@@ -340,28 +340,28 @@ export default function ParamLayerPage() {
   const dispDecay = decaySec(dispParams[3]).toFixed(2);
 
   return (
-    <div className="fixed inset-0 bg-black text-white flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-black text-foreground flex flex-col overflow-hidden">
       {/* header */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 shrink-0">
-        <h1 className="text-base font-serif text-white/95">Param Layer</h1>
-        <p className="text-xs text-white/55 font-mono">harmonic ring synth · cycle 241</p>
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
+        <h1 className="text-base font-serif text-foreground">Param Layer</h1>
+        <p className="text-xs text-muted-foreground font-mono">harmonic ring synth · cycle 241</p>
       </div>
 
       {!started ? (
         /* splash */
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <p className="text-white/75 text-base max-w-xs leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-xs leading-relaxed">
             Four concentric rings shape a bell tone — pitch, overtones, metallic
             spread, and decay. Drag each ring to sculpt the timbre. Tap the
             center circle to strike.
           </p>
           <button
             onClick={boot}
-            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-base font-medium min-h-[44px] min-w-[44px] transition-all"
+            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-foreground text-base font-medium min-h-[44px] min-w-[44px] transition-all"
           >
             Open the synth
           </button>
-          <p className="text-white/40 text-xs">
+          <p className="text-muted-foreground/70 text-xs">
             Inspired by DEMON (hierarchical parameter propagation, arXiv May 2026)
           </p>
         </div>
@@ -379,17 +379,17 @@ export default function ParamLayerPage() {
           />
 
           {/* HUD row */}
-          <div className="shrink-0 grid grid-cols-4 border-t border-white/10 pb-safe">
+          <div className="shrink-0 grid grid-cols-4 border-t border-border pb-safe">
             {([
               { label: "pitch",     val: noteLabel(dispFund),  sub: `${Math.round(dispFund)} Hz`, color: "text-violet-300" },
-              { label: "partials",  val: String(dispNP),        sub: `of ${N_PARTIALS}`,           color: "text-teal-300"   },
-              { label: "spread",    val: `${dispIH}%`,          sub: "inharmonic",                 color: "text-amber-300"  },
-              { label: "decay",     val: `${dispDecay}s`,       sub: "per strike",                 color: "text-rose-300"   },
+              { label: "partials",  val: String(dispNP),        sub: `of ${N_PARTIALS}`,           color: "text-violet-300"   },
+              { label: "spread",    val: `${dispIH}%`,          sub: "inharmonic",                 color: "text-violet-300"  },
+              { label: "decay",     val: `${dispDecay}s`,       sub: "per strike",                 color: "text-violet-300"   },
             ] as const).map(({ label, val, sub, color }) => (
               <div key={label} className="flex flex-col items-center py-2 gap-0.5">
                 <span className={`text-sm font-mono ${color}`}>{val}</span>
-                <span className="text-[10px] text-white/55 font-mono">{sub}</span>
-                <span className="text-[9px] text-white/35 font-mono uppercase tracking-wider">{label}</span>
+                <span className="text-[10px] text-muted-foreground font-mono">{sub}</span>
+                <span className="text-[9px] text-muted-foreground/70 font-mono uppercase tracking-wider">{label}</span>
               </div>
             ))}
           </div>
@@ -400,7 +400,7 @@ export default function ParamLayerPage() {
       <div className="absolute bottom-16 right-4 z-10">
         <Link
           href="/dream"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -408,7 +408,7 @@ export default function ParamLayerPage() {
       <div className="absolute bottom-16 left-4 z-10">
         <Link
           href="/dream/208-param-layer/README.md"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           design notes
         </Link>

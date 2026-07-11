@@ -470,10 +470,10 @@ export default function PianoPortalJamPage() {
 
   const connColor =
     conn === "connected"
-      ? "text-emerald-300"
+      ? "text-violet-300"
       : conn === "failed"
-        ? "text-rose-300"
-        : "text-white/75";
+        ? "text-violet-300"
+        : "text-muted-foreground";
   const connLabel =
     conn === "connected"
       ? "portal open — duet live"
@@ -488,7 +488,7 @@ export default function PianoPortalJamPage() {
   const isGuestPending = role === "guest" && phase !== "playing";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-foreground">
       <div
         ref={wrapRef}
         className="absolute inset-0"
@@ -501,10 +501,10 @@ export default function PianoPortalJamPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-8">
-        <h1 className="font-mono text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-mono text-2xl text-foreground sm:text-3xl">
           Piano Portal Jam
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/80">
+        <p className="mt-2 max-w-xl text-base text-foreground">
           Open a portal to Karel&apos;s real piano and send it to a friend with
           one link. Then play it together — peer-to-peer, two constellations
           meeting.
@@ -518,7 +518,7 @@ export default function PianoPortalJamPage() {
           e.preventDefault();
           setShowNotes((s) => !s);
         }}
-        className="pointer-events-auto absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-violet-300 backdrop-blur hover:bg-white/10"
+        className="pointer-events-auto absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-violet-300 backdrop-blur hover:bg-accent"
       >
         Read the design notes
       </Link>
@@ -526,10 +526,10 @@ export default function PianoPortalJamPage() {
       {/* Intro / Begin */}
       {phase !== "playing" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/55 backdrop-blur-sm">
-          <div className="mx-4 max-w-md rounded-2xl border border-white/12 bg-[#0a0b16]/90 p-7 text-center">
+          <div className="mx-4 max-w-md rounded-2xl border border-border bg-[#0a0b16]/90 p-7 text-center">
             {isGuestPending ? (
               <>
-                <p className="text-base text-white/85">
+                <p className="text-base text-foreground">
                   A friend opened a portal to Karel&apos;s piano and invited you
                   in. Tap below to start sound and join the duet — your grains
                   glow warm, theirs cool.
@@ -537,14 +537,14 @@ export default function PianoPortalJamPage() {
                 <button
                   onClick={begin}
                   disabled={phase === "loading"}
-                  className="mt-6 min-h-[44px] w-full rounded-xl bg-emerald-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-emerald-400 disabled:opacity-60"
+                  className="mt-6 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400 disabled:opacity-60"
                 >
                   {phase === "loading" ? "Opening the portal…" : "Join the duet"}
                 </button>
               </>
             ) : (
               <>
-                <p className="text-base text-white/85">
+                <p className="text-base text-foreground">
                   His whole performance is loaded as a corpus of sound-grains.
                   Tap and drag the field to re-sound it. Leave it alone and a
                   ghost player drifts a duet with you. Open a portal to play it
@@ -553,13 +553,13 @@ export default function PianoPortalJamPage() {
                 <button
                   onClick={begin}
                   disabled={phase === "loading"}
-                  className="mt-6 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-violet-400 disabled:opacity-60"
+                  className="mt-6 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400 disabled:opacity-60"
                 >
                   {phase === "loading" ? "Loading his piano…" : "Enter the field"}
                 </button>
               </>
             )}
-            <p className="mt-4 text-base text-white/55">
+            <p className="mt-4 text-base text-muted-foreground">
               Best with headphones. iOS needs this first tap to start sound.
             </p>
           </div>
@@ -570,12 +570,12 @@ export default function PianoPortalJamPage() {
       {phase === "playing" && (
         <div className="pointer-events-none absolute left-5 top-28 z-10 flex flex-col gap-2 sm:left-8">
           {source === "piano" && (
-            <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1.5 font-mono text-base text-emerald-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300/95">
               Karel&apos;s piano · {grainCount.toLocaleString()} grains
             </span>
           )}
           {source === "fallback" && (
-            <span className="w-fit rounded-full bg-rose-500/15 px-3 py-1.5 font-mono text-base text-rose-300">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300">
               live recording unavailable — fallback tone · {grainCount.toLocaleString()} grains
             </span>
           )}
@@ -592,12 +592,12 @@ export default function PianoPortalJamPage() {
             {connLabel}
           </span>
           {ghosting && !connectedRef.current && (
-            <span className="w-fit rounded-full bg-cyan-500/15 px-3 py-1.5 font-mono text-base text-cyan-200">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-200">
               ghost duet — open a portal for a real friend
             </span>
           )}
           {!rtcOk && (
-            <span className="w-fit rounded-full bg-rose-500/15 px-3 py-1.5 font-mono text-base text-rose-300">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300">
               this browser can&apos;t open a portal — solo + ghost only
             </span>
           )}
@@ -611,7 +611,7 @@ export default function PianoPortalJamPage() {
             setShowPortal(true);
             if (conn === "idle") void openPortal();
           }}
-          className="absolute right-4 top-20 z-20 min-h-[44px] rounded-full border border-emerald-400/30 bg-emerald-500/15 px-4 py-2.5 text-base text-emerald-200 backdrop-blur hover:bg-emerald-500/25"
+          className="absolute right-4 top-20 z-20 min-h-[44px] rounded-full border border-violet-400/30 bg-violet-500/15 px-4 py-2.5 text-base text-violet-200 backdrop-blur hover:bg-violet-500/25"
         >
           {conn === "connected" ? "Portal open" : "Open a portal"}
         </button>
@@ -620,7 +620,7 @@ export default function PianoPortalJamPage() {
       {/* Footer hint */}
       {phase === "playing" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
-          <p className="rounded-full bg-black/45 px-4 py-2 text-center text-base text-white/75 backdrop-blur">
+          <p className="rounded-full bg-black/45 px-4 py-2 text-center text-base text-muted-foreground backdrop-blur">
             Tap &amp; drag to play · you = warm · friend / ghost = cool
           </p>
         </div>
@@ -633,16 +633,16 @@ export default function PianoPortalJamPage() {
           onClick={() => setShowPortal(false)}
         >
           <div
-            className="max-h-[86vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/12 bg-[#0a0b16] p-6 text-base leading-relaxed text-white/80"
+            className="max-h-[86vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0b16] p-6 text-base leading-relaxed text-foreground"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-mono text-xl text-white/95">The portal</h2>
+              <h2 className="font-mono text-xl text-foreground">The portal</h2>
               <span className={`font-mono text-base ${connColor}`}>{connLabel}</span>
             </div>
 
             {!rtcOk && (
-              <p className="mt-4 text-rose-300">
+              <p className="mt-4 text-violet-300">
                 This browser lacks WebRTC or the Compression APIs, so the portal
                 can&apos;t open here. The solo + ghost duet still works.
               </p>
@@ -654,13 +654,13 @@ export default function PianoPortalJamPage() {
                 <p>
                   Step 1 — send this link to a friend (same room or across the
                   world). Step 2 — they&apos;ll send back a short{" "}
-                  <span className="text-emerald-300">return code</span>; paste it
+                  <span className="text-violet-300">return code</span>; paste it
                   below to connect.
                 </p>
                 {!shareUrl && (
                   <button
                     onClick={openPortal}
-                    className="min-h-[44px] w-full rounded-xl bg-emerald-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-emerald-400"
+                    className="min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400"
                   >
                     Build my portal link
                   </button>
@@ -670,29 +670,29 @@ export default function PianoPortalJamPage() {
                     <textarea
                       readOnly
                       value={shareUrl}
-                      className="h-20 w-full resize-none rounded-lg border border-white/12 bg-black/40 p-3 font-mono text-base text-white/85"
+                      className="h-20 w-full resize-none rounded-lg border border-border bg-black/40 p-3 font-mono text-base text-foreground"
                       onFocus={(e) => e.currentTarget.select()}
                     />
                     <button
                       onClick={shareLink}
-                      className="min-h-[44px] w-full rounded-xl bg-emerald-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-emerald-400"
+                      className="min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400"
                     >
                       Copy / share the link
                     </button>
                     <div>
-                      <p className="text-white/75">
+                      <p className="text-muted-foreground">
                         Paste the friend&apos;s return code here:
                       </p>
                       <textarea
                         value={pasteToken}
                         onChange={(e) => setPasteToken(e.target.value)}
                         placeholder="paste return code…"
-                        className="mt-2 h-24 w-full resize-none rounded-lg border border-white/12 bg-black/40 p-3 font-mono text-base text-white/85 placeholder:text-white/40"
+                        className="mt-2 h-24 w-full resize-none rounded-lg border border-border bg-black/40 p-3 font-mono text-base text-foreground placeholder:text-muted-foreground/70"
                       />
                       <button
                         onClick={submitAnswer}
                         disabled={!pasteToken.trim()}
-                        className="mt-2 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-violet-400 disabled:opacity-50"
+                        className="mt-2 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400 disabled:opacity-50"
                       >
                         Connect
                       </button>
@@ -707,23 +707,23 @@ export default function PianoPortalJamPage() {
               <div className="mt-4 space-y-4">
                 <p>
                   You opened a friend&apos;s portal. Copy the{" "}
-                  <span className="text-emerald-300">return code</span> below and
+                  <span className="text-violet-300">return code</span> below and
                   send it back to them — then you&apos;re playing together.
                 </p>
                 {!answerToken && (
-                  <p className="text-white/55">Preparing your return code…</p>
+                  <p className="text-muted-foreground">Preparing your return code…</p>
                 )}
                 {answerToken && (
                   <>
                     <textarea
                       readOnly
                       value={answerToken}
-                      className="h-28 w-full resize-none rounded-lg border border-white/12 bg-black/40 p-3 font-mono text-base text-white/85"
+                      className="h-28 w-full resize-none rounded-lg border border-border bg-black/40 p-3 font-mono text-base text-foreground"
                       onFocus={(e) => e.currentTarget.select()}
                     />
                     <button
                       onClick={copyAnswer}
-                      className="min-h-[44px] w-full rounded-xl bg-emerald-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-emerald-400"
+                      className="min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400"
                     >
                       Copy return code
                     </button>
@@ -733,12 +733,12 @@ export default function PianoPortalJamPage() {
             )}
 
             {copyMsg && (
-              <p className="mt-3 font-mono text-base text-emerald-300">{copyMsg}</p>
+              <p className="mt-3 font-mono text-base text-violet-300">{copyMsg}</p>
             )}
 
             <button
               onClick={() => setShowPortal(false)}
-              className="mt-5 min-h-[44px] w-full rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/85 hover:bg-white/20"
+              className="mt-5 min-h-[44px] w-full rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               {conn === "connected" ? "Back to the duet" : "Close"}
             </button>
@@ -753,10 +753,10 @@ export default function PianoPortalJamPage() {
           onClick={() => setShowNotes(false)}
         >
           <div
-            className="max-h-[82vh] max-w-lg overflow-y-auto rounded-2xl border border-white/12 bg-[#0a0b16] p-6 text-base leading-relaxed text-white/80"
+            className="max-h-[82vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0b16] p-6 text-base leading-relaxed text-foreground"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-mono text-xl text-white/95">Design notes</h2>
+            <h2 className="font-mono text-xl text-foreground">Design notes</h2>
             <p className="mt-3">
               The question: what if you could open a{" "}
               <em>portal</em> to Karel&apos;s real recorded piano, send it to a
@@ -764,7 +764,7 @@ export default function PianoPortalJamPage() {
               — peer-to-peer, across the room or across the world?
             </p>
             <p className="mt-3">
-              The elegant twist: <span className="text-emerald-300">both peers
+              The elegant twist: <span className="text-violet-300">both peers
               already hold the same recording</span>. So across the WebRTC data
               channel we send only tiny note <em>events</em>{" "}
               <code>{`{p,x,y,t}`}</code> — each peer renders the other&apos;s
@@ -778,21 +778,21 @@ export default function PianoPortalJamPage() {
               inside a shareable URL. The guest auto-answers and returns a short
               code; the host pastes it — connected. No backend, no npm deps.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               References: <strong>JackTrip</strong>&apos;s WebRTC work and the
               AES paper <em>&quot;Web-Based Networked Music Performances via
               WebRTC: A Low-Latency PCM Audio Solution&quot;</em> (RTCDataChannel
               + Web Audio). The corpus loader + concatenative grain engine reuse
               the lab&apos;s proven piano pattern (<code>720-paths-grainfield</code>).
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Degrade story: no WebGL → a Canvas2D starfield (audio unaffected).
               No WebRTC / Compression APIs → solo + ghost only, with a rose
               notice. Recording fetch fails → an offline arpeggio so the corpus
               is never empty. With no peer, a ghost player auto-drifts a duet
               after ~2.5s so the screen always sounds and moves.
             </p>
-            <p className="mt-3 text-cyan-200">
+            <p className="mt-3 text-violet-200">
               Honest caveat: the cross-device link is build-verified and
               correct-by-construction, but it has not been link-tested between
               two real devices in this sandbox. Symmetric/strict NATs may need a
@@ -800,7 +800,7 @@ export default function PianoPortalJamPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/85 hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

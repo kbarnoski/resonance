@@ -635,7 +635,7 @@ export default function DuetPathsPage() {
 
   // ─── Render ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -644,10 +644,10 @@ export default function DuetPathsPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-8">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Duet with the Paths
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/80">
+        <p className="mt-2 max-w-xl text-base text-foreground">
           Trade fours with a shadow that answers using grains pulled from
           Karel&apos;s real solo-piano recording.
         </p>
@@ -657,7 +657,7 @@ export default function DuetPathsPage() {
       <Link
         href="#notes"
         onClick={(e) => { e.preventDefault(); setShowNotes((s) => !s); }}
-        className="pointer-events-auto absolute right-4 top-4 z-20 rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-sm text-violet-300 backdrop-blur hover:bg-white/10"
+        className="pointer-events-auto absolute right-4 top-4 z-20 rounded-full border border-border bg-black/50 px-4 py-2.5 text-sm text-violet-300 backdrop-blur hover:bg-accent"
       >
         Read the design notes
       </Link>
@@ -665,19 +665,19 @@ export default function DuetPathsPage() {
       {/* Intro / Begin */}
       {phase !== "playing" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/55 backdrop-blur-sm">
-          <div className="mx-4 max-w-md rounded-2xl border border-white/12 bg-[#0c0c16]/90 p-7 text-center">
-            <p className="text-base text-white/85">
+          <div className="mx-4 max-w-md rounded-2xl border border-border bg-[#0c0c16]/90 p-7 text-center">
+            <p className="text-base text-foreground">
               Play a short phrase, then pause. The shadow answers with grains of
               Karel&apos;s own piano — a concatenative reply, not an echo.
             </p>
             <button
               onClick={begin}
               disabled={phase === "loading"}
-              className="mt-6 w-full rounded-xl bg-violet-500/90 px-4 py-3 text-base font-medium text-white hover:bg-violet-400 disabled:opacity-60"
+              className="mt-6 w-full rounded-xl bg-violet-500/90 px-4 py-3 text-base font-medium text-foreground hover:bg-violet-400 disabled:opacity-60"
             >
               {phase === "loading" ? "Loading his piano…" : "Begin"}
             </button>
-            <p className="mt-4 text-sm text-white/55">
+            <p className="mt-4 text-sm text-muted-foreground">
               Use a MIDI keyboard, your computer keys (a s d f g h j k l), or tap
               the keys below.
             </p>
@@ -689,21 +689,21 @@ export default function DuetPathsPage() {
       {phase === "playing" && (
         <div className="pointer-events-none absolute left-5 top-28 z-10 flex flex-col gap-2 text-sm sm:left-8">
           {source === "piano" && (
-            <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1.5 font-mono text-emerald-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-violet-300/95">
               Karel&apos;s piano 🎹 · {grainCount} grains
             </span>
           )}
           {source === "fallback" && (
-            <span className="w-fit rounded-full bg-amber-500/15 px-3 py-1.5 font-mono text-amber-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-violet-300/95">
               synth fallback · {grainCount} grains (offline)
             </span>
           )}
           {midiName ? (
-            <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1.5 font-mono text-emerald-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-violet-300/95">
               MIDI: {midiName}
             </span>
           ) : (
-            <span className="w-fit rounded-full bg-amber-500/15 px-3 py-1.5 font-mono text-amber-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-violet-300/95">
               {midiSupported ? "No MIDI device — use your keyboard or tap the keys" : "No Web MIDI — use your keyboard or tap the keys"}
             </span>
           )}
@@ -718,14 +718,14 @@ export default function DuetPathsPage() {
       {/* On-screen mini keyboard */}
       {phase === "playing" && (
         <div className="absolute inset-x-0 bottom-16 z-10 flex justify-center px-4">
-          <div className="flex gap-1.5 rounded-2xl border border-white/10 bg-black/50 p-2 backdrop-blur">
+          <div className="flex gap-1.5 rounded-2xl border border-border bg-black/50 p-2 backdrop-blur">
             {KEYS.map((m, i) => (
               <button
                 key={i}
                 onPointerDown={(e) => { e.preventDefault(); noteOn(m, 0.7); }}
                 onPointerUp={() => noteOff(m)}
                 onPointerLeave={() => noteOff(m)}
-                className="flex h-16 min-w-[44px] items-end justify-center rounded-lg border border-white/10 bg-gradient-to-b from-amber-200/10 to-rose-300/10 px-2 pb-2 text-sm text-white/75 hover:from-amber-200/25 hover:to-rose-300/25 active:from-amber-200/40"
+                className="flex h-16 min-w-[44px] items-end justify-center rounded-lg border border-border bg-gradient-to-b from-violet-200/10 to-violet-300/10 px-2 pb-2 text-sm text-muted-foreground hover:from-violet-200/25 hover:to-violet-300/25 active:from-violet-200/40"
               >
                 {KEY_LABELS[i]}
               </button>
@@ -737,8 +737,8 @@ export default function DuetPathsPage() {
       {/* Design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur" onClick={() => setShowNotes(false)}>
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-white/12 bg-[#0c0c16] p-6 text-sm leading-relaxed text-white/80" onClick={(e) => e.stopPropagation()}>
-            <h2 className="font-serif text-xl text-white/95">Design notes</h2>
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0c0c16] p-6 text-sm leading-relaxed text-foreground" onClick={(e) => e.stopPropagation()}>
+            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
             <p className="mt-3">
               This is the <span className="text-violet-300">concatenative</span> duet
               partner. On load it fetches Karel&apos;s recording, slices it into a
@@ -749,19 +749,19 @@ export default function DuetPathsPage() {
               When your phrase ends (~750ms of silence after 2+ notes), it builds
               an <em>answering line</em> — complementary register and contour,
               landing consonant in D&nbsp;Dorian — then realizes each note by
-              <span className="text-emerald-300/95"> retrieving the closest-pitch grain</span> from
+              <span className="text-violet-300/95"> retrieving the closest-pitch grain</span> from
               his piano and nudging <code>playbackRate</code> to fine-tune. So the
               reply is made of his real sound, not a synth approximation.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               References: MACataRT (arXiv:2502.00023, Feb 2025, concatenative
               co-improvisation) and Diemo Schwarz&apos;s CataRT.
             </p>
-            <p className="mt-3 text-amber-300/95">
+            <p className="mt-3 text-violet-300/95">
               Offline / no network: it falls back to a synthesized piano corpus so
               the piece stays fully alive (amber badge). Provenance is always shown.
             </p>
-            <button onClick={() => setShowNotes(false)} className="mt-5 rounded-lg bg-white/10 px-4 py-2.5 text-white/85 hover:bg-white/20">
+            <button onClick={() => setShowNotes(false)} className="mt-5 rounded-lg bg-muted px-4 py-2.5 text-foreground hover:bg-accent">
               Close
             </button>
           </div>

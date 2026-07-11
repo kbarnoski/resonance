@@ -370,10 +370,10 @@ export default function JellyPondPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06201c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06201c] text-foreground">
       <Link
         href="/dream"
-        className="absolute left-4 top-4 z-30 rounded-full bg-black/40 px-4 py-2.5 font-mono text-base text-white/80 backdrop-blur min-h-[44px] flex items-center hover:text-white"
+        className="absolute left-4 top-4 z-30 rounded-full bg-black/40 px-4 py-2.5 font-mono text-base text-foreground backdrop-blur min-h-[44px] flex items-center hover:text-foreground"
       >
         ← pond
       </Link>
@@ -396,8 +396,8 @@ export default function JellyPondPage() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#06201c]/80 px-6 text-center backdrop-blur">
-          <h1 className="text-2xl font-semibold text-white">Sing the Pond</h1>
-          <p className="max-w-md text-base text-white/80">
+          <h1 className="text-2xl font-semibold text-foreground">Sing the Pond</h1>
+          <p className="max-w-md text-base text-foreground">
             Drag your finger across the water. The water swirls, swells, and
             sings — every wiggle is a friendly sound.
           </p>
@@ -405,23 +405,23 @@ export default function JellyPondPage() {
             type="button"
             onClick={start}
             disabled={booting}
-            className="min-h-[72px] min-w-[72px] rounded-full bg-amber-300 px-10 py-5 text-2xl font-bold text-[#06201c] shadow-lg transition hover:bg-amber-200 active:scale-95"
+            className="min-h-[72px] min-w-[72px] rounded-full bg-violet-300 px-10 py-5 text-2xl font-bold text-[#06201c] shadow-lg transition hover:bg-violet-200 active:scale-95"
           >
             ▶ Play
           </button>
-          <p className="font-mono text-base text-white/75">touch the water to play</p>
+          <p className="font-mono text-base text-muted-foreground">touch the water to play</p>
         </div>
       )}
 
       {/* status / notice */}
       {started && backend === "none" && (
-        <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-xl bg-black/50 px-5 py-3 text-center text-base text-rose-300 backdrop-blur">
+        <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-xl bg-black/50 px-5 py-3 text-center text-base text-violet-300 backdrop-blur">
           Your device can&apos;t draw the water, but the pond is still singing —
           listen and drag.
         </div>
       )}
       {started && backend !== "none" && (
-        <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/30 px-4 py-2 font-mono text-base text-white/75 backdrop-blur">
+        <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/30 px-4 py-2 font-mono text-base text-muted-foreground backdrop-blur">
           {backend === "webgpu" ? "WebGPU fluid" : "WebGL2 water"} · drag to play
         </div>
       )}

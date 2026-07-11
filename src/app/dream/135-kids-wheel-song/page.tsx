@@ -320,10 +320,10 @@ export default function KidsWheelSong() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#050012] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#050012] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🎡</div>
-        <h1 className="text-2xl font-serif text-white/95">Wheel Song</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Wheel Song</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           The wheel spins and sings — each color plays a different note. Tap to spin it faster!
         </p>
         <div className="flex gap-3 items-center opacity-50 select-none mt-1" aria-hidden="true">
@@ -341,12 +341,12 @@ export default function KidsWheelSong() {
           ))}
         </div>
         <button
-          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-white/95 text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={handleStart}
         >
           🎡 Spin the wheel
         </button>
-        <p className="text-sm text-white/55">no microphone needed · for kids 3+</p>
+        <p className="text-sm text-muted-foreground">no microphone needed · for kids 3+</p>
       </div>
     );
   }

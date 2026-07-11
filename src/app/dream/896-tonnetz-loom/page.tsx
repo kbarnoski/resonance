@@ -223,28 +223,28 @@ export default function TonnetzLoomPage() {
     : null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#070611] text-white">
+    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#070611] text-foreground">
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
         <header>
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             tonnetz loom
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Walk the geometry of <span className="text-violet-300">harmony</span>.
             Each node is a pitch; each triangle is a consonant triad. Tap one to
             hear it in <span className="text-violet-300">just intonation</span>,
             then move with the neo-Riemannian{" "}
-            <span className="font-mono text-white/95">P / L / R</span> transforms —
+            <span className="font-mono text-foreground">P / L / R</span> transforms —
             each glides exactly one voice. Your path is woven as a ribbon.
           </p>
-          <p className="mt-1 font-mono text-base text-white/60">
+          <p className="mt-1 font-mono text-base text-muted-foreground">
             after Euler&rsquo;s <span className="italic">Tonnetz</span> (1739)
             &middot; Cohn, neo-Riemannian theory &middot; Lewin, transformations
           </p>
         </header>
 
         {/* The lattice */}
-        <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black/30">
+        <div className="relative w-full overflow-hidden rounded-xl border border-border bg-black/30">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -367,15 +367,15 @@ export default function TonnetzLoomPage() {
 
         {/* Status line */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             current:{" "}
-            <span className="text-emerald-300/95">{chordName(chord)}</span>
+            <span className="text-violet-300/95">{chordName(chord)}</span>
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             move: <span className="text-violet-300">{lastMove}</span>
           </span>
-          <span className="text-white/75">
-            steps: <span className="text-white/95">{path.length}</span>
+          <span className="text-muted-foreground">
+            steps: <span className="text-foreground">{path.length}</span>
           </span>
         </div>
 
@@ -395,7 +395,7 @@ export default function TonnetzLoomPage() {
                 className="flex min-h-[44px] flex-col items-center justify-center rounded-lg bg-violet-500/15 px-4 py-2.5 text-violet-200 ring-1 ring-violet-300/40 transition hover:bg-violet-500/25"
               >
                 <span className="font-mono text-xl font-semibold">{w}</span>
-                <span className="mt-0.5 text-center text-base leading-tight text-white/75">
+                <span className="mt-0.5 text-center text-base leading-tight text-muted-foreground">
                   {label}
                 </span>
               </button>
@@ -407,40 +407,40 @@ export default function TonnetzLoomPage() {
               onClick={() => setDrift((d) => !d)}
               className={`min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base ring-1 transition ${
                 drift
-                  ? "bg-emerald-500/20 text-emerald-200 ring-emerald-300/40 hover:bg-emerald-500/30"
-                  : "bg-white/10 text-white/95 ring-white/20 hover:bg-white/15"
+                  ? "bg-violet-500/20 text-violet-200 ring-violet-300/40 hover:bg-violet-500/30"
+                  : "bg-muted text-foreground ring-border hover:bg-accent"
               }`}
             >
               {drift ? "■ drift on" : "▶ drift (auto-walk)"}
             </button>
             <button
               onClick={handleExport}
-              className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 font-mono text-base text-white/95 ring-1 ring-white/20 transition hover:bg-white/15"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 font-mono text-base text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               ⤓ export SVG
             </button>
             <button
               onClick={clearPath}
-              className="min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white/95"
+              className="min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
             >
               clear path
             </button>
             <button
               onClick={() => setShowNotes(true)}
-              className="min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base text-white/75 underline-offset-4 transition hover:text-white/95 hover:underline"
+              className="min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base text-muted-foreground underline-offset-4 transition hover:text-foreground hover:underline"
             >
               design notes
             </button>
             <Link
               href="/dream"
-              className="font-mono text-base text-white/55 underline underline-offset-4 hover:text-white/75"
+              className="font-mono text-base text-muted-foreground underline underline-offset-4 hover:text-muted-foreground"
             >
               ← gallery
             </Link>
           </div>
 
           {!started ? (
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Audio starts on your first tap (covers iOS autoplay). Tap any
               triangle, then move with P / L / R — or hit{" "}
               <span className="text-violet-300">drift</span> to hear it walk
@@ -453,9 +453,9 @@ export default function TonnetzLoomPage() {
       {/* Design-notes panel */}
       {showNotes ? (
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/75 p-4">
-          <div className="max-h-[82vh] max-w-xl overflow-y-auto rounded-lg border border-white/15 bg-[#0b0a16] p-6 text-white/80">
+          <div className="max-h-[82vh] max-w-xl overflow-y-auto rounded-lg border border-border bg-[#0b0a16] p-6 text-foreground">
             <div className="mb-3 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-xl text-white">design notes</h2>
+              <h2 className="font-serif text-xl text-foreground">design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base text-violet-300 hover:text-violet-200"
@@ -465,15 +465,15 @@ export default function TonnetzLoomPage() {
             </div>
             <div className="space-y-3 text-base leading-relaxed">
               <p>
-                <span className="text-white/95">The lattice.</span> The Tonnetz is
+                <span className="text-foreground">The lattice.</span> The Tonnetz is
                 a triangular pitch-class grid. Horizontally each step is a perfect
                 fifth (+7 semitones); the up-right axis is a major third (+4); the
                 remaining edge is a minor third (+3, since 7&minus;4=3).
                 Up-pointing triangles are <span className="text-violet-300">major</span>{" "}
-                triads, down-pointing are <span className="text-sky-300">minor</span>.
+                triads, down-pointing are <span className="text-violet-300">minor</span>.
               </p>
               <p>
-                <span className="text-white/95">Just intonation.</span> Each triad
+                <span className="text-foreground">Just intonation.</span> Each triad
                 is sounded from pure ratios on its root — major{" "}
                 <span className="font-mono">4:5:6</span>, minor{" "}
                 <span className="font-mono">10:12:15</span> — so the thirds are
@@ -482,7 +482,7 @@ export default function TonnetzLoomPage() {
                 convolution reverb → compressor/limiter → out.
               </p>
               <p>
-                <span className="text-white/95">P / L / R voice-leading.</span> Each
+                <span className="text-foreground">P / L / R voice-leading.</span> Each
                 neo-Riemannian transform flips quality and moves exactly{" "}
                 <span className="text-violet-300">one voice</span> by a small step
                 while two common tones hold: <span className="font-mono">P</span>{" "}
@@ -494,17 +494,17 @@ export default function TonnetzLoomPage() {
                 re-striking, so you hear the single moving voice.
               </p>
               <p>
-                <span className="text-white/95">The loom.</span> Every visited
+                <span className="text-foreground">The loom.</span> Every visited
                 triad appends its centroid to a glowing ribbon over the lattice,
                 exportable as a standalone <span className="font-mono">.svg</span>{" "}
                 (lattice + your path) via Blob + object URL.
               </p>
               <p>
-                <span className="text-white/95">Lineage.</span> Leonhard Euler,{" "}
+                <span className="text-foreground">Lineage.</span> Leonhard Euler,{" "}
                 <span className="italic">Tonnetz</span> (1739); Richard Cohn,
                 neo-Riemannian theory (the P/L/R group); David Lewin,
                 transformational theory. Anchored to{" "}
-                <span className="font-mono text-white/75">
+                <span className="font-mono text-muted-foreground">
                   RESEARCH §533 (2026-06-24)
                 </span>
                 .

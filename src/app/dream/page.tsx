@@ -28,15 +28,15 @@ type RecentCycle = {
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const STATUS_STYLES: Record<string, string> = {
-  skeleton: "bg-white/10 text-white/60",
-  wip: "bg-amber-500/15 text-amber-300",
-  demoable: "bg-violet-500/15 text-violet-200",
-  polished: "bg-emerald-500/15 text-emerald-300",
+  skeleton: "bg-muted text-muted-foreground",
+  wip: "bg-primary/10 text-primary/90 border border-primary/20",
+  demoable: "bg-primary/15 text-primary",
+  polished: "bg-primary/20 text-primary border border-primary/30",
 };
 
 const CATEGORY_STYLES: Record<Prototype["category"], string> = {
-  local: "bg-emerald-500/10 text-emerald-300/90 border border-emerald-500/20",
-  "fal-required": "bg-amber-500/10 text-amber-300/90 border border-amber-500/20",
+  local: "bg-primary/10 text-primary/90 border border-primary/20",
+  "fal-required": "bg-muted text-muted-foreground border border-border",
 };
 
 const CATEGORY_LABELS: Record<Prototype["category"], string> = {
@@ -75,7 +75,7 @@ function renderInline(text: string, key: string): ReactNode {
         start: boldM.index,
         end: boldM.index + boldM[0].length,
         node: (
-          <strong key={`${key}-b${n++}`} className="font-semibold text-white">
+          <strong key={`${key}-b${n++}`} className="font-semibold text-foreground">
             {boldM[1]}
           </strong>
         ),
@@ -87,7 +87,7 @@ function renderInline(text: string, key: string): ReactNode {
         node: (
           <code
             key={`${key}-c${n++}`}
-            className="rounded bg-white/[0.07] px-1.5 py-0.5 text-[0.85em] text-violet-200"
+            className="rounded bg-muted px-1.5 py-0.5 text-[0.85em] text-primary"
           >
             {codeM[1]}
           </code>
@@ -103,7 +103,7 @@ function renderInline(text: string, key: string): ReactNode {
             href={linkM[2]}
             target={linkM[2].startsWith("http") ? "_blank" : undefined}
             rel="noopener noreferrer"
-            className="text-violet-300 underline underline-offset-2 hover:text-violet-100"
+            className="text-primary underline underline-offset-2 hover:text-primary/80"
           >
             {linkM[1]}
           </a>
@@ -140,7 +140,7 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
       out.push(
         <pre
           key={`${baseKey}-pre${k++}`}
-          className="my-3 overflow-x-auto rounded-md bg-white/[0.04] p-3 font-mono text-[0.78rem] leading-relaxed text-white/65"
+          className="my-3 overflow-x-auto rounded-md bg-muted p-3 font-mono text-[0.78rem] leading-relaxed text-muted-foreground"
         >
           {code}
         </pre>
@@ -155,7 +155,7 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
       out.push(
         <h3
           key={`${baseKey}-h${k++}`}
-          className="mt-5 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-violet-300/70"
+          className="mt-5 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary/80"
         >
           {text}
         </h3>
@@ -181,7 +181,7 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
           className="my-2 ml-4 space-y-2 text-sm"
         >
           {items.map((it, idx) => (
-            <li key={idx} className="leading-relaxed text-white/75">
+            <li key={idx} className="leading-relaxed text-muted-foreground">
               {renderInline(it, `${baseKey}-uli${k}-${idx}`)}
             </li>
           ))}
@@ -200,7 +200,7 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
       out.push(
         <ol
           key={`${baseKey}-ol${k++}`}
-          className="my-2 ml-5 list-decimal space-y-1 text-sm text-white/75"
+          className="my-2 ml-5 list-decimal space-y-1 text-sm text-muted-foreground"
         >
           {items.map((it, idx) => (
             <li key={idx}>
@@ -235,7 +235,7 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
     out.push(
       <p
         key={`${baseKey}-p${k++}`}
-        className="my-2 text-sm leading-relaxed text-white/75"
+        className="my-2 text-sm leading-relaxed text-muted-foreground"
       >
         {renderInline(para.join(" "), `${baseKey}-pin${k}`)}
       </p>
@@ -407,19 +407,19 @@ export default async function DreamPage() {
   const morningContentLines = morningMd.split("\n").slice(1);
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-background text-foreground">
       {/* ── Hero (compact — keeps prototypes above the fold) ─────── */}
-      <section className="border-b border-white/10 px-6 py-5">
+      <section className="border-b border-border px-6 py-5">
         <div className="mx-auto flex max-w-3xl flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.3em] text-violet-300/70">
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
               Resonance · Dream Lab
               {cycleNum ? ` · cycle ${cycleNum}` : ""}
             </div>
-            <h1 className="mt-1 font-serif text-2xl tracking-tight sm:text-3xl">
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               What the dream agent built
             </h1>
-            <p className="mt-0.5 text-xs text-white/45">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               {prototypes.length} prototypes · autonomous hourly cycles
               {lastUpdated ? ` · ${lastUpdated}` : ""}
             </p>
@@ -427,7 +427,7 @@ export default async function DreamPage() {
           <div className="flex flex-wrap gap-1.5 text-xs">
             <Link
               href="/dream/history"
-              className="rounded-full border border-violet-400/30 bg-violet-500/15 px-3 py-1 text-violet-100 transition-colors hover:bg-violet-500/25"
+              className="rounded-full border border-primary/30 bg-primary/15 px-3 py-1 text-primary transition-colors hover:bg-primary/25"
             >
               ↻{" "}
               {recentCycles.length > 0
@@ -438,7 +438,7 @@ export default async function DreamPage() {
               href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/IDEAS.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 transition-colors hover:bg-white/10"
+              className="rounded-full border border-border bg-muted px-3 py-1 transition-colors hover:bg-accent"
             >
               Ideas
             </a>
@@ -446,7 +446,7 @@ export default async function DreamPage() {
               href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/RESEARCH.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 transition-colors hover:bg-white/10"
+              className="rounded-full border border-border bg-muted px-3 py-1 transition-colors hover:bg-accent"
             >
               Research
             </a>
@@ -454,7 +454,7 @@ export default async function DreamPage() {
               href="https://claude.ai/code/routines/trig_018Bk8HoEkQnFqxgxK8rdD9h"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-violet-400/30 bg-violet-500/20 px-3 py-1 text-violet-100 transition-colors hover:bg-violet-500/30"
+              className="rounded-full border border-primary/30 bg-primary/20 px-3 py-1 text-primary transition-colors hover:bg-primary/30"
             >
               Logs →
             </a>
@@ -466,16 +466,16 @@ export default async function DreamPage() {
       <section className="px-6 pt-6 pb-10">
         <div className="mx-auto max-w-3xl">
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
-            <div className="text-xs uppercase tracking-[0.3em] text-white/50">
+            <div className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
               {prototypes.length} prototypes · newest first
             </div>
-            <div className="flex flex-wrap gap-3 text-[11px] text-white/45">
+            <div className="flex flex-wrap gap-3 text-[11px] text-muted-foreground">
               <span>
-                <span className="text-emerald-300/90">✓ local</span>{" "}
+                <span className="text-primary">✓ local</span>{" "}
                 {prototypes.filter((p) => p.category === "local").length}
               </span>
               <span>
-                <span className="text-amber-300/90">🔑 FAL_KEY</span>{" "}
+                <span className="text-muted-foreground">🔑 FAL_KEY</span>{" "}
                 {prototypes.filter((p) => p.category === "fal-required").length}
               </span>
             </div>
@@ -485,10 +485,11 @@ export default async function DreamPage() {
               <Link
                 key={p.slug}
                 href={`/dream/${p.slug}`}
-                className="group block rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all hover:border-violet-400/30 hover:bg-white/[0.08]"
+                prefetch={false}
+                className="group block rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:bg-accent"
               >
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-white/40">
+                  <span className="font-mono text-xs text-muted-foreground/70">
                     c{p.cycle}
                   </span>
                   {p.status !== "demoable" && (
@@ -515,13 +516,13 @@ export default async function DreamPage() {
                     <VoteButtons slug={p.slug} compact stopPropagation />
                   </span>
                 </div>
-                <h3 className="mb-1.5 font-serif text-lg transition-colors group-hover:text-violet-200">
+                <h3 className="mb-1.5 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
                   {p.name}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-white/50">
+                <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                   {p.description || "—"}
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm text-violet-300 transition-colors group-hover:text-violet-100">
+                <span className="inline-flex items-center gap-1 text-sm text-primary transition-colors group-hover:text-primary/80">
                   Launch{" "}
                   <span className="inline-block transition-transform group-hover:translate-x-0.5">
                     →
@@ -535,23 +536,23 @@ export default async function DreamPage() {
 
       {/* ── Recent cycles + Morning digest (collapsed by default) ──── */}
       {(recentCycles.length > 0 || morningMd) && (
-        <section className="border-t border-white/10 px-6 py-8">
+        <section className="border-t border-border px-6 py-8">
           <div className="mx-auto max-w-3xl space-y-3">
             {recentCycles.length > 0 && (
-              <details className="group rounded-xl border border-white/10 bg-white/[0.03] open:bg-white/[0.05]">
-                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-white/[0.05]">
-                  <div className="text-xs uppercase tracking-[0.3em] text-white/55">
+              <details className="group rounded-xl border border-border bg-card open:bg-accent">
+                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-accent">
+                  <div className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
                     Recent cycles ({recentCycles[0].number} total)
                   </div>
-                  <span className="text-xs text-white/40 transition-transform group-open:rotate-180">
+                  <span className="text-xs text-muted-foreground/70 transition-transform group-open:rotate-180">
                     ▾
                   </span>
                 </summary>
-                <div className="border-t border-white/10 p-4">
+                <div className="border-t border-border p-4">
                   <div className="mb-3 flex justify-end">
                     <Link
                       href="/dream/history"
-                      className="text-xs text-violet-300 transition-colors hover:text-violet-100"
+                      className="text-xs text-primary transition-colors hover:text-primary/80"
                     >
                       Full history →
                     </Link>
@@ -562,25 +563,25 @@ export default async function DreamPage() {
                         key={c.number}
                         className={`rounded-xl border p-4 ${
                           i === 0
-                            ? "border-violet-400/20 bg-violet-500/[0.06]"
-                            : "border-white/10 bg-white/[0.03]"
+                            ? "border-primary/20 bg-primary/[0.06]"
+                            : "border-border bg-card"
                         }`}
                       >
                         <div className="mb-1 flex flex-wrap items-baseline gap-3">
-                          <span className="font-mono text-xs text-white/40">
+                          <span className="font-mono text-xs text-muted-foreground/70">
                             cycle {c.number}
                           </span>
-                          <span className="text-sm text-white/85">
+                          <span className="text-sm text-foreground">
                             {c.title}
                           </span>
                         </div>
                         {c.date && (
-                          <div className="mb-1.5 text-xs text-white/35">
+                          <div className="mb-1.5 text-xs text-muted-foreground/70">
                             {c.date}
                           </div>
                         )}
                         {c.decision && (
-                          <p className="text-xs leading-relaxed text-white/50 line-clamp-2">
+                          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
                             {c.decision.slice(0, 200)}
                           </p>
                         )}
@@ -592,16 +593,16 @@ export default async function DreamPage() {
             )}
 
             {morningMd && (
-              <details className="group rounded-xl border border-white/10 bg-violet-500/[0.04] open:bg-violet-500/[0.06]">
-                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-violet-500/[0.08]">
-                  <div className="text-xs uppercase tracking-[0.3em] text-violet-300/80">
+              <details className="group rounded-xl border border-border bg-primary/[0.04] open:bg-primary/[0.06]">
+                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-primary/[0.08]">
+                  <div className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
                     ⭐ Morning digest
                   </div>
-                  <span className="text-xs text-white/40 transition-transform group-open:rotate-180">
+                  <span className="text-xs text-muted-foreground/70 transition-transform group-open:rotate-180">
                     ▾
                   </span>
                 </summary>
-                <div className="border-t border-white/10 p-4">
+                <div className="border-t border-border p-4">
                   {renderMdSection(morningContentLines, "morning")}
                 </div>
               </details>
@@ -610,15 +611,15 @@ export default async function DreamPage() {
         </section>
       )}
 
-      <footer className="border-t border-white/10 px-6 py-6 text-center text-xs text-white/35">
+      <footer className="border-t border-border px-6 py-6 text-center text-xs text-muted-foreground/70">
         Sandboxed to{" "}
-        <code className="text-white/55">dream/sandbox</code> · built by an
-        ambient agent running 24/7 in Anthropic&apos;s cloud.{" "}
+        <code className="font-mono text-muted-foreground">dream/sandbox</code> ·
+        built by an ambient agent running 24/7 in Anthropic&apos;s cloud.{" "}
         <a
           href="https://github.com/kbarnoski/resonance/commits/dream/sandbox"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/50 transition-colors hover:text-white/70"
+          className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Git log
         </a>{" "}
@@ -627,7 +628,7 @@ export default async function DreamPage() {
           href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/AGENT.md"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/50 transition-colors hover:text-white/70"
+          className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Agent manual
         </a>

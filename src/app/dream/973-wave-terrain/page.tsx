@@ -420,14 +420,14 @@ export default function WaveTerrainPage() {
   const preset = TERRAIN_PRESETS[presetIdx];
 
   return (
-    <main className="min-h-screen bg-[#0c0907] text-white">
+    <main className="min-h-screen bg-[#0c0907] text-foreground">
       <div className="mx-auto max-w-6xl px-5 py-8">
         <header className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
               Wave Terrain
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/75">
+            <p className="mt-1 max-w-2xl text-base text-muted-foreground">
               The glowing landscape you see <em>is</em> the sound you hear. An
               orbit traces a closed path over the terrain; the height under the
               moving point, read at audio rate, is the waveform.
@@ -436,13 +436,13 @@ export default function WaveTerrainPage() {
           <div className="flex flex-col items-end gap-2 text-right">
             <Link
               href="/dream"
-              className="rounded-full border border-white/15 px-4 py-2.5 text-sm text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="rounded-full border border-border px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               ↑ all prototypes
             </Link>
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="text-sm text-amber-300/95 underline-offset-4 hover:underline"
+              className="text-sm text-violet-300/95 underline-offset-4 hover:underline"
             >
               Read the design notes
             </button>
@@ -450,9 +450,9 @@ export default function WaveTerrainPage() {
         </header>
 
         {showNotes && (
-          <div className="mb-6 rounded-xl border border-white/10 bg-black/30 p-5 text-base leading-relaxed text-white/80">
+          <div className="mb-6 rounded-xl border border-border bg-black/30 p-5 text-base leading-relaxed text-foreground">
             <p className="mb-2">
-              <span className="text-emerald-300/95">Wave-terrain synthesis</span>{" "}
+              <span className="text-violet-300/95">Wave-terrain synthesis</span>{" "}
               (Mitsuhashi 1982; Borgonovo &amp; Haus 1986; Roads,{" "}
               <em>Microsound</em> 2001): a 2D trajectory scans a 3D surface{" "}
               <span className="font-mono">z = f(x, y)</span>. Sampling the
@@ -461,7 +461,7 @@ export default function WaveTerrainPage() {
               spin the orbit faster (a higher note) and the same shape plays at a
               higher pitch.
             </p>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               Here the period (1024 samples, DC-blocked) is turned into a{" "}
               <span className="font-mono">PeriodicWave</span> shared by up to six
               oscillator voices. A 2025–2026 hardware/software revival (Scaler{" "}
@@ -473,39 +473,39 @@ export default function WaveTerrainPage() {
         )}
 
         {!started ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a120c] to-[#0c0907] py-24 text-center">
-            <p className="mb-5 max-w-md px-6 text-base text-white/75">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-gradient-to-b from-[#1a120c] to-[#0c0907] py-24 text-center">
+            <p className="mb-5 max-w-md px-6 text-base text-muted-foreground">
               Headphones recommended. Audio starts on your gesture. Then play
               the home row — the keys, not the mouse.
             </p>
             <button
               onClick={start}
-              className="rounded-full bg-amber-400/90 px-8 py-3.5 text-lg font-medium text-black transition-colors hover:bg-amber-300"
+              className="rounded-full bg-violet-400/90 px-8 py-3.5 text-lg font-medium text-black transition-colors hover:bg-violet-300"
             >
               ▶ Start the instrument
             </button>
             {noWebAudio && (
-              <p className="mt-4 text-base text-rose-300">
+              <p className="mt-4 text-base text-violet-300">
                 Web Audio is unavailable in this browser — sound cannot play.
               </p>
             )}
           </div>
         ) : noWebAudio ? (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Web Audio is unavailable in this browser — sound cannot play.
           </p>
         ) : (
           <>
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-black">
               <canvas ref={canvasRef} className="block h-[55vh] w-full" />
               {usingFallback && (
-                <div className="absolute left-3 top-3 rounded-md bg-black/70 px-3 py-1.5 text-sm text-rose-300">
+                <div className="absolute left-3 top-3 rounded-md bg-black/70 px-3 py-1.5 text-sm text-violet-300">
                   WebGL2 unavailable — top-down heatmap fallback. Audio still
                   plays.
                 </div>
               )}
               {demoActive && (
-                <div className="absolute right-3 top-3 rounded-md bg-black/60 px-3 py-1.5 text-sm text-emerald-300/95">
+                <div className="absolute right-3 top-3 rounded-md bg-black/60 px-3 py-1.5 text-sm text-violet-300/95">
                   auto-demo · press a key to play
                 </div>
               )}
@@ -513,33 +513,33 @@ export default function WaveTerrainPage() {
 
             {/* carved waveform strip = the exact period being played */}
             <div className="mt-3">
-              <div className="mb-1 text-sm text-white/55">
+              <div className="mb-1 text-sm text-muted-foreground">
                 carved waveform — height sampled along the orbit (one period)
               </div>
               <canvas
                 ref={stripRef}
                 width={1024}
                 height={120}
-                className="block h-[90px] w-full rounded-lg border border-white/10"
+                className="block h-[90px] w-full rounded-lg border border-border"
               />
             </div>
 
             {/* status + controls */}
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
-              <div className="rounded-xl border border-white/10 bg-black/30 p-4">
-                <div className="text-sm uppercase tracking-widest text-white/55">
+              <div className="rounded-xl border border-border bg-black/30 p-4">
+                <div className="text-sm uppercase tracking-widest text-muted-foreground">
                   Terrain
                 </div>
-                <div className="mt-1 text-xl text-white">{preset.name}</div>
-                <div className="text-base text-white/75">{preset.blurb}</div>
+                <div className="mt-1 text-xl text-foreground">{preset.name}</div>
+                <div className="text-base text-muted-foreground">{preset.blurb}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {TERRAIN_PRESETS.map((p, i) => (
                     <span
                       key={p.id}
                       className={`rounded-md px-2.5 py-1 font-mono text-sm ${
                         i === presetIdx
-                          ? "bg-amber-400/90 text-black"
-                          : "bg-white/[0.06] text-white/75"
+                          ? "bg-violet-400/90 text-black"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       {i + 1} {p.name.split(" ")[0]}
@@ -548,21 +548,21 @@ export default function WaveTerrainPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-black/30 p-4">
-                <div className="text-sm uppercase tracking-widest text-white/55">
+              <div className="rounded-xl border border-border bg-black/30 p-4">
+                <div className="text-sm uppercase tracking-widest text-muted-foreground">
                   Orbit (pitch path / timbre)
                 </div>
-                <div className="mt-2 font-mono text-base text-white/80">
+                <div className="mt-2 font-mono text-base text-foreground">
                   radius {orbitUI.radius.toFixed(2)} · lobes {orbitUI.lobes} ·
                   morph {morphing ? "on" : "off"}
                 </div>
-                <div className="mt-3 text-base text-white/75">
+                <div className="mt-3 text-base text-muted-foreground">
                   <span className="text-violet-300">[ ]</span> or{" "}
                   <span className="text-violet-300">← →</span> radius ·{" "}
                   <span className="text-violet-300">↑ ↓</span> lobes ·{" "}
                   <span className="text-violet-300">M</span> morph
                 </div>
-                <div className="mt-1 text-base text-white/75">
+                <div className="mt-1 text-base text-muted-foreground">
                   MIDI:{" "}
                   {midiOk === null
                     ? "…"
@@ -574,8 +574,8 @@ export default function WaveTerrainPage() {
             </div>
 
             {/* key legend */}
-            <div className="mt-5 rounded-xl border border-white/10 bg-black/30 p-4">
-              <div className="text-sm uppercase tracking-widest text-white/55">
+            <div className="mt-5 rounded-xl border border-border bg-black/30 p-4">
+              <div className="text-sm uppercase tracking-widest text-muted-foreground">
                 Play — home row (D Dorian, ~2 octaves)
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -584,14 +584,14 @@ export default function WaveTerrainPage() {
                     key={k}
                     className={`flex h-11 min-w-[44px] items-center justify-center rounded-lg border px-3 font-mono text-base ${
                       activeKeys.has(`kb-${k}`)
-                        ? "border-amber-300 bg-amber-400/90 text-black"
-                        : "border-white/15 bg-white/[0.04] text-white/80"
+                        ? "border-violet-300 bg-violet-400/90 text-black"
+                        : "border-border bg-muted text-foreground"
                     }`}
                   >
                     {k.toUpperCase()}
                   </kbd>
                 ))}
-                <span className="self-center text-base text-white/55">
+                <span className="self-center text-base text-muted-foreground">
                   + Q W E R T Y U I O P go higher
                 </span>
               </div>

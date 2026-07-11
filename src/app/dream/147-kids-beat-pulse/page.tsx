@@ -223,19 +223,19 @@ export default function KidsBeatPulse() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#070010] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#070010] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🥁</div>
-        <h1 className="text-2xl font-serif text-white/95">Beat Pulse</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Beat Pulse</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           A glowing circle pulses with the beat — tap anywhere to play along!
         </p>
         <button
-          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-white/95 text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={() => setStarted(true)}
         >
           🎵 Let&apos;s play!
         </button>
-        <p className="text-sm text-white/55">no microphone needed · for kids 3+</p>
+        <p className="text-sm text-muted-foreground">no microphone needed · for kids 3+</p>
       </div>
     );
   }
@@ -246,16 +246,16 @@ export default function KidsBeatPulse() {
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-5 select-none">
         <button
           onPointerDown={() => setBpm(b => Math.max(40, b - 10))}
-          className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl font-bold flex items-center justify-center"
+          className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-muted hover:bg-accent text-foreground text-2xl font-bold flex items-center justify-center"
         >
           −
         </button>
-        <span className="text-white/75 text-base w-20 text-center tabular-nums">
+        <span className="text-muted-foreground text-base w-20 text-center tabular-nums">
           {bpm} BPM
         </span>
         <button
           onPointerDown={() => setBpm(b => Math.min(120, b + 10))}
-          className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl font-bold flex items-center justify-center"
+          className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-muted hover:bg-accent text-foreground text-2xl font-bold flex items-center justify-center"
         >
           +
         </button>

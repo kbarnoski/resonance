@@ -97,7 +97,7 @@ export default function KidsShadowDance() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0712] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0712] text-foreground">
       {/* WebGL2 dusk meadow fills the screen */}
       <canvas
         ref={canvasRef}
@@ -111,7 +111,7 @@ export default function KidsShadowDance() {
       {/* design-notes link, top-right corner */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/25 bg-black/30 px-4 py-2.5 text-sm text-white/80 backdrop-blur hover:text-white"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/30 px-4 py-2.5 text-sm text-foreground backdrop-blur hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -119,16 +119,16 @@ export default function KidsShadowDance() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
         {phase !== "playing" && (
           <>
-            <h1 className="font-serif text-3xl font-semibold text-white sm:text-5xl">
+            <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-5xl">
               Shadow Dance
             </h1>
-            <p className="max-w-xl text-base text-white/80 sm:text-lg">
+            <p className="max-w-xl text-base text-foreground sm:text-lg">
               Stand back so the camera can see you, then{" "}
-              <span className="text-white">dance with your whole body</span>.
+              <span className="text-foreground">dance with your whole body</span>.
               Wherever you move, the dusk meadow blooms and sings. No tapping,
               no rules &mdash; just move!
             </p>
-            <p className="max-w-xl text-base text-amber-300/95">
+            <p className="max-w-xl text-base text-violet-300/95">
               The camera is only used to feel your movement. Nothing is ever
               recorded or sent anywhere &mdash; it all stays on this device.
             </p>
@@ -138,14 +138,14 @@ export default function KidsShadowDance() {
         {phase === "idle" && (
           <button
             onClick={start}
-            className="min-h-[64px] rounded-3xl bg-fuchsia-500 px-10 py-5 text-2xl font-semibold text-white shadow-lg transition hover:bg-fuchsia-400 active:scale-[0.98]"
+            className="min-h-[64px] rounded-3xl bg-violet-500 px-10 py-5 text-2xl font-semibold text-foreground shadow-lg transition hover:bg-violet-400 active:scale-[0.98]"
           >
             Start dancing
           </button>
         )}
 
         {phase === "loading" && (
-          <p className="text-base text-white/75 sm:text-lg">
+          <p className="text-base text-muted-foreground sm:text-lg">
             Waking up the meadow&hellip;
           </p>
         )}
@@ -153,13 +153,13 @@ export default function KidsShadowDance() {
         {phase === "playing" && (
           <div className="pointer-events-none flex flex-col items-center gap-3">
             {ghost && (
-              <p className="max-w-md text-base text-amber-300/95">
+              <p className="max-w-md text-base text-violet-300/95">
                 No camera right now, so a friendly ghost dancer is dancing for
                 you. The meadow still blooms and sings &mdash; come dance along!
               </p>
             )}
             {noWebgl && (
-              <p className="max-w-md text-base text-rose-300">
+              <p className="max-w-md text-base text-violet-300">
                 This device can&rsquo;t draw the meadow, but the music is still
                 playing. Close your eyes and dance to the sound.
               </p>
@@ -170,28 +170,28 @@ export default function KidsShadowDance() {
 
       {/* expandable design notes panel */}
       {showNotes && (
-        <div className="absolute inset-x-4 bottom-4 z-30 mx-auto max-w-2xl rounded-2xl border border-white/15 bg-black/75 p-5 text-left backdrop-blur-md">
-          <h2 className="text-xl font-semibold text-white">Design notes</h2>
-          <p className="mt-2 text-base text-white/80">
+        <div className="absolute inset-x-4 bottom-4 z-30 mx-auto max-w-2xl rounded-2xl border border-border bg-black/75 p-5 text-left backdrop-blur-md">
+          <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mt-2 text-base text-foreground">
             Your camera frame is shrunk to a tiny 32&times;24 grid and the
             brightness change between frames becomes a{" "}
-            <span className="text-fuchsia-300">motion field</span> &mdash; hot
+            <span className="text-violet-300">motion field</span> &mdash; hot
             cells are wherever you just moved. That field blooms flowers, leaves
             glowing light-trails, and shows a faint shadow of you in the meadow.
             The same numbers play a warm{" "}
-            <span className="text-fuchsia-300">Lydian</span> scale (no wrong
+            <span className="text-violet-300">Lydian</span> scale (no wrong
             notes): the more you move the more the pad swells and the brighter
             the filter opens, and where you move on screen picks the pitch.
             Everything runs through a limiter so it can never get harsh.
           </p>
-          <p className="mt-3 text-sm text-white/70">
+          <p className="mt-3 text-sm text-muted-foreground">
             In the lineage of Jaques-Dalcroze&rsquo;s <em>Eurhythmics</em> and
             Myron Krueger&rsquo;s <em>Videoplace</em> (1985). See the README in
             this folder for the full mapping and references.
           </p>
           <Link
             href="/dream"
-            className="mt-4 inline-block text-sm text-emerald-300/95 hover:underline"
+            className="mt-4 inline-block text-sm text-violet-300/95 hover:underline"
           >
             &larr; Back to the dream lab
           </Link>

@@ -210,7 +210,7 @@ export default function KidsFrostGarden() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06070f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06070f] text-foreground">
       {/* Render surface */}
       <canvas
         ref={canvasRef}
@@ -225,20 +225,20 @@ export default function KidsFrostGarden() {
 
       {/* Header / title overlay */}
       <div className="pointer-events-none relative z-10 px-6 pt-8">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Frost Garden
         </h1>
-        <p className="mt-2 max-w-md text-base text-white/75">
+        <p className="mt-2 max-w-md text-base text-muted-foreground">
           Touch the dark to plant a glowing seed. Luminous coral creeps outward
           on its own, and every new sparkle-tip rings a soft chime.
         </p>
-        <p className="mt-1 text-base text-white/55">
+        <p className="mt-1 text-base text-muted-foreground">
           A calm, endless bedtime garden of light.
         </p>
       </div>
 
       {glError && (
-        <div className="pointer-events-none absolute left-6 top-40 z-10 max-w-sm text-base text-rose-300">
+        <div className="pointer-events-none absolute left-6 top-40 z-10 max-w-sm text-base text-violet-300">
           Your device can’t show the glowing garden (WebGL2 unavailable), but
           the chimes and drone are still playing. Tap anywhere to hear new
           tips ring.
@@ -248,14 +248,14 @@ export default function KidsFrostGarden() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-6">
-          <p className="max-w-md text-center text-base text-white/75">
+          <p className="max-w-md text-center text-base text-muted-foreground">
             A growing garden of frost-light. Plant seeds with your finger and
             listen to each branch chime.
           </p>
           <button
             type="button"
             onClick={start}
-            className="flex min-h-[72px] min-w-[72px] items-center justify-center rounded-full bg-violet-500/90 px-10 py-5 text-xl font-medium text-white shadow-lg shadow-violet-900/40 transition active:scale-95"
+            className="flex min-h-[72px] min-w-[72px] items-center justify-center rounded-full bg-violet-500/90 px-10 py-5 text-xl font-medium text-foreground shadow-lg shadow-violet-900/40 transition active:scale-95"
           >
             Start the garden
           </button>
@@ -272,7 +272,7 @@ export default function KidsFrostGarden() {
             Read the design notes
           </Link>
         </span>
-        <p id="design-notes" className="mt-1 max-w-md text-base text-white/55">
+        <p id="design-notes" className="mt-1 max-w-md text-base text-muted-foreground">
           Built with diffusion-limited aggregation (Witten &amp; Sander, 1981).
           See README.md for how it grows.
         </p>

@@ -303,13 +303,13 @@ export default function HeliosOrbitPage() {
 
   const modeLabelClass =
     mode === "live"
-      ? "text-emerald-300"
+      ? "text-violet-300"
       : mode === "simulated"
-        ? "text-amber-300"
-        : "text-white/75";
+        ? "text-violet-300"
+        : "text-muted-foreground";
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#010409] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#010409] text-foreground">
       {/* three.js canvas */}
       <canvas
         ref={canvasRef}
@@ -330,11 +330,11 @@ export default function HeliosOrbitPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/dream"
-              className="pointer-events-auto rounded-full border border-white/20 px-3 py-1.5 text-base text-white/75 transition hover:bg-white/10"
+              className="pointer-events-auto rounded-full border border-border px-3 py-1.5 text-base text-muted-foreground transition hover:bg-accent"
             >
               ← dream
             </Link>
-            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Helios — Orbit
             </h1>
             <span
@@ -343,7 +343,7 @@ export default function HeliosOrbitPage() {
               {modeLabel}
             </span>
           </div>
-          <p className="mt-2 max-w-md text-base leading-relaxed text-white/80">
+          <p className="mt-2 max-w-md text-base leading-relaxed text-foreground">
             A dark Earth from orbit. Live solar wind and the planetary K-index
             drive an EDM build-and-drop — the geomagnetic storm IS the drop,
             and auroral ovals ignite around the magnetic poles when it peaks.
@@ -355,7 +355,7 @@ export default function HeliosOrbitPage() {
           {/* Live telemetry readout */}
           {started && (
             <div className="flex flex-wrap gap-x-5 gap-y-1">
-              <div className="text-base text-white/80">
+              <div className="text-base text-foreground">
                 Wind{" "}
                 <span className="font-semibold text-violet-300">
                   {displaySpeed}
@@ -365,10 +365,10 @@ export default function HeliosOrbitPage() {
               <div
                 className={`text-base font-medium ${
                   displayBz < -5
-                    ? "text-rose-300"
+                    ? "text-violet-300"
                     : displayBz < 0
-                      ? "text-amber-300"
-                      : "text-white/80"
+                      ? "text-violet-300"
+                      : "text-foreground"
                 }`}
               >
                 Bz{" "}
@@ -381,10 +381,10 @@ export default function HeliosOrbitPage() {
               <div
                 className={`text-base font-medium ${
                   displayKp >= 5
-                    ? "text-rose-300"
+                    ? "text-violet-300"
                     : displayKp >= 3
-                      ? "text-amber-300"
-                      : "text-white/80"
+                      ? "text-violet-300"
+                      : "text-foreground"
                 }`}
               >
                 Kp{" "}
@@ -394,9 +394,9 @@ export default function HeliosOrbitPage() {
                 <div
                   className={`rounded-full px-2.5 py-0.5 text-sm font-bold tracking-widest ${
                     stormState === "drop"
-                      ? "bg-rose-500/30 text-rose-300"
+                      ? "bg-violet-500/30 text-violet-300"
                       : stormState === "decay"
-                        ? "bg-amber-500/20 text-amber-300"
+                        ? "bg-violet-500/20 text-violet-300"
                         : "bg-violet-500/20 text-violet-300"
                   }`}
                 >
@@ -411,7 +411,7 @@ export default function HeliosOrbitPage() {
             {!started ? (
               <button
                 onClick={handleBegin}
-                className="min-h-[44px] rounded-xl bg-violet-600/90 px-5 py-2.5 text-base font-semibold text-white shadow-lg shadow-violet-900/50 transition hover:bg-violet-500"
+                className="min-h-[44px] rounded-xl bg-violet-600/90 px-5 py-2.5 text-base font-semibold text-foreground shadow-lg shadow-violet-900/50 transition hover:bg-violet-500"
               >
                 ▶ Begin
               </button>
@@ -426,7 +426,7 @@ export default function HeliosOrbitPage() {
 
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="pointer-events-auto min-h-[44px] rounded-xl border border-white/20 px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+              className="pointer-events-auto min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
             >
               Design notes
             </button>
@@ -436,26 +436,26 @@ export default function HeliosOrbitPage() {
 
       {/* Design notes panel */}
       {showNotes && (
-        <div className="absolute inset-x-4 top-[80px] z-10 max-h-[70vh] overflow-y-auto rounded-2xl border border-white/15 bg-[#08101e]/95 p-5 shadow-2xl sm:inset-x-auto sm:left-4 sm:max-w-sm">
+        <div className="absolute inset-x-4 top-[80px] z-10 max-h-[70vh] overflow-y-auto rounded-2xl border border-border bg-[#08101e]/95 p-5 shadow-2xl sm:inset-x-auto sm:left-4 sm:max-w-sm">
           <div className="flex items-start justify-between gap-3">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <button
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] min-w-[44px] rounded-lg px-3 py-2 text-base text-white/75 transition hover:bg-white/10"
+              className="min-h-[44px] min-w-[44px] rounded-lg px-3 py-2 text-base text-muted-foreground transition hover:bg-accent"
             >
               ✕
             </button>
           </div>
-          <div className="mt-3 space-y-3 text-base leading-relaxed text-white/80">
+          <div className="mt-3 space-y-3 text-base leading-relaxed text-foreground">
             <p>
-              <span className="font-semibold text-white">Data →</span> NOAA SWPC
+              <span className="font-semibold text-foreground">Data →</span> NOAA SWPC
               solar-wind plasma (speed, density), IMF Bz/Bt, and planetary
               K-index polled every 60 s with exponential glide. On network
               failure, a random-walk synthetic with a scripted storm (auto-builds
               ~22 s after start) takes over silently.
             </p>
             <p>
-              <span className="font-semibold text-white">Audio →</span> Wind
+              <span className="font-semibold text-foreground">Audio →</span> Wind
               speed drives filter cutoff/brightness. Density drives pad shimmer.
               Bz negative drifts the pad from A-major toward A-minor (rising
               tension). Kp ≥ 5 = THE DROP: sub-bass swell, 4-on-the-floor kick
@@ -463,13 +463,13 @@ export default function HeliosOrbitPage() {
               bed fades back in.
             </p>
             <p>
-              <span className="font-semibold text-white">Visual →</span> A dark
+              <span className="font-semibold text-foreground">Visual →</span> A dark
               Fibonacci dot-sphere (visual continuity with{" "}
               <em>Terra Gamelan</em>). Auroral ovals around the IGRF magnetic
               poles brighten, widen, and shift green → magenta/red as Kp and
               |Bz| rise. On the drop: magnetosphere halo blooms and then fades.
             </p>
-            <p className="text-sm text-white/60">
+            <p className="text-sm text-muted-foreground">
               See README.md in this folder for references, arc details, and
               the unverified-surface list.
             </p>
@@ -480,7 +480,7 @@ export default function HeliosOrbitPage() {
       {/* WebGL unavailable notice */}
       {!webglOk && (
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6">
-          <p className="rounded-xl border border-rose-400/40 bg-rose-950/60 p-4 text-base text-rose-300">
+          <p className="rounded-xl border border-violet-400/40 bg-violet-950/60 p-4 text-base text-violet-300">
             WebGL is unavailable in this browser, so the orbital view
             can&apos;t be shown. The space-weather audio still plays — try a
             different browser or device for the full experience.

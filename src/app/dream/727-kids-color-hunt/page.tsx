@@ -757,14 +757,14 @@ export default function ColorHuntPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#03040a] font-mono text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#03040a] font-mono text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
 
       {/* Reticle — where the kid is "looking" for color. Pure decoration. */}
       {started && (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
           <div
-            className="h-28 w-28 rounded-full border-2 border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+            className="h-28 w-28 rounded-full border-2 border-border shadow-[0_0_30px_rgba(255,255,255,0.15)]"
             style={{
               boxShadow: swatch ? `0 0 60px 6px ${swatch.css}` : undefined,
             }}
@@ -774,10 +774,10 @@ export default function ColorHuntPage() {
 
       {/* Title — labeling, not gating. Always readable. */}
       <header className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-6 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 drop-shadow">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow">
           Color Hunt
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Point at the colors in your room — red sings warm and low, sky-blue shimmers bright and high.
         </p>
       </header>
@@ -788,13 +788,13 @@ export default function ColorHuntPage() {
           <button
             type="button"
             onClick={handleStart}
-            className="flex min-h-[44px] flex-col items-center gap-2 rounded-3xl bg-white/10 px-10 py-8 text-center ring-1 ring-white/20 transition hover:bg-white/15"
+            className="flex min-h-[44px] flex-col items-center gap-2 rounded-3xl bg-muted px-10 py-8 text-center ring-1 ring-border transition hover:bg-accent"
           >
             <span className="text-5xl" aria-hidden="true">
               🎨
             </span>
-            <span className="text-xl font-semibold text-white/95">Start the hunt</span>
-            <span className="text-base text-white/75">Tap, then point at a color</span>
+            <span className="text-xl font-semibold text-foreground">Start the hunt</span>
+            <span className="text-base text-muted-foreground">Tap, then point at a color</span>
           </button>
         </div>
       )}
@@ -803,7 +803,7 @@ export default function ColorHuntPage() {
       {started && swatch && (
         <div className="pointer-events-none absolute left-1/2 top-40 z-10 -translate-x-1/2">
           <div
-            className="h-16 w-16 rounded-2xl ring-2 ring-white/40 transition-colors"
+            className="h-16 w-16 rounded-2xl ring-2 ring-border transition-colors"
             style={{ backgroundColor: swatch.css }}
             aria-hidden="true"
           />
@@ -814,11 +814,11 @@ export default function ColorHuntPage() {
       {started && (
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center gap-1 px-4 pb-6 text-center">
           {camState === "denied" && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               No camera — Color Hunt keeps painting and singing on its own. Tap allow to hunt real colors.
             </p>
           )}
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             {rendererKind === "webgpu"
               ? "Blooming with WebGPU"
               : rendererKind === "canvas2d"
@@ -834,34 +834,34 @@ export default function ColorHuntPage() {
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 ring-1 ring-white/15 transition hover:bg-white/15"
+          className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
         >
           {showNotes ? "Close notes" : "Design notes"}
         </button>
       </div>
 
       {showNotes && (
-        <div className="absolute right-3 top-20 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-auto rounded-2xl bg-black/80 p-5 text-base leading-relaxed text-white/75 ring-1 ring-white/15 backdrop-blur">
-          <h2 className="mb-2 text-xl font-semibold text-white/95">Design notes</h2>
-          <p className="mb-3 text-white/95">
+        <div className="absolute right-3 top-20 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-auto rounded-2xl bg-black/80 p-5 text-base leading-relaxed text-muted-foreground ring-1 ring-border backdrop-blur">
+          <h2 className="mb-2 text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mb-3 text-foreground">
             One question: what if a 4-year-old could point the tablet at the COLORS in their room
             and PAINT music with what they see?
           </p>
           <p className="mb-3">
-            <span className="text-white/95">Input</span> · camera as a color sampler — we average
+            <span className="text-foreground">Input</span> · camera as a color sampler — we average
             the RGB of the center reticle each frame (analysis-only, never recorded or sent).{" "}
-            <span className="text-white/95">Technique</span> · cross-modal color → harmony: HUE
+            <span className="text-foreground">Technique</span> · cross-modal color → harmony: HUE
             picks a consonant pentatonic chord whose register climbs from warm-low (red) to
             bright-high (cyan/blue); SATURATION drives particle energy; BRIGHTNESS drives loudness
-            and the openness of the bloom. <span className="text-white/95">Output</span> · a WebGPU
+            and the openness of the bloom. <span className="text-foreground">Output</span> · a WebGPU
             compute-shader particle bloom (Canvas2D fallback, same physics).{" "}
-            <span className="text-white/95">Vibe</span> · wonder &amp; discovery — a slow evolving
+            <span className="text-foreground">Vibe</span> · wonder &amp; discovery — a slow evolving
             texture, never a loop or a beat.
           </p>
           <p>
             Lineage: Scriabin&apos;s <em>clavier à lumières</em> and Kandinsky&apos;s color-tone
             theory (color IS a tone color); Refik Anadol&apos;s luminous particle fields. Full
-            notes live in <span className="text-white/95">README.md</span> in this folder.
+            notes live in <span className="text-foreground">README.md</span> in this folder.
           </p>
         </div>
       )}

@@ -320,7 +320,7 @@ export default function KidsSingAPath() {
   const liveActive = mode === "live";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0712] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0712] text-foreground">
       {/* Scene */}
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -419,10 +419,10 @@ export default function KidsSingAPath() {
         {/* Top row: title + status */}
         <div className="flex w-full max-w-3xl items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Sing a Path
             </h1>
-            <p className="mt-1 max-w-md text-base text-white/75">
+            <p className="mt-1 max-w-md text-base text-muted-foreground">
               Make any sound and your voice draws a glowing trail. The little
               firefly flies along it.
             </p>
@@ -431,14 +431,14 @@ export default function KidsSingAPath() {
             <span
               className={`rounded-full px-3 py-1 text-sm font-medium ${
                 liveActive
-                  ? "bg-emerald-500/20 text-emerald-300"
+                  ? "bg-violet-500/20 text-violet-300"
                   : "bg-violet-500/20 text-violet-300"
               }`}
             >
               {liveActive ? "🎙️ Mic live" : "✨ Demo mode"}
             </span>
             {singing && (
-              <span className="rounded-full bg-amber-400/20 px-3 py-1 text-sm font-medium text-amber-200">
+              <span className="rounded-full bg-violet-400/20 px-3 py-1 text-sm font-medium text-violet-200">
                 singing!
               </span>
             )}
@@ -450,13 +450,13 @@ export default function KidsSingAPath() {
           {micError && (
             <p
               role="alert"
-              className="max-w-md rounded-2xl bg-rose-500/10 px-4 py-3 text-center text-base font-medium text-rose-300"
+              className="max-w-md rounded-2xl bg-violet-500/10 px-4 py-3 text-center text-base font-medium text-violet-300"
             >
               {micError}
             </p>
           )}
           {!liveActive && !micError && (
-            <p className="text-center text-base text-rose-300">
+            <p className="text-center text-base text-violet-300">
               Playing a demo song for you. Tap the big button to sing yourself!
             </p>
           )}
@@ -464,7 +464,7 @@ export default function KidsSingAPath() {
           <button
             type="button"
             onClick={() => void startLive()}
-            className="flex min-h-[96px] min-w-[260px] items-center justify-center gap-3 rounded-full bg-gradient-to-b from-violet-400 to-violet-600 px-10 text-3xl font-bold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform active:scale-95"
+            className="flex min-h-[96px] min-w-[260px] items-center justify-center gap-3 rounded-full bg-gradient-to-b from-violet-400 to-violet-600 px-10 text-3xl font-bold text-foreground shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform active:scale-95"
           >
             <span className="text-4xl" aria-hidden>
               🎤
@@ -475,7 +475,7 @@ export default function KidsSingAPath() {
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] rounded-full px-4 text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+            className="min-h-[44px] rounded-full px-4 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             {showNotes ? "Hide design notes" : "Design notes"}
           </button>
@@ -485,26 +485,26 @@ export default function KidsSingAPath() {
       {/* Design notes drawer (points to README.md) */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 p-6">
-          <div className="max-h-[80vh] max-w-xl overflow-y-auto rounded-2xl border border-white/10 bg-[#120c22] p-6 text-base text-white/90 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
-            <p className="mt-3 text-white/85">
+          <div className="max-h-[80vh] max-w-xl overflow-y-auto rounded-2xl border border-border bg-[#120c22] p-6 text-base text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+            <p className="mt-3 text-foreground">
               Your raw voice drives the <em>shape</em> of the path — never a
               right-or-wrong note. Following PESTO (arXiv 2508.01488), we track
               pitch <strong>contour</strong> (relative up/down/hold), not
               absolute pitch, so any child sounds beautiful and stays on screen.
             </p>
-            <p className="mt-3 text-white/85">
+            <p className="mt-3 text-foreground">
               The companion tone you hear is snapped to the C-major pentatonic
               scale, so the music is always consonant. A soft pad drone and a
               master limiter keep everything gentle.
             </p>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-white/80">
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-foreground">
               <li>Mic → NSDF / YIN-lite pitch tracker (autocorrelation).</li>
               <li>Contour-relative engine maps motion to a rising/falling path.</li>
               <li>Animated SVG renderer (no canvas / no webgl).</li>
               <li>Web Audio pentatonic harmony voice + pad drone.</li>
             </ul>
-            <p className="mt-3 text-sm text-white/70">
+            <p className="mt-3 text-sm text-muted-foreground">
               Full write-up: see <code className="text-violet-300">README.md</code> in
               this prototype folder.
             </p>

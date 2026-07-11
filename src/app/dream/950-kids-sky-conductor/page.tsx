@@ -433,8 +433,8 @@ export default function Page() {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center gap-7 bg-[#0b0712] px-8">
         <div className="text-5xl">🎶</div>
-        <h1 className="text-center text-2xl font-semibold text-white/95">Sky Conductor</h1>
-        <p className="max-w-md text-center text-base leading-relaxed text-white/75">
+        <h1 className="text-center text-2xl font-semibold text-foreground">Sky Conductor</h1>
+        <p className="max-w-md text-center text-base leading-relaxed text-muted-foreground">
           Two friends make music together. One CONDUCTS — sweep the iPad to change
           the sky&apos;s warm chord. The other PLAYS — tap the sky to drop bright notes
           that always fit the chord. No wrong notes, ever.
@@ -442,12 +442,12 @@ export default function Page() {
         <button
           onClick={handleStart}
           className="mt-2 flex min-h-[72px] min-w-[220px] items-center justify-center gap-3
-                     rounded-full bg-amber-400/25 px-10 text-xl font-semibold text-white
-                     ring-1 ring-amber-200/40 transition-colors hover:bg-amber-400/35"
+                     rounded-full bg-violet-400/25 px-10 text-xl font-semibold text-foreground
+                     ring-1 ring-violet-200/40 transition-colors hover:bg-violet-400/35"
         >
           <span className="text-2xl">🎶</span> Start
         </button>
-        <p className="text-base text-white/60">Tilt or drag · tap the sky · no words needed</p>
+        <p className="text-base text-muted-foreground">Tilt or drag · tap the sky · no words needed</p>
       </div>
     )
   }
@@ -460,7 +460,7 @@ export default function Page() {
       {/* role + chord HUD (icons + a single word; minimal reading) */}
       <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
         <span className="text-3xl">{role === 'conductor' ? '🪄' : '✨'}</span>
-        <span className="text-xl font-semibold text-white/95">
+        <span className="text-xl font-semibold text-foreground">
           {role === 'conductor' ? 'You conduct' : 'You play'}
         </span>
       </div>
@@ -474,7 +474,7 @@ export default function Page() {
             boxShadow: '0 0 12px currentColor',
           }}
         />
-        <span className="text-base text-white/75">
+        <span className="text-base text-muted-foreground">
           sky chord: {chordName} · {bpm} bpm
         </span>
       </div>
@@ -484,7 +484,7 @@ export default function Page() {
         <div className="text-4xl drop-shadow-[0_0_12px_rgba(255,210,140,0.7)]">
           {role === 'conductor' ? '↔️' : '👆'}
         </div>
-        <p className="mt-1 text-base text-white/75">
+        <p className="mt-1 text-base text-muted-foreground">
           {role === 'conductor' ? 'sweep / drag to change the chord' : 'tap the sky to play'}
         </p>
       </div>
@@ -493,8 +493,8 @@ export default function Page() {
       <button
         onClick={swapRoles}
         className="absolute bottom-6 right-4 flex min-h-[64px] min-w-[64px] items-center
-                   justify-center gap-2 rounded-2xl bg-white/10 px-4 py-2.5 text-base
-                   font-semibold text-white ring-1 ring-white/20 transition-colors hover:bg-white/20"
+                   justify-center gap-2 rounded-2xl bg-muted px-4 py-2.5 text-base
+                   font-semibold text-foreground ring-1 ring-border transition-colors hover:bg-accent"
         aria-label="swap roles"
       >
         <span className="text-2xl">🔄</span> swap
@@ -503,10 +503,10 @@ export default function Page() {
       {/* friend status */}
       <div className="pointer-events-none absolute right-4 top-4 flex items-center gap-2">
         <span
-          className={`inline-block h-3 w-3 rounded-full ${connected ? 'bg-emerald-300' : 'bg-amber-300/70'}`}
+          className={`inline-block h-3 w-3 rounded-full ${connected ? 'bg-violet-300' : 'bg-violet-300/70'}`}
           style={{ boxShadow: '0 0 10px currentColor' }}
         />
-        <span className="text-base text-white/75">{connected ? 'friend here' : 'tiny orchestra'}</span>
+        <span className="text-base text-muted-foreground">{connected ? 'friend here' : 'tiny orchestra'}</span>
       </div>
 
       {/* invite button (only if WebRTC+gzip supported and not already a guest) */}
@@ -514,8 +514,8 @@ export default function Page() {
         <button
           onClick={() => (inviteOpen ? setInviteOpen(false) : handleInvite())}
           className="absolute right-4 top-16 flex min-h-[64px] min-w-[64px] items-center
-                     justify-center rounded-full bg-white/10 text-2xl text-white
-                     ring-1 ring-white/20 transition-colors hover:bg-white/20"
+                     justify-center rounded-full bg-muted text-2xl text-foreground
+                     ring-1 ring-border transition-colors hover:bg-accent"
           aria-label="invite a friend"
         >
           👋
@@ -526,7 +526,7 @@ export default function Page() {
       <a
         href="https://github.com"
         onClick={(e) => e.preventDefault()}
-        className="pointer-events-auto absolute bottom-2 left-3 text-base text-white/40 hover:text-white/70"
+        className="pointer-events-auto absolute bottom-2 left-3 text-base text-muted-foreground/70 hover:text-muted-foreground"
         title="Read the design notes (README.md in this folder)"
       >
         design notes
@@ -535,7 +535,7 @@ export default function Page() {
       {/* notices — clearly visible */}
       {notice !== '' && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 max-w-xs -translate-x-1/2 text-center">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             {notice === 'no-tilt' && 'Tilt is off — drag across the sky to conduct.'}
             {notice === 'no-gpu' &&
               'This screen can’t draw the sky, but you can still hear the music.'}
@@ -546,43 +546,43 @@ export default function Page() {
 
       {/* renderer badge (tiny, for reviewers) */}
       {rendererKind !== 'none' && (
-        <div className="pointer-events-none absolute bottom-2 right-3 text-base text-white/35">
+        <div className="pointer-events-none absolute bottom-2 right-3 text-base text-muted-foreground/70">
           {rendererKind === 'webgpu' ? 'WebGPU' : 'WebGL2'}
         </div>
       )}
 
       {/* invite panel */}
       {inviteOpen && (
-        <div className="absolute inset-x-3 bottom-20 rounded-2xl bg-black/70 p-5 ring-1 ring-white/15 backdrop-blur">
+        <div className="absolute inset-x-3 bottom-20 rounded-2xl bg-black/70 p-5 ring-1 ring-border backdrop-blur">
           {netRole === 'host' && (
             <div className="flex flex-col gap-3">
-              <p className="text-base text-white/95">Share this link with your friend 👋</p>
+              <p className="text-base text-foreground">Share this link with your friend 👋</p>
               <div className="flex gap-2">
                 <input
                   readOnly
                   value={inviteLink}
                   onFocus={(e) => e.currentTarget.select()}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="making a link…"
                 />
                 <button
                   onClick={() => copyText(inviteLink)}
-                  className="min-h-[48px] rounded-lg bg-amber-400/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-400/30 px-4 text-base text-foreground"
                 >
                   copy
                 </button>
               </div>
-              <p className="text-base text-white/75">Then paste their music-code back here:</p>
+              <p className="text-base text-muted-foreground">Then paste their music-code back here:</p>
               <div className="flex gap-2">
                 <input
                   value={hostPaste}
                   onChange={(e) => setHostPaste(e.target.value)}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="paste friend’s code"
                 />
                 <button
                   onClick={handleHostAccept}
-                  className="min-h-[48px] rounded-lg bg-emerald-500/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-foreground"
                 >
                   join
                 </button>
@@ -591,23 +591,23 @@ export default function Page() {
           )}
           {netRole === 'guest' && (
             <div className="flex flex-col gap-3">
-              <p className="text-base text-white/95">You joined a friend’s sky 🎶 Send them this code:</p>
+              <p className="text-base text-foreground">You joined a friend’s sky 🎶 Send them this code:</p>
               <div className="flex gap-2">
                 <input
                   readOnly
                   value={guestCode}
                   onFocus={(e) => e.currentTarget.select()}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="making your code…"
                 />
                 <button
                   onClick={() => copyText(guestCode)}
-                  className="min-h-[48px] rounded-lg bg-amber-400/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-400/30 px-4 text-base text-foreground"
                 >
                   copy
                 </button>
               </div>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 {connected ? 'Connected! Make harmony together 🎶' : 'Waiting for your friend…'}
               </p>
             </div>

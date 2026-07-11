@@ -73,11 +73,11 @@ function buildTags(a: Analysis): string {
 function WaveformStrip({ label, peaks, progress, color }: {
   label: string; peaks: number[]; progress: number; color: string;
 }) {
-  if (peaks.length === 0) return <div className="h-14 bg-white/[0.06] rounded animate-pulse" />;
+  if (peaks.length === 0) return <div className="h-14 bg-muted rounded animate-pulse" />;
   return (
     <div>
-      <p className="text-white/55 text-xs font-mono mb-1 tracking-widest">{label}</p>
-      <div className="relative h-14 bg-white/[0.06] rounded overflow-hidden">
+      <p className="text-muted-foreground text-xs font-mono mb-1 tracking-widest">{label}</p>
+      <div className="relative h-14 bg-muted rounded overflow-hidden">
         <div className="absolute inset-0 flex items-end justify-center gap-px px-1">
           {peaks.map((p, i) => {
             const lit = progress > 0 && i / peaks.length < progress;
@@ -97,7 +97,7 @@ function WaveformStrip({ label, peaks, progress, color }: {
         </div>
         {progress > 0 && progress < 1 && (
           <div
-            className="absolute top-0 bottom-0 w-px bg-white/70"
+            className="absolute top-0 bottom-0 w-px bg-muted"
             style={{ left: `${progress * 100}%` }}
           />
         )}
@@ -416,19 +416,19 @@ export default function LmdmEcho() {
   if (phase === "idle") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 p-8 text-center">
       <div>
-        <h1 className="font-serif text-3xl text-white/95 mb-2">Echo Chamber</h1>
-        <p className="text-base text-white/75 max-w-xs mx-auto leading-relaxed">
+        <h1 className="font-serif text-3xl text-foreground mb-2">Echo Chamber</h1>
+        <p className="text-base text-muted-foreground max-w-xs mx-auto leading-relaxed">
           Record a piano phrase — the system listens to your harmony and tempo, then echoes it back transformed.
         </p>
       </div>
       <button
         onClick={() => { void handleStart(); }}
-        className="bg-violet-600 hover:bg-violet-500 text-white font-medium px-6 py-3 rounded-lg min-h-[44px] text-base transition-colors"
+        className="bg-violet-600 hover:bg-violet-500 text-foreground font-medium px-6 py-3 rounded-lg min-h-[44px] text-base transition-colors"
       >
         Start Mic
       </button>
-      <p className="text-white/40 text-sm">up to 15 s · headphones recommended · ~$0.006 / echo</p>
-      <Link href="/dream" className="mt-4 text-white/40 text-sm hover:text-white/70 transition-colors">
+      <p className="text-muted-foreground/70 text-sm">up to 15 s · headphones recommended · ~$0.006 / echo</p>
+      <Link href="/dream" className="mt-4 text-muted-foreground/70 text-sm hover:text-muted-foreground transition-colors">
         ← dream lab
       </Link>
     </div>
@@ -437,15 +437,15 @@ export default function LmdmEcho() {
   if (phase === "recording") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 p-8 text-center">
       <div className="flex items-center gap-3">
-        <span className="w-3 h-3 bg-rose-400 rounded-full animate-pulse" />
-        <span className="text-rose-300 font-mono text-lg">
+        <span className="w-3 h-3 bg-violet-400 rounded-full animate-pulse" />
+        <span className="text-violet-300 font-mono text-lg">
           {String(Math.floor(recSec / 60)).padStart(2, "0")}:{String(recSec % 60).padStart(2, "0")} / 0:15
         </span>
       </div>
-      <p className="text-white/75 text-base">Play something — stop when ready</p>
+      <p className="text-muted-foreground text-base">Play something — stop when ready</p>
       <button
         onClick={handleStop}
-        className="bg-rose-700 hover:bg-rose-600 text-white font-medium px-6 py-3 rounded-lg min-h-[44px] text-base transition-colors"
+        className="bg-violet-700 hover:bg-violet-600 text-foreground font-medium px-6 py-3 rounded-lg min-h-[44px] text-base transition-colors"
       >
         ■ Stop
       </button>
@@ -455,33 +455,33 @@ export default function LmdmEcho() {
   if (phase === "analyzing") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 p-8 text-center">
       <div className="w-8 h-8 border-2 border-violet-400/60 border-t-violet-400 rounded-full animate-spin" />
-      <p className="text-white/75 text-base">Analyzing phrase...</p>
+      <p className="text-muted-foreground text-base">Analyzing phrase...</p>
     </div>
   );
 
   if (phase === "generating") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 p-8 text-center">
       {analysis && (
-        <p className="text-white/55 text-sm font-mono">
+        <p className="text-muted-foreground text-sm font-mono">
           {analysis.quality} · {analysis.bpm} BPM · {analysis.register} register
         </p>
       )}
       <div className="w-8 h-8 border-2 border-violet-400/60 border-t-violet-400 rounded-full animate-spin" />
-      <p className="text-white/75 text-base">Generating echo...</p>
-      <p className="text-white/40 text-sm">~20–40 s · ACE-Step</p>
+      <p className="text-muted-foreground text-base">Generating echo...</p>
+      <p className="text-muted-foreground/70 text-sm">~20–40 s · ACE-Step</p>
     </div>
   );
 
   if (phase === "error") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-5 p-8 text-center">
-      <p className="text-rose-300 text-base max-w-xs">{errorMsg || "Something went wrong."}</p>
+      <p className="text-violet-300 text-base max-w-xs">{errorMsg || "Something went wrong."}</p>
       <button
         onClick={handleNewRecording}
-        className="bg-white/10 hover:bg-white/20 text-white/90 font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
+        className="bg-muted hover:bg-accent text-foreground font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
       >
         Try Again
       </button>
-      <Link href="/dream" className="text-white/40 text-sm hover:text-white/70 transition-colors">
+      <Link href="/dream" className="text-muted-foreground/70 text-sm hover:text-muted-foreground transition-colors">
         ← dream lab
       </Link>
     </div>
@@ -490,9 +490,9 @@ export default function LmdmEcho() {
   return (
     <div className="min-h-screen bg-black flex flex-col p-5 gap-4">
       <div className="text-center pt-2">
-        <h1 className="font-serif text-2xl text-white/95 mb-1">Echo Chamber</h1>
+        <h1 className="font-serif text-2xl text-foreground mb-1">Echo Chamber</h1>
         {analysis && (
-          <p className="text-white/55 text-sm font-mono">
+          <p className="text-muted-foreground text-sm font-mono">
             {analysis.quality} · {analysis.bpm} BPM · {analysis.register}
           </p>
         )}
@@ -510,7 +510,7 @@ export default function LmdmEcho() {
       </div>
 
       {phase === "playing" && (
-        <p className="text-center text-white/55 text-sm font-mono">
+        <p className="text-center text-muted-foreground text-sm font-mono">
           ♪ playing · original left · echo right
         </p>
       )}
@@ -518,19 +518,19 @@ export default function LmdmEcho() {
       <div className="flex gap-3 justify-center mt-1 flex-wrap">
         <button
           onClick={handleEchoAgain}
-          className="bg-white/10 hover:bg-white/20 text-white/90 font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
+          className="bg-muted hover:bg-accent text-foreground font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
         >
           ↺ Echo Again
         </button>
         <button
           onClick={handleNewRecording}
-          className="bg-violet-700 hover:bg-violet-600 text-white font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
+          className="bg-violet-700 hover:bg-violet-600 text-foreground font-medium px-5 py-2.5 rounded-lg min-h-[44px] text-base transition-colors"
         >
           + New Recording
         </button>
       </div>
 
-      <Link href="/dream" className="text-center text-white/40 text-sm hover:text-white/70 transition-colors mt-1">
+      <Link href="/dream" className="text-center text-muted-foreground/70 text-sm hover:text-muted-foreground transition-colors mt-1">
         ← dream lab
       </Link>
     </div>

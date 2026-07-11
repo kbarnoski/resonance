@@ -283,7 +283,7 @@ export default function ShadowMonster() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white/95">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* stage canvas (full-bleed) */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
@@ -297,7 +297,7 @@ export default function ShadowMonster() {
 
       {/* live backend badge */}
       {phase === "running" && (
-        <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-md bg-white/10 px-2 py-1 font-mono text-base text-white/75">
+        <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-md bg-muted px-2 py-1 font-mono text-base text-muted-foreground">
           {backend === "webgpu" ? "WebGPU" : "Canvas2D"}
         </div>
       )}
@@ -306,14 +306,14 @@ export default function ShadowMonster() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full bg-white/10 px-4 text-base text-white/75 hover:text-violet-200"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full bg-muted px-4 text-base text-muted-foreground hover:text-violet-200"
         aria-label="Design notes"
       >
         ?
       </button>
       {showNotes && (
-        <div className="absolute right-3 top-16 z-30 max-w-xs rounded-xl bg-black/85 p-4 text-base leading-relaxed text-white/75 ring-1 ring-white/15">
-          <p className="mb-2 text-white/95">
+        <div className="absolute right-3 top-16 z-30 max-w-xs rounded-xl bg-black/85 p-4 text-base leading-relaxed text-muted-foreground ring-1 ring-border">
+          <p className="mb-2 text-foreground">
             Your whole body becomes a giant googly shadow-monster. Wave to
             whoosh, jump to boing, get BIG to roar.
           </p>
@@ -335,10 +335,10 @@ export default function ShadowMonster() {
       {/* intro overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white/95 sm:text-5xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Shadow Monster Stage
           </h1>
-          <p className="max-w-xl text-lg leading-relaxed text-white/75">
+          <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
             Step in front of the camera and your whole body becomes a giant
             googly shadow-monster. Wave your arms and it whooshes. Jump and it
             BOINGs. Stretch big and it ROARs.
@@ -347,11 +347,11 @@ export default function ShadowMonster() {
             type="button"
             onClick={start}
             disabled={phase === "loading"}
-            className="min-h-[64px] rounded-full bg-violet-500/90 px-10 text-2xl font-semibold text-white/95 transition hover:bg-violet-400 disabled:opacity-60"
+            className="min-h-[64px] rounded-full bg-violet-500/90 px-10 text-2xl font-semibold text-foreground transition hover:bg-violet-400 disabled:opacity-60"
           >
             {phase === "loading" ? "Lights up…" : "Start the show ✦"}
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Sound on. No camera? It still plays — big buttons appear.
           </p>
         </div>
@@ -361,7 +361,7 @@ export default function ShadowMonster() {
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-4 px-4 pb-6 text-center">
           {notice && (
-            <p className="pointer-events-none max-w-lg text-base leading-relaxed text-rose-300">
+            <p className="pointer-events-none max-w-lg text-base leading-relaxed text-violet-300">
               {notice}
             </p>
           )}
@@ -369,21 +369,21 @@ export default function ShadowMonster() {
             <button
               type="button"
               onClick={() => fire("roar")}
-              className="min-h-[88px] min-w-[88px] rounded-3xl bg-amber-500/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-amber-400"
+              className="min-h-[88px] min-w-[88px] rounded-3xl bg-violet-500/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-violet-400"
             >
               🦖 ROAR
             </button>
             <button
               type="button"
               onClick={() => fire("whoosh")}
-              className="min-h-[88px] min-w-[88px] rounded-3xl bg-sky-400/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-sky-300"
+              className="min-h-[88px] min-w-[88px] rounded-3xl bg-violet-400/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-violet-300"
             >
               💨 WHOOSH
             </button>
             <button
               type="button"
               onClick={() => fire("boing")}
-              className="min-h-[88px] min-w-[88px] rounded-3xl bg-fuchsia-400/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-fuchsia-300"
+              className="min-h-[88px] min-w-[88px] rounded-3xl bg-violet-400/85 px-7 text-2xl font-bold text-black/85 transition active:scale-95 hover:bg-violet-300"
             >
               🤸 BOING
             </button>

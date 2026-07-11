@@ -46,8 +46,8 @@ export function VoteButtons({
       title={loved ? "Remove love" : "Love this"}
       className={`${size} flex items-center justify-center rounded-full border transition-colors ${
         loved
-          ? "border-rose-400/50 bg-rose-500/20 text-rose-300"
-          : "border-white/10 bg-white/5 text-white/40 hover:border-rose-400/30 hover:text-rose-300"
+          ? "border-primary/40 bg-primary/20 text-primary"
+          : "border-border bg-muted text-muted-foreground hover:border-primary/30 hover:text-primary"
       }`}
     >
       ♥

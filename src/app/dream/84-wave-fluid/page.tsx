@@ -383,20 +383,20 @@ export default function WaveFluidPage() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 text-center px-6">
           <div>
             <h1 className="text-3xl font-mono mb-3 tracking-tight">Wave Fluid</h1>
-            <p className="text-base text-white/80 max-w-sm leading-relaxed">
+            <p className="text-base text-foreground max-w-sm leading-relaxed">
               Audio-reactive ocean surface rendered in WebGPU.
               Bass raises the swell. Treble chops the surface.
               Onsets send ripples. Click anywhere to splash.
             </p>
-            <p className="text-sm text-white/55 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Requires WebGPU — Chrome 113+, Edge 113+, Safari 26+
             </p>
           </div>
 
           {gpuError && (
-            <div className="border border-rose-400/30 rounded-lg px-5 py-3 max-w-sm text-left">
-              <p className="text-rose-300 text-base mb-1">WebGPU unavailable</p>
-              <p className="text-white/55 text-sm mb-2">{gpuError}</p>
+            <div className="border border-violet-400/30 rounded-lg px-5 py-3 max-w-sm text-left">
+              <p className="text-violet-300 text-base mb-1">WebGPU unavailable</p>
+              <p className="text-muted-foreground text-sm mb-2">{gpuError}</p>
               <Link href="/dream/3-fluid" className="text-violet-300 text-sm underline">
                 Open 3-fluid (Canvas2D Navier-Stokes) →
               </Link>
@@ -406,23 +406,23 @@ export default function WaveFluidPage() {
           <div className="flex gap-3 flex-wrap justify-center">
             <button
               onClick={beginMic}
-              className="px-5 py-2.5 min-h-[44px] text-base font-mono tracking-wide border border-white/30 rounded-lg hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 min-h-[44px] text-base font-mono tracking-wide border border-border rounded-lg hover:bg-accent hover:border-border transition"
             >
               🎤 Start mic
             </button>
             <button
               onClick={beginDemo}
-              className="px-5 py-2.5 min-h-[44px] text-base font-mono tracking-wide border border-white/15 rounded-lg hover:bg-white/5 hover:border-white/35 transition text-white/80"
+              className="px-5 py-2.5 min-h-[44px] text-base font-mono tracking-wide border border-border rounded-lg hover:bg-accent hover:border-border transition text-foreground"
             >
               ▶ Demo mode
             </button>
           </div>
 
           {micError && (
-            <p className="text-rose-300 text-base">{micError}</p>
+            <p className="text-violet-300 text-base">{micError}</p>
           )}
 
-          <Link href="/dream" className="text-sm text-white/40 hover:text-white/70 transition">
+          <Link href="/dream" className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition">
             ← back to dream lab
           </Link>
         </div>
@@ -433,28 +433,28 @@ export default function WaveFluidPage() {
         <div className="absolute top-4 right-4 flex flex-col items-end gap-2 select-none">
           <div className="flex items-center gap-3">
             {mode === "mic" && (
-              <span className={`text-sm font-mono ${running ? "text-emerald-300/95" : "text-amber-300/95"}`}>
+              <span className={`text-sm font-mono ${running ? "text-violet-300/95" : "text-violet-300/95"}`}>
                 {running ? "● mic" : "◌ starting…"}
               </span>
             )}
             {mode === "demo" && (
-              <span className="text-sm font-mono text-white/55">demo</span>
+              <span className="text-sm font-mono text-muted-foreground">demo</span>
             )}
             <button
               onClick={stop}
-              className="text-sm text-white/65 hover:text-white/95 border border-white/20 hover:border-white/50 px-3 py-1.5 min-h-[36px] rounded-lg transition font-mono"
+              className="text-sm text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 min-h-[36px] rounded-lg transition font-mono"
             >
               stop
             </button>
           </div>
           {micError && (
-            <p className="text-rose-300 text-sm">{micError}</p>
+            <p className="text-violet-300 text-sm">{micError}</p>
           )}
           <a
             href="/dream/84-wave-fluid/README.md"
             target="_blank"
             rel="noreferrer"
-            className="text-xs text-white/25 hover:text-white/55 transition"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             design notes ↗
           </a>
@@ -462,7 +462,7 @@ export default function WaveFluidPage() {
       )}
 
       {mode !== "idle" && (
-        <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/30 pointer-events-none font-mono select-none">
+        <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted-foreground/70 pointer-events-none font-mono select-none">
           click water to splash · WebGPU ocean
         </p>
       )}

@@ -700,31 +700,31 @@ export default function KidsTunePurr() {
         </div>
 
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Tune the Hummers</h1>
-          <p className="text-base text-white/80 max-w-sm leading-relaxed">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Tune the Hummers</h1>
+          <p className="text-base text-foreground max-w-sm leading-relaxed">
             Slide each creature up or down until it stops wobbling and starts to purr.
           </p>
         </div>
 
         {audioError && (
-          <p className="text-rose-300 text-base">{audioError}</p>
+          <p className="text-violet-300 text-base">{audioError}</p>
         )}
 
         <button
           onClick={handleStart}
-          className="min-h-[64px] px-10 py-4 rounded-2xl text-xl font-bold text-white transition-colors"
+          className="min-h-[64px] px-10 py-4 rounded-2xl text-xl font-bold text-foreground transition-colors"
           style={{ background: "#8aabe0", color: "#1a1008" }}
         >
           ▶ tap to begin
         </button>
 
-        <p className="text-base text-white/60">
+        <p className="text-base text-muted-foreground">
           slide up · slide down · feel the purr
         </p>
 
         <Link
           href="/dream"
-          className="text-base text-white/50 hover:text-white/70 transition-colors"
+          className="text-base text-muted-foreground hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -740,7 +740,7 @@ export default function KidsTunePurr() {
     >
       {audioError && (
         <div className="absolute top-4 left-0 right-0 flex justify-center z-20 pointer-events-none">
-          <p className="text-rose-300 text-base bg-black/60 px-4 py-2 rounded-xl">{audioError}</p>
+          <p className="text-violet-300 text-base bg-black/60 px-4 py-2 rounded-xl">{audioError}</p>
         </div>
       )}
 
@@ -759,7 +759,7 @@ export default function KidsTunePurr() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/272-kids-tune-purr/README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-3 right-3 text-white/40 hover:text-white/65 transition-colors z-10"
+        className="absolute bottom-3 right-3 text-muted-foreground/70 hover:text-muted-foreground transition-colors z-10"
         style={{ fontSize: 12 }}
       >
         design notes

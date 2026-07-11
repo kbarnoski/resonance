@@ -366,16 +366,16 @@ export default function Page() {
       {/* ── HEADER ── */}
       <div className="flex-none flex items-center justify-between px-4 pt-3 pb-1 z-10">
         <div>
-          <h1 className="text-white/95 text-2xl font-serif font-bold leading-tight tracking-tight">
+          <h1 className="text-foreground text-2xl font-serif font-bold leading-tight tracking-tight">
             Fluid Paint
           </h1>
-          <p className="text-white/75 text-base leading-snug">
+          <p className="text-muted-foreground text-base leading-snug">
             Drag to pour glowing color &mdash; the painting hums!
           </p>
         </div>
         <div className="flex items-center gap-2">
           {started && (
-            <span className="text-white/55 text-sm" aria-label="Sound on">&#x1F50A;</span>
+            <span className="text-muted-foreground text-sm" aria-label="Sound on">&#x1F50A;</span>
           )}
         </div>
       </div>
@@ -384,7 +384,7 @@ export default function Page() {
       <div className="flex-1 relative min-h-0">
         {webglError ? (
           <div className="absolute inset-0 flex items-center justify-center p-8">
-            <p className="text-rose-300 text-xl text-center leading-relaxed max-w-sm">
+            <p className="text-violet-300 text-xl text-center leading-relaxed max-w-sm">
               {webglError}
             </p>
           </div>
@@ -405,15 +405,15 @@ export default function Page() {
             aria-label="Tap to start painting"
           >
             <span className="text-6xl leading-none" aria-hidden="true">&#x1F3A8;</span>
-            <span className="text-white/95 text-2xl font-bold">Tap to Paint!</span>
-            <span className="text-white/75 text-base">Touch to wake up the colors &amp; sound</span>
+            <span className="text-foreground text-2xl font-bold">Tap to Paint!</span>
+            <span className="text-muted-foreground text-base">Touch to wake up the colors &amp; sound</span>
           </button>
         )}
       </div>
 
       {/* ── COLOR SWATCHES ── */}
       <div
-        className="flex-none bg-zinc-900/90 backdrop-blur border-t border-white/10 px-3 py-3 z-10"
+        className="flex-none bg-zinc-900/90 backdrop-blur border-t border-border px-3 py-3 z-10"
         role="toolbar"
         aria-label="Choose a paint color"
       >
@@ -439,7 +439,7 @@ export default function Page() {
                   {sw.icon}
                 </span>
                 <span
-                  className="text-white/90 text-xs font-semibold leading-none tracking-wide"
+                  className="text-foreground text-xs font-semibold leading-none tracking-wide"
                   aria-hidden="true"
                 >
                   {sw.label}
@@ -454,7 +454,7 @@ export default function Page() {
       <div className="flex-none px-4 pb-2 text-right z-10">
         <button
           onClick={showDesignNotes}
-          className="text-white/55 hover:text-white/80 text-sm underline transition-colors bg-transparent border-0 cursor-pointer"
+          className="text-muted-foreground hover:text-foreground text-sm underline transition-colors bg-transparent border-0 cursor-pointer"
           aria-label="Read the design notes"
         >
           Design notes

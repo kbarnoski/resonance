@@ -307,32 +307,32 @@ export default function TerrainPage() {
       {mode === 'idle' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Spectrogram Terrain</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             Your audio history unfolds as a 3D landscape. Bass frequencies form mountains;
             treble draws bright high ridges. Time flows toward you — the past recedes to
             the horizon.
           </p>
-          <p className="text-xs text-white/35 max-w-sm mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-sm mb-8 leading-relaxed">
             Blue = bass · Teal = mids · Orange–white = treble. Louder = taller peaks.
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={handleDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={handleMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/60 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Start mic
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{micError}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{micError}</p>
           )}
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -340,31 +340,31 @@ export default function TerrainPage() {
 
       {mode !== 'idle' && (
         <>
-          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-wider text-white/35 space-y-0.5 pointer-events-none">
+          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none">
             <div>SPECTROGRAM TERRAIN</div>
-            <div className="text-white/20">30 Hz – 20 kHz · {ROWS} frames</div>
-            {peakLabel && <div className="text-teal-300/60 pt-0.5">peak {peakLabel}</div>}
+            <div className="text-muted-foreground/70">30 Hz – 20 kHz · {ROWS} frames</div>
+            {peakLabel && <div className="text-violet-300/60 pt-0.5">peak {peakLabel}</div>}
           </div>
 
           <div className="absolute top-4 right-4 font-mono text-[10px] tracking-wider text-right pointer-events-none">
-            {mode === 'mic' && <div className="text-green-300/70">MIC LIVE</div>}
-            {mode === 'demo' && <div className="text-white/25">DEMO</div>}
+            {mode === 'mic' && <div className="text-violet-300/70">MIC LIVE</div>}
+            {mode === 'demo' && <div className="text-muted-foreground/70">DEMO</div>}
           </div>
 
-          <div className="absolute bottom-4 left-4 text-[10px] tracking-wider text-white/25 space-y-0.5 pointer-events-none">
-            <div><span className="text-blue-400">━</span> bass</div>
-            <div><span className="text-teal-400">━</span> mids</div>
-            <div><span className="text-orange-400">━</span> treble</div>
+          <div className="absolute bottom-4 left-4 text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none">
+            <div><span className="text-violet-400">━</span> bass</div>
+            <div><span className="text-violet-400">━</span> mids</div>
+            <div><span className="text-violet-400">━</span> treble</div>
           </div>
 
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={stopAll}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>

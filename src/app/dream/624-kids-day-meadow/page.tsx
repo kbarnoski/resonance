@@ -300,7 +300,7 @@ export default function Page() {
   );
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-white select-none">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-foreground select-none">
       <canvas
         ref={canvasRef}
         onPointerDown={onPointer}
@@ -310,17 +310,17 @@ export default function Page() {
 
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-[#0b1030] to-[#1a1230] px-6 text-center">
-          <h1 className="font-serif text-4xl text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
             A Whole Day
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             A song that lives a whole day by itself — from sunrise to starlight
             and back. Tap the meadow to plant flowers, birds, and stars. They
             wake, sleep, and grow with the light.
           </p>
           <button
             onClick={begin}
-            className="flex min-h-[44px] items-center gap-3 rounded-full bg-amber-300 px-8 py-3.5 text-lg font-medium text-amber-950 shadow-lg shadow-amber-300/30 transition active:scale-95"
+            className="flex min-h-[44px] items-center gap-3 rounded-full bg-violet-300 px-8 py-3.5 text-lg font-medium text-violet-950 shadow-lg shadow-violet-300/30 transition active:scale-95"
           >
             <span className="text-2xl">☀</span> Begin the day
           </button>
@@ -331,27 +331,27 @@ export default function Page() {
         <>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="absolute right-3 top-3 z-10 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 font-mono text-sm text-white/75 backdrop-blur transition active:scale-95"
+            className="absolute right-3 top-3 z-10 min-h-[44px] rounded-full bg-muted px-4 py-2.5 font-mono text-sm text-muted-foreground backdrop-blur transition active:scale-95"
           >
             notes
           </button>
-          <div className="pointer-events-none absolute left-3 top-3 z-10 font-mono text-sm text-white/75">
+          <div className="pointer-events-none absolute left-3 top-3 z-10 font-mono text-sm text-muted-foreground">
             tap low → flower · mid → bird · sky → star
           </div>
           {showNotes && (
-            <div className="absolute inset-x-3 bottom-3 z-10 max-h-[60dvh] overflow-auto rounded-2xl bg-black/70 p-5 text-base text-white/90 backdrop-blur">
-              <p className="mb-2 text-white">
+            <div className="absolute inset-x-3 bottom-3 z-10 max-h-[60dvh] overflow-auto rounded-2xl bg-black/70 p-5 text-base text-foreground backdrop-blur">
+              <p className="mb-2 text-foreground">
                 A long-form generative journey: a continuous diurnal phase
                 cross-fades through five musical regions (dawn, morning, midday,
                 dusk, night) over ~9 minutes.
               </p>
-              <p className="mb-2 text-white/75">
+              <p className="mb-2 text-muted-foreground">
                 Everything you plant stores a tiny motif. The engine re-voices
                 those motifs into whatever scale the day is in now and mutates
                 them as the light changes — so minute 8 is not minute 1, yet it
                 all still belongs together.
               </p>
-              <p className="text-white/75">
+              <p className="text-muted-foreground">
                 After Brian Eno (Music for Airports / Bloom), Hustwit&apos;s
                 ENO, and arXiv 2604.05343 Anchored Cyclic Generation.
               </p>

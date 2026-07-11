@@ -273,20 +273,20 @@ export default function Page() {
     return (
       <div className="fixed inset-0 bg-[#070714] flex flex-col items-center justify-center gap-8 px-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Raindrop Rhythm ☁️</h1>
-          <p className="text-white/75 text-base max-w-xs">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Raindrop Rhythm ☁️</h1>
+          <p className="text-muted-foreground text-base max-w-xs">
             Tap a cloud to make it rain music.
             Each drop plays its note when it lands.
           </p>
         </div>
         <button
           onClick={handleStart}
-          className="bg-violet-700 hover:bg-violet-600 text-white text-xl font-semibold
+          className="bg-violet-700 hover:bg-violet-600 text-foreground text-xl font-semibold
                      px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
         >
           ▶ Start
         </button>
-        <p className="text-white/55 text-sm">For kids 3+ · No permissions needed</p>
+        <p className="text-muted-foreground text-sm">For kids 3+ · No permissions needed</p>
       </div>
     )
   }
@@ -296,15 +296,15 @@ export default function Page() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full touch-none" />
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between
                       px-4 pt-3 pb-2 pointer-events-none select-none">
-        <span className="text-white/75 text-base font-semibold">Raindrop Rhythm ☁️</span>
+        <span className="text-muted-foreground text-base font-semibold">Raindrop Rhythm ☁️</span>
         <Link href="/dream"
-          className="text-white/55 text-sm pointer-events-auto hover:text-white/80">
+          className="text-muted-foreground text-sm pointer-events-auto hover:text-foreground">
           ← dream
         </Link>
       </div>
       <div className="absolute bottom-5 right-4 pointer-events-auto">
         <Link href="/dream/174-kids-raindrop-rhythm/readme"
-          className="text-white/35 text-xs hover:text-white/60">notes</Link>
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground">notes</Link>
       </div>
     </div>
   )

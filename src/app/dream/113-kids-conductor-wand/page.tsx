@@ -319,16 +319,16 @@ export default function KidsConductorWand() {
     const orch = ORCHESTRAS[orchIdx];
     return (
       <div className="min-h-screen bg-[#030712] flex flex-col items-center justify-center px-6 py-10">
-        <h1 className="text-3xl font-bold text-white text-center mb-3">
+        <h1 className="text-3xl font-bold text-foreground text-center mb-3">
           Conductor Wand
         </h1>
-        <p className="text-base text-white/75 text-center mb-8 max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground text-center mb-8 max-w-sm leading-relaxed">
           Drag your finger to play the orchestra.<br />
           Move fast for quick notes · slow for long ones.<br />
           Quick tap = drum hit.
         </p>
 
-        <p className="text-base text-white/80 mb-4 font-medium">Choose your orchestra:</p>
+        <p className="text-base text-foreground mb-4 font-medium">Choose your orchestra:</p>
         <div className="grid grid-cols-2 gap-3 mb-10 w-full max-w-xs">
           {ORCHESTRAS.map((o, i) => (
             <button
@@ -336,14 +336,14 @@ export default function KidsConductorWand() {
               onClick={() => setOrchIdx(i)}
               className={`min-h-[80px] rounded-2xl flex flex-col items-center justify-center gap-1 border-2 transition-all ${
                 orchIdx === i
-                  ? 'border-white/80 bg-white/10'
-                  : 'border-white/20 bg-white/5'
+                  ? 'border-border bg-muted'
+                  : 'border-border bg-muted'
               }`}
             >
               <span className="text-4xl">{o.emoji}</span>
               <span
                 className={`text-base font-medium ${
-                  orchIdx === i ? 'text-white' : 'text-white/60'
+                  orchIdx === i ? 'text-foreground' : 'text-muted-foreground'
                 }`}
               >
                 {o.name}
@@ -359,7 +359,7 @@ export default function KidsConductorWand() {
         >
           Start {orch.emoji}
         </button>
-        <p className="text-sm text-white/40 mt-6 text-center">
+        <p className="text-sm text-muted-foreground/70 mt-6 text-center">
           No permissions needed
         </p>
       </div>
@@ -376,13 +376,13 @@ export default function KidsConductorWand() {
       {/* Orchestra badge */}
       <div className="absolute top-4 left-4 flex items-center gap-2 pointer-events-none">
         <span className="text-2xl">{ORCHESTRAS[orchIdx].emoji}</span>
-        <span className="text-base text-white/80 font-medium">
+        <span className="text-base text-foreground font-medium">
           {ORCHESTRAS[orchIdx].name}
         </span>
       </div>
       {/* Hint */}
       <div className="absolute bottom-6 inset-x-0 flex justify-center pointer-events-none">
-        <span className="text-sm text-white/40">
+        <span className="text-sm text-muted-foreground/70">
           drag to play · tap for drum
         </span>
       </div>

@@ -470,12 +470,12 @@ export default function ParticleLifeSong() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-foreground">
       <div ref={mountRef} className="absolute inset-0 h-full w-full" />
 
       {!supported && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL is unavailable in this browser, so the particle field cannot
             render. Try a recent desktop browser with hardware acceleration
             enabled.
@@ -485,10 +485,10 @@ export default function ParticleLifeSong() {
 
       {/* corner UI */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 max-w-md p-5 sm:p-6">
-        <h1 className="font-serif text-2xl text-white/95">
+        <h1 className="font-serif text-2xl text-foreground">
           Particle Life Song
         </h1>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           Thousands of particles self-organize into living clusters. Each
           species has a voice that blooms as its swarm condenses — the music is
           the emergence.
@@ -503,23 +503,23 @@ export default function ParticleLifeSong() {
               Start
             </button>
           ) : (
-            <span className="rounded-lg bg-emerald-500/15 px-4 py-2.5 text-base text-emerald-300/95">
+            <span className="rounded-lg bg-violet-500/15 px-4 py-2.5 text-base text-violet-300/95">
               Listening to world #{regime}
             </span>
           )}
           <button
             onClick={newWorld}
-            className="rounded-lg bg-white/[0.06] px-4 py-2.5 text-base font-medium text-white/85 ring-1 ring-white/15 transition-colors hover:bg-white/[0.12]"
+            className="rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-foreground ring-1 ring-border transition-colors hover:bg-accent"
           >
             New world
           </button>
         </div>
 
-        <p className="mt-3 text-sm text-white/55">
+        <p className="mt-3 text-sm text-muted-foreground">
           Drag across the field to stir the particles.{" "}
           <Link
             href="/dream/236-particle-life-song/README.md"
-            className="underline decoration-white/30 underline-offset-2 hover:text-white/75"
+            className="underline decoration-muted-foreground underline-offset-2 hover:text-muted-foreground"
           >
             Read the design notes
           </Link>
@@ -529,7 +529,7 @@ export default function ParticleLifeSong() {
       {/* species legend */}
       <div className="pointer-events-none absolute bottom-5 left-5 z-10 flex flex-col gap-1">
         {SPECIES_RGB.map((c, i) => (
-          <div key={i} className="flex items-center gap-2 text-sm text-white/55">
+          <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
             <span
               className="inline-block h-2.5 w-2.5 rounded-full"
               style={{

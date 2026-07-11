@@ -339,10 +339,10 @@ export default function KidsRainDrum() {
   }, [started]);
 
   return (
-    <div className="flex flex-col h-screen bg-[#070b12] text-white">
+    <div className="flex flex-col h-screen bg-[#070b12] text-foreground">
       <div className="px-5 pt-4 pb-2 flex-shrink-0">
-        <h1 className="text-2xl font-serif text-white/95">Rain Drum</h1>
-        <p className="text-base text-white/75 mt-0.5">
+        <h1 className="text-2xl font-serif text-foreground">Rain Drum</h1>
+        <p className="text-base text-muted-foreground mt-0.5">
           Four clouds drop notes from the sky. Tap a cloud to change its weather.
         </p>
       </div>
@@ -353,7 +353,7 @@ export default function KidsRainDrum() {
           <div className="absolute inset-0 flex items-center justify-center bg-[#070b12]/80">
             <button
               onClick={handleStart}
-              className="bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-sky-200 text-lg font-medium px-10 py-3.5 rounded-2xl min-h-[56px] transition-colors"
+              className="bg-violet-500/20 hover:bg-violet-500/30 border border-violet-400/40 text-violet-200 text-lg font-medium px-10 py-3.5 rounded-2xl min-h-[56px] transition-colors"
             >
               ▶ Start
             </button>
@@ -362,10 +362,10 @@ export default function KidsRainDrum() {
       </div>
 
       <div className="px-5 py-2 flex-shrink-0 flex items-center justify-between">
-        <Link href="/dream" className="text-white/55 text-xs hover:text-white/75 transition-colors">
+        <Link href="/dream" className="text-muted-foreground text-xs hover:text-muted-foreground transition-colors">
           ← dream lab
         </Link>
-        <span className="text-white/55 text-xs">cycle 142 · kids</span>
+        <span className="text-muted-foreground text-xs">cycle 142 · kids</span>
       </div>
     </div>
   );

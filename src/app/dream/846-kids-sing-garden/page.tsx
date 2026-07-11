@@ -393,7 +393,7 @@ export default function KidsSingGarden() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-sky-200 via-amber-50 to-emerald-100">
+    <main className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-violet-200 via-violet-50 to-violet-100">
       {/* Garden canvas (warm daylight) */}
       <div
         ref={mountRef}
@@ -404,18 +404,18 @@ export default function KidsSingGarden() {
       {/* Top chrome (dark, monospace accents) */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 flex w-full items-start justify-between p-4">
         <div className="pointer-events-auto rounded-xl bg-black/55 px-4 py-2 backdrop-blur">
-          <h1 className="font-mono text-xl text-white sm:text-2xl">
+          <h1 className="font-mono text-xl text-foreground sm:text-2xl">
             🌻 Sing the Garden
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             Your voice grows a living spiral.
           </p>
         </div>
         <div className="pointer-events-auto rounded-xl bg-black/55 px-3 py-2 text-right backdrop-blur">
-          <div className="font-mono text-base text-white/95">{siteCount} blooms</div>
+          <div className="font-mono text-base text-foreground">{siteCount} blooms</div>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="mt-1 font-mono text-base text-white/75 underline"
+            className="mt-1 font-mono text-base text-muted-foreground underline"
           >
             Design notes
           </button>
@@ -425,10 +425,10 @@ export default function KidsSingGarden() {
       {/* Mic-denied notice + fallback hint (must be visible, rose) */}
       {micState === "denied" && (
         <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-xl bg-black/60 px-4 py-3 text-center backdrop-blur">
-          <p className="text-base font-semibold text-rose-300">
+          <p className="text-base font-semibold text-violet-300">
             No microphone — the garden is auto-singing for you.
           </p>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             Tap anywhere on the garden to grow flowers (higher tap = higher note).
           </p>
         </div>
@@ -436,13 +436,13 @@ export default function KidsSingGarden() {
 
       {micState === "live" && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-xl bg-black/50 px-4 py-2 backdrop-blur">
-          <p className="text-base text-white/85">🎤 Hum or sing — watch it bloom!</p>
+          <p className="text-base text-foreground">🎤 Hum or sing — watch it bloom!</p>
         </div>
       )}
 
       {!webglOk && (
         <div className="absolute bottom-20 left-1/2 z-10 -translate-x-1/2 rounded-xl bg-black/60 px-4 py-3 text-center backdrop-blur">
-          <p className="text-base font-semibold text-rose-300">
+          <p className="text-base font-semibold text-violet-300">
             WebGL is unavailable on this device — visuals can&apos;t render, but
             the music still plays.
           </p>
@@ -451,17 +451,17 @@ export default function KidsSingGarden() {
 
       {/* Start gate */}
       {!started && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-sky-300/90 to-emerald-200/90 backdrop-blur-sm">
-          <h2 className="px-6 text-center font-mono text-2xl font-bold text-emerald-950 sm:text-4xl">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-violet-300/90 to-violet-200/90 backdrop-blur-sm">
+          <h2 className="px-6 text-center font-mono text-2xl font-bold text-violet-950 sm:text-4xl">
             Sing and grow a flower garden
           </h2>
           <button
             onClick={start}
-            className="min-h-[64px] rounded-3xl bg-emerald-600 px-10 py-5 text-2xl font-bold text-white shadow-xl transition active:scale-95"
+            className="min-h-[64px] rounded-3xl bg-violet-600 px-10 py-5 text-2xl font-bold text-foreground shadow-xl transition active:scale-95"
           >
             🌱 Start singing
           </button>
-          <p className="max-w-md px-6 text-center text-base text-emerald-950/80">
+          <p className="max-w-md px-6 text-center text-base text-violet-950/80">
             Hum, sing, or say &quot;laaa&quot; — every sound plants a glowing
             flower. The spiral arranges itself, just like a real sunflower.
           </p>
@@ -471,27 +471,27 @@ export default function KidsSingGarden() {
       {/* Design notes overlay */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-zinc-900 p-6 text-white/90">
-            <h3 className="font-mono text-xl text-white">Design notes</h3>
-            <p className="mt-3 text-base text-white/85">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-zinc-900 p-6 text-foreground">
+            <h3 className="font-mono text-xl text-foreground">Design notes</h3>
+            <p className="mt-3 text-base text-foreground">
               The garden is a three.js GPU point-field. Each sung note deposits a
               growth site in the <em>largest angular gap</em> on an expanding
               front, with a local inhibition rule — so the golden-angle spiral
               (~137.5°) <em>emerges</em> rather than being drawn. It keeps
               self-organizing and softly sings itself back when you go quiet.
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Pitch → hue (low = warm gold, high = cool violet), snapped to a
               C-major pentatonic so there are no wrong notes. Loudness → bloom
               brightness and how fast the field grows.
             </p>
-            <p className="mt-3 font-mono text-base text-white/70">
+            <p className="mt-3 font-mono text-base text-muted-foreground">
               Refs: arXiv 2509.06498 (phyllotaxis, Keller-Segel) · Vogel 1979 ·
               Mort Garson, Plantasia · Chris Wilson ACF pitch.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[48px] rounded-xl bg-emerald-600 px-6 py-2 text-base font-semibold text-white"
+              className="mt-5 min-h-[48px] rounded-xl bg-violet-600 px-6 py-2 text-base font-semibold text-foreground"
             >
               Close
             </button>

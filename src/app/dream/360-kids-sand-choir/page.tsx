@@ -250,13 +250,13 @@ export default function KidsSandChoir() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           <div className="space-y-3 text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-white/95 sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Sand Choir
             </h1>
-            <p className="text-xl font-light text-white/75">
+            <p className="text-xl font-light text-muted-foreground">
               Pour glowing sand. Tilt to make dunes.
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Every grain that lands on a string sings 🎵
             </p>
           </div>
@@ -264,12 +264,12 @@ export default function KidsSandChoir() {
           <button
             onClick={start}
             aria-label="Start Sand Choir"
-            className="flex h-40 w-40 items-center justify-center rounded-full border-4 border-white/20 bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 text-white shadow-2xl shadow-orange-900/50 transition-transform active:scale-95"
+            className="flex h-40 w-40 items-center justify-center rounded-full border-4 border-border bg-gradient-to-br from-violet-400 via-violet-500 to-violet-500 text-foreground shadow-2xl shadow-violet-900/50 transition-transform active:scale-95"
           >
             <span className="text-5xl">▶</span>
           </button>
 
-          <p className="max-w-xs text-center text-base text-white/75">
+          <p className="max-w-xs text-center text-base text-muted-foreground">
             Tilt your tablet to pour the sand.
             <br />
             On a computer, drag with the mouse.
@@ -277,7 +277,7 @@ export default function KidsSandChoir() {
 
           <button
             onClick={() => setShowNotes(true)}
-            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-amber-300/90 underline underline-offset-2 transition-opacity hover:opacity-100"
+            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-violet-300/90 underline underline-offset-2 transition-opacity hover:opacity-100"
           >
             Read the design notes ↓
           </button>
@@ -289,21 +289,21 @@ export default function KidsSandChoir() {
         <>
           {noWebGL && (
             <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center px-6">
-              <p className="max-w-sm rounded-2xl bg-black/55 px-4 py-2.5 text-center text-base text-rose-300 backdrop-blur-sm">
+              <p className="max-w-sm rounded-2xl bg-black/55 px-4 py-2.5 text-center text-base text-violet-300 backdrop-blur-sm">
                 WebGL2 is not available here, but the sand choir is still singing.
               </p>
             </div>
           )}
           {noTilt && !noWebGL && (
             <div className="pointer-events-none absolute inset-x-0 top-4 flex justify-center px-6">
-              <p className="rounded-full bg-black/50 px-4 py-2.5 text-center text-base text-rose-300 backdrop-blur-sm">
+              <p className="rounded-full bg-black/50 px-4 py-2.5 text-center text-base text-violet-300 backdrop-blur-sm">
                 Drag to tilt — it also sways on its own ✦
               </p>
             </div>
           )}
           <button
             onClick={() => setShowNotes(true)}
-            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm transition-colors hover:text-white/95"
+            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
           >
             Design notes
           </button>
@@ -312,18 +312,18 @@ export default function KidsSandChoir() {
 
       {/* Design notes panel */}
       {showNotes && (
-        <section className="absolute inset-0 z-10 overflow-y-auto bg-[#0a0814]/97 px-6 py-12 font-mono text-base text-white/75 backdrop-blur-sm">
+        <section className="absolute inset-0 z-10 overflow-y-auto bg-[#0a0814]/97 px-6 py-12 font-mono text-base text-muted-foreground backdrop-blur-sm">
           <div className="mx-auto max-w-xl space-y-4">
-            <h2 className="text-2xl font-bold text-white/95">Design Notes</h2>
+            <h2 className="text-2xl font-bold text-foreground">Design Notes</h2>
             <p>
-              <span className="font-semibold text-amber-300">Concept:</span> A
+              <span className="font-semibold text-violet-300">Concept:</span> A
               4-year-old pours streams of glowing colored sand that pile into
               dunes by tilting the tablet. Seven horizontal harp strings cross
               the field; every grain that comes to rest on a string plucks a
               note, so the shape of the dune you build is the song.
             </p>
             <p>
-              <span className="font-semibold text-amber-300">
+              <span className="font-semibold text-violet-300">
                 Falling-sand cellular automaton:
               </span>{" "}
               A {GRID_W}×{GRID_H} grid where each cell is empty or one colored
@@ -334,7 +334,7 @@ export default function KidsSandChoir() {
               powder-game / Sandspiel piece.
             </p>
             <p>
-              <span className="font-semibold text-amber-300">Tilt gravity:</span>{" "}
+              <span className="font-semibold text-violet-300">Tilt gravity:</span>{" "}
               <code>deviceorientation</code> β/γ become a 2D gravity vector,
               quantized to a dominant fall direction plus a diagonal bias, so
               tipping the world flows the dunes left / right / down. No sensor →
@@ -342,7 +342,7 @@ export default function KidsSandChoir() {
               hands-free.
             </p>
             <p>
-              <span className="font-semibold text-amber-300">
+              <span className="font-semibold text-violet-300">
                 D-Dorian sonification:
               </span>{" "}
               The strings are tuned D E F G A B C (D-Dorian), low→high by row. A
@@ -353,14 +353,14 @@ export default function KidsSandChoir() {
               so it can never get loud or harsh.
             </p>
             <p>
-              <span className="font-semibold text-amber-300">Render:</span> The
+              <span className="font-semibold text-violet-300">Render:</span> The
               CA grid is uploaded to an RGBA8 texture each frame and drawn with a
               hand-written GLSL ES 3.00 fragment shader — warm grain colors over a
               deep-indigo field, with matte alpha-over glowing strings (no
               additive bloom, per the lab&rsquo;s anti-glow house style).
             </p>
             <p>
-              <span className="font-semibold text-emerald-300/95">
+              <span className="font-semibold text-violet-300/95">
                 References:
               </span>{" "}
               Max Bittker, <em>Sandspiel</em>; the Noita / &ldquo;powder
@@ -369,7 +369,7 @@ export default function KidsSandChoir() {
               Timbres&rdquo; (Computer Music Journal, 1983).
             </p>
             <p>
-              <span className="font-semibold text-rose-300">
+              <span className="font-semibold text-violet-300">
                 Unverified surface:
               </span>{" "}
               Built in a sandbox with no real device tilt and no GPU — the
@@ -378,7 +378,7 @@ export default function KidsSandChoir() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-full border border-amber-500/30 bg-amber-600/25 px-4 py-2.5 text-base text-amber-200 transition-colors hover:bg-amber-600/40"
+              className="mt-6 min-h-[44px] rounded-full border border-violet-500/30 bg-violet-600/25 px-4 py-2.5 text-base text-violet-200 transition-colors hover:bg-violet-600/40"
             >
               ← Back
             </button>

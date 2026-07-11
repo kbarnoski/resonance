@@ -184,33 +184,33 @@ export default function SolarOrganPage() {
   }, []);
 
   const kpColor = (kp: number) =>
-    kp >= 6 ? "text-rose-300" : kp >= 4 ? "text-amber-200" : "text-white/95";
+    kp >= 6 ? "text-violet-300" : kp >= 4 ? "text-violet-200" : "text-foreground";
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* top HUD */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-between p-4 sm:p-6">
         <div className="max-w-[60%]">
-          <h1 className="text-xl font-semibold tracking-tight text-white/95 sm:text-2xl">
+          <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
             Solar Organ
           </h1>
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             The solar wind hitting Earth right now, played as an inharmonic
             organ over the aurora it drives.
           </p>
           {synthetic ? (
-            <p className="mt-2 text-base text-rose-300">
+            <p className="mt-2 text-base text-violet-300">
               Using sample data — {note}
             </p>
           ) : (
-            <p className="mt-2 text-base text-white/55">{note}</p>
+            <p className="mt-2 text-base text-muted-foreground">{note}</p>
           )}
         </div>
 
-        <div className="flex flex-col items-end gap-1 font-mono text-base text-white/75">
-          <span className="rounded bg-white/10 px-2 py-1 text-white/95">
+        <div className="flex flex-col items-end gap-1 font-mono text-base text-muted-foreground">
+          <span className="rounded bg-muted px-2 py-1 text-foreground">
             {backend ? backend.toUpperCase() : "INIT…"}
           </span>
         </div>
@@ -219,35 +219,35 @@ export default function SolarOrganPage() {
       {/* bottom HUD: live numbers + playhead + controls */}
       <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-3 p-4 sm:p-6">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             UTC{" "}
-            <span className="text-white/95">{fmtUTC(hud.t)}</span>
+            <span className="text-foreground">{fmtUTC(hud.t)}</span>
           </span>
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             Kp{" "}
             <span className={kpColor(hud.kp)}>{hud.kp.toFixed(1)}</span>
           </span>
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             Bz{" "}
             <span
               className={
-                hud.bz < -6 ? "text-rose-300" : "text-white/95"
+                hud.bz < -6 ? "text-violet-300" : "text-foreground"
               }
             >
               {hud.bz >= 0 ? "+" : ""}
               {hud.bz.toFixed(1)} nT
             </span>
           </span>
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             wind{" "}
-            <span className="text-white/95">{Math.round(hud.speed)} km/s</span>
+            <span className="text-foreground">{Math.round(hud.speed)} km/s</span>
           </span>
         </div>
 
         {/* playhead over the 24h sweep */}
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/15">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-violet-300 to-rose-300 transition-[width] duration-75"
+            className="h-full rounded-full bg-gradient-to-r from-violet-300 via-violet-300 to-violet-300 transition-[width] duration-75"
             style={{ width: `${(playing ? hud.pos : 0) * 100}%` }}
           />
         </div>
@@ -256,7 +256,7 @@ export default function SolarOrganPage() {
           {!playing ? (
             <button
               onClick={start}
-              className="min-h-[44px] rounded-lg bg-white/95 px-4 py-2.5 text-base font-semibold text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-semibold text-black transition hover:bg-card"
             >
               ▶ Play the storm
             </button>
@@ -267,13 +267,13 @@ export default function SolarOrganPage() {
                 setMuted(m);
                 applyVolume(vol, m);
               }}
-              className="min-h-[44px] rounded-lg bg-white/15 px-4 py-2.5 text-base font-semibold text-white/95 transition hover:bg-white/25"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-semibold text-foreground transition hover:bg-accent"
             >
               {muted ? "🔇 Muted" : "🔊 Sounding"}
             </button>
           )}
 
-          <label className="flex min-h-[44px] items-center gap-2 rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/75">
+          <label className="flex min-h-[44px] items-center gap-2 rounded-lg bg-muted px-4 py-2.5 text-base text-muted-foreground">
             <span>VOL</span>
             <input
               type="range"
@@ -286,7 +286,7 @@ export default function SolarOrganPage() {
                 setVol(v);
                 applyVolume(v, muted);
               }}
-              className="w-28 accent-emerald-300"
+              className="w-28 accent-violet-300"
             />
           </label>
         </div>
@@ -295,7 +295,7 @@ export default function SolarOrganPage() {
       {/* design-notes link */}
       <Link
         href="/dream/618-solar-organ/README.md"
-        className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 font-mono text-base text-white/55 hover:text-white/95"
+        className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 font-mono text-base text-muted-foreground hover:text-foreground"
       >
         Read the design notes →
       </Link>

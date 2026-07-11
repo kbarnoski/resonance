@@ -579,10 +579,10 @@ export default function Page() {
         {/* top: title + presence + help */}
         <div className="flex items-start justify-between p-4">
           <div>
-            <h1 className="text-2xl font-black text-white/95 drop-shadow">
+            <h1 className="text-2xl font-black text-foreground drop-shadow">
               Monster Band
             </h1>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               {ghostMode
                 ? "👻 ghost friend is jamming — tap a button!"
                 : friendPresent
@@ -592,7 +592,7 @@ export default function Page() {
           </div>
           <Link
             href="/dream/702-kids-monster-band/README.md"
-            className="pointer-events-auto rounded-full bg-white/15 px-4 py-2 text-xl font-bold text-white/95 hover:bg-white/25"
+            className="pointer-events-auto rounded-full bg-muted px-4 py-2 text-xl font-bold text-foreground hover:bg-accent"
             aria-label="design notes"
           >
             ?
@@ -618,7 +618,7 @@ export default function Page() {
                   e.preventDefault();
                   tapVoice(v);
                 }}
-                className="flex h-24 flex-col items-center justify-center rounded-3xl text-white/95 shadow-lg active:scale-95 transition-transform"
+                className="flex h-24 flex-col items-center justify-center rounded-3xl text-foreground shadow-lg active:scale-95 transition-transform"
                 style={{
                   background: VOICE_META[v].color,
                   minWidth: 64,
@@ -637,13 +637,13 @@ export default function Page() {
           </div>
         ) : (
           <div className="pointer-events-auto flex flex-col items-center gap-4 p-8">
-            <p className="max-w-md text-center text-base text-white/75">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Open this same page on another phone to play together — you both
               join the same monster room!
             </p>
             <button
               onClick={start}
-              className="rounded-full bg-gradient-to-r from-pink-500 to-amber-400 px-10 py-5 text-2xl font-black text-white/95 shadow-xl active:scale-95"
+              className="rounded-full bg-gradient-to-r from-violet-500 to-violet-400 px-10 py-5 text-2xl font-black text-foreground shadow-xl active:scale-95"
             >
               ▶ START THE BAND
             </button>

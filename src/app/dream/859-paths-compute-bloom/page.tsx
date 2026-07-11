@@ -310,14 +310,14 @@ export default function PathsComputeBloom() {
       <div className="absolute top-4 left-4 max-w-sm pointer-events-none">
         <Link
           href="/dream"
-          className="pointer-events-auto text-base text-white/55 hover:text-white/80 transition-colors"
+          className="pointer-events-auto text-base text-muted-foreground hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
-        <h1 className="font-serif text-2xl md:text-3xl text-white/95 mt-2 tracking-tight">
+        <h1 className="font-serif text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
           Compute Bloom
         </h1>
-        <p className="text-base text-white/75 mt-1 leading-relaxed">
+        <p className="text-base text-muted-foreground mt-1 leading-relaxed">
           A piano performance blooms a living particle ecosystem — {PARTICLE_COUNT.toLocaleString()}{" "}
           points pushed by the music&apos;s spectral bands on the GPU.
         </p>
@@ -325,12 +325,12 @@ export default function PathsComputeBloom() {
 
       {/* WebGPU-unavailable notice */}
       {isRunning && backend === "webgl" && (
-        <div className="absolute top-4 right-4 text-base text-rose-300/90 pointer-events-none text-right max-w-[14rem]">
+        <div className="absolute top-4 right-4 text-base text-violet-300/90 pointer-events-none text-right max-w-[14rem]">
           (WebGPU unavailable on this device — running the lighter WebGL2 bloom)
         </div>
       )}
       {isRunning && backend === "none" && (
-        <div className="absolute top-4 right-4 text-base text-rose-300 pointer-events-none text-right max-w-[14rem]">
+        <div className="absolute top-4 right-4 text-base text-violet-300 pointer-events-none text-right max-w-[14rem]">
           (No WebGPU or WebGL2 here — audio still playing)
         </div>
       )}
@@ -338,15 +338,15 @@ export default function PathsComputeBloom() {
       {/* idle / loading overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-serif text-2xl md:text-4xl text-white/95 mb-3 tracking-tight">
+          <h2 className="font-serif text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
             Compute Bloom
           </h2>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             Bring your own recording — or play the built-in piece. A WebGPU compute shader
             integrates half a million particles, pushed outward by bass and scattered into
             sparkle by the highs.
           </p>
-          <p className="text-base text-white/55 max-w-md mb-7 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-7 leading-relaxed">
             Curl-noise flow after Bridson 2007; latent-particle aesthetic after Refik Anadol.
           </p>
 
@@ -362,18 +362,18 @@ export default function PathsComputeBloom() {
             className={`mt-6 px-5 py-4 rounded-2xl border transition-colors ${
               dragOver
                 ? "border-violet-400/70 bg-violet-500/10"
-                : "border-white/20 bg-white/[0.03]"
+                : "border-border bg-muted"
             }`}
           >
-            <p className="text-base text-white/75 mb-2">Drop an audio file here</p>
-            <label className="inline-block px-4 py-2.5 min-h-[44px] rounded-full bg-white/10 text-white/90 hover:bg-white/20 cursor-pointer text-base transition-colors">
+            <p className="text-base text-muted-foreground mb-2">Drop an audio file here</p>
+            <label className="inline-block px-4 py-2.5 min-h-[44px] rounded-full bg-muted text-foreground hover:bg-accent cursor-pointer text-base transition-colors">
               or pick a track
               <input type="file" accept="audio/*" className="hidden" onChange={onPick} />
             </label>
-            <p className="text-base text-white/55 mt-2">now: {trackName}</p>
+            <p className="text-base text-muted-foreground mt-2">now: {trackName}</p>
           </div>
 
-          {error && <p className="text-base text-rose-300 mt-4 max-w-md">{error}</p>}
+          {error && <p className="text-base text-violet-300 mt-4 max-w-md">{error}</p>}
         </div>
       )}
 
@@ -388,13 +388,13 @@ export default function PathsComputeBloom() {
               </label>
               <button
                 onClick={() => setShowNotes((s) => !s)}
-                className="px-4 py-2.5 min-h-[44px] rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-base transition-colors"
+                className="px-4 py-2.5 min-h-[44px] rounded-full bg-muted text-foreground hover:bg-accent text-base transition-colors"
               >
                 Design notes
               </button>
             </div>
-            <p className="text-base text-white/55">
-              now playing: <span className="text-white/80">{trackName}</span> · drag to orbit ·
+            <p className="text-base text-muted-foreground">
+              now playing: <span className="text-foreground">{trackName}</span> · drag to orbit ·
               scroll to zoom
             </p>
           </div>
@@ -407,7 +407,7 @@ export default function PathsComputeBloom() {
                   className="w-3 rounded-t bg-violet-400/70"
                   style={{ height: `${Math.max(2, v * 56)}px` }}
                 />
-                <span className="text-xs text-white/55 hidden sm:block">{BAND_NAMES[i]}</span>
+                <span className="text-xs text-muted-foreground hidden sm:block">{BAND_NAMES[i]}</span>
               </div>
             ))}
           </div>
@@ -416,16 +416,16 @@ export default function PathsComputeBloom() {
 
       {/* design notes panel */}
       {showNotes && isRunning && (
-        <div className="absolute bottom-24 left-4 max-w-md p-5 rounded-2xl bg-black/80 border border-white/15 backdrop-blur">
-          <h3 className="text-xl text-white/95 mb-2 font-serif">Design notes</h3>
-          <p className="text-base text-white/75 leading-relaxed mb-2">
+        <div className="absolute bottom-24 left-4 max-w-md p-5 rounded-2xl bg-black/80 border border-border backdrop-blur">
+          <h3 className="text-xl text-foreground mb-2 font-serif">Design notes</h3>
+          <p className="text-base text-muted-foreground leading-relaxed mb-2">
             An <span className="text-violet-300">AnalyserNode</span> FFT splits the spectrum into{" "}
             {NUM_BANDS} bands. A WebGPU compute pass integrates {PARTICLE_COUNT.toLocaleString()}{" "}
             particles each frame: sub-bass and bass swell the core outward, low-mids pull a gentle
             gravity back, and the highs scatter sparkle at the rim. Onset spikes bloom the whole
             cloud; velocity damping gives it memory, so a loud passage stays expanded.
           </p>
-          <p className="text-base text-white/55 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             Velocity field: curl-noise advection (Bridson, SIGGRAPH 2007). Aesthetic after Refik
             Anadol&apos;s latent-flow particle works. Backend:{" "}
             <span className="text-violet-300">

@@ -289,14 +289,14 @@ export default function WikiCarillonPage() {
           className={[
             "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-base font-medium shadow-sm ring-1",
             liveBadge
-              ? "bg-emerald-50 text-emerald-800 ring-emerald-300"
-              : "bg-amber-50 text-amber-800 ring-amber-300",
+              ? "bg-violet-50 text-violet-800 ring-violet-300"
+              : "bg-violet-50 text-violet-800 ring-violet-300",
           ].join(" ")}
         >
           <span
             className={[
               "h-2.5 w-2.5 rounded-full",
-              liveBadge ? "bg-emerald-500" : "bg-amber-500",
+              liveBadge ? "bg-violet-500" : "bg-violet-500",
             ].join(" ")}
             aria-hidden="true"
           />
@@ -319,7 +319,7 @@ export default function WikiCarillonPage() {
           </div>
           {stats.lastTitle && (
             <div className="mt-1 max-w-sm truncate text-sm text-stone-300">
-              <span className="text-amber-300">{stats.lastWiki}</span> · {stats.lastTitle}
+              <span className="text-violet-300">{stats.lastWiki}</span> · {stats.lastTitle}
             </div>
           )}
         </div>
@@ -338,7 +338,7 @@ export default function WikiCarillonPage() {
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-stone-950/55 p-4 backdrop-blur-sm">
           <div className="max-h-[80vh] max-w-2xl overflow-auto rounded-2xl bg-stone-900 p-6 text-stone-100 shadow-2xl ring-1 ring-stone-700">
-            <h2 className="font-serif text-2xl font-semibold text-amber-200">Design notes</h2>
+            <h2 className="font-serif text-2xl font-semibold text-violet-200">Design notes</h2>
             <p className="mt-3 text-base leading-relaxed text-stone-200">
               <span className="font-semibold">What does the world sound like as it writes
               itself?</span>{" "}
@@ -348,7 +348,7 @@ export default function WikiCarillonPage() {
             </p>
             <ul className="mt-4 space-y-2 text-base text-stone-200">
               <li>
-                <span className="font-semibold text-amber-200">Gold</span> rings — large edits.
+                <span className="font-semibold text-violet-200">Gold</span> rings — large edits.
                 <span className="font-semibold text-violet-300"> Violet</span> swells — a brand-new
                 or anonymous editor. <span className="font-semibold text-stone-400">Muted</span>{" "}
                 woodblocks — bot edits.
@@ -376,7 +376,7 @@ export default function WikiCarillonPage() {
               <button
                 type="button"
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-xl bg-amber-300 px-4 py-2.5 text-base font-semibold text-stone-900 transition hover:bg-amber-200"
+                className="min-h-[44px] rounded-xl bg-violet-300 px-4 py-2.5 text-base font-semibold text-stone-900 transition hover:bg-violet-200"
               >
                 Close
               </button>
@@ -406,7 +406,7 @@ export default function WikiCarillonPage() {
             <button
               type="button"
               onClick={start}
-              className="mt-7 min-h-[44px] rounded-xl bg-stone-900 px-6 py-3 text-xl font-semibold text-amber-100 shadow-lg transition hover:bg-stone-800"
+              className="mt-7 min-h-[44px] rounded-xl bg-stone-900 px-6 py-3 text-xl font-semibold text-violet-100 shadow-lg transition hover:bg-stone-800"
             >
               Ring the carillon
             </button>

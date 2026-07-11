@@ -228,15 +228,15 @@ export default function KidsJellyfish() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-[#03081c] text-white px-4 py-6">
+    <main className="flex flex-col items-center min-h-screen bg-[#03081c] text-foreground px-4 py-6">
       <div className="w-full max-w-2xl">
-        <h1 className="text-2xl font-mono font-bold mb-1 text-white/95">
+        <h1 className="text-2xl font-mono font-bold mb-1 text-foreground">
           Jellyfish Song
         </h1>
-        <p className="text-base text-white/75 mb-2">
+        <p className="text-base text-muted-foreground mb-2">
           Touch a jellyfish to nudge it — each one sings its own bell note.
         </p>
-        <p className="text-sm text-white/55 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           5 jellyfish · pentatonic C-major · no microphone needed
         </p>
 
@@ -260,7 +260,7 @@ export default function KidsJellyfish() {
             </div>
             <button
               onClick={handleStart}
-              className="bg-cyan-400/15 border border-cyan-300/40 text-cyan-100/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
+              className="bg-violet-400/15 border border-violet-300/40 text-violet-100/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
             >
               🪼 Begin
             </button>
@@ -273,7 +273,7 @@ export default function KidsJellyfish() {
           />
         )}
 
-        <div className="mt-4 flex items-center justify-between text-xs text-white/55">
+        <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
           <span>For kids 4+ · zero permissions · multi-touch OK</span>
           <Link href="/dream" className="underline">
             ← dream lab

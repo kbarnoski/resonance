@@ -280,17 +280,17 @@ export default function WaveOrganPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#020814] text-white">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
+    <div className="flex flex-col h-screen bg-[#020814] text-foreground">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
           <h1 className="text-xl font-serif tracking-wide">Wave Organ</h1>
-          <p className="text-base text-white/75 mt-0.5">
+          <p className="text-base text-muted-foreground mt-0.5">
             Ocean waves play the pipes · tap to make waves
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           ← Dream Lab
         </Link>
@@ -302,13 +302,13 @@ export default function WaveOrganPage() {
         style={{ display: "block" }}
       />
 
-      <footer className="px-4 py-2 border-t border-white/10 shrink-0 flex items-center justify-between">
-        <span className="text-xs text-white/55">
+      <footer className="px-4 py-2 border-t border-border shrink-0 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">
           For kids 3+ · Zero permissions · Zero API · Zero deps
         </span>
         <Link
           href="/dream/190-kids-wave-organ/README.md"
-          className="text-xs text-white/55 hover:text-white/75 transition-colors"
+          className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
         >
           Design notes ↗
         </Link>

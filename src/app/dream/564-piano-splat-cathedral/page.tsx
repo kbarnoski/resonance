@@ -228,7 +228,7 @@ export default function PianoSplatCathedral() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -237,10 +237,10 @@ export default function PianoSplatCathedral() {
 
       {/* HUD top-right */}
       {phase !== "unsupported" && (
-        <div className="pointer-events-none absolute right-4 top-4 text-right font-mono text-xs text-white/75">
+        <div className="pointer-events-none absolute right-4 top-4 text-right font-mono text-xs text-muted-foreground">
           <div>
             source:{" "}
-            <span className="text-white/95">
+            <span className="text-foreground">
               {source === "piano"
                 ? "Karel's piano"
                 : source === "fallback"
@@ -250,7 +250,7 @@ export default function PianoSplatCathedral() {
           </div>
           <div>
             built:{" "}
-            <span className="text-white/95">
+            <span className="text-foreground">
               {builtElems}/{totalElems} elements
             </span>
           </div>
@@ -260,17 +260,17 @@ export default function PianoSplatCathedral() {
       {/* Intro / controls overlay */}
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-end p-6 sm:p-10">
         <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/50 p-6 backdrop-blur-sm">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Piano Splat Cathedral
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Karel&apos;s piano builds a luminous cathedral around you — each onset
             raises columns, arches, vaults, and a rose window from anisotropic
             Gaussian splats, depth-sorted so near stone occludes far.
           </p>
 
           {phase === "unsupported" ? (
-            <p className="mt-4 text-base text-rose-300">
+            <p className="mt-4 text-base text-violet-300">
               WebGL2 is unavailable in this browser. The cathedral cannot be
               rendered.
             </p>
@@ -280,7 +280,7 @@ export default function PianoSplatCathedral() {
                 type="button"
                 onClick={begin}
                 disabled={phase === "running" || loading}
-                className="min-h-[44px] rounded-xl bg-amber-500/20 px-4 py-2.5 text-base font-medium text-amber-200 transition hover:bg-amber-500/30 disabled:opacity-50"
+                className="min-h-[44px] rounded-xl bg-violet-500/20 px-4 py-2.5 text-base font-medium text-violet-200 transition hover:bg-violet-500/30 disabled:opacity-50"
               >
                 {phase === "running"
                   ? "Playing"
@@ -288,7 +288,7 @@ export default function PianoSplatCathedral() {
                     ? "Listening…"
                     : "Begin"}
               </button>
-              <span className="text-base text-white/75">
+              <span className="text-base text-muted-foreground">
                 drag to orbit · scroll to zoom
               </span>
             </div>
@@ -298,7 +298,7 @@ export default function PianoSplatCathedral() {
 
       <Link
         href="./README.md"
-        className="absolute bottom-4 right-4 font-mono text-xs text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white/95"
+        className="absolute bottom-4 right-4 font-mono text-xs text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </Link>

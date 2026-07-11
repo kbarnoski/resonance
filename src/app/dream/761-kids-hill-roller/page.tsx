@@ -477,7 +477,7 @@ export default function HillRollerPage() {
   const hillPath = drawHillPath(crests);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0b2a4a] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0b2a4a] text-foreground">
       {/* ── the sunny SVG play area ── */}
       <svg
         ref={svgRef}
@@ -623,15 +623,15 @@ export default function HillRollerPage() {
 
       {/* ── dark UI chrome over the bright play area ── */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center gap-1 px-4 pt-4 text-center">
-        <h1 className="text-xl font-bold text-white drop-shadow sm:text-2xl">
+        <h1 className="text-xl font-bold text-foreground drop-shadow sm:text-2xl">
           Sunny Hill Roller
         </h1>
-        <p className="max-w-md text-base text-white/95 drop-shadow">
+        <p className="max-w-md text-base text-foreground drop-shadow">
           Pull the hills up and down with your finger, then tilt to roll the ball
           over your shape — it plays your tune!
         </p>
         {started && note && (
-          <p className="max-w-sm text-base text-rose-300 drop-shadow">{note}</p>
+          <p className="max-w-sm text-base text-violet-300 drop-shadow">{note}</p>
         )}
       </div>
 
@@ -639,7 +639,7 @@ export default function HillRollerPage() {
       {started && (
         <button
           onClick={handleRoll}
-          className="absolute bottom-6 left-1/2 z-10 min-h-[64px] -translate-x-1/2 rounded-full bg-rose-500 px-10 py-4 text-2xl font-extrabold text-white shadow-lg ring-4 ring-white/70 transition hover:bg-rose-400 active:scale-95"
+          className="absolute bottom-6 left-1/2 z-10 min-h-[64px] -translate-x-1/2 rounded-full bg-violet-500 px-10 py-4 text-2xl font-extrabold text-foreground shadow-lg ring-4 ring-border transition hover:bg-violet-400 active:scale-95"
         >
           Roll! ⚽
         </button>
@@ -648,7 +648,7 @@ export default function HillRollerPage() {
       {/* corner design-notes link */}
       <Link
         href="#"
-        className="absolute bottom-3 right-4 z-10 text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+        className="absolute bottom-3 right-4 z-10 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
       >
         Design notes
       </Link>
@@ -656,20 +656,20 @@ export default function HillRollerPage() {
       {/* ── Start overlay (creates AudioContext + asks iOS tilt on tap) ── */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0b2a4a]/85 px-6 text-center">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
             Sunny Hill Roller ☀️
           </h2>
-          <p className="max-w-md text-base text-white/95 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Sculpt sunny hills with your finger. Tilt to roll the ball over the
             hills YOU made — and it sings your melody.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[64px] rounded-full bg-amber-400 px-10 py-4 text-2xl font-extrabold text-[#0b2a4a] shadow-lg ring-4 ring-white/70 transition hover:bg-amber-300 active:scale-95"
+            className="min-h-[64px] rounded-full bg-violet-400 px-10 py-4 text-2xl font-extrabold text-[#0b2a4a] shadow-lg ring-4 ring-border transition hover:bg-violet-300 active:scale-95"
           >
             Start ▶
           </button>
-          <p className="max-w-sm text-base text-white/75">
+          <p className="max-w-sm text-base text-muted-foreground">
             Bright, sound-on play. Tilt your phone/tablet, or use the Roll!
             button.
           </p>

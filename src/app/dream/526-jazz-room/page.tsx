@@ -513,21 +513,21 @@ export default function JazzRoomPage() {
     <main className="relative min-h-screen bg-[#080504] flex flex-col items-center overflow-hidden select-none">
       {/* Title bar */}
       <header className="w-full max-w-3xl px-4 pt-5 pb-2 z-10 relative">
-        <h1 className="text-2xl font-serif text-amber-300/95 tracking-wide text-center">
+        <h1 className="text-2xl font-serif text-violet-300/95 tracking-wide text-center">
           Jazz Room
         </h1>
-        <p className="text-sm text-white/75 text-center mt-1 font-light italic">
+        <p className="text-sm text-muted-foreground text-center mt-1 font-light italic">
           A late-night trio — sit in, or just listen
         </p>
         {started && (
-          <div className="flex justify-center gap-6 mt-2 text-xs text-white/55 font-mono">
+          <div className="flex justify-center gap-6 mt-2 text-xs text-muted-foreground font-mono">
             <span>
               Chord:{" "}
-              <span className="text-amber-300/95 font-semibold">{currentChordDisplay}</span>
+              <span className="text-violet-300/95 font-semibold">{currentChordDisplay}</span>
             </span>
             <span>
               Phase:{" "}
-              <span className="text-amber-300/95 font-semibold">{phaseDisplay}</span>
+              <span className="text-violet-300/95 font-semibold">{phaseDisplay}</span>
             </span>
           </div>
         )}
@@ -536,7 +536,7 @@ export default function JazzRoomPage() {
       {/* Canvas stage */}
       <div className="relative w-full max-w-3xl px-3 z-10">
         {canvasError && (
-          <p className="text-rose-300 text-base text-center py-4">
+          <p className="text-violet-300 text-base text-center py-4">
             Canvas 2D not available in this browser — audio continues.
           </p>
         )}
@@ -553,17 +553,17 @@ export default function JazzRoomPage() {
         <div className="z-10 mt-5">
           <button
             onClick={handleStart}
-            className="min-h-[44px] px-8 py-2.5 rounded-full bg-amber-700/80 hover:bg-amber-600/90 text-white text-lg font-serif tracking-wide transition-all shadow-lg shadow-amber-900/50 border border-amber-500/40"
+            className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-700/80 hover:bg-violet-600/90 text-foreground text-lg font-serif tracking-wide transition-all shadow-lg shadow-violet-900/50 border border-violet-500/40"
           >
             Start the Trio
           </button>
-          <p className="text-white/55 text-sm text-center mt-3 italic">
+          <p className="text-muted-foreground text-sm text-center mt-3 italic">
             Press to begin — the trio plays autonomously
           </p>
         </div>
       ) : (
         <div className="z-10 mt-4 text-center">
-          <p className="text-white/55 text-sm italic">
+          <p className="text-muted-foreground text-sm italic">
             The trio is playing &mdash; use the keys below to sit in
           </p>
         </div>
@@ -572,7 +572,7 @@ export default function JazzRoomPage() {
       {/* Sit-in keyboard */}
       {started && (
         <section className="z-10 mt-4 px-3 w-full max-w-3xl" aria-label="Sit-in keys">
-          <p className="text-white/75 text-sm text-center mb-2 font-serif">
+          <p className="text-muted-foreground text-sm text-center mb-2 font-serif">
             Sit In &mdash; F Blues Scale
           </p>
           <div className="flex gap-1.5 justify-center flex-wrap">
@@ -583,7 +583,7 @@ export default function JazzRoomPage() {
                   e.preventDefault();
                   handleUserKey(k.midi);
                 }}
-                className="min-h-[44px] w-10 flex items-center justify-center rounded-md text-sm font-serif font-semibold transition-all active:scale-95 border border-amber-700/40"
+                className="min-h-[44px] w-10 flex items-center justify-center rounded-md text-sm font-serif font-semibold transition-all active:scale-95 border border-violet-700/40"
                 style={{
                   backgroundColor: "rgba(60,35,8,0.7)",
                   color: k.color,
@@ -621,8 +621,8 @@ export default function JazzRoomPage() {
                     key={ph}
                     className={`px-2 py-1 rounded text-xs font-serif transition-all ${
                       isActive
-                        ? "bg-amber-700/60 text-amber-300/95 border border-amber-500/50"
-                        : "bg-amber-900/20 text-white/55 border border-amber-900/30"
+                        ? "bg-violet-700/60 text-violet-300/95 border border-violet-500/50"
+                        : "bg-violet-900/20 text-muted-foreground border border-violet-900/30"
                     }`}
                   >
                     {labels[ph]}
@@ -636,10 +636,10 @@ export default function JazzRoomPage() {
 
       {/* Footer info */}
       <footer className="z-10 mt-6 mb-4 px-4 text-center">
-        <p className="text-white/55 text-xs font-light">
+        <p className="text-muted-foreground text-xs font-light">
           Bill Evans rootless voicings &middot; Aebersold play-along tradition &middot; F Jazz Blues
         </p>
-        <p className="text-white/55 text-xs mt-1">
+        <p className="text-muted-foreground text-xs mt-1">
           Walking bass &middot; Brushed drums &middot; Type A/B shell voicings
         </p>
       </footer>

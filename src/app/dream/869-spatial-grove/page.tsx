@@ -371,14 +371,14 @@ export default function SpatialGrove() {
       <div className="absolute top-4 left-4 max-w-md pointer-events-none">
         <Link
           href="/dream"
-          className="pointer-events-auto text-base text-white/55 hover:text-white/80 transition-colors"
+          className="pointer-events-auto text-base text-muted-foreground hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
-        <h1 className="font-serif text-2xl md:text-3xl text-white/95 mt-2 tracking-tight">
+        <h1 className="font-serif text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
           Spatial Grove
         </h1>
-        <p className="text-base text-white/75 mt-1 leading-relaxed">
+        <p className="text-base text-muted-foreground mt-1 leading-relaxed">
           Walk through a living grove of {TREE_COUNT} generative song-trees — your body pans you
           across them, your distance walks you deeper. Each tree a fixed, spatialized voice you
           wander among.
@@ -387,12 +387,12 @@ export default function SpatialGrove() {
 
       {/* backend notices */}
       {isRunning && backend === "webgl" && (
-        <div className="absolute top-4 right-4 text-base text-rose-300/90 pointer-events-none text-right max-w-[15rem]">
+        <div className="absolute top-4 right-4 text-base text-violet-300/90 pointer-events-none text-right max-w-[15rem]">
           (WebGPU unavailable — running the lighter WebGL2 grove; audio unchanged)
         </div>
       )}
       {isRunning && backend === "none" && (
-        <div className="absolute top-4 right-4 text-base text-rose-300 pointer-events-none text-right max-w-[15rem]">
+        <div className="absolute top-4 right-4 text-base text-violet-300 pointer-events-none text-right max-w-[15rem]">
           (No WebGPU or WebGL2 here — the grove still plays in your ears)
         </div>
       )}
@@ -400,15 +400,15 @@ export default function SpatialGrove() {
       {/* idle / loading overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-serif text-2xl md:text-4xl text-white/95 mb-3 tracking-tight">
+          <h2 className="font-serif text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
             Spatial Grove
           </h2>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             A fixed field of HRTF-spatialized song-trees. Step left and right to pan across the
             grove; lean in or step back to walk deeper among the voices. Each tree drifts slowly
             over minutes — never the same grove twice.
           </p>
-          <p className="text-base text-white/55 max-w-md mb-7 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-7 leading-relaxed">
             After Cardiff &amp; Miller&apos;s <span className="italic">Forty Part Motet</span>{" "}
             (inverted: the field is fixed, you move) · spatial-audio-objects after AudioMiXR &amp;
             MoXaRt · slow generative drift after Eno.
@@ -422,12 +422,12 @@ export default function SpatialGrove() {
             {phase === "loading" ? "entering the grove…" : "Enter the grove"}
           </button>
 
-          <p className="text-base text-white/55 max-w-md mt-5 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mt-5 leading-relaxed">
             Allow the camera to walk with your body. No camera? It walks a slow figure-8 on its own,
             and you can drag to steer.
           </p>
 
-          {error && <p className="text-base text-rose-300 mt-4 max-w-md">{error}</p>}
+          {error && <p className="text-base text-violet-300 mt-4 max-w-md">{error}</p>}
         </div>
       )}
 
@@ -438,7 +438,7 @@ export default function SpatialGrove() {
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setShowNotes((s) => !s)}
-                className="px-4 py-2.5 min-h-[44px] rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-base transition-colors"
+                className="px-4 py-2.5 min-h-[44px] rounded-full bg-muted text-foreground hover:bg-accent text-base transition-colors"
               >
                 Design notes
               </button>
@@ -447,13 +447,13 @@ export default function SpatialGrove() {
                 {input === "pose" ? "body / pose" : input === "pointer" ? "drag-steer" : "auto-demo"}
               </span>
             </div>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               drag anywhere to steer the listener · walk near a tree to bloom its voice
             </p>
           </div>
 
           {/* live listener readout */}
-          <div className="font-mono text-base text-white/75 text-right leading-relaxed">
+          <div className="font-mono text-base text-muted-foreground text-right leading-relaxed">
             <div>
               listener X{" "}
               <span className="text-violet-300">{readout.x.toFixed(2)}</span>
@@ -462,16 +462,16 @@ export default function SpatialGrove() {
               listener Z{" "}
               <span className="text-violet-300">{readout.z.toFixed(2)}</span>
             </div>
-            <div className="text-white/55">nearest tree #{readout.near}</div>
+            <div className="text-muted-foreground">nearest tree #{readout.near}</div>
           </div>
         </div>
       )}
 
       {/* design notes panel */}
       {showNotes && isRunning && (
-        <div className="absolute bottom-28 left-4 max-w-lg p-5 rounded-2xl bg-black/80 border border-white/15 backdrop-blur">
-          <h3 className="text-xl text-white/95 mb-2 font-serif">Design notes</h3>
-          <p className="text-base text-white/75 leading-relaxed mb-2">
+        <div className="absolute bottom-28 left-4 max-w-lg p-5 rounded-2xl bg-black/80 border border-border backdrop-blur">
+          <h3 className="text-xl text-foreground mb-2 font-serif">Design notes</h3>
+          <p className="text-base text-muted-foreground leading-relaxed mb-2">
             {TREE_COUNT} song-trees sit at <span className="text-violet-300">fixed</span> world
             positions in a shallow arc. Each owns a{" "}
             <span className="text-violet-300">PannerNode (HRTF)</span> and plays a slow, sparse motif
@@ -479,12 +479,12 @@ export default function SpatialGrove() {
             position pans you across the grove, your apparent size (shoulder-width depth proxy) walks
             you deeper. Walk near a tree and its voice blooms in your ears and its canopy brightens.
           </p>
-          <p className="text-base text-white/75 leading-relaxed mb-2">
+          <p className="text-base text-muted-foreground leading-relaxed mb-2">
             <span className="text-violet-300">Long-form memory:</span> every tree drifts over minutes
             — transposing a scale step, re-densifying its rhythm, or swapping timbre brightness — so
             minute 5 is not minute 1.
           </p>
-          <p className="text-base text-white/55 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             Visuals: a {backend === "webgpu" ? "WebGPU compute" : "WebGL2"} particle field
             ({PARTICLE_COUNT.toLocaleString()} points on WebGPU) swirls each particle around its home
             tree; nearest canopy blooms. Inverts Cardiff &amp; Miller&apos;s{" "}

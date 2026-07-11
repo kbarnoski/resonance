@@ -31,11 +31,11 @@ function formatTime(seconds: number): string {
 }
 
 const MOVEMENT_COLORS: Record<MovementName, string> = {
-  Intact: "text-emerald-300",
-  Eroding: "text-yellow-300",
-  Sparse: "text-amber-400",
+  Intact: "text-violet-300",
+  Eroding: "text-violet-300",
+  Sparse: "text-violet-400",
   Ghost: "text-violet-300",
-  Reforming: "text-sky-300",
+  Reforming: "text-violet-300",
 };
 
 const MOVEMENT_DESCRIPTIONS: Record<MovementName, string> = {
@@ -223,7 +223,7 @@ export default function TapeErosionPage() {
 
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="relative flex flex-col min-h-screen bg-black text-white overflow-hidden">
+    <div className="relative flex flex-col min-h-screen bg-black text-foreground overflow-hidden">
 
       {/* Canvas fills entire background */}
       <canvas
@@ -236,21 +236,21 @@ export default function TapeErosionPage() {
       {phase === "intro" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10 px-6">
           <div className="max-w-xl w-full flex flex-col items-center gap-6 text-center">
-            <h1 className="text-3xl md:text-4xl font-serif text-white/95 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-serif text-foreground tracking-tight">
               Tape Erosion
             </h1>
-            <p className="text-base text-white/80 leading-relaxed max-w-md">
+            <p className="text-base text-foreground leading-relaxed max-w-md">
               Karel Barnoski&apos;s solo piano recording &ldquo;Welcome Home&rdquo; plays as a long,
               slow generative arc — slowly disintegrating and re-forming over many minutes.
               The spectrum thins and smears; motifs vanish and ghost back transformed.
               A living, eroding memory of music, rendered as decaying magnetic tape.
             </p>
-            <p className="text-sm font-mono text-white/55 tracking-wide uppercase">
+            <p className="text-sm font-mono text-muted-foreground tracking-wide uppercase">
               ~7 minutes · Generative · Long-form
             </p>
             <button
               onClick={() => void handleStart()}
-              className="min-h-[44px] px-6 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded text-white/95 text-base font-mono tracking-wide transition-all duration-200"
+              className="min-h-[44px] px-6 py-2.5 bg-muted hover:bg-accent border border-border hover:border-border rounded text-foreground text-base font-mono tracking-wide transition-all duration-200"
             >
               Begin the erosion
             </button>
@@ -261,7 +261,7 @@ export default function TapeErosionPage() {
       {/* Loading overlay */}
       {phase === "loading" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10">
-          <p className="text-base font-mono text-white/75 animate-pulse">
+          <p className="text-base font-mono text-muted-foreground animate-pulse">
             Loading the recording…
           </p>
         </div>
@@ -273,10 +273,10 @@ export default function TapeErosionPage() {
           {/* Top bar */}
           <div className="flex items-start justify-between px-5 pt-4">
             <div className="flex flex-col gap-0.5">
-              <h1 className="text-xl font-serif text-white/90 tracking-tight">
+              <h1 className="text-xl font-serif text-foreground tracking-tight">
                 Tape Erosion
               </h1>
-              <p className="text-sm font-mono text-white/55">
+              <p className="text-sm font-mono text-muted-foreground">
                 Karel Barnoski · Welcome Home
               </p>
             </div>
@@ -284,7 +284,7 @@ export default function TapeErosionPage() {
               <span className={`text-base font-mono font-semibold ${MOVEMENT_COLORS[currentMovement]}`}>
                 {currentMovement}
               </span>
-              <span className="text-sm font-mono text-white/55">
+              <span className="text-sm font-mono text-muted-foreground">
                 {MOVEMENT_DESCRIPTIONS[currentMovement]}
               </span>
             </div>
@@ -292,17 +292,17 @@ export default function TapeErosionPage() {
 
           {/* Progress bar */}
           <div className="mt-3 mx-5">
-            <div className="h-px bg-white/10 rounded-full overflow-hidden">
+            <div className="h-px bg-muted rounded-full overflow-hidden">
               <div
-                className="h-full bg-white/30 rounded-full transition-all duration-1000"
+                className="h-full bg-muted rounded-full transition-all duration-1000"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
             <div className="flex justify-between mt-1">
-              <span className="text-xs font-mono text-white/35">
+              <span className="text-xs font-mono text-muted-foreground/70">
                 {formatTime(elapsedSeconds)}
               </span>
-              <span className="text-xs font-mono text-white/35">
+              <span className="text-xs font-mono text-muted-foreground/70">
                 {formatTime(TOTAL_DURATION)}
               </span>
             </div>
@@ -313,12 +313,12 @@ export default function TapeErosionPage() {
       {/* Notices */}
       <div className="absolute bottom-12 left-0 right-0 z-10 flex flex-col items-center gap-2 px-5 pointer-events-none">
         {sourceKind === "fallback" && (
-          <p className="text-amber-300/95 text-sm font-mono text-center">
+          <p className="text-violet-300/95 text-sm font-mono text-center">
             Using a fallback tone — Karel&apos;s recording could not load.
           </p>
         )}
         {rendererKind === "canvas2d" && (
-          <p className="text-amber-300/95 text-sm font-mono text-center">
+          <p className="text-violet-300/95 text-sm font-mono text-center">
             WebGL2 unavailable — using Canvas2D renderer.
           </p>
         )}
@@ -326,12 +326,12 @@ export default function TapeErosionPage() {
 
       {/* Bottom bar — always visible */}
       <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between px-5 py-3 pointer-events-auto">
-        <span className="text-xs font-mono text-white/35">
+        <span className="text-xs font-mono text-muted-foreground/70">
           Basinski · Eno · Ikeda
         </span>
         <button
           onClick={() => setShowNotes(v => !v)}
-          className="text-sm font-mono text-white/55 hover:text-white/80 transition-colors duration-150 underline underline-offset-2"
+          className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors duration-150 underline underline-offset-2"
         >
           {showNotes ? "Close notes" : "Read the design notes"}
         </button>
@@ -340,18 +340,18 @@ export default function TapeErosionPage() {
       {/* Design notes panel */}
       {showNotes && (
         <div className="absolute inset-x-0 bottom-10 z-20 flex justify-center px-4 pb-4">
-          <div className="max-w-2xl w-full bg-black/90 border border-white/15 rounded-lg p-6 text-sm font-mono text-white/80 leading-relaxed overflow-y-auto max-h-[60vh]">
+          <div className="max-w-2xl w-full bg-black/90 border border-border rounded-lg p-6 text-sm font-mono text-foreground leading-relaxed overflow-y-auto max-h-[60vh]">
             <button
               onClick={() => setShowNotes(false)}
-              className="float-right text-white/40 hover:text-white/80 transition-colors duration-150 text-base mb-2"
+              className="float-right text-muted-foreground/70 hover:text-foreground transition-colors duration-150 text-base mb-2"
             >
               ✕
             </button>
-            <h2 className="text-base text-white/95 font-sans font-semibold mb-3">
+            <h2 className="text-base text-foreground font-sans font-semibold mb-3">
               Design Notes — Tape Erosion
             </h2>
             <p className="mb-3">
-              <span className="text-white/95">William Basinski&apos;s</span>{" "}
+              <span className="text-foreground">William Basinski&apos;s</span>{" "}
               <em>Disintegration Loops</em> (2002) accidentally captured the physical
               decay of old magnetic tape as it was being played back to digitize it.
               The tape shed its oxide coating with each pass; the music literally
@@ -359,24 +359,24 @@ export default function TapeErosionPage() {
               irreversibility.
             </p>
             <p className="mb-3">
-              <span className="text-white/95">Brian Eno&apos;s</span>{" "}
+              <span className="text-foreground">Brian Eno&apos;s</span>{" "}
               <em>Music for Airports</em> (1978) and <em>Reflection</em> (2017)
               established generative music as a long-form, self-evolving system —
               never an exact repeat, always alive. The 5-movement arc here borrows
               that sense of gradual, inevitable change.
             </p>
             <p className="mb-3">
-              <span className="text-white/95">Ryoji Ikeda&apos;s</span> spectral-feedback
+              <span className="text-foreground">Ryoji Ikeda&apos;s</span> spectral-feedback
               visuals treat data as material — the spectrogram is not a graph but a
               body. The feedback loop in the fragment shader lets the image accumulate
               memory, smear, and decay just as magnetic domains do.
             </p>
-            <p className="mb-3 text-white/60">
-              <strong className="text-white/80">Movements:</strong>{" "}
+            <p className="mb-3 text-muted-foreground">
+              <strong className="text-foreground">Movements:</strong>{" "}
               Intact (1:10) → Eroding (1:30) → Sparse (1:40) → Ghost (1:40) → Reforming (1:30)
             </p>
-            <p className="text-white/60">
-              <strong className="text-white/80">Renderer:</strong> Raw WebGL2, ping-pong FBO,
+            <p className="text-muted-foreground">
+              <strong className="text-foreground">Renderer:</strong> Raw WebGL2, ping-pong FBO,
               R32F float textures. Feedback fragment shader applies per-frame decay, Gaussian
               smear, horizontal advection, and magnetic noise. Canvas2D fallback for devices
               without <code>EXT_color_buffer_float</code>.
@@ -390,7 +390,7 @@ export default function TapeErosionPage() {
         <div className="absolute top-5 left-5 z-20">
           <Link
             href="/dream"
-            className="text-sm font-mono text-white/40 hover:text-white/70 transition-colors duration-150"
+            className="text-sm font-mono text-muted-foreground/70 hover:text-muted-foreground transition-colors duration-150"
           >
             ← dream
           </Link>

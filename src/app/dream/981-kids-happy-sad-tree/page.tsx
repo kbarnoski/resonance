@@ -227,7 +227,7 @@ export default function KidsHappySadTree() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-foreground">
       {/* sky (WebGL2 or 2D fallback) */}
       <canvas ref={skyRef} className="absolute inset-0 h-full w-full" />
       {/* tree + fruit overlay */}
@@ -248,7 +248,7 @@ export default function KidsHappySadTree() {
           aria-label="Tap to begin the music tree"
         >
           <span className="text-7xl" aria-hidden>🌳</span>
-          <span className="text-xl font-medium text-white/95">Tap to begin</span>
+          <span className="text-xl font-medium text-foreground">Tap to begin</span>
           <span className="text-4xl" aria-hidden>👆</span>
         </button>
       )}
@@ -258,7 +258,7 @@ export default function KidsHappySadTree() {
         <button
           onClick={() => flip()}
           aria-label={mode === "major" ? "Switch to the tender night world" : "Switch to the happy day world"}
-          className="absolute right-5 top-5 z-20 flex h-20 w-20 items-center justify-center rounded-full bg-white/15 text-5xl shadow-lg ring-2 ring-white/40 backdrop-blur-md transition active:scale-95"
+          className="absolute right-5 top-5 z-20 flex h-20 w-20 items-center justify-center rounded-full bg-muted text-5xl shadow-lg ring-2 ring-border backdrop-blur-md transition active:scale-95"
         >
           <span aria-hidden>{mode === "major" ? "☀️" : "🌙"}</span>
         </button>
@@ -266,7 +266,7 @@ export default function KidsHappySadTree() {
 
       {/* fallback / cap notices (kids: minimal text, color-led) */}
       {started && !webgl && (
-        <p className="absolute left-5 top-6 z-20 text-base text-white/75">
+        <p className="absolute left-5 top-6 z-20 text-base text-muted-foreground">
           Simple sky mode
         </p>
       )}
@@ -279,7 +279,7 @@ export default function KidsHappySadTree() {
       {/* design-notes corner link (nice-to-have) */}
       <a
         href="/dream/981-kids-happy-sad-tree/README.md"
-        className="absolute bottom-3 left-4 z-20 text-base text-white/75 underline-offset-2 hover:text-white/95 hover:underline"
+        className="absolute bottom-3 left-4 z-20 text-base text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
       >
         Read the design notes
       </a>

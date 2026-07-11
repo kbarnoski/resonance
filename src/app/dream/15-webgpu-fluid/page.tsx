@@ -570,17 +570,17 @@ export default function WgpuFluidPage() {
 
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">Fluid <span className="text-white/30 text-lg">WebGPU</span></h1>
-          <p className="text-sm text-white/55 max-w-sm mb-2 leading-relaxed">
+          <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">Fluid <span className="text-muted-foreground/70 text-lg">WebGPU</span></h1>
+          <p className="text-sm text-muted-foreground max-w-sm mb-2 leading-relaxed">
             Navier-Stokes ink-in-water at 512×512 — 16× the resolution of the WebGL2 version.
             Bass pulses the center, treble stirs turbulence, pitch shifts color. Drag to stir.
           </p>
-          <p className="text-xs text-white/30 max-w-xs mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-xs mb-8 leading-relaxed">
             Requires WebGPU (Chrome, Edge, Firefox, Safari 26+). Falls back to an error message on older browsers.
           </p>
 
           {gpuError && (
-            <p className="mb-5 text-xs text-rose-300/70 max-w-xs leading-relaxed border border-rose-400/20 rounded px-4 py-2">
+            <p className="mb-5 text-xs text-violet-300/70 max-w-xs leading-relaxed border border-violet-400/20 rounded px-4 py-2">
               {gpuError}
             </p>
           )}
@@ -588,23 +588,23 @@ export default function WgpuFluidPage() {
           <div className="flex gap-3 flex-wrap justify-center">
             <button
               onClick={() => startMode("mic")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
             <button
               onClick={() => startMode("demo")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/40 transition text-white/55"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Ambient drift
             </button>
           </div>
 
           {micError && (
-            <p className="mt-4 text-xs text-rose-300/70 max-w-xs">{micError}</p>
+            <p className="mt-4 text-xs text-violet-300/70 max-w-xs">{micError}</p>
           )}
 
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -612,32 +612,32 @@ export default function WgpuFluidPage() {
 
       {mode !== "idle" && (
         <div className="absolute top-4 right-4 flex flex-col items-end gap-2 select-none">
-          <span className="text-[10px] tracking-widest text-white/35 uppercase">
+          <span className="text-[10px] tracking-widest text-muted-foreground/70 uppercase">
             {useMic ? (running ? "● mic — 512²" : "starting…") : "demo — 512²"}
           </span>
           {useMic && running && (
             <>
-              <label className="text-[9px] text-white/35 tracking-wider">GAIN {gain.toFixed(1)}</label>
+              <label className="text-[9px] text-muted-foreground/70 tracking-wider">GAIN {gain.toFixed(1)}</label>
               <input
                 type="range" min="0.5" max="4" step="0.1"
                 value={gain}
                 onChange={e => setGain(parseFloat(e.target.value))}
-                className="w-28 accent-white"
+                className="w-28 accent-primary"
               />
             </>
           )}
           <button
             onClick={stopMode}
-            className="text-[10px] uppercase tracking-wider text-white/45 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+            className="text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
           >
             stop
           </button>
-          <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">← back</Link>
+          <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">← back</Link>
           <a
             href="/dream/15-webgpu-fluid/README.md"
             target="_blank"
             rel="noreferrer"
-            className="text-[9px] text-white/20 hover:text-white/50 transition"
+            className="text-[9px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             design notes ↗
           </a>
@@ -645,7 +645,7 @@ export default function WgpuFluidPage() {
       )}
 
       {mode !== "idle" && (
-        <p className="absolute bottom-4 left-4 text-[9px] text-white/20 pointer-events-none select-none tracking-wider">
+        <p className="absolute bottom-4 left-4 text-[9px] text-muted-foreground/70 pointer-events-none select-none tracking-wider">
           drag to stir · WebGPU 512×512
         </p>
       )}

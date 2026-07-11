@@ -930,7 +930,7 @@ export default function DreamHouse() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#080410] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#080410] text-foreground">
       <video ref={videoRef} className="hidden" playsInline muted />
       <canvas
         ref={canvasRef}
@@ -942,10 +942,10 @@ export default function DreamHouse() {
       {/* top */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="pointer-events-auto max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Dream House
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             A room of sustained just-intoned sine drones — move and some partials bloom while others
             fade. Pure standing-wave timbre you sculpt with your position. No notes, no wrong notes.
           </p>
@@ -965,7 +965,7 @@ export default function DreamHouse() {
           <button
             onClick={startCamera}
             disabled={cameraState === "loading" || cameraState === "on"}
-            className="min-h-[44px] rounded-lg border border-white/25 bg-white/5 px-4 py-2.5 text-base font-medium text-white/90 transition hover:bg-white/10 disabled:opacity-50"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
           >
             {cameraState === "on"
               ? "Camera live"
@@ -976,27 +976,27 @@ export default function DreamHouse() {
 
           <button
             onClick={clearMarkers}
-            className="min-h-[44px] rounded-lg border border-white/20 bg-transparent px-4 py-2.5 text-base font-medium text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base font-medium text-muted-foreground transition hover:bg-accent"
           >
             Clear resonances
           </button>
 
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-transparent px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
           >
             Read the design notes
           </button>
 
-          <div className="ml-auto flex items-center gap-4 font-mono text-base text-white/75">
+          <div className="ml-auto flex items-center gap-4 font-mono text-base text-muted-foreground">
             <span>
               loudest <span className="text-violet-200">{loudest}</span>
             </span>
             <span>
-              marks <span className="text-white/95">{markerCount}</span>
+              marks <span className="text-foreground">{markerCount}</span>
             </span>
             <span className="hidden sm:inline">
-              render <span className="text-white/95">{rendererKind}</span>
+              render <span className="text-foreground">{rendererKind}</span>
             </span>
           </div>
         </div>
@@ -1004,7 +1004,7 @@ export default function DreamHouse() {
         {notice && (
           <p
             className={`mt-3 text-base ${
-              cameraState === "error" ? "text-rose-300" : "text-white/75"
+              cameraState === "error" ? "text-violet-300" : "text-muted-foreground"
             }`}
           >
             {notice}
@@ -1015,50 +1015,50 @@ export default function DreamHouse() {
       {/* design notes */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/65 p-6">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-xl border border-white/15 bg-[#140a22] p-6 text-base text-white/80 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-xl border border-border bg-[#140a22] p-6 text-base text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>
-                <span className="text-white/95">The drone:</span> eight permanently-running sine
+                <span className="text-foreground">The drone:</span> eight permanently-running sine
                 oscillators tuned to just ratios over a {Math.round(FUND)} Hz fundamental — 1/1, 9/8,
                 5/4, 4/3, 3/2, 7/4, 2/1, 9/4. They never stop; this is timbre, not melody.
               </li>
               <li>
-                <span className="text-white/95">Position → spectrum:</span> each partial has a spatial
+                <span className="text-foreground">Position → spectrum:</span> each partial has a spatial
                 well. Your proximity (Gaussian falloff) sets its gain, so small moves re-balance which
                 overtones dominate. A position-dependent detuned twin per partial adds the shifting
                 beats that are the Dream House&rsquo;s signature shimmer.
               </li>
               <li>
-                <span className="text-white/95">HRTF:</span> you are the AudioListener; each partial
+                <span className="text-foreground">HRTF:</span> you are the AudioListener; each partial
                 sits at a fixed 3D position via an HRTF PannerNode, so the field re-pans around you as
                 you walk among the sources.
               </li>
               <li>
-                <span className="text-white/95">Zazeela light:</span> a symmetric magenta/violet glow
+                <span className="text-foreground">Zazeela light:</span> a symmetric magenta/violet glow
                 field whose blooms brighten with the partials that are currently loud.
               </li>
               <li>
-                <span className="text-white/95">Leave a resonance:</span> bookmark your current
+                <span className="text-foreground">Leave a resonance:</span> bookmark your current
                 spectral position as a soft persistent marker you can walk back to.
               </li>
               <li>
-                <span className="text-white/95">Render:</span> hand-written WGSL particle field
+                <span className="text-foreground">Render:</span> hand-written WGSL particle field
                 (WebGPU) → WebGL2 point sprites → Canvas2D radial blooms. Active path shown in the HUD.
               </li>
               <li>
-                <span className="text-white/95">Input:</span> pointer/touch by default; optional
+                <span className="text-foreground">Input:</span> pointer/touch by default; optional
                 MediaPipe full-body pose; zero-interaction auto-drift on load.
               </li>
               <li>
-                <span className="text-white/95">Lineage:</span> La Monte Young &amp; Marian
+                <span className="text-foreground">Lineage:</span> La Monte Young &amp; Marian
                 Zazeela&rsquo;s <em>Dream House</em> (MELA Foundation, NYC); Janet Cardiff&rsquo;s{" "}
                 <em>The Forty Part Motet</em>.
               </li>
             </ul>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/90 px-4 py-2.5 text-base font-medium text-[#120820] hover:bg-white"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-[#120820] hover:bg-card"
             >
               Close
             </button>

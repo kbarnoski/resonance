@@ -408,7 +408,7 @@ export default function PianoVivisectionPage() {
   const balancePct = Math.round(ui.balance * 100);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-foreground">
       {/* WebGL2 vivisection field */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -417,7 +417,7 @@ export default function PianoVivisectionPage() {
         href="/dream/606-piano-vivisection/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -425,10 +425,10 @@ export default function PianoVivisectionPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Piano Vivisection
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Take Karel&apos;s own recorded piano apart into the singing strings and the
             hammer / key noise — then remix the two layers live.
           </p>
@@ -436,14 +436,14 @@ export default function PianoVivisectionPage() {
           {sourceKind && (
             <p className="mt-2 font-mono text-sm">
               source:{" "}
-              <span className={sourceKind === "piano" ? "text-emerald-300/90" : "text-amber-300/90"}>
+              <span className={sourceKind === "piano" ? "text-violet-300/90" : "text-violet-300/90"}>
                 {sourceKind === "piano" ? "Karel's piano (real recording)" : "synthesized fallback"}
               </span>
             </p>
           )}
 
-          {webglError && <p className="mt-2 text-base text-rose-300">{webglError}</p>}
-          {errorMsg && <p className="mt-2 text-base text-rose-300">{errorMsg}</p>}
+          {webglError && <p className="mt-2 text-base text-violet-300">{webglError}</p>}
+          {errorMsg && <p className="mt-2 text-base text-violet-300">{errorMsg}</p>}
         </header>
 
         {/* Center: load / progress */}
@@ -451,7 +451,7 @@ export default function PianoVivisectionPage() {
           {phase === "idle" && (
             <button
               onClick={() => void load()}
-              className="min-h-[44px] rounded-md border border-cyan-400/40 bg-cyan-500/15 px-4 py-2.5 text-base font-medium text-cyan-100 hover:bg-cyan-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Load Karel&apos;s piano · Start
             </button>
@@ -459,12 +459,12 @@ export default function PianoVivisectionPage() {
 
           {phase === "loading" && (
             <div className="w-full max-w-md">
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-mono text-sm text-muted-foreground">
                 dissecting… {progressLabel} ({Math.round(progress * 100)}%)
               </p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full bg-gradient-to-r from-cyan-400 to-fuchsia-400 transition-[width] duration-150"
+                  className="h-full bg-gradient-to-r from-violet-400 to-violet-400 transition-[width] duration-150"
                   style={{ width: `${Math.round(progress * 100)}%` }}
                 />
               </div>
@@ -474,7 +474,7 @@ export default function PianoVivisectionPage() {
           {phase === "error" && (
             <button
               onClick={() => { setPhase("idle"); }}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Try again
             </button>
@@ -485,28 +485,28 @@ export default function PianoVivisectionPage() {
         {phase === "ready" && (
           <footer className="flex flex-col gap-4">
             {/* Live readout */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-sm text-white/75">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-sm text-muted-foreground">
               <span>
                 balance{" "}
-                <span className="text-cyan-300">strings {100 - balancePct}%</span>
+                <span className="text-violet-300">strings {100 - balancePct}%</span>
                 {" / "}
-                <span className="text-fuchsia-300">hammers {balancePct}%</span>
+                <span className="text-violet-300">hammers {balancePct}%</span>
               </span>
               <span>gain {ui.gain.toFixed(2)}</span>
-              <span className={ui.muteH ? "text-rose-300" : "text-cyan-300"}>
+              <span className={ui.muteH ? "text-violet-300" : "text-violet-300"}>
                 strings {ui.muteH ? "MUTED" : "on"}
               </span>
-              <span className={ui.muteP ? "text-rose-300" : "text-fuchsia-300"}>
+              <span className={ui.muteP ? "text-violet-300" : "text-violet-300"}>
                 hammers {ui.muteP ? "MUTED" : "on"}
               </span>
               <span>{ui.playing ? "▶ playing (looping)" : "⏸ paused"}</span>
             </div>
 
             {/* Keyboard map (primary) */}
-            <div className="font-mono text-sm text-white/75">
-              <span className="text-white/95">keyboard (primary):</span>{" "}
-              <kbd className="text-cyan-200">1</kbd> strings ·{" "}
-              <kbd className="text-fuchsia-200">2</kbd> hammers ·{" "}
+            <div className="font-mono text-sm text-muted-foreground">
+              <span className="text-foreground">keyboard (primary):</span>{" "}
+              <kbd className="text-violet-200">1</kbd> strings ·{" "}
+              <kbd className="text-violet-200">2</kbd> hammers ·{" "}
               <kbd>←/→</kbd> balance · <kbd>↑/↓</kbd> gain ·{" "}
               <kbd>space</kbd> play/pause
             </div>
@@ -515,53 +515,53 @@ export default function PianoVivisectionPage() {
             {tiltAvailable && !tiltOn && (
               <button
                 onClick={() => void enableTilt()}
-                className="min-h-[44px] w-fit rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                className="min-h-[44px] w-fit rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Enable device tilt → balance (mobile)
               </button>
             )}
             {tiltOn && (
-              <p className="font-mono text-sm text-emerald-300/90">tilt active — lean left/right to morph the mix</p>
+              <p className="font-mono text-sm text-violet-300/90">tilt active — lean left/right to morph the mix</p>
             )}
 
             {/* Secondary on-screen faders */}
-            <details className="text-sm text-white/75">
-              <summary className="cursor-pointer text-white/75">on-screen faders (secondary fallback)</summary>
+            <details className="text-sm text-muted-foreground">
+              <summary className="cursor-pointer text-muted-foreground">on-screen faders (secondary fallback)</summary>
               <div className="mt-3 flex flex-col gap-3 md:max-w-md">
                 <label className="flex items-center gap-3">
-                  <span className="w-20 font-mono text-cyan-300">strings</span>
+                  <span className="w-20 font-mono text-violet-300">strings</span>
                   <input
                     type="range" min={0} max={1} step={0.01} value={ui.balance}
                     onChange={(e) => onFaderBalance(parseFloat(e.target.value))}
-                    className="flex-1 accent-fuchsia-400"
+                    className="flex-1 accent-violet-400"
                   />
-                  <span className="w-20 text-right font-mono text-fuchsia-300">hammers</span>
+                  <span className="w-20 text-right font-mono text-violet-300">hammers</span>
                 </label>
                 <label className="flex items-center gap-3">
                   <span className="w-20 font-mono">gain</span>
                   <input
                     type="range" min={0} max={1.4} step={0.01} value={ui.gain}
                     onChange={(e) => onFaderGain(parseFloat(e.target.value))}
-                    className="flex-1 accent-cyan-400"
+                    className="flex-1 accent-violet-400"
                   />
                   <span className="w-20" />
                 </label>
                 <div className="flex gap-2">
                   <button
                     onClick={toggleMuteH}
-                    className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${ui.muteH ? "bg-rose-500/25 text-rose-100" : "bg-cyan-500/15 text-cyan-100"}`}
+                    className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${ui.muteH ? "bg-violet-500/25 text-violet-100" : "bg-violet-500/15 text-violet-100"}`}
                   >
                     {ui.muteH ? "unmute strings" : "mute strings"}
                   </button>
                   <button
                     onClick={toggleMuteP}
-                    className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${ui.muteP ? "bg-rose-500/25 text-rose-100" : "bg-fuchsia-500/15 text-fuchsia-100"}`}
+                    className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${ui.muteP ? "bg-violet-500/25 text-violet-100" : "bg-violet-500/15 text-violet-100"}`}
                   >
                     {ui.muteP ? "unmute hammers" : "mute hammers"}
                   </button>
                   <button
                     onClick={() => { markInteract(); togglePlay(); }}
-                    className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90"
+                    className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground"
                   >
                     {ui.playing ? "pause" : "play"}
                   </button>

@@ -131,13 +131,13 @@ export default function Page() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-[#03060d] text-white font-mono px-5 py-8 sm:px-8">
+    <main className="min-h-screen bg-[#03060d] text-foreground font-mono px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Seismic Globe
           </h1>
-          <p className="mt-2 max-w-2xl text-base text-white/80">
+          <p className="mt-2 max-w-2xl text-base text-foreground">
             Every earthquake recorded on Earth in the last day becomes a
             sustained voice placed in 3-D space around you. The slowly shifting
             chord you hear is the planet&apos;s current seismic state.
@@ -149,11 +149,11 @@ export default function Page() {
           <section className="relative">
             <div
               ref={hostRef}
-              className="aspect-square w-full overflow-hidden rounded-xl border border-white/10 bg-[#03060d]"
+              className="aspect-square w-full overflow-hidden rounded-xl border border-border bg-[#03060d]"
             />
             {!webgl && (
               <div className="absolute inset-0 flex items-center justify-center p-6">
-                <p className="max-w-sm text-center text-base text-rose-300">
+                <p className="max-w-sm text-center text-base text-violet-300">
                   WebGL is unavailable on this device, so the 3-D globe
                   cannot render — the spatial audio still plays. Press
                   &ldquo;Listen to the planet&rdquo; below.
@@ -167,7 +167,7 @@ export default function Page() {
             <button
               type="button"
               onClick={() => void onListen()}
-              className="min-h-[44px] w-full rounded-lg bg-emerald-500/90 px-4 py-2.5 text-base font-bold text-[#03060d] transition hover:bg-emerald-400"
+              className="min-h-[44px] w-full rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-bold text-[#03060d] transition hover:bg-violet-400"
             >
               {playing ? "● Listening to the planet" : "▶ Listen to the planet"}
             </button>
@@ -175,29 +175,29 @@ export default function Page() {
             {/* Provenance badge */}
             <div className="text-base">
               {live ? (
-                <span className="text-emerald-300">
+                <span className="text-violet-300">
                   ● live USGS feed · {count} quakes
                 </span>
               ) : (
-                <span className="text-amber-300">
+                <span className="text-violet-300">
                   ● sample quakes
                 </span>
               )}
             </div>
             {!live && (
-              <p className="text-base text-amber-300/90">
+              <p className="text-base text-violet-300/90">
                 live feed unavailable — showing sample quakes
               </p>
             )}
             {started && !hrtf && (
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 HRTF spatialization unavailable — using stereo panning fallback.
               </p>
             )}
 
             {/* Feed switcher */}
             <div>
-              <p className="mb-2 text-base text-white/75">feed</p>
+              <p className="mb-2 text-base text-muted-foreground">feed</p>
               <div className="flex flex-wrap gap-2">
                 {FEEDS.map((f) => (
                   <button
@@ -206,8 +206,8 @@ export default function Page() {
                     onClick={() => setFeed(f.id)}
                     className={`min-h-[44px] rounded-lg border px-4 py-2.5 text-base transition ${
                       feed === f.id
-                        ? "border-emerald-400/70 bg-emerald-400/15 text-white"
-                        : "border-white/15 text-white/75 hover:border-white/35 hover:text-white"
+                        ? "border-violet-400/70 bg-violet-400/15 text-foreground"
+                        : "border-border text-muted-foreground hover:border-border hover:text-foreground"
                     }`}
                   >
                     {f.label}
@@ -218,12 +218,12 @@ export default function Page() {
 
             {/* Loudest voices */}
             <div>
-              <p className="mb-2 text-base text-white/75">
+              <p className="mb-2 text-base text-muted-foreground">
                 loudest voices right now
               </p>
               <ul className="space-y-1.5">
                 {levels.length === 0 && (
-                  <li className="text-base text-white/55">
+                  <li className="text-base text-muted-foreground">
                     {started ? "listening…" : "press play to begin"}
                   </li>
                 )}
@@ -232,8 +232,8 @@ export default function Page() {
                     key={v.id}
                     className="flex items-baseline justify-between gap-3 text-base"
                   >
-                    <span className="truncate text-white/90">{v.place}</span>
-                    <span className="shrink-0 text-emerald-300/90">
+                    <span className="truncate text-foreground">{v.place}</span>
+                    <span className="shrink-0 text-violet-300/90">
                       M{v.mag.toFixed(1)}
                     </span>
                   </li>
@@ -243,7 +243,7 @@ export default function Page() {
 
             <a
               href="/dream/337-seismic-globe/README.md"
-              className="mt-auto text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+              className="mt-auto text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
             >
               Read the design notes ↗
             </a>

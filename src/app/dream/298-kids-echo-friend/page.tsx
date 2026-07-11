@@ -437,14 +437,14 @@ export default function KidsEchoFriend() {
   const phaseColor = isSinging
     ? "text-violet-300"
     : isEchoing
-      ? "text-emerald-300"
-      : "text-amber-300/80";
+      ? "text-violet-300"
+      : "text-violet-300/80";
 
   // ── Scale note display (purely decorative) ────────────────────────────────
   const scaleLabels = ["D", "E", "F", "G", "A", "B", "C"];
 
   return (
-    <div className="relative min-h-screen bg-[#06030f] text-white flex flex-col">
+    <div className="relative min-h-screen bg-[#06030f] text-foreground flex flex-col">
       {/* ── WebGL creature canvas (full background) ── */}
       <canvas
         ref={canvasRef}
@@ -459,13 +459,13 @@ export default function KidsEchoFriend() {
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
           <Link
             href="/dream"
-            className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors"
+            className="text-muted-foreground/70 hover:text-muted-foreground text-sm font-mono transition-colors"
           >
             ← dream lab
           </Link>
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="text-white/40 hover:text-white/70 text-xs font-mono transition-colors"
+            className="text-muted-foreground/70 hover:text-muted-foreground text-xs font-mono transition-colors"
             aria-label="Toggle design notes"
           >
             {showNotes ? "hide notes" : "design notes"}
@@ -474,8 +474,8 @@ export default function KidsEchoFriend() {
 
         {/* Design notes panel */}
         {showNotes && (
-          <div className="mx-4 mb-4 p-4 rounded-xl bg-black/60 backdrop-blur border border-white/10 text-sm font-mono text-white/70 space-y-2">
-            <p className="text-white/90 text-base font-semibold">
+          <div className="mx-4 mb-4 p-4 rounded-xl bg-black/60 backdrop-blur border border-border text-sm font-mono text-muted-foreground space-y-2">
+            <p className="text-foreground text-base font-semibold">
               Kids Echo Friend — Design Notes
             </p>
             <p>
@@ -490,18 +490,18 @@ export default function KidsEchoFriend() {
               never atonal, never harsh.
             </p>
             <p>
-              <span className="text-emerald-300">OUTPUT:</span> WebGL2 fragment
+              <span className="text-violet-300">OUTPUT:</span> WebGL2 fragment
               shader creature — SDF blob with domain-warped organic shape,
               aurora background, memory orbs. Hands-free; child never needs to
               tap.
             </p>
             <p>
-              <span className="text-amber-300">AUDIO:</span> Warm sine+triangle
+              <span className="text-violet-300">AUDIO:</span> Warm sine+triangle
               through lowpass + short delay + DynamicsCompressor limiter. Idle
               D-drone so it&apos;s never silent. Duck-and-echo pattern after each
               phrase.
             </p>
-            <p className="text-white/50">
+            <p className="text-muted-foreground">
               Refs: SingingSDS (arXiv:2511.20972) · Pauline Oliveros, Deep
               Listening · Call-and-response / Simon memory game tradition.
             </p>
@@ -510,15 +510,15 @@ export default function KidsEchoFriend() {
 
         {/* Notices */}
         {noWebgl && (
-          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/50 border border-rose-500/40">
-            <p className="text-rose-300 text-sm font-mono">
+          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/50 border border-violet-500/40">
+            <p className="text-violet-300 text-sm font-mono">
               WebGL2 not available — visuals disabled, but audio still works.
             </p>
           </div>
         )}
         {micError && (
-          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/50 border border-rose-500/30">
-            <p className="text-rose-300 text-sm font-mono">{micError}</p>
+          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/50 border border-violet-500/30">
+            <p className="text-violet-300 text-sm font-mono">{micError}</p>
           </div>
         )}
 
@@ -526,10 +526,10 @@ export default function KidsEchoFriend() {
         <div className="flex-1 flex flex-col items-center justify-center px-4 pb-8">
           {/* Title */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-semibold text-white tracking-tight mb-1">
+            <h1 className="text-2xl font-semibold text-foreground tracking-tight mb-1">
               Echo Friend
             </h1>
-            <p className="text-white/60 text-base font-mono">
+            <p className="text-muted-foreground text-base font-mono">
               sing → I listen → I sing back
             </p>
           </div>
@@ -538,7 +538,7 @@ export default function KidsEchoFriend() {
           {!isActive && (
             <button
               onClick={handleStart}
-              className="min-h-[72px] px-10 py-4 rounded-2xl bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-xl font-semibold shadow-lg shadow-violet-900/60 transition-all"
+              className="min-h-[72px] px-10 py-4 rounded-2xl bg-violet-600 hover:bg-violet-500 active:scale-95 text-foreground text-xl font-semibold shadow-lg shadow-violet-900/60 transition-all"
               style={{ minWidth: 220 }}
             >
               Sing to me ✨
@@ -558,7 +558,7 @@ export default function KidsEchoFriend() {
               {/* Phrase memory display */}
               {phraseCount > 0 && (
                 <div className="flex flex-col items-center gap-2">
-                  <p className="text-white/50 text-sm font-mono">
+                  <p className="text-muted-foreground text-sm font-mono">
                     {phraseCount === 1
                       ? "1 phrase remembered"
                       : `${phraseCount} phrases remembered`}
@@ -594,7 +594,7 @@ export default function KidsEchoFriend() {
                           opacity: 0.55,
                         }}
                       />
-                      <span className="text-white/25 text-xs font-mono">
+                      <span className="text-muted-foreground/70 text-xs font-mono">
                         {label}
                       </span>
                     </div>
@@ -605,7 +605,7 @@ export default function KidsEchoFriend() {
               {/* Demo mode tag */}
               {isDemo && (
                 <div className="text-center">
-                  <span className="text-white/30 text-xs font-mono">
+                  <span className="text-muted-foreground/70 text-xs font-mono">
                     auto-demo mode
                   </span>
                 </div>
@@ -615,7 +615,7 @@ export default function KidsEchoFriend() {
         </div>
 
         {/* Footer attribution */}
-        <div className="text-center pb-4 text-white/20 text-xs font-mono">
+        <div className="text-center pb-4 text-muted-foreground/70 text-xs font-mono">
           D-Dorian · WebGL2 · YIN pitch · call-and-response
         </div>
       </div>

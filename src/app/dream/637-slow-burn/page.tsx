@@ -604,7 +604,7 @@ export default function SlowBurnPage() {
     feel < 0.18 ? "robotic" : feel < 0.85 ? "tightening" : feel < 1.25 ? "in the pocket" : "too loose";
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0a0708] text-white/95">
+    <main className="relative min-h-screen overflow-hidden bg-[#0a0708] text-foreground">
       {/* smoky vignette backdrop */}
       <div
         aria-hidden
@@ -622,10 +622,10 @@ export default function SlowBurnPage() {
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
               Resonance · dream 637
             </p>
-            <h1 className="mt-2 font-serif text-3xl font-medium text-white/95 sm:text-4xl">
+            <h1 className="mt-2 font-serif text-3xl font-medium text-foreground sm:text-4xl">
               Slow Burn
             </h1>
-            <p className="mt-2 max-w-xl text-base text-white/75">
+            <p className="mt-2 max-w-xl text-base text-muted-foreground">
               An after-hours neo-soul vamp that makes the invisible pocket of a groove visible —
               watch the laid-back snare and pushed hats land off the grid, and hear the beat start to
               breathe as you loosen the feel.
@@ -633,21 +633,21 @@ export default function SlowBurnPage() {
           </div>
           <button
             onClick={() => setShowNotes((s: boolean) => !s)}
-            className="min-h-[44px] shrink-0 rounded-md border border-white/15 px-4 py-2.5 font-mono text-xs text-white/75 transition hover:border-white/30 hover:text-white/95"
+            className="min-h-[44px] shrink-0 rounded-md border border-border px-4 py-2.5 font-mono text-xs text-muted-foreground transition hover:border-border hover:text-foreground"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </header>
 
         {showNotes && (
-          <section className="rounded-xl border border-white/10 bg-white/[0.03] p-5 text-base text-white/75">
-            <h2 className="mb-2 font-serif text-xl text-white/95">Design notes</h2>
+          <section className="rounded-xl border border-border bg-muted p-5 text-base text-muted-foreground">
+            <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
             <p className="mb-3">
               Every groove has a <span className="text-violet-300">pocket</span> — the tiny, deliberate
               way each voice sits ahead of or behind the metronomic grid. It is the difference between
               a drum machine and a human at 2am. This prototype gives each voice its own timing lean
               (kick dead-on, snare laid back ~+32ms, hats pushed ~&minus;11ms, bass a touch behind) and
-              a single <span className="text-rose-300">FEEL</span> lever that scales them all from
+              a single <span className="text-violet-300">FEEL</span> lever that scales them all from
               quantized to deep in the pocket.
             </p>
             <p className="mb-3">
@@ -657,7 +657,7 @@ export default function SlowBurnPage() {
               legible. A reharmonization state machine drifts the voicings, walking bass, and fills
               over the minutes, so the vamp at minute three is not the vamp at minute zero.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Refs: Datseris et al., &ldquo;Does it Swing?&rdquo; (Sci. Rep. 2019 / arXiv 1904.03442);
               Charnas, <em>Dilla Time</em> (2022); the &ldquo;expressive drum grid&rdquo; interface of
               arXiv 2605.10281 (2026). Full notes in this folder&rsquo;s README.md.
@@ -666,7 +666,7 @@ export default function SlowBurnPage() {
         )}
 
         {notice && (
-          <p className="rounded-md border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-base text-rose-300">
+          <p className="rounded-md border border-violet-400/30 bg-violet-500/10 px-4 py-3 text-base text-violet-300">
             {notice}
           </p>
         )}
@@ -676,28 +676,28 @@ export default function SlowBurnPage() {
           <button
             onClick={toggle}
             disabled={!audioReady}
-            className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 font-mono text-base font-medium text-white/95 transition hover:bg-violet-400 disabled:opacity-40"
+            className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 font-mono text-base font-medium text-foreground transition hover:bg-violet-400 disabled:opacity-40"
           >
             {running ? "Stop the vamp" : "Start the vamp"}
-            <span className="ml-2 text-white/75">(Space)</span>
+            <span className="ml-2 text-muted-foreground">(Space)</span>
           </button>
 
           <div className="flex items-baseline gap-3 font-mono text-base">
-            <span className="text-white/55">{BPM} BPM</span>
-            <span className="text-white/55">·</span>
-            <span className="text-amber-300">{chordName}</span>
-            <span className="text-white/55">·</span>
-            <span className="text-white/55">bar {barCount}</span>
+            <span className="text-muted-foreground">{BPM} BPM</span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-violet-300">{chordName}</span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-muted-foreground">bar {barCount}</span>
           </div>
         </div>
 
         {/* ── FEEL lever ── */}
-        <section className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+        <section className="rounded-xl border border-border bg-muted p-5">
           <div className="flex items-center justify-between">
-            <label htmlFor="feel" className="font-mono text-base text-white/75">
+            <label htmlFor="feel" className="font-mono text-base text-muted-foreground">
               FEEL / looseness
             </label>
-            <span className="font-mono text-base text-rose-300">
+            <span className="font-mono text-base text-violet-300">
               {feel.toFixed(2)} · {feelLabel}
             </span>
           </div>
@@ -712,19 +712,19 @@ export default function SlowBurnPage() {
               setAutoDemo(false);
               setFeel(parseFloat(e.target.value));
             }}
-            className="mt-3 w-full accent-rose-400"
+            className="mt-3 w-full accent-violet-400"
           />
-          <div className="mt-2 flex justify-between font-mono text-xs text-white/55">
+          <div className="mt-2 flex justify-between font-mono text-xs text-muted-foreground">
             <span>0 · quantized</span>
             <span>1.0 · in the pocket</span>
             <span>1.8 · too loose</span>
           </div>
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             Move it with the slider or <span className="font-mono text-violet-300">← →</span> /{" "}
             <span className="font-mono text-violet-300">[ ]</span>. Every voice carries its own
             timing lean — this lever scales them all at once.
             {autoDemo && (
-              <span className="ml-1 text-emerald-300">Auto-demo is sweeping; touch to take over.</span>
+              <span className="ml-1 text-violet-300">Auto-demo is sweeping; touch to take over.</span>
             )}
           </p>
         </section>
@@ -734,7 +734,7 @@ export default function SlowBurnPage() {
 
         {/* ── voice toggles + legend ── */}
         <section className="flex flex-wrap items-center gap-2 font-mono text-sm">
-          <span className="text-white/55">voices (1–5):</span>
+          <span className="text-muted-foreground">voices (1–5):</span>
           {(Object.keys(VOICE_OFFSET) as VoiceName[]).map((v, i) => (
             <button
               key={v}
@@ -747,7 +747,7 @@ export default function SlowBurnPage() {
               }}
             >
               {i + 1} · {v}
-              <span className="ml-1 text-white/55">
+              <span className="ml-1 text-muted-foreground">
                 {VOICE_OFFSET[v] === 0
                   ? "on"
                   : VOICE_OFFSET[v] > 0
@@ -758,11 +758,11 @@ export default function SlowBurnPage() {
           ))}
         </section>
 
-        <footer className="mt-2 font-mono text-xs text-white/55">
-          Grounded in <span className="text-white/75">Datseris et al., &ldquo;Does it Swing?&rdquo;
-          (Sci. Rep. 2019)</span>, Charnas&rsquo; <span className="text-white/75">Dilla Time
+        <footer className="mt-2 font-mono text-xs text-muted-foreground">
+          Grounded in <span className="text-muted-foreground">Datseris et al., &ldquo;Does it Swing?&rdquo;
+          (Sci. Rep. 2019)</span>, Charnas&rsquo; <span className="text-muted-foreground">Dilla Time
           (2022)</span>, and the expressive drum grid of{" "}
-          <span className="text-white/75">arXiv 2605.10281 (2026)</span>.
+          <span className="text-muted-foreground">arXiv 2605.10281 (2026)</span>.
         </footer>
       </div>
     </main>
@@ -805,10 +805,10 @@ function GridPlot({
   const devToPx = (devSec: number) => (devSec / STEP_DUR) * cellW;
 
   return (
-    <section className="rounded-xl border border-white/10 bg-black/40 p-4">
+    <section className="rounded-xl border border-border bg-black/40 p-4">
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="font-mono text-base text-white/75">grid vs. actual — where the hits land</h2>
-        <span className="font-mono text-xs text-white/55">
+        <h2 className="font-mono text-base text-muted-foreground">grid vs. actual — where the hits land</h2>
+        <span className="font-mono text-xs text-muted-foreground">
           hollow = grid · glow = actual onset · one bar
         </span>
       </div>

@@ -266,23 +266,23 @@ export default function AtmosphereVeilPage() {
     mode === "live" ? "LIVE" : mode === "demo" ? "DEMO DATA" : "CONNECTING";
   const modeClass =
     mode === "live"
-      ? "text-emerald-300"
+      ? "text-violet-300"
       : mode === "demo"
-        ? "text-amber-300/95"
-        : "text-white/75";
+        ? "text-violet-300/95"
+        : "text-muted-foreground";
 
   const tensionClass =
     tensionPct >= 66
-      ? "text-rose-300"
+      ? "text-violet-300"
       : tensionPct >= 33
-        ? "text-amber-300/95"
+        ? "text-violet-300/95"
         : "text-violet-300";
 
   const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
   const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#030409] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#030409] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#030409]/80 via-transparent to-[#030409]/85" />
@@ -293,11 +293,11 @@ export default function AtmosphereVeilPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/dream"
-              className="pointer-events-auto rounded-full border border-white/20 px-3 py-1.5 text-base text-white/75 transition hover:bg-white/10"
+              className="pointer-events-auto rounded-full border border-border px-3 py-1.5 text-base text-muted-foreground transition hover:bg-accent"
             >
               ← dream
             </Link>
-            <h1 className="font-serif text-2xl tracking-tight text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
               Atmosphere — Veil
             </h1>
             <span
@@ -306,7 +306,7 @@ export default function AtmosphereVeilPage() {
               {modeLabel}
             </span>
           </div>
-          <p className="mt-2 max-w-md text-base leading-relaxed text-white/80">
+          <p className="mt-2 max-w-md text-base leading-relaxed text-foreground">
             The whole planet&apos;s live weather, breathing as one sustained,
             unresolved chord. Tens of thousands of particles ride the global
             wind field. The dissonance only relaxes when the real sky calms —
@@ -318,16 +318,16 @@ export default function AtmosphereVeilPage() {
         <footer className="space-y-3">
           {started && (
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
-              <div className="text-base text-white/80">
+              <div className="text-base text-foreground">
                 Global tension{" "}
                 <span className={`font-semibold ${tensionClass}`}>
                   {tensionPct}%
                 </span>
               </div>
-              <div className="font-mono text-base text-white/75">
+              <div className="font-mono text-base text-muted-foreground">
                 {mm}:{ss}
               </div>
-              <div className="text-base text-white/55">
+              <div className="text-base text-muted-foreground">
                 {mode === "live"
                   ? "12 cities · polling Open-Meteo"
                   : "synthetic evolving sky"}
@@ -339,25 +339,25 @@ export default function AtmosphereVeilPage() {
             {!started && (
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-xl bg-violet-600/90 px-5 py-2.5 text-base font-semibold text-white shadow-lg shadow-violet-900/50 transition hover:bg-violet-500"
+                className="min-h-[44px] rounded-xl bg-violet-600/90 px-5 py-2.5 text-base font-semibold text-foreground shadow-lg shadow-violet-900/50 transition hover:bg-violet-500"
               >
                 ▶ Start
               </button>
             )}
             <details className="group pointer-events-auto">
-              <summary className="min-h-[44px] cursor-pointer list-none rounded-xl border border-white/20 px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10">
+              <summary className="min-h-[44px] cursor-pointer list-none rounded-xl border border-border px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent">
                 Read the design notes
               </summary>
-              <div className="mt-2 max-h-[55vh] max-w-md overflow-y-auto rounded-2xl border border-white/15 bg-[#070a14]/95 p-5 text-base leading-relaxed text-white/80 shadow-2xl">
+              <div className="mt-2 max-h-[55vh] max-w-md overflow-y-auto rounded-2xl border border-border bg-[#070a14]/95 p-5 text-base leading-relaxed text-foreground shadow-2xl">
                 <p>
-                  <span className="font-semibold text-white">Data →</span> Live
+                  <span className="font-semibold text-foreground">Data →</span> Live
                   Open-Meteo current weather for 12 globe-spanning cities, one
                   batched request every 75 s. Per-city instability = high wind +
                   low/<em>falling</em> surface pressure + heavy cloud. Global
                   tension blends the mean with the worst sky.
                 </p>
                 <p className="mt-3">
-                  <span className="font-semibold text-white">Sound →</span> A
+                  <span className="font-semibold text-foreground">Sound →</span> A
                   sustained spectral drone. At rest: open fifths + octaves
                   (consonance). As tension rises the partials detune into audible
                   beating, tension tones (minor 2nd, tritone, b9) fade in, and a
@@ -371,14 +371,14 @@ export default function AtmosphereVeilPage() {
                   , with spectral-tension thinking after Grisey.
                 </p>
                 <p className="mt-3">
-                  <span className="font-semibold text-white">Light →</span> A
+                  <span className="font-semibold text-foreground">Light →</span> A
                   WebGPU compute shader advects ~60,000 particles through a wind
                   field built from the 12 city vortices. Speed, turbulence and
                   color-temperature (cool indigo → warm amber/rose) rise with
                   tension. No WebGPU → a readable notice plus a Canvas2D dot
                   fallback; audio always keeps running.
                 </p>
-                <p className="mt-3 text-white/55">
+                <p className="mt-3 text-muted-foreground">
                   Cycle 3 of the lab&apos;s Living Earth spine (after Terra
                   Gamelan and Helios Orbit). See README.md for the full mapping
                   and unverified-surface caveats.
@@ -392,7 +392,7 @@ export default function AtmosphereVeilPage() {
       {/* WebGPU absent notice */}
       {!gpuOk && (
         <div className="pointer-events-none absolute inset-x-0 top-[88px] mx-auto max-w-md px-6">
-          <p className="rounded-xl border border-rose-400/40 bg-rose-950/60 p-4 text-base text-rose-300">
+          <p className="rounded-xl border border-violet-400/40 bg-violet-950/60 p-4 text-base text-violet-300">
             WebGPU is unavailable in this browser, so the compute particle field
             can&apos;t run. The atmospheric drone still plays and a simpler
             Canvas2D wind field is shown — try Chrome or Edge for the full

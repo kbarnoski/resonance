@@ -457,8 +457,8 @@ export default function LoopStation() {
     <div className="flex flex-col min-h-screen bg-[#08081a] px-4 pt-5 pb-8 gap-4">
       {/* Header */}
       <div className="w-full max-w-md mx-auto">
-        <h1 className="text-2xl font-mono tracking-tight text-white/95">Loop Station</h1>
-        <p className="text-base text-white/75 mt-1 leading-snug">
+        <h1 className="text-2xl font-mono tracking-tight text-foreground">Loop Station</h1>
+        <p className="text-base text-muted-foreground mt-1 leading-snug">
           Build a multi-layer performance in real time. All loops snap to the beat grid
           and play phase-locked. Load the demo or tap REC to record.
         </p>
@@ -466,19 +466,19 @@ export default function LoopStation() {
 
       {/* BPM row */}
       <div className="w-full max-w-md mx-auto flex items-center gap-2">
-        <span className="text-sm font-mono text-white/55 w-10">BPM</span>
+        <span className="text-sm font-mono text-muted-foreground w-10">BPM</span>
         <button
           onClick={() => changeBpm(-2)}
-          className="px-3 py-2 text-sm font-mono border border-white/15 rounded hover:border-white/35 text-white/75 min-h-[44px] min-w-[44px] transition"
+          className="px-3 py-2 text-sm font-mono border border-border rounded hover:border-border text-muted-foreground min-h-[44px] min-w-[44px] transition"
         >−</button>
-        <span className="text-lg font-mono text-white/95 w-12 text-center tabular-nums">{bpm}</span>
+        <span className="text-lg font-mono text-foreground w-12 text-center tabular-nums">{bpm}</span>
         <button
           onClick={() => changeBpm(2)}
-          className="px-3 py-2 text-sm font-mono border border-white/15 rounded hover:border-white/35 text-white/75 min-h-[44px] min-w-[44px] transition"
+          className="px-3 py-2 text-sm font-mono border border-border rounded hover:border-border text-muted-foreground min-h-[44px] min-w-[44px] transition"
         >+</button>
         <button
           onClick={tapTempo}
-          className="px-4 py-2 text-sm font-mono border border-white/25 rounded hover:border-white/50 text-white/80 min-h-[44px] flex-1 transition"
+          className="px-4 py-2 text-sm font-mono border border-border rounded hover:border-border text-foreground min-h-[44px] flex-1 transition"
         >TAP TEMPO</button>
       </div>
 
@@ -487,7 +487,7 @@ export default function LoopStation() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className="flex flex-col gap-2 bg-white/[0.03] rounded-xl p-3 border border-white/[0.07]"
+            className="flex flex-col gap-2 bg-muted rounded-xl p-3 border border-border"
           >
             {/* Slot header */}
             <div className="flex items-center gap-2">
@@ -502,8 +502,8 @@ export default function LoopStation() {
                     onClick={() => pickBarLen(i, bl)}
                     className={`text-xs font-mono px-2 py-1 rounded transition min-h-[28px] min-w-[28px] ${
                       barLens[i] === bl
-                        ? "text-white/90 border border-white/40 bg-white/5"
-                        : "text-white/30 border border-white/10 hover:border-white/25 hover:text-white/60"
+                        ? "text-foreground border border-border bg-muted"
+                        : "text-muted-foreground/70 border border-border hover:border-border hover:text-muted-foreground"
                     }`}
                   >{bl}b</button>
                 ))}
@@ -523,10 +523,10 @@ export default function LoopStation() {
                 onClick={() => toggleRec(i)}
                 className={`px-4 py-2.5 text-sm font-mono rounded min-h-[44px] flex-1 transition border ${
                   states[i] === "recording"
-                    ? "bg-rose-500/20 border-rose-400/80 text-rose-300"
+                    ? "bg-violet-500/20 border-violet-400/80 text-violet-300"
                     : states[i] === "processing"
-                    ? "border-white/15 text-white/35 cursor-not-allowed"
-                    : "border-white/20 text-white/75 hover:border-white/45 hover:text-white/95"
+                    ? "border-border text-muted-foreground/70 cursor-not-allowed"
+                    : "border-border text-muted-foreground hover:border-border hover:text-foreground"
                 }`}
               >
                 {states[i] === "recording" ? "■ STOP" : states[i] === "processing" ? "…" : "● REC"}
@@ -536,13 +536,13 @@ export default function LoopStation() {
                 disabled={states[i] !== "looping" && states[i] !== "muted"}
                 className={`px-4 py-2.5 text-sm font-mono rounded min-h-[44px] border transition ${
                   states[i] === "muted"
-                    ? "border-amber-400/70 text-amber-300 bg-amber-500/10"
-                    : "border-white/15 text-white/55 hover:border-white/30 hover:text-white/80 disabled:opacity-25 disabled:cursor-not-allowed"
+                    ? "border-violet-400/70 text-violet-300 bg-violet-500/10"
+                    : "border-border text-muted-foreground hover:border-border hover:text-foreground disabled:opacity-25 disabled:cursor-not-allowed"
                 }`}
               >MUTE</button>
               <button
                 onClick={() => clearSlot(i)}
-                className="px-3 py-2.5 text-sm font-mono rounded min-h-[44px] border border-white/10 text-white/40 hover:border-white/30 hover:text-white/75 transition"
+                className="px-3 py-2.5 text-sm font-mono rounded min-h-[44px] border border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground transition"
               >✕</button>
             </div>
           </div>
@@ -560,7 +560,7 @@ export default function LoopStation() {
         </button>
         <Link
           href="/dream"
-          className="text-xs text-white/30 hover:text-white/60 transition ml-auto"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition ml-auto"
         >
           ← dream lab
         </Link>
@@ -568,7 +568,7 @@ export default function LoopStation() {
 
       <Link
         href="/dream/172-loop-station/readme"
-        className="text-[11px] text-white/25 hover:text-white/50 transition self-center"
+        className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition self-center"
       >
         design notes →
       </Link>

@@ -236,44 +236,44 @@ export default function VoiceCathedralPage() {
   const running = phase === "running";
 
   return (
-    <main className="min-h-screen bg-[#08070a] text-white px-6 py-10 flex flex-col items-center">
+    <main className="min-h-screen bg-[#08070a] text-foreground px-6 py-10 flex flex-col items-center">
       <div className="w-full max-w-2xl">
         <header className="mb-8">
           <p className="font-mono text-violet-300 text-base mb-2">
             331 · voice cathedral
           </p>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
             Sing one note. Build a choir around your head.
           </h1>
-          <p className="mt-3 text-base text-white/75 leading-relaxed">
+          <p className="mt-3 text-base text-muted-foreground leading-relaxed">
             Hold a single steady note and it blooms into a sustained voice,
             snapped to just intonation over a D2 drone and placed somewhere on a
             slowly orbiting ring around you. Sing again and again to stack a
             one-person overtone cathedral.{" "}
-            <span className="text-emerald-300/95">Best on headphones.</span>
+            <span className="text-violet-300/95">Best on headphones.</span>
           </p>
         </header>
 
         {/* Live legibility panel */}
         <section className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono">
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
-            <div className="text-base text-white/55">singing now</div>
-            <div className="text-2xl text-white/95 mt-1">{singingNote}</div>
+          <div className="rounded-lg border border-border bg-muted px-4 py-3">
+            <div className="text-base text-muted-foreground">singing now</div>
+            <div className="text-2xl text-foreground mt-1">{singingNote}</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 sm:col-span-1">
-            <div className="text-base text-white/55">voices</div>
-            <div className="text-2xl text-white/95 mt-1">{voiceCount}</div>
+          <div className="rounded-lg border border-border bg-muted px-4 py-3 sm:col-span-1">
+            <div className="text-base text-muted-foreground">voices</div>
+            <div className="text-2xl text-foreground mt-1">{voiceCount}</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
-            <div className="text-base text-white/55">cathedral built</div>
-            <div className="text-2xl text-white/95 mt-1 leading-tight">
+          <div className="rounded-lg border border-border bg-muted px-4 py-3">
+            <div className="text-base text-muted-foreground">cathedral built</div>
+            <div className="text-2xl text-foreground mt-1 leading-tight">
               {chord.length ? chord.join(" · ") : "—"}
             </div>
           </div>
         </section>
 
         {/* Radar */}
-        <section className="mb-6 rounded-2xl border border-white/10 bg-black/30 py-6">
+        <section className="mb-6 rounded-2xl border border-border bg-black/30 py-6">
           <Scene voices={voices} breath={breath} singing={singingNote !== "—"} />
         </section>
 
@@ -283,7 +283,7 @@ export default function VoiceCathedralPage() {
             <button
               type="button"
               onClick={start}
-              className="min-h-[44px] px-5 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-white text-base font-medium transition-colors"
+              className="min-h-[44px] px-5 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-foreground text-base font-medium transition-colors"
             >
               Start with my voice
             </button>
@@ -291,27 +291,27 @@ export default function VoiceCathedralPage() {
           <button
             type="button"
             onClick={startDemo}
-            className="min-h-[44px] px-5 py-2.5 rounded-lg border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] text-white/90 text-base font-medium transition-colors"
+            className="min-h-[44px] px-5 py-2.5 rounded-lg border border-border bg-muted hover:bg-accent text-foreground text-base font-medium transition-colors"
           >
             {running ? "Auto-demo (no mic)" : "Auto-demo without a mic"}
           </button>
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="ml-auto min-h-[44px] px-4 py-2.5 rounded-lg text-white/55 hover:text-white/80 text-base transition-colors"
+            className="ml-auto min-h-[44px] px-4 py-2.5 rounded-lg text-muted-foreground hover:text-foreground text-base transition-colors"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </section>
 
         {error && (
-          <p className="mt-4 text-base text-rose-300" role="alert">
+          <p className="mt-4 text-base text-violet-300" role="alert">
             {error}
           </p>
         )}
 
         {running && (
-          <p className="mt-4 text-base text-white/55">
+          <p className="mt-4 text-base text-muted-foreground">
             Sing a clear, steady note for about a quarter-second to commit a
             voice. Let your breath fall, then sing again — one breath blooms one
             voice.
@@ -319,8 +319,8 @@ export default function VoiceCathedralPage() {
         )}
 
         {showNotes && (
-          <section className="mt-6 rounded-2xl border border-white/10 bg-white/[0.02] p-5 text-base text-white/75 leading-relaxed space-y-3">
-            <h2 className="text-xl text-white/95">Design notes</h2>
+          <section className="mt-6 rounded-2xl border border-border bg-muted p-5 text-base text-muted-foreground leading-relaxed space-y-3">
+            <h2 className="text-xl text-foreground">Design notes</h2>
             <p>
               The primary medium here is spatial audio over headphones, not the
               screen. A YIN-style autocorrelation detector tracks your pitch; a
@@ -337,11 +337,11 @@ export default function VoiceCathedralPage() {
               compressor and a procedural convolution reverb keep nine voices
               clip-free and cathedral-sized.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Your voice is analysis-only: it is never recorded, stored, or
               transmitted, and the mic is never routed to the speakers.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Lineage: Pauline Oliveros&apos; <em>Deep Listening</em>; David Hykes
               &amp; the Harmonic Choir; La Monte Young&apos;s just-intonation
               drones; and this lab&apos;s own <em>308 · orbit-choir</em> HRTF

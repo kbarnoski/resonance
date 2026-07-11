@@ -265,18 +265,18 @@ export default function SeismicChoirPage() {
   }, []);
 
   const btn =
-    "min-h-[44px] px-4 py-2.5 rounded-md border border-white/15 bg-white/5 text-white/90 text-base font-mono hover:bg-white/10 active:bg-white/15 transition-colors";
+    "min-h-[44px] px-4 py-2.5 rounded-md border border-border bg-muted text-foreground text-base font-mono hover:bg-accent active:bg-muted transition-colors";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-black text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* top-left: title + concept */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7 max-w-xl">
-        <h1 className="font-serif text-2xl sm:text-4xl text-white/95 tracking-tight">
+        <h1 className="font-serif text-2xl sm:text-4xl text-foreground tracking-tight">
           Seismic Choir
         </h1>
-        <p className="mt-2 text-base text-white/75 leading-snug">
+        <p className="mt-2 text-base text-muted-foreground leading-snug">
           What does the planet sound like right now? Every real earthquake of the
           last 24&nbsp;hours becomes a deep resonant groan over a trembling globe
           of tectonic light.
@@ -285,13 +285,13 @@ export default function SeismicChoirPage() {
 
       {/* top-right: badges */}
       <div className="absolute right-0 top-0 p-5 sm:p-7 flex flex-col items-end gap-1.5 text-right font-mono">
-        <span className="text-amber-300/95 text-base">
+        <span className="text-violet-300/95 text-base">
           DATA: {source === "loading" ? "loading…" : source}
         </span>
-        <span className="text-white/75 text-base">
+        <span className="text-muted-foreground text-base">
           RENDER: {backend === "init" ? "detecting…" : backend}
         </span>
-        <span className="text-white/55 text-base">{count} quakes / 24h</span>
+        <span className="text-muted-foreground text-base">{count} quakes / 24h</span>
       </div>
 
       {/* start overlay before first gesture */}
@@ -299,7 +299,7 @@ export default function SeismicChoirPage() {
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={() => void runStart()}
-            className="min-h-[44px] px-7 py-4 rounded-lg border border-rose-400/40 bg-rose-950/40 text-white/95 text-xl font-serif backdrop-blur-sm hover:bg-rose-900/40 transition-colors pointer-events-auto"
+            className="min-h-[44px] px-7 py-4 rounded-lg border border-violet-400/40 bg-violet-950/40 text-foreground text-xl font-serif backdrop-blur-sm hover:bg-violet-900/40 transition-colors pointer-events-auto"
           >
             ▶ Start the Choir
           </button>
@@ -309,9 +309,9 @@ export default function SeismicChoirPage() {
       {/* bottom: transport controls */}
       <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
         {/* timeline */}
-        <div className="mb-3 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+        <div className="mb-3 h-1.5 w-full rounded-full bg-muted overflow-hidden">
           <div
-            className="h-full bg-rose-500/70"
+            className="h-full bg-violet-500/70"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
@@ -325,7 +325,7 @@ export default function SeismicChoirPage() {
           <button onClick={() => applySpeed(1 / 1.5)} className={btn}>
             ◀ Slower
           </button>
-          <span className="font-mono text-base text-white/75 min-w-[3.5rem] text-center">
+          <span className="font-mono text-base text-muted-foreground min-w-[3.5rem] text-center">
             {speed}×
           </span>
           <button onClick={() => applySpeed(1.5)} className={btn}>
@@ -338,7 +338,7 @@ export default function SeismicChoirPage() {
             Design notes
           </button>
         </div>
-        <p className="mt-2 font-mono text-base text-white/55">
+        <p className="mt-2 font-mono text-base text-muted-foreground">
           keys: space play/pause · m mute · [ / ] speed
         </p>
       </div>
@@ -346,8 +346,8 @@ export default function SeismicChoirPage() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/80 p-5">
-          <div className="max-w-lg rounded-lg border border-white/15 bg-zinc-950/95 p-6 text-base text-white/80 leading-relaxed">
-            <h2 className="font-serif text-xl text-white/95 mb-3">Design notes</h2>
+          <div className="max-w-lg rounded-lg border border-border bg-zinc-950/95 p-6 text-base text-foreground leading-relaxed">
+            <h2 className="font-serif text-xl text-foreground mb-3">Design notes</h2>
             <p className="mb-3">
               Live USGS feed (all quakes, past 24h) sonified per Florian
               Dombois&apos; auditory seismology: magnitude → loudness, duration &amp;
@@ -355,14 +355,14 @@ export default function SeismicChoirPage() {
               latitude → resonance tilt. Each quake excites a bank of low,
               slightly inharmonic resonant filters — rock, not a synth pad.
             </p>
-            <p className="mb-4 text-white/55">
+            <p className="mb-4 text-muted-foreground">
               No network → bundled sample dataset. No WebGPU → Canvas2D globe.
               Full notes &amp; honest self-assessment:
             </p>
             <div className="flex items-center justify-between">
               <Link
                 href="/dream/613-seismic-choir/README.md"
-                className="text-amber-300/95 underline"
+                className="text-violet-300/95 underline"
                 target="_blank"
               >
                 README.md →

@@ -386,7 +386,7 @@ export default function FeedbackHowl() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white/95">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* The violent reactive spectrum fills the screen. */}
       <canvas
         ref={canvasRef}
@@ -395,18 +395,18 @@ export default function FeedbackHowl() {
 
       {/* Header */}
       <div className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-mono text-2xl text-white sm:text-3xl">
+        <h1 className="font-mono text-2xl text-foreground sm:text-3xl">
           601 · feedback howl
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/75">
+        <p className="mt-2 max-w-2xl text-base text-muted-foreground">
           A no-input instrument: a Web Audio graph fed back into itself, howling
           on the edge of runaway — sculpt the chaos with your keyboard and your
           phone&apos;s tilt.
         </p>
         {errMsg && (
-          <p className="mt-3 max-w-2xl text-base text-rose-300">{errMsg}</p>
+          <p className="mt-3 max-w-2xl text-base text-violet-300">{errMsg}</p>
         )}
-        <p className="mt-2 max-w-2xl text-base text-rose-300">{tiltMsg}</p>
+        <p className="mt-2 max-w-2xl text-base text-violet-300">{tiltMsg}</p>
       </div>
 
       {/* Start overlay (the audio + tilt gesture) */}
@@ -414,7 +414,7 @@ export default function FeedbackHowl() {
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <button
             onClick={() => void begin(true)}
-            className="min-h-[44px] rounded-md border border-rose-300/40 bg-rose-300/10 px-4 py-2.5 font-mono text-base text-rose-300 transition hover:bg-rose-300/20"
+            className="min-h-[44px] rounded-md border border-violet-300/40 bg-violet-300/10 px-4 py-2.5 font-mono text-base text-violet-300 transition hover:bg-violet-300/20"
           >
             Start the howl
           </button>
@@ -426,13 +426,13 @@ export default function FeedbackHowl() {
         <div className="absolute bottom-6 left-6 z-10 flex flex-wrap gap-3 sm:left-10">
           <button
             onClick={panic}
-            className="min-h-[44px] rounded-md border border-rose-400/60 bg-rose-500/20 px-4 py-2.5 font-mono text-base text-rose-200 transition hover:bg-rose-500/35"
+            className="min-h-[44px] rounded-md border border-violet-400/60 bg-violet-500/20 px-4 py-2.5 font-mono text-base text-violet-200 transition hover:bg-violet-500/35"
           >
             PANIC / kill
           </button>
           <button
             onClick={toggleMute}
-            className="min-h-[44px] rounded-md border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground transition hover:bg-accent"
           >
             {muted ? "unmute" : "mute"}
           </button>
@@ -441,10 +441,10 @@ export default function FeedbackHowl() {
 
       {/* HUD — monospace readouts */}
       {started && (
-        <div className="absolute right-6 top-8 z-10 rounded-md border border-white/15 bg-black/50 px-3 py-2 font-mono text-base text-white/85 sm:right-10">
+        <div className="absolute right-6 top-8 z-10 rounded-md border border-border bg-black/50 px-3 py-2 font-mono text-base text-foreground sm:right-10">
           <div>
-            mode <span className="text-white/60">{gpuMode}</span>
-            {hud.auto && <span className="ml-2 text-rose-300">[auto-demo]</span>}
+            mode <span className="text-muted-foreground">{gpuMode}</span>
+            {hud.auto && <span className="ml-2 text-violet-300">[auto-demo]</span>}
           </div>
           <div>loop gain {hud.loopGain.toFixed(3)}</div>
           <div>delay {hud.delayHz.toFixed(0)} Hz</div>
@@ -452,7 +452,7 @@ export default function FeedbackHowl() {
           <div>res Q {hud.resonance.toFixed(1)}</div>
           <div>
             peak{" "}
-            <span className={hud.peak > 0.7 ? "text-rose-300" : "text-white/60"}>
+            <span className={hud.peak > 0.7 ? "text-violet-300" : "text-muted-foreground"}>
               {hud.peak.toFixed(2)}
             </span>
           </div>
@@ -461,8 +461,8 @@ export default function FeedbackHowl() {
 
       {/* Key map */}
       {started && (
-        <div className="absolute bottom-6 right-6 z-10 max-w-xs rounded-md border border-white/15 bg-black/50 px-3 py-2 font-mono text-base text-white/75 sm:right-10">
-          <div className="text-white/85">key map</div>
+        <div className="absolute bottom-6 right-6 z-10 max-w-xs rounded-md border border-border bg-black/50 px-3 py-2 font-mono text-base text-muted-foreground sm:right-10">
+          <div className="text-foreground">key map</div>
           <div>up / down — loop gain (tension)</div>
           <div>left / right — delay (pitch of howl)</div>
           <div>[ / ] — filter cutoff</div>
@@ -470,7 +470,7 @@ export default function FeedbackHowl() {
           <div>1 – 9 — jump cutoff</div>
           <div>space — stab (screech)</div>
           <div>P / Esc — PANIC kill</div>
-          <div className="mt-1 text-white/55">tilt — bend cutoff &amp; pitch</div>
+          <div className="mt-1 text-muted-foreground">tilt — bend cutoff &amp; pitch</div>
         </div>
       )}
 
@@ -483,36 +483,36 @@ export default function FeedbackHowl() {
           e.preventDefault();
           setShowNotes(true);
         }}
-        className="absolute left-6 top-8 z-30 hidden font-mono text-base text-white/60 underline-offset-4 hover:text-white/85 hover:underline sm:left-auto sm:right-6 sm:top-[7.5rem] sm:block"
+        className="absolute left-6 top-8 z-30 hidden font-mono text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline sm:left-auto sm:right-6 sm:top-[7.5rem] sm:block"
       >
         Read the design notes
       </a>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/85 px-6">
-          <div className="max-w-lg rounded-lg border border-white/15 bg-zinc-950 p-6 text-base">
-            <h2 className="font-mono text-xl text-white">Design notes</h2>
-            <p className="mt-3 text-white/75">
+          <div className="max-w-lg rounded-lg border border-border bg-zinc-950 p-6 text-base">
+            <h2 className="font-mono text-xl text-foreground">Design notes</h2>
+            <p className="mt-3 text-muted-foreground">
               There is no input source. A single Web Audio ring —
               delay &rarr; bandpass &rarr; peaking &rarr; soft saturation &rarr;
               DC-blocking highpass &rarr; back into the delay — self-oscillates
               once a tiny noise seed kicks it. The loop gain sits just below 1.0
               so it sustains and howls.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Safety: the loop gain is hard-capped below 1.0, a master brick-wall
               compressor limits the output, a highpass blocks DC pile-up, and a
               PANIC control instantly ramps the loop to zero. It is abrasive, not
               speaker-destroying.
             </p>
-            <p className="mt-3 text-white/55">
+            <p className="mt-3 text-muted-foreground">
               After Toshimaru Nakamura&apos;s no-input mixing board and David
               Tudor&apos;s live-electronic feedback works (Rainforest / Pulsers).
               Full notes live in the folder&apos;s README.md.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/75 hover:bg-white/10"
+              className="mt-5 min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-muted-foreground hover:bg-accent"
             >
               close
             </button>

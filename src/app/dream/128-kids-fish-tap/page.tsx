@@ -345,10 +345,10 @@ export default function KidsFishTap() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#01091a] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#01091a] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none">🐠</div>
-        <h1 className="text-2xl font-serif text-white/95">Fish School</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Fish School</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           Tap a fish to hear it sing
         </p>
         <div className="flex gap-3 items-center opacity-40 select-none mt-2">
@@ -366,12 +366,12 @@ export default function KidsFishTap() {
           ))}
         </div>
         <button
-          className="min-h-[64px] min-w-[220px] bg-violet-500/25 hover:bg-violet-500/40 border border-violet-400/50 rounded-2xl px-8 py-4 text-white text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/25 hover:bg-violet-500/40 border border-violet-400/50 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={handleStart}
         >
           🌊 Begin
         </button>
-        <p className="text-sm text-white/55">no microphone needed</p>
+        <p className="text-sm text-muted-foreground">no microphone needed</p>
       </div>
     );
   }

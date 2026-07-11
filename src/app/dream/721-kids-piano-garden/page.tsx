@@ -679,7 +679,7 @@ export default function PianoGardenPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#03040a] font-mono text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#03040a] font-mono text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -688,10 +688,10 @@ export default function PianoGardenPage() {
 
       {/* Title — labeling, not gating. Always readable. */}
       <header className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-6 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-white drop-shadow">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow">
           Papa&apos;s Piano Garden
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Hum or blow softly into the tablet — watch the light bloom from Papa&apos;s real piano.
         </p>
       </header>
@@ -702,13 +702,13 @@ export default function PianoGardenPage() {
           <button
             type="button"
             onClick={handleStart}
-            className="flex min-h-[44px] flex-col items-center gap-2 rounded-3xl bg-white/10 px-10 py-8 text-center ring-1 ring-white/20 transition hover:bg-white/15"
+            className="flex min-h-[44px] flex-col items-center gap-2 rounded-3xl bg-muted px-10 py-8 text-center ring-1 ring-border transition hover:bg-accent"
           >
             <span className="text-5xl" aria-hidden="true">
               🌱
             </span>
-            <span className="text-xl font-semibold text-white">Start the garden</span>
-            <span className="text-base text-white/75">Tap, then hum</span>
+            <span className="text-xl font-semibold text-foreground">Start the garden</span>
+            <span className="text-base text-muted-foreground">Tap, then hum</span>
           </button>
         </div>
       )}
@@ -717,16 +717,16 @@ export default function PianoGardenPage() {
       {started && (
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center gap-1 px-4 pb-6 text-center">
           {micState === "denied" && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               No microphone — the garden keeps blooming on its own. Tap allow to hum along.
             </p>
           )}
           {usingFallbackTone && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Playing a gentle demo tone (Papa&apos;s recording is unavailable right now).
             </p>
           )}
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             {rendererKind === "webgpu"
               ? "Glowing with WebGPU"
               : rendererKind === "canvas2d"
@@ -742,27 +742,27 @@ export default function PianoGardenPage() {
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 ring-1 ring-white/15 transition hover:bg-white/15"
+          className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
         >
           {showNotes ? "Close notes" : "Design notes"}
         </button>
       </div>
 
       {showNotes && (
-        <div className="absolute right-3 top-20 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-auto rounded-2xl bg-black/80 p-5 text-base leading-relaxed text-white/75 ring-1 ring-white/15 backdrop-blur">
-          <h2 className="mb-2 text-xl font-semibold text-white">Design notes</h2>
-          <p className="mb-3 text-white/95">
+        <div className="absolute right-3 top-20 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-auto rounded-2xl bg-black/80 p-5 text-base leading-relaxed text-muted-foreground ring-1 ring-border backdrop-blur">
+          <h2 className="mb-2 text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mb-3 text-foreground">
             One question: what if a 4-year-old could grow a glowing garden of light by humming
             into the tablet — and every petal that blooms is made from Karel&apos;s OWN real
             recorded piano?
           </p>
           <p className="mb-3">
-            <span className="text-white/95">Input</span> · microphone, breath/hum, analysis-only
-            (never recorded or sent). <span className="text-white/95">Output</span> · WebGPU
+            <span className="text-foreground">Input</span> · microphone, breath/hum, analysis-only
+            (never recorded or sent). <span className="text-foreground">Output</span> · WebGPU
             compute-shader particle field with a first-class Canvas2D fallback.{" "}
-            <span className="text-white/95">Technique</span> · concatenative grain resynthesis of
+            <span className="text-foreground">Technique</span> · concatenative grain resynthesis of
             Karel&apos;s real &ldquo;Welcome Home&rdquo; recording (CataRT-style descriptor
-            navigation). <span className="text-white/95">Vibe</span> · tender, luminous,
+            navigation). <span className="text-foreground">Vibe</span> · tender, luminous,
             contemplative — no beat, no loop.
           </p>
           <p className="mb-3">
@@ -772,7 +772,7 @@ export default function PianoGardenPage() {
           <p>
             References: Diemo Schwarz&apos;s CataRT concatenative synthesis; Refik Anadol&apos;s
             luminous particle fields; WebGPU shipping on iOS Safari 26 (2026) as the enabling fact.
-            Full notes live in <span className="text-white/95">README.md</span> in this folder.
+            Full notes live in <span className="text-foreground">README.md</span> in this folder.
           </p>
         </div>
       )}

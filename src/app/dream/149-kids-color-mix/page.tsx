@@ -206,10 +206,10 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#09090f] text-white select-none">
+    <div className="flex flex-col min-h-screen bg-[#09090f] text-foreground select-none">
       <div className="px-5 pt-8 pb-3">
-        <h1 className="text-2xl font-bold text-white/95 mb-1">Color Mix</h1>
-        <p className="text-base text-white/75">
+        <h1 className="text-2xl font-bold text-foreground mb-1">Color Mix</h1>
+        <p className="text-base text-muted-foreground">
           Three colors, three notes. Drag them together — the colors mix and the music grows.
           When all three meet, a C major chord glows white.
         </p>
@@ -219,8 +219,8 @@ export default function Page() {
         className="flex-1 w-full touch-none"
         style={{ cursor: "grab", minHeight: 0 }}
       />
-      <p className="text-xs text-white/55 px-5 py-3 text-center">
-        <a href="/dream/149-kids-color-mix/README.md" className="underline hover:text-white/75 transition-colors">
+      <p className="text-xs text-muted-foreground px-5 py-3 text-center">
+        <a href="/dream/149-kids-color-mix/README.md" className="underline hover:text-muted-foreground transition-colors">
           design notes
         </a>
         {" · "}For kids 3+ · Zero permissions · Zero API · Zero deps

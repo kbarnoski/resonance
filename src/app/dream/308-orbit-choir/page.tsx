@@ -773,7 +773,7 @@ export default function OrbitChoirPage() {
   const progressPct = Math.min(100, (clock / ARC_SECONDS) * 100);
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#05050a] text-white">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#05050a] text-foreground">
       <canvas
         ref={canvasRef}
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-80"
@@ -782,17 +782,17 @@ export default function OrbitChoirPage() {
 
       {(phase === "running" || phase === "resolved") && (
         <div className="pointer-events-none absolute top-8 left-1/2 -translate-x-1/2 text-center">
-          <p className="text-base text-white/75 tabular-nums">
+          <p className="text-base text-muted-foreground tabular-nums">
             {formatClock(clock)} — {arcLabel}
           </p>
-          <div className="mx-auto mt-2 h-px w-48 bg-white/10">
+          <div className="mx-auto mt-2 h-px w-48 bg-muted">
             <div
               className="h-px bg-violet-300/60"
               style={{ width: `${progressPct}%` }}
             />
           </div>
           {sourceLabel && (
-            <p className="mt-2 text-xs text-white/55">{sourceLabel}</p>
+            <p className="mt-2 text-xs text-muted-foreground">{sourceLabel}</p>
           )}
           {facedTitle && (
             <p className="mt-1 text-base text-violet-300">{facedTitle}</p>
@@ -802,8 +802,8 @@ export default function OrbitChoirPage() {
 
       {phase === "idle" && (
         <div className="relative z-10 max-w-md px-6 text-center">
-          <h1 className="font-serif text-2xl text-white/95">Orbit Choir</h1>
-          <p className="mt-4 text-base text-white/80">
+          <h1 className="font-serif text-2xl text-foreground">Orbit Choir</h1>
+          <p className="mt-4 text-base text-foreground">
             Karel&apos;s <span className="text-violet-300">Welcome Home</span>{" "}
             piano recordings become a circle of voices scattered around your
             head, blurred and out of tune. Over about six minutes they orbit
@@ -811,23 +811,23 @@ export default function OrbitChoirPage() {
             around you, a spatial <span className="italic">Forty Part Motet</span>{" "}
             of his own music.
           </p>
-          <p className="mt-4 text-base text-white/80">
+          <p className="mt-4 text-base text-foreground">
             Use <span className="text-violet-300">headphones</span> — the spatial
             field is rendered binaurally (HRTF) and won&apos;t work on speakers.
           </p>
           <button
             onClick={start}
-            className="mt-8 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/10 px-6 py-2.5 text-base text-white/95 transition hover:bg-violet-500/20"
+            className="mt-8 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/10 px-6 py-2.5 text-base text-foreground transition hover:bg-violet-500/20"
           >
             {savedGather > 0.02 ? "Return to the room" : "Begin the orbit"}
           </button>
           {savedGather > 0.02 && (
-            <p className="mt-4 text-base text-emerald-300/95">
+            <p className="mt-4 text-base text-violet-300/95">
               Your room was {Math.round(savedGather * 100)}% gathered — it
               remembers.
             </p>
           )}
-          <p className="mt-6 text-base text-white/75">
+          <p className="mt-6 text-base text-muted-foreground">
             Turn to face a voice and it gathers home faster. No phone sensor?
             Drag left/right or use arrow keys. A slow auto-tour plays hands-free.
           </p>
@@ -836,8 +836,8 @@ export default function OrbitChoirPage() {
 
       {phase === "loading" && (
         <div className="relative z-10 max-w-md px-6 text-center">
-          <p className="text-xl text-white/95">Gathering the room…</p>
-          <p className="mt-3 text-base text-white/75">
+          <p className="text-xl text-foreground">Gathering the room…</p>
+          <p className="mt-3 text-base text-muted-foreground">
             Loading Karel&apos;s recordings into the spatial field.
           </p>
         </div>
@@ -846,13 +846,13 @@ export default function OrbitChoirPage() {
       {phase === "running" && (
         <div className="pointer-events-none absolute bottom-10 left-1/2 -translate-x-1/2 px-6 text-center">
           {!sensorActive && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Motion sensor not active — drag or use arrow keys to turn; a slow
               auto-tour is guiding the field.
             </p>
           )}
           {sensorActive && (
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Turn to face a voice — it swells, sharpens, and gathers home a
               little faster.
             </p>
@@ -862,14 +862,14 @@ export default function OrbitChoirPage() {
 
       {phase === "resolved" && (
         <div className="relative z-10 max-w-md px-6 text-center">
-          <p className="text-xl text-white/95">The room is whole.</p>
-          <p className="mt-3 text-base text-white/80">
+          <p className="text-xl text-foreground">The room is whole.</p>
+          <p className="mt-3 text-base text-foreground">
             Every voice has orbited home, sharpened, and settled around you.
             Rest in it, or begin the scattering again.
           </p>
           <button
             onClick={beginAgain}
-            className="mt-6 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/10 px-6 py-2.5 text-base text-white/95 transition hover:bg-violet-500/20"
+            className="mt-6 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/10 px-6 py-2.5 text-base text-foreground transition hover:bg-violet-500/20"
           >
             Begin again
           </button>
@@ -878,7 +878,7 @@ export default function OrbitChoirPage() {
 
       {phase === "no-audio" && (
         <div className="relative z-10 max-w-md px-6 text-center">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             This browser doesn&apos;t support the Web Audio API, so the spatial
             choir can&apos;t play here. Try a recent Chrome, Safari, or Firefox.
           </p>
@@ -887,7 +887,7 @@ export default function OrbitChoirPage() {
 
       <a
         href="/dream/308-orbit-choir/README.md"
-        className="absolute bottom-4 right-4 text-base text-white/75 underline-offset-4 hover:underline"
+        className="absolute bottom-4 right-4 text-base text-muted-foreground underline-offset-4 hover:underline"
       >
         Read the design notes
       </a>

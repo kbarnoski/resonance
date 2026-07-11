@@ -335,7 +335,7 @@ export default function KidsDrumTap() {
       <nav className="absolute top-3 right-4 z-10">
         <Link
           href="/dream"
-          className="text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>

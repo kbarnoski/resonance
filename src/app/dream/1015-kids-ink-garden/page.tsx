@@ -277,12 +277,12 @@ export default function InkGardenPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#03040a] text-white">
+    <main className="min-h-screen bg-[#03040a] text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Ink Garden
         </h1>
-        <p className="mt-2 text-base text-white/80">
+        <p className="mt-2 text-base text-foreground">
           Drop a fingertip of magic ink and watch living spots grow and spread
           by themselves — the more the pattern blooms, the fuller the music
           gets.
@@ -291,7 +291,7 @@ export default function InkGardenPage() {
         {/* canvas stage */}
         <div
           ref={wrapRef}
-          className="relative mt-5 aspect-square w-full touch-none overflow-hidden rounded-2xl border border-white/10 bg-[#03040a]"
+          className="relative mt-5 aspect-square w-full touch-none overflow-hidden rounded-2xl border border-border bg-[#03040a]"
         >
           <canvas ref={glCanvasRef} className="absolute inset-0 h-full w-full" />
           {renderMode === "canvas2d" && (
@@ -305,11 +305,11 @@ export default function InkGardenPage() {
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/50 backdrop-blur-[1px]">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-gradient-to-r from-teal-300 to-violet-400 px-8 py-2.5 text-base font-semibold text-black shadow-lg transition hover:brightness-110"
+                className="min-h-[44px] rounded-full bg-gradient-to-r from-violet-300 to-violet-400 px-8 py-2.5 text-base font-semibold text-black shadow-lg transition hover:brightness-110"
               >
                 Tap to start
               </button>
-              <p className="px-6 text-center text-base text-white/75">
+              <p className="px-6 text-center text-base text-muted-foreground">
                 Sound and living ink begin on tap.
               </p>
             </div>
@@ -327,8 +327,8 @@ export default function InkGardenPage() {
                 style={{ backgroundColor: c.css }}
                 className={`h-16 w-16 rounded-full shadow-lg transition ${
                   inkIdx === i
-                    ? "ring-4 ring-white/90 scale-110"
-                    : "ring-2 ring-white/20 hover:scale-105"
+                    ? "ring-4 ring-border scale-110"
+                    : "ring-2 ring-border hover:scale-105"
                 }`}
               />
             ))}
@@ -337,23 +337,23 @@ export default function InkGardenPage() {
 
         {/* status / notices */}
         {error && (
-          <p className="mt-3 text-base text-rose-300">{error}</p>
+          <p className="mt-3 text-base text-violet-300">{error}</p>
         )}
         {started && degraded && !error && (
-          <p className="mt-3 text-base text-amber-300/95">
+          <p className="mt-3 text-base text-violet-300/95">
             Float-texture GPU compute is unavailable here, so the garden is
             running a simpler Canvas2D reaction-diffusion. It still grows and
             still sings.
           </p>
         )}
         {started && !degraded && !error && (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             GPU reaction-diffusion live ·{" "}
-            <span className="font-mono text-teal-300">
+            <span className="font-mono text-violet-300">
               {SIM_SIZE}×{SIM_SIZE}
             </span>{" "}
             field, sonified at{" "}
-            <span className="font-mono text-teal-300">
+            <span className="font-mono text-violet-300">
               {READ_W}×{READ_H}
             </span>
             .
@@ -368,26 +368,26 @@ export default function InkGardenPage() {
           {showNotes ? "Hide the design notes" : "Read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-base text-white/75">
+          <div className="mt-3 space-y-2 rounded-xl border border-border bg-muted p-4 text-base text-muted-foreground">
             <p>
               Each fingertip seeds a drop of the activator chemical{" "}
-              <span className="text-white/95">B</span> into a Gray-Scott
+              <span className="text-foreground">B</span> into a Gray-Scott
               reaction-diffusion field. B and a substrate A diffuse and react on
               the GPU; with feed{" "}
-              <span className="font-mono text-teal-300">f≈0.0367</span> and kill{" "}
-              <span className="font-mono text-teal-300">k≈0.0649</span> the field
+              <span className="font-mono text-violet-300">f≈0.0367</span> and kill{" "}
+              <span className="font-mono text-violet-300">k≈0.0649</span> the field
               grows soft Turing spots that split and spread — the morphogenesis
               patterns Alan Turing predicted in 1952.
             </p>
             <p>
               We read a tiny{" "}
-              <span className="font-mono text-teal-300">32×32</span> downsample
+              <span className="font-mono text-violet-300">32×32</span> downsample
               of the field back to the CPU ten times a second. Total coverage
               opens up a warm I–vi–IV–V chord bed; freshly forming spots ring
               soft bells; the spread rate brightens a gentle filter. Full math,
               the named reference (Karl Sims&apos; reaction-diffusion tutorial),
               and the kids-safety chain live in{" "}
-              <span className="text-white/95">README.md</span>.
+              <span className="text-foreground">README.md</span>.
             </p>
           </div>
         )}
@@ -395,7 +395,7 @@ export default function InkGardenPage() {
         <div className="mt-6">
           <Link
             href="/dream"
-            className="text-base text-white/55 underline underline-offset-4 hover:text-white/80"
+            className="text-base text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             ← back to the dream lab
           </Link>

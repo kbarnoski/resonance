@@ -259,23 +259,23 @@ export default function DisintegrationPage() {
 
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen w-full bg-[#0a0514] text-white flex flex-col items-center">
+    <main className="min-h-screen w-full bg-[#0a0514] text-foreground flex flex-col items-center">
       <div className="w-full max-w-3xl px-5 py-8 flex flex-col items-center gap-5">
         <div className="w-full flex items-center justify-between">
           <Link
             href="/dream"
-            className="font-mono text-base text-white/55 hover:text-white/80 min-h-[44px] flex items-center"
+            className="font-mono text-base text-muted-foreground hover:text-foreground min-h-[44px] flex items-center"
           >
             ← dream
           </Link>
-          <span className="font-mono text-base text-white/55">490</span>
+          <span className="font-mono text-base text-muted-foreground">490</span>
         </div>
 
         <header className="text-center flex flex-col gap-2 mt-2">
-          <h1 className="font-serif text-3xl sm:text-4xl text-white/95">
+          <h1 className="font-serif text-3xl sm:text-4xl text-foreground">
             Disintegration
           </h1>
-          <p className="text-base text-white/75 max-w-xl">
+          <p className="text-base text-muted-foreground max-w-xl">
             A warm loop that physically crumbles as you listen. Each pass
             permanently erodes its own tape — minute five is not minute one.
             You cannot save it; you can only shape how it dies.
@@ -300,19 +300,19 @@ export default function DisintegrationPage() {
         </div>
 
         {!canvasOk && (
-          <p className="text-base text-white/75 text-center">
+          <p className="text-base text-muted-foreground text-center">
             Canvas unavailable on this device — the audio still disintegrates,
             you just won&apos;t see the ring.
           </p>
         )}
 
         {error && (
-          <p className="font-mono text-base text-rose-300 text-center">{error}</p>
+          <p className="font-mono text-base text-violet-300 text-center">{error}</p>
         )}
 
         {phase !== "idle" && (
           <div className="flex flex-col items-center gap-3 w-full">
-            <p className="text-base text-white/75 text-center max-w-md">
+            <p className="text-base text-muted-foreground text-center max-w-md">
               {phase === "gone"
                 ? "The loop is gone. What you heard was consumed in the hearing."
                 : "Tap the ring to re-excite a faded region — it returns as a ghost, and the rest decays faster to pay for it."}
@@ -330,7 +330,7 @@ export default function DisintegrationPage() {
           </div>
         )}
 
-        <p className="font-mono text-base text-white/55 text-center mt-2 max-w-lg">
+        <p className="font-mono text-base text-muted-foreground text-center mt-2 max-w-lg">
           after William Basinski — The Disintegration Loops (2002)
         </p>
       </div>

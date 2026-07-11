@@ -314,14 +314,14 @@ export default function KidsGhostEcho() {
       />
 
       {!started && (
-        <p className="pointer-events-none absolute bottom-24 w-full text-center text-base text-white/75">
+        <p className="pointer-events-none absolute bottom-24 w-full text-center text-base text-muted-foreground">
           Tap anywhere to summon an echo Ghost
         </p>
       )}
 
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         ← dream lab
       </Link>

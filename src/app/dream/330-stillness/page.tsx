@@ -273,14 +273,14 @@ export default function StillnessPage() {
 
   const badge = (() => {
     if (provenance === "listening")
-      return { text: "Listening 🎤", cls: "text-emerald-300/95 border-emerald-400/40" };
+      return { text: "Listening 🎤", cls: "text-violet-300/95 border-violet-400/40" };
     if (provenance === "touch")
-      return { text: "Touch mode ✋", cls: "text-amber-300/95 border-amber-400/40" };
+      return { text: "Touch mode ✋", cls: "text-violet-300/95 border-violet-400/40" };
     return { text: "Auto-demo (breathing)", cls: "text-violet-300 border-violet-400/40" };
   })();
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-foreground">
       {/* ── The SVG room ── */}
       <div className="absolute inset-0">
         <Scene
@@ -297,10 +297,10 @@ export default function StillnessPage() {
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="flex items-start justify-between gap-4">
           <div className="max-w-xl">
-            <h1 className="font-serif text-2xl text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
               Stillness
             </h1>
-            <p className="mt-1 text-base text-white/80">
+            <p className="mt-1 text-base text-foreground">
               An anti-instrument: the room blooms in your silence and scatters at
               the first sound you make.
             </p>
@@ -316,14 +316,14 @@ export default function StillnessPage() {
       {/* ── Stillness HUD (top-center-ish) ── */}
       {begun && (
         <div className="pointer-events-none absolute left-1/2 top-24 z-10 -translate-x-1/2 text-center sm:top-28">
-          <div className="font-serif text-5xl tabular-nums text-white/95 sm:text-6xl">
+          <div className="font-serif text-5xl tabular-nums text-foreground sm:text-6xl">
             {streak.toFixed(1)}
-            <span className="text-2xl text-white/55">s</span>
+            <span className="text-2xl text-muted-foreground">s</span>
           </div>
-          <div className="mt-1 text-sm text-white/55">
+          <div className="mt-1 text-sm text-muted-foreground">
             stillness streak · bloom {(displayBloom * 100).toFixed(0)}%
           </div>
-          <div className="mt-1 text-base text-emerald-300/95">
+          <div className="mt-1 text-base text-violet-300/95">
             longest stillness: {Math.round(longest)}s
           </div>
         </div>
@@ -335,11 +335,11 @@ export default function StillnessPage() {
           <div className="flex flex-col items-start gap-3">
             <button
               onClick={begin}
-              className="min-h-[44px] rounded-xl bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
+              className="min-h-[44px] rounded-xl bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
             >
               Begin — then be still
             </button>
-            <p className="max-w-md text-base text-white/75">
+            <p className="max-w-md text-base text-muted-foreground">
               Sound is the enemy here. Stay quiet and the drone deepens; make a
               noise and it collapses. Cage&rsquo;s <em>4&prime;33&Prime;</em>,
               turned inside out.
@@ -359,7 +359,7 @@ export default function StillnessPage() {
                 e.preventDefault();
                 setHold(false);
               }}
-              className="min-h-[44px] touch-none select-none rounded-xl border border-emerald-400/40 bg-emerald-500/15 px-5 py-2.5 text-base font-medium text-emerald-300/95 transition active:bg-emerald-500/30"
+              className="min-h-[44px] touch-none select-none rounded-xl border border-violet-400/40 bg-violet-500/15 px-5 py-2.5 text-base font-medium text-violet-300/95 transition active:bg-violet-500/30"
             >
               Be quiet (press &amp; hold)
             </button>
@@ -368,19 +368,19 @@ export default function StillnessPage() {
               className={`min-h-[44px] rounded-xl border px-5 py-2.5 text-base font-medium transition ${
                 autoDemo
                   ? "border-violet-400/50 bg-violet-500/20 text-violet-300"
-                  : "border-white/20 bg-white/5 text-white/75 hover:bg-white/10"
+                  : "border-border bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {autoDemo ? "Auto-demo: on" : "Auto-demo: off"}
             </button>
-            <span className="text-sm text-white/55">
+            <span className="text-sm text-muted-foreground">
               release / make a sound → startle
             </span>
           </div>
         )}
 
         {micError && (
-          <p className="mt-3 max-w-lg text-base text-rose-300">{micError}</p>
+          <p className="mt-3 max-w-lg text-base text-violet-300">{micError}</p>
         )}
       </div>
 
@@ -388,7 +388,7 @@ export default function StillnessPage() {
       <Link
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/330-stillness/README.md"
         target="_blank"
-        className="absolute right-5 top-20 z-10 text-sm text-white/55 underline decoration-white/25 underline-offset-4 transition hover:text-white/80 sm:right-7 sm:top-24"
+        className="absolute right-5 top-20 z-10 text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition hover:text-foreground sm:right-7 sm:top-24"
       >
         Design notes
       </Link>

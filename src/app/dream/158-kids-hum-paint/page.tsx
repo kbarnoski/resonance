@@ -265,16 +265,16 @@ export default function Page() {
   if (phase === 'start') {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-black gap-6 px-8">
-        <p className="text-base font-mono text-white/55">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-white/95">
+        <p className="text-base font-mono text-muted-foreground">For kids 3+</p>
+        <h1 className="text-3xl font-serif text-center text-foreground">
           Voice Painting
         </h1>
-        <p className="text-base text-white/75 text-center max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-sm leading-relaxed">
           Sing or hum — your voice paints the screen! High notes go up,
           low notes drift down. Every pitch glows in its own color.
         </p>
         {micError && (
-          <p className="text-rose-300 text-base text-center">{micError}</p>
+          <p className="text-violet-300 text-base text-center">{micError}</p>
         )}
         <button
           onClick={() => { void startMic() }}
@@ -286,12 +286,12 @@ export default function Page() {
         </button>
         <button
           onClick={startDemo}
-          className="px-6 py-2.5 rounded-full bg-white/8 text-white/55 text-base font-mono
-                     min-h-[44px] hover:bg-white/15 transition-colors"
+          className="px-6 py-2.5 rounded-full bg-muted text-muted-foreground text-base font-mono
+                     min-h-[44px] hover:bg-accent transition-colors"
         >
           Watch the demo
         </button>
-        <p className="text-xs text-white/40 mt-2">
+        <p className="text-xs text-muted-foreground/70 mt-2">
           Mic optional · Zero API · Zero deps
         </p>
       </div>
@@ -305,7 +305,7 @@ export default function Page() {
       {isDemo && (
         <p className="absolute top-5 left-1/2 -translate-x-1/2
                       px-4 py-2 rounded-full bg-black/50
-                      text-white/55 text-sm font-mono pointer-events-none">
+                      text-muted-foreground text-sm font-mono pointer-events-none">
           Demo — Twinkle Twinkle ✦
         </p>
       )}
@@ -321,8 +321,8 @@ export default function Page() {
         </button>
         <button
           onClick={clearCanvas}
-          className="px-4 py-2.5 rounded-full bg-white/8 text-white/55 text-sm font-mono
-                     min-h-[44px] hover:bg-white/15 transition-colors"
+          className="px-4 py-2.5 rounded-full bg-muted text-muted-foreground text-sm font-mono
+                     min-h-[44px] hover:bg-accent transition-colors"
         >
           ↺ Clear
         </button>

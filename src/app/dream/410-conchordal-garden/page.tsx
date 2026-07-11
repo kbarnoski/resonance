@@ -458,18 +458,18 @@ export default function ConchordalGarden() {
   const cScore = stats.meanC;
   const cPct = Math.round(Math.max(0, Math.min(1, (cScore + 0.5) / 1)) * 100);
   const cColor =
-    cScore > 0.2 ? "bg-violet-400" : cScore > 0 ? "bg-sky-400" : "bg-rose-400";
+    cScore > 0.2 ? "bg-violet-400" : cScore > 0 ? "bg-violet-400" : "bg-violet-400";
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#05030a] text-white flex flex-col">
+    <div className="min-h-screen bg-[#05030a] text-foreground flex flex-col">
       {/* Header */}
       <div className="px-4 pt-6 pb-2">
-        <h1 className="text-2xl font-bold tracking-tight text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           Conchordal Garden
         </h1>
-        <p className="text-base text-white/75 mt-1 max-w-2xl">
+        <p className="text-base text-muted-foreground mt-1 max-w-2xl">
           A living ecosystem of sound-organisms that drift through pitch space
           hunting consonance — no scale, no conductor, just emergent harmony.
         </p>
@@ -477,7 +477,7 @@ export default function ConchordalGarden() {
 
       {/* Audio warning */}
       {!audioOk && (
-        <p className="px-4 py-2 text-rose-300 text-base">
+        <p className="px-4 py-2 text-violet-300 text-base">
           Web Audio unavailable — visual simulation running without sound.
         </p>
       )}
@@ -487,7 +487,7 @@ export default function ConchordalGarden() {
         <svg
           ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full max-w-4xl mx-auto block rounded-xl border border-white/10 bg-[#050308] cursor-crosshair"
+          className="w-full max-w-4xl mx-auto block rounded-xl border border-border bg-[#050308] cursor-crosshair"
           style={{ aspectRatio: `${SVG_W}/${SVG_H}` }}
           onClick={handleSvgClick}
           aria-label="Conchordal Garden — click to plant a seed"
@@ -510,14 +510,14 @@ export default function ConchordalGarden() {
       </div>
 
       {/* Stats bar */}
-      <div className="px-4 pb-2 flex flex-wrap gap-6 items-center text-base font-mono text-white/75">
+      <div className="px-4 pb-2 flex flex-wrap gap-6 items-center text-base font-mono text-muted-foreground">
         <span>
           <span className="text-violet-300">time</span>{" "}
-          <span className="text-white">{fmtTime(stats.elapsed)}</span>
+          <span className="text-foreground">{fmtTime(stats.elapsed)}</span>
         </span>
         <span>
           <span className="text-violet-300">pop</span>{" "}
-          <span className="text-white">{stats.pop}</span>
+          <span className="text-foreground">{stats.pop}</span>
         </span>
         <span className="flex items-center gap-2">
           <span className="text-violet-300">consonance</span>
@@ -525,7 +525,7 @@ export default function ConchordalGarden() {
             className={`inline-block h-2 rounded-full transition-all ${cColor}`}
             style={{ width: `${Math.max(4, cPct)}px` }}
           />
-          <span className="text-white">{cScore.toFixed(2)}</span>
+          <span className="text-foreground">{cScore.toFixed(2)}</span>
         </span>
       </div>
 
@@ -534,25 +534,25 @@ export default function ConchordalGarden() {
         {!running ? (
           <button
             onClick={handleStart}
-            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-base font-semibold transition-colors"
+            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-foreground text-base font-semibold transition-colors"
           >
             Start Garden
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-base font-semibold transition-colors"
+            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground text-base font-semibold transition-colors"
           >
             Stop
           </button>
         )}
-        <span className="text-white/50 text-base self-center">
+        <span className="text-muted-foreground text-base self-center">
           {running ? "Click garden to plant a seed" : ""}
         </span>
       </div>
 
       {/* Legend */}
-      <div className="px-4 pb-8 text-white/75 text-base max-w-2xl space-y-1">
+      <div className="px-4 pb-8 text-muted-foreground text-base max-w-2xl space-y-1">
         <p>
           <span className="text-violet-300 font-mono">bloom</span> — consonant
           organisms glow and open petals; dissonant ones wilt with a red ring.

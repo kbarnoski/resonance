@@ -387,7 +387,7 @@ export default function KidsSoundHunt() {
   const R = 124;
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0b0a14] text-white/95">
+    <main className="relative min-h-screen overflow-hidden bg-[#0b0a14] text-foreground">
       {/* warm dim lantern background glow */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -399,10 +399,10 @@ export default function KidsSoundHunt() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-xl flex-col items-center px-5 py-8">
         <header className="w-full text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Sound Hunt
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Close your eyes, hold the tablet like a lantern, and slowly turn your body to find
             gentle animal sounds floating in the dark. Headphones make the 3D magic best.
           </p>
@@ -413,11 +413,11 @@ export default function KidsSoundHunt() {
             <button
               type="button"
               onClick={handleStart}
-              className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full bg-amber-200/90 px-10 py-6 text-2xl font-semibold text-[#2a1c0e] shadow-[0_0_40px_rgba(245,210,150,0.35)] transition hover:bg-amber-100 active:scale-95"
+              className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full bg-violet-200/90 px-10 py-6 text-2xl font-semibold text-[#2a1c0e] shadow-[0_0_40px_rgba(245,210,150,0.35)] transition hover:bg-violet-100 active:scale-95"
             >
               Light the lantern
             </button>
-            <p className="max-w-xs text-center text-base text-white/55">
+            <p className="max-w-xs text-center text-base text-muted-foreground">
               Tap to begin. We will ask to use your motion sensor so turning your body sweeps the
               listening beam.
             </p>
@@ -500,20 +500,20 @@ export default function KidsSoundHunt() {
 
             {/* status line */}
             <div className="text-center">
-              <p className="text-lg text-white/95">
+              <p className="text-lg text-foreground">
                 {complete
                   ? "All found — sweet dreams. Keep turning to play forever."
                   : `Found ${foundCount} of ${NUM_VOICES}`}
               </p>
               {foundCount > 0 && (
-                <p className="mt-1 text-base text-white/55">
+                <p className="mt-1 text-base text-muted-foreground">
                   {dots
                     .map((d, i) => (d.found ? VOICE_NAME[i] : null))
                     .filter(Boolean)
                     .join(" · ")}
                 </p>
               )}
-              <p className="mt-2 text-base text-white/55">
+              <p className="mt-2 text-base text-muted-foreground">
                 {mode === "sensor"
                   ? "Turn your body slowly to sweep the beam."
                   : "Drag the ring to turn — or let the auto-tour sweep for you."}
@@ -521,7 +521,7 @@ export default function KidsSoundHunt() {
             </div>
 
             {notice && (
-              <p className="max-w-sm text-center text-base text-rose-300">{notice}</p>
+              <p className="max-w-sm text-center text-base text-violet-300">{notice}</p>
             )}
           </div>
         )}
@@ -530,27 +530,27 @@ export default function KidsSoundHunt() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="fixed bottom-4 right-4 min-h-[44px] min-w-[44px] rounded-full border border-white/15 bg-black/30 px-4 py-2.5 text-base text-white/75 backdrop-blur transition hover:bg-black/50"
+          className="fixed bottom-4 right-4 min-h-[44px] min-w-[44px] rounded-full border border-border bg-black/30 px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition hover:bg-black/50"
         >
           {showNotes ? "Close" : "Design notes"}
         </button>
 
         {showNotes && (
-          <div className="fixed inset-x-4 bottom-20 z-20 mx-auto max-w-md rounded-2xl border border-white/10 bg-[#15131f]/95 p-5 text-base text-white/75 shadow-2xl backdrop-blur">
-            <h2 className="mb-2 text-xl font-semibold text-white/95">Design notes</h2>
+          <div className="fixed inset-x-4 bottom-20 z-20 mx-auto max-w-md rounded-2xl border border-border bg-[#15131f]/95 p-5 text-base text-muted-foreground shadow-2xl backdrop-blur">
+            <h2 className="mb-2 text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mb-2">
               Eight gentle voices, each a C-major pentatonic chord tone, are placed at fixed
               azimuths around a 360° ring with Web Audio{" "}
-              <span className="text-white/95">PannerNode (HRTF)</span> spatialization. Your compass
+              <span className="text-foreground">PannerNode (HRTF)</span> spatialization. Your compass
               heading rotates the AudioListener; when the listening beam nears a voice it swells,
               latches a soft chime, and its dot glows. Collect all eight and the full chord blooms.
             </p>
-            <p className="mb-2 text-white/55">
+            <p className="mb-2 text-muted-foreground">
               Inspired by PlugSonic (web/mobile binaural sonic narratives, Geronazzo et al.) and
               Pauline Oliveros&apos; Deep Listening. Built for calm, eyes-closed, bedtime play —
               nothing is ever &quot;wrong.&quot;
             </p>
-            <Link href="/dream" className="text-amber-200/90 underline">
+            <Link href="/dream" className="text-violet-200/90 underline">
               Back to the dream lab
             </Link>
           </div>

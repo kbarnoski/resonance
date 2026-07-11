@@ -370,12 +370,12 @@ export default function KidsBubbleDuet() {
   }, [])
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-[#060812] text-white select-none">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-[#060812] text-foreground select-none">
       <div className="w-full max-w-md px-4 pb-6 pt-6">
-        <h1 className="text-2xl font-mono text-center mb-1 text-white">
+        <h1 className="text-2xl font-mono text-center mb-1 text-foreground">
           Bubble Duet
         </h1>
-        <p className="text-white/75 text-base text-center mb-4">
+        <p className="text-muted-foreground text-base text-center mb-4">
           Tap the pink bubble — your friend will sing back!
         </p>
         <canvas
@@ -386,11 +386,11 @@ export default function KidsBubbleDuet() {
         <div className="flex justify-between mt-4 px-1">
           <Link
             href="."
-            className="text-white/55 text-sm font-mono hover:text-white/80 transition-colors"
+            className="text-muted-foreground text-sm font-mono hover:text-foreground transition-colors"
           >
             ← dream lab
           </Link>
-          <span className="text-white/30 text-xs font-mono">
+          <span className="text-muted-foreground/70 text-xs font-mono">
             for kids 3+
           </span>
         </div>

@@ -995,7 +995,7 @@ export default function EchoRoomGPU() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0f0b08] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0f0b08] text-foreground">
       <video ref={videoRef} className="hidden" playsInline muted />
       <canvas
         ref={canvasRef}
@@ -1007,10 +1007,10 @@ export default function EchoRoomGPU() {
       {/* top bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="pointer-events-auto max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Echo Room
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Walk an invisible harmonic field; each loop becomes a past self — a glowing body that
             re-traces your path and re-sings its chord, spatialized around you.
           </p>
@@ -1024,8 +1024,8 @@ export default function EchoRoomGPU() {
             onClick={onPrimary}
             className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base font-medium transition ${
               armed
-                ? "bg-amber-400 text-[#1a1209] shadow-lg shadow-amber-500/20"
-                : "bg-white/90 text-[#1a1209] hover:bg-white"
+                ? "bg-violet-400 text-[#1a1209] shadow-lg shadow-violet-500/20"
+                : "bg-muted text-[#1a1209] hover:bg-card"
             }`}
           >
             {armed ? "Recording past self…" : "Start a loop"}
@@ -1034,7 +1034,7 @@ export default function EchoRoomGPU() {
           <button
             onClick={startCamera}
             disabled={cameraState === "loading" || cameraState === "on"}
-            className="min-h-[44px] rounded-lg border border-white/25 bg-white/5 px-4 py-2.5 text-base font-medium text-white/90 transition hover:bg-white/10 disabled:opacity-50"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
           >
             {cameraState === "on"
               ? "Camera live"
@@ -1045,27 +1045,27 @@ export default function EchoRoomGPU() {
 
           <button
             onClick={clearAll}
-            className="min-h-[44px] rounded-lg border border-white/20 bg-transparent px-4 py-2.5 text-base font-medium text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base font-medium text-muted-foreground transition hover:bg-accent"
           >
             Clear all
           </button>
 
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-transparent px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
           >
             Design notes
           </button>
 
-          <div className="ml-auto flex items-center gap-4 font-mono text-base text-white/75">
+          <div className="ml-auto flex items-center gap-4 font-mono text-base text-muted-foreground">
             <span>
-              ghosts <span className="text-white/95">{ghostCount}</span>/{MAX_GHOSTS}
+              ghosts <span className="text-foreground">{ghostCount}</span>/{MAX_GHOSTS}
             </span>
             <span>
-              chord <span className="text-amber-300/90">{nowChord}</span>
+              chord <span className="text-violet-300/90">{nowChord}</span>
             </span>
             <span className="hidden sm:inline">
-              render <span className="text-white/95">{rendererKind}</span>
+              render <span className="text-foreground">{rendererKind}</span>
             </span>
           </div>
         </div>
@@ -1073,7 +1073,7 @@ export default function EchoRoomGPU() {
         {notice && (
           <p
             className={`mt-3 text-base ${
-              cameraState === "error" ? "text-rose-300" : "text-white/75"
+              cameraState === "error" ? "text-violet-300" : "text-muted-foreground"
             }`}
           >
             {notice}
@@ -1084,37 +1084,37 @@ export default function EchoRoomGPU() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 p-6">
-          <div className="max-w-lg rounded-xl border border-white/15 bg-[#171009] p-6 text-base text-white/80 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-w-lg rounded-xl border border-border bg-[#171009] p-6 text-base text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>
-                <span className="text-white/95">Position → harmony:</span> the room&rsquo;s x-axis walks a
+                <span className="text-foreground">Position → harmony:</span> the room&rsquo;s x-axis walks a
                 voice-led diatonic neighbourhood in C major (I &middot; vi &middot; IV &middot; ii &middot; V &middot; iii). The y-axis
                 chooses the voicing/inversion and register. Real functional harmony, not a
                 no-wrong-notes scale.
               </li>
               <li>
-                <span className="text-white/95">Loop / ghost:</span> &ldquo;Start a loop&rdquo;
+                <span className="text-foreground">Loop / ghost:</span> &ldquo;Start a loop&rdquo;
                 records your path for one {BAR_SECONDS}s bar. It becomes a permanent ghost that loops
                 forever, re-sounding its chord at its moving position. Up to {MAX_GHOSTS}; oldest
                 drops.
               </li>
               <li>
-                <span className="text-white/95">Spatial audio:</span> each ghost owns an HRTF
+                <span className="text-foreground">Spatial audio:</span> each ghost owns an HRTF
                 PannerNode; your position is the AudioListener, so the ensemble re-pans as you move.
               </li>
               <li>
-                <span className="text-white/95">Render:</span> hand-written WGSL particle field
+                <span className="text-foreground">Render:</span> hand-written WGSL particle field
                 (WebGPU), falling back to WebGL2 points then Canvas2D — always showing the ghosts.
               </li>
               <li>
-                <span className="text-white/95">Input:</span> MediaPipe Pose torso centroid, falling
+                <span className="text-foreground">Input:</span> MediaPipe Pose torso centroid, falling
                 back to pointer, with a zero-hardware auto-demo on load.
               </li>
             </ul>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/90 px-4 py-2.5 text-base font-medium text-[#1a1209] hover:bg-white"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-[#1a1209] hover:bg-card"
             >
               Close
             </button>

@@ -397,11 +397,11 @@ export default function ConceptSteer() {
 
       {/* Title */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 text-center pointer-events-none">
-        <div className="text-[10px] tracking-[0.2em] uppercase text-white/30 mb-1">
+        <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/70 mb-1">
           Concept Steer
         </div>
         {playing && (
-          <div className="text-[11px] text-white/40 tracking-wider">{hudText}</div>
+          <div className="text-[11px] text-muted-foreground/70 tracking-wider">{hudText}</div>
         )}
       </div>
 
@@ -410,10 +410,10 @@ export default function ConceptSteer() {
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <div className="pointer-events-auto text-center px-6">
             <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Concept Steer</h1>
-            <p className="text-sm text-white/50 max-w-sm mb-2 leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-sm mb-2 leading-relaxed">
               Navigate music as a space of named concepts.
             </p>
-            <p className="text-xs text-white/35 max-xs mb-5 leading-relaxed">
+            <p className="text-xs text-muted-foreground/70 max-xs mb-5 leading-relaxed">
               Six axes derived from music AI internal representations:
               <br />Brightness · Density · Regularity · Complexity · Energy · Mode.
               <br />Drag any handle on the radar chart. The synthesizer follows.
@@ -423,7 +423,7 @@ export default function ConceptSteer() {
                 <button
                   key={name}
                   onClick={() => { valsRef.current = [...PRESETS[name]]; }}
-                  className="px-3 py-1.5 text-xs tracking-wide border border-white/20 rounded hover:bg-white/5 hover:border-white/40 transition"
+                  className="px-3 py-1.5 text-xs tracking-wide border border-border rounded hover:bg-accent hover:border-border transition"
                 >
                   {name}
                 </button>
@@ -431,11 +431,11 @@ export default function ConceptSteer() {
             </div>
             <button
               onClick={startPlaying}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               ▶ Play
             </button>
-            <Link href="/dream" className="block mt-8 text-[11px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="block mt-8 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back to dream sandbox
             </Link>
           </div>
@@ -450,7 +450,7 @@ export default function ConceptSteer() {
               <button
                 key={name}
                 onClick={() => { valsRef.current = [...PRESETS[name]]; }}
-                className="px-2 py-1 text-[10px] tracking-wide border border-white/15 rounded hover:bg-white/5 hover:border-white/35 transition"
+                className="px-2 py-1 text-[10px] tracking-wide border border-border rounded hover:bg-accent hover:border-border transition"
               >
                 {name}
               </button>
@@ -458,18 +458,18 @@ export default function ConceptSteer() {
           </div>
           <button
             onClick={stopPlaying}
-            className="text-[10px] tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+            className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
           >
             stop
           </button>
-          <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back
           </Link>
         </div>
       )}
 
       {/* Route label */}
-      <div className="absolute bottom-4 left-4 text-[10px] text-white/20 pointer-events-none select-none">
+      <div className="absolute bottom-4 left-4 text-[10px] text-muted-foreground/70 pointer-events-none select-none">
         /dream/52-concept-steer
       </div>
     </div>

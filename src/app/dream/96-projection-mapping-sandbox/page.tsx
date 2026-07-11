@@ -598,9 +598,9 @@ export default function ProjectionMappingSandbox() {
   if (gpuOk === false) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 p-8 text-center">
-        <p className="text-white/75 text-lg">WebGPU not available in this browser.</p>
-        <p className="text-white/55 text-sm">Try Chrome 113+ or Edge 113+ on desktop.</p>
-        <Link href="/dream" className="text-white/55 text-sm underline mt-4">← back to dream</Link>
+        <p className="text-muted-foreground text-lg">WebGPU not available in this browser.</p>
+        <p className="text-muted-foreground text-sm">Try Chrome 113+ or Edge 113+ on desktop.</p>
+        <Link href="/dream" className="text-muted-foreground text-sm underline mt-4">← back to dream</Link>
       </div>
     );
   }
@@ -611,11 +611,11 @@ export default function ProjectionMappingSandbox() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
       {/* Header */}
-      <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-white/10">
-        <Link href="/dream" className="text-white/55 text-sm hover:text-white/80 transition-colors">
+      <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-border">
+        <Link href="/dream" className="text-muted-foreground text-sm hover:text-foreground transition-colors">
           ← dream
         </Link>
-        <span className="text-white/95 text-sm font-medium">96 · Projection Mapping Sandbox</span>
+        <span className="text-foreground text-sm font-medium">96 · Projection Mapping Sandbox</span>
 
         <div className="flex gap-1 ml-auto">
           {THEME_NAMES.map((name, i) => (
@@ -623,7 +623,7 @@ export default function ProjectionMappingSandbox() {
               key={name}
               onClick={() => setTheme(i)}
               className={`px-3 py-1 rounded text-xs transition-colors ${
-                theme === i ? "bg-white/20 text-white/95" : "text-white/55 hover:text-white/80"
+                theme === i ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {name}
@@ -634,7 +634,7 @@ export default function ProjectionMappingSandbox() {
         <button
           onClick={() => setCalibrating(c => !c)}
           className={`px-3 py-1 rounded text-xs transition-colors ${
-            calibrating ? "bg-violet-500/40 text-violet-200" : "text-white/55 hover:text-white/80"
+            calibrating ? "bg-violet-500/40 text-violet-200" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           {calibrating ? "● Calibrating" : "Calibrate"}
@@ -716,21 +716,21 @@ export default function ProjectionMappingSandbox() {
           {/* GPU loading */}
           {gpuOk === null && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-white/40 text-sm">Initialising WebGPU…</span>
+              <span className="text-muted-foreground/70 text-sm">Initialising WebGPU…</span>
             </div>
           )}
         </div>
 
         {/* Sidebar */}
-        <div className="w-56 border-l border-white/10 flex flex-col gap-5 p-4 overflow-y-auto shrink-0">
+        <div className="w-56 border-l border-border flex flex-col gap-5 p-4 overflow-y-auto shrink-0">
           {/* Audio */}
           <div className="flex flex-col gap-2">
-            <p className="text-white/55 text-xs uppercase tracking-wider">Audio</p>
+            <p className="text-muted-foreground text-xs uppercase tracking-wider">Audio</p>
             <div className="flex flex-col gap-1">
               <button
                 onClick={() => { setMode("demo"); modeRef.current = "demo"; stopAudio(); }}
                 className={`w-full py-1.5 rounded text-xs transition-colors ${
-                  mode === "demo" ? "bg-white/20 text-white/95" : "text-white/55 hover:text-white/80"
+                  mode === "demo" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Demo
@@ -744,35 +744,35 @@ export default function ProjectionMappingSandbox() {
                   }
                 }}
                 className={`w-full py-1.5 rounded text-xs transition-colors ${
-                  mode === "mic" ? "bg-emerald-500/30 text-emerald-300" : "text-white/55 hover:text-white/80"
+                  mode === "mic" ? "bg-violet-500/30 text-violet-300" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {mode === "mic" ? "● Mic On" : "Mic Input"}
               </button>
             </div>
-            {micError && <p className="text-red-400/80 text-xs">{micError}</p>}
+            {micError && <p className="text-destructive/80 text-xs">{micError}</p>}
           </div>
 
           {/* Controls */}
           <div className="flex flex-col gap-3">
-            <p className="text-white/55 text-xs uppercase tracking-wider">Feedback</p>
+            <p className="text-muted-foreground text-xs uppercase tracking-wider">Feedback</p>
 
             <label className="flex flex-col gap-1">
-              <span className="text-white/75 text-xs">Rotation <span className="text-white/40">{rotSpeed.toFixed(2)}</span></span>
+              <span className="text-muted-foreground text-xs">Rotation <span className="text-muted-foreground/70">{rotSpeed.toFixed(2)}</span></span>
               <input type="range" min={-1} max={1} step={0.01} value={rotSpeed}
                 onChange={e => setRotSpeed(parseFloat(e.target.value))}
                 className="w-full accent-violet-400" />
             </label>
 
             <label className="flex flex-col gap-1">
-              <span className="text-white/75 text-xs">Zoom <span className="text-white/40">{zoom.toFixed(4)}</span></span>
+              <span className="text-muted-foreground text-xs">Zoom <span className="text-muted-foreground/70">{zoom.toFixed(4)}</span></span>
               <input type="range" min={0.990} max={1.020} step={0.0005} value={zoom}
                 onChange={e => setZoom(parseFloat(e.target.value))}
                 className="w-full accent-violet-400" />
             </label>
 
             <label className="flex flex-col gap-1">
-              <span className="text-white/75 text-xs">Decay <span className="text-white/40">{decay.toFixed(3)}</span></span>
+              <span className="text-muted-foreground text-xs">Decay <span className="text-muted-foreground/70">{decay.toFixed(3)}</span></span>
               <input type="range" min={0.90} max={0.999} step={0.001} value={decay}
                 onChange={e => setDecay(parseFloat(e.target.value))}
                 className="w-full accent-violet-400" />
@@ -780,26 +780,26 @@ export default function ProjectionMappingSandbox() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="text-white/55 text-xs uppercase tracking-wider">Warp</p>
+            <p className="text-muted-foreground text-xs uppercase tracking-wider">Warp</p>
 
             <label className="flex flex-col gap-1">
-              <span className="text-white/75 text-xs">Edge blend <span className="text-white/40">{(blend * 100).toFixed(0)}%</span></span>
+              <span className="text-muted-foreground text-xs">Edge blend <span className="text-muted-foreground/70">{(blend * 100).toFixed(0)}%</span></span>
               <input type="range" min={0} max={0.25} step={0.005} value={blend}
                 onChange={e => setBlend(parseFloat(e.target.value))}
-                className="w-full accent-cyan-400" />
+                className="w-full accent-violet-400" />
             </label>
 
             <button
               onClick={resetCorners}
-              className="w-full py-1.5 rounded text-xs text-white/55 hover:text-white/80 transition-colors border border-white/10"
+              className="w-full py-1.5 rounded text-xs text-muted-foreground hover:text-foreground transition-colors border border-border"
             >
               Reset corners
             </button>
           </div>
 
           {/* About */}
-          <div className="mt-auto pt-3 border-t border-white/10">
-            <p className="text-white/40 text-xs leading-relaxed">
+          <div className="mt-auto pt-3 border-t border-border">
+            <p className="text-muted-foreground/70 text-xs leading-relaxed">
               Drag the{" "}
               <span style={{ color: CORNER_COLORS[0] }}>TL</span>,{" "}
               <span style={{ color: CORNER_COLORS[1] }}>TR</span>,{" "}

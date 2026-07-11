@@ -280,10 +280,10 @@ export default function Page() {
     setScrubOn(false);
   };
 
-  const accent = readout.scrubbing ? "text-amber-300" : "text-violet-300";
+  const accent = readout.scrubbing ? "text-violet-300" : "text-violet-300";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* WebGL2 sky canvas */}
       <canvas
         ref={canvasRef}
@@ -296,10 +296,10 @@ export default function Page() {
 
       {/* ---- header / title ---- */}
       <div className="relative z-10 flex flex-col gap-1 px-5 pt-6 sm:px-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           The Place Where You Go to Listen
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           A long-form piece scored by your real local sky — the clock hour, the
           sun&apos;s position, the moon&apos;s phase, the season. It is
           genuinely different at 3am than at noon.
@@ -322,12 +322,12 @@ export default function Page() {
         <Readout
           label="moon"
           value={`${Math.round(readout.moon * 100)}% lit`}
-          accent="text-emerald-300"
+          accent="text-violet-300"
         />
         <Readout
           label="season"
           value={readout.season}
-          accent="text-emerald-300"
+          accent="text-violet-300"
         />
         <Readout
           label="place"
@@ -336,24 +336,24 @@ export default function Page() {
               ? `${place.lat.toFixed(2)}, ${place.lon.toFixed(2)}`
               : "fallback 61.2, -149.9"
           }
-          accent="text-white/75"
+          accent="text-muted-foreground"
         />
       </div>
 
       {/* mood line */}
       <div className="relative z-10 mt-5 px-5 sm:px-8">
-        <p className="font-mono text-base text-white/95">
-          <span className="text-white/55">mood · </span>
+        <p className="font-mono text-base text-foreground">
+          <span className="text-muted-foreground">mood · </span>
           <span className={accent}>{readout.mood}</span>
           {readout.scrubbing && (
-            <span className="text-amber-300"> · (scrubbing)</span>
+            <span className="text-violet-300"> · (scrubbing)</span>
           )}
         </p>
       </div>
 
       {glFailed && (
         <div className="relative z-10 mt-4 px-5 sm:px-8">
-          <p className="max-w-xl text-base text-rose-300">
+          <p className="max-w-xl text-base text-violet-300">
             WebGL2 is unavailable in this browser, so the sky field can&apos;t be
             drawn — but the music is still playing and tracking the real sky.
           </p>
@@ -361,12 +361,12 @@ export default function Page() {
       )}
 
       {/* ---- time scrubber ---- */}
-      <div className="absolute inset-x-0 bottom-0 z-10 border-t border-white/10 bg-black/55 px-5 pb-7 pt-4 backdrop-blur-sm sm:px-8">
+      <div className="absolute inset-x-0 bottom-0 z-10 border-t border-border bg-black/55 px-5 pb-7 pt-4 backdrop-blur-sm sm:px-8">
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-mono text-base text-white/75">
+            <p className="font-mono text-base text-muted-foreground">
               time scrubber{" "}
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 — drag to fast-forward the day &amp; year
               </span>
             </p>
@@ -376,8 +376,8 @@ export default function Page() {
               disabled={!scrubOn}
               className={`min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base transition ${
                 scrubOn
-                  ? "bg-amber-300/20 text-amber-300 hover:bg-amber-300/30"
-                  : "cursor-default bg-white/5 text-white/55"
+                  ? "bg-violet-300/20 text-violet-300 hover:bg-violet-300/30"
+                  : "cursor-default bg-muted text-muted-foreground"
               }`}
             >
               {scrubOn ? "return to now" : "tracking now"}
@@ -385,9 +385,9 @@ export default function Page() {
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-base text-white/75">
+            <span className="font-mono text-base text-muted-foreground">
               hour of day ·{" "}
-              <span className={scrubOn ? "text-amber-300" : "text-violet-300"}>
+              <span className={scrubOn ? "text-violet-300" : "text-violet-300"}>
                 {scrubOn ? formatClock(hourSlider / 60) : "live"}
               </span>
             </span>
@@ -398,15 +398,15 @@ export default function Page() {
               step={1}
               value={hourSlider}
               onChange={onHourChange}
-              className="h-11 w-full cursor-pointer accent-amber-300"
+              className="h-11 w-full cursor-pointer accent-violet-300"
               aria-label="hour of day scrubber"
             />
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-base text-white/75">
+            <span className="font-mono text-base text-muted-foreground">
               day of year ·{" "}
-              <span className={scrubOn ? "text-amber-300" : "text-emerald-300"}>
+              <span className={scrubOn ? "text-violet-300" : "text-violet-300"}>
                 {scrubOn ? `day ${daySlider + 1}` : "live"}
               </span>
             </span>
@@ -417,7 +417,7 @@ export default function Page() {
               step={1}
               value={daySlider}
               onChange={onDayChange}
-              className="h-11 w-full cursor-pointer accent-emerald-300"
+              className="h-11 w-full cursor-pointer accent-violet-300"
               aria-label="day of year scrubber"
             />
           </label>
@@ -446,7 +446,7 @@ export default function Page() {
             "Read the design notes in README.md inside src/app/dream/347-the-place/",
           );
         }}
-        className="absolute right-4 top-4 z-10 font-mono text-base text-white/55 underline decoration-white/30 underline-offset-4 hover:text-white/75"
+        className="absolute right-4 top-4 z-10 font-mono text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-muted-foreground"
       >
         Read the design notes
       </Link>
@@ -465,7 +465,7 @@ function Readout({
 }) {
   return (
     <div className="flex flex-col">
-      <span className="text-white/55">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <span className={`${accent} tabular-nums`}>{value}</span>
     </div>
   );

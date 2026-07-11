@@ -550,16 +550,16 @@ export default function KidsMirrorPets() {
       {/* Start gate (one big button, no reading needed to play) */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-[#06010f]">
-          <h1 className="text-2xl font-bold text-white/95 px-4 text-center">
+          <h1 className="text-2xl font-bold text-foreground px-4 text-center">
             Mirror Pets
           </h1>
-          <p className="text-base text-white/75 px-6 text-center max-w-sm">
+          <p className="text-base text-muted-foreground px-6 text-center max-w-sm">
             Move and make faces — a swarm of little singing pets becomes your
             reflection.
           </p>
           <button
             onClick={() => setStarted(true)}
-            className="min-h-[88px] min-w-[88px] px-10 py-6 rounded-full bg-violet-500/30 border-2 border-violet-300 text-white text-2xl font-bold shadow-lg hover:bg-violet-500/50 transition-colors"
+            className="min-h-[88px] min-w-[88px] px-10 py-6 rounded-full bg-violet-500/30 border-2 border-violet-300 text-foreground text-2xl font-bold shadow-lg hover:bg-violet-500/50 transition-colors"
           >
             ✦ Start ✦
           </button>
@@ -569,7 +569,7 @@ export default function KidsMirrorPets() {
       {/* graceful-degradation status message */}
       {statusMsg && started && (
         <div className="absolute top-0 left-0 right-0 p-4 text-center pointer-events-none">
-          <p className="text-base text-rose-300">{statusMsg}</p>
+          <p className="text-base text-violet-300">{statusMsg}</p>
         </div>
       )}
 
@@ -579,13 +579,13 @@ export default function KidsMirrorPets() {
           href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/258-kids-mirror-pets/README.md"
           target="_blank"
           rel="noreferrer"
-          className="text-white/75 text-sm hover:text-white transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           design notes
         </a>
         <Link
           href="/dream"
-          className="text-white/75 text-sm hover:text-white transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>

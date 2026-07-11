@@ -339,19 +339,19 @@ export default function MarpiVoid() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Void Organism</h1>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             A living entity breathes in the void. Arms extend on bass energy, curl on
             treble jitter. Percussive onsets spawn offspring — play long enough and a
             drifting colony fills the space.
           </p>
-          <p className="text-sm text-white/55 max-w-md mb-8">
+          <p className="text-sm text-muted-foreground max-w-md mb-8">
             Inspired by Marpi Studio&apos;s{" "}
             <em>New Nature</em> (ARTECHOUSE 2026).
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
             >
               Demo (no mic)
             </button>
@@ -363,11 +363,11 @@ export default function MarpiVoid() {
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-sm text-rose-300 max-w-sm">{error}</p>
+            <p className="mt-4 text-sm text-violet-300 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-xs text-white/30 hover:text-white/60"
+            className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -376,22 +376,22 @@ export default function MarpiVoid() {
 
       {mode !== "idle" && (
         <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
-          <div className="text-xs text-white/55 tracking-wider">
+          <div className="text-xs text-muted-foreground tracking-wider">
             {mode.toUpperCase()} &middot;{" "}
             {orgCount} organism{orgCount !== 1 ? "s" : ""}
           </div>
           {mode === "mic" && !running && error && (
-            <p className="text-xs text-rose-300 max-w-[180px] text-right">{error}</p>
+            <p className="text-xs text-violet-300 max-w-[180px] text-right">{error}</p>
           )}
           <button
             onClick={stopAll}
-            className="text-xs tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+            className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
           >
             stop
           </button>
           <Link
             href="/dream"
-            className="text-xs text-white/30 hover:text-white/60"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back
           </Link>

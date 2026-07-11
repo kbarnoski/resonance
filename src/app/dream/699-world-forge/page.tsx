@@ -143,7 +143,7 @@ export default function WorldForgePage() {
         : "warming up — synthetic world (live feed connecting)";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#03060f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#03060f] text-foreground">
       {/* visual layer */}
       <div ref={mountRef} className="absolute inset-0 z-0" aria-hidden />
       <canvas
@@ -170,21 +170,21 @@ export default function WorldForgePage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-violet-300">
             Resonance · 699
           </p>
-          <h1 className="font-serif text-4xl text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
             World Forge
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground">
             Hear and see the whole planet making things right now — every code
             push, star, and merge on Earth as a spark of light and a grain of
             sound, blooming at its place on a slowly turning globe.
           </p>
           <button
             onClick={begin}
-            className="mt-8 min-h-[44px] rounded-full border border-violet-300/40 bg-violet-300/10 px-8 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-300/20"
+            className="mt-8 min-h-[44px] rounded-full border border-violet-300/40 bg-violet-300/10 px-8 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-300/20"
           >
             Begin
           </button>
-          <p className="mt-4 font-mono text-xs text-white/55">
+          <p className="mt-4 font-mono text-xs text-muted-foreground">
             sound + visuals · headphones invite the texture in
           </p>
         </div>
@@ -193,19 +193,19 @@ export default function WorldForgePage() {
       {/* ── live HUD ─────────────────────────────────────────────────── */}
       {started && (
         <div className="pointer-events-none absolute left-0 right-0 top-0 z-20 flex flex-col gap-2 p-5">
-          <h1 className="font-serif text-2xl text-white/95">World Forge</h1>
+          <h1 className="font-serif text-2xl text-foreground">World Forge</h1>
           <p
             className={`font-mono text-sm ${
               status === "live"
-                ? "text-emerald-300/95"
+                ? "text-violet-300/95"
                 : status === "error"
-                  ? "text-amber-300/95"
-                  : "text-white/75"
+                  ? "text-violet-300/95"
+                  : "text-muted-foreground"
             }`}
           >
             {statusLine}
           </p>
-          <p className="font-mono text-xs text-white/55">
+          <p className="font-mono text-xs text-muted-foreground">
             {rate} events in the last 12s · {eventCount} sparks so far
             {lastEvent
               ? ` · latest: ${TYPE_LABEL[lastEvent.type] ?? lastEvent.type} · ${lastEvent.repo}`
@@ -217,15 +217,15 @@ export default function WorldForgePage() {
       {/* ── design notes toggle ──────────────────────────────────────── */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-16 right-4 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute bottom-16 right-4 z-30 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         {showNotes ? "close notes" : "design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute inset-x-4 bottom-28 z-30 mx-auto max-w-2xl rounded-2xl border border-white/10 bg-black/85 p-6 backdrop-blur-md">
-          <h2 className="font-serif text-xl text-white/95">Design notes</h2>
-          <p className="mt-3 text-base leading-relaxed text-white/80">
+        <div className="absolute inset-x-4 bottom-28 z-30 mx-auto max-w-2xl rounded-2xl border border-border bg-black/85 p-6 backdrop-blur-md">
+          <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+          <p className="mt-3 text-base leading-relaxed text-foreground">
             World Forge sonifies the live global creation firehose — GitHub&apos;s
             unauthenticated public-events stream. Each event is one grain: its
             type chooses a timbre (a push is a soft bell, a star a bright
@@ -236,19 +236,19 @@ export default function WorldForgePage() {
             placed at a deterministic pseudo geo-location and panned by
             longitude — texture, not accuracy.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/80">
+          <p className="mt-3 text-base leading-relaxed text-foreground">
             A synthetic world starts the instant you press Begin, with zero
             network, and the piece upgrades to live data on the first
             successful poll (at most once per ~78s to respect the keyless
             rate limit). Any error falls back to synthetic, so it plays
             forever.
           </p>
-          <p className="mt-3 text-sm leading-relaxed text-white/55">
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Lineage: Hatnote&apos;s &ldquo;Listen to Wikipedia&rdquo; (Stephen
             LaPorte &amp; Mahmoud Hashemi), github.audio, Brian Foo&apos;s
             Data-Driven DJ, and Refik Anadol&apos;s planetary data-as-light.
           </p>
-          <p className="mt-3 font-mono text-xs text-emerald-300/95">
+          <p className="mt-3 font-mono text-xs text-violet-300/95">
             render: {renderMode === "webgl"
               ? "three.js / WebGL globe"
               : renderMode === "canvas"

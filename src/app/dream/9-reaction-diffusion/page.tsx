@@ -477,7 +477,7 @@ export default function ReactionDiffusionPage() {
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <p className="text-rose-300/80 text-sm max-w-sm text-center leading-relaxed">
+          <p className="text-violet-300/80 text-sm max-w-sm text-center leading-relaxed">
             {glError}
           </p>
         </div>
@@ -487,12 +487,12 @@ export default function ReactionDiffusionPage() {
       {!running && !glError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Reaction Diffusion</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             Two chemicals: a substrate and an activator. The activator feeds on the
             substrate and diffuses slowly. Patterns — spots, coral, fingerprints, mazes
             — emerge from nothing but diffusion rates.
           </p>
-          <p className="text-sm text-white/40 max-w-md mb-5 leading-relaxed">
+          <p className="text-sm text-muted-foreground/70 max-w-md mb-5 leading-relaxed">
             Bass raises the feed rate (more activation). Treble raises the kill rate
             (pattern erosion). Percussive hits inject new seed blobs. Click the canvas
             to inject manually.
@@ -506,8 +506,8 @@ export default function ReactionDiffusionPage() {
                 onClick={() => setPreset(i)}
                 className={`px-3 py-1.5 text-xs tracking-wider uppercase border rounded transition ${
                   preset === i
-                    ? "border-teal-400/60 text-teal-200 bg-teal-900/20"
-                    : "border-white/20 text-white/50 hover:border-white/40 hover:text-white/80"
+                    ? "border-violet-400/60 text-violet-200 bg-violet-900/20"
+                    : "border-border text-muted-foreground hover:border-border hover:text-foreground"
                 }`}
               >
                 {p.name}
@@ -518,25 +518,25 @@ export default function ReactionDiffusionPage() {
           <div className="flex gap-3 mb-8">
             <button
               onClick={launchDemo}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={launchMic}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
 
           {micError && (
-            <p className="text-xs text-rose-300/80 max-w-sm mb-4">{micError}</p>
+            <p className="text-xs text-violet-300/80 max-w-sm mb-4">{micError}</p>
           )}
 
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/60 transition"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             ← back to dream sandbox
           </Link>
@@ -547,7 +547,7 @@ export default function ReactionDiffusionPage() {
       {running && (
         <>
           {/* Top-right: FPS + mode */}
-          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-white/35 space-y-0.5 pointer-events-none select-none">
+          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none select-none">
             <div>{fps} fps</div>
             <div className="uppercase">{audioMode}</div>
           </div>
@@ -560,8 +560,8 @@ export default function ReactionDiffusionPage() {
                 onClick={() => setPreset(i)}
                 className={`px-2 py-1 text-[9px] tracking-wider uppercase border rounded transition ${
                   preset === i
-                    ? "border-teal-400/50 text-teal-300"
-                    : "border-white/15 text-white/35 hover:border-white/40 hover:text-white/70"
+                    ? "border-violet-400/50 text-violet-300"
+                    : "border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground"
                 }`}
               >
                 {p.name}
@@ -571,18 +571,18 @@ export default function ReactionDiffusionPage() {
 
           {/* Bottom-right: controls */}
           <div className="absolute bottom-3 right-3 flex flex-col items-end gap-1.5">
-            <p className="text-[9px] text-white/25 tracking-wider">
+            <p className="text-[9px] text-muted-foreground/70 tracking-wider">
               click canvas to inject
             </p>
             <button
               onClick={stopAll}
-              className="text-[10px] tracking-wider uppercase text-white/55 border border-white/20 hover:border-white/60 hover:text-white px-2.5 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
             >
               stop
             </button>
             <Link
               href="/dream"
-              className="text-[10px] text-white/30 hover:text-white/60 transition"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
             >
               ← back
             </Link>

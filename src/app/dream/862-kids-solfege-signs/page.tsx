@@ -379,17 +379,17 @@ export default function KidsSolfegeSigns() {
         : "idle";
 
   return (
-    <div className="min-h-screen bg-[#070611] text-white px-5 py-8 sm:px-8">
+    <div className="min-h-screen bg-[#070611] text-foreground px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-3xl">
         <Link href="/dream" className="text-violet-300 text-base hover:underline">
           ← back to the dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-white">
+        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-foreground">
           Sing With Your Hand{" "}
           <span className="text-violet-300">(solfège signs)</span>
         </h1>
-        <p className="mt-3 text-base text-white/80 leading-relaxed">
+        <p className="mt-3 text-base text-foreground leading-relaxed">
           Make the classic music-teacher hand-signs in the air — a fist is{" "}
           <em>do</em>, a flat hand is <em>mi</em>, a pointing finger is{" "}
           <em>ti</em> — and a choir of glowing creatures sings that note back.
@@ -406,7 +406,7 @@ export default function KidsSolfegeSigns() {
         </button>
 
         {showNotes && (
-          <div className="mt-3 rounded-lg border border-violet-500/20 bg-violet-500/5 p-4 text-base text-white/80 leading-relaxed space-y-2">
+          <div className="mt-3 rounded-lg border border-violet-500/20 bg-violet-500/5 p-4 text-base text-foreground leading-relaxed space-y-2">
             <p>
               These are the Curwen hand-signs (John Curwen, 1870) used in the
               Kodály method by music teachers worldwide to teach pitch with the
@@ -439,7 +439,7 @@ export default function KidsSolfegeSigns() {
             <button
               type="button"
               onClick={stopAndReset}
-              className="min-h-[44px] px-4 py-2.5 rounded-md bg-white/10 text-white/80 border border-white/20 hover:bg-white/20 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-md bg-muted text-foreground border border-border hover:bg-accent transition-colors"
             >
               Stop
             </button>
@@ -450,10 +450,10 @@ export default function KidsSolfegeSigns() {
         </div>
 
         {notice && (
-          <p className="mt-4 text-rose-300 text-base leading-relaxed">{notice}</p>
+          <p className="mt-4 text-violet-300 text-base leading-relaxed">{notice}</p>
         )}
 
-        <div className="mt-5 relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black">
+        <div className="mt-5 relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-black">
           <canvas
             ref={glCanvasRef}
             className="absolute inset-0 h-full w-full"
@@ -461,10 +461,10 @@ export default function KidsSolfegeSigns() {
           {/* tiny Canvas2D hand-skeleton HUD — the ONLY 2D, top-right corner */}
           <canvas
             ref={hudCanvasRef}
-            className="absolute right-2 top-2 h-[28%] w-[28%] rounded-lg border border-white/15 bg-black/30"
+            className="absolute right-2 top-2 h-[28%] w-[28%] rounded-lg border border-border bg-black/30"
           />
           {!running && (
-            <div className="absolute inset-0 flex items-center justify-center text-white/75 text-base">
+            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-base">
               Press Start to wake the choir.
             </div>
           )}
@@ -476,7 +476,7 @@ export default function KidsSolfegeSigns() {
         {/* big tap-sign buttons — fully playable with zero camera */}
         {running && (
           <div className="mt-5">
-            <p className="text-base text-white/75 mb-2">
+            <p className="text-base text-muted-foreground mb-2">
               Tap and hold a sign to sing it:
             </p>
             <div className="flex flex-wrap gap-2.5">
@@ -517,7 +517,7 @@ export default function KidsSolfegeSigns() {
         )}
 
         {running && (
-          <p className="mt-5 text-base text-white/80 leading-relaxed">
+          <p className="mt-5 text-base text-foreground leading-relaxed">
             No camera? The ghost hand is already singing a little tune. Tap and
             hold the big colored signs above to sing your own melody — every note
             is in tune, so there are no wrong notes.

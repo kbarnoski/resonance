@@ -304,20 +304,20 @@ export default function GeminiVoiceLabPage() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#080808] text-white font-mono px-4 py-8">
+    <div className="min-h-screen bg-[#080808] text-foreground font-mono px-4 py-8">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="flex justify-between items-baseline mb-1">
           <h1 className="text-lg font-bold tracking-wide">Ghost Voice Lab</h1>
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           A/B style test for Gemini TTS. Edit the style instructions, generate each variant,
           compare them, and vote. Votes accumulate per scene across sessions.{" "}
-          <span className="text-white/25">Wear headphones.</span>
+          <span className="text-muted-foreground/70">Wear headphones.</span>
         </p>
 
         {/* Scene selector */}
@@ -334,7 +334,7 @@ export default function GeminiVoiceLabPage() {
               className={
                 "px-3 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                 (i !== sceneIdx
-                  ? "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70"
+                  ? "border-border text-muted-foreground hover:border-border hover:text-muted-foreground"
                   : "")
               }
             >
@@ -344,7 +344,7 @@ export default function GeminiVoiceLabPage() {
         </div>
 
         {/* Quote */}
-        <div className="text-center mb-6 py-3 px-4 border border-white/8 rounded-lg">
+        <div className="text-center mb-6 py-3 px-4 border border-border rounded-lg">
           <p className="text-[14px] italic leading-relaxed" style={{ color: scene.accent + "cc" }}>
             &ldquo;{scene.line}&rdquo;
           </p>
@@ -380,7 +380,7 @@ export default function GeminiVoiceLabPage() {
                       </span>
                     )}
                     {v.audioBuf && (
-                      <span className="text-[10px] text-white/30">
+                      <span className="text-[10px] text-muted-foreground/70">
                         {v.duration.toFixed(1)}s
                       </span>
                     )}
@@ -389,7 +389,7 @@ export default function GeminiVoiceLabPage() {
 
                 {/* Style instructions textarea */}
                 <div>
-                  <label className="text-[10px] text-white/35 block mb-1">
+                  <label className="text-[10px] text-muted-foreground/70 block mb-1">
                     style_instructions
                   </label>
                   <textarea
@@ -398,8 +398,8 @@ export default function GeminiVoiceLabPage() {
                     rows={3}
                     className={
                       "w-full bg-[#141414] border rounded px-2 py-1.5 " +
-                      "text-[11px] text-white/70 leading-relaxed resize-none " +
-                      "focus:outline-none focus:border-white/25 transition"
+                      "text-[11px] text-muted-foreground leading-relaxed resize-none " +
+                      "focus:outline-none focus:border-border transition"
                     }
                     style={{ borderColor: "rgba(255,255,255,0.10)" }}
                     placeholder="e.g. calm, androgynous, stone chamber reverb…"
@@ -412,7 +412,7 @@ export default function GeminiVoiceLabPage() {
                   disabled={v.loading}
                   className={
                     "px-3 py-2 border rounded text-[12px] tracking-wide " +
-                    "transition cursor-pointer hover:bg-white/5 " +
+                    "transition cursor-pointer hover:bg-accent " +
                     "disabled:opacity-40 disabled:cursor-not-allowed"
                   }
                   style={{
@@ -434,12 +434,12 @@ export default function GeminiVoiceLabPage() {
                   />
                   {!v.audioBuf && !v.loading && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-[10px] text-white/20">no audio yet</span>
+                      <span className="text-[10px] text-muted-foreground/70">no audio yet</span>
                     </div>
                   )}
                   {v.loading && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-[10px] text-white/35 animate-pulse">synthesizing…</span>
+                      <span className="text-[10px] text-muted-foreground/70 animate-pulse">synthesizing…</span>
                     </div>
                   )}
                 </div>
@@ -449,8 +449,8 @@ export default function GeminiVoiceLabPage() {
                   <button
                     onClick={() => handlePlay(variant)}
                     className={
-                      "px-3 py-1.5 border border-white/12 rounded text-[11px] " +
-                      "text-white/55 hover:text-white/90 hover:border-white/30 " +
+                      "px-3 py-1.5 border border-border rounded text-[11px] " +
+                      "text-muted-foreground hover:text-foreground hover:border-border " +
                       "transition cursor-pointer"
                     }
                     style={v.playing ? { borderColor: scene.accent + "50", color: scene.accent } : {}}
@@ -461,7 +461,7 @@ export default function GeminiVoiceLabPage() {
 
                 {/* Error */}
                 {v.error && (
-                  <div className="text-[10px] text-red-400 bg-red-950/30 rounded px-2 py-1.5 leading-relaxed">
+                  <div className="text-[10px] text-destructive bg-destructive/30 rounded px-2 py-1.5 leading-relaxed">
                     {v.error.slice(0, 260)}
                   </div>
                 )}
@@ -471,8 +471,8 @@ export default function GeminiVoiceLabPage() {
         </div>
 
         {/* Vote section */}
-        <div className="border border-white/8 rounded-lg p-4 mb-6">
-          <p className="text-[11px] text-white/40 mb-3">
+        <div className="border border-border rounded-lg p-4 mb-6">
+          <p className="text-[11px] text-muted-foreground/70 mb-3">
             Which style better captures the Ghost character for this scene?
           </p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -490,8 +490,8 @@ export default function GeminiVoiceLabPage() {
                 className={
                   "px-4 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                   (vote === choice
-                    ? "border-white/40 text-white bg-white/10"
-                    : "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70")
+                    ? "border-border text-foreground bg-muted"
+                    : "border-border text-muted-foreground hover:border-border hover:text-muted-foreground")
                 }
               >
                 {label}
@@ -500,17 +500,17 @@ export default function GeminiVoiceLabPage() {
           </div>
 
           {totalVotes > 0 && (
-            <div className="flex flex-wrap gap-5 text-[10px] text-white/35">
+            <div className="flex flex-wrap gap-5 text-[10px] text-muted-foreground/70">
               <span>A: {tally.A}</span>
               <span>B: {tally.B}</span>
               <span>Both: {tally.both}</span>
               <span>Try again: {tally.neither}</span>
-              <span className="text-white/20">({totalVotes} total for this scene)</span>
+              <span className="text-muted-foreground/70">({totalVotes} total for this scene)</span>
             </div>
           )}
 
           {vote === "neither" && (
-            <p className="mt-3 text-[11px] text-white/35">
+            <p className="mt-3 text-[11px] text-muted-foreground/70">
               Edit the style instructions above and generate again.
               The textarea is fully editable — try completely different directions.
             </p>
@@ -518,14 +518,14 @@ export default function GeminiVoiceLabPage() {
         </div>
 
         {/* Usage tips */}
-        <div className="text-[10px] text-white/25 leading-relaxed mb-6 border-l-2 border-white/8 pl-3">
+        <div className="text-[10px] text-muted-foreground/70 leading-relaxed mb-6 border-l-2 border-border pl-3">
           <p className="mb-1">Try swapping the default styles between A and B to isolate what each parameter does.</p>
           <p className="mb-1">Useful contrasts: slow/formal vs. breathy/intimate · flat affect vs. expressive · direct vs. distant.</p>
           <p>Votes are stored per-scene in localStorage — they persist across sessions.</p>
         </div>
 
         {/* Footer */}
-        <div className="flex justify-between text-[10px] text-white/20">
+        <div className="flex justify-between text-[10px] text-muted-foreground/70">
           <span>Gemini TTS · fal-ai/gemini-tts · FAL_KEY · ~$0.01 per generation pair</span>
           <span>design notes: src/app/dream/59-gemini-voice-lab/README.md</span>
         </div>

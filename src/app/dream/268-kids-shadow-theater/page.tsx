@@ -360,7 +360,7 @@ export default function ShadowTheaterPage() {
   const stageActors = actorsRef.current.filter((a) => a.alive);
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0b0717] text-white select-none">
+    <main className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0b0717] text-foreground select-none">
       {/* ── Lamp / screen backdrop (warm amber → deep indigo) ── */}
       <div
         className="absolute inset-0"
@@ -393,8 +393,8 @@ export default function ShadowTheaterPage() {
       {/* ── Header ── */}
       <header className="relative z-10 flex items-start justify-between gap-4 px-5 pt-5">
         <div>
-          <h1 className="font-serif text-2xl text-white drop-shadow sm:text-3xl">Shadow Theater</h1>
-          <p className="mt-1 max-w-md text-base text-white/80">
+          <h1 className="font-serif text-2xl text-foreground drop-shadow sm:text-3xl">Shadow Theater</h1>
+          <p className="mt-1 max-w-md text-base text-foreground">
             Tap a friendly puppet to send it onto the glowing screen — they sing together in an old
             Javanese gamelan tuning.
           </p>
@@ -402,7 +402,7 @@ export default function ShadowTheaterPage() {
         <nav className="flex shrink-0 flex-col items-end gap-2 text-base">
           <Link
             href="/dream"
-            className="min-h-[44px] rounded-lg bg-black/30 px-4 py-2.5 text-white/90 backdrop-blur hover:bg-black/45"
+            className="min-h-[44px] rounded-lg bg-black/30 px-4 py-2.5 text-foreground backdrop-blur hover:bg-black/45"
           >
             ← Gallery
           </Link>
@@ -410,7 +410,7 @@ export default function ShadowTheaterPage() {
             href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/268-kids-shadow-theater/README.md"
             target="_blank"
             rel="noreferrer"
-            className="text-base text-amber-300/95 hover:text-amber-200"
+            className="text-base text-violet-300/95 hover:text-violet-200"
           >
             Read the design notes
           </a>
@@ -419,12 +419,12 @@ export default function ShadowTheaterPage() {
 
       {/* ── Notices ── */}
       {audioFailed && (
-        <p className="relative z-10 mx-5 mt-3 rounded-lg bg-black/40 px-4 py-2.5 text-base text-rose-300">
+        <p className="relative z-10 mx-5 mt-3 rounded-lg bg-black/40 px-4 py-2.5 text-base text-violet-300">
           Sound is not available in this browser — but you can still play with the shadow puppets.
         </p>
       )}
       {!audioReady && !audioFailed && (
-        <p className="relative z-10 mx-5 mt-3 text-base text-white/75">
+        <p className="relative z-10 mx-5 mt-3 text-base text-muted-foreground">
           Tap any puppet to wake up the gamelan.
         </p>
       )}
@@ -490,8 +490,8 @@ export default function ShadowTheaterPage() {
               aria-pressed={active}
               className={`flex flex-col items-center rounded-2xl border-2 transition-transform duration-150 ${
                 active
-                  ? "scale-95 border-amber-300/90 bg-amber-300/10"
-                  : "border-white/10 bg-black/30 hover:bg-black/40"
+                  ? "scale-95 border-violet-300/90 bg-violet-300/10"
+                  : "border-border bg-black/30 hover:bg-black/40"
               }`}
               style={{
                 minWidth: 76,

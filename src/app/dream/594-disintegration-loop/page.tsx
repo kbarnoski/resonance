@@ -407,7 +407,7 @@ export default function DisintegrationLoop() {
     .padStart(2, "0");
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white/95">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* Visual canvas strip */}
       <div className="absolute inset-0 flex items-center justify-center">
         <CanvasStrip canvasRef={canvasRef} />
@@ -415,15 +415,15 @@ export default function DisintegrationLoop() {
 
       {/* Header */}
       <div className="relative z-10 px-6 pt-10 sm:px-10">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           The Disintegration Loop
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
           A recording that crumbles as it plays — re-recorded onto itself each
           pass until the music hollows into a ghost.
         </p>
         {errMsg && (
-          <p className="mt-3 max-w-xl text-base text-rose-300">{errMsg}</p>
+          <p className="mt-3 max-w-xl text-base text-violet-300">{errMsg}</p>
         )}
       </div>
 
@@ -443,7 +443,7 @@ export default function DisintegrationLoop() {
       {/* The one lever: vertical slider. Top = hold on, bottom = let go. */}
       {started && (
         <div className="absolute bottom-10 right-6 z-10 flex flex-col items-center sm:right-10">
-          <span className="mb-2 font-mono text-base text-white/75">hold on</span>
+          <span className="mb-2 font-mono text-base text-muted-foreground">hold on</span>
           <input
             type="range"
             min={0}
@@ -460,17 +460,17 @@ export default function DisintegrationLoop() {
               height: 200,
             }}
           />
-          <span className="mt-2 font-mono text-base text-white/55">let go</span>
+          <span className="mt-2 font-mono text-base text-muted-foreground">let go</span>
         </div>
       )}
 
       {/* Pass / elapsed indicator */}
       {started && (
-        <div className="absolute bottom-10 left-6 z-10 font-mono text-base text-white/75 sm:left-10">
+        <div className="absolute bottom-10 left-6 z-10 font-mono text-base text-muted-foreground sm:left-10">
           <div>
             pass <span className="text-violet-300">{pass}</span>
           </div>
-          <div className="text-white/55">
+          <div className="text-muted-foreground">
             {mins}:{secs} elapsed
           </div>
         </div>
@@ -479,34 +479,34 @@ export default function DisintegrationLoop() {
       {/* Design notes */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-10 z-30 font-mono text-base text-white/55 underline-offset-4 hover:text-white/75 hover:underline sm:right-10"
+        className="absolute right-6 top-10 z-30 font-mono text-base text-muted-foreground underline-offset-4 hover:text-muted-foreground hover:underline sm:right-10"
       >
         design notes
       </button>
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 px-6">
-          <div className="max-w-lg rounded-lg border border-white/15 bg-zinc-950 p-6 text-base">
-            <h2 className="font-serif text-xl text-white/95">Design notes</h2>
-            <p className="mt-3 text-white/75">
+          <div className="max-w-lg rounded-lg border border-border bg-zinc-950 p-6 text-base">
+            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <p className="mt-3 text-muted-foreground">
               A warm just-intonation lullaby fragment is rendered into a tape
               buffer. Each pass, the tape&apos;s own audio is run through a wear
               chain — a downward-creeping lowpass, accumulating oxide dropouts,
               wow/flutter and tape saturation — and written back onto itself, so
               the erosion is genuine, compounding state, never an LFO or a reset.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               The single lever is the only choice: <em>hold on</em> slows the
               decay and re-seeds a whisper of the original; <em>let go</em> lets
               it crumble faster. After ~2.5s of stillness it begins on its own
               and disintegrates with zero further input.
             </p>
-            <p className="mt-3 text-white/55">
+            <p className="mt-3 text-muted-foreground">
               After Basinski&apos;s <em>The Disintegration Loops</em> (2002) and
               the Music Thing Modular Degenerator (2026-05-28).
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/75 hover:bg-white/10"
+              className="mt-5 rounded-md border border-border px-4 py-2.5 font-mono text-base text-muted-foreground hover:bg-accent"
               style={{ minHeight: 44 }}
             >
               close

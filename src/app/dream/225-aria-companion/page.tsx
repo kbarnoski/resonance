@@ -379,21 +379,21 @@ export default function AriaCompanion() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#080810] text-white select-none">
+    <div className="flex flex-col h-screen bg-[#080810] text-foreground select-none">
       <div className="px-6 pt-5 pb-3 flex-shrink-0">
-        <h1 className="text-2xl font-semibold text-white/95 tracking-tight">Aria Companion</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-semibold text-foreground tracking-tight">Aria Companion</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Play a phrase on your piano. Pause 2 seconds — Aria responds, then listens again.
         </p>
       </div>
 
-      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-white/10 relative min-h-0">
+      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-border relative min-h-0">
         <canvas ref={canvasRef} className="w-full h-full block" />
 
         {phase === 'idle' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#080810]/85 backdrop-blur-sm">
             <div className="max-w-sm text-center px-6">
-              <p className="text-base text-white/75 leading-relaxed mb-6">
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">
                 Play ≥ 8 notes on your piano, then rest for 2 seconds. Aria builds a Markov chain
                 from your intervals and plays back. The more you play, the more it mirrors your style.
               </p>
@@ -406,12 +406,12 @@ export default function AriaCompanion() {
                 </button>
                 <button
                   onClick={startDemo}
-                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/70 text-base hover:bg-white/10 transition-colors"
+                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
                 >
                   Demo
                 </button>
               </div>
-              {err && <p className="text-rose-300 text-base mt-4">{err}</p>}
+              {err && <p className="text-violet-300 text-base mt-4">{err}</p>}
             </div>
           </div>
         )}
@@ -420,7 +420,7 @@ export default function AriaCompanion() {
           <div className="absolute bottom-4 left-0 right-0 flex justify-center">
             <button
               onClick={resetToIdle}
-              className="px-5 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/70 text-base hover:bg-white/10 transition-colors"
+              className="px-5 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
             >
               Try with mic →
             </button>
@@ -429,14 +429,14 @@ export default function AriaCompanion() {
       </div>
 
       <div className="px-6 pb-4 flex-shrink-0 flex items-center justify-between text-sm">
-        <span className="text-white/55">
+        <span className="text-muted-foreground">
           {phase === 'listening' && 'Play ≥ 8 notes, then pause 2 seconds'}
           {phase === 'responding' && 'Aria is playing her response…'}
           {phase === 'done' && 'Demo complete — mic mode learns from your actual playing style'}
           {phase === 'idle' && 'Markov-chain piano duet · zero deps · no AI calls'}
         </span>
         {cycles > 0 && (
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             {cycles} exchange{cycles !== 1 ? 's' : ''}
           </span>
         )}

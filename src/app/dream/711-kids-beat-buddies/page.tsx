@@ -387,7 +387,7 @@ export default function BeatBuddiesPage() {
   };
 
   return (
-    <main className="fixed inset-0 bg-[#0a0a0f] text-white overflow-hidden select-none">
+    <main className="fixed inset-0 bg-[#0a0a0f] text-foreground overflow-hidden select-none">
       {/* Canvas behind the pads */}
       <canvas
         ref={canvasRef}
@@ -403,8 +403,8 @@ export default function BeatBuddiesPage() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-[#0a0a0f]/95 px-6 text-center">
-          <h1 className="text-3xl font-bold text-white/95">Beat Buddies</h1>
-          <p className="text-base text-white/75 max-w-sm">
+          <h1 className="text-3xl font-bold text-foreground">Beat Buddies</h1>
+          <p className="text-base text-muted-foreground max-w-sm">
             Sit on opposite sides of the tablet. Tap the big shapes. Everything you
             both tap locks into one silly groove.
           </p>
@@ -413,18 +413,18 @@ export default function BeatBuddiesPage() {
               e.preventDefault();
               void beginAudio();
             }}
-            className="min-h-[44px] px-4 py-2.5 rounded-full bg-teal-400 text-slate-900 text-xl font-bold active:scale-95"
+            className="min-h-[44px] px-4 py-2.5 rounded-full bg-violet-400 text-slate-900 text-xl font-bold active:scale-95"
           >
             Start the band &#9654;
           </button>
-          {error && <p className="text-base text-rose-300">{error}</p>}
+          {error && <p className="text-base text-violet-300">{error}</p>}
         </div>
       )}
 
       {/* Design notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute top-2 right-2 z-40 min-h-[44px] px-4 py-2.5 rounded-full bg-white/10 text-white/75 text-base"
+        className="absolute top-2 right-2 z-40 min-h-[44px] px-4 py-2.5 rounded-full bg-muted text-muted-foreground text-base"
         aria-label="Read the design notes"
       >
         {showNotes ? 'close' : 'notes'}
@@ -432,32 +432,32 @@ export default function BeatBuddiesPage() {
 
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-[#0a0a0f]/95 p-6">
-          <div className="max-w-md text-white/90 space-y-3 text-base">
-            <h2 className="text-xl font-bold text-white/95">Design notes</h2>
+          <div className="max-w-md text-foreground space-y-3 text-base">
+            <h2 className="text-xl font-bold text-foreground">Design notes</h2>
             <p>
-              <span className="font-mono text-white/75">Beat Buddies</span> is the
+              <span className="font-mono text-muted-foreground">Beat Buddies</span> is the
               lab&apos;s first two-player kids piece. Two children face their own
               half of one tablet (the top half is rotated 180&deg;).
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Every tap is a looping layer that snaps onto ONE shared clock, so the
               result is always a groove, never noise &mdash; Incredibox / Sprunki style.
               A soft kick &amp; shaker keep the pulse. When both kids are playing at
               once, the buddies high-five.
             </p>
-            <p className="text-white/75 font-mono">
+            <p className="text-muted-foreground font-mono">
               Web Audio + Canvas2D. No samples, no network.
             </p>
             <Link
               href="/dream/711-kids-beat-buddies/README.md"
-              className="inline-block text-teal-300 underline text-base"
+              className="inline-block text-violet-300 underline text-base"
             >
               README
             </Link>
             <div>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] px-4 py-2.5 rounded-full bg-white/10 text-white/90 text-base mt-2"
+                className="min-h-[44px] px-4 py-2.5 rounded-full bg-muted text-foreground text-base mt-2"
               >
                 back to playing
               </button>

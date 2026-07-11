@@ -382,10 +382,10 @@ export default function SoundfieldRoomPage() {
             <p className="text-violet-300 text-sm font-mono tracking-widest uppercase">
               394 · Soundfield Room
             </p>
-            <h1 className="text-2xl font-bold text-white/95 tracking-wide">
+            <h1 className="text-2xl font-bold text-foreground tracking-wide">
               Binaural Ambisonic Space
             </h1>
-            <p className="text-base text-white/75 max-w-xs mx-auto leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-xs mx-auto leading-relaxed">
               Six drone voices float around you in 3D. Turn your head — the entire
               soundfield rotates coherently as a unified space.
             </p>
@@ -393,27 +393,27 @@ export default function SoundfieldRoomPage() {
 
           <div className="flex flex-col items-center gap-2">
             <span className="text-2xl" aria-label="Headphones recommended">🎧</span>
-            <p className="text-base text-white/75 font-medium">Best with headphones</p>
-            <p className="text-sm text-white/55">Eyes closed for full effect</p>
+            <p className="text-base text-muted-foreground font-medium">Best with headphones</p>
+            <p className="text-sm text-muted-foreground">Eyes closed for full effect</p>
           </div>
 
           <button
             onClick={handleStart}
             className="px-8 py-2.5 rounded-full bg-violet-700 hover:bg-violet-600 active:bg-violet-800
-                       text-white font-semibold text-xl min-h-[44px] min-w-[160px] transition-colors
+                       text-foreground font-semibold text-xl min-h-[44px] min-w-[160px] transition-colors
                        border border-violet-500/40"
           >
             Enter Space
           </button>
 
-          <p className="text-sm text-white/55 text-center max-w-xs leading-relaxed">
+          <p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
             On mobile: tilt and turn your device to navigate the soundfield.
             On desktop: drag left/right to rotate.
           </p>
 
           <a
             href="./394-soundfield-room/README.md"
-            className="text-xs text-white/55 hover:text-violet-300 underline underline-offset-2 transition-colors"
+            className="text-xs text-muted-foreground hover:text-violet-300 underline underline-offset-2 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -425,7 +425,7 @@ export default function SoundfieldRoomPage() {
       {/* ── Error overlay ── */}
       {appState === "error" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <p className="text-rose-300 text-base text-center">
+          <p className="text-violet-300 text-base text-center">
             {error ?? "An error occurred"}
           </p>
         </div>
@@ -437,8 +437,8 @@ export default function SoundfieldRoomPage() {
           {/* Orientation denied notice */}
           {oriDenied && (
             <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded-lg
-                            bg-black/70 border border-rose-500/40 max-w-xs">
-              <p className="text-rose-300 text-sm text-center leading-snug">
+                            bg-black/70 border border-violet-500/40 max-w-xs">
+              <p className="text-violet-300 text-sm text-center leading-snug">
                 Orientation access denied — drag left/right to rotate the field.
                 Auto-demo is running.
               </p>
@@ -449,14 +449,14 @@ export default function SoundfieldRoomPage() {
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-black/30">
             <div>
               <p className="text-violet-300 text-xs font-mono tracking-wider uppercase">394 · Soundfield Room</p>
-              <p className="text-white/75 text-sm font-mono">
+              <p className="text-muted-foreground text-sm font-mono">
                 {yawDeg}°
                 {isDemo && <span className="text-violet-300/70 ml-2">· auto-demo</span>}
               </p>
             </div>
             <div className="text-right">
               <p className="text-lg" aria-label="Headphones">🎧</p>
-              <p className="text-white/55 text-xs font-mono">binaural</p>
+              <p className="text-muted-foreground text-xs font-mono">binaural</p>
             </div>
           </div>
 
@@ -481,15 +481,15 @@ export default function SoundfieldRoomPage() {
                   className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                   style={{ backgroundColor: v.color }}
                 />
-                <span className="text-white/75 text-xs font-mono">{v.name}</span>
-                <span className="text-white/55 text-xs font-mono">{Math.round(v.freq)}Hz</span>
+                <span className="text-muted-foreground text-xs font-mono">{v.name}</span>
+                <span className="text-muted-foreground text-xs font-mono">{Math.round(v.freq)}Hz</span>
               </div>
             ))}
           </div>
 
           {/* Drag hint — bottom center */}
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-center">
-            <p className="text-white/55 text-xs font-mono">
+            <p className="text-muted-foreground text-xs font-mono">
               {isDemo ? "auto-rotating · drag or tilt to control" : "tilt or drag to rotate field"}
             </p>
           </div>
@@ -498,7 +498,7 @@ export default function SoundfieldRoomPage() {
           <div className="absolute bottom-4 right-4">
             <a
               href="./394-soundfield-room/README.md"
-              className="text-white/55 text-xs hover:text-violet-300 transition-colors font-mono"
+              className="text-muted-foreground text-xs hover:text-violet-300 transition-colors font-mono"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -508,9 +508,9 @@ export default function SoundfieldRoomPage() {
 
           {/* Ambisonics indicator — top right corner */}
           <div className="absolute top-16 right-4 text-right">
-            <p className="text-white/55 text-xs font-mono">FOA B-format</p>
-            <p className="text-white/55 text-xs font-mono">8 virt. spkrs</p>
-            <p className="text-white/55 text-xs font-mono">HRTF binaural</p>
+            <p className="text-muted-foreground text-xs font-mono">FOA B-format</p>
+            <p className="text-muted-foreground text-xs font-mono">8 virt. spkrs</p>
+            <p className="text-muted-foreground text-xs font-mono">HRTF binaural</p>
           </div>
         </>
       )}

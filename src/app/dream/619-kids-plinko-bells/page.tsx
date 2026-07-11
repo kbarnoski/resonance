@@ -193,7 +193,7 @@ export default function KidsPlinkoBells() {
   );
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070d] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070d] text-foreground">
       {/* Scene */}
       <div
         ref={wrapRef}
@@ -208,12 +208,12 @@ export default function KidsPlinkoBells() {
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-4">
         <Link
           href="/dream"
-          className="pointer-events-auto rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur hover:bg-white/20"
+          className="pointer-events-auto rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
         >
           ← back
         </Link>
         {backend && (
-          <span className="rounded-full bg-black/40 px-3 py-1.5 font-mono text-base text-white/75 backdrop-blur">
+          <span className="rounded-full bg-black/40 px-3 py-1.5 font-mono text-base text-muted-foreground backdrop-blur">
             {backend === "webgl2" ? "WebGL2" : "Canvas2D"}
           </span>
         )}
@@ -225,35 +225,35 @@ export default function KidsPlinkoBells() {
           <div className="animate-bounce text-5xl" aria-hidden>
             ⬇️
           </div>
-          <span className="mt-1 text-base text-white/55">tap to drop</span>
+          <span className="mt-1 text-base text-muted-foreground">tap to drop</span>
         </div>
       )}
 
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-[#06070d]/85 px-6 text-center backdrop-blur">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Marble Bells
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Drop glowing marbles into the pegs. Chance plays a warm chord — the
             middle bins ring loudest.
           </p>
           <button
             type="button"
             onClick={handleStart}
-            className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 to-cyan-400 text-6xl shadow-[0_0_60px_rgba(217,70,239,0.5)] transition active:scale-95"
+            className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-violet-400 text-6xl shadow-[0_0_60px_rgba(217,70,239,0.5)] transition active:scale-95"
             aria-label="Tap to begin"
           >
             ▶︎
           </button>
-          <span className="text-base text-white/55">tap to begin</span>
+          <span className="text-base text-muted-foreground">tap to begin</span>
         </div>
       )}
 
       {/* Error notice */}
       {error && (
-        <div className="absolute inset-x-0 bottom-0 z-20 m-4 rounded-xl bg-black/70 p-4 text-base text-rose-300 backdrop-blur">
+        <div className="absolute inset-x-0 bottom-0 z-20 m-4 rounded-xl bg-black/70 p-4 text-base text-violet-300 backdrop-blur">
           {error}
         </div>
       )}

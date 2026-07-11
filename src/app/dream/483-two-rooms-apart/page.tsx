@@ -802,8 +802,8 @@ export default function TwoRoomsApartPage() {
     roughness < 0.5  ? "Tense" :
     roughness < 0.75 ? "Dissonant" : "Clashing";
   const tensionColor =
-    roughness < 0.08 ? "text-emerald-300" :
-    roughness < 0.35 ? "text-amber-300" : "text-rose-300";
+    roughness < 0.08 ? "text-violet-300" :
+    roughness < 0.35 ? "text-violet-300" : "text-violet-300";
 
   // ── On-screen keyboard ────────────────────────────────────────────────────────
 
@@ -811,35 +811,35 @@ export default function TwoRoomsApartPage() {
   const allKeys = SCREEN_KEYS;
 
   return (
-    <div className="min-h-screen bg-[#06040e] text-white flex flex-col">
+    <div className="min-h-screen bg-[#06040e] text-foreground flex flex-col">
       {/* Header */}
       <div className="px-5 pt-5 pb-2 flex flex-col gap-1 shrink-0">
-        <h1 className="text-2xl font-bold tracking-tight text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           Two Rooms Apart
         </h1>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           Two resonant rooms detuned a tritone apart — every note beats against
           its own echo. Only you can collapse them into agreement.
         </p>
         {!audioOk && (
-          <p className="text-rose-300 text-base font-medium">
+          <p className="text-violet-300 text-base font-medium">
             Web Audio API unavailable in this browser. Audio will not play.
           </p>
         )}
         {started && (midiStatus === "denied" || midiStatus === "unavailable") && (
-          <p className="text-rose-300 text-sm">
+          <p className="text-violet-300 text-sm">
             {midiStatus === "denied"
               ? "MIDI access denied — use the on-screen keyboard or QWERTY keys."
               : "Web MIDI unavailable — use the on-screen keyboard or QWERTY keys."}
           </p>
         )}
         {started && midiStatus === "ok" && (
-          <p className="text-emerald-300/95 text-sm">MIDI connected.</p>
+          <p className="text-violet-300/95 text-sm">MIDI connected.</p>
         )}
       </div>
 
       {/* Canvas */}
-      <div className="relative flex-1 min-h-[260px] mx-4 rounded-xl overflow-hidden border border-white/10">
+      <div className="relative flex-1 min-h-[260px] mx-4 rounded-xl overflow-hidden border border-border">
         <canvas
           ref={canvasRef}
           className="w-full h-full block"
@@ -848,13 +848,13 @@ export default function TwoRoomsApartPage() {
         {/* Tap-to-begin overlay */}
         {!started && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-black/70">
-            <p className="text-white/75 text-base text-center px-6">
+            <p className="text-muted-foreground text-base text-center px-6">
               Two rooms, tuned a tritone apart. Play a note — hear the rooms
               fight. Drag the detune slider to zero to make peace.
             </p>
             <button
               onClick={handleStart}
-              className="px-6 py-3 rounded-xl text-base font-semibold text-white bg-violet-600 hover:bg-violet-500 active:scale-95 transition-all min-w-[44px] min-h-[44px]"
+              className="px-6 py-3 rounded-xl text-base font-semibold text-foreground bg-violet-600 hover:bg-violet-500 active:scale-95 transition-all min-w-[44px] min-h-[44px]"
             >
               Tap to Begin
             </button>
@@ -865,11 +865,11 @@ export default function TwoRoomsApartPage() {
           <div className="absolute top-3 right-3 flex flex-col gap-1 text-xs">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-violet-400 opacity-80" />
-              <span className="text-white/60">Room A (reference)</span>
+              <span className="text-muted-foreground">Room A (reference)</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-sky-400 opacity-80" />
-              <span className="text-white/60">Room B (detuned)</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-violet-400 opacity-80" />
+              <span className="text-muted-foreground">Room B (detuned)</span>
             </div>
           </div>
         )}
@@ -880,14 +880,14 @@ export default function TwoRoomsApartPage() {
         {/* Detune + Tension */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-white/75 text-base font-medium">
+            <label className="text-muted-foreground text-base font-medium">
               Room Detune
             </label>
             <div className="flex items-center gap-3">
-              <span className="text-white/60 text-sm tabular-nums">
+              <span className="text-muted-foreground text-sm tabular-nums">
                 {Math.round(detuneCents)} ¢
               </span>
-              <span className="text-white/60 text-sm">
+              <span className="text-muted-foreground text-sm">
                 {detuneCents < 10
                   ? "≈ Unison"
                   : detuneCents > 580
@@ -911,22 +911,22 @@ export default function TwoRoomsApartPage() {
               disabled={!started}
             />
           </div>
-          <div className="flex justify-between text-xs text-white/40">
+          <div className="flex justify-between text-xs text-muted-foreground/70">
             <span>Unison (resolved)</span>
             <span>Tritone (clashing)</span>
           </div>
         </div>
 
         {/* Tension readout */}
-        <div className="flex items-center gap-4 rounded-xl bg-white/5 px-4 py-3 border border-white/10">
+        <div className="flex items-center gap-4 rounded-xl bg-muted px-4 py-3 border border-border">
           <div className="flex flex-col">
-            <span className="text-white/60 text-sm">Tension / Roughness</span>
+            <span className="text-muted-foreground text-sm">Tension / Roughness</span>
             <span className={`text-xl font-bold ${tensionColor}`}>
               {tensionLabel}
             </span>
           </div>
           <div className="flex-1">
-            <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+            <div className="h-2 rounded-full bg-muted overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-100"
                 style={{
@@ -940,7 +940,7 @@ export default function TwoRoomsApartPage() {
                 }}
               />
             </div>
-            <div className="flex justify-between text-xs text-white/40 mt-1">
+            <div className="flex justify-between text-xs text-muted-foreground/70 mt-1">
               <span>Smooth</span>
               <span className="tabular-nums">{roughnessPct}%</span>
               <span>Rough</span>
@@ -951,7 +951,7 @@ export default function TwoRoomsApartPage() {
 
       {/* On-screen keyboard */}
       <div className="px-4 pb-3 shrink-0">
-        <p className="text-white/60 text-sm mb-2">
+        <p className="text-muted-foreground text-sm mb-2">
           Play: on-screen keys, QWERTY row (A–;), or MIDI keyboard
         </p>
         <div className="relative select-none overflow-x-auto">
@@ -975,7 +975,7 @@ export default function TwoRoomsApartPage() {
                   }}
                   onPointerUp={() => stopNote(k.midi)}
                   onPointerLeave={() => stopNote(k.midi)}
-                  className="absolute top-0 rounded-b-md border border-white/20 transition-colors"
+                  className="absolute top-0 rounded-b-md border border-border transition-colors"
                   style={{
                     left: `${i * 36}px`,
                     width: "34px",
@@ -1036,8 +1036,8 @@ export default function TwoRoomsApartPage() {
       </div>
 
       {/* How to play */}
-      <div className="px-5 pb-3 text-sm text-white/60">
-        <span className="font-medium text-white/75">How to play: </span>
+      <div className="px-5 pb-3 text-sm text-muted-foreground">
+        <span className="font-medium text-muted-foreground">How to play: </span>
         Press keys or play MIDI. The two rooms ring at a tritone apart — hear
         the beating. Drag detune left to fuse them. Resolution is yours alone.
       </div>
@@ -1051,18 +1051,18 @@ export default function TwoRoomsApartPage() {
           {showDesign ? "Hide" : "Show"} Design Notes
         </button>
         {showDesign && (
-          <div className="mt-3 rounded-xl bg-white/5 border border-white/10 px-5 py-4 text-sm text-white/75 space-y-3 max-w-prose">
-            <p className="text-white/95 font-semibold text-base">
+          <div className="mt-3 rounded-xl bg-muted border border-border px-5 py-4 text-sm text-muted-foreground space-y-3 max-w-prose">
+            <p className="text-foreground font-semibold text-base">
               Two Rooms Apart — Design Notes
             </p>
             <p>
-              <strong className="text-white/90">Cycle 2 of the Resonant Room spine.</strong>{" "}
+              <strong className="text-foreground">Cycle 2 of the Resonant Room spine.</strong>{" "}
               Cycle 1 (475) was a single Feedback Delay Network reverb tuned
               in-key, resolving warmly to the tonic. Here the question is what
               happens when two such rooms disagree fundamentally.
             </p>
             <p>
-              <strong className="text-white/90">Two tritone-detuned rooms.</strong>{" "}
+              <strong className="text-foreground">Two tritone-detuned rooms.</strong>{" "}
               Room A holds the reference spectrum (harmonics of the played
               note). Room B holds the same spectrum shifted up by the detune
               amount (0–600 cents, default = tritone = 600 cents). At a tritone,
@@ -1071,7 +1071,7 @@ export default function TwoRoomsApartPage() {
               spatial disagreement is audible.
             </p>
             <p>
-              <strong className="text-white/90">Beating and interference.</strong>{" "}
+              <strong className="text-foreground">Beating and interference.</strong>{" "}
               Each resonator is a high-Q biquad bandpass filter. When two
               resonators at nearby frequencies ring simultaneously, their outputs
               summed at the ear produce amplitude modulation at the difference
@@ -1080,7 +1080,7 @@ export default function TwoRoomsApartPage() {
               their beat frequency and colored rose (tense) to emerald (resolved).
             </p>
             <p>
-              <strong className="text-white/90">Roughness engine.</strong>{" "}
+              <strong className="text-foreground">Roughness engine.</strong>{" "}
               Real-time Plomp–Levelt / Sethares dyad model: for each partial
               pair (f₁,a₁),(f₂,a₂), roughness ≈ a₁·a₂·(exp(−b₁·s·Δf) −
               exp(−b₂·s·Δf)), where s = 0.24/(0.0207·f_min + 18.96). Summed
@@ -1088,21 +1088,21 @@ export default function TwoRoomsApartPage() {
               readout and canvas heat.
             </p>
             <p>
-              <strong className="text-white/90">Player-driven resolution.</strong>{" "}
+              <strong className="text-foreground">Player-driven resolution.</strong>{" "}
               The rooms do NOT auto-resolve. Only dragging the detune slider
               toward 0 collapses them. As the slider moves left, the beat
               frequencies drop to zero, the canvas fringes still, and the
               roughness readout falls to &ldquo;Resolved.&rdquo;
             </p>
             <p>
-              <strong className="text-white/90">References.</strong>{" "}
+              <strong className="text-foreground">References.</strong>{" "}
               FDN lineage: Stautner & Puckette (CMJ 1982); Jot & Chaigne (AES
               1991). Roughness: Plomp &amp; Levelt (JASA 1965); Sethares, &ldquo;Local
               consonance and the relationship between timbre and scale&rdquo; (JASA
               94:3, 1993); MacCallum & Einbond (CMMR 2008).
             </p>
             <p>
-              <strong className="text-white/90">Cycle 3 idea.</strong>{" "}
+              <strong className="text-foreground">Cycle 3 idea.</strong>{" "}
               Add a third room tuned a just fifth above Room A — so Room A and
               Room C agree on harmonics but Room B remains the tritone
               interloper. The player must find the &ldquo;pivot note&rdquo; where all three

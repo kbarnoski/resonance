@@ -280,7 +280,7 @@ export default function LiquidLight() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060e] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060e] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none select-none"
@@ -299,21 +299,21 @@ export default function LiquidLight() {
 
       {/* Title + notice overlay (non-blocking) */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 flex flex-col items-center gap-1 px-4 pt-5 text-center">
-        <h1 className="text-2xl font-semibold tracking-wide text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-wide text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
           Liquid Light
         </h1>
         {started && (
-          <p className="text-base text-white/75 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <p className="text-base text-muted-foreground drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             Drag your finger to swirl the singing light
           </p>
         )}
         {notice && (
-          <p className="text-base text-rose-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <p className="text-base text-violet-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {notice}
           </p>
         )}
         {started && mode === "gpu" && (
-          <p className="text-base text-white/55">live fluid · WebGPU</p>
+          <p className="text-base text-muted-foreground">live fluid · WebGPU</p>
         )}
       </div>
 
@@ -321,17 +321,17 @@ export default function LiquidLight() {
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 bg-[#05060e]/70 px-6 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-3 text-center">
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Liquid Light
             </h1>
-            <p className="max-w-sm text-base text-white/75">
+            <p className="max-w-sm text-base text-muted-foreground">
               Paint a pool of living light with your finger — and listen to it
               sing.
             </p>
           </div>
           <button
             onClick={handleStart}
-            className="flex min-h-[64px] items-center justify-center gap-3 rounded-full bg-gradient-to-r from-fuchsia-500 via-violet-500 to-sky-400 px-12 py-5 text-xl font-semibold text-white shadow-[0_8px_40px_rgba(168,85,247,0.55)] transition-transform active:scale-95"
+            className="flex min-h-[64px] items-center justify-center gap-3 rounded-full bg-gradient-to-r from-violet-500 via-violet-500 to-violet-400 px-12 py-5 text-xl font-semibold text-foreground shadow-[0_8px_40px_rgba(168,85,247,0.55)] transition-transform active:scale-95"
             aria-label="Start"
           >
             <span className="text-2xl" aria-hidden>

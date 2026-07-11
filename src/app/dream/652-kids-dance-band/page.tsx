@@ -542,7 +542,7 @@ export default function KidsDanceBand() {
   const tierLabels = ["soft pad", "+ beat", "+ bass & hats", "+ snare", "FULL PARTY!"];
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05050b] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05050b] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block h-full w-full"
@@ -552,18 +552,18 @@ export default function KidsDanceBand() {
       {/* top bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between p-4">
         <div className="pointer-events-none">
-          <h1 className="text-2xl font-bold text-white/95 sm:text-3xl">
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
             Dance Band
           </h1>
           {started && (
-            <p className="mt-1 text-base text-white/80">
+            <p className="mt-1 text-base text-foreground">
               Move BIG to make the band play!
             </p>
           )}
         </div>
         <Link
           href="/dream"
-          className="pointer-events-auto rounded-full px-3 py-2 text-base text-violet-300 hover:text-white"
+          className="pointer-events-auto rounded-full px-3 py-2 text-base text-violet-300 hover:text-foreground"
         >
           ← lab
         </Link>
@@ -581,7 +581,7 @@ export default function KidsDanceBand() {
                 <span
                   key={i}
                   className={`h-3 w-7 rounded-full ${
-                    i <= tier ? "bg-amber-300" : "bg-white/15"
+                    i <= tier ? "bg-violet-300" : "bg-muted"
                   }`}
                 />
               ))}
@@ -593,20 +593,20 @@ export default function KidsDanceBand() {
       {/* start hero overlay */}
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-black/70 px-6 text-center backdrop-blur-sm">
-          <h2 className="text-2xl font-bold text-white/95 sm:text-4xl">
+          <h2 className="text-2xl font-bold text-foreground sm:text-4xl">
             Make a band play by DANCING!
           </h2>
-          <p className="max-w-md text-base text-white/80 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Stand back so the camera can see you, then wiggle, jump, and wave.
             The more you move, the bigger the band gets!
           </p>
           <button
             onClick={runStart}
-            className="min-h-[64px] rounded-full bg-amber-400 px-10 py-4 text-xl font-bold text-black transition-transform hover:scale-105 active:scale-95"
+            className="min-h-[64px] rounded-full bg-violet-400 px-10 py-4 text-xl font-bold text-black transition-transform hover:scale-105 active:scale-95"
           >
             Start dancing
           </button>
-          <p className="max-w-sm text-base text-white/75">
+          <p className="max-w-sm text-base text-muted-foreground">
             We&apos;ll ask to use your camera. The video stays on your device —
             nothing is ever uploaded or saved.
           </p>
@@ -616,13 +616,13 @@ export default function KidsDanceBand() {
       {/* camera error + fallback controls */}
       {started && camError && (
         <div className="absolute inset-x-0 bottom-24 z-20 flex flex-col items-center gap-4 px-4">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             {camError}
           </p>
           <div className="flex items-center gap-4">
             <button
               onPointerDown={() => applyManual((manualRef.current ?? 0) - 0.25)}
-              className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-2xl bg-white/10 px-6 text-3xl font-bold text-white/90 active:scale-95"
+              className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-2xl bg-muted px-6 text-3xl font-bold text-foreground active:scale-95"
               aria-label="calm down"
             >
               🌙
@@ -630,13 +630,13 @@ export default function KidsDanceBand() {
             <button
               onPointerDown={() => applyManual(0.6)}
               onPointerUp={() => applyManual(0.15)}
-              className="flex min-h-[64px] min-w-[120px] items-center justify-center rounded-2xl bg-amber-400 px-6 text-xl font-bold text-black active:scale-95"
+              className="flex min-h-[64px] min-w-[120px] items-center justify-center rounded-2xl bg-violet-400 px-6 text-xl font-bold text-black active:scale-95"
             >
               DANCE! 🎉
             </button>
             <button
               onPointerDown={() => applyManual((manualRef.current ?? 0) + 0.25)}
-              className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-2xl bg-white/10 px-6 text-3xl font-bold text-white/90 active:scale-95"
+              className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-2xl bg-muted px-6 text-3xl font-bold text-foreground active:scale-95"
               aria-label="more energy"
             >
               🔥
@@ -647,7 +647,7 @@ export default function KidsDanceBand() {
 
       {/* privacy note */}
       {started && !camError && (
-        <div className="pointer-events-none absolute bottom-5 right-4 z-20 max-w-[200px] text-right text-base text-white/75">
+        <div className="pointer-events-none absolute bottom-5 right-4 z-20 max-w-[200px] text-right text-base text-muted-foreground">
           Camera stays on your device. Nothing is uploaded.
         </div>
       )}

@@ -665,15 +665,15 @@ export default function EchoHallsSphere() {
   };
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none select-none" />
 
       {/* reticle + horizon overlay (drawn over canvas) */}
       {started && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="relative h-10 w-10">
-            <div className="absolute left-1/2 top-1/2 h-[2px] w-6 -translate-x-1/2 -translate-y-1/2 bg-white/55" />
-            <div className="absolute left-1/2 top-1/2 h-6 w-[2px] -translate-x-1/2 -translate-y-1/2 bg-white/55" />
+            <div className="absolute left-1/2 top-1/2 h-[2px] w-6 -translate-x-1/2 -translate-y-1/2 bg-muted" />
+            <div className="absolute left-1/2 top-1/2 h-6 w-[2px] -translate-x-1/2 -translate-y-1/2 bg-muted" />
           </div>
         </div>
       )}
@@ -681,29 +681,29 @@ export default function EchoHallsSphere() {
       {/* HUD */}
       {started && (
         <div className="pointer-events-none absolute left-0 top-0 flex flex-col gap-1 p-4 font-mono">
-          <div className="text-xl text-white/95">
+          <div className="text-xl text-foreground">
             facing <span className="text-violet-300">{facedName}</span>
           </div>
-          <div className="text-base text-white/75">
+          <div className="text-base text-muted-foreground">
             body energy{" "}
-            <span className="text-emerald-300/95">{(energy * 100).toFixed(0)}%</span>
+            <span className="text-violet-300/95">{(energy * 100).toFixed(0)}%</span>
             {" "}→ shimmer
           </div>
-          <div className="text-base text-white/55">{tierLabel[tier]}</div>
+          <div className="text-base text-muted-foreground">{tierLabel[tier]}</div>
           {autoTour && (
-            <div className="text-base text-amber-300/95">auto-tour — move mouse / press a key to steer</div>
+            <div className="text-base text-violet-300/95">auto-tour — move mouse / press a key to steer</div>
           )}
           {orientStatus === "active" && (
-            <div className="text-base text-emerald-300/95">turn your phone to look around</div>
+            <div className="text-base text-violet-300/95">turn your phone to look around</div>
           )}
           {orientStatus === "denied" && (
-            <div className="text-base text-amber-300/95">motion denied — pointer-look still works</div>
+            <div className="text-base text-violet-300/95">motion denied — pointer-look still works</div>
           )}
         </div>
       )}
 
       {audioErr && (
-        <div className="absolute bottom-4 left-4 right-4 rounded-md bg-black/70 p-3 text-base text-rose-300">
+        <div className="absolute bottom-4 left-4 right-4 rounded-md bg-black/70 p-3 text-base text-violet-300">
           {audioErr}
         </div>
       )}
@@ -711,19 +711,19 @@ export default function EchoHallsSphere() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-black via-black/95 to-violet-950/40 px-6 text-center">
-          <h1 className="font-serif text-3xl text-white/95 sm:text-4xl">Echo Halls — Sphere</h1>
-          <p className="max-w-xl text-base text-white/80 sm:text-lg">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">Echo Halls — Sphere</h1>
+          <p className="max-w-xl text-base text-foreground sm:text-lg">
             Six harmonic rooms float around you on a full sphere — some above, some below, some
             behind. Close your eyes and turn toward the chord you want. The room you face blooms,
             its particle body comes alive, and that living motion drives the shimmer you hear.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-lg font-medium text-white shadow-lg transition hover:bg-violet-400"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-lg font-medium text-foreground shadow-lg transition hover:bg-violet-400"
           >
             Enter the halls
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             drag to look · WASD / arrows to drift · turn your phone if it asks
           </p>
         </div>
@@ -734,13 +734,13 @@ export default function EchoHallsSphere() {
         <>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur transition hover:bg-white/20"
+            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition hover:bg-accent"
           >
             {showNotes ? "close" : "design notes"}
           </button>
           {showNotes && (
-            <div className="absolute bottom-20 right-4 max-h-[60dvh] w-[min(92vw,28rem)] overflow-auto rounded-lg bg-black/85 p-4 text-base text-white/80 backdrop-blur">
-              <p className="mb-2 text-lg text-white/95">How it works</p>
+            <div className="absolute bottom-20 right-4 max-h-[60dvh] w-[min(92vw,28rem)] overflow-auto rounded-lg bg-black/85 p-4 text-base text-foreground backdrop-blur">
+              <p className="mb-2 text-lg text-foreground">How it works</p>
               <p className="mb-2">
                 You are the Web Audio <span className="text-violet-300">AudioListener</span>. Each
                 room owns an HRTF <span className="text-violet-300">PannerNode</span> at its 3D
@@ -749,12 +749,12 @@ export default function EchoHallsSphere() {
               </p>
               <p className="mb-2">
                 The room you face blooms loudest (no clicks — gains ramp). Its{" "}
-                <span className="text-emerald-300/95">particle body</span> (WebGPU compute when
+                <span className="text-violet-300/95">particle body</span> (WebGPU compute when
                 available, else CPU) advects on a curl-noise flow and attracts toward the room
                 centre; the measured kinetic energy drives that room&apos;s shimmer gain — the sim
                 genuinely sings.
               </p>
-              <p className="text-white/55">
+              <p className="text-muted-foreground">
                 Refs: Cardiff, The Forty Part Motet · Spatial Orchestra (arXiv:2510.23848) ·
                 full-sphere localisation (arXiv:2606.24367) · Sonic4D (arXiv:2506.15759).
               </p>

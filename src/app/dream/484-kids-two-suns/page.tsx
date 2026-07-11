@@ -265,16 +265,16 @@ export default function KidsTwoSuns() {
           aria-label="Tap anywhere to begin"
         >
           <div className="flex items-center gap-10">
-            <span className="block h-28 w-28 animate-ping rounded-full bg-amber-400/70" />
+            <span className="block h-28 w-28 animate-ping rounded-full bg-violet-400/70" />
             <span className="block h-28 w-28 animate-ping rounded-full bg-violet-400/70 [animation-delay:600ms]" />
           </div>
-          <span className="text-2xl font-light text-white/95">tap to wake the suns</span>
+          <span className="text-2xl font-light text-foreground">tap to wake the suns</span>
         </button>
       )}
 
       {/* WebGL2 unavailable notice (still fully playable on the Canvas2D fallback). */}
       {started && !webglOk && (
-        <p className="absolute left-4 top-4 max-w-xs text-base text-rose-300">
+        <p className="absolute left-4 top-4 max-w-xs text-base text-violet-300">
           Your device can&apos;t use the glow shader, so this is the simpler
           light version. The music plays just the same.
         </p>
@@ -283,7 +283,7 @@ export default function KidsTwoSuns() {
       {/* Quiet back-link — for the grown-up, not the child. */}
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-base text-white/55 hover:text-white/80"
+        className="absolute bottom-4 right-4 text-base text-muted-foreground hover:text-foreground"
       >
         back
       </Link>

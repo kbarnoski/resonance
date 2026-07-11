@@ -248,18 +248,18 @@ export default function BioEcho() {
       {/* ── Start screen ── */}
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-8">
-          <h1 className="text-2xl font-mono text-white/95 tracking-tight text-center">
+          <h1 className="text-2xl font-mono text-foreground tracking-tight text-center">
             Bio Echo
           </h1>
-          <p className="text-base text-white/75 text-center max-w-xs leading-relaxed">
+          <p className="text-base text-muted-foreground text-center max-w-xs leading-relaxed">
             Play — watch your music grow a forest.
           </p>
-          <p className="text-sm text-white/55 text-center max-w-sm leading-relaxed">
+          <p className="text-sm text-muted-foreground text-center max-w-sm leading-relaxed">
             Sub-bass grows root tendrils · bass builds the trunk ·
             mid blooms the canopy · onsets send birds · treble fills the sky
           </p>
           {error && (
-            <p className="text-rose-300 text-sm text-center">{error}</p>
+            <p className="text-violet-300 text-sm text-center">{error}</p>
           )}
           <div className="flex flex-col gap-3 w-full max-w-[200px]">
             <button
@@ -270,7 +270,7 @@ export default function BioEcho() {
             </button>
             <button
               onClick={() => setMode("demo")}
-              className="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white/75 text-base font-mono hover:bg-white/10 transition min-h-[44px]"
+              className="px-5 py-2.5 rounded-lg bg-muted border border-border text-muted-foreground text-base font-mono hover:bg-accent transition min-h-[44px]"
             >
               Demo mode
             </button>
@@ -283,7 +283,7 @@ export default function BioEcho() {
         <>
           {error && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2">
-              <p className="text-rose-300 text-sm font-mono px-3 py-1.5 bg-rose-950/50 rounded border border-rose-500/30">
+              <p className="text-violet-300 text-sm font-mono px-3 py-1.5 bg-violet-950/50 rounded border border-violet-500/30">
                 {error}
               </p>
             </div>
@@ -294,17 +294,17 @@ export default function BioEcho() {
               <span
                 className={`text-xs font-mono ${
                   mode === "demo"
-                    ? "text-white/55"
+                    ? "text-muted-foreground"
                     : running
-                    ? "text-emerald-300/75"
-                    : "text-white/40"
+                    ? "text-violet-300/75"
+                    : "text-muted-foreground/70"
                 }`}
               >
                 {mode === "demo" ? "demo" : running ? "mic live" : "mic…"}
               </span>
               <button
                 onClick={() => { stop(); setMode("idle"); clearForest(); }}
-                className="text-white/55 text-xs font-mono hover:text-white/80 transition"
+                className="text-muted-foreground text-xs font-mono hover:text-foreground transition"
               >
                 stop
               </button>
@@ -312,7 +312,7 @@ export default function BioEcho() {
 
             <button
               onClick={downloadPng}
-              className="px-3 py-1.5 rounded bg-white/10 border border-white/15 text-white/75 text-xs font-mono hover:bg-white/15 transition"
+              className="px-3 py-1.5 rounded bg-muted border border-border text-muted-foreground text-xs font-mono hover:bg-accent transition"
             >
               Save PNG
             </button>
@@ -323,7 +323,7 @@ export default function BioEcho() {
       <div className="absolute top-3 right-3">
         <Link
           href="https://getresonance.vercel.app/dream"
-          className="text-white/30 text-xs font-mono hover:text-white/55 transition"
+          className="text-muted-foreground/70 text-xs font-mono hover:text-muted-foreground transition"
         >
           ← dream lab
         </Link>

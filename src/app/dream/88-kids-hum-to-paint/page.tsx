@@ -351,29 +351,29 @@ export default function KidsHumToPaint() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           <div className="text-center">
-            <h1 className="text-white text-3xl font-mono tracking-wide mb-2">
+            <h1 className="text-foreground text-3xl font-mono tracking-wide mb-2">
               hum to paint
             </h1>
-            <p className="text-white/75 text-base font-mono">
+            <p className="text-muted-foreground text-base font-mono">
               hum into the mic — your voice paints colors
             </p>
           </div>
 
           <button
             onClick={() => { void beginPainting(); }}
-            className="flex items-center justify-center bg-violet-500 hover:bg-violet-400 text-white text-2xl font-bold rounded-full transition-colors"
+            className="flex items-center justify-center bg-violet-500 hover:bg-violet-400 text-foreground text-2xl font-bold rounded-full transition-colors"
             style={{ width: 160, height: 160 }}
           >
             Start
           </button>
 
           {micError && (
-            <p className="text-rose-300 text-base font-mono text-center">
+            <p className="text-violet-300 text-base font-mono text-center">
               microphone not available — check permissions and try again
             </p>
           )}
 
-          <p className="text-white/55 text-sm font-mono text-center max-w-xs">
+          <p className="text-muted-foreground text-sm font-mono text-center max-w-xs">
             high hum = top of screen · low hum = bottom
           </p>
         </div>
@@ -384,15 +384,15 @@ export default function KidsHumToPaint() {
         <>
           {/* Countdown + mic indicator */}
           <div className="absolute top-5 left-1/2 -translate-x-1/2 flex items-center gap-3 pointer-events-none">
-            <div className="w-3 h-3 rounded-full bg-rose-400 animate-pulse" />
-            <span className="text-white/80 text-xl font-mono">{timeLeft}s</span>
+            <div className="w-3 h-3 rounded-full bg-violet-400 animate-pulse" />
+            <span className="text-foreground text-xl font-mono">{timeLeft}s</span>
           </div>
 
           {/* Early replay once 5+ notes recorded */}
           {noteCount >= 5 && (
             <button
               onClick={replayMelody}
-              className="absolute bottom-7 left-1/2 -translate-x-1/2 bg-violet-500/85 hover:bg-violet-400/90 text-white text-xl font-bold rounded-full px-9 transition-colors"
+              className="absolute bottom-7 left-1/2 -translate-x-1/2 bg-violet-500/85 hover:bg-violet-400/90 text-foreground text-xl font-bold rounded-full px-9 transition-colors"
               style={{ minHeight: 72, minWidth: 200 }}
             >
               Replay ♫
@@ -407,18 +407,18 @@ export default function KidsHumToPaint() {
           {noteCount >= 3 ? (
             <button
               onClick={replayMelody}
-              className="bg-violet-500 hover:bg-violet-400 text-white text-2xl font-bold rounded-full transition-colors"
+              className="bg-violet-500 hover:bg-violet-400 text-foreground text-2xl font-bold rounded-full transition-colors"
               style={{ minHeight: 90, minWidth: 220, padding: "0 2rem" }}
             >
               ▶ Replay ♫
             </button>
           ) : (
-            <p className="text-white/75 text-lg font-mono">hum more to build a melody!</p>
+            <p className="text-muted-foreground text-lg font-mono">hum more to build a melody!</p>
           )}
 
           <button
             onClick={paintAgain}
-            className="text-white/70 hover:text-white/95 text-base font-mono underline transition-colors"
+            className="text-muted-foreground hover:text-foreground text-base font-mono underline transition-colors"
           >
             paint again
           </button>
@@ -437,7 +437,7 @@ export default function KidsHumToPaint() {
               boxShadow: "0 0 18px 6px rgba(255,255,255,0.35)",
             }}
           />
-          <p className="absolute top-5 left-1/2 -translate-x-1/2 text-white/80 text-xl font-mono pointer-events-none">
+          <p className="absolute top-5 left-1/2 -translate-x-1/2 text-foreground text-xl font-mono pointer-events-none">
             ♫ playing your melody…
           </p>
         </>
@@ -446,7 +446,7 @@ export default function KidsHumToPaint() {
       {/* ── Back link ── */}
       <Link
         href="/dream"
-        className="absolute top-3 left-3 text-white/55 hover:text-white/90 text-sm font-mono transition-colors"
+        className="absolute top-3 left-3 text-muted-foreground hover:text-foreground text-sm font-mono transition-colors"
       >
         ← dream lab
       </Link>

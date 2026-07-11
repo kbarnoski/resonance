@@ -271,28 +271,28 @@ export default function KidsSongSprout() {
   // ── start screen ──────────────────────────────────────────────────────
   if (!started) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#02040a] px-6 text-center text-white">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#02040a] px-6 text-center text-foreground">
         <div className="text-5xl select-none" aria-hidden="true">🌱</div>
-        <h1 className="text-3xl font-serif text-white/95">Song Sprout</h1>
-        <p className="max-w-sm text-base text-white/75">
+        <h1 className="text-3xl font-serif text-foreground">Song Sprout</h1>
+        <p className="max-w-sm text-base text-muted-foreground">
           A tiny glowing creature that listens to your little songs, remembers
           them, and slowly grows up — singing your own melodies back, made new.
         </p>
         <div className="flex flex-col gap-3">
           <button
             onClick={() => handleStart(true)}
-            className="min-h-[44px] rounded-2xl border border-violet-400/40 bg-violet-500/25 px-6 py-3 text-lg font-medium text-white/95 transition-colors hover:bg-violet-500/40"
+            className="min-h-[44px] rounded-2xl border border-violet-400/40 bg-violet-500/25 px-6 py-3 text-lg font-medium text-foreground transition-colors hover:bg-violet-500/40"
           >
             🎤 Sing to your sprout
           </button>
           <button
             onClick={() => handleStart(false)}
-            className="min-h-[44px] rounded-2xl border border-white/20 bg-white/5 px-6 py-3 text-base text-white/75 transition-colors hover:bg-white/10"
+            className="min-h-[44px] rounded-2xl border border-border bg-muted px-6 py-3 text-base text-muted-foreground transition-colors hover:bg-accent"
           >
             Just watch it grow (no mic)
           </button>
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-muted-foreground">
           Hum a few notes. Then go quiet — and listen back. For little ones 3+.
         </p>
       </div>
@@ -311,15 +311,15 @@ export default function KidsSongSprout() {
 
       {/* HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-1 p-5 text-center">
-        <h1 className="text-2xl font-serif text-white/95">Song Sprout</h1>
+        <h1 className="text-2xl font-serif text-foreground">Song Sprout</h1>
         <p className="text-base text-violet-300">{stage}</p>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           {mode === "ghost"
             ? "watching your sprout hum to itself"
             : "hum a little song, then go quiet and listen"}
         </p>
         {heard > 0 && (
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-muted-foreground">
             it remembers {heard} note{heard === 1 ? "" : "s"} of your songs
           </p>
         )}
@@ -327,7 +327,7 @@ export default function KidsSongSprout() {
 
       {micNote && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-center">
-          <p className="mx-auto max-w-md text-base text-rose-300">{micNote}</p>
+          <p className="mx-auto max-w-md text-base text-violet-300">{micNote}</p>
         </div>
       )}
     </div>

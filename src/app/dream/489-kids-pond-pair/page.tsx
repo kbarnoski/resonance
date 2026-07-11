@@ -824,10 +824,10 @@ export default function KidsPondPair() {
     <div className="min-h-screen flex flex-col" style={{ background: "#07050e" }}>
       {/* Header */}
       <div className="w-full px-6 pt-8 pb-3 text-center flex-none">
-        <h1 className="text-2xl font-bold text-white tracking-tight mb-2">
+        <h1 className="text-2xl font-bold text-foreground tracking-tight mb-2">
           Pond Pair
         </h1>
-        <p className="text-white/80 text-base leading-relaxed max-w-lg mx-auto">
+        <p className="text-foreground text-base leading-relaxed max-w-lg mx-auto">
           Tap the water — the lily pad rides the ripples and carries their energy across the channel.
         </p>
       </div>
@@ -841,10 +841,10 @@ export default function KidsPondPair() {
             border:     "1px solid rgba(244,63,94,0.3)",
           }}
         >
-          <p className="text-rose-300 text-base font-semibold">
+          <p className="text-violet-300 text-base font-semibold">
             Canvas 2D unavailable on this device
           </p>
-          <p className="text-white/75 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Try a different browser or device.
           </p>
         </div>
@@ -855,7 +855,7 @@ export default function KidsPondPair() {
         <div className="flex flex-col items-center flex-1 justify-center gap-4 pb-16">
           <button
             onClick={handleStart}
-            className="rounded-2xl text-xl font-semibold text-white
+            className="rounded-2xl text-xl font-semibold text-foreground
                        transition-all duration-200 hover:scale-105 active:scale-95"
             style={{
               background: "linear-gradient(135deg, #1a6eb8 0%, #18a870 100%)",
@@ -867,7 +867,7 @@ export default function KidsPondPair() {
           >
             Tap the Water
           </button>
-          <p className="text-white/55 text-sm">
+          <p className="text-muted-foreground text-sm">
             Multi-touch works — try both ponds at once!
           </p>
         </div>
@@ -887,14 +887,14 @@ export default function KidsPondPair() {
             />
             {/* Pond labels */}
             <div className="absolute bottom-2 left-0 pointer-events-none" style={{ width: "47%" }}>
-              <p className="text-center text-white/55 text-sm">Pond A · low bells</p>
+              <p className="text-center text-muted-foreground text-sm">Pond A · low bells</p>
             </div>
             <div className="absolute bottom-2 right-0 pointer-events-none" style={{ width: "47%" }}>
-              <p className="text-center text-white/55 text-sm">Pond B · high bells</p>
+              <p className="text-center text-muted-foreground text-sm">Pond B · high bells</p>
             </div>
           </div>
 
-          <p className="text-white/45 text-sm text-center py-2 px-4 flex-none">
+          <p className="text-muted-foreground text-sm text-center py-2 px-4 flex-none">
             Big splash → pad bobs to the edge → crosses the channel → drops into the other pond → it sings
           </p>
         </>
@@ -903,7 +903,7 @@ export default function KidsPondPair() {
       {/* Design notes (collapsible) */}
       <section className="w-full max-w-2xl mx-auto px-6 pb-16 pt-4 flex-none">
         <details>
-          <summary className="text-white/55 text-sm cursor-pointer hover:text-white/80 transition-colors py-2">
+          <summary className="text-muted-foreground text-sm cursor-pointer hover:text-foreground transition-colors py-2">
             Design notes ↓
           </summary>
           <div
@@ -913,12 +913,12 @@ export default function KidsPondPair() {
               border:     "1px solid rgba(255,255,255,0.08)",
             }}
           >
-            <h2 className="text-xl font-semibold text-white">Design Notes</h2>
-            <div className="space-y-3 text-white/75 text-sm leading-relaxed">
+            <h2 className="text-xl font-semibold text-foreground">Design Notes</h2>
+            <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
               <p>
-                <span className="text-white/90 font-medium">FDTD wave fields.</span>{" "}
+                <span className="text-foreground font-medium">FDTD wave fields.</span>{" "}
                 Two 56×56 grids, each stepped 3 substeps per frame using the discrete 2-D wave equation:{" "}
-                <code className="font-mono text-cyan-300 text-xs bg-white/5 px-1 rounded">
+                <code className="font-mono text-violet-300 text-xs bg-muted px-1 rounded">
                   uNext = 2u − uPrev + C²·∇²u, ×(1−DAMP)
                 </code>.{" "}
                 C_WAVE = 0.35, DAMP ≈ 0.0018. Dirichlet (zero) outer boundary makes waves reflect.
@@ -926,14 +926,14 @@ export default function KidsPondPair() {
                 ICMC 1993.
               </p>
               <p>
-                <span className="text-white/90 font-medium">Sympathetic coupling.</span>{" "}
+                <span className="text-foreground font-medium">Sympathetic coupling.</span>{" "}
                 The ponds whisper to each other always via edge-column coupling
-                (<code className="font-mono text-xs bg-white/5 px-1 rounded">K ≈ 0.08</code>).
+                (<code className="font-mono text-xs bg-muted px-1 rounded">K ≈ 0.08</code>).
                 This is analogous to sympathetic resonance between two coupled resonators — a ringing
                 in one pond subtly excites the other. The lily pad is the dramatic, visible layer on top.
               </p>
               <p>
-                <span className="text-white/90 font-medium">Lily pad carrier.</span>{" "}
+                <span className="text-foreground font-medium">Lily pad carrier.</span>{" "}
                 The pad bobs on the local wave height (lowpass-filtered) and drifts from the wave-gradient
                 vector (a wave pushes the pad like a real object riding a water surface).
                 When accumulated field energy exceeds a threshold and the pad has drifted near the channel edge,
@@ -941,20 +941,20 @@ export default function KidsPondPair() {
                 The golden dot on the pad visualises carried energy.
               </p>
               <p>
-                <span className="text-white/90 font-medium">Audio.</span>{" "}
+                <span className="text-foreground font-medium">Audio.</span>{" "}
                 Pond A: low pentatonic C3–A3. Pond B: high pentatonic C4–A4 (harmonising register).
                 Bell tones use a 12ms attack, 1.2s exponential release.
                 An always-on C3+G3 ambient pad keeps the space alive.
                 All audio passes through a DynamicsCompressor brick-wall limiter for child safety.
               </p>
               <p>
-                <span className="text-white/90 font-medium">Rendering.</span>{" "}
+                <span className="text-foreground font-medium">Rendering.</span>{" "}
                 Canvas2D only: per-frame pixel fill via{" "}
-                <code className="font-mono text-xs bg-white/5 px-1 rounded">createImageData</code> +{" "}
-                <code className="font-mono text-xs bg-white/5 px-1 rounded">putImageData</code>{" "}
+                <code className="font-mono text-xs bg-muted px-1 rounded">createImageData</code> +{" "}
+                <code className="font-mono text-xs bg-muted px-1 rounded">putImageData</code>{" "}
                 (no Three.js, no WebGL). The lily pad is drawn with arc/path primitives and radial gradients.
               </p>
-              <p className="text-white/50 text-xs">
+              <p className="text-muted-foreground text-xs">
                 Unverified: pixel-fill at 60fps may lag on very large canvases on low-end devices
                 (consider reducing GRID to 40 if needed). Pad crossing threshold is tuned aesthetically,
                 not physically. The sympathetic coupling is simplified (edge-column only). Bell note

@@ -25,12 +25,12 @@ export function PrototypeNav({ slugs }: { slugs: string[] }) {
   const btnBase =
     "rounded-full px-3 py-1.5 text-xs font-medium transition-colors";
   const btnEnabled =
-    "text-white/85 hover:bg-white/[0.08] hover:text-white";
-  const btnDisabled = "text-white/25 cursor-not-allowed";
+    "text-muted-foreground hover:bg-accent hover:text-foreground";
+  const btnDisabled = "text-muted-foreground/40 cursor-not-allowed";
 
   return (
     <nav className="pointer-events-none fixed bottom-3 left-1/2 z-40 -translate-x-1/2">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-white/10 bg-black/85 px-1.5 py-1 shadow-lg backdrop-blur-md">
+      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-popover/85 px-1.5 py-1 shadow-lg backdrop-blur-md">
         {newer ? (
           <Link
             href={`/dream/${newer}`}
@@ -45,7 +45,7 @@ export function PrototypeNav({ slugs }: { slugs: string[] }) {
 
         <Link
           href="/dream"
-          className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white/65 transition-colors hover:bg-white/[0.12] hover:text-white"
+          className="rounded-full bg-accent/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           title="Back to the full prototype index"
         >
           ↑ all · {position}
@@ -63,7 +63,7 @@ export function PrototypeNav({ slugs }: { slugs: string[] }) {
           <span className={`${btnBase} ${btnDisabled}`}>next →</span>
         )}
 
-        <span className="ml-1 flex items-center gap-1 border-l border-white/10 pl-2">
+        <span className="ml-1 flex items-center gap-1 border-l border-border pl-2">
           <VoteIndicator slug={slug} />
           <VoteButtons slug={slug} compact />
         </span>

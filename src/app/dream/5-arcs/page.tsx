@@ -389,15 +389,15 @@ export default function ArcsPage() {
     <div className="flex flex-col" style={{ height: "calc(100vh - 3rem)", background: "#050508" }}>
 
       {/* Arc tabs */}
-      <div className="flex border-b border-white/10 overflow-x-auto shrink-0 scrollbar-none">
+      <div className="flex border-b border-border overflow-x-auto shrink-0 scrollbar-none">
         {ARCS.map((a) => (
           <button
             key={a.id}
             onClick={() => switchArc(a.id)}
             className={`px-4 py-2.5 text-xs tracking-wider whitespace-nowrap transition-colors ${
               arcId === a.id
-                ? "text-white border-b-2 border-white/55 bg-white/5"
-                : "text-white/35 hover:text-white/65"
+                ? "text-foreground border-b-2 border-border bg-muted"
+                : "text-muted-foreground/70 hover:text-muted-foreground"
             }`}
           >
             {a.name}
@@ -419,30 +419,30 @@ export default function ArcsPage() {
           {/* Intro overlay */}
           {!running && (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-              <div className="text-[9px] tracking-[0.2em] text-white/25 uppercase mb-2">
+              <div className="text-[9px] tracking-[0.2em] text-muted-foreground/70 uppercase mb-2">
                 Journey Arc Prototype
               </div>
               <h1 className="text-2xl mb-1 tracking-tight">{arc.name}</h1>
-              <p className="text-xs text-white/35 mb-1">{arc.tagline}</p>
-              <p className="text-sm text-white/45 max-w-xs mb-7 leading-relaxed">{arc.about}</p>
+              <p className="text-xs text-muted-foreground/70 mb-1">{arc.tagline}</p>
+              <p className="text-sm text-muted-foreground max-w-xs mb-7 leading-relaxed">{arc.about}</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => handleStart("demo")}
-                  className="px-5 py-2 text-xs tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+                  className="px-5 py-2 text-xs tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
                 >
                   Demo mode
                 </button>
                 <button
                   onClick={() => handleStart("mic")}
-                  className="px-5 py-2 text-xs tracking-wider uppercase border border-white/15 rounded hover:bg-white/5 hover:border-white/35 transition text-white/50"
+                  className="px-5 py-2 text-xs tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
                 >
                   Start mic
                 </button>
               </div>
               {micError && (
-                <p className="mt-3 text-xs text-rose-300/65 max-w-xs">{micError}</p>
+                <p className="mt-3 text-xs text-violet-300/65 max-w-xs">{micError}</p>
               )}
-              <Link href="/dream" className="mt-10 text-[11px] text-white/22 hover:text-white/50">
+              <Link href="/dream" className="mt-10 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
                 ← dream sandbox
               </Link>
             </div>
@@ -451,12 +451,12 @@ export default function ArcsPage() {
           {/* Running HUD */}
           {running && (
             <div className="absolute top-3 right-3 flex items-center gap-3">
-              <span className="text-[9px] tracking-wider text-white/22 uppercase">
+              <span className="text-[9px] tracking-wider text-muted-foreground/70 uppercase">
                 {mode === "demo" ? "demo" : "mic"}
               </span>
               <button
                 onClick={handleStop}
-                className="text-[10px] tracking-wider uppercase text-white/32 hover:text-white border border-white/10 hover:border-white/40 px-3 py-1 rounded transition"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground/70 hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
               >
                 stop
               </button>
@@ -465,34 +465,34 @@ export default function ArcsPage() {
         </div>
 
         {/* Description panel — desktop only */}
-        <div className="w-52 shrink-0 border-l border-white/8 hidden md:flex flex-col p-3 gap-4 overflow-y-auto text-left">
+        <div className="w-52 shrink-0 border-l border-border hidden md:flex flex-col p-3 gap-4 overflow-y-auto text-left">
           <div>
-            <div className="text-[9px] tracking-[0.15em] text-white/22 uppercase mb-1.5">Active phase</div>
+            <div className="text-[9px] tracking-[0.15em] text-muted-foreground/70 uppercase mb-1.5">Active phase</div>
             <div
               className="text-sm font-medium mb-1"
               style={{ color: `rgb(${phase.color[0]},${phase.color[1]},${phase.color[2]})` }}
             >
               {phase.name}
             </div>
-            <div className="text-[11px] text-white/42 leading-relaxed">{phase.description}</div>
+            <div className="text-[11px] text-muted-foreground/70 leading-relaxed">{phase.description}</div>
           </div>
           <div>
-            <div className="text-[9px] tracking-[0.15em] text-white/22 uppercase mb-1.5">Arc design</div>
-            <div className="text-[11px] text-white/38 leading-relaxed">{arc.about}</div>
+            <div className="text-[9px] tracking-[0.15em] text-muted-foreground/70 uppercase mb-1.5">Arc design</div>
+            <div className="text-[11px] text-muted-foreground/70 leading-relaxed">{arc.about}</div>
           </div>
           <div>
-            <div className="text-[9px] tracking-[0.15em] text-white/22 uppercase mb-1.5">Duration</div>
-            <div className="text-[11px] text-white/42">{arc.minutes} min real · 60s demo</div>
-            <div className="text-[9px] text-white/22 mt-0.5">{arc.phases.length} phases · click timeline to jump</div>
+            <div className="text-[9px] tracking-[0.15em] text-muted-foreground/70 uppercase mb-1.5">Duration</div>
+            <div className="text-[11px] text-muted-foreground/70">{arc.minutes} min real · 60s demo</div>
+            <div className="text-[9px] text-muted-foreground/70 mt-0.5">{arc.phases.length} phases · click timeline to jump</div>
           </div>
           <div className="mt-auto">
-            <Link href="/dream" className="text-[10px] text-white/18 hover:text-white/45">← back</Link>
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">← back</Link>
           </div>
         </div>
       </div>
 
       {/* Phase timeline */}
-      <div className="shrink-0 border-t border-white/8 px-3 py-2">
+      <div className="shrink-0 border-t border-border px-3 py-2">
         <div className="flex items-stretch gap-0.5">
           {arc.phases.map((p, i) => {
             const widthPct = (p.durationWeight / totalWeight) * 100;
@@ -508,8 +508,8 @@ export default function ArcsPage() {
                 }}
                 title={`${p.name}: ${p.description}`}
                 className={`h-7 rounded-sm border text-[9px] tracking-wide truncate px-1.5 transition-all ${
-                  active ? "bg-white/4" : "hover:border-white/25"
-                } ${active ? "text-white" : "text-white/28 hover:text-white/52"}`}
+                  active ? "bg-muted" : "hover:border-border"
+                } ${active ? "text-foreground" : "text-muted-foreground/70 hover:text-muted-foreground"}`}
               >
                 <span style={active ? { color: `rgb(${pr},${pg},${pb})` } : {}}>
                   {p.name}

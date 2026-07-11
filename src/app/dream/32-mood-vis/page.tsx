@@ -445,35 +445,35 @@ export default function MoodVis() {
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">
             Mood Viz
           </h1>
-          <p className="text-sm text-white/55 max-w-sm mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm mb-2 leading-relaxed">
             A visualizer that listens. Audio features — brightness, energy,
             spectral spread — drive a rule-based classifier. The visual mode
             switches automatically as the music changes character.
           </p>
-          <p className="text-[11px] text-white/30 max-w-xs mb-6">
+          <p className="text-[11px] text-muted-foreground/70 max-w-xs mb-6">
             6 moods → 6 modes: Lissajous · Ink rings · Orbital drift · Radial
             bloom · Pulse field · Spectral mandala
           </p>
           <div className="flex gap-4">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Demo
             </button>
             <button
               onClick={start}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -485,30 +485,30 @@ export default function MoodVis() {
         <>
           {/* Current mood */}
           <div className="absolute top-4 left-4 pointer-events-none">
-            <div className="text-[9px] tracking-widest text-white/35 uppercase mb-1">
+            <div className="text-[9px] tracking-widest text-muted-foreground/70 uppercase mb-1">
               mood
             </div>
-            <div className="text-xl tracking-wider font-mono text-white">
+            <div className="text-xl tracking-wider font-mono text-foreground">
               {MOOD_LABEL[hud.mood]}
             </div>
-            <div className="text-[10px] text-white/30 mt-0.5">
+            <div className="text-[10px] text-muted-foreground/70 mt-0.5">
               {MOOD_VIZ[hud.mood]}
             </div>
           </div>
 
           {/* Audio features readout */}
-          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-white/40 text-right pointer-events-none space-y-0.5">
+          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-muted-foreground/70 text-right pointer-events-none space-y-0.5">
             <div>
               AMP{" "}
-              <span className="text-white">
+              <span className="text-foreground">
                 {(hud.amp * 100).toFixed(0)}
               </span>
             </div>
             <div>
-              CENT <span className="text-white">{hud.centroid}</span> Hz
+              CENT <span className="text-foreground">{hud.centroid}</span> Hz
             </div>
             <div>
-              SPREAD <span className="text-white">{hud.cv.toFixed(1)}</span>
+              SPREAD <span className="text-foreground">{hud.cv.toFixed(1)}</span>
             </div>
           </div>
 
@@ -518,7 +518,7 @@ export default function MoodVis() {
               <div
                 key={m}
                 className={`text-[9px] tracking-wider transition-colors duration-300 ${
-                  m === hud.mood ? "text-white" : "text-white/15"
+                  m === hud.mood ? "text-foreground" : "text-muted-foreground/70"
                 }`}
               >
                 {MOOD_LABEL[m]}
@@ -531,25 +531,25 @@ export default function MoodVis() {
             {demo && !running && (
               <button
                 onClick={start}
-                className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
               >
                 use mic
               </button>
             )}
             {demo && !running && (
-              <span className="text-[10px] text-white/25 tracking-wider uppercase">
+              <span className="text-[10px] text-muted-foreground/70 tracking-wider uppercase">
                 demo
               </span>
             )}
             <button
               onClick={stopAll}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               stop
             </button>
             <Link
               href="/dream"
-              className="text-[10px] text-white/30 hover:text-white/60"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground"
             >
               ← back
             </Link>

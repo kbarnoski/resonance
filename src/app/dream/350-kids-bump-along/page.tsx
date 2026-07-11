@@ -629,10 +629,10 @@ export default function KidsBumpAlong() {
       </svg>
 
       {/* Title */}
-      <h1 className="text-white/95 text-2xl font-bold tracking-wide mb-3 z-10 pointer-events-none">
+      <h1 className="text-foreground text-2xl font-bold tracking-wide mb-3 z-10 pointer-events-none">
         🐾 Bump Along
       </h1>
-      <p className="text-white/55 text-sm mb-6 z-10 pointer-events-none">
+      <p className="text-muted-foreground text-sm mb-6 z-10 pointer-events-none">
         tap a creature · drag to reorder
       </p>
 
@@ -739,7 +739,7 @@ export default function KidsBumpAlong() {
               className="flex-1 flex flex-col items-center gap-0.5"
             >
               <div
-                className="text-white/55 text-xs font-mono"
+                className="text-muted-foreground text-xs font-mono"
                 style={{ fontSize: "0.65rem" }}
               >
                 {noteNames[creature.pitchIdx] ?? "C"}
@@ -760,7 +760,7 @@ export default function KidsBumpAlong() {
 
       {/* Bottom hint row */}
       <div className="mt-6 z-10 flex items-center gap-4">
-        <p className="text-white/45 text-xs font-mono">
+        <p className="text-muted-foreground text-xs font-mono">
           ↔ drag to remix melody
         </p>
       </div>
@@ -768,8 +768,8 @@ export default function KidsBumpAlong() {
       {/* README corner button */}
       <button
         onClick={() => setShowReadme((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 text-white/55 text-xs font-mono
-                   bg-white/5 hover:bg-white/10 border border-white/10 rounded px-3 py-1.5
+        className="absolute bottom-4 right-4 z-20 text-muted-foreground text-xs font-mono
+                   bg-muted hover:bg-accent border border-border rounded px-3 py-1.5
                    transition-colors"
         aria-label="Show README"
       >
@@ -783,26 +783,26 @@ export default function KidsBumpAlong() {
           onClick={() => setShowReadme(false)}
         >
           <div
-            className="bg-gray-900 border border-white/10 rounded-xl p-6 max-w-lg w-full
-                       text-white/85 text-sm leading-relaxed overflow-y-auto max-h-[80vh]"
+            className="bg-gray-900 border border-border rounded-xl p-6 max-w-lg w-full
+                       text-foreground text-sm leading-relaxed overflow-y-auto max-h-[80vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-white/95 text-xl font-bold mb-3">350 — Bump Along</h2>
-            <p className="text-white/55 text-xs mb-4">tap backdrop to close</p>
+            <h2 className="text-foreground text-xl font-bold mb-3">350 — Bump Along</h2>
+            <p className="text-muted-foreground text-xs mb-4">tap backdrop to close</p>
             <div className="space-y-3 font-mono text-xs leading-relaxed">
-              <p><strong className="text-white/90">For:</strong> kids (4+)</p>
-              <p><strong className="text-white/90">Pitch:</strong> A row of sleepy creatures passes a bump down the line — each wakes and sings as the wave reaches it.</p>
-              <p><strong className="text-white/90">Novel:</strong> First impulse-propagation / Newton&apos;s-cradle chain-reaction music machine in the lab.</p>
-              <p><strong className="text-white/90">Impulse propagation:</strong> A wave object travels at WAVE_SPEED creatures/second; as it crosses each creature index it triggers squash-stretch + pentatonic note. At the end it reflects with BOUNCE_DECAY speed reduction, creating a return melody.</p>
-              <p><strong className="text-white/90">Pitch mapping:</strong> 7 creatures → C3 E3 G3 A3 C4 E4 G4 (pentatonic, left = low/large BANDIMAL convention). Drag to reorder → melody changes.</p>
-              <p><strong className="text-white/90">Synthesis:</strong> Additive sine stack (fundamental + octave + 3rd harmonic) with fast attack + exponential decay for marimba warmth. All audio routed DynamicsCompressor + 9kHz LPF.</p>
-              <p><strong className="text-white/90">References:</strong> Newton&apos;s cradle impulse transfer; &quot;pass it down the line&quot; physical toy; Rube-Goldberg sequential trigger; BANDIMAL pitch-size convention.</p>
-              <p><strong className="text-white/90">Graceful degradation:</strong> AudioContext errors caught silently; visuals + auto-demo run forever without sound.</p>
-              <p><strong className="text-white/90">Next cycle:</strong> variable wave speed by creature mass; multi-wave interference chords; momentum trails; voice recording per creature.</p>
+              <p><strong className="text-foreground">For:</strong> kids (4+)</p>
+              <p><strong className="text-foreground">Pitch:</strong> A row of sleepy creatures passes a bump down the line — each wakes and sings as the wave reaches it.</p>
+              <p><strong className="text-foreground">Novel:</strong> First impulse-propagation / Newton&apos;s-cradle chain-reaction music machine in the lab.</p>
+              <p><strong className="text-foreground">Impulse propagation:</strong> A wave object travels at WAVE_SPEED creatures/second; as it crosses each creature index it triggers squash-stretch + pentatonic note. At the end it reflects with BOUNCE_DECAY speed reduction, creating a return melody.</p>
+              <p><strong className="text-foreground">Pitch mapping:</strong> 7 creatures → C3 E3 G3 A3 C4 E4 G4 (pentatonic, left = low/large BANDIMAL convention). Drag to reorder → melody changes.</p>
+              <p><strong className="text-foreground">Synthesis:</strong> Additive sine stack (fundamental + octave + 3rd harmonic) with fast attack + exponential decay for marimba warmth. All audio routed DynamicsCompressor + 9kHz LPF.</p>
+              <p><strong className="text-foreground">References:</strong> Newton&apos;s cradle impulse transfer; &quot;pass it down the line&quot; physical toy; Rube-Goldberg sequential trigger; BANDIMAL pitch-size convention.</p>
+              <p><strong className="text-foreground">Graceful degradation:</strong> AudioContext errors caught silently; visuals + auto-demo run forever without sound.</p>
+              <p><strong className="text-foreground">Next cycle:</strong> variable wave speed by creature mass; multi-wave interference chords; momentum trails; voice recording per creature.</p>
             </div>
             <button
               onClick={() => setShowReadme(false)}
-              className="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 rounded text-white/75 transition-colors"
+              className="mt-4 w-full py-2 bg-muted hover:bg-accent rounded text-muted-foreground transition-colors"
             >
               Close
             </button>
@@ -813,8 +813,8 @@ export default function KidsBumpAlong() {
       {/* Back link */}
       <Link
         href="/dream"
-        className="absolute top-4 left-4 z-20 text-white/45 text-xs font-mono
-                   hover:text-white/70 transition-colors"
+        className="absolute top-4 left-4 z-20 text-muted-foreground text-xs font-mono
+                   hover:text-muted-foreground transition-colors"
       >
         ← dream lab
       </Link>

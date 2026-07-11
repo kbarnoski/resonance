@@ -314,27 +314,27 @@ export default function KidsKalimba() {
           })}
         </div>
 
-        <h1 className="text-4xl font-bold text-white tracking-tight">Kalimba</h1>
+        <h1 className="text-4xl font-bold text-foreground tracking-tight">Kalimba</h1>
 
-        <p className="text-lg text-white/75 max-w-xs leading-relaxed">
+        <p className="text-lg text-muted-foreground max-w-xs leading-relaxed">
           Eight glowing bars — tap any bar to pluck it. Taller bars ring low, shorter bars ring high.
           Drag across for a glissando.
         </p>
 
         <button
           onClick={handleStart}
-          className="min-h-[64px] px-10 py-4 bg-violet-600 hover:bg-violet-500 text-white text-xl font-semibold rounded-2xl transition-colors"
+          className="min-h-[64px] px-10 py-4 bg-violet-600 hover:bg-violet-500 text-foreground text-xl font-semibold rounded-2xl transition-colors"
         >
           Let&apos;s play! 🎵
         </button>
 
-        <p className="text-sm text-white/55">
+        <p className="text-sm text-muted-foreground">
           Karplus-Strong string synthesis · zero permissions · zero API
         </p>
 
         <Link
           href="/dream"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -347,12 +347,12 @@ export default function KidsKalimba() {
     <div className="relative w-full h-screen bg-[#04040e] overflow-hidden">
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 pt-4 z-10 pointer-events-none">
         <div>
-          <p className="text-lg font-semibold text-white/90">Kalimba</p>
-          <p className="text-sm text-white/55">tap · slide · play</p>
+          <p className="text-lg font-semibold text-foreground">Kalimba</p>
+          <p className="text-sm text-muted-foreground">tap · slide · play</p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors pointer-events-auto"
+          className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors pointer-events-auto"
         >
           ← dream
         </Link>

@@ -209,7 +209,7 @@ function Slider({ label, value, min, max, step, display, onChange }: SliderProps
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-baseline">
-        <span className="text-xs text-white/55 font-mono uppercase tracking-wider">
+        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
           {label}
         </span>
         <span className="text-xs text-violet-300/90 font-mono">{display(value)}</span>
@@ -426,17 +426,17 @@ export default function PathsGranularPage() {
       {/* Header */}
       <div className="w-full max-w-2xl flex flex-col gap-1">
         <div className="flex items-baseline justify-between">
-          <h1 className="text-2xl font-mono text-white/95 tracking-tight">
+          <h1 className="text-2xl font-mono text-foreground tracking-tight">
             Granular
           </h1>
           <Link
             href="/dream"
-            className="text-xs text-white/55 hover:text-white/75 transition-colors"
+            className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
           >
             ← Dream lab
           </Link>
         </div>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           Scrub through any audio file and let the engine scatter grain-sized
           fragments into sound. Each grain is Hann-windowed, pitch-shifted, and
           panned randomly.
@@ -445,11 +445,11 @@ export default function PathsGranularPage() {
 
       {/* Track name + load button */}
       <div className="w-full max-w-2xl flex items-center justify-between gap-4">
-        <span className="text-sm text-amber-300/95 font-mono truncate">
+        <span className="text-sm text-violet-300/95 font-mono truncate">
           {loading ? "Loading…" : trackName}
         </span>
-        <label className="cursor-pointer min-h-[44px] px-4 py-2 rounded-lg bg-white/5 text-white/75 text-sm
-                           hover:bg-white/10 transition-colors border border-white/10 whitespace-nowrap flex items-center">
+        <label className="cursor-pointer min-h-[44px] px-4 py-2 rounded-lg bg-muted text-muted-foreground text-sm
+                           hover:bg-accent transition-colors border border-border whitespace-nowrap flex items-center">
           Load audio
           <input
             type="file"
@@ -464,7 +464,7 @@ export default function PathsGranularPage() {
       </div>
 
       {/* Waveform canvas */}
-      <div className="w-full max-w-2xl rounded-lg overflow-hidden border border-white/8">
+      <div className="w-full max-w-2xl rounded-lg overflow-hidden border border-border">
         <canvas
           ref={canvasRef}
           width={800}
@@ -477,7 +477,7 @@ export default function PathsGranularPage() {
       {/* Scrub slider (full-width, prominent) */}
       <div className="w-full max-w-2xl flex flex-col gap-1">
         <div className="flex justify-between items-baseline">
-          <span className="text-xs text-white/55 font-mono uppercase tracking-wider">
+          <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
             Scrub position
           </span>
           <span className="text-xs text-violet-300/90 font-mono">
@@ -541,7 +541,7 @@ export default function PathsGranularPage() {
         disabled={loading}
         className={`min-h-[44px] px-8 py-2.5 rounded-lg text-base font-mono transition-colors
           ${running
-            ? "bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30"
+            ? "bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 border border-violet-500/30"
             : "bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 border border-violet-500/30"
           } disabled:opacity-40 disabled:cursor-not-allowed`}
       >
@@ -549,11 +549,11 @@ export default function PathsGranularPage() {
       </button>
 
       {error && (
-        <p className="text-sm text-rose-300 max-w-sm text-center">{error}</p>
+        <p className="text-sm text-violet-300 max-w-sm text-center">{error}</p>
       )}
 
       {/* Footer */}
-      <p className="text-xs text-white/55 font-mono text-center max-w-sm">
+      <p className="text-xs text-muted-foreground font-mono text-center max-w-sm">
         /dream/227-paths-granular · load any WAV / MP3 · try Karel&apos;s recordings
       </p>
     </div>

@@ -333,7 +333,7 @@ export default function PathsGrainfieldPage() {
 
   // ─── Render ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-foreground">
       <div
         ref={wrapRef}
         className="absolute inset-0"
@@ -347,10 +347,10 @@ export default function PathsGrainfieldPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-8">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Paths · Grainfield
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/80">
+        <p className="mt-2 max-w-xl text-base text-foreground">
           Fly through Karel&apos;s recorded piano, shattered into a cloud of
           tens of thousands of grains. Drag to re-sound the region you touch.
         </p>
@@ -363,7 +363,7 @@ export default function PathsGrainfieldPage() {
           e.preventDefault();
           setShowNotes((s) => !s);
         }}
-        className="pointer-events-auto absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-violet-300 backdrop-blur hover:bg-white/10"
+        className="pointer-events-auto absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-violet-300 backdrop-blur hover:bg-accent"
       >
         Read the design notes
       </Link>
@@ -371,8 +371,8 @@ export default function PathsGrainfieldPage() {
       {/* Intro / Begin */}
       {phase !== "playing" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/55 backdrop-blur-sm">
-          <div className="mx-4 max-w-md rounded-2xl border border-white/12 bg-[#0a0b16]/90 p-7 text-center">
-            <p className="text-base text-white/85">
+          <div className="mx-4 max-w-md rounded-2xl border border-border bg-[#0a0b16]/90 p-7 text-center">
+            <p className="text-base text-foreground">
               His whole performance becomes a galaxy of sound-grains, placed by
               their character — left&nbsp;to&nbsp;right is time through the
               piece, low&nbsp;to&nbsp;high is brightness. Drag a cursor through
@@ -381,11 +381,11 @@ export default function PathsGrainfieldPage() {
             <button
               onClick={begin}
               disabled={phase === "loading"}
-              className="mt-6 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-violet-400 disabled:opacity-60"
+              className="mt-6 min-h-[44px] w-full rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400 disabled:opacity-60"
             >
               {phase === "loading" ? "Shattering his piano…" : "Enter the field"}
             </button>
-            <p className="mt-4 text-base text-white/55">
+            <p className="mt-4 text-base text-muted-foreground">
               Leave it alone and it flies itself. Best with headphones.
             </p>
           </div>
@@ -396,12 +396,12 @@ export default function PathsGrainfieldPage() {
       {phase === "playing" && (
         <div className="pointer-events-none absolute left-5 top-28 z-10 flex flex-col gap-2 sm:left-8">
           {source === "piano" && (
-            <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1.5 font-mono text-base text-emerald-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300/95">
               Karel&apos;s piano · {grainCount.toLocaleString()} grains
             </span>
           )}
           {source === "fallback" && (
-            <span className="w-fit rounded-full bg-rose-500/15 px-3 py-1.5 font-mono text-base text-rose-300">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300">
               live recording unavailable — fallback tone · {grainCount.toLocaleString()} grains
             </span>
           )}
@@ -413,7 +413,7 @@ export default function PathsGrainfieldPage() {
             </span>
           )}
           {ghosting && (
-            <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1.5 font-mono text-base text-emerald-300/95">
+            <span className="w-fit rounded-full bg-violet-500/15 px-3 py-1.5 font-mono text-base text-violet-300/95">
               flying itself — move to take the controls
             </span>
           )}
@@ -423,7 +423,7 @@ export default function PathsGrainfieldPage() {
       {/* Footer hint */}
       {phase === "playing" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
-          <p className="rounded-full bg-black/45 px-4 py-2 text-base text-white/75 backdrop-blur">
+          <p className="rounded-full bg-black/45 px-4 py-2 text-base text-muted-foreground backdrop-blur">
             Drag through the cloud · horizontal = stereo position · pause and it drifts on its own
           </p>
         </div>
@@ -436,10 +436,10 @@ export default function PathsGrainfieldPage() {
           onClick={() => setShowNotes(false)}
         >
           <div
-            className="max-h-[82vh] max-w-lg overflow-y-auto rounded-2xl border border-white/12 bg-[#0a0b16] p-6 text-base leading-relaxed text-white/80"
+            className="max-h-[82vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0b16] p-6 text-base leading-relaxed text-foreground"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-xl text-white/95">Design notes</h2>
+            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
             <p className="mt-3">
               The question: what if Karel could fly{" "}
               <em>inside</em> his own recorded piano — the whole performance
@@ -457,12 +457,12 @@ export default function PathsGrainfieldPage() {
             </p>
             <p className="mt-3">
               Dragging the cursor selects the grains nearest in that space and{" "}
-              <span className="text-emerald-300/95">re-sounds them concatenatively</span>
+              <span className="text-violet-300/95">re-sounds them concatenatively</span>
               — each with a Hann window (no clicks) and a stereo pan from its
               horizontal position. This is navigation of a <em>map of sound</em>,
               not tapping pads on glass.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               References: Diemo Schwarz&apos;s <strong>CataRT</strong> (real-time
               corpus-based concatenative synthesis, 2D descriptor-space
               navigation of a sound corpus) and the idea of{" "}
@@ -472,12 +472,12 @@ export default function PathsGrainfieldPage() {
               <code>718-duet-paths</code> (concatenative grains of Karel&apos;s
               real piano).
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Degrade story: no WebGPU → a first-class Canvas2D field with the
               same particle behavior. No live recording → an offline-rendered
               soft arpeggio so the cloud is never empty (a rose notice appears).
             </p>
-            <p className="mt-3 text-emerald-300/95">
+            <p className="mt-3 text-violet-300/95">
               Next-cycle deepening: add a third descriptor (pitch / spectral
               flatness) and a true 3D fly-through with depth-of-field; let two
               cursors weave counterpoint through the same corpus; and persist a
@@ -485,7 +485,7 @@ export default function PathsGrainfieldPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/85 hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

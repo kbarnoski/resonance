@@ -731,27 +731,27 @@ export default function PulseRing() {
   }, []);
 
   const badge = hasRealPeer ? (
-    <span className="rounded-full bg-emerald-500/20 px-3 py-1 font-mono text-base text-emerald-300">
+    <span className="rounded-full bg-violet-500/20 px-3 py-1 font-mono text-base text-violet-300">
       👥 {playerCount} players on the ring
     </span>
   ) : (
-    <span className="rounded-full bg-amber-500/20 px-3 py-1 font-mono text-base text-amber-300">
+    <span className="rounded-full bg-violet-500/20 px-3 py-1 font-mono text-base text-violet-300">
       playing solo · 🤖 ghost players
     </span>
   );
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center bg-[#07060c] text-white">
+    <main className="relative flex min-h-screen flex-col items-center bg-[#07060c] text-foreground">
       <a
         href="/dream/694-pulse-ring/README.md"
-        className="absolute right-4 top-4 z-10 font-mono text-base text-white/55 underline decoration-dotted hover:text-white/95"
+        className="absolute right-4 top-4 z-10 font-mono text-base text-muted-foreground underline decoration-dotted hover:text-foreground"
       >
         Read the design notes
       </a>
 
       <header className="w-full max-w-3xl px-6 pt-10 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight text-white">Pulse Ring</h1>
-        <p className="mx-auto mt-3 max-w-xl text-base text-white/75">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Pulse Ring</h1>
+        <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
           One spinning clock, shared by everyone. Drop rhythmic beads onto the rotating ring; with
           different subdivisions per player, polyrhythm emerges from the group, not one player.
         </p>
@@ -759,7 +759,7 @@ export default function PulseRing() {
       </header>
 
       {error && (
-        <p className="mt-6 font-mono text-base text-rose-300" role="alert">
+        <p className="mt-6 font-mono text-base text-violet-300" role="alert">
           {error}
         </p>
       )}
@@ -775,7 +775,7 @@ export default function PulseRing() {
           <div className="absolute inset-0 flex items-center justify-center px-4">
             <button
               onClick={start}
-              className="rounded-2xl bg-white px-8 py-4 text-xl font-semibold text-black shadow-lg shadow-white/20 transition hover:bg-white/90"
+              className="rounded-2xl bg-card px-8 py-4 text-xl font-semibold text-black shadow-lg shadow-border transition hover:bg-accent"
             >
               ▶ Start the ring
             </button>
@@ -787,7 +787,7 @@ export default function PulseRing() {
         <section className="mt-6 w-full max-w-2xl px-6 pb-16">
           <div className="flex flex-wrap items-end justify-center gap-6">
             <div>
-              <p className="mb-2 font-mono text-base text-white/75">Your voice</p>
+              <p className="mb-2 font-mono text-base text-muted-foreground">Your voice</p>
               <div className="flex flex-wrap gap-2">
                 {VOICES.map((v) => (
                   <button
@@ -809,7 +809,7 @@ export default function PulseRing() {
             </div>
 
             <div>
-              <p className="mb-2 font-mono text-base text-white/75">Your subdivision</p>
+              <p className="mb-2 font-mono text-base text-muted-foreground">Your subdivision</p>
               <div className="flex gap-2">
                 {SUBDIVISIONS.map((s) => (
                   <button
@@ -831,7 +831,7 @@ export default function PulseRing() {
             </div>
 
             <div>
-              <p className="mb-2 font-mono text-base text-white/75">Drone</p>
+              <p className="mb-2 font-mono text-base text-muted-foreground">Drone</p>
               <button
                 onClick={() => {
                   markInteract();
@@ -848,7 +848,7 @@ export default function PulseRing() {
             </div>
           </div>
 
-          <p className="mt-6 text-center text-base text-white/55">
+          <p className="mt-6 text-center text-base text-muted-foreground">
             Tap the ring to drop a bead for your voice; tap your own bead to remove it. Open a second
             tab to add a second player. {beadCount} beads live on the ring.
           </p>

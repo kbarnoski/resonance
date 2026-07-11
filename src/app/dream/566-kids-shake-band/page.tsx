@@ -466,17 +466,17 @@ export default function KidsShakeBand() {
           ))}
         </div>
 
-        <h1 className="text-3xl font-bold text-white text-center mb-2 leading-tight">
+        <h1 className="text-3xl font-bold text-foreground text-center mb-2 leading-tight">
           Shake Band 🎉
         </h1>
-        <p className="text-base text-white/75 text-center mb-8 max-w-xs leading-relaxed">
+        <p className="text-base text-muted-foreground text-center mb-8 max-w-xs leading-relaxed">
           Shake the tablet to play with your band!<br />
           Shake hard for the big drum — gentle for the shaker.
         </p>
 
         <button
           onClick={handleStart}
-          className="min-h-[72px] min-w-[72px] px-10 py-4 rounded-3xl text-2xl font-extrabold text-white transition-transform active:scale-95"
+          className="min-h-[72px] min-w-[72px] px-10 py-4 rounded-3xl text-2xl font-extrabold text-foreground transition-transform active:scale-95"
           style={{
             background: "linear-gradient(135deg, #ff4d6a 0%, #a78bfa 100%)",
             boxShadow: "0 0 32px rgba(167,139,250,0.5), 0 4px 24px rgba(0,0,0,0.4)",
@@ -485,7 +485,7 @@ export default function KidsShakeBand() {
           Start 🥁
         </button>
 
-        <p className="text-sm text-white/50 mt-5 text-center max-w-xs">
+        <p className="text-sm text-muted-foreground mt-5 text-center max-w-xs">
           Shake your device · or drag fast on screen
         </p>
 
@@ -530,7 +530,7 @@ export default function KidsShakeBand() {
       {/* Status: no motion sensor */}
       {(motionStatus === "denied" || motionStatus === "unsupported") && (
         <div className="absolute top-4 inset-x-0 flex justify-center pointer-events-none">
-          <p className="text-rose-300 text-base bg-black/60 rounded-xl px-4 py-2 text-center max-w-xs">
+          <p className="text-violet-300 text-base bg-black/60 rounded-xl px-4 py-2 text-center max-w-xs">
             {motionStatus === "denied"
               ? "Motion not allowed — drag fast to play!"
               : "No motion sensor — drag fast to play!"}
@@ -541,7 +541,7 @@ export default function KidsShakeBand() {
       {/* Shake hint — fades in briefly */}
       {shakeHint && motionStatus === "granted" && (
         <div className="absolute top-4 inset-x-0 flex justify-center pointer-events-none">
-          <p className="text-emerald-300/95 text-xl font-bold animate-pulse">
+          <p className="text-violet-300/95 text-xl font-bold animate-pulse">
             SHAKE IT! 🎉
           </p>
         </div>
@@ -549,7 +549,7 @@ export default function KidsShakeBand() {
 
       {/* Title badge */}
       <div className="absolute top-3 left-3 pointer-events-none">
-        <span className="text-sm text-white/50 bg-black/40 rounded-lg px-2 py-1">
+        <span className="text-sm text-muted-foreground bg-black/40 rounded-lg px-2 py-1">
           Shake Band
         </span>
       </div>
@@ -557,7 +557,7 @@ export default function KidsShakeBand() {
       {/* Drag hint for desktop (no motion) */}
       {motionStatus !== "granted" && (
         <div className="absolute bottom-6 inset-x-0 flex justify-center pointer-events-none">
-          <span className="text-sm text-white/50">
+          <span className="text-sm text-muted-foreground">
             drag fast to play
           </span>
         </div>

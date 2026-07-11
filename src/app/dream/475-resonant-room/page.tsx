@@ -890,7 +890,7 @@ export default function ResonantRoomPage() {
       {/* WebGL unavailable notice */}
       {!webglOk && appState === "running" && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <p className="text-amber-300/95 text-base px-6 text-center">
+          <p className="text-violet-300/95 text-base px-6 text-center">
             WebGL2 not available — audio FDN is still playing.
           </p>
         </div>
@@ -901,10 +901,10 @@ export default function ResonantRoomPage() {
 
         {/* Header */}
         <header className="flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold text-white/95 tracking-tight">
+          <h1 className="text-2xl font-semibold text-foreground tracking-tight">
             Resonant Room
           </h1>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Karel&apos;s piano plays into a room tuned to its key — hold Swell to fill
             the space, release to let it ring out and resolve.
           </p>
@@ -918,12 +918,12 @@ export default function ResonantRoomPage() {
 
           {/* Fallback / FDN mode notices */}
           {appState === "running" && audioMode === "synth" && (
-            <p className="text-amber-300/95 text-base">
+            <p className="text-violet-300/95 text-base">
               Audio fallback — synthesized stand-in playing.
             </p>
           )}
           {appState === "running" && fdnMode === "script" && (
-            <p className="text-amber-300/95 text-base">
+            <p className="text-violet-300/95 text-base">
               AudioWorklet unavailable — ScriptProcessorNode fallback active.
             </p>
           )}
@@ -931,7 +931,7 @@ export default function ResonantRoomPage() {
           {/* Key selector */}
           {appState === "running" && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-white/75 text-base mr-1">Key:</span>
+              <span className="text-muted-foreground text-base mr-1">Key:</span>
               {KEY_OPTIONS.map((k) => (
                 <button
                   key={k}
@@ -939,8 +939,8 @@ export default function ResonantRoomPage() {
                   className={[
                     "min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium transition-all",
                     key === k
-                      ? "bg-amber-500/90 text-white shadow-lg shadow-amber-500/30"
-                      : "bg-white/10 text-white/80 hover:bg-white/20",
+                      ? "bg-violet-500/90 text-foreground shadow-lg shadow-violet-500/30"
+                      : "bg-muted text-foreground hover:bg-accent",
                   ].join(" ")}
                 >
                   {k}
@@ -956,8 +956,8 @@ export default function ResonantRoomPage() {
                 className={[
                   "min-h-[44px] px-6 py-2.5 rounded-xl text-base font-semibold transition-all select-none",
                   swellHeld
-                    ? "bg-amber-500 text-white scale-105 shadow-xl shadow-amber-500/50 ring-2 ring-amber-300"
-                    : "bg-white/15 text-white/90 hover:bg-white/25 ring-1 ring-white/20",
+                    ? "bg-violet-500 text-foreground scale-105 shadow-xl shadow-violet-500/50 ring-2 ring-violet-300"
+                    : "bg-muted text-foreground hover:bg-accent ring-1 ring-border",
                 ].join(" ")}
                 onPointerDown={(e) => { e.preventDefault(); handleSwellStart(); }}
                 onPointerUp={handleSwellEnd}
@@ -966,7 +966,7 @@ export default function ResonantRoomPage() {
               >
                 {swellHeld ? "✦ Swelling…" : "Hold to Swell"}
               </button>
-              <span className="text-white/60 text-base hidden sm:inline">
+              <span className="text-muted-foreground text-base hidden sm:inline">
                 or hold Space
               </span>
             </div>
@@ -977,12 +977,12 @@ export default function ResonantRoomPage() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => void handleStart()}
-                className="min-h-[44px] w-fit px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-base font-semibold transition-all shadow-lg shadow-amber-500/30"
+                className="min-h-[44px] w-fit px-6 py-2.5 rounded-xl bg-violet-500 hover:bg-violet-400 text-foreground text-base font-semibold transition-all shadow-lg shadow-violet-500/30"
               >
                 Start
               </button>
               {autoCountdown > 0 && (
-                <p className="text-white/60 text-base">
+                <p className="text-muted-foreground text-base">
                   Auto-starting in {autoCountdown}…
                 </p>
               )}
@@ -991,12 +991,12 @@ export default function ResonantRoomPage() {
 
           {/* Loading */}
           {appState === "loading" && (
-            <p className="text-white/75 text-base">Loading…</p>
+            <p className="text-muted-foreground text-base">Loading…</p>
           )}
 
           {/* Error */}
           {appState === "error" && (
-            <p className="text-rose-300 text-base">
+            <p className="text-violet-300 text-base">
               Audio engine failed to start. Please refresh and try again.
             </p>
           )}
@@ -1005,21 +1005,21 @@ export default function ResonantRoomPage() {
           <div>
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="text-white/50 text-base hover:text-white/75 transition-colors min-h-[44px] px-2 py-2.5"
+              className="text-muted-foreground text-base hover:text-muted-foreground transition-colors min-h-[44px] px-2 py-2.5"
             >
               {showNotes ? "Hide notes ↑" : "Design notes ↓"}
             </button>
             {showNotes && (
-              <div className="mt-2 p-4 rounded-xl bg-white/5 border border-white/10 max-w-lg">
-                <p className="text-white/80 text-base leading-relaxed">
-                  <strong className="text-white/95">FDN Architecture:</strong> N=8 delay
+              <div className="mt-2 p-4 rounded-xl bg-muted border border-border max-w-lg">
+                <p className="text-foreground text-base leading-relaxed">
+                  <strong className="text-foreground">FDN Architecture:</strong> N=8 delay
                   lines with a Householder mixing matrix (lossless, unitary). Each line is
                   tuned so its first comb peak aligns to a scale degree of the chosen key.
                   Per-line one-pole lowpass causes HF to decay faster — natural room warmth.
                   Hold Swell to ramp feedback gain g → 0.95 (room fills); release to ramp
                   g → 0 (room rings out and resolves to silence).
                 </p>
-                <p className="text-white/60 text-base mt-2">
+                <p className="text-muted-foreground text-base mt-2">
                   References: Stautner & Puckette (1982); Jot & Chaigne AES-90 (1991).
                 </p>
               </div>
@@ -1028,8 +1028,8 @@ export default function ResonantRoomPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 pt-4 border-t border-white/10">
-          <p className="text-white/40 text-base">
+        <div className="mt-6 pt-4 border-t border-border">
+          <p className="text-muted-foreground/70 text-base">
             Resonant Room · dream lab 475 · WebGL2 + FDN reverb
           </p>
         </div>

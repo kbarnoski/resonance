@@ -482,28 +482,28 @@ export default function KidsBloomGarden() {
 
   if (!started) {
     return (
-      <div className="min-h-screen bg-[#020412] flex flex-col items-center justify-center text-white px-6">
+      <div className="min-h-screen bg-[#020412] flex flex-col items-center justify-center text-foreground px-6">
         <div className="max-w-sm w-full flex flex-col items-center gap-6 text-center">
           <div className="text-5xl flex gap-2">🌸 🌼 🌺</div>
-          <h1 className="text-3xl font-bold text-white/95">Bloom Garden</h1>
-          <p className="text-base text-white/80 leading-relaxed">
+          <h1 className="text-3xl font-bold text-foreground">Bloom Garden</h1>
+          <p className="text-base text-foreground leading-relaxed">
             Press and hold anywhere to plant a glowing flower — it blooms and
             plays a soft note. After a while it seeds itself, and a new bud
             grows nearby. Tap any flower to burst it into sparkles.
           </p>
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-muted-foreground">
             Left side plays low notes · right side plays high notes
           </p>
           <button
             onPointerDown={() => setStarted(true)}
-            className="mt-2 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold text-lg rounded-2xl px-8 py-4 min-h-[64px] min-w-[200px] transition-colors"
+            className="mt-2 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-lg rounded-2xl px-8 py-4 min-h-[64px] min-w-[200px] transition-colors"
           >
             Start the garden
           </button>
         </div>
         <Link
           href="/dream"
-          className="absolute bottom-6 text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="absolute bottom-6 text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -519,13 +519,13 @@ export default function KidsBloomGarden() {
         style={{ background: "#020412" }}
       />
       <div className="fixed bottom-5 left-0 right-0 flex justify-center pointer-events-none">
-        <span className="text-white/55 text-sm bg-black/30 px-3 py-1.5 rounded-full">
+        <span className="text-muted-foreground text-sm bg-black/30 px-3 py-1.5 rounded-full">
           hold to plant · tap to burst
         </span>
       </div>
       <Link
         href="/dream"
-        className="fixed top-4 left-4 text-white/55 text-sm pointer-events-auto hover:text-white/80 transition-colors"
+        className="fixed top-4 left-4 text-muted-foreground text-sm pointer-events-auto hover:text-foreground transition-colors"
       >
         ← dream lab
       </Link>

@@ -379,8 +379,8 @@ export default function SdfCave() {
   if (!started) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 px-6 text-center">
-        <h1 className="text-3xl font-mono text-white/95 tracking-tight">Cave</h1>
-        <p className="text-base text-white/75 max-w-sm">
+        <h1 className="text-3xl font-mono text-foreground tracking-tight">Cave</h1>
+        <p className="text-base text-muted-foreground max-w-sm">
           A dark stone space that breathes with sound. Bass melts the walls. Treble
           roughens the stone. The light changes with your music.
         </p>
@@ -394,13 +394,13 @@ export default function SdfCave() {
           </button>
           <button
             onClick={() => { setMicMode(true); setStarted(true); }}
-            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-white/5 border border-white/15
-                       text-white/80 text-base font-mono hover:bg-white/10 transition-colors"
+            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-muted border border-border
+                       text-foreground text-base font-mono hover:bg-accent transition-colors"
           >
             Enter with mic
           </button>
         </div>
-        <p className="text-xs text-white/55">WebGL required</p>
+        <p className="text-xs text-muted-foreground">WebGL required</p>
       </div>
     );
   }
@@ -411,17 +411,17 @@ export default function SdfCave() {
 
       {/* Overlay — top-left info */}
       <div className="absolute top-4 left-4 flex flex-col gap-1 pointer-events-none">
-        <span className="font-mono text-xs text-white/55">
+        <span className="font-mono text-xs text-muted-foreground">
           206 — Cave
         </span>
         {micError && (
-          <span className="text-xs text-rose-300">{micError}</span>
+          <span className="text-xs text-violet-300">{micError}</span>
         )}
         {micMode && !micError && (
-          <span className="text-xs text-emerald-300/95">● mic active</span>
+          <span className="text-xs text-violet-300/95">● mic active</span>
         )}
         {!micMode && (
-          <span className="text-xs text-white/55">demo mode</span>
+          <span className="text-xs text-muted-foreground">demo mode</span>
         )}
       </div>
 
@@ -429,7 +429,7 @@ export default function SdfCave() {
       <div className="absolute bottom-4 right-4">
         <Link
           href="/dream"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -439,7 +439,7 @@ export default function SdfCave() {
       <div className="absolute bottom-4 left-4">
         <Link
           href="/dream/206-sdf-cave/README.md"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           design notes
         </Link>

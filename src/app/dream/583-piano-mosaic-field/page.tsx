@@ -205,7 +205,7 @@ export default function PianoMosaicField() {
   const running = phase === "running";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#08060d] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#08060d] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -215,10 +215,10 @@ export default function PianoMosaicField() {
       {/* Field axis hints (only while running) */}
       {running && (
         <>
-          <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-sm text-white/55">
+          <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-sm text-muted-foreground">
             ← darker · brightness · brighter →
           </div>
-          <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 -rotate-90 font-mono text-sm text-white/55">
+          <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 -rotate-90 font-mono text-sm text-muted-foreground">
             ↑ higher register
           </div>
         </>
@@ -227,10 +227,10 @@ export default function PianoMosaicField() {
       {/* Header / intro overlay */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-6 sm:p-8">
         <div className="max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Piano Mosaic Field
           </h1>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Reach into Karel&apos;s recorded piano and re-voice it. His
             performance is shattered into thousands of tiny grains laid out by
             timbre; drag the warm probe and the instrument answers with his own
@@ -243,7 +243,7 @@ export default function PianoMosaicField() {
                 type="button"
                 onClick={start}
                 disabled={phase === "loading"}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white transition hover:bg-violet-400 disabled:opacity-60"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400 disabled:opacity-60"
               >
                 {phase === "loading" ? "Building corpus…" : "Start"}
               </button>
@@ -252,7 +252,7 @@ export default function PianoMosaicField() {
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="pointer-events-auto min-h-[44px] rounded-full border border-white/20 px-5 py-2.5 text-base text-white/75 transition hover:border-white/40 hover:text-white"
+              className="pointer-events-auto min-h-[44px] rounded-full border border-border px-5 py-2.5 text-base text-muted-foreground transition hover:border-border hover:text-foreground"
             >
               Design notes
             </button>
@@ -262,22 +262,22 @@ export default function PianoMosaicField() {
                 className={
                   "rounded-full px-3 py-1.5 font-mono text-sm " +
                   (source === "piano"
-                    ? "bg-emerald-500/15 text-emerald-300/95"
-                    : "bg-amber-500/15 text-amber-300/95")
+                    ? "bg-violet-500/15 text-violet-300/95"
+                    : "bg-violet-500/15 text-violet-300/95")
                 }
               >
                 {source === "piano" ? "Karel's piano" : "synthesized fallback"}
               </span>
             )}
             {running && backend && (
-              <span className="rounded-full bg-white/10 px-3 py-1.5 font-mono text-sm text-white/55">
+              <span className="rounded-full bg-muted px-3 py-1.5 font-mono text-sm text-muted-foreground">
                 {backend} · {grainCount} grains
               </span>
             )}
           </div>
 
           {phase === "error" && (
-            <p className="mt-4 text-base text-rose-300">
+            <p className="mt-4 text-base text-violet-300">
               Couldn&apos;t start: {errMsg}. Try reloading.
             </p>
           )}
@@ -286,12 +286,12 @@ export default function PianoMosaicField() {
 
       {/* Design notes panel */}
       {showNotes && (
-        <div className="absolute inset-x-0 bottom-0 z-20 max-h-[70vh] overflow-y-auto border-t border-white/10 bg-[#0b0814]/95 p-6 backdrop-blur sm:p-8">
-          <div className="mx-auto max-w-2xl space-y-3 text-base leading-relaxed text-white/75">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+        <div className="absolute inset-x-0 bottom-0 z-20 max-h-[70vh] overflow-y-auto border-t border-border bg-[#0b0814]/95 p-6 backdrop-blur sm:p-8">
+          <div className="mx-auto max-w-2xl space-y-3 text-base leading-relaxed text-muted-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p>
               Karel&apos;s solo piano is decoded client-side and sliced into
-              overlapping <span className="text-white/95">~120ms Hann grains</span>.
+              overlapping <span className="text-foreground">~120ms Hann grains</span>.
               For each grain we precompute a spectral centroid (brightness),
               RMS loudness, and a crude dominant pitch (FFT peak with parabolic
               refinement). Those features place every grain in the 2-D field you
@@ -306,7 +306,7 @@ export default function PianoMosaicField() {
               limiter so it can&apos;t clip. The position MEANS a timbre, and his
               corpus answers with its closest grains — not random scatter.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               References: Diemo Schwarz, CataRT real-time corpus-based
               concatenative synthesis (2006); Tralie &amp; Berger, “The
               Concatenator” (arXiv:2411.04366, 2024) and MACataRT

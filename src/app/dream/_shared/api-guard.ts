@@ -1,29 +1,30 @@
 /**
- * Lightweight abuse protection for dream-zone API routes.
+ * Abuse protection for dream-zone API routes (fal.ai / ElevenLabs / video
+ * proxies that spend the master FAL_KEY).
  *
  * Layered protections (all run in order; first to reject wins):
  *   1. Method check (POST only)
  *   2. Origin / Referer check — request must originate from a known
  *      Resonance domain (preview / production / localhost).
- *   3. Per-IP sliding-window rate limit — 8 requests / 60s.
- *   4. Per-IP daily quota — 40 requests / UTC day.
+ *   3. Authenticated session required — an anonymous request is rejected
+ *      before it can spend any budget. (The `/dream/*` middleware rule
+ *      already redirects unauthenticated *page* loads, but API routes are
+ *      hit directly, so we check here too.)
+ *   4. Per-USER sliding-window rate limit — 8 requests / 60s.
+ *   5. Per-USER daily quota — ~40 requests / day.
  *
- * Rate-limit state is held in process memory, so it's per-lambda-instance
- * and resets on cold starts. For true global rate limiting we'd move this
- * to Vercel KV / Upstash Redis. For an experimental public sandbox the
- * in-memory tier raises the bar enough that casual abuse is unprofitable
- * and the FAL account-level budget cap (set in the fal.ai dashboard) is
- * the hard backstop on cost.
+ * Rate limiting uses the shared KV-backed limiter (`checkRateLimit`), which
+ * is global across lambda instances when Vercel KV / Upstash is provisioned
+ * and falls back to per-instance in-memory otherwise. Keying on the user id
+ * (not IP) makes the limit meaningful behind shared NATs/proxies. The
+ * fal.ai account-level budget cap remains the hard backstop.
  *
  * Returns a Response (to short-circuit) on rejection, or null to pass.
  */
 
 import { NextRequest } from "next/server";
-
-type Bucket = { count: number; reset: number };
-
-const RATE_LIMITS = new Map<string, Bucket>();
-const DAILY_QUOTAS = new Map<string, Bucket>();
+import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit, rateLimitedResponse } from "@/lib/rate-limit";
 
 const ALLOWED_ORIGIN_PATTERNS: RegExp[] = [
   // Production custom domain — getresonance.vercel.app.
@@ -38,9 +39,12 @@ const ALLOWED_ORIGIN_PATTERNS: RegExp[] = [
   /^http:\/\/127\.0\.0\.1:\d+$/,
 ];
 
-const RATE_WINDOW_MS = 60_000;
+// 8 requests / 60s: token bucket of capacity 8 refilling ~0.133 tok/s.
 const RATE_MAX = 8;
+const RATE_REFILL_PER_SEC = RATE_MAX / 60;
+// ~40 requests / day: capacity 40 refilling 40 tokens per 24h.
 const DAILY_MAX = 40;
+const DAILY_REFILL_PER_SEC = DAILY_MAX / 86_400;
 
 function originOrReferer(req: NextRequest): string {
   const origin = req.headers.get("origin");
@@ -56,22 +60,6 @@ function originOrReferer(req: NextRequest): string {
   return "";
 }
 
-function clientIp(req: NextRequest): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  const real = req.headers.get("x-real-ip");
-  if (real) return real;
-  return "unknown";
-}
-
-/** Periodically prune expired entries. Called probabilistically (~1% of
- *  requests) to keep the maps bounded without paying the cost every call. */
-function maybePrune(now: number): void {
-  if (Math.random() >= 0.01) return;
-  for (const [k, v] of RATE_LIMITS) if (v.reset < now) RATE_LIMITS.delete(k);
-  for (const [k, v] of DAILY_QUOTAS) if (v.reset < now) DAILY_QUOTAS.delete(k);
-}
-
 export async function guard(req: NextRequest): Promise<Response | null> {
   if (req.method !== "POST") {
     return Response.json({ error: "method not allowed" }, { status: 405 });
@@ -82,47 +70,42 @@ export async function guard(req: NextRequest): Promise<Response | null> {
     return Response.json({ error: "forbidden" }, { status: 403 });
   }
 
-  const ip = clientIp(req);
-  const now = Date.now();
-
-  const rl = RATE_LIMITS.get(ip);
-  if (rl && rl.reset > now) {
-    if (rl.count >= RATE_MAX) {
-      const retrySec = Math.ceil((rl.reset - now) / 1000);
-      return Response.json(
-        {
-          error: "rate limited",
-          retry_after_seconds: retrySec,
-          hint: "this prototype is shared; please wait a moment before trying again",
-        },
-        { status: 429, headers: { "Retry-After": String(retrySec) } }
-      );
-    }
-    rl.count += 1;
-  } else {
-    RATE_LIMITS.set(ip, { count: 1, reset: now + RATE_WINDOW_MS });
+  // Require an authenticated session before spending any budget. Anonymous
+  // callers hitting the API route directly (bypassing the page-level
+  // middleware redirect) are rejected here.
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return Response.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const today = new Date().toISOString().slice(0, 10);
-  const dayKey = `${ip}:${today}`;
-  const dq = DAILY_QUOTAS.get(dayKey);
-  const midnightUtc = new Date();
-  midnightUtc.setUTCHours(24, 0, 0, 0);
-  if (dq && dq.reset > now) {
-    if (dq.count >= DAILY_MAX) {
-      return Response.json(
-        {
-          error: "daily quota exceeded",
-          hint: "this sandbox limits each visitor to 40 generations per day to keep API costs predictable",
-        },
-        { status: 429 }
-      );
-    }
-    dq.count += 1;
-  } else {
-    DAILY_QUOTAS.set(dayKey, { count: 1, reset: midnightUtc.getTime() });
+  // Per-user daily quota first (so a burst can't exhaust today's budget on
+  // the short-window check alone).
+  const daily = await checkRateLimit(
+    `dream-ai-daily:user:${user.id}`,
+    DAILY_MAX,
+    DAILY_REFILL_PER_SEC,
+  );
+  if (!daily.allowed) {
+    return Response.json(
+      {
+        error: "daily quota exceeded",
+        hint: "this sandbox limits each account to ~40 generations per day to keep API costs predictable",
+      },
+      { status: 429 },
+    );
   }
 
-  maybePrune(now);
+  const burst = await checkRateLimit(
+    `dream-ai:user:${user.id}`,
+    RATE_MAX,
+    RATE_REFILL_PER_SEC,
+  );
+  if (!burst.allowed) {
+    return rateLimitedResponse(burst.retryAfterMs);
+  }
+
   return null;
 }

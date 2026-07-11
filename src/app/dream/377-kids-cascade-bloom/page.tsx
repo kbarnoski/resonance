@@ -220,10 +220,10 @@ export default function KidsCascadeBloom() {
           {/* Decorative seed-pod dots */}
           <div className="flex gap-3 mb-2" aria-hidden="true">
             {[
-              "bg-teal-500/40",
-              "bg-amber-400/70",
-              "bg-orange-400/80",
-              "bg-yellow-200/90",
+              "bg-violet-500/40",
+              "bg-violet-400/70",
+              "bg-violet-400/80",
+              "bg-violet-200/90",
             ].map((cls, i) => (
               <span
                 key={i}
@@ -234,13 +234,13 @@ export default function KidsCascadeBloom() {
           </div>
 
           <div className="space-y-3 text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-white/95 sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Cascade Bloom
             </h1>
-            <p className="text-xl font-light text-white/80">
+            <p className="text-xl font-light text-foreground">
               Tap a pod. Watch the light spill.
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Fill a pod to bursting — it sings and sparks its neighbours.
             </p>
           </div>
@@ -248,7 +248,7 @@ export default function KidsCascadeBloom() {
           <button
             onClick={start}
             aria-label="Tap to play"
-            className="flex items-center justify-center w-44 h-44 rounded-full text-white shadow-2xl active:scale-95 transition-transform"
+            className="flex items-center justify-center w-44 h-44 rounded-full text-foreground shadow-2xl active:scale-95 transition-transform"
             style={{
               background:
                 "radial-gradient(circle at 40% 35%, #f5b942 0%, #ff6633 55%, #cc2266 100%)",
@@ -259,7 +259,7 @@ export default function KidsCascadeBloom() {
             <span className="text-5xl leading-none">▶</span>
           </button>
 
-          <p className="max-w-xs text-center text-base text-white/75">
+          <p className="max-w-xs text-center text-base text-muted-foreground">
             Tap anywhere to drop a grain.
             <br />
             It blooms on its own if you watch.
@@ -267,7 +267,7 @@ export default function KidsCascadeBloom() {
 
           <button
             onClick={() => setShowNotes(true)}
-            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-amber-300/90 underline underline-offset-2"
+            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-violet-300/90 underline underline-offset-2"
           >
             Design notes ↓
           </button>
@@ -279,7 +279,7 @@ export default function KidsCascadeBloom() {
         <>
           {noWebGL && (
             <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center px-6">
-              <p className="max-w-sm rounded-2xl bg-black/60 px-4 py-2.5 text-center text-base text-rose-300 backdrop-blur-sm">
+              <p className="max-w-sm rounded-2xl bg-black/60 px-4 py-2.5 text-center text-base text-violet-300 backdrop-blur-sm">
                 WebGL2 is not available — the bloom is running but invisible.
                 Try a modern browser.
               </p>
@@ -291,14 +291,14 @@ export default function KidsCascadeBloom() {
             className="pointer-events-none absolute inset-x-0 bottom-20 flex justify-center transition-opacity duration-1000"
             style={{ opacity: 0 }}
           >
-            <p className="rounded-full bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm">
+            <p className="rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm">
               Tap the glowing pods ✦
             </p>
           </div>
 
           <button
             onClick={() => setShowNotes(true)}
-            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm transition-colors hover:text-white/95"
+            className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
           >
             Design notes
           </button>
@@ -307,12 +307,12 @@ export default function KidsCascadeBloom() {
 
       {/* ── Design notes panel ─────────────────────────────────────────────── */}
       {showNotes && (
-        <section className="absolute inset-0 z-10 overflow-y-auto bg-[#08081a]/97 px-6 py-12 text-base text-white/75 backdrop-blur-sm">
+        <section className="absolute inset-0 z-10 overflow-y-auto bg-[#08081a]/97 px-6 py-12 text-base text-muted-foreground backdrop-blur-sm">
           <div className="mx-auto max-w-xl space-y-5 font-mono">
-            <h2 className="text-2xl font-bold text-white/95">Design Notes</h2>
+            <h2 className="text-2xl font-bold text-foreground">Design Notes</h2>
 
             <p>
-              <span className="font-semibold text-amber-300">The question:</span>{" "}
+              <span className="font-semibold text-violet-300">The question:</span>{" "}
               What if a 4-year-old could tap glowing seed-pods that fill with
               light, and when a pod overflows it BURSTS — flinging light to its
               neighbours — and every burst sings a note? Small taps sometimes
@@ -321,7 +321,7 @@ export default function KidsCascadeBloom() {
             </p>
 
             <p>
-              <span className="font-semibold text-amber-300">
+              <span className="font-semibold text-violet-300">
                 Abelian sandpile (SOC):
               </span>{" "}
               A {GRID_W}×{GRID_H} grid of cells, each holding 0–3 light grains.
@@ -335,7 +335,7 @@ export default function KidsCascadeBloom() {
             </p>
 
             <p>
-              <span className="font-semibold text-amber-300">Render:</span> Raw
+              <span className="font-semibold text-violet-300">Render:</span> Raw
               WebGL2, GLSL ES 3.00. The grid state is uploaded each frame as an
               R8 texture; a second R32F texture carries per-cell flash
               brightness. The fragment shader draws each cell as a rounded
@@ -345,20 +345,20 @@ export default function KidsCascadeBloom() {
             </p>
 
             <p>
-              <span className="font-semibold text-amber-300">Audio:</span> Each
+              <span className="font-semibold text-violet-300">Audio:</span> Each
               topple plays a soft bell voice (sine + inharmonic 2nd partial ×
               2.76, quick exponential decay, 2200 Hz lowpass). Grid row maps to
               pitch across D-Dorian D3–A4 (D E F G A B C — no sharps/flats, no
               C-major pentatonic). A sustained D2/A2/D3 drone pad with a
               breathing lowpass LFO keeps silence from ever feeling dead. All
               voices route through a{" "}
-              <code className="text-teal-300">DynamicsCompressor</code> limiter
+              <code className="text-violet-300">DynamicsCompressor</code> limiter
               (ratio 20:1, threshold −8 dB) so a 50-note avalanche never clips.
               Voice pool capped at 8 simultaneous notes.
             </p>
 
             <p>
-              <span className="font-semibold text-amber-300">Kids design:</span>{" "}
+              <span className="font-semibold text-violet-300">Kids design:</span>{" "}
               No reading required to play. Tap targets span whole cells (≥64 px
               on tablet). Immediate audible and visual response to every tap.
               Auto-demo starts if untouched for 4 s — drops grains on random
@@ -367,11 +367,11 @@ export default function KidsCascadeBloom() {
             </p>
 
             <p>
-              <span className="font-semibold text-emerald-300/95">
+              <span className="font-semibold text-violet-300/95">
                 References:
               </span>
             </p>
-            <ul className="ml-4 list-disc space-y-1 text-white/75">
+            <ul className="ml-4 list-disc space-y-1 text-muted-foreground">
               <li>
                 Bak, Tang &amp; Wiesenfeld, &ldquo;Self-organized criticality,&rdquo; Phys.
                 Rev. Lett. 59, 381 (1987) — the Abelian sandpile model, origin
@@ -386,7 +386,7 @@ export default function KidsCascadeBloom() {
             </ul>
 
             <p>
-              <span className="font-semibold text-rose-300">
+              <span className="font-semibold text-violet-300">
                 Honest self-assessment:
               </span>{" "}
               The sandpile logic, audio engine, and WebGL2 renderer are fully
@@ -400,7 +400,7 @@ export default function KidsCascadeBloom() {
 
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-full border border-amber-500/30 bg-amber-600/20 px-4 py-2.5 text-base text-amber-200 transition-colors hover:bg-amber-600/35"
+              className="mt-6 min-h-[44px] rounded-full border border-violet-500/30 bg-violet-600/20 px-4 py-2.5 text-base text-violet-200 transition-colors hover:bg-violet-600/35"
             >
               ← Back to bloom
             </button>

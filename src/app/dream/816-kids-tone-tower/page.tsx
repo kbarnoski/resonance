@@ -288,7 +288,7 @@ export default function ToneTowerPage() {
       <div className="mx-auto flex max-w-[480px] items-center justify-between px-4 pt-4">
         <Link
           href="/dream"
-          className="rounded-full bg-white/70 px-3 py-2 text-base font-semibold text-[#7a5c3e] shadow-sm transition-colors hover:bg-white"
+          className="rounded-full bg-muted px-3 py-2 text-base font-semibold text-[#7a5c3e] shadow-sm transition-colors hover:bg-card"
           aria-label="Back to all prototypes"
         >
           ←
@@ -298,7 +298,7 @@ export default function ToneTowerPage() {
         </h1>
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="rounded-full bg-white/70 px-3 py-2 text-base font-semibold text-[#7a5c3e] shadow-sm transition-colors hover:bg-white"
+          className="rounded-full bg-muted px-3 py-2 text-base font-semibold text-[#7a5c3e] shadow-sm transition-colors hover:bg-card"
           aria-label="Design notes"
         >
           ?
@@ -306,7 +306,7 @@ export default function ToneTowerPage() {
       </div>
 
       {noAudio && (
-        <p className="mx-auto mt-2 max-w-[480px] px-4 text-base font-semibold text-rose-700">
+        <p className="mx-auto mt-2 max-w-[480px] px-4 text-base font-semibold text-violet-700">
           Sound is off on this device — you can still build and watch the tower
           glow.
         </p>
@@ -498,14 +498,14 @@ export default function ToneTowerPage() {
               void ensureStarted();
               strum();
             }}
-            className="flex h-20 w-20 items-center justify-center rounded-full bg-[#3fb68b] text-3xl text-white shadow-lg transition-transform active:scale-95"
+            className="flex h-20 w-20 items-center justify-center rounded-full bg-[#3fb68b] text-3xl text-foreground shadow-lg transition-transform active:scale-95"
             aria-label="Play the tower"
           >
             ▶
           </button>
           <button
             onClick={knockOver}
-            className="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8743b] text-3xl text-white shadow-lg transition-transform active:scale-95"
+            className="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8743b] text-3xl text-foreground shadow-lg transition-transform active:scale-95"
             aria-label="Knock the tower over and start again"
           >
             💥
@@ -532,7 +532,7 @@ export default function ToneTowerPage() {
       {/* design notes drawer */}
       {showNotes && (
         <div className="mx-auto max-w-[480px] px-4 pb-16">
-          <div className="rounded-2xl bg-white/80 p-5 text-base leading-relaxed text-[#4a3c2e] shadow">
+          <div className="rounded-2xl bg-muted p-5 text-base leading-relaxed text-[#4a3c2e] shadow">
             <p className="mb-2 text-xl font-bold text-[#b5651d]">
               How to play
             </p>

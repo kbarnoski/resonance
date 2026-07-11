@@ -340,28 +340,28 @@ export default function KidsSoundHunt() {
       {/* ── IDLE SCREEN ──────────────────────────────────────────────────── */}
       {phase === "idle" && (
         <div className="relative z-10 flex max-w-sm flex-col items-center gap-6 px-6 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white/95">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
             Sound Hunt
           </h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             Animals are hiding all around you, singing in the dark.{" "}
-            <span className="text-amber-300">Turn slowly</span> to find them —
+            <span className="text-violet-300">Turn slowly</span> to find them —
             when you hear one up close, hold still and it will come to you.
           </p>
-          <p className="text-base text-white/60 leading-relaxed">
-            Best with <span className="text-white/80">headphones</span>.
+          <p className="text-base text-muted-foreground leading-relaxed">
+            Best with <span className="text-foreground">headphones</span>.
             Works without — but the magic lives in your ears.
           </p>
 
           <button
             onClick={handleStart}
-            className="mt-2 min-h-[56px] w-full rounded-2xl bg-amber-500/20 border border-amber-400/40 px-6 py-3.5 text-xl font-semibold text-amber-200 transition-all hover:bg-amber-500/30 active:scale-95"
+            className="mt-2 min-h-[56px] w-full rounded-2xl bg-violet-500/20 border border-violet-400/40 px-6 py-3.5 text-xl font-semibold text-violet-200 transition-all hover:bg-violet-500/30 active:scale-95"
             style={{ touchAction: "manipulation" }}
           >
             ▸ Listen for the animals
           </button>
 
-          <p className="text-sm text-white/40 leading-relaxed">
+          <p className="text-sm text-muted-foreground/70 leading-relaxed">
             No phone sensor? Drag left/right to turn.
             A gentle auto-tour plays by itself.
           </p>
@@ -401,7 +401,7 @@ export default function KidsSoundHunt() {
               ))}
             </div>
 
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               {collectedCount === 0
                 ? "Turn slowly — listen…"
                 : collectedCount < totalCount
@@ -411,12 +411,12 @@ export default function KidsSoundHunt() {
 
             {/* Sensor status */}
             {!sensorActive && !sensorDenied && (
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-muted-foreground">
                 Drag left/right to turn · auto-demo playing
               </p>
             )}
             {sensorDenied && (
-              <p className="text-sm text-rose-300">
+              <p className="text-sm text-violet-300">
                 Sensor permission denied — drag left/right to turn.
               </p>
             )}
@@ -434,7 +434,7 @@ export default function KidsSoundHunt() {
                   {a.name}
                 </p>
                 {!a.collected && (
-                  <p className="text-sm text-white/50">
+                  <p className="text-sm text-muted-foreground">
                     {dwellPct > 0.6 ? "Hold still…" : "Stay facing it…"}
                   </p>
                 )}
@@ -447,7 +447,7 @@ export default function KidsSoundHunt() {
             const a = animals.find((x) => x.id === facedId);
             return a && !a.collected ? (
               <div className="absolute bottom-12 left-0 right-0 flex justify-center pointer-events-none">
-                <p className="text-sm text-white/40">or tap the compass to catch it</p>
+                <p className="text-sm text-muted-foreground/70">or tap the compass to catch it</p>
               </div>
             ) : null;
           })()}
@@ -459,7 +459,7 @@ export default function KidsSoundHunt() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none z-20"
           style={{ background: "radial-gradient(ellipse at center, rgba(251,191,36,0.08) 0%, transparent 70%)" }}
         >
-          <p className="text-3xl text-amber-200 font-bold">All found!</p>
+          <p className="text-3xl text-violet-200 font-bold">All found!</p>
           <div className="flex gap-3 text-3xl">
             {animals.map((a) => (
               <span key={a.id} style={{ filter: `drop-shadow(0 0 10px ${a.color})` }}>
@@ -467,7 +467,7 @@ export default function KidsSoundHunt() {
               </span>
             ))}
           </div>
-          <p className="text-base text-white/70">Listen to your song…</p>
+          <p className="text-base text-muted-foreground">Listen to your song…</p>
         </div>
       )}
 
@@ -481,16 +481,16 @@ export default function KidsSoundHunt() {
               </span>
             ))}
           </div>
-          <h2 className="text-2xl font-bold text-amber-200">
+          <h2 className="text-2xl font-bold text-violet-200">
             You found them all!
           </h2>
-          <p className="text-base text-white/70 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             The {animals.map((a) => a.name).join(", ")} are all singing together
             in your ears now. Well done, little listener.
           </p>
           <button
             onClick={handleReset}
-            className="mt-2 min-h-[52px] w-full rounded-2xl bg-amber-500/15 border border-amber-400/30 px-6 py-3 text-lg font-semibold text-amber-200 transition-all hover:bg-amber-500/25 active:scale-95"
+            className="mt-2 min-h-[52px] w-full rounded-2xl bg-violet-500/15 border border-violet-400/30 px-6 py-3 text-lg font-semibold text-violet-200 transition-all hover:bg-violet-500/25 active:scale-95"
             style={{ touchAction: "manipulation" }}
           >
             Hunt again
@@ -501,7 +501,7 @@ export default function KidsSoundHunt() {
       {/* ── NO AUDIO ──────────────────────────────────────────────────────── */}
       {phase === "no-audio" && (
         <div className="relative z-10 max-w-sm px-6 text-center">
-          <p className="text-base text-rose-300 leading-relaxed">
+          <p className="text-base text-violet-300 leading-relaxed">
             Web Audio isn&apos;t available in this browser. Try a recent
             Chrome, Safari, or Firefox to hear the animals.
           </p>
@@ -511,7 +511,7 @@ export default function KidsSoundHunt() {
       {/* ── Corner note ───────────────────────────────────────────────────── */}
       <a
         href="/dream/346-kids-sound-hunt/README.md"
-        className="absolute bottom-4 right-4 text-sm text-white/35 hover:text-white/60 transition-colors"
+        className="absolute bottom-4 right-4 text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors"
       >
         Design notes
       </a>

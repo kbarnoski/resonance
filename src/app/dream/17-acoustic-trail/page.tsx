@@ -344,14 +344,14 @@ export default function AcousticTrailPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">
-            Acoustic Trail <span className="text-white/30 text-lg">3D</span>
+            Acoustic Trail <span className="text-muted-foreground/70 text-lg">3D</span>
           </h1>
-          <p className="text-sm text-white/55 max-w-sm mb-3 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm mb-3 leading-relaxed">
             Your audio mapped to its own natural coordinate space. Spectral centroid
             (brightness) → X. Treble ratio → Y. Bass energy → Z. The trail you leave{" "}
             <em>is</em> the acoustic fingerprint of your performance.
           </p>
-          <p className="text-xs text-white/35 max-w-xs mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-xs mb-8 leading-relaxed">
             A single clean pitch traces a vertical column. A dense chord spreads wide.
             Bass notes pull toward the Z wall. Drag to rotate. Inspired by SoundPlot
             (arxiv 2601.12752).
@@ -360,25 +360,25 @@ export default function AcousticTrailPage() {
           <div className="flex gap-3 flex-wrap justify-center mb-6">
             <button
               onClick={() => startMode("demo")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={() => startMode("mic")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/40 transition text-white/55"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Start mic
             </button>
           </div>
 
           {micError && (
-            <p className="mb-4 text-xs text-rose-300/70 max-w-xs leading-relaxed">
+            <p className="mb-4 text-xs text-violet-300/70 max-w-xs leading-relaxed">
               {micError}
             </p>
           )}
 
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -387,48 +387,48 @@ export default function AcousticTrailPage() {
       {mode !== "idle" && (
         <>
           {/* Point count + mode — top-right */}
-          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-white/35 pointer-events-none select-none space-y-0.5">
+          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-muted-foreground/70 pointer-events-none select-none space-y-0.5">
             <div>{ptCount.toLocaleString()} pts</div>
             <div className="uppercase">{mode}</div>
           </div>
 
           {/* Axis legend — bottom-left */}
-          <div className="absolute bottom-3 left-3 text-[10px] text-white/30 pointer-events-none select-none leading-relaxed">
+          <div className="absolute bottom-3 left-3 text-[10px] text-muted-foreground/70 pointer-events-none select-none leading-relaxed">
             <div>
-              <span className="text-indigo-400/80">◀</span> centroid{" "}
-              <span className="text-orange-400/80">▶</span> dark → bright
+              <span className="text-violet-400/80">◀</span> centroid{" "}
+              <span className="text-violet-400/80">▶</span> dark → bright
             </div>
             <div>
-              <span className="text-white/50">▲</span> treble ratio
+              <span className="text-muted-foreground">▲</span> treble ratio
             </div>
             <div>
-              <span className="text-cyan-400/60">●</span> bass energy (depth)
+              <span className="text-violet-400/60">●</span> bass energy (depth)
             </div>
-            <div className="mt-1 text-white/20">drag to rotate</div>
+            <div className="mt-1 text-muted-foreground/70">drag to rotate</div>
           </div>
 
           {/* Controls — bottom-right */}
           <div className="absolute bottom-3 right-3 flex flex-col items-end gap-1.5">
             <button
               onClick={clearTrail}
-              className="text-[10px] tracking-wider uppercase text-white/50 border border-white/20 hover:border-white/50 hover:text-white px-2.5 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
             >
               clear
             </button>
             <button
               onClick={stopMode}
-              className="text-[10px] tracking-wider uppercase text-white/50 border border-white/20 hover:border-white/50 hover:text-white px-2.5 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <a
               href="/dream/17-acoustic-trail/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-[9px] text-white/20 hover:text-white/50 transition"
+              className="text-[9px] text-muted-foreground/70 hover:text-muted-foreground transition"
             >
               design notes ↗
             </a>

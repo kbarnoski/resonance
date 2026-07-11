@@ -1563,7 +1563,7 @@ export default function EchoHallsTonnetz() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#080910] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#080910] text-foreground">
       <video ref={videoRef} className="hidden" playsInline muted />
       {/* offscreen sim host for WebGL2 fallback (kept tiny + hidden) */}
       <canvas ref={simCanvasRef} width={256} height={256} className="pointer-events-none absolute -z-10 h-1 w-1 opacity-0" />
@@ -1578,10 +1578,10 @@ export default function EchoHallsTonnetz() {
       {/* top bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Echo Halls — Tonnetz
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Walk a lattice of triads; stepping across each threshold applies a P / L / R
             voice-leading transform while a live GPU reaction-diffusion field blooms and sings as the
             room&rsquo;s resonating body.
@@ -1597,7 +1597,7 @@ export default function EchoHallsTonnetz() {
             className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base font-medium transition ${
               armed
                 ? "bg-violet-400 text-[#0c0a16] shadow-lg shadow-violet-500/20"
-                : "bg-white/90 text-[#0c0a16] hover:bg-white"
+                : "bg-muted text-[#0c0a16] hover:bg-card"
             }`}
           >
             {armed ? "Recording a path-ghost…" : "Start a loop"}
@@ -1606,7 +1606,7 @@ export default function EchoHallsTonnetz() {
           <button
             onClick={startCamera}
             disabled={cameraState === "loading" || cameraState === "on"}
-            className="min-h-[44px] rounded-lg border border-white/25 bg-white/5 px-4 py-2.5 text-base font-medium text-white/90 transition hover:bg-white/10 disabled:opacity-50"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
           >
             {cameraState === "on"
               ? "Camera live"
@@ -1617,36 +1617,36 @@ export default function EchoHallsTonnetz() {
 
           <button
             onClick={clearAll}
-            className="min-h-[44px] rounded-lg border border-white/20 bg-transparent px-4 py-2.5 text-base font-medium text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base font-medium text-muted-foreground transition hover:bg-accent"
           >
             Clear all
           </button>
 
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-transparent px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
           >
             Read the design notes
           </button>
 
-          <div className="ml-auto flex items-center gap-4 font-mono text-base text-white/75">
+          <div className="ml-auto flex items-center gap-4 font-mono text-base text-muted-foreground">
             <span>
-              ghosts <span className="text-white/95">{ghostCount}</span>/{MAX_GHOSTS}
+              ghosts <span className="text-foreground">{ghostCount}</span>/{MAX_GHOSTS}
             </span>
             <span>
               chord <span className="text-violet-300">{nowChord}</span>
             </span>
             <span>
-              move <span className="text-emerald-300/95">{lastXform}</span>
+              move <span className="text-violet-300/95">{lastXform}</span>
             </span>
             <span className="hidden sm:inline">
-              sim <span className="text-amber-300/95">{rendererKind}</span>
+              sim <span className="text-violet-300/95">{rendererKind}</span>
             </span>
           </div>
         </div>
 
         {notice && (
-          <p className={`mt-3 text-base ${cameraState === "error" ? "text-rose-300" : "text-white/75"}`}>
+          <p className={`mt-3 text-base ${cameraState === "error" ? "text-violet-300" : "text-muted-foreground"}`}>
             {notice}
           </p>
         )}
@@ -1655,40 +1655,40 @@ export default function EchoHallsTonnetz() {
       {/* design notes */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 p-6">
-          <div className="max-h-[85vh] max-w-lg overflow-auto rounded-xl border border-white/15 bg-[#10111c] p-6 text-base text-white/80 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[85vh] max-w-lg overflow-auto rounded-xl border border-border bg-[#10111c] p-6 text-base text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>
-                <span className="text-white/95">Tonnetz lattice:</span> every node is a major or
+                <span className="text-foreground">Tonnetz lattice:</span> every node is a major or
                 minor triad. Crossing an edge applies a single neo-Riemannian transform —{" "}
                 <span className="text-violet-300">P</span> (parallel),{" "}
-                <span className="text-emerald-300/95">L</span> (leading-tone exchange),{" "}
-                <span className="text-amber-300/95">R</span> (relative) — each a one-voice,
+                <span className="text-violet-300/95">L</span> (leading-tone exchange),{" "}
+                <span className="text-violet-300/95">R</span> (relative) — each a one-voice,
                 common-tone-rich voice-leading move. Real functional harmony, not a no-wrong-notes
                 scale.
               </li>
               <li>
-                <span className="text-white/95">Resonating body:</span> a Gray-Scott
+                <span className="text-foreground">Resonating body:</span> a Gray-Scott
                 reaction-diffusion field runs on the GPU (WebGPU compute, ping-pong storage buffers).
                 Its coverage and edge-energy open a shimmer partial and breathe the master filter —
                 the Turing pattern is the instrument&rsquo;s body, not a backdrop.
               </li>
               <li>
-                <span className="text-white/95">HRTF + ghosts:</span> the live triad and every ghost
+                <span className="text-foreground">HRTF + ghosts:</span> the live triad and every ghost
                 own an HRTF <span className="font-mono">PannerNode</span>; you are the
                 AudioListener, so chords re-pan as you move. &ldquo;Start a loop&rdquo; records your
                 lattice path over {BAR_SECONDS}s into a permanent ghost that re-walks and re-triggers
                 its transforms forever (up to {MAX_GHOSTS}; oldest drops).
               </li>
               <li>
-                <span className="text-white/95">Fallback chain:</span> WebGPU-compute RD → WebGL2
+                <span className="text-foreground">Fallback chain:</span> WebGPU-compute RD → WebGL2
                 fragment RD → CPU RD; input MediaPipe Pose → pointer → ~1.5s auto-demo walking a
                 P–L–R cycle with zero permissions.
               </li>
             </ul>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/90 px-4 py-2.5 text-base font-medium text-[#0c0a16] hover:bg-white"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-[#0c0a16] hover:bg-card"
             >
               Close
             </button>

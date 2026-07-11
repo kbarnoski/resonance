@@ -499,10 +499,10 @@ export default function KidsCometGather() {
     return (
       <div className="min-h-screen bg-[#04020f] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-2xl font-semibold text-white mb-3">
+          <p className="text-2xl font-semibold text-foreground mb-3">
             WebGL not available
           </p>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             This prototype needs WebGL to render the night sky.
             Try a different browser or device.
           </p>
@@ -523,8 +523,8 @@ export default function KidsCometGather() {
       {/* HUD — gathered count (only while playing) */}
       {phase === "playing" && (
         <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="flex items-center gap-2 bg-white/8 backdrop-blur-sm rounded-full px-4 py-2">
-            <span className="text-base text-white/75 font-mono">
+          <div className="flex items-center gap-2 bg-muted backdrop-blur-sm rounded-full px-4 py-2">
+            <span className="text-base text-muted-foreground font-mono">
               {gatheredCount === 0
                 ? "sweep to scoop motes"
                 : `${gatheredCount} mote${gatheredCount !== 1 ? "s" : ""} gathered`}
@@ -536,7 +536,7 @@ export default function KidsCometGather() {
       {/* Input note */}
       {phase === "playing" && gyroNote === "drag" && (
         <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-          <p className="text-base text-white/55 font-mono px-4 text-center">
+          <p className="text-base text-muted-foreground font-mono px-4 text-center">
             drag to look around
           </p>
         </div>
@@ -554,14 +554,14 @@ export default function KidsCometGather() {
             <span className="text-5xl relative z-10">✦</span>
           </div>
 
-          <h1 className="text-3xl font-bold text-white mb-3 tracking-tight">
+          <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
             Comet Gather
           </h1>
 
-          <p className="text-base text-white/75 mb-2 max-w-xs leading-relaxed">
+          <p className="text-base text-muted-foreground mb-2 max-w-xs leading-relaxed">
             Hold up your phone and sweep it through the night sky.
           </p>
-          <p className="text-base text-white/75 mb-8 max-w-xs leading-relaxed">
+          <p className="text-base text-muted-foreground mb-8 max-w-xs leading-relaxed">
             Each mote you scoop up sings a new lullaby note.
           </p>
 
@@ -570,7 +570,7 @@ export default function KidsCometGather() {
             className="
               min-h-[64px] min-w-[200px] px-8 py-4
               bg-violet-600 hover:bg-violet-500 active:bg-violet-700
-              text-white text-xl font-bold rounded-2xl
+              text-foreground text-xl font-bold rounded-2xl
               transition-colors duration-150
               shadow-lg shadow-violet-900/40
             "
@@ -578,7 +578,7 @@ export default function KidsCometGather() {
             Begin ✦
           </button>
 
-          <p className="mt-6 text-base text-white/55 max-w-xs">
+          <p className="mt-6 text-base text-muted-foreground max-w-xs">
             Sound on for the full experience
           </p>
         </div>

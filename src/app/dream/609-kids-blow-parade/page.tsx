@@ -272,7 +272,7 @@ export default function BlowParadePage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0c1024] text-white select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0c1024] text-foreground select-none">
       {/* Canvas fills the screen */}
       <canvas
         ref={canvasRef}
@@ -281,10 +281,10 @@ export default function BlowParadePage() {
 
       {/* Title — labeling only, not gating */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 flex flex-col items-center pt-4">
-        <h1 className="text-2xl font-bold tracking-tight text-white/95 drop-shadow">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground drop-shadow">
           Blow Parade
         </h1>
-        <p className="mt-0.5 text-base text-white/75">
+        <p className="mt-0.5 text-base text-muted-foreground">
           Blow to puff up the balloons!
         </p>
       </div>
@@ -296,7 +296,7 @@ export default function BlowParadePage() {
             <span className="text-3xl" aria-hidden>
               {gauge > 0.05 ? "💨" : "🎈"}
             </span>
-            <div className="h-4 w-40 overflow-hidden rounded-full bg-white/15">
+            <div className="h-4 w-40 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full transition-[width] duration-75"
                 style={{
@@ -318,12 +318,12 @@ export default function BlowParadePage() {
           </div>
           <button
             onClick={onStart}
-            className="min-h-[44px] rounded-3xl bg-gradient-to-br from-fuchsia-500 to-amber-400 px-12 py-6 text-3xl font-bold text-white shadow-xl active:scale-95"
+            className="min-h-[44px] rounded-3xl bg-gradient-to-br from-violet-500 to-violet-400 px-12 py-6 text-3xl font-bold text-foreground shadow-xl active:scale-95"
             style={{ minWidth: 200, minHeight: 96 }}
           >
             ▶ Play!
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Tap to start, then blow into the mic
           </p>
         </div>
@@ -340,7 +340,7 @@ export default function BlowParadePage() {
             onPointerUp={endHold}
             onPointerLeave={endHold}
             onPointerCancel={endHold}
-            className="flex items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-fuchsia-500 text-white shadow-2xl active:scale-95"
+            className="flex items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-violet-500 text-foreground shadow-2xl active:scale-95"
             style={{ width: 128, height: 128 }}
             aria-label="Hold to blow"
           >
@@ -355,7 +355,7 @@ export default function BlowParadePage() {
       {started && (
         <button
           onClick={toggleMute}
-          className="absolute right-4 top-4 z-10 flex items-center justify-center rounded-full bg-white/10 active:scale-95"
+          className="absolute right-4 top-4 z-10 flex items-center justify-center rounded-full bg-muted active:scale-95"
           style={{ width: 64, height: 64 }}
           aria-label={muted ? "Unmute" : "Mute"}
         >
@@ -368,7 +368,7 @@ export default function BlowParadePage() {
       {/* Mic-denied notice (visible rose) — parade still fully works */}
       {micState === "denied" && started && (
         <div className="absolute left-1/2 top-36 z-10 -translate-x-1/2 rounded-2xl bg-black/40 px-4 py-2.5 text-center">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             No mic — tap and hold 💨 or press Space to blow!
           </p>
         </div>
@@ -376,7 +376,7 @@ export default function BlowParadePage() {
 
       {/* Backend badge (tiny, monospace accent) */}
       {started && backend !== "pending" && (
-        <div className="absolute left-3 top-3 z-10 rounded bg-black/30 px-2 py-1 font-mono text-xs text-white/60">
+        <div className="absolute left-3 top-3 z-10 rounded bg-black/30 px-2 py-1 font-mono text-xs text-muted-foreground">
           {backend === "webgpu" ? "WebGPU" : "Canvas2D"}
         </div>
       )}
@@ -384,14 +384,14 @@ export default function BlowParadePage() {
       {/* Design notes link (corner, nice-to-have) */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-3 right-3 z-10 rounded px-2 py-1 text-xs text-white/60 underline underline-offset-2"
+        className="absolute bottom-3 right-3 z-10 rounded px-2 py-1 text-xs text-muted-foreground underline underline-offset-2"
       >
         Read the design notes
       </button>
 
       {showNotes && (
-        <div className="absolute inset-x-4 bottom-16 z-30 mx-auto max-w-md rounded-2xl bg-[#0c1024]/95 p-4 text-sm text-white/80 shadow-2xl ring-1 ring-white/10">
-          <h2 className="mb-2 text-xl font-semibold text-white/95">
+        <div className="absolute inset-x-4 bottom-16 z-30 mx-auto max-w-md rounded-2xl bg-[#0c1024]/95 p-4 text-sm text-foreground shadow-2xl ring-1 ring-border">
+          <h2 className="mb-2 text-xl font-semibold text-foreground">
             Design notes
           </h2>
           <p className="mb-2">
@@ -401,14 +401,14 @@ export default function BlowParadePage() {
             <em>breath</em> (broadband, noise-like) and ignores yells and
             singing (tonal), so shouting won&apos;t inflate them — only blowing.
           </p>
-          <p className="mb-2 text-white/70">
+          <p className="mb-2 text-muted-foreground">
             No mic? Hold the big 💨 button or press Space. After ~2.5s of quiet
             it demos itself. Refs: party-blower / whoopee-cushion foley, balloon
             inflate→release physics, Toca Boca toddler interaction patterns.
           </p>
           <button
             onClick={() => setShowNotes(false)}
-            className="min-h-[44px] rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/90 active:scale-95"
+            className="min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground active:scale-95"
           >
             Got it
           </button>

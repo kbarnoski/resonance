@@ -506,36 +506,36 @@ export default function PianoHandsPage() {
       {uiMode === "idle" && (
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8 px-6">
           <div className="text-center space-y-3">
-            <h1 className="text-3xl font-mono text-white/95 tracking-tight">Piano Hands</h1>
-            <p className="text-base text-white/75 max-w-sm leading-relaxed">
+            <h1 className="text-3xl font-mono text-foreground tracking-tight">Piano Hands</h1>
+            <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
               Ghost fingers descend onto the keys as notes are detected.
               Play piano into the mic — or watch a demo.
             </p>
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               C3 – B4 · autocorrelation pitch detection · zero API
             </p>
           </div>
 
           {micError && (
-            <p className="text-base text-rose-300 text-center max-w-xs">{micError}</p>
+            <p className="text-base text-violet-300 text-center max-w-xs">{micError}</p>
           )}
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <button
               onClick={handleMic}
-              className="min-h-[48px] px-6 py-3 bg-violet-500/20 hover:bg-violet-500/30 border border-violet-500/40 rounded-lg text-white/95 text-base font-mono transition-colors"
+              className="min-h-[48px] px-6 py-3 bg-violet-500/20 hover:bg-violet-500/30 border border-violet-500/40 rounded-lg text-foreground text-base font-mono transition-colors"
             >
               Start mic
             </button>
             <button
               onClick={handleDemo}
-              className="min-h-[48px] px-6 py-3 bg-white/10 hover:bg-white/15 border border-white/15 rounded-lg text-white/80 text-base font-mono transition-colors"
+              className="min-h-[48px] px-6 py-3 bg-muted hover:bg-accent border border-border rounded-lg text-foreground text-base font-mono transition-colors"
             >
               Watch demo
             </button>
           </div>
 
-          <p className="text-sm text-white/40">Headphones recommended</p>
+          <p className="text-sm text-muted-foreground/70">Headphones recommended</p>
         </div>
       )}
 
@@ -544,11 +544,11 @@ export default function PianoHandsPage() {
         <div className="relative z-10 flex items-center justify-between px-4 pt-3 pointer-events-none">
           <button
             onClick={handleBack}
-            className="pointer-events-auto min-h-[44px] px-4 py-2 text-sm font-mono text-white/55 hover:text-white/80 transition-colors"
+            className="pointer-events-auto min-h-[44px] px-4 py-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors"
           >
             ← back
           </button>
-          <span className="text-sm font-mono text-white/55 select-none">
+          <span className="text-sm font-mono text-muted-foreground select-none">
             {uiMode === "demo" ? "Für Elise · demo" : "mic · play C3–B4"}
           </span>
           <div className="w-20" />

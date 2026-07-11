@@ -414,21 +414,21 @@ export default function PianoStillPage() {
   const RING = 200;
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#070608] text-white">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#070608] text-foreground">
       <a
         href="/dream/666-piano-still/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         design notes ↗
       </a>
 
       <header className="absolute left-0 right-0 top-0 z-10 px-6 pt-6 text-center md:pt-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
           Still Room
         </h1>
-        <p className="mx-auto mt-2 max-w-xl text-base text-white/75">
+        <p className="mx-auto mt-2 max-w-xl text-base text-muted-foreground">
           Karel&apos;s piano, down to its 12 notes — an eyes-closed instrument.
           Place a few notes; then close your eyes while the room grows itself in
           his own touch over minutes, quietly adding consonant notes and letting
@@ -437,12 +437,12 @@ export default function PianoStillPage() {
         {sourceKind && (
           <p className="mt-2 font-mono text-sm">
             source:{" "}
-            <span className={sourceKind === "piano" ? "text-emerald-300/95" : "text-amber-300/95"}>
+            <span className={sourceKind === "piano" ? "text-violet-300/95" : "text-violet-300/95"}>
               {sourceKind === "piano" ? "Karel's piano (real recording)" : "synthesized piano — recording unavailable"}
             </span>
           </p>
         )}
-        {errorMsg && <p className="mt-2 text-base text-rose-300">{errorMsg}</p>}
+        {errorMsg && <p className="mt-2 text-base text-violet-300">{errorMsg}</p>}
       </header>
 
       {/* ── The quiet SVG aura ── */}
@@ -513,7 +513,7 @@ export default function PianoStillPage() {
         {phase === "idle" && (
           <button
             onClick={() => void load()}
-            className="min-h-[44px] rounded-md border border-amber-300/40 bg-amber-400/15 px-4 py-2.5 text-base font-medium text-amber-100 hover:bg-amber-400/25"
+            className="min-h-[44px] rounded-md border border-violet-300/40 bg-violet-400/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-400/25"
           >
             Tap to begin · enter the still room
           </button>
@@ -521,12 +521,12 @@ export default function PianoStillPage() {
 
         {phase === "loading" && (
           <div className="w-full max-w-md">
-            <p className="font-mono text-sm text-white/75">
+            <p className="font-mono text-sm text-muted-foreground">
               {progressLabel} ({Math.round(progress * 100)}%)
             </p>
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full bg-gradient-to-r from-amber-300 via-rose-300 to-emerald-300 transition-[width] duration-150"
+                className="h-full bg-gradient-to-r from-violet-300 via-violet-300 to-violet-300 transition-[width] duration-150"
                 style={{ width: `${Math.round(progress * 100)}%` }}
               />
             </div>
@@ -536,7 +536,7 @@ export default function PianoStillPage() {
         {phase === "error" && (
           <button
             onClick={() => setPhase("idle")}
-            className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+            className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
           >
             Try again
           </button>
@@ -570,7 +570,7 @@ export default function PianoStillPage() {
             {/* the one lever + release + elapsed */}
             <div className="flex w-full max-w-xl flex-col items-center gap-2">
               <div className="flex w-full items-center gap-3">
-                <span className="font-mono text-sm text-white/75">stillness</span>
+                <span className="font-mono text-sm text-muted-foreground">stillness</span>
                 <input
                   type="range"
                   min={0}
@@ -579,23 +579,23 @@ export default function PianoStillPage() {
                   value={ui.growth}
                   onChange={(e) => setGrowth(parseFloat(e.target.value))}
                   aria-label="stillness to growth"
-                  className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-white/15 accent-amber-300"
+                  className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-violet-300"
                 />
-                <span className="font-mono text-sm text-white/75">growth</span>
+                <span className="font-mono text-sm text-muted-foreground">growth</span>
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={release}
-                  className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/15"
+                  className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   release (let it fade)
                 </button>
-                <span className="font-mono text-sm text-white/75">
+                <span className="font-mono text-sm text-muted-foreground">
                   {ui.notes.length} note{ui.notes.length === 1 ? "" : "s"} ·{" "}
                   {Math.floor(ui.elapsedSec / 60)}:{String(Math.floor(ui.elapsedSec % 60)).padStart(2, "0")}
                 </span>
               </div>
-              <p className="text-center font-mono text-sm text-white/55">
+              <p className="text-center font-mono text-sm text-muted-foreground">
                 tap a note to place it · then close your eyes — the room grows itself
               </p>
             </div>

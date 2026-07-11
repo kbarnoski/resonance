@@ -309,7 +309,7 @@ export default function PresenceBloomPage() {
   }, [startPreview]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04060c] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04060c] text-foreground">
       <video ref={videoRef} className="hidden" muted playsInline />
       <div ref={wrapRef} className="absolute inset-0">
         <canvas ref={canvasRef} className="block h-full w-full" />
@@ -321,21 +321,21 @@ export default function PresenceBloomPage() {
       {/* Hero / idle overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Presence Bloom
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-foreground sm:text-lg">
             Move your body to leave behind persistent singing voices in 3D space.
             They keep singing and accrete — over minutes — into a luminous
             resonant architecture of light around your own ears.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-full bg-white/95 px-7 py-2.5 text-base font-medium text-black transition hover:bg-white"
+            className="min-h-[44px] rounded-full bg-muted px-7 py-2.5 text-base font-medium text-black transition hover:bg-card"
           >
             Start
           </button>
-          <p className="text-base text-white/70">
+          <p className="text-base text-muted-foreground">
             Headphones strongly recommended — the sound is spatial (HRTF).
           </p>
         </div>
@@ -345,15 +345,15 @@ export default function PresenceBloomPage() {
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-4 sm:p-6">
           <div className="rounded-xl bg-black/35 px-4 py-2.5 backdrop-blur-sm">
-            <p className="text-base text-white/90">
+            <p className="text-base text-foreground">
               Voices in the air:{" "}
-              <span className="font-semibold text-white">{voiceCount}</span>
+              <span className="font-semibold text-foreground">{voiceCount}</span>
             </p>
             {notice && (
-              <p className="mt-1 max-w-xs text-base text-white/75">{notice}</p>
+              <p className="mt-1 max-w-xs text-base text-muted-foreground">{notice}</p>
             )}
           </div>
-          <div className="rounded-xl bg-black/35 px-3 py-2 text-base text-white/75 backdrop-blur-sm">
+          <div className="rounded-xl bg-black/35 px-3 py-2 text-base text-muted-foreground backdrop-blur-sm">
             {rendererKind === "webgpu" ? "WebGPU" : "Canvas2D"}
             {ghostMode ? " · ghost demo" : ""}
           </div>
@@ -363,7 +363,7 @@ export default function PresenceBloomPage() {
       {/* Camera / model error (visible) */}
       {camError && (
         <div className="pointer-events-none absolute inset-x-0 bottom-16 flex justify-center px-6">
-          <p className="max-w-md rounded-xl bg-black/45 px-4 py-2.5 text-center text-base text-rose-300 backdrop-blur-sm">
+          <p className="max-w-md rounded-xl bg-black/45 px-4 py-2.5 text-center text-base text-violet-300 backdrop-blur-sm">
             {camError}
           </p>
         </div>
@@ -372,7 +372,7 @@ export default function PresenceBloomPage() {
       {/* Design notes link */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/35 px-4 py-2.5 text-base text-white/80 backdrop-blur-sm transition hover:text-white"
+        className="absolute bottom-4 right-4 min-h-[44px] rounded-full bg-black/35 px-4 py-2.5 text-base text-foreground backdrop-blur-sm transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -380,8 +380,8 @@ export default function PresenceBloomPage() {
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
           <div className="max-w-2xl space-y-4 rounded-2xl bg-[#0a0e1a]/90 p-6 sm:p-8">
-            <h2 className="text-2xl font-semibold text-white">Design notes</h2>
-            <p className="text-base leading-relaxed text-white/80">
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
+            <p className="text-base leading-relaxed text-foreground">
               Spatialization is the instrument. One listener sits at the origin —
               your ears. Each deliberate wrist gesture (reach, dwell, then flick)
               leaves a <em>persistent</em> voice fixed at that point in 3D, sung
@@ -389,7 +389,7 @@ export default function PresenceBloomPage() {
               that grows with distance: far voices are quieter and wetter, near
               voices present and dry.
             </p>
-            <p className="text-base leading-relaxed text-white/80">
+            <p className="text-base leading-relaxed text-foreground">
               Voices accrete — they keep singing — drawing the next pitch from a
               slowly drifting D-Dorian modal field, so the set becomes an evolving
               spatial chord. Each voice is an attractor in a particle storm of
@@ -397,7 +397,7 @@ export default function PresenceBloomPage() {
               field if WebGPU is absent). At minute five the architecture is
               genuinely different than at minute one.
             </p>
-            <p className="text-base leading-relaxed text-white/75">
+            <p className="text-base leading-relaxed text-muted-foreground">
               Refs: Refik Anadol (GPU particle data-architecture); arXiv:2505.18020
               (distance + reverberation as the spatial signal); arXiv:2407.13083
               (body movement shaping spatial soundfields). Camera is analysed
@@ -405,13 +405,13 @@ export default function PresenceBloomPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] rounded-full bg-white/95 px-5 py-2.5 text-base font-medium text-black"
+              className="min-h-[44px] rounded-full bg-muted px-5 py-2.5 text-base font-medium text-black"
             >
               Close
             </button>
             <Link
               href="/dream"
-              className="ml-3 inline-block text-base text-white/70 underline hover:text-white"
+              className="ml-3 inline-block text-base text-muted-foreground underline hover:text-foreground"
             >
               Back to the lab
             </Link>

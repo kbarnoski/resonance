@@ -489,37 +489,37 @@ export default function KidsCradleSong() {
       <main className="fixed inset-0 bg-[#050508] flex flex-col items-center justify-center gap-8 px-6 select-none">
         <div
           aria-hidden="true"
-          className="text-white/20"
+          className="text-muted-foreground/70"
           style={{ fontSize: "56px", lineHeight: 1 }}
         >
           ☽
         </div>
 
-        <h1 className="text-xl font-light tracking-widest text-white/95 text-center">
+        <h1 className="text-xl font-light tracking-widest text-foreground text-center">
           Cradle Song
         </h1>
 
-        <p className="text-base text-white/75 text-center max-w-xs leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-xs leading-relaxed">
           Rock your tablet gently side to side.
           <br />
           Close your eyes. Listen.
         </p>
 
-        <p className="text-sm text-white/50 text-center">
+        <p className="text-sm text-muted-foreground text-center">
           🎧 Headphones work best
         </p>
 
         <button
           onPointerDown={handleStart}
           aria-label="Start the cradle song"
-          className="mt-2 rounded-full border border-white/15 bg-white/5 px-10 py-5 text-lg font-light tracking-widest text-white/90 transition-transform active:scale-95 min-h-[64px] min-w-[180px]"
+          className="mt-2 rounded-full border border-border bg-muted px-10 py-5 text-lg font-light tracking-widest text-foreground transition-transform active:scale-95 min-h-[64px] min-w-[180px]"
           style={{ WebkitTapHighlightColor: "transparent" }}
         >
           Begin
         </button>
 
         {noAudio && (
-          <p className="mt-2 text-center text-base text-rose-300">
+          <p className="mt-2 text-center text-base text-violet-300">
             Web Audio is not available in this browser.
           </p>
         )}
@@ -534,12 +534,12 @@ export default function KidsCradleSong() {
       <main className="fixed inset-0 bg-[#020204] flex flex-col items-center justify-center gap-6 select-none">
         <div
           aria-hidden="true"
-          className="text-white/15"
+          className="text-muted-foreground/70"
           style={{ fontSize: "48px", lineHeight: 1 }}
         >
           ☽
         </div>
-        <p className="text-xl font-light tracking-widest text-white/40">
+        <p className="text-xl font-light tracking-widest text-muted-foreground/70">
           Goodnight
         </p>
       </main>
@@ -578,7 +578,7 @@ export default function KidsCradleSong() {
 
       {/* Motion-denied notice */}
       {motionDenied && (
-        <p className="pointer-events-none absolute bottom-24 left-0 right-0 px-6 text-center text-base text-rose-300">
+        <p className="pointer-events-none absolute bottom-24 left-0 right-0 px-6 text-center text-base text-violet-300">
           Motion sensor unavailable — drag side to side, or just listen
         </p>
       )}
@@ -586,7 +586,7 @@ export default function KidsCradleSong() {
       {/* Tiny hint */}
       <p
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-6 left-0 right-0 select-none text-center text-xs text-white/20"
+        className="pointer-events-none absolute bottom-6 left-0 right-0 select-none text-center text-xs text-muted-foreground/70"
       >
         rock · listen · rest
       </p>

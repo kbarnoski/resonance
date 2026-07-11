@@ -337,12 +337,12 @@ export default function PaintComposePage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[#030308] text-white select-none overflow-hidden">
+    <div className="h-screen flex flex-col bg-[#030308] text-foreground select-none overflow-hidden">
       {/* Header toolbar */}
-      <div className="flex items-center gap-3 px-4 py-2.5 border-b border-white/10 flex-wrap">
+      <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border flex-wrap">
         <div className="flex-shrink-0">
-          <h1 className="text-xl font-serif text-white/95 leading-tight">Paint Compose</h1>
-          <p className="text-sm text-white/70 leading-tight">Each brushstroke loops as a melody</p>
+          <h1 className="text-xl font-serif text-foreground leading-tight">Paint Compose</h1>
+          <p className="text-sm text-muted-foreground leading-tight">Each brushstroke loops as a melody</p>
         </div>
 
         {/* Color palette */}
@@ -355,7 +355,7 @@ export default function PaintComposePage() {
               aria-label={c.name}
               className={`w-7 h-7 rounded-full flex-shrink-0 transition-all ${
                 hue === c.hue
-                  ? "ring-2 ring-white/80 ring-offset-1 ring-offset-[#030308] scale-110"
+                  ? "ring-2 ring-border ring-offset-1 ring-offset-[#030308] scale-110"
                   : "opacity-55 hover:opacity-90"
               }`}
               style={{ backgroundColor: `hsl(${c.hue},72%,52%)` }}
@@ -371,11 +371,11 @@ export default function PaintComposePage() {
               onClick={() => pickBrush(w)}
               aria-label={`brush ${w}`}
               className={`w-8 h-8 rounded flex items-center justify-center transition-all ${
-                brushW === w ? "bg-white/20" : "hover:bg-white/10"
+                brushW === w ? "bg-muted" : "hover:bg-accent"
               }`}
             >
               <div
-                className="rounded-full bg-white/90"
+                className="rounded-full bg-muted"
                 style={{ width: `${w + 2}px`, height: `${w + 2}px` }}
               />
             </button>
@@ -383,7 +383,7 @@ export default function PaintComposePage() {
         </div>
 
         {/* BPM */}
-        <div className="flex items-center gap-1.5 text-sm text-white/70">
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
           <span>BPM</span>
           <input
             type="range"
@@ -394,19 +394,19 @@ export default function PaintComposePage() {
             onChange={e => pickBpm(+e.target.value)}
             className="w-16 accent-violet-400"
           />
-          <span className="w-8 text-white/90 font-mono text-xs">{bpm}</span>
+          <span className="w-8 text-foreground font-mono text-xs">{bpm}</span>
         </div>
 
         <div className="flex gap-2 ml-auto">
           <button
             onClick={clearAll}
-            className="text-sm px-3 py-1.5 min-h-[36px] rounded border border-white/20 hover:bg-white/10 text-white/80 transition-all"
+            className="text-sm px-3 py-1.5 min-h-[36px] rounded border border-border hover:bg-accent text-foreground transition-all"
           >
             Clear
           </button>
           <button
             onClick={downloadPng}
-            className="text-sm px-3 py-1.5 min-h-[36px] rounded border border-white/20 hover:bg-white/10 text-white/80 transition-all"
+            className="text-sm px-3 py-1.5 min-h-[36px] rounded border border-border hover:bg-accent text-foreground transition-all"
           >
             ↓ PNG
           </button>
@@ -417,15 +417,15 @@ export default function PaintComposePage() {
       <div className="relative flex-1 overflow-hidden">
         {!started && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
-            <p className="text-white/75 text-base text-center max-w-xs leading-relaxed px-4">
+            <p className="text-muted-foreground text-base text-center max-w-xs leading-relaxed px-4">
               Paint strokes on a dark canvas.
               <br />
               Each stroke becomes a looping melody —<br />
-              <span className="text-white/55 text-sm">shape becomes sound, painting becomes score.</span>
+              <span className="text-muted-foreground text-sm">shape becomes sound, painting becomes score.</span>
             </p>
             <button
               onClick={startSession}
-              className="px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-medium text-base min-h-[48px] min-w-[160px] transition-all"
+              className="px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-medium text-base min-h-[48px] min-w-[160px] transition-all"
             >
               ▶ Start Painting
             </button>
@@ -443,7 +443,7 @@ export default function PaintComposePage() {
         />
 
         {started && (
-          <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-sm text-white/50 pointer-events-none text-center whitespace-nowrap">
+          <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-sm text-muted-foreground pointer-events-none text-center whitespace-nowrap">
             {count === 0
               ? "Draw a stroke to compose"
               : `${count} / ${MAX_VOICES} voices · draw to layer`}

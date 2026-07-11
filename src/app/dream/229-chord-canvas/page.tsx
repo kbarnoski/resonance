@@ -460,8 +460,8 @@ export default function ChordCanvasPage() {
       {/* Header */}
       <div className="relative z-10 flex items-start justify-between px-5 pt-4 pb-1">
         <div>
-          <h1 className="text-xl font-mono text-white/95 tracking-tight">Chord Canvas</h1>
-          <p className="text-sm text-white/70 mt-0.5">
+          <h1 className="text-xl font-mono text-foreground tracking-tight">Chord Canvas</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             What chord are you playing?
           </p>
         </div>
@@ -469,7 +469,7 @@ export default function ChordCanvasPage() {
           href="https://getresonance.vercel.app/dream/229-chord-canvas/README.md"
           target="_blank"
           rel="noreferrer"
-          className="text-xs font-mono text-white/35 hover:text-white/60 transition-colors mt-1"
+          className="text-xs font-mono text-muted-foreground/70 hover:text-muted-foreground transition-colors mt-1"
         >
           notes ↗
         </a>
@@ -479,15 +479,15 @@ export default function ChordCanvasPage() {
       <div className="relative z-10 flex flex-wrap items-center gap-2 px-5 py-2">
         {/* Mode toggle */}
         {!on && (
-          <div className="flex rounded-lg overflow-hidden border border-white/10 mr-1">
+          <div className="flex rounded-lg overflow-hidden border border-border mr-1">
             {(["mic", "demo"] as const).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
                 className={`min-h-[44px] px-4 py-2 text-sm font-mono transition-colors ${
                   mode === m
-                    ? "bg-white/12 text-white/95"
-                    : "text-white/50 hover:text-white/75"
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-muted-foreground"
                 }`}
               >
                 {m === "mic" ? "🎤 Mic" : "♪ Demo"}
@@ -509,7 +509,7 @@ export default function ChordCanvasPage() {
         </button>
 
         {on && label && (
-          <span className="text-sm font-mono text-white/75 ml-1">
+          <span className="text-sm font-mono text-muted-foreground ml-1">
             → {label}
           </span>
         )}
@@ -517,7 +517,7 @@ export default function ChordCanvasPage() {
 
       {/* Error */}
       {error && (
-        <div className="relative z-10 mx-5 mb-2 px-4 py-2.5 rounded-lg text-sm font-mono text-rose-300"
+        <div className="relative z-10 mx-5 mb-2 px-4 py-2.5 rounded-lg text-sm font-mono text-violet-300"
           style={{ background: "rgba(244,63,94,0.10)", border: "1px solid rgba(244,63,94,0.25)" }}>
           {error}
         </div>
@@ -525,17 +525,17 @@ export default function ChordCanvasPage() {
 
       {/* Idle hint */}
       {!on && !error && (
-        <div className="relative z-10 mx-5 mt-1 rounded-lg px-4 py-3 text-sm text-white/65"
+        <div className="relative z-10 mx-5 mt-1 rounded-lg px-4 py-3 text-sm text-muted-foreground"
           style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
           <p>Play any chord on piano (or any instrument). The detector matches your audio against 24 major and minor chord templates using a chromagram — no ML, no server.</p>
-          <p className="mt-1.5 text-white/45 text-xs">Try the demo to see it work immediately. Then switch to mic and play.</p>
+          <p className="mt-1.5 text-muted-foreground text-xs">Try the demo to see it work immediately. Then switch to mic and play.</p>
         </div>
       )}
 
       {/* Footer */}
-      <div className="relative z-10 mt-auto px-5 py-2 text-xs font-mono text-white/28 flex justify-between">
+      <div className="relative z-10 mt-auto px-5 py-2 text-xs font-mono text-muted-foreground/70 flex justify-between">
         <span>24 templates · 12-bin chroma · no deps · {on && mode === "demo" ? "demo ii–V–I" : "Web Audio FFT"}</span>
-        <span className="text-white/20">229</span>
+        <span className="text-muted-foreground/70">229</span>
       </div>
     </div>
   );

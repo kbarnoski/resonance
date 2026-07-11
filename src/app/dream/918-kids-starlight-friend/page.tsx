@@ -281,20 +281,20 @@ export default function Page() {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center gap-7 bg-[#0b0712] px-8">
         <div className="text-5xl">✨</div>
-        <h1 className="text-center text-2xl font-semibold text-white/95">Starlight Friend</h1>
-        <p className="max-w-sm text-center text-base leading-relaxed text-white/75">
+        <h1 className="text-center text-2xl font-semibold text-foreground">Starlight Friend</h1>
+        <p className="max-w-sm text-center text-base leading-relaxed text-muted-foreground">
           Shake to throw a shooting star into the sky. Your star lights up and sings
           in your friend&apos;s sky too — make a starlight song together.
         </p>
         <button
           onClick={handleStart}
           className="mt-2 flex min-h-[72px] min-w-[220px] items-center justify-center gap-3
-                     rounded-full bg-violet-500/25 px-10 text-xl font-semibold text-white
+                     rounded-full bg-violet-500/25 px-10 text-xl font-semibold text-foreground
                      ring-1 ring-violet-300/40 transition-colors hover:bg-violet-500/35"
         >
           <span className="text-2xl">✨</span> Start
         </button>
-        <p className="text-base text-white/60">Tap the sky too · no words needed</p>
+        <p className="text-base text-muted-foreground">Tap the sky too · no words needed</p>
       </div>
     )
   }
@@ -313,11 +313,11 @@ export default function Page() {
       <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2">
         <span
           className={`inline-block h-3 w-3 rounded-full ${
-            connected ? 'bg-emerald-300' : 'bg-cyan-300/70'
+            connected ? 'bg-violet-300' : 'bg-violet-300/70'
           }`}
           style={{ boxShadow: '0 0 10px currentColor' }}
         />
-        <span className="text-base text-white/75">
+        <span className="text-base text-muted-foreground">
           {connected ? 'friend here' : 'starlight friend'}
         </span>
       </div>
@@ -327,18 +327,18 @@ export default function Page() {
         <button
           onClick={() => (inviteOpen ? setInviteOpen(false) : handleInvite())}
           className="absolute right-4 top-4 flex min-h-[64px] min-w-[64px] items-center
-                     justify-center rounded-full bg-white/10 text-2xl text-white
-                     ring-1 ring-white/20 transition-colors hover:bg-white/20"
+                     justify-center rounded-full bg-muted text-2xl text-foreground
+                     ring-1 ring-border transition-colors hover:bg-accent"
           aria-label="invite a friend"
         >
           👋
         </button>
       )}
 
-      {/* notices — must be clearly visible (text-rose-300) */}
+      {/* notices — must be clearly visible (text-violet-300) */}
       {notice !== '' && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 max-w-xs -translate-x-1/2 text-center">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             {notice === 'no-motion' && 'Shake is off — tap the sky to make a star.'}
             {notice === 'no-webgl' && 'This screen can’t draw stars, but you can still hear them.'}
             {notice === 'no-audio' && 'Sound is off — the stars still shine.'}
@@ -348,36 +348,36 @@ export default function Page() {
 
       {/* invite panel */}
       {inviteOpen && (
-        <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-black/70 p-5 ring-1 ring-white/15 backdrop-blur">
+        <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-black/70 p-5 ring-1 ring-border backdrop-blur">
           {role === 'host' && (
             <div className="flex flex-col gap-3">
-              <p className="text-base text-white/95">Share this link with your friend 👋</p>
+              <p className="text-base text-foreground">Share this link with your friend 👋</p>
               <div className="flex gap-2">
                 <input
                   readOnly
                   value={inviteLink}
                   onFocus={(e) => e.currentTarget.select()}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="making a link…"
                 />
                 <button
                   onClick={() => copyText(inviteLink)}
-                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-foreground"
                 >
                   copy
                 </button>
               </div>
-              <p className="text-base text-white/75">Then paste their star-code back here:</p>
+              <p className="text-base text-muted-foreground">Then paste their star-code back here:</p>
               <div className="flex gap-2">
                 <input
                   value={hostPaste}
                   onChange={(e) => setHostPaste(e.target.value)}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="paste friend’s code"
                 />
                 <button
                   onClick={handleHostAccept}
-                  className="min-h-[48px] rounded-lg bg-emerald-500/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-foreground"
                 >
                   join
                 </button>
@@ -386,7 +386,7 @@ export default function Page() {
           )}
           {role === 'guest' && (
             <div className="flex flex-col gap-3">
-              <p className="text-base text-white/95">
+              <p className="text-base text-foreground">
                 You joined a friend’s sky 🌟 Send them this star-code:
               </p>
               <div className="flex gap-2">
@@ -394,17 +394,17 @@ export default function Page() {
                   readOnly
                   value={guestCode}
                   onFocus={(e) => e.currentTarget.select()}
-                  className="min-h-[48px] flex-1 rounded-lg bg-white/10 px-3 font-mono text-base text-white/90"
+                  className="min-h-[48px] flex-1 rounded-lg bg-muted px-3 font-mono text-base text-foreground"
                   placeholder="making your code…"
                 />
                 <button
                   onClick={() => copyText(guestCode)}
-                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-white"
+                  className="min-h-[48px] rounded-lg bg-violet-500/30 px-4 text-base text-foreground"
                 >
                   copy
                 </button>
               </div>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 {connected ? 'Connected! Shake to play together 🌟' : 'Waiting for your friend…'}
               </p>
             </div>

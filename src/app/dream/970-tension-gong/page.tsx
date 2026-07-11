@@ -374,17 +374,17 @@ export default function TensionGongPage() {
   const body = BODIES[activeBody];
 
   return (
-    <main className="relative h-[calc(100dvh-3rem)] w-full overflow-hidden bg-[#08090b] text-white">
+    <main className="relative h-[calc(100dvh-3rem)] w-full overflow-hidden bg-[#08090b] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="pointer-events-auto p-5 sm:p-7">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Tension Gong
           </h1>
-          <p className="mt-1 max-w-2xl text-base text-white/80">
+          <p className="mt-1 max-w-2xl text-base text-foreground">
             A struck-metal resonator built on{" "}
-            <span className="text-amber-300/95">
+            <span className="text-violet-300/95">
               non-linear modal synthesis
             </span>
             . Hit it hard and the pitch starts sharp, then blooms and glides
@@ -394,24 +394,24 @@ export default function TensionGongPage() {
 
           {started && (
             <div className="mt-3 max-w-2xl space-y-2">
-              <p className="text-base text-white/80">
+              <p className="text-base text-foreground">
                 Play with the keyboard.{" "}
-                <span className="text-white/95">A S D F G H J K</span> strike
-                the metal · hold <span className="text-white/95">Shift</span>{" "}
+                <span className="text-foreground">A S D F G H J K</span> strike
+                the metal · hold <span className="text-foreground">Shift</span>{" "}
                 for a hard, sharp, pitch-bending hit · play fast for harder
-                strikes · <span className="text-white/95">1 2 3 4</span> switch
+                strikes · <span className="text-foreground">1 2 3 4</span> switch
                 bodies.
               </p>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Active body:{" "}
-                <span className="text-amber-300/95">{body.name}</span>
+                <span className="text-violet-300/95">{body.name}</span>
                 {midiName ? (
-                  <span className="text-emerald-300/95">
+                  <span className="text-violet-300/95">
                     {" "}
                     · MIDI: {midiName} (note velocity drives strikes)
                   </span>
                 ) : (
-                  <span className="text-white/75">
+                  <span className="text-muted-foreground">
                     {" "}
                     · no MIDI device — keyboard only
                   </span>
@@ -421,14 +421,14 @@ export default function TensionGongPage() {
           )}
 
           {noWorklet && (
-            <p className="mt-2 max-w-2xl text-base text-rose-300">
+            <p className="mt-2 max-w-2xl text-base text-violet-300">
               AudioWorklet is unavailable in this browser — the non-linear
               modal synthesis needs a worklet to run, so this piece cannot
               ring here.
             </p>
           )}
           {status && !started && (
-            <p className="mt-2 text-base text-white/75">{status}</p>
+            <p className="mt-2 text-base text-muted-foreground">{status}</p>
           )}
         </header>
 
@@ -438,7 +438,7 @@ export default function TensionGongPage() {
           <div className="pointer-events-auto flex items-center justify-center pb-16">
             <button
               onClick={start}
-              className="min-h-[44px] rounded-full bg-amber-300/90 px-8 py-2.5 text-lg font-medium text-[#0a0a0a] shadow-lg transition-colors hover:bg-amber-200"
+              className="min-h-[44px] rounded-full bg-violet-300/90 px-8 py-2.5 text-lg font-medium text-[#0a0a0a] shadow-lg transition-colors hover:bg-violet-200"
             >
               Strike the metal · press a key to start
             </button>
@@ -453,11 +453,11 @@ export default function TensionGongPage() {
                 onClick={() => selectBody(i)}
                 className={`min-h-[44px] rounded-lg border px-4 py-2.5 text-base font-medium transition-colors ${
                   i === activeBody
-                    ? "border-amber-300/60 bg-amber-300/15 text-white"
-                    : "border-white/15 bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
+                    ? "border-violet-300/60 bg-violet-300/15 text-foreground"
+                    : "border-border bg-muted text-foreground hover:bg-accent"
                 }`}
               >
-                <span className="mr-1.5 text-white/55">{i + 1}</span>
+                <span className="mr-1.5 text-muted-foreground">{i + 1}</span>
                 {b.name}
               </button>
             ))}

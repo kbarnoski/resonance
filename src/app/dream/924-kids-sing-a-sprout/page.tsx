@@ -528,28 +528,28 @@ export default function SingASproutPage() {
   }
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070512] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070512] text-foreground">
       {/* three.js canvas mount */}
       <div ref={mountRef} className="absolute inset-0" />
 
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#070512]/95 px-6 text-center">
-          <h1 className="font-serif text-3xl text-white/95 sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             Sing a Sprout
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Hum or sing, and a garden grows from your voice. Keep singing — over
             a few minutes it blooms, and the garden softly sings your song back.
           </p>
           <button
             type="button"
             onClick={startGarden}
-            className="min-h-[64px] rounded-full bg-emerald-400/90 px-8 py-4 text-xl font-medium text-emerald-950 shadow-lg shadow-emerald-500/20 transition active:scale-95"
+            className="min-h-[64px] rounded-full bg-violet-400/90 px-8 py-4 text-xl font-medium text-violet-950 shadow-lg shadow-violet-500/20 transition active:scale-95"
           >
             Sing to your garden
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Best with the volume gentle and low.
           </p>
         </div>
@@ -557,15 +557,15 @@ export default function SingASproutPage() {
 
       {/* Live HUD */}
       {started && (
-        <div className="pointer-events-none absolute left-4 top-4 z-10 select-none font-mono text-base text-white/75">
-          <div className="text-emerald-300/95">{sproutCount} sprouts</div>
-          <div className="text-white/55">{elapsedMin.toFixed(1)} min growing</div>
+        <div className="pointer-events-none absolute left-4 top-4 z-10 select-none font-mono text-base text-muted-foreground">
+          <div className="text-violet-300/95">{sproutCount} sprouts</div>
+          <div className="text-muted-foreground">{elapsedMin.toFixed(1)} min growing</div>
         </div>
       )}
 
       {/* Mic-failed notice */}
       {started && micFailed && (
-        <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[60%] text-right text-base text-rose-300">
+        <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[60%] text-right text-base text-violet-300">
           No microphone — your garden is humming to itself. Sing along any time.
         </div>
       )}

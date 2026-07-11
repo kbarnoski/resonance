@@ -437,31 +437,31 @@ export default function EarthPulse() {
       {/* ── intro overlay ─────────────────────────────────────────────────── */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-          <h1 className="text-3xl md:text-4xl font-serif text-white/95 mb-3 tracking-tight">Earth Pulse</h1>
-          <p className="text-base text-white/80 max-w-lg leading-relaxed mb-2">
+          <h1 className="text-3xl md:text-4xl font-serif text-foreground mb-3 tracking-tight">Earth Pulse</h1>
+          <p className="text-base text-foreground max-w-lg leading-relaxed mb-2">
             The last 24 hours of global earthquakes, played as music. Each quake sounds the moment
-            it happened — <span className="text-amber-300/95">bigger = deeper boom</span>,{" "}
+            it happened — <span className="text-violet-300/95">bigger = deeper boom</span>,{" "}
             <span className="text-violet-300">deeper = more muffled</span>, longitude sets the stereo position.
           </p>
-          <p className="text-base text-white/60 max-w-lg leading-relaxed mb-6">
+          <p className="text-base text-muted-foreground max-w-lg leading-relaxed mb-6">
             A full day compressed into ~2.5 minutes. Aftershock swarms become flurries. Drag to orbit the globe.
           </p>
           {loading ? (
-            <p className="text-base text-white/70">Loading live USGS feed…</p>
+            <p className="text-base text-muted-foreground">Loading live USGS feed…</p>
           ) : (
             <div className="flex flex-col items-center gap-3 pointer-events-auto">
-              <p className="text-base text-emerald-300/95">
+              <p className="text-base text-violet-300/95">
                 {quakes.length} earthquakes in the last 24h
-                {biggest && <span className="text-white/70"> · strongest M{biggest.mag.toFixed(1)}</span>}
+                {biggest && <span className="text-muted-foreground"> · strongest M{biggest.mag.toFixed(1)}</span>}
               </p>
               <button
                 onClick={handlePlay}
-                className="min-h-[44px] px-8 py-3 rounded-md bg-violet-500/25 border border-violet-400/40 text-white/95 text-lg hover:bg-violet-500/35 transition-colors"
+                className="min-h-[44px] px-8 py-3 rounded-md bg-violet-500/25 border border-violet-400/40 text-foreground text-lg hover:bg-violet-500/35 transition-colors"
               >
                 ▶ Play the day
               </button>
               {usedFallback && (
-                <p className="text-base text-amber-300/95 max-w-sm">
+                <p className="text-base text-violet-300/95 max-w-sm">
                   Live feed unreachable — playing a synthetic sample set.
                 </p>
               )}
@@ -475,9 +475,9 @@ export default function EarthPulse() {
         <div className="absolute left-0 right-0 bottom-0 p-4 pointer-events-none">
           <div className="mx-auto max-w-3xl pointer-events-auto">
             {/* progress */}
-            <div className="h-1.5 w-full rounded bg-white/15 overflow-hidden mb-3">
+            <div className="h-1.5 w-full rounded bg-muted overflow-hidden mb-3">
               <div
-                className="h-full bg-gradient-to-r from-amber-400 to-violet-400"
+                className="h-full bg-gradient-to-r from-violet-400 to-violet-400"
                 style={{ width: `${Math.round(tick.prog * 100)}%` }}
               />
             </div>
@@ -485,13 +485,13 @@ export default function EarthPulse() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={playing ? handlePause : handlePlay}
-                  className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md bg-white/10 border border-white/25 text-white/95 text-base hover:bg-white/20 transition-colors"
+                  className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md bg-muted border border-border text-foreground text-base hover:bg-accent transition-colors"
                 >
                   {playing ? "❚❚ Pause" : "▶ Play"}
                 </button>
                 <button
                   onClick={handleRestart}
-                  className="min-h-[44px] px-4 py-2.5 rounded-md bg-white/10 border border-white/25 text-white/90 text-base hover:bg-white/20 transition-colors"
+                  className="min-h-[44px] px-4 py-2.5 rounded-md bg-muted border border-border text-foreground text-base hover:bg-accent transition-colors"
                 >
                   ↺ Restart
                 </button>
@@ -502,8 +502,8 @@ export default function EarthPulse() {
                       onClick={() => setSpeed(i)}
                       className={`min-h-[44px] px-3 py-2 rounded-md text-base border transition-colors ${
                         i === speedIdx
-                          ? "bg-violet-500/30 border-violet-400/50 text-white/95"
-                          : "bg-white/5 border-white/15 text-white/70 hover:bg-white/10"
+                          ? "bg-violet-500/30 border-violet-400/50 text-foreground"
+                          : "bg-muted border-border text-muted-foreground hover:bg-accent"
                       }`}
                     >
                       {s.label}
@@ -512,13 +512,13 @@ export default function EarthPulse() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-base text-white/90 font-mono">
+                <div className="text-base text-foreground font-mono">
                   {hoursAgo > 0.05 ? `${hoursAgo.toFixed(1)}h ago` : "now"} ·{" "}
-                  <span className="text-emerald-300/95">{tick.fired}</span>
-                  <span className="text-white/55">/{quakes.length} quakes</span>
+                  <span className="text-violet-300/95">{tick.fired}</span>
+                  <span className="text-muted-foreground">/{quakes.length} quakes</span>
                 </div>
                 {tick.last && (
-                  <div className="text-base text-white/75 font-mono truncate max-w-[60vw] md:max-w-md">
+                  <div className="text-base text-muted-foreground font-mono truncate max-w-[60vw] md:max-w-md">
                     M{tick.last.mag.toFixed(1)} · {Math.round(tick.last.depth)}km · {tick.last.place}
                   </div>
                 )}
@@ -529,11 +529,11 @@ export default function EarthPulse() {
       )}
 
       {/* design notes + back */}
-      <div className="absolute top-3 right-4 flex gap-4 text-xs text-white/55 font-mono">
-        <Link href="https://getresonance.vercel.app/dream/233-earth-pulse/README.md" target="_blank" rel="noreferrer" className="hover:text-white/80">
+      <div className="absolute top-3 right-4 flex gap-4 text-xs text-muted-foreground font-mono">
+        <Link href="https://getresonance.vercel.app/dream/233-earth-pulse/README.md" target="_blank" rel="noreferrer" className="hover:text-foreground">
           design notes →
         </Link>
-        <Link href="/dream" className="hover:text-white/80">← dream</Link>
+        <Link href="/dream" className="hover:text-foreground">← dream</Link>
       </div>
     </div>
   );

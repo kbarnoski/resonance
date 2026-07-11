@@ -663,7 +663,7 @@ export default function MosaicListener() {
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-[#07070b] text-white overflow-hidden relative">
+    <main className="min-h-screen w-full bg-[#07070b] text-foreground overflow-hidden relative">
       <canvas
         ref={canvasRef}
         onPointerDown={onPointer}
@@ -675,19 +675,19 @@ export default function MosaicListener() {
       />
 
       {/* axis hints */}
-      <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-white/55 tracking-wide">
+      <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-muted-foreground tracking-wide">
         brightness →
       </div>
-      <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-white/55 tracking-wide">
+      <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-muted-foreground tracking-wide">
         loudness →
       </div>
 
       {/* header / controls */}
       <div className="relative z-10 max-w-2xl p-5 sm:p-7">
-        <h1 className="font-serif text-3xl sm:text-4xl text-white/95 leading-tight">
+        <h1 className="font-serif text-3xl sm:text-4xl text-foreground leading-tight">
           Mosaic Listener
         </h1>
-        <p className="mt-2 text-base text-white/80 max-w-xl">
+        <p className="mt-2 text-base text-foreground max-w-xl">
           A recording is shattered into hundreds of tiny grains and laid out by{" "}
           <span className="text-violet-300">brightness</span> and{" "}
           <span className="text-violet-300">loudness</span>. Drag across the cloud
@@ -698,7 +698,7 @@ export default function MosaicListener() {
         {!started ? (
           <button
             onClick={handleBegin}
-            className="mt-5 min-h-[44px] rounded-lg bg-violet-500/90 px-5 py-2.5 text-base font-medium text-white hover:bg-violet-400 transition-colors"
+            className="mt-5 min-h-[44px] rounded-lg bg-violet-500/90 px-5 py-2.5 text-base font-medium text-foreground hover:bg-violet-400 transition-colors"
           >
             Begin
           </button>
@@ -710,7 +710,7 @@ export default function MosaicListener() {
                 setNav("drift");
               }}
               className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base transition-colors ${
-                nav === "drift" ? "bg-violet-500/90 text-white" : "bg-white/10 text-white/80 hover:bg-white/15"
+                nav === "drift" ? "bg-violet-500/90 text-foreground" : "bg-muted text-foreground hover:bg-accent"
               }`}
             >
               Auto-drift
@@ -722,7 +722,7 @@ export default function MosaicListener() {
                 setNav("drag");
               }}
               className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base transition-colors ${
-                nav === "drag" ? "bg-violet-500/90 text-white" : "bg-white/10 text-white/80 hover:bg-white/15"
+                nav === "drag" ? "bg-violet-500/90 text-foreground" : "bg-muted text-foreground hover:bg-accent"
               }`}
             >
               Drag to play
@@ -730,7 +730,7 @@ export default function MosaicListener() {
             <button
               onClick={toggleMic}
               className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base transition-colors ${
-                nav === "mic" ? "bg-emerald-500/80 text-white" : "bg-white/10 text-white/80 hover:bg-white/15"
+                nav === "mic" ? "bg-violet-500/80 text-foreground" : "bg-muted text-foreground hover:bg-accent"
               }`}
             >
               {nav === "mic" ? "Mic on" : "Hum into mic"}
@@ -744,26 +744,26 @@ export default function MosaicListener() {
               value={trackId}
               onChange={(e) => setTrackId(e.target.value)}
               placeholder="Welcome Home track ID"
-              className="min-h-[44px] w-48 rounded-lg bg-white/10 px-3 py-2.5 text-base text-white placeholder:text-white/40 outline-none focus:bg-white/15"
+              className="min-h-[44px] w-48 rounded-lg bg-muted px-3 py-2.5 text-base text-foreground placeholder:text-muted-foreground/70 outline-none focus:bg-muted"
             />
             <button
               onClick={handleTrack}
-              className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/85 hover:bg-white/15 transition-colors"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent transition-colors"
             >
               Use Karel&apos;s piano as the corpus
             </button>
           </div>
         )}
 
-        <p className="mt-3 text-sm text-white/75 max-w-xl">{status}</p>
-        {error && <p className="mt-1 text-sm text-rose-300">{error}</p>}
+        <p className="mt-3 text-sm text-muted-foreground max-w-xl">{status}</p>
+        {error && <p className="mt-1 text-sm text-violet-300">{error}</p>}
         {noGL && (
-          <p className="mt-1 text-sm text-rose-300">
+          <p className="mt-1 text-sm text-violet-300">
             WebGL2 unavailable — the audio mosaic still plays, but the atlas can&apos;t render.
           </p>
         )}
         {started && (
-          <p className="mt-2 text-xs text-white/55">
+          <p className="mt-2 text-xs text-muted-foreground">
             {grainCount} grains · corpus: {source === "track" ? "Karel's piano" : "procedural piano"}
           </p>
         )}
@@ -772,7 +772,7 @@ export default function MosaicListener() {
       <Link
         href={README_URL}
         target="_blank"
-        className="absolute bottom-3 right-4 z-10 text-xs text-white/55 hover:text-white/80 transition-colors"
+        className="absolute bottom-3 right-4 z-10 text-xs text-muted-foreground hover:text-foreground transition-colors"
       >
         Read the design notes →
       </Link>

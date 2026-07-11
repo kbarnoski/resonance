@@ -210,7 +210,7 @@ export default function NegativeSpacePage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -220,16 +220,16 @@ export default function NegativeSpacePage() {
       {/* HUD / chrome */}
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="max-w-2xl">
-          <h1 className="font-mono text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             negative space
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Play the instrument by being{" "}
             <span className="text-violet-300">silent</span>. The music blooms in
             the gaps of your sound — the instant you make noise, it ducks to
             nothing. You compose it by what you withhold.
           </p>
-          <p className="mt-1 font-mono text-base text-white/55">
+          <p className="mt-1 font-mono text-base text-muted-foreground">
             after Cage, <span className="italic">4&#39;33&#34;</span> &middot;
             Oliveros, Deep Listening
           </p>
@@ -244,7 +244,7 @@ export default function NegativeSpacePage() {
               >
                 ▶ Begin — then go quiet
               </button>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Audio + mic start on tap (covers iOS). The mic is analysis only:
                 never routed to output, never recorded, never sent anywhere.
               </p>
@@ -253,30 +253,30 @@ export default function NegativeSpacePage() {
             <div className="flex flex-col gap-3">
               {/* Live readout */}
               <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   source:{" "}
-                  <span className="text-emerald-300/95">
+                  <span className="text-violet-300/95">
                     {source === "mic" ? "live mic" : "auto-demo"}
                   </span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   state:{" "}
                   <span
                     className={
-                      hud.still ? "text-violet-300" : "text-amber-300/95"
+                      hud.still ? "text-violet-300" : "text-violet-300/95"
                     }
                   >
                     {hud.still ? "still — blooming" : "sound — eroding"}
                   </span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   bloom: {(hud.bloom * 100).toFixed(0)}%
                 </span>
               </div>
 
               {/* Bloom meter */}
               <div
-                className="h-1.5 w-full max-w-md overflow-hidden rounded-full bg-white/10"
+                className="h-1.5 w-full max-w-md overflow-hidden rounded-full bg-muted"
                 role="presentation"
               >
                 <div
@@ -288,26 +288,26 @@ export default function NegativeSpacePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={handleMakeSound}
-                  className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 font-mono text-base text-white/95 ring-1 ring-white/20 transition hover:bg-white/15"
+                  className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 font-mono text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   Make a sound
                 </button>
                 <button
                   onClick={() => setShowNotes(true)}
-                  className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base text-white/75 underline-offset-4 transition hover:text-white/95 hover:underline"
+                  className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base text-muted-foreground underline-offset-4 transition hover:text-foreground hover:underline"
                 >
                   Read the design notes
                 </button>
                 <Link
                   href="/dream"
-                  className="font-mono text-base text-white/55 underline underline-offset-4 hover:text-white/75"
+                  className="font-mono text-base text-muted-foreground underline underline-offset-4 hover:text-muted-foreground"
                 >
                   ← gallery
                 </Link>
               </div>
 
               {micError ? (
-                <p className="max-w-md text-base text-rose-300">{micError}</p>
+                <p className="max-w-md text-base text-violet-300">{micError}</p>
               ) : null}
             </div>
           )}
@@ -317,9 +317,9 @@ export default function NegativeSpacePage() {
       {/* Design-notes panel (in-page, no route) */}
       {showNotes ? (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 p-5">
-          <div className="max-h-[80vh] max-w-xl overflow-y-auto rounded-lg border border-white/15 bg-[#0b0c12] p-6 text-white/80">
+          <div className="max-h-[80vh] max-w-xl overflow-y-auto rounded-lg border border-border bg-[#0b0c12] p-6 text-foreground">
             <div className="mb-3 flex items-start justify-between gap-4">
-              <h2 className="font-mono text-xl text-white">design notes</h2>
+              <h2 className="font-mono text-xl text-foreground">design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base text-violet-300 hover:text-violet-200"
@@ -329,13 +329,13 @@ export default function NegativeSpacePage() {
             </div>
             <div className="space-y-3 text-base leading-relaxed">
               <p>
-                <span className="text-white/95">The inversion.</span> Every mic
+                <span className="text-foreground">The inversion.</span> Every mic
                 instrument maps loud&nbsp;&rarr;&nbsp;active. This one maps
                 silence&nbsp;&rarr;&nbsp;music. Your instrument is restraint; the
                 piece lives in negative space.
               </p>
               <p>
-                <span className="text-white/95">Mechanism.</span> A short-term
+                <span className="text-foreground">Mechanism.</span> A short-term
                 RMS energy feeds a stillness timer. While you stay below the
                 threshold the timer grows and a slow consonant chord-bloom rises
                 — root, fifth, octave, third, twelfth, high color — one warm
@@ -345,23 +345,23 @@ export default function NegativeSpacePage() {
                 returns it resumes building from where it left off.
               </p>
               <p>
-                <span className="text-white/95">Privacy.</span> The mic is
+                <span className="text-foreground">Privacy.</span> The mic is
                 analysis only. It is connected to an AnalyserNode and nothing
                 else — never routed to the speakers, never recorded, never sent
                 over any network. There is no API route.
               </p>
               <p>
-                <span className="text-white/95">Visual.</span> Canvas2D. Silence
+                <span className="text-foreground">Visual.</span> Canvas2D. Silence
                 blooms a luminous field (monochrome&nbsp;&rarr;&nbsp;violet as
                 the chord fills); sound floods dark grain inward from the edges
                 and the light recedes.
               </p>
               <p>
-                <span className="text-white/95">Lineage.</span> John Cage,{" "}
+                <span className="text-foreground">Lineage.</span> John Cage,{" "}
                 <span className="italic">4&#39;33&#34;</span> (silence as the
                 content of the piece) and Pauline Oliveros, &ldquo;Deep
                 Listening.&rdquo; See also{" "}
-                <span className="font-mono text-white/75">
+                <span className="font-mono text-muted-foreground">
                   RESEARCH §529 (2026-06-23)
                 </span>{" "}
                 — the cross-modal sound&harr;perception thread.

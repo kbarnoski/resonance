@@ -233,7 +233,7 @@ export default function KidsComeHome() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#0b0a16] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#0b0a16] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none select-none"
@@ -242,18 +242,18 @@ export default function KidsComeHome() {
 
       {/* chrome overlay */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-1 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Come Home
         </h1>
-        <p className="max-w-md text-base text-white/75">
+        <p className="max-w-md text-base text-muted-foreground">
           Drag the firefly up the hill. At the top it trembles, wanting home.
           Let go — and hear it land.
         </p>
         {fallback && (
-          <p className="text-base text-rose-300">(showing the simple view)</p>
+          <p className="text-base text-violet-300">(showing the simple view)</p>
         )}
         {audioError && (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             (sound could not start on this device)
           </p>
         )}
@@ -262,30 +262,30 @@ export default function KidsComeHome() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0b0a16]/70 backdrop-blur-sm">
-          <h2 className="px-6 text-center font-serif text-2xl text-white/95 sm:text-3xl">
+          <h2 className="px-6 text-center font-serif text-2xl text-foreground sm:text-3xl">
             Help the little light find its way home
           </h2>
           <button
             onClick={start}
-            className="min-h-[64px] rounded-full bg-amber-300 px-10 py-4 text-xl font-semibold text-[#0b0a16] shadow-lg shadow-amber-500/30 transition active:scale-95"
+            className="min-h-[64px] rounded-full bg-violet-300 px-10 py-4 text-xl font-semibold text-[#0b0a16] shadow-lg shadow-violet-500/30 transition active:scale-95"
           >
             Start
           </button>
-          <p className="text-base text-white/55">tap, then drag up and let go</p>
+          <p className="text-base text-muted-foreground">tap, then drag up and let go</p>
         </div>
       )}
 
       {/* Design notes toggle */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-white/20 bg-black/30 px-4 py-2.5 font-mono text-sm text-white/75 backdrop-blur-sm transition hover:text-white"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-border bg-black/30 px-4 py-2.5 font-mono text-sm text-muted-foreground backdrop-blur-sm transition hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-4 z-20 max-w-sm rounded-2xl border border-white/15 bg-black/70 p-5 text-base text-white/85 backdrop-blur-md">
-          <p className="mb-2 text-white/95">
+        <div className="absolute bottom-20 right-4 z-20 max-w-sm rounded-2xl border border-border bg-black/70 p-5 text-base text-foreground backdrop-blur-md">
+          <p className="mb-2 text-foreground">
             The hill is a C-major ladder: do–re–mi–fa–sol–la–<em>ti</em>. Low =
             home (I chord). High = the leading tone, pulled toward home by the
             dominant (V) chord. Letting go is a real V → I cadence — the tension
@@ -293,7 +293,7 @@ export default function KidsComeHome() {
           </p>
           <Link
             href="./957-kids-come-home/README.md"
-            className="font-mono text-sm text-amber-300 underline"
+            className="font-mono text-sm text-violet-300 underline"
           >
             full README
           </Link>

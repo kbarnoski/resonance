@@ -473,11 +473,11 @@ export default function PitchAlgoCompare() {
 
       {/* Header */}
       <div>
-        <div className="text-[9px] tracking-[0.35em] uppercase text-white/20 mb-1">
+        <div className="text-[9px] tracking-[0.35em] uppercase text-muted-foreground/70 mb-1">
           Dream Sandbox · /dream/70-pitch-algo-compare
         </div>
-        <h1 className="text-2xl tracking-tight text-white/90">Pitch Compare</h1>
-        <p className="text-sm text-white/40 mt-1 max-w-lg">
+        <h1 className="text-2xl tracking-tight text-foreground">Pitch Compare</h1>
+        <p className="text-sm text-muted-foreground/70 mt-1 max-w-lg">
           Three pitch detection algorithms running simultaneously — watch where they agree and where they diverge.
         </p>
       </div>
@@ -494,12 +494,12 @@ export default function PitchAlgoCompare() {
         {consensusMidi !== null ? (
           <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: COL_GOLD }}>
             ✦ consensus — {midiToNote(consensusMidi)}
-            <span className="text-white/25 normal-case tracking-normal ml-2 text-[9px]">
+            <span className="text-muted-foreground/70 normal-case tracking-normal ml-2 text-[9px]">
               ({vis.length}/{results.length} algorithms agree)
             </span>
           </span>
         ) : vis.length >= 2 ? (
-          <span className="text-[10px] text-white/30">
+          <span className="text-[10px] text-muted-foreground/70">
             diverged — {spread.toFixed(1)} semitone spread
           </span>
         ) : null}
@@ -508,17 +508,17 @@ export default function PitchAlgoCompare() {
       {/* Algorithm cards */}
       <div className="grid grid-cols-3 gap-3 max-w-2xl self-center w-full">
         {algoCfg.map(({ label, abbr, color, state }) => (
-          <div key={abbr} className="border border-white/10 rounded p-3 flex flex-col items-center gap-1">
+          <div key={abbr} className="border border-border rounded p-3 flex flex-col items-center gap-1">
             <div className="text-[8px] tracking-widest uppercase" style={{ color }}>{label}</div>
-            <div className="text-2xl font-mono text-white/90 leading-none mt-1">{getName(state)}</div>
-            <div className="text-[10px] text-white/30 h-4">{getHz(state)}</div>
-            <div className="w-full bg-white/8 rounded-full h-1 mt-0.5 overflow-hidden">
+            <div className="text-2xl font-mono text-foreground leading-none mt-1">{getName(state)}</div>
+            <div className="text-[10px] text-muted-foreground/70 h-4">{getHz(state)}</div>
+            <div className="w-full bg-muted rounded-full h-1 mt-0.5 overflow-hidden">
               <div
                 className="h-1 rounded-full transition-all duration-75"
                 style={{ width: `${state.conf * 100}%`, background: color }}
               />
             </div>
-            <div className="text-[9px] text-white/20">{(state.conf * 100).toFixed(0)}% conf</div>
+            <div className="text-[9px] text-muted-foreground/70">{(state.conf * 100).toFixed(0)}% conf</div>
           </div>
         ))}
       </div>
@@ -528,41 +528,41 @@ export default function PitchAlgoCompare() {
         {mode === "idle" ? (
           <>
             <button onClick={startDemo}
-              className="px-6 py-2.5 text-sm border border-white/20 rounded hover:bg-white/5 text-white/70 transition">
+              className="px-6 py-2.5 text-sm border border-border rounded hover:bg-accent text-muted-foreground transition">
               ▶ Demo
             </button>
             <button onClick={startMic}
-              className="px-6 py-2.5 text-sm border border-white/20 rounded hover:bg-white/5 text-white/70 transition">
+              className="px-6 py-2.5 text-sm border border-border rounded hover:bg-accent text-muted-foreground transition">
               🎤 Start mic
             </button>
           </>
         ) : (
           <button onClick={stopAll}
-            className="px-6 py-2.5 text-sm border border-white/15 rounded hover:bg-white/5 text-white/40 transition">
+            className="px-6 py-2.5 text-sm border border-border rounded hover:bg-accent text-muted-foreground/70 transition">
             ■ Stop
           </button>
         )}
       </div>
 
-      {micErr && <p className="max-w-2xl self-center text-center text-[11px] text-red-400/70">{micErr}</p>}
+      {micErr && <p className="max-w-2xl self-center text-center text-[11px] text-destructive/70">{micErr}</p>}
 
       {/* Algorithm notes */}
-      <div className="max-w-2xl self-center w-full border border-white/8 rounded p-4 grid grid-cols-1 gap-3 text-[10px]">
-        <div className="text-[9px] text-white/25 uppercase tracking-widest">Algorithm notes</div>
+      <div className="max-w-2xl self-center w-full border border-border rounded p-4 grid grid-cols-1 gap-3 text-[10px]">
+        <div className="text-[9px] text-muted-foreground/70 uppercase tracking-widest">Algorithm notes</div>
         {algoCfg.map(({ abbr, color, desc }) => (
           <div key={abbr} className="flex gap-2 items-start">
             <span style={{ color }} className="shrink-0 mt-0.5">■</span>
             <div>
-              <span className="text-white/50">{abbr}</span>
-              <span className="text-white/25 ml-2">{desc}</span>
+              <span className="text-muted-foreground">{abbr}</span>
+              <span className="text-muted-foreground/70 ml-2">{desc}</span>
             </div>
           </div>
         ))}
         <div className="flex gap-2 items-start">
           <span style={{ color: COL_GOLD }} className="shrink-0 mt-0.5">■</span>
           <div>
-            <span className="text-white/50">Consensus</span>
-            <span className="text-white/25 ml-2">
+            <span className="text-muted-foreground">Consensus</span>
+            <span className="text-muted-foreground/70 ml-2">
               Gold dashed cursor when ≥2 algorithms agree within 1.5 semitones. A faint piano tone
               plays when the consensus note changes. Demo uses a sawtooth (rich harmonics — ideal for HPS).
             </span>
@@ -571,7 +571,7 @@ export default function PitchAlgoCompare() {
       </div>
 
       <Link href="/dream"
-        className="self-center text-[10px] text-white/20 hover:text-white/50 transition">
+        className="self-center text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition">
         ← back to dream sandbox
       </Link>
     </div>

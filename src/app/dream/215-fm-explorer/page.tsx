@@ -413,31 +413,31 @@ export default function FmExplorerPage() {
   /* ─────────────────────────────────────────────────────────────────── */
 
   return (
-    <div className="fixed inset-0 bg-black text-white flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-black text-foreground flex flex-col overflow-hidden">
       {/* header */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 shrink-0">
-        <h1 className="text-base font-serif text-white/95">FM Explorer</h1>
-        <p className="text-xs text-white/55 font-mono">timbral landscape · cycle 249</p>
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
+        <h1 className="text-base font-serif text-foreground">FM Explorer</h1>
+        <p className="text-xs text-muted-foreground font-mono">timbral landscape · cycle 249</p>
       </div>
 
       {!started ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <p className="text-white/75 text-base max-w-xs leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-xs leading-relaxed">
             Move over a 2D canvas to sweep through hundreds of FM timbres.
             X&nbsp;=&nbsp;pitch · Y&nbsp;=&nbsp;mod ratio · slider&nbsp;=&nbsp;FM depth.
             Green&nbsp;=&nbsp;harmonic · amber&nbsp;=&nbsp;bell · violet&nbsp;=&nbsp;metallic.
           </p>
           <button
             onClick={boot}
-            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-base font-medium min-h-[44px] transition-all"
+            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-foreground text-base font-medium min-h-[44px] transition-all"
           >
             Start FM
           </button>
-          <p className="text-white/40 text-xs max-w-xs">
+          <p className="text-muted-foreground/70 text-xs max-w-xs">
             FM synthesis underlies the DX7 (1983), Rhodes piano, 808 bass, and bell tones —
             all from a single AudioParam connection.
           </p>
-          <Link href="/dream" className="text-xs text-white/30 hover:text-white/60 font-mono mt-2">
+          <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground font-mono mt-2">
             ← dream lab
           </Link>
         </div>
@@ -451,9 +451,9 @@ export default function FmExplorerPage() {
           />
 
           {/* controls */}
-          <div className="shrink-0 border-t border-white/10 px-4 py-2.5 flex flex-col gap-2.5">
+          <div className="shrink-0 border-t border-border px-4 py-2.5 flex flex-col gap-2.5">
             <div className="flex items-center gap-3">
-              <span className="text-xs text-white/55 font-mono w-28 shrink-0">
+              <span className="text-xs text-muted-foreground font-mono w-28 shrink-0">
                 index {fmIndex.toFixed(1)}
               </span>
               <input
@@ -469,8 +469,8 @@ export default function FmExplorerPage() {
                 onClick={toggleMic}
                 className={`text-xs font-mono px-3 py-1.5 rounded border min-h-[36px] min-w-[56px] transition-all ${
                   micMode
-                    ? "border-emerald-400/60 text-emerald-300"
-                    : "border-white/20 text-white/55 hover:border-white/40"
+                    ? "border-violet-400/60 text-violet-300"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
                 {micMode ? "mic ●" : "mic"}
@@ -482,7 +482,7 @@ export default function FmExplorerPage() {
                 <button
                   key={p.label}
                   onClick={() => applyPreset(p)}
-                  className="text-xs font-mono px-3 py-1.5 rounded border border-white/20 hover:border-violet-400/50 text-white/70 hover:text-white min-h-[36px] transition-all"
+                  className="text-xs font-mono px-3 py-1.5 rounded border border-border hover:border-violet-400/50 text-muted-foreground hover:text-foreground min-h-[36px] transition-all"
                 >
                   {p.label}
                 </button>
@@ -491,30 +491,30 @@ export default function FmExplorerPage() {
           </div>
 
           {/* HUD */}
-          <div className="shrink-0 grid grid-cols-4 border-t border-white/10">
+          <div className="shrink-0 grid grid-cols-4 border-t border-border">
             {([
               { label: "carrier",  val: hud.note,        sub: `${hud.hz} Hz`,     color: "text-violet-300"  },
-              { label: "ratio",    val: `${hud.ratio}×`, sub: "mod / carrier",    color: "text-amber-300"   },
-              { label: "index",    val: hud.idx,          sub: "depth",            color: "text-rose-300"    },
+              { label: "ratio",    val: `${hud.ratio}×`, sub: "mod / carrier",    color: "text-violet-300"   },
+              { label: "index",    val: hud.idx,          sub: "depth",            color: "text-violet-300"    },
               { label: "mode",     val: micMode ? "mic" : "free",
                                    sub: micMode ? "rms→idx" : "move to explore",
-                                   color: micMode ? "text-emerald-300" : "text-white/55" },
+                                   color: micMode ? "text-violet-300" : "text-muted-foreground" },
             ] as const).map(({ label, val, sub, color }) => (
               <div key={label} className="flex flex-col items-center py-2 gap-0.5">
                 <span className={`text-sm font-mono ${color}`}>{val}</span>
-                <span className="text-[10px] text-white/55 font-mono">{sub}</span>
-                <span className="text-[9px] text-white/35 font-mono uppercase tracking-wider">{label}</span>
+                <span className="text-[10px] text-muted-foreground font-mono">{sub}</span>
+                <span className="text-[9px] text-muted-foreground/70 font-mono uppercase tracking-wider">{label}</span>
               </div>
             ))}
           </div>
 
           <div className="absolute bottom-28 right-4 z-10">
-            <Link href="/dream" className="font-mono text-xs text-white/40 hover:text-white/70">
+            <Link href="/dream" className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground">
               ← dream lab
             </Link>
           </div>
           <div className="absolute bottom-28 left-4 z-10">
-            <Link href="/dream/215-fm-explorer/README.md" className="font-mono text-xs text-white/40 hover:text-white/70">
+            <Link href="/dream/215-fm-explorer/README.md" className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground">
               design notes
             </Link>
           </div>

@@ -294,20 +294,20 @@ export default function KidsPuddleJumper() {
           style={{ background: "linear-gradient(180deg, #040e23 0%, #051830 100%)" }}
         >
           <div className="text-8xl mb-6 select-none" aria-hidden>🫧</div>
-          <h1 className="text-4xl font-bold text-white mb-4">Puddle Jumper</h1>
-          <p className="text-lg text-white/80 max-w-xs mb-10 leading-relaxed">
+          <h1 className="text-4xl font-bold text-foreground mb-4">Puddle Jumper</h1>
+          <p className="text-lg text-foreground max-w-xs mb-10 leading-relaxed">
             Tap the pond to make splashes and music!
           </p>
           <button
             onClick={handleStart}
             style={{ minHeight: 80, minWidth: 260, fontSize: "1.5rem" }}
-            className="font-bold rounded-3xl bg-cyan-500 hover:bg-cyan-400 active:scale-95 text-white transition-all shadow-xl shadow-cyan-500/40 px-10 py-5"
+            className="font-bold rounded-3xl bg-violet-500 hover:bg-violet-400 active:scale-95 text-foreground transition-all shadow-xl shadow-violet-500/40 px-10 py-5"
           >
             💧 Play! 💧
           </button>
           <Link
             href="/dream"
-            className="mt-12 text-base text-white/40 hover:text-white/70"
+            className="mt-12 text-base text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream lab
           </Link>
@@ -318,7 +318,7 @@ export default function KidsPuddleJumper() {
       {started && (
         <Link
           href="/dream"
-          className="absolute top-4 left-4 text-sm text-white/40 hover:text-white/70 z-10"
+          className="absolute top-4 left-4 text-sm text-muted-foreground/70 hover:text-muted-foreground z-10"
         >
           ← back
         </Link>

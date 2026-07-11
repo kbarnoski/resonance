@@ -710,19 +710,19 @@ export default function MemoryLoom() {
   // ── UI ──────────────────────────────────────────────────────────────────────
 
   return (
-    <main className="min-h-screen bg-[#0b0a10] text-white px-5 py-6 md:px-10 md:py-8 flex flex-col gap-5">
+    <main className="min-h-screen bg-[#0b0a10] text-foreground px-5 py-6 md:px-10 md:py-8 flex flex-col gap-5">
       <a
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/275-memory-loom/README.md"
-        className="fixed top-4 right-5 z-10 text-sm text-white/60 hover:text-white/90 underline underline-offset-4"
+        className="fixed top-4 right-5 z-10 text-sm text-muted-foreground hover:text-foreground underline underline-offset-4"
       >
         Read the design notes
       </a>
 
       <header className="flex flex-col gap-2 max-w-3xl">
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
           Memory Loom
         </h1>
-        <p className="text-base text-white/75 leading-relaxed">
+        <p className="text-base text-muted-foreground leading-relaxed">
           A piece that <span className="text-violet-300">listens to you play</span>, captures verbatim
           phrases, and weaves them into an endless Frippertronics tape-loop room built from your own
           sound — audibly different at minute 10 than at minute 1.
@@ -730,7 +730,7 @@ export default function MemoryLoom() {
       </header>
 
       {err && (
-        <p className="text-base text-rose-300 max-w-3xl" role="alert">
+        <p className="text-base text-violet-300 max-w-3xl" role="alert">
           {err}
         </p>
       )}
@@ -740,13 +740,13 @@ export default function MemoryLoom() {
           <>
             <button
               onClick={startMic}
-              className="min-h-[44px] px-5 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-white font-medium transition"
+              className="min-h-[44px] px-5 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-foreground font-medium transition"
             >
               Use mic + start
             </button>
             <button
               onClick={startDemo}
-              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white/90 transition"
+              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground transition"
             >
               Start demo only
             </button>
@@ -756,12 +756,12 @@ export default function MemoryLoom() {
             {source !== "mic" && (
               <button
                 onClick={startMic}
-                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-white font-medium transition"
+                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-foreground font-medium transition"
               >
                 Add mic
               </button>
             )}
-            <label className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white/90 transition cursor-pointer flex items-center">
+            <label className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground transition cursor-pointer flex items-center">
               Feed a file
               <input
                 type="file"
@@ -778,18 +778,18 @@ export default function MemoryLoom() {
                 value={trackId}
                 onChange={(e) => setTrackId(e.target.value)}
                 placeholder="Welcome Home track id"
-                className="min-h-[44px] px-3 py-2 rounded-lg bg-black/40 border border-white/15 text-base text-white/90 placeholder:text-white/45 w-52"
+                className="min-h-[44px] px-3 py-2 rounded-lg bg-black/40 border border-border text-base text-foreground placeholder:text-muted-foreground w-52"
               />
               <button
                 onClick={loadTrack}
-                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white/90 transition"
+                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground transition"
               >
                 Load
               </button>
             </div>
             <button
               onClick={teardown}
-              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 transition ml-auto"
+              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-500/20 hover:bg-violet-500/30 text-violet-300 transition ml-auto"
             >
               Stop
             </button>
@@ -798,35 +798,35 @@ export default function MemoryLoom() {
       </div>
 
       {running && (
-        <div className="flex flex-wrap gap-x-6 gap-y-1 font-mono text-sm text-white/70">
+        <div className="flex flex-wrap gap-x-6 gap-y-1 font-mono text-sm text-muted-foreground">
           <span>
-            elapsed <span className="text-emerald-300/95">{fmtClock(elapsed)}</span>
+            elapsed <span className="text-violet-300/95">{fmtClock(elapsed)}</span>
           </span>
           <span>
-            movement <span className="text-amber-300/95">#{movement}</span>
+            movement <span className="text-violet-300/95">#{movement}</span>
           </span>
           <span>
             voices <span className="text-violet-300">{activeCount}</span>/{phraseCount}
           </span>
           <span>
             input{" "}
-            <span className={listening ? "text-emerald-300/95" : "text-white/55"}>
+            <span className={listening ? "text-violet-300/95" : "text-muted-foreground"}>
               {listening ? source : "demo pad"}
             </span>
           </span>
           {listening && (
-            <span className="text-white/55">
+            <span className="text-muted-foreground">
               {inPhraseRef.current ? "capturing phrase…" : "waiting for a phrase…"}
             </span>
           )}
         </div>
       )}
 
-      <div className="flex-1 min-h-[340px] rounded-xl overflow-hidden border border-white/10 bg-black/30">
+      <div className="flex-1 min-h-[340px] rounded-xl overflow-hidden border border-border bg-black/30">
         <canvas ref={canvasRef} className="w-full h-full block" style={{ height: "60vh" }} />
       </div>
 
-      <p className="text-sm text-white/55 max-w-3xl leading-relaxed">
+      <p className="text-sm text-muted-foreground max-w-3xl leading-relaxed">
         The loom shows your memory bank: each lane is a captured phrase, its waveform drawn in,
         a playhead sweeping at its own incommensurate rate, brightness = how loud it is right now.
         Newly captured phrases displace the oldest — a decaying memory after Eno &amp; Fripp.

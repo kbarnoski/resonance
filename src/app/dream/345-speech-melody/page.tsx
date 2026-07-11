@@ -408,7 +408,7 @@ export default function SpeechMelodyPage() {
     activeWord >= 0 && words[activeWord] ? words[activeWord].text : "—";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#08080d] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#08080d] text-foreground">
       {/* WebGL2 contour canvas */}
       <canvas
         ref={canvasRef}
@@ -419,37 +419,37 @@ export default function SpeechMelodyPage() {
       {/* design notes link */}
       <Link
         href="/dream/345-speech-melody/README.md"
-        className="absolute right-4 top-4 z-30 text-base text-white/55 underline decoration-dotted underline-offset-4 hover:text-white/90"
+        className="absolute right-4 top-4 z-30 text-base text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </Link>
 
       <div className="relative z-20 mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-5 py-8">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Speech Melody
           </h1>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Type a line — a poem, a memory — and hear its{" "}
             <span className="text-violet-300">speech</span> become{" "}
-            <span className="text-amber-300/95">music</span>. Vowels sing,
+            <span className="text-violet-300/95">music</span>. Vowels sing,
             consonants tap, your words light up as they sound.
           </p>
         </header>
 
         {glError && (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             WebGL2 isn&apos;t available on this device — the contour visuals are
             off, but the audio and the word highlights still play.
           </p>
         )}
 
         {/* the sung words — large, readable, light up word-by-word */}
-        <div className="rounded-xl border border-white/10 bg-black/30 p-5 backdrop-blur-sm">
-          <p className="mb-3 font-mono text-base text-white/55">the sung line</p>
+        <div className="rounded-xl border border-border bg-black/30 p-5 backdrop-blur-sm">
+          <p className="mb-3 font-mono text-base text-muted-foreground">the sung line</p>
           <p className="flex flex-wrap gap-x-3 gap-y-2 text-xl leading-relaxed sm:text-2xl">
             {words.length === 0 && (
-              <span className="text-white/55">type a line below…</span>
+              <span className="text-muted-foreground">type a line below…</span>
             )}
             {words.map((w) => {
               const on = w.index === activeWord;
@@ -459,10 +459,10 @@ export default function SpeechMelodyPage() {
                   className={
                     "transition-all duration-150 " +
                     (on
-                      ? "text-amber-200 drop-shadow-[0_0_18px_rgba(251,191,36,0.7)]"
+                      ? "text-violet-200 drop-shadow-[0_0_18px_rgba(251,191,36,0.7)]"
                       : w.index < activeWord
                         ? "text-violet-200/90"
-                        : "text-white/55")
+                        : "text-muted-foreground")
                   }
                   style={
                     on
@@ -485,18 +485,18 @@ export default function SpeechMelodyPage() {
             rows={2}
             spellCheck={false}
             placeholder="Type or paste a phrase…"
-            className="w-full resize-none rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-base text-white/95 outline-none placeholder:text-white/40 focus:border-violet-400/60"
+            className="w-full resize-none rounded-xl border border-border bg-black/40 px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-violet-400/60"
           />
 
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => (playing ? stopPlayback() : play())}
-              className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-violet-400"
+              className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400"
             >
               {playing ? "Stop" : "Play"}
             </button>
             {needsTap && (
-              <span className="text-base text-amber-300/95">
+              <span className="text-base text-violet-300/95">
                 tap Play to begin
               </span>
             )}
@@ -511,7 +511,7 @@ export default function SpeechMelodyPage() {
                   setText(ex);
                   play(ex);
                 }}
-                className="min-h-[44px] rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/75 hover:border-violet-400/50 hover:text-white/95"
+                className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground hover:border-violet-400/50 hover:text-foreground"
               >
                 {ex}
               </button>
@@ -521,18 +521,18 @@ export default function SpeechMelodyPage() {
 
         {/* legible readout */}
         <div className="mt-auto grid grid-cols-3 gap-3 font-mono text-base">
-          <div className="rounded-lg border border-white/10 bg-black/30 px-3 py-2">
-            <div className="text-white/55">mode / key</div>
-            <div className="text-emerald-300/95">
+          <div className="rounded-lg border border-border bg-black/30 px-3 py-2">
+            <div className="text-muted-foreground">mode / key</div>
+            <div className="text-violet-300/95">
               {mel.modeName} · {mel.keyName}
             </div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-black/30 px-3 py-2">
-            <div className="text-white/55">now sounding</div>
-            <div className="truncate text-amber-300/95">{curWordText}</div>
+          <div className="rounded-lg border border-border bg-black/30 px-3 py-2">
+            <div className="text-muted-foreground">now sounding</div>
+            <div className="truncate text-violet-300/95">{curWordText}</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-black/30 px-3 py-2">
-            <div className="text-white/55">progress</div>
+          <div className="rounded-lg border border-border bg-black/30 px-3 py-2">
+            <div className="text-muted-foreground">progress</div>
             <div className="text-violet-300">
               {Math.round(progress * 100)}%
             </div>

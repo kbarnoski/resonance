@@ -556,34 +556,34 @@ export default function KidsSoundSafari() {
   const allFound = found.length === ANIMALS.length
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0f] text-foreground">
       {/* Canvas compass lives behind everything */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* design-notes link (lab convention) */}
       <a
         href="./README.md"
-        className="absolute right-4 top-4 z-20 text-base text-white/55 underline decoration-dotted underline-offset-4 hover:text-white/80"
+        className="absolute right-4 top-4 z-20 text-base text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </a>
 
       {phase === 'start' && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-7 px-6 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Sound Safari <span aria-hidden>🐸🐦🐳</span>
           </h1>
-          <p className="max-w-md text-lg text-white/80">
+          <p className="max-w-md text-lg text-foreground">
             Six animals are hiding all around you, singing. Turn your whole body in a slow circle to
             find them with your ears.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[88px] min-w-[88px] rounded-full bg-amber-400 px-12 py-6 text-2xl font-bold text-[#1a1205] shadow-lg shadow-amber-500/30 transition active:scale-95"
+            className="min-h-[88px] min-w-[88px] rounded-full bg-violet-400 px-12 py-6 text-2xl font-bold text-[#1a1205] shadow-lg shadow-violet-500/30 transition active:scale-95"
           >
             ▶ Start
           </button>
-          <p className="max-w-sm text-base text-white/55">
+          <p className="max-w-sm text-base text-muted-foreground">
             Headphones make the magic stronger — but speakers work too.
           </p>
         </div>
@@ -592,7 +592,7 @@ export default function KidsSoundSafari() {
       {phase === 'play' && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-4 px-6 pb-8">
           {controlNote && (
-            <p className="rounded-full bg-black/40 px-4 py-2 text-base text-rose-300">{controlNote}</p>
+            <p className="rounded-full bg-black/40 px-4 py-2 text-base text-violet-300">{controlNote}</p>
           )}
 
           {/* found row — color + character, no reading required */}
@@ -617,7 +617,7 @@ export default function KidsSoundSafari() {
           </div>
 
           {allFound && (
-            <p className="text-xl font-semibold text-emerald-300/95">You found everyone! 🎉</p>
+            <p className="text-xl font-semibold text-violet-300/95">You found everyone! 🎉</p>
           )}
         </div>
       )}

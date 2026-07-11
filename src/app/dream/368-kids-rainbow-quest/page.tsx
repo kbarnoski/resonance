@@ -441,23 +441,23 @@ export default function KidsRainbowQuest() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Rainbow Quest
             </h1>
-            <p className="text-base text-white/75 leading-relaxed">
+            <p className="text-base text-muted-foreground leading-relaxed">
               The unicorn wants colours! Find them with your camera.
             </p>
           </div>
 
           <button
             onClick={handleStart}
-            className="min-h-[64px] w-full rounded-2xl border border-violet-400/40 bg-violet-500/20 px-6 py-4 text-2xl font-bold text-white transition-all hover:bg-violet-500/30 active:scale-95"
+            className="min-h-[64px] w-full rounded-2xl border border-violet-400/40 bg-violet-500/20 px-6 py-4 text-2xl font-bold text-foreground transition-all hover:bg-violet-500/30 active:scale-95"
             style={{ touchAction: "manipulation" }}
           >
             🌈 Start ▸
           </button>
 
-          <p className="text-sm text-white/40 leading-relaxed">
+          <p className="text-sm text-muted-foreground/70 leading-relaxed">
             Camera stays on your device — never recorded or uploaded.
           </p>
         </div>
@@ -467,7 +467,7 @@ export default function KidsRainbowQuest() {
       {phase === "camera-starting" && (
         <div className="relative z-10 flex flex-col items-center gap-4">
           <div className="text-5xl animate-pulse">🌈</div>
-          <p className="text-xl text-white/75">Opening camera…</p>
+          <p className="text-xl text-muted-foreground">Opening camera…</p>
         </div>
       )}
 
@@ -497,10 +497,10 @@ export default function KidsRainbowQuest() {
           >
             🌈
           </div>
-          <p className="text-2xl font-bold text-white" style={{ textShadow: "0 0 20px rgba(255,255,255,0.4)" }}>
+          <p className="text-2xl font-bold text-foreground" style={{ textShadow: "0 0 20px rgba(255,255,255,0.4)" }}>
             Rainbow complete!
           </p>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Listen to your rainbow song…
           </p>
         </div>
@@ -509,7 +509,7 @@ export default function KidsRainbowQuest() {
       {/* ── NO CAMERA NOTICE ─────────────────────────────────────────────── */}
       {phase === "no-camera" && (
         <div className="relative z-10 max-w-sm px-6 text-center">
-          <p className="text-base text-rose-300 leading-relaxed">
+          <p className="text-base text-violet-300 leading-relaxed">
             Camera not available — running auto-demo mode so you can see the
             full quest play itself.
           </p>
@@ -519,7 +519,7 @@ export default function KidsRainbowQuest() {
       {/* ── Design notes link ────────────────────────────────────────────── */}
       <a
         href="/dream/368-kids-rainbow-quest/README.md"
-        className="absolute bottom-4 right-4 text-sm text-white/35 hover:text-white/60 transition-colors z-50"
+        className="absolute bottom-4 right-4 text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors z-50"
       >
         Design notes
       </a>
@@ -723,11 +723,11 @@ function QuestOverlay({
     >
       {/* Top: quest counter */}
       <div className="flex items-center gap-2">
-        <span className="text-base text-white/75">
+        <span className="text-base text-muted-foreground">
           {collectedCount} / {questTotal}
         </span>
         {isAutoDemo && (
-          <span className="text-sm text-rose-300 ml-2">
+          <span className="text-sm text-violet-300 ml-2">
             · auto-demo
           </span>
         )}
@@ -764,7 +764,7 @@ function QuestOverlay({
                 border: `1.5px solid rgba(255,255,255,0.15)`,
               }}
             >
-              <p className="text-xl font-semibold text-white">
+              <p className="text-xl font-semibold text-foreground">
                 Find me{" "}
                 <span style={{ color: target.glowHex }}>
                   {target.emoji}
@@ -802,7 +802,7 @@ function QuestOverlay({
               boxShadow: `0 0 24px ${target.glowHex}40`,
             }}
           >
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-bold text-foreground">
               {target.emoji} Found it!
             </p>
           </div>
@@ -812,7 +812,7 @@ function QuestOverlay({
       {/* Bottom: hint */}
       <div className="flex flex-col items-center gap-1">
         {!isFanfare && target && (
-          <p className="text-base text-white/60">
+          <p className="text-base text-muted-foreground">
             {warmth > 0.7
               ? "Hold still…"
               : warmth > 0.35
@@ -823,7 +823,7 @@ function QuestOverlay({
           </p>
         )}
         {!isAutoDemo && (
-          <p className="text-sm text-white/35">
+          <p className="text-sm text-muted-foreground/70">
             Camera: on-device only · never recorded
           </p>
         )}

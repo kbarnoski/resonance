@@ -252,24 +252,24 @@ export default function KidsBounceNotes() {
           ))}
         </div>
 
-        <h1 className="text-3xl font-bold text-white/95 mb-3 text-center tracking-tight">
+        <h1 className="text-3xl font-bold text-foreground mb-3 text-center tracking-tight">
           Bounce Notes
         </h1>
-        <p className="text-base text-white/75 text-center max-w-[280px] mb-10 leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-[280px] mb-10 leading-relaxed">
           Every bounce makes a sound!<br />
           Tap to add more balls 🎵
         </p>
 
         <button
           onClick={handleStart}
-          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold text-xl rounded-2xl px-10 py-4 min-h-[64px] transition-colors"
+          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-xl rounded-2xl px-10 py-4 min-h-[64px] transition-colors"
         >
           Let&apos;s play! 🎵
         </button>
 
         <Link
           href="/dream"
-          className="mt-14 text-sm text-white/55 hover:text-white/75 transition-colors"
+          className="mt-14 text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
         >
           ← Dream lab
         </Link>
@@ -288,7 +288,7 @@ export default function KidsBounceNotes() {
       />
 
       {/* Ball count */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/55 pointer-events-none select-none">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-muted-foreground pointer-events-none select-none">
         {count < MAX_BALLS
           ? `${MAX_BALLS - count} more ball${MAX_BALLS - count !== 1 ? "s" : ""} to add`
           : "5 balls — 🎶 full chorus!"}
@@ -296,7 +296,7 @@ export default function KidsBounceNotes() {
 
       <Link
         href="/dream"
-        className="absolute top-4 left-4 text-sm text-white/55 hover:text-white/75 transition-colors"
+        className="absolute top-4 left-4 text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
       >
         ← Dream lab
       </Link>

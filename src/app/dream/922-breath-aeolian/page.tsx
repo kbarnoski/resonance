@@ -233,7 +233,7 @@ export default function BreathAeolianPage() {
   }, [sizeCanvas]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0c] text-foreground">
       {/* fluid canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
@@ -242,10 +242,10 @@ export default function BreathAeolianPage() {
 
       {/* header */}
       <div className="relative z-10 flex flex-col gap-2 px-6 pt-8 sm:px-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Breath Aeolian
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           Breathe into a living cloud of air and hear the air sing back — your
           breath injects wind into a fluid, and the vortices it stirs make
           aeolian tones whose pitch is set by airflow physics, not by any scale.
@@ -256,7 +256,7 @@ export default function BreathAeolianPage() {
       <div className="absolute right-4 top-4 z-20">
         <Link
           href="/dream/922-breath-aeolian/README.md"
-          className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55 transition-colors hover:text-amber-300"
+          className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-violet-300"
         >
           read the design notes
         </Link>
@@ -265,18 +265,18 @@ export default function BreathAeolianPage() {
       {/* idle gate */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <p className="max-w-md font-mono text-sm text-white/55">
+          <p className="max-w-md font-mono text-sm text-muted-foreground">
             Pale luminous vapor on deep charcoal. Seven reeds stand in the rising
             column. Wind shedding past each one whistles at f = St·U/d.
           </p>
           <button
             type="button"
             onClick={start}
-            className="min-h-[44px] rounded-full bg-amber-400/90 px-6 py-2.5 text-base font-semibold text-black transition-colors hover:bg-amber-300"
+            className="min-h-[44px] rounded-full bg-violet-400/90 px-6 py-2.5 text-base font-semibold text-black transition-colors hover:bg-violet-300"
           >
             Start (breathe)
           </button>
-          <p className="max-w-md text-sm text-white/55">
+          <p className="max-w-md text-sm text-muted-foreground">
             Allow the microphone to breathe into it directly. If you decline, a
             synthetic breath keeps the cloud alive and singing.
           </p>
@@ -285,26 +285,26 @@ export default function BreathAeolianPage() {
 
       {/* running HUD */}
       {phase === "running" && (
-        <div className="absolute bottom-6 left-6 z-20 flex flex-col gap-2 font-mono text-[11px] text-white/55">
+        <div className="absolute bottom-6 left-6 z-20 flex flex-col gap-2 font-mono text-[11px] text-muted-foreground">
           {micState === "live" && (
-            <span className="text-amber-300/90">mic live · real breath drives the wind</span>
+            <span className="text-violet-300/90">mic live · real breath drives the wind</span>
           )}
           {micState === "synthetic" && (
-            <span className="text-rose-300">
+            <span className="text-violet-300">
               no mic · synthetic breath active (cloud still breathes &amp; sings)
             </span>
           )}
           {micState === "denied" && (
-            <span className="text-rose-300">
+            <span className="text-violet-300">
               microphone denied — synthetic breath active so it stays demoable
             </span>
           )}
-          {audioError && <span className="text-rose-300">{audioError}</span>}
+          {audioError && <span className="text-violet-300">{audioError}</span>}
           <div className="mt-1 flex items-center gap-2">
-            <span className="text-white/45">breath</span>
-            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-white/10">
+            <span className="text-muted-foreground">breath</span>
+            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-amber-400 to-violet-400 transition-[width] duration-75"
+                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-violet-400 transition-[width] duration-75"
                 style={{ width: `${Math.round(breathLevel * 100)}%` }}
               />
             </div>
@@ -315,8 +315,8 @@ export default function BreathAeolianPage() {
       {/* error notice */}
       {phase === "error" && glError && (
         <div className="absolute inset-0 z-30 flex items-center justify-center px-6">
-          <div className="max-w-md rounded-xl border border-rose-400/30 bg-black/80 p-5 text-center">
-            <p className="text-base text-rose-300">{glError}</p>
+          <div className="max-w-md rounded-xl border border-violet-400/30 bg-black/80 p-5 text-center">
+            <p className="text-base text-violet-300">{glError}</p>
           </div>
         </div>
       )}

@@ -378,21 +378,21 @@ export default function BeatBuilderPage() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-black text-white gap-6 p-6">
+      <div className="flex flex-col items-center justify-center h-screen bg-black text-foreground gap-6 p-6">
         <h1 className="text-3xl font-bold text-center">Beat Builder</h1>
-        <p className="text-white/75 text-base text-center max-w-xs">
+        <p className="text-muted-foreground text-base text-center max-w-xs">
           Tap the{" "}
           <span className="text-violet-300 font-semibold">top row</span> for
           melody ♪
           <br />
           Tap the{" "}
-          <span className="text-rose-300 font-semibold">bottom row</span> for
+          <span className="text-violet-300 font-semibold">bottom row</span> for
           drums
           <br />
           The sweeping light plays what you pick!
         </p>
         <button
-          className="bg-violet-600 hover:bg-violet-500 text-white text-xl font-bold px-8 py-4 rounded-2xl min-h-[56px]"
+          className="bg-violet-600 hover:bg-violet-500 text-foreground text-xl font-bold px-8 py-4 rounded-2xl min-h-[56px]"
           onClick={handleStart}
         >
           Let&apos;s jam! 🎵
@@ -404,10 +404,10 @@ export default function BeatBuilderPage() {
   return (
     <div className="flex flex-col h-screen bg-black select-none overflow-hidden">
       <div className="flex items-center justify-between px-4 pt-3 pb-1 shrink-0">
-        <span className="text-white/80 text-base font-bold">Beat Builder</span>
+        <span className="text-foreground text-base font-bold">Beat Builder</span>
         <button
           onClick={clearAll}
-          className="text-white/70 text-sm px-4 py-2 rounded-xl border border-white/20 min-h-[44px]"
+          className="text-muted-foreground text-sm px-4 py-2 rounded-xl border border-border min-h-[44px]"
         >
           Clear
         </button>
@@ -424,17 +424,17 @@ export default function BeatBuilderPage() {
         <button
           onClick={() => changeBpm(-16)}
           aria-label="slower"
-          className="w-14 h-14 rounded-full border border-white/25 text-white text-2xl font-bold flex items-center justify-center min-h-[56px] min-w-[56px]"
+          className="w-14 h-14 rounded-full border border-border text-foreground text-2xl font-bold flex items-center justify-center min-h-[56px] min-w-[56px]"
         >
           −
         </button>
-        <span className="text-white/80 text-lg font-mono w-24 text-center tabular-nums">
+        <span className="text-foreground text-lg font-mono w-24 text-center tabular-nums">
           {bpm} BPM
         </span>
         <button
           onClick={() => changeBpm(+16)}
           aria-label="faster"
-          className="w-14 h-14 rounded-full border border-white/25 text-white text-2xl font-bold flex items-center justify-center min-h-[56px] min-w-[56px]"
+          className="w-14 h-14 rounded-full border border-border text-foreground text-2xl font-bold flex items-center justify-center min-h-[56px] min-w-[56px]"
         >
           +
         </button>

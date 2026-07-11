@@ -392,21 +392,21 @@ export default function KidsStarPair() {
         {/* preview: two stars reaching toward each other */}
         <div className="flex items-center gap-10" aria-hidden="true">
           <span style={{ fontSize: 56, filter: "drop-shadow(0 0 16px #8a6cf8)" }}>⭐</span>
-          <span className="text-2xl text-white/55">✨</span>
+          <span className="text-2xl text-muted-foreground">✨</span>
           <span style={{ fontSize: 56, filter: "drop-shadow(0 0 16px #5ad6f0)" }}>⭐</span>
         </div>
 
         <div>
-          <h1 className="mb-3 text-3xl font-bold text-white">Star Pair</h1>
-          <p className="mx-auto max-w-md text-base leading-relaxed text-white/75">
+          <h1 className="mb-3 text-3xl font-bold text-foreground">Star Pair</h1>
+          <p className="mx-auto max-w-md text-base leading-relaxed text-muted-foreground">
             Two friends, two stars. Slide your <span className="text-violet-300">violet star</span>{" "}
             up and down until it sings in tune with your friend&apos;s{" "}
             <span style={{ color: "#5ad6f0" }}>cyan star</span> — and a{" "}
-            <span className="text-white">beam of light</span> links them. ✨
+            <span className="text-foreground">beam of light</span> links them. ✨
           </p>
         </div>
 
-        {micError && <p className="text-base text-rose-300">{micError}</p>}
+        {micError && <p className="text-base text-violet-300">{micError}</p>}
 
         <button
           onClick={handleStart}
@@ -416,11 +416,11 @@ export default function KidsStarPair() {
           Play together ▸
         </button>
 
-        <p className="text-base text-white/55">
+        <p className="text-base text-muted-foreground">
           drag your star · or hum · find the beam ✨
         </p>
 
-        <Link href="/dream" className="text-base text-white/55 transition-colors hover:text-white/80">
+        <Link href="/dream" className="text-base text-muted-foreground transition-colors hover:text-foreground">
           ← dream lab
         </Link>
       </div>
@@ -442,7 +442,7 @@ export default function KidsStarPair() {
 
       {/* tiny caption + friend/robot badge (top) */}
       <div className="pointer-events-none absolute left-0 right-0 top-3 z-10 flex flex-col items-center gap-2">
-        <p className="rounded-xl bg-black/40 px-4 py-1.5 text-base text-white/75">
+        <p className="rounded-xl bg-black/40 px-4 py-1.5 text-base text-muted-foreground">
           slide your <span className="text-violet-300">star</span> until the beam lights up ✨
         </p>
         <span
@@ -460,8 +460,8 @@ export default function KidsStarPair() {
       {/* error notices — rose, never dimmed */}
       {(glError || micError) && (
         <div className="pointer-events-none absolute bottom-12 left-0 right-0 z-10 flex flex-col items-center gap-1 px-4 text-center">
-          {glError && <p className="rounded-lg bg-black/60 px-3 py-1.5 text-base text-rose-300">{glError}</p>}
-          {micError && <p className="rounded-lg bg-black/60 px-3 py-1.5 text-base text-rose-300">{micError}</p>}
+          {glError && <p className="rounded-lg bg-black/60 px-3 py-1.5 text-base text-violet-300">{glError}</p>}
+          {micError && <p className="rounded-lg bg-black/60 px-3 py-1.5 text-base text-violet-300">{micError}</p>}
         </div>
       )}
 
@@ -469,7 +469,7 @@ export default function KidsStarPair() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/341-kids-star-pair/README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-3 right-3 z-10 text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-3 right-3 z-10 text-muted-foreground transition-colors hover:text-foreground"
         style={{ fontSize: 13 }}
       >
         Read the design notes

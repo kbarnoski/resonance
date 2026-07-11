@@ -231,7 +231,7 @@ export default function AirVeilPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#070a10] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#070a10] text-foreground">
       {/* Canvas world map */}
       <canvas
         ref={canvasRef}
@@ -241,10 +241,10 @@ export default function AirVeilPage() {
 
       {/* Header / controls */}
       <div className="relative z-10 flex flex-col gap-3 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Air Veil
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           Hear the air six cities are breathing right now — the dirtier the air,
           the more it fouls the harmony.
         </p>
@@ -253,34 +253,34 @@ export default function AirVeilPage() {
           {!started ? (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-lg bg-violet-500/90 px-5 py-2.5 text-base font-medium text-white transition hover:bg-violet-400"
+              className="min-h-[44px] rounded-lg bg-violet-500/90 px-5 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400"
             >
               Listen to the air
             </button>
           ) : (
-            <span className="min-h-[44px] rounded-lg border border-emerald-300/30 px-4 py-2.5 text-base text-emerald-300/95">
+            <span className="min-h-[44px] rounded-lg border border-violet-300/30 px-4 py-2.5 text-base text-violet-300/95">
               Sounding live — six voices over a just-intonation chord
             </span>
           )}
         </div>
 
         {simulated && (
-          <p className="font-mono text-base text-rose-300">
+          <p className="font-mono text-base text-violet-300">
             Live feed unavailable — simulated air. The full mechanic still runs
             on plausible drifting values.
           </p>
         )}
 
-        <p className="font-mono text-base text-white/55">
+        <p className="font-mono text-base text-muted-foreground">
           worst right now:{" "}
-          <span className="text-amber-300/95">{worstCity}</span>
+          <span className="text-violet-300/95">{worstCity}</span>
         </p>
       </div>
 
       {/* design-notes affordance, corner */}
       <Link
         href="/dream/842-air-veil/README.md"
-        className="absolute bottom-4 right-4 z-10 font-mono text-base text-white/55 underline decoration-white/25 underline-offset-4 hover:text-white/80"
+        className="absolute bottom-4 right-4 z-10 font-mono text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </Link>

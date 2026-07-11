@@ -300,9 +300,9 @@ export default function SpectralMorph() {
           <div className="absolute bottom-0 left-0 right-0 px-4 pt-3 pb-4 flex flex-col gap-2 bg-black/60 backdrop-blur-sm">
             {/* Morph slider */}
             <div className="flex flex-col gap-1">
-              <div className="flex justify-between text-sm text-white/80">
+              <div className="flex justify-between text-sm text-foreground">
                 <span>{SRC_LABEL[srcA]}</span>
-                <span className="text-white font-mono text-xs tracking-wider">
+                <span className="text-foreground font-mono text-xs tracking-wider">
                   MORPH {Math.round(morph * 100)}%
                 </span>
                 <span>{SRC_LABEL[srcB]}</span>
@@ -322,7 +322,7 @@ export default function SpectralMorph() {
             {/* Source selectors + volume + stop */}
             <div className="flex flex-wrap gap-x-4 gap-y-1.5 items-center text-sm">
               <div className="flex gap-1.5 items-center">
-                <span className="text-white/55 text-xs tracking-wider">A:</span>
+                <span className="text-muted-foreground text-xs tracking-wider">A:</span>
                 {srcsA.map((s) => (
                   <button
                     key={s}
@@ -330,7 +330,7 @@ export default function SpectralMorph() {
                     className={`px-2.5 py-1 rounded text-xs min-h-[32px] border transition ${
                       srcA === s
                         ? "bg-violet-500/25 text-violet-200 border-violet-500/50"
-                        : "text-white/55 hover:text-white border-white/10 hover:border-white/30"
+                        : "text-muted-foreground hover:text-foreground border-border hover:border-border"
                     }`}
                   >
                     {SRC_LABEL[s]}
@@ -338,15 +338,15 @@ export default function SpectralMorph() {
                 ))}
               </div>
               <div className="flex gap-1.5 items-center">
-                <span className="text-white/55 text-xs tracking-wider">B:</span>
+                <span className="text-muted-foreground text-xs tracking-wider">B:</span>
                 {srcsB.map((s) => (
                   <button
                     key={s}
                     onClick={() => setSrcB(s)}
                     className={`px-2.5 py-1 rounded text-xs min-h-[32px] border transition ${
                       srcB === s
-                        ? "bg-emerald-500/25 text-emerald-200 border-emerald-500/50"
-                        : "text-white/55 hover:text-white border-white/10 hover:border-white/30"
+                        ? "bg-violet-500/25 text-violet-200 border-violet-500/50"
+                        : "text-muted-foreground hover:text-foreground border-border hover:border-border"
                     }`}
                   >
                     {SRC_LABEL[s]}
@@ -354,7 +354,7 @@ export default function SpectralMorph() {
                 ))}
               </div>
               <div className="flex gap-2 items-center ml-auto">
-                <span className="text-xs text-white/55">VOL</span>
+                <span className="text-xs text-muted-foreground">VOL</span>
                 <input
                   type="range"
                   min="0"
@@ -362,17 +362,17 @@ export default function SpectralMorph() {
                   step="0.05"
                   value={vol}
                   onChange={(e) => setVol(parseFloat(e.target.value))}
-                  className="w-20 accent-white"
+                  className="w-20 accent-primary"
                 />
                 <button
                   onClick={stopAudio}
-                  className="text-xs text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1.5 rounded min-h-[32px]"
+                  className="text-xs text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded min-h-[32px]"
                 >
                   stop
                 </button>
                 <Link
                   href="/dream"
-                  className="text-xs text-white/30 hover:text-white/60"
+                  className="text-xs text-muted-foreground/70 hover:text-muted-foreground"
                 >
                   ← back
                 </Link>
@@ -385,12 +385,12 @@ export default function SpectralMorph() {
           <h1 className="text-2xl md:text-3xl mb-4 tracking-tight">
             Spectral Morph
           </h1>
-          <p className="text-base text-white/80 max-w-md mb-3 leading-relaxed">
+          <p className="text-base text-foreground max-w-md mb-3 leading-relaxed">
             Drag the morph slider to blend the harmonic spectrum between two
             waveforms. At 50% you hear a genuine acoustic hybrid — not a
             crossfade, but a reshaped harmonic series.
           </p>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             40 sine partials tuned to harmonics of C3. Each partial&apos;s
             amplitude interpolates independently. The first sandbox prototype to
             synthesize audio from spectral manipulation rather than just analyze
@@ -398,13 +398,13 @@ export default function SpectralMorph() {
           </p>
           <button
             onClick={startAudio}
-            className="px-6 py-3 text-base tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px] min-w-[44px]"
+            className="px-6 py-3 text-base tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px] min-w-[44px]"
           >
             Start
           </button>
           <Link
             href="/dream"
-            className="mt-12 text-xs text-white/30 hover:text-white/60"
+            className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>

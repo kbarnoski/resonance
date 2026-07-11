@@ -318,7 +318,7 @@ export default function SympathyStringsPage() {
 
   return (
     <main
-      className="relative h-[100dvh] w-full overflow-hidden bg-[#08060c] text-white"
+      className="relative h-[100dvh] w-full overflow-hidden bg-[#08060c] text-foreground"
       style={{
         fontFamily:
           "ui-monospace, 'Cascadia Code', 'Fira Code', Menlo, monospace",
@@ -453,10 +453,10 @@ export default function SympathyStringsPage() {
 
       {/* Title (top-left) */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Sympathetic Strings
         </h1>
-        <p className="mt-1 max-w-sm text-base leading-snug text-white/75">
+        <p className="mt-1 max-w-sm text-base leading-snug text-muted-foreground">
           Sing or play — the strings that match your pitch ring back.
         </p>
       </div>
@@ -464,7 +464,7 @@ export default function SympathyStringsPage() {
       {/* Ghost mode notice */}
       {ghostMode && phase === "running" && (
         <div className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 px-4 text-center sm:top-20">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Ghost exciter active — mic unavailable. Click any string to pluck
             it.
           </p>
@@ -474,7 +474,7 @@ export default function SympathyStringsPage() {
       {/* Audio error */}
       {audioError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             {errorMsg ??
               "Web Audio API is unavailable. Please try a modern browser like Chrome, Firefox, or Safari."}
           </p>
@@ -488,12 +488,12 @@ export default function SympathyStringsPage() {
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-base transition-all ${
               pedalHeld
                 ? "border-violet-400/50 bg-violet-900/50 text-violet-300"
-                : "border-white/15 bg-black/40 text-white/50"
+                : "border-border bg-black/40 text-muted-foreground"
             }`}
           >
             <span
               className={`inline-block h-2 w-2 rounded-full ${
-                pedalHeld ? "bg-violet-300" : "bg-white/30"
+                pedalHeld ? "bg-violet-300" : "bg-muted"
               }`}
             />
             {pedalHeld ? "sustain on" : "sustain off"}
@@ -506,7 +506,7 @@ export default function SympathyStringsPage() {
         <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-3 pb-6 pt-3">
           {/* Tuning mode selector */}
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-base text-white/75">Mode:</span>
+            <span className="text-base text-muted-foreground">Mode:</span>
             {TUNING_MODES.map((m) => (
               <button
                 key={m.id}
@@ -514,7 +514,7 @@ export default function SympathyStringsPage() {
                 className={`min-h-[44px] rounded-full border px-4 py-2.5 text-base transition-colors ${
                   tuningMode === m.id
                     ? "border-violet-400/60 bg-violet-900/40 text-violet-300"
-                    : "border-white/20 bg-black/40 text-white/75 hover:border-white/40 hover:text-white"
+                    : "border-border bg-black/40 text-muted-foreground hover:border-border hover:text-foreground"
                 }`}
               >
                 {m.label}
@@ -539,15 +539,15 @@ export default function SympathyStringsPage() {
               onKeyUp={handlePedalKeyUp}
               className={`min-h-[44px] select-none rounded-full border px-6 py-2.5 text-base font-medium transition-all ${
                 pedalHeld
-                  ? "border-violet-300/80 bg-violet-700/60 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-                  : "border-white/25 bg-black/50 text-white/75 hover:border-white/40"
+                  ? "border-violet-300/80 bg-violet-700/60 text-foreground shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                  : "border-border bg-black/50 text-muted-foreground hover:border-border"
               }`}
               aria-pressed={pedalHeld}
               aria-label="Sustain pedal — hold to sustain strings"
             >
               {pedalHeld ? "⬛ Pedal Held" : "◻ Hold Pedal"}
             </button>
-            <span className="text-base text-white/50">or hold Space</span>
+            <span className="text-base text-muted-foreground">or hold Space</span>
           </div>
         </div>
       )}
@@ -556,22 +556,22 @@ export default function SympathyStringsPage() {
       {phase === "idle" && !audioError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6">
           <div className="max-w-lg text-center">
-            <h2 className="text-xl font-medium text-white">
+            <h2 className="text-xl font-medium text-foreground">
               A bank of 48 tuned strings, waiting.
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               Sing, hum, or play an instrument near your mic. The strings tuned
               to your pitch ring back sympathetically — like holding a
               piano&apos;s sustain pedal while you play.
             </p>
-            <p className="mt-2 text-base text-white/50">
+            <p className="mt-2 text-base text-muted-foreground">
               Hold Space or the on-screen pedal to sustain. Click any string to
               pluck it directly.
             </p>
           </div>
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-900/30 px-6 py-2.5 text-base font-medium text-white backdrop-blur-md transition-colors hover:border-violet-300/60 hover:bg-violet-800/40"
+            className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-900/30 px-6 py-2.5 text-base font-medium text-foreground backdrop-blur-md transition-colors hover:border-violet-300/60 hover:bg-violet-800/40"
           >
             ▶ Open the Strings
           </button>
@@ -580,7 +580,7 @@ export default function SympathyStringsPage() {
 
       {phase === "starting" && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <p className="text-base text-white/75">Tuning strings…</p>
+          <p className="text-base text-muted-foreground">Tuning strings…</p>
         </div>
       )}
 
@@ -588,7 +588,7 @@ export default function SympathyStringsPage() {
       {phase !== "running" && (
         <a
           href="#notes"
-          className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+          className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
         >
           Design notes
         </a>
@@ -600,7 +600,7 @@ export default function SympathyStringsPage() {
         className="absolute left-0 top-full w-full bg-[#08060c] px-6 py-12 sm:px-10"
       >
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="text-2xl font-semibold text-foreground">
             Design notes — Sympathetic Strings
           </h2>
 
@@ -620,7 +620,7 @@ export default function SympathyStringsPage() {
             ))}
           </div>
 
-          <p className="mt-6 text-base leading-relaxed text-white/80">
+          <p className="mt-6 text-base leading-relaxed text-foreground">
             The piece models a bank of 48 tuned sympathetic strings — the kind
             found inside a sitar (where they are called <em>tarab</em>) or a
             viola d&apos;amore, and evoked by Henry Cowell&apos;s string-piano
@@ -630,10 +630,10 @@ export default function SympathyStringsPage() {
             experience, made tangible in browser audio.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">Technique:</strong> Each string is a
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">Technique:</strong> Each string is a
             Karplus-Strong tuned delay line — a circular buffer of length{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-300">
+            <code className="rounded bg-muted px-1 text-violet-300">
               L = round(sampleRate / freq)
             </code>
             , with a one-pole lowpass loop filter (averaging current and
@@ -647,8 +647,8 @@ export default function SympathyStringsPage() {
             frequency — so strings tuned to what you play ring loudly.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">Long-form accretion:</strong> With
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">Long-form accretion:</strong> With
             the sustain pedal held (Space or the on-screen button), the
             feedback coefficient rises to 0.997 — an almost-lossless loop.
             Energy injected in second 10 is still circulating at minute 3, and
@@ -657,43 +657,43 @@ export default function SympathyStringsPage() {
             not a loop.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">Audio safety chain:</strong> The mic
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">Audio safety chain:</strong> The mic
             source is never connected to the audio destination, preventing
             acoustic feedback howl. Worklet feedback is clamped to ≤ 0.999. A
             DynamicsCompressor (ratio 20:1, threshold −18 dB) sits between the
             worklet and the destination as a hard limiter.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">Tuning modes:</strong>{" "}
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">Tuning modes:</strong>{" "}
             <em>Chromatic</em> — 48 semitones across the piano range (A0–C8).{" "}
             <em>Stacked Fifths</em> — 48 pure 3:2 fifths from C2, a Pythagorean
             spiral. <em>Overtone Series</em> — harmonic series of A0 with
             octave doublings, emphasising brass-natural intervals.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">Visualization:</strong> 48 vertical
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">Visualization:</strong> 48 vertical
             SVG lines. Each has a sharp layer and a wide glow layer with{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-300">
+            <code className="rounded bg-muted px-1 text-violet-300">
               feGaussianBlur
             </code>{" "}
             (dynamic stdDeviation). Per-string RMS energy is reported from the
             AudioWorklet via{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-300">
+            <code className="rounded bg-muted px-1 text-violet-300">
               port.postMessage
             </code>{" "}
             at ~15 fps; the SVG is updated imperatively inside{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-300">
+            <code className="rounded bg-muted px-1 text-violet-300">
               requestAnimationFrame
             </code>{" "}
             to avoid React re-renders. Color maps low strings to amber-orange,
             mid to violet, high to cool blue.
           </p>
 
-          <p className="mt-4 text-base leading-relaxed text-white/80">
-            <strong className="text-white">References:</strong>{" "}
+          <p className="mt-4 text-base leading-relaxed text-foreground">
+            <strong className="text-foreground">References:</strong>{" "}
             Electronic Audio Experiments <em>Prismatic Wall</em> (sympathetic
             string resonator, tuned-delay-line Karplus-Strong, 2026); Kevin
             Karplus &amp; Alex Strong / David A. Jaffe &amp; Julius O. Smith,
@@ -703,7 +703,7 @@ export default function SympathyStringsPage() {
             Henry Cowell string-piano preparations.
           </p>
 
-          <p className="mt-4 text-base text-white/50">
+          <p className="mt-4 text-base text-muted-foreground">
             Mic stays on-device. Nothing is recorded or transmitted. All
             processing is local, in your browser.
           </p>

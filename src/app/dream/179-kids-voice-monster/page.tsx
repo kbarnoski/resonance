@@ -368,29 +368,29 @@ export default function Page() {
       <div className="fixed inset-0 bg-[#06060e] flex flex-col items-center
                       justify-center gap-8 px-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Voice Monster 🎤</h1>
-          <p className="text-white/75 text-base max-w-xs leading-relaxed">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Voice Monster 🎤</h1>
+          <p className="text-muted-foreground text-base max-w-xs leading-relaxed">
             Hum or sing — the monster grows with your voice!
             Feed it for {TARGET_SEC} seconds and it sings back what it heard.
           </p>
         </div>
         <button
           onClick={handleStartMic}
-          className="bg-violet-700 hover:bg-violet-600 text-white text-xl font-semibold
+          className="bg-violet-700 hover:bg-violet-600 text-foreground text-xl font-semibold
                      px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
         >
           🎤 Start singing
         </button>
         {error && (
-          <p className="text-rose-300 text-base max-w-xs">{error}</p>
+          <p className="text-violet-300 text-base max-w-xs">{error}</p>
         )}
         <button
           onClick={handleDemo}
-          className="text-white/55 text-sm underline hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm underline hover:text-foreground transition-colors"
         >
           Try demo (no mic needed)
         </button>
-        <p className="text-white/55 text-sm">For kids 3+ · Tap the monster!</p>
+        <p className="text-muted-foreground text-sm">For kids 3+ · Tap the monster!</p>
       </div>
     )
   }
@@ -401,21 +401,21 @@ export default function Page() {
 
       <div className="absolute top-0 left-0 right-0 h-[52px] flex items-center
                       justify-between px-4 pointer-events-none select-none">
-        <span className="text-white/75 text-base font-semibold">Voice Monster 🎤</span>
+        <span className="text-muted-foreground text-base font-semibold">Voice Monster 🎤</span>
         <Link href="/dream"
-          className="text-white/55 text-sm pointer-events-auto hover:text-white/80">
+          className="text-muted-foreground text-sm pointer-events-auto hover:text-foreground">
           ← dream
         </Link>
       </div>
 
       {running && (
         <div className="absolute bottom-4 left-4 select-none pointer-events-none">
-          <span className="text-emerald-300/90 text-sm">🎤 mic live</span>
+          <span className="text-violet-300/90 text-sm">🎤 mic live</span>
         </div>
       )}
       {!running && !isDemo && error && (
         <div className="absolute bottom-4 left-4 flex items-center gap-3 select-none">
-          <span className="text-rose-300 text-sm">{error}</span>
+          <span className="text-violet-300 text-sm">{error}</span>
           <button
             onClick={() => setIsDemo(true)}
             className="text-violet-300 text-sm underline pointer-events-auto
@@ -428,7 +428,7 @@ export default function Page() {
 
       <div className="absolute bottom-4 right-4 pointer-events-auto">
         <Link href="/dream/179-kids-voice-monster/readme"
-          className="text-white/35 text-xs hover:text-white/60">
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground">
           notes
         </Link>
       </div>

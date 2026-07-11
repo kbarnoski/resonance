@@ -38,15 +38,17 @@ export default async function DreamLayout({
   return (
     <DreamVotesProvider>
       <AudioCleanup />
-      <div className="min-h-screen bg-black text-white font-sans">
-        <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-background text-foreground font-sans">
+        <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-border bg-background/70 backdrop-blur-sm">
           <Link
             href="/dream"
-            className="text-xs tracking-widest text-white/60 hover:text-white"
+            className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary"
           >
             RESONANCE / DREAM
           </Link>
-          <span className="text-[10px] text-white/30">{subtitle}</span>
+          <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground/70">
+            {subtitle}
+          </span>
         </header>
         <main className="pt-12">{children}</main>
         <PrototypeNav slugs={slugs} />

@@ -476,32 +476,32 @@ export default function KidsTiltFountain() {
           })}
         </div>
 
-        <h1 className="text-4xl font-bold text-white/95 mb-3 text-center tracking-tight">
+        <h1 className="text-4xl font-bold text-foreground mb-3 text-center tracking-tight">
           Tilt Fountain
         </h1>
-        <p className="text-xl text-white/80 text-center max-w-[300px] mb-3 leading-relaxed">
+        <p className="text-xl text-foreground text-center max-w-[300px] mb-3 leading-relaxed">
           Tip the tablet to pour glowing orbs through a garden of bells &amp; chimes
         </p>
-        <p className="text-base text-white/60 text-center max-w-[280px] mb-10 leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-[280px] mb-10 leading-relaxed">
           Every path = a different melody 🎶
         </p>
 
         <button
           onClick={handleStart}
           disabled={phase === "permission"}
-          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:bg-violet-900 text-white font-bold text-2xl rounded-3xl px-12 py-5 min-h-[72px] min-w-[220px] transition-colors shadow-lg shadow-violet-900/60"
+          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:bg-violet-900 text-foreground font-bold text-2xl rounded-3xl px-12 py-5 min-h-[72px] min-w-[220px] transition-colors shadow-lg shadow-violet-900/60"
           style={{ touchAction: "manipulation" }}
         >
           {phase === "permission" ? "Starting…" : "🎵 Tip me!"}
         </button>
 
-        <p className="mt-4 text-base text-white/50 text-center max-w-[260px] leading-relaxed">
+        <p className="mt-4 text-base text-muted-foreground text-center max-w-[260px] leading-relaxed">
           (tap to play — no tilt sensor needed!)
         </p>
 
         <Link
           href="/dream"
-          className="mt-14 text-sm text-white/50 hover:text-white/75 transition-colors"
+          className="mt-14 text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
         >
           ← Dream lab
         </Link>
@@ -524,7 +524,7 @@ export default function KidsTiltFountain() {
 
       {/* Tilt notice */}
       {tiltNotice && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-rose-300 text-sm bg-black/50 px-4 py-2 rounded-full pointer-events-none select-none max-w-[90vw] text-center">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-violet-300 text-sm bg-black/50 px-4 py-2 rounded-full pointer-events-none select-none max-w-[90vw] text-center">
           {tiltNotice}
         </div>
       )}
@@ -537,20 +537,20 @@ export default function KidsTiltFountain() {
       </div>
 
       {/* Hint for desktop */}
-      <div className="absolute top-4 right-4 text-white/40 text-xs pointer-events-none select-none hidden md:block">
+      <div className="absolute top-4 right-4 text-muted-foreground/70 text-xs pointer-events-none select-none hidden md:block">
         Move pointer or ← → keys to steer
       </div>
 
       <Link
         href="/dream"
-        className="absolute top-4 left-4 text-white/55 text-sm hover:text-white/80 transition-colors"
+        className="absolute top-4 left-4 text-muted-foreground text-sm hover:text-foreground transition-colors"
       >
         ← Dream lab
       </Link>
 
       <Link
         href="/dream/553-kids-tilt-fountain/README.md"
-        className="absolute bottom-5 right-4 text-white/30 text-xs hover:text-white/55 transition-colors"
+        className="absolute bottom-5 right-4 text-muted-foreground/70 text-xs hover:text-muted-foreground transition-colors"
       >
         notes
       </Link>

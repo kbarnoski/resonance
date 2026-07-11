@@ -475,7 +475,7 @@ export default function PianoCanvas() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Piano Canvas</h1>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             Play something. Each note becomes a glowing brush stroke — pitch sets
             the hue, loudness the weight, duration the length. Your improvisation
             accumulates as a painting you can save.
@@ -483,23 +483,23 @@ export default function PianoCanvas() {
           <div className="flex gap-4">
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/50 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Demo mode
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -510,14 +510,14 @@ export default function PianoCanvas() {
       {mode !== "idle" && (
         <>
           {/* Top-left: note name + stroke count */}
-          <div className="absolute top-4 left-4 text-[11px] tracking-widest text-white/50 space-y-1 pointer-events-none">
+          <div className="absolute top-4 left-4 text-[11px] tracking-widest text-muted-foreground space-y-1 pointer-events-none">
             <div>
-              NOTE <span className="text-white font-mono text-base">{currentNote}</span>
+              NOTE <span className="text-foreground font-mono text-base">{currentNote}</span>
             </div>
             <div>
-              STROKES <span className="text-white">{strokeCount}</span>
+              STROKES <span className="text-foreground">{strokeCount}</span>
             </div>
-            <div className="text-white/30 text-[10px]">
+            <div className="text-muted-foreground/70 text-[10px]">
               {mode === "demo" ? "demo" : "mic"}
             </div>
           </div>
@@ -533,7 +533,7 @@ export default function PianoCanvas() {
                 opacity: 0.6,
               }}
             />
-            <div className="flex justify-between text-[9px] text-white/30 mt-1">
+            <div className="flex justify-between text-[9px] text-muted-foreground/70 mt-1">
               <span>low</span><span>high</span>
             </div>
           </div>
@@ -542,25 +542,25 @@ export default function PianoCanvas() {
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={download}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               save PNG
             </button>
             <button
               onClick={clearCanvas}
-              className="text-[10px] tracking-wider uppercase text-white/40 hover:text-white/70 border border-white/15 hover:border-white/40 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               clear
             </button>
             <button
               onClick={stop}
-              className="text-[10px] tracking-wider uppercase text-white/40 hover:text-white/70 border border-white/15 hover:border-white/40 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
             <Link
               href="/dream"
-              className="text-[10px] text-white/30 hover:text-white/60"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground"
             >
               ← back
             </Link>
@@ -569,7 +569,7 @@ export default function PianoCanvas() {
           {/* Design notes link */}
           <a
             href="/dream/13-piano-canvas/readme"
-            className="absolute bottom-4 left-4 text-[10px] text-white/25 hover:text-white/50 transition"
+            className="absolute bottom-4 left-4 text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             design notes ↗
           </a>

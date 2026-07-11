@@ -913,7 +913,7 @@ export default function MotionLoomPage() {
   const ratioDisplay = isNaN(ratioNum) ? ratio : ratioNum.toFixed(4) + "…";
 
   return (
-    <div className="relative flex flex-col min-h-full bg-[#020208] text-white overflow-hidden">
+    <div className="relative flex flex-col min-h-full bg-[#020208] text-foreground overflow-hidden">
       {/* Hidden video element for camera feed */}
       <video
         ref={videoRef}
@@ -925,10 +925,10 @@ export default function MotionLoomPage() {
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="relative z-10 px-6 pt-8 pb-3 pointer-events-none">
-        <h1 className="text-2xl font-mono font-semibold tracking-tight text-white/95">
+        <h1 className="text-2xl font-mono font-semibold tracking-tight text-foreground">
           Motion Loom
         </h1>
-        <p className="text-base text-white/75 mt-1.5 max-w-xl leading-relaxed">
+        <p className="text-base text-muted-foreground mt-1.5 max-w-xl leading-relaxed">
           The room conducts a Nancarrow polytempo canon. Left and right motion
           each carry their own tempo — extracted from camera frame-differences,
           no ML — and because two real motions never lock to a clean ratio, the
@@ -946,7 +946,7 @@ export default function MotionLoomPage() {
 
       {webglError && (
         <div className="px-6 py-3">
-          <p className="text-rose-300 text-base font-mono border border-rose-400/30 rounded px-4 py-3 bg-rose-950/30">
+          <p className="text-violet-300 text-base font-mono border border-violet-400/30 rounded px-4 py-3 bg-violet-950/30">
             {webglError}
           </p>
         </div>
@@ -956,39 +956,39 @@ export default function MotionLoomPage() {
       <div className="relative z-10 px-6 py-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {/* Conductor A */}
         <div className="border border-violet-400/20 rounded-lg px-4 py-3 bg-[#0a0a18]/80">
-          <div className="text-white/55 text-xs font-mono uppercase tracking-widest mb-1">
+          <div className="text-muted-foreground text-xs font-mono uppercase tracking-widest mb-1">
             Left motion → Conductor A
           </div>
           <div className="text-violet-300 text-xl font-mono font-semibold">
             {bpmA.toFixed(1)} BPM
           </div>
-          <div className="text-white/55 text-xs font-mono mt-1">
+          <div className="text-muted-foreground text-xs font-mono mt-1">
             voices 0, 1 (×1, ×1/√2)
           </div>
         </div>
 
         {/* Conductor B */}
-        <div className="border border-cyan-400/20 rounded-lg px-4 py-3 bg-[#0a0a18]/80">
-          <div className="text-white/55 text-xs font-mono uppercase tracking-widest mb-1">
+        <div className="border border-violet-400/20 rounded-lg px-4 py-3 bg-[#0a0a18]/80">
+          <div className="text-muted-foreground text-xs font-mono uppercase tracking-widest mb-1">
             Right motion → Conductor B
           </div>
-          <div className="text-cyan-300 text-xl font-mono font-semibold">
+          <div className="text-violet-300 text-xl font-mono font-semibold">
             {bpmB.toFixed(1)} BPM
           </div>
-          <div className="text-white/55 text-xs font-mono mt-1">
+          <div className="text-muted-foreground text-xs font-mono mt-1">
             voices 2, 3, 4 (×1, ×1/φ, ×φ/2)
           </div>
         </div>
 
         {/* Ratio */}
-        <div className="border border-emerald-400/20 rounded-lg px-4 py-3 bg-[#0a0a18]/80">
-          <div className="text-white/55 text-xs font-mono uppercase tracking-widest mb-1">
+        <div className="border border-violet-400/20 rounded-lg px-4 py-3 bg-[#0a0a18]/80">
+          <div className="text-muted-foreground text-xs font-mono uppercase tracking-widest mb-1">
             Live ratio B/A
           </div>
-          <div className="text-emerald-300 text-xl font-mono font-semibold">
+          <div className="text-violet-300 text-xl font-mono font-semibold">
             {ratioDisplay}
           </div>
-          <div className="text-white/55 text-xs font-mono mt-1">
+          <div className="text-muted-foreground text-xs font-mono mt-1">
             never rational — the drift is permanent
           </div>
         </div>
@@ -1005,20 +1005,20 @@ export default function MotionLoomPage() {
             >
               Start
             </button>
-            <p className="text-white/55 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Audio + camera require a gesture. The loom weaves visually until you start.
             </p>
           </div>
         ) : (
           <div className="flex flex-wrap items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-emerald-300 font-mono text-sm">
+            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse shrink-0" />
+            <span className="text-violet-300 font-mono text-sm">
               running — {cameraGranted ? "camera conducting" : "ghost motion conducting"}
             </span>
             {!cameraGranted && !cameraError && (
               <button
                 onClick={initCamera}
-                className="min-h-[44px] px-4 py-2.5 rounded-full border border-white/20 text-white/75 text-sm font-mono hover:border-white/40 transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-full border border-border text-muted-foreground text-sm font-mono hover:border-border transition-colors"
               >
                 Grant camera
               </button>
@@ -1028,12 +1028,12 @@ export default function MotionLoomPage() {
 
         {/* Camera status */}
         {cameraGranted && (
-          <p className="text-white/55 text-sm font-mono">
+          <p className="text-muted-foreground text-sm font-mono">
             Camera active — left/right frame-difference energy → tempo autocorrelation → BPM
           </p>
         )}
         {cameraError && (
-          <p className="text-rose-300 text-sm font-mono border border-rose-400/30 rounded px-3 py-2 bg-rose-950/30">
+          <p className="text-violet-300 text-sm font-mono border border-violet-400/30 rounded px-3 py-2 bg-violet-950/30">
             Camera unavailable — ghost motion playing: {cameraError}
           </p>
         )}
@@ -1057,17 +1057,17 @@ export default function MotionLoomPage() {
                 >
                   V{i}
                 </span>
-                <span className="text-white/55 text-xs font-mono leading-none mt-0.5">
+                <span className="text-muted-foreground text-xs font-mono leading-none mt-0.5">
                   ×{subRatios[i]}
                 </span>
-                <span className="text-white/55 text-[10px] font-mono leading-none">
+                <span className="text-muted-foreground text-[10px] font-mono leading-none">
                   {conductors[i]}
                 </span>
               </div>
             );
           })}
         </div>
-        <p className="text-white/55 text-xs font-mono mt-3 max-w-xl">
+        <p className="text-muted-foreground text-xs font-mono mt-3 max-w-xl">
           Thread weave drift = tempo drift. The two conducted groups never lock to a
           rational ratio because real motion is never metronomic. The drift is structural.
         </p>

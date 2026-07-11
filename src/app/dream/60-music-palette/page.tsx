@@ -283,26 +283,26 @@ ${rects}
           </div>
 
           {/* ── controls bar ── */}
-          <div className="flex items-center justify-between px-4 py-2 bg-black border-t border-white/10 flex-shrink-0">
-            <span className="text-[10px] font-mono text-white/40">
-              aro&nbsp;<span className="text-white/65">{aro.toFixed(2)}</span>
-              &nbsp;·&nbsp;val&nbsp;<span className="text-white/65">{val.toFixed(2)}</span>
-              &nbsp;·&nbsp;<span className="text-white/30">{mode}</span>
+          <div className="flex items-center justify-between px-4 py-2 bg-black border-t border-border flex-shrink-0">
+            <span className="text-[10px] font-mono text-muted-foreground/70">
+              aro&nbsp;<span className="text-muted-foreground">{aro.toFixed(2)}</span>
+              &nbsp;·&nbsp;val&nbsp;<span className="text-muted-foreground">{val.toFixed(2)}</span>
+              &nbsp;·&nbsp;<span className="text-muted-foreground/70">{mode}</span>
             </span>
             <div className="flex items-center gap-3">
               <button
                 onClick={downloadSVG}
-                className="text-[10px] uppercase tracking-wider text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+                className="text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
               >
                 ↓ svg
               </button>
               <button
                 onClick={handleStop}
-                className="text-[10px] uppercase tracking-wider text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+                className="text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
               >
                 stop
               </button>
-              <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+              <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
                 ← back
               </Link>
             </div>
@@ -312,7 +312,7 @@ ${rects}
         /* ── idle / start screen ── */
         <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Music Palette</h1>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             Your audio becomes a 5-color palette. Bass shapes the energy (lightness); treble
             shapes the mood (hue). The palette breathes with the sound. Download it as SVG
             when a color story emerges.
@@ -320,29 +320,29 @@ ${rects}
           <div className="flex gap-3 flex-wrap justify-center">
             <button
               onClick={() => setMode("demo")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               ▶ Demo
             </button>
             <button
               onClick={handleStartMic}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               🎤 Start mic
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-10 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-10 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
           <Link
             href="/dream/60-music-palette/README.md"
-            className="mt-3 text-[11px] text-white/20 hover:text-white/50"
+            className="mt-3 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             design notes
           </Link>

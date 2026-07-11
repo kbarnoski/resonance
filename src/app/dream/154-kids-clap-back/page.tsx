@@ -304,21 +304,21 @@ export default function KidsClapBackPage() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-[#07070f] text-white gap-6 px-6 text-center select-none">
+      <div className="flex flex-col items-center justify-center h-screen bg-[#07070f] text-foreground gap-6 px-6 text-center select-none">
         <div className="text-5xl mb-1">🥁</div>
         <h1 className="text-3xl font-bold text-violet-300 font-mono">Clap Back</h1>
-        <p className="text-base text-white/75 max-w-xs leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-xs leading-relaxed">
           Watch the glowing circle tap out a beat.
           <br />
           When it turns green — tap it back!
         </p>
         <button
           onClick={handleStart}
-          className="mt-2 bg-violet-600 hover:bg-violet-500 active:scale-95 transition-transform text-white text-xl font-bold px-8 py-4 rounded-2xl min-h-[60px] min-w-[180px]"
+          className="mt-2 bg-violet-600 hover:bg-violet-500 active:scale-95 transition-transform text-foreground text-xl font-bold px-8 py-4 rounded-2xl min-h-[60px] min-w-[180px]"
         >
           Let&apos;s Play! 🎵
         </button>
-        <p className="text-xs text-white/50">For kids 4+ · No mic needed · Zero permissions</p>
+        <p className="text-xs text-muted-foreground">For kids 4+ · No mic needed · Zero permissions</p>
       </div>
     );
   }
@@ -330,7 +330,7 @@ export default function KidsClapBackPage() {
         href="README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-4 right-4 text-xs text-white/35 hover:text-white/60 transition-colors"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
       >
         design notes
       </a>

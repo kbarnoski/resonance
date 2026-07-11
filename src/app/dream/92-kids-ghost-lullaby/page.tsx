@@ -427,7 +427,7 @@ export default function KidsGhostLullaby() {
 
       {/* First-visit hint */}
       {!started && (
-        <p className="pointer-events-none absolute bottom-20 w-full text-center text-base text-white/75">
+        <p className="pointer-events-none absolute bottom-20 w-full text-center text-base text-muted-foreground">
           Tap the ghost to hear her sing
         </p>
       )}
@@ -435,7 +435,7 @@ export default function KidsGhostLullaby() {
       {/* Lullaby overlay */}
       {isLullaby && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3">
-          <p className="font-serif text-3xl text-white/85">Sweet dreams</p>
+          <p className="font-serif text-3xl text-foreground">Sweet dreams</p>
           <p className="text-2xl">🌙</p>
         </div>
       )}
@@ -443,7 +443,7 @@ export default function KidsGhostLullaby() {
       {/* Corner nav */}
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         ← dream lab
       </Link>

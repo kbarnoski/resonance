@@ -488,7 +488,7 @@ export default function LivingAlbumPage() {
     .padStart(2, "0");
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#05070c] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#05070c] text-foreground">
       <div
         ref={wrapRef}
         className="absolute inset-0 cursor-crosshair"
@@ -499,10 +499,10 @@ export default function LivingAlbumPage() {
 
       {/* header / copy */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="pointer-events-auto text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="pointer-events-auto text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Living Album
         </h1>
-        <p className="pointer-events-auto mt-2 max-w-xl text-base leading-relaxed text-white/75">
+        <p className="pointer-events-auto mt-2 max-w-xl text-base leading-relaxed text-muted-foreground">
           {status}
         </p>
 
@@ -511,7 +511,7 @@ export default function LivingAlbumPage() {
             <button
               type="button"
               onClick={startAudio}
-              className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+              className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
             >
               Wake the garden
             </button>
@@ -519,21 +519,21 @@ export default function LivingAlbumPage() {
           <button
             type="button"
             onClick={warmer}
-            className="min-h-[44px] rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/[0.12]"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Warm climate
           </button>
           <button
             type="button"
             onClick={cooler}
-            className="min-h-[44px] rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/[0.12]"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Cool climate
           </button>
           <button
             type="button"
             onClick={modulate}
-            className="min-h-[44px] rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/[0.12]"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Modulate key
           </button>
@@ -548,16 +548,16 @@ export default function LivingAlbumPage() {
       </div>
 
       {/* live stats */}
-      <div className="pointer-events-none absolute bottom-16 left-5 z-10 flex gap-4 text-base text-white/55 sm:left-7">
+      <div className="pointer-events-none absolute bottom-16 left-5 z-10 flex gap-4 text-base text-muted-foreground sm:left-7">
         <span>
-          population <span className="text-white/85">{stats.pop}</span>
+          population <span className="text-foreground">{stats.pop}</span>
         </span>
         <span>
-          generations <span className="text-white/85">{stats.gen}</span>
+          generations <span className="text-foreground">{stats.gen}</span>
         </span>
         <span>
           elapsed{" "}
-          <span className="text-white/85">
+          <span className="text-foreground">
             {mm}:{ss}
           </span>
         </span>
@@ -566,32 +566,32 @@ export default function LivingAlbumPage() {
       {/* design notes drawer */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 p-5 backdrop-blur-sm">
-          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-[#0b0e16] p-6 text-base leading-relaxed text-white/75">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0b0e16] p-6 text-base leading-relaxed text-muted-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               You are a <span className="text-violet-300">gardener</span>, not a
               player. A small population of melodic agents drifts through a
-              slowly-modulating <span className="text-white/95">diatonic</span>{" "}
+              slowly-modulating <span className="text-foreground">diatonic</span>{" "}
               harmony. Each agent carries a tiny genome (register, density,
               brightness, a short interval-motif, a lifespan). Agents are born,
               age, breed, and die.
             </p>
             <p className="mt-3">
               When two agents reproduce, the child inherits a{" "}
-              <span className="text-white/95">mutated blend</span> of both
+              <span className="text-foreground">mutated blend</span> of both
               parents&rsquo; genomes. So the motifs alive at minute 6 are
               descendants of those alive at minute 1 — that lineage is the
               audible <span className="text-violet-300">memory</span>. The
               threads on screen draw each child back to its parents.
             </p>
             <p className="mt-3">
-              <span className="text-white/95">Tapping</span> plants a seed whose
+              <span className="text-foreground">Tapping</span> plants a seed whose
               genome is biased by where you tapped (left/right → low/high
               register, top/bottom → bright/dark). Its effect is felt over the
               next minute as it breeds. The climate buttons nudge the whole
               field; agents adapt toward it slowly. Nothing here is note-on-tap.
             </p>
-            <p className="mt-3 text-white/55">
+            <p className="mt-3 text-muted-foreground">
               Reference: Brian Eno&rsquo;s generative <em>Reflection</em>, the
               2026 evolving long-form ambient wave, and arXiv:2506.05104
               &ldquo;Survey on the Evaluation of Generative Models in
@@ -600,7 +600,7 @@ export default function LivingAlbumPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
             >
               Back to the garden
             </button>

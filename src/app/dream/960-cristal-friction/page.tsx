@@ -517,7 +517,7 @@ export default function CristalFrictionPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0705] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0705] text-foreground">
       {/* visual stage */}
       <canvas
         ref={canvasRef}
@@ -534,36 +534,36 @@ export default function CristalFrictionPage() {
       {/* overlay UI */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="pointer-events-auto p-5 sm:p-7">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Cristal Friction
           </h1>
-          <p className="mt-1 max-w-2xl text-base text-white/75">
+          <p className="mt-1 max-w-2xl text-base text-muted-foreground">
             Bow glass and metal with your cursor. The singing comes from a
             real stick-slip friction model, not a sample.
           </p>
           {started && (
-            <p className="mt-2 max-w-2xl text-base text-white/75">
+            <p className="mt-2 max-w-2xl text-base text-muted-foreground">
               Drag slowly and steadily for pure tones; high and light for
               whistling wolf tones. Lower on a rod presses harder.
             </p>
           )}
           {noWorklet && (
-            <p className="mt-2 text-base text-rose-300">
+            <p className="mt-2 text-base text-violet-300">
               AudioWorklet is unavailable here — using a simpler oscillator
               voice. The friction model needs a worklet to sing fully.
             </p>
           )}
           {noGL && (
-            <p className="mt-2 text-base text-rose-300">
+            <p className="mt-2 text-base text-violet-300">
               WebGL2 is unavailable — falling back to a Canvas2D view.
             </p>
           )}
           {status && !started && (
-            <p className="mt-2 text-base text-white/75">{status}</p>
+            <p className="mt-2 text-base text-muted-foreground">{status}</p>
           )}
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             Read the design notes:{" "}
-            <span className="text-white/95">
+            <span className="text-foreground">
               src/app/dream/960-cristal-friction/README.md
             </span>
           </p>
@@ -575,7 +575,7 @@ export default function CristalFrictionPage() {
           <div className="pointer-events-auto flex items-center justify-center pb-16">
             <button
               onClick={start}
-              className="rounded-full bg-amber-300/90 px-8 py-3.5 text-lg font-medium text-[#1a0f06] shadow-lg transition-colors hover:bg-amber-200"
+              className="rounded-full bg-violet-300/90 px-8 py-3.5 text-lg font-medium text-[#1a0f06] shadow-lg transition-colors hover:bg-violet-200"
               style={{ minHeight: 44 }}
             >
               Light the rods & bow

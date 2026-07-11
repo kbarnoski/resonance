@@ -276,7 +276,7 @@ export default function KidsRainShakerPage() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#06060c] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#06060c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -287,13 +287,13 @@ export default function KidsRainShakerPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#0a0916]/70 to-[#06060c]/90 px-6 text-center">
           <div className="flex flex-col items-center gap-3">
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/55">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
               306 · rain-shaker
             </span>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Shake it like rain.
             </h1>
-            <p className="max-w-md text-base text-white/80">
+            <p className="max-w-md text-base text-foreground">
               Hold the phone and shake. Soft shakes make a gentle trickle —
               shake harder and warm rain and bells come tumbling down.
             </p>
@@ -301,12 +301,12 @@ export default function KidsRainShakerPage() {
 
           <button
             onClick={start}
-            className="min-h-[64px] rounded-full bg-gradient-to-r from-violet-400 to-rose-400 px-10 text-xl font-semibold text-[#160a18] shadow-lg shadow-violet-500/25 transition-transform active:scale-95"
+            className="min-h-[64px] rounded-full bg-gradient-to-r from-violet-400 to-violet-400 px-10 text-xl font-semibold text-[#160a18] shadow-lg shadow-violet-500/25 transition-transform active:scale-95"
           >
             Shake to play ▸
           </button>
 
-          <p className="max-w-sm text-base text-white/55">
+          <p className="max-w-sm text-base text-muted-foreground">
             On a computer? Swish the mouse fast — or just watch, it rains by
             itself.
           </p>
@@ -316,23 +316,23 @@ export default function KidsRainShakerPage() {
       {/* running hints */}
       {mode === "running" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col items-center gap-1 px-6 pt-5 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-muted-foreground">
             shake · trickle · chime
           </p>
           {sensorDenied && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               Motion sensor is off — swish the mouse fast instead, or watch it
               rain by itself.
             </p>
           )}
           {!sensorDenied && usingFallback && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               No motion sensor here — swish the mouse fast to shake, or let it
               rain by itself.
             </p>
           )}
           {noWebgl && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               Graphics need WebGL2 — the rain is hidden, but the sound still
               plays.
             </p>
@@ -343,7 +343,7 @@ export default function KidsRainShakerPage() {
       {/* D-Dorian legend (low → high) */}
       {mode === "running" && (
         <div className="pointer-events-none absolute bottom-16 left-1/2 z-10 -translate-x-1/2">
-          <div className="flex gap-3 font-mono text-xs text-white/55">
+          <div className="flex gap-3 font-mono text-xs text-muted-foreground">
             {SCALE_NAMES.map((n, i) => (
               <span key={i}>{n}</span>
             ))}
@@ -354,25 +354,25 @@ export default function KidsRainShakerPage() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 overflow-y-auto bg-black/85 px-6 py-16 backdrop-blur-md">
-          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-white/80">
-            <h2 className="text-2xl font-semibold text-white">
+          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               Rain-Shaker — design notes
             </h2>
             <p>
-              <span className="text-white/95">The one question:</span> what if a
+              <span className="text-foreground">The one question:</span> what if a
               kid could shake the phone like a rainstick or a maraca, and the
               harder they shake the warmer the shower of rain and bells that
               falls?
             </p>
             <p>
-              <span className="text-white/95">Motion.</span> Each{" "}
+              <span className="text-foreground">Motion.</span> Each{" "}
               <span className="font-mono text-violet-200">devicemotion</span>{" "}
               event (~60 Hz) gives an acceleration vector that still contains
               gravity. We keep a slow running average per axis (the gravity
@@ -384,7 +384,7 @@ export default function KidsRainShakerPage() {
               short refractory window, become discrete shake-hits.
             </p>
             <p>
-              <span className="text-white/95">Sound &amp; light.</span> The
+              <span className="text-foreground">Sound &amp; light.</span> The
               continuous envelope sets how many warm rain beads fall and how
               fast (raw WebGL2 point-sprites over a dark→dawn gradient); each
               shake-hit strikes an FM bell chime and blooms a glow. The bells
@@ -395,7 +395,7 @@ export default function KidsRainShakerPage() {
               blast. No fail, no timer, no score.
             </p>
             <p>
-              <span className="text-white/95">References.</span> The{" "}
+              <span className="text-foreground">References.</span> The{" "}
               <span className="italic">rainstick</span> (Andean/Chilean
               cactus-spine instrument played by tilting and shaking) and the{" "}
               <span className="italic">maraca / shaker</span> percussion
@@ -403,7 +403,7 @@ export default function KidsRainShakerPage() {
               movement-sonification research (CHI 2026, &ldquo;Designing
               Interactive Movement Sonification&rdquo;).
             </p>
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               Tags — INPUT: device MOTION (devicemotion / accelerometer) ·
               OUTPUT: raw WebGL2 · TECHNIQUE: accelerometer shake-energy
               detection · VIBE: warm, playful, rainy-day.
@@ -414,7 +414,7 @@ export default function KidsRainShakerPage() {
 
       <Link
         href="/dream"
-        className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         ← dream
       </Link>

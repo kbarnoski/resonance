@@ -508,7 +508,7 @@ export default function PianoMotion() {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 gap-5">
           <div>
             <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">Piano Motion</h1>
-            <p className="text-base text-white/75 max-w-sm leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
               Watch a piano being played — two hands glide across the keys as the music moves.
             </p>
           </div>
@@ -522,14 +522,14 @@ export default function PianoMotion() {
             </button>
             <button
               onClick={startMic}
-              className="px-5 py-2.5 text-sm tracking-wide border border-white/30 rounded hover:bg-white/5 transition min-h-[44px]"
+              className="px-5 py-2.5 text-sm tracking-wide border border-border rounded hover:bg-accent transition min-h-[44px]"
             >
               🎤 Use mic
             </button>
           </div>
 
           <div className="flex flex-col items-center gap-2 w-full max-w-sm">
-            <p className="text-sm text-white/55">Or animate a Resonance recording:</p>
+            <p className="text-sm text-muted-foreground">Or animate a Resonance recording:</p>
             <div className="flex gap-2 w-full">
               <input
                 type="text"
@@ -537,12 +537,12 @@ export default function PianoMotion() {
                 onChange={e => setRecId(e.target.value)}
                 onKeyDown={e => { if (e.key === "Enter") loadRecording(); }}
                 placeholder="Recording UUID"
-                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/20 rounded text-white placeholder-white/30 focus:outline-none focus:border-violet-400/60 min-h-[44px]"
+                className="flex-1 px-3 py-2 text-sm bg-muted border border-border rounded text-foreground placeholder-muted-foreground focus:outline-none focus:border-violet-400/60 min-h-[44px]"
               />
               <button
                 onClick={loadRecording}
                 disabled={loading || !recId.trim()}
-                className="px-4 py-2.5 text-sm border border-white/30 rounded hover:bg-white/5 disabled:opacity-40 transition min-h-[44px]"
+                className="px-4 py-2.5 text-sm border border-border rounded hover:bg-accent disabled:opacity-40 transition min-h-[44px]"
               >
                 {loading ? "…" : "Load"}
               </button>
@@ -550,16 +550,16 @@ export default function PianoMotion() {
             {audioUrl && !loading && (
               <button
                 onClick={playRecording}
-                className="w-full px-4 py-2.5 text-sm border border-emerald-400/60 text-emerald-300 rounded hover:bg-emerald-500/10 transition min-h-[44px]"
+                className="w-full px-4 py-2.5 text-sm border border-violet-400/60 text-violet-300 rounded hover:bg-violet-500/10 transition min-h-[44px]"
               >
                 ▶ Play recording
               </button>
             )}
           </div>
 
-          {error && <p className="text-base text-rose-300 max-w-sm">{error}</p>}
+          {error && <p className="text-base text-violet-300 max-w-sm">{error}</p>}
 
-          <Link href="/dream" className="text-sm text-white/40 hover:text-white/70 transition mt-2">
+          <Link href="/dream" className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition mt-2">
             ← dream sandbox
           </Link>
         </div>
@@ -568,18 +568,18 @@ export default function PianoMotion() {
       {/* Running controls */}
       {mode !== "idle" && (
         <div className="absolute top-4 right-4 flex items-center gap-2 pointer-events-auto">
-          <span className="text-xs tracking-wider text-white/50 px-2">
+          <span className="text-xs tracking-wider text-muted-foreground px-2">
             {mode === "demo" ? "BACH DEMO" : mode === "mic" ? "MIC" : "RECORDING"}
           </span>
           <button
             onClick={stopAll}
-            className="text-xs tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1.5 rounded transition"
+            className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded transition"
           >
             stop
           </button>
           <Link
             href="/dream"
-            className="text-xs text-white/30 hover:text-white/60 px-2 py-1 transition"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground px-2 py-1 transition"
           >
             ← back
           </Link>
@@ -589,7 +589,7 @@ export default function PianoMotion() {
       {/* Design notes link */}
       <Link
         href="/dream/183-piano-motion/README.md"
-        className="absolute bottom-3 right-4 text-xs text-white/25 hover:text-white/55 transition"
+        className="absolute bottom-3 right-4 text-xs text-muted-foreground/70 hover:text-muted-foreground transition"
       >
         design notes
       </Link>

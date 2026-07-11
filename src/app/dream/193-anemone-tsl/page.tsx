@@ -257,10 +257,10 @@ export default function AnemoreTSLPage() {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-8 p-6">
         <div className="text-center space-y-3 max-w-md">
-          <h1 className="text-3xl font-serif text-white/95 tracking-tight">
+          <h1 className="text-3xl font-serif text-foreground tracking-tight">
             Anemone TSL
           </h1>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             A torus-knot organism that breathes with your music. Bass stretches
             its surface; transients send it pulsing outward; spectral colour
             drifts violet to cyan.
@@ -277,24 +277,24 @@ export default function AnemoreTSLPage() {
           </button>
           <button
             onClick={handleMic}
-            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-cyan-500/20 text-cyan-300 text-base
-                       hover:bg-cyan-500/30 transition-colors border border-cyan-500/30"
+            className="min-h-[44px] px-6 py-2.5 rounded-lg bg-violet-500/20 text-violet-300 text-base
+                       hover:bg-violet-500/30 transition-colors border border-violet-500/30"
           >
             Start Mic
           </button>
         </div>
 
         {error && (
-          <p className="text-sm text-rose-300 max-w-xs text-center">{error}</p>
+          <p className="text-sm text-violet-300 max-w-xs text-center">{error}</p>
         )}
 
-        <p className="text-xs text-white/55">
+        <p className="text-xs text-muted-foreground">
           Headphones recommended · WebGL required
         </p>
 
         <Link
           href="/dream"
-          className="text-xs text-white/55 hover:text-white/75 transition-colors"
+          className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
         >
           ← Dream lab
         </Link>
@@ -338,8 +338,8 @@ export default function AnemoreTSLPage() {
       {/* HUD overlay */}
       <div className="absolute top-4 left-4 right-4 flex items-start justify-between pointer-events-none">
         <div>
-          <p className="text-base font-serif text-white/95">Anemone TSL</p>
-          <p className="text-xs text-white/55 mt-0.5">
+          <p className="text-base font-serif text-foreground">Anemone TSL</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
             {source === "mic"
               ? running
                 ? "Mic active"
@@ -349,7 +349,7 @@ export default function AnemoreTSLPage() {
         </div>
         <Link
           href="/dream"
-          className="text-xs text-white/55 hover:text-white/75 transition-colors pointer-events-auto"
+          className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors pointer-events-auto"
         >
           ← Dream lab
         </Link>
@@ -357,14 +357,14 @@ export default function AnemoreTSLPage() {
 
       {error && (
         <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none">
-          <p className="text-sm text-rose-300 bg-black/60 px-4 py-2 rounded-lg">
+          <p className="text-sm text-violet-300 bg-black/60 px-4 py-2 rounded-lg">
             {error}
           </p>
         </div>
       )}
 
       <div className="absolute bottom-4 right-4 pointer-events-none">
-        <p className="text-xs text-white/40">drag to orbit</p>
+        <p className="text-xs text-muted-foreground/70">drag to orbit</p>
       </div>
     </div>
   );

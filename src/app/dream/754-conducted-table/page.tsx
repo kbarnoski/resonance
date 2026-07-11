@@ -538,7 +538,7 @@ export default function ConductedTablePage() {
   const liveSeats = seatsRef.current.filter((s) => s.on).length;
 
   return (
-    <main className="min-h-screen w-full bg-amber-50 text-stone-900">
+    <main className="min-h-screen w-full bg-violet-50 text-stone-900">
       <div className="mx-auto max-w-5xl px-5 py-8">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
           The Conducted Table
@@ -554,7 +554,7 @@ export default function ConductedTablePage() {
             <button
               type="button"
               onClick={begin}
-              className="min-h-[44px] rounded-xl bg-amber-600 px-6 py-2.5 text-base font-semibold text-white shadow-md transition hover:bg-amber-700"
+              className="min-h-[44px] rounded-xl bg-violet-600 px-6 py-2.5 text-base font-semibold text-foreground shadow-md transition hover:bg-violet-700"
             >
               Begin
             </button>
@@ -566,7 +566,7 @@ export default function ConductedTablePage() {
               Read the design notes
             </button>
             {isGuest && (
-              <p className="mt-4 text-base text-amber-800">
+              <p className="mt-4 text-base text-violet-800">
                 You followed an invite link. Press Begin to hear the ensemble,
                 then accept the seat in the invite panel.
               </p>
@@ -582,7 +582,7 @@ export default function ConductedTablePage() {
           <>
             <div
               ref={wrapRef}
-              className="relative mt-6 h-[58vh] min-h-[360px] w-full overflow-hidden rounded-2xl border border-amber-200 shadow-lg"
+              className="relative mt-6 h-[58vh] min-h-[360px] w-full overflow-hidden rounded-2xl border border-violet-200 shadow-lg"
             >
               <canvas
                 ref={canvasRef}
@@ -592,7 +592,7 @@ export default function ConductedTablePage() {
             </div>
 
             {source === "fallback" && (
-              <p className="mt-3 text-base font-semibold text-rose-700">
+              <p className="mt-3 text-base font-semibold text-violet-700">
                 Live recording unavailable — a synthesized fallback tone is
                 playing so the ensemble is never silent.
               </p>
@@ -619,7 +619,7 @@ export default function ConductedTablePage() {
                   step={0.01}
                   value={tempo}
                   onChange={(e) => setTempo(parseFloat(e.target.value))}
-                  className="mt-2 w-full accent-amber-600"
+                  className="mt-2 w-full accent-violet-600"
                 />
               </label>
               <label className="block">
@@ -633,7 +633,7 @@ export default function ConductedTablePage() {
                   step={0.01}
                   value={dynamics}
                   onChange={(e) => setDynamics(parseFloat(e.target.value))}
-                  className="mt-2 w-full accent-amber-600"
+                  className="mt-2 w-full accent-violet-600"
                 />
               </label>
             </div>
@@ -652,9 +652,9 @@ export default function ConductedTablePage() {
                     className={`min-h-[44px] rounded-xl px-4 py-2.5 text-base font-semibold transition ${
                       on
                         ? remote
-                          ? "bg-sky-600 text-white"
-                          : "bg-amber-600 text-white"
-                        : "border border-stone-300 bg-white text-stone-500"
+                          ? "bg-violet-600 text-foreground"
+                          : "bg-violet-600 text-foreground"
+                        : "border border-stone-300 bg-card text-stone-500"
                     }`}
                   >
                     {label} · {on ? (remote ? "LIVE" : "IN") : "OUT"}
@@ -665,11 +665,11 @@ export default function ConductedTablePage() {
 
             {/* networking */}
             {rtcOk && (
-              <div className="mt-6 rounded-2xl border border-amber-200 bg-white/60 p-4">
+              <div className="mt-6 rounded-2xl border border-violet-200 bg-muted p-4">
                 <button
                   type="button"
                   onClick={() => setShowInvite((v) => !v)}
-                  className="min-h-[44px] rounded-xl bg-stone-800 px-4 py-2.5 text-base font-semibold text-white hover:bg-stone-900"
+                  className="min-h-[44px] rounded-xl bg-stone-800 px-4 py-2.5 text-base font-semibold text-foreground hover:bg-stone-900"
                 >
                   {showInvite ? "Hide invite panel" : "Invite a player"}
                 </button>
@@ -684,7 +684,7 @@ export default function ConductedTablePage() {
                         <button
                           type="button"
                           onClick={createInvite}
-                          className="min-h-[44px] rounded-xl bg-amber-600 px-4 py-2.5 text-base font-semibold text-white hover:bg-amber-700"
+                          className="min-h-[44px] rounded-xl bg-violet-600 px-4 py-2.5 text-base font-semibold text-foreground hover:bg-violet-700"
                         >
                           Create invite link
                         </button>
@@ -714,7 +714,7 @@ export default function ConductedTablePage() {
                             <button
                               type="button"
                               onClick={acceptAnswer}
-                              className="min-h-[44px] rounded-xl bg-stone-800 px-4 py-2.5 text-base font-semibold text-white hover:bg-stone-900"
+                              className="min-h-[44px] rounded-xl bg-stone-800 px-4 py-2.5 text-base font-semibold text-foreground hover:bg-stone-900"
                             >
                               Connect player
                             </button>
@@ -731,7 +731,7 @@ export default function ConductedTablePage() {
                         <button
                           type="button"
                           onClick={acceptInviteAsGuest}
-                          className="min-h-[44px] rounded-xl bg-amber-600 px-4 py-2.5 text-base font-semibold text-white hover:bg-amber-700"
+                          className="min-h-[44px] rounded-xl bg-violet-600 px-4 py-2.5 text-base font-semibold text-foreground hover:bg-violet-700"
                         >
                           Accept the seat
                         </button>
@@ -755,7 +755,7 @@ export default function ConductedTablePage() {
                     )}
 
                     {netMsg && (
-                      <p className="text-base text-amber-800">{netMsg}</p>
+                      <p className="text-base text-violet-800">{netMsg}</p>
                     )}
                   </div>
                 )}
@@ -779,7 +779,7 @@ export default function ConductedTablePage() {
         )}
 
         {showNotes && (
-          <div className="mt-5 max-w-2xl space-y-3 rounded-2xl border border-amber-200 bg-white/70 p-5 text-base leading-relaxed text-stone-700">
+          <div className="mt-5 max-w-2xl space-y-3 rounded-2xl border border-violet-200 bg-muted p-5 text-base leading-relaxed text-stone-700">
             <p>
               <strong>One question:</strong> what if Karel&apos;s real piano
               recording became a long-form conducted ensemble you direct from a
@@ -802,7 +802,7 @@ export default function ConductedTablePage() {
             </p>
             <Link
               href="/dream/729-piano-portal-jam"
-              className="inline-block font-semibold text-amber-700 underline"
+              className="inline-block font-semibold text-violet-700 underline"
             >
               ← Visit the cycle-1 duet
             </Link>

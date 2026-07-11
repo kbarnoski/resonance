@@ -369,7 +369,7 @@ export default function BandBuilder() {
       <div className="absolute top-3 left-4 z-10">
         <Link
           href="/dream"
-          className="text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -377,7 +377,7 @@ export default function BandBuilder() {
       <div className="absolute bottom-3 right-4 z-10">
         <Link
           href="/dream/216-kids-band-builder/readme"
-          className="text-white/40 text-xs hover:text-white/65 transition-colors"
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground transition-colors"
         >
           design notes
         </Link>

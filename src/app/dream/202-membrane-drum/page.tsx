@@ -263,13 +263,13 @@ export default function MembraneDrum() {
   const fundHz = Math.round(55 + tension * 200);
 
   return (
-    <div className="min-h-screen bg-[#0c0e16] text-white flex flex-col items-center px-4 py-8 gap-6">
+    <div className="min-h-screen bg-[#0c0e16] text-foreground flex flex-col items-center px-4 py-8 gap-6">
 
       <header className="text-center max-w-lg">
-        <h1 className="text-2xl font-serif font-semibold text-white/95 mb-2">
+        <h1 className="text-2xl font-serif font-semibold text-foreground mb-2">
           Membrane Drum
         </h1>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           A circular drumhead solved with the 2D wave equation. Tap anywhere on the drum — Bessel-mode overtones emerge from the physics, not from a preset.
         </p>
       </header>
@@ -277,7 +277,7 @@ export default function MembraneDrum() {
       {!started && (
         <button
           onClick={handleStart}
-          className="min-h-[48px] px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 text-white font-semibold text-base transition-colors"
+          className="min-h-[48px] px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 text-foreground font-semibold text-base transition-colors"
         >
           Strike the drum
         </button>
@@ -298,14 +298,14 @@ export default function MembraneDrum() {
         />
         {!started && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-white/40 text-sm">tap to play</span>
+            <span className="text-muted-foreground/70 text-sm">tap to play</span>
           </div>
         )}
       </div>
 
       {/* Waveform trace */}
-      <div className="w-full max-w-lg rounded-lg overflow-hidden border border-white/10">
-        <p className="text-xs text-white/40 px-3 pt-2 pb-0 font-mono">
+      <div className="w-full max-w-lg rounded-lg overflow-hidden border border-border">
+        <p className="text-xs text-muted-foreground/70 px-3 pt-2 pb-0 font-mono">
           centre-point displacement · 180 frames
         </p>
         <canvas ref={traceCanvas} width={560} height={72} className="w-full" />
@@ -314,7 +314,7 @@ export default function MembraneDrum() {
       {/* Controls */}
       <div className="w-full max-w-lg grid grid-cols-1 sm:grid-cols-2 gap-5">
         <label className="flex flex-col gap-2">
-          <span className="text-sm text-white/80">
+          <span className="text-sm text-foreground">
             Tension —{" "}
             <span className="text-violet-300 font-mono">{fundHz} Hz</span>{" "}
             fundamental
@@ -328,7 +328,7 @@ export default function MembraneDrum() {
         </label>
 
         <label className="flex flex-col gap-2">
-          <span className="text-sm text-white/80">
+          <span className="text-sm text-foreground">
             Damping —{" "}
             <span className="text-violet-300 font-mono">
               {((1 - damping) * 1000).toFixed(1)}
@@ -345,7 +345,7 @@ export default function MembraneDrum() {
       </div>
 
       {/* Stats */}
-      <div className="flex gap-6 text-xs text-white/55 font-mono">
+      <div className="flex gap-6 text-xs text-muted-foreground font-mono">
         <span>64×64 grid</span>
         <span>6 Bessel modes</span>
         <span>{strikeCount} {strikeCount === 1 ? "strike" : "strikes"}</span>
@@ -353,7 +353,7 @@ export default function MembraneDrum() {
 
       <Link
         href="/dream"
-        className="text-sm text-white/55 hover:text-white/80 transition-colors"
+        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         ← dream lab
       </Link>

@@ -229,22 +229,22 @@ export default function KidsMirrorMelody() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-black text-white px-4 py-6">
+    <main className="flex flex-col items-center min-h-screen bg-black text-foreground px-4 py-6">
       <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold mb-2 text-white">Mirror Melody</h1>
-        <p className="text-base text-white/80 mb-3">
+        <h1 className="text-3xl font-bold mb-2 text-foreground">Mirror Melody</h1>
+        <p className="text-base text-foreground mb-3">
           Draw on one side — the mirror sings back. Higher up = higher note.
           Two voices, one canvas.
         </p>
 
         <div className="flex gap-6 mb-5">
           <span className="flex items-center gap-2">
-            <span className="inline-block w-3.5 h-3.5 rounded-full bg-rose-400" />
-            <span className="text-sm text-white/70">left voice</span>
+            <span className="inline-block w-3.5 h-3.5 rounded-full bg-violet-400" />
+            <span className="text-sm text-muted-foreground">left voice</span>
           </span>
           <span className="flex items-center gap-2">
-            <span className="inline-block w-3.5 h-3.5 rounded-full bg-cyan-300" />
-            <span className="text-sm text-white/70">mirror voice</span>
+            <span className="inline-block w-3.5 h-3.5 rounded-full bg-violet-300" />
+            <span className="text-sm text-muted-foreground">mirror voice</span>
           </span>
         </div>
 
@@ -252,7 +252,7 @@ export default function KidsMirrorMelody() {
           <div className="flex justify-center pt-8">
             <button
               onClick={handleStart}
-              className="bg-violet-600 hover:bg-violet-500 text-white text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
+              className="bg-violet-600 hover:bg-violet-500 text-foreground text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
             >
               ▶ Start
             </button>
@@ -265,7 +265,7 @@ export default function KidsMirrorMelody() {
           />
         )}
 
-        <div className="mt-4 flex items-center justify-between text-xs text-white/55">
+        <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
           <span>For kids (4+) · no mic · draw anywhere · multi-touch OK</span>
           <Link href="/dream" className="underline">
             ← dream lab

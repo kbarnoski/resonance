@@ -378,11 +378,11 @@ export default function VowelColorPage() {
         {phase === "idle" && (
           <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 text-center gap-8">
 
-            <h1 className="text-4xl font-bold tracking-tight text-white drop-shadow-lg">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground drop-shadow-lg">
               Vowel Mirror
             </h1>
 
-            <p className="text-white/80 text-lg max-w-xs leading-relaxed">
+            <p className="text-foreground text-lg max-w-xs leading-relaxed">
               Make a sound and paint the whole screen!
             </p>
 
@@ -400,7 +400,7 @@ export default function VowelColorPage() {
                     }}
                   >
                     <span className="text-2xl" aria-hidden="true">{d.emoji}</span>
-                    <span className="text-white font-bold text-sm">{d.name}</span>
+                    <span className="text-foreground font-bold text-sm">{d.name}</span>
                   </div>
                 );
               })}
@@ -409,7 +409,7 @@ export default function VowelColorPage() {
             {/* Start button — big enough for small fingers */}
             <button
               onClick={handleStart}
-              className="flex items-center justify-center w-44 rounded-3xl text-white font-bold text-2xl shadow-2xl active:scale-95 transition-transform"
+              className="flex items-center justify-center w-44 rounded-3xl text-foreground font-bold text-2xl shadow-2xl active:scale-95 transition-transform"
               style={{
                 background: "linear-gradient(135deg,#c0392b,#f39c12)",
                 height: 80,
@@ -421,7 +421,7 @@ export default function VowelColorPage() {
 
             <Link
               href="/dream/393-kids-vowel-color/README.md"
-              className="text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+              className="text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
             >
               Read the design notes
             </Link>
@@ -437,7 +437,7 @@ export default function VowelColorPage() {
             {/* Mic error banner */}
             {micError && (
               <div className="bg-black/50 rounded-2xl px-5 py-3 max-w-sm">
-                <p className="text-rose-300 text-base leading-relaxed">{micError}</p>
+                <p className="text-violet-300 text-base leading-relaxed">{micError}</p>
               </div>
             )}
 
@@ -454,14 +454,14 @@ export default function VowelColorPage() {
                 {display.emoji}
               </span>
               <span
-                className="text-5xl font-bold text-white drop-shadow-lg tracking-wide"
+                className="text-5xl font-bold text-foreground drop-shadow-lg tracking-wide"
                 style={{ textShadow: `0 0 28px ${pal.glow}` }}
               >
                 {display.name}
               </span>
 
               {visState.active && (
-                <span className="text-white/65 text-sm font-mono">
+                <span className="text-muted-foreground text-sm font-mono">
                   F1&nbsp;{Math.round(visState.f1)}&nbsp;Hz&nbsp;&nbsp;
                   F2&nbsp;{Math.round(visState.f2)}&nbsp;Hz&nbsp;&nbsp;
                   {confPct}%
@@ -469,7 +469,7 @@ export default function VowelColorPage() {
               )}
 
               {!visState.active && phase === "running" && (
-                <span className="text-white/55 text-lg animate-pulse">
+                <span className="text-muted-foreground text-lg animate-pulse">
                   Make a sound&hellip;
                 </span>
               )}
@@ -478,7 +478,7 @@ export default function VowelColorPage() {
             {/* Volume bar */}
             {phase === "running" && (
               <div
-                className="w-56 h-4 rounded-full bg-white/10 overflow-hidden"
+                className="w-56 h-4 rounded-full bg-muted overflow-hidden"
                 role="progressbar"
                 aria-valuenow={volPct}
                 aria-valuemin={0}
@@ -495,7 +495,7 @@ export default function VowelColorPage() {
             {/* Stop button */}
             <button
               onClick={handleStop}
-              className="mt-2 px-6 py-3 rounded-2xl bg-black/35 text-white/80 text-base font-mono border border-white/25 hover:bg-black/55 active:scale-95 transition-all"
+              className="mt-2 px-6 py-3 rounded-2xl bg-black/35 text-foreground text-base font-mono border border-border hover:bg-black/55 active:scale-95 transition-all"
               style={{ minHeight: 44 }}
             >
               Stop
@@ -504,7 +504,7 @@ export default function VowelColorPage() {
             {/* Corner link */}
             <Link
               href="/dream/393-kids-vowel-color/README.md"
-              className="absolute bottom-4 right-4 text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+              className="absolute bottom-4 right-4 text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
             >
               design notes
             </Link>

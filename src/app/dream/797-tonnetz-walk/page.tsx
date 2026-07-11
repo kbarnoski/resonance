@@ -227,12 +227,12 @@ export default function TonnetzWalkPage() {
   const currentPitches = triadPitches(current);
 
   return (
-    <main className="min-h-screen bg-[#070708] text-white/95 antialiased">
+    <main className="min-h-screen bg-[#070708] text-foreground antialiased">
       <div className="mx-auto max-w-6xl px-5 py-8">
         {/* Header */}
         <header className="mb-6">
           <div className="flex items-baseline justify-between gap-4">
-            <h1 className="font-serif text-3xl tracking-tight text-white/95">
+            <h1 className="font-serif text-3xl tracking-tight text-foreground">
               Tonnetz Walk
             </h1>
             <Link
@@ -242,7 +242,7 @@ export default function TonnetzWalkPage() {
               Design notes ↓
             </Link>
           </div>
-          <p className="mt-2 max-w-2xl text-base text-white/75">
+          <p className="mt-2 max-w-2xl text-base text-muted-foreground">
             Watch harmony take a walk: a single chord glides forever through the
             Neo-Riemannian lattice by smooth voice-leading — P, L and R
             transforms, two notes held, one note stepping. Autonomous, never the
@@ -254,13 +254,13 @@ export default function TonnetzWalkPage() {
         <div className="mb-5 flex flex-wrap items-center gap-4">
           <button
             onClick={running ? handlePause : handleStart}
-            className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white/95 transition hover:bg-violet-400 active:scale-[0.98]"
+            className="min-h-[44px] rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400 active:scale-[0.98]"
           >
             {running ? "Pause" : "Start"}
           </button>
 
           <label className="flex min-w-[180px] flex-col gap-1">
-            <span className="font-mono text-sm text-white/55">
+            <span className="font-mono text-sm text-muted-foreground">
               wander ←→ home · {homeBias.toFixed(2)}
             </span>
             <input
@@ -275,7 +275,7 @@ export default function TonnetzWalkPage() {
           </label>
 
           <label className="flex min-w-[180px] flex-col gap-1">
-            <span className="font-mono text-sm text-white/55">
+            <span className="font-mono text-sm text-muted-foreground">
               step · {stepSec.toFixed(1)}s
             </span>
             <input
@@ -289,12 +289,12 @@ export default function TonnetzWalkPage() {
             />
           </label>
 
-          <label className="flex items-center gap-2 font-mono text-sm text-white/75">
+          <label className="flex items-center gap-2 font-mono text-sm text-muted-foreground">
             <input
               type="checkbox"
               checked={arpOn}
               onChange={(e) => setArpOn(e.target.checked)}
-              className="h-4 w-4 accent-emerald-400"
+              className="h-4 w-4 accent-violet-400"
             />
             arpeggio
           </label>
@@ -302,11 +302,11 @@ export default function TonnetzWalkPage() {
 
         {/* Readout */}
         <div className="mb-4 flex flex-wrap gap-x-8 gap-y-1 font-mono text-sm">
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             chord{" "}
             <span className="text-violet-300">{triadName(current)}</span>
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             last{" "}
             <span
               style={{
@@ -318,20 +318,20 @@ export default function TonnetzWalkPage() {
               {lastTransform ?? "—"}
             </span>
           </span>
-          <span className="text-white/75">
-            steps <span className="text-white/95">{steps}</span>
+          <span className="text-muted-foreground">
+            steps <span className="text-foreground">{steps}</span>
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             elapsed{" "}
-            <span className="text-white/95">{fmtTime(elapsed)}</span>
+            <span className="text-foreground">{fmtTime(elapsed)}</span>
           </span>
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             click any node to steer the walk there
           </span>
         </div>
 
         {/* The lattice */}
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c]">
+        <div className="overflow-hidden rounded-2xl border border-border bg-[#0a0a0c]">
           <svg
             viewBox={`0 0 ${viewW} ${viewH}`}
             className="block w-full"
@@ -476,7 +476,7 @@ export default function TonnetzWalkPage() {
         </div>
 
         {/* Transform legend */}
-        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-1 font-mono text-sm text-white/55">
+        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-1 font-mono text-sm text-muted-foreground">
           <span>
             <span style={{ color: TRANSFORM_COLOR.P }}>P</span> parallel · third
             ±1 semitone (C↔c)
@@ -494,9 +494,9 @@ export default function TonnetzWalkPage() {
         {/* Design notes */}
         <section
           id="notes"
-          className="mt-12 max-w-2xl border-t border-white/10 pt-6 text-base text-white/75"
+          className="mt-12 max-w-2xl border-t border-border pt-6 text-base text-muted-foreground"
         >
-          <h2 className="mb-2 font-serif text-xl text-white/95">Design notes</h2>
+          <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
           <p className="mb-3">
             This is an <em>autonomous generative walker</em>, not a click-to-hear
             grid. A self-driving harmonic process chooses P/L/R transforms over
@@ -505,7 +505,7 @@ export default function TonnetzWalkPage() {
             <em>glides</em> rather than jumps. The path through the lattice is the
             musical form.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Reference: Euler&apos;s Tonnetz (1739); Neo-Riemannian theory after
             Hugo Riemann, formalized by David Lewin and Richard Cohn (
             <em>Audacious Euphony</em>, 2012). All sound is pure Web Audio

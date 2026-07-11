@@ -326,7 +326,7 @@ export default function VoiceGardenPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#1a1030] text-white select-none">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#1a1030] text-foreground select-none">
       {/* The garden SVG. Tapping it (sky) plants light — full-screen target. */}
       <svg
         ref={svgRef}
@@ -379,22 +379,22 @@ export default function VoiceGardenPage() {
       {/* ---- UI overlay ---- */}
       {!started ? (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-black/35 px-6 text-center backdrop-blur-sm">
-          <h1 className="text-3xl font-bold text-white sm:text-4xl">
+          <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
             🌱 Voice Garden
           </h1>
-          <p className="max-w-md text-base text-white/90 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Sing or hum and a glowing garden grows toward your voice. High notes
             reach for the sky, soft notes grow slow. Come back tomorrow — it
             keeps growing while you&apos;re away.
           </p>
           <button
             onClick={start}
-            className="rounded-full bg-emerald-400 px-10 py-5 text-2xl font-bold text-emerald-950 shadow-lg shadow-emerald-500/30 transition active:scale-95"
+            className="rounded-full bg-violet-400 px-10 py-5 text-2xl font-bold text-violet-950 shadow-lg shadow-violet-500/30 transition active:scale-95"
             style={{ minWidth: 200, minHeight: 80 }}
           >
             ▶ Start singing
           </button>
-          <p className="text-sm text-white/75">
+          <p className="text-sm text-muted-foreground">
             No microphone? You can tap the sky instead. 🎨
           </p>
         </div>
@@ -405,25 +405,25 @@ export default function VoiceGardenPage() {
             <span
               className={
                 micLive
-                  ? "rounded-full bg-black/40 px-4 py-2 text-base font-semibold text-emerald-300/95 backdrop-blur"
-                  : "rounded-full bg-black/40 px-4 py-2 text-base font-semibold text-amber-300/95 backdrop-blur"
+                  ? "rounded-full bg-black/40 px-4 py-2 text-base font-semibold text-violet-300/95 backdrop-blur"
+                  : "rounded-full bg-black/40 px-4 py-2 text-base font-semibold text-violet-300/95 backdrop-blur"
               }
             >
               {micLive ? "Listening 🎤" : "Touch mode ✋"}
             </span>
             {chordLabel ? (
-              <span className="rounded-full bg-black/30 px-4 py-1.5 text-base text-white/75 backdrop-blur">
+              <span className="rounded-full bg-black/30 px-4 py-1.5 text-base text-muted-foreground backdrop-blur">
                 color: {chordLabel}
               </span>
             ) : null}
           </div>
 
           {micError ? (
-            <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-2xl bg-black/45 px-5 py-3 text-center text-base text-rose-300 backdrop-blur">
+            <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-2xl bg-black/45 px-5 py-3 text-center text-base text-violet-300 backdrop-blur">
               {micError}
             </div>
           ) : (
-            <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-2xl bg-black/30 px-5 py-3 text-center text-base text-white/75 backdrop-blur">
+            <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-2xl bg-black/30 px-5 py-3 text-center text-base text-muted-foreground backdrop-blur">
               {lullaby ? "Sweet dreams, little garden 🌙" : "Sing high for the sky · tap to plant light"}
             </div>
           )}

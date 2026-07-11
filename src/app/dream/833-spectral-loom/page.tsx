@@ -338,8 +338,8 @@ export default function SpectralLoomPage() {
       onClick={() => setTool(t)}
       className={`min-h-[44px] rounded-md px-4 py-2.5 text-base font-medium transition-colors ${
         tool === t
-          ? `bg-white/10 ${accent} ring-1 ring-white/20`
-          : "text-white/75 hover:bg-white/[0.06]"
+          ? `bg-muted ${accent} ring-1 ring-border`
+          : "text-muted-foreground hover:bg-accent"
       }`}
     >
       {label}
@@ -347,13 +347,13 @@ export default function SpectralLoomPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#04050a] px-5 py-8 text-white sm:px-8">
+    <main className="min-h-screen bg-[#04050a] px-5 py-8 text-foreground sm:px-8">
       <div className="mx-auto max-w-3xl">
         <header className="mb-5">
-          <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Spectral Loom
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Freeze your live sound as a spectrogram image, then paint the
             picture — smear it, brush energy in and out — and hear the picture
             you painted.
@@ -361,7 +361,7 @@ export default function SpectralLoomPage() {
         </header>
 
         {/* canvas */}
-        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-black">
+        <div className="relative overflow-hidden rounded-lg border border-border bg-black">
           <canvas
             ref={canvasRef}
             width={TIME_COLS * 4}
@@ -374,13 +374,13 @@ export default function SpectralLoomPage() {
             onPointerLeave={onPointerLeave}
           />
           {!canvasOk && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-6 text-center text-base text-rose-300">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-6 text-center text-base text-violet-300">
               Canvas2D is unavailable in this browser — the spectral instrument
               needs it to render.
             </div>
           )}
           {!frozen && started && (
-            <div className="pointer-events-none absolute left-3 top-3 rounded bg-black/50 px-2 py-1 font-mono text-xs text-white/70">
+            <div className="pointer-events-none absolute left-3 top-3 rounded bg-black/50 px-2 py-1 font-mono text-xs text-muted-foreground">
               LIVE · {source === "mic" ? "mic" : "demo"} — make a sound, then ❄ Freeze
             </div>
           )}
@@ -393,10 +393,10 @@ export default function SpectralLoomPage() {
 
         {/* notices */}
         {notice && (
-          <p className="mt-3 text-base text-rose-300">{notice}</p>
+          <p className="mt-3 text-base text-violet-300">{notice}</p>
         )}
         {audioError && (
-          <p className="mt-2 text-base text-rose-300">{audioError}</p>
+          <p className="mt-2 text-base text-violet-300">{audioError}</p>
         )}
 
         {/* controls */}
@@ -405,18 +405,18 @@ export default function SpectralLoomPage() {
             <button
               type="button"
               onClick={startMic}
-              className="min-h-[44px] rounded-md bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-white shadow hover:bg-violet-500"
+              className="min-h-[44px] rounded-md bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-foreground shadow hover:bg-violet-500"
             >
               Start mic
             </button>
             <button
               type="button"
               onClick={startDemo}
-              className="min-h-[44px] rounded-md border border-white/15 px-4 py-2.5 text-base font-medium text-white/85 hover:bg-white/[0.06]"
+              className="min-h-[44px] rounded-md border border-border px-4 py-2.5 text-base font-medium text-foreground hover:bg-accent"
             >
               Use demo sound
             </button>
-            <span className="text-base text-white/55">
+            <span className="text-base text-muted-foreground">
               The canvas is already alive — audio is gesture-gated.
             </span>
           </div>
@@ -428,7 +428,7 @@ export default function SpectralLoomPage() {
                 <button
                   type="button"
                   onClick={doFreeze}
-                  className="min-h-[44px] rounded-md bg-cyan-500/90 px-4 py-2.5 text-base font-semibold text-black hover:bg-cyan-400"
+                  className="min-h-[44px] rounded-md bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-black hover:bg-violet-400"
                 >
                   ❄ Freeze
                 </button>
@@ -436,7 +436,7 @@ export default function SpectralLoomPage() {
                 <button
                   type="button"
                   onClick={doUnfreeze}
-                  className="min-h-[44px] rounded-md border border-white/15 px-4 py-2.5 text-base font-medium text-white/85 hover:bg-white/[0.06]"
+                  className="min-h-[44px] rounded-md border border-border px-4 py-2.5 text-base font-medium text-foreground hover:bg-accent"
                 >
                   ↺ Back to live
                 </button>
@@ -447,8 +447,8 @@ export default function SpectralLoomPage() {
                 disabled={!frozen}
                 className={`min-h-[44px] rounded-md px-4 py-2.5 text-base font-medium transition-colors disabled:opacity-40 ${
                   loop
-                    ? "bg-white/10 text-emerald-300/95 ring-1 ring-white/20"
-                    : "text-white/75 hover:bg-white/[0.06]"
+                    ? "bg-muted text-violet-300/95 ring-1 ring-border"
+                    : "text-muted-foreground hover:bg-accent"
                 }`}
               >
                 {loop ? "Loop: on" : "Loop: off"}
@@ -457,7 +457,7 @@ export default function SpectralLoomPage() {
                 <button
                   type="button"
                   onClick={startDemo}
-                  className="min-h-[44px] rounded-md border border-white/10 px-4 py-2.5 text-base text-white/65 hover:bg-white/[0.06]"
+                  className="min-h-[44px] rounded-md border border-border px-4 py-2.5 text-base text-muted-foreground hover:bg-accent"
                 >
                   Switch to demo sound
                 </button>
@@ -466,14 +466,14 @@ export default function SpectralLoomPage() {
 
             {/* tools */}
             <div>
-              <div className="mb-1.5 text-xs uppercase tracking-[0.18em] text-white/55">
+              <div className="mb-1.5 text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 Brush (paint the frozen image)
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                {toolBtn("raise", "Raise +", "text-emerald-300/95")}
-                {toolBtn("lower", "Lower −", "text-amber-300/95")}
+                {toolBtn("raise", "Raise +", "text-violet-300/95")}
+                {toolBtn("lower", "Lower −", "text-violet-300/95")}
                 {toolBtn("smear", "Smear ↔", "text-violet-300")}
-                <label className="ml-2 flex items-center gap-2 text-base text-white/75">
+                <label className="ml-2 flex items-center gap-2 text-base text-muted-foreground">
                   Size
                   <input
                     type="range"
@@ -488,7 +488,7 @@ export default function SpectralLoomPage() {
             </div>
 
             {/* freeze-stretch slider */}
-            <label className="flex items-center gap-3 text-base text-white/75">
+            <label className="flex items-center gap-3 text-base text-muted-foreground">
               <span className="min-w-[8.5rem]">Freeze-stretch</span>
               <input
                 type="range"
@@ -497,14 +497,14 @@ export default function SpectralLoomPage() {
                 value={Math.round(stretch * 100)}
                 onChange={(e) => setStretch(Number(e.target.value) / 100)}
                 disabled={!frozen}
-                className="flex-1 accent-cyan-400 disabled:opacity-40"
+                className="flex-1 accent-violet-400 disabled:opacity-40"
               />
-              <span className="w-12 text-right font-mono text-sm text-white/55">
+              <span className="w-12 text-right font-mono text-sm text-muted-foreground">
                 {Math.round(stretch * 100)}%
               </span>
             </label>
 
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               {frozen
                 ? "Drag on the image to paint. The bright scrub line sweeps the frozen frame and an additive bank sings the column under it."
                 : "Make a sound — sing, hum, whistle, clap — then press ❄ Freeze to hold the picture and paint it."}
@@ -513,8 +513,8 @@ export default function SpectralLoomPage() {
         )}
 
         {/* design notes */}
-        <details className="mt-6 text-sm text-white/55">
-          <summary className="cursor-pointer text-white/70 hover:text-white/90">
+        <details className="mt-6 text-sm text-muted-foreground">
+          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
             Read the design notes
           </summary>
           <p className="mt-2 leading-relaxed">

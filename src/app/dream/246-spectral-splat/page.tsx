@@ -699,7 +699,7 @@ export default function SpectralSplatPage() {
     source === "pad" ? "generative pad" : source === "file" ? "your audio" : "microphone";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050b] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050b] text-foreground">
       {/* canvas */}
       <div ref={mountRef} className="absolute inset-0 z-0" />
 
@@ -716,17 +716,17 @@ export default function SpectralSplatPage() {
       {/* idle / start panel */}
       {status === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center px-6">
-          <div className="max-w-2xl rounded-2xl border border-white/10 bg-black/70 p-8 backdrop-blur-md">
+          <div className="max-w-2xl rounded-2xl border border-border bg-black/70 p-8 backdrop-blur-md">
             <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
               Resonance · 246
             </p>
             <h1 className="font-serif text-4xl leading-tight sm:text-5xl">Spectral Splat</h1>
-            <p className="mt-4 text-base text-white/80">
+            <p className="mt-4 text-base text-foreground">
               What if your music were a soft volumetric cloud of light you could fly through?
               Your spectrum is deposited as a rolling field of glowing Gaussian splats, and the
               camera dives forward into the nebula of your own sound.
             </p>
-            {glError && <p className="mt-4 text-base text-rose-300">{glError}</p>}
+            {glError && <p className="mt-4 text-base text-violet-300">{glError}</p>}
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 onClick={start}
@@ -736,18 +736,18 @@ export default function SpectralSplatPage() {
               </button>
               <button
                 onClick={loadDemo}
-                className="min-h-[44px] rounded-full bg-white/[0.06] px-4 py-2.5 text-base text-white/85 ring-1 ring-white/10 transition-colors hover:bg-white/[0.12]"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition-colors hover:bg-accent"
               >
                 Load demo audio
               </button>
               <button
                 onClick={() => setShowNotes((v) => !v)}
-                className="min-h-[44px] px-4 py-2.5 text-base text-white/55 underline-offset-4 hover:text-white/80 hover:underline"
+                className="min-h-[44px] px-4 py-2.5 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
                 Read the design notes
               </button>
             </div>
-            <p className="mt-4 text-base text-white/55">
+            <p className="mt-4 text-base text-muted-foreground">
               Starts with a built-in generative pad — no input needed. Drop an audio file or use
               your mic any time.
             </p>
@@ -760,34 +760,34 @@ export default function SpectralSplatPage() {
         <>
           {/* top-left readouts */}
           <div className="pointer-events-none absolute left-4 top-4 z-20 font-mono text-sm">
-            <p className="text-white/95">
+            <p className="text-foreground">
               <span className="text-violet-300">●</span> {sourceLabel}
             </p>
-            <p className="text-white/75">bpm ~ {bpm > 0 ? bpm : "—"}</p>
-            <p className={onsetFlash ? "text-violet-200" : "text-white/55"}>
+            <p className="text-muted-foreground">bpm ~ {bpm > 0 ? bpm : "—"}</p>
+            <p className={onsetFlash ? "text-violet-200" : "text-muted-foreground"}>
               onset {onsetFlash ? "▮▮▮" : "·"}
             </p>
           </div>
 
           {/* top-right title + controls */}
           <div className="absolute right-4 top-4 z-20 flex flex-col items-end gap-2">
-            <h1 className="font-serif text-2xl text-white/95">Spectral Splat</h1>
+            <h1 className="font-serif text-2xl text-foreground">Spectral Splat</h1>
             <div className="flex flex-wrap justify-end gap-2">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="min-h-[44px] rounded-full bg-white/[0.06] px-4 py-2.5 text-base text-white/85 ring-1 ring-white/10 transition-colors hover:bg-white/[0.12]"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition-colors hover:bg-accent"
               >
                 Drop / load file
               </button>
               <button
                 onClick={loadDemo}
-                className="min-h-[44px] rounded-full bg-white/[0.06] px-4 py-2.5 text-base text-white/85 ring-1 ring-white/10 transition-colors hover:bg-white/[0.12]"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition-colors hover:bg-accent"
               >
                 Demo
               </button>
               <button
                 onClick={enableMic}
-                className="min-h-[44px] rounded-full bg-white/[0.06] px-4 py-2.5 text-base text-white/85 ring-1 ring-white/10 transition-colors hover:bg-white/[0.12]"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition-colors hover:bg-accent"
               >
                 Use mic
               </button>
@@ -798,8 +798,8 @@ export default function SpectralSplatPage() {
                 Design notes
               </button>
             </div>
-            {error && <p className="max-w-xs text-right text-base text-rose-300">{error}</p>}
-            {micNote && <p className="max-w-xs text-right text-base text-rose-300">{micNote}</p>}
+            {error && <p className="max-w-xs text-right text-base text-violet-300">{error}</p>}
+            {micNote && <p className="max-w-xs text-right text-base text-violet-300">{micNote}</p>}
           </div>
 
           {/* invisible full-area drop target */}
@@ -826,21 +826,21 @@ export default function SpectralSplatPage() {
       {/* design notes drawer */}
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center px-6">
-          <div className="max-h-[85vh] max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-black/85 p-8 backdrop-blur-md">
+          <div className="max-h-[85vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-black/85 p-8 backdrop-blur-md">
             <div className="flex items-start justify-between gap-4">
               <h2 className="font-serif text-3xl">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full bg-white/[0.08] px-4 py-2.5 text-base text-white/85 hover:bg-white/[0.16]"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>
             </div>
-            <div className="mt-4 space-y-4 text-base leading-relaxed text-white/80">
+            <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground">
               <p>
                 <span className="text-violet-300">The idea.</span> Most spectrum visualisers draw
                 hard points or bars. Here the spectrum is deposited as soft, additive{" "}
-                <span className="text-white/95">Gaussian splats</span> — anisotropic glowing blobs
+                <span className="text-foreground">Gaussian splats</span> — anisotropic glowing blobs
                 with an <code className="font-mono text-violet-300">exp(-r*r)</code> falloff — so the
                 accumulating history reads as luminous fog you fly through, not dots.
               </p>
@@ -861,7 +861,7 @@ export default function SpectralSplatPage() {
               </p>
               <p>
                 <span className="text-violet-300">Why splats, not points.</span> Inspired by{" "}
-                <span className="text-white/95">AudioGS — &ldquo;Spectrogram-Based Audio Gaussian
+                <span className="text-foreground">AudioGS — &ldquo;Spectrogram-Based Audio Gaussian
                 Splatting for Sound Field Reconstruction&rdquo;</span> (arXiv 2604.08967, 2026),
                 which represents a sound field as a set of audio Gaussians derived from spectrograms.
                 We borrow the aesthetic, not the math: soft Gaussians give a continuous volumetric
@@ -876,7 +876,7 @@ export default function SpectralSplatPage() {
       {/* bottom-left back link */}
       <Link
         href="/dream"
-        className="absolute bottom-4 left-4 z-20 font-mono text-sm text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 left-4 z-20 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         ← all prototypes
       </Link>

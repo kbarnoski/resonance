@@ -269,10 +269,10 @@ export default function KidsEchoCanon() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#040014] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#040014] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🎵</div>
-        <h1 className="text-2xl font-serif text-white/95">Echo Canon</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Echo Canon</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           Tap out a little tune — then wait. It echoes back higher and higher!
         </p>
         <div className="flex gap-5 items-center mt-1">
@@ -291,12 +291,12 @@ export default function KidsEchoCanon() {
           ))}
         </div>
         <button
-          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-white/95 text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={handleStart}
         >
           🎵 Start playing
         </button>
-        <p className="text-sm text-white/55">no microphone needed · for kids 3+</p>
+        <p className="text-sm text-muted-foreground">no microphone needed · for kids 3+</p>
       </div>
     );
   }

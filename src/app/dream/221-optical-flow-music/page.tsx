@@ -542,10 +542,10 @@ export default function OpticalFlowMusic() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 text-center">
           <div>
-            <h1 className="text-3xl font-mono font-bold text-white/95 tracking-tight">
+            <h1 className="text-3xl font-mono font-bold text-foreground tracking-tight">
               Optical Flow Music
             </h1>
-            <p className="mt-3 text-base text-white/75 max-w-sm mx-auto">
+            <p className="mt-3 text-base text-muted-foreground max-w-sm mx-auto">
               Move in front of the camera — the motion becomes music.
               Flow direction shifts pitch; speed opens the filter; downward
               motion deepens the reverb.
@@ -556,20 +556,20 @@ export default function OpticalFlowMusic() {
             <button
               onClick={() => setMode("camera")}
               className="min-h-[52px] px-6 py-3 rounded-xl bg-violet-600/90 hover:bg-violet-500
-                         text-white text-base font-semibold transition-colors"
+                         text-foreground text-base font-semibold transition-colors"
             >
               🎥 Use Camera
             </button>
             <button
               onClick={() => setMode("demo")}
-              className="min-h-[52px] px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20
-                         text-white text-base font-semibold transition-colors border border-white/20"
+              className="min-h-[52px] px-6 py-3 rounded-xl bg-muted hover:bg-accent
+                         text-foreground text-base font-semibold transition-colors border border-border"
             >
               ▶ Demo mode
             </button>
           </div>
 
-          <p className="text-xs text-white/45">
+          <p className="text-xs text-muted-foreground">
             No audio data is sent anywhere · camera never leaves your device
           </p>
         </div>
@@ -580,10 +580,10 @@ export default function OpticalFlowMusic() {
         <>
           {/* Top-left info */}
           <div className="absolute top-4 left-4 flex flex-col gap-1 pointer-events-none">
-            <div className="text-2xl font-mono font-bold text-white/90">
+            <div className="text-2xl font-mono font-bold text-foreground">
               {hudNote}
             </div>
-            <div className="text-xs text-white/55 font-mono">
+            <div className="text-xs text-muted-foreground font-mono">
               motion {hudMag}% · {mode === "demo" ? "demo" : "camera"}
             </div>
           </div>
@@ -595,7 +595,7 @@ export default function OpticalFlowMusic() {
               setCamErr(null);
             }}
             className="absolute top-4 right-4 min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg
-                       bg-white/10 hover:bg-white/20 text-white/80 text-sm transition-colors"
+                       bg-muted hover:bg-accent text-foreground text-sm transition-colors"
           >
             ✕ Stop
           </button>
@@ -603,27 +603,27 @@ export default function OpticalFlowMusic() {
           {/* Camera error banner */}
           {camErr && (
             <div className="absolute top-16 left-0 right-0 mx-auto w-fit
-                            px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/40
-                            text-amber-300 text-sm text-center">
+                            px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/40
+                            text-violet-300 text-sm text-center">
               {camErr}
             </div>
           )}
 
           {/* Legend: direction colors */}
           <div className="absolute bottom-12 right-4 flex flex-col gap-1 pointer-events-none">
-            <div className="flex items-center gap-2 text-xs text-white/60">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="w-3 h-0.5 bg-[#f59e0b] inline-block rounded" />
               right → higher pitch
             </div>
-            <div className="flex items-center gap-2 text-xs text-white/60">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="w-3 h-0.5 bg-[#7c3aed] inline-block rounded" />
               left → lower pitch
             </div>
-            <div className="flex items-center gap-2 text-xs text-white/60">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="w-3 h-0.5 bg-[#14b8a6] inline-block rounded" />
               up → brighter filter
             </div>
-            <div className="flex items-center gap-2 text-xs text-white/60">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="w-3 h-0.5 bg-[#f43f5e] inline-block rounded" />
               down → deeper reverb
             </div>
@@ -635,7 +635,7 @@ export default function OpticalFlowMusic() {
       <Link
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/221-optical-flow-music/README.md"
         target="_blank"
-        className="absolute bottom-2 left-3 text-xs text-white/35 hover:text-white/60 transition-colors"
+        className="absolute bottom-2 left-3 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
       >
         design notes
       </Link>

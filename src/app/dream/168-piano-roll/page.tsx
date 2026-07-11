@@ -364,31 +364,31 @@ export default function PianoRoll() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-3xl font-light mb-3 tracking-tight">Piano Roll</h1>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             Play piano into your mic. Each note appears as a glowing bar scrolling left —
             pitch sets the row, color shifts from violet (low) to red (high).
           </p>
-          <p className="text-sm text-white/55 max-w-md mb-8">
+          <p className="text-sm text-muted-foreground max-w-md mb-8">
             A real-time visual record of everything you play.
           </p>
           <div className="flex gap-3 mb-4">
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
             >
               Start mic
             </button>
             <button
               onClick={startDemo}
-              className="px-5 py-3 text-sm tracking-wider uppercase border border-white/15 text-white/55 rounded hover:bg-white/5 hover:text-white/80 transition min-h-[44px]"
+              className="px-5 py-3 text-sm tracking-wider uppercase border border-border text-muted-foreground rounded hover:bg-accent hover:text-foreground transition min-h-[44px]"
             >
               Demo
             </button>
           </div>
           {micError && (
-            <p className="mt-2 text-sm text-rose-300 max-w-sm">{micError}</p>
+            <p className="mt-2 text-sm text-violet-300 max-w-sm">{micError}</p>
           )}
-          <Link href="/dream" className="mt-10 text-xs text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-10 text-xs text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -400,9 +400,9 @@ export default function PianoRoll() {
             className="absolute top-0 left-0 right-0 h-10 flex items-center justify-between px-4 pointer-events-none"
             style={{ background: "linear-gradient(to bottom, rgba(6,7,10,0.88), transparent)" }}
           >
-            <span className="text-sm font-light text-white/80 tracking-wide">Piano Roll</span>
+            <span className="text-sm font-light text-foreground tracking-wide">Piano Roll</span>
             <div className="flex items-center gap-4 pointer-events-auto">
-              <label className="flex items-center gap-2 text-xs text-white/60">
+              <label className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="w-16 text-right">{bpm} BPM</span>
                 <input
                   type="range" min={30} max={200} value={bpm}
@@ -411,7 +411,7 @@ export default function PianoRoll() {
                 />
               </label>
               {phase === "running" && (
-                <span className="text-xs text-emerald-300/80 tracking-wider">
+                <span className="text-xs text-violet-300/80 tracking-wider">
                   ● <span ref={noteDisplayRef} className="font-mono" />
                 </span>
               )}
@@ -424,12 +424,12 @@ export default function PianoRoll() {
             className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4"
             style={{ height: 36, background: "linear-gradient(to top, rgba(6,7,10,0.88), transparent)" }}
           >
-            <Link href="/dream" className="text-xs text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <button
               onClick={stop}
-              className="text-xs tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1.5 rounded min-h-[36px]"
+              className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded min-h-[36px]"
             >
               stop
             </button>

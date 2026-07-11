@@ -283,14 +283,14 @@ export default function KidsLightLoomPage() {
       {/* ── WebGL error ───────────────────────────────────────────────────── */}
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="text-rose-300 text-xl text-center font-mono">{glError}</p>
+          <p className="text-violet-300 text-xl text-center font-mono">{glError}</p>
         </div>
       )}
 
       {/* ── Audio error (non-fatal — visuals still run) ────────────────────── */}
       {audioError && mode === "running" && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-          <p className="text-rose-300 text-base font-mono bg-black/50 rounded px-3 py-1">
+          <p className="text-violet-300 text-base font-mono bg-black/50 rounded px-3 py-1">
             Audio unavailable — {audioError}
           </p>
         </div>
@@ -300,10 +300,10 @@ export default function KidsLightLoomPage() {
       {mode === "idle" && !glError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 z-10 bg-[#05050f]/90 backdrop-blur-sm">
           <div className="text-center px-6">
-            <h1 className="text-white text-3xl font-bold tracking-wide mb-2">
+            <h1 className="text-foreground text-3xl font-bold tracking-wide mb-2">
               Light Loom
             </h1>
-            <p className="text-white/75 text-lg">
+            <p className="text-muted-foreground text-lg">
               Drag across the glowing strings to make them sing
             </p>
           </div>
@@ -326,8 +326,8 @@ export default function KidsLightLoomPage() {
 
           <button
             onClick={handleStart}
-            className="min-h-[60px] px-10 py-3 rounded-full text-white text-xl font-bold
-                       bg-white/10 hover:bg-white/20 active:bg-white/30 border border-white/20
+            className="min-h-[60px] px-10 py-3 rounded-full text-foreground text-xl font-bold
+                       bg-muted hover:bg-accent active:bg-muted border border-border
                        transition-all duration-200 shadow-lg"
             style={{
               boxShadow: "0 0 32px rgba(180,120,255,0.35)",
@@ -336,7 +336,7 @@ export default function KidsLightLoomPage() {
             ▶ Start Playing
           </button>
 
-          <p className="text-white/55 text-base font-mono">
+          <p className="text-muted-foreground text-base font-mono">
             Drag slowly for soft glow · Drag fast for bright sound
           </p>
         </div>
@@ -348,7 +348,7 @@ export default function KidsLightLoomPage() {
           {NOTE_NAMES.map((name, i) => (
             <span
               key={i}
-              className="text-white/75 text-base font-mono transition-all duration-150"
+              className="text-muted-foreground text-base font-mono transition-all duration-150"
               style={{
                 color: STRING_COLORS[i],
                 opacity: 0.65,
@@ -366,7 +366,7 @@ export default function KidsLightLoomPage() {
         {mode === "running" && (
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="text-white/55 text-base font-mono hover:text-white/75 transition-colors
+            className="text-muted-foreground text-base font-mono hover:text-muted-foreground transition-colors
                        min-h-[44px] px-4 py-2.5"
           >
             {showNotes ? "× close" : "? notes"}
@@ -374,7 +374,7 @@ export default function KidsLightLoomPage() {
         )}
         <Link
           href="/dream/320-kids-light-loom/README.md"
-          className="text-white/55 text-base font-mono hover:text-white/75 transition-colors
+          className="text-muted-foreground text-base font-mono hover:text-muted-foreground transition-colors
                      min-h-[44px] px-4 py-2.5 flex items-center"
         >
           Read the design notes
@@ -385,20 +385,20 @@ export default function KidsLightLoomPage() {
       {showNotes && (
         <div
           className="absolute top-14 right-3 w-80 max-w-[90vw] z-20
-                     bg-black/80 border border-white/10 rounded-xl p-5 text-sm"
+                     bg-black/80 border border-border rounded-xl p-5 text-sm"
         >
-          <h2 className="text-white text-xl font-bold mb-3">How it works</h2>
-          <ul className="text-white/75 text-base space-y-2 list-disc list-inside">
+          <h2 className="text-foreground text-xl font-bold mb-3">How it works</h2>
+          <ul className="text-muted-foreground text-base space-y-2 list-disc list-inside">
             <li>Drag a finger along any glowing string to bow it</li>
             <li>Slow drag = soft & dark · Fast drag = bright & loud</li>
             <li>Two fingers, two kids — harmonize together</li>
             <li>The string SUSTAINS while you move — try holding the drag</li>
           </ul>
-          <h3 className="text-white text-base font-semibold mt-4 mb-1">Scale</h3>
-          <p className="text-white/75 text-base font-mono">
+          <h3 className="text-foreground text-base font-semibold mt-4 mb-1">Scale</h3>
+          <p className="text-muted-foreground text-base font-mono">
             D-Dorian hexachord: D E F G A C
           </p>
-          <p className="text-white/55 text-base mt-2">
+          <p className="text-muted-foreground text-base mt-2">
             Just-intonation 5ths/4ths over D root. No wrong notes.
           </p>
         </div>

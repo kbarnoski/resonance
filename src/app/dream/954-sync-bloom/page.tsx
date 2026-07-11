@@ -301,15 +301,15 @@ export default function SyncBloomPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-white">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl text-white md:text-5xl">
+          <h1 className="font-serif text-2xl text-foreground md:text-5xl">
             Sync Bloom
           </h1>
-          <p className="mt-2 text-base text-white/80 md:text-lg">
+          <p className="mt-2 text-base text-foreground md:text-lg">
             A field of hundreds of coupled oscillators. Scribble coupling into it
             and watch the phases lock into clusters — each locked cluster becomes
             a real consonant pitch, so the chord you hear is the field reaching
@@ -327,11 +327,11 @@ export default function SyncBloomPage() {
           <div className="mx-auto flex max-w-lg flex-col items-center text-center">
             <button
               onClick={enter}
-              className="min-h-[44px] rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-xl font-medium text-white backdrop-blur-sm transition hover:bg-white/20"
+              className="min-h-[44px] rounded-2xl border border-border bg-muted px-6 py-3 text-xl font-medium text-foreground backdrop-blur-sm transition hover:bg-accent"
             >
               Start the field
             </button>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Sound starts on your tap (browsers require a gesture). Then drag
               across the field to drip in coupling — or just watch: it breathes
               itself into sync within a second.
@@ -341,7 +341,7 @@ export default function SyncBloomPage() {
 
         {entered && (
           <div className="mx-auto w-full max-w-md">
-            <label className="block text-center font-mono text-base text-white/75">
+            <label className="block text-center font-mono text-base text-muted-foreground">
               global coupling K{" "}
               <span className="text-violet-300">{kGlobal.toFixed(2)}</span>
             </label>
@@ -355,7 +355,7 @@ export default function SyncBloomPage() {
               className="mt-2 h-2 w-full cursor-pointer accent-violet-400"
               aria-label="global coupling K"
             />
-            <p className="mt-2 text-center text-base text-white/60">
+            <p className="mt-2 text-center text-base text-muted-foreground">
               Low K → scattered, beating, unresolved. High K → clusters lock, the
               chord fills in and resolves toward consonance.
             </p>
@@ -364,32 +364,32 @@ export default function SyncBloomPage() {
 
         <footer className="max-w-3xl">
           {errMsg && (
-            <p className="mb-3 rounded-lg border border-rose-400/40 bg-rose-950/30 px-4 py-2.5 text-base text-rose-300">
+            <p className="mb-3 rounded-lg border border-violet-400/40 bg-violet-950/30 px-4 py-2.5 text-base text-violet-300">
               {errMsg}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               render:{" "}
               <span className="text-violet-300">{renderLabel[renderState]}</span>
             </span>
             {entered && (
               <>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   sync r{" "}
-                  <span className="text-emerald-300/95">
+                  <span className="text-violet-300/95">
                     {(hud.order * 100).toFixed(0)}%
                   </span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   chord{" "}
-                  <span className="text-amber-300/95">{hud.chord}</span>
+                  <span className="text-violet-300/95">{hud.chord}</span>
                 </span>
               </>
             )}
             <Link
               href="/dream"
-              className="text-white/75 underline underline-offset-4 hover:text-white"
+              className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
               ← back to the lab
             </Link>
@@ -399,10 +399,10 @@ export default function SyncBloomPage() {
 
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
-          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-white/80">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p>
-              <span className="text-white/95">The question:</span> what if a
+              <span className="text-foreground">The question:</span> what if a
               chord could grow itself? Instead of looking harmony up from a chart,
               you grow it: a field of {cfgRef.current.n} phase-coupled oscillators
               runs on the GPU, and when you nudge them they spontaneously
@@ -411,32 +411,32 @@ export default function SyncBloomPage() {
               reaching consensus.
             </p>
             <p>
-              <span className="text-white/95">The Kuramoto model.</span> Each
+              <span className="text-foreground">The Kuramoto model.</span> Each
               oscillator i has a phase θ and a natural frequency ω. Every step,
               dθ/dt = ω + K·r·sin(ψ − θ), where r·e^{"{iψ}"} is the field&apos;s
               mean
               phase (the <span className="text-violet-300">order parameter</span>
               ). When K is large enough relative to the spread of natural
               frequencies, sub-populations spontaneously{" "}
-              <span className="text-white/95">phase-lock</span>. That locking is,
+              <span className="text-foreground">phase-lock</span>. That locking is,
               physically, what musical consonance is: simple frequency ratios
               lock; dissonance never settles and beats.
             </p>
             <p>
-              <span className="text-white/95">On the GPU.</span> The integration
+              <span className="text-foreground">On the GPU.</span> The integration
               runs as a raw WGSL{" "}
-              <span className="text-white/95">@compute</span> shader — a reduction
+              <span className="text-foreground">@compute</span> shader — a reduction
               pass folds the field into the order parameter, an advance pass steps
               every phase toward the mean field, both on storage buffers. Every
-              few frames we async <span className="text-white/95">mapAsync</span>{" "}
+              few frames we async <span className="text-foreground">mapAsync</span>{" "}
               the phases back, bin them, and find phase-locked clusters; each
               cluster&apos;s effective frequency snaps to the nearest{" "}
-              <span className="text-white/95">just-intonation</span> partial of a
+              <span className="text-foreground">just-intonation</span> partial of a
               slowly drifting root (1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, 2). The set
               of locked clusters = the current chord.
             </p>
             <p>
-              <span className="text-white/95">Sound.</span> Each locked partial is
+              <span className="text-foreground">Sound.</span> Each locked partial is
               voiced as a warm additive tone (sine + soft triangle body) with a
               gentle FM vibrato, over a root drone bed. As coupling rises more
               clusters lock and the chord fills in toward consonance; as it falls
@@ -445,30 +445,30 @@ export default function SyncBloomPage() {
               samples — pure synthesis.
             </p>
             <p>
-              <span className="text-white/95">Visuals.</span> Each oscillator is a
+              <span className="text-foreground">Visuals.</span> Each oscillator is a
               glowing point whose hue encodes its phase; phase-locked clusters
               read as coherent colour-bands blooming out of noise, and the global
               order parameter drives the overall bloom and contrast. Luminous and
               bioluminescent — Ikeda precision warmed by Anadol flow.
             </p>
-            <p className="text-white/75">
-              <span className="text-white/95">Degrades:</span> no WebGPU →
+            <p className="text-muted-foreground">
+              <span className="text-foreground">Degrades:</span> no WebGPU →
               hand-written WebGL2 render running the{" "}
-              <span className="text-white/95">same</span> Kuramoto math on the CPU
+              <span className="text-foreground">same</span> Kuramoto math on the CPU
               (and a rose notice). Autonomous breathing of K means an idle glance
               still sees and hears it self-organize within ~1s; the pointer brush
               drips extra coupling where you scribble.
             </p>
-            <p className="text-white/75">
-              <span className="text-white/95">References.</span> Y. Kuramoto
+            <p className="text-muted-foreground">
+              <span className="text-foreground">References.</span> Y. Kuramoto
               (1975), the coupled-oscillator model · Steven Strogatz,{" "}
               <em>Sync</em> (2003) · &quot;Kuramoto oscillatory Phase Encoding&quot;
               (KoPE), arXiv 2604.07904 (2026) — the deep-learning revival of
               Kuramoto sync that prompted re-reading synchronization as a
               generative primitive.
             </p>
-            <p className="text-white/60">
-              <span className="text-white/80">Honest warts:</span> cluster→JI
+            <p className="text-muted-foreground">
+              <span className="text-foreground">Honest warts:</span> cluster→JI
               mapping is a heuristic (phase-bin density + nearest-ratio snap), so
               the exact voicing wanders; the GPU order parameter lags one frame
               behind the advance (we fold it async), which is harmless here but
@@ -476,7 +476,7 @@ export default function SyncBloomPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] rounded-xl border border-white/20 px-4 py-2.5 text-base text-white hover:bg-white/10"
+              className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

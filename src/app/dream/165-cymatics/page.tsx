@@ -346,7 +346,7 @@ export default function CymaticsPage() {
   const modeLabel = `(${currentMode.m},${currentMode.n})`;
 
   return (
-    <div className="min-h-screen bg-[#04040c] text-white flex flex-col">
+    <div className="min-h-screen bg-[#04040c] text-foreground flex flex-col">
       {/* Canvas */}
       <div className="flex justify-center px-4 pt-5">
         <div className="relative w-full max-w-[480px]">
@@ -359,20 +359,20 @@ export default function CymaticsPage() {
           />
           {/* mode overlay */}
           {uiMode !== "idle" && (
-            <div className="absolute bottom-3 left-3 font-mono text-xs text-white/55 bg-black/30 px-2 py-1 rounded">
+            <div className="absolute bottom-3 left-3 font-mono text-xs text-muted-foreground bg-black/30 px-2 py-1 rounded">
               mode {modeLabel} · {currentHz} Hz
             </div>
           )}
           {uiMode === "demo" && (
             <div className="absolute top-3 right-3 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              <span className="text-xs text-white/55">demo</span>
+              <span className="text-xs text-muted-foreground">demo</span>
             </div>
           )}
           {uiMode === "live" && (
             <div className="absolute top-3 right-3 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-white/55">live</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-xs text-muted-foreground">live</span>
             </div>
           )}
         </div>
@@ -381,14 +381,14 @@ export default function CymaticsPage() {
       {/* Header */}
       <div className="px-5 pt-4 pb-2 flex items-start justify-between max-w-lg mx-auto w-full">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Cymatics</h1>
-          <p className="text-base text-white/75 mt-1">
+          <h1 className="text-2xl font-semibold text-foreground">Cymatics</h1>
+          <p className="text-base text-muted-foreground mt-1">
             Chladni plate patterns from sound — each frequency resonates a unique standing-wave shape
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/40 hover:text-white/70 transition-colors ml-4 mt-1 shrink-0"
+          className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors ml-4 mt-1 shrink-0"
         >
           ← dreams
         </Link>
@@ -407,18 +407,18 @@ export default function CymaticsPage() {
         >
           {uiMode === "demo" ? "■  Stop demo" : "▶  Demo — sweep through 25 modes"}
         </button>
-        <p className="text-sm text-white/55 text-center -mt-2">
+        <p className="text-sm text-muted-foreground text-center -mt-2">
           Slowly cycles through resonant modes (1,1) → (5,5) · watch patterns transform
         </p>
 
         <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-sm text-white/40">or use Karel&apos;s recordings</span>
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-muted" />
+          <span className="text-sm text-muted-foreground/70">or use Karel&apos;s recordings</span>
+          <div className="flex-1 h-px bg-muted" />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm text-white/75">Recording ID</label>
+          <label className="block text-sm text-muted-foreground">Recording ID</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -426,7 +426,7 @@ export default function CymaticsPage() {
               onChange={(e) => setRecordingId(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && loadRecordingUrl()}
               placeholder="paste a recording UUID…"
-              className="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-base text-white placeholder-white/25 focus:outline-none focus:border-white/40"
+              className="flex-1 bg-muted border border-border rounded-lg px-3 py-2.5 text-base text-foreground placeholder-muted-foreground focus:outline-none focus:border-border"
               style={{ minHeight: 44 }}
             />
             <button
@@ -438,9 +438,9 @@ export default function CymaticsPage() {
               {loading ? "…" : "Load"}
             </button>
           </div>
-          {loadError && <p className="text-sm text-rose-300">{loadError}</p>}
+          {loadError && <p className="text-sm text-violet-300">{loadError}</p>}
           {audioUrl && !loadError && (
-            <p className="text-sm text-emerald-300/95">Recording loaded ✓</p>
+            <p className="text-sm text-violet-300/95">Recording loaded ✓</p>
           )}
         </div>
 
@@ -461,17 +461,17 @@ export default function CymaticsPage() {
           </div>
         )}
 
-        <p className="text-sm text-white/55 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           Chladni figures are the standing-wave node patterns on a vibrating plate — literally what
           gives Resonance its name. Each frequency excites a distinct mode; as pitch rises the
           patterns grow more intricate. The symmetry you see is physical law.
         </p>
 
-        <p className="text-xs text-white/30">
+        <p className="text-xs text-muted-foreground/70">
           <Link
             href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/165-cymatics/README.md"
             target="_blank"
-            className="underline underline-offset-2 hover:text-white/50"
+            className="underline underline-offset-2 hover:text-muted-foreground"
           >
             design notes
           </Link>

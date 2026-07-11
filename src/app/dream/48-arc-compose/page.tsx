@@ -265,18 +265,18 @@ export default function ArcComposePage() {
   const isPlaying = arcPhase === "playing";
 
   return (
-    <div className="min-h-screen bg-black text-white/90 font-mono flex flex-col">
+    <div className="min-h-screen bg-black text-foreground font-mono flex flex-col">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-white/10 flex-none">
+      <div className="px-6 pt-6 pb-4 border-b border-border flex-none">
         <div className="flex items-baseline justify-between gap-4">
           <div>
             <h1 className="text-lg tracking-tight">Arc Compose</h1>
-            <p className="text-[11px] text-white/40 mt-0.5">
+            <p className="text-[11px] text-muted-foreground/70 mt-0.5">
               Write a journey arc with section tags → MiniMax Music 2.6 generates a structured piece ·{" "}
-              <span className="text-white/25">$0.03 · FAL_KEY</span>
+              <span className="text-muted-foreground/70">$0.03 · FAL_KEY</span>
             </p>
           </div>
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>
@@ -285,16 +285,16 @@ export default function ArcComposePage() {
       {/* Two-column main */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2">
         {/* Left: arc editor */}
-        <div className="p-6 border-r border-white/10 flex flex-col gap-4">
+        <div className="p-6 border-r border-border flex flex-col gap-4">
           {/* Section tag buttons */}
           <div>
-            <p className="text-[10px] text-white/35 tracking-wider uppercase mb-2">Insert section tag</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-wider uppercase mb-2">Insert section tag</p>
             <div className="flex flex-wrap gap-1.5">
               {SECTION_TAGS.map(tag => (
                 <button
                   key={tag}
                   onClick={() => addTag(tag)}
-                  className="text-[10px] px-2 py-1 border border-white/20 rounded hover:border-white/50 hover:text-white transition text-white/55"
+                  className="text-[10px] px-2 py-1 border border-border rounded hover:border-border hover:text-foreground transition text-muted-foreground"
                 >
                   {tag}
                 </button>
@@ -304,22 +304,22 @@ export default function ArcComposePage() {
 
           {/* Arc textarea */}
           <div className="flex flex-col gap-1.5 flex-1">
-            <p className="text-[10px] text-white/35 tracking-wider uppercase">Journey arc</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-wider uppercase">Journey arc</p>
             <textarea
               value={arc}
               onChange={e => setArc(e.target.value)}
-              className="flex-1 min-h-[200px] bg-white/[0.04] border border-white/15 rounded p-3 text-[12px] text-white/80 leading-relaxed resize-none focus:outline-none focus:border-white/30"
+              className="flex-1 min-h-[200px] bg-muted border border-border rounded p-3 text-[12px] text-foreground leading-relaxed resize-none focus:outline-none focus:border-border"
               spellCheck={false}
             />
           </div>
 
           {/* Style field */}
           <div className="flex flex-col gap-1.5">
-            <p className="text-[10px] text-white/35 tracking-wider uppercase">Style / genre</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-wider uppercase">Style / genre</p>
             <input
               value={style}
               onChange={e => setStyle(e.target.value)}
-              className="bg-white/[0.04] border border-white/15 rounded px-3 py-2 text-[12px] text-white/80 focus:outline-none focus:border-white/30"
+              className="bg-muted border border-border rounded px-3 py-2 text-[12px] text-foreground focus:outline-none focus:border-border"
               placeholder="cinematic orchestra, 80 BPM, dark ambient"
             />
           </div>
@@ -328,21 +328,21 @@ export default function ArcComposePage() {
           <button
             onClick={compose}
             disabled={isGenerating || !arc.trim()}
-            className="py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            className="py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isGenerating ? "Composing…" : "▶ Compose"}
           </button>
 
           {isGenerating && (
-            <p className="text-[11px] text-white/35 text-center animate-pulse">
+            <p className="text-[11px] text-muted-foreground/70 text-center animate-pulse">
               Reading your arc — 20–40 seconds
             </p>
           )}
 
           {arcPhase === "error" && (
-            <div className="bg-rose-950/30 border border-rose-500/30 rounded p-3 space-y-2">
-              <p className="text-[11px] text-rose-300/80 break-all leading-relaxed">{errMsg}</p>
-              <p className="text-[10px] text-white/25">
+            <div className="bg-violet-950/30 border border-violet-500/30 rounded p-3 space-y-2">
+              <p className="text-[11px] text-violet-300/80 break-all leading-relaxed">{errMsg}</p>
+              <p className="text-[10px] text-muted-foreground/70">
                 ⚠ If this is an API error, paste the message and the agent fixes the endpoint next cycle.
               </p>
             </div>
@@ -350,7 +350,7 @@ export default function ArcComposePage() {
 
           <Link
             href="/dream"
-            className="text-[10px] text-white/20 hover:text-white/50 transition text-center"
+            className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition text-center"
           >
             design notes in README.md ↗
           </Link>
@@ -367,7 +367,7 @@ export default function ArcComposePage() {
             />
             {!isPlaying && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <p className="text-[12px] text-white/20 tracking-wider">
+                <p className="text-[12px] text-muted-foreground/70 tracking-wider">
                   {isGenerating ? "generating your arc…" : "compose an arc to hear it"}
                 </p>
               </div>
@@ -376,21 +376,21 @@ export default function ArcComposePage() {
 
           {/* Waveform + controls */}
           {peaks.length > 0 && (
-            <div className="p-4 border-t border-white/10 space-y-3">
+            <div className="p-4 border-t border-border space-y-3">
               <canvas
                 ref={waveCanvasRef}
                 className="w-full rounded"
                 style={{ height: 56 }}
               />
               <div className="flex items-center justify-between">
-                <p className="text-[10px] text-white/35">
+                <p className="text-[10px] text-muted-foreground/70">
                   {Math.round(duration)}s · MiniMax Music 2.6
                 </p>
                 <div className="flex gap-2">
                   {!isPlaying && (
                     <button
                       onClick={replay}
-                      className="text-[10px] tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+                      className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
                     >
                       ▶ replay
                     </button>
@@ -399,7 +399,7 @@ export default function ArcComposePage() {
                     <a
                       href={audioUrl}
                       download="arc-compose.mp3"
-                      className="text-[10px] tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+                      className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
                     >
                       ↓ mp3
                     </a>

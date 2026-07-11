@@ -310,23 +310,23 @@ export default function Page() {
       {/* ---- HEADER ---- */}
       <div className="flex-none flex items-center justify-between px-4 pt-3 pb-1 z-10">
         <div>
-          <h1 className="text-white/95 text-2xl font-bold leading-tight tracking-tight">
+          <h1 className="text-foreground text-2xl font-bold leading-tight tracking-tight">
             Texture Paint
           </h1>
-          <p className="text-white/60 text-base leading-snug">
+          <p className="text-muted-foreground text-base leading-snug">
             Tap or drag to paint &amp; hear!
           </p>
         </div>
         <div className="flex gap-2 items-center">
           {audioReady && (
-            <span className="text-white/40 text-sm">
+            <span className="text-muted-foreground/70 text-sm">
               🔊
             </span>
           )}
           <button
             onClick={clearCanvas}
             aria-label="Clear canvas"
-            className="text-white/70 hover:text-white/95 text-base font-medium min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 active:bg-white/20 transition-colors"
+            className="text-muted-foreground hover:text-foreground text-base font-medium min-h-[44px] px-4 py-2.5 rounded-xl bg-muted hover:bg-accent active:bg-muted transition-colors"
           >
             Clear
           </button>
@@ -350,15 +350,15 @@ export default function Page() {
             aria-label="Tap to start audio"
           >
             <span className="text-5xl">👆</span>
-            <span className="text-white/95 text-2xl font-bold">Tap to Start!</span>
-            <span className="text-white/70 text-base">Touch anywhere to wake up the sounds</span>
+            <span className="text-foreground text-2xl font-bold">Tap to Start!</span>
+            <span className="text-muted-foreground text-base">Touch anywhere to wake up the sounds</span>
           </button>
         )}
       </div>
 
       {/* ---- BRUSH PICKER ---- */}
       <div
-        className="flex-none bg-zinc-900/90 backdrop-blur border-t border-white/10 px-3 py-3 z-10"
+        className="flex-none bg-zinc-900/90 backdrop-blur border-t border-border px-3 py-3 z-10"
         role="toolbar"
         aria-label="Choose a texture brush"
       >
@@ -382,7 +382,7 @@ export default function Page() {
                   {brush.icon}
                 </span>
                 <span
-                  className="text-white/90 text-xs font-semibold leading-none tracking-wide"
+                  className="text-foreground text-xs font-semibold leading-none tracking-wide"
                   aria-hidden="true"
                 >
                   {brush.label}
@@ -393,7 +393,7 @@ export default function Page() {
         </div>
 
         {/* Active brush label (big enough for kids) */}
-        <p className="text-center text-white/80 text-base mt-2 leading-none">
+        <p className="text-center text-foreground text-base mt-2 leading-none">
           {activeBrushDef.description}
         </p>
       </div>
@@ -402,7 +402,7 @@ export default function Page() {
       <div className="flex-none px-4 pb-2 text-right z-10">
         <a
           href="#readme"
-          className="text-white/55 hover:text-white/80 text-sm underline transition-colors"
+          className="text-muted-foreground hover:text-foreground text-sm underline transition-colors"
           aria-label="Read the design notes"
           onClick={(e) => {
             e.preventDefault();

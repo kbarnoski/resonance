@@ -15,10 +15,10 @@ type SillyButton = {
 };
 
 const SILLY_BUTTONS: SillyButton[] = [
-  { mode: "chipmunk", icon: "🐿️", color: "bg-amber-400", label: "chipmunk" },
-  { mode: "monster", icon: "👹", color: "bg-rose-500", label: "monster" },
-  { mode: "backwards", icon: "🔁", color: "bg-sky-400", label: "backwards" },
-  { mode: "robot", icon: "🤖", color: "bg-emerald-400", label: "robot" },
+  { mode: "chipmunk", icon: "🐿️", color: "bg-violet-400", label: "chipmunk" },
+  { mode: "monster", icon: "👹", color: "bg-violet-500", label: "monster" },
+  { mode: "backwards", icon: "🔁", color: "bg-violet-400", label: "backwards" },
+  { mode: "robot", icon: "🤖", color: "bg-violet-400", label: "robot" },
   { mode: "wobble", icon: "🌊", color: "bg-violet-400", label: "wobble" },
 ];
 
@@ -293,10 +293,10 @@ function playPrebaked(engine: Engine, idx: number): void {
 }
 
 const PREBAKED: SillyButton[] = [
-  { mode: "chipmunk", icon: "🪀", color: "bg-amber-400", label: "boing" },
-  { mode: "monster", icon: "📯", color: "bg-rose-500", label: "honk" },
-  { mode: "backwards", icon: "🎈", color: "bg-sky-400", label: "pop" },
-  { mode: "robot", icon: "🛸", color: "bg-emerald-400", label: "whistle" },
+  { mode: "chipmunk", icon: "🪀", color: "bg-violet-400", label: "boing" },
+  { mode: "monster", icon: "📯", color: "bg-violet-500", label: "honk" },
+  { mode: "backwards", icon: "🎈", color: "bg-violet-400", label: "pop" },
+  { mode: "robot", icon: "🛸", color: "bg-violet-400", label: "whistle" },
   { mode: "wobble", icon: "😝", color: "bg-violet-400", label: "raspberry" },
 ];
 
@@ -530,13 +530,13 @@ export default function KidsSillyVoice() {
   const buttons = micDenied && !bufferRef.current ? PREBAKED : SILLY_BUTTONS;
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#15102a] text-white select-none">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#15102a] text-foreground select-none">
       {/* monster canvas fills the screen */}
       {canvasOk ? (
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-          <p className="text-rose-300 text-xl">
+          <p className="text-violet-300 text-xl">
             Your screen can’t draw the monster right now. Try another browser!
           </p>
         </div>
@@ -545,10 +545,10 @@ export default function KidsSillyVoice() {
       {/* INTRO: big start button (creates + resumes audio in this gesture) */}
       {phase === "intro" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-[#15102a]/80 backdrop-blur-sm px-6">
-          <h1 className="text-2xl sm:text-4xl font-bold text-white text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold text-foreground text-center">
             Silly Voice Monster
           </h1>
-          <p className="text-base sm:text-lg text-white/80 text-center max-w-sm">
+          <p className="text-base sm:text-lg text-foreground text-center max-w-sm">
             Talk to the monster. It says it back in the silliest voice!
           </p>
           <button
@@ -586,7 +586,7 @@ export default function KidsSillyVoice() {
             }}
             className={`flex h-40 w-40 items-center justify-center rounded-full text-7xl transition-transform active:scale-95 ${
               recording
-                ? "bg-rose-500/40 ring-8 ring-rose-300 animate-pulse scale-110"
+                ? "bg-violet-500/40 ring-8 ring-violet-300 animate-pulse scale-110"
                 : "bg-violet-500/30 ring-4 ring-violet-300"
             }`}
             aria-label={recording ? "Listening" : "Record your voice"}
@@ -606,7 +606,7 @@ export default function KidsSillyVoice() {
                 onClick={() => playSillyAndTrack(b.mode)}
                 className={`flex h-20 w-20 items-center justify-center rounded-3xl text-4xl shadow-lg transition-transform active:scale-90 ${
                   b.color
-                } ${activeMode === b.mode ? "scale-110 ring-4 ring-white" : ""}`}
+                } ${activeMode === b.mode ? "scale-110 ring-4 ring-border" : ""}`}
                 aria-label={b.label}
               >
                 {b.icon}
@@ -627,7 +627,7 @@ export default function KidsSillyVoice() {
               onClick={() => {
                 if (!recording) void runStartRecording();
               }}
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 ring-2 ring-white/40 text-3xl active:scale-90 transition-transform"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-muted ring-2 ring-border text-3xl active:scale-90 transition-transform"
               aria-label="Record again"
             >
               🎤
@@ -639,7 +639,7 @@ export default function KidsSillyVoice() {
       {/* friendly mic-denied message */}
       {micDenied && (
         <div className="absolute left-1/2 top-6 z-20 -translate-x-1/2 px-4 text-center">
-          <p className="text-rose-300 text-base max-w-xs">
+          <p className="text-violet-300 text-base max-w-xs">
             No microphone — but you can still press the silly buttons! 🎉
           </p>
         </div>
@@ -649,13 +649,13 @@ export default function KidsSillyVoice() {
       <div className="absolute bottom-2 left-3 z-30 flex items-center gap-3">
         <Link
           href="/dream"
-          className="text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
-        <details className="text-xs text-white/40">
-          <summary className="cursor-pointer hover:text-white/70">notes</summary>
-          <div className="absolute bottom-6 left-0 w-64 rounded-lg bg-black/80 p-3 text-white/70 text-xs leading-relaxed">
+        <details className="text-xs text-muted-foreground/70">
+          <summary className="cursor-pointer hover:text-muted-foreground">notes</summary>
+          <div className="absolute bottom-6 left-0 w-64 rounded-lg bg-black/80 p-3 text-muted-foreground text-xs leading-relaxed">
             A comedy voice-changer toy. Records ~1.8s of your voice and replays
             it with playback-rate, reverse, ring-mod and wobble. See README.md
             for the full design notes &amp; references (Talking Tom, Toca Boca).

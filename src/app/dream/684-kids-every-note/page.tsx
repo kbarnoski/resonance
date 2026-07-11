@@ -391,17 +391,17 @@ export default function KidsEveryNote() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-[#04060e] text-white px-4 py-6">
+    <main className="flex flex-col items-center min-h-screen bg-[#04060e] text-foreground px-4 py-6">
       <div className="w-full max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl font-mono font-bold mb-1 text-white/95">
+        <h1 className="text-2xl sm:text-3xl font-mono font-bold mb-1 text-foreground">
           Every Note
         </h1>
-        <p className="text-base text-white/80 mb-2">
+        <p className="text-base text-foreground mb-2">
           Touch any colored petal — all twelve. There is no wrong note. The
           music underneath quietly changes its chord to hold whatever you
           touch, so every color blooms into something beautiful.
         </p>
-        <p className="text-base text-white/75 mb-4">
+        <p className="text-base text-muted-foreground mb-4">
           12 chromatic petals · the harmony chases your note · no microphone, no
           reading
         </p>
@@ -436,7 +436,7 @@ export default function KidsEveryNote() {
             >
               Start
             </button>
-            <p className="text-base text-white/75 text-center max-w-md">
+            <p className="text-base text-muted-foreground text-center max-w-md">
               A calm garden of light. Tap any petal and listen for the chord
               that blooms to catch it.
             </p>
@@ -454,7 +454,7 @@ export default function KidsEveryNote() {
             />
             {canvasFailed && (
               <div className="absolute inset-0 flex items-center justify-center p-6 rounded-2xl bg-[#04060e]/90">
-                <p className="text-rose-300 text-base text-center max-w-sm">
+                <p className="text-violet-300 text-base text-center max-w-sm">
                   Canvas drawing is not available on this device, so the garden
                   can&apos;t glow — but the sound still plays. Use keys Z S X D
                   C V G B H N J M to touch the twelve notes.
@@ -462,11 +462,11 @@ export default function KidsEveryNote() {
               </div>
             )}
             <div className="mt-3 flex items-center justify-between">
-              <span className="text-base text-white/75 font-mono">
+              <span className="text-base text-muted-foreground font-mono">
                 chord:{" "}
-                <span className="text-white/95">{chordName}</span>
+                <span className="text-foreground">{chordName}</span>
               </span>
-              <span className="text-base text-white/75">
+              <span className="text-base text-muted-foreground">
                 keys: Z S X D C V G B H N J M
               </span>
             </div>
@@ -475,12 +475,12 @@ export default function KidsEveryNote() {
 
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="mt-5 text-base text-white/75 underline underline-offset-2 px-4 py-2.5 min-h-[44px]"
+          className="mt-5 text-base text-muted-foreground underline underline-offset-2 px-4 py-2.5 min-h-[44px]"
         >
           {showNotes ? "Hide design notes" : "Read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 text-base text-white/75 space-y-2 leading-relaxed">
+          <div className="mt-3 text-base text-muted-foreground space-y-2 leading-relaxed">
             <p>
               Most &ldquo;kids music&rdquo; toys hide every wrong note behind a
               5-note pentatonic cage. This does the opposite: it gives a
@@ -497,7 +497,7 @@ export default function KidsEveryNote() {
               chord plays underneath, re-tinting the aurora. A &ldquo;wrong&rdquo;
               note simply becomes the color of a new chord.
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               The retrieve → edit → rerank decomposition follows He, Li, Sun &amp;
               Huang, <em>A Decomposed Retrieval-Edit-Rerank Framework for Chord
               Generation</em> (arXiv:2605.07489, 2026). The lesson is pre-verbal:
@@ -507,7 +507,7 @@ export default function KidsEveryNote() {
           </div>
         )}
 
-        <div className="mt-5 flex items-center justify-between text-base text-white/75">
+        <div className="mt-5 flex items-center justify-between text-base text-muted-foreground">
           <span>For kids 4+ · zero permissions</span>
           <Link href="/dream" className="underline">
             ← dream lab

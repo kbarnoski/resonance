@@ -686,10 +686,10 @@ export default function KidsClapCanon() {
     >
       {/* Hero title + description */}
       <div className="w-full max-w-lg text-center mb-5">
-        <h1 className="text-3xl font-bold text-white/95 mb-2 tracking-tight leading-tight">
+        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight leading-tight">
           Clap Canon
         </h1>
-        <p className="text-base text-white/75 leading-relaxed">
+        <p className="text-base text-muted-foreground leading-relaxed">
           Clap a rhythm — two friends loop it back, but one drifts faster.
           Watch them slide in &amp; out of sync: Steve Reich&apos;s phasing, for kids!
         </p>
@@ -697,8 +697,8 @@ export default function KidsClapCanon() {
 
       {/* Mic denied warning */}
       {micDenied && (
-        <div className="mb-4 px-4 py-2.5 rounded-xl bg-rose-950/70 border border-rose-500/40 max-w-sm w-full">
-          <p className="text-rose-300 text-base font-medium text-center">
+        <div className="mb-4 px-4 py-2.5 rounded-xl bg-violet-950/70 border border-violet-500/40 max-w-sm w-full">
+          <p className="text-violet-300 text-base font-medium text-center">
             No mic access — tap anywhere to add your claps!
           </p>
         </div>
@@ -716,7 +716,7 @@ export default function KidsClapCanon() {
       </div>
 
       {/* Status message */}
-      <p className="text-base text-white/80 mb-5 text-center min-h-[1.5rem] px-2">
+      <p className="text-base text-foreground mb-5 text-center min-h-[1.5rem] px-2">
         {statusMsg}
       </p>
 
@@ -726,8 +726,8 @@ export default function KidsClapCanon() {
           <button
             onClick={handleStart}
             className="w-full min-h-[52px] px-6 py-3 rounded-2xl text-xl font-bold
-              text-white bg-gradient-to-r from-violet-600 to-fuchsia-500
-              hover:from-violet-500 hover:to-fuchsia-400
+              text-foreground bg-gradient-to-r from-violet-600 to-violet-500
+              hover:from-violet-500 hover:to-violet-400
               active:scale-95 transition-transform shadow-xl shadow-violet-900/40"
           >
             Start Clapping!
@@ -735,7 +735,7 @@ export default function KidsClapCanon() {
         )}
 
         {appPhase === "permission" && (
-          <p className="text-white/70 text-base animate-pulse text-center">
+          <p className="text-muted-foreground text-base animate-pulse text-center">
             Setting up mic…
           </p>
         )}
@@ -756,7 +756,7 @@ export default function KidsClapCanon() {
               ))}
             </div>
             {!micDenied && (
-              <p className="text-white/60 text-sm text-center">
+              <p className="text-muted-foreground text-sm text-center">
                 Listening for claps via microphone…
               </p>
             )}
@@ -768,14 +768,14 @@ export default function KidsClapCanon() {
             <button
               onClick={handleReclap}
               className="w-full min-h-[48px] px-5 py-2.5 rounded-xl text-base font-semibold
-                text-white/90 bg-white/10 border border-white/20
-                hover:bg-white/15 active:scale-95 transition-all"
+                text-foreground bg-muted border border-border
+                hover:bg-accent active:scale-95 transition-all"
             >
               👏 Clap a New Rhythm
             </button>
             {/* Phase legend */}
             <div className="text-center mt-1">
-              <p className="text-sm text-white/55">
+              <p className="text-sm text-muted-foreground">
                 <span style={{ color: CHAR_A_COLOR }}>●</span> A: steady loop
                 &nbsp;·&nbsp;
                 <span style={{ color: CHAR_B_COLOR }}>●</span> B: drifts faster
@@ -789,7 +789,7 @@ export default function KidsClapCanon() {
       <div className="fixed bottom-4 right-4 z-10">
         <Link
           href="./README.md"
-          className="text-xs text-white/30 hover:text-white/55 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           Design notes

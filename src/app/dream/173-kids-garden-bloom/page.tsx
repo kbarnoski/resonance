@@ -346,20 +346,20 @@ export default function Page() {
     return (
       <div className="fixed inset-0 bg-[#050510] flex flex-col items-center justify-center gap-8 px-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Garden Bloom 🌸</h1>
-          <p className="text-white/75 text-base max-w-xs">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Garden Bloom 🌸</h1>
+          <p className="text-muted-foreground text-base max-w-xs">
             Hold the soil to grow a glowing flower. Each petal plays a note.
             Hold longer for a richer chord.
           </p>
         </div>
         <button
           onClick={handleStart}
-          className="bg-emerald-700 hover:bg-emerald-600 text-white text-xl font-semibold
+          className="bg-violet-700 hover:bg-violet-600 text-foreground text-xl font-semibold
                      px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
         >
           ▶ Start
         </button>
-        <p className="text-white/55 text-sm">For kids 3+ · No permissions needed</p>
+        <p className="text-muted-foreground text-sm">For kids 3+ · No permissions needed</p>
       </div>
     )
   }
@@ -369,18 +369,18 @@ export default function Page() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full touch-none" />
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between
                       px-4 pt-3 pb-2 pointer-events-none select-none">
-        <span className="text-white/75 text-base font-semibold">Garden Bloom 🌸</span>
+        <span className="text-muted-foreground text-base font-semibold">Garden Bloom 🌸</span>
         <Link href="/dream"
-          className="text-white/55 text-sm pointer-events-auto hover:text-white/80">
+          className="text-muted-foreground text-sm pointer-events-auto hover:text-foreground">
           ← dream
         </Link>
       </div>
       <div className="absolute top-14 left-0 right-0 text-center pointer-events-none select-none">
-        <span className="text-white/40 text-sm">Hold the soil · longer hold = more petals</span>
+        <span className="text-muted-foreground/70 text-sm">Hold the soil · longer hold = more petals</span>
       </div>
       <div className="absolute bottom-5 right-4 pointer-events-auto">
         <Link href="/dream/173-kids-garden-bloom/readme"
-          className="text-white/35 text-xs hover:text-white/60">notes</Link>
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground">notes</Link>
       </div>
     </div>
   )

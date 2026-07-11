@@ -102,7 +102,7 @@ export default function KidsSkyBand() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#070912] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#070912] text-foreground">
       {/* WebGL2 sky fills the screen */}
       <canvas
         ref={canvasRef}
@@ -116,16 +116,16 @@ export default function KidsSkyBand() {
       {/* design-notes link, top-right corner */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/25 bg-black/30 px-4 py-2 text-sm text-white/80 backdrop-blur hover:text-white"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/30 px-4 py-2 text-sm text-foreground backdrop-blur hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
-        <h1 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
+        <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-4xl">
           Kids&rsquo; Sky Band
         </h1>
-        <p className="max-w-xl text-base text-white/80">
+        <p className="max-w-xl text-base text-foreground">
           A tiny band that plays the real sky outside your window right now &mdash;
           so it sounds a little different every day, because the weather is real.
         </p>
@@ -133,35 +133,35 @@ export default function KidsSkyBand() {
         {phase === "idle" && (
           <button
             onClick={start}
-            className="min-h-[44px] rounded-2xl bg-violet-500 px-6 py-3 text-lg font-medium text-white shadow-lg transition hover:bg-violet-400 active:scale-[0.98]"
+            className="min-h-[44px] rounded-2xl bg-violet-500 px-6 py-3 text-lg font-medium text-foreground shadow-lg transition hover:bg-violet-400 active:scale-[0.98]"
           >
             Start the sky band
           </button>
         )}
 
         {phase === "loading" && (
-          <p className="text-base text-white/75">Looking up at the sky&hellip;</p>
+          <p className="text-base text-muted-foreground">Looking up at the sky&hellip;</p>
         )}
 
         {phase === "playing" && weather && (
           <div className="flex flex-col items-center gap-3">
-            <p className="text-base text-white/75 sm:text-lg">
+            <p className="text-base text-muted-foreground sm:text-lg">
               {describeWeather(weather, source)}
             </p>
 
             {offline && (
-              <p className="text-sm text-amber-300/95">
+              <p className="text-sm text-violet-300/95">
                 Showing a sample sky &mdash; couldn&rsquo;t reach the weather.
               </p>
             )}
             {source === "fallback-location" && !offline && (
-              <p className="text-sm text-emerald-300/95">
+              <p className="text-sm text-violet-300/95">
                 Using San Francisco &mdash; location wasn&rsquo;t shared.
               </p>
             )}
 
             {noWebgl && (
-              <p className="max-w-md text-sm text-rose-300">
+              <p className="max-w-md text-sm text-violet-300">
                 Your device can&rsquo;t show the WebGL sky, but the band is still
                 playing. Close your eyes and listen.
               </p>
@@ -173,14 +173,14 @@ export default function KidsSkyBand() {
                 <button
                   key={f.id}
                   onClick={() => poke(f.id)}
-                  className="min-h-[44px] rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur transition hover:bg-white/20 active:scale-95"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2 text-sm text-foreground backdrop-blur transition hover:bg-accent active:scale-95"
                 >
                   <span aria-hidden>{f.emoji}</span>{" "}
                   <span>{f.label}</span>
                 </button>
               ))}
             </div>
-            <p className="max-w-md text-sm text-white/55">
+            <p className="max-w-md text-sm text-muted-foreground">
               You don&rsquo;t have to touch anything &mdash; the band plays itself.
               Tapping a sky-friend just makes it sing a little louder.
             </p>
@@ -190,9 +190,9 @@ export default function KidsSkyBand() {
 
       {/* expandable design notes panel */}
       {showNotes && (
-        <div className="absolute inset-x-4 bottom-4 z-30 mx-auto max-w-2xl rounded-2xl border border-white/15 bg-black/70 p-5 text-left backdrop-blur-md">
-          <h2 className="text-xl font-semibold text-white">Design notes</h2>
-          <p className="mt-2 text-base text-white/80">
+        <div className="absolute inset-x-4 bottom-4 z-30 mx-auto max-w-2xl rounded-2xl border border-border bg-black/70 p-5 text-left backdrop-blur-md">
+          <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mt-2 text-base text-foreground">
             The real weather above you becomes a four-voice lullaby in C-major
             pentatonic &mdash; there are no wrong notes. The{" "}
             <span className="text-violet-300">Sun</span> rings warm bells (higher
@@ -203,14 +203,14 @@ export default function KidsSkyBand() {
             gentle pentatonic plinks. The sky itself is a single WebGL2 fragment
             shader driven by the same live numbers.
           </p>
-          <p className="mt-3 text-sm text-white/55">
+          <p className="mt-3 text-sm text-muted-foreground">
             In the lineage of John Luther Adams&rsquo;{" "}
             <em>The Place Where You Go to Listen</em>. Data from Open-Meteo. See
             the README in this folder for the full mapping and references.
           </p>
           <Link
             href="/dream"
-            className="mt-4 inline-block text-sm text-emerald-300/95 hover:underline"
+            className="mt-4 inline-block text-sm text-violet-300/95 hover:underline"
           >
             &larr; Back to the dream lab
           </Link>

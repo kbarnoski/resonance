@@ -385,20 +385,20 @@ export default function OrpheusVoicePage() {
   const canvasRefs = [canvasRef0, canvasRef1, canvasRef2] as const;
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white font-mono px-4 py-8">
+    <div className="min-h-screen bg-[#080808] text-foreground font-mono px-4 py-8">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
         <div className="flex justify-between items-baseline mb-1">
           <h1 className="text-lg font-bold tracking-wide">Orpheus Voice Lab</h1>
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           Three-way Ghost voice comparison: Gemini TTS global style (A) · Gemini TTS experimental (B) ·
           Orpheus TTS phrase-level emotion tags (C).{" "}
-          <span className="text-white/25">Wear headphones.</span>
+          <span className="text-muted-foreground/70">Wear headphones.</span>
         </p>
 
         {/* Scene selector */}
@@ -415,7 +415,7 @@ export default function OrpheusVoicePage() {
               className={
                 "px-3 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                 (i !== sceneIdx
-                  ? "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70"
+                  ? "border-border text-muted-foreground hover:border-border hover:text-muted-foreground"
                   : "")
               }
             >
@@ -425,7 +425,7 @@ export default function OrpheusVoicePage() {
         </div>
 
         {/* Quote */}
-        <div className="text-center mb-6 py-3 px-4 border border-white/8 rounded-lg">
+        <div className="text-center mb-6 py-3 px-4 border border-border rounded-lg">
           <p className="text-[14px] italic leading-relaxed" style={{ color: scene.accent + "cc" }}>
             &ldquo;{scene.line}&rdquo;
           </p>
@@ -454,7 +454,7 @@ export default function OrpheusVoicePage() {
                     >
                       {label}
                     </span>
-                    <span className="text-[9px] text-white/30 block leading-tight mt-0.5">
+                    <span className="text-[9px] text-muted-foreground/70 block leading-tight mt-0.5">
                       {VARIANT_DESC[i]}
                     </span>
                   </div>
@@ -465,7 +465,7 @@ export default function OrpheusVoicePage() {
                       </span>
                     )}
                     {v.audioBuf && (
-                      <span className="text-[10px] text-white/30">
+                      <span className="text-[10px] text-muted-foreground/70">
                         {v.duration.toFixed(1)}s
                       </span>
                     )}
@@ -474,7 +474,7 @@ export default function OrpheusVoicePage() {
 
                 {/* Input textarea */}
                 <div>
-                  <label className="text-[10px] text-white/35 block mb-1">
+                  <label className="text-[10px] text-muted-foreground/70 block mb-1">
                     {VARIANT_INPUT_LABELS[i]}
                   </label>
                   <textarea
@@ -490,8 +490,8 @@ export default function OrpheusVoicePage() {
                     rows={3}
                     className={
                       "w-full bg-[#141414] border rounded px-2 py-1.5 " +
-                      "text-[11px] text-white/70 leading-relaxed resize-none " +
-                      "focus:outline-none focus:border-white/25 transition"
+                      "text-[11px] text-muted-foreground leading-relaxed resize-none " +
+                      "focus:outline-none focus:border-border transition"
                     }
                     style={{ borderColor: "rgba(255,255,255,0.10)" }}
                     placeholder={VARIANT_PLACEHOLDERS[i]}
@@ -504,7 +504,7 @@ export default function OrpheusVoicePage() {
                   disabled={v.loading}
                   className={
                     "px-3 py-2 border rounded text-[12px] tracking-wide " +
-                    "transition cursor-pointer hover:bg-white/5 " +
+                    "transition cursor-pointer hover:bg-accent " +
                     "disabled:opacity-40 disabled:cursor-not-allowed"
                   }
                   style={{
@@ -526,12 +526,12 @@ export default function OrpheusVoicePage() {
                   />
                   {!v.audioBuf && !v.loading && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-[10px] text-white/20">no audio yet</span>
+                      <span className="text-[10px] text-muted-foreground/70">no audio yet</span>
                     </div>
                   )}
                   {v.loading && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-[10px] text-white/35 animate-pulse">synthesizing…</span>
+                      <span className="text-[10px] text-muted-foreground/70 animate-pulse">synthesizing…</span>
                     </div>
                   )}
                 </div>
@@ -541,8 +541,8 @@ export default function OrpheusVoicePage() {
                   <button
                     onClick={() => handlePlay(i)}
                     className={
-                      "px-3 py-1.5 border border-white/12 rounded text-[11px] " +
-                      "text-white/55 hover:text-white/90 hover:border-white/30 " +
+                      "px-3 py-1.5 border border-border rounded text-[11px] " +
+                      "text-muted-foreground hover:text-foreground hover:border-border " +
                       "transition cursor-pointer"
                     }
                     style={v.playing ? { borderColor: scene.accent + "50", color: scene.accent } : {}}
@@ -553,7 +553,7 @@ export default function OrpheusVoicePage() {
 
                 {/* Error */}
                 {v.error && (
-                  <div className="text-[10px] text-red-400 bg-red-950/30 rounded px-2 py-1.5 leading-relaxed">
+                  <div className="text-[10px] text-destructive bg-destructive/30 rounded px-2 py-1.5 leading-relaxed">
                     {v.error.slice(0, 280)}
                   </div>
                 )}
@@ -563,8 +563,8 @@ export default function OrpheusVoicePage() {
         </div>
 
         {/* Vote */}
-        <div className="border border-white/8 rounded-lg p-4 mb-6">
-          <p className="text-[11px] text-white/40 mb-3">
+        <div className="border border-border rounded-lg p-4 mb-6">
+          <p className="text-[11px] text-muted-foreground/70 mb-3">
             Which voice best captures the Ghost character for this scene?
           </p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -583,8 +583,8 @@ export default function OrpheusVoicePage() {
                 className={
                   "px-4 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                   (vote === choice
-                    ? "border-white/40 text-white bg-white/10"
-                    : "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70")
+                    ? "border-border text-foreground bg-muted"
+                    : "border-border text-muted-foreground hover:border-border hover:text-muted-foreground")
                 }
               >
                 {lbl}
@@ -593,18 +593,18 @@ export default function OrpheusVoicePage() {
           </div>
 
           {totalVotes > 0 && (
-            <div className="flex flex-wrap gap-5 text-[10px] text-white/35">
+            <div className="flex flex-wrap gap-5 text-[10px] text-muted-foreground/70">
               <span>A: {tally.A}</span>
               <span>B: {tally.B}</span>
               <span>C: {tally.C}</span>
               <span>All: {tally.all}</span>
               <span>Retry: {tally.retry}</span>
-              <span className="text-white/20">({totalVotes} total for this scene)</span>
+              <span className="text-muted-foreground/70">({totalVotes} total for this scene)</span>
             </div>
           )}
 
           {vote === "retry" && (
-            <p className="mt-3 text-[11px] text-white/35">
+            <p className="mt-3 text-[11px] text-muted-foreground/70">
               Edit the style instructions or Orpheus tags above and generate again. Textareas are
               fully editable — try completely different directions.
             </p>
@@ -612,14 +612,14 @@ export default function OrpheusVoicePage() {
         </div>
 
         {/* Orpheus tag reference */}
-        <div className="text-[10px] text-white/25 leading-relaxed mb-6 border-l-2 border-white/8 pl-3">
-          <p className="mb-1 text-white/35">Orpheus emotion tags (column C only):</p>
-          <p className="font-mono mb-1 text-white/30">
+        <div className="text-[10px] text-muted-foreground/70 leading-relaxed mb-6 border-l-2 border-border pl-3">
+          <p className="mb-1 text-muted-foreground/70">Orpheus emotion tags (column C only):</p>
+          <p className="font-mono mb-1 text-muted-foreground/70">
             {"<reverent> <whispers> <sad> <fearful> <happy> <excited> <surprised> <disgusted>"}
           </p>
           <p className="mb-1">
             Wrap a word or phrase:{" "}
-            <span className="text-white/40 font-mono">
+            <span className="text-muted-foreground/70 font-mono">
               The &lt;reverent&gt;resonance&lt;/reverent&gt; here is ancient.
             </span>
           </p>
@@ -630,7 +630,7 @@ export default function OrpheusVoicePage() {
         </div>
 
         {/* Footer */}
-        <div className="flex flex-wrap justify-between gap-2 text-[10px] text-white/20">
+        <div className="flex flex-wrap justify-between gap-2 text-[10px] text-muted-foreground/70">
           <span>
             Gemini TTS · fal-ai/gemini-tts · Orpheus TTS · fal-ai/orpheus-tts · FAL_KEY ·
             ~$0.01–0.02/row

@@ -844,30 +844,30 @@ export default function TiltOrrery() {
       {/* idle / start */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="font-serif text-3xl md:text-4xl text-white mb-3 tracking-tight">
+          <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
             Tilt Orrery
           </h1>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             Tip a little cosmos like a bowl. Each time a body sweeps through its
             closest approach, it rings — and the whole field becomes a polyrhythm.
           </p>
-          <p className="text-base text-white/60 max-w-md mb-8 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-8 leading-relaxed">
             A handful of bodies are locked in TRAPPIST-1 resonance, so a steady
             pulse hides inside the chaos.
           </p>
           <button
             onClick={handleStart}
-            className="px-6 py-2.5 min-h-[44px] text-base text-white border border-violet-400/50 bg-violet-500/20 rounded hover:bg-violet-500/30 hover:border-violet-400 transition"
+            className="px-6 py-2.5 min-h-[44px] text-base text-foreground border border-violet-400/50 bg-violet-500/20 rounded hover:bg-violet-500/30 hover:border-violet-400 transition"
           >
             Start
           </button>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="mt-5 text-base text-white/60 hover:text-white/90 underline underline-offset-4"
+            className="mt-5 text-base text-muted-foreground hover:text-foreground underline underline-offset-4"
           >
             Design notes
           </button>
-          <Link href="/dream" className="mt-10 text-base text-white/60 hover:text-white/90">
+          <Link href="/dream" className="mt-10 text-base text-muted-foreground hover:text-foreground">
             ← dream sandbox
           </Link>
         </div>
@@ -876,12 +876,12 @@ export default function TiltOrrery() {
       {/* running HUD + controls */}
       {running && (
         <>
-          <div className="absolute top-4 left-4 text-base text-white/75 space-y-1 pointer-events-none select-none">
-            <div className="font-serif text-2xl text-white/95">Tilt Orrery</div>
-            <div className="text-sm text-white/60 font-mono">
+          <div className="absolute top-4 left-4 text-base text-muted-foreground space-y-1 pointer-events-none select-none">
+            <div className="font-serif text-2xl text-foreground">Tilt Orrery</div>
+            <div className="text-sm text-muted-foreground font-mono">
               {phase === "gpu" ? `WebGPU · ${GPU_BODIES} bodies` : `CPU · ${CPU_BODIES} bodies`}
             </div>
-            <div className="text-sm text-white/60 font-mono">
+            <div className="text-sm text-muted-foreground font-mono">
               tilt {tiltX.toFixed(2)}, {tiltY.toFixed(2)} · {hitRate} hits/s · {tiltSource}
             </div>
           </div>
@@ -893,7 +893,7 @@ export default function TiltOrrery() {
                 className={`text-sm px-3 py-2 min-h-[44px] rounded border transition ${
                   tiltSource === "auto"
                     ? "border-violet-400 text-violet-300 bg-violet-500/20"
-                    : "border-white/20 text-white/70 hover:border-white/50"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
                 auto-drift
@@ -903,13 +903,13 @@ export default function TiltOrrery() {
                 className={`text-sm px-3 py-2 min-h-[44px] rounded border transition ${
                   tiltSource === "manual"
                     ? "border-violet-400 text-violet-300 bg-violet-500/20"
-                    : "border-white/20 text-white/70 hover:border-white/50"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
                 drag/sliders
               </button>
             </div>
-            <label className="text-sm text-white/70 font-mono w-full">
+            <label className="text-sm text-muted-foreground font-mono w-full">
               tilt x
               <input
                 type="range" min="-1.2" max="1.2" step="0.01" value={tiltX}
@@ -917,7 +917,7 @@ export default function TiltOrrery() {
                 className="w-40 accent-violet-400 block"
               />
             </label>
-            <label className="text-sm text-white/70 font-mono w-full">
+            <label className="text-sm text-muted-foreground font-mono w-full">
               tilt y
               <input
                 type="range" min="-1.2" max="1.2" step="0.01" value={tiltY}
@@ -927,7 +927,7 @@ export default function TiltOrrery() {
             </label>
             <button
               onClick={handleStop}
-              className="text-sm text-white/70 hover:text-white border border-white/20 hover:border-white/50 px-3 py-2 min-h-[44px] rounded w-full"
+              className="text-sm text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-2 min-h-[44px] rounded w-full"
             >
               Stop
             </button>
@@ -935,7 +935,7 @@ export default function TiltOrrery() {
 
           <Link
             href="/dream"
-            className="absolute bottom-4 left-4 text-base text-white/60 hover:text-white/90"
+            className="absolute bottom-4 left-4 text-base text-muted-foreground hover:text-foreground"
           >
             ← back
           </Link>
@@ -944,7 +944,7 @@ export default function TiltOrrery() {
 
       {/* amber notice (graceful, not a crash) */}
       {notice && (
-        <div className="absolute top-4 right-4 max-w-xs text-base text-amber-300/95 bg-black/40 rounded px-3 py-2">
+        <div className="absolute top-4 right-4 max-w-xs text-base text-violet-300/95 bg-black/40 rounded px-3 py-2">
           {notice}
         </div>
       )}
@@ -953,8 +953,8 @@ export default function TiltOrrery() {
       {showNotes && phase === "idle" && (
         <div className="absolute inset-0 bg-black/85 flex items-center justify-center px-6 overflow-y-auto">
           <div className="max-w-lg text-left py-10">
-            <h2 className="font-serif text-2xl text-white mb-4">Design notes</h2>
-            <p className="text-base text-white/75 mb-3 leading-relaxed">
+            <h2 className="font-serif text-2xl text-foreground mb-4">Design notes</h2>
+            <p className="text-base text-muted-foreground mb-3 leading-relaxed">
               A raw-WebGPU N-body field orbits a central mass. A compute shader
               integrates {GPU_BODIES} bodies (semi-implicit Euler, inverse-square
               gravity plus a tilt acceleration vector). It tracks each body&apos;s
@@ -962,15 +962,15 @@ export default function TiltOrrery() {
               a perihelion (closest approach) — into a buffer that the CPU reads
               back asynchronously each frame and turns into a bell.
             </p>
-            <p className="text-base text-white/75 mb-3 leading-relaxed">
+            <p className="text-base text-muted-foreground mb-3 leading-relaxed">
               Pitch is kept deliberately dumb (a low drone + a fixed pentatonic),
               so the music lives in rhythm, density and space. Timbre comes from
               radius and speed (close+fast = bright bell, far+slow = soft thud);
               stereo pan comes from the body&apos;s angular position, so you hear
               the cosmos rotate around you.
             </p>
-            <p className="text-base text-white/75 mb-4 leading-relaxed">
-              Seven bodies are seeded in the <span className="text-amber-300">TRAPPIST-1
+            <p className="text-base text-muted-foreground mb-4 leading-relaxed">
+              Seven bodies are seeded in the <span className="text-violet-300">TRAPPIST-1
               resonance chain</span> (≈8:5, 5:3, 3:2, 3:2, 4:3, 3:2), so a steady
               hypnotic pulse emerges from the chaotic field — Kepler&apos;s 1619
               &ldquo;harmony of the spheres.&rdquo;

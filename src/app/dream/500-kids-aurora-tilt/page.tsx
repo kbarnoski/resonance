@@ -236,7 +236,7 @@ export default function AuroraTiltPage() {
   // ── Idle splash screen ─────────────────────────────────────────────────────
   if (phase === "idle") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#04011a] text-white gap-8 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#04011a] text-foreground gap-8 px-6 text-center">
         <div
           aria-hidden="true"
           className="select-none text-7xl"
@@ -246,15 +246,15 @@ export default function AuroraTiltPage() {
         </div>
 
         <div className="flex flex-col gap-2 items-center">
-          <h1 className="text-3xl font-bold text-white/95 tracking-wide">
+          <h1 className="text-3xl font-bold text-foreground tracking-wide">
             Aurora Sky
           </h1>
-          <p className="text-xl text-white/80">
+          <p className="text-xl text-foreground">
             Tilt to bend the light
           </p>
         </div>
 
-        <p className="text-base text-white/75 max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
           Hold your tablet and tilt it — the northern lights stretch and shimmer.{" "}
           Tilt far and the sky goes electric and bright.{" "}
           Hold it flat and still, and everything comes to rest.
@@ -276,13 +276,13 @@ export default function AuroraTiltPage() {
 
         <button
           onClick={handleStart}
-          className="min-h-[72px] min-w-[240px] bg-violet-600/30 hover:bg-violet-600/50 border border-violet-400/50 rounded-3xl px-10 py-5 text-white text-xl font-semibold transition-colors"
+          className="min-h-[72px] min-w-[240px] bg-violet-600/30 hover:bg-violet-600/50 border border-violet-400/50 rounded-3xl px-10 py-5 text-foreground text-xl font-semibold transition-colors"
           style={{ boxShadow: "0 0 24px rgba(139,92,246,0.3)" }}
         >
           ✨ Start
         </button>
 
-        <p className="text-base text-white/55">
+        <p className="text-base text-muted-foreground">
           no microphone • for kids 4+
         </p>
       </div>
@@ -307,7 +307,7 @@ export default function AuroraTiltPage() {
       {/* WebGL2 unavailable notice */}
       {noWebGL2 && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <p className="text-rose-300 text-base max-w-xs text-center px-6 leading-relaxed">
+          <p className="text-violet-300 text-base max-w-xs text-center px-6 leading-relaxed">
             WebGL2 not available in this browser — but the aurora music is playing!
             Try Chrome or Safari for the full visual experience.
           </p>
@@ -317,7 +317,7 @@ export default function AuroraTiltPage() {
       {/* No gyro: drag-fallback hint */}
       {noGyro && (
         <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-          <p className="text-white/75 text-base bg-black/50 rounded-xl px-4 py-2.5 backdrop-blur-sm">
+          <p className="text-muted-foreground text-base bg-black/50 rounded-xl px-4 py-2.5 backdrop-blur-sm">
             Drag across the screen to tilt the sky
           </p>
         </div>

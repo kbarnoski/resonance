@@ -372,14 +372,14 @@ export default function Page() {
           <button
             type="button"
             onClick={startAudio}
-            className="pointer-events-auto mt-4 rounded-full bg-stone-900 px-6 py-2.5 text-lg font-bold text-white shadow-lg transition active:scale-95"
+            className="pointer-events-auto mt-4 rounded-full bg-stone-900 px-6 py-2.5 text-lg font-bold text-foreground shadow-lg transition active:scale-95"
           >
             ▶ Play
           </button>
         )}
 
         {started && audioError && (
-          <p className="mt-4 max-w-md text-base font-semibold text-rose-600">
+          <p className="mt-4 max-w-md text-base font-semibold text-violet-600">
             Sound isn&apos;t available on this device — but you can still play
             with the moiré bands by sliding them.
           </p>

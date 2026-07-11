@@ -347,20 +347,20 @@ export default function CellularPage() {
 
       {/* Title overlay (below dream header) */}
       <div className="absolute top-16 left-4 z-10 pointer-events-none">
-        <h1 className="text-2xl font-mono font-bold text-white">Cellular</h1>
-        <p className="text-sm text-white/75 mt-0.5 leading-snug">
+        <h1 className="text-2xl font-mono font-bold text-foreground">Cellular</h1>
+        <p className="text-sm text-muted-foreground mt-0.5 leading-snug">
           Conway Life · columns are pitches · evolution composes
         </p>
       </div>
 
       {/* Gen + voice counter (top-right) */}
       <div className="absolute top-16 right-4 z-10 pointer-events-none text-right">
-        <p className="text-xs text-white/55 font-mono">gen {gen}</p>
-        <p className="text-xs text-white/55 font-mono">{voices} voices</p>
+        <p className="text-xs text-muted-foreground font-mono">gen {gen}</p>
+        <p className="text-xs text-muted-foreground font-mono">{voices} voices</p>
       </div>
 
       {/* Controls (bottom bar) */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 px-4 py-3 flex flex-wrap items-center gap-2 bg-[#06060f]/80 backdrop-blur-sm border-t border-white/10">
+      <div className="absolute bottom-0 left-0 right-0 z-10 px-4 py-3 flex flex-wrap items-center gap-2 bg-[#06060f]/80 backdrop-blur-sm border-t border-border">
 
         <button
           onClick={() => { ensureAudio(); setPaused((p) => !p); }}
@@ -370,7 +370,7 @@ export default function CellularPage() {
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-white/55 font-mono">BPM</span>
+          <span className="text-xs text-muted-foreground font-mono">BPM</span>
           <input
             type="range"
             min={40}
@@ -379,16 +379,16 @@ export default function CellularPage() {
             onChange={(e) => setBpm(Number(e.target.value))}
             className="w-20 accent-violet-400"
           />
-          <span className="text-base text-white/75 font-mono w-7 text-right tabular-nums">{bpm}</span>
+          <span className="text-base text-muted-foreground font-mono w-7 text-right tabular-nums">{bpm}</span>
         </div>
 
-        <span className="hidden sm:block text-white/20 font-mono">|</span>
+        <span className="hidden sm:block text-muted-foreground/70 font-mono">|</span>
 
         {(["glider", "pulsar", "acorn", "rpent"] as const).map((name) => (
           <button
             key={name}
             onClick={() => applyPreset(name)}
-            className="min-h-[44px] px-3 py-2 rounded bg-white/5 text-white/75 text-sm font-mono hover:bg-white/10 transition-colors"
+            className="min-h-[44px] px-3 py-2 rounded bg-muted text-muted-foreground text-sm font-mono hover:bg-accent transition-colors"
           >
             {name === "rpent" ? "R-pent" : name.charAt(0).toUpperCase() + name.slice(1)}
           </button>
@@ -402,7 +402,7 @@ export default function CellularPage() {
             setGen(0);
             setVoices(0);
           }}
-          className="min-h-[44px] px-3 py-2 rounded bg-emerald-500/10 text-emerald-300/95 text-sm font-mono hover:bg-emerald-500/20 transition-colors"
+          className="min-h-[44px] px-3 py-2 rounded bg-violet-500/10 text-violet-300/95 text-sm font-mono hover:bg-violet-500/20 transition-colors"
         >
           Random
         </button>
@@ -414,7 +414,7 @@ export default function CellularPage() {
             setGen(0);
             setVoices(0);
           }}
-          className="min-h-[44px] px-3 py-2 rounded bg-white/5 text-white/55 text-sm font-mono hover:bg-white/10 transition-colors"
+          className="min-h-[44px] px-3 py-2 rounded bg-muted text-muted-foreground text-sm font-mono hover:bg-accent transition-colors"
         >
           Clear
         </button>
@@ -422,7 +422,7 @@ export default function CellularPage() {
         <Link
           href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/180-cellular/README.md"
           target="_blank"
-          className="ml-auto text-xs text-white/40 font-mono hover:text-white/70 transition-colors"
+          className="ml-auto text-xs text-muted-foreground/70 font-mono hover:text-muted-foreground transition-colors"
         >
           design notes ↗
         </Link>

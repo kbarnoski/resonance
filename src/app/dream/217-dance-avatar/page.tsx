@@ -367,10 +367,10 @@ export default function DanceAvatarPage() {
 
       {/* header */}
       <div className="absolute top-0 left-0 p-5 pointer-events-none select-none">
-        <h1 className="text-2xl font-semibold text-white/95 tracking-tight leading-tight">
+        <h1 className="text-2xl font-semibold text-foreground tracking-tight leading-tight">
           Dance Avatar
         </h1>
-        <p className="text-base text-white/75 mt-1 max-w-[280px] leading-snug">
+        <p className="text-base text-muted-foreground mt-1 max-w-[280px] leading-snug">
           Spring-physics skeleton — each limb driven by its own frequency band.
         </p>
       </div>
@@ -380,7 +380,7 @@ export default function DanceAvatarPage() {
         {micActive ? (
           <button
             onClick={stopMic}
-            className="px-5 py-2.5 rounded-full text-base font-medium min-h-[44px] bg-rose-500/20 text-rose-300 ring-1 ring-rose-400/40 hover:bg-rose-500/30 transition-all"
+            className="px-5 py-2.5 rounded-full text-base font-medium min-h-[44px] bg-violet-500/20 text-violet-300 ring-1 ring-violet-400/40 hover:bg-violet-500/30 transition-all"
           >
             ■ Stop Mic
           </button>
@@ -397,14 +397,14 @@ export default function DanceAvatarPage() {
       {/* mic mode indicator */}
       {micActive && (
         <div className="absolute top-5 right-5 flex items-center gap-2 pointer-events-none">
-          <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
-          <span className="text-sm text-rose-300/90">mic live</span>
+          <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
+          <span className="text-sm text-violet-300/90">mic live</span>
         </div>
       )}
 
       {/* mic error */}
       {micErr && (
-        <p className="absolute bottom-20 left-1/2 -translate-x-1/2 text-base text-rose-300 whitespace-nowrap">
+        <p className="absolute bottom-20 left-1/2 -translate-x-1/2 text-base text-violet-300 whitespace-nowrap">
           {micErr}
         </p>
       )}
@@ -413,7 +413,7 @@ export default function DanceAvatarPage() {
       <div className="absolute bottom-6 right-5 flex flex-col gap-1 items-end pointer-events-none select-none">
         {BANDS.map((bd, i) => (
           <div key={i} className="flex items-center gap-1.5">
-            <span className="text-xs text-white/55">{bd.label}</span>
+            <span className="text-xs text-muted-foreground">{bd.label}</span>
             <span
               className="w-2 h-2 rounded-full"
               style={{ background: `rgb(${bd.r},${bd.g},${bd.b})` }}
@@ -426,7 +426,7 @@ export default function DanceAvatarPage() {
       <div className="absolute bottom-6 left-5">
         <Link
           href="/dream/217-dance-avatar/README.md"
-          className="text-xs text-white/40 hover:text-white/65 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           Design notes ↗
         </Link>

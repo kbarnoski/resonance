@@ -307,10 +307,10 @@ export default function KidsBirdRound() {
       {/* Title + hint */}
       {started && (
         <div className="pointer-events-none absolute left-1/2 top-5 z-10 -translate-x-1/2 text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-white/95 drop-shadow sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground drop-shadow sm:text-3xl">
             🐦 Bird Round
           </h1>
-          <p className="mt-1 text-base text-white/75 drop-shadow">
+          <p className="mt-1 text-base text-muted-foreground drop-shadow">
             {hasMelody
               ? "Add a bird to sing a round 🎶"
               : "Drag the bird up & down to sing 🎶"}
@@ -326,7 +326,7 @@ export default function KidsBirdRound() {
             onClick={addBird}
             disabled={birdCount >= MAX_BIRDS}
             aria-label="Add a bird"
-            className="flex min-h-[72px] min-w-[72px] flex-col items-center justify-center rounded-3xl bg-amber-300/90 px-6 py-3 text-2xl font-bold text-emerald-950 shadow-lg backdrop-blur transition active:scale-95 disabled:opacity-40"
+            className="flex min-h-[72px] min-w-[72px] flex-col items-center justify-center rounded-3xl bg-violet-300/90 px-6 py-3 text-2xl font-bold text-violet-950 shadow-lg backdrop-blur transition active:scale-95 disabled:opacity-40"
           >
             <span className="text-3xl leading-none">🐦➕</span>
             <span className="mt-1 text-base">{birdCount}/4</span>
@@ -335,7 +335,7 @@ export default function KidsBirdRound() {
             type="button"
             onClick={resetFlock}
             aria-label="Reset to one bird"
-            className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-3xl bg-white/15 px-5 py-3 text-2xl text-white/90 shadow-lg backdrop-blur transition active:scale-95"
+            className="flex min-h-[64px] min-w-[64px] items-center justify-center rounded-3xl bg-muted px-5 py-3 text-2xl text-foreground shadow-lg backdrop-blur transition active:scale-95"
           >
             🔄
           </button>
@@ -345,10 +345,10 @@ export default function KidsBirdRound() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-[#1a3326] to-[#0d1a13] px-6 text-center">
-          <h1 className="text-3xl font-bold text-white/95 sm:text-4xl">
+          <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
             🐦 Bird Round
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Teach a bird a little tune, then hear a whole flock sing it back as
             a round.
           </p>
@@ -356,7 +356,7 @@ export default function KidsBirdRound() {
             type="button"
             onClick={start}
             aria-label="Start"
-            className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full bg-amber-300 text-5xl text-emerald-950 shadow-2xl transition active:scale-95"
+            className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full bg-violet-300 text-5xl text-violet-950 shadow-2xl transition active:scale-95"
           >
             ▶️
           </button>
@@ -367,7 +367,7 @@ export default function KidsBirdRound() {
       <div className="absolute bottom-2 right-3 z-10">
         <Link
           href="/dream/946-kids-bird-round/README.md"
-          className="text-xs text-white/55 underline-offset-2 hover:text-white/80 hover:underline"
+          className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
         >
           Read the design notes
         </Link>

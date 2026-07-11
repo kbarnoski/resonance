@@ -553,20 +553,20 @@ export default function LoopStation() {
   // ── render ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#060610] text-white font-mono p-4 flex flex-col gap-4">
+    <div className="min-h-screen bg-[#060610] text-foreground font-mono p-4 flex flex-col gap-4">
       {/* header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-xl font-bold tracking-tight">
             LOOP STATION
           </h1>
-          <p className="text-xs text-white/40 mt-0.5">
+          <p className="text-xs text-muted-foreground/70 mt-0.5">
             build a multi-layer performance in real time
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-xs text-white/30 hover:text-white/70 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream
         </Link>
@@ -576,7 +576,7 @@ export default function LoopStation() {
       <div className="flex items-center gap-3 flex-wrap">
         <button
           onClick={tapTempo}
-          className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded text-xs transition-colors select-none"
+          className="px-3 py-1.5 bg-muted hover:bg-accent rounded text-xs transition-colors select-none"
         >
           TAP BPM
         </button>
@@ -585,26 +585,26 @@ export default function LoopStation() {
         {!micReady ? (
           <button
             onClick={startMic}
-            className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded text-xs transition-colors"
+            className="px-3 py-1.5 bg-muted hover:bg-accent rounded text-xs transition-colors"
           >
             🎤 Start mic
           </button>
         ) : (
-          <span className="text-xs text-green-400">🎤 mic live</span>
+          <span className="text-xs text-violet-400">🎤 mic live</span>
         )}
 
         {!demoLoaded && (
           <button
             onClick={loadDemo}
             disabled={demoLoading}
-            className="px-3 py-1.5 bg-indigo-700/60 hover:bg-indigo-600/70 rounded text-xs transition-colors disabled:opacity-50"
+            className="px-3 py-1.5 bg-violet-700/60 hover:bg-violet-600/70 rounded text-xs transition-colors disabled:opacity-50"
           >
             {demoLoading ? "Loading…" : "▶ Load demo loops"}
           </button>
         )}
 
         {micError && (
-          <span className="text-xs text-red-400">{micError}</span>
+          <span className="text-xs text-destructive">{micError}</span>
         )}
       </div>
 
@@ -620,7 +620,7 @@ export default function LoopStation() {
           return (
             <div
               key={i}
-              className="rounded-lg border border-white/10 p-3 flex flex-col gap-2"
+              className="rounded-lg border border-border p-3 flex flex-col gap-2"
               style={{ background: `rgba(${color[0]},${color[1]},${color[2]},0.06)` }}
             >
               {/* slot header */}
@@ -638,8 +638,8 @@ export default function LoopStation() {
                   onClick={() => pressRec(i)}
                   className={`px-3 py-1 rounded text-xs font-bold transition-all shrink-0 ${
                     isRec
-                      ? "bg-red-600 animate-pulse text-white"
-                      : "bg-red-900/40 hover:bg-red-700/60 text-red-300"
+                      ? "bg-destructive animate-pulse text-foreground"
+                      : "bg-destructive/40 hover:bg-destructive/60 text-destructive"
                   }`}
                 >
                   {isRec ? "■ STOP" : "● REC"}
@@ -653,14 +653,14 @@ export default function LoopStation() {
                       onClick={() => setBars(i, b)}
                       className={`px-2 py-0.5 rounded text-xs transition-colors ${
                         ds.bars === b
-                          ? "bg-white/20 text-white"
-                          : "bg-white/5 hover:bg-white/10 text-white/40"
+                          ? "bg-muted text-foreground"
+                          : "bg-muted hover:bg-accent text-muted-foreground/70"
                       }`}
                     >
                       {b}
                     </button>
                   ))}
-                  <span className="text-xs text-white/30 self-center pl-1">bar{ds.bars !== 1 ? "s" : ""}</span>
+                  <span className="text-xs text-muted-foreground/70 self-center pl-1">bar{ds.bars !== 1 ? "s" : ""}</span>
                 </div>
 
                 {/* mute button */}
@@ -669,8 +669,8 @@ export default function LoopStation() {
                   disabled={isEmpty || isRec}
                   className={`px-3 py-1 rounded text-xs transition-colors shrink-0 ${
                     isMuted
-                      ? "bg-yellow-600/60 text-yellow-200"
-                      : "bg-white/5 hover:bg-white/15 text-white/50"
+                      ? "bg-violet-600/60 text-violet-200"
+                      : "bg-muted hover:bg-accent text-muted-foreground"
                   } disabled:opacity-20`}
                 >
                   {isMuted ? "MUTED" : "MUTE"}
@@ -680,7 +680,7 @@ export default function LoopStation() {
                 <button
                   onClick={() => clearSlot(i)}
                   disabled={isEmpty}
-                  className="px-3 py-1 rounded text-xs bg-white/5 hover:bg-white/15 text-white/40 transition-colors shrink-0 disabled:opacity-20"
+                  className="px-3 py-1 rounded text-xs bg-muted hover:bg-accent text-muted-foreground/70 transition-colors shrink-0 disabled:opacity-20"
                 >
                   CLEAR
                 </button>
@@ -689,12 +689,12 @@ export default function LoopStation() {
                 <span
                   className={`text-xs ml-auto ${
                     isRec
-                      ? "text-red-400 animate-pulse"
+                      ? "text-destructive animate-pulse"
                       : ds.state === "playing"
-                      ? "text-green-400"
+                      ? "text-violet-400"
                       : isMuted
-                      ? "text-yellow-400"
-                      : "text-white/20"
+                      ? "text-violet-400"
+                      : "text-muted-foreground/70"
                   }`}
                 >
                   {ds.state.toUpperCase()}
@@ -715,11 +715,11 @@ export default function LoopStation() {
       </div>
 
       {/* footer */}
-      <div className="flex justify-between items-center text-xs text-white/20 pt-2 border-t border-white/5">
+      <div className="flex justify-between items-center text-xs text-muted-foreground/70 pt-2 border-t border-border">
         <span>tap all 4 slots together for phase-locked layering</span>
         <Link
           href="/dream/35-loop-station/README.md"
-          className="hover:text-white/50 transition-colors"
+          className="hover:text-muted-foreground transition-colors"
         >
           design notes
         </Link>

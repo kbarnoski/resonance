@@ -266,12 +266,12 @@ export default function SpectrogramPaint() {
 
       {/* ── Idle card ── */}
       {mode === "idle" && (
-        <div className="relative z-10 flex flex-col items-center gap-6 bg-black/65 border border-white/10 backdrop-blur-sm rounded-2xl px-8 py-8 max-w-sm text-center">
+        <div className="relative z-10 flex flex-col items-center gap-6 bg-black/65 border border-border backdrop-blur-sm rounded-2xl px-8 py-8 max-w-sm text-center">
           <div>
-            <h1 className="text-2xl font-mono font-bold text-white mb-2">
+            <h1 className="text-2xl font-mono font-bold text-foreground mb-2">
               spectrogram paint
             </h1>
-            <p className="text-white/75 text-base leading-relaxed">
+            <p className="text-muted-foreground text-base leading-relaxed">
               Sound crystallizes into a living painting. Time flows left to right;
               pitch rises bottom to top. Notes leave glowing trails that breathe
               and drift — a Ryoji Ikeda-style matrix rendered live.
@@ -280,19 +280,19 @@ export default function SpectrogramPaint() {
           <div className="flex gap-3">
             <button
               onClick={startMic}
-              className="px-5 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-base min-h-[44px] transition-colors"
+              className="px-5 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-foreground font-mono text-base min-h-[44px] transition-colors"
             >
               Start mic
             </button>
             <button
               onClick={() => setMode("demo")}
-              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white/90 font-mono text-base min-h-[44px] transition-colors"
+              className="px-5 py-3 rounded-xl bg-muted hover:bg-accent border border-border text-foreground font-mono text-base min-h-[44px] transition-colors"
             >
               Demo
             </button>
           </div>
           {micError && (
-            <p className="text-rose-300 text-sm">{micError}</p>
+            <p className="text-violet-300 text-sm">{micError}</p>
           )}
         </div>
       )}
@@ -305,7 +305,7 @@ export default function SpectrogramPaint() {
             {freqLabels.map(([label, top]) => (
               <span
                 key={label}
-                className="absolute text-white/30 text-xs font-mono leading-none"
+                className="absolute text-muted-foreground/70 text-xs font-mono leading-none"
                 style={{ top, left: 0 }}
               >
                 {label}
@@ -315,26 +315,26 @@ export default function SpectrogramPaint() {
 
           {/* Status + controls (bottom bar) */}
           <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between">
-            <span className="text-white/55 text-xs font-mono">
+            <span className="text-muted-foreground text-xs font-mono">
               {mode === "mic" ? "● mic live" : "◌ demo"}
             </span>
             <div className="flex gap-2">
               {mode === "demo" && (
                 <button
                   onClick={startMic}
-                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 text-xs font-mono min-h-[36px] transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-muted hover:bg-accent text-foreground text-xs font-mono min-h-[36px] transition-colors"
                 >
                   Use mic
                 </button>
               )}
               {micError && (
-                <span className="text-rose-300 text-xs font-mono self-center">
+                <span className="text-violet-300 text-xs font-mono self-center">
                   {micError}
                 </span>
               )}
               <button
                 onClick={handleStop}
-                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 text-xs font-mono min-h-[36px] transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-muted hover:bg-accent text-foreground text-xs font-mono min-h-[36px] transition-colors"
               >
                 Stop
               </button>
@@ -346,7 +346,7 @@ export default function SpectrogramPaint() {
       {/* Nav links */}
       <Link
         href="/dream"
-        className="absolute top-4 left-4 z-10 text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+        className="absolute top-4 left-4 z-10 text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
       >
         ← dream lab
       </Link>
@@ -354,7 +354,7 @@ export default function SpectrogramPaint() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/85-spectrogram-paint/README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute top-4 right-4 z-10 text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+        className="absolute top-4 right-4 z-10 text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
       >
         design notes ↗
       </Link>

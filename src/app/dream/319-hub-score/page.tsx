@@ -404,7 +404,7 @@ export default function HubScorePage() {
 
   // ── view ───────────────────────────────────────────────────────────────────
   return (
-    <main className="relative flex min-h-screen w-full flex-col bg-[#050507] text-white">
+    <main className="relative flex min-h-screen w-full flex-col bg-[#050507] text-foreground">
       {/* the living score */}
       <canvas
         ref={canvasRef}
@@ -415,24 +415,24 @@ export default function HubScorePage() {
       {/* idle gate */}
       {phase === "idle" && (
         <div className="relative z-10 m-auto max-w-lg px-6 text-center">
-          <h1 className="font-mono text-2xl text-white/95">Hub Score</h1>
-          <p className="mt-4 text-base text-white/80">
-            Every open tab of this page is one sustained <span className="text-white">voice</span>{" "}
+          <h1 className="font-mono text-2xl text-foreground">Hub Score</h1>
+          <p className="mt-4 text-base text-foreground">
+            Every open tab of this page is one sustained <span className="text-foreground">voice</span>{" "}
             in a single, server-less ensemble — a just-intonation drone over a D
-            root that breathes together on the <span className="text-white">wall clock</span>.
+            root that breathes together on the <span className="text-foreground">wall clock</span>.
             No server keeps time: the shared clock <em>is</em> the conductor&apos;s baton.
           </p>
-          <p className="mt-4 text-base text-white/75">
+          <p className="mt-4 text-base text-muted-foreground">
             Tap a degree to choose which chord-tone you sing. Take the baton to
             conduct the whole room&apos;s harmony — everyone glides to match.
           </p>
           <button
             onClick={start}
-            className="mt-8 min-h-[44px] rounded-full border border-white/30 bg-white/5 px-6 py-2.5 font-mono text-base text-white/95 transition hover:bg-white/10"
+            className="mt-8 min-h-[44px] rounded-full border border-border bg-muted px-6 py-2.5 font-mono text-base text-foreground transition hover:bg-accent"
           >
             ▶ Start / Join the room
           </button>
-          <p className="mt-6 text-base text-white/75">
+          <p className="mt-6 text-base text-muted-foreground">
             Open this page in another tab to add a voice. A lone tab still hears
             two gentle ghost voices holding the chord.
           </p>
@@ -444,31 +444,31 @@ export default function HubScorePage() {
         <>
           {/* top status */}
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between px-5 py-4">
-            <p className="font-mono text-base text-white/75">
+            <p className="font-mono text-base text-muted-foreground">
               {peerCount + 1} {peerCount + 1 === 1 ? "voice" : "voices"}
               {peerCount === 0 ? " · solo" : ""}
               {isConductor ? " · you hold the baton" : conductorId ? " · conducted" : " · drifting"}
             </p>
-            <p className="hidden font-mono text-base text-white/75 sm:block">
+            <p className="hidden font-mono text-base text-muted-foreground sm:block">
               breath ≈ 30s · wall-clock baton
             </p>
           </div>
 
           {peerCount === 0 && (
-            <p className="pointer-events-none absolute left-1/2 top-14 z-10 -translate-x-1/2 font-mono text-base text-white/75">
+            <p className="pointer-events-none absolute left-1/2 top-14 z-10 -translate-x-1/2 font-mono text-base text-muted-foreground">
               Open this page in another tab to add a voice.
             </p>
           )}
 
           {noChannel && (
-            <p className="pointer-events-none absolute left-1/2 top-14 z-10 -translate-x-1/2 px-4 text-center font-mono text-base text-amber-300/95">
+            <p className="pointer-events-none absolute left-1/2 top-14 z-10 -translate-x-1/2 px-4 text-center font-mono text-base text-violet-300/95">
               This browser blocks BroadcastChannel — running solo. Your voice
               still sings.
             </p>
           )}
 
           {noAudio && (
-            <p className="pointer-events-none absolute left-1/2 top-24 z-10 -translate-x-1/2 px-4 text-center font-mono text-base text-rose-300">
+            <p className="pointer-events-none absolute left-1/2 top-24 z-10 -translate-x-1/2 px-4 text-center font-mono text-base text-violet-300">
               Web Audio unavailable — showing the silent score only.
             </p>
           )}
@@ -477,7 +477,7 @@ export default function HubScorePage() {
           <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col gap-3 px-4 pb-5 pt-2">
             {/* your degree picker */}
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <span className="font-mono text-base text-white/75">your tone</span>
+              <span className="font-mono text-base text-muted-foreground">your tone</span>
               {JI_RATIOS.map((_, d) => {
                 const inChord = chord.includes(d);
                 const mine = selfDegree === d;
@@ -487,10 +487,10 @@ export default function HubScorePage() {
                     onClick={() => pickDegree(d)}
                     className={`min-h-[44px] rounded-md border px-3 py-2.5 font-mono text-base transition ${
                       mine
-                        ? "border-white/70 bg-white/15 text-white"
+                        ? "border-border bg-muted text-foreground"
                         : inChord
-                          ? "border-white/25 bg-white/[0.04] text-white/80 hover:bg-white/10"
-                          : "border-white/10 text-white/50 hover:bg-white/5"
+                          ? "border-border bg-muted text-foreground hover:bg-accent"
+                          : "border-border text-muted-foreground hover:bg-accent"
                     }`}
                     style={mine ? { boxShadow: `0 0 0 1px hsla(${selfHue},70%,60%,0.6)` } : undefined}
                   >
@@ -505,7 +505,7 @@ export default function HubScorePage() {
               {!isConductor ? (
                 <button
                   onClick={takeBaton}
-                  className="min-h-[44px] rounded-full border border-white/40 bg-white/5 px-5 py-2.5 font-mono text-base text-white/95 transition hover:bg-white/10"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 font-mono text-base text-foreground transition hover:bg-accent"
                 >
                   Take the baton
                 </button>
@@ -513,49 +513,49 @@ export default function HubScorePage() {
                 <>
                   <button
                     onClick={() => stepChord(-1)}
-                    className="min-h-[44px] rounded-md border border-white/30 px-4 py-2.5 font-mono text-base text-white/95 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     ◀ chord
                   </button>
                   <button
                     onClick={() => stepChord(1)}
-                    className="min-h-[44px] rounded-md border border-white/30 px-4 py-2.5 font-mono text-base text-white/95 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     chord ▶
                   </button>
                   <button
                     onClick={() => nudge("brightness", 0.12)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     brighter
                   </button>
                   <button
                     onClick={() => nudge("brightness", -0.12)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     darker
                   </button>
                   <button
                     onClick={() => nudge("density", 0.12)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     denser
                   </button>
                   <button
                     onClick={() => nudge("density", -0.12)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     sparser
                   </button>
                   <button
                     onClick={() => stepOctave(1)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     oct +
                   </button>
                   <button
                     onClick={() => stepOctave(-1)}
-                    className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-white/10"
+                    className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
                   >
                     oct −
                   </button>
@@ -568,7 +568,7 @@ export default function HubScorePage() {
 
       <a
         href="/dream/319-hub-score/README.md"
-        className="absolute right-4 top-4 z-10 font-mono text-base text-white/75 underline-offset-4 hover:underline"
+        className="absolute right-4 top-4 z-10 font-mono text-base text-muted-foreground underline-offset-4 hover:underline"
       >
         Read the design notes
       </a>

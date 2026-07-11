@@ -358,13 +358,13 @@ export default function StructureViz() {
   useEffect(() => () => stopAll(), [stopAll]);
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono p-6">
+    <div className="min-h-screen bg-black text-foreground font-mono p-6">
       <div className="max-w-3xl mx-auto space-y-5">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-xl tracking-tight mb-1">Structure Viz</h1>
-            <p className="text-xs text-white/50 max-w-md leading-relaxed">
+            <p className="text-xs text-muted-foreground max-w-md leading-relaxed">
               Your music as a map of itself. Each row and column is a 1.5-second
               audio snapshot. Bright squares mean similar material. Block diagonals
               reveal repeating sections — verse, chorus, bridge, return.
@@ -372,7 +372,7 @@ export default function StructureViz() {
           </div>
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/50 ml-4 shrink-0"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground ml-4 shrink-0"
           >
             ← back
           </Link>
@@ -384,8 +384,8 @@ export default function StructureViz() {
             onClick={startDemo}
             className={`px-4 py-2 text-xs tracking-wider uppercase border rounded transition ${
               status === "demo"
-                ? "border-cyan-400/60 text-cyan-300"
-                : "border-white/20 text-white/55 hover:border-white/50 hover:text-white"
+                ? "border-violet-400/60 text-violet-300"
+                : "border-border text-muted-foreground hover:border-border hover:text-foreground"
             }`}
           >
             ▶ Demo (ABA)
@@ -394,8 +394,8 @@ export default function StructureViz() {
             onClick={startMic}
             className={`px-4 py-2 text-xs tracking-wider uppercase border rounded transition ${
               status === "mic"
-                ? "border-cyan-400/60 text-cyan-300"
-                : "border-white/20 text-white/55 hover:border-white/50 hover:text-white"
+                ? "border-violet-400/60 text-violet-300"
+                : "border-border text-muted-foreground hover:border-border hover:text-foreground"
             }`}
           >
             🎤 Mic
@@ -406,7 +406,7 @@ export default function StructureViz() {
                 stopAll();
                 setStatus("idle");
               }}
-              className="px-4 py-2 text-xs tracking-wider uppercase border border-white/15 text-white/35 hover:border-white/35 hover:text-white/55 rounded transition"
+              className="px-4 py-2 text-xs tracking-wider uppercase border border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground rounded transition"
             >
               Stop
             </button>
@@ -414,13 +414,13 @@ export default function StructureViz() {
         </div>
 
         {/* Status */}
-        <div className="text-[11px] text-white/40 min-h-4">
+        <div className="text-[11px] text-muted-foreground/70 min-h-4">
           {status === "demo" && (
             <>
               Demo: A (C3 chord, 0–16s) → B (A4 chord, 16–32s) → A′ (returns, 32–48s). Watch
               two bright off-diagonal blocks emerge.{" "}
               {barCount > 0 && (
-                <span className="text-white/60">
+                <span className="text-muted-foreground">
                   {barCount} bar{barCount !== 1 ? "s" : ""} ·{" "}
                   {((barCount * BAR_MS) / 1000).toFixed(0)}s captured
                 </span>
@@ -431,7 +431,7 @@ export default function StructureViz() {
             <>
               Listening — play sections with clear contrast or repeating material.{" "}
               {barCount > 0 && (
-                <span className="text-white/60">
+                <span className="text-muted-foreground">
                   {barCount} bar{barCount !== 1 ? "s" : ""} ·{" "}
                   {((barCount * BAR_MS) / 1000).toFixed(0)}s
                 </span>
@@ -445,7 +445,7 @@ export default function StructureViz() {
         <div className="overflow-x-auto">
           {barCount < 2 && status !== "idle" && (
             <div
-              className="border border-white/10 flex items-center justify-center text-xs text-white/25"
+              className="border border-border flex items-center justify-center text-xs text-muted-foreground/70"
               style={{ width: 160, height: 80 }}
             >
               {barCount === 0 ? "capturing first bar…" : "waiting for second bar…"}
@@ -453,22 +453,22 @@ export default function StructureViz() {
           )}
           <canvas
             ref={canvasRef}
-            className="border border-white/10"
+            className="border border-border"
             style={{ display: barCount >= 2 ? "block" : "none" }}
           />
         </div>
 
         {/* Legend */}
-        <div className="text-[10px] text-white/28 space-y-0.5 leading-relaxed">
+        <div className="text-[10px] text-muted-foreground/70 space-y-0.5 leading-relaxed">
           <div>
             <span style={{ color: "rgb(185,100,255)" }}>■</span> bright white ={" "}
-            <span className="text-white/45">acoustically similar</span>
+            <span className="text-muted-foreground">acoustically similar</span>
             {"  "}
-            <span style={{ color: "rgb(5,5,20)" }} className="border border-white/10">
+            <span style={{ color: "rgb(5,5,20)" }} className="border border-border">
               ■
             </span>{" "}
             dark ={" "}
-            <span className="text-white/45">contrasting material</span>
+            <span className="text-muted-foreground">contrasting material</span>
           </div>
           <div>white lines = detected section boundaries (checkerboard kernel)</div>
           <div>
@@ -476,11 +476,11 @@ export default function StructureViz() {
           </div>
         </div>
 
-        {error && <p className="text-xs text-rose-300/80">{error}</p>}
+        {error && <p className="text-xs text-violet-300/80">{error}</p>}
 
         <Link
           href="/dream/67-structure-viz/README.md"
-          className="block text-[11px] text-white/20 hover:text-white/50 pt-1"
+          className="block text-[11px] text-muted-foreground/70 hover:text-muted-foreground pt-1"
         >
           design notes →
         </Link>

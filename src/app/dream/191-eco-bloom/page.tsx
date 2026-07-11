@@ -306,14 +306,14 @@ export default function EcoBloomPage() {
         {/* Header */}
         <div className="p-5 flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-serif text-white/95">eco-bloom</h1>
-            <p className="text-base text-white/75 mt-0.5">
+            <h1 className="text-2xl font-serif text-foreground">eco-bloom</h1>
+            <p className="text-base text-muted-foreground mt-0.5">
               L-system plant · Karplus-Strong strings
             </p>
           </div>
           <Link
             href="/dream"
-            className="pointer-events-auto text-sm text-white/55 hover:text-white/80 transition-colors"
+            className="pointer-events-auto text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             ← lab
           </Link>
@@ -325,7 +325,7 @@ export default function EcoBloomPage() {
             <button
               className="pointer-events-auto px-8 py-3 min-h-[44px]
                          bg-violet-500/20 border border-violet-400/40 rounded-lg
-                         text-white/95 text-base font-mono
+                         text-foreground text-base font-mono
                          hover:bg-violet-500/30 active:bg-violet-500/40 transition-all"
               onClick={handleGrow}
             >
@@ -337,7 +337,7 @@ export default function EcoBloomPage() {
         {/* Footer */}
         {started && (
           <div className="mt-auto p-5">
-            <p className="text-sm font-mono text-white/55">
+            <p className="text-sm font-mono text-muted-foreground">
               {iterLabel} · tap to grow · auto-cycles
             </p>
           </div>

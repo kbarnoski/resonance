@@ -313,7 +313,7 @@ export default function KidsColorBells() {
   // ─── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden select-none">
+    <div className="relative min-h-screen bg-black text-foreground overflow-hidden select-none">
       {/* Hidden video element for camera feed */}
       <video
         ref={videoRef}
@@ -337,10 +337,10 @@ export default function KidsColorBells() {
         <div className="flex flex-col items-center justify-center min-h-screen gap-8 px-4">
           {/* Title */}
           <div className="text-center space-y-3">
-            <h1 className="text-3xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl font-bold text-foreground tracking-tight">
               🎐 Color Bells
             </h1>
-            <p className="text-base text-white/75 max-w-xs leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-xs leading-relaxed">
               Show something colorful to the camera — a red toy, a blue cup — and a bell rings!
             </p>
           </div>
@@ -359,7 +359,7 @@ export default function KidsColorBells() {
           {/* Start button */}
           <button
             onClick={handleStart}
-            className="min-h-[72px] min-w-[200px] rounded-3xl bg-white text-black text-2xl font-bold px-10 py-4 shadow-2xl active:scale-95 transition-transform"
+            className="min-h-[72px] min-w-[200px] rounded-3xl bg-card text-black text-2xl font-bold px-10 py-4 shadow-2xl active:scale-95 transition-transform"
           >
             ▶ Start
           </button>
@@ -367,7 +367,7 @@ export default function KidsColorBells() {
           {/* Design notes link */}
           <button
             onClick={() => setShowNotes(true)}
-            className="text-base text-white/60 underline underline-offset-4 hover:text-white/90 transition-colors"
+            className="text-base text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
           >
             Read the design notes
           </button>
@@ -378,22 +378,22 @@ export default function KidsColorBells() {
       {showNotes && (
         <div className="fixed inset-0 z-50 bg-black/90 overflow-y-auto flex items-start justify-center p-6">
           <div className="max-w-md w-full space-y-4 pt-4">
-            <h2 className="text-2xl font-bold text-white">Design Notes</h2>
-            <p className="text-base text-white/75 leading-relaxed">
-              <strong className="text-white">The room is your instrument.</strong> Color Bells samples the average RGB of a central reticle region from the live camera feed — no ML, no body tracking, just a simple pixel average that maps to a note.
+            <h2 className="text-2xl font-bold text-foreground">Design Notes</h2>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">The room is your instrument.</strong> Color Bells samples the average RGB of a central reticle region from the live camera feed — no ML, no body tracking, just a simple pixel average that maps to a note.
             </p>
-            <p className="text-base text-white/75 leading-relaxed">
-              <strong className="text-white">Scale:</strong> D major hexachord (D E F♯ G A B). Warm colors (red, orange, yellow) map to lower notes; cool colors (green, blue, violet) ascend the scale.
+            <p className="text-base text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">Scale:</strong> D major hexachord (D E F♯ G A B). Warm colors (red, orange, yellow) map to lower notes; cool colors (green, blue, violet) ascend the scale.
             </p>
-            <p className="text-base text-white/75 leading-relaxed">
-              <strong className="text-white">References:</strong> Toshio Iwai — SimTunes (1996), where grid cells&apos; colors directly triggered instruments. Also the color-organ lineage: Castel&apos;s clavecin oculaire, Len Lye and Oskar Fischinger&apos;s visual music — color as pitch.
+            <p className="text-base text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">References:</strong> Toshio Iwai — SimTunes (1996), where grid cells&apos; colors directly triggered instruments. Also the color-organ lineage: Castel&apos;s clavecin oculaire, Len Lye and Oskar Fischinger&apos;s visual music — color as pitch.
             </p>
-            <p className="text-base text-white/75 leading-relaxed">
-              <strong className="text-white">Ambition:</strong> Novel camera region-color sampling technique (never used in the lab) + 4 integrated subsystems: camera sampler, FM bell audio engine, Canvas2D scene, song-memory state machine.
+            <p className="text-base text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">Ambition:</strong> Novel camera region-color sampling technique (never used in the lab) + 4 integrated subsystems: camera sampler, FM bell audio engine, Canvas2D scene, song-memory state machine.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-4 min-h-[44px] px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 text-base text-white transition-colors"
+              className="mt-4 min-h-[44px] px-6 py-2 rounded-full bg-muted hover:bg-accent text-base text-foreground transition-colors"
             >
               Close
             </button>
@@ -407,21 +407,21 @@ export default function KidsColorBells() {
           {/* Top bar */}
           <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-sm">
             <div className="flex items-center gap-3">
-              <h1 className="text-xl font-bold text-white">🎐 Color Bells</h1>
+              <h1 className="text-xl font-bold text-foreground">🎐 Color Bells</h1>
               {/* Camera status indicator */}
               {mode === "camera" ? (
-                <span className="text-sm font-semibold text-emerald-400 bg-emerald-400/10 rounded-full px-2 py-0.5">
+                <span className="text-sm font-semibold text-violet-400 bg-violet-400/10 rounded-full px-2 py-0.5">
                   Camera on
                 </span>
               ) : (
-                <span className="text-sm font-semibold text-amber-400 bg-amber-400/10 rounded-full px-2 py-0.5">
+                <span className="text-sm font-semibold text-violet-400 bg-violet-400/10 rounded-full px-2 py-0.5">
                   Touch mode
                 </span>
               )}
             </div>
             <button
               onClick={() => setShowNotes(true)}
-              className="text-sm text-white/60 hover:text-white/90 underline underline-offset-2 transition-colors min-h-[44px] px-2"
+              className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors min-h-[44px] px-2"
             >
               Notes
             </button>
@@ -430,7 +430,7 @@ export default function KidsColorBells() {
           {/* Camera error notice */}
           {cameraError && (
             <div className="absolute top-16 left-0 right-0 z-10 flex justify-center px-4">
-              <p className="text-rose-300 text-base text-center bg-black/50 rounded-xl px-4 py-2 max-w-sm">
+              <p className="text-violet-300 text-base text-center bg-black/50 rounded-xl px-4 py-2 max-w-sm">
                 {cameraError}
               </p>
             </div>
@@ -458,7 +458,7 @@ export default function KidsColorBells() {
           <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center gap-3 pb-6 px-4">
             {/* Bead area label */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/60">
+              <span className="text-sm text-muted-foreground">
                 {beadCount === 0
                   ? "Find a color to start your song!"
                   : `${beadCount} color${beadCount !== 1 ? "s" : ""} collected`}
@@ -471,13 +471,13 @@ export default function KidsColorBells() {
                 <button
                   onClick={playSong}
                   disabled={isPlaying}
-                  className="min-h-[64px] min-w-[140px] rounded-2xl bg-white text-black text-xl font-bold px-6 py-3 shadow-xl disabled:opacity-50 active:scale-95 transition-all"
+                  className="min-h-[64px] min-w-[140px] rounded-2xl bg-card text-black text-xl font-bold px-6 py-3 shadow-xl disabled:opacity-50 active:scale-95 transition-all"
                 >
                   {isPlaying ? "♪ Playing..." : "▶ Play song"}
                 </button>
                 <button
                   onClick={clearBasket}
-                  className="min-h-[64px] min-w-[64px] rounded-2xl bg-white/10 text-white text-xl px-4 py-3 shadow-xl active:scale-95 transition-transform"
+                  className="min-h-[64px] min-w-[64px] rounded-2xl bg-muted text-foreground text-xl px-4 py-3 shadow-xl active:scale-95 transition-transform"
                   title="Clear basket"
                   aria-label="Clear basket"
                 >
@@ -494,7 +494,7 @@ export default function KidsColorBells() {
         <div className="absolute top-3 right-4 z-20">
           <Link
             href="/dream"
-            className="text-xs text-white/40 hover:text-white/70 transition-colors min-h-[44px] flex items-center"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors min-h-[44px] flex items-center"
           >
             ← Dream
           </Link>

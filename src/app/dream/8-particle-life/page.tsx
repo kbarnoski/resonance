@@ -318,35 +318,35 @@ export default function ParticleLifePage() {
       {!isRunning && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Particle Life</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             900 particles. 6 species. A random 6×6 attraction/repulsion matrix
             drives emergent flocking, orbit, and predator-prey patterns — none
             explicitly programmed.
           </p>
-          <p className="text-sm text-white/40 max-w-md mb-6 leading-relaxed">
+          <p className="text-sm text-muted-foreground/70 max-w-md mb-6 leading-relaxed">
             Audio energy injects velocity noise per species. Percussive onsets
             reshuffle the matrix → new emergent pattern appears mid-song.
           </p>
           <div className="flex gap-3 mb-8">
             <button
               onClick={launchDemo}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={launchMic}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
           {micError && (
-            <p className="text-xs text-rose-300/80 max-w-sm mb-4">{micError}</p>
+            <p className="text-xs text-violet-300/80 max-w-sm mb-4">{micError}</p>
           )}
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/60 transition"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             ← back to dream sandbox
           </Link>
@@ -359,7 +359,7 @@ export default function ParticleLifePage() {
           {/* Matrix heatmap — top-left */}
           {matrixSnap.length === N_SPECIES * N_SPECIES && (
             <div className="absolute top-3 left-3 pointer-events-none select-none">
-              <p className="text-[9px] tracking-widest text-white/30 mb-1 uppercase">
+              <p className="text-[9px] tracking-widest text-muted-foreground/70 mb-1 uppercase">
                 matrix
               </p>
               <div
@@ -392,7 +392,7 @@ export default function ParticleLifePage() {
           )}
 
           {/* FPS + mode — top-right */}
-          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-white/40 space-y-0.5 pointer-events-none select-none">
+          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none select-none">
             <div>{fps} fps</div>
             <div className="uppercase">{audioMode}</div>
           </div>
@@ -415,7 +415,7 @@ export default function ParticleLifePage() {
                         transition: "height 80ms linear, opacity 80ms linear",
                       }}
                     />
-                    <span className="text-[7px] text-white/40 tracking-wider uppercase">
+                    <span className="text-[7px] text-muted-foreground/70 tracking-wider uppercase">
                       {name.slice(0, 3)}
                     </span>
                   </div>
@@ -427,19 +427,19 @@ export default function ParticleLifePage() {
             <div className="flex flex-col items-end gap-1">
               <button
                 onClick={reshuffle}
-                className="text-[10px] tracking-wider uppercase text-white/55 border border-white/20 hover:border-white/60 hover:text-white px-2.5 py-1 rounded transition"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
               >
                 reshuffle
               </button>
               <button
                 onClick={stopAll}
-                className="text-[10px] tracking-wider uppercase text-white/55 border border-white/20 hover:border-white/60 hover:text-white px-2.5 py-1 rounded transition"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
               >
                 stop
               </button>
               <Link
                 href="/dream"
-                className="text-[10px] text-white/30 hover:text-white/60 transition"
+                className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
               >
                 ← back
               </Link>

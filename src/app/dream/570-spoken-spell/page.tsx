@@ -400,15 +400,15 @@ export default function SpokenSpellPage() {
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <main className="min-h-screen bg-[#0a090f] flex flex-col text-white select-none overflow-hidden">
+    <main className="min-h-screen bg-[#0a090f] flex flex-col text-foreground select-none overflow-hidden">
 
       {/* ── Header ── */}
       <header className="relative z-10 flex items-start justify-between px-6 pt-6 pb-2 shrink-0">
         <div>
-          <h1 className="text-3xl font-serif font-light tracking-wide text-white/95">
+          <h1 className="text-3xl font-serif font-light tracking-wide text-foreground">
             Spoken Spell
           </h1>
-          <p className="mt-1 text-base text-white/75 max-w-lg leading-snug">
+          <p className="mt-1 text-base text-muted-foreground max-w-lg leading-snug">
             Speak — your words become a self-layering musical incantation.
             Each phrase freezes as a looping ostinato; new words bloom above.
           </p>
@@ -421,12 +421,12 @@ export default function SpokenSpellPage() {
               <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                 listening
                   ? "bg-violet-500/20 text-violet-300"
-                  : "bg-white/10 text-white/55"
+                  : "bg-muted text-muted-foreground"
               }`}>
                 {listening ? "● listening" : "○ awaiting"}
               </span>
               {loopCount > 0 && (
-                <span className="px-2.5 py-1 rounded-full text-xs bg-white/5 text-white/55">
+                <span className="px-2.5 py-1 rounded-full text-xs bg-muted text-muted-foreground">
                   {loopCount} loop{loopCount !== 1 ? "s" : ""} accreted
                 </span>
               )}
@@ -438,21 +438,21 @@ export default function SpokenSpellPage() {
       {/* ── Speech unavailable notice ── */}
       {srAvail === false && (
         <div className="px-6 py-2 shrink-0">
-          <p className="text-rose-300 text-sm">
+          <p className="text-violet-300 text-sm">
             Live speech needs Chrome or Edge — type below to cast the spell.
           </p>
         </div>
       )}
       {micDenied && (
         <div className="px-6 py-1 shrink-0">
-          <p className="text-rose-300 text-sm">
+          <p className="text-violet-300 text-sm">
             Mic permission denied — use the text input below.
           </p>
         </div>
       )}
 
       {/* ── SVG word river ── */}
-      <div className="relative flex-1 min-h-[300px] mx-4 my-2 rounded-xl overflow-hidden border border-white/5 bg-[#07060d]">
+      <div className="relative flex-1 min-h-[300px] mx-4 my-2 rounded-xl overflow-hidden border border-border bg-[#07060d]">
         <svg
           ref={svgRef}
           className="w-full h-full"
@@ -560,7 +560,7 @@ export default function SpokenSpellPage() {
                   ? "Or type here and press Enter…"
                   : "Type a word or sentence and press Enter…"
               }
-              className="flex-1 min-h-[44px] px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white/95 text-base placeholder:text-white/30 focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-colors"
+              className="flex-1 min-h-[44px] px-4 py-2.5 rounded-lg bg-muted border border-border text-foreground text-base placeholder:text-muted-foreground/70 focus:outline-none focus:border-violet-400/50 focus:bg-muted transition-colors"
             />
             <button
               onClick={handleTypedSubmit}
@@ -575,12 +575,12 @@ export default function SpokenSpellPage() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setShowNotes(n => !n)}
-            className="text-sm text-white/55 hover:text-white/75 transition-colors underline underline-offset-2"
+            className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors underline underline-offset-2"
           >
             {showNotes ? "hide design notes" : "design notes"}
           </button>
           {started && loopCount === 0 && (
-            <span className="text-sm text-white/55 italic">
+            <span className="text-sm text-muted-foreground italic">
               {listening ? "speak now — words will appear above" : "type above to begin"}
             </span>
           )}
@@ -588,8 +588,8 @@ export default function SpokenSpellPage() {
 
         {/* Design notes panel */}
         {showNotes && (
-          <div className="mt-1 p-4 rounded-lg bg-white/4 border border-white/8 text-sm text-white/75 max-w-2xl space-y-2">
-            <p className="font-medium text-white/90 text-base">Spoken Spell — Design Notes</p>
+          <div className="mt-1 p-4 rounded-lg bg-muted border border-border text-sm text-muted-foreground max-w-2xl space-y-2">
+            <p className="font-medium text-foreground text-base">Spoken Spell — Design Notes</p>
             <p>
               Each spoken word is hashed deterministically to a pitch in D pentatonic
               (D E F# A B across two octaves). Word length and vowel density map to duration;

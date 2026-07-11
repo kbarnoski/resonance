@@ -245,7 +245,7 @@ export default function CoralGardenPage() {
   }, [handleOrientation]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0a2e] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0a2e] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -257,7 +257,7 @@ export default function CoralGardenPage() {
 
       {noCanvas && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-8 text-center">
-          <p className="text-rose-300 text-xl">
+          <p className="text-violet-300 text-xl">
             The drawing canvas is not available here, but the coral is still
             singing. Listen with the lights low.
           </p>
@@ -270,21 +270,21 @@ export default function CoralGardenPage() {
             <span className="text-6xl" aria-hidden>
               🪸
             </span>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Coral Garden
             </h1>
-            <p className="max-w-sm text-base text-white/80">
+            <p className="max-w-sm text-base text-foreground">
               Tilt the tablet to grow a glowing reef. The coral sings the song it
               draws.
             </p>
           </div>
           <button
             onClick={() => void start()}
-            className="flex h-[88px] min-w-[88px] items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-amber-300 px-10 py-4 text-2xl font-semibold text-[#1a0f3a] shadow-[0_0_40px_rgba(244,114,182,0.6)] active:scale-95"
+            className="flex h-[88px] min-w-[88px] items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-violet-300 px-10 py-4 text-2xl font-semibold text-[#1a0f3a] shadow-[0_0_40px_rgba(244,114,182,0.6)] active:scale-95"
           >
             Start
           </button>
-          <p className="text-white/55 text-xs">
+          <p className="text-muted-foreground text-xs">
             Best with sound on. Calm and quiet, made for bedtime.
           </p>
         </div>
@@ -292,7 +292,7 @@ export default function CoralGardenPage() {
 
       {phase === "playing" && (
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 flex justify-center p-4">
-          <p className="text-white/55 text-xs">
+          <p className="text-muted-foreground text-xs">
             Tilt to grow · tap the water to plant · the reef is singing
           </p>
         </div>

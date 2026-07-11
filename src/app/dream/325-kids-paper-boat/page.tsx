@@ -449,19 +449,19 @@ export default function PaperBoatVoyage() {
 
   // ── render ─────────────────────────────────────────────────────────────
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-foreground">
       {/* corner design-notes link */}
       <Link
         href="/dream/325-kids-paper-boat/README.md"
-        className="absolute right-3 top-3 z-30 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-sm text-white/75 backdrop-blur hover:text-white"
+        className="absolute right-3 top-3 z-30 rounded-full border border-border bg-black/40 px-3 py-1.5 text-sm text-muted-foreground backdrop-blur hover:text-foreground"
       >
         Read the design notes
       </Link>
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">Paper Boat</h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Paper Boat</h1>
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Steer the little boat down the night river. Glide into the glowing
           lily-pads to make them sing.
         </p>
@@ -612,7 +612,7 @@ export default function PaperBoatVoyage() {
         <div className="pointer-events-none absolute inset-0 z-20 flex items-end justify-center pb-20">
           <button
             onClick={handleBeginAgain}
-            className="pointer-events-auto min-h-[44px] rounded-full bg-amber-200/90 px-6 py-3 text-base font-medium text-[#3a2a08] shadow-lg shadow-amber-300/30 transition hover:bg-amber-100"
+            className="pointer-events-auto min-h-[44px] rounded-full bg-violet-200/90 px-6 py-3 text-base font-medium text-[#3a2a08] shadow-lg shadow-violet-300/30 transition hover:bg-violet-100"
           >
             ☀ Begin a new voyage
           </button>
@@ -623,13 +623,13 @@ export default function PaperBoatVoyage() {
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-black/55 backdrop-blur-sm">
           {unsupported ? (
-            <p className="max-w-sm px-6 text-center text-base text-rose-300">
+            <p className="max-w-sm px-6 text-center text-base text-violet-300">
               Sound isn&apos;t available in this browser, so the voyage can&apos;t
               sing. Try a recent Chrome, Safari, or Firefox.
             </p>
           ) : (
             <>
-              <p className="max-w-sm px-6 text-center text-base text-white/75">
+              <p className="max-w-sm px-6 text-center text-base text-muted-foreground">
                 A long, slow river ride from dusk to dawn. Drag the paper boat to
                 steer. Glide into the lily-pads to make them sing.
               </p>
@@ -642,7 +642,7 @@ export default function PaperBoatVoyage() {
               {hasSaved && (
                 <button
                   onClick={() => handleStart(true)}
-                  className="min-h-[44px] rounded-full border border-white/25 px-6 py-3 text-base text-white/85 transition hover:bg-white/10"
+                  className="min-h-[44px] rounded-full border border-border px-6 py-3 text-base text-foreground transition hover:bg-accent"
                 >
                   ↻ Continue your river
                 </button>

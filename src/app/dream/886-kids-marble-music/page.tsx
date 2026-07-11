@@ -260,18 +260,18 @@ export default function MarbleMusicPage() {
   );
 
   return (
-    <main className="min-h-screen w-full bg-[#140d1f] text-white flex flex-col items-center">
+    <main className="min-h-screen w-full bg-[#140d1f] text-foreground flex flex-col items-center">
       <div className="w-full max-w-[520px] px-4 pt-6 pb-3 flex flex-col items-center">
         <Link
           href="/dream"
-          className="self-start text-base text-white/55 hover:text-white/80"
+          className="self-start text-base text-muted-foreground hover:text-foreground"
         >
           ← back
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white text-center">
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground text-center">
           Marble Music Machine
         </h1>
-        <p className="mt-2 text-base text-white/75 text-center">
+        <p className="mt-2 text-base text-muted-foreground text-center">
           Tap the top to drop a glowing marble. Every bounce sings the{" "}
           <span className="text-violet-300">material</span> it hits — wood
           thuds, glass rings, metal shimmers, drums boom.
@@ -283,7 +283,7 @@ export default function MarbleMusicPage() {
           ref={canvasRef}
           width={BOARD_W}
           height={BOARD_H}
-          className="w-full rounded-2xl border border-white/10 bg-[#1a1029] touch-none select-none"
+          className="w-full rounded-2xl border border-border bg-[#1a1029] touch-none select-none"
           style={{ aspectRatio: `${BOARD_W} / ${BOARD_H}` }}
           onPointerDown={(e) => {
             if (!started) return;
@@ -296,10 +296,10 @@ export default function MarbleMusicPage() {
             onClick={() => void start()}
             className="absolute inset-0 m-4 rounded-2xl bg-violet-500/20 border border-violet-400/40 backdrop-blur-sm flex flex-col items-center justify-center gap-3 min-h-[64px]"
           >
-            <span className="text-2xl font-semibold text-white">
+            <span className="text-2xl font-semibold text-foreground">
               Tap to Play
             </span>
-            <span className="text-base text-white/75 px-6 text-center">
+            <span className="text-base text-muted-foreground px-6 text-center">
               Turn your sound on. Then tap the top of the board to drop marbles.
             </span>
           </button>
@@ -314,13 +314,13 @@ export default function MarbleMusicPage() {
               onPointerUp={() => setManualTilt(0)}
               onPointerLeave={() => setManualTilt(0)}
               onPointerCancel={() => setManualTilt(0)}
-              className="flex-1 min-h-[64px] rounded-2xl bg-violet-500/20 border border-violet-400/40 text-2xl font-semibold text-white active:bg-violet-500/40 touch-none select-none"
+              className="flex-1 min-h-[64px] rounded-2xl bg-violet-500/20 border border-violet-400/40 text-2xl font-semibold text-foreground active:bg-violet-500/40 touch-none select-none"
             >
               ◀ Tilt
             </button>
             <button
               onClick={() => dropMarble(BOARD_W * (0.3 + Math.random() * 0.4))}
-              className="flex-1 min-h-[64px] rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-xl font-semibold text-white active:bg-emerald-500/40 touch-none select-none"
+              className="flex-1 min-h-[64px] rounded-2xl bg-violet-500/20 border border-violet-400/40 text-xl font-semibold text-foreground active:bg-violet-500/40 touch-none select-none"
             >
               + Marble
             </button>
@@ -329,17 +329,17 @@ export default function MarbleMusicPage() {
               onPointerUp={() => setManualTilt(0)}
               onPointerLeave={() => setManualTilt(0)}
               onPointerCancel={() => setManualTilt(0)}
-              className="flex-1 min-h-[64px] rounded-2xl bg-violet-500/20 border border-violet-400/40 text-2xl font-semibold text-white active:bg-violet-500/40 touch-none select-none"
+              className="flex-1 min-h-[64px] rounded-2xl bg-violet-500/20 border border-violet-400/40 text-2xl font-semibold text-foreground active:bg-violet-500/40 touch-none select-none"
             >
               Tilt ▶
             </button>
           </div>
 
           <div className="flex items-center justify-between text-base">
-            <span className="text-white/75 font-mono">
+            <span className="text-muted-foreground font-mono">
               {marbleCount} / {MAX_MARBLES} marbles
             </span>
-            <span className="text-white/55 font-mono">
+            <span className="text-muted-foreground font-mono">
               {tiltMode === "sensor" ? "tilt: sensor" : "tilt: buttons"}
             </span>
           </div>
@@ -347,7 +347,7 @@ export default function MarbleMusicPage() {
           {sensorStatus && (
             <p
               className={`text-base ${
-                tiltMode === "sensor" ? "text-emerald-300" : "text-rose-300"
+                tiltMode === "sensor" ? "text-violet-300" : "text-violet-300"
               }`}
             >
               {sensorStatus}
@@ -362,7 +362,7 @@ export default function MarbleMusicPage() {
           </button>
 
           {showNotes && (
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-base text-white/80 leading-relaxed">
+            <div className="rounded-2xl border border-border bg-muted p-4 text-base text-foreground leading-relaxed">
               <p>
                 Every object has a <span className="text-violet-300">material</span>{" "}
                 and a fixed pitch. When a marble hits it, a small{" "}
@@ -379,7 +379,7 @@ export default function MarbleMusicPage() {
                 Wintergatan&rsquo;s Marble Machine and Jem Finer&rsquo;s
                 self-generative marble machine.
               </p>
-              <p className="mt-3 text-white/55 font-mono text-sm">
+              <p className="mt-3 text-muted-foreground font-mono text-sm">
                 Canvas2D + Web Audio, no libraries. RESEARCH §530.
               </p>
             </div>

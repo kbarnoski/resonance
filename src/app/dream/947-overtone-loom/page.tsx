@@ -905,19 +905,19 @@ export default function OvertoneLoomPage() {
           : "—";
 
   return (
-    <main className="min-h-screen bg-[#040507] text-white px-4 py-6 sm:px-8 font-sans">
+    <main className="min-h-screen bg-[#040507] text-foreground px-4 py-6 sm:px-8 font-sans">
       <div className="mx-auto max-w-5xl">
         <header className="mb-5">
           <Link
             href="/dream"
-            className="text-white/55 hover:text-white/80 text-sm font-mono"
+            className="text-muted-foreground hover:text-foreground text-sm font-mono"
           >
             ← dream lab
           </Link>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+          <h1 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
             Overtone Loom
           </h1>
-          <p className="mt-2 text-base text-white/80 max-w-3xl">
+          <p className="mt-2 text-base text-foreground max-w-3xl">
             Play notes and watch the live spectral-interference dissonance field
             between their overtones — consonant intervals lock dark and still,
             dissonant ones churn bright. The roughness is computed on the GPU.
@@ -927,7 +927,7 @@ export default function OvertoneLoomPage() {
         {!started ? (
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-lg bg-cyan-400/15 border border-cyan-300/40 px-6 py-2.5 text-base font-medium text-cyan-200 hover:bg-cyan-400/25 transition-colors"
+            className="min-h-[44px] rounded-lg bg-violet-400/15 border border-violet-300/40 px-6 py-2.5 text-base font-medium text-violet-200 hover:bg-violet-400/25 transition-colors"
           >
             ▸ Start — sound + GPU field
           </button>
@@ -935,62 +935,62 @@ export default function OvertoneLoomPage() {
           <>
             {/* status row */}
             <div className="mb-3 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-sm">
-              <span className="text-cyan-300/95">renderer: {tierLabel}</span>
-              <span className="text-white/75">
+              <span className="text-violet-300/95">renderer: {tierLabel}</span>
+              <span className="text-muted-foreground">
                 held:{" "}
-                <span className="text-white/95">
+                <span className="text-foreground">
                   {heldNames.length ? heldNames.join(" ") : "—"}
                 </span>
               </span>
-              <span className="text-white/75">
+              <span className="text-muted-foreground">
                 total dissonance:{" "}
-                <span className="text-emerald-300/95 tabular-nums">
+                <span className="text-violet-300/95 tabular-nums">
                   {dissReadout.toFixed(3)}
                 </span>
               </span>
             </div>
 
             {notice && (
-              <p className="mb-3 text-base text-amber-300/95 font-mono">
+              <p className="mb-3 text-base text-violet-300/95 font-mono">
                 ⚠ {notice}
               </p>
             )}
             {audioError && (
-              <p className="mb-3 text-base text-rose-300 font-mono">
+              <p className="mb-3 text-base text-violet-300 font-mono">
                 {audioError}
               </p>
             )}
 
             {/* the field */}
-            <div className="relative rounded-lg overflow-hidden border border-white/10 bg-black">
+            <div className="relative rounded-lg overflow-hidden border border-border bg-black">
               <canvas
                 ref={canvasRef}
                 className="block w-full"
                 style={{ height: "320px" }}
               />
               {/* scalar dissonance meter */}
-              <div className="absolute left-3 top-3 right-3 flex items-center gap-3 font-mono text-xs text-white/55">
+              <div className="absolute left-3 top-3 right-3 flex items-center gap-3 font-mono text-xs text-muted-foreground">
                 <span>roughness</span>
-                <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
                   <div
-                    className="h-full bg-cyan-300/90"
+                    className="h-full bg-violet-300/90"
                     style={{
                       width: `${Math.min(100, dissReadout * 90)}%`,
                     }}
                   />
                 </div>
               </div>
-              <div className="absolute left-3 bottom-2 font-mono text-xs text-white/40">
+              <div className="absolute left-3 bottom-2 font-mono text-xs text-muted-foreground/70">
                 {F_MIN.toFixed(0)} Hz · log freq axis · {F_MAX.toFixed(0)} Hz
               </div>
             </div>
 
             {/* timbre controls */}
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                <label className="block text-sm font-mono text-white/80">
+              <div className="rounded-lg border border-border bg-muted p-3">
+                <label className="block text-sm font-mono text-foreground">
                   timbre brightness:{" "}
-                  <span className="text-cyan-300/95">{timbre.toFixed(2)}</span>
+                  <span className="text-violet-300/95">{timbre.toFixed(2)}</span>
                 </label>
                 <input
                   type="range"
@@ -999,17 +999,17 @@ export default function OvertoneLoomPage() {
                   step={0.01}
                   value={timbre}
                   onChange={(e) => setTimbre(parseFloat(e.target.value))}
-                  className="mt-2 w-full accent-cyan-400"
+                  className="mt-2 w-full accent-violet-400"
                 />
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-xs text-muted-foreground">
                   shifts spectral energy up — bright timbres make more intervals
                   read as dissonant (the 2026 spectrum finding).
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                <label className="block text-sm font-mono text-white/80">
+              <div className="rounded-lg border border-border bg-muted p-3">
+                <label className="block text-sm font-mono text-foreground">
                   partials / voice:{" "}
-                  <span className="text-cyan-300/95">{partialCount}</span>
+                  <span className="text-violet-300/95">{partialCount}</span>
                 </label>
                 <input
                   type="range"
@@ -1018,9 +1018,9 @@ export default function OvertoneLoomPage() {
                   step={1}
                   value={partialCount}
                   onChange={(e) => setPartialCount(parseInt(e.target.value, 10))}
-                  className="mt-2 w-full accent-cyan-400"
+                  className="mt-2 w-full accent-violet-400"
                 />
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-xs text-muted-foreground">
                   additive harmonic stack per note. More partials → more
                   overtone pairs that can clash.
                 </p>
@@ -1029,7 +1029,7 @@ export default function OvertoneLoomPage() {
 
             {/* keyboard */}
             <div className="mt-4 select-none">
-              <div className="flex h-40 w-full gap-[2px] rounded-lg overflow-hidden border border-white/10">
+              <div className="flex h-40 w-full gap-[2px] rounded-lg overflow-hidden border border-border">
                 {KEYS.map((k) => (
                   <button
                     key={k.midi}
@@ -1045,8 +1045,8 @@ export default function OvertoneLoomPage() {
                     }}
                     className={`flex-1 min-w-0 flex items-end justify-center pb-2 transition-colors ${
                       k.black
-                        ? "bg-[#0a0d10] hover:bg-cyan-400/20 text-white/55"
-                        : "bg-[#14181c] hover:bg-cyan-400/25 text-white/75"
+                        ? "bg-[#0a0d10] hover:bg-violet-400/20 text-muted-foreground"
+                        : "bg-[#14181c] hover:bg-violet-400/25 text-muted-foreground"
                     }`}
                   >
                     <span className="font-mono text-[10px] leading-none">
@@ -1065,11 +1065,11 @@ export default function OvertoneLoomPage() {
                       return next;
                     });
                   }}
-                  className="min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-base text-white/80 hover:bg-white/5"
+                  className="min-h-[44px] rounded-lg border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   {autoDemo ? "⏸ pause auto-demo" : "▸ resume auto-demo"}
                 </button>
-                <p className="text-sm text-white/55">
+                <p className="text-sm text-muted-foreground">
                   Press keys to stack a chord. Web MIDI is auto-connected if a
                   controller is present.
                 </p>

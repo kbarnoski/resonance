@@ -393,13 +393,13 @@ export default function QuasicrystalPage() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6">
           <div className="text-center max-w-lg">
-            <h1 className="text-2xl font-light text-white/95 tracking-widest uppercase mb-1">
+            <h1 className="text-2xl font-light text-foreground tracking-widest uppercase mb-1">
               Quasicrystal
             </h1>
-            <p className="text-base text-white/75 font-light mb-6">
+            <p className="text-base text-muted-foreground font-light mb-6">
               Music with no repeat and no seam — structured by Penrose aperiodic order.
             </p>
-            <p className="text-sm text-white/55 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               A de Bruijn pentagrid generates a Penrose P3 rhomb tiling — perfectly
               ordered, 5-fold symmetric, yet provably never repeating. A traversal visits
               each tile; fat and thin rhombs, their vertex configurations, and distance
@@ -411,13 +411,13 @@ export default function QuasicrystalPage() {
           <button
             onClick={handleStart}
             className="px-6 py-3 min-h-[44px] bg-violet-700 hover:bg-violet-600
-                       text-white text-base font-medium rounded-lg transition-colors
+                       text-foreground text-base font-medium rounded-lg transition-colors
                        tracking-wide"
           >
             Begin Crystal
           </button>
           {noAudio && (
-            <p className="text-rose-300 text-sm">
+            <p className="text-violet-300 text-sm">
               Web Audio unavailable — visuals will run silently.
             </p>
           )}
@@ -428,11 +428,11 @@ export default function QuasicrystalPage() {
       {started && (
         <div className="absolute bottom-0 left-0 right-0 flex flex-col">
           {/* Control bar */}
-          <div className="flex flex-wrap items-end gap-4 px-4 py-3 bg-black/50 backdrop-blur-sm border-t border-white/10">
+          <div className="flex flex-wrap items-end gap-4 px-4 py-3 bg-black/50 backdrop-blur-sm border-t border-border">
 
             {/* Tempo */}
             <div className="flex flex-col gap-1 min-w-[130px]">
-              <label className="text-xs text-white/55 uppercase tracking-wider">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider">
                 Traversal tempo
               </label>
               <div className="flex items-center gap-2">
@@ -442,7 +442,7 @@ export default function QuasicrystalPage() {
                   onChange={e => setTempo(parseFloat(e.target.value))}
                   className="w-24 accent-violet-400"
                 />
-                <span className="text-sm text-white/75 w-12 tabular-nums">
+                <span className="text-sm text-muted-foreground w-12 tabular-nums">
                   {tempo.toFixed(1)} t/s
                 </span>
               </div>
@@ -450,7 +450,7 @@ export default function QuasicrystalPage() {
 
             {/* Inflation */}
             <div className="flex flex-col gap-1 min-w-[140px]">
-              <label className="text-xs text-white/55 uppercase tracking-wider">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider">
                 φ inflation ×{getInflationScale(inflationLevel).toFixed(2)}
               </label>
               <div className="flex items-center gap-1">
@@ -460,8 +460,8 @@ export default function QuasicrystalPage() {
                     onClick={() => setInflationLevel(lvl)}
                     className={`px-2 py-1 text-xs rounded min-h-[32px] min-w-[32px] transition-colors ${
                       inflationLevel === lvl
-                        ? "bg-violet-600 text-white"
-                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                        ? "bg-violet-600 text-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {lvl < 0 ? `1/φ` : lvl === 0 ? "1" : `φ${lvl > 1 ? lvl : ""}`}
@@ -472,7 +472,7 @@ export default function QuasicrystalPage() {
 
             {/* Traversal mode */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-white/55 uppercase tracking-wider">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider">
                 Traversal
               </label>
               <div className="flex gap-1">
@@ -482,8 +482,8 @@ export default function QuasicrystalPage() {
                     onClick={() => setTraversalMode(mode)}
                     className={`px-3 py-1.5 text-xs rounded min-h-[32px] transition-colors ${
                       traversalMode === mode
-                        ? "bg-cyan-700 text-white"
-                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                        ? "bg-violet-700 text-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {mode}
@@ -494,7 +494,7 @@ export default function QuasicrystalPage() {
 
             {/* Highlight */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-white/55 uppercase tracking-wider">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider">
                 Highlight
               </label>
               <div className="flex gap-1">
@@ -504,8 +504,8 @@ export default function QuasicrystalPage() {
                     onClick={() => setHighlightMode(hm)}
                     className={`px-3 py-1.5 text-xs rounded min-h-[32px] transition-colors ${
                       highlightMode === hm
-                        ? "bg-sky-700 text-white"
-                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                        ? "bg-violet-700 text-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {hm}
@@ -517,30 +517,30 @@ export default function QuasicrystalPage() {
             {/* Reseed */}
             <button
               onClick={handleReseed}
-              className="px-4 py-2.5 min-h-[44px] bg-white/10 hover:bg-white/20
-                         text-white/75 text-sm rounded-lg transition-colors ml-auto"
+              className="px-4 py-2.5 min-h-[44px] bg-muted hover:bg-accent
+                         text-muted-foreground text-sm rounded-lg transition-colors ml-auto"
             >
               Reseed crystal
             </button>
           </div>
 
           {/* Tile info bar */}
-          <div className="flex items-center gap-4 px-4 py-1.5 bg-black/30 border-t border-white/5">
+          <div className="flex items-center gap-4 px-4 py-1.5 bg-black/30 border-t border-border">
             <span className="text-xs text-violet-300 tabular-nums">
               {traversalIndex + 1} / {totalRhombs}
             </span>
             {currentRhomb && (
               <>
-                <span className="text-xs text-white/55">
+                <span className="text-xs text-muted-foreground">
                   {currentRhomb.type} rhomb
                 </span>
-                <span className="text-xs text-cyan-400/70">
+                <span className="text-xs text-violet-400/70">
                   {currentRhomb.vertexConfig}
                 </span>
-                <span className="text-xs text-white/55 tabular-nums">
+                <span className="text-xs text-muted-foreground tabular-nums">
                   r={currentRhomb.distFromCenter.toFixed(2)}
                 </span>
-                <span className="text-xs text-white/55 tabular-nums">
+                <span className="text-xs text-muted-foreground tabular-nums">
                   φ≈{PHI.toFixed(4)}
                 </span>
               </>
@@ -552,10 +552,10 @@ export default function QuasicrystalPage() {
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 pointer-events-none">
         <div>
-          <h1 className="text-xl font-light text-white/90 tracking-widest uppercase">
+          <h1 className="text-xl font-light text-foreground tracking-widest uppercase">
             Quasicrystal
           </h1>
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             aperiodic order · de Bruijn pentagrid · just-intonation
           </p>
         </div>
@@ -570,7 +570,7 @@ export default function QuasicrystalPage() {
           )}
           <Link
             href="/dream/837-quasicrystal/README.md"
-            className="text-xs text-white/55 hover:text-white/80 transition-colors"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             target="_blank"
           >
             README
@@ -581,17 +581,17 @@ export default function QuasicrystalPage() {
       {/* Design notes overlay */}
       {showNotes && (
         <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-6 z-10">
-          <div className="max-w-2xl w-full bg-[#0f172a] border border-white/10 rounded-xl p-6 overflow-y-auto max-h-[80vh]">
+          <div className="max-w-2xl w-full bg-[#0f172a] border border-border rounded-xl p-6 overflow-y-auto max-h-[80vh]">
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-xl text-white/95 font-light">Design Notes</h2>
+              <h2 className="text-xl text-foreground font-light">Design Notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="text-white/50 hover:text-white/80 text-lg leading-none px-2 py-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="text-muted-foreground hover:text-foreground text-lg leading-none px-2 py-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 ×
               </button>
             </div>
-            <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+            <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
               <p>
                 <span className="text-violet-300">The tiling.</span>{" "}
                 Five families of parallel lines (directions 0°, 36°, 72°, 108°, 144°,
@@ -601,7 +601,7 @@ export default function QuasicrystalPage() {
                 exact 5-fold symmetry and is provably aperiodic.
               </p>
               <p>
-                <span className="text-cyan-300">The music.</span>{" "}
+                <span className="text-violet-300">The music.</span>{" "}
                 The traversal visits tiles in order (spiral / sweep / growth front).
                 Each tile triggers a voice: fat rhombs use warm additive partials (1f, 2f, 3f);
                 thin rhombs use bright partials (1f, 3f, 5f) with subtle FM shimmer.
@@ -611,7 +611,7 @@ export default function QuasicrystalPage() {
                 slowly as the traversal travels outward.
               </p>
               <p>
-                <span className="text-sky-300">Why it never repeats.</span>{" "}
+                <span className="text-violet-300">Why it never repeats.</span>{" "}
                 The Penrose tiling is aperiodic — no translation maps it to itself.
                 Therefore the sequence of tile types and vertex configs the traversal
                 encounters is also aperiodic: the musical sequence has no period.
@@ -620,13 +620,13 @@ export default function QuasicrystalPage() {
                 across time. The piece is genuinely different at minute 5 than minute 1.
               </p>
               <p>
-                <span className="text-white/50">φ-inflation.</span>{" "}
+                <span className="text-muted-foreground">φ-inflation.</span>{" "}
                 The inflation controls zoom the world by powers of φ = (1+√5)/2 ≈ 1.618.
                 A Penrose tiling at scale φⁿ is self-similar to scale φⁿ⁺¹ — the same
                 patterns appear at larger scales, producing a harmonic-rhythm change
                 (the traversal&apos;s &quot;sentence length&quot; shifts).
               </p>
-              <p className="text-white/55 text-xs">
+              <p className="text-muted-foreground text-xs">
                 References: Penrose (1974) · de Bruijn (1981) · Shechtman Nobel (2011)
                 · arXiv:2009.04667 · Aesthetic: Ryoji Ikeda
               </p>

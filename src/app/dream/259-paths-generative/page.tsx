@@ -748,14 +748,14 @@ export default function PathsGenerative() {
   // ─────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#080810] text-white flex flex-col">
+    <div className="min-h-screen bg-[#080810] text-foreground flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-white/10 flex-shrink-0">
+      <header className="flex items-center justify-between px-6 py-4 border-b border-border flex-shrink-0">
         <div>
-          <h1 className="text-2xl font-light tracking-wide text-white">
+          <h1 className="text-2xl font-light tracking-wide text-foreground">
             Paths Generative
           </h1>
-          <p className="text-sm text-white/75 font-mono mt-0.5">
+          <p className="text-sm text-muted-foreground font-mono mt-0.5">
             endless, never-repeating ambient · incommensurate tape loops
           </p>
         </div>
@@ -780,9 +780,9 @@ export default function PathsGenerative() {
         {/* Idle overlay */}
         {!playing && (
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <p className="text-white/75 text-base font-mono text-center px-6">
+            <p className="text-muted-foreground text-base font-mono text-center px-6">
               Drop a piano recording here, load by track ID, or press{" "}
-              <span className="text-emerald-300/95">Start Demo</span>
+              <span className="text-violet-300/95">Start Demo</span>
             </p>
           </div>
         )}
@@ -790,7 +790,7 @@ export default function PathsGenerative() {
         {/* Demo notice */}
         {playing && usingDemo && (
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 pointer-events-none text-center">
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Playing a generated demo — drop your own piano recording to transform it.
             </p>
           </div>
@@ -799,16 +799,16 @@ export default function PathsGenerative() {
 
       {/* HUD readout bar */}
       {playing && (
-        <div className="flex items-center gap-6 px-6 py-2 border-t border-white/10 bg-black/20 text-xs font-mono text-white/60 flex-shrink-0">
+        <div className="flex items-center gap-6 px-6 py-2 border-t border-border bg-black/20 text-xs font-mono text-muted-foreground flex-shrink-0">
           <span>
-            <span className="text-emerald-300/95">elapsed</span>{" "}
+            <span className="text-violet-300/95">elapsed</span>{" "}
             {elapsedDisplay}
           </span>
           <span>
             <span className="text-violet-300">movement</span> {movementNum}
           </span>
           <span>
-            <span className="text-amber-300/95">voices</span> {activeVoiceCount}
+            <span className="text-violet-300/95">voices</span> {activeVoiceCount}
             {" / "}
             {LOOP_LENGTHS.length}
           </span>
@@ -816,15 +816,15 @@ export default function PathsGenerative() {
       )}
 
       {/* Controls panel */}
-      <div className="border-t border-white/10 bg-black/30 px-6 py-5 flex flex-col gap-4 flex-shrink-0">
+      <div className="border-t border-border bg-black/30 px-6 py-5 flex flex-col gap-4 flex-shrink-0">
         {/* Error notice */}
         {errorMsg && (
-          <p className="text-rose-300 text-sm font-mono">{errorMsg}</p>
+          <p className="text-violet-300 text-sm font-mono">{errorMsg}</p>
         )}
 
         {/* Row 1: file input + track ID loader */}
         <div className="flex flex-wrap gap-3 items-stretch">
-          <label className="flex-1 min-w-[200px] flex items-center justify-center gap-2 border border-dashed border-white/25 rounded-lg px-4 py-2.5 min-h-[44px] text-white/75 text-sm cursor-pointer hover:border-violet-400/50 hover:text-white/90 transition-colors">
+          <label className="flex-1 min-w-[200px] flex items-center justify-center gap-2 border border-dashed border-border rounded-lg px-4 py-2.5 min-h-[44px] text-muted-foreground text-sm cursor-pointer hover:border-violet-400/50 hover:text-foreground transition-colors">
             <input
               type="file"
               accept="audio/*"
@@ -843,7 +843,7 @@ export default function PathsGenerative() {
               value={trackId}
               onChange={(e) => setTrackId(e.target.value)}
               placeholder="Resonance track ID…"
-              className="flex-1 bg-white/5 border border-white/15 rounded-lg px-4 py-2.5 min-h-[44px] text-base text-white placeholder-white/30 font-mono focus:outline-none focus:border-violet-400/50"
+              className="flex-1 bg-muted border border-border rounded-lg px-4 py-2.5 min-h-[44px] text-base text-foreground placeholder-muted-foreground font-mono focus:outline-none focus:border-violet-400/50"
               onKeyDown={(e) => {
                 if (e.key === "Enter") loadFromApi();
               }}
@@ -862,20 +862,20 @@ export default function PathsGenerative() {
           {!playing ? (
             <button
               onClick={startDemo}
-              className="px-6 py-2.5 min-h-[44px] rounded-lg bg-emerald-700/40 hover:bg-emerald-700/60 text-emerald-300/95 font-mono text-sm transition-colors border border-emerald-600/30"
+              className="px-6 py-2.5 min-h-[44px] rounded-lg bg-violet-700/40 hover:bg-violet-700/60 text-violet-300/95 font-mono text-sm transition-colors border border-violet-600/30"
             >
               Start Demo
             </button>
           ) : (
             <button
               onClick={stopEngine}
-              className="px-6 py-2.5 min-h-[44px] rounded-lg bg-white/10 hover:bg-white/20 text-white/80 font-mono text-sm transition-colors border border-white/15"
+              className="px-6 py-2.5 min-h-[44px] rounded-lg bg-muted hover:bg-accent text-foreground font-mono text-sm transition-colors border border-border"
             >
               Stop
             </button>
           )}
 
-          <label className="flex items-center gap-3 text-sm text-white/75 font-mono">
+          <label className="flex items-center gap-3 text-sm text-muted-foreground font-mono">
             <span>drift</span>
             <input
               type="range"
@@ -889,7 +889,7 @@ export default function PathsGenerative() {
             <span className="w-8 text-violet-300">{driftSpeed.toFixed(1)}×</span>
           </label>
 
-          <label className="flex items-center gap-3 text-sm text-white/75 font-mono">
+          <label className="flex items-center gap-3 text-sm text-muted-foreground font-mono">
             <span>density</span>
             <input
               type="range"
@@ -898,9 +898,9 @@ export default function PathsGenerative() {
               step="0.1"
               value={density}
               onChange={(e) => setDensity(parseFloat(e.target.value))}
-              className="w-28 accent-emerald-400"
+              className="w-28 accent-violet-400"
             />
-            <span className="w-8 text-emerald-300/95">
+            <span className="w-8 text-violet-300/95">
               {density.toFixed(1)}×
             </span>
           </label>

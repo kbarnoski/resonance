@@ -248,17 +248,17 @@ export default function KidsPaintSong() {
     return (
       <main className="fixed inset-0 bg-[#060a12] flex flex-col items-center justify-center gap-8 px-6">
         <div className="text-6xl">✨</div>
-        <h1 className="text-3xl font-bold text-white text-center">Paint a Song</h1>
-        <p className="text-white/75 text-base text-center max-w-xs leading-relaxed">
+        <h1 className="text-3xl font-bold text-foreground text-center">Paint a Song</h1>
+        <p className="text-muted-foreground text-base text-center max-w-xs leading-relaxed">
           Draw a line with your finger — lift up to hear your melody play!
         </p>
         <button
           onPointerDown={() => setStarted(true)}
-          className="bg-violet-500 text-white text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
+          className="bg-violet-500 text-foreground text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
         >
           Let&apos;s draw! 🎵
         </button>
-        <p className="text-white/55 text-sm text-center">Left side = low notes &nbsp;·&nbsp; Right side = high notes</p>
+        <p className="text-muted-foreground text-sm text-center">Left side = low notes &nbsp;·&nbsp; Right side = high notes</p>
       </main>
     )
   }
@@ -266,7 +266,7 @@ export default function KidsPaintSong() {
   return (
     <main className="fixed inset-0 overflow-hidden bg-[#060a12]">
       <canvas ref={canvasRef} className="block w-full h-full touch-none" />
-      <p className="absolute bottom-6 left-0 right-0 text-center text-white/40 text-xs pointer-events-none select-none">
+      <p className="absolute bottom-6 left-0 right-0 text-center text-muted-foreground/70 text-xs pointer-events-none select-none">
         Draw a line ✦ lift to hear your song
       </p>
     </main>

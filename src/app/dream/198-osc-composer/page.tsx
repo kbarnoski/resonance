@@ -338,10 +338,10 @@ export default function OscComposerPage() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-start justify-between px-5 pt-5 pointer-events-none">
         <div>
-          <h1 className="text-2xl font-serif text-white/95">Oscilloscope Composer</h1>
-          <p className="text-base text-white/75 mt-0.5">Design a Lissajous figure — download the audio that draws it</p>
+          <h1 className="text-2xl font-serif text-foreground">Oscilloscope Composer</h1>
+          <p className="text-base text-muted-foreground mt-0.5">Design a Lissajous figure — download the audio that draws it</p>
         </div>
-        <Link href="/dream" className="text-sm text-white/55 hover:text-white/80 transition-colors pointer-events-auto">
+        <Link href="/dream" className="text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto">
           ← dream lab
         </Link>
       </div>
@@ -356,8 +356,8 @@ export default function OscComposerPage() {
               onClick={() => applyPreset(p)}
               className={`px-3 py-1.5 rounded-full text-sm transition-colors min-h-[36px] ${
                 rIdx === p.rIdx && phase === p.phase
-                  ? "bg-violet-600/80 text-white/95"
-                  : "bg-white/10 text-white/60 hover:bg-white/20"
+                  ? "bg-violet-600/80 text-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {p.name}
@@ -368,11 +368,11 @@ export default function OscComposerPage() {
         {/* Sliders */}
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
           <label className="flex items-center gap-2">
-            <span className="text-white/55 text-xs">Ratio</span>
+            <span className="text-muted-foreground text-xs">Ratio</span>
             <select
               value={rIdx}
               onChange={e => setRIdx(Number(e.target.value))}
-              className="bg-white/10 text-white/90 rounded px-2 py-1 text-sm border border-white/20 focus:outline-none"
+              className="bg-muted text-foreground rounded px-2 py-1 text-sm border border-border focus:outline-none"
             >
               {RATIOS.map(([n, d, name], i) => (
                 <option key={i} value={i} className="bg-neutral-900">
@@ -382,22 +382,22 @@ export default function OscComposerPage() {
             </select>
           </label>
           <label className="flex items-center gap-2">
-            <span className="text-white/55 text-xs">Phase</span>
+            <span className="text-muted-foreground text-xs">Phase</span>
             <input
               type="range" min={0} max={360} step={1} value={phase}
               onChange={e => setPhase(Number(e.target.value))}
               className="w-28 accent-violet-400"
             />
-            <span className="text-white/55 text-xs w-9">{phase}°</span>
+            <span className="text-muted-foreground text-xs w-9">{phase}°</span>
           </label>
           <label className="flex items-center gap-2">
-            <span className="text-white/55 text-xs">X</span>
+            <span className="text-muted-foreground text-xs">X</span>
             <input
               type="range" min={10} max={90} step={1} value={balance}
               onChange={e => setBalance(Number(e.target.value))}
               className="w-20 accent-violet-400"
             />
-            <span className="text-white/55 text-xs">Y</span>
+            <span className="text-muted-foreground text-xs">Y</span>
           </label>
         </div>
 
@@ -406,21 +406,21 @@ export default function OscComposerPage() {
           {!playing ? (
             <button
               onClick={handlePlay}
-              className="px-6 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 text-white/95 text-sm transition-colors min-h-[44px]"
+              className="px-6 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 text-foreground text-sm transition-colors min-h-[44px]"
             >
               ▶ Play {num * BASE_FREQ} Hz × {den * BASE_FREQ} Hz
             </button>
           ) : (
             <button
               onClick={handleStop}
-              className="px-6 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white/80 text-sm transition-colors min-h-[44px]"
+              className="px-6 py-2.5 rounded-full bg-muted hover:bg-accent text-foreground text-sm transition-colors min-h-[44px]"
             >
               ■ Stop
             </button>
           )}
           <button
             onClick={handleDownload}
-            className="px-5 py-2.5 rounded-full bg-emerald-800/60 hover:bg-emerald-700/70 text-emerald-200 text-sm transition-colors min-h-[44px]"
+            className="px-5 py-2.5 rounded-full bg-violet-800/60 hover:bg-violet-700/70 text-violet-200 text-sm transition-colors min-h-[44px]"
           >
             ↓ WAV
           </button>
@@ -428,8 +428,8 @@ export default function OscComposerPage() {
             onClick={() => { setPuzzleMode(prev => !prev); setRevealed(false); }}
             className={`px-5 py-2.5 rounded-full text-sm transition-colors min-h-[44px] ${
               puzzleMode
-                ? "bg-amber-700/60 text-white/90"
-                : "bg-white/10 text-white/60 hover:bg-white/20"
+                ? "bg-violet-700/60 text-foreground"
+                : "bg-muted text-muted-foreground hover:bg-accent"
             }`}
           >
             {puzzleMode ? "Exit Puzzle" : "Puzzle"}
@@ -445,8 +445,8 @@ export default function OscComposerPage() {
                 onClick={() => { setPuzzleIdx(i); setRevealed(false); }}
                 className={`px-3 py-1.5 rounded-full text-sm min-h-[36px] ${
                   puzzleIdx === i
-                    ? "bg-amber-600/70 text-white/90"
-                    : "bg-white/10 text-white/50 hover:bg-white/20"
+                    ? "bg-violet-600/70 text-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 #{i + 1}
@@ -454,19 +454,19 @@ export default function OscComposerPage() {
             ))}
             <button
               onClick={() => setRevealed(prev => !prev)}
-              className="px-3 py-1.5 rounded-full bg-white/10 text-white/55 text-sm hover:bg-white/20 min-h-[36px]"
+              className="px-3 py-1.5 rounded-full bg-muted text-muted-foreground text-sm hover:bg-accent min-h-[36px]"
             >
               {revealed ? "Hide" : "Hint"}
             </button>
             {revealed && (
-              <span className="self-center text-sm text-amber-300">
+              <span className="self-center text-sm text-violet-300">
                 {PUZZLES[puzzleIdx].hint}
               </span>
             )}
           </div>
         )}
 
-        <p className="text-center text-white/30 text-xs">
+        <p className="text-center text-muted-foreground/70 text-xs">
           {intervalName} — {num}:{den} · stereo · no permissions needed
         </p>
       </div>

@@ -500,29 +500,29 @@ export default function LatentListeningRoomPage() {
   const statusBadge =
     appStatus === "running"
       ? imageStatus === "live"
-        ? { text: "dreaming live", cls: "text-emerald-300/95 border-emerald-400/30 bg-emerald-400/5" }
-        : { text: "live image unavailable — showing synthesized field", cls: "text-amber-300/95 border-amber-400/30 bg-amber-400/5" }
+        ? { text: "dreaming live", cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
+        : { text: "live image unavailable — showing synthesized field", cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
       : null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060e] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060e] text-foreground">
       {/* Full-bleed canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Design notes toggle — top-right corner */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-md bg-black/40 px-3 py-2 font-mono text-base text-white/75 backdrop-blur transition hover:text-white"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-md bg-black/40 px-3 py-2 font-mono text-base text-muted-foreground backdrop-blur transition hover:text-foreground"
       >
         {showNotes ? "Hide notes" : "Read the design notes"}
       </button>
 
       {/* Design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-4 top-16 z-30 mx-auto max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-black/80 p-5 backdrop-blur sm:right-4 sm:left-auto sm:w-[520px]"
+        <div className="pointer-events-auto absolute inset-x-4 top-16 z-30 mx-auto max-w-2xl overflow-y-auto rounded-2xl border border-border bg-black/80 p-5 backdrop-blur sm:right-4 sm:left-auto sm:w-[520px]"
           style={{ maxHeight: "70vh" }}>
-          <h2 className="text-xl font-medium text-white">Design notes</h2>
-          <div className="mt-2 whitespace-pre-wrap text-base leading-relaxed text-white/75">
+          <h2 className="text-xl font-medium text-foreground">Design notes</h2>
+          <div className="mt-2 whitespace-pre-wrap text-base leading-relaxed text-muted-foreground">
             {README_TEXT}
           </div>
         </div>
@@ -531,7 +531,7 @@ export default function LatentListeningRoomPage() {
       {/* Live prompt display — bottom-left */}
       {appStatus === "running" && currentPrompt && (
         <div className="pointer-events-none absolute bottom-28 left-5 z-10 max-w-xs sm:max-w-sm">
-          <p className="font-mono text-[11px] leading-relaxed text-white/55 line-clamp-3">
+          <p className="font-mono text-[11px] leading-relaxed text-muted-foreground line-clamp-3">
             {currentPrompt}
           </p>
         </div>
@@ -541,10 +541,10 @@ export default function LatentListeningRoomPage() {
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-8">
         {/* Header */}
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Latent Listening Room
           </h1>
-          <p className="mt-2 text-base leading-relaxed text-white/75">
+          <p className="mt-2 text-base leading-relaxed text-muted-foreground">
             A generative ambient piece that{" "}
             <span className="text-violet-300">continuously dreams its own image</span>
             {" "}— AI-generated every few seconds from the music&rsquo;s live spectral character,
@@ -564,12 +564,12 @@ export default function LatentListeningRoomPage() {
         <footer className="flex flex-col gap-3">
           {/* Live analysis readout */}
           {appStatus === "running" && (
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-base text-white/75">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-base text-muted-foreground">
               <span>
                 chord:{" "}
                 <span className="font-mono text-violet-300">{chordName}</span>
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 pitch:{" "}
                 <span className="font-mono">{PC_NAMES[pitchClass]}</span>
               </span>
@@ -581,28 +581,28 @@ export default function LatentListeningRoomPage() {
             {appStatus === "idle" || appStatus === "error" ? (
               <button
                 onClick={() => void handleBegin()}
-                className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white transition hover:bg-violet-400"
+                className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400"
               >
                 Begin
               </button>
             ) : appStatus === "loading" ? (
               <button
                 disabled
-                className="min-h-[44px] rounded-xl bg-violet-500/50 px-4 py-2.5 text-base font-medium text-white/60 cursor-not-allowed"
+                className="min-h-[44px] rounded-xl bg-violet-500/50 px-4 py-2.5 text-base font-medium text-muted-foreground cursor-not-allowed"
               >
                 Starting…
               </button>
             ) : (
               <button
                 onClick={handleStop}
-                className="min-h-[44px] rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-base font-medium text-white/90 transition hover:bg-white/10"
+                className="min-h-[44px] rounded-xl border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-accent"
               >
                 Stop
               </button>
             )}
 
             {errorMsg && (
-              <span className="text-base text-rose-300">{errorMsg}</span>
+              <span className="text-base text-violet-300">{errorMsg}</span>
             )}
           </div>
         </footer>

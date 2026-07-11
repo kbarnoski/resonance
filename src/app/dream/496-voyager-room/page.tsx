@@ -495,17 +495,17 @@ export default function VoyagerRoom() {
   const agents = agentsRef.current;
 
   return (
-    <main className="min-h-screen bg-[#0a0514] text-white px-5 py-6 flex flex-col items-center">
+    <main className="min-h-screen bg-[#0a0514] text-foreground px-5 py-6 flex flex-col items-center">
       <div className="w-full max-w-3xl">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white/95">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
           Voyager Room
         </h1>
-        <p className="mt-2 text-base text-white/75 max-w-2xl">
+        <p className="mt-2 text-base text-muted-foreground max-w-2xl">
           A small ensemble of autonomous machine musicians listens to each other
           and to you. You don&apos;t play the notes — you conduct the room&apos;s
           harmonic tension, leaning into dissonance and releasing it.
         </p>
-        <p className="mt-1 text-base text-white/55 font-mono">
+        <p className="mt-1 text-base text-muted-foreground font-mono">
           Homage to George Lewis&apos;s <em>Voyager</em> · frame-synchronous
           jamming after StreamMUSE (arXiv 2606.11886).
         </p>
@@ -520,7 +520,7 @@ export default function VoyagerRoom() {
         ) : (
           <div className="mt-5 grid gap-5">
             {!canvasOk && (
-              <div className="rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-base text-amber-200/95">
+              <div className="rounded-lg border border-violet-400/40 bg-violet-500/10 px-4 py-3 text-base text-violet-200/95">
                 Canvas 2D is unavailable on this device — visuals are off, but the
                 ensemble is still playing. Use the controls below to conduct.
               </div>
@@ -529,20 +529,20 @@ export default function VoyagerRoom() {
             <canvas
               ref={canvasRef}
               onPointerDown={handleCanvasPointer}
-              className="w-full rounded-xl border border-white/10 bg-black/30 touch-none"
+              className="w-full rounded-xl border border-border bg-black/30 touch-none"
               style={{ height: "min(60vh, 460px)" }}
             />
 
             {/* TENSION — the primary control */}
             <div>
               <div className="flex items-center justify-between text-base">
-                <label className="text-white/95 font-medium">
+                <label className="text-foreground font-medium">
                   Tension{" "}
-                  <span className="text-white/55 font-mono text-sm">
+                  <span className="text-muted-foreground font-mono text-sm">
                     consonance ⇄ dissonance
                   </span>
                 </label>
-                <span className="font-mono text-rose-300">
+                <span className="font-mono text-violet-300">
                   {tension.toFixed(2)}
                 </span>
               </div>
@@ -555,14 +555,14 @@ export default function VoyagerRoom() {
                 disabled={autoDemo}
                 onChange={(e) => setTension(parseFloat(e.target.value))}
                 onPointerDown={() => setAutoDemo(false)}
-                className="w-full mt-2 accent-rose-400 disabled:opacity-50"
+                className="w-full mt-2 accent-violet-400 disabled:opacity-50"
               />
             </div>
 
             {/* TEMPO */}
             <div>
               <div className="flex items-center justify-between text-base">
-                <label className="text-white/95 font-medium">Tempo</label>
+                <label className="text-foreground font-medium">Tempo</label>
                 <span className="font-mono text-violet-300">{tempo} BPM</span>
               </div>
               <input
@@ -578,7 +578,7 @@ export default function VoyagerRoom() {
 
             {/* Spotlight + auto-demo */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-base text-white/75 mr-1">Spotlight:</span>
+              <span className="text-base text-muted-foreground mr-1">Spotlight:</span>
               {agents.map((a) => (
                 <button
                   key={a.id}
@@ -601,8 +601,8 @@ export default function VoyagerRoom() {
                 onClick={() => setAutoDemo((v) => !v)}
                 className={`min-h-[44px] px-3 py-2 rounded-lg border text-sm font-medium transition ${
                   autoDemo
-                    ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-200"
-                    : "border-white/15 text-white/75"
+                    ? "border-violet-400/50 bg-violet-500/15 text-violet-200"
+                    : "border-border text-muted-foreground"
                 }`}
               >
                 {autoDemo ? "Auto-conduct: ON" : "Auto-conduct: OFF"}
@@ -610,24 +610,24 @@ export default function VoyagerRoom() {
             </div>
 
             {/* Readout */}
-            <div className="flex flex-wrap gap-x-6 gap-y-1 text-base font-mono text-white/75">
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-base font-mono text-muted-foreground">
               <span>
                 state:{" "}
-                <span className="text-amber-300/95">{readout.label}</span>
+                <span className="text-violet-300/95">{readout.label}</span>
               </span>
               <span>
                 roughness:{" "}
-                <span className="text-rose-300">
+                <span className="text-violet-300">
                   {readout.roughness.toFixed(2)}
                 </span>
               </span>
               <span>
                 voicing:{" "}
-                <span className="text-emerald-300/95">{readout.chord}</span>
+                <span className="text-violet-300/95">{readout.chord}</span>
               </span>
             </div>
 
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               Tap an orb to spotlight a soloist (others defer). Drag the tension
               slider to lean into or release the room&apos;s dissonance. Auto-conduct
               runs a slow ~20s settle → build → release arc until you take over.
@@ -635,10 +635,10 @@ export default function VoyagerRoom() {
           </div>
         )}
 
-        <div className="mt-8 text-sm text-white/55">
+        <div className="mt-8 text-sm text-muted-foreground">
           <Link
             href="/dream/496-voyager-room/README.md"
-            className="underline decoration-white/30 hover:text-white/75"
+            className="underline decoration-muted-foreground hover:text-muted-foreground"
           >
             Read the design notes →
           </Link>

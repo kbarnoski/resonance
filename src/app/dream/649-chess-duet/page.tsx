@@ -216,29 +216,29 @@ export default function ChessDuetPage() {
   const progressPct = Math.round(((current + 1) / NOTES.length) * 100);
 
   return (
-    <main className="min-h-screen bg-[#0a0a0f] px-5 py-8 text-white/90 sm:px-8">
+    <main className="min-h-screen bg-[#0a0a0f] px-5 py-8 text-foreground sm:px-8">
       <div className="mx-auto max-w-3xl">
         <div className="mb-1 flex items-center justify-between">
           <Link
             href="/dream"
-            className="text-sm text-white/55 transition-colors hover:text-white/90"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             ← dream
           </Link>
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/45">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
             649 · chess-duet
           </span>
         </div>
 
-        <h1 className="font-serif text-3xl text-white/95 sm:text-4xl">Chess Duet</h1>
-        <p className="mt-2 text-base text-white/75">
+        <h1 className="font-serif text-3xl text-foreground sm:text-4xl">Chess Duet</h1>
+        <p className="mt-2 text-base text-muted-foreground">
           A famous chess game played as a slow, inevitable two-voice duet —{" "}
-          <span className="text-white/90">{GAME_META.name}</span>: {GAME_META.white}{" "}
+          <span className="text-foreground">{GAME_META.name}</span>: {GAME_META.white}{" "}
           vs {GAME_META.black}, {GAME_META.event}.
         </p>
 
         {error && (
-          <p className="mt-3 rounded-md border border-rose-400/30 bg-rose-500/10 px-3 py-2 text-base text-rose-300">
+          <p className="mt-3 rounded-md border border-violet-400/30 bg-violet-500/10 px-3 py-2 text-base text-violet-300">
             {error}
           </p>
         )}
@@ -248,14 +248,14 @@ export default function ChessDuetPage() {
           {phase === "playing" ? (
             <button
               onClick={onPause}
-              className="inline-flex min-h-[44px] items-center rounded-md bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/15"
+              className="inline-flex min-h-[44px] items-center rounded-md bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               ❚❚ Pause
             </button>
           ) : (
             <button
               onClick={onPlay}
-              className="inline-flex min-h-[44px] items-center rounded-md bg-indigo-500/80 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-indigo-500"
+              className="inline-flex min-h-[44px] items-center rounded-md bg-violet-500/80 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500"
             >
               ► {phase === "done" ? "Replay" : muted ? "Play with sound" : "Play"}
             </button>
@@ -263,20 +263,20 @@ export default function ChessDuetPage() {
 
           <button
             onClick={onRestart}
-            className="inline-flex min-h-[44px] items-center rounded-md bg-white/8 px-4 py-2.5 text-base font-medium text-white/85 transition-colors hover:bg-white/15"
+            className="inline-flex min-h-[44px] items-center rounded-md bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
           >
             ↺ Restart
           </button>
 
           <button
             onClick={toggleMute}
-            className="inline-flex min-h-[44px] items-center rounded-md bg-white/8 px-4 py-2.5 text-base font-medium text-white/85 transition-colors hover:bg-white/15"
+            className="inline-flex min-h-[44px] items-center rounded-md bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
           >
             {muted ? "🔇 Muted" : "🔊 Sound on"}
           </button>
 
-          <label className="flex min-h-[44px] items-center gap-2 text-sm text-white/75">
-            <span className="font-mono uppercase tracking-wider text-white/55">tempo</span>
+          <label className="flex min-h-[44px] items-center gap-2 text-sm text-muted-foreground">
+            <span className="font-mono uppercase tracking-wider text-muted-foreground">tempo</span>
             <input
               type="range"
               min={1.0}
@@ -284,52 +284,52 @@ export default function ChessDuetPage() {
               step={0.1}
               value={tempo}
               onChange={(e) => setTempo(parseFloat(e.target.value))}
-              className="h-1 w-28 accent-indigo-400"
+              className="h-1 w-28 accent-violet-400"
             />
-            <span className="font-mono text-white/75">{tempo.toFixed(1)}s/move</span>
+            <span className="font-mono text-muted-foreground">{tempo.toFixed(1)}s/move</span>
           </label>
         </div>
 
         {/* Current move readout */}
         <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span className="font-mono text-2xl text-white/95">
+          <span className="font-mono text-2xl text-foreground">
             {activePly ? sanLabel(activePly) : "—"}
           </span>
-          <span className="text-base text-white/75">
+          <span className="text-base text-muted-foreground">
             {activePly
               ? `${activePly.color === "w" ? "White" : "Black"} · ${PIECE_NAMES[activePly.piece]} → ${FILE_NAMES[activePly.toFile]}${activePly.toRank + 1}`
               : "press play, or wait — it begins on its own"}
           </span>
           {activePly?.capture && (
-            <span className="rounded bg-rose-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-rose-300">
+            <span className="rounded bg-violet-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-violet-300">
               capture
             </span>
           )}
           {activePly?.check && !activePly?.mate && (
-            <span className="rounded bg-amber-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-amber-300">
+            <span className="rounded bg-violet-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-violet-300">
               check
             </span>
           )}
           {activePly?.castle && (
-            <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-emerald-300">
+            <span className="rounded bg-violet-500/20 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-violet-300">
               castle
             </span>
           )}
           {activePly?.mate && (
-            <span className="rounded bg-indigo-500/30 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-indigo-200">
+            <span className="rounded bg-violet-500/30 px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-violet-200">
               checkmate
             </span>
           )}
         </div>
 
         {/* progress bar */}
-        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-white/10">
+        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full rounded-full bg-indigo-400/70 transition-all duration-300"
+            className="h-full rounded-full bg-violet-400/70 transition-all duration-300"
             style={{ width: `${Math.max(0, progressPct)}%` }}
           />
         </div>
-        <p className="mt-1 font-mono text-xs text-white/45">
+        <p className="mt-1 font-mono text-xs text-muted-foreground">
           ply {Math.max(0, current + 1)} / {NOTES.length} · move {Math.max(0, whitePlies)} of{" "}
           {Math.ceil(NOTES.length / 2)}
         </p>
@@ -341,7 +341,7 @@ export default function ChessDuetPage() {
             viewBox={`0 0 ${BOARD} ${BOARD}`}
             width={BOARD}
             height={BOARD}
-            className="mx-auto rounded-lg border border-white/10 bg-black/40"
+            className="mx-auto rounded-lg border border-border bg-black/40"
             role="img"
             aria-label="Chess board showing the current move"
           >
@@ -443,7 +443,7 @@ export default function ChessDuetPage() {
           {/* SVG two-staff score */}
           <svg
             viewBox="0 0 720 200"
-            className="w-full rounded-lg border border-white/10 bg-black/40"
+            className="w-full rounded-lg border border-border bg-black/40"
             role="img"
             aria-label="Unfolding two-staff score of the duet"
           >
@@ -517,43 +517,43 @@ export default function ChessDuetPage() {
         {/* legend / design notes */}
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="mt-6 text-sm text-white/55 underline decoration-dotted underline-offset-4 transition-colors hover:text-white/90"
+          className="mt-6 text-sm text-muted-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-foreground"
         >
           {showNotes ? "Hide the design notes" : "Read the design notes"}
         </button>
 
         {showNotes && (
-          <div className="mt-3 space-y-2 rounded-lg border border-white/10 bg-white/[0.03] p-4 text-base text-white/75">
+          <div className="mt-3 space-y-2 rounded-lg border border-border bg-muted p-4 text-base text-muted-foreground">
             <p>
-              <span className="text-white/90">The game is the score.</span> Each
+              <span className="text-foreground">The game is the score.</span> Each
               move becomes a note in a two-voice duet. White (warm triangle, upper
               staff) and Black (darker FM voice, lower staff) alternate as
               call-and-response counterpoint.
             </p>
-            <ul className="ml-4 list-disc space-y-1 text-white/70">
+            <ul className="ml-4 list-disc space-y-1 text-muted-foreground">
               <li>
-                <span className="text-white/85">File a–h</span> → scale degree in D
-                harmonic minor; <span className="text-white/85">rank 1–8</span> →
+                <span className="text-foreground">File a–h</span> → scale degree in D
+                harmonic minor; <span className="text-foreground">rank 1–8</span> →
                 register.
               </li>
               <li>
-                <span className="text-white/85">Piece</span> → articulation: pawn
+                <span className="text-foreground">Piece</span> → articulation: pawn
                 short, queen long &amp; rich, knight a grace-note leap, rook firm.
               </li>
               <li>
-                <span className="text-rose-300">Capture</span> = a dissonant clash;{" "}
-                <span className="text-amber-300">check</span> = a held tension pedal
-                tone; <span className="text-emerald-300">castling</span> = a settled
-                fifth; <span className="text-indigo-200">checkmate</span> = a
+                <span className="text-violet-300">Capture</span> = a dissonant clash;{" "}
+                <span className="text-violet-300">check</span> = a held tension pedal
+                tone; <span className="text-violet-300">castling</span> = a settled
+                fifth; <span className="text-violet-200">checkmate</span> = a
                 resolving held chord.
               </li>
               <li>
-                A running <span className="text-white/85">material balance</span>{" "}
+                A running <span className="text-foreground">material balance</span>{" "}
                 biases the timbre brighter (White ahead) or darker (Black ahead) so
                 the arc is felt.
               </li>
             </ul>
-            <p className="text-white/60">
+            <p className="text-muted-foreground">
               Lineage: chess-as-music sonification (e.g. data-driven game
               sonifications and &quot;Chess Symphony&quot; experiments) reimagined
               here as strict two-voice counterpoint over a real master game.

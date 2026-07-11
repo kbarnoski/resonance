@@ -616,7 +616,7 @@ export default function KidsLeniaPond() {
   }, [startAudio]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04030f] text-white/95">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04030f] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -625,10 +625,10 @@ export default function KidsLeniaPond() {
 
       {/* title (small, top-left) */}
       <div className="pointer-events-none absolute left-4 top-4 z-10">
-        <h1 className="text-xl font-semibold text-white/95 drop-shadow">
+        <h1 className="text-xl font-semibold text-foreground drop-shadow">
           Lenia Pond
         </h1>
-        <p className="text-base text-white/75 drop-shadow">
+        <p className="text-base text-muted-foreground drop-shadow">
           Tap to grow glowing creatures
         </p>
       </div>
@@ -638,7 +638,7 @@ export default function KidsLeniaPond() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/264-kids-lenia-pond/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute bottom-4 right-4 z-10 text-xs text-white/75 underline decoration-white/30 underline-offset-4"
+        className="absolute bottom-4 right-4 z-10 text-xs text-muted-foreground underline decoration-muted-foreground underline-offset-4"
       >
         design notes
       </a>
@@ -646,7 +646,7 @@ export default function KidsLeniaPond() {
       {/* WebGL2 unavailable notice */}
       {glOk === false && (
         <div className="absolute inset-0 z-20 flex items-center justify-center p-6">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This browser can&apos;t show the glowing pond (WebGL2 is
             unavailable), but a gentle tone is still playing. Try a recent
             Chrome, Safari, or Firefox.
@@ -658,10 +658,10 @@ export default function KidsLeniaPond() {
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-[#04030f]/70 backdrop-blur-sm">
           <div className="px-6 text-center">
-            <h2 className="text-xl font-semibold text-white/95">
+            <h2 className="text-xl font-semibold text-foreground">
               Grow glowing pond creatures
             </h2>
-            <p className="mt-2 text-base text-white/75">
+            <p className="mt-2 text-base text-muted-foreground">
               Tap anywhere on the dark pond. A glowing nebula creature is born,
               swims away on its own, and sings.
             </p>

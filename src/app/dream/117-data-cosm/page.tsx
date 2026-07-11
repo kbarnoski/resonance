@@ -286,11 +286,11 @@ export default function DataCosmPage() {
     <main className="relative w-full h-screen overflow-hidden bg-black">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       <div className="absolute top-0 left-0 right-0 p-5 pointer-events-none">
-        <h1 className="text-2xl font-mono font-bold text-white/95 tracking-widest">DATA-COSM</h1>
-        <p className="text-base font-mono text-white/70 mt-1">
+        <h1 className="text-2xl font-mono font-bold text-foreground tracking-widest">DATA-COSM</h1>
+        <p className="text-base font-mono text-muted-foreground mt-1">
           particle physics event stream · three temporal scales
         </p>
-        <p className="text-sm font-mono text-white/45 mt-0.5">
+        <p className="text-sm font-mono text-muted-foreground mt-0.5">
           tap to activate audio · scales auto-advance every 40 s
         </p>
       </div>

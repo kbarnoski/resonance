@@ -427,10 +427,10 @@ export default function KidsRipplePond() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#020a1a] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#020a1a] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">💧</div>
-        <h1 className="text-2xl font-serif text-white/95">Ripple Pond</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Ripple Pond</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           Tap to drop a stone — the ripple sings. When two ripples meet, they make a chord
           and burst with light.
         </p>
@@ -449,12 +449,12 @@ export default function KidsRipplePond() {
           ))}
         </div>
         <button
-          className="min-h-[64px] min-w-[220px] bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/40 rounded-2xl px-8 py-4 text-white/95 text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={handleStart}
         >
           💧 Open the pond
         </button>
-        <p className="text-sm text-white/55">no microphone needed · for kids 3+</p>
+        <p className="text-sm text-muted-foreground">no microphone needed · for kids 3+</p>
       </div>
     );
   }

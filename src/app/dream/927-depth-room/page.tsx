@@ -337,16 +337,16 @@ export default function DepthRoomPage() {
   }, []);
 
   const statusLabel: Record<ModelState, { text: string; cls: string }> = {
-    idle: { text: "asleep", cls: "text-white/55" },
+    idle: { text: "asleep", cls: "text-muted-foreground" },
     synthetic: { text: "synthetic depth field", cls: "text-violet-300" },
-    "camera-only": { text: "camera live", cls: "text-amber-300/95" },
-    "loading-model": { text: "loading Depth Anything V2…", cls: "text-amber-300/95" },
-    live: { text: "live depth (Depth Anything V2 · WebGPU)", cls: "text-emerald-300/95" },
-    error: { text: "error", cls: "text-rose-300" },
+    "camera-only": { text: "camera live", cls: "text-violet-300/95" },
+    "loading-model": { text: "loading Depth Anything V2…", cls: "text-violet-300/95" },
+    live: { text: "live depth (Depth Anything V2 · WebGPU)", cls: "text-violet-300/95" },
+    error: { text: "error", cls: "text-violet-300" },
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#05060d] text-white">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#05060d] text-foreground">
       {/* canvas room */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       {/* offscreen processing canvas + hidden video (camera never shown raw) */}
@@ -356,10 +356,10 @@ export default function DepthRoomPage() {
       {/* overlay UI */}
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-3xl md:text-5xl text-white">
+          <h1 className="font-serif text-3xl md:text-5xl text-foreground">
             Depth Room
           </h1>
-          <p className="mt-2 text-base md:text-lg text-white/80">
+          <p className="mt-2 text-base md:text-lg text-foreground">
             Your distance to the screen, read as a live depth field, is the
             instrument — music lives in proximity and motion, not in pitch.
           </p>
@@ -376,15 +376,15 @@ export default function DepthRoomPage() {
           <div className="mx-auto flex max-w-lg flex-col items-center text-center">
             <button
               onClick={enter}
-              className="min-h-[44px] rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-xl font-medium text-white backdrop-blur-sm transition hover:bg-white/20"
+              className="min-h-[44px] rounded-2xl border border-border bg-muted px-6 py-3 text-xl font-medium text-foreground backdrop-blur-sm transition hover:bg-accent"
             >
               Enter the room
             </button>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Sound starts on your tap (browsers require a gesture). Lean in and
               pull back.
             </p>
-            <p className="mt-1 font-mono text-base text-emerald-300/95">
+            <p className="mt-1 font-mono text-base text-violet-300/95">
               Camera is used live, never recorded or uploaded.
             </p>
           </div>
@@ -392,12 +392,12 @@ export default function DepthRoomPage() {
 
         <footer className="max-w-2xl">
           {errMsg && (
-            <p className="mb-3 rounded-lg border border-rose-400/40 bg-rose-950/30 px-4 py-2.5 text-base text-rose-300">
+            <p className="mb-3 rounded-lg border border-violet-400/40 bg-violet-950/30 px-4 py-2.5 text-base text-violet-300">
               {errMsg}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               state:{" "}
               <span className={statusLabel[model].cls}>
                 {statusLabel[model].text}
@@ -405,21 +405,21 @@ export default function DepthRoomPage() {
             </span>
             {entered && (
               <>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   near{" "}
-                  <span className="text-amber-300/95">
+                  <span className="text-violet-300/95">
                     {(feat.nearEnergy * 100).toFixed(0)}%
                   </span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   motion{" "}
                   <span className="text-violet-300">
                     {(feat.motion * 100).toFixed(0)}%
                   </span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   pan{" "}
-                  <span className="text-emerald-300/95">
+                  <span className="text-violet-300/95">
                     {feat.centroidX < 0.45
                       ? "L"
                       : feat.centroidX > 0.55
@@ -431,7 +431,7 @@ export default function DepthRoomPage() {
             )}
             <Link
               href="/dream"
-              className="text-white/75 underline underline-offset-4 hover:text-white"
+              className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
               ← back to the lab
             </Link>
@@ -442,26 +442,26 @@ export default function DepthRoomPage() {
       {/* design notes drawer */}
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
-          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-white/80">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p>
               This is the lab&apos;s first depth-camera piece achieved in pure
               software — no Kinect, no RealSense. A monocular depth model,{" "}
-              <span className="text-white/95">Depth Anything V2</span> (Yang et
+              <span className="text-foreground">Depth Anything V2</span> (Yang et
               al., NeurIPS 2024), runs in your browser on WebGPU via
               Transformers.js to turn a single webcam image into a per-pixel
               distance field, ~6&nbsp;times a second.
             </p>
             <p>
               That field is averaged into a 16×12 grid. From it we read{" "}
-              <span className="text-amber-300/95">near-zone energy</span> (how
-              close you are), histogram <span className="text-white/95">spread</span>,
-              the <span className="text-emerald-300/95">centroid</span> of your
+              <span className="text-violet-300/95">near-zone energy</span> (how
+              close you are), histogram <span className="text-foreground">spread</span>,
+              the <span className="text-violet-300/95">centroid</span> of your
               nearest region, and{" "}
               <span className="text-violet-300">motion-in-depth</span>.
             </p>
             <p>
-              <span className="text-white/95">The mapping:</span> lean in and a
+              <span className="text-foreground">The mapping:</span> lean in and a
               bank of granular/additive voices blooms bright and foreground; pull
               back and it thins to a low soft drone bed. Your nearest region pans
               the voices left↔right through an HRTF panner. Movement toward and
@@ -471,12 +471,12 @@ export default function DepthRoomPage() {
               proximity, space and motion, never intervals.
             </p>
             <p>
-              <span className="text-white/95">Visuals:</span> a fullscreen WebGL2
+              <span className="text-foreground">Visuals:</span> a fullscreen WebGL2
               fragment shader renders you as a depth-shaded room — near pixels
               glow warm and bloom, far pixels recede into cool dark, with quiet
               iso-contour bands and a soft volumetric haze.
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Everything degrades: no camera, no WebGPU, or no model all fall
               back to a synthetic procedural depth field so the room always
               sounds and shows. No WebGL2 falls back to a minimal Canvas2D view.
@@ -485,7 +485,7 @@ export default function DepthRoomPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] rounded-xl border border-white/20 px-4 py-2.5 text-base text-white hover:bg-white/10"
+              className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

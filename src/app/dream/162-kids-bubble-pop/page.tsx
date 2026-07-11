@@ -296,9 +296,9 @@ export default function Page() {
   if (phase === "start") {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-[#020208] gap-6 px-8">
-        <p className="text-sm font-mono text-white/55">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-white/95">Bubble Pop</h1>
-        <p className="text-base text-white/75 text-center max-w-xs leading-relaxed">
+        <p className="text-sm font-mono text-muted-foreground">For kids 3+</p>
+        <h1 className="text-3xl font-serif text-center text-foreground">Bubble Pop</h1>
+        <p className="text-base text-muted-foreground text-center max-w-xs leading-relaxed">
           Colorful bubbles float up — tap or drag to pop them! Each bubble
           plays its own note. Bigger bubbles sing lower.
         </p>
@@ -310,7 +310,7 @@ export default function Page() {
         >
           ✦ Start!
         </button>
-        <p className="text-xs text-white/40 mt-2">
+        <p className="text-xs text-muted-foreground/70 mt-2">
           Zero permissions · Zero API · Zero deps
         </p>
       </div>

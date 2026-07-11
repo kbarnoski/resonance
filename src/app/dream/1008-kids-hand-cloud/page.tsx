@@ -194,7 +194,7 @@ export default function HandCloudPage() {
   }, [run, loop]);
 
   return (
-    <div className="relative min-h-dvh w-full overflow-hidden bg-[#04060f] text-white">
+    <div className="relative min-h-dvh w-full overflow-hidden bg-[#04060f] text-foreground">
       {/* fullscreen field */}
       <canvas
         ref={canvasRef}
@@ -209,14 +209,14 @@ export default function HandCloudPage() {
       <header className="relative z-10 px-6 pt-6">
         <Link
           href="/dream"
-          className="font-mono text-xs text-white/55 hover:text-white/80"
+          className="font-mono text-xs text-muted-foreground hover:text-foreground"
         >
           ← dream lab
         </Link>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Hand Cloud
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
           Wave your bare hands in front of the camera to conduct a glowing,
           singing cloud of light. Open your hand to make it bloom; pinch to
           gather a bright chiming star. There are no wrong notes.
@@ -234,11 +234,11 @@ export default function HandCloudPage() {
             {run === "starting" ? "Starting…" : "Start (camera + sound)"}
           </button>
         ) : (
-          <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-white/55">
-            <span className="rounded-md bg-white/10 px-2 py-1">
+          <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
+            <span className="rounded-md bg-muted px-2 py-1">
               render: {renderer === "webgpu" ? "WebGPU compute" : "Canvas2D (CPU)"}
             </span>
-            <span className="rounded-md bg-white/10 px-2 py-1">
+            <span className="rounded-md bg-muted px-2 py-1">
               input: {input === "camera" ? "camera hands" : "ghost auto-demo"}
             </span>
           </div>
@@ -246,7 +246,7 @@ export default function HandCloudPage() {
 
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="min-h-[44px] rounded-xl bg-white/5 px-4 py-2.5 text-base text-white/75 ring-1 ring-white/15 transition hover:bg-white/10"
+          className="min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
         >
           Read the design notes
         </button>
@@ -254,40 +254,40 @@ export default function HandCloudPage() {
 
       {/* graceful-degrade notice */}
       {notice && (
-        <p className="relative z-10 mt-3 max-w-xl px-6 text-base text-rose-300">
+        <p className="relative z-10 mt-3 max-w-xl px-6 text-base text-violet-300">
           {notice}
         </p>
       )}
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="relative z-10 mt-4 mx-6 max-w-2xl rounded-2xl bg-black/60 p-5 text-base text-white/75 ring-1 ring-white/10 backdrop-blur">
-          <p className="text-white/95">
+        <div className="relative z-10 mt-4 mx-6 max-w-2xl rounded-2xl bg-black/60 p-5 text-base text-muted-foreground ring-1 ring-border backdrop-blur">
+          <p className="text-foreground">
             One question: what if a 4-year-old could conduct a glowing, singing
             cloud of light with bare hands in the air — no touching the screen?
           </p>
           <ul className="mt-3 list-disc space-y-1.5 pl-5">
             <li>
-              <span className="text-white/95">Hands</span> come from{" "}
-              <span className="font-mono text-white/90">
+              <span className="text-foreground">Hands</span> come from{" "}
+              <span className="font-mono text-foreground">
                 MediaPipe HandLandmarker
               </span>{" "}
               (Google) over the webcam — up to 2 hands × 21 3D landmarks.
             </li>
             <li>
-              <span className="text-white/95">The cloud</span> is{" "}
+              <span className="text-foreground">The cloud</span> is{" "}
               {renderer === "webgpu" ? "120k" : "~3.2k"} particles advected by
               curl-noise and pulled toward your hands. WebGPU runs a real{" "}
               <span className="font-mono">@compute</span> kernel; without it a
               CPU integrator drives the same look on Canvas2D.
             </li>
             <li>
-              <span className="text-white/95">Sound</span> snaps every voice to a
+              <span className="text-foreground">Sound</span> snaps every voice to a
               C-major pentatonic over a soft drone, so nothing is ever wrong. A
               pinch rings a bright bell.
             </li>
           </ul>
-          <p className="mt-3 text-white/55">
+          <p className="mt-3 text-muted-foreground">
             References: MediaPipe Hands (Google, on-device 21-landmark real-time
             hand tracking); curl-noise per Bridson (SIGGRAPH 2007) &amp; Memo
             Akten&apos;s particle-flow work.
@@ -297,7 +297,7 @@ export default function HandCloudPage() {
 
       {/* footer hint */}
       <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-6 pb-5">
-        <p className="font-mono text-xs text-white/55">
+        <p className="font-mono text-xs text-muted-foreground">
           open hand = bloom · pinch (thumb + index) = gather &amp; chime · stand
           back so your hands fit in frame
         </p>

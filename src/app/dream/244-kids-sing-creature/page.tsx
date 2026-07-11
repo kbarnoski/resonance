@@ -746,7 +746,7 @@ export default function SingCreaturePage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0820] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0820] text-foreground">
       {/* 3D creature mount */}
       <div ref={mountRef} className="absolute inset-0 z-0 h-screen w-full" aria-hidden />
 
@@ -756,18 +756,18 @@ export default function SingCreaturePage() {
       <div className="relative z-20 flex min-h-screen flex-col justify-between p-6 sm:p-10">
         <header className="max-w-2xl">
           <p className="text-base font-medium uppercase tracking-[0.3em] text-violet-300">Resonance · Dream 244</p>
-          <h1 className="mt-2 text-4xl font-semibold text-white sm:text-5xl">Sing Creature</h1>
-          <p className="mt-3 max-w-xl text-base text-white/75 sm:text-lg">
+          <h1 className="mt-2 text-4xl font-semibold text-foreground sm:text-5xl">Sing Creature</h1>
+          <p className="mt-3 max-w-xl text-base text-muted-foreground sm:text-lg">
             Hum or sing, and your glowing creature grows, changes color, and sings your little tune right back to you.
           </p>
 
-          {glError && <p className="mt-3 text-base text-rose-300">{glError}</p>}
-          {micError && <p className="mt-3 text-base text-rose-300">{micError}</p>}
+          {glError && <p className="mt-3 text-base text-violet-300">{glError}</p>}
+          {micError && <p className="mt-3 text-base text-violet-300">{micError}</p>}
 
           {status === "idle" && (
             <button
               onClick={handleStart}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500 px-7 py-3 text-lg font-semibold text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500 px-7 py-3 text-lg font-semibold text-foreground shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
             >
               Sing to it 🎤
             </button>
@@ -804,7 +804,7 @@ export default function SingCreaturePage() {
         )}
 
         <footer className="flex flex-wrap items-end justify-between gap-4">
-          <p className="max-w-md text-base text-white/55">
+          <p className="max-w-md text-base text-muted-foreground">
             Low notes glow deep violet, high notes go bright. Keep singing and it gets bigger — then go quiet and listen.
           </p>
           <Link

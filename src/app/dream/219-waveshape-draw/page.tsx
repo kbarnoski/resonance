@@ -378,16 +378,16 @@ export default function WaveshapeDraw() {
   // ── render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#06050c] text-white flex flex-col select-none">
+    <div className="min-h-screen bg-[#06050c] text-foreground flex flex-col select-none">
       {/* Header */}
       <div className="shrink-0 px-4 pt-4 pb-2">
-        <h1 className="text-2xl font-mono text-white/95 font-bold">
+        <h1 className="text-2xl font-mono text-foreground font-bold">
           Waveshape Draw
         </h1>
-        <p className="text-base text-white/75 mt-1">
+        <p className="text-base text-muted-foreground mt-1">
           Draw a waveform — hear its timbre live.{" "}
           <span className="text-violet-300">Violet</span> = drawn ·{" "}
-          <span className="text-amber-300">amber</span> = oscillator output.
+          <span className="text-violet-300">amber</span> = oscillator output.
         </p>
       </div>
 
@@ -406,33 +406,33 @@ export default function WaveshapeDraw() {
           onPointerLeave={() => { isDrawingRef.current = false; lastIdxRef.current = -1; }}
         />
         {/* Amplitude axis labels */}
-        <span className="absolute top-[4%] left-2 text-xs text-white/30 font-mono pointer-events-none">
+        <span className="absolute top-[4%] left-2 text-xs text-muted-foreground/70 font-mono pointer-events-none">
           +1
         </span>
-        <span className="absolute top-[28%] left-2 text-xs text-white/30 font-mono pointer-events-none">
+        <span className="absolute top-[28%] left-2 text-xs text-muted-foreground/70 font-mono pointer-events-none">
           0
         </span>
-        <span className="absolute top-[52%] left-2 text-xs text-white/30 font-mono pointer-events-none">
+        <span className="absolute top-[52%] left-2 text-xs text-muted-foreground/70 font-mono pointer-events-none">
           −1
         </span>
       </div>
 
       {/* Controls */}
-      <div className="shrink-0 px-4 pt-3 pb-4 space-y-3 border-t border-white/10">
+      <div className="shrink-0 px-4 pt-3 pb-4 space-y-3 border-t border-border">
         {/* Presets */}
         <div className="flex flex-wrap gap-2">
           {PRESETS.map(({ label, fn }) => (
             <button
               key={label}
               onClick={() => loadPreset(fn)}
-              className="px-4 py-2.5 min-h-[44px] bg-white/10 hover:bg-white/20 rounded-lg text-base text-white/95 font-mono transition-colors"
+              className="px-4 py-2.5 min-h-[44px] bg-muted hover:bg-accent rounded-lg text-base text-foreground font-mono transition-colors"
             >
               {label}
             </button>
           ))}
           <button
             onClick={() => loadPreset(() => new Float32Array(N))}
-            className="px-4 py-2.5 min-h-[44px] bg-white/8 hover:bg-white/15 rounded-lg text-base text-white/55 font-mono transition-colors"
+            className="px-4 py-2.5 min-h-[44px] bg-muted hover:bg-accent rounded-lg text-base text-muted-foreground font-mono transition-colors"
           >
             Clear
           </button>
@@ -440,7 +440,7 @@ export default function WaveshapeDraw() {
 
         {/* Pitch */}
         <div>
-          <label className="block text-sm text-white/75 font-mono mb-1">
+          <label className="block text-sm text-muted-foreground font-mono mb-1">
             Pitch — {pitch} Hz ({pitchLabel(pitch)})
           </label>
           <input
@@ -452,7 +452,7 @@ export default function WaveshapeDraw() {
 
         {/* Volume */}
         <div>
-          <label className="block text-sm text-white/75 font-mono mb-1">
+          <label className="block text-sm text-muted-foreground font-mono mb-1">
             Volume — {Math.round(volume * 100)}%
           </label>
           <input
@@ -467,16 +467,16 @@ export default function WaveshapeDraw() {
           onClick={running ? stopAudio : startAudio}
           className={`w-full py-3 min-h-[44px] rounded-xl text-base font-mono font-bold transition-colors ${
             running
-              ? "bg-rose-500/20 hover:bg-rose-500/35 text-rose-300"
+              ? "bg-violet-500/20 hover:bg-violet-500/35 text-violet-300"
               : "bg-violet-500/20 hover:bg-violet-500/35 text-violet-300"
           }`}
         >
           {running ? "■ Stop" : "▶ Start — hear the waveform"}
         </button>
 
-        <div className="flex items-center justify-between text-xs text-white/40 font-mono">
+        <div className="flex items-center justify-between text-xs text-muted-foreground/70 font-mono">
           <span>Zero deps · Zero permissions · Web Audio API</span>
-          <Link href="/dream" className="underline hover:text-white/60 transition-colors">
+          <Link href="/dream" className="underline hover:text-muted-foreground transition-colors">
             ← dream lab
           </Link>
         </div>

@@ -397,19 +397,19 @@ export default function EcoBloom() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 z-10 px-6">
           <div className="text-center max-w-sm">
-            <h1 className="text-3xl font-serif text-white/95 mb-3">Eco Bloom</h1>
-            <p className="text-white/75 text-base leading-relaxed">
+            <h1 className="text-3xl font-serif text-foreground mb-3">Eco Bloom</h1>
+            <p className="text-muted-foreground text-base leading-relaxed">
               Three tree species grow before you — L-system branches unfold over 45 seconds,
               each new branch a Karplus-Strong pluck. Wind and rain layer in as the canopy fills.
             </p>
           </div>
           <button
             onClick={() => setStarted(true)}
-            className="px-7 py-3 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-base rounded-lg min-h-[44px] hover:bg-emerald-500/30 transition-colors"
+            className="px-7 py-3 bg-violet-500/20 border border-violet-400/40 text-violet-300 text-base rounded-lg min-h-[44px] hover:bg-violet-500/30 transition-colors"
           >
             Grow the forest
           </button>
-          <p className="text-white/55 text-sm">Tap canvas to plant more trees · max 6</p>
+          <p className="text-muted-foreground text-sm">Tap canvas to plant more trees · max 6</p>
         </div>
       )}
 
@@ -420,8 +420,8 @@ export default function EcoBloom() {
             onClick={() => setRainOn(r => !r)}
             className={`px-4 py-2.5 rounded-lg text-sm min-h-[44px] border transition-colors ${
               rainOn
-                ? 'bg-blue-500/25 border-blue-400/50 text-blue-300'
-                : 'bg-white/5 border-white/20 text-white/75 hover:bg-white/10'
+                ? 'bg-violet-500/25 border-violet-400/50 text-violet-300'
+                : 'bg-muted border-border text-muted-foreground hover:bg-accent'
             }`}
           >
             🌧 Rain
@@ -431,8 +431,8 @@ export default function EcoBloom() {
               onClick={() => setBirdsOn(b => !b)}
               className={`px-4 py-2.5 rounded-lg text-sm min-h-[44px] border transition-colors ${
                 birdsOn
-                  ? 'bg-amber-500/25 border-amber-400/50 text-amber-300'
-                  : 'bg-white/5 border-white/20 text-white/75 hover:bg-white/10'
+                  ? 'bg-violet-500/25 border-violet-400/50 text-violet-300'
+                  : 'bg-muted border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               🐦 Birds
@@ -440,7 +440,7 @@ export default function EcoBloom() {
           )}
           <button
             onClick={() => { clearRef.current = true; }}
-            className="px-4 py-2.5 rounded-lg text-sm min-h-[44px] bg-white/5 border border-white/20 text-white/75 hover:bg-white/10 transition-colors"
+            className="px-4 py-2.5 rounded-lg text-sm min-h-[44px] bg-muted border border-border text-muted-foreground hover:bg-accent transition-colors"
           >
             Clear
           </button>
@@ -450,7 +450,7 @@ export default function EcoBloom() {
       {/* Design notes link */}
       <a
         href="/dream/146-eco-bloom/README.md"
-        className="absolute top-3 right-3 z-10 text-white/55 text-xs hover:text-white/75 transition-colors"
+        className="absolute top-3 right-3 z-10 text-muted-foreground text-xs hover:text-muted-foreground transition-colors"
       >
         Design notes ↗
       </a>

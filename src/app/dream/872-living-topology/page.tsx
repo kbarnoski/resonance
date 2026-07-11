@@ -464,26 +464,26 @@ export default function LivingTopologyPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#05060d]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between">
-          <h1 className="font-mono text-2xl font-bold text-white">
+          <h1 className="font-mono text-2xl font-bold text-foreground">
             Living Topology
           </h1>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex items-center font-mono text-base text-white/55 transition hover:text-white/75"
+              className="flex items-center font-mono text-base text-muted-foreground transition hover:text-muted-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           A network of feedback resonators whose coupling topology rewires itself
           — steered by a Lorenz attractor drifting at the center. It evolves on
           its own and never repeats.
@@ -491,9 +491,9 @@ export default function LivingTopologyPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl rounded-lg bg-black/60 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl rounded-lg bg-black/60 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The idea:</strong> Cycle 3 of the
+            <strong className="text-foreground">The idea:</strong> Cycle 3 of the
             feedback-ecology thread. In cycle 1 (820) the small-world coupling
             matrix was static. Here it is continuously driven by a Lorenz
             attractor (σ=10, ρ=28, β=8/3): its evolving (x,y,z) state modulates
@@ -502,12 +502,12 @@ export default function LivingTopologyPage() {
             never goes silent — but the topology reorganizes over minutes.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Ear-safety:</strong> every path ends
+            <strong className="text-foreground">Ear-safety:</strong> every path ends
             in a DynamicsCompressor brick-wall limiter (−8 dB, ratio 20) → master
             gain (default 0.22) → output. Self-feedback is hard-clamped below the
             divergence point; coupling is hard-clamped. Panic mute is always live.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Refs: Edward Lorenz, &ldquo;Deterministic Nonperiodic Flow&rdquo;
             (1963); 2026 work in <em>Chaos, Solitons &amp; Fractals</em> on
             synchronization of coupled Lorenz oscillators on Watts-Strogatz
@@ -523,7 +523,7 @@ export default function LivingTopologyPage() {
 
         {/* Lorenz driver HUD */}
         {phase === "running" && (
-          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/40 px-3 py-2 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/40 px-3 py-2 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
             <div className="text-violet-300">lorenz driver</div>
             <div>x {lzReadout.x.toFixed(2)}</div>
             <div>y {lzReadout.y.toFixed(2)}</div>
@@ -534,7 +534,7 @@ export default function LivingTopologyPage() {
         {phase === "idle" && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-[#05060d]/75 backdrop-blur-sm">
             <div className="max-w-sm space-y-3 px-6 text-center">
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Eleven feedback resonators tuned to the overtone series on A1.
                 Their coupling graph is rewired live by a chaotic Lorenz
                 attractor — strengthening and fading connections so the drone
@@ -557,7 +557,7 @@ export default function LivingTopologyPage() {
 
         {phase === "noaudio" && (
           <div className="absolute inset-0 z-20 flex items-center justify-center p-6">
-            <p className="max-w-sm text-center text-base text-rose-300">
+            <p className="max-w-sm text-center text-base text-violet-300">
               Audio or WebGL is unavailable in this browser. Try Chrome, Firefox,
               or Safari with audio enabled and hardware acceleration on.
             </p>
@@ -566,12 +566,12 @@ export default function LivingTopologyPage() {
       </div>
 
       {phase === "running" && (
-        <div className="relative z-10 flex flex-col gap-3 border-t border-white/10 bg-black/40 px-4 py-3 backdrop-blur-sm">
+        <div className="relative z-10 flex flex-col gap-3 border-t border-border bg-black/40 px-4 py-3 backdrop-blur-sm">
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={seedAll}
-              className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/10 transition hover:bg-white/10"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
             >
               seed network
             </button>
@@ -581,8 +581,8 @@ export default function LivingTopologyPage() {
                 onClick={handleMute}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                   muted
-                    ? "bg-rose-500/25 text-rose-300 ring-rose-400/40"
-                    : "bg-white/5 text-white/75 ring-white/10 hover:bg-white/10"
+                    ? "bg-violet-500/25 text-violet-300 ring-violet-400/40"
+                    : "bg-muted text-muted-foreground ring-border hover:bg-accent"
                 }`}
               >
                 {muted ? "unmute" : "panic mute"}
@@ -609,7 +609,7 @@ export default function LivingTopologyPage() {
               max={3}
               step={0.05}
               onChange={setDrift}
-              accent="accent-amber-400"
+              accent="accent-violet-400"
             />
             <Slider
               label="master volume"
@@ -619,11 +619,11 @@ export default function LivingTopologyPage() {
               max={0.6}
               step={0.01}
               onChange={handleVolume}
-              accent="accent-emerald-400"
+              accent="accent-violet-400"
             />
           </div>
 
-          <p className="font-mono text-base text-white/55">
+          <p className="font-mono text-base text-muted-foreground">
             Tap &ldquo;seed network&rdquo; to perturb · the Lorenz driver reshapes
             the graph on its own
           </p>
@@ -658,8 +658,8 @@ function Slider({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-baseline justify-between">
-        <span className="font-mono text-base text-white/80">{label}</span>
-        <span className="font-mono text-base text-white/55">{pct}%</span>
+        <span className="font-mono text-base text-foreground">{label}</span>
+        <span className="font-mono text-base text-muted-foreground">{pct}%</span>
       </div>
       <input
         type="range"
@@ -670,7 +670,7 @@ function Slider({
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className={`w-full cursor-pointer ${accent}`}
       />
-      <span className="font-mono text-base text-white/55">{hint}</span>
+      <span className="font-mono text-base text-muted-foreground">{hint}</span>
     </div>
   );
 }

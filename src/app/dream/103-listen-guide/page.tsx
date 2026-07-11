@@ -493,25 +493,25 @@ export default function ListenGuide() {
       {/* ── IDLE ─────────────────────────────────────────────────────────── */}
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
-          <p className="text-xs tracking-[0.25em] uppercase text-white/55 mb-3 font-mono">
+          <p className="text-xs tracking-[0.25em] uppercase text-muted-foreground mb-3 font-mono">
             Guided listening
           </p>
           <h1 className="text-3xl md:text-4xl mb-3 tracking-tight">
             Hear the layers.
           </h1>
-          <p className="text-white/75 text-base max-w-md mb-2 leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-md mb-2 leading-relaxed">
             Six 22-second windows. Each one focuses your attention on a
             different frequency register — from the deepest sub-bass to the
             highest shimmer.
           </p>
-          <p className="text-white/55 text-sm max-w-sm mb-8 leading-relaxed">
+          <p className="text-muted-foreground text-sm max-w-sm mb-8 leading-relaxed">
             Use demo mode, or drop in any audio file. Headphones recommended.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 items-center mb-4">
             <button
               onClick={startDemo}
-              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Demo mode
             </button>
@@ -529,16 +529,16 @@ export default function ListenGuide() {
             </label>
           </div>
 
-          <p className="text-white/35 text-xs mb-8">
+          <p className="text-muted-foreground/70 text-xs mb-8">
             or drag an audio file anywhere on this page
           </p>
           {error && (
-            <p className="text-rose-300 text-sm mb-4 max-w-sm">{error}</p>
+            <p className="text-violet-300 text-sm mb-4 max-w-sm">{error}</p>
           )}
 
           <Link
             href="/dream"
-            className="text-xs text-white/30 hover:text-white/55 transition"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             ← back to dream sandbox
           </Link>
@@ -550,10 +550,10 @@ export default function ListenGuide() {
         <div className="absolute inset-0 flex flex-col justify-between z-10 p-5 pointer-events-none">
           {/* Top bar */}
           <div className="flex justify-between items-start">
-            <p className="text-white/40 text-xs font-mono truncate max-w-xs">
+            <p className="text-muted-foreground/70 text-xs font-mono truncate max-w-xs">
               {fileName ?? "demo"}
             </p>
-            <p className="text-white/40 text-xs font-mono">
+            <p className="text-muted-foreground/70 text-xs font-mono">
               {lensIdx + 1}&thinsp;/&thinsp;{LENSES.length}
             </p>
           </div>
@@ -566,17 +566,17 @@ export default function ListenGuide() {
             >
               {lens.name}&ensp;·&ensp;{lens.range}
             </p>
-            <p className="text-white text-2xl md:text-3xl font-light leading-snug mb-4 max-w-xl">
+            <p className="text-foreground text-2xl md:text-3xl font-light leading-snug mb-4 max-w-xl">
               {lens.prompt}
             </p>
-            <p className="text-white/75 text-base leading-relaxed max-w-lg">
+            <p className="text-muted-foreground text-base leading-relaxed max-w-lg">
               {lens.detail}
             </p>
           </div>
 
           {/* Bottom — progress + band bars */}
           <div className="flex flex-col gap-4">
-            <div className="w-full h-px bg-white/10 rounded-full overflow-hidden">
+            <div className="w-full h-px bg-muted rounded-full overflow-hidden">
               <div
                 ref={progressBarRef}
                 className="h-full rounded-full"
@@ -631,26 +631,26 @@ export default function ListenGuide() {
       {/* ── DONE ─────────────────────────────────────────────────────────── */}
       {mode === "done" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
-          <p className="text-xs tracking-[0.25em] uppercase text-white/55 mb-4 font-mono">
+          <p className="text-xs tracking-[0.25em] uppercase text-muted-foreground mb-4 font-mono">
             Session complete
           </p>
           <h2 className="text-2xl md:text-3xl mb-3 font-light">
             You&apos;ve heard all six layers.
           </h2>
-          <p className="text-white/75 text-base max-w-sm mb-8 leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-sm mb-8 leading-relaxed">
             Your ear has traveled from the room&apos;s deepest foundation to
             the shimmer at the edge of hearing.
           </p>
           <div className="flex gap-3">
             <button
               onClick={resetSession}
-              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Listen again
             </button>
             <Link
               href="/dream"
-              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-white/15 text-white/50 rounded hover:border-white/35 hover:text-white/70 transition flex items-center"
+              className="px-6 py-3 min-h-[44px] text-sm tracking-wider uppercase border border-border text-muted-foreground rounded hover:border-border hover:text-muted-foreground transition flex items-center"
             >
               ← Back
             </Link>

@@ -437,7 +437,7 @@ export default function ElevenDialoguePage() {
       : "▶ Perform scene";
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white font-mono px-5 py-8">
+    <div className="min-h-screen bg-[#080808] text-foreground font-mono px-5 py-8">
       <div className="max-w-2xl mx-auto">
 
         {/* Header */}
@@ -445,15 +445,15 @@ export default function ElevenDialoguePage() {
           <h1 className="text-lg font-bold tracking-wide">Eleven Dialogue</h1>
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/60"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           The Ghost is no longer alone. Six scenes as two-character dramatic exchanges —
           voiced by ElevenLabs V3 with inline emotional tags: [slowly], [whispers], [pauses].{" "}
-          <span className="text-white/22">Headphones recommended.</span>
+          <span className="text-muted-foreground/70">Headphones recommended.</span>
         </p>
 
         {/* Scene selector */}
@@ -470,7 +470,7 @@ export default function ElevenDialoguePage() {
               className={
                 "px-3 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                 (i !== sceneIdx
-                  ? "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70"
+                  ? "border-border text-muted-foreground hover:border-border hover:text-muted-foreground"
                   : "")
               }
             >
@@ -527,7 +527,7 @@ export default function ElevenDialoguePage() {
 
         {/* Edit script */}
         <details className="mb-6">
-          <summary className="text-[11px] text-white/30 cursor-pointer hover:text-white/55 select-none mb-3">
+          <summary className="text-[11px] text-muted-foreground/70 cursor-pointer hover:text-muted-foreground select-none mb-3">
             ✏ Edit script — use V3 tags: [whispers] [pauses] [slowly] [awed] [resigned tone] …
           </summary>
           <div className="flex flex-col gap-3 mt-3">
@@ -551,9 +551,9 @@ export default function ElevenDialoguePage() {
                       setEditLines(next);
                     }}
                     rows={2}
-                    className="w-full bg-white/5 border border-white/10 rounded px-3 py-2
-                      text-[12px] text-white/75 resize-none focus:outline-none
-                      focus:border-white/22"
+                    className="w-full bg-muted border border-border rounded px-3 py-2
+                      text-[12px] text-muted-foreground resize-none focus:outline-none
+                      focus:border-border"
                     placeholder={line.text}
                   />
                 </div>
@@ -575,35 +575,35 @@ export default function ElevenDialoguePage() {
                   : scene.ghostAccent,
             }}
             className="px-8 py-2.5 border rounded text-[13px] tracking-widest
-              hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             {btnLabel}
           </button>
 
           {status === "loading" && (
-            <p className="text-[11px] text-white/28">
+            <p className="text-[11px] text-muted-foreground/70">
               Generating 3 voice lines — takes ~10s…
             </p>
           )}
 
           {status === "error" && (
             <div
-              className="text-[10px] text-red-400 max-w-md text-center
-                bg-red-950/30 rounded px-3 py-2 leading-relaxed"
+              className="text-[10px] text-destructive max-w-md text-center
+                bg-destructive/30 rounded px-3 py-2 leading-relaxed"
             >
               {errorMsg.slice(0, 320)}
             </div>
           )}
 
           {status === "done" && (
-            <p className="text-[11px] text-white/28">
+            <p className="text-[11px] text-muted-foreground/70">
               Scene complete — click to perform again
             </p>
           )}
         </div>
 
         {/* Footer */}
-        <div className="mt-8 flex justify-between text-[10px] text-white/18">
+        <div className="mt-8 flex justify-between text-[10px] text-muted-foreground/70">
           <span>ElevenLabs V3 via FAL_KEY · ~$0.02/scene · Adam + Alice voices</span>
           <span>design notes: src/app/dream/64-eleven-dialogue/README.md</span>
         </div>

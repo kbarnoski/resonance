@@ -229,8 +229,8 @@ export default function ShepardTonePage() {
     return (
       <div className="relative flex flex-col items-center justify-center h-full gap-6 text-center px-6">
         <div className="text-5xl leading-none select-none">∞</div>
-        <h1 className="text-2xl font-serif text-white/95">Shepard Tone</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Shepard Tone</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           Eight sine waves across eight octaves — each fading in and out as they climb —
           creating an auditory illusion of a tone that ascends forever without ever resolving.
           An endless musical staircase.
@@ -241,10 +241,10 @@ export default function ShepardTonePage() {
         >
           Begin Ascent
         </button>
-        <p className="text-xs text-white/45">headphones recommended for full effect</p>
+        <p className="text-xs text-muted-foreground">headphones recommended for full effect</p>
         <a
           href="/dream/132-shepard-tone/README.md"
-          className="text-xs text-white/40 hover:text-white/60 transition-colors absolute bottom-4 right-4"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors absolute bottom-4 right-4"
         >
           design notes ↗
         </a>
@@ -260,7 +260,7 @@ export default function ShepardTonePage() {
       <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-3 bg-black/40 backdrop-blur-sm">
         {/* Rate */}
         <div className="flex items-center gap-3">
-          <span className="text-white/55 text-xs w-12 shrink-0">RATE</span>
+          <span className="text-muted-foreground text-xs w-12 shrink-0">RATE</span>
           <input
             type="range"
             min={0.5}
@@ -270,7 +270,7 @@ export default function ShepardTonePage() {
             onChange={(e) => setRate(Number(e.target.value))}
             className="flex-1 accent-violet-400"
           />
-          <span className="text-white/75 text-xs w-20 text-right">
+          <span className="text-muted-foreground text-xs w-20 text-right">
             {rate} BPM
           </span>
         </div>
@@ -282,7 +282,7 @@ export default function ShepardTonePage() {
             className={`min-h-[44px] px-4 py-2 rounded text-sm border transition-colors ${
               asc
                 ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
-                : "border-rose-400/50 text-rose-200 bg-rose-500/15"
+                : "border-violet-400/50 text-violet-200 bg-violet-500/15"
             }`}
           >
             {asc ? "↑ Ascending" : "↓ Descending"}
@@ -294,8 +294,8 @@ export default function ShepardTonePage() {
               onClick={() => setStepMode(m)}
               className={`min-h-[44px] px-3 py-2 rounded text-sm border transition-colors ${
                 stepMode === m
-                  ? "border-white/35 text-white/90 bg-white/10"
-                  : "border-white/10 text-white/45 hover:text-white/70"
+                  ? "border-border text-foreground bg-muted"
+                  : "border-border text-muted-foreground hover:text-muted-foreground"
               }`}
             >
               {m === "glide" ? "Glide" : m === "whole" ? "Whole-tone" : "Semitone"}
@@ -306,8 +306,8 @@ export default function ShepardTonePage() {
             onClick={() => setFrozen((f) => !f)}
             className={`min-h-[44px] px-4 py-2 rounded text-sm border transition-colors ml-auto ${
               frozen
-                ? "border-amber-400/50 text-amber-200 bg-amber-500/15"
-                : "border-white/10 text-white/45 hover:text-white/70"
+                ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
+                : "border-border text-muted-foreground hover:text-muted-foreground"
             }`}
           >
             {frozen ? "❄ Frozen" : "Freeze"}

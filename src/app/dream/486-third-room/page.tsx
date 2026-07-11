@@ -1353,8 +1353,8 @@ export default function ThirdRoomPage() {
     roughness < 0.5  ? "Tense" :
     roughness < 0.75 ? "Dissonant" : "Clashing";
   const tensionColor =
-    roughness < 0.08 ? "text-emerald-300" :
-    roughness < 0.35 ? "text-amber-300" : "text-rose-300";
+    roughness < 0.08 ? "text-violet-300" :
+    roughness < 0.35 ? "text-violet-300" : "text-violet-300";
 
   const whiteKeys = SCREEN_KEYS.filter((k) => !k.black);
   const allKeys = SCREEN_KEYS;
@@ -1365,12 +1365,12 @@ export default function ThirdRoomPage() {
     `${(detuneCents / 100).toFixed(1)} semitones`;
 
   return (
-    <div className="min-h-screen bg-[#0a0514] text-white flex flex-col">
+    <div className="min-h-screen bg-[#0a0514] text-foreground flex flex-col">
       {/* Header */}
       <div className="px-5 pt-5 pb-2 flex flex-col gap-1 shrink-0">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white font-serif">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground font-serif">
               Third Room
             </h1>
             <p className="text-sm text-violet-300/80 mt-0.5 font-mono tracking-wide">
@@ -1380,29 +1380,29 @@ export default function ThirdRoomPage() {
           {rendererKind && (
             <span className={`text-xs font-mono px-2 py-1 rounded border ${
               rendererKind === "gpu"
-                ? "text-emerald-300/95 border-emerald-300/20 bg-emerald-300/5"
-                : "text-white/55 border-white/10"
+                ? "text-violet-300/95 border-violet-300/20 bg-violet-300/5"
+                : "text-muted-foreground border-border"
             }`}>
               {rendererKind === "gpu" ? "WebGPU" : "Canvas2D"}
             </span>
           )}
         </div>
-        <p className="text-base text-white/80 mt-1 max-w-prose">
+        <p className="text-base text-foreground mt-1 max-w-prose">
           Negotiate a tritone into rest — not by collapsing it, but by routing it
-          through a <span className="text-emerald-300/95 font-medium">third room a just-fifth above</span> that shares
+          through a <span className="text-violet-300/95 font-medium">third room a just-fifth above</span> that shares
           its harmonics. Find the pivot note where all three rooms agree.
         </p>
 
         {!audioOk && (
-          <p className="text-rose-300 text-base font-medium mt-1">
+          <p className="text-violet-300 text-base font-medium mt-1">
             Web Audio API unavailable. Audio will not play.
           </p>
         )}
         {started && midiStatus === "ok" && (
-          <p className="text-emerald-300/95 text-sm mt-1">MIDI connected.</p>
+          <p className="text-violet-300/95 text-sm mt-1">MIDI connected.</p>
         )}
         {started && (midiStatus === "denied" || midiStatus === "unavailable") && (
-          <p className="text-white/55 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             {midiStatus === "denied"
               ? "MIDI denied — use the on-screen keyboard or QWERTY keys."
               : "No MIDI detected — use the on-screen keyboard or QWERTY keys."}
@@ -1411,7 +1411,7 @@ export default function ThirdRoomPage() {
       </div>
 
       {/* Canvas */}
-      <div className="relative flex-1 min-h-[280px] mx-4 mt-2 rounded-xl overflow-hidden border border-white/10">
+      <div className="relative flex-1 min-h-[280px] mx-4 mt-2 rounded-xl overflow-hidden border border-border">
         <canvas
           ref={canvasRef}
           className="w-full h-full block"
@@ -1422,15 +1422,15 @@ export default function ThirdRoomPage() {
         {!started && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-black/75">
             <div className="text-center max-w-xs px-4">
-              <p className="text-white/80 text-base mb-2">
+              <p className="text-foreground text-base mb-2">
                 Three resonant rooms — a tritone interloper, a just-fifth bridge.
               </p>
-              <p className="text-white/60 text-sm mb-5">
+              <p className="text-muted-foreground text-sm mb-5">
                 Blend Room C in. Find the pivot note. Route the tritone to rest.
               </p>
               <button
                 onClick={handleStart}
-                className="px-6 py-3 rounded-xl text-base font-semibold text-white bg-violet-600 hover:bg-violet-500 active:scale-95 transition-all min-w-[44px] min-h-[44px]"
+                className="px-6 py-3 rounded-xl text-base font-semibold text-foreground bg-violet-600 hover:bg-violet-500 active:scale-95 transition-all min-w-[44px] min-h-[44px]"
               >
                 Begin
               </button>
@@ -1443,23 +1443,23 @@ export default function ThirdRoomPage() {
           <div className="absolute top-3 right-3 flex flex-col gap-1.5 bg-black/40 backdrop-blur-sm rounded-lg px-3 py-2">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-violet-400/80" />
-              <span className="text-white/75 text-xs font-mono">Room A · reference</span>
+              <span className="text-muted-foreground text-xs font-mono">Room A · reference</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-rose-400/80" />
-              <span className="text-white/75 text-xs font-mono">Room B · tritone +{Math.round(detuneCents)}¢</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-violet-400/80" />
+              <span className="text-muted-foreground text-xs font-mono">Room B · tritone +{Math.round(detuneCents)}¢</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div
-                className="w-2.5 h-2.5 rounded-full bg-emerald-400 transition-opacity"
+                className="w-2.5 h-2.5 rounded-full bg-violet-400 transition-opacity"
                 style={{ opacity: 0.2 + cBlend * 0.8 }}
               />
-              <span className="text-emerald-300/95 text-xs font-mono">
+              <span className="text-violet-300/95 text-xs font-mono">
                 Room C · just 5th · blend {Math.round(cBlend * 100)}%
               </span>
             </div>
-            <div className="border-t border-white/10 pt-1 mt-0.5">
-              <span className="text-white/55 text-[10px] font-mono">A↔C consonant · A↔B tritone</span>
+            <div className="border-t border-border pt-1 mt-0.5">
+              <span className="text-muted-foreground text-[10px] font-mono">A↔C consonant · A↔B tritone</span>
             </div>
           </div>
         )}
@@ -1469,9 +1469,9 @@ export default function ThirdRoomPage() {
           <div className="absolute top-3 left-3 flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <span className={`text-xs font-mono font-bold ${tensionColor}`}>{tensionLabel}</span>
-              <span className="text-white/55 text-xs font-mono tabular-nums">{roughnessPct}%</span>
+              <span className="text-muted-foreground text-xs font-mono tabular-nums">{roughnessPct}%</span>
             </div>
-            <div className="w-32 h-1.5 rounded-full bg-white/10 overflow-hidden">
+            <div className="w-32 h-1.5 rounded-full bg-muted overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-75"
                 style={{
@@ -1491,12 +1491,12 @@ export default function ThirdRoomPage() {
         {/* Two sliders side by side */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Room B detune */}
-          <div className="flex flex-col gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3">
+          <div className="flex flex-col gap-2 rounded-xl bg-muted border border-border px-4 py-3">
             <div className="flex items-center justify-between">
-              <label className="text-white/80 text-sm font-medium font-mono">
+              <label className="text-foreground text-sm font-medium font-mono">
                 Room B Detune
               </label>
-              <span className="text-white/60 text-xs font-mono tabular-nums">
+              <span className="text-muted-foreground text-xs font-mono tabular-nums">
                 {Math.round(detuneCents)} ¢
               </span>
             </div>
@@ -1513,20 +1513,20 @@ export default function ThirdRoomPage() {
               }}
               disabled={!started}
             />
-            <div className="flex justify-between text-xs text-white/40 font-mono">
+            <div className="flex justify-between text-xs text-muted-foreground/70 font-mono">
               <span>Unison</span>
-              <span className="text-white/60">{detuneLabel}</span>
+              <span className="text-muted-foreground">{detuneLabel}</span>
               <span>Tritone</span>
             </div>
           </div>
 
           {/* Room C blend */}
-          <div className="flex flex-col gap-2 rounded-xl bg-white/5 border border-emerald-300/15 px-4 py-3">
+          <div className="flex flex-col gap-2 rounded-xl bg-muted border border-violet-300/15 px-4 py-3">
             <div className="flex items-center justify-between">
-              <label className="text-emerald-300/95 text-sm font-medium font-mono">
+              <label className="text-violet-300/95 text-sm font-medium font-mono">
                 Room C Blend
               </label>
-              <span className="text-white/60 text-xs font-mono tabular-nums">
+              <span className="text-muted-foreground text-xs font-mono tabular-nums">
                 {Math.round(cBlend * 100)}%
               </span>
             </div>
@@ -1543,24 +1543,24 @@ export default function ThirdRoomPage() {
               }}
               disabled={!started}
             />
-            <div className="flex justify-between text-xs text-white/40 font-mono">
+            <div className="flex justify-between text-xs text-muted-foreground/70 font-mono">
               <span>Off</span>
-              <span className="text-emerald-300/80">Just fifth bridge</span>
+              <span className="text-violet-300/80">Just fifth bridge</span>
               <span>Full</span>
             </div>
           </div>
         </div>
 
         {/* Tension readout */}
-        <div className="flex items-center gap-4 rounded-xl bg-white/5 px-4 py-3 border border-white/10">
+        <div className="flex items-center gap-4 rounded-xl bg-muted px-4 py-3 border border-border">
           <div className="flex flex-col min-w-[100px]">
-            <span className="text-white/60 text-xs font-mono">Tension / Roughness</span>
+            <span className="text-muted-foreground text-xs font-mono">Tension / Roughness</span>
             <span className={`text-xl font-bold font-mono ${tensionColor}`}>
               {tensionLabel}
             </span>
           </div>
           <div className="flex-1">
-            <div className="h-2.5 rounded-full bg-white/10 overflow-hidden">
+            <div className="h-2.5 rounded-full bg-muted overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-100"
                 style={{
@@ -1572,7 +1572,7 @@ export default function ThirdRoomPage() {
                 }}
               />
             </div>
-            <div className="flex justify-between text-xs text-white/40 mt-1 font-mono">
+            <div className="flex justify-between text-xs text-muted-foreground/70 mt-1 font-mono">
               <span>Smooth</span>
               <span className="tabular-nums">{roughnessPct}%</span>
               <span>Rough</span>
@@ -1582,22 +1582,22 @@ export default function ThirdRoomPage() {
 
         {/* Pivot note suggestions */}
         {started && cBlend > 0.05 && pivotNotes.length > 0 && (
-          <div className="rounded-xl bg-emerald-950/40 border border-emerald-300/20 px-4 py-3">
+          <div className="rounded-xl bg-violet-950/40 border border-violet-300/20 px-4 py-3">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-emerald-300/95 text-sm font-medium font-mono">
+              <span className="text-violet-300/95 text-sm font-medium font-mono">
                 ↓ Pivot suggestions
               </span>
-              <span className="text-white/55 text-xs font-mono">
+              <span className="text-muted-foreground text-xs font-mono">
                 notes that most lower total roughness
               </span>
             </div>
             <div className="flex gap-3 flex-wrap">
               {pivotNotes.map((midi) => (
                 <div key={midi} className="flex flex-col items-center">
-                  <span className="text-emerald-300/95 text-base font-bold font-mono">
+                  <span className="text-violet-300/95 text-base font-bold font-mono">
                     {midiNoteName(midi)}
                   </span>
-                  <span className="text-emerald-300/60 text-[10px] font-mono">
+                  <span className="text-violet-300/60 text-[10px] font-mono">
                     {predictRoughness(midi, detuneCents, cBlend) < roughness - 0.05
                       ? `↓${Math.round((roughness - predictRoughness(midi, detuneCents, cBlend)) * 100)}%`
                       : "pivot"}
@@ -1611,7 +1611,7 @@ export default function ThirdRoomPage() {
 
       {/* On-screen keyboard */}
       <div className="px-4 pb-3 shrink-0">
-        <p className="text-white/60 text-sm mb-2 font-mono">
+        <p className="text-muted-foreground text-sm mb-2 font-mono">
           Play: keys below, QWERTY (a–;), or MIDI · pivot notes glow emerald
         </p>
         <div className="relative select-none overflow-x-auto">
@@ -1712,26 +1712,26 @@ export default function ThirdRoomPage() {
       {/* Three-room geometry explanation */}
       {started && (
         <div className="px-5 pb-3 shrink-0">
-          <div className="rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm">
+          <div className="rounded-xl bg-muted border border-border px-4 py-3 text-sm">
             <div className="flex items-start gap-4 flex-wrap">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-violet-300 font-mono text-sm font-bold">A</span>
-                  <span className="text-white/40">─</span>
-                  <span className="text-rose-300 font-mono text-sm font-bold">B</span>
+                  <span className="text-muted-foreground/70">─</span>
+                  <span className="text-violet-300 font-mono text-sm font-bold">B</span>
                 </div>
-                <span className="text-white/60 text-xs">tritone · clashing</span>
+                <span className="text-muted-foreground text-xs">tritone · clashing</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-violet-300 font-mono text-sm font-bold">A</span>
-                  <span className="text-emerald-300/60">─</span>
-                  <span className="text-emerald-300/95 font-mono text-sm font-bold">C</span>
+                  <span className="text-violet-300/60">─</span>
+                  <span className="text-violet-300/95 font-mono text-sm font-bold">C</span>
                 </div>
-                <span className="text-white/60 text-xs">just fifth · bridge · consonant</span>
+                <span className="text-muted-foreground text-xs">just fifth · bridge · consonant</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-white/55 text-xs">
+                <span className="text-muted-foreground text-xs">
                   Blend C in → find pivot → collapse B
                 </span>
               </div>
@@ -1741,11 +1741,11 @@ export default function ThirdRoomPage() {
       )}
 
       {/* How to play */}
-      <div className="px-5 pb-2 text-sm text-white/60">
-        <span className="font-medium text-white/80">How to play: </span>
+      <div className="px-5 pb-2 text-sm text-muted-foreground">
+        <span className="font-medium text-foreground">How to play: </span>
         Play notes (keyboard, QWERTY, or MIDI) into all three rooms. Hear the
         tritone clash (A vs B). Raise the Room C blend — the just-fifth bridge
-        introduces a consonant anchor. Watch for <span className="text-emerald-300/95">emerald pivot notes</span> — notes
+        introduces a consonant anchor. Watch for <span className="text-violet-300/95">emerald pivot notes</span> — notes
         where all three rooms momentarily agree. Find one, linger, then drag
         Room B detune toward unison to resolve.
       </div>
@@ -1759,12 +1759,12 @@ export default function ThirdRoomPage() {
           {showDesign ? "Hide" : "Show"} Design Notes
         </button>
         {showDesign && (
-          <div className="mt-3 rounded-xl bg-white/5 border border-white/10 px-5 py-4 text-sm text-white/75 space-y-3 max-w-prose">
-            <p className="text-white/95 font-semibold text-base">
+          <div className="mt-3 rounded-xl bg-muted border border-border px-5 py-4 text-sm text-muted-foreground space-y-3 max-w-prose">
+            <p className="text-foreground font-semibold text-base">
               Third Room — Design Notes
             </p>
             <p>
-              <strong className="text-white/90">Cycle 3 of the Resonant Room spine.</strong>{" "}
+              <strong className="text-foreground">Cycle 3 of the Resonant Room spine.</strong>{" "}
               Cycle 2 (483) placed two rooms a tritone apart and asked the player
               to collapse them toward unison. Here the question is whether
               resolution requires collapse — or whether a{" "}
@@ -1772,7 +1772,7 @@ export default function ThirdRoomPage() {
               Room A, can offer a consonant path through the dissonance.
             </p>
             <p>
-              <strong className="text-white/90">Three rooms.</strong>{" "}
+              <strong className="text-foreground">Three rooms.</strong>{" "}
               Room A (violet, center/−20° L) holds the reference harmonic series.
               Room B (rose, +35° R) holds the same series shifted by a
               continuously variable detune (0–600 cents, default tritone).
@@ -1782,7 +1782,7 @@ export default function ThirdRoomPage() {
               making A↔C partially consonant — the bridge the ear can grab.
             </p>
             <p>
-              <strong className="text-white/90">Pivot note mechanic.</strong>{" "}
+              <strong className="text-foreground">Pivot note mechanic.</strong>{" "}
               A steepest-descent hint layer analytically predicts roughness across
               all candidate notes (MIDI 48–84), given the current C blend and B
               detune, without synthesizing audio. Notes that minimise total
@@ -1793,7 +1793,7 @@ export default function ThirdRoomPage() {
               the detune.
             </p>
             <p>
-              <strong className="text-white/90">Roughness engine.</strong>{" "}
+              <strong className="text-foreground">Roughness engine.</strong>{" "}
               Real-time Plomp–Levelt / Sethares dyad model: for each partial pair,{" "}
               roughness ≈ a₁·a₂·(exp(−b₁·s·Δf) − exp(−b₂·s·Δf)), where
               s = 0.24/(0.0207·f_min + 18.96). Summed over all active partial
@@ -1803,7 +1803,7 @@ export default function ThirdRoomPage() {
               where C&rsquo;s harmonics pull the total down.
             </p>
             <p>
-              <strong className="text-white/90">WebGPU vorticity field.</strong>{" "}
+              <strong className="text-foreground">WebGPU vorticity field.</strong>{" "}
               The background is a particle simulation running in a WebGPU compute
               shader (WGSL, ping-pong storage buffers, ~4 000 particles). Each
               particle belongs to one of the three room attractors (violet A,
@@ -1816,7 +1816,7 @@ export default function ThirdRoomPage() {
               same three attractor colors.
             </p>
             <p>
-              <strong className="text-white/90">Signal chain.</strong>{" "}
+              <strong className="text-foreground">Signal chain.</strong>{" "}
               N=8 high-Q biquad bandpass resonators per room per note. Note-on
               injects a 40ms filtered-noise burst. Panning: A at −20° L, B at
               +35° R, C at −35° L. Master gain → DynamicsCompressor brick-wall
@@ -1824,7 +1824,7 @@ export default function ThirdRoomPage() {
               destination.
             </p>
             <p>
-              <strong className="text-white/90">References.</strong>{" "}
+              <strong className="text-foreground">References.</strong>{" "}
               Plomp &amp; Levelt (JASA 1965); Sethares, &ldquo;Local consonance and the
               relationship between timbre and scale&rdquo; (JASA 94:3, 1993);
               MacCallum &amp; Einbond (CMMR 2008); Stautner &amp; Puckette (CMJ 1982);

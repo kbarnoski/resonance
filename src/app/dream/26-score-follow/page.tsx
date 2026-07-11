@@ -523,46 +523,46 @@ export default function ScoreFollow() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Score Follow</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             Bach Invention No.1 appears as a piano roll. Play along —
             the score lights green as you match each note. The cursor
             advances only when you play the right pitch.
           </p>
-          <p className="text-xs text-white/30 mb-2">
+          <p className="text-xs text-muted-foreground/70 mb-2">
             Play the wrong note for too long and the score backs up one step.
           </p>
-          <p className="text-xs text-white/25 mb-8">
+          <p className="text-xs text-muted-foreground/70 mb-8">
             Demo mode plays the score and self-matches — cursor advances perfectly.
           </p>
 
           <div className="flex items-center gap-3 mb-6">
-            <label className="text-xs text-white/40 uppercase tracking-wider">BPM</label>
+            <label className="text-xs text-muted-foreground/70 uppercase tracking-wider">BPM</label>
             <input
               type="range" min={40} max={160} value={bpm}
               onChange={e => setBpm(Number(e.target.value))}
-              className="w-32 accent-white/60"
+              className="w-32 accent-primary"
             />
-            <span className="text-xs text-white/60 font-mono w-8">{bpm}</span>
+            <span className="text-xs text-muted-foreground font-mono w-8">{bpm}</span>
           </div>
 
           <div className="flex gap-4">
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/50 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Demo mode
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -572,46 +572,46 @@ export default function ScoreFollow() {
       {mode !== "idle" && (
         <>
           {/* Progress */}
-          <div className="absolute top-3 left-14 text-[11px] tracking-widest text-white/40 pointer-events-none select-none">
-            <span className="font-mono text-white/70">{matchCount}</span>
-            <span className="text-white/30"> / {TOTAL_NOTES} notes</span>
-            <span className="ml-3 text-white/20 text-[10px]">{mode}</span>
+          <div className="absolute top-3 left-14 text-[11px] tracking-widest text-muted-foreground/70 pointer-events-none select-none">
+            <span className="font-mono text-muted-foreground">{matchCount}</span>
+            <span className="text-muted-foreground/70"> / {TOTAL_NOTES} notes</span>
+            <span className="ml-3 text-muted-foreground/70 text-[10px]">{mode}</span>
           </div>
 
           {/* Controls */}
           <div className="absolute top-3 right-4 flex flex-col items-end gap-2">
             <div className="flex items-center gap-2">
-              <label className="text-[10px] text-white/30 uppercase tracking-wider">BPM</label>
+              <label className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">BPM</label>
               <input
                 type="range" min={40} max={160} value={bpm}
                 onChange={e => setBpm(Number(e.target.value))}
-                className="w-20 accent-white/60"
+                className="w-20 accent-primary"
               />
-              <span className="text-[10px] text-white/50 font-mono w-6">{bpm}</span>
+              <span className="text-[10px] text-muted-foreground font-mono w-6">{bpm}</span>
             </div>
             <button
               onClick={stop}
-              className="text-[10px] tracking-wider uppercase text-white/40 hover:text-white/70 border border-white/15 hover:border-white/40 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>
 
           {/* Legend */}
-          <div className="absolute bottom-6 right-4 text-[10px] text-white/25 space-y-1 pointer-events-none select-none">
+          <div className="absolute bottom-6 right-4 text-[10px] text-muted-foreground/70 space-y-1 pointer-events-none select-none">
             <div>
-              <span className="inline-block w-3 h-2 rounded-sm bg-green-500/50 mr-1 align-middle" />
+              <span className="inline-block w-3 h-2 rounded-sm bg-violet-500/50 mr-1 align-middle" />
               matched
             </div>
             <div>
-              <span className="inline-block w-3 h-2 rounded-sm border border-white/40 mr-1 align-middle" />
+              <span className="inline-block w-3 h-2 rounded-sm border border-border mr-1 align-middle" />
               target
             </div>
             <div>
-              <span className="inline-block w-2 h-0 border-t border-yellow-400/70 mr-1 align-middle" />
+              <span className="inline-block w-2 h-0 border-t border-violet-400/70 mr-1 align-middle" />
               ▶ you
             </div>
           </div>
@@ -619,17 +619,17 @@ export default function ScoreFollow() {
           {/* Score complete overlay */}
           {isDone && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-center bg-black/70 backdrop-blur-sm rounded-xl px-10 py-7 border border-white/10">
-                <div className="text-4xl mb-2 text-green-400">✓</div>
-                <p className="text-xl tracking-wider text-green-400/90">Score complete</p>
-                <p className="text-xs text-white/40 mt-2">{TOTAL_NOTES} notes matched</p>
+              <div className="text-center bg-black/70 backdrop-blur-sm rounded-xl px-10 py-7 border border-border">
+                <div className="text-4xl mb-2 text-violet-400">✓</div>
+                <p className="text-xl tracking-wider text-violet-400/90">Score complete</p>
+                <p className="text-xs text-muted-foreground/70 mt-2">{TOTAL_NOTES} notes matched</p>
               </div>
             </div>
           )}
 
           <a
             href="/dream/26-score-follow/readme"
-            className="absolute bottom-4 left-14 text-[10px] text-white/25 hover:text-white/50 transition"
+            className="absolute bottom-4 left-14 text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             design notes ↗
           </a>

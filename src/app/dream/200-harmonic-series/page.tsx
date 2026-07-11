@@ -357,22 +357,22 @@ export default function HarmonicSeries() {
   const isRunning = mode !== "idle";
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-foreground flex flex-col">
       {/* Header */}
       <div className="px-5 pt-6 pb-2 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-mono font-semibold text-white/95">Harmonic Series</h1>
-          <p className="text-base text-white/75 mt-1 max-w-lg">
+          <h1 className="text-2xl font-mono font-semibold text-foreground">Harmonic Series</h1>
+          <p className="text-base text-muted-foreground mt-1 max-w-lg">
             Every sound is a sum of sine waves. Toggle partials to hear WHY different instruments sound different.
           </p>
         </div>
-        <Link href="/dream" className="text-sm text-white/55 hover:text-white/80 transition-colors shrink-0 ml-4 mt-1">
+        <Link href="/dream" className="text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0 ml-4 mt-1">
           ← dream lab
         </Link>
       </div>
 
       {/* Controls row */}
-      <div className="px-5 py-3 flex flex-wrap gap-3 items-center border-b border-white/10">
+      <div className="px-5 py-3 flex flex-wrap gap-3 items-center border-b border-border">
         {/* Preset buttons */}
         <div className="flex flex-wrap gap-2">
           {PRESETS.map((p, i) => (
@@ -382,7 +382,7 @@ export default function HarmonicSeries() {
               className={`px-3 py-2 text-sm font-mono rounded min-h-[36px] transition-colors
                 ${presetIdx === i
                   ? "bg-violet-500/30 text-violet-200 border border-violet-400/50"
-                  : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10"}`}
+                  : "bg-muted text-muted-foreground border border-border hover:bg-accent"}`}
             >
               {p.name}
             </button>
@@ -391,8 +391,8 @@ export default function HarmonicSeries() {
 
         {/* Fundamental display */}
         <div className="ml-auto text-right shrink-0">
-          <div className="text-xl font-mono text-white/95">{noteName}</div>
-          <div className="text-xs text-white/55">{fundamental.toFixed(1)} Hz</div>
+          <div className="text-xl font-mono text-foreground">{noteName}</div>
+          <div className="text-xs text-muted-foreground">{fundamental.toFixed(1)} Hz</div>
         </div>
       </div>
 
@@ -412,9 +412,9 @@ export default function HarmonicSeries() {
               <button
                 key={i}
                 onClick={() => togglePartial(i)}
-                className={`flex items-center gap-3 px-4 border-b border-white/5 flex-1 min-h-[40px]
+                className={`flex items-center gap-3 px-4 border-b border-border flex-1 min-h-[40px]
                   transition-colors text-left
-                  ${on ? "hover:bg-white/5" : "hover:bg-white/[0.03] opacity-40"}`}
+                  ${on ? "hover:bg-accent" : "hover:bg-accent opacity-40"}`}
               >
                 {/* Partial number */}
                 <span
@@ -425,14 +425,14 @@ export default function HarmonicSeries() {
                 </span>
 
                 {/* Freq label */}
-                <span className="text-xs font-mono text-white/55 w-20 shrink-0">
+                <span className="text-xs font-mono text-muted-foreground w-20 shrink-0">
                   {partialHz < 1000
                     ? `${partialHz.toFixed(0)} Hz`
                     : `${(partialHz/1000).toFixed(2)} kHz`}
                 </span>
 
                 {/* Level bar */}
-                <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-none"
                     style={{
@@ -443,23 +443,23 @@ export default function HarmonicSeries() {
                 </div>
 
                 {/* Amplitude % */}
-                <span className="text-xs font-mono text-white/55 w-10 text-right shrink-0">
+                <span className="text-xs font-mono text-muted-foreground w-10 text-right shrink-0">
                   {levelPct > 0 ? `${levelPct}%` : "—"}
                 </span>
 
                 {/* On/off indicator */}
-                <span className={`w-2 h-2 rounded-full shrink-0 ${on ? "bg-white/60" : "bg-white/15"}`} />
+                <span className={`w-2 h-2 rounded-full shrink-0 ${on ? "bg-muted" : "bg-muted"}`} />
               </button>
             );
           })}
         </div>
 
         {/* Sine wave canvas */}
-        <div className="w-48 sm:w-64 border-l border-white/10 relative">
+        <div className="w-48 sm:w-64 border-l border-border relative">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           {mode === "idle" && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs text-white/30 font-mono text-center px-3">
+              <span className="text-xs text-muted-foreground/70 font-mono text-center px-3">
                 start to see<br />sine traces
               </span>
             </div>
@@ -468,22 +468,22 @@ export default function HarmonicSeries() {
       </div>
 
       {/* Footer / start buttons */}
-      <div className="px-5 py-4 border-t border-white/10 flex flex-wrap gap-3 items-center">
+      <div className="px-5 py-4 border-t border-border flex flex-wrap gap-3 items-center">
         {!isRunning ? (
           <>
             <button
               onClick={startDemo}
-              className="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-base font-mono rounded min-h-[44px] transition-colors"
+              className="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-foreground text-base font-mono rounded min-h-[44px] transition-colors"
             >
               ▶ Start demo
             </button>
             <button
               onClick={startMic}
-              className="px-5 py-2.5 bg-white/10 hover:bg-white/15 text-white text-base font-mono rounded min-h-[44px] transition-colors"
+              className="px-5 py-2.5 bg-muted hover:bg-accent text-foreground text-base font-mono rounded min-h-[44px] transition-colors"
             >
               🎤 Start mic
             </button>
-            <span className="text-sm text-white/55">
+            <span className="text-sm text-muted-foreground">
               Mic mode locks the fundamental to your detected pitch.
             </span>
           </>
@@ -491,25 +491,25 @@ export default function HarmonicSeries() {
           <>
             <button
               onClick={stop}
-              className="px-5 py-2.5 bg-white/10 hover:bg-white/15 text-white text-base font-mono rounded min-h-[44px] transition-colors"
+              className="px-5 py-2.5 bg-muted hover:bg-accent text-foreground text-base font-mono rounded min-h-[44px] transition-colors"
             >
               ■ Stop
             </button>
-            <span className="text-sm text-white/75">
+            <span className="text-sm text-muted-foreground">
               {mode === "mic" ? `Listening · ${noteName}` : `Demo · ${noteName}`}
             </span>
-            <span className="text-xs text-white/55 ml-auto">Click any row to toggle that partial</span>
+            <span className="text-xs text-muted-foreground ml-auto">Click any row to toggle that partial</span>
           </>
         )}
-        {error && <span className="text-rose-300 text-sm">{error}</span>}
+        {error && <span className="text-violet-300 text-sm">{error}</span>}
       </div>
 
       {/* Footer meta */}
       <div className="px-5 pb-4 flex justify-between items-center">
-        <span className="text-xs text-white/40">
+        <span className="text-xs text-muted-foreground/70">
           cycle 233 · harmonic series · zero deps
         </span>
-        <Link href="/dream/200-harmonic-series/README.md" className="text-xs text-white/40 hover:text-white/70">
+        <Link href="/dream/200-harmonic-series/README.md" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
           design notes ↗
         </Link>
       </div>

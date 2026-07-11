@@ -284,24 +284,24 @@ export default function KidsFerroMagnet() {
         />
 
         {/* Title */}
-        <h1 className="text-2xl font-serif text-white/95 mb-2 tracking-wide z-10">
+        <h1 className="text-2xl font-serif text-foreground mb-2 tracking-wide z-10">
           Ferro Magnet
         </h1>
-        <p className="text-base text-white/75 mb-1 z-10">
+        <p className="text-base text-muted-foreground mb-1 z-10">
           {iosNeedsPermission
             ? "Tilt to move the magnet · or drag"
             : "Tilt or drag to move the magnet"}
         </p>
-        <p className="text-sm text-white/60 mb-10 z-10">
+        <p className="text-sm text-muted-foreground mb-10 z-10">
           Watch the dark pool reach for the light
         </p>
 
         {/* Start button */}
         <button
           onClick={() => void handleStart()}
-          className="z-10 px-8 py-4 rounded-full text-xl font-semibold text-white
-                     bg-gradient-to-br from-amber-500 to-orange-600
-                     shadow-lg shadow-orange-900/60
+          className="z-10 px-8 py-4 rounded-full text-xl font-semibold text-foreground
+                     bg-gradient-to-br from-violet-500 to-violet-600
+                     shadow-lg shadow-violet-900/60
                      active:scale-95 transition-transform
                      min-w-[200px]"
           style={{ minHeight: 64 }}
@@ -310,7 +310,7 @@ export default function KidsFerroMagnet() {
         </button>
 
         {/* Drag affordance */}
-        <p className="mt-6 text-sm text-white/50 z-10">
+        <p className="mt-6 text-sm text-muted-foreground z-10">
           No sensor? Drag the pool to play
         </p>
 
@@ -325,10 +325,10 @@ export default function KidsFerroMagnet() {
         {/* Design notes anchor */}
         <section
           id="notes"
-          className="absolute bottom-0 left-0 right-0 p-6 bg-black/80 text-white/60 text-xs leading-relaxed
-                     border-t border-white/10 max-h-48 overflow-y-auto"
+          className="absolute bottom-0 left-0 right-0 p-6 bg-black/80 text-muted-foreground text-xs leading-relaxed
+                     border-t border-border max-h-48 overflow-y-auto"
         >
-          <p className="text-white/80 text-sm font-semibold mb-1">Design notes</p>
+          <p className="text-foreground text-sm font-semibold mb-1">Design notes</p>
           <p>
             Ferrofluid spikes arise from the Rosensweig normal-field instability (R.E. Rosensweig,
             1969/1985): when a magnetic field exceeds a critical threshold the flat surface bifurcates
@@ -338,7 +338,7 @@ export default function KidsFerroMagnet() {
             D major hexachord (D E F# A B C#) — every combination consonant. Five rim-bells of
             different sizes map to five pitches; larger bell = lower register.
           </p>
-          <p className="mt-1 text-white/40">Ref: Andrejs Cēbers — ferrofluid pattern formation.</p>
+          <p className="mt-1 text-muted-foreground/70">Ref: Andrejs Cēbers — ferrofluid pattern formation.</p>
         </section>
       </div>
     );
@@ -356,12 +356,12 @@ export default function KidsFerroMagnet() {
       {/* No-WebGL notice */}
       {noWebGL && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-rose-300 text-base text-center px-8">
+          <p className="text-violet-300 text-base text-center px-8">
             WebGL2 is not available in this browser.
             <br />
             Try Chrome or Safari 15+.
             <br />
-            <span className="text-white/60 text-sm">
+            <span className="text-muted-foreground text-sm">
               (Audio is still running — you can hear the drone.)
             </span>
           </p>
@@ -371,7 +371,7 @@ export default function KidsFerroMagnet() {
       {/* Tilt / drag mode indicator */}
       {!hasTilt && !noWebGL && (
         <div className="absolute top-16 left-0 right-0 flex justify-center pointer-events-none">
-          <span className="text-rose-300 text-sm px-3 py-1 rounded-full bg-black/40">
+          <span className="text-violet-300 text-sm px-3 py-1 rounded-full bg-black/40">
             Drag the pool to move the magnet
           </span>
         </div>

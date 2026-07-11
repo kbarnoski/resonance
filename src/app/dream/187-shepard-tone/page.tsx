@@ -369,12 +369,12 @@ export default function ShepardTonePage() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-start justify-between px-6 pt-5 pointer-events-none">
         <div>
-          <h1 className="text-2xl font-serif text-white/95 leading-tight">Shepard Tone</h1>
-          <p className="text-base text-white/75 mt-0.5">An auditory illusion: the endless staircase</p>
+          <h1 className="text-2xl font-serif text-foreground leading-tight">Shepard Tone</h1>
+          <p className="text-base text-muted-foreground mt-0.5">An auditory illusion: the endless staircase</p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors pointer-events-auto"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto"
         >
           ← dream lab
         </Link>
@@ -383,18 +383,18 @@ export default function ShepardTonePage() {
       {/* Pre-start overlay */}
       {!running && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-8 text-center">
-          <p className="text-white/75 text-base max-w-sm leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
             Eight overlapping sine tones, each one octave apart — weighted by a bell curve
             so only the middle range is audible. Together they create a pitch that
             rises (or falls) forever without ever reaching a higher note.
           </p>
           <button
             onClick={handleStart}
-            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white/95 text-base font-medium transition-colors min-h-[44px]"
+            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground text-base font-medium transition-colors min-h-[44px]"
           >
             Start
           </button>
-          <p className="text-white/40 text-sm">
+          <p className="text-muted-foreground/70 text-sm">
             Shepard (1964) · pure Web Audio · no permissions needed
           </p>
         </div>
@@ -406,7 +406,7 @@ export default function ShepardTonePage() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={handleStop}
-              className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white/90 text-sm transition-colors min-h-[44px]"
+              className="px-5 py-2.5 rounded-full bg-muted hover:bg-accent text-foreground text-sm transition-colors min-h-[44px]"
             >
               Stop
             </button>
@@ -416,8 +416,8 @@ export default function ShepardTonePage() {
                 onClick={() => setAscending(true)}
                 className={`px-4 py-2.5 rounded-full text-sm transition-colors min-h-[44px] ${
                   ascending
-                    ? "bg-violet-600 text-white/95"
-                    : "bg-white/10 text-white/60 hover:bg-white/20"
+                    ? "bg-violet-600 text-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 ↑ Rising
@@ -426,15 +426,15 @@ export default function ShepardTonePage() {
                 onClick={() => setAscending(false)}
                 className={`px-4 py-2.5 rounded-full text-sm transition-colors min-h-[44px] ${
                   !ascending
-                    ? "bg-violet-600 text-white/95"
-                    : "bg-white/10 text-white/60 hover:bg-white/20"
+                    ? "bg-violet-600 text-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 ↓ Falling
               </button>
             </div>
 
-            <label className="flex items-center gap-2 text-sm text-white/65">
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Slow</span>
               <input
                 type="range" min={0.5} max={10} step={0.5} value={rate}
@@ -448,8 +448,8 @@ export default function ShepardTonePage() {
               onClick={() => setFrozen(f => !f)}
               className={`px-4 py-2.5 rounded-full text-sm transition-colors min-h-[44px] ${
                 frozen
-                  ? "bg-amber-600/70 text-white/95"
-                  : "bg-white/10 text-white/60 hover:bg-white/20"
+                  ? "bg-violet-600/70 text-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {frozen ? "● Frozen" : "Freeze"}
@@ -459,8 +459,8 @@ export default function ShepardTonePage() {
               onClick={() => setMicMode(m => !m)}
               className={`px-4 py-2.5 rounded-full text-sm transition-colors min-h-[44px] ${
                 micMode
-                  ? "bg-emerald-700/70 text-white/90"
-                  : "bg-white/10 text-white/60 hover:bg-white/20"
+                  ? "bg-violet-700/70 text-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {micMode ? "Mic on" : "Mic mode"}
@@ -468,7 +468,7 @@ export default function ShepardTonePage() {
           </div>
 
           {micErr && (
-            <p className="text-center text-rose-300 text-sm mt-2">{micErr}</p>
+            <p className="text-center text-violet-300 text-sm mt-2">{micErr}</p>
           )}
         </div>
       )}

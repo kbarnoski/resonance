@@ -699,31 +699,31 @@ export default function KidsBodyRibbons() {
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-6 text-center">
           {/* warm glow rings (pure CSS, no canvas) */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-72 h-72 rounded-full bg-amber-500/5 blur-3xl" />
+            <div className="w-72 h-72 rounded-full bg-violet-500/5 blur-3xl" />
             <div className="absolute w-48 h-48 rounded-full bg-violet-500/5 blur-2xl" />
           </div>
 
           <div className="relative z-10 flex flex-col items-center gap-5">
-            <h1 className="text-3xl font-bold text-white/95 leading-tight max-w-xs">
+            <h1 className="text-3xl font-bold text-foreground leading-tight max-w-xs">
               Body Ribbons
             </h1>
-            <p className="text-base text-white/75 max-w-sm leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
               Move your arms and draw glowing ribbons that sing.
               High arms = high notes. Move fast = louder and brighter.
             </p>
-            <p className="text-base text-white/60 max-w-xs leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-xs leading-relaxed">
               Stand back so your whole body shows.
             </p>
 
             <button
               type="button"
               onClick={handleStart}
-              className="min-h-[72px] px-8 py-4 rounded-3xl bg-amber-500/90 hover:bg-amber-400 text-white/95 text-2xl font-bold transition-colors shadow-lg shadow-amber-900/40"
+              className="min-h-[72px] px-8 py-4 rounded-3xl bg-violet-500/90 hover:bg-violet-400 text-foreground text-2xl font-bold transition-colors shadow-lg shadow-violet-900/40"
             >
               Start
             </button>
 
-            <p className="text-base text-white/50">
+            <p className="text-base text-muted-foreground">
               Camera stays in your browser. No wrong notes.
             </p>
           </div>
@@ -733,7 +733,7 @@ export default function KidsBodyRibbons() {
       {/* ── loading overlay ────────────────────────────────────────────────── */}
       {phase === "loading" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <p className="text-xl text-white/75">Waking up…</p>
+          <p className="text-xl text-muted-foreground">Waking up…</p>
         </div>
       )}
 
@@ -743,7 +743,7 @@ export default function KidsBodyRibbons() {
           {/* notice (camera off, etc.) */}
           {notice && (
             <div className="absolute top-0 inset-x-0 z-30 flex justify-center pt-4 pointer-events-none">
-              <p className="text-base text-rose-300 bg-black/40 px-4 py-2 rounded-full">
+              <p className="text-base text-violet-300 bg-black/40 px-4 py-2 rounded-full">
                 {notice}
               </p>
             </div>
@@ -751,7 +751,7 @@ export default function KidsBodyRibbons() {
 
           {/* hint bar */}
           <div className="absolute bottom-0 inset-x-0 z-10 flex justify-center pb-5 pointer-events-none">
-            <p className="text-base text-white/50">
+            <p className="text-base text-muted-foreground">
               raise arms = high notes · move fast = louder
             </p>
           </div>
@@ -759,7 +759,7 @@ export default function KidsBodyRibbons() {
           {/* design notes link */}
           <a
             href="./README.md"
-            className="absolute top-4 right-4 z-20 text-base text-white/50 hover:text-white/80 underline underline-offset-2 transition-colors"
+            className="absolute top-4 right-4 z-20 text-base text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
             target="_blank"
             rel="noreferrer"
           >
@@ -768,7 +768,7 @@ export default function KidsBodyRibbons() {
 
           {/* left wrist label */}
           <div className="absolute top-4 left-4 z-10 pointer-events-none">
-            <span className="text-base text-amber-300/70 font-medium">
+            <span className="text-base text-violet-300/70 font-medium">
               left arm
             </span>
           </div>

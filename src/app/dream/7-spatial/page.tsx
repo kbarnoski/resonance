@@ -401,11 +401,11 @@ export default function SpatialPage() {
   // ── render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#090912] text-white/90 font-mono p-5">
+    <div className="min-h-screen bg-[#090912] text-foreground font-mono p-5">
       <div className="max-w-[860px] mx-auto">
         <div className="mb-5">
-          <h1 className="text-lg font-bold tracking-widest text-white">7 — Spatial Audio</h1>
-          <p className="text-xs text-white/40 mt-1">
+          <h1 className="text-lg font-bold tracking-widest text-foreground">7 — Spatial Audio</h1>
+          <p className="text-xs text-muted-foreground/70 mt-1">
             Six frequency bands placed in 3-D space via HRTF. Drag dots to reposition. Wear headphones.
           </p>
         </div>
@@ -424,7 +424,7 @@ export default function SpatialPage() {
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerUp}
             />
-            <p className="text-[10px] text-white/20 mt-1.5 text-center">
+            <p className="text-[10px] text-muted-foreground/70 mt-1.5 text-center">
               Drag a dot to move that band · brighter = closer to you · center dot = listener
             </p>
           </div>
@@ -432,14 +432,14 @@ export default function SpatialPage() {
           {/* Controls */}
           <div className="flex-1 min-w-[200px] flex flex-col gap-5">
             <div>
-              <p className="text-[10px] text-white/35 uppercase tracking-widest mb-2">Audio source</p>
+              <p className="text-[10px] text-muted-foreground/70 uppercase tracking-widest mb-2">Audio source</p>
               <div className="flex flex-col gap-2">
                 <button
                   onClick={startDemo}
                   className={`text-left px-3 py-2.5 rounded text-sm border transition ${
                     mode === "demo"
-                      ? "bg-violet-700/50 border-violet-500 text-white"
-                      : "bg-white/[0.04] border-white/10 text-white/65 hover:bg-white/[0.08] hover:border-white/25"
+                      ? "bg-violet-700/50 border-violet-500 text-foreground"
+                      : "bg-muted border-border text-muted-foreground hover:bg-accent hover:border-border"
                   }`}
                 >
                   Demo oscillators{mode === "demo" ? " ▶" : ""}
@@ -448,8 +448,8 @@ export default function SpatialPage() {
                   onClick={startMic}
                   className={`text-left px-3 py-2.5 rounded text-sm border transition ${
                     mode === "mic"
-                      ? "bg-cyan-800/50 border-cyan-600 text-white"
-                      : "bg-white/[0.04] border-white/10 text-white/65 hover:bg-white/[0.08] hover:border-white/25"
+                      ? "bg-violet-800/50 border-violet-600 text-foreground"
+                      : "bg-muted border-border text-muted-foreground hover:bg-accent hover:border-border"
                   }`}
                 >
                   Microphone{mode === "mic" ? " ▶" : ""}
@@ -458,8 +458,8 @@ export default function SpatialPage() {
                   onClick={() => fileInputRef.current?.click()}
                   className={`text-left px-3 py-2.5 rounded text-sm border transition truncate ${
                     mode === "file"
-                      ? "bg-green-900/50 border-green-700 text-white"
-                      : "bg-white/[0.04] border-white/10 text-white/65 hover:bg-white/[0.08] hover:border-white/25"
+                      ? "bg-violet-900/50 border-violet-700 text-foreground"
+                      : "bg-muted border-border text-muted-foreground hover:bg-accent hover:border-border"
                   }`}
                 >
                   {fileName ? `File: ${fileName}` : "Upload audio file"}
@@ -475,12 +475,12 @@ export default function SpatialPage() {
               </div>
             </div>
 
-            {error && <p className="text-xs text-rose-400">{error}</p>}
+            {error && <p className="text-xs text-violet-400">{error}</p>}
 
             {mode !== "idle" && (
               <button
                 onClick={() => { stopAudio(); setMode("idle"); }}
-                className="text-xs text-white/35 hover:text-white/65 border border-white/10 hover:border-white/30 px-3 py-1.5 rounded transition uppercase tracking-wider self-start"
+                className="text-xs text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-3 py-1.5 rounded transition uppercase tracking-wider self-start"
               >
                 Stop
               </button>
@@ -488,13 +488,13 @@ export default function SpatialPage() {
 
             {/* Band legend */}
             <div>
-              <p className="text-[10px] text-white/35 uppercase tracking-widest mb-2">Bands</p>
+              <p className="text-[10px] text-muted-foreground/70 uppercase tracking-widest mb-2">Bands</p>
               <div className="flex flex-col gap-1.5">
                 {BANDS.map((b) => (
                   <div key={b.label} className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: b.color }} />
-                    <span className="text-xs text-white/55 flex-1">{b.label}</span>
-                    <span className="text-[10px] text-white/25">
+                    <span className="text-xs text-muted-foreground flex-1">{b.label}</span>
+                    <span className="text-[10px] text-muted-foreground/70">
                       {b.hz >= 1000 ? `${b.hz / 1000}kHz` : `${b.hz}Hz`}
                     </span>
                   </div>
@@ -503,8 +503,8 @@ export default function SpatialPage() {
             </div>
 
             {/* Tip */}
-            <div className="bg-white/[0.04] border border-white/[0.07] rounded p-3">
-              <p className="text-[11px] text-white/40 leading-relaxed">
+            <div className="bg-muted border border-border rounded p-3">
+              <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
                 HRTF uses head-related transfer functions — tiny frequency cues your ears learned from a lifetime of locating sounds. Close your eyes and drag high frequencies above your head. The illusion is subtle but real.
               </p>
             </div>
@@ -517,7 +517,7 @@ export default function SpatialPage() {
               >
                 Design notes →
               </Link>
-              <Link href="/dream" className="text-xs text-white/20 hover:text-white/55">
+              <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
                 ← dream sandbox
               </Link>
             </div>

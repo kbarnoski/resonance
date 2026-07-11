@@ -143,8 +143,8 @@ function HexLine({ yang }: { yang: boolean | null }) {
   if (yang === null) {
     return (
       <div className="flex items-center gap-2 h-4 w-24 opacity-15">
-        <div className="h-0.5 flex-1 bg-white/30 rounded-full" />
-        <div className="h-0.5 flex-1 bg-white/30 rounded-full" />
+        <div className="h-0.5 flex-1 bg-muted rounded-full" />
+        <div className="h-0.5 flex-1 bg-muted rounded-full" />
       </div>
     );
   }
@@ -443,18 +443,18 @@ export default function RitualComposePage() {
   const canCast = (phase === "intro" || phase === "casting") && lines.length < 6;
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col select-none">
+    <div className="min-h-screen bg-black text-foreground flex flex-col select-none">
       {/* Header */}
-      <div className="px-5 pt-5 pb-4 border-b border-white/10 flex items-start justify-between gap-4">
+      <div className="px-5 pt-5 pb-4 border-b border-border flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-mono font-semibold tracking-tight">Oracle</h1>
-          <p className="text-base text-white/75 mt-1 max-w-md">
+          <p className="text-base text-muted-foreground mt-1 max-w-md">
             Cast three coins six times. The I Ching hexagram becomes a journey in sound.
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-xs text-white/55 hover:text-white/80 transition-colors shrink-0 mt-1"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0 mt-1"
         >
           ← dream lab
         </Link>
@@ -463,7 +463,7 @@ export default function RitualComposePage() {
       {/* Body */}
       <div className="flex-1 flex flex-col lg:flex-row min-h-0">
         {/* Left: coins + hexagram lines */}
-        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 flex flex-col border-b lg:border-b-0 lg:border-r border-white/10">
+        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 flex flex-col border-b lg:border-b-0 lg:border-r border-border">
           {/* Coin toss area */}
           <div
             className={`flex-1 flex flex-col items-center justify-center gap-6 px-8 py-8 ${canCast ? "cursor-pointer" : ""}`}
@@ -484,19 +484,19 @@ export default function RitualComposePage() {
             {/* Status text */}
             {phase === "intro" && (
               <div className="text-center">
-                <p className="text-white/75 text-base mb-1">Cast the oracle</p>
-                <p className="text-white/40 text-sm">tap to toss the coins</p>
+                <p className="text-muted-foreground text-base mb-1">Cast the oracle</p>
+                <p className="text-muted-foreground/70 text-sm">tap to toss the coins</p>
               </div>
             )}
             {phase === "casting" && coinFlipping && (
-              <p className="text-amber-300/95 text-base animate-pulse">Tossing…</p>
+              <p className="text-violet-300/95 text-base animate-pulse">Tossing…</p>
             )}
             {phase === "casting" && !coinFlipping && castsLeft > 0 && (
               <div className="text-center">
-                <p className="text-white/75 text-base mb-1">
+                <p className="text-muted-foreground text-base mb-1">
                   {castsLeft === 1 ? "One more toss" : `${castsLeft} tosses remaining`}
                 </p>
-                <p className="text-white/40 text-sm">tap to continue</p>
+                <p className="text-muted-foreground/70 text-sm">tap to continue</p>
               </div>
             )}
             {(phase === "hexagram" ||
@@ -505,7 +505,7 @@ export default function RitualComposePage() {
               phase === "playing") && (
               <button
                 onClick={reCast}
-                className="text-sm text-white/55 hover:text-white/80 transition-colors px-4 py-2 border border-white/10 rounded-lg min-h-[40px]"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 border border-border rounded-lg min-h-[40px]"
               >
                 ↺ Re-cast
               </button>
@@ -533,7 +533,7 @@ export default function RitualComposePage() {
               ))}
             </div>
             {hex && (
-              <p className="text-white/40 text-xs font-mono mt-3">
+              <p className="text-muted-foreground/70 text-xs font-mono mt-3">
                 Hexagram {hexKW}
               </p>
             )}
@@ -544,7 +544,7 @@ export default function RitualComposePage() {
         <div className="flex-1 flex flex-col min-h-0">
           {/* Hexagram detail */}
           {hex ? (
-            <div className="px-5 py-4 border-b border-white/10">
+            <div className="px-5 py-4 border-b border-border">
               <div className="flex items-start gap-4 mb-2">
                 <span
                   className="text-5xl font-serif leading-none shrink-0"
@@ -553,14 +553,14 @@ export default function RitualComposePage() {
                   {hex.chinese}
                 </span>
                 <div className="pt-1">
-                  <p className="text-white/95 text-xl font-semibold leading-tight">{hex.name}</p>
-                  <p className="text-white/55 text-sm font-mono mt-0.5">Hexagram {hexKW} of 64</p>
+                  <p className="text-foreground text-xl font-semibold leading-tight">{hex.name}</p>
+                  <p className="text-muted-foreground text-sm font-mono mt-0.5">Hexagram {hexKW} of 64</p>
                 </div>
               </div>
 
-              <p className="text-white/80 text-base leading-relaxed italic mb-3">{hex.interp}</p>
+              <p className="text-foreground text-base leading-relaxed italic mb-3">{hex.interp}</p>
 
-              {errorMsg && <p className="text-rose-300 text-sm mb-2 leading-snug">{errorMsg}</p>}
+              {errorMsg && <p className="text-violet-300 text-sm mb-2 leading-snug">{errorMsg}</p>}
 
               {phase === "hexagram" && (
                 <button
@@ -571,14 +571,14 @@ export default function RitualComposePage() {
                 </button>
               )}
               {phase === "generating" && (
-                <p className="text-amber-300/95 text-base animate-pulse">
+                <p className="text-violet-300/95 text-base animate-pulse">
                   Lyria is reading the oracle…
                 </p>
               )}
               {phase === "ready" && (
                 <button
                   onClick={playAudio}
-                  className="px-5 py-2.5 bg-emerald-600/20 hover:bg-emerald-600/35 border border-emerald-500/35 rounded-lg text-emerald-300 text-base font-medium transition-colors min-h-[44px]"
+                  className="px-5 py-2.5 bg-violet-600/20 hover:bg-violet-600/35 border border-violet-500/35 rounded-lg text-violet-300 text-base font-medium transition-colors min-h-[44px]"
                 >
                   ▶ Play Journey
                 </button>
@@ -591,7 +591,7 @@ export default function RitualComposePage() {
                   >
                     ■ Stop
                   </button>
-                  <span className="text-white/55 text-sm font-mono">
+                  <span className="text-muted-foreground text-sm font-mono">
                     {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}
                     {duration > 0 && (
                       <>
@@ -604,8 +604,8 @@ export default function RitualComposePage() {
               )}
             </div>
           ) : (
-            <div className="px-5 py-4 border-b border-white/10">
-              <p className="text-white/25 text-base leading-relaxed">
+            <div className="px-5 py-4 border-b border-border">
+              <p className="text-muted-foreground/70 text-base leading-relaxed">
                 Complete the six coin tosses — the oracle will speak
               </p>
             </div>
@@ -617,7 +617,7 @@ export default function RitualComposePage() {
             {phase !== "playing" && (
               <div className="absolute inset-0 flex items-end justify-center pointer-events-none pb-4">
                 {phase === "ready" && (
-                  <p className="text-white/20 text-sm">press Play to hear the oracle</p>
+                  <p className="text-muted-foreground/70 text-sm">press Play to hear the oracle</p>
                 )}
               </div>
             )}
@@ -626,11 +626,11 @@ export default function RitualComposePage() {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-white/8 flex items-center gap-4 text-xs text-white/30">
+      <div className="px-5 py-3 border-t border-border flex items-center gap-4 text-xs text-muted-foreground/70">
         <span>~$0.08 / generation · Lyria 3 Pro · FAL_KEY</span>
         <Link
           href="/dream/151-ritual-compose/README.md"
-          className="hover:text-white/55 transition-colors ml-auto"
+          className="hover:text-muted-foreground transition-colors ml-auto"
         >
           design notes ↗
         </Link>

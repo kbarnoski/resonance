@@ -374,10 +374,10 @@ export default function MoodXY() {
 
       {/* Top-center: live mood label */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 text-center pointer-events-none">
-        <div className="text-[10px] tracking-[0.2em] uppercase text-white/35 mb-1">Mood XY</div>
-        <div className="text-lg tracking-wide text-white/80">{label}</div>
+        <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/70 mb-1">Mood XY</div>
+        <div className="text-lg tracking-wide text-foreground">{label}</div>
         {playing && (
-          <div className="text-[11px] text-white/35 mt-1 tracking-wider">
+          <div className="text-[11px] text-muted-foreground/70 mt-1 tracking-wider">
             {hudBpm} BPM · {hudChord}
           </div>
         )}
@@ -388,23 +388,23 @@ export default function MoodXY() {
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <div className="pointer-events-auto text-center px-6">
             <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Mood XY</h1>
-            <p className="text-sm text-white/50 max-w-sm mb-2 leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-sm mb-2 leading-relaxed">
               Navigate your musical mood on a 2D plane.
             </p>
-            <p className="text-xs text-white/35 max-w-xs mb-6 leading-relaxed">
+            <p className="text-xs text-muted-foreground/70 max-w-xs mb-6 leading-relaxed">
               X axis: valence — sad ← → happy.<br />
               Y axis: arousal — calm ↕ energetic.<br />
               Drag the dot. The synthesizer follows.
             </p>
             <button
               onClick={startPlaying}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               ▶ Play
             </button>
             <Link
               href="/dream"
-              className="block mt-8 text-[11px] text-white/30 hover:text-white/60"
+              className="block mt-8 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
             >
               ← back to dream sandbox
             </Link>
@@ -417,18 +417,18 @@ export default function MoodXY() {
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 items-end pointer-events-auto">
           <button
             onClick={stopPlaying}
-            className="text-[10px] tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+            className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
           >
             stop
           </button>
-          <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back
           </Link>
         </div>
       )}
 
       {/* Design notes link */}
-      <div className="absolute bottom-4 left-4 text-[10px] text-white/20 pointer-events-none select-none">
+      <div className="absolute bottom-4 left-4 text-[10px] text-muted-foreground/70 pointer-events-none select-none">
         /dream/38-mood-xy
       </div>
     </div>

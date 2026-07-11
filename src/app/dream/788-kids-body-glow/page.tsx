@@ -680,29 +680,29 @@ export default function BodyGlowPage() {
   }, [phase]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#dfeeff] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#dfeeff] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       {/* analysis-only camera; never recorded or transmitted */}
       <video ref={videoRef} className="hidden" playsInline muted />
 
       {phase === "idle" && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-sky-300/70 via-amber-100/40 to-amber-200/60 px-6 text-center backdrop-blur-sm">
-          <h1 className="text-4xl font-bold text-white/95 drop-shadow sm:text-5xl">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-violet-300/70 via-violet-100/40 to-violet-200/60 px-6 text-center backdrop-blur-sm">
+          <h1 className="text-4xl font-bold text-foreground drop-shadow sm:text-5xl">
             Body Glow
           </h1>
-          <p className="max-w-md text-base text-white/90 sm:text-xl">
+          <p className="max-w-md text-base text-foreground sm:text-xl">
             Dance, and your whole body paints a glowing song in the sky. Reach up
             high for high notes, low for low ones!
           </p>
           <button
             onClick={() => void start()}
-            className="min-h-[64px] rounded-full bg-white/90 px-12 py-5 text-2xl font-bold text-amber-700 shadow-lg transition hover:scale-105 hover:bg-white active:scale-95"
+            className="min-h-[64px] rounded-full bg-muted px-12 py-5 text-2xl font-bold text-violet-700 shadow-lg transition hover:scale-105 hover:bg-card active:scale-95"
           >
             Start dancing
           </button>
           <Link
             href="#design-notes"
-            className="text-base text-white/75 underline-offset-4 hover:underline"
+            className="text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             design notes
           </Link>
@@ -710,7 +710,7 @@ export default function BodyGlowPage() {
       )}
 
       {phase === "running" && notice && (
-        <div className="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full bg-black/30 px-5 py-2 text-base text-rose-300 backdrop-blur">
+        <div className="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full bg-black/30 px-5 py-2 text-base text-violet-300 backdrop-blur">
           {notice}
         </div>
       )}
@@ -719,7 +719,7 @@ export default function BodyGlowPage() {
       {phase === "running" && (
         <div
           id="design-notes"
-          className="absolute bottom-3 right-4 z-10 text-base text-white/75"
+          className="absolute bottom-3 right-4 z-10 text-base text-muted-foreground"
         >
           <span className="rounded bg-black/20 px-2 py-1 backdrop-blur">
             UPIC for whole bodies · height = pitch

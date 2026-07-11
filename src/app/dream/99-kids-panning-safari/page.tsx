@@ -289,17 +289,17 @@ export default function KidsPanningSafari() {
     return (
       <main className="fixed inset-0 bg-[#070c18] flex flex-col items-center justify-center gap-8 px-6">
         <div className="text-6xl">🌿</div>
-        <h1 className="text-3xl font-bold text-white text-center">Panning Safari</h1>
-        <p className="text-white/75 text-base text-center max-w-xs leading-relaxed">
+        <h1 className="text-3xl font-bold text-foreground text-center">Panning Safari</h1>
+        <p className="text-muted-foreground text-base text-center max-w-xs leading-relaxed">
           Five animals roam the savanna. Tap them to hear their calls — the sound moves left and right as they walk!
         </p>
         <button
           onPointerDown={handleStart}
-          className="bg-emerald-500 text-white text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
+          className="bg-violet-500 text-foreground text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
         >
           Let&apos;s go! 🐾
         </button>
-        <p className="text-white/50 text-sm">🎧 Headphones make it magical</p>
+        <p className="text-muted-foreground text-sm">🎧 Headphones make it magical</p>
       </main>
     )
   }
@@ -307,7 +307,7 @@ export default function KidsPanningSafari() {
   return (
     <main className="fixed inset-0 overflow-hidden bg-[#070c18]">
       <canvas ref={canvasRef} className="block w-full h-full touch-none" />
-      <p className="absolute bottom-2 left-0 right-0 text-center text-white/40 text-xs pointer-events-none select-none">
+      <p className="absolute bottom-2 left-0 right-0 text-center text-muted-foreground/70 text-xs pointer-events-none select-none">
         Tap an animal 🐾
       </p>
     </main>

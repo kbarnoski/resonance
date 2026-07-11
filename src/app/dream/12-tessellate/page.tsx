@@ -369,33 +369,33 @@ export default function TessellatePage() {
       {mode === 'idle' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Tessellate</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             A 40×28 grid of Truchet tiles rewires on every beat. Each tile holds one of two
             quarter-arc orientations; together they form flowing curves across the whole grid.
             On a bass hit, 12% of tiles flip simultaneously — the topology rewires in a flash.
           </p>
-          <p className="text-xs text-white/35 max-w-sm mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-sm mb-8 leading-relaxed">
             Two complementary arc colors rotate through the spectrum. Mids control
             saturation. Flipped tiles light white then fade.
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={handleDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={handleMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/60 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Start mic
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{micError}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{micError}</p>
           )}
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -403,30 +403,30 @@ export default function TessellatePage() {
 
       {mode !== 'idle' && (
         <>
-          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-wider text-white/35 space-y-0.5 pointer-events-none">
+          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none">
             <div>TESSELLATE</div>
-            <div className="text-white/20">{COLS}×{ROWS} Truchet grid</div>
+            <div className="text-muted-foreground/70">{COLS}×{ROWS} Truchet grid</div>
           </div>
 
           <div className="absolute top-4 right-4 font-mono text-[10px] tracking-wider text-right pointer-events-none">
-            {mode === 'mic' && <div className="text-green-300/70">MIC LIVE</div>}
-            {mode === 'demo' && <div className="text-white/25">DEMO</div>}
+            {mode === 'mic' && <div className="text-violet-300/70">MIC LIVE</div>}
+            {mode === 'demo' && <div className="text-muted-foreground/70">DEMO</div>}
           </div>
 
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={reshuffle}
-              className="text-[10px] tracking-wider uppercase text-white/45 hover:text-white border border-white/15 hover:border-white/50 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               reshuffle
             </button>
             <button
               onClick={stopAll}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>

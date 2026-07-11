@@ -241,7 +241,7 @@ export default function KidsHumChoir() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a1320] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a1320] text-foreground">
       {/* warm cozy ground */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -260,17 +260,17 @@ export default function KidsHumChoir() {
       {/* corner: design notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-xs text-white/80 backdrop-blur hover:bg-black/60 hover:text-white"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-xs text-foreground backdrop-blur hover:bg-black/60 hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 right-0 top-4 z-20 px-5 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Kids Hum Choir
         </h1>
-        <p className="mx-auto mt-1 max-w-xl text-base text-white/80">
+        <p className="mx-auto mt-1 max-w-xl text-base text-foreground">
           Hum one note and a choir of friendly creatures sings the chord that
           fits — leaning into tension, swooping home when you do.
         </p>
@@ -279,13 +279,13 @@ export default function KidsHumChoir() {
       {/* start gate */}
       {!started && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-6 px-6">
-          <p className="max-w-md text-center text-base text-white/80">
+          <p className="max-w-md text-center text-base text-foreground">
             Tap start, then hum a note. The creatures will harmonize with you in
             real C-major harmony. No mic? Big note buttons appear instead.
           </p>
           <button
             onClick={start}
-            className="min-h-[44px] rounded-full bg-amber-300 px-8 py-3 text-lg font-semibold text-[#2a1a10] shadow-lg shadow-amber-500/20 transition hover:bg-amber-200"
+            className="min-h-[44px] rounded-full bg-violet-300 px-8 py-3 text-lg font-semibold text-[#2a1a10] shadow-lg shadow-violet-500/20 transition hover:bg-violet-200"
           >
             ▶ Start the choir
           </button>
@@ -295,17 +295,17 @@ export default function KidsHumChoir() {
       {/* live HUD: current chord + tension meter */}
       {started && (
         <div className="pointer-events-none absolute bottom-24 left-0 right-0 z-20 flex flex-col items-center gap-2 px-5">
-          <div className="rounded-full border border-white/15 bg-black/40 px-5 py-2 backdrop-blur">
-            <span className="font-mono text-xl text-white/95">
+          <div className="rounded-full border border-border bg-black/40 px-5 py-2 backdrop-blur">
+            <span className="font-mono text-xl text-foreground">
               {degreeLabel.name}{" "}
-              <span className="text-white/75">{degreeLabel.roman}</span>
+              <span className="text-muted-foreground">{degreeLabel.roman}</span>
             </span>
           </div>
-          <div className="flex items-center gap-2 font-mono text-xs text-white/75">
+          <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <span>home</span>
-            <span className="relative block h-2 w-40 overflow-hidden rounded-full bg-white/10">
+            <span className="relative block h-2 w-40 overflow-hidden rounded-full bg-muted">
               <span
-                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-amber-300 via-rose-400 to-violet-400 transition-[width] duration-150"
+                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-violet-300 via-violet-400 to-violet-400 transition-[width] duration-150"
                 style={{ width: `${tensionPct}%` }}
               />
             </span>
@@ -318,14 +318,14 @@ export default function KidsHumChoir() {
       {started && (
         <div className="absolute bottom-6 left-0 right-0 z-30 flex flex-col items-center gap-3 px-5">
           {(micState === "denied" || micState === "unsupported") && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               {micState === "denied"
                 ? "No mic access — tap the notes below to sing with the choir."
                 : "Mic not available here — tap the notes below to sing with the choir."}
             </p>
           )}
           {micState === "live" && (
-            <p className="font-mono text-xs text-white/75">
+            <p className="font-mono text-xs text-muted-foreground">
               listening — hum a note 🎤 (or tap a note below)
             </p>
           )}
@@ -334,7 +334,7 @@ export default function KidsHumChoir() {
               <button
                 key={n.label}
                 onClick={() => tapNote(n.midi)}
-                className="min-h-[44px] min-w-[44px] rounded-2xl border border-white/15 bg-white/5 px-4 py-2.5 text-lg font-semibold text-white/95 transition hover:bg-white/15 active:scale-95"
+                className="min-h-[44px] min-w-[44px] rounded-2xl border border-border bg-muted px-4 py-2.5 text-lg font-semibold text-foreground transition hover:bg-accent active:scale-95"
                 aria-label={`Sing chord ${n.label}`}
               >
                 {n.label}
@@ -347,9 +347,9 @@ export default function KidsHumChoir() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 px-5 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#1c1428] p-6 text-white/90">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
-            <p className="mt-3 text-base text-white/80">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#1c1428] p-6 text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+            <p className="mt-3 text-base text-foreground">
               A child hums one note. We detect the pitch locally with the McLeod
               Pitch Method (a normalized autocorrelation), snap it to the
               nearest C-major scale degree, and build the real diatonic triad on
@@ -357,15 +357,15 @@ export default function KidsHumChoir() {
               are voice-led to the nearest chord tones, so the choir glides
               between chords instead of leaping.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               This is real functional harmony — not a can&apos;t-be-wrong
               pentatonic. Humming the dominant (G / V) or the leading tone (B /
               vii°) makes the choir lean and the harmony tighten; landing home
               on C, E, or G blooms and resolves. The full write-up is in the
               prototype&apos;s{" "}
-              <span className="font-mono text-amber-200">README.md</span>.
+              <span className="font-mono text-violet-200">README.md</span>.
             </p>
-            <p className="mt-3 font-mono text-xs text-white/75">
+            <p className="mt-3 font-mono text-xs text-muted-foreground">
               Mic audio is processed locally and never uploaded, never routed to
               the speakers (no feedback). Scale: {DEGREE_NAMES.join(" ")} ·
               center {midiToHz(60).toFixed(0)}Hz.
@@ -373,13 +373,13 @@ export default function KidsHumChoir() {
             <div className="mt-5 flex items-center justify-between">
               <Link
                 href="/dream"
-                className="font-mono text-xs text-white/75 hover:text-white"
+                className="font-mono text-xs text-muted-foreground hover:text-foreground"
               >
                 ← back to the lab
               </Link>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full bg-white/10 px-5 py-2.5 text-base text-white/95 hover:bg-white/20"
+                className="min-h-[44px] rounded-full bg-muted px-5 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>

@@ -662,13 +662,13 @@ export default function Page() {
   const state = kpState(wind.kp);
   const stateColor =
     state === "CALM"
-      ? "text-emerald-300"
+      ? "text-violet-300"
       : state === "UNSETTLED"
-        ? "text-amber-300"
-        : "text-rose-300";
+        ? "text-violet-300"
+        : "text-violet-300";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040c] text-foreground">
       {/* canvas layer */}
       {started && webglOk && (
         <div className="absolute inset-0">
@@ -693,22 +693,22 @@ export default function Page() {
 
       {/* top: title + description */}
       <div className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Aurora Particle
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/80">
+        <p className="mt-2 max-w-2xl text-base text-foreground">
           Live solar wind is the score: NOAA reads the plasma, magnetic field and
           Kp index hitting Earth right now, and the Sun writes both a drone and a
           flowing aurora.
         </p>
 
         {simulating && (
-          <p className="mt-3 font-mono text-base text-rose-300">
+          <p className="mt-3 font-mono text-base text-violet-300">
             Live feed unavailable — simulating solar wind.
           </p>
         )}
         {!webglOk && (
-          <p className="mt-1 font-mono text-base text-rose-300">
+          <p className="mt-1 font-mono text-base text-violet-300">
             WebGL unavailable — visuals disabled; the drone still plays.
           </p>
         )}
@@ -719,11 +719,11 @@ export default function Page() {
         <div className="relative z-10 mt-10 px-6 sm:px-10">
           <button
             onClick={start}
-            className="min-h-[44px] rounded-md border border-white/25 bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur transition hover:bg-white/20"
+            className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition hover:bg-accent"
           >
             Start — let the Sun play
           </button>
-          <p className="mt-3 max-w-xl text-base text-white/55">
+          <p className="mt-3 max-w-xl text-base text-muted-foreground">
             Tap to fetch real-time space weather and begin. Headphones
             recommended.
           </p>
@@ -733,22 +733,22 @@ export default function Page() {
       {/* live HUD */}
       {started && (
         <div className="pointer-events-none absolute bottom-6 left-6 z-10 sm:left-10">
-          <div className="rounded-lg border border-white/15 bg-black/40 p-4 font-mono text-base text-white/90 backdrop-blur">
+          <div className="rounded-lg border border-border bg-black/40 p-4 font-mono text-base text-foreground backdrop-blur">
             <div className="flex flex-wrap gap-x-6 gap-y-1">
               <span>
-                <span className="text-white/55">SPEED</span> {wind.speed.toFixed(0)} km/s
+                <span className="text-muted-foreground">SPEED</span> {wind.speed.toFixed(0)} km/s
               </span>
               <span>
-                <span className="text-white/55">DENSITY</span> {wind.density.toFixed(1)} p/cm³
+                <span className="text-muted-foreground">DENSITY</span> {wind.density.toFixed(1)} p/cm³
               </span>
               <span>
-                <span className="text-white/55">Bz</span> {wind.bz.toFixed(1)} nT
+                <span className="text-muted-foreground">Bz</span> {wind.bz.toFixed(1)} nT
               </span>
               <span>
-                <span className="text-white/55">Bt</span> {wind.bt.toFixed(1)} nT
+                <span className="text-muted-foreground">Bt</span> {wind.bt.toFixed(1)} nT
               </span>
               <span>
-                <span className="text-white/55">Kp</span> {wind.kp.toFixed(1)}
+                <span className="text-muted-foreground">Kp</span> {wind.kp.toFixed(1)}
               </span>
             </div>
             <div className="mt-2">
@@ -766,7 +766,7 @@ export default function Page() {
       <div className="absolute bottom-6 right-6 z-10 sm:right-10">
         <Link
           href="/dream/262-aurora-particle/README.md"
-          className="font-mono text-base text-white/55 underline decoration-white/30 underline-offset-4 hover:text-white/80"
+          className="font-mono text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
         >
           Read the design notes
         </Link>

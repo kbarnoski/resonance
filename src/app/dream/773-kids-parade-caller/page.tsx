@@ -504,14 +504,14 @@ export default function ParadeCaller() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-sky-200 text-slate-900">
+    <main className="relative min-h-screen w-full overflow-hidden bg-violet-200 text-slate-900">
       {/* Hero */}
       <header className="relative z-10 px-5 pt-6 pb-3 text-center">
         <h1 className="text-3xl font-black tracking-tight text-slate-900 drop-shadow-sm sm:text-4xl">
           🎉 Parade Caller
         </h1>
         <p className="mx-auto mt-1 max-w-xl text-base font-semibold text-slate-700 sm:text-lg">
-          Say a word out loud — its <span className="text-rose-600">syllables</span> become a drum beat,
+          Say a word out loud — its <span className="text-violet-600">syllables</span> become a drum beat,
           and every word marches into your parade band!
         </p>
       </header>
@@ -526,7 +526,7 @@ export default function ParadeCaller() {
         {!running ? (
           <button
             onClick={start}
-            className="min-h-[72px] rounded-full bg-rose-500 px-10 py-4 text-2xl font-black text-white shadow-xl transition hover:bg-rose-600 active:scale-95"
+            className="min-h-[72px] rounded-full bg-violet-500 px-10 py-4 text-2xl font-black text-foreground shadow-xl transition hover:bg-violet-600 active:scale-95"
           >
             🎤 Tap &amp; talk
           </button>
@@ -537,7 +537,7 @@ export default function ParadeCaller() {
         )}
 
         {notice && (
-          <p className="max-w-xl text-center text-base font-semibold text-rose-300">{notice}</p>
+          <p className="max-w-xl text-center text-base font-semibold text-violet-300">{notice}</p>
         )}
 
         {/* Word menu — always available (and the full fallback with no mic). */}
@@ -547,7 +547,7 @@ export default function ParadeCaller() {
               <button
                 key={m.word}
                 onClick={() => onRealWord(m.word)}
-                className="flex min-h-[64px] flex-col items-center justify-center rounded-2xl bg-white/85 px-2 py-2 text-base font-bold text-slate-800 shadow-md transition hover:bg-white active:scale-95"
+                className="flex min-h-[64px] flex-col items-center justify-center rounded-2xl bg-muted px-2 py-2 text-base font-bold text-slate-800 shadow-md transition hover:bg-card active:scale-95"
               >
                 <span className="text-3xl leading-none">{m.emoji}</span>
                 <span className="mt-1">{m.word}</span>

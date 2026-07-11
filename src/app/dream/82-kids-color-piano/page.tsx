@@ -154,14 +154,14 @@ export default function KidsColorPiano() {
       >
         <div className="text-center space-y-4">
           <div className="text-7xl">🎹</div>
-          <h1 className="text-4xl font-bold text-white">Color Piano</h1>
-          <p className="text-lg text-white/75 max-w-xs leading-relaxed">
+          <h1 className="text-4xl font-bold text-foreground">Color Piano</h1>
+          <p className="text-lg text-muted-foreground max-w-xs leading-relaxed">
             Eight colorful keys — tap, hold, or slide to play. No wrong notes.
           </p>
         </div>
         <button
           onClick={handleStart}
-          className="text-xl font-bold text-white bg-violet-600 hover:bg-violet-500 active:bg-violet-700 rounded-2xl px-12 py-5 min-h-[64px] min-w-[200px] transition-colors select-none"
+          className="text-xl font-bold text-foreground bg-violet-600 hover:bg-violet-500 active:bg-violet-700 rounded-2xl px-12 py-5 min-h-[64px] min-w-[200px] transition-colors select-none"
           style={{ touchAction: "manipulation" }}
         >
           {"Let's play! 🎵"}

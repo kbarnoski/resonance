@@ -351,11 +351,11 @@ export default function BubbleBath() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-black text-white select-none">
+    <div className="flex flex-col items-center min-h-screen bg-black text-foreground select-none">
       <div className="w-full max-w-lg px-4 pt-6 pb-8 flex flex-col items-center gap-4">
         <div className="text-center">
           <h1 className="text-2xl font-mono font-bold">Bubble Bath</h1>
-          <p className="text-white/75 text-base mt-1">
+          <p className="text-muted-foreground text-base mt-1">
             Tap to blow a bubble — when two touch, they chime a chord together
           </p>
         </div>
@@ -367,7 +367,7 @@ export default function BubbleBath() {
 
         <Link
           href="/dream"
-          className="text-white/40 text-sm hover:text-white/60 transition mt-1"
+          className="text-muted-foreground/70 text-sm hover:text-muted-foreground transition mt-1"
         >
           ← dream lab
         </Link>

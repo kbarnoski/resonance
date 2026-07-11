@@ -861,23 +861,23 @@ export default function KiteFlyerPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-slate-950 text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-slate-950 text-foreground">
       {/* the three.js canvas mounts here */}
       <div ref={mountRef} className="absolute inset-0" />
 
       {/* ── start / intro overlay ── */}
       {!started && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-sky-400/30 to-slate-950/85 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-4xl font-bold text-white drop-shadow sm:text-5xl">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-violet-400/30 to-slate-950/85 px-6 text-center backdrop-blur-sm">
+          <h1 className="font-serif text-4xl font-bold text-foreground drop-shadow sm:text-5xl">
             Kite Flyer
           </h1>
-          <p className="max-w-md text-base text-white/95 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Tilt the tablet to fly a glowing kite across a sunny sky. The higher
             it climbs the higher it sings, the wind sparkles a rhythm, and the
             taut string hums along.
           </p>
           {!webglOk ? (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               This device can&apos;t show 3D graphics, so the kite can&apos;t
               take off here. Try a newer browser or device.
             </p>
@@ -885,18 +885,18 @@ export default function KiteFlyerPage() {
             <button
               type="button"
               onClick={startTilt}
-              className="min-h-[64px] min-w-[64px] rounded-full bg-gradient-to-b from-amber-300 to-orange-400 px-10 py-4 text-2xl font-bold text-orange-950 shadow-lg transition active:scale-95"
+              className="min-h-[64px] min-w-[64px] rounded-full bg-gradient-to-b from-violet-300 to-violet-400 px-10 py-4 text-2xl font-bold text-violet-950 shadow-lg transition active:scale-95"
             >
               Fly! 🪁
             </button>
           )}
-          <p className="text-base text-white/75">No reading needed — just tilt or drag.</p>
+          <p className="text-base text-muted-foreground">No reading needed — just tilt or drag.</p>
         </div>
       )}
 
       {/* ── in-play notice (fallback / tips) ── */}
       {started && note && (
-        <div className="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-2xl bg-slate-900/80 px-4 py-2.5 text-center text-base text-white/95 shadow-lg backdrop-blur">
+        <div className="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-2xl bg-slate-900/80 px-4 py-2.5 text-center text-base text-foreground shadow-lg backdrop-blur">
           {note}
         </div>
       )}
@@ -905,35 +905,35 @@ export default function KiteFlyerPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full bg-slate-900/70 px-4 py-2.5 font-mono text-base text-white/95 shadow backdrop-blur transition active:scale-95"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full bg-slate-900/70 px-4 py-2.5 font-mono text-base text-foreground shadow backdrop-blur transition active:scale-95"
       >
         {showNotes ? "close" : "notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-4 z-20 max-h-[70dvh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-slate-900/90 p-5 text-base text-white/90 shadow-2xl backdrop-blur">
-          <h2 className="mb-2 font-serif text-xl text-white">Design notes</h2>
-          <p className="mb-3 text-white/90">
+        <div className="absolute bottom-20 right-4 z-20 max-h-[70dvh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-slate-900/90 p-5 text-base text-foreground shadow-2xl backdrop-blur">
+          <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
+          <p className="mb-3 text-foreground">
             <span className="font-semibold">The question:</span> what if a
             4-year-old could TILT the tablet to fly a glowing kite, and the
             kite&apos;s flight PLAYED music — its height a melody, the wind a
             rhythm, its taut string an Aeolian drone?
           </p>
-          <p className="mb-3 text-white/90">
+          <p className="mb-3 text-foreground">
             <span className="font-semibold">How it plays:</span> tilt left/right
             steers the kite across the sky; tilt forward/back climbs or dives.
             Every height snaps to a major-pentatonic note, so there are no wrong
             notes — higher is higher. Wind gusts toss in sparkle chimes, and the
             taut string hums a soft, swelling drone the more it tightens.
           </p>
-          <p className="mb-3 text-white/90">
+          <p className="mb-3 text-foreground">
             <span className="font-semibold">If there&apos;s no tilt</span> (a
             desktop, or permission denied) you drag the kite with a finger or
             mouse — and if nobody touches it, a gentle breeze keeps it swooping
             and singing on its own.
           </p>
-          <p className="mb-1 font-semibold text-white">References</p>
-          <ul className="mb-3 list-disc pl-5 text-white/85">
+          <p className="mb-1 font-semibold text-foreground">References</p>
+          <ul className="mb-3 list-disc pl-5 text-foreground">
             <li>
               The <span className="italic">Aeolian harp</span> — an instrument
               the wind plays by vibrating a taut string (the humming drone here).
@@ -944,7 +944,7 @@ export default function KiteFlyerPage() {
             </li>
             <li>Kite-flying as embodied, whole-body play.</li>
           </ul>
-          <p className="font-mono text-base text-white/70">
+          <p className="font-mono text-base text-muted-foreground">
             tilt · three.js 3D · pentatonic altitude · Aeolian string drone
           </p>
         </div>

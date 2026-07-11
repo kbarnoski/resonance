@@ -414,10 +414,10 @@ export default function KidsTiltRain() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-7 px-6">
           <div className="text-center">
             <div className="text-6xl mb-4">🌈</div>
-            <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
+            <h1 className="text-4xl font-bold text-foreground mb-3 tracking-tight">
               Rain Catcher
             </h1>
-            <p className="text-white/80 text-lg leading-relaxed max-w-xs mx-auto">
+            <p className="text-foreground text-lg leading-relaxed max-w-xs mx-auto">
               Tilt the screen to move the basket.
               <br />
               Catch the drops to make music!
@@ -425,12 +425,12 @@ export default function KidsTiltRain() {
           </div>
           <button
             onClick={startGame}
-            className="bg-violet-500 hover:bg-violet-400 active:scale-95 text-white font-bold rounded-full text-2xl transition-all shadow-xl shadow-violet-500/30"
+            className="bg-violet-500 hover:bg-violet-400 active:scale-95 text-foreground font-bold rounded-full text-2xl transition-all shadow-xl shadow-violet-500/30"
             style={{ minWidth: 220, minHeight: 72, padding: "0 2.5rem" }}
           >
             ▶ Start
           </button>
-          <p className="text-white/50 text-base text-center">
+          <p className="text-muted-foreground text-base text-center">
             Move your mouse to steer on desktop
           </p>
         </div>
@@ -442,7 +442,7 @@ export default function KidsTiltRain() {
           <button
             onClick={replayMelody}
             disabled={isReplaying}
-            className="bg-emerald-500/90 hover:bg-emerald-400 disabled:opacity-50 text-white font-bold rounded-full text-lg transition-colors shadow-lg"
+            className="bg-violet-500/90 hover:bg-violet-400 disabled:opacity-50 text-foreground font-bold rounded-full text-lg transition-colors shadow-lg"
             style={{ minHeight: 56, padding: "0 1.5rem" }}
           >
             {isReplaying ? "♪ …" : "▶ Replay"}

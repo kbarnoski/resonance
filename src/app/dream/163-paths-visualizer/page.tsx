@@ -303,22 +303,22 @@ export default function PathsVisualizer() {
   useEffect(() => () => stopAll(), [stopAll]);
 
   return (
-    <div className="min-h-screen bg-[#04040c] text-white flex flex-col">
+    <div className="min-h-screen bg-[#04040c] text-foreground flex flex-col">
       <div className="relative flex-1" style={{ minHeight: "60vh" }}>
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
         <div className="absolute top-4 left-4 right-4 flex items-start justify-between pointer-events-none">
           <div>
-            <h1 className="text-xl font-semibold tracking-wide text-white/90">
+            <h1 className="text-xl font-semibold tracking-wide text-foreground">
               Paths Visualizer
             </h1>
-            <p className="text-sm text-white/50 mt-0.5">
+            <p className="text-sm text-muted-foreground mt-0.5">
               Lorenz attractor · 6-band bloom · Karel&apos;s piano
             </p>
           </div>
           <Link
             href="/dream"
-            className="text-sm text-white/40 hover:text-white/70 transition-colors pointer-events-auto"
+            className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors pointer-events-auto"
           >
             ← dreams
           </Link>
@@ -326,15 +326,15 @@ export default function PathsVisualizer() {
 
         {isPlaying && (
           <div className="absolute bottom-4 left-4 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs text-white/50">
+            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
+            <span className="text-xs text-muted-foreground">
               {mode === "demo" ? "demo mode" : "live"}
             </span>
           </div>
         )}
       </div>
 
-      <div className="px-6 py-6 space-y-5 border-t border-white/10 max-w-xl mx-auto w-full">
+      <div className="px-6 py-6 space-y-5 border-t border-border max-w-xl mx-auto w-full">
         <button
           onClick={isPlaying && mode === "demo" ? stopAll : startDemo}
           className="w-full py-3 rounded-xl font-medium text-base transition-colors"
@@ -346,18 +346,18 @@ export default function PathsVisualizer() {
         >
           {mode === "demo" && isPlaying ? "Stop demo" : "▶ Play demo"}
         </button>
-        <p className="text-xs text-white/40 text-center -mt-3">
+        <p className="text-xs text-muted-foreground/70 text-center -mt-3">
           Synthesized piano phrase — no recording needed
         </p>
 
         <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-xs text-white/30">or use a recording</span>
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-muted" />
+          <span className="text-xs text-muted-foreground/70">or use a recording</span>
+          <div className="flex-1 h-px bg-muted" />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm text-white/70">Recording ID</label>
+          <label className="block text-sm text-muted-foreground">Recording ID</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -365,7 +365,7 @@ export default function PathsVisualizer() {
               onChange={(e) => setRecordingId(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && fetchAudioUrl()}
               placeholder="paste a recording UUID…"
-              className="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-white/40"
+              className="flex-1 bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-border"
               style={{ minHeight: 44 }}
             />
             <button
@@ -377,9 +377,9 @@ export default function PathsVisualizer() {
               {loading ? "…" : "Load"}
             </button>
           </div>
-          {loadError && <p className="text-xs text-red-400">{loadError}</p>}
+          {loadError && <p className="text-xs text-destructive">{loadError}</p>}
           {audioUrl && !loadError && (
-            <p className="text-xs text-green-400">Recording loaded ✓</p>
+            <p className="text-xs text-violet-400">Recording loaded ✓</p>
           )}
         </div>
 
@@ -400,7 +400,7 @@ export default function PathsVisualizer() {
           </div>
         )}
 
-        <p className="text-xs text-white/30 leading-relaxed text-center">
+        <p className="text-xs text-muted-foreground/70 leading-relaxed text-center">
           Lorenz attractor path colored by frequency band. Bass drives the orbit
           scale; treble sharpens the trace. Paste a Resonance recording ID to
           visualize Karel&apos;s actual piano.

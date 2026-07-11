@@ -771,25 +771,25 @@ export default function LiveDuetTrader() {
         : 'Real-time gap-detected trading · live Markov · zero deps · no AI calls';
 
   return (
-    <div className="flex flex-col h-screen bg-[#0a0a10] text-white select-none">
+    <div className="flex flex-col h-screen bg-[#0a0a10] text-foreground select-none">
       <div className="px-6 pt-5 pb-3 flex-shrink-0">
-        <h1 className="text-2xl font-semibold text-white/95 tracking-tight">Live Duet Trader</h1>
-        <p className="text-base text-white/75 mt-1 max-w-2xl">
+        <h1 className="text-2xl font-semibold text-foreground tracking-tight">Live Duet Trader</h1>
+        <p className="text-base text-muted-foreground mt-1 max-w-2xl">
           The instant you pause, it darts in with a melodic answer in your key. The instant you
           play again, it ducks out of the way. Interleaved trading — not turn-based waiting.
         </p>
       </div>
 
-      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-white/10 relative min-h-0">
+      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-border relative min-h-0">
         <canvas ref={canvasRef} className="w-full h-full block" />
 
         {uiState === 'idle' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#0a0a10]/85 backdrop-blur-sm">
             <div className="max-w-md text-center px-6">
-              <p className="text-base text-white/75 leading-relaxed mb-6">
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">
                 Play any pitched instrument (piano, voice, guitar) into your mic. After ~3 notes the
                 partner starts learning your intervals; whenever a{' '}
-                <span className="text-amber-300/95">~320 ms gap</span> opens it trades a phrase in
+                <span className="text-violet-300/95">~320 ms gap</span> opens it trades a phrase in
                 your inferred key, and ducks the moment you re-enter.
               </p>
               <div className="flex gap-3 justify-center">
@@ -797,18 +797,18 @@ export default function LiveDuetTrader() {
                   onClick={() => {
                     void startMic();
                   }}
-                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 text-base font-medium hover:bg-amber-500/30 transition-colors"
+                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-violet-500/20 border border-violet-500/40 text-violet-300 text-base font-medium hover:bg-violet-500/30 transition-colors"
                 >
                   Start listening (mic)
                 </button>
                 <button
                   onClick={startDemo}
-                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/75 text-base hover:bg-white/10 transition-colors"
+                  className="px-5 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
                 >
                   Play demo
                 </button>
               </div>
-              {err && <p className="text-rose-300 text-base mt-4">{err}</p>}
+              {err && <p className="text-violet-300 text-base mt-4">{err}</p>}
             </div>
           </div>
         )}
@@ -817,7 +817,7 @@ export default function LiveDuetTrader() {
           <div className="absolute bottom-4 left-0 right-0 flex justify-center">
             <button
               onClick={stopAll}
-              className="px-5 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/75 text-base hover:bg-white/10 transition-colors"
+              className="px-5 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
             >
               Stop
             </button>
@@ -826,9 +826,9 @@ export default function LiveDuetTrader() {
       </div>
 
       <div className="px-6 pb-2 flex-shrink-0 flex items-center justify-between text-sm gap-4">
-        <span className="text-white/55">{stateText}</span>
-        <span className="text-white/55 font-mono flex-shrink-0">
-          key <span className="text-emerald-300/95">{keyLabel}</span>
+        <span className="text-muted-foreground">{stateText}</span>
+        <span className="text-muted-foreground font-mono flex-shrink-0">
+          key <span className="text-violet-300/95">{keyLabel}</span>
           {exchanges > 0 && (
             <>
               {' · '}
@@ -842,16 +842,16 @@ export default function LiveDuetTrader() {
       <div className="px-6 pb-4 flex-shrink-0">
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="text-sm font-mono text-amber-300/95 hover:text-amber-200 transition-colors"
+          className="text-sm font-mono text-violet-300/95 hover:text-violet-200 transition-colors"
         >
           Design notes →
         </button>
         {showNotes && (
-          <div className="mt-3 max-w-2xl text-base text-white/75 leading-relaxed space-y-2">
+          <div className="mt-3 max-w-2xl text-base text-muted-foreground leading-relaxed space-y-2">
             <p>
               Each ~16 ms frame runs NSDF / McLeod-style autocorrelation pitch detection (RMS-gated)
               on the time-domain buffer. Stable pitches become note onsets; the time since the last
-              onset is the <span className="text-amber-300/95">gap timer</span>. When it crosses{' '}
+              onset is the <span className="text-violet-300/95">gap timer</span>. When it crosses{' '}
               ~320 ms and you have ≥3 notes of history, the partner generates a fill from a
               live-trained 1st-order Markov interval table, constrained to the key inferred from
               your pitch histogram.
@@ -860,8 +860,8 @@ export default function LiveDuetTrader() {
               The instant a new onset is detected, the partner&apos;s master gain ramps to zero in
               ~50 ms and its scheduled phrase is cancelled — you always have right of way. That
               continuous duck-on-re-entry is what makes it feel like{' '}
-              <span className="text-emerald-300/95">trading fours</span> rather than turn-taking.
-              Full write-up in <code className="text-amber-300/95">README.md</code>.
+              <span className="text-violet-300/95">trading fours</span> rather than turn-taking.
+              Full write-up in <code className="text-violet-300/95">README.md</code>.
             </p>
           </div>
         )}

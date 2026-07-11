@@ -304,14 +304,14 @@ export default function CameraSongPage() {
       {phase === "idle" && (
         <div className="flex flex-col items-center justify-center h-full gap-8 px-6 text-center">
           <div>
-            <h1 className="text-3xl font-mono font-bold text-white/95 mb-3 tracking-tight">
+            <h1 className="text-3xl font-mono font-bold text-foreground mb-3 tracking-tight">
               camera-song
             </h1>
-            <p className="text-base text-white/75 max-w-sm mx-auto leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-sm mx-auto leading-relaxed">
               Six journeys orbit in the dark. As you turn to face one, its music rises.
               Turn away — it fades.
             </p>
-            <p className="text-base text-white/55 italic mt-2 max-w-sm mx-auto">
+            <p className="text-base text-muted-foreground italic mt-2 max-w-sm mx-auto">
               You&apos;re not listening to music. You&apos;re walking through it.
             </p>
           </div>
@@ -332,8 +332,8 @@ export default function CameraSongPage() {
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs text-white/40">drag to orbit · headphones recommended</span>
-            <Link href="/dream" className="text-xs text-white/40 hover:text-white/65 transition-colors">
+            <span className="text-xs text-muted-foreground/70">drag to orbit · headphones recommended</span>
+            <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors">
               ← dream lab
             </Link>
           </div>
@@ -379,10 +379,10 @@ export default function CameraSongPage() {
           {/* HUD overlay */}
           <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-5">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-white/45">camera-song</span>
+              <span className="font-mono text-xs text-muted-foreground">camera-song</span>
               <Link
                 href="/dream"
-                className="text-xs text-white/45 hover:text-white/65 pointer-events-auto transition-colors"
+                className="text-xs text-muted-foreground hover:text-muted-foreground pointer-events-auto transition-colors"
               >
                 ← dream
               </Link>
@@ -398,11 +398,11 @@ export default function CameraSongPage() {
               </div>
               <p
                 ref={descRef}
-                className="text-sm text-white/55 mt-1"
+                className="text-sm text-muted-foreground mt-1"
               >
                 {JOURNEYS[0].desc}
               </p>
-              <p className="text-xs text-white/35 mt-3 font-mono">
+              <p className="text-xs text-muted-foreground/70 mt-3 font-mono">
                 drag to orbit · the music follows your gaze
               </p>
             </div>

@@ -504,7 +504,7 @@ export default function PresenceFieldPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060a] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060a] text-foreground">
       {/* three.js canvas mount */}
       <div ref={mountRef} className="absolute inset-0" />
 
@@ -513,7 +513,7 @@ export default function PresenceFieldPage() {
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL is unavailable in this browser, so the 3D room can&apos;t
             render. The spatial ensemble still plays when you press Start.
           </p>
@@ -522,15 +522,15 @@ export default function PresenceFieldPage() {
 
       {/* top-left: title + description */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7">
-        <h1 className="font-mono text-xl font-semibold tracking-tight text-white sm:text-2xl">
+        <h1 className="font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
           Presence Field
         </h1>
-        <p className="mt-2 max-w-sm text-base leading-snug text-white/80">
+        <p className="mt-2 max-w-sm text-base leading-snug text-foreground">
           Your body becomes a spatial ensemble. Each limb is a voice placed in
           3D around you — spread your arms and the music sweeps through the
           room.
         </p>
-        <p className="mt-2 max-w-sm font-mono text-base text-white/75">
+        <p className="mt-2 max-w-sm font-mono text-base text-muted-foreground">
           Camera stays on-device. Nothing is stored or sent.
         </p>
       </div>
@@ -539,7 +539,7 @@ export default function PresenceFieldPage() {
       {phase === "running" && (
         <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 p-5 sm:p-7">
           {demoMode && (
-            <p className="font-mono text-base text-cyan-200/80">
+            <p className="font-mono text-base text-violet-200/80">
               auto-demo — a virtual body is conducting the ensemble
             </p>
           )}
@@ -548,7 +548,7 @@ export default function PresenceFieldPage() {
 
       {notice && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 w-[min(90vw,40rem)] -translate-x-1/2 p-4 text-center">
-          <p className="text-base text-rose-300">{notice}</p>
+          <p className="text-base text-violet-300">{notice}</p>
         </div>
       )}
 
@@ -557,7 +557,7 @@ export default function PresenceFieldPage() {
         <div className="absolute inset-0 flex items-end justify-center pb-16 sm:items-center sm:pb-0">
           <button
             onClick={start}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-white/25 bg-white/10 px-4 py-2.5 font-mono text-base font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 font-mono text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-accent"
           >
             ▶ Start — step into the field
           </button>
@@ -567,17 +567,17 @@ export default function PresenceFieldPage() {
       {/* corner: design notes */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         Design notes
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-4 w-[min(92vw,30rem)] rounded-xl border border-white/15 bg-black/85 p-5 backdrop-blur-md">
-          <h2 className="font-mono text-xl font-semibold text-white">
+        <div className="absolute bottom-20 right-4 w-[min(92vw,30rem)] rounded-xl border border-border bg-black/85 p-5 backdrop-blur-md">
+          <h2 className="font-mono text-xl font-semibold text-foreground">
             Design notes
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-white/80">
+          <p className="mt-3 text-base leading-relaxed text-foreground">
             Each tracked joint drives a sustained voice through its own
             HRTF-spatialized PannerNode. The body&apos;s position becomes the
             sound&apos;s position in 3D — spatialization is the instrument.
@@ -588,7 +588,7 @@ export default function PresenceFieldPage() {
           </p>
           <Link
             href="/dream/677-presence-field"
-            className="mt-3 inline-block font-mono text-base text-cyan-300 hover:text-cyan-200"
+            className="mt-3 inline-block font-mono text-base text-violet-300 hover:text-violet-200"
           >
             README →
           </Link>

@@ -756,7 +756,7 @@ export default function KidsStirGarden() {
   );
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04080a] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04080a] text-foreground">
       {/* hidden video used only for motion diffing */}
       <video
         ref={videoRef}
@@ -785,16 +785,16 @@ export default function KidsStirGarden() {
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-[#04080a]/95 px-6 text-center">
           <div className="text-6xl">🌱</div>
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Stir the Living Garden
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Wave your arms, dance, or wiggle — and watch a glowing garden
             grow where you move. It sings as it blooms.
           </p>
           <button
             onClick={start}
-            className="rounded-full bg-emerald-400/90 px-10 py-5 text-xl font-semibold text-[#04080a] shadow-lg shadow-emerald-500/30 transition-transform hover:scale-105 active:scale-95"
+            className="rounded-full bg-violet-400/90 px-10 py-5 text-xl font-semibold text-[#04080a] shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 active:scale-95"
             style={{ minWidth: 64, minHeight: 64 }}
           >
             ✨ Start
@@ -805,12 +805,12 @@ export default function KidsStirGarden() {
       {/* error / camera notices */}
       {glError && (
         <div className="absolute left-1/2 top-6 z-30 -translate-x-1/2 rounded-xl bg-black/80 px-5 py-3 text-center">
-          <p className="text-base text-rose-300">{glError}</p>
+          <p className="text-base text-violet-300">{glError}</p>
         </div>
       )}
       {camNote && started && (
         <div className="absolute left-1/2 top-6 z-30 -translate-x-1/2 max-w-sm rounded-xl bg-black/70 px-5 py-3 text-center">
-          <p className="text-base text-rose-300">{camNote}</p>
+          <p className="text-base text-violet-300">{camNote}</p>
         </div>
       )}
 
@@ -826,14 +826,14 @@ export default function KidsStirGarden() {
       {/* read the design notes */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 z-30 rounded-full bg-white/10 px-3 py-2 text-xs text-white/75 backdrop-blur hover:bg-white/20 hover:text-white"
+        className="absolute right-3 top-3 z-30 rounded-full bg-muted px-3 py-2 text-xs text-muted-foreground backdrop-blur hover:bg-accent hover:text-foreground"
         style={{ minHeight: 44 }}
       >
         {showNotes ? "✕" : "ⓘ notes"}
       </button>
       {showNotes && (
-        <div className="absolute right-3 top-16 z-30 max-w-xs rounded-xl border border-white/10 bg-black/85 p-4 text-sm text-white/75 backdrop-blur">
-          <p className="mb-2 text-base font-semibold text-white">
+        <div className="absolute right-3 top-16 z-30 max-w-xs rounded-xl border border-border bg-black/85 p-4 text-sm text-muted-foreground backdrop-blur">
+          <p className="mb-2 text-base font-semibold text-foreground">
             Living Garden
           </p>
           <p className="mb-2">
@@ -846,7 +846,7 @@ export default function KidsStirGarden() {
               ? "Camera off: drag to stir the garden."
               : "Move your whole body to grow patterns."}
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             See README.md for the math (feed≈0.037, kill≈0.0603),
             sound mapping, and references (Ghassaei, cake23, Karl Sims).
           </p>

@@ -786,7 +786,7 @@ export default function MirrorChoirPage() {
   }, []);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#0a0a0f] text-white font-mono overflow-hidden">
+    <div className="relative flex flex-col min-h-screen bg-[#0a0a0f] text-foreground font-mono overflow-hidden">
 
       {/* Top-right design notes link */}
       <div className="absolute top-4 right-4 z-20">
@@ -794,7 +794,7 @@ export default function MirrorChoirPage() {
           href={README_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           design notes
         </Link>
@@ -802,11 +802,11 @@ export default function MirrorChoirPage() {
 
       {/* Header */}
       <header className="px-6 pt-8 pb-4 z-10">
-        <p className="text-white/55 text-xs tracking-widest uppercase mb-1">dream · 287</p>
-        <h1 className="text-3xl font-bold tracking-tight text-white/95 mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-1">dream · 287</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
           Mirror Choir
         </h1>
-        <p className="text-base text-white/75 max-w-md leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-md leading-relaxed">
           Your body becomes a choir. Move and you sing — stand still and the voices hold a soft chord.
         </p>
       </header>
@@ -816,7 +816,7 @@ export default function MirrorChoirPage() {
 
         {/* Canvas (always rendered; hidden until started) */}
         <div
-          className="relative w-full max-w-2xl aspect-[4/3] rounded-xl overflow-hidden border border-white/10"
+          className="relative w-full max-w-2xl aspect-[4/3] rounded-xl overflow-hidden border border-border"
           style={{ display: started ? "block" : "none" }}
         >
           {/* Hidden video element for MediaPipe input */}
@@ -836,7 +836,7 @@ export default function MirrorChoirPage() {
           {/* Ghost notice */}
           {isGhost && (
             <div className="absolute bottom-4 left-0 right-0 flex justify-center z-10">
-              <span className="text-rose-300 text-sm bg-black/60 rounded-full px-4 py-1">
+              <span className="text-violet-300 text-sm bg-black/60 rounded-full px-4 py-1">
                 Camera unavailable — playing a ghost dancer demo
               </span>
             </div>
@@ -849,7 +849,7 @@ export default function MirrorChoirPage() {
                 <div className="text-violet-400 text-lg mb-2 animate-pulse">
                   summoning the choir…
                 </div>
-                <div className="text-white/55 text-sm">
+                <div className="text-muted-foreground text-sm">
                   loading pose model from CDN
                 </div>
               </div>
@@ -867,10 +867,10 @@ export default function MirrorChoirPage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-white/95 mb-2">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
                 What if your body became a choir?
               </h2>
-              <p className="text-base text-white/75 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Allow camera access and stand back a few feet. Your hands are two
                 singing voices — their height in frame sets the pitch. Spread your
                 arms to open the vowel; close in to narrow it. Move and the choir
@@ -878,13 +878,13 @@ export default function MirrorChoirPage() {
               </p>
             </div>
 
-            <div className="text-white/55 text-sm leading-relaxed space-y-1">
+            <div className="text-muted-foreground text-sm leading-relaxed space-y-1">
               <p>D-Dorian chord tones · Klatt-style formant synthesis</p>
               <p>Matte wooden-mirror rendering · 33-point pose tracking</p>
             </div>
 
             {error && (
-              <p className="text-rose-300 text-sm">{error}</p>
+              <p className="text-violet-300 text-sm">{error}</p>
             )}
 
             <button
@@ -892,12 +892,12 @@ export default function MirrorChoirPage() {
                 setError(null);
                 setStarted(true);
               }}
-              className="min-h-[44px] px-8 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold rounded-lg transition-colors text-base"
+              className="min-h-[44px] px-8 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold rounded-lg transition-colors text-base"
             >
               Begin
             </button>
 
-            <p className="text-white/40 text-xs">
+            <p className="text-muted-foreground/70 text-xs">
               Camera permission requested · audio starts immediately · nothing is recorded
             </p>
           </div>
@@ -905,7 +905,7 @@ export default function MirrorChoirPage() {
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-4 border-t border-white/8 text-white/40 text-xs flex justify-between items-center">
+      <footer className="px-6 py-4 border-t border-border text-muted-foreground/70 text-xs flex justify-between items-center">
         <span>
           ref: Rozin <em>Wooden Mirror</em> (1999) · MediaPipe Pose · Klatt formants
         </span>

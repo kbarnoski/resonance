@@ -295,18 +295,18 @@ export default function CoralTide() {
   const voicesSounding = activeBands.filter(Boolean).length;
 
   return (
-    <main className="min-h-screen bg-[#2a160c] text-white flex flex-col">
+    <main className="min-h-screen bg-[#2a160c] text-foreground flex flex-col">
       <div className="px-5 pt-5 pb-3">
         <Link
           href="/dream"
-          className="text-base text-white/75 hover:text-white/95 underline underline-offset-4"
+          className="text-base text-muted-foreground hover:text-foreground underline underline-offset-4"
         >
           ← back to dreams
         </Link>
-        <h1 className="mt-3 text-2xl font-semibold text-white/95">
+        <h1 className="mt-3 text-2xl font-semibold text-foreground">
           Coral Tide 🪸
         </h1>
-        <p className="mt-1 text-base text-white/80 max-w-prose">
+        <p className="mt-1 text-base text-foreground max-w-prose">
           Shake the tablet to stir the sea. Glowing plankton settle and grow a
           coral reef — and the taller it climbs, the richer the chord you hear.
         </p>
@@ -326,14 +326,14 @@ export default function CoralTide() {
         {!started && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-black/30 backdrop-blur-sm">
             {noCanvas ? (
-              <p className="text-base text-rose-300 px-6 text-center max-w-prose">
+              <p className="text-base text-violet-300 px-6 text-center max-w-prose">
                 This device can&apos;t draw the reef (no Canvas 2D). Try a
                 different browser.
               </p>
             ) : (
               <button
                 onClick={onStart}
-                className="min-w-[64px] min-h-[64px] px-8 py-4 rounded-full bg-amber-400 text-[#3a1c0c] text-xl font-bold shadow-lg active:scale-95 transition"
+                className="min-w-[64px] min-h-[64px] px-8 py-4 rounded-full bg-violet-400 text-[#3a1c0c] text-xl font-bold shadow-lg active:scale-95 transition"
               >
                 Start the tide 🌊
               </button>
@@ -345,11 +345,11 @@ export default function CoralTide() {
         {started && (
           <div className="absolute top-3 left-3 flex items-center gap-2">
             {mode === "shake" ? (
-              <span className="px-3 py-1.5 rounded-full bg-emerald-500/25 text-emerald-200 text-base font-medium">
+              <span className="px-3 py-1.5 rounded-full bg-violet-500/25 text-violet-200 text-base font-medium">
                 Shaking 🌊
               </span>
             ) : (
-              <span className="px-3 py-1.5 rounded-full bg-amber-500/25 text-amber-200 text-base font-medium">
+              <span className="px-3 py-1.5 rounded-full bg-violet-500/25 text-violet-200 text-base font-medium">
                 Touch mode ✋
               </span>
             )}
@@ -359,7 +359,7 @@ export default function CoralTide() {
         {/* Chord-stack indicator (lit pips show which voices are sounding) */}
         {started && (
           <div className="absolute bottom-3 right-3 flex flex-col items-end gap-1.5">
-            <span className="text-base text-white/80 font-medium">
+            <span className="text-base text-foreground font-medium">
               {voicesSounding} of {BANDS} voices
             </span>
             <div className="flex flex-col-reverse gap-1">
@@ -370,8 +370,8 @@ export default function CoralTide() {
                     <span
                       className={
                         on
-                          ? "text-base text-white/95 font-semibold"
-                          : "text-base text-white/55"
+                          ? "text-base text-foreground font-semibold"
+                          : "text-base text-muted-foreground"
                       }
                     >
                       {name}
@@ -380,8 +380,8 @@ export default function CoralTide() {
                       aria-hidden
                       className={
                         on
-                          ? "w-5 h-5 rounded-full bg-amber-300 shadow-[0_0_10px_rgba(253,224,160,0.9)]"
-                          : "w-5 h-5 rounded-full bg-white/20"
+                          ? "w-5 h-5 rounded-full bg-violet-300 shadow-[0_0_10px_rgba(253,224,160,0.9)]"
+                          : "w-5 h-5 rounded-full bg-muted"
                       }
                     />
                   </div>
@@ -394,9 +394,9 @@ export default function CoralTide() {
 
       {/* Footer notices */}
       <div className="px-5 pb-6 space-y-1.5">
-        {notice && <p className="text-base text-rose-300 max-w-prose">{notice}</p>}
+        {notice && <p className="text-base text-violet-300 max-w-prose">{notice}</p>}
         {started && (
-          <p className="text-base text-white/75 max-w-prose">
+          <p className="text-base text-muted-foreground max-w-prose">
             Hear it grow: each lit pip is one held voice of a D-Dorian chord. As
             the reef climbs into higher bands, more voices stack in.
           </p>

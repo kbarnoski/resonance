@@ -441,13 +441,13 @@ export default function OperatorPanel() {
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
         <div className="absolute top-3 left-3 pointer-events-none">
-          <div className="text-[10px] tracking-widest text-white/30 mb-0.5">
+          <div className="text-[10px] tracking-widest text-muted-foreground/70 mb-0.5">
             SCENE {ui.activeScene + 1}
           </div>
           <div className="text-xl tracking-wide" style={{ color: currentScene.color }}>
             {currentScene.name}
           </div>
-          <div className="text-[11px] text-white/40 mt-0.5">
+          <div className="text-[11px] text-muted-foreground/70 mt-0.5">
             {currentScene.phase} — {currentScene.desc}
           </div>
         </div>
@@ -459,13 +459,13 @@ export default function OperatorPanel() {
           <div className="text-2xl font-mono" style={{ color: currentScene.color }}>
             {ui.bpm > 0 ? ui.bpm : "·"}
           </div>
-          <div className="text-[10px] text-white/30 tracking-widest">BPM</div>
+          <div className="text-[10px] text-muted-foreground/70 tracking-widest">BPM</div>
         </div>
 
         {micRunning && (
           <div className="absolute bottom-4 left-3 pointer-events-none">
-            <div className="text-[10px] text-white/30 tracking-widest mb-1.5">CROWD NOISE</div>
-            <div className="w-28 h-1.5 bg-white/10 rounded-full overflow-hidden">
+            <div className="text-[10px] text-muted-foreground/70 tracking-widest mb-1.5">CROWD NOISE</div>
+            <div className="w-28 h-1.5 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-75"
                 style={{
@@ -478,24 +478,24 @@ export default function OperatorPanel() {
         )}
 
         {ui.transScene !== null && (
-          <div className="absolute bottom-4 right-3 pointer-events-none text-[10px] text-white/35 text-right">
+          <div className="absolute bottom-4 right-3 pointer-events-none text-[10px] text-muted-foreground/70 text-right">
             → {SCENES[ui.transScene].name}
           </div>
         )}
       </div>
 
       {/* ── Operator controls ────────────────────────────────────────────── */}
-      <div className="w-64 md:w-72 border-l border-white/10 bg-black flex flex-col overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/10 flex-shrink-0">
-          <div className="text-[10px] tracking-widest text-white/40">OPERATOR PANEL</div>
-          <div className="text-[10px] text-white/20 mt-0.5">/dream/4-operator · sandbox</div>
+      <div className="w-64 md:w-72 border-l border-border bg-black flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b border-border flex-shrink-0">
+          <div className="text-[10px] tracking-widest text-muted-foreground/70">OPERATOR PANEL</div>
+          <div className="text-[10px] text-muted-foreground/70 mt-0.5">/dream/4-operator · sandbox</div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
 
           {/* Scene picker */}
-          <div className="px-4 py-3 border-b border-white/10">
-            <div className="text-[10px] tracking-wider text-white/35 mb-2">SCENES — keys 1–6</div>
+          <div className="px-4 py-3 border-b border-border">
+            <div className="text-[10px] tracking-wider text-muted-foreground/70 mb-2">SCENES — keys 1–6</div>
             <div className="grid grid-cols-2 gap-1.5">
               {SCENES.map((scene) => {
                 const isActive = ui.activeScene === scene.id && ui.transScene === null;
@@ -506,10 +506,10 @@ export default function OperatorPanel() {
                     onClick={() => triggerScene(scene.id)}
                     className={`text-left p-2 rounded border transition-all duration-150 ${
                       isActive
-                        ? "border-white/35 bg-white/5"
+                        ? "border-border bg-muted"
                         : isNext
-                        ? "border-white/20 bg-white/5 animate-pulse"
-                        : "border-white/10 hover:border-white/25 hover:bg-white/5"
+                        ? "border-border bg-muted animate-pulse"
+                        : "border-border hover:border-border hover:bg-accent"
                     }`}
                   >
                     <div className="flex items-center gap-1.5 mb-0.5">
@@ -517,7 +517,7 @@ export default function OperatorPanel() {
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                         style={{ background: isActive ? scene.color : "rgba(255,255,255,0.2)" }}
                       />
-                      <span className="text-[9px] text-white/35">{scene.phase}</span>
+                      <span className="text-[9px] text-muted-foreground/70">{scene.phase}</span>
                     </div>
                     <div
                       className="text-[11px]"
@@ -532,12 +532,12 @@ export default function OperatorPanel() {
           </div>
 
           {/* BPM tap */}
-          <div className="px-4 py-3 border-b border-white/10">
-            <div className="text-[10px] tracking-wider text-white/35 mb-2">BPM — space to tap</div>
+          <div className="px-4 py-3 border-b border-border">
+            <div className="text-[10px] tracking-wider text-muted-foreground/70 mb-2">BPM — space to tap</div>
             <div className="flex items-center gap-3">
               <button
                 onClick={tapBeat}
-                className="flex-1 py-3 text-center border border-white/20 rounded hover:border-white/45 hover:bg-white/5 active:bg-white/10 active:scale-95 transition-all text-xs tracking-widest select-none"
+                className="flex-1 py-3 text-center border border-border rounded hover:border-border hover:bg-accent active:bg-muted active:scale-95 transition-all text-xs tracking-widest select-none"
               >
                 TAP
               </button>
@@ -551,13 +551,13 @@ export default function OperatorPanel() {
                 >
                   {ui.bpm > 0 ? ui.bpm : "—"}
                 </div>
-                <div className="text-[9px] text-white/25">BPM</div>
+                <div className="text-[9px] text-muted-foreground/70">BPM</div>
               </div>
             </div>
             {ui.bpm > 0 && (
               <button
                 onClick={() => { bpmRef.current = 0; tapTimesRef.current = []; }}
-                className="mt-2 text-[10px] text-white/20 hover:text-white/45 transition-colors"
+                className="mt-2 text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition-colors"
               >
                 clear
               </button>
@@ -565,21 +565,21 @@ export default function OperatorPanel() {
           </div>
 
           {/* Mic */}
-          <div className="px-4 py-3 border-b border-white/10">
-            <div className="text-[10px] tracking-wider text-white/35 mb-2">MIC — crowd noise</div>
+          <div className="px-4 py-3 border-b border-border">
+            <div className="text-[10px] tracking-wider text-muted-foreground/70 mb-2">MIC — crowd noise</div>
             <div className="flex items-center gap-2 mb-2">
               <button
                 onClick={micRunning ? stopMic : startMic}
                 className={`text-[10px] tracking-wider px-3 py-1.5 rounded border transition-all ${
                   micRunning
-                    ? "border-emerald-500/40 text-emerald-400 bg-emerald-900/20"
-                    : "border-white/20 text-white/45 hover:border-white/35"
+                    ? "border-violet-500/40 text-violet-400 bg-violet-900/20"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
                 {micRunning ? "● LIVE" : "START MIC"}
               </button>
               {micRunning && (
-                <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-75"
                     style={{
@@ -592,40 +592,40 @@ export default function OperatorPanel() {
             </div>
             {micRunning && (
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-white/30">GAIN</span>
+                <span className="text-[10px] text-muted-foreground/70">GAIN</span>
                 <input
                   type="range" min="0.5" max="4" step="0.1"
                   value={gain}
                   onChange={(e) => setGain(parseFloat(e.target.value))}
-                  className="flex-1 accent-white"
+                  className="flex-1 accent-primary"
                 />
-                <span className="text-[10px] text-white/30 w-7 text-right">{gain.toFixed(1)}×</span>
+                <span className="text-[10px] text-muted-foreground/70 w-7 text-right">{gain.toFixed(1)}×</span>
               </div>
             )}
             {micError && (
-              <p className="text-[10px] text-rose-400/70 mt-1">{micError}</p>
+              <p className="text-[10px] text-violet-400/70 mt-1">{micError}</p>
             )}
           </div>
 
           {/* MIDI */}
           <div className="px-4 py-3">
-            <div className="text-[10px] tracking-wider text-white/35 mb-2">MIDI</div>
-            <div className={`text-[11px] ${ui.midiDevice ? "text-emerald-400" : "text-white/25"}`}>
+            <div className="text-[10px] tracking-wider text-muted-foreground/70 mb-2">MIDI</div>
+            <div className={`text-[11px] ${ui.midiDevice ? "text-violet-400" : "text-muted-foreground/70"}`}>
               {ui.midiDevice ? `● ${ui.midiDevice}` : "○ No device detected"}
             </div>
             {ui.lastMidi && (
-              <div className="text-[10px] text-white/35 mt-1 font-mono">{ui.lastMidi}</div>
+              <div className="text-[10px] text-muted-foreground/70 mt-1 font-mono">{ui.lastMidi}</div>
             )}
-            <div className="text-[10px] text-white/18 mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.18)" }}>
+            <div className="text-[10px] text-muted-foreground/70 mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.18)" }}>
               Notes C3–A3 → scenes 1–6<br />CC48 → tap beat
             </div>
           </div>
         </div>
 
-        <div className="px-4 py-3 border-t border-white/10 flex-shrink-0 space-y-1">
+        <div className="px-4 py-3 border-t border-border flex-shrink-0 space-y-1">
           <Link
             href="/dream"
-            className="block text-[10px] text-white/25 hover:text-white/55 transition-colors"
+            className="block text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition-colors"
           >
             ← back to sandbox
           </Link>

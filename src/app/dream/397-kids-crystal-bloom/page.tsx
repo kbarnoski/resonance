@@ -249,13 +249,13 @@ export default function CrystalBloomPage() {
   }, []);
 
   const modeLabel: Record<InputMode, { text: string; cls: string }> = {
-    mic: { text: "listening to you", cls: "text-emerald-300/95" },
+    mic: { text: "listening to you", cls: "text-violet-300/95" },
     touch: { text: "press-and-hold breath", cls: "text-violet-300" },
-    auto: { text: "breathing on its own", cls: "text-amber-300/95" },
+    auto: { text: "breathing on its own", cls: "text-violet-300/95" },
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#05060c] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#05060c] text-foreground">
       {/* ambient backdrop glow that warms as the tower blooms */}
       <div
         aria-hidden
@@ -270,10 +270,10 @@ export default function CrystalBloomPage() {
       {/* header */}
       <header className="relative z-10 flex items-start justify-between gap-4 px-5 pt-6">
         <div>
-          <h1 className="font-serif text-3xl leading-tight text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">
             Crystal Bloom
           </h1>
-          <p className="mt-1 max-w-md text-base text-white/75">
+          <p className="mt-1 max-w-md text-base text-muted-foreground">
             Blow or hum, and grow a tower of singing crystal bells tuned to{" "}
             <span className="text-violet-300">pure harmonic ratios</span> — a
             glassy, beating-free chord unlike any piano.
@@ -281,7 +281,7 @@ export default function CrystalBloomPage() {
         </div>
         <Link
           href="#design-notes"
-          className="shrink-0 font-mono text-xs text-white/55 underline-offset-4 hover:text-white/80 hover:underline"
+          className="shrink-0 font-mono text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
         >
           Read the design notes
         </Link>
@@ -399,7 +399,7 @@ export default function CrystalBloomPage() {
           )}
         </div>
         {micError && (
-          <p className="mt-2 max-w-md text-center text-base text-rose-300">
+          <p className="mt-2 max-w-md text-center text-base text-violet-300">
             {micError}
           </p>
         )}
@@ -410,11 +410,11 @@ export default function CrystalBloomPage() {
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-end gap-4 pb-16">
           <button
             onClick={start}
-            className="min-h-[84px] rounded-3xl bg-violet-500/20 px-12 py-6 text-2xl font-medium text-white ring-2 ring-violet-300/60 transition hover:bg-violet-500/30 active:scale-[0.98]"
+            className="min-h-[84px] rounded-3xl bg-violet-500/20 px-12 py-6 text-2xl font-medium text-foreground ring-2 ring-violet-300/60 transition hover:bg-violet-500/30 active:scale-[0.98]"
           >
             ✦ Tap to begin ✦
           </button>
-          <p className="px-6 text-center text-base text-white/75">
+          <p className="px-6 text-center text-base text-muted-foreground">
             Then blow or hum into the mic — or press and hold the bells.
           </p>
         </div>
@@ -423,9 +423,9 @@ export default function CrystalBloomPage() {
       {/* design notes */}
       <section
         id="design-notes"
-        className="relative z-10 mx-auto max-w-2xl px-6 pb-16 pt-8 text-base text-white/75"
+        className="relative z-10 mx-auto max-w-2xl px-6 pb-16 pt-8 text-base text-muted-foreground"
       >
-        <h2 className="font-serif text-xl text-white">Design notes</h2>
+        <h2 className="font-serif text-xl text-foreground">Design notes</h2>
         <p className="mt-2">
           Every bell is tuned to a{" "}
           <span className="text-violet-300">pure integer frequency ratio</span>{" "}
@@ -435,7 +435,7 @@ export default function CrystalBloomPage() {
           stillness is the whole point, and it is something a 12-tone equal-
           tempered piano physically cannot produce.
         </p>
-        <p className="mt-3 text-white/55">
+        <p className="mt-3 text-muted-foreground">
           INPUT: microphone loudness (RMS envelope) · OUTPUT: animated inline SVG
           · TECHNIQUE: just-intonation additive bell synthesis · See the
           folder&apos;s README.md for the full tuning table and references

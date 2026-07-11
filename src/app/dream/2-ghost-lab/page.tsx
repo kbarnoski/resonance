@@ -208,14 +208,14 @@ export default function GhostLab() {
     mode === "lora-compare" ? "B — no LoRA (flux-dev)" : "B";
 
   return (
-    <div className="min-h-screen bg-black text-white/90 font-mono">
+    <div className="min-h-screen bg-black text-foreground font-mono">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
 
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-xl tracking-tight">Ghost LoRA Lab</h1>
-            <p className="text-xs text-white/45 mt-1 max-w-md leading-relaxed">
+            <p className="text-xs text-muted-foreground mt-1 max-w-md leading-relaxed">
               Compare Ghost image generations side-by-side. Vote to build intuition
               for what works. Requires admin login for Ghost LoRA (flux-lora) quality;
               others get schnell automatically.
@@ -223,7 +223,7 @@ export default function GhostLab() {
           </div>
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/60 whitespace-nowrap mt-1"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground whitespace-nowrap mt-1"
           >
             ← back
           </Link>
@@ -237,8 +237,8 @@ export default function GhostLab() {
               onClick={() => setMode(m)}
               className={`px-3 py-1 text-[11px] tracking-wider border rounded transition ${
                 mode === m
-                  ? "border-white/60 bg-white/10 text-white"
-                  : "border-white/20 text-white/40 hover:border-white/40 hover:text-white/60"
+                  ? "border-border bg-muted text-foreground"
+                  : "border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground"
               }`}
             >
               {m === "lora-compare" ? "LoRA vs no-LoRA" : "A/B Prompts"}
@@ -248,10 +248,10 @@ export default function GhostLab() {
 
         {/* Scene picker */}
         <div className="flex items-center gap-3">
-          <span className="text-[10px] text-white/35 tracking-wider">SCENE</span>
+          <span className="text-[10px] text-muted-foreground/70 tracking-wider">SCENE</span>
           <select
             onChange={(e) => handleSceneChange(parseInt(e.target.value, 10))}
-            className="bg-black border border-white/20 rounded text-[11px] text-white/70 px-2 py-1 focus:outline-none focus:border-white/50"
+            className="bg-black border border-border rounded text-[11px] text-muted-foreground px-2 py-1 focus:outline-none focus:border-border"
           >
             {SCENES.map((s, i) => (
               <option key={i} value={i}>
@@ -265,12 +265,12 @@ export default function GhostLab() {
         {/* Prompt inputs */}
         {mode === "lora-compare" ? (
           <div className="space-y-2">
-            <span className="text-[10px] text-white/35 tracking-wider">PROMPT (shared)</span>
+            <span className="text-[10px] text-muted-foreground/70 tracking-wider">PROMPT (shared)</span>
             <textarea
               value={sharedPrompt}
               onChange={(e) => setSharedPrompt(e.target.value)}
               rows={4}
-              className="w-full bg-white/5 border border-white/15 rounded text-[11px] text-white/80 p-2 resize-none focus:outline-none focus:border-white/40 leading-relaxed"
+              className="w-full bg-muted border border-border rounded text-[11px] text-foreground p-2 resize-none focus:outline-none focus:border-border leading-relaxed"
             />
             <div className="grid grid-cols-2 gap-4 pt-1">
               <SeedRow label={labelA} seed={seedA} setSeed={setSeedA} />
@@ -281,27 +281,27 @@ export default function GhostLab() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] text-white/35 tracking-wider">PROMPT A</span>
+                <span className="text-[10px] text-muted-foreground/70 tracking-wider">PROMPT A</span>
                 <LoraToggle checked={useLoraA} onChange={setUseLoraA} />
               </div>
               <textarea
                 value={promptA}
                 onChange={(e) => setPromptA(e.target.value)}
                 rows={5}
-                className="w-full bg-white/5 border border-white/15 rounded text-[11px] text-white/80 p-2 resize-none focus:outline-none focus:border-white/40 leading-relaxed"
+                className="w-full bg-muted border border-border rounded text-[11px] text-foreground p-2 resize-none focus:outline-none focus:border-border leading-relaxed"
               />
               <SeedRow label="" seed={seedA} setSeed={setSeedA} />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] text-white/35 tracking-wider">PROMPT B</span>
+                <span className="text-[10px] text-muted-foreground/70 tracking-wider">PROMPT B</span>
                 <LoraToggle checked={useLoraB} onChange={setUseLoraB} />
               </div>
               <textarea
                 value={promptB}
                 onChange={(e) => setPromptB(e.target.value)}
                 rows={5}
-                className="w-full bg-white/5 border border-white/15 rounded text-[11px] text-white/80 p-2 resize-none focus:outline-none focus:border-white/40 leading-relaxed"
+                className="w-full bg-muted border border-border rounded text-[11px] text-foreground p-2 resize-none focus:outline-none focus:border-border leading-relaxed"
               />
               <SeedRow label="" seed={seedB} setSeed={setSeedB} />
             </div>
@@ -313,7 +313,7 @@ export default function GhostLab() {
           <button
             onClick={generate}
             disabled={isGenerating}
-            className="px-8 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-8 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isGenerating ? "Generating…" : "Generate A vs B"}
           </button>
@@ -330,23 +330,23 @@ export default function GhostLab() {
             ).map(({ res, label }) => (
               <div key={label} className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-white/40 tracking-wider">
+                  <span className="text-[10px] text-muted-foreground/70 tracking-wider">
                     {label.toUpperCase()}
                   </span>
                   {res.model && res.cost != null && (
-                    <span className="text-[9px] text-white/25">
+                    <span className="text-[9px] text-muted-foreground/70">
                       {res.model.split("/").pop()} · ${res.cost.toFixed(3)}
                     </span>
                   )}
                 </div>
-                <div className="aspect-square bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
+                <div className="aspect-square bg-muted border border-border rounded overflow-hidden flex items-center justify-center">
                   {res.loading && (
-                    <div className="text-[11px] text-white/30 animate-pulse">
+                    <div className="text-[11px] text-muted-foreground/70 animate-pulse">
                       generating…
                     </div>
                   )}
                   {res.error && !res.loading && (
-                    <p className="text-[11px] text-rose-300/70 px-6 text-center leading-relaxed">
+                    <p className="text-[11px] text-violet-300/70 px-6 text-center leading-relaxed">
                       {res.error}
                     </p>
                   )}
@@ -367,7 +367,7 @@ export default function GhostLab() {
         {/* Vote buttons */}
         {hasResults && !isGenerating && (
           <div className="space-y-3">
-            <p className="text-[10px] text-white/30 text-center tracking-wider">
+            <p className="text-[10px] text-muted-foreground/70 text-center tracking-wider">
               WHICH IS BETTER?
             </p>
             <div className="flex justify-center gap-2 flex-wrap">
@@ -377,8 +377,8 @@ export default function GhostLab() {
                   onClick={() => vote(v)}
                   className={`px-4 py-1.5 text-[11px] tracking-wider border rounded transition ${
                     lastVote === v
-                      ? "border-white bg-white/15 text-white"
-                      : "border-white/20 text-white/50 hover:border-white/50 hover:bg-white/5"
+                      ? "border-border bg-muted text-foreground"
+                      : "border-border text-muted-foreground hover:border-border hover:bg-accent"
                   }`}
                 >
                   {v === "A"
@@ -392,7 +392,7 @@ export default function GhostLab() {
               ))}
             </div>
             {lastVote && (
-              <p className="text-[10px] text-white/25 text-center">
+              <p className="text-[10px] text-muted-foreground/70 text-center">
                 voted — saved to local history
               </p>
             )}
@@ -401,34 +401,34 @@ export default function GhostLab() {
 
         {/* Vote tally */}
         {total > 0 && (
-          <div className="border-t border-white/10 pt-4 space-y-2">
-            <p className="text-[10px] text-white/30 tracking-wider">
+          <div className="border-t border-border pt-4 space-y-2">
+            <p className="text-[10px] text-muted-foreground/70 tracking-wider">
               SESSION TALLY — {total} vote{total !== 1 ? "s" : ""}
             </p>
-            <div className="flex gap-6 text-[11px] text-white/60">
+            <div className="flex gap-6 text-[11px] text-muted-foreground">
               <span>
-                👍 A: <strong className="text-white">{tally.A}</strong>
+                👍 A: <strong className="text-foreground">{tally.A}</strong>
               </span>
               <span>
-                Both: <strong className="text-white">{tally.both}</strong>
+                Both: <strong className="text-foreground">{tally.both}</strong>
               </span>
               <span>
-                👍 B: <strong className="text-white">{tally.B}</strong>
+                👍 B: <strong className="text-foreground">{tally.B}</strong>
               </span>
               <span>
-                Neither: <strong className="text-white">{tally.neither}</strong>
+                Neither: <strong className="text-foreground">{tally.neither}</strong>
               </span>
             </div>
           </div>
         )}
 
         {/* Footer */}
-        <div className="pt-4 text-[10px] text-white/20 flex gap-4">
+        <div className="pt-4 text-[10px] text-muted-foreground/70 flex gap-4">
           <a
             href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/src/app/dream/2-ghost-lab/README.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white/50"
+            className="hover:text-muted-foreground"
           >
             design notes ↗
           </a>
@@ -452,20 +452,20 @@ function SeedRow({
   return (
     <div className="flex items-center gap-2">
       {label && (
-        <span className="text-[9px] text-white/30 truncate max-w-[120px]">
+        <span className="text-[9px] text-muted-foreground/70 truncate max-w-[120px]">
           {label}
         </span>
       )}
-      <span className="text-[9px] text-white/25 ml-auto">seed</span>
+      <span className="text-[9px] text-muted-foreground/70 ml-auto">seed</span>
       <input
         type="number"
         value={seed}
         onChange={(e) => setSeed(parseInt(e.target.value, 10) || 0)}
-        className="w-28 bg-white/5 border border-white/15 rounded text-[10px] text-white/60 px-2 py-0.5 focus:outline-none focus:border-white/35"
+        className="w-28 bg-muted border border-border rounded text-[10px] text-muted-foreground px-2 py-0.5 focus:outline-none focus:border-border"
       />
       <button
         onClick={() => setSeed(Math.floor(Math.random() * 999_999_999))}
-        className="text-[10px] text-white/30 hover:text-white/60 border border-white/15 hover:border-white/35 rounded px-2 py-0.5"
+        className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border rounded px-2 py-0.5"
       >
         ↺
       </button>
@@ -481,12 +481,12 @@ function LoraToggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="flex items-center gap-1.5 text-[10px] text-white/40 cursor-pointer select-none">
+    <label className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70 cursor-pointer select-none">
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="accent-white"
+        className="accent-primary"
       />
       Ghost LoRA
     </label>

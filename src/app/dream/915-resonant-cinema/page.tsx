@@ -597,7 +597,7 @@ export default function ResonantCinema() {
   const dreaming = phase === "dreaming";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* GPU canvas — always behind the UI once started. */}
       <canvas
         ref={canvasRef}
@@ -608,23 +608,23 @@ export default function ResonantCinema() {
       {/* Intro / start gate. */}
       {!started && (
         <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="font-mono text-3xl font-semibold tracking-tight text-white/95 sm:text-4xl">
+          <h1 className="font-mono text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Resonant Cinema
           </h1>
-          <p className="text-base leading-relaxed text-white/75">
+          <p className="text-base leading-relaxed text-muted-foreground">
             Your playing dreams a short film of itself: your sound is distilled
             into a single still image, bloomed into a living video, and then
             kept moving — frame by frame — by your own live audio.
           </p>
           <button
             onClick={start}
-            className="min-h-[44px] rounded-lg border border-white/30 bg-white/5 px-4 py-2.5 font-mono text-base text-white/95 transition-colors hover:border-amber-300/70 hover:bg-white/10"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:border-violet-300/70 hover:bg-accent"
           >
             Begin — start the ambient bed
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             A living nebula plays on load. Nothing is sent anywhere until you
-            click <span className="text-amber-200/90">Dream the film</span>.
+            click <span className="text-violet-200/90">Dream the film</span>.
           </p>
         </div>
       )}
@@ -634,10 +634,10 @@ export default function ResonantCinema() {
         <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div className="pointer-events-auto max-w-md">
-              <h1 className="font-mono text-xl font-semibold tracking-tight text-white/95 drop-shadow">
+              <h1 className="font-mono text-xl font-semibold tracking-tight text-foreground drop-shadow">
                 Resonant Cinema
               </h1>
-              <p className="mt-1 text-base text-white/75 drop-shadow">
+              <p className="mt-1 text-base text-muted-foreground drop-shadow">
                 {phase === "film"
                   ? "The AI film is live; your audio is animating it."
                   : "A synthesized nebula, driven by your sound."}
@@ -645,29 +645,29 @@ export default function ResonantCinema() {
             </div>
             <a
               href="#design-notes"
-              className="pointer-events-auto font-mono text-base text-amber-200/80 underline underline-offset-4 transition-colors hover:text-amber-200"
+              className="pointer-events-auto font-mono text-base text-violet-200/80 underline underline-offset-4 transition-colors hover:text-violet-200"
             >
               Read the design notes
             </a>
           </div>
 
           <div className="pointer-events-auto flex flex-col items-center gap-3 pb-2">
-            <div className="font-mono text-base text-white/75 drop-shadow">
-              mood: <span className="text-white/95">{moodLabel}</span>
+            <div className="font-mono text-base text-muted-foreground drop-shadow">
+              mood: <span className="text-foreground">{moodLabel}</span>
             </div>
 
             {errorMsg && (
-              <p className="max-w-md text-center text-base text-rose-300 drop-shadow">
+              <p className="max-w-md text-center text-base text-violet-300 drop-shadow">
                 {errorMsg}
               </p>
             )}
             {micNote && (
-              <p className="max-w-md text-center text-base text-white/75 drop-shadow">
+              <p className="max-w-md text-center text-base text-muted-foreground drop-shadow">
                 {micNote}
               </p>
             )}
             {!webglOk && (
-              <p className="max-w-md text-center text-base text-rose-300 drop-shadow">
+              <p className="max-w-md text-center text-base text-violet-300 drop-shadow">
                 WebGL is unavailable on this device — the ambient bed still
                 plays, but the visual canvas is disabled.
               </p>
@@ -677,18 +677,18 @@ export default function ResonantCinema() {
               <button
                 onClick={dreamTheFilm}
                 disabled={dreaming}
-                className="min-h-[44px] rounded-lg border border-amber-300/50 bg-amber-300/10 px-4 py-2.5 font-mono text-base text-white/95 transition-colors hover:border-amber-300/80 hover:bg-amber-300/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-h-[44px] rounded-lg border border-violet-300/50 bg-violet-300/10 px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:border-violet-300/80 hover:bg-violet-300/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {dreaming ? "dreaming the film…" : "Dream the film"}
               </button>
               <button
                 onClick={toggleMic}
-                className="min-h-[44px] rounded-lg border border-white/25 bg-white/5 px-4 py-2.5 font-mono text-base text-white/95 transition-colors hover:border-white/50 hover:bg-white/10"
+                className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:border-border hover:bg-accent"
               >
                 {micOn ? "use ambient bed" : "use microphone"}
               </button>
             </div>
-            <p className="max-w-md text-center text-base text-white/75 drop-shadow">
+            <p className="max-w-md text-center text-base text-muted-foreground drop-shadow">
               Each dream calls a paid two-model AI chain
               (flux-schnell → LTX-Video). It fires only on your click.
             </p>
@@ -699,9 +699,9 @@ export default function ResonantCinema() {
       {/* Anchor target for the in-corner design-notes link. */}
       <section
         id="design-notes"
-        className="relative z-10 mx-auto max-w-2xl px-6 py-16 text-white/75"
+        className="relative z-10 mx-auto max-w-2xl px-6 py-16 text-muted-foreground"
       >
-        <h2 className="font-mono text-xl font-semibold text-white/95">
+        <h2 className="font-mono text-xl font-semibold text-foreground">
           Design notes
         </h2>
         <p className="mt-3 text-base leading-relaxed">
@@ -711,7 +711,7 @@ export default function ResonantCinema() {
           a fragment-shader pass over the clip every frame — ripple from energy,
           bloom from brightness, RGB-split from spectral flux. Before the first
           dream, and on any error, a synthesized GPU nebula keeps the scene
-          alive. See <span className="font-mono text-amber-200/90">README.md</span>{" "}
+          alive. See <span className="font-mono text-violet-200/90">README.md</span>{" "}
           in this folder for the full write-up and references.
         </p>
       </section>

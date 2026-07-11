@@ -432,7 +432,7 @@ export default function KidsClapAlongPage() {
 
   // ───────────────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070611] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070611] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -443,13 +443,13 @@ export default function KidsClapAlongPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#0b0918]/70 to-[#070611]/90 px-6 text-center">
           <div className="flex flex-col items-center gap-3">
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
               371 · clap-along
             </span>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Clap with a creature.
             </h1>
-            <p className="max-w-md text-base text-white/80">
+            <p className="max-w-md text-base text-foreground">
               A friendly creature claps a little rhythm. Clap it back with your
               real hands — the phone listens — and every time you do, the song you
               share gets one clap longer.
@@ -458,12 +458,12 @@ export default function KidsClapAlongPage() {
 
           <button
             onClick={start}
-            className="min-h-[64px] rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-10 text-xl font-semibold text-[#2a1402] shadow-lg shadow-amber-500/25 transition-transform active:scale-95"
+            className="min-h-[64px] rounded-full bg-gradient-to-r from-violet-300 to-violet-400 px-10 text-xl font-semibold text-[#2a1402] shadow-lg shadow-violet-500/25 transition-transform active:scale-95"
           >
             Clap to play ▸
           </button>
 
-          <p className="max-w-sm text-base text-white/60">
+          <p className="max-w-sm text-base text-muted-foreground">
             We&apos;ll ask for the microphone so it can hear your claps. No mic?
             Tap the screen to clap — or just watch, it plays itself.
           </p>
@@ -473,30 +473,30 @@ export default function KidsClapAlongPage() {
       {/* running HUD */}
       {mode === "running" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col items-center gap-1 px-6 pt-5 text-center">
-          <p className="font-mono text-sm uppercase tracking-[0.22em] text-white/85">
+          <p className="font-mono text-sm uppercase tracking-[0.22em] text-foreground">
             {PHASE_HINT[phase]}
           </p>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-muted-foreground">
             song length · {Math.max(2, level + 2)} claps
           </p>
           {micDenied && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               No microphone — tap the screen to clap instead, or just watch it
               play itself.
             </p>
           )}
           {!micDenied && usingTapFallback && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               Tap-to-clap is on — tap the screen, or let it play itself.
             </p>
           )}
           {autoDemo && (
-            <p className="max-w-md text-base text-white/75">
+            <p className="max-w-md text-base text-muted-foreground">
               Playing by itself — clap (or tap) any time to join in.
             </p>
           )}
           {noWebgl && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               Graphics need WebGL2 — the creature is hidden, but the sound still
               plays.
             </p>
@@ -507,11 +507,11 @@ export default function KidsClapAlongPage() {
       {/* D-Dorian legend */}
       {mode === "running" && (
         <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
-          <div className="flex gap-3 font-mono text-xs text-white/60">
+          <div className="flex gap-3 font-mono text-xs text-muted-foreground">
             {SCALE_NAMES.map((n, i) => (
               <span key={i}>{n}</span>
             ))}
-            <span className="text-white/40">· D-dorian</span>
+            <span className="text-muted-foreground/70">· D-dorian</span>
           </div>
         </div>
       )}
@@ -519,37 +519,37 @@ export default function KidsClapAlongPage() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 overflow-y-auto bg-black/85 px-6 py-16 backdrop-blur-md">
-          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-white/80">
-            <h2 className="text-2xl font-semibold text-white">
+          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               Clap-Along — design notes
             </h2>
             <p>
-              <span className="text-white/95">The one question:</span> what if a
+              <span className="text-foreground">The one question:</span> what if a
               4-year-old could have a clapping conversation with a friendly
               creature — clap with their real hands, the phone hears it, and the
               shared rhythm grows each time they clap it back?
             </p>
             <p>
-              <span className="text-white/95">Hearing a clap.</span> A clap is a
+              <span className="text-foreground">Hearing a clap.</span> A clap is a
               sharp broadband transient. Each frame we read the microphone&apos;s{" "}
-              <span className="font-mono text-amber-200">FFT</span> and compute a{" "}
-              <span className="font-mono text-amber-200">spectral-flux</span> /
+              <span className="font-mono text-violet-200">FFT</span> and compute a{" "}
+              <span className="font-mono text-violet-200">spectral-flux</span> /
               high-frequency-content novelty — the sum of positive,
               high-weighted bin-to-bin energy increases. An{" "}
-              <span className="font-mono text-amber-200">adaptive threshold</span>{" "}
+              <span className="font-mono text-violet-200">adaptive threshold</span>{" "}
               (a slow running mean of that novelty) self-tunes to the room, and a{" "}
-              <span className="font-mono text-amber-200">~140 ms refractory</span>{" "}
+              <span className="font-mono text-violet-200">~140 ms refractory</span>{" "}
               window makes a single clap — even a wobbly double-tap — count once.
             </p>
             <p>
-              <span className="text-white/95">A growing song.</span> The creature
+              <span className="text-foreground">A growing song.</span> The creature
               calls a short rhythm; we record your claps&apos; onset times and
               match them against the target within a generous tolerance (little
               hands are forgiven). A good-enough answer makes the creature delight
@@ -558,23 +558,23 @@ export default function KidsClapAlongPage() {
               warmly replays the same pattern.
             </p>
             <p>
-              <span className="text-white/95">One pipeline, three doors.</span>{" "}
+              <span className="text-foreground">One pipeline, three doors.</span>{" "}
               Real claps reach the detector through the mic; a screen-tap and the
               hands-free auto-demo play a real broadband burst into the{" "}
               <span className="italic">same</span> analyser, so all three are
               judged by the identical onset machine.
             </p>
             <p>
-              <span className="text-white/95">Sound &amp; light.</span> Tuned clap
+              <span className="text-foreground">Sound &amp; light.</span> Tuned clap
               voices in{" "}
-              <span className="font-mono text-amber-200">D-Dorian</span> (D E F G
+              <span className="font-mono text-violet-200">D-Dorian</span> (D E F G
               A B C — explicitly not C-major-pentatonic) over an always-on soft
               D+A drone, all through a limiter so it can never blast. The visuals
               are raw WebGL2 — one breathing creature and a row of clap beads that
               grows with the song — composited matte (no additive glow).
             </p>
             <p>
-              <span className="text-white/95">References.</span>{" "}
+              <span className="text-foreground">References.</span>{" "}
               <span className="italic">Drumball</span> (Audio Mostly 2024), a
               tangible call-and-response drumming system inspired by the West
               African djembe; Steve Reich&apos;s{" "}
@@ -582,7 +582,7 @@ export default function KidsClapAlongPage() {
               composition; and the African call-and-response / talking-drum
               tradition.
             </p>
-            <p className="text-sm text-white/60">
+            <p className="text-sm text-muted-foreground">
               Tags — INPUT: microphone / acoustic clap · OUTPUT: raw WebGL2 ·
               TECHNIQUE: spectral-flux onset detection + growing call-and-response
               · VIBE: kids, warm, calm-but-playful, D-Dorian.
@@ -593,7 +593,7 @@ export default function KidsClapAlongPage() {
 
       <Link
         href="/dream"
-        className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         ← dream
       </Link>

@@ -347,19 +347,19 @@ export default function Page() {
     return (
       <div className="fixed inset-0 bg-[#05050f] flex flex-col items-center justify-center gap-8 px-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Marble Music 🎵</h1>
-          <p className="text-white/75 text-base max-w-xs">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Marble Music 🎵</h1>
+          <p className="text-muted-foreground text-base max-w-xs">
             Draw ramps — drop marbles — hear the notes bounce!
           </p>
         </div>
         <button
           onClick={handleStart}
-          className="bg-violet-500 hover:bg-violet-400 text-white text-xl font-semibold
+          className="bg-violet-500 hover:bg-violet-400 text-foreground text-xl font-semibold
                      px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
         >
           ▶ Start
         </button>
-        <p className="text-white/55 text-sm">For kids 4+ · Zero permissions needed</p>
+        <p className="text-muted-foreground text-sm">For kids 4+ · Zero permissions needed</p>
       </div>
     )
   }
@@ -372,29 +372,29 @@ export default function Page() {
       {/* header */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-3 pb-2
                       pointer-events-none select-none">
-        <span className="text-white/75 text-base font-semibold">Marble Music 🎵</span>
-        <Link href="/dream" className="text-white/55 text-sm pointer-events-auto hover:text-white/80">
+        <span className="text-muted-foreground text-base font-semibold">Marble Music 🎵</span>
+        <Link href="/dream" className="text-muted-foreground text-sm pointer-events-auto hover:text-foreground">
           ← dream
         </Link>
       </div>
 
       {/* hint */}
       <div className="absolute top-14 left-0 right-0 text-center pointer-events-none select-none">
-        <span className="text-white/40 text-sm">Draw a ramp · Marbles bounce the notes</span>
+        <span className="text-muted-foreground/70 text-sm">Draw a ramp · Marbles bounce the notes</span>
       </div>
 
       {/* controls */}
       <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4 px-6">
         <button
           onClick={handleDrop}
-          className="bg-violet-600/80 hover:bg-violet-500 backdrop-blur text-white text-lg font-semibold
+          className="bg-violet-600/80 hover:bg-violet-500 backdrop-blur text-foreground text-lg font-semibold
                      px-6 py-3 rounded-2xl min-h-[56px] min-w-[140px] transition-colors"
         >
           Drop 🎵
         </button>
         <button
           onClick={handleClear}
-          className="bg-white/10 hover:bg-white/20 backdrop-blur text-white/80 text-base font-medium
+          className="bg-muted hover:bg-accent backdrop-blur text-foreground text-base font-medium
                      px-6 py-3 rounded-2xl min-h-[56px] min-w-[100px] transition-colors"
         >
           Clear
@@ -404,7 +404,7 @@ export default function Page() {
       {/* design notes */}
       <div className="absolute bottom-6 right-4 pointer-events-auto">
         <Link href="/dream/169-kids-marble-run/readme"
-          className="text-white/40 text-xs hover:text-white/60">notes</Link>
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground">notes</Link>
       </div>
     </div>
   )

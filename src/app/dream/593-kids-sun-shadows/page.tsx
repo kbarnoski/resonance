@@ -336,7 +336,7 @@ export default function Page() {
   }
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#140b22] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#140b22] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -345,8 +345,8 @@ export default function Page() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 px-5 pt-4">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">Move the Sun</h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Move the Sun</h1>
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           Drag the big sun across the sky. The long shadows it throws sweep over the
           glowing stones and make them sing.
         </p>
@@ -355,7 +355,7 @@ export default function Page() {
       {/* read the design notes */}
       <Link
         href="/dream/593-kids-sun-shadows/README.md"
-        className="pointer-events-auto absolute right-3 top-3 z-20 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 backdrop-blur hover:text-white"
+        className="pointer-events-auto absolute right-3 top-3 z-20 rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground backdrop-blur hover:text-foreground"
       >
         Read the design notes
       </Link>
@@ -364,7 +364,7 @@ export default function Page() {
       {started && (
         <button
           onClick={clearObjects}
-          className="pointer-events-auto absolute bottom-5 right-5 z-20 flex min-h-[44px] items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 backdrop-blur hover:bg-white/20"
+          className="pointer-events-auto absolute bottom-5 right-5 z-20 flex min-h-[44px] items-center gap-2 rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
           aria-label="Clear planted objects"
         >
           <span aria-hidden>↺</span> Reset
@@ -378,11 +378,11 @@ export default function Page() {
           className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#140b22]/60 backdrop-blur-sm"
           aria-label="Start"
         >
-          <span className="mb-5 inline-flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-b from-amber-200 to-orange-400 text-5xl shadow-[0_0_70px_20px_rgba(255,190,120,0.55)]">
+          <span className="mb-5 inline-flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-b from-violet-200 to-violet-400 text-5xl shadow-[0_0_70px_20px_rgba(255,190,120,0.55)]">
             ☀
           </span>
-          <span className="text-xl text-white/95">Tap to begin</span>
-          <span className="mt-1 text-base text-white/75">then drag the sun</span>
+          <span className="text-xl text-foreground">Tap to begin</span>
+          <span className="mt-1 text-base text-muted-foreground">then drag the sun</span>
         </button>
       )}
     </main>

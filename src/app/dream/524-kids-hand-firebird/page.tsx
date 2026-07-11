@@ -807,24 +807,24 @@ export default function FirebirdPage() {
             />
           </div>
 
-          <h1 className="text-2xl font-bold text-white text-center tracking-wide">
+          <h1 className="text-2xl font-bold text-foreground text-center tracking-wide">
             Firebird
           </h1>
-          <p className="text-base text-white/75 text-center max-w-xs leading-relaxed">
+          <p className="text-base text-muted-foreground text-center max-w-xs leading-relaxed">
             Hold your hand up and watch a creature of light form around your fingers
           </p>
-          <p className="text-sm text-white/50 text-center max-w-xs">
+          <p className="text-sm text-muted-foreground text-center max-w-xs">
             Opens its wings and sings when you open your hand
           </p>
 
           <button
             onClick={() => setStarted(true)}
-            className="px-4 py-2.5 bg-orange-500 hover:bg-orange-400 active:bg-orange-600 text-white font-semibold rounded-full text-lg min-h-[44px] min-w-[220px] transition-colors"
+            className="px-4 py-2.5 bg-violet-500 hover:bg-violet-400 active:bg-violet-600 text-foreground font-semibold rounded-full text-lg min-h-[44px] min-w-[220px] transition-colors"
           >
             Wake the Firebird
           </button>
 
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-muted-foreground/70">
             Glowing auto-demo starts immediately · camera optional
           </p>
         </div>
@@ -832,7 +832,7 @@ export default function FirebirdPage() {
 
       {/* Status message */}
       {started && status && (
-        <p className="absolute bottom-4 left-0 right-0 text-center text-white/75 text-sm pointer-events-none px-4">
+        <p className="absolute bottom-4 left-0 right-0 text-center text-muted-foreground text-sm pointer-events-none px-4">
           {status}
         </p>
       )}
@@ -840,7 +840,7 @@ export default function FirebirdPage() {
       {/* WebGL2 fallback notice */}
       {webglFailed && started && (
         <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none">
-          <p className="text-rose-300 text-sm bg-black/60 px-3 py-1.5 rounded-lg">
+          <p className="text-violet-300 text-sm bg-black/60 px-3 py-1.5 rounded-lg">
             WebGL2 unavailable — Canvas2D mode
           </p>
         </div>

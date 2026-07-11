@@ -527,7 +527,7 @@ export default function ShapeDrumsPage() {
   };
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#050507] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#050507] text-foreground">
       {/* Full-bleed animated canvas */}
       <canvas
         ref={canvasRef}
@@ -537,10 +537,10 @@ export default function ShapeDrumsPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col gap-1 p-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Shape Drums
         </h1>
-        <p className="max-w-md text-base text-white/80">
+        <p className="max-w-md text-base text-foreground">
           Build a rhythm by spinning shapes. More sides = more pings. Tap a
           shape to change its sides; the dots make the beat.
         </p>
@@ -582,11 +582,11 @@ export default function ShapeDrumsPage() {
               onClick={addShape}
               disabled={shapes.length >= MAX_SHAPES}
               aria-label="Add a new shape"
-              className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/40 bg-white/10 text-4xl font-bold text-white transition active:scale-95 disabled:opacity-30"
+              className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-border bg-muted text-4xl font-bold text-foreground transition active:scale-95 disabled:opacity-30"
             >
               +
             </button>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               {shapes.length >= MAX_SHAPES
                 ? "Full house!"
                 : "Add another shape"}
@@ -601,15 +601,15 @@ export default function ShapeDrumsPage() {
           onClick={start}
           className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-black/70 backdrop-blur-sm"
         >
-          <span className="text-2xl font-semibold text-white sm:text-4xl">
+          <span className="text-2xl font-semibold text-foreground sm:text-4xl">
             Tap to start
           </span>
-          <span className="max-w-xs text-center text-base text-white/80">
+          <span className="max-w-xs text-center text-base text-foreground">
             Make spinning shapes sing. Each shape plays a warm note that always
             fits.
           </span>
           {!audioOk && (
-            <span className="text-base text-white/75">
+            <span className="text-base text-muted-foreground">
               (Sound is off here, but the shapes still spin.)
             </span>
           )}
@@ -619,16 +619,16 @@ export default function ShapeDrumsPage() {
       {/* Design notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 rounded-lg border border-white/25 bg-black/40 px-4 py-2.5 text-base text-white/80 transition hover:text-white"
+        className="absolute right-4 top-4 z-20 rounded-lg border border-border bg-black/40 px-4 py-2.5 text-base text-foreground transition hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/80 p-6 backdrop-blur">
-          <div className="max-w-lg space-y-3 rounded-2xl border border-white/15 bg-[#0c0c16] p-6">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
-            <p className="text-base text-white/80">
+          <div className="max-w-lg space-y-3 rounded-2xl border border-border bg-[#0c0c16] p-6">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+            <p className="text-base text-foreground">
               The number of <strong>sides</strong> a shape has is its rhythm
               subdivision — a triangle pings 3 times per spin, a hexagon 6. The
               <strong> spin speed</strong> is its tempo. Two shapes spinning at
@@ -636,7 +636,7 @@ export default function ShapeDrumsPage() {
               <em>builds</em> a polyrhythm (3-against-2, 4-against-3) instead of
               tapping pre-approved notes.
             </p>
-            <p className="text-base text-white/80">
+            <p className="text-base text-foreground">
               Each shape carries one tone of a single warm chord, so every
               combination is consonant. There is no wrong move — only rhythm to
               shape. Inspired by the &quot;polyrhythms in shapes&quot;
@@ -645,7 +645,7 @@ export default function ShapeDrumsPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="rounded-lg border border-white/25 px-4 py-2.5 text-base text-white/90 hover:text-white"
+              className="rounded-lg border border-border px-4 py-2.5 text-base text-foreground hover:text-foreground"
             >
               Close
             </button>

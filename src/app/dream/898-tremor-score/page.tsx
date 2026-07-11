@@ -139,16 +139,16 @@ export default function TremorScorePage() {
   const events: ScoreEvent[] = score?.events ?? [];
 
   return (
-    <main className="min-h-screen bg-[#08080b] px-6 py-10 text-white/90 selection:bg-violet-300/30">
+    <main className="min-h-screen bg-[#08080b] px-6 py-10 text-foreground selection:bg-violet-300/30">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6">
-          <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-white/55">
+          <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
             898 · tremor-score
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Tremor Score
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/75">
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
             A live planetary earthquake feed composes a piece &mdash; deciding
             who plays, when, and in what register, while a fixed consonant mode
             keeps every note in tune.
@@ -169,19 +169,19 @@ export default function TremorScorePage() {
                 : "Listen to the last 24 hours of Earth"}
           </button>
           {sourceLabel && (
-            <span className="font-mono text-sm text-white/55">
+            <span className="font-mono text-sm text-muted-foreground">
               {sourceLabel}
             </span>
           )}
         </div>
 
         {errorMsg && (
-          <p className="mb-4 max-w-2xl text-base text-rose-300" role="alert">
+          <p className="mb-4 max-w-2xl text-base text-violet-300" role="alert">
             {errorMsg}
           </p>
         )}
 
-        <figure className="overflow-hidden rounded-xl border border-white/10 bg-[#0c0c11]">
+        <figure className="overflow-hidden rounded-xl border border-border bg-[#0c0c11]">
           <svg
             viewBox={`0 0 ${W} ${H}`}
             className="block w-full"
@@ -289,7 +289,7 @@ export default function TremorScorePage() {
         <div className="mt-4 flex items-start gap-6">
           <svg
             viewBox="0 0 360 180"
-            className="w-64 rounded-lg border border-white/10 bg-[#0c0c11]"
+            className="w-64 rounded-lg border border-border bg-[#0c0c11]"
             role="img"
             aria-label="Epicentre map"
           >
@@ -312,7 +312,7 @@ export default function TremorScorePage() {
               );
             })}
           </svg>
-          <div className="flex-1 font-mono text-sm leading-relaxed text-white/55">
+          <div className="flex-1 font-mono text-sm leading-relaxed text-muted-foreground">
             <p>x &rarr; time (24h compressed to 90s)</p>
             <p>y &rarr; register (magnitude picks the octave)</p>
             <p>radius &rarr; magnitude · pan &rarr; longitude</p>
@@ -329,7 +329,7 @@ export default function TremorScorePage() {
             {showNotes ? "− Design notes" : "+ Design notes"}
           </button>
           {showNotes && (
-            <div className="mt-3 max-w-2xl space-y-3 text-base leading-relaxed text-white/75">
+            <div className="mt-3 max-w-2xl space-y-3 text-base leading-relaxed text-muted-foreground">
               <p>
                 The data decides <em>structure</em> &mdash; who plays, when, and
                 in what register &mdash; never detune. Every pitch is quantised
@@ -344,7 +344,7 @@ export default function TremorScorePage() {
                 become dense overlapping flurries; quiet stretches become sparse
                 solos.
               </p>
-              <p className="text-white/55">
+              <p className="text-muted-foreground">
                 Lineage: Ryoji Ikeda&rsquo;s <em>data.path</em> /{" "}
                 <em>datamatics</em> and Florian Dombois&rsquo; &ldquo;Auditory
                 Seismology.&rdquo; Research anchor: OpenSeisML (arXiv 2605.20539,

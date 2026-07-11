@@ -599,26 +599,26 @@ export default function KidsButtonGarden() {
   // ---- Pre-start gate (creates AudioContext inside the gesture) ----
   if (!started) {
     return (
-      <div className="min-h-screen bg-[#05140f] flex flex-col items-center justify-center text-white px-6">
+      <div className="min-h-screen bg-[#05140f] flex flex-col items-center justify-center text-foreground px-6">
         <div className="max-w-md w-full flex flex-col items-center gap-6 text-center">
           <div className="text-5xl">🎮 🌷 🌼</div>
-          <h1 className="text-3xl font-bold text-white/95">Button Garden</h1>
-          <p className="text-base text-white/80 leading-relaxed">
+          <h1 className="text-3xl font-bold text-foreground">Button Garden</h1>
+          <p className="text-base text-foreground leading-relaxed">
             Hold a game controller and mash the big buttons. A garden of light
             blooms and sings — no screen-tapping needed. No controller? Press{" "}
-            <span className="font-mono text-white/95">A S D F</span> on the
+            <span className="font-mono text-foreground">A S D F</span> on the
             keyboard, or use the on-screen buttons.
           </p>
           <button
             onPointerDown={() => setStarted(true)}
-            className="mt-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-semibold text-lg rounded-2xl px-8 py-4 min-h-[64px] min-w-[220px] transition-colors"
+            className="mt-2 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-lg rounded-2xl px-8 py-4 min-h-[64px] min-w-[220px] transition-colors"
           >
             Open the garden
           </button>
         </div>
         <Link
           href="/dream"
-          className="absolute bottom-6 text-white/75 text-base hover:text-white transition-colors"
+          className="absolute bottom-6 text-muted-foreground text-base hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -641,8 +641,8 @@ export default function KidsButtonGarden() {
 
       {/* Status strip */}
       <div className="fixed top-4 left-0 right-0 flex justify-center pointer-events-none px-4">
-        <span className="text-white/75 text-base font-mono bg-black/40 px-3 py-1.5 rounded-full">
-          season: <span className="text-white/95">{seasonName}</span>
+        <span className="text-muted-foreground text-base font-mono bg-black/40 px-3 py-1.5 rounded-full">
+          season: <span className="text-foreground">{seasonName}</span>
           {usingDemo ? " · auto-demo (press anything)" : ""}
         </span>
       </div>
@@ -650,7 +650,7 @@ export default function KidsButtonGarden() {
       {/* No-controller prompt — clearly visible, never dimmed */}
       {!hasPad && (
         <div className="fixed top-16 left-0 right-0 flex justify-center pointer-events-none px-4">
-          <span className="text-amber-300/95 text-base text-center bg-black/45 px-4 py-2 rounded-xl max-w-md">
+          <span className="text-violet-300/95 text-base text-center bg-black/45 px-4 py-2 rounded-xl max-w-md">
             Plug in a game controller and press the big buttons — or use{" "}
             <span className="font-mono">A S D F</span> / the buttons below.
           </span>
@@ -667,7 +667,7 @@ export default function KidsButtonGarden() {
                 e.preventDefault();
                 tapVoice(v);
               }}
-              className="min-h-[56px] min-w-[56px] px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 active:bg-white/30 text-white/95 text-xl font-mono font-bold transition-colors"
+              className="min-h-[56px] min-w-[56px] px-4 py-2.5 rounded-2xl bg-muted hover:bg-accent active:bg-muted text-foreground text-xl font-mono font-bold transition-colors"
             >
               {label}
             </button>
@@ -679,7 +679,7 @@ export default function KidsButtonGarden() {
               e.preventDefault();
               tapSeason(-1);
             }}
-            className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:bg-white/30 text-white/90 text-base font-mono transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-xl bg-muted hover:bg-accent active:bg-muted text-foreground text-base font-mono transition-colors"
           >
             ◀ season
           </button>
@@ -688,7 +688,7 @@ export default function KidsButtonGarden() {
               e.preventDefault();
               tapSeason(1);
             }}
-            className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:bg-white/30 text-white/90 text-base font-mono transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-xl bg-muted hover:bg-accent active:bg-muted text-foreground text-base font-mono transition-colors"
           >
             season ▶
           </button>
@@ -696,11 +696,11 @@ export default function KidsButtonGarden() {
       </div>
 
       {/* Design notes */}
-      <details className="fixed top-4 right-4 max-w-xs text-white/90 bg-black/55 rounded-xl px-3 py-2 pointer-events-auto">
-        <summary className="cursor-pointer text-base text-white/95 font-mono">
+      <details className="fixed top-4 right-4 max-w-xs text-foreground bg-black/55 rounded-xl px-3 py-2 pointer-events-auto">
+        <summary className="cursor-pointer text-base text-foreground font-mono">
           Design notes
         </summary>
-        <p className="mt-2 text-base text-white/75 leading-relaxed">
+        <p className="mt-2 text-base text-muted-foreground leading-relaxed">
           A controller-first instrument for the smallest hands. Face buttons are
           four warm just-intonation voices (root, 3rd, 5th, 7th); each press
           blooms a glowing flower and sings. The d-pad shifts the season
@@ -711,7 +711,7 @@ export default function KidsButtonGarden() {
 
       <Link
         href="/dream"
-        className="fixed bottom-2 left-4 text-white/75 text-base hover:text-white transition-colors z-10"
+        className="fixed bottom-2 left-4 text-muted-foreground text-base hover:text-foreground transition-colors z-10"
       >
         ← dream lab
       </Link>

@@ -527,12 +527,12 @@ export default function KidsHumStack() {
 
       {/* top bar */}
       <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-4">
-        <h1 className="text-2xl font-bold text-white/95 drop-shadow">
+        <h1 className="text-2xl font-bold text-foreground drop-shadow">
           Hum &amp; Stack
         </h1>
         <Link
           href="/dream"
-          className="text-base text-white/40 hover:text-white/70 transition-colors"
+          className="text-base text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream
         </Link>
@@ -541,13 +541,13 @@ export default function KidsHumStack() {
       {/* start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-black/55 backdrop-blur-sm p-6">
-          <p className="max-w-md text-center text-xl text-white/95">
+          <p className="max-w-md text-center text-xl text-foreground">
             Hum a note, then tap the friendly buttons to stack singing creatures
             on top of your own voice.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[64px] rounded-3xl bg-gradient-to-br from-amber-400 to-pink-500 px-12 py-6 text-2xl font-extrabold text-white shadow-xl active:scale-95 transition-transform"
+            className="min-h-[64px] rounded-3xl bg-gradient-to-br from-violet-400 to-violet-500 px-12 py-6 text-2xl font-extrabold text-foreground shadow-xl active:scale-95 transition-transform"
           >
             ▶ tap to start
           </button>
@@ -557,7 +557,7 @@ export default function KidsHumStack() {
       {/* mic-denied / fallback message — clearly visible */}
       {started && micError && (
         <div className="absolute left-0 right-0 top-16 z-10 px-4">
-          <p className="mx-auto max-w-md rounded-2xl bg-black/50 px-4 py-3 text-center text-base font-semibold text-rose-300">
+          <p className="mx-auto max-w-md rounded-2xl bg-black/50 px-4 py-3 text-center text-base font-semibold text-violet-300">
             {micError}
           </p>
         </div>
@@ -591,7 +591,7 @@ export default function KidsHumStack() {
                 key={f.id}
                 onClick={() => stackVoice(f.id)}
                 disabled={!canStack}
-                className="flex min-h-[88px] flex-1 flex-col items-center justify-center gap-1 rounded-3xl text-white shadow-xl active:scale-95 transition-transform disabled:opacity-30"
+                className="flex min-h-[88px] flex-1 flex-col items-center justify-center gap-1 rounded-3xl text-foreground shadow-xl active:scale-95 transition-transform disabled:opacity-30"
                 style={{ backgroundColor: f.hex }}
                 aria-label={f.label}
               >
@@ -603,7 +603,7 @@ export default function KidsHumStack() {
           <button
             onClick={releaseTop}
             disabled={stackCount === 0}
-            className="min-h-[64px] rounded-2xl bg-white/15 px-8 text-lg font-bold text-white/90 shadow active:scale-95 transition-transform disabled:opacity-25"
+            className="min-h-[64px] rounded-2xl bg-muted px-8 text-lg font-bold text-foreground shadow active:scale-95 transition-transform disabled:opacity-25"
             aria-label="let go of the top creature"
           >
             ↓ let go

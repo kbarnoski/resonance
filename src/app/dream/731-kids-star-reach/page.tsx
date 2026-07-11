@@ -225,28 +225,28 @@ export default function KidsStarReach() {
           style={{ background: "radial-gradient(ellipse at 50% 35%, #0a1030cc 0%, #02020aee 75%)" }}
         >
           <div className="mb-6 text-7xl leading-none" aria-hidden="true">✨🤲</div>
-          <h1 className="mb-3 text-3xl font-bold text-white drop-shadow-xl sm:text-4xl">
+          <h1 className="mb-3 text-3xl font-bold text-foreground drop-shadow-xl sm:text-4xl">
             Star Reach
           </h1>
-          <p className="mb-10 max-w-md text-lg leading-relaxed text-white/80">
+          <p className="mb-10 max-w-md text-lg leading-relaxed text-foreground">
             Reach up into the night sky with your hands. Close a hand to
-            <span className="text-white/95"> scoop a handful of stars</span> that
+            <span className="text-foreground"> scoop a handful of stars</span> that
             chime — open wide to
-            <span className="text-white/95"> spill them back</span> in a sparkle.
+            <span className="text-foreground"> spill them back</span> in a sparkle.
           </p>
           <button
             onClick={() => { void handleStart(); }}
-            className="min-h-[72px] min-w-[64px] rounded-3xl border-2 border-sky-300/70 bg-sky-600/40 px-10 py-5 text-2xl font-bold text-white shadow-2xl transition-all hover:bg-sky-500/55 active:scale-95"
+            className="min-h-[72px] min-w-[64px] rounded-3xl border-2 border-violet-300/70 bg-violet-600/40 px-10 py-5 text-2xl font-bold text-foreground shadow-2xl transition-all hover:bg-violet-500/55 active:scale-95"
             aria-label="Touch to begin Star Reach"
           >
             🌙 Touch to Begin
           </button>
-          <p className="mt-6 max-w-sm text-base text-white/75">
+          <p className="mt-6 max-w-sm text-base text-muted-foreground">
             The camera watches your hands only — nothing is recorded or sent.
           </p>
           <Link
             href="/dream"
-            className="mt-8 text-base text-white/75 transition-colors hover:text-white"
+            className="mt-8 text-base text-muted-foreground transition-colors hover:text-foreground"
           >
             ← dream lab
           </Link>
@@ -257,7 +257,7 @@ export default function KidsStarReach() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-4 flex justify-center px-4">
-            <p className="text-lg text-white/85 drop-shadow sm:text-xl">
+            <p className="text-lg text-foreground drop-shadow sm:text-xl">
               {usingReal
                 ? "Close a hand to scoop stars ✦  open wide to spill them"
                 : "Watch the sky sing ✦  tap below to use your own hands"}
@@ -266,7 +266,7 @@ export default function KidsStarReach() {
 
           {camNotice && (
             <div className="pointer-events-none absolute left-0 right-0 top-16 flex justify-center px-4">
-              <p className="max-w-sm text-center text-base text-rose-300 drop-shadow">
+              <p className="max-w-sm text-center text-base text-violet-300 drop-shadow">
                 {camNotice}
               </p>
             </div>
@@ -277,12 +277,12 @@ export default function KidsStarReach() {
             <div className="absolute bottom-7 left-0 right-0 flex flex-col items-center gap-3 px-4">
               <button
                 onClick={() => { void handleStart(); }}
-                className="min-h-[68px] min-w-[64px] rounded-2xl border-2 border-indigo-300/60 bg-indigo-600/40 px-8 py-4 text-xl font-bold text-white shadow-xl transition-all hover:bg-indigo-500/55 active:scale-95"
+                className="min-h-[68px] min-w-[64px] rounded-2xl border-2 border-violet-300/60 bg-violet-600/40 px-8 py-4 text-xl font-bold text-foreground shadow-xl transition-all hover:bg-violet-500/55 active:scale-95"
                 aria-label="Turn on the camera to use your real hands"
               >
                 🤲 Use My Hands
               </button>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Ghost hands are scooping stars — tap to reach in yourself
               </p>
             </div>
@@ -292,7 +292,7 @@ export default function KidsStarReach() {
           <div className="absolute left-4 top-3 z-10 flex items-center gap-4">
             <Link
               href="/dream"
-              className="text-base text-white/75 transition-colors hover:text-white"
+              className="text-base text-muted-foreground transition-colors hover:text-foreground"
             >
               ← dream
             </Link>
@@ -300,7 +300,7 @@ export default function KidsStarReach() {
               href="/dream/731-kids-star-reach/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-base text-white/75 transition-colors hover:text-white"
+              className="text-base text-muted-foreground transition-colors hover:text-foreground"
             >
               Read the design notes ↗
             </a>
@@ -308,7 +308,7 @@ export default function KidsStarReach() {
 
           {renderPath && (
             <div className="pointer-events-none absolute right-4 top-3 z-10">
-              <span className="font-mono text-xs uppercase tracking-wider text-white/75">
+              <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
                 {renderPath === "webgl2" ? "WebGL2 ◈" : "Canvas2D ◇"}
               </span>
             </div>

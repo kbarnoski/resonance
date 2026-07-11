@@ -349,14 +349,14 @@ export default function CollapseScore() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#080810] text-white flex flex-col select-none">
+    <div className="min-h-screen bg-[#080810] text-foreground flex flex-col select-none">
 
       {/* Page header */}
       <div className="px-6 pt-8 pb-3 max-w-5xl mx-auto w-full">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Collapse Score
         </h1>
-        <p className="mt-1 text-base text-white/75 max-w-2xl">
+        <p className="mt-1 text-base text-muted-foreground max-w-2xl">
           A self-composing score in D-Dorian driven by Wave Function Collapse.
           Each cell starts in superposition — watch constraints ripple outward
           as the lattice decides its notes.
@@ -370,11 +370,11 @@ export default function CollapseScore() {
           <div className="flex flex-col items-center gap-4 pt-8">
             <button
               onClick={handleBegin}
-              className="min-h-[44px] px-8 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 active:bg-violet-800 text-white text-base font-semibold transition-colors"
+              className="min-h-[44px] px-8 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 active:bg-violet-800 text-foreground text-base font-semibold transition-colors"
             >
               Begin Composition
             </button>
-            <p className="text-white/55 text-base text-center max-w-xs">
+            <p className="text-muted-foreground text-base text-center max-w-xs">
               Tap to unlock audio and start the WFC solver.
             </p>
           </div>
@@ -427,7 +427,7 @@ export default function CollapseScore() {
                 </span>
                 {/* Collapsed note label */}
                 <span
-                  className="lbl absolute inset-0 flex items-center justify-center font-mono font-semibold text-white"
+                  className="lbl absolute inset-0 flex items-center justify-center font-mono font-semibold text-foreground"
                   style={{
                     fontSize:      "10px",
                     opacity:       0,
@@ -452,13 +452,13 @@ export default function CollapseScore() {
                 style={{ background: collapsedBg(tile.hue) }}
               />
               <span
-                className="text-white/80 font-mono"
+                className="text-foreground font-mono"
                 style={{ fontSize: "11px" }}
               >
                 {tile.label.slice(0, 1)}
               </span>
               <span
-                className="text-white/55"
+                className="text-muted-foreground"
                 style={{ fontSize: "10px" }}
               >
                 deg {tile.degree + 1}
@@ -472,23 +472,23 @@ export default function CollapseScore() {
           <div className="flex flex-col items-center gap-4 w-full max-w-2xl">
 
             {/* Stats bar */}
-            <div className="flex flex-wrap items-center justify-center gap-4 font-mono text-base text-white/55">
+            <div className="flex flex-wrap items-center justify-center gap-4 font-mono text-base text-muted-foreground">
               <span>
                 collapsed{" "}
                 <span className="text-violet-300">{collapsedCount}</span>
                 {" / "}
-                <span className="text-white/75">{TOTAL_CELLS}</span>
+                <span className="text-muted-foreground">{TOTAL_CELLS}</span>
               </span>
-              <span className="text-white/25">·</span>
+              <span className="text-muted-foreground/70">·</span>
               <span>
                 beat{" "}
-                <span className="text-emerald-300">{playCol + 1}</span>
-                <span className="text-white/40">/{COLS}</span>
+                <span className="text-violet-300">{playCol + 1}</span>
+                <span className="text-muted-foreground/70">/{COLS}</span>
               </span>
-              <span className="text-white/25">·</span>
+              <span className="text-muted-foreground/70">·</span>
               <span>
                 seed{" "}
-                <span className="text-amber-300" style={{ fontSize: "11px" }}>
+                <span className="text-violet-300" style={{ fontSize: "11px" }}>
                   {seed.toString(16).padStart(8, "0")}
                 </span>
               </span>
@@ -498,13 +498,13 @@ export default function CollapseScore() {
             <div className="flex flex-wrap gap-3 justify-center">
               <button
                 onClick={handlePause}
-                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 active:bg-white/20 text-white text-base transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent active:bg-muted text-foreground text-base transition-colors"
               >
                 {paused ? "▶ Resume" : "⏸ Pause"}
               </button>
               <button
                 onClick={handleNewSeed}
-                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-700/60 hover:bg-violet-600/70 text-white text-base transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-700/60 hover:bg-violet-600/70 text-foreground text-base transition-colors"
               >
                 New Seed
               </button>
@@ -512,7 +512,7 @@ export default function CollapseScore() {
 
             {/* Seed replay */}
             <div className="flex flex-wrap items-center gap-2 justify-center">
-              <label htmlFor="seed-in" className="text-white/55 text-base">
+              <label htmlFor="seed-in" className="text-muted-foreground text-base">
                 Replay seed:
               </label>
               <input
@@ -522,11 +522,11 @@ export default function CollapseScore() {
                 onChange={handleSeedChange}
                 min={0}
                 max={4294967295}
-                className="min-h-[44px] w-36 bg-white/[0.07] border border-white/20 rounded px-2 py-1 text-white/90 font-mono text-base"
+                className="min-h-[44px] w-36 bg-muted border border-border rounded px-2 py-1 text-foreground font-mono text-base"
               />
               <button
                 onClick={handleReplay}
-                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-base transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground text-base transition-colors"
               >
                 Replay
               </button>
@@ -534,15 +534,15 @@ export default function CollapseScore() {
 
             {/* Speed buttons */}
             <div className="flex items-center gap-3 flex-wrap justify-center">
-              <span className="text-white/55 text-base">Solve speed:</span>
+              <span className="text-muted-foreground text-base">Solve speed:</span>
               {SOLVE_SPEEDS.map(({ label, ms }) => (
                 <button
                   key={ms}
                   onClick={() => handleSpeed(ms)}
                   className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base transition-colors ${
                     solveSpeedMs === ms
-                      ? "bg-violet-600 text-white"
-                      : "bg-white/10 text-white/75 hover:bg-white/15"
+                      ? "bg-violet-600 text-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   {label}
@@ -553,18 +553,18 @@ export default function CollapseScore() {
         )}
 
         {/* How it works card */}
-        <div className="max-w-2xl w-full rounded-xl bg-white/[0.04] border border-white/10 px-5 py-4 space-y-2">
-          <h2 className="text-base font-semibold text-white/90">How it works</h2>
-          <p className="text-base text-white/75 leading-relaxed">
+        <div className="max-w-2xl w-full rounded-xl bg-muted border border-border px-5 py-4 space-y-2">
+          <h2 className="text-base font-semibold text-foreground">How it works</h2>
+          <p className="text-base text-muted-foreground leading-relaxed">
             The lattice starts with all 14 D-Dorian tiles (7 scale degrees ×
             2 octaves) possible in every cell. The WFC loop: find the{" "}
             <span className="text-violet-300">lowest-entropy cell</span> →
             collapse it to a weighted-random note → propagate arc-consistency
             (neighbours lose incompatible candidates, shown as a{" "}
-            <span className="text-emerald-300">brief glow</span>). Horizontal
+            <span className="text-violet-300">brief glow</span>). Horizontal
             neighbours must move by ≤ 2 diatonic steps; vertical neighbours
             must share diatonic thirds/fourths/fifths. The{" "}
-            <span className="text-amber-300/90">playhead</span> sweeps left→right
+            <span className="text-violet-300/90">playhead</span> sweeps left→right
             sounding each collapsed cell as the score writes itself in real time.
           </p>
           <div className="flex flex-wrap gap-4 pt-1">
@@ -576,7 +576,7 @@ export default function CollapseScore() {
                 { label: "playing",       swatch: "hsl(270 62% 50%)",    op: 1,   glow: "0 0 8px 3px hsl(270 88% 68%)" },
               ] satisfies { label: string; swatch: string; op: number; glow: string }[]
             ).map(({ label, swatch, op, glow }) => (
-              <span key={label} className="flex items-center gap-1.5 text-white/55 text-base">
+              <span key={label} className="flex items-center gap-1.5 text-muted-foreground text-base">
                 <span
                   className="inline-block w-3 h-3 rounded-sm flex-shrink-0"
                   style={{

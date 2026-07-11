@@ -223,12 +223,12 @@ export default function LatentCondensationPage() {
 
   const sourceBadge = source
     ? source.real
-      ? { text: `♪ Welcome Home — Karel's recording`, cls: "text-emerald-300/95 border-emerald-400/30 bg-emerald-400/5" }
-      : { text: `♪ ${source.title} (synth fallback)`, cls: "text-amber-300/95 border-amber-400/30 bg-amber-400/5" }
+      ? { text: `♪ Welcome Home — Karel's recording`, cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
+      : { text: `♪ ${source.title} (synth fallback)`, cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
     : null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060c] text-foreground">
       {/* GPU canvas (also the backdrop) */}
       <canvas
         ref={canvasRef}
@@ -246,10 +246,10 @@ export default function LatentCondensationPage() {
               style={{ opacity: 0.2 }}
             />
             <div className="absolute h-40 w-40 rounded-full border border-violet-400/30" />
-            <div className="z-10 h-3 w-48 overflow-hidden rounded-full bg-white/10">
+            <div className="z-10 h-3 w-48 overflow-hidden rounded-full bg-muted">
               <div
                 ref={meterBarRef}
-                className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-400 to-cyan-300"
+                className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-400 to-violet-300"
                 style={{ transform: "scaleX(0.05)" }}
               />
             </div>
@@ -260,10 +260,10 @@ export default function LatentCondensationPage() {
       {/* ── Overlay UI ─────────────────────────────────────────────────────── */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 sm:p-8">
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Latent Condensation
           </h1>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             Karel&apos;s live piano spectrum pulls{" "}
             <span className="text-violet-300">120,000 GPU particles</span> out of
             turbulent chaos — condensing into a flowing form on each phrase, then
@@ -278,7 +278,7 @@ export default function LatentCondensationPage() {
             </div>
           )}
           {gpuOk === false && (
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-rose-300">
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-violet-300">
               WebGPU is required for the particle simulation and is unavailable
               here{gpuNotice ? ` (${gpuNotice})` : ""}. The audio still plays and the
               meter below tracks the phrase envelope. Try a recent Chrome, Edge, or
@@ -290,15 +290,15 @@ export default function LatentCondensationPage() {
         {/* footer status + controls */}
         <footer className="flex flex-col gap-4">
           {status === "running" && (
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-base text-white/75">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-base text-muted-foreground">
               <span>
                 phase:{" "}
                 <span className="text-violet-300">{PHASE_LABEL[phase]}</span>
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 condensation {(condensation * 100).toFixed(0)}%
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 level {(amplitude * 100).toFixed(0)}%
               </span>
             </div>
@@ -309,7 +309,7 @@ export default function LatentCondensationPage() {
               <button
                 onClick={start}
                 disabled={status === "loading"}
-                className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white transition hover:bg-violet-400 disabled:opacity-60"
+                className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400 disabled:opacity-60"
               >
                 {status === "loading" ? "Summoning the cloud…" : "Play Karel's piano"}
               </button>
@@ -322,19 +322,19 @@ export default function LatentCondensationPage() {
                   setSource(null);
                   setGpuOk(null);
                 }}
-                className="min-h-[44px] rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-base font-medium text-white/90 transition hover:bg-white/10"
+                className="min-h-[44px] rounded-xl border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-accent"
               >
                 Stop
               </button>
             )}
             {status === "error" && (
-              <span className="text-base text-rose-300">
+              <span className="text-base text-violet-300">
                 Could not start audio. Reload and try again.
               </span>
             )}
             <button
               onClick={() => setShowNotes((s) => !s)}
-              className="min-h-[44px] rounded-xl px-4 py-2.5 text-base text-white/55 transition hover:text-white/80"
+              className="min-h-[44px] rounded-xl px-4 py-2.5 text-base text-muted-foreground transition hover:text-foreground"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
@@ -344,9 +344,9 @@ export default function LatentCondensationPage() {
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-4 bottom-24 mx-auto max-w-xl rounded-2xl border border-white/10 bg-black/70 p-5 backdrop-blur sm:inset-x-auto sm:right-8">
-          <h2 className="text-xl font-medium text-white">Design notes</h2>
-          <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-white/75">
+        <div className="pointer-events-auto absolute inset-x-4 bottom-24 mx-auto max-w-xl rounded-2xl border border-border bg-black/70 p-5 backdrop-blur sm:inset-x-auto sm:right-8">
+          <h2 className="text-xl font-medium text-foreground">Design notes</h2>
+          <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-muted-foreground">
             {README}
           </p>
         </div>

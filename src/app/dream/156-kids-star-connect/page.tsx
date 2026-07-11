@@ -398,12 +398,12 @@ export default function Page() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-black text-white gap-6 px-8">
-        <p className="text-base font-mono text-white/55">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-white/95">
+      <div className="flex flex-col items-center justify-center h-screen bg-black text-foreground gap-6 px-8">
+        <p className="text-base font-mono text-muted-foreground">For kids 3+</p>
+        <h1 className="text-3xl font-serif text-center text-foreground">
           Constellation Song
         </h1>
-        <p className="text-base text-white/75 text-center max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-sm leading-relaxed">
           The stars are waiting. Draw a line from one star to another — hear
           the notes ring out. Connect three stars to close a shape and hear a
           chord light up the sky.
@@ -419,7 +419,7 @@ export default function Page() {
         >
           ✦ &nbsp;Begin
         </button>
-        <p className="text-sm text-white/40 mt-2">Zero permissions · Zero API · Zero deps</p>
+        <p className="text-sm text-muted-foreground/70 mt-2">Zero permissions · Zero API · Zero deps</p>
       </div>
     )
   }
@@ -434,8 +434,8 @@ export default function Page() {
       <button
         onClick={handleClear}
         className="absolute bottom-5 right-5 px-4 py-2.5 rounded-full
-                   bg-white/8 text-white/55 text-sm font-mono
-                   min-h-[44px] min-w-[44px] hover:bg-white/15 transition-colors"
+                   bg-muted text-muted-foreground text-sm font-mono
+                   min-h-[44px] min-w-[44px] hover:bg-accent transition-colors"
       >
         ↺ Clear
       </button>

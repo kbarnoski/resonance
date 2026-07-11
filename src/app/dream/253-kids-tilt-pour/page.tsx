@@ -698,13 +698,13 @@ export default function KidsTiltPour() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           {/* Hero title */}
           <div className="text-center space-y-3">
-            <h1 className="text-4xl font-bold text-white tracking-tight">
+            <h1 className="text-4xl font-bold text-foreground tracking-tight">
               Jelly Pour
             </h1>
-            <p className="text-xl text-white/75 font-light">
+            <p className="text-xl text-muted-foreground font-light">
               Tilt to pour glowing blobs!
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               They sing when they touch 🎵
             </p>
           </div>
@@ -714,19 +714,19 @@ export default function KidsTiltPour() {
             onClick={startExperience}
             className="
               w-40 h-40 rounded-full
-              bg-gradient-to-br from-violet-500 via-fuchsia-500 to-rose-500
-              text-white text-2xl font-bold
+              bg-gradient-to-br from-violet-500 via-violet-500 to-violet-500
+              text-foreground text-2xl font-bold
               shadow-2xl shadow-violet-900/60
               active:scale-95 transition-transform
               flex items-center justify-center
-              border-4 border-white/20
+              border-4 border-border
             "
             aria-label="Start Jelly Pour"
           >
             <span className="text-5xl">▶</span>
           </button>
 
-          <p className="text-base text-white/75 text-center max-w-xs">
+          <p className="text-base text-muted-foreground text-center max-w-xs">
             Tilt your device to pour the blobs.
             <br />
             On desktop, drag with your finger or mouse.
@@ -748,7 +748,7 @@ export default function KidsTiltPour() {
         <>
           {noWebGL && (
             <div className="absolute inset-0 flex items-center justify-center px-6">
-              <p className="text-base text-rose-300 text-center max-w-sm">
+              <p className="text-base text-violet-300 text-center max-w-sm">
                 WebGL is not available on this device. The ambient pad is still playing!
               </p>
             </div>
@@ -756,7 +756,7 @@ export default function KidsTiltPour() {
 
           {noTiltFallback && !noWebGL && (
             <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none">
-              <p className="text-base text-rose-300 bg-black/50 px-4 py-2.5 rounded-full backdrop-blur-sm">
+              <p className="text-base text-violet-300 bg-black/50 px-4 py-2.5 rounded-full backdrop-blur-sm">
                 Drag to steer the blobs
               </p>
             </div>
@@ -767,7 +767,7 @@ export default function KidsTiltPour() {
             <a
               href="#notes"
               onClick={(e) => { e.preventDefault(); setPhase("idle"); }}
-              className="text-xs text-white/75 bg-black/40 px-3 py-2 rounded-full backdrop-blur-sm hover:text-white transition-colors"
+              className="text-xs text-muted-foreground bg-black/40 px-3 py-2 rounded-full backdrop-blur-sm hover:text-foreground transition-colors"
             >
               Design notes
             </a>
@@ -778,68 +778,68 @@ export default function KidsTiltPour() {
       {/* Design notes section (scroll target) */}
       <section
         id="notes"
-        className="absolute top-full left-0 right-0 min-h-dvh bg-[#0a0410] px-6 py-12 text-white/75 text-base font-mono"
+        className="absolute top-full left-0 right-0 min-h-dvh bg-[#0a0410] px-6 py-12 text-muted-foreground text-base font-mono"
         style={{ display: phase === "idle" ? "block" : "none" }}
       >
         <div className="max-w-xl mx-auto space-y-4">
-          <h2 className="text-2xl text-white font-bold">Design Notes</h2>
-          <p className="text-white/75">
+          <h2 className="text-2xl text-foreground font-bold">Design Notes</h2>
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Concept:</span> A fullscreen lava-lamp made of 8
             candy-colored jelly blobs. Tilt an iOS/Android device to pour them
             around; blobs sing pentatonic notes when they merge, making music
             impossible to get wrong.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Metaball math:</span> Each blob contributes a field
             value using a <em>Hermite smoothstep falloff</em> (t² (3−2t) where t =
             1−d/r), capped at zero outside the radius. Summing all 8 fields and
             thresholding at 1.0 gives the classic lava-lamp goo shape. Colors
             are blended proportionally to each blob&rsquo;s field weight.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Smooth-min (smin):</span> Inigo Quilez&rsquo;s
             polynomial smin blends the iso-surface transitions — the shader
             uses smoothstep thresholds on the total field to produce bright
             rims + additive halos at merge zones.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Performance (Van Der Merwe Apr 2026):</span> Hermite
             falloff instead of exp(), fixed 8 blobs, noise capped at 2 octaves,
             devicePixelRatio capped at 2 — halves GPU load on 3× phones.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Physics:</span> Each frame a tiny CPU step applies
             gravity (from device tilt via deviceorientation gamma/beta → smoothed
             gravity vector), DAMPING=0.985, edge RESTITUTION=0.55, and soft
             blob–blob repulsion within 16% normalized radius. Velocities capped
             at 0.5 for gentle motion.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Sound:</span> C-major pentatonic (C4–E5). Each blob
             owns one note. Merges trigger a sine+triangle voice → feedback delay
             shimmer → DynamicsCompressor limiter. A low C–E–G ambient pad swells
             with the slosh metric (mean blob speed).
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             <span className="text-violet-300 font-semibold">Degradation:</span> iOS DeviceOrientationEvent
             requestPermission called inside the start-button tap. If no tilt
             events arrive within 1.8s, auto-switch to pointer-drag fallback.
             WebGL failure shows a readable notice while ambient pad plays on.
           </p>
-          <p className="text-white/75">
-            <span className="text-emerald-300/95 font-semibold">References:</span> Damian Van Der Merwe,
+          <p className="text-muted-foreground">
+            <span className="text-violet-300/95 font-semibold">References:</span> Damian Van Der Merwe,
             &ldquo;Painting with Math: Building an Interactive Lava Lamp Shader from
             Scratch&rdquo; (damianvandermerwe.com, April 3, 2026). Inigo Quilez,
             smooth-min / SDF techniques (iquilezles.org). Related prototypes:
             83-kids-tilt-rain, 169-kids-marble-run, 84-wave-fluid.
           </p>
-          <p className="text-white/75">
-            <span className="text-amber-300/95 font-semibold">Limitations:</span> Physics is a simple
+          <p className="text-muted-foreground">
+            <span className="text-violet-300/95 font-semibold">Limitations:</span> Physics is a simple
             Euler-integration CPU step with no true fluid simulation. Blobs don&rsquo;t
             visually split — they only look merged in the shader field.
           </p>
-          <p className="text-white/75">
-            <span className="text-amber-300/95 font-semibold">Next cycle:</span> True SDF-signed distance
+          <p className="text-muted-foreground">
+            <span className="text-violet-300/95 font-semibold">Next cycle:</span> True SDF-signed distance
             field for per-blob outlines; gyroscope-assisted 3-axis tilt; Karplus-Strong
             pluck voices instead of sine+triangle; save a &ldquo;melody&rdquo; from blob
             collisions.

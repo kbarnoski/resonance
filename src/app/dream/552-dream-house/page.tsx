@@ -682,10 +682,10 @@ export default function DreamHousePage() {
           <p className="text-violet-300/70 text-xs font-mono tracking-widest uppercase">
             dream house · 552
           </p>
-          <h1 className="text-3xl font-serif text-white/95 leading-tight">
+          <h1 className="text-3xl font-serif text-foreground leading-tight">
             The Drone Pilgrimage
           </h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             A self-composing{' '}
             <span className="text-violet-300">just-intonation</span> drone
             installation. No interaction required — press Start and leave it
@@ -693,7 +693,7 @@ export default function DreamHousePage() {
             <span className="text-violet-300">Tonnetz lattice</span>, never
             repeating, never returning home.
           </p>
-          <p className="text-sm text-white/55 leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             After 12 minutes the piece will sound entirely different in
             register, density, tuning, and colour — that long arc is the music.
           </p>
@@ -706,20 +706,20 @@ export default function DreamHousePage() {
           >
             Start Dream House
           </button>
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-muted-foreground/70">
             Tap anywhere after starting to exhale — bloom a new constellation
           </p>
         </div>
 
         {audioError && (
-          <p className="text-rose-300 text-sm">
+          <p className="text-violet-300 text-sm">
             Web Audio unavailable — visuals only
           </p>
         )}
 
         <a
           href="/dream/552-dream-house/README.md"
-          className="absolute bottom-4 right-4 text-xs text-white/35 hover:text-white/60 transition-colors"
+          className="absolute bottom-4 right-4 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           Read the design notes ↗
         </a>
@@ -904,17 +904,17 @@ export default function DreamHousePage() {
       </div>
 
       {/* ── Top bar readout ──────────────────────────────────────────────── */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between px-4 py-2 bg-black/30 backdrop-blur-sm border-b border-white/5">
-        <span className="text-base font-serif text-white/80">
+      <div className="relative z-10 flex-shrink-0 flex items-center justify-between px-4 py-2 bg-black/30 backdrop-blur-sm border-b border-border">
+        <span className="text-base font-serif text-foreground">
           Dream House
         </span>
-        <span className="text-xs font-mono text-white/35">
+        <span className="text-xs font-mono text-muted-foreground/70">
           tap anywhere to exhale
         </span>
         <a
           href="/dream/552-dream-house/README.md"
           onClick={(e) => e.stopPropagation()}
-          className="text-xs text-white/30 hover:text-white/55 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           notes ↗
         </a>
@@ -922,7 +922,7 @@ export default function DreamHousePage() {
 
       {/* ── Audio error banner ───────────────────────────────────────────── */}
       {audioError && (
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded bg-black/70 text-rose-300 text-sm pointer-events-none">
+        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded bg-black/70 text-violet-300 text-sm pointer-events-none">
           Web Audio unavailable — visuals only
         </div>
       )}

@@ -420,29 +420,29 @@ export default function KidsWeatherMusic() {
   if (!started) {
     return (
       <div className="min-h-screen bg-[#030712] flex flex-col items-center justify-center px-6 py-10">
-        <h1 className="text-3xl font-bold text-white text-center mb-3">
+        <h1 className="text-3xl font-bold text-foreground text-center mb-3">
           Weather Music
         </h1>
-        <p className="text-base text-white/75 text-center mb-8 max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground text-center mb-8 max-w-sm leading-relaxed">
           Touch and hold anywhere to play the weather.<br />
           Drag between corners to blend the sounds.
         </p>
         <div className="grid grid-cols-2 gap-3 mb-10 w-full max-w-xs">
           {ZONES.map(z => (
-            <div key={z.name} className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+            <div key={z.name} className="rounded-2xl bg-muted border border-border p-4 text-center">
               <div className="text-4xl mb-1">{z.icon}</div>
               <div className="text-base font-medium" style={{ color: z.color }}>{z.name}</div>
-              <div className="text-sm text-white/55">{z.pos}</div>
+              <div className="text-sm text-muted-foreground">{z.pos}</div>
             </div>
           ))}
         </div>
         <button
           onClick={() => setStarted(true)}
-          className="min-h-[64px] px-10 rounded-2xl text-xl font-bold text-white bg-violet-600 hover:bg-violet-500 transition-colors"
+          className="min-h-[64px] px-10 rounded-2xl text-xl font-bold text-foreground bg-violet-600 hover:bg-violet-500 transition-colors"
         >
           Play ☁️☀️🌧️💨
         </button>
-        <p className="text-sm text-white/40 mt-4 text-center">No permissions needed</p>
+        <p className="text-sm text-muted-foreground/70 mt-4 text-center">No permissions needed</p>
       </div>
     );
   }
@@ -459,7 +459,7 @@ export default function KidsWeatherMusic() {
       <span className="absolute bottom-10 left-4  text-3xl pointer-events-none select-none opacity-50">🌧️</span>
       <span className="absolute bottom-10 right-4 text-3xl pointer-events-none select-none opacity-50">💨</span>
       <div className="absolute bottom-3 inset-x-0 flex justify-center pointer-events-none">
-        <span className="text-sm text-white/40">hold · drag · blend</span>
+        <span className="text-sm text-muted-foreground/70">hold · drag · blend</span>
       </div>
     </div>
   );

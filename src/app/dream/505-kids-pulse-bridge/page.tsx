@@ -917,7 +917,7 @@ export default function KidsPulseBridge() {
   if (!started) {
     return (
       <div
-        className="flex flex-col items-center justify-center min-h-screen text-white gap-6 px-6 text-center select-none"
+        className="flex flex-col items-center justify-center min-h-screen text-foreground gap-6 px-6 text-center select-none"
         style={{ background: "linear-gradient(135deg, #1a0e02 0%, #050a0a 50%, #021212 100%)" }}
       >
         {/* Title area */}
@@ -927,7 +927,7 @@ export default function KidsPulseBridge() {
             style={{ background: hsl(COL_L.h, COL_L.s, 50, 0.9), boxShadow: `0 0 18px ${hsl(COL_L.h, COL_L.s, 50)}` }}
             aria-hidden="true"
           />
-          <h1 className="text-3xl font-serif text-white/95">Pulse Bridge</h1>
+          <h1 className="text-3xl font-serif text-foreground">Pulse Bridge</h1>
           <div
             className="w-10 h-10 rounded-full"
             style={{ background: hsl(COL_R.h, COL_R.s, 44, 0.9), boxShadow: `0 0 18px ${hsl(COL_R.h, COL_R.s, 44)}` }}
@@ -973,7 +973,7 @@ export default function KidsPulseBridge() {
           })}
         </svg>
 
-        <p className="text-base text-white/75 max-w-xs leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-xs leading-relaxed">
           Two children, one screen. Each side is yours.
           Tap your side to the same steady beat
           — and light a bridge between you.
@@ -981,7 +981,7 @@ export default function KidsPulseBridge() {
 
         <button
           onPointerDown={handleStart}
-          className="min-h-[64px] min-w-[260px] rounded-2xl px-8 py-4 text-white text-xl font-semibold transition-colors"
+          className="min-h-[64px] min-w-[260px] rounded-2xl px-8 py-4 text-foreground text-xl font-semibold transition-colors"
           style={{
             background: `linear-gradient(90deg, ${hsl(COL_L.h, COL_L.s, 30, 0.8)}, ${hsl(COL_R.h, COL_R.s, 25, 0.8)})`,
             border: `1.5px solid ${hsl(50, 60, 60, 0.4)}`,
@@ -991,7 +991,7 @@ export default function KidsPulseBridge() {
           Play together ✨
         </button>
 
-        <p className="text-sm text-white/55">
+        <p className="text-sm text-muted-foreground">
           no mic · no camera · for kids 4+
         </p>
       </div>
@@ -1002,7 +1002,7 @@ export default function KidsPulseBridge() {
   return (
     <div className="fixed inset-0 overflow-hidden" style={{ background: "#050a0a" }}>
       {noCanvas ? (
-        <p className="text-rose-300 text-base p-6 text-center">
+        <p className="text-violet-300 text-base p-6 text-center">
           Canvas is unavailable in this browser — audio is still running.
         </p>
       ) : null}

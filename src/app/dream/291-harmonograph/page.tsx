@@ -689,17 +689,17 @@ export default function HarmonographPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#06080d] text-white overflow-hidden relative">
+    <main className="min-h-screen w-full bg-[#06080d] text-foreground overflow-hidden relative">
       <Link
         href="/dream"
-        className="fixed top-4 left-4 z-30 text-base text-white/75 hover:text-white px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur transition-colors"
+        className="fixed top-4 left-4 z-30 text-base text-muted-foreground hover:text-foreground px-4 py-2.5 rounded-lg bg-muted hover:bg-accent backdrop-blur transition-colors"
       >
         ← dream lab
       </Link>
 
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="fixed top-4 right-4 z-30 text-base text-white/75 hover:text-white px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur transition-colors"
+        className="fixed top-4 right-4 z-30 text-base text-muted-foreground hover:text-foreground px-4 py-2.5 rounded-lg bg-muted hover:bg-accent backdrop-blur transition-colors"
       >
         Design notes
       </button>
@@ -712,7 +712,7 @@ export default function HarmonographPage() {
       />
 
       {glError && (
-        <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-20 text-rose-300 text-base bg-black/60 px-5 py-3 rounded-lg max-w-md text-center">
+        <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-20 text-violet-300 text-base bg-black/60 px-5 py-3 rounded-lg max-w-md text-center">
           {glError} The keyboard and synth still work.
         </div>
       )}
@@ -720,10 +720,10 @@ export default function HarmonographPage() {
       {/* Hero / controls overlay */}
       <div className="relative z-10 pointer-events-none flex flex-col min-h-screen">
         <header className="px-6 pt-20 max-w-2xl pointer-events-none">
-          <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
             Harmonograph — Spectrum
           </h1>
-          <p className="mt-2 text-base text-white/75 max-w-xl">
+          <p className="mt-2 text-base text-muted-foreground max-w-xl">
             Play a chord — MIDI, computer keys, or the on-screen piano — and watch
             the harmony draw itself as a Victorian pendulum figure where{" "}
             <span className="text-violet-300">every note draws its own colored
@@ -734,7 +734,7 @@ export default function HarmonographPage() {
             <span className="text-violet-300">mod-wheel</span> (CC1 / ↑↓) sweeps
             pendulum damping from loose sprawl to tight spiral, harder strikes
             draw brighter ink. Export the figure as a PNG or a printable{" "}
-            <span className="text-emerald-300/95">vector SVG specimen</span>.
+            <span className="text-violet-300/95">vector SVG specimen</span>.
           </p>
 
           {!started && (
@@ -749,23 +749,23 @@ export default function HarmonographPage() {
           {/* status line */}
           <div className="mt-4 text-base flex flex-wrap gap-x-4 gap-y-1">
             {midiStatus?.kind === "ready" && (
-              <span className="text-emerald-300/95">
+              <span className="text-violet-300/95">
                 MIDI: {midiStatus.device}
               </span>
             )}
             {midiStatus?.kind === "none" && (
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 MIDI ready — no device connected. Use the keyboard below.
               </span>
             )}
             {midiStatus?.kind === "unsupported" && (
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 Web MIDI unsupported here (e.g. Safari) — QWERTY + on-screen
                 keyboard still work fully.
               </span>
             )}
             {midiStatus?.kind === "error" && (
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 MIDI blocked: {midiStatus.message}. Keyboard still works.
               </span>
             )}
@@ -781,8 +781,8 @@ export default function HarmonographPage() {
               onClick={() => setJustIntonation((j) => !j)}
               className={`text-base font-medium px-4 py-2.5 rounded-xl border transition-colors ${
                 justIntonation
-                  ? "bg-emerald-500/25 border-emerald-400/50 text-emerald-100"
-                  : "bg-white/5 border-white/15 text-white/75 hover:bg-white/10"
+                  ? "bg-violet-500/25 border-violet-400/50 text-violet-100"
+                  : "bg-muted border-border text-muted-foreground hover:bg-accent"
               }`}
             >
               Pure tuning (Just Intonation): {justIntonation ? "ON" : "OFF"}
@@ -794,24 +794,24 @@ export default function HarmonographPage() {
                 className={`text-base px-4 py-2.5 rounded-xl border transition-colors ${
                   echoMidiOut
                     ? "bg-violet-500/25 border-violet-400/50 text-violet-100"
-                    : "bg-white/5 border-white/15 text-white/75 hover:bg-white/10"
+                    : "bg-muted border-border text-muted-foreground hover:bg-accent"
                 }`}
               >
                 Echo to MIDI out: {echoMidiOut ? "ON" : "OFF"}
               </button>
             )}
 
-            <div className="flex items-center gap-2 text-base text-white/75">
+            <div className="flex items-center gap-2 text-base text-muted-foreground">
               <button
                 onClick={() => setOctave((o) => Math.max(1, o - 1))}
-                className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/10 min-w-[44px]"
+                className="px-4 py-2.5 rounded-xl bg-muted border border-border hover:bg-accent min-w-[44px]"
               >
                 −
               </button>
               <span className="tabular-nums">Octave {octave}</span>
               <button
                 onClick={() => setOctave((o) => Math.min(7, o + 1))}
-                className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/10 min-w-[44px]"
+                className="px-4 py-2.5 rounded-xl bg-muted border border-border hover:bg-accent min-w-[44px]"
               >
                 +
               </button>
@@ -830,7 +830,7 @@ export default function HarmonographPage() {
               className={`text-base font-medium px-4 py-2.5 rounded-xl border transition-colors min-h-[44px] select-none ${
                 pedal
                   ? "bg-violet-500/35 border-violet-400/60 text-violet-100"
-                  : "bg-white/5 border-white/15 text-white/75 hover:bg-white/10"
+                  : "bg-muted border-border text-muted-foreground hover:bg-accent"
               }`}
               style={{ touchAction: "none" }}
             >
@@ -850,7 +850,7 @@ export default function HarmonographPage() {
             <button
               onClick={() => captureSvgRef.current?.()}
               disabled={!!glError || figureMidis.length === 0}
-              className="text-base font-medium px-4 py-2.5 rounded-xl border border-emerald-400/40 bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/35 transition-colors min-h-[44px] disabled:opacity-40"
+              className="text-base font-medium px-4 py-2.5 rounded-xl border border-violet-400/40 bg-violet-500/20 text-violet-200 hover:bg-violet-500/35 transition-colors min-h-[44px] disabled:opacity-40"
             >
               ⤓ Export SVG
             </button>
@@ -858,8 +858,8 @@ export default function HarmonographPage() {
 
           {/* damping (mod-wheel CC1 / ↑↓ / slider) */}
           <div className="flex flex-wrap items-center gap-3 mb-3">
-            <label className="flex items-center gap-3 text-base text-white/75">
-              <span className="text-white/75">Pendulum damping</span>
+            <label className="flex items-center gap-3 text-base text-muted-foreground">
+              <span className="text-muted-foreground">Pendulum damping</span>
               <input
                 type="range"
                 min={0}
@@ -873,7 +873,7 @@ export default function HarmonographPage() {
               <span className="font-mono text-base text-violet-300 tabular-nums w-14">
                 {(damping * 100).toFixed(0)}%
               </span>
-              <span className="text-base text-white/75">
+              <span className="text-base text-muted-foreground">
                 {damping < 0.33
                   ? "loose / sprawling"
                   : damping < 0.66
@@ -881,22 +881,22 @@ export default function HarmonographPage() {
                   : "tight spiral"}
               </span>
             </label>
-            <span className="text-base text-white/55">
+            <span className="text-base text-muted-foreground">
               mod-wheel CC1 · ↑ / ↓ keys
             </span>
           </div>
 
           {/* readout */}
           <div className="font-mono text-base flex flex-wrap gap-x-6 gap-y-1 mb-3">
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               held:{" "}
-              <span className="text-white/95">
+              <span className="text-foreground">
                 {sortedMidis.length > 0
                   ? sortedMidis.map((m) => noteName(m)).join(" ")
                   : "—"}
               </span>
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               pedaled:{" "}
               <span className="text-violet-300">
                 {pedaledMidis.length > 0
@@ -907,15 +907,15 @@ export default function HarmonographPage() {
                   : "—"}
               </span>
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               chord:{" "}
               <span className="text-violet-300">{figureChord}</span>
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               ratios:{" "}
               <span
                 className={
-                  justIntonation ? "text-emerald-300/95" : "text-amber-300/95"
+                  justIntonation ? "text-violet-300/95" : "text-violet-300/95"
                 }
               >
                 {ratioSet}
@@ -926,14 +926,14 @@ export default function HarmonographPage() {
           {/* color legend — swatch per thread, circle-of-fifths hue */}
           {legendMidis.length > 0 && (
             <div className="flex flex-wrap items-center gap-3 mb-1">
-              <span className="text-base text-white/75">threads:</span>
+              <span className="text-base text-muted-foreground">threads:</span>
               {legendMidis.map((m, i) => (
                 <span
                   key={`${m}-${i}`}
-                  className="inline-flex items-center gap-2 font-mono text-base text-white/95"
+                  className="inline-flex items-center gap-2 font-mono text-base text-foreground"
                 >
                   <span
-                    className="inline-block rounded-sm border border-white/25"
+                    className="inline-block rounded-sm border border-border"
                     style={{
                       width: 16,
                       height: 16,
@@ -969,7 +969,7 @@ export default function HarmonographPage() {
                         ? "bg-violet-300 text-black"
                         : isPedaled
                         ? "bg-violet-300/40 text-black/70"
-                        : "bg-white/90 text-black/60 hover:bg-white"
+                        : "bg-muted text-black/60 hover:bg-card"
                     }`}
                     style={{ minWidth: 44, touchAction: "none" }}
                   >
@@ -1011,7 +1011,7 @@ export default function HarmonographPage() {
               })}
             </div>
           </div>
-          <p className="text-center text-base text-white/55 mt-2">
+          <p className="text-center text-base text-muted-foreground mt-2">
             QWERTY: a w s e d f t g y h u j k o l p ;  ·  z / x = octave  ·{" "}
             Space = sustain pedal  ·  ↑ / ↓ = damping
           </p>
@@ -1021,12 +1021,12 @@ export default function HarmonographPage() {
       {/* Design notes panel */}
       {showNotes && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-6">
-          <div className="max-w-lg max-h-[80vh] overflow-y-auto bg-[#0c1018] border border-white/15 rounded-2xl p-6 text-base text-white/85 space-y-3">
+          <div className="max-w-lg max-h-[80vh] overflow-y-auto bg-[#0c1018] border border-border rounded-2xl p-6 text-base text-foreground space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+              <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-base"
+                className="px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-base"
               >
                 Close
               </button>
@@ -1050,7 +1050,7 @@ export default function HarmonographPage() {
               <strong>Cycle 2 — the expressive live instrument.</strong> Four
               performance layers now sculpt the figure as it draws:
             </p>
-            <ul className="list-disc pl-5 space-y-2 text-white/85">
+            <ul className="list-disc pl-5 space-y-2 text-foreground">
               <li>
                 <strong>Sustain pedal</strong> (MIDI CC64, Space bar, or the
                 on-screen pad): while down, released notes are not removed — they
@@ -1074,7 +1074,7 @@ export default function HarmonographPage() {
                 downloadable image named for the chord.
               </li>
             </ul>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Input: Web MIDI / computer keyboard / on-screen piano. Output: a raw
               WebGL2 line-strip ink trail. Web MIDI exists elsewhere in this lab;
               the novel idea here is harmony-as-visible-geometry, sculpted in real

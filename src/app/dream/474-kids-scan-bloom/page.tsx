@@ -258,10 +258,10 @@ export default function KidsScanBloom() {
       {/* ── Idle splash ─────────────────────────────────────────────────── */}
       {phase === "idle" && (
         <div className="flex flex-col items-center gap-6 z-10 px-6 text-center">
-          <h1 className="text-3xl font-bold text-white/95 tracking-tight">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
             Squeeze the Bloom
           </h1>
-          <p className="text-base text-white/75 max-w-xs">
+          <p className="text-base text-muted-foreground max-w-xs">
             Tap or squeeze the glowing flower.
             <br />
             Every petal you touch{" "}
@@ -271,12 +271,12 @@ export default function KidsScanBloom() {
           <button
             onClick={() => void startExperience()}
             className="mt-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 active:scale-95
-                       text-white text-xl font-bold transition-all duration-150 min-w-[160px] min-h-[56px]"
+                       text-foreground text-xl font-bold transition-all duration-150 min-w-[160px] min-h-[56px]"
             style={{ touchAction: "manipulation" }}
           >
             🌸 Start
           </button>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-muted-foreground/70 mt-1">
             Best with headphones
           </p>
         </div>
@@ -352,7 +352,7 @@ export default function KidsScanBloom() {
 
           {/* No-WebGL notice */}
           {noWebGL && (
-            <p className="absolute top-4 left-1/2 -translate-x-1/2 text-rose-300 text-base text-center px-4">
+            <p className="absolute top-4 left-1/2 -translate-x-1/2 text-violet-300 text-base text-center px-4">
               WebGL2 not available — bloom is simplified, audio runs normally.
             </p>
           )}
@@ -364,7 +364,7 @@ export default function KidsScanBloom() {
         href={`/dream/474-kids-scan-bloom/README.md`}
         target="_blank"
         rel="noopener"
-        className="absolute bottom-3 right-4 text-sm text-white/35 hover:text-white/65 transition-colors z-20"
+        className="absolute bottom-3 right-4 text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors z-20"
       >
         Read the design notes ↗
       </Link>

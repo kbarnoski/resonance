@@ -636,21 +636,21 @@ export default function ParticleLifeGpuPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">
-            Particle Life <span className="text-white/30 text-lg">WebGPU</span>
+            Particle Life <span className="text-muted-foreground/70 text-lg">WebGPU</span>
           </h1>
-          <p className="text-sm text-white/55 max-w-sm mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm mb-2 leading-relaxed">
             9,000 particles across 6 species on the GPU. A 6×6 attraction/repulsion matrix
             governs emergent flocking, predator-prey spirals, and orbiting clusters —
             none explicitly programmed.
           </p>
-          <p className="text-xs text-white/35 max-w-xs mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-xs mb-8 leading-relaxed">
             Audio energy injects velocity turbulence per species. Onsets reshuffle the
             matrix → the swarm self-organizes into a new emergent pattern.
             Requires WebGPU (Chrome, Edge, Firefox 147+, Safari 26+).
           </p>
 
           {gpuError && (
-            <p className="mb-5 text-xs text-rose-300/70 max-w-xs leading-relaxed border border-rose-400/20 rounded px-4 py-2">
+            <p className="mb-5 text-xs text-violet-300/70 max-w-xs leading-relaxed border border-violet-400/20 rounded px-4 py-2">
               {gpuError}
             </p>
           )}
@@ -658,23 +658,23 @@ export default function ParticleLifeGpuPage() {
           <div className="flex gap-3 flex-wrap justify-center mb-6">
             <button
               onClick={() => startMode("demo")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={() => startMode("mic")}
-              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/40 transition text-white/55"
+              className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Start mic
             </button>
           </div>
 
           {micError && (
-            <p className="text-xs text-rose-300/70 max-w-sm mb-4">{micError}</p>
+            <p className="text-xs text-violet-300/70 max-w-sm mb-4">{micError}</p>
           )}
 
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -685,7 +685,7 @@ export default function ParticleLifeGpuPage() {
           {/* Matrix heatmap — top-left */}
           {matrixSnap.length === 36 && (
             <div className="absolute top-3 left-3 pointer-events-none select-none">
-              <p className="text-[9px] tracking-widest text-white/30 mb-1 uppercase">matrix</p>
+              <p className="text-[9px] tracking-widest text-muted-foreground/70 mb-1 uppercase">matrix</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 10px)", gap: 1 }}>
                 {matrixSnap.map((v, idx) => {
                   const abs = Math.abs(v);
@@ -708,7 +708,7 @@ export default function ParticleLifeGpuPage() {
           )}
 
           {/* FPS + mode — top-right */}
-          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-white/40 space-y-0.5 pointer-events-none select-none">
+          <div className="absolute top-3 right-3 text-right text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none select-none">
             <div>{fps} fps</div>
             <div className="uppercase">{mode} — 9k GPU</div>
           </div>
@@ -727,7 +727,7 @@ export default function ParticleLifeGpuPage() {
                       opacity: 0.35 + energySnap[i] * 0.65,
                       transition: "height 80ms linear",
                     }} />
-                    <span className="text-[7px] text-white/40 tracking-wider uppercase">
+                    <span className="text-[7px] text-muted-foreground/70 tracking-wider uppercase">
                       {name.slice(0, 3)}
                     </span>
                   </div>
@@ -738,24 +738,24 @@ export default function ParticleLifeGpuPage() {
             <div className="flex flex-col items-end gap-1">
               <button
                 onClick={reshuffleMatrix}
-                className="text-[10px] tracking-wider uppercase text-white/55 border border-white/20 hover:border-white/60 hover:text-white px-2.5 py-1 rounded transition"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
               >
                 reshuffle
               </button>
               <button
                 onClick={stopMode}
-                className="text-[10px] tracking-wider uppercase text-white/55 border border-white/20 hover:border-white/60 hover:text-white px-2.5 py-1 rounded transition"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground border border-border hover:border-border hover:text-foreground px-2.5 py-1 rounded transition"
               >
                 stop
               </button>
-              <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+              <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
                 ← back
               </Link>
               <a
                 href="/dream/16-particle-life-gpu/README.md"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[9px] text-white/20 hover:text-white/50 transition"
+                className="text-[9px] text-muted-foreground/70 hover:text-muted-foreground transition"
               >
                 design notes ↗
               </a>

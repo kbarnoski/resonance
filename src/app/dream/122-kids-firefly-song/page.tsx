@@ -330,14 +330,14 @@ export default function KidsFireflySong() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-black text-white px-4 py-6">
+    <main className="flex flex-col items-center min-h-screen bg-black text-foreground px-4 py-6">
       <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold mb-2 text-white/95">Firefly Song</h1>
-        <p className="text-base text-white/75 mb-2">
+        <h1 className="text-3xl font-bold mb-2 text-foreground">Firefly Song</h1>
+        <p className="text-base text-muted-foreground mb-2">
           Touch a firefly to catch it — it follows your finger and sings its note.
           Let go and it drifts away.
         </p>
-        <p className="text-sm text-white/55 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Catch two or three at once to make a chord. No microphone needed.
         </p>
 
@@ -358,7 +358,7 @@ export default function KidsFireflySong() {
             <div className="flex justify-center">
               <button
                 onClick={handleStart}
-                className="bg-yellow-400/20 border border-yellow-300/50 text-yellow-200/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
+                className="bg-violet-400/20 border border-violet-300/50 text-violet-200/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
               >
                 ✨ Begin
               </button>
@@ -372,7 +372,7 @@ export default function KidsFireflySong() {
           />
         )}
 
-        <div className="mt-4 flex items-center justify-between text-xs text-white/55">
+        <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
           <span>For kids (4+) · no mic · touch to catch · multi-touch OK</span>
           <Link href="/dream" className="underline">
             ← dream lab

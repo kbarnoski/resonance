@@ -500,7 +500,7 @@ export default function NightBoat() {
   const seaLift = glow.tilt * 0.6;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* The single glowing scene */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <svg
@@ -582,10 +582,10 @@ export default function NightBoat() {
       {/* Text overlay */}
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-5">
         <header className="max-w-md">
-          <h1 className="font-mono text-2xl tracking-tight text-white/95">
+          <h1 className="font-mono text-2xl tracking-tight text-foreground">
             Night Boat
           </h1>
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             Rock the tablet like a cradle. Close your eyes and listen for the
             music to come home.
           </p>
@@ -595,28 +595,28 @@ export default function NightBoat() {
           {!started && (
             <button
               onClick={begin}
-              className="min-h-[64px] min-w-[200px] rounded-full bg-white/10 px-8 py-4 font-mono text-xl text-white ring-1 ring-white/30 transition hover:bg-white/20"
+              className="min-h-[64px] min-w-[200px] rounded-full bg-muted px-8 py-4 font-mono text-xl text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               ▶ Begin
             </button>
           )}
 
           {started && fellBack && (
-            <p className="max-w-sm text-center text-base text-rose-300">
+            <p className="max-w-sm text-center text-base text-violet-300">
               {statusMsg ||
                 "Drag up and down anywhere to rock the boat."}
             </p>
           )}
 
           {started && !fellBack && (
-            <p className="text-center text-base text-white/75">
+            <p className="text-center text-base text-muted-foreground">
               Rock gently… the boat is sailing home.
             </p>
           )}
 
           <Link
             href="/dream/680-kids-night-boat/README.md"
-            className="font-mono text-base text-white/55 underline-offset-4 hover:text-white/80 hover:underline"
+            className="font-mono text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             Read the design notes
           </Link>

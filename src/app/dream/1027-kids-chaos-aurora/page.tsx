@@ -300,7 +300,7 @@ export default function Page() {
   }, [onOrient]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#060a16] text-white/95 select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#060a16] text-foreground select-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -310,14 +310,14 @@ export default function Page() {
 
       {/* Title + secondary line */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 p-5">
-        <h1 className="text-xl font-semibold text-white/95 drop-shadow">
+        <h1 className="text-xl font-semibold text-foreground drop-shadow">
           Aurora Pendulum
         </h1>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           Flick the glowing dancer. Listen to it sing.
         </p>
         {started && tiltOn && (
-          <p className="text-base text-white/75">Tilt to bend the sky.</p>
+          <p className="text-base text-muted-foreground">Tilt to bend the sky.</p>
         )}
       </div>
 
@@ -326,22 +326,22 @@ export default function Page() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black/40 backdrop-blur-sm">
           <button
             onClick={start}
-            className="flex h-[88px] min-w-[220px] items-center justify-center rounded-full bg-gradient-to-r from-teal-400 via-violet-400 to-amber-300 px-10 text-2xl font-bold text-[#0a0f1f] shadow-2xl active:scale-95"
+            className="flex h-[88px] min-w-[220px] items-center justify-center rounded-full bg-gradient-to-r from-violet-400 via-violet-400 to-violet-300 px-10 text-2xl font-bold text-[#0a0f1f] shadow-2xl active:scale-95"
             style={{ minHeight: 72 }}
           >
             ▶ Start
           </button>
-          <p className="max-w-xs px-6 text-center text-base text-white/75">
+          <p className="max-w-xs px-6 text-center text-base text-muted-foreground">
             Tap Start, then flick the glowing pendulum to make it dance and sing.
           </p>
           {error && (
-            <p className="px-6 text-center text-base text-rose-300">{error}</p>
+            <p className="px-6 text-center text-base text-violet-300">{error}</p>
           )}
         </div>
       )}
 
       {started && error && (
-        <div className="absolute bottom-20 left-0 right-0 px-6 text-center text-base text-rose-300">
+        <div className="absolute bottom-20 left-0 right-0 px-6 text-center text-base text-violet-300">
           {error}
         </div>
       )}
@@ -351,7 +351,7 @@ export default function Page() {
         <button
           onClick={() => flick(3)}
           aria-label="flick"
-          className="absolute bottom-6 left-1/2 h-[72px] min-w-[160px] -translate-x-1/2 rounded-full bg-white/10 px-8 text-lg font-semibold text-white/95 backdrop-blur active:scale-95"
+          className="absolute bottom-6 left-1/2 h-[72px] min-w-[160px] -translate-x-1/2 rounded-full bg-muted px-8 text-lg font-semibold text-foreground backdrop-blur active:scale-95"
         >
           ✦ Flick
         </button>
@@ -360,14 +360,14 @@ export default function Page() {
       {/* Design notes link */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-3 right-3 text-base text-white/75 underline decoration-dotted"
+        className="absolute bottom-3 right-3 text-base text-muted-foreground underline decoration-dotted"
       >
         Read the design notes
       </button>
 
       {showNotes && (
-        <div className="absolute inset-x-4 bottom-16 max-h-[60vh] overflow-auto rounded-2xl bg-[#0a1024]/95 p-5 text-base text-white/75 shadow-2xl">
-          <h2 className="mb-2 text-lg font-semibold text-white/95">
+        <div className="absolute inset-x-4 bottom-16 max-h-[60vh] overflow-auto rounded-2xl bg-[#0a1024]/95 p-5 text-base text-muted-foreground shadow-2xl">
+          <h2 className="mb-2 text-lg font-semibold text-foreground">
             Design notes
           </h2>
           <p className="mb-2">

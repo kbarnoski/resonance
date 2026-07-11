@@ -278,11 +278,11 @@ export default function SpinWheel() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-black text-white select-none">
+    <div className="flex flex-col items-center min-h-screen bg-black text-foreground select-none">
       <div className="w-full max-w-md px-4 pt-6 pb-8 flex flex-col items-center gap-5">
         <div className="text-center">
           <h1 className="text-2xl font-mono font-bold">Spin Wheel</h1>
-          <p className="text-white/75 text-base mt-1">
+          <p className="text-muted-foreground text-base mt-1">
             Tap segments to light them — ✦ plays each as it spins past
           </p>
         </div>
@@ -295,17 +295,17 @@ export default function SpinWheel() {
         <div className="flex items-center gap-6">
           <button
             onClick={() => setBpm((b) => Math.max(30, b - 10))}
-            className="min-h-[48px] min-w-[48px] rounded-full bg-white/10 hover:bg-white/20 text-2xl font-bold transition"
+            className="min-h-[48px] min-w-[48px] rounded-full bg-muted hover:bg-accent text-2xl font-bold transition"
             aria-label="Slower"
           >
             −
           </button>
-          <span className="font-mono text-base text-white/80 w-20 text-center">
+          <span className="font-mono text-base text-foreground w-20 text-center">
             {bpm} BPM
           </span>
           <button
             onClick={() => setBpm((b) => Math.min(160, b + 10))}
-            className="min-h-[48px] min-w-[48px] rounded-full bg-white/10 hover:bg-white/20 text-2xl font-bold transition"
+            className="min-h-[48px] min-w-[48px] rounded-full bg-muted hover:bg-accent text-2xl font-bold transition"
             aria-label="Faster"
           >
             +
@@ -314,14 +314,14 @@ export default function SpinWheel() {
 
         <button
           onClick={() => { stRef.current.pegs.fill(false); }}
-          className="min-h-[44px] px-6 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-base text-white/80 transition"
+          className="min-h-[44px] px-6 py-2.5 rounded-lg bg-muted hover:bg-accent text-base text-foreground transition"
         >
           Clear
         </button>
 
         <Link
           href="/dream"
-          className="text-white/40 text-sm hover:text-white/60 transition"
+          className="text-muted-foreground/70 text-sm hover:text-muted-foreground transition"
         >
           ← dream lab
         </Link>

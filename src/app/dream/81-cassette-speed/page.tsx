@@ -287,12 +287,12 @@ export default function CassetteSpeed() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-foreground">
       <div className="max-w-3xl mx-auto px-4 py-8">
         {/* Nav */}
         <Link
           href="/dream"
-          className="text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← Dream Lab
         </Link>
@@ -300,20 +300,20 @@ export default function CassetteSpeed() {
         {/* Header */}
         <div className="mt-5 mb-8">
           <h1 className="text-2xl font-mono tracking-tight">Cassette vs ACE-Step</h1>
-          <p className="text-white/75 mt-2 text-base leading-relaxed">
+          <p className="text-muted-foreground mt-2 text-base leading-relaxed">
             Same prompt · two backends · fired simultaneously. CassetteAI targets ~2s.
             ACE-Step targets ~20–40s. Is the quality difference worth the wait?
           </p>
-          <p className="text-white/55 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             CassetteAI $0.02/min · ACE-Step $0.012/min · FAL_KEY
           </p>
         </div>
 
         {/* Prompt input */}
         <div className="mb-6">
-          <label className="block text-white/75 text-sm mb-2">Style tags</label>
+          <label className="block text-muted-foreground text-sm mb-2">Style tags</label>
           <textarea
-            className="w-full bg-white/5 border border-white/15 rounded-lg px-4 py-3 text-base text-white placeholder-white/30 focus:outline-none focus:border-white/40 resize-none"
+            className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-base text-foreground placeholder-muted-foreground focus:outline-none focus:border-border resize-none"
             rows={2}
             value={tags}
             onChange={(e) => setTags(e.target.value)}
@@ -324,7 +324,7 @@ export default function CassetteSpeed() {
               <button
                 key={p.label}
                 onClick={() => setTags(p.tags)}
-                className="text-sm px-3 py-1.5 rounded border border-white/20 text-white/75 hover:text-white hover:border-white/40 transition-colors"
+                className="text-sm px-3 py-1.5 rounded border border-border text-muted-foreground hover:text-foreground hover:border-border transition-colors"
               >
                 {p.label}
               </button>
@@ -336,7 +336,7 @@ export default function CassetteSpeed() {
         <button
           onClick={generate}
           disabled={isGenerating}
-          className="w-full mb-8 py-3 px-6 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white font-mono text-base transition-colors min-h-[44px]"
+          className="w-full mb-8 py-3 px-6 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-foreground font-mono text-base transition-colors min-h-[44px]"
         >
           {isGenerating ? "Generating…" : "▶ Generate Both"}
         </button>
@@ -344,19 +344,19 @@ export default function CassetteSpeed() {
         {/* Side-by-side comparison panels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {/* Cassette panel */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+          <div className="bg-muted border border-border rounded-xl p-4">
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="font-mono text-base text-violet-300">CassetteAI</div>
-                <div className="text-white/55 text-sm">speed-optimized · ~2s</div>
+                <div className="text-muted-foreground text-sm">speed-optimized · ~2s</div>
               </div>
-              <span className="text-xs text-white/40 font-mono mt-1">$0.02/min</span>
+              <span className="text-xs text-muted-foreground/70 font-mono mt-1">$0.02/min</span>
             </div>
 
             {/* Status line */}
             <div className="mb-3 font-mono text-sm" style={{ minHeight: "1.25rem" }}>
               {cassette.phase === "idle" && (
-                <span className="text-white/40">ready</span>
+                <span className="text-muted-foreground/70">ready</span>
               )}
               {cassette.phase === "generating" && (
                 <span className="text-violet-300">
@@ -364,12 +364,12 @@ export default function CassetteSpeed() {
                 </span>
               )}
               {cassette.phase === "done" && (
-                <span className="text-emerald-300">
+                <span className="text-violet-300">
                   ✓ {fmtMs(cassette.durationMs)}
                 </span>
               )}
               {cassette.phase === "error" && (
-                <span className="text-rose-300">✗ error</span>
+                <span className="text-violet-300">✗ error</span>
               )}
             </div>
 
@@ -387,7 +387,7 @@ export default function CassetteSpeed() {
               )}
               {cassette.phase === "error" && (
                 <div className="absolute inset-0 p-2 overflow-hidden">
-                  <span className="text-rose-300 text-xs">
+                  <span className="text-violet-300 text-xs">
                     {cassette.errorMsg}
                   </span>
                 </div>
@@ -419,7 +419,7 @@ export default function CassetteSpeed() {
                 <a
                   href={cassette.url}
                   download="cassette.mp3"
-                  className="py-2 px-3 bg-white/5 hover:bg-white/10 rounded text-white/55 text-sm transition-colors flex items-center"
+                  className="py-2 px-3 bg-muted hover:bg-accent rounded text-muted-foreground text-sm transition-colors flex items-center"
                 >
                   ⬇
                 </a>
@@ -428,30 +428,30 @@ export default function CassetteSpeed() {
           </div>
 
           {/* ACE-Step panel */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+          <div className="bg-muted border border-border rounded-xl p-4">
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="font-mono text-base text-cyan-300">ACE-Step</div>
-                <div className="text-white/55 text-sm">quality-optimized · ~20–40s</div>
+                <div className="font-mono text-base text-violet-300">ACE-Step</div>
+                <div className="text-muted-foreground text-sm">quality-optimized · ~20–40s</div>
               </div>
-              <span className="text-xs text-white/40 font-mono mt-1">$0.012/min</span>
+              <span className="text-xs text-muted-foreground/70 font-mono mt-1">$0.012/min</span>
             </div>
 
             {/* Status line */}
             <div className="mb-3 font-mono text-sm" style={{ minHeight: "1.25rem" }}>
               {ace.phase === "idle" && (
-                <span className="text-white/40">ready</span>
+                <span className="text-muted-foreground/70">ready</span>
               )}
               {ace.phase === "generating" && (
-                <span className="text-cyan-300">
+                <span className="text-violet-300">
                   ⟳ {fmtMs(aceElapsed)}…
                 </span>
               )}
               {ace.phase === "done" && (
-                <span className="text-emerald-300">✓ {fmtMs(ace.durationMs)}</span>
+                <span className="text-violet-300">✓ {fmtMs(ace.durationMs)}</span>
               )}
               {ace.phase === "error" && (
-                <span className="text-rose-300">✗ error</span>
+                <span className="text-violet-300">✗ error</span>
               )}
             </div>
 
@@ -462,14 +462,14 @@ export default function CassetteSpeed() {
             >
               {ace.phase === "generating" && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-cyan-300/50 text-xs font-mono animate-pulse">
+                  <div className="text-violet-300/50 text-xs font-mono animate-pulse">
                     generating…
                   </div>
                 </div>
               )}
               {ace.phase === "error" && (
                 <div className="absolute inset-0 p-2 overflow-hidden">
-                  <span className="text-rose-300 text-xs">{ace.errorMsg}</span>
+                  <span className="text-violet-300 text-xs">{ace.errorMsg}</span>
                 </div>
               )}
               <canvas
@@ -490,14 +490,14 @@ export default function CassetteSpeed() {
                   onClick={() =>
                     nowPlaying === "ace" ? stopTrack() : playTrack("ace")
                   }
-                  className="flex-1 py-2 px-3 bg-cyan-600/30 hover:bg-cyan-600/50 rounded text-cyan-300 font-mono text-sm transition-colors min-h-[36px]"
+                  className="flex-1 py-2 px-3 bg-violet-600/30 hover:bg-violet-600/50 rounded text-violet-300 font-mono text-sm transition-colors min-h-[36px]"
                 >
                   {nowPlaying === "ace" ? "■ stop" : "▶ play"}
                 </button>
                 <a
                   href={ace.url}
                   download="ace-step.mp3"
-                  className="py-2 px-3 bg-white/5 hover:bg-white/10 rounded text-white/55 text-sm transition-colors flex items-center"
+                  className="py-2 px-3 bg-muted hover:bg-accent rounded text-muted-foreground text-sm transition-colors flex items-center"
                 >
                   ⬇
                 </a>
@@ -522,8 +522,8 @@ export default function CassetteSpeed() {
 
         {/* Speed comparison summary */}
         {bothDone && cassette.phase === "done" && ace.phase === "done" && (
-          <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-8 text-sm text-white/75 leading-relaxed">
-            <div className="font-mono text-white text-base mb-2">
+          <div className="bg-muted border border-border rounded-xl p-4 mb-8 text-sm text-muted-foreground leading-relaxed">
+            <div className="font-mono text-foreground text-base mb-2">
               Speed comparison
             </div>
             {(() => {
@@ -536,16 +536,16 @@ export default function CassetteSpeed() {
               return (
                 <>
                   <p>
-                    <span className="text-white">{fasterName}</span> was{" "}
+                    <span className="text-foreground">{fasterName}</span> was{" "}
                     {ratio}× faster ({fmtMs(cMs)} vs {fmtMs(aMs)}).
                   </p>
-                  <p className="mt-1 text-white/55">
+                  <p className="mt-1 text-muted-foreground">
                     Play both and decide if the quality difference justifies
                     the wait. If CassetteAI sounds good enough, it could
                     replace ACE-Step in{" "}
                     <Link
                       href="/dream/6-compose"
-                      className="text-white/70 hover:text-white underline"
+                      className="text-muted-foreground hover:text-foreground underline"
                     >
                       /dream/6-compose
                     </Link>{" "}
@@ -558,7 +558,7 @@ export default function CassetteSpeed() {
         )}
 
         {/* Footer notes */}
-        <div className="text-white/40 text-xs leading-relaxed border-t border-white/10 pt-6 space-y-1">
+        <div className="text-muted-foreground/70 text-xs leading-relaxed border-t border-border pt-6 space-y-1">
           <p>
             CassetteAI — lightweight distilled model, ~2s generation, $0.02/min.
             Trade-off: speed over fidelity.
@@ -569,12 +569,12 @@ export default function CassetteSpeed() {
           </p>
           <p>
             Both receive identical style tags +{" "}
-            <code className="text-white/55">[inst]</code> for instrumental
+            <code className="text-muted-foreground">[inst]</code> for instrumental
             output. 30s clips.
           </p>
           <p className="mt-2">
             ⚠ CassetteAI endpoint{" "}
-            <code className="text-white/55">cassetteai/music-generator</code>{" "}
+            <code className="text-muted-foreground">cassetteai/music-generator</code>{" "}
             uses best-guess parameter names — paste any API error for a fix
             next cycle.
           </p>

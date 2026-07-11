@@ -317,22 +317,22 @@ export default function VoiceScenePage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#050508] text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#050508] text-foreground overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between px-5 pt-5 pb-2 shrink-0">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white">Voice Scene</h1>
-          <p className="text-base text-white/75 mt-0.5 max-w-md leading-snug">
+          <h1 className="text-2xl font-mono font-bold text-foreground">Voice Scene</h1>
+          <p className="text-base text-muted-foreground mt-0.5 max-w-md leading-snug">
             Speak a word — transform the space. Say{" "}
-            <span className="text-white/90 font-mono">cosmic</span>,{" "}
-            <span className="text-white/90 font-mono">forest</span>,{" "}
-            <span className="text-white/90 font-mono">ocean</span>,{" "}
-            <span className="text-white/90 font-mono">fire</span>, or any scene name.
+            <span className="text-foreground font-mono">cosmic</span>,{" "}
+            <span className="text-foreground font-mono">forest</span>,{" "}
+            <span className="text-foreground font-mono">ocean</span>,{" "}
+            <span className="text-foreground font-mono">fire</span>, or any scene name.
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-white/55 text-sm font-mono hover:text-white/80 transition-colors mt-1 ml-4 shrink-0"
+          className="text-muted-foreground text-sm font-mono hover:text-foreground transition-colors mt-1 ml-4 shrink-0"
         >
           ← dream lab
         </Link>
@@ -358,8 +358,8 @@ export default function VoiceScenePage() {
                   onClick={() => switchScene(k)}
                   className={`px-4 py-2 text-base font-mono rounded border transition min-h-[44px] ${
                     active
-                      ? "bg-white/15 border-white/30 text-white"
-                      : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white/80"
+                      ? "bg-muted border-border text-foreground"
+                      : "bg-muted border-border text-muted-foreground hover:bg-accent hover:text-foreground"
                   }`}
                 >
                   {s.icon} {s.label}
@@ -371,8 +371,8 @@ export default function VoiceScenePage() {
                 onClick={toggleSpeech}
                 className={`px-4 py-2 text-base font-mono rounded border transition min-h-[44px] ml-auto ${
                   listening
-                    ? "bg-rose-500/20 border-rose-400/50 text-rose-300"
-                    : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white/80"
+                    ? "bg-violet-500/20 border-violet-400/50 text-violet-300"
+                    : "bg-muted border-border text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {listening ? "● listening" : "🎙 voice"}
@@ -381,8 +381,8 @@ export default function VoiceScenePage() {
           </div>
         )}
         {lastWord && (
-          <p className="text-white/55 text-sm font-mono mt-1.5">
-            heard: <span className="text-white/80">&ldquo;{lastWord}&rdquo;</span>
+          <p className="text-muted-foreground text-sm font-mono mt-1.5">
+            heard: <span className="text-foreground">&ldquo;{lastWord}&rdquo;</span>
           </p>
         )}
       </div>
@@ -393,12 +393,12 @@ export default function VoiceScenePage() {
         {!started && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center px-8">
-              <p className="text-white/30 text-base font-mono leading-loose">
+              <p className="text-muted-foreground/70 text-base font-mono leading-loose">
                 ✦ cosmic &nbsp;·&nbsp; ◉ earth &nbsp;·&nbsp; ✿ forest
                 <br />
                 ◎ ocean &nbsp;·&nbsp; ◈ fire &nbsp;·&nbsp; ◇ crystal
               </p>
-              <p className="text-white/20 text-sm font-mono mt-3">
+              <p className="text-muted-foreground/70 text-sm font-mono mt-3">
                 press Begin — then say a word or click a scene
               </p>
             </div>
@@ -407,9 +407,9 @@ export default function VoiceScenePage() {
       </div>
 
       {/* Footer */}
-      <div className="flex justify-between items-center px-5 py-2 text-white/55 text-xs font-mono shrink-0 border-t border-white/5">
+      <div className="flex justify-between items-center px-5 py-2 text-muted-foreground text-xs font-mono shrink-0 border-t border-border">
         <span>189-voice-scene · cycle 221 · zero deps · zero api</span>
-        <span className="text-white/40">Web Audio · Web Speech API · Canvas2D</span>
+        <span className="text-muted-foreground/70">Web Audio · Web Speech API · Canvas2D</span>
       </div>
     </div>
   );

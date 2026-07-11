@@ -894,7 +894,7 @@ export default function KidsDanceSky() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black font-mono text-white/95 select-none">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black font-mono text-foreground select-none">
       {/* full-bleed Canvas2D skeleton + aura */}
       <canvas
         ref={canvasRef}
@@ -919,7 +919,7 @@ export default function KidsDanceSky() {
         href={README_URL}
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 text-base text-white/75 underline-offset-4 hover:text-amber-300 hover:underline"
+        className="absolute right-4 top-4 z-20 text-base text-muted-foreground underline-offset-4 hover:text-violet-300 hover:underline"
       >
         Read the design notes
       </Link>
@@ -927,10 +927,10 @@ export default function KidsDanceSky() {
       {/* intro / overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-4xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Sky Choir
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Stand back so your whole body shows. Raise your arms and the sky
             brightens. Spread out wide and the warm chord opens. Just dance —
             there are no wrong notes.
@@ -939,11 +939,11 @@ export default function KidsDanceSky() {
             type="button"
             onClick={start}
             disabled={phase === "loading"}
-            className="min-h-[64px] min-w-[64px] rounded-full bg-amber-500/90 px-8 py-2.5 text-xl font-medium text-white/95 transition hover:bg-amber-400 disabled:opacity-60"
+            className="min-h-[64px] min-w-[64px] rounded-full bg-violet-500/90 px-8 py-2.5 text-xl font-medium text-foreground transition hover:bg-violet-400 disabled:opacity-60"
           >
             {phase === "loading" ? "Waking the sky…" : "Start dancing"}
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Camera stays in your browser. Best with room to move.
           </p>
         </div>
@@ -953,11 +953,11 @@ export default function KidsDanceSky() {
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-2 px-6 pb-6 text-center">
           {notice && (
-            <p className="max-w-md text-base leading-relaxed text-rose-300">
+            <p className="max-w-md text-base leading-relaxed text-violet-300">
               {notice}
             </p>
           )}
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             {tracking
               ? "Dancing with you — raise high to brighten, spread wide to open."
               : "Drag across the sky, or just watch it dance and sing."}

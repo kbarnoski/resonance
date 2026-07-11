@@ -791,15 +791,15 @@ export default function KidsTidePoolPage() {
   }
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04060f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04060f] text-foreground">
       <canvas ref={mountRef} className="absolute inset-0 h-full w-full" />
 
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#04060f]/95 px-6 text-center">
-          <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Moonlit Tide Pool
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Tilt the screen and a sea of light flows downhill, pooling in the low
             corner. Every pool rings a soft bell. Rock it gently for slow drops,
             or sway it for a sparkle of chimes.
@@ -807,38 +807,38 @@ export default function KidsTidePoolPage() {
           <button
             type="button"
             onClick={startSea}
-            className="min-h-[64px] min-w-[64px] rounded-full bg-sky-400/90 px-8 py-4 text-xl font-medium text-sky-950 shadow-lg shadow-sky-500/20 transition active:scale-95"
+            className="min-h-[64px] min-w-[64px] rounded-full bg-violet-400/90 px-8 py-4 text-xl font-medium text-violet-950 shadow-lg shadow-violet-500/20 transition active:scale-95"
           >
             Touch the sea
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Best with the volume gentle and low, lying down at bedtime.
           </p>
         </div>
       )}
 
       {started && (
-        <div className="pointer-events-none absolute left-4 top-4 z-10 select-none font-mono text-base text-white/75">
-          <div className="text-sky-300/95">{bellCount} bells</div>
-          <div className="text-white/55">tilt or drag the sea</div>
+        <div className="pointer-events-none absolute left-4 top-4 z-10 select-none font-mono text-base text-muted-foreground">
+          <div className="text-violet-300/95">{bellCount} bells</div>
+          <div className="text-muted-foreground">tilt or drag the sea</div>
         </div>
       )}
 
       {started && permissionNote && (
-        <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[60%] text-right text-base text-rose-300">
+        <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[60%] text-right text-base text-violet-300">
           {permissionNote}
         </div>
       )}
 
       {started && noGpuNote && (
-        <div className="pointer-events-none absolute inset-x-4 bottom-16 z-10 text-center text-base text-rose-300">
+        <div className="pointer-events-none absolute inset-x-4 bottom-16 z-10 text-center text-base text-violet-300">
           {noGpuNote}
         </div>
       )}
 
       <a
         href="/dream/931-kids-tide-pool/README.md"
-        className="absolute bottom-3 right-4 z-10 font-mono text-base text-sky-300/80 underline-offset-2 hover:underline"
+        className="absolute bottom-3 right-4 z-10 font-mono text-base text-violet-300/80 underline-offset-2 hover:underline"
       >
         design notes
       </a>

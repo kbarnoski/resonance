@@ -256,15 +256,15 @@ export default function MarineGamelanPage() {
 
   const badge = (s: Source) =>
     s === "live" ? (
-      <span className="text-emerald-300/95">live feed</span>
+      <span className="text-violet-300/95">live feed</span>
     ) : s === "simulated" ? (
-      <span className="text-rose-300">(live feed unavailable — simulated sea)</span>
+      <span className="text-violet-300">(live feed unavailable — simulated sea)</span>
     ) : (
-      <span className="text-white/55">connecting…</span>
+      <span className="text-muted-foreground">connecting…</span>
     );
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05070f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05070f] text-foreground">
       {/* WebGL2 caustic water-light — the main visualization */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -273,10 +273,10 @@ export default function MarineGamelanPage() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col gap-5 px-5 py-8">
         <header className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             Marine Gamelan
           </h1>
-          <p className="max-w-2xl text-base text-white/80">
+          <p className="max-w-2xl text-base text-foreground">
             The real, live state of the world&rsquo;s oceans plays a bronze
             gamelan — heavy seas roughen the metal into a beating, detuned clang
             while calm seas stay sparse, high and sweet.
@@ -286,27 +286,27 @@ export default function MarineGamelanPage() {
         {!started ? (
           <button
             onClick={handleStart}
-            className="w-fit rounded-xl bg-violet-500/90 px-6 py-3 text-base font-medium text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
+            className="w-fit rounded-xl bg-violet-500/90 px-6 py-3 text-base font-medium text-foreground shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
           >
             Start the sea
           </button>
         ) : (
           <div className="space-y-5">
             {!webglOk && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 WebGL2 unavailable — the audio keeps playing without the caustic
                 shader.
               </p>
             )}
             {!audioOk && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 Web Audio unavailable — the visuals keep running without sound.
               </p>
             )}
 
             {/* preset buttons → drive Sea A */}
             <div className="space-y-2">
-              <div className="text-sm uppercase tracking-wide text-white/55">
+              <div className="text-sm uppercase tracking-wide text-muted-foreground">
                 Sea A
               </div>
               <div className="flex flex-wrap gap-2">
@@ -316,8 +316,8 @@ export default function MarineGamelanPage() {
                     onClick={() => selectPreset("a", p.id)}
                     className={`rounded-lg px-4 py-2.5 text-base transition ${
                       idA === p.id
-                        ? "bg-white/90 text-black"
-                        : "bg-white/10 text-white/80 hover:bg-white/20"
+                        ? "bg-muted text-black"
+                        : "bg-muted text-foreground hover:bg-accent"
                     }`}
                   >
                     {p.label}
@@ -329,7 +329,7 @@ export default function MarineGamelanPage() {
             {/* dual-sea crossfade + B picker */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="text-sm uppercase tracking-wide text-white/55">
+                <div className="text-sm uppercase tracking-wide text-muted-foreground">
                   Sea B &amp; crossfade
                 </div>
               </div>
@@ -340,8 +340,8 @@ export default function MarineGamelanPage() {
                     onClick={() => selectPreset("b", p.id)}
                     className={`rounded-lg px-4 py-2.5 text-base transition ${
                       idB === p.id
-                        ? "bg-amber-300/90 text-black"
-                        : "bg-white/10 text-white/80 hover:bg-white/20"
+                        ? "bg-violet-300/90 text-black"
+                        : "bg-muted text-foreground hover:bg-accent"
                     }`}
                   >
                     {p.label}
@@ -349,7 +349,7 @@ export default function MarineGamelanPage() {
                 ))}
               </div>
               <label className="block space-y-1">
-                <span className="text-sm text-white/75">
+                <span className="text-sm text-muted-foreground">
                   Crossfade A → B ({Math.round((1 - crossfade) * 100)}% /{" "}
                   {Math.round(crossfade * 100)}%)
                 </span>
@@ -371,7 +371,7 @@ export default function MarineGamelanPage() {
                 onClick={() =>
                   setTuning((t) => (t === "slendro" ? "pelog" : "slendro"))
                 }
-                className="rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/85 transition hover:bg-white/20"
+                className="rounded-lg bg-muted px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
               >
                 Tuning: {tuning === "slendro" ? "Slendro" : "Pelög"}
               </button>
@@ -379,8 +379,8 @@ export default function MarineGamelanPage() {
                 onClick={() => setSnap((v) => !v)}
                 className={`rounded-lg px-4 py-2.5 text-base transition ${
                   snap
-                    ? "bg-emerald-400/90 text-black"
-                    : "bg-white/10 text-white/85 hover:bg-white/20"
+                    ? "bg-violet-400/90 text-black"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 Snap to groove: {snap ? "on" : "off"}
@@ -389,8 +389,8 @@ export default function MarineGamelanPage() {
                 onClick={() => setMuted((v) => !v)}
                 className={`rounded-lg px-4 py-2.5 text-base transition ${
                   muted
-                    ? "bg-rose-400/90 text-black"
-                    : "bg-white/10 text-white/85 hover:bg-white/20"
+                    ? "bg-violet-400/90 text-black"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {muted ? "Muted — tap to unmute" : "Panic mute"}
@@ -407,36 +407,36 @@ export default function MarineGamelanPage() {
               ).map(([label, slot]) => (
                 <div
                   key={label}
-                  className="rounded-xl border border-white/10 bg-black/30 p-3 text-sm"
+                  className="rounded-xl border border-border bg-black/30 p-3 text-sm"
                 >
                   <div className="mb-1 flex items-center justify-between">
-                    <span className="text-base text-white/95">
+                    <span className="text-base text-foreground">
                       {slot.preset.label}
                     </span>
                     {badge(slot.source)}
                   </div>
-                  <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-white/75">
+                  <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-muted-foreground">
                     <div className="flex justify-between">
                       <dt>Wave height</dt>
-                      <dd className="text-white/90">
+                      <dd className="text-foreground">
                         {slot.waveHeight.toFixed(2)} m
                       </dd>
                     </div>
                     <div className="flex justify-between">
                       <dt>Period</dt>
-                      <dd className="text-white/90">
+                      <dd className="text-foreground">
                         {slot.drive.period.toFixed(1)} s
                       </dd>
                     </div>
                     <div className="flex justify-between">
                       <dt>Direction</dt>
-                      <dd className="text-white/90">
+                      <dd className="text-foreground">
                         {Math.round(slot.drive.direction)}°
                       </dd>
                     </div>
                     <div className="flex justify-between">
                       <dt>Roughness</dt>
-                      <dd className="text-amber-300/95">
+                      <dd className="text-violet-300/95">
                         {slot.drive.roughness.toFixed(2)}
                       </dd>
                     </div>

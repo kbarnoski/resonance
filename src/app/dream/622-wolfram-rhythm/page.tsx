@@ -386,14 +386,14 @@ export default function WolframRhythmPage() {
   const activePreset = PRESETS.find((p) => p.rule === rule);
 
   return (
-    <main className="min-h-screen bg-[#06070a] text-white px-5 py-6 sm:px-8 sm:py-8 font-sans">
+    <main className="min-h-screen bg-[#06070a] text-foreground px-5 py-6 sm:px-8 sm:py-8 font-sans">
       <div className="mx-auto max-w-5xl flex flex-col gap-5">
         <header className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
               Wolfram Rhythm
             </h1>
-            <p className="text-base text-white/75 max-w-2xl">
+            <p className="text-base text-muted-foreground max-w-2xl">
               A single integer composes the music: a 1D cellular automaton unfolds
               row by row on a beat, and each live cell sounds.
             </p>
@@ -401,7 +401,7 @@ export default function WolframRhythmPage() {
           <button
             type="button"
             onClick={() => setShowNotes((v) => !v)}
-            className="shrink-0 min-h-[44px] px-4 py-2.5 rounded-md border border-white/15 text-sm text-white/75 hover:text-white hover:border-white/35 font-mono"
+            className="shrink-0 min-h-[44px] px-4 py-2.5 rounded-md border border-border text-sm text-muted-foreground hover:text-foreground hover:border-border font-mono"
           >
             Design notes
           </button>
@@ -410,23 +410,23 @@ export default function WolframRhythmPage() {
         {/* big rule readout */}
         <div className="flex items-end gap-4 font-mono">
           <div className="flex flex-col">
-            <span className="text-sm text-white/55 uppercase tracking-widest">rule</span>
-            <span className="text-6xl sm:text-7xl font-bold tabular-nums text-white leading-none">
+            <span className="text-sm text-muted-foreground uppercase tracking-widest">rule</span>
+            <span className="text-6xl sm:text-7xl font-bold tabular-nums text-foreground leading-none">
               {rule}
             </span>
           </div>
-          <div className="flex flex-col pb-1 text-white/75">
-            <span className="text-base text-white/95">
+          <div className="flex flex-col pb-1 text-muted-foreground">
+            <span className="text-base text-foreground">
               {activePreset ? activePreset.label : "custom"}
             </span>
-            <span className="text-sm text-white/55">
+            <span className="text-sm text-muted-foreground">
               {activePreset ? activePreset.blurb : "—"}
             </span>
           </div>
         </div>
 
         {/* canvas */}
-        <div className="relative w-full rounded-lg overflow-hidden border border-white/10 bg-black">
+        <div className="relative w-full rounded-lg overflow-hidden border border-border bg-black">
           <canvas
             ref={canvasRef}
             className="block w-full"
@@ -434,24 +434,24 @@ export default function WolframRhythmPage() {
           />
           {!started && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/55 backdrop-blur-[1px] gap-3">
-              <p className="text-base text-white/75 text-center px-6 max-w-sm">
+              <p className="text-base text-muted-foreground text-center px-6 max-w-sm">
                 The automaton is already drawing. Tap Begin to hear it.
               </p>
               <button
                 type="button"
                 onClick={begin}
-                className="min-h-[44px] px-6 py-2.5 rounded-md bg-white text-black font-semibold text-base hover:bg-white/90"
+                className="min-h-[44px] px-6 py-2.5 rounded-md bg-card text-black font-semibold text-base hover:bg-accent"
               >
                 Begin
               </button>
             </div>
           )}
           {glFailed && (
-            <div className="absolute top-2 left-2 text-xs font-mono text-amber-300 bg-black/60 px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 text-xs font-mono text-violet-300 bg-black/60 px-2 py-1 rounded">
               WebGL2 unavailable — Canvas2D fallback
             </div>
           )}
-          <div className="absolute bottom-2 right-2 text-xs font-mono text-white/55 bg-black/40 px-2 py-1 rounded">
+          <div className="absolute bottom-2 right-2 text-xs font-mono text-muted-foreground bg-black/40 px-2 py-1 rounded">
             {usingGL ? "webgl2" : "canvas2d"} · {lastEvent}
           </div>
         </div>
@@ -462,7 +462,7 @@ export default function WolframRhythmPage() {
             <button
               type="button"
               onClick={() => applyRule(rule - 1)}
-              className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md border border-white/15 text-white text-xl font-mono hover:border-white/40"
+              className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md border border-border text-foreground text-xl font-mono hover:border-border"
               aria-label="rule down"
             >
               −
@@ -473,13 +473,13 @@ export default function WolframRhythmPage() {
               max={255}
               value={rule}
               onChange={(e) => applyRule(Number(e.target.value))}
-              className="flex-1 accent-sky-400 h-2"
+              className="flex-1 accent-violet-400 h-2"
               aria-label="rule number"
             />
             <button
               type="button"
               onClick={() => applyRule(rule + 1)}
-              className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md border border-white/15 text-white text-xl font-mono hover:border-white/40"
+              className="min-h-[44px] min-w-[44px] px-4 py-2.5 rounded-md border border-border text-foreground text-xl font-mono hover:border-border"
               aria-label="rule up"
             >
               +
@@ -494,12 +494,12 @@ export default function WolframRhythmPage() {
                 onClick={() => applyRule(p.rule)}
                 className={`min-h-[44px] px-4 py-2.5 rounded-md border text-sm font-mono ${
                   rule === p.rule
-                    ? "border-sky-400 bg-sky-400/15 text-white"
-                    : "border-white/15 text-white/75 hover:border-white/40"
+                    ? "border-violet-400 bg-violet-400/15 text-foreground"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
-                <span className="text-white/95">{p.rule}</span>{" "}
-                <span className="text-white/55">{p.label}</span>
+                <span className="text-foreground">{p.rule}</span>{" "}
+                <span className="text-muted-foreground">{p.label}</span>
               </button>
             ))}
           </div>
@@ -507,22 +507,22 @@ export default function WolframRhythmPage() {
 
         {/* tempo + timbre */}
         <section className="flex flex-wrap items-center gap-x-8 gap-y-3 font-mono">
-          <label className="flex items-center gap-3 text-sm text-white/75">
-            <span className="uppercase tracking-widest text-white/55">tempo</span>
+          <label className="flex items-center gap-3 text-sm text-muted-foreground">
+            <span className="uppercase tracking-widest text-muted-foreground">tempo</span>
             <input
               type="range"
               min={60}
               max={300}
               value={bpm}
               onChange={(e) => setBpm(Number(e.target.value))}
-              className="accent-sky-400 w-40 h-2"
+              className="accent-violet-400 w-40 h-2"
               aria-label="tempo"
             />
-            <span className="tabular-nums text-white/95 w-16">{bpm} bpm</span>
+            <span className="tabular-nums text-foreground w-16">{bpm} bpm</span>
           </label>
 
           <div className="flex items-center gap-2">
-            <span className="uppercase tracking-widest text-white/55 text-sm">voice</span>
+            <span className="uppercase tracking-widest text-muted-foreground text-sm">voice</span>
             {TIMBRES.map((t) => (
               <button
                 key={t}
@@ -530,8 +530,8 @@ export default function WolframRhythmPage() {
                 onClick={() => setTimbre(t)}
                 className={`min-h-[44px] px-4 py-2.5 rounded-md border text-sm ${
                   timbre === t
-                    ? "border-sky-400 bg-sky-400/15 text-white"
-                    : "border-white/15 text-white/75 hover:border-white/40"
+                    ? "border-violet-400 bg-violet-400/15 text-foreground"
+                    : "border-border text-muted-foreground hover:border-border"
                 }`}
               >
                 {t}
@@ -541,23 +541,23 @@ export default function WolframRhythmPage() {
         </section>
 
         {showNotes && (
-          <aside className="rounded-lg border border-white/10 bg-white/[0.03] p-5 text-base text-white/75 flex flex-col gap-3">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <aside className="rounded-lg border border-border bg-muted p-5 text-base text-muted-foreground flex flex-col gap-3">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p>
               Each row of an elementary cellular automaton is a chord/rhythm. The
-              8-bit <span className="text-white/95 font-mono">rule number</span> (0–255)
+              8-bit <span className="text-foreground font-mono">rule number</span> (0–255)
               decides how each cell&apos;s left/self/right neighbourhood becomes the
               next row. That single integer is the composition.
             </p>
             <p>
-              <span className="font-mono text-white/95">30</span> chaotic and noisy,{" "}
-              <span className="font-mono text-white/95">90</span> a self-similar
-              Sierpinski fractal, <span className="font-mono text-white/95">110</span>{" "}
+              <span className="font-mono text-foreground">30</span> chaotic and noisy,{" "}
+              <span className="font-mono text-foreground">90</span> a self-similar
+              Sierpinski fractal, <span className="font-mono text-foreground">110</span>{" "}
               complex and Turing-complete (gliders collide). Live cells fire short,
               metallic/clicky FM blips panned by column over a whole-tone set —
               edged, not cozy.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               When a rule freezes, dies, or locks into a short cycle, the engine
               auto-perturbs (flips cells) or re-seeds, so the piece keeps evolving
               for minutes. Refs: Wolfram, <em>A New Kind of Science</em> (2002);

@@ -178,7 +178,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#07070c] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#07070c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -191,10 +191,10 @@ export default function Page() {
           started ? "opacity-0" : "opacity-100"
         }`}
       >
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Inkblot Bloom
         </h1>
-        <p className="mt-2 max-w-md text-base text-white/75">
+        <p className="mt-2 max-w-md text-base text-muted-foreground">
           Hum or blow softly. Watch the ink open like a butterfly, and hear each
           fold sing.
         </p>
@@ -205,7 +205,7 @@ export default function Page() {
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <button
             onClick={handleStart}
-            className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full border border-white/20 bg-white/10 px-10 py-6 text-xl font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15 active:bg-white/20"
+            className="flex min-h-[96px] min-w-[96px] items-center justify-center rounded-full border border-border bg-muted px-10 py-6 text-xl font-medium text-foreground backdrop-blur-md transition-colors hover:bg-accent active:bg-muted"
           >
             Tap to begin
           </button>
@@ -216,13 +216,13 @@ export default function Page() {
       {started && (
         <div className="pointer-events-none absolute inset-x-0 bottom-16 z-10 flex flex-col items-center gap-1 px-6 text-center">
           {mode === "canvas2d" && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Lite mode — your device has no WebGPU, so the ink runs gently on the
               CPU. It still blooms and sings.
             </p>
           )}
           {micOk === false && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               No microphone — a soft ghost hum is keeping the ink blooming for
               you.
             </p>
@@ -234,7 +234,7 @@ export default function Page() {
       {started && (
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="absolute bottom-4 right-4 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+          className="absolute bottom-4 right-4 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
         >
           {showNotes ? "Close" : "Design notes"}
         </button>
@@ -242,8 +242,8 @@ export default function Page() {
 
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
-          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-[#0c0c14] p-6 text-base leading-relaxed text-white/85">
-            <h2 className="mb-3 text-xl font-semibold text-white">
+          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0c0c14] p-6 text-base leading-relaxed text-foreground">
+            <h2 className="mb-3 text-xl font-semibold text-foreground">
               Inkblot Bloom — design notes
             </h2>
             <p className="mb-3">
@@ -253,26 +253,26 @@ export default function Page() {
               hum seeds a fresh drop of ink; spreading fronts ring soft consonant
               bells in C-major pentatonic, so there is never a wrong note.
             </p>
-            <p className="mb-3 text-white/75">
+            <p className="mb-3 text-muted-foreground">
               The ink is a <strong>Gray-Scott reaction-diffusion</strong> field
               (Pearson 1993 / Turing 1952), run as a WebGPU compute shader on a
               256&times;256 ping-pong buffer, then folded with mirror symmetry to
               a full-screen quad. Where WebGPU is missing, the same model runs on
               a 96&times;96 CPU grid drawn mirror-symmetrically to Canvas2D.
             </p>
-            <p className="mb-3 text-white/75">
+            <p className="mb-3 text-muted-foreground">
               Visual lineage: Bileam Tschepe (elekktronaut) feedback/inkblot
               TouchDesigner work, and Entagma&apos;s &ldquo;Easy Houdini:
               Inkblots — Steal from TouchDesigner&rdquo; (2026).
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               The microphone is live-analysis only — never recorded, never sent,
               never wired to the speakers. An always-on drone pad and a ghost
               auto-demo keep the piece alive even in silence.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-base text-white hover:bg-white/15"
+              className="mt-5 min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Back to the ink
             </button>

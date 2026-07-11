@@ -252,7 +252,7 @@ export default function SilkChoirPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#08070f] text-white/95">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#08070f] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -265,13 +265,13 @@ export default function SilkChoirPage() {
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Silk Choir
           </h1>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Pull the silk. The more you stretch it, the higher and brighter the
             voices rise. Let go and they sigh back home.
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-[#08070f] transition hover:bg-white active:scale-95"
+            className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-[#08070f] transition hover:bg-card active:scale-95"
           >
             Touch the silk
           </button>
@@ -283,19 +283,19 @@ export default function SilkChoirPage() {
         <>
           <div className="pointer-events-none absolute left-4 top-4 select-none">
             <h1 className="text-2xl font-semibold tracking-tight">Silk Choir</h1>
-            <p className="mt-1 text-base text-white/75">Pull the silk.</p>
+            <p className="mt-1 text-base text-muted-foreground">Pull the silk.</p>
           </div>
-          <div className="pointer-events-none absolute right-4 top-4 text-right font-mono text-base text-white/75">
+          <div className="pointer-events-none absolute right-4 top-4 text-right font-mono text-base text-muted-foreground">
             {renderer}
           </div>
           {error && (
-            <p className="pointer-events-none absolute bottom-12 left-1/2 -translate-x-1/2 text-base text-rose-300">
+            <p className="pointer-events-none absolute bottom-12 left-1/2 -translate-x-1/2 text-base text-violet-300">
               {error}
             </p>
           )}
           <a
             href="/dream/579-silk-choir/README.md"
-            className="absolute bottom-4 right-4 font-mono text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white/95"
+            className="absolute bottom-4 right-4 font-mono text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
           >
             Read the design notes &rarr;
           </a>

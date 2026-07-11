@@ -486,22 +486,22 @@ export default function LoopStation() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#070707] text-white flex flex-col gap-4 p-4 pb-8">
+    <div className="min-h-screen bg-[#070707] text-foreground flex flex-col gap-4 p-4 pb-8">
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white/95">Loop Station</h1>
-          <p className="text-base text-white/75 mt-1">
+          <h1 className="text-2xl font-mono font-bold text-foreground">Loop Station</h1>
+          <p className="text-base text-muted-foreground mt-1">
             Build a live layered performance. Each slot: pick bars → REC → play → STOP to loop.
           </p>
         </div>
         <div className="flex items-start gap-2 flex-wrap">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm text-white/55">{bpm} BPM</span>
+            <span className="font-mono text-sm text-muted-foreground">{bpm} BPM</span>
             <button
               onClick={() => void tapTempo()}
-              className="px-4 py-2 font-mono text-sm bg-white/10 hover:bg-white/18 border border-white/20 rounded-lg min-h-[44px] min-w-[60px]">
+              className="px-4 py-2 font-mono text-sm bg-muted hover:bg-accent border border-border rounded-lg min-h-[44px] min-w-[60px]">
               TAP
             </button>
           </div>
@@ -509,8 +509,8 @@ export default function LoopStation() {
             onClick={() => void enableMic()}
             className={`px-4 py-2 font-mono text-sm rounded-lg border min-h-[44px] transition-colors ${
               micOn
-                ? 'bg-emerald-500/20 border-emerald-400/40 text-emerald-300'
-                : 'bg-white/8 border-white/20 text-white/70 hover:bg-white/14'
+                ? 'bg-violet-500/20 border-violet-400/40 text-violet-300'
+                : 'bg-muted border-border text-muted-foreground hover:bg-accent'
             }`}>
             {micOn ? '🎤 Mic On' : '🎤 Start Mic'}
           </button>
@@ -520,7 +520,7 @@ export default function LoopStation() {
       {/* Slots */}
       <div className="flex flex-col gap-3">
         {slots.map((slot, i) => (
-          <div key={i} className="rounded-xl border border-white/10 bg-white/[0.025] p-3 flex flex-col gap-2">
+          <div key={i} className="rounded-xl border border-border bg-muted p-3 flex flex-col gap-2">
 
             {/* Slot header: number · status · bar selector */}
             <div className="flex items-center gap-3">
@@ -542,13 +542,13 @@ export default function LoopStation() {
                     disabled={slot.status !== 'empty'}
                     className={`w-9 h-9 text-xs font-mono rounded-lg border transition-colors disabled:opacity-30 ${
                       slot.bars === b
-                        ? 'border-white/40 bg-white/15 text-white/90'
-                        : 'border-white/15 text-white/40 hover:text-white/70'
+                        ? 'border-border bg-muted text-foreground'
+                        : 'border-border text-muted-foreground/70 hover:text-muted-foreground'
                     }`}>
                     {b}
                   </button>
                 ))}
-                <span className="text-xs font-mono text-white/35 ml-1">bars</span>
+                <span className="text-xs font-mono text-muted-foreground/70 ml-1">bars</span>
               </div>
             </div>
 
@@ -567,8 +567,8 @@ export default function LoopStation() {
                 onClick={() => void pressRec(i)}
                 className={`flex-1 py-2.5 font-mono text-sm font-semibold rounded-lg border min-h-[44px] transition-colors ${
                   slot.status === 'recording'
-                    ? 'bg-rose-500/25 border-rose-400/50 text-rose-300'
-                    : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/18'
+                    ? 'bg-violet-500/25 border-violet-400/50 text-violet-300'
+                    : 'bg-muted border-border text-foreground hover:bg-accent'
                 }`}>
                 {slot.status === 'recording' ? '■ STOP' : '● REC'}
               </button>
@@ -577,15 +577,15 @@ export default function LoopStation() {
                 disabled={slot.status !== 'looping' && slot.status !== 'muted'}
                 className={`px-5 py-2.5 font-mono text-sm rounded-lg border min-h-[44px] transition-colors disabled:opacity-30 ${
                   slot.status === 'muted'
-                    ? 'bg-amber-500/20 border-amber-400/40 text-amber-300'
-                    : 'bg-white/8 border-white/15 text-white/65 hover:bg-white/14'
+                    ? 'bg-violet-500/20 border-violet-400/40 text-violet-300'
+                    : 'bg-muted border-border text-muted-foreground hover:bg-accent'
                 }`}>
                 {slot.status === 'muted' ? 'UNMUTE' : 'MUTE'}
               </button>
               <button
                 onClick={() => pressClear(i)}
                 disabled={slot.status === 'empty'}
-                className="px-4 py-2.5 font-mono text-sm rounded-lg border border-white/15 text-white/50 hover:bg-white/10 min-h-[44px] disabled:opacity-25 transition-colors">
+                className="px-4 py-2.5 font-mono text-sm rounded-lg border border-border text-muted-foreground hover:bg-accent min-h-[44px] disabled:opacity-25 transition-colors">
                 CLEAR
               </button>
             </div>
@@ -601,9 +601,9 @@ export default function LoopStation() {
           Load Demo Loops
         </button>
         {!ready && (
-          <p className="text-sm font-mono text-white/40">Tap any control to initialize audio</p>
+          <p className="text-sm font-mono text-muted-foreground/70">Tap any control to initialize audio</p>
         )}
-        <span className="text-xs font-mono text-white/35">loop-station · /dream/121</span>
+        <span className="text-xs font-mono text-muted-foreground/70">loop-station · /dream/121</span>
       </div>
     </div>
   );

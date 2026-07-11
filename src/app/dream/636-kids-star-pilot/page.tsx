@@ -540,7 +540,7 @@ export default function StarPilot() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060f] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -549,15 +549,15 @@ export default function StarPilot() {
 
       {/* Top HUD */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-6 text-center">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Star Pilot
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Fly through the singing gates. Weave a melody in the stars.
         </p>
 
         {!canvasOk && (
-          <p className="mt-3 text-base text-rose-300">
+          <p className="mt-3 text-base text-violet-300">
             Your browser can&apos;t open a 2D canvas, so the starfield
             can&apos;t draw.
           </p>
@@ -570,7 +570,7 @@ export default function StarPilot() {
           </p>
         )}
         {canvasOk && hasGamepad && (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             Controller ready. Push the stick to fly, tap the buttons for drums.
           </p>
         )}
@@ -582,7 +582,7 @@ export default function StarPilot() {
           <button
             type="button"
             onClick={handleStart}
-            className="min-h-[64px] rounded-2xl border border-violet-300/40 bg-violet-500/20 px-8 py-3.5 text-xl font-medium text-white shadow-[0_0_40px_rgba(168,85,247,0.45)] backdrop-blur transition hover:bg-violet-500/30"
+            className="min-h-[64px] rounded-2xl border border-violet-300/40 bg-violet-500/20 px-8 py-3.5 text-xl font-medium text-foreground shadow-[0_0_40px_rgba(168,85,247,0.45)] backdrop-blur transition hover:bg-violet-500/30"
           >
             ▶ Start flying
           </button>
@@ -592,11 +592,11 @@ export default function StarPilot() {
       {/* Bottom HUD */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center gap-1 px-4 pb-5 text-center">
         {started && (
-          <p className="font-mono text-base text-white/55">
+          <p className="font-mono text-base text-muted-foreground">
             gates rung: {gateHits} · recent notes keep echoing
           </p>
         )}
-        <p className="font-mono text-sm text-white/55">
+        <p className="font-mono text-sm text-muted-foreground">
           Read the design notes:
           src/app/dream/636-kids-star-pilot/README.md
         </p>

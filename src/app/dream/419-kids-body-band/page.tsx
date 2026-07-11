@@ -503,7 +503,7 @@ export default function KidsBodyBandPage() {
   const now = performance.now();
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#08041a] font-mono text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#08041a] font-mono text-foreground">
       {/* Live canvas fills the screen */}
       <canvas
         ref={canvasRef}
@@ -514,11 +514,11 @@ export default function KidsBodyBandPage() {
 
       {/* Title */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center pt-4">
-        <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground drop-shadow">
           🥁 Body Band
         </h1>
         {mode !== "idle" && (
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             Dance! Your body plays the drums.
           </p>
         )}
@@ -527,13 +527,13 @@ export default function KidsBodyBandPage() {
       {/* Start overlay */}
       {mode === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#08041a]/80 px-6 text-center">
-          <p className="max-w-md text-xl text-white/95">
+          <p className="max-w-md text-xl text-foreground">
             Stand back so the camera sees you, then dance with your whole body to
             make a beat!
           </p>
           <button
             onClick={start}
-            className="min-h-[84px] rounded-3xl bg-violet-500/30 px-10 py-5 text-2xl font-bold text-white ring-2 ring-violet-300/70 transition active:scale-95"
+            className="min-h-[84px] rounded-3xl bg-violet-500/30 px-10 py-5 text-2xl font-bold text-foreground ring-2 ring-violet-300/70 transition active:scale-95"
           >
             Start the band 🥁
           </button>
@@ -542,14 +542,14 @@ export default function KidsBodyBandPage() {
 
       {mode === "loading" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#08041a]/70">
-          <p className="text-xl text-white/95">Warming up the drums… 🥁</p>
+          <p className="text-xl text-foreground">Warming up the drums… 🥁</p>
         </div>
       )}
 
       {/* Degradation notice */}
       {notice && (
         <div className="absolute left-1/2 top-20 z-10 w-[90%] max-w-md -translate-x-1/2 rounded-2xl bg-black/60 px-4 py-3 text-center">
-          <p className="text-base text-rose-300">{notice}</p>
+          <p className="text-base text-violet-300">{notice}</p>
         </div>
       )}
 

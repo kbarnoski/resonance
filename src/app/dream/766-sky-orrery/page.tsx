@@ -299,31 +299,31 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <div ref={containerRef} className="absolute inset-0" />
 
       {/* HUD labels */}
       {started && (
         <div className="pointer-events-none absolute left-4 top-4 z-10 space-y-1 text-base">
-          <div className="text-2xl font-semibold tabular-nums text-white">
+          <div className="text-2xl font-semibold tabular-nums text-foreground">
             {hud.clock}
-            <span className="ml-2 text-base font-normal text-white/75">
+            <span className="ml-2 text-base font-normal text-muted-foreground">
               local sky
             </span>
           </div>
-          <div className="text-white/90">
+          <div className="text-foreground">
             sun altitude{" "}
             <span className="tabular-nums">{hud.sunAlt.toFixed(1)}°</span>
           </div>
-          <div className="text-white/90">moon — {hud.moonName}</div>
-          <div className="text-white/75">{hud.mood}</div>
-          <div className="text-white/75">
+          <div className="text-foreground">moon — {hud.moonName}</div>
+          <div className="text-muted-foreground">{hud.mood}</div>
+          <div className="text-muted-foreground">
             sidereal time{" "}
             <span className="tabular-nums">{formatClock(hud.lst)}</span>
           </div>
-          <div className="text-white/90">
+          <div className="text-foreground">
             conducting now —{" "}
-            <span className="font-medium text-white">{hud.conductor}</span>
+            <span className="font-medium text-foreground">{hud.conductor}</span>
           </div>
         </div>
       )}
@@ -331,13 +331,13 @@ export default function Page() {
       {/* Source + mode notices */}
       {started && (
         <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[16rem] space-y-1 text-right text-base">
-          <div className="text-white/75">{sourceLabel}</div>
-          <div className="text-white/55">
+          <div className="text-muted-foreground">{sourceLabel}</div>
+          <div className="text-muted-foreground">
             {renderMode === "webgl"
               ? "three.js WebGL dome"
               : "Canvas2D fallback sky"}
           </div>
-          {placeNotice && <div className="text-white/55">{placeNotice}</div>}
+          {placeNotice && <div className="text-muted-foreground">{placeNotice}</div>}
         </div>
       )}
 
@@ -347,13 +347,13 @@ export default function Page() {
           <button
             type="button"
             onClick={() => setScrubActive((v) => !v)}
-            className="min-h-[44px] rounded-xl bg-white/15 px-4 py-2.5 text-base font-medium text-white hover:bg-white/25"
+            className="min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base font-medium text-foreground hover:bg-accent"
           >
             {scrubActive ? "Live sky" : "Explore time-of-day"}
           </button>
           {scrubActive ? (
             <div className="flex min-w-[260px] flex-1 items-center gap-3">
-              <span className="text-base text-white/75">
+              <span className="text-base text-muted-foreground">
                 {formatClock(scrubHour)}
               </span>
               <input
@@ -363,13 +363,13 @@ export default function Page() {
                 step={0.05}
                 value={scrubHour}
                 onChange={(e) => setScrubHour(parseFloat(e.target.value))}
-                className="h-2 flex-1 cursor-pointer accent-white"
+                className="h-2 flex-1 cursor-pointer accent-primary"
                 aria-label="Scrub hour of day"
               />
-              <span className="text-base text-white/55">scrub the day</span>
+              <span className="text-base text-muted-foreground">scrub the day</span>
             </div>
           ) : (
-            <div className="text-base text-white/75">
+            <div className="text-base text-muted-foreground">
               tracking real wall-clock time — the arrangement evolves as the sky
               turns.
             </div>
@@ -380,16 +380,16 @@ export default function Page() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-gradient-to-b from-[#0a1230] via-[#0a0a1a] to-black px-6 text-center">
-          <h1 className="max-w-2xl text-2xl font-semibold text-white sm:text-4xl">
+          <h1 className="max-w-2xl text-2xl font-semibold text-foreground sm:text-4xl">
             Sky Orrery
           </h1>
-          <p className="mt-4 max-w-xl text-base text-white/90 sm:text-lg">
+          <p className="mt-4 max-w-xl text-base text-foreground sm:text-lg">
             Stand under a real 3D dome of the sky. The sun, the phased moon, and
             a handful of bright stars and planets sit where they truly are right
             now over your place — and whichever ride highest conduct slow,
             ever-changing phrases of Karel&apos;s <em>Welcome Home</em> piano.
           </p>
-          <p className="mt-3 max-w-xl text-base text-white/75">
+          <p className="mt-3 max-w-xl text-base text-muted-foreground">
             It plays itself. No microphone, no camera — just the clock and (if
             you allow it) your location. Atlas Eclipticalis, made literal: sky
             position becomes score position.
@@ -398,11 +398,11 @@ export default function Page() {
             type="button"
             onClick={start}
             disabled={loading}
-            className="mt-8 min-h-[44px] rounded-2xl bg-white px-8 py-3 text-lg font-semibold text-black hover:bg-white/90 disabled:opacity-60"
+            className="mt-8 min-h-[44px] rounded-2xl bg-card px-8 py-3 text-lg font-semibold text-black hover:bg-accent disabled:opacity-60"
           >
             {loading ? "Reading the sky…" : "Enter the dome"}
           </button>
-          <p className="mt-4 text-base text-white/55">
+          <p className="mt-4 text-base text-muted-foreground">
             Best with sound on. Long-form & generative — let it run.
           </p>
         </div>
@@ -411,8 +411,8 @@ export default function Page() {
       {/* Design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 px-6">
-          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl bg-[#0c1226] p-6 text-base text-white/90">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl bg-[#0c1226] p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               Body positions are computed locally (no network, no ephemeris)
               from your clock and place: solar altitude/azimuth, a synodic moon
@@ -428,7 +428,7 @@ export default function Page() {
               so the audible arrangement is literally the sky overhead, and it is
               never the same minute twice.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               After John Cage&apos;s <em>Atlas Eclipticalis</em>, Jem
               Finer&apos;s <em>Longplayer</em>, John Luther Adams&apos;{" "}
               <em>The Place Where You Go to Listen</em>, and a planetarium
@@ -437,7 +437,7 @@ export default function Page() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-xl bg-white/15 px-4 py-2.5 text-base text-white hover:bg-white/25"
+              className="mt-6 min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>
@@ -450,7 +450,7 @@ export default function Page() {
         <button
           type="button"
           onClick={() => setShowNotes(true)}
-          className="absolute right-4 bottom-24 z-20 min-h-[44px] rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/20"
+          className="absolute right-4 bottom-24 z-20 min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
         >
           Read the design notes
         </button>
@@ -459,7 +459,7 @@ export default function Page() {
       {/* home link */}
       <Link
         href="/dream"
-        className="absolute left-4 bottom-24 z-20 min-h-[44px] rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/20"
+        className="absolute left-4 bottom-24 z-20 min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
         style={{ display: started ? undefined : "none" }}
       >
         ← dream lab

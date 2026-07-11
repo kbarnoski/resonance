@@ -471,12 +471,12 @@ export default function ThunderDrumPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#07060a] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#07060a] text-foreground">
       <div ref={mountRef} className="absolute inset-0" />
 
       {webglFailed && (
         <div className="absolute inset-0 flex items-center justify-center p-6">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This drum needs WebGL, which is not available in your browser. Try a recent
             desktop or mobile browser to play the thunder-drum.
           </p>
@@ -485,11 +485,11 @@ export default function ThunderDrumPage() {
 
       {!webglFailed && (
         <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-2 p-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95 drop-shadow">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow">
             Thunder Drum
           </h1>
           <p
-            className={`font-mono text-base text-white/75 transition-opacity duration-1000 ${
+            className={`font-mono text-base text-muted-foreground transition-opacity duration-1000 ${
               showHint ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -502,7 +502,7 @@ export default function ThunderDrumPage() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/284-kids-thunder-drum/README.md"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-3 right-3 z-10 text-xs text-white/55 hover:text-white/80"
+        className="fixed bottom-3 right-3 z-10 text-xs text-muted-foreground hover:text-foreground"
       >
         design notes
       </a>

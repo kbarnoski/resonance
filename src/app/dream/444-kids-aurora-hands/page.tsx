@@ -226,15 +226,15 @@ export default function KidsAuroraHands() {
           style={{ background: "radial-gradient(ellipse at 50% 40%, #12063a99 0%, #04021099 100%)" }}
         >
           <div className="mb-6 text-8xl leading-none" aria-hidden="true">🌌</div>
-          <h1 className="text-3xl font-bold text-white/95 mb-3 drop-shadow-xl">
+          <h1 className="text-3xl font-bold text-foreground mb-3 drop-shadow-xl">
             Aurora Galaxy
           </h1>
-          <p className="text-xl text-white/80 max-w-sm leading-relaxed mb-10">
+          <p className="text-xl text-foreground max-w-sm leading-relaxed mb-10">
             Wave your hands to shape a galaxy of light — it sings when you move!
           </p>
           <button
             onClick={() => { void handleTapStart(); }}
-            className="min-h-[72px] px-10 py-5 rounded-3xl text-2xl font-bold text-white
+            className="min-h-[72px] px-10 py-5 rounded-3xl text-2xl font-bold text-foreground
                        bg-violet-600/50 border-2 border-violet-300/70
                        hover:bg-violet-500/60 active:scale-95 transition-all shadow-2xl
                        drop-shadow-lg"
@@ -245,7 +245,7 @@ export default function KidsAuroraHands() {
 
           <Link
             href="/dream"
-            className="mt-10 text-base text-white/60 hover:text-white/85 transition-colors"
+            className="mt-10 text-base text-muted-foreground hover:text-foreground transition-colors"
           >
             ← dream lab
           </Link>
@@ -258,7 +258,7 @@ export default function KidsAuroraHands() {
           {/* Render path badge (top-right, small) */}
           {renderPath && (
             <div className="absolute top-3 right-4 z-10 pointer-events-none">
-              <span className="text-xs text-white/40 font-mono tracking-wider uppercase">
+              <span className="text-xs text-muted-foreground/70 font-mono tracking-wider uppercase">
                 {renderPath === "webgpu" ? "WebGPU ✦" : renderPath === "webgl2" ? "WebGL2 ◈" : ""}
               </span>
             </div>
@@ -269,14 +269,14 @@ export default function KidsAuroraHands() {
             <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-10">
               <button
                 onClick={() => { void handleCameraUpgrade(); }}
-                className="min-h-[68px] px-8 py-4 rounded-2xl text-xl font-bold text-white
-                           bg-indigo-600/40 border-2 border-indigo-300/60
-                           hover:bg-indigo-500/55 active:scale-95 transition-all shadow-xl"
+                className="min-h-[68px] px-8 py-4 rounded-2xl text-xl font-bold text-foreground
+                           bg-violet-600/40 border-2 border-violet-300/60
+                           hover:bg-violet-500/55 active:scale-95 transition-all shadow-xl"
                 aria-label="Turn on camera for hand tracking"
               >
                 ✋ Use My Hands
               </button>
-              <p className="text-base text-white/60">
+              <p className="text-base text-muted-foreground">
                 Ghost hands are playing — tap above to use your real hands!
               </p>
             </div>
@@ -285,7 +285,7 @@ export default function KidsAuroraHands() {
           {/* Live hand tracking hint */}
           {usingRealRef.current && (
             <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none z-10 px-4">
-              <p className="text-xl text-white/80 text-center drop-shadow">
+              <p className="text-xl text-foreground text-center drop-shadow">
                 Open hands to scatter ✦  Bring them together to gather ✦
               </p>
             </div>
@@ -295,7 +295,7 @@ export default function KidsAuroraHands() {
           <div className="absolute top-3 left-4 z-10 flex items-center gap-4">
             <Link
               href="/dream"
-              className="text-base text-white/55 hover:text-white/85 transition-colors"
+              className="text-base text-muted-foreground hover:text-foreground transition-colors"
             >
               ← dream
             </Link>
@@ -303,7 +303,7 @@ export default function KidsAuroraHands() {
               href="/dream/444-kids-aurora-hands/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-base text-white/40 hover:text-white/70 transition-colors"
+              className="text-base text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               Read the design notes ↗
             </a>
@@ -315,7 +315,7 @@ export default function KidsAuroraHands() {
       {phase === "cameraFail" && (
         <>
           <div className="absolute top-4 left-0 right-0 flex justify-center z-10 px-4 pointer-events-none">
-            <p className="text-xl text-rose-300 text-center drop-shadow max-w-sm">
+            <p className="text-xl text-violet-300 text-center drop-shadow max-w-sm">
               {camMessage ?? "Camera unavailable — ghost hands are dancing!"}
             </p>
           </div>
@@ -324,7 +324,7 @@ export default function KidsAuroraHands() {
           <div className="absolute top-3 left-4 z-10 flex items-center gap-4">
             <Link
               href="/dream"
-              className="text-base text-white/55 hover:text-white/85 transition-colors"
+              className="text-base text-muted-foreground hover:text-foreground transition-colors"
             >
               ← dream
             </Link>
@@ -332,7 +332,7 @@ export default function KidsAuroraHands() {
               href="/dream/444-kids-aurora-hands/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-base text-white/40 hover:text-white/70 transition-colors"
+              className="text-base text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               Read the design notes ↗
             </a>

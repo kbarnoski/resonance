@@ -207,7 +207,7 @@ export default function AnsweringRoom() {
   }, [teardown]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a120c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a120c] text-foreground">
       {/* Soft hearth wash */}
       <div
         aria-hidden
@@ -220,13 +220,13 @@ export default function AnsweringRoom() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-8 px-6 py-16">
         <header className="text-center">
-          <p className="font-mono text-base uppercase tracking-[0.3em] text-amber-200/80">
+          <p className="font-mono text-base uppercase tracking-[0.3em] text-violet-200/80">
             770 · answering room
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
             A duet with the recording
           </h1>
-          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-white/80">
+          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-foreground">
             His &ldquo;Welcome Home&rdquo; piano plays whole, as the soloist. A
             live music agent listens — tracking the chord under his hands and
             the silences between his phrases — and answers in the gaps.
@@ -241,7 +241,7 @@ export default function AnsweringRoom() {
             height={420}
             className="h-full w-full"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-between px-6 text-base text-white/75">
+          <div className="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-between px-6 text-base text-muted-foreground">
             <span className="font-mono">him</span>
             <span className="font-mono">the answer</span>
           </div>
@@ -249,8 +249,8 @@ export default function AnsweringRoom() {
 
         {/* Currently-detected chord (big) */}
         <div className="text-center">
-          <p className="text-base text-white/75">listening — chord under his hands</p>
-          <p className="mt-1 font-mono text-4xl font-semibold tabular-nums text-amber-100">
+          <p className="text-base text-muted-foreground">listening — chord under his hands</p>
+          <p className="mt-1 font-mono text-4xl font-semibold tabular-nums text-violet-100">
             {chordName}
           </p>
         </div>
@@ -262,7 +262,7 @@ export default function AnsweringRoom() {
               type="button"
               onClick={begin}
               disabled={phase === "loading"}
-              className="min-h-[44px] rounded-full bg-amber-300 px-8 py-2.5 text-base font-semibold text-[#241509] shadow-lg shadow-amber-900/40 transition hover:bg-amber-200 disabled:opacity-60"
+              className="min-h-[44px] rounded-full bg-violet-300 px-8 py-2.5 text-base font-semibold text-[#241509] shadow-lg shadow-violet-900/40 transition hover:bg-violet-200 disabled:opacity-60"
             >
               {phase === "loading"
                 ? "Warming up…"
@@ -274,16 +274,16 @@ export default function AnsweringRoom() {
             <button
               type="button"
               onClick={stop}
-              className="min-h-[44px] rounded-full border border-amber-200/50 px-8 py-2.5 text-base font-semibold text-white transition hover:bg-amber-200/10"
+              className="min-h-[44px] rounded-full border border-violet-200/50 px-8 py-2.5 text-base font-semibold text-foreground transition hover:bg-violet-200/10"
             >
               Let the room rest
             </button>
           )}
 
           <div className="w-full">
-            <div className="flex items-center justify-between text-base text-white/75">
+            <div className="flex items-center justify-between text-base text-muted-foreground">
               <span>shy</span>
-              <span className="font-mono text-white/80">company</span>
+              <span className="font-mono text-foreground">company</span>
               <span>talkative</span>
             </div>
             <input
@@ -294,14 +294,14 @@ export default function AnsweringRoom() {
               value={company}
               onChange={(e) => setCompany(parseFloat(e.target.value))}
               aria-label="how forward the agent is"
-              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-amber-200/25 accent-amber-300"
+              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200/25 accent-violet-300"
             />
           </div>
 
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] text-base text-amber-200/80 underline-offset-4 hover:underline"
+            className="min-h-[44px] text-base text-violet-200/80 underline-offset-4 hover:underline"
           >
             {showNotes ? "Hide the design notes" : "Read the design notes"}
           </button>
@@ -312,8 +312,8 @@ export default function AnsweringRoom() {
           <div
             className={`rounded-full border px-4 py-1.5 text-base ${
               provenance === "his"
-                ? "border-amber-300/40 text-amber-100/90"
-                : "border-emerald-300/40 text-emerald-100/90"
+                ? "border-violet-300/40 text-violet-100/90"
+                : "border-violet-300/40 text-violet-100/90"
             }`}
           >
             {provenance === "his"
@@ -323,15 +323,15 @@ export default function AnsweringRoom() {
         )}
 
         {phase === "unsupported" && (
-          <p className="max-w-md text-center text-base text-amber-100/90">
+          <p className="max-w-md text-center text-base text-violet-100/90">
             Your browser would not open an audio context. Try a recent Chrome,
             Firefox, or Safari and tap Begin again.
           </p>
         )}
 
         {showNotes && (
-          <section className="w-full max-w-lg rounded-2xl border border-amber-200/20 bg-black/20 p-6 text-base leading-relaxed text-white/80">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <section className="w-full max-w-lg rounded-2xl border border-violet-200/20 bg-black/20 p-6 text-base leading-relaxed text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               This is a <strong>live music agent</strong>. His recording is the
               soloist — it plays whole, never chopped into grains. A second,
@@ -342,7 +342,7 @@ export default function AnsweringRoom() {
               the silences, loosely inverting his last gesture and resolving on
               a chord tone.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Lineage: CHI 2026 &ldquo;live music agents&rdquo;, Christopher
               Raphael&rsquo;s <em>Music Plus One</em> score-following, George
               Lewis&rsquo;s <em>Voyager</em>. Full notes live in the folder
@@ -350,7 +350,7 @@ export default function AnsweringRoom() {
             </p>
             <Link
               href="/dream"
-              className="mt-4 inline-block text-amber-200/80 underline-offset-4 hover:underline"
+              className="mt-4 inline-block text-violet-200/80 underline-offset-4 hover:underline"
             >
               ← back to the gallery
             </Link>

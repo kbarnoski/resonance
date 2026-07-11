@@ -433,7 +433,7 @@ export default function TapRhythm() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col select-none">
+    <div className="min-h-screen bg-black text-foreground flex flex-col select-none">
       <div className="px-5 pt-5 pb-1 flex items-start justify-between flex-shrink-0">
         <div>
           <h1 className="font-mono text-lg font-bold tracking-tight">Tap Rhythm</h1>
@@ -462,27 +462,27 @@ export default function TapRhythm() {
                 gentle tap =&nbsp;
                 <span className="text-violet-400">kick</span>
                 &nbsp;· medium =&nbsp;
-                <span className="text-cyan-400">snare</span>
+                <span className="text-violet-400">snare</span>
                 &nbsp;· hard / clap =&nbsp;
-                <span className="text-amber-400">hi-hat</span>
+                <span className="text-violet-400">hi-hat</span>
               </p>
             </div>
             <div className="flex gap-3 pointer-events-auto">
               <button
                 onClick={handleStartTap}
-                className="font-mono text-sm px-5 py-2.5 rounded border border-white/20 bg-white/8 hover:bg-white/15 transition-colors"
+                className="font-mono text-sm px-5 py-2.5 rounded border border-border bg-muted hover:bg-accent transition-colors"
               >
                 🎤 Tap your rhythm
               </button>
               <button
                 onClick={handleDemo}
-                className="font-mono text-sm px-4 py-2.5 rounded border border-white/10 bg-white/4 hover:bg-white/10 text-gray-400 transition-colors"
+                className="font-mono text-sm px-4 py-2.5 rounded border border-border bg-muted hover:bg-accent text-gray-400 transition-colors"
               >
                 ▶ Demo
               </button>
             </div>
             {error && (
-              <p className="font-mono text-xs text-rose-400 max-w-xs text-center pointer-events-auto">
+              <p className="font-mono text-xs text-violet-400 max-w-xs text-center pointer-events-auto">
                 {error}
               </p>
             )}
@@ -498,34 +498,34 @@ export default function TapRhythm() {
             </p>
             <p className="font-mono text-xs text-gray-600 mb-3">
               gentle =&nbsp;<span className="text-violet-400">kick</span>
-              &nbsp;· medium =&nbsp;<span className="text-cyan-400">snare</span>
-              &nbsp;· hard =&nbsp;<span className="text-amber-400">hat</span>
+              &nbsp;· medium =&nbsp;<span className="text-violet-400">snare</span>
+              &nbsp;· hard =&nbsp;<span className="text-violet-400">hat</span>
             </p>
             <div className="flex gap-2 pointer-events-auto">
               {tapCount >= 8 && (
                 <button
                   onClick={commitTaps}
-                  className="font-mono text-sm px-4 py-2 rounded border border-green-700/50 bg-green-900/40 hover:bg-green-800/60 text-green-300 transition-colors"
+                  className="font-mono text-sm px-4 py-2 rounded border border-violet-700/50 bg-violet-900/40 hover:bg-violet-800/60 text-violet-300 transition-colors"
                 >
                   ▶ Build loop
                 </button>
               )}
               <button
                 onClick={handleClear}
-                className="font-mono text-xs px-3 py-2 rounded border border-white/10 text-gray-500 hover:bg-white/5 transition-colors"
+                className="font-mono text-xs px-3 py-2 rounded border border-border text-gray-500 hover:bg-accent transition-colors"
               >
                 Cancel
               </button>
             </div>
             {error && (
-              <p className="font-mono text-xs text-rose-400 mt-2">{error}</p>
+              <p className="font-mono text-xs text-violet-400 mt-2">{error}</p>
             )}
           </div>
         )}
       </div>
 
       {phase === "sequencing" && (
-        <div className="px-5 pb-5 flex-shrink-0 flex flex-wrap items-center gap-x-5 gap-y-2 justify-between border-t border-white/5 pt-3">
+        <div className="px-5 pb-5 flex-shrink-0 flex flex-wrap items-center gap-x-5 gap-y-2 justify-between border-t border-border pt-3">
           <div className="flex items-center gap-3 font-mono text-xs">
             <span className="text-gray-500">BPM</span>
             <input
@@ -534,25 +534,25 @@ export default function TapRhythm() {
               max={bpmRange[1]}
               value={bpm}
               onChange={e => handleBpmSlider(Number(e.target.value))}
-              className="w-24 accent-white"
+              className="w-24 accent-primary"
             />
             <span className="w-8 text-right tabular-nums">{bpm}</span>
           </div>
           <div className="font-mono text-xs text-gray-600 hidden sm:block">
             <span className="text-violet-400/70">●</span> kick &nbsp;
-            <span className="text-cyan-400/70">●</span> snare &nbsp;
-            <span className="text-amber-400/70">●</span> hat &nbsp;· click steps to toggle
+            <span className="text-violet-400/70">●</span> snare &nbsp;
+            <span className="text-violet-400/70">●</span> hat &nbsp;· click steps to toggle
           </div>
           <div className="flex gap-2">
             <button
               onClick={handleRetap}
-              className="font-mono text-xs px-3 py-1.5 rounded border border-white/15 text-gray-300 hover:bg-white/8 transition-colors"
+              className="font-mono text-xs px-3 py-1.5 rounded border border-border text-gray-300 hover:bg-accent transition-colors"
             >
               ↩ Re-tap
             </button>
             <button
               onClick={handleClear}
-              className="font-mono text-xs px-3 py-1.5 rounded border border-white/8 text-gray-600 hover:bg-white/5 transition-colors"
+              className="font-mono text-xs px-3 py-1.5 rounded border border-border text-gray-600 hover:bg-accent transition-colors"
             >
               Clear
             </button>

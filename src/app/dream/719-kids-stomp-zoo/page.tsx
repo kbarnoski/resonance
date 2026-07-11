@@ -604,7 +604,7 @@ export default function StompZooPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#1a1030] font-mono text-white/95">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#1a1030] font-mono text-foreground">
       {/* Hidden video element feeding the frame-diff processor. */}
       <video ref={videoRef} playsInline muted className="hidden" />
 
@@ -612,15 +612,15 @@ export default function StompZooPage() {
 
       {/* Header / title */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-5">
-        <h1 className="text-2xl font-bold tracking-tight text-white/95 drop-shadow-lg sm:text-4xl">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground drop-shadow-lg sm:text-4xl">
           STOMP ZOO
         </h1>
-        <p className="mt-1 text-base text-white/75">
+        <p className="mt-1 text-base text-muted-foreground">
           Jump and STOMP your feet — the parade jumps too!
         </p>
         {started && (
-          <p className="mt-1 text-base text-white/75">
-            stomps: <span className="text-white/95">{stompCount}</span>
+          <p className="mt-1 text-base text-muted-foreground">
+            stomps: <span className="text-foreground">{stompCount}</span>
           </p>
         )}
       </div>
@@ -628,7 +628,7 @@ export default function StompZooPage() {
       {/* Camera / permission notice */}
       {camNote && (
         <div className="pointer-events-none absolute left-1/2 top-24 z-20 max-w-md -translate-x-1/2 px-4 text-center">
-          <p className="text-base text-rose-300 drop-shadow">{camNote}</p>
+          <p className="text-base text-violet-300 drop-shadow">{camNote}</p>
         </div>
       )}
 
@@ -636,8 +636,8 @@ export default function StompZooPage() {
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#1a1030]/80 px-6 text-center backdrop-blur-sm">
           <div className="mb-6 text-7xl">🦛🐸🦒</div>
-          <h2 className="mb-2 text-2xl font-bold text-white/95">Stomp Zoo</h2>
-          <p className="mb-8 max-w-sm text-base text-white/75">
+          <h2 className="mb-2 text-2xl font-bold text-foreground">Stomp Zoo</h2>
+          <p className="mb-8 max-w-sm text-base text-muted-foreground">
             Stand back so the camera can see your feet. Then JUMP and STOMP to
             make the googly parade bonk and fly!
           </p>
@@ -647,7 +647,7 @@ export default function StompZooPage() {
           >
             ▶ STOMP!
           </button>
-          <p className="mt-6 max-w-sm text-base text-white/75">
+          <p className="mt-6 max-w-sm text-base text-muted-foreground">
             Everything stays on your device. Nothing is recorded or sent.
           </p>
         </div>
@@ -656,7 +656,7 @@ export default function StompZooPage() {
       {/* Design notes corner link */}
       <Link
         href="/dream/719-kids-stomp-zoo/README.md"
-        className="absolute bottom-3 right-3 z-10 rounded-md bg-black/30 px-3 py-2 text-base text-white/75 hover:text-white/95"
+        className="absolute bottom-3 right-3 z-10 rounded-md bg-black/30 px-3 py-2 text-base text-muted-foreground hover:text-foreground"
       >
         notes
       </Link>

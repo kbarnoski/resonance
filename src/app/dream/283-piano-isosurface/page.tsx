@@ -516,7 +516,7 @@ export default function PianoIsosurfacePage() {
 
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-white"
+      className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-foreground"
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
     >
@@ -525,16 +525,16 @@ export default function PianoIsosurfacePage() {
       {/* HUD */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5">
         <header className="pointer-events-auto max-w-xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Piano Isosurface
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             A piano performance sculpts a living 3D isosurface in real time — sound
             becoming a breathing volumetric blob that folds, swells, and splits.
           </p>
 
           {!webglOk && (
-            <p className="mt-3 text-base text-rose-300">
+            <p className="mt-3 text-base text-violet-300">
               WebGL is unavailable in this browser — the isosurface cannot render.
             </p>
           )}
@@ -543,13 +543,13 @@ export default function PianoIsosurfacePage() {
             {!started ? (
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-md bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white hover:bg-violet-400"
+                className="min-h-[44px] rounded-md bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground hover:bg-violet-400"
               >
                 Start
               </button>
             ) : (
               <>
-                <label className="min-h-[44px] cursor-pointer rounded-md border border-white/20 px-4 py-2.5 text-base text-white/90 hover:bg-white/10">
+                <label className="min-h-[44px] cursor-pointer rounded-md border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent">
                   Drop / pick file
                   <input
                     type="file"
@@ -563,7 +563,7 @@ export default function PianoIsosurfacePage() {
                 </label>
                 <button
                   onClick={handleMic}
-                  className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                  className="min-h-[44px] rounded-md border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   Use mic
                 </button>
@@ -577,31 +577,31 @@ export default function PianoIsosurfacePage() {
                 value={trackId}
                 onChange={(e) => setTrackId(e.target.value)}
                 placeholder="track id (Welcome Home recording)"
-                className="min-h-[44px] flex-1 rounded-md border border-white/20 bg-black/40 px-3 py-2.5 text-base text-white placeholder:text-white/55"
+                className="min-h-[44px] flex-1 rounded-md border border-border bg-black/40 px-3 py-2.5 text-base text-foreground placeholder:text-muted-foreground"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleTrack();
                 }}
               />
               <button
                 onClick={handleTrack}
-                className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                className="min-h-[44px] rounded-md border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Load
               </button>
             </div>
           )}
 
-          <p className="mt-3 text-base text-emerald-300/95">
-            <span className="text-white/75">source:</span> {mode}
-            <span className="ml-3 text-white/75">status:</span>{" "}
-            <span className="text-white/90">{status}</span>
+          <p className="mt-3 text-base text-violet-300/95">
+            <span className="text-muted-foreground">source:</span> {mode}
+            <span className="ml-3 text-muted-foreground">status:</span>{" "}
+            <span className="text-foreground">{status}</span>
           </p>
-          {error && <p className="mt-1 text-base text-rose-300">{error}</p>}
+          {error && <p className="mt-1 text-base text-violet-300">{error}</p>}
         </header>
 
         <footer className="pointer-events-auto flex items-end justify-between gap-4">
-          <div className="rounded-md bg-black/40 px-3 py-2 font-mono text-sm text-white/80">
-            <div className="text-amber-300/95">bands</div>
+          <div className="rounded-md bg-black/40 px-3 py-2 font-mono text-sm text-foreground">
+            <div className="text-violet-300/95">bands</div>
             <div>
               sub {fmt(readout.sub)} · bass {fmt(readout.bass)} · lowMid{" "}
               {fmt(readout.lowMid)}
@@ -616,7 +616,7 @@ export default function PianoIsosurfacePage() {
             href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/283-piano-isosurface/README.md"
             target="_blank"
             rel="noreferrer"
-            className="text-sm text-white/75 underline hover:text-white"
+            className="text-sm text-muted-foreground underline hover:text-foreground"
           >
             Read the design notes
           </a>

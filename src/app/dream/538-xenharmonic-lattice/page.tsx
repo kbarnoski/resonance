@@ -533,13 +533,13 @@ export default function XenharmonicLatticePage() {
           <p className="text-violet-300/80 text-xs font-mono tracking-widest uppercase mb-3">
             xenharmonic lattice
           </p>
-          <h1 className="text-2xl font-serif text-white/95 leading-snug mb-4">
+          <h1 className="text-2xl font-serif text-foreground leading-snug mb-4">
             Tunings the Piano Cannot Play
           </h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             A navigable harmonic lattice in{" "}
             <span className="text-violet-300">just intonation</span> and{" "}
-            <span className="text-emerald-300">Bohlen–Pierce</span> — exact
+            <span className="text-violet-300">Bohlen–Pierce</span> — exact
             rational frequency ratios. Hover or tap nodes to hear the pure
             tuning. The tension lives in the intervals themselves.
           </p>
@@ -553,11 +553,11 @@ export default function XenharmonicLatticePage() {
               className={`min-h-[36px] px-3 py-1.5 rounded-full text-sm border transition-all ${
                 tuningIdx === i
                   ? t.id === "bp"
-                    ? "border-emerald-400/50 text-emerald-200 bg-emerald-500/15"
+                    ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
                     : t.id === "19edo"
-                    ? "border-amber-400/50 text-amber-200 bg-amber-500/15"
+                    ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
                     : "border-violet-400/50 text-violet-200 bg-violet-500/15"
-                  : "border-white/10 text-white/55 hover:text-white/80"
+                  : "border-border text-muted-foreground hover:text-foreground"
               }`}
             >
               {t.shortName}
@@ -573,19 +573,19 @@ export default function XenharmonicLatticePage() {
         </button>
 
         {audioError && (
-          <p className="text-rose-300 text-sm">
+          <p className="text-violet-300 text-sm">
             Web Audio unavailable — visuals only.
           </p>
         )}
 
-        <p className="text-white/55 text-sm max-w-xs">
+        <p className="text-muted-foreground text-sm max-w-xs">
           Tap or drag across nodes to play. Ghost-finger auto-demo plays on
           load. Resumes after 4s idle.
         </p>
 
         <a
           href="/dream/538-xenharmonic-lattice/README.md"
-          className="absolute bottom-4 right-4 text-xs text-white/40 hover:text-white/60 transition-colors"
+          className="absolute bottom-4 right-4 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           design notes ↗
         </a>
@@ -606,12 +606,12 @@ export default function XenharmonicLatticePage() {
       `}</style>
 
       {/* ── Top bar ─────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-white/5 bg-black/20 z-10">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-border bg-black/20 z-10">
         <div className="flex items-center gap-3">
-          <span className="text-xl font-serif text-white/90 hidden sm:inline">
+          <span className="text-xl font-serif text-foreground hidden sm:inline">
             Xenharmonic Lattice
           </span>
-          <span className="text-white/20 hidden sm:inline">—</span>
+          <span className="text-muted-foreground/70 hidden sm:inline">—</span>
           <div className="flex gap-1.5">
             {TUNING_SYSTEMS.map((t, i) => (
               <button
@@ -620,11 +620,11 @@ export default function XenharmonicLatticePage() {
                 className={`min-h-[36px] px-3 py-1 rounded text-sm border transition-all ${
                   tuningIdx === i
                     ? t.id === "bp"
-                      ? "border-emerald-400/50 text-emerald-200 bg-emerald-500/15"
+                      ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
                       : t.id === "19edo"
-                      ? "border-amber-400/50 text-amber-200 bg-amber-500/15"
+                      ? "border-violet-400/50 text-violet-200 bg-violet-500/15"
                       : "border-violet-400/50 text-violet-200 bg-violet-500/15"
-                    : "border-white/10 text-white/45 hover:text-white/75"
+                    : "border-border text-muted-foreground hover:text-muted-foreground"
                 }`}
               >
                 {t.shortName}
@@ -637,14 +637,14 @@ export default function XenharmonicLatticePage() {
         <div className="text-xs font-mono text-right leading-tight">
           {hoveredNode ? (
             <span>
-              <span className="text-white/80">{hoveredNode.label}</span>
-              <span className="text-white/25 mx-1">·</span>
-              <span className="text-white/55">{hoveredNode.ratioLabel}</span>
-              <span className="text-white/25 mx-1">·</span>
-              <span className="text-white/55">{hoveredNode.freq.toFixed(2)} Hz</span>
+              <span className="text-foreground">{hoveredNode.label}</span>
+              <span className="text-muted-foreground/70 mx-1">·</span>
+              <span className="text-muted-foreground">{hoveredNode.ratioLabel}</span>
+              <span className="text-muted-foreground/70 mx-1">·</span>
+              <span className="text-muted-foreground">{hoveredNode.freq.toFixed(2)} Hz</span>
             </span>
           ) : (
-            <span className="text-white/30">hover a node</span>
+            <span className="text-muted-foreground/70">hover a node</span>
           )}
         </div>
       </div>
@@ -742,7 +742,7 @@ export default function XenharmonicLatticePage() {
 
         {/* Demo indicator */}
         {isDemo && (
-          <div className="absolute top-3 left-3 flex items-center gap-1.5 text-xs text-white/40 pointer-events-none select-none">
+          <div className="absolute top-3 left-3 flex items-center gap-1.5 text-xs text-muted-foreground/70 pointer-events-none select-none">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-400/60 animate-pulse" />
             auto-demo · tap to explore
           </div>
@@ -750,14 +750,14 @@ export default function XenharmonicLatticePage() {
       </div>
 
       {/* ── Bottom info bar ─────────────────────────────────────────── */}
-      <div className="flex-shrink-0 px-4 py-2 border-t border-white/5 bg-black/20 flex items-center justify-between gap-2 text-xs font-mono">
-        <span className="text-white/55 shrink-0">{tuning.name}</span>
-        <span className="text-white/30 hidden md:block truncate max-w-xs">
+      <div className="flex-shrink-0 px-4 py-2 border-t border-border bg-black/20 flex items-center justify-between gap-2 text-xs font-mono">
+        <span className="text-muted-foreground shrink-0">{tuning.name}</span>
+        <span className="text-muted-foreground/70 hidden md:block truncate max-w-xs">
           {tuning.description}
         </span>
         <a
           href="/dream/538-xenharmonic-lattice/README.md"
-          className="text-white/30 hover:text-white/55 transition-colors shrink-0"
+          className="text-muted-foreground/70 hover:text-muted-foreground transition-colors shrink-0"
         >
           notes ↗
         </a>
@@ -765,7 +765,7 @@ export default function XenharmonicLatticePage() {
 
       {/* Audio unavailable notice */}
       {audioError && (
-        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded bg-black/70 text-rose-300 text-sm pointer-events-none">
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded bg-black/70 text-violet-300 text-sm pointer-events-none">
           Web Audio unavailable — visuals only
         </div>
       )}

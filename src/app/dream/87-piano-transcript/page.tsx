@@ -450,27 +450,27 @@ export default function PianoTranscript() {
           <h1 className="text-2xl md:text-3xl font-light mb-3 tracking-tight">
             Piano Transcript
           </h1>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             Play piano into your mic — this prototype writes while you play.
             YIN pitch detection turns each note into a filled rectangle on a
             scrolling piano-roll canvas.
           </p>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             C2–C3 amber · C3–C5 violet · C5–C7 cyan. Phrases group
             automatically. Save the session as a PNG when done.
           </p>
           <button
             onClick={startMic}
-            className="px-6 py-2.5 text-base tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+            className="px-6 py-2.5 text-base tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
           >
             Start mic
           </button>
           {micError && (
-            <p className="mt-4 text-sm text-rose-300 max-w-sm">{micError}</p>
+            <p className="mt-4 text-sm text-violet-300 max-w-sm">{micError}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-xs text-white/40 hover:text-white/60"
+            className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -480,26 +480,26 @@ export default function PianoTranscript() {
       {/* ── Post-stop overlay ─────────────────────────────────────────────── */}
       {hasStopped && (
         <div className="absolute inset-0 flex flex-col items-end justify-end p-4 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-end gap-3 bg-black/70 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <p className="text-sm text-white/55">
-              <span className="text-white/80">{count}</span> notes ·{" "}
-              <span className="text-white/80">{fmtTime(elapsed)}</span>
+          <div className="pointer-events-auto flex flex-col items-end gap-3 bg-black/70 backdrop-blur-sm rounded-xl p-4 border border-border">
+            <p className="text-sm text-muted-foreground">
+              <span className="text-foreground">{count}</span> notes ·{" "}
+              <span className="text-foreground">{fmtTime(elapsed)}</span>
             </p>
             <div className="flex gap-2">
               <button
                 onClick={saveScore}
-                className="px-4 py-2.5 text-sm tracking-wider uppercase text-emerald-300/95 border border-emerald-500/40 hover:border-emerald-400/70 rounded min-h-[44px]"
+                className="px-4 py-2.5 text-sm tracking-wider uppercase text-violet-300/95 border border-violet-500/40 hover:border-violet-400/70 rounded min-h-[44px]"
               >
                 Save PNG
               </button>
               <button
                 onClick={startMic}
-                className="px-4 py-2.5 text-sm tracking-wider uppercase border border-white/30 hover:bg-white/5 rounded min-h-[44px]"
+                className="px-4 py-2.5 text-sm tracking-wider uppercase border border-border hover:bg-accent rounded min-h-[44px]"
               >
                 New session
               </button>
             </div>
-            <Link href="/dream" className="text-xs text-white/40 hover:text-white/60">
+            <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>
@@ -509,21 +509,21 @@ export default function PianoTranscript() {
       {/* ── Running HUD ──────────────────────────────────────────────────── */}
       {running && (
         <div className="absolute top-3 right-3 flex flex-col items-end gap-2 pointer-events-none">
-          <p className="text-xs text-white/55 tracking-wider">
-            <span className="text-white/80">{fmtTime(elapsed)}</span>
+          <p className="text-xs text-muted-foreground tracking-wider">
+            <span className="text-foreground">{fmtTime(elapsed)}</span>
             {" · "}
-            <span className="text-white/80">{count}</span> notes
+            <span className="text-foreground">{count}</span> notes
           </p>
           <div className="pointer-events-auto flex gap-2">
             <button
               onClick={saveScore}
-              className="text-xs tracking-wider uppercase text-emerald-300/95 border border-emerald-500/30 hover:border-emerald-400/60 px-3 py-1.5 rounded min-h-[44px]"
+              className="text-xs tracking-wider uppercase text-violet-300/95 border border-violet-500/30 hover:border-violet-400/60 px-3 py-1.5 rounded min-h-[44px]"
             >
               Save PNG
             </button>
             <button
               onClick={stopMic}
-              className="text-xs tracking-wider uppercase text-white/75 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1.5 rounded min-h-[44px]"
+              className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded min-h-[44px]"
             >
               Stop
             </button>

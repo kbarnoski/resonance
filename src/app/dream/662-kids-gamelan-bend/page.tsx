@@ -327,13 +327,13 @@ export default function GamelanBendPage() {
   }, [applyLaras, strikeKey, unlock]);
 
   return (
-    <main className="min-h-screen w-full bg-[#070504] text-white">
+    <main className="min-h-screen w-full bg-[#070504] text-foreground">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">
         <header className="flex flex-wrap items-baseline justify-between gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-white">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Bronze Bend
           </h1>
-          <p className="font-mono text-sm text-white/75">
+          <p className="font-mono text-sm text-muted-foreground">
             grab a bar · slide up &amp; down · bend it back into tune
           </p>
         </header>
@@ -341,7 +341,7 @@ export default function GamelanBendPage() {
         {/* The instrument: WebGL2 bronze field (Canvas2D fallback) */}
         <div
           ref={wrapRef}
-          className="relative aspect-[4/3] w-full touch-none select-none overflow-hidden rounded-2xl border border-amber-900/40 bg-black"
+          className="relative aspect-[4/3] w-full touch-none select-none overflow-hidden rounded-2xl border border-violet-900/40 bg-black"
           style={{ touchAction: "none" }}
         >
           <canvas
@@ -350,7 +350,7 @@ export default function GamelanBendPage() {
           />
           {!unlocked && (
             <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-              <span className="rounded-full bg-black/50 px-4 py-2 font-mono text-base text-white/95 backdrop-blur">
+              <span className="rounded-full bg-black/50 px-4 py-2 font-mono text-base text-foreground backdrop-blur">
                 touch a glowing bar to wake the bronze
               </span>
             </div>
@@ -365,8 +365,8 @@ export default function GamelanBendPage() {
             aria-label={`Switch tuning, currently ${laras}`}
             className={`flex min-h-[96px] min-w-[200px] items-center justify-center gap-3 rounded-3xl px-8 py-5 text-2xl font-bold shadow-lg transition-transform active:scale-95 ${
               laras === "slendro"
-                ? "bg-gradient-to-br from-amber-500 to-amber-700 text-black"
-                : "bg-gradient-to-br from-teal-400 to-cyan-700 text-black"
+                ? "bg-gradient-to-br from-violet-500 to-violet-700 text-black"
+                : "bg-gradient-to-br from-violet-400 to-violet-700 text-black"
             }`}
           >
             <span aria-hidden className="text-4xl">
@@ -376,23 +376,23 @@ export default function GamelanBendPage() {
           </button>
         </div>
 
-        <p className="text-center text-base text-white/75">
+        <p className="text-center text-base text-muted-foreground">
           Tap the big sun/moon to re-tune the whole instrument.{" "}
-          <span className="text-amber-300">Slendro</span> sounds open and
-          floating; <span className="text-teal-300">pélog</span> sounds tense,
+          <span className="text-violet-300">Slendro</span> sounds open and
+          floating; <span className="text-violet-300">pélog</span> sounds tense,
           with a close half-step.
         </p>
 
         {fallback && (
-          <p className="text-center text-base text-rose-300">
+          <p className="text-center text-base text-violet-300">
             WebGL2 unavailable — running the Canvas2D fallback. It still
             shimmers and sings.
           </p>
         )}
 
-        <footer className="mt-2 text-center font-mono text-sm text-white/75">
+        <footer className="mt-2 text-center font-mono text-sm text-muted-foreground">
           design notes:{" "}
-          <span className="text-white/95">
+          <span className="text-foreground">
             src/app/dream/662-kids-gamelan-bend/README.md
           </span>
         </footer>

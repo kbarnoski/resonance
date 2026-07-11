@@ -258,7 +258,7 @@ export default function BreathFlutePage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05070d] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05070d] text-foreground">
       {/* Glowing air-column canvas */}
       <canvas
         ref={canvasRef}
@@ -269,17 +269,17 @@ export default function BreathFlutePage() {
       {/* Top bar */}
       <div className="relative z-10 flex items-start justify-between gap-4 p-5">
         <div className="max-w-xl">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Breath Flute
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             Blow or hum into the tablet — the glowing air sings a real flute.
             Tap a big circle to pick a note.
           </p>
         </div>
         <Link
           href="/dream"
-          className="shrink-0 rounded-full bg-white/10 px-4 py-2 text-base text-white/80 hover:bg-white/20"
+          className="shrink-0 rounded-full bg-muted px-4 py-2 text-base text-foreground hover:bg-accent"
         >
           ← back
         </Link>
@@ -288,37 +288,37 @@ export default function BreathFlutePage() {
       {/* Status line */}
       <div className="relative z-10 px-5">
         {micState === "denied" && (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             No microphone — that&apos;s okay! Tap the holes to puff the flute,
             or just watch it play by itself.
           </p>
         )}
         {micState === "on" && (
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Listening… blow softly for a mellow note, harder for a brighter one.
           </p>
         )}
         {micState === "asking" && (
-          <p className="text-base text-white/75">Asking for the microphone…</p>
+          <p className="text-base text-muted-foreground">Asking for the microphone…</p>
         )}
         {(micState === "idle" || !started) && started && (
-          <p className="text-base text-white/75">Tap a hole to play.</p>
+          <p className="text-base text-muted-foreground">Tap a hole to play.</p>
         )}
       </div>
 
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-black/40 px-6 text-center backdrop-blur-sm">
-          <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Let me hear you
           </h2>
-          <p className="max-w-md text-base text-white/80">
+          <p className="max-w-md text-base text-foreground">
             Tap to wake the flute. Then blow or hum into the tablet, or tap the
             glowing holes.
           </p>
           <button
             onClick={start}
-            className="min-h-[64px] min-w-[64px] rounded-full bg-gradient-to-r from-teal-400 to-amber-300 px-10 py-5 text-2xl font-semibold text-black shadow-lg transition hover:brightness-110 active:scale-95"
+            className="min-h-[64px] min-w-[64px] rounded-full bg-gradient-to-r from-violet-400 to-violet-300 px-10 py-5 text-2xl font-semibold text-black shadow-lg transition hover:brightness-110 active:scale-95"
           >
             ▶ Start
           </button>
@@ -365,13 +365,13 @@ export default function BreathFlutePage() {
         </div>
 
         {/* Controls */}
-        <div className="pointer-events-auto flex items-center gap-3 text-base text-white/75">
+        <div className="pointer-events-auto flex items-center gap-3 text-base text-muted-foreground">
           <button
             onClick={() => {
               noteInteraction();
               setAutoDemo((v) => !v);
             }}
-            className="min-h-[44px] rounded-full bg-white/10 px-4 py-2 text-base text-white/85 hover:bg-white/20"
+            className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-base text-foreground hover:bg-accent"
           >
             {autoDemo ? "Auto-play: on" : "Auto-play: off"}
           </button>

@@ -2,10 +2,10 @@
 
 import { useMemo, useRef, useState, useEffect } from "react";
 import type { AnalysisResult } from "@/lib/audio/types";
+import { useAudioStore } from "@/lib/audio/audio-store";
 
 interface AnalysisHUDProps {
   analysis: AnalysisResult | null | undefined;
-  currentTime: number;
   duration: number;
   compact?: boolean;
   onSectionChange?: (section: string) => void;
@@ -38,7 +38,10 @@ function isMinorChord(chord: string): boolean {
   return /^m($|[^a])/.test(name) || /^min/.test(name);
 }
 
-export function AnalysisHUD({ analysis, currentTime, duration, compact, onSectionChange }: AnalysisHUDProps) {
+export function AnalysisHUD({ analysis, duration, compact, onSectionChange }: AnalysisHUDProps) {
+  // Subscribe to raw currentTime here (not via the parent) so only this HUD —
+  // when visible — reconciles at frame rate, not the whole visualizer subtree.
+  const currentTime = useAudioStore((s) => s.currentTime);
   const dt = disc(currentTime);
   const prevChordRef = useRef<string>("");
   const [chordFade, setChordFade] = useState(1);

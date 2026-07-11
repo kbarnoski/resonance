@@ -398,18 +398,18 @@ export default function TapRhythm() {
   };
   const drumColors: Record<string, string> = {
     kick: "bg-violet-500/20 border-violet-400 text-violet-300",
-    snare: "bg-amber-500/20 border-amber-400 text-amber-300",
-    hat: "bg-emerald-500/20 border-emerald-400 text-emerald-300",
+    snare: "bg-violet-500/20 border-violet-400 text-violet-300",
+    hat: "bg-violet-500/20 border-violet-400 text-violet-300",
   };
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-[#060610] px-4 pt-5 pb-8 gap-5">
       {/* Header */}
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-mono tracking-tight text-white/95">
+        <h1 className="text-2xl font-mono tracking-tight text-foreground">
           Tap Rhythm
         </h1>
-        <p className="text-base text-white/75 mt-1 leading-snug">
+        <p className="text-base text-muted-foreground mt-1 leading-snug">
           Tap a groove — it auto-detects tempo, quantizes, and loops.
           Click the ring to edit individual steps.
         </p>
@@ -440,7 +440,7 @@ export default function TapRhythm() {
               className={`flex-1 py-2.5 text-sm font-mono tracking-wide rounded border transition min-h-[44px] ${
                 drumTab === d
                   ? drumColors[d]
-                  : "border-white/15 text-white/55 hover:border-white/30 hover:text-white/75"
+                  : "border-border text-muted-foreground hover:border-border hover:text-muted-foreground"
               }`}
             >
               {drumLabel[d]}
@@ -454,13 +454,13 @@ export default function TapRhythm() {
             e.preventDefault();
             handleTap();
           }}
-          className="w-full py-5 text-xl font-mono tracking-[0.3em] uppercase border-2 border-white/25 rounded-xl hover:border-white/50 hover:bg-white/5 active:bg-white/10 transition text-white/90 select-none min-h-[64px]"
+          className="w-full py-5 text-xl font-mono tracking-[0.3em] uppercase border-2 border-border rounded-xl hover:border-border hover:bg-accent active:bg-muted transition text-foreground select-none min-h-[64px]"
         >
           {phase === "tapping" ? `TAP  ×${tapCount}` : "TAP"}
         </button>
 
         {/* Status */}
-        <p className="text-sm text-white/55 text-center min-h-[1.25rem]">
+        <p className="text-sm text-muted-foreground text-center min-h-[1.25rem]">
           {phase === "idle" &&
             "Click a ring dot or tap to start · spacebar also works"}
           {phase === "tapping" &&
@@ -471,7 +471,7 @@ export default function TapRhythm() {
 
         {/* BPM */}
         <div className="flex items-center gap-3">
-          <span className="text-xs text-white/55 font-mono">BPM</span>
+          <span className="text-xs text-muted-foreground font-mono">BPM</span>
           <input
             type="range"
             min={60}
@@ -479,9 +479,9 @@ export default function TapRhythm() {
             step={1}
             value={bpm}
             onChange={(e) => handleBpmChange(parseInt(e.target.value))}
-            className="flex-1 accent-white"
+            className="flex-1 accent-primary"
           />
-          <span className="text-sm text-white/95 font-mono w-10 text-right">
+          <span className="text-sm text-foreground font-mono w-10 text-right">
             {bpm}
           </span>
         </div>
@@ -490,40 +490,40 @@ export default function TapRhythm() {
         <div className="flex gap-2 flex-wrap items-center">
           <button
             onClick={startDemo}
-            className="px-4 py-2.5 text-sm font-mono border border-white/15 rounded hover:border-white/35 text-white/75 hover:text-white/95 transition min-h-[44px]"
+            className="px-4 py-2.5 text-sm font-mono border border-border rounded hover:border-border text-muted-foreground hover:text-foreground transition min-h-[44px]"
           >
             Demo
           </button>
           <button
             onClick={clearDrumType}
-            className="px-4 py-2.5 text-sm font-mono border border-white/15 rounded hover:border-white/35 text-white/75 hover:text-white/95 transition min-h-[44px]"
+            className="px-4 py-2.5 text-sm font-mono border border-border rounded hover:border-border text-muted-foreground hover:text-foreground transition min-h-[44px]"
           >
             Clear {drumTab}
           </button>
           <button
             onClick={clearAll}
-            className="px-4 py-2.5 text-sm font-mono border border-white/15 rounded hover:border-white/35 text-white/75 hover:text-white/95 transition min-h-[44px]"
+            className="px-4 py-2.5 text-sm font-mono border border-border rounded hover:border-border text-muted-foreground hover:text-foreground transition min-h-[44px]"
           >
             Clear all
           </button>
           <Link
             href="/dream"
-            className="ml-auto text-xs text-white/30 hover:text-white/60 transition"
+            className="ml-auto text-xs text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             ← dream lab
           </Link>
         </div>
 
         {/* Legend */}
-        <div className="flex gap-4 text-xs font-mono text-white/40 pt-1">
+        <div className="flex gap-4 text-xs font-mono text-muted-foreground/70 pt-1">
           <span>
             <span className="text-violet-400">◉</span> kick
           </span>
           <span>
-            <span className="text-amber-400">●</span> snare
+            <span className="text-violet-400">●</span> snare
           </span>
           <span>
-            <span className="text-emerald-400">·</span> hi-hat
+            <span className="text-violet-400">·</span> hi-hat
           </span>
           <span className="ml-auto">32 steps · 2 bars</span>
         </div>
@@ -531,7 +531,7 @@ export default function TapRhythm() {
 
       <Link
         href="/dream/161-tap-rhythm/readme"
-        className="text-[11px] text-white/25 hover:text-white/50 transition"
+        className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition"
       >
         design notes →
       </Link>

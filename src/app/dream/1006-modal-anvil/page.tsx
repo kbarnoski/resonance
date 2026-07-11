@@ -365,7 +365,7 @@ export default function ModalAnvilPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0a0b0e] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0a0b0e] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -375,7 +375,7 @@ export default function ModalAnvilPage() {
       {/* back link */}
       <Link
         href="/dream"
-        className="absolute left-4 top-4 z-20 text-sm text-white/75 hover:text-white"
+        className="absolute left-4 top-4 z-20 text-sm text-muted-foreground hover:text-foreground"
       >
         ← dream lab
       </Link>
@@ -385,7 +385,7 @@ export default function ModalAnvilPage() {
         href="https://github.com/"
         onClick={(e) => e.preventDefault()}
         title="See README.md in this prototype's folder for the technique & references"
-        className="absolute right-4 top-4 z-20 cursor-help text-sm text-white/55 hover:text-white/80"
+        className="absolute right-4 top-4 z-20 cursor-help text-sm text-muted-foreground hover:text-foreground"
       >
         design notes
       </a>
@@ -393,21 +393,21 @@ export default function ModalAnvilPage() {
       {/* hero overlay (pre-start) */}
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Modal Anvil
           </h1>
-          <p className="max-w-xl text-base text-white/75 sm:text-lg">
+          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
             A glowing metal plate, simulated in real time. The sound you hear is the
             literal motion of a finite-difference vibrating plate — strike it hard and the
             pitch blooms bright, then glides downward as it rings. No samples. No notes.
           </p>
           <button
             onClick={() => void boot()}
-            className="min-h-[44px] rounded-md bg-amber-500/90 px-6 py-2.5 text-base font-medium text-[#1a1206] shadow-lg shadow-amber-900/40 transition hover:bg-amber-400"
+            className="min-h-[44px] rounded-md bg-violet-500/90 px-6 py-2.5 text-base font-medium text-[#1a1206] shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
           >
             Strike the anvil
           </button>
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             Or just wait — the forge strikes itself.
           </p>
         </div>
@@ -416,12 +416,12 @@ export default function ModalAnvilPage() {
       {/* running HUD */}
       {started && (
         <div className="pointer-events-none absolute bottom-4 left-4 z-20 max-w-[80vw] space-y-1">
-          <p className="text-sm text-amber-300/95">Modal Anvil</p>
-          <p className="text-sm text-white/55">{pathLabel}</p>
+          <p className="text-sm text-violet-300/95">Modal Anvil</p>
+          <p className="text-sm text-muted-foreground">{pathLabel}</p>
           {autoDemo && (
-            <p className="text-sm text-white/55">ghost hammer active — strike a plate to take over</p>
+            <p className="text-sm text-muted-foreground">ghost hammer active — strike a plate to take over</p>
           )}
-          {audioWarning && <p className="text-sm text-rose-300">{audioWarning}</p>}
+          {audioWarning && <p className="text-sm text-violet-300">{audioWarning}</p>}
         </div>
       )}
 
@@ -429,7 +429,7 @@ export default function ModalAnvilPage() {
       {started && (
         <div className="pointer-events-none absolute inset-x-0 bottom-16 z-10 flex justify-around px-[6%]">
           {PLATES.map((p) => (
-            <span key={p.label} className="text-sm text-white/55">{p.label}</span>
+            <span key={p.label} className="text-sm text-muted-foreground">{p.label}</span>
           ))}
         </div>
       )}

@@ -715,7 +715,7 @@ export default function CloudWeatherPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#7cc7ff] font-sans text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#7cc7ff] font-sans text-foreground">
       {/* Hidden video feeding the frame-diff processor. */}
       <video ref={videoRef} playsInline muted className="hidden" />
 
@@ -723,10 +723,10 @@ export default function CloudWeatherPage() {
 
       {/* Title */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-5">
-        <h1 className="text-2xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_6px_rgba(60,90,140,0.6)] sm:text-4xl">
+        <h1 className="text-2xl font-extrabold tracking-tight text-foreground drop-shadow-[0_2px_6px_rgba(60,90,140,0.6)] sm:text-4xl">
           CONDUCT THE SKY
         </h1>
-        <p className="mt-1 text-base font-semibold text-white/95 drop-shadow-[0_1px_4px_rgba(60,90,140,0.6)]">
+        <p className="mt-1 text-base font-semibold text-foreground drop-shadow-[0_1px_4px_rgba(60,90,140,0.6)]">
           Move your whole body — gentle, BIG, high, low — and paint the music!
         </p>
       </div>
@@ -734,7 +734,7 @@ export default function CloudWeatherPage() {
       {/* Camera / permission notice */}
       {camNote && (
         <div className="pointer-events-none absolute left-1/2 top-28 z-20 max-w-md -translate-x-1/2 px-4 text-center">
-          <p className="rounded-xl bg-black/30 px-4 py-2 text-base text-rose-300 drop-shadow">
+          <p className="rounded-xl bg-black/30 px-4 py-2 text-base text-violet-300 drop-shadow">
             {camNote}
           </p>
         </div>
@@ -744,10 +744,10 @@ export default function CloudWeatherPage() {
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#7cc7ff]/85 px-6 text-center backdrop-blur-sm">
           <div className="mb-6 text-7xl">☀️🌸🐦</div>
-          <h2 className="mb-2 text-2xl font-extrabold text-white drop-shadow">
+          <h2 className="mb-2 text-2xl font-extrabold text-foreground drop-shadow">
             Conduct the Sky
           </h2>
-          <p className="mb-8 max-w-sm text-base font-medium text-white drop-shadow">
+          <p className="mb-8 max-w-sm text-base font-medium text-foreground drop-shadow">
             Stand back so the camera can see you. Reach UP high, sway gently,
             make a BIG wave — the sky sings and blooms with your moves!
           </p>
@@ -757,7 +757,7 @@ export default function CloudWeatherPage() {
           >
             ▶ PLAY THE SKY!
           </button>
-          <p className="mt-6 max-w-sm text-base font-medium text-white drop-shadow">
+          <p className="mt-6 max-w-sm text-base font-medium text-foreground drop-shadow">
             Everything stays on your device. Nothing is recorded or sent.
           </p>
         </div>
@@ -766,7 +766,7 @@ export default function CloudWeatherPage() {
       {/* Design notes corner link */}
       <Link
         href="/dream/978-kids-cloud-weather/README.md"
-        className="absolute bottom-3 right-3 z-10 rounded-md bg-black/30 px-3 py-2 text-base text-white/90 hover:text-white"
+        className="absolute bottom-3 right-3 z-10 rounded-md bg-black/30 px-3 py-2 text-base text-foreground hover:text-foreground"
       >
         notes
       </Link>

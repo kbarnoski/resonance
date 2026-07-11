@@ -360,18 +360,18 @@ export default function ChordCanvasPage() {
   const heroName     = detected ? chordDisplay(cRoot, cQual, useFlats) : "—";
 
   return (
-    <div className="flex flex-col h-screen bg-[#04040a] text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#04040a] text-foreground overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between px-5 pt-5 pb-2 shrink-0">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white">Chord Canvas</h1>
-          <p className="text-base text-white/75 mt-0.5 max-w-sm leading-snug">
+          <h1 className="text-2xl font-mono font-bold text-foreground">Chord Canvas</h1>
+          <p className="text-base text-muted-foreground mt-0.5 max-w-sm leading-snug">
             What chord are you playing? Hear it named, colored, and traced over time.
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-white/55 text-sm font-mono hover:text-white/80 transition-colors mt-1 shrink-0 ml-4"
+          className="text-muted-foreground text-sm font-mono hover:text-foreground transition-colors mt-1 shrink-0 ml-4"
         >
           ← dream lab
         </Link>
@@ -389,7 +389,7 @@ export default function ChordCanvasPage() {
             </button>
             <button
               onClick={() => { void startMic(); }}
-              className="px-5 py-2.5 bg-white/10 border border-white/20 text-white/90 text-base font-mono rounded hover:bg-white/15 transition min-h-[44px]"
+              className="px-5 py-2.5 bg-muted border border-border text-foreground text-base font-mono rounded hover:bg-accent transition min-h-[44px]"
             >
               🎤 Start mic
             </button>
@@ -409,8 +409,8 @@ export default function ChordCanvasPage() {
                 title="Toggle sharps / flats notation"
                 className={`px-3 py-1.5 text-sm font-mono rounded border transition min-h-[36px] ${
                   useFlats
-                    ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
-                    : "bg-white/10 border-white/20 text-white/65 hover:text-white/90"
+                    ? "bg-violet-500/20 border-violet-500/40 text-violet-300"
+                    : "bg-muted border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {useFlats ? "♭ flats" : "♯ sharps"}
@@ -420,8 +420,8 @@ export default function ChordCanvasPage() {
                 title="Lock / unlock chord detection"
                 className={`px-3 py-1.5 text-sm font-mono rounded border transition min-h-[36px] ${
                   locked
-                    ? "bg-amber-500/20 border-amber-500/40 text-amber-300"
-                    : "bg-white/10 border-white/20 text-white/65 hover:text-white/90"
+                    ? "bg-violet-500/20 border-violet-500/40 text-violet-300"
+                    : "bg-muted border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {locked ? "🔒 locked" : "lock"}
@@ -430,7 +430,7 @@ export default function ChordCanvasPage() {
           </div>
         )}
         {errMsg && (
-          <p className="text-rose-300 text-base font-mono mt-2">{errMsg}</p>
+          <p className="text-violet-300 text-base font-mono mt-2">{errMsg}</p>
         )}
       </div>
 
@@ -440,7 +440,7 @@ export default function ChordCanvasPage() {
       </div>
 
       {/* Footer */}
-      <div className="flex justify-between items-center px-5 py-2 text-white/55 text-xs font-mono shrink-0 border-t border-white/5">
+      <div className="flex justify-between items-center px-5 py-2 text-muted-foreground text-xs font-mono shrink-0 border-t border-border">
         <span>195-chord-canvas · cycle 229 polish · 9 types · ♭/♯ · lock</span>
         <span>108 templates · chroma · color timeline</span>
       </div>

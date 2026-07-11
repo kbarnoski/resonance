@@ -492,13 +492,13 @@ export default function HarmonicMirrorPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#08070c] text-white px-5 py-8 md:px-10">
+    <main className="min-h-screen bg-[#08070c] text-foreground px-5 py-8 md:px-10">
       <div className="mx-auto max-w-4xl">
         <header className="mb-5">
-          <h1 className="font-serif text-3xl md:text-4xl text-white">
+          <h1 className="font-serif text-3xl md:text-4xl text-foreground">
             Harmonic Mirror
           </h1>
-          <p className="mt-2 text-base text-white/75 max-w-2xl">
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
             Play, and your instrument completes the chord you imply — adding the
             1–2 notes you didn&apos;t play, tuned in pure{" "}
             <span className="text-violet-300">just intonation</span> to your
@@ -507,10 +507,10 @@ export default function HarmonicMirrorPage() {
         </header>
 
         {midiNotice && (
-          <p className="mb-3 text-base text-rose-300">{midiNotice}</p>
+          <p className="mb-3 text-base text-violet-300">{midiNotice}</p>
         )}
         {audioNotice && (
-          <p className="mb-3 text-base text-rose-300">{audioNotice}</p>
+          <p className="mb-3 text-base text-violet-300">{audioNotice}</p>
         )}
 
         {!started && audioPhase === "idle" && (
@@ -525,7 +525,7 @@ export default function HarmonicMirrorPage() {
           </button>
         )}
 
-        <div className="relative rounded-xl overflow-hidden border border-white/10">
+        <div className="relative rounded-xl overflow-hidden border border-border">
           <canvas
             ref={canvasRef}
             className="block w-full"
@@ -534,11 +534,11 @@ export default function HarmonicMirrorPage() {
         </div>
 
         <div className="mt-3 flex flex-wrap items-baseline gap-x-6 gap-y-1">
-          <span className="text-base text-white/95">
+          <span className="text-base text-foreground">
             Chord:{" "}
             <span className="font-mono text-violet-200">{chordName}</span>
           </span>
-          <span className="text-base text-white/75 font-mono">
+          <span className="text-base text-muted-foreground font-mono">
             {mirrorInfo}
           </span>
         </div>
@@ -560,7 +560,7 @@ export default function HarmonicMirrorPage() {
                   onPointerLeave={(e) => {
                     if (e.buttons) releaseKey(off);
                   }}
-                  className="flex-1 min-h-[44px] rounded-b-md bg-white/90 hover:bg-white active:bg-violet-200 flex items-end justify-center pb-2 text-sm font-mono text-black/70"
+                  className="flex-1 min-h-[44px] rounded-b-md bg-muted hover:bg-card active:bg-violet-200 flex items-end justify-center pb-2 text-sm font-mono text-black/70"
                 >
                   {WHITE_LABELS[i]}
                 </button>
@@ -583,7 +583,7 @@ export default function HarmonicMirrorPage() {
                         onPointerLeave={(e) => {
                           if (e.buttons) releaseKey(blackOff);
                         }}
-                        className="pointer-events-auto absolute -right-3 top-0 z-10 h-[60%] w-6 min-h-[44px] rounded-b-md bg-black hover:bg-zinc-800 active:bg-violet-900 border border-white/10"
+                        className="pointer-events-auto absolute -right-3 top-0 z-10 h-[60%] w-6 min-h-[44px] rounded-b-md bg-black hover:bg-zinc-800 active:bg-violet-900 border border-border"
                       />
                     )}
                   </div>
@@ -592,24 +592,24 @@ export default function HarmonicMirrorPage() {
             </div>
           </div>
 
-          <p className="mt-4 text-base text-white/75">
+          <p className="mt-4 text-base text-muted-foreground">
             Or use your computer keyboard:{" "}
             <span className="font-mono text-violet-200">
               a w s e d f t g y h u j k
             </span>{" "}
             → C C# D D# E F F# G G# A A# B C.
           </p>
-          <p className="mt-1 text-base text-white/55">
+          <p className="mt-1 text-base text-muted-foreground">
             Connect a MIDI piano and it drives the same pipeline. Idle ~2s and a
             demo arpeggiates I–vi–IV–V; your first note stops it.
           </p>
         </div>
 
-        <details className="mt-6 text-base text-white/55">
+        <details className="mt-6 text-base text-muted-foreground">
           <summary className="cursor-pointer text-violet-300 hover:text-violet-200">
             Read the design notes
           </summary>
-          <div className="mt-2 space-y-2 text-white/75">
+          <div className="mt-2 space-y-2 text-muted-foreground">
             <p>
               Your played notes are warm detuned-saw voices in equal temperament
               — the keys you actually pressed. The mirror infers your chord

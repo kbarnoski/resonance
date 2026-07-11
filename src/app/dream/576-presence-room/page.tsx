@@ -296,7 +296,7 @@ export default function PresenceRoom() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white/95">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* WebGL2 canvas (full-bleed) */}
       <canvas
         ref={canvasRef}
@@ -321,7 +321,7 @@ export default function PresenceRoom() {
         href={README_URL}
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 text-base text-white/55 underline-offset-4 hover:text-violet-300 hover:underline"
+        className="absolute right-4 top-4 z-20 text-base text-muted-foreground underline-offset-4 hover:text-violet-300 hover:underline"
       >
         Read the design notes
       </Link>
@@ -329,10 +329,10 @@ export default function PresenceRoom() {
       {/* Intro / overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white/95 sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Presence Room
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Lean and turn your head — the warm chord physically moves around you.
             Your own face is the listener; the music surrounds wherever you look.
           </p>
@@ -340,11 +340,11 @@ export default function PresenceRoom() {
             type="button"
             onClick={enter}
             disabled={phase === "loading"}
-            className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white/95 transition hover:bg-violet-400 disabled:opacity-60"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400 disabled:opacity-60"
           >
             {phase === "loading" ? "Entering…" : "Enter the room"}
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Headphones recommended (binaural). Camera stays in your browser.
           </p>
         </div>
@@ -354,11 +354,11 @@ export default function PresenceRoom() {
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-2 px-6 pb-6 text-center">
           {notice && (
-            <p className="max-w-md text-base leading-relaxed text-rose-300">
+            <p className="max-w-md text-base leading-relaxed text-violet-300">
               {notice}
             </p>
           )}
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             {tracking
               ? "Tracking your head — move and the room moves with you."
               : "Drag to look around. Headphones recommended (binaural)."}

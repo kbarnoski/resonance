@@ -807,7 +807,7 @@ export default function MotetRoomReach() {
           : "idle";
 
   return (
-    <div className="min-h-screen bg-[#070611] text-white px-5 py-8 sm:px-8">
+    <div className="min-h-screen bg-[#070611] text-foreground px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-3xl">
         <Link
           href="/dream"
@@ -816,10 +816,10 @@ export default function MotetRoomReach() {
           ← back to the dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-white">
+        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-foreground">
           The Motet Room <span className="text-violet-300">(Reach)</span>
         </h1>
-        <p className="mt-3 text-base text-white/80 leading-relaxed">
+        <p className="mt-3 text-base text-foreground leading-relaxed">
           Stand at the still center of a fixed constellation of forty-ish
           spatialized voices and conduct it with your bare hands — reach toward
           a section to swell it, spread your arms to bloom the whole choir open
@@ -837,7 +837,7 @@ export default function MotetRoomReach() {
         </button>
 
         {showNotes && (
-          <div className="mt-3 rounded-lg border border-violet-500/20 bg-violet-500/5 p-4 text-base text-white/80 leading-relaxed space-y-2">
+          <div className="mt-3 rounded-lg border border-violet-500/20 bg-violet-500/5 p-4 text-base text-foreground leading-relaxed space-y-2">
             <p>
               Every voice lives at a fixed 3D coordinate on a shell around you
               and is rendered through its own <code>PannerNode</code> with
@@ -871,7 +871,7 @@ export default function MotetRoomReach() {
             <button
               type="button"
               onClick={stopAndReset}
-              className="min-h-[44px] px-4 py-2.5 rounded-md bg-white/10 text-white/80 border border-white/20 hover:bg-white/20 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-md bg-muted text-foreground border border-border hover:bg-accent transition-colors"
             >
               Leave the room
             </button>
@@ -884,18 +884,18 @@ export default function MotetRoomReach() {
         </div>
 
         {notice && (
-          <p className="mt-4 text-rose-300 text-base leading-relaxed">
+          <p className="mt-4 text-violet-300 text-base leading-relaxed">
             {notice}
           </p>
         )}
 
-        <div className="mt-5 relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black">
+        <div className="mt-5 relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-black">
           <canvas
             ref={canvasRef}
             className="absolute inset-0 h-full w-full touch-none"
           />
           {!running && (
-            <div className="absolute inset-0 flex items-center justify-center text-white/60 text-base">
+            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-base">
               Enter the room to wake the choir.
             </div>
           )}
@@ -905,14 +905,14 @@ export default function MotetRoomReach() {
         <video ref={videoRef} className="hidden" playsInline muted />
 
         {running && (
-          <p className="mt-4 text-base text-white/80 leading-relaxed">
+          <p className="mt-4 text-base text-foreground leading-relaxed">
             No camera here? You&apos;re hearing the auto-demo conduct itself.
             Move your mouse over the field and drag to pinch-grab the nearest
             voice and fling it somewhere new — it stays where you drop it.
           </p>
         )}
 
-        <p className="mt-8 text-xs text-white/40 font-mono">
+        <p className="mt-8 text-xs text-muted-foreground/70 font-mono">
           input: hand-tracking-camera · output: raw-WebGL2 · technique:
           HRTF-spatial-sculpting · vibe: installation / sacred-ambient
         </p>

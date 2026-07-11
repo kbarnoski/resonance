@@ -404,40 +404,40 @@ export default function NodeSynth() {
   const hasDestination = graph.nodes.some(n => n.kind === "destination");
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col" style={{ userSelect: "none" }}>
+    <div className="min-h-screen bg-black text-foreground flex flex-col" style={{ userSelect: "none" }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-white/10">
+      <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-border">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white">Node Synth</h1>
-          <p className="text-white/75 text-base mt-0.5">
+          <h1 className="text-2xl font-mono font-bold text-foreground">Node Synth</h1>
+          <p className="text-muted-foreground text-base mt-0.5">
             Patch oscillators, filters, and effects into a live sound.
           </p>
         </div>
-        <Link href="/dream" className="text-white/55 text-sm hover:text-white/80 transition-colors">
+        <Link href="/dream" className="text-muted-foreground text-sm hover:text-foreground transition-colors">
           ← dream
         </Link>
       </div>
 
       {/* Toolbar */}
-      <div className="flex items-center gap-2 px-5 py-2 border-b border-white/10 flex-wrap">
+      <div className="flex items-center gap-2 px-5 py-2 border-b border-border flex-wrap">
         {!running ? (
           <button
             onClick={startAudio}
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-500 rounded text-white text-sm font-mono transition-colors min-h-[44px]"
+            className="px-4 py-2 bg-violet-600 hover:bg-violet-500 rounded text-foreground text-sm font-mono transition-colors min-h-[44px]"
           >
             ▶ Start audio
           </button>
         ) : (
-          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300/95 rounded text-sm font-mono">
+          <span className="px-3 py-1 bg-violet-500/20 text-violet-300/95 rounded text-sm font-mono">
             ● playing
           </span>
         )}
-        <span className="text-white/40 text-xs font-mono mx-1">add:</span>
+        <span className="text-muted-foreground/70 text-xs font-mono mx-1">add:</span>
         {(["oscillator", "gain", "filter", "delay"] as NodeKind[]).map(k => (
           <button
             key={k}
             onClick={() => addNode(k)}
-            className="px-3 py-1.5 rounded text-white/80 text-sm font-mono hover:text-white transition-colors min-h-[36px]"
+            className="px-3 py-1.5 rounded text-foreground text-sm font-mono hover:text-foreground transition-colors min-h-[36px]"
             style={{ background: KIND_COLOR[k] + "33", border: `1px solid ${KIND_COLOR[k]}66` }}
           >
             + {KIND_LABEL[k]}
@@ -446,26 +446,26 @@ export default function NodeSynth() {
         {!hasDestination && (
           <button
             onClick={() => addNode("destination")}
-            className="px-3 py-1.5 rounded text-white/80 text-sm font-mono hover:text-white transition-colors min-h-[36px]"
+            className="px-3 py-1.5 rounded text-foreground text-sm font-mono hover:text-foreground transition-colors min-h-[36px]"
             style={{ background: KIND_COLOR.destination + "33", border: `1px solid ${KIND_COLOR.destination}66` }}
           >
             + Speakers
           </button>
         )}
-        <span className="text-white/40 text-xs font-mono ml-auto">
+        <span className="text-muted-foreground/70 text-xs font-mono ml-auto">
           {pendingFrom ? "click an input port to connect →" : "click output port ● to start a wire"}
         </span>
       </div>
 
       {error && (
-        <div className="px-5 py-2 text-rose-300 text-sm font-mono bg-rose-500/10">{error}</div>
+        <div className="px-5 py-2 text-violet-300 text-sm font-mono bg-violet-500/10">{error}</div>
       )}
 
       {/* Instructions */}
       {!running && (
-        <div className="px-5 py-3 text-white/55 text-sm font-mono border-b border-white/10">
+        <div className="px-5 py-3 text-muted-foreground text-sm font-mono border-b border-border">
           Press <span className="text-violet-300">▶ Start audio</span> to hear the patch.
-          Drag node cards to rearrange. Click a <span className="text-white/75">right port</span> then a <span className="text-white/75">left port</span> to wire them.
+          Drag node cards to rearrange. Click a <span className="text-muted-foreground">right port</span> then a <span className="text-muted-foreground">left port</span> to wire them.
           Click a wire label to remove it.
         </div>
       )}
@@ -500,7 +500,7 @@ export default function NodeSynth() {
               key={w.id}
               onClick={e => { e.stopPropagation(); removeWire(w.id); }}
               title="Remove wire"
-              className="absolute w-5 h-5 rounded-full text-xs flex items-center justify-center hover:bg-rose-500/80 bg-rose-500/40 text-rose-200 transition-colors"
+              className="absolute w-5 h-5 rounded-full text-xs flex items-center justify-center hover:bg-violet-500/80 bg-violet-500/40 text-violet-200 transition-colors"
               style={{ left: mx - 10, top: my - 10, zIndex: 3 }}
             >
               ×
@@ -524,11 +524,11 @@ export default function NodeSynth() {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-2 border-t border-white/10 flex justify-between items-center">
-        <span className="text-white/40 text-xs font-mono">
+      <div className="px-5 py-2 border-t border-border flex justify-between items-center">
+        <span className="text-muted-foreground/70 text-xs font-mono">
           {graph.nodes.length} nodes · {graph.wires.length} wires
         </span>
-        <Link href="/dream/78-node-synth/README.md" className="text-white/40 text-xs hover:text-white/60 transition-colors">
+        <Link href="/dream/78-node-synth/README.md" className="text-muted-foreground/70 text-xs hover:text-muted-foreground transition-colors">
           design notes ↗
         </Link>
       </div>
@@ -577,7 +577,7 @@ function NodeCard({ node, pending, onPointerDown, onClickOut, onClickIn, onParam
           <button
             data-control="true"
             onClick={e => { e.stopPropagation(); onRemove(); }}
-            className="text-white/40 hover:text-rose-300 transition-colors leading-none"
+            className="text-muted-foreground/70 hover:text-violet-300 transition-colors leading-none"
           >
             ×
           </button>
@@ -610,7 +610,7 @@ function NodeCard({ node, pending, onPointerDown, onClickOut, onClickIn, onParam
           </>
         )}
         {node.kind === "destination" && (
-          <p className="text-white/55 text-xs font-mono">audio output</p>
+          <p className="text-muted-foreground text-xs font-mono">audio output</p>
         )}
       </div>
 
@@ -685,7 +685,7 @@ function ParamSlider({ label, value, min, max, step = 1, log, unit, onChange }: 
 
   return (
     <div className="flex items-center gap-1.5">
-      <span className="text-white/55 text-xs font-mono w-12 shrink-0">{label}</span>
+      <span className="text-muted-foreground text-xs font-mono w-12 shrink-0">{label}</span>
       <input
         type="range"
         min={sliderMin}
@@ -697,7 +697,7 @@ function ParamSlider({ label, value, min, max, step = 1, log, unit, onChange }: 
         onPointerDown={e => e.stopPropagation()}
         className="flex-1 h-1 accent-violet-500"
       />
-      <span className="text-white/75 text-xs font-mono w-14 text-right shrink-0">
+      <span className="text-muted-foreground text-xs font-mono w-14 text-right shrink-0">
         {display}{unit ?? ""}
       </span>
     </div>
@@ -714,13 +714,13 @@ interface SelectProps {
 function ParamSelect({ label, value, options, onSelect }: SelectProps) {
   return (
     <div className="flex items-center gap-1.5">
-      <span className="text-white/55 text-xs font-mono w-12 shrink-0">{label}</span>
+      <span className="text-muted-foreground text-xs font-mono w-12 shrink-0">{label}</span>
       <select
         value={value}
         onChange={e => onSelect(e.target.value)}
         onClick={e => e.stopPropagation()}
         onPointerDown={e => e.stopPropagation()}
-        className="flex-1 bg-black/60 border border-white/20 rounded text-white/80 text-xs font-mono px-1 py-0.5"
+        className="flex-1 bg-black/60 border border-border rounded text-foreground text-xs font-mono px-1 py-0.5"
       >
         {options.map(o => <option key={o} value={o}>{o}</option>)}
       </select>

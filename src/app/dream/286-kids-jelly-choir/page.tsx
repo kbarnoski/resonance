@@ -442,7 +442,7 @@ export default function JellyChoirPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#08060d] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#08060d] text-foreground">
       <div ref={wrapRef} className="absolute inset-0 touch-none">
         <svg className="h-full w-full" preserveAspectRatio="none">
           <defs>
@@ -498,18 +498,18 @@ export default function JellyChoirPage() {
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-2 p-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 drop-shadow">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow">
           Jelly Choir
         </h1>
         <p
-          className={`font-mono text-base text-white/80 transition-opacity duration-1000 ${
+          className={`font-mono text-base text-foreground transition-opacity duration-1000 ${
             showHint ? "opacity-100" : "opacity-0"
           }`}
         >
           Poke a jelly! 🫧 It wobbles and sings. Poke two to make them harmonize.
         </p>
         {!audioReady && (
-          <p className="font-mono text-sm text-white/55">tap to wake the jellies</p>
+          <p className="font-mono text-sm text-muted-foreground">tap to wake the jellies</p>
         )}
       </div>
 
@@ -517,7 +517,7 @@ export default function JellyChoirPage() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/286-kids-jelly-choir/README.md"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-3 right-3 z-10 text-xs text-white/55 hover:text-white/80"
+        className="fixed bottom-3 right-3 z-10 text-xs text-muted-foreground hover:text-foreground"
       >
         design notes
       </a>
@@ -574,7 +574,7 @@ function Eyes() {
             {[-1, 1].map((s) => (
               <div
                 key={s}
-                className="pointer-events-none absolute rounded-full bg-white"
+                className="pointer-events-none absolute rounded-full bg-card"
                 style={{
                   left: b.x + s * dx - eyeR,
                   top: b.y - dy - eyeR,

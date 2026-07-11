@@ -874,9 +874,9 @@ export default function PianoImageDuet() {
   const isLoading = appStatus === "loading";
 
   const statusDot =
-    appStatus === "error" ? "bg-rose-400" :
-    (isRunning && audioMode === "real" && imageStatus === "live") ? "bg-emerald-400 animate-pulse" :
-    isRunning ? "bg-amber-400 animate-pulse" : "bg-white/20";
+    appStatus === "error" ? "bg-violet-400" :
+    (isRunning && audioMode === "real" && imageStatus === "live") ? "bg-violet-400 animate-pulse" :
+    isRunning ? "bg-violet-400 animate-pulse" : "bg-muted";
 
   const statusLabel =
     appStatus === "error" ? (errorMsg ?? "Error") :
@@ -887,10 +887,10 @@ export default function PianoImageDuet() {
     isLoading ? "loading…" : "ready";
 
   const statusColor =
-    appStatus === "error" ? "text-rose-300" :
-    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-emerald-400" :
-    (isRunning && audioMode === "real") ? "text-emerald-300/80" :
-    isRunning ? "text-amber-300" : "text-white/55";
+    appStatus === "error" ? "text-violet-300" :
+    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-violet-400" :
+    (isRunning && audioMode === "real") ? "text-violet-300/80" :
+    isRunning ? "text-violet-300" : "text-muted-foreground";
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -910,64 +910,64 @@ export default function PianoImageDuet() {
 
       {/* Drag overlay */}
       {isDragOver && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 border-4 border-cyan-400/70 border-dashed">
-          <p className="text-2xl font-serif text-cyan-300 drop-shadow-lg">Drop audio file here</p>
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 border-4 border-violet-400/70 border-dashed">
+          <p className="text-2xl font-serif text-violet-300 drop-shadow-lg">Drop audio file here</p>
         </div>
       )}
 
       {/* ── Idle screen ──────────────────────────────────────────────────── */}
       {!isRunning && !isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12 text-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-cyan-950/20 to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black pointer-events-none" />
 
           <div className="relative z-10 max-w-xl flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-serif font-bold text-white tracking-tight leading-snug">
+            <h1 className="text-3xl font-serif font-bold text-foreground tracking-tight leading-snug">
               Piano Image Duet
             </h1>
-            <p className="text-base text-white/80 leading-relaxed">
+            <p className="text-base text-foreground leading-relaxed">
               A dreamed image that doesn&apos;t just filter the piano — it{" "}
-              <em className="text-cyan-300">re-composes it</em>. A glowing scan-line reads the
+              <em className="text-violet-300">re-composes it</em>. A glowing scan-line reads the
               AI image as a spectral score, singing new partial harmonics that duet Karel&apos;s
               real piano. Cycle 3 of <em>The Latent Piano Room</em>.
             </p>
-            <p className="text-sm text-white/60 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Image-as-spectrogram resynthesis · additive partial bank quantised to detected key ·
               Xenakis UPIC / MetaSynth lineage · Art2Mus arXiv 2602.17599
             </p>
 
             {(statusMsg || errorMsg) && (
-              <p className={`text-sm max-w-md ${errorMsg ? "text-rose-300" : "text-amber-300/95"}`}>
+              <p className={`text-sm max-w-md ${errorMsg ? "text-violet-300" : "text-violet-300/95"}`}>
                 {errorMsg ?? statusMsg}
               </p>
             )}
 
-            <p className="text-white/55 text-xs">Auto-starting in ~10s…</p>
+            <p className="text-muted-foreground text-xs">Auto-starting in ~10s…</p>
 
             <button
               onClick={() => void handleBegin()}
               disabled={isLoading}
-              className="min-h-[44px] px-8 py-2.5 rounded-full bg-cyan-700 hover:bg-cyan-600 active:bg-cyan-800 text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-cyan-900/50"
+              className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-700 hover:bg-violet-600 active:bg-violet-800 text-foreground font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-900/50"
             >
               Begin the duet
             </button>
 
             {/* File drop zone */}
-            <div className="w-full border border-white/20 rounded-xl p-5 text-center bg-white/5 hover:bg-white/[0.08] transition-colors">
-              <p className="text-white/75 text-base mb-3">
+            <div className="w-full border border-border rounded-xl p-5 text-center bg-muted hover:bg-accent transition-colors">
+              <p className="text-muted-foreground text-base mb-3">
                 Drop your own audio to replace Karel&apos;s piano
               </p>
               <label className="cursor-pointer">
                 <input type="file" accept="audio/*" className="hidden" onChange={handleFileInput} />
-                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-white/30 text-white/75 text-base hover:border-cyan-400/60 hover:text-white transition-colors">
+                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-border text-muted-foreground text-base hover:border-violet-400/60 hover:text-foreground transition-colors">
                   Choose audio file
                 </span>
               </label>
-              <p className="text-white/55 text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
+              <p className="text-muted-foreground text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
             </div>
 
             <a
               href="#design-notes"
-              className="text-cyan-300/80 text-xs underline underline-offset-2 hover:text-cyan-300 transition-colors"
+              className="text-violet-300/80 text-xs underline underline-offset-2 hover:text-violet-300 transition-colors"
             >
               Read the design notes
             </a>
@@ -978,8 +978,8 @@ export default function PianoImageDuet() {
       {/* ── Loading screen ──────────────────────────────────────────────── */}
       {isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-4">
-          <div className="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
-          <p className="text-white/75 text-base">Loading audio…</p>
+          <div className="w-8 h-8 rounded-full border-2 border-violet-400 border-t-transparent animate-spin" />
+          <p className="text-muted-foreground text-base">Loading audio…</p>
         </div>
       )}
 
@@ -996,19 +996,19 @@ export default function PianoImageDuet() {
             <div className="flex items-center gap-2 pointer-events-auto">
               <button
                 onClick={() => setShowHud(v => !v)}
-                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-white transition-colors"
+                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors"
               >
                 HUD
               </button>
               <label className="cursor-pointer">
                 <input type="file" accept="audio/*" className="hidden" onChange={handleFileInput} />
-                <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/55 text-xs hover:text-white/90 transition-colors border border-white/15 hover:border-cyan-400/40">
+                <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors border border-border hover:border-violet-400/40">
                   Swap audio
                 </span>
               </label>
               <button
                 onClick={handleStop}
-                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-rose-300 transition-colors"
+                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-violet-300 transition-colors"
               >
                 Stop
               </button>
@@ -1019,7 +1019,7 @@ export default function PianoImageDuet() {
           {statusMsg && (
             <div className="absolute top-14 left-4 z-20 pointer-events-none max-w-sm">
               <div className="bg-black/55 backdrop-blur-sm rounded-lg px-3 py-2">
-                <p className="text-amber-300/95 text-xs leading-relaxed">{statusMsg}</p>
+                <p className="text-violet-300/95 text-xs leading-relaxed">{statusMsg}</p>
               </div>
             </div>
           )}
@@ -1028,7 +1028,7 @@ export default function PianoImageDuet() {
           {imageStatus === "synthesized" && !inFlightRef.current && (
             <div className="absolute top-14 right-4 z-20 pointer-events-none">
               <div className="bg-black/55 backdrop-blur-sm rounded-lg px-3 py-1.5">
-                <p className="text-amber-300/95 text-xs">synthesized field (no image key)</p>
+                <p className="text-violet-300/95 text-xs">synthesized field (no image key)</p>
               </div>
             </div>
           )}
@@ -1037,24 +1037,24 @@ export default function PianoImageDuet() {
           {showHud && (
             <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
               <div className="bg-black/65 backdrop-blur-sm rounded-xl px-3 py-2.5 space-y-1.5 min-w-[170px]">
-                <p className="text-white/55 text-xs uppercase tracking-wider mb-1">Duet</p>
+                <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1">Duet</p>
 
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">Key</span>
-                  <span className="text-cyan-300 text-xs font-mono">{hudKey}</span>
+                  <span className="text-muted-foreground text-xs">Key</span>
+                  <span className="text-violet-300 text-xs font-mono">{hudKey}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">Dyn</span>
-                  <span className="text-white/75 text-xs font-mono">{hudDyn}</span>
+                  <span className="text-muted-foreground text-xs">Dyn</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudDyn}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">Scan</span>
-                  <span className="text-cyan-300/80 text-xs font-mono">{Math.round(hudScan * 100)}%</span>
+                  <span className="text-muted-foreground text-xs">Scan</span>
+                  <span className="text-violet-300/80 text-xs font-mono">{Math.round(hudScan * 100)}%</span>
                 </div>
 
                 {/* Live partial visualizer */}
                 <div className="mt-1">
-                  <p className="text-white/40 text-xs mb-1">partials singing</p>
+                  <p className="text-muted-foreground/70 text-xs mb-1">partials singing</p>
                   <div className="flex items-end gap-px h-8">
                     {Array.from({ length: PARTIAL_COUNT }).map((_, i) => {
                       const amp = hudPartials[i] ?? 0;
@@ -1081,8 +1081,8 @@ export default function PianoImageDuet() {
           {showHud && (
             <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
               <div className="bg-black/50 backdrop-blur-sm rounded-xl px-3 py-2">
-                <p className="text-white/60 font-serif text-sm italic">Piano Image Duet</p>
-                <p className="text-white/35 text-xs">cycle 3 · latent piano room</p>
+                <p className="text-muted-foreground font-serif text-sm italic">Piano Image Duet</p>
+                <p className="text-muted-foreground/70 text-xs">cycle 3 · latent piano room</p>
               </div>
             </div>
           )}
@@ -1091,39 +1091,39 @@ export default function PianoImageDuet() {
 
       {/* ── Design notes ────────────────────────────────────────────────── */}
       <div id="design-notes" className="relative z-10 mt-auto px-6 py-12 max-w-2xl mx-auto">
-        <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-white/10 px-6 py-5 space-y-4">
-          <h2 className="text-xl font-serif text-white">Design Notes</h2>
-          <p className="text-white/75 text-sm leading-relaxed">
-            <strong className="text-cyan-300">The new move (cycle 3):</strong> Prior cycles used the
+        <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-border px-6 py-5 space-y-4">
+          <h2 className="text-xl font-serif text-foreground">Design Notes</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            <strong className="text-violet-300">The new move (cycle 3):</strong> Prior cycles used the
             dreamed image only to FILTER the piano (color → lowpass cutoff, brightness → reverb wet).
             Here the image RE-COMPOSES it. A scan-line sweeps the image as a spectrogram: each
             column&apos;s vertical brightness profile is sampled at{" "}
-            <code className="text-cyan-300/80 text-xs">{PARTIAL_COUNT}</code> log-spaced Y positions,
+            <code className="text-violet-300/80 text-xs">{PARTIAL_COUNT}</code> log-spaced Y positions,
             each mapped to a frequency in the detected key (diatonic scale degrees across 3 octaves,
             quantised so every partial is consonant). Brightness → that partial&apos;s amplitude. The
             result is an additive shimmer/choir voice that duets the real piano.
           </p>
-          <p className="text-white/75 text-sm leading-relaxed">
-            <strong className="text-emerald-300/95">Musical quantisation (stays warm):</strong> The
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            <strong className="text-violet-300/95">Musical quantisation (stays warm):</strong> The
             partial frequency grid is rebuilt at every phrase boundary using the chromagram&apos;s
             best-fit key (major diatonic: 0,2,4,5,7,9,11 semitones; minor: 0,2,3,5,7,8,10; chromatic
             fallback: pentatonic). Every partial is IN KEY — never atonal. The image is constrained to
             sing consonant harmonics.
           </p>
-          <p className="text-white/75 text-sm leading-relaxed">
-            <strong className="text-amber-300/95">No-key fallback (complete without API):</strong> When
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            <strong className="text-violet-300/95">No-key fallback (complete without API):</strong> When
             FAL_KEY is absent, the route returns 501 and the UI generates a plasma / gradient blob field
             on canvas from the same musical features. The scanner still sweeps THAT synthesized field —
             so you hear the generated blobs sing back to the piano. Status: amber &ldquo;synthesized field
             (no image key)&rdquo; vs. emerald &ldquo;dreaming live&rdquo; when real images arrive.
           </p>
-          <p className="text-white/55 text-xs leading-relaxed">
+          <p className="text-muted-foreground text-xs leading-relaxed">
             Subsystems: audio fetch + CORS-taint check + warm synth fallback (C–Am–F–G7–Cmaj9) ·
             FFT 2048 chromagram + spectral-flux onset + phrase-boundary heuristic · FAL flux/schnell
             image gen + Ken-Burns crossfade · image-as-spectrogram additive resynthesis (UPIC /
             MetaSynth / Art2Mus) · synthesized plasma field fallback · scan-line partial-bar HUD.
           </p>
-          <p className="text-white/40 text-xs">
+          <p className="text-muted-foreground/70 text-xs">
             References: Xenakis UPIC (1977) · MetaSynth (Wenger &amp; Spiegel 1997) · Art2Mus arXiv
             2602.17599 (Feb 2026) · Bello et al. 2005 onset detection · Russell 1980 circumplex ·
             Refik Anadol (Machine Hallucinations) · Memo Akten (Learning to See)

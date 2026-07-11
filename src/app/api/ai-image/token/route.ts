@@ -14,9 +14,10 @@
  * and a 5-minute scoped JWT is the right primitive.
  *
  * POST forwards standard HTTP calls with the master key attached
- * server-side (fal SDK proxyUrl mode). Auth-gated, rate-limited, and
- * the forwarded URL must be on a fal.* allowlist so this can't be
- * turned into an open proxy bearing our credentials.
+ * server-side (fal SDK proxyUrl mode). Rate-limited, and the forwarded
+ * URL must be on a fal.* host allowlist AND (on compute hosts) target an
+ * allowlisted app path, so the master key can only ever invoke the models
+ * we actually use — not an arbitrary fal model, and not an open proxy.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -39,6 +40,23 @@ const ALLOWED_FAL_HOSTS = [
  *  invoke these models, not arbitrary fal endpoints. */
 const REALTIME_ALLOWED_APPS = ["fal-ai/flux/schnell"];
 
+/** Compute hosts where a request path names the fal app being invoked.
+ *  POST forwards to these must target an allowlisted app (below); media
+ *  hosts that only serve result assets are exempt from the app check. */
+const FAL_COMPUTE_HOSTS = new Set([
+  "fal.run",
+  "queue.fal.run",
+  "rest.fal.run",
+  "gateway.fal.ai",
+]);
+
+/** App path prefixes the POST proxy will spend the master key on. The
+ *  proxy previously forwarded to any path on an allowed host, so any fal
+ *  model could be run on our credentials within rate limits. Restricting
+ *  to the apps we actually use (the same set the JWT is scoped to) closes
+ *  that without breaking the realtime image service or the anon kiosk. */
+const ALLOWED_APP_PATHS = REALTIME_ALLOWED_APPS.map((app) => `/${app}`);
+
 /** JWT expiration in seconds. 5 minutes is plenty for a page load
  *  to open its WebSocket; the realtime connection itself stays open
  *  on whatever its server-side timeout is, independent of the
@@ -49,9 +67,20 @@ function isAllowedFalUrl(raw: string): boolean {
   try {
     const parsed = new URL(raw);
     if (parsed.protocol !== "https:") return false;
-    return ALLOWED_FAL_HOSTS.some(
+    const hostAllowed = ALLOWED_FAL_HOSTS.some(
       (host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`),
     );
+    if (!hostAllowed) return false;
+    // On compute hosts, the path must name an allowlisted app so the master
+    // key can't be used to invoke arbitrary fal models. Media/asset hosts
+    // (which only serve result images) are not app-scoped, so they pass on
+    // the host check alone.
+    if (FAL_COMPUTE_HOSTS.has(parsed.hostname)) {
+      return ALLOWED_APP_PATHS.some(
+        (app) => parsed.pathname === app || parsed.pathname.startsWith(`${app}/`),
+      );
+    }
+    return true;
   } catch {
     return false;
   }

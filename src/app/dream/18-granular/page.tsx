@@ -329,7 +329,7 @@ export default function GranularCloud() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Granular Cloud</h1>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             Your audio shattered into overlapping grains and reassembled into a glowing cloud.
             Each dot is one grain — X is where in the audio it was sampled from, Y is its
             pitch shift. The dots ARE the sound.
@@ -337,23 +337,23 @@ export default function GranularCloud() {
           <div className="flex gap-4 mb-4">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
           {error && (
-            <p className="mt-2 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-2 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-10 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-10 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -362,7 +362,7 @@ export default function GranularCloud() {
 
       {mode !== "idle" && (
         <>
-          <div className="absolute top-4 left-4 text-[10px] tracking-wider text-white/35 pointer-events-none">
+          <div className="absolute top-4 left-4 text-[10px] tracking-wider text-muted-foreground/70 pointer-events-none">
             {mode === "demo" ? "DEMO — synthetic oscillators" : "MIC — live input"}
           </div>
 
@@ -371,11 +371,11 @@ export default function GranularCloud() {
             {SLIDER_DEFS.map(([label, key, min, max, stepVal]) => (
               <label
                 key={key}
-                className="flex flex-col gap-1 text-[9px] tracking-wider text-white/40"
+                className="flex flex-col gap-1 text-[9px] tracking-wider text-muted-foreground/70"
               >
                 <span>
                   {label}{" "}
-                  <span className="text-white/65">
+                  <span className="text-muted-foreground">
                     {key === "scatter"
                       ? `${Math.round(params[key] * 100)}%`
                       : params[key]}
@@ -390,7 +390,7 @@ export default function GranularCloud() {
                   onChange={(e) =>
                     setParams((prev) => ({ ...prev, [key]: parseFloat(e.target.value) }))
                   }
-                  className="w-28 accent-white"
+                  className="w-28 accent-primary"
                 />
               </label>
             ))}
@@ -400,16 +400,16 @@ export default function GranularCloud() {
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={stop}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <a
               href="/dream/18-granular/README.md"
-              className="text-[10px] text-white/22 hover:text-white/50"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground"
               target="_blank"
               rel="noreferrer"
             >

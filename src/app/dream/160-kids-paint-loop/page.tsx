@@ -367,9 +367,9 @@ export default function Page() {
   if (phase === 'start') {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-black gap-6 px-8">
-        <p className="text-base font-mono text-white/55">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-white/95">Loop Garden</h1>
-        <p className="text-base text-white/75 text-center max-w-sm leading-relaxed">
+        <p className="text-base font-mono text-muted-foreground">For kids 3+</p>
+        <h1 className="text-3xl font-serif text-center text-foreground">Loop Garden</h1>
+        <p className="text-base text-muted-foreground text-center max-w-sm leading-relaxed">
           Draw a glowing stroke on the screen — it turns into a looping melody!
           Draw up to four strokes in different colors. Tap any stroke to erase it.
         </p>
@@ -383,12 +383,12 @@ export default function Page() {
         </button>
         <button
           onClick={handleDemo}
-          className="px-6 py-2.5 rounded-full bg-white/8 text-white/55 text-base font-mono
-                     min-h-[44px] hover:bg-white/15 transition-colors"
+          className="px-6 py-2.5 rounded-full bg-muted text-muted-foreground text-base font-mono
+                     min-h-[44px] hover:bg-accent transition-colors"
         >
           Watch the demo
         </button>
-        <p className="text-xs text-white/40 mt-2">
+        <p className="text-xs text-muted-foreground/70 mt-2">
           Zero permissions · Zero API · Zero deps
         </p>
       </div>
@@ -401,7 +401,7 @@ export default function Page() {
 
       {isDemo && loopsRef.current.length > 0 && (
         <p className="absolute top-5 left-1/2 -translate-x-1/2 px-4 py-2
-                      rounded-full bg-black/50 text-white/55 text-sm font-mono
+                      rounded-full bg-black/50 text-muted-foreground text-sm font-mono
                       pointer-events-none select-none">
           Demo — draw your own!
         </p>
@@ -410,8 +410,8 @@ export default function Page() {
       <div className="absolute bottom-5 right-5">
         <button
           onClick={clearAll}
-          className="px-4 py-2.5 rounded-full bg-white/8 text-white/55 text-sm font-mono
-                     min-h-[44px] hover:bg-white/15 transition-colors"
+          className="px-4 py-2.5 rounded-full bg-muted text-muted-foreground text-sm font-mono
+                     min-h-[44px] hover:bg-accent transition-colors"
         >
           ↺ Clear
         </button>

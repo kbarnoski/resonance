@@ -88,8 +88,8 @@ type Phase = "idle" | "running";
 function GaugeBar({ label, value, cls }: { label: string; value: number; cls: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-white/55 text-xs font-mono w-[4.5rem] shrink-0">{label}</span>
-      <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
+      <span className="text-muted-foreground text-xs font-mono w-[4.5rem] shrink-0">{label}</span>
+      <div className="w-20 h-1.5 bg-muted rounded-full overflow-hidden">
         <div
           className={`h-full ${cls} rounded-full transition-all duration-500`}
           style={{ width: `${Math.min(value, 1) * 100}%` }}
@@ -398,19 +398,19 @@ export default function ScoreStructurePage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#050508] text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#050508] text-foreground overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between px-5 pt-5 pb-2 shrink-0">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white">Score Structure</h1>
-          <p className="text-base text-white/75 mt-0.5 max-w-md leading-snug">
+          <h1 className="text-2xl font-mono font-bold text-foreground">Score Structure</h1>
+          <p className="text-base text-muted-foreground mt-0.5 max-w-md leading-snug">
             The architecture of your improvisation — chord timeline, density, and section
             shape revealed in real time.
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-white/55 text-sm font-mono hover:text-white/80 transition-colors mt-1 shrink-0 ml-4"
+          className="text-muted-foreground text-sm font-mono hover:text-foreground transition-colors mt-1 shrink-0 ml-4"
         >
           ← dream lab
         </Link>
@@ -428,7 +428,7 @@ export default function ScoreStructurePage() {
             </button>
             <button
               onClick={() => { void startMic(); }}
-              className="px-5 py-2.5 bg-white/10 border border-white/20 text-white/90 text-base font-mono rounded hover:bg-white/15 transition min-h-[44px]"
+              className="px-5 py-2.5 bg-muted border border-border text-foreground text-base font-mono rounded hover:bg-accent transition min-h-[44px]"
             >
               🎤 Start mic
             </button>
@@ -436,22 +436,22 @@ export default function ScoreStructurePage() {
         ) : (
           <div className="flex items-center gap-6 flex-wrap">
             <div>
-              <div className="text-white/55 text-xs font-mono uppercase tracking-wider">Chord</div>
-              <div className="text-3xl font-mono font-bold text-white leading-tight">{chord}</div>
+              <div className="text-muted-foreground text-xs font-mono uppercase tracking-wider">Chord</div>
+              <div className="text-3xl font-mono font-bold text-foreground leading-tight">{chord}</div>
             </div>
             <div>
-              <div className="text-white/55 text-xs font-mono uppercase tracking-wider">Section</div>
-              <div className="text-xl font-mono text-emerald-300/95 leading-tight">{section}</div>
+              <div className="text-muted-foreground text-xs font-mono uppercase tracking-wider">Section</div>
+              <div className="text-xl font-mono text-violet-300/95 leading-tight">{section}</div>
             </div>
             <div className="ml-auto flex flex-col gap-1.5">
               <GaugeBar label="Density"    value={densNorm} cls="bg-violet-500" />
-              <GaugeBar label="Chord rate" value={compNorm} cls="bg-rose-400"   />
-              <GaugeBar label="Register"   value={regNorm}  cls="bg-amber-400"  />
+              <GaugeBar label="Chord rate" value={compNorm} cls="bg-violet-400"   />
+              <GaugeBar label="Register"   value={regNorm}  cls="bg-violet-400"  />
             </div>
           </div>
         )}
         {errMsg && (
-          <p className="text-rose-300 text-base font-mono mt-2">{errMsg}</p>
+          <p className="text-violet-300 text-base font-mono mt-2">{errMsg}</p>
         )}
       </div>
 
@@ -459,16 +459,16 @@ export default function ScoreStructurePage() {
       <div className="relative flex-1 min-h-0">
         <canvas ref={canvasRef} className="w-full h-full block" />
         {phase !== "idle" && section !== "—" && (
-          <div className="absolute top-2 right-3 font-mono font-bold text-7xl text-white/10 pointer-events-none select-none leading-none">
+          <div className="absolute top-2 right-3 font-mono font-bold text-7xl text-muted-foreground/70 pointer-events-none select-none leading-none">
             {section}
           </div>
         )}
       </div>
 
       {/* Footer */}
-      <div className="flex justify-between items-center px-5 py-2 text-white/55 text-xs font-mono shrink-0 border-t border-white/5">
+      <div className="flex justify-between items-center px-5 py-2 text-muted-foreground text-xs font-mono shrink-0 border-t border-border">
         <span>185-score-structure · cycle 217 · zero deps · zero api</span>
-        <span className="text-white/40">chord detection · chromagram · section classifier</span>
+        <span className="text-muted-foreground/70">chord detection · chromagram · section classifier</span>
       </div>
     </div>
   );

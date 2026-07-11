@@ -640,47 +640,47 @@ export default function DiatonicHarmony() {
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Diatonic Harmony</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             Play a melody — the key is detected from what you play, and diatonic
             third and fifth voices float alongside each note.
           </p>
-          <p className="text-xs text-white/30 mb-8">
+          <p className="text-xs text-muted-foreground/70 mb-8">
             Demo plays Bach Invention No.1 with auto-generated harmonies. Hear how
             different scale degrees produce different interval qualities.
           </p>
 
           <div className="flex items-center gap-3 mb-6">
-            <label className="text-xs text-white/40 uppercase tracking-wider">BPM</label>
+            <label className="text-xs text-muted-foreground/70 uppercase tracking-wider">BPM</label>
             <input
               type="range" min={40} max={160} value={bpm}
               onChange={e => setBpm(Number(e.target.value))}
-              className="w-32 accent-white/60"
+              className="w-32 accent-primary"
             />
-            <span className="text-xs text-white/60 font-mono w-6">{bpm}</span>
+            <span className="text-xs text-muted-foreground font-mono w-6">{bpm}</span>
           </div>
 
           <div className="flex gap-4">
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/50 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Demo mode
             </button>
           </div>
 
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
 
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -692,42 +692,42 @@ export default function DiatonicHarmony() {
         <>
           {/* Key detection label */}
           <div className="absolute top-4 right-4 text-right pointer-events-none">
-            <div className="text-[9px] text-white/35 uppercase tracking-widest mb-0.5">
+            <div className="text-[9px] text-muted-foreground/70 uppercase tracking-widest mb-0.5">
               detected key
             </div>
-            <div className="text-sm text-white font-mono">{keyLabel}</div>
+            <div className="text-sm text-foreground font-mono">{keyLabel}</div>
           </div>
 
           {/* Mode indicator */}
-          <div className="absolute top-4 left-14 text-[10px] tracking-widest text-white/35 pointer-events-none">
+          <div className="absolute top-4 left-14 text-[10px] tracking-widest text-muted-foreground/70 pointer-events-none">
             {mode}
           </div>
 
           {/* Controls */}
           <div className="absolute bottom-[52px] right-4 flex flex-col items-end gap-2">
             <div className="flex items-center gap-2">
-              <label className="text-[10px] text-white/30 uppercase tracking-wider">BPM</label>
+              <label className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">BPM</label>
               <input
                 type="range" min={40} max={160} value={bpm}
                 onChange={e => setBpm(Number(e.target.value))}
-                className="w-20 accent-white/60"
+                className="w-20 accent-primary"
               />
-              <span className="text-[10px] text-white/50 font-mono w-6">{bpm}</span>
+              <span className="text-[10px] text-muted-foreground font-mono w-6">{bpm}</span>
             </div>
             <button
               onClick={stop}
-              className="text-[10px] tracking-wider uppercase text-white/40 hover:text-white/70 border border-white/15 hover:border-white/40 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>
 
           <a
             href="/dream/51-diatonic-harmony/readme"
-            className="absolute bottom-[52px] left-14 text-[10px] text-white/25 hover:text-white/50 transition"
+            className="absolute bottom-[52px] left-14 text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             design notes ↗
           </a>

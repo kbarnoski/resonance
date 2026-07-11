@@ -313,19 +313,19 @@ export default function KidsStarPaintPage() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-[#08080e] text-white gap-6 px-6 text-center select-none">
+      <div className="flex flex-col items-center justify-center h-screen bg-[#08080e] text-foreground gap-6 px-6 text-center select-none">
         <h1 className="text-3xl font-bold">Star Song</h1>
-        <p className="text-white/75 text-base max-w-xs leading-relaxed">
+        <p className="text-muted-foreground text-base max-w-xs leading-relaxed">
           Draw a path across the night sky —<br />
           every star you paint will sing.
         </p>
         <button
           onClick={handleStart}
-          className="mt-2 bg-violet-600/80 hover:bg-violet-500/90 active:scale-95 transition-transform text-white text-xl font-bold px-8 py-4 rounded-2xl min-h-[60px] min-w-[180px]"
+          className="mt-2 bg-violet-600/80 hover:bg-violet-500/90 active:scale-95 transition-transform text-foreground text-xl font-bold px-8 py-4 rounded-2xl min-h-[60px] min-w-[180px]"
         >
           ✦ Let&apos;s paint!
         </button>
-        <p className="text-xs text-white/50">
+        <p className="text-xs text-muted-foreground">
           For kids 3+ · No mic needed · Zero permissions
         </p>
       </div>
@@ -343,7 +343,7 @@ export default function KidsStarPaintPage() {
         href="README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-4 right-4 text-xs text-white/35 hover:text-white/60 transition-colors"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
       >
         design notes
       </a>

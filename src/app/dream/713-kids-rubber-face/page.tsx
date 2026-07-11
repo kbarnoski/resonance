@@ -623,23 +623,23 @@ export default function KidsRubberFace() {
   }, [started]);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#0b0420] text-white select-none touch-none">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#0b0420] text-foreground select-none touch-none">
       {!started ? (
         <div className="flex h-full w-full flex-col items-center justify-center gap-6 px-6 text-center">
           <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
             Rubber Face Sing-Along
           </h1>
-          <p className="max-w-md text-base text-white/95">
+          <p className="max-w-md text-base text-foreground">
             Grab the silly face and pull its nose, stretch its mouth, and squish
             its cheeks. The face sings whatever shape you make!
           </p>
           <button
             onPointerDown={handleStart}
-            className="min-h-[64px] rounded-3xl bg-gradient-to-b from-amber-300 to-orange-500 px-10 py-5 text-xl font-extrabold text-[#3a1500] shadow-lg active:scale-95"
+            className="min-h-[64px] rounded-3xl bg-gradient-to-b from-violet-300 to-violet-500 px-10 py-5 text-xl font-extrabold text-[#3a1500] shadow-lg active:scale-95"
           >
             Wake the face!
           </button>
-          <p className="text-base text-white/75">No reading needed — just touch and play.</p>
+          <p className="text-base text-muted-foreground">No reading needed — just touch and play.</p>
         </div>
       ) : (
         <>
@@ -647,15 +647,15 @@ export default function KidsRubberFace() {
           {!audioOk && (
             <button
               onPointerDown={handleRetryAudio}
-              className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl bg-black/60 px-5 py-3 text-base text-rose-300"
+              className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl bg-black/60 px-5 py-3 text-base text-violet-300"
             >
               Tap once more to turn on the sound
             </button>
           )}
-          <div className="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-base text-white/75">
+          <div className="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-base text-muted-foreground">
             Pull the nose to sing high or low — stretch the mouth for silly vowels
           </div>
-          <span className="pointer-events-none absolute bottom-3 right-4 font-mono text-base text-white/55">
+          <span className="pointer-events-none absolute bottom-3 right-4 font-mono text-base text-muted-foreground">
             713
           </span>
         </>

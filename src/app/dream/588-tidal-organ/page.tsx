@@ -194,7 +194,7 @@ export default function TidalOrganPage() {
   const isLive = source.kind === "live";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04080f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04080f] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Overlay UI */}
@@ -202,12 +202,12 @@ export default function TidalOrganPage() {
         <header className="max-w-2xl">
           <Link
             href="/dream"
-            className="text-sm text-white/55 transition hover:text-white/80"
+            className="text-sm text-muted-foreground transition hover:text-foreground"
           >
             ← dream lab
           </Link>
-          <h1 className="mt-3 font-serif text-3xl text-white sm:text-4xl">Tidal Organ</h1>
-          <p className="mt-2 max-w-xl text-base text-white/80">
+          <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">Tidal Organ</h1>
+          <p className="mt-2 max-w-xl text-base text-foreground">
             A warm just-intonation organ tuned by the live state of a real ocean
             right now — music about the sea this minute, not a synth knob.
           </p>
@@ -218,27 +218,27 @@ export default function TidalOrganPage() {
               className={
                 "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm " +
                 (isLive
-                  ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300/95"
-                  : "border-amber-400/30 bg-amber-400/10 text-amber-300/95")
+                  ? "border-violet-400/30 bg-violet-400/10 text-violet-300/95"
+                  : "border-violet-400/30 bg-violet-400/10 text-violet-300/95")
               }
             >
               <span
                 className={
                   "h-2 w-2 rounded-full " +
-                  (isLive ? "bg-emerald-300" : "bg-amber-300")
+                  (isLive ? "bg-violet-300" : "bg-violet-300")
                 }
               />
               {isLive ? `live · ${source.name}` : `demo swell (offline) · ${source.name}`}
             </span>
             {renderer && (
-              <span className="text-sm text-white/55">
+              <span className="text-sm text-muted-foreground">
                 {renderer === "webgpu" ? "WebGPU field" : "Canvas2D field"}
               </span>
             )}
           </div>
 
           {statusMsg && (
-            <p className="mt-3 text-sm text-rose-300">{statusMsg}</p>
+            <p className="mt-3 text-sm text-violet-300">{statusMsg}</p>
           )}
         </header>
 
@@ -246,14 +246,14 @@ export default function TidalOrganPage() {
           {!started ? (
             <button
               onClick={() => void start()}
-              className="rounded-xl bg-white/95 px-6 py-3 text-base font-medium text-[#04080f] shadow-lg transition hover:bg-white"
+              className="rounded-xl bg-muted px-6 py-3 text-base font-medium text-[#04080f] shadow-lg transition hover:bg-card"
             >
               Listen to the sea
             </button>
           ) : (
-            <div className="space-y-4 rounded-2xl border border-white/10 bg-black/30 p-4 backdrop-blur-sm">
+            <div className="space-y-4 rounded-2xl border border-border bg-black/30 p-4 backdrop-blur-sm">
               <div>
-                <p className="mb-2 text-sm text-white/55">Coastline</p>
+                <p className="mb-2 text-sm text-muted-foreground">Coastline</p>
                 <div className="flex flex-wrap gap-2">
                   {COASTS.map((c) => {
                     const active = c.id === coast.id;
@@ -265,7 +265,7 @@ export default function TidalOrganPage() {
                           "rounded-lg px-4 py-2.5 text-sm transition " +
                           (active
                             ? "bg-violet-400/20 text-violet-300 ring-1 ring-violet-400/40"
-                            : "bg-white/5 text-white/75 hover:bg-white/10")
+                            : "bg-muted text-muted-foreground hover:bg-accent")
                         }
                       >
                         {c.name}
@@ -274,7 +274,7 @@ export default function TidalOrganPage() {
                   })}
                   <button
                     onClick={useMyLocation}
-                    className="rounded-lg bg-white/5 px-4 py-2.5 text-sm text-white/75 transition hover:bg-white/10"
+                    className="rounded-lg bg-muted px-4 py-2.5 text-sm text-muted-foreground transition hover:bg-accent"
                   >
                     Use my location
                   </button>
@@ -283,15 +283,15 @@ export default function TidalOrganPage() {
 
               <button
                 onClick={() => setShowNotes((v) => !v)}
-                className="text-sm text-white/55 underline-offset-4 transition hover:text-white/80 hover:underline"
+                className="text-sm text-muted-foreground underline-offset-4 transition hover:text-foreground hover:underline"
               >
                 {showNotes ? "Hide design notes" : "Design notes"}
               </button>
 
               {showNotes && (
-                <div className="space-y-2 border-t border-white/10 pt-3 text-sm text-white/75">
+                <div className="space-y-2 border-t border-border pt-3 text-sm text-muted-foreground">
                   <p>
-                    <span className="text-white/95">Mapping.</span> Wave period
+                    <span className="text-foreground">Mapping.</span> Wave period
                     breathes the whole texture (longer swell = slower, grander
                     breaths). Wave height stacks more just-intonation voices and
                     opens the filter (bigger seas = fuller, brighter chord).
@@ -300,18 +300,18 @@ export default function TidalOrganPage() {
                     — a compass of sound.
                   </p>
                   <p>
-                    <span className="text-white/95">Chord.</span> Just-intonation
+                    <span className="text-foreground">Chord.</span> Just-intonation
                     ratios 1/1, 9/8, 5/4, 3/2, 7/4, 2/1 over a low root, soft
                     sine/triangle partials, gentle lowpass, slow attack and
                     detune — a sea organ breathing, not a bright synth.
                   </p>
                   <p>
-                    <span className="text-white/95">Data.</span> Open-Meteo
+                    <span className="text-foreground">Data.</span> Open-Meteo
                     Marine API (no key, fetched client-side). If it fails or you
                     glance before interacting, a synthetic drifting demo swell
                     keeps the piece sounding and moving.
                   </p>
-                  <p className="text-white/55">
+                  <p className="text-muted-foreground">
                     Lineage: Zadar Sea Organ; Annea Lockwood, “A Sound Map of the
                     Hudson River”; the “Pulse of an Ocean” buoy-sonification work;
                     arXiv 2602.14560 (ENSO sonification with gamelan scales).

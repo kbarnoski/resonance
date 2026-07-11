@@ -394,14 +394,14 @@ export default function PolytempoLoomPage() {
   });
 
   return (
-    <div className="relative flex flex-col min-h-full bg-[#070710] text-white overflow-x-hidden">
+    <div className="relative flex flex-col min-h-full bg-[#070710] text-foreground overflow-x-hidden">
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="px-6 pt-8 pb-3">
-        <h1 className="text-2xl font-mono font-semibold tracking-tight text-white">
+        <h1 className="text-2xl font-mono font-semibold tracking-tight text-foreground">
           Polytempo Loom
         </h1>
-        <p className="text-base text-white/75 mt-1.5 max-w-xl leading-relaxed">
+        <p className="text-base text-muted-foreground mt-1.5 max-w-xl leading-relaxed">
           Five voices, identical pitches, irrational tempo ratios.
           No shared downbeat &mdash; ever. The only tension lives in time.
         </p>
@@ -410,7 +410,7 @@ export default function PolytempoLoomPage() {
       {/* ── SVG Loom ───────────────────────────────────────────── */}
       <div className="px-4">
         <div
-          className="relative w-full rounded-lg border border-white/[0.07] overflow-hidden bg-[#04040c]"
+          className="relative w-full rounded-lg border border-border overflow-hidden bg-[#04040c]"
           style={{ height: SVG_H }}
         >
           <svg
@@ -525,14 +525,14 @@ export default function PolytempoLoomPage() {
             >
               Begin
             </button>
-            <p className="text-white/55 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Audio requires a gesture &mdash; the loom drifts visually until you begin.
             </p>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-emerald-300/95 font-mono text-sm">
+            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse shrink-0" />
+            <span className="text-violet-300/95 font-mono text-sm">
               {audioError ? "visual only — audio unavailable" : "running — no resolution possible"}
             </span>
           </div>
@@ -540,7 +540,7 @@ export default function PolytempoLoomPage() {
 
         {/* Audio error */}
         {audioError && (
-          <p className="text-rose-300 text-sm font-mono border border-rose-400/30 rounded px-3 py-2 bg-rose-950/30">
+          <p className="text-violet-300 text-sm font-mono border border-violet-400/30 rounded px-3 py-2 bg-violet-950/30">
             AudioContext error: {audioError}
           </p>
         )}
@@ -548,10 +548,10 @@ export default function PolytempoLoomPage() {
         {/* Spread slider */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label htmlFor="spread" className="text-white/75 text-sm font-mono">
+            <label htmlFor="spread" className="text-muted-foreground text-sm font-mono">
               stir the loom
             </label>
-            <span className="text-white/55 text-xs font-mono">
+            <span className="text-muted-foreground text-xs font-mono">
               &times; {spread.toFixed(2)}
             </span>
           </div>
@@ -565,7 +565,7 @@ export default function PolytempoLoomPage() {
             onChange={(e) => setSpread(Number(e.target.value))}
             className="w-full accent-violet-400"
           />
-          <p className="text-white/55 text-xs font-mono">
+          <p className="text-muted-foreground text-xs font-mono">
             narrows or widens mutual drift velocity &mdash; ratios stay irrational at every setting
           </p>
         </div>
@@ -584,10 +584,10 @@ export default function PolytempoLoomPage() {
               >
                 {info.label}
               </span>
-              <span className="text-white/55 text-xs font-mono leading-none mt-1">
+              <span className="text-muted-foreground text-xs font-mono leading-none mt-1">
                 {info.bpm}
               </span>
-              <span className="text-white/40 text-[10px] font-mono leading-none">bpm</span>
+              <span className="text-muted-foreground/70 text-[10px] font-mono leading-none">bpm</span>
             </div>
           ))}
         </div>
@@ -597,36 +597,36 @@ export default function PolytempoLoomPage() {
       <div className="px-6 pb-8">
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="text-white/55 text-sm font-mono hover:text-white/75 transition-colors"
+          className="text-muted-foreground text-sm font-mono hover:text-muted-foreground transition-colors"
         >
           {showNotes ? "▲ hide design notes" : "▼ read the design notes"}
         </button>
 
         {showNotes && (
-          <div className="mt-3 border-l border-white/10 pl-4 space-y-3 max-w-2xl">
-            <p className="text-white/75 text-sm font-mono">
+          <div className="mt-3 border-l border-border pl-4 space-y-3 max-w-2xl">
+            <p className="text-muted-foreground text-sm font-mono">
               Five voices share one pitch set: D pentatonic across 2 octaves.
               Zero harmonic tension. The entire drama is metric.
             </p>
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Tempo ratios: 1, &radic;2, &phi; (golden ratio), e/2, &pi;/2.
               These are mutually irrational &mdash; no two voices ever simultaneously
               return to beat 1. Convergence is effectively impossible.
             </p>
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Directly in the lineage of Conlon Nancarrow&rsquo;s{" "}
               <em>Studies for Player Piano</em> &mdash; especially Study No. 40
               &ldquo;Transcendental&rdquo; (a canon at the ratio e:&pi;) and his
               &radic;2 canons. Where the ratio is irrational, the layers share no
               common period; no structural downbeat can ever align.
             </p>
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               The SVG loom scrolls all lanes at the same pixel-per-second rate.
               Each lane&rsquo;s mark spacing encodes its own beat period, so faster
               voices show denser marks. Near-vertical alignments across lanes are
               transient moir&eacute; effects &mdash; not structural events.
             </p>
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Scheduler: Web Audio &ldquo;Tale of Two Clocks&rdquo; pattern.
               setInterval every 25&nbsp;ms, scheduling 120&nbsp;ms ahead via
               precise AudioContext.currentTime. No drift accumulation.
@@ -648,7 +648,7 @@ export default function PolytempoLoomPage() {
         href="/dream/514-polytempo-loom/README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-4 right-4 text-white/40 text-xs font-mono hover:text-white/60 transition-colors"
+        className="absolute bottom-4 right-4 text-muted-foreground/70 text-xs font-mono hover:text-muted-foreground transition-colors"
       >
         design notes &nearr;
       </a>

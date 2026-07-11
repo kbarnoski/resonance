@@ -332,16 +332,16 @@ export default function TensionJourneyPage() {
   const ss = String(Math.floor(elapsed % 60)).padStart(2, "0");
 
   return (
-    <main className="relative min-h-screen w-full bg-[#14130f] text-white">
+    <main className="relative min-h-screen w-full bg-[#14130f] text-foreground">
       {/* header */}
       <div className="mx-auto max-w-6xl px-5 pt-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="font-serif text-3xl text-white/95">
+            <h1 className="font-serif text-3xl text-foreground">
               Tension Journey
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/75">
-              Pick an emotional tension <span className="text-amber-300/95">arc</span>; a
+            <p className="mt-1 max-w-2xl text-base text-muted-foreground">
+              Pick an emotional tension <span className="text-violet-300/95">arc</span>; a
               transparent engine searches harmony with Chew&apos;s Spiral
               Array so the music&apos;s <em>measured</em> tonal tension
               tracks that exact curve — every chord chosen for a numeric reason.
@@ -358,7 +358,7 @@ export default function TensionJourneyPage() {
 
       {/* canvas */}
       <div className="mx-auto mt-4 max-w-6xl px-5">
-        <div className="relative h-[460px] w-full overflow-hidden rounded-lg border border-white/10 bg-[#14130f]">
+        <div className="relative h-[460px] w-full overflow-hidden rounded-lg border border-border bg-[#14130f]">
           <canvas ref={canvasRef} className="h-full w-full" />
         </div>
       </div>
@@ -370,17 +370,17 @@ export default function TensionJourneyPage() {
             onClick={() => (running ? stop() : void start())}
             className={`min-h-[44px] rounded-md px-5 py-2.5 text-base font-semibold transition-colors ${
               running
-                ? "bg-rose-500/20 text-rose-200 hover:bg-rose-500/30"
-                : "bg-amber-400/90 text-[#14130f] hover:bg-amber-300"
+                ? "bg-violet-500/20 text-violet-200 hover:bg-violet-500/30"
+                : "bg-violet-400/90 text-[#14130f] hover:bg-violet-300"
             }`}
           >
             {running ? "Pause" : finished ? "Replay" : "Start"}
           </button>
-          <span className="font-mono text-base text-white/80">
+          <span className="font-mono text-base text-foreground">
             {mm}:{ss}
           </span>
           {finished && (
-            <span className="text-sm text-emerald-300/95">
+            <span className="text-sm text-violet-300/95">
               arc complete — minute 5 ≠ minute 1
             </span>
           )}
@@ -388,9 +388,9 @@ export default function TensionJourneyPage() {
 
         {/* arc presets */}
         <div className="mt-4">
-          <p className="mb-2 text-sm text-white/55">
+          <p className="mb-2 text-sm text-muted-foreground">
             Target arc shape{" "}
-            <span className="font-mono text-white/55">(keys 1–5)</span>
+            <span className="font-mono text-muted-foreground">(keys 1–5)</span>
           </p>
           <div className="flex flex-wrap gap-2">
             {ARCS.map((a, i) => (
@@ -401,10 +401,10 @@ export default function TensionJourneyPage() {
                 className={`min-h-[44px] rounded-md px-4 py-2.5 text-sm transition-colors ${
                   arc === a.id
                     ? "bg-violet-500/25 text-violet-200 ring-1 ring-violet-400/50"
-                    : "bg-white/[0.05] text-white/75 hover:bg-white/[0.1]"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
-                <span className="font-mono text-white/55">{i + 1}</span>{" "}
+                <span className="font-mono text-muted-foreground">{i + 1}</span>{" "}
                 {a.label}
               </button>
             ))}
@@ -413,32 +413,32 @@ export default function TensionJourneyPage() {
 
         {/* legend / status row */}
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-sm text-white/55">Key</p>
-            <p className="mt-1 font-mono text-base text-white/90">
+          <div className="rounded-md border border-border bg-muted p-3">
+            <p className="text-sm text-muted-foreground">Key</p>
+            <p className="mt-1 font-mono text-base text-foreground">
               {TONICS[tonic]} {minor ? "minor" : "major"}
             </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm text-muted-foreground">
               ↑ / ↓ transpose by fifths · <span className="font-mono">m</span>{" "}
               toggle mode · <span className="font-mono">p</span> perturb
             </p>
           </div>
-          <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-sm text-white/55">Tempo (sec / chord)</p>
-            <p className="mt-1 font-mono text-base text-white/90">
+          <div className="rounded-md border border-border bg-muted p-3">
+            <p className="text-sm text-muted-foreground">Tempo (sec / chord)</p>
+            <p className="mt-1 font-mono text-base text-foreground">
               {TEMPO_OPTIONS[tempoIdx].toFixed(1)}s
             </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm text-muted-foreground">
               ← slower · → faster
             </p>
           </div>
-          <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-sm text-white/55">Length</p>
-            <p className="mt-1 font-mono text-base text-white/90">
+          <div className="rounded-md border border-border bg-muted p-3">
+            <p className="text-sm text-muted-foreground">Length</p>
+            <p className="mt-1 font-mono text-base text-foreground">
               {LENGTH_OPTIONS[lengthIdx].label} ·{" "}
               {LENGTH_OPTIONS[lengthIdx].chords} chords
             </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm text-muted-foreground">
               <span className="font-mono">[</span> shorter ·{" "}
               <span className="font-mono">]</span> longer ·{" "}
               <span className="font-mono">space</span> play/pause
@@ -448,20 +448,20 @@ export default function TensionJourneyPage() {
 
         {/* live "why" readout */}
         {liveChord && (
-          <div className="mt-4 rounded-md border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-sm text-white/55">
+          <div className="mt-4 rounded-md border border-border bg-muted p-3">
+            <p className="text-sm text-muted-foreground">
               Now playing — the engine&apos;s justification
             </p>
-            <p className="mt-1 text-base text-white/90">
-              <span className="font-semibold text-amber-300/95">
+            <p className="mt-1 text-base text-foreground">
+              <span className="font-semibold text-violet-300/95">
                 {liveChord.name}
               </span>{" "}
               <span className="font-mono text-violet-300">
                 {liveChord.roman}
               </span>{" "}
-              <span className="text-white/75">— {liveChord.why}</span>
+              <span className="text-muted-foreground">— {liveChord.why}</span>
             </p>
-            <p className="mt-1 font-mono text-sm text-white/55">
+            <p className="mt-1 font-mono text-sm text-muted-foreground">
               target {liveChord.target.toFixed(2)} · achieved{" "}
               {liveChord.achieved.tension.toFixed(2)}
               {liveChord.modulated ? " · ↳ modulated key" : ""}
@@ -470,10 +470,10 @@ export default function TensionJourneyPage() {
         )}
 
         {notice && (
-          <p className="mt-3 text-sm text-rose-300">{notice}</p>
+          <p className="mt-3 text-sm text-violet-300">{notice}</p>
         )}
         {!audioOk && (
-          <p className="mt-2 text-sm text-white/55">
+          <p className="mt-2 text-sm text-muted-foreground">
             (Visual-only mode: the planned tension ribbon still renders.)
           </p>
         )}

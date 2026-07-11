@@ -365,8 +365,8 @@ export default function KidsGlowGarden() {
       />
 
       <div className="absolute top-0 left-0 right-0 p-4 text-center pointer-events-none">
-        <h1 className="text-2xl font-bold text-white/95">Glow Garden</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Glow Garden</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Tap to grow a flower — plant near others to hear their harmony ✦
         </p>
       </div>
@@ -374,7 +374,7 @@ export default function KidsGlowGarden() {
       <div className="absolute top-4 right-4">
         <Link
           href="/dream"
-          className="text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>

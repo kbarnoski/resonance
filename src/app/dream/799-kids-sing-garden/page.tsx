@@ -514,16 +514,16 @@ Sing into the mic and watch a living garden grow in real time.
         {/* Status badges */}
         {started && (
           <div className="flex gap-2 mt-2 pointer-events-auto flex-wrap justify-center px-2">
-            <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200">
+            <span className="px-3 py-1 rounded-full text-sm font-medium bg-violet-100 text-violet-800 border border-violet-200">
               🌿 {plantCount} plant{plantCount !== 1 ? "s" : ""}
             </span>
             {isReplaying && (
-              <span className="px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200 animate-pulse">
+              <span className="px-3 py-1 rounded-full text-sm font-medium bg-violet-100 text-violet-800 border border-violet-200 animate-pulse">
                 🔔 Garden is singing…
               </span>
             )}
             {micDenied && (
-              <span className="px-3 py-1 rounded-full text-sm font-medium bg-rose-100 text-rose-700 border border-rose-200">
+              <span className="px-3 py-1 rounded-full text-sm font-medium bg-violet-100 text-violet-700 border border-violet-200">
                 Mic unavailable — ghost garden is growing
               </span>
             )}
@@ -532,7 +532,7 @@ Sing into the mic and watch a living garden grow in real time.
 
         {/* No WebGL notice */}
         {noWebGL && (
-          <div className="mt-8 mx-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-stone-800 text-center max-w-md pointer-events-auto">
+          <div className="mt-8 mx-4 p-4 rounded-xl bg-violet-50 border border-violet-200 text-stone-800 text-center max-w-md pointer-events-auto">
             <p className="font-semibold text-lg">WebGL not available</p>
             <p className="text-sm mt-1 text-stone-600">
               Your browser or device does not support WebGL. Try Chrome or Firefox on a desktop.
@@ -546,7 +546,7 @@ Sing into the mic and watch a living garden grow in real time.
           <div className="flex-1 flex flex-col items-center justify-center pointer-events-auto">
             <button
               onClick={startGarden}
-              className="px-10 py-6 rounded-3xl font-bold text-white shadow-xl transition-transform active:scale-95"
+              className="px-10 py-6 rounded-3xl font-bold text-foreground shadow-xl transition-transform active:scale-95"
               style={{
                 fontSize: "clamp(1.2rem, 3.5vw, 1.8rem)",
                 background: "linear-gradient(135deg, #4ade80, #22c55e)",

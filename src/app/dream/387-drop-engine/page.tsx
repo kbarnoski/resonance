@@ -25,16 +25,16 @@ type EngineState = "idle" | "running" | "error"
 // ── Phase colours (Tailwind-safe) ─────────────────────────────────────────────
 const PHASE_COLORS: Record<ArcPhase, string> = {
   GROOVE:  "text-violet-300",
-  BUILD:   "text-cyan-300",
-  DROP:    "text-fuchsia-300",
-  RELEASE: "text-teal-300",
+  BUILD:   "text-violet-300",
+  DROP:    "text-violet-300",
+  RELEASE: "text-violet-300",
 }
 
 const PHASE_BG: Record<ArcPhase, string> = {
   GROOVE:  "border-violet-500/40",
-  BUILD:   "border-cyan-500/40",
-  DROP:    "border-fuchsia-500/60",
-  RELEASE: "border-teal-500/40",
+  BUILD:   "border-violet-500/40",
+  DROP:    "border-violet-500/60",
+  RELEASE: "border-violet-500/40",
 }
 
 export default function DropEnginePage() {
@@ -222,20 +222,20 @@ export default function DropEnginePage() {
       {/* Idle overlay */}
       {engineState === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black/60">
-          <h1 className="text-3xl font-bold text-white/95 tracking-wider text-center px-4">
+          <h1 className="text-3xl font-bold text-foreground tracking-wider text-center px-4">
             DROP ENGINE
           </h1>
-          <p className="text-base text-white/75 text-center max-w-xs px-6">
+          <p className="text-base text-muted-foreground text-center max-w-xs px-6">
             Generative EDM build-and-drop arc engine.
             Procedural tension → riser → drop → release. Loops with variation.
           </p>
           <button
             onPointerDown={handleStart}
-            className="px-8 py-3 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 active:bg-fuchsia-700 text-white font-semibold text-xl min-w-[160px] min-h-[52px] transition-colors"
+            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-xl min-w-[160px] min-h-[52px] transition-colors"
           >
             START
           </button>
-          <p className="text-sm text-white/50 text-center px-4">
+          <p className="text-sm text-muted-foreground text-center px-4">
             Tap Start to begin — audio + visuals start together
           </p>
         </div>
@@ -244,7 +244,7 @@ export default function DropEnginePage() {
       {/* Error overlay */}
       {engineState === "error" && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-rose-300 text-base text-center px-6">
+          <p className="text-violet-300 text-base text-center px-6">
             Engine error: {glError ?? "unknown error"}
           </p>
         </div>
@@ -252,8 +252,8 @@ export default function DropEnginePage() {
 
       {/* WebGL fallback notice (audio still runs) */}
       {glError && engineState === "running" && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-black/70 border border-rose-500/40">
-          <p className="text-rose-300 text-sm text-center">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-black/70 border border-violet-500/40">
+          <p className="text-violet-300 text-sm text-center">
             WebGL2 unavailable — audio running without visuals
           </p>
         </div>
@@ -266,12 +266,12 @@ export default function DropEnginePage() {
             <span className={`text-2xl font-bold tracking-widest ${PHASE_COLORS[phase]}`}>
               {phase}
             </span>
-            <span className="text-white/75 text-base font-mono">
+            <span className="text-muted-foreground text-base font-mono">
               {bar + 1}/16
             </span>
           </div>
           {/* Phase progress bar */}
-          <div className="mt-1.5 h-1 w-32 bg-white/10 rounded-full overflow-hidden">
+          <div className="mt-1.5 h-1 w-32 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-100"
               style={{
@@ -288,16 +288,16 @@ export default function DropEnginePage() {
 
       {/* HUD — top right: tension meter */}
       {engineState === "running" && (
-        <div className="absolute top-4 right-4 px-4 py-2.5 rounded-xl border border-white/10 bg-black/60 backdrop-blur-sm">
+        <div className="absolute top-4 right-4 px-4 py-2.5 rounded-xl border border-border bg-black/60 backdrop-blur-sm">
           <div className="flex flex-col items-end gap-1">
-            <span className="text-white/75 text-sm font-mono uppercase tracking-wider">
+            <span className="text-muted-foreground text-sm font-mono uppercase tracking-wider">
               TENSION
             </span>
-            <span className="text-white/95 text-2xl font-mono font-bold">
+            <span className="text-foreground text-2xl font-mono font-bold">
               {Math.round(tension * 100)}
             </span>
             {/* Vertical bar */}
-            <div className="w-3 h-24 bg-white/10 rounded-full overflow-hidden flex flex-col justify-end">
+            <div className="w-3 h-24 bg-muted rounded-full overflow-hidden flex flex-col justify-end">
               <div
                 className="w-full rounded-full transition-all duration-75"
                 style={{
@@ -315,8 +315,8 @@ export default function DropEnginePage() {
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
           {/* Intensity charge indicator */}
           <div className="flex items-center gap-2">
-            <span className="text-white/75 text-sm">CHARGE</span>
-            <div className="w-32 h-2.5 bg-white/10 rounded-full overflow-hidden">
+            <span className="text-muted-foreground text-sm">CHARGE</span>
+            <div className="w-32 h-2.5 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-75"
                 style={{
@@ -325,7 +325,7 @@ export default function DropEnginePage() {
                 }}
               />
             </div>
-            <span className="text-white/75 text-sm font-mono w-8">
+            <span className="text-muted-foreground text-sm font-mono w-8">
               {Math.round(displayIntens * 100)}
             </span>
           </div>
@@ -336,7 +336,7 @@ export default function DropEnginePage() {
               onPointerDown={handleHoldStart}
               onPointerUp={handleHoldEnd}
               onPointerLeave={handleHoldEnd}
-              className="px-6 py-3 rounded-full bg-violet-700/80 hover:bg-violet-600/90 active:bg-violet-500 text-white font-semibold text-base min-w-[120px] min-h-[48px] border border-violet-400/30 transition-colors touch-none"
+              className="px-6 py-3 rounded-full bg-violet-700/80 hover:bg-violet-600/90 active:bg-violet-500 text-foreground font-semibold text-base min-w-[120px] min-h-[48px] border border-violet-400/30 transition-colors touch-none"
             >
               HOLD → CHARGE
             </button>
@@ -344,27 +344,27 @@ export default function DropEnginePage() {
             {/* DROP NOW: early drop trigger */}
             <button
               onPointerDown={handleDropNow}
-              className="px-6 py-3 rounded-full bg-fuchsia-700/80 hover:bg-fuchsia-600/90 active:bg-fuchsia-500 text-white font-bold text-base min-w-[120px] min-h-[48px] border border-fuchsia-400/40 transition-colors"
+              className="px-6 py-3 rounded-full bg-violet-700/80 hover:bg-violet-600/90 active:bg-violet-500 text-foreground font-bold text-base min-w-[120px] min-h-[48px] border border-violet-400/40 transition-colors"
             >
               DROP NOW
             </button>
           </div>
 
-          <p className="text-white/50 text-sm text-center">
-            Hold <span className="text-white/75">CHARGE</span> to bias the next drop intensity
-            · <span className="text-white/75">DROP NOW</span> triggers early during BUILD
+          <p className="text-muted-foreground text-sm text-center">
+            Hold <span className="text-muted-foreground">CHARGE</span> to bias the next drop intensity
+            · <span className="text-muted-foreground">DROP NOW</span> triggers early during BUILD
           </p>
         </div>
       )}
 
       {/* Design notes affordance */}
       <div className="absolute bottom-4 right-4">
-        <details className="text-white/50 text-xs">
-          <summary className="cursor-pointer hover:text-white/75 py-1 px-2">
+        <details className="text-muted-foreground text-xs">
+          <summary className="cursor-pointer hover:text-muted-foreground py-1 px-2">
             design notes
           </summary>
-          <div className="absolute bottom-8 right-0 w-72 bg-black/90 border border-white/10 rounded-xl p-4 text-white/75 text-xs space-y-2 z-10">
-            <p className="font-semibold text-white/90 text-sm">387 · Drop Engine</p>
+          <div className="absolute bottom-8 right-0 w-72 bg-black/90 border border-border rounded-xl p-4 text-muted-foreground text-xs space-y-2 z-10">
+            <p className="font-semibold text-foreground text-sm">387 · Drop Engine</p>
             <p>Lab&apos;s first EDM/club journey engine. Arc: GROOVE→BUILD→DROP→RELEASE→loop, 16 bars each at 126 BPM.</p>
             <p>Tension scalar [0→1] simultaneously drives: noise riser pitch, LP filter sweep, snare-roll acceleration, HP suck-out pre-drop, and all visuals.</p>
             <p>Synthesis: kick (sine+click), snare (filtered noise), hat, bass (saw+sub through LP), supersaw lead, riser. All sum through a DynamicsCompressor limiter.</p>

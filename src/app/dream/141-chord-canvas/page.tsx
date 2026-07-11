@@ -363,13 +363,13 @@ export default function ChordCanvas() {
 
   if (mode === 'idle') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white px-6 py-12">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
         <div className="max-w-xs w-full text-center space-y-6">
           <div>
-            <h1 className="text-3xl font-serif text-white">Chord Canvas</h1>
-            <p className="text-white/55 text-sm font-mono mt-1">real-time chord detection · harmonic timeline</p>
+            <h1 className="text-3xl font-serif text-foreground">Chord Canvas</h1>
+            <p className="text-muted-foreground text-sm font-mono mt-1">real-time chord detection · harmonic timeline</p>
           </div>
-          <p className="text-white/75 text-base leading-relaxed">
+          <p className="text-muted-foreground text-base leading-relaxed">
             Play piano into the mic. Your chord appears as a name — C, F♯m,
             Bdim — and paints a scrolling color timeline. The chromagram below
             shows which pitch classes are active right now.
@@ -383,12 +383,12 @@ export default function ChordCanvas() {
             </button>
             <button
               onPointerDown={() => setMode('demo')}
-              className="w-full py-3 px-6 bg-white/5 hover:bg-white/10 border border-white/15 text-white/75 text-base font-mono rounded-lg transition-colors min-h-[44px]"
+              className="w-full py-3 px-6 bg-muted hover:bg-accent border border-border text-muted-foreground text-base font-mono rounded-lg transition-colors min-h-[44px]"
             >
               Demo — ii–V–I in C
             </button>
           </div>
-          <p className="text-white/55 text-xs">24 chord templates · chroma matching · zero ML · zero API</p>
+          <p className="text-muted-foreground text-xs">24 chord templates · chroma matching · zero ML · zero API</p>
         </div>
       </div>
     )
@@ -400,14 +400,14 @@ export default function ChordCanvas() {
     <div className="w-full h-screen flex flex-col bg-zinc-950">
       <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30">
         <div>
-          <span className="text-white text-base font-serif">Chord Canvas</span>
-          <span className="text-white/45 text-xs font-mono ml-3">
+          <span className="text-foreground text-base font-serif">Chord Canvas</span>
+          <span className="text-muted-foreground text-xs font-mono ml-3">
             {mode === 'demo' ? 'demo · ii–V–I in C, repeating' : 'mic · play any chord'}
           </span>
         </div>
         <div className="flex items-center gap-3">
-          {errMsg && <span className="text-rose-300 text-xs">{errMsg}</span>}
-          <span className="text-white/30 text-xs font-mono">141</span>
+          {errMsg && <span className="text-violet-300 text-xs">{errMsg}</span>}
+          <span className="text-muted-foreground/70 text-xs font-mono">141</span>
         </div>
       </div>
       <canvas ref={canvasRef} className="flex-1 w-full" style={{ display: 'block' }} />

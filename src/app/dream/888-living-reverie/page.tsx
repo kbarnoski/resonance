@@ -226,16 +226,16 @@ export default function LivingReveriePage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#05060d] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#05060d] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* idle overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-black/55 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-4xl tracking-tight text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl tracking-tight text-foreground sm:text-5xl">
             Living Reverie
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/80">
+          <p className="max-w-xl text-base leading-relaxed text-foreground">
             Karel&rsquo;s recorded piano, re-dreamed as a ten-minute generative
             arc with memory &mdash; sparse, then blooming, dense, and finally
             dissolving. It never loops, and minute eight is a different world
@@ -243,13 +243,13 @@ export default function LivingReveriePage() {
           </p>
           <button
             onClick={start}
-            className="rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-white shadow-lg transition hover:bg-violet-400"
+            className="rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-400"
           >
             Begin the reverie
           </button>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="text-base text-white/75 underline-offset-4 hover:underline"
+            className="text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             Read the design notes
           </button>
@@ -259,8 +259,8 @@ export default function LivingReveriePage() {
       {/* WebGL unavailable notice */}
       {phase === "nowebgl" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black/70 px-6 text-center">
-          <h1 className="font-serif text-3xl text-white">Living Reverie</h1>
-          <p className="max-w-md text-base text-amber-300/95">
+          <h1 className="font-serif text-3xl text-foreground">Living Reverie</h1>
+          <p className="max-w-md text-base text-violet-300/95">
             WebGL is unavailable in this browser, so the visual membrane
             can&rsquo;t render. Try a desktop browser with hardware acceleration
             enabled.
@@ -271,8 +271,8 @@ export default function LivingReveriePage() {
       {/* running HUD */}
       {phase === "running" && (
         <>
-          <div className="pointer-events-none absolute left-5 top-5 z-10 flex flex-col gap-1 font-mono text-base text-white/80">
-            <span className="text-white/95">
+          <div className="pointer-events-none absolute left-5 top-5 z-10 flex flex-col gap-1 font-mono text-base text-foreground">
+            <span className="text-foreground">
               {fmtTime(elapsed)} / 10:00
             </span>
             <span>
@@ -281,27 +281,27 @@ export default function LivingReveriePage() {
             </span>
             <span>
               mode &middot;{" "}
-              <span className="text-rose-300">{modeLabel(mode)}</span>
+              <span className="text-violet-300">{modeLabel(mode)}</span>
             </span>
             <span>age &middot; {agePct.toFixed(1)}%</span>
             {status.kind === "live" ? (
-              <span className="text-emerald-300/95">
+              <span className="text-violet-300/95">
                 playing Karel&rsquo;s piano
               </span>
             ) : (
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 generative piano &mdash; live recording unavailable
               </span>
             )}
           </div>
 
-          <div className="pointer-events-none absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-base text-white/75">
+          <div className="pointer-events-none absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-base text-muted-foreground">
             drag to orbit the membrane
           </div>
 
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="absolute bottom-5 right-5 z-10 text-base text-white/75 underline-offset-4 hover:underline"
+            className="absolute bottom-5 right-5 z-10 text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             Read the design notes
           </button>
@@ -311,8 +311,8 @@ export default function LivingReveriePage() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 px-6">
-          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0b0d1a] p-7 text-base leading-relaxed text-white/85 shadow-2xl">
-            <h2 className="mb-3 font-serif text-2xl text-white">
+          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-[#0b0d1a] p-7 text-base leading-relaxed text-foreground shadow-2xl">
+            <h2 className="mb-3 font-serif text-2xl text-foreground">
               Design notes
             </h2>
             <p className="mb-3">
@@ -325,7 +325,7 @@ export default function LivingReveriePage() {
               recording; in fallback mode it is seeded from a built-in motif.
             </p>
             <p className="mb-3">
-              The <span className="text-rose-300">global tier</span> is a single
+              The <span className="text-violet-300">global tier</span> is a single
               irreversible <em>age</em> walking 0&rarr;1 across ten minutes,
               driving a four-section state machine (sparse &rarr; blooming &rarr;
               dense &rarr; dissolving) plus a modal journey (Ionian &rarr;
@@ -340,7 +340,7 @@ export default function LivingReveriePage() {
               densest, then collapsing back toward stillness and deep violet as
               it dissolves.
             </p>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               References: RESEARCH &sect;531 (2026-06-24) &mdash; &ldquo;Fusing
               Memory and Attention&rdquo;, arXiv 2603.21282 (March 2026); Brian
               Eno&rsquo;s generative music (<em>Music for Airports</em>,{" "}
@@ -356,7 +356,7 @@ export default function LivingReveriePage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 rounded-full bg-white/10 px-5 py-2.5 text-base text-white/90 hover:bg-white/20"
+              className="mt-5 rounded-full bg-muted px-5 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

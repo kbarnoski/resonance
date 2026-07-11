@@ -590,15 +590,15 @@ export default function EchoCanyon() {
         className="flex flex-col items-center justify-center gap-6 px-6 text-center"
         style={{ height: "100dvh", background: "#2b2740" }}
       >
-        <h1 className="text-3xl font-semibold text-white/95">Echo Canyon</h1>
-        <p className="max-w-md text-lg text-white/80">
+        <h1 className="text-3xl font-semibold text-foreground">Echo Canyon</h1>
+        <p className="max-w-md text-lg text-foreground">
           Sing, hum, or call across the canyon. A little paper creature will
           catch your song and sing it right back to you — then add a friend.
         </p>
-        <p className="max-w-md text-base text-white/60">
+        <p className="max-w-md text-base text-muted-foreground">
           For kids (4+). Best with the sound on. Nothing you sing is ever wrong.
         </p>
-        {micError && <p className="max-w-md text-base text-rose-300">{micError}</p>}
+        {micError && <p className="max-w-md text-base text-violet-300">{micError}</p>}
         <button
           onClick={handleStart}
           className="min-h-[64px] rounded-2xl px-10 py-4 text-xl font-bold transition-transform active:scale-95"
@@ -608,7 +608,7 @@ export default function EchoCanyon() {
         </button>
         <Link
           href="/dream"
-          className="text-base text-white/55 transition-colors hover:text-white/80"
+          className="text-base text-muted-foreground transition-colors hover:text-foreground"
         >
           ← dream lab
         </Link>
@@ -624,7 +624,7 @@ export default function EchoCanyon() {
     >
       {micError && (
         <div className="pointer-events-none absolute left-0 right-0 top-4 z-20 flex justify-center px-4">
-          <p className="rounded-xl bg-black/55 px-4 py-2 text-base text-rose-300">
+          <p className="rounded-xl bg-black/55 px-4 py-2 text-base text-violet-300">
             {micError}
           </p>
         </div>
@@ -634,7 +634,7 @@ export default function EchoCanyon() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/280-kids-echo-canyon/README.md"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-3 right-3 z-10 text-white/45 transition-colors hover:text-white/70"
+        className="absolute bottom-3 right-3 z-10 text-muted-foreground transition-colors hover:text-muted-foreground"
         style={{ fontSize: 12 }}
       >
         design notes

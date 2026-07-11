@@ -306,7 +306,7 @@ export default function BreathSanctuaryPage() {
   const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#05060a] text-foreground">
       {/* Faint breathing form — the only visual. Look away from the screen. */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <svg
@@ -331,17 +331,17 @@ export default function BreathSanctuaryPage() {
       {/* Sparse text overlay. */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-between px-6 py-10 text-center">
         <header className="max-w-xl">
-          <h1 className="font-serif text-3xl tracking-wide text-white/95 sm:text-4xl">
+          <h1 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl">
             Breath Sanctuary
           </h1>
-          <p className="mt-2 text-base text-white/70">
+          <p className="mt-2 text-base text-muted-foreground">
             an eyes-closed sound-space you steer with your breath alone
           </p>
         </header>
 
         {runState === "idle" ? (
           <div className="flex flex-col items-center gap-5">
-            <p className="max-w-md text-base text-white/75">
+            <p className="max-w-md text-base text-muted-foreground">
               A ceremonial drone in just intonation, with struck singing bowls.
               Close your eyes and breathe slowly into the microphone — each breath
               rings a bowl and moves the ritual forward.
@@ -352,7 +352,7 @@ export default function BreathSanctuaryPage() {
             >
               Begin · breathe
             </button>
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               wear headphones · the room may glance and simply listen
             </p>
           </div>
@@ -361,12 +361,12 @@ export default function BreathSanctuaryPage() {
             <p className="text-sm uppercase tracking-[0.3em] text-violet-300">
               {phase.name}
             </p>
-            <p className="max-w-md text-base text-white/80">{phase.instruction}</p>
-            <p className="text-sm text-white/55" aria-live="polite">
+            <p className="max-w-md text-base text-foreground">{phase.instruction}</p>
+            <p className="text-sm text-muted-foreground" aria-live="polite">
               {breaths} breath{breaths === 1 ? "" : "s"} · {mm}:{ss}
             </p>
             {autonomous && (
-              <p className="max-w-sm text-sm text-rose-300">
+              <p className="max-w-sm text-sm text-violet-300">
                 {micDenied
                   ? "Microphone unavailable — the sanctuary is breathing on its own."
                   : "Breathing autonomously — press Begin and allow the mic to steer it yourself."}
@@ -375,7 +375,7 @@ export default function BreathSanctuaryPage() {
           </div>
         )}
 
-        <footer className="max-w-xl text-sm leading-relaxed text-white/55">
+        <footer className="max-w-xl text-sm leading-relaxed text-muted-foreground">
           After Pauline Oliveros&rsquo; <em>Deep Listening</em> &amp; La Monte
           Young&rsquo;s sustained drone — a continuous, breath-steered stream that
           never lands.

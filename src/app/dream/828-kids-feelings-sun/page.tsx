@@ -175,7 +175,7 @@ export default function FeelingsSun() {
   const dominant = labelMap.reduce((a, b) => (w[a.key] >= w[b.key] ? a : b));
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-foreground">
       <div
         ref={wrapRef}
         onPointerDown={onDown}
@@ -288,7 +288,7 @@ export default function FeelingsSun() {
 
       {/* graceful audio-failure notice (visuals stay alive) */}
       {audioFailed && (
-        <p className="absolute bottom-20 left-1/2 -translate-x-1/2 rounded-full bg-black/40 px-4 py-2 text-base text-rose-300">
+        <p className="absolute bottom-20 left-1/2 -translate-x-1/2 rounded-full bg-black/40 px-4 py-2 text-base text-violet-300">
           Sound is napping on this device — keep playing, the sky still moves!
         </p>
       )}
@@ -300,18 +300,18 @@ export default function FeelingsSun() {
           e.preventDefault();
           setShowNotes((v) => !v);
         }}
-        className="absolute bottom-3 right-3 z-20 rounded-full bg-white/10 px-3 py-1.5 text-base text-white/75 backdrop-blur hover:text-white"
+        className="absolute bottom-3 right-3 z-20 rounded-full bg-muted px-3 py-1.5 text-base text-muted-foreground backdrop-blur hover:text-foreground"
       >
         Read the design notes
       </Link>
 
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur">
-          <div className="max-w-md rounded-3xl bg-zinc-900/90 p-6 text-white/90 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white">
+          <div className="max-w-md rounded-3xl bg-zinc-900/90 p-6 text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">
               Feelings Sun — design notes
             </h2>
-            <p className="mt-3 text-base text-white/90">
+            <p className="mt-3 text-base text-foreground">
               Drag the friendly sun across the feelings-sky. Its position
               bilinearly blends four chord <em>feelings</em>: up-left is bright
               <strong> happy</strong> (major), down-left is{" "}
@@ -319,7 +319,7 @@ export default function FeelingsSun() {
               <strong>floaty</strong> (suspended), up-right is{" "}
               <strong>dreamy</strong> (add9/maj7).
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               A root drone and a perfect fifth are always sounding, so the
               harmony is always in tune. Two color voices glide continuously —
               never re-triggered — so the chord morphs with no clicks. Inspired
@@ -328,7 +328,7 @@ export default function FeelingsSun() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 rounded-full bg-white/15 px-5 py-2 text-base text-white hover:bg-white/25"
+              className="mt-5 rounded-full bg-muted px-5 py-2 text-base text-foreground hover:bg-accent"
             >
               Back to playing
             </button>
@@ -340,13 +340,13 @@ export default function FeelingsSun() {
       {!started && (
         <button
           onClick={handleStart}
-          className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-b from-amber-300 via-orange-300 to-rose-400 text-center"
+          className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-b from-violet-300 via-violet-300 to-violet-400 text-center"
         >
           <span className="text-7xl drop-shadow-lg">🌞</span>
-          <span className="mt-6 text-2xl font-semibold text-white drop-shadow">
+          <span className="mt-6 text-2xl font-semibold text-foreground drop-shadow">
             Tap to play with the Feelings Sun
           </span>
-          <span className="mt-2 text-base text-white/90">
+          <span className="mt-2 text-base text-foreground">
             Drag the sun around the sky
           </span>
         </button>

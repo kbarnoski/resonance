@@ -354,31 +354,31 @@ export default function KidsBreathBubbles() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           <div className="text-center">
-            <h1 className="text-white text-3xl font-mono tracking-wide mb-2">
+            <h1 className="text-foreground text-3xl font-mono tracking-wide mb-2">
               breath bubbles
             </h1>
-            <p className="text-white/75 text-base font-mono">
+            <p className="text-muted-foreground text-base font-mono">
               blow into the mic — bubbles float up and pop
             </p>
           </div>
 
           <button
             onClick={() => { void startListening(); }}
-            className="flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 text-white text-2xl font-bold rounded-full transition-colors"
+            className="flex items-center justify-center bg-violet-500 hover:bg-violet-400 text-foreground text-2xl font-bold rounded-full transition-colors"
             style={{ width: 160, height: 160 }}
           >
             Start
           </button>
 
           {micError && (
-            <p className="text-rose-300 text-base font-mono text-center">
+            <p className="text-violet-300 text-base font-mono text-center">
               microphone not available — check permissions
             </p>
           )}
 
           <button
             onClick={startDemo}
-            className="text-white/55 hover:text-white/80 text-base font-mono underline transition-colors"
+            className="text-muted-foreground hover:text-foreground text-base font-mono underline transition-colors"
             style={{ minHeight: 44 }}
           >
             try without mic
@@ -390,11 +390,11 @@ export default function KidsBreathBubbles() {
       {phase === "active" && (
         <div className="pointer-events-none absolute top-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
           {demoRef.current ? (
-            <span className="text-white/55 text-sm font-mono">demo — tap screen for bubbles</span>
+            <span className="text-muted-foreground text-sm font-mono">demo — tap screen for bubbles</span>
           ) : (
             <>
-              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-white/75 text-sm font-mono">blow to make bubbles</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-muted-foreground text-sm font-mono">blow to make bubbles</span>
             </>
           )}
         </div>
@@ -402,7 +402,7 @@ export default function KidsBreathBubbles() {
 
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         ← dream lab
       </Link>

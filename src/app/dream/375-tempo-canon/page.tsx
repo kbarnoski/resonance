@@ -239,13 +239,13 @@ export default function TempoCanonPage() {
   const refLen = REFERENCE.length
 
   return (
-    <main className="min-h-screen bg-[#06060b] text-white px-5 py-8 sm:px-8">
+    <main className="min-h-screen bg-[#06060b] text-foreground px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6">
           <h1 className="text-3xl font-semibold tracking-tight">Tempo Canon</h1>
-          <p className="mt-2 text-base text-white/75 max-w-2xl">
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
             A live score-follower that plays the accompaniment in sync with your
-            rubato. You play the <span className="text-white/95">Ode to Joy</span>{" "}
+            rubato. You play the <span className="text-foreground">Ode to Joy</span>{" "}
             melody; online DTW aligns your performance to the score in real time
             and the bass &amp; chords lock to your position and tempo.
           </p>
@@ -265,17 +265,17 @@ export default function TempoCanonPage() {
               resetFollower()
               setMode("idle")
             }}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/5 text-white/75 hover:bg-white/10 border border-white/10 text-base transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted text-muted-foreground hover:bg-accent border border-border text-base transition-colors"
           >
             Reset
           </button>
           <button
             onClick={requestMidi}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/5 text-white/75 hover:bg-white/10 border border-white/10 text-base transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted text-muted-foreground hover:bg-accent border border-border text-base transition-colors"
           >
             Connect MIDI
           </button>
-          <label className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-base text-white/75 cursor-pointer">
+          <label className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-muted border border-border text-base text-muted-foreground cursor-pointer">
             <input
               type="checkbox"
               checked={echoOn}
@@ -287,10 +287,10 @@ export default function TempoCanonPage() {
         </div>
 
         {/* The warping-path GPU visual */}
-        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-white/10 bg-black">
+        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-border bg-black">
           {glError ? (
             <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-              <p className="text-rose-300 text-base">
+              <p className="text-violet-300 text-base">
                 WebGL2 is unavailable, so the warping-path visual can&apos;t
                 render here ({glError}). The follower and audio still work — try
                 the demo or your keyboard.
@@ -300,10 +300,10 @@ export default function TempoCanonPage() {
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           )}
           {/* Axis labels */}
-          <span className="pointer-events-none absolute left-3 top-3 text-xs font-mono text-white/55">
+          <span className="pointer-events-none absolute left-3 top-3 text-xs font-mono text-muted-foreground">
             ↑ your performance time
           </span>
-          <span className="pointer-events-none absolute right-3 bottom-3 text-xs font-mono text-white/55">
+          <span className="pointer-events-none absolute right-3 bottom-3 text-xs font-mono text-muted-foreground">
             reference score time →
           </span>
         </div>
@@ -322,7 +322,7 @@ export default function TempoCanonPage() {
         {/* Keyboard map */}
         <section className="mt-7">
           <h2 className="text-xl font-medium mb-3">Play it yourself</h2>
-          <p className="text-base text-white/75 mb-3 max-w-2xl">
+          <p className="text-base text-muted-foreground mb-3 max-w-2xl">
             Tap the home-row keys to play the melody. The follower aligns
             whatever you play — rush and the path steepens; drag and it flattens.
             The accompaniment follows you.
@@ -334,27 +334,27 @@ export default function TempoCanonPage() {
                 className={`flex flex-col items-center justify-center min-w-[54px] min-h-[54px] rounded-lg border text-center transition-colors ${
                   lastKey === k.key
                     ? "bg-violet-500/30 border-violet-300/50"
-                    : "bg-white/5 border-white/10"
+                    : "bg-muted border-border"
                 }`}
               >
-                <span className="text-base font-mono uppercase text-white/95">
+                <span className="text-base font-mono uppercase text-foreground">
                   {k.key}
                 </span>
-                <span className="text-xs text-white/55">{k.label}</span>
+                <span className="text-xs text-muted-foreground">{k.label}</span>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-base text-white/55">MIDI: {midiStatus}</p>
+          <p className="mt-3 text-base text-muted-foreground">MIDI: {midiStatus}</p>
         </section>
 
         {/* Design notes */}
-        <section className="mt-8 border-t border-white/10 pt-5">
+        <section className="mt-8 border-t border-border pt-5">
           <h2 className="text-xl font-medium mb-2">Design notes</h2>
-          <p className="text-base text-white/75 max-w-2xl">
+          <p className="text-base text-muted-foreground max-w-2xl">
             The engine is online (streaming) dynamic time warping — a bounded
             search window grows the alignment path one note at a time, in the
             spirit of Dixon&apos;s MATCH (2005). Local tempo comes from the{" "}
-            <span className="text-white/95">slope of the warping path</span>:
+            <span className="text-foreground">slope of the warping path</span>:
             steeper than 45° means you&apos;re rushing, shallower means
             dragging. Full method, references (incl. Matchmaker, arXiv
             2510.10087), and honest caveats are in{" "}
@@ -375,11 +375,11 @@ function modeLabel(m: InputMode): string {
 
 function Readout({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-white/5 border border-white/10 px-4 py-3">
-      <div className="text-xs uppercase tracking-wide text-white/55 font-mono">
+    <div className="rounded-lg bg-muted border border-border px-4 py-3">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground font-mono">
         {label}
       </div>
-      <div className="mt-1 text-base text-white/95 font-mono">{value}</div>
+      <div className="mt-1 text-base text-foreground font-mono">{value}</div>
     </div>
   )
 }

@@ -242,7 +242,7 @@ export default function KidsChoirBloom() {
   const bloomPct = Math.round(consonance(targets) * 100);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0b0717] text-white select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0b0717] text-foreground select-none">
       {/* GPU / WebGL2 metaball surface */}
       <canvas
         ref={canvasRef}
@@ -278,7 +278,7 @@ export default function KidsChoirBloom() {
       )}
 
       {mode === "dom" && started && (
-        <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-base text-rose-300">
+        <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-base text-violet-300">
           GPU rendering unavailable — the choir is still singing, with a simple glow view.
         </p>
       )}
@@ -287,13 +287,13 @@ export default function KidsChoirBloom() {
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-4">
         <Link
           href="/dream"
-          className="pointer-events-auto rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur hover:bg-white/20"
+          className="pointer-events-auto rounded-xl bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
         >
           ← Gallery
         </Link>
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur hover:bg-white/20"
+          className="pointer-events-auto rounded-xl bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
         >
           Design notes
         </button>
@@ -301,77 +301,77 @@ export default function KidsChoirBloom() {
 
       {/* Bloom meter (small, top-center, non-distracting) */}
       {started && (
-        <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full bg-white/10 px-4 py-2 text-base text-white/75 backdrop-blur">
+        <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full bg-muted px-4 py-2 text-base text-muted-foreground backdrop-blur">
           Harmony bloom: {bloomPct}%
-          <span className="ml-2 text-white/50">({mode})</span>
+          <span className="ml-2 text-muted-foreground">({mode})</span>
         </div>
       )}
 
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0b0717]/80 px-6 text-center backdrop-blur">
-          <h1 className="text-2xl font-semibold text-white sm:text-4xl">Choir Bloom</h1>
-          <p className="max-w-md text-base text-white/75">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-4xl">Choir Bloom</h1>
+          <p className="max-w-md text-base text-muted-foreground">
             Drag the bright rose blob up and down to lead a little melody. Three singing
             friends follow you into harmony — and the lights bloom when you all agree.
           </p>
           <button
             onClick={onStart}
-            className="rounded-full bg-rose-400 px-10 py-5 text-2xl font-semibold text-[#0b0717] shadow-lg shadow-rose-500/30 active:scale-95"
+            className="rounded-full bg-violet-400 px-10 py-5 text-2xl font-semibold text-[#0b0717] shadow-lg shadow-violet-500/30 active:scale-95"
             style={{ minHeight: 72 }}
           >
             ▶ Start singing
           </button>
-          <p className="text-base text-white/75">Best with sound on.</p>
+          <p className="text-base text-muted-foreground">Best with sound on.</p>
         </div>
       )}
 
       {/* Design notes overlay */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#0b0717]/90 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-muted p-6 ring-1 ring-border">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+              <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/95 hover:bg-white/20"
+                className="rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>
             </div>
-            <div className="space-y-3 text-base text-white/75">
-              <p className="text-white/95">
+            <div className="space-y-3 text-base text-muted-foreground">
+              <p className="text-foreground">
                 <strong>For:</strong> kids (4+)
               </p>
               <p>
-                <strong className="text-white/95">The idea:</strong> a child conducts a choir by
+                <strong className="text-foreground">The idea:</strong> a child conducts a choir by
                 dragging singing blob-creatures to pitches; a voice-leading brain turns their
                 melody into real four-part harmony, rendered as luminous GPU metaballs that merge
                 and bloom as the voices harmonize.
               </p>
               <p>
-                <strong className="text-white/95">Interaction:</strong> drag the rose
+                <strong className="text-foreground">Interaction:</strong> drag the rose
                 soprano up/down to choose a note (snapped to C-major — no wrong notes). Its scale
                 degree implies a chord (1→I, 2→ii … 6→vi); the other three voices each glide to the
                 nearest chord tone, so a melody you draw makes real chords change underneath.
               </p>
               <p>
-                <strong className="text-white/95">Voices:</strong> formant source-filter
+                <strong className="text-foreground">Voices:</strong> formant source-filter
                 singing — a glottal sawtooth source with slow vibrato into a bank of bandpass
                 formant filters (warm /a/ vowel), brighter for high voices. Classic DSP, not
                 samples and not AI.
               </p>
               <p>
-                <strong className="text-white/95">Visuals:</strong> WebGPU (WGSL) metaball
+                <strong className="text-foreground">Visuals:</strong> WebGPU (WGSL) metaball
                 glow field, with a raw WebGL2 fallback and a plain-DOM glow if neither is
                 available.
               </p>
               <p>
-                <strong className="text-white/95">Inspiration:</strong> Blob Opera (David Li,
+                <strong className="text-foreground">Inspiration:</strong> Blob Opera (David Li,
                 Google Arts &amp; Culture, 2020); Cantor / Chorus Digitalis (IRCAM/LIMSI);
                 Aldwell &amp; Schachter, <em>Harmony and Voice Leading</em>.
               </p>
-              <p className="text-white/95">No mic, no network, no AI model — fully offline &amp; private.</p>
+              <p className="text-foreground">No mic, no network, no AI model — fully offline &amp; private.</p>
             </div>
           </div>
         </div>

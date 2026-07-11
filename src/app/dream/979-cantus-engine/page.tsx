@@ -332,50 +332,50 @@ export default function CantusEnginePage() {
   const ss = Math.floor(elapsed % 60).toString().padStart(2, "0");
 
   return (
-    <main className="min-h-screen bg-[#0d0b09] text-white">
+    <main className="min-h-screen bg-[#0d0b09] text-foreground">
       <div className="mx-auto max-w-6xl px-5 py-6">
         {/* header */}
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <Link
               href="/dream"
-              className="text-base text-white/55 transition-colors hover:text-white/80"
+              className="text-base text-muted-foreground transition-colors hover:text-foreground"
             >
               ← dream lab
             </Link>
-            <h1 className="mt-1 font-serif text-3xl text-white/95 sm:text-4xl">
+            <h1 className="mt-1 font-serif text-3xl text-foreground sm:text-4xl">
               Cantus Engine
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/75">
+            <p className="mt-1 max-w-2xl text-base text-muted-foreground">
               A deterministic, self-developing fugue. Every note is an explainable
               contrapuntal operation — the legible inverse of a black-box neural
               Bach-imitator.
             </p>
           </div>
           <div className="text-right text-base">
-            <div className="font-mono text-2xl text-white/95">
+            <div className="font-mono text-2xl text-foreground">
               {mm}:{ss}
             </div>
-            <div className="text-white/55">cycle {cycle}</div>
+            <div className="text-muted-foreground">cycle {cycle}</div>
           </div>
         </div>
 
         {/* status row */}
         <div className="mb-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-base">
-          <span className="text-white/80">
+          <span className="text-foreground">
             Section:{" "}
-            <span className="font-medium text-emerald-300/95">{section}</span>
+            <span className="font-medium text-violet-300/95">{section}</span>
           </span>
-          <span className="text-white/80">
+          <span className="text-foreground">
             Key: <span className="font-medium text-violet-300">{keyName}</span>
           </span>
-          <span className="text-white/80">
+          <span className="text-foreground">
             Subject:{" "}
-            <span className="font-medium text-white/95">{subjectLabel}</span>
+            <span className="font-medium text-foreground">{subjectLabel}</span>
           </span>
-          <span className="text-white/80">
+          <span className="text-foreground">
             View:{" "}
-            <span className="text-white/95">
+            <span className="text-foreground">
               {rendererKind === "gl"
                 ? "WebGL2"
                 : rendererKind === "2d"
@@ -384,9 +384,9 @@ export default function CantusEnginePage() {
             </span>
           </span>
           {midiOk ? (
-            <span className="text-emerald-300/95">{midiStatus}</span>
+            <span className="text-violet-300/95">{midiStatus}</span>
           ) : (
-            <span className="text-amber-300/95">
+            <span className="text-violet-300/95">
               {midiStatus === "not requested"
                 ? "no MIDI — keyboard A–K plays scale degrees"
                 : midiStatus}
@@ -395,24 +395,24 @@ export default function CantusEnginePage() {
         </div>
 
         {error && (
-          <div className="mb-3 rounded-md border border-rose-400/30 bg-rose-500/10 px-4 py-2.5 text-base text-rose-300">
+          <div className="mb-3 rounded-md border border-violet-400/30 bg-violet-500/10 px-4 py-2.5 text-base text-violet-300">
             {error}
           </div>
         )}
 
         {/* the score */}
-        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-[#141210]">
+        <div className="relative overflow-hidden rounded-lg border border-border bg-[#141210]">
           <canvas ref={canvasRef} className="block h-[52vh] min-h-[320px] w-full" />
 
           {/* transform flash overlay */}
           {flash && (
             <div className="pointer-events-none absolute left-5 top-4 select-none">
               <div className="rounded-md bg-black/55 px-4 py-2.5 backdrop-blur-sm">
-                <div className="font-serif text-2xl tracking-wide text-amber-200">
+                <div className="font-serif text-2xl tracking-wide text-violet-200">
                   {flash.op}
                 </div>
                 {flash.detail && (
-                  <div className="text-base text-white/75">{flash.detail}</div>
+                  <div className="text-base text-muted-foreground">{flash.detail}</div>
                 )}
               </div>
             </div>
@@ -428,7 +428,7 @@ export default function CantusEnginePage() {
                     backgroundColor: `rgb(${c[0] * 255},${c[1] * 255},${c[2] * 255})`,
                   }}
                 />
-                <span className="text-white/75">{VOICE_LABELS[i]}</span>
+                <span className="text-muted-foreground">{VOICE_LABELS[i]}</span>
               </div>
             ))}
           </div>
@@ -439,7 +439,7 @@ export default function CantusEnginePage() {
           {running ? (
             <button
               onClick={stop}
-              className="rounded-md bg-white/10 px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/15"
+              className="rounded-md bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               Pause
             </button>
@@ -449,7 +449,7 @@ export default function CantusEnginePage() {
                 const s = BUILT_IN_SUBJECTS.find((b) => b.label === subjectLabel) ?? BUILT_IN_SUBJECTS[0];
                 void start(s.motif, s.label);
               }}
-              className="rounded-md bg-emerald-500/20 px-4 py-2.5 text-base text-emerald-200 transition-colors hover:bg-emerald-500/30"
+              className="rounded-md bg-violet-500/20 px-4 py-2.5 text-base text-violet-200 transition-colors hover:bg-violet-500/30"
             >
               Play
             </button>
@@ -457,7 +457,7 @@ export default function CantusEnginePage() {
 
           <button
             onClick={requestMidi}
-            className="rounded-md bg-white/10 px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/15"
+            className="rounded-md bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Connect MIDI
           </button>
@@ -466,8 +466,8 @@ export default function CantusEnginePage() {
             onClick={beginCapture}
             className={`rounded-md px-4 py-2.5 text-base transition-colors ${
               capturing
-                ? "bg-amber-500/25 text-amber-200"
-                : "bg-white/10 text-white/95 hover:bg-white/15"
+                ? "bg-violet-500/25 text-violet-200"
+                : "bg-muted text-foreground hover:bg-accent"
             }`}
           >
             {capturing
@@ -476,12 +476,12 @@ export default function CantusEnginePage() {
           </button>
 
           <div className="ml-1 flex items-center gap-2">
-            <span className="text-sm text-white/55">Built-in:</span>
+            <span className="text-sm text-muted-foreground">Built-in:</span>
             {BUILT_IN_SUBJECTS.map((s) => (
               <button
                 key={s.id}
                 onClick={() => void start(s.motif, s.label)}
-                className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white/85 transition-colors hover:bg-white/10"
+                className="rounded-md border border-border bg-muted px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
               >
                 {s.label}
               </button>
@@ -491,34 +491,34 @@ export default function CantusEnginePage() {
 
         {/* help + recent ops */}
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
-          <div className="text-base text-white/75">
-            <h2 className="mb-2 font-serif text-xl text-white/95">How to use</h2>
+          <div className="text-base text-muted-foreground">
+            <h2 className="mb-2 font-serif text-xl text-foreground">How to use</h2>
             <p className="mb-2">
               It auto-starts a fugue within a couple of seconds. To seed your own
-              subject, hit <span className="text-white/95">Set subject</span> then
+              subject, hit <span className="text-foreground">Set subject</span> then
               play 5 notes — on a connected MIDI keyboard, or on your computer
               keyboard with{" "}
               <span className="font-mono text-violet-300">A S D F G H J K</span>{" "}
               (scale degrees 1–8).
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               The arc runs Exposition → Episode → Modulation → Stretto → Coda and
               loops with a fifth of key-drift each cycle, so minute 5 sounds
               different from minute 1.
             </p>
           </div>
-          <div className="text-base text-white/75">
-            <h2 className="mb-2 font-serif text-xl text-white/95">
+          <div className="text-base text-muted-foreground">
+            <h2 className="mb-2 font-serif text-xl text-foreground">
               Transforms as they fire
             </h2>
             <ul className="space-y-1">
               {recentOps.length === 0 && (
-                <li className="text-white/55">…waiting for the engine.</li>
+                <li className="text-muted-foreground">…waiting for the engine.</li>
               )}
               {recentOps.map((f, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-amber-200">{f.op}</span>
-                  {f.detail && <span className="text-white/55">{f.detail}</span>}
+                  <span className="text-violet-200">{f.op}</span>
+                  {f.detail && <span className="text-muted-foreground">{f.detail}</span>}
                 </li>
               ))}
             </ul>

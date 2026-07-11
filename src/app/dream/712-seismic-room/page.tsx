@@ -92,10 +92,10 @@ function depthColor(depth: number): [number, number, number] {
 }
 
 function magColorClass(mag: number): string {
-  if (mag >= 6) return "text-rose-300";
-  if (mag >= 5) return "text-orange-300";
-  if (mag >= 4) return "text-amber-300";
-  return "text-white/75";
+  if (mag >= 6) return "text-violet-300";
+  if (mag >= 5) return "text-violet-300";
+  if (mag >= 4) return "text-violet-300";
+  return "text-muted-foreground";
 }
 
 // ─── audio engine ─────────────────────────────────────────────────────────────
@@ -573,19 +573,19 @@ export default function SeismicRoom() {
 
   const badge =
     status === "live"
-      ? { label: "● Live feed", cls: "text-emerald-300/95" }
+      ? { label: "● Live feed", cls: "text-violet-300/95" }
       : status === "connecting"
-        ? { label: "● Connecting…", cls: "text-sky-300/95" }
-        : { label: "● Simulated swarm", cls: "text-amber-300/95" };
+        ? { label: "● Connecting…", cls: "text-violet-300/95" }
+        : { label: "● Simulated swarm", cls: "text-violet-300/95" };
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#05060a] text-foreground">
       {/* canvas full-bleed */}
       <div className="absolute inset-0">
         {canvasOk ? (
           <canvas ref={canvasRef} className="h-full w-full" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center p-6 text-center text-base text-white/75">
+          <div className="flex h-full w-full items-center justify-center p-6 text-center text-base text-muted-foreground">
             Canvas is unavailable in this browser. The audio still plays the planet.
           </div>
         )}
@@ -594,26 +594,26 @@ export default function SeismicRoom() {
       {/* HUD */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 sm:p-7">
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl text-white/95">Tremor</h1>
-          <p className="mt-1 text-base text-white/75">
+          <h1 className="font-serif text-2xl text-foreground">Tremor</h1>
+          <p className="mt-1 text-base text-muted-foreground">
             The world&rsquo;s earthquakes, live — the moment each one is detected, it becomes a
             sound and a ripple on the planet.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-base">
             <span className={badge.cls}>{badge.label}</span>
-            <span className="text-white/55">{count} events</span>
+            <span className="text-muted-foreground">{count} events</span>
           </div>
-          {note ? <p className="mt-2 text-base text-amber-300/95">{note}</p> : null}
+          {note ? <p className="mt-2 text-base text-violet-300/95">{note}</p> : null}
         </header>
 
         {/* event log */}
         <div className="pointer-events-none absolute right-5 top-5 hidden w-72 font-mono text-base sm:right-7 sm:top-7 sm:block">
           <div className="space-y-0.5">
             {log.map((q) => (
-              <div key={q.id} className="truncate text-white/55">
+              <div key={q.id} className="truncate text-muted-foreground">
                 <span className={magColorClass(q.mag)}>M{q.mag.toFixed(1)}</span>{" "}
-                <span className="text-white/75">{q.region}</span>{" "}
-                <span className="text-white/55">{q.depth}km</span>
+                <span className="text-muted-foreground">{q.region}</span>{" "}
+                <span className="text-muted-foreground">{q.depth}km</span>
               </div>
             ))}
           </div>
@@ -625,7 +625,7 @@ export default function SeismicRoom() {
             <button
               type="button"
               onClick={handleStart}
-              className="min-h-[44px] rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/20"
+              className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               ▶ Start — enter the room
             </button>
@@ -633,13 +633,13 @@ export default function SeismicRoom() {
             <button
               type="button"
               onClick={handleToggle}
-              className="min-h-[44px] rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/15"
+              className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               {mode === "live" ? "Switch to simulated swarm" : "Try live feed"}
             </button>
           )}
           {started ? (
-            <span className="font-mono text-base text-white/55">
+            <span className="font-mono text-base text-muted-foreground">
               {mode === "live" ? "sonifying real detections" : "sonifying a synthetic swarm"}
             </span>
           ) : null}

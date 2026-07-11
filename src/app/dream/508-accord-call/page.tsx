@@ -498,20 +498,20 @@ function describeInterval(ratio: number): string {
 
 function IdleScreen({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white px-6 py-12">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
       <div className="max-w-sm w-full text-center space-y-6">
         <div>
-          <h1 className="text-3xl font-serif text-white tracking-wide">Accord Call</h1>
+          <h1 className="text-3xl font-serif text-foreground tracking-wide">Accord Call</h1>
           <p className="text-violet-300 text-sm font-mono mt-1">508 · together spine</p>
         </div>
-        <p className="text-white/75 text-base leading-relaxed">
+        <p className="text-muted-foreground text-base leading-relaxed">
           Two voices. Two browsers. A harmony that neither player can resolve alone.
           Drag your pitch toward the other — only when both move into consonance
           does the dissonance dissolve and the shimmer bloom.
         </p>
-        <div className="space-y-2 text-left bg-white/5 rounded-lg p-4 border border-white/10">
-          <p className="text-white/55 text-sm font-mono">how it works</p>
-          <p className="text-white/75 text-sm leading-relaxed">
+        <div className="space-y-2 text-left bg-muted rounded-lg p-4 border border-border">
+          <p className="text-muted-foreground text-sm font-mono">how it works</p>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             Real peer-to-peer (WebRTC, no server). Share a copy-pasted SDP blob with
             someone else. Each browser is one voice — a vertical drag sets your
             pitch. Both pitches are synthesised locally using the
@@ -524,17 +524,17 @@ function IdleScreen({ onStart }: { onStart: () => void }) {
         >
           Start →
         </button>
-        <p className="text-white/35 text-xs">
+        <p className="text-muted-foreground/70 text-xs">
           headphones recommended · no mic · no camera · no server
         </p>
         <a
           href="#design-notes"
-          className="text-white/35 text-xs underline underline-offset-2 hover:text-white/60 transition-colors"
+          className="text-muted-foreground/70 text-xs underline underline-offset-2 hover:text-muted-foreground transition-colors"
           onClick={(e) => e.preventDefault()}
         >
           Read the design notes ↓
         </a>
-        <div id="design-notes" className="text-left text-white/55 text-xs font-mono space-y-2 pt-2 border-t border-white/10">
+        <div id="design-notes" className="text-left text-muted-foreground text-xs font-mono space-y-2 pt-2 border-t border-border">
           <p><span className="text-violet-300">model:</span> Plomp–Levelt (JASA 1965) / Sethares 1998 — sensory roughness from partial beating</p>
           <p><span className="text-violet-300">signal:</span> RTCDataChannel, manual SDP copy/paste, STUN-assisted ICE</p>
           <p><span className="text-violet-300">reference:</span> Pauline Oliveros — Deep Listening (1988) — mutual attentive tuning as practice</p>
@@ -598,22 +598,22 @@ function RunningScreen({
   })();
 
   const statusColor = connState === 'connected'
-    ? 'text-emerald-300/95'
+    ? 'text-violet-300/95'
     : connState === 'failed'
-    ? 'text-rose-300'
-    : 'text-white/55';
+    ? 'text-violet-300'
+    : 'text-muted-foreground';
 
   return (
-    <div className="flex flex-col h-screen bg-zinc-950 text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-zinc-950 text-foreground overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/40 border-b border-white/10">
+      <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/40 border-b border-border">
         <div>
-          <span className="text-white font-serif text-base">Accord Call</span>
-          <span className="text-white/45 text-xs font-mono ml-3">drag vertically · find consonance together</span>
+          <span className="text-foreground font-serif text-base">Accord Call</span>
+          <span className="text-muted-foreground text-xs font-mono ml-3">drag vertically · find consonance together</span>
         </div>
         <div className="flex items-center gap-3">
           <span className={`text-xs font-mono ${statusColor}`}>{statusText}</span>
-          <span className="text-white/25 text-xs font-mono">508</span>
+          <span className="text-muted-foreground/70 text-xs font-mono">508</span>
         </div>
       </div>
 
@@ -738,7 +738,7 @@ function RunningScreen({
           {/* Bot label overlay — shown when no peer */}
           {!hasPeer && connState !== 'connected' && (
             <div className="absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
-              <span className="text-white/45 text-xs font-mono bg-black/50 px-3 py-1 rounded-full">
+              <span className="text-muted-foreground text-xs font-mono bg-black/50 px-3 py-1 rounded-full">
                 practice partner — no one&apos;s connected yet
               </span>
             </div>
@@ -746,7 +746,7 @@ function RunningScreen({
         </div>
 
         {/* Signaling panel — right side */}
-        <div className="w-72 shrink-0 flex flex-col bg-black/30 border-l border-white/10 overflow-y-auto">
+        <div className="w-72 shrink-0 flex flex-col bg-black/30 border-l border-border overflow-y-auto">
           <SignalingPanel
             sigStep={sigStep}
             offerBlob={offerBlob}
@@ -809,15 +809,15 @@ function SignalingPanel({
   if (sigStep === 'connected') {
     return (
       <div className={panelBase}>
-        <p className="text-emerald-300/95 font-mono font-medium text-base">connected ✓</p>
-        <p className="text-white/55 text-xs leading-relaxed">
+        <p className="text-violet-300/95 font-mono font-medium text-base">connected ✓</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           Real peer connected. Drag your orb vertically to move your pitch.
           You&apos;ll both hear both voices — find consonance together.
         </p>
-        <div className="mt-2 border-t border-white/10 pt-3 space-y-1">
-          <p className="text-white/35 text-xs font-mono">— drag up for higher pitch</p>
-          <p className="text-white/35 text-xs font-mono">— consonance blooms shimmer</p>
-          <p className="text-white/35 text-xs font-mono">— dissonance beats and grinds</p>
+        <div className="mt-2 border-t border-border pt-3 space-y-1">
+          <p className="text-muted-foreground/70 text-xs font-mono">— drag up for higher pitch</p>
+          <p className="text-muted-foreground/70 text-xs font-mono">— consonance blooms shimmer</p>
+          <p className="text-muted-foreground/70 text-xs font-mono">— dissonance beats and grinds</p>
         </div>
       </div>
     );
@@ -826,13 +826,13 @@ function SignalingPanel({
   if (sigStep === 'failed') {
     return (
       <div className={panelBase}>
-        <p className="text-rose-300 font-mono text-base">connection failed</p>
-        <p className="text-white/55 text-xs">
+        <p className="text-violet-300 font-mono text-base">connection failed</p>
+        <p className="text-muted-foreground text-xs">
           The peer connection dropped or the SDP was rejected.
         </p>
         <button
           onPointerDown={onChooseCaller}
-          className="mt-2 w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white/75 text-sm font-mono rounded-lg transition-colors min-h-[44px]"
+          className="mt-2 w-full py-2.5 px-4 bg-muted hover:bg-accent border border-border text-muted-foreground text-sm font-mono rounded-lg transition-colors min-h-[44px]"
         >
           Try again
         </button>
@@ -843,8 +843,8 @@ function SignalingPanel({
   if (sigStep === 'choose') {
     return (
       <div className={panelBase}>
-        <p className="text-white/75 font-mono text-sm font-medium">Connect a peer</p>
-        <p className="text-white/45 text-xs leading-relaxed">
+        <p className="text-muted-foreground font-mono text-sm font-medium">Connect a peer</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           No server. You&apos;ll copy/paste a signaling blob between two browser tabs or devices.
         </p>
         <button
@@ -855,27 +855,27 @@ function SignalingPanel({
         </button>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/10" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-zinc-950 px-2 text-white/25 font-mono">or</span>
+            <span className="bg-zinc-950 px-2 text-muted-foreground/70 font-mono">or</span>
           </div>
         </div>
-        <p className="text-white/45 text-xs">Paste the caller&apos;s offer below to join:</p>
+        <p className="text-muted-foreground text-xs">Paste the caller&apos;s offer below to join:</p>
         <textarea
           value={pasteOffer}
           onChange={(e) => onSetPasteOffer(e.target.value)}
           placeholder="Paste offer SDP here…"
-          className="w-full h-24 p-2 bg-black/40 border border-white/15 text-white/75 text-xs font-mono rounded resize-none placeholder-white/25 focus:outline-none focus:border-white/30"
+          className="w-full h-24 p-2 bg-black/40 border border-border text-muted-foreground text-xs font-mono rounded resize-none placeholder-muted-foreground focus:outline-none focus:border-border"
         />
         <button
           onPointerDown={() => { if (pasteOffer.trim()) onJoinRoom(); }}
           disabled={!pasteOffer.trim()}
-          className="w-full py-2.5 px-4 bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/40 text-teal-300 text-sm font-mono rounded-lg transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full py-2.5 px-4 bg-violet-500/20 hover:bg-violet-500/30 border border-violet-500/40 text-violet-300 text-sm font-mono rounded-lg transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Join room (joiner)
         </button>
-        <p className="text-white/25 text-xs font-mono text-center pt-1">practice partner active until connected</p>
+        <p className="text-muted-foreground/70 text-xs font-mono text-center pt-1">practice partner active until connected</p>
       </div>
     );
   }
@@ -883,8 +883,8 @@ function SignalingPanel({
   if (sigStep === 'creating') {
     return (
       <div className={panelBase}>
-        <p className="text-white/55 font-mono text-sm">Gathering ICE candidates…</p>
-        <p className="text-white/35 text-xs">STUN: stun.l.google.com:19302 · up to 8s</p>
+        <p className="text-muted-foreground font-mono text-sm">Gathering ICE candidates…</p>
+        <p className="text-muted-foreground/70 text-xs">STUN: stun.l.google.com:19302 · up to 8s</p>
         <div className="animate-pulse h-2 bg-violet-500/30 rounded" />
       </div>
     );
@@ -893,8 +893,8 @@ function SignalingPanel({
   if (sigStep === 'offer-ready') {
     return (
       <div className={panelBase}>
-        <p className="text-white/75 font-mono text-sm font-medium">Step 1 of 2</p>
-        <p className="text-white/55 text-xs leading-relaxed">
+        <p className="text-muted-foreground font-mono text-sm font-medium">Step 1 of 2</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           Copy this offer blob and send it to your peer (text, chat, email…).
           They paste it into &ldquo;Join room&rdquo;.
         </p>
@@ -902,7 +902,7 @@ function SignalingPanel({
           <textarea
             readOnly
             value={offerBlob}
-            className="w-full h-28 p-2 bg-black/50 border border-white/15 text-white/60 text-xs font-mono rounded resize-none focus:outline-none"
+            className="w-full h-28 p-2 bg-black/50 border border-border text-muted-foreground text-xs font-mono rounded resize-none focus:outline-none"
           />
           <button
             onPointerDown={() => onCopy(offerBlob)}
@@ -911,25 +911,25 @@ function SignalingPanel({
             {copyMsg || 'Copy'}
           </button>
         </div>
-        <div className="border-t border-white/10 pt-3">
-          <p className="text-white/55 text-xs mb-2">
+        <div className="border-t border-border pt-3">
+          <p className="text-muted-foreground text-xs mb-2">
             Step 2: paste their answer SDP here once they give it to you:
           </p>
           <textarea
             value={pasteAnswer}
             onChange={(e) => onSetPasteAnswer(e.target.value)}
             placeholder="Paste answer SDP here…"
-            className="w-full h-24 p-2 bg-black/40 border border-white/15 text-white/75 text-xs font-mono rounded resize-none placeholder-white/25 focus:outline-none focus:border-white/30"
+            className="w-full h-24 p-2 bg-black/40 border border-border text-muted-foreground text-xs font-mono rounded resize-none placeholder-muted-foreground focus:outline-none focus:border-border"
           />
           <button
             onPointerDown={() => { if (pasteAnswer.trim()) onPasteAnswer(); }}
             disabled={!pasteAnswer.trim()}
-            className="mt-2 w-full py-2.5 px-4 bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/40 text-teal-300 text-sm font-mono rounded-lg transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="mt-2 w-full py-2.5 px-4 bg-violet-500/20 hover:bg-violet-500/30 border border-violet-500/40 text-violet-300 text-sm font-mono rounded-lg transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Complete connection
           </button>
         </div>
-        {sigError && <p className="text-rose-300 text-xs font-mono">{sigError}</p>}
+        {sigError && <p className="text-violet-300 text-xs font-mono">{sigError}</p>}
       </div>
     );
   }
@@ -937,9 +937,9 @@ function SignalingPanel({
   if (sigStep === 'joining') {
     return (
       <div className={panelBase}>
-        <p className="text-white/55 font-mono text-sm">Gathering ICE candidates…</p>
-        <p className="text-white/35 text-xs">Creating answer · STUN · up to 8s</p>
-        <div className="animate-pulse h-2 bg-teal-500/30 rounded" />
+        <p className="text-muted-foreground font-mono text-sm">Gathering ICE candidates…</p>
+        <p className="text-muted-foreground/70 text-xs">Creating answer · STUN · up to 8s</p>
+        <div className="animate-pulse h-2 bg-violet-500/30 rounded" />
       </div>
     );
   }
@@ -947,8 +947,8 @@ function SignalingPanel({
   if (sigStep === 'answer-ready') {
     return (
       <div className={panelBase}>
-        <p className="text-white/75 font-mono text-sm font-medium">Your answer SDP</p>
-        <p className="text-white/55 text-xs leading-relaxed">
+        <p className="text-muted-foreground font-mono text-sm font-medium">Your answer SDP</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           Copy this blob and send it back to the caller. Once they paste it,
           the connection will open.
         </p>
@@ -956,17 +956,17 @@ function SignalingPanel({
           <textarea
             readOnly
             value={answerBlob}
-            className="w-full h-28 p-2 bg-black/50 border border-white/15 text-white/60 text-xs font-mono rounded resize-none focus:outline-none"
+            className="w-full h-28 p-2 bg-black/50 border border-border text-muted-foreground text-xs font-mono rounded resize-none focus:outline-none"
           />
           <button
             onPointerDown={() => onCopy(answerBlob)}
-            className="absolute top-1.5 right-1.5 px-2 py-1 bg-teal-500/30 hover:bg-teal-500/50 border border-teal-500/40 text-teal-300 text-xs font-mono rounded transition-colors"
+            className="absolute top-1.5 right-1.5 px-2 py-1 bg-violet-500/30 hover:bg-violet-500/50 border border-violet-500/40 text-violet-300 text-xs font-mono rounded transition-colors"
           >
             {copyMsg || 'Copy'}
           </button>
         </div>
-        <p className="text-white/35 text-xs font-mono">Waiting for caller to paste answer…</p>
-        {sigError && <p className="text-rose-300 text-xs font-mono">{sigError}</p>}
+        <p className="text-muted-foreground/70 text-xs font-mono">Waiting for caller to paste answer…</p>
+        {sigError && <p className="text-violet-300 text-xs font-mono">{sigError}</p>}
       </div>
     );
   }
@@ -974,12 +974,12 @@ function SignalingPanel({
   if (sigStep === 'waiting-answer') {
     return (
       <div className={panelBase}>
-        <p className="text-white/55 font-mono text-sm">Waiting for peer…</p>
-        <p className="text-white/35 text-xs">
+        <p className="text-muted-foreground font-mono text-sm">Waiting for peer…</p>
+        <p className="text-muted-foreground/70 text-xs">
           Answer received. The data channel will open once both ICE agents agree on a path.
         </p>
-        <div className="animate-pulse h-2 bg-teal-500/20 rounded" />
-        {sigError && <p className="text-rose-300 text-xs font-mono">{sigError}</p>}
+        <div className="animate-pulse h-2 bg-violet-500/20 rounded" />
+        {sigError && <p className="text-violet-300 text-xs font-mono">{sigError}</p>}
       </div>
     );
   }

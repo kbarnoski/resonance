@@ -280,7 +280,7 @@ export default function GlassworkPage() {
   const chordId = harmonyRef.current.current.id;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06070b] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06070b] text-foreground">
       {/* SVG field */}
       <div
         className="absolute inset-0 touch-none"
@@ -374,10 +374,10 @@ export default function GlassworkPage() {
       {/* HUD / controls */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10">
         <header className="max-w-xl">
-          <h1 className="font-serif text-3xl text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             Glasswork
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             A 3am music-box whose harmony breathes through real four-part
             voice-leading — watch each voice glide to its nearest tone as the
             chord changes.
@@ -393,7 +393,7 @@ export default function GlassworkPage() {
             >
               Begin
             </button>
-            <p className="max-w-md text-sm text-white/55">
+            <p className="max-w-md text-sm text-muted-foreground">
               Plays itself. Optional: move the pointer — higher is brighter,
               further right is busier. A tap drops a stone, pulling the harmony
               toward rest.
@@ -403,7 +403,7 @@ export default function GlassworkPage() {
 
         {phase === "error" && (
           <div className="pointer-events-auto max-w-md">
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               {errorMsg ?? "Audio is unavailable on this device."}
             </p>
           </div>
@@ -411,15 +411,15 @@ export default function GlassworkPage() {
 
         {phase === "playing" && (
           <div className="flex items-end justify-between">
-            <p className="font-mono text-sm text-white/55">
-              chord <span className="text-white/75">{chordId}</span> · nearest-
+            <p className="font-mono text-sm text-muted-foreground">
+              chord <span className="text-muted-foreground">{chordId}</span> · nearest-
               tone voice-leading · D Dorian
             </p>
             <details className="pointer-events-auto max-w-xs text-right">
-              <summary className="cursor-pointer font-mono text-sm text-white/55 hover:text-white/75">
+              <summary className="cursor-pointer font-mono text-sm text-muted-foreground hover:text-muted-foreground">
                 design notes
               </summary>
-              <p className="mt-2 text-sm text-white/55">
+              <p className="mt-2 text-sm text-muted-foreground">
                 A tension-weighted random walk picks a new diatonic chord every
                 6–10s. An exhaustive 4-voice search then assigns voices to the
                 nearest chord tones (doublings penalised) and each pad voice

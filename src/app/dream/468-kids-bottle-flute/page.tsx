@@ -791,7 +791,7 @@ export default function KidsBottleFlute() {
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <div className="relative min-h-screen bg-[#0d0905] text-white flex flex-col items-center">
+    <div className="relative min-h-screen bg-[#0d0905] text-foreground flex flex-col items-center">
       {/* Background warm gradient */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
@@ -804,12 +804,12 @@ export default function KidsBottleFlute() {
 
       {/* Header */}
       <header className="relative z-10 w-full px-5 pt-6 pb-2 flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight text-white/95">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           Bottle Flute
         </h1>
         <Link
           href="/dream"
-          className="text-xs tracking-widest text-white/50 hover:text-white/80 transition-colors"
+          className="text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
         >
           RESONANCE / DREAM
         </Link>
@@ -835,26 +835,26 @@ export default function KidsBottleFlute() {
             ))}
           </div>
 
-          <p className="text-white/75 text-base max-w-xs leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-xs leading-relaxed">
             Blow into the mic and tap a glowing bottle — it breathes like a real flute.
           </p>
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <button
               onClick={handleStart}
-              className="min-h-[52px] px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white text-base font-semibold shadow-lg shadow-amber-900/40 transition-colors"
+              className="min-h-[52px] px-6 py-3 rounded-2xl bg-violet-600 hover:bg-violet-500 text-foreground text-base font-semibold shadow-lg shadow-violet-900/40 transition-colors"
             >
               Start with mic
             </button>
             <button
               onClick={handleStartNoMic}
-              className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white/80 text-base transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-xl bg-muted hover:bg-accent text-foreground text-base transition-colors"
             >
               Tap-only (no mic)
             </button>
           </div>
 
-          <p className="text-white/40 text-sm max-w-xs">
+          <p className="text-muted-foreground/70 text-sm max-w-xs">
             Mic is used only for live breath — never recorded or stored.
           </p>
         </div>
@@ -866,19 +866,19 @@ export default function KidsBottleFlute() {
           {/* Status bar */}
           <div className="flex items-center gap-3 mb-6 h-7">
             {micActive && (
-              <span className="text-sm text-emerald-400/80 flex items-center gap-1.5">
+              <span className="text-sm text-violet-400/80 flex items-center gap-1.5">
                 <span
-                  className="inline-block w-2 h-2 rounded-full bg-emerald-400"
+                  className="inline-block w-2 h-2 rounded-full bg-violet-400"
                   style={{ animation: "pulse 1.5s ease-in-out infinite" }}
                 />
                 mic on — blow gently
               </span>
             )}
             {micError && (
-              <span className="text-sm text-rose-300">{micError}</span>
+              <span className="text-sm text-violet-300">{micError}</span>
             )}
             {isAutoDemo && (
-              <span className="text-sm text-amber-400/80 italic">auto-demo — tap any bottle</span>
+              <span className="text-sm text-violet-400/80 italic">auto-demo — tap any bottle</span>
             )}
           </div>
 
@@ -902,14 +902,14 @@ export default function KidsBottleFlute() {
           </div>
 
           {/* Instructions */}
-          <p className="mt-8 text-white/50 text-sm text-center max-w-xs">
+          <p className="mt-8 text-muted-foreground text-sm text-center max-w-xs">
             {micActive
               ? "Tap a bottle, then blow — soft breath for pure tone, hard blow for high note"
               : "Tap and hold a bottle to play"}
           </p>
 
           {/* Overblow hint */}
-          <p className="mt-2 text-amber-400/50 text-xs text-center max-w-xs">
+          <p className="mt-2 text-violet-400/50 text-xs text-center max-w-xs">
             Blow hard to jump the octave
           </p>
         </div>
@@ -917,7 +917,7 @@ export default function KidsBottleFlute() {
 
       {/* Corner note */}
       <div className="fixed bottom-16 right-4 z-20">
-        <span className="text-[11px] text-white/25 select-none">
+        <span className="text-[11px] text-muted-foreground/70 select-none">
           waveguide flute — see README
         </span>
       </div>

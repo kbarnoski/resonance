@@ -230,7 +230,7 @@ function SteadinessMeter({ steadiness, tempo }: { steadiness: number; tempo: num
           );
         })}
       </div>
-      <p className="text-white/75 text-sm mt-0.5">
+      <p className="text-muted-foreground text-sm mt-0.5">
         {tempo > 0
           ? `${Math.round(tempo)} BPM · ${Math.round(steadiness * 100)}% steady`
           : "Keep the beat!"}
@@ -245,21 +245,21 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.75)" }}>
-      <div className="bg-slate-900 border border-white/10 rounded-2xl p-6 max-w-lg w-full
+      <div className="bg-slate-900 border border-border rounded-2xl p-6 max-w-lg w-full
                       max-h-[80vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold text-white mb-4">Design Notes</h2>
-        <div className="space-y-4 text-white/80 text-base leading-relaxed">
+        <h2 className="text-2xl font-bold text-foreground mb-4">Design Notes</h2>
+        <div className="space-y-4 text-foreground text-base leading-relaxed">
           <p><span className="text-violet-300 font-semibold">Question:</span> What if a little creature only walked smoothly when you kept a steady beat?</p>
           <p><span className="text-violet-300 font-semibold">How to Play:</span> Tap &ldquo;Start&rdquo;, then clap or say &ldquo;bup bup bup&rdquo; in a steady rhythm. The creature walks smoother the more even your beat is. Keep steady for 8 steps to earn a flower reward!</p>
           <p><span className="text-violet-300 font-semibold">Technique:</span> A Web Audio AnalyserNode reads mic input each animation frame. Spectral flux (sum of positive bin-to-bin magnitude increases, weighted toward high frequencies) detects each clap onset. Inter-onset intervals (IOIs) are stored in a ring buffer. Steadiness = 1 − CV where CV = stddev/mean of recent IOIs. Tempo = 60000 / median(IOI) in BPM.</p>
           <p><span className="text-violet-300 font-semibold">Reference:</span> Repp, B. H. (2005). Sensorimotor synchronization: A review of the tapping literature. <em>Psychonomic Bulletin &amp; Review, 12</em>(6), 969–992. The refractory window (~120 ms) follows tapping-study norms from this work.</p>
           <p><span className="text-violet-300 font-semibold">Sound:</span> Slendro pentatonic (Indonesian gamelan) — approx. [196, 226, 258, 296, 342] Hz and upper octave. Each step cycles through this non-Western 5-tone scale.</p>
           <p><span className="text-violet-300 font-semibold">Subsystems:</span> onset.ts (spectral flux detector), steadiness.ts (IOI ring buffer + CV), audio.ts (slendro synth), page.tsx (SVG creature + path scene + reward logic).</p>
-          <p className="text-white/60 text-sm">Tags: INPUT=mic onsets · OUTPUT=SVG · TECHNIQUE=onset detection + IOI regularity · PALETTE=walking creature, slendro scale</p>
+          <p className="text-muted-foreground text-sm">Tags: INPUT=mic onsets · OUTPUT=SVG · TECHNIQUE=onset detection + IOI regularity · PALETTE=walking creature, slendro scale</p>
         </div>
         <button onClick={onClose}
           className="mt-6 px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500
-                     text-white font-semibold text-base transition-colors w-full">
+                     text-foreground font-semibold text-base transition-colors w-full">
           Close
         </button>
       </div>
@@ -599,15 +599,15 @@ export default function KidsSteadyWalk() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between
-                    bg-slate-950 text-white select-none overflow-hidden"
+                    bg-slate-950 text-foreground select-none overflow-hidden"
       style={{ fontFamily: "system-ui, sans-serif" }}>
 
       {/* Header */}
       <div className="w-full flex items-center justify-between px-4 pt-4 pb-2">
-        <h1 className="text-2xl font-bold text-white">Steady Walk</h1>
+        <h1 className="text-2xl font-bold text-foreground">Steady Walk</h1>
         <button
           onClick={() => setShowNotes(true)}
-          className="text-white/75 text-sm underline underline-offset-2
+          className="text-muted-foreground text-sm underline underline-offset-2
                      hover:text-violet-300 transition-colors">
           Read the design notes
         </button>
@@ -747,14 +747,14 @@ export default function KidsSteadyWalk() {
 
           {appState === "idle" && (
             <>
-              <p className="text-white/80 text-base text-center">
+              <p className="text-foreground text-base text-center">
                 Clap or say &ldquo;bup bup bup&rdquo; in a steady beat!
               </p>
               <button
                 onClick={startMic}
                 className="w-full min-h-[64px] rounded-2xl bg-violet-600
                            hover:bg-violet-500 active:bg-violet-700
-                           text-white text-xl font-bold transition-colors
+                           text-foreground text-xl font-bold transition-colors
                            shadow-lg shadow-violet-900/50">
                 🎙 Start (use mic)
               </button>
@@ -762,7 +762,7 @@ export default function KidsSteadyWalk() {
                 onClick={startDemo}
                 className="w-full min-h-[64px] rounded-2xl bg-slate-700
                            hover:bg-slate-600 active:bg-slate-800
-                           text-white text-base font-semibold transition-colors">
+                           text-foreground text-base font-semibold transition-colors">
                 Watch it play (demo)
               </button>
             </>
@@ -770,14 +770,14 @@ export default function KidsSteadyWalk() {
 
           {appState === "denied" && (
             <>
-              <p className="text-rose-300 text-base text-center font-semibold">
+              <p className="text-violet-300 text-base text-center font-semibold">
                 Mic not available — that is okay!
               </p>
               <button
                 onClick={startDemo}
                 className="w-full min-h-[64px] rounded-2xl bg-slate-700
                            hover:bg-slate-600 active:bg-slate-800
-                           text-white text-xl font-bold transition-colors">
+                           text-foreground text-xl font-bold transition-colors">
                 Watch it play (demo)
               </button>
             </>
@@ -785,7 +785,7 @@ export default function KidsSteadyWalk() {
 
           {(appState === "running" || appState === "demo") && (
             <>
-              <p className="text-white/75 text-base text-center">
+              <p className="text-muted-foreground text-base text-center">
                 {appState === "demo"
                   ? "Demo mode — watch the creature!"
                   : "Clap or say \"bup bup bup\" in a steady beat!"}
@@ -808,7 +808,7 @@ export default function KidsSteadyWalk() {
                     setAppState("idle");
                   }}
                   className="flex-1 min-h-[64px] rounded-2xl bg-slate-700
-                             hover:bg-slate-600 text-white text-base
+                             hover:bg-slate-600 text-foreground text-base
                              font-semibold transition-colors">
                   Stop
                 </button>
@@ -830,7 +830,7 @@ export default function KidsSteadyWalk() {
                       startMic();
                     }}
                     className="flex-1 min-h-[64px] rounded-2xl bg-violet-600
-                               hover:bg-violet-500 text-white text-base
+                               hover:bg-violet-500 text-foreground text-base
                                font-semibold transition-colors">
                     Use mic
                   </button>

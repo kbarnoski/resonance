@@ -251,12 +251,12 @@ export default function ChatterboxGhostPage() {
   const hasRef = Boolean(refBlob);
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-screen bg-black text-foreground p-6">
       <div className="max-w-2xl mx-auto font-mono">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-lg tracking-tight mb-2">Chatterbox Ghost</h1>
-          <p className="text-xs text-white/40 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
             Hear the Ghost narrate six scenes in a cloned voice. Record 5–10 seconds
             of any voice as a reference — Chatterbox Turbo renders the Ghost&apos;s lines
             in that voice, with physical acting tags embedded in the text.
@@ -264,8 +264,8 @@ export default function ChatterboxGhostPage() {
         </div>
 
         {/* Voice reference card */}
-        <div className="border border-white/10 rounded p-4 mb-5">
-          <div className="text-[10px] text-white/40 uppercase tracking-widest mb-3">
+        <div className="border border-border rounded p-4 mb-5">
+          <div className="text-[10px] text-muted-foreground/70 uppercase tracking-widest mb-3">
             Voice reference (optional)
           </div>
 
@@ -275,15 +275,15 @@ export default function ChatterboxGhostPage() {
                 onClick={() => { void (recording ? stopRecord() : startRecord()); }}
                 className={`px-4 py-2 text-xs tracking-wider uppercase border rounded transition ${
                   recording
-                    ? "border-rose-400/60 text-rose-300 bg-rose-400/10 animate-pulse"
-                    : "border-white/20 hover:border-white/50 hover:bg-white/5"
+                    ? "border-violet-400/60 text-violet-300 bg-violet-400/10 animate-pulse"
+                    : "border-border hover:border-border hover:bg-accent"
                 }`}
               >
                 {recording
                   ? `■ stop — ${refDuration.toFixed(1)}s`
                   : "● record 5–10s reference"}
               </button>
-              <span className="text-[11px] text-white/25">
+              <span className="text-[11px] text-muted-foreground/70">
                 {recording
                   ? "speak naturally — one sentence is enough"
                   : "without reference, Chatterbox uses its default voice"}
@@ -291,12 +291,12 @@ export default function ChatterboxGhostPage() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
-              <span className="text-xs text-white/60">
+              <span className="text-xs text-muted-foreground">
                 ✓ {refDuration.toFixed(1)}s reference recorded
               </span>
               <button
                 onClick={clearRef}
-                className="text-[11px] text-white/30 hover:text-white/60 border border-white/10 hover:border-white/30 px-2 py-1 rounded transition"
+                className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground border border-border hover:border-border px-2 py-1 rounded transition"
               >
                 clear
               </button>
@@ -306,7 +306,7 @@ export default function ChatterboxGhostPage() {
 
         {/* Exaggeration slider */}
         <div className="flex items-center gap-4 mb-5">
-          <span className="text-[10px] text-white/40 uppercase tracking-widest shrink-0">
+          <span className="text-[10px] text-muted-foreground/70 uppercase tracking-widest shrink-0">
             Exaggeration
           </span>
           <input
@@ -316,9 +316,9 @@ export default function ChatterboxGhostPage() {
             step="0.05"
             value={exaggeration}
             onChange={(e) => setExaggeration(parseFloat(e.target.value))}
-            className="w-40 accent-white"
+            className="w-40 accent-primary"
           />
-          <span className="text-[11px] text-white/30">
+          <span className="text-[11px] text-muted-foreground/70">
             {exaggeration.toFixed(2)} — {exaggeration < 0.35 ? "neutral" : exaggeration < 0.7 ? "expressive" : "dramatic"}
           </span>
         </div>
@@ -327,7 +327,7 @@ export default function ChatterboxGhostPage() {
         <button
           onClick={() => { void generate(); }}
           disabled={generating}
-          className="mb-8 px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition disabled:opacity-30 disabled:cursor-not-allowed"
+          className="mb-8 px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {generating ? "Generating…" : "Generate Ghost voices"}
         </button>
@@ -341,7 +341,7 @@ export default function ChatterboxGhostPage() {
             return (
               <div
                 key={scene.id}
-                className="border border-white/10 rounded p-4"
+                className="border border-border rounded p-4"
                 style={isPlaying ? { borderColor: `${scene.accent}40` } : undefined}
               >
                 {/* Scene header row */}
@@ -351,7 +351,7 @@ export default function ChatterboxGhostPage() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {result.status === "loading" && (
-                      <span className="text-[11px] text-white/30 animate-pulse">
+                      <span className="text-[11px] text-muted-foreground/70 animate-pulse">
                         generating…
                       </span>
                     )}
@@ -380,7 +380,7 @@ export default function ChatterboxGhostPage() {
                       return next;
                     })
                   }
-                  className="w-full text-xs text-white/55 bg-transparent resize-none outline-none leading-relaxed mb-3"
+                  className="w-full text-xs text-muted-foreground bg-transparent resize-none outline-none leading-relaxed mb-3"
                   rows={2}
                   spellCheck={false}
                 />
@@ -396,12 +396,12 @@ export default function ChatterboxGhostPage() {
                   />
                 )}
                 {result.status === "idle" && (
-                  <div className="h-9 rounded bg-white/[0.03] flex items-center px-3">
-                    <div className="w-full h-px bg-white/5" />
+                  <div className="h-9 rounded bg-muted flex items-center px-3">
+                    <div className="w-full h-px bg-muted" />
                   </div>
                 )}
                 {result.status === "loading" && (
-                  <div className="h-9 rounded bg-white/[0.03] flex items-center px-3">
+                  <div className="h-9 rounded bg-muted flex items-center px-3">
                     <div
                       className="h-px animate-pulse"
                       style={{ width: "100%", background: `${scene.accent}40` }}
@@ -409,8 +409,8 @@ export default function ChatterboxGhostPage() {
                   </div>
                 )}
                 {result.status === "error" && (
-                  <div className="h-9 rounded bg-rose-900/10 flex items-center px-3">
-                    <span className="text-[10px] text-rose-300/60 truncate">{result.error}</span>
+                  <div className="h-9 rounded bg-violet-900/10 flex items-center px-3">
+                    <span className="text-[10px] text-violet-300/60 truncate">{result.error}</span>
                   </div>
                 )}
               </div>
@@ -420,27 +420,27 @@ export default function ChatterboxGhostPage() {
 
         {/* Summary note after generation */}
         {allDone && results.some((r) => r.status === "error") && (
-          <div className="mt-4 text-[11px] text-white/30 leading-relaxed">
+          <div className="mt-4 text-[11px] text-muted-foreground/70 leading-relaxed">
             ⚠ Some scenes failed. Paste the error text and the agent will fix the endpoint
             parameters next cycle. Endpoint used:{" "}
-            <code className="text-white/50">fal-ai/chatterbox/text-to-speech</code>
+            <code className="text-muted-foreground">fal-ai/chatterbox/text-to-speech</code>
           </div>
         )}
 
         {/* Footer */}
         <div className="mt-12 flex flex-wrap items-center gap-6">
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back
           </Link>
           <a
             href="src/app/dream/66-chatterbox-ghost/README.md"
             target="_blank"
             rel="noreferrer"
-            className="text-[11px] text-white/30 hover:text-white/60"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             design notes
           </a>
-          <span className="text-[11px] text-white/20">
+          <span className="text-[11px] text-muted-foreground/70">
             Chatterbox Turbo · fal.ai · $0.025/1000 chars
             {hasRef ? " · voice-clone mode" : " · default voice"}
           </span>

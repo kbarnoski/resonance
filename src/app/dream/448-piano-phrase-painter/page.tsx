@@ -793,16 +793,16 @@ export default function PianoPhraseParinter() {
   const isLoading = appStatus === "loading";
 
   const statusColor =
-    appStatus === "error" ? "text-rose-300" :
-    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-emerald-400" :
-    (isRunning && audioMode === "real") ? "text-emerald-300/80" :
-    isRunning ? "text-amber-300" : "text-white/55";
+    appStatus === "error" ? "text-violet-300" :
+    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-violet-400" :
+    (isRunning && audioMode === "real") ? "text-violet-300/80" :
+    isRunning ? "text-violet-300" : "text-muted-foreground";
 
   const statusDot =
-    appStatus === "error" ? "bg-rose-400" :
-    (isRunning && imageStatus === "live") ? "bg-emerald-400 animate-pulse" :
-    isRunning ? "bg-amber-400 animate-pulse" :
-    "bg-white/20";
+    appStatus === "error" ? "bg-violet-400" :
+    (isRunning && imageStatus === "live") ? "bg-violet-400 animate-pulse" :
+    isRunning ? "bg-violet-400 animate-pulse" :
+    "bg-muted";
 
   const statusLabel =
     appStatus === "error" ? (errorMsg ?? "Error") :
@@ -837,13 +837,13 @@ export default function PianoPhraseParinter() {
       {!isRunning && !isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12 text-center">
           {/* Background gradient for idle state */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-indigo-950/40 to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-violet-950/40 to-black pointer-events-none" />
 
           <div className="relative z-10 max-w-xl flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-serif font-bold text-white tracking-tight leading-snug">
+            <h1 className="text-3xl font-serif font-bold text-foreground tracking-tight leading-snug">
               Piano Phrase Painter
             </h1>
-            <p className="text-base text-white/75 leading-relaxed">
+            <p className="text-base text-muted-foreground leading-relaxed">
               Karel&apos;s real piano recording listens to itself — onset detection, harmonic
               chromagram, and phrase-boundary analysis drive when a new image is dreamed and
               what it depicts. The returning image bends the piano back. A closed
@@ -852,7 +852,7 @@ export default function PianoPhraseParinter() {
 
             {/* Status / error message */}
             {(statusMsg || errorMsg) && (
-              <p className={`text-sm ${errorMsg ? "text-rose-300" : "text-amber-300"} max-w-md`}>
+              <p className={`text-sm ${errorMsg ? "text-violet-300" : "text-violet-300"} max-w-md`}>
                 {errorMsg ?? statusMsg}
               </p>
             )}
@@ -861,14 +861,14 @@ export default function PianoPhraseParinter() {
             <button
               onClick={() => void handleBegin()}
               disabled={isLoading}
-              className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-900/50"
+              className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-900/50"
             >
               Begin
             </button>
 
             {/* File drop zone */}
-            <div className="w-full border border-white/20 rounded-xl p-5 text-center bg-white/5 hover:bg-white/8 transition-colors">
-              <p className="text-white/75 text-base mb-3">
+            <div className="w-full border border-border rounded-xl p-5 text-center bg-muted hover:bg-accent transition-colors">
+              <p className="text-muted-foreground text-base mb-3">
                 Drop a <em>Welcome Home</em> track (or any audio file)
               </p>
               <label className="cursor-pointer">
@@ -878,14 +878,14 @@ export default function PianoPhraseParinter() {
                   className="hidden"
                   onChange={handleFileInput}
                 />
-                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-white/30 text-white/75 text-base hover:border-violet-400/60 hover:text-white transition-colors">
+                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-border text-muted-foreground text-base hover:border-violet-400/60 hover:text-foreground transition-colors">
                   Choose audio file
                 </span>
               </label>
-              <p className="text-white/55 text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
+              <p className="text-muted-foreground text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
             </div>
 
-            <p className="text-white/55 text-sm max-w-md leading-relaxed">
+            <p className="text-muted-foreground text-sm max-w-md leading-relaxed">
               No audio file? Begin plays Karel&apos;s Ghost-journey recording (when logged in) or a warm synthesized piano that resolves on purpose — both drive real musical analysis.
             </p>
           </div>
@@ -896,7 +896,7 @@ export default function PianoPhraseParinter() {
       {isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-4">
           <div className="w-8 h-8 rounded-full border-2 border-violet-400 border-t-transparent animate-spin" />
-          <p className="text-white/75 text-base">Loading audio…</p>
+          <p className="text-muted-foreground text-base">Loading audio…</p>
         </div>
       )}
 
@@ -913,14 +913,14 @@ export default function PianoPhraseParinter() {
             <div className="flex items-center gap-2 pointer-events-auto">
               <button
                 onClick={() => setShowHud(v => !v)}
-                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-white transition-colors"
+                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors"
                 title="Toggle HUD"
               >
                 HUD
               </button>
               <button
                 onClick={handleStop}
-                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-rose-300 transition-colors"
+                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-violet-300 transition-colors"
               >
                 Stop
               </button>
@@ -931,7 +931,7 @@ export default function PianoPhraseParinter() {
           {statusMsg && (
             <div className="absolute top-14 left-4 right-4 z-20 pointer-events-none">
               <div className="bg-black/55 backdrop-blur-sm rounded-lg px-4 py-2.5 max-w-lg">
-                <p className="text-amber-300 text-xs leading-relaxed">{statusMsg}</p>
+                <p className="text-violet-300 text-xs leading-relaxed">{statusMsg}</p>
               </div>
             </div>
           )}
@@ -940,26 +940,26 @@ export default function PianoPhraseParinter() {
           {showHud && (
             <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
               <div className="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-3 space-y-1 min-w-[200px]">
-                <p className="text-white/55 text-xs uppercase tracking-wider mb-1.5">Musical State</p>
+                <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1.5">Musical State</p>
                 <div className="flex justify-between gap-4">
-                  <span className="text-white/55 text-xs">Key / Mode</span>
+                  <span className="text-muted-foreground text-xs">Key / Mode</span>
                   <span className="text-violet-300 text-xs font-mono">{hudKey}</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-white/55 text-xs">Phrase</span>
-                  <span className="text-white/75 text-xs font-mono">{hudPhrase}</span>
+                  <span className="text-muted-foreground text-xs">Phrase</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudPhrase}</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-white/55 text-xs">Dynamics</span>
-                  <span className="text-white/75 text-xs font-mono">{hudDyn}</span>
+                  <span className="text-muted-foreground text-xs">Dynamics</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudDyn}</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-white/55 text-xs">Onsets/min</span>
-                  <span className="text-white/75 text-xs font-mono">{hudOpm}</span>
+                  <span className="text-muted-foreground text-xs">Onsets/min</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudOpm}</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-white/55 text-xs">Flux ×1000</span>
-                  <span className="text-white/75 text-xs font-mono">{hudFlux}</span>
+                  <span className="text-muted-foreground text-xs">Flux ×1000</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudFlux}</span>
                 </div>
               </div>
             </div>
@@ -969,7 +969,7 @@ export default function PianoPhraseParinter() {
           {currentPrompt && (
             <div className="absolute bottom-4 right-4 z-20 max-w-xs pointer-events-none">
               <div className="bg-black/50 backdrop-blur-sm rounded-xl px-3 py-2">
-                <p className="text-white/55 text-xs leading-snug line-clamp-3">{currentPrompt}</p>
+                <p className="text-muted-foreground text-xs leading-snug line-clamp-3">{currentPrompt}</p>
               </div>
             </div>
           )}
@@ -983,7 +983,7 @@ export default function PianoPhraseParinter() {
                 className="hidden"
                 onChange={handleFileInput}
               />
-              <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/55 text-xs hover:text-white/90 transition-colors border border-white/15 hover:border-violet-400/40">
+              <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors border border-border hover:border-violet-400/40">
                 Swap audio file
               </span>
             </label>

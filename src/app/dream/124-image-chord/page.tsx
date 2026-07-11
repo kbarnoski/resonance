@@ -343,11 +343,11 @@ export default function ImageChord() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030008] flex flex-col text-white select-none">
+    <div className="min-h-screen bg-[#030008] flex flex-col text-foreground select-none">
       {/* ── header ── */}
       <div className="px-5 pt-5 pb-2 shrink-0">
-        <h1 className="text-2xl font-mono text-white/95 tracking-tight">Image Chord</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-mono text-foreground tracking-tight">Image Chord</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Drop a photo — its palette becomes music.
         </p>
       </div>
@@ -361,7 +361,7 @@ export default function ImageChord() {
           className={`rounded-xl border-2 border-dashed transition-colors duration-150 min-h-[120px] flex items-center justify-center overflow-hidden cursor-pointer ${
             isDragging
               ? "border-violet-400/80 bg-violet-500/10"
-              : "border-white/20 hover:border-white/35"
+              : "border-border hover:border-border"
           }`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
@@ -376,7 +376,7 @@ export default function ImageChord() {
               className="max-h-[108px] max-w-full object-contain rounded-lg"
             />
           ) : (
-            <span className="text-white/40 text-base font-mono px-6 text-center leading-relaxed">
+            <span className="text-muted-foreground/70 text-base font-mono px-6 text-center leading-relaxed">
               {isDragging ? "Release to analyze" : "Drop an image or tap to choose"}
             </span>
           )}
@@ -392,7 +392,7 @@ export default function ImageChord() {
 
       {/* ── journey palette swatches ── */}
       <div className="px-4 pb-3 shrink-0">
-        <p className="text-xs font-mono text-white/45 mb-2 tracking-wide">Journey palettes</p>
+        <p className="text-xs font-mono text-muted-foreground mb-2 tracking-wide">Journey palettes</p>
         <div className="grid grid-cols-4 gap-1.5">
           {SWATCHES.map((sw) => (
             <button
@@ -400,7 +400,7 @@ export default function ImageChord() {
               onClick={() => handleSwatchClick(sw)}
               style={{ backgroundColor: sw.hex }}
               className={`min-h-[44px] rounded-lg text-xs font-mono transition-opacity hover:opacity-85 active:opacity-70 ${
-                sw.l > 0.65 ? "text-gray-900/80" : "text-white/80"
+                sw.l > 0.65 ? "text-gray-900/80" : "text-foreground"
               }`}
             >
               {sw.name}
@@ -416,21 +416,21 @@ export default function ImageChord() {
         {/* Chord name + analysis readout — centered overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-2">
           <span
-            className="text-5xl font-mono text-white/95 tracking-tight"
+            className="text-5xl font-mono text-foreground tracking-tight"
             style={{ textShadow: "0 0 16px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,1)" }}
           >
             {chordName}
           </span>
           {analysis ? (
             <span
-              className="text-xs font-mono text-white/55"
+              className="text-xs font-mono text-muted-foreground"
               style={{ textShadow: "0 0 8px rgba(0,0,0,1)" }}
             >
               H {Math.round(analysis.h)}° · S {Math.round(analysis.s * 100)}% · L {Math.round(analysis.l * 100)}%
             </span>
           ) : (
             <span
-              className="text-sm font-mono text-white/35"
+              className="text-sm font-mono text-muted-foreground/70"
               style={{ textShadow: "0 0 8px rgba(0,0,0,1)" }}
             >
               tap a swatch or drop a photo

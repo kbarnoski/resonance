@@ -301,33 +301,33 @@ export default function StrangePage() {
       {mode === 'idle' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Strange Attractor</h1>
-          <p className="text-sm text-white/55 max-w-md mb-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-2 leading-relaxed">
             The Lorenz chaotic system traces a butterfly in 3D space. Its xyz coordinates
             drive FM synthesis in real time — you <em>see</em> and <em>hear</em> chaos
             evolve together. Wing transitions flip pitch; z-height shapes harmonic richness.
           </p>
-          <p className="text-xs text-white/35 max-w-sm mb-8 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 max-w-sm mb-8 leading-relaxed">
             Mic mode: your volume reshapes σ (the chaos parameter). Louder = faster wing
             transitions and more turbulent pitch jumps.
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={() => { void startMicMode() }}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/60 transition text-white/70"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               Start mic
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{micError}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{micError}</p>
           )}
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -336,42 +336,42 @@ export default function StrangePage() {
       {mode !== 'idle' && (
         <>
           {/* Lorenz state readout — top left */}
-          <div className="absolute top-4 left-4 text-[10px] tracking-wider text-white/40 space-y-0.5 pointer-events-none font-mono">
-            <div>x <span className="text-white/80">{hud.x.toFixed(2)}</span></div>
-            <div>y <span className="text-white/80">{hud.y.toFixed(2)}</span></div>
-            <div>z <span className="text-white/80">{hud.z.toFixed(2)}</span></div>
-            <div className="pt-1 text-white/25">σ={hud.sigma.toFixed(1)} ρ=28 β=2.67</div>
+          <div className="absolute top-4 left-4 text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 pointer-events-none font-mono">
+            <div>x <span className="text-foreground">{hud.x.toFixed(2)}</span></div>
+            <div>y <span className="text-foreground">{hud.y.toFixed(2)}</span></div>
+            <div>z <span className="text-foreground">{hud.z.toFixed(2)}</span></div>
+            <div className="pt-1 text-muted-foreground/70">σ={hud.sigma.toFixed(1)} ρ=28 β=2.67</div>
           </div>
 
           {/* FM synth readout — top right */}
-          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-white/40 space-y-0.5 text-right pointer-events-none font-mono">
+          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-muted-foreground/70 space-y-0.5 text-right pointer-events-none font-mono">
             <div>
               WING{' '}
-              <span className={hud.wing === 'right' ? 'text-orange-300' : 'text-blue-300'}>
+              <span className={hud.wing === 'right' ? 'text-violet-300' : 'text-violet-300'}>
                 {hud.wing.toUpperCase()}
               </span>
             </div>
-            <div>CARRIER <span className="text-white/80">{hud.carrierHz} Hz</span></div>
-            <div>FM INDEX <span className="text-white/80">{hud.modIdx}</span></div>
-            {mode === 'mic' && <div className="text-green-300/70 pt-1">MIC LIVE</div>}
+            <div>CARRIER <span className="text-foreground">{hud.carrierHz} Hz</span></div>
+            <div>FM INDEX <span className="text-foreground">{hud.modIdx}</span></div>
+            {mode === 'mic' && <div className="text-violet-300/70 pt-1">MIC LIVE</div>}
           </div>
 
           {/* Wing legend — bottom left */}
-          <div className="absolute bottom-4 left-4 text-[10px] tracking-wider text-white/30 space-y-1 pointer-events-none">
-            <div><span className="text-orange-300">■</span> right wing — high pitch</div>
-            <div><span className="text-blue-300">■</span> left wing — low pitch</div>
-            <div className="text-white/20 pt-0.5">z-height → harmonic richness</div>
+          <div className="absolute bottom-4 left-4 text-[10px] tracking-wider text-muted-foreground/70 space-y-1 pointer-events-none">
+            <div><span className="text-violet-300">■</span> right wing — high pitch</div>
+            <div><span className="text-violet-300">■</span> left wing — low pitch</div>
+            <div className="text-muted-foreground/70 pt-0.5">z-height → harmonic richness</div>
           </div>
 
           {/* Controls — bottom right */}
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={stopAll}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>

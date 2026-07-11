@@ -437,13 +437,13 @@ export default function SongArchitecturePage() {
             : "Play again";
 
   return (
-    <main className="min-h-screen bg-[#0a0712] text-white/95 px-6 py-10 flex flex-col items-center font-sans">
+    <main className="min-h-screen bg-[#0a0712] text-foreground px-6 py-10 flex flex-col items-center font-sans">
       <div className="w-full max-w-3xl">
         <header className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white/95">
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
             Song Architecture
           </h1>
-          <p className="mt-2 text-base text-white/75 max-w-2xl">
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
             A self-similarity matrix of Karel&apos;s &ldquo;Welcome Home&rdquo;
             piano recording — the hidden form drawn as a luminous heatmap.
             Bright off-diagonal stripes are where a phrase{" "}
@@ -455,40 +455,40 @@ export default function SongArchitecturePage() {
           <button
             onClick={loadAndAnalyze}
             disabled={busy}
-            className="min-h-[44px] px-4 py-2.5 rounded-md bg-violet-500/90 hover:bg-violet-400 disabled:opacity-60 disabled:cursor-wait text-white font-medium text-base transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-md bg-violet-500/90 hover:bg-violet-400 disabled:opacity-60 disabled:cursor-wait text-foreground font-medium text-base transition-colors"
           >
             {btnLabel}
           </button>
           {status === "playing" && (
             <button
               onClick={stopPlayback}
-              className="min-h-[44px] px-4 py-2.5 rounded-md bg-white/10 hover:bg-white/20 text-white/90 text-base transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-md bg-muted hover:bg-accent text-foreground text-base transition-colors"
             >
               Stop
             </button>
           )}
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="min-h-[44px] px-4 py-2.5 rounded-md bg-transparent border border-white/15 hover:border-white/30 text-white/75 text-base ml-auto transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-md bg-transparent border border-border hover:border-border text-muted-foreground text-base ml-auto transition-colors"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </div>
 
         {isFallback && (
-          <p className="mb-3 text-base text-amber-300/95">
+          <p className="mb-3 text-base text-violet-300/95">
             Using a synthesized stand-in (his recording unavailable here) — it
             still has a clear A&middot;B&middot;A form, so the recurrence stripes
             are real.
           </p>
         )}
         {status === "error" && (
-          <p className="mb-3 text-base text-rose-300">
+          <p className="mb-3 text-base text-violet-300">
             Could not start audio. Try the button again after a click.
           </p>
         )}
 
-        <div className="relative rounded-lg overflow-hidden border border-white/10 bg-black/40">
+        <div className="relative rounded-lg overflow-hidden border border-border bg-black/40">
           <canvas
             ref={canvasRef}
             width={640}
@@ -501,7 +501,7 @@ export default function SongArchitecturePage() {
           />
           {status === "idle" && (
             <div className="absolute inset-0 flex items-center justify-center text-center px-8 pointer-events-none">
-              <p className="text-base text-white/60">
+              <p className="text-base text-muted-foreground">
                 Press play. The piece plays whole while its structure is
                 computed in your browser and drawn here.
               </p>
@@ -520,23 +520,23 @@ export default function SongArchitecturePage() {
 
         <div className="mt-3 min-h-[44px] text-base">
           {compareMsg ? (
-            <span className="text-emerald-300">{compareMsg}</span>
+            <span className="text-violet-300">{compareMsg}</span>
           ) : hover && engineRef.current ? (
-            <span className="text-white/75 font-mono text-sm">
+            <span className="text-muted-foreground font-mono text-sm">
               cell ({hover.i},{hover.j}) ={" "}
               {(hover.s * 100).toFixed(0)}% similar &nbsp;·&nbsp;{" "}
               {(hover.i * (engineRef.current.ssm.frameSec)).toFixed(1)}s vs{" "}
               {(hover.j * engineRef.current.ssm.frameSec).toFixed(1)}s
               {Math.abs(hover.i - hover.j) >= 2 && hover.s >= 0.4 ? (
-                <span className="text-emerald-300"> — click to hear both</span>
+                <span className="text-violet-300"> — click to hear both</span>
               ) : null}
             </span>
           ) : status === "playing" ? (
-            <span className="text-white/60">
+            <span className="text-muted-foreground">
               The crosshair sweeps the diagonal in time with the music.
             </span>
           ) : status === "ready" ? (
-            <span className="text-white/60">
+            <span className="text-muted-foreground">
               Hover the heatmap; click a bright off-diagonal cell to hear two
               similar moments back-to-back.
             </span>
@@ -544,8 +544,8 @@ export default function SongArchitecturePage() {
         </div>
 
         {showNotes && (
-          <section className="mt-5 rounded-lg border border-white/10 bg-black/30 p-5 text-base text-white/75 leading-relaxed space-y-3">
-            <h2 className="text-xl font-semibold text-white/95">
+          <section className="mt-5 rounded-lg border border-border bg-black/30 p-5 text-base text-muted-foreground leading-relaxed space-y-3">
+            <h2 className="text-xl font-semibold text-foreground">
               Design notes
             </h2>
             <p>
@@ -559,19 +559,19 @@ export default function SongArchitecturePage() {
             </p>
             <p>
               The diagonal is white-hot (every frame matches itself). The
-              payoff is the <span className="text-amber-300">off-diagonal
+              payoff is the <span className="text-violet-300">off-diagonal
               stripes</span>: parallel lines mean a passage returns. The{" "}
-              <span className="text-emerald-300">emerald novelty curve</span>{" "}
+              <span className="text-violet-300">emerald novelty curve</span>{" "}
               along the bottom is a checkerboard-kernel correlation whose peaks
               mark likely section boundaries.
             </p>
             <p>
               Click a bright off-diagonal cell to{" "}
-              <span className="text-amber-300">resynthesize</span> the two
+              <span className="text-violet-300">resynthesize</span> the two
               moments back-to-back from the decoded buffer — the visual claims a
               repeat; your ears confirm it.
             </p>
-            <p className="text-white/60">
+            <p className="text-muted-foreground">
               Reference: Jonathan Foote, <em>&ldquo;Visualizing Music and Audio
               using Self-Similarity&rdquo;</em> (ACM Multimedia, 1999). See also
               SSM-Net and &ldquo;Generating Music with Structure Using

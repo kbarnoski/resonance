@@ -9,10 +9,15 @@ export async function GET(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
+  // Explicit application-layer scope (defense-in-depth; RLS also enforces
+  // this). A signed-in user may read their own journey or any public one —
+  // mirrors the journeys RLS policy so we don't lean on it as the only gate.
+  // user.id is a session-derived UUID, so it's safe to inline in the filter.
   const { data, error } = await supabase
     .from("journeys")
     .select("*")
     .eq("id", id)
+    .or(`user_id.eq.${user.id},is_public.eq.true`)
     .single();
 
   if (error || !data) {

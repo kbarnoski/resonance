@@ -567,7 +567,7 @@ export default function SpectralDriftPage() {
   // ── UI ───────────────────────────────────────────────────────────────────────
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden bg-[#05040a] text-white"
+      className="relative h-screen w-screen overflow-hidden bg-[#05040a] text-foreground"
       onDrop={onDrop}
       onDragOver={(e) => e.preventDefault()}
     >
@@ -576,21 +576,21 @@ export default function SpectralDriftPage() {
       {/* corner design-notes link */}
       <Link
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/267-spectral-drift/README.md"
-        className="absolute right-4 top-4 z-20 font-mono text-base text-white/55 underline decoration-white/30 hover:text-white/80"
+        className="absolute right-4 top-4 z-20 font-mono text-base text-muted-foreground underline decoration-muted-foreground hover:text-foreground"
       >
         Read the design notes
       </Link>
 
       {/* HUD while running */}
       {mode === "running" && (
-        <div className="pointer-events-none absolute bottom-4 left-4 z-20 font-mono text-base text-white/75">
+        <div className="pointer-events-none absolute bottom-4 left-4 z-20 font-mono text-base text-muted-foreground">
           <div className="text-violet-300">spectral drift</div>
-          {sourceLabel && <div className="text-white/55">{sourceLabel}</div>}
+          {sourceLabel && <div className="text-muted-foreground">{sourceLabel}</div>}
           {bpm !== null && (
-            <div className="text-emerald-300/95">~{bpm} bpm · {BINS} streams</div>
+            <div className="text-violet-300/95">~{bpm} bpm · {BINS} streams</div>
           )}
           {noWebGL && (
-            <div className="text-amber-300/95">
+            <div className="text-violet-300/95">
               audio is flowing — but this browser has no WebGL, so the visuals are hidden.
             </div>
           )}
@@ -600,14 +600,14 @@ export default function SpectralDriftPage() {
       {/* control panel */}
       {mode === "idle" && (
         <div className="absolute inset-0 z-10 flex items-center justify-center p-6">
-          <div className="max-w-xl rounded-2xl border border-white/10 bg-black/55 p-7 backdrop-blur-md">
-            <h1 className="font-serif text-3xl text-white/95">Spectral Drift</h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+          <div className="max-w-xl rounded-2xl border border-border bg-black/55 p-7 backdrop-blur-md">
+            <h1 className="font-serif text-3xl text-foreground">Spectral Drift</h1>
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               Your music becomes a flowing river of light you drift through. Each
               frequency is a stream of glowing particles that advects forward and
               meanders as the song plays — a living current, not a frozen wall.
             </p>
-            <p className="mt-2 text-base leading-relaxed text-white/55">
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               Drop an audio file below, load a Resonance track by ID, or just press
               Start for a synthesized demo current.
             </p>
@@ -623,7 +623,7 @@ export default function SpectralDriftPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="min-h-[44px] flex-1 rounded-xl bg-white/5 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/15 transition hover:bg-white/10"
+                  className="min-h-[44px] flex-1 rounded-xl bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   Choose audio file
                 </button>
@@ -645,26 +645,26 @@ export default function SpectralDriftPage() {
                   value={trackId}
                   onChange={(e) => setTrackId(e.target.value)}
                   placeholder="Resonance track ID"
-                  className="min-h-[44px] flex-1 rounded-xl bg-white/5 px-4 py-2.5 font-mono text-base text-white/90 ring-1 ring-white/15 placeholder:text-white/40 focus:outline-none focus:ring-violet-400/50"
+                  className="min-h-[44px] flex-1 rounded-xl bg-muted px-4 py-2.5 font-mono text-base text-foreground ring-1 ring-border placeholder:text-muted-foreground/70 focus:outline-none focus:ring-violet-400/50"
                 />
                 <button
                   onClick={() => void loadById()}
-                  className="min-h-[44px] rounded-xl bg-white/5 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/15 transition hover:bg-white/10"
+                  className="min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   Load
                 </button>
               </div>
             </div>
 
-            <p className="mt-4 text-base text-white/55">{status}</p>
-            {error && <p className="mt-2 text-base text-rose-300">{error}</p>}
+            <p className="mt-4 text-base text-muted-foreground">{status}</p>
+            {error && <p className="mt-2 text-base text-violet-300">{error}</p>}
           </div>
         </div>
       )}
 
       {/* running-state overlay for late file drops / errors */}
       {mode === "running" && error && (
-        <div className="absolute right-4 top-14 z-20 max-w-sm rounded-xl border border-rose-400/30 bg-black/60 p-3 font-mono text-base text-rose-300 backdrop-blur">
+        <div className="absolute right-4 top-14 z-20 max-w-sm rounded-xl border border-violet-400/30 bg-black/60 p-3 font-mono text-base text-violet-300 backdrop-blur">
           {error}
         </div>
       )}

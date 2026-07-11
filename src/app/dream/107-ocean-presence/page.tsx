@@ -311,8 +311,8 @@ export default function OceanPresencePage() {
   if (gpuErr) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black text-center px-6 gap-5">
-        <p className="text-base text-rose-300">WebGPU unavailable: {gpuErr}</p>
-        <p className="text-base text-white/75">
+        <p className="text-base text-violet-300">WebGPU unavailable: {gpuErr}</p>
+        <p className="text-base text-muted-foreground">
           Try Chrome or Edge on a WebGPU-capable device.{" "}
           The{" "}
           <Link href="/dream/84-wave-fluid" className="text-violet-300 underline">
@@ -320,7 +320,7 @@ export default function OceanPresencePage() {
           </Link>{" "}
           prototype uses the same ocean engine with audio input instead.
         </p>
-        <Link href="/dream" className="text-sm text-white/55 underline mt-1">
+        <Link href="/dream" className="text-sm text-muted-foreground underline mt-1">
           ← Dream lab
         </Link>
       </div>
@@ -332,13 +332,13 @@ export default function OceanPresencePage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black gap-8 px-6">
         <div className="flex flex-col items-center gap-3 text-center max-w-xs">
-          <h1 className="text-3xl font-serif text-white">Ocean Presence</h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <h1 className="text-3xl font-serif text-foreground">Ocean Presence</h1>
+          <p className="text-base text-muted-foreground leading-relaxed">
             Move your cursor through the ocean.
             <br />
             It sings back.
           </p>
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             No mic needed — the fluid is the instrument.
             <br />
             Headphones recommended.
@@ -346,11 +346,11 @@ export default function OceanPresencePage() {
         </div>
         <button
           onClick={() => setPhase("running")}
-          className="bg-violet-600 hover:bg-violet-500 text-white text-lg font-medium px-8 py-3 rounded-xl min-h-[52px] transition-colors"
+          className="bg-violet-600 hover:bg-violet-500 text-foreground text-lg font-medium px-8 py-3 rounded-xl min-h-[52px] transition-colors"
         >
           Enter the ocean
         </button>
-        <Link href="/dream" className="text-sm text-white/55 underline">
+        <Link href="/dream" className="text-sm text-muted-foreground underline">
           ← Dream lab
         </Link>
       </div>
@@ -367,11 +367,11 @@ export default function OceanPresencePage() {
       />
       <Link
         href="/dream"
-        className="absolute top-4 left-4 text-sm text-white/55 hover:text-white/80 transition-colors z-10"
+        className="absolute top-4 left-4 text-sm text-muted-foreground hover:text-foreground transition-colors z-10"
       >
         ← dream lab
       </Link>
-      <p className="absolute bottom-4 right-4 text-xs text-white/40 select-none pointer-events-none">
+      <p className="absolute bottom-4 right-4 text-xs text-muted-foreground/70 select-none pointer-events-none">
         move your cursor · it sings
       </p>
     </div>

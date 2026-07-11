@@ -523,7 +523,7 @@ export default function BodyChimesPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070509] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#070509] text-foreground">
       {/* three.js canvas mount */}
       <div ref={mountRef} className="absolute inset-0" />
 
@@ -532,7 +532,7 @@ export default function BodyChimesPage() {
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL is unavailable in this browser, so the struck room can&apos;t
             render. Modal synthesis still rings when you press Start.
           </p>
@@ -541,15 +541,15 @@ export default function BodyChimesPage() {
 
       {/* top-left: title + description */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Body Chimes
         </h1>
-        <p className="mt-2 max-w-md text-base leading-snug text-white/80">
+        <p className="mt-2 max-w-md text-base leading-snug text-foreground">
           Your moving body plays an invisible, room-sized instrument of struck
           resonant bodies. Each limb rings the bars, bowls and bells it sweeps
           through; the room slowly accretes into a shimmering cloud.
         </p>
-        <p className="mt-2 max-w-md font-mono text-base text-white/75">
+        <p className="mt-2 max-w-md font-mono text-base text-muted-foreground">
           Camera stays on-device. Nothing is stored or sent.
         </p>
       </div>
@@ -557,7 +557,7 @@ export default function BodyChimesPage() {
       {/* status line */}
       {phase === "running" && ghostMode && (
         <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 sm:left-7">
-          <p className="font-mono text-base text-amber-200/80">
+          <p className="font-mono text-base text-violet-200/80">
             ghost body — the room is playing itself
           </p>
         </div>
@@ -565,7 +565,7 @@ export default function BodyChimesPage() {
 
       {notice && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 w-[min(90vw,40rem)] -translate-x-1/2 p-4 text-center">
-          <p className="text-base text-rose-300">{notice}</p>
+          <p className="text-base text-violet-300">{notice}</p>
         </div>
       )}
 
@@ -574,7 +574,7 @@ export default function BodyChimesPage() {
         <div className="absolute inset-0 flex items-end justify-center pb-16 sm:items-center sm:pb-0">
           <button
             onClick={start}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-amber-200/30 bg-amber-100/10 px-4 py-2.5 font-mono text-base font-medium text-white backdrop-blur-md transition-colors hover:bg-amber-100/20"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-violet-200/30 bg-violet-100/10 px-4 py-2.5 font-mono text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-violet-100/20"
           >
             ▶ Start — enter the struck room
           </button>
@@ -584,7 +584,7 @@ export default function BodyChimesPage() {
       {/* corner: scroll to in-page design notes */}
       <a
         href="#notes"
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         Read the design notes
       </a>
@@ -595,10 +595,10 @@ export default function BodyChimesPage() {
         className="absolute left-0 top-full w-full bg-[#070509] px-6 py-12 sm:px-10"
       >
         <div className="mx-auto max-w-2xl">
-          <h2 className="font-serif text-2xl font-semibold text-white">
+          <h2 className="font-serif text-2xl font-semibold text-foreground">
             Design notes — Body Chimes / Struck Room
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/80">
+          <p className="mt-4 text-base leading-relaxed text-foreground">
             The room suspends {FIELD_COUNT} resonant bodies — bars, bowls and
             bells — in a dark 3D volume, each tuned to a just-intonation degree
             over a low ~110&nbsp;Hz root so the field is always consonant. Your
@@ -607,7 +607,7 @@ export default function BodyChimesPage() {
             and visibly blooms, and its amplitude is set by the limb&apos;s
             velocity. A per-body refractory window stops machine-gunning.
           </p>
-          <p className="mt-4 text-base leading-relaxed text-white/80">
+          <p className="mt-4 text-base leading-relaxed text-foreground">
             Each ring is genuine <strong>modal synthesis</strong>: a bank of
             high-Q bandpass resonators excited by a short impulse, one resonator
             per physical mode. The partials are inharmonic and characteristic of
@@ -616,7 +616,7 @@ export default function BodyChimesPage() {
             2.83, 4.22, 5.0]. Higher modes are excited less and decay faster, as
             in a real struck metal body.
           </p>
-          <p className="mt-4 text-base leading-relaxed text-white/80">
+          <p className="mt-4 text-base leading-relaxed text-foreground">
             Long-form <strong>accretion</strong>: every strike feeds a
             sympathetic mode-bed — always-on resonators tuned to the scale that
             linger for ~25&nbsp;s and slowly grow over ~4 minutes, biased by a
@@ -624,7 +624,7 @@ export default function BodyChimesPage() {
             90-second cycle. Minute&nbsp;5 sounds fuller and subtly shifted from
             minute&nbsp;1. The central warm light brightens with the cloud.
           </p>
-          <p className="mt-4 text-base leading-relaxed text-white/80">
+          <p className="mt-4 text-base leading-relaxed text-foreground">
             References: <strong>Vrengt</strong> (Erdem, Jensenius et al.,
             NIME&nbsp;2019 / arXiv:2010.03779) — the shared body-machine
             instrument framing of dance-as-musicianship; the{" "}
@@ -633,7 +633,7 @@ export default function BodyChimesPage() {
             Bernhard Leitner&apos;s sound-sculpture installations for the
             room-as-instrument spatial sensibility.
           </p>
-          <p className="mt-4 font-mono text-base text-white/75">
+          <p className="mt-4 font-mono text-base text-muted-foreground">
             Controls: press Start, then move. Camera denied or MediaPipe
             unavailable → a ghost body drifts through the field so the piece
             plays hands-free.

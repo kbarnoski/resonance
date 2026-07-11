@@ -398,28 +398,28 @@ export default function CommaPumpPage() {
   const absCents = Math.abs(centsFromHome);
   const driftSign  = centsFromHome < 0 ? "−" : "+";
   const driftColor =
-    absCents > 100 ? "text-rose-400" :
-    absCents > 50  ? "text-amber-300" :
+    absCents > 100 ? "text-violet-400" :
+    absCents > 50  ? "text-violet-300" :
                      "text-violet-300";
 
   return (
-    <main className="min-h-screen w-full bg-[#080b12] text-white flex flex-col overflow-hidden">
+    <main className="min-h-screen w-full bg-[#080b12] text-foreground flex flex-col overflow-hidden">
 
       {/* Back nav */}
       <Link
         href="/dream"
-        className="fixed top-4 left-4 z-30 text-base text-white/75 hover:text-white
-                   px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur transition-colors"
+        className="fixed top-4 left-4 z-30 text-base text-muted-foreground hover:text-foreground
+                   px-4 py-2.5 rounded-lg bg-muted hover:bg-accent backdrop-blur transition-colors"
       >
         ← dream lab
       </Link>
 
       {/* Page header */}
       <header className="relative z-10 px-6 pt-20 pb-4 max-w-3xl">
-        <h1 className="text-3xl font-semibold text-white tracking-tight">
+        <h1 className="text-3xl font-semibold text-foreground tracking-tight">
           Comma Pump
         </h1>
-        <p className="mt-2 text-base text-white/75 max-w-xl">
+        <p className="mt-2 text-base text-muted-foreground max-w-xl">
           A long-form generative piece in{" "}
           <span className="text-violet-300">adaptive 5-limit just intonation</span>.
           Every chord is voiced with pure ratios; every root motion is a pure
@@ -432,7 +432,7 @@ export default function CommaPumpPage() {
       </header>
 
       {/* Canvas — pitch river + HUD overlay */}
-      <div className="relative flex-1 min-h-0 mx-6 mb-4 rounded-xl overflow-hidden border border-white/10"
+      <div className="relative flex-1 min-h-0 mx-6 mb-4 rounded-xl overflow-hidden border border-border"
            style={{ minHeight: 260 }}>
         {/* Layer 1: scrolling pitch river (accumulates) */}
         <canvas
@@ -450,7 +450,7 @@ export default function CommaPumpPage() {
         {/* Idle overlay */}
         {!running && !audioError && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <p className="text-base text-white/55 select-none">
+            <p className="text-base text-muted-foreground select-none">
               Press Start to begin the piece
             </p>
           </div>
@@ -459,7 +459,7 @@ export default function CommaPumpPage() {
         {/* Audio error notice */}
         {audioError && (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20
-                          text-rose-300 text-base bg-black/70 px-5 py-3
+                          text-violet-300 text-base bg-black/70 px-5 py-3
                           rounded-lg max-w-md text-center pointer-events-none">
             {audioError}
           </div>
@@ -468,17 +468,17 @@ export default function CommaPumpPage() {
 
       {/* Text HUD (mirrors canvas readout for accessibility) */}
       <div className="relative z-10 px-6 mb-4 flex flex-wrap gap-x-8 gap-y-2 items-baseline font-mono">
-        <span className="text-white/55 text-base">drift</span>
+        <span className="text-muted-foreground text-base">drift</span>
         <span className={`text-2xl font-bold tabular-nums ${driftColor}`}>
           {driftSign}{absCents.toFixed(2)}&thinsp;¢
         </span>
-        <span className="text-white/55 text-base">from home (A3 = 220 Hz)</span>
+        <span className="text-muted-foreground text-base">from home (A3 = 220 Hz)</span>
 
-        <span className="text-white/55 text-base ml-4">chord</span>
+        <span className="text-muted-foreground text-base ml-4">chord</span>
         <span className="text-xl text-violet-300">{chordLabel}</span>
 
         <span className={`ml-4 text-base font-bold ${
-          mode === "JI" ? "text-emerald-300" : "text-amber-300"
+          mode === "JI" ? "text-violet-300" : "text-violet-300"
         }`}>
           {mode === "JI" ? "Just Intonation" : "12-TET (equal temperament)"}
         </span>
@@ -501,8 +501,8 @@ export default function CommaPumpPage() {
           <button
             onClick={handleStop}
             className="min-h-[44px] px-6 py-2.5 rounded-xl
-                       bg-white/10 hover:bg-white/15 text-white
-                       border border-white/20 text-base font-medium transition-colors"
+                       bg-muted hover:bg-accent text-foreground
+                       border border-border text-base font-medium transition-colors"
           >
             ■ Stop
           </button>
@@ -514,15 +514,15 @@ export default function CommaPumpPage() {
           className={`min-h-[44px] px-4 py-2.5 rounded-xl border
                       text-base font-medium transition-colors ${
             mode === "JI"
-              ? "bg-emerald-500/20 border-emerald-400/40 text-emerald-100"
-              : "bg-amber-500/20 border-amber-400/40 text-amber-100"
+              ? "bg-violet-500/20 border-violet-400/40 text-violet-100"
+              : "bg-violet-500/20 border-violet-400/40 text-violet-100"
           }`}
         >
           {mode === "JI" ? "JI → 12-TET" : "12-TET → JI"}
         </button>
 
         {/* Tempo slider */}
-        <label className="flex items-center gap-3 text-base text-white/75 min-h-[44px]">
+        <label className="flex items-center gap-3 text-base text-muted-foreground min-h-[44px]">
           <span>Tempo</span>
           <input
             type="range"
@@ -541,7 +541,7 @@ export default function CommaPumpPage() {
       </div>
 
       {/* Visual legend */}
-      <div className="relative z-10 px-6 pb-3 flex flex-wrap gap-4 text-base text-white/55">
+      <div className="relative z-10 px-6 pb-3 flex flex-wrap gap-4 text-base text-muted-foreground">
         <span className="flex items-center gap-2">
           <span className="inline-block w-8 h-px" style={{ backgroundColor: "rgba(100,100,180,0.4)" }} />
           home tonic (fixed)
@@ -563,12 +563,12 @@ export default function CommaPumpPage() {
 
       {/* Footer */}
       <div className="relative z-10 px-6 pb-5 flex justify-between items-center">
-        <span className="text-base text-white/40">
+        <span className="text-base text-muted-foreground/70">
           cycle 404 · syntonic comma pump · 5-limit JI · zero deps
         </span>
-        <span className="text-base text-white/40">
+        <span className="text-base text-muted-foreground/70">
           Design notes:{" "}
-          <span className="font-mono text-sm text-white/55">
+          <span className="font-mono text-sm text-muted-foreground">
             src/app/dream/404-comma-pump/README.md
           </span>
         </span>

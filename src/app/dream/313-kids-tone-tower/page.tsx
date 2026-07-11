@@ -261,7 +261,7 @@ export default function KidsToneTower() {
   const isYourTurn = phase === "yourTurn";
 
   return (
-    <div className="relative min-h-screen bg-[#0b0710] text-white flex flex-col overflow-hidden">
+    <div className="relative min-h-screen bg-[#0b0710] text-foreground flex flex-col overflow-hidden">
       {/* ── Canvas tower scene (fills the screen behind the UI) ── */}
       <canvas
         ref={canvasRef}
@@ -275,7 +275,7 @@ export default function KidsToneTower() {
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
           <Link
             href="/dream"
-            className="text-white/75 hover:text-white text-base font-mono transition-colors"
+            className="text-muted-foreground hover:text-foreground text-base font-mono transition-colors"
           >
             ← dream lab
           </Link>
@@ -283,7 +283,7 @@ export default function KidsToneTower() {
             {/* tower-height indicator (for the grown-up) */}
             {started && (
               <span
-                className="text-white/75 text-base font-mono"
+                className="text-muted-foreground text-base font-mono"
                 aria-label={`Tower is ${towerHeight} blocks tall`}
               >
                 🧱 {towerHeight}
@@ -291,7 +291,7 @@ export default function KidsToneTower() {
             )}
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="text-white/75 hover:text-white text-base font-mono transition-colors"
+              className="text-muted-foreground hover:text-foreground text-base font-mono transition-colors"
             >
               {showNotes ? "hide notes" : "Read the design notes"}
             </button>
@@ -300,22 +300,22 @@ export default function KidsToneTower() {
 
         {/* Design notes panel + README link */}
         {showNotes && (
-          <div className="mx-4 mb-2 p-4 rounded-xl bg-black/70 backdrop-blur border border-white/10 text-base text-white/80 space-y-2">
-            <p className="text-white/95 text-xl font-semibold">Tone Tower</p>
+          <div className="mx-4 mb-2 p-4 rounded-xl bg-black/70 backdrop-blur border border-border text-base text-foreground space-y-2">
+            <p className="text-foreground text-xl font-semibold">Tone Tower</p>
             <p>
               The tower IS the song. Echo the melody the tower sings: each correct
               note stacks a glowing block (the tower grows taller and stays). A
               wrong note makes the top block wobble and slide off — gentle, never
               game-over. Finish the whole song and it grows by one note.
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Touch · Canvas2D stacking · echo-the-sequence memory · G-major
               hexachord (tiles play G A B D). Refs: Simon (1978); classic block /
               stacking toys; JMIR Serious Games 2026 (process-over-pass/fail).
             </p>
             <Link
               href="./README.md"
-              className="inline-block text-sky-300 hover:text-sky-200 underline text-base"
+              className="inline-block text-violet-300 hover:text-violet-200 underline text-base"
             >
               Read the full design notes (README.md)
             </Link>
@@ -324,8 +324,8 @@ export default function KidsToneTower() {
 
         {/* Audio-unavailable notice (visuals stay alive) */}
         {noAudio && (
-          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/60 border border-rose-500/40">
-            <p className="text-rose-300 text-base font-mono">
+          <div className="mx-4 mb-2 p-3 rounded-lg bg-black/60 border border-violet-500/40">
+            <p className="text-violet-300 text-base font-mono">
               Sound is not available on this device — the tower still builds, just
               quietly.
             </p>
@@ -336,16 +336,16 @@ export default function KidsToneTower() {
         <div className="flex-1 flex flex-col items-center justify-start px-4">
           {!started && (
             <div className="mt-8 flex flex-col items-center gap-5 text-center">
-              <h1 className="text-2xl font-semibold text-white tracking-tight">
+              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
                 Tone Tower
               </h1>
-              <p className="text-white/80 text-base font-mono max-w-xs">
+              <p className="text-foreground text-base font-mono max-w-xs">
                 Listen to the tower&apos;s song, then tap it back. Every note you
                 remember builds it taller.
               </p>
               <button
                 onClick={handleStart}
-                className="min-h-[72px] px-10 py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-[#1a1206] text-xl font-bold shadow-lg shadow-amber-900/50 transition-all"
+                className="min-h-[72px] px-10 py-4 rounded-2xl bg-violet-500 hover:bg-violet-400 active:scale-95 text-[#1a1206] text-xl font-bold shadow-lg shadow-violet-900/50 transition-all"
                 style={{ minWidth: 220 }}
               >
                 Build it taller ▲
@@ -356,7 +356,7 @@ export default function KidsToneTower() {
           {/* Your-turn cue: a big pulsing pointer, no text gating */}
           {isYourTurn && (
             <div
-              className="mt-6 flex items-center gap-3 text-emerald-300 text-2xl animate-pulse"
+              className="mt-6 flex items-center gap-3 text-violet-300 text-2xl animate-pulse"
               aria-label="Your turn"
             >
               <span className="text-3xl">👆</span>

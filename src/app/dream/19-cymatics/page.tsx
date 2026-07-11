@@ -411,26 +411,26 @@ export default function CymaticsPage() {
           <h1 className="text-2xl md:text-3xl mb-2 tracking-tight" style={{ color: "#d4a050" }}>
             Cymatics
           </h1>
-          <p className="text-sm text-white/50 max-w-sm mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm mb-8 leading-relaxed">
             Sand settling into the standing wave geometry of a vibrating plate. Each
             frequency produces a unique pattern — the hidden shape of sound.
           </p>
           <div className="flex gap-4 mb-4">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
-          {error && <p className="text-xs text-rose-300/80 max-w-sm mt-1">{error}</p>}
-          <Link href="/dream" className="mt-8 text-[11px] text-white/30 hover:text-white/60">
+          {error && <p className="text-xs text-violet-300/80 max-w-sm mt-1">{error}</p>}
+          <Link href="/dream" className="mt-8 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -444,11 +444,11 @@ export default function CymaticsPage() {
             <span style={{ color: "#d4a050" }}>
               ({mode.m},{mode.n}) {mode.name.toUpperCase()}
             </span>
-            <span className="text-white/30">
+            <span className="text-muted-foreground/70">
               {status === "demo" ? "DEMO" : `MIC · ${centHz > 0 ? centHz + " Hz" : "listening…"}`}
             </span>
             {/* Amplitude meter */}
-            <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="w-16 h-1 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-75"
                 style={{ width: `${ampPct}%`, background: "#d4a050" }}
@@ -464,8 +464,8 @@ export default function CymaticsPage() {
                 onClick={() => pickMode(i)}
                 className={`text-[10px] px-2 py-1 rounded border transition ${
                   i === modeIdx
-                    ? "border-amber-600/70 text-amber-400 bg-amber-900/20"
-                    : "border-white/10 text-white/35 hover:border-white/30 hover:text-white/60"
+                    ? "border-violet-600/70 text-violet-400 bg-violet-900/20"
+                    : "border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground"
                 }`}
               >
                 ({cm.m},{cm.n}) {cm.name}
@@ -477,16 +477,16 @@ export default function CymaticsPage() {
           <div className="flex items-center gap-4 text-[10px]">
             <button
               onClick={stop}
-              className="tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+              className="tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <a
               href="/dream/19-cymatics/README.md"
-              className="text-white/20 hover:text-white/50"
+              className="text-muted-foreground/70 hover:text-muted-foreground"
               target="_blank"
               rel="noreferrer"
             >

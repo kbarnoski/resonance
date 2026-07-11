@@ -473,8 +473,8 @@ export default function KidsCreatureGrow() {
   return (
     <main className="relative w-full h-screen bg-[#04020c] overflow-hidden">
       <div className="absolute top-0 left-0 right-0 z-10 px-6 pt-5 pointer-events-none">
-        <h1 className="text-2xl font-serif text-white/95 tracking-wide">Creature Grow</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-serif text-foreground tracking-wide">Creature Grow</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Tap to feed your creature a note — six notes to grow!
         </p>
       </div>
@@ -484,7 +484,7 @@ export default function KidsCreatureGrow() {
         onPointerDown={handlePointer}
       />
       <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pointer-events-none">
-        <p className="text-xs text-white/55">
+        <p className="text-xs text-muted-foreground">
           Zero deps · Zero permissions · Pure Web Audio + Canvas
         </p>
       </div>

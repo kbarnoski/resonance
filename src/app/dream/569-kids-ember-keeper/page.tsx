@@ -433,7 +433,7 @@ export default function EmberKeeperPage() {
   const partCount = genome?.tokens.length ?? 0;
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0b0608] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#0b0608] text-foreground">
       {/* warm ambient backdrop */}
       <div
         aria-hidden
@@ -446,23 +446,23 @@ export default function EmberKeeperPage() {
 
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col gap-4 px-5 py-8">
         <header className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-white">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Ember Keeper
           </h1>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             A glowing creature that lives in here, remembers your visits, and grows a
             bigger body every day you come back.
           </p>
           <a
             href="./README.md"
-            className="font-mono text-base text-amber-300/90 underline decoration-amber-300/40 underline-offset-4 hover:text-amber-200"
+            className="font-mono text-base text-violet-300/90 underline decoration-violet-300/40 underline-offset-4 hover:text-violet-200"
           >
             Read the design notes
           </a>
         </header>
 
         {/* Stage */}
-        <div className="relative rounded-3xl border border-white/10 bg-black/40 p-2">
+        <div className="relative rounded-3xl border border-border bg-black/40 p-2">
           {/* three.js mount */}
           {webglOk ? (
             <div
@@ -521,12 +521,12 @@ export default function EmberKeeperPage() {
           {/* idle veil + primary action */}
           {phase === "idle" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-2xl bg-black/55 backdrop-blur-[2px]">
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Your keeper has been growing while you were away.
               </p>
               <button
                 onClick={handleWake}
-                className="min-h-[64px] min-w-[64px] rounded-full bg-amber-400 px-10 py-4 text-xl font-bold text-[#3a1a06] shadow-lg shadow-amber-500/30 transition-transform active:scale-95"
+                className="min-h-[64px] min-w-[64px] rounded-full bg-violet-400 px-10 py-4 text-xl font-bold text-[#3a1a06] shadow-lg shadow-violet-500/30 transition-transform active:scale-95"
               >
                 Wake the keeper
               </button>
@@ -536,7 +536,7 @@ export default function EmberKeeperPage() {
 
         {/* Status row — readable, kid-friendly, no reading required to PLAY */}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-4 font-mono text-base text-white/75">
+          <div className="flex items-center gap-4 font-mono text-base text-muted-foreground">
             <span aria-label="days returned">days {dayCount}</span>
             <span aria-label="body parts">parts {partCount}</span>
           </div>
@@ -544,7 +544,7 @@ export default function EmberKeeperPage() {
           {phase === "awake" && (
             <button
               onClick={handleNextDay}
-              className="min-h-[44px] rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-mono text-base text-white/75 transition-colors hover:bg-white/[0.12] hover:text-white"
+              className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2 font-mono text-base text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               aria-label="Let another day pass"
             >
               🌙 next day
@@ -554,22 +554,22 @@ export default function EmberKeeperPage() {
 
         {/* notices */}
         {notice && phase === "awake" && (
-          <p className="text-base text-amber-200/90">{notice}</p>
+          <p className="text-base text-violet-200/90">{notice}</p>
         )}
         {micOk === false && (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Microphone is off — humming is paused, but petting still feeds and grows
             your keeper.
           </p>
         )}
         {!webglOk && (
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             This screen can&apos;t draw 3D, so here&apos;s a simpler keeper — it still
             glows, grows, and sings.
           </p>
         )}
         {phase === "awake" && micOk && (
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Hum or sing to feed it. Tap it to pet it. Its mic listens only — nothing is
             ever recorded.
           </p>

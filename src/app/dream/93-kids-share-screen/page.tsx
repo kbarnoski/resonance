@@ -373,11 +373,11 @@ export default function KidsShareScreen() {
 
       {/* Title + pre-play hint */}
       <div className="pointer-events-none absolute left-0 right-0 top-5 flex flex-col items-center gap-1.5 px-6 text-center">
-        <h1 className="text-xl font-semibold tracking-wide text-white/90">
+        <h1 className="text-xl font-semibold tracking-wide text-foreground">
           Share the Screen
         </h1>
         {!started && (
-          <p className="text-base text-white/70">
+          <p className="text-base text-muted-foreground">
             Two fingers — two voices — always in harmony
           </p>
         )}
@@ -385,14 +385,14 @@ export default function KidsShareScreen() {
 
       {/* Pitch guide (right edge) */}
       <div className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 flex-col items-end gap-1">
-        <span className="text-[11px] text-white/45">high</span>
-        <div className="my-2 h-16 w-px rounded-full bg-white/15" />
-        <span className="text-[11px] text-white/45">low</span>
+        <span className="text-[11px] text-muted-foreground">high</span>
+        <div className="my-2 h-16 w-px rounded-full bg-muted" />
+        <span className="text-[11px] text-muted-foreground">low</span>
       </div>
 
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         ← dream lab
       </Link>

@@ -504,37 +504,37 @@ export default function WebcamCompose() {
       {/* ── Idle / Error ── */}
       {(phase === "idle" || phase === "error") && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 gap-5">
-          <h1 className="text-3xl md:text-4xl font-light tracking-tight text-white/95">
+          <h1 className="text-3xl md:text-4xl font-light tracking-tight text-foreground">
             Webcam Compose
           </h1>
-          <p className="text-base text-white/75 max-w-sm leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
             Point your camera at anything — colors become chords. Warm reds play major,
             cool blues play minor, motion adds arpeggios.
           </p>
-          <p className="text-sm text-white/55 max-w-xs">
+          <p className="text-sm text-muted-foreground max-w-xs">
             No mic · No API · No ML — image pixels → synthesizer, directly.
           </p>
 
           {phase === "error" && (
-            <p className="text-rose-300 text-sm">Camera error: {errorMsg}</p>
+            <p className="text-violet-300 text-sm">Camera error: {errorMsg}</p>
           )}
 
           <div className="flex gap-3 flex-wrap justify-center mt-1">
             <button
               onClick={openCamera}
-              className="px-6 py-3 text-base bg-violet-600 hover:bg-violet-500 text-white rounded-xl min-h-[48px] font-medium transition"
+              className="px-6 py-3 text-base bg-violet-600 hover:bg-violet-500 text-foreground rounded-xl min-h-[48px] font-medium transition"
             >
               Open camera
             </button>
             <button
               onClick={openDemo}
-              className="px-6 py-3 text-base border border-white/25 hover:border-white/50 text-white/80 hover:text-white rounded-xl min-h-[48px] transition"
+              className="px-6 py-3 text-base border border-border hover:border-border text-foreground hover:text-foreground rounded-xl min-h-[48px] transition"
             >
               Demo mode
             </button>
           </div>
 
-          <Link href="/dream" className="mt-8 text-xs text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-8 text-xs text-muted-foreground/70 hover:text-muted-foreground">
             ← dream sandbox
           </Link>
         </div>
@@ -563,12 +563,12 @@ export default function WebcamCompose() {
                   />
                 ))}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="text-white/20 text-xs tracking-widest uppercase">demo mode</span>
+                  <span className="text-muted-foreground/70 text-xs tracking-widest uppercase">demo mode</span>
                 </div>
                 {/* Crosshair */}
                 <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/10" />
-                  <div className="absolute left-0 right-0 top-1/2 h-px bg-white/10" />
+                  <div className="absolute top-0 bottom-0 left-1/2 w-px bg-muted" />
+                  <div className="absolute left-0 right-0 top-1/2 h-px bg-muted" />
                 </div>
               </div>
             )}
@@ -577,7 +577,7 @@ export default function WebcamCompose() {
             {(["↖", "↗", "↙", "↘"] as const).map((arrow, i) => (
               <div
                 key={i}
-                className="absolute text-[10px] text-white/35 pointer-events-none leading-none select-none"
+                className="absolute text-[10px] text-muted-foreground/70 pointer-events-none leading-none select-none"
                 style={{
                   top:  i < 2 ? 7 : "calc(50% + 7px)",
                   left: i % 2 === 0 ? 7 : "calc(50% + 7px)",
@@ -597,13 +597,13 @@ export default function WebcamCompose() {
                   >
                     {vis.chordName}
                   </div>
-                  <div className="text-xs text-white/55 mt-0.5">
+                  <div className="text-xs text-muted-foreground mt-0.5">
                     {vis.rootHz.toFixed(0)} Hz ·{" "}
                     {vis.numVoices} voice{vis.numVoices !== 1 ? "s" : ""} ·{" "}
                     {vis.isArpeggio ? "arpeggiated" : "pad"}
                   </div>
                 </div>
-                <div className="text-right text-[11px] text-white/40 leading-snug">
+                <div className="text-right text-[11px] text-muted-foreground/70 leading-snug">
                   <div>hue {vis.dominantHue.toFixed(0)}°</div>
                   <div>Δ {(vis.frameDelta * 100).toFixed(1)}%</div>
                 </div>
@@ -614,7 +614,7 @@ export default function WebcamCompose() {
           {/* RIGHT — bloom visualizer (synth output) */}
           <div className="relative flex-1 bg-black min-h-0">
             <canvas ref={bloomRef} className="absolute inset-0 w-full h-full" />
-            <div className="absolute top-3 right-3 text-[9px] text-white/30 tracking-wider text-right pointer-events-none select-none">
+            <div className="absolute top-3 right-3 text-[9px] text-muted-foreground/70 tracking-wider text-right pointer-events-none select-none">
               SYNTH OUTPUT
             </div>
           </div>
@@ -626,11 +626,11 @@ export default function WebcamCompose() {
         <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
           <button
             onClick={closeAll}
-            className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1.5 rounded transition"
+            className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded transition"
           >
             stop
           </button>
-          <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>

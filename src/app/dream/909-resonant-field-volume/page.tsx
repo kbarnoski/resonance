@@ -180,7 +180,7 @@ export default function ResonantFieldPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-foreground">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 h-full w-full"
@@ -190,10 +190,10 @@ export default function ResonantFieldPage() {
       {/* Foreground UI */}
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl tracking-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
             Resonant Field
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             Sing, and your voice blooms as a volume of light and grains — shaped
             in space by its timbre, not its pitch.
           </p>
@@ -202,53 +202,53 @@ export default function ResonantFieldPage() {
             <button
               type="button"
               onClick={handleStart}
-              className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-md border border-white/15 bg-white/10 px-4 py-2.5 font-mono text-base text-white/95 transition-colors hover:bg-white/20 active:bg-white/25"
+              className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-md border border-border bg-muted px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent active:bg-muted"
             >
               Start mic
             </button>
           )}
 
           {started && status === "mic" && (
-            <p className="mt-5 font-mono text-sm text-white/75">
+            <p className="mt-5 font-mono text-sm text-muted-foreground">
               Listening — make a sound and watch the field bloom.
             </p>
           )}
           {started && status === "demo" && (
-            <p className="mt-5 font-mono text-sm text-white/75">
+            <p className="mt-5 font-mono text-sm text-muted-foreground">
               Auto-demo running (silence detected) — sing to take over.
             </p>
           )}
           {started && status === "denied" && (
-            <p className="mt-5 font-mono text-sm text-rose-300">
+            <p className="mt-5 font-mono text-sm text-violet-300">
               Mic unavailable — running the synthetic auto-demo instead.
             </p>
           )}
           {!audioOk && (
-            <p className="mt-5 font-mono text-sm text-rose-300">
+            <p className="mt-5 font-mono text-sm text-violet-300">
               Web Audio is unavailable in this browser — the visual field is
               still alive above.
             </p>
           )}
           {!webglOk && (
-            <p className="mt-2 font-mono text-sm text-rose-300">
+            <p className="mt-2 font-mono text-sm text-violet-300">
               WebGL unavailable — showing the Canvas2D glow fallback.
             </p>
           )}
 
-          <p className="mt-4 text-sm text-white/55">
+          <p className="mt-4 text-sm text-muted-foreground">
             Best with headphones — the grains are placed in 3D around your head.
           </p>
         </header>
 
         <footer className="flex items-end justify-between">
-          <span className="font-mono text-xs text-white/55">
+          <span className="font-mono text-xs text-muted-foreground">
             909 · timbre × space
           </span>
           <a
             href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/909-resonant-field-volume/README.md"
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-xs text-white/55 underline decoration-white/20 underline-offset-4 hover:text-white/85"
+            className="font-mono text-xs text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
           >
             Read the design notes
           </a>

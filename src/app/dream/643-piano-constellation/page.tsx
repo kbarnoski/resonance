@@ -544,11 +544,11 @@ export default function PianoConstellationPage() {
   const voiceLabel = (i: number): string => (i === HAMMER ? "Hammers" : CHROMA_NAMES[i]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {backend && (
-        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-white/75">
+        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-muted-foreground">
           {backend === "webgl" ? "three.js / WebGL" : "no WebGL"}
         </span>
       )}
@@ -557,17 +557,17 @@ export default function PianoConstellationPage() {
         href="/dream/643-piano-constellation/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Piano Constellation
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Take Karel&apos;s solo piano apart down to its 12 notes — isolate each pitch
             class from the recording, then <span className="text-violet-300">play it back as an instrument</span>{" "}
             made of his own touch. Tap a constellation or press a key to re-fire that
@@ -577,14 +577,14 @@ export default function PianoConstellationPage() {
           {sourceKind && (
             <p className="mt-2 font-mono text-sm">
               source:{" "}
-              <span className={sourceKind === "piano" ? "text-emerald-300/95" : "text-amber-300/95"}>
+              <span className={sourceKind === "piano" ? "text-violet-300/95" : "text-violet-300/95"}>
                 {sourceKind === "piano" ? "Karel's piano (real recording)" : "synthesized piano — recording unavailable"}
               </span>
             </p>
           )}
 
-          {errorMsg && <p className="mt-2 text-base text-amber-300/95">{errorMsg}</p>}
-          {noticeMsg && <p className="mt-2 text-base text-rose-300">{noticeMsg}</p>}
+          {errorMsg && <p className="mt-2 text-base text-violet-300/95">{errorMsg}</p>}
+          {noticeMsg && <p className="mt-2 text-base text-violet-300">{noticeMsg}</p>}
         </header>
 
         <section className="flex flex-col items-start gap-3">
@@ -599,12 +599,12 @@ export default function PianoConstellationPage() {
 
           {phase === "loading" && (
             <div className="w-full max-w-md">
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-mono text-sm text-muted-foreground">
                 {progressLabel} ({Math.round(progress * 100)}%)
               </p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full bg-gradient-to-r from-violet-400 via-rose-400 to-emerald-400 transition-[width] duration-150"
+                  className="h-full bg-gradient-to-r from-violet-400 via-violet-400 to-violet-400 transition-[width] duration-150"
                   style={{ width: `${Math.round(progress * 100)}%` }}
                 />
               </div>
@@ -614,7 +614,7 @@ export default function PianoConstellationPage() {
           {phase === "error" && (
             <button
               onClick={() => setPhase("idle")}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Try again
             </button>
@@ -623,16 +623,16 @@ export default function PianoConstellationPage() {
 
         {phase === "ready" && (
           <footer className="flex flex-col gap-4">
-            <div className="font-mono text-sm text-white/75">
+            <div className="font-mono text-sm text-muted-foreground">
               <span className="text-violet-300">replay</span> (tap a note or press a key):{" "}
-              <kbd className="text-white/95">A W S E D F T G Y H U J</kbd> → 12 notes ·{" "}
-              <kbd className="text-white/95">X</kbd> hammers ·{" "}
-              <kbd className="text-white/95">←/→</kbd> select ·{" "}
-              <kbd className="text-white/95">Enter</kbd> solo ·{" "}
-              <kbd className="text-white/95">m</kbd> mute ·{" "}
-              <kbd className="text-white/95">0</kbd> reset ·{" "}
-              <kbd className="text-white/95">space</kbd> play/pause
-              {!ui.playing && <span className="ml-2 text-amber-300/95">paused</span>}
+              <kbd className="text-foreground">A W S E D F T G Y H U J</kbd> → 12 notes ·{" "}
+              <kbd className="text-foreground">X</kbd> hammers ·{" "}
+              <kbd className="text-foreground">←/→</kbd> select ·{" "}
+              <kbd className="text-foreground">Enter</kbd> solo ·{" "}
+              <kbd className="text-foreground">m</kbd> mute ·{" "}
+              <kbd className="text-foreground">0</kbd> reset ·{" "}
+              <kbd className="text-foreground">space</kbd> play/pause
+              {!ui.playing && <span className="ml-2 text-violet-300/95">paused</span>}
             </div>
 
             {/* 13 note-orbs: tap = REPLAY grain; long-press buttons below for solo/mute */}
@@ -647,7 +647,7 @@ export default function PianoConstellationPage() {
                       onClick={() => replayChroma(i)}
                       aria-label={`replay ${voiceLabel(i)}`}
                       className={`flex min-h-[44px] min-w-[52px] items-center justify-center rounded-md border px-4 py-2.5 text-base font-medium transition ${
-                        ui.selected === i ? "border-white/60" : "border-white/15"
+                        ui.selected === i ? "border-border" : "border-border"
                       } ${dimmed ? "opacity-50" : "opacity-100"} ${isMuted ? "line-through" : ""}`}
                       style={{
                         backgroundColor: `${chromaCss(i)}22`,
@@ -661,7 +661,7 @@ export default function PianoConstellationPage() {
                       <button
                         onClick={() => soloVoice(i)}
                         className={`min-h-[28px] flex-1 rounded px-2 py-1 font-mono text-sm ${
-                          isSolo ? "bg-white/25 text-white" : "bg-white/5 text-white/75 hover:bg-white/10"
+                          isSolo ? "bg-muted text-foreground" : "bg-muted text-muted-foreground hover:bg-accent"
                         }`}
                       >
                         {isSolo ? "solo*" : "solo"}
@@ -669,7 +669,7 @@ export default function PianoConstellationPage() {
                       <button
                         onClick={() => muteVoice(i)}
                         className={`min-h-[28px] flex-1 rounded px-2 py-1 font-mono text-sm ${
-                          isMuted ? "bg-rose-500/30 text-rose-100" : "bg-white/5 text-white/75 hover:bg-white/10"
+                          isMuted ? "bg-violet-500/30 text-violet-100" : "bg-muted text-muted-foreground hover:bg-accent"
                         }`}
                       >
                         {isMuted ? "mute*" : "mute"}
@@ -683,17 +683,17 @@ export default function PianoConstellationPage() {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={resetAll}
-                className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/15"
+                className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 reset (all on)
               </button>
               <button
                 onClick={() => { markInteract(); togglePlay(); }}
-                className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/15"
+                className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 {ui.playing ? "pause" : "play"}
               </button>
-              <span className="font-mono text-sm text-white/75">
+              <span className="font-mono text-sm text-muted-foreground">
                 tap any note to <span className="text-violet-300">replay</span> Karel&apos;s touch · layers stack
               </span>
             </div>

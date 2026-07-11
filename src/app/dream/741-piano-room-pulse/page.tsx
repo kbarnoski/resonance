@@ -379,25 +379,25 @@ export default function PianoRoomPulse() {
 
   const statusLine = (() => {
     if (status === "duet")
-      return { text: "partner in the room — locked & live", cls: "text-emerald-300" };
+      return { text: "partner in the room — locked & live", cls: "text-violet-300" };
     if (status === "connected")
-      return { text: "in the room — waiting for a partner", cls: "text-white/75" };
+      return { text: "in the room — waiting for a partner", cls: "text-muted-foreground" };
     if (status === "connecting")
-      return { text: "reaching the room…", cls: "text-white/55" };
-    return { text: "solo — a ghost partner keeps the pulse", cls: "text-white/75" };
+      return { text: "reaching the room…", cls: "text-muted-foreground" };
+    return { text: "solo — a ghost partner keeps the pulse", cls: "text-muted-foreground" };
   })();
 
   return (
-    <main className="min-h-dvh bg-[#0d0a14] text-white">
+    <main className="min-h-dvh bg-[#0d0a14] text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
         <header className="mb-6">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
             dream / 741
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Piano Room Pulse
           </h1>
-          <p className="mt-2 max-w-2xl text-base text-white/75">
+          <p className="mt-2 max-w-2xl text-base text-muted-foreground">
             Two phones on one room code, ~80–150ms apart. They estimate their
             clock offset NTP-style and lock onto ONE slowly-drifting pulse — a
             real ensemble emerges across the latency.
@@ -405,7 +405,7 @@ export default function PianoRoomPulse() {
         </header>
 
         {/* visual stage */}
-        <div className="relative mb-5 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0710]">
+        <div className="relative mb-5 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border bg-[#0a0710]">
           <div ref={hostRef} className="absolute inset-0" />
           {/* Canvas2D fallback (only drawn if WebGL/scene unavailable) */}
           <canvas
@@ -417,14 +417,14 @@ export default function PianoRoomPulse() {
           />
           {!started && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#0a0710]/80 px-6 text-center">
-              <p className="max-w-md text-base text-white/75">
+              <p className="max-w-md text-base text-muted-foreground">
                 Warm dark piano room. Tap start to wake the sound (also unlocks
                 audio on iOS), then play a real keyboard, your computer keys, or
                 the on-screen piano.
               </p>
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-amber-300 px-6 py-2.5 text-base font-semibold text-[#1a1208] transition hover:bg-amber-200"
+                className="min-h-[44px] rounded-full bg-violet-300 px-6 py-2.5 text-base font-semibold text-[#1a1208] transition hover:bg-violet-200"
               >
                 Start the room
               </button>
@@ -433,9 +433,9 @@ export default function PianoRoomPulse() {
         </div>
 
         {/* room + status */}
-        <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-border bg-muted p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <label className="font-mono text-xs uppercase tracking-widest text-white/55">
+            <label className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
               room
             </label>
             <input
@@ -448,7 +448,7 @@ export default function PianoRoomPulse() {
               }}
               maxLength={4}
               disabled={started}
-              className="w-24 rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-center font-mono text-lg tracking-[0.3em] text-white disabled:opacity-60"
+              className="w-24 rounded-lg border border-border bg-black/40 px-3 py-2 text-center font-mono text-lg tracking-[0.3em] text-foreground disabled:opacity-60"
             />
             {!started && (
               <button
@@ -457,7 +457,7 @@ export default function PianoRoomPulse() {
                   setCodeInput(c);
                   setRoomCode(c);
                 }}
-                className="min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/75 transition hover:bg-white/5"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
               >
                 shuffle
               </button>
@@ -468,23 +468,23 @@ export default function PianoRoomPulse() {
 
         {/* clock readout */}
         {started && (
-          <div className="mb-5 grid grid-cols-3 gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 font-mono text-sm">
+          <div className="mb-5 grid grid-cols-3 gap-3 rounded-2xl border border-border bg-muted p-4 font-mono text-sm">
             <div>
-              <div className="text-white/55">offset</div>
-              <div className="text-base text-white/95">
+              <div className="text-muted-foreground">offset</div>
+              <div className="text-base text-foreground">
                 {clock.samples > 0 ? `${clock.offset.toFixed(0)} ms` : "—"}
               </div>
             </div>
             <div>
-              <div className="text-white/55">rtt</div>
-              <div className="text-base text-white/95">
+              <div className="text-muted-foreground">rtt</div>
+              <div className="text-base text-foreground">
                 {clock.samples > 0 ? `${clock.rtt.toFixed(0)} ms` : "—"}
               </div>
             </div>
             <div>
-              <div className="text-white/55">pulse</div>
+              <div className="text-muted-foreground">pulse</div>
               <div
-                className={`text-base ${clock.locked && status === "duet" ? "text-emerald-300" : "text-amber-300/95"}`}
+                className={`text-base ${clock.locked && status === "duet" ? "text-violet-300" : "text-violet-300/95"}`}
               >
                 {status === "duet"
                   ? clock.locked
@@ -498,7 +498,7 @@ export default function PianoRoomPulse() {
 
         {/* notice */}
         {notice && (
-          <p className="mb-5 rounded-xl border border-amber-300/20 bg-amber-300/5 px-4 py-3 text-base text-amber-300/95">
+          <p className="mb-5 rounded-xl border border-violet-300/20 bg-violet-300/5 px-4 py-3 text-base text-violet-300/95">
             {notice}
           </p>
         )}
@@ -507,10 +507,10 @@ export default function PianoRoomPulse() {
         {started && (
           <div className="mb-5">
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 On-screen piano · D Dorian
               </p>
-              <p className="font-mono text-sm text-white/55">
+              <p className="font-mono text-sm text-muted-foreground">
                 octave {octaveRef.current >= 0 ? "+" : ""}
                 {octaveRef.current} · z / x
               </p>
@@ -523,7 +523,7 @@ export default function PianoRoomPulse() {
                     e.preventDefault();
                     onScreenStrike(k.degree);
                   }}
-                  className="flex min-h-[64px] flex-1 items-end justify-center rounded-lg border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] pb-2 text-sm text-white/75 transition active:from-amber-300/40 active:to-amber-300/10"
+                  className="flex min-h-[64px] flex-1 items-end justify-center rounded-lg border border-border bg-gradient-to-b from-foreground/10 to-foreground/10 pb-2 text-sm text-muted-foreground transition active:from-violet-300/40 active:to-violet-300/10"
                 >
                   {k.label}
                 </button>
@@ -538,8 +538,8 @@ export default function PianoRoomPulse() {
             <span
               className={`rounded-full border px-3 py-1.5 ${
                 midiState === "ready"
-                  ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-                  : "border-white/10 bg-white/[0.03] text-white/55"
+                  ? "border-violet-400/40 bg-violet-400/10 text-violet-300"
+                  : "border-border bg-muted text-muted-foreground"
               }`}
             >
               MIDI:{" "}
@@ -549,19 +549,19 @@ export default function PianoRoomPulse() {
                   ? "not supported"
                   : "plug in a keyboard"}
             </span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-white/55">
+            <span className="rounded-full border border-border bg-muted px-3 py-1.5 text-muted-foreground">
               keys: a s d f g h j k l (· w e t y u o)
             </span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-white/55">
+            <span className="rounded-full border border-border bg-muted px-3 py-1.5 text-muted-foreground">
               z / x octave
             </span>
           </div>
         )}
 
-        <footer className="border-t border-white/10 pt-4 text-sm">
+        <footer className="border-t border-border pt-4 text-sm">
           <Link
             href="/dream/741-piano-room-pulse/README.md"
-            className="text-white/55 underline decoration-white/20 underline-offset-4 transition hover:text-white/75"
+            className="text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition hover:text-muted-foreground"
           >
             Read the design notes
           </Link>

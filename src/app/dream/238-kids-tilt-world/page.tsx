@@ -656,29 +656,29 @@ export default function TiltWorldPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#191033] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#191033] text-foreground">
       {/* 3D mount */}
       <div ref={mountRef} className="absolute inset-0" />
 
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#191033]/95 px-6 text-center">
-          <h1 className="text-4xl font-bold text-white sm:text-5xl">
+          <h1 className="text-4xl font-bold text-foreground sm:text-5xl">
             Tilt World
           </h1>
-          <p className="max-w-md text-base text-white/80 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Tilt the iPad to roll the glowing marble across the hills. Roll it
             onto the colored pads to ring the bells.
           </p>
           <button
             onClick={startTilt}
-            className="min-h-[44px] rounded-2xl bg-violet-500/30 px-8 py-4 text-xl font-semibold text-white ring-1 ring-violet-300/40 transition hover:bg-violet-500/45 active:scale-95"
+            className="min-h-[44px] rounded-2xl bg-violet-500/30 px-8 py-4 text-xl font-semibold text-foreground ring-1 ring-violet-300/40 transition hover:bg-violet-500/45 active:scale-95"
           >
             Tilt to play
           </button>
           <button
             onClick={startDrag}
-            className="min-h-[44px] rounded-xl px-4 py-2.5 text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+            className="min-h-[44px] rounded-xl px-4 py-2.5 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             No tilt? Drag to play instead
           </button>
@@ -688,17 +688,17 @@ export default function TiltWorldPage() {
       {/* status / fallback note */}
       {started && (
         <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center gap-1 px-4 pt-4 text-center">
-          <p className="text-base font-medium text-white/90">
+          <p className="text-base font-medium text-foreground">
             {mode === "tilt" ? "Tilt to roll the marble" : "Drag the marble"}
           </p>
           {note && (
-            <p className="max-w-sm text-base text-rose-300">{note}</p>
+            <p className="max-w-sm text-base text-violet-300">{note}</p>
           )}
         </div>
       )}
 
       {/* design notes affordance */}
-      <p className="absolute bottom-3 right-4 z-10 text-base text-white/55">
+      <p className="absolute bottom-3 right-4 z-10 text-base text-muted-foreground">
         238 · tilt world
       </p>
     </main>

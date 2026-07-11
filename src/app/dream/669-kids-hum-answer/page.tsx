@@ -490,7 +490,7 @@ export default function HumAnswerPage() {
   const breathe = 0.92 + 0.08 * Math.sin(Date.now() / 1400);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#050407] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#050407] text-foreground">
       {/* The single breathing radial glow. */}
       <div
         aria-hidden
@@ -508,10 +508,10 @@ export default function HumAnswerPage() {
       {/* Minimal, typography-compliant overlay. */}
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         <header className="w-full max-w-md text-center">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Hum &amp; Answer
           </h1>
-          <p className="mt-3 text-base text-white/80">
+          <p className="mt-3 text-base text-foreground">
             Hum one note, close your eyes — an unseen friend leans on a tense
             note and sighs down to rest.
           </p>
@@ -522,7 +522,7 @@ export default function HumAnswerPage() {
             <button
               type="button"
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-violet-400/90 active:bg-violet-500"
+              className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-base font-medium text-foreground shadow-lg transition-colors hover:bg-violet-400/90 active:bg-violet-500"
             >
               Hum a note
             </button>
@@ -537,20 +537,20 @@ export default function HumAnswerPage() {
           )}
 
           {micError && (
-            <p className="max-w-sm text-center text-base text-rose-300">
+            <p className="max-w-sm text-center text-base text-violet-300">
               {micError}
             </p>
           )}
         </div>
 
         <footer className="w-full max-w-md text-center">
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Nothing is recorded, stored, or sent. Your voice is heard only on
             this device.
           </p>
           <Link
             href="/dream/669-kids-hum-answer/README.md"
-            className="mt-3 inline-block text-base text-white/75 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
+            className="mt-3 inline-block text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
           >
             Design notes
           </Link>

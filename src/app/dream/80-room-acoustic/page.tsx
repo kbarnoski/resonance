@@ -580,20 +580,20 @@ export default function RoomAcousticPage() {
     : "#f59e0b";              // amber — cathedral/cave
 
   return (
-    <div className="min-h-screen bg-[#020817] text-white flex flex-col">
+    <div className="min-h-screen bg-[#020817] text-foreground flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
         <div>
-          <h1 className="text-2xl font-serif font-semibold text-white/95 leading-tight">
+          <h1 className="text-2xl font-serif font-semibold text-foreground leading-tight">
             Room Acoustic
           </h1>
-          <p className="text-base text-white/75 mt-0.5">
+          <p className="text-base text-muted-foreground mt-0.5">
             Draw a room. Hear what it sounds like.
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -603,7 +603,7 @@ export default function RoomAcousticPage() {
       <div className="flex flex-col lg:flex-row flex-1 gap-4 px-4 pb-5 min-h-0">
 
         {/* Canvas */}
-        <div className="flex-1 relative rounded-xl overflow-hidden border border-white/10 bg-[#0a0f1e] min-h-[280px]">
+        <div className="flex-1 relative rounded-xl overflow-hidden border border-border bg-[#0a0f1e] min-h-[280px]">
           <canvas
             ref={canvasRef}
             className="w-full h-full cursor-crosshair"
@@ -621,7 +621,7 @@ export default function RoomAcousticPage() {
             RT60 ≈ {rt60.toFixed(2)}s
           </div>
           {/* Drag hint */}
-          <div className="absolute bottom-3 right-3 text-xs text-white/40 font-mono">
+          <div className="absolute bottom-3 right-3 text-xs text-muted-foreground/70 font-mono">
             drag ♪ source · 👂 listener
           </div>
         </div>
@@ -630,15 +630,15 @@ export default function RoomAcousticPage() {
         <div className="w-full lg:w-72 flex flex-col gap-4 shrink-0">
 
           {/* RT60 + Play */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+          <div className="rounded-xl border border-border bg-muted p-4">
             <div className="flex items-center gap-3 mb-3">
               <div
                 className="text-4xl font-mono font-bold"
                 style={{ color: rt60Color }}
               >
-                {rt60.toFixed(2)}<span className="text-lg ml-1 text-white/55">s</span>
+                {rt60.toFixed(2)}<span className="text-lg ml-1 text-muted-foreground">s</span>
               </div>
-              <div className="text-sm text-white/55">
+              <div className="text-sm text-muted-foreground">
                 <div>Reverberation time</div>
                 <div className="text-xs mt-0.5">
                   {rt60 < 0.4 ? "Dead / anechoic"
@@ -660,21 +660,21 @@ export default function RoomAcousticPage() {
               <button
                 onClick={buildIR}
                 disabled={building}
-                className="min-h-[44px] px-3 rounded-lg bg-white/[0.06] border border-white/10 text-white/75 text-sm hover:bg-white/[0.1] transition-colors disabled:opacity-40"
+                className="min-h-[44px] px-3 rounded-lg bg-muted border border-border text-muted-foreground text-sm hover:bg-accent transition-colors disabled:opacity-40"
               >
                 {building ? "⟳" : "↺"}
               </button>
             </div>
             {building && (
-              <div className="mt-2 text-xs text-amber-300/80 font-mono">
+              <div className="mt-2 text-xs text-violet-300/80 font-mono">
                 computing impulse response…
               </div>
             )}
           </div>
 
           {/* Room presets */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <div className="text-sm text-white/75 font-medium mb-2">Presets</div>
+          <div className="rounded-xl border border-border bg-muted p-4">
+            <div className="text-sm text-muted-foreground font-medium mb-2">Presets</div>
             <div className="grid grid-cols-3 gap-1.5">
               {PRESETS.map((p) => (
                 <button
@@ -683,7 +683,7 @@ export default function RoomAcousticPage() {
                   className={`text-xs py-1.5 px-1 rounded-md border transition-colors ${
                     activePreset === p.label
                       ? "border-violet-400/60 bg-violet-500/20 text-violet-300"
-                      : "border-white/10 bg-white/[0.03] text-white/60 hover:text-white/80 hover:bg-white/[0.06]"
+                      : "border-border bg-muted text-muted-foreground hover:text-foreground hover:bg-accent"
                   }`}
                 >
                   {p.label}
@@ -693,11 +693,11 @@ export default function RoomAcousticPage() {
           </div>
 
           {/* Room size sliders */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <div className="text-sm text-white/75 font-medium mb-3">Room size</div>
+          <div className="rounded-xl border border-border bg-muted p-4">
+            <div className="text-sm text-muted-foreground font-medium mb-3">Room size</div>
             <div className="space-y-3">
               <div>
-                <div className="flex justify-between text-xs text-white/55 mb-1">
+                <div className="flex justify-between text-xs text-muted-foreground mb-1">
                   <span>Width</span>
                   <span className="font-mono">{roomW.toFixed(1)} m</span>
                 </div>
@@ -709,7 +709,7 @@ export default function RoomAcousticPage() {
                 />
               </div>
               <div>
-                <div className="flex justify-between text-xs text-white/55 mb-1">
+                <div className="flex justify-between text-xs text-muted-foreground mb-1">
                   <span>Depth</span>
                   <span className="font-mono">{roomD.toFixed(1)} m</span>
                 </div>
@@ -724,8 +724,8 @@ export default function RoomAcousticPage() {
           </div>
 
           {/* Material pickers */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <div className="text-sm text-white/75 font-medium mb-2">Wall material</div>
+          <div className="rounded-xl border border-border bg-muted p-4">
+            <div className="text-sm text-muted-foreground font-medium mb-2">Wall material</div>
             <div className="flex flex-wrap gap-1.5 mb-3">
               {MATERIALS.map((m, i) => (
                 <button
@@ -733,8 +733,8 @@ export default function RoomAcousticPage() {
                   onClick={() => { setWallMatIdx(i); setTimeout(buildIR, 50); }}
                   className={`text-xs px-2.5 py-1.5 rounded-md border transition-colors ${
                     wallMatIdx === i
-                      ? "border-white/50 text-white bg-white/10"
-                      : "border-white/10 text-white/60 hover:text-white/80"
+                      ? "border-border text-foreground bg-muted"
+                      : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                   style={wallMatIdx === i ? { borderColor: m.color + "aa", color: m.color } : {}}
                 >
@@ -742,7 +742,7 @@ export default function RoomAcousticPage() {
                 </button>
               ))}
             </div>
-            <div className="text-sm text-white/75 font-medium mb-2">Floor / ceiling</div>
+            <div className="text-sm text-muted-foreground font-medium mb-2">Floor / ceiling</div>
             <div className="flex flex-wrap gap-1.5">
               {MATERIALS.map((m, i) => (
                 <button
@@ -750,8 +750,8 @@ export default function RoomAcousticPage() {
                   onClick={() => { setFloorCeilIdx(i); setTimeout(buildIR, 50); }}
                   className={`text-xs px-2.5 py-1.5 rounded-md border transition-colors ${
                     floorCeilIdx === i
-                      ? "border-white/50 text-white bg-white/10"
-                      : "border-white/10 text-white/60 hover:text-white/80"
+                      ? "border-border text-foreground bg-muted"
+                      : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                   style={floorCeilIdx === i ? { borderColor: m.color + "aa", color: m.color } : {}}
                 >
@@ -762,23 +762,23 @@ export default function RoomAcousticPage() {
           </div>
 
           {/* Ray toggle */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+          <div className="rounded-xl border border-border bg-muted p-4">
             <label className="flex items-center gap-3 cursor-pointer select-none">
               <div
                 onClick={() => setShowRays((v) => !v)}
-                className={`w-10 h-5 rounded-full transition-colors ${showRays ? "bg-violet-500" : "bg-white/10"}`}
+                className={`w-10 h-5 rounded-full transition-colors ${showRays ? "bg-violet-500" : "bg-muted"}`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full mt-0.5 transition-transform ${showRays ? "translate-x-5.5" : "translate-x-0.5"}`} />
+                <div className={`w-4 h-4 bg-card rounded-full mt-0.5 transition-transform ${showRays ? "translate-x-5.5" : "translate-x-0.5"}`} />
               </div>
-              <span className="text-sm text-white/75">Show reflection rays</span>
+              <span className="text-sm text-muted-foreground">Show reflection rays</span>
             </label>
-            <p className="text-xs text-white/40 mt-2 leading-relaxed">
+            <p className="text-xs text-muted-foreground/70 mt-2 leading-relaxed">
               Dashed lines show early reflections. Brighter = stronger reflection.
             </p>
           </div>
 
           {/* Design notes */}
-          <div className="text-xs text-white/40 px-1 pb-1 leading-relaxed">
+          <div className="text-xs text-muted-foreground/70 px-1 pb-1 leading-relaxed">
             Image-source method · up to 3rd-order reflections ·{" "}
             <Link href="/dream/80-room-acoustic/README.md" className="text-violet-400/70 hover:text-violet-300">
               design notes

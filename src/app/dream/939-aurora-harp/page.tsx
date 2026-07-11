@@ -706,33 +706,33 @@ export default function AuroraHarp() {
       {/* idle / start */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="font-serif text-3xl md:text-4xl text-white mb-3 tracking-tight">
+          <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
             Aurora Harp
           </h1>
-          <p className="text-base text-white/80 max-w-lg mb-2 leading-relaxed">
+          <p className="text-base text-foreground max-w-lg mb-2 leading-relaxed">
             Hear space weather, right now. The live solar wind streaming past
             Earth — its speed, density and magnetic-field Bz — drives a shimmering
             aurora you watch and audifies the magnetosphere&apos;s resonances the
             way NASA&apos;s HARP project does.
           </p>
-          <p className="text-base text-white/75 max-w-lg mb-8 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-lg mb-8 leading-relaxed">
             Calm wind: slow ULF-style drones. A gust or a southward Bz: the
             curtain flares green-violet and the sound thickens, beats and ripples.
             Music from real data and its resonances — not a pitch scale.
           </p>
           <button
             onClick={handleStart}
-            className="px-6 py-2.5 min-h-[44px] text-base text-white border border-emerald-400/50 bg-emerald-500/15 rounded hover:bg-emerald-500/25 hover:border-emerald-400 transition"
+            className="px-6 py-2.5 min-h-[44px] text-base text-foreground border border-violet-400/50 bg-violet-500/15 rounded hover:bg-violet-500/25 hover:border-violet-400 transition"
           >
             Start listening to the sky
           </button>
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="mt-5 text-base text-white/75 hover:text-white/95 underline underline-offset-4"
+            className="mt-5 text-base text-muted-foreground hover:text-foreground underline underline-offset-4"
           >
             Design notes
           </button>
-          <Link href="/dream" className="mt-10 text-base text-white/75 hover:text-white/95">
+          <Link href="/dream" className="mt-10 text-base text-muted-foreground hover:text-foreground">
             ← dream sandbox
           </Link>
         </div>
@@ -742,28 +742,28 @@ export default function AuroraHarp() {
       {running && (
         <>
           <div className="absolute top-4 left-4 space-y-1 pointer-events-none select-none">
-            <div className="font-serif text-2xl text-white/95">Aurora Harp</div>
-            <div className="text-base text-white/80 font-mono">
+            <div className="font-serif text-2xl text-foreground">Aurora Harp</div>
+            <div className="text-base text-foreground font-mono">
               wind {Math.round(readout.speed)} km/s · {readout.density.toFixed(1)} p/cm³
             </div>
-            <div className="text-base text-white/80 font-mono">
+            <div className="text-base text-foreground font-mono">
               Bz {readout.bz >= 0 ? "+" : ""}
               {readout.bz.toFixed(1)} nT · Bt {readout.bt.toFixed(1)} nT
               {readout.bz < -3 && (
-                <span className="text-rose-300"> · southward</span>
+                <span className="text-violet-300"> · southward</span>
               )}
             </div>
-            <div className="text-sm text-white/75 font-mono">
+            <div className="text-sm text-muted-foreground font-mono">
               {isSynthetic ? "source: synthetic" : "source: NOAA SWPC (L1, live)"}
             </div>
           </div>
 
           {/* what am I hearing panel */}
           <div className="absolute top-4 right-4 max-w-xs bg-black/40 rounded-lg p-3 pointer-events-none select-none">
-            <div className="text-base text-white/95 font-semibold mb-1">
+            <div className="text-base text-foreground font-semibold mb-1">
               What am I hearing
             </div>
-            <ul className="text-sm text-white/80 space-y-1 leading-snug font-mono">
+            <ul className="text-sm text-foreground space-y-1 leading-snug font-mono">
               <li>speed → gust tempo / energy</li>
               <li>density → drone partials / brightness</li>
               <li>Bz south → flare + beating + crimson sky</li>
@@ -773,14 +773,14 @@ export default function AuroraHarp() {
 
           <button
             onClick={handleStop}
-            className="absolute bottom-4 right-4 text-base text-white/80 hover:text-white border border-white/20 hover:border-white/50 px-4 py-2.5 min-h-[44px] rounded bg-black/30"
+            className="absolute bottom-4 right-4 text-base text-foreground hover:text-foreground border border-border hover:border-border px-4 py-2.5 min-h-[44px] rounded bg-black/30"
           >
             Stop
           </button>
 
           <Link
             href="/dream"
-            className="absolute bottom-4 left-4 text-base text-white/75 hover:text-white/95"
+            className="absolute bottom-4 left-4 text-base text-muted-foreground hover:text-foreground"
           >
             ← back
           </Link>
@@ -793,7 +793,7 @@ export default function AuroraHarp() {
           className={`absolute ${
             running ? "bottom-20 right-4" : "top-4 right-4"
           } max-w-xs text-base bg-black/45 rounded px-3 py-2 ${
-            isSynthetic && running ? "text-amber-300/95" : "text-white/80"
+            isSynthetic && running ? "text-violet-300/95" : "text-foreground"
           }`}
         >
           {notice}
@@ -804,20 +804,20 @@ export default function AuroraHarp() {
       {showNotes && phase === "idle" && (
         <div className="absolute inset-0 bg-black/85 flex items-center justify-center px-6 overflow-y-auto">
           <div className="max-w-lg text-left py-10">
-            <h2 className="font-serif text-2xl text-white mb-4">Design notes</h2>
-            <p className="text-base text-white/80 mb-3 leading-relaxed">
+            <h2 className="font-serif text-2xl text-foreground mb-4">Design notes</h2>
+            <p className="text-base text-foreground mb-3 leading-relaxed">
               Two live NOAA SWPC feeds (5-minute plasma + magnetic-field products
               from ACE/DSCOVR at the L1 point) are polled every 60 seconds from the
-              browser. The latest row gives solar-wind <span className="text-emerald-300">speed</span>,{" "}
-              <span className="text-emerald-300">density</span>, and the
+              browser. The latest row gives solar-wind <span className="text-violet-300">speed</span>,{" "}
+              <span className="text-violet-300">density</span>, and the
               interplanetary magnetic-field <span className="text-violet-300">Bz</span> and total
               field <span className="text-violet-300">Bt</span>. If the feed is
               unreachable, a smoothly-varying synthetic solar wind takes over so it
               always sounds and shows (with an amber notice).
             </p>
-            <p className="text-base text-white/80 mb-3 leading-relaxed">
+            <p className="text-base text-foreground mb-3 leading-relaxed">
               The sound is HARP-style data sonification, not a chord. A sustained
-              drone bed sits on inharmonic resonance <span className="text-emerald-300">bands</span>;
+              drone bed sits on inharmonic resonance <span className="text-violet-300">bands</span>;
               density decides how many partials sing. Each band is a detuned
               oscillator <span className="text-violet-300">pair</span> producing real{" "}
               <span className="text-violet-300">beating</span>, whose beat rate tracks
@@ -825,7 +825,7 @@ export default function AuroraHarp() {
               the wind. A southward-Bz event triggers a flare: a sub-rumble plus a
               ripple of beating tones — and the sky flashes.
             </p>
-            <p className="text-base text-white/80 mb-4 leading-relaxed">
+            <p className="text-base text-foreground mb-4 leading-relaxed">
               The visual is a raw WebGL2 fragment shader: fbm-folded vertical light
               sheets over a dark arctic horizon and a twinkling star field. Faster
               wind folds the curtain faster; more density brightens it; southward
@@ -834,7 +834,7 @@ export default function AuroraHarp() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="text-base text-emerald-300 hover:text-emerald-200 underline underline-offset-4 min-h-[44px]"
+              className="text-base text-violet-300 hover:text-violet-200 underline underline-offset-4 min-h-[44px]"
             >
               close
             </button>

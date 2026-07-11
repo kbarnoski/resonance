@@ -418,7 +418,7 @@ export default function KidsTiltCadence() {
   }, []);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-neutral-950 text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-neutral-950 text-foreground">
       {/* Play surface */}
       <canvas
         ref={canvasRef}
@@ -429,24 +429,24 @@ export default function KidsTiltCadence() {
       {/* Header chrome */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between p-4">
         <div className="pointer-events-auto rounded-2xl bg-black/35 px-4 py-2.5 backdrop-blur-sm">
-          <h1 className="font-mono text-xl font-semibold text-white sm:text-2xl">
+          <h1 className="font-mono text-xl font-semibold text-foreground sm:text-2xl">
             Tilt the marble home
           </h1>
-          <p className="mt-1 text-base text-white/80">
-            Roll from <span className="text-orange-300">Pull</span> to{" "}
-            <span className="text-amber-200">Home</span> to feel it resolve.
+          <p className="mt-1 text-base text-foreground">
+            Roll from <span className="text-violet-300">Pull</span> to{" "}
+            <span className="text-violet-200">Home</span> to feel it resolve.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/dream"
-            className="pointer-events-auto flex min-h-[44px] items-center rounded-2xl bg-black/35 px-4 py-2.5 text-base text-white/80 backdrop-blur-sm hover:text-white"
+            className="pointer-events-auto flex min-h-[44px] items-center rounded-2xl bg-black/35 px-4 py-2.5 text-base text-foreground backdrop-blur-sm hover:text-foreground"
           >
             ← Lab
           </Link>
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="pointer-events-auto flex min-h-[44px] items-center rounded-2xl bg-black/35 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm hover:text-white"
+            className="pointer-events-auto flex min-h-[44px] items-center rounded-2xl bg-black/35 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm hover:text-foreground"
           >
             Design notes
           </button>
@@ -456,7 +456,7 @@ export default function KidsTiltCadence() {
       {/* Cadence "Home!" flash */}
       {cadenceFlash && (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <span className="animate-pulse rounded-3xl bg-amber-300/20 px-8 py-4 text-5xl font-extrabold text-amber-100 drop-shadow-lg">
+          <span className="animate-pulse rounded-3xl bg-violet-300/20 px-8 py-4 text-5xl font-extrabold text-violet-100 drop-shadow-lg">
             ✦ Home! ✦
           </span>
         </div>
@@ -464,7 +464,7 @@ export default function KidsTiltCadence() {
 
       {/* Sensor fallback note */}
       {started && sensor === "fallback" && (
-        <p className="absolute left-1/2 top-20 z-10 -translate-x-1/2 rounded-xl bg-black/45 px-4 py-2 text-center text-base text-rose-300 backdrop-blur-sm">
+        <p className="absolute left-1/2 top-20 z-10 -translate-x-1/2 rounded-xl bg-black/45 px-4 py-2 text-center text-base text-violet-300 backdrop-blur-sm">
           {sensorNote}
         </p>
       )}
@@ -472,7 +472,7 @@ export default function KidsTiltCadence() {
       {/* Fallback tilt-pad (shown when no sensor) */}
       {started && sensor === "fallback" && (
         <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
-          <p className="mb-2 text-center text-base text-white/80">
+          <p className="mb-2 text-center text-base text-foreground">
             Drag to tilt · or use arrow keys
           </p>
           <div
@@ -491,10 +491,10 @@ export default function KidsTiltCadence() {
               puckRef.current.y = 0;
               (e.target as HTMLElement).releasePointerCapture(e.pointerId);
             }}
-            className="relative h-40 w-40 touch-none rounded-full border-2 border-white/40 bg-black/30 backdrop-blur-sm"
+            className="relative h-40 w-40 touch-none rounded-full border-2 border-border bg-black/30 backdrop-blur-sm"
           >
-            <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/50" />
-            <span className="absolute left-1/2 top-2 -translate-x-1/2 text-base text-white/55">
+            <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted" />
+            <span className="absolute left-1/2 top-2 -translate-x-1/2 text-base text-muted-foreground">
               ↑
             </span>
           </div>
@@ -503,22 +503,22 @@ export default function KidsTiltCadence() {
 
       {/* Start overlay (primary action -> sound + motion immediately) */}
       {!started && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-emerald-900/70 to-amber-900/60 p-6 text-center backdrop-blur-sm">
-          <h2 className="max-w-xl text-3xl font-bold text-white sm:text-4xl">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-violet-900/70 to-violet-900/60 p-6 text-center backdrop-blur-sm">
+          <h2 className="max-w-xl text-3xl font-bold text-foreground sm:text-4xl">
             Tilt the glowing marble back home
           </h2>
-          <p className="mt-4 max-w-md text-lg text-white/80">
+          <p className="mt-4 max-w-md text-lg text-foreground">
             Tip your tablet to roll the marble between three glowing wells. Bring
             it from the restless orange <b>Pull</b> into the gold <b>Home</b> and
             hear the music settle.
           </p>
           <button
             onClick={handleStart}
-            className="mt-8 min-h-[64px] rounded-full bg-amber-300 px-10 py-4 text-2xl font-extrabold text-amber-950 shadow-lg transition hover:bg-amber-200 active:scale-95"
+            className="mt-8 min-h-[64px] rounded-full bg-violet-300 px-10 py-4 text-2xl font-extrabold text-violet-950 shadow-lg transition hover:bg-violet-200 active:scale-95"
           >
             ▶ Start playing
           </button>
-          <p className="mt-4 text-base text-white/75">
+          <p className="mt-4 text-base text-muted-foreground">
             Sound plays right away. Works with tilt, drag-pad, or arrow keys.
           </p>
         </div>
@@ -527,15 +527,15 @@ export default function KidsTiltCadence() {
       {/* Design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6">
-          <div className="max-h-[80vh] max-w-lg overflow-auto rounded-2xl bg-neutral-900 p-6 text-base leading-relaxed text-white/85">
-            <h3 className="text-2xl font-bold text-white">Design notes</h3>
+          <div className="max-h-[80vh] max-w-lg overflow-auto rounded-2xl bg-neutral-900 p-6 text-base leading-relaxed text-foreground">
+            <h3 className="text-2xl font-bold text-foreground">Design notes</h3>
             <p className="mt-3">
               A 4-year-old tilts the device to roll a damped point-mass marble
               across a height field of three Gaussian wells. The wells literally
               are Hugo Riemann&apos;s harmonic functions:{" "}
-              <b className="text-amber-200">Tonic (I) = Home</b>,{" "}
-              <b className="text-green-300">Subdominant (IV) = Away</b>,{" "}
-              <b className="text-orange-300">Dominant 7th (V7) = Pull</b>.
+              <b className="text-violet-200">Tonic (I) = Home</b>,{" "}
+              <b className="text-violet-300">Subdominant (IV) = Away</b>,{" "}
+              <b className="text-violet-300">Dominant 7th (V7) = Pull</b>.
             </p>
             <p className="mt-3">
               Sitting in a well sounds its chord over an always-on tonic drone.
@@ -543,13 +543,13 @@ export default function KidsTiltCadence() {
               the leading tone resolves up a semitone, the chordal 7th down — with
               sparks and blooming flowers. Tension to home, learned in the hands.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               References: Riemann functional harmony · Toca Boca tilt-toys ·
               BeSound · CHI 2026 &ldquo;From Movement to Sound and Back.&rdquo;
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-xl bg-white/15 px-4 py-2.5 text-base text-white hover:bg-white/25"
+              className="mt-5 min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

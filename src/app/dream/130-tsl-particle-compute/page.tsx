@@ -473,17 +473,17 @@ export default function TslParticleCompute() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Lorenz Attractor</h1>
-          <p className="text-base text-white/75 max-w-md mb-2 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
             50,000 particles trace the Lorenz strange attractor in a WebGPU compute shader.
           </p>
-          <p className="text-base text-white/60 max-w-md mb-8 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-8 leading-relaxed">
             Bass warps σ (wing spread), treble warps ρ (chaos level).
             Drag to orbit.
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={handleStartDemo}
-              className="px-6 py-3 text-base border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+              className="px-6 py-3 text-base border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
             >
               Demo mode
             </button>
@@ -495,11 +495,11 @@ export default function TslParticleCompute() {
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-sm text-rose-300">{micError}</p>
+            <p className="mt-4 text-sm text-violet-300">{micError}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-xs text-white/40 hover:text-white/70"
+            className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← dream sandbox
           </Link>
@@ -509,10 +509,10 @@ export default function TslParticleCompute() {
       {/* ── no-gpu: fallback ─────────────────────────────────────────────── */}
       {phase === "no-gpu" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <p className="text-base text-amber-300/95 mb-3">
+          <p className="text-base text-violet-300/95 mb-3">
             WebGPU is not available in this browser.
           </p>
-          <p className="text-sm text-white/75 mb-6">
+          <p className="text-sm text-muted-foreground mb-6">
             Try Chrome 113+, Edge 113+, or Safari 18+ on a supported device.
           </p>
           <Link
@@ -521,7 +521,7 @@ export default function TslParticleCompute() {
           >
             Open /dream/10-strange instead →
           </Link>
-          <Link href="/dream" className="text-xs text-white/40 hover:text-white/70">
+          <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
             ← dream sandbox
           </Link>
         </div>
@@ -530,16 +530,16 @@ export default function TslParticleCompute() {
       {/* ── running: HUD ─────────────────────────────────────────────────── */}
       {isRunning && (
         <>
-          <div className="absolute top-4 right-4 text-xs text-white/55 space-y-1 text-right pointer-events-none select-none">
-            <div className="text-white/75 tracking-wider">LORENZ · 50k</div>
+          <div className="absolute top-4 right-4 text-xs text-muted-foreground space-y-1 text-right pointer-events-none select-none">
+            <div className="text-muted-foreground tracking-wider">LORENZ · 50k</div>
             <div>σ = <span className="text-violet-300">{hudSigma}</span></div>
-            <div>ρ = <span className="text-cyan-300">{hudRho}</span></div>
-            <div className="text-white/40 mt-1">drag to orbit</div>
+            <div>ρ = <span className="text-violet-300">{hudRho}</span></div>
+            <div className="text-muted-foreground/70 mt-1">drag to orbit</div>
           </div>
 
           {micMode && micRunning && (
             <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2 pointer-events-auto">
-              <label className="text-xs text-white/55 tracking-wider">
+              <label className="text-xs text-muted-foreground tracking-wider">
                 GAIN {gain.toFixed(1)}
               </label>
               <input
@@ -550,7 +550,7 @@ export default function TslParticleCompute() {
               />
               <button
                 onClick={stopMic}
-                className="text-xs text-white/55 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1.5 rounded min-h-[36px]"
+                className="text-xs text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded min-h-[36px]"
               >
                 stop mic
               </button>
@@ -559,7 +559,7 @@ export default function TslParticleCompute() {
 
           <Link
             href="/dream"
-            className="absolute bottom-4 left-4 text-xs text-white/35 hover:text-white/65"
+            className="absolute bottom-4 left-4 text-xs text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back
           </Link>

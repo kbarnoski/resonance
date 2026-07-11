@@ -614,26 +614,26 @@ export default function PolymeterLoomPage() {
   const lcmAll = lcmOfSteps(voices.map((v) => v.n));
 
   return (
-    <main className="min-h-screen bg-[#070a10] text-white/95">
+    <main className="min-h-screen bg-[#070a10] text-foreground">
       <div className="mx-auto max-w-5xl px-5 py-8">
         <header className="mb-5">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Polymeter Loom
           </h1>
-          <p className="mt-2 max-w-2xl text-base text-white/75">
+          <p className="mt-2 max-w-2xl text-base text-muted-foreground">
             Interlocking Euclidean rhythms woven into a hypnotic groove — voices on
             different step-counts drift apart and back together, Reich-style.
           </p>
         </header>
 
         {/* Loom viewport */}
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/60">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-black/60">
           <div ref={mountRef} className="h-[clamp(300px,52vh,560px)] w-full" />
           {glError && (
-            <div className="absolute inset-x-0 top-0 p-4 text-base text-rose-300">{glError}</div>
+            <div className="absolute inset-x-0 top-0 p-4 text-base text-violet-300">{glError}</div>
           )}
           {!running && !audioError && (
-            <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/70 px-4 py-2 text-sm text-white/55">
+            <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-border bg-black/70 px-4 py-2 text-sm text-muted-foreground">
               idle demo — press Weave for sound
             </div>
           )}
@@ -644,14 +644,14 @@ export default function PolymeterLoomPage() {
           {!running ? (
             <button
               onClick={startAudio}
-              className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-violet-400"
+              className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
             >
               ▶ Weave
             </button>
           ) : (
             <button
               onClick={stopAudio}
-              className="min-h-[44px] rounded-xl border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/[0.08]"
+              className="min-h-[44px] rounded-xl border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               ⏸ Pause
             </button>
@@ -661,15 +661,15 @@ export default function PolymeterLoomPage() {
             onClick={() => setPhasingOn((p) => !p)}
             className={`min-h-[44px] rounded-xl border px-4 py-2.5 text-base font-medium transition-colors ${
               phasingOn
-                ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-300/95"
-                : "border-white/15 bg-white/[0.03] text-white/75 hover:bg-white/[0.07]"
+                ? "border-violet-400/40 bg-violet-500/15 text-violet-300/95"
+                : "border-border bg-muted text-muted-foreground hover:bg-accent"
             }`}
           >
             phasing {phasingOn ? "on" : "off"}
           </button>
 
-          <label className="flex min-h-[44px] items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5">
-            <span className="font-mono text-sm text-white/55">tempo</span>
+          <label className="flex min-h-[44px] items-center gap-3 rounded-xl border border-border bg-muted px-4 py-2.5">
+            <span className="font-mono text-sm text-muted-foreground">tempo</span>
             <input
               type="range"
               min={70}
@@ -678,7 +678,7 @@ export default function PolymeterLoomPage() {
               onChange={(e) => setBpm(parseInt(e.target.value, 10))}
               className="w-32 accent-violet-400"
             />
-            <span className="w-16 font-mono text-base text-amber-300/95">{bpm} bpm</span>
+            <span className="w-16 font-mono text-base text-violet-300/95">{bpm} bpm</span>
           </label>
         </div>
 
@@ -690,7 +690,7 @@ export default function PolymeterLoomPage() {
               <div
                 key={v.id}
                 className={`rounded-xl border px-4 py-3 transition-colors ${
-                  on ? "border-white/15 bg-white/[0.04]" : "border-white/8 bg-white/[0.015]"
+                  on ? "border-border bg-muted" : "border-border bg-muted"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -702,16 +702,16 @@ export default function PolymeterLoomPage() {
                       className="inline-block h-3.5 w-3.5 rounded-full"
                       style={{ background: v.color, opacity: on ? 1 : 0.3 }}
                     />
-                    <span className={`text-base font-medium ${on ? "text-white/95" : "text-white/55"}`}>
+                    <span className={`text-base font-medium ${on ? "text-foreground" : "text-muted-foreground"}`}>
                       {v.name}
                     </span>
                     {v.phasing && (
-                      <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 font-mono text-xs text-emerald-300/95">
+                      <span className="rounded bg-violet-500/15 px-1.5 py-0.5 font-mono text-xs text-violet-300/95">
                         phase
                       </span>
                     )}
                   </button>
-                  <span className="font-mono text-sm text-white/55">[{v.hint}]</span>
+                  <span className="font-mono text-sm text-muted-foreground">[{v.hint}]</span>
                 </div>
                 <div className="mt-1.5 flex items-center justify-between">
                   <span className="font-mono text-base text-violet-300">
@@ -720,14 +720,14 @@ export default function PolymeterLoomPage() {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => nudgeK(i, -1)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-base text-white/75 hover:bg-white/[0.1]"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-muted text-base text-muted-foreground hover:bg-accent"
                       aria-label={`fewer onsets on ${v.name}`}
                     >
                       −
                     </button>
                     <button
                       onClick={() => nudgeK(i, +1)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-base text-white/75 hover:bg-white/[0.1]"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-muted text-base text-muted-foreground hover:bg-accent"
                       aria-label={`more onsets on ${v.name}`}
                     >
                       +
@@ -741,54 +741,54 @@ export default function PolymeterLoomPage() {
         </div>
 
         {/* status line */}
-        <p className="mt-4 font-mono text-sm text-white/55">
+        <p className="mt-4 font-mono text-sm text-muted-foreground">
           {voices.filter((_, i) => enabled[i]).length} voices weaving · combined loop realigns every{" "}
-          <span className="text-amber-300/95">{lcmAll}</span> steps
-          {phasingOn && <span className="text-emerald-300/95"> · phasing drift active</span>}
+          <span className="text-violet-300/95">{lcmAll}</span> steps
+          {phasingOn && <span className="text-violet-300/95"> · phasing drift active</span>}
         </p>
 
         {audioError && (
-          <p className="mt-3 text-base text-rose-300">{audioError}</p>
+          <p className="mt-3 text-base text-violet-300">{audioError}</p>
         )}
 
         {/* Keyboard hints */}
-        <p className="mt-3 text-sm text-white/55">
-          Keys: <span className="font-mono text-white/75">1–5</span> toggle voices ·{" "}
-          <span className="font-mono text-white/75">q/a w/s e/d r/f t/g</span> nudge onsets ·{" "}
-          <span className="font-mono text-white/75">space</span> toggle phasing
+        <p className="mt-3 text-sm text-muted-foreground">
+          Keys: <span className="font-mono text-muted-foreground">1–5</span> toggle voices ·{" "}
+          <span className="font-mono text-muted-foreground">q/a w/s e/d r/f t/g</span> nudge onsets ·{" "}
+          <span className="font-mono text-muted-foreground">space</span> toggle phasing
         </p>
 
         {/* Design notes */}
-        <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.02]">
+        <div className="mt-6 rounded-xl border border-border bg-muted">
           <button
             onClick={() => setShowNotes((s) => !s)}
             className="flex min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left"
           >
-            <span className="text-xl font-medium text-white/95">Design notes</span>
-            <span className="font-mono text-base text-white/55">{showNotes ? "−" : "+"}</span>
+            <span className="text-xl font-medium text-foreground">Design notes</span>
+            <span className="font-mono text-base text-muted-foreground">{showNotes ? "−" : "+"}</span>
           </button>
           {showNotes && (
-            <div className="space-y-3 px-4 pb-5 text-base text-white/75">
+            <div className="space-y-3 px-4 pb-5 text-base text-muted-foreground">
               <p>
                 Each voice plays a <span className="text-violet-300">Euclidean rhythm</span>{" "}
                 E(k,n): k onsets spread as evenly as possible over n steps, computed with the{" "}
-                <span className="font-mono text-white/75">Bjorklund</span> algorithm.
+                <span className="font-mono text-muted-foreground">Bjorklund</span> algorithm.
               </p>
               <p>
                 Voices use <em>different</em> n (16, 8, 16, 16, 12), so the combined groove is{" "}
-                <span className="text-emerald-300/95">polymetric</span> — it only realigns after
+                <span className="text-violet-300/95">polymetric</span> — it only realigns after
                 the least common multiple of all step-counts, a long evolving loop.
               </p>
               <p>
-                The <span className="text-emerald-300/95">marimba</span> and{" "}
-                <span className="text-amber-300/95">bell</span> share a pattern but one runs{" "}
+                The <span className="text-violet-300/95">marimba</span> and{" "}
+                <span className="text-violet-300/95">bell</span> share a pattern but one runs{" "}
                 {((PHASE_RATIO - 1) * 100).toFixed(1)}% faster — Steve Reich phasing. They slide
                 out of unison and slowly back, so minute 2 sounds unlike minute 0.
               </p>
-              <p className="text-white/55">
-                References: <span className="text-white/75">Steve Reich</span> — phasing
+              <p className="text-muted-foreground">
+                References: <span className="text-muted-foreground">Steve Reich</span> — phasing
                 (<em>Music for 18 Musicians</em>, <em>Clapping Music</em>) ·{" "}
-                <span className="text-white/75">Godfried Toussaint</span> —{" "}
+                <span className="text-muted-foreground">Godfried Toussaint</span> —{" "}
                 <em>The Euclidean Algorithm Generates Traditional Musical Rhythms</em> (2005).
                 Subsystems: Euclidean generator · phasing clock · multi-voice FM/pluck synth ·
                 three.js loom. See README.md.

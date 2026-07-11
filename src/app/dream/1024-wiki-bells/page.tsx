@@ -799,7 +799,7 @@ export default function WikiBellsPage() {
   const langChoices = ["all", "en", "de", "fr", "es", "ja", "ru", "zh"];
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06060a] text-foreground">
       {/* canvas backdrop */}
       <canvas
         ref={canvasRef}
@@ -812,16 +812,16 @@ export default function WikiBellsPage() {
 
       {/* ── Header ── */}
       <header className="relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Wiki Bells
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/75">
+        <p className="mt-2 max-w-2xl text-base text-muted-foreground">
           Every Wikipedia edit on Earth, this very second, struck as a bell. The
           world&apos;s collective editing is the instrument — you only shape the
           listening.
         </p>
         {source === "simulated" && (
-          <p className="mt-3 font-mono text-base text-amber-300/95">
+          <p className="mt-3 font-mono text-base text-violet-300/95">
             simulated edit stream — live feed unavailable
           </p>
         )}
@@ -831,17 +831,17 @@ export default function WikiBellsPage() {
       {!running && (
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col items-center gap-5 px-6 text-center">
-            <p className="max-w-md text-base text-white/75">
+            <p className="max-w-md text-base text-muted-foreground">
               A live sonification of the global Wikimedia stream. Press play and
               listen to the whole world think out loud.
             </p>
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-amber-200/90 px-6 py-2.5 text-base font-medium text-[#1a140a] shadow-lg transition-colors hover:bg-amber-100"
+              className="min-h-[44px] rounded-full bg-violet-200/90 px-6 py-2.5 text-base font-medium text-[#1a140a] shadow-lg transition-colors hover:bg-violet-100"
             >
               Listen to the world edit
             </button>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Audio starts on this click. No account, no pointing — just the
               stream.
             </p>
@@ -852,8 +852,8 @@ export default function WikiBellsPage() {
       {/* ── Live controls ── */}
       {running && (
         <div className="absolute bottom-16 left-1/2 z-10 w-[min(92vw,720px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-white/10 bg-black/55 px-4 py-3 backdrop-blur-md">
-            <span className="mr-1 font-mono text-base text-white/55">
+          <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-border bg-black/55 px-4 py-3 backdrop-blur-md">
+            <span className="mr-1 font-mono text-base text-muted-foreground">
               {source === "live"
                 ? "live"
                 : source === "connecting"
@@ -865,23 +865,23 @@ export default function WikiBellsPage() {
               onClick={() => setMuteBots((b) => !b)}
               className={`min-h-[44px] rounded-full px-4 py-2.5 text-base font-medium transition-colors ${
                 muteBots
-                  ? "bg-white/10 text-white/75 hover:bg-white/15"
-                  : "bg-amber-200/20 text-amber-100 hover:bg-amber-200/30"
+                  ? "bg-muted text-muted-foreground hover:bg-accent"
+                  : "bg-violet-200/20 text-violet-100 hover:bg-violet-200/30"
               }`}
               title="Bot edits are woodier/quieter; toggle to silence them."
             >
               {muteBots ? "bots: muted" : "bots: on"}
             </button>
 
-            <div className="flex items-center gap-1 rounded-full bg-white/[0.06] px-2 py-1">
+            <div className="flex items-center gap-1 rounded-full bg-muted px-2 py-1">
               {langChoices.map((l) => (
                 <button
                   key={l}
                   onClick={() => setOnlyLang(l)}
                   className={`min-h-[44px] rounded-full px-3 py-2 font-mono text-base transition-colors ${
                     onlyLang === l
-                      ? "bg-amber-200/85 text-[#1a140a]"
-                      : "text-white/75 hover:bg-white/10"
+                      ? "bg-violet-200/85 text-[#1a140a]"
+                      : "text-muted-foreground hover:bg-accent"
                   }`}
                   title={l === "all" ? "all language wikis" : `${l} wiki only`}
                 >
@@ -890,7 +890,7 @@ export default function WikiBellsPage() {
               ))}
             </div>
 
-            <span className="ml-1 font-mono text-base text-white/55">
+            <span className="ml-1 font-mono text-base text-muted-foreground">
               {stats.rate}/s · {stats.total} struck
             </span>
           </div>
@@ -900,7 +900,7 @@ export default function WikiBellsPage() {
       {/* ── Design notes button ── */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute right-5 top-8 z-10 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:bg-black/60 hover:text-white/95"
+        className="absolute right-5 top-8 z-10 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:bg-black/60 hover:text-foreground"
       >
         Design notes
       </button>
@@ -912,41 +912,41 @@ export default function WikiBellsPage() {
           onClick={() => setShowNotes(false)}
         >
           <div
-            className="max-h-[82vh] w-[min(92vw,640px)] overflow-y-auto rounded-2xl border border-white/12 bg-[#0b0b12] p-6 text-white/85 shadow-2xl"
+            className="max-h-[82vh] w-[min(92vw,640px)] overflow-y-auto rounded-2xl border border-border bg-[#0b0b12] p-6 text-foreground shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-serif text-xl text-white/95">Design notes</h2>
+              <h2 className="font-serif text-xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-white/65 hover:text-white/95"
+                className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
               >
                 close
               </button>
             </div>
-            <div className="space-y-4 text-base leading-relaxed text-white/75">
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
               <p>
-                <span className="text-white/95">The question:</span> what does
+                <span className="text-foreground">The question:</span> what does
                 the whole world thinking out loud sound like — every Wikipedia
                 edit, anywhere on Earth, this very second, struck as a bell?
               </p>
               <p>
                 A Resonance-flavored, harmonically richer descendant of{" "}
-                <span className="text-white/95">
+                <span className="text-foreground">
                   Hatnote&apos;s &ldquo;Listen to Wikipedia&rdquo;
                 </span>{" "}
                 (Stephen LaPorte &amp; Mahmoud Hashemi, 2013), which first turned
                 the edit feed into bells and swells. Credit and thanks to them.
               </p>
               <p>
-                <span className="text-white/95">Four subsystems:</span> live SSE
+                <span className="text-foreground">Four subsystems:</span> live SSE
                 ingestion + filter (Wikimedia EventStreams), inharmonic bell /
                 tongue-drum synthesis, a modal scale that drifts every ~30s, and
                 a Canvas2D bloom field.
               </p>
               <div>
-                <p className="mb-1 text-white/95">Event → sound:</p>
-                <ul className="ml-4 list-disc space-y-1 text-white/70">
+                <p className="mb-1 text-foreground">Event → sound:</p>
+                <ul className="ml-4 list-disc space-y-1 text-muted-foreground">
                   <li>byte-delta → pitch (big change = low, weighty bell)</li>
                   <li>edit → struck gold bell · new article → warm violet chime</li>
                   <li>new user → rising mint sparkle · bot → woodier / mutable</li>
@@ -954,7 +954,7 @@ export default function WikiBellsPage() {
                 </ul>
               </div>
               <p>
-                <span className="text-white/95">No network?</span> A built-in
+                <span className="text-foreground">No network?</span> A built-in
                 synthetic generator (Poisson-ish arrivals) plays an identical-
                 feeling stream, flagged in amber. Up to 12 voices; floods are
                 throttled to the most significant events so a busy day never

@@ -281,12 +281,12 @@ export default function KidsSongFamily() {
   // ── start screen ─────────────────────────────────────────────────────────
   if (!started) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#03040c] px-6 text-center text-white">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#03040c] px-6 text-center text-foreground">
         <div className="text-5xl select-none" aria-hidden="true">
           ✨🫧✨
         </div>
-        <h1 className="text-3xl font-serif text-white/95">Song Family</h1>
-        <p className="max-w-md text-base text-white/80">
+        <h1 className="text-3xl font-serif text-foreground">Song Family</h1>
+        <p className="max-w-md text-base text-foreground">
           Hum a little song and a glowing friend hatches who remembers it. Sing
           more and a whole family of friends appears — and they sing your songs
           back to you, stacked in warm harmony, in a voice made from a real
@@ -295,18 +295,18 @@ export default function KidsSongFamily() {
         <div className="flex flex-col gap-3">
           <button
             onClick={() => handleStart(true)}
-            className="min-h-[64px] rounded-2xl border border-violet-400/40 bg-violet-500/25 px-6 py-3 text-xl font-medium text-white/95 transition-colors hover:bg-violet-500/40"
+            className="min-h-[64px] rounded-2xl border border-violet-400/40 bg-violet-500/25 px-6 py-3 text-xl font-medium text-foreground transition-colors hover:bg-violet-500/40"
           >
             🎤 Sing to them
           </button>
           <button
             onClick={() => handleStart(false)}
-            className="min-h-[64px] rounded-2xl border border-white/20 bg-white/5 px-6 py-3 text-base text-white/80 transition-colors hover:bg-white/10"
+            className="min-h-[64px] rounded-2xl border border-border bg-muted px-6 py-3 text-base text-foreground transition-colors hover:bg-accent"
           >
             Just watch them dream
           </button>
         </div>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           Hum a few notes, then go quiet and listen. For little ones 3+.
         </p>
       </div>
@@ -320,8 +320,8 @@ export default function KidsSongFamily() {
 
       {/* HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-1 p-5 text-center">
-        <h1 className="text-2xl font-serif text-white/95">Song Family</h1>
-        <p className="text-base text-white/80">
+        <h1 className="text-2xl font-serif text-foreground">Song Family</h1>
+        <p className="text-base text-foreground">
           {mode === "ghost"
             ? "watching your friends dream and sing"
             : "hum a little song, then go quiet and listen"}
@@ -333,7 +333,7 @@ export default function KidsSongFamily() {
           </p>
         )}
         {voiceKind === "fallback" && (
-          <p className="text-sm text-white/75">
+          <p className="text-sm text-muted-foreground">
             (singing in a soft synth voice — the real piano could not load)
           </p>
         )}
@@ -342,14 +342,14 @@ export default function KidsSongFamily() {
       {/* design notes link, corner */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="pointer-events-auto absolute right-3 top-3 rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-sm text-white/75 backdrop-blur-md transition-colors hover:text-white"
+        className="pointer-events-auto absolute right-3 top-3 rounded-full border border-border bg-black/50 px-4 py-2.5 text-sm text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
-        <div className="pointer-events-auto absolute right-3 top-16 max-w-xs rounded-2xl border border-white/15 bg-black/85 p-4 text-left text-sm text-white/80 backdrop-blur-md">
-          <p className="mb-2 text-base text-white/95">Song Family</p>
+        <div className="pointer-events-auto absolute right-3 top-16 max-w-xs rounded-2xl border border-border bg-black/85 p-4 text-left text-sm text-foreground backdrop-blur-md">
+          <p className="mb-2 text-base text-foreground">Song Family</p>
           <p className="mb-2">
             A 4-year-old&apos;s hummed phrases hatch a family of glowing
             companions (cap {MAX_COMPANIONS}) that remember the melodies and sing
@@ -362,7 +362,7 @@ export default function KidsSongFamily() {
             &ldquo;Welcome Home&rdquo; piano, pitch-shifted onto each note (synth
             fallback if it can&apos;t load). Rendered in raw WebGL2.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Cycle-2 of <span className="font-mono">738-kids-song-sprout</span>.
             {glFallback ? " (Canvas2D fallback active.)" : ""}
           </p>
@@ -371,7 +371,7 @@ export default function KidsSongFamily() {
 
       {micNote && (
         <div className="pointer-events-none absolute inset-x-0 bottom-16 p-5 text-center">
-          <p className="mx-auto max-w-md text-base text-rose-300">{micNote}</p>
+          <p className="mx-auto max-w-md text-base text-violet-300">{micNote}</p>
         </div>
       )}
     </div>

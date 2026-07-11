@@ -282,11 +282,11 @@ export default function OracleMusic() {
 
       {/* Header */}
       <div className="text-center mb-10">
-        <div className="text-[9px] tracking-[0.35em] uppercase text-white/25 mb-2">
+        <div className="text-[9px] tracking-[0.35em] uppercase text-muted-foreground/70 mb-2">
           Dream Sandbox · /dream/69-oracle-music
         </div>
-        <h1 className="text-3xl tracking-tight text-white/90">Oracle Music</h1>
-        <p className="text-sm text-white/40 mt-2">The I Ching answers in sound</p>
+        <h1 className="text-3xl tracking-tight text-foreground">Oracle Music</h1>
+        <p className="text-sm text-muted-foreground/70 mt-2">The I Ching answers in sound</p>
       </div>
 
       {/* Central panel */}
@@ -295,7 +295,7 @@ export default function OracleMusic() {
         {/* ── IDLE ── */}
         {phase === "idle" && (
           <div className="flex flex-col items-center gap-7">
-            <p className="text-xs text-white/40 text-center leading-relaxed">
+            <p className="text-xs text-muted-foreground/70 text-center leading-relaxed">
               Three coins are cast six times. Their sum on each throw
               determines a line — solid or broken. Six lines form one of
               64 hexagrams, each with its own music.
@@ -308,7 +308,7 @@ export default function OracleMusic() {
             </div>
             <button
               onClick={handleCast}
-              className="px-8 py-4 text-sm tracking-widest uppercase border border-white/25 rounded hover:bg-white/5 hover:border-white/55 transition text-white/75"
+              className="px-8 py-4 text-sm tracking-widest uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               ✦ Cast the Coins
             </button>
@@ -318,7 +318,7 @@ export default function OracleMusic() {
         {/* ── CASTING ── */}
         {phase === "casting" && (
           <div className="flex flex-col items-center gap-6">
-            <div className="text-[10px] tracking-[0.25em] uppercase text-white/35">
+            <div className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground/70">
               Line {lineIdx + 1} of 6
             </div>
 
@@ -349,9 +349,9 @@ export default function OracleMusic() {
 
             {/* Coin readout */}
             {!spinning && coins[0] !== 0 && (
-              <div className="text-[10px] text-white/30 tracking-wider text-center">
+              <div className="text-[10px] text-muted-foreground/70 tracking-wider text-center">
                 {coins[0] === 3 ? "yang" : "yin"} · {coins[1] === 3 ? "yang" : "yin"} · {coins[2] === 3 ? "yang" : "yin"}
-                <span className="text-white/50 ml-2">
+                <span className="text-muted-foreground ml-2">
                   = {lineFromCoins(coins[0], coins[1], coins[2])}
                   {" — "}
                   {lineFromCoins(coins[0], coins[1], coins[2]) === 6 ? "moving yin" :
@@ -376,7 +376,7 @@ export default function OracleMusic() {
         {/* ── READING ── */}
         {phase === "reading" && datum && (
           <div className="flex flex-col items-center gap-5" style={{ animation: "oracleIn 0.7s ease forwards" }}>
-            <div className="text-[9px] tracking-[0.3em] uppercase text-white/30">
+            <div className="text-[9px] tracking-[0.3em] uppercase text-muted-foreground/70">
               Hexagram {hexNum}
             </div>
 
@@ -388,17 +388,17 @@ export default function OracleMusic() {
             </div>
 
             {/* Name */}
-            <div className="text-xl tracking-wide text-white/90 text-center">
+            <div className="text-xl tracking-wide text-foreground text-center">
               {datum[0]}
             </div>
 
             {/* Commentary */}
-            <div className="text-xs text-white/50 text-center leading-relaxed max-w-[13rem]">
+            <div className="text-xs text-muted-foreground text-center leading-relaxed max-w-[13rem]">
               {datum[6]}
             </div>
 
             {/* Musical parameters */}
-            <div className="flex flex-col items-center gap-1 text-[10px] tracking-[0.18em] text-white/30">
+            <div className="flex flex-col items-center gap-1 text-[10px] tracking-[0.18em] text-muted-foreground/70">
               <div>{datum[1]} BPM · {datum[2]}</div>
               <div>register {registerLabel(datum[3])} · {datum[4]} voices</div>
             </div>
@@ -410,26 +410,26 @@ export default function OracleMusic() {
                 background: "rgba(255,255,255,0.55)",
                 animation: "oraclePulse 1.4s ease-in-out infinite",
               }} />
-              <span className="text-[10px] text-white/30 tracking-wider">sounding</span>
+              <span className="text-[10px] text-muted-foreground/70 tracking-wider">sounding</span>
             </div>
 
             {/* Moving lines notice */}
             {lines.some(v => v === 6 || v === 9) && (
-              <div className="text-[10px] text-amber-300/60 text-center">
+              <div className="text-[10px] text-violet-300/60 text-center">
                 ✦ moving lines present — the hexagram is in transition
               </div>
             )}
 
             <button
               onClick={handleCast}
-              className="mt-1 px-6 py-3 text-xs tracking-widest uppercase border border-white/18 rounded hover:bg-white/5 hover:border-white/45 transition text-white/55"
+              className="mt-1 px-6 py-3 text-xs tracking-widest uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               ✦ Cast again
             </button>
           </div>
         )}
 
-        <Link href="/dream" className="text-[10px] text-white/20 hover:text-white/50 mt-2">
+        <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground mt-2">
           ← back to dream sandbox
         </Link>
       </div>

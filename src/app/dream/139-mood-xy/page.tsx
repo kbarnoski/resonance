@@ -258,22 +258,22 @@ export default function MoodXY() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white px-6 py-12">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
         <div className="max-w-xs w-full text-center space-y-6">
           <div>
-            <h1 className="text-3xl font-serif text-white">Mood XY</h1>
-            <p className="text-white/55 text-sm font-mono mt-1">Russell circumplex · valence × arousal</p>
+            <h1 className="text-3xl font-serif text-foreground">Mood XY</h1>
+            <p className="text-muted-foreground text-sm font-mono mt-1">Russell circumplex · valence × arousal</p>
           </div>
-          <p className="text-white/75 text-base leading-relaxed">
+          <p className="text-muted-foreground text-base leading-relaxed">
             Drag a dot across a two-dimensional mood space. The music changes
             in real time — slow pads to fast arpeggios, major chords to diminished,
             deep indigo to warm amber.
           </p>
           <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs font-mono mx-auto w-fit">
-            <div className="text-right text-indigo-300/80">calm · sad</div>
-            <div className="text-left text-emerald-300/80">calm · happy</div>
-            <div className="text-right text-rose-300/80">energetic · sad</div>
-            <div className="text-left text-amber-300/80">energetic · happy</div>
+            <div className="text-right text-violet-300/80">calm · sad</div>
+            <div className="text-left text-violet-300/80">calm · happy</div>
+            <div className="text-right text-violet-300/80">energetic · sad</div>
+            <div className="text-left text-violet-300/80">energetic · happy</div>
           </div>
           <button
             onPointerDown={() => setStarted(true)}
@@ -281,7 +281,7 @@ export default function MoodXY() {
           >
             Navigate mood →
           </button>
-          <p className="text-white/35 text-xs">Headphones recommended · zero permissions · zero API</p>
+          <p className="text-muted-foreground/70 text-xs">Headphones recommended · zero permissions · zero API</p>
         </div>
       </div>
     )
@@ -293,12 +293,12 @@ export default function MoodXY() {
     <div className="w-full h-screen flex flex-col bg-zinc-950">
       <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30">
         <div>
-          <span className="text-white text-base font-serif">Mood XY</span>
-          <span className="text-white/45 text-xs font-mono ml-3">
+          <span className="text-foreground text-base font-serif">Mood XY</span>
+          <span className="text-muted-foreground text-xs font-mono ml-3">
             drag · valence × arousal → live music
           </span>
         </div>
-        <span className="text-white/30 text-xs font-mono">139</span>
+        <span className="text-muted-foreground/70 text-xs font-mono">139</span>
       </div>
       <canvas
         ref={canvasRef}

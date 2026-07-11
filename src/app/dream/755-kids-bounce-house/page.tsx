@@ -393,7 +393,7 @@ export default function KidsBounceHouse() {
   );
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-sky-200 select-none">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-violet-200 select-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -405,10 +405,10 @@ export default function KidsBounceHouse() {
 
       {/* Title */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 px-4 pt-4">
-        <h1 className="text-2xl font-extrabold tracking-tight text-indigo-900 drop-shadow-sm sm:text-3xl">
+        <h1 className="text-2xl font-extrabold tracking-tight text-violet-900 drop-shadow-sm sm:text-3xl">
           Bounce House
         </h1>
-        <p className="mt-1 text-base font-semibold text-indigo-800/90">
+        <p className="mt-1 text-base font-semibold text-violet-800/90">
           Tap the sky to drop a ball. Drag the trampoline to make it wobble and sing!
         </p>
       </div>
@@ -418,15 +418,15 @@ export default function KidsBounceHouse() {
         <button
           type="button"
           onClick={handleStart}
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-sky-300/70 backdrop-blur-sm"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-violet-300/70 backdrop-blur-sm"
         >
           <span className="text-7xl" aria-hidden>
             🤸
           </span>
-          <span className="rounded-full bg-amber-400 px-10 py-5 text-2xl font-extrabold text-indigo-950 shadow-lg ring-4 ring-white/70">
+          <span className="rounded-full bg-violet-400 px-10 py-5 text-2xl font-extrabold text-violet-950 shadow-lg ring-4 ring-border">
             Play! ▶
           </span>
-          <span className="text-base font-semibold text-indigo-900">
+          <span className="text-base font-semibold text-violet-900">
             Tap to start the bouncy trampoline
           </span>
         </button>
@@ -436,14 +436,14 @@ export default function KidsBounceHouse() {
       <button
         type="button"
         onClick={() => setShowNotes((s: boolean) => !s)}
-        className="absolute bottom-3 right-3 z-10 rounded-full bg-white/85 px-4 py-2.5 text-sm font-bold text-indigo-800 shadow ring-2 ring-indigo-200"
+        className="absolute bottom-3 right-3 z-10 rounded-full bg-muted px-4 py-2.5 text-sm font-bold text-violet-800 shadow ring-2 ring-violet-200"
       >
         {showNotes ? "Close" : "Design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-16 right-3 z-10 max-w-xs rounded-2xl bg-white/95 p-4 text-sm text-slate-800 shadow-xl ring-2 ring-indigo-200">
-          <p className="font-bold text-indigo-900">How it works</p>
+        <div className="absolute bottom-16 right-3 z-10 max-w-xs rounded-2xl bg-muted p-4 text-sm text-slate-800 shadow-xl ring-2 ring-violet-200">
+          <p className="font-bold text-violet-900">How it works</p>
           <p className="mt-1">
             The trampoline is a real{" "}
             <span className="font-semibold">Verlet mass-spring cloth</span> (24×10
@@ -457,7 +457,7 @@ export default function KidsBounceHouse() {
           </p>
           <Link
             href="/"
-            className="mt-2 inline-block font-semibold text-indigo-700 underline"
+            className="mt-2 inline-block font-semibold text-violet-700 underline"
           >
             ← back to lab
           </Link>

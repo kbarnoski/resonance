@@ -199,16 +199,16 @@ export default function KidsDeep() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-[#03060f] text-white px-4 py-6">
+    <main className="flex flex-col items-center min-h-screen bg-[#03060f] text-foreground px-4 py-6">
       <div className="w-full max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl font-mono font-bold mb-1 text-white/95">
+        <h1 className="text-2xl sm:text-3xl font-mono font-bold mb-1 text-foreground">
           Deep Drum
         </h1>
-        <p className="text-base text-white/80 mb-2">
+        <p className="text-base text-foreground mb-2">
           Tap the glowing stones. The ground beneath you slowly changes key — so
           the same beat feels brave, then mysterious, then home.
         </p>
-        <p className="text-base text-white/55 mb-4">
+        <p className="text-base text-muted-foreground mb-4">
           6 stones · a drone that drifts under your taps · no microphone, no
           reading
         </p>
@@ -232,11 +232,11 @@ export default function KidsDeep() {
             </div>
             <button
               onClick={handleStart}
-              className="bg-cyan-400/15 border border-cyan-300/40 text-cyan-100/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
+              className="bg-violet-400/15 border border-violet-300/40 text-violet-100/95 text-xl font-semibold px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] active:scale-95 transition-transform"
             >
               Start
             </button>
-            <p className="text-base text-white/55 text-center max-w-md">
+            <p className="text-base text-muted-foreground text-center max-w-md">
               Listen for the deep hum sliding under your taps. Same stones, new
               feeling.
             </p>
@@ -254,7 +254,7 @@ export default function KidsDeep() {
             />
             {glFailed && (
               <div className="absolute inset-0 flex items-center justify-center p-6 rounded-2xl bg-[#03060f]/90">
-                <p className="text-rose-300 text-base text-center max-w-sm">
+                <p className="text-violet-300 text-base text-center max-w-sm">
                   WebGL2 is not available on this device, so the deep can&apos;t
                   glow — but the drone and the stones still sound. Use keys
                   A·S·D·F·G·H to play.
@@ -262,11 +262,11 @@ export default function KidsDeep() {
               </div>
             )}
             <div className="mt-3 flex items-center justify-between">
-              <span className="text-base text-white/75 font-mono">
+              <span className="text-base text-muted-foreground font-mono">
                 the deep feels{" "}
-                <span className="text-white/95">{feel}</span>
+                <span className="text-foreground">{feel}</span>
               </span>
-              <span className="text-base text-white/55">
+              <span className="text-base text-muted-foreground">
                 keys: A S D F G H
               </span>
             </div>
@@ -275,12 +275,12 @@ export default function KidsDeep() {
 
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="mt-5 text-base text-white/55 underline underline-offset-2"
+          className="mt-5 text-base text-muted-foreground underline underline-offset-2"
         >
           {showNotes ? "Hide design notes" : "Design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 text-base text-white/75 space-y-2 leading-relaxed">
+          <div className="mt-3 text-base text-muted-foreground space-y-2 leading-relaxed">
             <p>
               The six stones always play the <em>same</em> fixed pitches. Below
               them, a sustained drone slowly migrates its root through a heroic
@@ -295,7 +295,7 @@ export default function KidsDeep() {
               violet as their tension rises; the whole deep warms to amber at the
               home resolution.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Inspired by the Indian classical <em>tanpura</em>: a constant
               drone over which every other note gains its meaning. No
               &ldquo;wrong&rdquo; notes, no fail state — only changing colour.
@@ -303,7 +303,7 @@ export default function KidsDeep() {
           </div>
         )}
 
-        <div className="mt-5 flex items-center justify-between text-base text-white/55">
+        <div className="mt-5 flex items-center justify-between text-base text-muted-foreground">
           <span>For kids 4+ · zero permissions</span>
           <Link href="/dream" className="underline">
             ← dream lab

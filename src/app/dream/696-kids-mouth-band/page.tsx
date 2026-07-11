@@ -641,21 +641,21 @@ export default function MouthBand() {
 
   // -----------------------------------------------------------------------
   return (
-    <main className="relative min-h-screen w-full bg-[#120a2e] text-white/95 font-sans overflow-hidden">
+    <main className="relative min-h-screen w-full bg-[#120a2e] text-foreground font-sans overflow-hidden">
       <div className="absolute inset-0">
         <canvas ref={canvasRef} className="h-full w-full block" />
       </div>
 
       {/* header */}
       <div className="relative z-10 px-5 pt-5 pointer-events-none">
-        <h1 className="text-2xl font-bold tracking-tight text-white/95">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           🎤 Mouth Band
         </h1>
-        <p className="text-base text-white/75 mt-1 max-w-md">
+        <p className="text-base text-muted-foreground mt-1 max-w-md">
           Make noises with your mouth — <span className="font-mono">boom · tss · pop · brrr</span> — and watch the goofy guy loop them into a beat!
         </p>
         {micOk === false && (
-          <p className="text-base text-rose-300 mt-2 max-w-md">{notice}</p>
+          <p className="text-base text-violet-300 mt-2 max-w-md">{notice}</p>
         )}
       </div>
 
@@ -663,7 +663,7 @@ export default function MouthBand() {
       <div className="absolute z-10 top-5 right-5 flex flex-col gap-1.5 pointer-events-none">
         {VOICES.map((v) => (
           <div key={v} className="flex items-center gap-2 justify-end">
-            <span className="font-mono text-sm text-white/75">{VOICE_LABEL[v]}</span>
+            <span className="font-mono text-sm text-muted-foreground">{VOICE_LABEL[v]}</span>
             <span
               className="inline-block w-5 h-5 rounded-full"
               style={{ backgroundColor: VOICE_COLOR[v] }}
@@ -677,14 +677,14 @@ export default function MouthBand() {
         {!started ? (
           <button
             onClick={start}
-            className="min-h-[44px] px-8 py-3 rounded-2xl bg-yellow-400 text-[#120a2e] text-xl font-bold shadow-lg active:scale-95 transition"
+            className="min-h-[44px] px-8 py-3 rounded-2xl bg-violet-400 text-[#120a2e] text-xl font-bold shadow-lg active:scale-95 transition"
           >
             ▶ START
           </button>
         ) : (
           <button
             onClick={clearLoop}
-            className="min-h-[44px] px-6 py-2.5 rounded-2xl bg-rose-500 text-white text-lg font-bold shadow-lg active:scale-95 transition"
+            className="min-h-[44px] px-6 py-2.5 rounded-2xl bg-violet-500 text-foreground text-lg font-bold shadow-lg active:scale-95 transition"
           >
             🔄 CLEAR
           </button>
@@ -694,7 +694,7 @@ export default function MouthBand() {
       {/* design notes link */}
       <Link
         href="/dream/696-kids-mouth-band/README.md"
-        className="absolute z-10 bottom-3 right-4 text-sm font-mono text-white/75 underline decoration-dotted hover:text-white/95"
+        className="absolute z-10 bottom-3 right-4 text-sm font-mono text-muted-foreground underline decoration-dotted hover:text-foreground"
       >
         Read the design notes
       </Link>

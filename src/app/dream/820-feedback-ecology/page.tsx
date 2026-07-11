@@ -727,24 +727,24 @@ export default function FeedbackEcologyPage() {
       {/* Header */}
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between">
-          <h1 className="font-mono text-2xl font-bold text-white">Feedback Ecology</h1>
+          <h1 className="font-mono text-2xl font-bold text-foreground">Feedback Ecology</h1>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[36px] rounded px-3 py-1 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[36px] rounded px-3 py-1 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex items-center font-mono text-base text-white/55 transition hover:text-white/75"
+              className="flex items-center font-mono text-base text-muted-foreground transition hover:text-muted-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           A self-organizing network of feedback resonators — tap nodes to perturb the ecology, watch energy
           circulate and self-organize into emergent drones and polyrhythm.
         </p>
@@ -752,32 +752,32 @@ export default function FeedbackEcologyPage() {
 
       {/* Design notes panel */}
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 rounded-lg bg-black/60 p-4 font-mono text-base text-white/75 backdrop-blur-sm ring-1 ring-white/10">
+        <div className="relative z-20 mx-4 mb-2 rounded-lg bg-black/60 p-4 font-mono text-base text-muted-foreground backdrop-blur-sm ring-1 ring-border">
           <p className="mb-2">
-            <strong className="text-white/90">Technique:</strong> {NODE_COUNT} coupled BiquadFilter (bandpass,
+            <strong className="text-foreground">Technique:</strong> {NODE_COUNT} coupled BiquadFilter (bandpass,
             high-Q) → DelayNode → feedback GainNode loops wired into a small-world graph.
             Coupling above a threshold drives bifurcations: isolated pings → mutual entrainment →
             emergent polyrhythm → roaring drone. The network evolves on its own — minute 2 differs
             from minute 0.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Ear-safety:</strong> DynamicsCompressor brick-wall limiter
+            <strong className="text-foreground">Ear-safety:</strong> DynamicsCompressor brick-wall limiter
             (threshold −8 dB, ratio 20) before master gain (default 0.25). Per-node feedback and
             coupling gains are hard-clamped. Gentle 2-second ramp on start. Panic mute button always
             visible.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Visualization:</strong> Node brightness/size = energy.
+            <strong className="text-foreground">Visualization:</strong> Node brightness/size = energy.
             Edge flow particles = coupling × signal transfer. Phase-space Lissajous trace inside each
             node shows limit cycle formation.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Refs: &ldquo;Musicking with dynamical systems&rdquo; (ACM NIME 2024,
             dl.acm.org/doi/10.1145/3678299.3678302); David Tudor&apos;s Rainforest/Pulsers feedback
             ecosystems; Toshimaru Nakamura no-input mixing board; Body Synths Laboratory
             self-oscillating feedback synth, Superbooth 2026 (Berlin, May 7&ndash;9 2026).
           </p>
-          <p className="mt-2 text-white/55">
+          <p className="mt-2 text-muted-foreground">
             Next-cycle deepening: add Lorenz-attractor coupling weights that drift over time;
             per-node waveform display; recording/export.
           </p>
@@ -797,7 +797,7 @@ export default function FeedbackEcologyPage() {
         {phase === "idle" && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-[#05060d]/75 backdrop-blur-sm">
             <div className="max-w-sm space-y-3 px-6 text-center">
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Eight resonators feed each other through a small-world coupling graph. Raise coupling and
                 the network self-organizes — nodes entrain, energy circulates, rhythmic instabilities emerge.
               </p>
@@ -818,7 +818,7 @@ export default function FeedbackEcologyPage() {
         {/* No audio notice */}
         {phase === "noaudio" && (
           <div className="absolute inset-0 z-20 flex items-center justify-center p-6">
-            <p className="max-w-sm text-center text-base text-rose-300">
+            <p className="max-w-sm text-center text-base text-violet-300">
               Web Audio is unavailable in this browser. Try Chrome, Firefox, or Safari with audio
               permissions enabled.
             </p>
@@ -828,10 +828,10 @@ export default function FeedbackEcologyPage() {
 
       {/* Controls panel */}
       {phase === "running" && (
-        <div className="relative z-10 flex flex-col gap-3 border-t border-white/10 bg-black/40 px-4 py-3 backdrop-blur-sm">
+        <div className="relative z-10 flex flex-col gap-3 border-t border-border bg-black/40 px-4 py-3 backdrop-blur-sm">
           {/* Row 1: scale presets + mute */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-base text-white/55">tuning:</span>
+            <span className="font-mono text-base text-muted-foreground">tuning:</span>
             {Object.keys(SCALE_PRESETS).map((name) => (
               <button
                 key={name}
@@ -840,7 +840,7 @@ export default function FeedbackEcologyPage() {
                 className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base transition ${
                   scaleName === name
                     ? "bg-violet-500/20 text-violet-300 ring-1 ring-violet-400/40"
-                    : "bg-white/5 text-white/75 ring-1 ring-white/10 hover:bg-white/10"
+                    : "bg-muted text-muted-foreground ring-1 ring-border hover:bg-accent"
                 }`}
               >
                 {name}
@@ -852,8 +852,8 @@ export default function FeedbackEcologyPage() {
                 onClick={handleMute}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                   muted
-                    ? "bg-rose-500/25 text-rose-300 ring-rose-400/40"
-                    : "bg-white/5 text-white/75 ring-white/10 hover:bg-white/10"
+                    ? "bg-violet-500/25 text-violet-300 ring-violet-400/40"
+                    : "bg-muted text-muted-foreground ring-border hover:bg-accent"
                 }`}
               >
                 {muted ? "unmute" : "panic mute"}
@@ -895,7 +895,7 @@ export default function FeedbackEcologyPage() {
             />
           </div>
 
-          <p className="font-mono text-base text-white/55">
+          <p className="font-mono text-base text-muted-foreground">
             Tap a node to inject energy · tap empty space to seed all nodes
           </p>
         </div>
@@ -919,8 +919,8 @@ interface SliderControlProps {
 
 const ACCENT_CLASSES: Record<string, string> = {
   violet: "accent-violet-400",
-  cyan: "accent-cyan-400",
-  emerald: "accent-emerald-400",
+  cyan: "accent-violet-400",
+  emerald: "accent-violet-400",
 };
 
 function SliderControl({
@@ -937,8 +937,8 @@ function SliderControl({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-baseline justify-between">
-        <span className="font-mono text-base text-white/80">{label}</span>
-        <span className="font-mono text-base text-white/55">{pct}%</span>
+        <span className="font-mono text-base text-foreground">{label}</span>
+        <span className="font-mono text-base text-muted-foreground">{pct}%</span>
       </div>
       <input
         type="range"
@@ -949,7 +949,7 @@ function SliderControl({
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className={`w-full cursor-pointer ${ACCENT_CLASSES[accentColor] ?? "accent-violet-400"}`}
       />
-      <span className="font-mono text-base text-white/55">{hint}</span>
+      <span className="font-mono text-base text-muted-foreground">{hint}</span>
     </div>
   );
 }

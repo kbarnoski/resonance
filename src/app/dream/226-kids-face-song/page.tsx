@@ -358,15 +358,15 @@ export default function KidsFaceSong() {
         className="absolute inset-0 w-full h-full touch-none"
       />
       <div className="absolute top-0 left-0 right-0 p-4 text-center pointer-events-none">
-        <h1 className="text-2xl font-bold text-white/95">Face Song</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Face Song</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Tap each part of the face to make it sing ✦
         </p>
       </div>
       <div className="absolute top-4 right-4">
         <Link
           href="/dream"
-          className="text-white/55 text-sm hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>

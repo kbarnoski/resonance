@@ -703,7 +703,7 @@ export default function SunOrganPage() {
   const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#03040c] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#03040c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -713,10 +713,10 @@ export default function SunOrganPage() {
       {/* Overlay UI */}
       <div className="relative z-10 flex min-h-dvh flex-col justify-between p-6 sm:p-8">
         <header className="max-w-2xl">
-          <h1 className="font-mono text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Sun Organ
           </h1>
-          <p className="mt-2 max-w-xl text-base text-white/80">
+          <p className="mt-2 max-w-xl text-base text-foreground">
             An endless, non-looping ambient piece composed in real time from{" "}
             <span className="text-violet-300">live space-weather data</span> — the
             music is literally different every minute because it tracks the actual
@@ -727,21 +727,21 @@ export default function SunOrganPage() {
             <button
               type="button"
               onClick={() => void start()}
-              className="mt-5 inline-flex min-h-[44px] items-center rounded-lg border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 font-mono text-base text-white transition-colors hover:bg-violet-500/25"
+              className="mt-5 inline-flex min-h-[44px] items-center rounded-lg border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-violet-500/25"
             >
               ▶ Play the Sun
             </button>
           ) : (
-            <p className="mt-5 font-mono text-base text-white/75">
+            <p className="mt-5 font-mono text-base text-muted-foreground">
               <span className="text-violet-300">●</span> playing · {mm}:{ss}{" "}
-              <span className="text-white/75">
+              <span className="text-muted-foreground">
                 — the harmonic state keeps drifting; it never repeats.
               </span>
             </p>
           )}
 
           {usingSynth && status === "running" && (
-            <p className="mt-3 max-w-xl text-base text-amber-300/95">
+            <p className="mt-3 max-w-xl text-base text-violet-300/95">
               Using simulated space weather (live feed unavailable). The piece
               still plays and evolves with zero network.
             </p>
@@ -772,13 +772,13 @@ export default function SunOrganPage() {
               hint="→ active voices"
             />
           </div>
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             source:{" "}
-            <span className={usingSynth ? "text-amber-300/95" : "text-violet-300"}>
+            <span className={usingSynth ? "text-violet-300/95" : "text-violet-300"}>
               {usingSynth ? "synthetic generator" : "NOAA SWPC (live)"}
             </span>
             {" · "}
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               render: {glActive ? "WebGL2 aurora" : "Canvas2D fallback"}
             </span>
           </p>
@@ -799,11 +799,11 @@ function Readout({
 }) {
   return (
     <div className="min-w-[7rem]">
-      <div className="text-[0.7rem] uppercase tracking-[0.18em] text-white/75">
+      <div className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </div>
-      <div className="mt-0.5 text-xl font-semibold text-white">{value}</div>
-      <div className="text-base text-white/75">{hint}</div>
+      <div className="mt-0.5 text-xl font-semibold text-foreground">{value}</div>
+      <div className="text-base text-muted-foreground">{hint}</div>
     </div>
   );
 }

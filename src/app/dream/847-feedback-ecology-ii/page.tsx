@@ -340,26 +340,26 @@ export default function FeedbackEcologyIIPage() {
       {/* Header */}
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between">
-          <h1 className="font-mono text-2xl font-bold text-white">
+          <h1 className="font-mono text-2xl font-bold text-foreground">
             Feedback Ecology II
           </h1>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex items-center font-mono text-base text-white/55 transition hover:text-white/75"
+              className="flex items-center font-mono text-base text-muted-foreground transition hover:text-muted-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="text-base text-white/75">
+        <p className="text-base text-muted-foreground">
           A self-running feedback network whose topology evolves on its own — a
           Lorenz attractor weathers the coupling while Hebbian edges strengthen
           or die. Minute 5 is not minute 0.
@@ -368,16 +368,16 @@ export default function FeedbackEcologyIIPage() {
 
       {/* Design notes */}
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-h-[60vh] overflow-y-auto rounded-lg bg-black/60 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-h-[60vh] overflow-y-auto rounded-lg bg-black/60 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/90">Cycle-2 of 820.</strong> Inherits
+            <strong className="text-foreground">Cycle-2 of 820.</strong> Inherits
             820&apos;s ear-safe engine wholesale: {NODE_COUNT} coupled high-Q
             BiquadFilter → DelayNode → feedback-GainNode resonators on a
             small-world graph, root {ROOT_HZ} Hz. The new layer makes the network
             drive its OWN topology — no user input required.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Lorenz weather.</strong> A Lorenz
+            <strong className="text-foreground">Lorenz weather.</strong> A Lorenz
             attractor (σ=10, ρ=28, β=8/3) is integrated every frame. Its x drives
             global coupling (sweeping the network through bifurcations: isolated
             pings ↔ entrainment ↔ roaring drone), y drives the edge-of-chaos
@@ -385,7 +385,7 @@ export default function FeedbackEcologyIIPage() {
             settles, so the instrument weathers over minutes.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Hebbian edges.</strong> Each edge
+            <strong className="text-foreground">Hebbian edges.</strong> Each edge
             has a live weight: when both endpoints are energetic the edge
             strengthens; idle edges decay toward a floor. The graph literally
             rewires itself — watch links brighten and fade. All of this passes
@@ -393,7 +393,7 @@ export default function FeedbackEcologyIIPage() {
             0.88) so ear-safety is preserved.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Render.</strong> Raw WebGL2 (no
+            <strong className="text-foreground">Render.</strong> Raw WebGL2 (no
             three.js, no Canvas2D): additive point-sprite node blobs, GPU edge
             lines whose brightness ∝ live weight × flow, a ping-pong FBO
             feedback-trail accumulation so energy leaves luminous decaying
@@ -401,12 +401,12 @@ export default function FeedbackEcologyIIPage() {
             weather.
           </p>
           <p className="mb-2">
-            <strong className="text-white/90">Ear-safety.</strong> Brick-wall
+            <strong className="text-foreground">Ear-safety.</strong> Brick-wall
             DynamicsCompressor limiter before master (default 0.25); gentle 2 s
             start ramp; AudioContext only after the explicit gesture below; panic
             mute always visible.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Refs: E. N. Lorenz, &ldquo;Deterministic Nonperiodic Flow,&rdquo;
             J. Atmos. Sci. 20 (1963), 130&ndash;141. Adaptive / time-varying
             pulse-coupled oscillator networks (Hebbian &ldquo;fire together,
@@ -428,8 +428,8 @@ export default function FeedbackEcologyIIPage() {
 
         {/* WebGL failure notice — audio keeps running */}
         {webglFailed && phase === "running" && (
-          <div className="absolute left-4 top-4 z-20 max-w-xs rounded-lg bg-black/70 p-3 ring-1 ring-rose-400/30">
-            <p className="text-base text-rose-300">
+          <div className="absolute left-4 top-4 z-20 max-w-xs rounded-lg bg-black/70 p-3 ring-1 ring-violet-400/30">
+            <p className="text-base text-violet-300">
               WebGL2 is unavailable here, so the visuals are disabled — but the
               audio ecology is still running. The sound is the point; put on
               headphones.
@@ -439,7 +439,7 @@ export default function FeedbackEcologyIIPage() {
 
         {/* Elapsed weathering readout */}
         {phase === "running" && (
-          <div className="pointer-events-none absolute right-4 top-4 z-10 rounded-md bg-black/40 px-3 py-2 font-mono text-base text-white/55 ring-1 ring-white/10">
+          <div className="pointer-events-none absolute right-4 top-4 z-10 rounded-md bg-black/40 px-3 py-2 font-mono text-base text-muted-foreground ring-1 ring-border">
             weathering · {mins}:{secs.toString().padStart(2, "0")}
           </div>
         )}
@@ -448,7 +448,7 @@ export default function FeedbackEcologyIIPage() {
         {phase === "idle" && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-[#05060d]/75 backdrop-blur-sm">
             <div className="max-w-md space-y-3 px-6 text-center">
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Eight resonators feed each other through a small-world graph. A
                 Lorenz attractor slowly drifts the coupling through bifurcations
                 while Hebbian edges strengthen-or-die. It runs itself — let it
@@ -471,7 +471,7 @@ export default function FeedbackEcologyIIPage() {
         {/* No audio notice */}
         {phase === "noaudio" && (
           <div className="absolute inset-0 z-20 flex items-center justify-center p-6">
-            <p className="max-w-sm text-center text-base text-rose-300">
+            <p className="max-w-sm text-center text-base text-violet-300">
               Web Audio is unavailable in this browser. Try Chrome, Firefox, or
               Safari with audio permissions enabled.
             </p>
@@ -481,13 +481,13 @@ export default function FeedbackEcologyIIPage() {
 
       {/* Controls */}
       {phase === "running" && (
-        <div className="relative z-10 flex flex-col gap-3 border-t border-white/10 bg-black/40 px-4 py-3 backdrop-blur-sm">
+        <div className="relative z-10 flex flex-col gap-3 border-t border-border bg-black/40 px-4 py-3 backdrop-blur-sm">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-base text-white/55">
+            <span className="font-mono text-base text-muted-foreground">
               self-running · autonomous Lorenz + Hebbian drift
             </span>
             <div className="ml-auto flex items-center gap-3">
-              <label className="flex items-center gap-2 font-mono text-base text-white/80">
+              <label className="flex items-center gap-2 font-mono text-base text-foreground">
                 <span>master</span>
                 <input
                   type="range"
@@ -496,7 +496,7 @@ export default function FeedbackEcologyIIPage() {
                   step={0.01}
                   value={volume}
                   onChange={(e) => handleVolume(parseFloat(e.target.value))}
-                  className="w-32 cursor-pointer accent-emerald-400"
+                  className="w-32 cursor-pointer accent-violet-400"
                   aria-label="master volume"
                 />
               </label>
@@ -505,15 +505,15 @@ export default function FeedbackEcologyIIPage() {
                 onClick={handleMute}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                   muted
-                    ? "bg-rose-500/25 text-rose-300 ring-rose-400/40"
-                    : "bg-white/5 text-white/75 ring-white/10 hover:bg-white/10"
+                    ? "bg-violet-500/25 text-violet-300 ring-violet-400/40"
+                    : "bg-muted text-muted-foreground ring-border hover:bg-accent"
                 }`}
               >
                 {muted ? "unmute" : "panic mute"}
               </button>
             </div>
           </div>
-          <p className="font-mono text-base text-white/55">
+          <p className="font-mono text-base text-muted-foreground">
             Tapping a node still perturbs it — but no input is required; the
             network shapes itself.
           </p>

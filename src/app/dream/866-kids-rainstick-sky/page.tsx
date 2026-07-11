@@ -735,7 +735,7 @@ export default function KidsRainstickSky() {
   //  RENDER
   // ════════════════════════════════════════════════════════════════════════════
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#04040c] text-white select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#04040c] text-foreground select-none">
       {/* particle field */}
       <canvas
         ref={canvasRef}
@@ -746,7 +746,7 @@ export default function KidsRainstickSky() {
       {/* nav */}
       <Link
         href="/dream"
-        className="absolute left-3 top-3 z-20 rounded-lg bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm hover:text-white"
+        className="absolute left-3 top-3 z-20 rounded-lg bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm hover:text-foreground"
       >
         ← lab
       </Link>
@@ -755,10 +755,10 @@ export default function KidsRainstickSky() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-[#04040c]/80 backdrop-blur-sm">
           <div className="text-center">
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Rainstick Sky
             </h1>
-            <p className="mt-3 max-w-md px-6 text-base text-white/75">
+            <p className="mt-3 max-w-md px-6 text-base text-muted-foreground">
               Gently shake the tablet to make a calm rain of music. Hold still for
               sleepy glowing stars.
             </p>
@@ -766,11 +766,11 @@ export default function KidsRainstickSky() {
           <button
             onClick={handleStart}
             aria-label="Start"
-            className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-b from-indigo-400 to-violet-600 text-6xl shadow-[0_0_60px_rgba(139,92,246,0.6)] transition active:scale-95"
+            className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-b from-violet-400 to-violet-600 text-6xl shadow-[0_0_60px_rgba(139,92,246,0.6)] transition active:scale-95"
           >
             🌧️
           </button>
-          <p className="text-base text-white/75">tap the cloud</p>
+          <p className="text-base text-muted-foreground">tap the cloud</p>
         </div>
       )}
 
@@ -778,29 +778,29 @@ export default function KidsRainstickSky() {
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2 p-4">
           {/* shake meter — color is the language */}
-          <div className="h-3 w-48 overflow-hidden rounded-full bg-white/10">
+          <div className="h-3 w-48 overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-400 via-violet-400 to-amber-300 transition-[width] duration-100"
+              className="h-full rounded-full bg-gradient-to-r from-violet-400 via-violet-400 to-violet-300 transition-[width] duration-100"
               style={{ width: `${Math.max(shakeHud, 4)}%` }}
             />
           </div>
-          <p className="font-mono text-base text-white/75">
+          <p className="font-mono text-base text-muted-foreground">
             {shakeHud < 15 ? "✨ sleepy stars" : shakeHud < 55 ? "🌧️ soft rain" : "🌧️🌧️ more rain"}
           </p>
 
           {backend === "none" && (
-            <p className="mt-2 max-w-sm text-center text-base text-rose-300">
+            <p className="mt-2 max-w-sm text-center text-base text-violet-300">
               No GPU drawing here, but the rain is still playing — listen and
               shake. ✨
             </p>
           )}
           {sensor === "denied" && (
-            <p className="mt-1 max-w-sm text-center text-base text-rose-300">
+            <p className="mt-1 max-w-sm text-center text-base text-violet-300">
               Motion is off — drag a finger across the sky to make it rain.
             </p>
           )}
           {sensor === "auto" && (
-            <p className="mt-1 text-center text-base text-white/75">
+            <p className="mt-1 text-center text-base text-muted-foreground">
               Shake or drag across the sky to make more rain.
             </p>
           )}

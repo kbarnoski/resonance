@@ -194,7 +194,7 @@ export default function KidsShadowDance() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#07060f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#07060f] text-foreground">
       {/* Hidden analysis-only video — never recorded, never uploaded. */}
       <video ref={videoRef} className="hidden" playsInline muted />
 
@@ -212,10 +212,10 @@ export default function KidsShadowDance() {
       {phase !== "playing" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
           <div className="text-6xl">🕺✨</div>
-          <h1 className="font-serif text-3xl text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             Shadow Dance
           </h1>
-          <p className="max-w-md text-base text-white/80 sm:text-lg">
+          <p className="max-w-md text-base text-foreground sm:text-lg">
             Dance, wave, and stomp. Your whole body scatters a cloud of light
             and makes the music move.
           </p>
@@ -223,11 +223,11 @@ export default function KidsShadowDance() {
             onClick={start}
             disabled={phase === "loading"}
             aria-label="Start dancing"
-            className="mt-2 min-h-[72px] min-w-[200px] rounded-full bg-gradient-to-r from-violet-500 to-amber-400 px-10 text-2xl font-semibold text-[#07060f] shadow-[0_0_40px_rgba(167,139,250,0.5)] transition active:scale-95 disabled:opacity-70"
+            className="mt-2 min-h-[72px] min-w-[200px] rounded-full bg-gradient-to-r from-violet-500 to-violet-400 px-10 text-2xl font-semibold text-[#07060f] shadow-[0_0_40px_rgba(167,139,250,0.5)] transition active:scale-95 disabled:opacity-70"
           >
             {phase === "loading" ? "✨ …" : "Dance! 💃"}
           </button>
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             Best on a phone or tablet. Stand back so it can see you.
           </p>
         </div>
@@ -236,14 +236,14 @@ export default function KidsShadowDance() {
       {/* ── Notices ───────────────────────────────────────────────────── */}
       {phase === "playing" && notice && (
         <div className="pointer-events-none absolute left-1/2 top-4 z-20 -translate-x-1/2 px-4">
-          <p className="rounded-full bg-black/60 px-4 py-2 text-center text-base text-rose-300 backdrop-blur">
+          <p className="rounded-full bg-black/60 px-4 py-2 text-center text-base text-violet-300 backdrop-blur">
             {notice}
           </p>
         </div>
       )}
       {phase === "playing" && noWebgl && (
         <div className="absolute inset-0 flex items-center justify-center px-6 text-center">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Visuals are off on this screen — the music keeps playing. 🎵
           </p>
         </div>
@@ -262,14 +262,14 @@ export default function KidsShadowDance() {
       <button
         onClick={() => setShowNotes((s) => !s)}
         aria-label="Design notes"
-        className="absolute right-3 top-3 z-30 rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/75 backdrop-blur transition hover:bg-white/20"
+        className="absolute right-3 top-3 z-30 rounded-full bg-muted px-3 py-1.5 text-sm text-muted-foreground backdrop-blur transition hover:bg-accent"
       >
         ℹ︎
       </button>
       {showNotes && (
-        <div className="absolute right-3 top-14 z-30 w-72 rounded-2xl border border-white/10 bg-black/85 p-4 text-left backdrop-blur">
-          <h2 className="text-xl text-white">Design notes</h2>
-          <p className="mt-2 text-base text-white/80">
+        <div className="absolute right-3 top-14 z-30 w-72 rounded-2xl border border-border bg-black/85 p-4 text-left backdrop-blur">
+          <h2 className="text-xl text-foreground">Design notes</h2>
+          <p className="mt-2 text-base text-foreground">
             Your body&rsquo;s movement — not pitch — makes the sound. Big moves
             brighten the light cloud, smooth moves add shimmer, and sudden
             stomps thump.
@@ -282,12 +282,12 @@ export default function KidsShadowDance() {
           >
             Read more →
           </a>
-          <p className="mt-3 text-sm text-white/55">
+          <p className="mt-3 text-sm text-muted-foreground">
             Camera stays on your device. Nothing is recorded or sent.
           </p>
           <Link
             href="/dream"
-            className="mt-2 inline-block text-sm text-white/55 underline"
+            className="mt-2 inline-block text-sm text-muted-foreground underline"
           >
             ← all dreams
           </Link>

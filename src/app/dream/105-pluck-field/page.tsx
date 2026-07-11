@@ -275,26 +275,26 @@ export default function PluckField() {
   if (phase === "idle") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#04040e] px-6 text-center gap-6">
-        <h1 className="text-3xl font-serif text-white">Pluck Field</h1>
-        <p className="text-base text-white/75 max-w-sm">
+        <h1 className="text-3xl font-serif text-foreground">Pluck Field</h1>
+        <p className="text-base text-muted-foreground max-w-sm">
           24 virtual strings across four octaves. Click any string to pluck it.
           Each string uses Karplus-Strong physical modeling — a noise burst
           filtered through a tuned feedback loop. The same algorithm behind
           every digital guitar, harp, and piano string synthesis.
         </p>
-        <p className="text-sm text-white/55">
+        <p className="text-sm text-muted-foreground">
           Click individual strings · drag across a row for a glissando · add mic for onset auto-pluck
         </p>
         <button
           onClick={handleStart}
-          className="min-h-[44px] px-6 py-3 bg-violet-600/80 hover:bg-violet-500/90 text-white text-base rounded-lg transition-colors"
+          className="min-h-[44px] px-6 py-3 bg-violet-600/80 hover:bg-violet-500/90 text-foreground text-base rounded-lg transition-colors"
         >
           Open the harp
         </button>
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-muted-foreground/70">
           C major hexatonic · 4 octaves · physical modeling synthesis · zero deps · zero API
         </p>
-        <Link href="/dream" className="text-xs text-white/40 hover:text-white/60 transition-colors mt-1">
+        <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors mt-1">
           ← dream lab
         </Link>
       </div>
@@ -306,12 +306,12 @@ export default function PluckField() {
       {/* Header overlay */}
       <div className="absolute top-3 left-0 right-0 flex items-start justify-between px-5 z-10 pointer-events-none">
         <div>
-          <p className="text-sm text-white/75 font-mono">Pluck Field</p>
-          <p className="text-xs text-white/40">Karplus-Strong · click any string · drag for glissando</p>
+          <p className="text-sm text-muted-foreground font-mono">Pluck Field</p>
+          <p className="text-xs text-muted-foreground/70">Karplus-Strong · click any string · drag for glissando</p>
         </div>
         <Link
           href="/dream"
-          className="text-xs text-white/40 hover:text-white/60 transition-colors pointer-events-auto"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors pointer-events-auto"
         >
           ← dream
         </Link>
@@ -327,18 +327,18 @@ export default function PluckField() {
 
       {/* Bottom controls */}
       <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-4 z-10">
-        {!micOn && <span className="text-xs text-white/40">demo: auto-strumming</span>}
+        {!micOn && <span className="text-xs text-muted-foreground/70">demo: auto-strumming</span>}
         <button
           onClick={toggleMic}
           className={`min-h-[44px] px-5 py-2.5 text-base rounded-lg transition-colors ${
             micOn
-              ? "bg-rose-500/60 hover:bg-rose-400/70 text-white"
-              : "bg-white/10 hover:bg-white/20 text-white/75"
+              ? "bg-violet-500/60 hover:bg-violet-400/70 text-foreground"
+              : "bg-muted hover:bg-accent text-muted-foreground"
           }`}
         >
           {micOn ? "🎙 mic: on" : "🎤 add mic"}
         </button>
-        {error && <p className="text-rose-300 text-sm">{error}</p>}
+        {error && <p className="text-violet-300 text-sm">{error}</p>}
       </div>
     </div>
   );

@@ -724,13 +724,13 @@ export default function KidsPianoCreaturesPage() {
   // RENDER
   // ---------------------------------------------------------------
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#05060f] text-white/95 font-sans select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#05060f] text-foreground font-sans select-none">
       {/* three canvas */}
       <div ref={canvasMountRef} className="absolute inset-0" />
 
       {!webglOk && (
         <div className="absolute left-1/2 top-4 -translate-x-1/2 z-20 rounded-lg bg-black/60 px-4 py-2.5">
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Graphics could not start — but the music still plays! Press keys to hear it.
           </p>
         </div>
@@ -738,11 +738,11 @@ export default function KidsPianoCreaturesPage() {
 
       {/* Title + instructions */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-5">
-        <h1 className="text-2xl font-semibold text-white/95 drop-shadow">
+        <h1 className="text-2xl font-semibold text-foreground drop-shadow">
           Piano Creatures
         </h1>
         {started && (
-          <p className="mt-1 max-w-sm text-base text-white/75">
+          <p className="mt-1 max-w-sm text-base text-muted-foreground">
             {midiStatus === "ok"
               ? "Play your keyboard — every note grows a creature!"
               : "Press letter keys (A W S E D F...) to play!"}
@@ -752,7 +752,7 @@ export default function KidsPianoCreaturesPage() {
 
       {/* MIDI status one-liner */}
       {started && midiStatus !== "ok" && (
-        <p className="absolute left-5 top-24 z-10 max-w-sm text-base text-rose-300">
+        <p className="absolute left-5 top-24 z-10 max-w-sm text-base text-violet-300">
           No MIDI keyboard found — press letter keys to play!
         </p>
       )}
@@ -760,10 +760,10 @@ export default function KidsPianoCreaturesPage() {
       {/* Energy / band meter */}
       {started && (
         <div className="absolute right-5 top-5 z-10 flex items-center gap-2">
-          <span className="text-base text-white/75">Band</span>
-          <div className="h-2.5 w-28 overflow-hidden rounded-full bg-white/15">
+          <span className="text-base text-muted-foreground">Band</span>
+          <div className="h-2.5 w-28 overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-300 to-rose-400 transition-[width] duration-150"
+              className="h-full rounded-full bg-gradient-to-r from-violet-300 to-violet-400 transition-[width] duration-150"
               style={{ width: `${Math.round(energyUi * 100)}%` }}
             />
           </div>
@@ -773,17 +773,17 @@ export default function KidsPianoCreaturesPage() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-black/55 px-6 text-center backdrop-blur-sm">
-          <h2 className="text-2xl font-semibold text-white/95">
+          <h2 className="text-2xl font-semibold text-foreground">
             Play a keyboard. Make a band appear.
           </h2>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Plug in a MIDI piano, or just press the letter keys on your computer.
             Every note you play blooms a glowing creature — and an invisible band
             plays along, so there are no wrong notes.
           </p>
           <button
             onClick={handleStart}
-            className="rounded-2xl bg-amber-400 px-8 py-4 text-2xl font-bold text-black shadow-lg transition active:scale-95"
+            className="rounded-2xl bg-violet-400 px-8 py-4 text-2xl font-bold text-black shadow-lg transition active:scale-95"
             style={{ minWidth: 200, minHeight: 64 }}
           >
             Begin
@@ -819,7 +819,7 @@ export default function KidsPianoCreaturesPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setMuted((m) => !m)}
-                className="rounded-xl bg-white/15 px-4 py-2.5 text-base text-white/95 active:scale-95"
+                className="rounded-xl bg-muted px-4 py-2.5 text-base text-foreground active:scale-95"
                 style={{ minHeight: 44 }}
               >
                 {muted ? "Unmute" : "Mute"}
@@ -832,17 +832,17 @@ export default function KidsPianoCreaturesPage() {
                 value={vol}
                 onChange={(e) => setVol(parseFloat(e.target.value))}
                 aria-label="volume"
-                className="w-32 accent-amber-400"
+                className="w-32 accent-violet-400"
               />
               {ghostActive && (
-                <span className="text-base text-white/75">band is playing… your turn!</span>
+                <span className="text-base text-muted-foreground">band is playing… your turn!</span>
               )}
             </div>
             <Link
               href="#"
               onClick={(e) => e.preventDefault()}
               title="Design notes are in README.md"
-              className="text-base text-white/75 underline decoration-dotted underline-offset-4 hover:text-white/95"
+              className="text-base text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
             >
               Read the design notes
             </Link>

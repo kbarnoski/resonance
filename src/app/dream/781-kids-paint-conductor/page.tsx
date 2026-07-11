@@ -617,7 +617,7 @@ export default function KidsPaintConductor() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-amber-50 select-none">
+    <div className="relative w-full h-screen overflow-hidden bg-violet-50 select-none">
       {/* ── Canvas ─────────────────────────────────────────────────────── */}
       <canvas
         ref={canvasRef}
@@ -632,7 +632,7 @@ export default function KidsPaintConductor() {
 
       {/* ── Start overlay ──────────────────────────────────────────────── */}
       {!started && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-amber-50/90 z-20">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-violet-50/90 z-20">
           <div className="text-center px-6 max-w-sm">
             <div className="text-5xl mb-4">🎨</div>
             <h1 className="text-2xl font-bold text-slate-900 mb-2">Paint Your Music!</h1>
@@ -641,7 +641,7 @@ export default function KidsPaintConductor() {
             </p>
             <button
               onClick={handleStart}
-              className="min-h-[64px] px-8 py-4 bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-slate-900 font-bold text-xl rounded-2xl shadow-lg transition-all"
+              className="min-h-[64px] px-8 py-4 bg-violet-400 hover:bg-violet-500 active:bg-violet-600 text-slate-900 font-bold text-xl rounded-2xl shadow-lg transition-all"
               style={{ minWidth: 200 }}
             >
               🎵 Let&apos;s Paint!
@@ -652,8 +652,8 @@ export default function KidsPaintConductor() {
 
       {/* ── Audio unavailable notice ───────────────────────────────────── */}
       {audioError && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-white border border-rose-200 rounded-xl px-4 py-2 shadow">
-          <p className="text-rose-600 font-semibold text-base">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-card border border-violet-200 rounded-xl px-4 py-2 shadow">
+          <p className="text-violet-600 font-semibold text-base">
             Sound is unavailable on this device, but you can still paint!
           </p>
         </div>
@@ -661,7 +661,7 @@ export default function KidsPaintConductor() {
 
       {/* ── Voice / color swatches ─────────────────────────────────────── */}
       {started && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-3 items-center bg-white/80 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-3 items-center bg-muted backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg">
           {VOICES.map((voice) => (
             <button
               key={voice.id}
@@ -709,7 +709,7 @@ export default function KidsPaintConductor() {
       {/* ── Voice label hint ───────────────────────────────────────────── */}
       {started && (
         <div className="absolute bottom-[108px] left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-          <span className="text-slate-600 text-base font-medium bg-white/70 rounded-full px-3 py-1">
+          <span className="text-slate-600 text-base font-medium bg-muted rounded-full px-3 py-1">
             {VOICES.find((v) => v.id === activeVoice)?.label ?? ""} selected
           </span>
         </div>

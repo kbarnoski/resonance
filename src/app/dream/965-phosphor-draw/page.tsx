@@ -276,22 +276,22 @@ export default function PhosphorDrawPage() {
   }, [started]);
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-foreground">
       <div className="mx-auto flex max-w-5xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
         <header className="flex flex-col gap-1">
           <Link
             href="/dream"
-            className="font-mono text-base text-white/75 hover:text-white"
+            className="font-mono text-base text-muted-foreground hover:text-foreground"
           >
             ← dream lab
           </Link>
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Phosphor Draw
           </h1>
-          <p className="max-w-2xl text-base text-white/75">
+          <p className="max-w-2xl text-base text-muted-foreground">
             A true vector oscilloscope. The glowing shape you{" "}
-            <span className="text-white">see</span> and the tone you{" "}
-            <span className="text-white">hear</span> are the same stereo signal —
+            <span className="text-foreground">see</span> and the tone you{" "}
+            <span className="text-foreground">hear</span> are the same stereo signal —
             X is the left channel, Y is the right. Geometry becomes timbre; the
             loop&rsquo;s replay rate becomes pitch.
           </p>
@@ -300,7 +300,7 @@ export default function PhosphorDrawPage() {
         {/* Scope */}
         <div
           ref={wrapRef}
-          className="relative mx-auto aspect-square w-full max-w-[600px] overflow-hidden rounded-2xl border border-emerald-400/20 bg-black shadow-[0_0_60px_-15px_rgba(16,185,129,0.4)]"
+          className="relative mx-auto aspect-square w-full max-w-[600px] overflow-hidden rounded-2xl border border-violet-400/20 bg-black shadow-[0_0_60px_-15px_rgba(16,185,129,0.4)]"
         >
           <canvas
             ref={canvasRef}
@@ -315,14 +315,14 @@ export default function PhosphorDrawPage() {
           {/* Start overlay */}
           {!started && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black/70 backdrop-blur-sm">
-              <p className="max-w-xs px-6 text-center text-base text-white/75">
+              <p className="max-w-xs px-6 text-center text-base text-muted-foreground">
                 Audio needs a tap to begin. Then a figure-8 will draw itself and
                 sing.
               </p>
               <button
                 type="button"
                 onClick={handleStart}
-                className="min-h-[44px] rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-6 py-2.5 font-mono text-base font-medium text-emerald-200 transition-colors hover:bg-emerald-500/20"
+                className="min-h-[44px] rounded-xl border border-violet-400/40 bg-violet-500/10 px-6 py-2.5 font-mono text-base font-medium text-violet-200 transition-colors hover:bg-violet-500/20"
               >
                 ▶ Start the scope
               </button>
@@ -332,10 +332,10 @@ export default function PhosphorDrawPage() {
           {/* status chips */}
           {started && (
             <div className="pointer-events-none absolute right-2 top-2 flex flex-col items-end gap-1 font-mono text-xs">
-              <span className="rounded bg-black/50 px-2 py-1 text-emerald-300/80">
+              <span className="rounded bg-black/50 px-2 py-1 text-violet-300/80">
                 {glMode === "gl" ? "CRT · WebGL2" : "CRT · Canvas2D"}
               </span>
-              <span className="rounded bg-black/50 px-2 py-1 text-white/60">
+              <span className="rounded bg-black/50 px-2 py-1 text-muted-foreground">
                 {activePreset === "drawn" ? "your shape" : PRESET_LABELS[activePreset]}
               </span>
             </div>
@@ -343,14 +343,14 @@ export default function PhosphorDrawPage() {
         </div>
 
         {!audioOk && (
-          <p className="text-center text-base text-rose-300">
+          <p className="text-center text-base text-violet-300">
             Audio could not start on this device — the scope is running silently.
           </p>
         )}
 
         {/* Presets */}
         <section className="flex flex-col gap-2">
-          <span className="font-mono text-xs uppercase tracking-widest text-white/60">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             presets — tap to hear
           </span>
           <div className="flex flex-wrap gap-2">
@@ -361,15 +361,15 @@ export default function PhosphorDrawPage() {
                 onClick={() => applyPreset(id)}
                 className={`min-h-[44px] rounded-lg border px-4 py-2.5 font-mono text-base transition-colors ${
                   activePreset === id
-                    ? "border-emerald-400/60 bg-emerald-500/15 text-emerald-100"
-                    : "border-white/15 bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
+                    ? "border-violet-400/60 bg-violet-500/15 text-violet-100"
+                    : "border-border bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {PRESET_LABELS[id]}
               </button>
             ))}
           </div>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Or draw your own closed loop on the scope with finger or mouse — a
             circle hums clean, a star buzzes bright, a square is rich with
             harmonics.
@@ -414,7 +414,7 @@ export default function PhosphorDrawPage() {
           />
         </section>
 
-        <footer className="border-t border-white/10 pt-4 font-mono text-sm text-white/60">
+        <footer className="border-t border-border pt-4 font-mono text-sm text-muted-foreground">
           One signal, two senses. Lineage: Lissajous (1857) · Jerobeam Fenderson,
           Oscilloscope Music · Hansi Raber, OsciStudio / osci-render.
         </footer>
@@ -443,9 +443,9 @@ function Slider({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="flex items-baseline justify-between font-mono text-base text-white/75">
+      <span className="flex items-baseline justify-between font-mono text-base text-muted-foreground">
         <span className="uppercase tracking-widest">{label}</span>
-        <span className="text-emerald-200">
+        <span className="text-violet-200">
           {step < 1 ? value.toFixed(2) : value}
           {suffix}
         </span>
@@ -457,7 +457,7 @@ function Slider({
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-emerald-400"
+        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-violet-400"
       />
     </label>
   );

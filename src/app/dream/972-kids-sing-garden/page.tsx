@@ -518,7 +518,7 @@ export default function KidsSingGardenPage() {
   const pads = allDegrees();
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white flex flex-col">
+    <main className="min-h-screen bg-neutral-950 text-foreground flex flex-col">
       <header className="px-4 pt-5 pb-2">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
           Sing Garden{" "}
@@ -526,9 +526,9 @@ export default function KidsSingGardenPage() {
             972
           </span>
         </h1>
-        <p className="text-base text-white/75 mt-1 max-w-2xl">
+        <p className="text-base text-muted-foreground mt-1 max-w-2xl">
           Sing any note. The garden grows a flower and a real chord blooms{" "}
-          <span className="text-white/95">underneath</span> to hold your voice —
+          <span className="text-foreground">underneath</span> to hold your voice —
           no wrong notes, real harmony.
         </p>
       </header>
@@ -546,18 +546,18 @@ export default function KidsSingGardenPage() {
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-neutral-950/70 rounded-2xl">
             <button
               onClick={start}
-              className="min-h-[72px] min-w-[72px] px-8 py-5 rounded-full bg-violet-500 hover:bg-violet-400 active:scale-95 transition text-white text-xl font-semibold shadow-lg"
+              className="min-h-[72px] min-w-[72px] px-8 py-5 rounded-full bg-violet-500 hover:bg-violet-400 active:scale-95 transition text-foreground text-xl font-semibold shadow-lg"
             >
               ▶ Start singing
             </button>
-            <p className="text-base text-white/75 font-mono">
+            <p className="text-base text-muted-foreground font-mono">
               tap to wake the garden + mic
             </p>
           </div>
         )}
 
         {started && lastLabel && (
-          <div className="absolute top-3 left-3 font-mono text-base text-neutral-900 bg-white/80 rounded-lg px-3 py-1.5">
+          <div className="absolute top-3 left-3 font-mono text-base text-neutral-900 bg-muted rounded-lg px-3 py-1.5">
             {lastLabel}
           </div>
         )}
@@ -565,12 +565,12 @@ export default function KidsSingGardenPage() {
 
       {/* mic error / fallback notice */}
       {started && micOk === false && (
-        <p className="px-4 pt-3 text-base text-rose-300 font-mono">
+        <p className="px-4 pt-3 text-base text-violet-300 font-mono">
           {micError ?? "Microphone is off — use the colored sing-pads below."}
         </p>
       )}
       {started && micOk === true && (
-        <p className="px-4 pt-3 text-base text-white/75 font-mono">
+        <p className="px-4 pt-3 text-base text-muted-foreground font-mono">
           🎤 Listening locally — your voice is never recorded or sent anywhere.
           Or tap a pad.
         </p>
@@ -599,14 +599,14 @@ export default function KidsSingGardenPage() {
       <div className="px-4 pb-8">
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white/95 text-base font-mono"
+          className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted hover:bg-accent text-foreground text-base font-mono"
         >
           {showNotes ? "Hide" : "Read"} the design notes
         </button>
         {showNotes && (
-          <div className="mt-3 max-w-2xl text-base text-white/75 space-y-3 leading-relaxed">
+          <div className="mt-3 max-w-2xl text-base text-muted-foreground space-y-3 leading-relaxed">
             <p>
-              <span className="text-white/95">The question:</span> what if a
+              <span className="text-foreground">The question:</span> what if a
               child sang any note and a real harmonic garden grew a chord that
               genuinely <span className="text-violet-300">supports</span> it —
               no wrong notes, but real functional harmony underneath, not a safe
@@ -617,12 +617,12 @@ export default function KidsSingGardenPage() {
               <span className="font-mono">C major</span> (always in tune). Each
               degree implies its diatonic triad (1→I, 2→ii, 3→iii, 4→IV, 5→V,
               6→vi, 7→vii°) and three inner voices + a bass{" "}
-              <span className="text-white/95">voice-lead</span> to the nearest
+              <span className="text-foreground">voice-lead</span> to the nearest
               chord tones. Sing 5 then 1, or land on the leading tone (7) and
               resolve, to hear a real V→I cadence — the warm gold halo means
               &ldquo;home.&rdquo;
             </p>
-            <p className="font-mono text-sm text-white/75">
+            <p className="font-mono text-sm text-muted-foreground">
               input: mic / live voice pitch (autocorrelation/YIN) · output:
               Canvas2D watercolor/ink garden · technique: functional
               voice-leading accompaniment · vibe: ink-and-watercolor, not cosmic

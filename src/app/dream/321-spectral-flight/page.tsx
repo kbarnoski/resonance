@@ -393,17 +393,17 @@ export default function SpectralFlightPage() {
   const flying = phase === "flying";
 
   return (
-    <div className="relative h-dvh w-screen overflow-hidden bg-[#04030a] font-mono text-white">
+    <div className="relative h-dvh w-screen overflow-hidden bg-[#04030a] font-mono text-foreground">
       {/* three.js mount */}
       <div ref={mountRef} className="absolute inset-0 z-0" aria-hidden />
 
       {/* top-left identity + transport */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-7">
         <header className="max-w-xl space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Spectral Flight
           </h1>
-          <p className="text-base leading-relaxed text-white/75">
+          <p className="text-base leading-relaxed text-muted-foreground">
             Fly through the inside of Karel&apos;s own recording — his{" "}
             <span className="text-violet-300">Welcome Home</span> piano rendered
             as a navigable 3D spectral landscape, in sync with playback.
@@ -413,7 +413,7 @@ export default function SpectralFlightPage() {
             <p
               className={`text-base ${
                 sourceLabel.includes("demo")
-                  ? "text-rose-300"
+                  ? "text-violet-300"
                   : "text-violet-300"
               }`}
             >
@@ -422,13 +422,13 @@ export default function SpectralFlightPage() {
           )}
 
           {error && (
-            <p className="text-base text-rose-300" role="alert">
+            <p className="text-base text-violet-300" role="alert">
               {error}
             </p>
           )}
 
           {!webglOk && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Your browser reports no WebGL — the flythrough cannot render here.
             </p>
           )}
@@ -441,7 +441,7 @@ export default function SpectralFlightPage() {
               <button
                 onClick={() => void launch()}
                 disabled={phase === "loading"}
-                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-500/30 disabled:cursor-wait disabled:opacity-60"
+                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-5 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30 disabled:cursor-wait disabled:opacity-60"
               >
                 {phase === "loading"
                   ? "Building the landscape…"
@@ -451,14 +451,14 @@ export default function SpectralFlightPage() {
               <>
                 <button
                   onClick={() => void togglePlay()}
-                  className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-white/20"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   {playing ? "Pause" : "Play"}
                 </button>
-                <span className="text-base tabular-nums text-white/75">
+                <span className="text-base tabular-nums text-muted-foreground">
                   {clock} / {fmtClock(duration)}
                 </span>
-                <span className="hidden text-base text-white/55 sm:inline">
+                <span className="hidden text-base text-muted-foreground sm:inline">
                   drag or arrow keys to steer · space to play/pause
                 </span>
               </>
@@ -469,7 +469,7 @@ export default function SpectralFlightPage() {
             href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/321-spectral-flight/README.md"
             target="_blank"
             rel="noreferrer"
-            className="pointer-events-auto text-base text-white/55 underline transition-colors hover:text-white/95"
+            className="pointer-events-auto text-base text-muted-foreground underline transition-colors hover:text-foreground"
           >
             Read the design notes
           </a>

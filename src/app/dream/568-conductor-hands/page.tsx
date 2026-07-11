@@ -373,7 +373,7 @@ export default function ConductorHandsPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#07061a] font-mono text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#07061a] font-mono text-foreground">
       {/* three.js phase-space fills the screen */}
       <canvas
         ref={canvasRef}
@@ -390,10 +390,10 @@ export default function ConductorHandsPage() {
 
       {/* Title + live ratio readout */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-5 text-center">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-white drop-shadow">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow">
           Conductor&apos;s Hands
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/80">
+        <p className="mt-1 max-w-xl text-base text-foreground">
           Two hands beat two voices locked to an irrational tempo ratio — their
           pulses can never realign.
         </p>
@@ -401,13 +401,13 @@ export default function ConductorHandsPage() {
           <span className="text-violet-300">
             Voice A {bpmA} BPM
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             ratio{" "}
-            <span className="text-amber-300/95">
+            <span className="text-violet-300/95">
               {ratio.name} ≈ {ratio.value.toFixed(3)}
             </span>
           </span>
-          <span className="text-amber-300/95">
+          <span className="text-violet-300/95">
             Voice B {Math.round(bpmA * ratio.value)} BPM
           </span>
         </div>
@@ -416,18 +416,18 @@ export default function ConductorHandsPage() {
       {/* Start overlay (auto-demo plays silently behind it) */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#07061a]/70 px-6 text-center">
-          <p className="max-w-md text-xl text-white/95">
+          <p className="max-w-md text-xl text-foreground">
             Conduct two tempi at once. The system snaps voice B to an irrational
             multiple of voice A, so the two pulses drift forever and never share
             a downbeat — Nancarrow in your own arms.
           </p>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             The camera runs locally for hand-tracking only. Nothing is recorded,
             uploaded, or networked.
           </p>
           <button
             onClick={start}
-            className="min-h-[44px] rounded-2xl bg-violet-500/30 px-8 py-3 text-xl font-semibold text-white ring-2 ring-violet-300/70 transition active:scale-95"
+            className="min-h-[44px] rounded-2xl bg-violet-500/30 px-8 py-3 text-xl font-semibold text-foreground ring-2 ring-violet-300/70 transition active:scale-95"
           >
             Start conducting
           </button>
@@ -440,8 +440,8 @@ export default function ConductorHandsPage() {
           <p
             className={
               mode === "fallback"
-                ? "text-base text-rose-300"
-                : "text-base text-white/80"
+                ? "text-base text-violet-300"
+                : "text-base text-foreground"
             }
           >
             {notice}
@@ -460,7 +460,7 @@ export default function ConductorHandsPage() {
           </button>
           <button
             onClick={() => tapPad(1)}
-            className="min-h-[44px] rounded-2xl bg-amber-500/20 px-8 py-5 text-xl font-semibold text-amber-300/95 ring-2 ring-amber-300/60 transition active:scale-95"
+            className="min-h-[44px] rounded-2xl bg-violet-500/20 px-8 py-5 text-xl font-semibold text-violet-300/95 ring-2 ring-violet-300/60 transition active:scale-95"
           >
             Beat B
           </button>

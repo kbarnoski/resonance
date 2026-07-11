@@ -391,19 +391,19 @@ export default function MarkovMirror() {
     return (
       <div className="relative flex flex-col items-center justify-center h-full gap-6 text-center px-6 bg-[#07091a]">
         <div className="text-5xl select-none opacity-80" aria-hidden>◎</div>
-        <h1 className="text-2xl font-mono font-bold text-white/95">Markov Mirror</h1>
-        <p className="text-base text-white/75 max-w-sm leading-relaxed">
+        <h1 className="text-2xl font-mono font-bold text-foreground">Markov Mirror</h1>
+        <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
           Play a melody on the keyboard below — the system learns your note transitions
           and builds a visible Markov graph. Then let it improvise forever in your style
           while you watch the melody walk its own learned web.
         </p>
-        <ul className="text-sm text-white/55 font-mono text-left space-y-1">
+        <ul className="text-sm text-muted-foreground font-mono text-left space-y-1">
           <li><span className="text-violet-300">a s d f g h j k l</span> → C D E F G A B C D</li>
-          <li><span className="text-emerald-300">space</span> → toggle Improvise / Teach</li>
+          <li><span className="text-violet-300">space</span> → toggle Improvise / Teach</li>
           <li>tap / click the keys to play</li>
         </ul>
         {audioError && (
-          <p className="text-rose-300 text-base">{audioError}</p>
+          <p className="text-violet-300 text-base">{audioError}</p>
         )}
         <button
           onClick={() => {
@@ -416,7 +416,7 @@ export default function MarkovMirror() {
         </button>
         <a
           href="/dream/778-markov-mirror/README.md"
-          className="absolute bottom-4 right-4 text-xs text-white/55 hover:text-white/75 transition-colors font-mono"
+          className="absolute bottom-4 right-4 text-xs text-muted-foreground hover:text-muted-foreground transition-colors font-mono"
         >
           Read the design notes ↗
         </a>
@@ -429,18 +429,18 @@ export default function MarkovMirror() {
     <div className="flex flex-col h-full bg-[#07091a] select-none overflow-hidden">
 
       {/* ── Header bar ──────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-4 py-2 shrink-0 border-b border-white/5">
-        <h1 className="text-xl font-mono text-white/95">Markov Mirror</h1>
+      <div className="flex items-center justify-between px-4 py-2 shrink-0 border-b border-border">
+        <h1 className="text-xl font-mono text-foreground">Markov Mirror</h1>
         <div className="flex items-center gap-3">
-          <span className="text-sm font-mono text-white/55">
+          <span className="text-sm font-mono text-muted-foreground">
             {transitionCount} transition{transitionCount !== 1 ? 's' : ''} learned
           </span>
           {audioError && (
-            <span className="text-rose-300 text-sm">{audioError}</span>
+            <span className="text-violet-300 text-sm">{audioError}</span>
           )}
           <a
             href="/dream/778-markov-mirror/README.md"
-            className="text-xs text-white/55 hover:text-white/75 transition-colors font-mono"
+            className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors font-mono"
           >
             design notes ↗
           </a>
@@ -659,7 +659,7 @@ export default function MarkovMirror() {
         <div className="absolute top-3 left-1/2 -translate-x-1/2 pointer-events-none">
           <span className={`text-xs font-mono px-3 py-1 rounded-full border ${
             appMode === 'improvise'
-              ? 'border-emerald-400/40 text-emerald-300 bg-emerald-900/30'
+              ? 'border-violet-400/40 text-violet-300 bg-violet-900/30'
               : 'border-violet-400/30 text-violet-300 bg-violet-900/20'
           }`}>
             {appMode === 'improvise' ? '◉ improvising' : '◎ teaching'}
@@ -668,14 +668,14 @@ export default function MarkovMirror() {
       </div>
 
       {/* ── Piano keyboard ───────────────────────────────────────────────── */}
-      <div className="shrink-0 px-3 pb-3 pt-1 border-t border-white/5">
+      <div className="shrink-0 px-3 pb-3 pt-1 border-t border-border">
         {/* Keyboard label row */}
         <div className="flex items-center gap-1 mb-1 justify-center">
           {SCALE_NOTES.map((note) => {
             const keyChar = Object.entries(KEY_MAP).find(([, id]) => id === note.id)?.[0];
             return (
               <div key={note.id} className="flex-1 text-center">
-                <span className="text-xs font-mono text-white/55">{keyChar}</span>
+                <span className="text-xs font-mono text-muted-foreground">{keyChar}</span>
               </div>
             );
           })}
@@ -698,8 +698,8 @@ export default function MarkovMirror() {
                   min-h-[56px] min-w-[44px] text-xs
                   border select-none
                   ${isActive
-                    ? 'bg-violet-400/80 border-violet-300 text-white shadow-[0_0_16px_rgba(167,139,250,0.6)] scale-95'
-                    : 'bg-white/5 border-white/10 text-white/55 hover:bg-white/10 hover:border-white/20 hover:text-white/75'
+                    ? 'bg-violet-400/80 border-violet-300 text-foreground shadow-[0_0_16px_rgba(167,139,250,0.6)] scale-95'
+                    : 'bg-muted border-border text-muted-foreground hover:bg-accent hover:border-border hover:text-muted-foreground'
                   }
                 `}
                 aria-label={`Play ${note.label}`}
@@ -712,13 +712,13 @@ export default function MarkovMirror() {
       </div>
 
       {/* ── Control bar ─────────────────────────────────────────────────── */}
-      <div className="shrink-0 px-4 pb-4 pt-2 flex items-center gap-2 flex-wrap border-t border-white/5">
+      <div className="shrink-0 px-4 pb-4 pt-2 flex items-center gap-2 flex-wrap border-t border-border">
         <button
           onClick={switchToTeach}
           className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base font-mono border transition-colors ${
             appMode === 'teach'
               ? 'bg-violet-500/20 border-violet-400/50 text-violet-200'
-              : 'bg-white/5 border-white/10 text-white/55 hover:text-white/75 hover:bg-white/10'
+              : 'bg-muted border-border text-muted-foreground hover:text-muted-foreground hover:bg-accent'
           }`}
         >
           Teach
@@ -727,19 +727,19 @@ export default function MarkovMirror() {
           onClick={appMode === 'improvise' ? switchToTeach : switchToImprovise}
           className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base font-mono border transition-colors ${
             appMode === 'improvise'
-              ? 'bg-emerald-500/20 border-emerald-400/50 text-emerald-200'
-              : 'bg-white/5 border-white/10 text-white/55 hover:text-white/75 hover:bg-white/10'
+              ? 'bg-violet-500/20 border-violet-400/50 text-violet-200'
+              : 'bg-muted border-border text-muted-foreground hover:text-muted-foreground hover:bg-accent'
           }`}
         >
           {appMode === 'improvise' ? '◉ Improvise' : 'Improvise'}
         </button>
-        <span className="text-white/55 font-mono text-sm hidden sm:inline">space</span>
+        <span className="text-muted-foreground font-mono text-sm hidden sm:inline">space</span>
 
         <div className="flex-1" />
 
         <button
           onClick={handleForget}
-          className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-mono border border-rose-400/25 text-rose-300/75 hover:bg-rose-900/20 hover:text-rose-300 transition-colors"
+          className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-mono border border-violet-400/25 text-violet-300/75 hover:bg-violet-900/20 hover:text-violet-300 transition-colors"
         >
           Forget
         </button>

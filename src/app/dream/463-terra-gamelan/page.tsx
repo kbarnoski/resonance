@@ -225,7 +225,7 @@ export default function TerraGamelanPage() {
         : "connecting to USGS feed…";
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#02060e] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#02060e] text-foreground">
       {/* three.js canvas */}
       <canvas
         ref={canvasRef}
@@ -246,15 +246,15 @@ export default function TerraGamelanPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/dream"
-              className="pointer-events-auto rounded-full border border-white/20 px-3 py-1.5 text-base text-white/75 transition hover:bg-white/10"
+              className="pointer-events-auto rounded-full border border-border px-3 py-1.5 text-base text-muted-foreground transition hover:bg-accent"
             >
               ← dream
             </Link>
-            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Terra Gamelan
             </h1>
           </div>
-          <p className="mt-2 text-base leading-relaxed text-white/75">
+          <p className="mt-2 text-base leading-relaxed text-muted-foreground">
             Every earthquake on Earth, right now, ringing a bell tuned to a
             Javanese gamelan scale on a slowly turning globe of light.
           </p>
@@ -266,21 +266,21 @@ export default function TerraGamelanPage() {
             <p
               className={
                 mode === "live"
-                  ? "text-base font-medium text-emerald-300/95"
+                  ? "text-base font-medium text-violet-300/95"
                   : mode === "simulated"
-                    ? "text-base font-medium text-amber-300/95"
-                    : "text-base font-medium text-white/75"
+                    ? "text-base font-medium text-violet-300/95"
+                    : "text-base font-medium text-muted-foreground"
               }
             >
               {statusLine}
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               <span className="text-violet-300">{count}</span> quakes glowing ·
               tuning{" "}
               <span className="text-violet-300">{tuning}</span>
             </p>
             {latest && (
-              <p className="text-base text-white/55">
+              <p className="text-base text-muted-foreground">
                 latest: M{latest.mag.toFixed(1)} · {latest.place} ·{" "}
                 {Math.round(latest.depthKm)} km deep
               </p>
@@ -292,7 +292,7 @@ export default function TerraGamelanPage() {
             {!started ? (
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-xl bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
+                className="min-h-[44px] rounded-xl bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-foreground shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
               >
                 ▶ Begin listening to the Earth
               </button>
@@ -300,13 +300,13 @@ export default function TerraGamelanPage() {
               <>
                 <button
                   onClick={toggleTuning}
-                  className="min-h-[44px] rounded-xl border border-white/25 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/10"
+                  className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
                 >
                   tuning: {tuning} → {tuning === "slendro" ? "pelog" : "slendro"}
                 </button>
                 <button
                   onClick={toggleMute}
-                  className="min-h-[44px] rounded-xl border border-white/25 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/10"
+                  className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
                 >
                   {muted ? "🔇 unmute" : "🔊 mute"}
                 </button>
@@ -319,7 +319,7 @@ export default function TerraGamelanPage() {
       {/* WebGL-unavailable notice */}
       {!webglOk && (
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6">
-          <p className="rounded-xl border border-rose-400/40 bg-rose-950/60 p-4 text-base text-rose-300">
+          <p className="rounded-xl border border-violet-400/40 bg-violet-950/60 p-4 text-base text-violet-300">
             WebGL is unavailable in this browser, so the globe can&apos;t be
             shown. The gamelan audio still plays — try a different browser or
             device for the full visual.

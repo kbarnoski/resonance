@@ -324,39 +324,39 @@ export default function DiatonicHarmonyPage() {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-black text-white flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-black text-foreground flex flex-col overflow-hidden">
       {/* header */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 shrink-0">
-        <h1 className="text-base font-serif text-white/95">Diatonic Harmony</h1>
-        <p className="text-xs text-white/55 font-mono">scale-correct voices · cycle 245</p>
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
+        <h1 className="text-base font-serif text-foreground">Diatonic Harmony</h1>
+        <p className="text-xs text-muted-foreground font-mono">scale-correct voices · cycle 245</p>
       </div>
 
       {!started ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <p className="text-white/75 text-base max-w-sm leading-relaxed">
+          <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
             Play piano into the mic. Every note you play is joined in real time by its
             diatonic third and fifth — scale-correct companion voices that adapt to
             your key as you play.
           </p>
           <button
             onClick={() => { void boot(); }}
-            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-base font-medium min-h-[44px] min-w-[44px] transition-all"
+            className="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-foreground text-base font-medium min-h-[44px] min-w-[44px] transition-all"
           >
             Start mic
           </button>
-          <p className="text-white/40 text-xs">
+          <p className="text-muted-foreground/70 text-xs">
             No mic? Click anyway — demo plays a C major scale.
           </p>
         </div>
       ) : (
         <>
           <canvas ref={cvRef} className="flex-1 w-full" />
-          <div className="shrink-0 flex items-center justify-between px-4 py-2 border-t border-white/10">
-            <span className="text-sm font-mono text-white/75">key: {keyLabel}</span>
-            <span className="text-xs font-mono text-white/55">
-              <span className="text-blue-200/75">■</span> third ▲3 &nbsp;
-              <span className="text-orange-400/90">■</span> you &nbsp;
-              <span className="text-blue-300/75">■</span> fifth ▲7
+          <div className="shrink-0 flex items-center justify-between px-4 py-2 border-t border-border">
+            <span className="text-sm font-mono text-muted-foreground">key: {keyLabel}</span>
+            <span className="text-xs font-mono text-muted-foreground">
+              <span className="text-violet-200/75">■</span> third ▲3 &nbsp;
+              <span className="text-violet-400/90">■</span> you &nbsp;
+              <span className="text-violet-300/75">■</span> fifth ▲7
             </span>
           </div>
         </>
@@ -365,7 +365,7 @@ export default function DiatonicHarmonyPage() {
       <div className="absolute bottom-16 right-4 z-10">
         <Link
           href="/dream"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           ← dream lab
         </Link>
@@ -373,7 +373,7 @@ export default function DiatonicHarmonyPage() {
       <div className="absolute bottom-16 left-4 z-10">
         <Link
           href="/dream/212-diatonic-harmony/README.md"
-          className="font-mono text-xs text-white/40 hover:text-white/70 transition-colors"
+          className="font-mono text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           design notes
         </Link>

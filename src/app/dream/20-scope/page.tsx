@@ -242,7 +242,7 @@ export default function ScopePage() {
       {mode === "idle" && (
         <div className="flex flex-col items-center text-center mt-10">
           <h1 className="text-2xl md:text-3xl mb-2 tracking-tight">Vectorscope</h1>
-          <p className="text-sm text-white/50 max-w-sm mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm mb-8 leading-relaxed">
             Two signals, one against the other. When their frequencies form a musical
             interval, the trace draws a Lissajous figure — the hidden geometry of harmony.
             With mic input, the signal is plotted against its own past: a phase portrait
@@ -251,23 +251,23 @@ export default function ScopePage() {
           <div className="flex gap-4 mb-4">
             <button
               onClick={startDemo}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Lissajous demo
             </button>
             <button
               onClick={startMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Phase portrait
             </button>
           </div>
           {error && (
-            <p className="text-xs text-rose-300/80 mt-1 max-w-sm">{error}</p>
+            <p className="text-xs text-violet-300/80 mt-1 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-8 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-8 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -298,8 +298,8 @@ export default function ScopePage() {
                   }}
                   className={`text-[10px] px-2 py-1 rounded border transition ${
                     i === ratioIdx
-                      ? "border-cyan-400/60 text-cyan-300 bg-cyan-900/20"
-                      : "border-white/10 text-white/35 hover:border-white/30 hover:text-white/60"
+                      ? "border-violet-400/60 text-violet-300 bg-violet-900/20"
+                      : "border-border text-muted-foreground/70 hover:border-border hover:text-muted-foreground"
                   }`}
                 >
                   {r.name}
@@ -310,7 +310,7 @@ export default function ScopePage() {
 
           {mode === "mic" && (
             <div className="flex items-center gap-3 mb-3 text-[11px]">
-              <span className="text-white/50 tracking-wider">
+              <span className="text-muted-foreground tracking-wider">
                 DELAY {delayMs}ms
               </span>
               <input
@@ -320,7 +320,7 @@ export default function ScopePage() {
                 step="5"
                 value={delayMs}
                 onChange={e => setDelayMs(+e.target.value)}
-                className="w-40 accent-cyan-400"
+                className="w-40 accent-violet-400"
               />
             </div>
           )}
@@ -328,18 +328,18 @@ export default function ScopePage() {
           <div className="flex items-center gap-4 text-[10px]">
             <button
               onClick={stop}
-              className="tracking-wider uppercase text-white/50 hover:text-white border border-white/20 hover:border-white/50 px-3 py-1 rounded transition"
+              className="tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
             >
               stop
             </button>
-            <Link href="/dream" className="text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <a
               href="/dream/20-scope/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-white/20 hover:text-white/50"
+              className="text-muted-foreground/70 hover:text-muted-foreground"
             >
               design notes ↗
             </a>

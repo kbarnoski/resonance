@@ -474,10 +474,10 @@ export default function KidsBreathGrovePage() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           <div className="text-center">
-            <h1 className="text-white/95 text-3xl font-serif tracking-wide mb-3">
+            <h1 className="text-foreground text-3xl font-serif tracking-wide mb-3">
               breath grove
             </h1>
-            <p className="text-white/75 text-base">
+            <p className="text-muted-foreground text-base">
               breathe slowly — grow a glowing forest
             </p>
           </div>
@@ -485,7 +485,7 @@ export default function KidsBreathGrovePage() {
           {/* Begin button — ≥64px for kids */}
           <button
             onClick={() => { void startExperience(false); }}
-            className="flex items-center justify-center bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white/95 text-2xl font-bold rounded-full transition-colors shadow-lg shadow-violet-900/50"
+            className="flex items-center justify-center bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground text-2xl font-bold rounded-full transition-colors shadow-lg shadow-violet-900/50"
             style={{ width: 160, height: 160 }}
             aria-label="Begin"
           >
@@ -493,14 +493,14 @@ export default function KidsBreathGrovePage() {
           </button>
 
           {micError && (
-            <p className="text-rose-300 text-base text-center max-w-xs">
+            <p className="text-violet-300 text-base text-center max-w-xs">
               microphone not available — auto-demo will run instead
             </p>
           )}
 
           <button
             onClick={() => { void startExperience(true); }}
-            className="text-white/55 hover:text-white/80 text-base underline transition-colors"
+            className="text-muted-foreground hover:text-foreground text-base underline transition-colors"
             style={{ minHeight: 44, padding: "10px 16px" }}
           >
             watch the demo
@@ -514,19 +514,19 @@ export default function KidsBreathGrovePage() {
           {/* Top badge */}
           <div className="pointer-events-none absolute top-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
             {isDemo ? (
-              <span className="text-amber-300 text-sm font-mono bg-amber-900/30 px-3 py-1 rounded-full">
+              <span className="text-violet-300 text-sm font-mono bg-violet-900/30 px-3 py-1 rounded-full">
                 Auto-demo (breathing)
               </span>
             ) : (
-              <span className="text-emerald-300 text-sm font-mono bg-emerald-900/30 px-3 py-1 rounded-full flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
+              <span className="text-violet-300 text-sm font-mono bg-violet-900/30 px-3 py-1 rounded-full flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse inline-block" />
                 Listening 🎤
               </span>
             )}
           </div>
 
           {/* Breath counter */}
-          <div className="pointer-events-none absolute top-5 right-4 text-white/55 text-sm font-mono">
+          <div className="pointer-events-none absolute top-5 right-4 text-muted-foreground text-sm font-mono">
             {breathCount} breath{breathCount !== 1 ? "s" : ""}
           </div>
 
@@ -539,7 +539,7 @@ export default function KidsBreathGrovePage() {
 
           {/* Mic error notice */}
           {micError && (
-            <div className="pointer-events-none absolute bottom-20 left-1/2 -translate-x-1/2 text-rose-300 text-sm text-center max-w-xs">
+            <div className="pointer-events-none absolute bottom-20 left-1/2 -translate-x-1/2 text-violet-300 text-sm text-center max-w-xs">
               mic unavailable — running auto-demo
             </div>
           )}
@@ -567,7 +567,7 @@ export default function KidsBreathGrovePage() {
       {/* Design notes link */}
       <Link
         href="/dream/408-kids-breath-grove/README.md"
-        className="absolute bottom-4 right-4 text-xs text-white/55 hover:text-white/80 transition-colors"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
       >
         read design notes
       </Link>

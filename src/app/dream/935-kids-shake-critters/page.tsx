@@ -144,20 +144,20 @@ export default function Page() {
         : "Auto-playing — shake or drag!";
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden bg-[#2a1a4a] text-white select-none">
+    <div className="relative h-dvh w-full overflow-hidden bg-[#2a1a4a] text-foreground select-none">
       {/* three.js canvas */}
       <div ref={wrapRef} className="absolute inset-0 touch-none">
         {phase === "playing" && (
           <canvas ref={canvasRef} className="block h-full w-full" />
         )}
         {phase === "nowebgl" && (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-200 via-rose-200 to-violet-300">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-200 via-violet-200 to-violet-300">
             <div className="text-center px-6">
               <div className="text-7xl mb-4">🫨🟡🔵🟣🟢</div>
               <p className="text-2xl font-bold text-violet-900">
                 The critters are dancing in sound!
               </p>
-              <p className="mt-2 text-base text-rose-700">
+              <p className="mt-2 text-base text-violet-700">
                 Your browser can&apos;t show the 3D critters, but the music is
                 still playing — shake or drag to make the rattle groove.
               </p>
@@ -168,7 +168,7 @@ export default function Page() {
 
       {/* intro overlay */}
       {phase === "intro" && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-br from-amber-300 via-rose-300 to-violet-400 px-6 text-center">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-br from-violet-300 via-violet-300 to-violet-400 px-6 text-center">
           <div className="text-7xl mb-3">🫨</div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-violet-950 drop-shadow">
             Shake the Critters!
@@ -180,7 +180,7 @@ export default function Page() {
           </p>
           <button
             onClick={handleStart}
-            className="mt-8 min-h-[64px] rounded-full bg-violet-700 px-10 py-4 text-2xl font-extrabold text-white shadow-xl active:scale-95 transition-transform hover:bg-violet-600"
+            className="mt-8 min-h-[64px] rounded-full bg-violet-700 px-10 py-4 text-2xl font-extrabold text-foreground shadow-xl active:scale-95 transition-transform hover:bg-violet-600"
           >
             🎉 Shake me!
           </button>
@@ -194,16 +194,16 @@ export default function Page() {
       {phase !== "intro" && (
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-4">
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white drop-shadow">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-foreground drop-shadow">
               Shake the Critters!
             </h1>
-            <p className="mt-1 text-base font-semibold text-white/90 drop-shadow">
+            <p className="mt-1 text-base font-semibold text-foreground drop-shadow">
               {modeLabel}
             </p>
             {/* energy meter — playful, never a fail state */}
-            <div className="mt-2 h-3 w-48 overflow-hidden rounded-full bg-white/25">
+            <div className="mt-2 h-3 w-48 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-amber-300 via-rose-400 to-violet-400 transition-[width] duration-75"
+                className="h-full rounded-full bg-gradient-to-r from-violet-300 via-violet-400 to-violet-400 transition-[width] duration-75"
                 style={{ width: `${energyPct}%` }}
               />
             </div>
@@ -217,13 +217,13 @@ export default function Page() {
                   key={i}
                   className={`h-4 w-4 rounded-full transition-all ${
                     i < loopCount
-                      ? "bg-emerald-300 scale-110 shadow-[0_0_12px_2px_rgba(110,231,183,0.7)]"
-                      : "bg-white/25"
+                      ? "bg-violet-300 scale-110 shadow-[0_0_12px_2px_rgba(110,231,183,0.7)]"
+                      : "bg-muted"
                   }`}
                 />
               ))}
             </div>
-            <p className="text-base font-semibold text-emerald-300/95 drop-shadow">
+            <p className="text-base font-semibold text-violet-300/95 drop-shadow">
               {loopCount > 0
                 ? "Groove caught! The critters keep grooving 🎶"
                 : "Shake, then pause — your rhythm gets caught in a loop"}
@@ -231,7 +231,7 @@ export default function Page() {
             {loopCount > 0 && (
               <button
                 onClick={clearLoops}
-                className="pointer-events-auto min-h-[44px] rounded-full bg-white/20 px-5 py-2.5 text-base font-bold text-white active:scale-95 hover:bg-white/30"
+                className="pointer-events-auto min-h-[44px] rounded-full bg-muted px-5 py-2.5 text-base font-bold text-foreground active:scale-95 hover:bg-accent"
               >
                 🧹 Clear the groove
               </button>
@@ -243,7 +243,7 @@ export default function Page() {
       {/* corner README link */}
       <Link
         href="/dream/935-kids-shake-critters/README.md"
-        className="absolute right-3 top-3 z-30 rounded-full bg-black/30 px-3 py-2 text-base font-semibold text-white/80 hover:text-white"
+        className="absolute right-3 top-3 z-30 rounded-full bg-black/30 px-3 py-2 text-base font-semibold text-foreground hover:text-foreground"
       >
         notes
       </Link>

@@ -46,17 +46,17 @@ function cadenceLabel(c: CadenceType): string {
 }
 
 function cadenceColor(c: CadenceType): string {
-  if (c === "authentic")  return "text-emerald-300/95"
+  if (c === "authentic")  return "text-violet-300/95"
   if (c === "plagal")     return "text-violet-300"
-  if (c === "deceptive")  return "text-amber-300/95"
+  if (c === "deceptive")  return "text-violet-300/95"
   return ""
 }
 
 function fnColor(fn: ChordEvent["fn"] | undefined): string {
-  if (fn === "Dominant")    return "text-amber-300/95"
+  if (fn === "Dominant")    return "text-violet-300/95"
   if (fn === "Subdominant") return "text-violet-300"
-  if (fn === "Tonic")       return "text-emerald-300/95"
-  return "text-white/75"
+  if (fn === "Tonic")       return "text-violet-300/95"
+  return "text-muted-foreground"
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -261,15 +261,15 @@ export default function Page() {
   const { key, chord, cadence, isModulating, midiConnected } = readout
 
   return (
-    <main className="min-h-screen bg-[#04060b] text-white font-mono px-5 py-6 sm:px-8">
+    <main className="min-h-screen bg-[#04060b] text-foreground font-mono px-5 py-6 sm:px-8">
       <div className="mx-auto max-w-5xl">
 
         {/* Header */}
         <header className="mb-5">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Cadence Ladder
           </h1>
-          <p className="mt-1.5 max-w-2xl text-base text-white/75">
+          <p className="mt-1.5 max-w-2xl text-base text-muted-foreground">
             Real-time key estimation · Roman-numeral functional labeling · cadence detection.
             Harmony made visible — watch tension build and resolve.
           </p>
@@ -280,30 +280,30 @@ export default function Page() {
           {/* Three.js canvas + overlay */}
           <section className="relative">
             {/* Host div — three.js renders into this */}
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-white/10 bg-[#04060b]">
+            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-border bg-[#04060b]">
               <div ref={hostRef} className="absolute inset-0" />
               {/* DOM overlay for block labels + zone labels */}
               <div ref={overlayRef} className="absolute inset-0 pointer-events-none">
                 {/* Zone labels — always present */}
                 <div className="absolute right-3 text-right" style={{ top: "6%", width: "5rem" }}>
-                  <div className="text-amber-300/95 text-xs font-bold uppercase tracking-widest">Dominant</div>
-                  <div className="text-white/40 text-xs">V  vii°</div>
+                  <div className="text-violet-300/95 text-xs font-bold uppercase tracking-widest">Dominant</div>
+                  <div className="text-muted-foreground/70 text-xs">V  vii°</div>
                 </div>
                 <div className="absolute right-3 text-right" style={{ top: "40%", width: "5rem" }}>
                   <div className="text-violet-300 text-xs font-bold uppercase tracking-widest">Subdom.</div>
-                  <div className="text-white/40 text-xs">IV  ii</div>
+                  <div className="text-muted-foreground/70 text-xs">IV  ii</div>
                 </div>
                 <div className="absolute right-3 text-right" style={{ top: "72%", width: "5rem" }}>
-                  <div className="text-emerald-300/95 text-xs font-bold uppercase tracking-widest">Tonic</div>
-                  <div className="text-white/40 text-xs">I  vi  iii</div>
+                  <div className="text-violet-300/95 text-xs font-bold uppercase tracking-widest">Tonic</div>
+                  <div className="text-muted-foreground/70 text-xs">I  vi  iii</div>
                 </div>
               </div>
 
               {/* Pre-start overlay */}
               {!started && (
                 <div className="absolute inset-0 flex items-center justify-center p-6">
-                  <p className="max-w-xs text-center text-base text-white/75">
-                    Press <strong className="text-white">Begin</strong> — a known progression plays and the ladder proves itself. Connect a MIDI keyboard to play your own chords.
+                  <p className="max-w-xs text-center text-base text-muted-foreground">
+                    Press <strong className="text-foreground">Begin</strong> — a known progression plays and the ladder proves itself. Connect a MIDI keyboard to play your own chords.
                   </p>
                 </div>
               )}
@@ -311,7 +311,7 @@ export default function Page() {
               {/* WebGL unavailable */}
               {!hasWebGL && (
                 <div className="absolute inset-0 flex items-center justify-center p-6">
-                  <p className="max-w-sm text-center text-base text-rose-300">
+                  <p className="max-w-sm text-center text-base text-violet-300">
                     WebGL is unavailable on this device — the ladder cannot render. Key analysis and audio still run.
                   </p>
                 </div>
@@ -319,10 +319,10 @@ export default function Page() {
             </div>
 
             {/* Legend */}
-            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/55">
-              <span><span className="text-emerald-300/95">━</span> Authentic cadence V→I</span>
+            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <span><span className="text-violet-300/95">━</span> Authentic cadence V→I</span>
               <span><span className="text-violet-300">━</span> Plagal IV→I</span>
-              <span><span className="text-amber-300/95">━</span> Deceptive V→vi</span>
+              <span><span className="text-violet-300/95">━</span> Deceptive V→vi</span>
             </div>
           </section>
 
@@ -334,15 +334,15 @@ export default function Page() {
               type="button"
               onClick={() => void onStart()}
               disabled={started}
-              className="min-h-[44px] w-full rounded-lg bg-emerald-500/90 px-4 py-2.5 text-base font-bold text-[#04060b] transition hover:bg-emerald-400 disabled:bg-white/15 disabled:text-white/75"
+              className="min-h-[44px] w-full rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-bold text-[#04060b] transition hover:bg-violet-400 disabled:bg-muted disabled:text-muted-foreground"
             >
               {started ? "● Running" : "▶ Begin"}
             </button>
 
             {/* Key banner */}
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <p className="text-xs text-white/55 uppercase tracking-wider">Current key</p>
-              <p className={`mt-1 text-2xl font-bold tracking-tight ${isModulating ? "text-violet-300" : "text-white"}`}>
+            <div className="rounded-xl border border-border bg-muted px-4 py-3">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">Current key</p>
+              <p className={`mt-1 text-2xl font-bold tracking-tight ${isModulating ? "text-violet-300" : "text-foreground"}`}>
                 {key ? key.name : "——"}
                 {isModulating && (
                   <span className="ml-2 text-sm font-normal text-violet-300 animate-pulse">modulating…</span>
@@ -350,13 +350,13 @@ export default function Page() {
               </p>
               {key && (
                 <div className="mt-1 flex items-center gap-2">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
                     <div
                       className="h-full rounded-full bg-violet-400 transition-[width] duration-300"
                       style={{ width: `${Math.round(Math.max(0, Math.min(1, key.confidence)) * 100)}%` }}
                     />
                   </div>
-                  <span className="text-xs text-white/55 tabular-nums">
+                  <span className="text-xs text-muted-foreground tabular-nums">
                     {Math.round(key.confidence * 100)}%
                   </span>
                 </div>
@@ -364,43 +364,43 @@ export default function Page() {
             </div>
 
             {/* Current chord */}
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <p className="text-xs text-white/55 uppercase tracking-wider">Active chord</p>
+            <div className="rounded-xl border border-border bg-muted px-4 py-3">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">Active chord</p>
               {chord ? (
                 <>
-                  <p className="mt-1 text-4xl font-bold tracking-tight text-white tabular-nums">
+                  <p className="mt-1 text-4xl font-bold tracking-tight text-foreground tabular-nums">
                     {chord.roman}
-                    <span className="ml-2 text-xl font-normal text-white/60">{chord.symbol}</span>
+                    <span className="ml-2 text-xl font-normal text-muted-foreground">{chord.symbol}</span>
                   </p>
                   <p className={`mt-1 text-sm font-semibold ${fnColor(chord.fn)}`}>
                     {chord.fn}
-                    <span className="ml-2 text-white/40 font-normal">
+                    <span className="ml-2 text-muted-foreground/70 font-normal">
                       tension {Math.round(chord.tension * 100)}%
                     </span>
                   </p>
                 </>
               ) : (
-                <p className="mt-1 text-2xl text-white/30">——</p>
+                <p className="mt-1 text-2xl text-muted-foreground/70">——</p>
               )}
             </div>
 
             {/* Cadence readout */}
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 min-h-[72px]">
-              <p className="text-xs text-white/55 uppercase tracking-wider">Cadence</p>
+            <div className="rounded-xl border border-border bg-muted px-4 py-3 min-h-[72px]">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">Cadence</p>
               {cadence ? (
                 <p className={`mt-1 text-base font-semibold ${cadenceColor(cadence)}`}>
                   {cadenceLabel(cadence)}
                 </p>
               ) : (
-                <p className="mt-1 text-base text-white/25">—</p>
+                <p className="mt-1 text-base text-muted-foreground/70">—</p>
               )}
             </div>
 
             {/* Tension meter */}
             {chord && (
-              <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                <p className="text-xs text-white/55 uppercase tracking-wider mb-2">Harmonic tension</p>
-                <div className="relative h-5 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="rounded-xl border border-border bg-muted px-4 py-3">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Harmonic tension</p>
+                <div className="relative h-5 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
@@ -413,7 +413,7 @@ export default function Page() {
                     }}
                   />
                 </div>
-                <div className="flex justify-between mt-1 text-xs text-white/40">
+                <div className="flex justify-between mt-1 text-xs text-muted-foreground/70">
                   <span>Rest</span>
                   <span>Tension</span>
                 </div>
@@ -421,7 +421,7 @@ export default function Page() {
             )}
 
             {/* MIDI status */}
-            <p className="text-xs text-white/55">
+            <p className="text-xs text-muted-foreground">
               {midiConnected
                 ? "● MIDI keyboard connected"
                 : "No MIDI detected — internal demo playing"}
@@ -430,7 +430,7 @@ export default function Page() {
             {/* Design notes link */}
             <a
               href="/dream/365-cadence-ladder/README.md"
-              className="mt-auto text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+              className="mt-auto text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
               target="_blank"
               rel="noreferrer"
             >

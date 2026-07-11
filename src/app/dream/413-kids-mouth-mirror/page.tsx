@@ -337,18 +337,18 @@ export default function KidsMouthMirror() {
   const qy = lerp(14, 70, view.height); // high tongue near TOP
 
   return (
-    <main className="min-h-screen bg-[#1a1726] text-white flex flex-col items-center px-4 py-6 font-sans">
+    <main className="min-h-screen bg-[#1a1726] text-foreground flex flex-col items-center px-4 py-6 font-sans">
       <Link
         href="/dream"
-        className="self-start text-white/60 hover:text-white/90 text-base mb-2"
+        className="self-start text-muted-foreground hover:text-foreground text-base mb-2"
       >
         ← dream lab
       </Link>
 
-      <h1 className="text-2xl sm:text-3xl font-semibold text-white/95 text-center">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-foreground text-center">
         The Magic X-Ray Mouth Mirror
       </h1>
-      <p className="text-white/75 text-base text-center max-w-md mt-1">
+      <p className="text-muted-foreground text-base text-center max-w-md mt-1">
         Sing a long vowel — <span className="font-mono">aaah, eee, ooo</span> —
         and watch the tongue inside the friendly head move to the shape it heard.
         Go quiet and it sings back.
@@ -493,7 +493,7 @@ export default function KidsMouthMirror() {
 
         {/* big readable vowel label */}
         <div className="absolute top-2 left-2 px-3 py-1.5 rounded-xl bg-black/35 backdrop-blur-sm">
-          <span className="font-mono text-2xl text-white/95">{label}</span>
+          <span className="font-mono text-2xl text-foreground">{label}</span>
         </div>
       </div>
 
@@ -502,13 +502,13 @@ export default function KidsMouthMirror() {
         {phase === "idle" ? (
           <button
             onPointerDown={handleStart}
-            className="min-h-[64px] min-w-[200px] px-8 py-4 rounded-2xl bg-amber-300 text-[#2a1a10] text-xl font-semibold active:scale-95 transition-transform shadow-lg"
+            className="min-h-[64px] min-w-[200px] px-8 py-4 rounded-2xl bg-violet-300 text-[#2a1a10] text-xl font-semibold active:scale-95 transition-transform shadow-lg"
           >
             Start 🎤
           </button>
         ) : (
           <div className="text-center">
-            <p className="text-white/90 text-base">
+            <p className="text-foreground text-base">
               {phase === "attract"
                 ? "Demo mode — the mirror is singing each vowel for you."
                 : view.active
@@ -521,7 +521,7 @@ export default function KidsMouthMirror() {
                 setPhase("idle");
                 setView(IDLE_STATE);
               }}
-              className="mt-3 min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 text-white/80 text-base hover:bg-white/20"
+              className="mt-3 min-h-[44px] px-4 py-2.5 rounded-xl bg-muted text-foreground text-base hover:bg-accent"
             >
               Stop
             </button>
@@ -529,14 +529,14 @@ export default function KidsMouthMirror() {
         )}
 
         {micError && (
-          <p className="text-rose-300 text-base text-center max-w-sm">
+          <p className="text-violet-300 text-base text-center max-w-sm">
             {micError}
           </p>
         )}
 
         {/* tiny formant readout (monospace accent) */}
         {phase !== "idle" && (
-          <p className="font-mono text-sm text-white/60">
+          <p className="font-mono text-sm text-muted-foreground">
             F1 {Math.round(view.f1)} Hz · F2 {Math.round(view.f2)} Hz · tongue
             ↑{n2(view.height)} →{n2(view.frontness)} · jaw {n2(view.jaw)} · lips{" "}
             {n2(view.round)}
@@ -544,7 +544,7 @@ export default function KidsMouthMirror() {
         )}
       </div>
 
-      <p className="mt-6 text-white/40 text-sm text-center max-w-md font-mono">
+      <p className="mt-6 text-muted-foreground/70 text-sm text-center max-w-md font-mono">
         LPC formant tracking → articulatory inversion → SVG tongue. Mic is
         analysed only — never recorded, routed, or sent anywhere.
       </p>

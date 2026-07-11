@@ -664,14 +664,14 @@ export default function MirrorCanonRoundPage() {
   const running = phase === "running";
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#0a0a0a] text-white font-mono overflow-hidden">
+    <div className="relative flex flex-col min-h-screen bg-[#0a0a0a] text-foreground font-mono overflow-hidden">
       {/* design notes link */}
       <div className="absolute top-4 right-4 z-30">
         <Link
           href={README_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/55 text-sm hover:text-white/85 transition-colors"
+          className="text-muted-foreground text-sm hover:text-foreground transition-colors"
         >
           design notes
         </Link>
@@ -679,13 +679,13 @@ export default function MirrorCanonRoundPage() {
 
       {/* header / hero */}
       <header className="px-6 pt-8 pb-3 z-10">
-        <p className="text-white/55 text-xs tracking-[0.2em] uppercase mb-1">
+        <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase mb-1">
           dream · 302
         </p>
-        <h1 className="text-3xl sm:text-4xl font-serif font-semibold tracking-tight text-white/95 mb-2">
+        <h1 className="text-3xl sm:text-4xl font-serif font-semibold tracking-tight text-foreground mb-2">
           Mirror Canon
         </h1>
-        <p className="text-base text-white/75 max-w-xl leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-xl leading-relaxed">
           Conduct a round sung entirely by past versions of yourself. Perform a
           body-phrase, commit it, and a new past-you enters a few beats later in
           canon — a stacked round of your own selves in a wooden mirror.
@@ -698,7 +698,7 @@ export default function MirrorCanonRoundPage() {
           className="w-full max-w-3xl flex flex-col gap-4"
           style={{ display: running ? "flex" : "none" }}
         >
-          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/10 bg-black">
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-border bg-black">
             <video
               ref={videoRef}
               className="absolute inset-0 w-full h-full object-cover"
@@ -714,21 +714,21 @@ export default function MirrorCanonRoundPage() {
                 <span
                   key={b}
                   className={`inline-block w-2 h-2 rounded-full transition-colors ${
-                    b === beatPulse ? "bg-amber-300/95" : "bg-white/25"
+                    b === beatPulse ? "bg-violet-300/95" : "bg-muted"
                   }`}
                 />
               ))}
-              <span className="text-white/55 text-xs ml-1">{BPM} bpm</span>
+              <span className="text-muted-foreground text-xs ml-1">{BPM} bpm</span>
             </div>
 
             {/* voice count */}
-            <div className="absolute top-3 right-3 bg-black/50 rounded-full px-3 py-1.5 text-sm text-white/75">
+            <div className="absolute top-3 right-3 bg-black/50 rounded-full px-3 py-1.5 text-sm text-muted-foreground">
               round: {voiceCount}/4 voices
             </div>
 
             {isGhost && error && (
               <div className="absolute bottom-3 left-0 right-0 flex justify-center px-4">
-                <span className="text-rose-300 text-sm bg-black/65 rounded-lg px-4 py-2 max-w-md text-center">
+                <span className="text-violet-300 text-sm bg-black/65 rounded-lg px-4 py-2 max-w-md text-center">
                   {error}
                 </span>
               </div>
@@ -740,7 +740,7 @@ export default function MirrorCanonRoundPage() {
             <button
               onClick={commitVoice}
               disabled={voiceCount >= 4 || recording}
-              className="min-h-[44px] px-5 py-2.5 rounded-lg text-base font-semibold transition-colors bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:bg-white/10 disabled:text-white/40 text-white"
+              className="min-h-[44px] px-5 py-2.5 rounded-lg text-base font-semibold transition-colors bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:bg-muted disabled:text-muted-foreground/70 text-foreground"
             >
               {recording
                 ? "recording one bar…"
@@ -751,12 +751,12 @@ export default function MirrorCanonRoundPage() {
             <button
               onClick={clearRound}
               disabled={voiceCount === 0}
-              className="min-h-[44px] px-4 py-2.5 rounded-lg text-base transition-colors border border-white/15 hover:border-white/35 disabled:opacity-40 text-white/85"
+              className="min-h-[44px] px-4 py-2.5 rounded-lg text-base transition-colors border border-border hover:border-border disabled:opacity-40 text-foreground"
             >
               Clear round
             </button>
             {/* Round ⇄ Phase mode toggle (the cycle-2 deepening) */}
-            <div className="flex items-center rounded-lg border border-white/15 overflow-hidden">
+            <div className="flex items-center rounded-lg border border-border overflow-hidden">
               {(["round", "phase"] as CanonMode[]).map((m) => (
                 <button
                   key={m}
@@ -765,15 +765,15 @@ export default function MirrorCanonRoundPage() {
                   }}
                   className={`min-h-[44px] px-4 py-2.5 text-base transition-colors ${
                     mode === m
-                      ? "bg-violet-600 text-white font-semibold"
-                      : "bg-transparent text-white/70 hover:text-white/95"
+                      ? "bg-violet-600 text-foreground font-semibold"
+                      : "bg-transparent text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {m === "round" ? "Round" : "Phase"}
                 </button>
               ))}
             </div>
-            <p className="text-white/55 text-sm">
+            <p className="text-muted-foreground text-sm">
               {mode === "round"
                 ? `each voice enters ${CANON_OFFSET_BEATS} beat${
                     CANON_OFFSET_BEATS === 1 ? "" : "s"
@@ -786,7 +786,7 @@ export default function MirrorCanonRoundPage() {
               mode the markers slip apart, in Round mode they hold their offsets */}
           {voiceCount > 0 && (
             <div className="flex flex-col gap-1.5">
-              <p className="text-white/55 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {mode === "phase" ? "Phase drift" : "Round positions"}
               </p>
               <div className="flex flex-col gap-1.5">
@@ -804,10 +804,10 @@ export default function MirrorCanonRoundPage() {
                     soloIdx !== null ? soloIdx === i : !muted[i];
                   return (
                     <div key={i} className="flex items-center gap-2">
-                      <span className="text-white/55 text-xs w-16 shrink-0">
+                      <span className="text-muted-foreground text-xs w-16 shrink-0">
                         past-you {i + 1}
                       </span>
-                      <div className="relative flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
+                      <div className="relative flex-1 h-2 rounded-full bg-muted overflow-hidden">
                         <span
                           className="absolute top-0 bottom-0 w-1.5 rounded-full"
                           style={{
@@ -826,7 +826,7 @@ export default function MirrorCanonRoundPage() {
 
           {/* conduct: per-voice mute / solo */}
           <div className="flex flex-col gap-2">
-            <p className="text-white/55 text-sm">Conduct the stack</p>
+            <p className="text-muted-foreground text-sm">Conduct the stack</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[0, 1, 2, 3].map((i) => {
                 const active = i < voiceCount;
@@ -835,15 +835,15 @@ export default function MirrorCanonRoundPage() {
                   tint.name === "violet"
                     ? "text-violet-300"
                     : tint.name === "emerald"
-                      ? "text-emerald-300/95"
+                      ? "text-violet-300/95"
                       : tint.name === "rose"
-                        ? "text-rose-300"
-                        : "text-amber-300/95";
+                        ? "text-violet-300"
+                        : "text-violet-300/95";
                 return (
                   <div
                     key={i}
                     className={`rounded-lg border p-2.5 flex flex-col gap-2 ${
-                      active ? "border-white/20" : "border-white/8 opacity-50"
+                      active ? "border-border" : "border-border opacity-50"
                     }`}
                   >
                     <span className={`text-sm ${accent}`}>
@@ -856,8 +856,8 @@ export default function MirrorCanonRoundPage() {
                         disabled={!active}
                         className={`flex-1 min-h-[44px] rounded-md text-sm transition-colors disabled:opacity-40 ${
                           muted[i]
-                            ? "bg-rose-500/30 text-rose-200"
-                            : "bg-white/10 hover:bg-white/20 text-white/85"
+                            ? "bg-violet-500/30 text-violet-200"
+                            : "bg-muted hover:bg-accent text-foreground"
                         }`}
                       >
                         mute
@@ -867,8 +867,8 @@ export default function MirrorCanonRoundPage() {
                         disabled={!active}
                         className={`flex-1 min-h-[44px] rounded-md text-sm transition-colors disabled:opacity-40 ${
                           soloIdx === i
-                            ? "bg-amber-400/30 text-amber-200"
-                            : "bg-white/10 hover:bg-white/20 text-white/85"
+                            ? "bg-violet-400/30 text-violet-200"
+                            : "bg-muted hover:bg-accent text-foreground"
                         }`}
                       >
                         solo
@@ -888,10 +888,10 @@ export default function MirrorCanonRoundPage() {
               🪞
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-white/95 mb-2">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
                 A round of your own selves
               </h2>
-              <p className="text-base text-white/75 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Your hands are two singing voices — their height sets the pitch,
                 your openness shapes the vowel. Perform a phrase, tap{" "}
                 <span className="text-violet-300">Add a voice</span>, and a past
@@ -902,23 +902,23 @@ export default function MirrorCanonRoundPage() {
                 (Steve Reich) cloud.
               </p>
             </div>
-            <div className="text-white/55 text-sm leading-relaxed space-y-1">
+            <div className="text-muted-foreground text-sm leading-relaxed space-y-1">
               <p>D-Dorian formant choir · round ⇄ phase canon memory</p>
               <p>matte wooden-mirror render · 33-point pose tracking</p>
             </div>
 
             {error && phase === "idle" && (
-              <p className="text-rose-300 text-sm">{error}</p>
+              <p className="text-violet-300 text-sm">{error}</p>
             )}
 
             <button
               onClick={start}
               disabled={phase === "loading"}
-              className="min-h-[44px] px-8 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:opacity-60 text-white font-semibold rounded-lg transition-colors text-base"
+              className="min-h-[44px] px-8 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 disabled:opacity-60 text-foreground font-semibold rounded-lg transition-colors text-base"
             >
               {phase === "loading" ? "summoning the round…" : "Begin"}
             </button>
-            <p className="text-white/55 text-xs">
+            <p className="text-muted-foreground text-xs">
               Camera requested inside this tap · audio starts immediately ·
               nothing is recorded or uploaded
             </p>
@@ -926,7 +926,7 @@ export default function MirrorCanonRoundPage() {
         )}
       </main>
 
-      <footer className="px-6 py-4 border-t border-white/10 text-white/55 text-xs flex flex-wrap gap-x-3 gap-y-1 justify-between items-center">
+      <footer className="px-6 py-4 border-t border-border text-muted-foreground text-xs flex flex-wrap gap-x-3 gap-y-1 justify-between items-center">
         <span>
           ref: Rozin <em>Wooden Mirror</em> (1999) · the musical round / canon ·
           Reich <em>Piano Phase</em> · Frippertronics · Oliveros{" "}

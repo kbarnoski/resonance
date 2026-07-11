@@ -156,23 +156,23 @@ export default function LiveMicViz() {
       {!running && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Live Mic Viz</h1>
-          <p className="text-sm text-white/55 max-w-md mb-6 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-6 leading-relaxed">
             Play, sing, or hum into your mic. Six frequency bands bloom as
             radial color fields — sub-bass deep violet at the outer edge,
             highs red-hot toward the center. Percussive hits flash.
           </p>
           <button
             onClick={start}
-            className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+            className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
           >
             Start mic
           </button>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -182,15 +182,15 @@ export default function LiveMicViz() {
       {/* HUD overlay when running */}
       {running && (
         <>
-          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-white/55 space-y-1 text-right pointer-events-none">
+          <div className="absolute top-4 right-4 text-[10px] tracking-wider text-muted-foreground space-y-1 text-right pointer-events-none">
             <div>
-              BPM <span className="text-white">{isNaN(hud.bpm) ? "—" : Math.round(hud.bpm)}</span>
+              BPM <span className="text-foreground">{isNaN(hud.bpm) ? "—" : Math.round(hud.bpm)}</span>
             </div>
             <div>
-              CENTROID <span className="text-white">{Math.round(hud.centroid)}</span> Hz
+              CENTROID <span className="text-foreground">{Math.round(hud.centroid)}</span> Hz
             </div>
             <div>
-              AMPLITUDE <span className="text-white">{(hud.amplitude * 100).toFixed(0)}</span>
+              AMPLITUDE <span className="text-foreground">{(hud.amplitude * 100).toFixed(0)}</span>
             </div>
           </div>
 
@@ -210,10 +210,10 @@ export default function LiveMicViz() {
                         transition: "height 60ms linear, opacity 60ms linear",
                       }}
                     />
-                    <span className="text-[8px] text-white/40 tracking-wider">
+                    <span className="text-[8px] text-muted-foreground/70 tracking-wider">
                       {BAND_LABELS[i]}
                     </span>
-                    <span className="text-[8px] text-white/30">
+                    <span className="text-[8px] text-muted-foreground/70">
                       {BAND_RANGES_HZ[i][0]}–{BAND_RANGES_HZ[i][1] >= 1000 ? `${(BAND_RANGES_HZ[i][1] / 1000).toFixed(0)}k` : BAND_RANGES_HZ[i][1]}
                     </span>
                   </div>
@@ -222,7 +222,7 @@ export default function LiveMicViz() {
             </div>
 
             <div className="flex flex-col items-end gap-2 pointer-events-auto">
-              <label className="text-[10px] text-white/55 tracking-wider">
+              <label className="text-[10px] text-muted-foreground tracking-wider">
                 GAIN {gain.toFixed(1)}
               </label>
               <input
@@ -232,17 +232,17 @@ export default function LiveMicViz() {
                 step="0.1"
                 value={gain}
                 onChange={(e) => setGain(parseFloat(e.target.value))}
-                className="w-40 accent-white"
+                className="w-40 accent-primary"
               />
               <button
                 onClick={stop}
-                className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+                className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
               >
                 stop
               </button>
               <Link
                 href="/dream"
-                className="text-[10px] text-white/30 hover:text-white/60"
+                className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground"
               >
                 ← back
               </Link>

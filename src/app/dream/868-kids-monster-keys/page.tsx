@@ -342,7 +342,7 @@ export default function Page() {
   const anyClash = scoreClashes(held).worst > 0;
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0e0510] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0e0510] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -350,15 +350,15 @@ export default function Page() {
 
       {/* Title + status overlay */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col gap-1 p-4">
-        <h1 className="text-2xl font-bold text-white/95 drop-shadow">
+        <h1 className="text-2xl font-bold text-foreground drop-shadow">
           Monster Keys
         </h1>
-        <p className="font-mono text-base text-white/75 drop-shadow">
+        <p className="font-mono text-base text-muted-foreground drop-shadow">
           {anyClash
             ? "a wobbly monster appeared! add a glowing key to calm it"
             : "tap the glowing creatures — stack them to make friends"}
         </p>
-        <p className="font-mono text-base text-white/75">
+        <p className="font-mono text-base text-muted-foreground">
           {midiStatus === "connected" && "🎹 connected"}
           {midiStatus === "none" && "🎹 plug in a keyboard — optional"}
           {midiStatus === "checking" && "🎹 looking for a keyboard…"}
@@ -366,7 +366,7 @@ export default function Page() {
             "🎹 keyboard not supported here — tap the keys"}
         </p>
         {glError && (
-          <p className="font-mono text-base text-rose-300 drop-shadow">{glError}</p>
+          <p className="font-mono text-base text-violet-300 drop-shadow">{glError}</p>
         )}
       </div>
 
@@ -418,8 +418,8 @@ export default function Page() {
       {/* Start gate (iOS) */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0e0510]/90 p-6 text-center">
-          <h1 className="text-2xl font-bold text-white/95">Monster Keys</h1>
-          <p className="max-w-md font-mono text-base text-white/75">
+          <h1 className="text-2xl font-bold text-foreground">Monster Keys</h1>
+          <p className="max-w-md font-mono text-base text-muted-foreground">
             Tap the friendly creatures. Some pairs make a wobbly monster — add a
             glowing key to calm it. No wrong notes, ever.
           </p>
@@ -429,7 +429,7 @@ export default function Page() {
               void handleStart();
             }}
             aria-label="Start"
-            className="flex items-center justify-center gap-3 rounded-full bg-gradient-to-br from-amber-300 to-rose-400 px-8 py-4 text-2xl font-bold text-[#2a0f18] shadow-lg active:scale-95"
+            className="flex items-center justify-center gap-3 rounded-full bg-gradient-to-br from-violet-300 to-violet-400 px-8 py-4 text-2xl font-bold text-[#2a0f18] shadow-lg active:scale-95"
             style={{ minWidth: 200, minHeight: 88 }}
           >
             <span aria-hidden className="text-3xl">

@@ -431,15 +431,15 @@ export default function IronGardenPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#05061a] text-white overflow-hidden">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
+    <div className="flex flex-col h-screen bg-[#05061a] text-foreground overflow-hidden">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-2xl font-serif tracking-wide text-white">Iron Garden</h1>
-          <p className="text-base text-white/80 mt-0.5">
+          <h1 className="text-2xl font-serif tracking-wide text-foreground">Iron Garden</h1>
+          <p className="text-base text-foreground mt-0.5">
             Drag the glowing flowers — watch the invisible magnet lines appear and hear them sing together.
           </p>
         </div>
-        <Link href="/dream" className="text-base text-white/75 hover:text-white transition-colors min-h-[44px] flex items-center">
+        <Link href="/dream" className="text-base text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center">
           ← Dream Lab
         </Link>
       </header>
@@ -449,7 +449,7 @@ export default function IronGardenPage() {
 
         {!supported && (
           <div className="absolute inset-0 flex items-center justify-center p-6">
-            <p className="text-base text-rose-300 text-center max-w-md">
+            <p className="text-base text-violet-300 text-center max-w-md">
               This little garden needs a browser with Canvas2D and the Web Audio API. Please try a recent
               version of Safari, Chrome, or Firefox.
             </p>
@@ -466,18 +466,18 @@ export default function IronGardenPage() {
             <span className="text-6xl select-none" aria-hidden>
               🌸
             </span>
-            <span className="text-2xl text-white px-6 py-2.5 rounded-full border border-white/25 min-h-[44px] flex items-center">
+            <span className="text-2xl text-foreground px-6 py-2.5 rounded-full border border-border min-h-[44px] flex items-center">
               tap to begin
             </span>
           </button>
         )}
       </div>
 
-      <footer className="px-4 py-2.5 border-t border-white/10 shrink-0 flex items-center justify-between gap-3">
-        <span className="text-base text-white/75">For kids 4+ · drag with one or two fingers</span>
+      <footer className="px-4 py-2.5 border-t border-border shrink-0 flex items-center justify-between gap-3">
+        <span className="text-base text-muted-foreground">For kids 4+ · drag with one or two fingers</span>
         <Link
           href="/dream/953-kids-iron-garden/README.md"
-          className="text-base text-white/75 hover:text-white transition-colors min-h-[44px] flex items-center"
+          className="text-base text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
         >
           Design notes ↗
         </Link>

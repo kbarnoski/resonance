@@ -299,19 +299,19 @@ export default function VocalChoirPage() {
   }, [])
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
+    <div className="flex flex-col h-screen bg-black text-foreground">
       <div className="flex-1 relative min-h-0">
         <canvas ref={cvsRef} className="w-full h-full" />
 
         {phase === 'idle' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6">
-            <h1 className="text-2xl font-serif text-white">Vocal Choir</h1>
-            <p className="text-base text-white/75 text-center max-w-sm">
+            <h1 className="text-2xl font-serif text-foreground">Vocal Choir</h1>
+            <p className="text-base text-muted-foreground text-center max-w-sm">
               Sing or hum any note. Three harmony voices materialise around you in 3D
               space — a major third, a perfect fifth, and a bass octave track every pitch
               you make.
             </p>
-            <p className="text-sm text-white/55">Wear headphones for the full 3D effect.</p>
+            <p className="text-sm text-muted-foreground">Wear headphones for the full 3D effect.</p>
             <div className="flex gap-3 mt-1">
               <button
                 onClick={clickMic}
@@ -321,26 +321,26 @@ export default function VocalChoirPage() {
               </button>
               <button
                 onClick={() => boot(null)}
-                className="min-h-[44px] px-5 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white/80 text-base hover:bg-white/15 transition-colors"
+                className="min-h-[44px] px-5 py-2.5 bg-muted border border-border rounded-lg text-foreground text-base hover:bg-accent transition-colors"
               >
                 Demo
               </button>
             </div>
-            {errMsg && <p className="text-rose-300 text-base mt-1">{errMsg}</p>}
+            {errMsg && <p className="text-violet-300 text-base mt-1">{errMsg}</p>}
           </div>
         )}
       </div>
 
-      <footer className="px-4 py-2 flex items-center gap-3 border-t border-white/10 shrink-0">
-        <span className="text-white/55 text-xs">/dream/175-vocal-choir</span>
+      <footer className="px-4 py-2 flex items-center gap-3 border-t border-border shrink-0">
+        <span className="text-muted-foreground text-xs">/dream/175-vocal-choir</span>
         {phase !== 'idle' && (
-          <span className="text-emerald-300/95 text-xs">
+          <span className="text-violet-300/95 text-xs">
             {phase === 'mic' ? '● mic' : '▶ demo'}
           </span>
         )}
         <a
           href="README.md"
-          className="ml-auto text-white/40 text-xs hover:text-white/60"
+          className="ml-auto text-muted-foreground/70 text-xs hover:text-muted-foreground"
         >
           design notes
         </a>

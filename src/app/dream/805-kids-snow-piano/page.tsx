@@ -608,7 +608,7 @@ export default function SnowPianoPage() {
   // Render
   // ------------------------------------------------------------------
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0b1830] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0b1830] text-foreground">
       {/* three.js mount */}
       <div ref={mountRef} className="absolute inset-0 h-full w-full" />
 
@@ -616,11 +616,11 @@ export default function SnowPianoPage() {
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between p-4">
         <Link
           href="/dream"
-          className="pointer-events-auto inline-flex min-h-[44px] items-center rounded-full bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur-sm hover:bg-white/20"
+          className="pointer-events-auto inline-flex min-h-[44px] items-center rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur-sm hover:bg-accent"
         >
           ← Lab
         </Link>
-        <h1 className="mt-1 text-right text-xl font-semibold text-white/95 drop-shadow">
+        <h1 className="mt-1 text-right text-xl font-semibold text-foreground drop-shadow">
           Snow Piano
         </h1>
       </div>
@@ -631,18 +631,18 @@ export default function SnowPianoPage() {
           <div className="text-6xl" aria-hidden>
             ❄️
           </div>
-          <p className="max-w-md text-xl text-white/95">
+          <p className="max-w-md text-xl text-foreground">
             Tilt the snow globe. Karel&apos;s piano pours out as glowing snow
             that chimes when it lands.
           </p>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Tilt your device — or drag with your finger or mouse. It plays all
             by itself too.
           </p>
           <button
             type="button"
             onClick={handleStart}
-            className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-sky-300 px-10 py-5 text-2xl font-semibold text-[#0b1830] shadow-lg transition hover:bg-sky-200 active:scale-95"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-violet-300 px-10 py-5 text-2xl font-semibold text-[#0b1830] shadow-lg transition hover:bg-violet-200 active:scale-95"
             style={{ minWidth: 200, minHeight: 80 }}
           >
             ▶ Start
@@ -656,10 +656,10 @@ export default function SnowPianoPage() {
           <div className="text-6xl" aria-hidden>
             ❄️
           </div>
-          <p className="max-w-md text-xl text-white/95">
+          <p className="max-w-md text-xl text-foreground">
             This snow globe needs WebGL, which isn&apos;t available here.
           </p>
-          <p className="text-base text-rose-300">
+          <p className="text-base text-violet-300">
             Try a different browser or device to watch the snow fall.
           </p>
         </div>
@@ -669,13 +669,13 @@ export default function SnowPianoPage() {
       {status === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2 p-4 text-center">
           {usingFallbackVoice && (
-            <p className="text-base font-medium text-rose-300">
+            <p className="text-base font-medium text-violet-300">
               Playing a soft bell voice (Karel&apos;s recording couldn&apos;t
               load).
             </p>
           )}
           {!tiltActive && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Tilt not available — drag to tilt, or just watch it play itself.
             </p>
           )}
@@ -686,16 +686,16 @@ export default function SnowPianoPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-4 right-4 z-30 inline-flex min-h-[44px] items-center rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm hover:bg-white/20"
+        className="absolute bottom-4 right-4 z-30 inline-flex min-h-[44px] items-center rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm hover:bg-accent"
       >
         {showNotes ? "Close" : "Design notes"}
       </button>
       {showNotes && (
-        <div className="absolute bottom-20 right-4 z-30 max-w-xs rounded-2xl bg-[#0b1830]/95 p-4 text-base text-white/90 shadow-xl ring-1 ring-white/15">
-          <p className="mb-2 text-lg font-semibold text-white/95">
+        <div className="absolute bottom-20 right-4 z-30 max-w-xs rounded-2xl bg-[#0b1830]/95 p-4 text-base text-foreground shadow-xl ring-1 ring-border">
+          <p className="mb-2 text-lg font-semibold text-foreground">
             A snow-globe music box
           </p>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Tilt is the only input. Glowing motes are Karel&apos;s real piano;
             when one settles on a chime rail it plays a soft pentatonic window
             of his recording, then dissolves into sparkles. No score, no fail —

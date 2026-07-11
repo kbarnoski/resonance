@@ -554,35 +554,35 @@ export default function RubberBandBand() {
   const bands = bandsRef.current;
 
   return (
-    <main className="min-h-screen w-full bg-[#1a1012] text-white">
+    <main className="min-h-screen w-full bg-[#1a1012] text-foreground">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-white sm:text-3xl">
+            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
               Rubber-Band Band
             </h1>
-            <p className="mt-1 text-base text-white/75">
+            <p className="mt-1 text-base text-muted-foreground">
               Pull a glowing band and let go to make it sing. Pull{" "}
-              <span className="text-amber-300/95">too far</span> and it goes
+              <span className="text-violet-300/95">too far</span> and it goes
               floppy and sad — turn its knob to fix it.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </header>
 
         {audioError && (
-          <p className="text-base text-rose-300">{audioError}</p>
+          <p className="text-base text-violet-300">{audioError}</p>
         )}
 
         {showNotes && (
-          <section className="rounded-2xl border border-white/10 bg-black/30 p-4 text-base leading-relaxed text-white/75">
-            <p className="text-white/95">
+          <section className="rounded-2xl border border-border bg-black/30 p-4 text-base leading-relaxed text-muted-foreground">
+            <p className="text-foreground">
               A wall of stretchy glowing rubber-bands tuned to a warm C major
               pentatonic. Drag a band sideways and release to pluck it — a
               Karplus-Strong plucked-string tone — and watch it wobble and
@@ -591,14 +591,14 @@ export default function RubberBandBand() {
             <p className="mt-3">
               <span className="text-violet-300">The stakes:</span> if you
               over-stretch a band it goes{" "}
-              <span className="text-amber-300/95">slack and out of tune</span>{" "}
+              <span className="text-violet-300/95">slack and out of tune</span>{" "}
               and <em>stays</em> that way — flat, buzzy, and drooping. Nothing
               rescues it for you. To fix it you grab its tuning peg and turn it
               back up until the band snaps taut and{" "}
-              <span className="text-emerald-300/95">glows true</span> again. The
+              <span className="text-violet-300/95">glows true</span> again. The
               wrong choice is visible, audible, and lasting; the fix is earned.
             </p>
-            <p className="mt-3 text-white/55">
+            <p className="mt-3 text-muted-foreground">
               Technique: SVG spring-string animation + pluck synth + detune
               state machine. Refs: Karplus &amp; Strong (1983); the monochord /
               rubber-band as a child&apos;s first tunable string. The out-of-tune
@@ -608,7 +608,7 @@ export default function RubberBandBand() {
           </section>
         )}
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+        <div className="relative overflow-hidden rounded-3xl border border-border shadow-2xl">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${VW} ${VH}`}
@@ -754,7 +754,7 @@ export default function RubberBandBand() {
               <button
                 type="button"
                 onClick={handleStart}
-                className="pointer-events-auto min-h-[44px] rounded-full bg-amber-400 px-8 py-3 text-lg font-bold text-[#241719] shadow-lg transition active:scale-95"
+                className="pointer-events-auto min-h-[44px] rounded-full bg-violet-400 px-8 py-3 text-lg font-bold text-[#241719] shadow-lg transition active:scale-95"
                 style={{ marginTop: 64 }}
               >
                 ▶ Start
@@ -763,7 +763,7 @@ export default function RubberBandBand() {
           )}
         </div>
 
-        <p className="text-base text-white/55">
+        <p className="text-base text-muted-foreground">
           Drag a band up or down and let go to pluck. Pull way too far and it
           sags out of tune — turn its little knob upward to tighten it back to a
           sweet note.

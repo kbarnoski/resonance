@@ -745,29 +745,29 @@ export default function LiveDuetHarmonist() {
   const started = runState !== 'idle';
 
   return (
-    <div className="flex flex-col h-screen bg-[#0a0a10] text-white select-none">
+    <div className="flex flex-col h-screen bg-[#0a0a10] text-foreground select-none">
       <div className="px-6 pt-5 pb-3 flex-shrink-0">
-        <h1 className="text-2xl font-semibold text-white/95 tracking-tight">Live Duet Harmonist</h1>
-        <p className="text-base text-white/75 mt-1 max-w-2xl">
+        <h1 className="text-2xl font-semibold text-foreground tracking-tight">Live Duet Harmonist</h1>
+        <p className="text-base text-muted-foreground mt-1 max-w-2xl">
           Play <span className="text-violet-300">chords</span> and an AI accompanist answers with a
-          jazz comping bed — <span className="text-emerald-300/95">rootless voicings</span> and a{' '}
-          <span className="text-amber-300/95">walking bass</span> that locks to the rhythm of your
+          jazz comping bed — <span className="text-violet-300/95">rootless voicings</span> and a{' '}
+          <span className="text-violet-300/95">walking bass</span> that locks to the rhythm of your
           playing, not a fixed metronome.
         </p>
       </div>
 
-      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-white/10 relative min-h-0">
+      <div className="flex-1 mx-4 mb-3 rounded-xl overflow-hidden border border-border relative min-h-0">
         <canvas ref={canvasRef} className="w-full h-full block" />
 
         {!started && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#0a0a10]/85 backdrop-blur-sm">
             <div className="max-w-md text-center px-6">
-              <p className="text-base text-white/75 leading-relaxed mb-6">
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">
                 A 12-bin <span className="text-violet-300">chroma</span> front end matches your chords
                 against 36 templates (maj / min / dom7), waits a{' '}
-                <span className="text-emerald-300/95">160 ms settle</span> so the bed is anticipatory,
+                <span className="text-violet-300/95">160 ms settle</span> so the bed is anticipatory,
                 then comps with jazz voicings and a walking bass{' '}
-                <span className="text-amber-300/95">synced to your onsets</span>.
+                <span className="text-violet-300/95">synced to your onsets</span>.
               </p>
               <div className="flex gap-3 justify-center">
                 <button
@@ -778,27 +778,27 @@ export default function LiveDuetHarmonist() {
                 </button>
                 <button
                   onClick={startDemo}
-                  className="px-4 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/75 text-base hover:bg-white/10 transition-colors"
+                  className="px-4 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
                 >
                   Run the demo
                 </button>
               </div>
-              {err && <p className="text-rose-300 text-base mt-4">{err}</p>}
+              {err && <p className="text-violet-300 text-base mt-4">{err}</p>}
             </div>
           </div>
         )}
 
         {started && (
           <div className="absolute top-3 left-4 right-4 flex items-start justify-between gap-3 pointer-events-none">
-            <div className="text-base text-white/80 font-mono">
-              {chordText} <span className="text-white/55">· {bpmText} BPM</span>
+            <div className="text-base text-foreground font-mono">
+              {chordText} <span className="text-muted-foreground">· {bpmText} BPM</span>
             </div>
             {demoMode && (
-              <div className="text-rose-300 text-base pointer-events-auto">
+              <div className="text-violet-300 text-base pointer-events-auto">
                 {err || 'Demo mode — mic unavailable. '}
                 <button
                   onClick={startMic}
-                  className="ml-1 underline decoration-dotted hover:text-rose-200"
+                  className="ml-1 underline decoration-dotted hover:text-violet-200"
                 >
                   Use microphone
                 </button>
@@ -810,15 +810,15 @@ export default function LiveDuetHarmonist() {
         <div className="absolute bottom-4 right-4">
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="px-4 py-2.5 min-h-[44px] rounded-lg bg-white/5 border border-white/10 text-white/75 text-base hover:bg-white/10 transition-colors"
+            className="px-4 py-2.5 min-h-[44px] rounded-lg bg-muted border border-border text-muted-foreground text-base hover:bg-accent transition-colors"
           >
             {showNotes ? 'Hide' : 'Read the design notes'}
           </button>
         </div>
 
         {showNotes && (
-          <div className="absolute bottom-20 right-4 max-w-sm rounded-xl bg-[#0a0a10]/95 border border-white/10 p-4 text-base text-white/75 leading-relaxed">
-            <p className="text-white/95 font-medium mb-2 text-xl">Pipeline</p>
+          <div className="absolute bottom-20 right-4 max-w-sm rounded-xl bg-[#0a0a10]/95 border border-border p-4 text-base text-muted-foreground leading-relaxed">
+            <p className="text-foreground font-medium mb-2 text-xl">Pipeline</p>
             <p>
               chroma → cosine-match 36 chord templates → 160 ms settle → rootless / drop-2 voicing
               with nearest-pitch voice leading → walking bass on the onset-inferred pulse. See{' '}

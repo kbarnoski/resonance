@@ -432,14 +432,14 @@ export default function Page() {
   const mouthH = 3 + mouthOpen * 16;
 
   return (
-    <main className="min-h-screen bg-[#0a0710] text-white/95">
+    <main className="min-h-screen bg-[#0a0710] text-foreground">
       <div className="mx-auto flex max-w-3xl flex-col gap-5 px-5 py-8">
         <header className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-white">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               A Friend Made of Songs
             </h1>
-            <p className="mt-1 max-w-prose text-base text-white/75">
+            <p className="mt-1 max-w-prose text-base text-muted-foreground">
               Sing or hum, and your friend grows a new petal shaped like your
               melody. It keeps every song forever and sings them back to you —
               changed — each time you visit.
@@ -447,7 +447,7 @@ export default function Page() {
           </div>
           <Link
             href="/dream/549-kids-song-friend/README.md"
-            className="shrink-0 rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/55 hover:text-white/80"
+            className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
             title="About this prototype"
           >
             readme
@@ -455,7 +455,7 @@ export default function Page() {
         </header>
 
         {/* the creature */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#16101f] to-[#0a0710]">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-b from-[#16101f] to-[#0a0710]">
           <svg
             viewBox="0 0 400 400"
             className="mx-auto block h-[58vh] max-h-[460px] w-full"
@@ -534,7 +534,7 @@ export default function Page() {
           </svg>
 
           {/* speech bubble */}
-          <div className="pointer-events-none absolute left-4 top-4 max-w-[70%] rounded-2xl bg-black/55 px-3 py-2 text-base text-white/90 backdrop-blur-sm">
+          <div className="pointer-events-none absolute left-4 top-4 max-w-[70%] rounded-2xl bg-black/55 px-3 py-2 text-base text-foreground backdrop-blur-sm">
             {message}
           </div>
 
@@ -542,7 +542,7 @@ export default function Page() {
           {listening && (
             <div className="absolute bottom-4 left-4 flex items-center gap-1.5">
               {capturedNotes.length === 0 ? (
-                <span className="text-sm text-white/55">…sing!</span>
+                <span className="text-sm text-muted-foreground">…sing!</span>
               ) : (
                 capturedNotes.map((d, i) => (
                   <span
@@ -558,7 +558,7 @@ export default function Page() {
             </div>
           )}
 
-          <div className="absolute bottom-4 right-4 text-xs text-white/55">
+          <div className="absolute bottom-4 right-4 text-xs text-muted-foreground">
             {total} song{total === 1 ? "" : "s"} · {memory.totalNotesEver} notes ever
             {memory.day > 0 ? ` · visit ${memory.day + 1}` : ""}
           </div>
@@ -568,7 +568,7 @@ export default function Page() {
         {phase === "intro" ? (
           <button
             onClick={start}
-            className="mx-auto rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-white shadow-lg shadow-violet-900/40 hover:bg-violet-400"
+            className="mx-auto rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-foreground shadow-lg shadow-violet-900/40 hover:bg-violet-400"
           >
             ✨ Meet your friend
           </button>
@@ -578,8 +578,8 @@ export default function Page() {
               onClick={toggleListen}
               className={`rounded-full px-5 py-2.5 text-base font-medium ${
                 listening
-                  ? "bg-rose-500/85 text-white hover:bg-rose-400"
-                  : "bg-violet-500/90 text-white hover:bg-violet-400"
+                  ? "bg-violet-500/85 text-foreground hover:bg-violet-400"
+                  : "bg-violet-500/90 text-foreground hover:bg-violet-400"
               }`}
             >
               {listening ? "● stop & keep it" : "🎤 Sing to me"}
@@ -587,13 +587,13 @@ export default function Page() {
             <button
               onClick={() => singBack(memoryRef.current)}
               disabled={singingBack || total === 0}
-              className="rounded-full bg-emerald-500/20 px-5 py-2.5 text-base font-medium text-emerald-300/95 hover:bg-emerald-500/30 disabled:opacity-40"
+              className="rounded-full bg-violet-500/20 px-5 py-2.5 text-base font-medium text-violet-300/95 hover:bg-violet-500/30 disabled:opacity-40"
             >
               ♫ sing back
             </button>
             <button
               onClick={pretendTomorrow}
-              className="rounded-full bg-amber-500/15 px-4 py-2.5 text-base font-medium text-amber-300/95 hover:bg-amber-500/25"
+              className="rounded-full bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-300/95 hover:bg-violet-500/25"
               title="Demo shortcut: jump to the next visit-day"
             >
               ✨ pretend it&apos;s tomorrow
@@ -602,10 +602,10 @@ export default function Page() {
         )}
 
         {micError && (
-          <p className="text-center text-base text-rose-300">{micError}</p>
+          <p className="text-center text-base text-violet-300">{micError}</p>
         )}
 
-        <p className="mx-auto max-w-prose text-center text-sm text-white/55">
+        <p className="mx-auto max-w-prose text-center text-sm text-muted-foreground">
           Each petal is one of your songs — its shape traces the pitches you
           sang, its color comes from the notes. The friend remembers across days
           in your browser. “Pretend it&apos;s tomorrow” is an honest demo shortcut.

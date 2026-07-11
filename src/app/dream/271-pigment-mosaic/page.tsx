@@ -642,7 +642,7 @@ export default function PigmentMosaicPage() {
     typeof window !== "undefined" && !!document.createElement("canvas").getContext;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0f] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Read the design notes — corner link */}
@@ -650,7 +650,7 @@ export default function PigmentMosaicPage() {
         href={README_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute right-4 top-4 z-20 rounded-md bg-black/40 px-3 py-2 font-mono text-base text-white/75 backdrop-blur transition hover:text-white"
+        className="absolute right-4 top-4 z-20 rounded-md bg-black/40 px-3 py-2 font-mono text-base text-muted-foreground backdrop-blur transition hover:text-foreground"
       >
         Read the design notes
       </a>
@@ -658,10 +658,10 @@ export default function PigmentMosaicPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold text-white md:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground md:text-3xl">
             Pigment Mosaic
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             An AI image becomes reconfigurable matter — a non-luminous mosaic of
             tiles the music shatters, scales and re-sorts in real time.
           </p>
@@ -678,18 +678,18 @@ export default function PigmentMosaicPage() {
         {/* Notices */}
         <div className="pointer-events-none mx-auto w-full max-w-2xl space-y-2">
           {!hasCanvas && (
-            <p className="rounded-md bg-black/50 px-4 py-2.5 text-base text-rose-300">
+            <p className="rounded-md bg-black/50 px-4 py-2.5 text-base text-violet-300">
               This browser has no Canvas2D — the mosaic cannot render.
             </p>
           )}
           {keyNotice && (
-            <p className="rounded-md bg-amber-500/10 px-4 py-2.5 text-base text-amber-300/95">
+            <p className="rounded-md bg-violet-500/10 px-4 py-2.5 text-base text-violet-300/95">
               Image generation needs FAL_KEY — running in procedural mode. The
               shatter-and-settle experience is fully live.
             </p>
           )}
           {errorMsg && (
-            <p className="rounded-md bg-black/50 px-4 py-2.5 text-base text-rose-300">
+            <p className="rounded-md bg-black/50 px-4 py-2.5 text-base text-violet-300">
               {errorMsg}
             </p>
           )}
@@ -702,19 +702,19 @@ export default function PigmentMosaicPage() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => void startMic()}
-                className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
               >
                 Use mic
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
               >
                 Drop / pick file
               </button>
               <button
                 onClick={() => void startSynth()}
-                className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
               >
                 Synth demo
               </button>
@@ -732,18 +732,18 @@ export default function PigmentMosaicPage() {
 
             {/* track loader */}
             <div className="flex items-end gap-2">
-              <label className="flex flex-col text-base text-white/75">
+              <label className="flex flex-col text-base text-muted-foreground">
                 Welcome Home track ID
                 <input
                   value={trackId}
                   onChange={(e) => setTrackId(e.target.value)}
                   placeholder="e.g. 42"
-                  className="mt-1 min-h-[44px] w-40 rounded-lg bg-white/10 px-3 py-2 font-mono text-base text-white placeholder:text-white/55"
+                  className="mt-1 min-h-[44px] w-40 rounded-lg bg-muted px-3 py-2 font-mono text-base text-foreground placeholder:text-muted-foreground"
                 />
               </label>
               <button
                 onClick={() => void loadTrack()}
-                className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/95 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground transition hover:bg-accent"
               >
                 Load track
               </button>
@@ -751,7 +751,7 @@ export default function PigmentMosaicPage() {
 
             {/* chapter controls */}
             <div className="ml-auto flex items-center gap-3">
-              <label className="flex cursor-pointer items-center gap-2 text-base text-white/75">
+              <label className="flex cursor-pointer items-center gap-2 text-base text-muted-foreground">
                 <input
                   type="checkbox"
                   checked={autoRegen}
@@ -769,7 +769,7 @@ export default function PigmentMosaicPage() {
               </button>
             </div>
 
-            <p className="w-full font-mono text-base text-white/55">
+            <p className="w-full font-mono text-base text-muted-foreground">
               source: {source} · chapter: {chapterLabel} · {GRID_COLS}×{GRID_ROWS} tiles
             </p>
           </div>

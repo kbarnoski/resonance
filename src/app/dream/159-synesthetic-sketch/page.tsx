@@ -321,57 +321,57 @@ export default function SynestheticSketch() {
   // ── start screen ─────────────────────────────────────────────────────────
   if (phase === "start") {
     return (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6 text-white">
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6 text-foreground">
         <div className="max-w-lg text-center space-y-6">
-          <h1 className="text-3xl font-mono font-bold text-white/95">
+          <h1 className="text-3xl font-mono font-bold text-foreground">
             Synesthetic Sketch
           </h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             Your music as shape — not just color. Each audio feature maps to a
             different visual dimension as shapes accumulate on the canvas.
           </p>
 
-          <div className="text-sm text-white/60 space-y-1 text-left border border-white/10 rounded-lg p-4">
+          <div className="text-sm text-muted-foreground space-y-1 text-left border border-border rounded-lg p-4">
             <div>
-              <span className="text-white/80">Spectral centroid</span> → hue
+              <span className="text-foreground">Spectral centroid</span> → hue
               (violet = low, amber = mid, rose = high)
             </div>
             <div>
-              <span className="text-white/80">Spectral spread</span> → shape
+              <span className="text-foreground">Spectral spread</span> → shape
               (circle = pure tone · star = complex noise)
             </div>
             <div>
-              <span className="text-white/80">Harmonic richness</span> → inner
+              <span className="text-foreground">Harmonic richness</span> → inner
               rings (0–4 concentric)
             </div>
             <div>
-              <span className="text-white/80">Amplitude</span> → object scale
+              <span className="text-foreground">Amplitude</span> → object scale
             </div>
             <div>
-              <span className="text-white/80">Onset / beat</span> → spark burst
+              <span className="text-foreground">Onset / beat</span> → spark burst
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={handleDemo}
-              className="px-6 py-3 bg-violet-600 hover:bg-violet-500 rounded-lg text-white font-mono text-base min-h-[44px] transition-colors"
+              className="px-6 py-3 bg-violet-600 hover:bg-violet-500 rounded-lg text-foreground font-mono text-base min-h-[44px] transition-colors"
             >
               Demo mode
             </button>
             <button
               onClick={handleMic}
-              className="px-6 py-3 bg-transparent hover:bg-violet-900/50 border border-violet-600 rounded-lg text-white/90 font-mono text-base min-h-[44px] transition-colors"
+              className="px-6 py-3 bg-transparent hover:bg-violet-900/50 border border-violet-600 rounded-lg text-foreground font-mono text-base min-h-[44px] transition-colors"
             >
               Start mic
             </button>
           </div>
 
           {micError && (
-            <p className="text-rose-300 text-sm">{micError}</p>
+            <p className="text-violet-300 text-sm">{micError}</p>
           )}
 
-          <p className="text-white/45 text-xs">
+          <p className="text-muted-foreground text-xs">
             Shapes accumulate over the session — the canvas fills slowly and
             fades over ~3 minutes. Download at any time.
           </p>
@@ -379,7 +379,7 @@ export default function SynestheticSketch() {
 
         <Link
           href="/dream"
-          className="fixed bottom-5 left-5 text-white/55 text-sm hover:text-white/80 font-mono"
+          className="fixed bottom-5 left-5 text-muted-foreground text-sm hover:text-foreground font-mono"
         >
           ← dream
         </Link>
@@ -394,22 +394,22 @@ export default function SynestheticSketch() {
 
       {/* top-right HUD */}
       <div className="absolute top-4 right-4 text-right space-y-1.5 pointer-events-none select-none">
-        <div className="font-mono text-sm text-white/80">
+        <div className="font-mono text-sm text-foreground">
           {shapeLabel(hudKind)}
         </div>
-        <div className="font-mono text-xs text-white/55">
+        <div className="font-mono text-xs text-muted-foreground">
           {hudRings > 0
             ? `${hudRings} ring${hudRings > 1 ? "s" : ""}`
             : "no rings"}
         </div>
-        <div className="font-mono text-xs text-white/55">
+        <div className="font-mono text-xs text-muted-foreground">
           {phase === "mic" ? "● mic" : "◌ demo"}
         </div>
       </div>
 
       {/* mic error overlay */}
       {micError && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-rose-300 text-sm font-mono bg-black/70 px-4 py-2 rounded">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-violet-300 text-sm font-mono bg-black/70 px-4 py-2 rounded">
           {micError}
         </div>
       )}
@@ -418,19 +418,19 @@ export default function SynestheticSketch() {
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 items-center">
         <button
           onClick={handleClear}
-          className="px-4 py-2 bg-black/60 border border-white/20 rounded text-white/75 text-sm font-mono hover:text-white/95 hover:border-white/40 min-h-[36px] transition-colors"
+          className="px-4 py-2 bg-black/60 border border-border rounded text-muted-foreground text-sm font-mono hover:text-foreground hover:border-border min-h-[36px] transition-colors"
         >
           Clear
         </button>
         <button
           onClick={handleDownload}
-          className="px-4 py-2 bg-black/60 border border-white/20 rounded text-white/75 text-sm font-mono hover:text-white/95 hover:border-white/40 min-h-[36px] transition-colors"
+          className="px-4 py-2 bg-black/60 border border-border rounded text-muted-foreground text-sm font-mono hover:text-foreground hover:border-border min-h-[36px] transition-colors"
         >
           ↓ PNG
         </button>
         <button
           onClick={handleStop}
-          className="px-4 py-2 bg-black/60 border border-white/20 rounded text-white/55 text-sm font-mono hover:text-white/80 hover:border-white/40 min-h-[36px] transition-colors"
+          className="px-4 py-2 bg-black/60 border border-border rounded text-muted-foreground text-sm font-mono hover:text-foreground hover:border-border min-h-[36px] transition-colors"
         >
           ✕ Stop
         </button>
@@ -438,14 +438,14 @@ export default function SynestheticSketch() {
 
       <Link
         href="/dream"
-        className="absolute top-4 left-4 text-white/55 text-sm hover:text-white/80 font-mono"
+        className="absolute top-4 left-4 text-muted-foreground text-sm hover:text-foreground font-mono"
       >
         ← dream
       </Link>
 
       <Link
         href="/dream/159-synesthetic-sketch/README.md"
-        className="absolute bottom-4 right-4 text-white/40 text-xs hover:text-white/70 font-mono"
+        className="absolute bottom-4 right-4 text-muted-foreground/70 text-xs hover:text-muted-foreground font-mono"
       >
         design notes
       </Link>

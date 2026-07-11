@@ -536,15 +536,15 @@ export default function JourneyArcSpreadPage() {
     <div className="flex flex-col" style={{ height: "calc(100vh - 3rem)", background: "#050508" }}>
 
       {/* Journey tabs */}
-      <div className="flex border-b border-white/10 overflow-x-auto shrink-0 scrollbar-none">
+      <div className="flex border-b border-border overflow-x-auto shrink-0 scrollbar-none">
         {JOURNEYS.map((j) => (
           <button
             key={j.id}
             onClick={() => switchJourney(j.id)}
             className={`px-4 py-2.5 text-xs tracking-wider whitespace-nowrap transition-colors min-h-[44px] ${
               journeyId === j.id
-                ? "text-white border-b-2 border-white/60 bg-white/5"
-                : "text-white/55 hover:text-white/80"
+                ? "text-foreground border-b-2 border-border bg-muted"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {j.name}
@@ -566,30 +566,30 @@ export default function JourneyArcSpreadPage() {
           {/* Intro overlay */}
           {!running && (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-              <div className="text-xs tracking-[0.2em] text-white/55 uppercase mb-2">
+              <div className="text-xs tracking-[0.2em] text-muted-foreground uppercase mb-2">
                 Journey Arc
               </div>
               <h1 className="text-2xl font-medium mb-1 tracking-tight">{journey.name}</h1>
-              <p className="text-sm text-white/75 italic mb-2">{journey.subtitle}</p>
-              <p className="text-base text-white/75 max-w-xs mb-7 leading-relaxed">{journey.description}</p>
+              <p className="text-sm text-muted-foreground italic mb-2">{journey.subtitle}</p>
+              <p className="text-base text-muted-foreground max-w-xs mb-7 leading-relaxed">{journey.description}</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => handleStart("demo")}
-                  className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+                  className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
                 >
                   Demo
                 </button>
                 <button
                   onClick={() => handleStart("mic")}
-                  className="px-5 py-2.5 text-sm tracking-wider uppercase border border-white/15 rounded hover:bg-white/5 hover:border-white/35 transition text-white/75 min-h-[44px]"
+                  className="px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground min-h-[44px]"
                 >
                   Mic input
                 </button>
               </div>
               {micError && (
-                <p className="mt-3 text-sm text-rose-300 max-w-xs">{micError}</p>
+                <p className="mt-3 text-sm text-violet-300 max-w-xs">{micError}</p>
               )}
-              <Link href="/dream" className="mt-10 text-sm text-white/55 hover:text-white/80">
+              <Link href="/dream" className="mt-10 text-sm text-muted-foreground hover:text-foreground">
                 ← dream sandbox
               </Link>
             </div>
@@ -598,12 +598,12 @@ export default function JourneyArcSpreadPage() {
           {/* Running HUD */}
           {running && (
             <div className="absolute top-3 right-3 flex items-center gap-3">
-              <span className="text-xs tracking-wider text-white/55 uppercase">
+              <span className="text-xs tracking-wider text-muted-foreground uppercase">
                 {mode === "demo" ? "demo" : "mic"}
               </span>
               <button
                 onClick={handleStop}
-                className="text-xs tracking-wider uppercase text-white/55 hover:text-white/95 border border-white/15 hover:border-white/40 px-3 py-1.5 rounded transition"
+                className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded transition"
               >
                 stop
               </button>
@@ -612,35 +612,35 @@ export default function JourneyArcSpreadPage() {
         </div>
 
         {/* Side panel — desktop only */}
-        <div className="w-52 shrink-0 border-l border-white/8 hidden md:flex flex-col p-3 gap-4 overflow-y-auto text-left">
+        <div className="w-52 shrink-0 border-l border-border hidden md:flex flex-col p-3 gap-4 overflow-y-auto text-left">
           <div>
-            <div className="text-xs tracking-[0.15em] text-white/55 uppercase mb-1.5">Active phase</div>
+            <div className="text-xs tracking-[0.15em] text-muted-foreground uppercase mb-1.5">Active phase</div>
             <div
               className="text-base font-medium mb-1"
               style={{ color: `rgb(${phase.color[0]},${phase.color[1]},${phase.color[2]})` }}
             >
               {phase.name}
             </div>
-            <div className="text-sm text-white/80 leading-relaxed">{phase.description}</div>
+            <div className="text-sm text-foreground leading-relaxed">{phase.description}</div>
           </div>
           <div>
-            <div className="text-xs tracking-[0.15em] text-white/55 uppercase mb-1.5">Journey</div>
-            <div className="text-sm text-white/75 leading-relaxed">{journey.description}</div>
+            <div className="text-xs tracking-[0.15em] text-muted-foreground uppercase mb-1.5">Journey</div>
+            <div className="text-sm text-muted-foreground leading-relaxed">{journey.description}</div>
           </div>
           <div>
-            <div className="text-xs tracking-[0.15em] text-white/55 uppercase mb-1.5">Mode</div>
-            <div className="text-xs text-white/75 font-mono">{journey.visualMode}</div>
-            <div className="text-xs text-white/55 mt-1">60 min real · 60s demo</div>
-            <div className="text-xs text-white/55 mt-0.5">Click timeline to jump</div>
+            <div className="text-xs tracking-[0.15em] text-muted-foreground uppercase mb-1.5">Mode</div>
+            <div className="text-xs text-muted-foreground font-mono">{journey.visualMode}</div>
+            <div className="text-xs text-muted-foreground mt-1">60 min real · 60s demo</div>
+            <div className="text-xs text-muted-foreground mt-0.5">Click timeline to jump</div>
           </div>
           <div className="mt-auto">
-            <Link href="/dream" className="text-sm text-white/55 hover:text-white/80">← back</Link>
+            <Link href="/dream" className="text-sm text-muted-foreground hover:text-foreground">← back</Link>
           </div>
         </div>
       </div>
 
       {/* Phase timeline */}
-      <div className="shrink-0 border-t border-white/8 px-3 py-2">
+      <div className="shrink-0 border-t border-border px-3 py-2">
         <div className="flex items-stretch gap-0.5">
           {journey.phases.map((p, i) => {
             const widthPct = (p.durationWeight / totalWeight) * 100;
@@ -656,8 +656,8 @@ export default function JourneyArcSpreadPage() {
                 }}
                 title={`${p.name}: ${p.description}`}
                 className={`h-8 rounded-sm border text-xs tracking-wide truncate px-1.5 transition-all ${
-                  active ? "bg-white/4" : "hover:border-white/25"
-                } ${active ? "text-white" : "text-white/55 hover:text-white/80"}`}
+                  active ? "bg-muted" : "hover:border-border"
+                } ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 <span style={active ? { color: `rgb(${pr},${pg},${pb})` } : {}}>
                   {p.name}

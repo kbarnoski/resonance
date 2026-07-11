@@ -343,22 +343,22 @@ export default function WindChimes() {
 
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-3xl font-light tracking-tight text-white mb-3">
+          <h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
             Wind Chimes
           </h1>
-          <p className="text-base text-white/75 max-w-sm mb-8 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-sm mb-8 leading-relaxed">
             Eight glowing chimes hang in the dark — longer ones ring lower.
             Tap or drag to blow the wind. When chimes touch, they ring together.
           </p>
           <button
             onClick={handleStart}
-            className="px-8 py-3 text-base border border-white/30 rounded-xl hover:bg-white/5 hover:border-white/60 transition text-white min-h-[48px]"
+            className="px-8 py-3 text-base border border-border rounded-xl hover:bg-accent hover:border-border transition text-foreground min-h-[48px]"
           >
             Hang the chimes
           </button>
           <Link
             href="/dream"
-            className="mt-10 text-sm text-white/55 hover:text-white/80"
+            className="mt-10 text-sm text-muted-foreground hover:text-foreground"
           >
             ← dream sandbox
           </Link>
@@ -369,7 +369,7 @@ export default function WindChimes() {
         <div className="absolute top-4 right-4">
           <Link
             href="/dream"
-            className="text-sm text-white/55 hover:text-white/80"
+            className="text-sm text-muted-foreground hover:text-foreground"
           >
             ← back
           </Link>

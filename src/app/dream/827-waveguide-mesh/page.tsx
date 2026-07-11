@@ -264,20 +264,20 @@ export default function WaveguideMeshPage() {
   const midiLine = (() => {
     switch (midiStatus) {
       case "checking":
-        return <span className="text-white/75">Checking for a MIDI keyboard…</span>;
+        return <span className="text-muted-foreground">Checking for a MIDI keyboard…</span>;
       case "connected":
         return (
-          <span className="text-emerald-300/95">
+          <span className="text-violet-300/95">
             MIDI keyboard connected ✓{midiName ? ` — ${midiName}` : ""} · play any keys
           </span>
         );
       case "none":
         return (
-          <span className="text-amber-300/95">No MIDI device — use the pads below (or your keyboard A–L)</span>
+          <span className="text-violet-300/95">No MIDI device — use the pads below (or your keyboard A–L)</span>
         );
       default:
         return (
-          <span className="text-amber-300/95">
+          <span className="text-violet-300/95">
             Web MIDI not supported here — use the pads below (or your keyboard A–L)
           </span>
         );
@@ -285,12 +285,12 @@ export default function WaveguideMeshPage() {
   })();
 
   return (
-    <main className="min-h-screen w-full bg-[#0b0610] text-white overflow-hidden">
+    <main className="min-h-screen w-full bg-[#0b0610] text-foreground overflow-hidden">
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-4 px-4 py-6 sm:px-6">
         {/* Header */}
         <header className="flex flex-col gap-1">
           <div className="flex items-baseline justify-between gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Waveguide Mesh
             </h1>
             <Link
@@ -300,7 +300,7 @@ export default function WaveguideMeshPage() {
               Read the design notes
             </Link>
           </div>
-          <p className="text-base text-white/80">
+          <p className="text-base text-foreground">
             Strike a vibrating drumhead and watch the energy ripple, reflect off the rim, and ring as
             a real plate tone — the membrane&apos;s own physics makes the sound.
           </p>
@@ -311,11 +311,11 @@ export default function WaveguideMeshPage() {
           <canvas
             ref={canvasRef}
             onPointerDown={onCanvasPointer}
-            className="aspect-square w-full max-h-[58vh] cursor-crosshair touch-none rounded-2xl border border-white/10 bg-[#0a050f] shadow-[0_0_60px_-15px_rgba(180,110,90,0.5)]"
+            className="aspect-square w-full max-h-[58vh] cursor-crosshair touch-none rounded-2xl border border-border bg-[#0a050f] shadow-[0_0_60px_-15px_rgba(180,110,90,0.5)]"
             style={{ marginLeft: "auto", marginRight: "auto" }}
           />
           {!canvasOk && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/70 p-6 text-center text-base text-white/85">
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/70 p-6 text-center text-base text-foreground">
               This browser can&apos;t draw the membrane (no canvas). The audio engine still works.
             </div>
           )}
@@ -324,10 +324,10 @@ export default function WaveguideMeshPage() {
               onClick={enableAudio}
               className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/45 text-center backdrop-blur-[1px]"
             >
-              <span className="rounded-full bg-amber-500/90 px-6 py-3 text-base font-semibold text-black shadow-lg">
+              <span className="rounded-full bg-violet-500/90 px-6 py-3 text-base font-semibold text-black shadow-lg">
                 ▶ Enable sound
               </span>
-              <span className="text-base text-white/80">then tap the head, the pads, or play MIDI</span>
+              <span className="text-base text-foreground">then tap the head, the pads, or play MIDI</span>
             </button>
           )}
         </div>
@@ -335,14 +335,14 @@ export default function WaveguideMeshPage() {
         {/* Status + last note */}
         <div className="flex flex-wrap items-center justify-between gap-2 text-base">
           <div>{midiLine}</div>
-          <div className="text-white/75">
-            last strike: <span className="font-mono text-amber-300/95">{lastNote}</span>
+          <div className="text-muted-foreground">
+            last strike: <span className="font-mono text-violet-300/95">{lastNote}</span>
           </div>
         </div>
 
         {/* Pads */}
         <section className="flex flex-col gap-2">
-          <div className="text-sm text-white/55">Plates (higher tension)</div>
+          <div className="text-sm text-muted-foreground">Plates (higher tension)</div>
           <div className="grid grid-cols-6 gap-2">
             {HIGH_PADS.map((p) => (
               <button
@@ -350,15 +350,15 @@ export default function WaveguideMeshPage() {
                 onPointerDown={() => triggerPad(p.midi)}
                 className={`min-h-[44px] rounded-xl border px-4 py-2.5 text-base font-medium transition ${
                   activePads.has(p.midi)
-                    ? "border-amber-300 bg-amber-400/30 text-white"
-                    : "border-violet-400/30 bg-violet-500/10 text-white/90 hover:bg-violet-500/20"
+                    ? "border-violet-300 bg-violet-400/30 text-foreground"
+                    : "border-violet-400/30 bg-violet-500/10 text-foreground hover:bg-violet-500/20"
                 }`}
               >
                 {p.label}
               </button>
             ))}
           </div>
-          <div className="mt-1 text-sm text-white/55">Toms (lower tension)</div>
+          <div className="mt-1 text-sm text-muted-foreground">Toms (lower tension)</div>
           <div className="grid grid-cols-6 gap-2">
             {LOW_PADS.map((p) => (
               <button
@@ -366,8 +366,8 @@ export default function WaveguideMeshPage() {
                 onPointerDown={() => triggerPad(p.midi)}
                 className={`min-h-[44px] rounded-xl border px-4 py-2.5 text-base font-medium transition ${
                   activePads.has(p.midi)
-                    ? "border-amber-300 bg-amber-400/30 text-white"
-                    : "border-amber-400/25 bg-amber-500/10 text-white/90 hover:bg-amber-500/20"
+                    ? "border-violet-300 bg-violet-400/30 text-foreground"
+                    : "border-violet-400/25 bg-violet-500/10 text-foreground hover:bg-violet-500/20"
                 }`}
               >
                 {p.label}
@@ -377,11 +377,11 @@ export default function WaveguideMeshPage() {
         </section>
 
         {/* Instructions */}
-        <footer className="mt-1 text-sm leading-relaxed text-white/75">
+        <footer className="mt-1 text-sm leading-relaxed text-muted-foreground">
           <p>
             Tap two or more pads together for a chord — the mesh sums the strikes. Tap directly on the
             head to strike at that exact point (height = octave, left↔right = pitch). On a laptop, the
-            <span className="font-mono text-white/90"> A S D F G H J K </span> row plays too. Higher
+            <span className="font-mono text-foreground"> A S D F G H J K </span> row plays too. Higher
             notes = tighter head = higher ring.
           </p>
           <Link

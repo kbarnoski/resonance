@@ -752,14 +752,14 @@ export default function ConchordalListen() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#05020a] text-white flex flex-col">
+    <div className="min-h-screen bg-[#05020a] text-foreground flex flex-col">
       {/* Header */}
       <div className="px-4 pt-5 pb-1 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white/95">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Conchordal Listen
           </h1>
-          <p className="text-base text-white/75 mt-0.5 max-w-xl">
+          <p className="text-base text-muted-foreground mt-0.5 max-w-xl">
             A living chord that{" "}
             <span className="text-violet-300 font-mono">listens</span> — organisms forage a
             Plomp–Levelt consonance landscape, assembling pure-intonation harmony around what
@@ -768,7 +768,7 @@ export default function ConchordalListen() {
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/40 hover:text-white/70 transition-colors shrink-0 ml-4 mt-1"
+          className="text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors shrink-0 ml-4 mt-1"
         >
           ← dreams
         </Link>
@@ -776,10 +776,10 @@ export default function ConchordalListen() {
 
       {/* Error notices */}
       {audioErr && (
-        <p className="px-4 py-1.5 text-rose-300 text-base">{audioErr}</p>
+        <p className="px-4 py-1.5 text-violet-300 text-base">{audioErr}</p>
       )}
       {micErr && (
-        <p className="px-4 py-1.5 text-rose-300 text-base">{micErr}</p>
+        <p className="px-4 py-1.5 text-violet-300 text-base">{micErr}</p>
       )}
 
       {/* SVG canvas */}
@@ -787,7 +787,7 @@ export default function ConchordalListen() {
         <svg
           ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full max-w-5xl mx-auto block rounded-xl border border-white/8 bg-[#050208]"
+          className="w-full max-w-5xl mx-auto block rounded-xl border border-border bg-[#050208]"
           style={{ aspectRatio: `${SVG_W}/${SVG_H}` }}
           aria-label="Conchordal Listen — organisms bloom toward heard pitches"
         >
@@ -810,34 +810,34 @@ export default function ConchordalListen() {
       {/* HUD — heard pitches + consonance */}
       {isRunning && (
         <div className="px-4 pb-1 flex flex-wrap gap-x-6 gap-y-1 items-center text-base font-mono">
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             <span className="text-violet-300">time</span>{" "}
-            <span className="text-white/95">{fmtTime(stats.elapsed)}</span>
+            <span className="text-foreground">{fmtTime(stats.elapsed)}</span>
           </span>
-          <span className="text-white/55">
+          <span className="text-muted-foreground">
             <span className="text-violet-300">pop</span>{" "}
-            <span className="text-white/95">{stats.pop}</span>
+            <span className="text-foreground">{stats.pop}</span>
           </span>
-          <span className="flex items-center gap-2 text-white/55">
+          <span className="flex items-center gap-2 text-muted-foreground">
             <span className="text-violet-300">harmony</span>
             <span
               className="inline-block h-2 rounded-full transition-all duration-300"
               style={{ width: `${Math.max(4, cPct)}px`, background: cBarColor }}
             />
-            <span className="text-white/95">{cScore.toFixed(2)}</span>
+            <span className="text-foreground">{cScore.toFixed(2)}</span>
           </span>
           {heardDisplay.length > 0 && (
-            <span className="flex items-center gap-2 text-white/55">
+            <span className="flex items-center gap-2 text-muted-foreground">
               <span className="text-violet-300">heard</span>
               {heardDisplay.slice(0, 4).map((hp, i) => (
-                <span key={i} className="text-amber-300">
+                <span key={i} className="text-violet-300">
                   {freqToNote(hp.freq)}
                 </span>
               ))}
             </span>
           )}
           {heardDisplay.length === 0 && inputMode === "mic" && (
-            <span className="text-white/55 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               (play piano — organisms will orient)
             </span>
           )}
@@ -853,8 +853,8 @@ export default function ConchordalListen() {
             onClick={inputMode === "demo" && isRunning ? stopAll : startDemo}
             className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base font-semibold transition-colors ${
               inputMode === "demo" && isRunning
-                ? "bg-violet-700 text-white"
-                : "bg-violet-600/70 hover:bg-violet-600 text-white"
+                ? "bg-violet-700 text-foreground"
+                : "bg-violet-600/70 hover:bg-violet-600 text-foreground"
             }`}
           >
             {inputMode === "demo" && isRunning ? "■ Stop demo" : "▶ Self-play demo"}
@@ -865,8 +865,8 @@ export default function ConchordalListen() {
             onClick={inputMode === "mic" && isRunning ? stopAll : startMic}
             className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base font-semibold transition-colors ${
               inputMode === "mic" && isRunning
-                ? "bg-emerald-700 text-white"
-                : "bg-emerald-600/70 hover:bg-emerald-600 text-white"
+                ? "bg-violet-700 text-foreground"
+                : "bg-violet-600/70 hover:bg-violet-600 text-foreground"
             }`}
           >
             {inputMode === "mic" && isRunning ? "■ Stop mic" : "🎹 Play piano"}
@@ -875,7 +875,7 @@ export default function ConchordalListen() {
 
         {/* Recording input */}
         <div className="space-y-1.5">
-          <label className="block text-sm text-white/55 font-mono">
+          <label className="block text-sm text-muted-foreground font-mono">
             Karel&apos;s track — paste a recording ID
           </label>
           <div className="flex gap-2">
@@ -885,27 +885,27 @@ export default function ConchordalListen() {
               onChange={(e) => setRecordingId(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && loadRecording()}
               placeholder="paste a recording UUID…"
-              className="flex-1 bg-white/5 border border-white/12 rounded-lg px-3 py-2.5 text-base text-white/95 placeholder-white/25 focus:outline-none focus:border-violet-400/50"
+              className="flex-1 bg-muted border border-border rounded-lg px-3 py-2.5 text-base text-foreground placeholder-muted-foreground focus:outline-none focus:border-violet-400/50"
               style={{ minHeight: 44 }}
             />
             <button
               onClick={loadRecording}
               disabled={recordLoading || !recordingId.trim()}
-              className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-sky-800/70 hover:bg-sky-700 text-white transition-colors disabled:opacity-40"
+              className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-violet-800/70 hover:bg-violet-700 text-foreground transition-colors disabled:opacity-40"
             >
               {recordLoading ? "…" : "Load"}
             </button>
           </div>
-          {recordErr && <p className="text-rose-300 text-base">{recordErr}</p>}
+          {recordErr && <p className="text-violet-300 text-base">{recordErr}</p>}
           {recordLoaded && !recordErr && (
             <div className="flex items-center gap-2">
-              <span className="text-emerald-400 text-sm font-mono">Recording loaded ✓</span>
+              <span className="text-violet-400 text-sm font-mono">Recording loaded ✓</span>
               <button
                 onClick={inputMode === "recording" && isRunning ? stopAll : startRecording}
                 className={`min-h-[44px] px-4 py-2.5 rounded-lg text-base font-semibold transition-colors ${
                   inputMode === "recording" && isRunning
-                    ? "bg-sky-800 text-white"
-                    : "bg-sky-700/70 hover:bg-sky-700 text-white"
+                    ? "bg-violet-800 text-foreground"
+                    : "bg-violet-700/70 hover:bg-violet-700 text-foreground"
                 }`}
               >
                 {inputMode === "recording" && isRunning ? "■ Stop" : "▶ Play recording"}
@@ -918,19 +918,19 @@ export default function ConchordalListen() {
         <audio ref={audioRef} crossOrigin="anonymous" className="hidden" />
 
         {/* Legend */}
-        <div className="text-white/55 text-sm font-mono space-y-0.5 pt-1 border-t border-white/8">
+        <div className="text-muted-foreground text-sm font-mono space-y-0.5 pt-1 border-t border-border">
           <p>
-            <span className="text-amber-300">yellow wells</span> — heard pitches; organisms grow toward them
+            <span className="text-violet-300">yellow wells</span> — heard pitches; organisms grow toward them
           </p>
           <p>
             <span className="text-violet-300">bloom</span> — consonant voices open petals;
-            <span className="text-rose-400"> red ring</span> = dissonant
+            <span className="text-violet-400"> red ring</span> = dissonant
           </p>
           <p>
             <span className="text-violet-300">threads</span> — Kuramoto-coupled consonant pairs
           </p>
           <p>
-            <span className="text-white/40">vertical axis</span> — pitch log-scale {FREQ_MIN}–{FREQ_MAX} Hz, low at bottom
+            <span className="text-muted-foreground/70">vertical axis</span> — pitch log-scale {FREQ_MIN}–{FREQ_MAX} Hz, low at bottom
           </p>
         </div>
       </div>
@@ -939,7 +939,7 @@ export default function ConchordalListen() {
       <div className="px-4 pb-6 text-right">
         <Link
           href="/dream/414-conchordal-listen/README.md"
-          className="text-xs text-white/30 hover:text-violet-300 transition-colors font-mono"
+          className="text-xs text-muted-foreground/70 hover:text-violet-300 transition-colors font-mono"
           target="_blank"
         >
           design notes →

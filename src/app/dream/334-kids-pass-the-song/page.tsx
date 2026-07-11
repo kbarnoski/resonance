@@ -444,7 +444,7 @@ export default function PassTheSong() {
   const hasPending = pendingDegree != null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0b0a14] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0b0a14] text-foreground">
       {/* soft background wash */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -457,7 +457,7 @@ export default function PassTheSong() {
       {/* corner link to design notes */}
       <a
         href="/dream/334-kids-pass-the-song/README.md"
-        className="absolute right-3 top-3 z-30 font-mono text-sm text-white/55 underline decoration-dotted underline-offset-4 hover:text-white/80"
+        className="absolute right-3 top-3 z-30 font-mono text-sm text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </a>
@@ -494,14 +494,14 @@ export default function PassTheSong() {
       {/* the shared SONG RIBBON — one bead per turn, identical on both screens */}
       <div className="pointer-events-none absolute left-0 right-0 top-[58%] z-20 flex flex-wrap items-center justify-center gap-2 px-4">
         {beads.length === 0 ? (
-          <div className="font-mono text-base text-white/55">
+          <div className="font-mono text-base text-muted-foreground">
             ✨ your song starts here ✨
           </div>
         ) : (
           beads.map((b, i) => (
             <span
               key={i}
-              className="inline-block h-10 w-10 rounded-full ring-2 ring-white/20"
+              className="inline-block h-10 w-10 rounded-full ring-2 ring-border"
               style={{
                 background: `hsl(${DEGREE_HUE[b.degree]} 88% 62%)`,
                 boxShadow: `0 0 16px hsl(${DEGREE_HUE[b.degree]} 88% 62% / 0.7)`,
@@ -515,21 +515,21 @@ export default function PassTheSong() {
       <div className="relative z-20 flex min-h-screen flex-col items-center justify-end pb-8">
         {!started ? (
           <div className="mb-[18vh] flex flex-col items-center gap-5 px-6 text-center">
-            <h1 className="text-3xl font-semibold text-white sm:text-5xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-5xl">
               Pass the Song 🎶
             </h1>
-            <p className="max-w-md text-base text-white/75 sm:text-lg">
+            <p className="max-w-md text-base text-muted-foreground sm:text-lg">
               Two friends, one song. Hum or tap to give the glowing friend a
               note, then send it across to your buddy. Take turns — your song
               grows!
             </p>
             <button
               onClick={handleStart}
-              className="min-h-[64px] rounded-3xl bg-violet-500/30 px-10 py-4 text-2xl font-semibold text-white ring-2 ring-violet-300/60 transition hover:bg-violet-500/45 active:scale-95"
+              className="min-h-[64px] rounded-3xl bg-violet-500/30 px-10 py-4 text-2xl font-semibold text-foreground ring-2 ring-violet-300/60 transition hover:bg-violet-500/45 active:scale-95"
             >
               ▶ Start
             </button>
-            <p className="font-mono text-sm text-white/55">
+            <p className="font-mono text-sm text-muted-foreground">
               open in a second tab to play with a real friend 👫
             </p>
           </div>
@@ -542,7 +542,7 @@ export default function PassTheSong() {
                   Playing with a friend 👫
                 </span>
               ) : (
-                <span className="rounded-full bg-amber-500/20 px-4 py-2 text-base font-medium text-amber-300/95 ring-1 ring-amber-300/40">
+                <span className="rounded-full bg-violet-500/20 px-4 py-2 text-base font-medium text-violet-300/95 ring-1 ring-violet-300/40">
                   Playing with the robot friend 🤖
                 </span>
               )}
@@ -550,7 +550,7 @@ export default function PassTheSong() {
 
             {/* mic-denied notice + assurance that tap still works */}
             {micState === "denied" && (
-              <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-2xl bg-rose-500/10 px-4 py-2.5 text-center text-base text-rose-300 ring-1 ring-rose-300/30">
+              <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-2xl bg-violet-500/10 px-4 py-2.5 text-center text-base text-violet-300 ring-1 ring-violet-300/30">
                 No microphone — that&apos;s okay! Tap a glowing color to pick a
                 note 🎨
               </div>
@@ -559,24 +559,24 @@ export default function PassTheSong() {
             {/* turn banner */}
             <div className="mb-4 text-center">
               {myTurn && !hasPending && (
-                <p className="text-2xl font-semibold text-emerald-300/95">
+                <p className="text-2xl font-semibold text-violet-300/95">
                   {micState === "on" ? "Your turn — hum or tap! 🎤" : "Your turn — tap a color! 🎨"}
                 </p>
               )}
               {myTurn && hasPending && (
-                <p className="text-2xl font-semibold text-white/95">
+                <p className="text-2xl font-semibold text-foreground">
                   Nice! Now send it to your friend ✨
                 </p>
               )}
               {phase === "theirs" && (
-                <p className="text-2xl font-semibold text-white/75">
+                <p className="text-2xl font-semibold text-muted-foreground">
                   {friendKind === "real"
                     ? "Your friend's turn… 👫"
                     : "Robot friend is thinking… 🤖"}
                 </p>
               )}
               {(phase === "flying-out" || phase === "flying-in") && (
-                <p className="text-2xl font-semibold text-white/75">whoosh! ✨</p>
+                <p className="text-2xl font-semibold text-muted-foreground">whoosh! ✨</p>
               )}
             </div>
 
@@ -609,7 +609,7 @@ export default function PassTheSong() {
             <button
               onClick={sendToFriend}
               disabled={!myTurn || !hasPending}
-              className="min-h-[64px] rounded-3xl bg-emerald-500/30 px-10 py-4 text-2xl font-semibold text-white ring-2 ring-emerald-300/60 transition hover:bg-emerald-500/45 active:scale-95 disabled:opacity-30 disabled:ring-white/20"
+              className="min-h-[64px] rounded-3xl bg-violet-500/30 px-10 py-4 text-2xl font-semibold text-foreground ring-2 ring-violet-300/60 transition hover:bg-violet-500/45 active:scale-95 disabled:opacity-30 disabled:ring-border"
             >
               ✨ send to friend
             </button>

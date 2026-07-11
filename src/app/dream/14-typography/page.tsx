@@ -228,7 +228,7 @@ export default function TypographyDream() {
       {!active && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">Kinetic Typography</h1>
-          <p className="text-sm text-white/55 max-w-md mb-6 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-6 leading-relaxed">
             Letters float in frequency space. Each letter belongs to a
             musical band — bass letters scatter on low hits, treble letters
             shimmer with high frequencies. Phrases assemble from scatter,
@@ -237,21 +237,21 @@ export default function TypographyDream() {
           <div className="flex gap-3">
             <button
               onClick={() => setDemoMode(true)}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start demo
             </button>
             <button
               onClick={start}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               Start mic
             </button>
           </div>
           {error && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{error}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{error}</p>
           )}
-          <Link href="/dream" className="mt-12 text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -259,21 +259,21 @@ export default function TypographyDream() {
 
       {active && (
         <>
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] text-white/20 pointer-events-none">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] text-muted-foreground/70 pointer-events-none">
             {phraseLabel}
           </div>
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             <button
               onClick={() => { setDemoMode(false); stop() }}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               stop
             </button>
-            <Link href="/dream" className="text-[10px] text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
           </div>
-          <div className="absolute bottom-4 left-4 text-[10px] text-white/30 tracking-wider pointer-events-none">
+          <div className="absolute bottom-4 left-4 text-[10px] text-muted-foreground/70 tracking-wider pointer-events-none">
             {demoMode ? 'DEMO' : 'MIC'}
           </div>
         </>

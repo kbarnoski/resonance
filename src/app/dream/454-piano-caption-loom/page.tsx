@@ -718,9 +718,9 @@ export default function PianoCaptionLoom() {
   const isLoading = appStatus === "loading";
 
   const statusDot =
-    appStatus === "error" ? "bg-rose-400" :
-    (isRunning && audioMode === "real" && imageStatus === "live") ? "bg-emerald-400 animate-pulse" :
-    isRunning ? "bg-amber-400 animate-pulse" : "bg-white/20";
+    appStatus === "error" ? "bg-violet-400" :
+    (isRunning && audioMode === "real" && imageStatus === "live") ? "bg-violet-400 animate-pulse" :
+    isRunning ? "bg-violet-400 animate-pulse" : "bg-muted";
 
   const statusLabel =
     appStatus === "error" ? (errorMsg ?? "Error") :
@@ -731,10 +731,10 @@ export default function PianoCaptionLoom() {
     isLoading ? "loading…" : "ready";
 
   const statusColor =
-    appStatus === "error" ? "text-rose-300" :
-    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-emerald-400" :
-    (isRunning && audioMode === "real") ? "text-emerald-300/80" :
-    isRunning ? "text-amber-300" : "text-white/55";
+    appStatus === "error" ? "text-violet-300" :
+    (isRunning && audioMode === "real" && imageStatus === "live") ? "text-violet-400" :
+    (isRunning && audioMode === "real") ? "text-violet-300/80" :
+    isRunning ? "text-violet-300" : "text-muted-foreground";
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -762,25 +762,25 @@ export default function PianoCaptionLoom() {
       {/* ── Idle screen ──────────────────────────────────────────────────── */}
       {!isRunning && !isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12 text-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-indigo-950/35 to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-violet-950/35 to-black pointer-events-none" />
 
           <div className="relative z-10 max-w-xl flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-serif font-bold text-white tracking-tight leading-snug">
+            <h1 className="text-3xl font-serif font-bold text-foreground tracking-tight leading-snug">
               Piano Caption Loom
             </h1>
-            <p className="text-base text-white/80 leading-relaxed">
+            <p className="text-base text-foreground leading-relaxed">
               What if the caption an image is dreamed from were not written in one shot, but{" "}
               <em className="text-violet-300">refined across visible rounds</em> — a draft proposed
               from Karel&apos;s real piano, then a critic pushes back, the agents revise, and you
               watch the caption sharpen before the image regenerates?
             </p>
-            <p className="text-sm text-white/60 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Multi-agent propose → critique → revise loom. Emotion-aligned via valence × arousal
               (Russell 1980 circumplex). Cycle 2 of <em>The Latent Piano Room</em>.
             </p>
 
             {(statusMsg || errorMsg) && (
-              <p className={`text-sm max-w-md ${errorMsg ? "text-rose-300" : "text-amber-300/95"}`}>
+              <p className={`text-sm max-w-md ${errorMsg ? "text-violet-300" : "text-violet-300/95"}`}>
                 {errorMsg ?? statusMsg}
               </p>
             )}
@@ -788,26 +788,26 @@ export default function PianoCaptionLoom() {
             <button
               onClick={() => void handleBegin()}
               disabled={isLoading}
-              className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-900/50"
+              className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-violet-900/50"
             >
               Begin
             </button>
 
             {/* File drop zone */}
-            <div className="w-full border border-white/20 rounded-xl p-5 text-center bg-white/5 hover:bg-white/[0.08] transition-colors">
-              <p className="text-white/75 text-base mb-3">
+            <div className="w-full border border-border rounded-xl p-5 text-center bg-muted hover:bg-accent transition-colors">
+              <p className="text-muted-foreground text-base mb-3">
                 Drop a <em>Welcome Home</em> track (or any audio file)
               </p>
               <label className="cursor-pointer">
                 <input type="file" accept="audio/*" className="hidden" onChange={handleFileInput} />
-                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-white/30 text-white/75 text-base hover:border-violet-400/60 hover:text-white transition-colors">
+                <span className="min-h-[44px] inline-flex items-center px-5 py-2.5 rounded-lg border border-border text-muted-foreground text-base hover:border-violet-400/60 hover:text-foreground transition-colors">
                   Choose audio file
                 </span>
               </label>
-              <p className="text-white/55 text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
+              <p className="text-muted-foreground text-sm mt-2">mp3 · wav · ogg · m4a · flac</p>
             </div>
 
-            <p className="text-white/55 text-sm max-w-md leading-relaxed">
+            <p className="text-muted-foreground text-sm max-w-md leading-relaxed">
               No file? Begin plays Karel&apos;s recording (when logged in) or a warm resolving
               synthesized piano — both drive real musical analysis and the caption loom.
             </p>
@@ -827,7 +827,7 @@ export default function PianoCaptionLoom() {
       {isLoading && (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-4">
           <div className="w-8 h-8 rounded-full border-2 border-violet-400 border-t-transparent animate-spin" />
-          <p className="text-white/75 text-base">Loading audio…</p>
+          <p className="text-muted-foreground text-base">Loading audio…</p>
         </div>
       )}
 
@@ -844,19 +844,19 @@ export default function PianoCaptionLoom() {
             <div className="flex items-center gap-2 pointer-events-auto">
               <button
                 onClick={() => setShowHud(v => !v)}
-                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-white transition-colors"
+                className="min-h-[36px] px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors"
               >
                 HUD
               </button>
               <label className="cursor-pointer">
                 <input type="file" accept="audio/*" className="hidden" onChange={handleFileInput} />
-                <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/55 text-xs hover:text-white/90 transition-colors border border-white/15 hover:border-violet-400/40">
+                <span className="min-h-[36px] inline-flex items-center px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-foreground transition-colors border border-border hover:border-violet-400/40">
                   Swap audio
                 </span>
               </label>
               <button
                 onClick={handleStop}
-                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white/75 text-xs hover:text-rose-300 transition-colors"
+                className="min-h-[36px] px-4 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-muted-foreground text-xs hover:text-violet-300 transition-colors"
               >
                 Stop
               </button>
@@ -867,7 +867,7 @@ export default function PianoCaptionLoom() {
           {statusMsg && (
             <div className="absolute top-14 left-4 z-20 pointer-events-none max-w-sm">
               <div className="bg-black/55 backdrop-blur-sm rounded-lg px-3 py-2">
-                <p className="text-amber-300/95 text-xs leading-relaxed">{statusMsg}</p>
+                <p className="text-violet-300/95 text-xs leading-relaxed">{statusMsg}</p>
               </div>
             </div>
           )}
@@ -876,7 +876,7 @@ export default function PianoCaptionLoom() {
           {imageStatus === "synthesized" && !inFlightRef.current && (
             <div className="absolute top-14 right-4 z-20 pointer-events-none">
               <div className="bg-black/55 backdrop-blur-sm rounded-lg px-3 py-1.5">
-                <p className="text-amber-300/95 text-xs">synthesized (no image key)</p>
+                <p className="text-violet-300/95 text-xs">synthesized (no image key)</p>
               </div>
             </div>
           )}
@@ -886,7 +886,7 @@ export default function PianoCaptionLoom() {
             <div className="absolute bottom-4 left-4 z-20 pointer-events-none" style={{ maxWidth: "min(460px, calc(100vw - 2rem))" }}>
               <div className="bg-black/70 backdrop-blur-md rounded-2xl px-4 py-3 space-y-2">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-white/55 text-xs uppercase tracking-widest">Caption Loom</p>
+                  <p className="text-muted-foreground text-xs uppercase tracking-widest">Caption Loom</p>
                   {loomAnimating && (
                     <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
                   )}
@@ -895,8 +895,8 @@ export default function PianoCaptionLoom() {
                 {/* Valence/Arousal bar */}
                 <div className="flex gap-4 items-center mb-1">
                   <div className="flex flex-col gap-0.5 flex-1">
-                    <span className="text-white/55 text-xs">valence</span>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <span className="text-muted-foreground text-xs">valence</span>
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all duration-700"
                         style={{
@@ -910,8 +910,8 @@ export default function PianoCaptionLoom() {
                     </span>
                   </div>
                   <div className="flex flex-col gap-0.5 flex-1">
-                    <span className="text-white/55 text-xs">arousal</span>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <span className="text-muted-foreground text-xs">arousal</span>
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all duration-700"
                         style={{
@@ -920,7 +920,7 @@ export default function PianoCaptionLoom() {
                         }}
                       />
                     </div>
-                    <span className="text-emerald-300/95 text-xs font-mono">
+                    <span className="text-violet-300/95 text-xs font-mono">
                       {activeLoom.arousalTarget > 0 ? "+" : ""}{activeLoom.arousalTarget.toFixed(2)}
                     </span>
                   </div>
@@ -938,19 +938,19 @@ export default function PianoCaptionLoom() {
                           isFinal
                             ? "border-violet-500/50 bg-violet-950/40"
                             : isLatest
-                            ? "border-white/20 bg-white/5"
-                            : "border-white/10 bg-white/[0.03] opacity-75"
+                            ? "border-border bg-muted"
+                            : "border-border bg-muted opacity-75"
                         }`}
                       >
                         {/* Round header */}
                         <div className="flex items-center justify-between mb-1">
-                          <span className={`text-xs font-semibold ${isFinal ? "text-violet-300" : "text-white/75"}`}>
+                          <span className={`text-xs font-semibold ${isFinal ? "text-violet-300" : "text-muted-foreground"}`}>
                             Round {round.roundNum + 1} — {round.label}
                           </span>
                           {/* Confidence bar */}
                           <div className="flex items-center gap-1.5">
-                            <span className="text-white/55 text-xs">{Math.round(round.confidence * 100)}%</span>
-                            <div className="w-12 h-1 bg-white/10 rounded-full overflow-hidden">
+                            <span className="text-muted-foreground text-xs">{Math.round(round.confidence * 100)}%</span>
+                            <div className="w-12 h-1 bg-muted rounded-full overflow-hidden">
                               <div
                                 className="h-full rounded-full"
                                 style={{
@@ -964,7 +964,7 @@ export default function PianoCaptionLoom() {
                         </div>
 
                         {/* Caption text — highlight changed clauses */}
-                        <p className={`text-xs leading-relaxed ${isFinal ? "text-white/95" : "text-white/75"} font-mono`}>
+                        <p className={`text-xs leading-relaxed ${isFinal ? "text-foreground" : "text-muted-foreground"} font-mono`}>
                           {renderCaptionWithHighlights(round)}
                         </p>
 
@@ -972,7 +972,7 @@ export default function PianoCaptionLoom() {
                         {round.critiques.length > 0 && (
                           <div className="mt-1.5 space-y-0.5">
                             {round.critiques.map((c, ci) => (
-                              <p key={ci} className="text-amber-300/80 text-xs leading-snug">
+                              <p key={ci} className="text-violet-300/80 text-xs leading-snug">
                                 ↳ {c}
                               </p>
                             ))}
@@ -984,9 +984,9 @@ export default function PianoCaptionLoom() {
 
                   {/* Loom animating pulse */}
                   {loomAnimating && visibleRounds.length < (activeLoom?.rounds.length ?? 0) && (
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/[0.03]">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-muted">
                       <div className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-                      <span className="text-white/55 text-xs italic">revising…</span>
+                      <span className="text-muted-foreground text-xs italic">revising…</span>
                     </div>
                   )}
                 </div>
@@ -998,26 +998,26 @@ export default function PianoCaptionLoom() {
           {showHud && (
             <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
               <div className="bg-black/60 backdrop-blur-sm rounded-xl px-3 py-2.5 space-y-1 min-w-[140px]">
-                <p className="text-white/55 text-xs uppercase tracking-wider mb-1">Music</p>
+                <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1">Music</p>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">Key</span>
+                  <span className="text-muted-foreground text-xs">Key</span>
                   <span className="text-violet-300 text-xs font-mono">{hudKey}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">Dyn</span>
-                  <span className="text-white/75 text-xs font-mono">{hudDyn}</span>
+                  <span className="text-muted-foreground text-xs">Dyn</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudDyn}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">OPM</span>
-                  <span className="text-white/75 text-xs font-mono">{hudOpm}</span>
+                  <span className="text-muted-foreground text-xs">OPM</span>
+                  <span className="text-muted-foreground text-xs font-mono">{hudOpm}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">V</span>
+                  <span className="text-muted-foreground text-xs">V</span>
                   <span className="text-violet-300 text-xs font-mono">{hudValence > 0 ? "+" : ""}{hudValence.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span className="text-white/55 text-xs">A</span>
-                  <span className="text-emerald-300/95 text-xs font-mono">{hudArousal > 0 ? "+" : ""}{hudArousal.toFixed(2)}</span>
+                  <span className="text-muted-foreground text-xs">A</span>
+                  <span className="text-violet-300/95 text-xs font-mono">{hudArousal > 0 ? "+" : ""}{hudArousal.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -1027,9 +1027,9 @@ export default function PianoCaptionLoom() {
 
       {/* ── Design notes (hidden section) ─────────────────────────────── */}
       <div id="design-notes" className="relative z-10 mt-auto px-6 py-12 max-w-2xl mx-auto">
-        <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-white/10 px-6 py-5 space-y-3">
-          <h2 className="text-xl font-serif text-white">Design Notes</h2>
-          <p className="text-white/75 text-sm leading-relaxed">
+        <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-border px-6 py-5 space-y-3">
+          <h2 className="text-xl font-serif text-foreground">Design Notes</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             <strong className="text-violet-300">The Loom:</strong> At each phrase boundary or onset
             cluster (min 7s apart), four specialist agents (Scene, Palette, Motion, Style) propose
             independent clauses from the <code className="text-violet-300 text-xs">MusicalFrame</code>.
@@ -1037,20 +1037,20 @@ export default function PianoCaptionLoom() {
             concrete fixes. Revisers apply the fixes, producing a sharper caption each round. The
             final round also appends the numeric emotion anchor for maximum image alignment.
           </p>
-          <p className="text-white/75 text-sm leading-relaxed">
-            <strong className="text-emerald-300/95">Emotion alignment:</strong> Valence (major +
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            <strong className="text-violet-300/95">Emotion alignment:</strong> Valence (major +
             consonant → +1, chromatic/dissonant → -1) and Arousal (RMS dynamics + onset density)
             follow Russell&apos;s (1980) circumplex model of affect, as operationalized in arXiv
             2512.23320 for music-to-image generation.
           </p>
-          <p className="text-white/75 text-sm leading-relaxed">
-            <strong className="text-amber-300/95">No-key fallback:</strong> When no FAL_KEY is
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            <strong className="text-violet-300/95">No-key fallback:</strong> When no FAL_KEY is
             configured, the route returns 501 and the UI switches to synthesized mode — the plasma
             / particle field renders continuously, driven by the same musical features and
             valence-arousal readout. The loom still runs every cycle; you watch captions improve
             even when no image arrives.
           </p>
-          <p className="text-white/55 text-xs leading-relaxed">
+          <p className="text-muted-foreground text-xs leading-relaxed">
             References: arXiv 2507.20536 (T2I-Copilot) · arXiv 2511.11483 (ImAgent) · arXiv
             2512.23320 (Semantic Emotion Aligned Music→Image) · Russell 1980 circumplex · Bello
             et al. 2005 onset detection · Refik Anadol (Machine Hallucinations) · Memo Akten

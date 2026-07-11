@@ -414,10 +414,10 @@ export default function SingingDunePage() {
           <div className="pointer-events-auto max-w-sm w-full space-y-6">
             {/* Title */}
             <div className="space-y-2">
-              <h1 className="text-2xl font-serif text-white/95 tracking-wide">
+              <h1 className="text-2xl font-serif text-foreground tracking-wide">
                 Singing Dune
               </h1>
-              <p className="text-base text-white/75 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 One living dune — under its own gravity. Tip the world; the sand
                 avalanches and re-settles, forever. Its motion is the sound.
               </p>
@@ -427,16 +427,16 @@ export default function SingingDunePage() {
             <button
               onClick={handleStart}
               className="w-full min-h-[52px] px-6 py-3 rounded-lg
-                         bg-amber-800/30 border border-amber-600/40
-                         text-amber-200 text-base font-medium
-                         hover:bg-amber-700/35 hover:border-amber-500/60
+                         bg-violet-800/30 border border-violet-600/40
+                         text-violet-200 text-base font-medium
+                         hover:bg-violet-700/35 hover:border-violet-500/60
                          transition-colors"
             >
               Wake the dune
             </button>
 
             {/* Controls hint */}
-            <p className="text-sm text-white/55 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Tilt your device · or drag · or arrow keys
             </p>
 
@@ -445,14 +445,14 @@ export default function SingingDunePage() {
               href="/dream/520-singing-dune/README.md"
               target="_blank"
               rel="noreferrer"
-              className="inline-block text-xs text-white/40 hover:text-white/60 transition-colors"
+              className="inline-block text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               Read the design notes ↗
             </a>
 
             <Link
               href="/dream"
-              className="block text-xs text-white/35 hover:text-white/55 transition-colors"
+              className="block text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               ← dream lab
             </Link>
@@ -467,7 +467,7 @@ export default function SingingDunePage() {
           <div className="absolute top-4 right-4 flex flex-col items-end gap-2 select-none">
             {/* Sim mode badge */}
             {hasGpu !== null && (
-              <span className="text-xs text-white/55 font-mono tracking-wider">
+              <span className="text-xs text-muted-foreground font-mono tracking-wider">
                 {hasGpu ? "WebGPU · 6k grains" : "CPU · 2k grains"}
               </span>
             )}
@@ -475,9 +475,9 @@ export default function SingingDunePage() {
             {/* Stop */}
             <button
               onClick={handleStop}
-              className="min-h-[44px] px-4 py-2.5 text-xs text-white/55
-                         border border-white/20 rounded
-                         hover:text-white hover:border-white/50 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 text-xs text-muted-foreground
+                         border border-border rounded
+                         hover:text-foreground hover:border-border transition-colors"
             >
               stop
             </button>
@@ -485,7 +485,7 @@ export default function SingingDunePage() {
             {/* Back */}
             <Link
               href="/dream"
-              className="text-xs text-white/35 hover:text-white/55 transition-colors"
+              className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               ← back
             </Link>
@@ -495,7 +495,7 @@ export default function SingingDunePage() {
               href="/dream/520-singing-dune/README.md"
               target="_blank"
               rel="noreferrer"
-              className="text-xs text-white/30 hover:text-white/55 transition-colors"
+              className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
             >
               design notes ↗
             </a>
@@ -504,13 +504,13 @@ export default function SingingDunePage() {
           {/* Bottom-left status */}
           <div className="absolute bottom-4 left-4 space-y-1 pointer-events-none select-none">
             {audioError && (
-              <p className="text-xs text-rose-300">Audio unavailable: {audioError}</p>
+              <p className="text-xs text-violet-300">Audio unavailable: {audioError}</p>
             )}
             {orientErr && (
-              <p className="text-xs text-rose-300">{orientErr}</p>
+              <p className="text-xs text-violet-300">{orientErr}</p>
             )}
             {tiltHint && (
-              <p className="text-xs text-amber-300/95">
+              <p className="text-xs text-violet-300/95">
                 Drag or use arrow keys to tilt the dune
               </p>
             )}
@@ -573,7 +573,7 @@ function GravityIndicator({ gravRef }: { gravRef: React.MutableRefObject<Gravity
           </marker>
         </defs>
       </svg>
-      <p className="text-xs text-white/30 text-center mt-0.5 font-mono">g</p>
+      <p className="text-xs text-muted-foreground/70 text-center mt-0.5 font-mono">g</p>
     </div>
   );
 }

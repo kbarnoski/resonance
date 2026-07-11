@@ -163,13 +163,13 @@ export default function SpectralSeancePage() {
   const words = desc ? describeWords(desc) : null;
   const sourceLabel =
     source === "flux" ? (
-      <span className="text-cyan-300/95">dreaming live (flux)</span>
+      <span className="text-violet-300/95">dreaming live (flux)</span>
     ) : (
-      <span className="text-emerald-300/95">dreaming (procedural)</span>
+      <span className="text-violet-300/95">dreaming (procedural)</span>
     );
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* WebGL2 raster output */}
       <canvas
         ref={canvasRef}
@@ -179,7 +179,7 @@ export default function SpectralSeancePage() {
 
       {webglOk ? null : (
         <div className="absolute inset-0 flex items-center justify-center bg-black px-6 text-center">
-          <p className="max-w-md text-base text-amber-300/95">
+          <p className="max-w-md text-base text-violet-300/95">
             WebGL2 is unavailable on this device, so the visual spectrogram
             can&apos;t render — but the séance is still running: the inharmonic
             bed and the re-sonified image are playing as sound.
@@ -189,29 +189,29 @@ export default function SpectralSeancePage() {
 
       {/* heading + HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Spectral Séance
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           A sound dreams a picture — then the picture becomes the next
           instrument you hear. A closed loop where the return trip is literal:
           the dreamed image is played back column-by-column as a spectrogram.
         </p>
 
         {started && (
-          <div className="mt-5 max-w-xl rounded-xl border border-white/10 bg-black/55 p-4 font-mono backdrop-blur-md">
+          <div className="mt-5 max-w-xl rounded-xl border border-border bg-black/55 p-4 font-mono backdrop-blur-md">
             <div className="flex items-center justify-between text-base">
-              <span className="text-white">
+              <span className="text-foreground">
                 {words ? `${words.brightness} · ${words.texture}` : "listening…"}
               </span>
-              <span className="text-white/75">
+              <span className="text-muted-foreground">
                 col {String(Math.round(scanPct * (COLS - 1))).padStart(3, "0")}/
                 {COLS}
               </span>
             </div>
 
             {desc && (
-              <div className="mt-3 flex gap-1.5 text-white/55" aria-hidden>
+              <div className="mt-3 flex gap-1.5 text-muted-foreground" aria-hidden>
                 <Bar label="lo" v={desc.low} />
                 <Bar label="mid" v={desc.mid} />
                 <Bar label="hi" v={desc.high} />
@@ -221,11 +221,11 @@ export default function SpectralSeancePage() {
               </div>
             )}
 
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               {sourceLabel}
             </p>
             {prompt && (
-              <p className="mt-1 text-sm leading-relaxed text-white/55">
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                 {prompt}
               </p>
             )}
@@ -236,7 +236,7 @@ export default function SpectralSeancePage() {
       {/* begin overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-black/85 px-6 text-center backdrop-blur-sm">
-          <p className="max-w-md text-base leading-relaxed text-white/75">
+          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
             An inharmonic drone listens to itself, dreams an austere data-image,
             then plays that image back as sound — each column a moment, each row
             a pitch — while a cyan line sweeps across it. The loop closes and
@@ -245,13 +245,13 @@ export default function SpectralSeancePage() {
           </p>
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-white px-8 py-2.5 text-base font-medium text-black transition-opacity hover:opacity-90"
+            className="min-h-[44px] rounded-full bg-card px-8 py-2.5 text-base font-medium text-black transition-opacity hover:opacity-90"
           >
             Begin
           </button>
           <Link
             href="/dream"
-            className="text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+            className="text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             ← back to the lab
           </Link>
@@ -272,11 +272,11 @@ function Bar({ label, v }: { label: string; v: number }) {
     <div className="flex w-9 flex-col items-center gap-1">
       <div className="flex h-6 w-full items-end justify-center">
         <div
-          className="w-full rounded-sm bg-cyan-300/70"
+          className="w-full rounded-sm bg-violet-300/70"
           style={{ height: `${h}px` }}
         />
       </div>
-      <span className="text-[10px] uppercase tracking-wider text-white/55">
+      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
         {label}
       </span>
     </div>

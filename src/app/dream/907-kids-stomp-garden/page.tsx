@@ -206,7 +206,7 @@ export default function StompGardenPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#1a1410] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#1a1410] text-foreground">
       <canvas
         ref={canvasRef}
         onPointerDown={handleTap}
@@ -216,7 +216,7 @@ export default function StompGardenPage() {
       {/* Back link */}
       <Link
         href="/dream"
-        className="absolute left-4 top-4 z-20 rounded-full bg-black/40 px-4 py-2.5 text-base text-white/80 backdrop-blur hover:text-white"
+        className="absolute left-4 top-4 z-20 rounded-full bg-black/40 px-4 py-2.5 text-base text-foreground backdrop-blur hover:text-foreground"
       >
         ← Garden
       </Link>
@@ -225,16 +225,16 @@ export default function StompGardenPage() {
       {phase === "intro" && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#231a12] to-[#140f0a] px-6 text-center">
           <div className="text-6xl">🌱👏🌸</div>
-          <h1 className="text-3xl font-bold text-white sm:text-5xl">
+          <h1 className="text-3xl font-bold text-foreground sm:text-5xl">
             Stomp Garden
           </h1>
-          <p className="max-w-md text-lg text-white/80">
+          <p className="max-w-md text-lg text-foreground">
             Clap, stomp, or tap a beat. Your rhythm grows a glowing garden — then
             it plays your beat back so you can dance along!
           </p>
           <button
             onClick={handleStart}
-            className="rounded-3xl bg-gradient-to-br from-amber-400 to-rose-500 px-10 py-6 text-2xl font-bold text-[#1a1410] shadow-lg shadow-rose-500/30 active:scale-95"
+            className="rounded-3xl bg-gradient-to-br from-violet-400 to-violet-500 px-10 py-6 text-2xl font-bold text-[#1a1410] shadow-lg shadow-violet-500/30 active:scale-95"
             style={{ minHeight: 64, minWidth: 220 }}
           >
             👏 Clap to grow!
@@ -246,10 +246,10 @@ export default function StompGardenPage() {
       {phase === "noWebGL" && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 px-6 text-center">
           <div className="text-5xl">🌼</div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             The garden needs a 3D screen
           </h1>
-          <p className="max-w-md text-lg text-white/80">
+          <p className="max-w-md text-lg text-foreground">
             This device can&apos;t show the glowing garden right now. Try a
             different browser or device — and come back to clap!
           </p>
@@ -260,25 +260,25 @@ export default function StompGardenPage() {
       {phase === "playing" && (
         <>
           {micErr && (
-            <div className="absolute bottom-24 left-1/2 z-20 -translate-x-1/2 rounded-2xl bg-black/50 px-5 py-3 text-center text-base text-rose-300 backdrop-blur">
+            <div className="absolute bottom-24 left-1/2 z-20 -translate-x-1/2 rounded-2xl bg-black/50 px-5 py-3 text-center text-base text-violet-300 backdrop-blur">
               {micErr}
             </div>
           )}
-          <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/40 px-5 py-2.5 text-base text-white/80 backdrop-blur">
+          <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/40 px-5 py-2.5 text-base text-foreground backdrop-blur">
             {looping ? "🌸 Your beat is looping — dance along!" : "👏 Make a beat!"}
           </div>
 
           {/* Design notes toggle (nice-to-have) */}
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="absolute right-4 top-4 z-20 rounded-full bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur hover:text-white"
+            className="absolute right-4 top-4 z-20 rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur hover:text-foreground"
             aria-label="Design notes"
           >
             ⓘ
           </button>
           {showNotes && (
-            <div className="absolute right-4 top-16 z-20 max-w-xs rounded-2xl bg-black/70 p-4 text-base text-white/80 backdrop-blur">
-              <p className="mb-2 font-semibold text-white">Design notes</p>
+            <div className="absolute right-4 top-16 z-20 max-w-xs rounded-2xl bg-black/70 p-4 text-base text-foreground backdrop-blur">
+              <p className="mb-2 font-semibold text-foreground">Design notes</p>
               <p>
                 The mic listens for <b>onsets</b> (claps/stomps/taps), not pitch.
                 Each beat grows a plant and plays a soft hit. After a few beats

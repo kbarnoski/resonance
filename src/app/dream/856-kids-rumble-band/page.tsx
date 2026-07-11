@@ -500,16 +500,16 @@ export default function KidsRumbleBand() {
   const harStick = makeStickHandlers("har");
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-black text-white select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-black text-foreground select-none">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Title + notes link */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between p-4">
         <div>
-          <h1 className="font-serif text-2xl text-white/95 drop-shadow">
+          <h1 className="font-serif text-2xl text-foreground drop-shadow">
             Feel the Beat
           </h1>
-          <p className="mt-1 max-w-md text-base text-white/75">
+          <p className="mt-1 max-w-md text-base text-muted-foreground">
             Push the sticks to sing. Mash the buttons to drum. The controller
             buzzes with the beat.
           </p>
@@ -517,7 +517,7 @@ export default function KidsRumbleBand() {
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto rounded-full border border-white/20 bg-black/40 px-3 py-2 text-base text-white/75 backdrop-blur hover:text-white"
+          className="pointer-events-auto rounded-full border border-border bg-black/40 px-3 py-2 text-base text-muted-foreground backdrop-blur hover:text-foreground"
         >
           notes
         </button>
@@ -525,7 +525,7 @@ export default function KidsRumbleBand() {
 
       {/* WebGL failure notice */}
       {noWebGL && (
-        <div className="absolute left-1/2 top-20 z-20 -translate-x-1/2 rounded-lg bg-black/70 px-4 py-2 text-base text-rose-300">
+        <div className="absolute left-1/2 top-20 z-20 -translate-x-1/2 rounded-lg bg-black/70 px-4 py-2 text-base text-violet-300">
           WebGL2 unavailable — visuals are off, but the music keeps playing.
         </div>
       )}
@@ -537,7 +537,7 @@ export default function KidsRumbleBand() {
             <div className="text-6xl" aria-hidden>
               🎮✨
             </div>
-            <p className="mt-4 max-w-sm px-6 text-base text-white/75">
+            <p className="mt-4 max-w-sm px-6 text-base text-muted-foreground">
               Play music with a game controller you already hold. Or just tap
               the buttons below — it works either way.
             </p>
@@ -545,7 +545,7 @@ export default function KidsRumbleBand() {
           <button
             type="button"
             onClick={start}
-            className="rounded-full bg-gradient-to-r from-amber-400 to-rose-400 px-10 py-5 text-2xl font-semibold text-black shadow-lg"
+            className="rounded-full bg-gradient-to-r from-violet-400 to-violet-400 px-10 py-5 text-2xl font-semibold text-black shadow-lg"
             style={{ minHeight: 72, minWidth: 200 }}
           >
             ▶ Start
@@ -559,12 +559,12 @@ export default function KidsRumbleBand() {
           {/* Controller / haptics hint */}
           <div className="pointer-events-none absolute left-1/2 top-24 z-10 -translate-x-1/2 text-center">
             {!padConnected && (
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Connect a game controller, or play with the buttons below.
               </p>
             )}
             {padConnected && (
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Controller connected{" "}
                 {hapticsOk ? "· rumble on 🤚" : "· (no rumble on this pad)"}
               </p>
@@ -576,11 +576,11 @@ export default function KidsRumbleBand() {
             {/* Left virtual stick (melody) */}
             <div
               {...melStick}
-              className="flex h-32 w-32 shrink-0 touch-none items-center justify-center rounded-full border-2 border-amber-300/40 bg-amber-400/10 backdrop-blur"
+              className="flex h-32 w-32 shrink-0 touch-none items-center justify-center rounded-full border-2 border-violet-300/40 bg-violet-400/10 backdrop-blur"
               style={{ minHeight: 96, minWidth: 96 }}
               aria-label="Melody stick"
             >
-              <div className="h-12 w-12 rounded-full bg-amber-300/70" />
+              <div className="h-12 w-12 rounded-full bg-violet-300/70" />
             </div>
 
             {/* Drum buttons A B X Y */}
@@ -621,11 +621,11 @@ export default function KidsRumbleBand() {
             {/* Right virtual stick (harmony) */}
             <div
               {...harStick}
-              className="flex h-32 w-32 shrink-0 touch-none items-center justify-center rounded-full border-2 border-sky-300/40 bg-sky-400/10 backdrop-blur"
+              className="flex h-32 w-32 shrink-0 touch-none items-center justify-center rounded-full border-2 border-violet-300/40 bg-violet-400/10 backdrop-blur"
               style={{ minHeight: 96, minWidth: 96 }}
               aria-label="Harmony stick"
             >
-              <div className="h-12 w-12 rounded-full bg-sky-300/70" />
+              <div className="h-12 w-12 rounded-full bg-violet-300/70" />
             </div>
           </div>
         </>
@@ -633,17 +633,17 @@ export default function KidsRumbleBand() {
 
       {/* Notes panel */}
       {showNotes && (
-        <div className="absolute right-4 top-16 z-40 max-w-sm rounded-xl border border-white/15 bg-black/85 p-4 text-base text-white/75 backdrop-blur">
-          <p className="mb-2 text-white/95">Feel the Beat</p>
+        <div className="absolute right-4 top-16 z-40 max-w-sm rounded-xl border border-border bg-black/85 p-4 text-base text-muted-foreground backdrop-blur">
+          <p className="mb-2 text-foreground">Feel the Beat</p>
           <p className="mb-2">
             A 4-year-old conducts two glowing creature-voices with the two
             thumbsticks, mashes the face buttons to drum, and the controller{" "}
-            <span className="text-white/95">rumbles on the beat</span> so they
+            <span className="text-foreground">rumbles on the beat</span> so they
             feel the music in their hands.
           </p>
           <Link
             href="/dream/856-kids-rumble-band/README.md"
-            className="text-amber-300 underline"
+            className="text-violet-300 underline"
           >
             Read the design notes →
           </Link>

@@ -311,8 +311,8 @@ export default function KaliSustainPage() {
     return (
       <div className="relative flex flex-col items-center justify-center h-full gap-6 text-center px-6">
         <div className="text-5xl leading-none select-none opacity-70">◎</div>
-        <h1 className="text-2xl font-serif text-white/95">Kali Sustain</h1>
-        <p className="text-base text-white/70 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">Kali Sustain</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           A C2 drone cycles through six just-intonation intervals — each held twelve
           seconds then gliding to the next. The clock shows where you are in the
           harmonic journey.
@@ -326,15 +326,15 @@ export default function KaliSustainPage() {
           </button>
           <button
             onClick={() => setMode("mic")}
-            className="min-h-[48px] px-8 py-3 rounded-full bg-teal-500/15 border border-teal-400/25 text-teal-200 text-base hover:bg-teal-500/25 transition-colors"
+            className="min-h-[48px] px-8 py-3 rounded-full bg-violet-500/15 border border-violet-400/25 text-violet-200 text-base hover:bg-violet-500/25 transition-colors"
           >
             Mic mode — tune to my voice
           </button>
         </div>
-        <p className="text-xs text-white/40">headphones recommended</p>
+        <p className="text-xs text-muted-foreground/70">headphones recommended</p>
         <a
           href="/dream/136-kali-sustain/README.md"
-          className="text-xs text-white/35 hover:text-white/55 transition-colors absolute bottom-4 right-4"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors absolute bottom-4 right-4"
         >
           design notes ↗
         </a>
@@ -347,7 +347,7 @@ export default function KaliSustainPage() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       <button
         onClick={() => setMode("idle")}
-        className="absolute top-4 right-4 text-white/30 hover:text-white/60 text-xs transition-colors"
+        className="absolute top-4 right-4 text-muted-foreground/70 hover:text-muted-foreground text-xs transition-colors"
       >
         ✕ stop
       </button>

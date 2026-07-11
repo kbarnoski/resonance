@@ -318,29 +318,29 @@ export default function ConceptSteer() {
     <div className="relative flex flex-col w-full" style={{ height: "calc(100vh - 3rem)" }}>
       {!started ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <p className="text-[11px] tracking-widest uppercase text-white/55 mb-4">
+          <p className="text-[11px] tracking-widest uppercase text-muted-foreground mb-4">
             Dream Lab · 157
           </p>
-          <h1 className="text-2xl md:text-3xl font-serif mb-3 text-white/95">
+          <h1 className="text-2xl md:text-3xl font-serif mb-3 text-foreground">
             Concept Steer
           </h1>
-          <p className="text-base text-white/80 max-w-sm mb-3 leading-relaxed">
+          <p className="text-base text-foreground max-w-sm mb-3 leading-relaxed">
             A hexagonal radar chart where each vertex controls a musical dimension:
             Brightness, Density, Regularity, Complexity, Energy, Mode.
           </p>
-          <p className="text-sm text-white/55 max-w-xs mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-xs mb-8 leading-relaxed">
             These six axes are what music AI models learn internally — surfaced by sparse
             autoencoder research on transformer weights. Now they are your synthesizer controls.
           </p>
           <button
             onClick={handleStart}
-            className="px-6 py-2.5 min-h-[44px] text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+            className="px-6 py-2.5 min-h-[44px] text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
           >
             Begin
           </button>
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -362,10 +362,10 @@ export default function ConceptSteer() {
               <span className="text-xl font-mono text-violet-300">{chordLabel}</span>
             </div>
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end pointer-events-none">
-              <p className="text-[11px] text-white/30">drag vertices · music follows</p>
+              <p className="text-[11px] text-muted-foreground/70">drag vertices · music follows</p>
               <Link
                 href="/dream/157-concept-steer/README.md"
-                className="pointer-events-auto text-[11px] text-white/30 hover:text-white/60"
+                className="pointer-events-auto text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
               >
                 design notes ↗
               </Link>
@@ -373,15 +373,15 @@ export default function ConceptSteer() {
           </div>
 
           {/* Presets row */}
-          <div className="shrink-0 border-t border-white/10 px-4 py-3 flex flex-wrap gap-2 items-center">
-            <span className="text-[11px] text-white/40 uppercase tracking-wider mr-1">
+          <div className="shrink-0 border-t border-border px-4 py-3 flex flex-wrap gap-2 items-center">
+            <span className="text-[11px] text-muted-foreground/70 uppercase tracking-wider mr-1">
               Presets
             </span>
             {PRESETS.map((p) => (
               <button
                 key={p.name}
                 onClick={() => setConcept([...p.values])}
-                className="text-xs px-3 py-1.5 min-h-[36px] rounded border border-white/20 text-white/75 hover:border-violet-400/50 hover:text-white transition"
+                className="text-xs px-3 py-1.5 min-h-[36px] rounded border border-border text-muted-foreground hover:border-violet-400/50 hover:text-foreground transition"
               >
                 {p.name}
               </button>
@@ -389,7 +389,7 @@ export default function ConceptSteer() {
             <div className="ml-auto">
               <Link
                 href="/dream"
-                className="text-[11px] text-white/30 hover:text-white/60"
+                className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
               >
                 ← back
               </Link>

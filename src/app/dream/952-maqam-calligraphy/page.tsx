@@ -401,17 +401,17 @@ export default function MaqamCalligraphy() {
   const seconds = Math.floor((ui.pos * 5.5 - minutes) * 60);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#080a18] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#080a18] text-foreground">
       {/* canvas field */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* top hero / readouts */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-3xl font-semibold tracking-wide text-white/95 sm:text-4xl">
+        <h1 className="font-serif text-3xl font-semibold tracking-wide text-foreground sm:text-4xl">
           Maqam Calligraphy
         </h1>
-        <p className="max-w-2xl text-base text-white/75">
-          A living Arabic <span className="text-amber-300/95">taqsim</span> — a free-meter
+        <p className="max-w-2xl text-base text-muted-foreground">
+          A living Arabic <span className="text-violet-300/95">taqsim</span> — a free-meter
           solo that wanders in exact microtonal cents and writes itself as a luminous
           calligraphic line, so you can see the quarter-tones sit between the piano&apos;s
           cracks.
@@ -419,14 +419,14 @@ export default function MaqamCalligraphy() {
 
         {(started || demoRef.current) && (
           <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1 text-base">
-            <span className="text-white/90">
-              maqam <span className="font-serif text-amber-300/95">{ui.maqam}</span>
+            <span className="text-foreground">
+              maqam <span className="font-serif text-violet-300/95">{ui.maqam}</span>
             </span>
-            <span className="text-white/80">
-              jins <span className="text-amber-300/95">{ui.jins}</span>
+            <span className="text-foreground">
+              jins <span className="text-violet-300/95">{ui.jins}</span>
             </span>
-            <span className="text-white/75">{STAGE_LABEL[ui.stage]}</span>
-            <span className="text-white/55 tabular-nums">
+            <span className="text-muted-foreground">{STAGE_LABEL[ui.stage]}</span>
+            <span className="text-muted-foreground tabular-nums">
               {minutes}:{seconds.toString().padStart(2, "0")} / 5:30
             </span>
             {ui.lastMod && (
@@ -439,12 +439,12 @@ export default function MaqamCalligraphy() {
       {/* pre-start panel */}
       {!started && (
         <div className="absolute inset-0 z-20 flex items-center justify-center p-6">
-          <div className="w-full max-w-lg rounded-2xl border border-amber-300/20 bg-[#0b1024]/80 p-6 backdrop-blur-sm">
-            <p className="text-base text-white/80">
+          <div className="w-full max-w-lg rounded-2xl border border-violet-300/20 bg-[#0b1024]/80 p-6 backdrop-blur-sm">
+            <p className="text-base text-foreground">
               Choose a starting maqam. Once begun, it plays a full self-developing taqsim
               hands-free for about five and a half minutes — opening low at the{" "}
-              <span className="text-amber-300/95">qarar</span>, reaching the{" "}
-              <span className="text-amber-300/95">ghammaz</span>, modulating to a related
+              <span className="text-violet-300/95">qarar</span>, reaching the{" "}
+              <span className="text-violet-300/95">ghammaz</span>, modulating to a related
               maqam at the peak, then descending home.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
@@ -454,8 +454,8 @@ export default function MaqamCalligraphy() {
                   onClick={() => setStartMaqam(m)}
                   className={`min-h-[44px] rounded-xl border px-4 py-2.5 text-base transition ${
                     startMaqam === m
-                      ? "border-amber-300/70 bg-amber-300/15 text-amber-200"
-                      : "border-white/15 text-white/75 hover:border-white/30"
+                      ? "border-violet-300/70 bg-violet-300/15 text-violet-200"
+                      : "border-border text-muted-foreground hover:border-border"
                   }`}
                 >
                   {m}
@@ -464,7 +464,7 @@ export default function MaqamCalligraphy() {
             </div>
             <button
               onClick={begin}
-              className="mt-5 min-h-[44px] w-full rounded-xl border border-amber-300/60 bg-amber-300/20 px-4 py-2.5 text-lg font-medium text-amber-100 transition hover:bg-amber-300/30"
+              className="mt-5 min-h-[44px] w-full rounded-xl border border-violet-300/60 bg-violet-300/20 px-4 py-2.5 text-lg font-medium text-violet-100 transition hover:bg-violet-300/30"
             >
               Begin taqsim
             </button>
@@ -475,19 +475,19 @@ export default function MaqamCalligraphy() {
       {/* steering controls (during play) */}
       {started && (
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center gap-2 p-5 sm:p-7">
-          <span className="mr-1 text-base text-white/55">nudge next modulation</span>
+          <span className="mr-1 text-base text-muted-foreground">nudge next modulation</span>
           {MAQAM_NAMES.map((m) => (
             <button
               key={m}
               onClick={() => nudge(m)}
-              className="min-h-[44px] rounded-xl border border-white/15 px-4 py-2.5 text-base text-white/75 transition hover:border-amber-300/50 hover:text-amber-200"
+              className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-muted-foreground transition hover:border-violet-300/50 hover:text-violet-200"
             >
               {m}
             </button>
           ))}
           <button
             onClick={headHome}
-            className="min-h-[44px] rounded-xl border border-rose-300/30 px-4 py-2.5 text-base text-rose-300 transition hover:border-rose-300/60"
+            className="min-h-[44px] rounded-xl border border-violet-300/30 px-4 py-2.5 text-base text-violet-300 transition hover:border-violet-300/60"
           >
             rest — head home
           </button>
@@ -496,7 +496,7 @@ export default function MaqamCalligraphy() {
 
       {/* audio-failure notice */}
       {audioOk === false && (
-        <div className="absolute left-5 top-32 z-10 max-w-sm rounded-xl border border-rose-300/30 bg-[#0b1024]/80 p-3 text-base text-rose-300">
+        <div className="absolute left-5 top-32 z-10 max-w-sm rounded-xl border border-violet-300/30 bg-[#0b1024]/80 p-3 text-base text-violet-300">
           No audio device available — showing the calligraphic field as a silent visual
           demo. The melodic engine is still running.
         </div>
@@ -506,20 +506,20 @@ export default function MaqamCalligraphy() {
       <div className="absolute right-4 top-4 z-30">
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="min-h-[44px] rounded-lg border border-white/15 px-3 py-2 text-base text-white/55 transition hover:text-white/80"
+          className="min-h-[44px] rounded-lg border border-border px-3 py-2 text-base text-muted-foreground transition hover:text-foreground"
         >
           Design notes
         </button>
         {showNotes && (
-          <div className="mt-2 w-72 rounded-xl border border-white/15 bg-[#0b1024]/90 p-4 text-base text-white/75">
+          <div className="mt-2 w-72 rounded-xl border border-border bg-[#0b1024]/90 p-4 text-base text-muted-foreground">
             <p>
               Every pitch is an exact cents offset from a D tonic — quarter-tones are
               first-class, never snapped to the 12-TET grid (the faint dashed lines). The
               gold lines mark the active jins; the half-flats glow between the cracks.
             </p>
-            <p className="mt-2 text-white/55">
+            <p className="mt-2 text-muted-foreground">
               Full theory, references, and an honest &quot;unverified&quot; note are in{" "}
-              <span className="text-amber-300/95">README.md</span> in this prototype&apos;s
+              <span className="text-violet-300/95">README.md</span> in this prototype&apos;s
               folder.
             </p>
             <Link

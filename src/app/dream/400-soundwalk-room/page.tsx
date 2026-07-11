@@ -353,10 +353,10 @@ export default function SoundwalkRoomPage() {
             <p className="text-violet-300 text-sm font-mono tracking-widest uppercase">
               400 · Soundwalk Room
             </p>
-            <h1 className="text-3xl font-serif font-bold text-white/95 tracking-wide">
+            <h1 className="text-3xl font-serif font-bold text-foreground tracking-wide">
               Walk through the voices
             </h1>
-            <p className="text-base text-white/75 leading-relaxed">
+            <p className="text-base text-muted-foreground leading-relaxed">
               Seven just-intonation overtones stand around a small room. After you
               start, you auto-walk a wandering path — voices swell, brush past, and
               recede. Each one you pass close to gives a little haptic tap whose feel
@@ -366,20 +366,20 @@ export default function SoundwalkRoomPage() {
 
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-2xl" aria-hidden>🎧</span>
-            <p className="text-base text-white/75 font-medium">Headphones, eyes closed</p>
-            <p className="text-sm text-white/55">Phones also buzz as you pass each voice</p>
+            <p className="text-base text-muted-foreground font-medium">Headphones, eyes closed</p>
+            <p className="text-sm text-muted-foreground">Phones also buzz as you pass each voice</p>
           </div>
 
           <button
             onClick={handleStart}
             className="min-h-[44px] px-6 py-2.5 rounded-full bg-violet-700 hover:bg-violet-600
-                       active:bg-violet-800 text-white font-semibold text-xl border border-violet-500/40
+                       active:bg-violet-800 text-foreground font-semibold text-xl border border-violet-500/40
                        transition-colors"
           >
             Start the walk
           </button>
 
-          <p className="text-sm text-white/55 text-center max-w-xs leading-relaxed">
+          <p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
             Hands-free auto-walk runs on start. Drag left/right to steer.
             On mobile, turning your device turns your heading.
           </p>
@@ -388,7 +388,7 @@ export default function SoundwalkRoomPage() {
             href="./400-soundwalk-room/README.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-white/55 hover:text-violet-300 underline underline-offset-2 transition-colors"
+            className="text-sm text-muted-foreground hover:text-violet-300 underline underline-offset-2 transition-colors"
           >
             Read the design notes ↗
           </a>
@@ -397,10 +397,10 @@ export default function SoundwalkRoomPage() {
 
       {appState === "error" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6">
-          <p className="text-rose-300 text-base text-center max-w-sm">{error ?? "Something went wrong."}</p>
+          <p className="text-violet-300 text-base text-center max-w-sm">{error ?? "Something went wrong."}</p>
           <button
             onClick={() => { setAppState("idle"); setError(null) }}
-            className="min-h-[44px] px-4 py-2.5 rounded-full bg-violet-700 hover:bg-violet-600 text-white text-base"
+            className="min-h-[44px] px-4 py-2.5 rounded-full bg-violet-700 hover:bg-violet-600 text-foreground text-base"
           >
             Back
           </button>
@@ -419,12 +419,12 @@ export default function SoundwalkRoomPage() {
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-black/30 z-10">
             <div>
               <p className="text-violet-300 text-xs font-mono tracking-wider uppercase">400 · Soundwalk Room</p>
-              <p className="text-white/75 text-sm font-mono">6DoF · HRTF binaural</p>
+              <p className="text-muted-foreground text-sm font-mono">6DoF · HRTF binaural</p>
             </div>
             <button
               onClick={stopAll}
-              className="min-h-[44px] px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20
-                         text-white/90 text-base transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-full bg-muted hover:bg-accent border border-border
+                         text-foreground text-base transition-colors"
             >
               Stop
             </button>
@@ -433,24 +433,24 @@ export default function SoundwalkRoomPage() {
           {/* Degradation notices */}
           <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 w-full px-4">
             {!hapticsAvailable && (
-              <div className="px-4 py-2 rounded-lg bg-black/70 border border-rose-500/40 max-w-sm">
-                <p className="text-rose-300 text-sm text-center leading-snug">
+              <div className="px-4 py-2 rounded-lg bg-black/70 border border-violet-500/40 max-w-sm">
+                <p className="text-violet-300 text-sm text-center leading-snug">
                   Haptics unavailable on this device — you&apos;ll still hear the voices pass,
                   and the map ring-pulses when you brush one.
                 </p>
               </div>
             )}
             {oriDenied && (
-              <div className="px-4 py-2 rounded-lg bg-black/70 border border-rose-500/40 max-w-sm">
-                <p className="text-rose-300 text-sm text-center leading-snug">
+              <div className="px-4 py-2 rounded-lg bg-black/70 border border-violet-500/40 max-w-sm">
+                <p className="text-violet-300 text-sm text-center leading-snug">
                   No device-orientation heading — your heading follows the auto-walk.
                   Drag left/right to steer.
                 </p>
               </div>
             )}
             {!canvasOk && (
-              <div className="px-4 py-2 rounded-lg bg-black/70 border border-rose-500/40 max-w-sm">
-                <p className="text-rose-300 text-sm text-center leading-snug">
+              <div className="px-4 py-2 rounded-lg bg-black/70 border border-violet-500/40 max-w-sm">
+                <p className="text-violet-300 text-sm text-center leading-snug">
                   Canvas unavailable — the map can&apos;t draw, but the audio walk is still running.
                 </p>
               </div>
@@ -475,15 +475,15 @@ export default function SoundwalkRoomPage() {
             {VOICE_CONFIGS.map((v) => (
               <div key={v.name} className="flex items-center gap-2">
                 <span className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: v.color }} />
-                <span className="text-white/75 text-sm font-mono">{v.ratio}</span>
-                <span className="text-white/55 text-sm font-mono">{Math.round(v.freq)}Hz</span>
+                <span className="text-muted-foreground text-sm font-mono">{v.ratio}</span>
+                <span className="text-muted-foreground text-sm font-mono">{Math.round(v.freq)}Hz</span>
               </div>
             ))}
           </div>
 
           {/* Hint */}
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-center z-10">
-            <p className="text-white/55 text-sm font-mono">auto-walking · drag to steer · turn device to look</p>
+            <p className="text-muted-foreground text-sm font-mono">auto-walking · drag to steer · turn device to look</p>
           </div>
 
           {/* Design notes */}
@@ -492,7 +492,7 @@ export default function SoundwalkRoomPage() {
               href="./400-soundwalk-room/README.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/55 text-sm hover:text-violet-300 transition-colors font-mono"
+              className="text-muted-foreground text-sm hover:text-violet-300 transition-colors font-mono"
             >
               design notes ↗
             </a>

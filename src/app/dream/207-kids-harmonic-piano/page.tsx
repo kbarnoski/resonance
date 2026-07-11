@@ -330,11 +330,11 @@ export default function HarmonicPiano() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-black text-white select-none">
+    <div className="flex flex-col items-center min-h-screen bg-black text-foreground select-none">
       <div className="w-full max-w-lg px-4 pt-6 pb-8 flex flex-col items-center gap-4">
         <div className="text-center">
           <h1 className="text-2xl font-mono font-bold">Voice Circles</h1>
-          <p className="text-white/75 text-base mt-1">
+          <p className="text-muted-foreground text-base mt-1">
             Tap a circle to add or remove its voice — hear the sound change as they blend
           </p>
         </div>
@@ -344,13 +344,13 @@ export default function HarmonicPiano() {
           className="w-full aspect-[3/4] rounded-xl touch-none cursor-pointer"
         />
 
-        <p className="text-white/55 text-sm text-center">
+        <p className="text-muted-foreground text-sm text-center">
           Four voices · each circle a harmonic · BANDIMAL: bigger = deeper
         </p>
 
         <Link
           href="/dream"
-          className="text-white/40 text-sm hover:text-white/60 transition"
+          className="text-muted-foreground/70 text-sm hover:text-muted-foreground transition"
         >
           ← dream lab
         </Link>

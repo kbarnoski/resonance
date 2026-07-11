@@ -408,15 +408,15 @@ export default function MaestroStemsPage() {
         {/* Header */}
         <div className="flex justify-between items-baseline mb-1">
           <h1 className="text-lg font-bold tracking-wide">Maestro Stems</h1>
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           Generate a 2.5-minute instrumental track — then hear each stem played back from its own
           position in 3D space.{" "}
-          <span className="text-white/60">Drums above. Bass below. Melody right. Harmony left.</span>{" "}
-          <span className="text-white/25">Wear headphones.</span>
+          <span className="text-muted-foreground">Drums above. Bass below. Melody right. Harmony left.</span>{" "}
+          <span className="text-muted-foreground/70">Wear headphones.</span>
         </p>
 
         {/* Presets */}
@@ -428,8 +428,8 @@ export default function MaestroStemsPage() {
               className={
                 "px-3 py-1 rounded text-[11px] border transition cursor-pointer " +
                 (prompt === p.value
-                  ? "border-white/40 text-white/80 bg-white/[0.07]"
-                  : "border-white/12 text-white/45 hover:border-white/25 hover:text-white/65")
+                  ? "border-border text-foreground bg-muted"
+                  : "border-border text-muted-foreground hover:border-border hover:text-muted-foreground")
               }
             >
               {p.label}
@@ -442,7 +442,7 @@ export default function MaestroStemsPage() {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           rows={2}
-          className="w-full bg-white/[0.05] border border-white/12 rounded px-3 py-2 text-[12px] text-white/70 mb-4 resize-none focus:outline-none focus:border-white/30"
+          className="w-full bg-muted border border-border rounded px-3 py-2 text-[12px] text-muted-foreground mb-4 resize-none focus:outline-none focus:border-border"
           placeholder="Style, tempo, mood, instruments…"
         />
 
@@ -453,17 +453,17 @@ export default function MaestroStemsPage() {
           className={
             "w-full py-2.5 rounded-md text-[14px] font-bold border-0 transition mb-6 " +
             (generating
-              ? "bg-white/8 text-white/30 cursor-not-allowed"
+              ? "bg-muted text-muted-foreground/70 cursor-not-allowed"
               : !prompt.trim()
-              ? "bg-white/8 text-white/22 cursor-not-allowed"
-              : "bg-white/15 text-white/90 hover:bg-white/20 cursor-pointer")
+              ? "bg-muted text-muted-foreground/70 cursor-not-allowed"
+              : "bg-muted text-foreground hover:bg-accent cursor-pointer")
           }
         >
           {generating ? "Generating… (30–90 seconds)" : "▶ Generate Track + Stems"}
         </button>
 
         {genError && (
-          <div className="mb-5 p-3 rounded bg-red-900/20 border border-red-500/30 text-[11px] text-red-300/70 break-all leading-relaxed whitespace-pre-wrap">
+          <div className="mb-5 p-3 rounded bg-destructive/20 border border-destructive/30 text-[11px] text-destructive/70 break-all leading-relaxed whitespace-pre-wrap">
             {genError}
           </div>
         )}
@@ -495,7 +495,7 @@ export default function MaestroStemsPage() {
                         ? "#e0504055"
                         : undefined,
                   }}
-                  className="p-2.5 rounded-md bg-white/[0.04] border border-white/[0.08]"
+                  className="p-2.5 rounded-md bg-muted border border-border"
                 >
                   {/* Stem header */}
                   <div className="flex items-center gap-1.5 mb-1.5">
@@ -503,8 +503,8 @@ export default function MaestroStemsPage() {
                       className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                       style={{ background: stemDef.color }}
                     />
-                    <span className="text-[11px] text-white/70">{stemDef.label}</span>
-                    <span className="text-[9px] text-white/28 ml-auto">{stemDef.hint}</span>
+                    <span className="text-[11px] text-muted-foreground">{stemDef.label}</span>
+                    <span className="text-[9px] text-muted-foreground/70 ml-auto">{stemDef.hint}</span>
                   </div>
 
                   {/* Status */}
@@ -528,7 +528,7 @@ export default function MaestroStemsPage() {
                   </div>
 
                   {ui.status === "error" && (
-                    <div className="text-[10px] text-red-400/55 break-all leading-tight mb-1">
+                    <div className="text-[10px] text-destructive/55 break-all leading-tight mb-1">
                       {ui.error.slice(0, 130)}
                     </div>
                   )}
@@ -547,7 +547,7 @@ export default function MaestroStemsPage() {
                       />
                       <button
                         onClick={() => toggleMute(i)}
-                        className="text-[10px] border border-white/15 rounded px-2 py-0.5 text-white/50 hover:text-white/75 hover:border-white/28 cursor-pointer"
+                        className="text-[10px] border border-border rounded px-2 py-0.5 text-muted-foreground hover:text-muted-foreground hover:border-border cursor-pointer"
                       >
                         {ui.muted ? "unmute" : "mute"}
                       </button>
@@ -565,19 +565,19 @@ export default function MaestroStemsPage() {
             {!playing ? (
               <button
                 onClick={startPlayback}
-                className="px-6 py-2.5 rounded-md text-[14px] font-bold bg-white/15 text-white/90 hover:bg-white/20 cursor-pointer border-0 transition"
+                className="px-6 py-2.5 rounded-md text-[14px] font-bold bg-muted text-foreground hover:bg-accent cursor-pointer border-0 transition"
               >
                 ▶ Play Stems
               </button>
             ) : (
               <button
                 onClick={stopAll}
-                className="px-6 py-2.5 rounded-md text-[14px] bg-white/8 text-white/80 border border-white/18 hover:bg-white/12 cursor-pointer"
+                className="px-6 py-2.5 rounded-md text-[14px] bg-muted text-foreground border border-border hover:bg-accent cursor-pointer"
               >
                 ■ Stop
               </button>
             )}
-            <span className="text-[12px] text-white/35">
+            <span className="text-[12px] text-muted-foreground/70">
               {playing
                 ? `${readyCount}/4 stems playing — wear headphones`
                 : `${readyCount}/4 stems ready`}
@@ -588,32 +588,32 @@ export default function MaestroStemsPage() {
         {/* Raw response (debug) */}
         {rawResp && (
           <details className="mb-5">
-            <summary className="text-[10px] text-white/20 cursor-pointer hover:text-white/38 select-none">
+            <summary className="text-[10px] text-muted-foreground/70 cursor-pointer hover:text-muted-foreground/70 select-none">
               raw API response
             </summary>
-            <pre className="mt-1.5 p-2 bg-white/[0.04] rounded text-[9px] text-white/30 overflow-auto max-h-40 leading-relaxed">
+            <pre className="mt-1.5 p-2 bg-muted rounded text-[9px] text-muted-foreground/70 overflow-auto max-h-40 leading-relaxed">
               {rawResp}
             </pre>
           </details>
         )}
 
         {/* Footer */}
-        <div className="border-t border-white/[0.06] pt-4 space-y-2">
-          <p className="text-[11px] text-white/28 leading-relaxed">
+        <div className="border-t border-border pt-4 space-y-2">
+          <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
             Each stem is positioned via Web Audio HRTF PannerNode: drums overhead (+60°), bass
             below (−30°), melody front-right (+30° az, +10° el), harmony front-left (−30° az).
             Spatial separation by musical role — qualitatively different from{" "}
-            <Link href="/dream/7-spatial" className="text-white/45 hover:text-white/65">
+            <Link href="/dream/7-spatial" className="text-muted-foreground hover:text-muted-foreground">
               7-spatial
             </Link>{" "}
             which splits by frequency band. Mix sliders fade stems live without stopping playback.
           </p>
-          <p className="text-[11px] text-white/22">
+          <p className="text-[11px] text-muted-foreground/70">
             ⚠ Endpoint{" "}
-            <code className="text-white/38">beatoven/music-generation</code> from RESEARCH.md §101.
+            <code className="text-muted-foreground/70">beatoven/music-generation</code> from RESEARCH.md §101.
             If you see an error above, paste the text and the agent will fix the endpoint next cycle.
           </p>
-          <div className="text-[10px] text-white/18 pt-1">
+          <div className="text-[10px] text-muted-foreground/70 pt-1">
             $0.10/track · FAL_KEY in use · /dream/54-maestro-stems
           </div>
         </div>

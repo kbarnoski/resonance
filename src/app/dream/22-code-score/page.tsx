@@ -384,12 +384,12 @@ export default function CodeScore() {
 
       {/* ── Left: editor panel ── */}
       <div
-        className="flex flex-col border-r border-white/10 bg-black shrink-0"
+        className="flex flex-col border-r border-border bg-black shrink-0"
         style={{ width: "300px" }}
       >
-        <div className="p-4 border-b border-white/10">
+        <div className="p-4 border-b border-border">
           <h1 className="text-sm tracking-wider mb-1">Code Score</h1>
-          <p className="text-[11px] text-white/40 leading-relaxed">
+          <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
             Write a melody — watch it paint itself — hear it play.
           </p>
         </div>
@@ -398,39 +398,39 @@ export default function CodeScore() {
           value={scoreText}
           onChange={(e) => setScoreText(e.target.value)}
           spellCheck={false}
-          className="flex-1 bg-transparent text-[11px] font-mono text-white/70 p-4 resize-none outline-none leading-relaxed"
+          className="flex-1 bg-transparent text-[11px] font-mono text-muted-foreground p-4 resize-none outline-none leading-relaxed"
           style={{ minHeight: 0 }}
         />
 
         {parseError && (
-          <div className="px-4 py-2 text-[10px] text-rose-300/80 bg-rose-900/20 border-t border-rose-900/30 font-mono">
+          <div className="px-4 py-2 text-[10px] text-violet-300/80 bg-violet-900/20 border-t border-violet-900/30 font-mono">
             ⚠ {parseError}
           </div>
         )}
 
-        <div className="p-4 border-t border-white/10 space-y-3">
+        <div className="p-4 border-t border-border space-y-3">
           <div className="flex items-center gap-3">
-            <span className="text-[10px] text-white/40 tracking-wider">BPM</span>
+            <span className="text-[10px] text-muted-foreground/70 tracking-wider">BPM</span>
             <input
               type="range" min="40" max="200" step="1" value={bpm}
               onChange={(e) => setBpm(parseInt(e.target.value))}
-              className="flex-1 accent-white"
+              className="flex-1 accent-primary"
             />
-            <span className="text-[10px] text-white w-7 text-right tabular-nums">{bpm}</span>
+            <span className="text-[10px] text-foreground w-7 text-right tabular-nums">{bpm}</span>
           </div>
 
           <div className="flex gap-2">
             {mode === "idle" ? (
               <button
                 onClick={play}
-                className="flex-1 py-2 text-[11px] tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+                className="flex-1 py-2 text-[11px] tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
               >
                 ▶ Play
               </button>
             ) : (
               <button
                 onClick={stopPlayback}
-                className="flex-1 py-2 text-[11px] tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+                className="flex-1 py-2 text-[11px] tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
               >
                 ■ Stop
               </button>
@@ -438,25 +438,25 @@ export default function CodeScore() {
             <button
               onClick={download}
               title="Save painting as PNG"
-              className="py-2 px-3 text-[11px] border border-white/20 rounded hover:bg-white/5 hover:border-white/50 transition text-white/50"
+              className="py-2 px-3 text-[11px] border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               ↓
             </button>
           </div>
 
           {mode === "playing" && (
-            <div className="text-[10px] text-white/35 text-center tabular-nums">
+            <div className="text-[10px] text-muted-foreground/70 text-center tabular-nums">
               {playedCount} / {totalNotes} notes
             </div>
           )}
 
           <div className="flex justify-between items-center pt-1">
-            <Link href="/dream" className="text-[10px] text-white/25 hover:text-white/50 transition">
+            <Link href="/dream" className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition">
               ← back
             </Link>
             <a
               href="https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/22-code-score/readme"
-              className="text-[10px] text-white/25 hover:text-white/50 transition"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground transition"
             >
               design notes ↗
             </a>
@@ -464,8 +464,8 @@ export default function CodeScore() {
         </div>
 
         {/* Syntax reference */}
-        <div className="px-4 pb-4 pt-3 border-t border-white/5 text-[10px] font-mono text-white/25 leading-relaxed">
-          <div className="text-[9px] tracking-wider text-white/15 mb-1">SYNTAX</div>
+        <div className="px-4 pb-4 pt-3 border-t border-border text-[10px] font-mono text-muted-foreground/70 leading-relaxed">
+          <div className="text-[9px] tracking-wider text-muted-foreground/70 mb-1">SYNTAX</div>
           <div>C4 Q · D#4 H · Bb3 E</div>
           <div>rest Q · [C4 E4 G4] Q</div>
           <div>W H Q E S = whole → 16th</div>
@@ -481,8 +481,8 @@ export default function CodeScore() {
         {mode === "idle" && playedCount === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
             <div className="text-center">
-              <div className="text-5xl text-white/5 mb-3 font-serif">𝄞</div>
-              <p className="text-[11px] text-white/15">write a score · press play</p>
+              <div className="text-5xl text-muted-foreground/70 mb-3 font-serif">𝄞</div>
+              <p className="text-[11px] text-muted-foreground/70">write a score · press play</p>
             </div>
           </div>
         )}
@@ -496,7 +496,7 @@ export default function CodeScore() {
               opacity: 0.35,
             }}
           />
-          <div className="flex justify-between text-[9px] text-white/20 mt-1">
+          <div className="flex justify-between text-[9px] text-muted-foreground/70 mt-1">
             <span>low</span><span>high</span>
           </div>
         </div>

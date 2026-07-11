@@ -126,13 +126,13 @@ function ADSRRow({ label, val, onSet, min, max, step, unit }: {
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-white/55 text-xs font-mono w-4 shrink-0">{label}</span>
+      <span className="text-muted-foreground text-xs font-mono w-4 shrink-0">{label}</span>
       <input
         type="range" min={min} max={max} step={step} value={val}
         onChange={e => onSet(Number(e.target.value))}
-        className="flex-1 h-1 accent-emerald-500"
+        className="flex-1 h-1 accent-violet-500"
       />
-      <span className="text-white/75 text-xs font-mono w-12 text-right shrink-0">
+      <span className="text-muted-foreground text-xs font-mono w-12 text-right shrink-0">
         {val < 1 ? val.toFixed(2) : val.toFixed(1)}{unit}
       </span>
     </div>
@@ -362,25 +362,25 @@ export default function FMExplorer() {
   const depth = Math.round(modIndex * midiToHz(midiNote));
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col" style={{ userSelect: "none" }}>
+    <div className="min-h-screen bg-black text-foreground flex flex-col" style={{ userSelect: "none" }}>
 
       {/* Header */}
-      <div className="flex items-start justify-between px-5 pt-4 pb-3 border-b border-white/10">
+      <div className="flex items-start justify-between px-5 pt-4 pb-3 border-b border-border">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white">FM Explorer</h1>
-          <p className="text-white/75 text-base mt-1 max-w-md">
+          <h1 className="text-2xl font-mono font-bold text-foreground">FM Explorer</h1>
+          <p className="text-muted-foreground text-base mt-1 max-w-md">
             2-operator frequency modulation. C:M ratio and modulation index
             control everything — electric piano to metallic clang.
           </p>
         </div>
-        <Link href="/dream" className="text-white/55 text-sm hover:text-white/80 transition-colors mt-1 ml-4 shrink-0">
+        <Link href="/dream" className="text-muted-foreground text-sm hover:text-foreground transition-colors mt-1 ml-4 shrink-0">
           ← dream
         </Link>
       </div>
 
       {/* Presets */}
-      <div className="flex items-center gap-2 px-5 py-2.5 border-b border-white/10 overflow-x-auto">
-        <span className="text-white/55 text-sm font-mono shrink-0">preset:</span>
+      <div className="flex items-center gap-2 px-5 py-2.5 border-b border-border overflow-x-auto">
+        <span className="text-muted-foreground text-sm font-mono shrink-0">preset:</span>
         {PRESETS.map((p, i) => (
           <button
             key={p.name}
@@ -388,7 +388,7 @@ export default function FMExplorer() {
             className={`px-3 py-1.5 rounded text-sm font-mono transition-colors shrink-0 min-h-[36px] border ${
               activePreset === i
                 ? "bg-violet-500/30 text-violet-300 border-violet-400/50"
-                : "bg-white/5 text-white/70 hover:bg-white/10 border-white/10"
+                : "bg-muted text-muted-foreground hover:bg-accent border-border"
             }`}
           >
             {p.name}
@@ -400,12 +400,12 @@ export default function FMExplorer() {
       <div className="flex flex-col lg:flex-row flex-1 min-h-0">
 
         {/* Controls */}
-        <div className="lg:w-72 shrink-0 px-5 py-4 space-y-5 border-b lg:border-b-0 lg:border-r border-white/10 overflow-y-auto">
+        <div className="lg:w-72 shrink-0 px-5 py-4 space-y-5 border-b lg:border-b-0 lg:border-r border-border overflow-y-auto">
 
           {/* C:M Ratio */}
           <div>
             <div className="flex justify-between mb-1.5">
-              <label className="text-white/75 text-sm font-mono">C:M Ratio</label>
+              <label className="text-muted-foreground text-sm font-mono">C:M Ratio</label>
               <span className="text-violet-300 text-sm font-mono">1:{cmRatio.toFixed(2)}</span>
             </div>
             <input
@@ -413,7 +413,7 @@ export default function FMExplorer() {
               onChange={e => setCmRatio(Number(e.target.value))}
               className="w-full h-1.5 accent-violet-500"
             />
-            <div className="flex justify-between text-white/40 text-xs font-mono mt-1">
+            <div className="flex justify-between text-muted-foreground/70 text-xs font-mono mt-1">
               <span>brass</span><span>piano·bell</span><span>metal</span>
             </div>
           </div>
@@ -421,15 +421,15 @@ export default function FMExplorer() {
           {/* Modulation Index */}
           <div>
             <div className="flex justify-between mb-1.5">
-              <label className="text-white/75 text-sm font-mono">Mod Index &#946;</label>
-              <span className="text-cyan-300 text-sm font-mono">{modIndex.toFixed(1)}</span>
+              <label className="text-muted-foreground text-sm font-mono">Mod Index &#946;</label>
+              <span className="text-violet-300 text-sm font-mono">{modIndex.toFixed(1)}</span>
             </div>
             <input
               type="range" min={0} max={20} step={0.1} value={modIndex}
               onChange={e => setModIndex(Number(e.target.value))}
-              className="w-full h-1.5 accent-cyan-500"
+              className="w-full h-1.5 accent-violet-500"
             />
-            <div className="flex justify-between text-white/40 text-xs font-mono mt-1">
+            <div className="flex justify-between text-muted-foreground/70 text-xs font-mono mt-1">
               <span>pure</span><span>warm</span><span>rich</span><span>noise</span>
             </div>
           </div>
@@ -437,22 +437,22 @@ export default function FMExplorer() {
           {/* Carrier Note */}
           <div>
             <div className="flex justify-between mb-1.5">
-              <label className="text-white/75 text-sm font-mono">Carrier Note</label>
-              <span className="text-amber-300 text-sm font-mono">{midiLabel(midiNote)} · {fHz} Hz</span>
+              <label className="text-muted-foreground text-sm font-mono">Carrier Note</label>
+              <span className="text-violet-300 text-sm font-mono">{midiLabel(midiNote)} · {fHz} Hz</span>
             </div>
             <input
               type="range" min={36} max={84} step={1} value={midiNote}
               onChange={e => setMidiNote(Number(e.target.value))}
-              className="w-full h-1.5 accent-amber-500"
+              className="w-full h-1.5 accent-violet-500"
             />
-            <div className="flex justify-between text-white/40 text-xs font-mono mt-1">
+            <div className="flex justify-between text-muted-foreground/70 text-xs font-mono mt-1">
               <span>C2</span><span>C4</span><span>C6</span>
             </div>
           </div>
 
           {/* Envelope */}
           <div className="space-y-2.5">
-            <p className="text-white/55 text-xs font-mono uppercase tracking-widest">Envelope ADSR</p>
+            <p className="text-muted-foreground text-xs font-mono uppercase tracking-widest">Envelope ADSR</p>
             <ADSRRow label="A" val={attack}  onSet={setAttack}  min={0.005} max={2}   step={0.005} unit="s" />
             <ADSRRow label="D" val={decay}   onSet={setDecay}   min={0.01}  max={3}   step={0.01}  unit="s" />
             <ADSRRow label="S" val={sustain} onSet={setSustain} min={0}     max={1}   step={0.01}  unit=""  />
@@ -469,12 +469,12 @@ export default function FMExplorer() {
               className={`w-full py-3 rounded font-mono text-base font-bold transition-all min-h-[48px] border ${
                 playing
                   ? "bg-violet-500/30 text-violet-200 border-violet-400/60 shadow-lg shadow-violet-500/20"
-                  : "bg-violet-600 hover:bg-violet-500 text-white border-violet-400/30"
+                  : "bg-violet-600 hover:bg-violet-500 text-foreground border-violet-400/30"
               }`}
             >
               {playing ? "● sustaining" : "▶ Play note"}
             </button>
-            <p className="text-white/40 text-xs font-mono text-center">or hold Space</p>
+            <p className="text-muted-foreground/70 text-xs font-mono text-center">or hold Space</p>
 
             <div className="flex gap-2">
               <button
@@ -482,7 +482,7 @@ export default function FMExplorer() {
                 className={`flex-1 py-2 rounded text-sm font-mono min-h-[40px] transition-colors border ${
                   !micMode
                     ? "bg-violet-500/20 text-violet-300 border-violet-400/40"
-                    : "bg-white/5 text-white/50 hover:bg-white/10 border-white/10"
+                    : "bg-muted text-muted-foreground hover:bg-accent border-border"
                 }`}
               >
                 Demo
@@ -491,8 +491,8 @@ export default function FMExplorer() {
                 onClick={async () => { setMicMode(true); if (!mic.running) await mic.start(); }}
                 className={`flex-1 py-2 rounded text-sm font-mono min-h-[40px] transition-colors border ${
                   micMode
-                    ? "bg-cyan-500/20 text-cyan-300 border-cyan-400/40"
-                    : "bg-white/5 text-white/50 hover:bg-white/10 border-white/10"
+                    ? "bg-violet-500/20 text-violet-300 border-violet-400/40"
+                    : "bg-muted text-muted-foreground hover:bg-accent border-border"
                 }`}
               >
                 Mic
@@ -500,7 +500,7 @@ export default function FMExplorer() {
             </div>
 
             {mic.error && (
-              <p className="text-rose-300 text-sm">{mic.error}</p>
+              <p className="text-violet-300 text-sm">{mic.error}</p>
             )}
           </div>
         </div>
@@ -508,20 +508,20 @@ export default function FMExplorer() {
         {/* Spectrum canvas */}
         <div className="flex-1 flex flex-col p-4 gap-2 min-h-[300px]">
           <div className="flex justify-between items-center">
-            <p className="text-white/75 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Sideband spectrum — |J&#8345;(&#946;)|
             </p>
-            <span className="text-white/40 text-xs font-mono">
+            <span className="text-muted-foreground/70 text-xs font-mono">
               {micMode && mic.running ? "● mic · bass drives β" : "○ demo LFO"}
             </span>
           </div>
 
           <canvas
             ref={canvasRef}
-            className="flex-1 rounded-lg border border-white/10 min-h-[220px]"
+            className="flex-1 rounded-lg border border-border min-h-[220px]"
           />
 
-          <p className="text-white/55 text-sm font-mono">
+          <p className="text-muted-foreground text-sm font-mono">
             <span className="text-violet-300">C</span> = carrier at {fHz} Hz &nbsp;·&nbsp;
             f&#x2098; = {fmHz} Hz &nbsp;·&nbsp;
             depth = &#946; &times; f&#x2c = {depth} Hz
@@ -530,11 +530,11 @@ export default function FMExplorer() {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-2.5 border-t border-white/10 flex justify-between items-center">
-        <span className="text-white/40 text-xs font-mono">
+      <div className="px-5 py-2.5 border-t border-border flex justify-between items-center">
+        <span className="text-muted-foreground/70 text-xs font-mono">
           Yamaha DX7 algorithm · modulator &#8594; carrier.frequency · Web Audio · zero deps
         </span>
-        <Link href="/dream/79-fm-explorer/README.md" className="text-white/40 text-xs hover:text-white/60 transition-colors">
+        <Link href="/dream/79-fm-explorer/README.md" className="text-muted-foreground/70 text-xs hover:text-muted-foreground transition-colors">
           design notes &#8599;
         </Link>
       </div>

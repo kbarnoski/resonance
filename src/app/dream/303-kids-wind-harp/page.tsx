@@ -330,7 +330,7 @@ export default function KidsWindHarpPage() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#06060c] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#06060c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -341,13 +341,13 @@ export default function KidsWindHarpPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#0a0916]/70 to-[#06060c]/90 px-6 text-center">
           <div className="flex flex-col items-center gap-3">
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/55">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
               303 · wind-harp
             </span>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
               Tip the world.
             </h1>
-            <p className="max-w-md text-base text-white/80">
+            <p className="max-w-md text-base text-foreground">
               Tilt your tablet and gravity swings the glowing strings. Swing one
               far enough and it sings.
             </p>
@@ -355,12 +355,12 @@ export default function KidsWindHarpPage() {
 
           <button
             onClick={start}
-            className="min-h-[64px] rounded-full bg-gradient-to-r from-amber-400 to-rose-400 px-10 text-xl font-semibold text-[#1a0e08] shadow-lg shadow-amber-500/20 transition-transform active:scale-95"
+            className="min-h-[64px] rounded-full bg-gradient-to-r from-violet-400 to-violet-400 px-10 text-xl font-semibold text-[#1a0e08] shadow-lg shadow-violet-500/20 transition-transform active:scale-95"
           >
             Tilt to play ▸
           </button>
 
-          <p className="max-w-sm text-sm text-white/55">
+          <p className="max-w-sm text-sm text-muted-foreground">
             On a computer? Drag across the strings, or just watch — the harp
             plays itself.
           </p>
@@ -370,17 +370,17 @@ export default function KidsWindHarpPage() {
       {/* running hints */}
       {mode === "running" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col items-center gap-1 px-6 pt-5 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-muted-foreground">
             tilt · swing · sing
           </p>
           {sensorDenied && (
-            <p className="pointer-events-none max-w-md text-sm text-rose-300">
+            <p className="pointer-events-none max-w-md text-sm text-violet-300">
               Tilt sensor is off — drag across the strings instead, or watch it
               play itself.
             </p>
           )}
           {!sensorDenied && usingFallback && (
-            <p className="max-w-md text-sm text-white/55">
+            <p className="max-w-md text-sm text-muted-foreground">
               No tilt sensor here — drag to swing the strings, or let it play
               itself.
             </p>
@@ -391,7 +391,7 @@ export default function KidsWindHarpPage() {
       {/* string legend (low -> high, D-Dorian) */}
       {mode === "running" && (
         <div className="pointer-events-none absolute bottom-16 left-1/2 z-10 -translate-x-1/2">
-          <div className="flex gap-3 font-mono text-xs text-white/55">
+          <div className="flex gap-3 font-mono text-xs text-muted-foreground">
             {SCALE_NAMES.map((n, i) => (
               <span key={i}>{n}</span>
             ))}
@@ -402,27 +402,27 @@ export default function KidsWindHarpPage() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 z-30 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute right-3 top-3 z-30 rounded-full border border-border bg-black/40 px-3 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 overflow-y-auto bg-black/85 px-6 py-16 backdrop-blur-md">
-          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-white/80">
-            <h2 className="text-2xl font-semibold text-white">
+          <div className="mx-auto max-w-xl space-y-5 text-base leading-relaxed text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               Wind-Harp — design notes
             </h2>
             <p>
-              <span className="text-white/95">The one question:</span> what if a
+              <span className="text-foreground">The one question:</span> what if a
               kid could tilt their iPad and gravity would swing a row of glowing
               strings like a wind-harp — each string that swings far enough
               plucks itself and sings?
             </p>
             <p>
-              <span className="text-white/95">Physics.</span> Each string is a
+              <span className="text-foreground">Physics.</span> Each string is a
               chain of point masses solved with{" "}
-              <span className="font-mono text-amber-200">
+              <span className="font-mono text-violet-200">
                 Verlet integration
               </span>{" "}
               plus distance constraints (a few relaxation passes per frame).
@@ -431,24 +431,24 @@ export default function KidsWindHarpPage() {
               naturally.
             </p>
             <p>
-              <span className="text-white/95">Sound.</span> When a string&apos;s
+              <span className="text-foreground">Sound.</span> When a string&apos;s
               midpoint swings past a threshold it plucks via{" "}
-              <span className="font-mono text-amber-200">Karplus-Strong</span>{" "}
+              <span className="font-mono text-violet-200">Karplus-Strong</span>{" "}
               synthesis (noise burst through a tuned, lowpass-fed delay line).
               Bigger swing → louder and brighter. A short refractory time keeps
               it from machine-gunning. The seven strings are tuned to a warm{" "}
-              <span className="font-mono text-amber-200">D-Dorian</span> scale,
+              <span className="font-mono text-violet-200">D-Dorian</span> scale,
               with an ambient drone underneath and a limiter on the master so it
               never blasts. There is no way to lose.
             </p>
             <p>
-              <span className="text-white/95">References.</span> The{" "}
+              <span className="text-foreground">References.</span> The{" "}
               <span className="italic">Aeolian harp</span> — a stringed
               instrument played by moving air rather than fingers; here the
               child&apos;s tilt is the wind. Plus the Karplus &amp; Strong
               plucked-string algorithm (1983).
             </p>
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               Tags — INPUT: device tilt (deviceorientation) · OUTPUT: raw WebGL2
               · TECHNIQUE: Verlet rope physics + Karplus-Strong · VIBE: calm,
               modal, no fail state.
@@ -459,7 +459,7 @@ export default function KidsWindHarpPage() {
 
       <Link
         href="/dream"
-        className="absolute left-3 top-3 z-30 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 font-mono text-xs text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+        className="absolute left-3 top-3 z-30 rounded-full border border-border bg-black/40 px-3 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         ← dream
       </Link>

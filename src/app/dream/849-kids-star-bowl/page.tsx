@@ -246,22 +246,22 @@ export default function KidsStarBowl() {
           <div className="text-6xl" aria-hidden>
             ✨🥣✨
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-white">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">
             Star Bowl
           </h1>
-          <p className="mx-auto max-w-xs text-base leading-relaxed text-white/75">
+          <p className="mx-auto max-w-xs text-base leading-relaxed text-muted-foreground">
             Tilt to roll the glowing stars. Keep them in the calm middle for a
             cozy sound — or tip them out to the wobbly edge, then bring them
             home to make it sweet again.
           </p>
           <button
             onClick={start}
-            className="rounded-full bg-indigo-500 font-bold text-white shadow-xl shadow-indigo-500/30 transition-all hover:bg-indigo-400 active:scale-95"
+            className="rounded-full bg-violet-500 font-bold text-foreground shadow-xl shadow-violet-500/30 transition-all hover:bg-violet-400 active:scale-95"
             style={{ minWidth: 200, minHeight: 72, padding: "0 2.5rem", fontSize: 24 }}
           >
             ▶ Start
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             On a computer? Drag the stars around instead.
           </p>
         </div>
@@ -272,9 +272,9 @@ export default function KidsStarBowl() {
         <>
           {/* Calm <-> Wobbly meter */}
           <div className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 text-center">
-            <div className="mb-1 flex items-center gap-2 text-base text-white/75">
+            <div className="mb-1 flex items-center gap-2 text-base text-muted-foreground">
               <span>calm</span>
-              <div className="h-2.5 w-40 overflow-hidden rounded-full bg-white/15">
+              <div className="h-2.5 w-40 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full transition-[width] duration-150"
                   style={{
@@ -291,17 +291,17 @@ export default function KidsStarBowl() {
           {/* Fallback / error notices */}
           <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-1">
             {tiltUnavailable && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 Tilt not available — drag to tilt.
               </p>
             )}
             {noWebGL && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 3D not available on this device — sound is still playing.
               </p>
             )}
             {noAudio && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 Sound not available — the stars still roll.
               </p>
             )}
@@ -312,22 +312,22 @@ export default function KidsStarBowl() {
       {/* Design notes */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 transition-colors hover:bg-white/20"
+        className="absolute right-3 top-3 rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-accent"
         style={{ minHeight: 44 }}
       >
         {showNotes ? "✕" : "?"}
       </button>
       {showNotes && (
-        <div className="absolute right-3 top-16 max-w-xs rounded-2xl bg-[#0b1830]/95 p-4 text-base text-white/75 shadow-2xl ring-1 ring-white/10">
-          <h2 className="mb-2 text-xl font-bold text-white">Design notes</h2>
+        <div className="absolute right-3 top-16 max-w-xs rounded-2xl bg-[#0b1830]/95 p-4 text-base text-muted-foreground shadow-2xl ring-1 ring-border">
+          <h2 className="mb-2 text-xl font-bold text-foreground">Design notes</h2>
           <p className="mb-2">
             Tilt-gravity rolls ~48 star-marbles in a bowl. Where the cluster
             sits maps to harmony: center = warm consonant chord; rim = soft
             dissonance with shimmer; tilting home{" "}
-            <span className="text-white/95">resolves</span> it — a real
+            <span className="text-foreground">resolves</span> it — a real
             tension→release decision made by the body.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Built on the &ldquo;dissonance resolves to consonance&rdquo;
             tension-and-release pedagogy and an Eno-style calm bedtime drone.
             Tags: tilt input · three.js GPU · tilt-gravity harmony.

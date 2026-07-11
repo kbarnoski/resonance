@@ -328,7 +328,7 @@ export default function KidsGlassArmonica() {
         {Array.from({ length: 60 }, (_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-white"
+            className="absolute rounded-full bg-card"
             style={{
               left:    `${(i * 137.508) % 100}%`,
               top:     `${(i * 97.341) % 100}%`,
@@ -343,7 +343,7 @@ export default function KidsGlassArmonica() {
       {/* Back link */}
       <Link
         href="/dream"
-        className="absolute top-4 left-4 z-20 text-white/55 text-xs font-mono hover:text-white/80 transition-colors"
+        className="absolute top-4 left-4 z-20 text-muted-foreground text-xs font-mono hover:text-foreground transition-colors"
       >
         ← dream lab
       </Link>
@@ -351,7 +351,7 @@ export default function KidsGlassArmonica() {
       {/* Audio unavailable notice */}
       {!audioAvailable && (
         <div className="absolute top-14 inset-x-4 z-20 text-center">
-          <span className="text-rose-300 text-sm font-mono bg-rose-950/60 border border-rose-800/50 rounded-lg px-4 py-2">
+          <span className="text-violet-300 text-sm font-mono bg-violet-950/60 border border-violet-800/50 rounded-lg px-4 py-2">
             Web Audio unavailable — visuals still animate
           </span>
         </div>
@@ -359,13 +359,13 @@ export default function KidsGlassArmonica() {
 
       {/* Header */}
       <div className="z-10 flex flex-col items-center pt-10 pb-6 px-4 text-center">
-        <h1 className="text-white text-2xl md:text-3xl font-bold tracking-wide mb-2">
+        <h1 className="text-foreground text-2xl md:text-3xl font-bold tracking-wide mb-2">
           Glass Armonica
         </h1>
-        <p className="text-white/80 text-base mb-1">
+        <p className="text-foreground text-base mb-1">
           Drag a glass to fill it, then swipe across the rims to make them sing
         </p>
-        <p className="text-white/55 text-xs font-mono">
+        <p className="text-muted-foreground text-xs font-mono">
           more water = lower pitch · like Benjamin Franklin&apos;s armonica (1761)
         </p>
       </div>
@@ -413,7 +413,7 @@ export default function KidsGlassArmonica() {
               <div key={idx} className="flex flex-col items-center gap-1" style={{ minWidth: 44 }}>
                 {/* Note label */}
                 <div
-                  className="font-mono text-white/55"
+                  className="font-mono text-muted-foreground"
                   style={{ fontSize: "0.65rem" }}
                 >
                   {noteLabel}
@@ -503,7 +503,7 @@ export default function KidsGlassArmonica() {
 
         {/* Demo hint */}
         {demo.running && !demo.stopped && (
-          <p className="text-white/55 text-xs font-mono text-center mt-4 pointer-events-none">
+          <p className="text-muted-foreground text-xs font-mono text-center mt-4 pointer-events-none">
             ↔ ghost finger sweeping · touch any glass to take over
           </p>
         )}
@@ -514,7 +514,7 @@ export default function KidsGlassArmonica() {
         <div className="flex items-center gap-6 flex-wrap justify-center">
           <div className="flex items-center gap-2">
             <div className="w-4 h-7 rounded-b bg-violet-400/35 border border-violet-400/40" />
-            <span className="text-white/75 text-sm">drag ↕ to tune</span>
+            <span className="text-muted-foreground text-sm">drag ↕ to tune</span>
           </div>
           <div className="flex items-center gap-2">
             <div
@@ -523,10 +523,10 @@ export default function KidsGlassArmonica() {
                 background: "linear-gradient(90deg, #c4b5fd55, #67e8f966, #c4b5fd55)",
               }}
             />
-            <span className="text-white/75 text-sm">swipe → to sing</span>
+            <span className="text-muted-foreground text-sm">swipe → to sing</span>
           </div>
         </div>
-        <p className="text-white/55 text-xs font-mono text-center">
+        <p className="text-muted-foreground text-xs font-mono text-center">
           sweep back and forth to make overlapping washes
         </p>
       </div>
@@ -534,8 +534,8 @@ export default function KidsGlassArmonica() {
       {/* Design notes button */}
       <button
         onClick={() => setShowReadme((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 text-white/55 text-xs font-mono
-                   bg-white/5 hover:bg-white/10 border border-white/10 rounded
+        className="absolute bottom-4 right-4 z-20 text-muted-foreground text-xs font-mono
+                   bg-muted hover:bg-accent border border-border rounded
                    px-4 py-2.5 transition-colors min-h-[44px] flex items-center"
         aria-label="Read the design notes"
       >
@@ -549,16 +549,16 @@ export default function KidsGlassArmonica() {
           onClick={() => setShowReadme(false)}
         >
           <div
-            className="bg-gray-900 border border-white/10 rounded-xl p-6 max-w-lg w-full
-                       text-white/80 text-sm leading-relaxed overflow-y-auto max-h-[82vh]"
+            className="bg-gray-900 border border-border rounded-xl p-6 max-w-lg w-full
+                       text-foreground text-sm leading-relaxed overflow-y-auto max-h-[82vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-white text-xl font-bold mb-1">355 — Kids Glass Armonica</h2>
-            <p className="text-white/55 text-xs font-mono mb-4">tap backdrop to close</p>
+            <h2 className="text-foreground text-xl font-bold mb-1">355 — Kids Glass Armonica</h2>
+            <p className="text-muted-foreground text-xs font-mono mb-4">tap backdrop to close</p>
 
             <div className="space-y-3 font-mono text-xs leading-relaxed">
               <p>
-                <strong className="text-white/90">Reference:</strong>{" "}
+                <strong className="text-foreground">Reference:</strong>{" "}
                 Benjamin Franklin&apos;s <em>glass armonica</em> (1761) — a set of nested
                 spinning glass bowls played by touching wet fingers to the rims. The continuous
                 friction produces a sustained, breathy, ethereal tone entirely unlike the struck
@@ -567,7 +567,7 @@ export default function KidsGlassArmonica() {
               </p>
 
               <p>
-                <strong className="text-white/90">Water → pitch (physically correct):</strong>{" "}
+                <strong className="text-foreground">Water → pitch (physically correct):</strong>{" "}
                 More water = heavier glass = slower vibration = lower pitch. At
                 waterLevel=0 (empty glass) the voice sings its base D-Dorian note.
                 At waterLevel=1 (full) the pitch drops by factor&nbsp;1.65 below base.
@@ -575,7 +575,7 @@ export default function KidsGlassArmonica() {
               </p>
 
               <p>
-                <strong className="text-white/90">Synthesis:</strong>{" "}
+                <strong className="text-foreground">Synthesis:</strong>{" "}
                 Each glass voice is a continuously-running oscillator bank: fundamental
                 sine + 3rd-harmonic triangle (7% gain) + 7th-partial shimmer (1.5% gain),
                 all gated by an amplitude envelope. A slow LFO (~5 Hz, tiny amplitude) adds
@@ -585,7 +585,7 @@ export default function KidsGlassArmonica() {
               </p>
 
               <p>
-                <strong className="text-white/90">Controls:</strong><br />
+                <strong className="text-foreground">Controls:</strong><br />
                 • Drag UP/DOWN on a glass to set its water level (tuning).<br />
                 • Swipe continuously across the glass tops to rub the rims.<br />
                 • Hold a single rim to sustain that note.<br />
@@ -593,13 +593,13 @@ export default function KidsGlassArmonica() {
               </p>
 
               <p>
-                <strong className="text-white/90">Auto-demo:</strong>{" "}
+                <strong className="text-foreground">Auto-demo:</strong>{" "}
                 On load, a ghost finger sweeps back and forth for ~12 seconds so the
                 armonica plays itself. Stops the moment you touch any glass.
               </p>
 
               <p>
-                <strong className="text-white/90">Subsystems:</strong>{" "}
+                <strong className="text-foreground">Subsystems:</strong>{" "}
                 audio.ts — voice building (oscillator bank + LFO + envelope gain),
                 retune, activate/deactivate, teardown.
                 page.tsx — pointer capture + bounding-rect hit-test (needed because
@@ -607,7 +607,7 @@ export default function KidsGlassArmonica() {
                 tracker, CSS box-shadow/opacity glow driven by live amplitude.
               </p>
 
-              <p className="text-white/55">
+              <p className="text-muted-foreground">
                 Unverified surface: the exact water-level / pitch ratio is a musical
                 approximation, not a calibrated physics model.
               </p>
@@ -615,8 +615,8 @@ export default function KidsGlassArmonica() {
 
             <button
               onClick={() => setShowReadme(false)}
-              className="mt-5 w-full py-2.5 bg-white/10 hover:bg-white/20 rounded
-                         text-white/75 transition-colors text-sm min-h-[44px]"
+              className="mt-5 w-full py-2.5 bg-muted hover:bg-accent rounded
+                         text-muted-foreground transition-colors text-sm min-h-[44px]"
             >
               Close
             </button>

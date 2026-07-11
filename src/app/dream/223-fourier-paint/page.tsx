@@ -332,18 +332,18 @@ export default function FourierPaint() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white select-none">
+    <div className="flex flex-col h-screen bg-black text-foreground select-none">
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-4 pb-2 shrink-0">
         <div>
-          <h1 className="text-2xl font-mono text-white/95">Fourier Paint</h1>
-          <p className="text-base text-white/75 mt-0.5">
+          <h1 className="text-2xl font-mono text-foreground">Fourier Paint</h1>
+          <p className="text-base text-muted-foreground mt-0.5">
             {mode === 'idle' && 'Draw any closed shape — Fourier decomposes it into sound'}
             {mode === 'drawing' && 'Draw a closed shape, then press Animate + sound'}
             {mode === 'animating' && 'Epicycles trace your shape · drag Terms to hear more/fewer harmonics'}
           </p>
         </div>
-        <a href="/dream" className="text-xs text-white/55 hover:text-white/80 transition-colors">← lab</a>
+        <a href="/dream" className="text-xs text-muted-foreground hover:text-foreground transition-colors">← lab</a>
       </div>
 
       {/* Canvas */}
@@ -385,14 +385,14 @@ export default function FourierPaint() {
       />
 
       {/* Controls */}
-      <div className="shrink-0 px-5 py-4 border-t border-white/10 flex flex-wrap items-center gap-3">
+      <div className="shrink-0 px-5 py-4 border-t border-border flex flex-wrap items-center gap-3">
         {mode === 'idle' && (
           <>
             <button onClick={handleDraw}
               className="min-h-[44px] px-6 py-2.5 bg-violet-500/20 hover:bg-violet-500/30 text-violet-300 font-mono text-sm rounded-lg border border-violet-500/30 transition-colors">
               Draw shape
             </button>
-            <p className="text-sm text-white/50 font-mono">
+            <p className="text-sm text-muted-foreground font-mono">
               circles → pure tone · stars → odd harmonics · spirals → complex timbre
             </p>
           </>
@@ -404,11 +404,11 @@ export default function FourierPaint() {
               Animate + sound
             </button>
             <button onClick={handleDraw}
-              className="min-h-[44px] px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white/75 font-mono text-sm rounded-lg border border-white/10 transition-colors">
+              className="min-h-[44px] px-4 py-2.5 bg-muted hover:bg-accent text-muted-foreground font-mono text-sm rounded-lg border border-border transition-colors">
               Redraw
             </button>
             <button onClick={handleClear}
-              className="min-h-[44px] px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white/55 font-mono text-sm rounded-lg border border-white/10 transition-colors">
+              className="min-h-[44px] px-4 py-2.5 bg-muted hover:bg-accent text-muted-foreground font-mono text-sm rounded-lg border border-border transition-colors">
               Clear
             </button>
           </>
@@ -416,17 +416,17 @@ export default function FourierPaint() {
         {mode === 'animating' && (
           <>
             <button onClick={handleDraw}
-              className="min-h-[44px] px-5 py-2.5 bg-white/5 hover:bg-white/10 text-white/75 font-mono text-sm rounded-lg border border-white/10 transition-colors">
+              className="min-h-[44px] px-5 py-2.5 bg-muted hover:bg-accent text-muted-foreground font-mono text-sm rounded-lg border border-border transition-colors">
               New shape
             </button>
             <div className="flex items-center gap-3 flex-1 min-w-[200px]">
-              <span className="text-sm text-white/75 font-mono shrink-0">Terms {terms}</span>
+              <span className="text-sm text-muted-foreground font-mono shrink-0">Terms {terms}</span>
               <input type="range" min={1} max={MAX_TERMS} value={terms}
                 onChange={e => setTerms(Number(e.target.value))}
                 className="flex-1 accent-violet-400 min-h-[20px]" />
             </div>
             <button onClick={handleClear}
-              className="min-h-[44px] px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white/55 font-mono text-sm rounded-lg border border-white/10 transition-colors">
+              className="min-h-[44px] px-4 py-2.5 bg-muted hover:bg-accent text-muted-foreground font-mono text-sm rounded-lg border border-border transition-colors">
               Clear
             </button>
           </>

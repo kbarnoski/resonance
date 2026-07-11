@@ -385,21 +385,21 @@ export default function LiveHarmonize() {
   useEffect(() => () => clearAll(), [clearAll]);
 
   return (
-    <div className="relative min-h-screen bg-[#07070f] text-white flex flex-col">
+    <div className="relative min-h-screen bg-[#07070f] text-foreground flex flex-col">
 
       {/* Header */}
       <div className="relative z-10 px-6 pt-6 pb-3 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-mono font-semibold text-white/95 tracking-tight">
+          <h1 className="text-2xl font-mono font-semibold text-foreground tracking-tight">
             Live Harmonize
           </h1>
-          <p className="text-base text-white/75 mt-1 max-w-md">
+          <p className="text-base text-muted-foreground mt-1 max-w-md">
             Play a melody into the mic — diatonic 3rd and 5th harmony voices appear alongside each note, detected from your key, panned left and right.
           </p>
         </div>
         {status !== "idle" && (
           <div className="text-right shrink-0">
-            <div className="text-xs text-white/55 font-mono mb-0.5">detected key</div>
+            <div className="text-xs text-muted-foreground font-mono mb-0.5">detected key</div>
             <div className="text-2xl font-mono text-violet-300">{keyLabel}</div>
           </div>
         )}
@@ -413,7 +413,7 @@ export default function LiveHarmonize() {
         {status === "idle" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6">
             <div className="max-w-sm w-full text-center space-y-5">
-              <p className="text-base text-white/75 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Play piano or sing into your mic. The system listens for your key and adds two harmony voices — the diatonic 3rd and 5th above every note — panned slightly left and right. A scrolling piano roll records all three parts.
               </p>
 
@@ -434,19 +434,19 @@ export default function LiveHarmonize() {
               </div>
 
               {micError && (
-                <p className="text-rose-300 text-base">{micError}</p>
+                <p className="text-violet-300 text-base">{micError}</p>
               )}
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-1">
                 <button
                   onClick={startMic}
-                  className="min-h-[44px] px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-base font-medium rounded-lg transition-colors"
+                  className="min-h-[44px] px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-foreground text-base font-medium rounded-lg transition-colors"
                 >
                   Start mic
                 </button>
                 <button
                   onClick={startDemo}
-                  className="min-h-[44px] px-6 py-2.5 bg-white/10 hover:bg-white/15 text-white/90 text-base font-medium rounded-lg transition-colors"
+                  className="min-h-[44px] px-6 py-2.5 bg-muted hover:bg-accent text-foreground text-base font-medium rounded-lg transition-colors"
                 >
                   Demo mode
                 </button>
@@ -458,12 +458,12 @@ export default function LiveHarmonize() {
         {/* Running HUD */}
         {status !== "idle" && (
           <div className="absolute bottom-6 right-4 flex flex-col items-end gap-2 z-10">
-            <span className="text-xs font-mono text-white/55">
+            <span className="text-xs font-mono text-muted-foreground">
               {status === "demo" ? "demo · Bach fragment · C major" : "mic active — play any melody"}
             </span>
             <button
               onClick={clearAll}
-              className="min-h-[44px] px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white/80 text-sm font-medium rounded-lg transition-colors"
+              className="min-h-[44px] px-4 py-2.5 bg-muted hover:bg-accent text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Stop
             </button>

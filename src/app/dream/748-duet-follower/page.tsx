@@ -175,7 +175,7 @@ export default function DuetFollowerPage() {
   const ribbonBotStr = ribbonBot.join(" ");
 
   return (
-    <main className="min-h-dvh w-full bg-[#140d0a] text-white overflow-hidden relative font-sans">
+    <main className="min-h-dvh w-full bg-[#140d0a] text-foreground overflow-hidden relative font-sans">
       {/* warm chamber-concert wash */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -188,12 +188,12 @@ export default function DuetFollowerPage() {
       {/* Header */}
       <header className="relative z-10 px-6 pt-7 pb-2 max-w-5xl mx-auto">
         <div className="flex items-baseline justify-between gap-4 flex-wrap">
-          <h1 className="text-2xl font-semibold tracking-tight text-white">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Duet Follower
           </h1>
-          <span className="text-base text-white/75 font-mono">748 · welcome home</span>
+          <span className="text-base text-muted-foreground font-mono">748 · welcome home</span>
         </div>
-        <p className="mt-2 text-base text-white/80 max-w-2xl">
+        <p className="mt-2 text-base text-foreground max-w-2xl">
           You keep the pulse. Karel&rsquo;s real recording listens and follows your tempo &mdash;
           a duet where his performance is the accompanist that adapts to you.
         </p>
@@ -214,14 +214,14 @@ export default function DuetFollowerPage() {
       <section className="relative z-10 px-6 mt-5 max-w-5xl mx-auto">
         {phase === "intro" && (
           <div className="flex flex-col items-center gap-4 py-6">
-            <p className="text-base text-white/80 text-center max-w-md">
-              Tap a steady pulse with the <span className="font-mono text-white">spacebar</span>,
-              the <span className="font-mono text-white">A&ndash;L</span> row, or by clicking the stage.
+            <p className="text-base text-foreground text-center max-w-md">
+              Tap a steady pulse with the <span className="font-mono text-foreground">spacebar</span>,
+              the <span className="font-mono text-foreground">A&ndash;L</span> row, or by clicking the stage.
               The recording re-times itself to land on its next musical moment with each tap.
             </p>
             <button
               onClick={start}
-              className="min-h-[44px] px-6 py-2.5 rounded-full bg-amber-400 text-[#140d0a] text-base font-semibold hover:bg-amber-300 transition-colors"
+              className="min-h-[44px] px-6 py-2.5 rounded-full bg-violet-400 text-[#140d0a] text-base font-semibold hover:bg-violet-300 transition-colors"
             >
               Start the duet
             </button>
@@ -229,7 +229,7 @@ export default function DuetFollowerPage() {
         )}
 
         {phase === "loading" && (
-          <p className="text-base text-white/80 text-center py-8">Tuning to his recording&hellip;</p>
+          <p className="text-base text-foreground text-center py-8">Tuning to his recording&hellip;</p>
         )}
 
         {phase === "playing" && (
@@ -243,7 +243,7 @@ export default function DuetFollowerPage() {
                 e.preventDefault();
                 doTap();
               }}
-              className="min-h-[44px] min-w-[44px] px-8 py-4 rounded-2xl bg-amber-400/90 text-[#140d0a] text-xl font-semibold hover:bg-amber-300 active:scale-95 transition-all select-none"
+              className="min-h-[44px] min-w-[44px] px-8 py-4 rounded-2xl bg-violet-400/90 text-[#140d0a] text-xl font-semibold hover:bg-violet-300 active:scale-95 transition-all select-none"
               style={{
                 boxShadow: `0 0 ${12 + ui.pulse * 40}px rgba(251,191,36,${0.25 + ui.pulse * 0.5})`,
               }}
@@ -257,7 +257,7 @@ export default function DuetFollowerPage() {
               <Stat label="taps" value={String(ui.taps)} />
             </div>
 
-            <p className="text-base text-white/75 text-center">
+            <p className="text-base text-muted-foreground text-center">
               Keep tapping. Speed up &rarr; his performance hurries to keep pace.
               Slow down &rarr; it breathes and waits with you.
             </p>
@@ -265,7 +265,7 @@ export default function DuetFollowerPage() {
         )}
 
         {phase === "playing" && sourceKind === "fallback" && (
-          <p className="mt-4 text-base text-amber-300/95 text-center">
+          <p className="mt-4 text-base text-violet-300/95 text-center">
             Couldn&rsquo;t reach Karel&rsquo;s recording &mdash; following an offline piano phrase instead.
           </p>
         )}
@@ -274,14 +274,14 @@ export default function DuetFollowerPage() {
       {/* Design notes toggle */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="fixed bottom-4 right-4 z-20 min-h-[44px] px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-base text-white/90 transition-colors"
+        className="fixed bottom-4 right-4 z-20 min-h-[44px] px-4 py-2.5 rounded-full bg-muted hover:bg-accent text-base text-foreground transition-colors"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       <Link
         href="/dream"
-        className="fixed bottom-4 left-4 z-20 min-h-[44px] px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-base text-white/90 transition-colors"
+        className="fixed bottom-4 left-4 z-20 min-h-[44px] px-4 py-2.5 rounded-full bg-muted hover:bg-accent text-base text-foreground transition-colors"
       >
         &larr; gallery
       </Link>
@@ -294,8 +294,8 @@ export default function DuetFollowerPage() {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col">
-      <span className="text-2xl font-semibold text-white font-mono tabular-nums">{value}</span>
-      <span className="text-base text-white/75">{label}</span>
+      <span className="text-2xl font-semibold text-foreground font-mono tabular-nums">{value}</span>
+      <span className="text-base text-muted-foreground">{label}</span>
     </div>
   );
 }
@@ -316,7 +316,7 @@ function RibbonView({
 }) {
   const playheadX = VB_W / 2; // playhead fixed at center; recording scrolls past it
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/30 overflow-hidden">
+    <div className="rounded-2xl border border-border bg-black/30 overflow-hidden">
       <svg
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         className="w-full h-[220px] sm:h-[300px]"
@@ -382,7 +382,7 @@ function RibbonView({
         />
         <circle cx={playheadX} cy={VB_H / 2} r={5} fill="rgba(255,255,255,0.95)" />
       </svg>
-      <div className="flex justify-between px-3 py-1.5 text-base text-white/55 font-mono">
+      <div className="flex justify-between px-3 py-1.5 text-base text-muted-foreground font-mono">
         <span>his recording &rarr; scrolls past</span>
         <span>now</span>
         <span>&larr; next moment</span>
@@ -395,18 +395,18 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-30 bg-black/80 backdrop-blur-sm overflow-y-auto" onClick={onClose}>
       <div
-        className="max-w-2xl mx-auto my-12 px-6 py-7 rounded-2xl bg-[#1b1310] border border-white/12"
+        className="max-w-2xl mx-auto my-12 px-6 py-7 rounded-2xl bg-[#1b1310] border border-border"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-semibold text-white">Design notes &mdash; Duet Follower</h2>
-        <p className="mt-4 text-base text-white/80 leading-relaxed">
+        <h2 className="text-2xl font-semibold text-foreground">Design notes &mdash; Duet Follower</h2>
+        <p className="mt-4 text-base text-foreground leading-relaxed">
           What if Karel&rsquo;s real <em>Welcome Home</em> recording were an accompanist that
           <strong> listens to you</strong>? You provide the beat by tapping; the system estimates
           your tempo from the gaps between taps and drives the playback rate of his actual
           recording to follow your groove. You conduct his performance&rsquo;s pace.
         </p>
-        <h3 className="mt-6 text-xl font-semibold text-white">The technique</h3>
-        <p className="mt-2 text-base text-white/80 leading-relaxed">
+        <h3 className="mt-6 text-xl font-semibold text-foreground">The technique</h3>
+        <p className="mt-2 text-base text-foreground leading-relaxed">
           Onset &rarr; tempo estimate &rarr; interactive pacing. Each tap is an onset; recent
           inter-onset intervals give a median beat period. The recording is analyzed once into a
           coarse RMS envelope, and rising-edge peaks become musical &ldquo;landmarks.&rdquo; On each
@@ -415,8 +415,8 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
           performance arrives at that moment one of <em>your</em> beats from now. It plays as one
           continuous, time-stretched source &mdash; <strong>not</strong> a granular grain cloud.
         </p>
-        <h3 className="mt-6 text-xl font-semibold text-white">Honest notes</h3>
-        <ul className="mt-2 text-base text-white/80 leading-relaxed list-disc pl-5 space-y-1">
+        <h3 className="mt-6 text-xl font-semibold text-foreground">Honest notes</h3>
+        <ul className="mt-2 text-base text-foreground leading-relaxed list-disc pl-5 space-y-1">
           <li>
             This is onset-driven tempo <em>following</em>, not full audio-to-score DTW alignment.
             Landmarks are envelope peaks, not transcribed notes &mdash; an honest, tractable proxy.
@@ -430,8 +430,8 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             response, so very erratic tapping settles rather than chasing every jitter.
           </li>
         </ul>
-        <h3 className="mt-6 text-xl font-semibold text-white">Named references</h3>
-        <ul className="mt-2 text-base text-white/80 leading-relaxed list-disc pl-5 space-y-1">
+        <h3 className="mt-6 text-xl font-semibold text-foreground">Named references</h3>
+        <ul className="mt-2 text-base text-foreground leading-relaxed list-disc pl-5 space-y-1">
           <li>
             <strong>Matchmaker</strong> &mdash; open-source real-time piano score following
             (arXiv 2510.10087, Oct 2025).
@@ -448,13 +448,13 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             <strong>Arshia Cont, Antescofo</strong> &mdash; anticipatory score follower.
           </li>
         </ul>
-        <p className="mt-6 text-base text-white/55">
+        <p className="mt-6 text-base text-muted-foreground">
           INPUT: keyboard / tap pulse &middot; OUTPUT: SVG/DOM &middot; TECHNIQUE: onset &rarr; tempo
           &rarr; interactive pacing of his real recording.
         </p>
         <button
           onClick={onClose}
-          className="mt-6 min-h-[44px] px-5 py-2.5 rounded-full bg-amber-400 text-[#140d0a] text-base font-semibold hover:bg-amber-300"
+          className="mt-6 min-h-[44px] px-5 py-2.5 rounded-full bg-violet-400 text-[#140d0a] text-base font-semibold hover:bg-violet-300"
         >
           Close
         </button>

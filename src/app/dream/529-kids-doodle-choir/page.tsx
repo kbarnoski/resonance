@@ -716,7 +716,7 @@ export default function KidsDoodleChoir() {
           {Array.from({ length: 30 }).map((_, i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-white"
+              className="absolute rounded-full bg-card"
               style={{
                 width: 1 + (i % 3),
                 height: 1 + (i % 3),
@@ -731,40 +731,40 @@ export default function KidsDoodleChoir() {
         <div className="relative text-center space-y-6 max-w-sm">
           {/* Hero */}
           <div className="text-5xl mb-2">🎨🎵✨</div>
-          <h1 className="text-3xl font-bold text-white/95 leading-tight">
+          <h1 className="text-3xl font-bold text-foreground leading-tight">
             Doodle Choir
           </h1>
-          <p className="text-base text-white/75 leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             Draw something — a sun, a fish, a bird — and watch it
-            <span className="text-yellow-300"> come alive </span>
+            <span className="text-violet-300"> come alive </span>
             and sing!
           </p>
 
           <div className="grid grid-cols-4 gap-3 py-2">
             {(['sun','fish','bird','plant','cloud','star','critter','home'] as Archetype[]).map(a => (
               <div key={a}
-                className="flex flex-col items-center gap-1 bg-white/10 rounded-xl py-2 px-1">
+                className="flex flex-col items-center gap-1 bg-muted rounded-xl py-2 px-1">
                 <span className="text-2xl">{CREATURE_CONFIG[a].emoji}</span>
-                <span className="text-white/60 text-xs">{CREATURE_CONFIG[a].label}</span>
+                <span className="text-muted-foreground text-xs">{CREATURE_CONFIG[a].label}</span>
               </div>
             ))}
           </div>
 
           <button
             onPointerDown={handleStart}
-            className="w-full bg-yellow-400 hover:bg-yellow-300 active:scale-95 text-gray-900 font-bold text-xl rounded-2xl px-8 py-4 min-h-[64px] transition-all shadow-lg"
+            className="w-full bg-violet-400 hover:bg-violet-300 active:scale-95 text-gray-900 font-bold text-xl rounded-2xl px-8 py-4 min-h-[64px] transition-all shadow-lg"
           >
             Let&apos;s Draw! 🎨
           </button>
 
-          <p className="text-white/55 text-sm">
+          <p className="text-muted-foreground text-sm">
             Finger-drawing works on phones &amp; tablets
           </p>
         </div>
 
         <Link
           href="/dream"
-          className="fixed bottom-5 left-5 text-white/55 text-sm hover:text-white/80 font-mono"
+          className="fixed bottom-5 left-5 text-muted-foreground text-sm hover:text-foreground font-mono"
         >
           ← dream
         </Link>
@@ -798,16 +798,16 @@ export default function KidsDoodleChoir() {
         {classifierStatus && (
           <div className={`font-mono text-xs px-2 py-1 rounded ${
             classifierStatus.includes('AI ready') || classifierStatus.includes('AI recognizing')
-              ? 'text-green-300 bg-black/40'
+              ? 'text-violet-300 bg-black/40'
               : classifierStatus.includes('shape')
-                ? 'text-rose-300 bg-black/40'
-                : 'text-white/55 bg-black/30'
+                ? 'text-violet-300 bg-black/40'
+                : 'text-muted-foreground bg-black/30'
           }`}>
             {classifierStatus}
           </div>
         )}
         {creatureCount > 0 && (
-          <div className="font-mono text-xs text-white/55 bg-black/30 px-2 py-1 rounded">
+          <div className="font-mono text-xs text-muted-foreground bg-black/30 px-2 py-1 rounded">
             {creatureCount} singing {creatureCount === 1 ? 'friend' : 'friends'}
           </div>
         )}
@@ -817,7 +817,7 @@ export default function KidsDoodleChoir() {
       {creatureCount === 0 && (
         <div className="absolute bottom-20 left-0 right-0 flex justify-center pointer-events-none"
           style={{ zIndex: 10 }}>
-          <div className="bg-black/50 text-white/75 text-base font-medium px-5 py-3 rounded-2xl">
+          <div className="bg-black/50 text-muted-foreground text-base font-medium px-5 py-3 rounded-2xl">
             ✏️ Draw anything!
           </div>
         </div>
@@ -838,8 +838,8 @@ export default function KidsDoodleChoir() {
           demoRef.current.phase = 'drawing';
           demoRef.current.timer = performance.now();
         }}
-        className="absolute bottom-5 right-5 bg-black/50 hover:bg-black/70 border border-white/20
-          text-white/75 text-sm font-mono px-4 py-2.5 rounded-lg min-h-[44px] transition-colors"
+        className="absolute bottom-5 right-5 bg-black/50 hover:bg-black/70 border border-border
+          text-muted-foreground text-sm font-mono px-4 py-2.5 rounded-lg min-h-[44px] transition-colors"
         style={{ zIndex: 10 }}
       >
         ✕ Clear
@@ -847,7 +847,7 @@ export default function KidsDoodleChoir() {
 
       <Link
         href="/dream"
-        className="absolute top-4 left-4 text-white/55 text-sm hover:text-white/80 font-mono"
+        className="absolute top-4 left-4 text-muted-foreground text-sm hover:text-foreground font-mono"
         style={{ zIndex: 10 }}
       >
         ← dream
@@ -855,7 +855,7 @@ export default function KidsDoodleChoir() {
 
       <Link
         href="/dream/529-kids-doodle-choir/README.md"
-        className="absolute bottom-5 left-5 text-white/40 text-xs hover:text-white/70 font-mono"
+        className="absolute bottom-5 left-5 text-muted-foreground/70 text-xs hover:text-muted-foreground font-mono"
         style={{ zIndex: 10 }}
       >
         design notes

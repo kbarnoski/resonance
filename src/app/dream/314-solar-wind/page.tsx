@@ -200,7 +200,7 @@ export default function SolarWindPage() {
   const sourceNote = history?.note ?? "Connecting to NOAA SWPC…";
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#02030a] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#02030a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -210,7 +210,7 @@ export default function SolarWindPage() {
       {/* Corner: design notes link */}
       <Link
         href="/dream/314-solar-wind/README.md"
-        className="absolute right-4 top-4 z-20 text-sm text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/80"
+        className="absolute right-4 top-4 z-20 text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
       >
         Read the design notes
       </Link>
@@ -221,21 +221,21 @@ export default function SolarWindPage() {
           <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
             Resonance · 314
           </p>
-          <h1 className="max-w-3xl font-serif text-4xl leading-tight text-white sm:text-5xl">
+          <h1 className="max-w-3xl font-serif text-4xl leading-tight text-foreground sm:text-5xl">
             Solar Wind
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground sm:text-lg">
             A long-form drone scored, live and in real time, by the Sun — the
             actual state of space weather above you right now, fetched from NOAA
             and turned into harmony and a sky of aurora.
           </p>
           <button
             onClick={begin}
-            className="mt-8 min-h-[44px] rounded-full bg-white px-7 py-3 text-lg font-medium text-black transition-transform hover:scale-[1.03] active:scale-95"
+            className="mt-8 min-h-[44px] rounded-full bg-card px-7 py-3 text-lg font-medium text-black transition-transform hover:scale-[1.03] active:scale-95"
           >
             Begin
           </button>
-          <p className="mt-4 font-mono text-sm text-white/55">
+          <p className="mt-4 font-mono text-sm text-muted-foreground">
             {sourceNote}
           </p>
         </div>
@@ -246,30 +246,30 @@ export default function SolarWindPage() {
         <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-6">
           {/* top row: provenance + mode toggle */}
           <div className="flex items-start justify-between gap-3">
-            <div className="pointer-events-auto rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 backdrop-blur-md">
-              <p className="font-serif text-xl text-white sm:text-2xl">Solar Wind</p>
+            <div className="pointer-events-auto rounded-xl border border-border bg-black/40 px-4 py-2.5 backdrop-blur-md">
+              <p className="font-serif text-xl text-foreground sm:text-2xl">Solar Wind</p>
               <p
                 className={`mt-0.5 font-mono text-sm ${
                   source === "live"
-                    ? "text-emerald-300/95"
-                    : "text-amber-300/95"
+                    ? "text-violet-300/95"
+                    : "text-violet-300/95"
                 }`}
               >
                 {sourceNote}
               </p>
               {loadError && (
-                <p className="mt-1 text-sm text-rose-300">{loadError}</p>
+                <p className="mt-1 text-sm text-violet-300">{loadError}</p>
               )}
             </div>
 
             <div className="pointer-events-auto flex flex-col gap-2">
-              <div className="flex overflow-hidden rounded-full border border-white/15 bg-black/40 backdrop-blur-md">
+              <div className="flex overflow-hidden rounded-full border border-border bg-black/40 backdrop-blur-md">
                 <button
                   onClick={() => setMode("live")}
                   className={`min-h-[44px] px-4 py-2.5 text-sm font-medium transition-colors ${
                     mode === "live"
-                      ? "bg-white text-black"
-                      : "text-white/75 hover:text-white"
+                      ? "bg-card text-black"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Live
@@ -278,17 +278,17 @@ export default function SolarWindPage() {
                   onClick={() => setMode("replay")}
                   className={`min-h-[44px] px-4 py-2.5 text-sm font-medium transition-colors ${
                     mode === "replay"
-                      ? "bg-white text-black"
-                      : "text-white/75 hover:text-white"
+                      ? "bg-card text-black"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Replay 24h
                 </button>
               </div>
               {mode === "replay" && (
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/15">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                   <div
-                    className="h-full bg-emerald-300/90"
+                    className="h-full bg-violet-300/90"
                     style={{ width: `${replayProgress * 100}%` }}
                   />
                 </div>
@@ -297,8 +297,8 @@ export default function SolarWindPage() {
           </div>
 
           {/* bottom: the Sun's actual numbers */}
-          <div className="pointer-events-auto self-start rounded-xl border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-md">
-            <p className="mb-2 font-mono text-sm uppercase tracking-[0.2em] text-white/55">
+          <div className="pointer-events-auto self-start rounded-xl border border-border bg-black/40 px-4 py-3 backdrop-blur-md">
+            <p className="mb-2 font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
               The Sun, right now
             </p>
             <div className="grid grid-cols-2 gap-x-8 gap-y-1.5 sm:grid-cols-4">
@@ -345,16 +345,16 @@ function Stat({
 }) {
   const valueColor =
     accent === "rose"
-      ? "text-rose-300"
+      ? "text-violet-300"
       : accent === "amber"
-        ? "text-amber-300/95"
-        : "text-white";
+        ? "text-violet-300/95"
+        : "text-foreground";
   return (
     <div>
-      <p className="font-mono text-sm text-white/55">{label}</p>
+      <p className="font-mono text-sm text-muted-foreground">{label}</p>
       <p className={`font-mono text-xl ${valueColor}`}>
         {value}{" "}
-        <span className="text-sm text-white/55">{unit}</span>
+        <span className="text-sm text-muted-foreground">{unit}</span>
       </p>
     </div>
   );

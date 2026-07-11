@@ -339,23 +339,23 @@ export default function MoodXY() {
 
       {/* title — always visible */}
       <div className="absolute top-4 left-4 z-10 pointer-events-none">
-        <h1 className="text-xl font-serif text-white/80">Mood XY</h1>
+        <h1 className="text-xl font-serif text-foreground">Mood XY</h1>
       </div>
 
       {/* start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-black/55">
-          <h2 className="text-3xl font-serif text-white/95">Mood XY</h2>
-          <p className="text-base text-white/75 text-center max-w-sm px-6 leading-relaxed">
+          <h2 className="text-3xl font-serif text-foreground">Mood XY</h2>
+          <p className="text-base text-muted-foreground text-center max-w-sm px-6 leading-relaxed">
             Drag the dot through the emotion plane.<br />
             The music synthesizes to match where you are.
           </p>
-          <p className="text-sm text-white/55 font-mono">
+          <p className="text-sm text-muted-foreground font-mono">
             valence (sad ↔ happy) · arousal (calm ↔ excited)
           </p>
           <button
             onClick={() => setStarted(true)}
-            className="mt-2 px-8 py-3 rounded-full bg-violet-500/80 hover:bg-violet-500 transition-colors text-white/95 text-base font-medium min-h-[44px]"
+            className="mt-2 px-8 py-3 rounded-full bg-violet-500/80 hover:bg-violet-500 transition-colors text-foreground text-base font-medium min-h-[44px]"
           >
             Start
           </button>
@@ -366,7 +366,7 @@ export default function MoodXY() {
       <div className="absolute bottom-4 left-4 z-10">
         <Link
           href="/dream"
-          className="text-xs text-white/55 hover:text-white/80 transition-colors"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           ← dream lab
         </Link>

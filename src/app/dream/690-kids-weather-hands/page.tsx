@@ -305,7 +305,7 @@ export default function Page() {
   }, [onOrient, onMotion]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#221c2e] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#221c2e] text-foreground">
       {/* full-bleed breathing sky — the whole "screen" */}
       <canvas
         ref={canvasRef}
@@ -315,7 +315,7 @@ export default function Page() {
 
       {/* tiny weather word — readable but unobtrusive; no reading needed to play */}
       <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center">
-        <span className="rounded-full bg-black/25 px-4 py-2 text-xl font-serif text-white/95 backdrop-blur-sm">
+        <span className="rounded-full bg-black/25 px-4 py-2 text-xl font-serif text-foreground backdrop-blur-sm">
           {running ? weatherWord : "weather in your hands"}
         </span>
       </div>
@@ -323,21 +323,21 @@ export default function Page() {
       {/* Begin overlay (single gesture) */}
       {!running && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="max-w-md text-2xl font-serif text-white/95">
+          <h1 className="max-w-md text-2xl font-serif text-foreground">
             Weather in Your Hands
           </h1>
-          <p className="max-w-sm text-base text-white/75">
+          <p className="max-w-sm text-base text-muted-foreground">
             Hold me like a tray. Be still for sunshine. Move and play to bring
             the storm. Listen with your whole body.
           </p>
           <button
             type="button"
             onClick={begin}
-            className="min-h-[64px] min-w-[64px] rounded-full bg-amber-300/90 px-10 py-4 text-xl font-semibold text-[#221c2e] shadow-lg transition-transform active:scale-95"
+            className="min-h-[64px] min-w-[64px] rounded-full bg-violet-300/90 px-10 py-4 text-xl font-semibold text-[#221c2e] shadow-lg transition-transform active:scale-95"
           >
             Begin
           </button>
-          <p className="max-w-xs text-base text-white/55">
+          <p className="max-w-xs text-base text-muted-foreground">
             Sound and motion. Best on a phone or tablet you can tip and wave.
           </p>
         </div>
@@ -348,7 +348,7 @@ export default function Page() {
         <div className="pointer-events-none absolute inset-x-0 bottom-24 flex justify-center px-6">
           <p
             className={`max-w-md rounded-2xl bg-black/35 px-4 py-2.5 text-center text-base backdrop-blur-sm ${
-              inputMode === "drift" ? "text-rose-300" : "text-white/75"
+              inputMode === "drift" ? "text-violet-300" : "text-muted-foreground"
             }`}
           >
             {notice}
@@ -360,7 +360,7 @@ export default function Page() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-3 right-3 z-30 rounded-full bg-black/40 px-4 py-2.5 text-base text-white/60 backdrop-blur-sm transition-colors hover:text-white/90"
+        className="absolute bottom-3 right-3 z-30 rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
@@ -368,7 +368,7 @@ export default function Page() {
       {/* back link (corner, large enough) */}
       <Link
         href="/dream"
-        className="absolute left-3 top-3 z-30 flex min-h-[44px] items-center rounded-full bg-black/40 px-4 py-2.5 text-base text-white/60 backdrop-blur-sm transition-colors hover:text-white/90"
+        className="absolute left-3 top-3 z-30 flex min-h-[44px] items-center rounded-full bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
       >
         ← back
       </Link>
@@ -376,10 +376,10 @@ export default function Page() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/80 px-6 py-16 backdrop-blur-md">
-          <div className="mx-auto max-w-xl space-y-4 text-base leading-relaxed text-white/85">
-            <h2 className="text-2xl font-serif text-white/95">Design notes</h2>
+          <div className="mx-auto max-w-xl space-y-4 text-base leading-relaxed text-foreground">
+            <h2 className="text-2xl font-serif text-foreground">Design notes</h2>
             <p>
-              <span className="text-white/95">For kids (4+).</span> The screen
+              <span className="text-foreground">For kids (4+).</span> The screen
               is nearly empty on purpose — all the play is in your ears and your
               body. Hold the device like a tray. When you are calm and still,
               the music sits in a bright, sunny world. As you sway, rock, wave
@@ -387,7 +387,7 @@ export default function Page() {
               a stormy minor — then glides back to sun the moment you settle.
             </p>
             <p>
-              <span className="text-white/95">The harmonic trick.</span> Your
+              <span className="text-foreground">The harmonic trick.</span> Your
               movement and voice become one &ldquo;energy&rdquo; signal that
               continuously <em>morphs the musical mode</em>. The chord&rsquo;s
               third and sixth physically slide between a bright major / Lydian
@@ -397,7 +397,7 @@ export default function Page() {
               the chord change its <em>feeling</em>, controlled by your body.
             </p>
             <p>
-              <span className="text-white/95">Why this matters.</span> Music-
+              <span className="text-foreground">Why this matters.</span> Music-
               cognition research finds that children&rsquo;s perception of a
               piece&rsquo;s expressive character is shaped by their own (and
               observed) body movement — the embodied basis of Reggio Emilia
@@ -405,7 +405,7 @@ export default function Page() {
               Eno&rsquo;s ambient systems. Together: embodied, expressive
               control of musical mode.
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Ear-safe: soft attacks, a compressor/limiter, and a low master
               cap — gentle enough near a sleeping sibling. No sensors? The sky
               and music drift on their own.

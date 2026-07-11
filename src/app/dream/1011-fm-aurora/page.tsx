@@ -380,12 +380,12 @@ export default function FmAuroraPage() {
         : "auto-demo (idle)";
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           FM Aurora
         </h1>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           Tilt your phone through a 2-D timbre space to sculpt a 6-operator
           FM synth, and watch the spectrum bloom with sidebands as you move.
         </p>
@@ -393,7 +393,7 @@ export default function FmAuroraPage() {
         {/* canvas stage */}
         <div
           ref={wrapRef}
-          className="relative mt-5 aspect-[4/5] w-full touch-none overflow-hidden rounded-2xl border border-white/10 bg-[#03040a] sm:aspect-video"
+          className="relative mt-5 aspect-[4/5] w-full touch-none overflow-hidden rounded-2xl border border-border bg-[#03040a] sm:aspect-video"
         >
           {/* WebGL aurora wash (behind) */}
           <canvas
@@ -410,11 +410,11 @@ export default function FmAuroraPage() {
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 backdrop-blur-[1px]">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-8 py-2.5 text-base font-semibold text-black shadow-lg transition hover:brightness-110"
+                className="min-h-[44px] rounded-full bg-gradient-to-r from-violet-400 to-violet-500 px-8 py-2.5 text-base font-semibold text-black shadow-lg transition hover:brightness-110"
               >
                 Start
               </button>
-              <p className="px-6 text-center text-base text-white/75">
+              <p className="px-6 text-center text-base text-muted-foreground">
                 Sound + visuals begin on tap.
               </p>
             </div>
@@ -426,16 +426,16 @@ export default function FmAuroraPage() {
           {statusMsg}
         </p>
         {started && (
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             input:{" "}
-            <span className="text-white/95">{sensorLabel}</span>
+            <span className="text-foreground">{sensorLabel}</span>
             {renderMode === "canvas2d" && (
-              <span className="ml-2 text-rose-300">
+              <span className="ml-2 text-violet-300">
                 WebGL2 unavailable — using Canvas2D fallback.
               </span>
             )}
             {renderMode === "" && started && (
-              <span className="ml-2 text-rose-300">
+              <span className="ml-2 text-violet-300">
                 No canvas context available.
               </span>
             )}
@@ -451,8 +451,8 @@ export default function FmAuroraPage() {
                 onClick={() => setAlgoIdx(i)}
                 className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base font-medium transition ${
                   algoIdx === i
-                    ? "bg-cyan-400/90 text-black"
-                    : "bg-white/10 text-white/95 hover:bg-white/20"
+                    ? "bg-violet-400/90 text-black"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {a.name}
@@ -469,11 +469,11 @@ export default function FmAuroraPage() {
           {showNotes ? "Hide design notes" : "Read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-base text-white/75">
+          <div className="mt-3 space-y-2 rounded-xl border border-border bg-muted p-4 text-base text-muted-foreground">
             <p>
               FM synthesis (Chowning, JAES 1973): one oscillator&apos;s
               output modulates another&apos;s frequency, generating sidebands
-              at <span className="text-white/95">fc ± k·fm</span> whose
+              at <span className="text-foreground">fc ± k·fm</span> whose
               amplitudes follow Bessel functions. Raising the modulation
               index pours energy into higher sidebands — the spectrum
               &quot;blooms.&quot;
@@ -483,7 +483,7 @@ export default function FmAuroraPage() {
               &quot;algorithms.&quot; Here, three routings are selectable; the
               orbiting nodes are operators and the pulsing links are
               modulation paths. Full notes live in{" "}
-              <span className="text-white/95">README.md</span> beside this
+              <span className="text-foreground">README.md</span> beside this
               prototype.
             </p>
           </div>

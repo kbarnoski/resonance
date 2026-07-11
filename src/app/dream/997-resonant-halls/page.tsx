@@ -837,7 +837,7 @@ export default function ResonantHalls() {
   };
 
   return (
-    <main className="relative h-[calc(100dvh-3rem)] w-full overflow-hidden bg-[#06040c] text-white">
+    <main className="relative h-[calc(100dvh-3rem)] w-full overflow-hidden bg-[#06040c] text-foreground">
       <PrototypeNav slugs={["997-resonant-halls", "992-dream-house"]} />
       <canvas
         ref={canvasRef}
@@ -851,10 +851,10 @@ export default function ResonantHalls() {
       {/* Title + description (always present) */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Resonant Halls
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             A first-person walk through a cathedral of harmonic rooms — each room a
             key on the circle of fifths, each with its own acoustics, where stepping
             through a doorway is a key modulation you hear in the reverb itself.
@@ -879,7 +879,7 @@ export default function ResonantHalls() {
             {hud.full} · {hud.label}
           </div>
           {hud.cross && (
-            <div className="rounded-full bg-black/40 px-4 py-1.5 font-mono text-base text-white/85 backdrop-blur-sm">
+            <div className="rounded-full bg-black/40 px-4 py-1.5 font-mono text-base text-foreground backdrop-blur-sm">
               → {hud.cross}
             </div>
           )}
@@ -898,11 +898,11 @@ export default function ResonantHalls() {
             </button>
             <button
               onClick={() => setShowNotes((s) => !s)}
-              className="min-h-[44px] rounded-lg border border-white/20 bg-transparent px-4 py-2.5 text-base text-white/75 transition hover:bg-white/10"
+              className="min-h-[44px] rounded-lg border border-border bg-transparent px-4 py-2.5 text-base text-muted-foreground transition hover:bg-accent"
             >
               Read the design notes
             </button>
-            <p className="ml-auto font-mono text-base text-white/60">
+            <p className="ml-auto font-mono text-base text-muted-foreground">
               drag to look · WASD / arrows to walk
             </p>
           </div>
@@ -912,10 +912,10 @@ export default function ResonantHalls() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-[#0a0618] to-[#05030c] px-6 text-center">
-          <h2 className="mb-3 text-2xl font-semibold text-white/95 sm:text-3xl">
+          <h2 className="mb-3 text-2xl font-semibold text-foreground sm:text-3xl">
             Enter the hall
           </h2>
-          <p className="mb-8 max-w-md text-base text-white/75">
+          <p className="mb-8 max-w-md text-base text-muted-foreground">
             Five connected chambers, tuned by the circle of fifths. Drag to look
             around; walk forward with WASD or the arrow keys; step through a doorway
             to hear the key modulate in the room&rsquo;s own reverb. Sound starts on
@@ -923,12 +923,12 @@ export default function ResonantHalls() {
           </p>
           <button
             onClick={handleStart}
-            className="rounded-full bg-violet-500 px-10 py-4 text-2xl font-semibold text-white shadow-lg shadow-violet-900/50 transition hover:bg-violet-400 active:scale-95"
+            className="rounded-full bg-violet-500 px-10 py-4 text-2xl font-semibold text-foreground shadow-lg shadow-violet-900/50 transition hover:bg-violet-400 active:scale-95"
             style={{ minHeight: 64, minWidth: 220 }}
           >
             Enter the hall
           </button>
-          <p className="mt-6 max-w-sm text-base text-white/55">
+          <p className="mt-6 max-w-sm text-base text-muted-foreground">
             Best with sound on. Or press &ldquo;Take the tour&rdquo; after entering
             for a hands-free stroll.
           </p>
@@ -939,10 +939,10 @@ export default function ResonantHalls() {
       {failed && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/80 px-6 text-center">
           <div className="max-w-md">
-            <h2 className="text-xl font-semibold text-white/95">
+            <h2 className="text-xl font-semibold text-foreground">
               WebGL2 isn&rsquo;t available
             </h2>
-            <p className="mt-2 text-base text-white/75">
+            <p className="mt-2 text-base text-muted-foreground">
               This walk-through needs WebGL2 to raymarch the hall. Try a recent
               desktop browser with hardware acceleration enabled. The audio engine
               is unaffected, but there&rsquo;s nothing to render without WebGL2.
@@ -954,46 +954,46 @@ export default function ResonantHalls() {
       {/* Design notes */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-xl border border-white/15 bg-[#120a20] p-6 text-base text-white/80 shadow-2xl">
-            <h2 className="text-xl font-semibold text-white/95">Design notes</h2>
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-xl border border-border bg-[#120a20] p-6 text-base text-foreground shadow-2xl">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>
-                <span className="text-white/95">Floor-plan:</span> five rooms laid
+                <span className="text-foreground">Floor-plan:</span> five rooms laid
                 out by the circle of fifths — C → G → D → A → E. Each room&rsquo;s
                 tonic is a just (3/2) fifth above its neighbour, octave-folded into a
                 warm low register.
               </li>
               <li>
-                <span className="text-white/95">Drone:</span> each room runs a
+                <span className="text-foreground">Drone:</span> each room runs a
                 permanently-sounding just-intoned major pad (1/1, 5/4, 3/2, 2/1, 9/8,
                 3/1) — sustained timbre, never triggered notes, never a wrong note.
               </li>
               <li>
-                <span className="text-white/95">Each room its own acoustics:</span> a
+                <span className="text-foreground">Each room its own acoustics:</span> a
                 procedurally-synthesized impulse response per room (exponential-decay
                 noise + sparse early reflections, darkened by a one-pole filter) fed
                 to a ConvolverNode. Small bright chapel = short reverb; tall dark nave
                 = long reverb.
               </li>
               <li>
-                <span className="text-white/95">Doorway = modulation:</span> the 3/2
+                <span className="text-foreground">Doorway = modulation:</span> the 3/2
                 fifth of each key equals the root of the next, so during a crossing
                 that shared partial is held steady (a pivot common tone) while the
                 rest retune — a real, audible key modulation in the reverb itself.
               </li>
               <li>
-                <span className="text-white/95">Proximity:</span> a deterministic
+                <span className="text-foreground">Proximity:</span> a deterministic
                 Gaussian well per room turns your position into normalized weights
                 that ramp each room&rsquo;s drone + reverb send (no clicks).
               </li>
               <li>
-                <span className="text-white/95">Render:</span> a single full-screen
+                <span className="text-foreground">Render:</span> a single full-screen
                 fragment shader raymarches an SDF corridor of box-rooms; a hand-rolled
                 first-person camera (position + yaw/pitch, no three.js) drives the
                 ray. Colors map hue = fifths-index / 12.
               </li>
               <li>
-                <span className="text-white/95">Lineage:</span> La Monte Young &amp;
+                <span className="text-foreground">Lineage:</span> La Monte Young &amp;
                 Marian Zazeela&rsquo;s <em>Dream House</em>; architectural-acoustics
                 auralization (convolution reverb from room IRs); the circle of fifths
                 as a spatial layout.
@@ -1001,7 +1001,7 @@ export default function ResonantHalls() {
             </ul>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/90 px-4 py-2.5 text-base font-medium text-[#120820] hover:bg-white"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-[#120820] hover:bg-card"
             >
               Close
             </button>

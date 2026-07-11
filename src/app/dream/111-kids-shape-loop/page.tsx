@@ -386,8 +386,8 @@ export default function ShapeLoop() {
   if (!started) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a14] px-6 text-center">
-        <h1 className="text-3xl font-bold text-white/95 mb-3">Shape Loop</h1>
-        <p className="text-base text-white/75 mb-8 max-w-xs">
+        <h1 className="text-3xl font-bold text-foreground mb-3">Shape Loop</h1>
+        <p className="text-base text-muted-foreground mb-8 max-w-xs">
           Draw any closed shape — it becomes a looping melody. Add shapes to layer the music.
         </p>
         <div className="flex gap-3 mb-8 items-center">
@@ -406,7 +406,7 @@ export default function ShapeLoop() {
         </div>
         <button
           onClick={handleStart}
-          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white text-xl font-semibold rounded-2xl px-8 transition-colors"
+          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground text-xl font-semibold rounded-2xl px-8 transition-colors"
           style={{
             minHeight: 64,
             minWidth: 200,
@@ -415,7 +415,7 @@ export default function ShapeLoop() {
         >
           Let&apos;s draw! 🎵
         </button>
-        <p className="text-xs text-white/55 mt-6">
+        <p className="text-xs text-muted-foreground mt-6">
           Tap a shape to erase it · Up to 6 loops at once
         </p>
       </div>
@@ -429,7 +429,7 @@ export default function ShapeLoop() {
         className="w-full h-full touch-none select-none"
       />
       <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-        <span className="text-xs text-white/40">
+        <span className="text-xs text-muted-foreground/70">
           Draw a closed shape · Tap to erase
         </span>
       </div>

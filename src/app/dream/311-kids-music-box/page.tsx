@@ -108,7 +108,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#1a120b] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#1a120b] text-foreground">
       {/* 3D scene */}
       {started && webgl && (
         <div className="absolute inset-0">
@@ -125,7 +125,7 @@ export default function Page() {
       {/* WebGL fallback */}
       {started && !webgl && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This music box needs WebGL to draw its spinning cylinder, and your
             browser does not seem to have it. Try a different browser or device.
           </p>
@@ -135,10 +135,10 @@ export default function Page() {
       {/* Top caption (adults) + paint legend */}
       {started && (
         <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-3 p-4">
-          <h1 className="text-2xl font-semibold text-white/95 drop-shadow">
+          <h1 className="text-2xl font-semibold text-foreground drop-shadow">
             Build a Music Box
           </h1>
-          <p className="max-w-lg text-center text-base text-white/75">
+          <p className="max-w-lg text-center text-base text-muted-foreground">
             Tap the spinning barrel to place little pins. The comb plucks each
             pin as it rolls past — your tune keeps looping and is remembered.
           </p>
@@ -169,7 +169,7 @@ export default function Page() {
           <button
             type="button"
             onClick={runClear}
-            className="min-h-[44px] rounded-full bg-white/10 px-6 py-2.5 text-base font-medium text-white/80 backdrop-blur transition hover:bg-white/20"
+            className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-accent"
             aria-label="Clear all pins and start fresh"
           >
             🧹 Start fresh
@@ -184,21 +184,21 @@ export default function Page() {
             <span className="text-5xl" aria-hidden>
               🎶
             </span>
-            <h1 className="text-2xl font-semibold text-white/95">
+            <h1 className="text-2xl font-semibold text-foreground">
               Kids Music Box
             </h1>
-            <p className="max-w-md text-base text-white/75">
+            <p className="max-w-md text-base text-muted-foreground">
               Tap the spinning barrel to stud it with pins. A comb plucks each
               pin as it turns — building a little looping tune that the box
               remembers, even after you come back.
             </p>
-            <p className="max-w-md text-base text-white/55">
+            <p className="max-w-md text-base text-muted-foreground">
               No reading needed: colors are the notes, and the studs you tap are
               the melody.
             </p>
           </div>
           {!audioOk && (
-            <p className="max-w-md text-base text-rose-300">
+            <p className="max-w-md text-base text-violet-300">
               Sound is not available in this browser, but you can still build
               and watch the box spin.
             </p>
@@ -218,7 +218,7 @@ export default function Page() {
         href="/dream/311-kids-music-box/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute bottom-2 right-3 z-20 text-sm text-white/55 hover:text-white/80"
+        className="absolute bottom-2 right-3 z-20 text-sm text-muted-foreground hover:text-foreground"
       >
         Read the design notes
       </Link>

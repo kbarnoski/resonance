@@ -326,11 +326,11 @@ export default function KidsPaintMixerPage() {
       {/* Header */}
       <div className="z-10 flex items-center justify-between px-4 py-3 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0">
         <div>
-          <h1 className="text-2xl font-bold text-white leading-tight">Paint Mixer</h1>
-          <p className="text-base text-white/75">Mix the paints — the color you make is the music you hear</p>
+          <h1 className="text-2xl font-bold text-foreground leading-tight">Paint Mixer</h1>
+          <p className="text-base text-muted-foreground">Mix the paints — the color you make is the music you hear</p>
         </div>
         {(webglError || audioError) && (
-          <p className="text-rose-300 text-sm ml-4 max-w-xs">
+          <p className="text-violet-300 text-sm ml-4 max-w-xs">
             {webglError ? 'WebGL2 unavailable — using CSS blend mode. ' : ''}
             {audioError ? 'Audio unavailable.' : ''}
           </p>
@@ -384,7 +384,7 @@ export default function KidsPaintMixerPage() {
             {/* Start button — large for kids */}
             <button
               onClick={handleStart}
-              className="relative z-10 flex flex-col items-center gap-3 bg-white/90 hover:bg-white rounded-3xl px-10 py-6 shadow-2xl transition-transform active:scale-95"
+              className="relative z-10 flex flex-col items-center gap-3 bg-muted hover:bg-card rounded-3xl px-10 py-6 shadow-2xl transition-transform active:scale-95"
               style={{ minHeight: 64, minWidth: 200 }}
             >
               <span className="text-5xl select-none">🎨</span>
@@ -409,7 +409,7 @@ export default function KidsPaintMixerPage() {
 
       {/* Footer hint */}
       {started && (
-        <div className="z-10 text-center py-2 bg-zinc-900/60 text-white/60 text-sm flex-shrink-0">
+        <div className="z-10 text-center py-2 bg-zinc-900/60 text-muted-foreground text-sm flex-shrink-0">
           Drag the blobs · mix the paint · hear the chord change
         </div>
       )}

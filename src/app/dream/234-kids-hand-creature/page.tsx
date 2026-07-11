@@ -603,7 +603,7 @@ export default function KidsHandCreature() {
         ref={videoRef}
         playsInline
         muted
-        className="absolute bottom-4 left-4 w-32 h-24 rounded-xl object-cover opacity-70 border border-white/15"
+        className="absolute bottom-4 left-4 w-32 h-24 rounded-xl object-cover opacity-70 border border-border"
         style={{ transform: "scaleX(-1)", display: phase === "live" ? "block" : "none" }}
       />
 
@@ -613,19 +613,19 @@ export default function KidsHandCreature() {
       {/* idle splash */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-          <h1 className="text-4xl md:text-5xl font-bold text-white/95 mb-3 drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3 drop-shadow-lg">
             Hand Creature
           </h1>
-          <p className="text-xl text-white/80 max-w-md leading-relaxed mb-8">
+          <p className="text-xl text-foreground max-w-md leading-relaxed mb-8">
             Lift your hands in the air and grow a glowing creature. Open your hands to make it sparkle. No touching!
           </p>
           <button
             onClick={() => { void wake(); }}
-            className="pointer-events-auto min-h-[64px] px-8 py-4 rounded-3xl text-2xl font-bold text-white bg-violet-500/40 border-2 border-violet-300/60 hover:bg-violet-500/55 active:scale-95 transition-all shadow-xl"
+            className="pointer-events-auto min-h-[64px] px-8 py-4 rounded-3xl text-2xl font-bold text-foreground bg-violet-500/40 border-2 border-violet-300/60 hover:bg-violet-500/55 active:scale-95 transition-all shadow-xl"
           >
             Wake the creature 🪼
           </button>
-          <Link href="/dream" className="pointer-events-auto mt-10 text-base text-white/55 hover:text-white/80">
+          <Link href="/dream" className="pointer-events-auto mt-10 text-base text-muted-foreground hover:text-foreground">
             ← dream
           </Link>
         </div>
@@ -634,7 +634,7 @@ export default function KidsHandCreature() {
       {/* live HUD */}
       {phase === "live" && (
         <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none px-4">
-          <p className="text-xl text-white/90 text-center max-w-lg drop-shadow">
+          <p className="text-xl text-foreground text-center max-w-lg drop-shadow">
             Raise your hands to grow it! Open wide to make it sparkle ✨
           </p>
         </div>
@@ -643,8 +643,8 @@ export default function KidsHandCreature() {
       {/* fallback / error message */}
       {phase === "fallback" && message && (
         <div className="absolute top-4 left-0 right-0 flex flex-col items-center pointer-events-none px-4 gap-2">
-          <p className="text-xl text-rose-300 text-center max-w-lg drop-shadow">{message}</p>
-          <p className="text-base text-white/75 text-center max-w-md">Tap the creature to bounce it!</p>
+          <p className="text-xl text-violet-300 text-center max-w-lg drop-shadow">{message}</p>
+          <p className="text-base text-muted-foreground text-center max-w-md">Tap the creature to bounce it!</p>
         </div>
       )}
 
@@ -652,7 +652,7 @@ export default function KidsHandCreature() {
       {phase !== "idle" && (
         <Link
           href="/dream"
-          className="absolute top-3 right-4 text-base text-white/60 hover:text-white/90 z-10"
+          className="absolute top-3 right-4 text-base text-muted-foreground hover:text-foreground z-10"
         >
           ← dream
         </Link>

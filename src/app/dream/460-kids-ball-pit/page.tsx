@@ -445,12 +445,12 @@ export default function KidsBallPit() {
   if (noWebGL) {
     return (
       <div className="flex flex-col items-center justify-center min-h-dvh bg-[#0a0b12] px-6 text-center gap-4">
-        <p className="text-2xl font-serif text-white/95">WebGL2 not available</p>
-        <p className="text-base text-white/75 max-w-sm leading-relaxed">
+        <p className="text-2xl font-serif text-foreground">WebGL2 not available</p>
+        <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
           Your browser does not support WebGL2, which this experience requires for
           hardware-accelerated rendering. Try a recent Chrome or Safari on a modern device.
         </p>
-        <Link href="/dream" className="mt-6 text-sm text-white/50 hover:text-white/70">
+        <Link href="/dream" className="mt-6 text-sm text-muted-foreground hover:text-muted-foreground">
           ← Dream lab
         </Link>
       </div>
@@ -477,25 +477,25 @@ export default function KidsBallPit() {
           ))}
         </div>
 
-        <h1 className="text-3xl font-serif text-white/95 text-center mb-3 tracking-tight">
+        <h1 className="text-3xl font-serif text-foreground text-center mb-3 tracking-tight">
           Ball Pit
         </h1>
-        <p className="text-base text-white/75 text-center max-w-[300px] mb-10 leading-relaxed">
+        <p className="text-base text-muted-foreground text-center max-w-[300px] mb-10 leading-relaxed">
           Tip the phone to pour a thousand singing marbles — every collision chimes!
         </p>
 
         <button
           onClick={handleStart}
-          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-bold text-xl rounded-2xl px-10 py-4 min-h-[64px] min-w-[200px] transition-colors shadow-lg shadow-violet-900/60"
+          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-bold text-xl rounded-2xl px-10 py-4 min-h-[64px] min-w-[200px] transition-colors shadow-lg shadow-violet-900/60"
         >
           Pour them in!
         </button>
 
-        <p className="mt-5 text-sm text-white/50 text-center leading-loose">
+        <p className="mt-5 text-sm text-muted-foreground text-center leading-loose">
           Tap to drop more &nbsp;·&nbsp; Drag to tilt &nbsp;·&nbsp; Two fingers to shake
         </p>
 
-        <Link href="/dream" className="mt-12 text-sm text-white/40 hover:text-white/65 transition-colors">
+        <Link href="/dream" className="mt-12 text-sm text-muted-foreground/70 hover:text-muted-foreground transition-colors">
           ← Dream lab
         </Link>
       </div>
@@ -518,7 +518,7 @@ export default function KidsBallPit() {
       {/* Nav back */}
       <Link
         href="/dream"
-        className="absolute top-4 left-4 z-10 text-xs text-white/35 hover:text-white/65 transition-colors"
+        className="absolute top-4 left-4 z-10 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         style={{ lineHeight: "44px", paddingInline: "12px" }}
       >
         ← Dream
@@ -527,7 +527,7 @@ export default function KidsBallPit() {
       {/* Design notes toggle */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute top-4 right-4 z-10 text-xs text-white/30 hover:text-white/55 transition-colors min-h-[44px] px-3 py-2"
+        className="absolute top-4 right-4 z-10 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors min-h-[44px] px-3 py-2"
         aria-label={showNotes ? "Close design notes" : "Design notes"}
       >
         {showNotes ? "×" : "notes"}
@@ -538,39 +538,39 @@ export default function KidsBallPit() {
         <div
           role="dialog"
           aria-label="Design notes"
-          className="absolute inset-x-4 top-14 bottom-4 z-20 rounded-2xl bg-black/88 backdrop-blur border border-white/10 overflow-y-auto p-5 leading-relaxed"
+          className="absolute inset-x-4 top-14 bottom-4 z-20 rounded-2xl bg-black/88 backdrop-blur border border-border overflow-y-auto p-5 leading-relaxed"
           onClick={() => setShowNotes(false)}
         >
-          <p className="font-serif text-xl text-white/95 mb-4">Ball Pit — notes</p>
+          <p className="font-serif text-xl text-foreground mb-4">Ball Pit — notes</p>
 
-          <p className="text-sm text-white/75 mb-3">
-            <strong className="text-white/90">Physics:</strong> ~900–1400 circles; CPU
+          <p className="text-sm text-muted-foreground mb-3">
+            <strong className="text-foreground">Physics:</strong> ~900–1400 circles; CPU
             uniform-grid spatial hash (cell = 2.2× max radius), 3×3 neighbourhood broad-phase,
             narrow-phase circle–circle penetration resolution + mass-weighted impulse response.
             Reference: Müller, Heidelberger, Hennix &amp; Ratcliff,{" "}
             <em>Position Based Dynamics</em> (2007).
           </p>
 
-          <p className="text-sm text-white/75 mb-3">
-            <strong className="text-white/90">Renderer:</strong> WebGL2 instanced quads — one
+          <p className="text-sm text-muted-foreground mb-3">
+            <strong className="text-foreground">Renderer:</strong> WebGL2 instanced quads — one
             draw call per frame regardless of ball count. Additive blending for glow rings.
             Inspired by: <em>Party: A WebGPU Particle Physics Playground</em>, webgpu.com,
             Jan 23 2026 — thousands of GPU-collided particles as a musical instrument.
           </p>
 
-          <p className="text-sm text-white/75 mb-3">
-            <strong className="text-white/90">Audio:</strong> D-major just-intonation hexachord
+          <p className="text-sm text-muted-foreground mb-3">
+            <strong className="text-foreground">Audio:</strong> D-major just-intonation hexachord
             (D E F♯ A B D′, two octaves = 12 pitches). Each collision above 60 px/s rings a
             bell voice (sine fundamental + inharmonic partial + brief noise click). All routed
             through compressor → brick-wall limiter — celebratory but never harsh.
           </p>
 
-          <p className="text-sm text-white/75 mb-3">
-            <strong className="text-white/90">Controls:</strong> Tap = drop a handful; single-finger
+          <p className="text-sm text-muted-foreground mb-3">
+            <strong className="text-foreground">Controls:</strong> Tap = drop a handful; single-finger
             drag = tilt gravity; two-finger fast swipe = scramble; DeviceOrientation tilt on mobile.
           </p>
 
-          <p className="text-xs text-white/35 mt-5">
+          <p className="text-xs text-muted-foreground/70 mt-5">
             Unverified on real GPU/sensor hardware beyond desktop Chrome.
             Tap anywhere to close.
           </p>
@@ -578,7 +578,7 @@ export default function KidsBallPit() {
       )}
 
       {/* Hint */}
-      <div className="absolute bottom-5 inset-x-0 text-center text-xs text-white/25 pointer-events-none select-none">
+      <div className="absolute bottom-5 inset-x-0 text-center text-xs text-muted-foreground/70 pointer-events-none select-none">
         Tap · Drag · Shake
       </div>
     </div>

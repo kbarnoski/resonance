@@ -157,13 +157,13 @@ export default function WorldPulsePage() {
     readout.mom > 0.08 ? 'rising' : readout.mom < -0.08 ? 'falling' : 'steady'
   const momColor =
     readout.mom > 0.08
-      ? 'text-amber-300'
+      ? 'text-violet-300'
       : readout.mom < -0.08
-        ? 'text-sky-300'
+        ? 'text-violet-300'
         : 'text-violet-300'
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#05040a] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#05040a] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* subtle vignette so text stays legible over the nebula */}
@@ -171,10 +171,10 @@ export default function WorldPulsePage() {
 
       {/* header */}
       <div className="relative z-10 flex flex-col gap-3 p-6 sm:p-10">
-        <h1 className="font-serif text-3xl tracking-tight text-white sm:text-4xl">
+        <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
           World Pulse
         </h1>
-        <p className="max-w-xl text-base leading-relaxed text-white/80">
+        <p className="max-w-xl text-base leading-relaxed text-foreground">
           The live fear and greed of the world&rsquo;s markets, witnessed as a
           cosmic weather system &mdash; every trade a breath of light and sound,
           right now, this second.
@@ -190,7 +190,7 @@ export default function WorldPulsePage() {
           </button>
         )}
         {started && (
-          <p className="mt-1 text-base text-white/55">
+          <p className="mt-1 text-base text-muted-foreground">
             Let it drift. The harmony slowly evolves &mdash; it will sound
             different in five minutes.
           </p>
@@ -200,7 +200,7 @@ export default function WorldPulsePage() {
       {/* live amber notice when no real feed */}
       {!live && (
         <div className="absolute left-6 top-1/2 z-10 -translate-y-1/2 sm:left-10">
-          <p className="max-w-[15rem] rounded-md bg-black/40 px-3 py-2 text-base leading-snug text-amber-300/95">
+          <p className="max-w-[15rem] rounded-md bg-black/40 px-3 py-2 text-base leading-snug text-violet-300/95">
             Live feed unavailable &mdash; playing a simulated market.
           </p>
         </div>
@@ -208,23 +208,23 @@ export default function WorldPulsePage() {
 
       {/* ambient readout */}
       <div className="absolute bottom-6 left-6 z-10 flex flex-col gap-1 font-mono text-base sm:left-10">
-        <div className="text-white/80">
+        <div className="text-foreground">
           BTC{' '}
-          <span className="text-white">
+          <span className="text-foreground">
             ${readout.price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </span>
           {live ? (
-            <span className="ml-2 text-base text-emerald-300/90">live</span>
+            <span className="ml-2 text-base text-violet-300/90">live</span>
           ) : (
-            <span className="ml-2 text-base text-amber-300/95">sim</span>
+            <span className="ml-2 text-base text-violet-300/95">sim</span>
           )}
         </div>
-        <div className="text-white/75">
+        <div className="text-muted-foreground">
           momentum <span className={momColor}>{momLabel}</span>
         </div>
-        <div className="text-white/75">
+        <div className="text-muted-foreground">
           volatility{' '}
-          <span className="text-white/80">
+          <span className="text-foreground">
             {(readout.vol * 100).toFixed(0)}%
           </span>
         </div>
@@ -232,7 +232,7 @@ export default function WorldPulsePage() {
 
       {/* renderer mode + design notes */}
       <div className="absolute bottom-6 right-6 z-10 flex flex-col items-end gap-1 text-right sm:right-10">
-        <span className="text-base text-white/55">
+        <span className="text-base text-muted-foreground">
           {usingGpu === null
             ? 'starting field…'
             : usingGpu
@@ -242,7 +242,7 @@ export default function WorldPulsePage() {
         <a
           href="https://github.com/"
           onClick={(e) => e.preventDefault()}
-          className="text-base text-white/55 underline-offset-2 hover:text-white/75 hover:underline"
+          className="text-base text-muted-foreground underline-offset-2 hover:text-muted-foreground hover:underline"
           title="See README.md in this prototype's folder"
         >
           Read the design notes

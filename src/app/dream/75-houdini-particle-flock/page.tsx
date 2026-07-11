@@ -679,15 +679,15 @@ export default function HoudiniParticleFlock() {
       {/* WebGPU error state */}
       {gpuError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center px-8 z-10">
-          <p className="text-rose-300 text-xl font-mono">WebGPU unavailable</p>
-          <p className="text-white/75 text-base max-w-sm">{gpuError}</p>
+          <p className="text-violet-300 text-xl font-mono">WebGPU unavailable</p>
+          <p className="text-muted-foreground text-base max-w-sm">{gpuError}</p>
           <Link
             href="/dream/16-particle-life-gpu"
             className="text-violet-300 underline text-base hover:text-violet-200"
           >
             Try particle-life-gpu instead →
           </Link>
-          <Link href="/dream" className="text-white/55 text-sm hover:text-white/80">
+          <Link href="/dream" className="text-muted-foreground text-sm hover:text-foreground">
             ← dream lab
           </Link>
         </div>
@@ -697,14 +697,14 @@ export default function HoudiniParticleFlock() {
       {!gpuError && (
         <div className="absolute top-0 left-0 right-0 flex items-start justify-between p-6 z-10">
           <div>
-            <h1 className="text-2xl font-mono text-white/95 mb-1">Houdini Particle Flock</h1>
-            <p className="text-base text-white/75 max-w-md leading-snug">
+            <h1 className="text-2xl font-mono text-foreground mb-1">Houdini Particle Flock</h1>
+            <p className="text-base text-muted-foreground max-w-md leading-snug">
               {theme.subtitle} · Boids + curl-noise · {N_TOTAL.toLocaleString()} particles
             </p>
           </div>
           <Link
             href="/dream"
-            className="text-white/55 hover:text-white/90 text-sm font-mono transition-colors mt-1"
+            className="text-muted-foreground hover:text-foreground text-sm font-mono transition-colors mt-1"
           >
             ← dream lab
           </Link>
@@ -726,8 +726,8 @@ export default function HoudiniParticleFlock() {
                 }}
                 className={`px-3 py-2 rounded text-sm font-mono transition-all min-h-[44px] ${
                   i === themeIdx
-                    ? "bg-white/20 text-white/95 ring-1 ring-white/50"
-                    : "bg-black/40 text-white/60 hover:bg-white/10 hover:text-white/90"
+                    ? "bg-muted text-foreground ring-1 ring-border"
+                    : "bg-black/40 text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {t.name}
@@ -746,7 +746,7 @@ export default function HoudiniParticleFlock() {
               className={`px-4 py-2.5 rounded font-mono text-base min-h-[44px] transition-colors ${
                 mode === "demo"
                   ? "bg-violet-500/30 text-violet-200 ring-1 ring-violet-400/50"
-                  : "bg-white/10 text-white/80 hover:bg-white/20"
+                  : "bg-muted text-foreground hover:bg-accent"
               }`}
             >
               {mode === "demo" ? "● Demo" : "Demo"}
@@ -760,8 +760,8 @@ export default function HoudiniParticleFlock() {
               }}
               className={`px-4 py-2.5 rounded font-mono text-base min-h-[44px] transition-colors ${
                 mode === "mic"
-                  ? "bg-rose-500/30 text-rose-200 ring-1 ring-rose-400/50"
-                  : "bg-white/10 text-white/80 hover:bg-white/20"
+                  ? "bg-violet-500/30 text-violet-200 ring-1 ring-violet-400/50"
+                  : "bg-muted text-foreground hover:bg-accent"
               }`}
             >
               {mode === "mic" ? "● Mic" : "Start Mic"}
@@ -771,7 +771,7 @@ export default function HoudiniParticleFlock() {
             <button
               onClick={generateBg}
               disabled={generating}
-              className="px-4 py-2.5 rounded font-mono text-base min-h-[44px] bg-emerald-500/20 text-emerald-300/95 hover:bg-emerald-500/30 disabled:opacity-50 transition-colors ring-1 ring-emerald-400/30"
+              className="px-4 py-2.5 rounded font-mono text-base min-h-[44px] bg-violet-500/20 text-violet-300/95 hover:bg-violet-500/30 disabled:opacity-50 transition-colors ring-1 ring-violet-400/30"
             >
               {generating ? "Generating…" : bgUrl ? "New Backdrop" : "Generate Backdrop"}
             </button>
@@ -799,12 +799,12 @@ export default function HoudiniParticleFlock() {
 
           {/* Mic error */}
           {micError && (
-            <p className="text-rose-300 text-sm mt-2 font-mono">{micError}</p>
+            <p className="text-violet-300 text-sm mt-2 font-mono">{micError}</p>
           )}
 
           {/* Backdrop hint */}
           {!bgUrl && !generating && mode !== "idle" && (
-            <p className="text-white/55 text-sm mt-2 font-mono">
+            <p className="text-muted-foreground text-sm mt-2 font-mono">
               ↑ Generate a Flux backdrop themed to {theme.name}
             </p>
           )}

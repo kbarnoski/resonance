@@ -621,7 +621,7 @@ export default function SpectralCloudPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060d] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060d] text-foreground">
       {/* canvas mount */}
       <div ref={mountRef} className="absolute inset-0 z-0 h-screen w-full" aria-hidden />
 
@@ -632,32 +632,32 @@ export default function SpectralCloudPage() {
       <div className="relative z-20 flex min-h-screen flex-col justify-between p-6 sm:p-10">
         <header className="max-w-2xl">
           <p className="text-base font-medium uppercase tracking-[0.3em] text-violet-300">Resonance · Dream 243</p>
-          <h1 className="mt-2 text-4xl font-semibold text-white sm:text-5xl">Spectral Cloud</h1>
-          <p className="mt-3 max-w-xl text-base text-white/75 sm:text-lg">
+          <h1 className="mt-2 text-4xl font-semibold text-foreground sm:text-5xl">Spectral Cloud</h1>
+          <p className="mt-3 max-w-xl text-base text-muted-foreground sm:text-lg">
             What if your own music became a volumetric cloud of light you could orbit? Each frame of the spectrum is
             deposited into a slowly rotating nebula — a rolling few-second memory you drift through.
           </p>
 
-          {glError && <p className="mt-3 text-base text-rose-300">{glError}</p>}
-          {error && <p className="mt-3 text-base text-rose-300">{error}</p>}
+          {glError && <p className="mt-3 text-base text-violet-300">{glError}</p>}
+          {error && <p className="mt-3 text-base text-violet-300">{error}</p>}
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
             {status === "idle" ? (
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-violet-500 px-6 py-2.5 text-base font-semibold text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
+                className="min-h-[44px] rounded-full bg-violet-500 px-6 py-2.5 text-base font-semibold text-foreground shadow-lg shadow-violet-900/40 transition hover:bg-violet-400"
               >
                 Start the cloud
               </button>
             ) : (
-              <span className="min-h-[44px] rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-base text-white/75">
+              <span className="min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 text-base text-muted-foreground">
                 {source === "file" ? "Playing your track" : "Ambient pad live"}
               </span>
             )}
 
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="min-h-[44px] rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-base font-medium text-white/95 transition hover:bg-white/10"
+              className="min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 text-base font-medium text-foreground transition hover:bg-accent"
             >
               Drop a track
             </button>
@@ -683,19 +683,19 @@ export default function SpectralCloudPage() {
         </header>
 
         <footer className="flex flex-wrap items-end justify-between gap-4">
-          <p className="max-w-md text-base text-white/55">
+          <p className="max-w-md text-base text-muted-foreground">
             Drag to orbit · scroll to dolly · auto-orbit resumes when you let go. Drop a piano recording to sculpt it in
             light.
           </p>
-          <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-base backdrop-blur">
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-black/40 px-4 py-3 text-base backdrop-blur">
             <span
               className={`inline-block h-3 w-3 rounded-full transition ${
-                onsetFlash ? "scale-150 bg-rose-300" : "bg-white/30"
+                onsetFlash ? "scale-150 bg-violet-300" : "bg-muted"
               }`}
               aria-hidden
             />
-            <span className="text-white/75">onset</span>
-            <span className="ml-2 tabular-nums text-white/95">{bpm > 0 ? `${bpm} BPM` : "— BPM"}</span>
+            <span className="text-muted-foreground">onset</span>
+            <span className="ml-2 tabular-nums text-foreground">{bpm > 0 ? `${bpm} BPM` : "— BPM"}</span>
           </div>
         </footer>
       </div>

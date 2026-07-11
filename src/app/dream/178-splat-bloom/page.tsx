@@ -252,19 +252,19 @@ export default function SplatBloomPage() {
       {/* ── Idle splash ── */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 z-10 px-6">
-          <h1 className="text-3xl font-mono text-white/95 tracking-wide">Splat Bloom</h1>
-          <p className="text-base text-white/75 max-w-xs text-center leading-relaxed">
+          <h1 className="text-3xl font-mono text-foreground tracking-wide">Splat Bloom</h1>
+          <p className="text-base text-muted-foreground max-w-xs text-center leading-relaxed">
             500 luminous ellipses breathing with your music. Bass blooms
             the centre outward; treble swirls the whole field; spectral
             colour shifts from violet to amber.
           </p>
-          <p className="text-sm text-white/55 max-w-xs text-center">
+          <p className="text-sm text-muted-foreground max-w-xs text-center">
             Additive Canvas2D splat field — a texture between particles and fluid.
           </p>
           <div className="flex gap-3 mt-2">
             <button
               onClick={handleDemo}
-              className="px-5 py-3 min-h-[44px] min-w-[80px] bg-white/10 hover:bg-white/18 border border-white/20 text-white/95 text-base font-mono rounded-lg transition-colors"
+              className="px-5 py-3 min-h-[44px] min-w-[80px] bg-muted hover:bg-accent border border-border text-foreground text-base font-mono rounded-lg transition-colors"
             >
               Demo
             </button>
@@ -275,22 +275,22 @@ export default function SplatBloomPage() {
               Start mic
             </button>
           </div>
-          {errMsg && <p className="text-rose-300 text-base">{errMsg}</p>}
+          {errMsg && <p className="text-violet-300 text-base">{errMsg}</p>}
         </div>
       )}
 
       {/* ── Active: title bar ── */}
       {phase !== "idle" && (
         <div className="absolute top-4 left-5 z-10 pointer-events-none select-none">
-          <p className="text-xl font-mono text-white/80">Splat Bloom</p>
-          <p className="text-sm text-white/55 mt-0.5">Gaussian additive field · audio-reactive</p>
+          <p className="text-xl font-mono text-foreground">Splat Bloom</p>
+          <p className="text-sm text-muted-foreground mt-0.5">Gaussian additive field · audio-reactive</p>
         </div>
       )}
 
       {/* ── Active: bottom bar ── */}
       {phase !== "idle" && (
         <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between z-10">
-          <p className="text-xs text-white/55 font-mono select-none">
+          <p className="text-xs text-muted-foreground font-mono select-none">
             {running ? "🎤 mic" : "demo · LFO"}
           </p>
           <div className="flex items-center gap-4">
@@ -304,7 +304,7 @@ export default function SplatBloomPage() {
             )}
             <Link
               href="/dream"
-              className="text-sm text-white/40 font-mono hover:text-white/70 transition-colors"
+              className="text-sm text-muted-foreground/70 font-mono hover:text-muted-foreground transition-colors"
             >
               ← dream lab
             </Link>
@@ -315,7 +315,7 @@ export default function SplatBloomPage() {
       {/* ── Error overlay ── */}
       {errMsg && phase !== "idle" && (
         <div className="absolute top-16 left-5 z-10">
-          <p className="text-rose-300 text-base font-mono">{errMsg}</p>
+          <p className="text-violet-300 text-base font-mono">{errMsg}</p>
         </div>
       )}
     </div>

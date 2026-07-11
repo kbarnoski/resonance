@@ -293,15 +293,15 @@ export default function LandscapeResonancePage() {
       {/* header */}
       <div className="absolute top-0 left-0 right-0 flex items-start justify-between p-4 pointer-events-none">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-white/95 tracking-wide">
+          <h1 className="text-2xl font-mono font-bold text-foreground tracking-wide">
             Landscape Resonance
           </h1>
-          <p className="text-base text-white/75 mt-0.5 max-w-xs">
+          <p className="text-base text-muted-foreground mt-0.5 max-w-xs">
             Audio-reactive terrain — bass lifts mountains, treble adds surface detail
           </p>
         </div>
         {(phase === "demo" || phase === "mic") && (
-          <span className="text-xs font-mono text-white/55 bg-black/40 px-2 py-1 rounded mt-1">
+          <span className="text-xs font-mono text-muted-foreground bg-black/40 px-2 py-1 rounded mt-1">
             {phase === "mic" ? "🎙 mic" : "◎ demo"}
           </span>
         )}
@@ -312,13 +312,13 @@ export default function LandscapeResonancePage() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
           <button
             onClick={startMic}
-            className="min-h-[44px] px-7 py-3 bg-violet-600/85 hover:bg-violet-500 text-white font-mono font-semibold text-base rounded-xl border border-violet-400/50 transition-colors"
+            className="min-h-[44px] px-7 py-3 bg-violet-600/85 hover:bg-violet-500 text-foreground font-mono font-semibold text-base rounded-xl border border-violet-400/50 transition-colors"
           >
             Start mic
           </button>
           <button
             onClick={startDemo}
-            className="min-h-[44px] px-7 py-3 bg-white/10 hover:bg-white/20 text-white/80 font-mono text-base rounded-xl border border-white/20 transition-colors"
+            className="min-h-[44px] px-7 py-3 bg-muted hover:bg-accent text-foreground font-mono text-base rounded-xl border border-border transition-colors"
           >
             Demo mode
           </button>
@@ -328,10 +328,10 @@ export default function LandscapeResonancePage() {
       {/* error + fallback */}
       {phase === "error" && (
         <div className="absolute bottom-6 inset-x-4 flex flex-col items-center gap-3">
-          <p className="text-rose-300 font-mono text-base text-center">{errMsg}</p>
+          <p className="text-violet-300 font-mono text-base text-center">{errMsg}</p>
           <button
             onClick={startDemo}
-            className="min-h-[44px] px-6 py-3 bg-white/10 hover:bg-white/20 text-white/80 font-mono text-base rounded-xl border border-white/20 transition-colors"
+            className="min-h-[44px] px-6 py-3 bg-muted hover:bg-accent text-foreground font-mono text-base rounded-xl border border-border transition-colors"
           >
             Demo mode
           </button>
@@ -341,7 +341,7 @@ export default function LandscapeResonancePage() {
       {/* footer hint */}
       {(phase === "demo" || phase === "mic") && (
         <div className="absolute bottom-3 inset-x-0 flex justify-center pointer-events-none">
-          <p className="text-xs font-mono text-white/55">
+          <p className="text-xs font-mono text-muted-foreground">
             bass = height · treble = surface detail · onset = flash
           </p>
         </div>

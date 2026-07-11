@@ -559,33 +559,33 @@ export default function KidsShadowStill() {
 
   if (phase === "idle") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#050816] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#050816] text-foreground gap-6 px-6 text-center">
         <div className="select-none text-6xl" aria-hidden="true">🌑</div>
-        <h1 className="text-3xl font-serif text-white/95 leading-tight">
+        <h1 className="text-3xl font-serif text-foreground leading-tight">
           Shadow Still
         </h1>
-        <p className="text-base text-white/75 max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
           Move to wake the sound. Go still — and the sound hollows to a hush.
         </p>
-        <p className="text-sm text-white/55 max-w-xs leading-relaxed">
+        <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
           Your shadow and its echo split apart when you wiggle. Hold still and
           they merge — the sound cancels to almost nothing.
         </p>
         <button
-          className="min-h-[64px] min-w-[220px] bg-indigo-500/20 hover:bg-indigo-500/35
-                     border border-indigo-400/40 rounded-2xl px-8 py-4
-                     text-white/95 text-lg font-medium transition-colors
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35
+                     border border-violet-400/40 rounded-2xl px-8 py-4
+                     text-foreground text-lg font-medium transition-colors
                      active:scale-95"
           onPointerDown={handleStart}
         >
           🌑 Start
         </button>
-        <p className="text-sm text-white/55">
+        <p className="text-sm text-muted-foreground">
           camera optional · for kids 4+
         </p>
         <Link
           href="/dream/513-kids-shadow-still/README.md"
-          className="text-sm text-white/60 hover:text-white/85 underline underline-offset-2 mt-2"
+          className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 mt-2"
         >
           Read the design notes
         </Link>
@@ -604,8 +604,8 @@ export default function KidsShadowStill() {
       {/* Camera error notice */}
       {cameraErr && (
         <p className="absolute top-3 left-1/2 -translate-x-1/2 z-20
-                      text-rose-300 text-sm px-4 py-1.5 rounded-full
-                      bg-black/60 border border-rose-500/30 max-w-xs text-center
+                      text-violet-300 text-sm px-4 py-1.5 rounded-full
+                      bg-black/60 border border-violet-500/30 max-w-xs text-center
                       pointer-events-none">
           {cameraErr}
         </p>
@@ -791,7 +791,7 @@ export default function KidsShadowStill() {
         <div className="flex justify-center pb-3">
           <Link
             href="/dream/513-kids-shadow-still/README.md"
-            className="pointer-events-auto text-xs text-white/60 hover:text-white/85
+            className="pointer-events-auto text-xs text-muted-foreground hover:text-foreground
                        underline underline-offset-2 transition-colors"
           >
             design notes

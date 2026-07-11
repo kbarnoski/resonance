@@ -327,19 +327,19 @@ export default function GhostVoicePage() {
   const showCursor = status === "playing" && revealedChars < scene.line.length;
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white font-mono px-5 py-8">
+    <div className="min-h-screen bg-[#080808] text-foreground font-mono px-5 py-8">
       <div className="max-w-2xl mx-auto">
 
         {/* Header */}
         <div className="flex justify-between items-baseline mb-1">
           <h1 className="text-lg font-bold tracking-wide">Ghost Voice</h1>
-          <Link href="/dream" className="text-[11px] text-white/30 hover:text-white/60">
+          <Link href="/dream" className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground">
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           The Ghost speaks — each scene narrated from front-center.{" "}
-          <span className="text-white/25">Wear headphones.</span>
+          <span className="text-muted-foreground/70">Wear headphones.</span>
         </p>
 
         {/* Scene selector */}
@@ -356,7 +356,7 @@ export default function GhostVoicePage() {
               className={
                 "px-3 py-1.5 rounded text-[12px] border transition cursor-pointer " +
                 (i !== sceneIdx
-                  ? "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70"
+                  ? "border-border text-muted-foreground hover:border-border hover:text-muted-foreground"
                   : "")
               }
             >
@@ -388,7 +388,7 @@ export default function GhostVoicePage() {
               &rdquo;
             </p>
           ) : (
-            <p className="text-[12px] text-white/22 italic text-center">
+            <p className="text-[12px] text-muted-foreground/70 italic text-center">
               &ldquo;{scene.line}&rdquo;
             </p>
           )}
@@ -407,7 +407,7 @@ export default function GhostVoicePage() {
                   : scene.accent,
             }}
             className="px-8 py-2.5 border rounded text-[13px] tracking-widest
-              hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             {status === "loading"
               ? "Generating…"
@@ -417,21 +417,21 @@ export default function GhostVoicePage() {
           </button>
 
           {status === "error" && (
-            <div className="text-[10px] text-red-400 max-w-md text-center
-              bg-red-950/30 rounded px-3 py-2 leading-relaxed">
+            <div className="text-[10px] text-destructive max-w-md text-center
+              bg-destructive/30 rounded px-3 py-2 leading-relaxed">
               API error — {errorMsg.slice(0, 250)}
             </div>
           )}
 
           {status === "done" && (
-            <p className="text-[11px] text-white/30">
+            <p className="text-[11px] text-muted-foreground/70">
               ↺ click Narrate to generate again
             </p>
           )}
         </div>
 
         {/* Footer */}
-        <div className="mt-8 flex justify-between text-[10px] text-white/20">
+        <div className="mt-8 flex justify-between text-[10px] text-muted-foreground/70">
           <span>Gemini TTS via FAL_KEY · ~$0.01 / narration · HRTF front-center</span>
           <span>design notes: src/app/dream/56-ghost-voice/README.md</span>
         </div>

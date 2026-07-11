@@ -386,7 +386,7 @@ export default function PianoGardenPage() {
   }, [onOrient]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -396,10 +396,10 @@ export default function PianoGardenPage() {
       {/* Intro / start gate */}
       {phase !== "playing" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Papa&apos;s Piano Garden
           </h1>
-          <p className="max-w-md text-base leading-relaxed text-white/80">
+          <p className="max-w-md text-base leading-relaxed text-foreground">
             Tilt the tablet to roll a glowing seed across a dark garden.
             Wherever it rests, Papa&apos;s real piano blooms into a singing
             flower of light. There are no wrong notes — only blooming.
@@ -408,11 +408,11 @@ export default function PianoGardenPage() {
             type="button"
             onClick={start}
             disabled={phase === "loading"}
-            className="min-h-[64px] min-w-[64px] rounded-full bg-rose-400/90 px-10 py-4 text-xl font-semibold text-black transition hover:bg-rose-300 disabled:opacity-60"
+            className="min-h-[64px] min-w-[64px] rounded-full bg-violet-400/90 px-10 py-4 text-xl font-semibold text-black transition hover:bg-violet-300 disabled:opacity-60"
           >
             {phase === "loading" ? "Planting…" : "Begin"}
           </button>
-          <p className="font-mono text-base text-white/75">
+          <p className="font-mono text-base text-muted-foreground">
             tilt · drag · arrow keys
           </p>
         </div>
@@ -421,12 +421,12 @@ export default function PianoGardenPage() {
       {/* Playing HUD */}
       {phase === "playing" && (
         <>
-          <div className="pointer-events-none absolute left-4 top-4 select-none font-mono text-base text-white/75">
-            <div className="text-white/95">Papa&apos;s Piano Garden</div>
-            <div className="text-white/75">
+          <div className="pointer-events-none absolute left-4 top-4 select-none font-mono text-base text-muted-foreground">
+            <div className="text-foreground">Papa&apos;s Piano Garden</div>
+            <div className="text-muted-foreground">
               flowers singing: {flowerCount}
             </div>
-            <div className="text-white/75">
+            <div className="text-muted-foreground">
               {source === "piano"
                 ? "Karel's real piano"
                 : source === "fallback"
@@ -437,7 +437,7 @@ export default function PianoGardenPage() {
           </div>
 
           {sensorNote && (
-            <div className="pointer-events-none absolute inset-x-0 top-4 mx-auto max-w-sm px-6 text-center text-base text-rose-300">
+            <div className="pointer-events-none absolute inset-x-0 top-4 mx-auto max-w-sm px-6 text-center text-base text-violet-300">
               {sensorNote}
             </div>
           )}
@@ -446,21 +446,21 @@ export default function PianoGardenPage() {
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 text-base text-white/80 backdrop-blur"
+            className="absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/40 px-4 text-base text-foreground backdrop-blur"
           >
             {showNotes ? "close" : "notes"}
           </button>
 
           {showNotes && (
-            <div className="absolute bottom-20 right-4 max-w-xs rounded-2xl border border-white/15 bg-black/70 p-4 text-base leading-relaxed text-white/80 backdrop-blur">
-              <p className="mb-2 text-white/95">Design notes</p>
+            <div className="absolute bottom-20 right-4 max-w-xs rounded-2xl border border-border bg-black/70 p-4 text-base leading-relaxed text-foreground backdrop-blur">
+              <p className="mb-2 text-foreground">Design notes</p>
               <p className="mb-2">
                 A tilt-rolled seed scans Papa&apos;s recorded piano. Each grain
                 of his recording is pitch-snapped to a C-major pentatonic, so
                 everything stays in key. Dwell, and a flower blooms — it keeps
                 singing a held grain-cloud, and the garden grows.
               </p>
-              <Link href="/dream" className="font-mono text-rose-300 underline">
+              <Link href="/dream" className="font-mono text-violet-300 underline">
                 ← back to the lab
               </Link>
             </div>

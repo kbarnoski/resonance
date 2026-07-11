@@ -561,19 +561,19 @@ export default function BalanceBandPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0a0716] text-white flex flex-col items-center px-4 py-6 relative overflow-hidden">
+    <main className="min-h-screen bg-[#0a0716] text-foreground flex flex-col items-center px-4 py-6 relative overflow-hidden">
       <Link
         href="/dream"
-        className="absolute left-4 top-4 text-base text-white/55 hover:text-white/90 transition-colors"
+        className="absolute left-4 top-4 text-base text-muted-foreground hover:text-foreground transition-colors"
       >
         ← lab
       </Link>
 
       <header className="text-center mt-6 mb-4 max-w-xl">
-        <h1 className="font-serif text-3xl sm:text-4xl text-white/95">
+        <h1 className="font-serif text-3xl sm:text-4xl text-foreground">
           Balance Band
         </h1>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           Hang singing creatures on the seesaw. A spicy note tips the beam and
           buzzes — add a friendly creature on the high side to balance it back
           to calm.
@@ -591,14 +591,14 @@ export default function BalanceBandPage() {
       ) : (
         <>
           {audioFailed && (
-            <p className="text-rose-300 text-base mb-2">
+            <p className="text-violet-300 text-base mb-2">
               Sound is unavailable on this device — you can still play with the
               seesaw.
             </p>
           )}
 
           {/* canvas stage */}
-          <div className="w-full max-w-3xl aspect-[3/2] rounded-2xl overflow-hidden border border-white/10">
+          <div className="w-full max-w-3xl aspect-[3/2] rounded-2xl overflow-hidden border border-border">
             <canvas
               ref={canvasRef}
               onPointerDown={onCanvasPointer}
@@ -609,7 +609,7 @@ export default function BalanceBandPage() {
           {/* status line */}
           <p
             className={`mt-3 text-base ${
-              tipped ? "text-rose-300" : "text-emerald-300/95"
+              tipped ? "text-violet-300" : "text-violet-300/95"
             }`}
             aria-live="polite"
           >
@@ -628,7 +628,7 @@ export default function BalanceBandPage() {
                 className={`rounded-2xl border transition-colors flex items-center justify-center ${
                   selected === p.id
                     ? "border-violet-300 bg-violet-500/25"
-                    : "border-white/15 bg-white/5 hover:bg-white/10"
+                    : "border-border bg-muted hover:bg-accent"
                 }`}
                 style={{ minWidth: 72, minHeight: 72, fontSize: 34 }}
                 title={p.spicy ? "spicy creature" : "friendly creature"}
@@ -638,13 +638,13 @@ export default function BalanceBandPage() {
             ))}
           </div>
 
-          <p className="mt-2 text-base text-white/55 text-center max-w-md">
+          <p className="mt-2 text-base text-muted-foreground text-center max-w-md">
             Pick a creature, then tap a glowing ring on the beam to hang it.
           </p>
 
           <button
             onClick={clearAll}
-            className="mt-4 px-6 py-3 text-lg rounded-2xl bg-white/5 border border-white/15 text-white/75 hover:bg-white/10 transition-colors"
+            className="mt-4 px-6 py-3 text-lg rounded-2xl bg-muted border border-border text-muted-foreground hover:bg-accent transition-colors"
             style={{ minHeight: 56 }}
           >
             ↺ Start over
@@ -655,13 +655,13 @@ export default function BalanceBandPage() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 text-base text-white/55 hover:text-white/90 transition-colors"
+        className="absolute right-4 top-4 text-base text-muted-foreground hover:text-foreground transition-colors"
       >
         {showNotes ? "close" : "design notes"}
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-12 z-10 w-80 max-w-[88vw] max-h-[70vh] overflow-auto rounded-2xl border border-white/15 bg-[#160d33] p-4 text-base text-white/75 shadow-xl">
-          <h2 className="text-xl text-white/95 mb-2 font-serif">
+        <div className="absolute right-4 top-12 z-10 w-80 max-w-[88vw] max-h-[70vh] overflow-auto rounded-2xl border border-border bg-[#160d33] p-4 text-base text-muted-foreground shadow-xl">
+          <h2 className="text-xl text-foreground mb-2 font-serif">
             Design notes
           </h2>
           <p className="mb-2">
@@ -671,7 +671,7 @@ export default function BalanceBandPage() {
           </p>
           <p className="mb-2">
             The hung creatures form a chord judged against a C root. A{" "}
-            <span className="text-rose-300">spicy</span> (dissonant) creature is
+            <span className="text-violet-300">spicy</span> (dissonant) creature is
             heavier and grumpier: the beam tips toward it and a sour, beating
             voice persists — it does <em>not</em> auto-resolve.
           </p>
@@ -680,7 +680,7 @@ export default function BalanceBandPage() {
             arm: torque levels out and the sour voice blooms away to a warm,
             consonant chord.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Audio: every voice → master(0.26) → lowpass(6kHz) → compressor
             → out. Soft attacks; even dissonance is gentle and wobbly, never
             harsh. Full notes in README.md.

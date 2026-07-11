@@ -457,7 +457,7 @@ export default function SkyMurmurationPage() {
 
       {/* Error notice */}
       {error && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-rose-300 text-base px-4 py-2 bg-black/40 rounded-lg pointer-events-none">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-violet-300 text-base px-4 py-2 bg-black/40 rounded-lg pointer-events-none">
           {error}
         </div>
       )}
@@ -466,10 +466,10 @@ export default function SkyMurmurationPage() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0d0b2a]/95 px-6">
           <div className="max-w-sm text-center space-y-6">
-            <h1 className="text-3xl font-serif text-white/95 leading-snug">
+            <h1 className="text-3xl font-serif text-foreground leading-snug">
               Sky Murmuration
             </h1>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Thousands of starlings swirl in the dusk sky — touch to shepherd them, and hear them sing.
             </p>
             <button
@@ -488,7 +488,7 @@ export default function SkyMurmurationPage() {
             >
               Begin
             </button>
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               Touch and guide the flock. Two fingers split it into harmonies.
             </p>
           </div>
@@ -498,7 +498,7 @@ export default function SkyMurmurationPage() {
       {/* Corner hint — only shown after start */}
       {started && (
         <div className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none">
-          <span className="text-white/55 text-sm font-mono tracking-wide">
+          <span className="text-muted-foreground text-sm font-mono tracking-wide">
             touch to shepherd · two fingers to split
           </span>
         </div>
@@ -508,7 +508,7 @@ export default function SkyMurmurationPage() {
       <div className="absolute top-4 right-4 z-10">
         <Link
           href="/dream/537-kids-sky-murmuration/README.md"
-          className="text-white/55 hover:text-violet-300 text-sm font-mono transition-colors"
+          className="text-muted-foreground hover:text-violet-300 text-sm font-mono transition-colors"
           target="_blank"
         >
           design notes ↗

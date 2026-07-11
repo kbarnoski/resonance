@@ -377,7 +377,7 @@ export default function BalloonTritave() {
   }, [started]);
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden bg-[#1a1230] text-white select-none">
+    <div className="relative h-dvh w-full overflow-hidden bg-[#1a1230] text-foreground select-none">
       <svg
         ref={svgRef}
         viewBox="0 0 1000 1000"
@@ -506,16 +506,16 @@ export default function BalloonTritave() {
       {/* start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#1a1230]/85 px-6 text-center">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Balloon Sky
           </h1>
-          <p className="mt-3 max-w-md text-base text-white/75">
+          <p className="mt-3 max-w-md text-base text-muted-foreground">
             Tilt your tablet to float the little bird across the sky. Brush a
             balloon to make it sing.
           </p>
           <button
             onClick={handleStart}
-            className="mt-7 flex items-center gap-3 rounded-full bg-rose-500 px-8 py-5 text-xl font-semibold text-white shadow-lg active:scale-95"
+            className="mt-7 flex items-center gap-3 rounded-full bg-violet-500 px-8 py-5 text-xl font-semibold text-foreground shadow-lg active:scale-95"
             style={{ minWidth: 64, minHeight: 64 }}
           >
             <span aria-hidden className="text-2xl">🎈</span>
@@ -526,7 +526,7 @@ export default function BalloonTritave() {
 
       {/* status + design notes */}
       {started && (
-        <div className="pointer-events-none absolute left-0 top-0 z-10 p-3 font-mono text-base text-white/75">
+        <div className="pointer-events-none absolute left-0 top-0 z-10 p-3 font-mono text-base text-muted-foreground">
           {inputMode === "tilt" ? "Tilt to steer" : "Move to steer (no tilt sensor)"}
         </div>
       )}
@@ -534,7 +534,7 @@ export default function BalloonTritave() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/276-kids-balloon-tritave/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute bottom-0 right-0 z-10 p-3 font-mono text-base text-white/75 underline decoration-white/30 underline-offset-2"
+        className="absolute bottom-0 right-0 z-10 p-3 font-mono text-base text-muted-foreground underline decoration-muted-foreground underline-offset-2"
       >
         design notes
       </a>

@@ -787,24 +787,24 @@ export default function BubbleHarp() {
   if (phase === "idle") {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#021419] px-6 text-center">
-        <h1 className="text-3xl font-semibold text-white">Bubble Harp</h1>
-        <p className="max-w-sm text-base text-white/80">
+        <h1 className="text-3xl font-semibold text-foreground">Bubble Harp</h1>
+        <p className="max-w-sm text-base text-foreground">
           Floating bubbles you can tap. Each one is a real plucked string — touch
           it and it wobbles, sings, and glows. Drag your finger across them to
           strum a harp.
         </p>
         <button
           onClick={handleStart}
-          className="min-h-[72px] rounded-2xl bg-amber-400/90 px-10 py-5 text-2xl font-semibold text-[#021419] shadow-lg transition-colors hover:bg-amber-300"
+          className="min-h-[72px] rounded-2xl bg-violet-400/90 px-10 py-5 text-2xl font-semibold text-[#021419] shadow-lg transition-colors hover:bg-violet-300"
         >
           ▶ Start playing
         </button>
-        <p className="text-sm text-white/55">
+        <p className="text-sm text-muted-foreground">
           Tap a bubble · drag across bubbles to strum
         </p>
         <Link
           href="/dream"
-          className="mt-2 font-mono text-sm text-white/55 transition-colors hover:text-white/80"
+          className="mt-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           ← dream lab
         </Link>
@@ -824,25 +824,25 @@ export default function BubbleHarp() {
       />
       <div className="pointer-events-none absolute left-0 right-0 top-3 flex items-start justify-between px-5">
         <div>
-          <p className="font-mono text-sm text-white/80">Bubble Harp</p>
-          <p className="text-sm text-white/55">
+          <p className="font-mono text-sm text-foreground">Bubble Harp</p>
+          <p className="text-sm text-muted-foreground">
             Tap a bubble · drag to strum
           </p>
         </div>
         <Link
           href="/dream"
-          className="pointer-events-auto font-mono text-sm text-white/55 transition-colors hover:text-white/80"
+          className="pointer-events-auto font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           ← dream
         </Link>
       </div>
       {audioWarn && (
-        <p className="absolute bottom-4 left-0 right-0 text-center text-base text-rose-300">
+        <p className="absolute bottom-4 left-0 right-0 text-center text-base text-violet-300">
           {audioWarn}
         </p>
       )}
       {!audioWarn && (
-        <p className="pointer-events-none absolute bottom-3 left-0 right-0 text-center font-mono text-sm text-white/55">
+        <p className="pointer-events-none absolute bottom-3 left-0 right-0 text-center font-mono text-sm text-muted-foreground">
           {renderMode === "webgl" ? "WebGL2" : "Canvas2D"} ·{" "}
           {useWorkletRef.current ? "Karplus-Strong worklet" : "Karplus-Strong buffer"}
         </p>

@@ -264,7 +264,7 @@ export default function MoonTrampolinePage() {
   }, [onOrient]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#070712] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#070712] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -278,11 +278,11 @@ export default function MoonTrampolinePage() {
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
         <Link
           href="/dream"
-          className="pointer-events-auto rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur hover:bg-white/20"
+          className="pointer-events-auto rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
         >
           ← Gallery
         </Link>
-        <span className="pointer-events-none select-none rounded-full bg-indigo-500/20 px-4 py-2 text-base text-violet-300">
+        <span className="pointer-events-none select-none rounded-full bg-violet-500/20 px-4 py-2 text-base text-violet-300">
           Moon Trampoline 🌙
         </span>
       </div>
@@ -290,7 +290,7 @@ export default function MoonTrampolinePage() {
       {/* Notice */}
       {notice && started && (
         <div className="pointer-events-none absolute inset-x-0 bottom-24 z-10 flex justify-center px-4">
-          <p className="max-w-md rounded-2xl bg-black/40 px-4 py-3 text-center text-base text-rose-300 backdrop-blur">
+          <p className="max-w-md rounded-2xl bg-black/40 px-4 py-3 text-center text-base text-violet-300 backdrop-blur">
             {notice}
           </p>
         </div>
@@ -299,7 +299,7 @@ export default function MoonTrampolinePage() {
       {/* Play hint (always visible once started, no reading required to play) */}
       {started && (
         <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center px-4">
-          <p className="rounded-full bg-white/10 px-5 py-3 text-center text-base text-white/75 backdrop-blur">
+          <p className="rounded-full bg-muted px-5 py-3 text-center text-base text-muted-foreground backdrop-blur">
             Tilt or drag to roll the moon 🌙 — it sings the trampoline awake
           </p>
         </div>
@@ -310,7 +310,7 @@ export default function MoonTrampolinePage() {
         <div className="absolute bottom-4 right-4 z-10">
           <Link
             href="/dream/995-kids-moon-trampoline/README.md"
-            className="rounded-full bg-white/5 px-3 py-2 text-base text-white/55 hover:text-white/80"
+            className="rounded-full bg-muted px-3 py-2 text-base text-muted-foreground hover:text-foreground"
             onClick={(e) => e.preventDefault()}
             title="CPU-Verlet Provot cloth + membrane-mode synthesis"
           >
@@ -325,22 +325,22 @@ export default function MoonTrampolinePage() {
           <div className="mb-6 text-7xl" aria-hidden>
             🌙
           </div>
-          <h1 className="mb-3 text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="mb-3 text-3xl font-semibold text-foreground sm:text-4xl">
             Moon Trampoline
           </h1>
-          <p className="mb-8 max-w-md text-lg text-white/80">
+          <p className="mb-8 max-w-md text-lg text-foreground">
             Tilt your tablet like a tray and roll the glowing moon across a
             springy trampoline of stars. The bouncy cloth rings like a soft
             drum.
           </p>
           <button
             onClick={handleStart}
-            className="rounded-full bg-violet-500 px-10 py-5 text-2xl font-semibold text-white shadow-lg shadow-violet-900/50 transition hover:bg-violet-400 active:scale-95"
+            className="rounded-full bg-violet-500 px-10 py-5 text-2xl font-semibold text-foreground shadow-lg shadow-violet-900/50 transition hover:bg-violet-400 active:scale-95"
             style={{ minHeight: 72, minWidth: 200 }}
           >
             Start 🌟
           </button>
-          <p className="mt-6 max-w-sm text-base text-white/55">
+          <p className="mt-6 max-w-sm text-base text-muted-foreground">
             Best on a phone or tablet you can tilt. It also plays all by itself.
           </p>
         </div>

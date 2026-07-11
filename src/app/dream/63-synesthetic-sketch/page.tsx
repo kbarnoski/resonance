@@ -371,33 +371,33 @@ export default function SynestheticSketch() {
           <h1 className="text-2xl md:text-3xl mb-3 tracking-tight">
             Synesthetic Sketch
           </h1>
-          <p className="text-sm text-white/55 max-w-md mb-3 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-3 leading-relaxed">
             Not just what color your music is — what <em>shape</em> it is.
           </p>
-          <p className="text-xs text-white/35 max-w-xs mb-8 leading-relaxed font-mono">
+          <p className="text-xs text-muted-foreground/70 max-w-xs mb-8 leading-relaxed font-mono">
             centroid → hue · bandwidth → shape · harmonics → rings ·
             amplitude → scale · rhythm → scatter · onsets → sparks
           </p>
           <div className="flex gap-3 flex-wrap justify-center">
             <button
               onClick={() => setMode("demo")}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               ▶ Demo
             </button>
             <button
               onClick={handleStartMic}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition"
             >
               🎤 Start mic
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-xs text-rose-300/80 max-w-sm">{micError}</p>
+            <p className="mt-4 text-xs text-violet-300/80 max-w-sm">{micError}</p>
           )}
           <Link
             href="/dream"
-            className="mt-12 text-[11px] text-white/30 hover:text-white/60"
+            className="mt-12 text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← back to dream sandbox
           </Link>
@@ -408,35 +408,35 @@ export default function SynestheticSketch() {
       {mode !== "idle" && (
         <>
           {/* Dimension legend — top left */}
-          <div className="absolute top-3 left-4 text-[9px] tracking-wider text-white/40 space-y-[3px] pointer-events-none font-mono leading-4">
+          <div className="absolute top-3 left-4 text-[9px] tracking-wider text-muted-foreground/70 space-y-[3px] pointer-events-none font-mono leading-4">
             <div>
               HUE{" "}
-              <span className="text-white/65">{hud.hue}°</span>{" "}
+              <span className="text-muted-foreground">{hud.hue}°</span>{" "}
               centroid
             </div>
             <div>
               SHAPE{" "}
-              <span className="text-white/65">{hud.shape}</span>{" "}
+              <span className="text-muted-foreground">{hud.shape}</span>{" "}
               bandwidth {hud.bw}%
             </div>
             <div>
               RINGS{" "}
-              <span className="text-white/65">{hud.rings}</span>{" "}
+              <span className="text-muted-foreground">{hud.rings}</span>{" "}
               harmonic peaks
             </div>
             <div>
               SCATTER{" "}
-              <span className="text-white/65">{100 - hud.regularity}%</span>{" "}
+              <span className="text-muted-foreground">{100 - hud.regularity}%</span>{" "}
               irregularity
             </div>
             <div>
               SCALE amp{" "}
-              <span className="text-white/65">{hud.amp}%</span>
+              <span className="text-muted-foreground">{hud.amp}%</span>
             </div>
           </div>
 
           {/* Mode badge — top right */}
-          <div className="absolute top-3 right-4 text-[10px] tracking-wider text-white/35 uppercase pointer-events-none">
+          <div className="absolute top-3 right-4 text-[10px] tracking-wider text-muted-foreground/70 uppercase pointer-events-none">
             {mode === "demo" ? "demo" : "mic"}
           </div>
 
@@ -444,7 +444,7 @@ export default function SynestheticSketch() {
           <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
             {mode === "mic" && micRunning && (
               <>
-                <label className="text-[10px] text-white/55 tracking-wider">
+                <label className="text-[10px] text-muted-foreground tracking-wider">
                   GAIN {gain.toFixed(1)}
                 </label>
                 <input
@@ -454,31 +454,31 @@ export default function SynestheticSketch() {
                   step="0.1"
                   value={gain}
                   onChange={(e) => setGain(parseFloat(e.target.value))}
-                  className="w-32 accent-white"
+                  className="w-32 accent-primary"
                 />
               </>
             )}
             <button
               onClick={clearCanvas}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               clear
             </button>
             <button
               onClick={downloadPng}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               ↓ png
             </button>
             <button
               onClick={handleStop}
-              className="text-[10px] tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded"
+              className="text-[10px] tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded"
             >
               stop
             </button>
             <Link
               href="/dream"
-              className="text-[10px] text-white/30 hover:text-white/60"
+              className="text-[10px] text-muted-foreground/70 hover:text-muted-foreground"
             >
               ← back
             </Link>

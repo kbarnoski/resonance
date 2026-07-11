@@ -593,7 +593,7 @@ export default function KidsFaceBeatPage() {
   const nowMs = performance.now();
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06030f] font-mono text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06030f] font-mono text-foreground">
       {/* WebGL2 canvas — fills the screen */}
       <canvas
         ref={canvasRef}
@@ -606,7 +606,7 @@ export default function KidsFaceBeatPage() {
       {/* WebGL2 unavailable notice */}
       {noWebGL && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#06030f]">
-          <p className="max-w-xs text-center text-base text-rose-300">
+          <p className="max-w-xs text-center text-base text-violet-300">
             WebGL2 is not available on this device. Audio still works — tap the
             drum buttons below!
           </p>
@@ -615,11 +615,11 @@ export default function KidsFaceBeatPage() {
 
       {/* Title bar */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center pt-4">
-        <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground drop-shadow">
           🥁 Face Beat
         </h1>
         {mode !== "idle" && (
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             Make funny faces — play the drums!
           </p>
         )}
@@ -628,14 +628,14 @@ export default function KidsFaceBeatPage() {
       {/* Start overlay */}
       {mode === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#06030f]/90 px-6 text-center">
-          <h2 className="text-3xl font-bold text-white">Face Beat Drum Kit</h2>
-          <p className="max-w-sm text-xl text-white/95">
+          <h2 className="text-3xl font-bold text-foreground">Face Beat Drum Kit</h2>
+          <p className="max-w-sm text-xl text-foreground">
             Make funny faces to play the drums! Open your mouth, raise your
             eyebrows, flash a big smile…
           </p>
 
           {/* Face legend */}
-          <div className="grid grid-cols-5 gap-3 rounded-2xl bg-white/5 px-4 py-3">
+          <div className="grid grid-cols-5 gap-3 rounded-2xl bg-muted px-4 py-3">
             {PADS.map((pad) => (
               <div key={pad.kind} className="flex flex-col items-center gap-1">
                 <span className="text-3xl">{pad.emoji}</span>
@@ -651,12 +651,12 @@ export default function KidsFaceBeatPage() {
 
           <button
             onClick={start}
-            className="min-h-[72px] rounded-3xl bg-rose-500/25 px-10 py-4 text-2xl font-bold text-white ring-2 ring-rose-300/60 transition active:scale-95"
+            className="min-h-[72px] rounded-3xl bg-violet-500/25 px-10 py-4 text-2xl font-bold text-foreground ring-2 ring-violet-300/60 transition active:scale-95"
           >
             Start the face beat 🥁
           </button>
 
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             Camera is analysis-only — never recorded or stored.
           </p>
         </div>
@@ -665,14 +665,14 @@ export default function KidsFaceBeatPage() {
       {/* Loading overlay */}
       {mode === "loading" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#06030f]/70">
-          <p className="text-xl text-white/95">Loading face tracker… 🥁</p>
+          <p className="text-xl text-foreground">Loading face tracker… 🥁</p>
         </div>
       )}
 
       {/* Degradation notice */}
       {notice && mode !== "idle" && (
         <div className="absolute left-1/2 top-16 z-10 w-[90%] max-w-md -translate-x-1/2 rounded-2xl bg-black/60 px-4 py-3 text-center">
-          <p className="text-base text-rose-300">{notice}</p>
+          <p className="text-base text-violet-300">{notice}</p>
         </div>
       )}
 
@@ -735,7 +735,7 @@ export default function KidsFaceBeatPage() {
 
       {/* Privacy note (when running) */}
       {(mode === "camera" || mode === "ghost") && (
-        <p className="pointer-events-none absolute bottom-14 left-0 right-0 z-10 text-center text-sm text-white/55">
+        <p className="pointer-events-none absolute bottom-14 left-0 right-0 z-10 text-center text-sm text-muted-foreground">
           Camera: analysis only — never recorded or uploaded.
         </p>
       )}

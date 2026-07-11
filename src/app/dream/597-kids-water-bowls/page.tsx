@@ -492,7 +492,7 @@ export default function SingingWaterPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04101a] text-white touch-none select-none">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04101a] text-foreground touch-none select-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -502,10 +502,10 @@ export default function SingingWaterPage() {
       {/* Decorative title (never gates play) */}
       {started && (
         <div className="pointer-events-none absolute left-0 right-0 top-0 flex flex-col items-center pt-5">
-          <h1 className="font-serif text-2xl text-white/95 drop-shadow">
+          <h1 className="font-serif text-2xl text-foreground drop-shadow">
             Singing Water
           </h1>
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             tap to ring • rub to sing
           </p>
         </div>
@@ -515,7 +515,7 @@ export default function SingingWaterPage() {
       {started && (
         <button
           onClick={() => setShowNotes(true)}
-          className="absolute bottom-4 right-4 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 backdrop-blur hover:bg-white/20"
+          className="absolute bottom-4 right-4 rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground backdrop-blur hover:bg-accent"
         >
           notes
         </button>
@@ -525,29 +525,29 @@ export default function SingingWaterPage() {
       {!started && !unsupported && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#06121f] to-[#04101a] px-6 text-center">
           <div>
-            <h1 className="font-serif text-3xl text-white/95 sm:text-4xl">
+            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
               Singing Water
             </h1>
-            <p className="mx-auto mt-3 max-w-md text-base text-white/75">
+            <p className="mx-auto mt-3 max-w-md text-base text-muted-foreground">
               A row of glowing bowls. Tap to ring them like bells. Rub a finger
               round and round to make them sing.
             </p>
           </div>
           <button
             onClick={begin}
-            className="rounded-full bg-sky-400/90 px-10 py-6 text-2xl font-semibold text-[#04101a] shadow-lg shadow-sky-500/30 transition active:scale-95"
+            className="rounded-full bg-violet-400/90 px-10 py-6 text-2xl font-semibold text-[#04101a] shadow-lg shadow-violet-500/30 transition active:scale-95"
           >
             Tap to begin
           </button>
-          <p className="text-base text-white/55">turn your sound on 🔊</p>
+          <p className="text-base text-muted-foreground">turn your sound on 🔊</p>
         </div>
       )}
 
       {/* Unsupported notice */}
       {unsupported && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-[#04101a] px-6 text-center">
-          <h1 className="font-serif text-2xl text-white/95">Singing Water</h1>
-          <p className="max-w-md text-base text-white/75">
+          <h1 className="font-serif text-2xl text-foreground">Singing Water</h1>
+          <p className="max-w-md text-base text-muted-foreground">
             This little instrument needs a browser with Web Audio and Canvas. Try
             a recent Safari, Chrome, or Firefox.
           </p>
@@ -564,25 +564,25 @@ export default function SingingWaterPage() {
             className="max-w-lg rounded-2xl bg-[#0a1c2e] p-6 text-left shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-xl text-white/95">Design notes</h2>
-            <p className="mt-3 text-base text-white/80">
+            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <p className="mt-3 text-base text-foreground">
               Each bowl is one resonator excited two ways. A{" "}
-              <span className="text-sky-300">tap</span> strikes it like an
+              <span className="text-violet-300">tap</span> strikes it like an
               inharmonic glass bell. A{" "}
-              <span className="text-emerald-300/95">rub</span> drives a sustained
+              <span className="text-violet-300/95">rub</span> drives a sustained
               glass-armonica friction tone — filtered noise through a high-Q
               bandpass whose loudness, brightness and focus track how fast you
               rub.
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Tuned to a just-intonation Lydian row over F. More water means a
               lower tone — real physics you can hear. Inspired by the Indian{" "}
-              <span className="text-amber-300/95">Jal Tarang</span> and Benjamin
+              <span className="text-violet-300/95">Jal Tarang</span> and Benjamin
               Franklin&apos;s glass armonica (1761).
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 hover:bg-white/20"
+              className="mt-5 rounded-full bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               close
             </button>

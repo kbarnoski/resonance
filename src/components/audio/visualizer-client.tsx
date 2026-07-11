@@ -303,15 +303,20 @@ export function VisualizerClient({
   // Global audio store
   // Batch data selectors with useShallow so the component only re-renders
   // when one of these specific fields changes — not on every store mutation.
-  const { currentTrack, isPlaying, currentTime, duration, storeAnalysis } = useAudioStore(
+  const { currentTrack, isPlaying, duration, storeAnalysis } = useAudioStore(
     useShallow((s) => ({
       currentTrack: s.currentTrack,
       isPlaying: s.isPlaying,
-      currentTime: s.currentTime,
       duration: s.duration,
       storeAnalysis: s.analysis,
     }))
   );
+  // Raw currentTime advances ~15×/sec. Subscribing this large subtree to it
+  // reconciles the whole component 15 Hz during playback. Completion detection
+  // only needs ~1 Hz granularity, so subscribe to a floored value here; the
+  // fine-grained consumers (AnalysisHUD, TonnetzOverlay) read the raw value
+  // from the store themselves so only they re-render at frame rate.
+  const completionTime = useAudioStore((s) => Math.floor(s.currentTime));
   // Actions are stable references — safe as individual selectors
   const play = useAudioStore((s) => s.play);
   const togglePlayPause = useAudioStore((s) => s.togglePlayPause);
@@ -478,13 +483,13 @@ export function VisualizerClient({
     // OR audio stopped while past 95% of the track (handles RAF sync gaps).
     // completionOffset lets journeys with silent endings trigger earlier.
     const offset = activeJourney.completionOffset ?? 0.5;
-    const nearEnd = duration > 0 && currentTime > 0 && currentTime >= duration - offset;
-    const stoppedLate = duration > 0 && currentTime > 0 && !isPlaying && currentTime >= duration * 0.95;
+    const nearEnd = duration > 0 && completionTime > 0 && completionTime >= duration - offset;
+    const stoppedLate = duration > 0 && completionTime > 0 && !isPlaying && completionTime >= duration * 0.95;
 
     if (nearEnd || stoppedLate) {
       console.log(
         `[Journey] COMPLETED — nearEnd=${nearEnd} stoppedLate=${stoppedLate} ` +
-        `currentTime=${currentTime.toFixed(1)} duration=${duration.toFixed(1)} isPlaying=${isPlaying}`
+        `currentTime=${completionTime.toFixed(1)} duration=${duration.toFixed(1)} isPlaying=${isPlaying}`
       );
       setJourneyCompleted(true);
       completedJourneyRef.current = activeJourney.id;
@@ -510,7 +515,7 @@ export function VisualizerClient({
         refreshAdaptiveProfile();
       }
     }
-  }, [journeyActive, activeJourney, currentTime, duration, journeyCompleted, isPlaying]);
+  }, [journeyActive, activeJourney, completionTime, duration, journeyCompleted, isPlaying]);
 
   // Detect AI-only viz mode
   const storeVizMode = useAudioStore((s) => s.vizMode);
@@ -1781,7 +1786,6 @@ export function VisualizerClient({
           {hudVisible && showHud && !journeyActive && (
             <AnalysisHUD
               analysis={activeAnalysis}
-              currentTime={currentTime}
               duration={duration}
               onSectionChange={handleSectionChange}
             />
@@ -1791,7 +1795,6 @@ export function VisualizerClient({
             <TonnetzOverlay
               notes={activeAnalysis.notes}
               chords={activeAnalysis.chords}
-              currentTime={currentTime}
             />
           )}
         </VisualizerCore>

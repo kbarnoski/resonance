@@ -383,7 +383,7 @@ export default function EmptyRoomPage() {
   }
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* full-viewport compass canvas */}
       <canvas
         ref={canvasRef}
@@ -396,10 +396,10 @@ export default function EmptyRoomPage() {
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
             626 · empty room
           </p>
-          <h1 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-4xl">
+          <h1 className="mt-5 text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
             An empty room, in the dark, with company you can only hear.
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/75">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
             Close your eyes. Several unseen presences drift around you in 3D space,
             each a soft, sustained voice. Turn to face one and it opens up and sings;
             the others recede. There is almost nothing to see — the payoff is in your
@@ -411,7 +411,7 @@ export default function EmptyRoomPage() {
           >
             Enter the dark — put on headphones
           </button>
-          <p className="mt-4 font-mono text-sm text-white/55">
+          <p className="mt-4 font-mono text-sm text-muted-foreground">
             Headphones strongly recommended. On a phone, hold it up and turn your body.
           </p>
         </div>
@@ -421,13 +421,13 @@ export default function EmptyRoomPage() {
         <>
           {/* minimal heads-up text, kept faint so the dark dominates */}
           <div className="pointer-events-none absolute left-0 right-0 top-6 z-10 text-center">
-            <p className="font-mono text-sm tracking-[0.25em] text-white/55">
+            <p className="font-mono text-sm tracking-[0.25em] text-muted-foreground">
               {mode === "orientation"
                 ? "TURN YOUR BODY TO FACE A PRESENCE"
                 : "DRAG TO TURN · FACE A PRESENCE"}
             </p>
             {!hrtf && (
-              <p className="mt-2 font-mono text-sm text-amber-300/95">
+              <p className="mt-2 font-mono text-sm text-violet-300/95">
                 HRTF binaural unavailable — using stereo panning fallback.
               </p>
             )}
@@ -435,7 +435,7 @@ export default function EmptyRoomPage() {
 
           {err && (
             <div className="absolute left-0 right-0 top-20 z-10 text-center">
-              <p className="mx-auto max-w-md px-6 font-mono text-base text-rose-300">
+              <p className="mx-auto max-w-md px-6 font-mono text-base text-violet-300">
                 {err}
               </p>
             </div>
@@ -447,20 +447,20 @@ export default function EmptyRoomPage() {
       <div className="absolute bottom-4 right-4 z-20 max-w-sm text-right">
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-sm text-white/55 transition hover:text-white/80"
+          className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-sm text-muted-foreground transition hover:text-foreground"
         >
           {showNotes ? "hide notes" : "read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-2 rounded-lg bg-black/70 p-4 text-left ring-1 ring-white/10 backdrop-blur">
-            <p className="text-base leading-relaxed text-white/75">
+          <div className="mt-2 rounded-lg bg-black/70 p-4 text-left ring-1 ring-border backdrop-blur">
+            <p className="text-base leading-relaxed text-muted-foreground">
               Eyes-closed, audio-first binaural piece. Each presence is panned with a
               Web Audio <span className="text-violet-300">HRTF</span> PannerNode; the
               listener orientation rotates as you turn. Facing a presence brightens and
               swells it. After ~2.5s of stillness the heading auto-rotates so the room
               sweeps past on its own.
             </p>
-            <p className="mt-3 text-sm text-white/55">
+            <p className="mt-3 text-sm text-muted-foreground">
               In the lineage of Janet Cardiff (<em>The Forty Part Motet</em>,{" "}
               <em>Her Long Black Hair</em>) and Pauline Oliveros (<em>Deep Listening</em>).
             </p>

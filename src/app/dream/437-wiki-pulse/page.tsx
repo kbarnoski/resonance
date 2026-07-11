@@ -173,10 +173,10 @@ export default function WikiPulsePage() {
 
   const statusColor =
     stats.status === "live"
-      ? "text-emerald-400"
+      ? "text-violet-400"
       : stats.status === "connecting"
-      ? "text-white/55"
-      : "text-amber-300/95";
+      ? "text-muted-foreground"
+      : "text-violet-300/95";
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
@@ -191,22 +191,22 @@ export default function WikiPulsePage() {
       {/* Tap-to-start overlay */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-black/80">
-          <h1 className="text-3xl font-mono font-bold text-white/95 tracking-widest mb-2 text-center px-4">
+          <h1 className="text-3xl font-mono font-bold text-foreground tracking-widest mb-2 text-center px-4">
             WIKI-PULSE
           </h1>
-          <p className="text-base font-mono text-white/70 mb-8 text-center px-6 max-w-sm">
+          <p className="text-base font-mono text-muted-foreground mb-8 text-center px-6 max-w-sm">
             Every glowing point is a real Wikipedia edit, happening right now.
           </p>
           <button
             onClick={handleStart}
-            className="px-6 py-3 font-mono text-base font-bold bg-white text-black rounded-none
-                       hover:bg-white/90 active:bg-white/70 transition-colors
+            className="px-6 py-3 font-mono text-base font-bold bg-card text-black rounded-none
+                       hover:bg-accent active:bg-muted transition-colors
                        min-h-[44px] tracking-widest"
             style={{ minWidth: 200 }}
           >
             TAP TO START
           </button>
-          <p className="text-sm font-mono text-white/40 mt-4 text-center px-4">
+          <p className="text-sm font-mono text-muted-foreground/70 mt-4 text-center px-4">
             Connects to the Wikimedia EventStreams live firehose
           </p>
         </div>
@@ -215,10 +215,10 @@ export default function WikiPulsePage() {
       {/* HUD — top-left title + description */}
       {started && (
         <div className="absolute top-14 left-0 right-0 px-5 pt-2 pointer-events-none z-10">
-          <h1 className="text-2xl font-mono font-bold text-white/95 tracking-widest">
+          <h1 className="text-2xl font-mono font-bold text-foreground tracking-widest">
             WIKI-PULSE
           </h1>
-          <p className="text-base font-mono text-white/70 mt-0.5">
+          <p className="text-base font-mono text-muted-foreground mt-0.5">
             Every glowing point is a real Wikipedia edit, happening right now.
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function WikiPulsePage() {
           <div className={`text-sm font-mono ${statusColor}`}>
             ◉ {statusText}
           </div>
-          <div className="text-sm font-mono text-white/55 mt-1">
+          <div className="text-sm font-mono text-muted-foreground mt-1">
             {stats.editsPerSec.toFixed(1)} edits/sec
             &nbsp;·&nbsp;
             {(stats.botFraction * 100).toFixed(0)}% bot
@@ -244,22 +244,22 @@ export default function WikiPulsePage() {
       {started && (
         <div className="absolute bottom-16 right-5 z-10 pointer-events-none space-y-1">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-cyan-300 opacity-80" />
-            <span className="text-xs font-mono text-white/55">human edit</span>
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-violet-300 opacity-80" />
+            <span className="text-xs font-mono text-muted-foreground">human edit</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 opacity-80" />
-            <span className="text-xs font-mono text-white/55">bot edit</span>
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-violet-400 opacity-80" />
+            <span className="text-xs font-mono text-muted-foreground">bot edit</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-fuchsia-400 opacity-80" />
-            <span className="text-xs font-mono text-white/55">new page</span>
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-violet-400 opacity-80" />
+            <span className="text-xs font-mono text-muted-foreground">new page</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: "rgba(120,180,120,0.8)" }} />
-            <span className="text-xs font-mono text-white/55">log / categorize</span>
+            <span className="text-xs font-mono text-muted-foreground">log / categorize</span>
           </div>
-          <div className="text-xs font-mono text-white/35 mt-2 text-right">
+          <div className="text-xs font-mono text-muted-foreground/70 mt-2 text-right">
             X: wiki · Y: byte delta
           </div>
         </div>
@@ -269,8 +269,8 @@ export default function WikiPulsePage() {
       <button
         onClick={() => setShowNotes((v) => !v)}
         className="absolute top-16 right-4 z-20 px-3 py-2 text-xs font-mono
-                   text-white/55 hover:text-white/80 border border-white/15
-                   hover:border-white/35 transition-colors bg-black/60
+                   text-muted-foreground hover:text-foreground border border-border
+                   hover:border-border transition-colors bg-black/60
                    min-h-[44px] flex items-center"
         aria-label="Toggle design notes"
       >
@@ -281,27 +281,27 @@ export default function WikiPulsePage() {
       {showNotes && (
         <div
           className="absolute inset-y-0 right-0 z-30 w-full max-w-md bg-black/95
-                     border-l border-white/10 overflow-y-auto"
+                     border-l border-border overflow-y-auto"
           role="dialog"
           aria-label="Design notes"
         >
           <div className="p-6 pt-16">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-mono font-bold text-white/95 tracking-widest">
+              <h2 className="text-lg font-mono font-bold text-foreground tracking-widest">
                 DESIGN NOTES
               </h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="text-white/55 hover:text-white font-mono text-sm px-2 py-1 min-h-[44px]"
+                className="text-muted-foreground hover:text-foreground font-mono text-sm px-2 py-1 min-h-[44px]"
               >
                 ✕
               </button>
             </div>
-            <pre className="text-xs font-mono text-white/70 whitespace-pre-wrap leading-relaxed">
+            <pre className="text-xs font-mono text-muted-foreground whitespace-pre-wrap leading-relaxed">
               {DESIGN_NOTES}
             </pre>
-            <div className="mt-6 pt-4 border-t border-white/10">
-              <p className="text-xs font-mono text-white/40">
+            <div className="mt-6 pt-4 border-t border-border">
+              <p className="text-xs font-mono text-muted-foreground/70">
                 Press N to toggle this panel
               </p>
             </div>
@@ -312,8 +312,8 @@ export default function WikiPulsePage() {
       {/* Visual axis labels (left = enwiki, right = wikidata) */}
       {started && !showNotes && (
         <div className="absolute bottom-5 left-0 right-0 flex justify-between px-5 z-10 pointer-events-none">
-          <span className="text-xs font-mono text-white/25">enwiki</span>
-          <span className="text-xs font-mono text-white/25">wikidata</span>
+          <span className="text-xs font-mono text-muted-foreground/70">enwiki</span>
+          <span className="text-xs font-mono text-muted-foreground/70">wikidata</span>
         </div>
       )}
 
@@ -321,7 +321,7 @@ export default function WikiPulsePage() {
       <Link
         href="/dream"
         className="absolute bottom-5 left-1/2 -translate-x-1/2 text-xs font-mono
-                   text-white/25 hover:text-white/50 transition-colors z-10"
+                   text-muted-foreground/70 hover:text-muted-foreground transition-colors z-10"
       >
         RESONANCE / DREAM
       </Link>

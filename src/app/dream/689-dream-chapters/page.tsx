@@ -783,7 +783,7 @@ export default function DreamChaptersPage() {
   const secs = Math.floor(elapsed % 60);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-foreground">
       {/* three.js gallery canvas */}
       <div
         ref={mountRef}
@@ -794,19 +794,19 @@ export default function DreamChaptersPage() {
       {/* WebGL fallback notice + stacked-card Canvas2D substitute */}
       {!webglOk && (
         <div className="absolute inset-0 overflow-y-auto bg-[#05060a] p-6">
-          <p className="mb-4 text-base text-amber-300/95">
+          <p className="mb-4 text-base text-violet-300/95">
             WebGL is unavailable — showing a flat stacked-card gallery instead.
           </p>
           <div className="flex flex-col gap-4">
             {chapters.map((c) => (
               <div
                 key={c.id}
-                className="rounded-lg border border-white/10 bg-white/[0.04] p-4"
+                className="rounded-lg border border-border bg-muted p-4"
               >
-                <div className="text-xl font-medium text-white/95">
+                <div className="text-xl font-medium text-foreground">
                   Chapter {c.id} · {c.phaseName}
                 </div>
-                <div className="mt-1 text-base text-white/75">{c.prompt}</div>
+                <div className="mt-1 text-base text-muted-foreground">{c.prompt}</div>
               </div>
             ))}
           </div>
@@ -815,22 +815,22 @@ export default function DreamChaptersPage() {
 
       {/* heading + journey HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Dream Chapters
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           A long-form generative journey that remembers everything it has
           dreamed — each movement mints a chapter card, accumulating a visible
           gallery of its own past.
         </p>
 
         {started && (
-          <div className="mt-5 max-w-xl rounded-xl border border-white/10 bg-black/45 p-4 backdrop-blur-md">
+          <div className="mt-5 max-w-xl rounded-xl border border-border bg-black/45 p-4 backdrop-blur-md">
             <div className="flex items-center justify-between text-base">
-              <span className="font-mono text-xl text-white/95">
+              <span className="font-mono text-xl text-foreground">
                 {phase.name}
               </span>
-              <span className="font-mono text-base text-white/75">
+              <span className="font-mono text-base text-muted-foreground">
                 {String(mins).padStart(2, "0")}:
                 {String(secs).padStart(2, "0")} · {chapters.length} chapter
                 {chapters.length === 1 ? "" : "s"}
@@ -843,25 +843,25 @@ export default function DreamChaptersPage() {
                   key={p.name}
                   className={`h-1.5 flex-1 rounded-full transition-colors ${
                     i === phaseIdx
-                      ? "bg-white/90"
+                      ? "bg-muted"
                       : i < phaseIdx
-                        ? "bg-white/40"
-                        : "bg-white/15"
+                        ? "bg-muted"
+                        : "bg-muted"
                   }`}
                   title={p.name}
                 />
               ))}
             </div>
-            <p className="mt-3 font-mono text-base leading-relaxed text-white/75">
+            <p className="mt-3 font-mono text-base leading-relaxed text-muted-foreground">
               {currentPrompt}
             </p>
             {localOnly && (
-              <p className="mt-3 text-base text-amber-300/95">
+              <p className="mt-3 text-base text-violet-300/95">
                 dreaming locally (no model key) — chapter cards painted in code
               </p>
             )}
             {status && (
-              <p className="mt-2 text-base text-rose-300">{status}</p>
+              <p className="mt-2 text-base text-violet-300">{status}</p>
             )}
           </div>
         )}
@@ -870,7 +870,7 @@ export default function DreamChaptersPage() {
       {/* begin overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#05060a]/80 px-6 text-center backdrop-blur-sm">
-          <p className="max-w-md text-base leading-relaxed text-white/75">
+          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
             Five named movements over five-plus minutes. At each phase boundary
             the piece dreams a chapter card; every card it has ever made drifts
             in a receding corridor you can look back through. Runs hands-off —
@@ -878,13 +878,13 @@ export default function DreamChaptersPage() {
           </p>
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-white px-8 py-2.5 text-base font-medium text-black transition-opacity hover:opacity-90"
+            className="min-h-[44px] rounded-full bg-card px-8 py-2.5 text-base font-medium text-black transition-opacity hover:opacity-90"
           >
             Begin
           </button>
           <Link
             href="/dream"
-            className="text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+            className="text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             ← back to the lab
           </Link>

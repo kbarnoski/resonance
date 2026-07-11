@@ -534,14 +534,14 @@ export default function KidsWordBandPage() {
   const TAP_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-300 via-cyan-200 to-yellow-100 flex flex-col items-center px-3 py-4 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-violet-300 via-violet-200 to-violet-100 flex flex-col items-center px-3 py-4 overflow-hidden">
 
       {/* ── Header ── */}
       <div className="w-full max-w-2xl text-center mb-3">
-        <h1 className="text-3xl font-black text-white drop-shadow-md tracking-tight leading-tight">
+        <h1 className="text-3xl font-black text-foreground drop-shadow-md tracking-tight leading-tight">
           Word Band 🎵
         </h1>
-        <p className="text-base text-white/90 mt-1 font-semibold">
+        <p className="text-base text-foreground mt-1 font-semibold">
           Say a word — hear it turn into music!
         </p>
       </div>
@@ -551,11 +551,11 @@ export default function KidsWordBandPage() {
         <div className="flex flex-col items-center gap-5 mt-8">
           <button
             onClick={handleStart}
-            className="bg-yellow-400 hover:bg-yellow-300 active:scale-95 text-yellow-900 font-black text-2xl rounded-full px-10 py-5 shadow-lg shadow-yellow-600/40 transition-all duration-150 min-h-[80px]"
+            className="bg-violet-400 hover:bg-violet-300 active:scale-95 text-violet-900 font-black text-2xl rounded-full px-10 py-5 shadow-lg shadow-violet-600/40 transition-all duration-150 min-h-[80px]"
           >
             ▶ START
           </button>
-          <p className="text-white/80 text-base text-center max-w-xs">
+          <p className="text-foreground text-base text-center max-w-xs">
             Say any word out loud and watch the rainbow xylophone come alive!
           </p>
         </div>
@@ -569,16 +569,16 @@ export default function KidsWordBandPage() {
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-2">
               {srAvail === null && (
-                <span className="text-white/70 text-sm">Setting up…</span>
+                <span className="text-muted-foreground text-sm">Setting up…</span>
               )}
               {srAvail && !micDenied && (
-                <span className={`text-sm font-bold flex items-center gap-1 ${listening ? "text-green-600" : "text-white/70"}`}>
-                  <span className={`w-2.5 h-2.5 rounded-full ${listening ? "bg-green-500 animate-pulse" : "bg-white/40"}`} />
+                <span className={`text-sm font-bold flex items-center gap-1 ${listening ? "text-violet-600" : "text-muted-foreground"}`}>
+                  <span className={`w-2.5 h-2.5 rounded-full ${listening ? "bg-violet-500 animate-pulse" : "bg-muted"}`} />
                   {listening ? "Listening…" : "Mic off"}
                 </span>
               )}
               {(srAvail === false || micDenied) && (
-                <span className="text-rose-300 text-sm font-semibold">
+                <span className="text-violet-300 text-sm font-semibold">
                   {micDenied ? "Mic blocked — tap letters to play!" : "Tap the letters to play!"}
                 </span>
               )}
@@ -588,7 +588,7 @@ export default function KidsWordBandPage() {
                 {loopWords.map((w, i) => (
                   <span
                     key={i}
-                    className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
+                    className="text-xs font-bold px-2 py-0.5 rounded-full text-foreground"
                     style={{ backgroundColor: BAR_COLORS[i % N_BARS] }}
                   >
                     {w}
@@ -599,7 +599,7 @@ export default function KidsWordBandPage() {
           </div>
 
           {/* ── SVG stage: xylophone + bouncing letters ── */}
-          <div className="w-full rounded-3xl overflow-hidden shadow-xl bg-white/30 backdrop-blur-sm border-2 border-white/50">
+          <div className="w-full rounded-3xl overflow-hidden shadow-xl bg-muted backdrop-blur-sm border-2 border-border">
             <svg
               viewBox="0 0 600 340"
               className="w-full"
@@ -722,8 +722,8 @@ export default function KidsWordBandPage() {
           </div>
 
           {/* ── Tap keyboard fallback ── */}
-          <div className="w-full bg-white/40 backdrop-blur-sm rounded-2xl p-3 border border-white/50">
-            <p className="text-sm font-bold text-sky-800 mb-2 text-center">
+          <div className="w-full bg-muted backdrop-blur-sm rounded-2xl p-3 border border-border">
+            <p className="text-sm font-bold text-violet-800 mb-2 text-center">
               {srAvail ? "Or tap letters:" : "Tap letters to make music:"}
             </p>
             {/* Current word preview */}
@@ -733,7 +733,7 @@ export default function KidsWordBandPage() {
                 return (
                   <span
                     key={i}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-white font-black text-sm shadow-md"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-foreground font-black text-sm shadow-md"
                     style={{ backgroundColor: BAR_COLORS[barIdx] }}
                   >
                     {c.toUpperCase()}
@@ -741,7 +741,7 @@ export default function KidsWordBandPage() {
                 );
               })}
               {tapWord.length === 0 && (
-                <span className="text-sky-600/60 text-sm self-center">tap letters below…</span>
+                <span className="text-violet-600/60 text-sm self-center">tap letters below…</span>
               )}
             </div>
             {/* Letter grid */}
@@ -759,7 +759,7 @@ export default function KidsWordBandPage() {
                         const n = new Set(s); n.delete(l); return n;
                       }), 200);
                     }}
-                    className="w-9 h-9 rounded-lg text-white font-black text-sm transition-all duration-75 active:scale-90 touch-none select-none"
+                    className="w-9 h-9 rounded-lg text-foreground font-black text-sm transition-all duration-75 active:scale-90 touch-none select-none"
                     style={{
                       backgroundColor: BAR_COLORS[barIdx],
                       opacity: active ? 1 : 0.8,
@@ -776,21 +776,21 @@ export default function KidsWordBandPage() {
               <button
                 onPointerDown={handleTapSubmit}
                 disabled={tapWord.length < 2}
-                className="bg-yellow-400 hover:bg-yellow-300 disabled:opacity-40 text-yellow-900 font-black text-base rounded-xl px-5 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
+                className="bg-violet-400 hover:bg-violet-300 disabled:opacity-40 text-violet-900 font-black text-base rounded-xl px-5 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
               >
                 PLAY! ▶
               </button>
               <button
                 onPointerDown={() => { setTapWord((w) => w.slice(0, -1)); }}
                 disabled={tapWord.length === 0}
-                className="bg-rose-300 hover:bg-rose-200 disabled:opacity-40 text-white font-bold text-base rounded-xl px-4 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
+                className="bg-violet-300 hover:bg-violet-200 disabled:opacity-40 text-foreground font-bold text-base rounded-xl px-4 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
               >
                 ⌫
               </button>
               <button
                 onPointerDown={() => { setTapWord(""); setActiveTapLetters(new Set()); }}
                 disabled={tapWord.length === 0}
-                className="bg-white/60 hover:bg-white/80 disabled:opacity-40 text-sky-700 font-bold text-base rounded-xl px-4 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
+                className="bg-muted hover:bg-accent disabled:opacity-40 text-violet-700 font-bold text-base rounded-xl px-4 py-2.5 shadow-md transition-all active:scale-95 min-h-[44px]"
               >
                 Clear
               </button>
@@ -801,12 +801,12 @@ export default function KidsWordBandPage() {
           <div className="text-center">
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="text-sky-700/80 text-sm underline underline-offset-2"
+              className="text-violet-700/80 text-sm underline underline-offset-2"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
             {showNotes && (
-              <div className="mt-2 bg-white/60 rounded-2xl p-4 text-left text-sm text-sky-900 space-y-2">
+              <div className="mt-2 bg-muted rounded-2xl p-4 text-left text-sm text-violet-900 space-y-2">
                 <p><strong>Letter → Note mapping:</strong> Vowels (a e i o u) anchor the pentatonic scale degrees. Each consonant maps to a stable bar index — nothing can sound wrong because every note is in C-major pentatonic (C4 D4 E4 G4 A4 C5 D5 E5).</p>
                 <p><strong>Scheduling:</strong> A 25ms look-ahead scheduler (Chris Wilson pattern) pumps notes 120ms ahead for tight, glitch-free timing even on iOS Safari.</p>
                 <p><strong>Timbre:</strong> Triangle fundamental + soft 2× and 4× sine partials, percussive envelope — warm mallet / marimba feel. All voices → masterGain (0.28) → lowpass (7000 Hz) → DynamicsCompressor (−10 dB, 20:1) → output.</p>

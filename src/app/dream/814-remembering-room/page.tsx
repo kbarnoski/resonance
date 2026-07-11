@@ -227,7 +227,7 @@ export default function RememberingRoom() {
   }, [teardown]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a120c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#1a120c] text-foreground">
       {/* Soft hearth wash */}
       <div
         aria-hidden
@@ -240,20 +240,20 @@ export default function RememberingRoom() {
 
       <Link
         href="/dream"
-        className="absolute left-5 top-5 z-20 font-mono text-base text-amber-200/80 underline-offset-4 hover:underline"
+        className="absolute left-5 top-5 z-20 font-mono text-base text-violet-200/80 underline-offset-4 hover:underline"
       >
         ← gallery
       </Link>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-7 px-6 py-16">
         <header className="text-center">
-          <p className="font-mono text-base uppercase tracking-[0.3em] text-amber-200/80">
+          <p className="font-mono text-base uppercase tracking-[0.3em] text-violet-200/80">
             814 · remembering room
           </p>
-          <h1 className="mt-3 font-serif text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="mt-3 font-serif text-3xl font-semibold text-foreground sm:text-4xl">
             Welcome Home, remembered
           </h1>
-          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-white/80">
+          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-foreground">
             His &ldquo;Welcome Home&rdquo; piano plays whole, as the soloist. A
             live music agent answers in his gaps — but this one{" "}
             <em>remembers</em>: it banks motifs, then over minutes transposes,
@@ -270,7 +270,7 @@ export default function RememberingRoom() {
             height={380}
             className="h-full w-full"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-1 flex items-center justify-between px-6 text-base text-white/75">
+          <div className="pointer-events-none absolute inset-x-0 bottom-1 flex items-center justify-between px-6 text-base text-muted-foreground">
             <span className="font-mono">him</span>
             <span className="font-mono">the answer</span>
           </div>
@@ -278,17 +278,17 @@ export default function RememberingRoom() {
 
         {/* Currently-detected chord (big) */}
         <div className="text-center">
-          <p className="text-base text-white/75">chord under his hands</p>
-          <p className="mt-1 font-mono text-4xl font-semibold tabular-nums text-amber-100">
+          <p className="text-base text-muted-foreground">chord under his hands</p>
+          <p className="mt-1 font-mono text-4xl font-semibold tabular-nums text-violet-100">
             {chordName}
           </p>
         </div>
 
         {/* The memory shelf — the long-form memory, made legible */}
         <div className="w-full max-w-md">
-          <div className="flex items-baseline justify-between text-base text-white/75">
+          <div className="flex items-baseline justify-between text-base text-muted-foreground">
             <span className="font-mono">memory shelf</span>
-            <span className="font-mono tabular-nums text-amber-200/90">
+            <span className="font-mono tabular-nums text-violet-200/90">
               {bankSize} motifs · {pressurePct}% recall pressure
             </span>
           </div>
@@ -296,11 +296,11 @@ export default function RememberingRoom() {
             ref={shelfRef}
             width={760}
             height={150}
-            className="mt-2 h-[75px] w-full rounded-lg border border-amber-200/15 bg-black/25"
+            className="mt-2 h-[75px] w-full rounded-lg border border-violet-200/15 bg-black/25"
           />
-          <p className="mt-2 text-base text-white/55">
+          <p className="mt-2 text-base text-muted-foreground">
             Each glyph is a banked motif&rsquo;s contour; amber ones are{" "}
-            <span className="text-amber-200/90">his gestures, lifted</span>,
+            <span className="text-violet-200/90">his gestures, lifted</span>,
             rose ones are the agent&rsquo;s own answers. A glyph flares when it
             is recalled and developed.
           </p>
@@ -313,7 +313,7 @@ export default function RememberingRoom() {
               type="button"
               onClick={begin}
               disabled={phase === "loading"}
-              className="min-h-[44px] rounded-full bg-amber-300 px-8 py-2.5 text-base font-semibold text-[#241509] shadow-lg shadow-amber-900/40 transition hover:bg-amber-200 disabled:opacity-60"
+              className="min-h-[44px] rounded-full bg-violet-300 px-8 py-2.5 text-base font-semibold text-[#241509] shadow-lg shadow-violet-900/40 transition hover:bg-violet-200 disabled:opacity-60"
             >
               {phase === "loading"
                 ? "Warming up…"
@@ -325,16 +325,16 @@ export default function RememberingRoom() {
             <button
               type="button"
               onClick={stop}
-              className="min-h-[44px] rounded-full border border-amber-200/50 px-8 py-2.5 text-base font-semibold text-white transition hover:bg-amber-200/10"
+              className="min-h-[44px] rounded-full border border-violet-200/50 px-8 py-2.5 text-base font-semibold text-foreground transition hover:bg-violet-200/10"
             >
               Let the room rest
             </button>
           )}
 
           <div className="w-full">
-            <div className="flex items-center justify-between text-base text-white/75">
+            <div className="flex items-center justify-between text-base text-muted-foreground">
               <span>shy</span>
-              <span className="font-mono text-white/80">company</span>
+              <span className="font-mono text-foreground">company</span>
               <span>talkative</span>
             </div>
             <input
@@ -345,14 +345,14 @@ export default function RememberingRoom() {
               value={company}
               onChange={(e) => setCompany(parseFloat(e.target.value))}
               aria-label="how forward the agent is"
-              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-amber-200/25 accent-amber-300"
+              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200/25 accent-violet-300"
             />
           </div>
 
           <div className="w-full">
-            <div className="flex items-center justify-between text-base text-white/75">
+            <div className="flex items-center justify-between text-base text-muted-foreground">
               <span>invent</span>
-              <span className="font-mono text-white/80">memory</span>
+              <span className="font-mono text-foreground">memory</span>
               <span>recall</span>
             </div>
             <input
@@ -363,14 +363,14 @@ export default function RememberingRoom() {
               value={memoryLean}
               onChange={(e) => setMemoryLean(parseFloat(e.target.value))}
               aria-label="how strongly the agent leans on memory"
-              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-rose-200/25 accent-rose-300"
+              className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200/25 accent-violet-300"
             />
           </div>
 
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] text-base text-amber-200/80 underline-offset-4 hover:underline"
+            className="min-h-[44px] text-base text-violet-200/80 underline-offset-4 hover:underline"
           >
             {showNotes ? "Hide the design notes" : "Read the design notes"}
           </button>
@@ -381,8 +381,8 @@ export default function RememberingRoom() {
           <div
             className={`rounded-full border px-4 py-1.5 text-base ${
               provenance === "his"
-                ? "border-amber-300/40 text-amber-100/90"
-                : "border-emerald-300/40 text-emerald-300/95"
+                ? "border-violet-300/40 text-violet-100/90"
+                : "border-violet-300/40 text-violet-300/95"
             }`}
           >
             {provenance === "his"
@@ -392,15 +392,15 @@ export default function RememberingRoom() {
         )}
 
         {phase === "unsupported" && (
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             Your browser would not open an audio context. Try a recent Chrome,
             Firefox, or Safari and tap Begin again.
           </p>
         )}
 
         {showNotes && (
-          <section className="w-full max-w-lg rounded-2xl border border-amber-200/20 bg-black/20 p-6 text-base leading-relaxed text-white/80">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <section className="w-full max-w-lg rounded-2xl border border-violet-200/20 bg-black/20 p-6 text-base leading-relaxed text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               This is a <strong>live music agent</strong> with{" "}
               <strong>long-form memory</strong>. His recording is the soloist —
@@ -420,7 +420,7 @@ export default function RememberingRoom() {
               diminish the rhythm, fragment to the head, invert, sequence — so
               the piece accretes coherence over minutes.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Lineage: CHI 2026 &ldquo;A Design Space for Live Music Agents&rdquo;
               (arXiv 2602.05064), whose &ldquo;Adaptive Phrase Bank&rdquo; seeds
               this build and which notes that sustained motif development is a
@@ -430,7 +430,7 @@ export default function RememberingRoom() {
             </p>
             <Link
               href="/dream"
-              className="mt-4 inline-block text-amber-200/80 underline-offset-4 hover:underline"
+              className="mt-4 inline-block text-violet-200/80 underline-offset-4 hover:underline"
             >
               ← back to the gallery
             </Link>

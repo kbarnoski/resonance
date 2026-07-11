@@ -345,17 +345,17 @@ export default function ExpressiveAccompanistPage() {
   const refLen = REFERENCE.length
 
   return (
-    <main className="min-h-screen bg-[#07060d] text-white px-5 py-8 sm:px-8">
+    <main className="min-h-screen bg-[#07060d] text-foreground px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-5xl">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <header className="mb-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             Expressive Accompanist
           </h1>
-          <p className="mt-2 text-base text-white/75 max-w-2xl">
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
             An online-DTW score follower that couples to the soloist in{" "}
-            <span className="text-white/95">three dimensions</span>: tempo,
+            <span className="text-foreground">three dimensions</span>: tempo,
             dynamics, and articulation — so it feels like a real duet partner.
             Play the Pachelbel Canon melody; the machine plays bass &amp; chords
             matching your loudness and legato/staccato phrase-by-phrase.
@@ -372,17 +372,17 @@ export default function ExpressiveAccompanistPage() {
           </button>
           <button
             onClick={() => { stopDemo(); resetFollower(); setMode("idle") }}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/5 text-white/75 hover:bg-white/10 border border-white/10 text-base transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted text-muted-foreground hover:bg-accent border border-border text-base transition-colors"
           >
             Reset
           </button>
           <button
             onClick={requestMidi}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-white/5 text-white/75 hover:bg-white/10 border border-white/10 text-base transition-colors"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg bg-muted text-muted-foreground hover:bg-accent border border-border text-base transition-colors"
           >
             Connect MIDI
           </button>
-          <label className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-base text-white/75 cursor-pointer">
+          <label className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-muted border border-border text-base text-muted-foreground cursor-pointer">
             <input
               type="checkbox"
               checked={echoOn}
@@ -394,10 +394,10 @@ export default function ExpressiveAccompanistPage() {
         </div>
 
         {/* ── WebGL2 canvas ────────────────────────────────────────────────── */}
-        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-white/10 bg-black">
+        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-border bg-black">
           {glError ? (
             <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-              <p className="text-rose-300 text-base leading-relaxed">
+              <p className="text-violet-300 text-base leading-relaxed">
                 WebGL2 is unavailable here ({glError}). The follower and audio
                 still work — press &ldquo;Play demo&rdquo; or use your keyboard.
               </p>
@@ -405,10 +405,10 @@ export default function ExpressiveAccompanistPage() {
           ) : (
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           )}
-          <span className="pointer-events-none absolute left-3 top-3 text-xs font-mono text-white/55">
+          <span className="pointer-events-none absolute left-3 top-3 text-xs font-mono text-muted-foreground">
             ↑ your performance time
           </span>
-          <span className="pointer-events-none absolute right-3 bottom-3 text-xs font-mono text-white/55">
+          <span className="pointer-events-none absolute right-3 bottom-3 text-xs font-mono text-muted-foreground">
             reference score time →
           </span>
           <div className="pointer-events-none absolute left-3 bottom-3 flex flex-col gap-0.5">
@@ -437,8 +437,8 @@ export default function ExpressiveAccompanistPage() {
             pct={accompDynPct}
             barColor="bg-violet-600"
           />
-          <div className="rounded-lg bg-white/5 border border-white/10 px-4 py-3">
-            <div className="text-xs uppercase tracking-wide text-white/55 font-mono mb-2">
+          <div className="rounded-lg bg-muted border border-border px-4 py-3">
+            <div className="text-xs uppercase tracking-wide text-muted-foreground font-mono mb-2">
               Articulation
             </div>
             <div className="flex items-center gap-2">
@@ -447,8 +447,8 @@ export default function ExpressiveAccompanistPage() {
                   articLabel === "legato"
                     ? "text-violet-300"
                     : articLabel === "staccato"
-                    ? "text-amber-300"
-                    : "text-white/75"
+                    ? "text-violet-300"
+                    : "text-muted-foreground"
                 }`}
               >
                 {articLabel}
@@ -456,8 +456,8 @@ export default function ExpressiveAccompanistPage() {
               <span
                 className={`ml-auto text-xs font-mono rounded px-2 py-0.5 border ${
                   isConfident
-                    ? "text-emerald-300 border-emerald-400/30 bg-emerald-500/10"
-                    : "text-white/55 border-white/10 bg-white/5"
+                    ? "text-violet-300 border-violet-400/30 bg-violet-500/10"
+                    : "text-muted-foreground border-border bg-muted"
                 }`}
               >
                 {isConfident ? "lock ✓" : "seeking…"}
@@ -469,7 +469,7 @@ export default function ExpressiveAccompanistPage() {
         {/* ── Keyboard map ─────────────────────────────────────────────────── */}
         <section className="mt-7">
           <h2 className="text-xl font-medium mb-3">Play it yourself</h2>
-          <p className="text-base text-white/75 mb-3 max-w-2xl">
+          <p className="text-base text-muted-foreground mb-3 max-w-2xl">
             Home-row keys play the Pachelbel Canon melody in D major. Hold keys
             longer for legato phrasing, tap quickly for staccato — the
             accompaniment will follow your articulation. Use MIDI for full
@@ -482,45 +482,45 @@ export default function ExpressiveAccompanistPage() {
                 className={`flex flex-col items-center justify-center min-w-[54px] min-h-[54px] rounded-lg border text-center transition-colors ${
                   lastKey === k.key
                     ? "bg-violet-500/30 border-violet-300/50"
-                    : "bg-white/5 border-white/10"
+                    : "bg-muted border-border"
                 }`}
               >
-                <span className="text-base font-mono uppercase text-white/95">{k.key}</span>
-                <span className="text-xs text-white/55">{k.label}</span>
+                <span className="text-base font-mono uppercase text-foreground">{k.key}</span>
+                <span className="text-xs text-muted-foreground">{k.label}</span>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-base text-white/55">
-            MIDI: <span className="text-white/75">{midiStatus}</span>
+          <p className="mt-3 text-base text-muted-foreground">
+            MIDI: <span className="text-muted-foreground">{midiStatus}</span>
           </p>
         </section>
 
         {/* ── How it works ─────────────────────────────────────────────────── */}
-        <section className="mt-8 border-t border-white/10 pt-5">
+        <section className="mt-8 border-t border-border pt-5">
           <h2 className="text-xl font-medium mb-3">How the coupling works</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-base text-white/75">
-            <div className="rounded-lg bg-white/5 border border-white/10 p-4">
-              <div className="text-white/95 font-medium mb-1">1. Tempo</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-base text-muted-foreground">
+            <div className="rounded-lg bg-muted border border-border p-4">
+              <div className="text-foreground font-medium mb-1">1. Tempo</div>
               Online DTW (Dixon&apos;s MATCH, 2005): bounded search window grows
               the path one note at a time. Slope of the path = local tempo. Steeper
               than 45° → rushing; shallower → dragging. Chord placement locks to
               your position.
             </div>
-            <div className="rounded-lg bg-white/5 border border-white/10 p-4">
-              <div className="text-white/95 font-medium mb-1">2. Dynamics</div>
+            <div className="rounded-lg bg-muted border border-border p-4">
+              <div className="text-foreground font-medium mb-1">2. Dynamics</div>
               Your note velocity is EMA-smoothed and maps directly to accompaniment
               gain. Soft playing → quiet chords; loud swell → the chords swell with
               you. The ribbon&apos;s{" "}
               <span className="text-violet-300">thickness</span> encodes this live.
             </div>
-            <div className="rounded-lg bg-white/5 border border-white/10 p-4">
-              <div className="text-white/95 font-medium mb-1">3. Articulation</div>
+            <div className="rounded-lg bg-muted border border-border p-4">
+              <div className="text-foreground font-medium mb-1">3. Articulation</div>
               Duration ÷ inter-onset-interval = articulation ratio. Legato (high ratio)
               → long chord decays. Staccato (low) → detached chords. The ribbon{" "}
-              <span className="text-amber-300">dashes</span> when you go staccato.
+              <span className="text-violet-300">dashes</span> when you go staccato.
             </div>
           </div>
-          <p className="mt-4 text-base text-white/55 max-w-2xl">
+          <p className="mt-4 text-base text-muted-foreground max-w-2xl">
             The baked demo has a deliberate expressive arc: steady intro →
             accelerando → ritardando; crescendo → diminuendo; legato first half →
             staccato second half. Watch the ribbon change as each phase passes.
@@ -546,9 +546,9 @@ function labelForMode(m: InputMode): string {
 
 function Readout({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-white/5 border border-white/10 px-4 py-3">
-      <div className="text-xs uppercase tracking-wide text-white/55 font-mono">{label}</div>
-      <div className="mt-1 text-base text-white/95 font-mono">{value}</div>
+    <div className="rounded-lg bg-muted border border-border px-4 py-3">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground font-mono">{label}</div>
+      <div className="mt-1 text-base text-foreground font-mono">{value}</div>
     </div>
   )
 }
@@ -563,15 +563,15 @@ function MeterReadout({
   barColor: string
 }) {
   return (
-    <div className="rounded-lg bg-white/5 border border-white/10 px-4 py-3">
-      <div className="text-xs uppercase tracking-wide text-white/55 font-mono mb-2">{label}</div>
-      <div className="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
+    <div className="rounded-lg bg-muted border border-border px-4 py-3">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground font-mono mb-2">{label}</div>
+      <div className="w-full h-2.5 rounded-full bg-muted overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-150 ${barColor}`}
           style={{ width: `${Math.max(3, pct)}%` }}
         />
       </div>
-      <div className="mt-1 text-xs text-white/55 font-mono text-right">{pct}%</div>
+      <div className="mt-1 text-xs text-muted-foreground font-mono text-right">{pct}%</div>
     </div>
   )
 }

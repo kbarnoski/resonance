@@ -487,14 +487,14 @@ export default function GhostSfxPage() {
           <h1 className="text-lg font-bold tracking-wide">Ghost SFX</h1>
           <Link
             href="/dream"
-            className="text-[11px] text-white/30 hover:text-white/60"
+            className="text-[11px] text-muted-foreground/70 hover:text-muted-foreground"
           >
             ← dream
           </Link>
         </div>
-        <p className="text-[12px] text-white/40 mb-6 leading-relaxed">
+        <p className="text-[12px] text-muted-foreground/70 mb-6 leading-relaxed">
           Each Ghost scene has a sound as distinctive as its visuals.{" "}
-          <span className="text-white/25">Wear headphones.</span>
+          <span className="text-muted-foreground/70">Wear headphones.</span>
         </p>
 
         {/* Scene selector */}
@@ -512,7 +512,7 @@ export default function GhostSfxPage() {
               className={
                 "px-3 py-1.5 rounded text-[12px] border transition " +
                 (i !== sceneIdx
-                  ? "border-white/12 text-white/50 hover:border-white/30 hover:text-white/70 "
+                  ? "border-border text-muted-foreground hover:border-border hover:text-muted-foreground "
                   : "") +
                 (generating && i !== sceneIdx ? "opacity-40 cursor-not-allowed" : "cursor-pointer")
               }
@@ -547,9 +547,9 @@ export default function GhostSfxPage() {
                       ? "#e0504055"
                       : undefined,
                 }}
-                className="flex-1 p-2.5 rounded-md bg-white/[0.04] border border-white/[0.08]"
+                className="flex-1 p-2.5 rounded-md bg-muted border border-border"
               >
-                <div className="text-[10px] text-white/38 mb-1">
+                <div className="text-[10px] text-muted-foreground/70 mb-1">
                   {sceneIdx >= 0 ? SCENES[sceneIdx].sources[i]?.label : ""}
                 </div>
                 <div
@@ -574,14 +574,14 @@ export default function GhostSfxPage() {
                     : "—"}
                 </div>
                 {ui.status === "error" && (
-                  <div className="text-[10px] text-red-400/60 mt-1 break-all leading-tight">
+                  <div className="text-[10px] text-destructive/60 mt-1 break-all leading-tight">
                     {ui.error.slice(0, 150)}
                   </div>
                 )}
                 {ui.status === "ready" && (
                   <button
                     onClick={() => toggleMute(i)}
-                    className="mt-1.5 px-2 py-0.5 text-[10px] border border-white/15 rounded text-white/55 hover:text-white/80 hover:border-white/30"
+                    className="mt-1.5 px-2 py-0.5 text-[10px] border border-border rounded text-muted-foreground hover:text-foreground hover:border-border"
                   >
                     {ui.muted ? "unmute" : "mute"}
                   </button>
@@ -606,7 +606,7 @@ export default function GhostSfxPage() {
                 "px-6 py-2.5 rounded-md text-[14px] font-bold border-0 transition " +
                 (anyReady
                   ? "cursor-pointer"
-                  : "bg-white/8 text-white/22 cursor-not-allowed")
+                  : "bg-muted text-muted-foreground/70 cursor-not-allowed")
               }
             >
               ▶ Play
@@ -614,13 +614,13 @@ export default function GhostSfxPage() {
           ) : (
             <button
               onClick={killNodes}
-              className="px-6 py-2.5 rounded-md text-[14px] bg-white/8 text-white/80 border border-white/18 hover:bg-white/12 cursor-pointer"
+              className="px-6 py-2.5 rounded-md text-[14px] bg-muted text-foreground border border-border hover:bg-accent cursor-pointer"
             >
               ■ Stop
             </button>
           )}
 
-          <span className="text-[12px] text-white/35">
+          <span className="text-[12px] text-muted-foreground/70">
             {generating
               ? `generating… ${readyCount}/${srcUi.length} ready`
               : sceneIdx < 0
@@ -634,21 +634,21 @@ export default function GhostSfxPage() {
         </div>
 
         {/* Info + API note */}
-        <div className="border-t border-white/[0.06] pt-4 space-y-2">
-          <p className="text-[11px] text-white/28 leading-relaxed">
+        <div className="border-t border-border pt-4 space-y-2">
+          <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
             Each source is positioned at its 3-D location via Web Audio HRTF
             PannerNode. The canvas shows the top-down view: F=forward, B=back,
             L=left, R=right. Elevation (±°) is applied to the audio even though
             the top-down canvas doesn&apos;t show it vertically. Six scenes · 3
             AI-generated sounds each · ~$0.05–0.15/scene (ElevenLabs on fal.ai).
           </p>
-          <p className="text-[11px] text-white/22">
+          <p className="text-[11px] text-muted-foreground/70">
             ⚠ API note: endpoint{" "}
-            <code className="text-white/40">fal-ai/elevenlabs/sound-generation</code>
+            <code className="text-muted-foreground/70">fal-ai/elevenlabs/sound-generation</code>
             . If sources show errors, paste the error text and the agent will fix
             the endpoint or parameters next cycle.
           </p>
-          <div className="text-[10px] text-white/18 pt-1">/dream/53-ghost-sfx</div>
+          <div className="text-[10px] text-muted-foreground/70 pt-1">/dream/53-ghost-sfx</div>
         </div>
       </div>
     </div>

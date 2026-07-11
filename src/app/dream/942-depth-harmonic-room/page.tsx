@@ -441,17 +441,17 @@ export default function HarmonicRoomPage() {
   }, []);
 
   const inputLabel: Record<InputState, { text: string; cls: string }> = {
-    idle: { text: "asleep", cls: "text-white/60" },
+    idle: { text: "asleep", cls: "text-muted-foreground" },
     synthetic: { text: "synthetic depth (auto-walk)", cls: "text-violet-300" },
-    pointer: { text: "pointer walking the lattice", cls: "text-emerald-300/95" },
-    "camera-only": { text: "camera live", cls: "text-amber-300/95" },
+    pointer: { text: "pointer walking the lattice", cls: "text-violet-300/95" },
+    "camera-only": { text: "camera live", cls: "text-violet-300/95" },
     "loading-model": {
       text: "loading Depth Anything V2…",
-      cls: "text-amber-300/95",
+      cls: "text-violet-300/95",
     },
     live: {
       text: "live body depth (Depth Anything V2 · WebGPU)",
-      cls: "text-emerald-300/95",
+      cls: "text-violet-300/95",
     },
   };
 
@@ -463,7 +463,7 @@ export default function HarmonicRoomPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#080507] text-white">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#080507] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       <canvas ref={procRef} width={PROC_W} height={PROC_H} className="hidden" />
       <video ref={videoRef} className="hidden" playsInline muted />
@@ -481,10 +481,10 @@ export default function HarmonicRoomPage() {
                 "radial-gradient(circle, rgba(255,150,80,0.14), transparent 70%)",
             }}
           >
-            <div className="font-serif text-6xl text-amber-300/95">
+            <div className="font-serif text-6xl text-violet-300/95">
               {hud.chord}
             </div>
-            <div className="mt-2 font-mono text-base text-white/75">
+            <div className="mt-2 font-mono text-base text-muted-foreground">
               last move: {hud.move}
             </div>
           </div>
@@ -493,10 +493,10 @@ export default function HarmonicRoomPage() {
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-3xl text-white md:text-5xl">
+          <h1 className="font-serif text-3xl text-foreground md:text-5xl">
             Depth Harmonic Room
           </h1>
-          <p className="mt-2 text-base text-white/80 md:text-lg">
+          <p className="mt-2 text-base text-foreground md:text-lg">
             Move through the room and your body, read live as a depth field,
             walks a neo-Riemannian Tonnetz — smooth, voice-led chord changes
             where harmony itself is the instrument.
@@ -513,15 +513,15 @@ export default function HarmonicRoomPage() {
           <div className="mx-auto flex max-w-lg flex-col items-center text-center">
             <button
               onClick={enter}
-              className="min-h-[44px] rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-xl font-medium text-white backdrop-blur-sm transition hover:bg-white/20"
+              className="min-h-[44px] rounded-2xl border border-border bg-muted px-6 py-3 text-xl font-medium text-foreground backdrop-blur-sm transition hover:bg-accent"
             >
               Enter the room
             </button>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Sound starts on your tap (browsers require a gesture). Step left
               and right, lean in and back — or just watch: it walks itself.
             </p>
-            <p className="mt-1 font-mono text-base text-emerald-300/95">
+            <p className="mt-1 font-mono text-base text-violet-300/95">
               Camera is processed on-device, live — never recorded or uploaded.
             </p>
           </div>
@@ -529,36 +529,36 @@ export default function HarmonicRoomPage() {
 
         <footer className="max-w-3xl">
           {errMsg && (
-            <p className="mb-3 rounded-lg border border-rose-400/40 bg-rose-950/30 px-4 py-2.5 text-base text-rose-300">
+            <p className="mb-3 rounded-lg border border-violet-400/40 bg-violet-950/30 px-4 py-2.5 text-base text-violet-300">
               {errMsg}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               input:{" "}
               <span className={inputLabel[input].cls}>
                 {inputLabel[input].text}
               </span>
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               render:{" "}
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 {renderLabel[renderState]}
               </span>
             </span>
             {entered && (
               <>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   chord{" "}
-                  <span className="text-amber-300/95">{hud.chord}</span>
+                  <span className="text-violet-300/95">{hud.chord}</span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   voice-lead{" "}
                   <span className="text-violet-300">{hud.move}</span>
                 </span>
-                <span className="text-white/75">
+                <span className="text-muted-foreground">
                   near{" "}
-                  <span className="text-emerald-300/95">
+                  <span className="text-violet-300/95">
                     {(hud.near * 100).toFixed(0)}%
                   </span>
                 </span>
@@ -566,7 +566,7 @@ export default function HarmonicRoomPage() {
             )}
             <Link
               href="/dream"
-              className="text-white/75 underline underline-offset-4 hover:text-white"
+              className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
               ← back to the lab
             </Link>
@@ -576,31 +576,31 @@ export default function HarmonicRoomPage() {
 
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
-          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-white/80">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p>
-              <span className="text-white/95">The question:</span> what if the
+              <span className="text-foreground">The question:</span> what if the
               distance and position of your body in the room — read live as a
               per-pixel depth field by an ML model in the browser — placed you
               inside a neo-Riemannian{" "}
-              <span className="text-amber-300/95">Tonnetz</span> of harmony, so
+              <span className="text-violet-300/95">Tonnetz</span> of harmony, so
               that simply moving through space glides you through smooth,
               voice-led chord changes? Harmony is the instrument; you walk it.
             </p>
             <p>
-              <span className="text-white/95">Depth.</span>{" "}
-              <span className="text-white/95">Depth Anything V2 (small)</span>{" "}
+              <span className="text-foreground">Depth.</span>{" "}
+              <span className="text-foreground">Depth Anything V2 (small)</span>{" "}
               runs in your browser on WebGPU via Transformers.js, turning a
               single webcam frame into a distance field ~8×/second. It is
               averaged into a 16×12 grid; from it we read{" "}
-              <span className="text-emerald-300/95">near-energy</span> (how close
-              you are), the <span className="text-white/95">lateral centroid</span>{" "}
+              <span className="text-violet-300/95">near-energy</span> (how close
+              you are), the <span className="text-foreground">lateral centroid</span>{" "}
               of your nearest region, a{" "}
-              <span className="text-white/95">depth band</span>, and{" "}
+              <span className="text-foreground">depth band</span>, and{" "}
               <span className="text-violet-300">motion</span>.
             </p>
             <p>
-              <span className="text-white/95">
+              <span className="text-foreground">
                 Tonnetz + voice-leading (the core).
               </span>{" "}
               Lateral position walks an alternating R/L chain around the circle
@@ -611,22 +611,22 @@ export default function HarmonicRoomPage() {
               chord is then voiced for four SATB voices, each taking the nearest
               chord tone to where it already sits, and gliding (portamento,
               ~120–300&nbsp;ms) when it must move. That common-tone retention{" "}
-              <span className="text-white/95">is</span> the smooth voice-leading.
+              <span className="text-foreground">is</span> the smooth voice-leading.
             </p>
             <p>
-              <span className="text-white/95">Sound.</span> Four warm
+              <span className="text-foreground">Sound.</span> Four warm
               detuned-sine/triangle pads through soft lowpass + slow vibrato,
               over a root drone bed. Master chain: gain&nbsp;≤0.28 → lowpass
               ~7&nbsp;kHz → compressor. Never harsh, never sudden-loud.
             </p>
             <p>
-              <span className="text-white/95">Visuals.</span> A raw-WebGPU (WGSL)
+              <span className="text-foreground">Visuals.</span> A raw-WebGPU (WGSL)
               warm lattice room — pitch nodes glow, the sounding triad triangle
               blooms with near-energy, your focal glow marks where you stand. If
               WebGPU is missing it falls back to a raw-WebGL2 port; if that too
               is missing, a DOM chord view.
             </p>
-            <p className="text-white/75">
+            <p className="text-muted-foreground">
               Everything degrades: no camera or no model → a synthetic
               presence-blob on a Lissajous path keeps the harmony walking on its
               own; your pointer over the room also walks the lattice on a laptop.
@@ -635,7 +635,7 @@ export default function HarmonicRoomPage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] rounded-xl border border-white/20 px-4 py-2.5 text-base text-white hover:bg-white/10"
+              className="min-h-[44px] rounded-xl border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

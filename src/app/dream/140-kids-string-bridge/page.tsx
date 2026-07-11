@@ -315,10 +315,10 @@ export default function KidsStringBridge() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#01080f] text-white gap-6 px-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#01080f] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🎻</div>
-        <h1 className="text-2xl font-serif text-white/95">String Bridge</h1>
-        <p className="text-base text-white/75 max-w-xs">
+        <h1 className="text-2xl font-serif text-foreground">String Bridge</h1>
+        <p className="text-base text-muted-foreground max-w-xs">
           Hold two fingers on the screen. A glowing string stretches between
           them and sings. Move them closer for a higher note, farther apart
           for a lower one.
@@ -341,12 +341,12 @@ export default function KidsStringBridge() {
           ))}
         </div>
         <button
-          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-white/95 text-lg font-medium transition-colors"
+          className="min-h-[64px] min-w-[220px] bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 rounded-2xl px-8 py-4 text-foreground text-lg font-medium transition-colors"
           onPointerDown={handleStart}
         >
           ✨ Play the string
         </button>
-        <p className="text-sm text-white/55">no microphone needed · for kids 4+</p>
+        <p className="text-sm text-muted-foreground">no microphone needed · for kids 4+</p>
       </div>
     );
   }

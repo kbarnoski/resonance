@@ -856,22 +856,22 @@ export default function KidsFeelingForest() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white px-6 py-10">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-10">
         <div className="max-w-sm w-full text-center space-y-8">
           <div>
-            <h1 className="text-2xl font-mono font-bold text-white tracking-tight">
+            <h1 className="text-2xl font-mono font-bold text-foreground tracking-tight">
               Feeling Forest
             </h1>
-            <p className="text-white/75 text-base mt-2 leading-relaxed">
+            <p className="text-muted-foreground text-base mt-2 leading-relaxed">
               Move through a world of feelings —{' '}
               <span className="text-violet-300">prickly and stormy</span> in one corner,{' '}
-              <span className="text-amber-300/95">calm and warm</span> in another.
+              <span className="text-violet-300/95">calm and warm</span> in another.
             </p>
           </div>
 
           {/* Mini preview map */}
           <div
-            className="relative w-full max-w-[240px] mx-auto rounded-xl overflow-hidden border border-white/10"
+            className="relative w-full max-w-[240px] mx-auto rounded-xl overflow-hidden border border-border"
             style={{ aspectRatio: '1' }}
           >
             <div
@@ -899,7 +899,7 @@ export default function KidsFeelingForest() {
           </div>
 
           {/* Grown-up instruction */}
-          <p className="text-white/75 text-sm font-mono leading-relaxed">
+          <p className="text-muted-foreground text-sm font-mono leading-relaxed">
             For grown-ups: tap <em>Use Camera</em> to walk by moving your body,
             or drag the glowing spirit with a finger.
           </p>
@@ -914,7 +914,7 @@ export default function KidsFeelingForest() {
             Enter the Forest
           </button>
 
-          <p className="text-white/55 text-xs font-mono">
+          <p className="text-muted-foreground text-xs font-mono">
             Camera optional · touch + mouse · sound always gentle
           </p>
         </div>
@@ -927,10 +927,10 @@ export default function KidsFeelingForest() {
   return (
     <div className="w-full h-screen flex flex-col bg-zinc-950 overflow-hidden">
       {/* Header bar */}
-      <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30 border-b border-white/8">
+      <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30 border-b border-border">
         <div className="flex items-center gap-3">
-          <span className="text-white text-base font-mono font-semibold">Feeling Forest</span>
-          <span className="text-white/55 text-xs font-mono hidden sm:inline">
+          <span className="text-foreground text-base font-mono font-semibold">Feeling Forest</span>
+          <span className="text-muted-foreground text-xs font-mono hidden sm:inline">
             {inputMode === 'camera' ? '● camera'
               : inputMode === 'drag' ? '○ drag'
               : inputMode === 'auto' ? '◈ demo' : ''}
@@ -946,16 +946,16 @@ export default function KidsFeelingForest() {
           </button>
         )}
         {inputMode === 'camera' && (
-          <span className="text-emerald-300/95 text-xs font-mono">camera active</span>
+          <span className="text-violet-300/95 text-xs font-mono">camera active</span>
         )}
 
-        <span className="text-white/30 text-xs font-mono">493</span>
+        <span className="text-muted-foreground/70 text-xs font-mono">493</span>
       </div>
 
       {/* Camera error */}
       {cameraError && (
-        <div className="px-4 py-2 bg-rose-950/50 border-b border-rose-500/30 shrink-0">
-          <p className="text-rose-300 text-sm font-mono">{cameraError}</p>
+        <div className="px-4 py-2 bg-violet-950/50 border-b border-violet-500/30 shrink-0">
+          <p className="text-violet-300 text-sm font-mono">{cameraError}</p>
         </div>
       )}
 
@@ -978,7 +978,7 @@ export default function KidsFeelingForest() {
       {/* Auto-demo hint */}
       {inputMode === 'auto' && (
         <div className="absolute bottom-8 inset-x-0 flex justify-center pointer-events-none">
-          <span className="text-white/55 text-sm font-mono bg-black/40 px-4 py-2 rounded-full">
+          <span className="text-muted-foreground text-sm font-mono bg-black/40 px-4 py-2 rounded-full">
             drag to walk · or tap Use Camera
           </span>
         </div>

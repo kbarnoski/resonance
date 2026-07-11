@@ -275,20 +275,20 @@ export default function FireflyWebPage() {
 
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 p-4 pointer-events-none">
-        <h1 className="text-2xl font-serif text-white/95">Firefly Web</h1>
-        <p className="text-base text-white/75 mt-1">
+        <h1 className="text-2xl font-serif text-foreground">Firefly Web</h1>
+        <p className="text-base text-muted-foreground mt-1">
           Tap anywhere to release a firefly — when two meet, they spin a glowing silk thread
         </p>
       </div>
 
       {/* Footer */}
       <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end pointer-events-none">
-        <span className="text-sm text-white/55">tap · up to 8 fireflies</span>
+        <span className="text-sm text-muted-foreground">tap · up to 8 fireflies</span>
         <a
           href="/dream/211-kids-firefly-web/README.md"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors pointer-events-auto"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto"
         >
           design notes ↗
         </a>

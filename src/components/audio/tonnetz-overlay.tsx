@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useMemo } from "react";
+import { useAudioStore } from "@/lib/audio/audio-store";
 
 interface TonnetzOverlayProps {
   notes: { time: number; duration: number; midi: number }[];
   chords: { time: number; duration: number; chord: string }[];
-  currentTime: number;
 }
 
 const PITCH_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -77,7 +77,10 @@ function chordRootPc(chord: string): number | null {
   return map[root] ?? null;
 }
 
-export function TonnetzOverlay({ notes, chords, currentTime }: TonnetzOverlayProps) {
+export function TonnetzOverlay({ notes, chords }: TonnetzOverlayProps) {
+  // Self-subscribe to raw currentTime so note/chord highlighting stays
+  // frame-accurate without re-rendering the parent visualizer subtree.
+  const currentTime = useAudioStore((s) => s.currentTime);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const grid = useMemo(() => buildGrid(), []);
 

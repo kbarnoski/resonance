@@ -696,8 +696,8 @@ export default function EuclidEnginePage() {
     const pattern = bjorklund(r.k, r.n);
     const hexCol  = `#${r.color.toString(16).padStart(6, "0")}`;
     return (
-      <div key={r.id} className="font-mono text-sm text-white/75">
-        <span className="text-white/55">{RING_LABELS[idx]} {r.voice} E({r.k},{r.n})  </span>
+      <div key={r.id} className="font-mono text-sm text-muted-foreground">
+        <span className="text-muted-foreground">{RING_LABELS[idx]} {r.voice} E({r.k},{r.n})  </span>
         {pattern.map((on, si) => (
           <span key={si} style={on ? { color: hexCol } : undefined}>
             {on ? "●" : "·"}
@@ -710,14 +710,14 @@ export default function EuclidEnginePage() {
   // ─ Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <main className="min-h-screen bg-[#030712] text-white flex flex-col">
+    <main className="min-h-screen bg-[#030712] text-foreground flex flex-col">
 
       {/* Header */}
       <header className="px-5 pt-6 pb-3 max-w-3xl">
-        <h1 className="text-2xl font-bold tracking-tight text-white/95 font-mono">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
           Euclid Engine
         </h1>
-        <p className="mt-1 text-base text-white/75">
+        <p className="mt-1 text-base text-muted-foreground">
           Stack interlocking Euclidean percussion rings and watch them slowly
           phase against each other — Reich-style polyrhythm, ZERO pitch.
         </p>
@@ -732,21 +732,21 @@ export default function EuclidEnginePage() {
           >
             ▶ Start Engine
           </button>
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             Auto-starts in ~1.5 s on desktop · tap button on mobile to unlock audio
           </p>
         </div>
       )}
 
       {audioBlocked && (
-        <p className="px-5 pb-2 text-amber-300/95 text-base">
+        <p className="px-5 pb-2 text-violet-300/95 text-base">
           AudioContext blocked — tap &quot;Start Engine&quot; above to activate.
         </p>
       )}
 
       {!webgl && started && (
         <div className="px-5 pb-3">
-          <p className="text-amber-300/95 text-base mb-2">
+          <p className="text-violet-300/95 text-base mb-2">
             WebGL unavailable — text ring display. Audio still runs.
           </p>
           <div className="space-y-1">{rings.map((r, i) => renderTextRing(r, i))}</div>
@@ -777,17 +777,17 @@ export default function EuclidEnginePage() {
               key={r.id}
               className={`rounded-xl border p-3 flex flex-col gap-2 transition-all duration-200 ${
                 r.active
-                  ? "border-white/20 bg-white/[0.04]"
-                  : "border-white/[0.08] bg-white/[0.015] opacity-55"
+                  ? "border-border bg-muted"
+                  : "border-border bg-muted opacity-55"
               }`}
             >
               {/* Title row */}
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: hexCol }} />
-                <span className="text-white/80 text-sm font-mono font-semibold">
+                <span className="text-foreground text-sm font-mono font-semibold">
                   {RING_LABELS[ri]} · {VOICE_LABELS[r.voice]}
                 </span>
-                <span className="ml-auto text-white/50 text-xs font-mono">
+                <span className="ml-auto text-muted-foreground text-xs font-mono">
                   E({r.k},{r.n})
                 </span>
                 <button
@@ -795,7 +795,7 @@ export default function EuclidEnginePage() {
                   className={`min-h-[36px] px-3 py-1 rounded-lg text-sm font-semibold transition-colors ml-1 ${
                     r.active
                       ? "bg-violet-500/30 text-violet-200 hover:bg-violet-500/45"
-                      : "bg-white/8 text-white/45 hover:bg-white/14"
+                      : "bg-muted text-muted-foreground hover:bg-accent"
                   }`}
                   aria-pressed={r.active}
                   aria-label={`${r.active ? "Mute" : "Unmute"} ring ${RING_LABELS[ri]}`}
@@ -806,44 +806,44 @@ export default function EuclidEnginePage() {
 
               {/* K (onsets) */}
               <div className="flex items-center gap-2">
-                <span className="text-white/55 text-xs font-mono w-10 flex-shrink-0">K =</span>
+                <span className="text-muted-foreground text-xs font-mono w-10 flex-shrink-0">K =</span>
                 <button
                   onClick={() => changeK(r.id, -1)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Decrease onsets for ring ${RING_LABELS[ri]}`}
                 >−</button>
-                <span className="text-white/90 font-mono text-base w-6 text-center">{r.k}</span>
+                <span className="text-foreground font-mono text-base w-6 text-center">{r.k}</span>
                 <button
                   onClick={() => changeK(r.id, 1)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Increase onsets for ring ${RING_LABELS[ri]}`}
                 >+</button>
-                <span className="text-white/40 text-xs ml-1">onsets</span>
+                <span className="text-muted-foreground/70 text-xs ml-1">onsets</span>
               </div>
 
               {/* N (steps) */}
               <div className="flex items-center gap-2">
-                <span className="text-white/55 text-xs font-mono w-10 flex-shrink-0">N =</span>
+                <span className="text-muted-foreground text-xs font-mono w-10 flex-shrink-0">N =</span>
                 <button
                   onClick={() => changeN(r.id, -2)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Decrease steps for ring ${RING_LABELS[ri]}`}
                 >−</button>
-                <span className="text-white/90 font-mono text-base w-6 text-center">{r.n}</span>
+                <span className="text-foreground font-mono text-base w-6 text-center">{r.n}</span>
                 <button
                   onClick={() => changeN(r.id, 2)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Increase steps for ring ${RING_LABELS[ri]}`}
                 >+</button>
-                <span className="text-white/40 text-xs ml-1">steps</span>
+                <span className="text-muted-foreground/70 text-xs ml-1">steps</span>
               </div>
 
               {/* Phase drift */}
               <div className="flex items-center gap-2">
-                <span className="text-white/55 text-xs font-mono w-10 flex-shrink-0">drift</span>
+                <span className="text-muted-foreground text-xs font-mono w-10 flex-shrink-0">drift</span>
                 <button
                   onClick={() => nudgeDrift(r.id, -0.05)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Slow phase drift for ring ${RING_LABELS[ri]}`}
                 >−</button>
                 <span className="text-violet-300/90 font-mono text-xs w-14 text-center">
@@ -851,7 +851,7 @@ export default function EuclidEnginePage() {
                 </span>
                 <button
                   onClick={() => nudgeDrift(r.id, 0.05)}
-                  className="min-h-[44px] w-11 rounded-lg bg-white/8 text-white/80 text-xl font-bold hover:bg-white/15 transition-colors"
+                  className="min-h-[44px] w-11 rounded-lg bg-muted text-foreground text-xl font-bold hover:bg-accent transition-colors"
                   aria-label={`Speed phase drift for ring ${RING_LABELS[ri]}`}
                 >+</button>
               </div>
@@ -874,7 +874,7 @@ export default function EuclidEnginePage() {
 
       {/* Footer */}
       <footer className="px-5 pb-6 flex items-center gap-4 max-w-3xl">
-        <p className="text-white/55 text-xs flex-1">
+        <p className="text-muted-foreground text-xs flex-1">
           Base {BASE_BPM} BPM · Bjorklund · Reich phasing · Wilson look-ahead scheduler
         </p>
         <Link
@@ -887,11 +887,11 @@ export default function EuclidEnginePage() {
       </footer>
 
       {/* Design notes anchor */}
-      <section id="design-notes" className="px-5 pb-10 max-w-3xl border-t border-white/8 pt-6">
-        <h2 className="text-xl font-bold text-white/90 font-mono mb-3">Design Notes</h2>
-        <div className="space-y-3 text-white/70 text-sm leading-relaxed">
+      <section id="design-notes" className="px-5 pb-10 max-w-3xl border-t border-border pt-6">
+        <h2 className="text-xl font-bold text-foreground font-mono mb-3">Design Notes</h2>
+        <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
           <p>
-            <strong className="text-white/85">Euclidean rhythms (Bjorklund)</strong> —
+            <strong className="text-foreground">Euclidean rhythms (Bjorklund)</strong> —
             E(k, n) distributes k onsets across n steps as evenly as possible using
             the same remainder algorithm that Euclid used for GCDs. E(3,8) is the
             Afro-Cuban <em>tresillo</em>; E(5,8) appears in Middle Eastern and African
@@ -900,14 +900,14 @@ export default function EuclidEnginePage() {
             Musical Rhythms,&quot; 2005.
           </p>
           <p>
-            <strong className="text-white/85">Reich phasing</strong> — each ring runs at
+            <strong className="text-foreground">Reich phasing</strong> — each ring runs at
             BASE_BPM + a tiny driftBpm offset so their downbeats gradually slip against
             each other, producing an interference pattern that never exactly repeats within
             a normal listening session. After ~4–8 minutes the rings re-align, then drift
             again. Inspired by Steve Reich&apos;s <em>Piano Phase</em> (1967) and <em>Clapping Music</em> (1972).
           </p>
           <p>
-            <strong className="text-white/85">Look-ahead scheduler</strong> — a
+            <strong className="text-foreground">Look-ahead scheduler</strong> — a
             setInterval at 25 ms pre-schedules audio events 100 ms ahead using
             AudioContext.currentTime, so percussion fires with sub-millisecond precision
             regardless of frame-rate jitter. Visual flashes are queued via setTimeout
@@ -915,7 +915,7 @@ export default function EuclidEnginePage() {
             Reference: Chris Wilson, &quot;A Tale of Two Clocks,&quot; 2013.
           </p>
           <p>
-            <strong className="text-white/85">Voices</strong> — kick (pitch-enveloped
+            <strong className="text-foreground">Voices</strong> — kick (pitch-enveloped
             sine 150→45 Hz + click), hat (HF noise burst), clave (band-pass exponential
             decay), shaker (band-pass HF noise). All synthesised in Web Audio — no samples.
             Output through a DynamicsCompressor brick-wall limiter.

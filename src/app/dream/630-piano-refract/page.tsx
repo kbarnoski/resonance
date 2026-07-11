@@ -526,13 +526,13 @@ export default function PianoRefractPage() {
   }, [markInteract, applyMix]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06080c] text-foreground">
       {/* WebGL2 / Canvas2D prism */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Backend badge */}
       {backend && (
-        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-white/75">
+        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-muted-foreground">
           {backend === "webgl2" ? "WebGL2" : "Canvas2D"}
         </span>
       )}
@@ -542,7 +542,7 @@ export default function PianoRefractPage() {
         href="/dream/630-piano-refract/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -550,10 +550,10 @@ export default function PianoRefractPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Piano Refract
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Refract Karel&apos;s solo piano through a prism — split it into sustained
             strings vs. hammer attacks, then fan the strings into four pitched
             register voices you can solo, mute, and re-mix.
@@ -562,14 +562,14 @@ export default function PianoRefractPage() {
           {sourceKind && (
             <p className="mt-2 font-mono text-sm">
               source:{" "}
-              <span className={sourceKind === "piano" ? "text-emerald-300/90" : "text-amber-300/90"}>
+              <span className={sourceKind === "piano" ? "text-violet-300/90" : "text-violet-300/90"}>
                 {sourceKind === "piano" ? "Karel's piano (real recording)" : "synthesized piano — recording unavailable"}
               </span>
             </p>
           )}
 
-          {errorMsg && <p className="mt-2 text-base text-amber-300/90">{errorMsg}</p>}
-          {sensorMsg && <p className="mt-2 text-base text-rose-300">{sensorMsg}</p>}
+          {errorMsg && <p className="mt-2 text-base text-violet-300/90">{errorMsg}</p>}
+          {sensorMsg && <p className="mt-2 text-base text-violet-300">{sensorMsg}</p>}
         </header>
 
         {/* Center: Begin / progress */}
@@ -577,7 +577,7 @@ export default function PianoRefractPage() {
           {phase === "idle" && (
             <button
               onClick={() => void load()}
-              className="min-h-[44px] rounded-md border border-fuchsia-400/40 bg-fuchsia-500/15 px-4 py-2.5 text-base font-medium text-fuchsia-100 hover:bg-fuchsia-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Begin · refract Karel&apos;s piano
             </button>
@@ -585,12 +585,12 @@ export default function PianoRefractPage() {
 
           {phase === "loading" && (
             <div className="w-full max-w-md">
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-mono text-sm text-muted-foreground">
                 {progressLabel} ({Math.round(progress * 100)}%)
               </p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full bg-gradient-to-r from-violet-400 via-rose-400 to-emerald-400 transition-[width] duration-150"
+                  className="h-full bg-gradient-to-r from-violet-400 via-violet-400 to-violet-400 transition-[width] duration-150"
                   style={{ width: `${Math.round(progress * 100)}%` }}
                 />
               </div>
@@ -600,7 +600,7 @@ export default function PianoRefractPage() {
           {phase === "error" && (
             <button
               onClick={() => { setPhase("idle"); }}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Try again
             </button>
@@ -611,15 +611,15 @@ export default function PianoRefractPage() {
         {phase === "ready" && (
           <footer className="flex flex-col gap-4">
             {/* Keyboard map (primary) */}
-            <div className="font-mono text-sm text-white/75">
-              <span className="text-white/95">keyboard (primary):</span>{" "}
-              <kbd className="text-white/95">1</kbd>–<kbd className="text-white/95">5</kbd> solo ·{" "}
-              <kbd className="text-white/95">0</kbd> reset ·{" "}
-              <kbd className="text-white/95">m</kbd> mute selected ·{" "}
-              <kbd className="text-white/95">←/→</kbd> select ·{" "}
-              <kbd className="text-white/95">↑/↓</kbd> gain ·{" "}
-              <kbd className="text-white/95">space</kbd> play/pause
-              {!ui.playing && <span className="ml-2 text-amber-300/90">⏸ paused</span>}
+            <div className="font-mono text-sm text-muted-foreground">
+              <span className="text-foreground">keyboard (primary):</span>{" "}
+              <kbd className="text-foreground">1</kbd>–<kbd className="text-foreground">5</kbd> solo ·{" "}
+              <kbd className="text-foreground">0</kbd> reset ·{" "}
+              <kbd className="text-foreground">m</kbd> mute selected ·{" "}
+              <kbd className="text-foreground">←/→</kbd> select ·{" "}
+              <kbd className="text-foreground">↑/↓</kbd> gain ·{" "}
+              <kbd className="text-foreground">space</kbd> play/pause
+              {!ui.playing && <span className="ml-2 text-violet-300/90">⏸ paused</span>}
             </div>
 
             {/* Five voice rows */}
@@ -633,20 +633,20 @@ export default function PianoRefractPage() {
                   <div
                     key={label}
                     className={`flex flex-wrap items-center gap-3 rounded-md border px-3 py-2 ${
-                      isSelected ? "border-white/40 bg-white/10" : "border-white/10 bg-black/30"
+                      isSelected ? "border-border bg-muted" : "border-border bg-black/30"
                     } ${dimmed ? "opacity-60" : "opacity-100"}`}
                   >
                     <span
                       className="inline-block h-3 w-3 rounded-full"
                       style={{ backgroundColor: cssColor(i) }}
                     />
-                    <span className="w-24 font-mono text-base text-white/95">
+                    <span className="w-24 font-mono text-base text-foreground">
                       {i + 1}. {label}
                     </span>
                     <button
                       onClick={() => soloVoice(i)}
                       className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
-                        isSoloed ? "bg-white/25 text-white" : "bg-white/5 text-white/75 hover:bg-white/10"
+                        isSoloed ? "bg-muted text-foreground" : "bg-muted text-muted-foreground hover:bg-accent"
                       }`}
                     >
                       {isSoloed ? "soloed" : "solo"}
@@ -654,20 +654,20 @@ export default function PianoRefractPage() {
                     <button
                       onClick={() => muteVoice(i)}
                       className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
-                        isMuted ? "bg-rose-500/30 text-rose-100" : "bg-white/5 text-white/75 hover:bg-white/10"
+                        isMuted ? "bg-violet-500/30 text-violet-100" : "bg-muted text-muted-foreground hover:bg-accent"
                       }`}
                     >
                       {isMuted ? "muted" : "mute"}
                     </button>
                     <label className="flex flex-1 items-center gap-2">
-                      <span className="font-mono text-sm text-white/75">gain</span>
+                      <span className="font-mono text-sm text-muted-foreground">gain</span>
                       <input
                         type="range" min={0} max={1.4} step={0.01} value={ui.gains[i]}
                         onChange={(e) => setVoiceGain(i, parseFloat(e.target.value))}
                         className="min-w-[120px] flex-1"
                         style={{ accentColor: cssColor(i) }}
                       />
-                      <span className="w-10 text-right font-mono text-sm text-white/75">
+                      <span className="w-10 text-right font-mono text-sm text-muted-foreground">
                         {ui.gains[i].toFixed(2)}
                       </span>
                     </label>
@@ -679,26 +679,26 @@ export default function PianoRefractPage() {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={resetAll}
-                className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/15"
+                className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 reset (all on)
               </button>
               <button
                 onClick={() => { markInteract(); togglePlay(); }}
-                className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/15"
+                className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 {ui.playing ? "pause" : "play"}
               </button>
               {tiltAvailable && !tiltOn && (
                 <button
                   onClick={() => void enableTilt()}
-                  className="min-h-[44px] rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                  className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   Enable tilt spotlight (mobile)
                 </button>
               )}
               {tiltOn && (
-                <span className="font-mono text-sm text-emerald-300/90">
+                <span className="font-mono text-sm text-violet-300/90">
                   tilt active — lean left/right to spotlight a voice
                 </span>
               )}

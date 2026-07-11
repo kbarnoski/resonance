@@ -500,20 +500,20 @@ export default function SpatialPalette() {
 
   if (!started) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-[#070710] text-white gap-6 px-6">
+      <div className="flex flex-col items-center justify-center h-screen bg-[#070710] text-foreground gap-6 px-6">
         <h1 className="text-3xl font-mono font-bold text-violet-300">Spatial Palette</h1>
-        <p className="text-white/75 text-base text-center max-w-md leading-relaxed">
+        <p className="text-muted-foreground text-base text-center max-w-md leading-relaxed">
           Each dot is a synthesis voice. Drag left/right to pan it in stereo. Drag
           up/down to change pitch. Scroll over a dot to brighten or darken its
           timbre and reverb. Double-click to cycle waveform. Long-press to remove.
           Click empty canvas to add a voice.
         </p>
-        <p className="text-white/55 text-sm text-center font-mono">
+        <p className="text-muted-foreground text-sm text-center font-mono">
           C major triad pre-placed · up to 8 voices · zero API
         </p>
         <button
           onClick={handleStart}
-          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-mono
+          className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground font-mono
                      px-8 py-3 rounded-lg text-base min-h-[48px] min-w-[160px] transition-colors"
         >
           Open Palette
@@ -525,13 +525,13 @@ export default function SpatialPalette() {
   return (
     <div className="flex flex-col h-screen bg-[#070710] select-none overflow-hidden touch-none">
       {/* header */}
-      <div className="flex items-center justify-between px-4 py-2 shrink-0 border-b border-white/8">
-        <span className="text-white/55 text-sm font-mono">
-          <Link href="/dream" className="hover:text-white/75 transition-colors">dream</Link>
+      <div className="flex items-center justify-between px-4 py-2 shrink-0 border-b border-border">
+        <span className="text-muted-foreground text-sm font-mono">
+          <Link href="/dream" className="hover:text-muted-foreground transition-colors">dream</Link>
           {' / '}spatial-palette
         </span>
         <span className="text-violet-300 font-mono text-2xl font-bold tracking-wide">{chord}</span>
-        <span className="text-white/45 text-xs font-mono text-right hidden sm:block leading-4">
+        <span className="text-muted-foreground text-xs font-mono text-right hidden sm:block leading-4">
           drag pitch·pan<br />scroll brightness·reverb
         </span>
       </div>
@@ -548,15 +548,15 @@ export default function SpatialPalette() {
       />
 
       {/* scope strip */}
-      <div className="shrink-0 border-t border-white/8">
+      <div className="shrink-0 border-t border-border">
         <canvas ref={scopeRef} className="w-full h-14" />
       </div>
 
       {/* footer */}
-      <div className="flex items-center justify-between px-4 py-1.5 shrink-0 border-t border-white/8">
-        <span className="text-white/45 text-xs font-mono">{voiceCount}/8 voices</span>
-        <span className="text-white/30 text-xs font-mono">∿ △ ⊿ ⊓ · double-click to cycle · long-press removes</span>
-        <span className="text-white/30 text-xs font-mono">148-spatial-palette</span>
+      <div className="flex items-center justify-between px-4 py-1.5 shrink-0 border-t border-border">
+        <span className="text-muted-foreground text-xs font-mono">{voiceCount}/8 voices</span>
+        <span className="text-muted-foreground/70 text-xs font-mono">∿ △ ⊿ ⊓ · double-click to cycle · long-press removes</span>
+        <span className="text-muted-foreground/70 text-xs font-mono">148-spatial-palette</span>
       </div>
     </div>
   );

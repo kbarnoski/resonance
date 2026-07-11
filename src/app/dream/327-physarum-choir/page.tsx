@@ -179,7 +179,7 @@ export default function PhysarumChoirPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#060509] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#060509] text-foreground">
       {/* the living field */}
       <canvas
         ref={canvasRef}
@@ -192,10 +192,10 @@ export default function PhysarumChoirPage() {
       {/* idle / intro overlay */}
       {phase !== "running" && (
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-serif text-3xl text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             Physarum Choir
           </h1>
-          <p className="mt-4 max-w-xl text-base text-white/80">
+          <p className="mt-4 max-w-xl text-base text-foreground">
             Don&apos;t play notes — plant <em>tones as food</em>. A living
             slime-mold network decides, over seconds, which ones to connect. The
             chord you hear <em>is</em> the topology it grows.
@@ -203,19 +203,19 @@ export default function PhysarumChoirPage() {
           <button
             onClick={start}
             disabled={phase === "loading"}
-            className="mt-8 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/15 px-6 py-2.5 text-base text-white/95 transition hover:bg-violet-500/25 disabled:opacity-60"
+            className="mt-8 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/15 px-6 py-2.5 text-base text-foreground transition hover:bg-violet-500/25 disabled:opacity-60"
           >
             {phase === "loading" ? "Growing the network…" : "Plant the first tones"}
           </button>
           {noAudio && (
-            <p className="mt-6 max-w-md text-base text-rose-300">
+            <p className="mt-6 max-w-md text-base text-violet-300">
               This browser doesn&apos;t support the Web Audio API, so the choir
               can&apos;t play here. Try a recent Chrome, Safari, or Firefox.
             </p>
           )}
           <a
             href="/dream/327-physarum-choir/README.md"
-            className="mt-10 text-base text-white/75 underline-offset-4 hover:underline"
+            className="mt-10 text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             Read the design notes
           </a>
@@ -226,17 +226,17 @@ export default function PhysarumChoirPage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-sm">
-            <h1 className="font-serif text-xl text-white/95">Physarum Choir</h1>
-            <p className="mt-1 text-base text-white/75">
+            <h1 className="font-serif text-xl text-foreground">Physarum Choir</h1>
+            <p className="mt-1 text-base text-muted-foreground">
               The slime is composing — each vein it grows to a tone swells that
               voice in. Click to plant another tone.
             </p>
             <div className="mt-3 space-y-1 font-mono text-sm">
               {sourceReal === true && (
-                <p className="text-emerald-300/95">{sourceLabel}</p>
+                <p className="text-violet-300/95">{sourceLabel}</p>
               )}
               {sourceReal === false && (
-                <p className="text-amber-300/95">♪ {sourceLabel}</p>
+                <p className="text-violet-300/95">♪ {sourceLabel}</p>
               )}
               {backendKind === "webgpu" && (
                 <p className="text-violet-300">
@@ -244,17 +244,17 @@ export default function PhysarumChoirPage() {
                 </p>
               )}
               {backendKind === "cpu" && (
-                <p className="text-amber-300/95">
+                <p className="text-violet-300/95">
                   Canvas2D / CPU fallback — no WebGPU compute here, reduced agent
                   count
                 </p>
               )}
               {backendKind === null && (
-                <p className="text-rose-300">
+                <p className="text-violet-300">
                   No GPU and no 2D canvas — audio only
                 </p>
               )}
-              <p className="text-white/75">
+              <p className="text-muted-foreground">
                 connected voices: {connectedCount} / {totalNodes}
               </p>
             </div>
@@ -262,7 +262,7 @@ export default function PhysarumChoirPage() {
 
           <a
             href="/dream/327-physarum-choir/README.md"
-            className="absolute bottom-4 right-4 z-10 text-base text-white/75 underline-offset-4 hover:underline"
+            className="absolute bottom-4 right-4 z-10 text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             Read the design notes
           </a>

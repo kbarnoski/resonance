@@ -430,13 +430,13 @@ export default function HumBlossomPage() {
   }, []);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#0b1020] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#0b1020] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         <header className="w-full max-w-md text-center">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">Hum Blossom</h1>
-          <p className="mt-3 text-base text-white/80">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Hum Blossom</h1>
+          <p className="mt-3 text-base text-foreground">
             Hum a note and a glowing flower blooms in tune with you — a soft choir
             sings a chord back.
           </p>
@@ -447,29 +447,29 @@ export default function HumBlossomPage() {
             <button
               type="button"
               onClick={runStart}
-              className="min-h-[44px] rounded-full bg-rose-500/90 px-10 py-3 text-lg font-semibold text-white shadow-lg transition-colors hover:bg-rose-400/90 active:bg-rose-500"
+              className="min-h-[44px] rounded-full bg-violet-500/90 px-10 py-3 text-lg font-semibold text-foreground shadow-lg transition-colors hover:bg-violet-400/90 active:bg-violet-500"
             >
               Hum to bloom 🌸
             </button>
           ) : (
-            <p className="min-h-[44px] text-center text-base text-white/95">
+            <p className="min-h-[44px] text-center text-base text-foreground">
               {micOn ? "Listening — hum and hold a note!" : "Demo blooming — listen to the choir."}
-              <span className="ml-2 text-white/75">chord: {chordName}</span>
+              <span className="ml-2 text-muted-foreground">chord: {chordName}</span>
             </p>
           )}
 
           {micNotice && (
-            <p className="max-w-sm text-center text-base text-rose-300">{micNotice}</p>
+            <p className="max-w-sm text-center text-base text-violet-300">{micNotice}</p>
           )}
         </div>
 
         <footer className="w-full max-w-md text-center">
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Nothing is recorded or sent. Your voice is heard only on this device.
           </p>
           <Link
             href="/dream/1033-kids-hum-blossom/README.md"
-            className="mt-3 inline-block text-base text-white/75 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
+            className="mt-3 inline-block text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
           >
             Read the design notes
           </Link>

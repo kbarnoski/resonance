@@ -495,14 +495,14 @@ export default function SeismicPulse() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="relative min-h-screen bg-black text-white flex flex-col select-none">
+    <div className="relative min-h-screen bg-black text-foreground flex flex-col select-none">
 
       {/* Title + description */}
       <div className="px-5 pt-6 pb-3 z-10">
-        <h1 className="text-2xl font-mono font-bold tracking-tight text-white leading-tight">
+        <h1 className="text-2xl font-mono font-bold tracking-tight text-foreground leading-tight">
           Seismic Pulse
         </h1>
-        <p className="mt-1 text-base text-white/75 max-w-2xl leading-snug">
+        <p className="mt-1 text-base text-muted-foreground max-w-2xl leading-snug">
           The last 24 hours of real earthquakes, sonified so it never resolves to a chord —
           magnitude, depth, and position mapped to noise, booms, and pans. The Earth never
           stops shaking and never lands on a consonance.
@@ -512,19 +512,19 @@ export default function SeismicPulse() {
       {/* Status + notices */}
       <div className="px-5 pb-1 flex flex-wrap gap-x-4 gap-y-1 z-10 min-h-[24px]">
         {feedData && !isLoading && (
-          <span className={`text-sm font-mono ${isLive ? "text-white/55" : "text-amber-300/95"}`}>
+          <span className={`text-sm font-mono ${isLive ? "text-muted-foreground" : "text-violet-300/95"}`}>
             {isLive
               ? `${quakes.length} seismic events · live USGS feed`
               : `Live USGS feed unreachable — playing a recorded day (${quakes.length} events)`}
           </span>
         )}
         {isLoading && (
-          <span className="text-sm font-mono text-white/45 animate-pulse">
+          <span className="text-sm font-mono text-muted-foreground animate-pulse">
             Fetching USGS earthquake data…
           </span>
         )}
         {audioBlocked && (
-          <span className="text-sm font-mono text-amber-300/95">
+          <span className="text-sm font-mono text-violet-300/95">
             Tap the map to enable sound
           </span>
         )}
@@ -537,8 +537,8 @@ export default function SeismicPulse() {
           disabled={isLoading || quakes.length === 0}
           className={`min-h-[44px] px-6 py-2.5 font-mono text-base tracking-wide border transition-all
             ${isPlaying
-              ? "border-white/55 text-white bg-white/10 hover:bg-white/20"
-              : "border-white/35 text-white/90 hover:text-white hover:border-white/65"
+              ? "border-border text-foreground bg-muted hover:bg-accent"
+              : "border-border text-foreground hover:text-foreground hover:border-border"
             }
             disabled:opacity-40 disabled:cursor-not-allowed`}
         >
@@ -553,8 +553,8 @@ export default function SeismicPulse() {
               onClick={() => handleFilterChange(f)}
               className={`min-h-[44px] px-3 py-2.5 font-mono text-xs border transition-all
                 ${feedFilter === f
-                  ? "border-white/55 text-white bg-white/10"
-                  : "border-white/18 text-white/45 hover:text-white/75 hover:border-white/35"
+                  ? "border-border text-foreground bg-muted"
+                  : "border-border text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
             >
               {f === "all_day" ? "All" : f === "2.5_day" ? "M2.5+" : "Significant"}
@@ -567,7 +567,7 @@ export default function SeismicPulse() {
           target="_blank"
           rel="noopener noreferrer"
           className="min-h-[44px] inline-flex items-center px-4 py-2.5 text-sm font-mono
-            text-white/45 hover:text-white/75 border border-transparent hover:border-white/18
+            text-muted-foreground hover:text-muted-foreground border border-transparent hover:border-border
             transition-all"
         >
           USGS data ↗
@@ -591,14 +591,14 @@ export default function SeismicPulse() {
           {currentQuake && isPlaying ? (
             <div className="font-mono space-y-0.5">
               <div className={`text-2xl font-bold leading-none ${
-                (currentQuake.properties.mag ?? 0) >= 4.5 ? "text-amber-300" : "text-white"
+                (currentQuake.properties.mag ?? 0) >= 4.5 ? "text-violet-300" : "text-foreground"
               }`}>
                 M {(currentQuake.properties.mag ?? 0).toFixed(1)}
               </div>
-              <div className="text-base text-white/80 leading-snug">
+              <div className="text-base text-foreground leading-snug">
                 {currentQuake.properties.place}
               </div>
-              <div className="text-sm text-white/50 leading-snug">
+              <div className="text-sm text-muted-foreground leading-snug">
                 {currentQuake.geometry.coordinates[2].toFixed(0)} km deep
                 {" · "}
                 {currentQuake.geometry.coordinates[1].toFixed(1)}°
@@ -609,7 +609,7 @@ export default function SeismicPulse() {
               </div>
             </div>
           ) : !isPlaying && !isLoading && quakes.length > 0 ? (
-            <p className="text-base text-white/50 font-mono">
+            <p className="text-base text-muted-foreground font-mono">
               {quakes.length} events in the last 24h — press play
             </p>
           ) : null}
@@ -617,11 +617,11 @@ export default function SeismicPulse() {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-white/8 flex flex-wrap gap-x-6 gap-y-1 z-10">
-        <span className="text-sm font-mono text-white/35">
+      <div className="px-5 py-3 border-t border-border flex flex-wrap gap-x-6 gap-y-1 z-10">
+        <span className="text-sm font-mono text-muted-foreground/70">
           sonification: data-mapped noise bursts · no scale quantization
         </span>
-        <span className="text-sm font-mono text-white/35">
+        <span className="text-sm font-mono text-muted-foreground/70">
           ref: Ryoji Ikeda <em>data-cosm</em> · AGU/Eos seismic audification
         </span>
       </div>

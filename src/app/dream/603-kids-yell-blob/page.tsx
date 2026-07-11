@@ -319,7 +319,7 @@ export default function KidsYellBlob() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0d0916] text-white select-none">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0d0916] text-foreground select-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -328,10 +328,10 @@ export default function KidsYellBlob() {
 
       {/* Title + instructions */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 p-5 sm:p-7">
-        <h1 className="text-3xl font-black tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-4xl">
+        <h1 className="text-3xl font-black tracking-tight text-foreground drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-4xl">
           YELL AT THE BLOB!
         </h1>
-        <p className="mt-1 text-base text-white/85 drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)] sm:text-lg">
+        <p className="mt-1 text-base text-foreground drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)] sm:text-lg">
           Roar, sing, or shout — louder makes it bigger, bouncier, and it HONKS you back.
         </p>
       </div>
@@ -339,17 +339,17 @@ export default function KidsYellBlob() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0d0916]/80 px-6 text-center backdrop-blur-sm">
-          <p className="text-2xl font-bold text-white sm:text-3xl">
+          <p className="text-2xl font-bold text-foreground sm:text-3xl">
             Ready to make some noise?
           </p>
           <button
             type="button"
             onClick={runStart}
-            className="min-h-[72px] rounded-3xl bg-gradient-to-b from-fuchsia-400 to-rose-500 px-10 py-5 text-2xl font-black text-white shadow-[0_8px_0_rgba(0,0,0,0.35)] transition-transform active:translate-y-1 active:shadow-[0_4px_0_rgba(0,0,0,0.35)] sm:text-3xl"
+            className="min-h-[72px] rounded-3xl bg-gradient-to-b from-violet-400 to-violet-500 px-10 py-5 text-2xl font-black text-foreground shadow-[0_8px_0_rgba(0,0,0,0.35)] transition-transform active:translate-y-1 active:shadow-[0_4px_0_rgba(0,0,0,0.35)] sm:text-3xl"
           >
             START YELLING 📣
           </button>
-          <p className="max-w-sm text-base text-white/75">
+          <p className="max-w-sm text-base text-muted-foreground">
             We&apos;ll ask for your microphone. No mic? No problem — tap or press a key to yell.
           </p>
         </div>
@@ -358,7 +358,7 @@ export default function KidsYellBlob() {
       {/* Mic failure notice — must be clearly visible */}
       {started && micError && (
         <div className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 px-6 text-center">
-          <p className="rounded-2xl bg-black/45 px-4 py-2.5 text-base font-semibold text-rose-300 drop-shadow">
+          <p className="rounded-2xl bg-black/45 px-4 py-2.5 text-base font-semibold text-violet-300 drop-shadow">
             {micError}
           </p>
         </div>
@@ -367,7 +367,7 @@ export default function KidsYellBlob() {
       {/* WebGL failure notice */}
       {glError && (
         <div className="absolute inset-0 z-30 flex items-center justify-center px-6 text-center">
-          <p className="max-w-md rounded-2xl bg-black/60 px-5 py-4 text-base font-semibold text-rose-300">
+          <p className="max-w-md rounded-2xl bg-black/60 px-5 py-4 text-base font-semibold text-violet-300">
             {glError}
           </p>
         </div>
@@ -377,16 +377,16 @@ export default function KidsYellBlob() {
       {started && !glError && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 sm:p-7">
           <div className="mx-auto flex max-w-md items-center gap-3">
-            <span className="text-base font-bold text-white/85">quiet</span>
-            <div className="h-4 flex-1 overflow-hidden rounded-full bg-white/15">
+            <span className="text-base font-bold text-foreground">quiet</span>
+            <div className="h-4 flex-1 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-yellow-300 to-rose-400 transition-[width] duration-75"
+                className="h-full rounded-full bg-gradient-to-r from-violet-300 via-violet-300 to-violet-400 transition-[width] duration-75"
                 style={{ width: `${Math.min(100, Math.round(loudUi * 100))}%` }}
               />
             </div>
-            <span className="text-base font-bold text-white/85">LOUD!</span>
+            <span className="text-base font-bold text-foreground">LOUD!</span>
           </div>
-          <p className="mt-2 text-center text-base text-white/70">
+          <p className="mt-2 text-center text-base text-muted-foreground">
             Tip: hold the screen or mash a key to fake a yell.
           </p>
         </div>
@@ -394,7 +394,7 @@ export default function KidsYellBlob() {
 
       {/* corner tag + design-notes pointer */}
       <div className="pointer-events-none absolute bottom-2 right-3 z-10">
-        <span className="text-sm text-white/55">
+        <span className="text-sm text-muted-foreground">
           603 · design notes in README.md
         </span>
       </div>

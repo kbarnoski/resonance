@@ -198,17 +198,17 @@ export default function KidsEchoSong() {
     return (
       <main className="fixed inset-0 bg-[#060a12] flex flex-col items-center justify-center gap-8 px-6">
         <div className="text-7xl">🦜</div>
-        <h1 className="text-3xl font-bold text-white text-center">Echo Song</h1>
-        <p className="text-white/75 text-base text-center max-w-xs leading-relaxed">
+        <h1 className="text-3xl font-bold text-foreground text-center">Echo Song</h1>
+        <p className="text-muted-foreground text-base text-center max-w-xs leading-relaxed">
           The bird sings a song — then tap the colors to sing back!
         </p>
         <button
           onPointerDown={() => setStarted(true)}
-          className="bg-violet-500 text-white text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
+          className="bg-violet-500 text-foreground text-xl font-bold rounded-2xl px-10 py-4 min-h-[60px] min-w-[220px] active:scale-95 transition-transform"
         >
           Let&apos;s sing! 🎵
         </button>
-        <p className="text-white/55 text-sm text-center">No microphone needed · tap the colors</p>
+        <p className="text-muted-foreground text-sm text-center">No microphone needed · tap the colors</p>
       </main>
     )
   }
@@ -232,7 +232,7 @@ export default function KidsEchoSong() {
             🦜
           </div>
           {/* Phase hint — small, tertiary */}
-          <p className="text-white/55 text-sm tracking-wide select-none">
+          <p className="text-muted-foreground text-sm tracking-wide select-none">
             {phase === 'bird' && 'Listen...'}
             {phase === 'child' && 'Your turn! ✨'}
             {phase === 'echo' && 'Echo! 🎵'}

@@ -209,7 +209,7 @@ export default function ShakeBellsPage() {
   }, [fireShake]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0618] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0618] text-foreground">
       {/* Glow field canvas */}
       <canvas
         ref={canvasRef}
@@ -221,7 +221,7 @@ export default function ShakeBellsPage() {
       <div className="absolute left-4 top-4 z-20">
         <Link
           href="/dream"
-          className="rounded-full bg-white/10 px-4 py-2.5 font-mono text-sm text-white/75 backdrop-blur hover:bg-white/20"
+          className="rounded-full bg-muted px-4 py-2.5 font-mono text-sm text-muted-foreground backdrop-blur hover:bg-accent"
         >
           ← lab
         </Link>
@@ -232,30 +232,30 @@ export default function ShakeBellsPage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="rounded-full bg-white/10 px-4 py-2.5 text-sm text-white/75 backdrop-blur hover:bg-white/20"
+          className="rounded-full bg-muted px-4 py-2.5 text-sm text-muted-foreground backdrop-blur hover:bg-accent"
         >
           {showNotes ? "Close notes" : "Read the design notes"}
         </button>
       </div>
 
       {showNotes && (
-        <div className="absolute right-4 top-16 z-30 max-w-sm rounded-2xl bg-black/80 p-5 text-base text-white/80 backdrop-blur">
-          <h2 className="mb-2 font-serif text-xl text-white/95">Magic Bell Tray</h2>
-          <p className="mb-2 text-white/80">
+        <div className="absolute right-4 top-16 z-30 max-w-sm rounded-2xl bg-black/80 p-5 text-base text-foreground backdrop-blur">
+          <h2 className="mb-2 font-serif text-xl text-foreground">Magic Bell Tray</h2>
+          <p className="mb-2 text-foreground">
             Shake the tablet like a tray of handbells. Each shake rings real,
             physically-modeled bells that climb and descend a{" "}
-            <span className="text-amber-300/95">G Mixolydian</span> ladder.
+            <span className="text-violet-300/95">G Mixolydian</span> ladder.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Harder shakes ring a fuller sparkling arpeggio (3–5 bells); a gentle
             shake rings just one or two soft tones.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Bells are inharmonic partial banks (no samples) so they beat and
             shimmer. The visuals are a WebGL2 additive glow field driven by the
             audio amplitude.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Play: shake the device · big round button · spacebar. Threshold and
             sensitivity are reasoned, not measured on a real device.
           </p>
@@ -265,22 +265,22 @@ export default function ShakeBellsPage() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="font-serif text-4xl font-semibold text-white/95 sm:text-5xl">
+          <h1 className="font-serif text-4xl font-semibold text-foreground sm:text-5xl">
             Magic Bell Tray
           </h1>
-          <p className="max-w-xl text-lg text-white/80">
+          <p className="max-w-xl text-lg text-foreground">
             Shake the tablet like a tray of handbells — each shake rings real
             bells that climb a sparkling musical ladder.
           </p>
           <button
             type="button"
             onClick={handleStart}
-            className="rounded-full bg-amber-400 px-10 py-5 text-2xl font-bold text-[#2a1500] shadow-[0_0_60px_rgba(251,191,36,0.55)] transition hover:scale-105"
+            className="rounded-full bg-violet-400 px-10 py-5 text-2xl font-bold text-[#2a1500] shadow-[0_0_60px_rgba(251,191,36,0.55)] transition hover:scale-105"
             style={{ minHeight: 72, minWidth: 220 }}
           >
             ✶ Start ✶
           </button>
-          <p className="text-base text-white/55">For little hands (ages 4+)</p>
+          <p className="text-base text-muted-foreground">For little hands (ages 4+)</p>
         </div>
       )}
 
@@ -288,12 +288,12 @@ export default function ShakeBellsPage() {
       {started && (
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-4 pb-10">
           {sensorNote && (
-            <p className="rounded-full bg-black/50 px-4 py-2 text-base text-rose-300 backdrop-blur">
+            <p className="rounded-full bg-black/50 px-4 py-2 text-base text-violet-300 backdrop-blur">
               {sensorNote}
             </p>
           )}
           {renderNote && (
-            <p className="rounded-full bg-black/50 px-4 py-2 text-base text-rose-300 backdrop-blur">
+            <p className="rounded-full bg-black/50 px-4 py-2 text-base text-violet-300 backdrop-blur">
               {renderNote}
             </p>
           )}
@@ -301,23 +301,23 @@ export default function ShakeBellsPage() {
             type="button"
             onClick={tapButton}
             aria-label="Shake the bells"
-            className="flex items-center justify-center rounded-full bg-gradient-to-b from-amber-300 to-orange-500 text-3xl font-black text-[#2a1500] shadow-[0_0_70px_rgba(251,146,60,0.6)] transition active:scale-90"
+            className="flex items-center justify-center rounded-full bg-gradient-to-b from-violet-300 to-violet-500 text-3xl font-black text-[#2a1500] shadow-[0_0_70px_rgba(251,146,60,0.6)] transition active:scale-90"
             style={{ width: 176, height: 176 }}
           >
             SHAKE!
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Shake the device, tap the button, or press{" "}
             <span className="font-mono text-violet-300">space</span>
             {ghostOn && (
-              <span className="ml-2 text-emerald-300/95">· auto-playing ✶</span>
+              <span className="ml-2 text-violet-300/95">· auto-playing ✶</span>
             )}
           </p>
         </div>
       )}
 
       {/* Tiny meta label */}
-      <div className="pointer-events-none absolute bottom-3 left-4 z-10 font-mono text-xs text-white/55">
+      <div className="pointer-events-none absolute bottom-3 left-4 z-10 font-mono text-xs text-muted-foreground">
         984 · g mixolydian · thr {SHAKE_THRESHOLD} · sens {SHAKE_SENSITIVITY}
       </div>
     </main>

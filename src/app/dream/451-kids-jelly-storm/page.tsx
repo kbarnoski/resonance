@@ -439,7 +439,7 @@ export default function JellyStormPage() {
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-xl text-white/95">
+          <p className="max-w-md text-center text-xl text-foreground">
             This jelly storm needs WebGL, which your browser or device
             doesn&apos;t support right now. Try a recent Chrome, Safari, or
             Firefox to play!
@@ -450,9 +450,9 @@ export default function JellyStormPage() {
       {/* energy meter — a fun "MORE!" bar, no reading required */}
       {started && webglOk && (
         <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2">
-          <div className="h-3 w-40 overflow-hidden rounded-full bg-white/15">
+          <div className="h-3 w-40 overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-fuchsia-400 via-yellow-300 to-lime-300 transition-[width] duration-150"
+              className="h-full rounded-full bg-gradient-to-r from-violet-400 via-violet-300 to-violet-300 transition-[width] duration-150"
               style={{ width: `${Math.round(energyUi * 100)}%` }}
             />
           </div>
@@ -462,16 +462,16 @@ export default function JellyStormPage() {
       {/* Start overlay (creates AudioContext inside the gesture) */}
       {!started && webglOk && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black/55 backdrop-blur-sm p-6">
-          <h1 className="text-center text-2xl font-black tracking-tight text-white sm:text-4xl">
+          <h1 className="text-center text-2xl font-black tracking-tight text-foreground sm:text-4xl">
             JELLY STORM
           </h1>
-          <p className="max-w-sm text-center text-base text-white/75">
+          <p className="max-w-sm text-center text-base text-muted-foreground">
             Tap, drag, and shake to make squishy jelly RAIN. The more chaos,
             the bigger the music gets!
           </p>
           <button
             onClick={handleStart}
-            className="min-h-[64px] min-w-[64px] rounded-3xl bg-gradient-to-br from-fuchsia-500 to-yellow-400 px-10 py-5 text-2xl font-black text-white shadow-2xl shadow-fuchsia-500/40 active:scale-95 transition-transform"
+            className="min-h-[64px] min-w-[64px] rounded-3xl bg-gradient-to-br from-violet-500 to-violet-400 px-10 py-5 text-2xl font-black text-foreground shadow-2xl shadow-violet-500/40 active:scale-95 transition-transform"
           >
             TAP TO PLAY!
           </button>
@@ -481,13 +481,13 @@ export default function JellyStormPage() {
       {/* Design notes affordance (outside the play area) */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-16 right-4 z-30 rounded-full border border-white/20 bg-black/60 px-3 py-2 text-base text-white/75 backdrop-blur hover:text-white"
+        className="absolute bottom-16 right-4 z-30 rounded-full border border-border bg-black/60 px-3 py-2 text-base text-muted-foreground backdrop-blur hover:text-foreground"
       >
         Design notes
       </button>
       {showNotes && (
-        <div className="absolute bottom-28 right-4 z-30 max-w-xs rounded-2xl border border-white/15 bg-black/85 p-4 text-base text-white/85 backdrop-blur">
-          <p className="mb-2 text-white/95">
+        <div className="absolute bottom-28 right-4 z-30 max-w-xs rounded-2xl border border-border bg-black/85 p-4 text-base text-foreground backdrop-blur">
+          <p className="mb-2 text-foreground">
             Each creature is a Position-Based-Dynamics soft body: a ring of
             particles held by distance + area constraints, so it really
             squishes and bounces.
@@ -498,7 +498,7 @@ export default function JellyStormPage() {
           </p>
           <Link
             href="/dream/451-kids-jelly-storm/README.md"
-            className="text-fuchsia-300 underline"
+            className="text-violet-300 underline"
           >
             Read the README
           </Link>

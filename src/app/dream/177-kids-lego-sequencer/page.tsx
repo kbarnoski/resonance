@@ -292,20 +292,20 @@ export default function Page() {
       <div className="fixed inset-0 bg-[#070714] flex flex-col items-center justify-center
                       gap-8 px-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-3">Lego Beats 🧱</h1>
-          <p className="text-white/75 text-base max-w-xs">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Lego Beats 🧱</h1>
+          <p className="text-muted-foreground text-base max-w-xs">
             Tap colorful blocks to build a melody. The cursor sweeps and plays
             your pattern on loop!
           </p>
         </div>
         <button
           onClick={handleStart}
-          className="bg-violet-700 hover:bg-violet-600 text-white text-xl font-semibold
+          className="bg-violet-700 hover:bg-violet-600 text-foreground text-xl font-semibold
                      px-10 py-4 rounded-2xl min-h-[64px] min-w-[200px] transition-colors"
         >
           ▶ Start
         </button>
-        <p className="text-white/55 text-sm">For kids 3+ · No permissions needed</p>
+        <p className="text-muted-foreground text-sm">For kids 3+ · No permissions needed</p>
       </div>
     )
   }
@@ -317,9 +317,9 @@ export default function Page() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 h-[52px] flex items-center
                       justify-between px-4 pointer-events-none select-none">
-        <span className="text-white/75 text-base font-semibold">Lego Beats 🧱</span>
+        <span className="text-muted-foreground text-base font-semibold">Lego Beats 🧱</span>
         <Link href="/dream"
-          className="text-white/55 text-sm pointer-events-auto hover:text-white/80">
+          className="text-muted-foreground text-sm pointer-events-auto hover:text-foreground">
           ← dream
         </Link>
       </div>
@@ -330,21 +330,21 @@ export default function Page() {
         <button
           onClick={() => handleBpm(-10)}
           aria-label="Slower"
-          className="bg-indigo-900/80 text-violet-300 text-2xl font-bold rounded-2xl
+          className="bg-violet-900/80 text-violet-300 text-2xl font-bold rounded-2xl
                      min-h-[56px] min-w-[56px] flex items-center justify-center
-                     hover:bg-indigo-800/80 transition-colors"
+                     hover:bg-violet-800/80 transition-colors"
         >−</button>
-        <span className="text-white/80 text-base font-semibold w-16 text-center select-none">
+        <span className="text-foreground text-base font-semibold w-16 text-center select-none">
           ♩&nbsp;{bpm}
         </span>
         <button
           onClick={() => handleBpm(+10)}
           aria-label="Faster"
-          className="bg-indigo-900/80 text-violet-300 text-2xl font-bold rounded-2xl
+          className="bg-violet-900/80 text-violet-300 text-2xl font-bold rounded-2xl
                      min-h-[56px] min-w-[56px] flex items-center justify-center
-                     hover:bg-indigo-800/80 transition-colors"
+                     hover:bg-violet-800/80 transition-colors"
         >+</button>
-        <div className="mx-2 w-px h-8 bg-white/20" />
+        <div className="mx-2 w-px h-8 bg-muted" />
         <button
           onClick={handleClear}
           className="bg-slate-800/80 text-slate-300 text-sm font-semibold rounded-2xl
@@ -354,7 +354,7 @@ export default function Page() {
 
       <div className="absolute bottom-4 right-4 pointer-events-auto">
         <Link href="/dream/177-kids-lego-sequencer/readme"
-          className="text-white/35 text-xs hover:text-white/60">notes</Link>
+          className="text-muted-foreground/70 text-xs hover:text-muted-foreground">notes</Link>
       </div>
     </div>
   )

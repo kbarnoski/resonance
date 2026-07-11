@@ -239,27 +239,27 @@ export default function PulseCathedralPage() {
 
   const phaseColor =
     phase === "DROP"
-      ? "text-amber-200"
+      ? "text-violet-200"
       : phase === "SUSTAIN"
-      ? "text-yellow-100"
+      ? "text-violet-100"
       : "text-violet-300";
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#0a0612] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#0a0612] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Top HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-1 p-5">
-        <h1 className="font-mono text-2xl font-semibold tracking-tight text-white/95">
+        <h1 className="font-mono text-2xl font-semibold tracking-tight text-foreground">
           659 · Pulse Cathedral
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           An EDM build-and-drop journey arc — a euphoric four-on-the-floor
           cathedral of light that tensions through a riser and{" "}
-          <span className="text-amber-200">breaks into a drop</span>, then climbs
+          <span className="text-violet-200">breaks into a drop</span>, then climbs
           and never quite lands.
         </p>
-        <p className="mt-1 font-mono text-base text-white/55">
+        <p className="mt-1 font-mono text-base text-muted-foreground">
           phase:{" "}
           <span className={`font-semibold ${phaseColor}`}>{phase}</span>
           {"  ·  "}
@@ -269,7 +269,7 @@ export default function PulseCathedralPage() {
 
       {/* WebGL fallback notice */}
       {glFailed && (
-        <div className="absolute left-5 top-36 z-10 max-w-sm rounded-md border border-rose-400/40 bg-black/40 p-3 text-base text-rose-300">
+        <div className="absolute left-5 top-36 z-10 max-w-sm rounded-md border border-violet-400/40 bg-black/40 p-3 text-base text-violet-300">
           WebGL2 not available — running the Canvas2D fallback nave. Visuals are
           simplified but the arc still plays.
         </div>
@@ -280,14 +280,14 @@ export default function PulseCathedralPage() {
         {!started ? (
           <button
             onClick={handleStart}
-            className="min-h-[44px] rounded-md bg-amber-300/90 px-5 py-2.5 font-mono text-base font-semibold text-black transition hover:bg-amber-200"
+            className="min-h-[44px] rounded-md bg-violet-300/90 px-5 py-2.5 font-mono text-base font-semibold text-black transition hover:bg-violet-200"
           >
             ▶ Start
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="min-h-[44px] rounded-md border border-white/30 bg-white/10 px-5 py-2.5 font-mono text-base font-semibold text-white/95 transition hover:bg-white/20"
+            className="min-h-[44px] rounded-md border border-border bg-muted px-5 py-2.5 font-mono text-base font-semibold text-foreground transition hover:bg-accent"
           >
             ■ Stop
           </button>
@@ -295,35 +295,35 @@ export default function PulseCathedralPage() {
 
         <button
           onClick={forceDrop}
-          className="min-h-[44px] rounded-md border border-amber-300/50 bg-amber-300/15 px-4 py-2.5 font-mono text-base font-semibold text-amber-100 transition hover:bg-amber-300/30"
+          className="min-h-[44px] rounded-md border border-violet-300/50 bg-violet-300/15 px-4 py-2.5 font-mono text-base font-semibold text-violet-100 transition hover:bg-violet-300/30"
         >
-          DROP ⏷ <span className="text-amber-200/70">(space)</span>
+          DROP ⏷ <span className="text-violet-200/70">(space)</span>
         </button>
 
-        <div className="flex items-center gap-2 rounded-md border border-white/15 bg-black/30 px-4 py-2">
-          <span className="font-mono text-base text-white/75">ENERGY</span>
+        <div className="flex items-center gap-2 rounded-md border border-border bg-black/30 px-4 py-2">
+          <span className="font-mono text-base text-muted-foreground">ENERGY</span>
           <button
             onClick={() => bumpEnergy(-0.15)}
-            className="min-h-[44px] rounded px-3 py-2.5 font-mono text-base text-white/95 hover:bg-white/10"
+            className="min-h-[44px] rounded px-3 py-2.5 font-mono text-base text-foreground hover:bg-accent"
             aria-label="less energy"
           >
             −
           </button>
-          <span className="w-10 text-center font-mono text-base text-white/95">
+          <span className="w-10 text-center font-mono text-base text-foreground">
             {Math.round(energy * 100)}
           </span>
           <button
             onClick={() => bumpEnergy(0.15)}
-            className="min-h-[44px] rounded px-3 py-2.5 font-mono text-base text-white/95 hover:bg-white/10"
+            className="min-h-[44px] rounded px-3 py-2.5 font-mono text-base text-foreground hover:bg-accent"
             aria-label="more energy"
           >
             +
           </button>
-          <span className="ml-1 font-mono text-base text-white/55">↑/↓</span>
+          <span className="ml-1 font-mono text-base text-muted-foreground">↑/↓</span>
         </div>
 
-        <label className="flex min-h-[44px] items-center gap-3 rounded-md border border-white/15 bg-black/30 px-4 py-2">
-          <span className="font-mono text-base text-white/75">
+        <label className="flex min-h-[44px] items-center gap-3 rounded-md border border-border bg-black/30 px-4 py-2">
+          <span className="font-mono text-base text-muted-foreground">
             TEMPO {bpm}
           </span>
           <input
@@ -336,13 +336,13 @@ export default function PulseCathedralPage() {
               markInteract();
               setBpm(Number(e.target.value));
             }}
-            className="w-32 accent-amber-300"
+            className="w-32 accent-violet-300"
           />
         </label>
 
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="ml-auto min-h-[44px] rounded-md border border-white/15 bg-black/30 px-4 py-2.5 font-mono text-base text-white/75 transition hover:text-white/95"
+          className="ml-auto min-h-[44px] rounded-md border border-border bg-black/30 px-4 py-2.5 font-mono text-base text-muted-foreground transition hover:text-foreground"
         >
           Design notes
         </button>
@@ -350,8 +350,8 @@ export default function PulseCathedralPage() {
 
       {/* Design notes panel */}
       {showNotes && (
-        <div className="absolute bottom-24 right-5 z-20 max-w-md rounded-lg border border-white/15 bg-black/70 p-4 font-mono text-base text-white/75 backdrop-blur">
-          <p className="mb-2 text-white/95">Design notes</p>
+        <div className="absolute bottom-24 right-5 z-20 max-w-md rounded-lg border border-border bg-black/70 p-4 font-mono text-base text-muted-foreground backdrop-blur">
+          <p className="mb-2 text-foreground">Design notes</p>
           <ul className="list-disc space-y-1 pl-5">
             <li>Look-ahead scheduler (setInterval ~25ms, +120ms ahead).</li>
             <li>
@@ -364,9 +364,9 @@ export default function PulseCathedralPage() {
             </li>
             <li>WebGL2 cathedral nave; Canvas2D fallback.</li>
           </ul>
-          <p className="mt-2 text-white/55">
+          <p className="mt-2 text-muted-foreground">
             Full write-up:{" "}
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               src/app/dream/659-pulse-cathedral/README.md
             </span>
           </p>
@@ -375,7 +375,7 @@ export default function PulseCathedralPage() {
 
       {/* GL mode badge */}
       {glMode && (
-        <div className="pointer-events-none absolute right-5 top-5 z-10 font-mono text-base text-white/55">
+        <div className="pointer-events-none absolute right-5 top-5 z-10 font-mono text-base text-muted-foreground">
           {glMode === "webgl2" ? "WebGL2" : "Canvas2D"}
         </div>
       )}

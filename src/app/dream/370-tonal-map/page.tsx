@@ -189,21 +189,21 @@ export default function Page() {
   // ── Focus bar color ───────────────────────────────────────────────────────
   const focusPct = Math.round(hud.focus * 100)
   const focusColor =
-    hud.focus > 0.65 ? "bg-emerald-400" :
-    hud.focus > 0.35 ? "bg-amber-400"   :
-    "bg-rose-400"
+    hud.focus > 0.65 ? "bg-violet-400" :
+    hud.focus > 0.35 ? "bg-violet-400"   :
+    "bg-violet-400"
 
   // ─── Render ───────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen bg-[#080d1a] text-white font-mono px-4 py-7 sm:px-7">
+    <main className="min-h-screen bg-[#080d1a] text-foreground font-mono px-4 py-7 sm:px-7">
       <div className="mx-auto max-w-5xl">
 
         {/* Header */}
         <header className="mb-5">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Tonal Map
           </h1>
-          <p className="mt-1 max-w-2xl text-base text-white/80">
+          <p className="mt-1 max-w-2xl text-base text-foreground">
             Watch a comet of tonal gravity glide across labeled key territories —
             modulations are literal map crossings. The halo widens when the music
             is harmonically unstable.
@@ -216,13 +216,13 @@ export default function Page() {
           <section className="relative">
             <div
               ref={hostRef}
-              className="aspect-square w-full overflow-hidden rounded-xl border border-white/10 bg-[#080d1a]"
+              className="aspect-square w-full overflow-hidden rounded-xl border border-border bg-[#080d1a]"
             />
 
             {/* No-WebGL fallback */}
             {!webgl && (
               <div className="absolute inset-0 flex items-center justify-center p-6 rounded-xl">
-                <p className="max-w-sm text-center text-base text-rose-300">
+                <p className="max-w-sm text-center text-base text-violet-300">
                   WebGL is unavailable on this device — the 3-D map cannot render.
                   The audio tonal analysis is still running and you can read the
                   key / chord info in the panel.
@@ -235,7 +235,7 @@ export default function Page() {
               <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 backdrop-blur-sm">
                 <button
                   onClick={() => void onBegin()}
-                  className="min-h-[44px] px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white text-base font-semibold tracking-wide transition-colors"
+                  className="min-h-[44px] px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-foreground text-base font-semibold tracking-wide transition-colors"
                 >
                   Begin
                 </button>
@@ -256,39 +256,39 @@ export default function Page() {
           <aside className="flex flex-col gap-4">
 
             {/* Current key */}
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-              <p className="text-xs uppercase tracking-widest text-white/60 mb-1">Current Key</p>
-              <p className="text-2xl font-bold text-emerald-300/95 tracking-tight">
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Current Key</p>
+              <p className="text-2xl font-bold text-violet-300/95 tracking-tight">
                 {hud.keyName}
               </p>
             </div>
 
             {/* Current chord */}
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-              <p className="text-xs uppercase tracking-widest text-white/60 mb-1">Chord</p>
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Chord</p>
               <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-bold text-white tracking-tight">
+                <span className="text-2xl font-bold text-foreground tracking-tight">
                   {hud.chordSymbol}
                 </span>
-                <span className="text-base text-amber-300/95 font-semibold">
+                <span className="text-base text-violet-300/95 font-semibold">
                   {hud.roman}
                 </span>
               </div>
             </div>
 
             {/* Tonal Focus meter */}
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className="rounded-lg border border-border bg-muted p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs uppercase tracking-widest text-white/60">Tonal Focus</p>
-                <p className="text-base font-semibold text-white/80">{focusPct}%</p>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">Tonal Focus</p>
+                <p className="text-base font-semibold text-foreground">{focusPct}%</p>
               </div>
-              <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${focusColor}`}
                   style={{ width: `${focusPct}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs text-white/60">
+              <p className="mt-2 text-xs text-muted-foreground">
                 {hud.focus > 0.65
                   ? "Settled — firmly in key"
                   : hud.focus > 0.35
@@ -298,19 +298,19 @@ export default function Page() {
             </div>
 
             {/* Legend */}
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-              <p className="text-xs uppercase tracking-widest text-white/60 mb-2">Map Legend</p>
-              <ul className="space-y-1 text-xs text-white/75">
-                <li><span className="text-amber-300/95 font-semibold">● Comet</span> — center of tonal gravity</li>
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Map Legend</p>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li><span className="text-violet-300/95 font-semibold">● Comet</span> — center of tonal gravity</li>
                 <li><span className="text-violet-300 font-semibold">◎ Halo</span> — wide = modulating</li>
-                <li><span className="text-emerald-300/95 font-semibold">■ Bright region</span> — active key territory</li>
-                <li><span className="text-white/80 font-semibold">— Trail</span> — recent path of the comet</li>
+                <li><span className="text-violet-300/95 font-semibold">■ Bright region</span> — active key territory</li>
+                <li><span className="text-foreground font-semibold">— Trail</span> — recent path of the comet</li>
               </ul>
             </div>
 
             {/* MIDI status */}
-            <div className="rounded-lg border border-white/10 bg-white/5 px-4 py-3">
-              <p className="text-xs text-white/60">
+            <div className="rounded-lg border border-border bg-muted px-4 py-3">
+              <p className="text-xs text-muted-foreground">
                 {started
                   ? "Web MIDI active (if available) — play any keyboard to override the demo"
                   : "Press Begin to start the modulating demo progression"}
@@ -321,7 +321,7 @@ export default function Page() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-6 flex items-center justify-between text-xs text-white/60">
+        <footer className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
           <span>
             Chew Spiral Array · Krumhansl–Kessler profiles · arXiv:2603.27035
           </span>

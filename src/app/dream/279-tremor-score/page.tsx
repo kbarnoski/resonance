@@ -699,7 +699,7 @@ export default function TremorScore() {
   }, [started, feedMode, playMode]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -711,43 +711,43 @@ export default function TremorScore() {
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/279-tremor-score/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/55 underline-offset-4 hover:text-white/80 hover:underline"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
       >
         Read the design notes &#8599;
       </a>
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-8">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Tremor Score
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             The planet&apos;s live earthquakes, composed in real time into an
             evolving piece that never exactly repeats.
           </p>
 
           {started && (
-            <div className="mt-3 font-mono text-sm text-white/75">
+            <div className="mt-3 font-mono text-sm text-muted-foreground">
               <span>
                 {count} quake{count === 1 ? "" : "s"} loaded
               </span>
-              <span className="text-white/40"> &middot; </span>
+              <span className="text-muted-foreground/70"> &middot; </span>
               <span>last update {lastUpdate}</span>
-              <span className="text-white/40"> &middot; </span>
+              <span className="text-muted-foreground/70"> &middot; </span>
               <span>
                 largest{" "}
-                <span className="text-amber-300/95">
+                <span className="text-violet-300/95">
                   M{maxMag.toFixed(1)}
                 </span>
               </span>
               {usingFallback && (
-                <div className="mt-1 text-amber-300/95">
+                <div className="mt-1 text-violet-300/95">
                   Live feed unavailable &mdash; playing from a cached set of
                   recent quakes.
                 </div>
               )}
               {error && !usingFallback && (
-                <div className="mt-1 text-rose-300">feed note: {error}</div>
+                <div className="mt-1 text-violet-300">feed note: {error}</div>
               )}
             </div>
           )}
@@ -757,22 +757,22 @@ export default function TremorScore() {
           {!started ? (
             <button
               onClick={() => setStarted(true)}
-              className="min-h-[44px] w-fit rounded-md border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-base text-white/95 transition hover:border-white/40 hover:bg-white/10"
+              className="min-h-[44px] w-fit rounded-md border border-border bg-muted px-4 py-2.5 font-mono text-base text-foreground transition hover:border-border hover:bg-accent"
             >
               Begin listening to the Earth
             </button>
           ) : (
             <div className="flex flex-wrap items-center gap-3">
               {/* Live / Replay */}
-              <div className="flex overflow-hidden rounded-md border border-white/20">
+              <div className="flex overflow-hidden rounded-md border border-border">
                 {(["live", "replay"] as PlayMode[]).map((m) => (
                   <button
                     key={m}
                     onClick={() => setPlayMode(m)}
                     className={`min-h-[44px] px-4 py-2.5 font-mono text-sm transition ${
                       playMode === m
-                        ? "bg-white/15 text-white"
-                        : "text-white/60 hover:bg-white/5 hover:text-white/85"
+                        ? "bg-muted text-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     }`}
                   >
                     {m === "live" ? "Live" : "Replay 24h"}
@@ -781,15 +781,15 @@ export default function TremorScore() {
               </div>
 
               {/* all_day / all_hour */}
-              <div className="flex overflow-hidden rounded-md border border-white/20">
+              <div className="flex overflow-hidden rounded-md border border-border">
                 {(["all_day", "all_hour"] as FeedMode[]).map((m) => (
                   <button
                     key={m}
                     onClick={() => setFeedMode(m)}
                     className={`min-h-[44px] px-4 py-2.5 font-mono text-sm transition ${
                       feedMode === m
-                        ? "bg-white/15 text-white"
-                        : "text-white/60 hover:bg-white/5 hover:text-white/85"
+                        ? "bg-muted text-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     }`}
                   >
                     {m === "all_day" ? "Last 24h" : "Last hour"}
@@ -799,14 +799,14 @@ export default function TremorScore() {
 
               <button
                 onClick={() => setMuted((v) => !v)}
-                className="min-h-[44px] rounded-md border border-white/20 px-4 py-2.5 font-mono text-sm text-white/85 transition hover:border-white/40 hover:bg-white/5"
+                className="min-h-[44px] rounded-md border border-border px-4 py-2.5 font-mono text-sm text-foreground transition hover:border-border hover:bg-accent"
               >
                 {muted ? "Unmute" : "Mute"}
               </button>
             </div>
           )}
 
-          <p className="max-w-2xl font-mono text-sm text-white/55">
+          <p className="max-w-2xl font-mono text-sm text-muted-foreground">
             magnitude &#8594; loudness, length &amp; sub-rumble &middot; depth
             &#8594; pitch (just-intonation, deep = dark) &middot; longitude
             &#8594; stereo pan &middot; latitude &#8594; brightness. Data: USGS

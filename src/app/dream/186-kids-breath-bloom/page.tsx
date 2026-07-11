@@ -317,17 +317,17 @@ export default function BreathBloomPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
+    <div className="flex flex-col h-screen bg-black text-foreground">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
           <h1 className="text-xl font-serif tracking-wide">Breath Bloom</h1>
-          <p className="text-base text-white/70 mt-0.5">
+          <p className="text-base text-muted-foreground mt-0.5">
             Five glowing petals breathe in unison — tap to bloom
           </p>
         </div>
         <Link
           href="/dream"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           ← Dream Lab
         </Link>
@@ -339,13 +339,13 @@ export default function BreathBloomPage() {
         style={{ display: "block" }}
       />
 
-      <footer className="px-4 py-2 border-t border-white/10 shrink-0 flex items-center justify-between">
-        <span className="text-xs text-white/40">
+      <footer className="px-4 py-2 border-t border-border shrink-0 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground/70">
           For kids 3+ · Zero permissions · Zero API · Zero deps
         </span>
         <Link
           href="/dream/186-kids-breath-bloom/README.md"
-          className="text-xs text-white/40 hover:text-white/60 transition-colors"
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
         >
           Design notes ↗
         </Link>

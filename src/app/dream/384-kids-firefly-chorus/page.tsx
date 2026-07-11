@@ -309,7 +309,7 @@ export default function KidsFireflyChorus() {
   }, [handleOrientation, handlePointerMove, handlePointerUp]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05050f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05050f] text-foreground">
       {/* Play canvas */}
       <canvas
         ref={canvasRef}
@@ -321,7 +321,7 @@ export default function KidsFireflyChorus() {
       {phase === "playing" && (
         <Link
           href="/dream"
-          className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-white/10 bg-black/50 px-4 py-2.5 text-base text-white/80 backdrop-blur-md hover:text-white"
+          className="absolute left-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-foreground backdrop-blur-md hover:text-foreground"
         >
           ← back
         </Link>
@@ -329,13 +329,13 @@ export default function KidsFireflyChorus() {
 
       {/* Togetherness meter — gentle, legible synchrony cue */}
       {phase === "playing" && (
-        <div className="pointer-events-none absolute right-3 top-3 z-30 rounded-2xl border border-white/10 bg-black/40 px-4 py-2.5 backdrop-blur-md">
-          <div className="text-xs uppercase tracking-wider text-white/75">
+        <div className="pointer-events-none absolute right-3 top-3 z-30 rounded-2xl border border-border bg-black/40 px-4 py-2.5 backdrop-blur-md">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">
             together
           </div>
-          <div className="mt-1 h-2 w-28 overflow-hidden rounded-full bg-white/10">
+          <div className="mt-1 h-2 w-28 overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-amber-300/80 transition-[width] duration-200"
+              className="h-full rounded-full bg-violet-300/80 transition-[width] duration-200"
               style={{ width: `${orderPct}%` }}
             />
           </div>
@@ -344,22 +344,22 @@ export default function KidsFireflyChorus() {
 
       {/* Denied-tilt notice (rose) + pointer hint */}
       {phase === "playing" && tiltDenied && (
-        <div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-2xl border border-rose-400/30 bg-black/55 px-4 py-2.5 text-center backdrop-blur-md">
-          <p className="text-base text-rose-300">
+        <div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-2xl border border-violet-400/30 bg-black/55 px-4 py-2.5 text-center backdrop-blur-md">
+          <p className="text-base text-violet-300">
             Tilt is off — drag a finger to make a breeze.
           </p>
         </div>
       )}
       {phase === "playing" && !tiltDenied && usingPointer && (
-        <div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-2xl border border-white/10 bg-black/45 px-4 py-2.5 text-center backdrop-blur-md">
-          <p className="text-base text-white/80">Drag to drift the fireflies together.</p>
+        <div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-2xl border border-border bg-black/45 px-4 py-2.5 text-center backdrop-blur-md">
+          <p className="text-base text-foreground">Drag to drift the fireflies together.</p>
         </div>
       )}
 
       {/* WebGL2 missing notice (rose) */}
       {phase === "playing" && noWebGL && (
-        <div className="pointer-events-none absolute inset-x-4 top-1/2 z-30 -translate-y-1/2 rounded-2xl border border-rose-400/30 bg-black/70 p-5 text-center backdrop-blur-md">
-          <p className="text-base text-rose-300">
+        <div className="pointer-events-none absolute inset-x-4 top-1/2 z-30 -translate-y-1/2 rounded-2xl border border-violet-400/30 bg-black/70 p-5 text-center backdrop-blur-md">
+          <p className="text-base text-violet-300">
             This device can&apos;t show the meadow (no WebGL2) — but you can still
             hear the fireflies sing.
           </p>
@@ -369,10 +369,10 @@ export default function KidsFireflyChorus() {
       {/* Start screen */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-[#070718] to-[#0c0c22] px-6 text-center">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Firefly Chorus
           </h1>
-          <p className="mt-3 max-w-md text-base text-white/80">
+          <p className="mt-3 max-w-md text-base text-foreground">
             A meadow of sleepy fireflies. Tilt the world — or drag a finger — to
             float them together. When they meet, they blink and sing as one.
           </p>
@@ -383,7 +383,7 @@ export default function KidsFireflyChorus() {
           >
             ✦ start
           </button>
-          <p className="mt-6 max-w-sm text-xs text-white/55">
+          <p className="mt-6 max-w-sm text-xs text-muted-foreground">
             Sound stays soft and gentle. Tilt needs your OK on some phones.
           </p>
         </div>

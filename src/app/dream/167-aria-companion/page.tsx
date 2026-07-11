@@ -450,9 +450,9 @@ export default function AriaCompanion() {
   };
   const PHASE_COLOR: Record<Phase, string> = {
     idle: "",
-    listening: "text-emerald-300/80",
-    thinking: "text-white/55",
-    responding: "text-blue-300/80",
+    listening: "text-violet-300/80",
+    thinking: "text-muted-foreground",
+    responding: "text-violet-300/80",
   };
 
   return (
@@ -466,32 +466,32 @@ export default function AriaCompanion() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-3xl font-light mb-3 tracking-tight">Aria</h1>
-          <p className="text-base text-white/75 max-w-md mb-3 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-md mb-3 leading-relaxed">
             Play piano into your mic. After two seconds of silence, Aria responds — a
             short phrase built from the note transitions in what you just played.
           </p>
-          <p className="text-sm text-white/55 max-w-md mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
             The Markov table grows across every call-and-response. The longer the
             session, the more Aria sounds like you.
           </p>
           <div className="flex gap-3">
             <button
               onClick={start}
-              className="px-6 py-3 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition min-h-[44px]"
+              className="px-6 py-3 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition min-h-[44px]"
             >
               Start mic
             </button>
             <button
               onClick={runDemo}
-              className="px-5 py-3 text-sm tracking-wider uppercase border border-white/15 text-white/55 rounded hover:bg-white/5 hover:text-white/80 transition min-h-[44px]"
+              className="px-5 py-3 text-sm tracking-wider uppercase border border-border text-muted-foreground rounded hover:bg-accent hover:text-foreground transition min-h-[44px]"
             >
               Demo
             </button>
           </div>
           {micError && (
-            <p className="mt-4 text-sm text-rose-300 max-w-sm">{micError}</p>
+            <p className="mt-4 text-sm text-violet-300 max-w-sm">{micError}</p>
           )}
-          <Link href="/dream" className="mt-12 text-xs text-white/30 hover:text-white/60">
+          <Link href="/dream" className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -500,7 +500,7 @@ export default function AriaCompanion() {
       {phase !== "idle" && (
         <>
           <div className="absolute top-0 left-0 right-0 h-11 flex items-center justify-between px-4 pointer-events-none">
-            <span className="text-sm font-light text-white/80 tracking-wide">
+            <span className="text-sm font-light text-foreground tracking-wide">
               Aria — Piano Companion
             </span>
             <span className={`text-xs tracking-wider ${PHASE_COLOR[phase]}`}>
@@ -511,12 +511,12 @@ export default function AriaCompanion() {
             className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-auto"
             style={{ height: 40 }}
           >
-            <Link href="/dream" className="text-xs text-white/30 hover:text-white/60">
+            <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground">
               ← back
             </Link>
             <button
               onClick={stop}
-              className="text-xs tracking-wider uppercase text-white/55 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1.5 rounded min-h-[36px]"
+              className="text-xs tracking-wider uppercase text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1.5 rounded min-h-[36px]"
             >
               stop
             </button>

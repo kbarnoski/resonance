@@ -69,12 +69,12 @@ const STATUS_LABEL: Record<PhaseStatus, string> = {
 };
 
 const STATUS_COLOR: Record<PhaseStatus, string> = {
-  idle: "text-white/30",
-  generating: "text-amber-300/95",
-  ready: "text-cyan-300/95",
+  idle: "text-muted-foreground/70",
+  generating: "text-violet-300/95",
+  ready: "text-violet-300/95",
   playing: "text-violet-300",
-  done: "text-white/50",
-  error: "text-rose-300",
+  done: "text-muted-foreground",
+  error: "text-violet-300",
 };
 
 export default function ArcSteerPage() {
@@ -327,20 +327,20 @@ export default function ArcSteerPage() {
   const activeIdx = activePhase;
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-foreground flex flex-col">
       {/* Header */}
-      <div className="px-5 pt-5 pb-4 border-b border-white/10">
+      <div className="px-5 pt-5 pb-4 border-b border-border">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-mono font-semibold tracking-tight">Arc Steer</h1>
-            <p className="text-base text-white/75 mt-1 max-w-lg">
+            <p className="text-base text-muted-foreground mt-1 max-w-lg">
               Six phases of a Resonance journey arc — each realized as 30 s of AI-generated
               music. Edit any prompt, then begin.
             </p>
           </div>
           <Link
             href="/dream"
-            className="text-xs text-white/40 hover:text-white/70 transition-colors shrink-0 mt-1"
+            className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors shrink-0 mt-1"
           >
             ← dream lab
           </Link>
@@ -350,7 +350,7 @@ export default function ArcSteerPage() {
       {/* Body */}
       <div className="flex-1 flex flex-col lg:flex-row min-h-0">
         {/* Phase list */}
-        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-white/10">
+        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-border">
           <div className="p-3 space-y-2">
             {PHASES.map((phase, i) => (
               <div
@@ -359,8 +359,8 @@ export default function ArcSteerPage() {
                   activeIdx === i
                     ? "border-violet-500/50 bg-violet-950/40"
                     : statuses[i] === "done"
-                    ? "border-white/6 bg-white/[0.02] opacity-55"
-                    : "border-white/8 bg-white/[0.02]"
+                    ? "border-border bg-muted opacity-55"
+                    : "border-border bg-muted"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1.5">
@@ -368,10 +368,10 @@ export default function ArcSteerPage() {
                     className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: phase.dot }}
                   />
-                  <span className="text-[11px] text-white/40 font-mono w-6 shrink-0">
+                  <span className="text-[11px] text-muted-foreground/70 font-mono w-6 shrink-0">
                     {phase.numeral}
                   </span>
-                  <span className="text-sm font-semibold text-white/95 flex-1 leading-tight">
+                  <span className="text-sm font-semibold text-foreground flex-1 leading-tight">
                     {phase.name}
                   </span>
                   <span
@@ -390,7 +390,7 @@ export default function ArcSteerPage() {
                   }}
                   disabled={running}
                   rows={2}
-                  className="w-full bg-transparent text-xs text-white/65 resize-none outline-none leading-relaxed font-mono"
+                  className="w-full bg-transparent text-xs text-muted-foreground resize-none outline-none leading-relaxed font-mono"
                 />
               </div>
             ))}
@@ -405,7 +405,7 @@ export default function ArcSteerPage() {
 
             {activeIdx >= 0 && (
               <div className="absolute bottom-4 inset-x-0 text-center pointer-events-none">
-                <span className="text-sm font-mono text-white/70">
+                <span className="text-sm font-mono text-muted-foreground">
                   {PHASES[activeIdx].name} ·{" "}
                   {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")} / 0:30
                 </span>
@@ -414,7 +414,7 @@ export default function ArcSteerPage() {
 
             {!running && activeIdx < 0 && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <p className="text-white/20 text-sm text-center px-4">
+                <p className="text-muted-foreground/70 text-sm text-center px-4">
                   {complete
                     ? "Journey complete — reset to run again"
                     : "Six phases · ~3 minutes total · ACE‑Step"}
@@ -424,18 +424,18 @@ export default function ArcSteerPage() {
           </div>
 
           {/* Controls */}
-          <div className="px-5 py-4 border-t border-white/10 flex items-center gap-3 flex-wrap">
+          <div className="px-5 py-4 border-t border-border flex items-center gap-3 flex-wrap">
             {!running ? (
               <button
                 onClick={handleBeginJourney}
-                className="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 rounded-lg text-sm font-semibold text-white transition-colors min-h-[44px]"
+                className="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 active:bg-violet-700 rounded-lg text-sm font-semibold text-foreground transition-colors min-h-[44px]"
               >
                 ▶ Begin Journey
               </button>
             ) : (
               <button
                 onClick={handleStopJourney}
-                className="px-5 py-2.5 bg-white/10 hover:bg-white/15 rounded-lg text-sm font-semibold text-white transition-colors min-h-[44px]"
+                className="px-5 py-2.5 bg-muted hover:bg-accent rounded-lg text-sm font-semibold text-foreground transition-colors min-h-[44px]"
               >
                 ■ Stop
               </button>
@@ -444,16 +444,16 @@ export default function ArcSteerPage() {
             {complete && !running && (
               <button
                 onClick={handleReset}
-                className="px-4 py-2.5 bg-white/[0.07] hover:bg-white/10 rounded-lg text-sm text-white/75 transition-colors min-h-[44px]"
+                className="px-4 py-2.5 bg-muted hover:bg-accent rounded-lg text-sm text-muted-foreground transition-colors min-h-[44px]"
               >
                 ↺ Reset
               </button>
             )}
 
             {errorMsg ? (
-              <p className="text-rose-300 text-sm">{errorMsg}</p>
+              <p className="text-violet-300 text-sm">{errorMsg}</p>
             ) : (
-              <p className="text-xs text-white/35 ml-auto">
+              <p className="text-xs text-muted-foreground/70 ml-auto">
                 6 × 30 s · ~$0.04 · FAL_KEY required
               </p>
             )}
@@ -462,10 +462,10 @@ export default function ArcSteerPage() {
       </div>
 
       {/* Phase timeline */}
-      <div className="px-4 py-3 border-t border-white/10">
+      <div className="px-4 py-3 border-t border-border">
         <div className="flex gap-1.5 mb-1.5">
           {PHASES.map((phase, i) => (
-            <div key={i} className="flex-1 h-1.5 rounded-full bg-white/8 overflow-hidden">
+            <div key={i} className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
@@ -499,7 +499,7 @@ export default function ArcSteerPage() {
             <div key={i} className="flex-1 text-center">
               <span
                 className={`text-[10px] font-mono transition-colors ${
-                  activeIdx === i ? "text-white/70" : "text-white/30"
+                  activeIdx === i ? "text-muted-foreground" : "text-muted-foreground/70"
                 }`}
               >
                 {phase.numeral}

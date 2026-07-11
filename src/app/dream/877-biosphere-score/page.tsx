@@ -276,7 +276,7 @@ export default function BiosphereScorePage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040a] text-foreground">
       <div className="absolute inset-0">
         <canvas
           ref={canvasRef}
@@ -288,26 +288,26 @@ export default function BiosphereScorePage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 w-full p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Biosphere Score
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           Every species just observed on Earth becomes an orchestra — the live
           GBIF data decides which taxonomic section plays when.
         </p>
         {phase === "running" && (
           <p className="mt-2 text-base">
             {source === "live" ? (
-              <span className="text-emerald-300/95">live GBIF feed</span>
+              <span className="text-violet-300/95">live GBIF feed</span>
             ) : (
-              <span className="text-amber-300/95">
+              <span className="text-violet-300/95">
                 offline — curated sample (auto-demo)
               </span>
             )}
           </p>
         )}
         {phase === "noaudio" && (
-          <p className="mt-2 text-base text-rose-300">
+          <p className="mt-2 text-base text-violet-300">
             Web Audio unavailable — visuals only.
           </p>
         )}
@@ -317,7 +317,7 @@ export default function BiosphereScorePage() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col items-center gap-4 rounded-2xl bg-black/45 px-8 py-8 backdrop-blur-sm">
-            <p className="max-w-md text-center text-base text-white/80">
+            <p className="max-w-md text-center text-base text-foreground">
               An orchestra conducted by the living planet. Birds sing high,
               mammals sing low, fungi drone beneath — all in one slowly
               modulating key. Press start; it plays itself.
@@ -325,11 +325,11 @@ export default function BiosphereScorePage() {
             <button
               type="button"
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-base font-medium text-white shadow-lg transition hover:bg-violet-400"
+              className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-400"
             >
               Start the orchestra
             </button>
-            <span className="text-base text-white/55">
+            <span className="text-base text-muted-foreground">
               no microphone · no camera · plays hands-free
             </span>
           </div>
@@ -340,38 +340,38 @@ export default function BiosphereScorePage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-violet-300 backdrop-blur-sm transition hover:bg-white/15"
+        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-violet-300 backdrop-blur-sm transition hover:bg-accent"
       >
         Read the design notes
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-5 z-30 w-[min(92vw,30rem)] rounded-2xl bg-[#070912]/95 p-5 text-base text-white/80 shadow-2xl ring-1 ring-white/10">
-          <h2 className="text-xl font-semibold text-white">Design notes</h2>
-          <p className="mt-2 text-white/75">
+        <div className="absolute bottom-20 right-5 z-30 w-[min(92vw,30rem)] rounded-2xl bg-[#070912]/95 p-5 text-base text-foreground shadow-2xl ring-1 ring-border">
+          <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mt-2 text-muted-foreground">
             This is a <span className="text-violet-300">structural</span>{" "}
             sonification: the data shapes the{" "}
-            <span className="text-white/95">ensemble and the form</span>, not
+            <span className="text-foreground">ensemble and the form</span>, not
             the pitch of individual notes. Each observation brings its
             taxonomic section&apos;s voice in; pitch is always quantized to a
             shared modal scale, so it stays harmonic.
           </p>
-          <ul className="mt-3 space-y-1 text-white/75">
+          <ul className="mt-3 space-y-1 text-muted-foreground">
             <li>
-              <span className="text-white/95">Section → register band</span>{" "}
+              <span className="text-foreground">Section → register band</span>{" "}
               follows Krause&apos;s acoustic niche hypothesis.
             </li>
             <li>
-              <span className="text-white/95">Clustering</span> of events →
+              <span className="text-foreground">Clustering</span> of events →
               rhythmic density.
             </li>
             <li>
-              <span className="text-white/95">Cumulative richness</span> →
+              <span className="text-foreground">Cumulative richness</span> →
               long-form arc (fuller, brighter over time).
             </li>
             <li>Longitude → stereo pan. Scale modulates every ~36s.</li>
           </ul>
-          <p className="mt-3 text-white/55">
+          <p className="mt-3 text-muted-foreground">
             Hover or tap a section in the legend to solo it.
           </p>
         </div>

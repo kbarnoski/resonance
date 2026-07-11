@@ -615,16 +615,16 @@ export default function MagneticWalkPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060c] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* backend badge + live heading */}
       {started && (
         <div className="absolute left-4 top-4 z-20 flex flex-col gap-1">
-          <span className="rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-white/75">
+          <span className="rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-muted-foreground">
             {backend === "webgl2" ? "WebGL2" : backend === "canvas2d" ? "Canvas2D" : "…"}
           </span>
-          <span className="rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-white/75">
+          <span className="rounded-md bg-black/40 px-3 py-1.5 font-mono text-sm text-muted-foreground">
             heading {headingLabel}
             {fieldRef.current.ghost ? " · drifting" : ""}
           </span>
@@ -636,7 +636,7 @@ export default function MagneticWalkPage() {
         href="/dream/744-magnetic-walk/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -644,22 +644,22 @@ export default function MagneticWalkPage() {
       {/* intro overlay / Start */}
       {!started && (
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Magnetic Walk
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/75 md:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
             The invisible field around you, made audible. Your phone&apos;s compass and
             tilt voice a slowly-shifting drone and a field of light locked to magnetic
             north — turn your body, and the music turns with the world.
           </p>
           <button
             onClick={handleStart}
-            className="rounded-full bg-white/10 px-8 py-4 text-xl font-medium text-white ring-1 ring-white/30 transition hover:bg-white/20 active:scale-95"
+            className="rounded-full bg-muted px-8 py-4 text-xl font-medium text-foreground ring-1 ring-border transition hover:bg-accent active:scale-95"
             style={{ minHeight: 64 }}
           >
             Start the walk
           </button>
-          <p className="max-w-md font-mono text-base text-white/75">
+          <p className="max-w-md font-mono text-base text-muted-foreground">
             Allow motion access when asked. No live compass? It drifts on its own.
           </p>
         </div>
@@ -668,7 +668,7 @@ export default function MagneticWalkPage() {
       {/* sensor notice (degraded / ghost mode) */}
       {started && sensorMsg && (
         <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 px-4">
-          <p className="rounded-lg bg-black/50 px-4 py-2.5 text-center font-mono text-base text-rose-300">
+          <p className="rounded-lg bg-black/50 px-4 py-2.5 text-center font-mono text-base text-violet-300">
             {sensorMsg}
           </p>
         </div>
@@ -677,7 +677,7 @@ export default function MagneticWalkPage() {
       {/* gentle instruction once running */}
       {started && !sensorMsg && (
         <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 px-4">
-          <p className="rounded-lg bg-black/40 px-4 py-2.5 text-center font-mono text-base text-white/75">
+          <p className="rounded-lg bg-black/40 px-4 py-2.5 text-center font-mono text-base text-muted-foreground">
             Turn slowly. Tilt to open the field. Listen.
           </p>
         </div>

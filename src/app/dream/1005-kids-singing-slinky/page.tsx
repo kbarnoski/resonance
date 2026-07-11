@@ -308,7 +308,7 @@ export default function SingingSlinkyPage() {
   }, [started, pickIndex]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0d17] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0d17] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -317,16 +317,16 @@ export default function SingingSlinkyPage() {
 
       <Link
         href="/dream"
-        className="absolute left-4 top-4 z-20 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur hover:bg-white/20"
+        className="absolute left-4 top-4 z-20 rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur hover:bg-accent"
       >
         ← dream
       </Link>
 
       {started && (
-        <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/35 px-5 py-2.5 text-center text-base text-white/90 backdrop-blur">
+        <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/35 px-5 py-2.5 text-center text-base text-foreground backdrop-blur">
           drag the rainbow up or down, then let go to flick it ✨
           {fallback && (
-            <span className="ml-2 text-rose-300">(simple view)</span>
+            <span className="ml-2 text-violet-300">(simple view)</span>
           )}
         </div>
       )}
@@ -334,10 +334,10 @@ export default function SingingSlinkyPage() {
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#0a0d17] to-[#10162a] px-6 text-center">
           <div className="space-y-3">
-            <h1 className="text-4xl font-bold text-white drop-shadow">
+            <h1 className="text-4xl font-bold text-foreground drop-shadow">
               Singing Slinky
             </h1>
-            <p className="mx-auto max-w-md text-lg text-white/75">
+            <p className="mx-auto max-w-md text-lg text-muted-foreground">
               Flick the glowing rainbow spring and watch a wave race down,
               bounce, and hum. It plays itself if you wait.
             </p>
@@ -345,7 +345,7 @@ export default function SingingSlinkyPage() {
           <button
             type="button"
             onClick={handleStart}
-            className="rounded-full bg-gradient-to-r from-fuchsia-500 via-amber-400 to-cyan-400 px-10 py-5 text-2xl font-bold text-black shadow-lg shadow-fuchsia-500/30 active:scale-95"
+            className="rounded-full bg-gradient-to-r from-violet-500 via-violet-400 to-violet-400 px-10 py-5 text-2xl font-bold text-black shadow-lg shadow-violet-500/30 active:scale-95"
           >
             ▶ Start
           </button>

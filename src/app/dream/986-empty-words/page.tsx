@@ -222,26 +222,26 @@ export default function EmptyWordsPage() {
   const noteCount = compRef.current?.events.filter((e) => !e.isRest).length ?? 0;
 
   return (
-    <main className="min-h-screen w-full bg-[#111010] text-white">
+    <main className="min-h-screen w-full bg-[#111010] text-foreground">
       <div className="mx-auto max-w-5xl px-4 py-6">
         {/* header */}
         <header className="mb-4">
           <Link
             href="/dream"
-            className="text-base text-white/55 hover:text-white/80 transition-colors"
+            className="text-base text-muted-foreground hover:text-foreground transition-colors"
           >
             ← dream lab
           </Link>
-          <h1 className="mt-2 font-serif text-3xl sm:text-4xl text-white">Empty Words</h1>
-          <p className="mt-1 text-base text-white/75 max-w-2xl">
+          <h1 className="mt-2 font-serif text-3xl sm:text-4xl text-foreground">Empty Words</h1>
+          <p className="mt-1 text-base text-muted-foreground max-w-2xl">
             Paste a poem or an email and a transparent engine{" "}
-            <span className="text-amber-300/95">composes</span> it — every note carries the
+            <span className="text-violet-300/95">composes</span> it — every note carries the
             letter, syllable or mark that caused it. Same text, same piece, every time.
           </p>
         </header>
 
         {/* manuscript canvas */}
-        <div className="relative rounded-lg overflow-hidden border border-white/10 bg-black">
+        <div className="relative rounded-lg overflow-hidden border border-border bg-black">
           <canvas
             ref={canvasRef}
             className="block w-full"
@@ -249,7 +249,7 @@ export default function EmptyWordsPage() {
           />
           {renderMode === "none" && (
             <div className="absolute inset-0 grid place-items-center p-6 text-center">
-              <p className="text-rose-300 text-base">
+              <p className="text-violet-300 text-base">
                 Neither WebGL2 nor Canvas2D is available in this browser, so the manuscript can’t
                 render. Audio will still work.
               </p>
@@ -257,31 +257,31 @@ export default function EmptyWordsPage() {
           )}
           {!gestured && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 text-center">
-              <span className="inline-block rounded-full bg-black/55 px-4 py-2 text-base text-white/80 backdrop-blur">
+              <span className="inline-block rounded-full bg-black/55 px-4 py-2 text-base text-foreground backdrop-blur">
                 Press{" "}
-                <span className="text-amber-300/95">▶ Sing the text</span> to hear it composed
+                <span className="text-violet-300/95">▶ Sing the text</span> to hear it composed
               </span>
             </div>
           )}
         </div>
 
         {/* live "why" readout */}
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 min-h-[44px] rounded-md bg-white/[0.04] px-4 py-2.5 border border-white/10">
-          <span className="text-base text-white/55">now singing:</span>
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 min-h-[44px] rounded-md bg-muted px-4 py-2.5 border border-border">
+          <span className="text-base text-muted-foreground">now singing:</span>
           {readout ? (
             <>
-              <span className="font-serif text-2xl text-white">
+              <span className="font-serif text-2xl text-foreground">
                 {readout.glyph === " " ? "␣" : readout.glyph}
               </span>
               <span className="text-base text-violet-300">{readout.reason}</span>
               {!readout.isRest && (
-                <span className="text-base text-white/55">
+                <span className="text-base text-muted-foreground">
                   · {readout.articulation} · vel {Math.round(readout.velocity * 100)}%
                 </span>
               )}
             </>
           ) : (
-            <span className="text-base text-white/55">
+            <span className="text-base text-muted-foreground">
               the running cause of each note appears here as it sounds
             </span>
           )}
@@ -292,21 +292,21 @@ export default function EmptyWordsPage() {
           {!playing ? (
             <button
               onClick={startAudio}
-              className="min-h-[44px] px-4 py-2.5 rounded-md bg-amber-300/90 text-black font-medium text-base hover:bg-amber-300 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-md bg-violet-300/90 text-black font-medium text-base hover:bg-violet-300 transition-colors"
             >
               ▶ Sing the text
             </button>
           ) : (
             <button
               onClick={stopAudio}
-              className="min-h-[44px] px-4 py-2.5 rounded-md bg-white/10 text-white text-base hover:bg-white/15 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-md bg-muted text-foreground text-base hover:bg-accent transition-colors"
             >
               ■ Stop
             </button>
           )}
 
           {/* mode selector */}
-          <div className="flex items-center gap-1 rounded-md bg-white/[0.04] border border-white/10 p-1">
+          <div className="flex items-center gap-1 rounded-md bg-muted border border-border p-1">
             {MODE_ORDER.map((m) => (
               <button
                 key={m}
@@ -314,7 +314,7 @@ export default function EmptyWordsPage() {
                 className={`min-h-[44px] px-3 py-2 rounded text-base transition-colors ${
                   mode === m
                     ? "bg-violet-300/20 text-violet-200"
-                    : "text-white/60 hover:text-white/90"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {MODES[m].label}
@@ -323,7 +323,7 @@ export default function EmptyWordsPage() {
           </div>
 
           {/* tempo */}
-          <label className="flex items-center gap-2 text-base text-white/75">
+          <label className="flex items-center gap-2 text-base text-muted-foreground">
             <span>tempo</span>
             <input
               type="range"
@@ -331,21 +331,21 @@ export default function EmptyWordsPage() {
               max={132}
               value={bpm}
               onChange={(e) => setBpm(Number(e.target.value))}
-              className="accent-amber-300"
+              className="accent-violet-300"
             />
-            <span className="tabular-nums text-white/90 w-14">{bpm} bpm</span>
+            <span className="tabular-nums text-foreground w-14">{bpm} bpm</span>
           </label>
 
-          <span className="text-base text-white/55 ml-auto">
+          <span className="text-base text-muted-foreground ml-auto">
             {noteCount} notes · {renderMode === "webgl2" ? "WebGL2" : renderMode === "canvas2d" ? "Canvas2D" : "no GPU"}
           </span>
         </div>
 
-        {audioError && <p className="mt-3 text-base text-rose-300">{audioError}</p>}
+        {audioError && <p className="mt-3 text-base text-violet-300">{audioError}</p>}
 
         {/* the input */}
         <div className="mt-5">
-          <label className="block text-base text-white/75 mb-2" htmlFor="ew-text">
+          <label className="block text-base text-muted-foreground mb-2" htmlFor="ew-text">
             the text to set to music
           </label>
           <textarea
@@ -354,13 +354,13 @@ export default function EmptyWordsPage() {
             onChange={(e) => setText(e.target.value)}
             spellCheck={false}
             rows={6}
-            className="w-full rounded-md bg-white/[0.03] border border-white/10 px-4 py-3 text-base text-white/95 leading-relaxed font-serif resize-y focus:outline-none focus:border-amber-300/50"
+            className="w-full rounded-md bg-muted border border-border px-4 py-3 text-base text-foreground leading-relaxed font-serif resize-y focus:outline-none focus:border-violet-300/50"
             placeholder="Paste a poem, an email, anything…"
           />
-          <p className="mt-2 text-base text-white/55">
+          <p className="mt-2 text-base text-muted-foreground">
             Vowels pick scale degrees; capitals get louder; commas breathe; periods cadence to the
-            tonic; <span className="text-white/75">!</span> and{" "}
-            <span className="text-white/75">?</span> leap to tension; new lines lift the register.
+            tonic; <span className="text-muted-foreground">!</span> and{" "}
+            <span className="text-muted-foreground">?</span> leap to tension; new lines lift the register.
           </p>
         </div>
       </div>

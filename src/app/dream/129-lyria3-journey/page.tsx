@@ -62,11 +62,11 @@ const STATUS_LABEL: Record<SceneStatus, string> = {
 };
 
 const STATUS_COLOR: Record<SceneStatus, string> = {
-  idle: "text-white/30",
-  generating: "text-amber-300/95",
-  ready: "text-cyan-300/95",
+  idle: "text-muted-foreground/70",
+  generating: "text-violet-300/95",
+  ready: "text-violet-300/95",
   playing: "text-violet-300",
-  error: "text-rose-300",
+  error: "text-violet-300",
 };
 
 export default function Lyria3JourneyPage() {
@@ -305,20 +305,20 @@ export default function Lyria3JourneyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-foreground flex flex-col">
       {/* Header */}
-      <div className="px-5 pt-5 pb-4 border-b border-white/10">
+      <div className="px-5 pt-5 pb-4 border-b border-border">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-mono font-semibold tracking-tight">Ghost Scenes</h1>
-            <p className="text-base text-white/75 mt-1 max-w-lg">
+            <p className="text-base text-muted-foreground mt-1 max-w-lg">
               Six scenes from the Ghost journey — each realized as 30 s of Lyria 3 ambient music.
               Generate any scene, then play.
             </p>
           </div>
           <Link
             href="/dream"
-            className="text-xs text-white/55 hover:text-white/80 transition-colors shrink-0 mt-1"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0 mt-1"
           >
             ← dream lab
           </Link>
@@ -328,7 +328,7 @@ export default function Lyria3JourneyPage() {
       {/* Body */}
       <div className="flex-1 flex flex-col lg:flex-row min-h-0">
         {/* Scene list */}
-        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-white/10">
+        <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-border">
           <div className="p-3 space-y-2">
             {SCENES.map((scene, i) => (
               <div
@@ -337,8 +337,8 @@ export default function Lyria3JourneyPage() {
                   activeScene === i
                     ? "border-violet-500/50 bg-violet-950/40"
                     : statuses[i] === "ready"
-                    ? "border-white/10 bg-white/[0.03]"
-                    : "border-white/8 bg-white/[0.02]"
+                    ? "border-border bg-muted"
+                    : "border-border bg-muted"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1.5">
@@ -346,7 +346,7 @@ export default function Lyria3JourneyPage() {
                     className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: scene.dot }}
                   />
-                  <span className="text-sm font-semibold text-white/95 flex-1 leading-tight">
+                  <span className="text-sm font-semibold text-foreground flex-1 leading-tight">
                     {scene.name}
                   </span>
                   <span className={`text-xs font-mono shrink-0 ${STATUS_COLOR[statuses[i]]}`}>
@@ -364,24 +364,24 @@ export default function Lyria3JourneyPage() {
                   }}
                   disabled={statuses[i] === "generating" || statuses[i] === "playing"}
                   rows={2}
-                  className="w-full bg-transparent text-xs text-white/65 resize-none outline-none leading-relaxed font-mono mb-2"
+                  className="w-full bg-transparent text-xs text-muted-foreground resize-none outline-none leading-relaxed font-mono mb-2"
                 />
 
                 {errorMsgs[i] && (
-                  <p className="text-xs text-rose-300 mb-2 leading-relaxed">{errorMsgs[i]}</p>
+                  <p className="text-xs text-violet-300 mb-2 leading-relaxed">{errorMsgs[i]}</p>
                 )}
 
                 <div className="flex gap-1.5">
                   {statuses[i] === "idle" || statuses[i] === "error" ? (
                     <button
                       onClick={() => generateScene(i)}
-                      className="flex-1 px-3 py-1.5 text-xs bg-white/8 hover:bg-white/12 rounded-md text-white/80 transition-colors min-h-[32px]"
+                      className="flex-1 px-3 py-1.5 text-xs bg-muted hover:bg-accent rounded-md text-foreground transition-colors min-h-[32px]"
                     >
                       Generate
                     </button>
                   ) : statuses[i] === "generating" ? (
                     <div className="flex-1 text-center py-1.5">
-                      <span className="text-xs text-amber-300/95 animate-pulse">
+                      <span className="text-xs text-violet-300/95 animate-pulse">
                         generating…
                       </span>
                     </div>
@@ -397,7 +397,7 @@ export default function Lyria3JourneyPage() {
                       ) : (
                         <button
                           onClick={() => playScene(i)}
-                          className="flex-1 px-3 py-1.5 text-xs bg-white/8 hover:bg-white/12 rounded-md text-white/80 transition-colors min-h-[32px]"
+                          className="flex-1 px-3 py-1.5 text-xs bg-muted hover:bg-accent rounded-md text-foreground transition-colors min-h-[32px]"
                         >
                           ▶ Play
                         </button>
@@ -405,7 +405,7 @@ export default function Lyria3JourneyPage() {
                       <button
                         onClick={() => generateScene(i)}
                         disabled={statuses[i] === "playing"}
-                        className="px-2.5 py-1.5 text-xs bg-white/6 hover:bg-white/10 rounded-md text-white/55 transition-colors min-h-[32px] disabled:opacity-30"
+                        className="px-2.5 py-1.5 text-xs bg-muted hover:bg-accent rounded-md text-muted-foreground transition-colors min-h-[32px] disabled:opacity-30"
                         title="Generate variation"
                       >
                         ↺
@@ -425,7 +425,7 @@ export default function Lyria3JourneyPage() {
 
             {activeScene >= 0 ? (
               <div className="absolute bottom-4 inset-x-0 text-center pointer-events-none">
-                <span className="text-sm font-mono text-white/75">
+                <span className="text-sm font-mono text-muted-foreground">
                   {SCENES[activeScene].name} ·{" "}
                   {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}
                   {duration > 0 && (
@@ -435,7 +435,7 @@ export default function Lyria3JourneyPage() {
                     </>
                   )}
                   {bpmsRef.current[activeScene] != null && (
-                    <span className="text-white/40 ml-3">
+                    <span className="text-muted-foreground/70 ml-3">
                       {bpmsRef.current[activeScene]} BPM
                     </span>
                   )}
@@ -443,7 +443,7 @@ export default function Lyria3JourneyPage() {
               </div>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <p className="text-white/20 text-sm text-center px-4 max-w-xs leading-relaxed">
+                <p className="text-muted-foreground/70 text-sm text-center px-4 max-w-xs leading-relaxed">
                   Generate a scene, then play — Lyria 3 interprets the Ghost journey
                 </p>
               </div>
@@ -451,10 +451,10 @@ export default function Lyria3JourneyPage() {
           </div>
 
           {/* Scene progress strip */}
-          <div className="px-4 py-3 border-t border-white/10">
+          <div className="px-4 py-3 border-t border-border">
             <div className="flex gap-1.5 mb-1.5">
               {SCENES.map((scene, i) => (
-                <div key={i} className="flex-1 h-1.5 rounded-full bg-white/8 overflow-hidden">
+                <div key={i} className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
@@ -484,7 +484,7 @@ export default function Lyria3JourneyPage() {
                 <div key={i} className="flex-1 text-center">
                   <span
                     className={`text-[10px] font-mono truncate block transition-colors ${
-                      activeScene === i ? "text-white/75" : "text-white/25"
+                      activeScene === i ? "text-muted-foreground" : "text-muted-foreground/70"
                     }`}
                   >
                     {scene.name.split(" ")[0]}

@@ -141,19 +141,19 @@ export default function Page() {
     conf > 0.55 ? "locked" : conf > 0.28 ? "tracking" : "searching"
   const confColor =
     conf > 0.55
-      ? "text-emerald-300/95"
+      ? "text-violet-300/95"
       : conf > 0.28
         ? "text-violet-300"
-        : "text-amber-300/95"
+        : "text-violet-300/95"
 
   return (
-    <main className="min-h-screen bg-[#04060b] text-white font-mono px-5 py-8 sm:px-8">
+    <main className="min-h-screen bg-[#04060b] text-foreground font-mono px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Beat Mirror
           </h1>
-          <p className="mt-2 max-w-2xl text-base text-white/80">
+          <p className="mt-2 max-w-2xl text-base text-foreground">
             A real-time beat tracker that finds the pulse in live audio and locks
             a visual to it — showing you the BPM it heard, and how sure it is.
           </p>
@@ -164,11 +164,11 @@ export default function Page() {
           <section className="relative">
             <div
               ref={hostRef}
-              className="aspect-[8/5] w-full overflow-hidden rounded-xl border border-white/10 bg-[#04060b]"
+              className="aspect-[8/5] w-full overflow-hidden rounded-xl border border-border bg-[#04060b]"
             />
             {!started && (
               <div className="absolute inset-0 flex items-center justify-center p-6">
-                <p className="max-w-sm text-center text-base text-white/75">
+                <p className="max-w-sm text-center text-base text-muted-foreground">
                   Press Start — a 112 BPM groove plays and the tracker locks to
                   it. Then switch to the mic and clap.
                 </p>
@@ -176,21 +176,21 @@ export default function Page() {
             )}
             {!webgl && (
               <div className="absolute inset-0 flex items-center justify-center p-6">
-                <p className="max-w-sm text-center text-base text-rose-300">
+                <p className="max-w-sm text-center text-base text-violet-300">
                   WebGL is unavailable on this device, so the pulse/scope cannot
                   render — the audio and tempo tracking still run.
                 </p>
               </div>
             )}
-            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-base text-white/55">
+            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-base text-muted-foreground">
               <span>
                 <span className="text-violet-300">━</span> onset strength
               </span>
               <span>
-                <span className="text-emerald-300">│</span> predicted beat
+                <span className="text-violet-300">│</span> predicted beat
               </span>
               <span>
-                <span className="text-white/90">│</span> detected onset
+                <span className="text-foreground">│</span> detected onset
               </span>
             </div>
           </section>
@@ -201,17 +201,17 @@ export default function Page() {
               type="button"
               onClick={() => void onStart()}
               disabled={started}
-              className="min-h-[44px] w-full rounded-lg bg-emerald-500/90 px-4 py-2.5 text-base font-bold text-[#04060b] transition hover:bg-emerald-400 disabled:bg-white/15 disabled:text-white/75"
+              className="min-h-[44px] w-full rounded-lg bg-violet-500/90 px-4 py-2.5 text-base font-bold text-[#04060b] transition hover:bg-violet-400 disabled:bg-muted disabled:text-muted-foreground"
             >
               {started ? "● Listening" : "▶ Start"}
             </button>
 
             {/* BPM hero readout */}
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4">
-              <p className="text-base text-white/55">detected tempo</p>
-              <p className="mt-1 text-6xl font-bold tabular-nums tracking-tight text-white">
+            <div className="rounded-xl border border-border bg-muted px-5 py-4">
+              <p className="text-base text-muted-foreground">detected tempo</p>
+              <p className="mt-1 text-6xl font-bold tabular-nums tracking-tight text-foreground">
                 {started && readout.bpm > 0 ? Math.round(readout.bpm) : "––"}
-                <span className="ml-2 text-xl font-normal text-white/55">
+                <span className="ml-2 text-xl font-normal text-muted-foreground">
                   BPM
                 </span>
               </p>
@@ -219,19 +219,19 @@ export default function Page() {
               {/* confidence */}
               <div className="mt-4">
                 <div className="flex items-baseline justify-between text-base">
-                  <span className="text-white/55">confidence</span>
+                  <span className="text-muted-foreground">confidence</span>
                   <span className={`tabular-nums ${confColor}`}>
                     {confLabel} · {Math.round(conf * 100)}%
                   </span>
                 </div>
-                <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className={`h-full rounded-full transition-[width] duration-150 ${
                       conf > 0.55
-                        ? "bg-emerald-400"
+                        ? "bg-violet-400"
                         : conf > 0.28
                           ? "bg-violet-400"
-                          : "bg-amber-400"
+                          : "bg-violet-400"
                     }`}
                     style={{ width: `${Math.max(3, Math.round(conf * 100))}%` }}
                   />
@@ -241,7 +241,7 @@ export default function Page() {
 
             {/* Source toggle */}
             <div>
-              <p className="mb-2 text-base text-white/75">source</p>
+              <p className="mb-2 text-base text-muted-foreground">source</p>
               <div className="flex gap-2">
                 {(["groove", "mic"] as const).map((s) => (
                   <button
@@ -250,15 +250,15 @@ export default function Page() {
                     onClick={() => void onToggleSource(s)}
                     className={`min-h-[44px] flex-1 rounded-lg border px-4 py-2.5 text-base transition ${
                       source === s
-                        ? "border-emerald-400/70 bg-emerald-400/15 text-white"
-                        : "border-white/15 text-white/75 hover:border-white/35 hover:text-white"
+                        ? "border-violet-400/70 bg-violet-400/15 text-foreground"
+                        : "border-border text-muted-foreground hover:border-border hover:text-foreground"
                     }`}
                   >
                     {s === "groove" ? "Groove · 112" : "Mic"}
                   </button>
                 ))}
               </div>
-              <p className="mt-2 text-base text-white/55">
+              <p className="mt-2 text-base text-muted-foreground">
                 {source === "groove"
                   ? "Internal 112 BPM drum loop — the known answer."
                   : "Listening to the room. Analysis only — never recorded or uploaded."}
@@ -266,12 +266,12 @@ export default function Page() {
             </div>
 
             {micError && (
-              <p className="text-base text-rose-300">{micError}</p>
+              <p className="text-base text-violet-300">{micError}</p>
             )}
 
             <a
               href="/dream/358-beat-mirror/README.md"
-              className="mt-auto text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+              className="mt-auto text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
             >
               Read the design notes ↗
             </a>

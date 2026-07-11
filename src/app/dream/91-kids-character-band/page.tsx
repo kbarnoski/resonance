@@ -247,20 +247,20 @@ export default function KidsCharacterBand() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-20">
           <div className="text-7xl mb-6 select-none">🎶</div>
-          <h1 className="text-4xl font-bold text-white mb-3">
+          <h1 className="text-4xl font-bold text-foreground mb-3">
             Character Band
           </h1>
-          <p className="text-lg text-white/75 max-w-xs mb-10 leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-xs mb-10 leading-relaxed">
             Tap an animal to hear their song!
           </p>
           <button
             onClick={handleStart}
             style={{ minHeight: 80, minWidth: 260, fontSize: "1.4rem" }}
-            className="font-bold rounded-3xl bg-violet-500 hover:bg-violet-400 active:scale-95 text-white transition-all shadow-xl shadow-violet-500/40 px-10 py-5"
+            className="font-bold rounded-3xl bg-violet-500 hover:bg-violet-400 active:scale-95 text-foreground transition-all shadow-xl shadow-violet-500/40 px-10 py-5"
           >
             🎵 Let&rsquo;s Jam!
           </button>
-          <Link href="/dream" className="mt-10 text-base text-white/40 hover:text-white/70">
+          <Link href="/dream" className="mt-10 text-base text-muted-foreground/70 hover:text-muted-foreground">
             ← back to dream lab
           </Link>
         </div>
@@ -270,14 +270,14 @@ export default function KidsCharacterBand() {
       {started && (
         <>
           {/* Back link — unobtrusive */}
-          <Link href="/dream" className="absolute top-4 left-4 text-sm text-white/40 hover:text-white/70 z-20">
+          <Link href="/dream" className="absolute top-4 left-4 text-sm text-muted-foreground/70 hover:text-muted-foreground z-20">
             ← back
           </Link>
 
           {/* Title */}
           <div className="relative z-20 text-center pt-6 pb-2 shrink-0">
-            <h1 className="text-2xl font-bold text-white/95">Character Band</h1>
-            <p className="text-base text-white/70 mt-1">
+            <h1 className="text-2xl font-bold text-foreground">Character Band</h1>
+            <p className="text-base text-muted-foreground mt-1">
               Tap to play — tap two at once to harmonize
             </p>
           </div>
@@ -337,7 +337,7 @@ export default function KidsCharacterBand() {
 
           {/* Breathing hint text */}
           <div className="relative z-20 pb-6 text-center shrink-0">
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-muted-foreground/70">
               Each animal has their own song ✦ mix &amp; match
             </p>
           </div>

@@ -510,21 +510,21 @@ export default function VocoderVeilPage() {
 
   // ─── Render ──────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#050208] text-white flex flex-col select-none">
+    <div className="min-h-screen bg-[#050208] text-foreground flex flex-col select-none">
       {/* Header */}
       <div className="px-5 pt-6 pb-3 flex items-start justify-between max-w-2xl mx-auto w-full">
         <div>
-          <h1 className="text-2xl font-serif text-white/95 tracking-wide">
+          <h1 className="text-2xl font-serif text-foreground tracking-wide">
             Vocoder Veil
           </h1>
-          <p className="text-base text-white/75 mt-1 leading-snug">
+          <p className="text-base text-muted-foreground mt-1 leading-snug">
             Speak or sing — your voice becomes the shape,{' '}
-            <span className="text-white/55">Karel&apos;s piano becomes the voice.</span>
+            <span className="text-muted-foreground">Karel&apos;s piano becomes the voice.</span>
           </p>
         </div>
         <a
           href="#notes"
-          className="text-sm text-white/55 hover:text-white/80 transition-colors mt-1 shrink-0 ml-4"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors mt-1 shrink-0 ml-4"
         >
           design notes ↓
         </a>
@@ -542,9 +542,9 @@ export default function VocoderVeilPage() {
           />
           {/* Band freq labels */}
           <div className="absolute bottom-2 inset-x-0 flex justify-between px-3 pointer-events-none">
-            <span className="font-mono text-[10px] text-white/30">120 Hz</span>
-            <span className="font-mono text-[10px] text-white/30">~1 kHz</span>
-            <span className="font-mono text-[10px] text-white/30">7 kHz</span>
+            <span className="font-mono text-[10px] text-muted-foreground/70">120 Hz</span>
+            <span className="font-mono text-[10px] text-muted-foreground/70">~1 kHz</span>
+            <span className="font-mono text-[10px] text-muted-foreground/70">7 kHz</span>
           </div>
           {/* Status badge */}
           <div className="absolute top-3 right-3 flex items-center gap-1.5">
@@ -552,23 +552,23 @@ export default function VocoderVeilPage() {
               <>
                 <span
                   className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                    modulatorMode === 'mic' ? 'bg-emerald-400' : 'bg-violet-400'
+                    modulatorMode === 'mic' ? 'bg-violet-400' : 'bg-violet-400'
                   }`}
                 />
-                <span className="text-xs text-white/55 font-mono">
+                <span className="text-xs text-muted-foreground font-mono">
                   {modulatorMode === 'mic' ? 'mic live' : 'auto-demo'}
                 </span>
               </>
             ) : (
               <>
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-violet-500/50" />
-                <span className="text-xs text-white/40 font-mono">idle</span>
+                <span className="text-xs text-muted-foreground/70 font-mono">idle</span>
               </>
             )}
           </div>
           {webglFallback && (
             <div className="absolute top-3 left-3">
-              <span className="text-[10px] text-amber-300/70 font-mono">canvas2d fallback</span>
+              <span className="text-[10px] text-violet-300/70 font-mono">canvas2d fallback</span>
             </div>
           )}
         </div>
@@ -581,11 +581,11 @@ export default function VocoderVeilPage() {
           <div className="space-y-2">
             <button
               onClick={() => { void buildEngine(); }}
-              className="w-full min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-violet-600 hover:bg-violet-500 text-white transition-colors"
+              className="w-full min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-violet-600 hover:bg-violet-500 text-foreground transition-colors"
             >
               ▶ &thinsp;Wake the Vocoder
             </button>
-            <p className="text-sm text-white/55 text-center">
+            <p className="text-sm text-muted-foreground text-center">
               Plays instantly in auto-demo mode — no mic needed.
             </p>
           </div>
@@ -594,23 +594,23 @@ export default function VocoderVeilPage() {
             {modulatorMode === 'demo' ? (
               <button
                 onClick={() => { void switchToMic(); }}
-                className="min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-emerald-700 hover:bg-emerald-600 text-white transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-violet-700 hover:bg-violet-600 text-foreground transition-colors"
               >
                 🎤 &thinsp;Use my voice
               </button>
             ) : (
               <button
                 onClick={switchToDemo}
-                className="min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-violet-800 hover:bg-violet-700 text-white transition-colors"
+                className="min-h-[44px] px-4 py-2.5 rounded-xl text-base font-medium bg-violet-800 hover:bg-violet-700 text-foreground transition-colors"
               >
                 ← &thinsp;Auto-demo
               </button>
             )}
-            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 min-h-[44px]">
-              <span className="text-sm text-white/55 shrink-0">carrier:</span>
+            <div className="flex items-center gap-2 bg-muted rounded-xl px-3 min-h-[44px]">
+              <span className="text-sm text-muted-foreground shrink-0">carrier:</span>
               <span
                 className={`text-sm font-mono ${
-                  carrierMode === 'piano' ? 'text-amber-300/95' : 'text-white/70'
+                  carrierMode === 'piano' ? 'text-violet-300/95' : 'text-muted-foreground'
                 }`}
               >
                 {carrierMode === 'piano' ? 'piano ♩' : 'synth ~'}
@@ -621,10 +621,10 @@ export default function VocoderVeilPage() {
 
         {/* Error / status messages */}
         {micError && (
-          <p className="text-base text-rose-300 leading-snug">{micError}</p>
+          <p className="text-base text-violet-300 leading-snug">{micError}</p>
         )}
         {carrierError && (
-          <p className="text-base text-amber-300/95 leading-snug">{carrierError}</p>
+          <p className="text-base text-violet-300/95 leading-snug">{carrierError}</p>
         )}
 
         {/* Sliders */}
@@ -632,8 +632,8 @@ export default function VocoderVeilPage() {
           <div className="space-y-4 pt-1">
             <div>
               <div className="flex justify-between mb-1.5">
-                <label className="text-sm text-white/75">Vocoder intensity</label>
-                <span className="font-mono text-sm text-white/55">{Math.round(intensity * 100)}%</span>
+                <label className="text-sm text-muted-foreground">Vocoder intensity</label>
+                <span className="font-mono text-sm text-muted-foreground">{Math.round(intensity * 100)}%</span>
               </div>
               <input
                 type="range"
@@ -648,8 +648,8 @@ export default function VocoderVeilPage() {
 
             <div>
               <div className="flex justify-between mb-1.5">
-                <label className="text-sm text-white/75">Carrier pitch shift</label>
-                <span className="font-mono text-sm text-white/55">
+                <label className="text-sm text-muted-foreground">Carrier pitch shift</label>
+                <span className="font-mono text-sm text-muted-foreground">
                   {carrierPitch > 0 ? '+' : ''}{carrierPitch} st
                 </span>
               </div>
@@ -660,7 +660,7 @@ export default function VocoderVeilPage() {
                 step={1}
                 value={carrierPitch}
                 onChange={e => setCarrierPitch(Number(e.target.value))}
-                className="w-full accent-amber-400"
+                className="w-full accent-violet-400"
               />
             </div>
           </div>
@@ -674,8 +674,8 @@ export default function VocoderVeilPage() {
                 key={v.name}
                 className={`font-mono text-sm px-2 py-1 rounded transition-all duration-300 ${
                   activeVowel === i
-                    ? 'bg-violet-500/40 text-white/90'
-                    : 'text-white/30'
+                    ? 'bg-violet-500/40 text-foreground'
+                    : 'text-muted-foreground/70'
                 }`}
               >
                 {v.name}
@@ -685,14 +685,14 @@ export default function VocoderVeilPage() {
         )}
 
         {/* Explainer */}
-        <div className="border border-white/8 rounded-xl px-4 py-3 space-y-2 mt-2">
-          <p className="text-base text-white/75 leading-relaxed">
-            A <strong className="text-white/90">channel vocoder</strong> splits both your voice and
+        <div className="border border-border rounded-xl px-4 py-3 space-y-2 mt-2">
+          <p className="text-base text-muted-foreground leading-relaxed">
+            A <strong className="text-foreground">channel vocoder</strong> splits both your voice and
             the piano into {NUM_BANDS} frequency bands. Your voice&apos;s energy in each band controls
             how much of the corresponding piano band comes through — so the piano speaks in your
             formants.
           </p>
-          <p className="text-sm text-white/55 leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             Classic sibilance fix: broadband noise mixes into the carrier so &ldquo;s&rdquo; and
             &ldquo;sh&rdquo; sounds pass clearly. Tap the visualization bars = the live filterbank.
           </p>
@@ -700,14 +700,14 @@ export default function VocoderVeilPage() {
 
         {/* Notes anchor + link */}
         <div id="notes" className="pt-2">
-          <p className="text-xs text-white/30 leading-relaxed">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
             Technique refs: Homer Dudley — Bell Labs Vocoder (1939) · Wendy Carlos &amp; Robert Moog
             (vocoder on <em>A Clockwork Orange</em>) · Imogen Heap — &ldquo;Hide and Seek&rdquo;.{' '}
             <a
               href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/532-vocoder-veil/README.md"
               target="_blank"
               rel="noreferrer"
-              className="underline underline-offset-2 hover:text-white/55 transition-colors"
+              className="underline underline-offset-2 hover:text-muted-foreground transition-colors"
             >
               Read the full design notes →
             </a>

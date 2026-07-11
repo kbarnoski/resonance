@@ -751,14 +751,14 @@ export default function ShatterPianoPage() {
       {/* Idle splash */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
-          <h1 className="text-3xl md:text-4xl font-light tracking-widest text-white mb-2">
+          <h1 className="text-3xl md:text-4xl font-light tracking-widest text-foreground mb-2">
             SHATTER
           </h1>
-          <p className="text-base text-white/75 max-w-lg mb-1 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-lg mb-1 leading-relaxed">
             A calm, consonant piano phrase — refused its resolution. Shattered
             into a granular, time-frozen cloud that hangs, smears, and reverses.
           </p>
-          <p className="text-sm text-white/50 mb-8">
+          <p className="text-sm text-muted-foreground mb-8">
             Tap <em>Shatter it</em> for the full arc: resolve → denied.
           </p>
 
@@ -766,21 +766,21 @@ export default function ShatterPianoPage() {
           <div className="flex flex-wrap gap-3 justify-center mb-6">
             <button
               onClick={() => void startAutoDemo()}
-              className="min-h-[44px] px-6 py-2.5 text-sm tracking-widest uppercase border border-amber-400/60 text-amber-300/95 rounded hover:bg-amber-400/10 transition font-mono"
+              className="min-h-[44px] px-6 py-2.5 text-sm tracking-widest uppercase border border-violet-400/60 text-violet-300/95 rounded hover:bg-violet-400/10 transition font-mono"
             >
               ✦ Shatter it
             </button>
             <button
               onClick={() => void startShatter()}
-              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-white/25 text-white/75 rounded hover:bg-white/5 hover:border-white/50 transition font-mono"
+              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-border text-muted-foreground rounded hover:bg-accent hover:border-border transition font-mono"
             >
               Open engine
             </button>
           </div>
 
           {/* Optional source panel */}
-          <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-lg p-4 text-left">
-            <p className="text-xs text-amber-300/95 mb-3 font-mono tracking-wide">
+          <div className="w-full max-w-sm bg-muted border border-border rounded-lg p-4 text-left">
+            <p className="text-xs text-violet-300/95 mb-3 font-mono tracking-wide">
               OPTIONAL: load your own audio source
             </p>
             <div className="flex gap-2 mb-2">
@@ -789,21 +789,21 @@ export default function ShatterPianoPage() {
                 placeholder="Recording ID"
                 value={optionalId}
                 onChange={(e) => setOptionalId(e.target.value)}
-                className="flex-1 min-h-[36px] px-3 text-sm bg-white/5 border border-white/20 rounded text-white/90 placeholder-white/30 focus:outline-none focus:border-white/40 font-mono"
+                className="flex-1 min-h-[36px] px-3 text-sm bg-muted border border-border rounded text-foreground placeholder-muted-foreground focus:outline-none focus:border-border font-mono"
               />
               <button
                 onClick={() => void startShatter()}
-                className="min-h-[36px] px-3 text-xs uppercase border border-white/25 text-white/70 rounded hover:bg-white/5 font-mono"
+                className="min-h-[36px] px-3 text-xs uppercase border border-border text-muted-foreground rounded hover:bg-accent font-mono"
               >
                 Load
               </button>
             </div>
-            <p className="text-xs text-white/40 mb-2">
+            <p className="text-xs text-muted-foreground/70 mb-2">
               — or drag &amp; drop / pick an audio file below —
             </p>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="min-h-[36px] w-full text-xs uppercase border border-white/15 text-white/50 rounded hover:bg-white/5 font-mono"
+              className="min-h-[36px] w-full text-xs uppercase border border-border text-muted-foreground rounded hover:bg-accent font-mono"
             >
               Browse file…
             </button>
@@ -814,17 +814,17 @@ export default function ShatterPianoPage() {
               className="hidden"
               onChange={handleFilePick}
             />
-            <p className="text-xs text-white/30 mt-2">
+            <p className="text-xs text-muted-foreground/70 mt-2">
               All optional — falls back to synth phrase automatically.
             </p>
             {optError && (
-              <p className="text-xs text-amber-300/95 mt-2">{optError}</p>
+              <p className="text-xs text-violet-300/95 mt-2">{optError}</p>
             )}
           </div>
 
           <Link
             href="/dream"
-            className="mt-8 text-xs text-white/30 hover:text-white/60 font-mono"
+            className="mt-8 text-xs text-muted-foreground/70 hover:text-muted-foreground font-mono"
           >
             ← dream lab
           </Link>
@@ -837,20 +837,20 @@ export default function ShatterPianoPage() {
           {/* Top bar */}
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-2 z-10 bg-black/30 backdrop-blur-sm">
             <div>
-              <span className="text-xs font-mono tracking-widest text-white/95">
+              <span className="text-xs font-mono tracking-widest text-foreground">
                 SHATTER
               </span>
-              <span className="ml-3 text-xs font-mono text-white/50">
+              <span className="ml-3 text-xs font-mono text-muted-foreground">
                 {phaseLabel[phase]}
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-white/40">
+              <span className="text-xs font-mono text-muted-foreground/70">
                 src: {sourceLabel}
               </span>
               <button
                 onClick={stopAudio}
-                className="min-h-[32px] px-3 py-1 text-xs uppercase font-mono border border-white/20 text-white/60 rounded hover:bg-white/5"
+                className="min-h-[32px] px-3 py-1 text-xs uppercase font-mono border border-border text-muted-foreground rounded hover:bg-accent"
               >
                 stop
               </button>
@@ -858,7 +858,7 @@ export default function ShatterPianoPage() {
           </div>
 
           {/* Controls panel */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/50 backdrop-blur-sm border-t border-white/10 px-4 py-3">
+          <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/50 backdrop-blur-sm border-t border-border px-4 py-3">
             <div className="flex flex-wrap gap-3 items-end justify-between">
 
               {/* Left: action buttons */}
@@ -869,7 +869,7 @@ export default function ShatterPianoPage() {
                     "min-h-[44px] px-4 py-2.5 text-sm font-mono tracking-widest uppercase rounded border transition",
                     isFrozen
                       ? "border-violet-400/80 text-violet-300/95 bg-violet-900/30"
-                      : "border-white/25 text-white/70 hover:bg-white/5",
+                      : "border-border text-muted-foreground hover:bg-accent",
                   ].join(" ")}
                 >
                   {isFrozen ? "◼ Frozen" : "❄ Freeze"}
@@ -882,7 +882,7 @@ export default function ShatterPianoPage() {
                       grainParamsRef.current = { ...grainParamsRef.current, position: pos };
                       setGrainParams((prev) => ({ ...prev, position: pos }));
                     }}
-                    className="min-h-[44px] px-4 py-2.5 text-sm font-mono tracking-wide uppercase rounded border border-white/20 text-white/65 hover:bg-white/5"
+                    className="min-h-[44px] px-4 py-2.5 text-sm font-mono tracking-wide uppercase rounded border border-border text-muted-foreground hover:bg-accent"
                   >
                     Jump
                   </button>
@@ -900,10 +900,10 @@ export default function ShatterPianoPage() {
                     ["DRIFT", "freezeDrift", 0, 1, 0.05, (v: number) => v.toFixed(2)],
                   ] as const
                 ).map(([label, key, min, max, step, fmt]) => (
-                  <label key={key} className="flex flex-col gap-0.5 text-[10px] font-mono tracking-wider text-white/50">
+                  <label key={key} className="flex flex-col gap-0.5 text-[10px] font-mono tracking-wider text-muted-foreground">
                     <span>
                       {label}{" "}
-                      <span className="text-white/80">{fmt(grainParams[key])}</span>
+                      <span className="text-foreground">{fmt(grainParams[key])}</span>
                     </span>
                     <input
                       type="range"
@@ -924,14 +924,14 @@ export default function ShatterPianoPage() {
 
               {/* Right: nav */}
               <div className="flex flex-col items-end gap-1">
-                <Link href="/dream" className="text-xs font-mono text-white/30 hover:text-white/60">
+                <Link href="/dream" className="text-xs font-mono text-muted-foreground/70 hover:text-muted-foreground">
                   ← dream lab
                 </Link>
                 <a
                   href="/dream/422-shatter-piano/README.md"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[10px] font-mono text-white/22 hover:text-white/50"
+                  className="text-[10px] font-mono text-muted-foreground/70 hover:text-muted-foreground"
                 >
                   notes ↗
                 </a>

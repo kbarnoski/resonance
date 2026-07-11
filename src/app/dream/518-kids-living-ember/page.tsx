@@ -225,26 +225,26 @@ export default function LivingEmberPage() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen w-full bg-[#0d0503] text-white flex flex-col items-center">
+    <main className="min-h-screen w-full bg-[#0d0503] text-foreground flex flex-col items-center">
       <div className="w-full max-w-2xl px-5 py-8 flex flex-col items-center gap-6">
 
         {/* Nav */}
         <div className="w-full flex items-center justify-between">
           <Link
             href="/dream"
-            className="font-mono text-base text-white/55 hover:text-white/80 min-h-[44px] flex items-center"
+            className="font-mono text-base text-muted-foreground hover:text-foreground min-h-[44px] flex items-center"
           >
             ← dream
           </Link>
-          <span className="font-mono text-base text-white/55">518</span>
+          <span className="font-mono text-base text-muted-foreground">518</span>
         </div>
 
         {/* Header */}
         <header className="text-center flex flex-col gap-2 mt-1">
-          <h1 className="text-3xl sm:text-4xl font-light text-white/95 tracking-wide">
+          <h1 className="text-3xl sm:text-4xl font-light text-foreground tracking-wide">
             living ember
           </h1>
-          <p className="text-base text-white/75 max-w-sm mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-sm mx-auto leading-relaxed">
             A small warm creature that is simply here with you. Hum to it —
             it remembers everything you give it, forever.
           </p>
@@ -317,14 +317,14 @@ export default function LivingEmberPage() {
               type="button"
               onClick={handleStart}
               className="relative z-10 w-32 h-32 rounded-full flex flex-col items-center justify-center gap-1
-                         bg-[#1a0a04]/80 backdrop-blur-sm border border-amber-700/30
-                         text-amber-200 hover:bg-[#2a1208]/90 hover:border-amber-600/50
+                         bg-[#1a0a04]/80 backdrop-blur-sm border border-violet-700/30
+                         text-violet-200 hover:bg-[#2a1208]/90 hover:border-violet-600/50
                          transition-all duration-300 touch-none select-none"
               style={{ minHeight: 64, minWidth: 64 }}
               aria-label="Wake the ember"
             >
               <span className="text-3xl" role="img" aria-label="ember">🔥</span>
-              <span className="font-light text-base text-amber-200/90">wake it</span>
+              <span className="font-light text-base text-violet-200/90">wake it</span>
             </button>
           )}
         </div>
@@ -332,17 +332,17 @@ export default function LivingEmberPage() {
         {/* Status messages */}
         <div className="flex flex-col items-center gap-2 min-h-[2.5rem]">
           {micError && (
-            <p className="font-mono text-base text-rose-300 text-center max-w-sm">
+            <p className="font-mono text-base text-violet-300 text-center max-w-sm">
               {micError}
             </p>
           )}
           {gpuError && (
-            <p className="font-mono text-base text-amber-300/95 text-center max-w-sm">
+            <p className="font-mono text-base text-violet-300/95 text-center max-w-sm">
               {gpuError}
             </p>
           )}
           {phase === "running" && !micError && (
-            <p className="text-base text-white/55 text-center">
+            <p className="text-base text-muted-foreground text-center">
               hum softly — the ember is listening
             </p>
           )}
@@ -352,44 +352,44 @@ export default function LivingEmberPage() {
         <button
           type="button"
           onClick={() => setShowDesignNotes((v) => !v)}
-          className="font-mono text-base text-white/55 hover:text-white/75 min-h-[44px] px-4 py-2.5 transition-colors"
+          className="font-mono text-base text-muted-foreground hover:text-muted-foreground min-h-[44px] px-4 py-2.5 transition-colors"
         >
           {showDesignNotes ? "hide design notes" : "read the design notes"}
         </button>
 
         {showDesignNotes && (
-          <div className="w-full max-w-lg text-base text-white/75 space-y-4 font-light leading-relaxed border-t border-white/10 pt-5">
+          <div className="w-full max-w-lg text-base text-muted-foreground space-y-4 font-light leading-relaxed border-t border-border pt-5">
             <p>
-              <strong className="text-white/90">For ages 4+.</strong> A single warm
+              <strong className="text-foreground">For ages 4+.</strong> A single warm
               creature that is simply here. No rules, no goals, no resolution. The child
               keeps a small friend company by humming.
             </p>
             <p>
-              <strong className="text-white/90">What the ember does:</strong> A
+              <strong className="text-foreground">What the ember does:</strong> A
               Gray-Scott reaction-diffusion field runs live on the GPU — the same
               mathematics Turing used to explain animal markings. Humming raises the
               feed rate, blooming warm fingers outward. Each hum deposits a permanent
               seed that shifts the morphology forever, so minute 5 is never minute 1.
             </p>
             <p>
-              <strong className="text-white/90">Long-form memory:</strong> Two slow
+              <strong className="text-foreground">Long-form memory:</strong> Two slow
               drift functions (sums of incommensurate LFOs at irrational-ratio
               frequencies over a 5-minute base period) traverse different Turing zones
               over a session. Combined with the child&apos;s cumulative hum, the field
               never loops back.
             </p>
             <p>
-              <strong className="text-white/90">Sound:</strong> Pentatonic/just-intonation
+              <strong className="text-foreground">Sound:</strong> Pentatonic/just-intonation
               lullaby pad that slowly mutates with the drift. A soft bell rings each time
               the child hums. Never silent; never resolves.
             </p>
             <p>
-              <strong className="text-white/90">References:</strong>{" "}
+              <strong className="text-foreground">References:</strong>{" "}
               teamLab <em>Sketch Aquarium / Future Park</em> · Brian Eno{" "}
               <em>Ambient 1: Music for Airports</em> · Pearson (1993) /
               Gray-Scott reaction-diffusion.
             </p>
-            <p className="text-white/55 text-sm font-mono">
+            <p className="text-muted-foreground text-sm font-mono">
               Cycle 1 of a kids &ldquo;Companion / Presence&rdquo; spine.
               Successor to 490-disintegration — same &ldquo;no solve button&rdquo;
               courage, made warm.

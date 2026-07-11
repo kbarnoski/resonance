@@ -556,10 +556,10 @@ export default function KidsWavePond() {
     >
       {/* ── Header ── */}
       <div className="w-full max-w-2xl px-6 pt-8 pb-3 text-center">
-        <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+        <h1 className="text-3xl font-bold text-foreground tracking-tight mb-2">
           Wave Pond
         </h1>
-        <p className="text-white/80 text-base leading-relaxed">
+        <p className="text-foreground text-base leading-relaxed">
           Tap the glowing pond — real waves spread, bounce off the edge, and
           cross through each other. The golden dot listens and plays what it hears.
         </p>
@@ -567,7 +567,7 @@ export default function KidsWavePond() {
 
       {/* ── Status badges ── */}
       {fallback && (
-        <p className="text-white/60 text-sm mb-1">
+        <p className="text-muted-foreground text-sm mb-1">
           (AudioWorklet unavailable — using fallback engine)
         </p>
       )}
@@ -576,10 +576,10 @@ export default function KidsWavePond() {
           className="rounded-xl px-6 py-4 mx-6 mb-4 text-center"
           style={{ background: "rgba(244,63,94,0.12)", border: "1px solid rgba(244,63,94,0.3)" }}
         >
-          <p className="text-rose-300 text-base font-semibold">
+          <p className="text-violet-300 text-base font-semibold">
             WebGL unavailable on this device
           </p>
-          <p className="text-white/75 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             The wave-field audio is still running — you can hear it.
           </p>
         </div>
@@ -590,7 +590,7 @@ export default function KidsWavePond() {
         <div className="flex flex-col items-center mt-8">
           <button
             onClick={handleStart}
-            className="px-10 py-5 rounded-2xl text-2xl font-semibold text-white
+            className="px-10 py-5 rounded-2xl text-2xl font-semibold text-foreground
                        transition-all duration-200 hover:scale-105 active:scale-95"
             style={{
               background: "linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%)",
@@ -601,7 +601,7 @@ export default function KidsWavePond() {
           >
             Touch the Pond
           </button>
-          <p className="text-white/55 text-sm mt-4">
+          <p className="text-muted-foreground text-sm mt-4">
             Multi-touch works — try two taps at once.
           </p>
         </div>
@@ -622,7 +622,7 @@ export default function KidsWavePond() {
             }}
           />
           {!glFailed && (
-            <p className="text-white/55 text-sm mt-4 text-center max-w-sm px-4">
+            <p className="text-muted-foreground text-sm mt-4 text-center max-w-sm px-4">
               Drag to trail ripples · multi-touch for interfering waves ·
               the amber dot reads out what you hear
             </p>
@@ -634,8 +634,8 @@ export default function KidsWavePond() {
       <div className="mt-8 pb-6">
         <a
           href="#notes"
-          className="text-white/55 text-sm underline underline-offset-4
-                     hover:text-white/80 transition-colors"
+          className="text-muted-foreground text-sm underline underline-offset-4
+                     hover:text-foreground transition-colors"
         >
           Read the design notes ↓
         </a>
@@ -653,13 +653,13 @@ export default function KidsWavePond() {
             border:     "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          <h2 className="text-xl font-semibold text-white">Design Notes</h2>
-          <div className="space-y-3 text-white/75 text-sm leading-relaxed">
+          <h2 className="text-xl font-semibold text-foreground">Design Notes</h2>
+          <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
             <p>
-              <span className="text-white/90 font-medium">Core technique — FDTD wave mesh.</span>{" "}
+              <span className="text-foreground font-medium">Core technique — FDTD wave mesh.</span>{" "}
               Every tap injects a Gaussian displacement pulse into a 64×64 grid of coupled
               cells. Each cell is updated by the discrete 2-D wave equation:{" "}
-              <code className="font-mono text-cyan-300 text-xs bg-white/5 px-1 py-0.5 rounded">
+              <code className="font-mono text-violet-300 text-xs bg-muted px-1 py-0.5 rounded">
                 u_next[i,j] = 2·u[i,j] − u_prev[i,j] + c²·(u[i+1,j] + u[i-1,j] + u[i,j+1] + u[i,j-1] − 4·u[i,j])
               </code>{" "}
               with Dirichlet (fixed) boundaries at the rim. Waves propagate, reflect, and
@@ -667,7 +667,7 @@ export default function KidsWavePond() {
               &amp; Smith 2-D Digital Waveguide Mesh (ICMC 1993).
             </p>
             <p>
-              <span className="text-white/90 font-medium">Audio.</span>{" "}
+              <span className="text-foreground font-medium">Audio.</span>{" "}
               The grid runs inside an AudioWorklet at audio rate (ScriptProcessor on older
               browsers). A single &ldquo;pickup&rdquo; cell reads its displacement value as the output
               sample — you are literally hearing the field. A pentatonic tone synth tracks
@@ -676,19 +676,19 @@ export default function KidsWavePond() {
               (kids-safe: no sudden loudness, no harsh transients).
             </p>
             <p>
-              <span className="text-white/90 font-medium">Renderer.</span>{" "}
+              <span className="text-foreground font-medium">Renderer.</span>{" "}
               Three.js with a top-down OrthographicCamera. The 64×64 field array updates
               the vertex colors of a PlaneGeometry each frame — no Canvas 2D, no raw
               WebGL2, no compute shaders. Deep-indigo rest, cyan/white crests, violet
               troughs.
             </p>
             <p>
-              <span className="text-white/90 font-medium">Reference.</span>{" "}
+              <span className="text-foreground font-medium">Reference.</span>{" "}
               Dana C. Van Duyne &amp; Julius O. Smith III, &ldquo;Physical Modeling with the
               2-D Digital Waveguide Mesh,&rdquo; Proceedings of the International Computer Music
               Conference, 1993.
             </p>
-            <p className="text-white/55 text-xs">
+            <p className="text-muted-foreground text-xs">
               Caveats: audio-rate grid stepping at 64×64 on a single AudioWorklet thread
               is CPU-intensive on mobile; the fallback ScriptProcessor runs on the main
               thread and may cause frame drops. Reflection boundary and damping are correct

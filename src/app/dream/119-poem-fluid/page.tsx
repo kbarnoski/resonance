@@ -636,15 +636,15 @@ export default function PoemFluidPage() {
       {/* ── Idle screen ────────────────────────────────────────────────────────*/}
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-2xl md:text-3xl font-serif mb-3 tracking-tight text-white">
+          <h1 className="text-2xl md:text-3xl font-serif mb-3 tracking-tight text-foreground">
             Poem Fluid
           </h1>
-          <p className="text-base text-white/75 max-w-sm mb-8 leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-sm mb-8 leading-relaxed">
             Still water reveals the poem. Stir to fragment it.
           </p>
 
           {glError && (
-            <p className="mb-5 text-sm text-rose-300 max-w-xs leading-relaxed border border-rose-400/20 rounded px-4 py-2">
+            <p className="mb-5 text-sm text-violet-300 max-w-xs leading-relaxed border border-violet-400/20 rounded px-4 py-2">
               {glError}
             </p>
           )}
@@ -652,25 +652,25 @@ export default function PoemFluidPage() {
           <div className="flex gap-3 flex-wrap justify-center">
             <button
               onClick={() => handleStart("still")}
-              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-white/30 rounded hover:bg-white/5 hover:border-white/60 transition text-white"
+              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-foreground"
             >
               Still water
             </button>
             <button
               onClick={() => handleStart("mic")}
-              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-white/20 rounded hover:bg-white/5 hover:border-white/40 transition text-white/75"
+              className="min-h-[44px] px-5 py-2.5 text-sm tracking-wider uppercase border border-border rounded hover:bg-accent hover:border-border transition text-muted-foreground"
             >
               + Mic
             </button>
           </div>
 
           {micError && (
-            <p className="mt-4 text-sm text-rose-300 max-w-xs">{micError}</p>
+            <p className="mt-4 text-sm text-violet-300 max-w-xs">{micError}</p>
           )}
 
           <Link
             href="/dream"
-            className="mt-12 text-xs text-white/35 hover:text-white/65 transition"
+            className="mt-12 text-xs text-muted-foreground/70 hover:text-muted-foreground transition"
           >
             ← back to dream sandbox
           </Link>
@@ -680,36 +680,36 @@ export default function PoemFluidPage() {
       {/* ── Running HUD ────────────────────────────────────────────────────────*/}
       {mode !== "idle" && (
         <div className="absolute top-4 right-4 flex flex-col items-end gap-2 select-none">
-          <span className="text-xs tracking-widest text-white/40 uppercase">
+          <span className="text-xs tracking-widest text-muted-foreground/70 uppercase">
             {useMic ? (running ? "● mic" : "starting…") : "still water"}
           </span>
           {useMic && running && (
             <>
-              <label className="text-xs text-white/35 tracking-wider">
+              <label className="text-xs text-muted-foreground/70 tracking-wider">
                 GAIN {gain.toFixed(1)}
               </label>
               <input
                 type="range" min="0.5" max="4" step="0.1"
                 value={gain}
                 onChange={(e) => setGain(parseFloat(e.target.value))}
-                className="w-24 accent-white"
+                className="w-24 accent-primary"
               />
             </>
           )}
           <button
             onClick={handleStop}
-            className="text-xs uppercase tracking-wider text-white/50 hover:text-white border border-white/20 hover:border-white/60 px-3 py-1 rounded transition"
+            className="text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border hover:border-border px-3 py-1 rounded transition"
           >
             stop
           </button>
-          <Link href="/dream" className="text-xs text-white/30 hover:text-white/65 transition">
+          <Link href="/dream" className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition">
             ← back
           </Link>
         </div>
       )}
 
       {mode !== "idle" && (
-        <p className="absolute bottom-4 left-4 text-xs text-white/25 pointer-events-none select-none tracking-wider">
+        <p className="absolute bottom-4 left-4 text-xs text-muted-foreground/70 pointer-events-none select-none tracking-wider">
           drag to stir · still to read
         </p>
       )}

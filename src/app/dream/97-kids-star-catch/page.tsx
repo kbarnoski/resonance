@@ -326,7 +326,7 @@ export default function KidsStarCatch() {
 
       {/* Hint */}
       <div className="absolute top-5 left-0 right-0 flex justify-center pointer-events-none">
-        <p className="font-mono text-white/75 text-base tracking-widest">
+        <p className="font-mono text-muted-foreground text-base tracking-widest">
           ✦ tap the falling stars ✦
         </p>
       </div>
@@ -355,7 +355,7 @@ export default function KidsStarCatch() {
           <button
             onClick={replayMelody}
             disabled={replaying}
-            className="font-mono text-white/90 text-base px-6 py-3 rounded-full transition-colors"
+            className="font-mono text-foreground text-base px-6 py-3 rounded-full transition-colors"
             style={{
               background: "rgba(255,255,255,0.10)",
               border:     "1px solid rgba(255,255,255,0.22)",
@@ -370,7 +370,7 @@ export default function KidsStarCatch() {
 
       <Link
         href="/dream"
-        className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+        className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         ← dream lab
       </Link>
