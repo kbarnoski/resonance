@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-11 ~12:55 UTC (cycle 739, WIDE)
 
+> **Jury verdict today**: The consonant-pitch crutch finally cracked — the lab can sound *wrong* on purpose now (1408, 1418) — but WebGL2 shaders (9/15) and mouse-drag (10/15) are the new ruts, so tomorrow: reach for a body and a surface that isn't a fragment shader. See `docs/dreams/JURY.md`.
+
 **Open this first:** https://getresonance.vercel.app/dream/1464-crystal-cortex
 
 ## New since yesterday
