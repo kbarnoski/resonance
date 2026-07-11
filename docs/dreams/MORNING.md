@@ -1,21 +1,20 @@
-# Morning digest — last updated 2026-07-11 ~18:25 UTC (cycle 742, DEEP)
-
-> **Reaching for the first 5/5, without re-entering the void.** The jury's named path to a 5/5 is "take a piece and make it a *multi-cycle* commitment cited against *fresh* research" — but it named the *void* NDE piece to do it with, which the same jury told me to rest (for the 3rd cycle now). So I took the **recipe** and applied it to an **ecstatic** concept instead. See `docs/dreams/JURY.md`.
-
-**Open this first — headphones, and tilt your phone if you're on mobile:** https://getresonance.vercel.app/dream/1478-sema-ascent
+# Morning digest — last updated 2026-07-11 ~20:55 UTC (cycle 743, WIDE)
 
 ## New since yesterday
-- **`1478-sema-ascent`** (cycle 742, DEEP-winner) — *Enter a drug-free **whirling trance** built as a six-minute climb.* Nine nested rings of light spin at locked **polyrhythmic ratios** (2:3:4…:11), accelerate, **phase-lock into a white-hot *Fana* peak**, then set you gently down to amber embers — a genuinely **long-form, stateful** piece where minute 6 (sparse embers) is unmistakably different from minute 1 (one slow ring). The trick: **one clock drives both the picture and the sound** — every bell you hear is fired by a ring crossing a phase gate, so *what you see spinning is what you hear pulsing*. It's the **rhythmic-entrainment** neuroscience (drumming → trance) made playable, as a Sufi *sema*. **Tilt to lean the whirl; tap to surge; it plays itself to the end.** This is the jury's wanted **three.js scene-graph** (off the fragment-shader rut) + **tilt** (off the mouse-drag rut) + **ecstatic ascent** (rests the cosmic-void vibe). Pole: **intense**.
-- *A second full prototype was built this fire and banked — see below.*
+- **[1482-face-mandala](https://getresonance.vercel.app/dream/1482-face-mandala)** — *your own face conducts a living psychedelic mandala.* Open your jaw and it blooms, smile and it turns gold, raise your brows for another tier, tilt your head to spin it in 3D. The lab's **first face-blendshape input** (MediaPipe FaceLandmarker v2, running entirely in your browser) — the exact embodied ML sensor the jury asked for three times to break the "everything is mouse-drag" rut. INTENSE / three.js scene-graph (off the fragment-shader rut too). *Open it on a laptop with a webcam for the real thing; no camera → it self-demos and still sings.*
+- **2 more explored this fire, banked to IDEAS §743** (WIDE mode = 3 parallel builders, ship the strongest):
+  - **⭐⭐ 1484-xeno-lattice** — sing your way through a **Bohlen–Pierce** scale (13 steps of the tritave, *no octave*) drawn as a glowing harmonic lattice; every "wrong" note is a real place on the map. Mic-played, unit-tested pitch detection — **near ship-ready**, top of the resurrect queue.
+  - **⭐ 1486-solar-choir** — the **live solar wind hitting Earth right now** (NOAA space-weather) conducts a slow cosmic choir + an aurora you drift inside. The lab's likely first real external-API sonification.
 
-## In progress / partial (banked, ready to ship next)
-- **⭐ `1480-vortex-sama`** — the **same** whirling-trance concept as a **26,000-spark GPU particle vortex** — a storm of golden shards gathering into a rising white-hot column that *sings from its own spin*. Built demoable; it's **love-adjacent to your loved particle pieces**, so a strong pick for a night wanting spectacle. Held back only because its ring-mechanism sibling coupled sound-to-rhythm more literally. One upgrade queued (move it fully onto the GPU) → IDEAS §742.
-- **⭐ `1472-whirl-mandala`** (§741) — a Sufi-whirl mandala on three.js, also ecstatic/tilt — a natural WIDE-743 companion to tonight's piece.
-- **⭐⭐ `1468-the-return`** — the 7-min NDE point-cloud (WebGPU) — still the jury's named path to the lab's **first 5/5**, waiting for the void vibe to be fresh again.
+## In progress / partial
+- Nothing half-built. Winner is demoable; both banked pieces have full working code preserved (scratchpad `banked-743/`).
 
 ## Research findings worth a look
-- **Rhythm is a trance engine — and there's 2025 neuroscience for it.** A 2025 *Annals NYAS* review (Aparicio-Terrés et al.) argues rhythmic sound entrains the brain into altered states; that + Gilbert Rouget's *Music and Trance* (1985) + the Mevlevi whirling dervishes is exactly what `1478` builds on. And the current three.js audio-reactive frontier (ASTRODITHER, released **2026-07-01**) confirms 2026 browser AV is moving *off* the fragment shader onto the scene-graph. Full note in `RESEARCH.md §742`.
+- **RESEARCH §743** — the embodied-sensor frontier is *browser-native* now: MediaPipe FaceLandmarker (face blendshapes) and Whisper/Voxtral-WebGPU (in-browser speech-to-text) are both one CDN import away and both grep-0× as committed lab inputs. 1482 cashes the first; **spoken-words-as-material** (Whisper-WebGPU) is banked as the next unbuilt hook.
 
 ## Open questions for Karel
-- **Does the whirl actually pull you in?** `1478` is designed to *accelerate* you into rapture and read as ecstatic-not-calm — but I build headless, so the peak's punch and whether the phase-lock reads are the two things I most want your eyes/ears on. It's designed as a **multi-cycle** piece; tell me if the ascent lands and I'll deepen it (literal ring-snap at the lock, spatialised bells, a brighter Fana bloom).
-- **The ≥2-model AI pipeline (audio→image→video) is still 0×** — the last standing demand, blocked only on your go-ahead for a small paid image/video budget (I can't spend unattended). Say the word and I'll wire it into an AV piece.
+- **The ≥2-model AI-pipeline chain (audio→image→video) is still 0×** — four juries now name it as the last standing demand, gated only on your paid-budget go. Want me to escalate it next fire?
+- Face-tracking (1482) is the freshest input in months but I can't eye-verify tracking *feel* headless — does the mandala respond the way you'd hope on your webcam? That answer tells me whether to deepen face-input as a full lane.
+
+## Note
+- Local build hit the usual 700-route fd-ceiling (`EMFILE`) at page-data collection — infra, not code; cleared via the standing compile-mode gate (TypeScript + ESLint + compile all green). Deploys to Vercel fine.
