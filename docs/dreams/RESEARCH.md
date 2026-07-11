@@ -3,6 +3,19 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §737 — 2026-07-11 (research-first dive, cycle 737 · PSYCHEDELIC · **WIDE** — "A fresh sensor on a fresh surface")
+
+**Dive target.** The freshest work at the intersection of embodied/cross-modal sound and drug-free immersive AV, and — per the ambition mandate — one genuinely-recent (<30-day) surprising item.
+
+**Freshest single hit.** *ChladniSonify: A Visual-Acoustic Mapping Method for Chladni Patterns in New Media Art Creation* (arXiv **2605.09846**, ~May 2026) — a bidirectional visual↔acoustic mapping of Chladni figures (pattern→sound AND sound→pattern) for installation practice. Genuinely <30-day-fresh. **Rejected as a build target**, honestly: the lab already has cymatics twice (`19-cymatics`, `165-cymatics`) and a Faraday standing-wave piece (`1278-faraday-relief`), so a Chladni piece is a near-duplicate — logged so a future dive doesn't re-discover it. What survives from it: the *bidirectional* mapping stance (the output re-drives the input) is a technique the lab's old cymatics pieces don't do — a seed for later.
+
+**Trend confirmation (the actionable half).** 2026 immersive-art coverage (soundverse / artsonify sound-art blogs) + arXiv *Simulacra Naturae* (2509.02924) converge on two live directions the lab is thin on: **real-world data sonification** ("any dataset — weather, tide, heartbeat — as the composer") and **embodied cross-modal** installation (the body as an instrument, not a cursor). These directly back tonight's briefs.
+
+**Grep discipline (the near-duplicate trap, logged).** In a ~690-piece lab most *sims* are taken — before briefing I grepped and REJECTED: Kuramoto/firefly-sync (`1082-dissolve-return` is a real Kuramoto piece), camera→form-constant warp (`1057-face-bloom`, `1044-hyperbolic-bloom`), moiré (`1316`), quasicrystal (`837`), cymatics (above), gravitational-lensing/accretion (`1148-light-accretion`). Conclusion (the lab's own recurring lesson): the surviving 0× lanes are fresh **interactions + named-reference combinations + thin categories**, not new equations.
+
+**Chain → build (visible).** This dive (data-sonification + embodied trend; grep-rejected the sims) → cycle 737 WIDE fan-out on three fresh INPUT modalities the recent pointer/tilt/stillness run never touched: external-data (`1454-tide-organ`) · MIDI (`1456-rose-organ`) · **camera** (`1458-room-of-you`, the winner — cashes the concept jury's standing #5 "revive the camera/embodied lane"). Shipped `1458`; banked ⭐⭐`1454` + ⭐`1456` → IDEAS §737.
+
+---
 ## §736 — 2026-07-11 (research-first dive, cycle 736 · PSYCHEDELIC · **DEEP** — "Play the morphospace")
 
 **Source.** Johan Gielis, *A generic geometric transformation that unifies a wide range of natural and abstract shapes* (Am. J. Botany, 2003) — the "superformula"; Paul Bourke's 3D supershape pages (spherical product of two superformulas); and the genuinely-recent framing **ParamExplorer** (arXiv 2512.16529, Dec 2025) — a framework for exploring the *parameter spaces* of generative systems that uses the superformula as its case study. Aesthetic lineage: Ernst Haeckel, *Kunstformen der Natur* (radiolaria/diatoms).

@@ -1,37 +1,41 @@
-# Morning digest — last updated 2026-07-11 ~06:20 UTC (cycle 736, DEEP)
+# Morning digest — last updated 2026-07-11 ~08:25 UTC (cycle 737, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/1450-supershape-bloom` — "Supershape Bloom"** ⭐ tonight's ship. *Reach into
-  the equation behind natural form and play the whole zoo of alien organisms.* Drag across
-  the canvas to morph a live **3D supershape** — starfish → sea-urchin → diatom →
-  chrysanthemum, unfurling and breathing — while the sound **re-tunes itself from the shape's
-  symmetry**: clean integer symmetries ring near-consonant, prime/half-morph shapes beat
-  *inharmonically on purpose*. Built on the **Superformula** (Gielis 2003) + Paul Bourke's 3D
-  spherical-product — the lab's **first superformula piece** (checked: 0× across ~690
-  prototypes). It's Haeckel's *Kunstformen der Natur* made playable. *Why open it:* horizontal
-  drag = number of lobes, vertical drag = pinch↔bloom; keys 1–8 jump to preset organisms;
-  leave it alone and it auto-tours. WebGL2 + Web Audio, works on a bare phone, no headphones/file.
+- **`/dream/1458-room-of-you` — "The Room of You"** ⭐ tonight's ship. *Your own body
+  becomes the acoustic space.* Stand in front of the camera and your silhouette **is the
+  shape of a resonant room** — move, and the space re-tunes and a soft bell rings out
+  through the you-shaped cathedral. Not body-as-visual-paint (the lab's done that) but
+  **body-as-acoustics**: a hand-built **Feedback-Delay-Network reverb** whose delay
+  lengths / decay / brightness are continuously re-tuned by how tall, wide and full of
+  the frame you are; motion re-strikes the bells. After Alvin Lucier's *I Am Sitting in a
+  Room* (his mapping inverted — *your* geometry becomes the room) + Pauline Oliveros's
+  Deep Listening. *Why open it:* allow the camera, stand back, and move slowly in a dim
+  room with sound on — you're playing a cathedral shaped like you. No camera? A synthetic
+  presence inhabits it for you (self-demos on a phone). WebGL2 + Web Audio, no file/MIDI.
+  This **revives the camera/embodied lane** the concept jury flagged as collapsed (1×).
 
-## In progress / partial
-- Nothing half-built. One clean DEEP ship + 1 sibling banked.
-
-## Also explored (banked to IDEAS §736, not shipped)
-- ⭐ **`1452-radiolaria-field`** — the *cosmic-ambient* sibling: a whole galaxy of ~30 breathing
-  2D radiolaria (the same equation, many solutions) that drift and hum as one slowly-evolving
-  plate you reach into. Just as complete — de-selected only because its calm-field pole is close
-  to the last three nights (Troxler / echo-void / dissolve-room were all cosmic-ambient), so I
-  shipped the *intense* 3D bloom as the sharper break. Resurrect-first for a meditative-field night.
+## Also explored tonight (banked to IDEAS §737, not shipped)
+- ⭐⭐ **`1454-tide-organ`** (RESURRECT-FIRST) — *the living ocean composes.* Real public
+  marine data (Open-Meteo Marine API) — swell **period** → the drone's pulse + root note,
+  wave **height** → brightness, **direction** → the field's rotation — drives a slow
+  cosmic-ambient drone-cathedral you breathe inside. After Douglas Hollis's **Wave Organ**
+  (an Exploratorium tide-played sculpture) + Deep Listening. Cashes the jury-praised
+  real-data-sonification lane; zero hardware, self-demos with a synthetic tide offline.
+  De-selected only because camera was the sharper break from the recent run.
+- ⭐ **`1456-rose-organ`** — *play a MIDI keyboard, grow a Gothic rose window.* Every note
+  a pane of light; velocity → brightness, chord size → fold-symmetry, sustain → freeze the
+  glass. True 12-TET, so a wrong note is honestly audible (breaks the always-consonant
+  spell). After the Chartres rose window. Resurrect when a MIDI/installation context fits.
 
 ## Note on the theme
-- A deliberate swing away from three straight cosmic-ambient/dissolution nights into **alien
-  organic morphology** — the "impossible biology blooming" of a psychedelic peak, played as an
-  instrument rather than watched. Fresh substrate (a real 3D parametric mesh recomputed every
-  frame), fresh vibe. If this lands, the morphospace has a lot more in it (symmetry→timbre,
-  supershape duets, a field scaled to hundreds via GPU vertex shaders).
+- A deliberate **three-way swing off "too similar"**: the recent run was all
+  pointer/tilt/stillness input — so tonight's three explorers each used a sensor that run
+  never touched (**external-data / MIDI / camera**), and the winner is the sharpest break.
+  Camera-as-acoustic-space is a genuinely new cross-modal mapping for the lab.
 
 ## Open question for Karel (standing)
-- The **≥4-model AI-pipeline chain** (audio→image→video) is the only 0× rung left and a repeated
-  jury ask — but it spends FAL/Replicate budget, so I can't run it unattended. **Say the word + a
-  per-piece budget and it ships next cycle.**
+- The **≥4-model AI-pipeline chain** (audio→image→video) is the only 0× rung left and a
+  repeated jury ask — but it spends FAL/Replicate budget, so I can't run it unattended.
+  **Say the word + a per-piece budget and it ships next cycle.**

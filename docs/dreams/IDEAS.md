@@ -10,6 +10,27 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §737 (cycle 737 · WIDE — "A fresh sensor on a fresh surface") — SHIPPED `1458-room-of-you`; two banked ⭐⭐ + ⭐
+
+Three orthogonal explorers, each on a sensor the recent pointer/tilt/stillness run never touched (external-data / MIDI / camera). Shipped the camera piece (`1458-room-of-you` — revives the jury-flagged collapsed camera lane; freshest cross-modal mapping). Both non-winners were built demoable + scoped-clean (self-reported `tsc`=0 / `eslint --max-warnings 0`=0; `1456` served HTTP 200 under `next dev`), backed up to scratchpad `banked-737/`, folders `rm -rf`'d — never committed. Full rebuildable specs:
+
+### ⭐⭐ `1454-tide-organ` — RESURRECT-FIRST (the living ocean as composer) · `status: banked`
+- **The one question:** what if real ocean data composed a slow cosmic-ambient drone-cathedral you breathe inside?
+- **Input:** the **Open-Meteo Marine API** (`https://marine-api.open-meteo.com/v1/marine?latitude=..&longitude=..&hourly=wave_height,wave_period,wave_direction,swell_wave_height,swell_wave_period&current=...`) — free, no key, CORS-OK, READ-only GET (no guard needed; not a route). 6 s AbortController; a coastline picker (default 37.81,-122.47 = the SF Wave Organ site). **Mandatory fallback:** on any failure, a deterministic synthetic tide (sum of ~3 sine swells, mulberry32) so it's never blank/silent; honest emerald "live ocean data" vs amber "synthetic tide (offline)" status.
+- **Mapping:** swell **period** → drone pulse LFO + derived root note · wave **height** → spectral brightness/drive · wave **direction** → field rotation/pan. ONE shared `tideAt()` envelope drives both drone swell and visual bloom.
+- **Output:** WebGL2 full-screen fragment pass — travelling swell wavefronts interfere into slow luminous indigo→teal→aqua caustics + horizon glow; CSS-gradient fallback. **Audio:** shared `startDroneBank`(root=ocean root)→`createVoidReverb`→master(≤0.20)→`DynamicsCompressor`, + a deterministic filtered-noise surf layer. Pointer/Space "breathe" deepens the field.
+- **Refs:** Douglas Hollis *Wave Organ* (SF Exploratorium — direct EXPLORATORIUM.md tie) + Pauline Oliveros *Deep Listening*. **Ambition 2/5:** #2 (fetch/parse + data→param mapper + drone synth + WebGL2 field = 4) + #3 named refs. Cashes the jury-praised real-data-sonification lane (only 1374/1426 before).
+- **Why banked not shipped:** camera (`1458`) was the sharper break from the recent run; this is the top ship-next for a data/cosmic-ambient night. **Resurrect knob (its own honest knock):** deepen the live-vs-synthetic *audible* difference (live currently reads structurally similar to synthetic) + finer root quantization so different coastlines land in different keys.
+
+### ⭐ `1456-rose-organ` — a MIDI-played Gothic rose window · `status: banked`
+- **The one question:** what if playing a MIDI keyboard grew a living stained-glass rose window — a drug-free luminous mandala you PLAY?
+- **Input:** **Web MIDI** (`navigator.requestMIDIAccess`) primary — noteon lights a pane, velocity→brightness, **polyphony→fold-symmetry** (3 notes→6-fold), sustain CC64→freeze the glass. Fallback: QWERTY (clearly secondary) + a seeded mulberry32 **idle auto-organist** so it's never blank. Honest emerald "MIDI connected: <device>" vs amber "keyboard fallback".
+- **Output:** WebGL2 fragment-shader rose — `F`-fold kaleidoscopic petals (`cos(F·a)`), per-note luminous pane rings, stone tracery/mullions, energy-driven central boss, filmic tone-map, sub-Hz rotation; Canvas2D fallback. **Audio:** warm additive organ voice per note (detuned partials + octave/twelfth shimmer, slow attack) through `createVoidReverb` + limiter; **true 12-TET (no scale-snapping)** so a wrong note is honestly audible (breaks the always-consonant spell — jury #2).
+- **Refs:** Chartres / Notre-Dame rose window + Gothic sacred geometry. **Ambition 2/5:** #2 (voices + fold-symmetry model + WebGL2 rose + idle player = 4) + #3 named ref. Best-verified of the three (served HTTP 200 under `next dev`).
+- **Why banked not shipped:** its true identity needs MIDI hardware (Karel's 06:30 phone review has none → he'd see the auto-organist/QWERTY, not the full instrument), and the "wrong note" axis is dissonance-adjacent (a spent lane). **Resurrect** when a MIDI / installation context is the frame. **Knock (own):** integer fold count can pop a single frame on chord changes; dense clusters lean on the limiter (visual cap MAX_PANES=24).
+
+---
+
 ## §732 (cycle 732 · DEEP — "THE DISSOLVE") — SHIPPED `1428-dissolve-room`; one banked ⭐
 
 The DEEP fire: ONE massively-bigger concept (a long-form, irreversible ego-dissolution / NDE-tunnel — the lab-thin long-form/accumulating-state category, cashing jury #2 "break the always-consonant spell") attacked via 2 approaches on 2 fresh surfaces. Shipped the render-robust DOM/CSS-3D approach (`1428-dissolve-room`) — zero GPU dependency + surface-contrasts last night's three.js winner `1426`. The non-winner was built demoable + scoped-clean (`tsc --noEmit`=0 / repo-pinned `eslint --max-warnings 0`=0), backed up to scratchpad `banked-732/`, folder `rm -rf`'d — never committed. Full rebuildable spec:
