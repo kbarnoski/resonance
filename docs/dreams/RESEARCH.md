@@ -3,6 +3,19 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §733 — 2026-07-11 (research-first dive, cycle 733 · PSYCHEDELIC · **WIDE** — "Navigate by Ear / Comment on the Self")
+
+**Dive target:** a genuinely <30-day, surprising piece to anchor today's build. Searched: WebGPU-compute audio-reactive (June 2026), web volumetric raymarching AV (2026), arxiv cs.SD real-time neural/binaural (June 2026), and the TouchDesigner/Houdini educator feeds (Tschepe/Entagma/Horikawa) for last-30-day uploads.
+
+**Freshest relevant findings (all logged with dates, honestly):**
+- **LINN — Lightweight Implicit Neural Network for Binaural Audio Synthesis** (arxiv **2509.14069**, Sep 2025). An Implicit Binaural Corrector: a small MLP taking *(spatial pose, ear index, frequency, time)* → per-ear log-amplitude + phase corrections; 72.7% fewer params than baselines, aimed at **real-time HRTF rendering on constrained devices**. https://arxiv.org/html/2509.14069v1
+- **Maxime Heckel — "On Shaping Light: Real-Time Volumetric Lighting with Raymarching for the Web"** (React-Three-Fiber + postprocessing; depth-reconstructed world-space raymarch through a shadow-mapped light volume). Publication date **2025-06-10**. https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/
+
+**Freshness verdict (per the mandate):** BOTH are **>30 days** (Sep-2025 / Jun-2025), and the Heckel technique's lane (`raymarch`/`volumetric`) is already **20+×** in the lab (grep hit 1041/1042/1047/1081/1124/1148/1158/1188/1263/1344/1428…). No strictly-<30-day item surfaced that isn't a lab duplicate — the honest state of a ~1430-prototype lab: fresh *physics* is essentially mined out, the surviving 0× lanes are fresh *interaction models*, not new sims (a lesson standing since §726).
+
+**What's decision-relevant (the finding worth stealing):** LINN confirms that **continuous, pose-conditioned HRTF binaural rendering is a live 2025–26 frontier** — which directly backs building an instrument whose whole point is *spatial-audio-as-perception*. The pragmatic browser path is the native `PannerNode({panningModel:"HRTF"})`, not a neural net, but the research validates the direction. → This cycle's build is **research-first option (c)**: it consumes the banked ⭐⭐ `1402-echo-void` (an echolocation instrument seeded by the §727 WebGPU dive), whose core subsystem is exactly HRTF-panned per-surface echo returns — re-de-risked to WebGL2-primary. Two orthogonal explorers (`1434-orbit-compass` aim-to-audition; `1438-mortal-tape` destructive playback) round out the WIDE fire. Chain visible: §727 WebGPU dive + today's binaural confirmation → echo-void.
+
+---
 ## §732 — 2026-07-11 (research-first dive, cycle 732 · PSYCHEDELIC · **DEEP** — "THE DISSOLVE": long-form irreversible NDE-tunnel, cashing jury #2 break-always-consonant)
 
 **Source:** "Psychedelic drug DMT and near-death experiences have long been linked — my study is the first to explore the connection in depth" — *The Conversation*, **2025-07-29** (writeup of the naturalistic-DMT vs NDE thematic/content analysis; corpus incl. Frontiers 2018 "DMT Models the Near-Death Experience" and the 2025 comparative-analysis paper). https://theconversation.com/psychedelic-drug-dmt-and-near-death-experiences-have-long-been-linked-my-study-is-the-first-to-explore-the-connection-in-depth-258641
