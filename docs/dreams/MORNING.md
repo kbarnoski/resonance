@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-07-11 ~14:40 UTC (cycle 740, DEEP)
+# Morning digest — last updated 2026-07-11 ~16:25 UTC (cycle 741, WIDE)
 
-> **Jury note:** the jury contradicted itself — it named `1468-the-return` for a first 5/5 but *also* BANNED the void/dissolve-into-light vibe (4× and converging) and begged for **ecstatic/kinetic, BUILD instead of dissolve**. I honored the ban (diversity is the hard gate; you called the lab "too similar") and rested the void. `1468` stays top of the resurrect queue for when the void is fresh again. See `docs/dreams/JURY.md`.
+> **The "too similar" answer:** the jury said the lab's new ruts are the WebGL2 fragment shader (9/15), mouse/finger-drag (10/15), and the cosmic-void vibe (8/15). Tonight I didn't just swap tags — I **changed the medium**. Tonight's winner has almost no "look" at all. See `docs/dreams/JURY.md`.
 
-**Open this first:** https://getresonance.vercel.app/dream/1470-the-drop
+**Open this first — best with headphones, eyes closed:** https://getresonance.vercel.app/dream/1476-dark-choir
 
 ## New since yesterday
-- **`1470-the-drop`** (cycle 740, DEEP-winner) — *Play **self-organized criticality** as an instrument.* Grains rain onto a molten 3D landscape, slopes steepen invisibly to the critical angle, then **TOPPLE in scale-free avalanches** that sweep across the terrain as waves of light — and the avalanches ARE the music: mostly tiny ticks, the rare "big one" a **full-spectrum DROP**. This is the **ecstatic EDM build-and-drop** you've asked for as an alt journey arc, rendered as real physics (Bak–Tang–Wiesenfeld sandpile, 1987). It **composes itself and never loops** — leave it running. **Press Space** to force a big one; drag to pour more sand. Pole: **intense** (BUILDS, doesn't dissolve).
-- *A 2nd approach was explored this fire and banked — see below + IDEAS §740.*
+- **`1476-dark-choir`** (cycle 741, WIDE-winner) — *Sing or hum into the dark and the dark sings back.* The screen is **intentionally near-black** (one soft halo that breathes with your voice); the piece lives in your ears. Your voice is the instrument: hum one note and a whole **choir lifts off it and climbs forever** — a Shepard/Risset endless-glissando, each voice circling your head (HRTF), over a firm drone ground and a cathedral reverb. This is the jury's explicitly-named **best** unspent direction (a genuine *audio-only / no-screen* piece — 0× in the whole lab) plus the **mic** input that had gone to 0×. It's **ascent, not dissolution** — buoyant, boundless, lifting. No mic? it sings to itself. Pole: cosmic-ambient (ascending).
+- *Two more full prototypes were built this fire and banked — see below.*
 
-## In progress / partial (banked, ready to ship next)
-- **⭐ `1472-criticality`** — the same build-and-drop at **bigger scale** (a 256² GPU sandpile as a luminous ember point-field). Built demoable; resurrect after two small fixes (noted in IDEAS §740).
-- **⭐⭐ `1468-the-return`** — the near-death-experience arc as ONE 7-min unrepeating WebGPU point-cloud journey (long-form stateful + 2nd WebGPU-compute). **Still top ship-next** — but it's a *dissolve-into-light* piece, so it waits until the void vibe is fresh again.
+## In progress / partial (banked this fire, ready to ship next)
+- **⭐ `1472-whirl-mandala`** — enter a **Sufi-whirling / mandala trance** by tilting your phone: nested rings on a real **three.js 3D scene** accelerate you into rapture, then release. INTENSE, ecstatic — the "go kinetic" the jury also wanted. Built demoable; one small fix queued (swap its consonant partials → continuous). **Top ship-next for an ecstatic night.**
+- **⭐ `1474-rapture-organ`** — a **rave/gospel build-and-drop cathedral** of light panels in **CSS-3D** (no WebGL), played with MIDI or your keyboard. Alive on load (it self-plays the drop). Held back only because `1470-the-drop` was *also* a build-and-drop — didn't want two in a row. Ship when a drop is fresh again.
+- **⭐⭐ `1468-the-return`** — the 7-min NDE point-cloud journey (WebGPU-compute) — still the jury's named path to the lab's **first 5/5**, but it's a *dissolve-into-light* piece, so it waits until the void vibe is fresh again.
 
 ## Research findings worth a look
-- **Self-organized criticality is the physics of the ecstatic build-and-drop** — a driven sandpile tunes *itself* to the edge where avalanches follow a power law (Bak-Tang-Wiesenfeld 1987; Bak *How Nature Works* 1996). Tension accumulates to a threshold, then discharges scale-free = the EDM riser→drop. Became `1470`. Full note in RESEARCH §740.
+- **The frontier moved off the fragment shader.** three.js *scene-graph* audio-reactive work (Codrops 2025 walkthrough; ASTRODITHER, a 2026 three.js-WebGPU/TSL piece) is where 2026 browser AV lives — which is why two of tonight's three were three.js / CSS-3D, not another full-screen shader. Full note in `RESEARCH.md §741`.
 
 ## Open questions for Karel
-- **The ≥2-model AI-pipeline chain (audio→image→video) is still 0×** — the last standing jury demand, gated **only** on your per-prototype paid-budget go-ahead (FAL/Replicate). Say the word and it ships next fire.
-- The jury's own 5/5 path (`1468-the-return`) fights its own vibe ban. My call was to rest the void and ship an ecstatic piece instead — **agree, or do you want `1468` shipped next regardless?**
-
-_Winner's SOC **physics is verified** (headless ~9000-frame sims: real power-law avalanches); NOT eye/ear-verified for *feel* (no GPU/display/speakers). Build gate green, self-demos on load. The camera framing + drop-mix loudness want your browser._
+- **The audio-first bet.** `1476-dark-choir` is deliberately the *least* visual thing the lab has ever shipped — a test of whether "the screen is optional" reads as bold or as broken on your phone. Worth a 30-second listen with headphones. Does the "screen bias" experiment land, or do you want the visual back?
+- **The ≥2-model AI pipeline (audio→image→video) is still 0×** — the last standing demand, blocked only on your go-ahead for a small paid image/video budget (I can't spend unattended). Say the word and I'll wire it into an AV piece.

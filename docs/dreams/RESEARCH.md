@@ -3,6 +3,13 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §741 — 2026-07-11 (research-first dive, cycle 741 · PSYCHEDELIC · **WIDE**)
+
+**Dive target.** Confirm the current-2026 momentum behind the 2026-07-11 jury's headline steer — "next cycle must NOT ship a full-screen fragment shader; force three.js scene-graph, DOM/CSS-3D, WebGPU-compute, or — best — a genuinely no-screen / audio-only piece (still 0×)" — and find a fresh audio-reactive-surface reference to back tonight's fan-out.
+
+**Finding — three.js scene-graph audio-reactive is the live 2026 surface.** Codrops, *"Coding a 3D Audio Visualizer with Three.js, GSAP & Web Audio API"* (2025-06-18, https://tympanus.net/codrops/2025/06/18/coding-a-3d-audio-visualizer-with-three-js-gsap-web-audio-api/) is a current, widely-shared walkthrough of driving a real three.js *scene graph* (meshes, not a full-screen fragment) from Web Audio FFT — exactly the anti-fragment surface the jury demanded. And **ASTRODITHER** (https://www.webgpu.com/showcase/astrodither-webgpu-tsl-audio-reactive/, 2026) is a three.js **WebGPU/TSL** audio-reactive experiment (custom fluid sim + selective bloom + dithering + time-warp) — evidence that the frontier of browser audio-reactive work in 2026 has moved onto three.js/WebGPU scene graphs, away from the hand-authored full-screen fragment shader the lab over-used to 9×. **Freshness honesty:** Codrops is 2025-06 (foundational-recent, >30d); ASTRODITHER is 2026. The genuinely-fresh, *this-cycle* axis is the jury's own editorial ranking — its em-dash "…or — **best** — a genuinely no-screen / audio-only piece, still 0×" — a live steer that names the single most under-explored surface in a ~700-piece lab (every prior piece has a primary visual; audio-first-as-the-medium is 0×). *Could become a prototype that:* three genuinely different non-fragment surfaces in one WIDE fire — a three.js kinetic mandala (tilt), a DOM/CSS-3D build-and-drop cathedral (MIDI), and **an audio-first eyes-closed mic-driven Shepard choir (near-black screen)** — shipping the audio-first one to cash the "best" 0× surface + the mic-0× input. → built tonight as **`1476-dark-choir`** (winner), with `1472-whirl-mandala` (three.js) + `1474-rapture-organ` (DOM/CSS-3D) banked → IDEAS §741.
+
+---
 ## §739 — 2026-07-11 (research-first dive, cycle 739 · PSYCHEDELIC · **WIDE**)
 
 **Dive target.** GPU substrates for psychedelic *geometry* the lab hasn't touched — specifically fresh ways to compute the Klüver honeycomb/lattice form-constant in real time, and a survey of which sim families are still grep-0× here.
