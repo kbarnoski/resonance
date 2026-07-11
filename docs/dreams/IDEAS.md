@@ -10,6 +10,20 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §740 (cycle 740 · DEEP — "CRITICALITY / THE DROP") — SHIPPED `1470-the-drop`; one banked ⭐
+
+The DEEP fire: ONE concept — *self-organized criticality (the Bak–Tang–Wiesenfeld sandpile) as the ecstatic **build-and-drop** — grains rain, slopes reach the critical angle, then topple in scale-free power-law avalanches that ARE the music (tiny ticks → the rare full-spectrum DROP)* — attacked via 2 technical approaches. Cashes the 2026-07-11 JURY's #3 ("ecstatic/kinetic/intense — BUILD instead of dissolve") + Karel's "EDM build-and-drop journey arc" wish. Shipped the three.js-terrain approach (`1470-the-drop` — three.js scene-graph is the jury's wanted anti-fragment surface; verified power-law physics). The non-winner was built demoable + scoped-clean (`eslint --max-warnings 0`=0 / `tsc --noEmit`=0), backed up to scratchpad `banked-740/`, folder `rm -rf`'d — never committed. Full rebuildable spec:
+
+### ⭐ `1472-criticality` — the GPGPU-at-scale twin (TOP ship-next for this concept) · `status: banked`
+- **The one question:** the SAME SOC build-and-drop, but a **huge field** — a 256×256 (fallback 128²) sandpile computed on the GPU, so avalanches span from single ticks up to genuinely field-wide cascades.
+- **Technique:** a real Bak–Tang–Wiesenfeld abelian sandpile as a **WebGL2 GPGPU ping-pong** cellular automaton. Float FBOs (RGBA32F→RGBA16F→128² fallback ladder, `checkFramebufferStatus`-validated); `STEP_FS` update pass `new h[c] = h[c] − 4·T(h[c]) + Σ_neighbour T(h[n]) + deposits + shock` (the abelian property [Dhar 1990] makes parallel synchronous toppling exact); open boundary drives it onto the SOC attractor; seeded just under critical density (mean ≈2.0, critical ≈2.125) with sparse tall spikes for a lively opening.
+- **Audio scalars:** a `REDUCE_FS` pass sums toppled-flags/heights/toppled·(u,v) over 8×8 blocks into a 32×32 target, `gl.readPixels`-ed once/frame → `activity` (avalanche size → the drop), `tension` (mean height → the build), avalanche `centroid` (→ continuous inharmonic pitch, stretched partials `[1,2.76,5.40,8.93]`, no scale).
+- **Display:** a `gl.POINTS` field (one vertex per cell, `gl_VertexID`→cell, texelFetch height+heat → additive ember dot) — a data-viz OF the sim, not fragment-art.
+- **Refs:** Bak-Tang-Wiesenfeld (1987) / Per Bak *How Nature Works* (1996) / **Dhar** (1990, abelian property). **Ambition 4/5:** #2 ≥5 subsystems + #3 named refs + #4 multi-cycle + #5 §740 dive.
+- **Why banked, not shipped:** its `gl.POINTS` display is exactly the jury-banned "WebGL2 raw point shader as the primary surface" (`1470`'s three.js scene-graph is the jury's wanted alternative), and its riser is driven by **mean height** — which is flat at the SOC attractor (the physical insight `1470` acts on), so its build may barely move. **Resurrect knob:** ship for a slot wanting bigger scale after (a) swapping the mean-height riser for a **reload-cycle** (grains-since-last-big-release, like `1470`) and (b) **throttling the per-frame `readPixels`** to every-other-frame (its main perf risk / GPU→CPU stall). Full working code in `banked-740/1472-criticality/` (`page.tsx`, `gl.ts`, `audio.ts`, `README.md`).
+
+---
+
 ## §739 (cycle 739 · WIDE — 3 grep-thin explorers) — SHIPPED `1464-crystal-cortex`; two banked ⭐⭐ + ⭐
 
 The WIDE fire: 3 orthogonal explorers on grep-thin techniques (JFA-Voronoi / Lattice-Boltzmann / long-form-stateful WebGPU point-cloud). Shipped the GPU-Voronoi honeycomb (`1464-crystal-cortex`). Both non-winners were built demoable + scoped-clean (all 3 folders passed `tsc --noEmit`=0 / `eslint --max-warnings 0`=0 together), backed up to scratchpad `banked-739/`, folders `rm -rf`'d — never committed. Full rebuildable specs:

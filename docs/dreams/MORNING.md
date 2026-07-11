@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-07-11 ~12:55 UTC (cycle 739, WIDE)
+# Morning digest — last updated 2026-07-11 ~14:40 UTC (cycle 740, DEEP)
 
-> **Jury verdict today**: The consonant-pitch crutch finally cracked — the lab can sound *wrong* on purpose now (1408, 1418) — but WebGL2 shaders (9/15) and mouse-drag (10/15) are the new ruts, so tomorrow: reach for a body and a surface that isn't a fragment shader. See `docs/dreams/JURY.md`.
+> **Jury note:** the jury contradicted itself — it named `1468-the-return` for a first 5/5 but *also* BANNED the void/dissolve-into-light vibe (4× and converging) and begged for **ecstatic/kinetic, BUILD instead of dissolve**. I honored the ban (diversity is the hard gate; you called the lab "too similar") and rested the void. `1468` stays top of the resurrect queue for when the void is fresh again. See `docs/dreams/JURY.md`.
 
-**Open this first:** https://getresonance.vercel.app/dream/1464-crystal-cortex
+**Open this first:** https://getresonance.vercel.app/dream/1470-the-drop
 
 ## New since yesterday
-- **`1464-crystal-cortex`** (cycle 739, WIDE-winner) — *Reach into the DMT "jewelled honeycomb" and play it.* A living **Voronoi lattice** of stained-glass cells, warped into an infinite tunnel; **drag the cells with your fingers** (multi-touch) and each cell sings a continuous tone. The lab's **first GPU Voronoi / Jump-Flooding piece** (grep-0×), backed by today's research dive. Pole: **intense** (breaks the recent calm run). Best on a touch screen — grab a few cells and pull.
-- *2 more were explored this fire and banked — see below + IDEAS §739.*
+- **`1470-the-drop`** (cycle 740, DEEP-winner) — *Play **self-organized criticality** as an instrument.* Grains rain onto a molten 3D landscape, slopes steepen invisibly to the critical angle, then **TOPPLE in scale-free avalanches** that sweep across the terrain as waves of light — and the avalanches ARE the music: mostly tiny ticks, the rare "big one" a **full-spectrum DROP**. This is the **ecstatic EDM build-and-drop** you've asked for as an alt journey arc, rendered as real physics (Bak–Tang–Wiesenfeld sandpile, 1987). It **composes itself and never loops** — leave it running. **Press Space** to force a big one; drag to pour more sand. Pole: **intense** (BUILDS, doesn't dissolve).
+- *A 2nd approach was explored this fire and banked — see below + IDEAS §740.*
 
 ## In progress / partial (banked, ready to ship next)
-- **⭐⭐ `1468-the-return`** — the whole **near-death-experience arc as ONE 7-min unrepeating journey** a point-cloud performs (different at min 6 than min 1). Cashes two jury asks at once: **long-form stateful** + a **2nd WebGPU-compute** piece. Built demoable; top of the resurrect queue.
-- **⭐ `1466-boltzmann-bloom`** — breathe into a **real Lattice-Boltzmann fluid** (grep-0× method) as LSD "breathing surfaces + colour trails." Built demoable; novelty is under the hood.
+- **⭐ `1472-criticality`** — the same build-and-drop at **bigger scale** (a 256² GPU sandpile as a luminous ember point-field). Built demoable; resurrect after two small fixes (noted in IDEAS §740).
+- **⭐⭐ `1468-the-return`** — the near-death-experience arc as ONE 7-min unrepeating WebGPU point-cloud journey (long-form stateful + 2nd WebGPU-compute). **Still top ship-next** — but it's a *dissolve-into-light* piece, so it waits until the void vibe is fresh again.
 
 ## Research findings worth a look
-- **Jump Flooding Algorithm** for GPU Voronoi (Rong & Tan 2006; live again — arXiv 2509.07175 Sept 2025 + Jan-2026 WebGPU impls). Grep-0× here → became `1464`. Full note in RESEARCH §739.
+- **Self-organized criticality is the physics of the ecstatic build-and-drop** — a driven sandpile tunes *itself* to the edge where avalanches follow a power law (Bak-Tang-Wiesenfeld 1987; Bak *How Nature Works* 1996). Tension accumulates to a threshold, then discharges scale-free = the EDM riser→drop. Became `1470`. Full note in RESEARCH §740.
 
 ## Open questions for Karel
-- **The ≥4-model AI-pipeline chain (audio→image→video) is still 0×** — the last standing jury demand, gated **only** on your per-prototype paid-budget go-ahead (FAL/Replicate). Say the word and it ships next fire.
-- Ship **`1468-the-return`** (the NDE WebGPU point-cloud journey) next, or redirect?
+- **The ≥2-model AI-pipeline chain (audio→image→video) is still 0×** — the last standing jury demand, gated **only** on your per-prototype paid-budget go-ahead (FAL/Replicate). Say the word and it ships next fire.
+- The jury's own 5/5 path (`1468-the-return`) fights its own vibe ban. My call was to rest the void and ship an ecstatic piece instead — **agree, or do you want `1468` shipped next regardless?**
 
-_Winner NOT eye/ear-verified for feel (headless — no GPU/display/speakers); build gate is green and it self-demos on load. The cell-voice mix + warp want your browser._
+_Winner's SOC **physics is verified** (headless ~9000-frame sims: real power-law avalanches); NOT eye/ear-verified for *feel* (no GPU/display/speakers). Build gate green, self-demos on load. The camera framing + drop-mix loudness want your browser._
