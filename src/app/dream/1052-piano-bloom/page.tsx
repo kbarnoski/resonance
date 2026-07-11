@@ -348,7 +348,7 @@ export default function PianoBloomPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-4 sm:p-6">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-violet-100 sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-violet-100 sm:text-3xl">
           Piano Bloom
         </h1>
         <p className="mt-1 max-w-md text-base text-foreground">
@@ -384,7 +384,7 @@ export default function PianoBloomPage() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="flex max-w-lg flex-col items-center px-6 text-center">
-            <h2 className="font-serif text-2xl font-semibold text-violet-100 sm:text-3xl">
+            <h2 className="font-semibold text-2xl font-semibold text-violet-100 sm:text-3xl">
               An instrument you play
             </h2>
             <p className="mt-3 text-base text-foreground">
@@ -508,7 +508,7 @@ export default function PianoBloomPage() {
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/85 p-6 backdrop-blur-md">
           <div className="mt-14 max-w-2xl text-foreground">
-            <h2 className="font-serif text-2xl font-semibold text-violet-100">
+            <h2 className="font-semibold text-2xl font-semibold text-violet-100">
               Design notes
             </h2>
             <p className="mt-3 text-base text-foreground">

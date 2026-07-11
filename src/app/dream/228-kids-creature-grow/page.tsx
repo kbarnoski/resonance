@@ -473,7 +473,7 @@ export default function KidsCreatureGrow() {
   return (
     <main className="relative w-full h-screen bg-[#04020c] overflow-hidden">
       <div className="absolute top-0 left-0 right-0 z-10 px-6 pt-5 pointer-events-none">
-        <h1 className="text-2xl font-serif text-foreground tracking-wide">Creature Grow</h1>
+        <h1 className="text-2xl font-semibold text-foreground tracking-wide">Creature Grow</h1>
         <p className="text-base text-muted-foreground mt-1">
           Tap to feed your creature a note — six notes to grow!
         </p>

@@ -265,7 +265,7 @@ export default function FaceMandala() {
 
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="p-5 sm:p-8">
-          <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-4xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Face Mandala
           </h1>
           <p className="mt-2 max-w-xl text-base text-muted-foreground">

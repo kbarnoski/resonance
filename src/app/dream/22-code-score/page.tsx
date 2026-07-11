@@ -481,7 +481,7 @@ export default function CodeScore() {
         {mode === "idle" && playedCount === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
             <div className="text-center">
-              <div className="text-5xl text-muted-foreground/70 mb-3 font-serif">𝄞</div>
+              <div className="text-5xl text-muted-foreground/70 mb-3 font-semibold">𝄞</div>
               <p className="text-[11px] text-muted-foreground/70">write a score · press play</p>
             </div>
           </div>

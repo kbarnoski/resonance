@@ -324,7 +324,7 @@ export default function KeyBloomPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Key Bloom</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Key Bloom</h1>
         <p className="mt-1 max-w-xl text-base text-foreground">
           A keyboard played as a psychedelic organ — each key sounds a
           just-intonation tone and blooms a chrysanthemum of form-constant
@@ -346,7 +346,7 @@ export default function KeyBloomPage() {
           <button
             type="button"
             onClick={() => void handleStart()}
-            className="rounded-2xl border border-violet-300/40 bg-violet-300/10 px-6 py-3.5 font-serif text-xl text-violet-300/95 backdrop-blur transition hover:bg-violet-300/20"
+            className="rounded-2xl border border-violet-300/40 bg-violet-300/10 px-6 py-3.5 font-semibold text-xl text-violet-300/95 backdrop-blur transition hover:bg-violet-300/20"
           >
             Play — press A–L or tap the keys
           </button>

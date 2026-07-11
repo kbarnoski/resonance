@@ -411,7 +411,7 @@ export default function KidsMagnetNotesPage() {
     <div className="flex flex-col h-screen bg-[#020310] text-foreground">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-xl font-serif tracking-wide">Magnet Notes</h1>
+          <h1 className="text-xl font-semibold tracking-wide">Magnet Notes</h1>
           <p className="text-base text-muted-foreground mt-0.5">
             Tap an orb to send it toward the others — notes ring when they meet
           </p>

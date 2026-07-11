@@ -549,7 +549,7 @@ export default function StarPilot() {
 
       {/* Top HUD */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-6 text-center">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Star Pilot
         </h1>
         <p className="mt-1 max-w-md text-base text-muted-foreground">

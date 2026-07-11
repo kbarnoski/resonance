@@ -435,7 +435,7 @@ export default function HumBlossomPage() {
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         <header className="w-full max-w-md text-center">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Hum Blossom</h1>
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Hum Blossom</h1>
           <p className="mt-3 text-base text-foreground">
             Hum a note and a glowing flower blooms in tune with you — a soft choir
             sings a chord back.

@@ -273,7 +273,7 @@ export default function KidsSongSprout() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#02040a] px-6 text-center text-foreground">
         <div className="text-5xl select-none" aria-hidden="true">🌱</div>
-        <h1 className="text-3xl font-serif text-foreground">Song Sprout</h1>
+        <h1 className="text-3xl font-semibold text-foreground">Song Sprout</h1>
         <p className="max-w-sm text-base text-muted-foreground">
           A tiny glowing creature that listens to your little songs, remembers
           them, and slowly grows up — singing your own melodies back, made new.
@@ -311,7 +311,7 @@ export default function KidsSongSprout() {
 
       {/* HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-1 p-5 text-center">
-        <h1 className="text-2xl font-serif text-foreground">Song Sprout</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Song Sprout</h1>
         <p className="text-base text-violet-300">{stage}</p>
         <p className="text-base text-muted-foreground">
           {mode === "ghost"

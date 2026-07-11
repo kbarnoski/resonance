@@ -348,7 +348,7 @@ export default function TanpuraThroatPage() {
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         <header className="w-full max-w-xl text-center">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Tanpura Throat</h1>
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Tanpura Throat</h1>
           <p className="mt-3 text-base text-foreground">
             Sing into it and a bank of just-intonation sympathetic strings rings back — a
             physical-modeling drone that answers the harmonics of your voice.

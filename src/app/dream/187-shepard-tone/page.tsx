@@ -369,7 +369,7 @@ export default function ShepardTonePage() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-start justify-between px-6 pt-5 pointer-events-none">
         <div>
-          <h1 className="text-2xl font-serif text-foreground leading-tight">Shepard Tone</h1>
+          <h1 className="text-2xl font-semibold text-foreground leading-tight">Shepard Tone</h1>
           <p className="text-base text-muted-foreground mt-0.5">An auditory illusion: the endless staircase</p>
         </div>
         <Link

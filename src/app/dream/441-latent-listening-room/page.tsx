@@ -541,7 +541,7 @@ export default function LatentListeningRoomPage() {
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-8">
         {/* Header */}
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Latent Listening Room
           </h1>
           <p className="mt-2 text-base leading-relaxed text-muted-foreground">

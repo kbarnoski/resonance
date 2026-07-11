@@ -266,7 +266,7 @@ export default function MembraneDrum() {
     <div className="min-h-screen bg-[#0c0e16] text-foreground flex flex-col items-center px-4 py-8 gap-6">
 
       <header className="text-center max-w-lg">
-        <h1 className="text-2xl font-serif font-semibold text-foreground mb-2">
+        <h1 className="text-2xl font-semibold font-semibold text-foreground mb-2">
           Membrane Drum
         </h1>
         <p className="text-base text-muted-foreground">

@@ -292,7 +292,7 @@ export default function BeatFieldPage() {
 
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground md:text-5xl">
+          <h1 className="font-semibold text-3xl font-semibold tracking-tight text-foreground md:text-5xl">
             Beat Field
           </h1>
           <p className="mt-3 text-base text-foreground">
@@ -375,7 +375,7 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
         >
           Close
         </button>
-        <h2 className="font-serif text-2xl font-semibold text-foreground">Beat Field — design notes</h2>
+        <h2 className="font-semibold text-2xl font-semibold text-foreground">Beat Field — design notes</h2>
 
         <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground">
           <p>

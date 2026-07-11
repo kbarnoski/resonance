@@ -584,7 +584,7 @@ export default function RoomAcousticPage() {
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
         <div>
-          <h1 className="text-2xl font-serif font-semibold text-foreground leading-tight">
+          <h1 className="text-2xl font-semibold font-semibold text-foreground leading-tight">
             Room Acoustic
           </h1>
           <p className="text-base text-muted-foreground mt-0.5">

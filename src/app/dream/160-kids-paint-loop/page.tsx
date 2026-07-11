@@ -368,7 +368,7 @@ export default function Page() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-black gap-6 px-8">
         <p className="text-base font-mono text-muted-foreground">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-foreground">Loop Garden</h1>
+        <h1 className="text-3xl font-semibold text-center text-foreground">Loop Garden</h1>
         <p className="text-base text-muted-foreground text-center max-w-sm leading-relaxed">
           Draw a glowing stroke on the screen — it turns into a looping melody!
           Draw up to four strokes in different colors. Tap any stroke to erase it.

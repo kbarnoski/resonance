@@ -348,7 +348,7 @@ export default function GlowBugPage() {
     <div className="flex flex-col h-screen bg-black text-foreground">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-xl font-serif tracking-wide">Glow Bugs</h1>
+          <h1 className="text-xl font-semibold tracking-wide">Glow Bugs</h1>
           <p className="text-base text-muted-foreground mt-0.5">
             Release glow-bugs · they drift to the garden lamps and chime
           </p>

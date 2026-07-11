@@ -241,7 +241,7 @@ export default function EmergePage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-violet-200/90">
             Resonance · dream 1263
           </p>
-          <h1 className="mb-4 font-serif text-3xl text-foreground md:text-5xl">Emerge</h1>
+          <h1 className="mb-4 font-semibold text-3xl text-foreground md:text-5xl">Emerge</h1>
           <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
             A drug-free psychedelic <em>journey</em> — one six-minute arc from
             stillness, through ego-dissolution, and softly back. A vast cloud of
@@ -288,7 +288,7 @@ export default function EmergePage() {
       {started && !glError && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-            <span className="font-serif text-xl text-foreground">Emerge</span>
+            <span className="font-semibold text-xl text-foreground">Emerge</span>
             <span className="font-mono text-base text-violet-200/95">{hud.phaseName}</span>
             <span className="font-mono text-base text-muted-foreground">
               {mmss(hud.elapsed)} / {mmss(TOTAL)} · {(hud.journey * 100).toFixed(0)}%

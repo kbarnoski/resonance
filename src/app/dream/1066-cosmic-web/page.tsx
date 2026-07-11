@@ -296,7 +296,7 @@ export default function CosmicWebPage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-violet-300/90">
             Resonance · dream 1066
           </p>
-          <h1 className="mb-4 font-serif text-3xl text-foreground md:text-5xl">The Cosmic Web</h1>
+          <h1 className="mb-4 font-semibold text-3xl text-foreground md:text-5xl">The Cosmic Web</h1>
           <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
             The same slime-mold algorithm astronomers used to map dark-matter
             filaments, turned into a playable cosmic-ambient instrument. Seed
@@ -333,7 +333,7 @@ export default function CosmicWebPage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-            <span className="font-serif text-xl text-foreground">The Cosmic Web</span>
+            <span className="font-semibold text-xl text-foreground">The Cosmic Web</span>
             {path === "gpu" && (
               <span className="font-mono text-base text-violet-300/95">WebGPU compute · {hud.agents.toLocaleString()} agents</span>
             )}

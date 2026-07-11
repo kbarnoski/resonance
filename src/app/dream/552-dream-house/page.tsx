@@ -682,7 +682,7 @@ export default function DreamHousePage() {
           <p className="text-violet-300/70 text-xs font-mono tracking-widest uppercase">
             dream house · 552
           </p>
-          <h1 className="text-3xl font-serif text-foreground leading-tight">
+          <h1 className="text-3xl font-semibold text-foreground leading-tight">
             The Drone Pilgrimage
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
@@ -905,7 +905,7 @@ export default function DreamHousePage() {
 
       {/* ── Top bar readout ──────────────────────────────────────────────── */}
       <div className="relative z-10 flex-shrink-0 flex items-center justify-between px-4 py-2 bg-black/30 backdrop-blur-sm border-b border-border">
-        <span className="text-base font-serif text-foreground">
+        <span className="text-base font-semibold text-foreground">
           Dream House
         </span>
         <span className="text-xs font-mono text-muted-foreground/70">

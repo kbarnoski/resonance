@@ -495,7 +495,7 @@ export default function HarmonicMirrorPage() {
     <main className="min-h-screen bg-[#08070c] text-foreground px-5 py-8 md:px-10">
       <div className="mx-auto max-w-4xl">
         <header className="mb-5">
-          <h1 className="font-serif text-3xl md:text-4xl text-foreground">
+          <h1 className="font-semibold text-3xl md:text-4xl text-foreground">
             Harmonic Mirror
           </h1>
           <p className="mt-2 text-base text-muted-foreground max-w-2xl">

@@ -250,7 +250,7 @@ export default function RijkeFlamePage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#0d0b09]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-foreground">Rijke Flame</h1>
+          <h1 className="font-semibold text-2xl font-bold text-foreground">Rijke Flame</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"

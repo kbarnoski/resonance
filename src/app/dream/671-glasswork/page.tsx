@@ -374,7 +374,7 @@ export default function GlassworkPage() {
       {/* HUD / controls */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10">
         <header className="max-w-xl">
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             Glasswork
           </h1>
           <p className="mt-2 text-base text-muted-foreground">

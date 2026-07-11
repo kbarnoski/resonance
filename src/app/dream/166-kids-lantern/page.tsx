@@ -211,7 +211,7 @@ export default function Page() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-[#020208] gap-6 px-8">
         <p className="text-sm font-mono text-muted-foreground">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-foreground">Night Garden</h1>
+        <h1 className="text-3xl font-semibold text-center text-foreground">Night Garden</h1>
         <p className="text-base text-muted-foreground text-center max-w-xs leading-relaxed">
           Hidden stars are waiting in the dark — each one holds a note.
           Hold your finger to carry the lantern and wake them up!

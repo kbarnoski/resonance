@@ -119,7 +119,7 @@ export default function KidsShadowDance() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
         {phase !== "playing" && (
           <>
-            <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-5xl">
+            <h1 className="font-semibold text-3xl font-semibold text-foreground sm:text-5xl">
               Shadow Dance
             </h1>
             <p className="max-w-xl text-base text-foreground sm:text-lg">

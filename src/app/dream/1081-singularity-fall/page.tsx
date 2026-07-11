@@ -172,7 +172,7 @@ export default function SingularityFallPage() {
 
       {phase !== "running" && (
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-serif text-2xl sm:text-4xl text-foreground">Singularity Fall</h1>
+          <h1 className="font-semibold text-2xl sm:text-4xl text-foreground">Singularity Fall</h1>
           <p className="mt-4 max-w-xl text-base text-foreground">
             Fall toward a black hole — light bending around it, your own sound red-shifting —
             until you cross the horizon and the universe swallows itself.

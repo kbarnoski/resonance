@@ -385,7 +385,7 @@ export default function KidsSolfegeSigns() {
           ← back to the dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-foreground">
+        <h1 className="mt-4 font-semibold text-3xl sm:text-4xl text-foreground">
           Sing With Your Hand{" "}
           <span className="text-violet-300">(solfège signs)</span>
         </h1>
@@ -506,7 +506,7 @@ export default function KidsSolfegeSigns() {
                     <span className="text-2xl leading-none">
                       {DEGREE_EMOJI[d]}
                     </span>
-                    <span className="mt-1 font-serif text-lg">
+                    <span className="mt-1 font-semibold text-lg">
                       {DEGREE_LABEL[d]}
                     </span>
                   </button>

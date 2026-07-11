@@ -270,7 +270,7 @@ export default function DreamCathedralPage() {
       {/* title + brief (idle) */}
       {!entered && !glError && (
         <div className="pointer-events-none absolute left-0 top-0 p-6 sm:p-9">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:text-4xl">
+          <h1 className="font-semibold text-3xl font-semibold tracking-tight text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:text-4xl">
             Dream Cathedral
           </h1>
           <p className="mt-3 max-w-md text-base leading-relaxed text-foreground drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">
@@ -286,7 +286,7 @@ export default function DreamCathedralPage() {
         <div className="absolute inset-0 flex items-end justify-center pb-16 sm:items-center sm:pb-0">
           <button
             onClick={enter}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/30 px-6 py-3 font-serif text-xl font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/45"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/30 px-6 py-3 font-semibold text-xl font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/45"
           >
             Enter the cathedral ▸
           </button>
@@ -309,7 +309,7 @@ export default function DreamCathedralPage() {
         <div className="absolute inset-0 flex items-center justify-center bg-black/25 backdrop-blur-[2px]">
           <button
             onClick={resume}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-6 py-3 font-serif text-xl text-foreground transition-colors hover:bg-black/55"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-6 py-3 font-semibold text-xl text-foreground transition-colors hover:bg-black/55"
           >
             Click to keep walking
           </button>
@@ -334,7 +334,7 @@ export default function DreamCathedralPage() {
 
       {showNotes && (
         <div className="absolute bottom-20 right-4 w-[min(92vw,32rem)] rounded-xl border border-border bg-black/85 p-5 backdrop-blur-md">
-          <h2 className="font-serif text-xl font-semibold text-foreground">
+          <h2 className="font-semibold text-xl font-semibold text-foreground">
             Design notes
           </h2>
           <p className="mt-3 text-base leading-relaxed text-foreground">

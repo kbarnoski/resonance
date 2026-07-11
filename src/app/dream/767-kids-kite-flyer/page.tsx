@@ -868,7 +868,7 @@ export default function KiteFlyerPage() {
       {/* ── start / intro overlay ── */}
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-violet-400/30 to-slate-950/85 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-4xl font-bold text-foreground drop-shadow sm:text-5xl">
+          <h1 className="font-semibold text-4xl font-bold text-foreground drop-shadow sm:text-5xl">
             Kite Flyer
           </h1>
           <p className="max-w-md text-base text-foreground sm:text-lg">
@@ -912,7 +912,7 @@ export default function KiteFlyerPage() {
 
       {showNotes && (
         <div className="absolute bottom-20 right-4 z-20 max-h-[70dvh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-slate-900/90 p-5 text-base text-foreground shadow-2xl backdrop-blur">
-          <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
+          <h2 className="mb-2 font-semibold text-xl text-foreground">Design notes</h2>
           <p className="mb-3 text-foreground">
             <span className="font-semibold">The question:</span> what if a
             4-year-old could TILT the tablet to fly a glowing kite, and the

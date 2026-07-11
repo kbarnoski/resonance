@@ -341,7 +341,7 @@ export default function KidsRainDrum() {
   return (
     <div className="flex flex-col h-screen bg-[#070b12] text-foreground">
       <div className="px-5 pt-4 pb-2 flex-shrink-0">
-        <h1 className="text-2xl font-serif text-foreground">Rain Drum</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Rain Drum</h1>
         <p className="text-base text-muted-foreground mt-0.5">
           Four clouds drop notes from the sky. Tap a cloud to change its weather.
         </p>

@@ -320,7 +320,7 @@ export default function BreathBloomPage() {
     <div className="flex flex-col h-screen bg-black text-foreground">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-xl font-serif tracking-wide">Breath Bloom</h1>
+          <h1 className="text-xl font-semibold tracking-wide">Breath Bloom</h1>
           <p className="text-base text-muted-foreground mt-0.5">
             Five glowing petals breathe in unison — tap to bloom
           </p>

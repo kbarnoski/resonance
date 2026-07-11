@@ -171,7 +171,7 @@ export default function WorldPulsePage() {
 
       {/* header */}
       <div className="relative z-10 flex flex-col gap-3 p-6 sm:p-10">
-        <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
+        <h1 className="font-semibold text-3xl tracking-tight text-foreground sm:text-4xl">
           World Pulse
         </h1>
         <p className="max-w-xl text-base leading-relaxed text-foreground">

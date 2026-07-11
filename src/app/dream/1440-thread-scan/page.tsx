@@ -257,7 +257,7 @@ export default function ThreadScanPage() {
 
       {/* title */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
           Thread Scan
         </h1>
         <p className="mt-1 max-w-xl text-base text-muted-foreground">

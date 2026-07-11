@@ -273,7 +273,7 @@ export default function SeismicChoirPage() {
 
       {/* top-left: title + concept */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7 max-w-xl">
-        <h1 className="font-serif text-2xl sm:text-4xl text-foreground tracking-tight">
+        <h1 className="font-semibold text-2xl sm:text-4xl text-foreground tracking-tight">
           Seismic Choir
         </h1>
         <p className="mt-2 text-base text-muted-foreground leading-snug">
@@ -299,7 +299,7 @@ export default function SeismicChoirPage() {
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={() => void runStart()}
-            className="min-h-[44px] px-7 py-4 rounded-lg border border-violet-400/40 bg-violet-950/40 text-foreground text-xl font-serif backdrop-blur-sm hover:bg-violet-900/40 transition-colors pointer-events-auto"
+            className="min-h-[44px] px-7 py-4 rounded-lg border border-violet-400/40 bg-violet-950/40 text-foreground text-xl font-semibold backdrop-blur-sm hover:bg-violet-900/40 transition-colors pointer-events-auto"
           >
             ▶ Start the Choir
           </button>
@@ -347,7 +347,7 @@ export default function SeismicChoirPage() {
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/80 p-5">
           <div className="max-w-lg rounded-lg border border-border bg-zinc-950/95 p-6 text-base text-foreground leading-relaxed">
-            <h2 className="font-serif text-xl text-foreground mb-3">Design notes</h2>
+            <h2 className="font-semibold text-xl text-foreground mb-3">Design notes</h2>
             <p className="mb-3">
               Live USGS feed (all quakes, past 24h) sonified per Florian
               Dombois&apos; auditory seismology: magnitude → loudness, duration &amp;

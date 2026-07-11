@@ -375,7 +375,7 @@ export default function SpatialGrove() {
         >
           ← dream lab
         </Link>
-        <h1 className="font-serif text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
+        <h1 className="font-semibold text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
           Spatial Grove
         </h1>
         <p className="text-base text-muted-foreground mt-1 leading-relaxed">
@@ -400,7 +400,7 @@ export default function SpatialGrove() {
       {/* idle / loading overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-serif text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
+          <h2 className="font-semibold text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
             Spatial Grove
           </h2>
           <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
@@ -470,7 +470,7 @@ export default function SpatialGrove() {
       {/* design notes panel */}
       {showNotes && isRunning && (
         <div className="absolute bottom-28 left-4 max-w-lg p-5 rounded-2xl bg-black/80 border border-border backdrop-blur">
-          <h3 className="text-xl text-foreground mb-2 font-serif">Design notes</h3>
+          <h3 className="text-xl text-foreground mb-2 font-semibold">Design notes</h3>
           <p className="text-base text-muted-foreground leading-relaxed mb-2">
             {TREE_COUNT} song-trees sit at <span className="text-violet-300">fixed</span> world
             positions in a shallow arc. Each owns a{" "}

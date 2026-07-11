@@ -287,7 +287,7 @@ export default function CrystalCortex() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+            <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
               Crystal Cortex
             </h1>
             <p className="mt-4 text-base leading-relaxed text-foreground">
@@ -321,7 +321,7 @@ export default function CrystalCortex() {
       {/* Running HUD */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xs">
-          <h2 className="font-serif text-xl text-foreground">Crystal Cortex</h2>
+          <h2 className="font-semibold text-xl text-foreground">Crystal Cortex</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Drag a cell to bend the honeycomb and glide its voice.
           </p>

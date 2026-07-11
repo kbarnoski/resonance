@@ -927,7 +927,7 @@ export default function KidsPulseBridge() {
             style={{ background: hsl(COL_L.h, COL_L.s, 50, 0.9), boxShadow: `0 0 18px ${hsl(COL_L.h, COL_L.s, 50)}` }}
             aria-hidden="true"
           />
-          <h1 className="text-3xl font-serif text-foreground">Pulse Bridge</h1>
+          <h1 className="text-3xl font-semibold text-foreground">Pulse Bridge</h1>
           <div
             className="w-10 h-10 rounded-full"
             style={{ background: hsl(COL_R.h, COL_R.s, 44, 0.9), boxShadow: `0 0 18px ${hsl(COL_R.h, COL_R.s, 44)}` }}

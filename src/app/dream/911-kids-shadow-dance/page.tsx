@@ -212,7 +212,7 @@ export default function KidsShadowDance() {
       {phase !== "playing" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
           <div className="text-6xl">🕺✨</div>
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             Shadow Dance
           </h1>
           <p className="max-w-md text-base text-foreground sm:text-lg">

@@ -382,7 +382,7 @@ export default function QuietudePage() {
       {/* Foreground UI */}
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-2xl flex-col items-center px-6 py-10">
         <header className="text-center">
-          <h1 className="font-serif text-4xl tracking-tight text-stone-800 sm:text-5xl">
+          <h1 className="font-semibold text-4xl tracking-tight text-stone-800 sm:text-5xl">
             Quietude
           </h1>
           <p className="mt-3 text-base text-stone-600">

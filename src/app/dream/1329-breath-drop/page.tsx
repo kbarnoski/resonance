@@ -414,7 +414,7 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
               Resonance · Dream Lab · 1329
             </p>
-            <h1 className="mt-3 font-serif text-2xl font-semibold text-foreground sm:text-4xl">
+            <h1 className="mt-3 font-semibold text-2xl font-semibold text-foreground sm:text-4xl">
               Breath Drop
             </h1>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">

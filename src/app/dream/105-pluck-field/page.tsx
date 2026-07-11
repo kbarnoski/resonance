@@ -275,7 +275,7 @@ export default function PluckField() {
   if (phase === "idle") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#04040e] px-6 text-center gap-6">
-        <h1 className="text-3xl font-serif text-foreground">Pluck Field</h1>
+        <h1 className="text-3xl font-semibold text-foreground">Pluck Field</h1>
         <p className="text-base text-muted-foreground max-w-sm">
           24 virtual strings across four octaves. Click any string to pluck it.
           Each string uses Karplus-Strong physical modeling — a noise burst

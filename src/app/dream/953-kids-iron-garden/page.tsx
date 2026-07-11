@@ -434,7 +434,7 @@ export default function IronGardenPage() {
     <div className="flex flex-col h-screen bg-[#05061a] text-foreground overflow-hidden">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-2xl font-serif tracking-wide text-foreground">Iron Garden</h1>
+          <h1 className="text-2xl font-semibold tracking-wide text-foreground">Iron Garden</h1>
           <p className="text-base text-foreground mt-0.5">
             Drag the glowing flowers — watch the invisible magnet lines appear and hear them sing together.
           </p>

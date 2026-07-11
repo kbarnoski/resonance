@@ -802,7 +802,7 @@ export default function OrbitChoirPage() {
 
       {phase === "idle" && (
         <div className="relative z-10 max-w-md px-6 text-center">
-          <h1 className="font-serif text-2xl text-foreground">Orbit Choir</h1>
+          <h1 className="font-semibold text-2xl text-foreground">Orbit Choir</h1>
           <p className="mt-4 text-base text-foreground">
             Karel&apos;s <span className="text-violet-300">Welcome Home</span>{" "}
             piano recordings become a circle of voices scattered around your

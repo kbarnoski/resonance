@@ -279,7 +279,7 @@ export default function CarrierMeltPage() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-2xl tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-semibold text-2xl tracking-tight text-foreground md:text-4xl">
             Carrier Melt
           </h1>
           <p className="mt-2 text-base text-muted-foreground">

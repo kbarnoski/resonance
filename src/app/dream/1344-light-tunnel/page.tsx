@@ -405,7 +405,7 @@ export default function LightTunnelPage() {
 
       {/* ── corner UI ─────────────────────────────────────────────────────── */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-sm p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
           Light Tunnel
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
@@ -455,7 +455,7 @@ export default function LightTunnelPage() {
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-5 backdrop-blur-sm">
           <div className="max-h-[85vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#080b16] p-6 text-foreground shadow-2xl">
             <div className="flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-foreground">Light Tunnel</h2>
+              <h2 className="font-semibold text-2xl text-foreground">Light Tunnel</h2>
               <button
                 onClick={() => setNotesOpen(false)}
                 className="min-h-[44px] rounded-full border border-border px-4 py-2.5 font-mono text-sm text-muted-foreground transition hover:text-foreground"

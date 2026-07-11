@@ -391,7 +391,7 @@ export default function DissolvePage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">dissolve</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">dissolve</h1>
         <p className="mt-1 max-w-xl text-base text-foreground">
           Play the keyboard: at first the sound you hear and the shape you see are
           bound together — then the senses slowly stop agreeing.
@@ -413,7 +413,7 @@ export default function DissolvePage() {
           <button
             type="button"
             onClick={() => void handleStart()}
-            className="min-h-[44px] rounded-2xl border border-slate-300/40 bg-slate-300/10 px-6 py-3.5 font-serif text-xl text-slate-100 backdrop-blur transition hover:bg-slate-300/20"
+            className="min-h-[44px] rounded-2xl border border-slate-300/40 bg-slate-300/10 px-6 py-3.5 font-semibold text-xl text-slate-100 backdrop-blur transition hover:bg-slate-300/20"
           >
             Begin — press A–L or tap the pads
           </button>

@@ -350,7 +350,7 @@ export default function SpectralLoomPage() {
     <main className="min-h-screen bg-[#04050a] px-5 py-8 text-foreground sm:px-8">
       <div className="mx-auto max-w-3xl">
         <header className="mb-5">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Spectral Loom
           </h1>
           <p className="mt-2 text-base text-muted-foreground">

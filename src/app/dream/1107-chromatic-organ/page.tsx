@@ -320,7 +320,7 @@ export default function Page() {
 
       {/* Title + description chip (dark translucent for contrast on daylight) */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-md rounded-2xl bg-neutral-900/70 px-4 py-3 backdrop-blur-sm">
-        <h1 className="font-serif text-2xl text-foreground">Chromatic Organ</h1>
+        <h1 className="font-semibold text-2xl text-foreground">Chromatic Organ</h1>
         <p className="mt-1 text-base text-foreground">
           Play notes and <em>see</em> the music — every pitch bursts into its
           Scriabin colour; chords interfere into shimmering moiré, in bright
@@ -378,7 +378,7 @@ export default function Page() {
       {/* Start overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-[#f4efe6]/85 px-6 text-center backdrop-blur-sm">
-          <h2 className="font-serif text-3xl text-neutral-900">
+          <h2 className="font-semibold text-3xl text-neutral-900">
             A pianist&apos;s chromesthesia
           </h2>
           <p className="max-w-md text-base text-neutral-700">
@@ -415,7 +415,7 @@ export default function Page() {
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-neutral-950/60 p-4 backdrop-blur-sm">
           <div className="max-h-full max-w-lg overflow-y-auto rounded-2xl bg-[#faf7f0] p-6 text-neutral-900 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
-              <h3 className="font-serif text-2xl">Design notes</h3>
+              <h3 className="font-semibold text-2xl">Design notes</h3>
               <button
                 type="button"
                 onClick={() => setShowNotes(false)}

@@ -305,7 +305,7 @@ export default function VocalChoirPage() {
 
         {phase === 'idle' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6">
-            <h1 className="text-2xl font-serif text-foreground">Vocal Choir</h1>
+            <h1 className="text-2xl font-semibold text-foreground">Vocal Choir</h1>
             <p className="text-base text-muted-foreground text-center max-w-sm">
               Sing or hum any note. Three harmony voices materialise around you in 3D
               space — a major third, a perfect fifth, and a bass octave track every pitch

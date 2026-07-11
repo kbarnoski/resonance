@@ -324,7 +324,7 @@ export default function KholeTunnelPage() {
 
       {/* hero / controls */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
+        <h1 className="font-semibold text-3xl tracking-tight text-foreground sm:text-4xl">
           K-Hole Tunnel
         </h1>
         <p className="mt-3 text-base leading-relaxed text-foreground">
@@ -366,7 +366,7 @@ export default function KholeTunnelPage() {
       {showNotes && (
         <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/80 p-5 backdrop-blur-md sm:p-10">
           <div className="max-w-2xl py-6 text-foreground">
-            <h2 className="font-serif text-2xl text-foreground sm:text-3xl">
+            <h2 className="font-semibold text-2xl text-foreground sm:text-3xl">
               K-Hole Tunnel — design notes
             </h2>
             <p className="mt-4 text-base leading-relaxed text-foreground">

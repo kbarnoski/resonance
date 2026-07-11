@@ -491,7 +491,7 @@ export default function ApopheniaFieldPage() {
     <main className="min-h-screen bg-[#07060c] px-4 py-6 text-foreground sm:px-6">
       <div className="mx-auto max-w-3xl">
         <header className="mb-4">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Apophenia Field
           </h1>
           <p className="mt-1 text-base text-foreground">

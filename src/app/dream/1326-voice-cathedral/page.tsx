@@ -647,7 +647,7 @@ export default function VoiceCathedralPage() {
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         {/* Header (scrim keeps text readable when the field blooms white) */}
         <header className="w-full max-w-xl rounded-2xl bg-black/35 px-5 py-4 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Voice Cathedral</h1>
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Voice Cathedral</h1>
           <p className="mt-2 text-base text-foreground">
             Hum or sing a sustained tone. Your held voice is captured, frozen and
             multiplied into a slowly-blooming cathedral of light — sustain, and
@@ -704,7 +704,7 @@ export default function VoiceCathedralPage() {
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/80 px-6 py-10 backdrop-blur-md">
           <div className="mx-auto max-w-2xl text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Voice Cathedral — design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Voice Cathedral — design notes</h2>
             <p className="mt-4 text-base text-foreground">
               <span className="text-foreground">The question:</span> what if your own
               held voice could build a vast luminous meditative space? A sustained

@@ -405,7 +405,7 @@ export default function SpokenSpellPage() {
       {/* ── Header ── */}
       <header className="relative z-10 flex items-start justify-between px-6 pt-6 pb-2 shrink-0">
         <div>
-          <h1 className="text-3xl font-serif font-light tracking-wide text-foreground">
+          <h1 className="text-3xl font-semibold font-light tracking-wide text-foreground">
             Spoken Spell
           </h1>
           <p className="mt-1 text-base text-muted-foreground max-w-lg leading-snug">

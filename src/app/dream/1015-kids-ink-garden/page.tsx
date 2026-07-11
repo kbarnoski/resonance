@@ -279,7 +279,7 @@ export default function InkGardenPage() {
   return (
     <main className="min-h-screen bg-[#03040a] text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Ink Garden
         </h1>
         <p className="mt-2 text-base text-foreground">

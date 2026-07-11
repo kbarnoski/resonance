@@ -181,7 +181,7 @@ export default function AuroralPage() {
 
       {/* header */}
       <header className="relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
           Auroral
         </h1>
         <p className="mt-2 max-w-2xl text-base text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">

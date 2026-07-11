@@ -437,7 +437,7 @@ export default function EarthPulse() {
       {/* ── intro overlay ─────────────────────────────────────────────────── */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-          <h1 className="text-3xl md:text-4xl font-serif text-foreground mb-3 tracking-tight">Earth Pulse</h1>
+          <h1 className="text-3xl md:text-4xl font-semibold text-foreground mb-3 tracking-tight">Earth Pulse</h1>
           <p className="text-base text-foreground max-w-lg leading-relaxed mb-2">
             The last 24 hours of global earthquakes, played as music. Each quake sounds the moment
             it happened — <span className="text-violet-300/95">bigger = deeper boom</span>,{" "}

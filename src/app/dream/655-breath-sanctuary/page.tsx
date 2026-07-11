@@ -331,7 +331,7 @@ export default function BreathSanctuaryPage() {
       {/* Sparse text overlay. */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-between px-6 py-10 text-center">
         <header className="max-w-xl">
-          <h1 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl tracking-wide text-foreground sm:text-4xl">
             Breath Sanctuary
           </h1>
           <p className="mt-2 text-base text-muted-foreground">

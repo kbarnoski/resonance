@@ -142,7 +142,7 @@ export default function EntityLatticePage() {
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-border">
-            <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
+            <h1 className="font-semibold text-3xl tracking-tight text-foreground sm:text-4xl">
               Entity Lattice
             </h1>
             <p className="mt-3 text-base leading-relaxed text-foreground">
@@ -183,7 +183,7 @@ export default function EntityLatticePage() {
       {/* ── Running HUD ────────────────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-foreground">Entity Lattice</h1>
+          <h1 className="font-semibold text-2xl text-foreground">Entity Lattice</h1>
           {mode === "body" && (
             <p className="mt-1 font-mono text-base text-violet-300/95">
               ● body tracking
@@ -230,7 +230,7 @@ export default function EntityLatticePage() {
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
           <div className="max-w-2xl text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
 
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">The question.</span> What if your

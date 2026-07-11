@@ -706,7 +706,7 @@ export default function AuroraHarp() {
       {/* idle / start */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
+          <h1 className="font-semibold text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
             Aurora Harp
           </h1>
           <p className="text-base text-foreground max-w-lg mb-2 leading-relaxed">
@@ -742,7 +742,7 @@ export default function AuroraHarp() {
       {running && (
         <>
           <div className="absolute top-4 left-4 space-y-1 pointer-events-none select-none">
-            <div className="font-serif text-2xl text-foreground">Aurora Harp</div>
+            <div className="font-semibold text-2xl text-foreground">Aurora Harp</div>
             <div className="text-base text-foreground font-mono">
               wind {Math.round(readout.speed)} km/s · {readout.density.toFixed(1)} p/cm³
             </div>
@@ -804,7 +804,7 @@ export default function AuroraHarp() {
       {showNotes && phase === "idle" && (
         <div className="absolute inset-0 bg-black/85 flex items-center justify-center px-6 overflow-y-auto">
           <div className="max-w-lg text-left py-10">
-            <h2 className="font-serif text-2xl text-foreground mb-4">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground mb-4">Design notes</h2>
             <p className="text-base text-foreground mb-3 leading-relaxed">
               Two live NOAA SWPC feeds (5-minute plasma + magnetic-field products
               from ACE/DSCOVR at the L1 point) are polled every 60 seconds from the

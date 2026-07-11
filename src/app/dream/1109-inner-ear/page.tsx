@@ -222,7 +222,7 @@ export default function InnerEarPage() {
           <p className="text-[13px] font-semibold uppercase tracking-widest text-neutral-500">
             Resonance · Dream Lab · 1109
           </p>
-          <h1 className="font-serif text-3xl font-bold text-neutral-900 sm:text-4xl">
+          <h1 className="font-semibold text-3xl font-bold text-neutral-900 sm:text-4xl">
             Inner Ear
           </h1>
           <p className="mt-1 max-w-2xl text-base text-neutral-700">

@@ -429,7 +429,7 @@ export default function KidsRipplePond() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#020a1a] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">💧</div>
-        <h1 className="text-2xl font-serif text-foreground">Ripple Pond</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Ripple Pond</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Tap to drop a stone — the ripple sings. When two ripples meet, they make a chord
           and burst with light.

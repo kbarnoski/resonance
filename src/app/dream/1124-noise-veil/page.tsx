@@ -225,7 +225,7 @@ export default function NoiseVeilPage() {
       {/* product panel */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-3 p-4 sm:p-6">
         <div className="pointer-events-auto max-w-xl rounded-2xl border border-border bg-black/55 p-4 shadow-xl backdrop-blur-md sm:p-5">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Noise Veil
           </h1>
           <p className="mt-1.5 text-base leading-relaxed text-foreground">

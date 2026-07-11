@@ -232,7 +232,7 @@ export default function EmptyWordsPage() {
           >
             ← dream lab
           </Link>
-          <h1 className="mt-2 font-serif text-3xl sm:text-4xl text-foreground">Empty Words</h1>
+          <h1 className="mt-2 font-semibold text-3xl sm:text-4xl text-foreground">Empty Words</h1>
           <p className="mt-1 text-base text-muted-foreground max-w-2xl">
             Paste a poem or an email and a transparent engine{" "}
             <span className="text-violet-300/95">composes</span> it — every note carries the
@@ -270,7 +270,7 @@ export default function EmptyWordsPage() {
           <span className="text-base text-muted-foreground">now singing:</span>
           {readout ? (
             <>
-              <span className="font-serif text-2xl text-foreground">
+              <span className="font-semibold text-2xl text-foreground">
                 {readout.glyph === " " ? "␣" : readout.glyph}
               </span>
               <span className="text-base text-violet-300">{readout.reason}</span>
@@ -354,7 +354,7 @@ export default function EmptyWordsPage() {
             onChange={(e) => setText(e.target.value)}
             spellCheck={false}
             rows={6}
-            className="w-full rounded-md bg-muted border border-border px-4 py-3 text-base text-foreground leading-relaxed font-serif resize-y focus:outline-none focus:border-violet-300/50"
+            className="w-full rounded-md bg-muted border border-border px-4 py-3 text-base text-foreground leading-relaxed font-semibold resize-y focus:outline-none focus:border-violet-300/50"
             placeholder="Paste a poem, an email, anything…"
           />
           <p className="mt-2 text-base text-muted-foreground">

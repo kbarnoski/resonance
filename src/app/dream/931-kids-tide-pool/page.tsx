@@ -796,7 +796,7 @@ export default function KidsTidePoolPage() {
 
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#04060f]/95 px-6 text-center">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Moonlit Tide Pool
           </h1>
           <p className="max-w-md text-base text-muted-foreground">

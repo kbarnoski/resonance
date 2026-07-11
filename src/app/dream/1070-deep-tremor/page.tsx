@@ -179,7 +179,7 @@ export default function DeepTremorPage() {
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="max-w-xl rounded-2xl bg-black/55 p-8 ring-1 ring-border backdrop-blur-md">
-            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+            <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
               Deep Tremor
             </h1>
             <p className="mt-3 text-base leading-relaxed text-foreground">
@@ -215,7 +215,7 @@ export default function DeepTremorPage() {
       {/* ── Running HUD ────────────────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-foreground">Deep Tremor</h1>
+          <h1 className="font-semibold text-2xl text-foreground">Deep Tremor</h1>
           <div className="mt-2 flex items-center gap-3">
             {source === "live" && (
               <span className="rounded-full bg-violet-500/15 px-3 py-1 font-mono text-base text-violet-300 ring-1 ring-violet-400/30">
@@ -251,7 +251,7 @@ export default function DeepTremorPage() {
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
           <div className="max-w-2xl text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">The question.</span> What if the
               planet&apos;s live seismic activity — every earthquake happening

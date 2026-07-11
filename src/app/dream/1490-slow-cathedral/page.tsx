@@ -216,13 +216,13 @@ export default function SlowCathedralPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05040f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05040f] text-foreground">
       <div ref={mountRef} className="absolute inset-0" />
 
       {/* header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">Slow Cathedral</h1>
-        <p className="max-w-xl text-base text-white/75">{PITCH}</p>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Slow Cathedral</h1>
+        <p className="max-w-xl text-base text-muted-foreground">{PITCH}</p>
       </div>
 
       {/* controls */}
@@ -239,30 +239,30 @@ export default function SlowCathedralPage() {
           {started && (
             <button
               onClick={toggleMute}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/15 transition hover:bg-white/15"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               {muted ? "Unmute" : "Mute"}
             </button>
           )}
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 text-base text-white/70 ring-1 ring-white/10 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </div>
-        <p className="pointer-events-none max-w-xs text-right text-sm text-white/55">
+        <p className="pointer-events-none max-w-xs text-right text-sm text-muted-foreground">
           {started ? tiltHint : "A live preview is already growing — press Begin for the full slow build."}
         </p>
       </div>
 
       {/* design-notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-0 top-24 z-20 mx-auto max-h-[70vh] max-w-xl overflow-y-auto rounded-2xl bg-black/75 p-5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur sm:top-28">
+        <div className="pointer-events-auto absolute inset-x-0 top-24 z-20 mx-auto max-h-[70vh] max-w-xl overflow-y-auto rounded-2xl bg-black/75 p-5 text-base text-foreground ring-1 ring-border backdrop-blur sm:top-28">
           {NOTES.map((n) => (
             <div key={n.heading} className="mb-3 last:mb-0">
               <p className="mb-1 text-violet-300">{n.heading}</p>
-              <p className="text-white/80">{n.body}</p>
+              <p className="text-foreground">{n.body}</p>
             </div>
           ))}
         </div>
@@ -271,13 +271,13 @@ export default function SlowCathedralPage() {
       {/* error / no-WebGL */}
       {err && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">{err}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{err}</p>
         </div>
       )}
 
       <Link
         href="/dream"
-        className="pointer-events-auto absolute right-5 top-5 z-10 text-sm text-white/55 transition hover:text-white/90 sm:right-7 sm:top-7"
+        className="pointer-events-auto absolute right-5 top-5 z-10 text-sm text-muted-foreground transition hover:text-foreground sm:right-7 sm:top-7"
       >
         ← gallery
       </Link>

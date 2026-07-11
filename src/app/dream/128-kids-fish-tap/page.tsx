@@ -347,7 +347,7 @@ export default function KidsFishTap() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#01091a] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none">🐠</div>
-        <h1 className="text-2xl font-serif text-foreground">Fish School</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Fish School</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Tap a fish to hear it sing
         </p>

@@ -393,7 +393,7 @@ export default function ShadowTheaterPage() {
       {/* ── Header ── */}
       <header className="relative z-10 flex items-start justify-between gap-4 px-5 pt-5">
         <div>
-          <h1 className="font-serif text-2xl text-foreground drop-shadow sm:text-3xl">Shadow Theater</h1>
+          <h1 className="font-semibold text-2xl text-foreground drop-shadow sm:text-3xl">Shadow Theater</h1>
           <p className="mt-1 max-w-md text-base text-foreground">
             Tap a friendly puppet to send it onto the glowing screen — they sing together in an old
             Javanese gamelan tuning.

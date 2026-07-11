@@ -366,7 +366,7 @@ export default function VortexFilamentsPage() {
 
       {/* header / controls */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Vortex Filaments</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Vortex Filaments</h1>
         <p className="max-w-xl text-base text-muted-foreground">
           Stir a superfluid and watch its quantized vortices tangle, ripple with Kelvin waves, and
           hear each reconnection fire.

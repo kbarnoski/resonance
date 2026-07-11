@@ -338,7 +338,7 @@ export default function OscComposerPage() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-start justify-between px-5 pt-5 pointer-events-none">
         <div>
-          <h1 className="text-2xl font-serif text-foreground">Oscilloscope Composer</h1>
+          <h1 className="text-2xl font-semibold text-foreground">Oscilloscope Composer</h1>
           <p className="text-base text-muted-foreground mt-0.5">Design a Lissajous figure — download the audio that draws it</p>
         </div>
         <Link href="/dream" className="text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto">

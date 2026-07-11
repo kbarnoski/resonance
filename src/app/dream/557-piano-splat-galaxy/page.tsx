@@ -213,7 +213,7 @@ export default function PianoSplatGalaxy() {
       {/* Intro / controls overlay */}
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-end p-6 sm:p-10">
         <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/45 p-6 backdrop-blur-sm">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Piano Splat Galaxy
           </h1>
           <p className="mt-2 text-base text-foreground">

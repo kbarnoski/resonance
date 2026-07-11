@@ -812,7 +812,7 @@ export default function WikiBellsPage() {
 
       {/* ── Header ── */}
       <header className="relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Wiki Bells
         </h1>
         <p className="mt-2 max-w-2xl text-base text-muted-foreground">
@@ -916,7 +916,7 @@ export default function WikiBellsPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+              <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"

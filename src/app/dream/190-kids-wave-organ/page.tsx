@@ -283,7 +283,7 @@ export default function WaveOrganPage() {
     <div className="flex flex-col h-screen bg-[#020814] text-foreground">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-xl font-serif tracking-wide">Wave Organ</h1>
+          <h1 className="text-xl font-semibold tracking-wide">Wave Organ</h1>
           <p className="text-base text-muted-foreground mt-0.5">
             Ocean waves play the pipes · tap to make waves
           </p>

@@ -1578,7 +1578,7 @@ export default function EchoHallsTonnetz() {
       {/* top bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Echo Halls — Tonnetz
           </h1>
           <p className="mt-2 text-base text-foreground">

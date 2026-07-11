@@ -132,7 +132,7 @@ export default function AuroraWindPage() {
       {/* Idle / Begin overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#02030a]/70 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             Aurora Wind
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -221,7 +221,7 @@ export default function AuroraWindPage() {
             >
               Close
             </button>
-            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-foreground">
+            <pre className="whitespace-pre-wrap font-semibold text-base leading-relaxed text-foreground">
               {README}
             </pre>
           </div>

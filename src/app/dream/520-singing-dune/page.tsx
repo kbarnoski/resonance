@@ -414,7 +414,7 @@ export default function SingingDunePage() {
           <div className="pointer-events-auto max-w-sm w-full space-y-6">
             {/* Title */}
             <div className="space-y-2">
-              <h1 className="text-2xl font-serif text-foreground tracking-wide">
+              <h1 className="text-2xl font-semibold text-foreground tracking-wide">
                 Singing Dune
               </h1>
               <p className="text-base text-muted-foreground leading-relaxed">

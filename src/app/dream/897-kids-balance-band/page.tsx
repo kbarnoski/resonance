@@ -570,7 +570,7 @@ export default function BalanceBandPage() {
       </Link>
 
       <header className="text-center mt-6 mb-4 max-w-xl">
-        <h1 className="font-serif text-3xl sm:text-4xl text-foreground">
+        <h1 className="font-semibold text-3xl sm:text-4xl text-foreground">
           Balance Band
         </h1>
         <p className="mt-2 text-base text-muted-foreground">
@@ -661,7 +661,7 @@ export default function BalanceBandPage() {
       </button>
       {showNotes && (
         <div className="absolute right-4 top-12 z-10 w-80 max-w-[88vw] max-h-[70vh] overflow-auto rounded-2xl border border-border bg-[#160d33] p-4 text-base text-muted-foreground shadow-xl">
-          <h2 className="text-xl text-foreground mb-2 font-serif">
+          <h2 className="text-xl text-foreground mb-2 font-semibold">
             Design notes
           </h2>
           <p className="mb-2">

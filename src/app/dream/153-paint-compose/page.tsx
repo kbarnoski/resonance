@@ -341,7 +341,7 @@ export default function PaintComposePage() {
       {/* Header toolbar */}
       <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border flex-wrap">
         <div className="flex-shrink-0">
-          <h1 className="text-xl font-serif text-foreground leading-tight">Paint Compose</h1>
+          <h1 className="text-xl font-semibold text-foreground leading-tight">Paint Compose</h1>
           <p className="text-sm text-muted-foreground leading-tight">Each brushstroke loops as a melody</p>
         </div>
 

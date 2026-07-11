@@ -1370,7 +1370,7 @@ export default function ThirdRoomPage() {
       <div className="px-5 pt-5 pb-2 flex flex-col gap-1 shrink-0">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground font-serif">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground font-semibold">
               Third Room
             </h1>
             <p className="text-sm text-violet-300/80 mt-0.5 font-mono tracking-wide">

@@ -829,7 +829,7 @@ export default function PianoPhraseParinter() {
       {/* Drag overlay */}
       {isDragOver && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 border-4 border-violet-400/70 border-dashed">
-          <p className="text-2xl font-serif text-violet-300 drop-shadow-lg">Drop audio file here</p>
+          <p className="text-2xl font-semibold text-violet-300 drop-shadow-lg">Drop audio file here</p>
         </div>
       )}
 
@@ -840,7 +840,7 @@ export default function PianoPhraseParinter() {
           <div className="absolute inset-0 bg-gradient-to-b from-black via-violet-950/40 to-black pointer-events-none" />
 
           <div className="relative z-10 max-w-xl flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-serif font-bold text-foreground tracking-tight leading-snug">
+            <h1 className="text-3xl font-semibold font-bold text-foreground tracking-tight leading-snug">
               Piano Phrase Painter
             </h1>
             <p className="text-base text-muted-foreground leading-relaxed">

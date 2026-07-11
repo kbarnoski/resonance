@@ -594,7 +594,7 @@ export default function SeismicRoom() {
       {/* HUD */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 sm:p-7">
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl text-foreground">Tremor</h1>
+          <h1 className="font-semibold text-2xl text-foreground">Tremor</h1>
           <p className="mt-1 text-base text-muted-foreground">
             The world&rsquo;s earthquakes, live — the moment each one is detected, it becomes a
             sound and a ripple on the planet.

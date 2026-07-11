@@ -421,7 +421,7 @@ export default function GendyPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
           Gendy
         </h1>
         <p className="mt-2 max-w-2xl text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
@@ -510,7 +510,7 @@ export default function GendyPage() {
       </button>
       {showNotes && (
         <div className="absolute right-4 top-20 z-30 w-[min(92vw,440px)] rounded-2xl border border-border bg-black/70 p-5 text-base text-foreground backdrop-blur-md">
-          <p className="mb-2 font-serif text-xl text-foreground">A waveform that walks</p>
+          <p className="mb-2 font-semibold text-xl text-foreground">A waveform that walks</p>
           <p className="mb-2">
             The tone is not sampled or oscillated — it is <em>drawn</em>. A dozen
             breakpoints define one cycle; after every cycle each breakpoint&rsquo;s

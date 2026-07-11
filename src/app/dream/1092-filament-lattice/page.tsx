@@ -463,7 +463,7 @@ export default function FilamentLatticePage() {
 
       {/* Live title + HUD */}
       <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-        <span className="font-serif text-xl text-foreground">Filament Lattice</span>
+        <span className="font-semibold text-xl text-foreground">Filament Lattice</span>
         {path === "webgl2" && (
           <span className="font-mono text-base text-violet-300/95">● WebGL2 · {hud.agents.toLocaleString()} agents</span>
         )}
@@ -530,7 +530,7 @@ export default function FilamentLatticePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+              <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:border-border hover:text-foreground"

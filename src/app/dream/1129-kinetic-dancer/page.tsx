@@ -184,7 +184,7 @@ export default function KineticDancerPage() {
     <main className="min-h-screen bg-[#111a26] text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1
-          className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground"
+          className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground"
           style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
         >
           Kinetic Dancer

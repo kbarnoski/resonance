@@ -327,7 +327,7 @@ export default function CosmicConnectomePage() {
           <p className="mb-3 font-mono text-base uppercase tracking-[0.35em] text-violet-300">
             Resonance · dream 1089
           </p>
-          <h1 className="mb-4 font-serif text-3xl text-foreground md:text-5xl">Cosmic Connectome</h1>
+          <h1 className="mb-4 font-semibold text-3xl text-foreground md:text-5xl">Cosmic Connectome</h1>
           <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
             The graph-connectivity of a living cosmic-web filament network is the
             thing you hear. A richly-connected super-cluster rings a full chord; a
@@ -363,7 +363,7 @@ export default function CosmicConnectomePage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-            <span className="font-serif text-xl text-foreground">Cosmic Connectome</span>
+            <span className="font-semibold text-xl text-foreground">Cosmic Connectome</span>
             {path === "gpu" && (
               <span className="font-mono text-base text-violet-300/95">● WebGPU compute · {hud.agents.toLocaleString()} agents</span>
             )}
@@ -419,7 +419,7 @@ export default function CosmicConnectomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+              <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:border-border hover:text-foreground"

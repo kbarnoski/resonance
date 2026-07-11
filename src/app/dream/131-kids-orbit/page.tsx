@@ -334,7 +334,7 @@ export default function KidsOrbit() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#050010] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🪐</div>
-        <h1 className="text-2xl font-serif text-foreground">Orbit Garden</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Orbit Garden</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Tap to send glowing planets into orbit. Each one rings its own note. Inner planets spin
           faster and sing higher.

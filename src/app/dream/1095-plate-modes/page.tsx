@@ -245,7 +245,7 @@ export default function PlateModesPage() {
           ← dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl text-foreground">Plate Modes</h1>
+        <h1 className="mt-4 font-semibold text-3xl text-foreground">Plate Modes</h1>
         <p className="mt-2 text-base text-foreground">
           Tap the plate and watch the exact standing-wave (Chladni) nodal lines
           you are hearing form in real time — the sound and the geometry are the

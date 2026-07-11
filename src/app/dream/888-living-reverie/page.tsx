@@ -232,7 +232,7 @@ export default function LivingReveriePage() {
       {/* idle overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-black/55 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-4xl tracking-tight text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl tracking-tight text-foreground sm:text-5xl">
             Living Reverie
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-foreground">
@@ -259,7 +259,7 @@ export default function LivingReveriePage() {
       {/* WebGL unavailable notice */}
       {phase === "nowebgl" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black/70 px-6 text-center">
-          <h1 className="font-serif text-3xl text-foreground">Living Reverie</h1>
+          <h1 className="font-semibold text-3xl text-foreground">Living Reverie</h1>
           <p className="max-w-md text-base text-violet-300/95">
             WebGL is unavailable in this browser, so the visual membrane
             can&rsquo;t render. Try a desktop browser with hardware acceleration
@@ -312,7 +312,7 @@ export default function LivingReveriePage() {
       {showNotes && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 px-6">
           <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-[#0b0d1a] p-7 text-base leading-relaxed text-foreground shadow-2xl">
-            <h2 className="mb-3 font-serif text-2xl text-foreground">
+            <h2 className="mb-3 font-semibold text-2xl text-foreground">
               Design notes
             </h2>
             <p className="mb-3">

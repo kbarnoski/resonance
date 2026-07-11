@@ -285,7 +285,7 @@ export default function KidsSongFamily() {
         <div className="text-5xl select-none" aria-hidden="true">
           ✨🫧✨
         </div>
-        <h1 className="text-3xl font-serif text-foreground">Song Family</h1>
+        <h1 className="text-3xl font-semibold text-foreground">Song Family</h1>
         <p className="max-w-md text-base text-foreground">
           Hum a little song and a glowing friend hatches who remembers it. Sing
           more and a whole family of friends appears — and they sing your songs
@@ -320,7 +320,7 @@ export default function KidsSongFamily() {
 
       {/* HUD */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-1 p-5 text-center">
-        <h1 className="text-2xl font-serif text-foreground">Song Family</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Song Family</h1>
         <p className="text-base text-foreground">
           {mode === "ghost"
             ? "watching your friends dream and sing"

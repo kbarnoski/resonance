@@ -345,7 +345,7 @@ export default function Page() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 px-5 pt-4">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Move the Sun</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Move the Sun</h1>
         <p className="mt-1 max-w-xl text-base text-muted-foreground">
           Drag the big sun across the sky. The long shadows it throws sweep over the
           glowing stones and make them sing.

@@ -339,13 +339,13 @@ export default function MoodXY() {
 
       {/* title — always visible */}
       <div className="absolute top-4 left-4 z-10 pointer-events-none">
-        <h1 className="text-xl font-serif text-foreground">Mood XY</h1>
+        <h1 className="text-xl font-semibold text-foreground">Mood XY</h1>
       </div>
 
       {/* start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-black/55">
-          <h2 className="text-3xl font-serif text-foreground">Mood XY</h2>
+          <h2 className="text-3xl font-semibold text-foreground">Mood XY</h2>
           <p className="text-base text-muted-foreground text-center max-w-sm px-6 leading-relaxed">
             Drag the dot through the emotion plane.<br />
             The music synthesizes to match where you are.

@@ -230,7 +230,7 @@ export default function ChessDuetPage() {
           </span>
         </div>
 
-        <h1 className="font-serif text-3xl text-foreground sm:text-4xl">Chess Duet</h1>
+        <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">Chess Duet</h1>
         <p className="mt-2 text-base text-muted-foreground">
           A famous chess game played as a slow, inevitable two-voice duet —{" "}
           <span className="text-foreground">{GAME_META.name}</span>: {GAME_META.white}{" "}

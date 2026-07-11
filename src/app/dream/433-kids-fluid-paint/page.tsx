@@ -366,7 +366,7 @@ export default function Page() {
       {/* ── HEADER ── */}
       <div className="flex-none flex items-center justify-between px-4 pt-3 pb-1 z-10">
         <div>
-          <h1 className="text-foreground text-2xl font-serif font-bold leading-tight tracking-tight">
+          <h1 className="text-foreground text-2xl font-semibold font-bold leading-tight tracking-tight">
             Fluid Paint
           </h1>
           <p className="text-muted-foreground text-base leading-snug">

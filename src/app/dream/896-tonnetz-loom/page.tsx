@@ -226,7 +226,7 @@ export default function TonnetzLoomPage() {
     <main className="relative min-h-screen w-full overflow-x-hidden bg-[#070611] text-foreground">
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
         <header>
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             tonnetz loom
           </h1>
           <p className="mt-2 text-base text-foreground">
@@ -455,7 +455,7 @@ export default function TonnetzLoomPage() {
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/75 p-4">
           <div className="max-h-[82vh] max-w-xl overflow-y-auto rounded-lg border border-border bg-[#0b0a16] p-6 text-foreground">
             <div className="mb-3 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-xl text-foreground">design notes</h2>
+              <h2 className="font-semibold text-xl text-foreground">design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-md px-4 py-2.5 font-mono text-base text-violet-300 hover:text-violet-200"

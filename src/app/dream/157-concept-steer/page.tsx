@@ -321,7 +321,7 @@ export default function ConceptSteer() {
           <p className="text-[11px] tracking-widest uppercase text-muted-foreground mb-4">
             Dream Lab · 157
           </p>
-          <h1 className="text-2xl md:text-3xl font-serif mb-3 text-foreground">
+          <h1 className="text-2xl md:text-3xl font-semibold mb-3 text-foreground">
             Concept Steer
           </h1>
           <p className="text-base text-foreground max-w-sm mb-3 leading-relaxed">

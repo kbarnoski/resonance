@@ -257,7 +257,7 @@ export default function AnemoreTSLPage() {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-8 p-6">
         <div className="text-center space-y-3 max-w-md">
-          <h1 className="text-3xl font-serif text-foreground tracking-tight">
+          <h1 className="text-3xl font-semibold text-foreground tracking-tight">
             Anemone TSL
           </h1>
           <p className="text-base text-muted-foreground">
@@ -338,7 +338,7 @@ export default function AnemoreTSLPage() {
       {/* HUD overlay */}
       <div className="absolute top-4 left-4 right-4 flex items-start justify-between pointer-events-none">
         <div>
-          <p className="text-base font-serif text-foreground">Anemone TSL</p>
+          <p className="text-base font-semibold text-foreground">Anemone TSL</p>
           <p className="text-xs text-muted-foreground mt-0.5">
             {source === "mic"
               ? running

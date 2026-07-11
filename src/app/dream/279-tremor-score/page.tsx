@@ -718,7 +718,7 @@ export default function TremorScore() {
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-8">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Tremor Score
           </h1>
           <p className="mt-2 text-base text-foreground">

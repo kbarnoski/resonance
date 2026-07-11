@@ -320,7 +320,7 @@ export default function PianoCurrentPage() {
           <p className="mb-3 font-mono text-base text-violet-300/90">
             1060 · piano-current
           </p>
-          <h1 className="mb-4 font-serif text-4xl text-foreground sm:text-5xl">
+          <h1 className="mb-4 font-semibold text-4xl text-foreground sm:text-5xl">
             Stir the luminous river
           </h1>
           <p className="mb-8 max-w-xl text-base leading-relaxed text-foreground sm:text-lg">
@@ -349,7 +349,7 @@ export default function PianoCurrentPage() {
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between p-4 sm:p-6">
             <div className="pointer-events-auto">
-              <h1 className="font-serif text-xl text-foreground sm:text-2xl">
+              <h1 className="font-semibold text-xl text-foreground sm:text-2xl">
                 piano-current
               </h1>
               <p className="mt-1 max-w-xs text-base text-muted-foreground">
@@ -389,7 +389,7 @@ export default function PianoCurrentPage() {
           {/* Design notes panel */}
           {showNotes && (
             <div className="absolute right-4 top-24 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-[#0c0a24]/95 p-5 text-base leading-relaxed text-foreground ring-1 ring-border backdrop-blur sm:right-6">
-              <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
+              <h2 className="mb-2 font-semibold text-xl text-foreground">Design notes</h2>
               <p className="mb-3">
                 <span className="text-violet-300">The question:</span> what if you
                 could stir a river of thousands of particles flowing through a

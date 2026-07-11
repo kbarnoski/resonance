@@ -323,7 +323,7 @@ export default function Page() {
       {/* Title + Begin overlay */}
       {!started && supported !== false && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 p-8 text-center">
-          <h1 className="font-serif text-2xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-4xl">
             Moiré Drift
           </h1>
           <p className="max-w-xl text-base text-muted-foreground">
@@ -372,7 +372,7 @@ export default function Page() {
       {showNotes && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-6 backdrop-blur">
           <div className="max-w-lg space-y-4 text-base text-muted-foreground">
-            <h2 className="font-serif text-xl text-foreground">
+            <h2 className="font-semibold text-xl text-foreground">
               What you are playing
             </h2>
             <p>

@@ -501,7 +501,7 @@ function IdleScreen({ onStart }: { onStart: () => void }) {
     <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
       <div className="max-w-sm w-full text-center space-y-6">
         <div>
-          <h1 className="text-3xl font-serif text-foreground tracking-wide">Accord Call</h1>
+          <h1 className="text-3xl font-semibold text-foreground tracking-wide">Accord Call</h1>
           <p className="text-violet-300 text-sm font-mono mt-1">508 · together spine</p>
         </div>
         <p className="text-muted-foreground text-base leading-relaxed">
@@ -608,7 +608,7 @@ function RunningScreen({
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/40 border-b border-border">
         <div>
-          <span className="text-foreground font-serif text-base">Accord Call</span>
+          <span className="text-foreground font-semibold text-base">Accord Call</span>
           <span className="text-muted-foreground text-xs font-mono ml-3">drag vertically · find consonance together</span>
         </div>
         <div className="flex items-center gap-3">

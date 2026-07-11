@@ -397,7 +397,7 @@ export default function EcoBloom() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 z-10 px-6">
           <div className="text-center max-w-sm">
-            <h1 className="text-3xl font-serif text-foreground mb-3">Eco Bloom</h1>
+            <h1 className="text-3xl font-semibold text-foreground mb-3">Eco Bloom</h1>
             <p className="text-muted-foreground text-base leading-relaxed">
               Three tree species grow before you — L-system branches unfold over 45 seconds,
               each new branch a Karplus-Strong pluck. Wind and rain layer in as the canopy fills.

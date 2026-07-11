@@ -250,7 +250,7 @@ export default function RememberingRoom() {
           <p className="font-mono text-base uppercase tracking-[0.3em] text-violet-200/80">
             814 · remembering room
           </p>
-          <h1 className="mt-3 font-serif text-3xl font-semibold text-foreground sm:text-4xl">
+          <h1 className="mt-3 font-semibold text-3xl font-semibold text-foreground sm:text-4xl">
             Welcome Home, remembered
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-foreground">

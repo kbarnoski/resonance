@@ -481,7 +481,7 @@ export default function HarmonicRoomPage() {
                 "radial-gradient(circle, rgba(255,150,80,0.14), transparent 70%)",
             }}
           >
-            <div className="font-serif text-6xl text-violet-300/95">
+            <div className="font-semibold text-6xl text-violet-300/95">
               {hud.chord}
             </div>
             <div className="mt-2 font-mono text-base text-muted-foreground">
@@ -493,7 +493,7 @@ export default function HarmonicRoomPage() {
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-3xl text-foreground md:text-5xl">
+          <h1 className="font-semibold text-3xl text-foreground md:text-5xl">
             Depth Harmonic Room
           </h1>
           <p className="mt-2 text-base text-foreground md:text-lg">
@@ -577,7 +577,7 @@ export default function HarmonicRoomPage() {
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
           <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p>
               <span className="text-foreground">The question:</span> what if the
               distance and position of your body in the room — read live as a

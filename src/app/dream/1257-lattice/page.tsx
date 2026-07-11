@@ -244,7 +244,7 @@ export default function LatticePage() {
       {/* Title + intro + Begin overlay */}
       {phase !== "unsupported" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-3 p-6 text-center">
-          <h1 className="font-serif text-2xl tracking-tight text-foreground drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:text-3xl">
+          <h1 className="font-semibold text-2xl tracking-tight text-foreground drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:text-3xl">
             Lattice
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-foreground drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">

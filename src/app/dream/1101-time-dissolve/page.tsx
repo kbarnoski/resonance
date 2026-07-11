@@ -187,7 +187,7 @@ export default function TimeDissolvePage() {
       {/* Idle / start overlay */}
       {!running && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl text-foreground sm:text-5xl">
             Time, Dissolving
           </h1>
           <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
@@ -248,7 +248,7 @@ export default function TimeDissolvePage() {
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-start justify-center overflow-y-auto bg-black/80 px-6 py-16 backdrop-blur-sm">
           <div className="max-w-2xl space-y-4 text-left">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="text-base text-muted-foreground">
               <span className="text-violet-300">The question:</span> what if we
               could dissolve the felt flow and grain of <em>time</em> — the way

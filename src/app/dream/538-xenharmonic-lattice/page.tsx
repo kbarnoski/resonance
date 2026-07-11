@@ -533,7 +533,7 @@ export default function XenharmonicLatticePage() {
           <p className="text-violet-300/80 text-xs font-mono tracking-widest uppercase mb-3">
             xenharmonic lattice
           </p>
-          <h1 className="text-2xl font-serif text-foreground leading-snug mb-4">
+          <h1 className="text-2xl font-semibold text-foreground leading-snug mb-4">
             Tunings the Piano Cannot Play
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
@@ -608,7 +608,7 @@ export default function XenharmonicLatticePage() {
       {/* ── Top bar ─────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-border bg-black/20 z-10">
         <div className="flex items-center gap-3">
-          <span className="text-xl font-serif text-foreground hidden sm:inline">
+          <span className="text-xl font-semibold text-foreground hidden sm:inline">
             Xenharmonic Lattice
           </span>
           <span className="text-muted-foreground/70 hidden sm:inline">—</span>

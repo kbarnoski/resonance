@@ -404,7 +404,7 @@ export default function LightningOrganPage() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Lightning Organ
         </h1>
         <p className="mt-1 max-w-xl text-base text-muted-foreground">
@@ -492,7 +492,7 @@ export default function LightningOrganPage() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 p-6">
           <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-[#0a0712] p-6 text-foreground">
             <div className="mb-3 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+              <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-full border border-border px-4 py-2 text-base text-foreground hover:bg-accent"

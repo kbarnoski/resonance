@@ -284,7 +284,7 @@ export default function LightAccretionPage() {
           <p className="mb-2 text-sm uppercase tracking-[0.28em] text-violet-200/80">
             Resonance · Dream Lab
           </p>
-          <h1 className="font-serif text-4xl font-medium leading-tight text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl font-medium leading-tight text-foreground sm:text-5xl">
             Light Accretion
           </h1>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground">

@@ -229,7 +229,7 @@ export default function ShepardTonePage() {
     return (
       <div className="relative flex flex-col items-center justify-center h-full gap-6 text-center px-6">
         <div className="text-5xl leading-none select-none">∞</div>
-        <h1 className="text-2xl font-serif text-foreground">Shepard Tone</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Shepard Tone</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Eight sine waves across eight octaves — each fading in and out as they climb —
           creating an auditory illusion of a tone that ascends forever without ever resolving.

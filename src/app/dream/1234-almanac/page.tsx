@@ -195,7 +195,7 @@ export default function Page() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 w-full p-6 sm:p-8">
-        <h1 className="font-serif text-3xl italic text-slate-800 sm:text-4xl">
+        <h1 className="font-semibold text-3xl italic text-slate-800 sm:text-4xl">
           Almanac
         </h1>
         <p className="mt-2 max-w-xl text-base leading-relaxed text-slate-700">
@@ -218,7 +218,7 @@ export default function Page() {
         ) : (
           <div className="pointer-events-auto flex max-w-xl flex-col gap-3">
             <div className="text-base text-slate-800">
-              <span className="font-serif text-lg italic">{hourName}</span>
+              <span className="font-semibold text-lg italic">{hourName}</span>
               <span className="text-slate-600">
                 {"  ·  "}
                 {mm}:{ss.toString().padStart(2, "0")}

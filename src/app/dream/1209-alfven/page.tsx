@@ -471,7 +471,7 @@ export default function AlfvenPage() {
 
       {/* title + description */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Alfvén Rack</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Alfvén Rack</h1>
         <p className="max-w-xl text-base text-muted-foreground">
           Pluck a magnetic field line like a string and hear the plasma sing — each glowing loop
           rings in the standing Alfvén modes that set its pitch.

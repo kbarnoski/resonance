@@ -306,7 +306,7 @@ export default function EcoBloomPage() {
         {/* Header */}
         <div className="p-5 flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-serif text-foreground">eco-bloom</h1>
+            <h1 className="text-2xl font-semibold text-foreground">eco-bloom</h1>
             <p className="text-base text-muted-foreground mt-0.5">
               L-system plant · Karplus-Strong strings
             </p>

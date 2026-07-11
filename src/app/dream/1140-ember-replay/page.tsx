@@ -439,7 +439,7 @@ export default function EmberReplayPage() {
       {/* top: title + status */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6">
         <div className="max-w-xl">
-          <h1 className="font-serif text-2xl leading-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl leading-tight text-foreground sm:text-3xl">
             Ember Replay
           </h1>
           <p className="mt-1 text-base text-foreground">
@@ -544,7 +544,7 @@ export default function EmberReplayPage() {
             style={{ background: "#120a06" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="mt-3 text-base text-foreground">
               A 2026 <span className="text-violet-300/90">eLife</span> computational
               study modelled classical psychedelics as shifting perception from

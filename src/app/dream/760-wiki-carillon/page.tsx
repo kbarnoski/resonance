@@ -275,7 +275,7 @@ export default function WikiCarillonPage() {
 
       {/* Stage labels on the bright field (dark ink for contrast) */}
       <div className="pointer-events-none absolute left-5 top-5 z-10 max-w-md">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-stone-900 drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+        <h1 className="font-semibold text-3xl font-semibold tracking-tight text-stone-900 drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
           Wiki Carillon
         </h1>
         <p className="mt-1 text-base text-stone-700">
@@ -338,7 +338,7 @@ export default function WikiCarillonPage() {
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-stone-950/55 p-4 backdrop-blur-sm">
           <div className="max-h-[80vh] max-w-2xl overflow-auto rounded-2xl bg-stone-900 p-6 text-stone-100 shadow-2xl ring-1 ring-stone-700">
-            <h2 className="font-serif text-2xl font-semibold text-violet-200">Design notes</h2>
+            <h2 className="font-semibold text-2xl font-semibold text-violet-200">Design notes</h2>
             <p className="mt-3 text-base leading-relaxed text-stone-200">
               <span className="font-semibold">What does the world sound like as it writes
               itself?</span>{" "}
@@ -395,7 +395,7 @@ export default function WikiCarillonPage() {
       {phase === "intro" && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-[#efe7d6]/85 p-6 backdrop-blur-sm">
           <div className="max-w-lg text-center">
-            <h2 className="font-serif text-4xl font-semibold tracking-tight text-stone-900">
+            <h2 className="font-semibold text-4xl font-semibold tracking-tight text-stone-900">
               Wiki Carillon
             </h2>
             <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-stone-700">

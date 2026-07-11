@@ -329,7 +329,7 @@ export default function CruciblePage() {
           <p className="mb-2 text-sm uppercase tracking-[0.28em] text-violet-200/80">
             Resonance · Dream Lab
           </p>
-          <h1 className="font-serif text-4xl font-medium leading-tight text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl font-medium leading-tight text-foreground sm:text-5xl">
             The Crucible
           </h1>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground">
@@ -349,7 +349,7 @@ export default function CruciblePage() {
                 Phase
               </span>
               <span
-                className={`font-serif text-2xl font-semibold ${PHASE_COLOR[readout.phase]}`}
+                className={`font-semibold text-2xl font-semibold ${PHASE_COLOR[readout.phase]}`}
               >
                 {readout.phase}
               </span>

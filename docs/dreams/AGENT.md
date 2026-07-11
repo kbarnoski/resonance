@@ -183,7 +183,7 @@ Each prototype should answer ONE question: "what if Resonance could do X?"
 Karel asked for bigger, more readable text and more contrast against dark backgrounds. Apply these rules to every prototype you build and to existing ones you polish:
 
 - **Body text**: minimum `text-base` (16px). Don't go below this for anything a visitor reads (descriptions, instructions, captions).
-- **Headings / prototype titles**: minimum `text-xl` (20px). Prefer `text-2xl` or larger for the page hero. Use `font-serif` for emphasis on names/titles where the existing dashboard style allows it.
+- **Headings / prototype titles**: minimum `text-xl` (20px). Prefer `text-2xl` or larger for the page hero. Use `font-semibold tracking-tight` for emphasis — the SAME treatment as the dashboard h1. **Never use `font-serif`**: Resonance ships no serif font (only Geist sans + Geist Mono), so `font-serif` falls back to browser-default Times and reads as off-brand. Sans is the title font; `font-mono` is only for labels/badges/technical readouts.
 - **Status labels, badges, footers**: `text-xs` (12px) is acceptable for truly secondary info, but **never** for anything the visitor is supposed to act on.
 - **Contrast on dark backgrounds**: minimum effective opacity for readable text is **70%**. USE SEMANTIC TOKENS, not raw `text-white/NN`. The design system defines these in `globals.css` (OKLCH) and they are the single source of truth for on-brand color. The convention going forward is:
   - **Primary text** (headings, button labels, instructions): `text-foreground`

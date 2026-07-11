@@ -601,7 +601,7 @@ export default function SpectralDriftPage() {
       {mode === "idle" && (
         <div className="absolute inset-0 z-10 flex items-center justify-center p-6">
           <div className="max-w-xl rounded-2xl border border-border bg-black/55 p-7 backdrop-blur-md">
-            <h1 className="font-serif text-3xl text-foreground">Spectral Drift</h1>
+            <h1 className="font-semibold text-3xl text-foreground">Spectral Drift</h1>
             <p className="mt-3 text-base leading-relaxed text-foreground">
               Your music becomes a flowing river of light you drift through. Each
               frequency is a stream of glowing particles that advects forward and

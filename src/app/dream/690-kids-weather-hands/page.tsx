@@ -315,7 +315,7 @@ export default function Page() {
 
       {/* tiny weather word — readable but unobtrusive; no reading needed to play */}
       <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center">
-        <span className="rounded-full bg-black/25 px-4 py-2 text-xl font-serif text-foreground backdrop-blur-sm">
+        <span className="rounded-full bg-black/25 px-4 py-2 text-xl font-semibold text-foreground backdrop-blur-sm">
           {running ? weatherWord : "weather in your hands"}
         </span>
       </div>
@@ -323,7 +323,7 @@ export default function Page() {
       {/* Begin overlay (single gesture) */}
       {!running && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="max-w-md text-2xl font-serif text-foreground">
+          <h1 className="max-w-md text-2xl font-semibold text-foreground">
             Weather in Your Hands
           </h1>
           <p className="max-w-sm text-base text-muted-foreground">
@@ -377,7 +377,7 @@ export default function Page() {
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/80 px-6 py-16 backdrop-blur-md">
           <div className="mx-auto max-w-xl space-y-4 text-base leading-relaxed text-foreground">
-            <h2 className="text-2xl font-serif text-foreground">Design notes</h2>
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
             <p>
               <span className="text-foreground">For kids (4+).</span> The screen
               is nearly empty on purpose — all the play is in your ears and your

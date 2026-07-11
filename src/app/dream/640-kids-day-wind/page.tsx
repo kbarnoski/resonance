@@ -1058,7 +1058,7 @@ export default function Page() {
 
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-[#0b1030] to-[#1a1230] px-6 text-center">
-          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl text-foreground sm:text-5xl">
             A Day on the Wind
           </h1>
           <p className="max-w-md text-base text-foreground">

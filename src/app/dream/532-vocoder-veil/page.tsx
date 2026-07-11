@@ -514,7 +514,7 @@ export default function VocoderVeilPage() {
       {/* Header */}
       <div className="px-5 pt-6 pb-3 flex items-start justify-between max-w-2xl mx-auto w-full">
         <div>
-          <h1 className="text-2xl font-serif text-foreground tracking-wide">
+          <h1 className="text-2xl font-semibold text-foreground tracking-wide">
             Vocoder Veil
           </h1>
           <p className="text-base text-muted-foreground mt-1 leading-snug">

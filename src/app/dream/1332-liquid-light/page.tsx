@@ -302,7 +302,7 @@ export default function LiquidLightPage() {
 
       {/* ── title + status (top-left) ────────────────────────────────────────── */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 max-w-lg p-5">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow-lg">
+        <h1 className="font-semibold text-3xl font-semibold tracking-tight text-foreground drop-shadow-lg">
           Liquid Light
         </h1>
         <p className="mt-2 text-base text-foreground drop-shadow-lg">
@@ -362,7 +362,7 @@ export default function LiquidLightPage() {
       {notesOpen && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur">
           <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-neutral-900/90 p-6 shadow-2xl ring-1 ring-border">
-            <h2 className="font-serif text-2xl font-semibold text-foreground">
+            <h2 className="font-semibold text-2xl font-semibold text-foreground">
               Liquid Light — design notes
             </h2>
             <p className="mt-3 text-base text-foreground">

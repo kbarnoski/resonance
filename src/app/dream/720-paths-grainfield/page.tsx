@@ -347,7 +347,7 @@ export default function PathsGrainfieldPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-8">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Paths · Grainfield
         </h1>
         <p className="mt-2 max-w-xl text-base text-foreground">
@@ -439,7 +439,7 @@ export default function PathsGrainfieldPage() {
             className="max-h-[82vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0b16] p-6 text-base leading-relaxed text-foreground"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
             <p className="mt-3">
               The question: what if Karel could fly{" "}
               <em>inside</em> his own recorded piano — the whole performance

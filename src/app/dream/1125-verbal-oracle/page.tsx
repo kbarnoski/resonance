@@ -207,7 +207,7 @@ export default function VerbalOraclePage() {
         style={{ background: CREAM, color: INK }}
       >
         <div className="mx-auto max-w-xl">
-          <h1 className="font-serif text-3xl">The Verbal Oracle</h1>
+          <h1 className="font-semibold text-3xl">The Verbal Oracle</h1>
           <p className="mt-4 text-base text-violet-600">
             This piece needs the Web Audio API, which your browser does not seem
             to support. Try a recent desktop Chrome, Firefox, or Safari with
@@ -227,7 +227,7 @@ export default function VerbalOraclePage() {
     >
       <div className="mx-auto flex max-w-2xl flex-col gap-8">
         <header className="flex flex-col gap-3">
-          <h1 className="font-serif text-4xl leading-tight sm:text-5xl">
+          <h1 className="font-semibold text-4xl leading-tight sm:text-5xl">
             The Verbal Oracle
           </h1>
           <p className="max-w-prose text-base" style={{ color: INK_SOFT }}>

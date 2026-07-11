@@ -170,7 +170,7 @@ export default function WorldForgePage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-violet-300">
             Resonance · 699
           </p>
-          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl text-foreground sm:text-5xl">
             World Forge
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground">
@@ -193,7 +193,7 @@ export default function WorldForgePage() {
       {/* ── live HUD ─────────────────────────────────────────────────── */}
       {started && (
         <div className="pointer-events-none absolute left-0 right-0 top-0 z-20 flex flex-col gap-2 p-5">
-          <h1 className="font-serif text-2xl text-foreground">World Forge</h1>
+          <h1 className="font-semibold text-2xl text-foreground">World Forge</h1>
           <p
             className={`font-mono text-sm ${
               status === "live"
@@ -224,7 +224,7 @@ export default function WorldForgePage() {
 
       {showNotes && (
         <div className="absolute inset-x-4 bottom-28 z-30 mx-auto max-w-2xl rounded-2xl border border-border bg-black/85 p-6 backdrop-blur-md">
-          <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+          <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
           <p className="mt-3 text-base leading-relaxed text-foreground">
             World Forge sonifies the live global creation firehose — GitHub&apos;s
             unauthenticated public-events stream. Each event is one grain: its

@@ -474,7 +474,7 @@ export default function KidsBreathGrovePage() {
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6">
           <div className="text-center">
-            <h1 className="text-foreground text-3xl font-serif tracking-wide mb-3">
+            <h1 className="text-foreground text-3xl font-semibold tracking-wide mb-3">
               breath grove
             </h1>
             <p className="text-muted-foreground text-base">

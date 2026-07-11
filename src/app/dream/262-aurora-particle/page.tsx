@@ -693,7 +693,7 @@ export default function Page() {
 
       {/* top: title + description */}
       <div className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Aurora Particle
         </h1>
         <p className="mt-2 max-w-2xl text-base text-foreground">

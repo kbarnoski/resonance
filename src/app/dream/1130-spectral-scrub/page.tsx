@@ -426,7 +426,7 @@ export default function SpectralScrubPage() {
       {/* top: title + status */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6">
         <div className="max-w-xl">
-          <h1 className="font-serif text-2xl leading-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl leading-tight text-foreground sm:text-3xl">
             Spectral Scrub
           </h1>
           <p className="mt-1 text-base text-muted-foreground">
@@ -463,7 +463,7 @@ export default function SpectralScrubPage() {
       {/* center drag hint */}
       {live && hint && (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <p className="rounded-2xl bg-black/40 px-5 py-3 text-center font-serif text-xl text-foreground backdrop-blur-sm">
+          <p className="rounded-2xl bg-black/40 px-5 py-3 text-center font-semibold text-xl text-foreground backdrop-blur-sm">
             drag anywhere
             <span className="mt-1 block text-base font-sans text-muted-foreground">
               ← → scrub &amp; stretch time · ↑ ↓ sculpt the spectrum
@@ -601,7 +601,7 @@ export default function SpectralScrubPage() {
             className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#070b16] p-6 text-foreground"
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="mt-3 text-base text-foreground">
               The hero visual is a WebGL2 fragment shader sampling a live
               scrolling spectrogram of the audio, rendered as drifting pigment —

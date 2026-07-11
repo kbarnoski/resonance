@@ -249,7 +249,7 @@ export default function RoomOfYou() {
       {phase === "idle" && (
         <div className="relative z-20 flex min-h-screen flex-col items-center justify-center px-6 text-center">
           <p className="mb-3 text-sm uppercase tracking-[0.3em] text-violet-300/90">a cross-modal meditation</p>
-          <h1 className="font-serif text-4xl leading-tight text-foreground sm:text-5xl md:text-6xl">The Room of You</h1>
+          <h1 className="font-semibold text-4xl leading-tight text-foreground sm:text-5xl md:text-6xl">The Room of You</h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground">
             Stand before the camera and your silhouette becomes the shape of a resonant room. Move, and the space
             re-tunes; a soft bell rings out through the you-shaped cathedral.

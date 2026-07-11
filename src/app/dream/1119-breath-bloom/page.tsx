@@ -303,7 +303,7 @@ export default function BreathBloomPage() {
       {/* product bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-3 p-4 sm:p-6">
         <div className="pointer-events-auto max-w-2xl rounded-2xl border border-black/10 bg-black/70 p-4 shadow-lg backdrop-blur-md">
-          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
             Breath Bloom
           </h1>
           <p className="mt-1 text-base text-foreground">

@@ -314,7 +314,7 @@ export default function PathsComputeBloom() {
         >
           ← dream lab
         </Link>
-        <h1 className="font-serif text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
+        <h1 className="font-semibold text-2xl md:text-3xl text-foreground mt-2 tracking-tight">
           Compute Bloom
         </h1>
         <p className="text-base text-muted-foreground mt-1 leading-relaxed">
@@ -338,7 +338,7 @@ export default function PathsComputeBloom() {
       {/* idle / loading overlay */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-serif text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
+          <h2 className="font-semibold text-2xl md:text-4xl text-foreground mb-3 tracking-tight">
             Compute Bloom
           </h2>
           <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
@@ -417,7 +417,7 @@ export default function PathsComputeBloom() {
       {/* design notes panel */}
       {showNotes && isRunning && (
         <div className="absolute bottom-24 left-4 max-w-md p-5 rounded-2xl bg-black/80 border border-border backdrop-blur">
-          <h3 className="text-xl text-foreground mb-2 font-serif">Design notes</h3>
+          <h3 className="text-xl text-foreground mb-2 font-semibold">Design notes</h3>
           <p className="text-base text-muted-foreground leading-relaxed mb-2">
             An <span className="text-violet-300">AnalyserNode</span> FFT splits the spectrum into{" "}
             {NUM_BANDS} bands. A WebGPU compute pass integrates {PARTICLE_COUNT.toLocaleString()}{" "}

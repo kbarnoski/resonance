@@ -122,7 +122,7 @@ export default function KidsSkyBand() {
       </button>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
-        <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-4xl">
+        <h1 className="font-semibold text-3xl font-semibold text-foreground sm:text-4xl">
           Kids&rsquo; Sky Band
         </h1>
         <p className="max-w-xl text-base text-foreground">

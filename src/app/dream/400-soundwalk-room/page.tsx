@@ -353,7 +353,7 @@ export default function SoundwalkRoomPage() {
             <p className="text-violet-300 text-sm font-mono tracking-widest uppercase">
               400 · Soundwalk Room
             </p>
-            <h1 className="text-3xl font-serif font-bold text-foreground tracking-wide">
+            <h1 className="text-3xl font-semibold font-bold text-foreground tracking-wide">
               Walk through the voices
             </h1>
             <p className="text-base text-muted-foreground leading-relaxed">

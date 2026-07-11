@@ -535,7 +535,7 @@ export default function SingASproutPage() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#070512]/95 px-6 text-center">
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             Sing a Sprout
           </h1>
           <p className="max-w-md text-base text-muted-foreground">

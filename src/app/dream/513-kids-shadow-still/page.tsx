@@ -561,7 +561,7 @@ export default function KidsShadowStill() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#050816] text-foreground gap-6 px-6 text-center">
         <div className="select-none text-6xl" aria-hidden="true">🌑</div>
-        <h1 className="text-3xl font-serif text-foreground leading-tight">
+        <h1 className="text-3xl font-semibold text-foreground leading-tight">
           Shadow Still
         </h1>
         <p className="text-base text-muted-foreground max-w-sm leading-relaxed">

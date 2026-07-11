@@ -435,7 +435,7 @@ export default function KidsGhostLullaby() {
       {/* Lullaby overlay */}
       {isLullaby && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3">
-          <p className="font-serif text-3xl text-foreground">Sweet dreams</p>
+          <p className="font-semibold text-3xl text-foreground">Sweet dreams</p>
           <p className="text-2xl">🌙</p>
         </div>
       )}

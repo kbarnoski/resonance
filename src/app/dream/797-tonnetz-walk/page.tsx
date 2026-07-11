@@ -232,7 +232,7 @@ export default function TonnetzWalkPage() {
         {/* Header */}
         <header className="mb-6">
           <div className="flex items-baseline justify-between gap-4">
-            <h1 className="font-serif text-3xl tracking-tight text-foreground">
+            <h1 className="font-semibold text-3xl tracking-tight text-foreground">
               Tonnetz Walk
             </h1>
             <Link
@@ -496,7 +496,7 @@ export default function TonnetzWalkPage() {
           id="notes"
           className="mt-12 max-w-2xl border-t border-border pt-6 text-base text-muted-foreground"
         >
-          <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
+          <h2 className="mb-2 font-semibold text-xl text-foreground">Design notes</h2>
           <p className="mb-3">
             This is an <em>autonomous generative walker</em>, not a click-to-hear
             grid. A self-driving harmonic process chooses P/L/R transforms over

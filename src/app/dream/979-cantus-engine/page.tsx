@@ -343,7 +343,7 @@ export default function CantusEnginePage() {
             >
               ← dream lab
             </Link>
-            <h1 className="mt-1 font-serif text-3xl text-foreground sm:text-4xl">
+            <h1 className="mt-1 font-semibold text-3xl text-foreground sm:text-4xl">
               Cantus Engine
             </h1>
             <p className="mt-1 max-w-2xl text-base text-muted-foreground">
@@ -408,7 +408,7 @@ export default function CantusEnginePage() {
           {flash && (
             <div className="pointer-events-none absolute left-5 top-4 select-none">
               <div className="rounded-md bg-black/55 px-4 py-2.5 backdrop-blur-sm">
-                <div className="font-serif text-2xl tracking-wide text-violet-200">
+                <div className="font-semibold text-2xl tracking-wide text-violet-200">
                   {flash.op}
                 </div>
                 {flash.detail && (
@@ -492,7 +492,7 @@ export default function CantusEnginePage() {
         {/* help + recent ops */}
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div className="text-base text-muted-foreground">
-            <h2 className="mb-2 font-serif text-xl text-foreground">How to use</h2>
+            <h2 className="mb-2 font-semibold text-xl text-foreground">How to use</h2>
             <p className="mb-2">
               It auto-starts a fugue within a couple of seconds. To seed your own
               subject, hit <span className="text-foreground">Set subject</span> then
@@ -508,7 +508,7 @@ export default function CantusEnginePage() {
             </p>
           </div>
           <div className="text-base text-muted-foreground">
-            <h2 className="mb-2 font-serif text-xl text-foreground">
+            <h2 className="mb-2 font-semibold text-xl text-foreground">
               Transforms as they fire
             </h2>
             <ul className="space-y-1">

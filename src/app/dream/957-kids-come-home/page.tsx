@@ -242,7 +242,7 @@ export default function KidsComeHome() {
 
       {/* chrome overlay */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-1 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Come Home
         </h1>
         <p className="max-w-md text-base text-muted-foreground">
@@ -262,7 +262,7 @@ export default function KidsComeHome() {
       {/* Start gate */}
       {!started && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#0b0a16]/70 backdrop-blur-sm">
-          <h2 className="px-6 text-center font-serif text-2xl text-foreground sm:text-3xl">
+          <h2 className="px-6 text-center font-semibold text-2xl text-foreground sm:text-3xl">
             Help the little light find its way home
           </h2>
           <button

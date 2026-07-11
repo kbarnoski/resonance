@@ -416,7 +416,7 @@ export default function LmdmEcho() {
   if (phase === "idle") return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 p-8 text-center">
       <div>
-        <h1 className="font-serif text-3xl text-foreground mb-2">Echo Chamber</h1>
+        <h1 className="font-semibold text-3xl text-foreground mb-2">Echo Chamber</h1>
         <p className="text-base text-muted-foreground max-w-xs mx-auto leading-relaxed">
           Record a piano phrase — the system listens to your harmony and tempo, then echoes it back transformed.
         </p>
@@ -490,7 +490,7 @@ export default function LmdmEcho() {
   return (
     <div className="min-h-screen bg-black flex flex-col p-5 gap-4">
       <div className="text-center pt-2">
-        <h1 className="font-serif text-2xl text-foreground mb-1">Echo Chamber</h1>
+        <h1 className="font-semibold text-2xl text-foreground mb-1">Echo Chamber</h1>
         {analysis && (
           <p className="text-muted-foreground text-sm font-mono">
             {analysis.quality} · {analysis.bpm} BPM · {analysis.register}

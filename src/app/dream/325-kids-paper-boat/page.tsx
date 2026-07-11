@@ -460,7 +460,7 @@ export default function PaperBoatVoyage() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Paper Boat</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Paper Boat</h1>
         <p className="mt-1 max-w-md text-base text-muted-foreground">
           Steer the little boat down the night river. Glide into the glowing
           lily-pads to make them sing.

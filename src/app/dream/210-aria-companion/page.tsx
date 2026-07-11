@@ -406,7 +406,7 @@ export default function AriaCompanionPage() {
     <div className="fixed inset-0 bg-black text-foreground flex flex-col overflow-hidden">
       {/* header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
-        <h1 className="text-base font-serif text-foreground">Aria Companion</h1>
+        <h1 className="text-base font-semibold text-foreground">Aria Companion</h1>
         <p className="text-xs text-muted-foreground font-mono">markov piano dialogue · cycle 243</p>
       </div>
 

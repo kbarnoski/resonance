@@ -343,7 +343,7 @@ export default function DissolveRoomPage() {
       {/* ── Text + controls overlay ──────────────────────────────────────── */}
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl font-semibold text-foreground sm:text-4xl">
             The Dissolve
           </h1>
           <p className="mt-2 text-base leading-relaxed text-foreground">

@@ -206,7 +206,7 @@ export default function TidalOrganPage() {
           >
             ← dream lab
           </Link>
-          <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">Tidal Organ</h1>
+          <h1 className="mt-3 font-semibold text-3xl text-foreground sm:text-4xl">Tidal Organ</h1>
           <p className="mt-2 max-w-xl text-base text-foreground">
             A warm just-intonation organ tuned by the live state of a real ocean
             right now — music about the sea this minute, not a synth knob.

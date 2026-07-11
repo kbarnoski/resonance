@@ -253,7 +253,7 @@ export default function BodyChoir() {
       <div className="mx-auto max-w-5xl px-5 py-6">
         <header className="mb-4">
           <div className="flex items-center justify-between gap-3">
-            <h1 className="font-serif text-2xl sm:text-3xl text-slate-900">
+            <h1 className="font-semibold text-2xl sm:text-3xl text-slate-900">
               Body Choir
             </h1>
             <Link

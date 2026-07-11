@@ -145,7 +145,7 @@ export default function TideBreathPage() {
             style={{ background: "radial-gradient(ellipse 65% 45% at 50% 70%, rgba(40,80,140,0.14) 0%, transparent 70%)" }}
           />
 
-          <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 tracking-wide z-10">
+          <h1 className="font-semibold text-3xl md:text-4xl text-foreground mb-3 tracking-wide z-10">
             Tide Breath
           </h1>
           <p className="text-base text-muted-foreground max-w-sm mb-1 leading-relaxed z-10">

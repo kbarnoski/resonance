@@ -445,7 +445,7 @@ export default function KidsBallPit() {
   if (noWebGL) {
     return (
       <div className="flex flex-col items-center justify-center min-h-dvh bg-[#0a0b12] px-6 text-center gap-4">
-        <p className="text-2xl font-serif text-foreground">WebGL2 not available</p>
+        <p className="text-2xl font-semibold text-foreground">WebGL2 not available</p>
         <p className="text-base text-muted-foreground max-w-sm leading-relaxed">
           Your browser does not support WebGL2, which this experience requires for
           hardware-accelerated rendering. Try a recent Chrome or Safari on a modern device.
@@ -477,7 +477,7 @@ export default function KidsBallPit() {
           ))}
         </div>
 
-        <h1 className="text-3xl font-serif text-foreground text-center mb-3 tracking-tight">
+        <h1 className="text-3xl font-semibold text-foreground text-center mb-3 tracking-tight">
           Ball Pit
         </h1>
         <p className="text-base text-muted-foreground text-center max-w-[300px] mb-10 leading-relaxed">
@@ -541,7 +541,7 @@ export default function KidsBallPit() {
           className="absolute inset-x-4 top-14 bottom-4 z-20 rounded-2xl bg-black/88 backdrop-blur border border-border overflow-y-auto p-5 leading-relaxed"
           onClick={() => setShowNotes(false)}
         >
-          <p className="font-serif text-xl text-foreground mb-4">Ball Pit — notes</p>
+          <p className="font-semibold text-xl text-foreground mb-4">Ball Pit — notes</p>
 
           <p className="text-sm text-muted-foreground mb-3">
             <strong className="text-foreground">Physics:</strong> ~900–1400 circles; CPU

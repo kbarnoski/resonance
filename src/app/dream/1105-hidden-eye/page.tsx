@@ -316,7 +316,7 @@ export default function HiddenEyePage() {
 
       {/* header / controls */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
           Hidden Eye
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
@@ -386,7 +386,7 @@ export default function HiddenEyePage() {
       {notesOpen && (
         <div className="fixed right-0 top-0 z-40 h-full w-full max-w-md overflow-y-auto border-l border-border bg-black/90 p-6 backdrop-blur-md sm:p-7">
           <div className="flex items-start justify-between gap-4">
-            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
             <button
               onClick={() => setNotesOpen(false)}
               className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-sm text-foreground hover:bg-accent"

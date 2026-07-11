@@ -337,7 +337,7 @@ export default function TensionJourneyPage() {
       <div className="mx-auto max-w-6xl px-5 pt-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="font-serif text-3xl text-foreground">
+            <h1 className="font-semibold text-3xl text-foreground">
               Tension Journey
             </h1>
             <p className="mt-1 max-w-2xl text-base text-muted-foreground">

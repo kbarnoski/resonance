@@ -298,7 +298,7 @@ export default function WelcomeSkyPage() {
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-8">
         <header className="max-w-2xl">
           <div className="pointer-events-auto inline-block rounded-2xl bg-black/35 px-5 py-4 backdrop-blur-md ring-1 ring-border">
-            <h1 className="font-serif text-2xl sm:text-3xl text-foreground">
+            <h1 className="font-semibold text-2xl sm:text-3xl text-foreground">
               Welcome Sky
             </h1>
             <p className="mt-1 text-base text-muted-foreground">

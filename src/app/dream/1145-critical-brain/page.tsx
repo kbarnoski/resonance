@@ -179,7 +179,7 @@ export default function CriticalBrainPage() {
       <div className="mx-auto max-w-6xl px-5 py-8">
         <header className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+            <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
               Critical Brain
             </h1>
             <p className="mt-1 max-w-2xl text-base text-muted-foreground">

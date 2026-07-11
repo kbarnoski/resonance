@@ -541,7 +541,7 @@ export default function BodyChimesPage() {
 
       {/* top-left: title + description */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Body Chimes
         </h1>
         <p className="mt-2 max-w-md text-base leading-snug text-foreground">
@@ -595,7 +595,7 @@ export default function BodyChimesPage() {
         className="absolute left-0 top-full w-full bg-[#070509] px-6 py-12 sm:px-10"
       >
         <div className="mx-auto max-w-2xl">
-          <h2 className="font-serif text-2xl font-semibold text-foreground">
+          <h2 className="font-semibold text-2xl font-semibold text-foreground">
             Design notes — Body Chimes / Struck Room
           </h2>
           <p className="mt-4 text-base leading-relaxed text-foreground">

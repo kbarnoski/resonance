@@ -234,7 +234,7 @@ export default function ThirdEarPage() {
           <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
             dream · 1165
           </p>
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             The Third Ear
           </h1>
           <p className="text-base text-foreground">

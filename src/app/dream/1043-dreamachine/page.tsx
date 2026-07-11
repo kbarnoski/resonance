@@ -283,7 +283,7 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
               Resonance · Dream Lab · 1043
             </p>
-            <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">
+            <h1 className="mt-3 font-semibold text-3xl text-foreground sm:text-4xl">
               Dreamachine
             </h1>
             <p className="mt-4 text-base leading-relaxed text-foreground">
@@ -343,7 +343,7 @@ export default function Page() {
           {/* top bar: title + phase + STOP (always visible) */}
           <div className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-between gap-3 p-4">
             <div className="rounded-xl bg-black/40 px-3 py-2 backdrop-blur-sm">
-              <p className="font-serif text-xl text-foreground">Dreamachine</p>
+              <p className="font-semibold text-xl text-foreground">Dreamachine</p>
               <p className="font-mono text-sm text-muted-foreground">
                 phase: <span className="text-violet-300">{phaseLabel}</span>
               </p>

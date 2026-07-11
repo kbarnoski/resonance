@@ -275,7 +275,7 @@ export default function FireflyWebPage() {
 
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 p-4 pointer-events-none">
-        <h1 className="text-2xl font-serif text-foreground">Firefly Web</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Firefly Web</h1>
         <p className="text-base text-muted-foreground mt-1">
           Tap anywhere to release a firefly — when two meet, they spin a glowing silk thread
         </p>

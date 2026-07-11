@@ -720,7 +720,7 @@ export default function SpectralSplatPage() {
             <p className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
               Resonance · 246
             </p>
-            <h1 className="font-serif text-4xl leading-tight sm:text-5xl">Spectral Splat</h1>
+            <h1 className="font-semibold text-4xl leading-tight sm:text-5xl">Spectral Splat</h1>
             <p className="mt-4 text-base text-foreground">
               What if your music were a soft volumetric cloud of light you could fly through?
               Your spectrum is deposited as a rolling field of glowing Gaussian splats, and the
@@ -771,7 +771,7 @@ export default function SpectralSplatPage() {
 
           {/* top-right title + controls */}
           <div className="absolute right-4 top-4 z-20 flex flex-col items-end gap-2">
-            <h1 className="font-serif text-2xl text-foreground">Spectral Splat</h1>
+            <h1 className="font-semibold text-2xl text-foreground">Spectral Splat</h1>
             <div className="flex flex-wrap justify-end gap-2">
               <button
                 onClick={() => fileInputRef.current?.click()}
@@ -828,7 +828,7 @@ export default function SpectralSplatPage() {
         <div className="absolute inset-0 z-40 flex items-center justify-center px-6">
           <div className="max-h-[85vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-black/85 p-8 backdrop-blur-md">
             <div className="flex items-start justify-between gap-4">
-              <h2 className="font-serif text-3xl">Design notes</h2>
+              <h2 className="font-semibold text-3xl">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
                 className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"

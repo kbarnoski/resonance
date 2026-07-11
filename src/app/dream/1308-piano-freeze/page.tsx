@@ -439,7 +439,7 @@ export default function PianoFreezePage() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xl">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground">Piano Freeze</h1>
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground">Piano Freeze</h1>
         <p className="mt-1 text-base text-muted-foreground">
           Reach into Karel&apos;s recorded piano — scrub through it with your hand, then raise up to freeze a
           moment into an infinite shimmer.

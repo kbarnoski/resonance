@@ -844,7 +844,7 @@ export default function TiltOrrery() {
       {/* idle / start */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
+          <h1 className="font-semibold text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
             Tilt Orrery
           </h1>
           <p className="text-base text-muted-foreground max-w-md mb-2 leading-relaxed">
@@ -877,7 +877,7 @@ export default function TiltOrrery() {
       {running && (
         <>
           <div className="absolute top-4 left-4 text-base text-muted-foreground space-y-1 pointer-events-none select-none">
-            <div className="font-serif text-2xl text-foreground">Tilt Orrery</div>
+            <div className="font-semibold text-2xl text-foreground">Tilt Orrery</div>
             <div className="text-sm text-muted-foreground font-mono">
               {phase === "gpu" ? `WebGPU · ${GPU_BODIES} bodies` : `CPU · ${CPU_BODIES} bodies`}
             </div>
@@ -953,7 +953,7 @@ export default function TiltOrrery() {
       {showNotes && phase === "idle" && (
         <div className="absolute inset-0 bg-black/85 flex items-center justify-center px-6 overflow-y-auto">
           <div className="max-w-lg text-left py-10">
-            <h2 className="font-serif text-2xl text-foreground mb-4">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground mb-4">Design notes</h2>
             <p className="text-base text-muted-foreground mb-3 leading-relaxed">
               A raw-WebGPU N-body field orbits a central mass. A compute shader
               integrates {GPU_BODIES} bodies (semi-implicit Euler, inverse-square

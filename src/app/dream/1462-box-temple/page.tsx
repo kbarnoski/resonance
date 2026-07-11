@@ -368,7 +368,7 @@ export default function Page() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-b from-black/75 via-black/60 to-black/85 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+            <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
               Box Temple
             </h1>
             <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
@@ -429,7 +429,7 @@ export default function Page() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 select-none">
-            <div className="font-serif text-2xl text-foreground">Box Temple</div>
+            <div className="font-semibold text-2xl text-foreground">Box Temple</div>
             <div className="mt-1 text-base text-muted-foreground">
               fold depth <span className="text-violet-300/95">{readout.depth}%</span>{" "}
               · folds <span className="text-violet-300/95">{readout.folds}</span>

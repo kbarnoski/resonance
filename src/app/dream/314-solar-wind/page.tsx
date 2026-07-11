@@ -221,7 +221,7 @@ export default function SolarWindPage() {
           <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
             Resonance · 314
           </p>
-          <h1 className="max-w-3xl font-serif text-4xl leading-tight text-foreground sm:text-5xl">
+          <h1 className="max-w-3xl font-semibold text-4xl leading-tight text-foreground sm:text-5xl">
             Solar Wind
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground sm:text-lg">
@@ -247,7 +247,7 @@ export default function SolarWindPage() {
           {/* top row: provenance + mode toggle */}
           <div className="flex items-start justify-between gap-3">
             <div className="pointer-events-auto rounded-xl border border-border bg-black/40 px-4 py-2.5 backdrop-blur-md">
-              <p className="font-serif text-xl text-foreground sm:text-2xl">Solar Wind</p>
+              <p className="font-semibold text-xl text-foreground sm:text-2xl">Solar Wind</p>
               <p
                 className={`mt-0.5 font-mono text-sm ${
                   source === "live"

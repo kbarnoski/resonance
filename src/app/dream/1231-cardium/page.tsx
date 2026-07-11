@@ -279,7 +279,7 @@ export default function Page() {
 
       {/* Header / intro */}
       <div className="pointer-events-none absolute left-0 top-0 w-full p-6 sm:p-8">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">cardium</h1>
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">cardium</h1>
         <p className="mt-2 max-w-xl text-base text-muted-foreground">
           A living sheet of excitable tissue wrapped on a sphere that composes
           itself over minutes — from a calm heartbeat, through a spiral rotor,

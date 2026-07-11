@@ -236,7 +236,7 @@ export default function TapeErosionPage() {
       {phase === "intro" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10 px-6">
           <div className="max-w-xl w-full flex flex-col items-center gap-6 text-center">
-            <h1 className="text-3xl md:text-4xl font-serif text-foreground tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-semibold text-foreground tracking-tight">
               Tape Erosion
             </h1>
             <p className="text-base text-foreground leading-relaxed max-w-md">
@@ -273,7 +273,7 @@ export default function TapeErosionPage() {
           {/* Top bar */}
           <div className="flex items-start justify-between px-5 pt-4">
             <div className="flex flex-col gap-0.5">
-              <h1 className="text-xl font-serif text-foreground tracking-tight">
+              <h1 className="text-xl font-semibold text-foreground tracking-tight">
                 Tape Erosion
               </h1>
               <p className="text-sm font-mono text-muted-foreground">

@@ -47,6 +47,12 @@ $s =~ s{\bstroke-white/(\d+)\b}{ $1>=80 ? 'stroke-foreground' : 'stroke-muted-fo
 $s =~ s{\bstroke-white/\[[^\]]+\]}{stroke-muted-foreground}g;
 $s =~ s{\bstroke-white(?![\w/\-])}{stroke-foreground}g;
 
+# font-serif -> font-semibold. Resonance ships NO serif font (only Geist sans +
+# Geist Mono), so `font-serif` silently falls back to browser-default Times —
+# off-brand on every heading. font-semibold gives the same emphasis in the
+# brand sans, matching the dashboard's own h1 treatment. Leaves font-mono alone.
+$s =~ s{\bfont-serif\b}{font-semibold}g;
+
 # shadow tint
 $s =~ s{\bshadow-white/(?:\d+|\[[^\]]+\])}{shadow-border}g;
 

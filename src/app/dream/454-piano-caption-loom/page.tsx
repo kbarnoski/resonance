@@ -755,7 +755,7 @@ export default function PianoCaptionLoom() {
       {/* Drag overlay */}
       {isDragOver && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 border-4 border-violet-400/70 border-dashed">
-          <p className="text-2xl font-serif text-violet-300 drop-shadow-lg">Drop audio file here</p>
+          <p className="text-2xl font-semibold text-violet-300 drop-shadow-lg">Drop audio file here</p>
         </div>
       )}
 
@@ -765,7 +765,7 @@ export default function PianoCaptionLoom() {
           <div className="absolute inset-0 bg-gradient-to-b from-black via-violet-950/35 to-black pointer-events-none" />
 
           <div className="relative z-10 max-w-xl flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-serif font-bold text-foreground tracking-tight leading-snug">
+            <h1 className="text-3xl font-semibold font-bold text-foreground tracking-tight leading-snug">
               Piano Caption Loom
             </h1>
             <p className="text-base text-foreground leading-relaxed">
@@ -1028,7 +1028,7 @@ export default function PianoCaptionLoom() {
       {/* ── Design notes (hidden section) ─────────────────────────────── */}
       <div id="design-notes" className="relative z-10 mt-auto px-6 py-12 max-w-2xl mx-auto">
         <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-border px-6 py-5 space-y-3">
-          <h2 className="text-xl font-serif text-foreground">Design Notes</h2>
+          <h2 className="text-xl font-semibold text-foreground">Design Notes</h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             <strong className="text-violet-300">The Loom:</strong> At each phrase boundary or onset
             cluster (min 7s apart), four specialist agents (Scene, Palette, Motion, Style) propose

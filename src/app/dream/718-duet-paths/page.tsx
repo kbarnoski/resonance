@@ -644,7 +644,7 @@ export default function DuetPathsPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-8">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Duet with the Paths
         </h1>
         <p className="mt-2 max-w-xl text-base text-foreground">
@@ -738,7 +738,7 @@ export default function DuetPathsPage() {
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur" onClick={() => setShowNotes(false)}>
           <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0c0c16] p-6 text-sm leading-relaxed text-foreground" onClick={(e) => e.stopPropagation()}>
-            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
             <p className="mt-3">
               This is the <span className="text-violet-300">concatenative</span> duet
               partner. On load it fetches Karel&apos;s recording, slices it into a

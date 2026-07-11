@@ -363,7 +363,7 @@ export default function TextureDrumPage() {
     <div className="flex flex-col h-screen bg-black text-foreground">
       <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
         <div>
-          <h1 className="text-xl font-serif tracking-wide">Texture Drum</h1>
+          <h1 className="text-xl font-semibold tracking-wide">Texture Drum</h1>
           <p className="text-base text-muted-foreground mt-0.5">
             Five surfaces · five sounds — wood, metal, water, earth, glass
           </p>

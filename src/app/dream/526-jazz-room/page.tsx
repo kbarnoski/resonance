@@ -513,7 +513,7 @@ export default function JazzRoomPage() {
     <main className="relative min-h-screen bg-[#080504] flex flex-col items-center overflow-hidden select-none">
       {/* Title bar */}
       <header className="w-full max-w-3xl px-4 pt-5 pb-2 z-10 relative">
-        <h1 className="text-2xl font-serif text-violet-300/95 tracking-wide text-center">
+        <h1 className="text-2xl font-semibold text-violet-300/95 tracking-wide text-center">
           Jazz Room
         </h1>
         <p className="text-sm text-muted-foreground text-center mt-1 font-light italic">
@@ -553,7 +553,7 @@ export default function JazzRoomPage() {
         <div className="z-10 mt-5">
           <button
             onClick={handleStart}
-            className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-700/80 hover:bg-violet-600/90 text-foreground text-lg font-serif tracking-wide transition-all shadow-lg shadow-violet-900/50 border border-violet-500/40"
+            className="min-h-[44px] px-8 py-2.5 rounded-full bg-violet-700/80 hover:bg-violet-600/90 text-foreground text-lg font-semibold tracking-wide transition-all shadow-lg shadow-violet-900/50 border border-violet-500/40"
           >
             Start the Trio
           </button>
@@ -572,7 +572,7 @@ export default function JazzRoomPage() {
       {/* Sit-in keyboard */}
       {started && (
         <section className="z-10 mt-4 px-3 w-full max-w-3xl" aria-label="Sit-in keys">
-          <p className="text-muted-foreground text-sm text-center mb-2 font-serif">
+          <p className="text-muted-foreground text-sm text-center mb-2 font-semibold">
             Sit In &mdash; F Blues Scale
           </p>
           <div className="flex gap-1.5 justify-center flex-wrap">
@@ -583,7 +583,7 @@ export default function JazzRoomPage() {
                   e.preventDefault();
                   handleUserKey(k.midi);
                 }}
-                className="min-h-[44px] w-10 flex items-center justify-center rounded-md text-sm font-serif font-semibold transition-all active:scale-95 border border-violet-700/40"
+                className="min-h-[44px] w-10 flex items-center justify-center rounded-md text-sm font-semibold font-semibold transition-all active:scale-95 border border-violet-700/40"
                 style={{
                   backgroundColor: "rgba(60,35,8,0.7)",
                   color: k.color,
@@ -619,7 +619,7 @@ export default function JazzRoomPage() {
                 return (
                   <div
                     key={ph}
-                    className={`px-2 py-1 rounded text-xs font-serif transition-all ${
+                    className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
                       isActive
                         ? "bg-violet-700/60 text-violet-300/95 border border-violet-500/50"
                         : "bg-violet-900/20 text-muted-foreground border border-violet-900/30"

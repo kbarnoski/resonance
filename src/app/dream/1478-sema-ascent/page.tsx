@@ -214,7 +214,7 @@ export default function SemaAscentPage() {
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300/95">
             drug-free sema · ecstatic ascent
           </p>
-          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl text-foreground sm:text-5xl">
             Sema Ascent
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-foreground">
@@ -257,7 +257,7 @@ export default function SemaAscentPage() {
         <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-xl border border-border bg-black/45 px-4 py-3 text-base backdrop-blur-md">
           <div className="mb-1.5 flex items-center gap-2">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-violet-400" />
-            <span className="font-serif text-violet-300/95">{hud.movement}</span>
+            <span className="font-semibold text-violet-300/95">{hud.movement}</span>
           </div>
           <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-foreground">
             <dt className="text-muted-foreground">time</dt>
@@ -300,7 +300,7 @@ export default function SemaAscentPage() {
             >
               Close
             </button>
-            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-foreground">
+            <pre className="whitespace-pre-wrap font-semibold text-base leading-relaxed text-foreground">
               {README}
             </pre>
           </div>

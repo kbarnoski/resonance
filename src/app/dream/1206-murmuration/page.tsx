@@ -437,7 +437,7 @@ export default function Murmuration() {
       {!started && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#070812]/80 via-[#0a0b18]/70 to-[#070812]/90 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">
+            <h1 className="font-semibold text-3xl leading-tight text-foreground sm:text-4xl">
               Murmuration
             </h1>
             <p className="mx-auto mt-4 max-w-lg text-base text-foreground sm:text-lg">
@@ -462,7 +462,7 @@ export default function Murmuration() {
       {showNotes && (
         <div className="absolute inset-0 z-10 overflow-y-auto bg-[#070812]/95 px-6 py-16">
           <div className="mx-auto max-w-2xl space-y-4 text-sm leading-relaxed text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p>
               <span className="font-mono text-foreground">The question:</span> what
               if the ensemble were a murmuration — a flock that sings when it

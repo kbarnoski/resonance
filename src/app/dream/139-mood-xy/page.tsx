@@ -261,7 +261,7 @@ export default function MoodXY() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
         <div className="max-w-xs w-full text-center space-y-6">
           <div>
-            <h1 className="text-3xl font-serif text-foreground">Mood XY</h1>
+            <h1 className="text-3xl font-semibold text-foreground">Mood XY</h1>
             <p className="text-muted-foreground text-sm font-mono mt-1">Russell circumplex · valence × arousal</p>
           </div>
           <p className="text-muted-foreground text-base leading-relaxed">
@@ -293,7 +293,7 @@ export default function MoodXY() {
     <div className="w-full h-screen flex flex-col bg-zinc-950">
       <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30">
         <div>
-          <span className="text-foreground text-base font-serif">Mood XY</span>
+          <span className="text-foreground text-base font-semibold">Mood XY</span>
           <span className="text-muted-foreground text-xs font-mono ml-3">
             drag · valence × arousal → live music
           </span>

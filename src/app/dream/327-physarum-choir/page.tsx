@@ -192,7 +192,7 @@ export default function PhysarumChoirPage() {
       {/* idle / intro overlay */}
       {phase !== "running" && (
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">
             Physarum Choir
           </h1>
           <p className="mt-4 max-w-xl text-base text-foreground">
@@ -226,7 +226,7 @@ export default function PhysarumChoirPage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-sm">
-            <h1 className="font-serif text-xl text-foreground">Physarum Choir</h1>
+            <h1 className="font-semibold text-xl text-foreground">Physarum Choir</h1>
             <p className="mt-1 text-base text-muted-foreground">
               The slime is composing — each vein it grows to a tone swells that
               voice in. Click to plant another tone.

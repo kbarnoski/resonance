@@ -243,7 +243,7 @@ export default function WolfRingPage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-violet-300/80">
             the wolf ring
           </p>
-          <h1 className="mb-4 font-serif text-3xl leading-snug text-foreground">
+          <h1 className="mb-4 font-semibold text-3xl leading-snug text-foreground">
             Walk the Circle of Fifths — <br className="hidden sm:block" />
             and Play the Wolf
           </h1>
@@ -304,7 +304,7 @@ export default function WolfRingPage() {
 
       {/* ── Top bar ─────────────────────────────────────────────────── */}
       <div className="z-10 flex flex-shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border bg-black/25 px-4 py-2.5">
-        <span className="font-serif text-xl text-foreground">The Wolf Ring</span>
+        <span className="font-semibold text-xl text-foreground">The Wolf Ring</span>
         <div className="flex flex-wrap gap-1.5">
           {TEMPERAMENTS.map((t, i) => (
             <button
@@ -434,7 +434,7 @@ export default function WolfRingPage() {
                   }}
                 >
                   <span
-                    className="font-serif text-2xl leading-none"
+                    className="font-semibold text-2xl leading-none"
                     style={{ color: text }}
                   >
                     {note.label}

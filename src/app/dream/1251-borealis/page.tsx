@@ -238,7 +238,7 @@ export default function BorealisPage() {
       )}
 
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
           Borealis
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">

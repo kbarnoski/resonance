@@ -682,7 +682,7 @@ export default function MirrorCanonRoundPage() {
         <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase mb-1">
           dream · 302
         </p>
-        <h1 className="text-3xl sm:text-4xl font-serif font-semibold tracking-tight text-foreground mb-2">
+        <h1 className="text-3xl sm:text-4xl font-semibold font-semibold tracking-tight text-foreground mb-2">
           Mirror Canon
         </h1>
         <p className="text-base text-muted-foreground max-w-xl leading-relaxed">

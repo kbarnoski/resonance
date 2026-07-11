@@ -684,7 +684,7 @@ export default function MosaicListener() {
 
       {/* header / controls */}
       <div className="relative z-10 max-w-2xl p-5 sm:p-7">
-        <h1 className="font-serif text-3xl sm:text-4xl text-foreground leading-tight">
+        <h1 className="font-semibold text-3xl sm:text-4xl text-foreground leading-tight">
           Mosaic Listener
         </h1>
         <p className="mt-2 text-base text-foreground max-w-xl">

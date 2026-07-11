@@ -233,7 +233,7 @@ export default function KidsHoldGlow() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#01080f] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">✨</div>
-        <h1 className="text-2xl font-serif text-foreground">Hold & Glow</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Hold & Glow</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Hold anywhere on the screen. The longer you hold, the brighter it glows
           and the richer the sound.

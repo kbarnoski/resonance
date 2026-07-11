@@ -400,7 +400,7 @@ export default function Page() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-black text-foreground gap-6 px-8">
         <p className="text-base font-mono text-muted-foreground">For kids 3+</p>
-        <h1 className="text-3xl font-serif text-center text-foreground">
+        <h1 className="text-3xl font-semibold text-center text-foreground">
           Constellation Song
         </h1>
         <p className="text-base text-muted-foreground text-center max-w-sm leading-relaxed">

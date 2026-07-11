@@ -311,7 +311,7 @@ export default function KaliSustainPage() {
     return (
       <div className="relative flex flex-col items-center justify-center h-full gap-6 text-center px-6">
         <div className="text-5xl leading-none select-none opacity-70">◎</div>
-        <h1 className="text-2xl font-serif text-foreground">Kali Sustain</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Kali Sustain</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           A C2 drone cycles through six just-intonation intervals — each held twelve
           seconds then gliding to the next. The clock shows where you are in the

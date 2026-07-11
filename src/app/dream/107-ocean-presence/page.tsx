@@ -332,7 +332,7 @@ export default function OceanPresencePage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black gap-8 px-6">
         <div className="flex flex-col items-center gap-3 text-center max-w-xs">
-          <h1 className="text-3xl font-serif text-foreground">Ocean Presence</h1>
+          <h1 className="text-3xl font-semibold text-foreground">Ocean Presence</h1>
           <p className="text-base text-muted-foreground leading-relaxed">
             Move your cursor through the ocean.
             <br />

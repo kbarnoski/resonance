@@ -390,7 +390,7 @@ export default function ConductorHandsPage() {
 
       {/* Title + live ratio readout */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex flex-col items-center px-4 pt-5 text-center">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow">
+        <h1 className="font-semibold text-3xl font-semibold tracking-tight text-foreground drop-shadow">
           Conductor&apos;s Hands
         </h1>
         <p className="mt-1 max-w-xl text-base text-foreground">

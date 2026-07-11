@@ -284,7 +284,7 @@ export default function KidsFerroMagnet() {
         />
 
         {/* Title */}
-        <h1 className="text-2xl font-serif text-foreground mb-2 tracking-wide z-10">
+        <h1 className="text-2xl font-semibold text-foreground mb-2 tracking-wide z-10">
           Ferro Magnet
         </h1>
         <p className="text-base text-muted-foreground mb-1 z-10">

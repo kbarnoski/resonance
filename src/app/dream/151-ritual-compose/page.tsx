@@ -547,7 +547,7 @@ export default function RitualComposePage() {
             <div className="px-5 py-4 border-b border-border">
               <div className="flex items-start gap-4 mb-2">
                 <span
-                  className="text-5xl font-serif leading-none shrink-0"
+                  className="text-5xl font-semibold leading-none shrink-0"
                   style={{ color: "rgba(251,191,36,0.9)" }}
                 >
                   {hex.chinese}

@@ -272,7 +272,7 @@ export default function DisintegrationPage() {
         </div>
 
         <header className="text-center flex flex-col gap-2 mt-2">
-          <h1 className="font-serif text-3xl sm:text-4xl text-foreground">
+          <h1 className="font-semibold text-3xl sm:text-4xl text-foreground">
             Disintegration
           </h1>
           <p className="text-base text-muted-foreground max-w-xl">

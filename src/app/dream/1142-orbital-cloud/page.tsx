@@ -473,7 +473,7 @@ export default function OrbitalCloudPage() {
       {!begun && (
         <div className="relative z-10 mx-auto flex min-h-dvh max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
           <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground">DREAM · 1142</p>
-          <h1 className="font-serif text-4xl leading-tight text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl leading-tight text-foreground sm:text-5xl">
             Orbital Cloud
           </h1>
           <p className="max-w-lg text-base leading-relaxed text-foreground">
@@ -500,7 +500,7 @@ export default function OrbitalCloudPage() {
       {begun && (
         <>
           <div className="pointer-events-none absolute left-0 top-0 z-10 p-5">
-            <h1 className="font-serif text-xl text-foreground">Orbital Cloud</h1>
+            <h1 className="font-semibold text-xl text-foreground">Orbital Cloud</h1>
             <p className="mt-1 font-mono text-sm text-muted-foreground">
               n={readout.n} &nbsp; {readout.n}
               {L_LABELS[readout.l]} &nbsp; m={readout.m >= 0 ? `+${readout.m}` : readout.m}

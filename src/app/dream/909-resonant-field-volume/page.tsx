@@ -190,7 +190,7 @@ export default function ResonantFieldPage() {
       {/* Foreground UI */}
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="max-w-xl">
-          <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
             Resonant Field
           </h1>
           <p className="mt-2 text-base text-foreground">

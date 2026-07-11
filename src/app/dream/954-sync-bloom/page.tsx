@@ -306,7 +306,7 @@ export default function SyncBloomPage() {
 
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl text-foreground md:text-5xl">
+          <h1 className="font-semibold text-2xl text-foreground md:text-5xl">
             Sync Bloom
           </h1>
           <p className="mt-2 text-base text-foreground md:text-lg">
@@ -400,7 +400,7 @@ export default function SyncBloomPage() {
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
           <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p>
               <span className="text-foreground">The question:</span> what if a
               chord could grow itself? Instead of looking harmony up from a chart,

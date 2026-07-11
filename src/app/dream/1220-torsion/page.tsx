@@ -185,7 +185,7 @@ export default function TorsionPage() {
           >
             ← dream lab
           </Link>
-          <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">
+          <h1 className="mt-3 font-semibold text-3xl text-foreground sm:text-4xl">
             Torsion
           </h1>
           <p className="mt-2 text-base text-foreground">

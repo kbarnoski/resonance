@@ -485,7 +485,7 @@ export default function ParticleLifeSong() {
 
       {/* corner UI */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 max-w-md p-5 sm:p-6">
-        <h1 className="font-serif text-2xl text-foreground">
+        <h1 className="font-semibold text-2xl text-foreground">
           Particle Life Song
         </h1>
         <p className="mt-2 text-base text-muted-foreground">

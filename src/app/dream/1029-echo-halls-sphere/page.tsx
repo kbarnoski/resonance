@@ -711,7 +711,7 @@ export default function EchoHallsSphere() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-black via-black/95 to-violet-950/40 px-6 text-center">
-          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">Echo Halls — Sphere</h1>
+          <h1 className="font-semibold text-3xl text-foreground sm:text-4xl">Echo Halls — Sphere</h1>
           <p className="max-w-xl text-base text-foreground sm:text-lg">
             Six harmonic rooms float around you on a full sphere — some above, some below, some
             behind. Close your eyes and turn toward the chord you want. The room you face blooms,

@@ -59,7 +59,7 @@ function renderInline(text: string, baseKey: string): ReactNode {
         start: boldM.index,
         end: boldM.index + boldM[0].length,
         node: (
-          <strong key={`${baseKey}-b${n++}`} className="font-semibold text-white">
+          <strong key={`${baseKey}-b${n++}`} className="font-semibold text-foreground">
             {boldM[1]}
           </strong>
         ),
@@ -71,7 +71,7 @@ function renderInline(text: string, baseKey: string): ReactNode {
         node: (
           <code
             key={`${baseKey}-c${n++}`}
-            className="rounded bg-white/[0.07] px-1.5 py-0.5 text-[0.85em] text-violet-200"
+            className="rounded bg-muted px-1.5 py-0.5 text-[0.85em] text-violet-200"
           >
             {codeM[1]}
           </code>
@@ -126,7 +126,7 @@ function renderBody(body: string, baseKey: string): ReactNode[] {
       out.push(
         <pre
           key={`${baseKey}-pre${k++}`}
-          className="my-3 overflow-x-auto rounded-md bg-white/[0.04] p-3 font-mono text-[0.78rem] leading-relaxed text-white/65"
+          className="my-3 overflow-x-auto rounded-md bg-muted p-3 font-mono text-[0.78rem] leading-relaxed text-muted-foreground"
         >
           {code}
         </pre>
@@ -144,7 +144,7 @@ function renderBody(body: string, baseKey: string): ReactNode[] {
       out.push(
         <ul
           key={`${baseKey}-ul${k++}`}
-          className="my-2 ml-5 list-disc space-y-1 text-sm text-white/75"
+          className="my-2 ml-5 list-disc space-y-1 text-sm text-muted-foreground"
         >
           {items.map((it, idx) => (
             <li key={idx}>{renderInline(it, `${baseKey}-uli${k}-${idx}`)}</li>
@@ -163,7 +163,7 @@ function renderBody(body: string, baseKey: string): ReactNode[] {
       out.push(
         <ol
           key={`${baseKey}-ol${k++}`}
-          className="my-2 ml-5 list-decimal space-y-1 text-sm text-white/75"
+          className="my-2 ml-5 list-decimal space-y-1 text-sm text-muted-foreground"
         >
           {items.map((it, idx) => (
             <li key={idx}>{renderInline(it, `${baseKey}-oli${k}-${idx}`)}</li>
@@ -193,7 +193,7 @@ function renderBody(body: string, baseKey: string): ReactNode[] {
     out.push(
       <p
         key={`${baseKey}-p${k++}`}
-        className="my-2 text-sm leading-relaxed text-white/75"
+        className="my-2 text-sm leading-relaxed text-muted-foreground"
       >
         {renderInline(para.join(" "), `${baseKey}-pin${k}`)}
       </p>
@@ -225,20 +225,20 @@ function Pager({
       {page > 1 ? (
         <Link
           href={hrefForPage(page - 1)}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
+          className="rounded-full border border-border bg-muted px-4 py-2 transition-colors hover:bg-accent"
         >
           ← Newer
         </Link>
       ) : (
         <span />
       )}
-      <span className="text-white/40">
+      <span className="text-muted-foreground/70">
         Page {page} of {totalPages}
       </span>
       {page < totalPages ? (
         <Link
           href={hrefForPage(page + 1)}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
+          className="rounded-full border border-border bg-muted px-4 py-2 transition-colors hover:bg-accent"
         >
           Older →
         </Link>
@@ -261,8 +261,8 @@ export function HistoryView({
   totalCycles: number;
 }): ReactNode {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <section className="border-b border-white/10 px-6 py-12">
+    <main className="min-h-screen bg-black text-foreground">
+      <section className="border-b border-border px-6 py-12">
         <div className="mx-auto max-w-4xl">
           <Link
             href="/dream"
@@ -270,10 +270,10 @@ export function HistoryView({
           >
             ← Back to dashboard
           </Link>
-          <h1 className="mt-4 mb-3 font-serif text-4xl tracking-tight md:text-5xl">
+          <h1 className="mt-4 mb-3 font-semibold text-4xl tracking-tight md:text-5xl">
             Cycle history
           </h1>
-          <p className="max-w-2xl text-base text-white/60 md:text-lg">
+          <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
             Every cycle the agent has run, preserved forever. {totalCycles}{" "}
             cycles · decisions, shipped work, observations, and what was queued
             next. Click any cycle to expand.
@@ -283,7 +283,7 @@ export function HistoryView({
               href="https://github.com/kbarnoski/resonance/blob/main/docs/dreams/STATE.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
+              className="rounded-full border border-border bg-muted px-4 py-2 transition-colors hover:bg-accent"
             >
               STATE.md (source)
             </a>
@@ -291,7 +291,7 @@ export function HistoryView({
               href="https://github.com/kbarnoski/resonance/commits/main"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
+              className="rounded-full border border-border bg-muted px-4 py-2 transition-colors hover:bg-accent"
             >
               Git commits
             </a>
@@ -302,7 +302,7 @@ export function HistoryView({
       <section className="px-6 py-10">
         <div className="mx-auto max-w-4xl space-y-3">
           {cycles.length === 0 ? (
-            <p className="text-white/50">No cycle history found in STATE.md.</p>
+            <p className="text-muted-foreground">No cycle history found in STATE.md.</p>
           ) : (
             cycles.map((c, idx) => {
               const decided = firstLine(c.body, "Decided");
@@ -310,27 +310,27 @@ export function HistoryView({
                 <details
                   key={c.number}
                   open={page === 1 && idx < 2}
-                  className="group rounded-xl border border-white/10 bg-white/[0.03] transition-colors open:bg-white/[0.05]"
+                  className="group rounded-xl border border-border bg-muted transition-colors open:bg-accent"
                 >
-                  <summary className="cursor-pointer list-none p-5 transition-colors hover:bg-white/[0.05]">
+                  <summary className="cursor-pointer list-none p-5 transition-colors hover:bg-accent">
                     <div className="flex flex-wrap items-baseline gap-3">
-                      <span className="font-mono text-xs text-white/40">
+                      <span className="font-mono text-xs text-muted-foreground/70">
                         cycle {c.number}
                       </span>
-                      <span className="font-serif text-lg text-white group-open:text-violet-200">
+                      <span className="font-semibold text-lg text-foreground group-open:text-violet-200">
                         {c.title}
                       </span>
                     </div>
                     {c.date && (
-                      <div className="mt-1 text-xs text-white/40">{c.date}</div>
+                      <div className="mt-1 text-xs text-muted-foreground/70">{c.date}</div>
                     )}
                     {decided && (
-                      <p className="mt-3 text-sm leading-relaxed text-white/55 line-clamp-2 group-open:hidden">
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2 group-open:hidden">
                         {decided.slice(0, 220)}
                       </p>
                     )}
                   </summary>
-                  <div className="border-t border-white/10 px-5 pb-5 pt-4">
+                  <div className="border-t border-border px-5 pb-5 pt-4">
                     {renderBody(c.body, `c${c.number}`)}
                   </div>
                 </details>
@@ -342,8 +342,8 @@ export function HistoryView({
         <Pager page={page} totalPages={totalPages} />
       </section>
 
-      <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-white/40">
-        Source: STATE.md on <code className="text-white/60">main</code> ·
+      <footer className="border-t border-border px-6 py-8 text-center text-sm text-muted-foreground/70">
+        Source: STATE.md on <code className="text-muted-foreground">main</code> ·
         written each cycle by the agent itself.
       </footer>
     </main>

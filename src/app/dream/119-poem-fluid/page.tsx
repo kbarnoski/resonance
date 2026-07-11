@@ -613,7 +613,7 @@ export default function PoemFluidPage() {
           Font-serif for poetic weight. Text-shadow for soft luminescence. */}
       {mode !== "idle" && poem.text && (
         <div
-          className="absolute pointer-events-none select-none font-serif"
+          className="absolute pointer-events-none select-none font-semibold"
           style={{
             left: `${poem.x}%`,
             top: `${poem.y}%`,
@@ -636,7 +636,7 @@ export default function PoemFluidPage() {
       {/* ── Idle screen ────────────────────────────────────────────────────────*/}
       {mode === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-2xl md:text-3xl font-serif mb-3 tracking-tight text-foreground">
+          <h1 className="text-2xl md:text-3xl font-semibold mb-3 tracking-tight text-foreground">
             Poem Fluid
           </h1>
           <p className="text-base text-muted-foreground max-w-sm mb-8 leading-relaxed">

@@ -508,7 +508,7 @@ export default function LatticeLoom() {
       <header className="relative z-30 px-5 pt-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
           <div>
-            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+            <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
               Lattice Loom
             </h1>
             <p className="mt-1 max-w-2xl text-base text-foreground">

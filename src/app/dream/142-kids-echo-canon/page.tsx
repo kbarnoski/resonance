@@ -271,7 +271,7 @@ export default function KidsEchoCanon() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#040014] text-foreground gap-6 px-6 text-center">
         <div className="text-5xl select-none" aria-hidden="true">🎵</div>
-        <h1 className="text-2xl font-serif text-foreground">Echo Canon</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Echo Canon</h1>
         <p className="text-base text-muted-foreground max-w-xs">
           Tap out a little tune — then wait. It echoes back higher and higher!
         </p>

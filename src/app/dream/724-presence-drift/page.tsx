@@ -338,7 +338,7 @@ export default function PresenceDriftPage() {
       {/* Hero / idle overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Presence Drift
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-foreground sm:text-lg">

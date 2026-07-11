@@ -407,7 +407,7 @@ export default function MaqamCalligraphy() {
 
       {/* top hero / readouts */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-3xl font-semibold tracking-wide text-foreground sm:text-4xl">
+        <h1 className="font-semibold text-3xl font-semibold tracking-wide text-foreground sm:text-4xl">
           Maqam Calligraphy
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
@@ -420,7 +420,7 @@ export default function MaqamCalligraphy() {
         {(started || demoRef.current) && (
           <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1 text-base">
             <span className="text-foreground">
-              maqam <span className="font-serif text-violet-300/95">{ui.maqam}</span>
+              maqam <span className="font-semibold text-violet-300/95">{ui.maqam}</span>
             </span>
             <span className="text-foreground">
               jins <span className="text-violet-300/95">{ui.jins}</span>

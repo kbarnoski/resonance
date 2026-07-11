@@ -622,7 +622,7 @@ export default function SlowBurnPage() {
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
               Resonance · dream 637
             </p>
-            <h1 className="mt-2 font-serif text-3xl font-medium text-foreground sm:text-4xl">
+            <h1 className="mt-2 font-semibold text-3xl font-medium text-foreground sm:text-4xl">
               Slow Burn
             </h1>
             <p className="mt-2 max-w-xl text-base text-muted-foreground">
@@ -641,7 +641,7 @@ export default function SlowBurnPage() {
 
         {showNotes && (
           <section className="rounded-xl border border-border bg-muted p-5 text-base text-muted-foreground">
-            <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
+            <h2 className="mb-2 font-semibold text-xl text-foreground">Design notes</h2>
             <p className="mb-3">
               Every groove has a <span className="text-violet-300">pocket</span> — the tiny, deliberate
               way each voice sits ahead of or behind the metronomic grid. It is the difference between

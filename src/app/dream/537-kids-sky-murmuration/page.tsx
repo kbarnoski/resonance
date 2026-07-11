@@ -466,7 +466,7 @@ export default function SkyMurmurationPage() {
       {!started && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0d0b2a]/95 px-6">
           <div className="max-w-sm text-center space-y-6">
-            <h1 className="text-3xl font-serif text-foreground leading-snug">
+            <h1 className="text-3xl font-semibold text-foreground leading-snug">
               Sky Murmuration
             </h1>
             <p className="text-base text-muted-foreground">
@@ -480,7 +480,7 @@ export default function SkyMurmurationPage() {
                 px-8 py-4
                 bg-violet-500/20 hover:bg-violet-500/35
                 border border-violet-400/40 hover:border-violet-300/60
-                text-violet-300 text-xl font-serif
+                text-violet-300 text-xl font-semibold
                 rounded-2xl
                 transition-all duration-200
                 active:scale-95

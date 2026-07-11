@@ -415,7 +415,7 @@ export default function DisintegrationLoop() {
 
       {/* Header */}
       <div className="relative z-10 px-6 pt-10 sm:px-10">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           The Disintegration Loop
         </h1>
         <p className="mt-2 max-w-xl text-base text-muted-foreground">
@@ -486,7 +486,7 @@ export default function DisintegrationLoop() {
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 px-6">
           <div className="max-w-lg rounded-lg border border-border bg-zinc-950 p-6 text-base">
-            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
             <p className="mt-3 text-muted-foreground">
               A warm just-intonation lullaby fragment is rendered into a tape
               buffer. Each pass, the tape&apos;s own audio is run through a wear

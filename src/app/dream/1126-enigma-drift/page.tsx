@@ -132,7 +132,7 @@ export default function EnigmaDriftPage() {
     >
       <div className="mx-auto flex max-w-5xl flex-col items-center">
         <header className="w-full text-center">
-          <h1 className="font-serif text-3xl font-semibold text-neutral-900 sm:text-4xl">
+          <h1 className="font-semibold text-3xl font-semibold text-neutral-900 sm:text-4xl">
             Enigma Drift
           </h1>
           <p className="mx-auto mt-2 max-w-2xl text-base leading-relaxed text-neutral-700">
@@ -300,7 +300,7 @@ function Slider({
 function DesignNotes() {
   return (
     <div className="mt-5 max-w-2xl text-left text-base leading-relaxed text-neutral-800">
-      <h2 className="font-serif text-xl font-semibold text-neutral-900">
+      <h2 className="font-semibold text-xl font-semibold text-neutral-900">
         What you are looking at
       </h2>
       <p className="mt-2">
@@ -309,7 +309,7 @@ function DesignNotes() {
         The colour bands appear to rotate and flow, yet every element on screen
         is perfectly still.
       </p>
-      <h2 className="mt-5 font-serif text-xl font-semibold text-neutral-900">
+      <h2 className="mt-5 font-semibold text-xl font-semibold text-neutral-900">
         How it works
       </h2>
       <p className="mt-2">
@@ -321,7 +321,7 @@ function DesignNotes() {
         beating quickens to match. <em>Shimmer</em> adds a barely-perceptible
         sub-pixel drift of the whole field to seed microsaccade-like reversals.
       </p>
-      <h2 className="mt-5 font-serif text-xl font-semibold text-neutral-900">
+      <h2 className="mt-5 font-semibold text-xl font-semibold text-neutral-900">
         References
       </h2>
       <ul className="mt-2 list-disc pl-5">
@@ -333,7 +333,7 @@ function DesignNotes() {
         <li>Faubert &amp; Herbert, &ldquo;The peripheral drift illusion,&rdquo; 1999.</li>
         <li>Bridget Riley — Op-art.</li>
       </ul>
-      <h2 className="mt-5 font-serif text-xl font-semibold text-neutral-900">
+      <h2 className="mt-5 font-semibold text-xl font-semibold text-neutral-900">
         Safety &amp; honesty
       </h2>
       <p className="mt-2">

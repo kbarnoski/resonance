@@ -366,7 +366,7 @@ export default function ChordCanvas() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-foreground px-6 py-12">
         <div className="max-w-xs w-full text-center space-y-6">
           <div>
-            <h1 className="text-3xl font-serif text-foreground">Chord Canvas</h1>
+            <h1 className="text-3xl font-semibold text-foreground">Chord Canvas</h1>
             <p className="text-muted-foreground text-sm font-mono mt-1">real-time chord detection · harmonic timeline</p>
           </div>
           <p className="text-muted-foreground text-base leading-relaxed">
@@ -400,7 +400,7 @@ export default function ChordCanvas() {
     <div className="w-full h-screen flex flex-col bg-zinc-950">
       <div className="flex items-center justify-between px-4 py-2 shrink-0 bg-black/30">
         <div>
-          <span className="text-foreground text-base font-serif">Chord Canvas</span>
+          <span className="text-foreground text-base font-semibold">Chord Canvas</span>
           <span className="text-muted-foreground text-xs font-mono ml-3">
             {mode === 'demo' ? 'demo · ii–V–I in C, repeating' : 'mic · play any chord'}
           </span>

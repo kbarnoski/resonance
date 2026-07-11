@@ -240,7 +240,7 @@ export default function ShakeBellsPage() {
 
       {showNotes && (
         <div className="absolute right-4 top-16 z-30 max-w-sm rounded-2xl bg-black/80 p-5 text-base text-foreground backdrop-blur">
-          <h2 className="mb-2 font-serif text-xl text-foreground">Magic Bell Tray</h2>
+          <h2 className="mb-2 font-semibold text-xl text-foreground">Magic Bell Tray</h2>
           <p className="mb-2 text-foreground">
             Shake the tablet like a tray of handbells. Each shake rings real,
             physically-modeled bells that climb and descend a{" "}
@@ -265,7 +265,7 @@ export default function ShakeBellsPage() {
       {/* Start overlay */}
       {!started && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 px-6 text-center">
-          <h1 className="font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+          <h1 className="font-semibold text-4xl font-semibold text-foreground sm:text-5xl">
             Magic Bell Tray
           </h1>
           <p className="max-w-xl text-lg text-foreground">

@@ -225,7 +225,7 @@ export default function KidsFrostGarden() {
 
       {/* Header / title overlay */}
       <div className="pointer-events-none relative z-10 px-6 pt-8">
-        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
           Frost Garden
         </h1>
         <p className="mt-2 max-w-md text-base text-muted-foreground">

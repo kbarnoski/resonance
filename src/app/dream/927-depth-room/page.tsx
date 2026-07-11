@@ -356,7 +356,7 @@ export default function DepthRoomPage() {
       {/* overlay UI */}
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="max-w-2xl">
-          <h1 className="font-serif text-3xl md:text-5xl text-foreground">
+          <h1 className="font-semibold text-3xl md:text-5xl text-foreground">
             Depth Room
           </h1>
           <p className="mt-2 text-base md:text-lg text-foreground">
@@ -443,7 +443,7 @@ export default function DepthRoomPage() {
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/85 p-6 backdrop-blur-md md:p-12">
           <div className="mx-auto max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p>
               This is the lab&apos;s first depth-camera piece achieved in pure
               software — no Kinect, no RealSense. A monocular depth model,{" "}

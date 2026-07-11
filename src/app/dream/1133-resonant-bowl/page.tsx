@@ -159,7 +159,7 @@ export default function ResonantBowlPage() {
 
       {/* Title + description (top-left) */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 max-w-xl p-6">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
+        <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
           Resonant Bowl
         </h1>
         <p className="mt-2 text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">

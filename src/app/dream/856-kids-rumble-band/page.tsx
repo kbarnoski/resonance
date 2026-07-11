@@ -506,7 +506,7 @@ export default function KidsRumbleBand() {
       {/* Title + notes link */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between p-4">
         <div>
-          <h1 className="font-serif text-2xl text-foreground drop-shadow">
+          <h1 className="font-semibold text-2xl text-foreground drop-shadow">
             Feel the Beat
           </h1>
           <p className="mt-1 max-w-md text-base text-muted-foreground">

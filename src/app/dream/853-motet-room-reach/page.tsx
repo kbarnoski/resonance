@@ -816,7 +816,7 @@ export default function MotetRoomReach() {
           ← back to the dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl sm:text-4xl text-foreground">
+        <h1 className="mt-4 font-semibold text-3xl sm:text-4xl text-foreground">
           The Motet Room <span className="text-violet-300">(Reach)</span>
         </h1>
         <p className="mt-3 text-base text-foreground leading-relaxed">

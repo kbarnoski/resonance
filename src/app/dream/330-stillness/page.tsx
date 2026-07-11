@@ -297,7 +297,7 @@ export default function StillnessPage() {
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
         <div className="flex items-start justify-between gap-4">
           <div className="max-w-xl">
-            <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
+            <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">
               Stillness
             </h1>
             <p className="mt-1 text-base text-foreground">
@@ -316,7 +316,7 @@ export default function StillnessPage() {
       {/* ── Stillness HUD (top-center-ish) ── */}
       {begun && (
         <div className="pointer-events-none absolute left-1/2 top-24 z-10 -translate-x-1/2 text-center sm:top-28">
-          <div className="font-serif text-5xl tabular-nums text-foreground sm:text-6xl">
+          <div className="font-semibold text-5xl tabular-nums text-foreground sm:text-6xl">
             {streak.toFixed(1)}
             <span className="text-2xl text-muted-foreground">s</span>
           </div>

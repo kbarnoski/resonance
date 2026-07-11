@@ -270,7 +270,7 @@ export default function CrystalBloomPage() {
       {/* header */}
       <header className="relative z-10 flex items-start justify-between gap-4 px-5 pt-6">
         <div>
-          <h1 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl leading-tight text-foreground sm:text-4xl">
             Crystal Bloom
           </h1>
           <p className="mt-1 max-w-md text-base text-muted-foreground">
@@ -425,7 +425,7 @@ export default function CrystalBloomPage() {
         id="design-notes"
         className="relative z-10 mx-auto max-w-2xl px-6 pb-16 pt-8 text-base text-muted-foreground"
       >
-        <h2 className="font-serif text-xl text-foreground">Design notes</h2>
+        <h2 className="font-semibold text-xl text-foreground">Design notes</h2>
         <p className="mt-2">
           Every bell is tuned to a{" "}
           <span className="text-violet-300">pure integer frequency ratio</span>{" "}

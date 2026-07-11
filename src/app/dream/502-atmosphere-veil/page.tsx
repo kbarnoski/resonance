@@ -297,7 +297,7 @@ export default function AtmosphereVeilPage() {
             >
               ← dream
             </Link>
-            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+            <h1 className="font-semibold text-2xl tracking-tight text-foreground sm:text-3xl">
               Atmosphere — Veil
             </h1>
             <span

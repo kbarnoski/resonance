@@ -128,7 +128,7 @@ export default function DarkChoirPage() {
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-border">
-            <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
+            <h1 className="font-semibold text-3xl tracking-tight text-foreground sm:text-4xl">
               Dark Choir
             </h1>
             <p className="mt-3 text-base leading-relaxed text-foreground">
@@ -166,7 +166,7 @@ export default function DarkChoirPage() {
       {/* ── Running status (sparse) ────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-foreground">Dark Choir</h1>
+          <h1 className="font-semibold text-2xl text-foreground">Dark Choir</h1>
           {mode === "mic" && (
             <p className="mt-1 text-base text-violet-300/95">
               ● listening — sing, hum, or breathe
@@ -195,7 +195,7 @@ export default function DarkChoirPage() {
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
           <div className="max-w-2xl text-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">The question:</span> what if you closed
               your eyes, sang into the dark, and the darkness sang back — an

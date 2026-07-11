@@ -272,7 +272,7 @@ export default function QuantumEtchPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#0a0807]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-foreground">Quantum Etch</h1>
+          <h1 className="font-semibold text-2xl font-bold text-foreground">Quantum Etch</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"

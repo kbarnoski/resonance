@@ -115,7 +115,7 @@ export default function KidsSkySongPage() {
 
       {/* ── header (outside the play area, top-left) ── */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-[70%]">
-        <h1 className="font-serif text-2xl text-foreground drop-shadow sm:text-3xl">
+        <h1 className="font-semibold text-2xl text-foreground drop-shadow sm:text-3xl">
           Today&rsquo;s Sky Song
         </h1>
         <p className="mt-1 text-base text-muted-foreground">

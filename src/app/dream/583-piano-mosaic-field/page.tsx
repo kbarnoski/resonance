@@ -227,7 +227,7 @@ export default function PianoMosaicField() {
       {/* Header / intro overlay */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-6 sm:p-8">
         <div className="max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          <h1 className="font-semibold text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Piano Mosaic Field
           </h1>
           <p className="mt-3 text-base leading-relaxed text-muted-foreground">
@@ -288,7 +288,7 @@ export default function PianoMosaicField() {
       {showNotes && (
         <div className="absolute inset-x-0 bottom-0 z-20 max-h-[70vh] overflow-y-auto border-t border-border bg-[#0b0814]/95 p-6 backdrop-blur sm:p-8">
           <div className="mx-auto max-w-2xl space-y-3 text-base leading-relaxed text-muted-foreground">
-            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p>
               Karel&apos;s solo piano is decoded client-side and sliced into
               overlapping <span className="text-foreground">~120ms Hann grains</span>.

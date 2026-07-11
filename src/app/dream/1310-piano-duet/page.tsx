@@ -329,7 +329,7 @@ export default function PianoDuetPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+          <h1 className="font-semibold text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Sing Into His Piano
           </h1>
           <p className="mt-2 text-base text-muted-foreground">
