@@ -3,6 +3,17 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §739 — 2026-07-11 (research-first dive, cycle 739 · PSYCHEDELIC · **WIDE**)
+
+**Dive target.** GPU substrates for psychedelic *geometry* the lab hasn't touched — specifically fresh ways to compute the Klüver honeycomb/lattice form-constant in real time, and a survey of which sim families are still grep-0× here.
+
+**Finding — GPU Voronoi via the Jump Flooding Algorithm (JFA).** JFA (Rong & Tan, I3D 2006 — https://www.comp.nus.edu.sg/~tants/jfa/i3d06.pdf) computes a full Voronoi diagram / distance field on the GPU in log₂(N) ping-pong passes: each pixel adopts the nearest seed among neighbors at exponentially-shrinking offsets. It's foundational, but it's **live right now** — arXiv **2509.07175** "Efficient Computation of Voronoi Diagrams Using Point-in-Cell Tests" (Sept 2025, https://arxiv.org/pdf/2509.07175) revisits GPU Voronoi accuracy, and minimal JFA/WebGPU implementations (Ricky Reusser's Observable WebGPU port; ncherel/jump-flood) were **updated as recently as January 2026**. Why it's surprising for *us*: a Voronoi tessellation IS a honeycomb/lattice form-constant, and warped through the shared log-polar `exp()` map it becomes a jeweled tunnel — the archetypal DMT "stained-glass lattice" — yet **Voronoi/JFA is grep-0× across the whole lab** (only a stray `271-pigment-mosaic` README mention; no piece computes or plays a Voronoi field). *Could become a prototype that:* renders a living GPU-Voronoi lattice you play by dragging its cells, each cell a continuous inharmonic voice, the whole thing log-polar-warped into a breathing tunnel. → built tonight as **`1464-crystal-cortex`**.
+
+**Adjacent freshness (context for the WIDE fan-out).** Surgical technique-grep over `src/app/dream/**` to find surviving 0× lanes: **Lattice-Boltzmann (D2Q9) = 0×** (distinct from the lab's many stable-fluids/Navier-Stokes pieces) → seeded **`1466-boltzmann-bloom`** (breathe into a real lattice-gas as LSD "breathing surfaces + tracers"). And the jury's still-open **2nd-WebGPU-compute** + **long-form >5min stateful** lanes → seeded **`1468-the-return`** (the NDE arc as one 7-min unrepeating point-cloud journey). Rejected pre-brief as near-dups (all have prior): Physarum (`1089`/`327`), Lenia (`1086`/`264`), Ganzfeld (`1043`/`1320`), seismic data (`1193`/`233`), Wikipedia-stream (`437`/`1024`/`760`), automatic-writing/séance (`704`).
+
+**Freshness honesty.** JFA (2006) and LBM (1990s) are foundational, not <30d — but both are grep-0× *here*, both have current-quarter/2026 implementation activity, and the fresh axis is the *combination* (JFA→form-constant→played instrument; LBM→breath-driven LSD membrane), which is the mandate's real intent: surface a live 0× lane, not re-discover 2022.
+
+---
 ## §738 — 2026-07-11 (research-first dive, cycle 738 · PSYCHEDELIC · **DEEP** — "THE FRACTAL PALACE")
 
 **Dive target.** The freshest work at the intersection of 3D fractal geometry, real-time raymarching, and altered-states/mindfulness sonification — and one genuinely-surprising item.

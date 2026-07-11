@@ -1,39 +1,20 @@
-# Morning digest — last updated 2026-07-11 ~10:30 UTC (cycle 738, DEEP)
+# Morning digest — last updated 2026-07-11 ~12:55 UTC (cycle 739, WIDE)
 
-Open the lab: https://getresonance.vercel.app/dream
+**Open this first:** https://getresonance.vercel.app/dream/1464-crystal-cortex
 
 ## New since yesterday
-- **`/dream/1462-box-temple` — "Box Temple"** ⭐ tonight's ship. *Fall forward
-  through an endless folded-architecture fractal — a machine-elf temple of infinite
-  corridors — and the geometry's own folding structure resonates as sound, so
-  travelling through it plays it.* The lab's **first 3D escape-time fractal** (a real
-  raymarched **Mandelbox** — Tom Lowe "Tglad", 2010) and its **first raymarched-fractal
-  instrument**. As you glide through the corridors, the same fold is sampled at the
-  camera every frame: each folded iteration lights a resonant band-pass "corridor" voice
-  pitched **continuously** by the temple's own dimensions (inharmonic, alien on purpose —
-  no musical scale); wall-proximity crossfades the sound present↔reverberant; folding
-  deeper multiplies the corridors and the drive. *Why open it:* sound on, dim room —
-  enter and let it fly you forward; drag to steer, hold **Fold deeper** to descend into a
-  tightening lattice. It flies itself on load (never blank). WebGL2 + Web Audio, no
-  file/camera/MIDI. Pole runs cosmic-ambient (calm chambers) → intense (dense fold).
+- **`1464-crystal-cortex`** (cycle 739, WIDE-winner) — *Reach into the DMT "jewelled honeycomb" and play it.* A living **Voronoi lattice** of stained-glass cells, warped into an infinite tunnel; **drag the cells with your fingers** (multi-touch) and each cell sings a continuous tone. The lab's **first GPU Voronoi / Jump-Flooding piece** (grep-0×), backed by today's research dive. Pole: **intense** (breaks the recent calm run). Best on a touch screen — grab a few cells and pull.
+- *2 more were explored this fire and banked — see below + IDEAS §739.*
 
-## Also explored tonight (banked to IDEAS §738, not shipped)
-- ⭐ **`1460-bulb-organ`** (TOP ship-next) — *the organic sibling.* Same "fly into an
-  infinite fractal that plays itself", but a power-8 **Mandelbulb** (White & Nylander,
-  2009) — the bulbous, living, organic face of the breakthrough rather than the rigid
-  temple. You orbit-and-dive it; its orbit-trap becomes a continuous microtonal voice.
-  De-selected only because the temple more literally lets you *travel through* the
-  fractal. Resurrect to pair the two as **"two faces of the fractal palace."**
+## In progress / partial (banked, ready to ship next)
+- **⭐⭐ `1468-the-return`** — the whole **near-death-experience arc as ONE 7-min unrepeating journey** a point-cloud performs (different at min 6 than min 1). Cashes two jury asks at once: **long-form stateful** + a **2nd WebGPU-compute** piece. Built demoable; top of the resurrect queue.
+- **⭐ `1466-boltzmann-bloom`** — breathe into a **real Lattice-Boltzmann fluid** (grep-0× method) as LSD "breathing surfaces + colour trails." Built demoable; novelty is under the hood.
 
-## Note on the theme (DEEP night)
-- A deliberate reach into a **massively-bigger, grep-0× concept**: the archetypal
-  DMT-breakthrough "infinite fractal palace" geometry (Mandelbulb / Mandelbox) had
-  **never** been built here — raymarching existed 15× but only for organic SDF scenes,
-  never a 3D escape-time fractal, and never as a *played* instrument. Both explorers keep
-  pitch **continuous and inharmonic**, deliberately off the ~10× JI/pentatonic
-  "always-consonant" crutch two juries have named.
+## Research findings worth a look
+- **Jump Flooding Algorithm** for GPU Voronoi (Rong & Tan 2006; live again — arXiv 2509.07175 Sept 2025 + Jan-2026 WebGPU impls). Grep-0× here → became `1464`. Full note in RESEARCH §739.
 
-## Open question for Karel (standing)
-- The **≥4-model AI-pipeline chain** (audio→image→video) is the only 0× rung left and a
-  repeated jury ask — but it spends FAL/Replicate budget, so I can't run it unattended.
-  **Say the word + a per-piece budget and it ships next cycle.**
+## Open questions for Karel
+- **The ≥4-model AI-pipeline chain (audio→image→video) is still 0×** — the last standing jury demand, gated **only** on your per-prototype paid-budget go-ahead (FAL/Replicate). Say the word and it ships next fire.
+- Ship **`1468-the-return`** (the NDE WebGPU point-cloud journey) next, or redirect?
+
+_Winner NOT eye/ear-verified for feel (headless — no GPU/display/speakers); build gate is green and it self-demos on load. The cell-voice mix + warp want your browser._
