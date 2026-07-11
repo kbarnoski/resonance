@@ -10,6 +10,20 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §738 (cycle 738 · DEEP — "THE FRACTAL PALACE") — SHIPPED `1462-box-temple`; one banked ⭐
+
+The DEEP fire: ONE concept — *fly into an infinite self-similar 3D escape-time fractal (the DMT-breakthrough "fractal palace" geometry) that plays itself* — attacked via 2 approaches on the grep-0× 3D-escape-time-fractal lane (`mandelbulb`/`mandelbox`/escape-time all 0× across the whole lab). Shipped the architectural Mandelbox flythrough (`1462-box-temple` — most literally "travel THROUGH the fractal"; richer played sonification). The non-winner was built demoable + scoped-clean (self-reported `tsc --noEmit`=0 / `eslint --max-warnings 0`=0), backed up to scratchpad `banked-738/`, folder `rm -rf`'d — never committed. Full rebuildable spec:
+
+### ⭐ `1460-bulb-organ` — the organic-breakthrough sibling (TOP ship-next) · `status: banked`
+- **The one question:** what if you could fly into a power-8 **Mandelbulb** — the *organic* face of the fractal breakthrough (bulbous, living, self-similar bloom, vs the box-temple's rigid architecture) — and its orbit-trap became a continuous voice?
+- **Technique:** single WebGL2 fragment shader sphere-tracing the **power-8 spherical Mandelbulb** (Daniel White & Paul Nylander, 2009) via the analytic DE `0.5·log(r)·r/dr`; DE-gradient normals, AO-from-step-count, near-miss glow, IQ cosine palette, sub-0.1 Hz luminance drift. CPU mirror of the same ~9-iteration loop samples the field at the camera each frame (`mandelbulb.ts`).
+- **Interaction:** an **orbit-and-dive** camera (drag orbits the bulb; wheel / *Dive deeper* pushes toward the surface shell, auto-drifts inward + spins so it's never static). Differs from the shipped `1462` which is a *first-person flythrough*.
+- **Sonification:** orbit trap → **continuous** additive fundamental over ~3.3 octaves (`setTargetAtTime` glides, stretched/inharmonic partials — **no scale snap**); iteration count → partial count/stretch; DE → filter cutoff; dive depth → drive; DE spikes → grains. 7-voice additive + sub + 5-grain pool, peak 0.2 → DynamicsCompressor.
+- **Refs:** White & Nylander (Mandelbulb 2009), Iñigo Quílez (DE/orbit-trap), Julius Horsthuis (DMT-fractal film lineage). **Ambition 3/5:** #1 (first Mandelbulb + continuous-non-scale-pitch, grep-0×) + #2 (≥4 subsystems) + #3 named refs + #5 §738 dive.
+- **Why banked not shipped:** `1462-box-temple` more literally embodies "fly INTO / travel THROUGH" (first-person flythrough w/ collision vs orbiting a sculpture) and has a richer structurally-grounded sonification (corridor resonances + wall-proximity reverb). **Resurrect knob:** pair the two as *"two faces of the fractal palace"* (organic bulb ↔ architectural temple), or deepen `1460` from orbit-and-dive into a true fly-INTO first-person path so the visitor passes through the bulb's shell into the interior detail. Full working code preserved in `banked-738/`.
+
+---
+
 ## §737 (cycle 737 · WIDE — "A fresh sensor on a fresh surface") — SHIPPED `1458-room-of-you`; two banked ⭐⭐ + ⭐
 
 Three orthogonal explorers, each on a sensor the recent pointer/tilt/stillness run never touched (external-data / MIDI / camera). Shipped the camera piece (`1458-room-of-you` — revives the jury-flagged collapsed camera lane; freshest cross-modal mapping). Both non-winners were built demoable + scoped-clean (self-reported `tsc`=0 / `eslint --max-warnings 0`=0; `1456` served HTTP 200 under `next dev`), backed up to scratchpad `banked-737/`, folders `rm -rf`'d — never committed. Full rebuildable specs:

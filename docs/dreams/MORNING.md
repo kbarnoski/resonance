@@ -1,39 +1,37 @@
-# Morning digest — last updated 2026-07-11 ~08:25 UTC (cycle 737, WIDE)
+# Morning digest — last updated 2026-07-11 ~10:30 UTC (cycle 738, DEEP)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/1458-room-of-you` — "The Room of You"** ⭐ tonight's ship. *Your own body
-  becomes the acoustic space.* Stand in front of the camera and your silhouette **is the
-  shape of a resonant room** — move, and the space re-tunes and a soft bell rings out
-  through the you-shaped cathedral. Not body-as-visual-paint (the lab's done that) but
-  **body-as-acoustics**: a hand-built **Feedback-Delay-Network reverb** whose delay
-  lengths / decay / brightness are continuously re-tuned by how tall, wide and full of
-  the frame you are; motion re-strikes the bells. After Alvin Lucier's *I Am Sitting in a
-  Room* (his mapping inverted — *your* geometry becomes the room) + Pauline Oliveros's
-  Deep Listening. *Why open it:* allow the camera, stand back, and move slowly in a dim
-  room with sound on — you're playing a cathedral shaped like you. No camera? A synthetic
-  presence inhabits it for you (self-demos on a phone). WebGL2 + Web Audio, no file/MIDI.
-  This **revives the camera/embodied lane** the concept jury flagged as collapsed (1×).
+- **`/dream/1462-box-temple` — "Box Temple"** ⭐ tonight's ship. *Fall forward
+  through an endless folded-architecture fractal — a machine-elf temple of infinite
+  corridors — and the geometry's own folding structure resonates as sound, so
+  travelling through it plays it.* The lab's **first 3D escape-time fractal** (a real
+  raymarched **Mandelbox** — Tom Lowe "Tglad", 2010) and its **first raymarched-fractal
+  instrument**. As you glide through the corridors, the same fold is sampled at the
+  camera every frame: each folded iteration lights a resonant band-pass "corridor" voice
+  pitched **continuously** by the temple's own dimensions (inharmonic, alien on purpose —
+  no musical scale); wall-proximity crossfades the sound present↔reverberant; folding
+  deeper multiplies the corridors and the drive. *Why open it:* sound on, dim room —
+  enter and let it fly you forward; drag to steer, hold **Fold deeper** to descend into a
+  tightening lattice. It flies itself on load (never blank). WebGL2 + Web Audio, no
+  file/camera/MIDI. Pole runs cosmic-ambient (calm chambers) → intense (dense fold).
 
-## Also explored tonight (banked to IDEAS §737, not shipped)
-- ⭐⭐ **`1454-tide-organ`** (RESURRECT-FIRST) — *the living ocean composes.* Real public
-  marine data (Open-Meteo Marine API) — swell **period** → the drone's pulse + root note,
-  wave **height** → brightness, **direction** → the field's rotation — drives a slow
-  cosmic-ambient drone-cathedral you breathe inside. After Douglas Hollis's **Wave Organ**
-  (an Exploratorium tide-played sculpture) + Deep Listening. Cashes the jury-praised
-  real-data-sonification lane; zero hardware, self-demos with a synthetic tide offline.
-  De-selected only because camera was the sharper break from the recent run.
-- ⭐ **`1456-rose-organ`** — *play a MIDI keyboard, grow a Gothic rose window.* Every note
-  a pane of light; velocity → brightness, chord size → fold-symmetry, sustain → freeze the
-  glass. True 12-TET, so a wrong note is honestly audible (breaks the always-consonant
-  spell). After the Chartres rose window. Resurrect when a MIDI/installation context fits.
+## Also explored tonight (banked to IDEAS §738, not shipped)
+- ⭐ **`1460-bulb-organ`** (TOP ship-next) — *the organic sibling.* Same "fly into an
+  infinite fractal that plays itself", but a power-8 **Mandelbulb** (White & Nylander,
+  2009) — the bulbous, living, organic face of the breakthrough rather than the rigid
+  temple. You orbit-and-dive it; its orbit-trap becomes a continuous microtonal voice.
+  De-selected only because the temple more literally lets you *travel through* the
+  fractal. Resurrect to pair the two as **"two faces of the fractal palace."**
 
-## Note on the theme
-- A deliberate **three-way swing off "too similar"**: the recent run was all
-  pointer/tilt/stillness input — so tonight's three explorers each used a sensor that run
-  never touched (**external-data / MIDI / camera**), and the winner is the sharpest break.
-  Camera-as-acoustic-space is a genuinely new cross-modal mapping for the lab.
+## Note on the theme (DEEP night)
+- A deliberate reach into a **massively-bigger, grep-0× concept**: the archetypal
+  DMT-breakthrough "infinite fractal palace" geometry (Mandelbulb / Mandelbox) had
+  **never** been built here — raymarching existed 15× but only for organic SDF scenes,
+  never a 3D escape-time fractal, and never as a *played* instrument. Both explorers keep
+  pitch **continuous and inharmonic**, deliberately off the ~10× JI/pentatonic
+  "always-consonant" crutch two juries have named.
 
 ## Open question for Karel (standing)
 - The **≥4-model AI-pipeline chain** (audio→image→video) is the only 0× rung left and a

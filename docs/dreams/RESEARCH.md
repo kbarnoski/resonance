@@ -3,6 +3,17 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §738 — 2026-07-11 (research-first dive, cycle 738 · PSYCHEDELIC · **DEEP** — "THE FRACTAL PALACE")
+
+**Dive target.** The freshest work at the intersection of 3D fractal geometry, real-time raymarching, and altered-states/mindfulness sonification — and one genuinely-surprising item.
+
+**Freshest hits.** (1) *FractalBrain: A Neuro-interactive VR Experience using EEG for Mindfulness* (arXiv **2510.26041**) — a real-time interactive stereo synthesizer whose audio is generated from **fractal parameters + live EEG**, explicitly for meditative/altered states. It is the clearest recent statement that *fractal structure ↔ sound* is a live, drug-free immersive-AV direction (not just a coloring trick). (2) Nikos Papadopoulos, *Rendering the Mandelbulb* (4rknova, Sept 2025) — a current deep-dive on WebGL raymarching of the power-8 Mandelbulb via the analytic distance estimator + **orbit traps**, confirming the DE/orbit-trap technique is present-day, not archival. Honesty on freshness: FractalBrain is ~9 months old and the Mandelbulb render post ~10 — neither is strictly <30 days, but the *3D-escape-time-fractal-as-played-instrument* combination they point at is genuinely un-built here (grep below), which is the mandate's real intent (surface a live lane, don't re-discover 2022).
+
+**Grep discipline (the 0× find).** In a ~690-piece lab, `mandelbulb` / `mandelbox` / `escape.time` / `distance estimator` as a fractal are **grep-0×** across every README + INDEX — despite `raymarch` appearing 15× and `SDF` 19× (all primitive/organic SDF scenes, no escape-time fractal). Also grep-rejected pre-brief as near-duplicates: Kleinian/Apollonian & hyperbolic (`1042`/`1044`/`1285`/`1288`/`1294` — a DEAD lane per §734), cymatics/Chladni (`19`/`165`/`1278`), Kuramoto (`1082`), moiré (`1316`), quasicrystal (`837`). The surviving 0× axis is the **3D escape-time fractal (Mandelbulb/Mandelbox) as a *played* instrument that sonifies its own DE/fold structure** — the archetypal DMT-breakthrough "infinite fractal palace" geometry, never instrumented.
+
+**Chain → build (visible).** This dive (fractal↔sound is a live altered-states lane per FractalBrain; DE/orbit-trap is a current WebGL technique; the 3D escape-time fractal is grep-0×) → cycle 738 **DEEP** on ONE concept — *"THE FRACTAL PALACE: fly into an infinite self-similar 3D fractal that plays itself"* — attacked via 2 approaches: **A `1460-bulb-organ`** (organic power-8 Mandelbulb, orbit-trap → continuous additive voice) · **B `1462-box-temple`** (architectural Mandelbox, first-person flythrough, fold-structure → resonant corridor voices). Shipped **`1462`** (most literally "travel THROUGH the fractal", richer played sonification); banked ⭐`1460` → IDEAS §738. Pitch is **continuous/inharmonic in both** — deliberately off the ~10× JI/pentatonic "always-consonant" crutch two juries named.
+
+---
 ## §737 — 2026-07-11 (research-first dive, cycle 737 · PSYCHEDELIC · **WIDE** — "A fresh sensor on a fresh surface")
 
 **Dive target.** The freshest work at the intersection of embodied/cross-modal sound and drug-free immersive AV, and — per the ambition mandate — one genuinely-recent (<30-day) surprising item.
