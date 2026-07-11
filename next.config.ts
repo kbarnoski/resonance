@@ -25,7 +25,11 @@ const BUILD_TIME = new Date().toISOString();
 // scripts and Tailwind inline styles.
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob:",
+  // cdn.jsdelivr.net: dream prototypes import ESM modules at runtime (MediaPipe
+  // FaceLandmarker, three.js addons, etc.) via dynamic import(), which is
+  // governed by script-src — without this the CDN module load is blocked and
+  // camera/face-tracking prototypes silently fall back to their self-demo.
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net",
   // Google Fonts stylesheets are loaded at runtime by journey/poetry code.
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https:",
