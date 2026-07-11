@@ -3,6 +3,17 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §736 — 2026-07-11 (research-first dive, cycle 736 · PSYCHEDELIC · **DEEP** — "Play the morphospace")
+
+**Source.** Johan Gielis, *A generic geometric transformation that unifies a wide range of natural and abstract shapes* (Am. J. Botany, 2003) — the "superformula"; Paul Bourke's 3D supershape pages (spherical product of two superformulas); and the genuinely-recent framing **ParamExplorer** (arXiv 2512.16529, Dec 2025) — a framework for exploring the *parameter spaces* of generative systems that uses the superformula as its case study. Aesthetic lineage: Ernst Haeckel, *Kunstformen der Natur* (radiolaria/diatoms).
+
+**Why it's relevant (not trivia).** A single 4-parameter equation (m symmetry, n1/n2/n3 roundness) continuously interpolates the entire zoo of natural symmetric form — starfish, urchins, diatoms, flowers, chrysanthemum blooms. Grep of the ~690-piece lab: superformula/supershape is **0×** (physarum, reaction-diffusion, hyperbolic tilings, quantum wavefunction [1284/1142], strange attractors are all already built and were each checked-and-rejected as near-duplicates first). The on-theme hook is the "impossible alien biology" of the psychedelic/DMT peak — morphing radiolaria — made *playable*: the user navigates the morphospace directly, and the shape's symmetry number m drives an inharmonic partial spectrum so a creature can ring "wrong."
+
+**Freshness note (honest).** The formula is foundational (2003), not <30-day. The genuinely-recent item is ParamExplorer (Dec 2025, ~7 mo), which reframes exactly what this build does — interactive navigation of the superformula's parameter space. The fresh axis is the synthesis: superformula parameter-space as a **played, sonified, drug-free psychedelic morphology instrument**, which the lab has 0×.
+
+**Chain → build (visible).** This dive → cycle 736 DEEP fan-out: shipped `1450-supershape-bloom` (one morphing 3D supershape you drag-sculpt & orbit); banked ⭐`1452-radiolaria-field` (cosmic-ambient field of many 2D creatures) → IDEAS §736. Could next become: symmetry→timbre mapping (n-params → inharmonicity), transform-feedback vertex-shader supershapes to scale to hundreds, or a supershape "duet" where two organisms morph toward/against each other.
+
+---
 ## §735 — 2026-07-11 (research-first dive, cycle 735 · PSYCHEDELIC · **WIDE** — "The mind hallucinates the rest")
 
 **Dive target:** drug-free altered-states induction that uses the perceptual system's OWN quirks as the transport — i.e. genuine illusions, not simulated psychedelia. Searched: Ganzfeld/Troxler interactive art (2026), arxiv June-2026 auditory-illusion / binaural perception, and the perceptual-science literature the lab hasn't mined.
