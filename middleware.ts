@@ -92,6 +92,15 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/share/") ||
     pathname.startsWith("/journey/") ||
     pathname.startsWith("/path/") ||
+    // The dream lab is a public showcase of AV experiments — no login. This
+    // covers the prototype pages AND their co-located `/dream/*/api/*` routes
+    // (fal.ai / ElevenLabs proxies), which self-protect via _shared/api-guard
+    // (origin check + per-IP rate limit) rather than an auth wall.
+    pathname.startsWith("/dream") ||
+    // Shared AI image endpoints spend the master FAL_KEY for anon viewers of
+    // the dream experiments + the installation kiosk; they rate-limit per-IP
+    // internally, so they don't need the login redirect.
+    pathname.startsWith("/api/ai-image") ||
     // Browsers POST CSP violation reports without credentials. Without
     // an allowlist entry, the middleware would redirect those POSTs
     // to /login and we'd never see violations.
