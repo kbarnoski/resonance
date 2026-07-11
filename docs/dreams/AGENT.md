@@ -201,6 +201,19 @@ Karel asked for bigger, more readable text and more contrast against dark backgr
 
 If you're polishing an existing prototype, the polish task is mostly **bumping these values**. A polish-cycle on `1-live` for example might just be: change dim text to `text-muted-foreground` / `text-foreground` throughout, bump `text-xs` → `text-sm` for the band labels, increase button size, and swap any off-brand hue for the semantic token. Tiny diff, huge readability gain.
 
+### Component styling — match the real Resonance app (minimal / Scandinavian)
+
+Resonance is restrained and minimal. Use these EXACT patterns from the core app (`src/components/ui/*`, settings, library) — do NOT invent heavier styles. No `rounded-full` CTAs, no `font-semibold` chunky buttons, no raw `bg-zinc-900`, no monospace walls of prose.
+
+- **Primary button (CTA)**: `min-h-[44px] rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90`. (`rounded-md`, not `rounded-full`; `font-medium`, not `semibold`; no `shadow-lg`.)
+- **Secondary / ghost button**: `min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground`.
+- **Modal / dialog / notes overlay**: backdrop `bg-black/50 backdrop-blur-sm`; panel `rounded-lg border border-border bg-background p-6 shadow-lg` with `max-w-lg`. Use the `bg-background` token, never `bg-zinc-900`.
+- **Design-notes / prose text**: sans, `text-sm leading-relaxed text-muted-foreground`. **Never `font-mono` for prose** — mono is only for short labels/badges/readouts.
+- **Section labels / meta**: `font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground` (this is the one place mono belongs).
+- **Rounding scale**: `rounded-md` buttons/inputs, `rounded-lg` dialogs/cards. **Never `rounded-2xl`/`rounded-3xl` on chrome.**
+
+The house style is: semantic tokens, thin `border-border` hairlines, layered opacity for hierarchy, sans everywhere except tiny mono labels. When in doubt, open `src/components/ui/button.tsx` and `dialog.tsx` and copy.
+
 **Bad prototype** (don't do):
 - Half-built UI with broken buttons
 - Requires reading code to use

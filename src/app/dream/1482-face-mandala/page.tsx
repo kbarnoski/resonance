@@ -288,7 +288,7 @@ export default function FaceMandala() {
             <div className="pointer-events-auto flex max-w-md flex-col items-center gap-4">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-lg font-semibold text-foreground shadow-lg transition-colors hover:bg-violet-400"
+                className="min-h-[44px] rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 Start camera
               </button>
@@ -318,21 +318,21 @@ export default function FaceMandala() {
       {phase === "running" && (
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition-colors hover:bg-accent"
+          className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground backdrop-blur transition-colors hover:bg-accent hover:text-foreground"
         >
           {showNotes ? "Hide design notes" : "Read the design notes"}
         </button>
       )}
 
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/85 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-zinc-900/90 p-6">
-            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-foreground">
+        <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm">
+          <div className="max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-background p-6 shadow-lg">
+            <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-muted-foreground">
               {README}
             </pre>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-foreground hover:bg-violet-400"
+              className="mt-6 min-h-[44px] rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Close
             </button>
