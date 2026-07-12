@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §750 — 2026-07-12 (research-first dive, cycle 750 · PSYCHEDELIC · **WIDE**)
+
+### 2026-07-12 · Human echolocation builds its spatial image by *stacking clicks* — accuracy grows ~linearly with each self-generated click
+
+**Anchor:** Garcia-Lazaro, Norman, Thaler et al., *"Neural and behavioral correlates of evidence accumulation in human click-based echolocation,"* **eNeuro, April 2026** (Smith-Kettlewell Eye Research Institute + Cardiff University; biorxiv preprint 2025.08.30.673202, plus Feb-2026 press). The finding: expert (blind) echolocators construct a stable spatial map by **"summation"** — localization accuracy improves roughly **linearly with the number of self-generated mouth-clicks**; the percept is assembled by progressively **accumulating acoustic evidence over time**, not read from a single optimal "snapshot," and the skill is trainable in sighted people via the same spatial-representation pathways. **Freshness honesty:** ~3 months old, **NOT <14-day** — so this fire does **not** claim ambition #5. The strict <14-day psychedelic-AV hunt again came up short (arXiv cs.SD/cs.GR "recent" = only Foley/v2a/binaural-speech-enhancement — *TANGO* binaural distributed model 3 Jul, *Sonic4D* spatial-audio-for-4D — none psychedelic/embodied; webgpu.com showcase surfaced nothing dated newer than the §749 ASTRODITHER anchor). **Why it's surprising for the lab:** it reframes an audio-only piece from "passive soundscape" to an **active, iterative instrument where clicking literally sharpens the world** — a drug-free sensory-substitution altered state (the eyes-closed "third ear" / boundless-space phenomenology) grounded in a mechanism, not a metaphor. **Became a prototype this cycle:** `1520-click-cathedral` — you click into an invisible procedural cathedral and it answers in binaural HRTF echoes; each surface's "belief" rises linearly per aimed click (louder + brighter + blooming on a faint belief-map), so a vague space resolves into a confident one only through repeated self-clicking — the eNeuro summation result made playable. Chain: this dive → tonight's WIDE winner.
+
+**Corroborators logged (dates checked):** Neuroscience News *"The Brain Stacks Sound Information to Navigate the Dark"* (2026, popular writeup of the same eNeuro work); medicalxpress *"Humans show bat-like skills using mouth-click echolocation"* (Feb 2026). Named-ref lineage for the build: Daniel Kish (human flash-sonar), Pauline Oliveros *Deep Listening*.
+
+---
+
 ## §747 — 2026-07-12 (research-first dive, cycle 747 · PSYCHEDELIC · **DEEP**)
 
 ### 2026-07-12 · Psychedelic "breathing surfaces" are literally a ~5-Hz *traveling wave* sweeping visual cortex — the mechanism, not just the metaphor
