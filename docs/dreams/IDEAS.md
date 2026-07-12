@@ -10,6 +10,25 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §746 (cycle 746 · WIDE — 3 orthogonal ECSTATIC sensor-instruments, resting the void) — SHIPPED `1502-sing-lattice`; two banked ⭐⭐ + ⭐
+
+The WIDE fire: three orthogonal ecstatic/kinetic instruments, each on a different under-used INPUT (mic / hand-tracking / tilt) and different non-fragment-shader OUTPUT (DOM-CSS-3D / three.js / WebGPU-compute), all deliberately warm/intense to rest the jury's 8× cosmic-void cluster. Shipped `1502-sing-lattice` (mic 0× + DOM/CSS-3D + the jury's named #6 ask). Both non-winners were built demoable + self-verified (`tsc --noEmit` / `eslint` clean per their agents), backed up to scratchpad `banked-746/`, folders `rm -rf`'d — never committed. Full rebuildable specs:
+
+### ⭐⭐ `1500-aurora-hands` — two-handed gestural aurora instrument (TOP ship-next) · `status: banked`
+- **The one question:** conduct a living aurora of light-and-sound with your bare hands in the air — no controller, two hands = two independent voices you can play a melody with.
+- **Input/Output/Technique/Vibe:** MediaPipe **HandLandmarker** (camera, 2 hands × 21 pts, runtime CDN load via webpackIgnore dynamic import — same pattern as `1482-face-mandala/face.ts`) → raw **three.js scene-graph** (billboarded triangle-strip ribbon meshes deforming to each hand's smoothed 3D trail, fingertip Points, halo sprites, starfield — NOT a fragment shader) → gesture→**additive+FM synthesis** (per voice: carrier + 4 partials + FM modulator + tremolo LFO + panner). Ecstatic gold→pink / violet→magenta.
+- **Mapping:** height→pitch (2-oct Lydian over warm D drone) · spread→brightness (partials + FM index) · pinch→pluck (edge-detected, refractory-gated) · x→pan · velocity→shimmer. Pointer/keyboard fallback + LFO self-demo if no camera.
+- **Refs:** MediaPipe HandLandmarker; **Imogen Heap's MiMu gloves**; IJFMR 2026 "Real-Time Gesture Recognition for Virtual Musical Instruments." **Ambition 3/5:** #2 (4 subsystems) + #3 named refs + arguably-fresh (adult hand-as-instrument; kids-only prior 862).
+- **Why banked, not shipped:** camera/face input is running warm-to-hot (1482-face loved *two fires ago*, 1103-face, 1458-body) — shipping another camera piece this fire risked the "too similar" note; the mic (0× for weeks) was the fresher input. **Resurrect knob:** ship next camera-slot; add convolution reverb room (the "ring" is currently just the envelope) and fix hand-cross voice-swap (assign by tracked identity, not on-screen x). Code in `banked-746/1500-aurora-hands/`.
+
+### ⭐ `1504-solar-wind` — tilt-steered WebGPU curl-noise particle torrent · `status: banked`
+- **The one question:** tilt your phone to pour a river of ~200k glowing particles across the screen — a solar wind that roars and shimmers with sound generated from its own flow speed & density.
+- **Input/Output/Technique/Vibe:** device **tilt** (gyro, keyboard/pointer fallback) → **WebGPU compute** (WGSL `@compute` integrates 200k particle pos+vel in a storage buffer, drawn as additive `point-list` — real GPGPU, three-tier fallback three.js Points 18k → Canvas2D 4k) → **curl-noise** advection (divergence-free `v=(∂P/∂y,−∂P/∂x)`, Bridson SIGGRAPH 2007) + a 320-tracer CPU sensor swarm → sonification (speed→noise-roar/shimmer, per-column density→Cmaj9 additive voices, knot→resonant ring, gust→whoosh). Ecstatic warm→violet.
+- **Refs:** Bridson et al. *Curl-Noise* (SIGGRAPH 2007); WebGPU-compute GPGPU (2025–26); Refik Anadol data-wind. **Ambition 3/5:** #1 (WebGPU-compute is lab-thin) + #2 (4 subsystems) + #3 named refs.
+- **Why banked, not shipped:** the swarm-that-sonifies-its-own-motion lane was just visited by `1384-gravity-choir-points` (cycle 724), and audio is a 320-tracer *proxy* of the field, not a literal GPU readback — so the see=hear tie is looser than 1502's voice=node. **Resurrect knob:** ship for a big-scale/tilt slot; give points real `gl_PointSize`/instanced-quad bloom (currently 1px additive overlap) and tie the knot-ring to a literal density readback if a throttled `readPixels` proves cheap enough. Code in `banked-746/1504-solar-wind/`.
+
+---
+
 ## §740 (cycle 740 · DEEP — "CRITICALITY / THE DROP") — SHIPPED `1470-the-drop`; one banked ⭐
 
 The DEEP fire: ONE concept — *self-organized criticality (the Bak–Tang–Wiesenfeld sandpile) as the ecstatic **build-and-drop** — grains rain, slopes reach the critical angle, then topple in scale-free power-law avalanches that ARE the music (tiny ticks → the rare full-spectrum DROP)* — attacked via 2 technical approaches. Cashes the 2026-07-11 JURY's #3 ("ecstatic/kinetic/intense — BUILD instead of dissolve") + Karel's "EDM build-and-drop journey arc" wish. Shipped the three.js-terrain approach (`1470-the-drop` — three.js scene-graph is the jury's wanted anti-fragment surface; verified power-law physics). The non-winner was built demoable + scoped-clean (`eslint --max-warnings 0`=0 / `tsc --noEmit`=0), backed up to scratchpad `banked-740/`, folder `rm -rf`'d — never committed. Full rebuildable spec:

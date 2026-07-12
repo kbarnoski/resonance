@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-07-12 ~00:40 UTC (cycle 745, WIDE)
+# Morning digest — last updated 2026-07-12 ~02:40 UTC (cycle 746, WIDE)
 
 ## New since yesterday
-- **[1492-pulsar-clock](https://getresonance.vercel.app/dream/1492-pulsar-clock)** — *the night sky as a clock you can hear.* Fifteen **real neutron stars** hang on the celestial sphere at their true sky coordinates (decoded straight from each pulsar's name — PSR B1919+21 → RA 19h19m/Dec +21°), and each **ticks at its real measured rotation period**: the millisecond pulsars fuse into a beating pitched chord, the second-scale ones (Vela, Geminga, Bell Burnell's own B1919+21) fire spatialised woodblock clicks, and the 76-second J0901−4046 tolls once like a cathedral bell — every tick HRTF-placed where its star actually is. **What you see sweeping is what you hear ticking.** Fly with arrow-keys/WASD or tilt your phone; it fully self-plays. *Headphones on — the whole sky is a vast slowly-phasing polyrhythm, every number in it real.*
-- **Why open this one:** it's the lab's **first pulsar sonification** (a genuinely new lane) and one of very few pieces built on **real external data**. Three orthogonal ideas were explored in parallel tonight — this shipped for being the biggest, most surprising concept with the tightest see=hear unity, on a three.js scene-graph (off the fragment-shader rut). **2 more explored — see below / IDEAS §745.**
+- **[1502-sing-lattice](https://getresonance.vercel.app/dream/1502-sing-lattice)** — *sing into a scale that has no octave.* Hum or sing into the mic and your voice is snapped, in real time, onto a **Bohlen–Pierce lattice** — 13 tones dividing the **tritave (3:1)** instead of the octave, so its signature chord is 3:5:7 and it sounds genuinely alien and lovely. Every node you land on glows amber→violet, glides a tone up to meet you, and plucks a real string *there and at its harmonic neighbours* — hold a few and the room blooms into a chord that exists on no keyboard. **The "wrongness" is the instrument.** No mic? Click the lattice or press `1-9 0 q w e`. *Headphones strongly recommended — the sympathetic strings leak back into the mic without them.*
+- **Why open this one:** it's the lab's **first voice→xenharmonic instrument** and the **return of mic input** (0× for weeks). It directly cashes your last jury's named ask — *"turn 1408-wolf-ring into a whole scale you can be wrong in, with the mic as controller."* Built on real music theory (verified just-BP lattice, McLeod-NSDF pitch tracking that dodges the usual octave error, Karplus–Strong sympathetic strings). **2 more explored tonight — see below.**
 
-## In progress / partial
-- Nothing half-built. Winner is demoable; the two banked pieces have full working code preserved (scratchpad `banked-745/`).
+## Also explored tonight (banked, full code preserved)
+- **⭐⭐ 1500-aurora-hands** — *conduct a two-voice aurora with your bare hands.* MediaPipe hand-tracking → glowing three.js ribbons + additive/FM; two hands = two independent Lydian voices you can play a melody with (MiMu-gloves spirit). **TOP pick for the next camera night.** Banked only because camera/face is running hot (1482-face loved two fires ago) and mic was the fresher input.
+- **⭐ 1504-solar-wind** — *tilt to pour a river of light.* A tilt-steered **WebGPU-compute** torrent of ~200k curl-noise particles that roars and shimmers with sound generated from its own flow. Banked as the big-scale/tilt option.
 
-## Also explored tonight (banked, ready to ship)
-- **⭐ 1496-escher-fall** — *fall forever into Escher's Circle Limit.* A real Poincaré-disk hyperbolic tessellation you plunge into endlessly (Möbius navigation), married to a descending Shepard tone — Canvas2D, **intense/vertiginous**. TOP pick for the next intense night (it rests the recent calm/cosmic cluster).
-- **⭐ 1494-tarab-room** — *find a room's hidden chord with your voice.* **The mic is back:** sing and any sympathetic string tuned to your note (or its harmonics) lights and rings, like a sitar's tarab strings; wake all six and the room blooms. DOM/CSS-3D, warm.
+## Deliberate diversity note
+- Tonight answers your standing question directly: **all three were ecstatic/warm/intense, resting the cosmic-void cluster** the jury flagged (8×). None is a fragment shader; each uses a different rare sensor (mic / hands / tilt). 1502 shipped for hitting the mic (rarest input) + the jury's named ask.
 
 ## Research findings worth a look
-- **RESEARCH §745** — pulsar-timing sonification is institutionally live (NASA/Chandra "A Universe of Sound"; the 76-s ultra-slow pulsar J0901−4046 vs the 1.5-ms fastest = a millionfold span of real metronomes) yet grep-0× here → became 1492. **Honesty note:** the strict "last-14-days" freshness hunt genuinely came up short this cycle, so tonight's trio rests on ≥3-subsystems + named-reference, not a fresh-paper citation. Logged straight rather than faked.
+- **RESEARCH §746** — the frontier of realtime music has moved **fully into the browser**: a webcam + a *lightweight client-side SVM* (not a deep net) is now enough for a ~96%-accurate performable instrument (IJFMR 2026), and the xenharmonic world's tooling (Sevish's Scale Workshop, Bohlen–Pierce) is browser-native too → became 1502 + banked 1500. **Honesty note:** strict <14-day freshness came up short again (sources are Jan/May-2026); logged straight, not faked.
 
 ## Open questions for Karel
-- **We keep landing on cosmic-ambient.** 1492 is beautiful but it's another cosmic piece; the banked **1496-escher-fall** (intense) and **1494-tarab-room** (mic, warm) deliberately break that — want me to ship one of those next fire to diversify the vibe?
-- **Your real Path piano is still unused.** Banked **1488-the-long-now** (from cycle 744) has a plan to build a cosmos around a real recording — say the word and I'll cash the "use my actual music" ask next.
+- **Ship a banked one next fire to keep breaking the vibe?** 1500-aurora-hands (hands, camera) is ready and would ride your love of 1482-face.
+- **Your real Path piano is still unused.** Banked **1488-the-long-now** (cycle 744) plans a cosmos around a real recording — say the word.
 - **The ≥2-model AI-pipeline chain (audio→image→video) is still 0×** — named by several juries as the last standing demand, gated only on your paid-budget go. Green-light it?
 
 ## Note
-- Local build hit the usual ~700-route fd-ceiling (`EMFILE`) at page-data collection — infra, not code; full TypeScript + ESLint + compile all passed clean and the route builds via the standing compile-mode gate. Deploys to Vercel fine.
+- Local build hit the usual ~700-route **EMFILE** fd-ceiling (hard limit 4096, unraisable) at page-data collection — infra, not code. Full TypeScript + ESLint + compile passed clean; the route builds via the standing compile-mode gate (34 kB page emitted) and deploys to Vercel fine.

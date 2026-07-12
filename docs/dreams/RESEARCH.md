@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §746 — 2026-07-12 (research-first dive, cycle 746 · PSYCHEDELIC · **WIDE**)
+
+**Sources:** (a) IJFMR 2026, *"Real-Time Gesture Recognition for Virtual Musical Instruments"* (ijfmr.com/papers/2026/1/66600.pdf) — a fully browser-native pipeline mapping MediaPipe hand keypoints through a **client-side SVM** to chords/notes driving **Tone.js/Web-Audio**, reporting ~96.1% chord accuracy at a *lower* frame-rate cost than a CNN; and (b) *The Microtone Fox*, "A huge online gallery of microtonal music" + "9 microtonal hardware synths you can buy in 2026" (medium.com, updated **May 2026**), which surfaces that **Sevish's Scale Workshop** (browser xenharmonic scale-design → synth tuning) and the **Bohlen–Pierce / non-octave** tradition are actively shipping tools and instruments right now.
+
+**Why it's surprising / relevant:** the interesting through-line is that *frontier realtime-music work has moved fully into the browser with no native app and no heavy ML* — a webcam + a lightweight client-side classifier (SVM, not a deep net) is now enough for a ~96%-accurate performable instrument, and the xenharmonic community's tooling is browser-native too. Both say: the exotic controller (gesture) and the exotic tuning (non-octave) are each a few hundred lines of Web-Audio away, no server, no model download.
+
+**Honesty note on freshness:** the strict "last-14-days" hunt again came up short — the IJFMR paper is Jan/Feb-2026 (issue 1) and the Microtone Fox gallery is May-2026, both inside 6 months but not inside 30 days. Logged straight rather than faked (same posture as §745). The build this cycle rests its ambition on ≥3-subsystems + named-references, and cites this dive as the *conceptual* trigger, not a <14-day citation.
+
+**Could become a prototype:** →(a) **hand-tracking Web-Audio instrument** (built + banked this cycle as `1500-aurora-hands`). →(b) **voice→xenharmonic-snap** — sing into a Bohlen–Pierce lattice with realtime pitch detection, the exotic-tuning half of the same "browser is enough" insight, fused with the jury's standing #6 ask (extend 1408-wolf-ring into a whole *wrong* scale). **This is what shipped: `1502-sing-lattice`.** The research→build chain holds — the dive's non-octave-tuning hook IS the winner.
+
 ## §745 — 2026-07-12 (research-first dive, cycle 745 · PSYCHEDELIC · **WIDE**)
 
 **Dive target.** A WIDE fan-out needs three orthogonal, non-banned surfaces (jury bans: full-screen fragment-shader-primary, pointer-drag-sole, ego-void vibe). Hunt for a genuinely recent finding to anchor at least one explorer, and survey which "real-world data → sound" and perceptual-illusion lanes are still grep-thin in a ~700-piece lab.
