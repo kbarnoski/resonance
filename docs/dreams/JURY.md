@@ -1,119 +1,128 @@
-# Concept Jury Verdict — 2026-07-11
+# Concept Jury Verdict — 2026-07-12
 
 ## Summary
-The deepest monoculture in the lab finally broke — and it broke where four straight juries
-pointed. The **always-consonant JI/pentatonic "scale-index" pitch spine fell from ~10× to 3×**:
-twelve of the last fifteen pieces sound inharmonic, continuous, or deliberately *wrong*, and two
-(**1408-wolf-ring**, **1418-beat-field**) make wrongness the actual instrument — the exact ask the
-last two juries begged for by name. **Canvas2D-as-primary hit 0×** (down from 9× two fortnights
-ago). The floor rose too: **zero local-minimum (0–1) builds** this window, a lab first. The honest
-other half: every gain grew a new rut. **WebGL2 raw-fragment-shader is now 9/15 — it *became* the
-new Canvas2D**, pointer/touch-drag is the input in 10/15, and half the lab is dissolving into the
-same cosmic-ego-death void. Still **zero 5/5**; the ceiling is a hard 4.
+This is the fortnight the lab *did what the last jury asked* — and the honesty of that has to be
+said first. The consonant-pitch crutch is dead, the **cosmic-death void is genuinely rested** (down
+from 8× to ~4×; eight of the last fifteen are ecstatic/intense/kinetic — the exact pivot demanded),
+the **mic came back from 0× to 3×** as a real controller, and **1490-slow-cathedral** got the lab
+within a *single criterion* of its first 5/5. That's real progress, not throat-clearing. The catch:
+the fix bred its own rut. Told to get off the WebGL2 fragment shader, the lab moved onto **three.js
+scene-graph — now 5/15** — while WebGL2 is *still* 5/15, so GPU-render-primary is ~10/15 and the
+three under-used surfaces (DOM/CSS-3D, WebGPU-compute, audio-only) sit at 1× each. And the last two
+cycles both spent themselves on the **same cortical-traveling-wave breathing-field** (1506→1516),
+quietly walking the dissolution vibe back in through the side door. Still **zero clean 5/5** — and
+now we know exactly which one criterion is the wall.
 
 ## Diversity audit
-Tags for the last 15: 1392, 1396, 1398, 1408, 1412, 1418, 1426, 1428, 1430, 1440, 1444, 1450,
-1458, 1462, 1464. (1392/1396/1398 overlap the 2026-07-10 window; twelve are new.)
+Window = the 15 highest-numbered prototypes, cycles 735–749: 1444, 1450, 1458, 1462, 1464, 1470,
+1476, 1478, 1482, 1490, 1492, 1502, 1506, 1508, 1516. (1444/1450/1458/1462/1464 overlap the
+2026-07-11 jury's tail; ten — 1470→1516 — are new.)
 
-- **Over-represented input**: **pointer / touch-drag — 10×** (1396, 1398, 1408, 1418, 1430, 1440,
-  1444, 1450, 1462, 1464). Last jury it was the home-row keyboard; the reflex just migrated one
-  input over — "mouse/finger the screen" is still the play surface in two of every three pieces.
-  The bright spots: **camera recovered to 2×** (1412 slit-scan, 1458 body-as-room) — the freshest
-  embodied work in months — plus **external-data 1×** (1426), **tilt 1×** (1428), **MIDI 1×** (1392).
-  The zero that stings: **mic — 0×** (was 4× two windows ago; the mic-as-controller lane evaporated
-  entirely).
-- **Over-represented output**: **WebGL2 raw fragment/point shader — 9×** (1398, 1412, 1430, 1440,
-  1444, 1450, 1458, 1462, 1464). This is the headline problem: the win against Canvas2D was real
-  (**Canvas2D-as-primary = 0×**), but the lab simply relocated the monoculture one substrate over.
-  Underneath: three.js 2× (1392, 1426), DOM/CSS-3D 2× (1408, 1428), SVG line-art 1× (1396),
-  WebGPU-compute 1× as a primary tier (1418). Genuinely under-used and ripe: WebGPU-compute,
-  DOM/CSS-3D, and **no-screen / audio-only** (still 0×).
-- **Over-represented technique**: at the mechanic level the window is actually **diverse** — no
-  single core technique hits 4× (temperament, slit-scan, roughness-field, echolocation-HRTF,
-  Hilbert-scan, Troxler-adaptation, superformula, Mandelbox, GPU-Voronoi are all distinct and mostly
-  grep-0×). The real cluster is **conceptual**: **"latent structure resolves out of noise / perceive
-  the hidden" — 4×** (1396 apophenia, 1398 ear-of-static, 1444 Troxler, adjacent 1440), all leaning
-  REBUS/Anil-Seth — exactly the bell the last jury said was already ringing, still ringing. The pitch
-  story is the *win*: **inharmonic / continuous / deliberately-dissonant pitch — 12×**; the banned
-  consonant JI spine is down to **3×** (1392, 1396, 1398).
-- **Over-represented vibe**: within the mandated psychedelic PRIMARY DIRECTION (not a ban target),
-  **cosmic-ambient / void / dissolution — 8×** (1396, 1398, 1426, 1428, 1430, 1440, 1444, 1458),
-  with a hard sub-cluster of **ego-dissolution / void-tunnel / NDE — 4×** (1428, 1430, 1440, 1444).
-  The only non-dissolving intensity is 1418's howl, 1462's fractal-intense, and 1464's DMT-honeycomb.
+- **Over-represented output**: **three.js scene-graph — 5×** (1470, 1478, 1482, 1490, 1492) — the
+  headline. This is the surface the *last* jury pushed the lab onto to escape the 9× fragment-shader
+  monoculture; one fortnight later it's the new monoculture. **WebGL2 raw fragment/mesh is still 5×**
+  (1444, 1450, 1458, 1462, 1464), so **GPU-render-primary is ~10/15**. The genuinely under-used
+  surfaces are all at **1×**: DOM/CSS-3D (1502), WebGPU-compute (1506), audio-only/no-screen (1476).
+  Canvas2D recovered to a healthy 2× (1508, 1516) after hitting 0× — good, not a problem.
+- **Over-represented input**: **pointer / touch-drag as the primary surface — 4×** (1444, 1450,
+  1462, 1464) — still the single most common input, but down hard from 10× and no longer dominant.
+  The wins: **mic recovered 0×→3×** (1476, 1502, 1508 — the mic-as-controller lane is genuinely
+  back), **camera 2×** (1458 body, 1482 face/MediaPipe), **tilt 1×** (1490), **keyboard 1×** (1516).
+  The zeros that now sting: **MediaPipe hand-tracking 0×** (1500-aurora-hands was *banked, not
+  shipped*), and **MIDI 0×** this window.
+- **Over-represented technique**: at the *mechanic* level the window is excellent — no single core
+  technique hits 4× (Troxler-adaptation, Superformula, FDN-reverb, Mandelbox-raymarch,
+  jump-flooding-Voronoi, abelian-sandpile-SOC, Shepard-rise, space-colonization, pulsar-sonification,
+  Bohlen–Pierce/NSDF, Kuramoto-traveling-wave, YIN/Sethares are all distinct and mostly grep-0×). The
+  cluster is **structural, not algorithmic: long-form self-evolving "watched" pieces — 5×** (1470
+  self-composing SOC, 1478 6-min sema, 1490 10-min cathedral, 1506 7-min tide, 1516 state-morph). Set
+  it and watch it is creeping back in as the interaction model even where the vibe is ecstatic.
+- **Over-represented vibe**: **ecstatic / intense / kinetic — 8×** (1462, 1464, 1470, 1476, 1478,
+  1482, 1508, 1516). This is **NOT a ban target** — it's the mandated psychedelic direction and the
+  precise thing the last jury begged for; celebrate it. The residual concern is the **cortical
+  breathing-field / log-polar wave lane run two cycles straight** (1506, 1516), which reads
+  cosmic-ambient and re-opens the dissolution register the lab had just closed.
 - **BANNED for next cycle**:
-  - **WebGL2 raw fragment/point shader as the primary surface** (9× — the new Canvas2D; force
-    three.js scene-graph, DOM/CSS-3D, WebGPU-compute, or genuinely audio-only/no-screen).
-  - **pointer / touch-drag as the sole play surface** (10× — reach for a sensor: camera is warm
-    again, mic is at 0×, MediaPipe hand/face is grep-0× and research-backed).
-  - **the ego-dissolution / void-tunnel / "dissolve into the light" vibe** (4× and converging — rest
-    it; go ecstatic / kinetic / intense instead of dissolving).
-  - **Reich phasing + always-consonant JI pitch together** (1392 reheated both the same fortnight
-    the last jury rested them — do not repeat).
+  - **three.js scene-graph as the primary output surface** (5× — the new fragment shader; force
+    DOM/CSS-3D, WebGPU-compute, or genuinely audio-only/no-screen, each still at 1×).
+  - **any GPU-render-primary reflex more broadly** — WebGL2 + three.js together are ~10/15; the next
+    piece's primary surface should not be a hand-authored GPU render at all.
+  - **the cortical-traveling-wave / log-polar breathing-field lane** (1506→1516, two cycles running —
+    rest it the way the void was rested; the multi-cycle discipline was right, the lane is exhausted).
+  - **pointer/touch-drag as the sole play surface** (still 4× and the most common input — every
+    sensor piece this window was a highlight; keep reaching past the mouse).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria**: **0** — no local-minimum builds this window (a lab first). The floor
-  genuinely lifted.
-- **Hit 2–3 criteria**: **10** — 1392(2), 1396(3), 1408(3), 1412(3), 1430(3), 1440(3), 1444(3),
-  1450(3), 1458(3), 1462(3). The thick, honest middle: each hits named-ref + ≥3 subsystems + a
-  novel-to-the-lab technique, but stops there.
-- **Hit 4–5 criteria**: **5** — 1398(4), 1418(4), 1426(4), 1428(4), 1464(4). **Zero 5/5.** Every
-  one is capped at 4 by the *same two* missing criteria: **#4 multi-cycle commitment** (only 1428
-  designed itself as one) and **#5 a research finding from the last 14 days** cited alongside the
-  rest. Nobody assembled both together — that's the whole gap between the ceiling and 5/5.
+- **Hit 0–1 criteria**: **0** — no local-minimum builds, the floor held for a second straight
+  fortnight. Real.
+- **Hit 2–3 criteria**: **11** — 1444(3), 1450(3), 1458(3), 1462(3), 1470(3), 1476(3), 1478(2–3),
+  1482(3), 1492(3), 1502(3), 1508(3). The honest, thick middle: named-ref + ≥3 subsystems + a
+  novel-to-the-lab mechanic, and stop there. 1478 is the softest — its "named reference" is the
+  cultural *sema* rather than a cited work, and its play layer is thin.
+- **Hit 4–5 criteria**: **4** — 1464(4), 1490(4, arguably 5), 1506(4), 1516(4). **Still zero clean
+  5/5** — but the ceiling changed character. **1490 and 1516 both assembled #2 + #3 + #4 + #5**
+  (≥3 subsystems + named refs + genuine multi-cycle commitment + a cited research finding) and stalled
+  at 4 for the *same single reason*: **#1, a technique never before used in the lab.** The 5/5 gap is
+  no longer "nobody does the discipline" — the discipline is proven. It's now one criterion wide.
 
 ## Standouts (positive)
-- **1418-beat-field**: the strongest build of the fortnight. WebGPU-compute (the long-0× substrate
-  the jury asked for), the exact Plomp–Levelt/Sethares roughness kernel shared across all three
-  render tiers *and* the audio graph, with **beating/dissonance as the played expressive medium** —
-  the definitive answer to "ship a piece that can sound wrong," done as a real instrument, not a demo.
-- **1408-wolf-ring**: the cleanest antidote to the JI monoculture in the lab's history — makes the
-  historically-specific *wrong* interval (the wolf fifth) a landmark you walk into, on genuine
-  circulating-temperament math where the wolf **emerges from the broken chain of fifths** rather than
-  being hand-placed, rendered on under-used DOM/CSS-3D. Small, exact, and overdue.
-- **1428-dissolve-room**: the lab's genuinely **long-form stateful** piece — a 5-minute irreversible
-  arc where minute 5 ≠ minute 1, audio that drifts *further* out of tune as it dissolves, on
-  DOM/CSS-3D with tilt, and the only build that designed itself as an explicit multi-cycle commitment.
-- **1412-time-smear** & **1458-room-of-you**: the two camera/embodied pieces that pulled camera-input
-  off the floor. 1458 especially — cross-modal *your-body-is-the-acoustic-space* via a hand-built
-  4-line Feedback-Delay-Network reverb, no ML library, no consonant crutch.
+- **1490-slow-cathedral**: the high-water mark. A 10-minute space-colonization cathedral that
+  genuinely accretes — minute 10 is topologically a different structure than minute 1, memory not a
+  loop — built as the lab's first honest assembly of **#4 (multi-cycle) + #5 (<14-day arXiv 2606.29427
+  entropic-time)** on a four-named-reference, ≥3-subsystem base. It stopped at 4/5 only on #1. This is
+  what "climb out of the local minimum" was supposed to produce.
+- **1482-face-mandala**: cashed the standing multi-jury demand for *real sensor tracking* — MediaPipe
+  FaceLandmarker v2 blendshapes, grep-0×, cashing RESEARCH §704 — on three.js, ecstatic not
+  dissolving. The pointer-drag rut, the fragment-shader rut, and the void vibe all broken in one
+  piece. Deservedly Karel-loved.
+- **1470-the-drop**: the cleanest "build, don't dissolve" answer to provocation #3. Real
+  self-organized-criticality physics (abelian sandpile, Bak–Tang–Wiesenfeld) that composes itself in
+  scale-free avalanches and never loops — intensity that reads without a void.
+- **1502-sing-lattice & 1508-wolf-throat**: together they cashed jury #6 to the letter — extend
+  1408-wolf-ring from one wolf interval into a *whole xenharmonic scale you sing inside and can be
+  wrong in* — and single-handedly revived the mic from 0×. 1502's DOM/CSS-3D Bohlen–Pierce lattice is
+  also one of only two non-GPU-render surfaces in the window.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **1392-phase-loom**: competent, but it reheated **two** combos the *same fortnight's* prior jury
-  rested by name — always-consonant JI pentatonic pitch **and** Reich-phasing-as-the-TIME-mechanic
-  (phasing was already 3×). Technically clean, but it ignored the standing verdict; the one build
-  that read as local-minimum-adjacent this window.
-- **1396-apophenia-field / 1398-ear-of-static**: individually strong (3–4 on the floor), but together
-  they're the third and fourth "perceive-the-hidden-structure-in-noise → REBUS/Anil-Seth →
-  JI-consonant chord" pieces — the exact concept the *last* jury already told the lab to bank, shipped
-  twice more. And both still lean on the consonant spine the other twelve escaped.
-- **The void/dissolution quartet (1428, 1430, 1440, 1444)**: each is technically distinct and
-  well-made, but that's four ego-dissolution/void/tunnel pieces in fifteen. The *vibe* is converging
-  even as the *technique* diversifies.
+- **1516-spiral-tide** (paired with **1506-theta-tide**): two consecutive cycles on the *same*
+  cortical-traveling-wave / log-polar breathing-field. The multi-cycle instinct is exactly right and
+  1516 is a genuine, admirable 5/5 shot — but the *lane* re-opened the cosmic-dissolution register the
+  fortnight had just rested, and it's the second log-polar wave in a row. Right discipline, exhausted
+  subject.
+- **1478-sema-ascent**: the softest floor score of the window — its "named reference" is cultural
+  (*sema*) rather than a cited work or technique, and its interaction is essentially passive (energy
+  from surges over a self-running arc). A largely *watched* long-form three.js piece.
+- **The long-form self-playing group (1470, 1478, 1490, 1506, 1516)**: five of fifteen are set-it-and-
+  watch by construction. Even the ecstatic ones lean on autonomy over play. Watch this — it's the same
+  "self-running, watch-it" pattern the lab banned two months ago, creeping back wearing a stateful-arc
+  costume.
 
 ## Provocations for tomorrow's dream cycle
-1. **WebGL2 raw-shader is the new Canvas2D — 9/15.** You killed one surface monoculture and grew
-   another. Next cycle must NOT ship a full-screen fragment shader. Force three.js scene-graph,
-   DOM/CSS-3D, WebGPU-compute, or — best — a genuinely **no-screen / audio-only** piece (still 0×,
-   named on the categorical menu as "test the screen bias").
-2. **Cash RESEARCH §704 (2026-07-08): MediaPipe FaceLandmarker v2 blendshapes, browser-native,
-   grep-0×.** It's sat three days, nothing built it, and it's the exact embodied sensor input that
-   would break the pointer-drag rut (10/15). Face-as-controller or hand-tracking — not another
-   mouse-drag. Camera is warm again (2×); ride the momentum with real tracking, not just pixels.
-3. **Rest the void.** Ego-dissolution/dissolve-into-the-light is 4× and the broader cosmic-void vibe
-   is 8×. Still psychedelic, but go **ecstatic / kinetic / intense** — the 1464 honeycomb and 1418
-   howl prove intensity reads without dissolving. One cycle that *builds* instead of *dissolves*.
-4. **Nobody hit 5/5 — and the gap is always the same two criteria.** Take one already-built banked
-   piece (**1468-the-return** long-form WebGPU point-cloud, or **1466-boltzmann-bloom**) and make it
-   a real **multi-cycle** commitment cited against a **<14-day** research finding. That single move
-   is the lab's first 5/5.
-5. **The ≥2-model AI-pipeline chain (audio→image→video) is STILL 0×** and MORNING names it the last
-   standing demand, gated only on Karel's paid-budget go. Escalate it — same as the last two juries,
-   now louder.
-6. **Build ON 1408-wolf-ring, don't just admire it.** It proved "can sound wrong" works. Cash it into
-   a full playable **microtonal/xenharmonic instrument** — a whole scale you can be wrong in, not one
-   wolf landmark. The mic (0× now) would make a fitting controller for it.
+1. **three.js is the new mouse-drag — 5/15.** You escaped the fragment shader by relocating the
+   monoculture one library over; GPU-render-primary is now ~10/15. Next cycle's primary surface must
+   NOT be a hand-authored GPU render. The three surfaces starving at 1× each: **DOM/CSS-3D** (only
+   1502), **WebGPU-compute** (only 1506), and **audio-only / no-screen** (only 1476, and it was a
+   highlight). Pick one of those.
+2. **Rest the breathing-field.** 1506→1516 spent two straight cycles on the cortical-traveling-wave /
+   log-polar lane, and it quietly walked the dissolution vibe back in. The multi-cycle discipline is a
+   keeper — *point it somewhere else.* An ecstatic or embodied piece deserves the 2–3-cycle treatment
+   more than a fourth log-polar wave does.
+3. **The first 5/5 is now ONE criterion away, and we know which.** 1490 and 1516 both nailed
+   #2+#3+#4+#5 and stalled on **#1 — a technique never used in the lab.** So the recipe for the lab's
+   first clean 5 is explicit: take a genuinely-novel-to-the-lab technique (**first MIDI/OSC in,
+   first WebRTC multi-user, first depth-camera, first TensorFlow.js realtime inference**) AND make it
+   multi-cycle AND cite a <14-day finding. The proven discipline + one new technique = the 5.
+4. **Resurrect 1500-aurora-hands — hand-tracking is 0× and was *banked, not shipped*.** MediaPipe
+   HandLandmarker is research-backed (§746, IJFMR 2026), grep-0×, and it breaks the pointer rut with a
+   sensor the lab has never used. 1482 proved MediaPipe face works beautifully; hands are the obvious
+   next embodied controller and the code is already banked.
+5. **The ≥2-model AI-pipeline chain (audio→image→video) is STILL 0× — now the oldest unmet demand
+   across five juries.** It is gated only on Karel's paid-budget go, and every jury has named it
+   louder than the last. Escalate it to Karel by name this morning: one sentence, one yes/no. Nothing
+   else on the menu has been asked for this many times and never built.
 
 ## Karel-facing line
-The consonant-pitch crutch finally cracked — the lab can sound *wrong* on purpose now (1408, 1418) —
-but WebGL2 shaders (9/15) and mouse-drag (10/15) are the new ruts, so tomorrow: reach for a body and
-a surface that isn't a fragment shader.
+You did everything the last jury asked — the void is rested, the mic is back, wrongness sings, and
+1490-slow-cathedral came within one criterion of the lab's first 5/5 — but three.js is now the new
+mouse-drag (5/15), so tomorrow: an off-GPU surface, one technique we've never used, and finally a
+yes/no on the AI-pipeline chain.
