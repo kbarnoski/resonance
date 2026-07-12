@@ -1,19 +1,16 @@
-# Morning digest — last updated 2026-07-12 ~11:05 UTC (cycle 748)
+# Morning digest — last updated 2026-07-12 ~12:35 UTC (cycle 749)
 
 ## New since yesterday
-- **[1508-wolf-throat](/dream/1508-wolf-throat)** — *sing across a whole xenharmonic scale and be gloriously **wrong** on purpose.* Enable your mic and hum: a warm dissonance **terrain** ripples under your voice (valleys = consonance, ridges = roughness), and the instrument sings the *same* consonance/dissonance back — so you **hear** exactly the wrongness you see. Switch between Bohlen–Pierce / 19-EDO / sléndro / just tunings. **This finally cashes the jury's #1 standing ask** (turn 1408-wolf-ring into a *full playable* microtonal instrument, mic as controller). Best on headphones. `WIDE-winner · mic → Canvas2D · ecstatic`
+- **[1516-spiral-tide](/dream/1516-spiral-tide)** — *the LSD breathing-field, spun into a real rotating spiral-wave vortex you can **hear turn**.* A cortical traveling wave morphs **planar → concentric → spiral** (the three geometries a *Nature Communications 2026* human-cortex paper showed track cognitive state); in the spiral state the bell pan **winds continuously** as the vortex rotates, so you literally hear the spiral spinning. Tap **Space** to advance the state, **←/→** to flip its chirality. Rendered in pure Canvas2D through an **audio-reactive dither** grain that thickens with the sound. **Best on headphones.** `DEEP-winner · keyboard → Canvas2D · intense/kinetic`
 
-## In progress / partial
-- Nothing mid-build. 1508 is demoable; cycle-2 knobs (richer voice timbre, adaptive noise gate) noted in its README.
+## Why this one matters
+- It's **cycle 2 of last night's `1506-theta-tide`** and a **deliberate shot at the lab's first 5/5.** It assembles the exact combo the standing jury named as the whole gap to a 5: a real **multi-cycle commitment** (#4) cited against a genuinely **<14-day** research finding (#5 — Robert Borghesi's *ASTRODITHER*, webgpu.com, **1 July 2026**, the audio-reactive-dither anchor), on top of ≥3 subsystems + 4 named refs. Honest score **4/5** — the only miss is #1 (never-used technique), abstained because traveling-wave/dither are lab-adjacent. Closest the lab has come.
+- The **see==hear is exact by construction**: one analytic ψ lights every pixel *and* fires the bells *and* computes the rotating pan — no GPU sim between eye and ear.
 
-## Also explored tonight (WIDE fire — 2 banked, full code saved, seeds in IDEAS §748)
-- **⭐⭐ 1510-plasma-wind** — a **524k-particle WebGPU-compute** curl-noise plasma-aurora (+ Canvas2D fallback), self-playing 5-min build. The "massively bigger" one — TOP ship-next for a WebGPU night. *De-selected only for the winner's tighter see=hear + zero headless-render-risk.*
-- **⭐ 1512-facet-fold** — the bold bet: a genuinely psychedelic kaleidoscope built with **zero WebGL / zero canvas** — pure DOM + CSS 3D transforms + Klüver form-constants. Constraint-art; needs a real-browser look/perf check.
-
-## Research finding worth a look
-- **WebGPU hit browser critical mass** (webgpu.com, Dec-2025): Chrome/Firefox/Safari/Edge now *all* ship it by default — Safari 26 landed it on **iOS 26**. The "won't run on my phone" objection that made every compute piece carry a heavy fallback is now **false**. That's what makes 1510's 524k-particle GPU path finally a safe, ubiquitous substrate.
+## Also explored tonight (DEEP fire — 1 banked, full code saved, seed in IDEAS §749)
+- **⭐⭐ 1514-spiral-states** — the *same* concept on **WebGPU-compute**: a real driven-Kuramoto lattice with a forced winding defect, 123k GPU quads, and a dither driven by a true AnalyserNode RMS (crisper audio-reactivity than the winner's). De-selected **only** for the winner's exact see==hear + guaranteed-anywhere Canvas2D render — a superb ship-next for a WebGPU night.
 
 ## Open questions for Karel
-- 1508 wants your ear: does the beating "wrongness" read as viscerally as intended, and which of the 4 tunings feels best to *sing* in? (Headphones — speaker bleed can fool the pitch tracker.)
-- Ship-next preference: the big **1510 WebGPU plasma-aurora**, or the **1512 zero-WebGL CSS kaleidoscope** experiment? Both are banked and rebuildable.
+- 1516 wants your ear + eye: does the spiral **audibly spin** (the winding pan), and does the dither grain read as alive rather than noisy? Which state — concentric breathing vs the spiral melt — lands hardest?
+- Two strong WebGPU pieces are now banked (**1514 spiral-lattice**, **1510 plasma-aurora**). Want a dedicated **WebGPU night** to ship one, or keep them as WIDE ballast?
 - Still standing & unattended-blocked: the **audio→image→video AI-pipeline chain** (0×) — needs your per-prototype paid-budget go before I can run it.
