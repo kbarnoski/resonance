@@ -4,6 +4,20 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §753 — 2026-07-12 (research-first dive, cycle 753 · PSYCHEDELIC · **DEEP**)
+
+### 2026-07-12 · The video codec itself is a psychedelic engine — WebCodecs makes real-time, hardware-accelerated *datamosh* a browser primitive, and it is grep-0× in the lab
+
+**Anchor:** MDN *WebCodecs API* + Chrome-for-Developers *"Video processing with WebCodecs"* (evergreen but now broadly shipped: Chrome/Edge/Safari 16+ all expose `VideoEncoder`/`VideoDecoder`), and — the surprising hook — **Nino Filiu's *SuperMosh*, a real-time in-browser datamosh editor built on WebCodecs** (github.com/topics/datamosh; freeCodeCamp *"The WebCodecs Handbook"*). **Datamosh** is the early-2000s glitch technique (Takeshi Murata *Monster Movie*, 2005) of deleting a video's I-frames so the decoder keeps applying *new motion vectors onto stale pixels* — the image melts, drags, and blooms. **The realization for the lab:** a video codec's compression artifacts — motion-vector smear, DCT-block explosion, quantizer banding, decode latency — are a *near-exact match* for the phenomenology the psychedelic direction chases: LSD positive-afterimage "tracers," surface-melt, ego-dissolution-then-clarity. Every prior lab attempt at that look was a **hand-rolled ping-pong feedback buffer** (`1047-tracer-drift` et al.); WebCodecs lets a *real hardware codec* generate it, and — verified by grep across the full 1500-deep lab — **`VideoEncoder`/`VideoDecoder`/`EncodedVideoChunk` appear in 0 files.** This is the genuine, honest **never-used-in-the-lab technique (ambition #1)** the last five juries said was the wall to the lab's first 5/5 (MIDI is 36×, hand-tracking 20×, attractor/particle warm — all *falsely* flagged as 0× by earlier juries; WebCodecs actually survives the grep).
+
+**Freshness honesty:** WebCodecs is not a <14-day drop — the API and SuperMosh predate the window — so this fire does **NOT claim ambition #5**. The strict <14-day psychedelic-AV hunt came up short again (arXiv cs.SD/cs.GR "recent" = audio→video generation only: OmniForcing/LAV/Art2Mus — none a real-time instrument), the same straight posture logged in §750/§751/§752. The genuine research-first trigger here is a **technique-novelty** finding, not a dated paper: WebCodecs is the last un-mined browser-native rendering substrate in a saturated lab.
+
+**Became this cycle's DEEP build:** one concept — *"datamosh as a played psychedelic instrument"* — attacked via three codec-manipulation mechanics: **A `1536-codec-melt`** (note attacks starve the encoder bitrate → DCT-block melt that heals on decay), **B `1538-mosh-bloom`** (keyframe-drop P-frame smear held by the keys; Space fires an "I-frame bloom" clarity-snap — the authentic Murata datamosh, made playable), **C `1540-ghost-delay`** (a ring buffer of decoded past frames blended additively as codec-ghost tracer-trails; pitch sets how far back the ghost reaches). Each welds pitch→melt-direction and velocity→melt-depth so the codec is *steered*, not watched; all three degrade to a Canvas2D software-feedback fallback if WebCodecs is absent. Named-ref lineage: Takeshi Murata *Monster Movie*; Rosa Menkman *The Glitch Moment(um)*; Nino Filiu *SuperMosh*; Sven König *aPpRoPiRaTe!*; Bill Viola's time-delay video (for C). Chain: this dive → tonight's DEEP winner.
+
+**Sources checked:** MDN *WebCodecs API* / *Using the WebCodecs API*; developer.chrome.com *Video processing with WebCodecs*; freeCodeCamp *The WebCodecs Handbook* (2025); github.com/topics/datamosh (SuperMosh, Nino Filiu); W3C *WebCodecs* TR. Browser-support verified current on caniuse-class writeups (TestMu/LambdaTest WebCodecs support hub).
+
+---
+
 ## §750 — 2026-07-12 (research-first dive, cycle 750 · PSYCHEDELIC · **WIDE**)
 
 ### 2026-07-12 · Human echolocation builds its spatial image by *stacking clicks* — accuracy grows ~linearly with each self-generated click
