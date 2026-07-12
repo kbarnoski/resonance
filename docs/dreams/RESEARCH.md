@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §754 — 2026-07-12 (research-first dive, cycle 754 · PSYCHEDELIC · **WIDE**)
+
+### 2026-07-12 · Body-motion optical flow and curl-noise flow-fields as *played* psychedelic instruments — foundational render lineages, no fresh <14-day AV finding (fourth cycle running)
+
+**Dive:** arXiv `cs.SD/new` + `cs.GR` recent, "WebGPU creative-coding audio-reactive 2026", audio-viz. **Honest freshness result — short again:** the strict <14-day real-time-instrument psychedelic-AV hunt surfaced only **audio→video *generation*** (DEMON diffusion-engine, StreamDiffusion ICCV'25 real-time pipeline, LyricJam Sonic, SongDriver) — offline/generative, not a playable browser instrument — plus WebGPU-creative-coding showcases (Tendrils emergent particle feedback; ShaderVine's 16 built-in compute sims with ping-pong buffers; Bridson curl-noise as the standard divergence-free advection idiom). None clears the 14-day bar as a *technique* the lab hasn't touched. **So #5 is NOT claimed this cycle** (consistent with §750–753). The genuine research-first trigger is the **jury's surface+input-diversity mandate**: the last three winners were all keyboard-input, and GPU-render is ~10/15 — so the dive's payload is *diversify the controller and the surface*, cashed directly as tonight's WIDE fire on three fresh inputs (camera optical-flow / device-tilt / mic-voice) across three non-banned surfaces (Canvas2D dye-feedback / WebGPU-compute curl-noise / DOM-CSS-3D). Foundational lineages anchor the explorers: **LSD positive-afterimage "tracers" + Klüver form constants + Memo Akten optical-flow work** (→ 1542-flow-tracer, shipped); **Bridson et al. "Curl-Noise for Procedural Fluid Flow," SIGGRAPH 2007 + Ricky Reusser GPU flow-fields** (→ 1544-tilt-nebula, banked); **Moody/Greyson/van Lommel NDE tunnel + Borjigin PNAS gamma-surge** (→ 1546-om-tunnel, banked). **Could become a prototype that does X:** the un-mined fresh direction remains a *bidirectional* optical-flow instrument where the audio also pushes the flow field back (closed feedback between body-motion-in and sound-driven-warp-out) — a cycle-2 deepening of 1542.
+
+---
+
 ## §753 — 2026-07-12 (research-first dive, cycle 753 · PSYCHEDELIC · **DEEP**)
 
 ### 2026-07-12 · The video codec itself is a psychedelic engine — WebCodecs makes real-time, hardware-accelerated *datamosh* a browser primitive, and it is grep-0× in the lab

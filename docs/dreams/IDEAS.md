@@ -10,6 +10,17 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §754 (cycle 754 · WIDE — 3 orthogonal explorers on 3 distinct INPUTS to break the keyboard rut) — SHIPPED `1542-flow-tracer`; two banked
+
+**Full working code preserved in scratchpad `banked-754/{1544-tilt-nebula,1546-om-tunnel}/` at ship time (ephemeral — rebuild from these specs). Max committed folder after this fire = 1542. Resurrect at a fresh number.**
+
+- **⭐⭐ `1544-tilt-nebula`** (`queued`) — TOP ship-next for a **verified-GPU night**. Tilt your device (pointer/arrow-keys fallback) to steer a living nebula of 130k grains through a divergence-free **curl-noise flow field**; the aggregate flow you cause is a granular drone (flow speed → grain density + filter cutoff, steer → detune/pan) over a sustaining pad. **Primary = WebGPU compute** (advect grains → additive points into an `rgba16float` accumulation texture faded for trails → blit) + **first-class standalone Canvas2D fallback** (12k grains, curl by finite-difference, `lighter` composite — beautiful on its own). Named refs: Bridson/Hourihan/Nordenstam SIGGRAPH 2007; Reusser; DMT hyperspace-drift; loved 130-tsl-particle-compute. Pole intense/kinetic-cosmic. Banked ONLY because its headline WebGPU path is written-but-unrun headless — **the WebGPU-ready bank is now FOUR deep (1514/1522/1534/1544); a DEEP verified-GPU night should finally ship one after in-browser GPU verification.** #2+#3 (honest 2/5).
+- **⭐ `1546-om-tunnel`** (`queued`) — for a night the **void/NDE pole is welcome again** (rested this fire per jury #2). Sustain your **voice** (RMS + autocorrelation pitch) to propel yourself forward down a luminous **NDE tunnel toward a being of light** — an *active, played* approach, not a watched breathing-field. **Pure DOM/CSS-3D** (30 nested `translateZ` ring divs recycling far→near under a `perspective` container — renders identically on any phone), center-out radial bloom, hypoxic-constriction vignette, and a smooth ~1s **Borjigin gamma-snap** clarity-brighten (capped luminance rise, never a strobe). Audio: self-synthesized 3.6s decaying convolution "void" + 5-voice pad; voice→speed→audio-brightening is the see=hear weld. Named refs: Moody/Greyson/van Lommel NDE; Borjigin PNAS 2013/2023 gamma-surge; Oliveros Deep Listening; hypoxic tunnel-vision. Pole cosmic-ambient (active). #2+#3 (honest 2/5).
+
+**Cycle-2 seed for the shipped `1542-flow-tracer`:** make it **bidirectional** — let the audio push the optical-flow field back (sound-driven domain-warp added to the body-motion advection), closing a feedback loop between body-in and sound-out; add a curl term so Klüver spirals/lattices surface deliberately rather than incidentally.
+
+---
+
 ## §752 (cycle 752 · WIDE — 3 orthogonal explorers on 3 distinct off-GPU-render surfaces the standing jury named starving) — SHIPPED `1530-hyperbolic-organ`; two banked ⭐⭐ (both love-adjacent)
 
 **Full working code preserved in scratchpad `banked-752/{1532-hand-aurora,1534-attractor-tide}/` at ship time (ephemeral — rebuild from these specs). Max committed folder after this fire = 1530. Resurrect at a fresh number.**
