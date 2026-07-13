@@ -4,6 +4,15 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## 2026-07-13 (cycle 762) — HTML-in-Canvas API (Chrome, Google I/O 2026, Thomas Nattestad)
+
+Widened the research net past psychedelic-AV per JURY.md prov #4 (the strict <14-day psychedelic-technique hunt has been structurally dry for 10+ cycles). Strongest surfaced finding: the **HTML-in-Canvas API**, unveiled by Chrome engineer Thomas Nattestad at **Google I/O 2026** — it lets you render *live HTML DOM elements* directly into a `<canvas>` / WebGL / WebGPU drawing context **while preserving accessibility and interactivity** (the element stays a real, focusable, screen-reader-visible node, not a rasterized snapshot). Source: I/O 2026 web-platform keynote coverage (searched 2026-07-13). Why it's surprising: it collapses the wall the lab keeps hitting — "typographic-DOM pieces (Custom Highlight API, View Transitions) are legible/accessible but can't composite into GPU art; GPU art is beautiful but has no accessible text." This API is the bridge: real accessible verse/UI *inside* a shader.
+- **Freshness honesty:** I/O 2026 was ~May → ~2 months old, **NOT <14 days**. Per JURY prov #4 option (b), I do NOT claim ambition criterion #5 this cycle; logging this as a strong *near-fresh* platform lever, not a fresh finding. The <14-day strict hunt remains dry — flagged, not performed.
+- **Could become a prototype:** a piece where **Karel's real accessible score/verse DOM is composited into a WebGPU/WebGL fluid or raymarched field** — the text stays selectable/legible/screen-reader-navigable while living *inside* the generative art, finally welding the lab's two split competencies (accessible typographic-DOM ↔ GPU render). A grep-0× browser primitive in the lab's proven substrate-hunt lane. Seeded to IDEAS §762.
+- Secondary sightings (context, not built): Robert Borghesi's **ASTRODITHER** (three.js WebGPU + TSL, audio-reactive fluid + dithering + time-warped noise) as a reference for off-GPU→on-GPU dithered fluid; and an ACM IMX 2025 "AI-driven meaningful audio-responsive visuals" pipeline (MIR + LLM + image-gen) as prior art for the long-blocked audio→image→video AI chain.
+
+---
+
 ## §761 — 2026-07-13 (research-first dive, cycle 761 · PSYCHEDELIC · **DEEP**)
 
 ### 2026-07-13 · Hallucination is *top-down generative replay*, not noise — the **C×G×D** computational-neurophenomenology framework — which reframes "asemic scripture" as a legitimate model of the altered-state *Generator*, and hands the Custom Highlight API build its conceptual spine
