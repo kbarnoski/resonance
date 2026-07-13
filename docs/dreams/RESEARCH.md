@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## 2026-07-13 (cycle 766) — The 2026 "auditory-overlay" sonification wave + a culturally-situated computational treatment of the I-Ching
+
+**Dive (last-30-day scan).** WebSearch across creative-coding / sonification / generative-music for June–July 2026. Two signals worth building on. (1) A **2026 "data-sonification / auditory-overlay" wave** — trade press (Attack Magazine, "Sonification Tools Are Here") and the browser-audio community are framing 2026 as the year dashboards grow *auditory* companions: hearing a market crash, the pulse of server traffic, a heartbeat whose rhythm tracks latency. High-fidelity real-time synthesis in-browser (Web Audio, WebXR soundscapes) is now routine. (2) **arxiv 2605.20386 — "Music of Changing Lines: Toward a Culturally Situated Approach to the I-Ching"** (May 2026): a computational-music paper that treats the I-Ching's 64 hexagrams and their *changing lines* as a culturally-grounded generative-music structure, rather than a Western-scale gimmick.
+
+**Why it's pointed at us.** Karel explicitly asks for **non-Western musical structure** and for the lab to break off the psychedelic-violet monotheme (jury prov #5). The sonification wave reinforces the long-banked **markets-over-WebSocket "ledger organ"** (real-world data, off-violet). The I-Ching paper is a direct hook for a **self-playing oracle-canon** whose motion comes from the *changing-lines* transform (present hexagram → transformed hexagram), walked as a Markov canon over the King Wen sequence — a genuinely different musical grammar. Grep honesty: `hexagram`/`i-ching` already appears in the lab (`69-oracle-music`, `151-ritual-compose`), so this is **not** grep-0×; the fresh angle is the *changing-lines Markov canon + guqin pentatonic*, research-cited.
+
+**Could become a prototype that does X:** (a) `1612-ledger-organ` — live Coinbase `matches` WebSocket → each trade a note, a generative market organ (ref: Laumeister *Listen to Bitcoin*); (b) `1616-changing-lines` — an I-Ching oracle that plays itself, changing lines pulling it through the King Wen sequence as a slow guqin canon (ref: arxiv 2605.20386, King Wen sequence, gong-pentatonic 宫商角徵羽). Plus, servicing the jury's oldest structural gap, (c) `1614-air-loom` — MediaPipe hands as a Karplus-Strong air-harp ("get a body in the room"). → **built this cycle as `1612/1614/1616` (WIDE).**
+
+**Freshness honesty:** the sonification-wave scan is <30-day; the I-Ching paper is **<60-day, not <14-day**, so I claim #5 for `1616` only as "a recent research finding," not the hard <14-day criterion. **15th straight cycle with no genuine <14-day psychedelic-AV find** — the standing recommendation to Karel to **retire criterion #5** as structurally unreachable stands.
+
+---
+
 ## 2026-07-13 (cycle 765) — The WebGPU/TSL audio-reactive-field frontier the lab abandoned; N-body gravity as a sonification substrate
 
 **Dive (last-30-day scan).** WebSearch across creative-coding / WebGPU / browser-graphics for June–July 2026. Signal is consistent: the current audio-visual frontier is **WebGPU compute + Three.js TSL (Three Shading Language) audio-reactive fields** — e.g. the Three.js-2026 WebGPU/TSL migration roundup (utsubo.com/blog/threejs-2026-what-changed), **Robert Borghesi's *ASTRODITHER*** (2026, an audio-reactive Three.js **WebGPU/TSL** experiment: fluid sim + bloom + **dithering** + time-warped signal noise), and Figma's Config-2026 natural-language→WGSL shaders. Also: WebGPU compute is now the browser's route to in-page GPU simulation/AI-inference at scale.
