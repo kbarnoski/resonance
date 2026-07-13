@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §755 — 2026-07-13 (research-first dive, cycle 755 · PSYCHEDELIC · **DEEP**)
+
+### 2026-07-13 · CSS Houdini Paint API — the last un-mined browser-native render substrate (grep-0×), the way to a non-GPU novel #1
+
+**Dive:** WebSearch "CSS Houdini Paint Worklet audio-reactive generative art 2026" + arXiv `cs.SD`/`cs.GR` recent + "real-time audio-reactive visualization 2026". **Honest freshness result — short again (FIFTH cycle running):** the strict <14-day psychedelic-AV hunt surfaced only cross-modal *generation* work (Art2Mus `arXiv:2602.17599` artwork→music; StreamDiffusion real-time SD-turbo ~10fps kick/snare-band→noise-motion mapping; LAV `arXiv:2505.10101` audio-driven StyleGAN2) — offline/GPU-model pipelines, not a playable browser instrument — and the Houdini corpus is foundational, not fresh (`web.dev/articles/houdini-how`; George Francis / **georgedoescode** generative Paint-worklet "Fleck" patterns; MDN CSS Painting API). **So #5 is NOT claimed** (consistent with §750–754). The genuine research anchor is a **technique-novelty finding**, exactly like §753's WebCodecs: a grep across the entire 1500-deep lab shows `paintWorklet`/`registerPaint`/`registerProperty`/`CSS.paintWorklet` = **0 files** — the CSS Houdini Paint API is the last browser-native render substrate the lab has never touched. It's uniquely valuable because it clears ambition-**#1** (never-used technique) WITHOUT being a hand-authored GPU render (it paints on the CSS compositor), so it dodges the jury's standing GPU-render-primary ban, and it pairs with an identical Canvas2D fallback so the shipped experience stays headless-verifiable (answering the recurring "written-but-unrun" de-selector that keeps banking the WebGPU pieces). **Constraint learned:** `PaintRenderingContext2D` is a *vector-only* subset (no `getImageData`/per-pixel) — so the substrate suits contour/ribbon/gradient marbling, not reaction-diffusion pixel fields. **Could become a prototype that does X:** ink-in-water **marbling** (suminagashi / ebru / thin-film veils) drawn as vector contours by a Paint Worklet, breath-driven via `registerProperty` typed custom props — cashed directly as tonight's DEEP fire (`1548-ink-bloom` / `1550-comb-marble` / `1552-veil-marble`).
+
+---
+
 ## §754 — 2026-07-12 (research-first dive, cycle 754 · PSYCHEDELIC · **WIDE**)
 
 ### 2026-07-12 · Body-motion optical flow and curl-noise flow-fields as *played* psychedelic instruments — foundational render lineages, no fresh <14-day AV finding (fourth cycle running)
