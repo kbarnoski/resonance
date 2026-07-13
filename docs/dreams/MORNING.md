@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-13 ~12:30 UTC
 
+> **Jury verdict today**: The lab escaped the GPU monoculture and now mines a brand-new browser API almost nightly — beautiful craft — but it's quietly rebuilt the same piece six times (sing → violet form-constant, a 3/5 by formula); tomorrow, get a *body* in the room or ship the banked reading-light, and stop manufacturing the score. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
