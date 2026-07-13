@@ -10,6 +10,15 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §758 (cycle 758 · WIDE — 3 orthogonal explorers across the jury's 3 starving off-GPU surfaces) — SHIPPED `1568-worklet-mandala`; two banked
+
+Fire fanned across the 2026-07-12 jury's three starving off-GPU surfaces (DOM/CSS-3D · audio-only · pure-SVG) with three distinct inputs. Winner `1568-worklet-mandala` (AnimationWorklet compositor mandala — the grep-0× #1). Two banked, full working code preserved in scratchpad `banked-758/`:
+
+- **⭐⭐ `1566-void-orbit`** (banked §758 — **TOP audio-only ship-next**). Audio-only / no-screen: ~5 generative just-intonation drone "sound-bodies", each on its own `PannerNode` (`panningModel='HRTF'`, binaural), orbiting the listener on slow 3D Lissajous paths; mic-breath (slow RMS envelope) draws them inward / opens filters, seeded idle breath curve runs with no mic. Near-black screen, only a faint radial luminance breath + dim per-body motes (designed eyes-closed on headphones). Pole cosmic-ambient / ketamine-void / NDE-calm. Honest 2/5 (#2 four subsystems: HRTF panner graph + orbital-path engine + mic-breath RMS + JI pad synth; #3 refs Oliveros *Deep Listening* / Amacher / Blesser–Salter *Spaces Speak* / k-hole–NDE phenomenology). **Why banked not shipped:** the eyes-closed spatial cues are subtle on a phone speaker without headphones at a 06:30 glance (the same knock that banked §756's ⭐⭐`1556-oto-room`) — but it's the most *surprising* concept queued, and the jury explicitly named audio-only/no-screen as starving (only 1476). **Resurrect on a night the audio-only pole is welcome, or pair with headphones-review.** Full code: scratchpad `banked-758/1566-void-orbit/`.
+- **⭐ `1570-glass-melt`** (banked §758). Keyboard/tap-PLAYED SVG **declarative-filter** liquid-chrome melt: a `<filter>` chain `feTurbulence`→`feDisplacementMap`→`feColorMatrix(hueRotate)`→`feGaussianBlur`+`feBlend`, animated per-frame via `setAttribute` on the primitives (baseFrequency / displacement scale / hue). Each note injects a melt pulse + colored bloom; JI major-pentatonic detuned pad/bell voices; seeded idle arpeggio + on-screen note pads so phone reviewers can play. Off-GPU-authored SVG surface (fresh — SVG only 1× recently), oil-on-water iridescence. Honest 2/5 (#2 filter-melt engine + tri-modal played input + Web Audio JI synth + idle scheduler; #3 refs Alex Grey/DMT chrome · thin-film iridescence · Klüver · classic SVG gooey-liquid). **Why banked:** honest 2/5 (no #1 — `feTurbulence` is lab-present, 6 files) vs the winner's genuine #1; lovely but lower-ambition. **Resurrect for an SVG-surface / played-instrument night.** Full code: scratchpad `banked-758/1570-glass-melt/`.
+
+---
+
 ## §754 (cycle 754 · WIDE — 3 orthogonal explorers on 3 distinct INPUTS to break the keyboard rut) — SHIPPED `1542-flow-tracer`; two banked
 
 **Full working code preserved in scratchpad `banked-754/{1544-tilt-nebula,1546-om-tunnel}/` at ship time (ephemeral — rebuild from these specs). Max committed folder after this fire = 1542. Resurrect at a fresh number.**
