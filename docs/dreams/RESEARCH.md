@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## 2026-07-13 (cycle 765) — The WebGPU/TSL audio-reactive-field frontier the lab abandoned; N-body gravity as a sonification substrate
+
+**Dive (last-30-day scan).** WebSearch across creative-coding / WebGPU / browser-graphics for June–July 2026. Signal is consistent: the current audio-visual frontier is **WebGPU compute + Three.js TSL (Three Shading Language) audio-reactive fields** — e.g. the Three.js-2026 WebGPU/TSL migration roundup (utsubo.com/blog/threejs-2026-what-changed), **Robert Borghesi's *ASTRODITHER*** (2026, an audio-reactive Three.js **WebGPU/TSL** experiment: fluid sim + bloom + **dithering** + time-warped signal noise), and Figma's Config-2026 natural-language→WGSL shaders. Also: WebGPU compute is now the browser's route to in-page GPU simulation/AI-inference at scale.
+
+**Why it's pointed at us.** The 2026-07-13 concept-jury noted the lab has **0 real GPU-render pieces in the last 15 cycles** — it fled the old three.js monoculture into typographic-DOM/SVG/Canvas2D. So this "frontier" is precisely the surface the lab *abandoned*; returning to it is maximally diverse for the recent window while being where large-scale cosmic-ambient visuals actually live. Novelty greps in the shipped lab: **`barnes-hut` = 0** and **`halftone` = 0** (grep-0×); `n-body`/`nbody` ≈ 5–7 total and **zero in the recent 15-window**, and crucially none sonify **orbital-resonance period-ratios → just intonation** (that weld is the genuine novelty, not "N-body render," which has thin prior art).
+
+**Could become a prototype that does X:** a **gravitational cosmos you conduct by touch** where masses settling into small-integer period ratios (2:1, 3:2, 4:3 …) ring the corresponding JI consonance — "the music of the spheres, made real." Three approaches: large-N GPU point-cloud (Anadol-scale), few-body resonance-lock detector (tightest weld), deterministic Laplace-canon orrery (most robust). Named anchors: **Barnes & Hut 1986** (tree N-body), **Kepler *Harmonices Mundi* 1619** (music of the spheres / third law), the **Laplace resonance** (Io-Europa-Ganymede 4:2:1), **Refik Anadol** point-cloud aesthetics. → **built this cycle as `1606/1608/1610` (DEEP).** Secondary IDEAS seed: *ASTRODITHER*-style **dithered/halftone GPU render** (grep-0× `halftone`) as a fresh render aesthetic layer for a future GPU piece.
+
+**Freshness honesty:** the *frontier scan* is genuinely <30-day (Three.js-2026 WebGPU/TSL, ASTRODITHER 2026, Config-2026), but the *build's* load-bearing references are foundational (Barnes-Hut 1986, Kepler 1619, Laplace) — so **#5 (a genuinely <14-day finding driving the build) is NOT claimed, 14th straight dry.** Re-affirming the standing recommendation to Karel: **retire criterion #5** as structurally unreachable for this lab's niche.
+
+---
+
 ## 2026-07-13 (cycle 764) — Off-the-violet: real-time data-feed sonification (orbital · market · attention/endurance)
 
 Cycle 764 is the **WIDE "off-the-violet" night** discharging the last open JURY-2026-07-13 provocation (**#5: break the psychedelic monotheme; the "real-world data" and "conceptual/critical" menu lanes are empty in the last-15 window**). Widened the research net entirely off consciousness/altered-states. Three anchors, one per explorer:
