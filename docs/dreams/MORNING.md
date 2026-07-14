@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-07-14 ~20:00 UTC (cycle 776)
+# Morning digest — last updated 2026-07-14 ~22:00 UTC (cycle 777)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[1676-tabla-loom](https://getresonance.vercel.app/dream/1676-tabla-loom)** — I cashed your jury's **#1 note** (break the just-intonation drone reflex → put real rhythm/grit in the ear). It's the lab's **first physically-modeled Indian tabla** — the drum voices are *synthesized*, not sampled (a bank of tuned resonators + a noise burst; the baya bass audibly bends down) — played through a **konnakol tala cycle** shown as a turning "necklace" (Teental 16 / Keherwa 8 / Jhaptal 10 / Rupak 7, with sam + khali marked). **Why open it:** hit **Play**, then drum the bols on the **home row (A–K)** or the pads — jam over the auto-theka or turn it off and play solo. It's percussion you *play*: no drone, no pad.
+- **`1682-cadence-forge`** → https://getresonance.vercel.app/dream/1682-cadence-forge — **play equal-tempered functional harmony that modulates and BITES.** Home row = roman numerals (I ii iii IV V vi vii°); `Shift`+key = applied secondary dominants; `L`=vii°7; `M`/Space = pivot-chord modulation; `N` = deceptive cadence. Real 4-voice SATB voice-leading, and a **numerically real tension curve** — the published TIV weighted scalar (dissonance ×0.402 + hierarchical ×0.246 + tonal-distance ×0.202 + voice-leading ×0.193) — rises on the dominants and drops home on the tonic, with a live per-component breakdown. **Why open it:** direct cash of your jury's #1 note — the last of its four named examples ("an equal-tempered one that actually modulates and bites"); the ear finally leaves the pretty just-intonation wash. Also the banked ⭐⭐ TOP ship-next (1678-tension-cell) shipped.
+- **DEEP night, 2 more built + banked** (IDEAS §777): **⭐⭐`1684-roughness-organ`** — the lab's *first psychoacoustic* engine: sculpt a chord's tension tones and a real Plomp-Levelt/Sethares **sensory-dissonance** model draws the classic roughness hump with a live dot per partial pair — you literally SEE where the bite comes from, then resolve it (highest surprise; sculpts bite but doesn't modulate keys → why it didn't win). **⭐`1686-figured-bass`** — a played real-time **reharmonizer**: play a bass line, the machine harmonizes each beat with functional chords (secondary dominants, tritone subs, modulations) biased by a "heat" knob.
 
-## Why this direction (your jury said so)
-Your 2026-07-14 jury's **#1** (loudest): *"13 of 15 pieces resolve to a pretty just-intonation drone — ban the JI bed for a week; force rhythm, grit, groove — a percussion/beat-driven piece."* Jury #3 (the fugue cycle-2) was cashed last night; so tonight (**WIDE**) I went after #1 with three rhythm/tension instruments and shipped the percussion one — first non-Western rhythmic engine in ~730 prototypes, and you *play* it (jury #2: no watch-only).
+## In progress / partial
+- None. One clean DEEP commit this cycle.
 
-## Explored tonight, banked (fully built, in the queue)
-- **⭐⭐ tension-cell** — the OTHER literal thing your jury asked for: *"an equal-tempered one that actually modulates and bites."* A 12-TET functional-harmony instrument — you play roman numerals, V7 / tritones / secondary dominants / deceptive cadences, and *modulate* to new keys, over a live tension→release curve. Numerically verified to actually bite, not wash. **Strongest ship-next in the lab.** Held only because tabla out-scored it on ambition + surprise + palette.
-- **⭐ beat-forge** — beatbox into your mic → it detects your kicks/snares/hats by timbre and forges a looping groove you layer. Max agency; held because its payoff needs a mic (won't self-demo in my headless box).
+## Research findings worth a look (RESEARCH.md §777c)
+- The **TIV tonal-tension model** (Navarro-Cáceres/Bernardes, *Entropy* 2020) gives an implementable weighted tension scalar — the math behind tonight's tension ribbon. **Mapping Tonal Harmony Pro 5.1** (2026-05-31) shows played functional-harmony-with-tension tooling is a live 2026 frontier.
 
-## Open questions for you
-1. **Does the tabla actually *sound* like resonant membrane percussion?** I can't hear it in here — the one thing the headless box can't judge. Tell me if the bols land or read thin.
-2. **Ship tension-cell next?** It cashes the other half of jury #1 and I think it's the strongest queued piece. Say go and it's next fire.
-3. **The audio→image→video AI pipeline is still 0×** — oldest unmet jury ask, blocked only on your go-ahead for a small per-prototype paid budget (I can't spend unattended). Want it?
-4. **Retire the "<14-day research" rule?** 18 cycles structurally dead — the honest freshest on-concept work (physical-model percussion, Euclidean rhythm) is foundational technique, not two-week-old news. Your jury has now asked twice. Your call.
+## Open questions for Karel
+- **Ear-check `1682` in Chrome:** does the applied-dominant / deceptive-cadence bite read as *musically satisfying* (not just correct), and is the TIV ribbon + component breakdown legible at a glance? (Headless container has no speakers/display — the deterministic ghost guarantees it's never blank.)
+- **Jury #1 nearly fully cashed** — its 4 named anti-JI examples are all shipped (noise/glitch=774, real-dissonance=775, percussion=776, ET-modulates-and-bites=777). Was the just-intonation wash actually your house sound, or hold the rhythm/grit/tension line longer? Your verdict sets next week's ear.
+- **Standing, still gated on you:** (1) the **≥2-model AI pipeline** (audio→image→video) is 0× — oldest unmet ask, blocked only on your per-prototype paid-budget go (can't run unattended). (2) Research criterion **#5** (<14-day find) is dead **19 straight** cycles; your jury has thrice recommended amending/retiring the <14-day bar — a one-line call settles it.
