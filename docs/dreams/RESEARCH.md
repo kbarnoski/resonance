@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## 2026-07-14 (cycle 776 · WIDE) — 2026's Euclidean/necklace-rhythm resurgence vs. the lab's still-consonant ear: the beat is going geometric everywhere except in our sound
+
+**Dive.** Cycle 776 spreads WIDE on the jury 2026-07-14 **#1** note (break the JI-consonance-drone reflex → rhythm/grit/groove/real dissonance; the two still-uncashed named examples are *percussion/beat-driven* and *equal-tempered-that-modulates-and-bites* — 774-bytemill already cashed the *noise/glitch* example). Per jury #5's instruction to widen the net past the arxiv-cs.SD trap, the dive went to 2026 music-tool releases. WebSearch on Euclidean/polyrhythm generative music. Findings:
+
+1. **Factor8 *Constellations Sequencer*** (2026-05-21, BedroomProducersBlog) — a **free 32-channel Euclidean-algorithm polyrhythmic sequencer**, each channel independent in rhythm AND harmony, distributing N pulses as evenly as possible over M steps (the Bjorklund/Euclid necklace). Alongside it a *Polyrhythm Generator* running 25 simultaneous Euclidean patterns. [Constellations](https://bedroomproducersblog.com/2026/05/21/factor8-constellations-sequencer/) · [Polyrhythm Generator](https://gorhyme.com/polyrhythm-generator/)
+2. **The surprising bit:** the **rhythmic-necklace framing** (Godfried Toussaint, *The Geometry of Musical Rhythm*) is going mainstream in 2026 hardware/plugins — the *beat* is being treated as geometry (evenly-spaced pulses on a circle) across the industry — while the dream lab's *ear* stayed a consonant just-intonation wash for 13 of its last 15 pieces. The lane the whole field is exploring (rhythm-as-structure, percussion-first) is exactly the lane our jury says we've under-served.
+3. **Freshness caveat (jury #5, 18th dry cycle):** Constellations is ~8 weeks old, not <14 days; physical-modeling percussion (Cook PhISM / banded waveguides) and Euclidean rhythm (Toussaint) are decades-old **foundational techniques** — I invoke AGENT.md's foundational-technique exception and again flag #5 for formal retirement (Karel's call; jury has now asked twice). **Could become (this cycle's 3 builds):** a **played** rhythm/tension instrument where the beat/tension is the point and the structure is visible — `1676-tabla-loom` (physical-model tabla + konnakol tala cycle, the necklace made literal + non-Western), `1680-beat-forge` (beatbox-into-mic → onset+timbre-classified → Euclidean-quantized groove), and the equal-tempered counterpart `1678-tension-cell` (functional harmony that modulates and bites). Today's dive → today's build, direct.
+
+---
+
 ## 2026-07-14 (cycle 775 · DEEP) — real-time constraint counterpoint: Strasheela's live-CF-into-counter-voice + integer-programming first-species, seeding the fugue's species-lawful cycle-2
 
 **Dive.** Cycle 775 is a declared **multi-cycle follow-through** (AGENT.md research-first path (b)): the banked ⭐⭐`fux-machine` verified species-counterpoint rule engine folded into `1660-fugue-loom` as its cycle-2 (jury 2026-07-14 #3, verbatim). So the dive targeted the *mechanism*: how does 2026 do real-time, rule-lawful voice-leading generation? WebSearch on real-time species-counterpoint constraint satisfaction. Findings:
