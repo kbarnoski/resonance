@@ -4,6 +4,20 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## 2026-07-14 (cycle 772 · WIDE) — two under-mined fields the jury named empty: real-time audio-to-score alignment (Karel's own piano) + earth-data audification
+
+**Dive (last-30/90-day scan).** WebSearch across 2026 score-following + data/seismic sonification. Two convergent fresh signals, each pointed at tonight's WIDE fan and at a jury-named EMPTY lane:
+
+1. **Audio-to-score alignment has matured into simple, robust, browser-feasible pipelines.** **arxiv 2605.20014 "Precise and Simple Audio-to-Score Alignment" (May 2026)** and **2510.10087 "Matchmaker: An Open-Source Library for Real-Time Piano Score Following" (2025)** show real-time onset/DTW score-following is now precise enough for reactive musical tasks at low latency — no heavyweight model required, a spectral-flux onset detector + lightweight tracker is enough. This directly seeds **1652-path-codex**: score-follow Karel's REAL Path piano (his recording `549fc519-…`) into a self-illuminating medieval codex — every detected note inks a light-glyph on the page. It cashes the 2026-07-13 jury's provocation #3 ("ship the reading-light that score-follows Karel's real Path piano") AND his standing "use his actual music as the source" directive.
+
+2. **Earth-data audification is a real, named field the lab has never touched.** The seismic-sonification lineage runs from Cold-War bomb-vs-quake ear-discrimination through **Florian Dombois' *Auditory Seismology*** to 2026 pieces (Eos.org "Earth Is Noisy. Why Should Its Data Be Silent?", Earthsound) — humans reliably distinguish tectonic from source signatures by ear. This seeds **1654-terraphone**: the live **USGS `all_day.geojson`** feed → a self-playing seismic organ (magnitude→amp+register, depth→timbre, lon→pan, rate→tectonic drone), each quake rippling on a DOM/SVG world map. It cashes the jury's #5 real-world-data lane (0× shipped) at an **awe pole** (the living earth, not consciousness, not finance) — resolving the ledger-organ's standing brand tension.
+
+**Why it's pointed at us.** The 2026-07-13 jury named **real-world-data sonification (0× shipped)** and **conceptual/critical (0×)** as the two empty menu lanes, and provocation #3 as "ship the real-piano reading-light." This WIDE fan hits all three at once — `1652-path-codex` (jury #3 + Karel's music), `1654-terraphone` (jury #5 real-data, awe pole), `1656-the-toll` (jury #5 conceptual/critical — "a recording you can't hear without doing something costly," a piece that only plays while you hold the toll of attention; refs Cage *4′33″* / Oliveros / Jenny Odell). Honest **#5:** 2605.20014 is May 2026, not verifiably <14d → **14th straight** dry cycle; the standing widen-or-retire note holds. Grep honesty: onset-detection, data-sonification, and generative-attention pieces each have some faint prior lab mention, so **#1 is NOT claimable** for any of the three — each floors on **#2** (≥3 subsystems) + **#3** (named refs), and 1656 adds **#4** (long-form stateful).
+
+**Could become a prototype that does X:** (a) 1652's next-cycle deepening — a true DTW alignment to a stored MusicXML of the Path so the codex illuminates the *correct* bar even when Karel rubatos; (b) 1654 fanned to other awe feeds (NOAA space-weather aurora Kp index, ISS pass predictions) for a "cosmos plays itself" companion; (c) 1656 as a shared-room piece — a collective attention-meter where the music only advances while N listeners all hold together (multi-user, WebRTC).
+
+---
+
 ## 2026-07-14 (cycle 770) — the two open frontiers of real-time generative audio: long-form NARRATIVE coherence (still unsolved) + real-world data sonification (financial / physical)
 
 **Dive (last-30-day scan).** WebSearch across 2026 real-time generative-music / adaptive-audio / data-sonification. Two convergent signals, both pointed at tonight's WIDE fan:
