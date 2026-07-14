@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-07-14 ~22:00 UTC (cycle 777)
+# Morning digest — last updated 2026-07-14 ~22:30 UTC (cycle 778)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`1682-cadence-forge`** → https://getresonance.vercel.app/dream/1682-cadence-forge — **play equal-tempered functional harmony that modulates and BITES.** Home row = roman numerals (I ii iii IV V vi vii°); `Shift`+key = applied secondary dominants; `L`=vii°7; `M`/Space = pivot-chord modulation; `N` = deceptive cadence. Real 4-voice SATB voice-leading, and a **numerically real tension curve** — the published TIV weighted scalar (dissonance ×0.402 + hierarchical ×0.246 + tonal-distance ×0.202 + voice-leading ×0.193) — rises on the dominants and drops home on the tonic, with a live per-component breakdown. **Why open it:** direct cash of your jury's #1 note — the last of its four named examples ("an equal-tempered one that actually modulates and bites"); the ear finally leaves the pretty just-intonation wash. Also the banked ⭐⭐ TOP ship-next (1678-tension-cell) shipped.
-- **DEEP night, 2 more built + banked** (IDEAS §777): **⭐⭐`1684-roughness-organ`** — the lab's *first psychoacoustic* engine: sculpt a chord's tension tones and a real Plomp-Levelt/Sethares **sensory-dissonance** model draws the classic roughness hump with a live dot per partial pair — you literally SEE where the bite comes from, then resolve it (highest surprise; sculpts bite but doesn't modulate keys → why it didn't win). **⭐`1686-figured-bass`** — a played real-time **reharmonizer**: play a bass line, the machine harmonizes each beat with functional chords (secondary dominants, tritone subs, modulations) biased by a "heat" knob.
+- **`1692-friction-loom`** — [play it](https://getresonance.vercel.app/dream/1692-friction-loom). **Drag on the loom and your pointer is a bow.** It's a real stick-slip *friction* physical model (the classic McIntyre-Schumacher-Woodhouse bowed string, running the bow-string grip/slip interaction every audio sample in an AudioWorklet), so you get the whole continuum a plucked model can't: slow drag → airy whistling harmonic, steady → a singing Helmholtz tone, fast/hard → a raucous over-pressure *bite*. Stop, and it goes silent — no drone. Press **Start bowing**, then drag; release and a ghost bow demos it. **Why open it:** the friction bite is a genuinely hard, rarely-done DSP — the "huh, we can do that in a browser?" one. **Please ear-check on your Chrome:** does it actually *sing* (lock a stable tone) rather than just scratch?
 
-## In progress / partial
-- None. One clean DEEP commit this cycle.
+## Mode / diversity
+- **WIDE** fire (3 divergent NON-keyboard instruments; shipped 1 of 3). The jury's #1 anti-JI note is now **fully cashed** (glitch/dissonance/percussion/ET-tension all shipped), so this cycle's real gate was the diversity audit: **keyboard-played had hit 5 of the last 10** — so I banned it and went camera / mic / pointer-gesture instead. All three were non-drone, non-cosmic, Canvas2D.
 
-## Research findings worth a look (RESEARCH.md §777c)
-- The **TIV tonal-tension model** (Navarro-Cáceres/Bernardes, *Entropy* 2020) gives an implementable weighted tension scalar — the math behind tonight's tension ribbon. **Mapping Tonal Harmony Pro 5.1** (2026-05-31) shows played functional-harmony-with-tension tooling is a live 2026 frontier.
+## Also explored (banked — see IDEAS §778)
+- **⭐ `1688-shadow-gamelan`** — cast shadows over your webcam to strike bronze gamelan bars that *beat* (Balinese ombak shimmer). Fun; closer cousins than the winner.
+- **⭐ `1690-wind-mobile`** — breathe into the mic and it's literal wind swinging a mobile of tuned tubes that chime on collision. Uses mic (an input we'd dropped).
 
-## Open questions for Karel
-- **Ear-check `1682` in Chrome:** does the applied-dominant / deceptive-cadence bite read as *musically satisfying* (not just correct), and is the TIV ribbon + component breakdown legible at a glance? (Headless container has no speakers/display — the deterministic ghost guarantees it's never blank.)
-- **Jury #1 nearly fully cashed** — its 4 named anti-JI examples are all shipped (noise/glitch=774, real-dissonance=775, percussion=776, ET-modulates-and-bites=777). Was the just-intonation wash actually your house sound, or hold the rhythm/grit/tension line longer? Your verdict sets next week's ear.
-- **Standing, still gated on you:** (1) the **≥2-model AI pipeline** (audio→image→video) is 0× — oldest unmet ask, blocked only on your per-prototype paid-budget go (can't run unattended). (2) Research criterion **#5** (<14-day find) is dead **19 straight** cycles; your jury has thrice recommended amending/retiring the <14-day bar — a one-line call settles it.
+## Open questions for Karel (a few standing ones need your call)
+1. **The jury's #1 is done** — all four anti-JI examples shipped. Hold the rhythm/grit/tension line, or return to the ambient wash? Your call sets the next week.
+2. **Saturation is real.** I grepped ~20 "fresh" techniques this cycle and *every one* was already built (rPPG, overtone-singing, wiki-stream ×3, Lucier, market-feed, gamelan, bowed-string…). After ~730 protos the lab has covered the primitive space — so ambition criterion **#1 (never-used technique) is now near-unreachable**. Suggest re-weighting the ambition floor toward #2 (unbuilt *combinations*) over #1. Want me to amend AGENT.md?
+3. **Criterion #5** (research <14 days old) is **20 cycles dead** — please retire or loosen it (you've flagged this too).
+4. **The audio→image→video AI-pipeline chain is still 0×** — it needs your one-time paid-budget OK per rule #6; I can't run it unattended.
+5. Four ⭐⭐ ship-ready banks (1684-roughness-organ, 1674-path-fugue, 1666-acid-cell, 1686-figured-bass) are all *keyboard-played* — they'll ship on a DEEP night once keyboard clears the over-rep window (should be next).
