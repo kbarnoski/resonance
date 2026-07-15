@@ -1,22 +1,17 @@
-# Morning digest — last updated 2026-07-15 ~14:40 UTC (cycle 786)
-
-> **You said "leave the workshop, get off Canvas2D, go back to the psychedelic core on the cosmic-ambient/dream pole" — this fire does all three at once.** A WIDE fan of 3 altered-states pieces, none on Canvas2D, re-injecting the two thin poles. Shipped the WebGPU-compute one.
-
-**Open this first:** https://getresonance.vercel.app/dream/1740-breath-nebula
+# Morning digest — last updated 2026-07-15 ~16:30 UTC
 
 ## New since yesterday
-- **1740-breath-nebula** (WIDE-winner) — **breathe toward the mic and a living cosmic nebula breathes with you: inhale blooms a cloud of ~hundreds-of-thousands of GPU points outward into warm-white light, exhale collapses it into cold violet filaments.** The lab's **first real WebGPU-compute piece in ages** — a WGSL `compute` shader advecting a persistent GPU particle buffer through a 3-D **curl-noise** flow field + a signed breath force. This is the literal answer to today's jury **#3** ("get off Canvas2D — force a WebGPU-compute piece, still near-0×") **and #2** (back to the cosmic-ambient pole).
-- **Why it matters:** the jury's biggest structural note was the Canvas2D monoculture (7 of 15). This doesn't dodge it with three.js — it opens the *hardest* substrate the lab keeps not building. No mic? It breathes on its own (~0.1 Hz), alive at your 06:30 glance. Sound is an inharmonic breathing pad + wind + bells — deliberately **not** a pretty JI drone.
-- **Fresh anchor (finally sub-14-day):** built on **ASTRODITHER** (Robert Borghesi, webgpu.com, **2026-07-01 — 14 days old**), the first research find under the <14-day bar in **27 cycles**. WebGPU compute is now a mainstream artist tool, not a research toy.
+- **[1746-threshold-lattice](https://getresonance.vercel.app/dream/1746-threshold-lattice)** — *the room's stillness is the interface.* Keep your space quiet and still and you **sink over ~12–15 s through a honeycomb phosphene lattice toward the threshold of dream** — any sound throws you back up. Ambient-mic RMS mapped *inversely*, split into a fast stillness meter (legible in <5 s) + a slow descent reward; a myoclonic sleep-start jerk lurches you at the edge of sleep. **Open it in a quiet room, click Enter, then go silent — watch the descent meter climb.** This is the lab's **first real occupant of the DREAM/hypnagogic pole** the jury named empty, and it cashes the ⭐⭐-banked §786 seed off the banned Canvas2D onto a three.js shader.
 
-## Also explored this fire (WIDE — 2 more built, banked to IDEAS §786)
-- **⭐⭐ 1742-drift-lattice** — a hypnagogic sleep-onset lattice that **sinks deeper the quieter/stiller your room gets** (silence is the reward). The §780 banked dream-seed, now **off Canvas2D** (three.js shader) and with its old "takes 15 s to feel the causal link" flaw **fixed** (a fast stillness channel reads in <5 s). **Fills the DREAM pole you named empty. Top ship-next.**
-- **⭐ 1744-void-bath** — close your eyes: a boundless NDE void built **entirely of sound** placed around your head (6 HRTF-spatialized drones, turn with device tilt). Cashes the **audio-only** menu item that's been empty for months + the HRTF research. Made speaker-safe, best on headphones.
+## Why this one
+- Direct execution of yesterday's jury #2 ("cosmic-ambient and DREAM states are thin-to-empty — cash a banked altered-states piece") + #3 (off Canvas2D). Cycle 786 shipped the cosmic-ambient WebGPU nebula; this fills the *other* empty pole.
+- **DEEP fire — one concept, 3 GPU substrates built in parallel, shipped the strongest.** The other two are demoable + clean, banked to ship next:
+  - ⭐⭐ **1748-threshold-drift** — WebGPU-compute phosphene sparks that *coalesce into fleeting fragmentary imagery then dissolve* (the N1 imagery emergence). Ship-next.
+  - ⭐ **1750-threshold-descent** — three.js raymarched Klüver tunnel-to-light / NDE descent (one trivial fix).
 
-## Research findings worth a look
-- **ASTRODITHER** (webgpu.com, 2026-07-01): WebGPU + Three.js + TSL audio-reactive fluid/particle sim — "all signal until the music pushes it around." Seeded 1740 directly. (RESEARCH.md §786.)
+## Research finding
+- **MIT *Dormio* / Targeted Dream Incubation** proves the hypnagogic threshold is an *addressable interface* (a wearable that acts at sleep-onset). The surprise lever: **invert it — make the ROOM the sensor** (ambient mic, no wearable). That inversion is tonight's build. (RESEARCH.md §787.)
 
 ## Open questions for Karel
-- **The rhythm/grit turn (784–785) is paused; this fire pivots back to psychedelic cosmic-ambient/dream per your jury.** Good call, or keep alternating grit ↔ cosmic? Say the word.
-- **The ≥2-model AI-pipeline chain (audio→image→video) is STILL 0×** — the jury's #4, the oldest unmet menu item, blocked only on your per-prototype paid-budget go (rule #6). Want a cycle on it? One yes unblocks it.
-- **Two housekeeping items (nothing broke — flagging so you know the guard held):** (1) the full `npm run build` can no longer finish in the cloud sandbox — ~1700 routes now exhaust its 4096 open-file cap during page-data collection (I proved the *untouched* repo fails identically; **Vercel is unaffected, production builds fine**). I validated 1740 via `tsc --noEmit` + folder eslint (both clean) instead. Might be time to archive very old dream routes, or raise the sandbox fd cap. (2) `npm ci` here now needs `--ignore-scripts` (a `sharp`/libvips download 403s through the proxy).
+- **The AI-pipeline chain (audio→image→video, ≥2 models) is still the one genuinely-empty lane** — blocked only on your go for a small per-prototype paid budget (rule #6). Want me to build it? One word unblocks it.
+- Housekeeping (unchanged from §786): the full `npm run build` can't finish in this sandbox's 4096-fd cap at ~1700 routes — validating via project-wide `tsc --noEmit` + folder-scoped `eslint --max-warnings 0` (both clean for 1746). Vercel's build has the fd headroom, so deploy is unaffected. Worth archiving old dream routes at some point.
