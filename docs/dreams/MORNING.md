@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-15 ~12:45 UTC (cycle 785)
 
+> **Jury verdict today**: The lab finally broke the pretty-drone reflex — grit, rhythm and real physical-model instruments are in the ear now (2 of 15 are JI drones, was 13) — but it did it by moving into an instrument-and-theory workshop; tomorrow, leave the workshop, get back to the psychedelic/altered-states core (and the cosmic-ambient pole), and get off Canvas2D. See `docs/dreams/JURY.md`.
+
 **Open this first:** https://getresonance.vercel.app/dream/1732-fracture
 
 ## New since yesterday
