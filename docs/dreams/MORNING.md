@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-07-15 ~08:30 UTC (cycle 783)
+# Morning digest — last updated 2026-07-15 ~10:20 UTC (cycle 784)
 
-**Open the lab:** https://getresonance.vercel.app/dream
+**Open this first:** https://getresonance.vercel.app/dream/1726-drum-trance
 
 ## New since yesterday
-- **[1722-breath-nimbus](https://getresonance.vercel.app/dream/1722-breath-nimbus)** — **breathe into your mic and 60,000 luminous motes gather toward you on the inhale and disperse to a boundless veil on the exhale.** The lab's **first breath-BIOFEEDBACK loop**: it reads your breath *phase* and rewards slow, steady ~0.1 Hz breathing (≈6/min) — the more coherent you breathe, the more the nimbus tightens into one calm phase-locked cloud. Cosmic-ambient / meditative — the counterweight to the recent INTENSE run (1700 bloom, 1714 tesseract). **Open it and grant the mic**, then breathe slowly. (No mic? It auto-runs a perfect synthetic breath, so it's never blank.)
-  - Winner of a **DEEP** 3-renderer fire on one concept ("the screen breathes with your lungs"). Cashes the ⭐⭐ banked `1712-breath-void` — the follow-through I kept speccing (jury #3 / criterion #4).
+- **1726-drum-trance** (WIDE-winner) — **tap the drums steadily near 4 beats/sec and the psychedelic geometry locks in; hold a wobbly beat and it scatters back to grey.** The lab's first closed **theta-entrainment reward loop**: you physically play the beat (4 touch pads + Space/F/J/K), a steadiness tracker measures how well you're locking to ~4 Hz, and Klüver form-constants bloom (tunnel→spiral→honeycomb→white-out) as you entrain. Direct build of *today's* research (a 2026-03-26 Nature paper: theta phase-lock predicts drumming-trance depth). Canvas2D, firelit-ember. A deterministic 4.2 Hz ghost drummer self-demos it even with no touch.
+- **Why it matters:** answers the jury's two loudest notes at once — **#1** (break the just-intonation wash; these are detuned inharmonic drum voices, no glassy drone) and **#2** (real agency, you play it, not watch-only). And it breaks the lab's 4-night raw-GPU render streak (back to Canvas2D).
 
-## In progress / partial (banked, ship-ready — resurrect ≥1726)
-- **⭐⭐ 1724-breath-membrane** — the same breath-biofeedback loop as a **Canvas2D caustic mandala** whose radial symmetry *rises with coherence*. De-selected only for lower headless fidelity vs 60k GPU motes — but it's the deliberate fix for the render note below (it's **off the GPU**), so it's first in line next.
-- **⭐ 1720-breath-bloom** — the purest version: a warm WebGL2 mist that expands on the inhale and washes white (boundary-dissolution) at the top of the breath. The gentlest meditation piece of the three.
-- Older ready banks: ⭐1716-tracer-drift (LSD tracers on a dropped track — the home to finally wire your real Path piano), ⭐⭐1706-void-descent (HRTF spatial void, verify on headphones).
+## Also explored this fire (WIDE — 2 more built, banked to IDEAS §784)
+- **⭐⭐ 1728-fracture** — drop a track and it *fractures*: audio bit-crushed + granular-stuttered into real grit while the image datamoshes into DMT hyper-detail. `bitcrush` has never been in the lab — the purest "put grit in the EAR" answer. **Ship-next to keep the ear un-calcified.**
+- **⭐ 1730-groove-lock** — clap a tempo and a dub-techno groove locks to your pulse, then evolves with modulating tritone/b9 stabs (the textbook "ET that modulates and bites"). Canvas2D echo-mandala.
 
 ## Research findings worth a look
-- **"Breathing Space" (HCI in the Alps, 2026)** — breath+cardiac biofeedback scored with real *coherence* metrics (~0.1 Hz resonance frequency), testing whether *entrainment* (not just display) is what shifts your state. This is exactly what 1722 implements: it doesn't just react to breath, it entrains it. Also seeds the particle-breath mapping (motes toward you on inhale, out on exhale).
+- **Neural tracking at theta predicts drumming-induced altered states** (Aparicio-Terrés et al., *Sci. Rep.* 16:10204, 2026-03-26). 4 bps drumming, and the *steadiness* of your phase-lock is the neural marker of trance depth → makes trance-induction a closed, agency-driven target. Seeded 1726 directly. (RESEARCH.md §784.)
 
-## Open questions for Karel (re-escalated)
-- **Render-lane watch:** 1722 is the **4th raw-GPU-render piece in a row** (1700/1708/1714/1722). Three.js (the jury's actual watch flag) is dodged — these are all raw WebGL2 — but the GPU-render lane is getting heavy. **1724 (Canvas2D) is the built correction; ship it next?**
-- **The ≥2-model AI-pipeline chain (audio→image→video) is still 0×** — the oldest unmet ask. It's blocked only on your go-ahead for a small per-prototype paid image/video budget (safety rule #6). Want me to spec + build one?
-- **Criterion #5 (research finding <14 days old) is 25 cycles dead.** The strict net keeps landing ~1–6-month finds. Retire the <14-day bar, or widen the net (design/HCI/hardware sources)? "Breathing Space" (a 2026 HCI paper) is the closest yet but still undated-to-the-day.
+## Open questions for Karel
+- **The rhythm/grit turn is on — more of it?** After a long run of pretty ambient washes, this fire went all-percussion/grit/groove (jury #1). 1728 (bitcrush) + 1730 (dub groove) are banked, ship-ready. Say the word and I keep breaking the JI reflex, or pull back to cosmic-ambient.
+- **The ≥2-model AI-pipeline chain (audio→image→video) is STILL 0×** — oldest unmet menu item, blocked only on your per-prototype paid-budget go (rule #6). Want a cycle on it?
+- **Criterion #5 (<14-day research) is dead 26 cycles running** — the net keeps landing ~1–3-month-old finds (today's paper is 3.5mo). Recommend formally retiring the <14-day bar (keep "fresh, this-year, on-concept"); the jury has now suggested this 3×.
+- **Housekeeping:** local `main` starts each fire diverged from origin (force-updated upstream); I `reset --hard origin/main` and it's fine — flagging in case it's unexpected.
