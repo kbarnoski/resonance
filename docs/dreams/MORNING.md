@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-07-14 ~22:30 UTC (cycle 778)
+# Morning digest — last updated 2026-07-15 ~00:35 UTC (cycle 779)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`1692-friction-loom`** — [play it](https://getresonance.vercel.app/dream/1692-friction-loom). **Drag on the loom and your pointer is a bow.** It's a real stick-slip *friction* physical model (the classic McIntyre-Schumacher-Woodhouse bowed string, running the bow-string grip/slip interaction every audio sample in an AudioWorklet), so you get the whole continuum a plucked model can't: slow drag → airy whistling harmonic, steady → a singing Helmholtz tone, fast/hard → a raucous over-pressure *bite*. Stop, and it goes silent — no drone. Press **Start bowing**, then drag; release and a ghost bow demos it. **Why open it:** the friction bite is a genuinely hard, rarely-done DSP — the "huh, we can do that in a browser?" one. **Please ear-check on your Chrome:** does it actually *sing* (lock a stable tone) rather than just scratch?
+- **`1694-reed-column`** — [play it](https://getresonance.vercel.app/dream/1694-reed-column). **Blow into your laptop mic and it becomes a real clarinet.** Your breath is the *exciter* of a genuine self-oscillating single-reed physical model (McIntyre-Schumacher-Woodhouse reed law over a cylindrical digital-waveguide bore, per-sample in an AudioWorklet). It's silent until you actually blow (no drone), and — the surprise — it **overblows to a *twelfth*, not an octave** (that's the real clarinet behavior; verified numerically at a 2.99 ratio). Press **Start blowing**, grant the mic, and blow; pointer-x slides the pitch. **Why open it:** it's a "wait, I blew and it jumped a twelfth?" moment. **Please ear-check on your Chrome:** does the reed actually *sing* a stable tone rather than squeak?
+- This completes a deliberate **physical-model triad**: pluck → **bow** (`1692-friction-loom`, yesterday) → **blow** (today).
 
 ## Mode / diversity
-- **WIDE** fire (3 divergent NON-keyboard instruments; shipped 1 of 3). The jury's #1 anti-JI note is now **fully cashed** (glitch/dissonance/percussion/ET-tension all shipped), so this cycle's real gate was the diversity audit: **keyboard-played had hit 5 of the last 10** — so I banned it and went camera / mic / pointer-gesture instead. All three were non-drone, non-cosmic, Canvas2D.
+- **DEEP** fire (one concept, 3 parallel approaches: clarinet / flute / brass; shipped 1). Chosen non-keyboard because — heads up — **keyboard-played is *still* over-represented (5 of the last 10)**: yesterday's gesture piece dropped a *non-keyboard* piece from the window, so the ban didn't clear like I predicted. That's why the 4 ready keyboard banks (roughness-organ, path-fugue, acid-cell, figured-bass) are still on hold; they need ~2 more non-keyboard nights to age out. So I went to the under-used **mic** input instead.
 
-## Also explored (banked — see IDEAS §778)
-- **⭐ `1688-shadow-gamelan`** — cast shadows over your webcam to strike bronze gamelan bars that *beat* (Balinese ombak shimmer). Fun; closer cousins than the winner.
-- **⭐ `1690-wind-mobile`** — breathe into the mic and it's literal wind swinging a mobile of tuned tubes that chime on collision. Uses mic (an input we'd dropped).
+## Also explored (banked — see IDEAS §779)
+- **⭐⭐ `1698-lip-buzz`** — the *freshest interaction*: breath = energy, pointer = lip tension, so you "lip up" the overtone series like a **bugle**. Banked as top-resurrect; de-selected only because it was the least-verified (lip-reed models are finicky).
+- **⭐ `1696-jet-flute`** — an air-jet **flute** with a lovely breathy chiff; de-selected as less surprising than the clarinet's twelfth.
 
-## Open questions for Karel (a few standing ones need your call)
-1. **The jury's #1 is done** — all four anti-JI examples shipped. Hold the rhythm/grit/tension line, or return to the ambient wash? Your call sets the next week.
-2. **Saturation is real.** I grepped ~20 "fresh" techniques this cycle and *every one* was already built (rPPG, overtone-singing, wiki-stream ×3, Lucier, market-feed, gamelan, bowed-string…). After ~730 protos the lab has covered the primitive space — so ambition criterion **#1 (never-used technique) is now near-unreachable**. Suggest re-weighting the ambition floor toward #2 (unbuilt *combinations*) over #1. Want me to amend AGENT.md?
-3. **Criterion #5** (research <14 days old) is **20 cycles dead** — please retire or loosen it (you've flagged this too).
-4. **The audio→image→video AI-pipeline chain is still 0×** — it needs your one-time paid-budget OK per rule #6; I can't run it unattended.
-5. Four ⭐⭐ ship-ready banks (1684-roughness-organ, 1674-path-fugue, 1666-acid-cell, 1686-figured-bass) are all *keyboard-played* — they'll ship on a DEEP night once keyboard clears the over-rep window (should be next).
+## Open questions for Karel (standing — your call sets direction)
+1. **Jury #1 (anti-JI) is done; the recent lane has been all *instruments* (glitch/tabla/harmony/bow/wind).** Keep building the instrument family, or jump back to the **psychedelic/altered-states** primary direction (which we've drifted from for ~6 cycles)?
+2. **Saturation is real** — after ~730 protos every "fresh" primitive is already built, so ambition **#1 (never-used technique) is near-unreachable**. Suggest re-weighting the floor toward **#2 (unbuilt combinations)**. Want me to amend AGENT.md?
+3. **Criterion #5** (research <14 days old) is **21 cycles dead** — retire or loosen it?
+4. **The audio→image→video AI-pipeline chain is still 0×** — needs your one-time paid-budget OK per rule #6; I can't run it unattended.
