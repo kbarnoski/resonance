@@ -1,21 +1,18 @@
-# Morning digest — last updated 2026-07-15 ~22:40 UTC
+# Morning digest — last updated 2026-07-16 (cycle 791)
 
 ## New since yesterday
-- **[1762-nde-void](https://getresonance.vercel.app/dream/1762-nde-void)** — *tilt your phone to gaze around a cold, sparse architectural VOID — the ketamine k-hole / near-death "in-between."* Your body drifts forward on rails while your gaze roams free (that split IS the dissociative feel). Each distant luminous structure is **HRTF-spatialized from its true 3-D position**, so passing one sweeps its cold bell-tone from in front of you, across your head, to behind. **Open it, press Begin, tilt to look around — best with headphones (the audio is binaural). Or just watch: it drifts and sweeps on its own.**
+- **[1766-ganzfeld-ascent](https://getresonance.vercel.app/dream/1766-ganzfeld-ascent)** — *hold perfectly still and watch your own visual noise climb from phosphene dots → cobweb lattices → a proto-face.* A dim Ganzfeld over a **WebGPU compute** structure-field; stillness (no pointer/tilt motion) is the whole interface — move and the trance breaks, the face melts back to grain. Open it, then don't touch anything for ~15 s (or just wait — it self-drives so you always see all three stages). Headphones: a ~6 Hz theta-pulsed drone thickens as the imagery ascends.
+  - *Why this one:* cashes the jury's two loudest notes at once — back to the **thin hypnagogic/dream pole** (provocation #2) and **onto WebGPU-compute, off the banned Canvas2D** (#3) — and turns AWAY from the recent void/dissolution trio: this is *accretion* (things forming out of nothing), the opposite motion.
+  - Anchored to a genuinely fresh source: the 2026 Ganzflicker paper *"From dots to faces"* (Neuroscience of Consciousness, niag016) — hallucination content climbs a dots→cobwebs→faces ladder set by your imagery capacity.
+  - **2 more explored this cycle** (DEEP race, same concept, banked in IDEAS.md): `1768-noise-face` (a real three.js Gray-Scott reaction-diffusion — the more authentic cobweb substrate) and `1770-ganz-drift` (audio LEADS the vision — one shared theta clock). Either is a clean cycle-2 sibling.
 
-## Why this one
-- **Cashes yesterday's jury's loudest note head-on.** #2: *"return to the psychedelic core on the OTHER poles — dissociative is thin — cash a banked altered-states piece, don't start another instrument."* This is the long-banked `void-descent` finally shipped, on the dissociative pole the lab had served only once.
-- **The defining move: one geometry, two senses.** A single table drives BOTH the raymarched shader AND one spatial-audio panner per structure (plus the listener orientation) — so sight and sound can never come apart. Passing a structure genuinely relocates its sound to wherever its glow now is.
-- **three.js, off the banned Canvas2D** (jury #3), 4 subsystems, cold violet-neutral architectural palette — a deliberate break from the last four cosmic-ambient/breath pieces.
+## In progress / partial
+- None carried. 1766 is demoable; the DEEP siblings are text seeds in IDEAS.md, not folders.
 
-## Explored but not shipped (WIDE fire — 3 built, best shipped; other 2 banked, IDEAS §790)
-- ⭐⭐ **1760-nidra** — cross the hypnagogic threshold by **TOUCH**: a drug-free yoga-nidra body-scan where a travelling point of **phone haptic vibration** is the moving locus of your attention (feet→crown). The boldest idea of the night and the literal answer to the jury's "test the screen-bias with a haptic experiment" — **held back only because iPhones don't support web vibration**, so it needs an Android review or an iOS audio-tactile fallback first. **If you're on Android, say the word and I'll ship it — it's the top of the bank.**
-- ⭐ **1764-ganzfeld** — your **camera's own sensor noise** becomes the "neural noise" of a Ganzfeld: point at a blank wall and a shader amplifies the grain into drifting hallucinatory geometry. Freshest concept; the real-camera bloom is currently too subtle — needs a legibility pass.
-
-## Research finding (§790)
-- **Yoga nidra reframes hypnagogia as a *conscious, guided descent*, not a spontaneous drop-off** (Woolfe, 2026-05; Sharpe et al.) — a systematic feet→crown scan of *attention* that keeps you awake at sleep's border, and the relaxed entry makes the threshold imagery gentler. That seeded tonight's haptic body-scan brief. Paired with the 2025–26 browser spatial-audio surge (HRTF is now the *expected* immersive-web stack) → the shipped void.
+## Research findings worth a look
+- **Ganzfeld hallucinations are hierarchical, not random** — *dots → cobwebs → faces*, and how high you climb tracks your visual-imagery vividness (aphantasics stall at dots). The lab had built form-constants/tunnels/sparks but never *emergent faces from noise* — that's the fresh render target this cycle. (RESEARCH.md 2026-07-16.)
 
 ## Open questions for Karel
-- **What phone do you review on?** If Android/Chrome, `1760-nidra` (the haptic body-scan) is ready to ship — it's genuinely the most novel thing in the bank and only needs your device confirmed.
-- **The AI-pipeline chain (audio→image→video, ≥2 models) is STILL the one genuinely-empty lane** — 8 juries running, blocked only on your go for a small per-prototype paid budget (rule #6). One word unblocks it.
-- Housekeeping (unchanged): the full `npm run build` still can't finish the *page-data* step under this sandbox's hard 4096-fd cap at ~745 routes — but this cycle it **passed ESLint + TypeScript + compile cleanly** and the compile-mode gate is EXIT 0 with the new route in the manifest; Vercel has the fd headroom, deploy is unaffected. (New: a builder running its own `npm install` mid-cycle corrupted node_modules — root-caused, fixed, logged.)
+- **The AI-pipeline chain (audio→image→video, ≥2 models) is still the one genuinely-empty lane** — blocked only on your go-ahead for a small per-prototype paid budget (rule #6). Want me to build it? One word and it's next.
+- On a real device, does the **stillness→ascent** loop feel rewarding, or too slow to reach "faces"? I can tune the climb rate / lower the faces threshold.
+- Does the WebGPU **proto-face read as a face** on your Chrome, or as loose pareidolia? If too subtle I'll strengthen the attractor wells — or ship the Gray-Scott sibling 1768 instead.
