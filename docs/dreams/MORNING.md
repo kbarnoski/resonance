@@ -1,18 +1,21 @@
-# Morning digest — last updated 2026-07-16 (cycle 792)
+# Morning digest — last updated 2026-07-16 (cycle 793)
 
 ## New since yesterday
-- **[1770-dmt-hyperbolic](https://getresonance.vercel.app/dream/1770-dmt-hyperbolic)** — *the DMT breakthrough's negatively-curved geometry, alive: Escher's Circle Limit breathing and drifting toward infinity, driven by sound.* A WebGL2 fragment shader folds every pixel into an **exact hyperbolic {7,q} tiling** on the Poincaré disk; a Möbius drift pushes it toward the boundary so the tiles bloom without limit ("more axes than physical reality allows"), with saddle "bedsheet" folds and an iridescent palette. Just press **Enter the bloom** — no camera, no mic, a self-playing piano/drone carrier starts on its own. Drop in your own track (a slow solo piano reads beautifully) to drive the geometry.
-  - *Why this one:* the last ~7 pieces were all slow **cosmic-ambient / void / meditative** — I'd drifted into a new monoculture (I flagged it myself last cycle). This swings hard back to the **INTENSE pole**, which had gone thin. It's also the literal build of today's research dive.
-  - Anchored to a named source: QRI / Gómez Emilsson, *"The Hyperbolic Geometry of DMT Experiences"* (2016) — breakthrough space is *hyperbolic* (saddle sheets, heptagonal {7,3} tilings), + Escher/Coxeter *Circle Limit* (1956). The (2,7,q) reflection-group fold is real math, not a fake.
-  - **2 more explored this cycle** (WIDE fan, banked in IDEAS.md): `1772-flow-chrysanthemum` (wave your hands at the **webcam** and your motion blooms a psilocybin chrysanthemum — the freshest input the lab's touched in 10 cycles) and `1774-tracer-melt` (hum into the **mic** and the room melts into LSD tracers via a ping-pong feedback buffer). Either is a clean next-cycle sibling.
+- **[1778-gradient-lotus](https://getresonance.vercel.app/dream/1778-gradient-lotus)** — *a warm, breathing psilocybin/LSD mandala rendered with **no canvas and no WebGL at all** — only the browser's CSS compositor.* Every petal is a stacked, counter-rotating `repeating-conic-gradient` fused with `mix-blend-mode` + `mask` and mirrored for kaleidoscope symmetry; a single rAF loop writes a handful of CSS custom properties from a live audio FFT, so the six frequency bands literally open and close the flower. Press **Begin** — it plays and turns on its own (drop your own track to drive it, or just watch).
+  - *Why this one:* it's the sharpest answer yet to your "too similar / get off Canvas2D" note. Nearly every trippy piece in the lab is a GPU shader or a Canvas2D loop — this proves a **third render substrate** (the CSS compositor, grep-confirmed never used as a primary render across 1500 prototypes). It's also the most robust to open cold on any device — no camera, no downloads, no GPU quirks.
+  - *Pole:* warm-organic **psilocybin/LSD**, not the cosmic-ambient/void the lab had over-run — a deliberate swing to the fresh pole.
 
 ## In progress / partial
-- None carried. 1770 is demoable; the two WIDE siblings are text seeds in IDEAS.md, not folders.
+- None carried. 1778 is demoable; the two WIDE siblings are text seeds in IDEAS.md, not folders.
 
 ## Research findings worth a look
-- **DMT space is *negatively curved*** — the chrysanthemum reads as heptagonal Poincaré-disk tilings, and higher dose = interpreting *more* curvature (hyperbolic folds, saddled scenes). It's the one geometry the intense pole is really about, and the lab had under-used it. (RESEARCH.md 2026-07-16.)
+- **High-dose psilocybin makes gaze *less* entropic, not more** — the eye *dwells* on local detail instead of scanning (Sci. Reports 2025, s41598-025-10206-8). It inverts the naive "trip = restless eyes." Seeded a piece where slow hand-*dwell* blooms a fractal and fast motion collapses it. (RESEARCH.md 2026-07-16.)
+
+## Explored but not shipped (banked in IDEAS.md, both built to demoable this cycle)
+- **⭐⭐ `1776-spore-gaze`** — wave/hold your hand at the **webcam**; slow dwell blooms a warm psilocybin fractal *there*, restless motion flattens it. The literal build of today's research; **highest-ambition of the three (4/5) — my pick to ship next.**
+- **⭐ `1780-dejong-swarm`** — 260k points on a **de Jong strange attractor** (a lab first) leaving LSD tracer-trails; gorgeous and alive.
 
 ## Open questions for Karel
-- **The AI-pipeline chain (audio→image→video, ≥2 models) is still the one genuinely-empty lane** — blocked only on your go-ahead for a small per-prototype paid budget (rule #6). Want me to build it? One word and it's next.
-- On a real device, does the hyperbolic bloom read as **intense/transporting**, or too abstract? I can push saturation + curvature harder at the "breakthrough" peak.
-- Want me to wire **your real Path piano** straight in as the default carrier (instead of the synth ghost + manual drop)? It's built to ride a slow piano — I held back only to keep the piece self-contained.
+- **Heads-up (not blocking you):** this session's sandbox hit a file-descriptor ceiling (4096) that stops a *local* full `npm run build` of the ~750-route lab — it aborts with `EMFILE`. Verified it's environmental (reproduces without my change; Vercel built fine 2h ago) and shipped on a clean full-project typecheck + lint instead. Nothing for you to do; just so you know why STATE.md talks about it.
+- **The AI-pipeline chain (audio→image→video, ≥2 models)** is still the one genuinely-empty lane — blocked only on your go-ahead for a small per-prototype paid budget (rule #6). One word and it's next.
+- Of the three tonight, **1778 shipped for diversity + reliability, but 1780 (the de Jong swarm) may be the prettiest** — want me to ship it next, or push 1776 (the webcam dwell-bloom) first?
