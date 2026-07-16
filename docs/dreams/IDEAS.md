@@ -7813,3 +7813,20 @@ WIDE fire (ledger 783 D · 784 W · 785 D → 786 W). Direct execution of the 20
 - **Why it's strong:** directly targets the jury's **empty "audio-only / embedded / screen-bias" lane** (named empty "for months"), and the "test the screen bias" menu item that's gone unbuilt. Real HRTF spatial motion + multi-minute evolution. Named refs: Tibetan singing-bowl sound bath / Yoga Nidra body-scan / Monroe-Institute Hemi-Sync (framed honestly as evocation, not clinical entrainment).
 - **Why it didn't win:** it's the boldest but riskiest 06:30-review experience (best on headphones, deliberately near-blank visual); the WIDE structure ships the strongest and banks this. De-selected as the diversity *bet*, not for build quality (eslint-clean).
 - **Next-cycle deepening:** ship it as the lab's first true audio-forward piece (it's the empty lane); add navigator.vibrate haptic bloom synced to the orbit crossings for a phone body-scan; optional Karel-Path-piano tracks spatialised on the orbit instead of synth partials.
+
+---
+
+## §798 bank (cycle 798, 2026-07-16) — WIDE fan: real-world-data-sonification, the jury-2026-07-16 hard-ban-on-altered-states cycle
+
+Shipped `1806-city-breath` (live GBFS bike-share → SVG city). The WIDE fan produced one ⭐⭐ ship-ready bank and one eliminated duplicate.
+
+### ⭐⭐ 1804-bourse — live financial-market trade-tape as an Ikeda data-instrument (TOP RESURRECT — the boldest jury-named-empty lane)
+**Ship-ready; backed up to scratchpad `banked-798/1804-bourse/`.** The single boldest cash of jury-2026-07-16 provocation #1 ("build about something other than the inside of a head") — **finance is 0× in the whole lab, ever.** Hear the world's live crypto market: every trade as it happens becomes a struck tone on a scrolling Ikeda-style data-tape.
+- **Data (external, no-auth, CORS):** Coinbase public WebSocket `wss://ws-feed.exchange.coinbase.com` (subscribe `matches` on BTC/ETH/SOL-USD) → REST fallback `api.exchange.coinbase.com/products/BTC-USD/trades` → **baked deterministic synthetic tape** (mulberry32 0x1804, frame-driven pseudo-random-walk) so it self-demos offline. Status line LIVE vs SIMULATED.
+- **Audio:** each trade strikes an FM bell/marimba voice — side buy→bright/ascending, sell→dark/descending; price→pitch (quantized to a musical scale); size→amplitude+partials; recent-price stddev (volatility)→master lowpass + a bending mid-price drone. Compressor + master ≤0.17.
+- **Visual (Canvas2D — well-rested substrate):** scrolling data-tape, each trade a mark at (time, price), color/brightness = side & size; running mid-price line + monospace numerics (last, delta, trades/sec). Ikeda *data.matrix / test pattern* register — a tonal register the lab has NEVER done.
+- **Ambition:** 3/5 honest (#2 five subsystems: multi-tier feed + trade→note mapping + FM synth + volatility→filter + Canvas2D tape; #3 named ref Ryoji Ikeda; research chain §798). **Files:** `page.tsx` / `feed.ts` / `synth.ts` / `README.md`.
+- **How to resurrect:** drop the backed-up folder to `src/app/dream/1804-bourse/`, `npx tsc --noEmit` + folder eslint + compile-build, ship. Ideal as the FLAGSHIP of a dedicated cold-data/Ikeda cycle where it isn't competing with a warmer sibling. Consider: add a "which market" toggle; or run Karel's own piano through the same tape as a duet with the market.
+
+### ✗ 1808-dawn-line — ELIMINATED (duplicate, not banked)
+Built a live-solar-terminator sweep sonifying cities as they cross into dawn (Canvas2D equirectangular map, offline NOAA-SPA solar math, ~54-city choir + daylight drone). **On curation it proved a near-exact duplicate of the existing `1244-dayline`** (same terminator-sweep concept, same `astro.ts`/`audio.ts`/`map-canvas.ts` structure, ~44 vs 54 cities). It does not advance the lab, so it is eliminated rather than banked — a reminder (per jury #5) to grep INDEX for the *concept*, not just the technique, when writing WIDE briefs. If ever revisited, it must be a genuine advance over 1244 (e.g. real live weather/cloud-cover per city layered on the terminator, or Karel's Path music gated by the dawn line), not a re-render.
