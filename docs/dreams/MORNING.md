@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-07-16 (cycle 791)
+# Morning digest — last updated 2026-07-16 (cycle 792)
 
 ## New since yesterday
-- **[1766-ganzfeld-ascent](https://getresonance.vercel.app/dream/1766-ganzfeld-ascent)** — *hold perfectly still and watch your own visual noise climb from phosphene dots → cobweb lattices → a proto-face.* A dim Ganzfeld over a **WebGPU compute** structure-field; stillness (no pointer/tilt motion) is the whole interface — move and the trance breaks, the face melts back to grain. Open it, then don't touch anything for ~15 s (or just wait — it self-drives so you always see all three stages). Headphones: a ~6 Hz theta-pulsed drone thickens as the imagery ascends.
-  - *Why this one:* cashes the jury's two loudest notes at once — back to the **thin hypnagogic/dream pole** (provocation #2) and **onto WebGPU-compute, off the banned Canvas2D** (#3) — and turns AWAY from the recent void/dissolution trio: this is *accretion* (things forming out of nothing), the opposite motion.
-  - Anchored to a genuinely fresh source: the 2026 Ganzflicker paper *"From dots to faces"* (Neuroscience of Consciousness, niag016) — hallucination content climbs a dots→cobwebs→faces ladder set by your imagery capacity.
-  - **2 more explored this cycle** (DEEP race, same concept, banked in IDEAS.md): `1768-noise-face` (a real three.js Gray-Scott reaction-diffusion — the more authentic cobweb substrate) and `1770-ganz-drift` (audio LEADS the vision — one shared theta clock). Either is a clean cycle-2 sibling.
+- **[1770-dmt-hyperbolic](https://getresonance.vercel.app/dream/1770-dmt-hyperbolic)** — *the DMT breakthrough's negatively-curved geometry, alive: Escher's Circle Limit breathing and drifting toward infinity, driven by sound.* A WebGL2 fragment shader folds every pixel into an **exact hyperbolic {7,q} tiling** on the Poincaré disk; a Möbius drift pushes it toward the boundary so the tiles bloom without limit ("more axes than physical reality allows"), with saddle "bedsheet" folds and an iridescent palette. Just press **Enter the bloom** — no camera, no mic, a self-playing piano/drone carrier starts on its own. Drop in your own track (a slow solo piano reads beautifully) to drive the geometry.
+  - *Why this one:* the last ~7 pieces were all slow **cosmic-ambient / void / meditative** — I'd drifted into a new monoculture (I flagged it myself last cycle). This swings hard back to the **INTENSE pole**, which had gone thin. It's also the literal build of today's research dive.
+  - Anchored to a named source: QRI / Gómez Emilsson, *"The Hyperbolic Geometry of DMT Experiences"* (2016) — breakthrough space is *hyperbolic* (saddle sheets, heptagonal {7,3} tilings), + Escher/Coxeter *Circle Limit* (1956). The (2,7,q) reflection-group fold is real math, not a fake.
+  - **2 more explored this cycle** (WIDE fan, banked in IDEAS.md): `1772-flow-chrysanthemum` (wave your hands at the **webcam** and your motion blooms a psilocybin chrysanthemum — the freshest input the lab's touched in 10 cycles) and `1774-tracer-melt` (hum into the **mic** and the room melts into LSD tracers via a ping-pong feedback buffer). Either is a clean next-cycle sibling.
 
 ## In progress / partial
-- None carried. 1766 is demoable; the DEEP siblings are text seeds in IDEAS.md, not folders.
+- None carried. 1770 is demoable; the two WIDE siblings are text seeds in IDEAS.md, not folders.
 
 ## Research findings worth a look
-- **Ganzfeld hallucinations are hierarchical, not random** — *dots → cobwebs → faces*, and how high you climb tracks your visual-imagery vividness (aphantasics stall at dots). The lab had built form-constants/tunnels/sparks but never *emergent faces from noise* — that's the fresh render target this cycle. (RESEARCH.md 2026-07-16.)
+- **DMT space is *negatively curved*** — the chrysanthemum reads as heptagonal Poincaré-disk tilings, and higher dose = interpreting *more* curvature (hyperbolic folds, saddled scenes). It's the one geometry the intense pole is really about, and the lab had under-used it. (RESEARCH.md 2026-07-16.)
 
 ## Open questions for Karel
 - **The AI-pipeline chain (audio→image→video, ≥2 models) is still the one genuinely-empty lane** — blocked only on your go-ahead for a small per-prototype paid budget (rule #6). Want me to build it? One word and it's next.
-- On a real device, does the **stillness→ascent** loop feel rewarding, or too slow to reach "faces"? I can tune the climb rate / lower the faces threshold.
-- Does the WebGPU **proto-face read as a face** on your Chrome, or as loose pareidolia? If too subtle I'll strengthen the attractor wells — or ship the Gray-Scott sibling 1768 instead.
+- On a real device, does the hyperbolic bloom read as **intense/transporting**, or too abstract? I can push saturation + curvature harder at the "breakthrough" peak.
+- Want me to wire **your real Path piano** straight in as the default carrier (instead of the synth ghost + manual drop)? It's built to ride a slow piano — I held back only to keep the piece self-contained.
