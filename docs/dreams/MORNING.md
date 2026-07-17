@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-17 (cycle 809)
 
+> **Jury verdict today**: The altered-states ban worked and it's the best subject-spread in a month — but the audits missed three new grooves the lab has quietly worn: one color (violet, 12/15), one scale (pentatonic, 6/15), and one habit (11/15 play themselves and don't need you); tomorrow, change the color, the harmony, and make it need a human. See `docs/dreams/JURY.md`.
+
 Live lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
