@@ -7495,3 +7495,30 @@ WebSearch on 2026 WebGPU compute-shader audio-reactive generative art + altered-
 **Why it's surprising + load-bearing (not just interesting):** it empirically **extends Klüver's classic four form constants** (lattice/honeycomb · cobweb · tunnel/funnel · spiral). Beyond the four, the corpus shows recurrent **concentric squares, crosses, and hyperbolic planforms**. This lands directly on the lab's foundation: PSYCHEDELIC.md's "single most load-bearing finding" and the shared engine `_shared/psych/logpolar.ts` both encode the Bressloff–Cowan story that *all* psychedelic geometry is one periodic pattern under the retina→V1 complex-log (`exp()`) warp — which yields exactly Klüver's four and, being purely **radial**, provably **cannot** produce Cartesian (crosses/concentric-squares) or hyperbolic motifs. So the 2026 data says the one-warp model is incomplete. Tagged **[foundational]** — a large-scale empirical taxonomy update to Klüver 1926 / Bressloff–Cowan; 5 mo old but a stable foundational result, freshness-exempt (the 30-day rule exempts foundational findings). *(Verification note: the biorxiv page 403'd WebFetch behind the agent proxy; date + core claim taken from the indexed listing — the date is encoded in the DOI path `2026.02.18`. Flagged for Karel to spot-check the exact motif taxonomy.)*
 
 **Could become a prototype that does X — BUILT THIS CYCLE:** an "atlas of form" that morphs a safe photic field through the classic four (via `logpolar.ts`) AND the three newly-mapped Cartesian/hyperbolic families, tagging each on-screen `log-polar` vs `newly-mapped` so the viewer literally sees the forms the standard engine can't make → shipped `1862-strobe-atlas` (cycle 807). Follow-on hooks: (a) a true metric **homotopy** morph between the radial (log-polar) and Cartesian (Chebyshev/L∞) and hyperbolic metrics, not a cross-dissolve; (b) validate the rendered families 4–6 against the actual study drawings; (c) a "which form is your flicker?" interactive that lets the viewer tune toward the motif they see.
+
+---
+
+## 2026-07-17 — §810 dive: gesture→music & played just-intonation lattices (cycle 810)
+
+**Sources (verified fresh):**
+- *Rhythm in the Air: Vision-based Real-Time Music Generation through Gestures* — arXiv:2511.00793 (2025). Webcam hand-gesture → real-time music, browser-native lineage (AIR Guitar: MediaPipe keypoints + client-side SVM, ~96% chord accuracy, low frame-drop).
+- *Real-Time Gesture Recognition for Virtual Musical Instruments* — IJFMR 2026/1 (five-finger binary → 32 gestures via MediaPipe + Web Audio).
+- *Microtonal Music Improvisation using a Web MIDI Tonality Diamond* — Zenodo 6772144: an 8×8 Launchpad reimagined as a tactile 15-limit tonality diamond you play; and **tune.js**, a Web-Audio JI/microtonal tuning library (3000+ historical tunings).
+
+**Why it's surprising + load-bearing (not just interesting):** the whole gesture-music
+literature maps **gesture → note** (play a pitch with your hand). Nobody in that line, or
+in our lab, maps **gesture → tonal FUNCTION and key MODULATION** — conduct a real
+progression that *travels* tonal space rather than triggering isolated notes. And the JI
+tonality-diamond work exists only as reference charts / catalogues (Zenodo diamond,
+tune.js) — a **keyboard-mapped Tonnetz you actually perform**, where lattice coordinates
+ARE the prime exponents so adjacency = consonance, is unbuilt. Both are the exact
+counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-human).
+
+**Could become a prototype that does X — BUILT THIS CYCLE (§810 chain visible):**
+- → **1882-lattice (WINNER):** the played just-intonation Tonnetz (Euler/Partch/Wilson),
+  distinct from Zenodo 6772144 + tune.js; SVG-DOM, cream palette, silent-until-played.
+- → **1888-conductor (banked ⭐⭐):** the gesture→function+modulation angle *Rhythm in the
+  Air* doesn't take — the direct build of arXiv:2511.00793 inverted to functional harmony.
+- Still open: MediaPipe/handpose is NOT an installed dep (tfjs + basic-pitch + three are);
+  1888 used pure luminance frame-diff to stay dependency-free. A real hand-landmark
+  version would need a dep add (forbidden) — worth flagging to Karel if pose fidelity matters.

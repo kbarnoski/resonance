@@ -7978,3 +7978,39 @@ Both non-winners below were built demoable this session, tsc/eslint-clean for th
 - **Built (6 files):** `arc.ts` (shared source of truth: `mulberry32(0x1866)`, curl field, `seedParticles`, per-particle `advect`, `arcAt(frame)` dissolution envelope — pure functions of seed + integer frame, `DT=1/60`, no wall-clock in the visual path), `gpu.ts` (WebGPU compute substrate: ~262k particles in ping-ponged storage buffers, a WGSL compute pass that is a line-for-line port of `advect`, + a render pass painting a center-out radial-white bg then additive violet→white billboards; `createGpuRenderer()` returns `null`-not-throws on any unsupported condition), `fallback.ts` (equivalent Canvas2D dissolution, 9k particles, cached soft-disc sprite for 60fps, SAME seeding+advect math), `audio.ts` (Shepard–Risset endless ASCENT via `_shared/psych/shepard` dir +1 + JI drone + long void reverb; one `dissolve` scalar drives all three; DynamicsCompressor → master 0.16, ~2.5 s fade-in), `page.tsx` (`"use client"`, GPU→Canvas2D→audio-only-notice three-level degrade, dark scrim for chrome legibility over the whitening field, notes modal), `README.md`.
 - **Named refs:** Lutz & Davidson PNAS 2004 (jhāna gamma synchrony); "Oceanic Boundlessness" (11-D-ASC); Shepard–Risset endless glissando; Eno / Oliveros *Deep Listening*. Tags: jhāna/meditation STATE · autonomous INPUT (non-mic) · **WebGPU-compute** OUTPUT (0×/10 dodge; WebGL2/Canvas2D fallback) · particle-dissolution-into-light TECHNIQUE · soft-white-boundless VIBE · `pole: cosmic-ambient`. **Ambition honest 2/5:** #2 (WebGPU-compute particles + Shepard generator + drone/void audio = ≥3) + #3 (refs above). Self-scored 6.5/10; honest limit — the arc is scripted (not emergent/interactive) and the curl field is a cheap trig swirl, so it reads as tasteful cosmic-ambient rather than transcendent.
 - **Resurrect path:** ship on a cosmic-ambient/meditative cycle, OR when a WebGPU-primary review device is confirmable (it's the lab's cleanest WebGPU-compute-primary piece with a real fallback). Deepen: make the dissolution *responsive* (breath via mic, or stillness-of-pointer blooms the light), and replace the trig curl with a real noise field. Note cosmic-ambient is an on-watch pole (1798 recent) — pair with a fresher hook before shipping.
+
+---
+
+## §810 banked seeds (cycle 810, 2026-07-17) — non-winners from the "change color/harmony/need-a-human" WIDE fire
+
+Both were built demoable this session (tsc+lint clean) then `rm -rf`'d per the
+non-winner rule. Rebuild from spec under a FRESH number. Winner shipped: 1882-lattice.
+
+- **⭐⭐ conductor (ship-next) — conduct FUNCTIONAL, modulating harmony with your body.**
+  Live camera → pure luminance **frame-diff** (no ML dep): motion centroid + energy grid +
+  activity. Vertical position = diatonic function (bottom I/rest → up the ladder ii iii IV V
+  vi vii°); horizontal = triad→7th→9th color; real triads voiced with nearest-tone voice
+  leading. **Dwell in the top "modulate" zone (or sustain high activity) → the key MODULATES
+  by a fifth** (sharpward from the right, flatward from the left) and lands on an audible
+  **V7→I authentic cadence** — over a minute the piece travels several keys around the circle
+  of fifths. Warm-daylight three.js full-viewport shader (cream/gold, key tints the world,
+  function floods flowing voice-leading lines, centroid = a luminous locus); CSS-glow
+  fallback. Honest **labelled ghost-conductor self-demo** when camera denied/headless.
+  Ref: *Rhythm in the Air* arXiv:2511.00793 (2025) + AIR Guitar — the gesture→*function*
+  angle they don't take. Ambition 3/5 (#2 subsystems + #3 ref + #5 §810 research). Files were
+  harmony.ts (chooseChord/buildChord/voiceLead/modulate) · vision.ts (frame-diff + seeded
+  ghost) · audio.ts (warm ensemble, gliding voice-leading, code reverb) · scene.ts (WebGL2) ·
+  page.tsx. **Resurrect nearly as-is** — it's the strongest runner-up in weeks.
+
+- **⭐ shape-note — sing one line; a cold-monochrome modal choir harmonizes you with earned
+  dissonance.** Mic → dependency-free **YIN** pitch detector (de Cheveigné & Kawahara 2002:
+  difference → CMND → absolute threshold → parabolic interp; returns Hz + clarity, verified
+  detecting a 220 Hz sine at 220.00 / clarity 1.0). Snap to a church mode (Dorian ♮6 /
+  Phrygian ♭2 / Lydian ♯4 / Mixolydian ♭7, visitor-cyclable), build a 3-5 voice choir UNDER
+  the sung note in just/modal ratios with an **open-fifth "hollow" Sacred-Harp voice** + the
+  mode's characteristic color tone, plus a seeded **4-3 suspension engine** that leans then
+  resolves by step as the line moves. Cold clinical monochrome (Ikeda-ish grey), WebGPU
+  compute+render particle field whose glide IS the voice-leading, robust CSS-compositor
+  fallback. Labelled self-demo singer (seeded) through the identical pipeline for headless.
+  Ambition ~3/5 (#1 YIN+modal-suspension engine is grep-fresh · #2 subsystems · #3 ref).
+  Rebuild note: verify the WebGPU path in a real browser (untested-in-browser this session).

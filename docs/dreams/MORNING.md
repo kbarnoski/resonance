@@ -1,21 +1,44 @@
-# Morning digest — last updated 2026-07-17 (cycle 809)
+# Morning digest — last updated 2026-07-17 (cycle 810)
 
-> **Jury verdict today**: The altered-states ban worked and it's the best subject-spread in a month — but the audits missed three new grooves the lab has quietly worn: one color (violet, 12/15), one scale (pentatonic, 6/15), and one habit (11/15 play themselves and don't need you); tomorrow, change the color, the harmony, and make it need a human. See `docs/dreams/JURY.md`.
+Yesterday's jury said the altered-states ban worked (best subject-spread in a
+month) but caught three *new* grooves no audit was checking: **one color**
+(violet-on-near-black, ~12/15), **one scale** (pentatonic, 6/15), **one habit**
+(~11/15 play themselves, need no human). Its line to you: *change the color, the
+harmony, and make it need a human.* Tonight's whole WIDE fire was briefed to break
+all three at once, three different ways.
 
-Live lab: https://getresonance.vercel.app/dream
+## New since yesterday — WINNER
+- **[1882-lattice](/dream/1882-lattice)** — *play consonance as geometry.* A
+  just-intonation **Tonnetz you perform**: press keys (or a MIDI keyboard, or tap
+  nodes) and each node sounds its EXACT small-integer ratio — pure 3/2 and 5/4
+  ring beat-free, wider lattice jumps thicken. Rendered as SVG on a **cream
+  manuscript page** (ink + one terracotta accent — the light-background break from
+  the violet monoculture). It makes **zero sound until you play** — the sharpest
+  answer to "make it need a human." Open it and hold a few keys near the tonic.
+  *Why it won:* only piece breaking all three monocultures at once — light
+  palette, real just intonation (no pentatonic), and dead without a person.
 
-## New since yesterday
-- **[1876-glasshouse](https://getresonance.vercel.app/dream/1876-glasshouse)** — *what if your device sang its own inner life?* The live telemetry of the machine you're on — frame stutter, memory pressure, network weather, battery drain, the entropy of your own mouse — becomes a continuous coherent groove **and** a dithered signal-noise field that TEARS as the device strains and settles when it's calm. No mic, no camera, no file — the only input is the browser watching itself. **Open it, then move your mouse / open a few tabs and watch the field and the music react.** There's a closed feedback loop: a straining machine draws more points → more GPU cost → the frame-timing sensor then re-hears its own strain.
-- Winner of a **WIDE** fire — 3 unrelated non-altered-states cross-modal explorers built in parallel; shipped the strongest, banked 2 (below).
-
-## 2 more explored (in IDEAS §809, not shipped)
-- **⭐⭐ glyphsong** — drop/paste text and hear it as music: vowels sing, consonants rattle, punctuation phrases it, while the SVG typography illuminates word-by-word. The most elegant + lowest-risk of the fan.
-- **⭐ resonant-halo** — drop any recording and a live just-intonation "halo" tuned to *its own detected key* blooms around it over a WebGPU particle field. The clean way to finally cash WebGPU-compute (0× in ~20 juries) **and** to build around your real Path piano tracks.
+## Also explored this fire (WIDE — 2 banked, see IDEAS §810)
+- **⭐⭐ 1888-conductor** — conduct a **real, modulating** chord progression with
+  body-motion (camera frame-diff, no ML): raise your hand up the diatonic ladder
+  I…vii°, dwell up top and the key travels the circle of fifths with a V7→I
+  cadence. Warm-daylight three.js. The strongest runner-up — **ship-next**.
+- **⭐ 1894-shape-note** — sing one line and a cold-monochrome Sacred-Harp choir
+  builds under you in modal color, with a suspension that leans then resolves.
+  Dependency-free YIN pitch tracking; WebGPU field w/ CSS fallback.
 
 ## Research finding worth a look
-- Freshest source this cycle: **ASTRODITHER** (Robert Borghesi, 2026 — three.js WebGPU/TSL dithered signal-noise) + the supercomputer-sonification paper (arXiv:2605.21874). The move: point that "monitor a machine as music" idea *inward* at the visitor's own device → glasshouse.
+- §810 dive: *Rhythm in the Air* (arXiv:2511.00793, 2025) — vision→music through
+  gestures. It maps gesture→note; 1888 does the angle it doesn't — gesture→tonal
+  *function* and key *modulation*. Also surfaced the Web-MIDI 15-limit tonality
+  diamond (Zenodo 6772144) that seeded 1882's played-Tonnetz.
 
-## Open questions for you
-- **The ≥2-model AI-pipeline chain (audio→image→video)** is still 0× across ~20 juries — the one genuinely-absent frontier — gated only on your go-ahead for a small paid per-prototype image/video budget (rule #6). Want it built? One word unblocks it.
-- **resonant-halo + your real music:** worth a dedicated cycle feeding a Welcome-Home track as the score-followed source (a live tuned halo around your own piano)?
-- Gates all cleared; alternation says **810 is a DEEP cycle** next.
+## Open questions for Karel
+- **The AI-pipeline chain (audio→image→video, ≥2 models) is STILL 0×** across ~13
+  juries — the one genuinely-absent frontier, gated only on your per-prototype
+  paid-budget go (rule #6). After the lab shipped real systems in-loop (1876/1810),
+  this is no longer a stretch. Want me to build one? Say the budget and go.
+- 1888-conductor is a strong runner-up I'd happily ship next cycle if you like it.
+- **Heads-up:** the container's full `npm run build` can't finish (file-descriptor
+  ceiling across ~750 routes); I gate every ship on project-wide `tsc --noEmit` +
+  folder ESLint instead — both clean here. Vercel builds fine.
