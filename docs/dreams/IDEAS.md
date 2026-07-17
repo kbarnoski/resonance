@@ -8014,3 +8014,50 @@ non-winner rule. Rebuild from spec under a FRESH number. Winner shipped: 1882-la
   fallback. Labelled self-demo singer (seeded) through the identical pipeline for headless.
   Ambition ~3/5 (#1 YIN+modal-suspension engine is grep-fresh · #2 subsystems · #3 ref).
   Rebuild note: verify the WebGPU path in a real browser (untested-in-browser this session).
+
+---
+
+## §811 — 2026-07-17 · DEEP-fan runners-up (FLOW-EDEN II — tended multi-kernel Flow-Lenia)
+
+Cycle 811 ran DEEP mode: ONE concept — a *tended, speciating, multi-kernel Flow-Lenia
+ecology where a human is load-bearing, the harmony is not pentatonic, and the palette is
+not violet-on-black — attacked via three technical/interaction bets. Winner shipped =
+`1900-tended-lenia` (gardener paints soil · just intonation · herbarium light palette).
+Both runners-up cleared the ambition floor and dodged every jury-banned tag; banked here
+with full specs (folders backed to scratchpad `banked-811/`, then removed — never committed).
+This is a declared **2–3 cycle DEEP commitment**: the natural cycle-2 is to UNIFY these
+three tending verbs (paint-soil / conduct-currents / breed-and-cross) into one instrument.
+
+- **⭐⭐ 1904-current-eden — conduct a living ecology like a river; every collision is a
+  chord you caused.** The freshest INTERACTION model of the fan. WebGL2 multi-kernel
+  Flow-Lenia; the human drags a **velocity/current texture** that is added to the transport
+  flow (`F += uCurrent·current(uv)`, currents decay ~2–3 s) so you physically herd 3 dye-
+  species into **encounters**. Load-bearing by construction: species seed into separate home
+  clusters, so with no conducting cross-species overlap ≈ 0, the encounter meter collapses,
+  and the piece thins to a lone drone within seconds. Harmony = **modal that modulates**:
+  lead species picks a home mode (Phrygian/Lydian/Dorian), an encounter pivots to a related
+  mode + shifts the tonal centre (incl. a biting **Hijaz** third) and rings mode-tone bells,
+  easing home under sustained dominance — never pentatonic. Palette = **warm daylight
+  textile** (bone/madder/saffron/indigo, combed streaklines), light chrome ink set inline.
+  Files: sim.ts (current paint+decay passes, encounter detector, 2-scale MSPD variance) ·
+  audio.ts (modal drone + modulation engine) · page.tsx (drag-to-conduct) · README. Ambition
+  ~3/5 (#2 subsystems + #3 refs Chan/Leniabreeder/Flow-Lenia + #5 §811 MSPD dive + #4 multi-
+  cycle). **Ship-next** on a performance/gesture cycle. Rebuild note: tune `uCurrent` vs
+  `kA/kM` so the base sim doesn't self-collide (untested in a live browser).
+
+- **⭐ 1902-compute-eden — breed the ones worth hearing; steer open-ended evolution by ear.**
+  The highest raw ambition (the lab's first genuine **WebGPU compute-shader CA** — three
+  compute passes over storage buffers + `mapAsync` readback, with a full WebGL2 RGBA16F
+  fallback and a Canvas plasma last resort; verified compile+200, NOT on real GPU). **2-D
+  genome** `(g1,g2)` carried mass-weighted. Human = **BREEDER** (Leniabreeder made real-time):
+  freeze → Select two thriving colonies (k-means colony detection + MSPD-lite complexity bars
+  guide the choice) → **Cross** blends their genomes into offspring → release; Cull frees the
+  resource. Load-bearing: **no mass-adding growth term** → the field is dissipative and
+  homogenizes to a dull monoculture on its own; Cross is the only source of fresh distinct
+  genome material. Harmony = **spectral/inharmonic additive** (`n·√(1+B·n²)`, timbre IS the
+  harmony — no scale). Palette = **bioluminescent deep-sea** (cyan/teal/chartreuse on abyssal
+  dark — non-violet, but DARK, so it answers the "not-violet" ban less sharply than the two
+  light siblings, which is why it lost this cycle). **Resurrect** when a WebGPU review device
+  is confirmable, or ship on its WebGL2 fallback for a spectral-timbre / evolutionary-breeding
+  cycle. Files: sim.ts (three render paths, shared multi-kernel math, StatsTracker) · audio.ts
+  (additive banks + Cross bloom) · page.tsx (breeder UI) · README.

@@ -7522,3 +7522,28 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
 - Still open: MediaPipe/handpose is NOT an installed dep (tfjs + basic-pitch + three are);
   1888 used pure luminance frame-diff to stay dependency-free. A real hand-landmark
   version would need a dep add (forbidden) — worth flagging to Karel if pose fidelity matters.
+
+## 2026-07-17 (§811) — MSPD: directing open-ended evolution, tested on Flow-Lenia
+
+- **arXiv:2606.17091 — "Directing Open-Ended Evolution in Artificial Life via Multi-Scale
+  Path Divergence"** (Akhtyrchenko, Katsnelson, Ustyuzhanin; submitted 12 Jun 2026 — verified,
+  well within the 30-day freshness window). Introduces **MSPD**, a renormalization-group-inspired
+  *scalar* that quantifies the temporal multi-scale organization of heterogeneity in a system's
+  local transition laws. Surprising because it imports statistical-physics RG machinery into
+  ALife and works cross-substrate (tested on **Flow-Lenia**, Life-like CA, Particle Life++),
+  beating matched-random parameters on held-out complexity — and it doubles as BOTH a fitness
+  function that *drives* open-ended evolution and a post-hoc analysis metric, replacing opaque
+  neural complexity estimators with an explicit physics-grounded formula.
+  → **Could become / became a prototype that:** "you *hear* a colony becoming interesting before
+  you see why" — compute an MSPD-lite scalar live per-region (two-scale temporal variance of the
+  mass field) in a mass-conserving Flow-Lenia ecology, map it to the audio (filter brightness /
+  event density) and to a visible meter the human uses to hunt for rich colonies.
+- **Multi-kernel Lenia confirmed established/documented:** Chan, *Lenia: Biology of Artificial
+  Life* (arXiv:1812.05433) + *Lenia and Expanded Universe* formalize multiple kernels & channels
+  per genome; restated in **Leniabreeder** (arXiv:2406.04235). This licensed the cycle's
+  "massively bigger" deepening (single-kernel → multi-kernel) as a faithful, cited extension.
+- **Runner-up (Jan 2026):** Hudcová et al., "Visualizing the Structure of Lenia Parameter Space"
+  (arXiv:2601.01932) — soliton-class map w/ interactive site. Seed for a future parameter-atlas piece.
+- **research→build chain (visible):** §811 dive → the MSPD "hear-complexity-rise" hook + the
+  multi-kernel license → tonight's DEEP fan (all three cited MSPD; winner **1900-tended-lenia**
+  ships a live MSPD-lite complexity meter mapped to both image and just-intonation audio).
