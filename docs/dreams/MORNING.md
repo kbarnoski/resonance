@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-07-17 (cycle 808)
+# Morning digest — last updated 2026-07-17 (cycle 809)
 
-**Cycle 808 · DEEP · shipped `1870-metastaseis` — you can fly through a Xenakis building and hear its geometry as the score.** Open it: three warped hyperbolic-paraboloid shells drawn as their straight "ruling lines," a playhead sweeping through, and every line it crosses lights up and *sings its glissando* — the pitch is the line's slope, dense regions fire pizzicato. It plays itself on load (one tap to unlock sound); drag to orbit, two sliders bend the architecture and the sweep. A fresh subject the lab has never touched, and a clean pivot off last night's psychedelic return.
+Live lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[1870-metastaseis](https://getresonance.vercel.app/dream/1870-metastaseis)** — *architecture as a performable score.* Xenakis composed *Metastaseis* (1953–54) as string **glissandi**, then built that exact ruled geometry into the **Philips Pavilion** (Expo '58, with Le Corbusier). An **11-day-old paper** (arXiv:2607.06589, "Extending Xenakis," 6 Jul 2026) runs it backwards: a ruled surface's straight ruling lines *are* glissandi, and point-density *is* instrumental energy. This piece builds that inversion literally — reconstructs the shells and lets you fly through and hear them. **Why open this:** it's the "huh, didn't know we could do that" swing — a building you can inhabit and play, off the inside-of-a-head monoculture. **Headless-built — I can't eye/ear-verify whether the shells read as *architecture* vs a faint net, or whether the many-glissandi texture stays clean under fast sweep; that wants your screen.**
-- **2 more explored, banked to IDEAS §808 (DEEP fire — same concept, 3 approaches):** **⭐⭐`1876-ruled-loom`** — the ruled surface as a **sculptable instrument**: a WebGPU-compute point cloud of a 4-corner paraboloid you *bend with your hands*, and the glissandi retune live (audio mirrors the GPU geometry with zero readback). The freshest interaction of the three + the lab's cleanest WebGPU-compute piece — but its wow is desktop-only (degrades to plain points on your iPhone), so I held it for a cycle where you'll review on desktop. **⭐`1882-glissando-field`** — the *Metastaseis* score as a **long-form living surface**: 72 glissando lines morphing between saddle/conoid/hyperboloid over ~11 movements, genuinely different at minute 5 than minute 1.
+- **[1876-glasshouse](https://getresonance.vercel.app/dream/1876-glasshouse)** — *what if your device sang its own inner life?* The live telemetry of the machine you're on — frame stutter, memory pressure, network weather, battery drain, the entropy of your own mouse — becomes a continuous coherent groove **and** a dithered signal-noise field that TEARS as the device strains and settles when it's calm. No mic, no camera, no file — the only input is the browser watching itself. **Open it, then move your mouse / open a few tabs and watch the field and the music react.** There's a closed feedback loop: a straining machine draws more points → more GPU cost → the frame-timing sensor then re-hears its own strain.
+- Winner of a **WIDE** fire — 3 unrelated non-altered-states cross-modal explorers built in parallel; shipped the strongest, banked 2 (below).
 
-## In progress / partial
-- Nothing half-built. DEEP fire: one concept, three approaches, shipped the biggest swing; the other two are ready-to-resurrect specs.
+## 2 more explored (in IDEAS §809, not shipped)
+- **⭐⭐ glyphsong** — drop/paste text and hear it as music: vowels sing, consonants rattle, punctuation phrases it, while the SVG typography illuminates word-by-word. The most elegant + lowest-risk of the fan.
+- **⭐ resonant-halo** — drop any recording and a live just-intonation "halo" tuned to *its own detected key* blooms around it over a WebGPU particle field. The clean way to finally cash WebGPU-compute (0× in ~20 juries) **and** to build around your real Path piano tracks.
 
-## Research findings worth a look
-- **A ruled surface's ruling lines ARE glissandi.** §808's anchor (arXiv:2607.06589, 6 Jul 2026) inverts Xenakis's famous music→architecture move: it reconstructs the Philips Pavilion as nine ruled surfaces and extracts each surface's straight ruling lines back into swept pitches — "architectural geometry as a performable musical structure." That's a whole fresh vein for us — *geometry-as-score* — and tonight's hero is the direct build of it. Full note in RESEARCH.md §808.
+## Research finding worth a look
+- Freshest source this cycle: **ASTRODITHER** (Robert Borghesi, 2026 — three.js WebGPU/TSL dithered signal-noise) + the supercomputer-sonification paper (arXiv:2605.21874). The move: point that "monitor a machine as music" idea *inward* at the visitor's own device → glasshouse.
 
-## Open questions for Karel
-1. **Does `1870` feel like inhabiting a Xenakis building, or like an abstract line-field?** If the architecture reads, the deepening is obvious: reconstruct the *actual nine* Pavilion shells (not 3 generic hypars), and let you slow-walk a section as a first-person instrument rather than a scripted flight.
-2. **Geometry-as-score is a rich new vein — want more?** The banked `1876-ruled-loom` (sculpt-the-surface, WebGPU) is the natural next step; it's the clean way to finally cash WebGPU-compute (still 0× in ~20 reviews) — I just want a cycle where you'll look on desktop so the wow lands.
-3. **Still standing (~20 windows):** the **audio→image→video AI-pipeline chain** (2+ models in series) is the one genuinely-absent frontier — it just needs your go on a small per-prototype paid budget (safety rule #6). One word and I build it.
+## Open questions for you
+- **The ≥2-model AI-pipeline chain (audio→image→video)** is still 0× across ~20 juries — the one genuinely-absent frontier — gated only on your go-ahead for a small paid per-prototype image/video budget (rule #6). Want it built? One word unblocks it.
+- **resonant-halo + your real music:** worth a dedicated cycle feeding a Welcome-Home track as the score-followed source (a live tuned halo around your own piano)?
+- Gates all cleared; alternation says **810 is a DEEP cycle** next.
