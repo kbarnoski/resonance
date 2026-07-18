@@ -1,111 +1,119 @@
-# 1930 — harmonices
+# 1930 — Harmonices II
 
-**What if orbital resonance were an instrument you play by TILTING your phone —
-and the music were the REAL just intonation the orbits give you, never a
-pentatonic fake?**
+**Cycle 2 of `1930-harmonices`, the tilt-played orrery.** A symplectic N-body
+orrery under real softened gravity: tilt the phone (or move the pointer) to bias
+the gravity field and pump two planets into a small-integer period ratio, which
+CAPTURES into resonance and sounds the TRUE just-intonation dyad of exactly that
+ratio — never a pentatonic fake. Hold still and everything circularizes to a
+lone drone: dead without a human. Cycle 2 turns the instrument into something you
+**compose** with.
 
-A brass-on-parchment orrery: a central star and five planets orbiting under real
-softened gravity, integrated by a symplectic velocity-Verlet leapfrog. You tilt
-the device (or move the pointer on a laptop) to add a gentle directional
-acceleration — a bias to the whole gravity field — and use it to pump and steer
-orbital energy. When two planets drift into a small-integer period ratio they
-**capture into resonance**, and a just-intonation dyad of exactly that ratio
-sounds and sustains. Hold still and the orbits circularize toward a lone drone:
-the piece is dead without a human actively tilting it.
+## What cycle 2 adds
 
-## How to play
+### 1. Chord crystallization (the headline)
 
-1. Press **Tilt to play**. On a phone this asks for motion-sensor permission
-   (iOS requires the tap). On a laptop, if no sensor speaks up within a second,
-   it falls back to **pointer = tilt** — move your mouse from the centre and the
-   gravity field leans that way. The active mode is shown in the readout.
-2. Watch the period-ratio meters. Nudge a neighbouring pair until its ratio
-   crosses 3:2, 2:1, 4:3, 5:3, 5:4… A **deep-red lock arc** snaps between the
-   two planets and their two voices jump to the exact just interval.
-3. Tilt away to break the lock; the interval dissolves. Stop moving and the
-   whole orrery decays toward the star's lone drone.
+In cycle 1 every resonance lock was transient — the interval sounded only while
+the pair held the ratio. Now:
 
-## The physics
+- **Hold a lock continuously for ~3.5 s and it CRYSTALLIZES.** Its exact just
+  interval is deposited as a **persistent sustained sine dyad** into a growing
+  **chord stack** that keeps sounding _after_ the two planets drift apart.
+- Across a session you therefore **build a chord of pure ratios**, one capture at
+  a time.
+- The stack is capped at **3 dyads = ≤6 crystallized tones** (drop-oldest when
+  full), so the oscillator count stays bounded. All crystals route through the
+  existing master → lowpass → compressor safety chain.
+- Each crystal **fades out over ~32 s unless renewed** — re-capturing the same
+  interval refreshes its life. Walk away and the whole composed chord decays to
+  the lone drone. This is a hard requirement: the piece must collapse with no one
+  driving it.
+- **Visualization:** each crystallized interval is engraved as a fine brass
+  ratio-ring on the plate (with a bloom at the moment it "sets"), and appears in
+  the HUD **harmonic ledger** with its interval name and a draining life-bar. The
+  transient lock arc "ripens" (a brightening halo) as the hold nears 3.5 s, then
+  blooms into the engraving.
 
-- **Integrator.** Velocity-Verlet (leapfrog) — symplectic, so orbital energy
-  doesn't drift over long runs. Gravity is softened (`1/(r²+ε²)`) so a close
-  pass never blows up to infinity.
-- **Tilt.** A uniform acceleration added to every body's equation of motion — a
-  literal bias of the gravity field, exactly as a tilted table biases a marble.
-- **Period read-out.** Each frame we take every planet's osculating Keplerian
-  period from its vis-viva energy (`a = -μ/2ε`, `T = 2π√(a³/μ)`). That is the
-  instantaneous "note length" of the orbit.
-- **Capture.** When a pair's period ratio comes within tolerance of a small
-  integer fraction, a restoring nudge snaps the ratio to the exact value and
-  holds it — a stylised mean-motion resonance, which in nature really does
-  librate and trap orbits at integer ratios (this is why the Galilean moons and
-  TRAPPIST-1 sit locked). Hysteresis keeps a lock from chattering.
-- **Cage & death.** A hard semi-major-axis cage and an eccentricity clamp keep
-  the system bounded and on the plate. When you stop tilting, a circularizing
-  term drains the orbital eccentricity that resonance libration feeds on, and
-  every voice glides to the drone.
+**How the machinery fits together:** the render loop tracks each crystal's `life`
+in seconds; every frame all lives decrement by `dt`, but any lock currently held
+past the threshold resets its crystal's `life` to full. Per-frame the loop pushes
+`life / MAX_LIFE` as the dyad's gain level (`setCrystalLevel`, ramped) and reaps
+crystals whose life hits zero. The audio engine owns the oscillators keyed by
+`"p:q"`; the page owns the life/visual state. No renewal means no held lock,
+which means no tilt — so the decay is honest.
 
-## The harmony — just intonation, not pentatonic
+### 2. Conjunction bells
 
-Orbital resonance is *already* just intonation. A 3:2 period ratio is a pure
-fifth; 2:1 is an octave; 5:4 a pure major third; 5:3 a just major sixth. So this
-piece voices the true ratios: the star sounds a low drone at the root, each
-planet is a voice that glides with its period, and a captured pair locks its two
-voices to the **exact integer frequency ratio** of its resonance — the deeper
-planet snapped to a just degree of the star's lattice, the other set precisely
-p/q above it. Nothing is rounded to a scale.
+A bright, slightly inharmonic bell rings whenever two planets pass through
+**conjunction** (their heliocentric angles align within a small tolerance), with
+per-pair hysteresis so it fires once per pass, not every frame. The bell is
+pitched to a just degree of the star's lattice (from the faster planet's period),
+capped at 3 simultaneous bells, and draws a brief sight-line flash across the two
+bodies. This gives regular sparkle even before a lock forms. Bells are gated off
+once the piece is mostly calm, so they don't self-play a dead orrery.
 
-This is the whole point. The celebrated ESO sonifications of resonant systems —
-**TOI-178** and **TRAPPIST-1** — both de-risk the mapping down to a *pentatonic*
-scale, a pretty crutch that discards the very physics being celebrated. Here the
-resonance and the interval are the same number.
+### 3. Warped gravity-well field + Laplace-chain seed
+
+- **Contour field:** faint equipotential rings of the star's well, rendered under
+  the orbits, that visibly **lean in the tilt direction**. They are true
+  equipotentials of `Φ = −μ/√(r²+ε²) + tilt·r` (Newton-solved per ray) — the same
+  biased potential the integrator uses — so the tilt's effect on the field is
+  legible. Canvas2D only; kept faint so it never fights the orbits.
+- **Seed a resonant chain:** a button that snaps the five planets into a
+  pre-locked TRAPPIST-1-style Laplace chain (successive 3:2 / 4:3 / 5:4
+  neighbours) so a first-time visitor hears a rich consonant chord within ~2 s —
+  then, if they don't tilt, it decays like everything else. Available both from
+  the idle overlay ("Start with a resonant chain") and while playing.
+
+## Physics recap
+
+- **Integrator:** velocity-Verlet (symplectic) → no secular energy drift.
+- **Softening:** `1/(r²+ε²)` gravity, so close passes never blow up.
+- **Tilt:** a uniform acceleration added to every body's equation of motion.
+- **Period read-out:** osculating Keplerian period from vis-viva
+  (`a = −μ/2ε`, `T = 2π√(a³/μ)`).
+- **Capture:** within tolerance of a small-integer ratio, a restoring nudge snaps
+  the ratio exact and holds it (stylised mean-motion resonance, with hysteresis).
+- **Death:** when still, a circularizing term drains eccentricity; voices and
+  crystals fade to the drone.
+
+## Determinism / safety
+
+- No `Math.random`, `Date.now`, or argless `new Date()` anywhere. Paper grain
+  uses the base LCG seeded `0x1930`; animation timing uses `performance.now()`.
+- Master gain ≤ 0.17; every param change ramped (`setTargetAtTime` /
+  `exponentialRampToValueAtTime`) — no zipper clicks. Full teardown of all
+  oscillators (star, planets, pings, bells, crystals) + `ctx.close()` on
+  stop/unmount.
+- No external deps, no CDN, no network, no API route. Web Audio + Canvas2D only.
+- Degrades: no motion sensor → pointer = tilt; Web Audio unavailable → runs
+  silent with a `text-destructive` notice; `prefers-reduced-motion` → thin
+  trails, no grain, static (unwarped) contours.
 
 ## References
 
-- **Johannes Kepler, _Harmonices Mundi_ (1619)** — "the music of the spheres";
-  Kepler literally sought musical ratios in planetary motion. This is that idea
-  made playable, with the ratios coming from a live integrator rather than his
-  eccentricity extremes.
-- **The Antikythera mechanism / orrery tradition** — a geared brass model of the
-  heavens; the visual language (engraved plate, ticks, brass bodies) is borrowed
-  from it.
-- **ESO's TOI-178 and TRAPPIST-1 sonifications** — cited here as the *foil*: the
-  pentatonic crutch this piece refuses.
+- **Johannes Kepler, _Harmonices Mundi_ (1619)** — "the music of the spheres,"
+  made playable with ratios from a live integrator.
+- **The Antikythera mechanism / orrery tradition** — the engraved brass plate
+  visual language, now carrying the crystallized chord engravings.
+- **ESO's TOI-178 and TRAPPIST-1 sonifications** — cited as the _foil_: the
+  pentatonic crutch this piece refuses. TRAPPIST-1's Laplace-chain architecture
+  is borrowed for the seed preset.
 
 ## Self-assessment
 
-**Ambition:** high — a real symplectic N-body engine, an osculating-period
-resonance detector with capture/hysteresis, and a genuine just-intonation voice
-engine, all driven by device tilt with a pointer fallback, in one self-contained
-folder.
+**What works.** Crystallization is legible end-to-end: the lock arc ripens, blooms
+as it etches a labelled brass ring onto the plate, and the interval joins the
+harmonic ledger with a draining life-bar while its dyad keeps sounding after the
+planets separate — you can clearly hear and see a chord being _built_. The decay
+is honest: a crystal's ~32 s life is only refreshed by re-capturing, so with no
+one tilting, locks break, no renewals occur, and the whole stack collapses to the
+lone drone. The seed preset gives an immediate consonant chord for headless
+review, and the warped well-field makes the tilt's effect on the gravity field
+readable.
 
-**What works:** the integrator is stable and bounded under adversarial tilt; the
-capture moment is legible — you see the red arc snap and hear the exact interval
-appear at the same instant; the calm-death drone honours the "dead without a
-human" brief; the JI mapping is honestly derived from the period ratios.
-
-**What's rough:** the capture-assist is a stylised restoring force, not an
-emergent mean-motion resonance from the mutual gravity alone (which is too slow
-to feel in seconds), so the lock is helped into place — the README is honest
-about that. Recovery from a long constant overdrive is slow, and on a real phone
-the tilt scaling may want per-device tuning.
-
-## This is cycle 1 of a declared 2–3 cycle commitment
-
-Cycle 817 ran DEEP: three substrates of this one tilt-orrery concept were built
-in parallel (this Canvas2D N-body, a WebGL2 gravity-well membrane, a three.js 3D
-armillary) and the strongest, most-reviewable implementation shipped. The other
-two are banked (IDEAS §817). This is the lab's first genuinely-extended
-multi-cycle build — a direct answer to the 2026-07-17 jury's criterion #4
-("actually commit a multi-cycle build — it is 0/15; nobody extends anything").
-
-**Planned deepening (next cycles):**
-- **Chord memory** — captured pairs deposit a *persistent* sustained just interval
-  into a growing stack, so you *compose* a chord of pure ratios across a session
-  (today each lock is transient).
-- **Conjunctions** — a bright transient when two planets cross the same sight
-  line (borrowed from the banked three.js armillary).
-- **Add / remove a planet** — change the harmonic density live.
-- **A pre-locked TRAPPIST-1-style Laplace chain preset** — so a phone-glancer
-  hears the payoff in the first two seconds.
-- Optional: graft the banked WebGL2 **gravity-well membrane** as an alternate skin.
+**What's rough.** The capture-assist remains a stylised restoring force rather than
+an emergent mean-motion resonance from mutual gravity alone (too slow to feel in
+seconds). The ≤3-dyad cap keeps composed chords lean — a deliberate safety trade
+for a bounded oscillator count. Conjunction-bell density depends on live geometry,
+so there are quiet stretches, and on a real phone the tilt scaling may want
+per-device tuning.

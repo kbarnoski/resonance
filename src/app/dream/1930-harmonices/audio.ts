@@ -10,17 +10,27 @@
 // The star sounds a low drone at ROOT. Each planet is a voice whose pitch
 // glides with its orbital period (shorter period → higher). When a pair CAPTURES
 // into resonance, its two voices lock to the EXACT integer frequency ratio of
-// that resonance (the deeper planet's pitch snapped to a just degree of the
-// star's lattice, the other set to exactly p/q above it) and swell — a real
-// consonant JI dyad you hear appear at the instant you see the lock arc.
+// that resonance and swell — a real consonant JI dyad you hear appear at the
+// instant you see the lock arc.
 //
-// Safety: master ≤ 0.17 → lowpass → compressor → destination. Fixed voice
-// budget (2 star + 5 planet oscillators + ≤4 capture pings = 11 < 12). All
+// CYCLE-2 additions:
+//   • CRYSTALLIZATION — a lock held ≥3.5 s deposits its exact interval as a
+//     PERSISTENT sustained sine dyad into a chord stack (≤3 dyads = ≤6 tones,
+//     drop-oldest when full). Each crystal decays over ~32 s unless re-captured,
+//     so the composed chord honestly dies when nobody drives it.
+//   • CONJUNCTION BELLS — a bright inharmonic transient when two planets cross
+//     the same heliocentric sight-line (borrowed from the armillary sibling).
+//
+// Safety: master ≤ 0.17 → lowpass → compressor → destination. Bounded voice
+// budget (2 star + 5 planet + ≤4 pings + ≤3 bells + ≤6 crystal tones). All
 // param changes are ramped (no zipper/clicks). Full teardown on stop().
 
 const ROOT = 65.41; // C2 — the star's fundamental
 const MASTER_MAX = 0.17;
 const MAX_PINGS = 4;
+const MAX_BELLS = 3;
+export const MAX_CRYSTALS = 3; // ≤3 sustained dyads = ≤6 crystallized tones
+const CRYSTAL_PEAK = 0.034; // per-tone peak gain of a crystallized voice
 
 /** Just-intonation degrees within one octave (pure integer ratios). */
 const JI_DEGREES = [
@@ -73,6 +83,17 @@ interface Ping {
   endsAt: number;
 }
 
+interface Bell {
+  oscs: OscillatorNode[];
+  endsAt: number;
+}
+
+interface Crystal {
+  id: string;
+  oscs: OscillatorNode[];
+  gains: GainNode[];
+}
+
 export class OrreryVoices {
   private ctx: AudioContext;
   private master: GainNode;
@@ -84,6 +105,8 @@ export class OrreryVoices {
 
   private planets: { osc: OscillatorNode; gain: GainNode }[] = [];
   private pings: Ping[] = [];
+  private bells: Bell[] = [];
+  private crystals: Crystal[] = [];
   private running = false;
 
   constructor(planetCount: number) {
@@ -185,6 +208,20 @@ export class OrreryVoices {
       }
       return true;
     });
+    // reap finished bells
+    this.bells = this.bells.filter((b) => {
+      if (b.endsAt < t) {
+        for (const o of b.oscs) {
+          try {
+            o.stop();
+          } catch {
+            /* already stopped */
+          }
+        }
+        return false;
+      }
+      return true;
+    });
   }
 
   /** A short bell transient at the instant a resonance captures. */
@@ -204,6 +241,100 @@ export class OrreryVoices {
     this.pings.push({ osc: o, gain: g, endsAt: t + 1.0 });
   }
 
+  /** CYCLE-2: a bright, slightly inharmonic bell when two planets pass through
+   *  conjunction. Two ringing partials give it the armillary-chime timbre. */
+  bell(freq: number): void {
+    if (!this.running || this.bells.length >= MAX_BELLS) return;
+    const t = this.ctx.currentTime;
+    const f = Math.max(120, Math.min(1900, freq));
+    const oscs: OscillatorNode[] = [];
+    // fundamental + a stretched partial (2.76 ≈ a real bell's hum→prime)
+    for (const [mult, peak, dur] of [
+      [1, 0.06, 1.7],
+      [2.76, 0.024, 1.15],
+    ] as const) {
+      const o = this.ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f * mult;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(peak, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(this.master);
+      o.start(t);
+      o.stop(t + dur + 0.05);
+      oscs.push(o);
+    }
+    this.bells.push({ oscs, endsAt: t + 1.85 });
+  }
+
+  /** CYCLE-2: create (or refresh) a persistent crystallized dyad. Returns true
+   *  when a brand-new crystal was born (for the visual etch-bloom). */
+  crystallize(id: string, baseFreq: number, ratio: number): boolean {
+    if (!this.running) return false;
+    const existing = this.crystals.find((c) => c.id === id);
+    if (existing) return false; // already sounding; page refreshes its life
+    // drop the oldest when the stack is full
+    if (this.crystals.length >= MAX_CRYSTALS) {
+      const oldest = this.crystals.shift();
+      if (oldest) this.stopCrystal(oldest);
+    }
+    const t = this.ctx.currentTime;
+    const oscs: OscillatorNode[] = [];
+    const gains: GainNode[] = [];
+    for (const f of [baseFreq, baseFreq * ratio]) {
+      const o = this.ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(CRYSTAL_PEAK, t + 1.4); // soft bloom-in
+      o.connect(g).connect(this.master);
+      o.start(t);
+      oscs.push(o);
+      gains.push(g);
+    }
+    this.crystals.push({ id, oscs, gains });
+    return true;
+  }
+
+  /** Set a crystallized dyad's level (0..1 of peak) as its life decays. */
+  setCrystalLevel(id: string, level: number): void {
+    if (!this.running) return;
+    const c = this.crystals.find((x) => x.id === id);
+    if (!c) return;
+    const t = this.ctx.currentTime;
+    const target = Math.max(0.0001, CRYSTAL_PEAK * Math.max(0, Math.min(1, level)));
+    for (const g of c.gains) g.gain.setTargetAtTime(target, t, 0.4);
+  }
+
+  /** Remove a fully-decayed crystallized dyad. */
+  removeCrystal(id: string): void {
+    const idx = this.crystals.findIndex((x) => x.id === id);
+    if (idx < 0) return;
+    const [c] = this.crystals.splice(idx, 1);
+    this.stopCrystal(c);
+  }
+
+  private stopCrystal(c: Crystal): void {
+    const t = this.ctx.currentTime;
+    for (const g of c.gains) {
+      try {
+        g.gain.cancelScheduledValues(t);
+        g.gain.setTargetAtTime(0.0001, t, 0.25);
+      } catch {
+        /* noop */
+      }
+    }
+    for (const o of c.oscs) {
+      try {
+        o.stop(t + 0.9);
+      } catch {
+        /* noop */
+      }
+    }
+  }
+
   stop(): void {
     this.running = false;
     const t = this.ctx.currentTime;
@@ -215,25 +346,20 @@ export class OrreryVoices {
     }
     const ctx = this.ctx;
     const stopAll = () => {
-      for (const o of this.starOsc) {
-        try {
-          o.stop();
-        } catch {
-          /* noop */
-        }
-      }
-      for (const p of this.planets) {
-        try {
-          p.osc.stop();
-        } catch {
-          /* noop */
-        }
-      }
-      for (const p of this.pings) {
-        try {
-          p.osc.stop();
-        } catch {
-          /* noop */
+      const groups: OscillatorNode[][] = [
+        this.starOsc,
+        this.planets.map((p) => p.osc),
+        this.pings.map((p) => p.osc),
+        this.bells.flatMap((b) => b.oscs),
+        this.crystals.flatMap((c) => c.oscs),
+      ];
+      for (const grp of groups) {
+        for (const o of grp) {
+          try {
+            o.stop();
+          } catch {
+            /* noop */
+          }
         }
       }
       ctx.close().catch(() => {});

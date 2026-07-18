@@ -1,4 +1,4 @@
-// nbody.ts — the physics half of 1930-harmonices.
+// nbody.ts — the physics half of 1930-harmonices (cycle 2 of 1930-harmonices).
 //
 // A central star (fixed at the origin) and five planets orbiting under real
 // softened Newtonian gravity in a 2D plane, advanced by a SYMPLECTIC
@@ -23,6 +23,10 @@
 // When the device is still, `calm` rises and a circularizing term drains the
 // orbital eccentricity that resonance libration needs — the piece dies toward a
 // lone drone. It is dead without a human actively tilting.
+//
+// CYCLE-2 additions (see page.tsx / audio.ts): a Laplace-chain seed preset
+// (`seedLaplaceChain`) and heliocentric-angle read-out (`angleOf`) for the
+// conjunction-bell detector. The core engine below is UNCHANGED from 1930.
 
 export const MU = 1; // gravitational parameter of the star (G·M)
 export const SOFT = 0.05; // gravitational softening length (never blows up)
@@ -72,8 +76,9 @@ export interface Lock {
  *  little tilt walks neighbouring pairs into a lock. */
 const HOME_A = [0.7, 0.98, 1.28, 1.62, 2.05];
 
+const SHADES = ["#c79a4e", "#b98a3c", "#a9702f", "#8f5a2a", "#7c4a24"];
+
 export function createSystem(): Body[] {
-  const shades = ["#c79a4e", "#b98a3c", "#a9702f", "#8f5a2a", "#7c4a24"];
   return HOME_A.map((a, i) => {
     const v = Math.sqrt(MU / a);
     const ph = i * 1.3 + 0.2;
@@ -83,10 +88,50 @@ export function createSystem(): Body[] {
       vx: -v * Math.sin(ph),
       vy: v * Math.cos(ph),
       homeA: a,
-      hue: shades[i % shades.length],
+      hue: SHADES[i % SHADES.length],
       trail: [],
     };
   });
+}
+
+/** CYCLE-2 preset: snap the five planets into a pre-locked TRAPPIST-1-style
+ *  Laplace resonance chain — successive small-integer neighbour ratios — so a
+ *  first-time visitor hears a rich consonant just-intonation chord within a
+ *  couple of seconds. It is seeded on circular orbits at the EXACT ratios, so
+ *  detectLocks() traps them immediately; but it still decays like everything
+ *  else once nobody tilts (the calm term circularizes the chain apart). */
+const CHAIN_RATIOS: ReadonlyArray<readonly [number, number]> = [
+  [3, 2],
+  [4, 3],
+  [3, 2],
+  [5, 4],
+];
+
+export function seedLaplaceChain(bodies: Body[]): void {
+  // innermost semi-major axis, then multiply by ρ^(2/3) for each neighbour
+  // period ratio ρ (Kepler's third law: a ∝ T^(2/3)).
+  const aList: number[] = [0.6];
+  for (const [p, q] of CHAIN_RATIOS) {
+    const rho = p / q;
+    aList.push(aList[aList.length - 1] * Math.pow(rho, 2 / 3));
+  }
+  for (let i = 0; i < bodies.length; i++) {
+    const b = bodies[i];
+    const a = Math.min(AMAX, Math.max(AMIN, aList[i] ?? aList[aList.length - 1]));
+    const v = Math.sqrt(MU / a); // circular (e = 0)
+    const ph = i * 1.7 + 0.35; // spread phases so conjunctions sweep past
+    b.x = a * Math.cos(ph);
+    b.y = a * Math.sin(ph);
+    b.vx = -v * Math.sin(ph);
+    b.vy = v * Math.cos(ph);
+    b.homeA = a;
+    b.trail = [];
+  }
+}
+
+/** Heliocentric sight-line angle from the star, for conjunction detection. */
+export function angleOf(b: Body): number {
+  return Math.atan2(b.y, b.x);
 }
 
 function computeAccel(

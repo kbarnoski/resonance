@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   createSystem,
+  seedLaplaceChain,
   stepSystem,
   postStep,
   applyCaptureAssist,
@@ -10,6 +11,9 @@ import {
   periodOf,
   phaseOf,
   smaOf,
+  angleOf,
+  MU,
+  SOFT,
   TILT_ACCEL,
   R_MAX,
   AMIN,
@@ -21,25 +25,38 @@ import {
   OrreryVoices,
   glideFreqForPeriod,
   snapToJI,
+  MAX_CRYSTALS,
   type VoiceState,
 } from "./audio";
 import { PrototypeNav } from "../_shared/prototype-nav";
 import { README } from "./readme-text";
 
 // ════════════════════════════════════════════════════════════════════════════
-// 1930 — harmonices
+// 1930 — Harmonices II  (cycle 2 of 1930-harmonices)
 //
 // Orbital resonance as an instrument you play by TILTING. A symplectic N-body
 // orrery under real gravity; tilt biases the gravity field; when two planets
 // capture into a small-integer period ratio, a JUST-INTONATION dyad of exactly
-// that ratio sounds — the true consonance the physics already is, never a
-// pentatonic fake. Still device → the orbits circularize toward a lone drone.
+// that ratio sounds. Still device → the orbits circularize toward a lone drone.
 //
-// Kepler's Harmonices Mundi, the Antikythera/orrery tradition, and (as the
-// pentatonic foil) ESO's TOI-178 & TRAPPIST-1 sonifications.
+// CYCLE-2 deepening layered on top of the shipped engine:
+//   1. CHORD CRYSTALLIZATION — hold a lock ≥3.5 s and its exact interval is
+//      engraved into a persistent chord stack (≤6 tones) that keeps sounding
+//      after the planets drift apart, then slowly decays (~32 s) unless renewed.
+//      Across a session you COMPOSE a chord of pure ratios. It dies without you.
+//   2. CONJUNCTION BELLS — a bright chime when two planets cross the same
+//      heliocentric sight-line, with a sight-line flash.
+//   3. WARPED GRAVITY-WELL FIELD + a Laplace-chain seed preset (immediate
+//      payoff that still collapses when nobody drives it).
 // ════════════════════════════════════════════════════════════════════════════
 
 const TWO_PI = Math.PI * 2;
+
+const CRYSTALLIZE_TIME = 3.5; // seconds a lock must hold before it crystallizes
+const CRYSTAL_MAXLIFE = 32; // seconds a crystal survives without renewal
+const CONJ_TOL = 0.055; // radians: sight-line alignment tolerance
+const CONJ_REARM = 0.16; // radians: must separate past this to re-arm the pair
+const FLASH_LIFE = 0.5; // seconds a conjunction sight-line flash lasts
 
 type InputMode = "waiting" | "sensor" | "pointer";
 
@@ -47,11 +64,37 @@ interface HudLock {
   p: number;
   q: number;
   strength: number;
+  age: number;
+}
+interface HudCrystal {
+  p: number;
+  q: number;
+  life01: number;
 }
 interface Hud {
   locks: HudLock[];
+  crystals: HudCrystal[];
   tilt: { x: number; y: number };
   calm: number;
+}
+
+/** A crystallized (persistent) interval on the chord stack. */
+interface Crystal {
+  id: string; // `${p}:${q}` — one crystal per distinct interval
+  p: number;
+  q: number;
+  baseFreq: number;
+  life: number; // seconds of life remaining
+  bloom: number; // 0..1 etch-in flash
+  seq: number; // creation order (oldest = smallest → dropped first)
+  angle: number; // engraving label angle on the plate
+  rf: number; // engraving ring radius factor
+}
+
+interface Flash {
+  i: number;
+  j: number;
+  t0: number; // performance.now() of the conjunction
 }
 
 const INTERVAL_NAMES: Record<string, string> = {
@@ -71,6 +114,13 @@ function clamp(v: number, lo: number, hi: number): number {
 function hexA(hex: string, a: number): string {
   const n = parseInt(hex.slice(1), 16);
   return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
+/** Wrap an angle difference to [-π, π]. */
+function wrapPi(d: number): number {
+  while (d > Math.PI) d -= TWO_PI;
+  while (d < -Math.PI) d += TWO_PI;
+  return d;
 }
 
 /** Build per-planet voice states, then override captured pairs to exact JI. */
@@ -103,6 +153,154 @@ function guideRadius(b: Body): number {
   return clamp(isFinite(a) ? a : AMAX, AMIN, AMAX);
 }
 
+/** CYCLE-2: warped equipotential contour field — the "membrane" the marbles
+ *  roll on. Each ring is a true equipotential of Φ = -μ/√(r²+ε²) + tilt·r, so
+ *  the whole field visibly leans when you tilt. Canvas2D, phone-cheap. */
+function drawWellField(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  scale: number,
+  tilt: { x: number; y: number },
+  reduced: boolean,
+): void {
+  const tx = reduced ? 0 : tilt.x;
+  const ty = reduced ? 0 : tilt.y;
+  const baseRadii = [0.42, 0.62, 0.85, 1.12, 1.45, 1.85, 2.35, 2.95];
+  const N = 72;
+  ctx.lineWidth = 1;
+  for (let ri = 0; ri < baseRadii.length; ri++) {
+    const r0 = baseRadii[ri];
+    const C = -MU / Math.sqrt(r0 * r0 + SOFT * SOFT); // target potential level
+    ctx.beginPath();
+    for (let k = 0; k <= N; k++) {
+      const th = (k / N) * TWO_PI;
+      const ct = Math.cos(th);
+      const st = Math.sin(th);
+      const aTh = TILT_ACCEL * (tx * ct + ty * st); // linear tilt slope
+      // Newton-solve Φ(r,θ) = C for r along this ray
+      let r = r0;
+      for (let it = 0; it < 6; it++) {
+        const s2 = r * r + SOFT * SOFT;
+        const f = -MU / Math.sqrt(s2) + aTh * r - C;
+        const fp = (MU * r) / (s2 * Math.sqrt(s2)) + aTh;
+        if (Math.abs(fp) < 1e-6) break;
+        r -= f / fp;
+        if (!isFinite(r) || r < 0.05) {
+          r = r0;
+          break;
+        }
+      }
+      r = Math.min(R_MAX * 1.05, r);
+      const px = cx + r * ct * scale;
+      const py = cy + r * st * scale;
+      if (k === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    // fainter toward the rim so it never fights the orbits
+    const alpha = 0.075 * (1 - ri / (baseRadii.length + 1));
+    ctx.strokeStyle = `rgba(120,86,40,${alpha.toFixed(3)})`;
+    ctx.stroke();
+  }
+}
+
+/** CYCLE-2: engrave each crystallized interval permanently onto the plate — a
+ *  fine brass ratio-ring plus its label, brightening in a bloom the instant it
+ *  sets, and fading with the crystal's remaining life. */
+function drawCrystalEngravings(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  scale: number,
+  crystals: Crystal[],
+  time: number,
+): void {
+  for (const c of crystals) {
+    const life01 = clamp(c.life / CRYSTAL_MAXLIFE, 0, 1);
+    const radius = R_MAX * scale * c.rf;
+    const aLine = 0.16 + 0.5 * life01;
+    // engraved groove: dark line + a light highlight offset for depth
+    ctx.lineWidth = 1.3;
+    ctx.strokeStyle = hexA("#4a3014", aLine);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, TWO_PI);
+    ctx.stroke();
+    ctx.lineWidth = 0.8;
+    ctx.strokeStyle = hexA("#fff4d2", aLine * 0.35);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius - 1.1, 0, TWO_PI);
+    ctx.stroke();
+
+    // etch-bloom the instant it crystallizes
+    if (c.bloom > 0.01) {
+      ctx.lineWidth = 1 + 5 * c.bloom;
+      ctx.strokeStyle = hexA("#c98a2e", 0.55 * c.bloom);
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, TWO_PI);
+      ctx.stroke();
+    }
+
+    // ratio label seated in a small parchment cartouche on the ring
+    const lx = cx + Math.cos(c.angle) * radius;
+    const ly = cy + Math.sin(c.angle) * radius;
+    const label = `${c.p}:${c.q}`;
+    ctx.font = "600 12px ui-monospace, SFMono-Regular, Menlo, monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const w = ctx.measureText(label).width + 10;
+    ctx.fillStyle = hexA("#efe1bf", 0.55 + 0.35 * life01);
+    ctx.beginPath();
+    ctx.roundRect(lx - w / 2, ly - 9, w, 18, 4);
+    ctx.fill();
+    ctx.strokeStyle = hexA("#8a5f28", 0.4 + 0.4 * life01);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = hexA("#5a3c16", 0.6 + 0.35 * life01);
+    ctx.fillText(label, lx, ly + 0.5);
+    // faint life pulse on the label so a fading crystal reads as fading
+    if (life01 < 0.5) {
+      const pulse = 0.5 + 0.5 * Math.sin(time * 0.004);
+      ctx.fillStyle = hexA("#9e2b25", (0.5 - life01) * 0.4 * pulse);
+      ctx.beginPath();
+      ctx.arc(lx + w / 2 + 4, ly, 2, 0, TWO_PI);
+      ctx.fill();
+    }
+  }
+}
+
+/** CYCLE-2: brief sight-line flash across a conjunct pair. */
+function drawConjunctionFlashes(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  scale: number,
+  bodies: Body[],
+  flashes: Flash[],
+  now: number,
+): void {
+  for (const f of flashes) {
+    const age = (now - f.t0) / 1000;
+    if (age < 0 || age > FLASH_LIFE) continue;
+    const a = 1 - age / FLASH_LIFE;
+    const bi = bodies[f.i];
+    const bj = bodies[f.j];
+    if (!bi || !bj) continue;
+    const ix = cx + bi.x * scale;
+    const iy = cy + bi.y * scale;
+    const jx = cx + bj.x * scale;
+    const jy = cy + bj.y * scale;
+    // extend the sight-line a touch past both bodies
+    const dx = jx - ix;
+    const dy = jy - iy;
+    ctx.strokeStyle = hexA("#fff4ce", 0.75 * a);
+    ctx.lineWidth = 0.6 + 2.2 * a;
+    ctx.beginPath();
+    ctx.moveTo(ix - dx * 0.12, iy - dy * 0.12);
+    ctx.lineTo(jx + dx * 0.12, jy + dy * 0.12);
+    ctx.stroke();
+  }
+}
+
 /** Render one frame of the brass-on-parchment orrery. */
 function drawScene(
   ctx: CanvasRenderingContext2D,
@@ -111,6 +309,8 @@ function drawScene(
   dpr: number,
   bodies: Body[],
   locks: Lock[],
+  crystals: Crystal[],
+  flashes: Flash[],
   tilt: { x: number; y: number },
   calm: number,
   reduced: boolean,
@@ -149,6 +349,9 @@ function drawScene(
   const cy = h / 2;
   const SCALE = (Math.min(w, h) * 0.44) / R_MAX;
 
+  // ── warped gravity-well membrane (under everything) ──
+  drawWellField(ctx, cx, cy, SCALE, tilt, reduced);
+
   // ── engraved plate: outer rings + ticks ──
   ctx.strokeStyle = "rgba(120,86,40,0.4)";
   ctx.lineWidth = 1.2;
@@ -168,6 +371,9 @@ function drawScene(
     ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
     ctx.stroke();
   }
+
+  // ── crystallized chord engravings (part of the permanent plate) ──
+  drawCrystalEngravings(ctx, cx, cy, SCALE, crystals, time);
 
   // ── orbit guide rings (dashed, at each planet's current semi-major axis) ──
   ctx.setLineDash([2, 6]);
@@ -207,6 +413,9 @@ function drawScene(
     }
   }
 
+  // ── conjunction sight-line flashes (bright, over trails) ──
+  drawConjunctionFlashes(ctx, cx, cy, SCALE, bodies, flashes, time);
+
   // set of planets currently in any lock (for red rings)
   const locked = new Set<number>();
   for (const l of locks) {
@@ -223,8 +432,10 @@ function drawScene(
     const bx = cx + b.x * SCALE;
     const by = cy + b.y * SCALE;
     const pulse = 0.55 + 0.45 * Math.sin(time * 0.006 + l.age * 4);
+    // arc brightens as it approaches the crystallization threshold
+    const ripe = clamp(l.age / CRYSTALLIZE_TIME, 0, 1);
     ctx.strokeStyle = hexA("#9e2b25", (0.35 + 0.5 * l.strength) * pulse);
-    ctx.lineWidth = 1 + 3.4 * l.strength;
+    ctx.lineWidth = 1 + 3.4 * l.strength + 1.6 * ripe;
     // bowed connector through the star region
     const mx = (ax + bx) / 2 + (cx - (ax + bx) / 2) * 0.35;
     const my = (ay + by) / 2 + (cy - (ay + by) / 2) * 0.35;
@@ -232,6 +443,12 @@ function drawScene(
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(mx, my, bx, by);
     ctx.stroke();
+    // a "ripening" halo as the hold nears crystallization
+    if (ripe > 0.35 && ripe < 1) {
+      ctx.strokeStyle = hexA("#c98a2e", 0.4 * ripe * pulse);
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
     // label
     ctx.fillStyle = hexA("#7c1f1a", 0.92);
     ctx.font = "600 13px ui-monospace, SFMono-Regular, Menlo, monospace";
@@ -308,10 +525,14 @@ function drawScene(
   ctx.restore();
 }
 
-export default function HarmonicesPage() {
+export default function HarmonicesTwoPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bodiesRef = useRef<Body[]>([]);
   const locksRef = useRef<Lock[]>([]);
+  const crystalsRef = useRef<Crystal[]>([]);
+  const crystalSeqRef = useRef(0);
+  const flashesRef = useRef<Flash[]>([]);
+  const armedRef = useRef<boolean[][]>([]);
   const tiltRef = useRef({ x: 0, y: 0 });
   const smoothTiltRef = useRef({ x: 0, y: 0 });
   const calmRef = useRef(0);
@@ -330,6 +551,7 @@ export default function HarmonicesPage() {
   const [showNotes, setShowNotes] = useState(false);
   const [hud, setHud] = useState<Hud>({
     locks: [],
+    crystals: [],
     tilt: { x: 0, y: 0 },
     calm: 0,
   });
@@ -337,6 +559,10 @@ export default function HarmonicesPage() {
   // one-time init: system, paper grain, reduced-motion
   useEffect(() => {
     bodiesRef.current = createSystem();
+    const n = bodiesRef.current.length;
+    armedRef.current = Array.from({ length: n }, () =>
+      Array.from({ length: n }, () => true),
+    );
     const grain: number[][] = [];
     let s = 0x1930;
     const rnd = () => {
@@ -381,46 +607,64 @@ export default function HarmonicesPage() {
     };
   }, []);
 
-  const startPlay = useCallback(async () => {
-    if (phase === "playing") return;
-    // audio inside the user gesture
-    try {
-      const synth = new OrreryVoices(bodiesRef.current.length);
-      await synth.start();
-      synthRef.current = synth;
-    } catch {
-      setAudioNotice(
-        "Web Audio is unavailable in this browser — the orrery runs silent.",
-      );
-    }
-    // orientation permission (iOS) inside the same gesture
-    sensorSeenRef.current = false;
-    inputModeRef.current = "waiting";
-    setInputMode("waiting");
-    try {
-      const DOE = window.DeviceOrientationEvent as unknown as {
-        requestPermission?: () => Promise<"granted" | "denied">;
-      };
-      if (DOE && typeof DOE.requestPermission === "function") {
-        const res = await DOE.requestPermission();
-        if (res === "granted")
+  const seedChain = useCallback(() => {
+    seedLaplaceChain(bodiesRef.current);
+    locksRef.current = [];
+    flashesRef.current = [];
+    calmTimerRef.current = 0;
+    calmRef.current = 0;
+    const n = bodiesRef.current.length;
+    for (let i = 0; i < n; i++)
+      for (let j = 0; j < n; j++) armedRef.current[i][j] = true;
+  }, []);
+
+  const startPlay = useCallback(
+    async (seed: boolean) => {
+      if (phase === "playing") {
+        if (seed) seedChain();
+        return;
+      }
+      // audio inside the user gesture
+      try {
+        const synth = new OrreryVoices(bodiesRef.current.length);
+        await synth.start();
+        synthRef.current = synth;
+      } catch {
+        setAudioNotice(
+          "Web Audio is unavailable in this browser — the orrery runs silent.",
+        );
+      }
+      // orientation permission (iOS) inside the same gesture
+      sensorSeenRef.current = false;
+      inputModeRef.current = "waiting";
+      setInputMode("waiting");
+      try {
+        const DOE = window.DeviceOrientationEvent as unknown as {
+          requestPermission?: () => Promise<"granted" | "denied">;
+        };
+        if (DOE && typeof DOE.requestPermission === "function") {
+          const res = await DOE.requestPermission();
+          if (res === "granted")
+            window.addEventListener("deviceorientation", applyOrientation);
+        } else if ("DeviceOrientationEvent" in window) {
           window.addEventListener("deviceorientation", applyOrientation);
-      } else if ("DeviceOrientationEvent" in window) {
-        window.addEventListener("deviceorientation", applyOrientation);
+        }
+      } catch {
+        /* no sensor — pointer carries it */
       }
-    } catch {
-      /* no sensor — pointer carries it */
-    }
-    window.addEventListener("pointermove", applyPointer);
-    // desktop fallback: no sensor within ~1s → pointer = tilt
-    window.setTimeout(() => {
-      if (!sensorSeenRef.current) {
-        inputModeRef.current = "pointer";
-        setInputMode("pointer");
-      }
-    }, 1000);
-    setPhase("playing");
-  }, [phase, applyOrientation, applyPointer]);
+      window.addEventListener("pointermove", applyPointer);
+      // desktop fallback: no sensor within ~1s → pointer = tilt
+      window.setTimeout(() => {
+        if (!sensorSeenRef.current) {
+          inputModeRef.current = "pointer";
+          setInputMode("pointer");
+        }
+      }, 1000);
+      if (seed) seedChain();
+      setPhase("playing");
+    },
+    [phase, applyOrientation, applyPointer, seedChain],
+  );
 
   // main loop — runs only while playing
   useEffect(() => {
@@ -494,6 +738,82 @@ export default function HarmonicesPage() {
       locksRef.current = locks;
       synthRef.current?.update(voices, calm);
 
+      // ── CYCLE-2 (1): chord crystallization ──
+      const crystals = crystalsRef.current;
+      // decay every crystal's life first
+      for (const c of crystals) {
+        c.life -= dt;
+        c.bloom *= Math.exp(-dt * 2.2);
+      }
+      // a lock held past the threshold crystallizes (or refreshes) its interval
+      for (const l of locks) {
+        if (l.age < CRYSTALLIZE_TIME) continue;
+        const id = `${l.p}:${l.q}`;
+        const found = crystals.find((c) => c.id === id);
+        if (found) {
+          found.life = CRYSTAL_MAXLIFE; // renew — holding keeps it alive
+          continue;
+        }
+        // new interval: make room (drop the oldest), then deposit it
+        if (crystals.length >= MAX_CRYSTALS) {
+          let oldestIdx = 0;
+          for (let k = 1; k < crystals.length; k++)
+            if (crystals[k].seq < crystals[oldestIdx].seq) oldestIdx = k;
+          const dropped = crystals.splice(oldestIdx, 1)[0];
+          synthRef.current?.removeCrystal(dropped.id);
+        }
+        const seq = crystalSeqRef.current++;
+        const baseFreq = voices[l.i].freq;
+        const born =
+          synthRef.current?.crystallize(id, baseFreq, l.p / l.q) ?? true;
+        crystals.push({
+          id,
+          p: l.p,
+          q: l.q,
+          baseFreq,
+          life: CRYSTAL_MAXLIFE,
+          bloom: born ? 1 : 0.4,
+          seq,
+          angle: -Math.PI / 2 + seq * 2.39996,
+          rf: 0.52 + (seq % 3) * 0.115,
+        });
+      }
+      // push levels and reap dead crystals
+      for (let k = crystals.length - 1; k >= 0; k--) {
+        const c = crystals[k];
+        if (c.life <= 0) {
+          synthRef.current?.removeCrystal(c.id);
+          crystals.splice(k, 1);
+          continue;
+        }
+        synthRef.current?.setCrystalLevel(c.id, c.life / CRYSTAL_MAXLIFE);
+      }
+
+      // ── CYCLE-2 (2): conjunction bells + sight-line flashes ──
+      if (calm < 0.6) {
+        const angles = bodies.map(angleOf);
+        const armed = armedRef.current;
+        for (let i = 0; i < bodies.length; i++) {
+          for (let j = i + 1; j < bodies.length; j++) {
+            const d = Math.abs(wrapPi(angles[i] - angles[j]));
+            if (d > CONJ_REARM) {
+              armed[i][j] = true;
+            } else if (d < CONJ_TOL && armed[i][j]) {
+              armed[i][j] = false;
+              // bell pitch: a just degree of the star lattice from the faster
+              const faster = periodOf(bodies[i]) <= periodOf(bodies[j]) ? i : j;
+              const bf = snapToJI(glideFreqForPeriod(periodOf(bodies[faster])));
+              synthRef.current?.bell(bf);
+              flashesRef.current.push({ i, j, t0: now });
+            }
+          }
+        }
+      }
+      // reap old flashes
+      flashesRef.current = flashesRef.current.filter(
+        (f) => now - f.t0 < FLASH_LIFE * 1000,
+      );
+
       // trails
       const maxTrail = reducedRef.current ? 36 : 110;
       for (const b of bodies) {
@@ -509,6 +829,8 @@ export default function HarmonicesPage() {
         dpr,
         bodies,
         locks,
+        crystals,
+        flashesRef.current,
         st,
         calm,
         reducedRef.current,
@@ -519,7 +841,20 @@ export default function HarmonicesPage() {
       if (now - hudT > 90) {
         hudT = now;
         setHud({
-          locks: locks.map((l) => ({ p: l.p, q: l.q, strength: l.strength })),
+          locks: locks.map((l) => ({
+            p: l.p,
+            q: l.q,
+            strength: l.strength,
+            age: l.age,
+          })),
+          crystals: crystals
+            .slice()
+            .sort((a, b) => a.seq - b.seq)
+            .map((c) => ({
+              p: c.p,
+              q: c.q,
+              life01: clamp(c.life / CRYSTAL_MAXLIFE, 0, 1),
+            })),
           tilt: { x: st.x, y: st.y },
           calm,
         });
@@ -562,12 +897,13 @@ export default function HarmonicesPage() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                Harmonices
+                Harmonices II
               </h1>
               <p className="mt-1 max-w-xl text-base text-muted-foreground">
-                Play orbital resonance by tilting. When two planets lock into a
-                whole-number period ratio you hear its real just-intonation
-                interval — never a pentatonic fake.
+                Play orbital resonance by tilting. Hold a lock and its pure
+                interval crystallizes into a growing chord engraved on the plate
+                — a chord of true just intonation you compose, that dies when you
+                stop.
               </p>
             </div>
             <button
@@ -583,20 +919,29 @@ export default function HarmonicesPage() {
           <canvas
             ref={canvasRef}
             className="block h-full w-full touch-none"
-            aria-label="An antique orrery: a star and five planets orbiting under gravity, with resonance lock arcs."
+            aria-label="An antique orrery: a star and five planets orbiting under gravity, with resonance lock arcs and a crystallized chord engraved on the plate."
           />
           {phase === "idle" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#efe4cb]/85 backdrop-blur-sm">
               <p className="max-w-xs px-6 text-center text-base text-[#5a4326]">
                 Tilt your phone — or move the pointer on a laptop — to steer the
-                gravity field and pump planets into resonance.
+                gravity field and pump planets into resonance. Hold a lock to
+                crystallize its interval into the chord.
               </p>
-              <button
-                onClick={startPlay}
-                className="min-h-[44px] rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                Tilt to play
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  onClick={() => startPlay(false)}
+                  className="min-h-[44px] rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  Tilt to play
+                </button>
+                <button
+                  onClick={() => startPlay(true)}
+                  className="min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                >
+                  Start with a resonant chain
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -619,8 +964,61 @@ export default function HarmonicesPage() {
               >
                 {alive ? "orbits alive" : "decaying to drone — tilt to revive"}
               </span>
+              <span className="grow" />
+              <button
+                onClick={() => seedChain()}
+                className="min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Seed a resonant chain
+              </button>
             </div>
 
+            {/* harmonic ledger — the crystallized chord stack */}
+            <div className="mt-3">
+              <div className="mb-1.5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                harmonic ledger
+                {hud.crystals.length > 0
+                  ? ` · ${hud.crystals.length}/${MAX_CRYSTALS}`
+                  : ""}
+              </div>
+              {hud.crystals.length === 0 ? (
+                <p className="text-base text-muted-foreground">
+                  No crystals yet — hold a lock steady for {CRYSTALLIZE_TIME}s and
+                  its interval sets into the chord.
+                </p>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2">
+                  {hud.crystals.map((c, idx) => {
+                    const key = `${c.p}:${c.q}`;
+                    return (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm"
+                        style={{ opacity: 0.45 + 0.55 * c.life01 }}
+                      >
+                        <span className="font-mono font-semibold text-foreground">
+                          {key}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {INTERVAL_NAMES[key] ?? "just interval"}
+                        </span>
+                        <span
+                          aria-hidden
+                          className="h-1.5 w-8 overflow-hidden rounded-full bg-border"
+                        >
+                          <span
+                            className="block h-full rounded-full bg-primary"
+                            style={{ width: `${Math.round(c.life01 * 100)}%` }}
+                          />
+                        </span>
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* transient resonance locks */}
             <div className="mt-3 min-h-[2.5rem]">
               {hud.locks.length === 0 ? (
                 <p className="text-base text-muted-foreground">
@@ -631,6 +1029,7 @@ export default function HarmonicesPage() {
                 <div className="flex flex-wrap gap-2">
                   {hud.locks.map((l, idx) => {
                     const key = `${l.p}:${l.q}`;
+                    const ripe = clamp(l.age / CRYSTALLIZE_TIME, 0, 1);
                     return (
                       <span
                         key={idx}
@@ -644,6 +1043,9 @@ export default function HarmonicesPage() {
                         <span className="font-mono font-semibold">{key}</span>
                         <span className="text-[#7c1f1a]/80">
                           {INTERVAL_NAMES[key] ?? "just interval"}
+                        </span>
+                        <span className="font-mono text-xs text-[#7c1f1a]/70">
+                          {ripe >= 1 ? "set" : `${Math.round(ripe * 100)}%`}
                         </span>
                       </span>
                     );
