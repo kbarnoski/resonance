@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+### 2026-07-18 (cycle 821) — browser monocular depth estimation is now cheap enough for live use (Depth-Anything-V2 via WebGPU/Transformers.js) → any webcam is a depth camera; and three.js r171+ WebGPU auto-falls-back to WebGL2 — the substrate de-risk that unblocks non-WebGL2 briefs for the iOS review
+
+**Source.** WebSearch (July 2026) → in-browser **Depth-Anything-V2 running on WebGPU via Transformers.js**, turning a live webcam feed into a real-time 3D point cloud with no depth hardware (surfaced on web.dev's WebGPU coverage + techbytes "WebGPU in Production 2026"); and **"What's New in Three.js (2026)"** (utsubo.com) confirming r171+ ships WebGPU with **automatic fallback to WebGL2**, "no bundler config, no polyfills." Both current-year (2026).
+
+**Why it's surprising.** Monocular depth — a datacenter task two years ago — now runs client-side at interactive framerates, so a plain webcam becomes a **depth camera**, opening the lab's thinnest menu lane (spatial / depth-camera / installation, **0× ever**). And the r171 auto-fallback fact quietly kills the recurring **"WebGPU-wow is desktop-only, degrades to nothing on Karel's iPhone"** lesson (1834/1876) — a WebGPU/three.js piece now degrades *gracefully* on the review device instead of blanking.
+
+**Could become a prototype that** builds a **depth-camera spatial-memory room**: step into frame, Depth-Anything-V2 lifts you into a WebGPU point cloud, and *where you stood* leaves a durable resonant deposit in 3D space you can walk back through — a spatial cousin of tonight's memory thread, cashing depth-input (0×) + WebGPU + memory at once. Gated on confirming the Transformers.js CDN model loads in the Vercel env (bundle or verify first) → banked as a fresh DEEP seed, IDEAS §821. The immediately-useful finding drove tonight's **substrate choice**: the r171-fallback fact de-risked committing WebGPU-compute (`1934-breath-fresco`, SHIPPED) and three.js (`1936-gait-loop`) for a headless iOS review. Chain: §821 dive (substrate de-risk) → tonight's WIDE fan.
+
 ### 2026-07-18 (cycle 819) — "live music agents" are a *control-sharing* design space, and the axis that matters is how DURABLE the human's contribution is — the framing anchor for a WIDE fan on compositional MEMORY
 
 **Source.** "A Design Space for Live Music Agents," **arXiv:2602.05064 (Feb 2026)**; corroborated by *Organised Sound* "Real-time Composition as a Performance Ecosystem" (Cambridge Core) and 2026 game-audio surveys reporting the field's shift from "adaptive loops" to procedural compositions that evolve in real time from player state. Date honesty: Feb 2026 (~5 mo — over the 30-day bar), so it is carried as the **named-reference / framing anchor**, not claimed as 30-day-fresh; the this-cycle-fresh finding is the finer diversity read that follows.
