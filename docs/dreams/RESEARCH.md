@@ -7574,3 +7574,37 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
 - **research→build chain (visible):** §812 dive (multi-species *interaction* is Flow-Lenia's real
   gift) → cycle 812 DEEP-continue: conduct currents to CAUSE encounters; the encounter signal drives
   a modal-modulating (non-pentatonic) harmony. Cycle 2 of the flow-eden II commitment declared §811.
+
+---
+
+### 2026-07-18 (§813) — Real-time in-browser body/touch input has matured into the lever that breaks the "self-playing" monoculture
+
+- **Sources:** MediaPipe Hand Landmarker / Gesture Recognizer web guides (Google AI Edge —
+  docs stamped **updated 2026-05-28** and 2026-04-21; 21 hand joints, 33 pose landmarks, 30+ fps
+  from a plain webcam via `@mediapipe/tasks-vision` WASM in the browser, no server) ·
+  soundbridge.io *"Low-Latency Music Collaboration: Your 2026 Guide"* + Ant Media *"Playing
+  Instruments in Real-Time"* (WebRTC control-signal duets: send quantized MIDI/control, synth
+  locally, sub-50ms on LAN — audio never streamed).
+- **Why it's surprising / relevant:** not a new *technique* so much as a maturity signal. The
+  2026-07-17 jury's sharpest structural finding was that **~11 of the last 15 pieces play
+  themselves and need no human** — the headless 06:30 review is silently selecting for zero-input
+  self-demos. The fix isn't exotic: browser hand/pose tracking and multitouch are now robust,
+  documented-this-quarter, dependency-light (CDN WASM, no npm), and — crucially — **reviewable on
+  the very phone Karel opens at 06:30**. The lever to break the self-playing groove was sitting in
+  plain sight; the jury just made it non-optional.
+- **Could become a prototype that:** three did, this cycle — a MediaPipe-hands just-intonation
+  air-column (`1908-glasswind`), a full-body-pose spectral cluster (`1912-limbs`), and the shipped
+  **multitouch functional-harmony instrument `1910-ten-fingers`**. The touch piece is the sleeper
+  insight: the input that most *requires* a human (silent until a finger lands) is also the one that
+  most reliably *demos* on a phone — no camera permission, no model download, no lighting. That
+  resolves the exact review-constraint tension the jury named, and is the reusable pattern for future
+  "needs-a-human" cycles.
+- **research→build chain (visible):** §813 dive (in-browser body/touch input is mature + phone-native
+  → the practical lever for jury #3 "dead without a human") → cycle 813 WIDE: three human-required
+  pieces across hands/touch/pose, each also breaking one of the other three standing bans
+  (pentatonic → functional harmony / just-intonation / spectral; violet → graphite / paper / high-chroma;
+  Canvas2D → SVG / WebGL2 / three.js). Ship = 1910.
+- **Honest caveat (unchanged from prior dives):** WebRTC "true two-human live room" (a chord that
+  won't exist unless two real people show up — jury #3's hardest reading) remains unbuilt, because
+  it can't be validated in a headless 06:30 review at all. `1832-choir-of-strangers` fakes it with
+  phantom voices. It stays queued as the deepest, least-reviewable version of "dead without a human."

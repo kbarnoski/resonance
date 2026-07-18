@@ -8094,3 +8094,50 @@ committed). Its three strongest ideas were also folded into the winner's README 
   field so encounter reads ~0, and (b) the `enc·55`/`trip·900` audio thresholds match real readback
   magnitudes (both single-constant tunes; untested in a live browser). Backed up: scratchpad
   `banked-812/1906-tide-eden`.
+
+---
+
+## §813 — banked from cycle 813's WIDE "dead without a human" race (2 non-winners)
+
+Both cleared the ambition floor and dodged all four active bans (pentatonic / violet-on-black /
+Canvas2D / self-playing). Winner shipped was `1910-ten-fingers`. These two are ready to resurrect —
+full builds exist in scratchpad `banked-813/` (this container only; re-derive from the brief below).
+
+### ⭐⭐ `1908-glasswind` — hand-tracking just-intonation air column (SHIP-NEXT candidate)
+- **Brief:** two empty hands play a resonating column of air; a just-intonation **harmonic-series**
+  drone (fundamental + 8 integer-ratio partials) is plucked/bent by pinch, hand height, and the
+  spread between hands, drawn as **Chladni/standing-wave sumi-ink nodal lines on warm paper** in a
+  WebGL2 fragment shader.
+- **Tags:** INPUT camera→MediaPipe Hands (21 landmarks ×2) · OUTPUT WebGL2 frag shader · TECHNIQUE
+  JI harmonic-series + Chladni interference field · PALETTE **paper-and-ink** (warm off-white ground,
+  sumi black, one vermilion) — a WARM break from violet.
+- **Named ref:** Imogen Heap's Mi.Mu gloves; glass-harmonica / La Monte Young JI drone.
+- **Why promising:** the single freshest *visual* of the three — warm paper-ink is a color world the
+  lab has barely touched, and coupling a harmonic-series air-column to a Chladni shader driven by ONE
+  shared gesture state is a genuinely legible 2-subsystem instrument. Needs a human absolutely (no
+  hand ⇒ silence + still sheet).
+- **Why not shipped this cycle:** 1910 was the more reliably phone-reviewable at 06:30 (no camera
+  permission / no CDN model / no lighting) AND the sharper answer to jury #1 (functional harmony that
+  *modulates*); and 1904 just shipped a warm palette last cycle, so cold-graphite was the fresher
+  color break this week. **Resurrect first** next WIDE/DEEP for a camera-input, warm-palette,
+  JI cycle — it's demoable as-is.
+- **Rough spots (builder-flagged):** 2D pinch wobbles with depth; snapped tonal-center can jump;
+  shader thresholds eyeballed.
+
+### ⭐ `1912-limbs` — full-body pose → spectral cluster in three.js
+- **Brief:** your whole body becomes a **spectral chord** (Grisey/Murail) — arm-span widens the
+  overtone spread, reaching up brightens it, a crouch collapses toward a single low fundamental —
+  rendered as a **luminous additive line-skeleton** in three.js on a dark field, dark+silent the
+  instant you leave frame.
+- **Tags:** INPUT camera→MediaPipe Pose (33 landmarks) · OUTPUT **three.js** (thin substrate, 2× in
+  last 15) · TECHNIQUE spectral/microtonal cluster ↔ body geometry · PALETTE **high-chroma**
+  sodium-amber vs electric-cyan (non-violet).
+- **Named ref:** Klaus Obermaier; Chris Milk "The Treachery of Sanctuary"; spectral music (Grisey,
+  Murail).
+- **Why promising:** grows the thin three.js substrate; spectralism-as-body-posture is a fresh
+  audio mapping; genuinely dead without a mover. Loved-signal backing (camera/body pieces
+  217-dance-avatar, 234-kids-hand-creature, 1482-face-mandala are all loved).
+- **Why not shipped:** full-body pose is the HARDEST to review at a 06:30 phone glance (Karel must
+  prop the phone and step back so the whole body is in frame) — highest review-friction of the three;
+  and pose/camera-body is comparatively well-trodden in the lab. Resurrect when Karel is at a laptop
+  with room to stand back, or reframe to upper-body-only so it works seated at a phone.

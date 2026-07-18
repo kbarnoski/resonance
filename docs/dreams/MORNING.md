@@ -1,15 +1,18 @@
-# Morning digest — last updated 2026-07-18 (cycle 812)
+# Morning digest — last updated 2026-07-18 (cycle 813, WIDE)
+
+**Open this first:** https://getresonance.vercel.app/dream/1910-ten-fingers — then **touch it with several fingers at once.**
 
 ## New since yesterday
-- **[1904-current-eden](https://getresonance.vercel.app/dream/1904-current-eden)** — *drag currents of wind through a field of evolving organisms and force three species to collide; every collision is a chord you caused.* A real GPU **multi-kernel Flow-Lenia** (mass-conserving) where three dye-tagged species each run their own ring kernel, so they read as distinct creatures. **Open this and DRAG** — with no conducting the field dissipates to a lone drone (dead without a human, by construction). Cycle 2 of the flow-eden II commitment, and the boldest palette break yet: **warm madder/saffron/indigo on linen**, not violet-on-black. Harmony **modulates modally** (Phrygian/Lydian/Dorian, a biting Hijaz on strong collisions) — not pentatonic.
+- **1910-ten-fingers** — a chord instrument that speaks *real functional harmony*, played with up to ten fingers. Press a cell to voice a diatonic function (I, ii, IV, V7…), hold several to conduct a progression, **drag to glissando** between chords, and tap the modulation strip to change key. Not a pentatonic scale-pad — real secondary dominants (V/V, V/vi, V/IV), modulation to related keys, and *audible* nearest-tone voice-leading you can watch morph on the staff ribbon. **It is dead silent until a finger lands** — no autopilot.
+  - **Why it's the pick:** it's the single most on-target answer to your 07-17 jury, which named three invisible new grooves — one color (violet 12/15), one scale (pentatonic 6/15), one habit (11/15 play themselves). This changes all three at once: **cold graphite Ikeda monochrome** (not violet), **functional harmony that modulates and bites** (not pentatonic), **touch = needs you** (not self-playing) — on **SVG-DOM** (not the banned Canvas2D). And it's the *only* candidate that reliably demos on your phone: no camera, no model download, no lighting. The piece that most requires a human is also the most reviewable — which resolves the exact headless-review tension the jury flagged.
 
-## What this cycle was doing (the meta-story)
-Cashing your jury's three unmet provocations at once — **change the color** (warm daylight, not violet), **change the harmony** (modal-that-modulates, not pentatonic), and **make it need a human** (no drag → no music). Plus the one the jury said was 0/15 and never fires: **criterion #4, actually commit a multi-cycle build.** This is a real cycle 2 extending §811's flow-eden II, not a one-and-done.
+## In progress / partial (2 more explored this cycle — WIDE fan, banked in IDEAS §813)
+- ⭐⭐ **1908-glasswind** — your two empty hands play a just-intonation harmonic-series air-column, drawn as sumi-ink Chladni standing waves on **warm paper** (WebGL2 + MediaPipe hands). The freshest *visual* of the three; ship-ready. **Ship-next candidate.**
+- ⭐ **1912-limbs** — your whole body becomes a spectral chord in **three.js** (arms wide → bright cluster, crouch → one low tone); high-chroma cyan/amber. Grows the thin three.js substrate. Best when you're at a laptop with room to step back.
 
-## Explored but not shipped (banked)
-- **⭐⭐ 1906-tide-eden** — same "conduct an ecology" concept, *different bet*: you **carve persistent channels/banks** and a global **tide** flows through the landscape you build (level-design, not pushing). Cool tidepool palette; a **Flatten button** that makes the collapse-to-drone audible on demand. Banked in IDEAS §812; its 3 best ideas folded into 1904's README for cycle 3.
+## Research finding worth a look (§813 → RESEARCH.md)
+- In-browser hand/pose/touch input has quietly matured (MediaPipe docs updated 2026-05-28: 21 hand joints / 33 pose points at 30fps, CDN WASM, no deps). That's the practical lever to break the "self-playing" monoculture — robust, phone-native, reviewable at 06:30.
 
-## Open questions for Karel
-- **1904 wants your eyes + ears** (headless build, no GPU/audio here). Two live unknowns, both single-constant tunes: do the blobs cohere yet stay herdable across the torus, and do the species read as distinct? Tuning: kernel μ/σ, current gain 26, brush 3.2×.
-- **Cycle 3 options** (your call): (a) graft 1906's persistent-bank tool onto 1904 into one instrument, or (b) ship 1906-tide-eden standalone. Both ready.
-- **Still 0× across ~15 juries: the ≥2-model AI pipeline (audio→image→video).** Only blocker is your go on a paid per-prototype budget (rule #6). Say the word and it's next.
+## Open questions for you (Karel)
+- **The one frontier still at 0× across ~16 juries: an AI-pipeline chain (audio→image→video, ≥2 models).** It's blocked only on your go for a small paid per-prototype budget (rule #6). Want me to build it next? One word and it's on.
+- Reviewability caveat: 1910 built + typechecked + compiled clean (EXIT 0), but is **not eye/ear-verified** (headless — no touch/speakers here). Whether the voice-leading glides sound musical and ten-finger play stays coherent wants your phone.
