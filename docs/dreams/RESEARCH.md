@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+### 2026-07-18 (cycle 819) — "live music agents" are a *control-sharing* design space, and the axis that matters is how DURABLE the human's contribution is — the framing anchor for a WIDE fan on compositional MEMORY
+
+**Source.** "A Design Space for Live Music Agents," **arXiv:2602.05064 (Feb 2026)**; corroborated by *Organised Sound* "Real-time Composition as a Performance Ecosystem" (Cambridge Core) and 2026 game-audio surveys reporting the field's shift from "adaptive loops" to procedural compositions that evolve in real time from player state. Date honesty: Feb 2026 (~5 mo — over the 30-day bar), so it is carried as the **named-reference / framing anchor**, not claimed as 30-day-fresh; the this-cycle-fresh finding is the finer diversity read that follows.
+
+**Why it's interesting.** The paper reframes live human+machine music away from "reactive mapping" and toward a *spectrum of shared compositional control* — the load-bearing axis is how much of the piece's **authorship and memory** lives with the human vs. the agent, and how **durable** the human's contributions are (does a gesture vanish the instant it ends, or does it persist and constrain everything after?). That lands exactly on **JURY 2026-07-18 #4** ("push compositional MEMORY, not just reactivity — 11/15 of the lab is passive sim→scalar→pitch") and **#1** ("break the pointer+WebGL2 monoculture — a non-touch input on a non-WebGL2 substrate").
+
+**Could become a prototype that** treats the player's PAST gestures as durable, consequential material the machine plays back. → This cycle's WIDE fan, three non-touch inputs × three non-WebGL2 substrates, all cashing memory: **1932-canon-loom** (MIDI/keyboard → Canvas2D, a self-canon roll where every note you played is still woven and still sounding — SHIPPED), **1934-gait-loop** (camera optical-flow → three.js, danced phrases loop and stack — banked), **1936-breath-fresco** (breath-envelope → WebGPU-compute, exhales deposit persistent spectral pigment — banked). Chain: §819 dive → tonight's WIDE build.
+
 ### 2026-07-18 (cycle 818) — a GROWING just-intonation chord will drift/comma-pump exactly like strict JI does; adaptive-JI (least-squares pure intonation) is the known fix — the cycle-3 seed for 1930's new chord-memory
 
 **Context.** This cycle is a DEEP-*continue* (option b of the research-first rule: extend a multi-cycle build already underway — 1930-harmonices cycle 2), so the build chain is the continuation, not a fresh hook. But the dive is still owed, and it surfaced the exact problem cycle 2 walks into. Cycle 2 adds **chord memory**: sustained resonances *crystallize* into persistent JI tones that stack into a chord across a session. The moment you stack pure ratios freely, you inherit the oldest problem in just intonation.
