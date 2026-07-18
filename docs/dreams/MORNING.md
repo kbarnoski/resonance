@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-07-18 (cycle 813, WIDE)
+# Morning digest — last updated 2026-07-18 (cycle 814, DEEP)
 
-**Open this first:** https://getresonance.vercel.app/dream/1910-ten-fingers — then **touch it with several fingers at once.**
+**Open this first:** https://getresonance.vercel.app/dream/1916-slime-cantor — tap **Start**, then **drop 2–3 food seeds with your fingers** and watch veins bridge them.
 
 ## New since yesterday
-- **1910-ten-fingers** — a chord instrument that speaks *real functional harmony*, played with up to ten fingers. Press a cell to voice a diatonic function (I, ii, IV, V7…), hold several to conduct a progression, **drag to glissando** between chords, and tap the modulation strip to change key. Not a pentatonic scale-pad — real secondary dominants (V/V, V/vi, V/IV), modulation to related keys, and *audible* nearest-tone voice-leading you can watch morph on the staff ribbon. **It is dead silent until a finger lands** — no autopilot.
-  - **Why it's the pick:** it's the single most on-target answer to your 07-17 jury, which named three invisible new grooves — one color (violet 12/15), one scale (pentatonic 6/15), one habit (11/15 play themselves). This changes all three at once: **cold graphite Ikeda monochrome** (not violet), **functional harmony that modulates and bites** (not pentatonic), **touch = needs you** (not self-playing) — on **SVG-DOM** (not the banned Canvas2D). And it's the *only* candidate that reliably demos on your phone: no camera, no model download, no lighting. The piece that most requires a human is also the most reviewable — which resolves the exact headless-review tension the jury flagged.
+- **`/dream/1916-slime-cantor`** — **drop food with your fingers and hear the shape of a living network.** A real slime-mold (Physarum) transport network grows veins between the food-nodes you place; the network's *topology* becomes harmony via **spectral graph theory** — the graph's Laplacian eigenvalues are its natural modes (freq ∝ √λ, like a drum head), so the chord literally *rewrites itself as the slime reorganizes*. **Why open this:** it's the lab's first Physarum piece (a beloved technique, somehow 0× here till now), the first real **WebGPU-compute** winner (~260k agents in the browser), and the harmony is genuinely non-pentatonic by construction. Deep-teal agar / amber-vein palette — no violet. Needs your hands (formless wash until you place food).
+- This was a **DEEP** cycle: one big concept, three parallel builds, shipped the strongest. **2 more explored** (IDEAS §814): ⭐⭐ **slime-consort** (three.js — you *hear the network reorganize*: every merge a modulation, every split a suspension — ship-next) + ⭐ **slime-loom** (WebGL2 — just intervals tuned by vein path-length).
 
-## In progress / partial (2 more explored this cycle — WIDE fan, banked in IDEAS §813)
-- ⭐⭐ **1908-glasswind** — your two empty hands play a just-intonation harmonic-series air-column, drawn as sumi-ink Chladni standing waves on **warm paper** (WebGL2 + MediaPipe hands). The freshest *visual* of the three; ship-ready. **Ship-next candidate.**
-- ⭐ **1912-limbs** — your whole body becomes a spectral chord in **three.js** (arms wide → bright cluster, crouch → one low tone); high-chroma cyan/amber. Grows the thin three.js substrate. Best when you're at a laptop with room to step back.
+## Research finding worth a look
+- **ShaderVine** (2026-04-12) confirms full Physarum + 15 other GPU sims now run *in a browser at interactive framerates via WebGPU compute* — i.e. shippable on your phone, not desktop-only. That's what made a real WebGPU-compute swing the right call this cycle. (RESEARCH.md §814.)
 
-## Research finding worth a look (§813 → RESEARCH.md)
-- In-browser hand/pose/touch input has quietly matured (MediaPipe docs updated 2026-05-28: 21 hand joints / 33 pose points at 30fps, CDN WASM, no deps). That's the practical lever to break the "self-playing" monoculture — robust, phone-native, reviewable at 06:30.
+## Honest caveats
+- Headless container = **no GPU/display/speakers**, so I couldn't run a WebGPU frame. WGSL bind-group parity is the one first-run risk — but a Canvas2D fallback feeds the *same* harmony, so it's never blank. Whether the eigen-drone sounds musical vs mushy, and whether 260k agents hold framerate on your iPhone, want your eyes/ears.
 
-## Open questions for you (Karel)
-- **The one frontier still at 0× across ~16 juries: an AI-pipeline chain (audio→image→video, ≥2 models).** It's blocked only on your go for a small paid per-prototype budget (rule #6). Want me to build it next? One word and it's on.
-- Reviewability caveat: 1910 built + typechecked + compiled clean (EXIT 0), but is **not eye/ear-verified** (headless — no touch/speakers here). Whether the voice-leading glides sound musical and ten-finger play stays coherent wants your phone.
+## Open questions for Karel
+- **The living-organism theme is getting worked hard** — Flow-Lenia ×3 (1836/1900/1904) + Physarum now = 4 "tend/conduct a living thing" pieces recently. I'll rest that whole vein for a few cycles unless you say otherwise.
+- **The AI-pipeline chain (audio→image→video, ≥2 models)** is still 0× — the one genuinely-absent frontier — gated only on your go-ahead for a small paid per-prototype budget (rule #6). One yes unblocks it.
