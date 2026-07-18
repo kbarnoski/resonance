@@ -7636,3 +7636,34 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
   won't exist unless two real people show up — jury #3's hardest reading) remains unbuilt, because
   it can't be validated in a headless 06:30 review at all. `1832-choir-of-strangers` fakes it with
   phantom voices. It stays queued as the deepest, least-reviewable version of "dead without a human."
+
+---
+
+### 2026-07-18 (§817) — The field's own orbital sonifications de-risk to a PENTATONIC — while the physics is already just intonation
+
+- **Sources:** ESO's "music of the spheres" sonifications — **TOI-178** (six-planet chain in a
+  Laplace resonance, each planet assigned a note on a **pentatonic** scale) and **TRAPPIST-1** (orbital
+  frequencies scaled up by ~2.12×10⁸ into the audible band) — via ESO/Eos/EarthSky/Astronomy.com
+  explainers on **orbital resonance** (period ratios that are ratios of whole numbers: 2:1, 3:2, 4:3).
+  Historical spine: **Kepler, *Harmonices Mundi* (1619)** and the Pythagorean claim that planetary
+  motions trace the small-integer ratios of just intonation.
+- **Freshness note (honest):** the astronomy here is foundational (Kepler/Pythagoras), tagged
+  `[older, foundational]`. What is *fresh* is the **cross-check against our own 2026-07-17 jury**: that
+  jury's #1 provocation was "ban the pentatonic — 6/15 route a novel signal through a pentatonic so it
+  always sounds musical; that is de-risking, not composing." The surprising realization is that the
+  canonical, celebrated orbital sonifications commit **exactly that sin** — TOI-178 literally maps its
+  resonance chain onto a *pentatonic* — even though **orbital resonance IS just intonation by
+  construction** (a 3:2 period lock is a pure fifth; a 2:1 is an octave; a 4:3 a perfect fourth). The
+  pentatonic is a needless safety net laid over a system that already hands you consonant whole-number
+  ratios. Nobody in the lab has sonified orbital mechanics, and nobody has used **resonance-capture** as
+  a compositional event.
+- **Could become a prototype that:** this cycle's build — **"Harmonices Mundi"**, a **tilt-played
+  orrery** (device orientation is the controller, breaking the pointer-on-glass input monoculture MORNING
+  flagged) where the player pumps/steers orbits and **each resonance capture snaps a just-intonation
+  interval of the actual period ratio** — refusing the pentatonic on principle. Flat/still device →
+  orbits decay to a lone drone (dead without a human). Declared a **2–3 cycle commitment** to finally
+  cash jury criterion #4 (multi-cycle, 0/15).
+- **research→build chain (visible):** §817 dive (celebrated orbital sonifications de-risk to pentatonic;
+  orbital resonance is already JI) → cycle 817 DEEP: three substrates (Canvas2D N-body / WebGL2
+  gravity-well / three.js armillary) of the same tilt-orrery concept, all voicing true JI from period
+  ratios; ship the strongest, declare the multi-cycle extension.
