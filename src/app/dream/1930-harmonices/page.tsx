@@ -28,26 +28,40 @@ import {
   MAX_CRYSTALS,
   type VoiceState,
 } from "./audio";
+import {
+  placeCrystal,
+  relaxTuning,
+  chordDriftCents,
+  maxTemperCents,
+  freqOf,
+  type TunedCrystal,
+} from "./tuning";
 import { PrototypeNav } from "../_shared/prototype-nav";
 import { README } from "./readme-text";
 
 // ════════════════════════════════════════════════════════════════════════════
-// 1930 — Harmonices II  (cycle 2 of 1930-harmonices)
+// 1930 — Harmonices III  (cycle 3 of 1930-harmonices — the lab's first 3-cycle piece)
 //
 // Orbital resonance as an instrument you play by TILTING. A symplectic N-body
 // orrery under real gravity; tilt biases the gravity field; when two planets
 // capture into a small-integer period ratio, a JUST-INTONATION dyad of exactly
 // that ratio sounds. Still device → the orbits circularize toward a lone drone.
 //
-// CYCLE-2 deepening layered on top of the shipped engine:
+// CYCLE-3 deepening (the comma pump, made playable — see tuning.ts):
+//   • ADAPTIVE-JI TUNING TOGGLE. Crystallized captures chain PURE intervals from
+//     a moving pivot, so the chord's centre DRIFTS off the star (STRICT: you hear
+//     it beat) — a real-time relaxation spreads the accumulated syntonic comma
+//     across the voices to LOCK it back (ADAPTIVE: beating dies, small temper
+//     paid). Flip live and the whole chord glides in/out of lock. Drift meter +
+//     drift/retuned cents readouts. Stange–Wick / Pivotuner in miniature.
+//
+// CYCLE-2 substrate it tunes:
 //   1. CHORD CRYSTALLIZATION — hold a lock ≥3.5 s and its exact interval is
 //      engraved into a persistent chord stack (≤6 tones) that keeps sounding
 //      after the planets drift apart, then slowly decays (~32 s) unless renewed.
-//      Across a session you COMPOSE a chord of pure ratios. It dies without you.
 //   2. CONJUNCTION BELLS — a bright chime when two planets cross the same
 //      heliocentric sight-line, with a sight-line flash.
-//   3. WARPED GRAVITY-WELL FIELD + a Laplace-chain seed preset (immediate
-//      payoff that still collapses when nobody drives it).
+//   3. WARPED GRAVITY-WELL FIELD + a Laplace-chain seed preset.
 // ════════════════════════════════════════════════════════════════════════════
 
 const TWO_PI = Math.PI * 2;
@@ -71,11 +85,14 @@ interface HudCrystal {
   q: number;
   life01: number;
 }
+type TuningMode = "strict" | "adaptive";
 interface Hud {
   locks: HudLock[];
   crystals: HudCrystal[];
   tilt: { x: number; y: number };
   calm: number;
+  drift: number; // signed tonal-centre drift vs the star, cents
+  temper: number; // largest interval temper the retune imposed, cents
 }
 
 /** A crystallized (persistent) interval on the chord stack. */
@@ -531,6 +548,8 @@ export default function HarmonicesTwoPage() {
   const locksRef = useRef<Lock[]>([]);
   const crystalsRef = useRef<Crystal[]>([]);
   const crystalSeqRef = useRef(0);
+  const tunedRef = useRef<TunedCrystal[]>([]); // cycle-3: per-crystal JI tuning
+  const tuningModeRef = useRef<TuningMode>("strict");
   const flashesRef = useRef<Flash[]>([]);
   const armedRef = useRef<boolean[][]>([]);
   const tiltRef = useRef({ x: 0, y: 0 });
@@ -549,11 +568,14 @@ export default function HarmonicesTwoPage() {
   const [inputMode, setInputMode] = useState<InputMode>("waiting");
   const [audioNotice, setAudioNotice] = useState<string | null>(null);
   const [showNotes, setShowNotes] = useState(false);
+  const [tuningMode, setTuningMode] = useState<TuningMode>("strict");
   const [hud, setHud] = useState<Hud>({
     locks: [],
     crystals: [],
     tilt: { x: 0, y: 0 },
     calm: 0,
+    drift: 0,
+    temper: 0,
   });
 
   // one-time init: system, paper grain, reduced-motion
@@ -616,6 +638,13 @@ export default function HarmonicesTwoPage() {
     const n = bodiesRef.current.length;
     for (let i = 0; i < n; i++)
       for (let j = 0; j < n; j++) armedRef.current[i][j] = true;
+  }, []);
+
+  const toggleTuning = useCallback(() => {
+    const next: TuningMode =
+      tuningModeRef.current === "strict" ? "adaptive" : "strict";
+    tuningModeRef.current = next;
+    setTuningMode(next);
   }, []);
 
   const startPlay = useCallback(
@@ -761,9 +790,22 @@ export default function HarmonicesTwoPage() {
             if (crystals[k].seq < crystals[oldestIdx].seq) oldestIdx = k;
           const dropped = crystals.splice(oldestIdx, 1)[0];
           synthRef.current?.removeCrystal(dropped.id);
+          const ti = tunedRef.current.findIndex((t) => t.id === dropped.id);
+          if (ti >= 0) tunedRef.current.splice(ti, 1);
         }
         const seq = crystalSeqRef.current++;
-        const baseFreq = voices[l.i].freq;
+        // CYCLE-3: place this capture on the adaptive-JI lattice. The first
+        // crystal snaps to the star's grid; later ones chain a PURE interval
+        // from the nearest sounding tone — that pure chain is where the comma
+        // enters, and the retuner below decides whether it drifts or locks.
+        const tuned = placeCrystal(
+          tunedRef.current,
+          voices[l.i].freq,
+          l.p,
+          l.q,
+        );
+        tunedRef.current.push(tuned);
+        const baseFreq = freqOf(tuned.lo);
         const born =
           synthRef.current?.crystallize(id, baseFreq, l.p / l.q) ?? true;
         crystals.push({
@@ -784,9 +826,27 @@ export default function HarmonicesTwoPage() {
         if (c.life <= 0) {
           synthRef.current?.removeCrystal(c.id);
           crystals.splice(k, 1);
+          const ti = tunedRef.current.findIndex((t) => t.id === c.id);
+          if (ti >= 0) tunedRef.current.splice(ti, 1);
           continue;
         }
         synthRef.current?.setCrystalLevel(c.id, c.life / CRYSTAL_MAXLIFE);
+      }
+
+      // ── CYCLE-3: adaptive-JI retune. STRICT holds each capture's pure ratio
+      //   and lets the chord centre drift against the fixed star drone; ADAPTIVE
+      //   spreads the accumulated comma across every voice so the centre locks
+      //   back. Relax a fraction each frame → the lock GLIDES when you toggle. ──
+      const tuned = tunedRef.current;
+      if (tuned.length) {
+        relaxTuning(tuned, tuningModeRef.current, Math.min(1, dt * 2.4));
+        for (const tc of tuned) {
+          synthRef.current?.setCrystalFreqs(
+            tc.id,
+            freqOf(tc.lo),
+            freqOf(tc.lo + tc.iv),
+          );
+        }
       }
 
       // ── CYCLE-2 (2): conjunction bells + sight-line flashes ──
@@ -857,6 +917,8 @@ export default function HarmonicesTwoPage() {
             })),
           tilt: { x: st.x, y: st.y },
           calm,
+          drift: chordDriftCents(tunedRef.current),
+          temper: maxTemperCents(tunedRef.current),
         });
       }
 
@@ -897,13 +959,15 @@ export default function HarmonicesTwoPage() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                Harmonices II
+                Harmonices III
               </h1>
               <p className="mt-1 max-w-xl text-base text-muted-foreground">
                 Play orbital resonance by tilting. Hold a lock and its pure
-                interval crystallizes into a growing chord engraved on the plate
-                — a chord of true just intonation you compose, that dies when you
-                stop.
+                interval crystallizes into a growing chord you compose — then
+                choose its intonation: <span className="text-foreground">strict</span>{" "}
+                lets the pure chord drift off the star and beat;{" "}
+                <span className="text-foreground">adaptive</span> spreads the comma
+                and locks it back. The 300-year-old comma pump, made playable.
               </p>
             </div>
             <button
@@ -1016,6 +1080,64 @@ export default function HarmonicesTwoPage() {
                   })}
                 </div>
               )}
+            </div>
+
+            {/* CYCLE-3: adaptive-JI intonation — strict drifts, adaptive locks */}
+            <div className="mt-3 rounded-md border border-border bg-background/40 p-3">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  intonation
+                </span>
+                <div className="inline-flex overflow-hidden rounded-md border border-border">
+                  <button
+                    onClick={() => tuningMode !== "strict" && toggleTuning()}
+                    aria-pressed={tuningMode === "strict"}
+                    className={`min-h-[44px] px-4 text-sm transition-colors ${
+                      tuningMode === "strict"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-background/60 text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    Strict physics
+                  </button>
+                  <button
+                    onClick={() => tuningMode !== "adaptive" && toggleTuning()}
+                    aria-pressed={tuningMode === "adaptive"}
+                    className={`min-h-[44px] border-l border-border px-4 text-sm transition-colors ${
+                      tuningMode === "adaptive"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-background/60 text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    Adaptive pure
+                  </button>
+                </div>
+                <span className="font-mono text-sm text-foreground tabular-nums">
+                  drift {hud.drift >= 0 ? "+" : "−"}
+                  {Math.abs(hud.drift).toFixed(1)}¢
+                </span>
+                <span className="font-mono text-xs text-muted-foreground tabular-nums">
+                  retuned ±{hud.temper.toFixed(1)}¢
+                </span>
+              </div>
+              {/* drift meter: needle vs the star's fixed centre (0¢) over ±30¢ */}
+              <div
+                className="relative mt-2.5 h-2 w-full max-w-xs overflow-hidden rounded-full bg-border"
+                aria-hidden
+              >
+                <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-muted-foreground/50" />
+                <span
+                  className="absolute top-1/2 h-3 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary transition-[left] duration-150"
+                  style={{
+                    left: `${clamp(50 + (hud.drift / 30) * 50, 2, 98)}%`,
+                  }}
+                />
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {tuningMode === "strict"
+                  ? "Strict keeps every captured ratio pure — so the chord's centre drifts off the star and you hear it beat. The syntonic comma, made audible."
+                  : "Adaptive spreads the accumulated comma across every voice, so the centre locks back to the star. The retune is the price of anchored, pure-sounding harmony."}
+              </p>
             </div>
 
             {/* transient resonance locks */}

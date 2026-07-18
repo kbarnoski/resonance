@@ -1,11 +1,36 @@
-export const README = `# 1930 — Harmonices II
+export const README = `# 1930 — Harmonices III
 
-**Cycle 2 of the tilt-played orrery.** The instrument is the same: a symplectic
-N-body orrery under real softened gravity, tilted to pump planets into
-whole-number period ratios that sound as the TRUE just intonation the physics
-already is — never a pentatonic fake. Cycle 2 lets you *compose* with it.
+**Cycle 3 of the tilt-played orrery — the lab's first three-cycle piece.** The
+instrument is the same: a symplectic N-body orrery under real softened gravity,
+tilted to pump planets into whole-number period ratios that sound as the TRUE
+just intonation the physics already is — never a pentatonic fake. Cycle 2 let you
+*compose* with it (crystallized chords). Cycle 3 lets you *tune* it — and hear the
+300-year-old comma that pure intonation can never escape.
 
-## What cycle 2 adds
+## What cycle 3 adds — the comma pump, made playable
+
+A just-intonation lattice doesn't close. Build a chord by chaining PURE intervals
+(exactly what capturing one resonance after another does) and the chord's centre
+walks off the star's fixed pitch: two stacked pure major thirds land ~41¢ shy of
+the lattice; a I–vi–ii–V–I in strict JI sinks a whole syntonic comma (81/80 ≈
+21.5¢) per turn. Cycle 3 exposes this as a live toggle under the harmonic ledger:
+
+- **STRICT (honest physics).** Every capture keeps its exact pure ratio, so the
+  chord's centre **drifts against the star drone and you hear the beating grow**.
+  The \`drift +N¢\` readout and the meter needle climb off centre. This is what
+  pure intonation actually does — normally hidden inside equal temperament.
+- **ADAPTIVE (spread the comma).** A real-time relaxation nudges every voice a
+  fraction of a comma so the centre **locks back to the star** — beating dies,
+  \`drift → ~0¢\`, needle re-centres. The cost is shown honestly as \`retuned ±N¢\`.
+  It is the browser cousin of Stange & Wick's least-squares JI scheme
+  (arXiv:1706.04338) and Nemire's Pivotuner (arXiv:2306.03873).
+
+Flip the toggle live and the whole crystallized chord **glides** into or out of
+lock against the fixed drone. To hear it clearly: crystallize a couple of **thirds
+(5:4)** — fifths and octaves sit on the lattice and barely drift, which is itself
+the lesson (some chains close, some don't).
+
+## Cycle 2 recap (the compositional substrate cycle 3 tunes)
 
 1. **Chord crystallization (the headline).** In cycle 1 every lock was
    transient — the interval sounded only while the pair held the ratio. Now,
@@ -84,8 +109,16 @@ resonance and the interval are the same number.
 - **ESO's TOI-178 and TRAPPIST-1 sonifications** — cited as the *foil*: the
   pentatonic crutch this piece refuses. TRAPPIST-1 also lends its Laplace-chain
   architecture to the seed preset.
+- **Stange & Wick, _Playing Music in Just Intonation_ (arXiv:1706.04338)** and
+  **Nemire, _Pivotuner_ (arXiv:2306.03873)** — the adaptive-JI / moving-pivot
+  retuners cycle 3's adaptive mode implements in miniature.
 
 ## Self-assessment
+
+**Cycle 3 status:** the tuning math is numerically verified (strict holds a
+−13.7¢ drift; adaptive locks to ~0¢; reversible) but **not ear-verified** here —
+whether the drift audibly beats and the ~0.2 s lock-glide reads as "sliding into
+tune" wants a real phone + speakers.
 
 **What works:** crystallization is legible — the arc ripens, blooms as it etches
 a labelled brass ring onto the plate, and the interval appears in the harmonic

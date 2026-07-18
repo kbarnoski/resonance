@@ -1,16 +1,55 @@
-# 1930 — Harmonices II
+# 1930 — Harmonices III
 
-**Cycle 2 of `1930-harmonices`, the tilt-played orrery.** A symplectic N-body
-orrery under real softened gravity: tilt the phone (or move the pointer) to bias
-the gravity field and pump two planets into a small-integer period ratio, which
-CAPTURES into resonance and sounds the TRUE just-intonation dyad of exactly that
-ratio — never a pentatonic fake. Hold still and everything circularizes to a
-lone drone: dead without a human. Cycle 2 turns the instrument into something you
-**compose** with.
+**Cycle 3 of `1930-harmonices`, the tilt-played orrery — the lab's first
+three-cycle commitment.** A symplectic N-body orrery under real softened gravity:
+tilt the phone (or move the pointer) to bias the gravity field and pump two
+planets into a small-integer period ratio, which CAPTURES into resonance and
+sounds the TRUE just-intonation dyad of exactly that ratio — never a pentatonic
+fake. Hold still and everything circularizes to a lone drone: dead without a
+human. Cycle 2 made the instrument something you **compose** with (crystallized
+chords). Cycle 3 makes it something you **tune** — it exposes the 300-year-old
+comma that pure intonation can never escape, as a live, playable toggle.
 
-## What cycle 2 adds
+## What cycle 3 adds — the comma pump, made playable (the headline)
 
-### 1. Chord crystallization (the headline)
+A just-intonation lattice does not close. Build a chord by chaining PURE intervals
+from a moving pivot — which is exactly what capturing one resonance after another
+does — and the chord's tonal centre slowly walks off the star's fixed pitch. Two
+pure major thirds stacked make 25/16 (~773¢), ~41¢ shy of the lattice's minor
+sixth; a I–vi–ii–V–I in strict JI sinks a whole syntonic comma (81/80 ≈ 21.5¢)
+per turn. This is the tension Kepler's ratios could never resolve, and it is
+normally hidden inside a keyboard's equal temperament. Here it is a switch:
+
+- **STRICT (honest physics).** Every crystallized capture keeps its exact pure
+  ratio. The chord is locally pure — but its centre **drifts against the star
+  drone (fixed at ROOT), and you hear the beating grow.** The `drift +N¢` readout
+  and the needle on the drift meter climb off centre. This is what pure intonation
+  actually does; nobody usually lets you hear it.
+- **ADAPTIVE (spread the comma).** A real-time relaxation nudges every sounding
+  voice a fraction of a comma so the centre **locks back to the star** — the
+  beating dies, `drift → ~0¢`, the needle re-centres. The price is reported
+  honestly as `retuned ±N¢`: the accumulated comma, spread across the voices
+  rather than left to drift. It is the browser analogue of the linear-least-
+  squares scheme in Stange & Wick's _Playing Music in Just Intonation_
+  (arXiv:1706.04338) and Nemire's _Pivotuner_ (arXiv:2306.03873).
+
+Flip the toggle live and the whole crystallized chord **glides** in or out of lock
+(each voice ramps over ~0.2 s). Strict → adaptive: the sour, drifting chord slides
+into tune against the drone. Adaptive → strict: it drifts free again. That glide,
+against a fixed reference you can hear beat, is a 300-year-old theory problem made
+audible and performable in real time — harmony that bites.
+
+**Where to hear it:** capture **thirds** (5:4). Stacking two 5:4 crystals lands
+the chord ~14¢ off centre — the drift is obvious. Fifths and octaves (3:2, 2:1)
+sit on the lattice and barely drift, which is itself the lesson: some chains close,
+some don't. The tuning subsystem lives in its own `tuning.ts` (lattice math,
+pure-chain placement, the relaxation solver, and the drift/temper metrics),
+numerically de-risked with a standalone harness before shipping (strict holds a
+−13.7¢ drift at 0¢ retune; adaptive locks to ~0¢ drift at 41¢ retune; reversible).
+
+## Cycle 2 recap (still here — the compositional substrate cycle 3 tunes)
+
+### 1. Chord crystallization
 
 In cycle 1 every resonance lock was transient — the interval sounded only while
 the pair held the ratio. Now:
@@ -98,6 +137,12 @@ once the piece is mostly calm, so they don't self-play a dead orrery.
 - **ESO's TOI-178 and TRAPPIST-1 sonifications** — cited as the _foil_: the
   pentatonic crutch this piece refuses. TRAPPIST-1's Laplace-chain architecture
   is borrowed for the seed preset.
+- **Simon Stange & Christoph Wick, _Playing Music in Just Intonation: A
+  Dynamically Adapting Tuning Scheme_ (arXiv:1706.04338)** — the live linear-
+  least-squares retuner cycle 3's adaptive mode implements in miniature.
+- **Nathan Nemire, _Pivotuner_ (arXiv:2306.03873)** — automatic real-time pure
+  intonation with a moving pivot; the named reference the concept jury pointed to
+  for this cycle-3 extend.
 
 ## Self-assessment
 
@@ -111,9 +156,28 @@ lone drone. The seed preset gives an immediate consonant chord for headless
 review, and the warped well-field makes the tilt's effect on the gravity field
 readable.
 
+The cycle-3 tuning toggle is numerically verified but **not yet ear-verified** in
+this headless container: whether the drift beats audibly against the drone before
+adaptive locks it, whether the ~0.2 s glide reads as "sliding into tune" and not
+as a pitch bend, and whether the drift meter needle tracks what you hear all want
+Karel's phone + speakers. The math is proven; the _feel_ is the open question.
+
 **What's rough.** The capture-assist remains a stylised restoring force rather than
 an emergent mean-motion resonance from mutual gravity alone (too slow to feel in
 seconds). The ≤3-dyad cap keeps composed chords lean — a deliberate safety trade
-for a bounded oscillator count. Conjunction-bell density depends on live geometry,
-so there are quiet stretches, and on a real phone the tilt scaling may want
-per-device tuning.
+for a bounded oscillator count. The drift is only pronounced for chains that leave
+the lattice (stacked thirds); a fifth/octave chain barely moves, so the seed preset
+(a Laplace chain of fifths) is a quiet demo of the toggle — capture a couple of
+5:4 thirds to see the needle swing. Conjunction-bell density depends on live
+geometry, so there are quiet stretches, and on a real phone the tilt scaling may
+want per-device tuning.
+
+## Where cycle 4 could go
+
+Per-crystal "pin" (freeze one voice on the grid so the comma spreads only across
+the others); an audible **reference tick** at ROOT so the beating has an explicit
+metronome to beat against; a **comma-pump loop preset** (I–vi–ii–V–I) that
+demonstrates the full 21.5¢ sink over one bar in strict, then closes it in
+adaptive. But per the jury's discipline note ("pick the one thread, ship it, then
+rotate"), cycle 3 is likely the natural **close** of this commitment — three
+cycles: play it (1), compose with it (2), tune it (3).

@@ -7687,3 +7687,35 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
   orbital resonance is already JI) → cycle 817 DEEP: three substrates (Canvas2D N-body / WebGL2
   gravity-well / three.js armillary) of the same tilt-orrery concept, all voicing true JI from period
   ratios; ship the strongest, declare the multi-cycle extension.
+
+---
+
+## 2026-07-18 — §820 · Adaptive just intonation as a live linear-least-squares solve (the comma pump, made playable)
+
+- **Sources:** Stange & Wick, *Playing Music in Just Intonation: A Dynamically Adapting Tuning Scheme*
+  (arXiv:1706.04338; IEEE) — a scheme that "continually solves a system of linear equations" to keep a
+  performance in JI in any key without explicit decisions; Nemire, *Pivotuner* (arXiv:2306.03873) — an
+  automatic real-time pure-intonation MIDI effect with a moving pivot; tonalsoft's *adaptive-JI*
+  definition — "reduce the comma-sized retuning of a strict-JI rendition to *fractions* of a comma by
+  spreading the motion among all the chord changes." Foundational (not last-30-days), but this was the
+  concept jury's explicitly-named cycle-3 thread (JURY 2026-07-18 provocation #3), so it's a
+  jury-directed dive, and the freshness rule allows foundational technique.
+- **Why it's surprising:** a JI lattice does not close — chaining pure intervals from a moving pivot
+  (exactly what capturing one resonance after another does in 1930) walks the tonal centre off a fixed
+  reference by a syntonic comma (81/80 ≈ 21.5¢) per I–vi–ii–V–I turn; two stacked pure major thirds land
+  ~41¢ shy of the lattice minor sixth. This 300-year-old tension (Benedetti's 1585 comma-drift letter →
+  Kepler's un-closable ratios) is normally *hidden* inside equal temperament. The adaptive schemes above
+  make it a live, solvable tradeoff: keep intervals pure and let the centre drift, OR spread the comma
+  across every voice and lock the centre (at a few cents of temper). Nobody usually lets you *hear the
+  choice*.
+- **Became a prototype THIS cycle:** cycle 820 extended `1930-harmonices` to **cycle 3 (Harmonices III)** —
+  a STRICT ⇄ ADAPTIVE intonation toggle on the crystallized chord. STRICT keeps every captured ratio pure
+  so the chord beats against the fixed star drone (drift meter climbs); ADAPTIVE runs a per-frame
+  relaxation that spreads the accumulated comma so the centre locks back (drift → 0, `retuned ±N¢`
+  reported honestly). Flip live and the whole chord glides in/out of lock. Own `tuning.ts` subsystem
+  (lattice math, pure-chain placement, relaxation solver, drift/temper metrics), numerically de-risked
+  with a standalone harness before shipping.
+- **research→build chain (visible):** §820 dive (adaptive-JI = a live least-squares that spreads the
+  comma) → cycle 820 DEEP-continue: the comma pump exposed as a playable toggle on 1930's chord memory —
+  the jury's #3 provocation delivered, and the **first cycle-3** (three-cycle commitment closed: play it →
+  compose with it → tune it).

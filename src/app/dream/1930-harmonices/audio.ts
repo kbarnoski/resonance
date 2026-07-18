@@ -308,6 +308,19 @@ export class OrreryVoices {
     for (const g of c.gains) g.gain.setTargetAtTime(target, t, 0.4);
   }
 
+  /** CYCLE-3: retune a crystallized dyad's two tones to absolute frequencies.
+   *  The page owns the adaptive-JI tuning math and pushes the solved freqs here;
+   *  both oscillators glide (no zipper) so flipping strict↔adaptive is audible as
+   *  the whole chord sliding in or out of lock against the fixed star drone. */
+  setCrystalFreqs(id: string, fLow: number, fHigh: number): void {
+    if (!this.running) return;
+    const c = this.crystals.find((x) => x.id === id);
+    if (!c || c.oscs.length < 2) return;
+    const t = this.ctx.currentTime;
+    c.oscs[0].frequency.setTargetAtTime(Math.max(20, fLow), t, 0.22);
+    c.oscs[1].frequency.setTargetAtTime(Math.max(20, fHigh), t, 0.22);
+  }
+
   /** Remove a fully-decayed crystallized dyad. */
   removeCrystal(id: string): void {
     const idx = this.crystals.findIndex((x) => x.id === id);
