@@ -8061,3 +8061,36 @@ three tending verbs (paint-soil / conduct-currents / breed-and-cross) into one i
   is confirmable, or ship on its WebGL2 fallback for a spectral-timbre / evolutionary-breeding
   cycle. Files: sim.ts (three render paths, shared multi-kernel math, StatsTracker) · audio.ts
   (additive banks + Cross bloom) · page.tsx (breeder UI) · README.
+
+---
+
+## §812 — 2026-07-18 · DEEP-race runner-up (flow-eden II cycle 2)
+
+Cycle 812 ran DEEP mode (cycle 2 of the flow-eden II commitment declared §811): ONE concept —
+*conduct a living multi-kernel Flow-Lenia ecology; every species encounter is a chord you caused* —
+raced via 2 parallel interaction bets. **Winner shipped = `1904-current-eden`** (drag a decaying
+current field; warm textile palette). The runner-up cleared the ambition floor + every jury-banned
+tag; banked here with full spec (folder backed to scratchpad `banked-812/`, then removed — never
+committed). Its three strongest ideas were also folded into the winner's README as cycle-3 deepenings.
+
+- **⭐⭐ 1906-tide-eden — tend a tidepool by carving the channels the current flows through.** The
+  *different interaction bet*: instead of a transient dragged current, the human paints a **PERSISTENT
+  conductance/bank landscape** and a slow global **tide** flows through the channels you carve —
+  landscaping the flow, not pushing it. WebGL2 RGBA16F multi-species Flow-Lenia (3 species, distinct
+  kernel radii 0.34/0.55/0.80·R); a second float texture holds painted conductance(R)/bank(G).
+  Per-species flow `F = (kA·∇U − kM·∇m + tide·conductance)·(1−bank) − kB·∇bank`; reintegration-tracking
+  transport (mass-conserving, whisper dissipation, no growth-from-nothing); conductance/bank erode
+  ~40 s so old channels silt up. **Carve** raises conductance + lowers bank; **Bank** (Shift/right-drag)
+  raises a wall. Load-bearing by construction: a flat field sweeps species down non-crossing parallel
+  lanes → encounter ≈ 0 → lone drone; a **Flatten-landscape button** makes that collapse audible on
+  demand (the clearest "dead without a human" proof in the fan). Harmony = modal-that-modulates
+  (Dorian/Aeolian/Lydian home, Phrygian pivot, fifth-shifted centre, biting **Hijaz** on strong triple
+  encounters) — not pentatonic. Palette = **cool tidepool daylight** (seafoam/kelp-green/slate-blue on
+  misted-glass) — deliberately distinct from the winner's warm textile, and non-violet. Files: sim.ts
+  (perceive → 3× flow → transport → erode → 32² readback) · audio.ts · page.tsx (Carve/Bank toggle,
+  Flatten proof) · README. Ambition ~3/5 (#2 subsystems + #3 refs Chan/Flow-Lenia/Leniabreeder + #4
+  multi-cycle + #5 §812 dive). **Ship-next** on a landscaping/level-design cycle, OR graft its
+  persistent-bank tool onto 1904 for cycle 3. Rebuild note: verify (a) lanes stay separated on a flat
+  field so encounter reads ~0, and (b) the `enc·55`/`trip·900` audio thresholds match real readback
+  magnitudes (both single-constant tunes; untested in a live browser). Backed up: scratchpad
+  `banked-812/1906-tide-eden`.

@@ -7547,3 +7547,30 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
 - **research→build chain (visible):** §811 dive → the MSPD "hear-complexity-rise" hook + the
   multi-kernel license → tonight's DEEP fan (all three cited MSPD; winner **1900-tended-lenia**
   ships a live MSPD-lite complexity meter mapped to both image and just-intonation audio).
+
+---
+
+## §812 — 2026-07-18 · Flow-Lenia's *multi-species interaction* frame + fresh WebGPU/TSL flow-art
+
+- **Flow-Lenia — Emergent evolutionary dynamics** (arXiv:2506.08569, Plantec et al.; the extended
+  journal version of the 2212.07906 original). Date-checked: this is the *evolutionary-dynamics*
+  follow-up, and its central contribution is the one the lab hasn't touched yet — not that
+  mass-conservation lets creatures move, but that it lets **many species with different embedded
+  update-rules coexist and INTERACT in the same world**, analysed via an **Evolutionary Activity**
+  framework (measuring which species-parameters persist and spread through genuine competition).
+  Standard Lenia creatures each need their own universe and can never meet; Flow-Lenia's parameter
+  localization is exactly what makes cross-species *encounters* meaningful.
+  → **Became a prototype that:** turns that interaction frame into the ENTIRE instrument — a human
+  conducts a global current/tide through a multi-kernel Flow-Lenia field to force species into
+  encounters, and each encounter (cross-species dye overlap, an Evolutionary-Activity-style
+  co-occurrence signal) is what modulates the harmony. The paper's thesis (interaction is the
+  point, not motion) is the design thesis of cycle 812's `1904-current-eden` / `1906-tide-eden`.
+- **Fresh substrate note (last ~30 days, July 2026):** the audio-reactive WebGPU/TSL flow-art wave
+  is cresting — Robert Borghesi's *ASTRODITHER* (three.js WebGPU TSL: fluid sim + time-warped noise
+  + dithering, audio-reactive) and several WebGPU slime-mold pieces with multi-target audio routing
+  are the current showcase pieces (webgpu.com / three.js community). Confirms the "conduct a flow
+  field by ear" idiom is live and current; the lab's version keeps it on **WebGL2 float** for the
+  06:30 phone review (WebGPU-compute banked separately as 1902-compute-eden).
+- **research→build chain (visible):** §812 dive (multi-species *interaction* is Flow-Lenia's real
+  gift) → cycle 812 DEEP-continue: conduct currents to CAUSE encounters; the encounter signal drives
+  a modal-modulating (non-pentatonic) harmony. Cycle 2 of the flow-eden II commitment declared §811.
