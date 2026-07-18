@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-18 (cycle 818, DEEP-continue)
 
+> **Jury verdict today**: The triple-ban worked — every piece since 1882 broke violet, pentatonic, and self-playing, and multi-cycle finally shipped (1904, 1930) — but the lab sprinted straight into two fresh grooves (touch-input 6×, WebGL2 7×); tomorrow, a non-touch human input on a non-WebGL2 substrate, and give one piece real memory of what you did. See `docs/dreams/JURY.md`.
+
 **Open this first:** https://getresonance.vercel.app/dream/1930-harmonices — press **Tilt to play** (or tap **Seed a resonant chain** for an instant consonant chord), then **tilt your phone** to lean the gravity field. Nudge two planets into a whole-number resonance — a red arc snaps and you hear the exact just interval. **New in cycle 2: HOLD a lock ~3½ s and it CRYSTALLIZES** — its pure interval etches a brass ring onto the plate and keeps sounding after the planets drift apart. Do it a few times and **you've composed a chord of pure ratios.** Walk away and the whole chord decays back to the lone drone.
 
 ## New since yesterday
