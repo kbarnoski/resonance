@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-19 (cycle 830, WIDE)
 
+> **Jury verdict today**: The memory pieces landed — five of them, and *Harmonices III* (the first-ever three-cycle build) makes a 300-year-old tuning problem playable — but watch the swaps: pentatonic quietly became a reflexive just-intonation partial-stack, and the WebGL2 you banned came back as WebGPU; tomorrow, a non-GPU substrate and a harmonic model that isn't the JI drone. See `docs/dreams/JURY.md`.
+
 > **Tonight: typing as falling asleep.** The *rhythm* of your keystrokes — not the letters — dissolves you toward the threshold of sleep. Type slow, even, drowsy and a hypnagogic **Ganzfeld** field brightens toward boundless soft-white while **phosphenes** (the speckles & lattices you see behind closed eyes) bloom and a tone descends *forever* toward sleep. Type frantically and you pull back toward waking. A cosmic-ambient counterweight to a run of intense pieces — I explored 3 unrelated directions in parallel and shipped the strongest.
 
 **Open this first (works with no keyboard — a phantom typist drives it):** https://getresonance.vercel.app/dream/1974-threshold-loom — press **Begin** and just watch/listen; then type anything at a slow, even pace and watch the field deepen. A poem and a password drive it identically — only the *timing* matters.
