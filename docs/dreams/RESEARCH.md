@@ -7763,3 +7763,30 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
   comma) → cycle 820 DEEP-continue: the comma pump exposed as a playable toggle on 1930's chord memory —
   the jury's #3 provocation delivered, and the **first cycle-3** (three-cycle commitment closed: play it →
   compose with it → tune it).
+
+---
+
+## 2026-07-19 — §827 · Monocular depth in the browser is now cheap — but the lab already has it; the fresh lever is MEMORY
+
+- **The dive first surfaced arXiv:2607.06589, "Extending Xenakis: From Architectural Geometry to
+  Sonification of the Philips Pavilion"** (Ma/Wang/Zhu/Smith, 2026-07-06) — inverts Xenakis, sonifying
+  the *finished* Pavilion (nine ruled hypar surfaces, 3357 sampled points → density-energy blocks).
+  Genuinely fresh (13 days old) — **but the lab already shipped it**: `1870-metastaseis` cites this exact
+  paper. Honest research outcome: tonight's strongest *new* find was already built, so the build fell to
+  a fresh **combination** instead (research-first rule, option (c)-adjacent).
+- **The build lever this cycle: compositional MEMORY on a depth field.** Depth-Anything-V2-small runs
+  client-side via **Transformers.js on WebGPU** (`onnx-community/depth-anything-v2-small`, ONNX,
+  device:"webgpu"), loadable at runtime from a CDN with the `/* webpackIgnore: true */` dynamic-import
+  pattern the lab proves for MediaPipe (`1297-hand-loom`). **A grep correction worth logging:** depth
+  input is NOT novel here — `927-depth-room` (depth → proximity, pitch frozen) and
+  `942-depth-harmonic-room` (depth → neo-Riemannian Tonnetz) already read webcam monocular depth. Both
+  are purely **reactive**. **What neither does is remember.** The surprising, un-worn move is a depth
+  room that **durably keeps where you dwelled** and lets you walk back to swell it — the jury's #4
+  (compositional memory) applied to the depth lineage's missing ingredient.
+- **Became a prototype THIS cycle (visible chain):** §827 dive (browser depth is cheap; the depth rooms
+  are reactive, memoryless) → cycle 827 DEEP: ONE concept — *a room that remembers where your body was* —
+  attacked via 3 approaches, hedging ML-load risk (real Depth-Anything-V2 + WebGPU point cloud w/
+  revisitable memory-nodes [SHIPPED `1960-depth-well`] / no-ML pseudo-depth Canvas2D floor / depth →
+  WebGPU-compute diffusing memory-field). Ships the point-cloud realization — the most legible reading of
+  "here are the places the room still sings." Refs: Depth-Anything-V2, Transformers.js/WebGPU, Rafael
+  Lozano-Hemmer, Daniel Rozin, Myron Krueger *Videoplace*; extends in-lab `927`/`942`.
