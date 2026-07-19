@@ -7817,3 +7817,43 @@ counter-move to the 2026-07-17 jury's three findings (violet / pentatonic / no-h
 2. **"Images that Sound: Composing Images and Sounds on a Single Canvas"** (arXiv:2405.12221) — a diffusion method producing a single 2-D field that reads simultaneously as a natural **image** and, played as a **spectrogram**, as a coherent **sound**. The concept (not the heavy model) is the payload: a visual field and its sound can be the *same object*, not scalar→pitch. The lab already has a see≈hear weld (`1576-flame-voice`: variation-gains ARE the JI partials) and spectrogram-resynth pieces (1130/1308/246), so this isn't virgin — but it re-motivates welding the *whole field* to the sound rather than a scalar, which the jury names as the compositional model that "hasn't moved in a month."
 
 **Chain today's research → today's build:** WIDE fire; **Builder A cashes hook #1 directly** (WebGPU-compute Gray–Scott in cortical space, mic-hum-steered, pattern statistics re-voice inharmonic partials = the field-not-scalar weld from thread 2). Builders B/C explore two other non-touch × non-WebGL2 altered-states directions (keyboard-cadence hypnagogic ganzfeld; gamepad ketamine AV-desync) so the fire also attacks the jury's two fresh monocultures on every axis.
+
+---
+
+## §831 — 2026-07-19 · SIGGRAPH 2026 Emerging Technologies opens TODAY — music from physical impacts, and resonance-of-intentions
+
+**Dive (research-first rule; genuinely <24h fresh).** SIGGRAPH 2026 runs **July 19–23, 2026** at the LA
+Convention Center — its Experience Hall / Emerging Technologies opened **today**. Two pieces are directly
+on-theme for the lab and both are hands-on, participatory (the ET program's stated emphasis this year:
+"direct audience participation and embodied experience rather than passive observation"):
+
+1. **Taisei Kato & Tetsuaki Baba (Tokyo Metropolitan University) — *A MIDI-Controlled Water-Droplet
+   Interface for Generating Droplet Impact Sounds.*** Music composed from **precisely timed collisions of
+   falling water droplets** — the sound IS the physical impact, and the "score" is the choreography of
+   drop timings. Surprising for us because it is a working, exhibited answer to the jury's provocation #2
+   ("force a *different* harmonic model… pure rhythm/timbre with no pitch lattice at all"): here there is
+   no scale whatsoever, only impact-timbre and rhythm. **Could become a prototype that** builds music by
+   stacking timed impacts — a drug-free, browser, *haptic* reimagining where tapping drops stones that
+   collide (modal/resonant impact synthesis, Web Audio), the Vibration API puts each hit in your hand, and
+   the rhythms phase against each other (Reich) into a growing "cairn" you can also *un-build* by knocking a
+   stone off. → **cashed this cycle as Builder B `1982-droplet-cairn`.**
+2. **Takeru Hashimoto, Shunichi Kasahara et al. — *Shall We Dance? Resonance of Intentions with an
+   Embodied Agent.*** A real-time agent that **synchronizes movement with and responds to a human dance
+   partner** — mutual entrainment / shared intention as the interface. Aligns with the lab's under-served
+   "embodied / camera-pose" lane and the Karel-loved dance/camera set (`217-dance-avatar`, `101-camera-song`).
+   **Could become a prototype that** turns a webcam pose stream into a duet: an on-screen partner that leads
+   or follows your movement, and the *degree of synchrony* (phase-lock between your motion and its motion)
+   drives whether an accompaniment resolves or fractures — "resonance of intentions" as a consonance dial.
+   Banked to IDEAS (a fresh non-touch, non-GPU-harmonic, camera-input seed for a later cycle).
+
+**Chain today's research → today's build (visible in STATE §831):** §831 dive (SIGGRAPH ET impact-sound
+interface, opens today) → cycle 831 WIDE Builder B `1982-droplet-cairn` cashes it directly. Builders A
+(`1980-tritave-loom`, Bohlen–Pierce editable weave on SVG-DOM) and C (`1984-stretched-choir`,
+Sethares stretched-partial spectrum on the CSS compositor) attack the jury's other two live directives —
+a non-JI harmonic model and a non-GPU substrate — on fully disjoint tag axes.
+
+**Date honesty.** Finding is genuinely <24h (ET program live today); the impact-sound and dance-agent
+pieces are new SIGGRAPH 2026 ET installations. The supporting harmonic refs the builders lean on
+(Bohlen–Pierce 1972, Sethares 1998, Reich, Oliveros) are foundational technique — allowed under the
+freshness rule, which permits stable foundational methods; the *freshness* this cycle is the SIGGRAPH lead
+and the lab-first fusions (editable un-weaving; impact-haptic no-pitch cairn; CSS-compositor stretched choir).
