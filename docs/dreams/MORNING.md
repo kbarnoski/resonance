@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-07-20 (cycle 840, WIDE)
+# Morning digest — last updated 2026-07-20 (cycle 841, WIDE)
 
-> **Grow frost, and hear it grow.** `2028-frost-lattice` nucleates a dendritic crystal that branches outward by **diffusion-limited aggregation** — and every particle that freezes onto the lattice both draws a branch and rings a glassy inharmonic tone, so the fern is literally its own evolving score. **DLA is grep-0× across ~800 prototypes** — a beloved generative-design technique the lab had never used, and almost always shipped as a *silent* picture; coupling each freeze to sound is the fresh move. Best move: let it grow from the centre seed, then **tap the field** to drop competing seeds and watch rival dendrites race, each climbing the register as it reaches outward.
+> **A Shepard tone for TEMPO.** `2036-eternal-groove` is a percussion groove that accelerates (or decelerates) *forever* without ever actually getting faster — the underlying pattern is static and loops seamlessly, yet the ear keeps hearing "faster." Five layers are stacked an octave apart in tempo and glide through a fixed loudness window; a layer that runs off the top wraps silently back to the bottom. It's the rhythmic transposition of the Shepard/Risset endless-pitch illusion — **grep-0× in the tempo domain across ~800 protos** — and it's a genuine *perceptual* trip (an altered perception without the drug). Best on headphones over ~15–20 s. Pure percussion, no scale at all.
 
 ## New since yesterday
-- **[2028-frost-lattice](https://getresonance.vercel.app/dream/2028-frost-lattice)** — the winner above. Self-grows on load; press Begin for sound, tap to seed. SVG-DOM, pale ice-blue on charcoal. Whole crystal is a single accumulating `<path>` (one node however large it gets).
+- **[2036-eternal-groove](https://getresonance.vercel.app/dream/2036-eternal-groove)** — the winner above. Press Begin (auto-demo sweeps within ~2 s), tap the pulse to set tempo, drag up/down to steer accelerate-forever / hold / decelerate-forever. **CSS-compositor only** (concentric DOM rings, no canvas/WebGL), warm ink-brass on dark.
 
 ## How this cycle ran (WIDE — 3 parallel builders → 1 shipped)
-- All 3 explorers were disjoint on input × output × technique × harmony × palette, and off every jury ban. Shipped the highest-ambition, most-surprising *technique* (DLA, grep-0×, honest 3/5). Kept forcing non-JI harmony (glass-plate inharmonic bells).
+- 3 explorers disjoint on input × output × technique × harmony × palette, all off every jury ban; each cleared **3 ambition criteria**. Shipped the boldest diversity move + freshest perceptual surprise. Winner has **no pitch lattice at all** — the cleanest possible dodge of the jury-banned JI partial-stack.
 
-## Explored & banked (IDEAS.md §840 — each one curation from shipping)
-- **⭐⭐ tide-glass** — tilt luminous liquid (or drag) and *hear the tide*: a damped-slosh water line sweeps a spectral filter. Pure **CSS-compositor** — the coldest starving substrate the jury keeps asking for. **Top resurrect.**
-- **⭐ tritave-veil** — a meditative drone tuned to the **Bohlen–Pierce** scale (no octave — the tritave 3:1 split into 13 steps); sing into it and your note snaps to a BP degree. Cashes the jury's #2 "force a non-octave harmonic model" directive *by name*.
+## Explored & banked (IDEAS.md §841 — each one curation-away from shipping)
+- **⭐ diffusion-field** — *draw glowing colour-curves; the luminous field diffusing between them IS the music.* Real **diffusion curves** (Orzan et al., SIGGRAPH 2008) via WebGL2 Poisson/Jacobi relaxation → a 5-formant synth. The most substantial + beautiful of the three, and a **cosmic-ambient rebalance**. **Top resurrect.**
+- **recurrence-loom** — *see a sound's hidden self-similarity as a woven cloth, and hear the period it finds.* The true N×N **recurrence matrix** (Takens/Eckmann, NOT an XY scope) of live audio, Canvas2D + comb-echo. Grep-0× but more analytical than immersive.
 
-## Research finding worth a look (RESEARCH §840)
-- The jury's anti-JI-reflex prescription (**Bohlen–Pierce**) has a living 2026 scene behind it (Microtone Fox May-2026 gallery). But the fan surfaced something fresher: **DLA** — a generative-design staple the lab had literally never touched, usually shipped silent. Coupling it to sound made the winner.
+## Research finding worth a look (RESEARCH §841)
+- The frontier feed's July-2026 default is still *server-grade joint audio-visual generation* (heavy, budgeted). The fresher, **$0** move: three foundational techniques the lab has never coupled to sound — **Risset rhythm** (shipped), **diffusion curves**, **recurrence plots** — all grep-0× in-lab.
 
 ## Open questions for Karel
-- Does the frost fern read **vividly** on your monitor, and do stacked freezes sound like an evolving shimmer or get busy? (Built headless — no display/speakers here.)
-- Substrate: I shipped SVG-DOM (warm, 3×) to get the grep-0× technique — the genuinely-cold **CSS-compositor** lane is banked as tide-glass (top resurrect). Want the next cycle to force that cold substrate?
+- Does the tempo illusion **actually convince** on your speakers? (Built headless — no display/speakers here. Builder says it's strongest on headphones; the *visual* direction cue is subtler than the audio.)
+- **Infra flag:** the dream-agent container now hits a hard 4096 open-file cap during a *full* `npm run build` at ~800 routes (`EMFILE` — and HEAD fails identically, it's not my code). The lab has been quietly relying on `next build --experimental-build-mode compile` (the exact compile phase Vercel fails on — it passed EXIT 0 with the winner). Worth raising the env ulimit or pruning/paginating the `/dream` index so the real static build can run again.
 - The audio→image→**video** AI chain is still the one unbuilt frontier rung (asked-for for weeks; the $0 in-browser path is proven). Want me to scope a full cycle on it?
