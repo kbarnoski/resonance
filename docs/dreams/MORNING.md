@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-07-20 (cycle 841, WIDE)
+# Morning digest — last updated 2026-07-20 (cycle 842, WIDE)
 
-> **A Shepard tone for TEMPO.** `2036-eternal-groove` is a percussion groove that accelerates (or decelerates) *forever* without ever actually getting faster — the underlying pattern is static and loops seamlessly, yet the ear keeps hearing "faster." Five layers are stacked an octave apart in tempo and glide through a fixed loudness window; a layer that runs off the top wraps silently back to the bottom. It's the rhythmic transposition of the Shepard/Risset endless-pitch illusion — **grep-0× in the tempo domain across ~800 protos** — and it's a genuine *perceptual* trip (an altered perception without the drug). Best on headphones over ~15–20 s. Pure percussion, no scale at all.
+Mode **WIDE** — 3 parallel builders, ship the strongest. This fire cashed the three strongest **banked TOP-resurrects** (each built demoable in a prior fire), disjoint on every tag axis, all off the jury 2026-07-19 bans, on the two cold substrates + un-banned WebGL2.
 
 ## New since yesterday
-- **[2036-eternal-groove](https://getresonance.vercel.app/dream/2036-eternal-groove)** — the winner above. Press Begin (auto-demo sweeps within ~2 s), tap the pulse to set tempo, drag up/down to steer accelerate-forever / hold / decelerate-forever. **CSS-compositor only** (concentric DOM rings, no canvas/WebGL), warm ink-brass on dark.
+- **[2046-orbit-transit](/dream/2046-orbit-transit)** — *the satellites and the ISS passing overhead right now, sung as an evolving Doppler-swept chord.* **Why open it:** the sky's real orbital traffic becomes music — each visible pass is a sustained voice whose pitch bends with its actual range-rate (approaching rises, departing falls), altitude sets register, elevation sets loudness, azimuth pans it; the chord re-voices as passes rise and set. Opens the **never-used orbital-data lane** — the boldest anti-"too similar" move available. Self-drives on mount (seeded sim); an optional live ISS fetch flips the chip to "live". Audio-forward + a quiet SVG sky-dome, non-JI Doppler glissando, off every ban.
 
-## How this cycle ran (WIDE — 3 parallel builders → 1 shipped)
-- 3 explorers disjoint on input × output × technique × harmony × palette, all off every jury ban; each cleared **3 ambition criteria**. Shipped the boldest diversity move + freshest perceptual surprise. Winner has **no pitch lattice at all** — the cleanest possible dodge of the jury-banned JI partial-stack.
+## In progress / partial
+- None — single-fire ship. Two runners-up were built demoable this session and banked (below), not committed (non-winner rule).
 
-## Explored & banked (IDEAS.md §841 — each one curation-away from shipping)
-- **⭐ diffusion-field** — *draw glowing colour-curves; the luminous field diffusing between them IS the music.* Real **diffusion curves** (Orzan et al., SIGGRAPH 2008) via WebGL2 Poisson/Jacobi relaxation → a 5-formant synth. The most substantial + beautiful of the three, and a **cosmic-ambient rebalance**. **Top resurrect.**
-- **recurrence-loom** — *see a sound's hidden self-similarity as a woven cloth, and hear the period it finds.* The true N×N **recurrence matrix** (Takens/Eckmann, NOT an XY scope) of live audio, Canvas2D + comb-echo. Grep-0× but more analytical than immersive.
+## Explored & banked this fire (see IDEAS §842)
+- **⭐⭐ diffusion-field** — *draw glowing colour-curves; the luminous field diffusing between them IS the music.* The **most technically substantial + most beautiful** build of the fan: a real WebGL2 Jacobi **Poisson diffusion-curve** solver (Orzan, SIGGRAPH 2008; confirmed *live 2026* by arXiv:2408.09211) driving a 5-formant spectral synth. De-selected only because "draw→hear" is the lab's most-worn *loved* shape — but it's the **TOP resurrect** and pays back the cosmic-ambient re-center the recent non-psychedelic window owes.
+- **⭐ tide-glass** — *tip a vessel of luminous liquid and hear the tide slosh, overshoot and ring.* A real damped-oscillator slosh on the **coldest substrate** (CSS-compositor only), spectral non-JI wash. Coldest-lane bank.
 
-## Research finding worth a look (RESEARCH §841)
-- The frontier feed's July-2026 default is still *server-grade joint audio-visual generation* (heavy, budgeted). The fresher, **$0** move: three foundational techniques the lab has never coupled to sound — **Risset rhythm** (shipped), **diffusion curves**, **recurrence plots** — all grep-0× in-lab.
+## Research finding worth a look (RESEARCH §842)
+- **Diffusion-curves-as-a-Poisson-problem is a live 2026 thread** (arXiv:2408.09211 · NURBS-Splatting 2606.31764 · ETH-Zurich ray-traced diffusion curves 2026) — which is what upgraded the diffusion-field resurrect from "foundational" to "current."
 
 ## Open questions for Karel
-- Does the tempo illusion **actually convince** on your speakers? (Built headless — no display/speakers here. Builder says it's strongest on headphones; the *visual* direction cue is subtler than the audio.)
-- **Infra flag:** the dream-agent container now hits a hard 4096 open-file cap during a *full* `npm run build` at ~800 routes (`EMFILE` — and HEAD fails identically, it's not my code). The lab has been quietly relying on `next build --experimental-build-mode compile` (the exact compile phase Vercel fails on — it passed EXIT 0 with the winner). Worth raising the env ulimit or pruning/paginating the `/dream` index so the real static build can run again.
-- The audio→image→**video** AI chain is still the one unbuilt frontier rung (asked-for for weeks; the $0 in-browser path is proven). Want me to scope a full cycle on it?
+- **Diversity vs. beauty:** I shipped orbit-transit (never-used data lane, bigger *concept*) over diffusion-field (higher ambition, richer *visual*) to honor the hard Diversity Mandate + your "too similar" directive. If you'd rather I weight *beauty/technical depth* over *lane-novelty*, say so — diffusion-field is one curation away.
+- **The AI-pipeline chain (audio→image→video, ≥2 models) is STILL 0×** (jury #5). I keep earmarking it and not building it because I'm headless and can't verify a multi-GB in-browser model actually *loads* — a runtime model failure passes the compile-mode build gate and would silently break your review. Worth a dedicated cycle where runtime is verifiable. Flagging honestly rather than punting silently again.
+- **Infra:** the dream container's 4096-fd hard cap still blocks a *full* `npm run build` at ~800 routes (HEAD too) — the lab leans on `next build --experimental-build-mode compile` (the Vercel compile gate). Raising the ulimit or paginating `/dream` would restore the real static build.
