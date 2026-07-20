@@ -1,156 +1,140 @@
-# Concept Jury Verdict — 2026-07-19
+# Concept Jury Verdict — 2026-07-20
 
 ## Summary
-The lab did the thing you'd want a lab to do: it heard the last verdict and
-*acted*. Yesterday's loudest ask — provocation #4, "push compositional MEMORY,
-not just reactivity" — landed **five times** (1930 crystallized chords → cycle 3,
-1932 canon loom, 1934 breath fresco, 1938 forking garden, 1960 depth well), and
-**1930-harmonices became the lab's first-ever THREE-cycle commitment**, cashing
-the criterion (#4) that sat at 0/15 for a month. Novelty is up too: five clean
-#1 hits (Physarum spectral harmony, functional SATB voice-leading, scroll-as-
-instrument, Gamepad API, onset→phase-reset weld). That's the good news, and it's
-real. The catch is the same reflex as always: escaping one groove, the lab
-sprinted into two new ones. **Pentatonic didn't get replaced by variety — it got
-replaced by a single reflexive just-intonation partial-stack** (the identical
-`[1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, 2]` over a ~55 Hz root, ~7×). And the
-**WebGL2 you banned yesterday (7×) came straight back as WebGPU (5×)** — same GPU
-reflex, new API. We fixed the scale and the substrate name; the *habit* underneath
-both is untouched.
+This is the best **novel-technique** window the lab has ever produced — and also the
+window where it quietly stopped being the lab it's supposed to be. The #1 criterion
+(a technique never used before) landed cleanly maybe eight times: the first in-browser
+**AI-model chain** (1992), the first real **external-API sonification** (1998, a
+floor example that sat 0× for the lab's whole history), the first **HRTF-as-instrument**
+(2010), a **DLA** frost instrument (2028), a **fractal-basin** instrument (2020), a
+**Risset-rhythm** endless accelerando (2036), a **no-pitch haptic** impact-cairn (1990),
+and Sethares **stretched-partial** harmony (1984). The two banned grooves from last
+verdict genuinely died: **zero JI-partial-stacks**, and **WebGPU-as-output collapsed
+from 5× to 1×**. That's real, and it's excellent. The catch is the same reflex, one
+level up: escaping "clever visualizer" the lab sprinted into **"clever system"** — data
+feeds, AI chains, physics sims, perceptual illusions — all high-ambition, and **only 1
+of the 12 new pieces (2010) sits on the cosmic-ambient / altered-states pole that
+AGENT.md calls "the top creative driver."** The lab got so good at single-fire novelty
+that it (a) drifted off Karel's PRIMARY psychedelic mandate, (b) made **zero multi-cycle
+commitments** the window after shipping its first-ever three-cycle piece, and (c) swapped
+the banned JI drone for a different reflexive sound — the same glass-plate inharmonic bell.
 
 ## Diversity audit
-- **Over-represented input:** *none ≥4 — and that's the headline.* The pointer/touch
-  monoculture (6× last window, hard-banned) genuinely broke: pointer is now **2×**
-  (1916/1922). Input is the most diverse it has been in months — voice/breath/hum
-  3× (1928/1934/1972), tilt 2× (1930/1944), MIDI/keyboard 2× (1932/1952), camera 2×
-  (1946/1960), plus one-each gamepad (1938), scroll (1958), audio-file (1966),
-  keyboard-cadence (1974). **The input ban worked cleanly — do NOT re-ban touch;
-  celebrate the spread.**
-- **Over-represented output:** **WebGPU, 5×** (1916/1934/1944/1960/1972) — the new
-  reflex. Told WebGL2 was banned and WebGPU-compute was the starving lane the jury
-  kept asking for, the lab over-corrected straight into it; WebGL2 collapsed to 1×
-  (1922) and WebGPU became the default GPU path. Right behind it, **Canvas2D at 4×**
-  (1930/1932/1938/1974) sits exactly on the threshold. The clean, under-served
-  substrates the lab *did* use and should lean on: SVG-DOM 2× (1928/1958),
-  CSS-compositor 1× (1952), three.js 2× (1946/1966).
-- **Over-represented technique:** **the JI additive partial-bank, ~7×**
-  (1930/1934/1944/1946/1958/1960 + the drone bed of 1952) — **this is the new
-  pentatonic.** The pentatonic ban succeeded, but the lab replaced one safe default
-  with another: a stack of pure ratios over a low root. In **three** pieces
-  (1946/1958/1960) it is the *literal same* set `[1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8,
-  2]`. Second groove: **Klüver form-constant / log-polar geometry, 4×**
-  (1952/1966/1972/1974) — two of them (1966/1972) built directly on
-  `_shared/psych/logpolar`, the deepest-worn engine in the lab (the same relapse
-  flagged for 1862 last week).
-- **Over-represented vibe:** two clusters. **Warm-material / craft palettes, 6×**
-  (graphite-brass 1922, gold-vellum 1928, engraved-brass 1930, indigo-linen 1932,
-  plaster-fresco 1934, paper-cinnabar 1958) — the celebrated fresh direction, **do
-  NOT ban.** But **cosmic teal/magenta/violet iridescence is creeping back, 5×**
-  (1944/1946/1952/1972/1974) — all the altered-states pieces — and **1946's "indigo
-  → violet → gold on near-black" is a straight relapse to the exact palette the
-  last jury killed.**
-- **BANNED for next cycle:** WebGPU as the primary output (5×) · the JI-additive-
-  partial-stack-over-a-low-root as the harmonic model (~7×), and specifically the
-  `[1,9/8,5/4,4/3,3/2,5/3,15/8,2]` set · Klüver/log-polar form-constant geometry
-  (4×) · violet-on-near-black cosmic palette (the 1946 relapse). **NOT banned
-  (self-corrected, celebrate):** touch/pointer input, WebGL2, pentatonic, the warm-
-  craft palette family.
+- **Over-represented input:** **pointer/touch, 5×** (1990/2012/2020/2028/2036) — the
+  monoculture the *last* jury celebrated breaking (it was down to 2×) has crept straight
+  back. Runner-up: **mic/voice/breath, 4×** (1972/1992/2004/2010). The clean, under-used
+  inputs to lean on: external-data/none 2× (1998/2046), MIDI 2× (1984/1996),
+  keyboard-cadence 1× (1974), audio-file 1× (1966).
+- **Over-represented output:** **SVG-DOM, 4×** (1996/2012/2028/2046) — the *new* default.
+  **Important context: this is the ban working.** Told GPU was banned, the lab correctly
+  went off-GPU — WebGPU-output fell to 1× (1972), and off-GPU pieces are now 8/15
+  (SVG-DOM 4×, CSS-compositor 3× [1984/1990/2036], audio-only 1× [2010]). But SVG-DOM is
+  now the substrate it reaches for on autopilot. WebGL2 (2×: 1992/2004), three.js (2×:
+  1966/2020) and Canvas2D (2×: 1974/1998) are all healthy again.
+- **Over-represented technique:** **perceptual-illusion-made-audible, 4×** — Shepard-Risset
+  + Ganzfeld (1974), Ganzfeld/HRTF (2010), Leviant *Enigma* op-art (2012), Risset-rhythm
+  (2036). Each is individually sharp; as a *set* it's a groove ("find a classic illusion,
+  sonify the illusory percept"). Runner-up grooves: sim-as-instrument 3× (1972/2020/2028),
+  AI-chain 2× (1992/2004), external-data 2× (1998/2046). And the **harmonic reflex** that
+  replaced JI: the inharmonic **Chladni glass-plate bell `1, 2.76, 5.40, 8.93`** is the
+  literal strike sound of BOTH 2020 and 2028 (and recurs lab-wide: 1930/1762/1784/…).
+- **Over-represented vibe:** **muted graphite/neutral-material on near-black, ~6×**
+  (1984/1990/1998/2010/2012/2036/2046) — the on-brand safe zone, broadened from last
+  jury's celebrated "warm-craft" family into a general monochrome default. The flip side
+  is the real finding: **cosmic / psychedelic vibe is now UNDER-served** — 3 of the 4
+  (1966/1972/1974) are carryovers from the last window; 2010 is the only *new* one.
+- **BANNED for next cycle:** pointer/touch input (5×) · SVG-DOM output (4×) · the
+  perceptual-illusion-made-audible technique (4×) · the inharmonic Chladni bell
+  `1, 2.76, 5.40, 8.93` as the default strike sound. **NOT banned (self-corrected —
+  celebrate):** WebGL2, three.js, Canvas2D (the GPU ban worked; don't ping-pong-ban them
+  back), the warm/neutral craft palette, MIDI, external-data.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria:** **0** — fifth straight clean floor. No local-minimum builds
-  by the letter.
-- **Hit 2–3 criteria:** **11** — 1922 (2), 1932 (2), 1944 (2), 1952 (2), 1934 (3),
-  1938 (3), 1946 (3), 1960 (3), 1966 (3), 1972 (3), 1974 (3).
-- **Hit 4–5 criteria:** **4** — 1916 (#1+#2+#3+#5), 1928 (#1+#2+#3+#5), 1930
-  (#2+#3+#4+#5), 1958 (#1+#2+#3+#5). The standing caveat holds: the WIDE/DEEP
-  pipeline auto-hits #3 (named ref) and #5 (recent research) most cycles, so 4+ is
-  partly process. **But the two discriminating criteria BOTH moved this window.**
-  **#1 (novel technique)** is up sharply — cleanly hit by **1916** (Physarum +
-  WebGPU-compute + graph-Laplacian eigenvalue harmony), **1928** (real functional
-  SATB voice-leading — a genuinely lab-first harmony engine), **1958** (scroll
-  velocity as the sole instrument), **1938** (Gamepad API), and arguably **1966**
-  (onset→phase-reset as a grep-0× *weld*). And **#4 (multi-cycle)** delivered its
-  **first three-cycle piece ever** — 1930. The floor stats finally show excellence,
-  not just process.
+- **Hit 0–1 criteria:** **0** — sixth straight clean floor. No local-minimum builds by the letter.
+- **Hit 2–3 criteria:** **9** — 1972(3), 1974(3), 1984(3), 2010(3), 2012(3), 2020(2),
+  2028(3), 2036(3), 2046(3).
+- **Hit 4–5 criteria:** **6** — 1966, 1990, 1992, 1996, 1998, 2004 (each #1+#2+#3+#5).
+  The standing caveat holds harder than usual this window: the WIDE pipeline auto-hits #3
+  (named ref) and #5 (recent research) nearly every fire, so "4" almost always means
+  `#1+#2+#3+#5`. The two *discriminating* criteria split sharply: **#1 (novel technique)
+  is the strongest it has ever been** — this is the most novel-technique-dense window on
+  record. **But #4 (multi-cycle) went to 0×** — the window right after the lab's first-ever
+  three-cycle piece (1930). Every one of these 15 is single-fire. Breadth is now crowding
+  out depth.
 
 ## Standouts (positive)
-- **1930-harmonices (III)**: the lab's **first three-cycle commitment**, and it
-  earned the third cycle. The **comma-pump toggle** — STRICT keeps every captured
-  interval pure and lets the chord's centre audibly drift and beat against a fixed
-  star drone, ADAPTIVE spreads the syntonic comma across the voices in a live
-  least-squares relaxation so it locks back — makes a **300-year-old tuning problem
-  playable in real time**. This is the deepest "harmony that bites" the lab has
-  produced. Flip it on stacked 5:4 thirds and you *hear* why pure intonation can't
-  close. Extend or retire, but this is the one to be proud of.
-- **1928-choralis**: the exact antidote to the monoculture this verdict names. A
-  hand-rolled **YIN** detector feeding a real **functional SATB voice-leading**
-  search — tendency-tone resolution, parallel-fifth avoidance, secondary dominants,
-  cadences, live modulation — under your sung line. It is *not* a no-wrong-notes JI
-  wash; it progresses and cadences. Proof the lab can write real harmony when it
-  chooses to.
-- **1916-slime-cantor**: the clean #1. A WebGPU-compute Physarum whose emergent
-  **network topology** — its graph-Laplacian eigenvalues — *is* the chord.
-  Continuous, non-quantized, non-pentatonic pitch that morphs as the slime rewires.
-  Novelty in the compositional model, not just the sim.
-- **1958-treatise-scroll**: the freshest **input** in the window and the cleanest
-  groove-dodge — *scroll velocity is the tempo, and the music exists only while you
-  read.* Reading a Cardew *Treatise* graphic score IS performing it. Off-GPU
-  (SVG-DOM), and its named reference is a gallery show that **opened 2026-07-10** —
-  genuine <14-day research, not a dusted-off paper.
-- *Honorable mention* — **1938-forking-garden**: first Gamepad API input, and the
-  only memory piece that lets the past *branch* (Borges: all alternate futures
-  sound at once) rather than merely accumulate.
+- **1990-impact-cairn**: the boldest piece in the window and the cleanest double-cash of
+  the *last* verdict — it kills jury #2 (a genuine **no-pitch-lattice** instrument: modal
+  impact synthesis, per-hit jitter so no pitch can crystallize) AND jury #3 (**consequential
+  memory** — you *knock a stone off* and the loop audibly loses it, plus a tumble sound so
+  un-making is itself an event). Near-non-visual, haptic-load-bearing, meant to be played
+  eyes-closed. This is the lab actually testing its own screen-first reflex, not just
+  naming it. Extend this one.
+- **1998-terra-tremor**: the living planet as score. Every earthquake on Earth in the last
+  24h, metered out of the real USGS feed as struck resonances in a drifting tectonic
+  drone — mag→register/decay, depth→brightness, longitude→pan. It's the first real
+  external-API sonification in a ~1000-piece lab, and it's music *about something*.
+  2046-orbit-transit then extends the lane (orbital traffic → Doppler chord) without
+  copying it — a genuine two-piece lane opening, not a repeat.
+- **1984-stretched-choir**: the antidote to "the invention is always in the sim, the pitch
+  is always boilerplate." Here the invention *is* the pitch material — Sethares
+  matched stretched-partial timbre+scale, with a live **Roughness** meter that numerically
+  tracks the sensory dissonance you hear as you drag the stretch. Playable (MIDI + keyboard),
+  and it does it all on the **CSS compositor** — no canvas at all.
+- *Honorable mention* — **1992-semantic-choir**: the first ≥2-model in-browser AI chain
+  (Whisper → MiniLM), $0, no `package.json` change — cashing the AI-pipeline criterion
+  that sat 0× across ~27 verdicts.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **The JI-additive-partial-bank cluster (1934/1944/1946/1958/1960, + the 1952
-  drone)**: the visible proof that banning pentatonic didn't buy harmonic variety —
-  it bought a *different* reflexive default. Five pieces sonify their input through
-  a stack of pure ratios over a ~55 Hz root; three use the *identical* set. The
-  invention is always in the sim/sensor; the pitch material is boilerplate. This is
-  the 2026-05-31 mandate's "local minimum" wearing new numbers.
-- **1946-somatic-echo**: concept is fine (movement→reward, stillness rewarded), but
-  it is the **palette + substrate relapse** in one build — "indigo → violet → gold
-  on near-black" is precisely the violet-on-near-black the last jury killed, and
-  THREE.Points is the reflexive GPU substrate. When the lab isn't paying attention,
-  this is the shape it defaults to.
-- **1966-alpha-reset & 1972-morphosong (the log-polar relapse)**: two more pieces
-  built on `_shared/psych/logpolar` — the deepest-worn groove, flagged for 1862
-  last week. Four form-constant pieces this window (1952/1966/1972/1974) is the lab
-  falling into the cortical-warp engine whenever altered-states ideas run thin. And
-  a tell worth naming: **1966's headless fallback carrier is a *pentatonic*
-  arpeggio** — the banned scale is still alive in a fallback path.
+- **2004-oracle-echo as a near-repeat of 1992-semantic-choir**: two AI-chains in one
+  window, same architecture (mic → ASR → text-model → **WebGL2** particle field), same
+  named reference (Memo Akten *Learning to See*), 12 prototypes apart. Having proven the
+  chain in 1992, the lab immediately did a *variation* (sentiment instead of embedding)
+  rather than pushing to the audio→image→**video** leg that's actually 0×. This is the
+  local-minimum tell wearing an AI badge: repeat the safe half of the frontier instead of
+  taking the unbuilt half.
+- **The inharmonic Chladni-bell cluster (2020 + 2028)**: the visible proof that banning JI
+  didn't buy harmonic variety — it bought a *different* reflexive default. Both strike the
+  identical glass-plate set `1, 2.76, 5.40, 8.93`; the genuine invention is upstream in the
+  sim (magnetic-pendulum basins / DLA), and the sound is the same bell the lab has reached
+  for since 1762. This is the 2026-05-31 mandate's "local minimum" wearing new ratios.
+- **The perceptual-illusion cluster (1974/2010/2012/2036)**: four "sonify a famous
+  perceptual illusion" pieces. Each is legitimately clever and none is a *build* failure —
+  but as a repeating shape it's the next groove forming. Watch it; don't let a fifth land.
 
 ## Provocations for tomorrow's dream cycle
-1. **WebGPU is the new WebGL2 — don't fall for the frictionless-GPU trap you already
-   named to Karel (MORNING §830).** Last jury banned WebGL2 (7×); the lab rushed
-   into WebGPU (5×). Next cycle: a **non-WebGPU, non-Canvas2D** substrate. SVG-DOM
-   (2×) and CSS-compositor (1×) both carried real pieces this week (1928/1958/1952);
-   or go genuinely **audio-only / haptic** and test the screen bias directly.
-2. **Ban the JI partial-stack for a week — it's the new pentatonic.** No
-   `[1,9/8,5/4,...,2]`-over-a-low-root additive drone next cycle. Force a *different*
-   harmonic model: real functional harmony (1928 proves it's buildable),
-   spectral/graph (1916), **non-octave xenharmonic (Bohlen–Pierce)**, pure
-   rhythm/timbre with no pitch lattice at all, or a scale that *changes* over the
-   piece rather than a fixed partial set.
-3. **Memory landed — now make it CONSEQUENTIAL, not just additive.** Five memory
-   pieces cashed #4, but 1930-cyc2 ≈ 1934 ≈ 1960 are the same gesture: *deposit a
-   persistent tone you can revisit.* Only 1938 lets the past *branch*; none let you
-   **delete, overwrite, or transform** what you already laid down. Push authorship —
-   a piece where an earlier gesture is *editable* and can be *un-made* — not one
-   more revisitable-deposit field.
-4. **Close the 1930 thread — don't fork it.** It's the first three-cycle commitment
-   and it delivered; per AGENT.md, "two live commitments is the ceiling; finish,
-   don't run a cycle 4." Ship a genuine capstone (e.g. save/recall a tuned chord
-   *across sessions*) or **retire it and rotate.** Don't let the one good multi-cycle
-   thread become an infinite one.
-5. **The AI-pipeline chain (audio→image→video, ≥2 models) is STILL 0× — but the last
-   excuse just died.** 1960 ran **real ML in the browser** (Depth-Anything-V2 via
-   Transformers.js/WebGPU), **$0, no paid budget, no `package.json` change.** That
-   $0 in-browser path can cash the frontier with **no budget ask** — the lab can now
-   answer Karel's own standing open question itself. Scope ONE cycle on it.
+1. **Go psychedelic again — it is now the lab's single biggest blind spot.** Only 1 of the
+   12 *new* pieces (2010) touches the cosmic-ambient / altered-states pole that AGENT.md
+   calls the top creative driver; STATE.md itself admits the re-center is "6 cycles
+   overdue." Next cycle MUST be altered-states — and NOT through the worn log-polar
+   form-constant engine (that's the *other* psychedelic groove). Bring a fresh state
+   (ketamine/NDE tunnel-to-light, a DMT breakthrough geometry that isn't log-polar,
+   hypnagogic drift) and a fresh technique. `2006-ganzfeld-well` is banked and pre-built
+   for exactly this.
+2. **Ship a multi-cycle commitment — #4 fell to 0× this window.** The lab got so good at
+   single-fire novelty that it stopped building depth the moment after landing its first
+   three-cycle piece (1930). Pick ONE genuine standout — 1990's un-build grammar, 1998's
+   living-planet, or 1984's stretched harmony — and give it a real cycle-2. Breadth is
+   crowding out depth.
+3. **Ban the Chladni bell `1, 2.76, 5.40, 8.93` as the default strike sound.** The JI ban
+   worked; this is its replacement. Any struck/plucked event next cycle must use a
+   *different* engine — Karplus–Strong / waveguide physical modeling, granular, FM, or a
+   real sampled body — not the glass-plate ratios for the fifth time.
+4. **Name and stop the substrate ping-pong.** WebGL2 (7×) → banned → WebGPU (5×) → banned →
+   SVG-DOM (4×). The lab escapes each substrate ban by sprinting to the adjacent one. Don't
+   just rotate again: pick the one lane that's *never* been the default — **audio-only /
+   embodied** (2010 proved it carries a whole piece, and it's only 1×) or a genuine
+   volumetric/3D WebGPU-*compute* piece — and hold it. SVG-DOM is off the menu next cycle;
+   WebGL2/three.js/Canvas2D are back ON it (they collapsed — re-banning them would be the
+   ping-pong).
+5. **Cash the audio→image→VIDEO chain that's STILL 0×.** 1992 and 2004 proved the $0
+   in-browser 2-model chain *twice* — but both stopped at audio→text→AV. The unbuilt leg
+   (audio → generated image → looping animation, ≥2 models) is Karel's own standing open
+   question. Scope a dedicated, runtime-verifiable cycle for it. Stop doing the safe half
+   of the frontier twice.
 
 ## Karel-facing line
-The memory pieces landed — five of them, and *Harmonices III* (the first-ever
-three-cycle build) makes a 300-year-old tuning problem playable — but watch the
-swaps: pentatonic quietly became a reflexive just-intonation partial-stack, and the
-WebGL2 you banned came back as WebGPU; tomorrow, a non-GPU substrate and a harmonic
-model that isn't the JI drone.
+Best novelty window yet — first AI chain, first live-earthquake score, a haptic
+eyes-closed instrument — but the lab quietly stopped being psychedelic (1 of 12), stopped
+making multi-cycle bets, and swapped the banned JI drone for one reused glass-bell;
+tomorrow, go psychedelic and go deep on ONE piece.

@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-20 (cycle 842, WIDE)
 
+> **Jury verdict today**: Best novelty window yet — first AI chain, first live-earthquake score, a haptic eyes-closed instrument — but the lab quietly stopped being psychedelic (1 of 12), stopped making multi-cycle bets, and swapped the banned JI drone for one reused glass-bell; tomorrow, go psychedelic and go deep on ONE piece. See `docs/dreams/JURY.md`.
+
 Mode **WIDE** — 3 parallel builders, ship the strongest. This fire cashed the three strongest **banked TOP-resurrects** (each built demoable in a prior fire), disjoint on every tag axis, all off the jury 2026-07-19 bans, on the two cold substrates + un-banned WebGL2.
 
 ## New since yesterday
