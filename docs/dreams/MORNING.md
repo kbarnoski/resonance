@@ -1,23 +1,22 @@
-# Morning digest — last updated 2026-07-20 (cycle 843, DEEP)
+# Morning digest — last updated 2026-07-20 (cycle 844, WIDE)
 
-> **This fire answered yesterday's jury head-on:** it wanted (1) *go psychedelic — only 1 of 12 recent pieces touched the cosmic-ambient pole* and (2) *ship a multi-cycle commitment — depth fell to 0×.* So: **DEEP mode**, one cosmic-ambient concept, 3 parallel approaches, shipped the strongest — and it's designed as a multi-cycle build.
+> Yesterday's DEEP fire (`2052-slow-radiance`) already cashed the jury's two co-top asks (go psychedelic + a multi-cycle bet). So tonight went **WIDE** — 3 disjoint *psychedelic* directions, all grep-0× techniques, all off every jury ban — to attack the "too similar" critique. Shipped the strongest; banked the other two.
 
-Mode **DEEP** — 3 parallel builders, ONE concept (an autonomous diffusion-curve nebula), different technical approaches, ship the strongest. The concept **rescues the ⭐⭐ banked `diffusion-field`** — the jury banned pointer/touch input this cycle, which was the *only* reason it kept losing, so I made the field drive itself.
+Mode **WIDE** — 3 parallel builders, 3 unrelated altered-states, ship the strongest.
 
 ## New since yesterday
-- **[2052-slow-radiance](/dream/2052-slow-radiance)** — *a screen and a sound that, with no interaction at all, drift you into a boundless meditative state over 6+ minutes.* **Why open it:** an autonomous **Bohlen–Pierce** harmonic engine (a genuinely non-octave scale — the tritave split into 13 steps) slowly evolves a cluster of gliding spectral voices, and a **real diffusion-curve light-field** (a Poisson relaxation solve on the GPU, not a blur) re-voices to follow it — **so you are literally watching the exact chord you hear** bloom as a breathing gold/amber/teal nebula. It never repeats; minute 6 differs from minute 1. Take nothing, do nothing, give it a few minutes with headphones. Cosmic-ambient, autonomous, off every jury ban.
+- **[2058-aura-fortress](/dream/2058-aura-fortress)** — *a real, drug-free altered-perception state you can watch happen: the migraine visual aura.* **Why open it:** a shimmering zigzag **"fortification" arc** (the classic scintillating scotoma) creeps slowly across the screen, edges scintillating, dragging a temporary **blind scotoma** behind it — and a **migrating spectral notch** carves that same blindness into the drone, so the blind region is an *audible traveling hole* in the sound. Sound and image are one shared wave, not a visualizer with a soundtrack. Autonomous — press Begin, take nothing, do nothing. Anchored on a genuine 2025 first: the first-ever *direct human recording* of the cortical wave behind aura. Grep-0× technique — the lab has never touched this state.
+  - **Safety:** the shimmer is a slow **2.6 Hz** luminance drift, floored so it never goes black — no hard strobe anywhere. Photosensitivity note + instant Stop in the UI.
 
-## In progress / partial
-- **`2052-slow-radiance` is cycle 1 of a multi-cycle bet** (the jury's #2 ask). Cycle 2: seed the nebula with **your real Path piano** via a Paulstretch spectral-freeze (loved: 227-paths-granular, 163-paths-visualizer) + an optional mic room-tone deepener.
+## Explored & banked this fire (see IDEAS §844)
+- **⭐ 2062-flame-genome** — a real **fractal-flame** engine (the *Electric Sheep* algorithm) rendering psychedelic **closed-eye visuals** that autonomously *breed and morph between genomes* over minutes, audio-reactive, with a Canvas2D fallback. Highest ambition of the fan, lowest risk — my top resurrect for the next intense cycle.
+- **⭐ 2060-spin-dome** — an **audio-first** rotating **ambisonic** sound-field for the peak-state "the whole cosmos slowly tumbles around you" sensation. Cashes the jury's "hold the audio-only lane" — but its whole payload is *unverifiable headless*, so I want to check it on real headphones before shipping.
 
-## Explored & banked this fire (see IDEAS §843)
-- **⭐ 2050-halo-field** — the *canonical* version of the same nebula (the field drives the sound, not the reverse), with the cleanest WebGL2→CPU→audio-only fallback. Ship-ready — resurrect if you prefer the visual-leads framing.
-- **⭐ 2054-inner-nebula** — the same field wrapped *around* the camera (three.js dome + bloom), so you feel *inside* the cloud. The most beautiful if the GPU cooperates; banked for a deliberately-volumetric cycle.
-
-## Research finding worth a look (RESEARCH §843)
-- **Diffusion Curves = a Poisson *boundary-value* problem** (arXiv:2408.09211): the field is fully set by its boundary, so **animating the boundary autonomously** gives a self-evolving nebula with zero drawing — the exact trick that let me rescue the banked diffusion-field under the pointer-input ban. (Also re-surfaced: PaulXStretch's real-time capture/freeze modules, the cosmic-ambient audio anchor — a cycle-2 hook.)
+## Research finding worth a look (RESEARCH §844)
+- **The migraine aura got its first direct human recording** (McLeod et al., *Headache*, 2025): stereo-EEG caught a cortical spreading-depression wave crossing a human cortex during an aura — confirming an 80-year-old hypothesis in vivo. That's the drug-free altered state `2058` dramatizes.
 
 ## Open questions for Karel
-- **Which framing do you like better?** Tonight ships **audio-leads** (`2052`, you see the chord you hear). The **visual-leads** version (`2050`) and the **enveloping/inside-the-cloud** version (`2054`) are both built and one curation away. Tell me which nebula to deepen.
-- **The AI audio→image→video chain (≥2 models) is STILL 0×** (jury #5). I keep flagging it honestly rather than building it blind: I'm headless and can't verify a multi-GB in-browser model actually *loads* — a runtime failure would pass the compile gate and silently break your morning review. Worth a dedicated cycle where runtime is verifiable.
-- **Infra:** the container's 4096-fd hard cap still blocks a *full* `npm run build` at ~800 routes (it compiles clean, then dies on EMFILE during page-data collection). The lab gates on `next build --experimental-build-mode compile` (the Vercel compile pipeline). Raising the ulimit or paginating `/dream` would restore the full static build.
+- **Is the aura vivid on your display?** I'm headless — I verified the CSD wave + notch coupling by reading the shader/audio, but can't see it render or hear the "blind hole." Tell me if the shimmer + scotoma read strongly or need pushing.
+- **Owed depth (jury #2):** `2052-slow-radiance`'s cycle-2 (weave your real Path piano via a Paulstretch spectral-freeze) is still owed. Want me to spend the next fire deepening one standout instead of a new WIDE?
+- **Still 0×:** the AI audio→image→**video** chain (jury #5) needs a cycle where runtime is verifiable — I can't confirm a multi-GB in-browser model loads headless without risking a silent break.
+- **Infra:** the container's 4096-fd cap still blocks a *full* `npm run build` at ~800 routes (compiles clean, then EMFILE on page-data collection); the lab gates on `next build --experimental-build-mode compile` (Vercel's compile pipeline). Raising the ulimit or paginating `/dream` restores the full build.
