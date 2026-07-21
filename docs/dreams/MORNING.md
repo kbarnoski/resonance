@@ -1,17 +1,21 @@
-# Morning digest — last updated 2026-07-21 ~03:00 UTC (cycle 849, DEEP)
+# Morning digest — last updated 2026-07-21 (cycle 850, WIDE)
 
-> The jury's loudest standing gap was **depth** — "go deep on ONE piece," multi-cycle commitment 0× all window. Tonight is that cycle-2: I took the §847 out-of-body line and staged the **whole arc of dissociation** as one 6½-minute journey that ends nowhere near where it began — not a loop, a timeline with a peak.
+**Open this first:** **[2100-veil-cathedral](https://getresonance.vercel.app/dream/2100-veil-cathedral)** — drift *through* a vast breathing cathedral of light. ~44k luminous points form a toroidal nave (nested shells + vaulted ribs); the camera travels endlessly through the volume while your music's spectrum sculpts it. Press **Begin** and it self-plays a seeded ambient-piano carrier — or **drop your own piano track** onto the canvas and it drives the whole space. Best in a dark, quiet room, headphones up.
 
 ## New since yesterday
-- **[2094-unself](https://getresonance.vercel.app/dream/2094-unself)** — a drug-free **dissociation JOURNEY**. A luminous point-cloud "you" first mirrors your tilt; then a **delayed ghost-self peels off** (~0.4 s → ~3 s behind) and brightens until you can't tell which one is you; the world drains to unreal; you **disperse into drifting motes** at the peak; then re-coalesce and land. Why open it: it's the lab's **first multi-cycle piece of the window** (cycle-2 of `2080-exo-vantage`), and the felt core is a real mechanism — the audio **lags** what you see by a growing offset (up to ~600 ms) and everything **slows** as you go under, from the *Bera et al. 2026* ketamine-dissociation paper. Give it the full arc; it self-drives with no sensor (tilt on a phone deepens it). *(DEEP-winner of a 3-renderer fire.)*
-- **2 more explored & banked** (IDEAS §849): **⭐⭐ 2092-egress** — the same journey as a **three.js OBE camera** (you float up and watch your own body from outside); **⭐ 2096-veil-drift** — a **WebGL2 first-person** version where the rendered *view itself* lags your head-motion, dissolving to a Ganzfeld white void.
+- **2100-veil-cathedral** (tonight's ship) — a cosmic-ambient space you *inhabit*, not watch. This is the one I most wanted a change of register on: after a run of OBE / struck-bell / dissociation pieces, a luminous **Anadol-DATALAND-style volumetric cathedral** feels like a different room of the lab. It also finally cashes two things you asked for a while back — **your real piano as the input** (file-drop) and **volumetric-you-inhabit**, together.
 
-## In progress / partial
-- None broken. The 2094 line now has a clear **cycle-3**: fold 2092's OBE-camera + 2096's view-lag in as selectable *modes* → a real multi-cycle dissociation instrument.
+## Explored but banked (WIDE cycle — 2 more built in parallel, see IDEAS §850)
+- **⭐⭐ 2098-drift-fathom** — a drug-free **sensory-deprivation float tank**: near-black screen, eyes closed, a 6½-min HRTF sound-world that orbits your head and dissolves you into boundless space. It's the *audio-only* lane the jury told us to hold — built to demoable, held back only because a black screen is a subtle 06:30 glance. **Say the word and I ship it next** (headphones essential).
+- **⭐ 2102-hollow-fold** — fall *inside* real 3-D hyperbolic space (ℍ³): a honeycomb of cells receding impossibly, walls curving around your head. The lab's freshest geometry (we'd only ever done flat hyperbolic disks) — but it's hand-authored GLSL I can't GPU-verify headless, so I want your eyes on it before it's the headline.
 
-## Research findings worth a look
-- **Ketamine dissociation got a fresh 2026 mechanism review** (Bera, Looger, Proekt & Cichon, *The Neuroscientist*): dissociation = **thalamocortical disconnection + time dilation**. That's exactly what I built the journey's arc engine around — the growing audio↔visual desync IS the disconnection, made audible. *(RESEARCH §849.)*
+## Why this pick (30-sec version)
+Alternation said WIDE tonight (849 was DEEP). Ran 3 disjoint altered-states explorers — audio-only / three.js-volumetric / WebGL2-raymarch — all off the jury's bans (pointer, SVG-DOM, illusion-audible, Chladni bell) and off the recent Canvas2D / device-tilt grooves. Shipped the one that's the biggest morning "wow" at the lowest risk I could verify.
+
+## Research finding worth a look
+- **Inside-ℍ³ curved-space raymarching** (Segerman/Hart/Hawksley; CodeParade *Hyperbolica*) — the "impossible non-Euclidean architecture" of deep trip reports is *real geometry* you can be inside of, and it's a fresh technique that isn't the worn log-polar warp. That became 2102 (banked); RESEARCH §850 has the full note.
 
 ## Open questions for Karel
-- **2094 wants your eyes + ears** — headless, I can't see the point-cloud at full mote-dissolve or hear the ~600 ms ghost-delay at real levels. Does the ghost-self read as *you*, uncanny? Does the split land, or need tuning?
-- Depth is finally cashed (first multi-cycle of the window). Next: give 2094 a **cycle-3** (unify the three renderers as modes), or ship the still-ready **space-weather aurora (2090)** on a WIDE cycle? Your call.
+1. **Ship 2098 (the float tank) next?** It's the jury's un-held audio-only lane and it's basically ready.
+2. For 2100 — want me to wire it to actually **fetch one of your Welcome Home path tracks** by default (instead of the synthetic carrier), so it opens on *your* piano?
+3. Is inside-ℍ³ (2102) worth a dedicated GPU-verifiable cycle, or does another hyperbolic piece feel "too similar" to you?
