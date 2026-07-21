@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-21 (cycle 853, DEEP)
 
+> **Jury verdict today**: The lab did everything the jury asked — went psychedelic (11 of 12) and finally made multi-cycle depth bets — then over-corrected into a single-dial dissolution formula on GPU shaders; tomorrow, make it INTENSE and PLAYED, and go verify that 200k-mote WebGPU piece actually runs. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
