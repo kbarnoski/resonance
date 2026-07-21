@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-07-21 (cycle 854, WIDE)
+# Morning digest — last updated 2026-07-21 (cycle 855, DEEP)
 
-> **You asked, the jury asked, this is the answer.** Yesterday's jury: "make the next altered-states piece INTENSE and PLAYED, not watched — and build the ENTITY / presence pole instead of a fifth dissolution." Tonight's winner is exactly that: a DMT-style entity encounter you play with your hands.
+> **Psychedelia isn't only loss.** The jury's push: "kill the dissolution monotheme — build the ECSTATIC / UNION pole, and make it PLAYED. `2122` already tried the binding inversion; push that direction." Tonight does exactly that — an ecstatic mystical UNION you build with your hands.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[2130-entity-parliament](https://getresonance.vercel.app/dream/2130-entity-parliament)** — a ring of ~11 benevolent guide-beings sleeps in the dark. Sound a chord on your **computer keyboard** and they OPEN their jeweled mandala-eyes and **turn their gaze toward you**; hold more voices and a low drone swells, a central mandala assembles, and a **presence ARRIVES**. **Why open it:** it's the first altered-states piece in a while you actually *play* — not one master knob you watch journey. How many keys you hold, the chord shape, and the span each drive different things. It's the entity-encounter pole (structure BUILDS), the opposite of the self dissolving.
-  - **Tuning is Bohlen–Pierce** (non-octave, odd-harmonic) so the presence sounds consonant-but-*other* — and it retires the pentatonic the last two juries kept flagging.
-  - Grounded in the DMT entity-encounter research (encounters in ~45% of experiences, benevolent, guide-type, the core report being *attended to* by the presence — Michael/Luke/Robinson, *Sci. Reports* 2022) + Klüver form-constants + McKenna's "machine elves."
-  - Plays on the **keyboard** (always) or a **MIDI** device (bonus, real velocity). Leave it idle and it gently self-demos. Canvas2D, so it loads instantly on your phone.
+- **[2136-communion](https://getresonance.vercel.app/dream/2136-communion)** — put several fingers on the dark field. Each finger is a **voice of the self**; the more you hold together, the more a web of glowing **sympathetic-resonance threads** binds every pair, brightening and thickening — until the slightly-detuned voices **lock** onto one shared scale and the many bloom into **one over-bright radiant whole**. **Why open it:** it's the *inverse* of the four-straight dissolution pieces — here the altered state is union as a *gain* of connection, not the self draining away. And it's genuinely **played**: voice count, each finger's left-right (pitch) and up-down (brightness), and your movement (shimmer) are all live — no single master knob.
+  - **Tuning is Bohlen–Pierce** (non-octave, odd-harmonic) — consonant-but-*other*, and it stays off the pentatonic the jury re-banned. As coupling rises, detuned voices resolve onto the lattice: you *hear* the many become one.
+  - Grounded in fresh 2026 neuroscience: ecstatic union is now read as brain **HYPER-connection** (not the mind going quiet) — "Dynamic Functional Hyperconnectivity … Oceanic Boundlessness," *Biol. Psychiatry: CNNI* (in 2026-06 coverage) + the PAG-as-pivot *Frontiers* 2025 framing (union is *visceral*, intense) + ecstatic ("Dostoevsky") seizures.
+  - **Multi-touch** on a phone (up to ~10 fingers) or click-drag on a mouse. Leave it be and it self-demos. Canvas2D, so it loads instantly.
 
-## Explored but not shipped (banked → IDEAS §854)
-- **⭐⭐ 2134-presence-in-the-dark** — an audio-only, near-black **HRTF/binaural** version: each finger summons a spatial voice that orbits and draws near, up to 8 converging into one. This holds the jury's #1 under-served lane (audio-only). Held back only because its whole payoff needs **headphones** — want it shipped next, reviewed on headphones?
-- **⭐ 2132-jubilation-lattice** — sing a vowel and a warm-gold crystal **blooms** (three.js), tuned so the sound and the growing structure are *literally the same Sethares spectrum*. Banked for a warm-palette/voice cycle once GPU output rests.
+## Explored but not shipped (banked → IDEAS §855)
+- **⭐⭐ 2138-one-weave** — the same played union built from real **SVG-DOM** elements (a star-polygon "everything binds to everything" halo). Grows the minority substrate the jury un-banned + dodges Canvas-back-to-back; ship on a Canvas-rested cycle.
+- **⭐⭐ 2140-become-ocean** — the **audio-only / eyes-closed** version: HRTF-spatialized voices scattered around you collapse toward one enveloping centre as they lock. Holds the jury's named audio-only lane — but note this now **double-stacks** with the already-queued `2134`; ship one of them on a headphones cycle, not both.
 
 ## Open question for Karel
-- Depth is still the standing gap — the last several cycles were all single-fire. Want a real **cycle-2** next? `2130` is built to extend (MIDI-CC morphing the beings' geometry live; the presence remembering who's been played).
+- The **audio-only / embodied** lane is now queued twice (`2134` from cycle 854 + `2140` tonight). Want the next cycle to deliberately be a headphones/eyes-closed ship to clear it — or keep it warm and stay on the played-visual pole?
