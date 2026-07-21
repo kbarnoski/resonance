@@ -1,23 +1,18 @@
-# Morning digest — last updated 2026-07-21 (cycle 853, DEEP)
+# Morning digest — last updated 2026-07-21 (cycle 854, WIDE)
 
-> **Jury verdict today**: The lab did everything the jury asked — went psychedelic (11 of 12) and finally made multi-cycle depth bets — then over-corrected into a single-dial dissolution formula on GPU shaders; tomorrow, make it INTENSE and PLAYED, and go verify that 200k-mote WebGPU piece actually runs. See `docs/dreams/JURY.md`.
+> **You asked, the jury asked, this is the answer.** Yesterday's jury: "make the next altered-states piece INTENSE and PLAYED, not watched — and build the ENTITY / presence pole instead of a fifth dissolution." Tonight's winner is exactly that: a DMT-style entity encounter you play with your hands.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[2122-last-coherence](https://getresonance.vercel.app/dream/2122-last-coherence)** — a near-death experience rendered NOT as a tunnel-to-light (we already built that in `1041`), but as the dying brain's own memory **binding together at once**: ~200k scattered "memory-motes" that suddenly SNAP into brilliant connected constellations — your whole life, all at once — converge into one boundless light, then release. ~6 min, autonomous, looping. **Why open it:** it's the cosmic-ambient pole the jury said we'd gone blind to, and it's the *inverse* of the last few dissolution pieces — here the altered state is a rare **over-coherence surge**, not a melt.
-  - Grounded in real neuroscience: **Borjigin, _PNAS_ 2023** (gamma spikes ~300× at death in the OBE/binding region) + the freshness anchor **_Frontiers in Psychology_, March 2026** (the NDE vision = the brain's *last internally-generated simulation*, built from its own memory stores) + Moody 1975.
-  - The "memory material" is meant to be **your real Path piano** — drop a track and its fragments become the memories that surface; a seeded generative-piano carrier self-plays otherwise.
-  - **On the tech:** the lab's first **WebGPU-compute** piece in the recent window (the jury's "hold the un-held lane" ask). If your Chrome doesn't expose WebGPU it falls to a complete Canvas2D version of the same thing — so it always renders. Best on desktop Chrome for the full 200k-mote version.
+- **[2130-entity-parliament](https://getresonance.vercel.app/dream/2130-entity-parliament)** — a ring of ~11 benevolent guide-beings sleeps in the dark. Sound a chord on your **computer keyboard** and they OPEN their jeweled mandala-eyes and **turn their gaze toward you**; hold more voices and a low drone swells, a central mandala assembles, and a **presence ARRIVES**. **Why open it:** it's the first altered-states piece in a while you actually *play* — not one master knob you watch journey. How many keys you hold, the chord shape, and the span each drive different things. It's the entity-encounter pole (structure BUILDS), the opposite of the self dissolving.
+  - **Tuning is Bohlen–Pierce** (non-octave, odd-harmonic) so the presence sounds consonant-but-*other* — and it retires the pentatonic the last two juries kept flagging.
+  - Grounded in the DMT entity-encounter research (encounters in ~45% of experiences, benevolent, guide-type, the core report being *attended to* by the presence — Michael/Luke/Robinson, *Sci. Reports* 2022) + Klüver form-constants + McKenna's "machine elves."
+  - Plays on the **keyboard** (always) or a **MIDI** device (bonus, real velocity). Leave it idle and it gently self-demos. Canvas2D, so it loads instantly on your phone.
 
-## Explored but not shipped (banked → IDEAS §853)
-- **2124-life-review** (three.js, visible binding *threads* — the most legible version; held back only because three.js is over-used right now).
-- **2126-binding-surge** (WebGL2 GPGPU particle sim of the same idea).
-- Plus a research seed: **physarum-as-score** (a WebGPU slime-mold network driven by your piano).
+## Explored but not shipped (banked → IDEAS §854)
+- **⭐⭐ 2134-presence-in-the-dark** — an audio-only, near-black **HRTF/binaural** version: each finger summons a spatial voice that orbits and draws near, up to 8 converging into one. This holds the jury's #1 under-served lane (audio-only). Held back only because its whole payoff needs **headphones** — want it shipped next, reviewed on headphones?
+- **⭐ 2132-jubilation-lattice** — sing a vowel and a warm-gold crystal **blooms** (three.js), tuned so the sound and the growing structure are *literally the same Sethares spectrum*. Banked for a warm-palette/voice cycle once GPU output rests.
 
-## Note worth flagging
-- Cycle **852** (`2114-hyperbolic-curvature`) shipped fine but never wrote its STATE.md header — its record lives only in the commit message. Nothing broken; just an honest ledger gap. I also caught + fixed a numbering collision this cycle (852 had reserved 2116/2118 as seed names), which is why tonight's piece is **2122**, not 2116.
-
-## Open questions for Karel
-- **The un-held audio-only lane is still waiting:** `2098-drift-fathom` (HRTF flotation sound-bath) is built and ready — want it shipped next, ideally reviewed on headphones?
-- **Depth is the standing gap:** the last four cycles were all single-fire. Want me to commit a real cycle-2 on a standout next (e.g. steer where `2122`'s light re-forms, or extend the dissociation line)?
+## Open question for Karel
+- Depth is still the standing gap — the last several cycles were all single-fire. Want a real **cycle-2** next? `2130` is built to extend (MIDI-CC morphing the beings' geometry live; the presence remembering who's been played).
