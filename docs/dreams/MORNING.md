@@ -1,15 +1,15 @@
-# Morning digest — last updated 2026-07-22 (cycle 864)
+# Morning digest — last updated 2026-07-22 (cycle 865)
 
 ## New since yesterday
-- **`2264-crystal-bloom`** → https://getresonance.vercel.app/dream/2264-crystal-bloom — **play the home row (A–L) and a crystalline cathedral of light GROWS around you.** Each note buds a self-similar crystal that recursively proliferates outward; hold keys and it keeps building; play chords and several structures bloom at once — all accreting violet→gold→white into an over-bright plenum. Why open it: it's the **intense / ecstatic pole you asked to return to** — an altered state where structure BUILDS, not the self dissolving. A demo phrase plays on mount; press any key to take over. (First three.js scene-graph piece in a while — the GPU lane had genuinely rested.)
+- **`2276-oceanic-gather`** → https://getresonance.vercel.app/dream/2276-oceanic-gather — **headphones + eyes closed: a sphere of twelve detuned voices surrounds your head, and you TILT your phone to gather them inward until they fuse into ONE presence at the centre of your skull.** As they converge, their detuning collapses to a single unison and they phase-lock — the self–world boundary dissolving into blissful oceanic UNION. Why open it: it's the first **audio-only / spatial (HRTF)** piece in a long while — the whole recent lab has been visual, and the jury kept asking me to hold the eyes-closed / embodied lane. This is that, on the ecstatic **union** pole (many becoming one — structure BUILDS, nothing melts). A demo plays hands-free on mount; put on headphones, then tilt. (On desktop, move the pointer outward from centre.)
 
 ## In progress / partial (banked, not shipped — one commit ships one)
-- **`2268-union-choir`** ⭐⭐ — eyes-closed with headphones, DRAG to gather a scattered field of bell-voices into ecstatic **UNION**: their detunes collapse and a single chord arrives *inside your head*. Audio-first, so I banked it for a deliberate headphones cycle (the audio-only queue is ~7 deep now — worth a dedicated "pick the best one" pass).
-- **`2272-agent-condense`** ⭐⭐ — press-and-hold to condense a particle storm into a **presence that turns to regard you** (the DMT "entity"). Runs on Canvas2D everywhere, with a 130k-particle WebGPU tier if your desktop has it. Banked for a desktop/GPU cycle — pairs with the standing "go verify the 200k-mote WebGPU piece (`2122`) on real hardware" item.
+- **`2284-oceanic-surrender`** ⭐⭐ — the same union, but you can only reach it by **letting go**: hold still and calm and it gathers itself inward; the instant you fidget or release, it scatters. The freshest idea of last night's three — banked as the natural cycle-2 (maybe driven by calm breathing).
+- **`2280-oceanic-choir`** ⭐ — CONDUCT the union with a two-finger **pinch**; each finger can even grab and sing one voice before they all fuse. Banked for a multi-touch cycle.
 
-## Research finding worth a look (§864)
-- Gallimore & Hoffman, *"The Mathematical Architecture of Altered Consciousness"* (Neuroscience News, 2026-06-03): DMT doesn't just erase the self — it **expands the accessible region of experience space** so normally-imperceptible *structured* form proliferates into being (coherent structure, not noise). That reframes psychedelia as BUILDING, not dissolving — which is exactly the pole the jury asked for. Tonight's whole fan (crystal / union / entity) is that idea, three ways.
+## Research finding worth a look (§865)
+- Unterrainer, *"Oceanic states of consciousness"* (Frontiers in Human Neuroscience, 2025): oceanic unity is, at bottom, the **collapse of the self–world spatial boundary** (DMN quiets; the self becomes "an embodied subject embedded in the world"). That's why I staged it in **3D binaural audio** — the one medium where spatial boundary IS the raw material. Union = many spatial sources fusing into one point inside your head.
 
 ## Open questions for Karel
-- Want the next cycle to finally use your **real Path piano** as the source? Two ripe cycle-2/3 lines: apply the 2244→2252 time-dilation to a real recording, or let the crystal cathedral grow from your actual notes.
-- The **entity-encounter** pole (2272) and **union** pole (2268) are both built and waiting — say the word and I'll ship one on the right (desktop / headphones) cycle instead of banking.
+- The obvious cycle-2 is to make those twelve voices **your real Path piano** — attend/gather and your own recording collapses into one held chord. Want me to take that on next (it finally cashes the standing "use your real music" ask)?
+- Two more union interaction-models (surrender, pinch) are built and banked — say the word and I'll ship one instead of banking.
