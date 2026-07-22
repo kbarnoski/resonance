@@ -1,17 +1,17 @@
-# Morning digest — last updated 2026-07-22 (cycle 869, WIDE)
+# Morning digest — last updated 2026-07-22 (cycle 870, DEEP)
 
-## Open this first
-- **[2320-three-valves](https://getresonance.vercel.app/dream/2320-three-valves)** — an altered state as a **CUBE, not a dial.** Three independent faders — C (geometry / Klüver form constants), G (abstract→figurative), D (real-out-there ↔ imagined-in-here) — with **no master intensity anywhere.** The same three sliders in different combos give categorically different worlds. It self-demos on load (autopilot tours the octants); drag any fader to feel the world change *category, not degree*. Grounded in a 20 May 2026 Frontiers paper that splits Huxley's single "reducing valve" into exactly these three computational axes.
-- **Why it matters:** this is the head-on cash of *your* jury's loudest week-long demand — "ban the single knob; force ≥2 genuinely independent variables that conflict." The neuroscience says altered states really ARE ≥3 orthogonal axes; collapsing them to one dial is the wrong model, not just a boring UI.
+## New since yesterday
+- **[2326-we-breathe](https://getresonance.vercel.app/dream/2326-we-breathe)** — the lab's **first multi-context piece**. Every open browser tab is a real, coupled breather in one shared field; the collective breath entrains into one shared rhythm with **nobody holding a dial**. Warm-dawn WebGL2 field blooms as one when breaths lock, goes cool/choppy when they clash; a drone detunes into beating vs. pulls to unison. **→ Open it, then open it in a SECOND tab or window — a genuine second breather joins, out of phase, and you watch the room re-sync.** Solo? A seeded chorus keeps the room alive; grant the mic or just hold anywhere to inhale.
+  - *Why it matters:* directly answers the jury's loudest uncashed demand — "break the solipsism, every piece is one person alone." Drug-free **collective effervescence / inter-brain synchrony** — an altered state that needs other people. Ambition 4/5 (first cross-context coupling in ~825 routes).
 
-## Also explored this fire (2 more, banked to IDEAS §869)
-- **⭐⭐ 2324-visual-snow** — play the entoptic TV-static of your own visual cortex as a granular instrument on TWO independent variables (γ density vs. τ trail-persistence). The freshest never-used pole in the lab; immediately legible; a clean self-contained ship. Top resurrect / cycle-2.
-- **⭐ 2322-ganzfeld** — remove almost all structure (flat pink light + pink noise) and let hallucination emerge from your own perceptual noise over 2–3 min. The purest anti-knob; but a slow burn (first percept ~1:45), so least glanceable — a patient/installation piece.
+## Explored but not shipped (banked → IDEAS §870)
+- **⭐⭐ 2328-the-commons** — a WebGL2 constellation of presence-nodes finding sync-communities and fracturing (the clearest *picture* of a collective mind). Banked because its Kuramoto-society technique is close to cycle-866's `2290-phase-society`; it's the natural **WebRTC multi-device** upgrade candidate.
+- **⭐ 2330-the-round** — a shared round/canon (SVG score-ring) where a collective harmony self-assembles from local decisions. Banked because it's audio-forward (least legible at a silent glance); near-shippable on a headphones cycle.
 
-## Research finding worth a look (§869)
-- Frontiers, 20 May 2026 — *"Beyond the reducing valve: a computational neurophenomenology of altered states via deep neural networks."* Altered states = a 3-axis C×G×D space (Classifier / Generator / Discriminator); the three canonical hallucination types (psychedelic / neurodegenerative / schizophrenic) are different *points in the cube*, not different amounts of one thing. It's the first-principles justification for the no-single-knob mandate.
+## Research finding worth a look (RESEARCH §870)
+- A **2026 Frontiers fNIRS-hyperscanning** study: inter-brain synchrony rises with shared music-making. Paired with Durkheim's *collective effervescence* — recent work shows it arises even in **digital** spaces without physical co-presence. That's what licensed a server-less shared-tab room.
 
 ## Open questions for Karel
-- 2320's "figuration" (the G axis) is procedural/suggestive, not literally recognizable faces/scenes. Worth a cycle-2 that pipes a real generative image path into G? (would need a budgeted AI-image cycle.)
-- Still 0× in the recent window and owed: an **AI-pipeline chain** (audio→image→video), and **verifying 2122's 200k-mote WebGPU on your real desktop GPU** — both need you at a machine, not a headless fire.
-- Want me to ship **2324-visual-snow** next as the cycle-2 (it's built-clean already), or push the C×G×D cube deeper?
+- **Want the real multi-device version?** BroadcastChannel is same-browser/multi-tab only. The next big step is a tiny WebRTC/WebSocket relay → genuinely couple people across the internet. Needs a server — worth a desktop cycle with you?
+- Should the collective breath modulate **your real Path piano** instead of a synth drone? (Standing "use Karel's music as carrier" ask — this piece is a natural fit.)
+- Extract a reusable `_shared/presence.ts` so multi-context pieces get cheap? (Queued.)
