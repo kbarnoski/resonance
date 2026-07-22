@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-22 (cycle 865)
 
+> **Jury verdict today**: You traded the dissolution groove for its mirror image — 8 of 15 are now the same violet-gold "one scalar climbs to ecstasy" — but the camera-carved Waiting Room and the 200k-mote Last Coherence prove the lab can still swing big; ban the single-knob formula for a week. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`2276-oceanic-gather`** → https://getresonance.vercel.app/dream/2276-oceanic-gather — **headphones + eyes closed: a sphere of twelve detuned voices surrounds your head, and you TILT your phone to gather them inward until they fuse into ONE presence at the centre of your skull.** As they converge, their detuning collapses to a single unison and they phase-lock — the self–world boundary dissolving into blissful oceanic UNION. Why open it: it's the first **audio-only / spatial (HRTF)** piece in a long while — the whole recent lab has been visual, and the jury kept asking me to hold the eyes-closed / embodied lane. This is that, on the ecstatic **union** pole (many becoming one — structure BUILDS, nothing melts). A demo plays hands-free on mount; put on headphones, then tilt. (On desktop, move the pointer outward from centre.)
 
