@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-07-22 (cycle 866)
+# Morning digest — last updated 2026-07-22 (cycle 867)
 
-> **I took today's jury head-on.** Its loudest demand was *"ban the single knob for a week — no master 0→1 dial; force ≥2 independent state variables that can conflict, a system with memory that contradicts your input."* Tonight's winner is the explicit inverse of that formula. See `docs/dreams/JURY.md`.
+**Open this first:** https://getresonance.vercel.app/dream/2304-seismic-choir
 
 ## New since yesterday
-- **`2290-phase-society`** → https://getresonance.vercel.app/dream/2290-phase-society — **a "society" of 320 phase-oscillators — a slow inner crowd and a fast outer crowd — argues its way toward or away from agreement. You HEAR consensus emerge as a detuned cluster-cacophony collapses toward a locked chorus; you SEE it as phase-dots gathering on a circle.** Why open it: there is **no unity dial**. The level of agreement (Kuramoto's order parameter *r*) is an *emergent readout* of two conflicting crowds plus the field's own **hysteretic memory** — you only perturb it (drag = pull the crowds together vs widen their argument; tap a ring = shock a crowd), and the field can visibly contradict your hand (`Breaking` / `Coalescing` in the HUD). It's the direct anti-formula to the last two weeks of "one scalar climbs to ecstasy" — and a genuinely different look: **Ikeda monochrome**, not the violet-gold jewel palette the jury flagged 6× in a row. Autopilot self-demos the sync↔fracture breathing the moment it loads; drag/tap/tilt to play.
+- **`2304-seismic-choir`** — WIDE-mode winner (1 of 3 explored). Press Start and you hear **the planet's last hour of real earthquakes** sung as one spatial cosmic-ambient choir: every live USGS quake becomes a sustained voice (magnitude→pitch, depth→timbre, longitude→pan), over a slowly-rotating teal globe with an amber marker at each true epicenter. Click a marker to solo its voice and read its stats.
+  *Why open it:* it's the **first piece in the lab whose input is the world outside your own nervous system** — the direct answer to yesterday's jury (*"break the solipsism; every piece is one person alone with their nervous system; zero real-external-data sonification"*). No master knob — the Earth is the score. Works offline (bundled quake snapshot) if the live feed is unreachable.
 
-## Also explored tonight (WIDE fire — 2 more built, banked to IDEAS §866; one commit ships one)
-- **`2294-solar-counterpoint` ⭐⭐** — two **live NOAA space-weather feeds** argue: the solar wind pushing vs Earth's geomagnetic field lagging hours behind, sonified as counterpoint that beats when they diverge and locks when they align. Off-menu real external data, aurora-cold palette. Resurrect on a data cycle.
-- **`2298-mirror-hands` ⭐⭐** — your **two webcam hands are two independent voices** that fuse into one bloom when you mirror them and split into two detuned forms when you don't. three.js, warm-daylight palette; works with no camera via a phantom-hands autopilot. The mandated camera cycle-2 candidate.
+## Explored but not shipped (banked in IDEAS.md for a cycle-2)
+- **`mirror-field`** — webcam motion carves you into a 30k-particle field of light (still→you vanish, move→you appear), clinical daylight-white palette; a NON-Canvas cycle-2 of the loved `2236-waiting-room` camera lane.
+- **`meadow-memory`** — a piece of music that's an **ecosystem that remembers**: creatures with genomes are born, harmonize, compete, and die over a drifting "climate", so minute 5 sounds nothing like minute 1 (proven in a headless 10-min run). Warm-daylight meadow palette, long-form.
 
-## Research finding worth a look (§866)
-- The structural cure for the "single knob" is a **coupled-oscillator network** — *"Sound in Multiples"* + the *"Collective Rhythms Toolbox"* (coupling-matrix topologies that self-synchronize or fracture), on **Kuramoto (1975)**. In that model "how unified is it?" *cannot* be a dial — it's a readout of the whole population — which is exactly why tonight's piece is built on it.
+## How this cycle answered the jury
+- Went **WIDE** (3 divergent explorers) to attack the jury's *remaining* fresh provocations in parallel — cycle 866 already took "ban the single knob" via `2290-phase-society`.
+- All 3 avoided **every** banned tag (keyboard input · Canvas2D · single-scalar-follower · ecstatic-union pole · violet-gold-on-black). Winner picks a genuinely fresh gamut (**tectonic teal/amber**) and a genuinely fresh input (**external data**).
 
 ## Open questions for Karel
-- Cycle-2 for `2290`: I'd like to extract a shared Kuramoto engine + an interactive **coupling-matrix editor** (topologies beyond two crowds), and/or wire **camera hands** in so each hand perturbs a community. Which interests you more?
-- The two banked pieces (live space-weather, two-hand camera duet) are fully built — say the word and I'll ship one next instead of banking it.
-- ⚠️ Note: the local full `npm run build` can't finish in this sandbox (a file-descriptor cap / EMFILE on the ~800-page static-gen step) — but TypeScript + ESLint pass clean and Vercel builds fine. Flagging so nothing looks off.
+- The jury still flags **two 0× lanes** I didn't touch tonight: WebRTC **multi-user** (shared listening room) and **AI-pipeline chains**. Want me to prioritize one of those next?
+- 2304's choir is **not ear-verified** (headless build) — does the additive spatial mix read as "the sound of the planet" or as a drone wash? Your ear decides.
+- Worth extracting a shared `_shared/geo.ts` (lat/long→sphere + fetch-with-fallback) so more external-data pieces come cheap?
