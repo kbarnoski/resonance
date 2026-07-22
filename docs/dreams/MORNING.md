@@ -1,20 +1,17 @@
-# Morning digest — last updated 2026-07-22 (cycle 868)
+# Morning digest — last updated 2026-07-22 (cycle 869, WIDE)
 
-**Open this first:** https://getresonance.vercel.app/dream/2314-the-return
+## Open this first
+- **[2320-three-valves](https://getresonance.vercel.app/dream/2320-three-valves)** — an altered state as a **CUBE, not a dial.** Three independent faders — C (geometry / Klüver form constants), G (abstract→figurative), D (real-out-there ↔ imagined-in-here) — with **no master intensity anywhere.** The same three sliders in different combos give categorically different worlds. It self-demos on load (autopilot tours the octants); drag any fader to feel the world change *category, not degree*. Grounded in a 20 May 2026 Frontiers paper that splits Huxley's single "reducing valve" into exactly these three computational axes.
+- **Why it matters:** this is the head-on cash of *your* jury's loudest week-long demand — "ban the single knob; force ≥2 genuinely independent variables that conflict." The neuroscience says altered states really ARE ≥3 orthogonal axes; collapsing them to one dial is the wrong model, not just a boring UI.
 
-## New since yesterday
-- **`2314-the-return`** — DEEP-mode winner (1 of 3 explored). A room watches you through the webcam and slowly builds a **persistent self-image** — where *this* body tends to move. Then it starts to **anticipate** you: it glows *ahead* of where it expects you to go. The music is the **gap** between where the room thinks you are and where you actually are — move as it expects and two voices fuse into a calm D-Lydian pad; **surprise it** and prediction-error blooms hot magenta and the second voice beats into dissonance; keep surprising it and its memory relearns — the room **habituates**.
-  *Why open it:* it's a drug-free **heautoscopy** — the un-built *third* altered-states pole. The lab kept flipping between *dissolution* (self melts) and *ecstatic-union* (self fuses) — the two poles the jury just banned. This is neither: the self **splits and regards itself**. "Being predicted is a form of being regarded." Works with no camera (a seeded phantom body self-demos the learn→predict→surprise→habituate arc on load, silently, before you press Start).
+## Also explored this fire (2 more, banked to IDEAS §869)
+- **⭐⭐ 2324-visual-snow** — play the entoptic TV-static of your own visual cortex as a granular instrument on TWO independent variables (γ density vs. τ trail-persistence). The freshest never-used pole in the lab; immediately legible; a clean self-contained ship. Top resurrect / cycle-2.
+- **⭐ 2322-ganzfeld** — remove almost all structure (flat pink light + pink noise) and let hallucination emerge from your own perceptual noise over 2–3 min. The purest anti-knob; but a slow burn (first percept ~1:45), so least glanceable — a patient/installation piece.
 
-## Explored but not shipped (banked in IDEAS.md §868 for a cycle-2)
-- **`2310-the-double`** — *see* your double: a three.js point-cloud body stands **beside you**, learns your motion from a memory ring-buffer, and gains autonomy until it moves on its own — sync→unison, divergence→beating. Clinical silver/steel-teal. (Lost only because three.js was last cycle's output; 2314's WebGL2 diverges harder.)
-- **`2312-monologue`** — *hear* your double: your own voice, captured and re-placed **outside your head** via HRTF, a chorus of former selves that speaks in your silences and pre-empts you. The direct implementation of the "monologue of the double" paper. (Lost only because audio-only is the over-represented lane and `2276` shipped it 3 cycles ago — resurrect on a headphones cycle.)
-
-## How this cycle answered the jury
-- Went **DEEP** (one concept, 3 approaches) — alternating after two WIDE cycles, and because the jury said *extend the standouts / change how you play it*.
-- `2314` cashes **four** jury provocations at once: **#1** no single knob (two independent fields whose *error* drives everything + a memory that contradicts live input), **#2** a NEW camera piece with a **non-Canvas** output (WebGL2, not Canvas2D), **#4** a bold fresh palette (**oil-film / Newton's-rings iridescence**, off violet-gold), **#5** a genuinely new interaction (predictive-processing + habituation).
+## Research finding worth a look (§869)
+- Frontiers, 20 May 2026 — *"Beyond the reducing valve: a computational neurophenomenology of altered states via deep neural networks."* Altered states = a 3-axis C×G×D space (Classifier / Generator / Discriminator); the three canonical hallucination types (psychedelic / neurodegenerative / schizophrenic) are different *points in the cube*, not different amounts of one thing. It's the first-principles justification for the no-single-knob mandate.
 
 ## Open questions for Karel
-- `2314` is **not eye/ear-verified** (headless build). Does the interference field read as "the room expecting me," and does prediction-error *sound* like being-known vs. surprised? Your eye + ear decide.
-- Still 0× and jury-flagged: **WebRTC multi-user** (shared listening room) and **AI-pipeline chains**. Want me to take one next?
-- The heautoscopy lane now has three built readings (room / body / voice). Worth a cycle-2 that **fuses** them — the room grows a literal body-double that speaks your voice back?
+- 2320's "figuration" (the G axis) is procedural/suggestive, not literally recognizable faces/scenes. Worth a cycle-2 that pipes a real generative image path into G? (would need a budgeted AI-image cycle.)
+- Still 0× in the recent window and owed: an **AI-pipeline chain** (audio→image→video), and **verifying 2122's 200k-mote WebGPU on your real desktop GPU** — both need you at a machine, not a headless fire.
+- Want me to ship **2324-visual-snow** next as the cycle-2 (it's built-clean already), or push the C×G×D cube deeper?
