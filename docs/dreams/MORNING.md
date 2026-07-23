@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-07-23 ~20:30 UTC (cycle 881, DEEP)
+# Morning digest — last updated 2026-07-23 ~22:26 UTC (cycle 882, WIDE)
 
-> **Day 4 of your jury's "full week off altered-states"** (tool → game → technical-firsts → **body-instruments**). Cycle 880 shipped the first of your jury's two named 0× technical gaps (WebGPU compute). This DEEP fire ships the **other one**: **real MediaPipe** face/hand/body tracking — the jury's endorsed fix for the bare-webcam-centroid monoculture.
+> **Day 5 of your jury's "full week off altered-states"** (tool → game → WebGPU → face-instrument → **cymatics physics**). This WIDE fire ran 3 non-consciousness explorers in parallel and shipped the one about the **real physical world**.
 
-Open the lab: https://getresonance.vercel.app/dream · **best on a laptop with a webcam + sound on.**
+Open the lab: https://getresonance.vercel.app/dream · **best on a phone or laptop with sound on.**
 
-## New since yesterday
-- **`2410-facesong`** → https://getresonance.vercel.app/dream/2410-facesong — **your face is a vocal instrument.** The lab's first *real* MediaPipe (`FaceLandmarker`, 478 landmarks + **52 blendshapes**). Open your mouth → an "aah" swells; smile → it brightens toward "ee"; purse → rounds toward "oo"; raise your brows → the pitch bends; tilt your head → it pans. A glowing 478-point face-mesh sings back what you're doing. **Why open it:** it's the freshest control surface MediaPipe offers — the *trained expression coefficients*, not just dots — driving a real formant "voice." Just sit at the laptop and let it read your face; no hands to raise, no standing back.
-- **2 more explored this fire (DEEP — one concept, three MediaPipe models), banked to IDEAS §881:**
-  - ⭐⭐ `2408-handspan` — first real `HandLandmarker` (21 pts × 2 hands): conduct a chord with bare hands (finger-spread = voices, height = register, pinch = strike). TOP resurrect for a hands cycle — its `hands.ts` becomes a reusable `_shared` primitive.
-  - ⭐ `2412-conductor` — first real `PoseLandmarker` (33-pt full body): a whole-body theremin (reach wide = swell, raise a hand = climb in pitch). The most *stage-fit* piece; held back only because it needs your whole body in frame = least reviewable at a seated glance. A natural fit for your installation/Tauri-venue interest.
+## New since yesterday — ⭐ open this first
+- **[2422-chladni](https://getresonance.vercel.app/dream/2422-chladni)** — the lab's **first cymatics / standing-wave sim**. Drive a square plate at a frequency and ~6,500 sand grains migrate onto the **nodal lines**, revealing the vibration mode as a crisp geometric figure; sweep the frequency (slider or drag the plate) and the pattern reorganises while a soft tone drives the plate at the same pitch — *you hear what you see*. Real math (a Newton step to the level set of `cos(nπx)cos(mπy) − cos(mπx)cos(nπy)`), not a shader trick. Loads playing itself (deterministic auto-sweep), so a silent glance already shows sand forming figures. **A piece about the real physical world, not consciousness** (jury #1), grounded in *today's* research (ChladniSonify, arXiv May 2026).
 
-## In progress / partial
-- None. Clean single-commit cycle: winner shipped, two seeds banked.
+## Also built this cycle — banked, not shipped (IDEAS §882)
+- ⭐⭐ **temperament** — a live A/B **tuning-system comparator** (Just vs Equal vs Pythagorean vs Meantone): flip systems while a chord sustains and the beating switches off/on; real 6-partial beats + Lissajous + a beat-Hz table. *The most useful-to-you piece in the fire — a tool you'd actually open.* Banked only because it's adjacent to two recent audio-analysis pieces; near-ready to ship next.
+- ⭐ **two-rooms** — the lab's **first real cross-machine WebRTC duet** (two devices, one shared sound-field, NO server — copy-paste handshake). Solo is already a complete instrument. Banked because the two-machine payoff is unreviewable solo on your phone — worth a dedicated cycle (+ a QR pairing helper) so you can actually feel it.
 
-## Research findings worth a look
-- **The under-used MediaPipe channel is the FaceLandmarker's 52 *blendshapes*** — a trained, labelled expression bus (jawOpen, mouthSmile, browInnerUp…) predicted client-side (*Blendshapes GHUM*, arXiv 2309.05782). Everyone else uses raw landmark positions; almost nobody sonifies the blendshapes. Cashed this cycle as `2410`. RESEARCH.md §881.
+## Research worth a look
+- **ChladniSonify** (arXiv:2605.09846, May 2026) runs cymatics *backwards* — a live CNN reads a nodal-line shape and emits the frequency that would produce it. Seeds a future "sculpt-a-figure → hear-its-frequency" instrument. (RESEARCH §882.)
 
 ## Open questions for Karel
-- **The camera-verify debt, honestly.** `2410`'s live face-tracking can't run headless, so it's compile/lint-verified only — but it degrades to a seeded visual auto-demo (a breathing synthetic face) + a pointer/sliders fallback, so it always renders. On your real machine you'll see the true blendshape-driven version. Worth a glance: does the vowel morph read as a convincing sung voice?
-- **Both of your jury's named 0× technical gaps are now closed** (880 = WebGPU compute, 881 = real MediaPipe). The two lanes still needing your go-ahead: a real **AI-pipeline chain** (audio→image→video — needs a FAL_KEY budget + your OK) and a **true cross-machine WebRTC** listening room. Say the word.
-- Mode ledger …879 D · 880 W · **881 D** → back to WIDE next cycle.
+- **Temperament tool** — want it shipped next cycle? It's essentially done and built for a pianist.
+- **WebRTC duet** — worth a DEEP cycle with a QR pairing helper so it self-demos phone↔laptop? Or hold until you can grab a second device?
+- **AI-pipeline chains** (music→image→video) are still 0× and would be the single most novel thing next — but they'd spend your FAL_KEY budget. Give me an explicit go-ahead + a budget and I'll build one.
+
+_Not eye/ear-verified — the headless container has no display/speakers. Chladni figure crispness, the morph-between-modes feel, and low-end fps want your browser._
