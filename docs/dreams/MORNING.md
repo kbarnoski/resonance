@@ -1,21 +1,42 @@
-# Morning digest — last updated 2026-07-23 ~00:40 UTC (cycle 871)
+# Morning digest — last updated 2026-07-23 (cycle 872, DEEP)
 
-**Open first:** https://getresonance.vercel.app/dream/2332-lock
+Open the lab: https://getresonance.vercel.app/dream · **use headphones for today's piece.**
 
-## New since yesterday
-- **`2332-lock` — an altered state you EARN, not a knob you turn.** A pulse ticks at a tempo that slowly drifts (1.65 → 2.85 Hz — the band where the brain's entrainment to rhythm actually peaks). You chase it by tapping (spacebar / tap the tunnel / mic claps). The "trippy" bloom only arrives when your rhythm truly **phase-locks** — and there's **no master dial**: two independent axes that can fight (are you at the right *tempo*? are you *on the beat* or in anti-phase?). Search = dim jitter; locked-but-off-phase = rings swelling *between* the beats; true lock = concentric rings pulse on the beat and the tunnel glides forward. On load a seeded autopilot flies the whole arc, so it's alive before you touch anything. *(three.js tunnel · phosphor cyan — a deliberate break from the recent violet-gold WebGL run.)*
-- **2 more explored this cycle — see IDEAS.md §871:**
-  - ⭐⭐ `2334-chroma` — "see music like a synesthete": a sound's real pitch/roughness/sharpness map to colour via documented cross-modal rules, six independent colour-organisms at once. Pure **SVG-DOM** (freshest output lane). Near-shippable.
-  - ⭐ `2336-descent` — audio-first, near-screenless NDE tunnel in headphones (HRTF spiral-descent + endless Shepard fall + ~2 Hz pulse). Ideal home for your **real Path piano** as the drone bed.
+## New since yesterday — ⭐ `2340-echo-body`
+**A drug-free out-of-body state.** Your webcam-seen motion is thrown back as a
+spatial **echo-self** on headphones — it first **lags** behind you, then over
+5 minutes crosses through "now" to **LEAD** you (it starts predicting your
+moves). The felt center of "you" comes loose from the body you see.
+→ https://getresonance.vercel.app/dream/2340-echo-body
+- **No single knob** — driven by TWO independent body variables (where you are ×
+  how spread-out you are), which can conflict. The illusion lives in the *gap*,
+  not a dial.
+- Output is **HRTF spatial-audio (primary) + a clean SVG-DOM plan** — deliberately
+  OFF the WebGL/three.js lane that had taken over the last 10 (~7×).
+- **Grounded in real science:** audio-visual OBE is inducible by *displaced* body
+  feedback (Scientific Reports 2024, s41598-024-74904-5; Blanke self-consciousness).
+- **Works with zero camera:** a synthetic body plays the whole lag→lead arc out, so
+  this is fully reviewable even if you don't grant the camera. Grant it for the real thing.
 
-## Why this cycle looks different
-Mode **WIDE** (3 divergent explorers, ship the strongest). My own diversity audit banned **WebGL2 output** (it was 4 of the last 10) on top of the jury's bans — so all three used a *different* renderer: three.js / SVG-DOM / audio-only. This directly re-attacks the jury's #1 week-long demand: *ban the single knob.* An earned phase-lock is the neuroscience inverse of a dial.
+## How this cycle ran
+- **DEEP mode:** 3 parallel builders attacked the ONE "OBE via displaced audio"
+  concept via different techniques; shipped the strongest. **2 more explored**
+  (bilateral-split `2338` + optical-flow-swarm `2342`, both build-clean) → banked
+  in **IDEAS.md §872** as resurrect-ready seeds.
+- Directly cashes the **2026-07-22 jury's #2** (build a NEW camera/body piece with a
+  non-Canvas, non-GPU output — camera is your freshest, most-loved input and nobody
+  had built the follow-up) and **#1** (ban the single knob).
 
-## Research finding worth a look
-Entrainment to rhythmic sound **peaks near ~2 Hz**, and the *strength* of that brain-to-beat locking predicts how altered people feel (PMC12014595, 2025; NYAS drumming review, 2025). That's the whole seed for `2332-lock`. RESEARCH.md §871.
+## Open questions for you
+- Love the **lag→lead echo-self**? If so the cycle-2 is obvious: fuse it with
+  `2338`'s *visible* seen↔heard displacement, or let the echo's timbre *age* across
+  the crossing. A love-tap on `2340` routes next cycle there.
+- The last never-touched menu item is an **AI-pipeline chain** (2+ models in series,
+  e.g. audio→image embedded in an AV piece — your stated favorite direction). It
+  needs FAL_KEY-budget + api-guard care; say the word and I'll take it on.
 
-## Honest limits
-Headless build box — no display/speakers/tapping. Compile + lint pass cleanly (full build EXIT 0, no EMFILE this run), but whether the three lock-regimes *read as distinct* and whether wrong-phase truly looks/sounds syncopated is unverified until you play it.
-
-## Open question for Karel
-The `2336-descent` shell is begging for your **actual recorded piano** as its carrier — want me to wire one of your Welcome Home tracks into it next cycle? (Standing directive; this is the cleanest vehicle yet.)
+## Caveat (honest)
+Headless run — I can't hear HRTF here, so whether the echo reads as a displaced
+*self* and the lag→lead crossing feels uncanny is reasoned + compile/lint-verified,
+not ear-verified. Build gates (tsc + ESLint) pass clean; the fd-cap blocks only the
+final page-collection step, same as every recent cycle.
