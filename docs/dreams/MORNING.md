@@ -1,17 +1,21 @@
-# Morning digest — last updated 2026-07-22 (cycle 870, DEEP)
+# Morning digest — last updated 2026-07-23 ~00:40 UTC (cycle 871)
+
+**Open first:** https://getresonance.vercel.app/dream/2332-lock
 
 ## New since yesterday
-- **[2326-we-breathe](https://getresonance.vercel.app/dream/2326-we-breathe)** — the lab's **first multi-context piece**. Every open browser tab is a real, coupled breather in one shared field; the collective breath entrains into one shared rhythm with **nobody holding a dial**. Warm-dawn WebGL2 field blooms as one when breaths lock, goes cool/choppy when they clash; a drone detunes into beating vs. pulls to unison. **→ Open it, then open it in a SECOND tab or window — a genuine second breather joins, out of phase, and you watch the room re-sync.** Solo? A seeded chorus keeps the room alive; grant the mic or just hold anywhere to inhale.
-  - *Why it matters:* directly answers the jury's loudest uncashed demand — "break the solipsism, every piece is one person alone." Drug-free **collective effervescence / inter-brain synchrony** — an altered state that needs other people. Ambition 4/5 (first cross-context coupling in ~825 routes).
+- **`2332-lock` — an altered state you EARN, not a knob you turn.** A pulse ticks at a tempo that slowly drifts (1.65 → 2.85 Hz — the band where the brain's entrainment to rhythm actually peaks). You chase it by tapping (spacebar / tap the tunnel / mic claps). The "trippy" bloom only arrives when your rhythm truly **phase-locks** — and there's **no master dial**: two independent axes that can fight (are you at the right *tempo*? are you *on the beat* or in anti-phase?). Search = dim jitter; locked-but-off-phase = rings swelling *between* the beats; true lock = concentric rings pulse on the beat and the tunnel glides forward. On load a seeded autopilot flies the whole arc, so it's alive before you touch anything. *(three.js tunnel · phosphor cyan — a deliberate break from the recent violet-gold WebGL run.)*
+- **2 more explored this cycle — see IDEAS.md §871:**
+  - ⭐⭐ `2334-chroma` — "see music like a synesthete": a sound's real pitch/roughness/sharpness map to colour via documented cross-modal rules, six independent colour-organisms at once. Pure **SVG-DOM** (freshest output lane). Near-shippable.
+  - ⭐ `2336-descent` — audio-first, near-screenless NDE tunnel in headphones (HRTF spiral-descent + endless Shepard fall + ~2 Hz pulse). Ideal home for your **real Path piano** as the drone bed.
 
-## Explored but not shipped (banked → IDEAS §870)
-- **⭐⭐ 2328-the-commons** — a WebGL2 constellation of presence-nodes finding sync-communities and fracturing (the clearest *picture* of a collective mind). Banked because its Kuramoto-society technique is close to cycle-866's `2290-phase-society`; it's the natural **WebRTC multi-device** upgrade candidate.
-- **⭐ 2330-the-round** — a shared round/canon (SVG score-ring) where a collective harmony self-assembles from local decisions. Banked because it's audio-forward (least legible at a silent glance); near-shippable on a headphones cycle.
+## Why this cycle looks different
+Mode **WIDE** (3 divergent explorers, ship the strongest). My own diversity audit banned **WebGL2 output** (it was 4 of the last 10) on top of the jury's bans — so all three used a *different* renderer: three.js / SVG-DOM / audio-only. This directly re-attacks the jury's #1 week-long demand: *ban the single knob.* An earned phase-lock is the neuroscience inverse of a dial.
 
-## Research finding worth a look (RESEARCH §870)
-- A **2026 Frontiers fNIRS-hyperscanning** study: inter-brain synchrony rises with shared music-making. Paired with Durkheim's *collective effervescence* — recent work shows it arises even in **digital** spaces without physical co-presence. That's what licensed a server-less shared-tab room.
+## Research finding worth a look
+Entrainment to rhythmic sound **peaks near ~2 Hz**, and the *strength* of that brain-to-beat locking predicts how altered people feel (PMC12014595, 2025; NYAS drumming review, 2025). That's the whole seed for `2332-lock`. RESEARCH.md §871.
 
-## Open questions for Karel
-- **Want the real multi-device version?** BroadcastChannel is same-browser/multi-tab only. The next big step is a tiny WebRTC/WebSocket relay → genuinely couple people across the internet. Needs a server — worth a desktop cycle with you?
-- Should the collective breath modulate **your real Path piano** instead of a synth drone? (Standing "use Karel's music as carrier" ask — this piece is a natural fit.)
-- Extract a reusable `_shared/presence.ts` so multi-context pieces get cheap? (Queued.)
+## Honest limits
+Headless build box — no display/speakers/tapping. Compile + lint pass cleanly (full build EXIT 0, no EMFILE this run), but whether the three lock-regimes *read as distinct* and whether wrong-phase truly looks/sounds syncopated is unverified until you play it.
+
+## Open question for Karel
+The `2336-descent` shell is begging for your **actual recorded piano** as its carrier — want me to wire one of your Welcome Home tracks into it next cycle? (Standing directive; this is the cleanest vehicle yet.)
