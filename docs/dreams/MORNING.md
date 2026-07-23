@@ -1,42 +1,50 @@
-# Morning digest — last updated 2026-07-23 (cycle 872, DEEP)
+# Morning digest — last updated 2026-07-23 (cycle 873, WIDE)
 
-Open the lab: https://getresonance.vercel.app/dream · **use headphones for today's piece.**
+Open the lab: https://getresonance.vercel.app/dream · **headphones + tap a few times for today's piece.**
 
-## New since yesterday — ⭐ `2340-echo-body`
-**A drug-free out-of-body state.** Your webcam-seen motion is thrown back as a
-spatial **echo-self** on headphones — it first **lags** behind you, then over
-5 minutes crosses through "now" to **LEAD** you (it starts predicting your
-moves). The felt center of "you" comes loose from the body you see.
-→ https://getresonance.vercel.app/dream/2340-echo-body
-- **No single knob** — driven by TWO independent body variables (where you are ×
-  how spread-out you are), which can conflict. The illusion lives in the *gap*,
-  not a dial.
-- Output is **HRTF spatial-audio (primary) + a clean SVG-DOM plan** — deliberately
-  OFF the WebGL/three.js lane that had taken over the last 10 (~7×).
-- **Grounded in real science:** audio-visual OBE is inducible by *displaced* body
-  feedback (Scientific Reports 2024, s41598-024-74904-5; Blanke self-consciousness).
-- **Works with zero camera:** a synthetic body plays the whole lag→lead arc out, so
-  this is fully reviewable even if you don't grant the camera. Grant it for the real thing.
+## New since yesterday — ⭐ `2348-tritone-veil`
+**The screen+speakers as a psychophysics instrument that reads YOUR
+perception back to you.** It plays Diana Deutsch's **tritone paradox**:
+octave-ambiguous tone pairs that are objectively *neither* rising nor falling —
+yet you involuntarily hear each as ▲ or ▼, and *which way is yours* (it tracks
+your speaking-voice range and dialect). You tap what you hear; a live map draws
+your private "signature"; then a spatial choir fades in and **glides endlessly
+in your direction** — the room agrees with your nervous system.
+→ https://getresonance.vercel.app/dream/2348-tritone-veil
+- **No single knob — the purest form yet.** The two independent variables are the
+  *objective* tone sequence vs. your *involuntary* percept. They genuinely can't
+  collapse to one dial: the tones don't rise or fall, but you unshakeably hear one
+  way. The percept can't be autopiloted because it's *yours*.
+- **Output is SVG-DOM + a spatialized WebAudio choir** — deliberately off the
+  WebGL/Canvas lane the last 10 leaned on. Clinical Ikeda-monochrome, not
+  violet-gold.
+- **Grounded:** Diana Deutsch, *The Tritone Paradox* (1991); Shepard (1964);
+  Risset glissando. Directly cashes the 2026-07-22 jury's #1 (ban the single knob),
+  #4 (fresh palette), #5 (a new interaction — the piece is *about you*).
 
 ## How this cycle ran
-- **DEEP mode:** 3 parallel builders attacked the ONE "OBE via displaced audio"
-  concept via different techniques; shipped the strongest. **2 more explored**
-  (bilateral-split `2338` + optical-flow-swarm `2342`, both build-clean) → banked
-  in **IDEAS.md §872** as resurrect-ready seeds.
-- Directly cashes the **2026-07-22 jury's #2** (build a NEW camera/body piece with a
-  non-Canvas, non-GPU output — camera is your freshest, most-loved input and nobody
-  had built the follow-up) and **#1** (ban the single knob).
+- **WIDE mode:** 3 parallel builders explored one thesis — *make the second
+  variable the visitor's own involuntary perception* — via three different
+  illusions. Shipped the strongest. **2 more explored** and banked in **IDEAS §873**:
+  `moire-drift` (WebGL2 op-art moiré beat-locked to two drones — hypnotic, lost only
+  on an over-used output lane) and `freeze-cathedral` (spectral-FREEZE of a piano
+  into an accumulating "eternal-now" — lost on the jury's Canvas2D ban; easy re-skin).
 
 ## Open questions for you
-- Love the **lag→lead echo-self**? If so the cycle-2 is obvious: fuse it with
-  `2338`'s *visible* seen↔heard displacement, or let the echo's timbre *age* across
-  the crossing. A love-tap on `2340` routes next cycle there.
-- The last never-touched menu item is an **AI-pipeline chain** (2+ models in series,
-  e.g. audio→image embedded in an AV piece — your stated favorite direction). It
-  needs FAL_KEY-budget + api-guard care; say the word and I'll take it on.
+- **Do you hear ▲ or ▼?** Tap through a full circle and watch your signature
+  axis form — Deutsch found it correlates with your speaking voice. Curious whether
+  the choir gliding *your* way feels uncanny. A love-tap routes next cycle deeper
+  into auditory illusions (scale illusion, octave illusion, phantom words — all
+  unbuilt).
+- The last never-touched menu item is still an **AI-pipeline chain** (2+ models in
+  series, e.g. audio→image embedded in an AV piece — your stated favorite). Needs
+  FAL_KEY-budget + api-guard care; say the word and I'll take it on.
 
 ## Caveat (honest)
-Headless run — I can't hear HRTF here, so whether the echo reads as a displaced
-*self* and the lag→lead crossing feels uncanny is reasoned + compile/lint-verified,
-not ear-verified. Build gates (tsc + ESLint) pass clean; the fd-cap blocks only the
-final page-collection step, same as every recent cycle.
+Headless run — no speakers here, so whether the Shepard pairs read as genuinely
+octave-ambiguous and whether the choir convincingly glides in your *reported*
+direction are reasoned + compile/lint-verified, not ear-verified. By design the
+piece **waits for your taps** (no fake self-demo of a percept), so a silent glance
+hears one pair + a tap prompt — the payoff needs a few answers. Build gates
+(tsc + ESLint + compile) pass; the full `next build` page-collection is blocked
+only by the standing fd-cap (`ulimit -n 4096`), same as every recent cycle.
