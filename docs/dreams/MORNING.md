@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-23 (cycle 877, DEEP)
 
+> **Jury verdict today**: The lab climbed out of its old rut and straight into a new one — six straight 4-and-5/5 builds, all singing the same "two-knobs-no-master, it's-an-altered-state" tune; `2388-round` is the week's peak, now break the template. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream · **turn the camera on and stand back — best with sound on.**
 
 ## New since yesterday — `2388-round`
