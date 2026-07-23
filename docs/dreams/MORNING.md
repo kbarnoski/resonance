@@ -1,50 +1,50 @@
-# Morning digest — last updated 2026-07-23 (cycle 874, DEEP)
+# Morning digest — last updated 2026-07-23 (cycle 875, WIDE)
 
-Open the lab: https://getresonance.vercel.app/dream · **best on your phone — hold it and physically bounce.**
+Open the lab: https://getresonance.vercel.app/dream · **best with the sound on — headphones help.**
 
-## New since yesterday — `2354-buoyant`
-**An altered state of your BODY, not your mind: the sound your footsteps
-make changes how HEAVY you feel.** Hold the phone, bounce or step in place —
-every footfall is sonified in real time, and by shaping that movement-sound you
-can talk your body into feeling buoyant and weightless, or leaden and grounded.
-A drug-free somatic illusion, straight out of a *fresh* CHI 2026 finding.
-→ https://getresonance.vercel.app/dream/2354-buoyant
-- **Grounded, same-day:** SoniBand (Tajadura-Jiménez et al., **CHI 2026**) —
-  pitch-modulated movement-sound measurably edits perceived body-lightness,
-  effort, and mood. Higher/brighter footstep → lighter body. (+ the foundational
-  "As Light as Your Footsteps", 2015; Lenggenhager/Blanke body-ownership.)
-- **No single knob — two axes that fight.** *Brightness/lightness* (how buoyant)
-  × *sync/lag ownership* (is the new weight *yours*, or does it float free and go
-  uncanny). The four quadrants each feel different: bright+tight = weightless &
-  owned; bright+lagged = floating-not-yours; dark+tight = heavy but grounded.
-- **First time the lab has touched felt body-weight** — every prior altered-state
-  piece edits how you see the world or hear pitch; this reaches into proprioception.
-  High-key *aerial daylight* palette, deliberately off the violet-gold groove.
+## New since yesterday — `2360-blind-spot`
+**Hear your own consciousness edit reality.** Sit still, fixate the center dot,
+and watch the warm dots in the corners of your eye *vanish* — one by one, for
+seconds at a time — even though they're physically always on screen and you *know*
+they're there. It's **Motion-Induced Blindness** (Bonneh, *Nature* 2001), a real
+perceptual glitch. Each dot is a note in a soft chord; **tap a dot the moment it
+disappears** and its note fades out — so the chord audibly *thins* to match your
+shrinking awareness, then re-blooms as the dots return. You are hearing the gap
+between what is there and what you perceive.
+→ https://getresonance.vercel.app/dream/2360-blind-spot
+- **The purest "no single knob" the lab has built.** The jury banned the master
+  0→1 dial for a week — this is the cleanest answer possible: *objective presence*
+  (the dot is always there) and *your awareness of it* aren't two ends of a slider,
+  they're facts that flatly contradict each other. Nothing to autopilot.
+- **A genuine lab-first** (Motion-Induced Blindness, never built before) with a
+  2024 twist baked in: dots on the diagonals fade *sooner and longer* than ones on
+  the horizontal/vertical — a real spatial anisotropy (PMC11557702). A little
+  "blind-map" logs which corners of your vision you lose most.
+- Pure **SVG-DOM**, clinical Ikeda-blue — off the WebGL/violet-gold groove. No mic,
+  no camera, no GPU, no permission prompts: it just works on your phone.
 
 ## How this cycle ran
-- **DEEP mode:** 2 parallel builders took ONE body-lightness concept via two
-  captures. Shipped the **phone-accelerometer footfall** version (most faithful to
-  SoniBand's footstep paradigm + phone-native for your 06:30 review). The
-  **webcam vertical-motion** sibling `2356-lighter` is banked in **IDEAS §874** as
-  the genuine cycle-2 (fuse both captures + real body-height via pose).
+- **WIDE mode:** 3 parallel builders, three unrelated "your perception is the
+  variable" pieces. Shipped the MIB one; **2 more banked in IDEAS §875:**
+  ⭐⭐ `2362-khoomei` (hum one note, and your mouth-shape whistles Tuvan-style
+  overtone melodies — a brand-new formant-tracking mic primitive) and
+  ⭐ `2364-drift-static` (a Kitaoka op-art field that rotates only because your
+  eyes invent the motion — WebGPU-compute, for a desktop-GPU cycle).
 
 ## Open questions for you
-- **Does your body actually feel lighter?** This one *needs your phone and a bounce*
-  — that's the whole experiment. Curious whether bright+tight reads as weightless,
-  and whether cranking the lag makes the lightness feel dislocated / not-yours.
-  A love-tap routes next cycle into the webcam cycle-2 + a shared `bodyLightness`
-  engine future embodied pieces can reuse.
-- **AI-pipeline chain** (audio→image embedded in an AV piece — your stated
-  favorite) is still the one never-touched menu item. It needs FAL_KEY budget +
-  api-guard care and your explicit go-ahead before I spend image budget — say the
-  word and I'll take it on.
+- **Do the dots actually vanish for you?** This one lives or dies on *your* fixation
+  — a silent glance sees the auto-demo, but the magic needs you to stare at the
+  center and let the periphery go. Does the chord thinning make the disappearance
+  feel uncanny, or is it too subtle?
+- After two "your-own-perception" cycles (the tritone piece + this), I'll
+  deliberately rotate the theme next — embodied/haptic, real-world-data, or a
+  long-form evolving piece. Say if one of those calls to you.
+- **AI-pipeline chain** (audio→image inside an AV piece — your stated favorite) is
+  still the one never-touched item; it needs FAL_KEY budget + api-guard and your
+  go-ahead before I spend image budget.
 
-## Housekeeping (honest)
-- **Found a logging gap:** STATE.md + RESEARCH.md hadn't been written since
-  cycles 861/864 even though code shipped through 873 — those 12 cycles' notes
-  live only in the commit messages. I restored both logs this cycle; can backfill
-  862–873 from git history if you want the record whole.
-- **Headless caveat:** no accelerometer/speakers here, so the felt-weight illusion,
-  the footfall thresholds, and whether the four quadrants land as distinct states
-  are reasoned + compile/lint/build-verified only, not body-tested. Build gates
-  (tsc + ESLint + compile) all pass clean.
+## Honest caveat
+- Headless here (no display/speakers), and real MIB *requires your own eyes* — so
+  whether the dots convincingly disappear and the chord-thinning lands is reasoned
+  + build-verified only, not seen/heard. A seeded auto-demo is the silent stand-in.
+  Build gates (tsc + ESLint + full compile) all pass clean.
