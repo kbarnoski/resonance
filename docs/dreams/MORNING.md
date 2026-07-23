@@ -1,50 +1,49 @@
-# Morning digest — last updated 2026-07-23 (cycle 875, WIDE)
+# Morning digest — last updated 2026-07-23 (cycle 876, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream · **best with the sound on — headphones help.**
 
-## New since yesterday — `2360-blind-spot`
-**Hear your own consciousness edit reality.** Sit still, fixate the center dot,
-and watch the warm dots in the corners of your eye *vanish* — one by one, for
-seconds at a time — even though they're physically always on screen and you *know*
-they're there. It's **Motion-Induced Blindness** (Bonneh, *Nature* 2001), a real
-perceptual glitch. Each dot is a note in a soft chord; **tap a dot the moment it
-disappears** and its note fades out — so the chord audibly *thins* to match your
-shrinking awareness, then re-blooms as the dots return. You are hearing the gap
-between what is there and what you perceive.
-→ https://getresonance.vercel.app/dream/2360-blind-spot
-- **The purest "no single knob" the lab has built.** The jury banned the master
-  0→1 dial for a week — this is the cleanest answer possible: *objective presence*
-  (the dot is always there) and *your awareness of it* aren't two ends of a slider,
-  they're facts that flatly contradict each other. Nothing to autopilot.
-- **A genuine lab-first** (Motion-Induced Blindness, never built before) with a
-  2024 twist baked in: dots on the diagonals fade *sooner and longer* than ones on
-  the horizontal/vertical — a real spatial anisotropy (PMC11557702). A little
-  "blind-map" logs which corners of your vision you lose most.
-- Pure **SVG-DOM**, clinical Ikeda-blue — off the WebGL/violet-gold groove. No mic,
-  no camera, no GPU, no permission prompts: it just works on your phone.
+## New since yesterday — `2366-solar-wind`
+**A drone tuned, right now, to the real solar wind between the Sun and the Earth.**
+This isn't a metaphor — it fetches live NOAA space-weather data (solar-wind speed
+& density, the interplanetary magnetic field's Bz, the Kp storm index, the aurora
+oval) straight into your browser. When the Sun is quiet you're in a calm cosmic
+void; **if a real geomagnetic storm is coupling into the planet, the aurora
+overhead ignites red-and-magenta and the harmony turns tense.** The sky in the
+browser *is* the sky. A 24h scrub slider lets you hear the Sun's last day.
+→ https://getresonance.vercel.app/dream/2366-solar-wind
+- **Breaks the lab's solipsism** (your #3 note): the last two weeks were all "one
+  person alone with their own nervous system." This one is about the actual
+  Sun–Earth system this minute — real data, no server, no permissions.
+- **The cleanest "no single knob" yet:** five independent physical channels that
+  disagree — fast wind can meet a *calm* northward field, so the sky can be
+  "bright-but-tense" or "dim-but-calm," which no 0→1 dial could ever reach. Bz
+  turning southward is the crux: open fifths melt toward a tritone shimmer.
+- **A lab-first:** first live-space-weather sonification and first live-data
+  *volumetric* aurora — true auroral emission-line colors (O 557nm green → O 630nm
+  red → N₂⁺ magenta), ≤3Hz drift, no strobe. Softly picked up your love of
+  `262-aurora-particle`.
 
 ## How this cycle ran
-- **WIDE mode:** 3 parallel builders, three unrelated "your perception is the
-  variable" pieces. Shipped the MIB one; **2 more banked in IDEAS §875:**
-  ⭐⭐ `2362-khoomei` (hum one note, and your mouth-shape whistles Tuvan-style
-  overtone melodies — a brand-new formant-tracking mic primitive) and
-  ⭐ `2364-drift-static` (a Kitaoka op-art field that rotates only because your
-  eyes invent the motion — WebGPU-compute, for a desktop-GPU cycle).
+- **WIDE mode + a hard theme rotation** off the 5-cycle "your-own-perception"
+  groove into **real external live data.** 3 parallel builders; shipped the space-
+  weather one. **2 more banked in IDEAS §876:** ⭐⭐ `2372-flyover` (stand under
+  your real night sky and *hear the actual ISS* cross overhead — it knows your
+  location, pans the sound to the compass direction it's really in) and ⭐
+  `2378-daybreak` (a dawn-to-void drone computed from the real sun/moon over your
+  location — opening it at 6:30am lands you in your own twilight; works fully
+  offline).
 
 ## Open questions for you
-- **Do the dots actually vanish for you?** This one lives or dies on *your* fixation
-  — a silent glance sees the auto-demo, but the magic needs you to stare at the
-  center and let the periphery go. Does the chord thinning make the disappearance
-  feel uncanny, or is it too subtle?
-- After two "your-own-perception" cycles (the tritone piece + this), I'll
-  deliberately rotate the theme next — embodied/haptic, real-world-data, or a
-  long-form evolving piece. Say if one of those calls to you.
-- **AI-pipeline chain** (audio→image inside an AV piece — your stated favorite) is
-  still the one never-touched item; it needs FAL_KEY budget + api-guard and your
-  go-ahead before I spend image budget.
+- **Is a storm live right now?** The piece is honest to the real feed, so at a calm
+  Sun it's deliberately quiet — drag the scrub back to find the last active hour,
+  or check if Kp is up. Does the storm→tension mapping read as uncanny or subtle?
+- Real-data lane is now stocked (ISS + daybreak seeds ready). Next I can go DEEP on
+  one of these, or finally hit the **AI-pipeline chain** (audio→image inside an AV
+  piece — your stated favorite; needs FAL_KEY budget + your go-ahead).
 
 ## Honest caveat
-- Headless here (no display/speakers), and real MIB *requires your own eyes* — so
-  whether the dots convincingly disappear and the chord-thinning lands is reasoned
-  + build-verified only, not seen/heard. A seeded auto-demo is the silent stand-in.
-  Build gates (tsc + ESLint + full compile) all pass clean.
+- Headless here (no display/speakers): whether the aurora reads as volumetric and
+  the Bz-tension is audible is reasoned + build-verified only, not seen/heard. A
+  bundled fallback snapshot guarantees it renders + sounds complete even if your
+  network blocks the live NOAA fetch. Gates all pass (compile + ESLint + full
+  compile-mode build, exit 0).
