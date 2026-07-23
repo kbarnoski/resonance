@@ -1,49 +1,44 @@
-# Morning digest — last updated 2026-07-23 (cycle 876, WIDE)
+# Morning digest — last updated 2026-07-23 (cycle 877, DEEP)
 
-Open the lab: https://getresonance.vercel.app/dream · **best with the sound on — headphones help.**
+Open the lab: https://getresonance.vercel.app/dream · **turn the camera on and stand back — best with sound on.**
 
-## New since yesterday — `2366-solar-wind`
-**A drone tuned, right now, to the real solar wind between the Sun and the Earth.**
-This isn't a metaphor — it fetches live NOAA space-weather data (solar-wind speed
-& density, the interplanetary magnetic field's Bz, the Kp storm index, the aurora
-oval) straight into your browser. When the Sun is quiet you're in a calm cosmic
-void; **if a real geomagnetic storm is coupling into the planet, the aurora
-overhead ignites red-and-magenta and the harmony turns tense.** The sky in the
-browser *is* the sky. A 24h scrub slider lets you hear the Sun's last day.
-→ https://getresonance.vercel.app/dream/2366-solar-wind
-- **Breaks the lab's solipsism** (your #3 note): the last two weeks were all "one
-  person alone with their own nervous system." This one is about the actual
-  Sun–Earth system this minute — real data, no server, no permissions.
-- **The cleanest "no single knob" yet:** five independent physical channels that
-  disagree — fast wind can meet a *calm* northward field, so the sky can be
-  "bright-but-tense" or "dim-but-calm," which no 0→1 dial could ever reach. Bz
-  turning southward is the crux: open fifths melt toward a tritone shimmer.
-- **A lab-first:** first live-space-weather sonification and first live-data
-  *volumetric* aurora — true auroral emission-line colors (O 557nm green → O 630nm
-  red → N₂⁺ magenta), ≤3Hz drift, no strobe. Softly picked up your love of
-  `262-aurora-particle`.
+## New since yesterday — `2388-round`
+**Your body becomes a live looper pedal.**
+Move in front of your webcam for ~7 seconds and that gesture becomes a glowing
+ghost that keeps looping forever. Lay down another, and another — soon a whole
+**canon of your past selves** is circling and singing at once, each on its own
+clock so they slowly drift out of phase (Steve-Reich style). What you hear and
+see at minute five is everything you left behind — nothing like minute one.
+→ https://getresonance.vercel.app/dream/2388-round
+- **"The room remembers you"** (your jury's #2 ask, finally built): the second,
+  un-collapsible variable is your *own recorded motion* replayed against live-you.
+- **The lab's first real long-form / stateful piece** — the one lane we were
+  thinnest on. State only *grows*; it's a genuine accumulator, not a loop.
+- **The richest "no single knob" yet:** not one dial, not two — *N* independent
+  voices, each its own loop. The only controls add or remove a layer.
+- **No permissions-blocker:** camera denied? A seeded auto-performer records the
+  full canon by itself, so it self-demos on your phone with the lens off.
+  Ikeda black-and-white; no strobe; slow drift.
 
 ## How this cycle ran
-- **WIDE mode + a hard theme rotation** off the 5-cycle "your-own-perception"
-  groove into **real external live data.** 3 parallel builders; shipped the space-
-  weather one. **2 more banked in IDEAS §876:** ⭐⭐ `2372-flyover` (stand under
-  your real night sky and *hear the actual ISS* cross overhead — it knows your
-  location, pans the sound to the compass direction it's really in) and ⭐
-  `2378-daybreak` (a dawn-to-void drone computed from the real sun/moon over your
-  location — opening it at 6:30am lands you in your own twilight; works fully
-  offline).
+- **DEEP mode** (broke a two-night WIDE streak): one big concept — *make your
+  recorded motion history the second performer* — raced by **3 parallel builders**.
+  Shipped the body-looper. **2 more banked in IDEAS §877:** ⭐⭐ `2380-afterself`
+  (a duet with "you" replayed 30 seconds behind, sound panned in 3D to where past-
+  you is) and ⭐ `2384-hysteresis` (GPU thermal feedback — a bright NOW-you burning
+  over a dim, delayed THEN-you, in a warm ember palette the lab has never used).
 
 ## Open questions for you
-- **Is a storm live right now?** The piece is honest to the real feed, so at a calm
-  Sun it's deliberately quiet — drag the scrub back to find the last active hour,
-  or check if Kp is up. Does the storm→tension mapping read as uncanny or subtle?
-- Real-data lane is now stocked (ISS + daybreak seeds ready). Next I can go DEEP on
-  one of these, or finally hit the **AI-pipeline chain** (audio→image inside an AV
-  piece — your stated favorite; needs FAL_KEY budget + your go-ahead).
+- Does the **accumulating canon read as legible** — can you tell your past selves
+  apart and enjoy the phasing — or does it just get busy? (Tune: fewer layers?)
+- A love-tap on `2388` and I'll go DEEP on a cycle-2: quantize the loops to a
+  shared meter, or seed the round with your real **Path piano**.
+- The last two never-touched lanes still need your go-ahead: the **AI-pipeline
+  chain** (audio→image inside an AV piece — your stated favorite; needs a FAL_KEY
+  budget) and a **shared multi-device room** (a body-looper you play *together*).
 
 ## Honest caveat
-- Headless here (no display/speakers): whether the aurora reads as volumetric and
-  the Bz-tension is audible is reasoned + build-verified only, not seen/heard. A
-  bundled fallback snapshot guarantees it renders + sounds complete even if your
-  network blocks the live NOAA fetch. Gates all pass (compile + ESLint + full
-  compile-mode build, exit 0).
+- Headless here (no camera/display/speakers): whether real webcam motion tracks
+  cleanly and the round is audibly satisfying is reasoned + build-verified only,
+  not seen/heard. Gates all pass (compile + ESLint + full compile-mode build,
+  exit 0). The seeded auto-performer guarantees a complete render + sound at review.
