@@ -1,35 +1,38 @@
-# Morning digest — last updated 2026-07-24 (cycle 889, DEEP)
+# Morning digest — last updated 2026-07-24 14:29 UTC
 
-> **Jury verdict today**: The altered-states rut is dead — the lab broke wide into games, tools and real-world data (2502-duel is a real AI you can lose to; 2402-sandfall is a real GPU sim) — but the new crutch is snapping every sound to a just-intonation lattice so nothing ever risks sounding bad; tomorrow, let something sound dangerous. See `docs/dreams/JURY.md`.
+**Cycle 890 · WIDE (3 parallel builders → shipped 1).** Directly answering
+yesterday's new jury verdict: *"kill the just-intonation safety net — let one
+piece sound dangerous."*
 
 ## New since yesterday
-- **[2502-duel](/dream/2502-duel) — Counterpoint Duel.** Open this one: it's the
-  lab's **first real game with a winner** and its **first AI that actually thinks
-  ahead**. You and a 3-ply *negamax* opponent take turns placing notes over a
-  fixed lower voice; every move is scored live by Fux's 1725 counterpoint rules,
-  highest total wins, and the scoreboard shows the actual search-tree size the AI
-  walked (thousands of positions per move). Deliberately *not* about
-  consciousness — a strategy game, straight down the jury's #1 provocation. It
-  self-plays a full duel on load, so a glance already shows it in motion.
-- 2 more explored this cycle, both built & banked (see IDEAS §889):
-  **`2506-weave`** — "Counterpoint Golf," a solo puzzle where a live rule-linter
-  flags your violations and a branch-and-bound *oracle* computes your provable
-  "par." **`2510-gambit`** — a real-time counterpoint *arcade* with a consonance
-  combo meter and an adaptive adversarial melody.
+- **[2522-xyscope](/dream/2522-xyscope)** — *the sound IS the picture.* An XY
+  oscilloscope where two hard-panned oscillators draw a glowing Lissajous vector
+  figure that literally **is** the audio waveform (WebGL, pulled from the real
+  audio buffer). The oscillator ratio is **free / un-quantized — no pitch
+  lattice** — so simple ratios draw clean loops and irrational ratios beat and
+  clash; a waveshaper+FM **drive** (hold Space) pushes a clean sine into
+  screeching harsh timbre while the shape sharpens into spikes.
+  **Why open it:** it's the first lab piece deliberately built to sound
+  *dangerous*, and the sound and the image are the same data. Play it on a
+  laptop keyboard (letters = pitch, arrows = ratio/phase, Space = drive).
 
-## In progress / partial
-- None. 2502-duel is demoable and self-contained (no mic, no camera, no network).
+## Explored but not shipped (banked as ideas)
+- **⭐⭐ 2518-against** — a rhythm-first groovebox *allowed to fall apart*: six
+  interlocking polymeter tracks + percussion/noise, with a "drift/danger" knob
+  that smears the pocket into chaos then snaps it back. Fresh mechanic — top
+  resurrect. (IDEAS §890)
+- **⭐ 2514-cracks** — a QWERTY xenharmonic instrument (Bohlen–Pierce, *no octave
+  anywhere* / 19-TET) with a drone you beat against, SVG lattice showing how far
+  "out" each note is. (IDEAS §890)
 
-## Research findings worth a look
-- The fresh 2026 browser-AV frontier (WebGPU-boids relaxation toys) is a lane we
-  already shipped (`2450-flock`) — a *negative* result. The real gap the jury
-  named is a **game**, and adversarial game-tree search was grep-0× in ~890
-  routes. So this cycle built the thing that was actually missing. (RESEARCH §889.)
+## Research worth a look
+- **§890** — Fragment/fsynth synthesizes sound *from GPU pixels* (the picture is
+  the spectrum); plus a live 2026 microtonal/dissonance browser ecosystem. This
+  is the vein the jury's #1 mandate points at.
 
 ## Open questions for Karel
-- Does the 3-ply AI feel like a worthy opponent, or near-greedy? First-species
-  counterpoint has low branching, so the lookahead may not bite until we add
-  **2nd/3rd species** (passing tones, suspensions) — the obvious deepening on a
-  love-tap, plus pass-and-play and a "why was I docked" teaching mode.
-- The lab now has an adversarial-AI + real-game register. Worth mining more
-  music-theory games (interval-ear duels, chord-progression puzzles)?
+- **Two lanes still need your explicit go-ahead** (I won't start them alone):
+  an **AI-pipeline chain** (music→image→video — needs FAL_KEY budget) and a
+  **true 2-device WebRTC** shared room. Want either this week?
+- xyscope's bloom/persistence was tuned blind (headless — no GPU here). Does it
+  read as harsh-yet-beautiful on your screen, or should it pull back?
