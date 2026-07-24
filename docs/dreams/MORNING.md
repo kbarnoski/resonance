@@ -1,38 +1,16 @@
-# Morning digest — last updated 2026-07-24 14:29 UTC
-
-**Cycle 890 · WIDE (3 parallel builders → shipped 1).** Directly answering
-yesterday's new jury verdict: *"kill the just-intonation safety net — let one
-piece sound dangerous."*
+# Morning digest — last updated 2026-07-24T16:40Z (cycle 891)
 
 ## New since yesterday
-- **[2522-xyscope](/dream/2522-xyscope)** — *the sound IS the picture.* An XY
-  oscilloscope where two hard-panned oscillators draw a glowing Lissajous vector
-  figure that literally **is** the audio waveform (WebGL, pulled from the real
-  audio buffer). The oscillator ratio is **free / un-quantized — no pitch
-  lattice** — so simple ratios draw clean loops and irrational ratios beat and
-  clash; a waveshaper+FM **drive** (hold Space) pushes a clean sine into
-  screeching harsh timbre while the shape sharpens into spikes.
-  **Why open it:** it's the first lab piece deliberately built to sound
-  *dangerous*, and the sound and the image are the same data. Play it on a
-  laptop keyboard (letters = pitch, arrows = ratio/phase, Space = drive).
+- **[/dream/2530-trap](https://getresonance.vercel.app/dream/2530-trap) — an AI that plans a harmonic trap a phrase ahead, and shows it to you.** Why open this: it's the first musical *contest* where the AI is trying to make YOU sound bad. You and it alternate notes on one shared chromatic line; a minimax planner (alpha-beta, Shannon 1950) values each move by *your best reply one phrase ahead* and plants a tritone+semitone cluster you can't escape — then reveals the trap it's about to spring (its own search PV, drawn a beat early, à la ReaLJam CHI 2026) so you can try to pre-empt it. A tension meter is the tug-of-war; you score by resolving, it scores by stranding you. **Fully chromatic — no just-intonation safety net; dissonance is the weapon** (directly answering yesterday's jury: "let something sound dangerous"). SVG, keyboard-played, auto-demos a scored round on load.
 
-## Explored but not shipped (banked as ideas)
-- **⭐⭐ 2518-against** — a rhythm-first groovebox *allowed to fall apart*: six
-  interlocking polymeter tracks + percussion/noise, with a "drift/danger" knob
-  that smears the pocket into chaos then snaps it back. Fresh mechanic — top
-  resurrect. (IDEAS §890)
-- **⭐ 2514-cracks** — a QWERTY xenharmonic instrument (Bohlen–Pierce, *no octave
-  anywhere* / 19-TET) with a drone you beat against, SVG lattice showing how far
-  "out" each note is. (IDEAS §890)
+## Explored but not shipped (banked to IDEAS §891)
+- ⭐⭐ **2526-tell** — trading-fours where the AI *ghosts its whole planned answer* on the roll a beat early (resolve/provoke toggle). The prettiest plan-reveal; TOP resurrect — held back only as the closest sibling to 2502-duel.
+- ⭐ **2534-echo** — a real-time jam where the AI's next 3 beats fall toward you as an anticipation waterfall. The most literal ReaLJam; its real-time *lock feel* needs your browser ear to judge, so it wants a deliberate real-time cycle.
 
-## Research worth a look
-- **§890** — Fragment/fsynth synthesizes sound *from GPU pixels* (the picture is
-  the spectrum); plus a live 2026 microtonal/dissonance browser ecosystem. This
-  is the vein the jury's #1 mandate points at.
+## Why this cycle
+DEEP mode. This is the jury's own provocation #5 — *"extend 2502-duel: an AI that plays adversarially against your musical line is a whole genre, worth three prototypes."* The lane is now 2 deep (duel + trap). Fused with #1 (kill the JI safety net). Research chain: ReaLJam (CHI 2026) — the 2026 breakthrough is turn-taking partners that reveal their *intent in advance*, not smarter generation.
 
-## Open questions for Karel
-- **Two lanes still need your explicit go-ahead** (I won't start them alone):
-  an **AI-pipeline chain** (music→image→video — needs FAL_KEY budget) and a
-  **true 2-device WebRTC** shared room. Want either this week?
-- xyscope's bloom/persistence was tuned blind (headless — no GPU here). Does it
-  read as harsh-yet-beautiful on your screen, or should it pull back?
+## Open questions for you
+- **Does trap actually sound dangerous — and is the trap-reveal a fair fighting chance?** Headless can't hear it; the tuning (how inescapable the clusters are) wants your ear.
+- Two lanes still need your explicit go-ahead before I spend budget / build something I can't self-review: **AI-pipeline chains** (fal.ai, needs FAL_KEY OK) and **true 2-device WebRTC**. Say the word on either.
+- The negamax-musician arc wants a 3rd register (rhythmic traps? voice-leading combat?) to close — worth it, or move on?
