@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-24 (cycle 889, DEEP)
 
+> **Jury verdict today**: The altered-states rut is dead — the lab broke wide into games, tools and real-world data (2502-duel is a real AI you can lose to; 2402-sandfall is a real GPU sim) — but the new crutch is snapping every sound to a just-intonation lattice so nothing ever risks sounding bad; tomorrow, let something sound dangerous. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[2502-duel](/dream/2502-duel) — Counterpoint Duel.** Open this one: it's the
   lab's **first real game with a winner** and its **first AI that actually thinks
