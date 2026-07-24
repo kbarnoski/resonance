@@ -1,37 +1,42 @@
-# Morning digest — last updated 2026-07-24 (cycle 886)
+# Morning digest — last updated 2026-07-24 (cycle 887)
 
 ## New since yesterday
-- **[2474-worldwire](https://getresonance.vercel.app/dream/2474-worldwire)** — *Listen to the world.*
-  The live global stream of **Wikipedia edits**, sonified as a field of just-intoned
-  bells: every edit anywhere on Earth strikes a bell — **big edits ring low, tiny
-  edits ring high** — snapped to a 7-limit JI scale so the field is always consonant,
-  new articles swell warm, bots are dimmer. Each event blooms a ripple placed by a
-  hash of the article title. **Why open it:** it plays itself — you don't perform it,
-  the world does; it's a piece genuinely *about the outside world* (like solar-wind /
-  seismic-choir, the lane you've rated strongest), not about your own head. Day 9 off
-  the altered-state theme.
-- **2 more built & explored, banked to IDEAS §886** (not shipped):
-  - ⭐⭐ **2470-trio** — a reactive **jazz rhythm section** (walking bass + comping +
-    brushed drums) that comps *causally* under your melody on a 1/16 grid. A real
-    live-performance tool + a jazz-responsive journey alternative (your cares #3/#4),
-    essentially ready — **the clear next ship.**
-  - ⭐ **2478-typesong** — type any text and your keystroke *timing* becomes the groove,
-    each letter a pitch. Playful cross-modal toy.
+- **[2482-collide](https://getresonance.vercel.app/dream/2482-collide)** — *A bowl that
+  composes its own music by colliding.* Drop or throw objects made of four **materials** —
+  glass, wood, metal, stone — into a 3D bowl. They fall, collide, and **ring by what
+  they're made of**: glass rings long and bright, stone thunks short, metal shimmers for
+  seconds, wood is a warm fast bar. The bowl funnels the pile back to the centre so it
+  keeps colliding on its own — a self-playing generative percussion sculpture. Shake to
+  keep it ringing; keep dropping objects to thicken the texture. **Why open it:** it's the
+  first piece in the lab where objects actually *hit each other and sound their material* —
+  real modal synthesis driven by a real physics loop (the FoleyAutomatic idea), not a
+  synthesized abstraction. It plays itself; you just stir it.
+- **2 more built & explored, banked to IDEAS §887** (not shipped):
+  - ⭐⭐ **2478-mallets** — a **morphing lithophone**: a row of tuned struck bars; one slider
+    crossfades the *whole set* glass→wood→metal→stone so the same melody changes what it's
+    made of. The most immediately *playable* of the three — **strong next ship** (extract a
+    shared `modal.ts` first).
+  - ⭐ **2486-resonator** — **sculpt a material by ear**: five physical sliders
+    (size/stiffness/density/damping/inharmonicity) reshape one struck object's modal
+    spectrum live, with a spectrum-bar display + strike/scrape/bow. A precise little tool.
 
 ## In progress / partial
-- Standing next moves: ship **2470-trio** (ready); MERGE the banked **2462-skyclock**
-  into **2466-horizon** as a dome/ground view-toggle; extract a shared `ephemeris.ts`.
+- All three share a modal-synthesis engine each reimplemented independently → the clean
+  next move is a `_shared/modal.ts` primitive, then ship **2478-mallets** on it.
+- Still standing: **2470-trio** (banked §886, reactive jazz rhythm section, near-ready);
+  merge **2462-skyclock** into **2466-horizon** as a dome/ground toggle.
 
 ## Research findings worth a look
-- **The "listen to the live world" sonification lane is wide open** (RESEARCH §886).
-  Real live non-audio streams keep beating synthesized abstractions — that gap *is*
-  tonight's ship. Also grounded in a fresh June-2026 paper on causal real-time
-  accompaniment (arXiv:2606.11886) that seeded the banked trio.
+- **Material-identity sonification** (RESEARCH §887) — *Sonify Anything* (arXiv:2508.01789)
+  + the classic van den Doel/Pai *FoleyAutomatic* modal work. The gap it exposed: the lab
+  had lots of physics AND lots of synthesis but had never joined them — a collision that
+  *excites a material ring*. That join is tonight's ship.
 
 ## Open questions for Karel
-- **Needs your eyes/ears** (headless can't verify): does the bell field read as calm
-  and consonant, and does the live feed feel alive without overwhelming? Falls back to
-  a built-in **demo stream** if the Wikimedia feed is blocked — so it always plays.
-- **AI-pipeline chains (music→image→video) are still 0×** — the jury's #1 "most novel
-  thing we could do." Needs your FAL_KEY budget + go-ahead before I spend it. Say the
-  word and I'll build one.
+- **Needs your eyes/ears** (headless can't verify): do the four materials read as clearly
+  *different* when they collide, and does the bowl stay musical without turning to mush as
+  the pile grows? It falls back to a top-down 2D view if WebGL is missing, and a seeded
+  auto-demo drops objects on load so it always shows something.
+- **AI-pipeline chains (music→image→video) and a true cross-machine WebRTC room are still
+  0×** — the jury's two biggest untouched lanes. Both need your budget/go-ahead (FAL_KEY)
+  or are hard for me to verify headless. Say the word.
