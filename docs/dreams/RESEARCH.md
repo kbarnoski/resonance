@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §883 — 2026-07-24 · The July-2026 cs.SD frontier is generation-models, not interaction — so the buildable edge is a *concept*, not a model
+
+**Sources:** arXiv `cs.SD/recent` July-2026 batch, dates verified (<30 days): **RPPNet** — *Perceptually-Grouped Rhythm-Pitch Primitives for Long-Term Structure Melody Generation via Boundary-Aware Modeling* (arXiv:2607.19776); *Pushing the Frontier of Full-Song Generation: Hierarchical Autoregressive Planning Meets Flow-Matching Rendering* (2607.20253); *StellarTTS* low-latency speech (2607.19859); plus a scan of live-data-sonification tooling (Manifest *Sonification Tools v2*, 2026; the "universe-as-algorithm" framing).
+
+**The finding (and a useful negative result).** The genuinely-fresh (this-month) cs.SD output is overwhelmingly **generation and detection** — full-song synthesis, streaming TTS, fake-audio detection, keyword-spotting — all of which need a trained model at inference time, i.e. not buildable inside a self-contained, offline, `"use client"` browser prototype. The one musically-structural paper, **RPPNet**, is the interesting one: it argues long-term melodic form emerges from **boundary-aware perceptual grouping of small rhythm–pitch primitives** — melody as a hierarchy of motifs delimited by perceptual boundaries, not a flat note-stream. **Why this matters for the lab:** the negative result is the signal. At ~882 routes the lab has already used nearly every *technique* (pitch-tracking, physical modeling, Physarum/RD/boids, TF.js, MediaPipe-face, WebGPU, wiki-stream sonification — all grepped and confirmed present), so a fresh *model* isn't the frontier; a **concept the lab is thin on** is. This cycle that concept was **temperament** — making the compromise of tuning systems audible+visible — cleared via foundational psychoacoustics (freshness-mandate-exempt) rather than a new paper.
+
+**Could become a prototype that does X:** (1) an RPPNet-style **boundary-grouped phrase visualizer** — hum/tap motifs, the app detects perceptual boundaries (inter-onset gaps) and draws the emergent hierarchical phrase tree, extending your line by *structure* not markov-next-note. (2) the temperament seam actually shipped this cycle as `2428-comma` (the Pythagorean comma / circle-of-fifths that won't close) with two banked deepenings — see IDEAS §883.
+
+---
+
 ## §881 — 2026-07-23 · MediaPipe FaceLandmarker's 52 blendshapes as a continuous expressive instrument
 
 **Sources:** MediaPipe `FaceLandmarker` guide (Google AI Edge — <https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker>); *"Blendshapes GHUM: Real-time Monocular Facial Blendshape Prediction"* (Grishchenko et al., arXiv:2309.05782); plus a scan of 2025–2026 browser gesture-music implementations (MediaPipe Hands air-pianos; five-finger-openness→synth timbre projects).
