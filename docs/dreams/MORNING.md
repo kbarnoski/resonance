@@ -1,16 +1,16 @@
-# Morning digest — last updated 2026-07-24T16:40Z (cycle 891)
+# Morning digest — last updated 2026-07-24 (cycle 892, WIDE)
 
 ## New since yesterday
-- **[/dream/2530-trap](https://getresonance.vercel.app/dream/2530-trap) — an AI that plans a harmonic trap a phrase ahead, and shows it to you.** Why open this: it's the first musical *contest* where the AI is trying to make YOU sound bad. You and it alternate notes on one shared chromatic line; a minimax planner (alpha-beta, Shannon 1950) values each move by *your best reply one phrase ahead* and plants a tritone+semitone cluster you can't escape — then reveals the trap it's about to spring (its own search PV, drawn a beat early, à la ReaLJam CHI 2026) so you can try to pre-empt it. A tension meter is the tug-of-war; you score by resolving, it scores by stranding you. **Fully chromatic — no just-intonation safety net; dissonance is the weapon** (directly answering yesterday's jury: "let something sound dangerous"). SVG, keyboard-played, auto-demos a scored round on load.
+- **[/dream/2538-driver](https://getresonance.vercel.app/dream/2538-driver)** — a generative techno machine that **composes itself forever and never plays the same bar twice.** A long-form arrangement state machine walks intro→build→drop→breakdown, mutating a fully-synthesized 909/303 kit every bar; the HUD tallies `distinct bars · 0 repeats` (an FNV-hash 64-bar ledger proves it's composing, not looping). **Rhythm-first, no just-intonation safety net** — the acid line draws the b9 + tritone and drifts its root into dissonance through a resonant filter + waveshaper, so it can bite. WebGL2 "equalizer city"; the **computer keyboard is the performance surface** (Space fill · ↑↓ energy · D drop · B breakdown · A acid · 1–6 mute). *Why open it:* hold a key for a minute and hear it become a different track — the lab's rarest thing (long-form, evolving, stateful) crossed with the jury's "let it sound dangerous."
+- **Auto-demo runs muted on load** — phase/energy/tension + live spectrum animate off the visual clock, so a still glance already reads as a machine mid-composition. Sound starts on first key/click.
 
-## Explored but not shipped (banked to IDEAS §891)
-- ⭐⭐ **2526-tell** — trading-fours where the AI *ghosts its whole planned answer* on the roll a beat early (resolve/provoke toggle). The prettiest plan-reveal; TOP resurrect — held back only as the closest sibling to 2502-duel.
-- ⭐ **2534-echo** — a real-time jam where the AI's next 3 beats fall toward you as an anticipation waterfall. The most literal ReaLJam; its real-time *lock feel* needs your browser ear to judge, so it wants a deliberate real-time cycle.
+## Also explored this cycle (banked — see IDEAS §892)
+- ⭐⭐ **2542-utterance** — *your typing performs itself*: the keyboard as a text surface, un-quantized keystroke timing = rhythm, each letter a speech-like voice (no scale-snap → real raw prosody), words flying onto an SVG piano-roll-of-language. Most novel concept; held back because its whole payoff is the sound, unheard headless.
+- ⭐ **2546-chaos** — *play the route to chaos*: a Rössler attractor integrated at audio rate, pushing one knob period-doubles a clean tone into broadband noise; WebGL2 3D butterfly.
 
-## Why this cycle
-DEEP mode. This is the jury's own provocation #5 — *"extend 2502-duel: an AI that plays adversarially against your musical line is a whole genre, worth three prototypes."* The lane is now 2 deep (duel + trap). Fused with #1 (kill the JI safety net). Research chain: ReaLJam (CHI 2026) — the 2026 breakthrough is turn-taking partners that reveal their *intent in advance*, not smarter generation.
+## Research finding worth a look
+- The 2026 sonification frontier is **infinite-yet-coherent** — arXiv:2605.21874 (EDM-monitoring, May 2026) argues for genre-native music that evolves forever and never repeats. 2538-driver is the direct build of that idea.
 
-## Open questions for you
-- **Does trap actually sound dangerous — and is the trap-reveal a fair fighting chance?** Headless can't hear it; the tuning (how inescapable the clusters are) wants your ear.
-- Two lanes still need your explicit go-ahead before I spend budget / build something I can't self-review: **AI-pipeline chains** (fal.ai, needs FAL_KEY OK) and **true 2-device WebRTC**. Say the word on either.
-- The negamax-musician arc wants a 3rd register (rhythmic traps? voice-leading combat?) to close — worth it, or move on?
+## Open questions for Karel
+- 2538 needs your ear: does the acid read as *dangerous* or just busy, and does minute-5 genuinely sound unlike minute-1? (All headless-unverified.)
+- Standing asks that need your explicit go-ahead: an **AI-pipeline chain** (music→image→video) needs your FAL_KEY-budget OK before I spend it; **cross-machine WebRTC** needs a desktop to review. Say the word.
