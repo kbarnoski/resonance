@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-07-25 (cycle 896, WIDE)
+# Morning digest — last updated 2026-07-25 (cycle 897, DEEP)
 
 ## New since yesterday
-- **[/dream/2590-tremor](https://getresonance.vercel.app/dream/2590-tremor)** — **play a voice with your hands.** Point your webcam at yourself and *move* — your hands become a vocal tract: raise them and the pitch climbs, open them and a closed "oo" blooms into an open "ah," move fast and wide and the voice genuinely **roughens and growls**. It's the deliberate inversion of 2026's hot research (SIGGRAPH '26 avatars that are *puppeted by* audio) — here the arrow runs the other way: **sound comes FROM motion.** No scale, no safety net — the pitch is continuous, so it can sound beautiful or dangerous depending on how you move. Payoff visual: a glowing **WebGL2** trail that follows your gesture and reddens as the voice gets rough. *Why open it:* it's the lab's first instrument you play with your **body**, not the keyboard — grant camera access and conduct yourself.
-- **Auto-plays on load** — a seeded gesture (rise → open → accelerate → still) drives the field + voice with zero interaction; camera and sound unlock on first click. Falls back gracefully: no MediaPipe → optical-flow; no camera → the demo; no WebGL2 → an SVG throat.
+- **[2610-prosody-formant](/dream/2610-prosody-formant)** — *a machine that listens only to HOW you speak and throws away WHAT you say.* Speak into your mic: it keeps your melody, rhythm, loudness **and vowel colour** and plays back a wordless, humming human — never a recoverable word. **Open this and talk to it** (it needs mic + speakers to really land — the whole payoff is whether the resynth reads as *your voice, wordless*). No mic? "Play demo" draws + sounds a seeded speech contour so it's still legible.
+  - Why now: this is the **force-ship** of the prosody idea you saw me bank twice (§894, §896) — held both times only because it's mic-gated and I can't ear-test it headless, never on quality. Direct cash of arXiv:2606.26083 ("voice AI hears but does not listen").
+  - How it works: autocorrelation f0 (continuous microtonal Hz, no scale-snapping — kills the just-intonation crutch the jury banned) + a coarse spectral envelope → a Fant source-filter voice through a live formant bank. SVG-only visual: an f0 spine over stacked violet→magenta vowel-colour strata, with a "WORDS · DISCARDED" stream dissolving above "PROSODY + COLOUR · KEPT."
 
-## Also explored this cycle (banked — see IDEAS §896)
-A **WIDE** cycle: three prototypes across three *unrelated input sources* — **voice / body / world** — to break a rut I noticed. My last **six** ships were all played with the computer keyboard; this cycle deliberately dragged the two starved inputs (camera, mic) back.
-- ⭐⭐ **2586-prosody** (MIC) — keep only the *melody* of how you speak and throw the words away; it draws the tune you were unconsciously singing while you talked ("WORDS·DISCARDED / PROSODY·KEPT"). The most *you*-facing idea in the queue — but I've now built it twice and held it twice because it needs your mic + ears to judge. **I'm flagging it to just ship next time, no more racing it.**
-- ⭐ **2594-quake** (WORLD) — the planet's last 24h of live earthquakes (real USGS feed) turned into a room drone: deep quakes rumble, big ones growl. Real and clean; the "music about real-world data" lane just already has a few siblings.
+## Explored but not shipped (2 more — see IDEAS §897)
+- **2602-prosody-yin** ⭐⭐ — same idea with a **true YIN** tracker (the most octave-robust pitch of the three). Next-cycle move is to **fuse** its tracker into the shipped formant piece, not ship a second one.
+- **2606-prosody-grain** — the prosody rebuilt as an airier **granular grain-cloud**. Biggest sonic surprise, least voice-like; saved for a texture cycle.
 
-## Research finding worth a look
-- **2026 keeps binding the body and the voice to real-time AI** — SIGGRAPH '26 shipped avatars that generate full-body motion *from* streaming audio (EchoAvatar, DiscoForcing). Every system runs it audio→body: a puppet. 2590-tremor flips it — *you* are the source, the machine sings your motion. The inversion is the whole piece.
+## Research finding worth a look (RESEARCH §897)
+- **StreamVoiceAnon+ (arXiv:2603.06079)** — 2026 streaming voice-conversion now surgically keeps one axis of a voice and discards another (it removes *who you are*, keeps *how you feel*). That's the exact mirror of today's piece (removes *what you say*, keeps *how you said it*) — the whole field is converging on "a voice is separable axes."
 
 ## Open questions for Karel
-- 2590 needs your webcam + ears: does hand-motion read as a *playable voice* (vs noise), and is the roughness expressive or just harsh? The auto-demo + fallbacks are verified; the live camera→voice feel is a real-hardware call.
-- Should I **force-ship 2586-prosody** next cycle (it's the most on-brand thing waiting), or keep breaking new input lanes (MIDI? phone-tilt?) first?
-- The **AI-pipeline chain** (music→image→video) is still the top-requested unbuilt thing — it needs your **FAL_KEY-budget go-ahead** before I spend your image budget. Say the word.
+- **Does the wordless voice actually read as *your* voice?** This is the one I most need your ear on — talk to 2610 and tell me if the vowel colour survives or if it mushes. If it's close, the YIN fusion (2602) should sharpen the pitch.
+- **AI-pipeline chains (music→image→video) are still ZERO — 3+ weeks overdue.** They'd spend your FAL_KEY image budget, so I won't start one autonomously. Give me an explicit go-ahead + a per-run budget and I'll build the first model→model→model chain.
+- Input diversity is healthy now — two cycles off the keyboard (camera, then mic). I'll keep pulling camera/mic/MIDI/tilt before snapping back to QWERTY.
