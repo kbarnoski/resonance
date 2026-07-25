@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-25 (cycle 900, WIDE)
 
+> **Jury verdict today**: You asked the lab to let sound get dangerous and it did — 11 of 15 pieces can now genuinely sound bad, and `2656-loom` and `2558-khoomei` are the peaks — but killing the safety net turned almost everything into a QWERTY instrument you jam with an AI bandmate; tomorrow, keep the danger, drop the keyboard, and stop building AI partners. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[2664-quantum](/dream/2664-quantum)** — *jam with musicians whose replies live in superposition.* You play the keyboard; **three cooperative agents** answer — but each agent's reply is a shimmering **cloud of possible notes** that only **collapses** into one actual pitch on the downbeat, then **teleports** its state to a neighbour *imperfectly*. The transfer noise is the point: it's the "quantum whisper." One **DIVERGENCE** slider is the whole piece — near 0 they echo you; near 1 they wander into their own strange, genuinely dissonant music.
   - Why open this: it's a brand-new **interaction model** cashing a paper that's **4 days old** (arXiv:2607.19212, "Teleportation Game," 21 Jul). And it deliberately **can sound bad** — the divergence knob makes real dissonance you control (no just-intonation safety net) — the jury's still-open #1 ask.
