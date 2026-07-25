@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-07-25 (cycle 897, DEEP)
+# Morning digest — last updated 2026-07-25 (cycle 898, WIDE)
 
 ## New since yesterday
-- **[2610-prosody-formant](/dream/2610-prosody-formant)** — *a machine that listens only to HOW you speak and throws away WHAT you say.* Speak into your mic: it keeps your melody, rhythm, loudness **and vowel colour** and plays back a wordless, humming human — never a recoverable word. **Open this and talk to it** (it needs mic + speakers to really land — the whole payoff is whether the resynth reads as *your voice, wordless*). No mic? "Play demo" draws + sounds a seeded speech contour so it's still legible.
-  - Why now: this is the **force-ship** of the prosody idea you saw me bank twice (§894, §896) — held both times only because it's mic-gated and I can't ear-test it headless, never on quality. Direct cash of arXiv:2606.26083 ("voice AI hears but does not listen").
-  - How it works: autocorrelation f0 (continuous microtonal Hz, no scale-snapping — kills the just-intonation crutch the jury banned) + a coarse spectral envelope → a Fant source-filter voice through a live formant bank. SVG-only visual: an f0 spine over stacked violet→magenta vowel-colour strata, with a "WORDS · DISCARDED" stream dissolving above "PROSODY + COLOUR · KEPT."
+- **[2626-tritave](/dream/2626-tritave)** — *an instrument with no octaves.* A genuinely playable microtonal keyboard in the **Bohlen–Pierce** tuning: its home interval isn't the 2:1 octave but the **3:1 tritave**, split into 13 equal steps on **odd harmonics** — so it has an alien consonance you can't fake pretty. **Play it with your QWERTY keyboard** (bottom row `A‥;`, top row `Q‥Y`), or plug in a **MIDI keyboard** (the lab's first Web-MIDI piece). Leave it 4s and it self-plays a Bohlen–Pierce phrase.
+  - Why now: this is the **most literal answer to Thursday's jury** — it named Bohlen–Pierce as the way to kill the "everything snaps to a consonant lattice so nothing can sound bad" crutch. This one is *allowed to sound dangerous.*
+  - The visual is the tell: a **spiral where one turn = one tritave**, so the amber octave marker visibly *never closes the loop* while the violet tritave marker lands exactly on the turn. The tuning math is numerically verified (step 13 = exactly 3× the base; the 2:1 octave falls between steps and coincides with none).
+  - **The one thing I need your ear on:** does the odd-harmonic timbre make the **3:5:7 "BP major" triad** actually *ring* as a consonance (tap the chord preset)? That's the perceptual claim I can't test headless.
 
-## Explored but not shipped (2 more — see IDEAS §897)
-- **2602-prosody-yin** ⭐⭐ — same idea with a **true YIN** tracker (the most octave-robust pitch of the three). Next-cycle move is to **fuse** its tracker into the shipped formant piece, not ship a second one.
-- **2606-prosody-grain** — the prosody rebuilt as an airier **granular grain-cloud**. Biggest sonic surprise, least voice-like; saved for a texture cycle.
+## Explored but not shipped (2 more — see IDEAS §898)
+- **2634-hold** ⭐⭐ — *hold music that slowly goes insane.* An infinite corporate on-hold loop that deterministically decays into ambient horror over 5 minutes (there's a "jump to minute 5" so you don't have to wait). A joke + a long-form piece — both lanes you keep asking for. The strongest near-term grab.
+- **2618-nodefarm** — *your laptop as a techno DJ.* Your device's live telemetry (frame-rate, memory, cores, battery) drives a never-repeats techno set; a dropped frame audibly derails the groove. Held only because its techno sound is close to 2538-driver.
 
-## Research finding worth a look (RESEARCH §897)
-- **StreamVoiceAnon+ (arXiv:2603.06079)** — 2026 streaming voice-conversion now surgically keeps one axis of a voice and discards another (it removes *who you are*, keeps *how you feel*). That's the exact mirror of today's piece (removes *what you say*, keeps *how you said it*) — the whole field is converging on "a voice is separable axes."
+## Research finding worth a look (RESEARCH §898)
+- **[arXiv:2605.21874](https://arxiv.org/abs/2605.21874)** (May 2026) — sonifying a *supercomputer's live node activity* as continuous EDM, for **monitoring, not debugging**. Novel because it listens to a *running machine's own guts* — a register we've never touched (we've done sky, solar wind, Wikipedia — all external worlds). Seeded 2618 above.
 
 ## Open questions for Karel
-- **Does the wordless voice actually read as *your* voice?** This is the one I most need your ear on — talk to 2610 and tell me if the vowel colour survives or if it mushes. If it's close, the YIN fusion (2602) should sharpen the pitch.
+- **Does BP's 3:5:7 chord ring?** (see above — the piece's one unverified claim).
 - **AI-pipeline chains (music→image→video) are still ZERO — 3+ weeks overdue.** They'd spend your FAL_KEY image budget, so I won't start one autonomously. Give me an explicit go-ahead + a per-run budget and I'll build the first model→model→model chain.
-- Input diversity is healthy now — two cycles off the keyboard (camera, then mic). I'll keep pulling camera/mic/MIDI/tilt before snapping back to QWERTY.
+- Web MIDI now works in the lab (first time) — a real MIDI performance piece (reactive accompaniment, score-follower) is unblocked whenever you want it.
