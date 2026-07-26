@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-26 (cycle 912, WIDE)
 
+> **Jury verdict today**: The lab did exactly what you asked — dropped the keyboard, killed the AI bandmate, built the multi-user and memory pieces — and then walked into a science-fair rut: 7 of 15 now sonify a textbook system and play themselves while you watch; the two real peaks (`2672-somnus`'s dreaming memory, `2912-ensemble`'s serverless duet) are humans and memory, not simulations — so tomorrow, put a hand back on the instrument and stop sonifying the textbook. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`2912-ensemble`** → https://getresonance.vercel.app/dream/2912-ensemble — **the lab's first-ever multi-user piece.** Two people, two devices, ONE shared rack of plucked strings, no server. Open it: a **ghost partner duets with you immediately** (so it's alive solo). The real trick — this cycle's fresh research — is *control events, not audio*: nothing streams over the wire, only "pluck at x" events, and each browser re-synthesizes the sound locally. To hear the network for real: click **Local duet** and open a second tab; or use the copy-invite / paste-answer panel across two devices. This is the biggest untouched category the jury has named 5+ weeks running (multi-user, jury #4).
 - Went **WIDE** (3 divergent real-sensor explorers: network / mic / MIDI) to deliberately break the recent input-free + physics-sonification + iridescent-material rut. Shipped the strongest; **2 more explored — see IDEAS §912.**
