@@ -8963,3 +8963,43 @@ Cycle 908 ran WIDE: three unrelated INPUT surfaces the lab is thin on. Winner `2
 
 - **`2824-murmuration` (⭐⭐, input-free agent-emergence — a flock as an instrument)** — a live **Reynolds boids** simulation (separation/alignment/cohesion + hawk repulsion, seeded `mulberry32(0x2824)`) whose **emergent order↔chaos IS the music**: k-means-lite into 4 sub-flocks → each cluster ONE additive voice (vertical centroid → continuous log pitch, never scale-snapped; horizontal centroid → pan; population → gain; **velocity variance → beating detune + harsher partial**); global **Vicsek order parameter → master lowpass** (ordered murmuration sings bright, a hawk-burst goes dark and rough); mean speed → breathing tremolo. Canvas2D dusk murmuration (oriented additive streaks, per-cluster violet-ramp tint, trails, ~0.05 Hz luminance drift). Self-plays with zero interaction: a seeded autonomous hawk sweeps every ~11–14 s so the flock perpetually bursts and re-coalesces; pointer = optional hawk. **Why it lost, not why it's weak:** genuinely mesmerizing and the order→roughness weld reads musically, BUT heliograph's live-data lane was more overdue and its see≈hear weld (Bz→storm) carries real-world meaning a synthetic flock can't. **Resurrect** on an emergence/organic cycle — and the strongest deepening is to **run the boids as a WebGPU compute shader** (the jury's most-wanted 1× substrate; a GPU flock scales to 10k+ agents). Honest limitation flagged in its README: hard k-means assignment can pop a voice's pitch when sub-flocks merge/split → fuzzy membership is the fix. Ref: Craig Reynolds, "Flocks, Herds, and Schools" (SIGGRAPH 1987); swarm-sonification lineage (distinct from `2566-ovation`'s Kuramoto phase-sync — this is spatial flocking). Files were: `page.tsx` + `boids.ts` (Reynolds rules + Vicsek + clustering) + `audio.ts` (4 additive cluster voices).
 - **`2832-thumbstick` (⭐⭐, the lab's FIRST gamepad instrument — the most literal "get off the keyboard")** — reads the **W3C Gamepad API** (`navigator.getGamepads()`, axes 0–3 + analog triggers 6/7) and turns a controller into a smooth **continuous pitch×timbre instrument** with NO scale-snap (a theremin / Haken Continuum in controller form): left stick X → log pitch 80–1200 Hz (glissando space), left Y → amplitude/vibrato; right stick X → lowpass cutoff, right Y → FM index (vowel/reediness); LT → breath swell; RT → a **detuned second carrier that beats** (the deliberate roughness). Two FM voices → shared lowpass → compressor → master ≤0.15, every param `setTargetAtTime`-smoothed (no zipper). Canvas2D pitch×amplitude field with a comet trail (timbre → colour, triggers → bloom). Self-demos with NO controller via a seeded **ghost player** (`mulberry32(0x2832)`: melodic pitch wander + seeded big bends + breath-phrased swells) that drives the identical control surface; clean auto-handover on `gamepadconnected`. **Why it lost:** a real gamepad-less 06:30 reviewer only ever sees the ghost demo (weaker silent frame than a live aurora), and heliograph's lane was more overdue. **Resurrect** on a live-performance/controller cycle; it directly cashes jury #2 ("MIDI/a real sensor as the instrument, not the keyboard") with a sensor the lab has never touched. Honest limitation flagged: monophonic-plus-shadow with no re-attack → polyphony + attack articulation is the next-cycle deepening. Refs: W3C Gamepad API; theremin / ondes Martenot / Haken Continuum (continuous-controller lineage). Files were: `page.tsx` + `gamepad.ts` + `ghost.ts` + `synth.ts` (ThumbSynth, 2 FM voices).
+
+---
+
+## Cycle 910 banked seeds (WIDE curate — 2 non-winners; shipped 2864-stillpoint)
+
+Both were built to demoable + clean tsc/eslint this cycle, then removed per the
+one-winner rule. Their code approach is *proven to compile* — resurrect either as
+a near-instant DEEP cycle.
+
+### `birefringence` — tilt a sheet of liquid crystal, stress blooms into iridescence (status: queued, HIGH priority)
+**The strongest novel-technique seed the lab has right now.** A **nematic
+liquid-crystal director field** — a technique with ZERO prior builds in the lab.
+Model a 2D field of rod-like molecules by orientation θ(x,y), stored as the
+*doubled* unit vector u=(cos2θ, sin2θ) so Laplacian neighbour-averaging is the
+correct headless-director mean and ±½ **disclinations** form naturally. Each
+step: Frank-elastic smoothing (restoring) vs. a threshold-gated **Fréedericksz**
+tilt-pull (device tilt = applied field). Render as if between **crossed
+polarizers**: extinction sin²(2β) × thin-film **birefringence iridescence**
+(oil-on-water colour), brightest along disclination lines. Audio: total
+distortion energy ∫|∇θ|² drives a shimmering additive drone (no scale-snapping);
+disclination cells throw sine glints. Input = tilt (DeviceOrientation + desktop
+pointer-drag fallback). Why it matters: a **different psychedelic register** from
+the lab's over-represented cortical form-constants — material/optical, cosmic-
+ambient. Clears ambition floor 3×: novel technique + ≥3 subsystems + named ref
+(Fréedericksz / crossed-polarizer birefringence). **Deepen:** move relaxation to
+a WebGPU compute pass (Q-tensor storage buffer, 512² @120fps); track real
+disclination world-lines and voice each defect as its own glinting partial.
+
+### `swarmphosphene` — the room's sound grows a self-organizing nervous system (status: queued)
+Mic FFT (loudness/RMS · spectral centroid · spectral-flux onsets) drives a
+**self-organizing particle-life** sim (1500 particles, 5 species, asymmetric
+interaction matrix + Vicsek alignment, spatial-hash neighbours, toroidal field)
+whose *emergent* filaments/cells ARE the visual — entoptic phosphene light.
+Loudness = swarm temperature; centroid = interaction balance + colour temp;
+onsets **detonate** particle blooms. Swarm state re-voices an always-on synth so
+it self-plays in silence. Deliberately **Canvas2D** (under-represented output),
+additive "lighter" glow + trail wash. Reference: **Neural Particle Automata
+(arXiv:2601.16096, 2026)**. **Deepen:** give onset blooms *spatial memory* — seed
+them where recent per-band energy peaked so claps detonate "where the sound is";
+learn the interaction matrix instead of hand-seeding it.

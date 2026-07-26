@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-07-26 · cycle 909 (DEEP)
+# Morning digest — last updated 2026-07-26 · cycle 910 (WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ [2848-overturning](https://getresonance.vercel.app/dream/2848-overturning) — hear the ocean's great conveyor belt approach a tipping point.** A ~10-min self-playing piece built on a real, bistable **Stommel two-box** model of the Atlantic overturning circulation. As slow freshwater forcing drifts toward the fold, you hear the **early-warning signals**: the deep drone **wobbles wider and recovers slower** (critical slowing down — variance rising, autocorrelation → 1), a turbulence bed swells, reverb tails lengthen — then a **sudden shutdown** (the deep drone collapses, drops an octave, the surface salinity voice takes over), and a recovery that does **not** retrace (hysteresis: it stays collapsed far past where it fell). **Why open it:** the lab's **first tipping-point piece** — a whole new emotional register (ecological dread / loss of resilience), and it directly extends the long-form-stateful seam you flagged, via a mechanism the memory pieces (round/loom/somnus) don't have. Pitch is pure continuous physics — no scale-snapping, so the approach to collapse is *allowed* to sound unstable.
-  - The muted picture tells the story: the classic **ball-in-a-potential-well** flattens as resilience is lost, the ball rattles wider, then rolls into the collapsed basin; a live hysteresis loop draws itself. Pause/Resume + a Jump-ahead to fast-forward the arc.
-  - **I can't hear it here (headless).** Worth your ears: does the shutdown read as *the conveyor stopping*, and can you hear the drone "losing its footing" before it tips?
+- **⭐ [2864-stillpoint](https://getresonance.vercel.app/dream/2864-stillpoint) — a psychedelic hallucination you open by holding your body still.** No sliders, no keys: allow the camera, then *stop moving*. The webcam measures how still you are; as you settle, a "reducing valve" opens — the live image warps through the retina→V1 log-polar map and dissolves into breathing kaleidoscopic **form constants** (tunnels, spirals, honeycombs), while an inharmonic drone thickens. Move, and it snaps back to reality in a third of a second. **Why open it:** it's the meditation→psychedelic bridge made literal, and it answers your standing note to *get off the keyboard and use a real sensor* — the sensor here is your own stillness. Grounded in a real 2026 paper (Frontiers, computational neurophenomenology of the "reducing valve").
+  - **I can't see it here (headless, no camera).** Worth your eyes: does going still actually *feel* like the geometry earning its way in, and is the snap-back on movement the right speed?
 
-## Also explored this cycle (DEEP — same idea, 3 tipping substrates raced; 2 banked not shipped)
-- **2840-threshold** — the same tipping engine as an **ecosystem collapse**: vegetation biomass across a grazing fold, with an 8-voice community that goes silent one voice at a time (a staggered **extinction cascade**), then re-seeds. Banked; strong idea to fold into overturning as a layered-dropout shutdown.
-- **2856-cascade** — the tip as **sudden synchronization**: a wash of incoherent detuned voices that **snaps into lockstep** as their coupling crosses a threshold, and stays locked far past where it snapped (hysteresis). The most directly musical of the three. Banked.
+## Also explored this cycle (WIDE — 3 real-sensor briefs, 2 banked not shipped)
+- **birefringence** (tilt) — tilt a sheet of **nematic liquid crystal**; stress blooms into oil-film iridescence and the material sings. A technique-new-to-the-lab (director field with real ±½ disclinations, crossed-polarizer birefringence) and a *different* psychedelic register from our over-used cortical geometry. **Banked as the top-priority seed — built clean, ready for a near-instant DEEP resurrection.**
+- **swarmphosphene** (mic) — the room's sound grows a self-organizing swarm of phosphene filaments (particle-life; claps *detonate* blooms). Canvas2D. Banked.
 
 ## Open questions for Karel (standing — need your desktop go-ahead)
-- **AI-pipeline chains** (music→image→video etc.) are still 0× — the single most novel unbuilt thing, flagged by many juries (now 8+ weeks). It spends your **FAL_KEY** budget, so I won't start it without your explicit OK + a per-run budget. Please rule on it.
-- **True cross-machine WebRTC** (two people, two devices, one shared field) is still banked (`2704-two-hands`) — needs two real devices to verify.
+- **AI-pipeline chains** (music→image→video) still 0× — the single most novel unbuilt thing, flagged many juries. Spends your **FAL_KEY** budget → I won't start without your explicit OK + a per-run budget. Please rule.
+- **True cross-machine WebRTC** (two devices, one shared field) still banked — needs two real devices to verify.
 
 ## Under the hood
-- mode ledger …907 D · 908 W · **909 D** → next cycle leans WIDE. Winner's dynamics numerically verified (variance ×2.95, AC1 → 0.994, hysteresis Δq up to 0.85). Real-DSP + eslint/tsc clean; compile-mode build green (the full `next build` can't finish in this fd-limited container — Vercel builds fine).
+- mode ledger …908 W · 909 D · **910 W** → next leans DEEP (jury says point it at the long-form-stateful seam, or resurrect `birefringence`). Winner ships with `tsc`=0 + compile-mode `next build`=0; normalizer 0 rewrites. Full `next build` can't finish in the fd-capped container (Vercel builds fine).
