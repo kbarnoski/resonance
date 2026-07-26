@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-07-26 · cycle 910 (WIDE)
+# Morning digest — last updated 2026-07-26 · cycle 911 (DEEP)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ [2864-stillpoint](https://getresonance.vercel.app/dream/2864-stillpoint) — a psychedelic hallucination you open by holding your body still.** No sliders, no keys: allow the camera, then *stop moving*. The webcam measures how still you are; as you settle, a "reducing valve" opens — the live image warps through the retina→V1 log-polar map and dissolves into breathing kaleidoscopic **form constants** (tunnels, spirals, honeycombs), while an inharmonic drone thickens. Move, and it snaps back to reality in a third of a second. **Why open it:** it's the meditation→psychedelic bridge made literal, and it answers your standing note to *get off the keyboard and use a real sensor* — the sensor here is your own stillness. Grounded in a real 2026 paper (Frontiers, computational neurophenomenology of the "reducing valve").
-  - **I can't see it here (headless, no camera).** Worth your eyes: does going still actually *feel* like the geometry earning its way in, and is the snap-back on movement the right speed?
+- **⭐ [2888-mesolife](https://getresonance.vercel.app/dream/2888-mesolife) — a liquid crystal that is ALIVE.** Not a pattern you drive — a *material* that stirs itself forever. Allow motion (or just watch), and an **active nematic** churns: topological defects are born, orbit, and annihilate in endless turbulence, seen through crossed polarizers as breathing **oil-film iridescence** with jeweled defect cores. Tilt the phone (or drag) to *shear* the living material; raise Confinement and the chaos coils into circulating cells. **Why open it:** it's a genuinely new psychedelic register for the lab — material-iridescent, organic, LSD-melt — not our usual kaleidoscope geometry. It resurrects and massively deepens the tilt-nematic idea I banked yesterday (`birefringence`): passive → *living*. Grounded in a live 2026 physics result (PNAS, "topological defects as chaos-generating stirring rods").
+  - **I can't see it here (headless — no GPU display, no speakers).** Worth your eyes: does it read as a *living material breathing*, does the iridescence bloom, and does tilt-shear feel responsive?
 
-## Also explored this cycle (WIDE — 3 real-sensor briefs, 2 banked not shipped)
-- **birefringence** (tilt) — tilt a sheet of **nematic liquid crystal**; stress blooms into oil-film iridescence and the material sings. A technique-new-to-the-lab (director field with real ±½ disclinations, crossed-polarizer birefringence) and a *different* psychedelic register from our over-used cortical geometry. **Banked as the top-priority seed — built clean, ready for a near-instant DEEP resurrection.**
-- **swarmphosphene** (mic) — the room's sound grows a self-organizing swarm of phosphene filaments (particle-life; claps *detonate* blooms). Canvas2D. Banked.
+## Also explored this cycle (DEEP — 1 north star, 3 approaches, 2 banked not shipped)
+- **disclination** (Canvas2D) — the same living nematic but with its ±½ defects made **explicit**: tracked comet-rods (+½) and trefoils (−½), and the sound is played *by the topology* — each defect birth rings a bell, each death a collapse. The tightest "you hear the physics" weld, and the freshest answer to the jury's "move past scalar→pitch." **Banked top-priority: the #1 deepening is to graft its defect-event audio onto mesolife.**
+- **schlieren** (Canvas2D) — the same field rendered as authentic **polarized-light microscopy**: dark schlieren brushes sweeping like calligraphy. Banked as an alternate "microscope" view of mesolife.
 
 ## Open questions for Karel (standing — need your desktop go-ahead)
 - **AI-pipeline chains** (music→image→video) still 0× — the single most novel unbuilt thing, flagged many juries. Spends your **FAL_KEY** budget → I won't start without your explicit OK + a per-run budget. Please rule.
 - **True cross-machine WebRTC** (two devices, one shared field) still banked — needs two real devices to verify.
 
 ## Under the hood
-- mode ledger …908 W · 909 D · **910 W** → next leans DEEP (jury says point it at the long-form-stateful seam, or resurrect `birefringence`). Winner ships with `tsc`=0 + compile-mode `next build`=0; normalizer 0 rewrites. Full `next build` can't finish in the fd-capped container (Vercel builds fine).
+- mode ledger …909 D · 910 W · **911 D** → next leans WIDE. Active-matter lane now open (0×→1×). Winner ships with `tsc`=0 + eslint=0 + compile-mode `next build`=0; normalizer 0 rewrites; input = **tilt** (a real sensor — input-free was over-served 6/10). Full `next build` can't finish in the fd-capped container (Vercel builds fine).
