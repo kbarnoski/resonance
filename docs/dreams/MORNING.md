@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-07-26 · cycle 911 (DEEP)
-
-Open the lab: https://getresonance.vercel.app/dream
+# Morning digest — last updated 2026-07-26 (cycle 912, WIDE)
 
 ## New since yesterday
-- **⭐ [2888-mesolife](https://getresonance.vercel.app/dream/2888-mesolife) — a liquid crystal that is ALIVE.** Not a pattern you drive — a *material* that stirs itself forever. Allow motion (or just watch), and an **active nematic** churns: topological defects are born, orbit, and annihilate in endless turbulence, seen through crossed polarizers as breathing **oil-film iridescence** with jeweled defect cores. Tilt the phone (or drag) to *shear* the living material; raise Confinement and the chaos coils into circulating cells. **Why open it:** it's a genuinely new psychedelic register for the lab — material-iridescent, organic, LSD-melt — not our usual kaleidoscope geometry. It resurrects and massively deepens the tilt-nematic idea I banked yesterday (`birefringence`): passive → *living*. Grounded in a live 2026 physics result (PNAS, "topological defects as chaos-generating stirring rods").
-  - **I can't see it here (headless — no GPU display, no speakers).** Worth your eyes: does it read as a *living material breathing*, does the iridescence bloom, and does tilt-shear feel responsive?
+- **`2912-ensemble`** → https://getresonance.vercel.app/dream/2912-ensemble — **the lab's first-ever multi-user piece.** Two people, two devices, ONE shared rack of plucked strings, no server. Open it: a **ghost partner duets with you immediately** (so it's alive solo). The real trick — this cycle's fresh research — is *control events, not audio*: nothing streams over the wire, only "pluck at x" events, and each browser re-synthesizes the sound locally. To hear the network for real: click **Local duet** and open a second tab; or use the copy-invite / paste-answer panel across two devices. This is the biggest untouched category the jury has named 5+ weeks running (multi-user, jury #4).
+- Went **WIDE** (3 divergent real-sensor explorers: network / mic / MIDI) to deliberately break the recent input-free + physics-sonification + iridescent-material rut. Shipped the strongest; **2 more explored — see IDEAS §912.**
 
-## Also explored this cycle (DEEP — 1 north star, 3 approaches, 2 banked not shipped)
-- **disclination** (Canvas2D) — the same living nematic but with its ±½ defects made **explicit**: tracked comet-rods (+½) and trefoils (−½), and the sound is played *by the topology* — each defect birth rings a bell, each death a collapse. The tightest "you hear the physics" weld, and the freshest answer to the jury's "move past scalar→pitch." **Banked top-priority: the #1 deepening is to graft its defect-event audio onto mesolife.**
-- **schlieren** (Canvas2D) — the same field rendered as authentic **polarized-light microscopy**: dark schlieren brushes sweeping like calligraphy. Banked as an alternate "microscope" view of mesolife.
+## Banked from tonight (both built demoable, then held)
+- **`2920-follow`** ⭐⭐ — **a reactive accompanist that follows YOU, not a click track.** Sing a melody it knows; online-DTW tracks your tempo and hesitations and plays chords/bass/arp locked to *your* position (waits when you pause, catches up when you leap). The most **product-relevant** banked piece — a pianist's real accompanist. Ship next mic/live-performance cycle.
+- **`2928-seaboard`** ⭐ — **the lab's first MPE / per-note-expression instrument.** Every held note bends, swells and changes timbre independently; a ROLI-Seaboard-style touch surface means you can play it with no MIDI hardware. Ship next MIDI/expressive cycle.
 
-## Open questions for Karel (standing — need your desktop go-ahead)
-- **AI-pipeline chains** (music→image→video) still 0× — the single most novel unbuilt thing, flagged many juries. Spends your **FAL_KEY** budget → I won't start without your explicit OK + a per-run budget. Please rule.
-- **True cross-machine WebRTC** (two devices, one shared field) still banked — needs two real devices to verify.
+## Research findings worth a look (RESEARCH §912)
+- The real trick of low-latency browser jamming isn't the network — it's **not sending audio**: broadcast control events, synthesize locally ("synchronized local engine"; sub-50ms; self-demoable on one machine via a BroadcastChannel loopback). That's what finally made a multi-user piece both buildable *and* reviewable solo.
+- Online score-following shipped as a real library this year (**Matchmaker**, arXiv:2510.10087) — an ML-free online-DTW aligner is browser-feasible, which is what `2920-follow` is.
 
-## Under the hood
-- mode ledger …909 D · 910 W · **911 D** → next leans WIDE. Active-matter lane now open (0×→1×). Winner ships with `tsc`=0 + eslint=0 + compile-mode `next build`=0; normalizer 0 rewrites; input = **tilt** (a real sensor — input-free was over-served 6/10). Full `next build` can't finish in the fd-capped container (Vercel builds fine).
+## Open questions for Karel
+- **AI-pipeline chains (music→image→video) are still 0×** — now ~8 juries overdue. It spends your FAL_KEY budget, so it needs your **explicit go-ahead + a per-run budget** before the agent can build it. One word and it's next.
+- **`2912-ensemble`'s real cross-device tier is unverified from here** (headless — no second device). The ghost + two-tab loopback are demoable; the manual-SDP WebRTC path wants you to try it phone↔laptop and tell me if pairing feels right.
+- Want the accompanist (`2920-follow`) fast-tracked? It's the closest thing tonight to an actual Resonance feature.
