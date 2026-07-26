@@ -1,20 +1,39 @@
-# Morning digest — last updated 2026-07-25 (cycle 905, DEEP)
+# Morning digest — last updated 2026-07-26 00:34 UTC
 
-> **The jury's win to *protect* ([JURY.md](JURY.md), 07-25): "keep the danger, drop the keyboard, stop building AI bandmates."** Tonight I also broke a *fresh* rut of my own: 903 and 904 were both input-free math/physics pieces, so 905 goes back to a **real sensor** — the mic — as the only input. No keyboard, no AI partner, no voice, no scale.
+**Cycle 906 · WIDE · shipped `2768-faraday`** (2 more explored — see IDEAS §906).
+Open first: **https://getresonance.vercel.app/dream/2768-faraday**
 
 ## New since yesterday
-- **[2744-musaic-room](/dream/2744-musaic-room)** — *the room plays itself back.* The microphone is the **only** input. It remembers every ~93 ms grain of sound the room makes, and when you make a new sound it doesn't play *that* — it finds the closest-sounding grain from **everything it has already heard** and plays that instead (deliberately skipping the last second, so it can't just echo you). Sparse and literal at first; dense and uncanny as the room's memory fills. This is real-time **concatenative "musaicing"** (the Schwarz/CataRT technique) done in the browser with **no ML** — a first for the lab.
-  - **Why open this:** it's the strangest "huh" in a while — the room answers you with a *different past sound that resembles you.* And it's the honest version of the danger win: it re-voices raw recorded grains, so there's no scale or tuning to hide behind at all.
-  - **On your phone:** tap **Begin listening**, allow the mic, then make sounds — hum, tap, speak, snap. Watch the 2D memory map fill; the line each frame links your live grain to the past grain it matched. (No mic? A built-in demo source runs the same pipeline so it still plays.)
-  - **The one thing I need your ears on:** does the reconstruction read as *the room answering itself* or as a smeary wash? Is the corpus "thickening" over 2–3 min actually audible?
+- **`2768-faraday` — pour sound into a dish of water and the water answers back.** A real
+  **Faraday-wave** fluid: your **mic's loudness** shakes a genuine parametrically-forced surface
+  PDE, and the water answers *subharmonically* (Faraday's half-frequency response, past a real
+  Mathieu threshold), self-organising into standing-wave cells. Then the loop closes both ways —
+  the dish's emergent wavenumber **re-voices** a 7-partial bank tuned to the fluid's own physics
+  (pitch is a continuous consequence of the water, never a scale). **Why open it:** it's the
+  first genuinely *bidirectional* sound↔water↔sound instrument in the lab — the "the compositional
+  model never moves past scalar→pitch" gap the jury keeps flagging, finally moved. Blooms + sounds
+  on load with no mic (seeded carrier); talk/clap to drive it. Ships Canvas2D (WebGPU-compute is
+  the banked deepening). No strobe — luminance is phase-insensitive.
 
-## Explored but not shipped (2 more, both ready — see IDEAS §905)
-- **2752-spore-garden** ⭐⭐ — *plant a garden with any real noise.* Each onset (clap, key, word) **spectrally freezes** into an additive "bloom" that joins a slowly-drifting chord-cloud; over minutes the room grows a lush harmonic garden. The most **gorgeous / cosmic-ambient** of the three — grab it on the ambient pole you keep asking me to cover. (Realizes the old `2736-mic-garden` seed.)
-- **2760-tide-pool** ⭐⭐ — *the room re-read by an autonomous performer.* Grains scatter onto a 2D pool; a slow self-driving "reading head" sweeps it and re-triggers what it passes, so the space's past is re-voiced in new orders. A reusable **self-play** mechanic — you never touch a control.
+## Also explored this cycle (banked, both essentially ready — IDEAS §906)
+- **`2776-seisma`** — hear the Earth's last 24 h of **real earthquakes** (USGS live feed): deep
+  quakes rumble low, shallow ones ring bright, swarms & aftershocks emerge as *rhythm*. The
+  freshest *input surface* — real-world live data. Resurrect on a data/outward-facing cycle.
+- **`2784-driftroom`** — the **motion in your room** is the instrument (camera dense-optical-flow,
+  no ML) → a river of light + a texture of sound. The direct answer to the jury's "get off the
+  keyboard, use the camera." Resurrect on a camera/embodied cycle.
 
-## Research finding worth a look (RESEARCH §905)
-- The 2026 resynthesis frontier ([arXiv:2507.19202](https://arxiv.org/abs/2507.19202), Jul 2026, *Latent Granular Resynthesis*; *The Concatenator*) keeps **rebuilding one sound out of the grains of another.** The ML versions (neural codecs) aren't a lane a no-ML browser lab should chase — but the *pre-ML core* (nearest-neighbour grain matching on cheap features) is trivially real-time in JS and was **0× in the lab.** The obvious corpus to hand it: the room itself, live. That's tonight's winner.
+## Research finding worth a look (RESEARCH §906)
+- 2026's physics-ML frontier keeps modelling deformable continua (strings, membranes, fluids) as
+  *differentiable dynamical systems* (port-Hamiltonian strings 2605.12785; PhysCtrl; j-Wave). A
+  no-ML browser lab can't chase the learned wrappers — but the pre-ML PDEs are 0× real-time in a
+  compute loop, and the **Faraday wave** (0× here, distinct from the plate-Chladni `2422`) was the
+  one that was both fresh and natively dangerous. → became `2768-faraday`.
 
-## Open questions for Karel
-- **AI-pipeline chains (music→image→video) are still ZERO — now six juries running.** They'd spend your FAL_KEY image budget, so I won't start one autonomously. An explicit go-ahead + a per-run budget and I'll build the first model→model→model chain.
-- **Deploy watch:** the full `next build` still can't finish in this 4096-fd container (858 routes exhaust the fd cap at page-data collection — infra, not code; validated instead via the compile-mode build + project `tsc`, both green, same as 903/904). Vercel's env has a higher limit and should deploy 2744 fine — worth a glance it went live.
+## Open questions for Karel (unchanged — these need your desktop go-ahead)
+- **AI-pipeline chains (music→image→video) are STILL 0× — now ~7 juries overdue.** This spends your
+  FAL_KEY budget, so it needs your explicit OK + a per-run cap. Want me to build one? (jury #3)
+- **True cross-machine WebRTC** (two devices, one shared field) is still unbuilt — needs two real
+  devices to verify. Seed `2704-two-hands` (QR-SDP handshake) is banked. (jury #4)
+- Input diversity is healthy (keyboard rut broken 6 cycles), but 905 & 906 were both mic — next
+  cycle I'll lean camera (`2784` ready) or live-data (`2776` ready) to widen the input surface.
