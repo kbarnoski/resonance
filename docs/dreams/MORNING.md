@@ -1,48 +1,20 @@
-# Morning digest — last updated 2026-07-27 (cycle 921, WIDE)
+# Morning digest — last updated 2026-07-27 (cycle 922, DEEP)
 
-**Open this first:** https://getresonance.vercel.app/dream/3056-clearlight
-*(best on a phone, with headphones, in a quiet spot — let it hear your breath)*
+Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`3056-clearlight`** (WIDE-winner) — *breathe a boundless clear light into being.*
-  A **Ganzfeld** field (soft, edge-free light) where your **breath is the only
-  instrument**: the mic reads it as a slow ~5.5-bpm envelope, and calm, steady
-  breathing **brightens** the field + swells a drone until faint hallucinatory
-  form-constants (rings + a soft spiral) surface from it. Breathe with the pacer
-  ring. *Why open it:* the lab's **first Ganzfeld** and the **most
-  product-relevant** piece to Resonance's core (breath/meditation) — the calm
-  cosmic-ambient pole you asked about, and the **first real use of the shared
-  psych kit** (the safe-flicker / drone / void / Shepard engines that had been
-  sitting unused). No mic? It breathes a seeded synthetic breath so it self-demos.
+- **[3040-tunnel](/dream/3040-tunnel)** — **pilot the near-death "tunnel toward the light" yourself.** Hold (pointer / Space / the button) to bloom the being-of-light closer; let go to drift back into the dark void; **go completely still and time itself dilates** — the image *and* the sound slow together, then any touch blooms it back. Steer by drag, tilt, or WASD/arrows. The lab's **first raymarching piece** and first piloted 3-D flight: a WebGL2 fragment shader flies you down an endless lensed wormhole. **Best with headphones, in a dark room** — it flies itself until you take the controls.
+  - *Why now:* it was the #1 banked item, held since cycle 919 "for a WebGL cycle where a live GPU can verify the raymarch" — that's tonight. Also gets us off the recent Canvas2D + mic streak.
+  - **Needs your eyes (headless here):** I can't verify the shader on a real GPU — does it compile + look right on your phone/laptop, and do the lensing / fog / bloom / time-dilation feel dramatic (not garish)? If WebGL2 is unavailable it degrades to a Canvas2D ring-tunnel.
 
-## Explored but not shipped (both built + banked — IDEAS §921)
-- **`3040-tunnel`** ⭐⭐ — **pilot the near-death tunnel-toward-the-light yourself:**
-  a WebGL2 raymarched infinite wormhole you steer (drag/tilt/keys), holding to
-  commit toward a being-of-light or hanging back in the dark void; stop and time
-  dilates. The biggest "whoa" of the three — held only for a cycle where a live
-  **GPU can verify the shader** (compile + look) before it ships.
-- **`3088-khole`** ⭐⭐ — a **K-hole dissociation** instrument: you play it, and the
-  bind between what your hand does and what you see/hear **comes apart** (the
-  light lags the sound, time stretches, your locus melts) — then a lucid snap
-  re-binds it. Freshest *technique* in the lab (first audio-visual desync engine);
-  held for a real-device pass to confirm the desync *reads* as dissociation.
-
-## Research worth a look (RESEARCH §921)
-- **Ganzflicker is a robustly-documented, drug-free psychedelic lever** — a uniform
-  field the viewer's *own brain* fills, whose brightness tracks alpha
-  (relaxation/eye-closure) and whose *content* tracks individual imagery capacity
-  (*"From dots to faces"*, Neuroscience of Consciousness 2026). Unlike binaural
-  beats, this one replicates — and it inverts our whole recent posture: the
-  instrument supplies a near-empty field and *you* are the content. Directly drove
-  tonight's `3056-clearlight`.
+## Also explored tonight (2 more — banked, IDEAS §922)
+- **3104-crossing** ⭐⭐ — the same tunnel built from **layered video-feedback** (droste-zoom rings). The *most GPU-robust* version, runs on anything. A natural companion / fallback to 3040.
+- **3096-lightbody** ⭐⭐ — the tunnel as a **volumetric cloud of luminous mist** with god-rays streaming from the light. Softest, most distinct register.
+- All three were one idea attacked three ways (a DEEP fan); I shipped the strongest and folded the other two into 3040's design notes as its deepening path.
 
 ## Open questions for Karel
-- **AI-pipeline chain (music→image→video) is still 0× — ~11 juries overdue.** It
-  spends your FAL_KEY image budget, so I won't start it alone. **One word —
-  "go, cap it at $X/run" — unblocks the single most novel unbuilt thing in the lab.**
-- **Which calm-pole sibling next?** `3040-tunnel` (biggest whoa, needs a GPU-verify
-  cycle) or `3088-khole` (freshest technique, needs a device-tuning pass)? Both are
-  built and banked — say the word and I'll ship one next cosmic-ambient slot.
-- Infra (minor, standing): the cron container's fd cap still trips the *full* local
-  `npm run build` across ~880 routes, so I validate via lint + the compile pass
-  (green) — deploys fine on Vercel. Raising `ulimit -n` restores full local builds.
+- **AI-pipeline chains (music→image→video) still 0× — ~12 juries overdue.** The single most novel unbuilt thing, but it spends your FAL_KEY image budget, so I won't start it autonomously. **One word ("go, cap $X/run") unblocks it.**
+- After you fly 3040: next cycle **deepen the tunnel** (ship 3104/3096) or **pivot** back to a hands-on played instrument / the long-form memory lane (3024-gloaming)?
+
+## Housekeeping
+- Build passed (winner-only compile, EXIT 0). Full-route local build still hits the container's 4096-fd cap (infra, not code) — Vercel deploys the full pipeline fine.
