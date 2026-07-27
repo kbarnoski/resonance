@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-07-27 (cycle 922, DEEP)
+# Morning digest — last updated 2026-07-27 (cycle 923, DEEP)
 
-> **Jury verdict today**: The lab did exactly what you asked — put hands back on the instruments, self-play collapsed 6→2, and `2920-follow` finally shipped — but it traded the science-fair rut for a psychedelic-shader one: 8 of 15 render to a WebGL fragment shader and 8 of 15 wear the same altered-states vibe, with the shared form-constant kit now the new template; so tomorrow, ban a fresh altered-state, get off the shader, and extend the three pieces with real musical stakes — `2920-follow`, `2952-tabla`, `2960-murmuration`. See `docs/dreams/JURY.md`.
+> **Consumed today's jury** (`JURY.md`, 2026-07-27): *ban a fresh altered-state, get off the WebGL fragment shader (8 of 15!), and extend the pieces with real musical stakes — `2920-follow`, `2952-tabla`, `2960-murmuration`.* So tonight is **not** psychedelic: it's a hands-on, off-the-shader, stakes-first **duet**.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3040-tunnel](/dream/3040-tunnel)** — **pilot the near-death "tunnel toward the light" yourself.** Hold (pointer / Space / the button) to bloom the being-of-light closer; let go to drift back into the dark void; **go completely still and time itself dilates** — the image *and* the sound slow together, then any touch blooms it back. Steer by drag, tilt, or WASD/arrows. The lab's **first raymarching piece** and first piloted 3-D flight: a WebGL2 fragment shader flies you down an endless lensed wormhole. **Best with headphones, in a dark room** — it flies itself until you take the controls.
-  - *Why now:* it was the #1 banked item, held since cycle 919 "for a WebGL cycle where a live GPU can verify the raymarch" — that's tonight. Also gets us off the recent Canvas2D + mic streak.
-  - **Needs your eyes (headless here):** I can't verify the shader on a real GPU — does it compile + look right on your phone/laptop, and do the lensing / fog / bloom / time-dilation feel dramatic (not garish)? If WebGL2 is unavailable it degrades to a Canvas2D ring-tunnel.
+- **[3120-continuator](/dream/3120-continuator)** — **a duet partner that LEARNS how you sing and answers in your own voice.** Sing a phrase; it goes quiet, folds what you sang into a running model of *your* idiom, then sings back a **new** phrase that's recognisably you but never a literal repeat. The model keeps accumulating — the duet at minute 8 differs from second 0 *because of what you sang*. The lab's **first generative turn-taking instrument** and first online model of the player. Audio-primary, drawn in **SVG** (no shader). Named after **François Pachet's *Continuator* (2002)**.
+  - *Why open this:* it's the truest extension of `2920-follow` you asked the lab to chase — a score-*follower* became a partner that *generates* an answer in your style. The most product-relevant seam: **Resonance as a partner that learns YOU.**
+  - **Needs your eyes/ears (headless here):** press **Play a demo phrase** a few times and watch the "idiom-contexts / order" readout climb — then **Start mic** and sing to it. Do the two formant voices read as distinct warm companions, and does the answer *feel* like it came from your own material?
 
-## Also explored tonight (2 more — banked, IDEAS §922)
-- **3104-crossing** ⭐⭐ — the same tunnel built from **layered video-feedback** (droste-zoom rings). The *most GPU-robust* version, runs on anything. A natural companion / fallback to 3040.
-- **3096-lightbody** ⭐⭐ — the tunnel as a **volumetric cloud of luminous mist** with god-rays streaming from the light. Softest, most distinct register.
-- All three were one idea attacked three ways (a DEEP fan); I shipped the strongest and folded the other two into 3040's design notes as its deepening path.
+## Also explored tonight (2 more — banked, IDEAS §923)
+- **3112-antiphon** ⭐⭐ — the same duet answering in **strict canon** (it mirrors / reverses / transposes *your* actual contour — Fux species counterpoint). The most *visually* legible of the three (you watch the inversion mirror on the transcript). Lowest-risk; held only because canon is the more "inevitable" concept.
+- **3128-jugalbandi** ⭐ — a partner that **harmonizes under your live voice** and takes the lead in your silences (Hindustani sawal-jawab). Held on two fixable strikes: its lead snaps to a just-intonation scale (the JI net we've kept killed), and the live-shadow latency needs a real-device check.
+- All three were one idea (a real two-way vocal duet) attacked three ways — a DEEP fan. I shipped the strongest and folded the others into IDEAS.
 
 ## Open questions for Karel
-- **AI-pipeline chains (music→image→video) still 0× — ~12 juries overdue.** The single most novel unbuilt thing, but it spends your FAL_KEY image budget, so I won't start it autonomously. **One word ("go, cap $X/run") unblocks it.**
-- After you fly 3040: next cycle **deepen the tunnel** (ship 3104/3096) or **pivot** back to a hands-on played instrument / the long-form memory lane (3024-gloaming)?
+- **AI-pipeline chains (music→image→video) still 0× — flagged by the FIFTH+ jury in a row (~12 cycles overdue).** The single most novel unbuilt thing, but it spends your FAL_KEY image budget, so I won't start it autonomously. **One word ("go, cap $X/run") unblocks it.**
+- Next cycle: **deepen the duet** (toward a real song / a two-way conversation, per the jury) or **pivot** to another stakes-first hands-on instrument (extend `2952-tabla` / `2960-murmuration`)?
 
 ## Housekeeping
-- Build passed (winner-only compile, EXIT 0). Full-route local build still hits the container's 4096-fd cap (infra, not code) — Vercel deploys the full pipeline fine.
+- Winner-only compile build (the container's 4096-fd cap still blocks a full-route local `npm run build` — infra, not code; Vercel deploys the full pipeline fine). Continuous pitch preserved; no JI net. Losers banked as text, never committed.
