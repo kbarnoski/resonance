@@ -1,42 +1,48 @@
-# Morning digest — last updated 2026-07-27 06:43 UTC (cycle 920, DEEP)
+# Morning digest — last updated 2026-07-27 (cycle 921, WIDE)
 
-**Open this first:** https://getresonance.vercel.app/dream/3080-mycelium
+**Open this first:** https://getresonance.vercel.app/dream/3056-clearlight
+*(best on a phone, with headphones, in a quiet spot — let it hear your breath)*
 
 ## New since yesterday
-- **`3080-mycelium`** (DEEP-winner) — *cultivate a living light.* Plant "spores"
-  with your finger and a mycelial web filaments outward on its own — branching,
-  **fusing into loops** (anastomosis, like a real fungal network), and never
-  erasing itself. Then **tap a living strand to ring its voice** — you play the
-  web you grew. Left running it keeps growing, so minute 8 ≠ second 0.
-  *Why open it:* a psychedelic instrument you **cultivate rather than trigger** —
-  touch input (off the recent mic/voice run), Canvas2D (off the WebGL streak),
-  organic cosmic-ambient (balances chrysanthemum's intense pole), and the lab's
-  first space-colonization growth. **Best on a phone — tap around, then tap a strand.**
+- **`3056-clearlight`** (WIDE-winner) — *breathe a boundless clear light into being.*
+  A **Ganzfeld** field (soft, edge-free light) where your **breath is the only
+  instrument**: the mic reads it as a slow ~5.5-bpm envelope, and calm, steady
+  breathing **brightens** the field + swells a drone until faint hallucinatory
+  form-constants (rings + a soft spiral) surface from it. Breathe with the pacer
+  ring. *Why open it:* the lab's **first Ganzfeld** and the **most
+  product-relevant** piece to Resonance's core (breath/meditation) — the calm
+  cosmic-ambient pole you asked about, and the **first real use of the shared
+  psych kit** (the safe-flicker / drone / void / Shepard engines that had been
+  sitting unused). No mic? It breathes a seeded synthetic breath so it self-demos.
 
-## Explored but not shipped (both built + banked — IDEAS §920)
-- **`3064-lenia`** ⭐⭐ (TOP next) — Lenia continuous-CA **creatures** that swim,
-  split, and self-sustain; seed & harvest them by hand (WebGL2). The freshest
-  artificial-life concept of the three — held only because the delicate "orbium"
-  parameters want a live GPU to tune so they stay lively (not decaying blobs).
-- **`3072-regrow`** ⭐ — a Neural-CA **"living skin"**: grow it, tear a hole with
-  your finger, watch it **heal itself back**, the scar carried as memory.
+## Explored but not shipped (both built + banked — IDEAS §921)
+- **`3040-tunnel`** ⭐⭐ — **pilot the near-death tunnel-toward-the-light yourself:**
+  a WebGL2 raymarched infinite wormhole you steer (drag/tilt/keys), holding to
+  commit toward a being-of-light or hanging back in the dark void; stop and time
+  dilates. The biggest "whoa" of the three — held only for a cycle where a live
+  **GPU can verify the shader** (compile + look) before it ships.
+- **`3088-khole`** ⭐⭐ — a **K-hole dissociation** instrument: you play it, and the
+  bind between what your hand does and what you see/hear **comes apart** (the
+  light lags the sound, time stretches, your locus melts) — then a lucid snap
+  re-binds it. Freshest *technique* in the lab (first audio-visual desync engine);
+  held for a real-device pass to confirm the desync *reads* as dissociation.
 
-## Research worth a look (RESEARCH §920)
-- **Neural Cellular Automata went real-time-high-res** — SIGGRAPH 2026,
-  arXiv:2506.22899 (coarse self-organizing CA + a small decoder → arbitrary
-  resolution, live). The whole morphogenesis toolkit (Lenia, Growing-NCA
-  *regeneration*) is now browser-viable — this cycle's "cultivate a living field
-  you play" thread came straight from it.
+## Research worth a look (RESEARCH §921)
+- **Ganzflicker is a robustly-documented, drug-free psychedelic lever** — a uniform
+  field the viewer's *own brain* fills, whose brightness tracks alpha
+  (relaxation/eye-closure) and whose *content* tracks individual imagery capacity
+  (*"From dots to faces"*, Neuroscience of Consciousness 2026). Unlike binaural
+  beats, this one replicates — and it inverts our whole recent posture: the
+  instrument supplies a near-empty field and *you* are the content. Directly drove
+  tonight's `3056-clearlight`.
 
 ## Open questions for Karel
-- **AI-pipeline chain (music→image→video) is still 0× — ~10 juries overdue.** It
-  spends your FAL_KEY image budget, so I won't start it on my own. **One word —
+- **AI-pipeline chain (music→image→video) is still 0× — ~11 juries overdue.** It
+  spends your FAL_KEY image budget, so I won't start it alone. **One word —
   "go, cap it at $X/run" — unblocks the single most novel unbuilt thing in the lab.**
-- **What to ship next:** keep pushing the *living-field* thread (extend `3064-lenia`
-  once a GPU can tune it), or pivot to a queued calm meditative piece —
-  `3056-clearlight` (breath meditation, most product-relevant to Resonance) or
-  `3040-tunnel` (NDE pilot, biggest "whoa")?
-- Infra (minor, standing): the cron container's fd cap (4096) still trips `EMFILE`
-  on the *full* local `npm run build` across ~875 routes, so I validate via the
-  compile+lint pass (green) — deploys fine on Vercel. Raising `ulimit -n` restores
-  full local builds.
+- **Which calm-pole sibling next?** `3040-tunnel` (biggest whoa, needs a GPU-verify
+  cycle) or `3088-khole` (freshest technique, needs a device-tuning pass)? Both are
+  built and banked — say the word and I'll ship one next cosmic-ambient slot.
+- Infra (minor, standing): the cron container's fd cap still trips the *full* local
+  `npm run build` across ~880 routes, so I validate via lint + the compile pass
+  (green) — deploys fine on Vercel. Raising `ulimit -n` restores full local builds.
