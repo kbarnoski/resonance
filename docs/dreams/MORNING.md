@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-07-26 (cycle 917, WIDE)
+# Morning digest — last updated 2026-07-27 (cycle 918, DEEP)
 
 ## New since yesterday
-- **`2992-around`** → https://getresonance.vercel.app/dream/2992-around — **sculpt a choir in the space around your head.** Click a top-down radar to place sustained voices at real 3-D positions; each is a continuous-pitch drone rendered through its own **HRTF binaural** panner, and they slowly **orbit your head** — a voice sweeps from one ear to the other. Drag (or tilt your phone) to **turn**, and the whole field rotates around you. *Why open this:* it's the lab's **first dedicated 3-D binaural instrument** — immersive/spatial audio, arguably the most *product-relevant* lane for a "personal audio workspace." **Put headphones on** — that's where the binaural effect lands. A seeded demo is already orbiting on load; tap **Start** for sound.
-- Went **WIDE** to break a **4-cycle groove**: 913–916 were all *one hand directly playing one instrument* (sing-follow, sing-harmony, tabla, murmuration). This cycle raced **three unrelated registers — SPACE / PEOPLE / ENVIRONMENT** — and shipped the strongest. **2 more explored — see IDEAS §917.**
+- **`3008-daylight`** → https://getresonance.vercel.app/dream/3008-daylight — **the light in your room is the instrument.** The camera reads *the room* — its brightness, its warm↔cool colour, how much is moving — **not you** — and turns it into one slow, living, continuous-pitch chord + a matching aurora. **Cup the lens → it hushes toward silence. Face a warm lamp vs a cool window → the chord's colour bends. Wave a hand → it shimmers.** It's **Scriabin's colour-organ (*Prometheus*, 1910) inverted** — colour drives sound instead of sound driving colour. *Why open this:* it's the **cosmic-ambient pole you asked for**, in a loved lane (camera) on a fresh axis (light, not body), and it deliberately breaks a **5-cycle solo-hand-instrument groove** (913–917 were all one hand on one instrument). A seeded "room at dusk" plays on load; tap **Start** to open sound + camera. All on-device — no pixels leave the browser.
+- Went **DEEP**: raced **three attacks on one concept** — *space* / *gesture* / *time* — and shipped the most legible. **2 more explored, both built demoable + banked — see IDEAS §918.**
 
 ## In progress / partial
-- Nothing half-built. One clean ship + two banked seeds (both built demoable + `tsc`/`eslint` clean in-folder this cycle).
+- Nothing half-built. `3008-daylight` is marked **multi-cycle** — its README folds the two banked attacks as the next-cycle deepening path (spatial voicing + per-zone light-memory).
 
-## Research findings worth a look (RESEARCH §917)
-- **Spatial audio + head-tracking is a first-class 2026 interaction** (AudioMiXR arXiv:2502.02929 — grab/place 3-D sources; SpatialNet 2512.20122 — binaural under head rotation). The browser already ships the primitive (`PannerNode{HRTF}` + movable listener), yet the lab had never built a spatial *instrument*. `2992-around` is that.
-- Banked **`3008-daylight`** ⭐⭐ (HIGH — freshest concept, the cosmic-ambient pole you want covered) — **the light in your room becomes the instrument**: the camera reads brightness/hue/motion (not your body) and turns it into a slow living chord. Cup the lens, walk to a window, dim a lamp. Scriabin's colour-organ **inverted**. No image data leaves the browser.
-- Banked **`3000-commons`** ⭐ — a **collective drone-choir** (open a 2nd tab = another person joins) where the room self-organizes into harmony. Cashes the multi-user seam (`2912-ensemble`) — but I held it because its coupling pulls toward just-intonation ratios (the very "safety net" the jury wants gone) and it's a close sibling to ensemble; the resurrect note swaps it for a roughness-minimizing (Sethares) coupling.
+## Research findings worth a look (RESEARCH §918)
+- **NIME 2026 (London, Jun 23–26) makes embodiment + haptics its flagship theme** — the instrument field is turning toward *physical stakes and whole-environment presence*, away from screen+AI. That re-frames the jury's "danger needs an agent who can be wrong" as a 2026 direction, and points past hands-on-a-keyboard toward **the environment as the controller** — which is exactly what Daylight is.
+
+## Banked, ready to grab (from this cycle's race)
+- **`3024-gloaming`** ⭐⭐ — the same light-instrument but **long-form with memory**: a room at dusk *composes a piece that remembers*, different at minute 5 than second 0. Directly cashes the jury's "extend the memory peak." Built + clean, waiting on a meditative cycle.
+- **`3016-lumen`** ⭐ — the **spatial** version: light *across* the room becomes a chord's voicing you can see, and a swept hand *strums* it.
 
 ## Open questions for Karel
-- **Does `2992-around` localize convincingly on your headphones?** I can't hear it here (headless). When a voice orbits, do you feel it move *around* your skull — and when you turn/tilt, does the field audibly rotate? The pitch range, orbit speeds and distance-rolloff are hand-tuned and want your ear.
-- **Spatial/immersive is a brand-new lane (0× → 1×) and the most Resonance-shaped one yet.** Want me to grow it — a spatial layer over your **real Path tracks** (arrange your piano in the round), or head-tracked spatial *journeys*? It's a natural multi-cycle build.
-- **AI-pipeline chains (music→image→video) are still 0× — the FIFTH+ jury flagging it.** It spends your FAL_KEY budget, so it needs your explicit go-ahead + a per-run cap. One word unblocks it.
+- **On your phone, does `3008-daylight` actually feel like playing light?** I'm headless — can't see/hear it. Point it around your room: does cupping the lens hush it, does warm-vs-cool light audibly bend the chord's colour, is the aurora beautiful? The mappings are hand-tuned and want your eye + ear.
+- **Environment-as-instrument is a fresh lane** — want me to grow it (fuse `gloaming`'s memory + `lumen`'s spatial voicing into one piece), or point it at your **real Path piano tracks** so the room's light *reshapes your own music*?
+- **AI-pipeline chains (music→image→video) are still 0× — ~9th jury flagging it.** It spends your FAL_KEY budget, so it needs your explicit go-ahead + a per-run cap. One word unblocks it.
