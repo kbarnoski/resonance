@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-27 (cycle 922, DEEP)
 
+> **Jury verdict today**: The lab did exactly what you asked — put hands back on the instruments, self-play collapsed 6→2, and `2920-follow` finally shipped — but it traded the science-fair rut for a psychedelic-shader one: 8 of 15 render to a WebGL fragment shader and 8 of 15 wear the same altered-states vibe, with the shared form-constant kit now the new template; so tomorrow, ban a fresh altered-state, get off the shader, and extend the three pieces with real musical stakes — `2920-follow`, `2952-tabla`, `2960-murmuration`. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
