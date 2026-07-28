@@ -1,24 +1,16 @@
-# Morning digest — last updated 2026-07-28 (cycle 930, WIDE)
-
-> **Tonight: the browser grew a GPU physics engine — so I got off Canvas2D.** Six of the last ten pieces rendered to Canvas2D (we escaped the shader rut straight into a Canvas2D one), so tonight raced **three fresh render substrates** — WebGPU/GPU-compute, three.js instanced geometry, and SVG — and shipped the one that's genuinely new for the lab. A 2026 finding (three.js WebGPU compute now simulates *thousands* of particles entirely GPU-side) became a playable **marble machine**.
-
-Open the lab: https://getresonance.vercel.app/dream
+# Morning digest — last updated 2026-07-28 (cycle 931, DEEP)
 
 ## New since yesterday
-- **[3272-cascade](/dream/3272-cascade)** — **compose a groove by aiming a waterfall of physics particles onto tuned bars.** A browser **Wintergatan marble machine** where the marbles are thousands of GPU-simulated particles. Tilt the draggable **deflectors** so the falling stream lands on the bars you want, in the rhythm you want — aim it into a groove, or over-drive the flow and it collapses into a noisy wash. *Where the particles land is which notes play.*
-  - **Try it:** press **Start the machine**, then drag/rotate the deflectors and nudge the emitter + flow. Particles fall, strike a row of pitched bars, and both ring and flash.
-  - **Why it matters:** this is the lab's **first GPU-compute / GPU-physics piece** — the compute substrate you (and the jury) kept asking for, a browser port of the TouchDesigner/Houdini particle paradigm. The heavy sim runs entirely on the GPU (raw WGSL compute shader); where WebGPU isn't available (Safari/Firefox) it falls back to an identical CPU/WebGL sim so it *always* works.
-  - **Love-aligned:** extends three you've loved — `130-tsl-particle-compute`, `169-kids-marble-run`, `236-particle-life-song`.
+- **`3324-laplace` → [/dream/3324-laplace](https://getresonance.vercel.app/dream/3324-laplace)** — **the lab's first celestial-mechanics instrument.** Three worlds (Io/Europa/Ganymede) strike a drum at perihelion; tune their orbits into Jupiter's real **4:2:1 Laplace resonance** and the hits interlock into a self-sustaining nested polyrhythm. Then hit **"Release gravity"**: an honest three-body torque HOLDS a near-locked chain — but on a wrong tuning a secular divergence runs until a world is flung out screeching. *Why open it:* composing = finding the lock, and a mistuning literally tears itself apart — the sharpest "a musical decision you can get wrong" yet, and a return to the cosmic register we'd been away from for 8+ cycles. Press **Start**, hit **Snap to 4:2:1** to hear the locked groove, drag a world to detune, then **Release gravity**. Idea = Matt Russo / SYSTEM Sounds.
+- **2 more orbital-resonance directions explored (DEEP race), banked to IDEAS §931:** `3300-orrery` ⭐⭐ (immersive 4-planet 3-D pad-primary orrery — the more *transporting* version) and `3312-kirkwood` ⭐ (raw-WebGL2 diagrammatic "watch the resonance argument lock" — the rarest substrate in the lab). Both built demoable + lint-clean, then set aside (not committed).
 
-## Also explored tonight (2 more — banked, IDEAS §930, both built + tsc/eslint-clean)
-Two other fresh non-Canvas2D substrates, same "one ambitious idea each" bar:
-- **3280-orrery** ⭐⭐ — **a polyrhythm you tune as a solar system.** Concentric rings of orbiting bodies; a fixed spoke is the playhead; each ring's *orbital period* is its pulse. Simple ratios (3:2, 4:3) interlock into a canon; detune them and the phases slowly drift so it's never the same minute to minute. three.js instanced geometry; **Kepler's *Harmonices Mundi***. The lab's cleanest long-form/evolving piece.
-- **3288-arbor** ⭐⭐ — **music that grows like a plant.** An L-system tree where every branch is a voice pitched at an interval above its parent — so the harmony literally *branches*, bushy sub-trees becoming clusters. You prune to steer it. **SVG** (a register that had cratered to 1×), **Lindenmayer / Prusinkiewicz**. Botanical, long-form.
+## In progress / partial
+- Nothing half-built. `3324-laplace` shipped whole this cycle.
+
+## Research findings worth a look
+- **RESEARCH §931 — orbital resonance is a *rhythm*, not a chord** (Matt Russo / SYSTEM Sounds). TRAPPIST-1 sits in a 24:15:9:6:4:3:2 chain; the Galilean moons in 4:2:1. Worlds in small-integer period ratio strike perihelion beats that interlock into polyrhythm — that's the whole mechanism of tonight's build. Fresh-to-the-lab lane (celestial mechanics, grep-0×); next hooks: the full TRAPPIST-1 8-world ladder as a long-form generative piece; ESO's TOI-178 5-planet chain.
 
 ## Open questions for Karel
-- **Which substrate should I deepen?** GPU-physics (cascade), instanced orbital-mechanics (orrery), or generative-botany SVG (arbor)? All three are fresh lanes — I'll build out whichever lands. The WebGPU compute engine is the biggest unlock: it's now reusable for a whole family of kinetic instruments (pinball, Galton board, sand pendulum).
-- **AI-pipeline chains (music→image→video) still 0×** — the single most novel unbuilt thing, but it spends your FAL_KEY budget so I won't start it autonomously. **One word ("go, cap $X/run") unblocks it.**
-
-## Housekeeping
-- Winner-only compile build passed **EXIT 0**. The full-route local `npm run build` still hits the container's **4096-fd** cap (infra, un-raisable — confirmed again this fire; Vercel deploys the full pipeline fine). Zero new npm deps (uses the already-present `three@0.182`); no api route; deterministic (no `Math.random`). The two siblings were banked as text, never committed.
-- `origin/main` had been force-rebased again since last night — I reset local main to it (remote is authoritative) before building, so nothing was lost.
+- **Can't fully self-verify audio/visual headless** — review stand-ins are the Snap-to-4:2:1 button + the live φ_L/strain HUD, but whether the locked chain *sounds* like a genuinely nested groove and whether "release gravity" delivers real tension want your device. Tell me if the lock reads.
+- **AI-pipeline chains are STILL at zero — now ~13 cycles / 5th+ jury overdue** (music→image→video, lyric→cover-art→loop via fal.ai/replicate). It spends your FAL_KEY budget, so it's blocked on your explicit go-ahead + a per-run cap. One word — *"go, cap $X/run"* — unblocks the single most novel unbuilt thing in the lab.
+- **Resurrect candidate:** the raw-WebGL2 substrate is starving — want me to ship `3312-kirkwood` (see-the-resonance-lock) next, or deepen `3324-laplace` toward the full TRAPPIST-1 ladder?
