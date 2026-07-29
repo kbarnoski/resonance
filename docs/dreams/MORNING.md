@@ -1,21 +1,23 @@
-# Morning digest — last updated 2026-07-29 (cycle 945, WIDE)
+# Morning digest — last updated 2026-07-29 (cycle 946, DEEP)
 
-> **Jury verdict today**: The fail-state rut you flagged is gone — but it's been replaced by a no-stakes one (11 of the last 12 have no win/lose), so tomorrow needs real consequence *without* a physics textbook; `3608-atlas` and `3552-forage` are the two peaks worth your morning. See `docs/dreams/JURY.md`.
+> **Yesterday's jury** said the lab has *never once* spent a deliberate second cycle deepening a strong piece — criterion (4) is 0-for-6 windows, "that, not ambition, is the missing discipline" — and named `3608-atlas` the peak to extend. **So this cycle is the lab's first-ever deepening.** See `docs/dreams/JURY.md`.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3624-covenant](https://getresonance.vercel.app/dream/3624-covenant)** — **open it, hit Start, then play a steady little phrase on your keyboard (A S D F G H J K = C D E F G A B C).** An accompanist answers you — but here's the idea: **it only commits to you when you play with intention.** Wander or fall silent and it retreats to a lone cautious drone; play coherent, resolving phrases and it climbs — a fifth, a triad, a voiced 7th, finally a moving bass + comping. **You earn a partner; you don't just trigger one.** It even *anticipates* — bets on your next chord and flashes "read you right" when you confirm it. The braid between the two glowing presences thickens as trust grows. Before you touch a key a seeded autopilot self-demos the whole arc (earns trust → breaks it → rebuilds it). This is the deliberate correction to a run of no-stakes pieces: real agency-with-consequence, but **no fail-buzzer**. Chained from today's research (arXiv:2511.17879 — an accompanist's *withholding* is the expressive substance, not a bug).
+- **[3648-songlines](https://getresonance.vercel.app/dream/3648-songlines)** — **a recording played like a keyboard.** `3608-atlas` gave you a recording's timbre-map to *wander* with the mouse. Songlines makes it an **instrument you play and compose with.** Hit Start, then press keys **A W S E D F T G Y H U J** (low→high) — each jumps you to a *timbre region* of the recording (warm/low → bright/shimmer) and sounds its grains. **Plug in a MIDI keyboard and it plays that** — the lab's first real Web MIDI instrument, and the seam most relevant to "Resonance for pianists." Then the point of it: hit **Record**, play a little phrase, hit **Stop** — and it **loops forever.** You didn't wander a recording; you *composed with it.* Before you touch anything, a seeded autopilot plays + records + loops a phrase so you see the whole idea in ~2 seconds.
 
-## In progress / partial
-Two other stakes-relationships were built + explored this WIDE cycle, then banked (not shipped) — see IDEAS §945:
-- **`3632-oath`** (⭐⭐ ship-ready) — a looper with ONE rule: **every layer you record LOCKS forever, no undo.** Sing takes into a permanent accreting stratum-record; a shaky take is stuck, a great one is a gift. Commitment as the instrument.
-- **`3640-quarry`** (⭐, phone-native) — **tilt your phone to *catch* fleeing voices** by matching their pitch; each capture grows a chord, each escape thins it. The rarest input in the lab (device-tilt).
+## Why this one matters
+Three jury asks in one build: (1) the **first deliberate deepening** — the discipline the jury said was missing for six windows; (2) **off touch, onto a wire** — real MIDI, the still-zero hardware path serving your live-performance priority; (3) **agency back** — you author a composition, but with **no fail-buzzer** (the correction to a run of 11 no-stakes pieces).
 
-## Research findings worth a look
-- **The accompanist's *withholding* is the point** (arXiv:2511.17879, "reward hacking in live human-AI music," May 2026; ReaLchords arXiv:2506.14723): the field found that a good real-time partner's retreat-to-safe-output is expressive substance. `3624-covenant` turns that retreat into the whole interface. (RESEARCH §945.)
+## Also explored this DEEP cycle (built + banked, not shipped — IDEAS §946)
+- **`3656-tracer`** (⭐⭐) — steer a read-head through the cloud, record the path, then **overdub** more paths into a growing multi-voice piece. The best banked answer to "make it different at minute 5" (memory).
+- **`3664-confluence`** (⭐) — **two recordings in one shared timbre-map**, morph between them: play recording A's contour with recording B's material. The jury's other named v2 hook.
+
+## Research (RESEARCH §946)
+- Schwarz's corpus-synthesis work notes navigation "**can be recorded for later playback**" — the un-built half of atlas, which Songlines makes literal. Plus **FXplorer** (arXiv:2606.08286, Jun 2026), a recent "map as playable surface" sibling.
 
 ## Open questions for Karel
-- **Does `3624-covenant` *feel* like earning a partner?** I built it headless — whether the five tiers audibly read as growing trust (vs just "more notes") needs your ears.
-- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — ~11th cycle I've flagged it. It spends `FAL_KEY`, so it needs your explicit **go-ahead + per-run $ cap**. One word unblocks it.
-- **Cash your real Path piano?** Drop a Path recording onto `3608-atlas`, or say the word and I'll build a piece around your actual recordings via the audio API.
+- **Does playing a recording's own timbres as notes *feel* musical?** Built headless — needs your ears (and a MIDI keyboard, if you have one plugged in).
+- **Feed it your actual Path piano?** The natural next step: point Songlines at one of *your* recordings via `/api/audio/[id]` so a take of yours becomes a playable map. (Still-uncashed real-music directive.)
+- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — needs your explicit go-ahead + a per-run `FAL_KEY` $ cap. One word unblocks it.
