@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-07-29 (cycle 943, DEEP)
+# Morning digest — last updated 2026-07-29 (cycle 944, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3576-bloom](https://getresonance.vercel.app/dream/3576-bloom)** — **open this and hit the surface.** A real physical-modeling *instrument*: strike a plate, gong, drum, bar or string and it rings with genuine **non-linear physics** — hit it *harder* and the pitch glides sharp and **blooms**, energy sloshing between its modes into an evolving **shimmer**, exactly like a real struck plate. And you *watch* the vibration draw itself as living **Chladni nodal patterns** — the picture is driven by the exact same mode energies you hear, so it blooms on strike and reorganises as the sound rings. No score, no win/lose — you excite a material, it sings back. It self-plays (strikes across plate/gong/membrane) until your first strike takes over. Directly implements today's research (non-linear modal synthesis).
+- **[3608-atlas](https://getresonance.vercel.app/dream/3608-atlas)** — **open this, then move your cursor slowly through the cloud.** A recording becomes a *place you walk through*: every ~46 ms grain of its sound is a glowing point placed by what it *sounds like* (bright grains upper-right, low/warm grains lower-left), and moving through the cloud triggers the grains nearest you — linger in the bright region and it shimmers, dive low and it drones. You're not scrubbing a timeline; you're **playing the recording's own timbre-space**. Then **drop your own audio file anywhere on the page** and the whole instrument rebuilds from *your* sound. Raw-WebGL2 GPU point cloud; it self-tours on load until your first move. Built on corpus-based concatenative synthesis (Schwarz/CataRT — today's research). Agency coming back after a long no-stakes run, and it sits right in the granular/particle/spectral direction you've loved (`227-paths-granular`, `130-particle-compute`, `243-spectral-cloud`).
 
 ## In progress / partial
-- Two more realizations of the same idea were built + explored this DEEP cycle, then banked (not shipped) — see IDEAS §943:
-  - **`3584-anvil`** — the same instrument as a *true per-sample DSP engine* (an AudioWorklet, not automation-faked). The most rigorous version; its whole value is the audio, so it wants a **headphones-on** test — I held it for a slot where you can listen.
-  - **`3592-plate`** — the same instrument as a **3-D plate** you can see physically deform in its vibration shapes as it rings. Spectacular, but held one cycle (three.js is over-used lately + it needs your GPU to verify).
+Two other relationships were built + explored this WIDE cycle, then banked (not shipped) — see IDEAS §944:
+- **`3616-relay`** — the freshest *relationship* I've banked: a **relay between strangers** — you inherit a phrase, answer it, and your braid rides on to the next person entirely inside a shareable link (no server). It round-trips exactly across 6 generations. Held for **one** fix: its mic path snaps pitch to a pentatonic scale, which trips your protected "no pentatonic net" rule — a small change unblocks it. The one I most want to ship next.
+- **`3600-braid`** — a playable **polymetric loom** (MIDI + keyboard): weave rings of coprime lengths that phase into a canon that doesn't fully repeat for ~5 hours. Clean and hypnotic; held only because its Euclidean-rhythm engine overlaps existing pieces.
 
 ## Research findings worth a look
-- **The modes go non-linear.** nlm (arXiv:2603.10240, Mar 2026) + Stable Differentiable Modal Synthesis (arXiv:2601.10453, Jan 2026): real-time struck-surface modeling where the modes are *coupled and amplitude-dependent* — energy raises tension raises frequency (the bloom), energy migrates between modes (the shimmer). Phenomena a plain sum-of-decaying-sines can't produce. That's exactly what `3576-bloom` is built on, and it massively expands the linear-modal `3560-matter` I banked yesterday. (RESEARCH §943.)
+- **A recording as a place, not a timeline** (Schwarz/*CataRT*, IRCAM + TENOR 2023 "Maps as Scores"): the instrument *is* the timbre-space you navigate. That's exactly what `3608-atlas` is. (RESEARCH §944.)
+- Banked for later: **C&C 2026 "Sound Clouds"** — engineering *awe* in ambient systems with **no interaction** (vastness + slowness). Held because no-stakes/ambient is over-supplied right now (6 of the last 10); queued for when that register cools.
 
 ## Open questions for Karel
-- **Ear-check `3576-bloom` on your device:** does the *bloom* (pitch gliding sharp on a hard hit) and the *shimmer* come through, and do the 5 materials sound genuinely different? The modal ratios are textbook idealisations and the tuning was reasoned, not listened to — one listening pass would tell me a lot. (The banked `3584-anvil` is the more faithful per-sample version if you want to compare — say the word and I'll ship it.)
-- **AI-pipeline chain (music→image→video)** is the one big lane still at 0× — 9th+ cycle I've flagged it. It needs your explicit **FAL go-ahead + a per-run $ cap** before I can build it (guarded, budgeted). Say the word.
-- **Your real Path piano** is still uncashed — a clean way in now: seed this instrument's mode set from your piano's spectral profile so you strike *your own* harmony.
+- **Try `3608-atlas` with your own piano:** drop a Path recording onto it and navigate your own timbre-space — does it *read* as playing your sound? (A clean way to finally cash your real Path music as a live source.)
+- **Unblock `3616-relay`?** One yes and I make the mic mapping continuous and ship the stranger-relay — the freshest new *relationship* in the lab.
+- **AI-pipeline chain (music→image→video)** is still 0× — ~10th cycle I've flagged it. It spends `FAL_KEY`, so it needs your explicit **go-ahead + per-run $ cap**. One word unblocks it.
