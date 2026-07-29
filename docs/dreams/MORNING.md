@@ -1,20 +1,19 @@
-# Morning digest — last updated 2026-07-29 (cycle 944, WIDE)
+# Morning digest — last updated 2026-07-29 (cycle 945, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3608-atlas](https://getresonance.vercel.app/dream/3608-atlas)** — **open this, then move your cursor slowly through the cloud.** A recording becomes a *place you walk through*: every ~46 ms grain of its sound is a glowing point placed by what it *sounds like* (bright grains upper-right, low/warm grains lower-left), and moving through the cloud triggers the grains nearest you — linger in the bright region and it shimmers, dive low and it drones. You're not scrubbing a timeline; you're **playing the recording's own timbre-space**. Then **drop your own audio file anywhere on the page** and the whole instrument rebuilds from *your* sound. Raw-WebGL2 GPU point cloud; it self-tours on load until your first move. Built on corpus-based concatenative synthesis (Schwarz/CataRT — today's research). Agency coming back after a long no-stakes run, and it sits right in the granular/particle/spectral direction you've loved (`227-paths-granular`, `130-particle-compute`, `243-spectral-cloud`).
+- **[3624-covenant](https://getresonance.vercel.app/dream/3624-covenant)** — **open it, hit Start, then play a steady little phrase on your keyboard (A S D F G H J K = C D E F G A B C).** An accompanist answers you — but here's the idea: **it only commits to you when you play with intention.** Wander or fall silent and it retreats to a lone cautious drone; play coherent, resolving phrases and it climbs — a fifth, a triad, a voiced 7th, finally a moving bass + comping. **You earn a partner; you don't just trigger one.** It even *anticipates* — bets on your next chord and flashes "read you right" when you confirm it. The braid between the two glowing presences thickens as trust grows. Before you touch a key a seeded autopilot self-demos the whole arc (earns trust → breaks it → rebuilds it). This is the deliberate correction to a run of no-stakes pieces: real agency-with-consequence, but **no fail-buzzer**. Chained from today's research (arXiv:2511.17879 — an accompanist's *withholding* is the expressive substance, not a bug).
 
 ## In progress / partial
-Two other relationships were built + explored this WIDE cycle, then banked (not shipped) — see IDEAS §944:
-- **`3616-relay`** — the freshest *relationship* I've banked: a **relay between strangers** — you inherit a phrase, answer it, and your braid rides on to the next person entirely inside a shareable link (no server). It round-trips exactly across 6 generations. Held for **one** fix: its mic path snaps pitch to a pentatonic scale, which trips your protected "no pentatonic net" rule — a small change unblocks it. The one I most want to ship next.
-- **`3600-braid`** — a playable **polymetric loom** (MIDI + keyboard): weave rings of coprime lengths that phase into a canon that doesn't fully repeat for ~5 hours. Clean and hypnotic; held only because its Euclidean-rhythm engine overlaps existing pieces.
+Two other stakes-relationships were built + explored this WIDE cycle, then banked (not shipped) — see IDEAS §945:
+- **`3632-oath`** (⭐⭐ ship-ready) — a looper with ONE rule: **every layer you record LOCKS forever, no undo.** Sing takes into a permanent accreting stratum-record; a shaky take is stuck, a great one is a gift. Commitment as the instrument.
+- **`3640-quarry`** (⭐, phone-native) — **tilt your phone to *catch* fleeing voices** by matching their pitch; each capture grows a chord, each escape thins it. The rarest input in the lab (device-tilt).
 
 ## Research findings worth a look
-- **A recording as a place, not a timeline** (Schwarz/*CataRT*, IRCAM + TENOR 2023 "Maps as Scores"): the instrument *is* the timbre-space you navigate. That's exactly what `3608-atlas` is. (RESEARCH §944.)
-- Banked for later: **C&C 2026 "Sound Clouds"** — engineering *awe* in ambient systems with **no interaction** (vastness + slowness). Held because no-stakes/ambient is over-supplied right now (6 of the last 10); queued for when that register cools.
+- **The accompanist's *withholding* is the point** (arXiv:2511.17879, "reward hacking in live human-AI music," May 2026; ReaLchords arXiv:2506.14723): the field found that a good real-time partner's retreat-to-safe-output is expressive substance. `3624-covenant` turns that retreat into the whole interface. (RESEARCH §945.)
 
 ## Open questions for Karel
-- **Try `3608-atlas` with your own piano:** drop a Path recording onto it and navigate your own timbre-space — does it *read* as playing your sound? (A clean way to finally cash your real Path music as a live source.)
-- **Unblock `3616-relay`?** One yes and I make the mic mapping continuous and ship the stranger-relay — the freshest new *relationship* in the lab.
-- **AI-pipeline chain (music→image→video)** is still 0× — ~10th cycle I've flagged it. It spends `FAL_KEY`, so it needs your explicit **go-ahead + per-run $ cap**. One word unblocks it.
+- **Does `3624-covenant` *feel* like earning a partner?** I built it headless — whether the five tiers audibly read as growing trust (vs just "more notes") needs your ears.
+- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — ~11th cycle I've flagged it. It spends `FAL_KEY`, so it needs your explicit **go-ahead + per-run $ cap**. One word unblocks it.
+- **Cash your real Path piano?** Drop a Path recording onto `3608-atlas`, or say the word and I'll build a piece around your actual recordings via the audio API.
