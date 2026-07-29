@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-07-29 (cycle 948, DEEP)
+# Morning digest — last updated 2026-07-29 (cycle 949, WIDE)
 
-> **The jury named two peaks worth extending — `3608-atlas` and `3552-forage` — and its provocation #2 was "spend a cycle DEEPENING, not minting: criterion-4 multi-cycle is 0-for-6 windows, the missing discipline." Atlas got its v2 (`3648-songlines`, cycle 946). Tonight took the un-done half: forage's exact words, "let two swarms on two food-fields duet."** See `docs/dreams/JURY.md`.
+> **The jury's story yesterday: the fail-state rut healed, but it flipped into a *no-stakes* one (11 of the last 12 have no win/lose), and touch/pointer has been the top input three windows running. So tonight went WIDE on the exact fix — three divergent instruments, none touch, each PLAYED with a real consequence — and shipped the lab's first hardware wire.** See `docs/dreams/JURY.md`.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3704-membrane](https://getresonance.vercel.app/dream/3704-membrane)** — **two slime-mould swarms in two separate fields, and the permeable MEMBRANE between them is the instrument.** `3552-forage` was one swarm singing its own network; this makes the **coupling between two networks** the played object. Press **`←`/`→`** to sweep membrane permeability: turn it **up** and both swarms grow to the boundary, meet, and their two hard-panned voices (left swarm = left ear, right = right) **lock into call-and-response**; turn it **down** and each forages alone, the voices **drift into independent counterpoint**. The lock isn't the knob — cross-membrane *connectivity* is measured each frame, so it takes a few seconds of real growth before they sing together. `1–8` drop food; a seeded autopilot sweeps permeability 0→1→0 over 48 s so it plays itself before you touch it.
+- **[3720-relay](https://getresonance.vercel.app/dream/3720-relay)** — **the lab's FIRST Web MIDI hardware input: a one-take recording desk where TIMING is the whole stake.** A click runs. Every note — from a real MIDI controller, the QWERTY home row, or a self-playing AUTO demo — is judged on one thing: how close to the click you landed. On-beat (±55 ms) → a clean **violet** mark that gilds the loop; off → a permanent **red scar** at its real offset that roughens it. You get **20 commits**; the counter only falls; at zero the take **seals and loops forever** — clean where you were tight, scarred where you rushed. No undo. **Plug in a MIDI keyboard if you have one — this one's built to be played on your rig.**
 
 ## Why this one
-It's the **deepening the jury asked for** — the lab's **first coupled multi-body emergent system**, and its first deliberate criterion-4 v2 of a named peak. The interface *is* the coupling: one legible knob moves the whole piece between two soloists and one locked duet. Non-pointer keyboard (clears the touch ban), biological emergence (not a physics-model — clears the second ban), WebGPU compute + Canvas2D fallback.
+It answers the jury's two loudest notes at once: it brings **real consequence back without a physics textbook** (the stake is your own timing under a finite, irreversible budget — it models nothing), and it **gets off touch onto a wire** — the still-zero MIDI/OSC hardware path, which is your stated live-performance priority. It also uses the scarce **Canvas2D** output the jury asked to protect, not another shader.
 
-## Also explored this DEEP cycle (built + banked, not shipped — IDEAS §948)
-- **`3696-antiphon`** (⭐⭐) — two rival slime-mould **species on one shared field** fighting over regrowing food, and **you HUM to feed one of them** (mic-pitch input). The fan's boldest input; held for a mic/embodied window.
-- **`3712-canon`** (⭐⭐) — a **WebGL2** port (runs on any GPU, no WebGPU) with a literal **lagged canon** (swarm B imitates A's past). Designated the **next-cycle deepening** of Membrane — fold its canon channel in so permeability morphs imitation→canon→counterpoint.
+## Also explored this WIDE cycle (built + banked, not shipped — IDEAS §949)
+- **`3728-conjure`** (⭐⭐ HIGH) — **hold a chord-shape in the air or it decoheres to noise.** Real MediaPipe **hand-landmark** tracking (21 points, not optical flow) → a coherent WebGL2 lattice that dissolves the instant your hand drifts. The close 2nd; teed up for the next camera/body window (answers the jury's hand-landmark ask, feeds the loved `3416-baton` cluster).
+- **`3712-steady`** (⭐⭐) — **hold your hand physically still or the tone frays; a phrase held steady commits to a permanent loop.** Device-motion (accelerometer) + three.js plumb-line. Non-touch, real stakes; wants a phone-in-hand window.
 
-## Research (RESEARCH §948)
-- Two fresh 2026 statements of one thesis — music as the **emergent by-product of coupled agents**: *The Agentic Symphony* (Meera Sundar, ADCx India 2026) and *MusicSwarm* (Buehler 2026). Forage had one body; the coupling was the unbuilt move. Chain: today's research → today's build.
+## Research (RESEARCH §949)
+- **Web MIDI is shipping and ready** (Chrome/Edge/Opera) — hardware knobs/keys straight into the browser — plus the accelerometer-gesture-to-MIDI lineage (Source Audio *Hothand*). The freshest synth papers (*Sonify Anything*, *PAVAS*) are both physics-model pieces — the rut the jury banned a relapse into — so logged, not built. Chain: today's research (the wire/body input class) → today's build (`3720-relay`, direct).
 
 ## Open questions for Karel
-- **Does the membrane lock read as two voices *finding each other*, or just as an EQ sweep?** Built headless — it needs your ears (stereo/headphones) to know if the couple-locking lands. This is the one to actually *play* with the `←/→` knob.
-- **Keep deepening, or go wide again?** Criterion-4 is the jury's stated frontier; `3712-canon` is teed up as Membrane's v2 — say the word and next cycle deepens instead of minting.
-- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — needs your explicit go-ahead + a per-run `FAL_KEY` $ cap.
+- **Does clean↔scar read as *musical stakes*?** Built headless — it needs your ears. Does an on-beat note audibly gild and an off-beat one audibly roughen, and is ±55 ms the right tightness? Play a take to zero and see if the sealed loop feels earned.
+- **Does a real MIDI controller wire up on your rig?** The Web MIDI path is built but untested against hardware here — plug in and check the badge names your device.
+- **Next: ship `3728-conjure` (hand-landmarks) on a camera window, or push installation/spatial (#4, still 0×)?** Say the word.
