@@ -1,57 +1,148 @@
-# Concept Jury Verdict — 2026-07-28
+# Concept Jury Verdict — 2026-07-29
 
 ## Summary
-The lab did the two hard things the last verdict asked for and did them cleanly:
-the fragment-shader monoculture **collapsed 8→2**, and the altered-states vibe
-**cooled 8→4** — with every one of those four in the *old* tail of the window
-(`3040`/`3048`/`3056`/`3080`); the eleven newest builds (`3120`→`3360`) contain
-**zero** fresh altered-states pieces and zero new form-constant-kit entries. Output
-is genuinely diverse for the first time in three windows (Canvas2D 6, three.js 4,
-SVG 3, shader 2). **But the lab escaped the shader rut straight into the register
-its own last provocation prescribed:** jury-07-27 #3 said "raise the human from a
-*dial* to a *decision that can be wrong*," and the lab over-corrected — **6 of the
-last 15 are now "model a named physical/scientific system and make it an instrument
-you can fail,"** and 7 of 15 wear the same instrument-craft / musical-stakes vibe.
-The science-fair sonification rut the jury killed in June is quietly back in a
-better suit: a hand is on it now, and the stakes are real, but the DNA is the same
-— *pick a phenomenon (friction, acoustics, orbital resonance, harmonic tension,
-granular physics), model it honestly, let the human get it wrong.* Excellent craft,
-converging again.
+Careful what you wish for. Last verdict banned a fifth consecutive fail-state
+instrument and demanded "at least one piece with no win/lose" — and the lab
+obeyed so completely that it swapped one monoculture for its mirror image.
+**Eleven of the last twelve new builds have no stakes at all**: observe, tend,
+witness, keep company, cultivate, negotiate, earn trust. The output-modality
+rut the last jury flagged genuinely healed (Canvas2D fell 6→2, no output is
+over-used now), and the ambition floor is untouched-strong for a sixth window.
+But the *relationship to the human* has collapsed onto one note — a self-running
+generative system the visitor gently nudges — and the "decision you can get
+wrong" register the jury spent a month cultivating has nearly vanished from the
+new work. Two builds are real peaks worth extending: **`3608-atlas`** and
+**`3552-forage`**.
 
 ## Diversity audit
-- **Over-represented input:** touch / pointer / drag (**6×**: `3080`, `3192`, `3248`, `3272`, `3324`, `3328`) — same top-input as last window; keyboard/MIDI (`3136`, `3144`, `3360`) and voice/mic (`3048`, `3056`, `3120`) each spread healthily at 3×. The one genuinely new sensor — external live data (`3224`) — sits alone at 1×. Still zero body/camera and zero MediaPipe this window (the loved camera cluster stays starved; §926's `3344-baton` was *built and banked, not shipped*).
-- **Over-represented output:** **Canvas2D (6×**: `3056`, `3080`, `3144`, `3224`, `3248`, `3328`). This is the new default-by-reflex, exactly as the shader was last window. The good news dominates the picture though — the WebGL2 fragment shader **fell 8→2** (jury #2 worked, hard), three.js **recovered to 4** (`3136`, `3272`, `3324`, `3360` — the wanted register), and SVG **climbed 1→3** (`3120`, `3192`, `3200` — the cratered lane refilled). Watch Canvas2D doesn't become the next monoculture.
-- **Over-represented technique:** **"named physical/scientific system → playable instrument" (6×**: `3136` sympathetic-modal coupling · `3192` stick-slip friction · `3272` GPU granular physics · `3324` celestial resonance · `3328` image-source acoustics · `3360` harmonic-tension pendulum). Each DSP substrate is *distinct* — so this is **not** an ambition-floor violation, every one clears "novel technique." But the *shape* is now the house style: find a phenomenon with a textbook, model it, wrap stakes around it. Secondary cluster: the shared psych kit (`logpolar`/`droneBank`/`convolutionVoid`) at **3×** (`3040`, `3048`, `3056`) — declining, all old-tail.
-- **Over-represented vibe:** **instrument-craft / "a musical decision you can get wrong" (7×**: `3120`, `3136`, `3144`, `3192`, `3200`, `3328`, `3360`). This is the real convergence of the window — more than half the output is a fail-state instrument. It is Karel's #3 ask from last jury realised almost too well. Altered-states sits at **4×** (`3040`, `3048`, `3056`, `3080`) — right at the ban threshold but declining and entirely in the window's older half.
-- **BANNED for next cycle:** a **new "model a named physical/scientific system as an instrument you play"** (the physics-sim rut — 6× — is the escaped-into monoculture; if the next pitch is "we model phenomenon X and you can play it wrong," reject it) · **Canvas2D as the reflex output** (now the top output at 6× — force three.js / audio-primary / DOM-SVG instead) · **a fifth fail-state / "decision you can get wrong" instrument as the *only* register** — next window must include at least one piece with **no win/lose**, a stakes-free relationship to the human (ambient, social/collaborative, observational, long-form-evolving) · AND still **do not** mint a fifth altered-states / form-constant piece · AND still **do not** re-add the JI/pentatonic safety net — continuous pitch stays, protected five windows running.
+- **Over-represented input:** **touch / pointer / drag (5×** — `3324`, `3328`,
+  `3552`, `3576`, `3608`; ~6× counting `3480`'s dwell-pointer). Third window
+  running as the top input. Keyboard (`3360`, `3456`, `3624`) and mic/voice
+  (`3424`, `3504`, `3528`) each sit healthily at 3×; camera/body finally got
+  **two** builds (`3416`, `3448`) after the loved cluster starved for a month —
+  good, but still only 2×.
+- **Over-represented output:** **none, for the first time in memory.** inline-SVG
+  4× (`3392`, `3424`, `3504`, `3624`), WebGL2 family 4× (`3448` gl-bloom, `3456`
+  tunnel-shader, `3528` fragment-shader, `3608` point-cloud), three.js 3×
+  (`3324`, `3360`, `3416`), WebGPU compute 2× (`3480`, `3552`), Canvas2D **2×**
+  (`3328`, `3576`). The last jury's "Canvas2D is the next monoculture" warning
+  **worked** — it fell from 6 to 2. This is the best output spread in five
+  windows; protect it.
+- **Over-represented technique:** **"a self-running generative system the human
+  only nudges" (~7×** — `3392` deep-time auto-clock, `3424` auto-blooming
+  attention field, `3480` auto affective director, `3504` synthetic companion,
+  `3528` self-running voice you wrest back, `3552` autonomous swarm, `3624`
+  auto-accompanist). Each DSP substrate is genuinely distinct — no ambition-floor
+  violation, every one clears "novel technique" — but the *interaction grammar*
+  underneath has converged. The physics-sim rut the last jury banned largely held:
+  only **`3576-bloom`** is a fresh "model a named phenomenon as an instrument"
+  build (the three others — `3324`/`3328`/`3360` — are carryover from before the
+  ban).
+- **Over-represented vibe:** **no-stakes / no-win-lose / calm-relationship
+  (~11×** — everything except `3324`, `3328`, `3360`, `3416`). This is the real
+  convergence and the whole story of the window: the lab over-corrected off the
+  fail-state monoculture (last jury: 7×) straight into a no-stakes one. "A
+  relationship that isn't performance-under-threat" is now necessary but not
+  sufficient — eleven of them is a rut in a nicer suit.
+- **BANNED for next cycle:** a **fifth-in-a-row no-stakes / calm-relationship
+  piece** (the new monoculture at ~11× — if the next pitch's verb is "tend,"
+  "witness," "keep company," or "nudge a self-running system," reject it) ·
+  **touch/pointer/drag as the primary input** (5×, third window as top input —
+  force camera/body, MIDI/OSC hardware, or device-motion) · a **second fresh
+  "model a named physical/scientific system as an instrument" build** (`3576` was
+  the one relapse; don't make it two). PROTECTED: continuous pitch (do NOT re-add
+  a JI/pentatonic safety net — six windows running); the newly-earned output
+  diversity (do NOT let SVG or WebGL2 slide into being the next reflex).
 
 ## Ambition floor stats (last 15 prototypes)
 Criteria: (1) novel technique · (2) ≥3 subsystems · (3) named reference · (4) multi-cycle · (5) research <14d.
-- **Hit 0–1 criteria — the local-minimum builds:** **0.** Fifth window running with none. The floor is permanently internalised; it is no longer the lever.
-- **Hit 2–3 criteria:** **5** — `3048-chrysanthemum`, `3056-clearlight`, `3200-downbeat`, `3224-seismic`, `3248-crowd`. The predictable-from-the-spec end: real references and clean craft, but each is "point one input at a known engine" (`3048`/`3056`), a pentatonic ensemble follower (`3200`), or a low-stakes auto-player (`3224`). See pruning.
-- **Hit 4–5 criteria — the ones to extend:** **10** — `3040-tunnel`, `3080-mycelium`, `3120-continuator`, `3136-tarab`, `3144-latency` (**5/5**), `3192-bow`, `3272-cascade`, `3324-laplace`, `3328-mirrorhall`, `3360-tightrope`.
+- **Hit 0–1 criteria — the local-minimum builds:** **0.** Sixth window running
+  with none. The floor is permanently internalised; it is no longer the lever.
+- **Hit 2–3 criteria:** **4** — `3448-aura` (silhouette mirror, weak/absent named
+  ref, soft mapping its own README calls "where the energy is"), `3456-surge` (EDM
+  arc, no named ref, no fresh-research chain), `3528-wrest` (strong idea, no firm
+  named reference), `3576-bloom` (excellent DSP but the physics-sim shape and no
+  single named source).
+- **Hit 4–5 criteria — the ones to extend:** **11** — `3324-laplace`,
+  `3328-mirrorhall`, `3360-tightrope`, `3392-longnow`, `3416-baton`,
+  `3424-attending`, `3480-reverie`, `3504-commons`, `3552-forage`, `3608-atlas`,
+  `3624-covenant`.
 
-Distribution (0 / 5 / 10) is identical to last window and excellent. **The floor is not the lever — *kind* is, for the fourth jury straight.** Ten strong builds where six share the same "honest physics model + a way to fail" DNA is still a monoculture, just a higher-craft one. The sharp note this window: **"a decision that can be wrong" is now necessary but not sufficient.** The lab has proven it can build a fail-state instrument around any textbook phenomenon. The unbuilt frontier is a piece that is *good without stakes at all* — where the human's relationship is care, or company, or attention, not performance-under-threat.
+Distribution **0 / 4 / 11** — excellent and stable. **The floor is not the
+lever; criterion (4) is the untouched frontier.** For the sixth straight window,
+essentially *zero* builds are designed as multi-cycle commitments — every fire
+mints a brand-new folder and ships it one-and-done. The lab has never once taken
+a strong piece and spent a deliberate second cycle deepening it. That, not
+ambition, is the missing discipline.
 
 ## Standouts (positive)
-- `3192-bow` — **the peak of the window and the most rigorous thing the lab has shipped.** A digital-waveguide bowed string with a real stick-slip friction junction (McIntyre/Woodhouse/Schumacher 1983) played *on* the Schelleng playability wedge (1973). It doesn't just claim stakes — it **proves them headless**: singing-tone autocorrelation ≈1.0 (locked/periodic), raucous ≈0.43 (genuinely aperiodic). The failure mode lives in the *sound*, not a UI meter. This is what "a decision you can get wrong" should mean.
-- `3328-mirrorhall` — **a genuine new DSP substrate, audio-primary, off the screen.** Real image-source-method room acoustics (Allen & Berkley 1979) — mirror the source across each wall to 3rd order, validate every image by reconstructing its specular path, each survivor is one IR tap driving a ConvolverNode. Make two walls parallel and a **flutter echo** appears — a mistake you can *hear*. The canvas is a radar; the piece is the sound. Exactly the non-shader register last jury chased.
-- `3120-continuator` — **the `2920-follow` duet the last three juries kept begging for, actually built.** A variable-order Markov idiom model (Pachet's *Continuator*, 2002) that learns *your* continuous-pitch phrasing live and answers with new phrases that are recognisably you but never literal repeats — different at minute 8 than second 0 because of what you sang. SVG, audio-primary, real long-form memory.
-- `3272-cascade` — **the kinetic-mechanical break from cosmic.** ~30k particles in a raw WGSL compute shader (the lab's WebGPU muscle, well used), poured onto tuned bars you aim with draggable deflectors — a browser Wintergatan. Compose a groove by *steering a stream*, over-drive it into an unpitched wash. Clockwork, not cosmos.
-- `3144-latency` (**5/5**) — **the freshest concept in the window.** Instead of fighting network round-trip toward zero, it *snaps the lag to a rhythmic subdivision and makes it a canon interval* (NIME 2025 #69), and the lab's second real multi-user piece. Cashes last jury's provocation #5.
-- `3248-crowd` — **the freshest *register*.** A conceptual-critical piece: working memory has a hard capacity, so every note you add steals activation from one already held — "adding is choosing what to lose." No physics textbook, no fail-buzzer; a genuine idea about attention. More of *this* kind of swing, please.
+- **`3608-atlas`** — the peak of the window. Corpus-based concatenative synthesis
+  (Schwarz's *CataRT* lineage, TENOR 2023 "Maps as Scores") that inverts a
+  recording from a timeline into a **place**: every ~46 ms grain placed by real
+  measured spectral descriptors, rendered as a raw-WebGL2 GPU point cloud you
+  navigate to trigger k-nearest grains. Nothing is faked — centroid, RMS, pitch,
+  flatness, spread all come from the audio — and you can drop your own file. A
+  genuinely new *relationship to a recording*, not just another synth.
+- **`3552-forage`** — the best-earned no-stakes piece. A Physarum slime-mould
+  swarm (Jones 2010) whose emergent transport topology *is* the harmony: thick
+  tubes between food wells become just intervals, wells decay and prune, so
+  minute 5 genuinely differs from minute 1 and the piece keeps reorganising after
+  you stop touching it. WebGPU compute + stigmergy + sonification. This is what
+  "no-stakes" should cost — real emergence, not a mood dial.
+- **`3624-covenant`** — the correct answer to "agency without a fail-buzzer." A
+  confidence-gated heuristic accompanist (Krumhansl-Schmuckler key-finding) whose
+  *withholding* is the interface: play with coherence and it commits up five
+  tiers from lone drone to voiced bass + comping; wander and it retreats. Turns
+  the ReaLchords "reward-hacking / retreat-to-safe-output" failure mode into the
+  whole legible mechanic.
+- **`3416-baton`** — the diversity win. Real camera/body input (the loved cluster
+  was starved for a month), a crisp derivative-threshold ictus detector + PLL, and
+  an ensemble with inertia you can *rush off a cliff* — one of the few new builds
+  that keeps real stakes. Ref: Sympathetic Orchestra (CHI 2026).
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- `3048-chrysanthemum` — **the local minimum of the (now-cooling) altered-states rut, carried from last window.** The shared `logpolar` form-constant engine driven by one voice scalar; the Klüver/Bressloff–Cowan references are real but the technique was already owned by `2864-stillpoint`, and it is essentially two subsystems (one input → one shader). You could write its spec without seeing the build. Already flagged last jury; noted again only because it sits in this window.
-- `3224-seismic` — **the science-fair sonification lane the jury retired in June, quietly returning.** "Every real earthquake becomes a bell; scrub a 24-hour clock and hear the planet play itself." Beautiful and documentary — but it **auto-plays**, and the scrub ring is a light hand on a playhead, not a decision that can be wrong. It is *about* the Earth; the human isn't responsible for anything. The exact "structure you decode, not a choice you own" the lab moved past. Charming, thin.
-- `3324-laplace` — **borderline: the physics-rut at its most self-playing.** Gorgeous celestial-mechanics craft (real Laplace argument, honest three-body torque), and there *is* a decision (release gravity on a wrong tuning and a world is ejected). But the dominant mode is "tune three sliders, then *watch* the system hold or tear itself apart" — closer to `3224`'s observe-a-simulation than to `3192`'s moment-to-moment play. Cosmic vibe returns here too. Keep it as the peak of the celestial lane; don't build a second.
+- **`3448-aura`** — a fourth meditative camera-mirror in a lab full of them; the
+  README itself admits the shape→sound mapping reads as "where the energy is,"
+  not fine control, and there's no named reference anchoring it. Local-minimum:
+  point a sensor at a soft drone and call the mapping cross-modal.
+- **`3456-surge`** — welcome as a journey-engine alternative (Karel's priority
+  #4), but the interaction is thin: hold-to-charge, release-to-drop, the drop
+  *always lands*. No named reference, no fresh-research chain, ambition floor 2.
+  The EDM arc is a good skeleton begging for a second cycle that adds real
+  agency to the ride.
+- **`3576-bloom`** — technically the rigorous one, but it's the single new build
+  that walked *back into* the physics-model-instrument rut the last jury banned.
+  Beautiful non-linear modal synthesis in service of a shape the lab has already
+  shipped six times.
+- **`3504-commons`** — lovely, but it's the Nth no-stakes ambient-presence piece,
+  and the two-device WebRTC path is unverified (the synthetic companion carries
+  every real demo). If the multi-user premise can't be shown working with two
+  actual phones, it's a solo ambient piece wearing a social costume.
 
 ## Provocations for tomorrow's dream cycle
-1. **Name and cool the new rut: the fail-state physics instrument.** Six of the last fifteen are "model a named phenomenon, let the human get it wrong." It is high-craft and it is Karel's #3 ask realised — which is exactly why it needs a cooling week. **Next cycle must NOT be another textbook-phenomenon-you-can-play-wrong.** If the pitch starts "we model [friction / acoustics / resonance / tension / fluid] and you…", reject it.
-2. **Build one piece with NO stakes.** The lab has mastered the fail-buzzer; the unbuilt frontier is a piece that's *good without a win/lose condition* — a relationship of care, company, or attention rather than performance-under-threat. Candidates from the menu the lab keeps skipping: a **multi-user shared listening room** (two humans present, no scoring), a **long-form generative that evolves regardless of you** (`3080`/`3120` proved the memory tech; point it at ambience, not stakes), or a **conceptual-critical swing** like `3248-crowd` but bigger. Diversify the *human's relationship to the piece*, not just the sensor.
-3. **AI-pipeline chains are STILL at zero — now the SIXTH+ jury in a row, ~13 cycles overdue.** music→image→video, lyric→cover-art→loop (fal.ai / replicate, both untouched). It spends Karel's `FAL_KEY` budget, so it needs his **explicit go-ahead + a per-run cap**. Karel — this is the single most novel unbuilt thing in the lab and it has now been deferred longer than any other seam. One word ("go, cap $X/run") unblocks it.
-4. **The camera/body seam stayed on the shelf again.** `3344-baton` (webcam optical-flow conducting, ref Sympathetic Orchestra CHI 2026, §926) was *built and banked but not shipped* — a fifth+ window with zero camera/body pieces despite it being the loved cluster. Ship the banked baton rather than mint a new physics instrument. And `3144-latency`'s real two-phone WebRTC path is still **unverified from a second device** — same gap as `2912-ensemble`; verify it or it stays theoretical.
-5. **Guard the two wins you just banked.** Shader fell 8→2 and altered-states 8→4 — do not let Canvas2D (now 6×) quietly become the third monoculture, and do not celebrate "off the shader" by piling into three.js orreries. The healthiest single number this window is the output spread (2/6/4/3); protect it.
+1. **Bring the decision back — without the physics textbook.** You proved you can
+   build no-stakes; you proved you can build fail-state-around-a-named-phenomenon.
+   The unbuilt cell is a **real-consequence instrument that models nothing** —
+   stakes that come from the human's own choices, memory, or commitment, not from
+   simulating friction/acoustics/orbits. (The banked `3632-oath` "every layer
+   locks forever, no undo" is exactly this — ship it.)
+2. **Spend a cycle DEEPENING, not minting.** Criterion (4) is 0-for-6 windows.
+   Take `3608-atlas` or `3552-forage` and run a deliberate DEEP second cycle:
+   atlas → multi-recording atlases you cross-fade between, or a recorded path
+   through the timbre-space you can replay as a composition; forage → let two
+   swarms on two food-fields duet. One real v2 beats a 16th new one-off.
+3. **Get off touch — onto a body or a wire.** Touch/pointer has been the top
+   input three windows straight. Camera got two good builds; push further —
+   MediaPipe hand/face landmarks (not just optical flow), device-motion (ship the
+   banked `3640-quarry` tilt-catcher), or the still-zero **MIDI/OSC hardware**
+   path that would serve Karel's live-performance priority (#3).
+4. **Serve installation / spatial (#5) — still zero this window.** No Tauri-mode,
+   no operator/venue UI, no projection or multi-screen, no depth camera. The lab
+   has 15 personal-screen pieces and nothing that imagines Resonance in a *room*.
+5. **`3392-longnow`'s "everyone shares the same instant" idea is unbuilt-upon.**
+   A deterministic shared *now* across all viewers is a genuinely fresh social
+   substrate hiding inside an ambient piece — extend it into something with a
+   verb, before it ages out unloved.
 
 ## Karel-facing line
-You asked me to get off the shader and I did — it fell 8→2, altered-states cooled 8→4, and output is finally diverse — but the lab over-corrected on "make it a decision you can get wrong," and now 6 of the last 15 are physics-textbook instruments you can fail on (`3192-bow` is the rigorous peak); tomorrow I want one piece with **no** win/lose at all, and it's time to say go/no-go on the AI-pipeline chain that six juries have now deferred.
+The fail-state rut you flagged is gone — but it's been replaced by a no-stakes one (11 of the last 12 have no win/lose), so tomorrow needs real consequence *without* a physics textbook; `3608-atlas` and `3552-forage` are the two peaks worth your morning.

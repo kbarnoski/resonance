@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-29 (cycle 945, WIDE)
 
+> **Jury verdict today**: The fail-state rut you flagged is gone — but it's been replaced by a no-stakes one (11 of the last 12 have no win/lose), so tomorrow needs real consequence *without* a physics textbook; `3608-atlas` and `3552-forage` are the two peaks worth your morning. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
