@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-07-29 (cycle 947, WIDE)
+# Morning digest — last updated 2026-07-29 (cycle 948, DEEP)
 
-> **Yesterday's jury** said the fail-state rut is gone but a *no-stakes* one replaced it (11 of the last 12 have no win/lose), and its loudest ask was **provocation #1: "bring the decision back — without a physics textbook… the banked `3632-oath`, 'every layer locks forever, no undo,' is exactly this — ship it."** So this cycle shipped it. See `docs/dreams/JURY.md`.
+> **The jury named two peaks worth extending — `3608-atlas` and `3552-forage` — and its provocation #2 was "spend a cycle DEEPENING, not minting: criterion-4 multi-cycle is 0-for-6 windows, the missing discipline." Atlas got its v2 (`3648-songlines`, cycle 946). Tonight took the un-done half: forage's exact words, "let two swarms on two food-fields duet."** See `docs/dreams/JURY.md`.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3672-oath](https://getresonance.vercel.app/dream/3672-oath)** — **composing as a series of vows you can never take back.** A glowing ceremonial ring is one looping bar. Hold **`A S D F G H J K`** to *audition* a soft note — free, undoable; while a key's held, **`↑`/`↓` bend the pitch continuously** (no safe scale — you can vow a deliberately sharp note). Press **`Space`** to **COMMIT**: that note welds to the ring and loops **forever — no undo, no delete, no clear.** Before you swear, a readout tells you the weight: the cursor glows **violet** when your live pitch agrees with the canon you've already committed, and gains a **dim-red edge** when it will clash. No fail buzzer — just a real choice you can get wrong, permanently. The ring fills into a canon of your irreversible choices. A seeded autopilot engraves a short canon in ~2 s, then hands over on your first keypress.
+- **[3704-membrane](https://getresonance.vercel.app/dream/3704-membrane)** — **two slime-mould swarms in two separate fields, and the permeable MEMBRANE between them is the instrument.** `3552-forage` was one swarm singing its own network; this makes the **coupling between two networks** the played object. Press **`←`/`→`** to sweep membrane permeability: turn it **up** and both swarms grow to the boundary, meet, and their two hard-panned voices (left swarm = left ear, right = right) **lock into call-and-response**; turn it **down** and each forages alone, the voices **drift into independent counterpoint**. The lock isn't the knob — cross-membrane *connectivity* is measured each frame, so it takes a few seconds of real growth before they sing together. `1–8` drop food; a seeded autopilot sweeps permeability 0→1→0 over 48 s so it plays itself before you touch it.
 
 ## Why this one
-It's the **decision the jury asked for, made physical**: stakes that come from your own commitment, not from simulating friction or orbits. It's the lab's **first irreversibility-as-interface instrument** (grep-clean), on scarce Canvas2D + a non-touch keyboard — clearing every active ban (no touch, no SVG/WebGL2 reflex, no fifth no-stakes piece).
+It's the **deepening the jury asked for** — the lab's **first coupled multi-body emergent system**, and its first deliberate criterion-4 v2 of a named peak. The interface *is* the coupling: one legible knob moves the whole piece between two soloists and one locked duet. Non-pointer keyboard (clears the touch ban), biological emergence (not a physics-model — clears the second ban), WebGPU compute + Canvas2D fallback.
 
-## Also explored this WIDE cycle (built + banked, not shipped — IDEAS §947)
-- **`3688-reach`** (⭐⭐, resurrect-first) — **bare hands as the instrument**: MediaPipe tracks 21 fingertip landmarks; hand height → pitch, finger-spread → brightness, a **thumb-pinch plucks** a note that scatters a 130k-particle **WebGPU** field. Highest ambition of the fan — held only because it's *no-stakes* (the over-full register) and can't be verified without a camera+GPU.
-- **`3680-lodestar`** (⭐) — **play the air by aiming your phone**: tone-orbs hang fixed in the room; turn the device (gyro) to sweep your body across them like a spatial harp. The 2026 "aim your own spatial mix" idea as an instrument.
+## Also explored this DEEP cycle (built + banked, not shipped — IDEAS §948)
+- **`3696-antiphon`** (⭐⭐) — two rival slime-mould **species on one shared field** fighting over regrowing food, and **you HUM to feed one of them** (mic-pitch input). The fan's boldest input; held for a mic/embodied window.
+- **`3712-canon`** (⭐⭐) — a **WebGL2** port (runs on any GPU, no WebGPU) with a literal **lagged canon** (swarm B imitates A's past). Designated the **next-cycle deepening** of Membrane — fold its canon channel in so permeability morphs imitation→canon→counterpoint.
 
-## Research (RESEARCH §947)
-- Both banked pieces came from a same-day dive into **non-touch input**: the days-old **`gesture-synth`** (MediaPipe hands → Web Audio) and **2026 gyro-driven spatial-audio** (Apple head-tracking; venues letting audiences aim their own mixes). The winner instead chained from the jury's provocation #1.
+## Research (RESEARCH §948)
+- Two fresh 2026 statements of one thesis — music as the **emergent by-product of coupled agents**: *The Agentic Symphony* (Meera Sundar, ADCx India 2026) and *MusicSwarm* (Buehler 2026). Forage had one body; the coupling was the unbuilt move. Chain: today's research → today's build.
 
 ## Open questions for Karel
-- **Does irreversibility land as *weight* or as *frustration*?** Oath was built headless — it needs your ears and fingers to know if "no undo" feels like a vow or a trap. This is the one to actually *play*.
-- **Ship the hands next?** `3688-reach` (air-synth) is banked resurrect-first for a window that wants a no-stakes expressive piece — say the word and it's next.
-- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — needs your explicit go-ahead + a per-run `FAL_KEY` $ cap. One word unblocks it.
+- **Does the membrane lock read as two voices *finding each other*, or just as an EQ sweep?** Built headless — it needs your ears (stereo/headphones) to know if the couple-locking lands. This is the one to actually *play* with the `←/→` knob.
+- **Keep deepening, or go wide again?** Criterion-4 is the jury's stated frontier; `3712-canon` is teed up as Membrane's v2 — say the word and next cycle deepens instead of minting.
+- **Unblock the AI-pipeline chain (music→image→video)?** Still 0× — needs your explicit go-ahead + a per-run `FAL_KEY` $ cap.
