@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-07-30 (cycle 951, WIDE)
+# Morning digest — last updated 2026-07-30 (cycle 952, DEEP)
 
-> **Last night went WIDE — three unrelated non-touch instruments built in parallel, shipped the strongest. It attacks two of the jury's still-open seams at once: get OFF touch onto a body (#3), and build a real consequence that models nothing (#1). The winner makes your body's *timing* the whole instrument.** See `docs/dreams/JURY.md`.
+> **Last night went DEEP on your #1 peak. The jury's loudest structural note has been "you never *deepen* — every fire mints a new one-off." So this cycle took `3608-atlas` and built the one subsystem atlas's own notes confess it's missing: temporal coherence. The result is a recording that sings *your voice* back to you.**
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[3760-ictus](/dream/3760-ictus)** — **your whole body conducts the beat.** The *moment* your hand or foot strikes a virtual plane places a downbeat on a 90-BPM grid: land it on the beat and it **locks** into a loop that replays every bar (a blooming, pulsing marker); miss and it **flams** — a darker doubled hit + a red ghost that drifts off the ring, rejected. Between strikes, your pose is a live controller: lean → filter, arm-spread → chord width, hands-up → register. A groove-lock meter turns the ring violet when you're "in the pocket." **Why open it:** it's the opposite of the many passive "wave-at-a-drone" body pieces — here the *timing is the stake*, and it's the first build to hit two cold lanes at once (camera + three.js, both 0× in the last 10). **On desktop:** press **1 2 3 4** (or f g h j / space) — the full lock-vs-flam game is playable with the keyboard, no camera needed. Reference: MotionBeat (ICASSP 2026) — bodily *contacts* carry the beat.
+- **[3808-mosaic](/dream/3808-mosaic)** — **a recording that sings back another sound.** Atlas let you *wander* a recording's timbre-map with a cursor. Mosaic flips it: **hum a melody into the mic (or drop a second recording), and the corpus's own grains reassemble to reconstruct it** — you hear the recording "sing" your line. The magic knob is **coherence** (a slider / ←→): at 0 you get atlas's scattered timbre-texture; slide toward 1 and the grains march in sequence so the *phrase* rebuilds, not just a wash. **Why open it:** it's the most literal cash of your "use my real piano" ask — make a Path track the corpus, sing, and the piano plays your melody back. It also gets us off touch (input is your *voice*, not a pointer) and fixes the exact flaw atlas documented about itself. It self-demos with a seeded auto-target the moment it loads — no mic needed to see it work. Reference: *The Concatenator* (arXiv:2411.04366) — real-time Bayesian audio musaicing.
 
 ## In progress / partial
-- WIDE cycle: three built, shipped the strongest; two banked runners-up are rebuild-ready (IDEAS §951):
-  - **3792-callback** ⭐⭐ HIGH — the machine sings a phrase *once*, you sing it back from memory, and **only an accurate echo commits** an immutable voice to a growing canon. The purest answer to the jury's "real consequence that models nothing" — a phrase can truly fail to commit. Mic → SVG, no GPU, protects continuous pitch. **The natural next ship.**
-  - **3776-dither** ⭐⭐ HIGH — drop your own piano recording and watch it become a living **ordered-dither** signal field (Bayer grid + bloom + chromatic fuzz), pushed around by its own spectrum. The direct cash of your "use my real Path piano" ask; reimplements Borghesi's *ASTRODITHER* (Jul 1 2026) in raw WebGL2.
+- DEEP cycle: one concept (*a recording that resynthesizes another sound*), three approaches built in parallel, shipped the strongest. Two banked runners-up are rebuild-ready (IDEAS §952):
+  - **3824-palimpsest** ⭐⭐ HIGH — load **two** recordings, morph the timbre-space between them so you navigate a hybrid that's in neither; record a path and replay it as a composition. (The other half of the jury's "atlas v2" hook.)
+  - **3840-echoes** ⭐⭐ — draw a gesture and it becomes a looping voice; overdub several with unequal loop lengths so they phase forever (Eno / Riley). A long-form piece that's different at minute 5.
 
 ## Research findings worth a look
-- **§951:** two July-2026 statements of "the medium pushes back" — **ASTRODITHER** (WebGPU/TSL ordered-dither audio-reactive field, Jul 1) and **MotionBeat** (ICASSP 2026: bodily *contacts*, not continuous motion, are what carry musical beat). The MotionBeat insight is exactly what makes Ictus feel like an instrument and not a mirror.
+- **§952:** the dive found the algorithm that fixes atlas's own confessed flaw — **The Concatenator** (arXiv:2411.04366): corpus grains as hidden states, your target as an observation, a *tunable transition prior* that decides how strongly to prefer sequential grains. That prior became Mosaic's coherence slider directly. Frontier confirm: neural-codec latent granular resynthesis (arXiv:2507.19202) + FXplorer's "the map is the instrument" (Jun 2026).
 
 ## Open questions for Karel
-- Which runner-up next — the **memory canon** (3792-callback, real stakes, mic, no GPU) or the **dither field on your real piano** (3776-dither)? Both are rebuild-ready.
-- The jury's untouched frontier is still **criterion-4 / deepening** — would you rather I spend a cycle making a strong recent piece a real *v2* (e.g. a two-body Ictus where two people trade the downbeat) than mint another one-off?
-- Still uncashed and needs your go-ahead: the **AI-pipeline chain** (music→image→video) — it needs an explicit **FAL_KEY OK + a per-run $ cap** before I can build it.
+- **This is the 2nd deliberate deepening of atlas** (after 946's songlines). The jury wanted exactly this discipline — worth me continuing to spend cycles turning strong pieces into real v2s rather than minting new ones? Next obvious v3: swap Mosaic's simple matcher for the paper's full particle filter + time-warp to *your* tempo.
+- Want me to wire a **real Path track as the corpus** (a read-only audio fetch, no side effects) so you can sing to your own piano directly? Small next step.
+- Still needs your go-ahead: the **AI-pipeline chain** (music→image→video) — an explicit **FAL_KEY OK + per-run $ cap** before I can build it.
