@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-07-30 (cycle 959, DEEP)
+# Morning digest — last updated 2026-07-30 (cycle 960, WIDE)
 
-> **The lab drifted off its own primary direction.** The last ~10 cycles were almost all instruments and external-data — the *psychedelic / altered-states* mandate (PSYCHEDELIC.md) went quiet. Tonight goes back to it, on the INTENSE pole, and squarely off every one of yesterday's jury bans (granular · point-cloud · pointer · cosmic-ambient).
+> **A sound that composes its own scale.** Tonight went WIDE — three lab-first techniques raced, off every one of yesterday's jury bans (granular · point-cloud · pointer · cosmic-ambient) — and shipped the one that lands the starved output lane the jury flagged: **SVG**.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[4032-formflight](/dream/4032-formflight)** — **no drug, no strobe: the MUSIC walks your visual cortex through Klüver's four form constants** (tunnels · radial spokes · spirals · honeycomb). Hit **Begin** — a built-in evolving drone self-demos with zero devices — and watch the geometry slide along the form-constant axis as the sound's **brightness** moves (dark/sustained → tunnels; bright → honeycomb), while loud/percussive audio **melts** the lattice. **Why open it:** it's the lab back on its psychedelic primary direction after a long absence, and the coupling is *felt* — the sound visibly conducts the geometry. Optional **Use mic** lets your own playing drive it.
+- **[4056-overtone-loom](/dream/4056-overtone-loom)** — **hum a note and the piece derives a microtonal scale from your OWN voice's harmonics, then hands you a keyboard tuned to it.** Neither imposed (no 12-TET/pentatonic) nor absent (not bare continuous-pitch) — a genuine *third* stance: the tuning is read out of the signal. Hit **Start** (a synthetic voice self-demos hands-off), watch the scale crystallise on a live **SVG tuning wheel**, then play the derived degrees on `A S D F G H J K L`. Change what you hum → the scale re-derives. **Why open it:** a "huh, I didn't know we could do that" — and the first crisp SVG harmonic-cartography piece in a long while. Ref: the **Biotuner** engine / Antoine Bellemare.
 
-## Two more explored tonight (DEEP fire — 3 approaches to one concept; both non-winners built, verified, banked in IDEAS §959)
-- **`4040-turingcortex`** ⭐⭐ HIGH, ship-next — a **living honeycomb grown by real WebGPU reaction-diffusion** in your cortex's own coordinate space, breathing and melting to tunnels, audio-conducted. The lab's coldest renderer (WebGPU) with a real Canvas2D fallback. Held only as slightly more redundant with older cortical-bloom pieces than the winner.
-- **`4048-hyperslab`** ⭐ — the **DMT-breakthrough** pole: a **4-D polytope tumbling through negatively-curved space**, audio-conducted (three.js raymarch). The most surprising of the three; held because it lacks a graceful fallback.
+## Two more explored tonight (WIDE fire — 3 lab-first techniques; both non-winners built, verified, banked in IDEAS §960)
+- **`4072-lenia-choir`** ⭐⭐ HIGH, ship-next — a **living ecology that SINGS**: lab-first **Lenia** (Bert Chan) continuous cellular automaton whose *orbium* gliders each become a voice; WebGPU compute + Canvas2D fallback, long-form/stateful (minute 5 ≠ minute 1). The builder empirically swept params to get gliders that actually persist. Held only vs. 4056's SVG diversity edge + WebGPU build risk.
+- **`4064-hollow`** ⭐ — finally puts **your REAL piano in the lab**: loads your actual Path recording via `/api/audio`, then **freezes** any instant into an infinitely-breathing spectral chord you can sculpt (a true phase-vocoder freeze, not banned granular). Held only because Canvas2D output is saturated this window.
 
-## Research findings worth a look
-- **RESEARCH §959** — bioRxiv 2026-02-18, *"Large-Scale Computer-Vision Mapping of Stroboscopically-Induced Visual Hallucinations"*: the first empirical map from flicker parameters → which Klüver form constant emerges. Tonight's new idea = let the **audio's own spectral signature** drive that map, so the *music* (not a strobe, not a drug) conducts the traversal. Lineage: Gysin & Sommerville's *Dreamachine* (1959) + Bressloff–Cowan/Klüver.
+## Research finding worth a look
+- **RESEARCH §960** — the **Biotuner** engine + Antoine Bellemare's *harmonic recurrence*: derive a tuning system from a signal's own spectral peaks (peaks → scale degrees, ratios → intervals). The lab had only ever *imposed* a tuning or *avoided* one — this is the untried third stance, and it's tonight's winner.
 
 ## Open questions for Karel
-- **Safety check (please try it):** flicker is **off by default** and gated (≤3 Hz, never blacks out, honors reduced-motion, instant **Stop**). Tap **"Add safe flicker"** — does the intensity feel right, or should I lower the cap further?
-- **Which pole next?** formflight is the analytic/liquid INTENSE pole; **4040-turingcortex** (organic RD honeycomb) is ship-ready to build out the set. Ship it next, or pivot?
-- **Still-stalled, your call only:** the **AI-pipeline chain** (music→image→video) is STILL 0× — it needs your explicit **FAL_KEY** go-ahead + a per-run $ cap. A decision, not a build; say the word and I'll wire it with the api-guard.
+- **Which to ship next?** `4072-lenia-choir` (WebGPU living choir) is the boldest and ship-ready with documented params; `4064-hollow` is the one that finally uses YOUR music. Say which and I'll build it out.
+- **Still-stalled, your call only:** the **AI-pipeline chain** (music→image→video) is STILL 0× — it needs your explicit **FAL_KEY** go-ahead + a per-run $ cap. A decision, not a build; say the word and I'll wire it behind the api-guard.
+- **Multi-user (jury #5):** real two-device WebRTC, or retire the seed? It's been demoed-solo for three windows now.
