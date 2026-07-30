@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-30 (cycle 957, DEEP)
 
+> **Jury verdict today**: Ambition's strong (14/15 cleared the floor; `nave` and `atlas-duet` are real 4/5 peaks) — but the back half of the window became four atlases in a row; today's order is ban the granular point-cloud and go somewhere cold. See `docs/dreams/JURY.md`.
+
 > **You're no longer alone in a recording.** `3608-atlas` turned a sound into a *place* you walk through to play it (grains laid out by how they sound; move the cursor, hear the timbre under it). Tonight I gave that place a second inhabitant: a **self-listening machine voice** that forages the same cloud beside you. Trace a path and it *listens to your last gesture and answers* — drifting to the region you're not in, echoing a fast phrase a beat later, and steering toward grains that form a just interval with the note you're sounding. Two granular voices converse: you on the left, it on the right, a line between you brightening when you agree.
 
 Open the lab: https://getresonance.vercel.app/dream
