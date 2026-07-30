@@ -1,20 +1,23 @@
-# Morning digest — last updated 2026-07-30 (cycle 960, WIDE)
+# Morning digest — last updated 2026-07-30 (cycle 961, DEEP)
 
-> **A sound that composes its own scale.** Tonight went WIDE — three lab-first techniques raced, off every one of yesterday's jury bans (granular · point-cloud · pointer · cosmic-ambient) — and shipped the one that lands the starved output lane the jury flagged: **SVG**.
+> **Your piano, split across the depth of a cathedral.** Tonight went DEEP — three approaches raced at ONE big concept, a real v2 of your favorite from last window (`3920-nave`, the head-tracking hall the jury called "the strongest build"). The winner finally cashes the note you've left across cycles: put YOUR music *in depth* instead of test tones.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[4056-overtone-loom](/dream/4056-overtone-loom)** — **hum a note and the piece derives a microtonal scale from your OWN voice's harmonics, then hands you a keyboard tuned to it.** Neither imposed (no 12-TET/pentatonic) nor absent (not bare continuous-pitch) — a genuine *third* stance: the tuning is read out of the signal. Hit **Start** (a synthetic voice self-demos hands-off), watch the scale crystallise on a live **SVG tuning wheel**, then play the derived degrees on `A S D F G H J K L`. Change what you hum → the scale re-derives. **Why open it:** a "huh, I didn't know we could do that" — and the first crisp SVG harmonic-cartography piece in a long while. Ref: the **Biotuner** engine / Antoine Bellemare.
+- **[4088-reliquary](/dream/4088-reliquary)** — **one piano recording, scattered across the depth of a nave, and a reverb that opens as you lean in.** Hit **Enter the hall** (a synth cathedral-piano plays instantly — no permissions needed) and lean your head: the flat screen becomes a window into a receding colonnade (nave's off-axis head-tracking, kept verbatim). The new part: the source is split into **5 frequency bands, each placed at a different distance** — the bass sits deep in the apse, the air up at the door — so you can literally **walk into a register**. And the reverb is no longer a fixed echo: it's a live **Feedback-Delay-Network** whose tail *lengthens and darkens as you lean toward the apse* — the room audibly opens up. **Why open it:** it's the first prototype that puts your real recording in *space* — paste one of your Path recording UUIDs and your actual piano spreads across the hall by register.
 
-## Two more explored tonight (WIDE fire — 3 lab-first techniques; both non-winners built, verified, banked in IDEAS §960)
-- **`4072-lenia-choir`** ⭐⭐ HIGH, ship-next — a **living ecology that SINGS**: lab-first **Lenia** (Bert Chan) continuous cellular automaton whose *orbium* gliders each become a voice; WebGPU compute + Canvas2D fallback, long-form/stateful (minute 5 ≠ minute 1). The builder empirically swept params to get gliders that actually persist. Held only vs. 4056's SVG diversity edge + WebGPU build risk.
-- **`4064-hollow`** ⭐ — finally puts **your REAL piano in the lab**: loads your actual Path recording via `/api/audio`, then **freezes** any instant into an infinitely-breathing spectral chord you can sculpt (a true phase-vocoder freeze, not banned granular). Held only because Canvas2D output is saturated this window.
+## The one thing I need from you
+- **Paste a Path UUID and tell me if it sings.** The build is verified but I'm headless — I can't hear it. Reliquary's whole payoff is your real piano spatialized across the depth; the fetch path mirrors the proven `163-paths-visualizer` one, but only your ear on your device confirms the register-across-depth reads as musical.
+
+## Two more explored tonight (DEEP fire — 3 approaches to the same concept; both banked in IDEAS §961)
+- **`4096-processional`** ⭐⭐ HIGH, ship-next — the **phone-first** sibling: **tilt your phone** to walk down the nave (no webcam). Since your 06:30 review is on a phone, a tilt-native version is high-value — say the word and I'll ship it.
+- **`4104-apse`** ⭐ — the most bodily version: one glowing source deep in the apse, and **leaning in literally draws you up the aisle** until you're inside the sound (gain/brightness/reverb all follow your approach).
 
 ## Research finding worth a look
-- **RESEARCH §960** — the **Biotuner** engine + Antoine Bellemare's *harmonic recurrence*: derive a tuning system from a signal's own spectral peaks (peaks → scale degrees, ratios → intervals). The lab had only ever *imposed* a tuning or *avoided* one — this is the untried third stance, and it's tonight's winner.
+- **RESEARCH §961** — reverb that *moves with you*: the 2026 frontier is real-time, listener-coupled room-acoustics built from tiny feedback-delay-networks (arXiv:2510.00238), not one baked impulse. That finding IS reliquary's movable reverb — nave's static echo was the exact limitation it removes.
 
 ## Open questions for Karel
-- **Which to ship next?** `4072-lenia-choir` (WebGPU living choir) is the boldest and ship-ready with documented params; `4064-hollow` is the one that finally uses YOUR music. Say which and I'll build it out.
-- **Still-stalled, your call only:** the **AI-pipeline chain** (music→image→video) is STILL 0× — it needs your explicit **FAL_KEY** go-ahead + a per-run $ cap. A decision, not a build; say the word and I'll wire it behind the api-guard.
-- **Multi-user (jury #5):** real two-device WebRTC, or retire the seed? It's been demoed-solo for three windows now.
+- **Ship the phone-first `4096-processional` next?** It's the one you can fully play on your phone at review time.
+- **AI-pipeline chain (music→image→video) is STILL 0×** — needs your explicit **FAL_KEY** go-ahead + a per-run $ cap. A decision, not a build.
+- **Multi-user (jury #5):** real two-device WebRTC, or retire the seed? Demoed-solo three windows now.
