@@ -1,19 +1,16 @@
-# Morning digest — last updated 2026-07-31 (cycle 964, WIDE)
+# Morning digest — last updated 2026-07-31 (cycle 965, DEEP)
 
-**Open first → https://getresonance.vercel.app/dream/4184-scrying** — put in earbuds and press **Start** (allow the camera, or let it self-demo).
+**Open first → https://getresonance.vercel.app/dream/4200-flatlands** — earbuds in, press **Begin the descent**, then just watch. It plays itself for ~6 minutes; no mic, no interaction needed.
 
 ## New since yesterday
-- **`4184-scrying` — hear what the camera sees.** Every audio-visualizer in the lab (914 of them) turns *sound into a picture*. This one does the reverse: it reads the live camera image literally as a **sound spectrogram** and turns it back into audio, so the visual world plays itself. A slow scan-line sweeps across the frame; the slice under it becomes a chord — a bright horizontal band is a sustained tone, a textured wall is broadband noise, a hand moving through the frame sweeps the pitch. The column you're hearing glows on screen, so sight and sound line up. **No camera? It self-demos** with a drifting procedural image — you'll still see and hear it at 06:30 with zero permissions. Best on a phone: point the rear camera at anything and listen.
-- It's the direct product of tonight's research (below) — the "Images that Sound" idea, inverted into real time. Off every one of last week's jury bans.
+- **`4200-flatlands` — a drug-free dissociative descent, rendered as literal geometry.** The lab's psychedelic direction has served the INTENSE/DMT pole (`4032-formflight`) and the cosmic pole, but the **dissociative / K-hole / NDE register was missing**. This is that register: the solid world loses its depth and **dissolves into a receding stack of flat, cardboard-cutout planes** drifting apart into a white void, then re-coheres as you return — the felt shape of *derealization*. Five self-running stages (derealize → detach → dissolve → a still white void → return) ride an **endless Shepard–Risset *descent*** (the pitch falling forever) over a steel drone through a cistern-void reverb that opens wide at the still point. The peak is **stillness, not intensity**. Rendered in **three.js** — the lab's rare non-shader renderer, a deliberate break from the recent run of fullscreen shaders.
+- Direct product of tonight's research: a **2026** paper (Bera/Looger/Cichon, *The Neuroscientist*) reframing dissociation as a *fragmentation of cortical integration* — which is exactly what the arc does (loosen, separate, thin, then re-integrate).
 
-## 2 more explored this fire (WIDE: 3 divergent directions → shipped 1; see IDEAS §964)
-- **`4176-pendulum`** ⭐⭐ (banked, my ship-next) — **tilt your phone like a pair of pendulums.** The decaying interference figure they trace is drawn in crisp **SVG** *and* sounded as a two-note chord — when the figure closes into a clean loop, the chord turns consonant (sight and sound agree). The single most phone-native piece in a while, and it feeds the starved SVG lane.
-- **`4192-strata`** ⭐⭐ (banked) — **your real Path piano, laid down as rock.** Every second of your playing deposits a sedimentary layer (loud = thick, bright = pale, busy = mottled); the layers never erase, so a long performance becomes a readable geological core — minute 5 looks nothing like minute 1. Finally puts *your* actual music in the lab; scrub the column to re-audition any past moment.
-
-## Research finding worth a look
-- §964 dive → **"Images that Sound"** (arXiv:2405.12221) + a [Sept-2025 catalog of 136 spectrogram-artworks](https://griffonagedotcom.wordpress.com/2025/09/06/136-visual-artworks-that-are-also-musical-sound-spectrograms/) — the lineage from Aphex Twin's hidden-face track to today's diffusion models, where one 2-D canvas is *both* a picture and a playable sound. It exposed a whole direction the lab had never taken: reading an *image* as sound instead of the other way round. That's exactly what `4184-scrying` does — live.
+## 2 more explored this fire (DEEP: one concept, 3 renderers → shipped 1; see IDEAS §965)
+- **`4192-khole`** ⭐⭐ (banked, my ship-next) — the same descent as a raw-WebGL2 **infinite tunnel** down Klüver's tunnel form-constant (rings under the cortical `exp()` warp *are* a tunnel — no raymarch loop). The most elegant geometry; held only because its fullscreen-shader output twins `4032-formflight`.
+- **`4208-detach`** ⭐ (banked) — the out-of-body pole: a real **video-feedback droste** where a luminous "you" splits from its lagging after-image and re-fuses on return.
 
 ## Open questions for Karel
-- **Does the camera→sound inversion land?** It's the most conceptually novel thing in a while but I can't hear it headless — whether a real scene reads as *musical* (vs harsh noise) needs your device. If it's compelling, a Griffin-Lim phase pass would make textures sound far more natural (v2).
-- **The real-piano cash is queued (`4192-strata`).** You keep asking to put *your* music in the lab; strata is the most literal version yet. Want me to ship it next, or keep it as a paste-your-own seed?
-- Two standing decisions only you can make (flagged for weeks): (1) the **AI-pipeline chain** (music→image→video) is still 0× — needs a FAL_KEY go-ahead + a per-run $ cap. (2) Real two-device **WebRTC** multi-user — build it for real, or retire the seed?
+- **The dissociative pole is now open** — worth continuing? (INTENSE-DMT + cosmic are served; ketamine/NDE/derealization was the gap.) If you love it, `4192-khole`'s tunnel is built + ready to ship next.
+- **Feed it your real Path piano.** Every version of this can take `/api/audio/{id}` as the carrier instead of the synth drone — *your* recording conducting the descent. Say the word.
+- **The AI-pipeline chain (music → image → video) is STILL 0×** — flagged for cycles 954/955/957/964 and by the jury. It's the single most novel unbuilt thing; it needs a `FAL_KEY` go-ahead from you, not a build. One decision unblocks it.
