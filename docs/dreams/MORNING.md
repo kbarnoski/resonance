@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-07-31 (cycle 968, resurrect)
+# Morning digest — last updated 2026-07-31 (cycle 969, DEEP fire)
 
-> **Jury verdict today**: Floor's holding and three builds genuinely sing (brine, overtone-loom, lucent) — but the lab has quietly become a neuroscience-of-perception gallery; tomorrow, put down the citations and build something with stakes. See `docs/dreams/JURY.md`.
+> **Following yesterday's jury** ("put down the citations and build something with stakes"), today is a duet with a mind of its own — no perceptual phenomenon explained, no references-list as content. Just you, a companion, and the space between your turns.
 
-**Open on your phone → https://getresonance.vercel.app/dream/4232-pendulum** — earbuds in, tap **Start sound + tilt** (allow motion access when iOS asks). Then just *lean the phone* left/right and forward/back. When the figure snaps shut into a still rosette, the two tones lock into a chord; tilt off it and it starts precessing and beating. This is the one built *for* the 06:30 phone review.
+**Open on your phone → https://getresonance.vercel.app/dream/4296-breath** — earbuds in, tap **Start**, then play the on-screen keys (or `a s d f g h j k` on a laptop). Play a busy, tumbling run and watch the glowing presence **pull back into the dark** — it's listening, not answering. Then play a rising phrase and *leave a breath* at the end: it **draws near, blooms, and answers you** in its own voice. It only speaks when it decides you meant to be answered.
 
 ## New since yesterday
-- **`4232-pendulum` — tilt your phone and it draws AND sings.** Two pendulums, one per screen axis; leaning sets their swing ratios. Land on a simple whole-number ratio (a fifth, a fourth, an octave…) and the traced rosette **closes** while the two voices **lock consonant** — sight and sound agree in one gesture. Between those points the figure precesses and the tones beat. It's the Pythagorean "simple ratios sound sweet" idea made visible + audible at once. Nothing is quantised — sit between two ratios and you hear the roughness the precession is drawing.
-- **You asked for this one specifically.** It's been my "strongest ship-next" pick **four cycles running** (tilt input + inline SVG — the two lanes the lab starves — and by far the most phone-native thing in the queue), and it kept getting out-surprised. This fire I force-shipped it, with the one rough edge fixed: **tilt now tares on the first reading**, so however you're holding the phone becomes "neutral" instead of biasing the resting chord.
-- No phone at your desk? It still works: **drag on the figure**, or use the two sliders. And it's already drawing itself (a seeded self-demo that hunts closed figures) before you touch anything — sound joins on the first tap.
+- **`4296-breath` — a companion that answers only when it feels invited, and whose silence has a body.** You play a little instrument; a luminous 3D presence listens to the *shape* of your playing — a held note, a rising unresolved question, a deliberate pause all read as "your turn," while a busy run reads as "keep going." When it's not invited it dims and **physically recedes into fog**; when it is, it comes near and replies with a transformed echo of your phrase. The point isn't the notes — it's that the machine **decides its own turn** and its withholding is expressive, not a bug. (Timbres are distinct — bright plucked *you* vs. a breathy pad *it* — so it's always clear who's speaking.)
+- **Why this one:** across the 2026 human-AI duet frontier (Aria-Duet, LK Jam) the machine still *asks permission* — an explicit handover button or a fixed loop grid. This infers the turn from the phrase itself. No AI model, no mic — a hand-rolled "invitation scorer" over what you play.
+
+## Also explored (banked, not shipped)
+- This was a **DEEP fire: 3 parallel builds of the same idea, one shipped.** The two runners-up are both strong and banked in `IDEAS.md §969`, ready to ship next: **`4280-cadence`** (a cleaner SVG version — the companion literally can't answer while your finger is still down; "held breath" made literal) and **`4312-trading`** (you can *watch a readiness meter fill* and see it move through LISTENING→DECIDING→SPEAKING; variable-length jazz "trading fours"). Both fold back into breath as next-cycle deepening.
 
 ## Heads-up
-- **This was a single-piece resurrect, not a 3-way explore fire** — the piece was already designed + spec'd, so I built it clean and shipped it rather than re-exploring. The WIDE/DEEP explore rotation resumes next cycle (a DEEP is due).
-- **Build note (unchanged):** the full 921-route build still overflows this sandbox's file-descriptor cap; Vercel has the headroom and deploys fine. `4232-pendulum` itself is typecheck + lint + normalizer clean.
+- **Not yet hardware-verified.** Built headless, so the one thing I couldn't check is *feel*: whether the invitation threshold fires on a genuinely deliberate offer and reliably stays quiet during exploratory playing. That wants your phone + earbuds — it's the thing to sanity-check first.
+- Build note (unchanged): the full 921-route build overflows this sandbox's file-descriptor cap; Vercel has headroom and deploys fine. `4296-breath` itself is typecheck + lint + normalizer clean and compiled cleanly in isolation.
 
-## Open questions for Karel
-- **Two standing 0× items still need a *decision*, not a build:** the **AI-pipeline chain (music → image → video)** — flagged for cycles 954/955/957/964 and by the jury; needs your `FAL_KEY` go-ahead — and **real two-device WebRTC multi-user** (every "collective" piece so far fakes the other phones).
-- Next in the tilt/instrument lane: a **decide-gated duet** (from today's research) — a companion voice that answers *only* when it reads real intent, so its silences are as expressive as its notes. Worth a DEEP fire?
+## Open questions for Karel — two standing items need a *decision*, not a build
+- **AI-pipeline chain (music → image → video):** blocked five cycles on your `FAL_KEY` go-ahead. Yes/no?
+- **The genuinely cold cells** the jury wants the next big explore fire spent on: **real two-device WebRTC** (every "collective" piece so far fakes the other phones) and a **depth-camera spatial-audio room**. Worth a DEEP fire — or off-limits?
