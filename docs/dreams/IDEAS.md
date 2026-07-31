@@ -9490,3 +9490,56 @@ DEEP fire, ONE concept (the dissociative / K-hole / NDE **descent** — off the 
 
 ### ⭐ `4208-detach` — the out-of-body pole: a real WebGL2 ping-pong video-feedback droste where the "self" splits from its lagging after-image
 **The question:** *what if a lagging visual echo gave you the dissociative "watching yourself from outside your body": a luminous "you" splits from a trailing after-image, the two drift apart into a droste tunnel of past selves, then re-fuse on return?* INPUT = **audio** (built-in descent self-demos headless + optional mic; NOT pointer) · OUTPUT = **WebGL2 ping-pong FEEDBACK loop** (two RGBA8 textures + two FBOs swapped per frame; NOT a point cloud, NOT a static frag-field, NOT three.js) · TECH = a genuine video-feedback / droste: the feedback pass samples the PREVIOUS frame through zoom-inward + rotate + log-polar inward pull (`LOGPOLAR_GLSL`) + trail-lag translate, multiplies by a persistence gain, hue-drifts toward steel-white, composites the current luminous self on top; display pass adds vignette + white-void bloom + safeFlicker luminance. **Provably non-runaway** (persistence keyframes <1, `arcState` clamps ≤0.985, shader `min(uPersist,0.985)`, RGBA8 [0,1] clamp). VIBE = dissociative steel/silver → white void. Files (built cycle 965, removed after banking): `page.tsx` + `shaders.ts` + `arc.ts` + `audio.ts` + `README.md`. Ambition honest **3/5** (#2 ≥3 subsystems [ping-pong FBO feedback + 5-stage arc + shepard/drone/voidreverb + safeFlicker] + #3 named refs [Bileam Tschepe/Elekktronaut feedback lineage · camera-into-monitor droste · autoscopy/depersonalization phenomenology] + #5 RESEARCH §965). **Why banked, not shipped:** the most literally-dissociative concept (the self/echo split) and strong runaway-safety — BUT its output is again a WebGL2-shader-family renderer (like khole/formflight/surge), less output-diverse than the winner's three.js geometry; and the "self" form is an abstract luminous blob, so the detachment reads less legibly than flatlands' cardboard-world flattening. **Resurrect** on a feedback/droste or out-of-body slot. Deepen (its own idea): feed the visitor's own webcam frame in as the "self" (with consent + a clear notice) so the after-image that detaches is literally *them*; add a second echo at a different lag so the droste tunnel carries two desynchronized selves.
+
+---
+
+## §971 — DEEP-fan runners-up (banked; cycle 971 shipped `4376-drag`)
+
+The cycle-971 DEEP concept was *latency is not a bug to fight to zero — it is a
+FORCE that acts on the player* (inverted agency vs. `3144-latency`, where the
+player quantizes the lag into a canon). Three "forces the canyon exerts" were
+built folder-isolated; `4376-drag` (the tempo-DRAG force, SVG) shipped. These two
+are built-clean-but-not-committed briefs to resurrect:
+
+### ⭐⭐ `4392-cistern` — the echo SCULPTS YOUR TIMBRE (ship-next when output rotates off SVG + audio can be heard) · status: queued
+**Brief:** "Call a sound across a canyon; each round-trip echo is filtered through
+the canyon's own resonance, so after a few passes your phrase dissolves into the
+tone the room *wanted all along* — and you shape the room to steer where your voice
+converges." The audible idea of **Alvin Lucier, *I Am Sitting in a Room* (1969)**
+crossed with **Pauline Oliveros** cistern / *Deep Listening* (1989). **Audio (the
+thesis):** recirculating `DelayNode` + a 5-band resonant `BiquadFilter` mode-bank +
+feedback + in-loop damping lowpass + `StereoPannerNode` (LFO tied to round-trip) +
+synthesized `ConvolverNode` reverb; because the same narrow filters apply every
+circulation, a broadband tap is peeled to the modal frequencies → a sustained drone.
+Three materials (Stone/Wood/Glass) retune the modes on D so each converges to a
+*different* drone; changing material/width mid-decay audibly bends where the ringing
+heads. `AnalyserNode` read only for visual glow — not FFT feature-mapping. **Visual:**
+three.js canyon (strata walls, `UnrealBloomPass`), a 56-packet additive pool where
+each returning pass shifts hue toward the room's signature and smooths from a sharp
+pulse into a sustained bloom — the visual mirror of the timbral convergence. Keyboard
+`A S D F G H J K`, no mic; seeded auto-call demo. **Why held, not shipped:** its whole
+payoff is *auditory* (unheard on a silent phone review) and it's **three.js** — which
+would be back-to-back with 969's `4296-breath`, exactly the "too similar in design"
+glowing-3D-bloom family MORNING §970 deliberately dodged. Ship when the output lane
+has rotated and Karel can listen on real speakers. **This is the strongest CONCEPT of
+the three** — resurrect first. (Full builder report: cistern is complete + clean in
+its own folder history; rebuild from this brief.)
+
+### ⭐ `4408-parallax` — the echo MULTIPLIES YOU ACROSS SPACE (resurrect when WebGPU is hardware-verifiable + give it a sharper stake) · status: queued
+**Brief:** "A single line you play is scattered across a space as a choir of your own
+delayed selves — each echo at its own distance/direction — and by moving ONE point you
+rearrange where-and-when your past selves answer (close → tight shimmer; far → diffuse
+antiphonal choir)." **Audio:** one dry voice → bus → 6 parallel taps, each
+`Delay → Lowpass → Gain → PannerNode(HRTF)` with light feedback; distance sets
+delay/gain/cutoff/pan; moving the pointer re-clusters the taps, all params glided via
+`setTargetAtTime` — a continuously arrangeable field, NOT a beat-grid canon, NOT FFT.
+The "parallax" read: one wavefront expands from you per strike, each tap flashes as the
+front reaches it (near taps swing hard as you move, far barely shift). **Visual:**
+genuine WebGPU (~36k instanced billboard particles, hand-rolled WGSL) with an inline-SVG
+fallback of the identical model for phones (NOT Canvas2D). Refs: Oliveros deep/spatial
+listening; multi-tap spatial echo. **Why held:** softest STAKE of the three (exploratory,
+cosmic-ambient-adjacent — flirts with the jury's no-stakes warning), and the WebGPU path
+is uncompiled/unverified (SVG fallback would be the review default anyway, and WebGPU was
+just shipped by 970). **To resurrect:** add a real stake — a *target* spatial arrangement
+to hit, or a "lose your voices into the fog if you stop moving" cost — and hardware-verify
+the WGSL. Then it's a strong spatial-polyphony piece.
