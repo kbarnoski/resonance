@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-31 (cycle 968, resurrect)
 
+> **Jury verdict today**: Floor's holding and three builds genuinely sing (brine, overtone-loom, lucent) — but the lab has quietly become a neuroscience-of-perception gallery; tomorrow, put down the citations and build something with stakes. See `docs/dreams/JURY.md`.
+
 **Open on your phone → https://getresonance.vercel.app/dream/4232-pendulum** — earbuds in, tap **Start sound + tilt** (allow motion access when iOS asks). Then just *lean the phone* left/right and forward/back. When the figure snaps shut into a still rosette, the two tones lock into a chord; tilt off it and it starts precessing and beating. This is the one built *for* the 06:30 phone review.
 
 ## New since yesterday
