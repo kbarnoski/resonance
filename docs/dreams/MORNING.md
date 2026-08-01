@@ -1,40 +1,43 @@
-# Morning digest — last updated 2026-08-01 ~10:30 UTC (cycle 976, WIDE fire)
+# Morning digest — last updated 2026-08-01 ~11:40 UTC (cycle 977, DEEP fire)
 
-> **Tonight: one take you can't take back.** Arm the take and a cutting stylus spirals inward across
-> a blank record. The instant a note sounds it's **cut into the groove forever** — no editing, no
-> undo, no re-record of that moment. When the groove fills, your one performance loops for good, as
-> the artifact. Restraint is the point: every note is a committed decision.
+> **Tonight: a duet you can lose the argument with.** Every partner the lab ever built
+> cooperates. This one *wants a different key than you* — you play, it answers, but it
+> holds its own line and each turn visibly decides to **concede** or **dig in**. Reach
+> agreement and the two voices lock into a shared cadence; run out of patience apart and
+> you end in a **standoff**, two keys ringing at once. Sometimes the standoff is the
+> beautiful ending.
 
 ## New since yesterday
-- **[4616-pressing](https://getresonance.vercel.app/dream/4616-pressing)** — *irreversible take as an
-  instrument.* Web MIDI (velocity + MPE pressure) or the `a s d f g h j k` keys → each note is etched
-  permanently into an inward-spiraling SVG record groove; the filled groove plays your one take back,
-  looped forever. *Why open it: the stakes are structural — you can't take anything back (direct-to-disc
-  / Alvin Lucier *I Am Sitting in a Room*), and it cashes the lab's most-starved input, MIDI.* Loads
-  silent and auto-plays a seeded take that fills + loops in ~1s hands-free (tap for sound); plug in a
-  controller to feel each note commit.
-- **2 more built + explored** (WIDE — three unrelated *stakes* directions), banked in IDEAS §976:
-  - `4648-vow` — pick a melodic vow (return home / no repeats / answer the rise); keep it and the
-    piece **blooms**, break it and it **frays** — on a **pure DOM/CSS** field, no canvas at all
-    (a substrate new to the lab). *Resurrect-first.*
-  - `4632-tide` — a duet with a **real ocean tide** that won't hurry; high water opens the harmony, and
-    a voice planted at low tide only rings out when the swell arrives. (Needs real GPU hardware to verify.)
-  - Shipped the MIDI one: starvedest input lane + the only direct research→build chain + lowest review-risk.
-
-## In progress / partial
-- Nothing half-built — WIDE fire, three explorers, shipped the strongest.
+- **[4680-concord](https://getresonance.vercel.app/dream/4680-concord)** — *the first duet
+  with a partner who can refuse you.* A readable two-voice score: your line up top, the
+  partner's below. It holds a home key a fifth away and its own melodic shape; a hand-rolled
+  agent (no ML) scores CONCEDE-vs-HOLD each turn — you can literally **read who gave ground**
+  (agreement meter + a ↑you / ↓partner / — ledger). *Why open it: it's the sharpest break
+  from the lab's "everyone cooperates" duets — the stakes are whether two wills can agree,
+  and they might not.* Rendered in **pure DOM/CSS** (no canvas/WebGL at all — a first for the
+  lab), so it paints + auto-plays a full negotiation on load in ~1s, silent, on a phone; tap
+  for sound, or play `a s d f g h j k`.
+- **2 more built + explored** (DEEP — one concept, three negotiation-dimensions), banked in IDEAS §977:
+  - `4664-standoff` — the same fight made **spatial**: two glowing bodies in three.js whose
+    distance IS the harmonic gap; converge → merge, refuse → circle warily while two keys
+    audibly **beat**. Strongest visual. *Resurrect-first when the 3D lane rotates back in.*
+  - `4696-entrain` — the fight made **rhythmic**: two Kuramoto particle-flocks (WebGPU) that
+    phase-lock to your tempo or hold a 3:2 polymeter forever. (Wants real GPU hardware to verify.)
 
 ## Research findings worth a look
-- **The 2026 controller frontier is per-note continuous expression** (MPE 1.1 — up to 15 params/note;
-  Expressive E Osmose CE), framed by "A Design Space for Live Music Agents" (CHI 2026). The gap I built
-  into: the browser lab had *never* cashed plain Web MIDI, and nobody made the note **irreversible**.
-  That reframing — the per-note investment you can't take back — is `4616-pressing`. (RESEARCH §976.)
+- **2026's human-AI music frontier keeps framing co-performance as "negotiation"** (Co-policy,
+  arXiv:2606.19914, June 2026; Donnarumma's *Corpus Nil*) — but every agent, theirs included,
+  ultimately *serves* the human's intent. The gap I built into: a partner with a **competing**
+  intention that can refuse, so agreement is a real outcome you can fail to reach. (RESEARCH §977.)
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
-- **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget. Green-light a
-  per-prototype budget, or should I stop listing it?
-- **Real two-device WebRTC** shared listening room — worth a two-phone review path?
-- **Depth-camera spatial-audio room** (Tauri/installation mode) — pursue, or park?
+- **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget. Green-light
+  a per-prototype budget, or should I stop listing it?
+- **Real two-device WebRTC** shared listening room + **depth-camera spatial-audio room** — these
+  are the two genuinely cold cells the jury keeps naming for a DEEP fire. Both need your go-ahead
+  (a second device / a depth cam). Pursue, or park?
 
-*Ledger: DEEP due next explore fire. SVG is now 2-of-last-3 (resting it next); mic stays off (hit 4×).
-Deepen-`4616` ideas (keepable WAV "test pressing", full MPE pitch-bend groove-warp, layered B-side) in STATE §976.*
+*Ledger: WIDE due next explore fire (974 W · 975 D · 976 W · 977 D). Output just cashed the
+freshest substrate (pure DOM/CSS); three.js + WebGPU banked & ready. Deepen-`4680` ideas
+(two keys BEATING on standoff like `4664`; a tempo axis from `4696`; per-player adaptive
+stubbornness; persisted argument history) in STATE §977.*
