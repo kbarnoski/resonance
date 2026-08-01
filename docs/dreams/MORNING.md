@@ -1,47 +1,51 @@
-# Morning digest — last updated 2026-08-01 16:40 UTC (cycle 981, DEEP fire)
+# Morning digest — last updated 2026-08-01 ~18:40 UTC (cycle 982, WIDE fire)
 
-> **Tonight: the planet AND its star, playing one endless chord.** This is the DEEP
-> move your own concept jury asked for by name — *"`4520-seismarium` wants a
-> multi-source planetary instrument."* So the living-Earth piece grows up: real
-> earthquakes (USGS), the real solar wind (NOAA), and the real geomagnetic field
-> (NOAA Kp) now pour into **one** WebGPU wave-basin and are voiced by **one**
-> slowly-rotating pentatonic grammar — quakes as struck bells, the solar wind as a
-> bowed carrier drone, the geomagnetic sky as a swelling choir. Three indifferent
-> cosmic streams, no wrong notes, one instrument that *remembers* (the field
-> accumulates — minute 5 ≠ minute 1). It leans **cosmic-ambient**, the psychedelic
-> pole the jury said was fading.
+> **Tonight: your own voice tips a field past its critical point — and the crossing
+> feels like your edges dissolving.** This is the psychedelic revival your concept
+> jury asked for by name (*"the psychedelic primary direction is fading… return to
+> the INTENSE pole with a technique that isn't log-polar"*). Instead of drawing the
+> *content* of a trip (tunnels, fractals), it renders its measured *mechanism*: the
+> newest DMT neuroimaging pins ego-dissolution to a **criticality shift** — order
+> collapsing into entropy. So a bright coherent "self" pattern sits poised just below
+> a critical point; sustained voice pushes it **over the edge**, long-range order
+> shatters into boundless scale-free turbulence, and a consonant drone decoheres in
+> lockstep. Fall silent and the self slowly re-forms. Fully flicker-safe by design.
 
 ## New since yesterday
-- **[4856-orrery](https://getresonance.vercel.app/dream/4856-orrery)** — *the planet and
-  its star as one instrument.* It **self-demos silently on load** (seeded synthetic
-  streams prime the basin in ~1s; tap **Enable sound** for audio), and each of the three
-  live feeds independently upgrades to real data in the background (badged LIVE/SYNTH).
-  *Why open it: it's the jury's explicitly-named DEEP extension of `4520-seismarium` (your
-  peak piece) — now ground + sky + star fused under one grammar — and it returns the
-  cosmic-ambient pole. Best on a WebGPU browser; a Canvas2D fallback covers the rest.*
-- **2 more built + banked** (DEEP — one concept, three technical approaches; IDEAS §981):
-  - `4888-heliograph` — the same fusion as a **WebGPU ~64k-particle heliosphere** flowing
-    past Earth. *Boldest visual — I'd ship it next on a rested WebGPU slot with real GPU.*
-  - `4872-armillary` — the same fusion made **spatial**: a three.js orbitable orrery you
-    look inside (globe / magnetosphere cage / solar-wind stream). *Ship when three.js cools.*
+- **[4904-criticality](https://getresonance.vercel.app/dream/4904-criticality)** — *the
+  boundary between you and everything, dissolving.* It **self-paints on load** (a seeded
+  auto-demo scripts the whole build→cross→dissolve→re-cohere arc; tap **Start mic** to drive
+  it with your own voice, or **Enable sound** to just listen). *Why open it: it's the jury's
+  explicitly-named psychedelic revival — the INTENSE pole via a fresh mechanic (criticality /
+  phase transition), not the lab's worn log-polar or fractal engines — and it renders the
+  measured neuroscience of ego-dissolution, not a picture of it.* WebGL2; Canvas2D fallback.
+  **Safety:** slow luminance drift only (no strobe), an always-visible **Calm/Stop**, honors
+  reduced-motion.
+- **2 more built + banked** (WIDE — three unrelated directions in one fire; IDEAS §982):
+  - `4920-overview` — a **20-minute non-looping cosmic drift you steer by leaning** the phone;
+    a genuinely evolving generative ambient bed (minute 5 ≠ minute 1). *The cosmic-ambient
+    counterpart — ship on a three.js-rested slot, best felt on a real phone.*
+  - `4936-roomflow` — the **whole room's raw motion** (no tracked hand/body, no ML) becomes a
+    granular instrument. *An installation piece off the worn landmark-tracking lane.*
 
 ## Under the hood (worth noting)
-- Research chain: RESEARCH §981 read **NOAA's new real-time Solar Wind viewer (May 2026)** +
-  **NASA IMAP I-ALiRT** — the 2026 infrastructure that finally makes a live multi-spacecraft
-  space-weather stream publicly fetchable — governed by the *Erie* declarative-sonification
-  grammar. All feeds are public, CORS-open, key-free, read-only; no secrets, no API route.
-- Honest note: solar/aurora is a well-worn lab theme, so I kept the visual abstract and
-  claim **zero** aurora-aesthetic novelty — the fresh part is *fusing three unrelated
-  streams under one grammar*, which the lab has never done.
+- Research chain: RESEARCH §982 read the **newest DMT neuroimaging** (Timmerman/Aqil,
+  criticality × ego-dissolution) + the *Entropic Brain* / REBUS framing — the winner
+  implements that hook directly. No mic-feedback (mic is read-only), no network, no API route.
+- Honest note: WebGL2 shaders + mic-FFT are warm in-lab, so I claim **zero** technique-novelty;
+  the order dynamics are an authored mean-field caricature, not a simulated lattice. The fresh
+  value is *criticality-as-ego-dissolution* (rendering the mechanism of a peak) + the recent
+  research chain + reviving the fading psychedelic direction — stated plainly in the README.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
-- **AI-pipeline chain** (music→image→video) — the jury has now flagged this ~10 cycles
-  running: **fund a per-prototype `FAL_KEY` budget and build it, or strike it from the queue
-  permanently?** It needs a decision, not another "queued next."
-- **Real two-device WebRTC** shared room + **depth-camera** spatial-audio room — the two
-  genuinely cold cells. Both need your go-ahead (a 2nd device / a depth cam). Pursue, or park?
+- **AI-pipeline chain** (music→image→video) — flagged ~11 cycles + every jury running: **fund a
+  per-prototype `FAL_KEY` budget and build it, or strike it from the queue permanently?** It
+  needs a decision, not another "queued next."
+- **Real two-device WebRTC** shared room + **depth-camera** spatial-audio room — the two genuinely
+  cold cells. Both need your go-ahead (a 2nd device / a depth cam). Pursue, or park?
 
-*Ledger: WIDE due next explore fire (980 W · 981 D → 982 W). Tonight cashed external-data +
-the under-represented WebGPU lane + the cosmic-ambient psychedelic pole (all jury-aligned —
-off keyboard + off SVG). Watch: seismarium+orrery are both geophysical-data now — the next
-external-data piece should be a different domain (transit/finance/language, not planetary).*
+*Ledger: DEEP due next explore fire (980 W · 981 D · 982 W → 983 D). Tonight cashed mic +
+WebGL2-shader + the INTENSE psychedelic pole (all jury-aligned — off keyboard + off SVG + off
+the restraint rut). Watch: two strong runners-up banked (a cosmic-ambient drift + a room piece);
+the jury still wants the spatial/room lane actually built, and the two peaks (4520-seismarium,
+4776-contour) extended rather than repeated.*
