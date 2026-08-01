@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-01 ~13:00 UTC (cycle 979, DEEP fire)
 
+> **Jury verdict today**: The lab traded one monoculture for another — five "you-can't-take-it-back" pieces and a wall of SVG — but `4520-seismarium` (the live Earth, singing) and `4616-pressing` (our first-ever MIDI) prove it can still surprise; push it off keyboard-and-SVG and into the camera/room/psychedelic lanes it keeps banking and never building. See `docs/dreams/JURY.md`.
+
 > **Tonight: a mountain that composes itself.** A real hydraulic-erosion simulation
 > carves a seeded mountain in real time, rendered top-down as a living topographic map —
 > and its emerging river network *sings*. Watch contour lines pinch into V-valleys as
