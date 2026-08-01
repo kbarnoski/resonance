@@ -1,45 +1,47 @@
-# Morning digest — last updated 2026-08-01 14:33 UTC (cycle 980, WIDE fire)
+# Morning digest — last updated 2026-08-01 16:40 UTC (cycle 981, DEEP fire)
 
-> **Tonight: your whole body becomes the instrument.** Not a hand, not a face — you
-> stand up and *dance*, and 33 full-body pose landmarks tune a live chord while a
-> ~15,000-point "particle-body" gathers to your skeleton when you're still and melts
-> into liquid light when you move. Motion is the one master intensity: raise your arms
-> and the chord climbs and brightens; build a dancing energy and the timbre ignites, a
-> sub and an ecstatic "breath" band open, and the effigy scatters into smeared trails.
-> This is the **camera/body lane the last three juries kept naming and the lab kept
-> avoiding** — and the psychedelic *intense* pole it said was fading. Drug-free
-> embodiment: the screen + your movement do the work.
+> **Tonight: the planet AND its star, playing one endless chord.** This is the DEEP
+> move your own concept jury asked for by name — *"`4520-seismarium` wants a
+> multi-source planetary instrument."* So the living-Earth piece grows up: real
+> earthquakes (USGS), the real solar wind (NOAA), and the real geomagnetic field
+> (NOAA Kp) now pour into **one** WebGPU wave-basin and are voiced by **one**
+> slowly-rotating pentatonic grammar — quakes as struck bells, the solar wind as a
+> bowed carrier drone, the geomagnetic sky as a swelling choir. Three indifferent
+> cosmic streams, no wrong notes, one instrument that *remembers* (the field
+> accumulates — minute 5 ≠ minute 1). It leans **cosmic-ambient**, the psychedelic
+> pole the jury said was fading.
 
 ## New since yesterday
-- **[4808-effigy](https://getresonance.vercel.app/dream/4808-effigy)** — *your whole moving
-  body is the resonator.* It **self-demos on load** with a seeded "dancer" (sound after you
-  tap **Start**), so you can read the whole arc on your phone without doing anything. Then
-  tap **Enable camera — become the effigy**, stand back, and **move** — the effigy becomes
-  *you*. *Why open it: it's the lab's return to full-body camera input (we'd only done hand
-  + face before) and to the psychedelic intense pole — and it literally makes your dancing
-  the music.* Best on a laptop with room to move; the seeded dancer covers the phone read.
-- **2 more built + explored** (WIDE — one fire, three different altered-state poles; banked
-  in IDEAS §980):
-  - `4824-tunnel` — the **cosmic-ambient** pole: **tilt your phone** to drift through a
-    WebGPU curl-noise **NDE tunnel-to-light**, a drone opening as you near the light.
-    *Strongest on real GPU hardware — I'd ship it next on a rested WebGPU slot.*
-  - `4840-driftoff` — the **hypnagogic dream** pole: **your real Path piano**, granulated
-    and time-stretched into sleep-onset drift while closed-eye **phosphene** blooms rise
-    and fade. *Wants sound-on to really land.*
+- **[4856-orrery](https://getresonance.vercel.app/dream/4856-orrery)** — *the planet and
+  its star as one instrument.* It **self-demos silently on load** (seeded synthetic
+  streams prime the basin in ~1s; tap **Enable sound** for audio), and each of the three
+  live feeds independently upgrades to real data in the background (badged LIVE/SYNTH).
+  *Why open it: it's the jury's explicitly-named DEEP extension of `4520-seismarium` (your
+  peak piece) — now ground + sky + star fused under one grammar — and it returns the
+  cosmic-ambient pole. Best on a WebGPU browser; a Canvas2D fallback covers the rest.*
+- **2 more built + banked** (DEEP — one concept, three technical approaches; IDEAS §981):
+  - `4888-heliograph` — the same fusion as a **WebGPU ~64k-particle heliosphere** flowing
+    past Earth. *Boldest visual — I'd ship it next on a rested WebGPU slot with real GPU.*
+  - `4872-armillary` — the same fusion made **spatial**: a three.js orbitable orrery you
+    look inside (globe / magnetosphere cage / solar-wind stream). *Ship when three.js cools.*
 
 ## Under the hood (worth noting)
-- All three are drug-free **psychedelic / altered-states** pieces — a deliberate return to
-  AGENT.md's *primary* direction, which the jury flagged as fading (only 3 of the prior 15).
-- Research chain: RESEARCH §980 read *DiscoForcing* (a May-2026 paper that makes a character
-  move *to* audio) and **inverted it** — here your body writes the audio.
+- Research chain: RESEARCH §981 read **NOAA's new real-time Solar Wind viewer (May 2026)** +
+  **NASA IMAP I-ALiRT** — the 2026 infrastructure that finally makes a live multi-spacecraft
+  space-weather stream publicly fetchable — governed by the *Erie* declarative-sonification
+  grammar. All feeds are public, CORS-open, key-free, read-only; no secrets, no API route.
+- Honest note: solar/aurora is a well-worn lab theme, so I kept the visual abstract and
+  claim **zero** aurora-aesthetic novelty — the fresh part is *fusing three unrelated
+  streams under one grammar*, which the lab has never done.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
-- **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget.
-  The jury says: green-light a per-prototype budget, or should I strike it from the queue?
+- **AI-pipeline chain** (music→image→video) — the jury has now flagged this ~10 cycles
+  running: **fund a per-prototype `FAL_KEY` budget and build it, or strike it from the queue
+  permanently?** It needs a decision, not another "queued next."
 - **Real two-device WebRTC** shared room + **depth-camera** spatial-audio room — the two
-  genuinely cold cells the jury keeps naming. Both need your go-ahead (a 2nd device / a
-  depth cam). Pursue, or park permanently?
+  genuinely cold cells. Both need your go-ahead (a 2nd device / a depth cam). Pursue, or park?
 
-*Ledger: DEEP due next explore fire (979 D · 980 W → 981 D). Tonight cashed the camera/body
-lane + the intense pole. Output rotation: three.js shipped tonight; WebGPU (4824) + WebGL2
-phosphene (4840) banked & ready. Input: next rotate toward MIDI/tilt (still starved).*
+*Ledger: WIDE due next explore fire (980 W · 981 D → 982 W). Tonight cashed external-data +
+the under-represented WebGPU lane + the cosmic-ambient psychedelic pole (all jury-aligned —
+off keyboard + off SVG). Watch: seismarium+orrery are both geophysical-data now — the next
+external-data piece should be a different domain (transit/finance/language, not planetary).*
