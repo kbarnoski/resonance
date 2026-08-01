@@ -1,47 +1,41 @@
-# Morning digest — last updated 2026-08-01 ~13:40 UTC (cycle 978, WIDE fire)
+# Morning digest — last updated 2026-08-01 ~13:00 UTC (cycle 979, DEEP fire)
 
-> **Tonight: a trio that breathes with the time you feel.** Every "in-time" tool the
-> lab ever made obeys a click or a score. This one has neither — you play a melody
-> freely, rushing and dragging and holding real rubato, and a hand-rolled ensemble
-> *follows you*: it speeds up when you rush and stretches when you hold, no metronome,
-> no AI model. It cooperates — the opposite of last night's arguing duet.
+> **Tonight: a mountain that composes itself.** A real hydraulic-erosion simulation
+> carves a seeded mountain in real time, rendered top-down as a living topographic map —
+> and its emerging river network *sings*. Watch contour lines pinch into V-valleys as
+> channels cut in; the strongest channel (the "spine") plays a slow marimba loop that
+> starts sparse and searching and settles into consonance as the drainage tree matures.
+> Disorder → dendritic river network is a ready-made long-form arc. No mic, no FFT, no AI.
 
 ## New since yesterday
-- **[4728-rubato](https://getresonance.vercel.app/dream/4728-rubato)** — *an accompanist
-  with no score, no click, and no model — just an ear for your time.* Play `a s d f g h j k`
-  (or tap) with whatever rubato you feel; a Large & Jones (1999) "attending oscillator"
-  infers your beat from the **timing of your keys alone** and a bass+chords+pad trio lays
-  down in time with it — visibly **speeding up and stretching** to stay with you. *Why open
-  it: it's the lab's first real live-performance / jazz-responsive tool — the ensemble
-  serves you, not a grid.* three.js pendulum trio pulses on the beat; on load a scripted
-  "human" plays a rushing-then-dragging phrase so you can watch the trio follow, hands-free,
-  in ~0.6s (tap for sound). *Best felt when YOU play it with your own timing.*
-- **2 more built + explored** (WIDE — three unrelated directions off the recent monoculture),
-  banked in IDEAS §978:
-  - `4712-sympathy` — 20 sympathetic strings you can **never play directly**; they ring on
-    their own, by physical coupling, only when your notes share their overtones. Play clean
-    and true → the field blooms; play muddy → nothing answers. *You earn the resonance.*
-    (Pure SVG, bulletproof — **the one I'd ship next.**)
-  - `4744-rosensweig` — sculpt harmony by sculpting a **magnetic field**: a ferrofluid
-    erupting into a self-organizing lattice of tuned spikes (Kodama's *Morpho Towers*).
-    Boldest look. (Wants real GPU hardware to verify the WebGPU path.)
+- **[4776-contour](https://getresonance.vercel.app/dream/4776-contour)** — *a watershed
+  that composes itself, as a living topographic map.* It erodes on load (silent — tap
+  **Start** for sound); **drag on the map to "rain here"** and steer where valleys cut.
+  *Why open it: it's the lab's first hydraulic-erosion piece — a self-organizing natural
+  process, drawn as pure SVG cartography, that you can hear find its own structure.* Best
+  on your phone; give it a minute to watch the river tree branch and the loop settle.
+- **2 more built + explored** (DEEP — one concept, three lenses; banked in IDEAS §979):
+  - `4760-delta` — the **3D** version: a three.js mountain you orbit as it erodes, glowing
+    violet rivers, deep "river-mouth" bells. *Strongest visual — I'd ship it next on a
+    real screen.*
+  - `4792-canyon` — the **"whole storm at once"**: a WebGPU aerial flow-particle skin
+    (with a phone-safe fallback). *Wants real GPU hardware to prove the fast path.*
 
-## Research findings worth a look
-- **The 2026 accompaniment frontier still needs a score or a heavy model** — The ACCompanion
-  (arXiv:2304.12939) follows a *known score*; "Real-Time LM Jamming" (arXiv:2606.11886, Jun
-  2026) leans on an *LLM*. The gap I built into `4728`: a **score-free, ML-free** ensemble that
-  follows your *free rubato* from key-timing alone — the classic Large-Jones attending
-  oscillator, no learning required. (RESEARCH §978.)
+## Under the hood (worth noting)
+- The dive **caught a near-duplicate before I built it:** tonight's first idea (a nonlinear
+  "blooming gong") turned out to already exist as `970-tension-gong`, same technique, same
+  paper. Pivoted to erosion instead — the grep ambition-gate did its job. (RESEARCH §979.)
+- The three erosion lenses share one reusable core (`_shared/erosion/engine.ts`) — any
+  future terrain/flow piece can build on it.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
 - **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget.
   Green-light a per-prototype budget, or should I stop listing it?
-- **Real two-device WebRTC** shared listening room + **depth-camera spatial-audio room** —
-  the two genuinely cold cells the jury keeps naming for a DEEP fire. Both need your go-ahead
+- **Real two-device WebRTC** shared room + **depth-camera spatial-audio room** — the two
+  genuinely cold cells the jury keeps naming for a DEEP fire. Both need your go-ahead
   (a second device / a depth cam). Pursue, or park?
 
-*Ledger: DEEP due next explore fire (976 W · 977 D · 978 W). Output rotation healthy — SVG /
-DOM-CSS / three.js all fresh in the last 3; WebGPU banked & ready (needs hardware) via
-4744/4696. Rotate input toward MIDI/tilt next (keyboard + pointer both warming). Resurrect
-`4712-sympathy` first. Deepen-`4728` ideas (infer harmony from what you play; feed your real
-Path piano as the melody it follows) in STATE §978.*
+*Ledger: WIDE due next explore fire (978 W · 979 D → 980 W). Output rotation healthy — SVG
+shipped tonight (was due), three.js + WebGPU banked & ready (4760/4792). Rotate input toward
+MIDI/tilt next (both still starved; tonight was pointer). Watch that "earth/geology" (reef,
+seismarium, marble, now contour) doesn't become its own monoculture — vary the domain next.*

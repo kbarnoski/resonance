@@ -8850,3 +8850,38 @@ Chain visible in STATE §947: today's research → today's WIDE build (winner `3
 **What's surprising / why it matters here.** Read across the whole frontier — Co-policy, Voyager, the lab's own duets — the agent is always, ultimately, *cooperative*: it exists to **realize the human's intent**, even when the coupling is framed as "negotiation." Nobody actually gives the partner a **competing intention of its own** — a home key, a tempo, a motif it *wants* — and lets it **refuse**, so that agreement is a real outcome you can fail to reach and sustained disagreement is a legitimate, even beautiful, end state. The lab has built a shelf of duets — `3120-continuator`, `3136-tarab`, `3624-covenant`, `3992-atlas-duet`, `4296-breath` — and every one of them cooperates: it answers you, it earns your trust, it decides *whether* to answer, but it never wants something *else*. That is the missing verb: **a duet you can lose the argument with.** It needs no ML — a hand-rolled symbolic agent holding a target tonal-center / tempo / contour, plus a legible yield-vs-hold decision each turn (driven by a stubbornness parameter and how far you've moved toward it), is the whole engine. And it directly answers jury-2026-07-31 provocation #1 ("no more brains — make something with *stakes or relationship*, not a phenomenon explained") from a genuinely fresh angle: the stake is *whether two wills can agree*, and the relationship has friction.
 
 **Could become a prototype that does X → this cycle's DEEP fan (ONE concept — "a duet partner that wants something different than you; the music is the negotiation between two wills, and you might never agree" — three negotiation-dimensions × three outputs, all off the jury bans):** **(A) `4664-standoff`** — negotiation as **tonal-center gravity**, two luminous bodies in a shared space whose 3D distance IS the harmonic distance between your key and its; converge → merge + cadence, diverge → circle + polytonal beating (**three.js**, the freshest output lane; keyboard input). **(B) `4680-concord`** — negotiation as **turn-by-turn concession**, a maximally-legible two-voice score with a live agreement meter + a "who conceded" ledger you can literally read (**pure DOM/CSS**, a substrate the lab has barely touched — best phone-review fitness; keyboard input). **(C) `4696-entrain`** — negotiation as **tempo entrainment** between two coupled Kuramoto populations that phase-lock or hold a 3:2 polymeter (**WebGPU** flocks w/ three.js-Points fallback; tap/keyboard). All: input keyboard/tap (off banned camera + audio-primary + mic), output three.js / DOM-CSS / WebGPU (off banned Canvas2D + WebGL2-shader, off rested SVG), technique symbolic negotiation/consensus dynamics (off banned live-spectral-FFT), vibe relationship-with-friction (off banned cosmic-ambient AND off the banned perceptual-neuroscience "explain-a-phenomenon" frame — nothing is explained; two wills argue). Also a clean break from the recent **irreversibility** streak (vow/reef/marble/pressing): a negotiation is *repeatable*, and its stake is agreement, not permanence. Chain: today's dive → today's DEEP build, visible in STATE §977 (research-first case (a)).
+### 2026-08-01 · cycle 979 — hydraulic erosion as a self-composing watershed (+ a near-miss caught)
+
+**The dive did two jobs today.** (1) It KILLED tonight's first idea: a non-linear
+modal "blooming gong" from *nlm: Real-Time Non-linear Modal Synthesis in Max*
+(arXiv:2603.10240, March 2026) — genuinely fresh DSP, but a grep found
+`970-tension-gong` already ships exactly that (tension modulation + mode coupling +
+strike-velocity, citing the same paper). The ambition-gate grep did its job; pivoted
+before building a near-duplicate. (2) It anchored the pivot: **droplet-based hydraulic
+erosion**, grep-clean in the lab (`973-wave-terrain` is unrelated wave-terrain
+*synthesis*).
+
+**Sources.** Interactive GPU erosion simulators and the current procedural-terrain
+literature (huw-man's interactive GPU erosion sim; daydreamsoft's 2026 survey of
+GPU-optimized erosion for procedural worlds) confirm real-time droplet/shallow-water
+erosion is a live, fast-moving area. Foundational refs (tagged `[older, foundational]`):
+Musgrave, Kolb & Mace, *The Synthesis and Rendering of Eroded Fractal Terrains*
+(SIGGRAPH 1989); Mei, Decaudin & Hu, *Fast Hydraulic Erosion Simulation and
+Visualization on GPU* (Pacific Graphics 2007); Beyer, *Implementation of a method for
+hydraulic erosion* (BSc thesis 2015 — the droplet/particle method popularised by
+Sebastian Lague).
+
+**Why it's surprising for an AUDIO lab:** erosion is almost always used to *render a
+picture*. Nobody sonifies the CARVING. A watershed is a self-organizing system with
+memory — it starts as chaotic sheet-wash and, over minutes, concentrates into a
+dendritic drainage tree. That trajectory (disorder → structure) is a ready-made
+long-form musical arc, and the drainage tree is literally a branching canon. The
+carve/deposit events, the flow-accumulation field, and the maturity of the network are
+three orthogonal, physically-grounded control signals — no FFT, no mic, no model.
+
+**Became a prototype tonight (research-first case (a)):** `_shared/erosion/engine.ts`
+(seeded droplet erosion + live flow field + `drainageMaturity`) driving a DEEP 3-way —
+`4760-delta` (three.js 3D terrain, "river-mouth voices"), `4776-contour` (SVG
+topographic map, "the spine sings"), `4792-canyon` (WebGPU flow-particles + three.js
+fallback, "the storm's roar"). One concept, three lenses on the same self-composing
+watershed.
