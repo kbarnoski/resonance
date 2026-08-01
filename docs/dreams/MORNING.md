@@ -1,34 +1,40 @@
-# Morning digest — last updated 2026-08-01 ~08:30 UTC (cycle 975, DEEP fire)
+# Morning digest — last updated 2026-08-01 ~10:30 UTC (cycle 976, WIDE fire)
 
-> **Tonight you can only carve — never add.** The screen opens as a solid roaring slab of sound
-> (48 tones at once — a block of marble). You make music by *taking away*: hum a note and the block
-> loses that partial, **forever**. And the block **fights back** — carve greedily and it roars;
-> carve slowly and deliberately and it rewards you with a chime and a bloom. What you *leave* is the
-> sculpture. The figure hidden in tonight's marble is a luminous Cmaj9.
+> **Tonight: one take you can't take back.** Arm the take and a cutting stylus spirals inward across
+> a blank record. The instant a note sounds it's **cut into the groove forever** — no editing, no
+> undo, no re-record of that moment. When the groove fills, your one performance loops for good, as
+> the artifact. Restraint is the point: every note is a committed decision.
 
 ## New since yesterday
-- **[4568-marble](/dream/4568-marble)** — *subtraction as an instrument.* Sing/hum → time-domain
-  pitch detection carves the nearest still-alive partial, permanently; the material resists
-  (lean-back + a "greed" heat model + a restraint chime), and over-carving self-defeats into
-  silence. Loads silent and auto-sculpts the Cmaj9 out of the roar in ~1s hands-free (tap for
-  sound; "carve it yourself" opens the mic). *Why open it: first piece where you can't add
-  anything, and the material has a will you have to negotiate with.*
-- **2 more built + explored** (same DEEP concept, different attacks), banked in IDEAS §975:
-  `4584-quarry` (WebGPU granular quarry — boldest look) and `4600-relief` (modal bas-relief — the
-  most physical "material pushes back"). Shipped the SVG one: lowest review-risk, cleanest slot.
+- **[4616-pressing](https://getresonance.vercel.app/dream/4616-pressing)** — *irreversible take as an
+  instrument.* Web MIDI (velocity + MPE pressure) or the `a s d f g h j k` keys → each note is etched
+  permanently into an inward-spiraling SVG record groove; the filled groove plays your one take back,
+  looped forever. *Why open it: the stakes are structural — you can't take anything back (direct-to-disc
+  / Alvin Lucier *I Am Sitting in a Room*), and it cashes the lab's most-starved input, MIDI.* Loads
+  silent and auto-plays a seeded take that fills + loops in ~1s hands-free (tap for sound); plug in a
+  controller to feel each note commit.
+- **2 more built + explored** (WIDE — three unrelated *stakes* directions), banked in IDEAS §976:
+  - `4648-vow` — pick a melodic vow (return home / no repeats / answer the rise); keep it and the
+    piece **blooms**, break it and it **frays** — on a **pure DOM/CSS** field, no canvas at all
+    (a substrate new to the lab). *Resurrect-first.*
+  - `4632-tide` — a duet with a **real ocean tide** that won't hurry; high water opens the harmony, and
+    a voice planted at low tide only rings out when the swell arrives. (Needs real GPU hardware to verify.)
+  - Shipped the MIDI one: starvedest input lane + the only direct research→build chain + lowest review-risk.
 
 ## In progress / partial
-- Nothing half-built — DEEP fire, one concept via three approaches, shipped the strongest.
+- Nothing half-built — WIDE fire, three explorers, shipped the strongest.
 
 ## Research findings worth a look
-- **Material agency** in musical-interface design (Zheng/Xambó/Bryan-Kinns 2026; Intelligent
-  Instruments Lab, arXiv:2604.23583): an instrument as a *material with its own will you negotiate
-  with*, not a tool that obeys. Paired with the lab's least-used verb — **subtraction** — that
-  became tonight's build. (RESEARCH §975.)
+- **The 2026 controller frontier is per-note continuous expression** (MPE 1.1 — up to 15 params/note;
+  Expressive E Osmose CE), framed by "A Design Space for Live Music Agents" (CHI 2026). The gap I built
+  into: the browser lab had *never* cashed plain Web MIDI, and nobody made the note **irreversible**.
+  That reframing — the per-note investment you can't take back — is `4616-pressing`. (RESEARCH §976.)
 
-## Open questions for Karel
-- **Resurrect order:** which sibling to deepen — `4584-quarry` (WebGPU, boldest look, needs a GPU
-  to verify) or `4600-relief` (modal, most physically-legible resistance)?
-- **Standing DECISIONS** (yes/no, re-flagged, not force-built): AI-pipeline chain needs your
-  `FAL_KEY` · real two-device WebRTC needs a two-device review path · depth-camera spatial room
-  needs a depth cam. Say go on any one and I'll build it.
+## Open questions for Karel (yes/no — blocked on you, not the agent)
+- **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget. Green-light a
+  per-prototype budget, or should I stop listing it?
+- **Real two-device WebRTC** shared listening room — worth a two-phone review path?
+- **Depth-camera spatial-audio room** (Tauri/installation mode) — pursue, or park?
+
+*Ledger: DEEP due next explore fire. SVG is now 2-of-last-3 (resting it next); mic stays off (hit 4×).
+Deepen-`4616` ideas (keepable WAV "test pressing", full MPE pitch-bend groove-warp, layered B-side) in STATE §976.*
