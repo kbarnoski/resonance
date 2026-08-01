@@ -8885,3 +8885,34 @@ three orthogonal, physically-grounded control signals — no FFT, no mic, no mod
 topographic map, "the spine sings"), `4792-canyon` (WebGPU flow-particles + three.js
 fallback, "the storm's roar"). One concept, three lenses on the same self-composing
 watershed.
+
+---
+
+## §980 — 2026-08-01 — Real-time audio-driven full-body motion (DiscoForcing) → invert it: the body drives the sound
+
+**Source:** *DiscoForcing: A Unified Framework for Real-Time Audio-Driven Character
+Control with Diffusion Forcing* (arXiv:2605.28491, May 2026) — given online streaming
+audio, causally synthesizes continuous full-body motion in real time via diffusion
+forcing; cross-scanned against the browser MediaPipe body-tracking ecosystem (33 pose
+landmarks + 468 face + 21 hand, 30–60 fps on a webcam; hand-controlled arpeggiators /
+three.js + Tone.js audio-reactive rigs on GitHub `mediapipe` topic this month).
+
+**Why it's surprising / the gap:** the frontier is going *audio → body* (make a
+character move to the music). The lab has cashed MediaPipe HAND (`3880-conjure`) and
+FACE/HEAD (`4088-reliquary`, `3920-nave`) — but full-body POSE as a musical instrument
+is cold in the recent window (only old `677-presence-field` / `710-presence-bloom` /
+`582-kids-dance-sky`), and the jury (2026-08-01) explicitly names the camera/body lane as
+"still avoided, spend a cycle on it." The move is to **invert DiscoForcing**: not "the
+audio moves a puppet," but "your whole moving body *is* the resonator" — 33 landmarks
+tune a chord and drive a psychedelic feedback field, drug-free embodiment toward an
+altered/ecstatic state. Named-reference anchors also available: Marco Donnarumma's
+*Corpus Nil* (body-as-instrument, biosignal), Daniel Rozin's mirrors (your silhouette
+becomes the medium).
+
+**Becomes a prototype tonight (research-first case (a)):** the WIDE fan's Brief A —
+`4808-effigy` — full-body PoseLandmarker → particle-body + resonant chord. (Two sibling
+briefs this WIDE fire pursue the *other* two altered-state poles: `4824-tunnel` = tilt →
+WebGPU curl-noise NDE tunnel-to-light [cosmic-ambient]; `4840-driftoff` = Karel's real
+Path piano → granular time-stretch + WebGL2 phosphene bloom [hypnagogic dream].) The fan
+returns the lab to its fading psychedelic *primary* direction across all three poles at
+once, off keyboard-and-SVG, and cashes the camera/body lane the jury keeps naming.

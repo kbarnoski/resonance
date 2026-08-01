@@ -1,43 +1,45 @@
-# Morning digest — last updated 2026-08-01 ~13:00 UTC (cycle 979, DEEP fire)
+# Morning digest — last updated 2026-08-01 14:33 UTC (cycle 980, WIDE fire)
 
-> **Jury verdict today**: The lab traded one monoculture for another — five "you-can't-take-it-back" pieces and a wall of SVG — but `4520-seismarium` (the live Earth, singing) and `4616-pressing` (our first-ever MIDI) prove it can still surprise; push it off keyboard-and-SVG and into the camera/room/psychedelic lanes it keeps banking and never building. See `docs/dreams/JURY.md`.
-
-> **Tonight: a mountain that composes itself.** A real hydraulic-erosion simulation
-> carves a seeded mountain in real time, rendered top-down as a living topographic map —
-> and its emerging river network *sings*. Watch contour lines pinch into V-valleys as
-> channels cut in; the strongest channel (the "spine") plays a slow marimba loop that
-> starts sparse and searching and settles into consonance as the drainage tree matures.
-> Disorder → dendritic river network is a ready-made long-form arc. No mic, no FFT, no AI.
+> **Tonight: your whole body becomes the instrument.** Not a hand, not a face — you
+> stand up and *dance*, and 33 full-body pose landmarks tune a live chord while a
+> ~15,000-point "particle-body" gathers to your skeleton when you're still and melts
+> into liquid light when you move. Motion is the one master intensity: raise your arms
+> and the chord climbs and brightens; build a dancing energy and the timbre ignites, a
+> sub and an ecstatic "breath" band open, and the effigy scatters into smeared trails.
+> This is the **camera/body lane the last three juries kept naming and the lab kept
+> avoiding** — and the psychedelic *intense* pole it said was fading. Drug-free
+> embodiment: the screen + your movement do the work.
 
 ## New since yesterday
-- **[4776-contour](https://getresonance.vercel.app/dream/4776-contour)** — *a watershed
-  that composes itself, as a living topographic map.* It erodes on load (silent — tap
-  **Start** for sound); **drag on the map to "rain here"** and steer where valleys cut.
-  *Why open it: it's the lab's first hydraulic-erosion piece — a self-organizing natural
-  process, drawn as pure SVG cartography, that you can hear find its own structure.* Best
-  on your phone; give it a minute to watch the river tree branch and the loop settle.
-- **2 more built + explored** (DEEP — one concept, three lenses; banked in IDEAS §979):
-  - `4760-delta` — the **3D** version: a three.js mountain you orbit as it erodes, glowing
-    violet rivers, deep "river-mouth" bells. *Strongest visual — I'd ship it next on a
-    real screen.*
-  - `4792-canyon` — the **"whole storm at once"**: a WebGPU aerial flow-particle skin
-    (with a phone-safe fallback). *Wants real GPU hardware to prove the fast path.*
+- **[4808-effigy](https://getresonance.vercel.app/dream/4808-effigy)** — *your whole moving
+  body is the resonator.* It **self-demos on load** with a seeded "dancer" (sound after you
+  tap **Start**), so you can read the whole arc on your phone without doing anything. Then
+  tap **Enable camera — become the effigy**, stand back, and **move** — the effigy becomes
+  *you*. *Why open it: it's the lab's return to full-body camera input (we'd only done hand
+  + face before) and to the psychedelic intense pole — and it literally makes your dancing
+  the music.* Best on a laptop with room to move; the seeded dancer covers the phone read.
+- **2 more built + explored** (WIDE — one fire, three different altered-state poles; banked
+  in IDEAS §980):
+  - `4824-tunnel` — the **cosmic-ambient** pole: **tilt your phone** to drift through a
+    WebGPU curl-noise **NDE tunnel-to-light**, a drone opening as you near the light.
+    *Strongest on real GPU hardware — I'd ship it next on a rested WebGPU slot.*
+  - `4840-driftoff` — the **hypnagogic dream** pole: **your real Path piano**, granulated
+    and time-stretched into sleep-onset drift while closed-eye **phosphene** blooms rise
+    and fade. *Wants sound-on to really land.*
 
 ## Under the hood (worth noting)
-- The dive **caught a near-duplicate before I built it:** tonight's first idea (a nonlinear
-  "blooming gong") turned out to already exist as `970-tension-gong`, same technique, same
-  paper. Pivoted to erosion instead — the grep ambition-gate did its job. (RESEARCH §979.)
-- The three erosion lenses share one reusable core (`_shared/erosion/engine.ts`) — any
-  future terrain/flow piece can build on it.
+- All three are drug-free **psychedelic / altered-states** pieces — a deliberate return to
+  AGENT.md's *primary* direction, which the jury flagged as fading (only 3 of the prior 15).
+- Research chain: RESEARCH §980 read *DiscoForcing* (a May-2026 paper that makes a character
+  move *to* audio) and **inverted it** — here your body writes the audio.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
 - **AI-pipeline chain** (music→image→video) — unlocks only with your `FAL_KEY` budget.
-  Green-light a per-prototype budget, or should I stop listing it?
-- **Real two-device WebRTC** shared room + **depth-camera spatial-audio room** — the two
-  genuinely cold cells the jury keeps naming for a DEEP fire. Both need your go-ahead
-  (a second device / a depth cam). Pursue, or park?
+  The jury says: green-light a per-prototype budget, or should I strike it from the queue?
+- **Real two-device WebRTC** shared room + **depth-camera** spatial-audio room — the two
+  genuinely cold cells the jury keeps naming. Both need your go-ahead (a 2nd device / a
+  depth cam). Pursue, or park permanently?
 
-*Ledger: WIDE due next explore fire (978 W · 979 D → 980 W). Output rotation healthy — SVG
-shipped tonight (was due), three.js + WebGPU banked & ready (4760/4792). Rotate input toward
-MIDI/tilt next (both still starved; tonight was pointer). Watch that "earth/geology" (reef,
-seismarium, marble, now contour) doesn't become its own monoculture — vary the domain next.*
+*Ledger: DEEP due next explore fire (979 D · 980 W → 981 D). Tonight cashed the camera/body
+lane + the intense pole. Output rotation: three.js shipped tonight; WebGPU (4824) + WebGL2
+phosphene (4840) banked & ready. Input: next rotate toward MIDI/tilt (still starved).*
