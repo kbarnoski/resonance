@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-08-02 (cycle 993, WIDE fire)
+# Morning digest — last updated 2026-08-02 (cycle 994, DEEP fire)
 
-**Open first:** [/dream/5432-tremorsong](https://getresonance.vercel.app/dream/5432-tremorsong) — press **Play the last 24 hours** (tap once for sound). You're hearing the planet's real earthquakes from the last day, pulled live from USGS: each quake is a struck bell — deep ones low, shallow ones high & bright, big ones loud, panned west→east by longitude — rippling across a world map. This is the lab's **first piece about the physical world / a live external feed**. If you're offline it plays a baked snapshot and the badge reads "sample data."
+**Open first:** [/dream/5480-development](https://getresonance.vercel.app/dream/5480-development) — press **Play**. You're hearing a piece **compose itself**: it states one little germ motif, then grows it across a whole arc — inverting it, reversing it, stretching it, fragmenting it, moving the key — with a real memory of everything it's played, so the end is a transformation of the beginning, never a loop. Watch the **derivation trace** at the bottom (`seed → I → aug → …`): it shows, in text, how the phrase you're hearing right now descends from the germ. (Silent on your phone? The score still writes itself and the trace still reads — but this one really wants speakers.)
 
 ## New since yesterday
-- **`5432-tremorsong`** *(shipped — WIDE winner)* — hear the last 24h of the living Earth as a seismic score over a Canvas2D world map (live USGS `all_day.geojson` → depth→pitch / magnitude→loudness / longitude→pan; degrades to a snapshot). *Music about something other than music* — the directest answer to the jury's "get off psychedelic-field-sims, I want range."
-- **2 more explored this fire, banked (see IDEAS §993):**
-  - **`5448-conductor`** ⭐⭐ — your **phone as a conductor's baton**: tilt to lead a string ensemble (lean=dynamics, sweep=tempo, hand-speed=articulation). The lab's first *tilt-primary* piece — **worth resurrecting on your phone** so the tilt is real (you loved `83-kids-tilt-rain`, so this is a good bet). Falls to mouse on desktop.
-  - **`5464-palimpsest`** ⭐ — a hymn you may hear **only 12 times, ever**; each listen permanently wears it away until only ghost notes remain, remembered across sessions. A conceptual piece with a real cost.
+- **`5480-development`** *(shipped — DEEP winner)* — the lab's **first self-developing long-form composer**. A genuinely new *verb* on music: not paint it, not analyze it, not duet with it — **compose & develop** it, like a composer working a theme. Built on Schoenberg's *developing variation* + the twelve-tone row operators (P/I/R/RI). Fourth cycle running I've stayed off the psychedelic-field-sim rut the jury flagged.
+- **2 more explored this fire, banked (see IDEAS §994):**
+  - **`5496-grammar`** ⭐⭐ — a generative piece whose **rules rewrite themselves** as it plays (a Markov grammar that reinforces its habits, forgets, and mutates), with a live "drift" meter proving minute 6 ≠ minute 1. The freshest *mechanic* of the three.
+  - **`5512-ensemble`** ⭐ — **5 autonomous players** who listen to each other and develop a shared motif in canon, drifting apart and finding their way home over 5 minutes. The richest visual (attention lines spark when one imitates another) — resurrect on a slot where you can actually listen.
 
 ## In progress / partial
-- Nothing half-built. One clean WIDE commit; the two runners-up are banked as full briefs, not code.
+- Nothing half-built. One clean DEEP commit; the two runners-up are banked as full briefs, not code.
 
 ## Research findings worth a look
-- **§993:** the planet's live seismicity is now one browser `fetch` away (2026 open-API seismic ingestion; USGS GeoJSON is public/CORS/no-auth), and the Holtzman/Lamont **Seismic Sound Lab / SeismoDome** lineage says the right move is to *sonify the Earth* — which `5432` now does, playably.
+- **§994:** the 2026 "live music agent" frontier (arXiv:2602.05064 *Design Space for Live Music Agents*, LK Jam) is entirely **reactive** — a machine answering a human. The un-built inverse is what shipped today: an **autonomous** composer that plays itself forward and remembers. Nobody in that cluster builds the self-remembering long-form composer as an instrument.
 
 ## Open questions for Karel
-- **Standing yes/no (flagged ~17 cycles):** the **AI-pipeline chain** (music→image→video) — fund a `FAL_KEY` budget so I can build it, or tell me to strike it permanently? It can't ship without a key decision.
-- Three cycles running I've stayed off psychedelic-field-sims (MIDI partner → music-structure map → Earth sonification). Is this range what you wanted, or do you miss the immersive/altered-states pieces? A word steers the next dozen cycles.
-- `5448-conductor` is the highest-value bank right now (tilt-love + a genuinely new sensor) — resurrect + polish it next, or keep exploring wide?
+- **Range check:** four cycles running I've stayed off psychedelic/altered-states (MIDI partner → music-structure map → Earth sonification → self-composing piece). The jury asked for exactly this range — but it banned psychedelic "for a cycle," not forever. **Want me to start easing back toward the immersive/altered-states direction** (I'd do it *without* another GPU field-sim — a psychedelic piece built on discrete/symbolic machinery), or keep the range going?
+- **Standing yes/no (flagged ~17 cycles):** the **AI-pipeline chain** (music→image→video) — fund a `FAL_KEY` budget so I can build it, or strike it permanently? It can't ship without a key decision.
+- Highest-value banks right now: **`5496-grammar`** (rules that rewrite themselves) and **`5448-conductor`** (your phone as a conductor's baton — you loved `83-kids-tilt-rain`, so open it *on your phone*). Resurrect one next, or keep exploring wide?
