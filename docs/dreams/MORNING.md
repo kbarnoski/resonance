@@ -1,50 +1,48 @@
-# Morning digest — last updated 2026-08-02 ~06:15 UTC (cycle 987, WIDE fire)
+# Morning digest — last updated 2026-08-02 (cycle 988, DEEP fire)
 
-> **Tonight the lab paints with your own music.** For weeks the jury has said the
-> "use Karel's REAL piano as the carrier wave" directive is honored by exactly one
-> piece (`4264-lucent`). Tonight a second: **press play and your actual Path recording
-> becomes a slow, boundless ocean of coloured light that paints itself** — the shape
-> of each chord becomes the shape of a pigment cloud that drifts, blooms, and never
-> repeats. It's the **Refik Anadol move** — data as *pigment*, not chart — from
-> *Dataland*, the first AI-art museum, which NPR covered 4 days ago. Cosmic-ambient,
-> slow, photosensitive-safe. **Best with sound on; also works on a phone.**
+> **Tonight the lab builds the "entities."** ~45% of DMT breakthroughs involve meeting
+> autonomous *beings*. Tonight's piece renders one honest guess at what a "being" could
+> actually BE: the **self-propelled topological defects of an active nematic** — a living
+> liquid crystal in perpetual turbulence, forever birthing and annihilating little
+> comet-shaped entities. Each one is a **voice**. Draw a boundary to gather them and
+> their chaos locks into an eternal three-body **"golden braid"** — a real 2025 physics
+> result — that sings a repeating canon. Drug-free, no strobe. **Best with sound on.**
 
 ## New since yesterday — open this first
-- **[5160-datapigment](https://getresonance.vercel.app/dream/5160-datapigment)** — *your
-  piano, rendered as living data-pigment.* On load a seeded ocean is already breathing
-  (silent, zero clicks — good for a phone). Press **Play Karel's piano** and your real
-  Path recording takes over: a WebGL2 fluid dye-field advects and blooms, five spectral
-  bands each painting their own colour (deep indigo lows → pale magenta air), onsets
-  bursting radial rings. *Why open it: it's the second piece ever to make your **real
-  music** the paint, on a technique the lab had never tried — Jos Stam fluid advection
-  as Anadol "data pigment."* **No recording?** A seeded cosmic-ambient pad drives the
-  identical field (a LIVE/SYNTH badge shows which).
-- **2 more built + banked** (WIDE — three unrelated directions in one fire; IDEAS §987):
-  - **`5176-plume` ⭐⭐ (resurrect first)** — *a million points of light draw a living
-    breakthrough-tunnel.* A **WebGPU-compute** 260k-agent river pulled toward a radiant
-    vanishing point (Klüver's tunnel form-constant · Sage Jenson). Held only because
-    WebGPU needs a real GPU to judge — and it's the piece that finally **rests WebGL2**
-    (now 4× recent) + cashes your standing "more WebGPU" ask. Resurrect-first for 988.
-  - **`5192-mandorla` ⭐** — *an impossible non-Euclidean chamber, breathing with your
-    voice.* A hyperbolic Poincaré-disk tessellation (Coxeter · Klüver). Lower surprise —
-    hyperbolic/kaleidoscope is a well-worn lab family — so held for a sharper angle.
+- **[5224-covenant](https://getresonance.vercel.app/dream/5224-covenant)** — *the DMT
+  entity-encounter, made of real physics.* On load a seeded demo self-plays the whole arc
+  hands-free (tap once for sound): luminous beings drift in a dark volume (three.js, bloom +
+  tracers — the "jeweled" DMT register), you **drag a boundary** to gather them, and after
+  ~4s three of them lock into a slow braid and their voices resolve to a bright triad over a
+  looping canon. *Why open it: it's the first piece to make the entity-contact the center —
+  and the entities aren't decoration, they're genuinely tracked ±½ defects with lifespans,
+  each one an oscillator that's born, wanders, and dies.*
+- **2 more built + banked** (DEEP — one concept, three renderers; IDEAS §988):
+  - **`5208-braid` ⭐⭐ (resurrect first)** — the **Canvas2D** reading of the same idea; plainer
+    but paints on literally any device (the guaranteed-silent-review version).
+  - **`5240-golden` ⭐** — the **WebGPU** high-density reading (a whole *swarm* of beings).
+    Banked for the usual reason: WebGPU can't be judged headless and falls to CPU on a phone —
+    resurrect on a real-GPU review slot.
 
 ## Under the hood (worth noting)
-- Research chain: RESEARCH §987 → **Anadol's *Dataland*** (NPR 2026-07-29, "machines are
-  collaborators"). The winner implements its "data-as-pigment" premise directly, with
-  Karel's real Path piano as the data. Freshest-possible named reference.
-- Honest note: fluid dye-advection isn't a *new* lab technique — the fresh value is the
-  Anadol frame + the real-music payoff + a same-day named-ref chain. **Not eye/ear-verified**
-  (headless): the seeded ocean + Canvas2D fallback stand in for review, but whether your
-  real recording fetches/decodes at runtime and whether the pigment reads as *your chord's
-  shape* want your real browser + speakers.
-- Ledger honesty: 987 was DEEP-due but both jury-named DEEP peaks (`4856` planetary, `4952`
-  erosion) are already extended — no fresh DEEP target, so I ran WIDE. **988 is DEEP-due.**
+- Research chain: RESEARCH §988 → active-matter defect physics. The "chaos → golden braid"
+  arc is the **arXiv:2503.10880** (Mar 2025) confinement result; the freshness anchor is
+  **arXiv:2606.13721** (Jun 2026, steering individual defects). Foundational: Sanchez & Dogic
+  (*Nature* 2012), Tan et al. (*Nature Physics* 2019). Entity frame: Strassman / McKenna.
+- Honest notes: active nematics isn't a *new* lab technique (`2888-mesolife` did one as
+  oil-film birefringence) — the fresh value is tracking the defects as **individually-voiced
+  beings** + the chaos→braid arc, never built before. **Not eye/ear-verified** (headless): I
+  validated the *physics* headlessly (the braid genuinely locks to exactly 3 with oscillating
+  orbits, 60fps), but the bloom render + the voices want your real device. And the braid
+  *steers* three real tracked defects onto the analytic braid path rather than hoping a light
+  CPU sim lands exactly three — the detection/voices it feeds stay genuine (stated in README).
+- Ledger: 988 was DEEP-due and I ran DEEP. **989 is WIDE-due.** WebGL2 got its rest tonight
+  (three.js instead) — the 4×-over-use ban clears.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
 - **AI-pipeline chain** (music→image→video) — flagged ~14 cycles + every jury: **fund a
   per-prototype `FAL_KEY` budget and build it, or strike it from the queue permanently?**
-- **Did the real-music paint land?** If `5160-datapigment` singing your own piano works,
-  the deepening is content-aware pigment (a recognizable melodic fragment surfacing in the
-  cloud) — worth a DEEP cycle?
-- **WebGPU** — `5176-plume` is banked-ready and rests the tired WebGL2 lane. Want it next?
+- **Do the "beings" read as beings?** If `5224-covenant` lands, the deepening is entity
+  *behavior* — defects that seem to notice you/each other, gesture, cluster — worth a cycle?
+- **WebGPU** — three banked GPU pieces now wait on a real-GPU review (`5112`, `5176`, `5240`).
+  Any chance you can open one on a desktop with WebGPU so I can judge that lane?
