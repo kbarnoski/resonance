@@ -1,55 +1,53 @@
-# Morning digest — last updated 2026-08-02 ~02:15 UTC (cycle 985, DEEP fire)
+# Morning digest — last updated 2026-08-02 ~04:40 UTC (cycle 986, WIDE fire)
 
-> **Tonight I finally built the room.** For weeks the jury has said the same thing —
-> *"the spatial/installation lane is a graveyard of banked ideas; either build the room
-> or stop banking it."* So this DEEP is a **room you cross, not a screen you watch**: a
-> boundless dark cathedral where a choir of eight voices is spatialized in a full sphere
-> around your head (true HRTF binaural), and you drift from a scattered dark **void**,
-> down a **tunnel**, into a warm **light** that pulls all the voices into a single chord.
-> Turn your head (or drag) and the whole sound-field swings around you. It's a drug-free
-> **near-death threshold** — cosmic-ambient, not intense — reviving the psychedelic
-> direction on the calm pole. **Headphones make it; but the visuals tell the whole story
-> silently too.**
+> **Tonight the lab finally puts your bare hands in the frame.** For weeks the jury
+> has named two un-cashed provocations — the spatial "room" (cashed last night by
+> `5048-narthex`) and *"camera / body-tracking is still 0× — spend a cycle on a
+> sensor the lab keeps avoiding."* So this WIDE cashes the second: **raise your
+> hands to the webcam and a living plasma of violet light and sound gathers between
+> your fingers.** No mouse, no keyboard — you conduct it in the air. It revives the
+> psychedelic direction on the **INTENSE** pole (5048 was calm), on a deliberately
+> non-log-polar field. **Best on a laptop with a webcam + sound on.**
 
 ## New since yesterday — open this first
-- **[5048-narthex](https://getresonance.vercel.app/dream/5048-narthex)** — *a room you
-  cross, not a screen you watch.* **Self-demos on load** (a seeded ~13s descent plays the
-  full void→tunnel→light journey hands-free, so you see the arc even on a silent phone).
-  Press **Enter** for sound; then **put on headphones** and turn your head (iOS) or
-  drag to look around — the choir is placed in 3-D space around you and swings as you turn.
-  *Why open it: it's the lab's **first shipped "room you inhabit"** — the spatial/installation
-  lane you kept flagging is finally built, not banked. This is `5016-vestibule` reborn (the
-  one I said I'd resurrect first).* Canvas2D — always paints, no GPU needed.
-- **2 more built + banked** (DEEP — three technical approaches to the same room; IDEAS §985):
-  - **`5064-cupola` ⭐⭐ (resurrect first)** — the most ambitious of the three: you *hear the
-    room change as you move* — a live moving-listener acoustic model recomputes the reverb
-    per position (boxy → vast → infinite-bright) as you fall down a WebGL2 tunnel. It's the
-    direct build of today's research; held only because WebGL2 is over-used lately and its
-    payoff needs real GPU + headphones to judge.
-  - **`5080-antechamber` ⭐⭐** — the room that **senses you're there** via the camera (raw
-    motion, no face/pose ML): lean toward it and you're drawn toward the light. The
-    installation reading of "build the room."
+- **[5096-theurgy](https://getresonance.vercel.app/dream/5096-theurgy)** — *conduct a
+  living plasma with your bare hands.* Click **Start camera**, then raise both hands:
+  each fingertip is a light-and-sound emitter, **pinch** to bloom and zoom, **spread
+  your hands** to fold the field into a kaleidoscope, **raise/lower** to drift the hue.
+  The sound tracks your fingers in real time (openness opens the filter; a pinch fires
+  a shimmer). *Why open it: it's the lab's **first camera-input piece in the whole
+  recent window** — the exact starved sensor you kept flagging, now a live instrument.*
+  **No webcam?** It still fully demos — drag the mouse to conduct a virtual hand, and
+  it auto-orbits (with sound) if you do nothing.
+- **2 more built + banked** (WIDE — three unrelated directions in one fire; IDEAS §986):
+  - **`5112-nucleus` ⭐⭐ (resurrect first)** — *your voice condenses a cosmos out of
+    dust.* Sustain a tone and 131k GPU particles nucleate into a filamentary cosmic web;
+    clap and it scatters. Held only to rest the camera lane a beat — it's the direct cash
+    of your other jury ask (**"more WebGPU"**), needs a real GPU to judge.
+  - **`5128-hypercube` ⭐⭐** — *turn an impossible 4D object and hear it sing its folds.*
+    A tesseract rotating through the axes with no 3D analogue, ringing a just-intoned bell
+    each time a corner passes through our space. The most robust of the three; high surprise.
 
 ## Under the hood (worth noting)
-- Research chain: RESEARCH §985 read **PathRIR (arXiv:2607.23293, 28 Jul 2026)** — new work
-  making a room's acoustic signature fast enough to recompute *as a listener moves*, so a room
-  stops being a fixed reverb and becomes a place you inhabit. The winner leans on it (cosmic
-  cathedral reverb); the banked `5064-cupola` implements the moving-listener model literally.
-- Honest note: HRTF `PannerNode`s + Canvas2D are known primitives (and `42-binaural` is a lab
-  prior) — no technique-novelty claim. The fresh thing is that **this is the first room-you-inhabit
-  the lab has ever shipped** (the whole spatial lane was banked, never built), plus the direct
-  research chain and reviving psychedelic on the **cosmic-ambient** pole (last two were intense).
-- No network, no API route, no mic — HRTF audio + Canvas2D + optional phone head-tracking only.
+- Research chain: RESEARCH §986 read a **WJARR 2026** paper making the whole
+  hand-tracking → GPU-visuals loop run at **<35 ms** — cheap enough that "conduct with
+  your hands" feels like direct manipulation, not a laggy gimmick. The winner implements
+  it directly (MediaPipe two-hand, 21 landmarks each, loaded from CDN — no new npm dep).
+- Honest note: MediaPipe is a lab prior (`1051-hand-hyperspace`) — no technique-novelty
+  claim. The fresh things are: camera-input revived after **0× recent**, the direct
+  research chain, ≥3 wired subsystems, and a **non-log-polar** psychedelic-INTENSE field.
+- Photosensitive-safe (only a ~0.15 Hz luminance drift, no strobe). The only network is
+  the MediaPipe CDN, which fails gracefully to the pointer path. No mic, no API, no secrets.
 
 ## Open questions for Karel (yes/no — blocked on you, not the agent)
-- **AI-pipeline chain** (music→image→video) — flagged ~13 cycles + every jury: **fund a
+- **AI-pipeline chain** (music→image→video) — flagged ~14 cycles + every jury: **fund a
   per-prototype `FAL_KEY` budget and build it, or strike it from the queue permanently?**
-- **Did the room land?** `5048-narthex` is best on headphones. If the spatial choir works for you,
-  the next move is to fold in `5064-cupola`'s moving-acoustics so the *room itself* re-renders as
-  you cross it (not just the voices) — worth a DEEP deepening cycle?
+- **Did the hands land?** `5096-theurgy` is best on a laptop webcam. If bare-hand
+  conducting works for you, the next move is a gesture vocabulary (fist/open-palm mode
+  switch) or pinch-to-record a gesture loop — worth a DEEP deepening cycle?
 - **Real two-device WebRTC** room + **depth-camera** spatial-audio room — still want these, or park?
 
-*Ledger: WIDE due next fire (983 D · 984 W · 985 D → 986 WIDE). Both jury-named DEEP peaks
-(`4520-seismarium`, `4776-contour`) stay extended; tonight cashed the jury's OTHER most-repeated
-provocation — the spatial/"room" graveyard is finally shipped, not banked. Watch: WebGL2 is 2×
-recent (982/984) and banked-ready via `5064` — rest it a beat before the next GPU piece.*
+*Ledger: DEEP due next fire (983 D · 984 W · 985 D · 986 W → 987 DEEP). Both jury-named
+DEEP peaks (`4520/4856` planetary, `4776/4952` erosion) stay extendable. Watch: WebGL2 is
+now 3× recent (5000/4904/5096) — rest it next GPU piece (WebGPU/three.js banked-ready via
+5112/5128).*
