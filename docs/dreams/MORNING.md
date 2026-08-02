@@ -1,48 +1,45 @@
-# Morning digest — last updated 2026-08-02 (cycle 988, DEEP fire)
+# Morning digest — last updated 2026-08-02 (cycle 989, WIDE fire)
 
-> **Tonight the lab builds the "entities."** ~45% of DMT breakthroughs involve meeting
-> autonomous *beings*. Tonight's piece renders one honest guess at what a "being" could
-> actually BE: the **self-propelled topological defects of an active nematic** — a living
-> liquid crystal in perpetual turbulence, forever birthing and annihilating little
-> comet-shaped entities. Each one is a **voice**. Draw a boundary to gather them and
-> their chaos locks into an eternal three-body **"golden braid"** — a real 2025 physics
-> result — that sings a repeating canon. Drug-free, no strobe. **Best with sound on.**
+> **Tonight: reality dissolving into hallucination — the way the brain actually
+> does it.** The leading neuroscience model of a psychedelic peak (REBUS) says the
+> brain's own top-down *predictions* flood down into the sensory field as the gating
+> that holds them back relaxes — and structured imagery blooms out of noise. Tonight's
+> piece BUILDS that loop: a top-down reaction-diffusion "prior" vs. your live mic as the
+> bottom-up "sensory" stream, and you watch the crossover. Drug-free, no strobe.
+> **Best with sound + mic on — but it self-plays the whole arc even if you tap nothing.**
 
 ## New since yesterday — open this first
-- **[5224-covenant](https://getresonance.vercel.app/dream/5224-covenant)** — *the DMT
-  entity-encounter, made of real physics.* On load a seeded demo self-plays the whole arc
-  hands-free (tap once for sound): luminous beings drift in a dark volume (three.js, bloom +
-  tracers — the "jeweled" DMT register), you **drag a boundary** to gather them, and after
-  ~4s three of them lock into a slow braid and their voices resolve to a bright triad over a
-  looping canon. *Why open it: it's the first piece to make the entity-contact the center —
-  and the entities aren't decoration, they're genuinely tracked ±½ defects with lifespans,
-  each one an oscillator that's born, wanders, and dies.*
-- **2 more built + banked** (DEEP — one concept, three renderers; IDEAS §988):
-  - **`5208-braid` ⭐⭐ (resurrect first)** — the **Canvas2D** reading of the same idea; plainer
-    but paints on literally any device (the guaranteed-silent-review version).
-  - **`5240-golden` ⭐** — the **WebGPU** high-density reading (a whole *swarm* of beings).
-    Banked for the usual reason: WebGPU can't be judged headless and falls to CPU on a phone —
-    resurrect on a real-GPU review slot.
+- **[5272-rebus](https://getresonance.vercel.app/dream/5272-rebus)** — *watch reality
+  dissolve into structured hallucination the way the brain actually does it.* On load,
+  a seeded demo self-plays the whole **sober → bloom → return** arc hands-free (tap
+  **Begin** for sound; grant the mic to drive it with your voice). At "sober" the field
+  is faithful and jittery; as the gating knob drops, the top-down prior runs free and
+  geometry blooms out of noise — that crossing is the hallucination, made visible.
+  *Why open it: it's the first piece to build the actual predictive-coding loop (REBUS),
+  not just a picture of a trip — and it's plain Canvas2D, so it paints on any device.*
 
-## Under the hood (worth noting)
-- Research chain: RESEARCH §988 → active-matter defect physics. The "chaos → golden braid"
-  arc is the **arXiv:2503.10880** (Mar 2025) confinement result; the freshness anchor is
-  **arXiv:2606.13721** (Jun 2026, steering individual defects). Foundational: Sanchez & Dogic
-  (*Nature* 2012), Tan et al. (*Nature Physics* 2019). Entity frame: Strassman / McKenna.
-- Honest notes: active nematics isn't a *new* lab technique (`2888-mesolife` did one as
-  oil-film birefringence) — the fresh value is tracking the defects as **individually-voiced
-  beings** + the chaos→braid arc, never built before. **Not eye/ear-verified** (headless): I
-  validated the *physics* headlessly (the braid genuinely locks to exactly 3 with oscillating
-  orbits, 60fps), but the bloom render + the voices want your real device. And the braid
-  *steers* three real tracked defects onto the analytic braid path rather than hoping a light
-  CPU sim lands exactly three — the detection/voices it feeds stay genuine (stated in README).
-- Ledger: 988 was DEEP-due and I ran DEEP. **989 is WIDE-due.** WebGL2 got its rest tonight
-  (three.js instead) — the 4×-over-use ban clears.
+## In progress / partial — 2 more explored this fire, banked (IDEAS §989)
+- **`5256-plateau` ⭐⭐ (resurrect first)** — float endlessly through a **morphing minimal
+  surface** (a soap-film / gyroid cosmos), three.js raymarch; the boundless-meditative
+  pole. Banked because the shader needs your real GPU/eyes to tune.
+- **`5288-hypnagogia` ⭐** — the **sleep-onset threshold**: hold still and autonomous
+  imagery assembles itself out of the dark. WebGPU (falls to Canvas2D on a phone) — banked
+  for the usual reason: the GPU path can't be judged headless.
 
-## Open questions for Karel (yes/no — blocked on you, not the agent)
-- **AI-pipeline chain** (music→image→video) — flagged ~14 cycles + every jury: **fund a
-  per-prototype `FAL_KEY` budget and build it, or strike it from the queue permanently?**
-- **Do the "beings" read as beings?** If `5224-covenant` lands, the deepening is entity
-  *behavior* — defects that seem to notice you/each other, gesture, cluster — worth a cycle?
-- **WebGPU** — three banked GPU pieces now wait on a real-GPU review (`5112`, `5176`, `5240`).
-  Any chance you can open one on a desktop with WebGPU so I can judge that lane?
+## Research worth a look (RESEARCH §989)
+- Freshest anchor (<30d): **"Neural Representation of Minimal Surfaces"** (arXiv:2607.23437,
+  28 Jul 2026) → the `5256-plateau` gyroid cosmos.
+- The winner's frame: **REBUS** (Carhart-Harris & Friston 2019) + a 2024 psilocybin fMRI
+  showing top-down flooding to early visual cortex — the model, literalized.
+
+## Open questions for Karel (standing — a yes/no unblocks each)
+- **AI-pipeline chain** (music → image → video): fund a `FAL_KEY` and build it, or strike
+  it from the queue? Flagged ~15 cycles + every jury. A permanent yes/no would settle it.
+- **WebGPU** — four banked GPU pieces now wait on a real-GPU review (`5112`, `5176`, `5240`,
+  `5288`). Any chance you can open one on a desktop with WebGPU so I can judge that lane?
+- Real two-device **WebRTC** shared-listening room + a **depth-camera** installation room —
+  both want hardware I can't exercise headless. Worth a cycle when you can review live?
+
+*Next fire (~2h): DEEP due (ledger 986 W · 987 W · 988 D · 989 W). Both jury-named DEEP peaks
+already extended → a fresh DEEP concept or a third extension. Canvas2D just hit 4× — it joins
+WebGL2 in the rest bin; three.js (5256) + WebGPU banks are the fresh-output candidates.*
