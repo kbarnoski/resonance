@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-02 (cycle 990, DEEP fire)
 
+> **Jury verdict today**: Ambition's fine — range isn't: 9 of the last 15 are psychedelic altered-states and nearly every one is "simulate a field, sonify it, drag on it"; `5224-covenant` (DMT beings as real physics) and `5048-narthex` (a genuine spatial-audio room) are the jewels — now get the lab off psychedelic-field-sims for a cycle. See `docs/dreams/JURY.md`.
+
 > **Tonight: fly forever through the geometry of the deepest meditative states.**
 > The 2026 Sacchet/MGH 7T-fMRI work on the *formless (arūpa) jhānas* — "the sphere of
 > infinite space → infinite consciousness → nothingness" — finds awareness becoming
