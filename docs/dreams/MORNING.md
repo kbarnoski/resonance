@@ -1,21 +1,22 @@
-# Morning digest — last updated 2026-08-03 (cycle 1002, DEEP fire)
+# Morning digest — last updated 2026-08-03 ~14:35 UTC (cycle 1003, WIDE fire)
 
-> **Jury verdict today**: You escaped the psychedelic field-sims and the ambition floor is rock-solid — but you traded them for a music-theory reading room (7 of the last 15 are "analyze note-data on a scrolling score"); `5528-follow` and `5864-overture` are the jewels — now build ONE wordless, gorgeous, immersive piece and stop explaining the music at me. See `docs/dreams/JURY.md`.
+> **We built the piece the jury asked for.** Yesterday's verdict: "reclaim the transcendent pole… build ONE wordless, gorgeous, immersive piece and stop explaining the music at me" + "feed WebGPU-compute — it's now 0×." Today's ship is exactly that.
 
-**Open first — on your phone:** [/dream/5864-overture](https://getresonance.vercel.app/dream/5864-overture) — tap **Begin the journey**, then **drag the timeline to the climax**. It's a 6-minute Resonance session composed as a *cinematic dramatic arc* — Freytag's pyramid (setup → inciting incident → rising action → climax → resolution) — where every note is chosen by a real, quantitative **musical-tension model**, so minute 5 is *earned* by minute 1. The whole shape is drawn as a tension landscape you can read (and scrub) in 5 seconds, even muted.
+## Open this first
+- **[5912-homecoming](/dream/5912-homecoming)** — *Fall inward through a living nebula.* No words, no meters, no readout — you drift into a breathing cloud of light that inhales/exhales with a wordless just-intonation drone, reach the warm core, and are carried back to the rim to fall again. **Why open:** a real **WebGPU compute-shader** nebula (~400k particles advected on the curl of a noise field), the purest *Cosmic Homecoming* register, zero chrome. Degrades WebGPU → Canvas2D → notice, so it renders on your phone.
 
-## New since yesterday
-- **`5864-overture`** *(shipped — cycle 1002 DEEP winner)* — **this is your care-#4 ask, finally built: an alternate journey ARC.** Not the psychedelic 6-phase engine — a warm *felt-piano ensemble* driven through a Freytag dramatic arc by a real **Farbood tension model** (loudness × register × harmony × density × tempo). The clever part: the model runs **both ways** — the dramaturgy *drives* the notes, and the notes *read back* as a live tension curve wobbling around the target, both drawn on screen. It's the most plausible real alternate-journey engine we've prototyped — you could drop your own Path recordings into this tension model. Refs: **Freytag's pyramid (1863)** + **Farbood, *A Parametric Temporal Model of Musical Tension* (2012)**.
-- **2 more journey-arc dramaturgies explored & banked (IDEAS §1002), both built clean this fire:**
-  - `5896-surge` ⭐⭐ — **EDM build-and-drop** (Butler's 16-bar phrase engine; "Jump to the drop"). The high-energy pole — deliberately off our calm brand, so it's banked for its own performance slot rather than headlining. You named EDM *first* in care-#4; it's ready.
-  - `5880-liminal` ⭐⭐ — **ritual rite-of-passage** (drone splits into 7 just-intoned overtones across a threshold crossing, then resolves). The transcendent/cosmic-ambient pole — held back only because its vibe leans toward the altered-states register the jury has us resting; it's the ready vehicle for that measured return.
+## How this cycle went
+- **WIDE fire, 3 parallel builders → shipped 1.** One jury ask (a wordless immersive transcendent piece), three divergent states on three GPU paths (WebGPU / raymarch / three.js). Shipped the WebGPU one; banked the other two.
+- Hit one real build error (a TS 5.7 typed-array typing on `writeBuffer`) — fixed in the one allowed attempt (pinned `Float32Array<ArrayBuffer>` return types). Build green.
 
-## In progress / partial
-- Nothing half-built. DEEP fire = one concept, three finished dramaturgies, shipped the strongest; the other two are banked as complete briefs.
+## Explored & banked (IDEAS §1003) — both built clean this fire, resurrect-ready
+- **`5928-lightfold` ⭐⭐** — *NDE tunnel-to-light.* Raw-WebGL2 volumetric raymarch: drift through folding radiance toward a warm boundless glow over ~2.5 min, wordless rising overtone drone. The most viscerally transcendent of the three.
+- **`5944-sanctum` ⭐⭐** — *Inner Sanctuary.* three.js embodied 3D: sit inside a boundless violet dark of drifting light-motes that ring just-intoned singing-bowl bells as they pass. The calm meditative pole — and the "genuine 3D-embodied output" the jury also named.
 
-## Research findings worth a look
-- **RESEARCH §1002** — the 2026 symbolic-music frontier (DSMR, LK_Jam's self-motif operators, TOMI) has shifted from "generate a plausible continuation" to **full-piece STRUCTURE / long-span developmental variation**. The browser has no no-model equivalent — so the honest move is to hand-code the dramaturgical arc, which is exactly this cycle's build.
+## Research finding worth a look (RESEARCH §1003)
+- Refik Anadol's **Latent City** (BRUSK Bruges) + **DATALAND** (LA, 200-channel Data Pavilion) both open in 2026 around the *boundless latent-cloud you inhabit* — the transcendent register at museum scale. A WebGPU compute particle field is its browser-native, no-model form. That's the chain into today's build.
 
 ## Open questions for Karel
-- **Which arc pole do you want more of?** Cinematic (shipped), EDM (`5896`), or ritual (`5880`)? A love on any of the three tells me where to deepen — and whether to build the **jazz-responsive** arc you also named.
-- **The AI-pipeline chain (music→image→video)** has been jury-flagged ~24 cycles: fund a small `FAL_KEY` budget and I'll build it, or say strike it and I'll stop re-queuing it.
+- **Verify on device:** 5912 wants your phone/browser + speakers — is the particle density/glow right, does the drone breathe? (Headless can't ear- or GPU-verify.)
+- **Standing yes/no (24+ cycles):** the AI-pipeline chain (music→image→video) — fund `FAL_KEY` and build it, or strike it. Every jury flags this.
+- **Installation lane:** two-device WebRTC / depth-camera room needs live hardware — build it or strike it (jury's 2nd repeat).
