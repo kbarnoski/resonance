@@ -1,110 +1,123 @@
-# Concept Jury Verdict — 2026-08-02
+# Concept Jury Verdict — 2026-08-03
 
 ## Summary
-The ambition floor is not the problem anymore — it's genuinely holding (0 sub-floor
-builds in the window, 5 of 15 at a real 4–5, every ambitious build research-chained).
-The problem is that all that ambition is now aiming at **one target**. Nine of the last
-fifteen are psychedelic / altered-states pieces, and nearly every ambitious one is the
-*same recipe underneath*: **simulate a continuous field (erosion / fluid / reaction-diffusion /
-wave / mass-spring / active-nematic / minimal-surface), render it on the GPU, sonify it, and
-let the viewer drag on it.** The lab took the last jury's "psychedelic is fading — return to
-it" and overcorrected into a psychedelic-neuroscience-field-sim gallery. It solved *range*
-last window by accident and lost it again this window. High ceiling, collapsing spread.
+The lab did the assigned thing: last jury said "get off psychedelic field-sims," and it
+did — psychedelic/altered-states fell from 9-of-15 to 3 (all carryover), and the field-sim
+reflex is dead. Ambition is *better* than ever: **zero sub-floor builds, 8 of 15 at a real
+4–5**. But it didn't learn *spread* — it learned to **migrate the monoculture**. The new
+house style is a music-theory reading room: **7 of the last 15 are "represent music as
+symbolic note-data, run a theory/analysis engine on it, draw it as a 2D scrolling score."**
+The pendulum swung from GPU-field (9× GPU-raster) straight to CPU-2D (9× Canvas2D + SVG),
+and from "melt your ego in a fractal" to "here is a heat-map of your song's form." Same
+convergence, opposite pole. The immersive/transcendent register the Resonance brand is
+actually built on (Cosmic Homecoming, Inner Sanctuary) is now the **minority**.
 
 ## Diversity audit
-- Over-represented input: **pointer / touch drag** (5× — `4776`, `4952`, `5000`, `5224`,
-  `5304`; the "drag on the GPU field" gesture)
-- Over-represented output: **three.js** (4× — `4728`, `4808`, `5224`, `5304`) **and WebGL2/
-  WebGL2-shader** (4× — `4904`, `5000`, `5096`, `5160`). Combined GPU-raster (three.js +
-  WebGL2 + WebGPU) is **9 of 15** — inline-SVG/DOM has fallen to 3 and Canvas2D to 3.
-- Over-represented technique: **"simulated continuous PDE/physics field, sonified"** (≈9× —
-  `4776` erosion, `4856` wave-field, `4904` criticality field, `4952` erosion, `5000` mass-spring,
-  `5160` fluid dye, `5224` active-nematic, `5272` reaction-diffusion, `5304` TPMS geometry).
-  No single named algorithm hits 4, but the *meta-move* — a field that ripples and you listen
-  to it — is now the house style.
-- Over-represented vibe: **psychedelic / altered-states** (9× — `4808`, `4904`, `5000`,
-  `5048`, `5096`, `5160`, `5224`, `5272`, `5304`; the last nine shipped are almost wall-to-wall
-  altered-states). Sub-pattern: **"literalize a neuroscience-of-consciousness paper as a field"**
-  (`4808` DiscoForcing, `4904` DMT-criticality, `5224` DMT-entities, `5272` REBUS, `5304` jhāna
-  fMRI) is its own repeating template — 5 builds citing brain papers to justify a shader.
-- **BANNED for next cycle:** pointer/touch-drag input · three.js output · WebGL2/WebGL2-shader
-  output · field-sim-as-instrument technique (any "ripple a continuous field and sonify it") ·
-  psychedelic/altered-states vibe. A dragged, GPU-field, brain-paper altered-state is this
-  window's local minimum. Do not mint another.
+- Over-represented input: **none hits ≥4 — this axis is genuinely fixed.** mic 3× (`5272`,
+  `5528`, `5784`), self-playing/none 3× (`5480`, `5688`, `5864`), MIDI 2× (`5336`, `5720`),
+  device-orientation 2× (`5576`, `5816`), pointer-drag only 2× (`5224`, `5304`, both
+  carryover). Last jury's "pointer-drag 5×" is gone. **Credit where due — input diversity
+  is the win of the window.**
+- Over-represented output: **Canvas2D 5×** (`5272`, `5384`, `5432`, `5480`, `5688`) **and
+  inline-SVG/DOM 4×** (`5336`, `5528`, `5576`, `5624`). Combined CPU-2D = **9 of 15** — the
+  exact mirror of last window's 9-of-15 GPU-raster. three.js fell to 4, WebGL2 to 2, WebGPU
+  to 0. A **scrolling-score/piano-roll on SVG** is its own sub-cluster (`5336`, `5528`,
+  `5624`).
+- Over-represented technique: **"music as symbolic note-data + a music-theory/analysis
+  engine, rendered as a 2D score" (≈7×)** — `5336` species-counterpoint, `5384` SSM/novelty
+  analysis, `5480` motivic-transformation, `5528` online-DTW score-following, `5624` edit-op
+  sequencer, `5720` Spiral-Array tonal analysis, `5864` bidirectional tension model. No
+  single named algorithm hits 4, but the **meta-move** — note-data + theory engine + scroll —
+  is now what "ripple a field and sonify it" was last window. Field-sim itself is down to 3
+  (all carryover: `5224`, `5272`, `5304`).
+- Over-represented vibe: **analytical / cerebral "explain-the-music" (≈6–7×)** — `5384`,
+  `5480`, `5528`, `5624`, `5720`, `5784`, `5864` mostly ask you to *understand* music, not be
+  *moved* by it. Psychedelic dropped to 3 (`5224`, `5272`, `5304`, + `5688` hypnagogic-
+  adjacent). The genuinely-immersive count (`5304`, `5576`, `5688`, `5816`) is now the
+  minority — a new gap, not a strength.
+- **BANNED for next cycle:** Canvas2D output · inline-SVG scrolling-score/piano-roll output ·
+  the "note-data + theory engine + 2D score" technique (any piece whose core is analyzing/
+  transforming/following symbolic music and drawing it as a roll) · analytical/cerebral
+  "here's how the music works" vibe. Do NOT mint an eighth reading-room piece.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0.** No local-minimum builds this window — a genuine improvement.
-- **Hit 2–3 criteria: 10** — `4616`, `4680`, `4808`, `4856`, `4904`, `4952`, `5000`, `5096`,
-  `5160`, `5272`. (Most clear the floor on ≥3-subsystems + named-ref + fresh-research; the
-  weakness is novelty, not effort — many are extensions or re-scaffolds.)
-- **Hit 4–5 criteria: 5** — `4776-contour` (5/5: first hydraulic-erosion sim + ≥3 subsystems +
-  named refs + multi-cycle shared engine + fresh research), `4728-rubato` (4/5), `5048-narthex`
-  (4/5), `5224-covenant` (4/5), `5304-formless` (4/5). **These are the ones to extend, and to
-  learn *range* from — note that the two best (`5224`, `5048`) are the two that broke the
-  field-sim/psychedelic mold hardest.**
+- **Hit 0–1 criteria: 0.** No local-minimum builds — held for a second straight window.
+- **Hit 2–3 criteria: 7** — `5272`, `5384`, `5432`, `5480`, `5688`, `5720`, `5816`. (Mostly
+  clear on ≥3-subsystems + named-ref; the weak leg is novelty or research-recency, not effort.)
+- **Hit 4–5 criteria: 8** — `5224-covenant` (4/5), `5304-formless` (4/5), `5336-answerer`
+  (4/5), `5528-follow` (5/5), `5576-reflections` (4/5), `5624-redlines` (4/5),
+  `5784-converge` (4/5), `5864-overture` (4–5/5). **A better top-tier than last window (8 vs
+  5). Ambition is not the problem and hasn't been for two windows — form and vibe are.**
 
 ## Standouts (positive)
-- `5224-covenant`: the window's peak. **The only genuinely new technique here** — a real
-  active-nematic director field with honest ±½ topological-defect *detection and tracking*, and
-  the golden three-defect braid is a state actually detected from the tracked data, not scripted.
-  Reframing "DMT entities" as real self-propelled physics is the rare build where the mechanic
-  and the concept are the same object. This is what "borrow a NAMED reference" (Sanchez/Dogic,
-  arXiv:2503.10880) is supposed to produce.
-- `5048-narthex`: the closest the lab has ever come to the installation/room lane it perpetually
-  banks and never builds — a real full-sphere HRTF choir with a head-tracked `AudioListener` and
-  a *procedurally-synthesised* convolution IR (no sample file). Cardiff's *Forty Part Motet* as
-  the ref is earned. Different subsystem set from everything around it.
-- `5304-formless`: chose the **buildable** form of a hard idea — a real marching-cubes minimal-
-  surface mesh that renders on a phone, instead of banking yet another raymarch/WebGPU sibling
-  that waits forever for a real-GPU review. The segregated→integrated drone maps the fMRI finding
-  honestly. Fresh <14-day research (arXiv:2607.23437) actually implemented.
-- `4728-rubato`: the rarest thing in the window — an accompanist that breathes with your rubato
-  via a Large & Jones attending oscillator, no score/click/model. Musical stakes, not moral or
-  neurological ones. The lab needs more of *this* register, not less.
-- `4776-contour`: still the erosion peak, and its `_shared/erosion/engine.ts` is the one piece
-  of genuine reusable infrastructure the window produced (`4952-confluence` built on it cleanly).
+- `5528-follow`: **the window's peak.** A genuinely new verb — *follow* a live performer
+  against a known score with a transparent online-DTW cost grid that survives rush, drag,
+  wrong notes, skips and repeats, verified headlessly on all four hard cases, degrading to a
+  seeded synthetic performer. This is exactly the "interaction logic, not PDE" escape hatch
+  the last jury named (`4680`/`4728` lineage) — and it has real live-performance fitness
+  (care-#3). 5/5, and the rare build where the mechanic *is* the concept.
+- `5864-overture`: the most plausible **alternate journey engine** the lab has ever shipped —
+  Karel's standing care-#4. A 6-minute through-composed cinematic arc (Freytag) driven by a
+  real quantitative **Farbood tension model that runs both ways** (dramaturgy drives the
+  notes; the notes read back as a live tension curve). You could drop his Path recordings
+  into this. This is the one to extend into a real engine.
+- `5576-reflections`: the **installation/room lane** the jury has begged for ~11 cycles,
+  finally a second entry — a navigable binaural room built on the from-scratch image-source
+  method (order-2 lattice, 17 images/voice), the acoustics re-rendering as you walk. Neuhaus/
+  Leitner as refs is earned. Different subsystem set from everything around it.
+- `5784-converge`: the **freshest technique** in the window — a CMA-ES swarm re-deriving its
+  own FM patch to *become* a timbre you give it, scored on analytic Bessel spectra so
+  thousands of candidates rank per second. "A synth that becomes your sound," grep-0× verb in
+  a 1600-piece lab. Real surprise (care-#2).
+- Honorable: `5336-answerer` (a partner that can *refuse* to cadence) is strong and on-brand —
+  but see below; it's the head of a cluster, not a lone jewel.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- `5160-datapigment`: **a re-scaffold of `4264-lucent`** — identical file layout
-  (`analysis.ts` · `deposit.ts` · `gl.ts` · `rng.ts` · `synth.ts` · `page.tsx`), same verb
-  ("Karel's real piano paints a WebGL2 flow-field with long memory"), which `4264` already did
-  and a prior jury already praised. The Anadol "data as pigment" framing is a fresh coat of
-  paint on an existing car. This is the window's clearest local-minimum repeat.
-- `5096-theurgy`: the weakest of the psychedelic run — MediaPipe hands (used before in `1051`,
-  `3880`) driving a generic domain-warp kaleidoscope plasma, refs thin (a hand-tracking how-to +
-  Klüver), and the README itself lists the rough edges (unstable hand indexing, mirrored
-  fingertips). Hands-as-forces-in-a-shader is inventory now.
-- `4904-criticality` + `5272-rebus` as a pair: both are "mic FFT drives a field across a
-  psychedelic threshold, drone decoheres/recoheres, just-intoned consonance rewards the peak."
-  Individually fine; together they're the same neuroscience-literalization template twice, and
-  they sit inside the 5-build brain-paper cluster that is itself the concept-level rut.
+- `5720-lattice`: an **analytical reskin of the lab's oldest shape** — play notes, watch a
+  pretty 3D crystal light up. The Spiral Array and center-of-effect are real tonal analysis,
+  but the *experience* is a visualizer you look at, and it's the **third three.js glowing-
+  orbiting-object** of the window (`5224`, `5816`, `5720`). "Dress a note-visualizer as
+  analysis" is the window's clearest local-minimum repeat.
+- `5480-development`: the **plainest member of the symbolic-score cluster** — a solo self-
+  composer with no interaction and no partner, so it lacks the one thing that makes its
+  siblings sing (`5336`'s refusal, `5528`'s following, `5624`'s counter-editing agent). The
+  developing-variation engine is competent; the piece has no *stake*. It reads as the cluster's
+  baseline, which is exactly why the cluster shouldn't grow.
+- `5432-tremorsong`: the **most templated form of data-music** — quake→pitch/pan/loudness
+  parameter-mapping is the textbook sonification example, and the named ref (Holtzman/
+  SeismoDome) *is* the canonical version that already exists. It cashes the data-sonification
+  menu item in its most expected shape; its own "what I'd deepen" (audify the real seismogram
+  waveform, not a synth bell) is where the actual idea was.
 
 ## Provocations for tomorrow's dream cycle
-- **Ban altered-states for a cycle — you overcorrected.** Last jury said psychedelic was fading;
-  the answer was NOT to make 9 of 15 psychedelic. Force one build with no ego-dissolution, no
-  boundlessness, no brain paper. The lab literalized five consciousness papers as fields in one
-  window — that's a genre now, not a direction.
-- **Kill the field-sim reflex for a cycle.** "Simulate a continuous field, render it on the GPU,
-  sonify it, drag on it" is the new house style (≈9 of 15). Build something whose core is NOT a
-  rippling continuous medium — a discrete/symbolic/agentic/score-based piece. `4680-concord`
-  (a partner that can *refuse*) and `4728-rubato` (an oscillator that *tracks* you) are the shape
-  of the escape hatch: interaction logic, not PDE integration.
-- **Cash a starved input.** Pointer-drag is 5×, camera 2×, but **MIDI/MPE shipped exactly once
-  (`4616-pressing`) and it was a standout**, tilt is only ever a secondary fallback, and real
-  external-data shipped once (`4856`). Build a MIDI-*primary* piece, or a real second sensor —
-  not a fourth thing you drag your finger across a shader.
-- **Extend `5048-narthex` into the actual room.** It is the nearest the lab has gotten to the
-  two-device WebRTC / depth-camera installation the jury has named for ~10 cycles and never built.
-  You have a working HRTF-spatial spine now — either put it in a real shared/embodied room this
-  week or admit the installation lane is dead and stop banking it.
-- **If you touch Karel's piano again, change the verb.** `5160` and `4264` both "paint it into a
-  fluid." Do score-following, or a duet, or a structural analysis — anything but a third flow-field.
+- **You migrated the monoculture; you didn't break it.** Window −1 = 9/15 psychedelic field-
+  sims. Window 0 = 7/15 note-data-on-a-scrolling-score. The lab has now proven it can move a
+  monoculture on command but can't *hold a spread*. Ban the "symbolic music + theory engine +
+  2D roll" recipe outright for a cycle — no counterpoint engine, no SSM, no piano-roll diff.
+- **Reclaim the transcendent pole — it's the brand and it's now the minority.** The lab swung
+  from ego-dissolution to spreadsheets; `5384`/`5480`/`5720`/`5784` want you to *understand*
+  music. Build ONE unabashedly beautiful, wordless, immersive piece with **no readout, no
+  meter, no derivation trace, no "here's how it works" chrome** — `5576`-room and
+  `5304`-formless are the register to return to. Immersion is not the same as psychedelic;
+  you can serve Cosmic Homecoming without a brain paper.
+- **Kill Canvas2D + SVG-scrolling-score output for a cycle.** Rendering flipped GPU-9 → CPU-2D-9;
+  WebGPU is now 0× (it was the jury-under-represented lane you were *supposed* to feed). Force
+  a WebGPU-compute or a genuine 3D-embodied output — not a fourth piano-roll.
+- **Build a REAL room, not a third single-user one — this is the second time.** You now hold
+  TWO spatial-audio spines (`5048-narthex` HRTF choir, `5576-reflections` image-source room)
+  and built the two-device-WebRTC / depth-camera installation from *neither*. Last jury (#4):
+  "put narthex in a real shared/embodied room this week or admit the lane is dead." You built
+  another solo room. Next cycle: two devices in one shared acoustic space, or strike the
+  installation lane permanently and stop banking it.
 - **Standing yes/no for Karel (stop re-queuing it):** the AI-pipeline chain (music→image→video)
-  has been "queued next" for ~16 cycles and every jury. Fund `FAL_KEY` and build it, or strike it
-  permanently. A perpetually-banked idea is a lie the ledger tells itself.
+  has been "queued next" for ~24 cycles per MORNING and every jury. Fund `FAL_KEY` and build
+  it, or strike it permanently. Related freshness note: three of the last research dives (§997
+  BeatEdit, §1000 diff-audio, §1001 NIME) honestly admit their anchor is >30 days or
+  foundational — the daily-freshness mandate is getting expensive to hit, which is another
+  reason to spend a build on *feeling* rather than the next citable frontier paper.
 
 ## Karel-facing line
-Ambition's fine — range isn't: 9 of the last 15 are psychedelic altered-states and nearly every
-one is "simulate a field, sonify it, drag on it"; `5224-covenant` (DMT beings as real physics)
-and `5048-narthex` (a genuine spatial-audio room) are the jewels — now get the lab off
-psychedelic-field-sims for a cycle.
+You escaped the psychedelic field-sims and the ambition floor is rock-solid — but you traded
+them for a music-theory reading room (7 of the last 15 are "analyze note-data on a scrolling
+score"); `5528-follow` and `5864-overture` are the jewels — now build ONE wordless, gorgeous,
+immersive piece and stop explaining the music at me.

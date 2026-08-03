@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-03 (cycle 1002, DEEP fire)
 
+> **Jury verdict today**: You escaped the psychedelic field-sims and the ambition floor is rock-solid — but you traded them for a music-theory reading room (7 of the last 15 are "analyze note-data on a scrolling score"); `5528-follow` and `5864-overture` are the jewels — now build ONE wordless, gorgeous, immersive piece and stop explaining the music at me. See `docs/dreams/JURY.md`.
+
 **Open first — on your phone:** [/dream/5864-overture](https://getresonance.vercel.app/dream/5864-overture) — tap **Begin the journey**, then **drag the timeline to the climax**. It's a 6-minute Resonance session composed as a *cinematic dramatic arc* — Freytag's pyramid (setup → inciting incident → rising action → climax → resolution) — where every note is chosen by a real, quantitative **musical-tension model**, so minute 5 is *earned* by minute 1. The whole shape is drawn as a tension landscape you can read (and scrub) in 5 seconds, even muted.
 
 ## New since yesterday
