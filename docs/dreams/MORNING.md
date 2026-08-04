@@ -1,22 +1,37 @@
-# Morning digest — last updated 2026-08-04 ~01:40 UTC (cycle 1008, DEEP fire)
+# Morning digest — last updated 2026-08-04 (cycle 1009, WIDE)
 
-> **Hear a synth think.** After a long transcendent/immersion run + last night's breath piece, the lab picks up an *instrument you play* — and the mechanic is the concept: a synthetic voice that audibly *optimizes itself* to become the sound you sing.
+Open the lab: https://getresonance.vercel.app/dream
 
-## Open this first
-- **[6184-descent](/dream/6184-descent)** — *Hear a synth think.* You don't press keys — you sing / hum / whistle and a small FM synth **descends a spectral-loss gradient, step by audible step**, until its timbre becomes yours. You *hear* the knobs slide and *watch* a bright point roll downhill across a live loss valley toward a basin star, two spectra converging at the base. **Why open:** it makes the optimization loop itself the instrument — a genuinely new "huh, I didn't know we could do that." The no-mic **Auto** mode plays a full duet on load (a drifting synthetic singer + the synth chasing it), so it's alive with zero permission; then hit **Use my mic** and hum a steady note. Headphones; the mic is analyser-only, never routed/recorded.
+## New since yesterday
+- **[6216-drumskin](/dream/6216-drumskin)** — a real, tuned **drumhead you play with ten fingers**.
+  The whole screen is a circular membrane simulated as a genuine 2-D wave equation; strike or
+  stroke it and the ripples spreading, reflecting off the rim and interfering **are the sound** —
+  what you see and what you hear are one physical object. Multi-touch, GPU wave-sim, audio tapped
+  from the membrane's own Bessel modes (drumming around the head plays a melody; 3 tunings).
+  **Why open it:** best on a phone/tablet — touch it with all ten fingers. It plays itself gently
+  on load, so it's alive before you touch.
 
-## How this cycle went
-- **DEEP fire, one concept → three engines → shipped 1.** The concept: *a played chameleon-duet — a synth that continuously re-tunes itself to become your live timbre, the search itself the visual.* Three builders attacked the real-time matching differently: an **evolution-strategy swarm** (`6152`), an **instant no-search codebook remap** (`6168`), and the winning **differentiable gradient chase** (`6184`).
-- **Why `6184` won.** It extends your favorite from the jury — `5784-converge` — down the exact **gradient** road 5784 *explicitly refused* (it used evolution instead), so it's the least "we already did that." It's also the cleanest chain from today's research and the most striking image on a silent phone (a ball rolling down a glowing valley).
-- **Pre-spawn redundancy grep paid off.** Before committing to a concept I grepped the lab and found spatial-audio, particles/splat, data-sonification, nonlinear-modal, rhythm, GENDYN and "accompanist" are *all* already triplicated here — this ~1000-piece lab has no untouched lanes left. So I leaned on the **last-10 diversity audit** instead: it bans *self-playing/passive* input and *transcendent-immersive* vibe (both ≥4× in the last 10) → forces a **played, active instrument**, which is also exactly what the jury praises.
-- **Research → build.** RESEARCH §1008: **ADAC** (arXiv 2606.21277, DAFx26, Jun 2026) — differentiable audio graphs compiled to real-time DSP, *making the optimization loop audible to support interactive instrument design*. That IS `6184`.
-- **Gates:** DEEP (ledger 1007 W → 1008 D) · ambition **3/5** (≥3 subsystems + ADAC/DDSP ref + today's research) · off every jury ban (played/felt, no note-theory, no 2D score, no analytical readout) · off the last-10 self-playing/transcendent bans. Build: TypeScript + ESLint **clean** (zero from the new piece), route emits into the compiled manifest; the only failure is the usual headless EMFILE at page-collection (Vercel doesn't share it).
+## How I picked it (WIDE fire — 3 built in parallel, 1 shipped)
+The last 10 ships had drifted to a **mic + passive-transcendent** monoculture, so all three briefs
+deliberately used inputs *never in the last 10* — **camera / multi-touch / tilt** — all wordless,
+felt instruments (per the jury: stop explaining the music). Drumskin won on the jury's peak
+criterion: "the mechanic IS the concept."
 
-## Explored & banked (IDEAS §1008) — both built clean this fire
-- **`6168-remap` ⭐⭐ (resurrect-first)** — *An instrument that instantly wears your timbre.* Same duet, but **no search at all**: it precomputes the map from "how a sound feels" → "which knobs make it," so re-voicing is zero-latency and *playable*. The most technically distinct sibling; ships on a live-performance / low-latency slot.
-- **`6152-becoming` ⭐⭐** — *A swarm learning your voice.* A ~64-patch evolution-strategy swarm forever hunting a moving target star — the most legible metaphor, banked just below `6168` only because it's the closest to `5784`'s own swarm image.
+## Also explored, banked for a later fire (IDEAS §1009)
+- **6200-handglass** ⭐⭐ — an **air-played two-hand instrument**: webcam + MediaPipe hand tracking →
+  a granular/additive synth; the gap between your hands is the interval, drawn as a standing wave.
+  Gorgeous; banked because camera-hand is the lab's most-worn lane. Resurrect-first.
+- **6232-phosphene** ⭐⭐ — a **tilt-steered phosphene tunnel** (the hexagons/spirals of closed-eye
+  vision), reusing the shared log-polar psych engine. Honors the psychedelic direction; banked for
+  a dedicated psychedelic slot.
 
-## Open questions for Karel
-- **Verify on device:** `6184` wants a real mic + a quiet hum — does the gradient chase actually sound musical, and does the descent *read* as "hearing it think"? Headless can't test the mic/GPU loop; I tuned it by reason, and the Auto singer is the fallback.
-- **Which sibling next?** All three of this cycle's engines are strong. If the **instant remap** (`6168`) or the **swarm** (`6152`) is the one you want as a real playable instrument, say so — both are banked and ready to ship.
-- **Standing fund-or-strike (still your call, ~29 cycles):** (1) the AI-pipeline chain (music→image→video) — fund `FAL_KEY` or strike it; (2) the two-device shared room — needs a signaling store/dep, un-buildable headless. Fund-or-strike?
+## Honest notes
+- Winner **compiles clean** (tsc exit 0 project-wide, folder lint zero-warnings, route built on
+  disk). The full `npm run build` still hits the known sandbox fd-ceiling (EMFILE) *after*
+  compilation — same headless artifact every recent cycle logs; Vercel builds fine.
+- **Not runtime-verified** (headless: no GPU/touch/speakers). Whether the drum feels musical and the
+  ripples read as a real surface wants your real device — the one thing I can't check.
+
+## Open questions for Karel (unchanged, still yours to call)
+- The **AI-pipeline chain** (music→image→video): fund `FAL_KEY` and build it, or strike it? (~28 cycles queued.)
+- The **two-device / installation room**: needs real hardware + a signaling store — fund the lane or strike it?
