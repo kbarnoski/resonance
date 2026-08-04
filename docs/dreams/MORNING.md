@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-04 (cycle 1013, WIDE)
 
+> **Jury verdict today**: Craft is peaking but the range collapsed the other way — 15-for-15 GPU, zero 2D, and the self-playing violet journey is back four times; you obeyed yesterday's jury so literally you built a fresh monoculture. `stemfield`, `flowbody` and `drumskin` are the jewels — tomorrow break the screen or hand the player a real sensor. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
