@@ -1,39 +1,42 @@
-# Morning digest — last updated 2026-08-04 (cycle 1012, DEEP)
+# Morning digest — last updated 2026-08-04 (cycle 1013, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[6360-honeycomb](/dream/6360-honeycomb)** — **titrate your own psychedelic breakthrough.**
-  Hold your thumb down and drag: ONE dial takes the whole piece together from calm boundlessness up to a
-  full jeweled breakthrough and back. You fly forward forever through a non-Euclidean honeycomb tunnel —
-  as you push the dose up, the lattice multiplies (3→18-fold kaleidoscopic symmetry), the flight
-  accelerates, the jewels saturate indigo→gold→magenta, and a just-intonation drone + endless-rising
-  Shepard glissando swell with it. Visuals and sound move as **one** thing you control.
-  **Why open it:** it finally reclaims the **psychedelic** direction you named as the top driver — but as
-  a *played instrument*, not a trip you watch. Press **Begin**, then just hold and drag up. It's fully
-  alive untouched (a slow auto-breath climbs and descends on its own) and hands you the dial the instant
-  you press. Best on a phone you can hold. Photosensitive-safe by design — no strobe, ever.
+- **[6392-stemfield](/dream/6392-stemfield)** — **fly INSIDE your own recording, pulled apart into its voices.**
+  Drop an audio file — **your Path piano is the ideal input** — and it separates the recording *live, in the
+  browser, with no AI model* into four voices (the percussive attacks, the bass, the harmonic body, the air).
+  Each becomes a glowing 3D body floating in space. You orbit and fly through them, and **remix by touching**:
+  tap a body to solo it, mute it, or push its level — and muting genuinely removes that voice from the sound,
+  because the mix is rebuilt from the separated streams.
+  **Why open it:** it finally does the thing you keep asking for — **use your real recorded music as the
+  material** — in a new way: not "visualize the track," but pull it apart and let you play with its pieces.
+  It's alive the moment it loads (a little synthetic four-part bed plays so you can try the mixer with no
+  file), then drop a track and fly inside *your* sound. Best on a device where you can drop a file; solo piano
+  separates cleanest.
 
-## How I picked it (DEEP fire — one concept, 3 render roads, 1 shipped)
-Psychedelic has been *absent from the last 10 nights* (all instruments/camera/journey), so reclaiming it
-is a fresh return, not the old field-sim monoculture. I built the SAME "titrate your dose" concept three
-ways and shipped the one that holds a **spread**: navigable 3D geometry you fly *through* — the road
-furthest from the field-sims/fractal-zoomers the lab escaped, and the one that reads instantly on a still
-frame. Cashes today's research (OmniForcing 2026, real-time *joint* audio-visual generation → one control
-driving sound + geometry together). It's love-adjacent too — your loved set is thick with mandala/bloom
-(`1482-face-mandala`, `1450-supershape-bloom`, `1392-phase-loom`).
+## How I picked it (WIDE fire — 3 unrelated instruments, 1 shipped)
+Rule this cycle forced a spread: the last 10 nights leaned hard on WebGL2 shaders (4×) and self-playing
+pieces (5×), so both were off-limits. I built three genuinely different instruments on three *fresh* inputs
+and shipped the one that cashes today's research and your standing "use my real music" ask:
+**drop a file → separate → play the voices.** (Technique: classic median-filter harmonic/percussive
+separation, Fitzgerald DAFx 2010 — the no-ML browser version of the 2026 real-time stem-splitting frontier.)
 
-## Also explored, banked verbatim (IDEAS §1012)
-- **6344-titrate** ⭐⭐ — the same dial driving a **closed-eye phosphene field** (the literal cortical
-  form-constant map). Deepest science, most robust — resurrect-first on a dedicated psychedelic slot.
-- **6376-kleinian** ⭐⭐ — the same dial diving **into a jeweled Mandelbox fractal** (the most literal DMT
-  "recursive cathedral / melt"). Gorgeous; resurrect once I can verify fractal perf on your phone.
+## Also explored, banked verbatim (IDEAS §1013)
+- **6424-marble** ⭐⭐ — **draw a landscape and hear it play itself**: glowing marbles tumble across terrain
+  you sketch and ring tuned notes as they roll (Iwai *Electroplankton* lineage). The most instantly-legible
+  and most robust of the three — resurrect-first, a lovely playful piece.
+- **6408-cadence** ⭐⭐ — **play music by WALKING**: your phone's step cadence becomes the tempo and a groove
+  phase-locks to your gait. Best experienced moving — I'll resurrect it on a slot where you can test it on
+  your actual phone.
 
 ## Open questions for Karel (both need your call — stop-or-build)
-1. The **shared multi-device room** (two phones in one acoustic space) — asked for ~12 cycles, and I keep
-   building solo rooms instead. Build it for real next, or strike the lane?
-2. The **music→image→video AI pipeline** — "queued" ~30 cycles; it needs `FAL_KEY` funded to ever ship.
+1. The **shared multi-device room** (two phones in one acoustic space) — asked for ~13 cycles, and I keep
+   building solo pieces instead. Build it for real next, or strike the lane? (It needs a signaling store I
+   can't stand up headlessly, so it needs your go-ahead.)
+2. The **music→image→video AI pipeline** — "queued" ~31 cycles; it needs `FAL_KEY` funded to ever ship.
    Fund it, or strike it permanently?
 
 *(Not runtime-verified — headless, no GPU/speakers. Full `npm run build` passed clean this cycle; the live
-feel — does the fold read as a breakthrough, does the swell sound musical — wants your device.)*
+feel — do the separated voices read clearly, does soloing sound musical on a real track — wants your device
+and a dropped recording.)*
