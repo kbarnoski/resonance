@@ -1,121 +1,129 @@
-# Concept Jury Verdict — 2026-08-04
+# Concept Jury Verdict — 2026-08-05
 
 ## Summary
-Third window, third monoculture — and this time the lab built it by obeying *me*. Yesterday's
-jury said "reclaim the transcendent pole, kill Canvas2D/SVG, force GPU/3D." The lab did exactly
-that, and kept going until it hit the opposite wall: **all 15 of the last builds render to the
-GPU (three.js 7×, WebGL2 6×, WebGPU 2×) — zero Canvas2D, zero SVG, zero DOM.** The reading-room
-pendulum didn't stop in the middle; it swung to a fullscreen violet world that plays itself.
-The window splits cleanly: the first four (`5720`–`5864`) are the tail of last week's analytical
-era; **every one of the eleven builds minted since yesterday's verdict (`5912`→`6392`) is a GPU
-piece, and four of them are the same self-playing transcendent-journey engine re-skinned.** Craft
-is genuinely high — six builds clear a real 4–5 floor and two are the best things the lab has made
-in a month — but the lab has now proven for the third straight window that it can *move* a
-monoculture on command and cannot *hold a spread*.
+This is the most genuinely diverse window the lab has shipped in a month — and it still
+found a way to end on a relapse. After three straight windows of single-monoculture
+(9/15 psychedelic field-sims, then 9/15 note-data reading-room, then 15/15 GPU worlds),
+cycles 1011–1025 finally **hold a real spread**: two clean poles (a run of pure-craft
+acoustic-physics instruments and a returning psychedelic cluster), the lab's *first true
+two-person instrument*, and a floor where **every single build clears the 2-criteria
+ambition bar** — nobody scraped the local minimum this time. The catch: the last three
+nights (`6872`→`6920`→`6936`) slid straight back into Klüver-form-constant hallucination
+geometry, and the "novel research" under all of them is 1926/1972/2001 science wearing a
+thin 2026 caveat. You proved you can hold a range for eleven cycles; then you flinched.
 
 ## Diversity audit
-- **Over-represented input: self-playing / no-primary-human-input (6×)** — `5864`, `5912`,
-  `5976`, `6008`, `6072`, `6280`. Six of fifteen pieces have no real sensor driving them; they
-  play themselves and you watch. This is the axis that regressed hardest — last window input
-  diversity was the *win*.
-- **Over-represented output: three.js (7×) AND WebGL2 (6×)** — combined GPU-3D/shader = **15 of
-  15**. `5912` and `6072` are WebGPU; everything else is three.js or hand-written WebGL2. The
-  headline: **Canvas2D / SVG / DOM output is 0×.** Last window it was 9-of-15; this window it is
-  extinct. RESEARCH already banked five non-GPU siblings nobody built (`5624`-redlines lineage,
-  `5640`-plumbline SVG, `5656`-scriptorium SVG, `5832`-harmonices, `5848`-augur).
-- **Over-represented technique: the single-scalar / tension-curve journey engine (4×)** —
-  `5864`-overture (Farbood/Freytag), `5976`-luminous (NDE tunnel arc), `6280`-cathedra (Freytag
-  sacred arc), `6360`-honeycomb (a "dose" scalar driving the same visual+audio coupling). One
-  number drives a violet immersive arc; add `5912`'s breath-LFO and it's ~5. Runner-up clusters:
-  no-ML DSP re-derivation (`5784`, `6184`, `6392` = 3) and physics-field sim (`5912`, `6072`,
-  `6216` = 3).
-- **Over-represented vibe: transcendent / cosmic / sacred / psychedelic immersion (5×)** —
-  `5816`, `5912`, `5976`, `6280`, `6360` (add `6136`'s meditative-ambient → 6). The exact
-  register I told it to reclaim yesterday — reclaimed so hard it's now the house style again.
-  Note a *second* cluster also clears the bar: analytical/clinical "instrument as microscope"
-  (`5720`, `5784`, `6184`, `6392` = 4).
-- **BANNED for next cycle:** self-playing / no-primary-input · three.js output · WebGL2 output ·
-  the single-scalar / tension-curve journey-arc engine · transcendent-cosmic-immersive vibe. In
-  plain terms: **no more fullscreen GPU world that plays itself.** The next build needs a real
-  primary sensor and an output that is NOT a GPU-3D scene.
+- **Over-represented input: touch-drag / pointer (6×)** — `6360`, `6456`, `6568`, `6584`,
+  `6664`, `6744`. The ledger keeps advertising "3 fresh INPUTS per WIDE," but under the
+  hood six of fifteen are a finger dragging a handle, a crossing, or a slider. Genuinely
+  fresh sensors that *did* show up (camera 2×, mic 2×, tilt 1×, audio-file 1×, telemetry
+  1×, keyboard 2×) are the window's real diversity win — but touch is the quiet default
+  underneath the marketing.
+- **Over-represented output: non-GPU 2D/DOM (10×)** — inline-SVG **4×** (`6456`, `6568`,
+  `6584`, `6936`), Canvas2D 3× (`6488`, `6664`, `6680`), pure-DOM 3× (`6728`, `6744`,
+  `6808`). GPU is only 5/15 (three.js 2×, WebGL2 3×). This is a **perfect inversion** of
+  last window's 15/15 GPU. The pendulum didn't stop in the middle; it swung to the other
+  wall. SVG alone clears the ban threshold.
+- **Over-represented technique: acoustic/mathematical-object-as-instrument (6×)** —
+  `6456` (waveguide mesh), `6568` (modal synth), `6584` (ruled-surface strings), `6680`
+  (material modal synth), `6744` (Chua attractor), `6808` (dissonance curve). "The sound
+  IS the model" is the window's house craft. Second cluster: **Klüver-form-constant /
+  log-polar hallucination geometry (4×)** — `6360`, `6872`, `6920`, `6936` — and this one
+  is a *recency* cluster (3 of the last 3 cycles).
+- **Over-represented vibe: clinical-analytical "instrument as microscope" (6×)** — `6488`,
+  `6680`, `6728`, `6744`, `6808` (+`6296`'s gestural-analytic). A close second pole:
+  **psychedelic-transcendent / altered-states (4×)** — `6360`, `6872`, `6920`, `6936`.
+  The window is genuinely bimodal, which is the good news; each mode is internally
+  repetitive, which is the note.
+- **BANNED for next cycle:** touch/pointer-drag as primary input · inline-SVG output (and
+  the whole non-GPU-2D/DOM reflex — do NOT answer this ban by minting a 5th SVG piece) ·
+  Klüver-form-constant / log-polar hallucination geometry technique · psychedelic-
+  transcendent AND clinical-microscope vibes. In plain terms: **no finger-on-glass, no
+  more honeycombs, and prove GPU can be non-transcendent again.**
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 5** — `5912`, `5976`, `6008`, `6136`, `6280`. These are the local-minimum
-  builds: beautiful surfaces, thin engines. Mostly one particle/field system + one drone, a named
-  vibe but no novel technique and no recent-research anchor.
-- **Hit 2–3 criteria: 4** — `5720`, `5864`, `6072`, `6216`. Solid on subsystems + named-ref; the
-  weak leg is research-recency, not effort.
-- **Hit 4–5 criteria: 6** — `5784`-converge (4), `5816`-astrolabe (4), `6184`-descent (4),
-  `6296`-flowbody (4), `6360`-honeycomb (4), `6392`-stemfield (4). A strong top tier, and every
-  new build (`5912`+) that cleared 4 did it via a live sensor + research chain — the exception to
-  the self-playing rule, which is the point.
-- **Note: nobody hit 5/5. Criterion #4 (multi-cycle commitment) is 0-for-15 — again.** Every
-  build is a one-night one-off. The lab has never once claimed the "designed to take 2–3 cycles"
-  ambition it wrote for itself. That's where the "massively bigger concept" is hiding.
+- **Hit 0–1 criteria: 0** — for the first time in four windows, *nobody* scraped the
+  floor. Last window had five local-minimum builds; this window has none. Real progress.
+- **Hit 2–3 criteria: 13** — the entire body. Almost every build clears the bar the same
+  way: **#1 novel-technique + #2 ≥3 subsystems + #3 named reference.** The window's spine
+  is genuine per-build technical novelty (first Wilson-Cowan field, first audio-rate Chua
+  ODE, first HPSS separation, first dissonance-curve scale, first comma-lattice, first
+  two-person instrument) — that's the strength, and it's real.
+- **Hit 4–5 criteria: 2** — `6568-dulcet` (4) and `6808-spectrascale` (4). Both are the
+  only builds that claim **#4 multi-cycle commitment** and mean it (declared "cycle 2").
+  **Nobody hit 5/5, and #4 is still 2-of-15.** The ceiling is thin: a uniformly-competent
+  floor with almost nothing reaching for the "massively bigger" top.
+- **Contested leg — criterion #5 (recent research):** the STATE/RESEARCH ledger stamps
+  "research-first, case (a)" on `6808`/`6872`/`6920`/`6936`, but the science each README
+  actually cites is foundational (Sethares 2005, Klüver 1926, Wilson-Cowan 1972,
+  Bressloff-Cowan 2001) with a same-day RESEARCH.md paragraph that itself carries an
+  "honest freshness caveat: the core is foundational." #5 is being *asserted in the ledger*
+  more than *earned in the build*. The genuinely research-fresh piece is `6680-resonate`
+  (ICAD 2026, in-window by date). Count #5 honestly next cycle.
 
 ## Standouts (positive)
-- **`6392-stemfield`: the window's peak.** In-browser Harmonic/Percussive Source Separation
-  (Fitzgerald DAFx 2010) with **no ML model** — you drop your own recording and it's pulled into
-  four voices you fly through and remix, and because the Wiener masks sum to unity, muting is a
-  *true* removal, not a fade. It finally cashes Karel's standing "use your real Path music as the
-  carrier" directive, it's research-fresh (§1013), and the mechanic *is* the concept. This is the
-  one to extend.
-- **`6296-flowbody`: the one that broke the self-playing reflex.** A live camera optical-flow
-  instrument (Lucas-Kanade-lite, no pose model, no ML) where your body's motion *is* the input —
-  the rare embodied/live-performance piece in a window of pieces that play themselves, with a
-  first-class synthetic fallback so it's gorgeous on load with zero permission. Krueger/Videoplace
-  lineage, §1011 chain. Keep making these.
-- **`6216-drumskin`: the most physical thing here.** A genuine 2-D wave equation on a GPU
-  ping-pong field where the sound is *tapped from the same physics you see* — ten-finger
-  multi-touch, strike-position maps to timbre and pitch. Tactile, embodied, and the furthest from
-  the violet-transcendent worlds around it. Sound and image are one object, not a mapping.
-- Honorable: `5784-converge` is the freshest *technique* in the window (a CMA-ES swarm
-  re-deriving its own FM patch to become your timbre) — but see below, it now has a near-twin.
+- **`6392-stemfield`: the window's peak (and last window's too).** In-browser HPSS
+  median-filter source separation with **no ML** — drop your own recording, fly through its
+  four voices, and because the Wiener masks sum to unity, muting is a *true* removal. It
+  cashes Karel's standing "use my real Path piano as the carrier" ask and the mechanic IS
+  the concept. Extend this.
+- **`6664-cohere`: the biggest concept in the window.** The lab's **first genuine
+  two-person shared instrument** — a chord that can only exist between two presences, played
+  over serverless copy-paste WebRTC or against a ghost peer. This is the multi-user category
+  the mandate has flagged as thin for months, and it's *explicitly declared cycle 1 of a
+  multi-cycle build*. This is what "massively bigger" looks like.
+- **`6808-spectrascale`: the sharpest idea.** Reshape the instrument's timbre and the entire
+  playable scale re-lays-out live at the valleys of that spectrum's dissonance curve —
+  Sethares' "tuning follows timbre" made playable, the reverse-coupling half of the
+  `6728-commawalk` living-tuning line. A true 4/5 and a real two-cycle arc.
+- **`6744-chua`: the freshest pure-technique flex.** A strange attractor integrated per-sample
+  in an AudioWorklet so the *waveform itself* is chaos, steered down the period-doubling route
+  with a live Lyapunov meter. The lab's first audio-rate ODE synth — sound as raw dynamics.
+- Honorable: **`6568-dulcet`** (first modal synthesis in the lab, pure-SVG, 4/5) and
+  **`6296-flowbody`** (camera optical-flow, no ML — the embodied instrument that broke the
+  self-playing reflex).
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`5976-luminous`**: the third self-playing transcendent tunnel-journey (with `5912`, `6280`).
-  Real craft, but 2 subsystems, no novel technique, no research anchor, no interaction — you fly
-  through an NDE and watch. It's the cleanest example of the window's local minimum: a wordless
-  violet arc that asks nothing of you.
-- **`6280-cathedra`**: `5864-overture`'s Freytag tension engine re-skinned as sacred architecture
-  one week later. Competent, but it *reuses* the prior build's core (tension curve → camera +
-  audio) rather than advancing it — the journey engine is being re-painted, not deepened. If the
-  engine is worth having, extend `5864` into it; don't mint a parallel one.
-- **`6008-surge`**: the EDM build-and-drop is a welcome vibe break, but it's ambition-thin — a
-  standard 16th-note look-ahead scheduler + an energy-automation curve, no named reference, no
-  research, no novel subsystem. Nice palette, floor-scraping engine.
-- **`6136-tideline`**: a lovely breath-entrainment meditation, but the coherent-breathing /
-  0.1 Hz-resonance lane is well-trodden and the piece is thin on the floor (envelope follower +
-  JI pad). Beautiful, familiar, small.
+- **`6872-ganzflicker` / `6920-neuralbloom` / `6936-floatdrift`: the psychedelic relapse.**
+  Three consecutive cycles (1023–1025), all rendering Klüver form-constants through a
+  log-polar map, all resting on 1926/1972/2001 science with a thin "fresh 2026" veneer, all
+  stamped "research-first" in the ledger. Each is competently built; together they are the
+  window's clearest regression to the mean. **`6936-floatdrift`'s "take the input *away* to
+  generate imagery" is the one genuinely new framing** — keep that one as the cluster's
+  representative and retire the reflex. `6872` and `6920` are the reconvergence.
+- **`6360-honeycomb`**: last window's "single-scalar tension-journey engine" wearing a
+  honeycomb. One "dose" dial, self-playing, fly-through-and-watch. Beautiful surface, thin
+  verb — the interaction is a single slider.
+- **`6488-pulsemeter`**: a charming premise (hear your machine's health) attached to a
+  floor-scraping mapping (telemetry → drone + bell). The window already has 5 clinical-
+  analytical pieces; this is the most mapping-thin of them.
 
 ## Provocations for tomorrow's dream cycle
-- **You obeyed me into a new monoculture — now hold the line in the middle.** Window −2 = 9/15
-  psychedelic field-sims. Window −1 = 9/15 note-data reading-room. Window 0 = **15/15 GPU,
-  6/15 self-playing.** Three windows, three convergences, each an over-correction of the last.
-  Stop swinging the whole fleet. Ban the fullscreen-GPU-world-that-plays-itself for a cycle and
-  build something that is neither the reading room nor the violet dream.
-- **Build ONE non-GPU piece — the banked SVG/DOM siblings are sitting right there.** Output is
-  15/15 GPU and Canvas2D/SVG/DOM is extinct. RESEARCH §997/§1001 already banked `5640-plumbline`
-  (tilt→Karplus, SVG), `5656-scriptorium` (live Wikipedia-edit sonification, SVG), and
-  `5848-augur` (anticipation ghost-paths). Resurrect one on SVG/DOM and prove the lab can render
-  restraint again without collapsing back to a piano-roll.
-- **Hand the player a real primary sensor — the self-playing arc is the reflex now.** `6296`-flow
-  (camera) and `6216`-drum (multi-touch) are the only genuinely embodied inputs in the window.
-  The two cold cells I have named for **three+ windows** — a **two-device WebRTC shared room** and
-  a **depth-camera spatial-audio room** — are still unbuilt. One of them is the natural
-  multi-cycle commitment (criterion #4, which is 0-for-15). Pick one and start it.
-- **The sound-matching idea is done twice — don't ship a third.** `5784-converge` (evolutionary
-  CMA-ES) and `6184-descent` (gradient descent) are the same "synth re-derives itself to become
-  your timbre" verb two ways, days apart. Instead of a third search method, *extend* one: let the
-  user sculpt the target live, or race the two searches head-to-head in one frame.
-- **Two standing yes/no's for Karel that keep getting re-queued (stop banking them):** (1) the
-  **AI-pipeline chain** (music→image→video) has been "queued next" for ~25 cycles and needs
-  `FAL_KEY` — fund it or strike it permanently. (2) the **shared/embodied room** — build it this
-  window or admit the installation lane is dead. Both need a human decision, not another dream
-  cycle; flagging in MORNING.
+- **You broke the GPU monoculture — do NOT build a 2D/DOM one to replace it.** Output went
+  15/15 GPU → 10/15 non-GPU-2D/DOM in one window. inline-SVG is 4×, pure-DOM 3×, Canvas2D
+  3×. Answering the old ban with a fifth SVG piece is the same pendulum in the other
+  direction. **Hold the middle: the next build can be GPU and still not be a violet
+  transcendent world** — `6216-drumskin` and `6392-stemfield` already proved GPU can be
+  analytical/embodied. A WebGPU-compute piece that isn't a hallucination is the un-built lane.
+- **Touch-drag is your secret monoculture (6×).** Stop shipping "3 fresh inputs" that
+  reduce to fingers on handles. Genuinely starved, sitting on the shelf: **MIDI (0×)**,
+  **depth-camera (0×)**, and the banked **`5640-plumbline` (tilt→Karplus)**. Ship a build
+  whose *primary verb* is not a finger on glass.
+- **Ban the form-constant/log-polar hallucination geometry for a week.** You've rendered
+  Klüver's four form-constants 4× this window and ~100× lab-wide. If you return to altered-
+  states, pick a mechanism you have NOT drawn to death: dissociation / time-smear.
+  **`6968-kholapse` is banked resurrect-FIRST** and it *also* cashes Karel's real-Path-music
+  ask — that's the psychedelic build to make, not a fourth honeycomb.
+- **Extend, don't mint.** `6664-cohere` is declared cycle 1 of a multi-cycle build and its
+  cycle 2 is DUE and unclaimed — the first two-person instrument deserves a second night
+  more than the fleet deserves a sixteenth new toy. The `6728→6808` living-tuning line is
+  your one real two-cycle arc; push it to cycle 3. #4 is 2-of-15 *because you keep starting
+  over.*
+- **Decide the standing item — don't re-queue it a 44th time.** The AI-pipeline chain
+  (`FAL_KEY`, music→image→video) has been flagged ~43 cycles. `6392-stemfield` just proved
+  the file-drop pipeline works; a `6968-kholapse` DEEP built on Karel's actual recordings is
+  the natural next step. Fund the pipeline or strike it — the jury will not accept it queued
+  a 44th time.
 
 ## Karel-facing line
-Craft is peaking but the range collapsed the other way — 15-for-15 GPU, zero 2D, and the
-self-playing violet journey is back four times; you obeyed yesterday's jury so literally you built
-a fresh monoculture. `stemfield`, `flowbody` and `drumskin` are the jewels — tomorrow break the
-screen or hand the player a real sensor.
+Your most diverse window in a month — you finally held a real range and shipped the first two-person instrument — but the last three nights relapsed into the violet form-constant reflex; tomorrow, extend `cohere` or dive the k-hole on your own Path music, don't paint a fourth honeycomb.
