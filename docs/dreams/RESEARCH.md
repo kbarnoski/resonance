@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §1025 — 2026-08-05 · *take the input AWAY and the imagery comes UP: flotation-REST, hypnagogia and sensory deprivation are drug-free routes to Klüver geometry — the LESS the room gives your senses, the MORE the visual system amplifies its own noise into structure*
+
+**Source.** ["Hypnagogia, psychedelics, and sensory deprivation: the mythic structure of dream-like experiences"](https://pmc.ncbi.nlm.nih.gov/articles/PMC12098477/) (2025 review, PMC12098477) + the flotation-REST phenomenology literature (Kraehenmann et al.; float-tank studies reporting heightened altered-states, diminished volitional control, and *more vivid visual imagery* as sensory input drops). Read against the same **Klüver form-constant** (1926) / **Bressloff–Cowan 2001** cortical-excitability spine as §1024: when sensory drive falls and cortical excitability rises, the intrinsic E/I interactions in early visual cortex surface lattice/spiral/cobweb percepts *without any drug* — the endogenous route.
+
+**Why surprising / why it matters for the lab.** Every psychedelic piece the lab has shipped ADDS stimulus — a flicker, a shader storm, a driven neural field. This flips it: the *withdrawal* of input is the generator. That reframes the interaction. Instead of a slider or a hum DRIVING the visuals, **stillness / silence / doing-less** becomes the control axis — the quieter and more still the visitor gets, the richer the imagery blooms. It's the most literal answer yet to Karel's core mandate ("a screen alone moves perception, no drug"), and it's an interaction the lab has never built: reward *reduction* of input, not addition. Two immediate hooks: (a) **stillness → imagery** on a phone (hold the device still, the entoptic geometry organizes); (b) **quiet → sleep-onset** (a piece that "falls asleep" as the room goes silent, its sound smearing into hypnagogic dream-logic).
+
+**Freshness caveat (honest).** The Klüver/Bressloff–Cowan spine and the float-tank paradigm are foundational; the genuinely in-window anchor is the **2025 review** (PMC12098477) that ties hypnagogia + psychedelics + sensory deprivation into one "reduced-input → endogenous imagery" frame — recent enough to anchor a build on a *new interaction* (input-withdrawal as the control), which is what this cycle's fan tested.
+
+**Research→build chain.** §1025 dive → today's **WIDE** winner `6936-floatdrift` implements hook (a) directly — **case (a)** (today's research → today's build); the banked `6952-hypnaglow` implements hook (b).
+
+---
+
 ## §1024 — 2026-08-05 · *the form-constants aren't DRAWN, they GROW: tune a Wilson–Cowan excitatory/inhibitory neural field to its Turing bifurcation and the exact stripe/spot/hexagon patterns self-organize — the retinocortical log-polar map then turns them into Klüver's tunnels/cobwebs/honeycombs; a fresh 2026 computer-vision survey confirms which classes dominate real flicker hallucinations and WHY (symmetry)*
 
 **Source.** bioRxiv 2026-02-18, ["A Large-Scale Computer-Vision Mapping of the Geometric Structures of Stroboscopically-Induced Visual Hallucinations"](https://www.biorxiv.org/content/10.64898/2026.02.18.705710v1) — CV methods applied to a large corpus of reported strobe hallucinations, read against the neural-field framework. Foundational spine: **Wilson & Cowan 1972** (E/I population dynamics); **Ermentrout & Cowan 1979**, *"A mathematical theory of visual hallucination patterns"* (Turing instability in V1 → stripes/hexagons); **Bressloff, Cowan, Golubitsky, Thomas & Wiener 2001** (the retinocortical map).
