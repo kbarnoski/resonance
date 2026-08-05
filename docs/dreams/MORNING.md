@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-08-05 (cycle 1027, WIDE)
+# Morning digest — last updated 2026-08-05 (cycle 1028, DEEP)
 
-> **I made your music physically visible.** The jury's loudest note was *"prove GPU can be non-transcendent again — no more honeycombs."* Tonight's winner is the sharpest possible answer: rigorous 1787 standing-wave physics run as a GPU sand-plate, driven by your real Path piano. No hallucination, no violet form-constant. See `docs/dreams/JURY.md`.
-
-**Open this first (drop one of your piano recordings into it):** [/dream/7032-chladni](https://getresonance.vercel.app/dream/7032-chladni) — **sound made physically visible.** Drop an exported *Path* track (or just drag the sweep slider) and its frequencies push ~24,000 glowing sand grains onto a vibrating plate's living **nodal-line figures** — the grains dance where the plate shakes and settle where it's still, drawing the shape of each chord. As the music moves, the figure blooms and dissolves; higher notes recruit finer, more intricate patterns. Then it runs **backwards**: the emergent geometry re-tunes a soft additive drone under your recording, so image and sound co-generate. *(Alive on load — sweep the slider before any file to walk the plate through its mode sequence; tap "Start" for sound, or drop a recording. No strobe.)*
-
-**Why this, tonight:** it clears every live ban at once — **GPU but non-transcendent** (real physics, not a fractal), a **Chladni plate** (a mechanism the lab has literally never drawn — the opposite of a honeycomb), your **real recording** as the source, and a **physical/luminous** vibe (not the psychedelic-transcendent or clinical-microscope you banned). And it's the cleanest research→build chain in a while: today's dive → tonight's build, honestly (below).
+**Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`7032-chladni`** (shipped, WIDE winner) — your Path piano → GPU Chladni sand-plate nodal figures + bidirectional re-sonification; audio-file input · **WebGL2 transform-feedback** (24k grains) · physical-luminous vibe · **ambition 3/5**. Standalone sweep mode works with no file; degrades gracefully with no WebGL2.
-- **2 more lanes explored & banked** (IDEAS §1027):
-  - **`7016-pulsegate`** ⭐⭐ (resurrect-FIRST) — the lab's **first WebMIDI**: plug in your keyboard and a live **EDM build-and-drop** engine wraps every note in a riser → sidechained pumping drop → breakdown. An alternate *journey arc* you asked for, on the instrument you actually play. Built clean; the strongest bank we've had — near-certain next-cycle ship.
-  - **`7048-kotekan`** ⭐ — the lab's **first long-form (>5min) evolving piece**: two Balinese metallophone parts hocket into one shimmering line that transforms over minutes and never repeats (minute 5 ≠ minute 1). Non-Western structure, ritual vibe. *(Needs one determinism fix before it can ship.)*
+- **[7096-voxglyph](https://getresonance.vercel.app/dream/7096-voxglyph) — your VOICE is the brush.** Hum or sing one continuous line; its pitch-contour is drawn as a glowing violet calligraphic ink-stroke that *simultaneously conducts a generative ensemble blooming around you.* Not a pitch-shifter, not paint-to-pitch — it reads the **dynamics** of your vocal line (how fast your pitch moves → note density; where you sing → register; leaps → harmony shifts; breath → the phrase cadences) and lets them steer a rule-based composer with its own distinct timbre. **Try it with sound on. No mic? It's alive on load** — a seeded demo line draws + composes itself so you can see the idea before you sing.
+- Grounded in a paper published **yesterday**: *Calliphony* (arXiv 2608.03040, 4 Aug 2026) — a performative stroke's kinematics as a live control layer over a generative model. A genuinely-this-week research→build, not a foundational idea wearing a fresh caveat.
 
-## Research finding worth a look (RESEARCH §1027)
-- **ChladniSonify** (arXiv 2605.09846, 2026) + the last-30-days browser-cymatics wave (CymaVis; Cymatica, a GPU sim flowing ~100k sand particles at 60–120fps). The fresh part isn't the physics (that's 1787 — I'm not pretending otherwise) — it's that Chladni now runs at real particle counts **in a browser**, and the paper's **backwards** framing: read the nodal geometry back *into* sound. Tonight's winner does both.
+## In progress / partial (explored this fire, not shipped — banked in IDEAS §1028)
+- **7064-inkcantor** ⭐⭐ — the same idea with a **drawn pointer/stylus stroke** (the most literal "calligraphy"). Built clean; held back only because pointer input is in the jury's "too many fingers-on-glass" penalty box right now. Strong candidate for a resurrect or as voxglyph's cycle-2.
+- **7080-airscribe** ⭐ — **tilt your phone through the air** as the brush. Built clean; needs a real phone in hand to verify, so it waits for a device-test path.
+
+## Research finding worth a look
+- The Calliphony framing (gesture *dynamics* → generative *parameters*, not position → pitch) is a lever we can reuse for many inputs — it's the altitude-lift on your loved `223-fourier-paint` / `153-paint-compose` (draw→compose) direction. Full note in RESEARCH.md §1028.
 
 ## Open questions for Karel
-1. **Did the Chladni plate land — is your real piano the right source for it?** If you like seeing your music as physical standing waves, there's an obvious cycle-2 (mic-live mode; a second "plate material" that changes the mode spacing; multi-recording overlay).
-2. **First WebMIDI is banked and ready** (`7016-pulsegate`). The lab has never had keyboard input — I'll ship it next unless you'd rather I chase something else. Anything you'd want from an EDM/journey-arc engine you can *play*?
-3. **`6664-cohere` cycle-2 is still due** but it's touch + Canvas2D, which collides with two live bans — I held it. Want me to reframe it away from finger-on-glass, or wait?
-4. **AI-pipeline chain** (music→image→video) still needs `FAL_KEY` funded or a permanent strike — the jury wants this *decided*, not re-queued.
+1. **Voice as a compositional controller** — does singing-to-conduct feel like *your* instrument, or a novelty? If it lands, voxglyph's cycle-2 is: snap the ensemble toward your detected key, add a second held drone, and let a sung phrase loop back as counterpoint.
+2. **Which capture road next** — the drawn stroke (7064), the tilt brush (7080), or push voxglyph deeper?
+3. **The AI-pipeline (music→image→video, needs `FAL_KEY`) is still queued — ~45 cycles now.** I keep deferring it honestly rather than fake-shipping it. Fund it (a small budget + go-ahead) or strike it?
+
+*Cycle 1028 was a DEEP: one concept (a gesture conducting a generative ensemble), three capture roads built in parallel, shipped the voice one. Note: I caught & dropped two tempting "first-ever" claims (we already have MIDI and an EDM journey engine) rather than fake novelty. Ledger: 1027 WIDE → 1028 DEEP → 1029 leans WIDE.*
