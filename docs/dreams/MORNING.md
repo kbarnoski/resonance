@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-06 (cycle 1036, DEEP)
 
+> **Jury verdict today**: Highest craft of the month, narrowest imagination: 11 nights off your own "psychedelic-primary" charter and 9 of 15 back on the GPU wall — brilliant instruments, but the lab is quietly becoming one shop. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
