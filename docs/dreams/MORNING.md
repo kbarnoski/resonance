@@ -1,42 +1,35 @@
-# Morning digest — last updated 2026-08-05 (cycle 1030, DEEP)
+# Morning digest — last updated 2026-08-06 (cycle 1031, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[7192-tidefield](/dream/7192-tidefield) — a living tide that is NOT on a clock.**
-  A 7+ minute generative journey whose long form isn't *scripted* — it's the trajectory of a
-  dynamical system. Six slow oscillators are weakly coupled (the Kuramoto model); how in-sync
-  they are is the conductor — in-phase = a crest, dispersed = calm — and the **sections emerge
-  on their own** (Dispersal → Gathering → Swell → Crest → Homecoming), so it has clear long
-  shapes yet never exactly repeats and always resolves home. You can *see* the mechanism: the
-  six phase-points drift as light on the water, converging at a crest and scattering in the
-  calm. Conduct it with your breath (tilt or mic); the tide reabsorbs your energy over ~30s.
-  **Why open it:** it's the most genuinely *long-form* thing the lab has made — a real evolving
-  memory, not a loop. **It's alive on load** (seeded auto-conduct), so a silent look already
-  shows it breathing; give it tilt/mic + sound for the full thing.
-  *Its clock breathes via Agogic timing (arXiv 2608.03999, Aug 2026): rubato read off each
-  oscillator's phase velocity; sync-crossings marked by holding a note longer, not louder.*
+- **[7240-fluxforge](/dream/7240-fluxforge) — your sound forges a fluid (the lab's FIRST WebGPU compute piece).**
+  100,000 particles are advected **on the GPU** every frame through a divergence-free curl-noise
+  flow field, and that field IS your music: bass = turbulence, treble = fine curl, an onset punches
+  an outward ring through the swarm. It reads as a real, physical velocity field — **not** another
+  violet mandala. **Why open it:** it answers the jury's single loudest standing note head-on ("a
+  WebGPU-compute piece that isn't a hallucination is the un-built lane") and it's genuinely new tech
+  for the lab — the first `navigator.gpu` compute pipeline we've shipped.
+  *Open in **Chrome or Edge**. No mic? Hit **Internal pad** — it's audible + drives the fluid, so it
+  moves and sounds with zero input. No WebGPU? It shows a notice + a small Canvas2D fallback, never a
+  blank screen.*
 
-## This was your call from yesterday, taken
-- You asked (open-Q #1 last cycle) whether to make **the tide a real multi-cycle build** instead
-  of another one-night toy. I did — this is that DEEP, and it's **declared cycle-1 of a multi-cycle
-  arc** with a concrete cycle-2 plan (separate voices per sync-cluster, adaptive arc length,
-  spatialization). This directly answers the jury's #1 note ("you keep starting over — #4 is 2 of 15").
-
-## Explored but not shipped (banked, BOTH built clean — IDEAS §1030)
-- **7176-tidegrammar** — the same tide via a stochastic **L-system grammar** (richest audio +
-  visuals of the three). The natural "second structural logic" / sibling.
-- **7160-tideengine** — the same tide via an explicit **state-machine** with named sections
-  (the banked §1029 design, realized). The "authored arc" counterpart to tidefield's emergence —
-  a natural A/B for a later night.
+## Explored but not shipped (banked, BOTH built clean — IDEAS §1031)
+- **7208-pulsegate** — the lab's **first WebMIDI**, as an **EDM build-and-drop** journey engine
+  (INTRO→BUILD→RISER→DROP→BREAKDOWN, sidechain pump, accelerating riser). Plays from a MIDI
+  controller, your computer keyboard, or a one-button "Simulate." Cashes your long-standing
+  "alternate journey arcs beyond the psychedelic 6-phase" ask; MIDI was the jury's most-starved input.
+- **7224-terraphon** — the lab's **first live external-API sonification**: the last 24h of the Earth's
+  real earthquakes (USGS live feed) played as a ~2.5-min generative score on a Canvas2D globe. Closes
+  the "music *about* something other than music" category the mandate keeps flagging as thin.
 
 ## For Karel — one standing decision (your call)
-- **The AI-pipeline (music → image → video via FAL_KEY)** has been queued ~45 cycles. I keep
-  deferring it because it needs your budget go-ahead. Fund it or strike it — I won't silently
-  re-queue it again.
+- **The AI-pipeline (music → image → video via FAL_KEY)** has been queued ~46 cycles. I keep deferring
+  it because it needs your budget go-ahead. Fund it or strike it — I won't silently re-queue it again.
 
 ## Note
-- `6664-cohere` (two-person instrument) cycle-2 is still blocked: touch-input (banned) + needs
-  two devices to verify headless. Needs a non-touch reframing.
-- Ledger: 1028 DEEP · 1029 WIDE · 1030 DEEP → 1031 leans WIDE (though a tidefield cycle-2 keeps
-  the multi-cycle commitment real — your steer welcome).
+- Ledger: 1029 WIDE · 1030 DEEP · **1031 WIDE**. A tidefield cycle-2 (per §1030's multi-cycle plan) or
+  a fluxforge cycle-2 (SPH/`atomicAdd` density; particle trails) both keep a multi-cycle commitment
+  real — your steer welcome.
+- `6664-cohere` (two-person instrument) cycle-2 still blocked on its touch-input (banned) + two-device
+  headless-verify problem; needs a non-touch reframing.
