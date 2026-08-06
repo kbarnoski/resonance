@@ -1,44 +1,37 @@
-# Morning digest — last updated 2026-08-06 (cycle 1039, DEEP)
-
-> **The jury's push**: "Highest craft, narrowest imagination." Tonight's answer: I grepped the
-> obvious psychedelic escape hatches and found the lab **saturated** (hyperbolic ×4, Ganzfeld,
-> Troxler, Enigma all already exist) — so instead of decorating an old idea, I opened a **whole
-> new family the lab has never touched: the hidden music of number theory**. Still no GPU, no
-> mic, no field-sim — 3rd straight non-GPU night, 3rd straight psychedelic *first*. See `JURY.md`.
+# Morning digest — last updated 2026-08-06 (cycle 1040, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[7544-fordtree](/dream/7544-fordtree) — descend the infinite tree of all harmony.**
-  Every fraction p/q is two things at once: a **tangent circle** in an infinitely-nested packing,
-  and a **just-intonation interval** (3/2 = a fifth, 4/3 = a fourth…). This piece lets you **fall
-  through that tree** — from the pure octave and fifth at the top toward ever-more-microtonal,
-  alien harmonies below — **steering as you go** (←/→ pick a flatter or sharper branch, click a
-  circle to dive into it). **Why open it:** it's a genuinely new *verb* — you don't watch it, you
-  navigate the space of every possible consonance — and it's the lab's **first** Stern–Brocot /
-  Ford-circle structure (grep-verified 0 across 7500+). Pure SVG, no GPU. It falls on its own from
-  first paint; **Start sound** adds the true just-intonation voices. (This is *not* the rested
-  tuning-curve line — it's the number theory of the rationals themselves.)
+- **[7592-floatwell](/dream/7592-floatwell)** — *breathe the void until it fills with form.*
+  A sensory-deprivation float where the **browser's CSS compositor is the entire renderer** —
+  no canvas, no WebGL, not a single pixel drawn. You tap Space at your own breathing rate; the
+  whole-field luminance and a cosmic drone entrain to your tempo and sink you into a featureless
+  mythic void that slowly resolves into tunnel/mandala/phosphene forms as you let go.
+  **Why open this:** it's the lab's first pure-CSS/DOM generative piece (a genuinely never-used
+  technique) and the most literal answer yet to the jury's "go actually non-GPU." Grounded in
+  fresh Frontiers 2025/2026 flotation-REST research: the deepest dream-states come from
+  *removing* sensory input, not piling it on. **Wear it full-screen; breathe slow.**
 
-## Explored but not shipped (banked, BOTH built + clean — IDEAS §1039)
-One north-star — *an endless integer sequence as a never-repeating musical descent* — three ways:
-- **7528-recaman** — Recamán's sequence as its iconic **arc-web**: forever trying to step back,
-  only leaping forward when blocked. The dream/hypnagogic sibling, and the **best silent-screen
-  visual of the three** — the one I'd resurrect first.
-- **7560-hailstone** — the **Collatz 3n+1** hailstone: every number's chaotic fall that always
-  finds its cadence home on 1, growing a living coral. The intense chaos→resolution sibling.
+## Also explored this fire (WIDE — 2 more built clean, banked in IDEAS §1040)
+- **7576-recaman** ⭐⭐ (resurrect first) — Recamán's sequence A005132 as its iconic
+  alternating-arc web in inline SVG, JI-Phrygian, step-back vs leap-forward sound audibly
+  different. Strongest silent-screen visual of the three. Declined only because it'd be the
+  3rd-straight SVG output — the piece itself is done and strong.
+- **7608-frostwork** ⭐ — a real Diffusion-Limited-Aggregation (Witten–Sander 1981) frost/coral
+  crystal that grows one random-walking particle at a time, each stick a just-intonation bell.
+  Meditative slow accretion.
 
-## For Karel — one standing decision (your call)
-- The lab still has **zero** multi-user, embodied, or AI-pipeline pieces — flagged ~20+ cycles.
-  `7320-fishtank` proved head-tracked spatial audio works and points straight at a real **WebRTC
-  two-device room**; the **music→image→video FAL_KEY pipeline** is still queued. Say "do the room"
-  or "fund the pipeline" and I'll force one next fire — or tell me to strike them for good.
+## The charter is back on track
+Psychedelic — AGENT.md's stated PRIMARY direction — is now **4 straight cosmic-ambient ships**
+(7464 → 7480 → 7544 → 7592), fully out of the 11-cycle drought the last jury flagged. Three
+straight non-GPU cycles too, off the GPU wall.
 
-## Note
-- Ledger: 1036 DEEP · 1037 DEEP · 1038 WIDE · **1039 DEEP** → next leans WIDE.
-- Honesty: **#1 earned honestly** — `farey`/`ford-circle`/`stern-brocot` = 0 across the lab. Cleared
-  2/5 anchored on that #1 (not the checklist the jury banned). The grep-0 number-theory family is
-  now wide open (Ulam spiral, continued-fraction, Thue–Morse rhythm all still untouched).
-- Not runtime-verified this fire (headless, no speakers): the drone-vs-bell mix and whether the
-  infinite-zoom *feels* like a harmonic fall want your device. The silent auto-descent is the
-  stand-in.
+## Open questions for Karel (unchanged, ~22 cycles — needs a decision)
+- The lab still has **zero embodied, zero multi-user, zero AI-pipeline** pieces. The three
+  standing asks — WebRTC two-device spatial-audio room (`7320-fishtank` proved head-tracking
+  works), depth-camera input, and the AI-pipeline `FAL_KEY` go-ahead — need a **go or a
+  permanent strike** from you. I keep flagging; they keep sitting.
+
+*Note: 7592 was built headless (no speakers/display) — the drone mix, whether the void reads as
+immersive vs thin, and whether the breath-swell feels locked all want your device.*

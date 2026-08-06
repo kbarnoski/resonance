@@ -9293,3 +9293,29 @@ once, off keyboard-and-SVG, and cashes the camera/body lane the jury keeps namin
 ## §1035 — 2026-08-06 — the 2026 symbolic-music frontier computes a TENSION CURVE for a model to follow; nobody hands the curve to a human to PERFORM (→ the never-shipped EDM build-and-drop)
 
 **Source:** a WebSearch dive on the 2026 real-time / interactive symbolic-music-generation frontier — **"Explicit Tonal Tension Conditioning via Dual-Level Beam Search for Symbolic Music Generation"** (arXiv:2511.19342 — integrates a computational tonal-tension model, tonal-interval-vector / Herremans–Chew lineage, into a Transformer and uses a two-level beam search to make generated music track a *desired tension curve*) and **LK_Jam** (arXiv:2606.21018, 2026 — a real-time human–AI jam system whose role-aware GRU uses a **"Continuous Harmonic Space" embedding to understand tension trajectories**), cross-referenced against the classical tension-arc spine (Herremans & Chew tension model; Chew's spiral array) and the EDM-structure literature (GEDMAS). **Why it's surprising / the gap:** across the whole 2026 frontier the *machine* computes and then *follows* the tension arc — the arc is an objective the model optimizes toward, never a control surface a human shapes live. Meanwhile the lab has flagged an **EDM build-and-drop journey arc** — Karel's explicit top-5 care ("EDM build-and-drop as an alternate arc to the psychedelic 6-phase engine") — and **banked it TWICE without ever shipping it** (`7016-pulsegate`, `7208-pulsegate`). The gap is the invert: **let a human PERFORM the tension curve** (velocity accumulates tension, the mod wheel is the riser, releasing into the downbeat is the drop) and let a GPU energy-field erupt with it — the non-ML, playable analog of the papers. **Becomes the prototype tonight (research-first case (a), WIDE):** the fan's flagship Brief A — **`7384-pulsegate`** (SHIPPED) — Web-MIDI note-velocity→tension + CC1→riser drives a hand-rolled build→riser→DROP→breakdown **state machine** with a sidechain-pump EDM voice engine, and an **80k-particle WebGPU energy chamber** that tightens through the build and bursts on the drop (the jury's exact "a WebGPU-compute piece that isn't a hallucination" lane). Honest freshness note: the tension-curve *modelling* is foundational (Chew/Herremans, 2000s); what's genuinely 2026-fresh is the explicit-tension-conditioning + continuous-harmonic-space-jam thread (2511.19342 / 2606.21018), and the build is stamped its deliberate non-ML performed inverse — no "first" claimed. (Sibling WIDE briefs cashed the other divergent lanes: **`7416-temperlattice`** = the living-tuning line cycle-3, Sethares dissonance-curve scale re-crystallizing as a WebGL2 crystal lattice; **`7400-joyfield`** = a gamepad as a two-hand Waisvisz-*Hands* continuous instrument on a three.js wheel — both built clean, banked IDEAS §1035.)
+
+## §1040 — 2026-08-06 (research-first dive)
+
+**Source (fresh, 2025–2026):**
+- "Beyond the reducing valve: towards a computational neurophenomenology of altered
+  states via deep neural networks" — Frontiers in Psychology **2026**
+  (https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1819038/full).
+  Frames altered states (hallucination, ego dissolution, psychedelic, hypnagogic) as
+  displacement along *phenomenological dimensions* rather than a single "trippier" axis —
+  a coordinate space you could literally steer through.
+- "Hypnagogia, psychedelics, and sensory deprivation: the mythic structure of dream-like
+  experiences" — Frontiers in Psychology **2025** / PMC12098477
+  (https://pmc.ncbi.nlm.nih.gov/articles/PMC12098477/). 31 participants, four 90-min
+  flotation-REST (float-tank) sessions; PCI showed significant shifts toward *mythic
+  cognition* — the featureless void resolving into archetypal space/time/substance.
+
+**Why surprising:** the flotation-REST result says the strongest dream-like/archetypal
+phenomenology comes from REMOVING sensory input, not adding stimulation — the opposite of
+the lab's reflex (pile on flicker/particles/fields). The mind fills a true void with
+structure on its own. That reframes "psychedelic-without-the-drug" as *sensory subtraction*.
+
+**Could become a prototype that does X:** a sensory-deprivation descent whose visual is a
+near-featureless slow-drift void that the viewer's *breath* (self-paced tap) sinks them
+into, and which resolves into faint archetypal forms only as they let go — rendered with
+zero drawing, pure CSS compositor (the "actually non-GPU" answer taken to its limit).
+→ chained this cycle to the build (case a): `7592-floatwell`.

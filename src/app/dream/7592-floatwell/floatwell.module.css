@@ -1,0 +1,234 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   7592-floatwell · floatwell.module.css
+
+   The renderer is the browser's CSS compositor — NO canvas, NO WebGL, NO SVG
+   path-art. Every visual below is layered radial/conic gradients + filter blur
+   + mix-blend-mode + 3D-ish transforms, animated by CSS keyframes and by a
+   handful of CSS custom properties that the rAF loop rewrites each frame:
+
+     --lum        overall Ganzfeld luminance (breath swell + slow drift)
+     --depth      monotonic descent 0..1
+     --mandala    mandala-ring opacity (phases in/out with depth)
+     --tunnel     tunnel-to-light opacity
+     --phos       phosphene-field opacity
+     --aura       visible breath aura (expands on inhale)
+
+   Every value change is smooth and sub-breath-rate — there is NO flicker.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate; /* contain the screen/blend accumulation */
+  background: #050309;
+  cursor: pointer;
+  /* defaults so the void breathes even before the loop drives it */
+  --lum: 0.5;
+  --depth: 0;
+  --mandala: 0;
+  --tunnel: 0;
+  --phos: 0.3;
+  --aura: 0.15;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+}
+
+/* ── 1 · the Ganzfeld void — a nearly-featureless dark-violet field ──────────
+   Extremely low contrast so the field reads as "empty". Its luminance is the
+   whole-field breath swell, applied smoothly via filter: brightness().        */
+.ganzfeld {
+  background:
+    radial-gradient(
+      130% 120% at 50% 42%,
+      #241640 0%,
+      #1a1032 26%,
+      #120a24 50%,
+      #0a0518 74%,
+      #060310 100%
+    );
+  filter: brightness(var(--lum));
+  transition: filter 0.12s linear;
+}
+
+/* ── 2 · tunnel-to-light — faint receding rings + a bright throat ────────────
+   Emerges deeper into the descent (opacity = --tunnel). The rings slowly
+   expand outward (traveling inward), the core scales with --depth.            */
+.tunnel {
+  display: grid;
+  place-items: center;
+  mix-blend-mode: screen;
+  opacity: var(--tunnel);
+  transition: opacity 0.4s linear;
+}
+.tunnelRings {
+  position: absolute;
+  width: 160vmax;
+  height: 160vmax;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 50% 46%,
+    rgba(214, 196, 255, 0) 0px,
+    rgba(214, 196, 255, 0.11) 3px,
+    rgba(150, 110, 240, 0) 11px,
+    rgba(150, 110, 240, 0) 46px
+  );
+  filter: blur(6px);
+  -webkit-mask: radial-gradient(circle at 50% 46%, #000 6%, #000 34%, transparent 62%);
+  mask: radial-gradient(circle at 50% 46%, #000 6%, #000 34%, transparent 62%);
+  animation: tunnelZoom 30s ease-in-out infinite;
+}
+.tunnelCore {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 46%,
+    rgba(242, 234, 255, 0.9) 0%,
+    rgba(196, 156, 255, 0.36) 22%,
+    rgba(120, 80, 220, 0.1) 46%,
+    transparent 66%
+  );
+  filter: blur(22px);
+  transform: scale(calc(0.28 + var(--depth) * 1.05));
+  transition: transform 0.5s linear;
+}
+
+/* ── 3 · mandala rings — soft archetypal petals, screen-blended, rotating ────
+   repeating-conic → spokes, repeating-radial → rings; heavy blur turns the
+   hard geometry into soft petals. Two counter-rotating instances.             */
+.mandala {
+  mix-blend-mode: screen;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(184, 128, 255, 0) 0deg,
+      rgba(184, 128, 255, 0.5) 6deg,
+      rgba(120, 74, 220, 0) 12deg
+    ),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(150, 100, 245, 0) 0px,
+      rgba(168, 118, 255, 0.32) 14px,
+      rgba(96, 54, 205, 0) 42px
+    );
+  filter: blur(15px) saturate(1.2);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 6%, #000 26%, #000 54%, transparent 82%);
+  mask: radial-gradient(circle at 50% 50%, transparent 6%, #000 26%, #000 54%, transparent 82%);
+  opacity: calc(var(--mandala) * 0.85);
+  transition: opacity 0.5s linear;
+  animation: spin 150s linear infinite;
+}
+.mandala2 {
+  mix-blend-mode: screen;
+  background:
+    repeating-conic-gradient(
+      from 4deg at 50% 50%,
+      rgba(160, 110, 255, 0) 0deg,
+      rgba(160, 110, 255, 0.42) 4.5deg,
+      rgba(110, 66, 210, 0) 9deg
+    ),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(140, 92, 240, 0) 0px,
+      rgba(190, 140, 255, 0.24) 9px,
+      rgba(88, 48, 190, 0) 30px
+    );
+  filter: blur(19px) saturate(1.15);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 12%, #000 34%, #000 60%, transparent 88%);
+  mask: radial-gradient(circle at 50% 50%, transparent 12%, #000 34%, #000 60%, transparent 88%);
+  opacity: calc(var(--mandala) * 0.6);
+  transition: opacity 0.5s linear;
+  animation: spinR 210s linear infinite;
+}
+
+/* ── 4 · breath aura — the visible swell of the whole field on inhale ────────*/
+.aura {
+  display: grid;
+  place-items: center;
+  mix-blend-mode: screen;
+}
+.auraInner {
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 46%,
+    rgba(150, 112, 240, 0.5) 0%,
+    rgba(110, 70, 210, 0.16) 30%,
+    transparent 60%
+  );
+  filter: blur(64px);
+  transform: scale(calc(0.86 + var(--aura) * 0.28));
+  opacity: calc(0.1 + var(--aura) * 0.24);
+  transition: transform 0.12s linear, opacity 0.12s linear;
+}
+
+/* ── 5 · phosphene field — drifting soft blobs (low-depth baseline) ──────────*/
+.phosphenes {
+  mix-blend-mode: screen;
+  opacity: var(--phos);
+  transition: opacity 0.5s linear;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(42px);
+  opacity: var(--blob-op, 0.5);
+  animation: drift var(--dur, 40s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+/* ── 6 · vignette — bounds the void, gives the descent its depth ─────────────*/
+.vignette {
+  background: radial-gradient(circle at 50% 48%, transparent 28%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+}
+
+/* ── keyframes — all slow, all smooth, none faster than a breath ─────────────*/
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinR {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes tunnelZoom {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+}
+@keyframes drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(var(--dx, 4vw), var(--dy, -3vh)) scale(1.28);
+  }
+}
+
+/* respect reduced-motion: hold the continuous rotations + tunnel travel still,
+   keep only the gentle breath (which the viewer controls). */
+.stage[data-reduced="true"] .mandala,
+.stage[data-reduced="true"] .mandala2,
+.stage[data-reduced="true"] .tunnelRings,
+.stage[data-reduced="true"] .blob {
+  animation: none;
+}
