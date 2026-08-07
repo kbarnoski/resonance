@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-08-07 (cycle 1048, WIDE)
+# Morning digest — last updated 2026-08-07 ~16:30 UTC (cycle 1049, DEEP)
 
-> **Tonight's move**: the fresh jury (2026-08-07) said the analytical half had become "a museum of Canvas2D math-explainers — technique is wide, but agency is thin; only 2 of 15 hand you a genuine verb." So tonight is all about **agency**: a piece where you *discover and author* the structure instead of watching a pre-given one. See `docs/dreams/JURY.md`.
+> **Tonight's move**: the jury (2026-08-07) said "force the multi-user question — you're one build away — build the two-device room instead of re-flagging it a 26th time." So tonight is a DEEP fan-out on ONE big concept — **a two-device duet that completes only through *entrainment*** (two people phase-lock and a sound blooms neither can make alone) — attacked via 3 substrates, strongest shipped. Built on today's research: "Pulse Before Sound" + the Kuramoto model of joint music-making. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **[7848-latents](https://getresonance.vercel.app/dream/7848-latents)** — **you don't play notes; you DISCOVER the hidden axes of a sound-world by ear, then compose along the ones you found.** The screen is a continuous field where every position morphs the sound through five qualities (brightness, tension, pulse, density, pitch) — but the axes are **unlabelled**, so you drag a token and find the bright regions and consonant valleys *by ear*. When a spot sings, you drop a marker; your markers close into a **path** that loops as a repeating phrase — a structure **you authored by exploring**, not one shown to you. Why open this: it's the direct answer to the jury's loudest complaint — the whole lab had drifted into "watch a beautiful known structure"; this hands you a real verb (find latent structure, compose with it). Inline **SVG**, so it renders and self-demos on a silent phone with no GPU: a seeded explorer discovers ~5 spots and loops the path within ~8s, no input needed. Tap to take over.
+- **[7912-entrain-moire](/dream/7912-entrain-moire)** — **the two-device room, finally built.** Open it in two tabs (or send the link to a second phone on your network): each of you drives one oscillator, and the moiré field between you **crawls and beats** until you both press-and-hold to *reach* — then it **freezes into a crisp standing pattern**, the audible beat collapses to unison, and a triad blooms that **neither of you can make alone.** Why open this: it's the multi-user piece the jury has demanded ~26 cycles, and entrainment is made *visible* — the interference literally stops moving the instant you lock. Reads fully on one silent phone via a seeded ghost-partner; the real payoff is a second tab.
+- **2 more built and banked** (DEEP fan-out, same concept, 3 substrates — see IDEAS §1049):
+  - `7880-entrain-well` (DOM-CSS) — ⭐⭐ **resurrect-first**: the same duet as two breathing auras + a bond filament; pure DOM/CSS so it's the *most robust two-phone test* (no GPU anywhere).
+  - `7896-entrain-room` (three.js) — ⭐⭐: your partner's pulse is **spatialized (HRTF)** so it pans as you orbit them; strongest sound-on payoff.
 
-## How it was made (WIDE mode)
-- **3 unrelated agency-forward directions built in parallel; shipped the strongest.** Each dodged every banned tag (no Canvas2D, no 5th WebGL2, no pre-given math-museum, no log-polar tunnel) on a different jury-endorsed substrate.
-- **Chained to today's research** (arXiv:2505.18186, Mar 2026): the 2026 co-creative-music frontier controls a sound-space by *discovering interpretable concept axes and steering along the ones you found* — implemented here hand-built, no ML.
-- **2 more built clean & banked in IDEAS §1048:**
-  - `7832-twoway` ⭐⭐ (**resurrect first**) — a duet that completes only when **two people in two tabs find and hold each other**; a bond blooms a third chord neither can sound alone. Pure DOM-CSS. **This is the two-device room you've asked about for weeks — open it in two tabs and it just works; no hardware to wire up.**
-  - `7864-knead` ⭐⭐ — **knead a living superformula bloom with your voice + hands**; the shape you sculpt drives an additive timbre, so the bloom sings its own shape. three.js, and in the lineage of your loved `1450-supershape-bloom`.
+## In progress / partial
+- None open. `7912` is demoable; the two banked siblings are complete, verified, and one `rm`-and-rebuild away.
+
+## Research findings worth a look
+- **"Pulse Before Sound" (JoNMA 2026) + the Kuramoto model of joint music-making** (RESEARCH §1049) — telematic music should send *control/pulse, not audio* (each device synthesizes locally), and two players are literally two coupled oscillators that phase-lock through mutual perception. That's what tonight is built on: the reward is *entrainment as an achieved event*, not "hear each other" (latency kills that).
 
 ## Open questions for Karel
-- **Agency vs. beauty — is this the right correction?** The jury pushed hard to stop shipping "beautiful known structures you watch." `7848-latents` swings all the way to "author it yourself." If you'd rather keep some of the museum-piece polish, say so.
-- **The two-device room is finally reviewable.** `7832-twoway` needs no second device to try — just open two browser tabs. Worth a look; if you like it, the next step is a tiny relay so it's two *phones*, not two tabs. Still the one standing infra yes/no.
-- **Still standing (~26 cycles):** the **AI-pipeline chain** (music→image→video) — fund a `FAL_KEY` budget and I'll build it, or say strike it and I'll stop re-flagging.
+- **Two-device room — just try it.** The ~26-cycle WebRTC/relay decision may be resolvable by *opening 7912 in two tabs*. To make it work across two phones on *different* networks (not same-origin tabs) needs a tiny guarded relay route — your yes/no. `7880-entrain-well` is the ready, lowest-risk candidate for that upgrade.
+- **AI-pipeline chain (music→image→video)** still flagged ~27 cycles: fund a `FAL_KEY` budget and build it, or strike it permanently?
+- Feed your real Path piano as the held tones in the entrain pieces? (both banked siblings have a hook for it.)
