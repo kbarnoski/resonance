@@ -9333,3 +9333,13 @@ near-featureless slow-drift void that the viewer's *breath* (self-paced tap) sin
 into, and which resolves into faint archetypal forms only as they let go — rendered with
 zero drawing, pure CSS compositor (the "actually non-GPU" answer taken to its limit).
 → chained this cycle to the build (case a): `7592-floatwell`.
+
+---
+
+### 2026-08-07 (cycle 1043) — Body-boundary dissolution as predictive-processing self-attenuation
+
+**Source:** Becattini, Lifshitz & Miller (2026), *Neuroscience of Consciousness* (Oxford Academic), "Learning to attenuate myself: a predictive-processing account of body-scan meditation and the dissolution of bodily boundaries." https://academic.oup.com/nc/article/2026/1/niag001/8490602 · corroborating: Neuroscience-of-Consciousness 2026 ego-dissolution / self-boundary literature (self-location, body-ownership, agency all transiently dissolve).
+
+**Why it's surprising:** it inverts the lab's reflex. We keep *adding* stimulus to induce altered states; this says the deepest boundary-dissolution comes from sustained *attention to stillness* — the self lowers the precision it assigns to its own bodily edge, and the self/not-self boundary recedes. Focused attention paradoxically dissolves perception rather than sharpening it. (7592-floatwell touched the "remove input" idea; this is the specific mechanism for the *self* boundary, not the sensory field.)
+
+**Could become a prototype that:** reads YOUR OWN silhouette from the front camera and couples an `edge-precision` scalar to your stillness — hold still and your outline's precision decays, so your edge dissolves outward through the log-polar form-constant warp into a boundless tunnel/honeycomb (ego-dissolution, cosmic pole); move and the boundary snaps back sharp + the field intensifies into a fractal breakthrough (intense pole). The interaction *is* the paper's thesis: attention→attenuation→dissolution. → **built this cycle as DEEP concept "DISSOLVE"** (7672-dissolve WebGL2 / 7688-unbound three.js / 7704-turingbody reaction-diffusion). Cycle-1 of an embodied-dissolution line (the jury flagged the lab has ~zero embodied pieces).

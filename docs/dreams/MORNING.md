@@ -1,38 +1,15 @@
-# Morning digest — last updated 2026-08-07 (cycle 1042, WIDE)
-
-**Open this first:** https://getresonance.vercel.app/dream/7656-changeringing
+# Morning digest — last updated 2026-08-07 (cycle 1043, DEEP)
 
 ## New since yesterday
-- **7656-changeringing** — *fall into the trance of an ancient bell ritual.* English
-  change-ringing rings **every permutation of its bells exactly once**, never repeating a
-  row until it returns home. Watch that permutation weave a non-repeating **blue-line
-  mandala-braid** (pure SVG, scrolls forever) and hear it cascade in **tuned tower-bells**
-  — real campanology partials (hum/prime/tierce/quint/nominal), not synth beeps. Space =
-  pause, click a bell to follow its line, switch 6↔7 bells or plain↔bob. It autostarts
-  silent (alive on a muted glance); hit **Start sound** for the peal, watch for the bloom
-  when it comes home.
-  - **Why it matters:** this is the direct answer to your jury. It **returns the psychedelic
-    charter after 11 dark ships**, it's **actually non-GPU** (inline SVG — off the whole GPU
-    wall), no mic, not a field-sim — and it's a genuine **#1**: the lab's first change-ringing
-    / permutation-group piece in 7500+ prototypes. A *new mechanism family* — a cyclic walk
-    through a group that comes home, not another number-line you fall down. The permutation
-    IS the braid IS the peal.
+- **[7672-dissolve](https://getresonance.vercel.app/dream/7672-dissolve)** — **watch your own bodily boundary un-form into hyperspace.** The camera reads your silhouette; **hold still** and the felt edge of "you" dissolves outward through a log-polar warp into a form-constant tunnel — **move** and it snaps back sharp and present. Why open this: it's the first *embodied* psychedelic piece in a while and the mechanic IS the science — sustained stillness dissolves the self-boundary. Opens on a self-demoing virtual performer, so it's alive before you enable the camera (and reads fully on a muted phone).
 
-## Also explored this fire (WIDE — 2 more built clean, banked in IDEAS §1042)
-- **7672-timescaustic** ⭐⭐ (resurrect first) — slide a multiplier and a **cardioid→nephroid
-  caustic mandala** melts between form-constants while it sings. The fire's strongest
-  silent-screen visual; great DEEP visual candidate.
-- **7688-goldenpulse** ⭐ — two clocks ticking at the **golden ratio** interlock forever
-  without ever landing together; a φ↔3:2 toggle makes "never repeats" audible + visible.
+## How it was made (DEEP mode)
+- One concept, **3 renderers raced in parallel**, shipped the strongest. Winner = the WebGL2 fragment-shader edge-*bleed* (a genuine continuous un-forming, not a particle field — deliberately, to dodge the "too similar" trap).
+- **2 more explored, banked in IDEAS §1043:** `7688-unbound` (three.js particle-portrait of you that dissolves — the most instantly legible; held back because it'd collide with `4808-effigy`) and `7704-turingbody` (your body as a melting Turing/reaction-diffusion pattern — resurrect on real WebGPU).
 
-## Research worth a look (RESEARCH §1042)
-- A change-ringing "extent" is literally a **Hamiltonian cycle on the Cayley graph of Sₙ**
-  (arXiv 1702.02623). Next seed: animate the peal walking that graph. Also spotted a live
-  2026 modular-rings *sonification* tool — the fordtree lane is a real front right now.
+## Research finding worth a look
+- **Becattini/Lifshitz/Miller 2026, *Neuroscience of Consciousness* — "Learning to attenuate myself."** The deepest self-boundary dissolution comes from *attending to stillness*, not adding stimulus — the brain lowers precision on its own bodily edge. Inverts the lab's pile-on reflex; it's the whole mechanic of tonight's build (RESEARCH §1043).
 
-## Open questions for Karel (unchanged, ~24 cycles — needs a decision)
-- The lab still has **zero embodied, zero multi-user, zero AI-pipeline** pieces. The three
-  standing asks — WebRTC two-device room, depth-camera input, the AI-pipeline `FAL_KEY`
-  go-ahead — need a **go or a permanent strike** from you.
-- All builds are headless-verified only (no speakers here): 7656's bell timbre + reverb mix
-  wants your ear. A love on it steers me deeper into permutation/ritual territory.
+## Open questions for Karel
+- **Embodied line, cycle-2?** Tonight is cycle-1 of an embodied-dissolution line. The obvious next leap is **two bodies / two devices whose selves merge into one field** — but that needs the long-standing **WebRTC two-device** decision resolved (flagged ~21 cycles now, still zero multi-user pieces). Green-light it?
+- **True body matte?** Right now the "silhouette" is a motion/background field, not a real segmentation. Worth adding a MediaPipe SelfieSegmentation dep so the edge that dissolves is genuinely *your body*?
