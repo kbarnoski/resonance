@@ -2,6 +2,28 @@
 
 ---
 
+## Cycle 1044 — 2026-08-07 · **WIDE** (3 divergent lanes — 3 distinct input × output × technique × pole, each clearing the ambition floor via different tags → curate 1) · ORCHESTRATED (3 parallel general-purpose builders) · SHIPPED `7720-mandelbulb`
+
+**Orient.** `git fetch && checkout main && pull --ff-only` → fast-forwarded `ccf73355..596818f3` (last ship `7672-dissolve`, cycle 1043). `node_modules` absent → ran `npm ci` (exit 0). Read AGENT.md in full, JURY.md (2026-08-06), STATE/INDEX/RESEARCH/PSYCHEDELIC/IDEAS heads, votes. Max proto on disk = 7672; 7688/7704 banked (cycle 1043). Pre-allocated a clean fresh block **7720 / 7736 / 7752** (grep-verified nothing ≥7673 on disk).
+
+**Votes / love pull.** Loved spectral/spatial-cloud cluster (`243-spectral-cloud`, `441-latent-listening-room`, `148-spatial-palette`, `227-paths-granular`) directly seeded runner-up brief C (`7752-harmonic-space`). The winner (`7720-mandelbulb`) is driven by the JURY + charter + the grep-0 #1, not the loves.
+
+**Research-first (§1044, dated).** ASTRODITHER — Robert Borghesi's audio-reactive Three.js/WebGPU/TSL R&D piece (webgpu.com showcase, **2026-07-01**, 37 days old): fluid sim + selective bloom + **ordered dithering** + **time-warped signal noise** + chromatic aberration, all driven by the music once playback starts. Companions this dive: fresh Ganzfeld/Ganzflicker neuroscience (*Neuroscience of Consciousness* 2025 + *Sci. Reports* 2024 — closed-eye form-constants = bottom-up signal reduction letting cortical noise read as signal) and the WFS / Kirchhoff–Helmholtz spatial-audio literature (Berkhout JAES 1988; Ahrens 2012; 2024–2026 IEEE/arXiv). The build chain is visible (case a — today's research → today's build): the winner cites ASTRODITHER as its #3 named 2026 audio-reactive-shader reference; runner-up `7736-wavefront` implements the WFS/Kirchhoff finding directly.
+
+**Decide — mode WIDE.** Ledger 1041 D · 1042 W · 1043 D → **1044 WIDE** (alternate deliberately). JURY.md's live demand is standing: "build a real psychedelic one," "earn #1 or #4 — not the #2+#3+#5 checklist," "go actually non-GPU / not a field-sim." **Diversity audit (last 10):** INPUT keyboard/pointer **≥6×** (7656,7640,7544,7480,7464,7416) → **BANNED**; TECHNIQUE discrete-symbolic-math-object-as-descent **≥5×** (turmite/monotile/number-theory/permutation/traveling-wave) → **BANNED** (the *new* monoculture forming after the jury pushed the lab off field-sims); inline-SVG output at 3× → **rested** (avoid a 4th). Three briefs chosen to each clear the floor via DIFFERENT non-banned tags: `diversity: banned=[keyboard/pointer-input, discrete-symbolic-math-object-technique, inline-SVG-output] · picked A=[mic · WebGL2-raymarch · Mandelbulb-DE-fractal · intense/DMT] B=[tilt · Canvas2D · WFS-wavefront-reconstruction · cosmic-ambient] C=[audio-file · three.js+HRTF · JI-3D-Tonnetz · cosmic-organic]`.
+
+**Act — 3 parallel builders, folder-isolated (7720/7736/7752), each self-contained brief.** All three returned built-clean (each self-verified no forbidden APIs, `"use client"` line 1, PrototypeNav, full teardown; repo eslint/tsc unrunnable in-agent because node_modules wasn't yet installed — orchestrator ran the authoritative build after).
+
+**Curate — winner `7720-mandelbulb`.** The grep-0 **#1** (first raymarched DE 3D fractal in 7500+ prototypes), the single most iconic drug-free DMT-breakthrough object, and the literal answer to the jury's #1-item plea for a real psychedelic build. Verified the DE math (`½·log(r)·r/dr`, running `dr`), orbit-trap coloring, mobile downscale, mic + seeded-performer, safe-flicker, WebGL2-degrade, full teardown — all present and correct. Beat the two runners on: genuine #1 (both runners anchor #1-or-#2-plus-#3, but the Mandelbulb is the cleaner grep-0 first + the more overwhelming realization of the charter), and pole diversity (intense/DMT, off the recent cosmic-ambient lean). Both runners built clean and are banked (IDEAS §1044), folders removed after banking (never committed).
+
+**Ambition (winner).** `ambition: #1 (first raymarched Mandelbulb — grep-verified 0) + #3 (White & Nylander 2009 / Quílez DE-raymarching; ASTRODITHER 2026-07-01) + #5 (RESEARCH §1044, today)` → anchored on **#1**, exactly the jury's demand.
+
+**Validate.** Normalizer: **0 rewrites** (winner already on-brand tokens). Authoritative `npm run build` winner-only: **EXIT 0**, ✓ 1099 static pages, `/dream/7720-mandelbulb` (9.77 kB) in the manifest ("Compiled with warnings" = pre-existing repo warnings, not errors — Vercel passes). No new npm deps (three.js already present but the winner uses raw WebGL2; runners' three.js/Canvas2D also dep-free). No API route → no guard needed. Zero `Math.random`/`Date.now`/`new Date` in winner code.
+
+**Ledger** 1041 D · 1042 W · 1043 D → **1044 WIDE**. Next fire (~2h): DEEP by rotation. Strongest resurrect = `7736-wavefront` ⭐⭐ (grep-0 WFS, strongest silent-screen read) — a natural cosmic-ambient A/B sibling to tonight's intense fractal.
+
+---
+
 ## Cycle 1042 — 2026-08-07 · **WIDE** (3 distinct discrete-symbolic math-objects, 3 different visual forms + sensory registers, all inline-SVG/non-GPU → curate 1) · ORCHESTRATED (3 parallel general-purpose builders) · SHIPPED `7656-changeringing`
 
 **Orient.** `git fetch && checkout main && pull --ff-only` — already up to date on `6183a82b` (last ship `7640-replay`, cycle 1041). `node_modules` present. Read AGENT.md in full, JURY.md (2026-08-06), STATE top, INDEX head, PSYCHEDELIC/IDEAS heads, votes. Max disk folder = `7640`; pre-allocated a clean fresh block **7656 / 7672 / 7688** (grep-verified nothing ≥7641 on disk).
