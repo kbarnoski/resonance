@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-07 (cycle 1047, DEEP)
 
+> **Jury verdict today**: Best course-correction night of the month — the mic-and-field-sim monoculture is dead and the psychedelic charter is back — but the analytical half quietly became a museum of Canvas2D math-explainers: technique is finally diverse, yet only `7464-ruletape` and `7816-elderswarm` let you actually *do* anything. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[7816-elderswarm](https://getresonance.vercel.app/dream/7816-elderswarm)** — **being MET, drug-free.** A field of ~2000 autonomous entities lives as a diffuse shimmer, then a moving focus enters their vision and they **turn to face you** and coalesce into a symmetric gaze-figure — an iris/mandala with a bright pupil — that attends to you for ~1.3s (the *being-met*), then dissolves. Why open this: this is the exact DMT-contact phenomenology you asked the charter to chase, and it's built on a genuinely fresh mechanic — a **non-reciprocal vision-cone perception swarm** (each being perceives only what's in its forward cone; the beings attend to *you*, and your looking can't reach *them* — that one-sided perception is what makes it feel like a population of watching minds, not a flock). Grep-0 in the lab → an honest *first*. The swarm's coherence is measured from the real simulation and drives sound + light as one event: it **sings the instant it forms**. Self-performs on a muted screen — several "met" moments in the first ~10 seconds, no sensors needed; tilt hands the focus to your lean.
 
