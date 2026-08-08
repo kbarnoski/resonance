@@ -1,28 +1,24 @@
-# Morning digest — last updated 2026-08-08 (cycle 1059, DEEP)
+# Morning digest — last updated 2026-08-08 (cycle 1060, WIDE)
 
-> **Jury verdict today**: You shipped the two I've been asking for — the first co-presence duet (`7912`) and a real 10-minute memory-journey (`8392`) — but the lab traded last week's Canvas2D museum for a new monoculture: 5 of 15 are three.js violet particle-clouds over a just-intonation drone, and the "dead" field-sim is quietly back in four builds. See `docs/dreams/JURY.md`.
+> **Yesterday's jury**: the lab traded last week's Canvas2D museum for a new monoculture — 5 of 15 were three.js violet particle-clouds over a JI drone. It banned four things at once (particle-cloud output · CPU field-sim core · violet+JI · breed-by-crossover) and named three things to build instead. See `docs/dreams/JURY.md`. **Tonight I built straight off that list.**
 
-Open first: **https://getresonance.vercel.app/dream/8392-longtide**
-Give it ~20 seconds — it self-plays, and the payoff is at "minute 8."
+Open first: **https://getresonance.vercel.app/dream/8440-duetmind**
+Press a key (or just watch — it self-plays a duet in ~2s). Then read the amber ghost notes ABOVE the line: that's the machine showing you its plan a beat before it plays it.
 
 ## New since yesterday
-- **`8392-longtide` — THE LONG MEMORY.** A ~10-minute *journey that remembers you.* Seed a motif (drag/tap) and steer a flowing cosmic current carried by granulated piano; at **minute 8 (the "Recollection" movement) the piece plays your own earlier gestures back, transformed** — time-stretched, up a fifth, re-lighting each old vortex — so minute 10 is nothing like minute 1. Cosmic-ambient, on the charter.
-  - **Why open it:** it's the lab's first real **long-form piece with memory** — the thin axis, and the jury's exact ask (you *author* and the piece *recapitulates*, not watch/steer). It fuses three engines **you loved** (`130` particle field + `243` spectral cloud + `227` granular piano) into one arc — the "bigger by SCOPE, not a new gimmick" bet.
-  - *Wear headphones. It auto-plays muted; tap once for sound. **Drop a piano recording** onto it and your real playing becomes the carrier — that's the robust way to hear your Path piano in it (details below).*
-- **2 more explored this fire (DEEP), banked IDEAS §1059:**
-  - **`8408-spectralnave`** — a cathedral of memory where the picture literally IS the live spectrum; each seed freezes a spectrum into a receding stratum of light that re-blooms late. The most *beautiful* of the three — held back only by mobile-GPU load (wants a real-device check).
-  - **`8424-longmoment`** — the memory engine as the star: recent gestures echo as a canon in seconds, whole early "themes" return late. Has a neat **"Leap to Recollection"** button so you can jump straight to the payoff.
+- **`8440-duetmind` — a live improvising partner that SHOWS YOU ITS PLAN.** You play the computer keyboard as a little piano; a second musician (all local, no AI model) listens to your phrase, commits to what it's about to play a beat ahead, **draws that plan as dashed ghost notes falling toward the "NOW" line**, then plays it — trading fours, developing your line by inversion/retrograde/augmentation. You read its intention before you hear it.
+  - **Why open it:** this is the one you've been asking me for (via the jury) for weeks — **a machine that plays WITH you, not one you operate.** The lab had zero. And it's a clean break from the house look: **blueprint ink, not violet; equal temperament, not the JI drone; an SVG piano-roll, not a glowing particle cloud.** A jazz dialogue, not a cosmic bath.
+- **2 more explored this fire (WIDE), banked IDEAS §1060 — both built clean, both hit a different thing you've asked for:**
+  - **`8456-kotekan`** — two strangers in two tabs INTERLOCK into one gamelan melody neither can play alone (you each own half the notes). The **second co-presence piece** the jury said mustn't be a one-off — DOM/CSS print-grid, gamelan tuning, no violet.
+  - **`8472-whispergallery`** — compose by placing voices on the walls of a **real 3D stone hall**; each note travels the room's curve and returns from that direction in **true binaural (HRTF) audio.** Fills the two empty registers the jury named: real geometry (not dots) + a real spatial-audio room.
 
 ## In progress / partial
-- None blocking. Ledger → **1060 is WIDE.** Next fire deepens longtide (Path-piano timbre per vortex; a scrubbable "fossil record" of a session) or resurrects a banked ⭐⭐.
+- None blocking. Ledger → **1061 is DEEP.** Strongest DEEP candidates: extend `8440-duetmind` (let the agent trade with your *mic* line, or two agents with different "tastes"), or the banked `8472-whispergallery` as a real-device spatial DEEP.
 
-## One judgment call you should know about
-- Last night's note queued **`8280-vespers`** as tonight's DEEP. I **passed on it** — it's the twin of `8312-shrutiloom` (which shipped Tuesday): same sing-a-JI-drone-cathedral idea, same mic, same sacred register. Shipping it now would've been the "too similar" trap. I built the bigger, genuinely-different memory-journey instead. Vespers stays banked.
-
-## Research (RESEARCH §1059)
-- Two sources converged: **Refik Anadol's *Latent City*** (open in Bruges *right now*, memory-as-material across chapters) + a 2026 music-ML paper showing memory needs **two tiers** (fast local echo + slow global arc). Both say the frontier is *a piece that remembers and recapitulates* — which is exactly what I built.
+## Research (RESEARCH §1060)
+- The 2026 human-AI music frontier has settled on one idea the lab had none of: **a partner that shows its INTENTION before it acts** (ReaLJam's "waterfall plan"; Co-policy Jun 2026; Real-Time Co-Performance Apr 2026). I built exactly that. George Lewis's *Voyager* (1987) is the ancestor.
 
 ## Open questions for you
-- **The `/api/audio/[id]` route** — does it return audio for an anonymous `/dream` visitor, or only your logged-in session? If there's a public read path, I can auto-load your Path piano into these pieces instead of the manual file-drop.
-- **Ambition rubric (6th time):** "first-ever technique" is exhausted after 8000+ protos. Tonight's a SCOPE/synthesis win. Formally shift the bar to reward *scale + fusion + deepening loved pieces*, and start a deliberate "deepen the loved ones" era?
-- **AI-pipeline chain** (music→image→video, needs `FAL_KEY`) has sat ~36 cycles — green-light it or strike it?
+- **The jury wants co-presence and embodiment to keep going** — both banked tonight (`8456`, `8472`) are ready to ship next WIDE. Want me to prioritize one, or keep racing new verbs?
+- **Ambition rubric (7th time):** "first-ever technique" is exhausted after 8000+ protos. Tonight was closer to a genuine "first" (a shown-plan agent) than most. Formally shift the bar to reward *scale + fusion + a genuinely new interaction*, and start a deliberate "deepen the loved ones" era?
+- **AI-pipeline chain** (music→image→video, needs `FAL_KEY`) has sat ~37 cycles — green-light it or strike it?
