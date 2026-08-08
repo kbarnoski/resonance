@@ -1,41 +1,34 @@
-# Morning digest — last updated 2026-08-08T02:20Z (cycle 1054)
+# Morning digest — last updated 2026-08-08 ~04:35 UTC
 
-## Headline: no new prototype tonight — and that's the gate working, not a failure
-I planned a 3-lane WIDE cycle, then grep-audited each lane against the lab **before**
-building. **All three were duplicates of pieces we already shipped:**
-- latency-as-canon two-device WebRTC → we already own **`3144-latency`** (same idea, same
-  WebRTC manual-signaling, *same NIME-2025 reference*). My "fresh" research literally
-  rediscovered our own prototype.
-- camera → reaction-diffusion → would've been the **29th** reaction-diffusion / 10th camera-bloom.
-- pure-DOM weave-as-canon → covered by **`1362-lattice-loom`** + **`1932-canon-loom`**.
+## New since yesterday
+- **[8200-rulesmith](https://getresonance.vercel.app/dream/8200-rulesmith)** — *the rules of a
+  particle-life world are a score you compose by hand.* Sculpt the 5×5 species-force matrix by
+  keyboard, watch ~2400 particles re-organize into cells/chases/membranes, hear each species' voice
+  bloom as it clusters — then **save** worlds you love and **breed** two into offspring
+  (crossover+mutation). **Why open this:** it deepens your loved `236-particle-life-song` by handing
+  you the pen — you *author and breed the genome* instead of hunting random worlds. It's alive on
+  load (a virtual author sculpts until you take over), so glance first, then press a key and take the
+  matrix. `S` save · `1–6` pick two · `B` breed · `N` new world.
 
-Per your ambition mandate ("stop shipping incremental variations; if you can't clear the
-gate, do research instead"), I shipped nothing redundant. The audit caught a stale slate
-before it hit production — which is exactly what you built it to do.
+## How this cycle went (an honest note — it matters)
+- The queued ⭐⭐⭐ pick (`synthesis-journey`, a long-form piece that remembers your gesture) got
+  **rejected before I built it**: grep showed the long-form-memory-journey *format* is already ours
+  4× (`1035-living-album`, `1135-deep-memory`, `1234-almanac`, `275-memory-loom`). Shipping it would
+  have repeated last cycle's duplication. So I pivoted to the queued ⭐⭐ alternative — **deepen a
+  loved piece with a genuinely absent verb** — and it produced real new interaction without a new
+  primitive. That's the "climb via SCOPE/DEEPEN, not new skeletons" thesis working in practice.
 
-## The real finding (worth 60 seconds)
-I then probed every "thin" area on the menu — external-data sonification, Chladni,
-MediaPipe pose/face/hand, model-learns-the-player, long-form-with-memory. **Every one was
-already occupied.** After ~thousands of protos, the lab has saturated the *primitive*
-novelty space. Ambition-floor #1 ("a technique never used") is asymptotically gone, and even
-#2/#3 combos always find a near-neighbour. This is the confirmation, from the build side, of
-what the jury half-said ("most #1s are just 'first port of a known thing'; agency is the weak axis").
+## Also explored (banked, not shipped)
+- `8216-livingscore` — the **legibility** take: a live "responsible-cell" highlight so you *see*
+  which rule made which sound. Strong teaching layer — I want to graft its metric onto 8200 next.
+- `8232-swarmforge` — the **scale** take: the same authored matrix reshaping **55k particles** on
+  WebGPU (one cell change ripples through a galaxy). Real wow, but wants a real-device WebGPU pass.
+  Both built clean; details in IDEAS §1055.
 
-## Open question for you (the highest-leverage call right now)
-Should the ambition rubric shift from **"new primitive"** → **SCOPE / long-form / synthesis /
-polish-to-depth**? And is it time for a deliberate **"deepen the loved ones" era** — extend the
-~43 pieces you've loved — rather than minting new skeletons? Full reasoning in RESEARCH §1054.
-
-## Queued next (DEEP, next fire) — framed for the saturated reality
-- **⭐⭐⭐ `synthesis-journey`**: one **8–15 min journey with real memory** fusing 3 *loved*
-  engines — `130-tsl-particle-compute` + `243-spectral-cloud` + `227-paths-granular`
-  granulating **your real Path piano**. "Bigger" by scale + fusion, not by a new primitive.
-  Unrecognisable at min 12 vs min 1. (IDEAS §1054.)
-- **⭐⭐ `deepen-a-loved-piece`**: 3–5× the depth of one loved proto (e.g. `236-particle-life-song`
-  → let the player author the interaction rules; `217-dance-avatar` → a two-person duet).
-
-## Still standing (unchanged, needs your yes/no — flagged ~31 cycles)
-- The **AI-pipeline chain** (music→image→video): fund a `FAL_KEY` budget or strike it.
-- Feed your real **Path piano** as a timbre/source across these instruments — no blocker but no green light.
-
-_Lab: https://getresonance.vercel.app/dream · latest live proto is still `8072-galapagos` (breed-a-sound-organism)._
+## The open question I keep flagging (needs your call)
+- After ~thousands of protos, ambition-criterion #1 ("a technique never used") is **effectively
+  unreachable** — grep-0 is gone. Two cycles running I've had to reject "new" ideas as dups. Should
+  the rubric formally shift to reward **SCOPE / long-form / synthesis / deepen-a-loved-piece** over
+  primitive-novelty — i.e. a deliberate **"deepen the loved ones" era** extending your ~43 loved
+  pieces? Today's ship is a first taste of that mode. This is the lab's highest-leverage decision
+  right now.
