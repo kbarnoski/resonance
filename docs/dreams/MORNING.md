@@ -1,51 +1,51 @@
-# Morning digest — last updated 2026-08-07 (cycle 1052, WIDE)
+# Morning digest — last updated 2026-08-08 (cycle 1053, DEEP)
 
 ## Open this first
-- **`8024-oneirogen` — FEEL THE MOMENT PERCEPTION FLIPS INTO HALLUCINATION.**
-  → https://getresonance.vercel.app/dream/8024-oneirogen
-  A 16k-point field (three.js) driven by your mic. At first it faithfully mirrors
-  your sound — but a hidden "oneirogen dial" drifts **upward on its own**, and
-  unless you keep making *fresh* sound to hold it back, the field stops listening
-  and starts **dreaming your sound-world back at you**. Past a threshold, nothing
-  you do pulls it back; a "reality monitor" meter collapses toward 50%. It's a
-  **tug-of-war, not a slider.** **Why open it:** try it with the mic on, then go
-  quiet and watch reality slip. Grounded in *today's* research (eLife-2026
-  "oneirogen" α-model + Frontiers-2026 C×G×D reality-monitoring).
+- **`8072-galapagos` — BREED A LIVING SOUND-ORGANISM.**
+  → https://getresonance.vercel.app/dream/8072-galapagos
+  Nine little creatures. Each one's genome both *draws* it (an SVG biomorph) and
+  *voices* it (an FM tone) — so the grid is a **chord you can breed**. Pick 1–2 you
+  like as parents (press **1–9**, or tap), hit **Evolve** (Space/↵) and their
+  children **cross + mutate**. Generation after generation you breed the grid — and
+  its sound — toward your taste. **Keep ★** banks a favourite; **New pool** starts over.
+  **Why open it:** it's the first piece in the lab where you *breed* the music instead
+  of playing it — aesthetic selection, straight out of Dawkins' Biomorphs / Karl
+  Sims' *Galápagos*. Leave it idle and it breeds itself on a loop.
 
 ## Why this one
-- It **brings the psychedelic charter back.** The last 4 ships (latents / entrain
-  / origami / quillsvg) were all non-psychedelic authoring instruments — good, but
-  the PRIMARY altered-states direction had gone quiet for 4 cycles. This
-  re-centers it with a mechanic the lab has never done: modelling the *reality-
-  monitoring collapse itself*, not just the look of a hallucination — and it still
-  passes the jury's agency gate (you fight to stay in perception and *discover you
-  can't*).
+- The jury's loudest, most-repeated ask is **interaction depth** — "give the player a
+  real verb; author the structure, don't watch it." This is that: you don't tune a
+  slider, you *choose which creatures live and mate*. The single genome driving both
+  the picture and the sound means every choice re-composes what you hear.
 
-## Explored tonight, banked for later (WIDE — 2 more, IDEAS §1052)
-- **`8056-rosewindow` ⭐⭐ (resurrect first).** Re-compose a piano recording by
-  re-**cutting** it into a pure-CSS stained-glass rose window — how you partition
-  the glass decides which notes ring. Uses your real Path piano. The starved
-  DOM/CSS substrate the last jury most wanted; genuinely player-authored.
-- **`8040-sympathy` ⭐.** A WebGPU-computed instrument whose strings *hear each
-  other* (sympathetic resonance), played over MIDI. Didn't ship: it rendered on
-  Canvas2D (banned this cycle) and its GPU/MIDI paths need real hardware.
+## Heads-up: DEEP fire, partial fan-out
+- This was a **DEEP** cycle — one concept meant to race across 3 substrates (SVG grid
+  / three.js ecosystem / WebGPU splicer). **A worker restart mid-run killed 2 of the 3
+  background builders.** Rather than skip the cycle, I finished + shipped the strongest,
+  lowest-risk lane (the SVG grid) directly. The other two are **banked, not lost**
+  (IDEAS §1053) — worth resurrecting:
+  - **`8088-tidepool` ⭐⭐** — selection as *cultivation*: tend a tide-pool with a
+    current of light; the creatures you feed thrive + mate, and you HEAR the pool drift
+    toward your taste (three.js). Resurrect first.
+  - **`8104-splice` ⭐** — reach into two creatures and *splice* a gene from one into
+    the other to hand-author a hybrid (WebGPU). Genetics as a hands-on verb.
 
 ## Open questions for you
-- Charter range: tonight swung back to **psychedelic (cosmic-ambient→intense)**.
-  Hold there next, or swing to a new pole?
-- Standing ask (~29 cycles): the **music→image→video AI-pipeline** needs a small
-  `FAL_KEY` budget — build it or strike it from the queue? And should I feed your
-  **real Path piano** as source/timbre across these instruments (rosewindow's
-  glass, sympathy's strings)?
+- Want the next version to breed with **your actual Path piano** as each creature's
+  timbre — so you're breeding *your* sound, not a synth?
+- A **two-player** version (two people breeding one shared population) is the natural
+  next step, but it needs the **WebRTC two-device** go-ahead flagged for ~30 cycles.
+  Green-light it?
+- Standing ask: the **music→image→video AI-pipeline** still needs a small `FAL_KEY`
+  budget — build it or strike it from the queue?
 
 ## Under the hood
-- WIDE fire (ledger 1050 W · 1051 D · 1052 W → **1053 DEEP** next). 3 divergent
-  lanes raced, each off every jury ban (no pointer input, no Canvas2D output, no
-  museum-explainer, no log-polar tunnel), shipped the psychedelic one. Winner
-  cleared ambition **3/5** (#2 ≥3 subsystems + #3 named refs + #5 today's
-  research; honest — no #1 claimed). `npm run build` TS + ESLint + compile all
-  green, full route table printed, winner in the manifest.
-- **Not runtime-verified** (headless, no speakers/display/mic): whether the flip
-  *feels* like a threshold vs. a fade, and framerate on a weak phone GPU, want
-  your device. A seeded virtual voice self-demos the whole arc silently if you
-  just want to watch.
+- DEEP fire (ledger 1051 D · 1052 W · 1053 D → **1054 WIDE** next). Ambition **3/5**,
+  honest — #2 (4 subsystems) + #3 (Sims 1991 / Dawkins 1986) + #5 (today's research:
+  SIGGRAPH-2026 Neural Particle Automata). **Not** a "first interactive-evolution"
+  claim — `71-shader-evolve` (cycle 89) did shader-uniform mutation; the delta here is
+  living organisms + sexual crossover + a per-organism voice + generational memory.
+- `npm run build` = TS + ESLint + compile all green; route prerendered + in the manifest;
+  zero warnings from the new file. **Not runtime-verified** (headless, no speakers): the
+  9-voice chord balance on one phone speaker wants your device. The seeded auto-curator
+  self-demos the whole thing silently if you just want to watch it evolve.
