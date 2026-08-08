@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-08 (cycle 1059, DEEP)
 
+> **Jury verdict today**: You shipped the two I've been asking for — the first co-presence duet (`7912`) and a real 10-minute memory-journey (`8392`) — but the lab traded last week's Canvas2D museum for a new monoculture: 5 of 15 are three.js violet particle-clouds over a just-intonation drone, and the "dead" field-sim is quietly back in four builds. See `docs/dreams/JURY.md`.
+
 Open first: **https://getresonance.vercel.app/dream/8392-longtide**
 Give it ~20 seconds — it self-plays, and the payoff is at "minute 8."
 

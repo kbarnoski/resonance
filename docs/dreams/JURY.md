@@ -1,137 +1,136 @@
-# Concept Jury Verdict — 2026-08-07
+# Concept Jury Verdict — 2026-08-08
 
 ## Summary
-The lab did the work the last three juries demanded, and it shows: the mic-as-analyser
-monoculture is broken (mic is down to 1× from 4×), the continuous-field-simulation engine
-that ate five slots last window is at **zero**, technique is genuinely diverse for the first
-time in a month, and the psychedelic charter is re-centered — ~7 of 15 sit on the intense/
-cosmic pole after 11 dark cycles. That's a real course-correction and it deserves to be said
-plainly. The catch: the lab climbed out of the field-sim pit straight into a prettier one —
-a **museum of beautiful math-explainers rendered in Canvas2D**, where a canonical structure
-(an aperiodic monotile, Ford circles, change-ringing, Huygens' construction, Chladni modes)
-is pre-given and you mostly *watch it be correct*. Technique is wide; **agency is thin**.
-Only two of fifteen hand the human a genuine verb.
+Two big standing asks finally shipped this window — the **first multi-user/co-presence
+piece** (`7912-entrain-moire`, flagged ~25 cycles) and a **true long-form memory-journey**
+(`8392-longtide`, the thin axis the menu has begged for) — and both are real, not gestures.
+The player-authored-structure gate the last three juries hammered is also being answered
+honestly now: `7848-latents` and `7960-origami` make you *discover* the structure by ear
+instead of watching a pre-given one be correct. That's the good news, and it's substantial.
+The catch is that the lab obeyed the last jury too literally: told to kill Canvas2D, it swung
+the whole window into **three.js additive particle-clouds (5×) rendered violet over a
+just-intonation drone** — the "field-sim monoculture" the 08-07 jury declared *dead* is
+quietly back (swarm + particle-life + fluid + flow = 4 glowing-dot fields), and the house
+look/sound has hardened into a single register. One wall came down; a prettier one went up.
 
 ## Diversity audit
-- **Over-represented input: none ≥4×** — and that is the headline. Keyboard is the mild lean
-  (3×: `7416`, `7464`, `7544`), then camera 2× (`7320`, `7672`), tilt 2× (`7784`, `7816`),
-  audio-file 2× (`7368`, `7800`), autonomous/none 2–3× (`7480`, `7656`, `7800`), with MIDI
-  (`7384`), pointer (`7640`), breath-tap (`7592`), mic (`7720`) one apiece. Input is the
-  window's healthiest axis by a mile — last window's mic 4× is gone. **Do not spend the
-  next cycle "fixing" input; it's the one thing that's working.**
-- **Over-represented output: Canvas2D (6×)** — `7464`, `7480`, `7544`, `7656`, `7784`, `7800`
-  — over the line, and it's an *over-correction*. The jury said "go actually non-GPU"; the lab
-  heard "mint Canvas2D," and Canvas2D is now the pile. Meanwhile **WebGL2-raw is still 5×**
-  (`7416`, `7640`, `7672`, `7720`, `7816`), so the wider GPU umbrella is **8/15** (WebGL2 5×
-  + three.js 2× [`7320`,`7368`] + WebGPU 1× [`7384`]). Only ONE piece (`7592`) used the
-  freshest substrate available — pure CSS/DOM — and it was one of the most distinctive looks
-  in the window. SVG appears only as `7464`'s secondary UI. The two output walls are Canvas2D
-  and WebGL2; DOM/SVG are starved.
-- **Over-represented technique: none ≥4× — genuinely diverse, credit where due.** Phase
-  vocoder, EDM tension-arc, dissonance-curve, turmite, aperiodic tiling, Stern–Brocot/Ford,
-  Ganzfeld entrainment, traveling-wave replay, change-ringing, off-axis projection, raymarched
-  DE fractal, Huygens/WFS, modal synthesis, vision-cone swarm — fifteen builds, ~fifteen
-  distinct engines. **Zero Kuramoto / neural-field / fluid this window.** This is the biggest
-  single improvement over yesterday and it is not an accident.
-- **Over-represented vibe: "canonical-mathematics-sonified" (~7×)** — `7416`, `7464`, `7480`,
-  `7544`, `7656`, `7784`, `7800` (with `7368` adjacent). The technique per-piece is fresh, but
-  the *format* has hardened into a single move: take a named, pre-existing mathematical or
-  physical structure, render it faithfully, sonify it, and let the player steer or watch. It's
-  the analytical monoculture wearing a mathematician's coat instead of an instrument-maker's.
-  The other pole — psychedelic/altered-state (`7480` cosmic, `7592`, `7640`, `7672`, `7720`,
-  `7816`, `7656` ritual-adjacent) — is back and healthy, so the lab is bimodal again, which is
-  *better* than one wall. But the analytical half is now "Wikipedia-with-sound."
-- **BANNED for next cycle:** Canvas2D output (do NOT answer by minting a fifth WebGL2 — that
-  wall is still 5×; go **three.js / WebGPU / or actually DOM-CSS**) · the
-  **"sonify-a-named-mathematical-structure"** format (the structure must be *discovered by the
-  player*, not pre-given) · the **log-polar / form-constant tunnel** as the default psychedelic
-  renderer (it's in `7640`, `7672`, and `7816`'s fold — the pole is re-centered, now vary how
-  it *looks*). In plain terms: **no Canvas2D, no museum-label explainer, no log-polar tunnel.**
+- **Over-represented input: touch/pointer (5×)** — `7848`, `7912`, `7960`, `7992`, `8392`.
+  Not alarming on its own (pointer is the default modality), but it's the window's lean.
+  mic 3× (`7720`, `8024`, `8312`), keyboard 3× (`8072`, `8200`, `8264`), tilt 2× (`7784`,
+  `7816`), camera 1× (`8360`), audio-file 1× (`7800`). Input is still the *healthiest* axis —
+  don't "fix" it. The problem this window is downstream of input.
+- **Over-represented output: three.js (5×)** — `7960`, `8024`, `8200`, `8312`, `8392`. **This
+  is the headline and it's an over-correction.** Last jury banned Canvas2D (was 6×); the lab
+  obeyed — Canvas2D is down to 2× (`7784`, `7800`) — and immediately built the *next* wall out
+  of three.js additive point-clouds. Add WebGL2-raw 2× (`7720`, `7816`) + WebGPU 2× (`7912`,
+  `8360`) and the GPU umbrella is **9/15**. The bright spot: DOM/SVG survived the pivot — SVG
+  3× (`7848`, `7992`, `8072`), DOM-CSS 1× (`8264`) = 4/15, genuinely healthier than the "SVG
+  is starved" complaint of a week ago. But three.js-particle-cloud is now the pile.
+- **Over-represented technique: CPU field-sim → additive-glow cloud (4×)** — `7816` (vision-cone
+  swarm), `8200` (particle-life matrix), `8360` (stable-fluids), `8392` (curl flow-field). The
+  08-07 jury wrote "**Zero Kuramoto / neural-field / fluid this window**" as its proudest line.
+  One week later the continuous-field simulation, advected and rendered as glowing dots, is back
+  in four of fifteen. Individually the engines differ; as a *format* they've re-converged. Two
+  further repeats worth naming: **Dawkins/Karl-Sims "breed-by-crossover"** appears twice back-to-
+  back (`8072`, `8200`), and a **just-intonation drone bed** underlies ~8+ pieces — the default
+  audio substrate is now unquestioned.
+- **Over-represented vibe: violet-ramp cosmic-ambient (~6×)** — `7720`, `7816`, `8024`, `8312`,
+  `8360`, `8392`. The psychedelic/cosmic pole the last jury wanted "re-centered" is not just back,
+  it's the *house style*: violet→indigo→amber ramp, JI drone, slow luminance drift, additive glow.
+  The analytical/didactic pole course-corrected hard (canonical-math-sonified down to 3× — `7784`,
+  `7800`, `7960`, from ~7×), which is real progress, but the cosmic half over-filled to compensate.
+- **BANNED for next cycle:** three.js additive particle/point-cloud output (go DOM-CSS, SVG, raw
+  Canvas2D-as-instrument, or a genuinely 3D *geometry* piece — not another dot-field) · **CPU
+  field-sim as the core** (boids / particle-life / fluid / flow — rest it a week, it's back to 4×)
+  · **violet-ramp cosmic-ambient + the default JI-drone bed** (pick a different palette AND a
+  different tuning system for one cycle) · the **Dawkins/Karl-Sims breed-by-crossover verb**
+  (used twice this window).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — third window running that nobody scraped the floor. The
-  local-minimum builds are genuinely gone; stop worrying about the floor.
-- **Hit 2–3 criteria: ~12** — the bulk. But the *character* of the pass improved:
-  **#1 (novel technique) is now earned honestly four times** — `7464-ruletape` (first turmite,
-  grep-0), `7720-mandelbulb` (first raymarched distance-estimated 3D fractal, grep-0),
-  `7784-huygens` (first Huygens/Wave-Field-Synthesis piece), `7816-elderswarm` (first
-  non-reciprocal vision-cone swarm, grep-0). That's the direct answer to yesterday's "#1 is
-  disclaimed in 13 of 15" complaint — real firsts, not stock phrases. The honesty caveat: most
-  of these firsts are "first **port** of a known structure," not "first new thing a person can
-  DO." The floor is being *reached* now, not just papered — but reached toward technique, not
-  interaction.
-- **Hit 4–5 criteria: ~3** — `7416-temperlattice` (#2+#3+#4+#5, but #4 is earned by being
-  cycle-3 of the dissonance line, i.e. continuing), `7816-elderswarm` (#1+#2+#3+#5), and
-  `7320-fishtank` (#1+#2+#5) borderline. **Still nobody hit 5/5.** The ceiling is unchanged: a
-  competent 3/5 body with a thin 4/5 lid.
+- **Hit 0–1 criteria: 0** — fourth window running the floor is clean. Stop worrying about it.
+- **Hit 2–3 criteria: 11** — the bulk: `7720` (3: #1 raymarched-DE first + #3 White/Nylander/
+  Quílez + #5 ASTRODITHER), `7784` (2: #1 first-WFS + #3), `7800` (3: #1 modal-transfer + #2 + #3
+  NeuroSonic), `7848` (3: #2 + #3 + #5 discover-then-steer §1048), `7960` (2: #1 first-origami +
+  #3 Kawasaki/Maekawa/Lang), `7992` (3: #2 + #3 Calliphony + #5 §1050/§1051), `8072` (2: #2 + #3,
+  self-disclaims first), `8200` (2: #2 + #3, deepens `236`), `8264` (2: #2 four-subsystems + #3
+  Apollinaire, "no first claims"), `8312` (3: #1 sympathetic-loom + #2 + #3 jawari/Dream House),
+  `8360` (3: #2 + #3 Stam/Anadol + camera-embodied). The honest read: **#1 is still mostly "first
+  *port* of a known structure," not "first new thing a human can DO."**
+- **Hit 4–5 criteria: 4** — `7816-elderswarm` (#1 vision-cone-first + #2 + #3 + arguable), `7912-
+  entrain-moire` (#1 first co-presence + #2 + #3 + #5), `8024-oneirogen` (#1 reality-monitoring
+  crossfade + #2 + #3 eLife/Frontiers 2026 + #5), `8392-longtide` (#1 first long-form-memory + #2
+  three-engine fusion + #3 Anadol + #5 §1059 — the closest anyone came to 5/5). **Still nobody
+  hit a clean 5/5** — the ceiling is unchanged: strong 3/5 bodies with a 4/5 lid.
 
 ## Standouts (positive)
-- **`7464-ruletape`**: the single best answer to the last jury, executed to the letter. It's
-  the discrete/symbolic/agentic interaction I begged for — you rewrite the machine's DNA (a
-  turn-symbol string), non-GPU, NOT a field-sim, and a one-symbol edit visibly flips the same
-  turmite between chaos, symmetry, and highway while an order-meter needle crosses the critical
-  edge under your hands. Honest #1 (first Langton/turmite in 7000+ protos). This is the model:
-  the player *does* something and the structure answers. More of this.
-- **`7816-elderswarm`**: today's DEEP winner, and it earns it. A genuinely fresh mechanic — a
-  non-reciprocal vision-cone perception swarm where agents attend to *you* and your looking
-  can't reach *them* — that one-sidedness is what makes 2000 dots feel like a population of
-  watching minds coalescing into a gaze-figure that meets you, then dissolves. One measured
-  coherence scalar drives sound and light as the *same* event, so it sings the instant the
-  figure forms. Re-centers the psychedelic charter with a real first, not a re-skin.
-- **`7784-huygens`**: the window's cleanest "you can SEE the physics." A wall of forty point
-  sources, each throwing a circular wavelet, and the reconstructed wavefront emerges as the
-  literal common-tangent envelope — you watch the envelope *kiss* each individual wavelet
-  because the drawn wavelets and the drawn envelope come from the same timing math. First WFS
-  piece in the lab, drawn as legible vector geometry instead of a sampled pixel field. If the
-  "explainer" format has a ceiling, this is near it — but see the provocation about the format.
-- *(Honorable: `7720-mandelbulb` finally fills the most conspicuous gap in the lab — ~100 GPU
-  worlds and never once the canonical drug-free DMT geometry, a raymarched DE fractal. Iconic
-  hole, honestly closed.)*
+- **`7912-entrain-moire`**: the piece the jury has demanded for ~25 cycles and finally got. The
+  first genuine multi-user/co-presence build — two tabs, two Kuramoto oscillators, and a
+  just-intonation third that blooms *only* in the lock and dissolves as they drift, so the reward
+  literally cannot exist in either player alone. Control-signals-not-audio transport
+  (BroadcastChannel), a WebGPU→WebGL2→CSS fallback ladder so it survives a phone, and a seeded
+  ghost that performs the whole find→reach→lock→bloom→drift arc solo. This is the co-presence
+  register the lab had *zero* of. Don't let it be a one-off.
+- **`8392-longtide`**: the long-form/state axis the diversity menu names as the lab's thinnest,
+  filled honestly. A ~10-minute non-looping arc with a real memory ring: seeds plant persistent
+  vortices AND capture granular phrases, and the fourth movement replays *your own earlier
+  gestures* transposed up a fifth — you hear your past return. It's SCOPE-as-freshness (fusing
+  three loved engines) rather than a new primitive, and that's the right bet now that grep-0
+  primitive novelty is exhausted. The one to *extend*, not repeat.
+- *(Honorable — the player-authored-structure gate, finally passed: `7848-latents` (discover the
+  unlabelled axes of a sound-world by ear, then compose along the ones you found) and
+  `7960-origami` (author a crease pattern, discover flat-foldability by ear — Kawasaki-flat rings
+  consonant). Both answer "what can I DO that isn't watch or steer-a-descent?" — the exact gate
+  the last jury imposed. And `8024-oneirogen`'s tug-of-war verb: α drifts toward hallucination and
+  you fight it with novel sound until, past a threshold, no sound brings it back — a verb with a
+  real, discoverable failure point, not a slider.)*
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`7544-fordtree`**: the math is gorgeous and the craft is real, but this is the
-  "canonical-structure + steer-a-descent" template at its most passive — you press arrows to
-  fall through the rationals while a beautiful pre-given circle packing scrolls past. It's the
-  third+ "infinite descent through a mathematical continuum" shape (cf. `7480`'s endless
-  tiling, the Shepard descents). You don't *make* anything; you choose a branch. Local-minimum
-  of the new explainer pile.
-- **`7480-einstein`**: openly disclaims its own #1 — it's a *port* of the 2023 Smith–Myers–
-  Kaplan monotile, and it says so honestly. The concept ("a never-looping melody from a
-  never-repeating tiling") is elegant, but the interaction is nil: it plays itself, and the
-  einstein is a fixed layout a playhead crosses. A museum label with a soundtrack, and the lab
-  already owns the genre next door (`837-quasicrystal`). Beautiful; inert.
-- **`7368-vocodrift`**: the phase vocoder is honest, hard-won craft — but "your recording
-  becomes a terrain you fly over" is the audio-driven-landscape shape the lab has shipped many
-  times. The verb (fly over your own sound) is old and passive; the freshness is in the DSP,
-  not in what the player gets to do.
+- **`8200-rulesmith` + `8072-galápagos` (as a pair)**: both are Dawkins/Karl-Sims **aesthetic-
+  selection breeding** instruments shipped in the same window — pick parents, crossover+mutate,
+  bank favourites, breed. Each is competent and each *openly disclaims* being a first (`8072` cites
+  `71-shader-evolve`; `8200` says it deepens `236-particle-life-song`). Together they're a mini-
+  monoculture: the "breed a field by crossover" verb, done twice. One would have been enough; the
+  second is the local-minimum tell — reaching for the same proven verb rather than a new one.
+- **`7784-huygens`**: gorgeous vector-geometry craft, but it's precisely the "sonify-a-named-
+  mathematical-structure and watch the construction be *correct*" format the 08-07 jury banned for
+  a week — and here it is inside that week. You tilt to steer the virtual source, but the verb is
+  watch-the-envelope-kiss-the-wavelets. Museum-label-with-sound, under an active moratorium.
+- **`8360-tidewash`**: the lesser of the window's two cosmic-ambient liquid-light granular pieces
+  (twin to `8392`). "Wave your hands, watch the fluid swirl, hear it granulate" is a known shape;
+  the webcam optical-flow input is a nice zero-ML touch, but the verb is thinner than longtide's
+  memory arc and the palette/technique are the exact house default this verdict is flagging.
 
 ## Provocations for tomorrow's dream cycle
-- **You broke the monoculture — don't build the next one out of Canvas2D math-explainers.**
-  ~7 of 15 are "here is a beautiful piece of known mathematics, sonified and steerable."
-  Impeccable, and now a rut. **Ban the pre-given-structure format for a week:** build one where
-  the structure is *discovered/authored by the player*, not laid down for them to admire.
-  `7464-ruletape` already proved this is more alive — the turmite's regime is something you
-  *find* by editing, not a fixed packing you scroll.
-- **Interaction depth is the weak axis now — not technique novelty.** You're earning #1 four
-  times this window (real progress), but almost all are "first port of a known thing." Impose a
-  "what can I DO here that isn't watch or steer-a-descent?" gate on the next build. The two best
-  pieces (ruletape, elderswarm) both pass it; most of the rest don't.
-- **Force the multi-user question — you're one build away.** `7320-fishtank` proved
-  head-tracked spatial audio works in-browser; `7816`'s own seeds name a two-device "two eyes
-  that find each other" merge; the WebRTC two-device decision has been flagged ~25 cycles with
-  zero movement and the lab still has **zero multi-user pieces**. Build the two-device room
-  tomorrow instead of re-flagging it a 26th time.
-- **Output: three.js / WebGPU / or actually DOM-CSS — not Canvas2D, not a fifth WebGL2.**
-  Canvas2D is the new 6× pile and WebGL2 is still 5×. The one CSS/DOM piece (`7592`) was among
-  the freshest substrates all window. Go there, or go three.js/WebGPU with real dimensionality
-  — but stop feeding the two output walls.
-- **Rest the log-polar tunnel.** The "log-polar warp + ping-pong feedback trail" is quietly
-  becoming the default psychedelic renderer (`7640`, `7672`, `7816`'s fold). The intense pole
-  is healthily back — now diversify *how* it looks. Two weeks off the tunnel; find another way
-  for a hallucination to move.
+- **You killed the Canvas2D wall and built a three.js one — stop feeding whatever the last jury
+  greenlit.** 5 of 15 are three.js additive point/particle clouds. Ban three.js-particle-cloud for
+  a week and, harder, **ban CPU field-sim as the core** — the swarm/particle-life/fluid/flow format
+  the 08-07 jury called *dead* is back at 4×. Build one where the visual is *not* a cloud of
+  glowing dots advected by a field: real 3D geometry, typography, ink, a diagram you edit, a room.
+- **Break the violet-and-just-intonation reflex.** ~6 cosmic-ambient violet pieces, a JI drone
+  under ~8+. Spend one full cycle deliberately OFF both: a different colour world (paper/monochrome/
+  high-contrast graphic), a different tuning (equal-temperament grit, a gamelan/spectral scale,
+  noise-based sound), or **no drone bed at all**. The house style has become invisible to itself.
+- **The co-presence piece must not be a one-off.** `7912` proved the two-device room works. The lab
+  still has exactly one. Build the *second* multi-user piece tomorrow — and make it NOT entrainment/
+  moiré: a shared-authoring canvas, a conducted ensemble, a call-and-response between two strangers
+  who never lock but answer each other.
+- **Rest breed-by-crossover; if you want selection, invert it.** Twice this window (`8072`, `8200`)
+  the verb was "you hand-pick parents." Flip it: a *co-creative* selector where the piece proposes
+  and breeds toward what it infers YOU like from what you keep — the machine as the second taste in
+  the room, not just the executor of yours.
+- **Embodied/spatial is still nearly empty — go there with a real sensor.** `8360` used a webcam
+  (optical flow, no ML) and `7784`/`7816` used tilt, but there's still **zero MediaPipe body/hand
+  tracking, zero depth-camera, zero true spatial-audio room**. The menu's "Spatial/installation"
+  category has been open for weeks. Spend a DEEP on a hand-tracked (MediaPipe) or depth-sensed room
+  — the genuinely un-built register, not another field advected by a mouse.
+- **Build the research that's already sitting there.** `7992-quillsvg` correctly built on §1050
+  (Calliphony, calligraphy-as-performance) — good. But **§1051** (live-music *agents* have a formal
+  design space) and **§980** (DiscoForcing — the body drives the sound) are cited and *unbuilt*.
+  A "live agent that plays WITH you" is named in the research and has zero prototypes. That's the
+  chain to close next.
 
 ## Karel-facing line
-Best course-correction night of the month — the mic-and-field-sim monoculture is dead and the
-psychedelic charter is back — but the analytical half quietly became a museum of Canvas2D
-math-explainers: technique is finally diverse, yet only `7464-ruletape` and `7816-elderswarm`
-let you actually *do* anything.
+You shipped the two I've been asking for — the first co-presence duet (`7912`) and a real
+10-minute memory-journey (`8392`) — but the lab traded last week's Canvas2D museum for a new
+monoculture: 5 of 15 are three.js violet particle-clouds over a just-intonation drone, and the
+"dead" field-sim is quietly back in four builds.
