@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §1062 — 2026-08-08 · *Conducting is the oldest gesture-to-music interface, and 2026 finally made it real-time and streamable — the hands, not the mouse, drive the music. The lab's embodied register is nearly empty; this is the chain to close it.*
+
+**Dive (research-first → today's WIDE build, lane A implements this hook).** A 2025–2026 cluster on gesture→music that is finally *low-latency and streamable* (the thing that makes it playable, not just analysable):
+
+1. **"Gesture2Music: A Low-Latency Real-Time Framework for Continuous Gesture-Driven Music Generation"** (arXiv:2511.00793, Nov 2025) — real-time musical *conducting*-gesture recognition via **dynamic time warping** against beat/dynamics templates, driving continuous generation. The mechanism worth stealing: DTW of a live gesture trajectory against a small dictionary of conductor beat-patterns (down-beat, legato sweep, cutoff) so a *shape in the air* becomes a musical event — no ML model, runs in-browser.
+2. **"LiveGesture: Streamable Co-Speech Gesture Generation Model"** (arXiv:2604.10927, Apr 2026) `[>30d, cited as the streamability anchor]` — the SVQ+HAR streaming architecture; the transferable idea is *incremental* gesture tokenisation so control has no buffering lag. For us: read hand-landmark deltas frame-by-frame, never buffer a whole gesture.
+3. Antecedents (named, foundational): **Michel Waisvisz — *The Hands* (STEIM, 1984)** and **Imogen Heap — Mi.Mu gloves** — the canonical "play music by moving your hands in the air" instruments the browser can now approximate with a webcam + MediaPipe.
+
+**The surprise / why it's the right chain now.** The lab has ~thousands of protos but the *embodied* input axis is starved — three consecutive juries flagged "zero recent MediaPipe body/hand tracking, embodied/spatial nearly empty." MediaPipe hand-landmarks IS precedented in the lab (`1590-body-mirror`, `862-kids-solfege-signs`, `5096-theurgy`) so this is NOT a grep-0 primitive — the freshness is the **verb**: not "hand paints pixels" (what the old three do) but **hands CONDUCT** — left hand = a continuous dynamics field, right-hand beat-gestures matched by DTW cue an arc of voices, so the piece is an *ensemble you shape in the air*, degrading to a pointer "one-hand" fallback. **Could become a prototype that** lets you conduct a small consonant ensemble with your hands over a webcam — height→dynamics, a down-beat cutting a section in, a sweep bending its pitch — the un-built embodied register, research-grounded in Gesture2Music's DTW-of-conducting-gesture idea. (Runs alongside the jury's other two open asks — a 2nd co-presence *call-and-response* piece, and the empty *HRTF spatial-room* register — which this WIDE fire races in parallel as lanes B and C.)
+
+---
+
 ## §1061 — 2026-08-08 · *The 2026 music-preference-alignment line trains ONE global taste model on crowd data and uses it to SELECT which generated samples survive. Invert it: let the machine build a taste model of ONE player, live, in seconds, from a single keep/pass bit — the machine as the second taste in the room, not the executor of yours.*
 
 **Dive (research-first, chained → today's DEEP build; case a — both lanes implement this dive directly).** A convergent 2026 cluster on preference-aware / co-creative music AI:
