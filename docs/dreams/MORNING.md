@@ -1,34 +1,32 @@
-# Morning digest — last updated 2026-08-08 ~04:35 UTC
+# Morning digest — last updated 2026-08-08 (cycle 1056, WIDE)
 
 ## New since yesterday
-- **[8200-rulesmith](https://getresonance.vercel.app/dream/8200-rulesmith)** — *the rules of a
-  particle-life world are a score you compose by hand.* Sculpt the 5×5 species-force matrix by
-  keyboard, watch ~2400 particles re-organize into cells/chases/membranes, hear each species' voice
-  bloom as it clusters — then **save** worlds you love and **breed** two into offspring
-  (crossover+mutation). **Why open this:** it deepens your loved `236-particle-life-song` by handing
-  you the pen — you *author and breed the genome* instead of hunting random worlds. It's alive on
-  load (a virtual author sculpts until you take over), so glance first, then press a key and take the
-  matrix. `S` save · `1–6` pick two · `B` breed · `N` new world.
+- **[8264-versecast](https://getresonance.vercel.app/dream/8264-versecast)** — *type prose and the
+  words ARE the score.* Every keystroke is a voice the instant you press it, and every character
+  becomes a living glyph — there's no separate visualiser, **the typography is the artwork**. Vowels
+  are held pitches, consonants are attacks, punctuation resolves into cadence, a line-break shifts
+  register so stacked lines interlock; backspace silences the last voice. **Why open this:** it's the
+  one thing the jury actually asked for — a genuine *authoring* verb (you *write* the piece, you don't
+  watch it) on **pure DOM/CSS**, the substrate it called the freshest of the window (no canvas, no
+  WebGL). Glance first — a ghost writer composes on its own within a second, then yields the moment
+  you type. Press **Begin**, click the field, and write.
 
-## How this cycle went (an honest note — it matters)
-- The queued ⭐⭐⭐ pick (`synthesis-journey`, a long-form piece that remembers your gesture) got
-  **rejected before I built it**: grep showed the long-form-memory-journey *format* is already ours
-  4× (`1035-living-album`, `1135-deep-memory`, `1234-almanac`, `275-memory-loom`). Shipping it would
-  have repeated last cycle's duplication. So I pivoted to the queued ⭐⭐ alternative — **deepen a
-  loved piece with a genuinely absent verb** — and it produced real new interaction without a new
-  primitive. That's the "climb via SCOPE/DEEPEN, not new skeletons" thesis working in practice.
+## Also explored (banked, not shipped — see IDEAS §1056)
+- `8280-vespers` — **sing a cathedral of light into being over minutes** (three.js + mic). Hold a pitch
+  ~1s and it commits a permanent just-intonation stratum of light + drone; tend them or let them fade,
+  so minute 5 ≠ minute 1. Strong, on your cosmic charter — my **resurrect-first / DEEP pick for next
+  cycle.**
+- `8296-dendrite` — **cultivate a coral of sound** (WebGPU): seed where thousands of particles
+  aggregate into branching crystal, each branch a voice. Highest ceiling, but WebGPU can't be verified
+  from here — batched with the waiting `8232-swarmforge` for one real-device GPU pass.
 
-## Also explored (banked, not shipped)
-- `8216-livingscore` — the **legibility** take: a live "responsible-cell" highlight so you *see*
-  which rule made which sound. Strong teaching layer — I want to graft its metric onto 8200 next.
-- `8232-swarmforge` — the **scale** take: the same authored matrix reshaping **55k particles** on
-  WebGPU (one cell change ripples through a galaxy). Real wow, but wants a real-device WebGPU pass.
-  Both built clean; details in IDEAS §1055.
-
-## The open question I keep flagging (needs your call)
-- After ~thousands of protos, ambition-criterion #1 ("a technique never used") is **effectively
-  unreachable** — grep-0 is gone. Two cycles running I've had to reject "new" ideas as dups. Should
-  the rubric formally shift to reward **SCOPE / long-form / synthesis / deepen-a-loved-piece** over
-  primitive-novelty — i.e. a deliberate **"deepen the loved ones" era** extending your ~43 loved
-  pieces? Today's ship is a first taste of that mode. This is the lab's highest-leverage decision
-  right now.
+## Two honest notes for you
+- **The jury was factually wrong on its headline.** It said "the lab has ZERO multi-user pieces, build
+  the two-device room." It doesn't — `508-accord-call`, `729-piano-portal-jam` ("first real
+  cross-device multi-user piece") and `3144-latency` already exist. I **rejected that lane before
+  building** (a fourth would just duplicate). The jury may want a re-audit that greps before prescribing.
+- **The strategic call I keep flagging (3 cycles now).** After ~thousands of protos, ambition-criterion
+  #1 ("a technique never used") is effectively unreachable — grep-0 is gone (I checked ~10 candidate
+  primitives tonight; all 4–63× used). I've been shipping honestly on **combination + agency + substrate**
+  instead. Should the rubric formally shift to reward **SCOPE / synthesis / deepen-a-loved-piece** and
+  open a deliberate "deepen the ~43 loved ones" era? This is the lab's highest-leverage open decision.
