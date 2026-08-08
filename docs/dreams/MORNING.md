@@ -1,24 +1,23 @@
-# Morning digest — last updated 2026-08-08 (cycle 1060, WIDE)
+# Morning digest — last updated 2026-08-08 (cycle 1061, DEEP)
 
-> **Yesterday's jury**: the lab traded last week's Canvas2D museum for a new monoculture — 5 of 15 were three.js violet particle-clouds over a JI drone. It banned four things at once (particle-cloud output · CPU field-sim core · violet+JI · breed-by-crossover) and named three things to build instead. See `docs/dreams/JURY.md`. **Tonight I built straight off that list.**
+> **The jury** (2026-08-08) banned four things at once (three.js particle-cloud output · CPU field-sim core · violet+JI · breed-by-crossover) and, among its "build instead" asks, named one I hadn't touched: *"rest breed-by-crossover; if you want selection, **invert** it — a selector that proposes and breeds toward what it infers YOU like from what you keep — the machine as the **second taste in the room**."* **Tonight I built exactly that.** (I also grep-checked the jury's *other* DEEP idea — a MediaPipe hand-tracked / spatial-audio room — and it was factually a dup: 1590-body-mirror already does hands+HRTF, and 997/1019/1029/3328 are halls. So I built the genuinely-absent verb, not the redundant one.)
 
-Open first: **https://getresonance.vercel.app/dream/8440-duetmind**
-Press a key (or just watch — it self-plays a duet in ~2s). Then read the amber ghost notes ABOVE the line: that's the machine showing you its plan a beat before it plays it.
+Open first: **https://getresonance.vercel.app/dream/8488-secondear**
+Just watch for ~5s — it auto-plays against a hidden "listener" and the **"knows your ear" meter climbs on its own.** Then press **K** (keep) / **J** (pass) on phrases YOU like, and watch its proposals drift toward your taste. Every few keeps it makes a **bold move**: composes a little melody it thinks is *you* and asks "Is this you?"
 
 ## New since yesterday
-- **`8440-duetmind` — a live improvising partner that SHOWS YOU ITS PLAN.** You play the computer keyboard as a little piano; a second musician (all local, no AI model) listens to your phrase, commits to what it's about to play a beat ahead, **draws that plan as dashed ghost notes falling toward the "NOW" line**, then plays it — trading fours, developing your line by inversion/retrograde/augmentation. You read its intention before you hear it.
-  - **Why open it:** this is the one you've been asking me for (via the jury) for weeks — **a machine that plays WITH you, not one you operate.** The lab had zero. And it's a clean break from the house look: **blueprint ink, not violet; equal temperament, not the JI drone; an SVG piano-roll, not a glowing particle cloud.** A jazz dialogue, not a cosmic bath.
-- **2 more explored this fire (WIDE), banked IDEAS §1060 — both built clean, both hit a different thing you've asked for:**
-  - **`8456-kotekan`** — two strangers in two tabs INTERLOCK into one gamelan melody neither can play alone (you each own half the notes). The **second co-presence piece** the jury said mustn't be a one-off — DOM/CSS print-grid, gamelan tuning, no violet.
-  - **`8472-whispergallery`** — compose by placing voices on the walls of a **real 3D stone hall**; each note travels the room's curve and returns from that direction in **true binaural (HRTF) audio.** Fills the two empty registers the jury named: real geometry (not dots) + a real spatial-audio room.
+- **`8488-secondear` — THE OTHER EAR: the machine as the second taste in the room.** It proposes a 2-bar phrase; you give ONE bit — Keep or Pass — and from that stream it silently builds a live model of *your* ear (a pure-TypeScript online preference model, no ML lib) and composes toward it. A **"knows your ear: NN%"** meter shows it learning; the picture is a **taste-space diagram** (density × register), not a particle cloud.
+  - **Why open it:** it's the freshest verb in a while — you don't tune anything and you don't hand-pick parents; **the machine models YOU.** It's the jury's named "invert the selection" ask, and grep-verified genuinely absent (the lab's breeders all put *your* hand on the parents). Clean off the banned house style: **graphite/amber ledger, not violet; 12-TET, no JI drone; a diagram, not a dot-cloud.**
+- **1 more explored this fire (DEEP, banked IDEAS §1061):**
+  - **`8504-earprint`** — the same "infer your taste" verb but for **timbre**: it proposes tones (fixed 4-note motif so you judge tone, not melody), learns the sound-colour you love, and grows a **"YOUR SOUND"** pad. Built clean; curated out only because tone-colour is inaudible on a muted phone — a natural resurrect, and it pairs perfectly with feeding your real Path-piano grain as the timbre space.
 
 ## In progress / partial
-- None blocking. Ledger → **1061 is DEEP.** Strongest DEEP candidates: extend `8440-duetmind` (let the agent trade with your *mic* line, or two agents with different "tastes"), or the banked `8472-whispergallery` as a real-device spatial DEEP.
+- None blocking. Ledger → **1062 is WIDE.** Strongest banked resurrects: `8504-earprint` (timbral twin), and from cycle 1060 `8456-kotekan` (two-tab gamelan interlock) + `8472-whispergallery` (real 3D HRTF hall) — the jury wants co-presence and real-geometry to keep going.
 
-## Research (RESEARCH §1060)
-- The 2026 human-AI music frontier has settled on one idea the lab had none of: **a partner that shows its INTENTION before it acts** (ReaLJam's "waterfall plan"; Co-policy Jun 2026; Real-Time Co-Performance Apr 2026). I built exactly that. George Lewis's *Voyager* (1987) is the ancestor.
+## Research (RESEARCH §1061)
+- The 2026 music-preference line (TuneJury, arXiv:2606.21670, Jun 2026) trains ONE taste model on a crowd, offline, and uses it to *select* which AI samples survive. I inverted it: the same pairwise-preference-selection mechanism, but **live, per-player, no ML** — so you hear it converge on *your* ear in one sitting.
 
 ## Open questions for you
-- **The jury wants co-presence and embodiment to keep going** — both banked tonight (`8456`, `8472`) are ready to ship next WIDE. Want me to prioritize one, or keep racing new verbs?
-- **Ambition rubric (7th time):** "first-ever technique" is exhausted after 8000+ protos. Tonight was closer to a genuine "first" (a shown-plan agent) than most. Formally shift the bar to reward *scale + fusion + a genuinely new interaction*, and start a deliberate "deepen the loved ones" era?
-- **AI-pipeline chain** (music→image→video, needs `FAL_KEY`) has sat ~37 cycles — green-light it or strike it?
+- **Ambition rubric (8th time):** "first-ever technique" is exhausted after 8000+ protos. The last two ships — a shown-plan agent, and now a taste-inferring co-composer — are the closest to "a genuinely new interaction a human can DO." Formally shift the bar to reward *scale + fusion + a new interaction*, and start a deliberate "deepen the loved ones" era?
+- **Deepen `8488`?** Obvious next steps: let it learn a *sweet-spot* taste (non-linear), seed it with **your real playing** (mic / dropped phrase) so it composes in *your* material, or a **two-ear** version where two inferred tastes argue over the next proposal. Want any of these next?
+- **AI-pipeline chain** (music→image→video, needs `FAL_KEY`) has sat ~38 cycles — green-light it or strike it?
