@@ -1,32 +1,41 @@
-# Morning digest — last updated 2026-08-08 (cycle 1056, WIDE)
+# Morning digest — last updated 2026-08-08 (cycle 1057, DEEP)
+
+Open first: **https://getresonance.vercel.app/dream/8312-shrutiloom**
 
 ## New since yesterday
-- **[8264-versecast](https://getresonance.vercel.app/dream/8264-versecast)** — *type prose and the
-  words ARE the score.* Every keystroke is a voice the instant you press it, and every character
-  becomes a living glyph — there's no separate visualiser, **the typography is the artwork**. Vowels
-  are held pitches, consonants are attacks, punctuation resolves into cadence, a line-break shifts
-  register so stacked lines interlock; backspace silences the last voice. **Why open this:** it's the
-  one thing the jury actually asked for — a genuine *authoring* verb (you *write* the piece, you don't
-  watch it) on **pure DOM/CSS**, the substrate it called the freshest of the window (no canvas, no
-  WebGL). Glance first — a ghost writer composes on its own within a second, then yields the moment
-  you type. Press **Begin**, click the field, and write.
+- **8312-shrutiloom** — *sing a loom of sympathetic strings.* Hold a sung note and it
+  strings a just-intonation line across the space; then **JI-related strings ring each
+  other** — notes you did *not* sing swell and shimmer on their own, like a tanpura's
+  jawari. The drone you weave **answers your voice**. Why open it: it's the first piece
+  where your held note has a *consequence that propagates* — the whole loom sings back,
+  not just the note you sang. Long-form (minute 8 is a dense cross-talking web, not
+  minute 1's lone string). Works muted on a phone — a seeded weaver builds it with no mic.
+  three.js · mic/sung-pitch · cosmic-ambient. **DEEP winner of 3 built tonight.**
 
-## Also explored (banked, not shipped — see IDEAS §1056)
-- `8280-vespers` — **sing a cathedral of light into being over minutes** (three.js + mic). Hold a pitch
-  ~1s and it commits a permanent just-intonation stratum of light + drone; tend them or let them fade,
-  so minute 5 ≠ minute 1. Strong, on your cosmic charter — my **resurrect-first / DEEP pick for next
-  cycle.**
-- `8296-dendrite` — **cultivate a coral of sound** (WebGPU): seed where thousands of particles
-  aggregate into branching crystal, each branch a voice. Highest ceiling, but WebGPU can't be verified
-  from here — batched with the waiting `8232-swarmforge` for one real-device GPU pass.
+## In progress / partial (banked, built clean, ready to resurrect)
+- **8280-vespers ⭐⭐** — the same idea as a *volumetric cathedral*: sung pitches raise
+  pillars of light + drone that ring on past your breath. The most beautiful of the
+  three; lost only because it's more *watch-it-accrete* than shrutiloom's active answer.
+  Natural next DEEP north-star.
+- **8328-tonnetz ⭐⭐** — a 3D just-intonation **crystal** whose *shape* encodes the
+  harmony you sang (fifths grow as a line, thirds spread sideways). Elegant, but it leans
+  toward the "music-theory diagram" format the jury banned — resurrect if that lifts.
 
-## Two honest notes for you
-- **The jury was factually wrong on its headline.** It said "the lab has ZERO multi-user pieces, build
-  the two-device room." It doesn't — `508-accord-call`, `729-piano-portal-jam` ("first real
-  cross-device multi-user piece") and `3144-latency` already exist. I **rejected that lane before
-  building** (a fourth would just duplicate). The jury may want a re-audit that greps before prescribing.
-- **The strategic call I keep flagging (3 cycles now).** After ~thousands of protos, ambition-criterion
-  #1 ("a technique never used") is effectively unreachable — grep-0 is gone (I checked ~10 candidate
-  primitives tonight; all 4–63× used). I've been shipping honestly on **combination + agency + substrate**
-  instead. Should the rubric formally shift to reward **SCOPE / synthesis / deepen-a-loved-piece** and
-  open a deliberate "deepen the ~43 loved ones" era? This is the lab's highest-leverage open decision.
+## Research finding worth a look
+- *The Moving Drone: Negotiating Agency Between the Voice and the Virtual*
+  (arXiv:2606.13640, 2026) — frames the drone as a **partner** whose sustain does
+  compositional work; the design space is the *agency handoff*. Tonight's build makes
+  that literal (the space keeps ringing after you stop). Paired with the tanpura **jawari**
+  sympathetic-resonance principle. Full note in RESEARCH.md §1057.
+
+## Open questions for Karel
+- **Strategic (flagged 4 cycles):** grep-0 primitive novelty is exhausted — no honest
+  "first-ever technique" is left in 8000+ protos. Should the ambition rubric formally
+  shift to reward **scope / synthesis / deepening loved pieces** over primitive-firsts?
+  Tonight's ship is another vote that *combination + agency + long-form state* is the
+  live lever, not novelty.
+- **JURY factual note:** the 2026-08-07 jury's headline "build the two-device room, the
+  lab has ZERO multi-user pieces" is **wrong** — 508/729/3144 already exist. A jury that
+  greps before prescribing would help.
+- **Standing (~34 cycles):** the AI-pipeline chain (music→image→video, needs FAL_KEY) —
+  build it or strike it from the queue?
