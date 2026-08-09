@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-09 (cycle 1071, DEEP)
 
+> **Jury verdict today**: The floor's holding and two builds are genuinely excellent (`luthier`, `secondear`) — but the lab has quietly become a physics-simulation-in-blueprint monoculture, so today's order is: ban the sim-instrument, and finally build (or kill) the AI-pipeline you've dodged for 31 cycles. See `docs/dreams/JURY.md`.
+
 **Open first:** https://getresonance.vercel.app/dream/8952-tensegrity
 
 ## New since yesterday
