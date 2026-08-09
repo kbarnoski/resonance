@@ -6,9 +6,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // 1542 — Flow Tracer
 //
 // THE QUESTION: "What if your own body's MOTION, seen through the webcam,
-// smeared the air into blooming LSD-style colour tracers you can hear?"
+// smeared the air into blooming visionary colour tracers you can hear?"
 //
-// state: LSD · pole: ecstatic / embodied / kinetic
+// state: visionary · pole: ecstatic / embodied / kinetic
 //
 // A dense frame-difference / normal-flow motion field is computed by hand in JS
 // on a 64×36 grid (per-cell temporal delta + local spatial gradient → a 2-D
@@ -626,7 +626,7 @@ export default function Page() {
             hand on a 64×36 grid (per-cell temporal delta + local gradient → a 2-D
             vector). That field is the sole controller: it advects an iridescent
             dye inside a Canvas2D ping-pong feedback trail — the previous frame is
-            re-drawn slightly zoomed and rotated at under-1 alpha, giving LSD-style
+            re-drawn slightly zoomed and rotated at under-1 alpha, giving visionary
             positive-afterimage tracers. Total motion energy sets grain density and
             brightness; the horizontal motion centroid pans, the vertical one sets
             pitch, over a soft drone bed. Bloom and burst are the same event. If the

@@ -1,9 +1,9 @@
 "use client";
 
-// 1770-dmt-hyperbolic — "DMT Hyperbolic Bloom".
-//   state: DMT-breakthrough · pole: intense
+// 1770 visionary-hyperbolic — "Visionary Hyperbolic Bloom".
+//   state: visionary-breakthrough · pole: intense
 //
-// What if the DMT breakthrough's hyperbolic, negatively-curved geometry could
+// What if the visionary breakthrough's hyperbolic, negatively-curved geometry could
 // bloom in real time — Escher's Circle Limit alive and breathing, driven by
 // sound? A full-viewport WebGL2 fragment shader folds the Poincaré disk into
 // the fundamental triangle of a {7,q} hyperbolic tiling; a Möbius automorphism
@@ -274,13 +274,13 @@ export default function Page() {
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-6 text-center">
           <div className="max-w-xl space-y-3">
             <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
-              DMT Hyperbolic Bloom
+              Visionary Hyperbolic Bloom
             </h1>
             <p className="text-base text-muted-foreground">
               A Poincaré-disk hyperbolic tiling — Escher&rsquo;s{" "}
               <span className="text-foreground">Circle Limit</span> alive and
               breathing, drifting toward its infinite boundary and driven by
-              sound. State: DMT-breakthrough · pole: intense.
+              sound. State: visionary-breakthrough · pole: intense.
             </p>
             <p className="text-base text-muted-foreground">
               A self-playing generative carrier starts automatically. You can
@@ -398,9 +398,8 @@ export default function Page() {
                 loudness → saturation and gain.
               </p>
               <p>
-                <span className="text-foreground">Named references:</span> QRI /
-                Qualia Computing, &ldquo;The Hyperbolic Geometry of DMT
-                Experiences&rdquo; (Andrés Gómez Emilsson, 2016); M.C. Escher,{" "}
+                <span className="text-foreground">Named references:</span>{" "}
+                M.C. Escher,{" "}
                 <span className="italic">Circle Limit</span> series (with
                 H.S.M. Coxeter, 1956); Bressloff–Cowan cortical form-constant /
                 log-polar map.

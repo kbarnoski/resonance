@@ -2,7 +2,7 @@
 
 **Route:** `/dream/1952-comma-veil`
 
-Comma Veil asks one question: what if a DMT-breakthrough form-constant mandala — the geometric hallucination of a psychedelic peak — were rendered with ZERO canvas, purely in the CSS compositor, and PLAYED like an instrument, so that the harmony you play warps the impossible geometry in real time?
+Comma Veil asks one question: what if a visionary-breakthrough form-constant mandala — the geometric hallucination of a visionary peak — were rendered with ZERO canvas, purely in the CSS compositor, and PLAYED like an instrument, so that the harmony you play warps the impossible geometry in real time?
 
 The render substrate is the browser's CSS compositor and nothing else. There is no canvas, no WebGL, no SVG. The mandala is a stack of animated `<div>`s built from `repeating-conic-gradient`, `repeating-radial-gradient` and `radial-gradient`, fused with `mix-blend-mode` (screen / overlay / soft-light), feathered with `mask-image`, and kaleidoscope-mirrored with CSS transforms. Every layer is driven by CSS custom properties — `--hue`, `--warp`, `--axes`, `--spin`, `--tension`, `--scale`, `--bloom` — that JS rewrites each frame. What you see is the compositor resolving harmony into geometry.
 
@@ -23,8 +23,8 @@ This is flicker-adjacent, so it never strobes. Motion is slow luminance / hue dr
 
 ## References
 
-- Heinrich Klüver, **form constants** — the honeycomb / lattice / spiral / tunnel taxonomy of psychedelic geometry.
-- QRI / Andrés Gómez Emilsson, **"The Hyperbolic Geometry of DMT Experiences"** — curvature as the felt substrate of intensity.
+- Heinrich Klüver, **form constants** — the honeycomb / lattice / spiral / tunnel taxonomy of visionary geometry.
+- **The hyperbolic geometry of visionary experience** — curvature as the felt substrate of intensity.
 - Plomp–Levelt / Sethares **sensory-dissonance curve** — the roughness model behind the tension scalar.
 - The lineage that treats the **CSS compositor itself as a render substrate** for generative art.
 

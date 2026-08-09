@@ -3,7 +3,7 @@
 ## The one question
 
 What if you could drop any track and hear it **fracture** into gritty,
-dissonant lo-fi ruin while the image **datamoshes** into DMT-like
+dissonant lo-fi ruin while the image **datamoshes** into visionary
 hyper-detail — with **bit-crush (quantization) as the headline instrument**?
 
 Drop a file (or let the built-in carrier run), then pull the Grit slider. The
@@ -84,7 +84,7 @@ arXiv **2604.16254** (2026-04-20), on how RVQ codebook quantization shapes the
 - Rosa Menkman, *Glitch Studies Manifesto* (2011) — error as aesthetic material.
 - Ryoji Ikeda, *data.matrix* / *test pattern* — near-monochrome data-as-image.
 - Datamosh / I-frame displacement — dropped keyframes smearing motion vectors.
-- DMT hyper-detail "machine-elf" phenomenology — the over-detailed mirror density.
+- Visionary hyper-detail "machine-elf" phenomenology — the over-detailed mirror density.
 - ArtifactNet, arXiv 2604.16254 (2026) — RVQ codebook quantization in AI audio.
 
 ## Determinism & safety

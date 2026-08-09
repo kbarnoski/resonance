@@ -2,7 +2,7 @@
 
 **Set by Karel, 2026-06-28.** This is now the **primary creative direction** for the dream lab. Read it every cycle alongside AGENT.md.
 
-> **⛔ HARD RULE — NEVER name or allude to any recreational/psychoactive drug in any prototype, comment, copy, tag, README, or note. Describe the STATE and PHENOMENON only** — the altered/visionary state, the felt experience, the perceptual/neuroscience effect. Substances are never the subject; the phenomenology is.
+> **⛔ HARD RULE — NEVER name or allude to any recreational/consciousness-altering drug in any prototype, comment, copy, tag, README, or note. Describe the STATE and PHENOMENON only** — the altered/visionary state, the felt experience, the perceptual/neuroscience effect. Substances are never the subject; the phenomenology is.
 
 > Karel's directive, reframed: *"let's go into deeply visionary, altered-states territory where the immersive experiments transport users into visionary states purely through light and sound — no substances. this can include cosmic ambient states too, not just super intense. do deep research on the visionary/breakthrough state, the slow visionary ascent, the warm mystic pole, the dissociative void, meditative, near-death, and dream-like states and draw inspiration from them."*
 

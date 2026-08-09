@@ -5,7 +5,7 @@
 // u = log r (radial), v = angle. A small set of cortical PLANE-WAVE sources sweeps
 // across it; under the inverse log-polar warp (r = exp(u)) each cortical plane
 // wave reads out as the classic expanding/contracting concentric rings of the
-// psychedelic "breathing tunnel". The GPU/CPU lattices are FORCED by these sources
+// visionary "breathing tunnel". The GPU/CPU lattices are FORCED by these sources
 // (a driven Kuramoto model) so their visible wavefronts and the audio front-
 // crossing events share one clock — see == hear by construction.
 //

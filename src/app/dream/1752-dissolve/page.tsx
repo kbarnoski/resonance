@@ -7,7 +7,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1752-dissolve
-//   state: dissociative ego-dissolution (k-hole descent+return) · pole:
+//   state: dissociative ego-dissolution (void descent+return) · pole:
 //   cosmic-ambient / dissociative.
 //
 //   "What if Resonance could dissolve your sense of self with sound ALONE —
@@ -310,7 +310,7 @@ export default function Page() {
               <p>
                 The carrier bed is intentionally inharmonic: slightly-stretched pad
                 partials plus near-unison voices whose detune fans WIDE at the peak,
-                so the k-hole is a beating, unplaced smear — never a pretty
+                so the void is a beating, unplaced smear — never a pretty
                 just-intonation drone.
               </p>
               <p>
@@ -323,7 +323,7 @@ export default function Page() {
                 Reference: browser spatial-audio maturity 2026 — Google Resonance
                 Audio / Omnitone ambisonic + binaural HRTF rendering (&ldquo;Web
                 Audio API: Immersive Soundscapes for WebXR 2026&rdquo;).
-                Phenomenology: ketamine / NDE ego-dissolution and unity — the loss
+                Phenomenology: dissociative / NDE ego-dissolution and unity — the loss
                 of the self / other boundary. The build inverts the usual goal of
                 spatial audio: instead of placing sounds precisely, it un-places
                 them until the listener&apos;s spatial self dissolves.

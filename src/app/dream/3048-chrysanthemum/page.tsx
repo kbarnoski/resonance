@@ -15,8 +15,8 @@ import { makeBloom, makeBloomFallback, type BloomHandle } from "./bloom-gl";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3048 · CHRYSANTHEMUM
-// Sing the DMT chrysanthemum into being. Sustain a hummed tone and the classic
-// serotonergic-psychedelic form-constants (tunnels, spirals, spokes, honeycombs)
+// Sing the visionary chrysanthemum into being. Sustain a hummed tone and the classic
+// serotonergic-visionary form-constants (tunnels, spirals, spokes, honeycombs)
 // bloom, unfold and saturate in exact response to your voice — then collapse to
 // a faint threshold the instant you fall silent.
 //
@@ -253,7 +253,7 @@ export default function ChrysanthemumPage() {
           </h1>
           <p className="mt-3 max-w-xl text-base text-muted-foreground">
             Sing the chrysanthemum into being. Sustain a hummed tone and the
-            classic psychedelic form-constants — tunnels, spirals, spokes,
+            classic visionary form-constants — tunnels, spirals, spokes,
             honeycombs — bloom, unfold and saturate in exact response to your
             voice, then collapse to a faint threshold the instant you fall
             silent. Pitch chooses the form; loudness drives the bloom.
@@ -344,7 +344,7 @@ export default function ChrysanthemumPage() {
             <p className="mt-3 text-base text-muted-foreground">
               A drug-free altered-states instrument. The{" "}
               <span className="text-foreground">chrysanthemum</span> is the dense
-              unfolding fractal flower of the DMT come-up — and here{" "}
+              unfolding fractal flower of the visionary come-up — and here{" "}
               <span className="text-foreground">you</span> are responsible for it,
               moment to moment.
             </p>
@@ -355,7 +355,7 @@ export default function ChrysanthemumPage() {
                 smoothed (fast attack, gentle release).
               </li>
               <li>
-                All psychedelic geometry is one stripe/hex pattern seen through a{" "}
+                All visionary geometry is one stripe/hex pattern seen through a{" "}
                 <span className="text-foreground">log-polar warp</span>{" "}
                 (Bressloff–Cowan, on Klüver&apos;s four{" "}
                 <span className="text-foreground">form constants</span>). This

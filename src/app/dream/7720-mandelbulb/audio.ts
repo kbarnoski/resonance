@@ -5,7 +5,7 @@
 //   detuned) through a lowpass, plus a shimmer stack an octave up gated by the
 //   same energy scalar that grows the geometry. When the fractal blooms the
 //   filter opens, the shimmer swells and a slow amplitude LFO deepens — so the
-//   ear hears the DMT breakthrough the eye is falling into. It swells with the
+//   ear hears the visionary breakthrough the eye is falling into. It swells with the
 //   virtual performer even when the mic is denied: no silent page.
 //
 //   No Math.random / Date.now / new Date — the tiny detune spread comes from a

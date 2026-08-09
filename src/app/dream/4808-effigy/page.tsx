@@ -3,7 +3,7 @@
 /* ── 4808 · Effigy ─────────────────────────────────────────────────────────
  *
  *  ONE QUESTION: what if your whole moving body were the resonator — 33
- *  full-body pose landmarks tuning a live chord and igniting a psychedelic
+ *  full-body pose landmarks tuning a live chord and igniting a visionary
  *  particle-body — a drug-free embodiment toward an ecstatic, altered state?
  *
  *  INPUT: MediaPipe PoseLandmarker (33 full-body landmarks, CDN-loaded).
@@ -541,7 +541,7 @@ export default function EffigyPage() {
               <p>
                 <span className="text-foreground">The one question:</span> what if your whole
                 moving body were the resonator — 33 full-body pose landmarks tuning a live chord
-                and igniting a psychedelic particle-body, a drug-free embodiment toward an
+                and igniting a visionary particle-body, a drug-free embodiment toward an
                 ecstatic, altered state?
               </p>
               <p>

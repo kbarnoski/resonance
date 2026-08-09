@@ -361,7 +361,7 @@ export default function Page() {
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               A drug-free walk through the derealization of the dissociative /
-              K-hole descent, rendered as literal geometry. The world is an
+              the void descent, rendered as literal geometry. The world is an
               instanced field of thin, flat planes — Edwin Abbott&rsquo;s{" "}
               <em>Flatland</em> (1884) as the metaphor for the clinical
               phenomenology of depersonalization/derealization (DPDR), where the

@@ -2,13 +2,13 @@
 
 ## What this is
 
-The psychedelic "breathing surfaces" hallucination, rebuilt from its likely
+The visionary "breathing surfaces" hallucination, rebuilt from its likely
 cortical mechanism instead of faked as a texture effect. A traveling wave sweeps
 across a model of visual cortex — a lattice of **coupled phase oscillators**
 living in *cortical* coordinates (u, v), where u = log r. Because the retina→V1
 map is approximately a complex logarithm, the inverse warp r = exp(u) turns a
 cortical plane wave into the classic expanding / contracting concentric rings of
-an LSD "breathing tunnel". Each wavefront that crosses a fixed listening ring
+a visionary "breathing tunnel". Each wavefront that crosses a fixed listening ring
 rings an inharmonic struck-bell tone, panned to the front's screen angle — so
 **the visible wavefront is the audible sweep**. It is a long-form (~7 minute),
 self-evolving, non-looping piece: an entropy / REBUS arc raises coupling, noise
@@ -18,7 +18,7 @@ gentle settle. Minute 6 is never minute 1.
 
 ## Research anchor
 
-- **Communications Biology (12 Jan 2026):** a 5-HT2A psychedelic agonist
+- **Communications Biology (12 Jan 2026):** a 5-HT2A agonist
   amplifies ~5-Hz oscillations in V1 and retrosplenial cortex that propagate as
   **cortical traveling waves** (~0.083–0.12 m/s, ~18 ms V1→RSC lag). This is the
   concrete anchor for the piece. **Honestly: this paper is ~6 months old, not a

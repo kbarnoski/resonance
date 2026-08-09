@@ -369,7 +369,7 @@ export default function TesseractMeltPage() {
 
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          DMT-breakthrough · hyperdimensional
+          visionary-breakthrough · hyperdimensional
         </p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           Tesseract Melt

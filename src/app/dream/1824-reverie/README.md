@@ -9,7 +9,7 @@ falling action → resolution), where the hard problem is the *musical transitio
 between acts*, and the piece shows its own dramatic structure on screen?
 
 This is an **alternate journey-engine arc**. Resonance's default engine is a slow
-psychedelic six-phase arc; the lab has also built an EDM build-and-drop arc
+visionary six-phase arc; the lab has also built an EDM build-and-drop arc
 (`1818-bigroom`). This one is neither: it is a **narrative / film-score arc** built
 on dramatic *tension* structure, not build-and-drop energy and not altered states.
 
@@ -66,9 +66,9 @@ on dramatic *tension* structure, not build-and-drop energy and not altered state
 
 ## Distinct from its nearest neighbours
 
-- **Resonance's default psychedelic six-phase arc** — same "long autonomous
+- **Resonance's default visionary six-phase arc** — same "long autonomous
   journey" ambition, but organised by *dramatic tension* and named story acts, not
-  altered-states phases. Not psychedelic.
+  altered-states phases. Not visionary.
 - **`1818-bigroom` (EDM build-and-drop)** — also a stateful multi-minute engine with
   a structure ribbon, but its axis is *energy → drop*. Here the axis is *narrative
   tension*, and the signature move is the **inter-act bridge** (a transition problem),
@@ -82,7 +82,7 @@ on dramatic *tension* structure, not build-and-drop energy and not altered state
 - **TECHNIQUE** dramatic-arc state machine + generative act-transition bridges +
   leitmotif memory
 - **VIBE** cinematic
-- Explicitly **NOT** altered-states/psychedelic, **NOT** mic, **NOT** EDM
+- Explicitly **NOT** altered-states/visionary, **NOT** mic, **NOT** EDM
   build-and-drop.
 
 ## Safety & determinism

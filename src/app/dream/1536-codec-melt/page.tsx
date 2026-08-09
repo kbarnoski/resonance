@@ -246,7 +246,7 @@ export default function CodecMeltPage() {
     ctx.globalAlpha = 1;
   }, []);
 
-  // ── Present a "fresh" frame through the feedback ping-pong (LSD tracers).
+  // ── Present a "fresh" frame through the feedback ping-pong (visionary tracers).
   //    Codec path passes the decoded VideoFrame; fallback passes the source canvas.
   const presentFrame = useCallback((fresh: CanvasImageSource, isFallback: boolean) => {
     const display = displayRef.current;

@@ -1,7 +1,7 @@
 # 7816 · MET (renderer A — WebGL2 instanced)
 
 ## The one question
-**What if the DMT-breakthrough sense of being MET — attended to by autonomous
+**What if the visionary-breakthrough sense of being MET — attended to by autonomous
 entities that turn to face you — could be evoked drug-free, on a screen?**
 
 A field of ~2000 autonomous agents lives as a diffuse drifting shimmer. Every
@@ -45,7 +45,7 @@ there is no separate audio timeline.
   instance buffer uploaded per frame. Positions/headings are stepped on the CPU
   (plain JS sim with a spatial-hash grid; no compute shader required).
 - **Ping-pong FBO feedback trail** — the previous frame is sampled and faded,
-  agents are drawn on top, buffers swap → the psychedelic smear.
+  agents are drawn on top, buffers swap → the visionary smear.
 - **Tonemapped bloom + mandala fold** — a composite pass adds a multi-tap bloom,
   a coherence-scaled kaleidoscopic fold around the focus (the symmetric
   gaze-figure), a bright pupil glow, a filmic tonemap, and the SafeFlicker

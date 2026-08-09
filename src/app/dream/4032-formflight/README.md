@@ -6,7 +6,7 @@
 your visual cortex through Klüver's four form constants (tunnels · radial
 spokes · spirals · honeycomb lattice)?**
 
-This is the intense pole — peak-LSD liquid-light melt / DMT-threshold — not calm
+This is the intense pole — peak-visionary liquid-light melt / visionary threshold — not calm
 cosmic ambient. A built-in evolving drone plays on **Begin**, so it self-demos
 with zero devices; an optional **Use mic** toggle lets your own music (or room
 sound) drive it.

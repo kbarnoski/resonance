@@ -48,7 +48,7 @@ on a user gesture per autoplay policy). Any real pointer or tilt hands control o
 **BioSonix: Physics-Based Sonification of Tissue Deformations** (arXiv:2508.14688,
 2026). There, 3D tissue displacements compute excitation forces for a modal sound
 model whose partials encode material stiffness/density, for surgical guidance. This
-prototype **inverts** it — from a surgical tool into a drug-free psychedelic
+prototype **inverts** it — from a surgical tool into a drug-free visionary
 instrument where the **deformation is the composer**.
 
 ## Tags

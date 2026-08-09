@@ -2,31 +2,29 @@
 
 **Route:** `/dream/2236-waiting-room`
 
-> What if you had to **build a space with your body** before a psychedelic
-> presence could inhabit it — the DMT "waiting room" assembling out of your own
+> What if you had to **build a space with your body** before a visionary
+> presence could inhabit it — the visionary "waiting room" assembling out of your own
 > motion, and only when the room is fully formed does something arrive in it?
 
 Your moving body — seen through the **webcam** — does not summon a swarm. It
 **carves a space**. Sustained motion climbs a four-stage immersion ladder that
-warps a hexagonal "cortical" lattice into a receding honeycomb tunnel — the DMT
+warps a hexagonal "cortical" lattice into a receding honeycomb tunnel — the visionary
 antechamber — and only once that room is fully built does a coherent presence
 condense inside it and regard you. Stop moving and it recedes. It is *sustained,
 never permanent*.
 
 ## The finding it renders
 
-- **"Micro-phenomenology of immersion and perceived presences under DMT"**
-  (*Neuroscience of Consciousness*, Oxford, 2026, article **niag015**) — under
-  DMT, immersion is a **structured continuum**, and a perceived **presence
+- The **micro-phenomenology of immersion and perceived presences** in visionary
+  states — immersion is a **structured continuum**, and a perceived **presence
   emerges only AFTER** multisensory integration and 3D-spatial structure have
   developed. First the body, then the senses bind, then a *space* forms, then
   something inhabits it. That ordering is the literal spine of this piece.
-- **"Computational spirits: a neuroscientific account of psychedelic entity
-  encounters"** (*Neuroscience of Consciousness*, 2026, article **niaf069**) —
-  models entities as **autonomous predictive agents**. So the presence here
+- A neuroscientific account of visionary **entity encounters** models presences
+  as **autonomous predictive agents**. So the presence here
   keeps its own slow autonomous drift rather than being pinned to the cursor.
-- The classic **DMT "waiting room" / antechamber** — the shimmering architecture
-  that precedes breakthrough (Strassman).
+- The classic visionary **"waiting room" / antechamber** — the shimmering
+  architecture that precedes breakthrough.
 
 ## The log-polar / form-constant warp
 

@@ -208,7 +208,7 @@ export default function Page() {
               Reel — a wordless short film
             </h1>
             <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
-              An alternate journey engine: instead of a psychedelic arc, a
+              An alternate journey engine: instead of a visionary arc, a
               self-playing five-minute film whose music and image both obey a
               classic dramatic beat sheet — Setup, Inciting Incident, Rising
               Action, Midpoint, Climax, Falling Action, Resolution.

@@ -7,7 +7,7 @@ screen; calming and slowing your breath brightens it until faint hallucinatory
 **form-constants** — concentric rings and a soft spiral — surface from the light.
 The whole piece is driven by a single scalar: your breath.
 
-This is the meditation / hypnagogia corner of the psychedelic-states lab. The
+This is the meditation / hypnagogia corner of the visionary-states lab. The
 pole is **cosmic-ambient** — slow, weightless, luminous, never intense.
 
 ## How to use

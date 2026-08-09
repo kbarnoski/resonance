@@ -454,9 +454,7 @@ export default function CommunionPage() {
               </p>
               <p>
                 <span className="text-foreground">Grounding.</span> Ecstatic union is now read as
-                hyper-connection, not fade-out. See &quot;Dynamic Functional Hyperconnectivity After
-                Psilocybin Intake Is Primarily Associated With Oceanic Boundlessness&quot;
-                (Biological Psychiatry: CNNI) — a recurrent hyperconnected brain state tracks oceanic
+                hyper-connection, not fade-out. A recurrent hyperconnected brain state tracks oceanic
                 boundlessness/unity; &quot;Oceanic states of consciousness — an existential-
                 neuroscience perspective&quot; (Frontiers in Human Neuroscience 19, 2025) — the PAG as
                 the pivot between embodiment and transcendence, so union is visceral and intense; and

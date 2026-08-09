@@ -84,8 +84,8 @@ removed.
 - **John C. Lilly** — flotation / REST (Restricted Environmental Stimulation
   Technique) tanks.
 - The **Ganzfeld effect** — a featureless visual field resolving into imagery.
-- "Hypnagogia, psychedelics, and sensory deprivation: the mythic structure of
-  dream-like experiences" — *Frontiers in Psychology* 2025 (PMC12098477).
+- Ganzfeld / hypnagogia and sensory-deprivation phenomenology — reduced sensory
+  input surfacing endogenous, dream-like geometry.
 - "Beyond the reducing valve: computational neurophenomenology of altered
   states" — *Frontiers* 2026.
 

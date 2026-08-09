@@ -6,7 +6,7 @@
 rendered through the exact early reflections that geometry actually produces —
 and hear a flutter echo appear the instant two walls go parallel?**
 
-Mirror Hall is a physically-grounded acoustic sandbox, not a psychedelic shader.
+Mirror Hall is a physically-grounded acoustic sandbox, not a visionary shader.
 The screen is a calm top-down architect's plan (a radar); the *piece* is the
 sound. You drag the corners of a room, drag the source **S** and listener **L**,
 and hear a dry Karplus-Strong piano phrase re-rendered through the room's real

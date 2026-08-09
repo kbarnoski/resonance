@@ -2,16 +2,15 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2166-silent-lattice — "Silent Lattice"
-//   state: ketamine / dissociative k-hole · pole: intense (non-dissolution).
+//   state: dissociative / the void · pole: intense (non-dissolution).
 //
-// THE ONE QUESTION: what if the k-hole were rendered NOT as the self fading
+// THE ONE QUESTION: what if the void were rendered NOT as the self fading
 // away, but as a SWITCH you PLAY — your familiar, sensory-connected world going
 // dark while a previously-invisible alien architecture ignites and reorganises
 // in its place, drawn as crisp vector line-work (an impossible Escher machine)?
 //
-// GROUNDING: Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing
-// to Ketamine-Induced Dissociation," The Neuroscientist (2025/26). Dissociative
-// ketamine SILENCES spontaneously-active ensembles while DORMANT neurons become
+// GROUNDING: the neuroscience of dissociation. The dissociative state
+// SILENCES spontaneously-active ensembles while DORMANT neurons become
 // ACTIVE — fragmenting normal circuit motifs and promoting novel, complex
 // patterns DISCONNECTED from sensory thalamocortical input. Not a fade to void:
 // a re-assembly. Harmony: Sethares (1993) stretched partials. Visual reference:
@@ -580,7 +579,7 @@ export default function SilentLatticePage() {
           Silent Lattice
         </h1>
         <p className="mt-1 max-w-xl text-base text-muted-foreground">
-          The k-hole not as the self fading away, but as a switch you play &mdash;
+          The void not as the self fading away, but as a switch you play &mdash;
           your familiar world goes dark and an invisible alien architecture
           ignites and re-assembles in its place.
         </p>
@@ -662,10 +661,7 @@ export default function SilentLatticePage() {
                 is a <em>played follower</em>, not a timeline: it rises while you
                 sustain contact and drag (more fingers push it faster) and decays
                 when you let go. As it crosses the switch (~0.4) the piece performs
-                the mechanism in Bera, Looger, Proekt &amp; Cichon,{" "}
-                <em>&ldquo;Cortical Mechanisms Contributing to Ketamine-Induced
-                Dissociation,&rdquo;</em> The Neuroscientist (online 2025-12-26;
-                print 2026-02-01): dissociative-dose ketamine <strong>silences</strong>{" "}
+                the mechanism of dissociation: the dissociative state <strong>silences</strong>{" "}
                 spontaneously-active neuronal ensembles while previously-dormant
                 neurons become <strong>active</strong>, fragmenting normal circuit
                 motifs and promoting novel, complex activity{" "}

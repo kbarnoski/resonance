@@ -10,8 +10,8 @@ not restored.
 
 ## The neuroscience
 
-Grounded in **Siegel, Nichols, Dosenbach et al., "Psilocybin desynchronizes the
-human brain," _Nature_ 2024.** The finding: ego-dissolution corresponds to a
+Grounded in **the neuroscience of ego-dissolution.** The finding:
+ego-dissolution corresponds to a
 massive **desynchronisation of brain activity across spatial scales** that
 _dissolves the distinctions between functional networks_, and the resulting
 re-organisation **persists for weeks** — you don't come back to exactly the same

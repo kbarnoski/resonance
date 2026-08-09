@@ -1,8 +1,8 @@
 # 1944 · Vestibular Dissolve
 
-**The one question:** *What if tilting your device dissolved your sense of "down" — a weightless, boundless drift like the ketamine / NDE loss of the body?*
+**The one question:** *What if tilting your device dissolved your sense of "down" — a weightless, boundless drift like the dissociative / NDE loss of the body?*
 
-A psychedelic / altered-states piece on the **INTENSE → cosmic** pole: the phenomenology of **vestibular / proprioceptive dissolution**. We normally never feel our gravity vector — it is the silent "down" the inner ear reports. Here, tilting the device *melts* it. The felt "down" reorients and comes apart, the horizon of a boundless field dissolves, and the boundary between viewer and cosmos loosens (K-hole depersonalisation, NDE weightlessness, ego-dissolution).
+A visionary / altered-states piece on the **INTENSE → cosmic** pole: the phenomenology of **vestibular / proprioceptive dissolution**. We normally never feel our gravity vector — it is the silent "down" the inner ear reports. Here, tilting the device *melts* it. The felt "down" reorients and comes apart, the horizon of a boundless field dissolves, and the boundary between viewer and cosmos loosens (dissociative depersonalisation, NDE weightlessness, ego-dissolution).
 
 ## How it works
 
@@ -27,7 +27,7 @@ A psychedelic / altered-states piece on the **INTENSE → cosmic** pole: the phe
 
 ## References
 
-- **Ketamine "K-hole" / NDE ego-dissolution phenomenology** — loss of body schema, floating / out-of-body, time dilation, cosmic oneness (see `docs/dreams/PSYCHEDELIC.md`, Cluster 2). *DMT-as-NDE-mechanism claims are speculative; we evoke phenomenology, not medical fact.*
+- **Dissociative void / NDE ego-dissolution phenomenology** — loss of body schema, floating / out-of-body, time dilation, cosmic oneness. *We evoke phenomenology, not medical fact.*
 - **James Turrell** — Ganzfeld works: a uniform, edgeless luminous field where the boundary of vision dissolves.
 - **Vestibular / gravity perception** — the otolith / proprioceptive "down" vector we never consciously notice, here made meltable.
 

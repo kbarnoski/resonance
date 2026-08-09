@@ -3,7 +3,7 @@
 An **active nematic** that stirs itself forever: a director field on the GPU in
 perpetual turbulent churn, endlessly birthing and annihilating topological
 defects, rendered as glowing **crossed-polarizer birefringence** — oil-film
-iridescence you can tilt and shear. A drug-free psychedelic piece in a
+iridescence you can tilt and shear. A drug-free visionary piece in a
 material-iridescent register (soap-film color, not kaleidoscope geometry). The
 screen and the sound do the work.
 

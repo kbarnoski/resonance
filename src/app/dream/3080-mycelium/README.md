@@ -1,7 +1,7 @@
 # 3080 · Mycelium
 
 ## The one question
-**What if a psychedelic altered-state field GREW like living mycelium — your hand
+**What if a visionary altered-state field GREW like living mycelium — your hand
 plants spores and the network filaments outward on its own, branching, fusing,
 and never erasing itself, so over minutes it accretes a persistent luminous web
 that is a visible record of everything you seeded, and touching a living strand

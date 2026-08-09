@@ -54,6 +54,6 @@ notices cover mic-denied and missing-Canvas2D cases.
 
 ---
 
-state: LSD/psilocybin organic entoptic bloom · pole: cosmic-ambient (organic)
+state: visionary organic entoptic bloom · pole: cosmic-ambient (organic)
 
 tags: INPUT=mic · OUTPUT=Canvas2D-additive · TECHNIQUE=differential-growth · VIBE=organic/meditative

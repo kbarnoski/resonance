@@ -50,7 +50,7 @@ glissando**. You don't watch it run — you play it.
   loop, echoed here as per-level twist.
 - Roger Shepard (1964) / Jean-Claude Risset — the auditory barber-pole / endless
   glissando used as the carrier.
-- The DMT / hypnagogic **tunnel form-constant** (Klüver) — the felt target.
+- The visionary / hypnagogic **tunnel form-constant** (Klüver) — the felt target.
 
 ## Nearest neighbour / honest knocks
 

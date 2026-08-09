@@ -7,7 +7,7 @@
 // via screenToCortex, generates the plane-wave / hex Turing pattern there, and
 // lets the inverse exp() warp turn it into tunnels, spirals, spokes and
 // honeycombs (Bressloff–Cowan on Klüver's four form constants). Thin-film
-// iridescence + chromatic aberration + feedback trails paint the DMT come-up.
+// iridescence + chromatic aberration + feedback trails paint the visionary come-up.
 //
 // PHOTOSENSITIVE SAFETY: intensity is expressed through slow luminance drift,
 // saturation, warp depth and trail persistence — never full-field strobing.

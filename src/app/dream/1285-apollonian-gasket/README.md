@@ -63,25 +63,25 @@ theorem for clarity.
 ### The play model
 
 - **On mount** the seed gasket is packed to a handful of levels and drawn immediately —
-  the image and the resting root chord read at a single glance, silent until *Begin*.
+ the image and the resting root chord read at a single glance, silent until *Begin*.
 - **Tap** a circle → it sounds (curvature → pitch), and the gaps beneath your finger
-  grow their next generation of tangent children, each chiming higher and quieter — a
-  small ascending chord condensing out of the gap.
+ grow their next generation of tangent children, each chiming higher and quieter — a
+ small ascending chord condensing out of the gap.
 - **Drag** to pan; **pinch / scroll** to zoom (tangency-preserving) and dive toward the
-  infinite-nesting limit. **Reset view** re-fits; **reseed** starts a fresh gasket.
+ infinite-nesting limit. **Reset view** re-fits; **reseed** starts a fresh gasket.
 
 ### The sound (`audio.ts`, output only)
 
 - Bend → frequency, quantised to a **5-limit just-intonation pentatonic**
-  (`1, 9/8, 5/4, 3/2, 5/3`) across octaves, so bigger circles ring lower and every tap
-  harmonises.
+ (`1, 9/8, 5/4, 3/2, 5/3`) across octaves, so bigger circles ring lower and every tap
+ harmonises.
 - A pool of 16 voices with soft attack and a long release scaled by circle size.
 - A low **root + fifth drone bed** (shared `droneBank`) ties the chord together and
-  swells gently with tap density.
+ swells gently with tap density.
 - Signal path: voices + drone → **convolution void** reverb (shared `convolutionVoid`) →
-  **DynamicsCompressor** limiter → master gain (≤ 0.3, short fade-in) → destination.
+ **DynamicsCompressor** limiter → master gain (≤ 0.3, short fade-in) → destination.
 - The `AudioContext` is gesture-gated behind *Begin*; full teardown on unmount (rAF
-  cancelled, oscillators stopped, context closed, ResizeObserver disconnected).
+ cancelled, oscillators stopped, context closed, ResizeObserver disconnected).
 
 ### Palette & safety
 
@@ -93,29 +93,29 @@ strobe**. `prefers-reduced-motion` coarsens the packing and freezes the drift.
 ## Named references
 
 - **René Descartes (1643)** — the Descartes Circle Theorem, in a letter to Princess
-  Elisabeth of Bohemia.
+ Elisabeth of Bohemia.
 - **Apollonius of Perga** — *Tangencies*; the problem of circles tangent to three given
-  circles.
+ circles.
 - **Frederick Soddy (1936)** — "The Kiss Precise," *Nature* 137, verse statement of the
-  theorem (the "Soddy circles").
+ theorem (the "Soddy circles").
 - **Mumford, Series & Wright, *Indra's Pearls* (2002)** — the modern visual grammar of
-  circle packings, limit sets, and Möbius symmetry.
-- **Heinrich Klüver, *Mescal and Mechanisms of Hallucinations* (1966)** — the form
-  constants (tunnels, spirals, honeycomb, cobweb) whose fractal-regress phenomenology
-  the infinite nesting evokes.
+ circle packings, limit sets, and Möbius symmetry.
+- **Heinrich Klüver (1966)** — the form
+ constants (tunnels, spirals, honeycomb, cobweb) whose fractal-regress phenomenology
+ the infinite nesting evokes.
 
 ## Next-cycle deepening
 
 - **Regenerate on deep zoom.** Right now the world radius floor bounds detail; a scale
-  ceiling of ~4M px is reachable. Re-pack the visible neighbourhood at higher resolution
-  as you dive, so the fractal is genuinely inexhaustible under the finger.
+ ceiling of ~4M px is reachable. Re-pack the visible neighbourhood at higher resolution
+ as you dive, so the fractal is genuinely inexhaustible under the finger.
 - **Möbius drift.** Slowly apply a tangency-preserving Möbius transformation (as in
-  *Indra's Pearls*) so the whole gasket breathes and rotates through the limit set while
-  staying a valid packing — a living form constant.
+ *Indra's Pearls*) so the whole gasket breathes and rotates through the limit set while
+ staying a valid packing — a living form constant.
 - **Sustained chord voicing.** Let tapped circles *hold* (a plucked-then-sustained
-  layer) so the packed gasket becomes a chord you can build up and hear all at once,
-  with a gesture to release voices.
+ layer) so the packed gasket becomes a chord you can build up and hear all at once,
+ with a gesture to release voices.
 - **Curvature colour = pitch class.** Tint each ring by its quantised pitch class, so the
-  visual iridescence and the harmony are the same map.
+ visual iridescence and the harmony are the same map.
 - **Two-finger "bend field".** Drag to warp the seed configuration (three arbitrary
-  mutually tangent circles) and hear the whole chord retune as the gasket re-solves.
+ mutually tangent circles) and hear the whole chord retune as the gasket re-solves.

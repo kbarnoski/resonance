@@ -11,7 +11,7 @@
  *     pentatonic: 3, 4, 5, 6, 7, 9, 11 × f0, lightly detuned). As "down"
  *     dissolves the spectral tilt lifts (higher partials bloom) AND the
  *     partials SPREAD across the stereo field — the weightless, boundless
- *     drift of the K-hole / NDE loss of the body.
+ *     drift of the void / NDE loss of the body.
  *
  * A master StereoPanner follows the gravity vector's left-right component.
  * Everything glides via setTargetAtTime — no clicks, no strobes in sound.

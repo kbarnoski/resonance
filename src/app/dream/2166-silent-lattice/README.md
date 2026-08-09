@@ -1,10 +1,10 @@
 # 2166 · Silent Lattice
 
-*state: ketamine / dissociative k-hole · pole: intense (non-dissolution — structure re-assembles)*
+*state: dissociative / the void · pole: intense (non-dissolution — structure re-assembles)*
 
 ## What it is
 
-A played audio-visual instrument for the dissociative "k-hole," rendered entirely
+A played audio-visual instrument for the dissociative "void," rendered entirely
 in **real SVG-DOM vector line-work**. Two line-architectures share one viewBox: a
 calm, legible **isometric grid** (the familiar, sensory-connected world) and an
 **impossible Escher machine** of interpenetrating struts and Penrose "tribar"
@@ -47,9 +47,8 @@ region-by-region and the impossible machine ignites and assembles in its place.
 
 ## How the science is implemented
 
-**Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing to
-Ketamine-Induced Dissociation," *The Neuroscientist* (online 2025-12-26; print
-2026-02-01).** The paper's core mechanism is a *switch*: dissociative-dose ketamine
+The neuroscience of **dissociation** describes a core mechanism that is a
+*switch*: the dissociative state
 **silences** spontaneously-active neuronal ensembles while previously-**quiescent**
 neurons become **active**, fragmenting normal circuit motifs and promoting novel,
 complex activity **disconnected from sensory thalamocortical input** — the
@@ -97,7 +96,7 @@ the AudioContext; if Web Audio is unavailable the visuals still run and an on-br
 - **output:** SVG-DOM (real `<line>`/`<path>`/`<circle>` mutated per frame — not canvas, not WebGL)
 - **technique:** active↔silent SWITCH — two co-located line-architectures cross-fading as a played dissociation-depth follower rises
 - **harmony:** Sethares stretched partials (A = 2.02 → 2.30)
-- **state:** ketamine / dissociative k-hole · **pole:** intense (non-dissolution — structure re-assembles)
+- **state:** dissociative / the void · **pole:** intense (non-dissolution — structure re-assembles)
 
 ## Next-cycle deepening
 

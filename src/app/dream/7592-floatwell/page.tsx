@@ -330,10 +330,9 @@ export default function FloatWellPage() {
             </p>
             <p className="mt-4 text-sm text-muted-foreground">
               References: John C. Lilly&rsquo;s flotation / REST tanks; the Ganzfeld effect;
-              &ldquo;Hypnagogia, psychedelics, and sensory deprivation: the mythic structure
-              of dream-like experiences&rdquo; (Frontiers in Psychology 2025, PMC12098477);
-              &ldquo;Beyond the reducing valve: computational neurophenomenology of altered
-              states&rdquo; (Frontiers 2026).
+              Ganzfeld / hypnagogia and sensory-deprivation phenomenology (reduced sensory
+              input surfacing endogenous, dream-like geometry); &ldquo;Beyond the reducing
+              valve: computational neurophenomenology of altered states&rdquo; (Frontiers 2026).
             </p>
             <div className="mt-5">
               <Link

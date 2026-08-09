@@ -2,7 +2,7 @@
 
 ## The question
 
-What if a psychedelic hallucination opened not by dragging a slider, but by
+What if a visionary hallucination opened not by dragging a slider, but by
 **holding your body still** — the way meditation, not a knob, dissolves the
 boundary of perception?
 

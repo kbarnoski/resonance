@@ -14,10 +14,8 @@
 // self dissolves into a boundless glowing medium — while a consonant additive
 // drone loses its harmonic coherence in lockstep. Silence lets the self re-form.
 //
-// This renders the MECHANISM of a psychedelic peak (a measurable criticality
+// This renders the MECHANISM of a visionary peak (a measurable criticality
 // shift), not its content. References:
-//   • Timmerman, Aqil et al., "DMT-induced shifts in criticality correlate with
-//     ego-dissolution" (bioRxiv 2025.02.08.636868).
 //   • Carhart-Harris et al., The Entropic Brain (2014);
 //     Carhart-Harris & Friston, REBUS (2019).
 //
@@ -414,12 +412,10 @@ export default function CriticalityPage() {
                 broadband noise floor rises, and the reverb widens.
               </p>
               <p>
-                This renders the <em>mechanism</em> of a psychedelic peak — a
-                measurable criticality shift — not its content. It nods to
-                Timmerman, Aqil et&nbsp;al., &ldquo;DMT-induced shifts in
-                criticality correlate with ego-dissolution&rdquo; (bioRxiv
-                2025.02.08.636868): DMT collapses posterior alpha and pushes
-                cortex past its slightly-subcritical operating point, and the size
+                This renders the <em>mechanism</em> of a visionary peak — a
+                measurable criticality shift — not its content. In the
+                neuroimaging of visionary states a collapse of posterior alpha
+                pushes cortex past its slightly-subcritical operating point, and the size
                 of that shift tracks rated ego-dissolution. Framing:
                 Carhart-Harris et&nbsp;al., <em>The Entropic Brain</em> (2014);
                 Carhart-Harris &amp; Friston, REBUS (2019). It is a metaphor made

@@ -1,9 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // stages.ts — the four-stage immersion ladder.
 //
-// Renders the central finding of "Micro-phenomenology of immersion and
-// perceived presences under DMT" (Neuroscience of Consciousness, 2026,
-// niag015): under DMT, immersion is a *structured continuum*. A perceived
+// Renders the central finding on the micro-phenomenology of immersion and
+// perceived presences in visionary states: immersion is a *structured
+// continuum*. A perceived
 // PRESENCE emerges only AFTER multisensory binding and 3D-spatial structure
 // have developed — first the body, then the senses bind, then a space forms,
 // then something inhabits it. Here that continuum is a single scalar

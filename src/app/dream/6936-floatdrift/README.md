@@ -54,12 +54,11 @@ reduces element counts.
 
 ## References
 
-- Heinrich Klüver, form-constants (*Mescal and Mechanisms of Hallucinations*,
-  work from 1926) — the cobweb / spiral / lattice / tunnel taxonomy.
+- Heinrich Klüver, form-constants (1926) — the cobweb / spiral / lattice /
+  tunnel taxonomy.
 - Kraehenmann et al. on Flotation-REST / sensory-deprivation phenomenology.
-- "Hypnagogia, psychedelics, and sensory deprivation: the mythic structure of
-  dream-like experiences" (2025 review) — reduced sensory input surfacing
-  endogenous, dream-like geometry.
+- Ganzfeld / hypnagogia and sensory-deprivation phenomenology — reduced sensory
+  input surfacing endogenous, dream-like geometry.
 
 ## Next-cycle deepening
 

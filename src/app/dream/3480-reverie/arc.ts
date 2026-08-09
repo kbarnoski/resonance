@@ -1,7 +1,7 @@
 /* ── 3480-reverie · three-act cinematic arc ──────────────────────────────
  *
  *  An ALTERNATE Resonance journey engine. Where the default is a
- *  psychedelic six-phase arc and the sibling `3456-surge` is an EDM
+ *  visionary six-phase arc and the sibling `3456-surge` is an EDM
  *  build-and-drop, this one is the canonical CINEMATIC THREE-ACT arc of
  *  trailer / score music:
  *

@@ -9,7 +9,7 @@ This is **fish-tank VR** / off-axis head-coupled parallax (Colin Ware et al.,
 tracking, 2007), driven by the **front camera with no machine-learning
 library**, rendered with **three.js**, and coupled to **head-tracked spatial
 audio**. It is deliberately non-transcendent: a believable, calm architectural
-room seen through the glass, not a psychedelic mandala.
+room seen through the glass, not a visionary mandala.
 
 ---
 

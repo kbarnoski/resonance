@@ -10,7 +10,7 @@ music AND a camera journey through morphing sacred architecture: descending into
 a dark narthex, pressure building, breaking through into blinding light, then
 ascending home?_
 
-The current Resonance engine is a psychedelic 6-phase spread. This is a different
+The current Resonance engine is a visionary 6-phase spread. This is a different
 one: a **Freytag arc rendered spatially** as an Inner-Sanctuary passage. The
 dramatic arc is not illustrated by the space — the arc *is* the space. Where you
 are in the corridor is where you are in the drama.

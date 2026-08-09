@@ -3,7 +3,7 @@
 // The dramatic-beat-sheet STATE MACHINE that drives everything. This is the
 // alternate journey-engine arc requested by the design director (directive #4:
 // "cinematic narrative as an alternate arc" vs. Resonance's fixed 6-phase
-// psychedelic engine). Instead of a psychedelic curve we walk Freytag's
+// visionary engine). Instead of a visionary curve we walk Freytag's
 // Pyramid / the Save-the-Cat beat sheet: a sequence of ACTS, each with a
 // target dramatic TENSION (0..1), a KEY + MODE, a tempo/density, and a
 // cinematic COLOR GRADE. One smooth tension curve is interpolated between the

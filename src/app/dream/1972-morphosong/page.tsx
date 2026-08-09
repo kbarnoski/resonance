@@ -1,11 +1,11 @@
 "use client";
 
 // ════════════════════════════════════════════════════════════════════════════
-// 1972 — Morphosong                                    state: psilocybin bloom
+// 1972 — Morphosong                                    state: visionary bloom
 //                                                       pole:  INTENSE
 //
 // THE QUESTION: What if you could HUM a living organism into being — where your
-// pitch breeds a different psychedelic Turing-pattern morphology, and the
+// pitch breeds a different visionary Turing-pattern morphology, and the
 // pattern you SEE is exactly the shimmer you HEAR?
 //
 // Mic hum → pitch (autocorrelation) + RMS → feed/kill of a WGSL-COMPUTE
@@ -202,7 +202,7 @@ export default function MorphosongPage() {
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <div className="max-w-lg rounded-lg border border-border bg-background/70 p-6 text-center backdrop-blur-sm">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              psilocybin bloom · intense
+              visionary bloom · intense
             </p>
             <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
               Morphosong
@@ -210,7 +210,7 @@ export default function MorphosongPage() {
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Hum a living organism into being. Your pitch breeds a different
               Turing-pattern morphology — mazes, honeycomb, coral, spots — grown
-              live in a WebGPU reaction-diffusion field and warped into psychedelic
+              live in a WebGPU reaction-diffusion field and warped into visionary
               form constants. The pattern you see re-voices the drone you hear.
             </p>
             {noRender && (

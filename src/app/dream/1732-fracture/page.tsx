@@ -239,7 +239,7 @@ export default function FracturePage() {
         </h1>
         <p className="mt-2 text-base leading-relaxed text-muted-foreground">
           Drop any track to hear it fracture into gritty, dissonant lo-fi ruin
-          while the image datamoshes into DMT-like hyper-detail — bit-crush
+          while the image datamoshes into visionary hyper-detail — bit-crush
           quantization as the headline instrument.
         </p>
 
@@ -333,7 +333,7 @@ export default function FracturePage() {
             chromatic split. A 2×2 mirror kaleidoscope plus a nested half-scale
             mirror give machine-elf density. Lineage: Menkman&apos;s Glitch
             Studies Manifesto, Ikeda&apos;s test pattern, datamosh I-frame
-            displacement, DMT hyper-detail phenomenology.
+            displacement, visionary hyper-detail phenomenology.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Fully deterministic (fixed-seed PRNG + frame counter), luminance

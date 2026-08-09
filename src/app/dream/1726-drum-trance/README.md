@@ -2,7 +2,7 @@
 
 **What if drumming a steady ~4 Hz beat could drive you into a drug-free trance —
 where the STEADINESS of your rhythm is measured and rewarded by intensifying
-psychedelic geometry?**
+visionary geometry?**
 
 A shamanic **theta auditory-driving** piece. You play a steady ~4 beats/sec
 pulse on touch/pointer drum pads. The steadier and closer-to-4-Hz your drumming,

@@ -9,7 +9,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 // 1588 — glossolalia
 //
 // THE QUESTION: "What if the whole field of vision flooded with language — the
-// DMT 'everything is syntax' overload — and moving apertures of light resolved
+// visionary 'everything is syntax' overload — and moving apertures of light resolved
 // fragments of it into legible meaning, which you steer and sound?"
 //
 // THE TECHNIQUE — the CSS Custom Highlight API. The viewport is filled with many

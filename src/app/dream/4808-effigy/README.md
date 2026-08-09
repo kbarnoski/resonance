@@ -1,7 +1,7 @@
 # 4808 · Effigy
 
 **The one question:** *What if your whole moving body were the resonator — 33
-full-body pose landmarks tuning a live chord and igniting a psychedelic
+full-body pose landmarks tuning a live chord and igniting a visionary
 particle-body, a drug-free embodiment toward an ecstatic / altered state?*
 
 Effigy makes the whole dancing figure the instrument. Not a hand, not a face —
@@ -87,7 +87,7 @@ length.
 ## Design notes
 
 The whole moving body as a resonator: 33 full-body pose landmarks tune a live
-chord and ignite a psychedelic particle-body — a drug-free route toward an
+chord and ignite a visionary particle-body — a drug-free route toward an
 ecstatic, altered state. Posture picks the root and the chord's quality; limb
 spread and verticality open extensions, brightness and FM index; motion energy is
 the master intensity that both melts the visuals and swells the sound. The

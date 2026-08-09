@@ -13,7 +13,7 @@
 //        complex log, so the body edge un-forms into cortical stripes/hexagons).
 //        A honeycomb + tunnel FORM-CONSTANT field (Bressloff–Cowan / Klüver) is
 //        mixed in as dissolution deepens. A ping-pong FEEDBACK read drifts the
-//        previous frame outward down the tunnel with a hue twist → LSD trails.
+//        previous frame outward down the tunnel with a hue twist → visionary trails.
 //     2) PRESENT pass → screen, with a vignette, a slow safe luminance drift, and
 //        a bright central "present tone" bloom that grows with precision.
 //
@@ -118,7 +118,7 @@ void main(){
   vec3 col = bodyCol
            + fieldCol * (0.55 + 0.85 * (1.0 - edgeDis) * uPrecision + 0.85 * edgeDis);
 
-  // --- feedback (LSD trails): previous frame drifting outward down the tunnel ---
+  // --- feedback (visionary trails): previous frame drifting outward down the tunnel ---
   float zoom = 1.0 + 0.02 + 0.05 * uDepth;
   vec2 fc = vUv - 0.5;
   fc /= zoom;

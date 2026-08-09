@@ -1,6 +1,6 @@
 # 6360 · Honeycomb
 
-**Titrate your own psychedelic breakthrough.** One continuous dial — `dose ∈ [0,1]` —
+**Titrate your own visionary breakthrough.** One continuous dial — `dose ∈ [0,1]` —
 driven by your thumb, moves the whole piece together from calm boundlessness up to
 a full jeweled hyperbolic-lattice breakthrough, and back down. This is a *played
 instrument*, not a passive meditation and not a self-playing generative piece.
@@ -82,8 +82,8 @@ reverb (wet rises with dose). Master is capped at 0.18 through a
 - **Bressloff, Cowan, Golubitsky, Thomas & Wiener** (2001) — geometric visual
   hallucinations and the architecture of the visual cortex.
 - **M. C. Escher**, *Circle Limit* series — hyperbolic tessellations.
-- **Rick Strassman**, *DMT: The Spirit Molecule* — the jeweled hyperbolic
-  "breakthrough" phenomenology.
+- Visionary-state phenomenology — the jeweled hyperbolic
+  "breakthrough" geometry.
 
 ## Known rough edges
 

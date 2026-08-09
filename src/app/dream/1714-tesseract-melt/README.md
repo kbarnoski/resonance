@@ -1,10 +1,10 @@
 # 1714 · Tesseract Melt
 
-**State:** `DMT-breakthrough-hyperdimensional` · **Pole:** `intense`
+**State:** `visionary-breakthrough-hyperdimensional` · **Pole:** `intense`
 
 ## The one question
 
-*What would DMT's "more axes than physical reality allows" feel like — a
+*What would a visionary breakthrough's "more axes than physical reality allows" feel like — a
 four-dimensional polytope you steer by tilting your device, melting through
 hyperspace?*
 
@@ -49,7 +49,7 @@ falls back to **pointer-drag**. With no input at all, a slow deterministic
   and the projection lineage.
 - **Heinrich Klüver's form constants** — the lattice/tunnel/spiral geometries
   reported under altered states, evoked here via the kaleidoscopic cage.
-- **DMT phenomenology reports** — the recurring "more axes / more dimensions
+- **Visionary phenomenology reports** — the recurring "more axes / more dimensions
   than physical reality allows" and hyperdimensional-geometry descriptions.
 - **Thin-film iridescence** — the physical origin of the jeweled, angle-shifting
   spectral color used for the edges.

@@ -1,7 +1,7 @@
 # 3048 · Chrysanthemum
 
-**Sing the DMT chrysanthemum into being.** Hum a sustained tone and the classic
-serotonergic-psychedelic form-constants — spirals, tunnels, spokes, honeycombs —
+**Sing the visionary chrysanthemum into being.** Hum a sustained tone and the classic
+serotonergic-visionary form-constants — spirals, tunnels, spokes, honeycombs —
 bloom, unfold and saturate in exact response to your voice, then collapse back to
 a faint threshold the instant you go silent.
 
@@ -9,13 +9,13 @@ This is a drug-free altered-states instrument at the **intense** pole (high
 entropy, high saturation, ornate fractal). The differentiator: **your voice
 drives the geometry live.** The flower is silent and still until *you* sound. A
 human is fully responsible for it, moment to moment — sustain a pitch and the
-chrysanthemum (the dense unfolding fractal flower of the DMT come-up) grows. It is
+chrysanthemum (the dense unfolding fractal flower of the visionary come-up) grows. It is
 not a self-playing screensaver.
 
 ## The phenomenology: Klüver's form constants + Bressloff–Cowan
 
-Heinrich Klüver catalogued the geometric hallucinations that recur across DMT,
-LSD, psilocybin, mescaline, migraine aura, hypnagogia and flicker into four
+Heinrich Klüver catalogued the geometric hallucinations that recur across
+visionary states, migraine aura, hypnagogia and flicker into four
 **form constants**:
 
 1. lattices / honeycombs

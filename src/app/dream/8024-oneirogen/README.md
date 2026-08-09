@@ -27,7 +27,7 @@ On load, with no mic and no audio (autoplay policy), a seeded `mulberry32(0x8024
 
 ## Named references
 
-- **eLife 2026** computational psychedelic / *oneirogen* model: raising α shifts perception from bottom-up sensory inference to top-down generative replay.
+- **eLife 2026** computational altered-states / *oneirogen* model: raising α shifts perception from bottom-up sensory inference to top-down generative replay.
 - **Frontiers in Psychology 2026**, *Beyond the reducing valve: computational neurophenomenology of altered states* — the C×G×D (Classifier / Generator / Discriminator) framework; reality-monitoring is the Discriminator's job.
 - **Klüver form constants** (the universal geometry of hallucination) — an aesthetic nod (spiral/cobweb), deliberately **not** a log-polar tunnel.
 

@@ -8,8 +8,7 @@
  * the clock.
  *
  * From D we derive every felt quantity, translating the cortical model of
- * ketamine-induced dissociation (Bera, Looger, Proekt & Cichon, The
- * Neuroscientist 2026) into code: dissociation = thalamocortical DISCONNECTION
+ * dissociation into code: dissociation = thalamocortical DISCONNECTION
  * + sensory-gating breakdown + subjective TIME DILATION.
  *
  *   • timeScale  — subjective time dilation. Shrinks as D rises (everything

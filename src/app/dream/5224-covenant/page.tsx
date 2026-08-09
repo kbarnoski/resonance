@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // 5224-covenant — entity-contact as real physics.
 //
-//   The autonomous "beings" of a DMT breakthrough, rendered as what they might
+//   The autonomous "beings" of a visionary breakthrough, rendered as what they might
 //   actually be: the self-propelled topological defects of an ACTIVE NEMATIC —
 //   luminous +½ comets and passive −½ three-fold forms, each a voice, drifting
 //   in a deep dark volume. You gather them inside a soft boundary until their
@@ -343,7 +343,7 @@ export default function CovenantPage() {
             </h2>
             <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
-                The autonomous entities people meet in a DMT breakthrough feel
+                The autonomous entities people meet in a visionary breakthrough feel
                 real and self-willed. This piece renders one candidate for what an
                 &ldquo;autonomous being&rdquo; could actually be:{" "}
                 <span className="text-foreground">
@@ -387,7 +387,7 @@ export default function CovenantPage() {
                 (2012, active microtubule nematics); Tan et al.,{" "}
                 <span className="italic">Nature Physics</span> (2019, topological
                 turbulence); the golden-braid confinement of arXiv:2503.10880
-                (2025); and Strassman&apos;s and McKenna&apos;s accounts of DMT
+                (2025); and the visionary-art tradition of autonomous
                 entity-contact. No strobe; motion respects
                 prefers-reduced-motion. If WebGL or Web Audio is missing, the
                 piece degrades without crashing.

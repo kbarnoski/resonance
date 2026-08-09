@@ -1,7 +1,7 @@
 # 4168-surge
 
 **An alternate journey engine for Resonance with a genuinely different energy
-from the calm psychedelic default: a self-composing, long-form EDM
+from the calm visionary default: a self-composing, long-form EDM
 build-and-drop set that plays itself and hits like a set.**
 
 ## The one question

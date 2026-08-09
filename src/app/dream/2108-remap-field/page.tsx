@@ -7,9 +7,9 @@
 // borders diffuse and dissolve into one boundless plasma, then slowly
 // re-crystallise into a DIFFERENT map? You return re-organised, not restored.
 //
-// Grounding: Siegel, Nichols, Dosenbach et al., "Psilocybin desynchronizes the
-// human brain", Nature 2024. The piece makes it literal: a parcellation of the
-// self that loses its boundaries and re-forms with new ones.
+// Grounding: the neuroscience of ego-dissolution as desynchronisation. The
+// piece makes it literal: a parcellation of the self that loses its boundaries
+// and re-forms with new ones.
 //
 // Visuals: WebGL2 fragment shader (render.ts) computes the parcellation
 // per-pixel; a single `coherence` scalar melts the borders. Audio: a bank of 20
@@ -319,13 +319,12 @@ export default function RemapFieldPage() {
                 to a new pitch set.
               </p>
               <p>
-                Grounding: Siegel, Nichols, Dosenbach et al.,{" "}
+                Grounding:{" "}
                 <span className="text-foreground">
-                  &ldquo;Psilocybin desynchronizes the human brain&rdquo;
-                </span>
-                , Nature 2024 — ego-dissolution as desynchronisation that
-                dissolves the distinctions between networks, with re-organisation
-                that persists for weeks.
+                  the neuroscience of ego-dissolution
+                </span>{" "}
+                as desynchronisation that dissolves the distinctions between
+                networks, with re-organisation that persists for weeks.
               </p>
               <p>
                 Phases: Bounded → Desync → Boundless floor → Re-crystallise. The

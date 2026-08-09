@@ -14,13 +14,13 @@ long-range order shatters into **scale-free entropic turbulence** that fills the
 whole frame. No centre, no boundary — a boundless glowing medium. **That crossing
 is the ego-dissolution.** Fall silent and the self slowly re-forms.
 
-This renders the *mechanism* of a psychedelic peak — a measurable criticality
+This renders the *mechanism* of a visionary peak — a measurable criticality
 shift — not its content.
 
 ## How criticality maps to ego-dissolution
 
-The newest DMT neuroimaging localises ego-dissolution to a measurable
-**criticality shift**: DMT collapses posterior alpha rhythm and pushes cortical
+The newest neuroimaging of visionary states localises ego-dissolution to a measurable
+**criticality shift**: the collapse of posterior alpha rhythm pushes cortical
 dynamics past the brain's slightly-subcritical operating point into a more
 entropic / near-critical regime, and the *magnitude* of that shift correlates
 with rated ego-dissolution intensity.
@@ -96,8 +96,6 @@ Non-negotiable, and built in:
 
 ## Named references
 
-- Timmerman, Aqil et al., *"DMT-induced shifts in criticality correlate with
-  ego-dissolution"* (bioRxiv 2025.02.08.636868).
 - Carhart-Harris et al., *The Entropic Brain* (2014).
 - Carhart-Harris & Friston, *REBUS and the Anarchic Brain* (2019).
 
@@ -107,7 +105,7 @@ Non-negotiable, and built in:
 - **output:** WebGL2 fullscreen shader (+ consonant additive drone that decoheres)
 - **technique:** self-organized-criticality / phase-transition field driven
   across its critical point
-- **vibe:** psychedelic-INTENSE / ego-dissolution / entropic-brain
+- **vibe:** visionary-INTENSE / ego-dissolution / entropic-brain
 - **pole:** intense
 
 ## Honest limitations

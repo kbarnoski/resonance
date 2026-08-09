@@ -21,7 +21,7 @@ A single **closed-form complex traveling wave** `ψ(u, v, t)` lives in cortical
 Under the inverse **log-polar retino-cortical map** `r = exp(u)` (Bressloff &
 Cowan 2001) each geometry reads out as a distinct **Klüver form constant**. The
 combined `Re(ψ)` sets each sample's brightness; the field is drawn as **additive
-dots over a low-alpha clear** (LSD colour trails for free) through an
+dots over a low-alpha clear** (visionary colour trails for free) through an
 **audio-reactive Bayer 8×8 ordered dither**.
 
 **Rendered entirely in Canvas2D `2d`** — no WebGL, no WebGPU, no three.js. The
@@ -34,7 +34,7 @@ the ψ that triggers the bell.
 - **Das, Zabeh, Ermentrout & Jacobs**, *Planar, spiral, and concentric traveling
   waves distinguish behavioral states in human memory*, **Nature Communications
   2026** (s41467-026-71386-z) — the three wave geometries as cognitive-state
-  signatures. This piece treats each as a psychedelic form constant.
+  signatures. This piece treats each as a visionary form constant.
 - **Bressloff & Cowan (2001)** — the log-polar V1 map that turns cortical plane
   waves into tunnels / rings / spirals.
 - **Klüver form constants** — the four recurring hallucinatory geometries.

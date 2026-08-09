@@ -440,7 +440,7 @@ export default function DrosteDescentPage() {
             <p className="mt-1">
               Escher, <em>Print Gallery</em> (1956) · the Droste effect (Droste
               cocoa tin, 1904) · Lenstra &amp; de Smit&apos;s Droste analysis
-              (2003) · Shepard (1964) / Risset endless tones · the DMT
+              (2003) · Shepard (1964) / Risset endless tones · the visionary
               tunnel form-constant.
             </p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">

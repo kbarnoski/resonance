@@ -1,8 +1,8 @@
-# 1770-dmt-hyperbolic
+# 1770 visionary-hyperbolic
 
-**One question:** *What if the DMT breakthrough's hyperbolic, negatively-curved geometry could bloom in real time — Escher's Circle Limit alive and breathing, driven by sound?*
+**One question:** *What if the visionary breakthrough's hyperbolic, negatively-curved geometry could bloom in real time — Escher's Circle Limit alive and breathing, driven by sound?*
 
-- **State:** DMT breakthrough
+- **State:** visionary breakthrough
 - **Pole:** intense
 - **Input:** audio — a deterministic self-playing generative carrier by default; optional file-drop of your own track
 - **Output:** WebGL2 full-viewport fragment shader (three.js `ShaderMaterial` on a fullscreen triangle)
@@ -68,10 +68,9 @@ throughout. Master chain ends `DynamicsCompressor → gain ≈ 0.15`.
 
 ## Named references
 
-- **QRI / Qualia Computing — "The Hyperbolic Geometry of DMT Experiences:
-  Symmetries, Sheets, and Saddled Scenes"** (Andrés Gómez Emilsson, 2016) — the
-  core thesis that breakthrough geometry is negatively curved: hyperbolic
-  sheets, saddles, and exponentially blooming tilings.
+- **Hyperbolic geometry of visionary experience** — the core thesis that
+  breakthrough geometry is negatively curved: hyperbolic sheets, saddles, and
+  exponentially blooming tilings.
 - **M.C. Escher, *Circle Limit* series** (with **H.S.M. Coxeter**, 1956) — the
   Poincaré-disk hyperbolic tessellation this piece renders and animates.
 - **Bressloff–Cowan cortical form-constant / log-polar map** — the retino-
@@ -85,7 +84,7 @@ throughout. Master chain ends `DynamicsCompressor → gain ≈ 0.15`.
   tessellation (this reads as "breathing density", which is intentional).
 - Near the boundary circle the fold loop is truncated (26 iterations), so the
   deepest infinite-regress detail is softened rather than resolved to infinity.
-- The generative carrier is a stylised piano/drone, not a real DMT-associated
+- The generative carrier is a stylised piano/drone, not a real visionary
   soundscape; the mapping from FFT bands to phenomenology is an artistic analogy
   informed by the references, not a neuroscientific model.
 - This is a visual/sonic evocation. It is not a substitute for, nor a

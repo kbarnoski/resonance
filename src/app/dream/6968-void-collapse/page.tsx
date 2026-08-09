@@ -441,13 +441,13 @@ export default function KholapsePage() {
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-8">
         <div className="pointer-events-auto max-w-xl">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Dream lab · 6968-kholapse
+            Dream lab · 6968-void-collapse
           </p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Kholapse
           </h1>
           <p className="mt-2 max-w-md text-base text-muted-foreground">
-            Your own music dissolved into a ketamine k-hole — one dissociation
+            Your own music dissolved into the void — one dissociation
             depth smears time and folds space into a receding wireframe tunnel.
           </p>
 
@@ -466,7 +466,7 @@ export default function KholapsePage() {
                 onClick={() => void ensureAudio()}
                 className="min-h-[44px] rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Enter the k-hole
+                Enter the void
               </button>
             ) : (
               <span className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
@@ -511,7 +511,7 @@ export default function KholapsePage() {
               className="mt-3 w-full accent-primary"
             />
             <p className="mt-2 text-sm text-muted-foreground">
-              Scrub the surface→k-hole arc by hand; loud transients surface you,
+              Scrub the surface→void-collapse arc by hand; loud transients surface you,
               silence sinks you deeper.
             </p>
           </div>
@@ -541,15 +541,14 @@ export default function KholapsePage() {
             <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
                 One question: <em>what does it feel like to hear your own music
-                dissolve as you fall into a k-hole?</em> A single depth scalar{" "}
+                dissolve as you fall into the void?</em> A single depth scalar{" "}
                 <span className="font-mono">d ∈ [0,1]</span> drives everything.
               </p>
               <p>
-                Following Bera, Looger, Proekt &amp; Cichon (<em>The
-                Neuroscientist</em> 32(1), 2026), dissociation is the cortex
-                suppressing feedforward stimulus-specific detail while feedback
-                context and salience persist — and at depth generating internal
-                patterns without input.
+                In the neuroscience of dissociative perception, dissociation is
+                the cortex suppressing feedforward stimulus-specific detail while
+                feedback context and salience persist — and at depth generating
+                internal patterns without input.
               </p>
               <p>
                 <strong className="text-foreground">Feedforward (suppressed as
@@ -580,7 +579,7 @@ export default function KholapsePage() {
         </div>
       )}
 
-      <PrototypeNav slugs={["6968-kholapse"]} />
+      <PrototypeNav slugs={["6968-void-collapse"]} />
     </main>
   );
 }

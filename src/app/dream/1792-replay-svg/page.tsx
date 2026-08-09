@@ -392,14 +392,8 @@ export default function ReplaySvgPage() {
             </h2>
             <p className="mb-3">
               A single parameter <span className="font-mono text-primary">&alpha;</span>{" "}
-              runs 0&rarr;1 on a slow auto-arc. It is the control parameter of
-              Bredenberg et al.,{" "}
-              <em>
-                &ldquo;Modeling the hallucinatory effects of classical
-                psychedelics in terms of replay-dependent plasticity
-                mechanisms,&rdquo;
-              </em>{" "}
-              eLife 2026;14:RP105968, which maps the Wake-Sleep algorithm onto
+              runs 0&rarr;1 on a slow auto-arc. It maps the Wake-Sleep algorithm
+              (Hinton, Dayan, Frey &amp; Neal, <em>Science</em> 1995) onto
               cortex: <strong>&alpha;=0</strong> is WAKE &mdash; basal dendrites,
               bottom-up sensory inference; <strong>&alpha;=1</strong> is SLEEP
               &mdash; apical dendrites, top-down generative <em>replay</em>. As the

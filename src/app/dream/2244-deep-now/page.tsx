@@ -7,10 +7,10 @@
 // itself — where sustained attention makes a single moment stretch until one
 // instant swells to fill everything (the "eternal now")?
 //
-// Grounding (see README.md): psychedelic time-dilation is NOT a sped-up/slowed
+// Grounding (see README.md): visionary time-dilation is NOT a sped-up/slowed
 // internal pacemaker. 5-HT2A activation raises cortical excitability and sensory
 // input GAIN, so the brain OVER-processes each moment — and more processing =
-// time felt as DILATED (psypost 2026-03-20). Wittmann, *Felt Time*: subjective
+// time felt as DILATED. Wittmann, *Felt Time*: subjective
 // time expands with attention/arousal. Here that is PLAYED: the more you attend
 // (press-and-hold), the more each moment's processing stretches.
 //
@@ -606,11 +606,11 @@ export default function DeepNowPage() {
               attention stretching a single moment into an eternal now?
             </p>
             <p className="mt-3 text-base text-muted-foreground">
-              <span className="text-foreground">The science:</span> psychedelic
+              <span className="text-foreground">The science:</span> visionary
               time-dilation is not a sped-up or slowed internal pacemaker. 5-HT2A
               activation raises cortical excitability and sensory input gain, so
               the brain over-processes each moment — and more processing is felt
-              as more elapsed time (psypost, 2026-03-20). Marc Wittmann&apos;s{" "}
+              as more elapsed time. Marc Wittmann&apos;s{" "}
               <span className="italic">Felt Time</span> shows subjective duration
               expands with attention and arousal. Here that is played: press-and-
               hold raises an attention level A, and A scales how long each

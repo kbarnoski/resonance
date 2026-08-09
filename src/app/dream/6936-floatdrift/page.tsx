@@ -467,10 +467,10 @@ export default function FloatDriftPage() {
                 geometry surface.
               </p>
               <p className="text-foreground">
-                References: Klüver, <em>Mescal &amp; Mechanisms of Hallucinations</em>{" "}
-                form-constants (1926); Kraehenmann et al. on flotation-REST;
-                &ldquo;Hypnagogia, psychedelics, and sensory deprivation: the mythic
-                structure of dream-like experiences&rdquo; (2025 review).
+                References: Klüver form-constants (1926); Kraehenmann et al. on
+                flotation-REST; Ganzfeld / hypnagogia and sensory-deprivation
+                phenomenology — reduced sensory input surfacing endogenous,
+                dream-like geometry.
               </p>
             </div>
             <button

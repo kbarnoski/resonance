@@ -48,7 +48,7 @@ Bressloff–Cowan geometric hallucination.
   outward through the inverse log-polar `exp()` warp. A **tunnel + spokes →
   honeycomb** form-constant field (mixed by depth) takes over as precision falls.
   **Ping-pong FBO feedback** drifts the previous frame outward down the tunnel
-  with a hue twist for LSD-style persistence trails. Violet → magenta → near-white
+  with a hue twist for visionary persistence trails. Violet → magenta → near-white
   art ramp; raw hex lives only inside the shader/canvas.
 - **Audio** (`audio.ts`). Built on the shared `startShepard` (a Shepard–Risset
   present-tone ascent that brightens with precision) and `startDroneBank` (a

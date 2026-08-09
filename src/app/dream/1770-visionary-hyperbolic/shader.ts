@@ -1,4 +1,4 @@
-// 1770-dmt-hyperbolic — GLSL for the Poincaré-disk hyperbolic tiling.
+// 1770 visionary-hyperbolic — GLSL for the Poincaré-disk hyperbolic tiling.
 //
 // A full-viewport fragment shader that folds every pixel of the unit disk into
 // the fundamental triangle of a (2,7,q) reflection group — a {7,q} hyperbolic

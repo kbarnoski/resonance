@@ -6,7 +6,7 @@
 //   defects are the stars: a +½ is a bright violet-white head trailing a comet
 //   of its recent path; a −½ is a dimmer, cooler three-fold form that only
 //   drifts. Everything is piped through UnrealBloomPass (jeweled glow) and a
-//   light AfterimagePass (slow LSD tracers). When the braid locks the three +½
+//   light AfterimagePass (slow visionary tracers). When the braid locks the three +½
 //   brighten and their trails weave a repeating mandala.
 //
 //   SAFETY: no strobe. Every brightness change is a slow lerp (≤ a few Hz);

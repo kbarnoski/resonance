@@ -145,7 +145,7 @@ export default function BloomFieldPage() {
           Bloom Field
         </h1>
         <p className="mt-1 max-w-md text-base text-muted-foreground">
-          A DMT-threshold chrysanthemum that opens to your presence. Stillness
+          A visionary-threshold chrysanthemum that opens to your presence. Stillness
           unfolds it slowly; movement makes it bloom and reorganize.
         </p>
       </div>

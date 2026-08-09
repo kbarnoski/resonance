@@ -17,7 +17,7 @@ negatively-curved lattice becomes a musical instrument.
 - **Technique:** a `{8,3}` Poincaré-disk tiling grown by a Fuchsian reflection group;
   hyperbolic isometries (Möbius transforms of the unit disk, represented as SU(1,1)
   matrices) as _playable_ transforms.
-- **Palette / vibe:** jeweled iridescent violet on near-black. State: DMT-hyperbolic /
+- **Palette / vibe:** jeweled iridescent violet on near-black. State: visionary-hyperbolic /
   Klüver-lattice. Pole: intense/kinetic — a geometric, kinetic form-constant, not a
   dissolution/void tunnel.
 
@@ -74,7 +74,7 @@ The lab already contains **`1044-hyperbolic-bloom`**, which renders the _same_ P
 tiling but as a **watched WebGL2 fragment shader driven by mic FFT**. This piece is the
 deliberate inversion of that one: **SVG vector tiles**, **keyboard-played**, an
 **instrument** rather than a spectacle. The hyperbolic-tiling technique is not new here —
-credit `1044` (and QRI's _Hyperbolic Geometry of the DMT Experience_ lineage it cites).
+credit `1044` and the hyperbolic-geometry lineage it grows from.
 
 ### Honest knocks
 - The `{8,3}` label is honest, but Escher's _Circle Limit III_ is a colored, decorated

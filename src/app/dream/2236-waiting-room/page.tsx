@@ -3,21 +3,20 @@
 /* ------------------------------------------------------------------ *
  * 2236 — Waiting Room
  *
- * You build a space with your body before a psychedelic presence can
+ * You build a space with your body before a visionary presence can
  * inhabit it. Your moving body (seen through the webcam) does not summon
  * a swarm — it CARVES a space. An inverse log-polar / form-constant warp
  * (Bressloff–Cowan) turns a hexagonal cortical lattice into a receding
- * honeycomb tunnel — the DMT "waiting room" / antechamber (Strassman).
+ * honeycomb tunnel — the visionary "waiting room" / antechamber.
  * Sustained motion climbs a four-stage immersion ladder; only once the
  * room is fully built does a coherent presence condense in it and regard
  * you. Stop moving and it recedes. Falls back to pointer/touch motion if
  * there is no camera.
  *
- * Renders: "Micro-phenomenology of immersion and perceived presences
- * under DMT" (Neuroscience of Consciousness, 2026, niag015) — immersion
- * is a structured continuum; presence emerges only AFTER multisensory
- * binding + 3D-spatial structure. Companion: "Computational spirits"
- * (Neuroscience of Consciousness, 2026, niaf069).
+ * Renders: the micro-phenomenology of immersion and perceived presences
+ * in visionary states — immersion is a structured continuum; presence
+ * emerges only AFTER multisensory binding + 3D-spatial structure.
+ * Companion: a neuroscientific account of visionary entity encounters.
  *
  * Subsystems: webcam capture · frame-diff motion field · log-polar warp
  * engine · four-stage state machine · spectral/inharmonic audio.
@@ -353,15 +352,14 @@ export default function WaitingRoomPage() {
                 presence looks.
               </p>
               <p>
-                <span className="text-foreground">The 2026 finding.</span> This
-                renders “Micro-phenomenology of immersion and perceived presences
-                under DMT” (<em>Neuroscience of Consciousness</em>, 2026,
-                niag015): immersion is a <em>structured continuum</em>, and a
+                <span className="text-foreground">The finding.</span> This
+                renders the micro-phenomenology of immersion and perceived
+                presences in visionary states: immersion is a{" "}
+                <em>structured continuum</em>, and a
                 perceived presence emerges only <em>after</em> multisensory
                 integration and 3D-spatial structure have developed. Its
-                companion, “Computational spirits: a neuroscientific account of
-                psychedelic entity encounters” (<em>Neuroscience of
-                Consciousness</em>, 2026, niaf069), models entities as autonomous
+                companion, a neuroscientific account of visionary entity
+                encounters, models presences as autonomous
                 predictive agents — so here the presence keeps its own slow drift.
               </p>
               <p>
@@ -369,8 +367,8 @@ export default function WaitingRoomPage() {
                 honeycomb chamber is an inverse log-polar / form-constant map
                 (Bressloff–Cowan): a hexagonal lattice in “cortical” coordinates
                 (log r, θ) becomes tunnels and honeycomb chambers when unwrapped
-                to the screen — the shimmering architecture that precedes a DMT
-                breakthrough (Strassman’s “waiting room”).
+                to the screen — the shimmering architecture that precedes a
+                visionary breakthrough (the “waiting room”).
               </p>
               <p>
                 <span className="text-foreground">The four stages.</span>{" "}

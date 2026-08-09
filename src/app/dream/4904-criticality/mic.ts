@@ -3,7 +3,7 @@
 //
 // The driver: the user's OWN voice, analysed with a real Web Audio AnalyserNode.
 // It exposes a single 0..1 "drive" = loudness (RMS) blended with a low-frequency
-// energy proxy standing in for the alpha-band collapse the DMT paper measures.
+// energy proxy standing in for the alpha-band collapse of the visionary peak.
 // (Cortical alpha lives at ~8–12 Hz, inaudible; here the analogue is the low,
 // sustained voiced energy of the voice — steady phonation pushes the control
 // parameter toward and past criticality; silence lets it fall back.)

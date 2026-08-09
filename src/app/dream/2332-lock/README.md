@@ -80,7 +80,7 @@ entrained.
 - **Aparicio-Terrés et al. (2025)**, "The neurobiology of altered states of
   consciousness induced by drumming and other rhythmic sound patterns," *Annals
   of the NY Academy of Sciences* — thalamo-cortical entrainment to low-frequency
-  rhythm parallels psychedelic mechanisms.
+  rhythm parallels visionary mechanisms.
 - **2025 study (PMC12014595)**, "The strength of neural entrainment to electronic
   music correlates with proxies of altered states of consciousness" — auditory
   entrainment peaks around ~2 Hz (tested 1.65 / 2.25 / 2.85 Hz), which is why the

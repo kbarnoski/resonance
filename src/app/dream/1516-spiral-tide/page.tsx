@@ -344,7 +344,7 @@ export default function SpiralTidePage() {
               The dither threshold breathes with the smoothed gain-envelope
               amplitude that also drives the audio master, so the grain thickens
               as the sound swells — an audio-reactive dither. Additive dots over a
-              low-alpha clear give LSD colour trails for free. It is pure Canvas2D,
+              low-alpha clear give visionary colour trails for free. It is pure Canvas2D,
               so the exact structural see==hear holds on any machine, GPU or not.
             </p>
             <p className="mt-4 text-base">

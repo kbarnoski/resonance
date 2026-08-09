@@ -576,9 +576,9 @@ export default function EternalReturnPage() {
               dilated; only time, lifetime, and reverb-bloom stretch.
             </p>
             <p className="mt-3 text-base text-muted-foreground">
-              <span className="text-foreground">The science:</span> psychedelic
+              <span className="text-foreground">The science:</span> visionary
               time-dilation is over-processing / raised sensory gain, not a
-              changed pacemaker (PsyPost, 2026-03-20). Marc Wittmann,{" "}
+              changed pacemaker. Marc Wittmann,{" "}
               <span className="italic">Felt Time</span> (MIT Press): subjective
               duration expands with attention. Engaged, analytical listening
               deepens flow, which warps felt time (bioRxiv, 2026-05-13, &ldquo;A

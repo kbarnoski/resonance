@@ -1,13 +1,13 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 1506-theta-tide — the psychedelic "breathing surfaces", rebuilt from its
+// 1506-theta-tide — the visionary "breathing surfaces", rebuilt from its
 // cortical mechanism.
 //
 // A lattice of coupled phase oscillators lives in cortical (u,v) space and is
 // swept by traveling plane-wave sources. Under the inverse log-polar warp
 // (r = exp(u)) a cortical plane wave reads out as the classic expanding /
-// contracting concentric rings of an LSD "breathing tunnel". Each wavefront that
+// contracting concentric rings of a visionary "breathing tunnel". Each wavefront that
 // crosses a listening ring rings an inharmonic tone — the visible wavefront IS the
 // audible sweep. A ~7-minute REBUS arc raises coupling, noise and the number of
 // interfering sources, then settles: minute 6 never equals minute 1.
@@ -238,13 +238,13 @@ export default function ThetaTidePage() {
           <div className="mx-auto max-w-2xl text-foreground">
             <h2 className="text-xl font-semibold tracking-tight text-foreground">Design notes</h2>
             <p className="mt-4 text-base">
-              The psychedelic hallucination of <span className="text-primary">breathing surfaces</span>{" "}
+              The visionary hallucination of <span className="text-primary">breathing surfaces</span>{" "}
               is rebuilt here from its likely cortical mechanism. A ~5-Hz traveling
               wave sweeps across a model of visual cortex — a lattice of coupled
               phase oscillators living in cortical (u,&nbsp;v) coordinates. Because
               the retina→V1 map is approximately a complex logarithm, the inverse
               warp r&nbsp;=&nbsp;exp(u) turns a cortical plane wave into the classic
-              expanding / contracting concentric rings of an LSD trip.
+              expanding / contracting concentric rings of a visionary trip.
             </p>
             <p className="mt-4 text-base">
               <span className="text-primary">See&nbsp;==&nbsp;hear:</span> the lattice

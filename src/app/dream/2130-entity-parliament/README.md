@@ -1,8 +1,8 @@
 # 2130 · Entity Parliament
 
-**What if a DMT-style entity encounter were an INSTRUMENT YOU PLAY — a parliament of benevolent guide-beings that OPEN and turn their gaze toward you as you hold chords?**
+**What if a visionary encounter with presences were an INSTRUMENT YOU PLAY — a parliament of benevolent guide-beings that OPEN and turn their gaze toward you as you hold chords?**
 
-`state: DMT · pole: intense / ecstatic`
+`state: visionary encounter · pole: intense / ecstatic`
 
 Not a piece that plays itself. A ring of ~11 procedurally-drawn guide-beings sleeps in the dark. Sound a Bohlen–Pierce chord and they OPEN their jeweled mandala-eyes, turn their gaze toward you, and together assemble a shared central mandala. Hold more voices and the structure BUILDS — a low tritave drone swells, the eyes widen, a presence ARRIVES. This is the ecstatic entity pole, the opposite of the self dissolving.
 
@@ -36,11 +36,10 @@ Any glow pulse is OFF by default and routed through the shared `_shared/visionar
 
 ## Grounding / references
 
-- Michael, Luke & Robinson, *Scientific Reports* 12 (2022), **s41598-022-11999-8** — DMT entity-encounter phenomenology.
-- Inhaled-DMT phenomenology corpus, **PMC9130218**. Entity encounters occur in ~45.5% of DMT experiences, share consistent cross-subject phenomenology, skew benevolent, ~32.4% are companion/pedagogical **guide**-type, and the core report is being **SEEN / attended-to** by the presence — used here as the interaction model.
+- The visionary/mystic **presence-encounter** — across contemplative traditions such encounters skew benevolent, often take a companion/pedagogical **guide** form, and the core report is being **SEEN / attended-to** by the presence — used here as the interaction model.
 - **Klüver's form-constants** (lattice / tunnel / spiral / cobweb) — the geometry the beings are drawn from.
 - **Terence McKenna** — "self-transforming machine elves."
-- A recent (2026) theoretical framework proposes a falsifiable test for whether the entities are "real"; "the presence attends to YOU" is treated here as the literal interaction model.
+- "The presence attends to YOU" is treated here as the literal interaction model.
 
 ## Tech
 

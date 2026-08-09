@@ -24,11 +24,11 @@ import {
 } from "./parliament";
 
 /**
- * 2130 · Entity Parliament — a DMT-style entity encounter you PLAY.
+ * 2130 · Entity Parliament — a visionary encounter with presences you PLAY.
  *
  * A ring of benevolent guide-beings OPEN and turn their gaze toward you as you
  * hold Bohlen–Pierce chords. How many keys you hold, which chord shape, and
- * velocity each drive different parameters. state: DMT · pole: intense-ecstatic.
+ * velocity each drive different parameters. state: visionary encounter · pole: intense-ecstatic.
  */
 
 const BEING_COUNT = 11;
@@ -406,7 +406,7 @@ export default function EntityParliamentPage() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-6 text-center">
           <span className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            2130 · DMT · intense / ecstatic
+            2130 · visionary encounter · intense / ecstatic
           </span>
           <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
             Entity Parliament
@@ -506,8 +506,8 @@ export default function EntityParliamentPage() {
             </div>
             <div className="mt-4 space-y-4 text-base text-muted-foreground">
               <p>
-                <span className="text-foreground">The question.</span> What if a DMT-style entity
-                encounter were an instrument you play — a parliament of benevolent guide-beings that
+                <span className="text-foreground">The question.</span> What if a visionary encounter
+                with presences were an instrument you play — a parliament of benevolent guide-beings that
                 open and turn their gaze toward you as you hold chords? Structure builds and a
                 presence arrives. This is the intense, ecstatic pole, the opposite of the self
                 dissolving.
@@ -534,11 +534,10 @@ export default function EntityParliamentPage() {
                 spirals.
               </p>
               <p>
-                <span className="text-foreground">Grounding.</span> Michael, Luke &amp; Robinson,
-                Scientific Reports 2022 (s41598-022-11999-8) and the inhaled-DMT phenomenology corpus
-                (PMC9130218): entity encounters occur in ~45.5% of DMT experiences, share consistent
-                cross-subject phenomenology, skew benevolent, ~32.4% are companion/pedagogical guide
-                types, and the core report is being seen and attended to by the presence — which is
+                <span className="text-foreground">Grounding.</span> The visionary/mystic
+                presence-encounter: across contemplative traditions such encounters share consistent
+                cross-subject phenomenology, skew benevolent, often take companion/pedagogical guide
+                forms, and the core report is being seen and attended to by the presence — which is
                 the interaction model here.
               </p>
               <p>

@@ -1,4 +1,4 @@
-// 1770-dmt-hyperbolic — audio engine.
+// 1770 visionary-hyperbolic — audio engine.
 //
 // DEFAULT + REQUIRED GHOST: a deterministic, self-playing generative carrier.
 // With no file and no mic it plays on its own forever — a slow inharmonic

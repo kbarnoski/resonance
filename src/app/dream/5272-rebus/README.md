@@ -3,15 +3,15 @@
 ## The one question
 
 **What if you could watch reality dissolve into structured hallucination the
-way the brain actually does it on psychedelics — top-down predictions flooding
+way the brain actually does it in visionary states — top-down predictions flooding
 down into the sensory field as the gating that normally holds them back
 relaxes?**
 
 ## What it is
 
-A drug-free, intense altered-states piece that literalizes the leading
-neuroscience model of psychedelic hallucination — **REBUS** ("RElaxed Beliefs
-Under pSychedelics", Carhart-Harris & Friston 2019) — as a live, two-layer
+A drug-free, intense altered-states piece that literalizes a leading
+neuroscience model of hallucination — **RElaxed Beliefs**, a predictive-coding
+account (Carhart-Harris & Friston 2019) — as a live, two-layer
 predictive-coding loop you can watch cross the threshold.
 
 Everything is Canvas2D + Web Audio, self-contained, deterministic, and it
@@ -73,10 +73,9 @@ first gesture (**Begin**); the visuals paint from load.
 
 - **Carhart-Harris & Friston (2019), "REBUS and the Anarchic Brain"**,
   _Pharmacological Reviews_ — the model this piece literalizes.
-- **"Neural mechanisms of psychedelic visual imagery" (2024)**, _Molecular
-  Psychiatry_ — psilocybin fMRI showing reduced top-down inhibition from
-  visual-association regions down to early visual cortex (top-down flooding,
-  measured).
+- Neuroimaging of visual imagery — fMRI evidence of reduced top-down inhibition
+  from visual-association regions down to early visual cortex (top-down
+  flooding, measured).
 - Karl Friston — free-energy principle / predictive coding (the substrate).
 
 ## Files

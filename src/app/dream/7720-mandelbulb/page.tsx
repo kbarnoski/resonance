@@ -12,7 +12,7 @@ import { MandelbulbAudio } from "./audio";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 7720-mandelbulb
-//   the lab's first raymarched, distance-estimated 3D fractal · pole: DMT bloom
+//   the lab's first raymarched, distance-estimated 3D fractal · pole: visionary bloom
 //
 // Fall INTO a living, jeweled power-8 Mandelbulb (White & Nylander, 2009) grown
 // by your voice: mic loudness pushes the fractal exponent 7 -> 9, opens the
@@ -251,7 +251,7 @@ export default function Page() {
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-5 sm:p-8">
         <div className="max-w-xl">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            7720 · mandelbulb · DMT bloom
+            7720 · mandelbulb · visionary bloom
           </p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Fall into the jewel

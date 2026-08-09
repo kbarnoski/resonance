@@ -453,7 +453,7 @@ export default function AnnealPage() {
               Physics-Based Sonification of Tissue Deformations (arXiv:2508.14688,
               2026). There, tissue displacement drives a modal sound model
               encoding stiffness for surgery. Here the same idea is inverted into
-              a drug-free psychedelic instrument: the deformation is the composer.
+              a drug-free visionary instrument: the deformation is the composer.
             </p>
             <p className="mt-3 text-base text-muted-foreground">
               <span className="text-foreground">Safety:</span> slow luminance

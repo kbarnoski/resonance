@@ -3,11 +3,11 @@ export const README_TEXT = `Morphosong — hum a living organism into being.
 
 THE QUESTION
 What if you could HUM an organism into being — where your pitch breeds a
-different psychedelic Turing-pattern morphology, and the pattern you SEE is
+different visionary Turing-pattern morphology, and the pattern you SEE is
 exactly the shimmer you HEAR?
 
 STATE / POLE
-Psilocybin morphing-fractal bloom · pole: INTENSE.
+Visionary morphing-fractal bloom · pole: INTENSE.
 
 THE LOOP (and it closes)
 1. YOU HUM. The microphone is pitch-tracked by time-domain autocorrelation
@@ -22,7 +22,7 @@ THE LOOP (and it closes)
 3. YOU SEE FORM CONSTANTS. A render pass warps the field through a log-polar /
    cortical map, so the flat petri pattern reads as tunnels, spirals and
    honeycomb — the Klüver form constants — in a warm amber→magenta→violet
-   psilocybin palette.
+   visionary palette.
 4. IT RE-VOICES ITSELF. A compute reduction reads the field's spatial statistics
    back to the CPU each few frames — mean V, variance (spottiness), gradient
    (edge density). Those scalars set the amplitudes of a bank of inharmonic

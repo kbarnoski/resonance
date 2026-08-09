@@ -1,8 +1,8 @@
 # 7720 · mandelbulb — fall into the jewel
 
-**State:** DMT-breakthrough / hyperdimensional bloom · **Pole:** intense, "more real than real"
+**State:** visionary breakthrough / hyperdimensional bloom · **Pole:** intense, "more real than real"
 **Input:** MIC (live) · **Fallback:** seeded virtual performer
-**Question it answers:** *What does it feel like to fall INTO a living, jeweled, hyperdimensional fractal — the canonical DMT-breakthrough geometry — grown by your own voice?*
+**Question it answers:** *What does it feel like to fall INTO a living, jeweled, hyperdimensional fractal — the canonical visionary-breakthrough geometry — grown by your own voice?*
 
 ---
 
@@ -62,7 +62,7 @@ raymarching / distance-estimation writeups.
 | Treble energy (bands 4–5)| Palette hue shimmer + specular sparkle            |
 | Same energy scalar       | Opens the drone's lowpass + swells the shimmer    |
 
-Louder / brighter sound = the fractal blooms and intensifies (DMT breakthrough);
+Louder / brighter sound = the fractal blooms and intensifies (visionary breakthrough);
 silence = it settles into a slower, calmer drift.
 
 ## Self-demo (Karel reviews on his phone at 06:30, no mic, no interaction)
@@ -112,7 +112,7 @@ flutter). It swells with the virtual performer even when the mic is denied.
   escape-time 3D fractal in the lab (grep-verified 0 across 7000+ prototypes).
 - **#3 — named references:** Daniel White & Paul Nylander (Mandelbulb, 2009);
   Íñigo Quílez (distance-estimation & raymarching writeups).
-- **#5 — charter fit:** sits squarely on the lab's PRIMARY psychedelic charter
+- **#5 — charter fit:** sits squarely on the lab's PRIMARY visionary charter
   ("raymarch a 4D polytope / negatively-curved SDFs") and rhymes with fresh 2026
   audio-reactive-shader work — Robert Borghesi's *ASTRODITHER* (WebGPU / TSL,
   2026-07-01).

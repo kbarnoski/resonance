@@ -69,9 +69,8 @@ further damps the bloom pulse and position easing.
 
 ## Named references (this cycle's §855 dive: ecstatic union = *hyper*-connection, and it can be PLAYED)
 
-- **"Dynamic Functional Hyperconnectivity After Psilocybin Intake Is Primarily
-  Associated With Oceanic Boundlessness," *Biological Psychiatry: CNNI*** — a
-  recurrent *hyperconnected* brain state tracks oceanic boundlessness/unity. This is
+- The neuroscience of **oceanic boundlessness** — a recurrent *hyperconnected*
+  brain state tracks oceanic boundlessness/unity. This is
   the core reframe: union is over-connection, not fade-out. Modeled directly by K
   raising inter-voice coupling and the all-pairs thread web.
 - **"Oceanic states of consciousness — an existential-neuroscience perspective,"

@@ -18,7 +18,7 @@ This is the first form-constant piece in the lab rendered as **SVG DOM elements*
 
 ## References
 
-- Heinrich Klüver, *Mescal and Mechanisms of Hallucinations* (1926) — the four form constants (tunnels/funnels, spokes/cobwebs, spirals, lattices/honeycombs).
+- Heinrich Klüver (1926) — the four form constants (tunnels/funnels, spokes/cobwebs, spirals, lattices/honeycombs).
 - Bressloff, Cowan, Golubitsky, Thomas & Wiener, "Geometric visual hallucinations, Euclidean symmetry and the functional architecture of striate cortex," *Phil. Trans. R. Soc. B* (2001) — V1 Turing patterns become the form constants under the retinocortical log-polar map.
 - The 2026 bioRxiv large-scale computer-vision mapping of stroboscopically-induced visual hallucination geometry — a fresh, drug-free confirmation that flicker reliably evokes the same four constants.
 

@@ -1,18 +1,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// 6968-kholapse · audio.ts — ONE granular time-freeze engine for both the
+// 6968-void-collapse · audio.ts — ONE granular time-freeze engine for both the
 // dropped recording AND the seeded fallback arpeggio.
 //
 //   A cloud of overlapping windowed grains reads a playhead that advances at
 //   (1 − d) of real time — so at depth the slice FREEZES. Each grain's
 //   playbackRate droops below 1 as d rises, so pitch and tempo DECOUPLE
-//   (a k-hole tell). As d rises:
+//   (a void-collapse tell). As d rises:
 //     · grain length grows           → feedforward detail blurs
 //     · a lowpass rolls off the highs → feedforward (HF) suppression
 //     · a cross-coupled ping-pong DelayNode echo opens
 //     · the shared void reverb + drone bed swell  (feedback / context persists)
 //   At d→1 the real audio thins and the drone/echo/reverb — the persistent
 //   feedback context — dominate: "internally-driven patterns without input"
-//   (Bera, Looger, Proekt & Cichon, The Neuroscientist 32(1), 2026).
+//   (the neuroscience of dissociative perception — feedforward suppression,
+//   feedback persistence).
 //
 //   All randomness is seeded with mulberry32(0x6968) — no Math.random / Date.now
 //   so the lab's build/resume determinism holds. Master ≤ 0.26 behind a

@@ -2,7 +2,7 @@
 
 A generative, **long-form, stateful EDM build-and-drop journey engine** in the
 festival / melodic big-room house idiom. An alternate to Resonance's slow
-6-phase psychedelic journey arc: this one is bright, euphoric, main-stage. One
+6-phase visionary journey arc: this one is bright, euphoric, main-stage. One
 Start press runs a full multi-minute arrangement start to finish; it is
 genuinely different at minute four than at second four.
 

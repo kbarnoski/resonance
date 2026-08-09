@@ -304,7 +304,7 @@ export default function Elderswarm() {
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
                 <span className="text-foreground">The question:</span> can the
-                DMT-breakthrough sense of being <em>met</em> — attended to by
+                visionary-breakthrough sense of being <em>met</em> — attended to by
                 autonomous entities that turn to face you — be evoked drug-free,
                 on a screen?
               </p>

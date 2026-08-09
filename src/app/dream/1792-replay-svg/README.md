@@ -11,7 +11,7 @@ auto-arc and trades cortical control between **bottom-up sensory inference**
 
 ## The one question
 
-> What if a psychedelic/dream visual weren't noise turned into geometry, but your
+> What if a visionary/dream visual weren't noise turned into geometry, but your
 > own cortex closing the sensory gate and **replaying what it just saw** —
 > recombined into dream-logic?
 
@@ -69,15 +69,13 @@ honored: motion is slowed (0.6×) and the melt/blur are damped.
 
 ## References
 
-- **Bredenberg C, et al.** "Modeling the hallucinatory effects of classical
-  psychedelics in terms of replay-dependent plasticity mechanisms." *eLife*
-  2026;14:RP105968. — the α∈[0,1] basal/apical Wake-Sleep mapping onto cortex;
-  α→1 = sleep-phase, top-down generative replay of learned memory.
 - **Hinton GE, Dayan P, Frey BJ, Neal RM.** "The wake-sleep algorithm for
-  unsupervised neural networks." *Science* 1995;268(5214):1158–1161.
-- **Carhart-Harris RL, Friston KJ.** "REBUS and the Anarchic Brain: Toward a
-  Unified Model of the Brain Action of Psychedelics." *Pharmacol Rev*
-  2019;71(3):316–344. — contrasted: relaxed priors vs. active generative replay.
+  unsupervised neural networks." *Science* 1995;268(5214):1158–1161. — the
+  α∈[0,1] basal/apical Wake-Sleep mapping onto cortex; α→1 = sleep-phase,
+  top-down generative replay of learned memory.
+- **Klüver form-constants** — the honeycomb / lattice / spiral / tunnel taxonomy
+  of geometric visual imagery, and the neuroscience of perception under
+  altered states.
 
 ## Honest limitations
 

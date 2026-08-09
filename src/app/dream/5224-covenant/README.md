@@ -1,12 +1,12 @@
 # 5224-covenant
 
-**The one question:** *What if the autonomous "beings" of a DMT breakthrough were
+**The one question:** *What if the autonomous "beings" of a visionary breakthrough were
 real physics — the self-propelled topological defects of an **active nematic** —
 rendered as luminous volumetric entities drifting in a deep dark space, each a
 voice, that you gather with a boundary until their chaos locks into an eternal
 three-body "golden braid" that sings a repeating canon?*
 
-A drug-free psychedelic **entity-contact** piece. State: DMT entity-contact →
+A drug-free visionary **entity-contact** piece. State: visionary entity-contact →
 ordered sacred-braid. Pole: intense, calm braid resolution. Screen and sound do
 all the work.
 
@@ -111,5 +111,5 @@ orbit.
   cell / active nematics*, **Nature Physics** 15 (2019).
 - *Confinement of active nematics into a golden three-defect braid*,
   **arXiv:2503.10880** (2025).
-- R. Strassman, *DMT: The Spirit Molecule* (2001); T. McKenna, accounts of DMT
-  entity-contact — the phenomenology this piece reframes as physics.
+- The visionary-art tradition of autonomous entity-contact — the phenomenology
+  this piece reframes as physics.

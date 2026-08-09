@@ -13,7 +13,7 @@ import { mulberry32, SEED } from "./rng";
  * sounds a glassy bell AND seeds a self-similar polyhedral cell that recursively
  * buds child cells outward; HOLD a key and its branch keeps proliferating; play
  * chords and several structures grow at once — structure ACCUMULATING into an
- * over-bright plenum. state: DMT / hyperspace · pole: intense / ecstatic-arrival.
+ * over-bright plenum. state: visionary / hyperspace · pole: intense / ecstatic-arrival.
  */
 
 const KEY_ROW = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
@@ -318,7 +318,7 @@ export default function CrystalBloomPage() {
           several at once.
         </p>
         <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          DMT / hyperspace · intense-ecstatic · density {(density * 100).toFixed(0)}%
+          visionary / hyperspace · intense-ecstatic · density {(density * 100).toFixed(0)}%
         </p>
         {audioError && (
           <p className="mt-2 text-base text-destructive">
@@ -441,12 +441,12 @@ export default function CrystalBloomPage() {
                 <span className="text-foreground">
                   &ldquo;The Mathematical Architecture of Altered Consciousness&rdquo;
                 </span>{" "}
-                (Neuroscience News, 2026-06-03): DMT perturbs the perceptual interface
+                (Neuroscience News, 2026-06-03): the visionary state perturbs the perceptual interface
                 and <em>expands the accessible region of experience space</em>, so
                 normally-imperceptible <span className="text-foreground">structured</span>{" "}
                 form proliferates into perceptibility — coherent structure, not noise.
                 Here, playing deeper condenses more coherent crystalline structure. It
-                echoes the DMT-realm phenomenology where geometry proliferates, then
+                echoes the visionary-realm phenomenology where geometry proliferates, then
                 structure — an ecstatic <em>arrival</em>, not a dissolution into void.
               </p>
               <p className="text-xs">

@@ -7,7 +7,7 @@ import { MyceliumAudio } from "./audio";
 /**
  * 3080 · Mycelium
  *
- * A psychedelic altered-state field that GROWS like living mycelium. Your hand
+ * A visionary altered-state field that GROWS like living mycelium. Your hand
  * plants spores and scatters nutrient; the network filaments outward on its own
  * via the Space Colonization Algorithm (Runions, Lane & Prusinkiewicz, 2007),
  * branching where nutrient pulls in divergent directions and fusing

@@ -1,9 +1,9 @@
 # 1972 — Morphosong
 
-**State / pole:** psilocybin morphing-fractal bloom · **INTENSE**
+**State / pole:** visionary morphing-fractal bloom · **INTENSE**
 
 > **The one question:** What if you could HUM a living organism into being — where
-> your pitch breeds a different psychedelic Turing-pattern morphology, and the
+> your pitch breeds a different visionary Turing-pattern morphology, and the
 > pattern you SEE is exactly the shimmer you HEAR?
 
 ## The loop (and it closes)
@@ -21,7 +21,7 @@
 3. **You see form constants.** A render pass warps the field through a **log-polar /
    cortical map**, so the flat petri pattern reads as tunnels, spirals and
    honeycomb — the Klüver form constants — in a warm amber→magenta→violet
-   psilocybin palette (not a violet-on-black petri dish).
+   visionary palette (not a violet-on-black petri dish).
 4. **It re-voices itself.** A compute **reduction** reads the field's spatial
    statistics (mean V, variance/"spottiness", gradient/edge-density) back to the
    CPU every few frames. Those scalars set the amplitudes of a bank of

@@ -12,7 +12,7 @@ each remembered event as the wavefront crosses it?
 A Salk Institute review in *Neuron* (2026-07-21) argues neural **traveling
 waves** are the visual cortex's computational engine — that they "replay
 sequential temporal memories" across the cortical sheet. In parallel, 2026
-psychedelic studies frame hallucination as **recalled memory replayed as vision**
+visionary-state studies frame hallucination as **recalled memory replayed as vision**
 — "partial dreaming." This piece makes the thesis literal: the memory is fixed;
 a wave travels; the sequence re-fires on loop. You watch (and hear) a stored
 memory being replayed by a wavefront.
@@ -39,7 +39,7 @@ centre.
   **ignites**: a phosphor bloom + a note. Because a **ping-pong feedback buffer**
   redraws each frame slightly zoomed-out about the centre (constant
   multiplicative zoom = constant velocity in log-radius), every bloom smears
-  down the tunnel wall as a colour-trail (LSD-tracer phenomenology). The fixed
+  down the tunnel wall as a colour-trail (visionary tracer phenomenology). The fixed
   memory is drawn crisp on top (dots + gesture line) so you can see the wave
   cross it.
 - **Dose / entropy** (default low, 0.20): raises the wave rate, deepens the

@@ -1,10 +1,10 @@
 // Design notes rendered inside the in-page panel. Kept in sync with README.md.
 export const NOTES_MD = `# Bloom Field
 
-state: DMT-threshold chrysanthemum · pole: INTENSE
+state: visionary-threshold chrysanthemum · pole: INTENSE
 
 What if your bodily presence in front of a webcam drove the dense unfolding
-fractal "flower" that opens the DMT visual sequence — where stillness lets it
+fractal "flower" that opens the visionary visual sequence — where stillness lets it
 unfold slowly and movement makes it bloom and reorganize faster?
 
 ## The technique chain

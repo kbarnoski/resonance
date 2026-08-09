@@ -510,7 +510,7 @@ export default function TunnelPage() {
               Design notes
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              A drug-free evocation of the near-death / ketamine{" "}
+              A drug-free evocation of the near-death / dissociative{" "}
               <span className="text-foreground">tunnel toward the light</span>.
               You pilot it: this is a piloted instrument, not a self-playing
               simulation. A single WebGL2 fragment shader sphere-traces a camera

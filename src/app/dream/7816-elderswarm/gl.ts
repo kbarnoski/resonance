@@ -4,7 +4,7 @@
 //   • ~2000 agents drawn as instanced additive point-sprites (drawArraysInstanced)
 //     — one dynamic instance buffer of [x, y, att] per agent uploaded each frame.
 //   • A ping-pong FBO feedback trail: the previous frame is sampled + faded, the
-//     agents are drawn on top, buffers swap — the psychedelic smear.
+//     agents are drawn on top, buffers swap — the visionary smear.
 //   • A composite pass: tonemap + multi-tap bloom + a KALEIDOSCOPIC MANDALA FOLD
 //     around the focus whose strength tracks coherence, so the transient
 //     gaze-figure literally reads as an iris/mandala with a bright pupil.

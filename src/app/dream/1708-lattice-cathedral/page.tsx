@@ -2,7 +2,7 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1708-lattice-cathedral
-// "What if the NDE / ketamine void were built from REAL 3-D architecture — a
+// "What if the NDE / dissociative void were built from REAL 3-D architecture — a
 //  receding cathedral-lattice of luminous wireframe girders and arches you fly
 //  through — and each landmark structure SANG from its true 3-D position via
 //  HRTF spatial audio?"

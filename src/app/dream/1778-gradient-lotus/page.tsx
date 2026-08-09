@@ -15,7 +15,7 @@ import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 // ════════════════════════════════════════════════════════════════════════════
 // 1778 — Gradient Lotus
 //
-// THE ONE QUESTION: can a genuinely psychedelic, audio-reactive mandala be
+// THE ONE QUESTION: can a genuinely visionary, audio-reactive mandala be
 // rendered with NO canvas and NO WebGL at all — using only the browser's CSS
 // compositor (stacked animated conic/radial gradients, blend modes and masks)
 // driven by CSS custom properties written from a Web-Audio FFT each frame?
@@ -409,7 +409,7 @@ export default function Page() {
             </h2>
             <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
-                Almost every psychedelic piece in this lab is a GPU fragment
+                Almost every visionary piece in this lab is a GPU fragment
                 shader or a Canvas2D draw loop. This one proves a third render
                 substrate — the browser&apos;s CSS compositor itself. There is
                 no <span className="text-foreground">&lt;canvas&gt;</span> and no

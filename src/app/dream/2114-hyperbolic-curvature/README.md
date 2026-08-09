@@ -1,10 +1,10 @@
 # 2114 · Hyperbolic Curvature
 
-**STATE:** DMT-breakthrough / hyperbolic-curvature · **POLE:** intense
+**STATE:** visionary breakthrough / hyperbolic-curvature · **POLE:** intense
 
 ## The one question
 
-What if a DMT breakthrough weren't "more shapes" but a change in the
+What if a visionary breakthrough weren't "more shapes" but a change in the
 **curvature of space itself** — and you could turn that dial?
 
 The master control is a single scalar **κ**. At κ=0 the raymarched field is a
@@ -71,9 +71,9 @@ visual animation and frame-rate-independent smoothing.)
 
 ## References
 
-- Andrés Gómez Emilsson / QRI — _The Hyperbolic Geometry of DMT Experiences_:
-  https://qri.org/blog/hyperbolic-geometry-dmt
-- The DMTLand atlas: https://dmtland.com/
+- The hyperbolic geometry of visionary perception — {7,3} Poincaré-disk
+  tilings, negative curvature, and how bounded space folds to hold infinite
+  cells.
 
 ## Honest caveats (not yet verified)
 

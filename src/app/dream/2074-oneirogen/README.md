@@ -5,7 +5,7 @@ world to the dream — a single dial that morphs your visual + audio field from
 *reacting to what is actually there* into an *internally-generated hypnagogic
 replay* that no longer answers to any input?
 
-A cosmic-ambient psychedelic piece for the state of **hypnagogia / oneiric
+A cosmic-ambient visionary piece for the state of **hypnagogia / oneiric
 drift** — soft, drifting closed-eye phosphene fields at sleep onset, gentle and
 boundless, slightly uncanny as forms half-emerge and dissolve.
 
@@ -52,7 +52,7 @@ A single parameter **α** interpolates the whole audio-visual field:
 ## Named reference
 
 - **The oneirogen hypothesis** — eLife reviewed preprint **105968**, Version of
-  Record **2026-04-21** — models classical-psychedelic and dream imagery as a
+  Record **2026-04-21** — models visionary and dream imagery as a
   single parameter **α** interpolating between **α = 0 "wake"** (bottom-up,
   sensory-driven inference) and **α = 1 "sleep"** (top-down,
   internally-generated replay), via the **Wake–Sleep algorithm's** α

@@ -116,8 +116,8 @@ attention follower driving `timeScale = 1/(1+6A)`), but changes two things:
 
 ## References
 
-- PsyPost, 2026-03-20 — "Psilocybin alters time perception by disrupting working
-  memory and attention." Time dilation reads as over-processing / increased
+- The neuroscience of **time perception in altered states** — time dilation
+  reads as over-processing / increased
   sensory gain, **not** a changed internal pacemaker.
 - Marc Wittmann, *Felt Time* (MIT Press) — subjective duration expands with
   attention and arousal.

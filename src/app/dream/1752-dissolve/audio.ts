@@ -10,7 +10,7 @@
 // arc progressively DE-LOCALIZES — decorrelates between the ears, smears via
 // short randomized granular delays, splits into orbiting HRTF copies, and lets
 // the direct-to-reverb ratio collapse toward a pure diffuse field — until
-// "front / back / self / not-self" is no longer distinguishable (the k-hole
+// "front / back / self / not-self" is no longer distinguishable (the void
 // peak). Then it slowly RE-COHERES back to the single front point (the return).
 //
 //   INVERTS the usual spatial-audio goal: instead of PLACING sounds precisely

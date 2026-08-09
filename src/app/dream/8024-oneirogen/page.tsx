@@ -611,7 +611,7 @@ export default function Page() {
                 as alpha → 1.
               </p>
               <p>
-                References: the eLife 2026 computational psychedelic / oneirogen
+                References: the eLife 2026 computational altered-states / oneirogen
                 model (raising alpha shifts perception from bottom-up sensory
                 inference to top-down generative replay); Frontiers in Psychology
                 2026, <em>Beyond the reducing valve: computational

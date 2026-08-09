@@ -40,7 +40,7 @@ club energy-chamber, not a transcendent cosmic mandala.
   engine (supersaw/detuned-saw lead, sub, white-noise riser sweep, kick)
   with a sidechain-pump envelope, plus the GPU field.
 - **vibe** = EDM-kinetic / energy-chamber — energetic, physical, club energy.
-  Explicitly not psychedelic-transcendent, not clinical-microscope.
+  Explicitly not visionary-transcendent, not clinical-microscope.
 
 ## The engine (`engine.ts`)
 
@@ -114,7 +114,7 @@ particles, so the page never white-screens.
   live instead of a model computing it in advance.
 - Standard EDM arrangement structure (build / riser / drop / breakdown) as
   an alternate journey-arc shape for the lab, sitting alongside the fixed
-  psychedelic arc most pieces here use.
+  visionary arc most pieces here use.
 - Research context, cited honestly and not overclaimed as fresh: the 2026
   symbolic-music explicit tension-curve conditioning thread — *"Explicit
   Tonal Tension Conditioning via Dual-Level Beam Search"* (arXiv

@@ -60,8 +60,8 @@ These prove that generalized ants such as `LLRRRL`, `LLRLRLL` and `LLLR` admit
 *both* persistent highway order *and* persistent chaos, selected by the symbol
 string.
 
-That maps directly onto **2026 psychedelic neuroscience**: the Entropic Brain
-Hypothesis and a 2026 virtual clinical trial frame the psychedelic state as the
+That maps directly onto **2026 consciousness neuroscience**: the Entropic Brain
+Hypothesis frames the visionary state as the
 brain moving toward **criticality — the edge between order and chaos**. This
 instrument lets you slide a system across that exact edge by editing a symbol
 string, and both see and hear the crossing.
@@ -74,7 +74,7 @@ string, and both see and hear the crossing.
   American (1989).
 - arXiv 2505.05426 & 2506.10482 (2025) — generalized-ant regime theory.
 - Carhart-Harris et al., the **Entropic Brain Hypothesis**; 2026 criticality
-  framing of the psychedelic state.
+  framing of the visionary state.
 
 ## The input model
 

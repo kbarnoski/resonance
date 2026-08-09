@@ -27,9 +27,7 @@ modulates `D` slightly upward (a little felt agency) but never resets the clock.
 
 ## The shared arc engine (the research payload)
 
-Named mechanism: **Bera, Looger, Proekt & Cichon, "Cortical Mechanisms
-Contributing to Ketamine-Induced Dissociation," _The Neuroscientist_ (2026),
-doi:10.1177/10738584251403946** — dissociation = thalamocortical
+Named mechanism: the cortical model of **dissociation** = thalamocortical
 **disconnection** + sensory-gating breakdown + subjective **time dilation**.
 Translated to code (`arc.ts`):
 
@@ -90,9 +88,6 @@ clock's.
 
 ## References
 
-- Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing to
-  Ketamine-Induced Dissociation," _The Neuroscientist_ (2026),
-  doi:10.1177/10738584251403946.
 - Lenggenhager, Tadi, Metzinger & Blanke, "Video ergo sum: manipulating bodily
   self-consciousness," _Science_ (2007).
 - Blanke & Metzinger, "Full-body illusions and minimal phenomenal selfhood,"

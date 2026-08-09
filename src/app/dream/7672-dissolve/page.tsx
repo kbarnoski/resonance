@@ -287,7 +287,7 @@ export default function DissolvePage() {
                 once sharp, once pulled from a smaller log-radius so the edge blooms
                 outward through the inverse log-polar exp() warp — and mixed with a
                 tunnel + honeycomb form-constant field. Ping-pong FBO feedback
-                drifts the previous frame outward down the tunnel for LSD-style
+                drifts the previous frame outward down the tunnel for visionary
                 trails.
               </p>
               <p>

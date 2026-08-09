@@ -1,7 +1,7 @@
 # 4200-flatlands
 
 **The ONE question:** *What if — taking no drug — the music and slow geometry
-could walk you through the derealization of the dissociative / K-hole descent:
+could walk you through the derealization of the dissociative / the void descent:
 the solid world loses its depth and dissolves into a receding stack of flat,
 cardboard-cutout planes drifting apart into a white void, then reassembles as
 you return?*

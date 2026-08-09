@@ -5,7 +5,7 @@
 > What if you played your voice through a resonant constant-Q filterbank — a
 > geometrically-spaced bank of ringing bandpass filters, one per semitone — and
 > watched the energy climb a glowing **pitch helix** where every octave is one
-> turn of a spiral and every partial lands as a bead of light in a psychedelic
+> turn of a spiral and every partial lands as a bead of light in a visionary
 > vortex you can hear ring?
 
 ## Why it is new here

@@ -26,7 +26,7 @@ the bars you want, in the rhythm you want?
   dense, unpitched wash (a decision you can get wrong).
 
 This is a **kinetic / mechanical** piece — clockwork and marble-machine, not
-cosmic or psychedelic.
+cosmic or visionary.
 
 ## The technique — GPU compute physics
 

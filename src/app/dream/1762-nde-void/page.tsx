@@ -14,7 +14,7 @@ import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1762-nde-void
-//   state: ketamine k-hole / near-death "in-between" · pole: dissociative
+//   state: dissociative void / near-death "in-between" · pole: dissociative
 //
 // Tilt your phone to gaze around a vast, cold, sparse architectural VOID while
 // your body drifts forward on rails. Each distant luminous structure is HRTF-
@@ -301,7 +301,7 @@ export default function Page() {
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6">
         <header className="max-w-xl space-y-2">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            ketamine k-hole · near-death in-between · dissociative
+            dissociative void · near-death in-between · dissociative
           </p>
           <h1 className="text-2xl font-semibold tracking-tight">NDE Void</h1>
           <p className="text-base text-muted-foreground">
@@ -385,7 +385,7 @@ export default function Page() {
             </h2>
             <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
-                A dissociative (ketamine k-hole / near-death &quot;in-between&quot;)
+                A dissociative (dissociative void / near-death &quot;in-between&quot;)
                 piece. Your body drifts forward on rails through a cold,
                 architectural void while your <em>gaze</em> roams independently —
                 the split between a falling body and a free-floating attention is
@@ -412,8 +412,7 @@ export default function Page() {
               </p>
               <p>
                 References: Pim van Lommel&apos;s NDE tunnel / &quot;in-between&quot;
-                phenomenology; the ketamine k-hole / ego-dissolution literature
-                (e.g. Frontiers, &quot;ketamine ego dissolution&quot;);
+                phenomenology;
                 Kl&uuml;ver&apos;s tunnel/cone form-constant (1926); Web Audio
                 HRTF/KEMAR binaural rendering and the 2025–26 spatial-audio surge
                 (e.g. the ASAudio survey, arXiv:2508.10924, and HRTFformer,
@@ -426,7 +425,7 @@ export default function Page() {
                 <em>steerable spatial dissociative void</em>, not a new technique.
                 The binaural payoff needs headphones; on laptop speakers it
                 collapses toward stereo (still audibly directional). This evokes a
-                phenomenology; it is not a medical claim about NDEs or ketamine.
+                phenomenology; it is not a medical claim about NDEs or dissociative states.
               </p>
               <p>
                 Safety: luminance changes are slow drifts (well under 0.3 Hz),

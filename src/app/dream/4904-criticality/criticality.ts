@@ -8,10 +8,9 @@
 // the fullscreen shader and the additive drone both read to render the crossing.
 //
 // This renders the MECHANISM described in:
-//   • Timmerman, Aqil et al., "DMT-induced shifts in criticality correlate with
-//     ego-dissolution" (bioRxiv 2025.02.08.636868). DMT collapses posterior
-//     alpha and pushes cortex past its slightly-subcritical operating point into
-//     a more entropic/near-critical regime; the size of that shift tracks rated
+//   • The neuroimaging of visionary states: a collapse of posterior alpha
+//     pushes cortex past its slightly-subcritical operating point into a more
+//     entropic/near-critical regime; the size of that shift tracks rated
 //     ego-dissolution.
 //   • Carhart-Harris et al., The Entropic Brain (2014); Carhart-Harris &
 //     Friston, REBUS (2019).

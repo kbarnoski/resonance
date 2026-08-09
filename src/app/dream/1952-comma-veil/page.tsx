@@ -302,7 +302,7 @@ export default function Page() {
             Comma Veil
           </h1>
           <p className="mt-1 text-base text-muted-foreground">
-            A DMT form-constant mandala rendered in the CSS compositor alone —
+            A visionary form-constant mandala rendered in the CSS compositor alone —
             play just-intonation harmony and the consonance you hold warps the
             impossible geometry.
           </p>

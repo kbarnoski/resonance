@@ -47,7 +47,7 @@ main pendulum sounds, you hear the song the twin _would not_ have played).
 Raw **WebGL2** (no three.js). A **ping-pong feedback texture** accumulates the
 tip's path with **additive blending** and a slow per-frame fade, so the chaotic
 orbit paints a glowing, Lissajous-like long-exposure figure — a physics-demo /
-Ikeda-plot vibe rather than a psychedelic shader field. The live rods and bobs
+Ikeda-plot vibe rather than a visionary shader field. The live rods and bobs
 are drawn on top each frame; the main tip bob gets the one hot accent, the trail
 and twin use the violet ramp. Luminance changes are slow and smooth (no
 strobing), and `prefers-reduced-motion` shortens the trail and lowers its

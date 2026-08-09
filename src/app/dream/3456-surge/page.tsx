@@ -460,7 +460,7 @@ export default function SurgePage() {
               <p>
                 Surge asks what a Resonance journey engine would feel like if
                 it followed an EDM build-and-drop arc instead of the
-                psychedelic six-phase one. The form is{" "}
+                visionary six-phase one. The form is{" "}
                 <span className="text-foreground">
                   intro → build → peak → drop → groove → breakdown
                 </span>

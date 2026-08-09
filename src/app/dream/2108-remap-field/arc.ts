@@ -11,8 +11,7 @@
 // integer that increments each cycle) — so you re-crystallise into a DIFFERENT
 // map. You come back re-organised, not restored.
 //
-// Grounding: Siegel, Nichols, Dosenbach et al., "Psilocybin desynchronizes the
-// human brain", Nature 2024 — ego-dissolution as desynchronisation that
+// Grounding: the neuroscience of ego-dissolution as desynchronisation that
 // dissolves the distinctions between networks, with re-organisation that
 // persists. See README.md.
 //

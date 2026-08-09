@@ -1,9 +1,9 @@
 # 1542 — Flow Tracer
 
 **The one question:** What if your own body's **motion**, seen through the
-webcam, smeared the air into blooming **LSD-style colour tracers** you can hear?
+webcam, smeared the air into blooming **visionary colour tracers** you can hear?
 
-`state: LSD · pole: ecstatic / embodied / kinetic`
+`state: visionary · pole: ecstatic / embodied / kinetic`
 
 ## What it is
 
@@ -43,7 +43,7 @@ appears, but the piece keeps blooming and sounding — never blank, never silent
 
 ## Named references
 
-- **LSD positive-afterimage "tracers"** — the phenomenology of moving objects
+- **Visionary positive-afterimage "tracers"** — the phenomenology of moving objects
   leaving lagging colour trails; the ping-pong feedback is a literal model of it.
 - **Heinrich Klüver's four form constants** (spirals, lattices/gratings, tunnels,
   cobwebs) — the curl in the advection field lets these hints surface in the smear.

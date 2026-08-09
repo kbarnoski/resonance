@@ -6,7 +6,7 @@
 > one act's world into the next?*
 
 Reverie is an **alternate** journey engine. Resonance's default is a
-psychedelic six-phase arc; the sibling `3456-surge` is an EDM build-and-drop.
+visionary six-phase arc; the sibling `3456-surge` is an EDM build-and-drop.
 This one is the canonical **three-act score/trailer form** — *Setup →
 Confrontation → Resolution* — and the deliberate centerpiece is the **bridge
 between acts**, never a hard cut.

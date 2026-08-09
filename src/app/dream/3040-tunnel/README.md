@@ -5,7 +5,7 @@ near-death "tunnel toward the light" — where holding toward the light blooms i
 letting go drifts you back into the void, and going still dilates time itself so
 image *and* sound slow together?
 
-A drug-free evocation of the near-death-experience / ketamine tunnel
+A drug-free evocation of the near-death-experience / dissociative tunnel
 phenomenology. You take nothing — screen and sound do the work. It is a piloted
 instrument, not a self-playing simulation: you fly it moment to moment.
 

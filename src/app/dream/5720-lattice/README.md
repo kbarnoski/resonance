@@ -5,7 +5,7 @@ moves through — a rotating 3D crystal where every note lights a point in a
 helical pitch-space, chords snap into solid geometric shapes, and your melody's
 voice-leading traces a glowing path through tonal space?
 
-Analytical, not psychedelic: the piece is a real-time tonal microscope built on
+Analytical, not visionary: the piece is a real-time tonal microscope built on
 Elaine Chew's **Spiral Array**.
 
 ## The Spiral Array geometry

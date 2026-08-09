@@ -417,7 +417,7 @@ export default function PulsegatePage() {
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
                 One question: what if you could <em>play</em> the drop? Most
-                journey pieces in this lab set a fixed psychedelic arc.
+                journey pieces in this lab set a fixed visionary arc.
                 Pulsegate swaps that for a performable EDM arrangement —
                 intro, build, riser, DROP, breakdown, back — driven live by
                 Web MIDI note velocity (tension) and the mod wheel (the

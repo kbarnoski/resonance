@@ -1,6 +1,6 @@
 # 1568 · Worklet Mandala
 
-**The one question:** What if a psychedelic mandala breathed, spun, and bloomed
+**The one question:** What if a visionary mandala breathed, spun, and bloomed
 entirely as living HTML elements moved by the browser's **compositor** — not one
 pixel drawn to a canvas or a GPU shader you wrote — and your singing voice drove
 it?

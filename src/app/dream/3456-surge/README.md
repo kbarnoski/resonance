@@ -2,7 +2,7 @@
 
 ## The one question it answers
 
-What if Resonance had a journey engine that isn't the psychedelic 6-phase
+What if Resonance had a journey engine that isn't the visionary 6-phase
 arc — but an **EDM build-and-drop arc**, where the human **rides and
 releases** tension instead of playing an instrument they can fail?
 

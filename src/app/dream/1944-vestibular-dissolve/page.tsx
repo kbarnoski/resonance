@@ -183,7 +183,7 @@ export default function VestibularDissolvePage() {
           Tilt your device until &ldquo;down&rdquo; melts and the cosmos comes apart
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          A weightless, boundless drift toward the ketamine / near-death loss of the body. As
+          A weightless, boundless drift toward the dissociative / near-death loss of the body. As
           you tilt, the felt gravity vector dissolves — the horizon of a raymarched nebula
           reorients and thins to a boundless fog, and a low anchoring drone thins as a
           weightless shimmer blooms and spreads across the stereo field.

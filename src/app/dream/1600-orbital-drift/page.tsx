@@ -33,7 +33,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 // failure — so the map animates and the drone sounds before and without any
 // fetch. Tap the map to drop a ground station that chimes as the ISS flies near.
 //
-// Deliberately NOT psychedelic: cool cartographic navy + cyan/teal with a warm
+// Deliberately NOT visionary: cool cartographic navy + cyan/teal with a warm
 // amber ISS marker. Instrument-panel legible, contemplative-scientific.
 //
 // Determinism: seeded mulberry32 + performance.now only — no wall-clock entropy.

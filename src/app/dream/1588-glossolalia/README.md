@@ -1,7 +1,7 @@
 # 1588 — glossolalia
 
 **The question:** What if the whole field of vision flooded with language — the
-DMT "everything is syntax" overload — and moving apertures of light resolved
+visionary "everything is syntax" overload — and moving apertures of light resolved
 fragments of it into legible meaning, which you steer and sound?
 
 The viewport fills edge to edge with real generated pseudo-language, painted so
@@ -112,7 +112,7 @@ next-cycle plan:
 - **C×G×D framework** — *Frontiers in Psychology*, 2026, doi
   10.3389/fpsyg.2026.1819038 (computational neurophenomenology of hallucination:
   Classifier × Generator × Dynamics).
-- **Henri Michaux** — asemic writing; mescaline drawings (*Miserable Miracle*).
+- **Henri Michaux** — asemic writing; visionary-state ink drawings (*Miserable Miracle*).
 - **Terence McKenna** — "syntactic light," self-transforming machine elves, and
   glossolalia as visible language.
 - **Heinrich Klüver** — form constants; the perceptual geometry of overload that

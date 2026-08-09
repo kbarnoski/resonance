@@ -113,7 +113,7 @@ runs.
 ## Named references
 
 1. **The oneirogen hypothesis** — eLife reviewed preprint **105968**, Version of
-   Record **2026-04-21**. Models classical-psychedelic and dream imagery as a
+   Record **2026-04-21**. Models visionary and dream imagery as a
    single parameter **α** interpolating wake (bottom-up) ↔ sleep (top-down) via
    the **Wake–Sleep algorithm**. Cycle-1's anchor; the α engine here is its
    re-implementation.

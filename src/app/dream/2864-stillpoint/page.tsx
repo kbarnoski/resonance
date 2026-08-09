@@ -19,7 +19,7 @@ const MOTION_EMA = 0.35; // smoothing on the raw motion signal
 
 const DESIGN_NOTES = `2864 · STILLPOINT
 
-The one question: what if a psychedelic hallucination opened not by dragging a
+The one question: what if a visionary hallucination opened not by dragging a
 slider, but by holding your body still — the way meditation, not a knob,
 dissolves the boundary of perception?
 

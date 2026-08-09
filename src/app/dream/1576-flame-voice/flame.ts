@@ -354,7 +354,7 @@ export class Flame {
   }
 }
 
-// violet -> magenta -> cyan psychedelic LUT (256 * 3 bytes).
+// violet -> magenta -> cyan visionary LUT (256 * 3 bytes).
 function buildPalette(): Uint8Array {
   const stops: Array<[number, [number, number, number]]> = [
     [0.0, [40, 8, 74]], // deep violet

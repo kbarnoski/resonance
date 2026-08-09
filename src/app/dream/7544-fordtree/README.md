@@ -53,7 +53,7 @@ To be plain: this piece is **not** the lab's rested *dissonance-curve / Sethares
 - **input**: keyboard / pointer — steered descent (← → branch, ↑ ascend, space pause, click to dive)
 - **output**: inline SVG (non-GPU) tangent-circle packing
 - **technique**: Stern–Brocot mediant tree / Ford circles / Farey — just-intonation harmony navigation
-- **pole**: cosmic-ambient / infinite harmonic descent (psychedelic)
+- **pole**: cosmic-ambient / infinite harmonic descent (visionary)
 
 ## Named references
 

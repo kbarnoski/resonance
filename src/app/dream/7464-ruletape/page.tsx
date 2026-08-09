@@ -15,7 +15,7 @@
 // References (see README): Langton (1986); Dewdney "Turmites" (Sci. Am. 1989);
 // arXiv 2505.05426 "Sideways on the highways" (2025); arXiv 2506.10482 "The LLLR
 // generalised Langton's ant" (2025); Entropic Brain Hypothesis / 2026 criticality
-// framing of the psychedelic state as the edge between order and chaos.
+// framing of the visionary state as the edge between order and chaos.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -531,8 +531,8 @@ export default function RuletapePage() {
                 inevitable&rdquo; conjecture fails for them.
               </p>
               <p>
-                The framing: the Entropic Brain Hypothesis and a 2026 virtual
-                clinical trial cast the psychedelic state as the brain moving toward{" "}
+                The framing: the Entropic Brain Hypothesis casts the visionary
+                state as the brain moving toward{" "}
                 <span className="text-primary">criticality</span> — the edge between
                 order and chaos. Here you slide a system across that exact edge by
                 editing a symbol string, and hear it: a chaotic tape is brighter,

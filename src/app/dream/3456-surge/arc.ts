@@ -1,6 +1,6 @@
 /* ── 3456-surge · arc state machine ──────────────────────────────────────
  *
- *  An EDM build-and-drop journey engine. Instead of the psychedelic 6-phase
+ *  An EDM build-and-drop journey engine. Instead of the visionary 6-phase
  *  arc, this is the canonical dance-music song form:
  *
  *      intro → build → peak → DROP → groove → breakdown → (loop into build)

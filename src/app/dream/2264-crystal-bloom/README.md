@@ -51,12 +51,12 @@ blending, so density literally sums into brightness. Colour runs **violet → go
 ## The named reference
 
 Gallimore & Hoffman, **"The Mathematical Architecture of Altered Consciousness"**
-(*Neuroscience News*, 2026-06-03): DMT *perturbs the perceptual interface,
+(*Neuroscience News*, 2026-06-03): the visionary state *perturbs the perceptual interface,
 expanding the accessible region of experience space* — crossing a threshold lets
 normally-imperceptible **structured** form proliferate into perceptibility
 (coherent structure, not noise). Crystal Bloom renders that literally: play
 deeper and more coherent crystalline structure condenses and arrives. It also
-draws on the DMT-realm phenomenology where "geometry proliferates, then
+draws on the visionary-realm phenomenology where "geometry proliferates, then
 structure."
 
 ## Constraints honoured

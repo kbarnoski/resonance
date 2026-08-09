@@ -1,13 +1,13 @@
-/* ── 6968-kholapse · GLSL for the folding wireframe k-hole tunnel ──────────
+/* ── 6968-void-collapse · GLSL for the folding wireframe void-collapse tunnel ──────────
  *
- *  "Your own music dissolved into a ketamine k-hole." A single dissociation
+ *  "Your own music dissolved into the void." A single dissociation
  *  scalar d ∈ [0,1] drives an analytic polar tunnel receding toward an
  *  infinite center. A gridded violet WIREFRAME kaleido-folds and shears its
  *  shards into fractured receding planes as d rises.
  *
- *  Mapped onto Bera et al. 2026 (cortical mechanisms of ketamine
- *  dissociation): the cortex SUPPRESSES feedforward stimulus-specific detail
- *  while feedback context/salience persists, and at depth GENERATES internal
+ *  Mapped onto the neuroscience of dissociative perception: the cortex
+ *  SUPPRESSES feedforward stimulus-specific detail while feedback
+ *  context/salience persists, and at depth GENERATES internal
  *  patterns "without input."
  *    · feedforward (suppressed as d→1): wireline sharpness, spectral detail,
  *      the treble-tear that carries pitch identity — all thin and blur.

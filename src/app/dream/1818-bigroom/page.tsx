@@ -276,7 +276,7 @@ export default function Page() {
             </h2>
             <div className="mt-3 space-y-3 text-base text-muted-foreground">
               <p>
-                An alternate to Resonance&apos;s slow psychedelic journey: a
+                An alternate to Resonance&apos;s slow visionary journey: a
                 festival main-stage <span className="text-foreground">build-and-drop engine</span>.
                 It runs a full multi-minute arrangement through a sample-accurate
                 look-ahead sequencer at 126 BPM.

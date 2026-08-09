@@ -1,8 +1,8 @@
 # 1762-nde-void
 
-**One question:** *What if you could tilt your phone to gaze around a vast, cold, sparse architectural VOID — the ketamine k-hole / near-death "in-between" — where each distant luminous structure is HRTF-spatialised so it sings from its true 3-D position, sweeping front → across-your-head → behind as you drift past it?*
+**One question:** *What if you could tilt your phone to gaze around a vast, cold, sparse architectural VOID — the dissociative void / near-death "in-between" — where each distant luminous structure is HRTF-spatialised so it sings from its true 3-D position, sweeping front → across-your-head → behind as you drift past it?*
 
-- **State:** ketamine k-hole / near-death "in-between" (dissociative)
+- **State:** dissociative void / near-death "in-between" (dissociative)
 - **Pole:** dissociative (the cosmic-ambient family's colder, more architectural cousin)
 - **Input:** device tilt / gyro (`deviceorientation`, permission requested inside the Begin gesture on iOS) → gaze, with a desktop `pointermove` fallback and an always-on autonomous drift/orbit ghost
 - **Output:** three.js full-viewport `ShaderMaterial`, a raymarched sparse-SDF scene
@@ -31,7 +31,6 @@ There is no second copy of the scene, so sight and sound cannot drift apart. Pas
 ## Named references
 
 - **Pim van Lommel** — NDE tunnel / "in-between" phenomenology (*Consciousness Beyond Life*).
-- **Ketamine k-hole / ego-dissolution literature** — e.g. Frontiers, "ketamine ego dissolution"; the dissociative-anaesthetic altered-state work.
 - **Heinrich Klüver (1926)** — the tunnel/cone form-constant of visual hallucination.
 - **Web Audio HRTF / KEMAR binaural rendering** and the **2025–26 spatial-audio surge** — e.g. the ASAudio survey (arXiv:2508.10924) and HRTFformer (arXiv:2510.01891).
 - **Inigo Quilez / Shadertoy** — volumetric-SDF sphere-tracing technique.
@@ -40,7 +39,7 @@ There is no second copy of the scene, so sight and sound cannot drift apart. Pas
 
 - **Not a new technique.** Raymarching and HRTF both already appear in the lab. The novelty is the *combination* — a **steerable spatial dissociative void** where one geometry table welds a marched scene to its binaural rendering.
 - **Headphones.** The binaural payoff needs headphones; on laptop speakers HRTF collapses toward stereo (still audibly directional — the UI and this doc say so).
-- **Not a medical claim.** This *evokes* a phenomenology reported around NDE and ketamine states. It says nothing scientific about what those states are.
+- **Not a medical claim.** This *evokes* a phenomenology reported around NDE and dissociative states. It says nothing scientific about what those states are.
 
 ## Safety
 

@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // 1568-worklet-mandala — "the mandala the compositor breathes"
 //
-// ONE QUESTION: What if a psychedelic Klüver-form-constant mandala breathed,
+// ONE QUESTION: What if a visionary Klüver-form-constant mandala breathed,
 // spun and bloomed entirely as living DOM elements moved by the browser's
 // COMPOSITOR — CSS Houdini AnimationWorklet, no canvas, no shader — and your
 // singing voice drove it?

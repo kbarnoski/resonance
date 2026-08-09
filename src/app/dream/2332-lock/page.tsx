@@ -426,7 +426,7 @@ export default function LockPage() {
               </p>
               <p>
                 References: Aparicio-Terrés et al. (2025), on drumming/rhythm
-                entrainment paralleling psychedelic thalamo-cortical mechanisms;
+                entrainment paralleling visionary thalamo-cortical mechanisms;
                 the 2025 study (PMC12014595) finding auditory-entrainment strength
                 near ~2 Hz correlates with altered-state proxies — the reason the
                 pulse sweeps 1.65/2.25/2.85 Hz; and Lachaux, Rodriguez,

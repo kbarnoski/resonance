@@ -14,12 +14,12 @@ import {
 /**
  * 2114 · Hyperbolic Curvature — a playable curvature dial.
  *
- * ONE question: what if a DMT breakthrough weren't "more shapes" but a change
+ * ONE question: what if a visionary breakthrough weren't "more shapes" but a change
  * in the CURVATURE of space itself — and you could turn that dial? κ warps a
  * WebGL2 raymarched field from a calm Euclidean tiling (κ=0) toward a folding,
  * proliferating hyperbolic ({7,3}-style Poincaré) jewel-lattice (κ→1). Each key
  * both nudges the curvature/rotation AND strikes an FM voice on a just
- * pentatonic scale. state: DMT-breakthrough / hyperbolic-curvature · pole: intense.
+ * pentatonic scale. state: visionary breakthrough / hyperbolic-curvature · pole: intense.
  */
 
 // Home row → 10 stacked just-pentatonic degrees. Keyboard is the play gesture.
@@ -363,7 +363,7 @@ export default function HyperbolicCurvaturePage() {
         {/* header */}
         <header className="pointer-events-auto max-w-xl">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Dream 2114 · DMT-breakthrough
+            Dream 2114 · visionary breakthrough
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Hyperbolic Curvature
@@ -486,7 +486,7 @@ export default function HyperbolicCurvaturePage() {
             </h2>
             <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
               <p>
-                The question: what if a DMT breakthrough weren&apos;t &ldquo;more
+                The question: what if a visionary breakthrough weren&apos;t &ldquo;more
                 shapes&rdquo; but a change in the curvature of space itself — and
                 you could turn that dial?
               </p>
@@ -505,9 +505,9 @@ export default function HyperbolicCurvaturePage() {
                 (harmonic ratio) struck across a just major-pentatonic scale.
               </p>
               <p>
-                Reference: Andrés Gómez Emilsson / QRI,{" "}
-                <em>The Hyperbolic Geometry of DMT Experiences</em>, and the
-                DMTLand atlas.
+                Lineage: the hyperbolic geometry of visionary perception —{" "}
+                <em>{"{7,3}"} Poincaré-disk tilings and negative curvature</em>,
+                where bounded space folds to hold infinite cells.
               </p>
               <p className="text-muted-foreground/80">
                 Safety: luminance change is a gentle ≤3 Hz drift — no strobe.

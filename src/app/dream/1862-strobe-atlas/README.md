@@ -62,36 +62,36 @@ Non-negotiable, and all luminance flicker is gated through
 `_shared/visionary/safeFlicker.ts`:
 
 - **Default is slow luminance drift, not flicker** — beautiful and safe with
-  zero flicker on load (`uFlicker` uniform is `1.0` until the user opts in).
+ zero flicker on load (`uFlicker` uniform is `1.0` until the user opts in).
 - **Photic pulse is opt-in only**, behind a visible warning ("May affect people
-  with photosensitive epilepsy"), capped at **≤ 3 flashes/sec** via the safe
-  engine, using a soft floor-limited sine (never a hard 0↔1 strobe), with an
-  instant **Stop pulse** kill control.
+ with photosensitive epilepsy"), capped at **≤ 3 flashes/sec** via the safe
+ engine, using a soft floor-limited sine (never a hard 0↔1 strobe), with an
+ instant **Stop pulse** kill control.
 - **`prefersReducedMotion()` is honored** — the pulse opt-in is hidden and the
-  engine forces a sub-perceptual drift.
+ engine forces a sub-perceptual drift.
 - No full-screen high-contrast strobe. When in doubt, it drifts.
 
 ## Named references (§807)
 
-- **Klüver, H. (1926/1966)** — *Mescal and Mechanisms of Hallucinations*; the
-  four form constants (lattice/cobweb/tunnel/spiral).
+- **Klüver, H. (1926/1966)** — the
+ four form constants (lattice/cobweb/tunnel/spiral).
 - **Bressloff, P. C. & Cowan, J. D. (2001–2002)** — the log-polar (complex-log)
-  retina→V1 cortical map that turns one periodic pattern into the four constants.
+ retina→V1 cortical map that turns one periodic pattern into the four constants.
 - *"A Large-Scale Computer-Vision Mapping of the Geometric Structures of
-  Stroboscopically-Induced Visual Hallucinations"* — **bioRxiv 2026.02.18.705710**;
-  10,598 participant drawings of flicker hallucinations, finding — beyond
-  Klüver's classic four — recurrent **concentric squares, crosses, and
-  hyperbolic planforms**. This piece is a direct argument-in-code with that
-  finding.
+ Stroboscopically-Induced Visual Hallucinations"* — **bioRxiv 2026.02.18.705710**;
+ 10,598 participant drawings of flicker hallucinations, finding — beyond
+ Klüver's classic four — recurrent **concentric squares, crosses, and
+ hyperbolic planforms**. This piece is a direct argument-in-code with that
+ finding.
 - **Brion Gysin, *Dreamachine* (1959)** / Ganzflicker — the stroboscopic
-  lineage that evokes the constants with no drug.
+ lineage that evokes the constants with no drug.
 
 ## Files
 
 - `page.tsx` — client component: WebGL2 setup, deterministic render loop, Atlas
-  readout, chrome, safety controls, notes modal.
+ readout, chrome, safety controls, notes modal.
 - `atlas.ts` — family metadata, `mulberry32`, the seeded playlist, `computeArc`,
-  and the vertex + fragment shaders (all 7 families in one shader).
+ and the vertex + fragment shaders (all 7 families in one shader).
 - `audio.ts` — `AtlasAudio`: drone bed + opt-in isochronic pulse.
 - `README.md` — this file.
 

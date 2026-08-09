@@ -10,23 +10,23 @@ figurative/semantic imagery vs. the feeling that it is *real-and-out-there* vs.
 ## The instrument: the C×G×D reducing-valve cube
 
 Aldous Huxley described perception as a **reducing valve** that filters "Mind at
-Large" down to a survival trickle, and psychedelics as the valve relaxing. The
+Large" down to a survival trickle, and the visionary state as the valve relaxing. The
 2026 Frontiers paper below reframes that single valve as **three independently
 manipulable computational functions** of a deep generative-perception network.
 This piece makes all three draggable at once, as three faders on one field:
 
 - **C — Classifier constraint.** Relax it and normally-hidden "effective causes"
-  surface as **geometric form constants** — Klüver's tunnels, spirals, spokes and
-  honeycomb — rendered here through the shared log-polar (retina→V1) warp. Low C =
-  tight perception; high C = pure geometry blooms. *Cool / teal channel.*
+ surface as **geometric form constants** — Klüver's tunnels, spirals, spokes and
+ honeycomb — rendered here through the shared log-polar (retina→V1) warp. Low C =
+ tight perception; high C = pure geometry blooms. *Cool / teal channel.*
 - **G — Generator prior.** Its strength governs **abstract → figurative**. Low G =
-  flat fine abstract grain; high G = the field gains bilateral symmetry, larger
-  coherent structures and dark nuclei, organising into almost-recognisable
-  figures / masks / scenes. *Warm / coral–magenta channel.*
+ flat fine abstract grain; high G = the field gains bilateral symmetry, larger
+ coherent structures and dark nuclei, organising into almost-recognisable
+ figures / masks / scenes. *Warm / coral–magenta channel.*
 - **D — Discriminator / reality-monitoring threshold.** Governs whether the same
-  imagery is felt as **real, out-there, bound** or **imagined, in-here, unreal.**
-  Low D = drifting, hazy, translucent, drowned in reverb; high D = crisp,
-  grounded, mono-centred, present.
+ imagery is felt as **real, out-there, bound** or **imagined, in-here, unreal.**
+ Low D = drifting, hazy, translucent, drowned in reverb; high D = crisp,
+ grounded, mono-centred, present.
 
 ## Why this is NOT a single knob
 
@@ -54,12 +54,12 @@ reverb and a Haas stereo spread (mono-centred-present ↔ smeared-wide-unreal).
 ## Interaction
 
 - **Three draggable vertical faders** (C, G, D) — the live readout *and* the
-  controls. Each has a `type="range"` fallback for touch / keyboard accessibility.
+ controls. Each has a `type="range"` fallback for touch / keyboard accessibility.
 - A **seeded, deterministic autopilot** (mulberry32) self-demos the cube on load,
-  gliding through distinct octants so a silent reviewer sees the whole idea with
-  zero interaction. Grabbing any fader takes the wheel; a toggle re-engages it.
+ gliding through distinct octants so a silent reviewer sees the whole idea with
+ zero interaction. Grabbing any fader takes the wheel; a toggle re-engages it.
 - **Start sound** — audio is silent until pressed (1 s fade-in, master ≤ 0.18
-  behind a `DynamicsCompressor`).
+ behind a `DynamicsCompressor`).
 
 ## Safety & degradation
 
@@ -72,19 +72,18 @@ closed after the reverb tail).
 ## Named references
 
 - **"Beyond the reducing valve: towards a computational neurophenomenology of
-  altered states via deep neural networks,"** *Frontiers in Psychology*, 20 May
-  2026. doi:10.3389/fpsyg.2026.1819038 — the C (classifier), G (generator),
-  D (discriminator) decomposition this instrument is built on.
+ altered states via deep neural networks,"** *Frontiers in Psychology*, 20 May
+ 2026. doi:10.3389/fpsyg.2026.1819038 — the C (classifier), G (generator),
+ D (discriminator) decomposition this instrument is built on.
 - **Aldous Huxley,** *The Doors of Perception* (1954) — the "reducing valve."
-- **Heinrich Klüver,** *Mescal and Mechanisms of Hallucinations* (form constants,
-  1926 / 1966) — the four geometric constants (lattice, cobweb, tunnel, spiral).
+- **Heinrich Klüver** (1926 / 1966) — the four geometric constants (lattice, cobweb, tunnel, spiral).
 
 ## Shared infrastructure used
 
 - `_shared/visionary/logpolar` — `LOGPOLAR_GLSL` (the log-polar / form-constant GLSL
-  engine) spliced into the fragment shader.
+ engine) spliced into the fragment shader.
 - `_shared/visionary/convolutionVoid` — `createVoidReverb` (the shared void tail that
-  D drowns the signal in).
+ D drowns the signal in).
 - `_shared/visionary/safeFlicker` — `prefersReducedMotion`.
 
 ## Files

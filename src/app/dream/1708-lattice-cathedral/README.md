@@ -1,11 +1,11 @@
 # 1708 · Lattice Cathedral
 
-**One question:** What if the NDE / ketamine "void" were built from *real 3-D
+**One question:** What if the NDE / dissociative "void" were built from *real 3-D
 architecture* — a receding cathedral-lattice of luminous wireframe girders and
 arches you fly through — and each structure *sang from its true 3-D position* via
 HRTF spatial audio?
 
-State: ketamine / NDE-void · Pole: cosmic-ambient (vast, sacred, boundless).
+State: dissociative / NDE-void · Pole: cosmic-ambient (vast, sacred, boundless).
 
 ## What it is
 
@@ -68,7 +68,7 @@ breathing LFO) routed → long `createVoidReverb` cavern tail → `DynamicsCompr
 ## Named references
 
 - van Lommel NDE tunnel phenomenology
-- ketamine k-hole / "the void"
+- dissociative "the void"
 - Klüver tunnel/spiral form-constant
 - gothic-nave / Sol-LeWitt-lattice architectural inspiration
 - Web Audio `PannerNode` HRTF (KEMAR)

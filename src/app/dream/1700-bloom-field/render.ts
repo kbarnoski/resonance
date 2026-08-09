@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // 1700-bloom-field / render.ts — raw WebGL2 chrysanthemum bloom engine.
 //
-//   state: DMT-threshold chrysanthemum · pole: INTENSE
+//   state: visionary-threshold chrysanthemum · pole: INTENSE
 //
 //   Technique chain (all on the GPU, no three.js):
 //     1. Gray-Scott reaction-diffusion in a ping-ponged half-float FBO pair

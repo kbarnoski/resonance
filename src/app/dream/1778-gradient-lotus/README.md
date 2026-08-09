@@ -1,18 +1,18 @@
 # 1778 — Gradient Lotus
 
-A warm, breathing, audio-reactive psilocybin/LSD mandala — rendered with **no
+A warm, breathing, audio-reactive visionary mandala — rendered with **no
 canvas and no WebGL at all**.
 
 ## The one question
 
-> Can a genuinely psychedelic, audio-reactive mandala be rendered using **only
+> Can a genuinely visionary, audio-reactive mandala be rendered using **only
 > the browser's CSS compositor** — layered animated conic/radial gradients,
 > blend modes and masks — driven by CSS custom properties written from a
 > Web-Audio FFT each frame?
 
 ## The thesis: the CSS compositor as a third render substrate
 
-Almost every psychedelic piece in this lab is a **GPU fragment shader** or a
+Almost every visionary piece in this lab is a **GPU fragment shader** or a
 **Canvas2D draw loop** — both are heavily over-represented, and one is
 jury-banned. This piece deliberately uses neither. There is no `<canvas>`, no
 WebGL/WebGPU, no three.js anywhere on the page. The entire visual is produced by

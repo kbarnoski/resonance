@@ -1,6 +1,6 @@
 # 1752 · Dissolve
 
-**state:** dissociative ego-dissolution (k-hole descent+return) · **pole:** cosmic-ambient / dissociative
+**state:** dissociative ego-dissolution (void descent+return) · **pole:** cosmic-ambient / dissociative
 
 ## The one question
 
@@ -19,7 +19,7 @@ single hairline that fills left→right as the descent deepens then empties on t
 3. **Close your eyes.** Do not look at the screen — that's the point.
 4. Over ~75 seconds a single point of tone directly in front of you comes loose, orbits,
    decorrelates between your ears and diffuses into an enveloping field until front, back,
-   self and not-self are no longer distinguishable (the k-hole peak). Over the next ~75
+   self and not-self are no longer distinguishable (the void peak). Over the next ~75
    seconds it slowly re-coheres back to the single front point (the return).
 5. Press **Descend again** to restart the arc.
 6. Optional: on a phone that exposes device orientation, physically turning your head steers
@@ -43,7 +43,7 @@ Everything is driven from a single normalized `depth` 0→1→0 envelope over 15
   wet/dry knob is the literal direct-to-reverb ratio, collapsing toward a pure diffuse field
   at the peak.
 - **Inharmonic carrier bed** — slightly-stretched pad partials plus near-unison voices whose
-  detune fans WIDE at the peak, so the k-hole is a beating, unplaced smear — **never** a
+  detune fans WIDE at the peak, so the void is a beating, unplaced smear — **never** a
   pretty just-intonation drone.
 
 Master chain: `[pad + orbiting voices + decorrelated smear] → ConvolverNode reverb →
@@ -55,7 +55,7 @@ fully torn down (oscillators stopped, listeners removed, context closed) on End 
 
 Browser spatial-audio maturity 2026 — Google **Resonance Audio** / **Omnitone** ambisonic
 decoding + binaural HRTF rendering; *"Web Audio API: Immersive Soundscapes for WebXR 2026."*
-Phenomenology: ketamine / NDE **ego-dissolution and unity** — the loss of the self / other
+Phenomenology: dissociative / NDE **ego-dissolution and unity** — the loss of the self / other
 boundary. The build **inverts** the usual "place sounds precisely in space" goal — it
 **un-places** them until the listener's spatial self dissolves.
 

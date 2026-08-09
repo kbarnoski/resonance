@@ -1,11 +1,11 @@
 # 1638 — Reel
 
 **What if Resonance's journey engine told a cinematic STORY instead of a
-psychedelic arc?** A self-playing, wordless, ~5.7-minute short film whose music
+visionary arc?** A self-playing, wordless, ~5.7-minute short film whose music
 and image both obey a classic dramatic beat sheet. This is an **alternate
 journey-engine arc** — built against the design director's directive #4 ("EDM
 build-and-drop, ritual, jazz responsive, **cinematic narrative** as alternate
-arcs" to Resonance's fixed 6-phase psychedelic engine).
+arcs" to Resonance's fixed 6-phase visionary engine).
 
 Press **Play the reel** and it rolls start-to-finish on its own. A WebGL
 atmosphere (drifting horizon, volumetric fog, particulate light, slow filmic

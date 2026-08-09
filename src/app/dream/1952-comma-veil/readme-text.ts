@@ -1,5 +1,5 @@
 /** Design notes shown behind the "Read the design notes" affordance. */
-export const README = `Comma Veil asks one question: what if a DMT-breakthrough form-constant mandala — the geometric hallucination of a psychedelic peak — were rendered with ZERO canvas, purely in the CSS compositor, and PLAYED like an instrument, so that the harmony you play warps the impossible geometry in real time?
+export const README = `Comma Veil asks one question: what if a visionary-breakthrough form-constant mandala — the geometric hallucination of a visionary peak — were rendered with ZERO canvas, purely in the CSS compositor, and PLAYED like an instrument, so that the harmony you play warps the impossible geometry in real time?
 
 The render substrate is the browser's CSS compositor and nothing else. There is no canvas, no WebGL, no SVG. The mandala is a stack of animated <div>s built from repeating-conic-gradient, repeating-radial-gradient and radial-gradient, fused with mix-blend-mode (screen / overlay / soft-light), feathered with mask-image, and kaleidoscope-mirrored with CSS transforms. Every layer is driven by CSS custom properties — --hue, --warp, --axes, --spin, --tension, --scale, --bloom — that JS rewrites each frame. What you see is the compositor resolving harmony into geometry.
 
@@ -9,6 +9,6 @@ Play it three ways. A MIDI keyboard (Web MIDI API) is the primary instrument. Wi
 
 Safety first: this is flicker-adjacent, so it never strobes. Motion is slow luminance and hue drift plus continuous sub-0.15 Hz transforms — no alpha flashing above ~3 Hz. prefers-reduced-motion freezes the spin and warp and holds a still mandala. Audio is hand-rolled Web Audio (triangle+sine voices through a lowpass, a JI drone bed, a tanh soft-clip limiter) with master gain hard-capped at 0.17.
 
-References: Heinrich Klüver's form constants (the honeycomb / lattice / spiral / tunnel taxonomy of psychedelic geometry); QRI / Andrés Gómez Emilsson, "The Hyperbolic Geometry of DMT Experiences" (curvature as the felt substrate of intensity); the Plomp–Levelt / Sethares sensory-dissonance curve; and the lineage that treats the CSS compositor itself as a render substrate for generative art.
+References: Heinrich Klüver's form constants (the honeycomb / lattice / spiral / tunnel taxonomy of visionary geometry); the hyperbolic geometry of visionary experience (curvature as the felt substrate of intensity); the Plomp–Levelt / Sethares sensory-dissonance curve; and the lineage that treats the CSS compositor itself as a render substrate for generative art.
 
 Honest caveats: CSS gradients are not a real hyperbolic manifold — the "impossible axes" are an evocation via layered mirror symmetry, not true negative curvature. The roughness model is a coarse approximation, and heavy multi-layer blending can tax low-end GPUs, so the layer count stays modest.`;

@@ -12,8 +12,8 @@
 //        are read back to the CPU and re-voice the audio: SEE ≈ HEAR.
 //     3. RENDER  — a full-screen triangle whose fragment stage samples the field
 //        through a log-polar / cortical warp (Bressloff–Cowan V1 map) so the flat
-//        petri pattern reads as psychedelic form-constants: tunnels, spirals,
-//        honeycomb. Warm psilocybin palette (amber → magenta → violet).
+//        petri pattern reads as visionary form-constants: tunnels, spirals,
+//        honeycomb. Warm visionary palette (amber → magenta → violet).
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Compute: one Gray–Scott step. binding0 = params (uniform),
@@ -195,7 +195,7 @@ fn fs(in: VOut) -> @location(0) vec4<f32> {
   let ix2 = clamp(ix + 1, 0, w - 1);
   let edge = abs(v - field[iy * w + ix2].y) * 8.0;
 
-  // Warm psilocybin palette: deep base → amber → magenta → violet.
+  // Warm visionary palette: deep base → amber → magenta → violet.
   let base = vec3<f32>(0.05, 0.025, 0.06);
   let amber = vec3<f32>(0.96, 0.55, 0.16);
   let magenta = vec3<f32>(0.86, 0.13, 0.52);

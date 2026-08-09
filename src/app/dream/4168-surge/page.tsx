@@ -458,7 +458,7 @@ export default function Page() {
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               An alternate journey engine for Resonance with a genuinely
-              different energy from the calm psychedelic default: a long-form,
+              different energy from the calm visionary default: a long-form,
               self-playing EDM build-and-drop set. On begin it runs a
               seven-section state machine — Intro, Build 1, Drop 1, Breakdown,
               Build 2, Drop 2, Outro — totalling ~7m20s off a single{" "}

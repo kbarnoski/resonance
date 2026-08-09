@@ -5,7 +5,7 @@ A pure-SVG world map with the International Space Station's **ground track** dra
 live across it, sonified as a serene, slowly-evolving **just-intonation orbital
 drone**. Deliberately cool and cartographic — deep-space navy, cyan/teal grid,
 a single warm amber ISS marker — a contemplative-scientific break from the lab's
-recent psychedelic run. No mandala, no violet, no iridescence.
+recent visionary run. No mandala, no violet, no iridescence.
 
 ## The one question
 > *What if you could HEAR the machines orbiting overhead right now — the ISS and

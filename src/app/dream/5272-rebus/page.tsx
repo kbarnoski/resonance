@@ -203,7 +203,7 @@ export default function RebusPage() {
       {/* corner UI */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          REBUS · relaxed beliefs under psychedelics
+          REBUS · relaxed beliefs, unbound seeing
         </p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           The Anarchic Field
@@ -305,9 +305,9 @@ export default function RebusPage() {
               <p>
                 This literalises the{" "}
                 <span className="text-foreground">REBUS</span> model of
-                psychedelic action (Carhart-Harris &amp; Friston, 2019). In
+                relaxed-belief perception (Carhart-Harris &amp; Friston, 2019). In
                 predictive coding the cortex holds high-level priors in check
-                with precise bottom-up sensory error. Psychedelics relax the
+                with precise bottom-up sensory error. Visionary states relax the
                 precision of that gating, so top-down predictions overwhelm the
                 noisy input and structured imagery blooms.
               </p>
@@ -337,9 +337,8 @@ export default function RebusPage() {
               </p>
               <p className="text-xs">
                 Refs: Carhart-Harris &amp; Friston (2019) &ldquo;REBUS and the
-                Anarchic Brain&rdquo;, Pharmacological Reviews · &ldquo;Neural
-                mechanisms of psychedelic visual imagery&rdquo; (2024),
-                Molecular Psychiatry · Friston, free-energy / predictive coding.
+                Anarchic Brain&rdquo;, Pharmacological Reviews · Friston,
+                free-energy / predictive coding.
               </p>
             </div>
             <button

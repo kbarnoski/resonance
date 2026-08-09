@@ -1,7 +1,7 @@
 # 1536 · Codec Melt
 
 **Route:** `/dream/1536-codec-melt`
-**Input:** keyboard · **Output:** Canvas2D + **WebCodecs** (`VideoEncoder` / `VideoDecoder`) · **Technique:** bitrate-starve DCT-block melt · **Palette:** iridescent jeweled violet, LSD-tracer · **Pole:** intense / kinetic — a *played* melt, not a passive drift.
+**Input:** keyboard · **Output:** Canvas2D + **WebCodecs** (`VideoEncoder` / `VideoDecoder`) · **Technique:** bitrate-starve DCT-block melt · **Palette:** iridescent jeweled violet, visionary-tracer · **Pole:** intense / kinetic — a *played* melt, not a passive drift.
 
 ## What it is
 
@@ -55,7 +55,7 @@ If `VideoEncoder` is undefined, `isConfigSupported({ codec: 'vp8', … })` repor
 - **Rosa Menkman — _The Glitch Moment(um)_** — the aesthetics/theory of compression & glitch.
 - **Nino Filiu — SuperMosh** — real-time datamosh in the browser via WebCodecs; direct technical lineage for this piece.
 - **Sven König — _aPpRoPiRaTe!_** — codec/keyframe manipulation as live performance.
-- Phenomenology: LSD positive-afterimage "tracers" + surface-melt.
+- Phenomenology: visionary positive-afterimage "tracers" + surface-melt.
 
 ## Ambition-floor self-assessment
 

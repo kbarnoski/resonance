@@ -1,12 +1,12 @@
-# 6968-kholapse
+# 6968-void-collapse
 
-**The one question:** _What does it feel like to hear your own music dissolve as you fall into a ketamine k-hole?_
+**The one question:** _What does it feel like to hear your own music dissolve as you fall into the void?_
 
 Drop one of Karel's real solo-piano recordings (or let the seeded arpeggio carry it) and a single **dissociation-depth** scalar `d ∈ [0,1]` smears time and folds space into a receding violet wireframe tunnel. This is **road A of 3** sibling explorations of the same idea: a **granular time-freeze** audio engine driving a **WebGL2 folding wireframe tunnel**.
 
 ## The mechanistic spine
 
-**Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing to Ketamine-Induced Dissociation," _The Neuroscientist_ 32(1), 2026.** Dissociation is the cortex **suppressing feedforward stimulus-specific detail while feedback context / salience persists**, and at depth **generating internal patterns "without input."** Everything here maps `d` literally onto that split:
+**The neuroscience of dissociative perception.** Dissociation is the cortex **suppressing feedforward stimulus-specific detail while feedback context / salience persists**, and at depth **generating internal patterns "without input."** Everything here maps `d` literally onto that split:
 
 - **Feedforward (suppressed as d→1):** the recording's fine detail — grain sharpness, transient attacks, high-frequency content, pitch identity; the wireframe's line crispness and the treble-driven shard-tear.
 - **Feedback / context (persists, even amplifies):** the slow gestalt — a frozen playhead, a sustained drone, reverb bloom, the tunnel's global motion and core glow, the bass-driven wall fold.
@@ -18,7 +18,7 @@ Drop one of Karel's real solo-piano recordings (or let the seeded arpeggio carry
 |---|---|---|
 | **0** surface | playhead at real time; grains ~70 ms; `playbackRate` 1.0; HF open (16 kHz); no echo; reverb dry; drone calm | crisp fine wireframe; fast forward travel; single-fold tunnel; audio drives motion |
 | **0.5** drift | playhead at ½ speed; grains ~270 ms; rate ~0.79 (pitch/tempo decouple); lowpass closing; ping-pong echo opening; reverb `wet=0.35`; drone drive `0.55` | lines widen/blur; travel slows; angle kaleido-folds into more shards; bass folds walls, treble tears shards; longer feedback smear |
-| **1.0** k-hole | playhead **frozen**; grains ~460 ms; rate ~0.58; lowpass ~900 Hz (feedforward gone); echo wide; reverb `wet=0.7`; drone drive `0.8`; dry granular thinned | motion driven by **seeded internal drift**, not the (thinned) audio; many shards; long inward feedback advection; color detail desaturates; intimate vignette, never a cosmic white end |
+| **1.0** void-collapse | playhead **frozen**; grains ~460 ms; rate ~0.58; lowpass ~900 Hz (feedforward gone); echo wide; reverb `wet=0.7`; drone drive `0.8`; dry granular thinned | motion driven by **seeded internal drift**, not the (thinned) audio; many shards; long inward feedback advection; color detail desaturates; intimate vignette, never a cosmic white end |
 
 **Live coupling (both directions):** an `AnalyserNode` reads amplitude, spectral centroid, and bass/mid/treble band energies. **Loud transients surface you** (ease effective `d` down → momentary sharpen); **silence sinks you** (ease `d` up above the slider baseline). A depth slider scrubs the whole arc by hand.
 
@@ -34,9 +34,9 @@ Drop one of Karel's real solo-piano recordings (or let the seeded arpeggio carry
 
 ## References
 
-- Bera, Looger, Proekt & Cichon (2026), _The Neuroscientist_ 32(1) — the feedforward-suppression / feedback-persistence spine (built, not just cited).
+- The neuroscience of dissociative perception — the feedforward-suppression / feedback-persistence spine (built, not just cited).
 - van Lommel et al. — NDE tunnel phenomenology (the receding-tunnel geometry, as inspiration).
-- Classic k-hole phenomenology (time-freeze, pitch/tempo decoupling, ego-dissolution into internally-generated pattern) — inspiration only.
+- Classic void-collapse phenomenology (time-freeze, pitch/tempo decoupling, ego-dissolution into internally-generated pattern) — inspiration only.
 
 ## Next-cycle deepening
 

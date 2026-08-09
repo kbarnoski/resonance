@@ -32,7 +32,7 @@
 // SAFETY: photosensitive-safe by construction — intensity is carried by camera
 // speed, geometry density and slow colour/luminance drift, never by strobe.
 // prefers-reduced-motion slows everything. Refs: Klüver form constants (1926) ·
-// Bressloff–Cowan et al. (2001) · Escher's Circle Limit · Strassman, DMT.
+// Bressloff–Cowan et al. (2001) · Escher's Circle Limit.
 // ════════════════════════════════════════════════════════════════════════════
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -622,8 +622,8 @@ export default function Honeycomb() {
             <p className="mt-3 text-sm text-muted-foreground">
               After Klüver’s form constants (1926), Bressloff–Cowan et al. (2001),
               Escher’s <span className="italic">Circle Limit</span> hyperbolic
-              tessellations, and the jeweled-breakthrough phenomenology in
-              Strassman’s <span className="italic">DMT: The Spirit Molecule</span>.
+              tessellations, and the jeweled-breakthrough phenomenology of
+              visionary states.
               Photosensitive-safe: no strobe — intensity rides speed, density and
               slow drift; reduced-motion slows all of it.
             </p>

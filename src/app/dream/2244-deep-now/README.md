@@ -56,8 +56,8 @@ Deliberately **not** pentatonic, **not** just-intonation, **not** Bohlen-Pierce:
 
 ## Research grounding
 
-- **psypost, 2026-03-20 — "Psilocybin alters time perception by disrupting working
-  memory and attention."** Psychedelic time-dilation is *not* the brain changing
+- The neuroscience of **time perception in altered states.** Visionary
+  time-dilation is *not* the brain changing
   an internal pacemaker's speed. 5-HT2A activation raises cortical excitability
   and sensory input **gain**, so the brain **over-processes** each moment — and
   more processing is felt as *more elapsed time* (dilation). This prototype makes

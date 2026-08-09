@@ -1,13 +1,13 @@
 # 1700 · Bloom Field
 
-**state: DMT-threshold chrysanthemum · pole: INTENSE**
+**state: visionary-threshold chrysanthemum · pole: INTENSE**
 
-> What if your bodily presence in front of a webcam drove a DMT-threshold
-> *chrysanthemum* — the dense unfolding fractal "flower" that opens the DMT
+> What if your bodily presence in front of a webcam drove a visionary-threshold
+> *chrysanthemum* — the dense unfolding fractal "flower" that opens the visionary
 > visual sequence — where stillness lets it unfold slowly and movement makes it
 > bloom and reorganize faster?
 
-A psychedelic / altered-states piece that evokes the *phenomenology* drug-free:
+A visionary / altered-states piece that evokes the *phenomenology* drug-free:
 a dense fractal bloom in neon-iridescent jeweled colour, ultra-saturated and
 breathing, that responds to your presence in front of the camera.
 

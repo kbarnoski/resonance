@@ -7,7 +7,7 @@
 //   sweep, 0..1), so as the front rushes outward the notes climb ~2 octaves —
 //   the tunnel rush is audible, not just visible. Underneath sits a Shepard–
 //   Risset endless DESCENT (the NDE plunge), and every voice feeds a feedback
-//   delay for an LSD-tracer tail. All gain moves go through setTargetAtTime.
+//   delay for a visionary tracer tail. All gain moves go through setTargetAtTime.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { SCALE_RATIOS } from "./memory";

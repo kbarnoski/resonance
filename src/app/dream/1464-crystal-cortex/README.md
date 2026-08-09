@@ -29,22 +29,22 @@ faked, not three.js, not Canvas2D.
 Per frame, in `gl.ts`:
 
 1. **Seed pass.** A 512×512 float (or 16-bit-packed) target is cleared to
-   `(0,0,0,0)` = "no seed". Each of the ~12 moving seeds is drawn as a 1-pixel
-   `POINT` that writes its own `(u,v)` into the texel it lands on.
+ `(0,0,0,0)` = "no seed". Each of the ~12 moving seeds is drawn as a 1-pixel
+ `POINT` that writes its own `(u,v)` into the texel it lands on.
 2. **JFA passes.** `log2(512) = 9` full-screen ping-pong passes at step sizes
-   `k = 256, 128, … 1`. Each texel examines its 8 neighbours at offset `±k` and
-   adopts the **nearest** seed among them (toroidal distance, so the lattice
-   tiles seamlessly). After the last pass every texel stores the coordinate of
-   its nearest seed — that is the Voronoi cell ID and, via the distance to it,
-   the distance field.
+ `k = 256, 128, … 1`. Each texel examines its 8 neighbours at offset `±k` and
+ adopts the **nearest** seed among them (toroidal distance, so the lattice
+ tiles seamlessly). After the last pass every texel stores the coordinate of
+ its nearest seed — that is the Voronoi cell ID and, via the distance to it,
+ the distance field.
 3. **Display pass.** The field is sampled through an **inverse log-polar warp**
-   (`r = exp(u)` — the retina→V1 cortical map; Bressloff & Cowan's account of
-   why the cortex turns a plane lattice into a perceived honeycomb-tunnel). Cell
-   colour is `hash(seed) → iridescent hue`; the bright **stained-glass leading**
-   is drawn where the nearest-seed field has an edge, detected with `fwidth()`
-   of the seed coordinate (an anti-aliased proxy for "distance to the
-   second-nearest seed"). A gentle, continuously drifting warp makes the cells
-   recede into an infinite funnel.
+ (`r = exp(u)` — the retina→V1 cortical map; Bressloff & Cowan's account of
+ why the cortex turns a plane lattice into a perceived honeycomb-tunnel). Cell
+ colour is `hash(seed) → iridescent hue`; the bright **stained-glass leading**
+ is drawn where the nearest-seed field has an edge, detected with `fwidth()`
+ of the seed coordinate (an anti-aliased proxy for "distance to the
+ second-nearest seed"). A gentle, continuously drifting warp makes the cells
+ recede into an infinite funnel.
 
 **Storage & graceful degradation.** If `EXT_color_buffer_float` is present the
 JFA field lives in `RGBA16F` (seed `uv` in `RG`). If not, it falls back to an
@@ -65,12 +65,12 @@ Audio (`audio.ts`) gives **each seed one continuous voice** — a sawtooth throu
 a per-voice band-pass + gain:
 
 - **Pitch** is continuous and **inharmonic** — derived directly from the seed's
-  tunnel-depth (`field.x`) as a log-frequency sweep over **80–900 Hz**. It is
-  never quantised to a scale.
+ tunnel-depth (`field.x`) as a log-frequency sweep over **80–900 Hz**. It is
+ never quantised to a scale.
 - **Cell area** (proxied by the toroidal gap to the nearest other seed) → voice
-  **amplitude**: big roomy cells sing louder and rounder.
+ **amplitude**: big roomy cells sing louder and rounder.
 - **Neighbour count** (Voronoi adjacency, proxied by seeds within a radius) →
-  band-pass **cutoff + Q**: crowded cells are thin and bright.
+ band-pass **cutoff + Q**: crowded cells are thin and bright.
 
 A quiet 2-oscillator sub-drone sits underneath. Total oscillators = 12 voices +
 2 drone = **14** (the hard cap). The `AudioContext` is created only from the
@@ -80,37 +80,37 @@ context is `close()`d.
 
 ## Named references
 
-- **Heinrich Klüver**, *Mescal and Mechanisms of Hallucinations* (1966) — the
-  four form constants: (1) lattices/honeycombs, (2) cobwebs, (3)
-  tunnels/funnels/cones, (4) spirals.
+- **Heinrich Klüver** (1966) — the
+ four form constants: (1) lattices/honeycombs, (2) cobwebs, (3)
+ tunnels/funnels/cones, (4) spirals.
 - **Bressloff, Cowan, Golubitsky, Thomas & Wiener** (2001) — geometric visual
-  hallucinations and the retino-cortical (log-polar) map of V1.
+ hallucinations and the retino-cortical (log-polar) map of V1.
 - **Rong & Tan** (2006) — the Jump Flooding Algorithm, the GPU Voronoi/distance
-  transform this piece is built on.
+ transform this piece is built on.
 
 ## Known limitations
 
 - **Cell area / neighbour count are proxies**, not exact Voronoi cell integrals
-  computed from the GPU field — a nearest-neighbour gap and a radius count. They
-  track the intended feel (big = loud, crowded = bright) but aren't the true
-  polygon areas.
+ computed from the GPU field — a nearest-neighbour gap and a radius count. They
+ track the intended feel (big = loud, crowded = bright) but aren't the true
+ polygon areas.
 - **`fwidth`-based leading** can draw a faint extra seam at the `θ = ±π` and the
-  `fract()` wrap boundaries of the toroidal field. It reads as a little extra
-  leading rather than an obvious artifact.
+ `fract()` wrap boundaries of the toroidal field. It reads as a little extra
+ leading rather than an obvious artifact.
 - **Pointer picking under drift** is exact only for the current frame's warp
-  parameters; because the tunnel drifts slowly, a grabbed cell can feel very
-  slightly "pushed" while held. Kept subtle by keeping the drift slow.
+ parameters; because the tunnel drifts slowly, a grabbed cell can feel very
+ slightly "pushed" while held. Kept subtle by keeping the drift slow.
 - Seeds live on a **torus**; they wander off one edge and back on the other,
-  which is intentional for an "infinite" lattice but means a cell can appear to
-  teleport across a seam.
+ which is intentional for an "infinite" lattice but means a cell can appear to
+ teleport across a seam.
 
 ## Next-cycle deepening
 
 - Compute **true second-nearest distance** with a second JFA channel so the
-  leading width is a real edge distance, and derive **exact cell areas +
-  adjacency** from a GPU histogram of the label field for the audio.
+ leading width is a real edge distance, and derive **exact cell areas +
+ adjacency** from a GPU histogram of the label field for the audio.
 - Add **curl-noise** seed drift instead of summed sinusoids for less periodic
-  idle motion.
+ idle motion.
 - A **held-mandala latch**: when the dragged configuration stabilises, bloom a
-  high just-intonation shimmer chord (the "more real than real" ceiling tone).
+ high just-intonation shimmer chord (the "more real than real" ceiling tone).
 - Keyboard arrow-key nudging of a selected seed for accessibility.

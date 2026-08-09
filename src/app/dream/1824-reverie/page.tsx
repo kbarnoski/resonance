@@ -260,7 +260,7 @@ export default function Page() {
               <p>
                 <span className="text-foreground">The what-if:</span> a cinematic
                 journey engine — a generative score to a film that isn&apos;t there.
-                Instead of Resonance&apos;s psychedelic arc or an EDM build-and-drop,
+                Instead of Resonance&apos;s visionary arc or an EDM build-and-drop,
                 this one moves through{" "}
                 <span className="text-foreground">Freytag&apos;s pyramid</span>:
                 establishing → inciting incident → rising action → climax → falling
