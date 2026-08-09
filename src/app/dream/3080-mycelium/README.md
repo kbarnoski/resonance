@@ -60,8 +60,8 @@ function of geometry, **never** quantised to a scale.
   non-integer overtone through a closing lowpass), pitch from the strand's
   cumulative length and height.
 - **Web extent →** the total grown length opens the *drive* of the shared
-  just-intonation drone bed (`_shared/psych/droneBank`) sitting in a convolution
-  void (`_shared/psych/convolutionVoid`).
+  just-intonation drone bed (`_shared/visionary/droneBank`) sitting in a convolution
+  void (`_shared/visionary/convolutionVoid`).
 
 Everything sums into a master gain ≤ 0.15 → `tanh` soft-clip → limiter →
 destination. AudioContext is created/resumed only after Start.

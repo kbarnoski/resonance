@@ -38,7 +38,7 @@ A genome is 10 genes in `[0,1]` (`genome.ts`). The **same** genome is read two w
   just-intonation scale (pitch gene), brightness from branch depth + curl,
   modulator ratio from the branch count (so it stays consonant), and an
   **ostinato** pulse from the rhythm gene. The whole grid breathes as a soft chord
-  over a shared JI drone (`_shared/psych/droneBank`); selected organisms sing
+  over a shared JI drone (`_shared/visionary/droneBank`); selected organisms sing
   louder. The **same pulse envelope** drives each creature's visual breathing, so
   what you see and what you hear are the one thing.
 

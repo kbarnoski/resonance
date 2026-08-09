@@ -96,7 +96,7 @@ attention follower driving `timeScale = 1/(1+6A)`), but changes two things:
 
 ## Safety
 
-- All luminance pulsing routes through `createSafeFlicker` (`_shared/psych`),
+- All luminance pulsing routes through `createSafeFlicker` (`_shared/visionary`),
   default **off**, hard-capped ≤ 3 Hz, soft sine (never a hard strobe).
 - `prefersReducedMotion()` reduces drift and the plenum's breathing. When in
   doubt the piece uses slow luminance drift, not flicker.

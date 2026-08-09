@@ -50,7 +50,7 @@ slow together.
 
 ## Audio
 
-Wires the shared psych kit (`_shared/psych/`) into one master gain (≤ 0.14) →
+Wires the shared psych kit (`_shared/visionary/`) into one master gain (≤ 0.14) →
 dilation lowpass → `DynamicsCompressor` limiter → destination. The AudioContext
 is created only inside the Start gesture.
 
@@ -107,7 +107,7 @@ their best ideas are the deepening path for this piece:
   the light" phenomenology — a selectable render mode alongside the SDF tube.
 - **Feedback ring-rush + robustness** (from `3104-crossing`): a WebGL2 ping-pong
   "droste-zoom" feedback tunnel with log-polar ring injection (shares
-  `_shared/psych/logpolar`) runs on *any* GPU with two fullscreen passes — the
+  `_shared/visionary/logpolar`) runs on *any* GPU with two fullscreen passes — the
   right fallback tier between this raymarch and the Canvas2D degrade, and the
   most legible "concentric rings toward a point" NDE image.
 

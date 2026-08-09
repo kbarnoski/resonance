@@ -60,7 +60,7 @@ and it stays turbulent and diffuse.
    detunes so they beat gently — not a clean just-intonation chord. Its amplitude
    follows the **same** breath phase that drives the motes, routed through a
    `DynamicsCompressor` and a low master gain (0.12) into the shared convolution
-   **void reverb** (`_shared/psych/convolutionVoid`). This graph is output-only;
+   **void reverb** (`_shared/visionary/convolutionVoid`). This graph is output-only;
    the mic never touches it.
 
 ## Palette
@@ -87,7 +87,7 @@ blank or silent on its own:
 
 No strobe/flicker. The only periodic brightness change is the ~0.1 Hz breath
 bloom — far below any photosensitive band — and it is still multiplied through the
-`_shared/psych/safeFlicker` gate (which returns 1.0 while disabled) and eased for
+`_shared/visionary/safeFlicker` gate (which returns 1.0 while disabled) and eased for
 `prefers-reduced-motion` users. When in doubt: slow drift, not flicker.
 
 Graceful fallbacks: mic denied → on-brand `text-destructive` note **and** the ghost

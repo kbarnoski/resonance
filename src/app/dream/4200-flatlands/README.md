@@ -56,7 +56,7 @@ A single `performance.now()` clock drives a keyframed parameter track
 reverb wet, plane-spread, fog density, bloom, camera dolly, whiteness, colour
 presence, and a safeFlicker-gated exposure.
 
-## Shared infrastructure used (`_shared/psych/`)
+## Shared infrastructure used (`_shared/visionary/`)
 
 - `startShepard(ctx, verb.input, { dir: -1, … })` — the endless descent; driven
   and stepped each frame.

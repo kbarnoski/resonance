@@ -47,7 +47,7 @@ while `K` and noise rise, so local coupling reorganises the field: the rings war
 interfere and "melt". Pitch is continuous and inharmonic (a Risset-flavoured
 struck-bell partial cluster, `[1, 2.76, 5.4, 8.93]`) — **no** just-intonation or
 pentatonic scale index, **no** Reich phasing. The slow pedal drone and the
-Shepard glissando are the shared `_shared/psych` helpers.
+Shepard glissando are the shared `_shared/visionary` helpers.
 
 ## Safety
 

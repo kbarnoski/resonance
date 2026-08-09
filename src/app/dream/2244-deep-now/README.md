@@ -79,7 +79,7 @@ the seeded RNG and rAF timestamps drive anything time- or randomness-related.
 ## Safety
 
 Any luminance oscillation routes through the shared `createSafeFlicker`
-(`../_shared/psych/safeFlicker`): **off by default**, hard-capped ≤3 Hz, soft sine
+(`../_shared/visionary/safeFlicker`): **off by default**, hard-capped ≤3 Hz, soft sine
 with a luminance floor (never a strobe), and it honours `prefers-reduced-motion`
 (also damping the core "breath" and lattice rotation). Nothing strobes.
 

@@ -76,7 +76,7 @@ A full-viewport `three.js` `ShaderMaterial` on a fullscreen quad renders a
 volumetric **auroral curtain** (domain-warped fBm noise, vertical fringed
 striations, slow horizontal drift) over a twinkling **starfield**. Slow and
 meditative — drift, not strobe. Any luminance shimmer is hard-clamped to **≤ 3 Hz**
-in the shader, following `_shared/psych/safeFlicker.ts`. `prefers-reduced-motion`
+in the shader, following `_shared/visionary/safeFlicker.ts`. `prefers-reduced-motion`
 slows the drift further.
 
 **Palette = real auroral emission lines**, not jeweled violet-gold:

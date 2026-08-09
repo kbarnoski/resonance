@@ -34,7 +34,7 @@ insight is the engine.
 ## Composes the shared `logpolar.ts` engine
 
 The geometry is **not** re-derived here. The fragment shader inlines
-`src/app/dream/_shared/psych/logpolar.ts` — its `LOGPOLAR_GLSL` helpers
+`src/app/dream/_shared/visionary/logpolar.ts` — its `LOGPOLAR_GLSL` helpers
 (`screenToCortex`, `formConstant`, `honeycomb`) and its coordinate conventions —
 and colours it with the shared violet `PALETTE_GLSL`. This prototype only decides
 *which* constant and *how dense*, driven by your voice.

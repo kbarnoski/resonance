@@ -44,7 +44,7 @@ at deep lock. Erratic drumming, or stopping, lets it fade back to a dim scatter.
    decays it every frame when drumming is erratic or stops.
 4. **Klüver form-constant field** (`field.ts`, Canvas2D) — a small offscreen
    `ImageData` is filled per-pixel in cortical (log-polar) space using the shared
-   `formConstant` / `honeycomb` from `_shared/psych/logpolar.ts`, then upscaled
+   `formConstant` / `honeycomb` from `_shared/visionary/logpolar.ts`, then upscaled
    with smoothing. Brightness, contrast, saturation, form-density and the
    tunnel→spiral→honeycomb crossfade all scale with `E`. Each beat gently pulses
    luminance.
@@ -76,7 +76,7 @@ at deep lock. Erratic drumming, or stopping, lets it fade back to a dim scatter.
   altered states of consciousness." *Scientific Reports* **16**:10204
   (2026-03-26).
 - Klüver's four form constants; Bressloff–Cowan cortical log-polar map (see
-  `_shared/psych/logpolar.ts`).
+  `_shared/visionary/logpolar.ts`).
 
 ## Honest limitations
 

@@ -89,7 +89,7 @@ is honoured — motion is slowed and flicker is forced to a sub-perceptual drift
    scalars into a single louder swell — the meeting of two attentions.
 4. **Form-constant fusion (from the `oculus` sibling, cycle 1047)** — feed this
    swarm's REAL per-agent coherence into a Klüver honeycomb log-polar warp
-   (`_shared/psych/logpolar`): as agents cluster they seed cortical-hex cells that
+   (`_shared/visionary/logpolar`): as agents cluster they seed cortical-hex cells that
    *bloom into eyes*, so a genuine "hall of eyes" form constant emerges from the
    simulation instead of being scripted onto a fixed grid — being-met-by-MANY,
    honestly.

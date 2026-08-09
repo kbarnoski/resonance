@@ -33,6 +33,11 @@ shippable**. Polish comes from iteration across many cycles.
    if (blocked) return blocked;
    ```
    Import: `import { guard } from "../../_shared/api-guard";` (depth `../../../_shared/api-guard` if the route is nested one level deeper). The guard enforces origin checks + per-IP rate limits + daily quotas — without it, the public preview URL exposes Karel's FAL_KEY budget to anyone on the internet. Never bypass.
+9. **NO drug references — hard block.** This lab is art about *altered states*, not substances. NEVER name, reference, or allude to recreational/psychoactive drugs (DMT, ketamine, k-hole, LSD/acid, psilocybin, MDMA, "psychedelic", "psychonaut", "trip", "come-up", etc.) in ANY prototype, page copy, comment, tag, README, slug, or log/idea/research note. Describe the *state* and *phenomenon* instead — visionary, dissociative, ecstatic, mystic, boundless, near-death, hypnagogic, meditative. If a research source names a drug, translate it to the altered-state phenomenology and **do not cite the drug paper by name** — cite the mechanism or a non-drug source instead. Before committing (part of the build gate in rule 3), run this self-check and it MUST return nothing:
+   ```bash
+   git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b'
+   ```
+   If it prints any line, rewrite that content to altered-states language before committing. This applies to steering docs too — do not seed IDEAS.md / RESEARCH.md with drug-named ideas.
 
 If you ever feel uncertain whether an action violates these rules, **do not perform it**. Log the question to STATE.md and let Karel resolve it in the morning.
 
@@ -74,6 +79,11 @@ Do the work. Constraints:
 - Prefer Web Audio API + Canvas/WebGL/shaders. Avoid heavy npm dependencies. If you need one, justify it in STATE.md.
 
 ### 4. Validate (5 min budget)
+- **Drug-language self-check (ABSOLUTE rule 9) — run before commit.** It MUST print nothing:
+  ```bash
+  git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b'
+  ```
+  If it prints, rewrite that content to altered-states/mystic/visionary language (and drop any drug-named citation) before committing.
 - **Normalize to on-brand tokens FIRST.** Before building, run the normalizer on every prototype page you created or edited this cycle:
   ```
   docs/dreams/tools/normalize.sh src/app/dream/<n>-<slug>/page.tsx

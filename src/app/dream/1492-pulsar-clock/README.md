@@ -16,7 +16,7 @@ Behaviour is chosen by the real period (`catalog.ts › classify`):
 | **click** | 45 ms – 10 s | Discrete spatialised woodblock clicks. Vela ~11/s, Geminga, B0329+54, Bell Burnell's B1919+21 (1.337 s), plus fill-ins. |
 | **bell** | ≥ 10 s | A single vast toll. J0901−4046 (75.9 s) is the cathedral bell. |
 
-Each pulsar owns an HRTF `PannerNode` fixed at its sky position, so its tick arrives from where the star is. Underneath sits a just-intonation perfect-fifth drone bed (`_shared/psych/droneBank`), and the ticks bloom into a code-generated convolution void (`_shared/psych/convolutionVoid`). As you fly, the listener translates through the sphere, more pulsars fall inside earshot, and the drone's `drive` rises — the polyrhythm **builds** and phases in and out of alignment.
+Each pulsar owns an HRTF `PannerNode` fixed at its sky position, so its tick arrives from where the star is. Underneath sits a just-intonation perfect-fifth drone bed (`_shared/visionary/droneBank`), and the ticks bloom into a code-generated convolution void (`_shared/visionary/convolutionVoid`). As you fly, the listener translates through the sphere, more pulsars fall inside earshot, and the drone's `drive` rises — the polyrhythm **builds** and phases in and out of alignment.
 
 ### Subsystems
 - **`catalog.ts`** — embedded real-data catalog + period→behaviour mapper + mulberry32 PRNG (9 real + 6 deterministic fill-ins, names formatted from their assigned coordinates).

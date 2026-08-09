@@ -48,7 +48,7 @@ drawn as dots and a log-frequency axis, so you **see the exact slice you hear.**
 
 The scan-line is a **slow smooth drift** (a full sweep is ≥3 s), never a strobe.
 There is no full-screen luminance flashing. `prefersReducedMotion()` from
-`_shared/psych/safeFlicker` slows the sweep further. Determinism is preserved:
+`_shared/visionary/safeFlicker` slows the sweep further. Determinism is preserved:
 no `Math.random` / `Date.now` / `new Date` — only `performance.now()` and the
 seeded `mulberry32(0x4184)`.
 

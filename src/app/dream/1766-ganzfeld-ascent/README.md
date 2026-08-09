@@ -32,7 +32,7 @@ A self-contained Web Audio cosmic-ambient bed: a soft detuned pad (JI-ish low dr
 
 ## Safety stance
 
-This is the **Dreamachine lineage deliberately de-fanged**. NO alpha-band (8–12 Hz) visual flicker — that is the photosensitive-epilepsy zone. The only luminance change is a slow ~0.06 Hz drift (well under 3 Hz), and brightness is hard-clamped ≤ 0.7 in the shader (no white-out). `prefers-reduced-motion` (via `_shared/psych/safeFlicker`) softens the climb rate, weakens the attractors and flattens the drift. All animation is driven by an integer frame counter + hash noise — no `Math.random` / `Date` / `performance.now` in the field/state path.
+This is the **Dreamachine lineage deliberately de-fanged**. NO alpha-band (8–12 Hz) visual flicker — that is the photosensitive-epilepsy zone. The only luminance change is a slow ~0.06 Hz drift (well under 3 Hz), and brightness is hard-clamped ≤ 0.7 in the shader (no white-out). `prefers-reduced-motion` (via `_shared/visionary/safeFlicker`) softens the climb rate, weakens the attractors and flattens the drift. All animation is driven by an integer frame counter + hash noise — no `Math.random` / `Date` / `performance.now` in the field/state path.
 
 ## Named references
 

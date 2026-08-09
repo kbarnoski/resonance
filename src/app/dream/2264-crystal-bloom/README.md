@@ -66,7 +66,7 @@ structure."
   noise, bud directions, cell orientation, autopilot phrase. Time comes from
   `performance.now()` / the AudioContext clock.
 - **Flicker safety:** all luminance shimmer routes through the shared
-  `_shared/psych/safeFlicker` engine (off by default, ≤3 Hz soft sine drift,
+  `_shared/visionary/safeFlicker` engine (off by default, ≤3 Hz soft sine drift,
   never a hard strobe, honours `prefers-reduced-motion`).
 - **Self-contained:** the only cross-folder import is the shared safe-flicker
   engine. three.js + Web Audio only, no new dependencies, no network / fetch /

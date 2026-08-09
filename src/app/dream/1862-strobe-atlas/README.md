@@ -27,7 +27,7 @@ arc through **seven planform families**:
 
 Families 0–3 are generated the *only* way they can be — a periodic pattern seen
 through the retina→V1 complex-log (`exp()`) warp, imported verbatim from
-`_shared/psych/logpolar.ts` (`LOGPOLAR_GLSL`, `formConstant`, `honeycomb`).
+`_shared/visionary/logpolar.ts` (`LOGPOLAR_GLSL`, `formConstant`, `honeycomb`).
 Because that warp is purely radial, it **cannot** produce families 4–6. The
 concentric squares use a Chebyshev metric `max(|x|,|y|)` (visibly *square*
 rings); the crosses use an axis-aligned `sin(kx)+sin(ky)` lattice; the
@@ -49,7 +49,7 @@ and a breathing zoom for the "alive" feel.
 ## Audio
 
 A soft generative bed matched to the intense-geometric mood: a detuned
-just-intonation drone carrier from `_shared/psych/droneBank.ts`
+just-intonation drone carrier from `_shared/visionary/droneBank.ts`
 (`startDroneBank`), plus an **opt-in isochronic pulse** whose LFO rate is locked
 to the safe photic rate, so when the Photic-pulse mode is engaged, sound and the
 safe luminance flicker breathe together. Autonomous (no mic, no FFT). Chain:
@@ -59,7 +59,7 @@ fade-in, `ctx.close()` on teardown.
 ## Safety (photosensitive epilepsy)
 
 Non-negotiable, and all luminance flicker is gated through
-`_shared/psych/safeFlicker.ts`:
+`_shared/visionary/safeFlicker.ts`:
 
 - **Default is slow luminance drift, not flicker** — beautiful and safe with
   zero flicker on load (`uFlicker` uniform is `1.0` until the user opts in).

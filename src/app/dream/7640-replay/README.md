@@ -30,7 +30,7 @@ centre.
   outward on a golden-angle spiral). A seeded default memory (deterministic
   mulberry32) lets **Start** demo instantly.
 - **The wave travels in cortical space.** The whole field is drawn through the
-  inverse **log-polar** warp (`_shared/psych/logpolar.ts` — the retina→V1 map is
+  inverse **log-polar** warp (`_shared/visionary/logpolar.ts` — the retina→V1 map is
   a complex log, so concentric rings ↔ cortical stripes). Each event's radius is
   turned into a cortical coordinate via `screenToCortex`. The wavefront advances
   at a constant rate in **log-radius**, so its screen radius (`exp(u)`)
@@ -53,7 +53,7 @@ Each ignition triggers a voice on a **just-intonation** 7-note modal scale
 (`1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5` — anti-pentatonic, minor-leaning). Pitch =
 degree; **register tracks radius**, so the outward rush climbs ~2 octaves and is
 audible, not just visible. Underneath runs a **Shepard–Risset endless descent**
-(`_shared/psych/shepard.ts`, `dir: -1`) — the tunnel plunge — and every voice
+(`_shared/visionary/shepard.ts`, `dir: -1`) — the tunnel plunge — and every voice
 feeds a feedback delay for the tracer tail. All gains move via
 `setTargetAtTime`; the AudioContext and rAF are fully torn down on unmount.
 
@@ -68,7 +68,7 @@ feeds a feedback delay for the tracer tail. All gains move via
 ## Safety
 
 No hard strobe. The only luminance modulation is a slow breathing drift routed
-through `_shared/psych/safeFlicker.ts` at 0.15 Hz — far below the ≤3 Hz gate.
+through `_shared/visionary/safeFlicker.ts` at 0.15 Hz — far below the ≤3 Hz gate.
 The tunnel motion is smooth zoom, never a flip.
 
 ## Honest limitations

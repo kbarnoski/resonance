@@ -32,7 +32,7 @@ Each being is a jeweled mandala-eye built from **Klüver form-constants** — tu
 
 ## Safety
 
-Any glow pulse is OFF by default and routed through the shared `_shared/psych/safeFlicker` engine: a soft sine, hard-clamped to ≤3 Hz, never a hard strobe, and it honors `prefers-reduced-motion`. The beings' awakening glow is a slow luminance drift, not a flicker. On load the page is never dead: after ~4s of silence a **seeded** autopilot (mulberry32, not `Math.random`) gently sounds a few beings — and the instant you press a key, you take over and it yields.
+Any glow pulse is OFF by default and routed through the shared `_shared/visionary/safeFlicker` engine: a soft sine, hard-clamped to ≤3 Hz, never a hard strobe, and it honors `prefers-reduced-motion`. The beings' awakening glow is a slow luminance drift, not a flicker. On load the page is never dead: after ~4s of silence a **seeded** autopilot (mulberry32, not `Math.random`) gently sounds a few beings — and the instant you press a key, you take over and it yields.
 
 ## Grounding / references
 

@@ -81,11 +81,11 @@ closed after the reverb tail).
 
 ## Shared infrastructure used
 
-- `_shared/psych/logpolar` — `LOGPOLAR_GLSL` (the log-polar / form-constant GLSL
+- `_shared/visionary/logpolar` — `LOGPOLAR_GLSL` (the log-polar / form-constant GLSL
   engine) spliced into the fragment shader.
-- `_shared/psych/convolutionVoid` — `createVoidReverb` (the shared void tail that
+- `_shared/visionary/convolutionVoid` — `createVoidReverb` (the shared void tail that
   D drowns the signal in).
-- `_shared/psych/safeFlicker` — `prefersReducedMotion`.
+- `_shared/visionary/safeFlicker` — `prefersReducedMotion`.
 
 ## Files
 

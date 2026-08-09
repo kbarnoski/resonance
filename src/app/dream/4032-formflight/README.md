@@ -23,7 +23,7 @@ hexagonal lattice in **cortical `(log r, θ)` space** and applies the inverse
 fragment shader (single full-screen triangle), no three.js, no point cloud.
 
 It does **not** re-derive the warp: it splices in the shared
-`_shared/psych/logpolar` engine and calls its `screenToCortex`, `formConstant`
+`_shared/visionary/logpolar` engine and calls its `screenToCortex`, `formConstant`
 (φ = 0 tunnels, π/2 spokes, π/4 spirals) and `honeycomb`.
 
 Lineage worth name-dropping: **Gysin & Sommerville's _Dreamachine_ (1959)** —

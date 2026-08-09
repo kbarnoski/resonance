@@ -9,7 +9,7 @@ field into momentary crystalline coherence, then it drifts apart again?*
 A full-screen **three.js** `ShaderMaterial` (fullscreen quad, orthographic camera)
 renders four Klüver form constants — **tunnels, spokes, spirals** and a **honeycomb
 lattice** — in cortical `(log r, theta)` space. The geometry is built with the shared
-log-polar engine (`_shared/psych/logpolar.ts`, `LOGPOLAR_GLSL`), the Bressloff–Cowan
+log-polar engine (`_shared/visionary/logpolar.ts`, `LOGPOLAR_GLSL`), the Bressloff–Cowan
 retina→V1 complex-log map: all Klüver form constants are one periodic pattern seen
 through that warp.
 

@@ -54,7 +54,7 @@ geometry opens — never a strobe over the literal camera image.
 - Heinrich Klüver — the four **form constants** (lattices/honeycombs, cobwebs,
   tunnels/funnels, spirals).
 - Bressloff & Cowan — the retina→V1 cortical map as a complex logarithm
-  (log-polar), the basis of the shared `_shared/psych/logpolar` engine.
+  (log-polar), the basis of the shared `_shared/visionary/logpolar` engine.
 
 ## Diversity tags
 

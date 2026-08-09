@@ -77,9 +77,9 @@ The bells are tuned to a **just-intonation diatonic scale** with the tenor as th
 tonic (D3 ≈ 146.83 Hz), so the ring sounds a descending major scale rather than a
 C-pentatonic cliché. The bells are struck in the exact order of each successive
 row, so you *hear* the changes cascade and re-weave. Underneath sits a low
-just-intonation **drone bed** (`_shared/psych/droneBank`) rooted an octave below
+just-intonation **drone bed** (`_shared/visionary/droneBank`) rooted an octave below
 the tenor, and the whole peal blooms through a generated **convolution reverb**
-(`_shared/psych/convolutionVoid`) — the tower. No percussion, no melody line.
+(`_shared/visionary/convolutionVoid`) — the tower. No percussion, no melody line.
 
 ## Interaction (keyboard + pointer)
 
@@ -95,7 +95,7 @@ the tenor, and the whole peal blooms through a generated **convolution reverb**
 - **Strobe-safe:** motion is slow and continuous; the only luminance change is the
   gentle "home" bloom, which swells/decays over ~1.4 s (well under 3 Hz). No
   flicker.
-- **`prefers-reduced-motion`** (via `_shared/psych/safeFlicker`): the smooth
+- **`prefers-reduced-motion`** (via `_shared/visionary/safeFlicker`): the smooth
   upward scroll is disabled — rows step forward on commit instead.
 - **AudioContext** is created/resumed only inside the "Start sound" gesture
   (autoplay policy / iOS). Visuals never depend on audio.

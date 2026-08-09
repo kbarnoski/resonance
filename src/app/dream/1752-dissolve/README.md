@@ -39,7 +39,7 @@ Everything is driven from a single normalized `depth` 0→1→0 envelope over 15
 - **Granular smear** — the per-ear delay times are re-jittered every frame (deterministic
   seeded PRNG) to smear the onset.
 - **Diffuse-field `ConvolverNode` reverb** — a code-synthesised exponentially-decaying stereo
-  impulse response (`_shared/psych/convolutionVoid`); everything routes *through* it so the
+  impulse response (`_shared/visionary/convolutionVoid`); everything routes *through* it so the
   wet/dry knob is the literal direct-to-reverb ratio, collapsing toward a pure diffuse field
   at the peak.
 - **Inharmonic carrier bed** — slightly-stretched pad partials plus near-unison voices whose

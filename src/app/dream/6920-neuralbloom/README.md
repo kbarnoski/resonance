@@ -39,7 +39,7 @@ deterministic per-cell noise (`mulberry32(0x6920)`) so symmetry breaks
 reproducibly.
 
 **Display:** for each screen pixel, cortical coord `c = (log|p|, atan(p.y,p.x))`
-(via `screenToCortex` spliced from `_shared/psych/logpolar`), sampled into the
+(via `screenToCortex` spliced from `_shared/visionary/logpolar`), sampled into the
 field over `u ∈ [−3.5, 1.5]`, `theta` wrapping; a slow inward `u`-drift gives the
 tunnel motion; tone-mapped to the house violet ramp.
 
