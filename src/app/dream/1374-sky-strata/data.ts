@@ -64,7 +64,9 @@ async function fetchProduct(url: string): Promise<Row[] | null> {
     const res = await fetch(url, { signal: ctrl.signal, cache: "no-store" });
     if (!res.ok) return null;
     const json: unknown = await res.json();
-    if (!Array.isArray(json) || json.length < 2) return null;
+    // NOAA products are arrays-of-arrays (row[0] is the header). Reject any other
+    // shape (e.g. an array-of-objects error body) so downstream colOf never crashes.
+    if (!Array.isArray(json) || json.length < 2 || !Array.isArray(json[0])) return null;
     return json as Row[];
   } catch {
     return null;
@@ -144,8 +146,8 @@ function plasmaHistory(rows: Row[]): SkyPoint[] {
  * A slowly-drifting synthetic sky. Deterministic in the wall clock so two
  * glances a moment apart look continuous. Used whenever the live feeds fail.
  */
-export function simulateSky(): Sky {
-  const t = Date.now() / 1000;
+export function simulateSky(nowMs: number = Date.now()): Sky {
+  const t = nowMs / 1000;
   const speed = clamp(450 + 170 * Math.sin(t / 97), 250, 800);
   const density = clamp(6 + 5 * Math.sin(t / 71 + 1), 0.5, 22);
   const bz = 7 * Math.sin(t / 53 + 2);

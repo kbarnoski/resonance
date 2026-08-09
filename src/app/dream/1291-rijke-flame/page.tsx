@@ -12,7 +12,7 @@ import {
   type TubeState,
 } from "./model";
 import { computeGeometry, drawScene, heatToY, yToHeat } from "./render";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1291 · RIJKE FLAME

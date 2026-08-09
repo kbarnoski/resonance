@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// _shared/psych/convolutionVoid.ts — a code-generated convolution reverb for the
+// _shared/visionary/convolutionVoid.ts — a code-generated convolution reverb for the
 // altered-states pieces: a vast, cistern-like void tail with no external IR file.
 //
 //   The impulse response is synthesised directly into an AudioBuffer — stereo

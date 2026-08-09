@@ -14,8 +14,8 @@
 // drone → master; master (≤0.5) → soft-knee compressor → destination.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 /** A rigid-body listener pose in world space (position + forward + up). */
 export interface ListenerPose {

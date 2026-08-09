@@ -14,7 +14,7 @@
 // Deterministic — no Math.random / Date; pitch comes from event geometry.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 const MASTER_TARGET = 0.2; // ≤ 0.22, ramped, never an instant blast
 const MAX_VOICES = 14;

@@ -42,7 +42,7 @@ minutes so it keeps changing with the planet.
 ## Audio
 
 Master ramps from silence to a **0.18** peak through a `DynamicsCompressor`
-limiter into `../_shared/psych/convolutionVoid` (a vast code-generated reverb).
+limiter into `../_shared/visionary/convolutionVoid` (a vast code-generated reverb).
 The pitch material is derived **entirely from the data** — a spectral,
 inharmonic drone cluster plus a continuous-pitch granular texture — never a
 pentatonic / just-intonation scale index. Full teardown on unmount: grains

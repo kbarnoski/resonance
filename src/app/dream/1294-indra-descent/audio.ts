@@ -11,8 +11,8 @@
 // void reverb → DynamicsCompressor limiter → master gain (≤0.3, fade-in) → out.
 // Full teardown on stop().
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_PEAK = 0.3;
 const ROOT_HZ = 123.47; // ~B2 — a low, calm root

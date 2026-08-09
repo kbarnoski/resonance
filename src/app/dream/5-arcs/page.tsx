@@ -35,8 +35,8 @@ interface Particle {
 
 const ARCS: ArcDef[] = [
   {
-    id: "psychedelic",
-    name: "Psychedelic",
+    id: "visionary",
+    name: "Visionary",
     tagline: "Current Resonance arc",
     minutes: 60,
     about: "This IS the baseline. Six phases from ego-intact to dissolved and back. Designed for intentional therapeutic sessions: gentle onset → building intensity → peak dissolution → golden afterglow → integration → grounded return.",
@@ -84,7 +84,7 @@ const ARCS: ArcDef[] = [
     name: "Ritual",
     tagline: "Ceremony arc · 45 min",
     minutes: 45,
-    about: "Slower and more intentional than psychedelic. Four phases: gathering silence → sacred opening → ceremony proper → closing. Identity is preserved and deepened, not dissolved. Built for group ceremonies.",
+    about: "Slower and more intentional than the visionary arc. Four phases: gathering silence → sacred opening → ceremony proper → closing. Identity is preserved and deepened, not dissolved. Built for group ceremonies.",
     phases: [
       { name: "Gathering", durationWeight: 2, color: [80,60,40],   accent: [120,100,60], intensity: 0.15, style: "orbit",   description: "Participants arrive, space becomes sacred, intention forms in silence" },
       { name: "Opening",   durationWeight: 2, color: [180,120,60], accent: [220,160,80], intensity: 0.4,  style: "rise",    description: "Intention set, circle opened, threshold crossed" },
@@ -235,7 +235,7 @@ function paintFrame(
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ArcsPage() {
-  const [arcId, setArcId] = useState("psychedelic");
+  const [arcId, setArcId] = useState("visionary");
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [mode, setMode] = useState<"none" | "demo" | "mic">("none");
   const [running, setRunning] = useState(false);

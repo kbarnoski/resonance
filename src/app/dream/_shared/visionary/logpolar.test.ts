@@ -6,7 +6,7 @@
 //
 // NOTE: the repo's vitest runner is scoped to src/lib/**, so this co-located
 // test is not auto-run by `npm test`. Run it ad hoc with:
-//   npx vitest run --root . src/app/dream/_shared/psych/logpolar.test.ts
+//   npx vitest run --root . src/app/dream/_shared/visionary/logpolar.test.ts
 import { describe, expect, it } from "vitest";
 import {
   screenToCortex,

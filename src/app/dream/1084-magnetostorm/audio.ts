@@ -19,8 +19,8 @@
 // Started only after a user gesture (Start button).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "@/app/dream/_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "@/app/dream/_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "@/app/dream/_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "@/app/dream/_shared/visionary/convolutionVoid";
 import type { Params } from "./data";
 
 export interface AuroraAudio {

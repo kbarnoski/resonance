@@ -1,8 +1,8 @@
 # 1098 · Cortical Bloom
 
-*state: DMT/psilocybin geometric form-constant emergence · pole: intense-hypnotic*
+*state: visionary geometric form-constant emergence · pole: intense-hypnotic*
 
-**What if the geometric hallucinations of a psychedelic state weren't painted, but
+**What if the geometric hallucinations of a visionary state weren't painted, but
 GROWN — emerging as the natural pattern of a simulated sheet of excitable neurons,
 exactly the way real visual-cortex hallucinations arise?**
 
@@ -29,9 +29,9 @@ inverse map:
 - the radial log-tiling gives the characteristic **inward tunnel motion**.
 
 This is the actual **Ermentrout & Cowan (1979)** explanation, extended by
-**Bressloff, Cowan, Golubitsky, Thomas & Wiener (2001/2002)**, for *why* drug,
+**Bressloff, Cowan, Golubitsky, Thomas & Wiener (2001/2002)**, for *why* visionary,
 migraine, flicker and hypnagogic hallucinations all look the way they do: it is a
-property of visual cortex + its map, not of any particular drug.
+property of visual cortex + its map, not of any particular trigger.
 
 A slow autonomous drift walks the feed/kill (excitation/inhibition) balance
 through those form-constant regimes over ~30 s, so the piece evolves on its own.

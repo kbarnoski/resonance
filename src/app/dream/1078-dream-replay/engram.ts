@@ -41,7 +41,7 @@ export function makeRng(seed: number): () => number {
 /**
  * Bounded ring buffer of engrams. When full, new onsets overwrite the oldest —
  * so the dream is always drawn from the RECENTLY-learned world (a core claim of
- * the replay model: psychedelic replay favours recent experience).
+ * the replay model: visionary replay favours recent experience).
  */
 export class EngramField {
   private readonly buf: Engram[] = [];

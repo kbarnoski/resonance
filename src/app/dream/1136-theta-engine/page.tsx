@@ -6,11 +6,12 @@ import { makeFieldRig, type FieldRig } from "./field";
 import {
   createSafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
-// 1136 · Theta Engine — a drug-free psychedelic field organised by the visual
-// cortex's own TEMPORAL rhythm rather than by spatial geometry.
+// 1136 · Theta Engine — a visionary field, purely through light and sound,
+// organised by the visual cortex's own TEMPORAL rhythm rather than by spatial
+// geometry.
 //
 // A ~5 Hz theta oscillator whose phase gates ~40 Hz gamma bursts (theta–gamma
 // phase-amplitude coupling). You HEAR the real nested rhythm; you SEE it as a
@@ -292,7 +293,7 @@ export default function ThetaEnginePage() {
           Theta Engine
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
-          A psychedelic field organised not by spatial geometry but by the
+          A visionary field organised not by spatial geometry but by the
           cortex&rsquo;s own <span className="text-violet-300">temporal</span>{" "}
           rhythm: a ~5&nbsp;Hz <span className="text-violet-300">theta</span>{" "}
           oscillation whose phase gates ~40&nbsp;Hz{" "}

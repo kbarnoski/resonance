@@ -6,9 +6,9 @@
 
 > What if you could *feel* your own brain being tuned toward the critical point —
 > the edge-of-chaos phase transition that neuroscience associates with both
-> consciousness and psychedelic ego-dissolution — by literally simulating it?
+> consciousness and visionary ego-dissolution — by literally simulating it?
 
-A drug-free psychedelic instrument built on a **genuine 2D Ising model** run as a
+A purely audiovisual visionary instrument built on a **genuine 2D Ising model** run as a
 **Metropolis Monte-Carlo** simulation on the GPU. A single "consciousness
 temperature" that you **drag** (vertical drag on the lattice, plus a visible
 slider) sweeps the lattice temperature `T` through the critical temperature
@@ -63,8 +63,8 @@ slider) sweeps the lattice temperature `T` through the critical temperature
 - **Entropic Brain hypothesis** — Carhart-Harris et al.
 - **Toker et al. 2022, *PNAS*** — "Consciousness is supported by near-critical
   slow cortical electrodynamics."
-- **2026, *J Neurosci* 46(2):e0344252025** — "DMT-Induced Shifts in Criticality
-  Correlate with Self-Dissolution."
+- **2026, *J Neurosci* 46(2):e0344252025** — altered-state shifts in criticality
+  correlating with self-dissolution.
 
 This is a real Ising simulation used as a **metaphor-made-literal** for
 near-critical brain dynamics. It does **not** claim the brain *is* an Ising model.
@@ -95,7 +95,7 @@ near-critical brain dynamics. It does **not** claim the brain *is* an Ising mode
 - **No hard strobe.** The "overload" state above Tc is a fast *spatial* shimmer
   computed per-cell in the fragment shader — never a global luminance flash.
 - No global luminance oscillation is used; if any were added it would be routed
-  through `_shared/psych/safeFlicker` (≤3 Hz soft).
+  through `_shared/visionary/safeFlicker` (≤3 Hz soft).
 - `prefers-reduced-motion` is honored: the simulation runs fewer sweeps per frame
   so the motion is calmer.
 - The **Stop** control instantly kills audio and freezes motion.

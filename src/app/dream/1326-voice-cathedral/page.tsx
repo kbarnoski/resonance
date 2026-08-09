@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { detectPitchHz, hzToMidi, midiToHz, snapToScale } from "./pitch";
 
 /* ───────────────────────────────────────────────────────────────────────────

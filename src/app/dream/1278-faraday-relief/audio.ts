@@ -16,8 +16,8 @@
 // DynamicsCompressor brick-wall limiter, then a master gain (≤0.32, 2 s ramp).
 // Full teardown on unmount.
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { ActiveSymmetry } from "./faraday";
 
 const MAX_VOICES = 6;

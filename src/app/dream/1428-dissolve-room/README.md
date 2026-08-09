@@ -83,7 +83,7 @@ to graft when this piece gets a cycle-2, borrowed from that twin:
   experience and its neural, rather than metaphysical, origin.
 - **Jean-Claude Risset** — the inharmonic bell partials whose non-integer ratios
   make a struck-metal timbre out of pure oscillators.
-- The **DMT-models-NDE** finding: the tunnel → void → light sequence is a
-  *universal, brain-generated scaffold*; only the personal content that decorates
+- The **visionary-state-models-NDE** finding: the tunnel → void → light sequence
+  is a *universal, brain-generated scaffold*; only the personal content that decorates
   it varies from person to person. This piece renders the scaffold as a fixed
   journey you personalize by how hard you lean in.

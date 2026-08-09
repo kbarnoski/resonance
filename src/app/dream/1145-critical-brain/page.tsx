@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { IsingGL, IsingObservables, TC } from "./gl";
 import { IsingSynth } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // Temperature sweep range (units of J/kB). Tc ≈ 2.269 sits in the middle so the
 // critical bloom is the centre of the journey.
@@ -183,7 +183,7 @@ export default function CriticalBrainPage() {
               Critical Brain
             </h1>
             <p className="mt-1 max-w-2xl text-base text-muted-foreground">
-              A drug-free psychedelic instrument built on a real 2D Ising model.
+              A visionary instrument built on a real 2D Ising model.
               Drag a &ldquo;consciousness temperature&rdquo; through the critical
               point Tc&nbsp;&approx;&nbsp;2.269 and feel order melt into the
               edge-of-chaos bloom, then into overload.
@@ -235,7 +235,7 @@ export default function CriticalBrainPage() {
               the Entropic Brain hypothesis (Carhart-Harris), Toker et&nbsp;al.
               2022 <em>PNAS</em> (&ldquo;Consciousness is supported by
               near-critical slow cortical electrodynamics&rdquo;), and the 2026{" "}
-              <em>J&nbsp;Neurosci</em> finding that DMT-induced shifts in
+              <em>J&nbsp;Neurosci</em> finding that altered-state shifts in
               criticality correlate with self-dissolution. Metropolis
               et&nbsp;al. 1953 gave us the algorithm.
             </p>

@@ -2,7 +2,7 @@
 // 1348-prism-cortex — audio engine.
 //
 // An additive pad-drone you PLAY. A sustained just-intonation drone bed (shared
-// _shared/psych kit) sits underneath; every held note adds a detuned partial on
+// _shared/visionary kit) sits underneath; every held note adds a detuned partial on
 // top, and a slow Shepard shimmer rises through it all. Everything is summed
 // into a void-reverb bus, then hard-limited by a DynamicsCompressor and scaled
 // by a master gain ≤ 0.25 with an exponential fade-in — nothing peaks a phone
@@ -12,12 +12,12 @@
 // resumes the AudioContext first), so autoplay policy is respected.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createVoidReverb,
   type VoidReverb,
-} from "../_shared/psych/convolutionVoid";
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
+} from "../_shared/visionary/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
 
 const MASTER_PEAK = 0.22; // ≤ 0.25 hard cap from the safety brief.
 

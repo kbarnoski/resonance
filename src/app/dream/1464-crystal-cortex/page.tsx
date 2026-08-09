@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import {
   createEngine,
   screenToField,
@@ -291,7 +291,7 @@ export default function CrystalCortex() {
               Crystal Cortex
             </h1>
             <p className="mt-4 text-base leading-relaxed text-foreground">
-              The DMT &ldquo;jewelled honeycomb&rdquo; as a living Voronoi lattice
+              The visionary &ldquo;jewelled honeycomb&rdquo; as a living Voronoi lattice
               you play by dragging its cells — a GPU jump-flood partition warped
               into an infinite stained-glass tunnel, where every cell sings a
               continuous tone.

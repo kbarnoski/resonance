@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// scene.ts — the DMT-style entity-lattice (three.js, GPU point field).
+// scene.ts — the visionary-state entity-lattice (three.js, GPU point field).
 //
 //   ~200k THREE.Points with a custom additive ShaderMaterial. Each particle is
 //   bound to ONE of the 12 tracked joints (attribute aJoint) and to ONE symmetry

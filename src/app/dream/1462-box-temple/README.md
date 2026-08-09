@@ -2,7 +2,7 @@
 
 ## The one question
 **What if you could walk through an endless folded-architecture fractal — a
-machine-elf temple of infinite corridors and chambers — and the geometry's own
+visionary temple of infinite corridors and chambers — and the geometry's own
 folding structure resonated as sound, so travelling through it plays it?**
 
 This is the *architectural* face of the fractal-breakthrough phenomenology: not
@@ -93,5 +93,5 @@ the animation frame, closes the `AudioContext`, and loses the GL context.
 ## Lineage
 Mandelbox — Tom Lowe ("Tglad"), 2010. Distance-estimated raymarching of fractals —
 Iñigo Quílez. The "impossible architecture / temple of infinite corridors" reading
-belongs to the wider psychedelic-breakthrough and hyperbolic-geometry phenomenology
+belongs to the wider visionary-breakthrough and hyperbolic-geometry phenomenology
 this lab keeps circling.

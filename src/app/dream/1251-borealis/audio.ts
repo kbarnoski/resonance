@@ -14,9 +14,9 @@
 // cavernous tunnel. This is a READ-ONLY use of the existing public GET
 // /api/audio/<id> route — no mic, no new API route, no guard.
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 /** Karel's real solo-piano recording (existing read-only route). */
 export const PIANO_RECORDING_ID = "549fc519-f7fc-4c38-a771-adaad2edbc81";
@@ -195,7 +195,7 @@ export class TunnelAudio {
     this.pianoGain.connect(this.analyser);
     this.analyser.connect(this.masterGain);
 
-    // shared psych bed: endless-rising Shepard + sustaining drone pad
+    // shared visionary bed: endless-rising Shepard + sustaining drone pad
     this.bedGain = this.ctx.createGain();
     this.bedGain.gain.value = 0.7;
     this.bedGain.connect(this.masterGain);

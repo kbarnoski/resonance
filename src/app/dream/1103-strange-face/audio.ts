@@ -18,7 +18,7 @@
 //   crossed. Everything is present in both the live and autonomous modes.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 export interface StrangeAudio {
   /** 0..1 dissolution amount. */

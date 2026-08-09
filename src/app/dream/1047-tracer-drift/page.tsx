@@ -8,12 +8,12 @@ import { computeArc } from "./arc";
 // ════════════════════════════════════════════════════════════════════════════
 // 1047 — Tracer Drift
 //
-// THE QUESTION: "What if a screen could evoke the LSD drift — surfaces breathing
+// THE QUESTION: "What if a screen could evoke the visionary drift — surfaces breathing
 // and slowly drifting, motion leaving lagging colour trails (positive
 // afterimages), persistent visual snow, gentle moire — the long weightless
-// plateau of an acid come-up, drug-free?"
+// plateau of a slow visionary ascent, purely through light and sound?"
 //
-// state: LSD · pole: cosmic-ambient (drifting)
+// state: visionary · pole: cosmic-ambient (drifting)
 //
 // A WebGL2 ping-pong feedback buffer is the engine: each frame composites the
 // decayed, slightly warped previous frame UNDER fresh content (a breathing fBm
@@ -22,9 +22,9 @@ import { computeArc } from "./arc";
 // saturation. Mic is analysis-only (breath as a slow swell); no mic -> a
 // self-driven LFO swell so it drifts with zero permissions.
 //
-// See README.md for design notes and named references (Memo Akten; LSD tracer /
-// positive-afterimage / visual-snow phenomenology; Carhart-Harris entropic
-// brain).
+// See README.md for design notes and named references (Memo Akten; tracer /
+// afterimage / positive-afterimage / visual-snow phenomenology; Carhart-Harris
+// entropic brain).
 // ════════════════════════════════════════════════════════════════════════════
 
 type Mode = "idle" | "running";
@@ -185,7 +185,7 @@ export default function Page() {
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Surfaces breathing and slowly drifting, motion leaving lagging
               colour trails, a haze of visual snow — the long, weightless plateau
-              of an acid come-up, drug-free. Breathe near the mic to swell the
+              of a slow visionary ascent, purely through light and sound. Breathe near the mic to swell the
               trails, or just let it drift.
             </p>
 

@@ -9,7 +9,7 @@ import {
   refreshQuakes,
   type QuakeSource,
 } from "./data";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 type Phase = "idle" | "starting" | "running" | "error";
 

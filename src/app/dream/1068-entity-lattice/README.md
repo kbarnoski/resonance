@@ -1,6 +1,6 @@
 # 1068 · Entity Lattice
 
-`state: DMT hyperspace / entity-lattice · pole: intense`
+`state: hyperspace state / entity-lattice · pole: intense`
 
 > **Cycle 2 (cycle 612, 2026-06-30).** This is the lab's first *honored*
 > multi-cycle commitment — a genuine cycle-2 of an existing concept, the move
@@ -18,12 +18,12 @@
 ## The one question
 
 **What if your whole moving body were multiplied — by camera body-tracking — into
-a luminous DMT-style hyperspace entity-lattice, where the "entities" are recursive
+a luminous hyperspace-state entity-lattice, where the "entities" are recursive
 kaleidoscopic copies of yourself across more directions than there should be, and
 the intensity of your motion drives an endless rising glissando toward
 breakthrough?**
 
-This is the DMT-breakthrough pole: a hyperspace lattice you inhabit with your body.
+This is the breakthrough-state pole: a hyperspace lattice you inhabit with your body.
 Explicitly NOT a calm cosmic drift, NOT a tunnel you fall through, NOT a centre-out
 bloom. It is a crystalline lattice of copies of *you*, tiled into more directions
 than space should allow, intensifying as you move.
@@ -69,15 +69,15 @@ glittering trails. Colour ramps indigo → magenta → gold-white by
 distance-from-core and speed; `THREE.AdditiveBlending`; deep indigo background with
 a faint radial vignette (never flat black).
 
-## Audio — the DMT-ascent (shared engines)
+## Audio — the visionary ascent (shared engines)
 
-Composes the three shared psych engines (imported, not reimplemented):
+Composes the three shared visionary engines (imported, not reimplemented):
 
-- `_shared/psych/shepard` — endless **rising** Shepard–Risset glissando; drive
+- `_shared/visionary/shepard` — endless **rising** Shepard–Risset glissando; drive
   scales ascent rate + brightness,
-- `_shared/psych/droneBank` — just-intonation detuned drone; drive opens its
+- `_shared/visionary/droneBank` — just-intonation detuned drone; drive opens its
   lowpass + saturation,
-- `_shared/psych/convolutionVoid` — vast cistern reverb; Shepard + drone route
+- `_shared/visionary/convolutionVoid` — vast cistern reverb; Shepard + drone route
   through it; wet blooms with drive.
 
 A single `drive` 0..1 = `motion·0.6 + lift·0.3 + spread·0.25 + motion·lift·0.4`,
@@ -97,7 +97,7 @@ brightness swells and saturation, not hard strobing.
 - **"Waves of Connection," Osaka Expo 2025** — three.js + WebGPU rendering ~1M
   particles in real time on a 98-inch 4K display with Kinect body tracking; the
   embodied-installation frontier (Safari 26 / Sept 2025 made WebGPU universal).
-- **Graham St John, "The Breakthrough Experience: DMT Hyperspace and its Liminal
+- **Graham St John, "The Breakthrough Experience: Hyperspace and its Liminal
   Aesthetics"** (Anthropology of Consciousness, 2018) — accelerating geometric
   movement, ascending/intensifying sound, "more directions in space than there
   should be," entity-contact.

@@ -2,15 +2,15 @@
 
 Two people, apart, whose separate rhythms slowly **entrain** — the piece makes
 the invisible inter-brain synchrony between them visible and audible. This is the
-lab's first **social / collective-consciousness** psychedelic piece: every prior
-one is a solo trip. Here there are two distinct luminous presences that approach
+lab's first **social / collective-consciousness** visionary piece: every prior
+one is a solo journey. Here there are two distinct luminous presences that approach
 each other across a void until they meet.
 
 Route: `/dream/1077-two-minds`
 
 ## The one question it answers
 
-What if a psychedelic experience could be *shared* — two beings, apart, whose
+What if a visionary experience could be *shared* — two beings, apart, whose
 separate rhythms slowly synchronize, and the piece renders the interbrain
 synchrony between them as something you can both see and hear?
 

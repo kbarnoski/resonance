@@ -3,9 +3,9 @@
 // ════════════════════════════════════════════════════════════════════════════
 // 1257-lattice — "Lattice".
 //
-// THE QUESTION: What if the living, breathing "realm-membrane" of the DMT
-// breakthrough could be *grown in real time* by a GPU reaction-diffusion field,
-// warped into psychedelic honeycomb geometry?
+// THE QUESTION: What if the living, breathing "realm-membrane" of the
+// breakthrough state could be *grown in real time* by a GPU reaction-diffusion
+// field, warped into kaleidoscopic honeycomb geometry?
 //
 // A Gray-Scott reaction-diffusion simulation (Turing morphogenesis) runs on the
 // GPU via ping-pong framebuffers. A stateful phase arc sweeps the feed/kill
@@ -17,13 +17,13 @@
 // A rising Shepard-Risset glissando + drone bed carries the ascent. Mic energy
 // is neural gain: louder room -> faster reaction; onsets seed new growth.
 //
-// state: DMT realm / morphogenesis · pole: intense (breakthrough ascent)
+// state: visionary realm / morphogenesis · pole: intense (breakthrough ascent)
 // See README.md for the full design notes and named references.
 // ════════════════════════════════════════════════════════════════════════════
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMicAnalyser } from "../_shared/use-mic-analyser";
-import { createSafeFlicker, type SafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, type SafeFlicker } from "../_shared/visionary/safeFlicker";
 import { ReactionField, computeArc, mulberry32 } from "./sim";
 import { AscentAudio } from "./audio";
 
@@ -250,7 +250,7 @@ export default function LatticePage() {
           <p className="max-w-xl text-base leading-relaxed text-foreground drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
             A living membrane <span className="text-foreground">grown</span> in real time by a
             GPU reaction-diffusion field — Turing&apos;s morphogenesis warped into a
-            psychedelic honeycomb realm. It blooms, replicates, saturates, and breaks
+            kaleidoscopic honeycomb realm. It blooms, replicates, saturates, and breaks
             through, carried by an endlessly rising tone.
           </p>
 
@@ -336,7 +336,7 @@ export default function LatticePage() {
             <p className="mt-3 text-base text-muted-foreground">
               Louder sound feeds the reaction; onsets seed fresh growth. Full notes and
               references in <span className="font-mono text-violet-200">README.md</span>{" "}
-              (Turing 1952; Gray-Scott / Pearson 1993; the DMT-realm phenomenology;
+              (Turing 1952; Gray-Scott / Pearson 1993; the visionary-realm phenomenology;
               Klüver&apos;s lattice form constant).
             </p>
           </div>

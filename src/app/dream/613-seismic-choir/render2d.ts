@@ -114,7 +114,7 @@ export function initRenderer2D(canvas: HTMLCanvasElement): Renderer2D | null {
       const b = Math.round(20 + q.depthN * 60);
 
       // expanding ripple ring
-      const ringR = age * radius * 0.5 * (0.6 + q.mag * 0.15);
+      const ringR = Math.max(0, age * radius * 0.5 * (0.6 + q.mag * 0.15));
       g.beginPath();
       g.arc(px, py, ringR, 0, Math.PI * 2);
       g.strokeStyle = `rgba(${r},${gg},${b},${life * 0.5})`;
@@ -122,7 +122,7 @@ export function initRenderer2D(canvas: HTMLCanvasElement): Renderer2D | null {
       g.stroke();
 
       // central bloom
-      const bloomR = (4 + q.mag * 5) * (0.4 + life);
+      const bloomR = Math.max(0, (4 + q.mag * 5) * (0.4 + life));
       const bg = g.createRadialGradient(px, py, 0, px, py, bloomR);
       bg.addColorStop(0, `rgba(${r},${gg},${b},${Math.min(1, life * (0.4 + q.mag * 0.18))})`);
       bg.addColorStop(1, `rgba(${r},${gg},${b},0)`);

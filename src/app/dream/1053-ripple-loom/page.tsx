@@ -2,7 +2,7 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1053-ripple-loom — "Strike a still pond of light and play the expanding
-// ripples, warped into psychedelic tunnels & spirals, like an instrument —
+// ripples, warped into kaleidoscopic tunnels & spirals, like an instrument —
 // each ring ringing a consonant bell."
 //
 // Substrate: a real 2D damped wave-equation ("ripple tank"). PRIMARY path runs
@@ -15,8 +15,8 @@
 // and ring just-intonation bells over a soft drone (audio.ts).
 //
 // Composes two shared engines (the whole point of the brief):
-//   _shared/psych/logpolar  — form-constant log-polar warp (GLSL + JS twins)
-//   _shared/psych/safeFlicker — opt-in, ≤3 Hz, soft-floor luminance shimmer
+//   _shared/visionary/logpolar  — form-constant log-polar warp (GLSL + JS twins)
+//   _shared/visionary/safeFlicker — opt-in, ≤3 Hz, soft-floor luminance shimmer
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -28,8 +28,8 @@ import {
   honeycomb,
   FORM_PHI,
   type FormConstant,
-} from "../_shared/psych/logpolar";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/logpolar";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { WaveField, probePositions } from "./wave";
 import { RippleAudio } from "./audio";
 
@@ -156,7 +156,7 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
   let uvField = p + vec2<f32>(0.5, 0.5);
   let height = sampleField(uvField);
 
-  // log-polar warp -> form constant gives the psychedelic tunnel/spiral grille
+  // log-polar warp -> form constant gives the kaleidoscopic tunnel/spiral grille
   let cort = s2c(p);
   var fc: f32;
   if (R.mode == 2u) {
@@ -501,7 +501,7 @@ export default function RippleLoomPage() {
           }
 
           // render warp pass
-          phaseDrift.v += dt * 0.45; // slow inward come-up drift
+          phaseDrift.v += dt * 0.45; // slow inward ascent drift
           const flick = flickRef.current.value(now / 1000);
           const m = formRef.current;
           device.queue.writeBuffer(

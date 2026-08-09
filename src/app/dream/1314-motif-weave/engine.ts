@@ -16,7 +16,7 @@
 // which a Begin gesture calls. Voice-count-limited through a compressor limiter
 // so overlapping recall never clips or runs away.
 
-import { startShepard, ShepardEngine } from "../_shared/psych/shepard";
+import { startShepard, ShepardEngine } from "../_shared/visionary/shepard";
 
 // ── Musical constants ────────────────────────────────────────────────────────
 const ROOT = 110; // A2

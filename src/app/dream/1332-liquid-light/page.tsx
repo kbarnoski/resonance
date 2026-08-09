@@ -1,7 +1,7 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Liquid Light — a 1960s psychedelic oil-wheel light show you POUR with your phone.
+// Liquid Light — a 1960s kaleidoscopic oil-wheel light show you POUR with your phone.
 //
 // THE ONE QUESTION: What if the molten pools of colored oil a projectionist
 // pushed across a hot plate by heat and gravity were an instrument you pour by

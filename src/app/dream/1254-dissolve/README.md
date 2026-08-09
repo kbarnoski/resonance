@@ -1,11 +1,11 @@
 # 1254 · dissolve
 
-**state: ketamine · pole: dissociative** (Cluster 2 — the K-hole)
+**state: dissociative · pole: dissociative** (Cluster 2 — the dissociative void)
 
 ## The question it answers
 
 > What if, as you play, the sound you hear and the image you see slowly came
-> unbound — the ketamine "K-hole" where the senses stop agreeing?
+> unbound — the dissociative void where the senses stop agreeing?
 
 You play the computer keyboard (a floating whole-tone scale). At first each note
 *flashes its shape exactly when you hear it* — sound and image are one event. Over
@@ -76,11 +76,11 @@ A full-screen **WebGL2** fragment shader (single full-screen triangle):
 ## Named references
 
 - **NMDA-antagonist thalamocortical disconnection / sensory-gating breakdown** —
-  ketamine's mechanism (PSYCHEDELIC.md, Cluster 2): the drug blocks NMDA receptors,
-  disconnecting thalamus from cortex so the normal binding of the senses breaks
+  the dissociative mechanism (VISIONARY.md, Cluster 2): NMDA-receptor blockade
+  disconnects thalamus from cortex so the normal binding of the senses breaks
   down. This piece enacts that breakdown as a literal *un-binding* of the audio and
   visual streams.
-- **PubMed 41453872 (2026), *Cortical Mechanisms Contributing to Ketamine-Induced
+- **PubMed 41453872 (2026), *Cortical Mechanisms Contributing to
   Dissociation*** — EEG under dissociation shows **diminished theta / alpha /
   low-beta** (the slow rhythms that bind perception) together with **elevated low
   gamma**. Mapped literally here: as desync deepens the *slow* visual rhythm thins

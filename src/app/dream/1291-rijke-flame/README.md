@@ -75,7 +75,7 @@ parchment/vellum. State: a meditative fire-drone at the cosmic-ambient pole.
 
 No strobe. All fast on-screen motion is *shape* motion (flame-tongue wobble,
 shimmer), never a full-screen luminance flip. The only macro-brightness
-modulation — the ember glow — is routed through `_shared/psych/safeFlicker`
+modulation — the ember glow — is routed through `_shared/visionary/safeFlicker`
 clamped to ≤3 Hz with a high luminance floor, and it honours
 `prefers-reduced-motion` (which also calms the flame/shimmer motion).
 

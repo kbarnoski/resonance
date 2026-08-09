@@ -13,8 +13,8 @@
 // send → reverb } and drone → master; master (≤0.5) → soft-knee compressor →
 // destination.
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import type { ListenerPose } from "./scene";
 
 const MODAL_PARTIALS: ReadonlyArray<{ r: number; a: number; d: number }> = [

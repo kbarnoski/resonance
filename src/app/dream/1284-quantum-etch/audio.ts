@@ -12,8 +12,8 @@
 //   voices + mallets + bed → void → DynamicsCompressor limiter → master (≤0.3,
 //   2 s fade-in) → destination. Full teardown on stop().
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_PEAK = 0.3;
 

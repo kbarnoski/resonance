@@ -1,8 +1,8 @@
 # 1257 · Lattice
 
 **The one question:** *What if the "living tissue / breathing membrane" quality of
-the DMT realm could be grown in real time by a GPU reaction-diffusion field, warped
-into psychedelic honeycomb geometry?*
+the visionary realm could be grown in real time by a GPU reaction-diffusion field, warped
+into kaleidoscopic honeycomb geometry?*
 
 An intense "breakthrough" ascent (~3.5-minute stateful loop). Instead of drawing a
 membrane, this piece **grows** one — a Gray-Scott reaction-diffusion simulation
@@ -31,7 +31,7 @@ v' = v + (Dv·∇²v + u·v² − (F+K)·v)·dt
   and the sim resolution drops from 512² to 384². The sim texture is capped
   regardless of screen size; the display is DPR-capped at 1.6.
 - The display pass samples the **V** field through an N-fold mirror kaleidoscope and
-  the shared log-polar cortical warp (`_shared/psych/logpolar`), then colours it with
+  the shared log-polar cortical warp (`_shared/visionary/logpolar`), then colours it with
   a thin-film interference palette. Structure blooms iridescent where the tissue is
   dense; the ground stays a bright pearl so mean luminance is high and stable.
 
@@ -62,7 +62,7 @@ intensity. A `text-rose-300` line reports the fallback; the visuals never block.
 
 ## Audio — the rising ascent
 
-Generated entirely from the shared psych toolkit:
+Generated entirely from the shared visionary toolkit:
 
 - `startShepard(dir: +1)` — a real Shepard-Risset endless-rising glissando that
   intensifies with the arc drive (the "ascending, intensifying sound" of
@@ -95,8 +95,8 @@ Begin gesture and fully torn down on unmount.
 - The **Gray-Scott** reaction-diffusion model; John Pearson, *"Complex Patterns in a
   Simple System"* (Science, 1993) — the feed/kill map of spots / stripes / mitosis /
   mazes this arc walks through.
-- *"Mapping a Discrete Psychedelic Dimension: Convergent Neuronal Signatures and
-  Phenomenology of the DMT Realm"* — the living/growing "realm-membrane"
+- *"Mapping a Discrete Visionary Dimension: Convergent Neuronal Signatures and
+  Phenomenology of the Visionary Realm"* — the living/growing "realm-membrane"
   phenomenology.
 - Heinrich Klüver's four form constants (the **lattice / honeycomb**), realised via
   the shared Bressloff–Cowan log-polar cortical warp.

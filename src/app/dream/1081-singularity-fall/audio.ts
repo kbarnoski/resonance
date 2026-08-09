@@ -6,7 +6,7 @@
 //   gravity well. A sub-bass "swallow" rises as the shadow fills the view. The
 //   photon-ring crossing rings a bright bell/impact.
 //
-//   The drone bed reuses _shared/psych/droneBank.ts (canonical detuned just
+//   The drone bed reuses _shared/visionary/droneBank.ts (canonical detuned just
 //   drone + drive-opening filter). We wrap it and add: (1) a red-shifting
 //   partial pair driven by arc progress, (2) a swallow sub whose gain+cutoff
 //   grow with progress, (3) a one-shot photon-ring bell.
@@ -14,7 +14,7 @@
 //   Start from a user gesture (AudioContext resume in the click handler).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "@/app/dream/_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "@/app/dream/_shared/visionary/droneBank";
 
 export interface FallAudio {
   /** progress 0..1 (arc position) → red-shift glide + swallow swell + drive. */

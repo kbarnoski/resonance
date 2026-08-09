@@ -1,6 +1,6 @@
 # 1063 · Dissolve · Void
 
-**Pole:** cosmic-ambient (void) · **State:** ketamine K-hole / dissociation / out-of-body
+**Pole:** cosmic-ambient (void) · **State:** the dissociative void / deep dissociation / out-of-body
 
 ## The one question
 
@@ -16,8 +16,9 @@ re-synchronised flash — before a soft return.
 
 ## The phenomenology
 
-This piece is drug-free, but it is shaped after the ketamine **K-hole** /
-dissociation: depersonalization, floating out of body, time dilation, and the
+This piece works purely through light and sound, but it is shaped after the
+**dissociative void** /
+deep dissociation: depersonalization, floating out of body, time dilation, and the
 sense of melting into a luminous vastness. The CORE mechanic — an **audio-visual
 desync engine** — is not decoration. It enacts the documented *mechanism* of
 dissociation: the normally-tight binding between sensory input, motor action, and
@@ -26,14 +27,14 @@ conscious awareness is deliberately lagged and decoupled.
 ## Research grounding
 
 - **Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing to
-  Ketamine-Induced Dissociation," _The Neuroscientist_ / Neuroscience Reviews,
+  Dissociation," _The Neuroscientist_ / Neuroscience Reviews,
   2026 (SAGE).** A defining feature of the dissociated brain state is the
   **uncoupling of sensory input from conscious awareness** and altered
   sensory-motor coupling, driven by NMDA-receptor blockade →
   thalamocortical disconnection. The desync engine here literally enacts this
   finding: the control stream, the visual motion, and the audio envelope are
   given three different, drifting lags so they glide out of phase.
-- **Ketamine NMDA-antagonism / thalamocortical disconnection** (PSYCHEDELIC.md
+- **NMDA-antagonism / thalamocortical disconnection** (VISIONARY.md
   Cluster 2) — the broader mechanism behind the dissociative, out-of-body,
   vast-void quality of the experience.
 - **Borjigin et al., PNAS 2013 / 2023** — the end-of-life / altered-state
@@ -81,7 +82,7 @@ The desync is exposed *through the experience*, not as a settings panel.
 - **5 HRTF sound motes**: each an oscillator + tremolo through its own
   `PannerNode` with `panningModel: "HRTF"`, drifting on slow Lissajous orbits in
   3D **around the listener** — vastness via spatialisation. (The lab's first
-  HRTF-spatialised psychedelic void.)
+  HRTF-spatialised visionary void.)
 - Master **compressor/limiter** guards the swell. `AudioContext` is created only
   on the first user gesture (the Start button).
 

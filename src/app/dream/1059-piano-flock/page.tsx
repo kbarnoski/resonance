@@ -245,7 +245,7 @@ export default function PianoFlockPage() {
       {phase !== "conducting" && (
         <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-center">
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
-            psilocybin · cosmic drift
+            visionary · cosmic drift
           </p>
           <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Piano Flock

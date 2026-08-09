@@ -1,6 +1,6 @@
 # /dream/5-arcs — Journey Arc Engine v2
 
-**Question**: what if Resonance journeys could have shapes other than the 6-phase psychedelic arc?
+**Question**: what if Resonance journeys could have shapes other than the 6-phase visionary arc?
 
 ## What this is
 
@@ -10,7 +10,7 @@ Five arcs:
 
 | Arc | Phases | Real duration | Visual identity |
 |-----|--------|---------------|-----------------|
-| Psychedelic | 6 | 60 min | Radial color fields, heavy dissolution phase |
+| Visionary | 6 | 60 min | Radial color fields, heavy dissolution phase |
 | EDM Build-and-Drop | 5 | 10 min | Grid→rise→scatter, white drop explosion |
 | Cinematic | 7 | 90 min | Amber warmth → red tension → blinding climax |
 | Ritual | 4 | 45 min | Earth tones, slow ceremony, fire eruption |
@@ -27,7 +27,7 @@ Demo mode compresses each arc to 60 seconds so all phases are immediately playab
 
 ## What this forces you to articulate
 
-The psychedelic arc has specific phase durations baked from clinical literature (short induction, long peak). The other arcs force explicit answers to: how long is "build"? where does the emotional peak sit? how do you define "resolution"? The cinematic arc turns out to need 2:1:1:1:2:2 weights; the EDM arc is almost inverted (short intro, long euphoric plateau).
+The visionary arc has specific phase durations baked from clinical literature (short induction, long peak). The other arcs force explicit answers to: how long is "build"? where does the emotional peak sit? how do you define "resolution"? The cinematic arc turns out to need 2:1:1:1:2:2 weights; the EDM arc is almost inverted (short intro, long euphoric plateau).
 
 ## What to try next
 

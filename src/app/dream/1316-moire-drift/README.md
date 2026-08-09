@@ -1,11 +1,11 @@
 # 1316 — Moiré Drift
 
-**The one question:** *What if you could TUNE a psychedelic trance by hand —
+**The one question:** *What if you could TUNE a visionary trance by hand —
 sliding and rotating one layer of a fine op-art grating against another until
 their interference beats out living Klüver form-constants (tunnels, spirals,
 honeycombs) AND you hear the same beat-frequency in the sound?*
 
-Drug-free LSD-moiré / op-art trance, pole = INTENSE.
+A visionary moiré / op-art trance built purely from light and sound, pole = INTENSE.
 
 ## What it is
 
@@ -19,7 +19,7 @@ term. That slow emergent envelope *is* a Klüver form constant:
 - diagonals in cortical space → **spirals**
 - a hex term that wakes near the peak → **honeycomb lattice**
 
-This is the Bressloff–Cowan insight made playable: all psychedelic geometry is
+This is the Bressloff–Cowan insight made playable: all visionary geometry is
 one stripe/hexagon pattern seen through the retina→V1 complex-log (`exp()`)
 warp.
 
@@ -54,7 +54,7 @@ pulse and the heard beat are the same number.
 
 ## The entropy arc
 
-A slow ~3-minute parameter ramp (onset → come-up → peak → settle) grows grating
+A slow ~3-minute parameter ramp (onset → slow ascent → peak → settle) grows grating
 octaves, drift speed and symmetry looseness, and shifts the palette from stark
 near-black + bone-white with an electric-cyan accent toward **saturated neon /
 iridescent** at the peak. Pointer energy can push the arc forward faster.
@@ -65,7 +65,7 @@ iridescent** at the peak. Pointer energy can push the arc forward faster.
   the star and tracks the visual detune.
 - **Soft low pulse / transport** at 0.7–2 Hz, tempo tightening toward the peak,
   so there is rhythm rather than a flat pad.
-- **Faint Shepard undertow** (shared `_shared/psych/shepard`), gliding downward.
+- **Faint Shepard undertow** (shared `_shared/visionary/shepard`), gliding downward.
 - Master gain ≤ 0.28, exponential ~1.2 s fade-in, routed through a
   `DynamicsCompressor` limiter; fixed small voice count.
 
@@ -100,7 +100,7 @@ beat rate is slowed.
 - **Heinrich Klüver**, *Mescal and Mechanisms of Hallucinations* (1966) — the
   original taxonomy of form constants (lattices/honeycombs, cobwebs,
   tunnels/funnels, spirals).
-- **Shepard–Risset** endless glissando (via the shared psych kit) for the audio
+- **Shepard–Risset** endless glissando (via the shared visionary kit) for the audio
   undertow.
 
 ## Files

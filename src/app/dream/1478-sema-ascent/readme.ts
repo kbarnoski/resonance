@@ -3,8 +3,8 @@
 
 export const README = `Sema Ascent
 
-What if Resonance could take you into an ecstatic whirling trance — a drug-free
-Sufi sema — as a long-form, self-evolving CLIMB? Nested rings of light spin at
+What if Resonance could take you into an ecstatic whirling trance — a
+Sufi sema, purely through light and sound — as a long-form, self-evolving CLIMB? Nested rings of light spin at
 locked polyrhythmic ratios; the whole architecture accelerates, phase-locks, and
 lifts you into a white-hot peak, then sets you gently down. You are different at
 minute 6 than at minute 1.

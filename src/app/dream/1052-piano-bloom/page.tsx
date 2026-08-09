@@ -518,7 +518,7 @@ export default function PianoBloomPage() {
               on a double-buffered grid with a Laplacian stencil. When{" "}
               <span className="text-foreground">WebGPU</span> is available the
               simulation step runs as a compute shader on ping-pong storage
-              buffers — the lab&rsquo;s psych lane had zero WebGPU compute, so
+              buffers — the lab&rsquo;s visionary lane had zero WebGPU compute, so
               this brings it back as the living body. With no WebGPU it falls
               back to a Canvas2D / typed-array CPU step at a smaller grid, so it
               never shows a blank screen.

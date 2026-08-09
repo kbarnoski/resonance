@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { CathedralGrowth } from "./growth";
 import { CathedralScene, type CamParams } from "./scene";
 import { createAudio, type AudioEngine } from "./audio";

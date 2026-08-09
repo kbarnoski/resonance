@@ -6,7 +6,7 @@ import Link from "next/link";
 import { createField, runSelfCheck, type QuantumField, type Tool } from "./schrodinger";
 import { createRenderer, type Renderer } from "./render";
 import { startAudio, BAND_COUNT, type AudioEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1284 · QUANTUM ETCH

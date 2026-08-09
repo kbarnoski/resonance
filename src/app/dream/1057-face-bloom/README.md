@@ -1,7 +1,8 @@
 # 1057 — Face Bloom
 
-**The one question:** *What if your FACE is the psychedelic instrument — your
-expressions sculpt an altered-state visual field and its sound, with no drug?*
+**The one question:** *What if your FACE is the visionary instrument — your
+expressions sculpt an altered-state visual field and its sound, purely through
+light and sound?*
 
 Face Bloom turns your webcam into an expression controller. There is no preset
 to watch; the visual field and the organ underneath it are quiet and near-still
@@ -23,7 +24,7 @@ are distilled in `mapping.ts` and fed to both the Canvas2D renderer
 | `browInnerUp` (+ outer brows) | form-constant `freq` + warmth | Denser rings/spokes; hotter, more saturated palette; brighter organ. |
 | eye-aspect (inverted `eyeBlinkLeft/Right`) | entropy / detail | Narrowing your eyes thins the gate so more fine petals appear. |
 | `mouthSmileLeft/Right` | bloom radius + shimmer voice | Smiling pushes the palette toward gold and adds a high shimmer voice. |
-| head **yaw / roll** (from the pose matrix) | handedness + come-up drift + form tour | Yaw sets spiral handedness and inward `phase` drift; yaw+roll continuously morph across **tunnel → spoke → spiral → honeycomb**. |
+| head **yaw / roll** (from the pose matrix) | handedness + ascent drift + form tour | Yaw sets spiral handedness and inward `phase` drift; yaw+roll continuously morph across **tunnel → spoke → spiral → honeycomb**. |
 | deliberate slow **squint/blink** (held) | opt-in phosphene shimmer | Only when the shimmer toggle is ON: a soft luminance shimmer, routed through `safeFlicker` (≤3 Hz, off by default). |
 
 **Idle = quiet.** No face (or a neutral one) collapses every parameter toward
@@ -37,7 +38,7 @@ play the same instrument. It is never a dead screen.
 ## How it works
 
 - **Geometry engine (composed, not re-derived):** imported from
-  `../_shared/psych/logpolar` — `screenToCortex` / `cortexToScreen`,
+  `../_shared/visionary/logpolar` — `screenToCortex` / `cortexToScreen`,
   `formConstant`, `honeycomb`, `FORM_PHI`, `FORM_CONSTANTS`. The renderer lays
   kaleidoscope petals out in **cortical `(u = log r, v = θ)`** space, modulates
   them with the form-constant field, and places each on screen via the inverse
@@ -68,9 +69,9 @@ play the same instrument. It is never a dead screen.
   hexagons. This is the warp the renderer uses.
 - **Heinrich Klüver's four form constants** — lattices/honeycombs, cobwebs,
   tunnels/funnels/cones, and spirals — the recurring vocabulary of
-  hallucinatory geometry across psychedelics, migraine, hypnagogia and flicker;
-  a property of visual cortex, not any drug.
-- **Psilocybin open-eye phenomenology** — reports of fractal-enhanced, warm
+  hallucinatory geometry across visionary states, migraine, hypnagogia and flicker;
+  a property of visual cortex.
+- **Warm-ecstatic open-eye phenomenology** — reports of fractal-enhanced, warm
   "breathing" geometry that intensifies with emotional engagement; the
   palette here (deep ember → rust → amber → gold, never cold) and the
   emote-to-bloom coupling are reaching for that *intense-warm* pole.
@@ -96,7 +97,7 @@ following are *reasoned, not yet seen or heard*:
 
 ## Safety
 
-Any luminance flicker is routed through `../_shared/psych/safeFlicker`:
+Any luminance flicker is routed through `../_shared/visionary/safeFlicker`:
 **off by default**, opt-in via the shimmer toggle, **hard-clamped to ≤3 Hz**
 (well below the photosensitive danger band), a *soft sine* with a luminance
 floor (never a hard 0↔1 strobe), with an instant kill and `prefers-reduced-

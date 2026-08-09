@@ -5,7 +5,8 @@
 ## The one question
 
 > What if Resonance could move your **own** visual cortex into hallucinated
-> geometry — spirals, tunnels, cobwebs, honeycombs — with no drug, just safe
+> geometry — spirals, tunnels, cobwebs, honeycombs — purely through light and
+> sound, just safe
 > rhythmic light + a uniform field + drone, the way Brion Gysin's *Dreamachine*
 > (1959) and modern *Ganzflicker* do?
 
@@ -83,7 +84,7 @@ One non-looping timeline drives field brightness, pulse depth, pulse rate, drone
 swell, and the form-constant hint opacity, so minute 5 ≠ minute 1:
 
 - **Onset** — still, faint field, no pulse.
-- **Come-up** — drift begins, pulse depth fades in, drone warms.
+- **Slow ascent** — drift begins, pulse depth fades in, drone warms.
 - **Plateau** — gentle alpha-paced (≤3 Hz) pulse + drone swell; the deepest
   stretch.
 - **Return** — pulse slows and fades, settling into a calm steady field.

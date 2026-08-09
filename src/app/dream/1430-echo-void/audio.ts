@@ -16,11 +16,11 @@
 //   unresolved, not sweetly consonant.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createVoidReverb,
   type VoidReverb,
-} from "../_shared/psych/convolutionVoid";
+} from "../_shared/visionary/convolutionVoid";
 import { MATERIALS, type Cathedral, type Surface } from "./geometry";
 
 const MASTER_TARGET = 0.72; // post-limiter master gain the ramp climbs to

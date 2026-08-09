@@ -7,7 +7,7 @@
 // a semi-transparent wash (never pure black) leaves breathing trails.
 //
 // A subtle pseudo-3D tilt maps grid (x,y) + transverse z to screen so pressing
-// the skin reads as depth. Colour comes from the salvia membrane-reality
+// the skin reads as depth. Colour comes from the membrane-reality
 // palette: deep indigo slack, hot magenta/gold taut, rupture rims near-white.
 
 import { GRID, Membrane } from "./membrane";

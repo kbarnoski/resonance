@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { DBM, type Branch } from "./dbm";
 import { LightningRenderer, type Seg } from "./gl";
 import { LightningAudio } from "./audio";

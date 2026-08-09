@@ -2,7 +2,7 @@
 // page has no extra dependency and stays self-contained.
 export const NOTES_MD = `# Apophenia Field
 
-**The one question:** what if the psychedelic act of finding meaning in noise
+**The one question:** what if the visionary act of finding meaning in noise
 were an *instrument* — where your directed attention crystallises latent pattern
 out of a field of pure noise, and sounds it?
 

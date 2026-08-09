@@ -7,7 +7,7 @@
 What if an instrument recorded you while you played — then, at the peak, stopped
 listening and **dreamed your own playing back to you**: your recent gestures
 replayed but recombined and drifting, less and less faithful — the way a 2026
-model says psychedelic hallucination is *top-down generative replay of the
+model says visionary hallucination is *top-down generative replay of the
 recently-learned world*, not bottom-up noise?
 
 ## The mechanic
@@ -56,7 +56,7 @@ invented from noise; everything is *replay*, recombined.
 ## Named references
 
 - **Bredenberg et al., "Modeling the hallucinatory effects of classical
-  psychedelics in terms of replay-dependent plasticity mechanisms," eLife
+  visionary states in terms of replay-dependent plasticity mechanisms," eLife
   2026;14:RP105968.** The **oneirogen** model: an internal parameter α runs 0→1
   from *awake* (bottom-up sensory, basal-dendrite-driven) to *dreaming* (top-down
   generative replay, apical dendrites dominating). Hallucination is cast as
@@ -65,7 +65,7 @@ invented from noise; everything is *replay*, recombined.
   that literally: α is the temperature of a Markov walk over your just-recorded
   engrams; "recently learned" = the bounded ring buffer; apical/top-down = the
   read-head's rising glow, basal/bottom-up = your fading live input.
-- **Carhart-Harris & Friston, REBUS — "relaxed beliefs under psychedelics"**
+- **Carhart-Harris & Friston, REBUS — "relaxed beliefs under visionary states"**
   (*Pharmacological Reviews* 2019). A *relaxation* account: flattened high-level
   priors let bottom-up prediction errors ascend. Contrast with the replay model's
   *active generative* stance. Here the "priors" are your own just-played phrases;

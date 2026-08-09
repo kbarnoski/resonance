@@ -18,8 +18,8 @@
 // panned to that mind's side; a sustained high index blooms a collective chord.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface EngineSnapshot {
   /** Smoothed synchrony index 0..1 (phase-locking value). */

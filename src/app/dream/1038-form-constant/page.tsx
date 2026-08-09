@@ -10,7 +10,7 @@ import { computeArc } from "./arc";
 //
 // THE QUESTION: "What if Resonance could turn your music into the actual
 // geometry your visual cortex hallucinates -- tunnels, spirals, funnels,
-// honeycomb lattices -- with no drug?"
+// honeycomb lattices -- purely through light and sound?"
 //
 // The lab's first altered-states prototype and the foundational log-polar /
 // form-constant engine. All Kluver form constants are ONE periodic pattern

@@ -4,7 +4,7 @@
 
 ## The one question
 
-**What if the _sound itself_ composed a drug-free hallucination?** — a Ganzfeld
+**What if the _sound itself_ composed a hallucination purely through sound and attention?** — a Ganzfeld
 chamber where you rest your gaze in a soft uniform field and a spectrally-morphable
 noise bath (white↔pink↔brown) steers what imagery your own brain manufactures.
 

@@ -306,7 +306,7 @@ export default function NdeTunnelPage() {
           NDE Tunnel
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
-          A drug-free raymarched descent down an endless wormhole toward the
+          A meditative raymarched descent down an endless wormhole toward the
           being of light — leaving the body, drifting the void, the gamma
           clarity-snap, the soft return. It plays itself; loops forever.
         </p>

@@ -2,7 +2,7 @@
  *
  *  Canvas2D only. Cycle-2 deepening of 1063-dissolve-void. Where 1063 built the
  *  lab's first audio-visual DESYNC engine (three streams given three different,
- *  drifting lags so cause/effect come unglued — the ketamine K-hole), this
+ *  drifting lags so cause/effect come unglued — the dissociative void), this
  *  prototype makes the RE-BINDING the star: something you *do* and can *see and
  *  hear lock*, not a hidden one-frame flash.
  *

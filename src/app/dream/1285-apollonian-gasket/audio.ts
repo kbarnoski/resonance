@@ -11,8 +11,8 @@
 //   voices + drone bed → void reverb → limiter → master (≤0.3, ramp) → out.
 //   Full teardown on stop().
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_PEAK = 0.3;
 const ROOT_HZ = 130.81; // ~C3

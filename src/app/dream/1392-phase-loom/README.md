@@ -24,7 +24,7 @@ NO drum grid and no step-sequencer?
   independently. The look-ahead is a clock, not a groove grid.
 - **Tuning.** Just intonation (pentatonic ratios 1, 9/8, 5/4, 3/2, 5/3 over two
   octaves) keeps every interference beat consonant. An underlying just-intonation
-  pad comes from the shared `_shared/psych/droneBank.ts`.
+  pad comes from the shared `_shared/visionary/droneBank.ts`.
 - **Visualisation (three.js).** Each active loop is a tilted orbital **ring** with
   a glowing mote travelling around it once per loop period. Rings at different
   periods orbit at different rates, so you literally SEE the phasing: when two

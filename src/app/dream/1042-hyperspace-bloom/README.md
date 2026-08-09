@@ -1,6 +1,7 @@
 # 1042 · Hyperspace Bloom
 
-A drug-free fall toward the DMT **"breakthrough"** — hyperdimensional geometry
+A fall — purely through light and sound — toward the **breakthrough state** —
+hyperdimensional geometry
 with more axes than physical reality allows. This is the lab's first 4D /
 hyperdimensional raymarch: a regular **24-cell** polytope rotated through all
 six planes of four-dimensional space, **stereographically projected** from 4D
@@ -8,13 +9,13 @@ into 3D, and rendered as glowing neon-iridescent structure you drift through.
 
 ## Altered state & pole
 
-- **State:** DMT-breakthrough
+- **State:** breakthrough state
 - **Pole:** INTENSE
 
 The journey is an auto-played ~75s arc: a slow build-up, a surge into the
 **breakthrough plateau** where rotation speed, color saturation, neon
 brightness and the stereographic "balloon" all peak together, then a gentle
-settle — and it loops. The phenomenology evoked (from psychedelic
+settle — and it loops. The phenomenology evoked (from visionary
 phenomenology research, *not* a medical claim): "hyperdimensional
 bedsheets," negatively-curved / saddle-like space, ultra-saturated
 neon-jeweled iridescence, the "more real than real" quality, and continuous
@@ -90,9 +91,9 @@ translucent fill for motion trails rather than hard clears, also flicker-free.
 
 ## Named references
 
-- **"The Hyperbolic Geometry of DMT Experiences"** — QRI / Andrés
+- **"The Hyperbolic Geometry of the Visionary Experience"** — QRI / Andrés
   Gómez-Emilsson (the hyperbolic / negatively-curved geometry thesis of
-  high-dose psychedelic phenomenology).
+  intense visionary-state phenomenology).
 - **Bressloff & Cowan et al.** — geometric visual hallucinations and cortical
   **form-constants** (the math of how spontaneous cortical activity maps to
   perceived geometric form).

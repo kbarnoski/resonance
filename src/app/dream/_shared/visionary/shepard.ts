@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// _shared/psych/shepard.ts — a real Shepard–Risset endless-glissando engine.
+// _shared/visionary/shepard.ts — a real Shepard–Risset endless-glissando engine.
 //
 //   Roger Shepard (1964) built the auditory barber-pole: sine partials spaced
 //   exactly one octave apart, each weighted by a fixed Gaussian envelope over
@@ -14,7 +14,7 @@
 //   piece (breath, body-motion, pointer energy, field activity) can play it.
 //
 //   The drive scales BOTH the ascent rate and the overall brightness/level, and
-//   `dir` lets a piece glide down (NDE plunge) instead of up (DMT ascent).
+//   `dir` lets a piece glide down (NDE plunge) instead of up (visionary ascent).
 //   When `phase` crosses an octave each partial's base frequency wraps by one
 //   octave, so the comb is identical and the glide is genuinely endless.
 // ─────────────────────────────────────────────────────────────────────────────

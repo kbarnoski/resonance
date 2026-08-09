@@ -15,7 +15,7 @@
 // Reverb tail comes from the shared code-generated void IR (no external file).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 function smoothstep(edge0: number, edge1: number, x: number): number {
   const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));

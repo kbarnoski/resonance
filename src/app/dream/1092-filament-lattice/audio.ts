@@ -1,5 +1,5 @@
 // audio.ts — the Filament Lattice instrument. Self-contained Web Audio built on
-// the shared psychedelic engine (_shared/psych: droneBank + convolutionVoid).
+// the shared visionary engine (_shared/visionary: droneBank + convolutionVoid).
 //
 // This is cycle-3 of 1089. 1089 sonified HOW MANY filaments touch each node
 // (degree -> chord). Here we ALSO hear the graph itself:
@@ -20,8 +20,8 @@
 // real musical intervals. If the audio device is absent (headless review) the
 // caller catches the failure and the sim runs silently.
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const NODE_ROOT = 110; // A2 — node pitch register
 // Just-intonation scale-degrees; a node's `tone` indexes this so edge dyads are

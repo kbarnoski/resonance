@@ -5,7 +5,7 @@
 > **What if Karel's REAL piano recording were the carrier wave that melts the
 > visual field — and YOU sculpt the melt with your hand?**
 
-An interactive psychedelic instrument (not a lean-back screensaver). Karel's
+An interactive visionary instrument (not a lean-back screensaver). Karel's
 actual solo-piano recording plays as the structural spine; an FFT analyser reads
 its spectral energy and that energy warps the geometry through a log-polar /
 form-constant domain map rendered with Canvas2D feedback trails. The music guides
@@ -13,7 +13,7 @@ the journey; the listener's pointer/touch is the instrument — **position moves
 the melt focus, and pointer SPEED raises the warp gain + saturation.** A still
 hand gives calm cosmic drift; a fast frantic drag gives peak melt.
 
-state: psilocybin / LSD warm-drift · pole: cosmic-ambient rising to intense waves
+state: warm ecstatic / visionary warm-drift · pole: cosmic-ambient rising to intense waves
 
 ## How it works
 
@@ -29,7 +29,7 @@ state: psilocybin / LSD warm-drift · pole: cosmic-ambient rising to intense wav
 - **Log-polar / form-constant warp + feedback trails** (`render.ts`) — a
   ping-pong feedback buffer is resampled each frame on a grid whose nodes are
   displaced along the log-polar gradient around the pointer focus (mirrors
-  `_shared/psych/logpolar.ts` math inline so the CPU warp stays self-contained).
+  `_shared/visionary/logpolar.ts` math inline so the CPU warp stays self-contained).
   Fresh form-constant ribbons are stamped over the decaying trails.
 - **Band mapping** (mirrors the neural-gain finding): bass → global flow speed +
   warp amplitude; mids → trail decay / hue sharpness; highs → fine ripple detail;
@@ -39,8 +39,8 @@ state: psilocybin / LSD warm-drift · pole: cosmic-ambient rising to intense wav
 ## Named references it borrows from
 
 - **Mendel Kaelen — "The hidden therapist: evidence for a central role of music
-  in psychedelic therapy" (Imperial College London, 2018).** Music as the
-  *carrier wave* of the psychedelic experience: here Karel's recording is literally
+  in visionary-state therapy" (Imperial College London, 2018).** Music as the
+  *carrier wave* of the visionary experience: here Karel's recording is literally
   the carrier that the visuals melt around.
 - **Bressloff & Cowan; Klüver form constants.** The retina→V1 cortical map is a
   complex logarithm, so all four Klüver form constants (tunnels, cobwebs, spirals,
@@ -49,7 +49,7 @@ state: psilocybin / LSD warm-drift · pole: cosmic-ambient rising to intense wav
 
 ## Ambition-floor criteria hit
 
-- **#1 lab-first** — the FIRST psychedelic-lane piece driven by Karel's real Path
+- **#1 lab-first** — the FIRST visionary-lane piece driven by Karel's real Path
   recording *as the carrier wave that warps the geometry* (vs. earlier pieces that
   decompose it as a mixer).
 - **#2 ≥3 subsystems** — real-audio loader/decode + fallback synth · FFT analyser

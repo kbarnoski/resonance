@@ -20,8 +20,8 @@
 // the destination.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 const MASTER_GAIN = 0.24;
 const BPM = 126;

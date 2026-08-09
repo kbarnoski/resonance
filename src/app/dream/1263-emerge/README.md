@@ -1,13 +1,13 @@
 # 1263 · Emerge
 
-**A drug-free psychedelic _journey_ — one ~6-minute stateful arc from stillness,
+**A purely audiovisual visionary _journey_ — one ~6-minute stateful arc from stillness,
 through ego-dissolution, and softly back — rendered as a vast cloud of GPU
 particles that condenses into a "body," dissolves its own boundary into
 boundless light at the peak, and re-condenses on the return.**
 
 Press **Begin the journey** and surrender. It runs itself. This is the
 **GPU particle / point-cloud** member of a three-builder deep fire: three
-prototypes build the same >5-minute stateful psychedelic-journey engine through
+prototypes build the same >5-minute stateful visionary-journey engine through
 three different WebGL rendering approaches. This one is the volumetric one —
 ~90,000 additive points drawn in a single `gl.POINTS` call, whose FORM most
 distinctly escapes flat shader fields.
@@ -21,7 +21,7 @@ it evolves, it does not loop.
 
 1. **Onset** (0–15%) — a few sparse teal/indigo motes in a dark void, near-still,
    low entropy. A quiet drone.
-2. **Come-up** (15–35%) — particles gather and **condense** into a bounded
+2. **Slow ascent** (15–35%) — particles gather and **condense** into a bounded
    luminous body; color warms; gentle orbital drift; the boundary is crisp.
 3. **Peak · breakthrough** (35–60%) — the boundary **dissolves**: the cloud
    expands outward, curl-noise turbulence rises, a second noise octave kicks in,
@@ -51,7 +51,7 @@ blank).
    flow** (robust, no ping-pong textures), pushes them outward on `expansion`,
    gates visibility by `population`, and evolves color teal → neon → white-gold.
    A full-screen radial-glow triangle blooms with the dissolution.
-3. **Audio bed slaved to the arc** (`audio.ts`) — built from the shared psych
+3. **Audio bed slaved to the arc** (`audio.ts`) — built from the shared visionary
    toolkit: **Shepard–Risset** ascent intensifying to the peak + **drone bank**
    whose filter opens with intensity + **convolution "void" reverb** whose wet
    mix opens as the boundary dissolves. `(shepard + drone) → bus → voidReverb →

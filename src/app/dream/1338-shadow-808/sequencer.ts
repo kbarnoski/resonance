@@ -236,12 +236,12 @@ export function createSequencer(
     o.stop(t + 0.32);
   }
 
-  // acid-ish resonant stab that emerges only when the pattern is dense
-  const acidNotes = [55, 55, 82.41, 65.41]; // A1 A1 E2 C2 — minor colour
-  function playAcid(t: number, idx: number, vel: number) {
+  // 303-style resonant stab that emerges only when the pattern is dense
+  const stabNotes = [55, 55, 82.41, 65.41]; // A1 A1 E2 C2 — minor colour
+  function playStab(t: number, idx: number, vel: number) {
     const o = ctx.createOscillator();
     o.type = "sawtooth";
-    o.frequency.value = acidNotes[idx % acidNotes.length];
+    o.frequency.value = stabNotes[idx % stabNotes.length];
     const lp = ctx.createBiquadFilter();
     lp.type = "lowpass";
     lp.Q.value = 9;
@@ -322,9 +322,9 @@ export function createSequencer(
       playHat(t, 0.5, step % 2 === 1);
     }
 
-    // acid stab surfaces once the groove is busy
+    // resonant stab surfaces once the groove is busy
     if (phase !== "slam" && dens > 0.34 && step % 4 === 2) {
-      playAcid(t, Math.floor(abs / 4), 0.9);
+      playStab(t, Math.floor(abs / 4), 0.9);
     }
   }
 

@@ -1,19 +1,19 @@
 # 1464 · Crystal Cortex
 
-**The one question:** *What if the DMT "jewelled honeycomb" visual form-constant
+**The one question:** *What if the visionary "jewelled honeycomb" visual form-constant
 were a LIVING Voronoi lattice you play by dragging its cells — the honeycomb
 warping into an infinite tunnel of stained-glass cells that each sing?*
 
-Drug-free altered-states piece. Pole: **INTENSE** — dense, saturated,
+An altered-states piece, purely through light and sound. Pole: **INTENSE** — dense, saturated,
 overwhelming — but with **no strobe**: every luminance change is slow drift
 (≤ ~0.15 Hz here, far under the 3 Hz safety ceiling).
 
 ## The altered state it evokes
 
 The **jewelled / honeycomb lattice** is the first of Heinrich Klüver's four
-"form constants" — the geometric hallucinations that recur across DMT,
-psilocybin, mescaline, migraine aura, hypnagogia and stroboscopic flicker. On
-DMT specifically it is often reported as a faceted, iridescent, tunnelling
+"form constants" — the geometric visions that recur across visionary and
+warm-mystic states, migraine aura, hypnagogia and stroboscopic flicker. In the
+visionary state specifically it is often reported as a faceted, iridescent, tunnelling
 honeycomb of "stained-glass" cells receding to a centre, each facet feeling
 charged with its own presence. Crystal Cortex reconstructs that percept as
 something you can reach into and deform with your fingers, with each cell voiced

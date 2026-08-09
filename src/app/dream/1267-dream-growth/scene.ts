@@ -14,7 +14,7 @@
 // tuned to a just-intonation A-Dorian degree by what (or where) it hit.
 
 import * as THREE from "three";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { GrowthField } from "./growth";
 import {
   degreeFreq,

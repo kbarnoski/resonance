@@ -53,8 +53,8 @@ gently talking to itself until you take a turn.
 
 - **You** — a soft triangle with a gentle attack.
 - **Partner** — a warmer FM pad (sine carrier + fifth modulator, low-passed).
-- **Bed** — a quiet just-intonation drone in D (shared `psych/droneBank`) through
-  a code-generated convolution reverb (shared `psych/convolutionVoid`).
+- **Bed** — a quiet just-intonation drone in D (shared `visionary/droneBank`) through
+  a code-generated convolution reverb (shared `visionary/convolutionVoid`).
 - Master gain ≤ 0.2 with an exponential fade-in and a `DynamicsCompressor`
   limiter on the bus. Full teardown on unmount (rAF, timers, listeners, mic
   tracks, `AudioContext.close()`).

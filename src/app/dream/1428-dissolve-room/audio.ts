@@ -15,8 +15,8 @@
 //   Deterministic: NO Math.random (fixed detune offsets only).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import { effectiveProgress } from "./lattice";
 
 const ROOT = 55; // A1

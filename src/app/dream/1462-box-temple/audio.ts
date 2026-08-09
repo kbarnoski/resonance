@@ -18,8 +18,8 @@
 //   before destination, ≤ 8 corridor voices + one low bed. Deterministic noise.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import type { FoldSample } from "./mandelbox";
 
 const NVOICES = 8;

@@ -8,7 +8,7 @@
 //
 // All fast motion here is SHAPE motion (position wobble), never a full-screen
 // luminance strobe. The one macro-brightness modulation (the ember glow) is fed
-// in as `flamePulse`, driven by _shared/psych/safeFlicker (≤3 Hz, gentle).
+// in as `flamePulse`, driven by _shared/visionary/safeFlicker (≤3 Hz, gentle).
 
 import type { TubeState } from "./model";
 

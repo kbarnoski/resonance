@@ -65,5 +65,5 @@ Cycle-3 of the cosmic-web thread. **1066** ("cosmic web") → **1089** ("cosmic 
 - `gl.ts` — raw WebGL2 fragment-shader Physarum (agent update, `gl_VertexID` deposit, diffuse, render, reduce+readback).
 - `physarum.ts` — Jones agent model, CPU fallback sim (two species), gravitational accretion + merge, field normalisation.
 - `graph.ts` — degree (ray-count), adjacency edges (segment coverage), clustering coefficient — shared by both paths.
-- `audio.ts` — self-contained Web Audio on the shared `_shared/psych` drone + void-reverb: per-node degree→chord + clustering→density voices, edge dyads, FM connection chime, coalescence bell, awe swell.
+- `audio.ts` — self-contained Web Audio on the shared `_shared/visionary` drone + void-reverb: per-node degree→chord + clustering→density voices, edge dyads, FM connection chime, coalescence bell, awe swell.
 - `notes.ts` — design-notes string rendered in the in-page modal.

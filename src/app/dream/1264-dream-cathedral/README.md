@@ -30,9 +30,9 @@ Giorgio de Chirico's metaphysical-architecture paintings — empty arcaded plaza
 
 ## Integrated subsystems
 
-- `_shared/psych/droneBank.ts` — the slow just-intonation drone bed (custom A-minor/Dorian chord), the cosmic-ambient pole; its `drive` spikes gently on each strike and eases back.
-- `_shared/psych/convolutionVoid.ts` — the code-generated cathedral convolution reverb, used as a pure-wet send bus so strikes bloom into a long stone tail.
-- `_shared/psych/safeFlicker.ts` — `prefersReducedMotion()` for the motion-safety gate. There is no fast luminance flicker at all; all change is slow drift, well under the 3 Hz ceiling.
+- `_shared/visionary/droneBank.ts` — the slow just-intonation drone bed (custom A-minor/Dorian chord), the cosmic-ambient pole; its `drive` spikes gently on each strike and eases back.
+- `_shared/visionary/convolutionVoid.ts` — the code-generated cathedral convolution reverb, used as a pure-wet send bus so strikes bloom into a long stone tail.
+- `_shared/visionary/safeFlicker.ts` — `prefersReducedMotion()` for the motion-safety gate. There is no fast luminance flicker at all; all change is slow drift, well under the 3 Hz ceiling.
 
 ## Next-cycle deepening
 

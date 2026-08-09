@@ -11,12 +11,12 @@
 //   dense storm never leaks nodes. Audio only starts after a user gesture.
 //
 //   Shared engines composed (do not reimplement):
-//     startDroneBank  — src/app/dream/_shared/psych/droneBank.ts
-//     createVoidReverb — src/app/dream/_shared/psych/convolutionVoid.ts
+//     startDroneBank  — src/app/dream/_shared/visionary/droneBank.ts
+//     createVoidReverb — src/app/dream/_shared/visionary/convolutionVoid.ts
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // A pentatonic (minor) scale over a wide range, in just-ish ratios of a root.
 // Height 0 (top) = highest note, height 1 (bottom) = lowest — a descending sweep.

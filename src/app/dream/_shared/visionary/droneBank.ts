@@ -1,11 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// _shared/psych/droneBank.ts — a just-intonation detuned drone bed for the
+// _shared/visionary/droneBank.ts — a just-intonation detuned drone bed for the
 // altered-states pieces. A small stack of sine/triangle partials tuned to a
 // pure-ratio chord, lightly detuned for chorus, fed through a lowpass that OPENS
 // with `drive` plus a gentle waveshaper so peak intensity grows teeth.
 //
 //   EXTRACTED 2026-06-30 (cycle 611). This drone + its drive-opening filter were
-//   re-synthesised by hand in nearly every recent psychedelic cycle (1052/1053/
+//   re-synthesised by hand in nearly every recent visionary cycle (1052/1053/
 //   1056/1058/1064/1066/1067). This is the canonical copy.
 //
 //   `drive` (0..1) raises the cutoff, the saturation, and the level — so the bed

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// _shared/psych/logpolar.ts — the load-bearing psychedelic-geometry engine.
+// _shared/visionary/logpolar.ts — the load-bearing visionary-geometry engine.
 //
-//   PSYCHEDELIC.md §"single most load-bearing finding": ALL psychedelic geometry
+//   VISIONARY.md §"single most load-bearing finding": ALL visionary geometry
 //   is one stripe/hexagon pattern seen through a log-polar warp. The retina→V1
 //   cortical map is a complex logarithm (Bressloff–Cowan, on Klüver's four
 //   "form constants"): concentric circles ↔ vertical cortical stripes, radial
@@ -21,8 +21,8 @@
 //   Klüver's four form constants:
 //     (1) lattices / honeycombs  (2) cobwebs  (3) tunnels / funnels / cones
 //     (4) spirals
-//   They recur across DMT, LSD, psilocybin, migraine, hypnagogia and flicker —
-//   a property of visual cortex, not any drug.
+//   They recur across the visionary state, migraine, hypnagogia and flicker —
+//   a property of visual cortex, not any substance.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type FormConstant = "tunnel" | "spoke" | "spiral" | "honeycomb";
@@ -90,7 +90,7 @@ export function honeycomb(u: number, v: number, freq: number, phase: number): nu
 //   formConstantGLSL / honeycombGLSL / cortex helpers. ─────────────────────────
 
 export const LOGPOLAR_GLSL = /* glsl */ `
-// --- _shared/psych/logpolar.ts: form-constant / log-polar engine ---
+// --- _shared/visionary/logpolar.ts: form-constant / log-polar engine ---
 const float TAU_LP = 6.28318530718;
 
 // screen (centered, aspect-normalized) -> cortical (log r, theta)

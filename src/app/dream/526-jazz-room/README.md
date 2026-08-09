@@ -8,7 +8,7 @@
 
 A living, self-playing jazz trio — walking upright bass, rootless piano comping, and brushed drums — that performs a complete jazz arc over an F Jazz Blues 12-bar form. The trio plays autonomously from the moment you press Start; no interaction required. You can optionally "sit in" by tapping keys from the F Blues scale on-screen.
 
-The prototype is **Resonance's first jazz piece** and presents an alternate dramatic arc to the existing psychedelic 6-phase engine: warm, swinging, intimate, noir.
+The prototype is **Resonance's first jazz piece** and presents an alternate dramatic arc to the existing visionary 6-phase engine: warm, swinging, intimate, noir.
 
 ---
 

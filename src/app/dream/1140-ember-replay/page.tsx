@@ -1,10 +1,10 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ember Replay — a psychedelic hallucination as TOP-DOWN REPLAY of a learned
-// world, drug-free, using Karel's real recorded piano as the world.
+// Ember Replay — a visionary hallucination as TOP-DOWN REPLAY of a learned
+// world, purely through music, using Karel's real recorded piano as the world.
 //
-// A 2026 eLife computational study modelled classical psychedelics as shifting
+// A 2026 eLife computational study modelled the visionary state as shifting
 // perception away from bottom-up sensory inference toward a generative REPLAY of
 // a learned visual world — so hallucination looks less like noise and more like
 // recombined wake-time memory. This piece LEARNS a real recording into a
@@ -547,11 +547,11 @@ export default function EmberReplayPage() {
             <h2 className="font-semibold text-2xl text-foreground">Design notes</h2>
             <p className="mt-3 text-base text-foreground">
               A 2026 <span className="text-violet-300/90">eLife</span> computational
-              study modelled classical psychedelics as shifting perception from
+              study modelled the visionary state as shifting perception from
               bottom-up sensory inference toward a top-down generative{" "}
               <em>replay of a learned world</em> — hallucination as recombined
-              wake-time memory rather than random noise. This piece is a drug-free
-              embodiment of that model.
+              wake-time memory rather than random noise. This piece embodies that
+              model purely through music.
             </p>
             <p className="mt-3 text-base text-foreground">
               <strong>Learn.</strong> The real recording is analysed into a small

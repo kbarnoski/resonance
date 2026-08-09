@@ -15,7 +15,7 @@
 //   Master: voices → reverb send + dry → master gain (≤0.20) → limiter → out.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const PARTIALS = [
   { mult: 1, gain: 0.5 },

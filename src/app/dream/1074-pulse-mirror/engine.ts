@@ -9,8 +9,8 @@
 // It owns the OnsetSource (mic or demo) and the TempoTracker, and exposes a
 // snapshot for the renderer + UI.
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import {
   DemoPerformer,
   MicListener,

@@ -14,7 +14,7 @@
 // Master gain ramps from silence to <=0.2 through a DynamicsCompressor limiter.
 // Polyphony capped at 14 voices (oldest stolen). Full teardown on stop().
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import { mulberry32 } from "./sandpile";
 
 export interface DropEvent {

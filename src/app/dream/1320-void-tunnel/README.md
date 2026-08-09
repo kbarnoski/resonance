@@ -1,12 +1,12 @@
-# 1320 · K-Hole Tunnel
+# 1320 · Dissociative Void Tunnel
 
 _Part of the 3-sibling DEEP concept **"Unbinding."** This is the tunnel sibling._
 
 ## The one "what if"
 
-What if a drug-free screen could evoke the ketamine k-hole / near-death
-tunnel-to-light — and make you feel the dissociative **unbinding of the senses**,
-where the sound you hear comes loose from the light you see?
+What if a screen — purely through light and sound — could evoke the dissociative
+void / near-death tunnel-to-light, and make you feel the dissociative **unbinding
+of the senses**, where the sound you hear comes loose from the light you see?
 
 ## Design notes
 
@@ -36,13 +36,13 @@ never a beatless drone. `2.7 Hz` sits deliberately below the `3 Hz` full-field
 luminance ceiling, and the visual breath is a shallow (~14%) continuous sine, not
 a strobe.
 
-### K-hole / NDE phenomenology
+### Dissociative void / NDE phenomenology
 
 Disembodied forward drift down a faint tunnel of soft rings toward a distant warm
 being of light; a **hypoxic vignette** constricting toward the centre as you
 approach; a smooth **gamma clarity-swell** (`1 - exp(-x)` ceiling, ≤180 ms, no
 flash) on sustained arrival; a gentle chromatic smear that grows with depth. The
-reported shape of the ketamine k-hole and the near-death tunnel — enacted, not
+reported shape of the dissociative void and the near-death tunnel — enacted, not
 illustrated.
 
 ### References
@@ -50,9 +50,9 @@ illustrated.
 - **James Turrell** — Ganzfeld works: light treated as a physical object you
   inhabit rather than an image you look at. The filling warm core and the
   vignette-constricted field borrow that "light-as-object" pull.
-- **Bera et al. 2026**, _"Cortical Mechanisms Contributing to Ketamine-Induced
-  Dissociation"_ — dissociation as the **uncoupling of sensory input from
-  awareness**, carried on a retrosplenial **~3 Hz** rhythm. The desync engine is a
+- **Bera et al. 2026** — cortical mechanisms of the dissociative state:
+  dissociation as the **uncoupling of sensory input from awareness**, carried on
+  a retrosplenial **~3 Hz** rhythm. The desync engine is a
   direct model of that uncoupling; the pulse rate is chosen to echo the rhythm.
 
 ## Controls

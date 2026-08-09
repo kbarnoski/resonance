@@ -1,11 +1,11 @@
 # 1396 · Apophenia Field
 
-**The one question:** *What if the psychedelic act of finding meaning in noise
+**The one question:** *What if the visionary act of finding meaning in noise
 were an instrument — where your directed ATTENTION crystallizes latent pattern
 out of a field of pure noise, and sounds it?*
 
 This stages **apophenia** — the mind's seeing of structure in randomness, the
-core cognition of the hypnagogic/psychedelic state under the REBUS /
+core cognition of the hypnagogic/visionary state under the REBUS /
 predictive-processing model (relaxed priors → the brain's generative model finds
 pattern everywhere). There is **no pre-authored constellation.** The field is
 pure seeded noise; every sign you hear was co-authored the moment you looked.

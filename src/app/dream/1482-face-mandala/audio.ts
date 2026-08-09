@@ -1,41 +1,90 @@
-// audio.ts — the affect-coupled synth voice of the mandala (Web Audio).
+// audio.ts — the affect-coupled voice of the mandala (Web Audio).
 //
-// Signal path:  drone bank + bells → masterGain → DynamicsCompressor → out.
-// The master gain ramps 0 → 0.2 on start; a compressor keeps peaks safe.
+// Aesthetic: cosmic, peaceful, meditative — an ambient "heaven" pad with
+// deep reverb and slow evolving layers, in the lineage of Max Richter's
+// held-string washes. Nothing is percussive or buzzy; everything breathes.
 //
-//   jawOpen      → opens a lowpass on the drone AND swells its level.
-//   smile        → warmer / brighter (raises the drone's upper partials).
-//   browInnerUp  → adds an upper harmonic partial (a lift in the overtone).
-//   browDown     → darkens (pulls everything down a touch).
-//   blink        → a throttled bell strike.
-//   pucker       → focuses the drone (narrows toward the fundamental).
+// Signal path:
+//   pad voices (extended chord) → panner → warm lowpass → level → breath swell
+//        → reverb bus ─┬─ dry  → master ─┐
+//                      └─ convolver → dark-hall damp → wet → master ─┴─ limiter → out
+//   soft glass chimes → reverb bus (drenched)
 //
-// Voice safety: bells are pooled and capped; oldest is stolen past the cap.
+// The chord is an open, suspended voicing over a G pedal — pedal bass, the
+// 5th and 9th for air, a quiet major 3rd + 6th for color, high 5th/9th for
+// shimmer. Suspension over resolution; color over function.
+//
+//   jawOpen      → gently opens the lowpass and swells the whole pad.
+//   smile        → brings the warm color tones (3rd, 6th) up.
+//   browInnerUp  → brings the high shimmer tones in.
+//   browDown     → darkens (pulls the lowpass down).
+//   pucker       → focuses (narrows the filter toward the fundamental).
+//   blink        → a soft glass chime, tuned to the chord, drenched in reverb.
+//
+// Voice safety: chimes are pooled and capped; oldest is stolen past the cap.
 
-const MAX_BELLS = 12; // < 14 total including the 6 drone oscillators
+const MAX_BELLS = 8;
 
-// Just-intoned overtone ratios for the drone bank.
-const DRONE_RATIOS = [1, 1.5, 2, 3, 4, 5];
-// A warm pentatonic (ratios over the root) for bell strikes.
-const BELL_RATIOS = [1, 9 / 8, 5 / 4, 3 / 2, 5 / 3, 2, 15 / 8 * 2];
+type Tier = "pedal" | "core" | "color" | "shimmer";
+
+interface VoiceSpec {
+  r: number; // frequency ratio over baseHz
+  tier: Tier;
+  wave: OscillatorType;
+  pan: number;
+}
+
+// An open, suspended voicing over the G pedal. Just-intoned ratios for warmth.
+const VOICES: VoiceSpec[] = [
+  { r: 0.5, tier: "pedal", wave: "triangle", pan: 0 }, // G1 sub
+  { r: 1.0, tier: "pedal", wave: "triangle", pan: 0 }, // G2
+  { r: 1.5, tier: "core", wave: "triangle", pan: -0.18 }, // D3 (5th)
+  { r: 2.0, tier: "core", wave: "triangle", pan: 0.18 }, // G3 (oct)
+  { r: 2.25, tier: "core", wave: "sine", pan: -0.1 }, // A3 (9th)
+  { r: 2.5, tier: "color", wave: "sine", pan: 0.28 }, // B3 (maj 3rd)
+  { r: 3.0, tier: "core", wave: "sine", pan: -0.28 }, // D4 (5th up)
+  { r: 10 / 3, tier: "color", wave: "sine", pan: 0.22 }, // E4 (6th/13th)
+  { r: 4.5, tier: "shimmer", wave: "sine", pan: -0.38 }, // A4 (9th up)
+  { r: 6.0, tier: "shimmer", wave: "sine", pan: 0.38 }, // D5 shimmer
+];
+
+// Chord tones for the glass chimes (higher partials of the pad).
+const BELL_RATIOS = [2, 2.25, 3, 10 / 3, 4.5, 6];
+
+interface Voice {
+  osc: OscillatorNode;
+  gain: GainNode;
+  tier: Tier;
+}
 
 interface Bell {
   osc: OscillatorNode;
-  mod: OscillatorNode;
+  partial: OscillatorNode;
   gain: GainNode;
-  startedAt: number;
 }
 
 export class FaceAudio {
   private ctx: AudioContext;
   private master: GainNode;
-  private comp: DynamicsCompressorNode;
+  private limiter: DynamicsCompressorNode;
 
-  // drone
+  // reverb + sends
+  private convolver: ConvolverNode;
+  private wetGain: GainNode;
+  private dryGain: GainNode;
+  private reverbBus: GainNode;
+
+  // pad chain
   private droneFilter: BiquadFilterNode;
-  private droneGain: GainNode;
-  private droneOscs: OscillatorNode[] = [];
-  private partialGains: GainNode[] = [];
+  private droneLevel: GainNode;
+  private breathGain: GainNode;
+  private voices: Voice[] = [];
+
+  // slow modulators
+  private breathLFO: OscillatorNode;
+  private breathDepth: GainNode;
+  private driftLFO: OscillatorNode;
+  private driftDepth: GainNode;
 
   private bells: Bell[] = [];
   private disposed = false;
@@ -45,43 +94,127 @@ export class FaceAudio {
     this.ctx = ctx;
     const now = ctx.currentTime;
 
-    this.comp = ctx.createDynamicsCompressor();
-    this.comp.threshold.value = -18;
-    this.comp.knee.value = 24;
-    this.comp.ratio.value = 3.5;
-    this.comp.attack.value = 0.004;
-    this.comp.release.value = 0.25;
-    this.comp.connect(ctx.destination);
+    // --- output: gentle limiter, slow fade-in ---
+    this.limiter = ctx.createDynamicsCompressor();
+    this.limiter.threshold.value = -14;
+    this.limiter.knee.value = 22;
+    this.limiter.ratio.value = 3;
+    this.limiter.attack.value = 0.01;
+    this.limiter.release.value = 0.4;
+    this.limiter.connect(ctx.destination);
 
     this.master = ctx.createGain();
     this.master.gain.setValueAtTime(0.0001, now);
-    this.master.gain.exponentialRampToValueAtTime(0.2, now + 2.2);
-    this.master.connect(this.comp);
+    this.master.gain.exponentialRampToValueAtTime(0.24, now + 3.6);
+    this.master.connect(this.limiter);
 
-    // drone: overtone bank → lowpass → droneGain → master
-    this.droneGain = ctx.createGain();
-    this.droneGain.gain.value = 0.0001;
+    // --- deep, dark reverb (algorithmic hall IR) ---
+    this.convolver = ctx.createConvolver();
+    this.convolver.buffer = this.makeIR(5.2, 3.6);
+
+    const wetDamp = ctx.createBiquadFilter();
+    wetDamp.type = "lowpass";
+    wetDamp.frequency.value = 3600; // soft, dark hall — no fizz
+    wetDamp.Q.value = 0.5;
+
+    this.wetGain = ctx.createGain();
+    this.wetGain.gain.value = 0.95; // mostly wet — depth
+    this.dryGain = ctx.createGain();
+    this.dryGain.gain.value = 0.4;
+
+    this.reverbBus = ctx.createGain();
+    this.reverbBus.gain.value = 1;
+    this.reverbBus.connect(this.dryGain);
+    this.reverbBus.connect(this.convolver);
+    this.convolver.connect(wetDamp);
+    wetDamp.connect(this.wetGain);
+    this.dryGain.connect(this.master);
+    this.wetGain.connect(this.master);
+
+    // --- pad chain: voices → filter → level → breath → reverb bus ---
+    this.breathGain = ctx.createGain();
+    this.breathGain.gain.value = 0.78; // breath LFO adds +/-
+    this.breathGain.connect(this.reverbBus);
+
+    this.droneLevel = ctx.createGain();
+    this.droneLevel.gain.value = 0.5;
+    this.droneLevel.connect(this.breathGain);
+
     this.droneFilter = ctx.createBiquadFilter();
     this.droneFilter.type = "lowpass";
-    this.droneFilter.frequency.value = 300;
-    this.droneFilter.Q.value = 0.9;
-    this.droneFilter.connect(this.droneGain);
-    this.droneGain.connect(this.master);
+    this.droneFilter.frequency.value = 500;
+    this.droneFilter.Q.value = 0.6;
+    this.droneFilter.connect(this.droneLevel);
 
-    DRONE_RATIOS.forEach((ratio, i) => {
+    // slow drift for a living chorus (a few cents of shared detune motion)
+    this.driftLFO = ctx.createOscillator();
+    this.driftLFO.type = "sine";
+    this.driftLFO.frequency.value = 0.06; // ~16s
+    this.driftDepth = ctx.createGain();
+    this.driftDepth.gain.value = 5; // cents
+    this.driftLFO.connect(this.driftDepth);
+    this.driftLFO.start(now);
+
+    VOICES.forEach((spec, i) => {
       const osc = ctx.createOscillator();
-      osc.type = i === 0 ? "sawtooth" : "triangle";
-      osc.frequency.value = this.baseHz * ratio;
-      osc.detune.value = (i - 2.5) * 4; // gentle chorus spread
-      const g = ctx.createGain();
-      // upper partials start quiet — brow/smile lift them
-      g.gain.value = i < 2 ? 0.5 : 0.12;
-      osc.connect(g);
-      g.connect(this.droneFilter);
+      osc.type = spec.wave;
+      osc.frequency.value = this.baseHz * spec.r;
+      osc.detune.value = (i - VOICES.length / 2) * 3; // static chorus spread
+      this.driftDepth.connect(osc.detune); // shared slow drift
+
+      const gain = ctx.createGain();
+      gain.gain.value = this.baseGainFor(spec.tier);
+
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = spec.pan;
+
+      osc.connect(gain);
+      gain.connect(panner);
+      panner.connect(this.droneFilter);
       osc.start(now);
-      this.droneOscs.push(osc);
-      this.partialGains.push(g);
+
+      this.voices.push({ osc, gain, tier: spec.tier });
     });
+
+    // slow tidal breath over the whole pad
+    this.breathLFO = ctx.createOscillator();
+    this.breathLFO.type = "sine";
+    this.breathLFO.frequency.value = 0.05; // ~20s
+    this.breathDepth = ctx.createGain();
+    this.breathDepth.gain.value = 0.2;
+    this.breathLFO.connect(this.breathDepth);
+    this.breathDepth.connect(this.breathGain.gain);
+    this.breathLFO.start(now);
+  }
+
+  private baseGainFor(tier: Tier): number {
+    switch (tier) {
+      case "pedal":
+        return 0.42;
+      case "core":
+        return 0.26;
+      case "color":
+        return 0.05; // smile lifts these
+      case "shimmer":
+        return 0.02; // brow lifts these
+    }
+  }
+
+  /** A smooth noise-decay stereo impulse for a soft, deep hall. */
+  private makeIR(seconds: number, decay: number): AudioBuffer {
+    const rate = this.ctx.sampleRate;
+    const len = Math.max(1, Math.floor(rate * seconds));
+    const buf = this.ctx.createBuffer(2, len, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++) {
+        const x = i / len;
+        // quick smooth build, long exponential tail
+        const env = (1 - Math.exp(-x * 40)) * Math.pow(1 - x, decay);
+        data[i] = (Math.random() * 2 - 1) * env;
+      }
+    }
+    return buf;
   }
 
   /** Feed the smoothed facial-affect drive each frame. */
@@ -95,34 +228,32 @@ export class FaceAudio {
   ): void {
     if (this.disposed) return;
     const now = this.ctx.currentTime;
-    const t = 0.08; // smoothing time-constant
+    const t = 0.5; // slow, meditative — never abrupt
 
-    // jawOpen opens the filter; browDown darkens; pucker narrows.
+    // warm, capped lowpass so it never turns buzzy
     const cutoff =
-      260 +
-      jaw * 3200 * (1 - browDown * 0.5) -
-      pucker * 400 +
-      smile * 900;
+      420 + jaw * 1500 * (1 - browDown * 0.4) - pucker * 260 + smile * 700;
     this.droneFilter.frequency.setTargetAtTime(
-      Math.max(140, cutoff),
+      Math.min(3400, Math.max(300, cutoff)),
       now,
       t,
     );
-    this.droneFilter.Q.setTargetAtTime(0.7 + pucker * 3.5, now, t);
+    this.droneFilter.Q.setTargetAtTime(0.5 + pucker * 2, now, t);
 
-    // level swells with jaw + presence
-    const lvl = (0.06 + jaw * 0.5 + presence * 0.12) * (0.5 + presence * 0.5);
-    this.droneGain.gain.setTargetAtTime(lvl, now, t);
+    // gentle swell with jaw + presence
+    const lvl = (0.5 + jaw * 0.35 + presence * 0.15) * (0.6 + presence * 0.4);
+    this.droneLevel.gain.setTargetAtTime(lvl, now, t);
 
-    // brow + smile raise the upper partials (index >= 2)
-    this.partialGains.forEach((g, i) => {
-      if (i < 2) return;
-      const lift = i >= 4 ? brow : smile;
-      g.gain.setTargetAtTime(0.06 + lift * 0.28, now, t);
+    // color tones bloom with a smile; shimmer with the brows
+    this.voices.forEach((v) => {
+      let g: number | null = null;
+      if (v.tier === "color") g = 0.05 + smile * 0.18;
+      else if (v.tier === "shimmer") g = 0.02 + brow * 0.14;
+      if (g !== null) v.gain.gain.setTargetAtTime(g, now, t);
     });
   }
 
-  /** A soft bell strike (throttled by the caller). */
+  /** A soft glass chime, tuned to the chord and drenched in reverb. */
   strike(intensity: number): void {
     if (this.disposed) return;
     const now = this.ctx.currentTime;
@@ -131,40 +262,42 @@ export class FaceAudio {
       if (oldest) this.stopBell(oldest, now);
     }
     const ratio = BELL_RATIOS[Math.floor(Math.random() * BELL_RATIOS.length)];
-    const freq = this.baseHz * 4 * ratio; // an octave-ish above the drone
+    const freq = this.baseHz * 2 * ratio; // up in the shimmer register
 
     const osc = this.ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = freq;
-    // a touch of FM for a bell-like partial
-    const mod = this.ctx.createOscillator();
-    mod.type = "sine";
-    mod.frequency.value = freq * 2.76;
-    const modGain = this.ctx.createGain();
-    modGain.gain.value = freq * 1.4;
-    mod.connect(modGain);
-    modGain.connect(osc.frequency);
+
+    // a quiet octave partial for a touch of glass — harmonic, not metallic
+    const partial = this.ctx.createOscillator();
+    partial.type = "sine";
+    partial.frequency.value = freq * 2;
+
+    const partialGain = this.ctx.createGain();
+    partialGain.gain.value = 0.18;
+    partial.connect(partialGain);
 
     const g = this.ctx.createGain();
-    const peak = 0.06 + intensity * 0.1;
+    const peak = 0.035 + intensity * 0.06;
     g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(peak, now + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+    g.gain.exponentialRampToValueAtTime(peak, now + 0.05); // soft attack
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 3.4); // long tail
 
     osc.connect(g);
-    g.connect(this.master);
+    partialGain.connect(g);
+    g.connect(this.reverbBus);
     osc.start(now);
-    mod.start(now);
-    osc.stop(now + 1.7);
-    mod.stop(now + 1.7);
+    partial.start(now);
+    osc.stop(now + 3.6);
+    partial.stop(now + 3.6);
 
-    const bell: Bell = { osc, mod, gain: g, startedAt: now };
+    const bell: Bell = { osc, partial, gain: g };
     osc.onended = () => {
       const idx = this.bells.indexOf(bell);
       if (idx >= 0) this.bells.splice(idx, 1);
       try {
         g.disconnect();
-        modGain.disconnect();
+        partialGain.disconnect();
       } catch {
         /* already gone */
       }
@@ -175,9 +308,9 @@ export class FaceAudio {
   private stopBell(b: Bell, now: number): void {
     try {
       b.gain.gain.cancelScheduledValues(now);
-      b.gain.gain.setTargetAtTime(0.0001, now, 0.05);
-      b.osc.stop(now + 0.2);
-      b.mod.stop(now + 0.2);
+      b.gain.gain.setTargetAtTime(0.0001, now, 0.3); // gentle, no click
+      b.osc.stop(now + 0.9);
+      b.partial.stop(now + 0.9);
     } catch {
       /* already stopped */
     }
@@ -189,23 +322,26 @@ export class FaceAudio {
     const now = this.ctx.currentTime;
     try {
       this.master.gain.cancelScheduledValues(now);
-      this.master.gain.setTargetAtTime(0.0001, now, 0.1);
+      this.master.gain.setTargetAtTime(0.0001, now, 0.4); // slow fade
     } catch {
       /* ignore */
     }
-    this.droneOscs.forEach((o) => {
+    const stop = (o: OscillatorNode, at: number) => {
       try {
-        o.stop(now + 0.3);
+        o.stop(at);
       } catch {
         /* ignore */
       }
-    });
+    };
+    this.voices.forEach((v) => stop(v.osc, now + 1.2));
+    stop(this.breathLFO, now + 1.2);
+    stop(this.driftLFO, now + 1.2);
     this.bells.forEach((b) => this.stopBell(b, now));
     this.bells = [];
-    // close the context shortly after the fade so tails don't click.
+    // close the context after the fade so tails don't click.
     window.setTimeout(() => {
       if (this.ctx.state !== "closed") this.ctx.close().catch(() => {});
-    }, 400);
+    }, 1400);
   }
 }
 

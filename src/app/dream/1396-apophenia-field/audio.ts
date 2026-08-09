@@ -12,8 +12,8 @@
 //   Sustained voices are capped and the oldest sign is stolen past the cap.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_PEAK = 0.2; // ≤ 0.22 ceiling
 const MAX_GROUPS = 6; // sustained sign-pads on screen at once (≤ 12 sustained notes)

@@ -4,7 +4,7 @@
 
 ## What it is
 
-A playable psychedelic instrument. You raise your hands to a webcam and your
+A playable visionary instrument. You raise your hands to a webcam and your
 gestures rotate a 4D polytope (a tesseract / 8-cell or a 24-cell) through all
 six independent rotation planes of four-dimensional space at once. The polytope
 is stereographically projected 4D → 3D → 2D and drawn on a Canvas 2D surface as
@@ -17,7 +17,7 @@ in, and then the hands are clearly steering both the picture and the sound.
 
 ## Altered state
 
-- **State:** DMT-breakthrough hyperdimensional geometry — "more axes than
+- **State:** breakthrough-state hyperdimensional geometry — "more axes than
   physical reality allows," the more-real-than-real lattice that breakthrough
   reports describe.
 - **Pole:** intense.
@@ -75,8 +75,8 @@ rotate").
 
 The **Pardesco 4D Polytope Viewer** (4d.pardesco.com) — an interactive
 stereographic projection with true 4D rotation that reveals a polytope's hidden
-symmetries — and the DMT **"hyperdimensional / more-real-than-real geometry"**
-phenomenology (PSYCHEDELIC.md, Cluster 1). This piece turns that watch-only
+symmetries — and the visionary-realm **"hyperdimensional / more-real-than-real geometry"**
+phenomenology (VISIONARY.md, Cluster 1). This piece turns that watch-only
 viewer into a hand-played instrument.
 
 ## Honest self-assessment / limits

@@ -1,7 +1,7 @@
 # 1196 · Fibration
 
 ## The one question
-*What if you could float, drug-free, **inside the Hopf fibration** — the way the
+*What if you could float, purely through light and sound, **inside the Hopf fibration** — the way the
 3-sphere fibres into interlocked great circles — as an NDE/meditative
 cosmic-ambient space: hundreds of glowing, mutually-linked rings forming nested
 tori that slowly rotate through 4D, each ring's position ringing a shimmering FM

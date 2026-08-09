@@ -9,7 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import {
   RING,
   RING_SIZE,

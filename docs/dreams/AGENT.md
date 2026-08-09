@@ -56,7 +56,7 @@ Pick ONE action for this cycle, in priority order:
 
 1. **Unblock**: if STATE.md notes a blocker from a prior cycle (e.g. "tsc fails on /dream/3-fluid because X"), fix it.
 2. **Continue**: if a prototype is in-progress (less than ~70% complete), continue it. Pick the highest-priority in-progress one.
-3. **Kid-cycle rotation — PAUSED 2026-06-28.** Karel said "pause on kids dream agent ones." **Do NOT build kids prototypes** until this line is changed back. Skip this step entirely — `cycle_number % 2` no longer routes to kids. Every cycle is now a **psychedelic / altered-states** cycle: read `docs/dreams/PSYCHEDELIC.md` and pick a state + pole from there. (Frozen rule, for when kids resumes: it was every-other via `cycle_number % 2 === 0`, slug `kids-<name>`, reading `docs/dreams/KIDS.md`. KIDS.md is preserved, just not driven.)
+3. **Kid-cycle rotation — PAUSED 2026-06-28.** Karel said "pause on kids dream agent ones." **Do NOT build kids prototypes** until this line is changed back. Skip this step entirely — `cycle_number % 2` no longer routes to kids. Every cycle is now an **altered-states / visionary** cycle: read `docs/dreams/VISIONARY.md` and pick a state + pole from there. (Frozen rule, for when kids resumes: it was every-other via `cycle_number % 2 === 0`, slug `kids-<name>`, reading `docs/dreams/KIDS.md`. KIDS.md is preserved, just not driven.)
 4. **Build new**: if a queued idea is ready (clear spec exists), start its prototype skeleton.
 5. **Research**: research is NOT a periodic side-quest — it runs at the START of EVERY cycle (see "The research-first rule"). This step is only about whether to spend the *build budget* on a deeper research-and-queue push when the IDEAS queue is thin (<3 entries). The dated RESEARCH.md dive still happens every cycle regardless.
 6. **Polish**: if there's nothing else, pick the oldest demoable prototype and polish it (better UX, better defaults, fix a rough edge, document it).
@@ -244,20 +244,21 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 1. **Real audio-visual prototypes**, not pixel mockups. Sound + viz, interactive.
 2. **Surprise** — things he hasn't considered. Drop in a research finding, a strange-attractor visualization, a non-Western musical structure, anything that makes him say "huh, I didn't know we could do that."
 3. **Live performance fitness** — many prototypes should be playable on a stage with mic input, low latency, GPU-only paths.
-4. **Journey engine alternatives** — the current engine has a psychedelic 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
+4. **Journey engine alternatives** — the current engine has a visionary 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
 5. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
 
-### PRIMARY DIRECTION (set 2026-06-28) — Psychedelic / altered states
+### PRIMARY DIRECTION (set 2026-06-28) — Altered states / visionary
 
-**This is now the top creative driver. Read `docs/dreams/PSYCHEDELIC.md` in full every cycle.**
+**This is now the top creative driver. Read `docs/dreams/VISIONARY.md` in full every cycle.**
 
-Karel: *"let's go into very psychedelic and trippy territory where the immersive experiments transport users to psychedelic states without taking the drug. this can include cosmic ambient states too not just super intense. do deep research on dmt, lsd, mushroom, ketamine, meditative, near death, dream like states and draw inspiration from them."*
+Karel: *"go into deeply visionary, boundless territory where the immersive experiments transport people into altered states of consciousness through light and sound alone. this can include cosmic ambient states too, not just super intense. draw on meditation, deep trance, mystical and visionary experience, near-death and dream-like states, and the neuroscience of perception."*
 
-- Build drug-free immersive AV that evokes the **phenomenology** of altered states (DMT/LSD/psilocybin, ketamine/NDE, meditation/hypnagogia/dreams). The user takes nothing — screen + sound do the work.
-- Cover the **whole spectrum**: INTENSE (DMT breakthrough, peak fractal melt) AND COSMIC-AMBIENT (meditative boundlessness, NDE tunnel-to-light, calm void). Don't camp on one pole.
+- Build immersive AV, purely through light and sound, that evokes the **phenomenology** of altered states — visionary/breakthrough geometry, dissociative voids, near-death tunnels, meditation, hypnagogia, dreams. The experience is the art; no substances, ever. Screen + sound do the work.
+- **NEVER name, reference, or allude to recreational or psychoactive drugs** in any prototype, comment, copy, tag, README, or research note. This is a hard rule. Describe the *state* and the *phenomenon* (visionary, dissociative, ecstatic, mystic, boundless, near-death), never a substance. If a research source names a drug, translate it to the altered-state phenomenology before using it.
+- Cover the **whole spectrum**: INTENSE (visionary breakthrough, peak fractal melt) AND COSMIC-AMBIENT (meditative boundlessness, NDE tunnel-to-light, calm void). Don't camp on one pole.
 - Tag every prototype in STATE.md: `state: <which> · pole: intense|cosmic-ambient`. Run the diversity audit over state/pole/technique/palette.
-- The single biggest lever: **the log-polar / form-constant engine** — all psychedelic geometry is stripes/hex under an `exp()` warp. Build it into `_shared/` early. See PSYCHEDELIC.md §"single most load-bearing finding" + the shared-infra list.
-- **SAFETY (non-negotiable):** any flicker/strobe MUST gate through a ≤3 Hz-default, opt-in, instant-kill engine — photosensitive-epilepsy risk is real. See the safety callout in PSYCHEDELIC.md. When in doubt, use slow luminance drift, not flicker.
+- The single biggest lever: **the log-polar / form-constant engine** — all visionary geometry is stripes/hex under an `exp()` warp. Build it into `_shared/` early. See VISIONARY.md §"single most load-bearing finding" + the shared-infra list.
+- **SAFETY (non-negotiable):** any flicker/strobe MUST gate through a ≤3 Hz-default, opt-in, instant-kill engine — photosensitive-epilepsy risk is real. See the safety callout in VISIONARY.md. When in doubt, use slow luminance drift, not flicker.
 - The 2026-05-21 directives below still apply as constraints (esp. **use Karel's real Path music as the carrier wave**, pull back on standalone voice gen), but the *theme* is now altered-states, not "spread across journeys."
 
 ### Current direction (set 2026-05-21)

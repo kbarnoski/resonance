@@ -213,7 +213,7 @@ export default function BoundlessBreathPage() {
               listeners&apos; postural sway. We pair it with <em>visual</em>{" "}
               vection: ~120k stars stream radially past the camera (optic-flow
               expansion), so the eyes feel the same ascent the ears do. Transport
-              without the drug.
+              purely through light and sound.
             </p>
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">References.</span> Roger Shepard

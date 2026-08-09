@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Ember Replay — audio engine
 //
-// A drug-free embodiment of a 2026 eLife computational model of classical
-// psychedelics: perception shifts from bottom-up sensory inference toward a
+// A purely musical embodiment of a 2026 eLife computational model of the
+// visionary state: perception shifts from bottom-up sensory inference toward a
 // TOP-DOWN generative REPLAY of a learned world, so a hallucination looks less
 // like noise and more like recombined wake-time memory.
 //
@@ -29,7 +29,7 @@
 // No Math.random / Date.now anywhere.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 // ── seeded PRNG (mulberry32) ─────────────────────────────────────────────────
 export function mulberry32(seed: number): () => number {

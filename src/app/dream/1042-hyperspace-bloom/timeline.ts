@@ -1,11 +1,11 @@
 /* ── 1042-hyperspace-bloom · auto-journey timeline ───────────────────────
  *
  *  A single scalar `t` (seconds since "Begin descent") drives a ~75s journey
- *  that rises into the DMT-style "breakthrough" and settles. Everything
+ *  that rises into the visionary-style "breakthrough" and settles. Everything
  *  (rotation speed, saturation, neon brightness, projection bloom) peaks at
  *  the breakthrough, then eases back into a sustained afterglow that loops.
  *
- *  Pure phenomenology — no medical claims. Shape inspired by trip-report
+ *  Pure phenomenology — no medical claims. Shape inspired by visionary-state
  *  arcs: build-up → onset → breakthrough plateau → gentle integration.
  */
 

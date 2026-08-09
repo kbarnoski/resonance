@@ -126,7 +126,9 @@ export default function SkyStrataPage() {
   const draggingRef = useRef<boolean>(false);
 
   const [started, setStarted] = useState(false);
-  const [sky, setSky] = useState<Sky>(() => simulateSky());
+  // Seed with a fixed timestamp so server and client render identical initial
+  // markup (avoids a hydration mismatch); the mount effect immediately pulls live.
+  const [sky, setSky] = useState<Sky>(() => simulateSky(0));
   const [notesOpen, setNotesOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -136,9 +138,14 @@ export default function SkyStrataPage() {
 
   // ── Live polling (runs regardless of audio so the SVG is always current) ─────
   const pull = useCallback(async () => {
-    const sample = await fetchSky();
-    setSky(sample);
-    audioRef.current?.applyDrivers(skyToDrivers(sample));
+    try {
+      const sample = await fetchSky();
+      setSky(sample);
+      audioRef.current?.applyDrivers(skyToDrivers(sample));
+    } catch {
+      // Live feed failed or returned an unexpected shape — keep the last good
+      // (simulated) sky drifting rather than crashing the view.
+    }
   }, []);
 
   useEffect(() => {

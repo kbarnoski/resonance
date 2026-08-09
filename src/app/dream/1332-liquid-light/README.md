@@ -2,7 +2,7 @@
 
 ## The one question
 
-**What if the 1960s psychedelic liquid light show — molten pools of colored oil
+**What if the 1960s visionary liquid light show — molten pools of colored oil
 pushed across a projector by heat and gravity — were an _instrument you pour with
 your phone_, tilting to make the color flow and bloom?**
 

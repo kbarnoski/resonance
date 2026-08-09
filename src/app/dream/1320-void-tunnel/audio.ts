@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// 1320-khole-tunnel · audio.ts — the desynced rhythmic pulse, the piece's IDENTITY.
+// 1320-void-tunnel · audio.ts — the desynced rhythmic pulse, the piece's IDENTITY.
 //
 //   The spine is NOT a "strike-a-bell" texture — it is a steady rhythmic THROB
 //   read through the desync engine. Every frame the page hands us the LAGGED
@@ -13,11 +13,11 @@
 //   DynamicsCompressor limiter on the master. Full teardown on stop().
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
-export interface KholeAudio {
+export interface VoidAudio {
   /** Feed the LAGGED pulse (0..1), the dissociation depth (0..1), and dt. */
   update(laggedPulse: number, dissociation: number, dtSeconds: number): void;
   stop(): void;
@@ -25,7 +25,7 @@ export interface KholeAudio {
 
 const MASTER_PEAK = 0.26; // ≤ 0.28 ceiling
 
-export function makeKholeAudio(ctx: AudioContext): KholeAudio {
+export function makeVoidAudio(ctx: AudioContext): VoidAudio {
   const now0 = ctx.currentTime;
 
   // ── master bus: limiter → fade-in gain → destination ──
@@ -79,7 +79,7 @@ export function makeKholeAudio(ctx: AudioContext): KholeAudio {
   // ── depth beds (thin) ──
   const drone: DroneBank = startDroneBank(ctx, master, { root: 41, peakGain: 0.1 });
   const shepard: ShepardEngine = startShepard(ctx, verb.input, {
-    dir: -1, // downward plunge — the NDE / k-hole descent
+    dir: -1, // downward plunge — the NDE / dissociative-void descent
     peakGain: 0.16,
   });
 

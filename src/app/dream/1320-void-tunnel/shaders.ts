@@ -1,4 +1,4 @@
-/* ── 1320-khole-tunnel · GLSL for the raymarched dissociative void ─────────
+/* ── 1320-void-tunnel · GLSL for the raymarched dissociative void ─────────
  *
  *  A full-screen WebGL2 fragment shader raymarching a vast dark void. The
  *  disembodied viewer drifts forward toward a distant warm being-of-light.

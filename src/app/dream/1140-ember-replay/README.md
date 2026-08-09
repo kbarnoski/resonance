@@ -2,13 +2,13 @@
 
 _Route: `/dream/1140-ember-replay`_
 
-`state: psychedelic hallucination as top-down replay of a learned world · pole: cosmic-ambient (warm, dreamlike)`
+`state: visionary hallucination as top-down replay of a learned world · pole: cosmic-ambient (warm, dreamlike)`
 
 `ambition: #2 (5 subsystems) + #3 (named refs) + #5 (fresh research <30d, implemented as the replay engine)`
 
 ## The one question
 
-**What if a psychedelic hallucination is not random noise but the mind
+**What if a visionary hallucination is not random noise but the mind
 REPLAYING a learned world top-down — and we fed it Karel's real recorded piano
 to replay?** You hear the actual piano dissolve and re-bloom as memory, and
 watch each recalled grain flare as a warm ember in a slowly-breathing
@@ -16,10 +16,10 @@ constellation.
 
 ## Fresh research anchor
 
-A **2026 eLife computational study** modelled classical psychedelics as shifting
+A **2026 eLife computational study** modelled classical visionary states as shifting
 perception away from bottom-up sensory inference toward a top-down generative
 **REPLAY of a learned world** — under that model a hallucination looks less like
-noise and more like recombined wake-time memory. This piece is a drug-free
+noise and more like recombined wake-time memory. This piece is a purely musical
 embodiment of that model, with Karel's real music standing in for the "learned
 world." The replay walk _is_ the implementation of the eLife idea, not a
 decoration on top of it.
@@ -66,7 +66,7 @@ Steerable live: **Replay density**, **Drift / mutation**, **Register**, **Bloom*
 
 ## References / lineage
 
-- The **2026 eLife** top-down-replay-of-a-learned-world psychedelic model
+- The **2026 eLife** top-down-replay-of-a-learned-world visionary-state model
   (implemented as the replay engine).
 - **Refik Anadol** — data / memory treated as living pigment.
 - **Brian Eno** — generative / systems music that evolves without repeating.

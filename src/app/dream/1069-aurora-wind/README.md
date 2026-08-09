@@ -2,7 +2,7 @@
 
 **What if the real, LIVE solar wind streaming past Earth right now played a cosmic-ambient aurora you fall into?**
 
-A drug-free *altered-states* piece — the meditative, oceanic pole of boundlessness. On a single **Begin** gesture it fetches NOAA SWPC's live space-weather feeds and lets the real wind drive an endless rising glissando and a field of drifting auroral curtains. It keeps evolving (the feed is polled every ~60 s) and it runs on slowly-drifting **synthetic** data when the network fails, so it **always** sounds and moves with zero network and zero interaction beyond Begin.
+An *altered-states* piece driven purely through light and sound — the meditative, oceanic pole of boundlessness. On a single **Begin** gesture it fetches NOAA SWPC's live space-weather feeds and lets the real wind drive an endless rising glissando and a field of drifting auroral curtains. It keeps evolving (the feed is polled every ~60 s) and it runs on slowly-drifting **synthetic** data when the network fails, so it **always** sounds and moves with zero network and zero interaction beyond Begin.
 
 We sonify the **real** solar wind, not a fake. The HUD says which: a green `live · NOAA SWPC` dot when data is real, an amber `synthetic fallback` dot otherwise. (In 2026 we're near solar maximum, so live aurora activity tends to be high.)
 
@@ -45,13 +45,13 @@ This piece stands in that lineage: it sonifies the **real** solar wind, not a st
 
 ## Design notes
 
-- Audio composes the shared psych engines (`startShepard`, `startDroneBank`, `createVoidReverb`) — no bespoke synthesis beyond the shimmer ping.
+- Audio composes the shared visionary engines (`startShepard`, `startDroneBank`, `createVoidReverb`) — no bespoke synthesis beyond the shimmer ping.
 - Everything is smoothed: live-data jumps glide into both sound and image over ~1 s, so a new 5-minute sample never snaps.
 - After the one Begin gesture the piece is autonomous: it drifts, polls, and re-paints on its own.
 
 ## Files
 - `page.tsx` — Begin gesture, render/audio loop, live HUD, in-page design-notes toggle.
 - `data.ts` — NOAA SWPC fetch + synthetic fallback.
-- `audio.ts` — composes the shared psych engines + shimmer ping; all data→sound mapping.
+- `audio.ts` — composes the shared visionary engines + shimmer ping; all data→sound mapping.
 - `scene.ts` — three.js auroral curtains + star backdrop; all data→visual mapping.
 - `readme.ts` — the in-page design-notes prose.

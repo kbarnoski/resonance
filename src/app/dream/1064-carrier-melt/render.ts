@@ -12,7 +12,7 @@
 // Audio drives structure; the pointer (position = warp focus, speed = warp gain
 // + saturation) is the instrument. NO WebGL fragment shader — pure Canvas2D.
 //
-// We mirror _shared/psych/logpolar.ts math (screenToCortex / cortexToScreen /
+// We mirror _shared/visionary/logpolar.ts math (screenToCortex / cortexToScreen /
 // formConstant) inline so the CPU warp stays self-contained and fast.
 
 import type { SpectralEnergy } from "./audio";
@@ -80,7 +80,7 @@ export function createMeltRenderer(canvas: HTMLCanvasElement): MeltRenderer {
   };
   resize();
 
-  // ── log-polar / form-constant helpers (mirror _shared/psych/logpolar.ts) ──
+  // ── log-polar / form-constant helpers (mirror _shared/visionary/logpolar.ts) ──
   const screenToCortexU = (x: number, y: number): number =>
     Math.log(Math.max(Math.hypot(x, y), 1e-4));
   const screenToCortexV = (x: number, y: number): number => Math.atan2(y, x);

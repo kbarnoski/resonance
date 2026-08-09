@@ -10,8 +10,8 @@ import { computeArc } from "./arc";
 // 1043 — Dreamachine
 //
 // THE QUESTION: "What if Resonance could move your OWN visual cortex into
-// hallucinated geometry — spirals, tunnels, cobwebs, honeycombs — with no drug,
-// just safe rhythmic light + a uniform field + drone, the way Brion Gysin's
+// hallucinated geometry — spirals, tunnels, cobwebs, honeycombs — purely through
+// light, just safe rhythmic light + a uniform field + drone, the way Brion Gysin's
 // Dreamachine (1959) and modern Ganzflicker do?"
 //
 // The screen does NOT draw the hallucination. It supplies a uniform Ganzfeld
@@ -287,7 +287,7 @@ export default function Page() {
               Dreamachine
             </h1>
             <p className="mt-4 text-base leading-relaxed text-foreground">
-              A drug-free altered-states field. Dim your lights, soft-focus the
+              A meditative altered-states field. Dim your lights, soft-focus the
               center, and let your own visual cortex draw the patterns — spirals,
               tunnels, cobwebs, honeycombs. The screen only offers a uniform glow,
               a gentle rhythm, and a drone; the geometry comes from you.

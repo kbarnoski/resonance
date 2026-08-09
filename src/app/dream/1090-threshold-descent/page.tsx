@@ -310,7 +310,7 @@ export default function ThresholdDescentPage() {
             <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">The question:</span> what if Resonance
-              could induce a near-death / ketamine &ldquo;tunnel-to-the-light&rdquo;
+              could induce a near-death / dissociative &ldquo;tunnel-to-the-light&rdquo;
               dissolution with almost <em>no screen</em> — using only spatial audio
               and the pace of your own body, so you can close your eyes?
             </p>
@@ -355,7 +355,7 @@ export default function ThresholdDescentPage() {
               releases you back to the surface.
             </p>
             <p className="mt-6 font-mono text-sm text-muted-foreground">
-              state: NDE tunnel-to-light / ketamine dissolution · pole:
+              state: NDE tunnel-to-light / dissociative dissolution · pole:
               cosmic-ambient → luminous-intense
             </p>
           </div>

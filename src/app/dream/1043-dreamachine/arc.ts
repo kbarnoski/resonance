@@ -3,7 +3,7 @@
 //
 // One timeline drives everything so minute 5 ≠ minute 1. Soft transitions only.
 //   onset    -> still, faint field, no pulse
-//   come-up  -> drift begins, pulse depth fades in, drone warms
+//   rise  -> drift begins, pulse depth fades in, drone warms
 //   plateau  -> gentle alpha-paced pulse + drone swell (the deepest stretch)
 //   return   -> pulse slows + fades, settles to a calm steady field
 //
@@ -35,7 +35,7 @@ type Key = {
 
 const KEYS: Key[] = [
   { name: "Onset", at: 0.0, field: 0.18, depth: 0.0, rate: 0.0, drone: 0.0, hint: 0.0 },
-  { name: "Come-up", at: 0.16, field: 0.42, depth: 0.35, rate: 0.4, drone: 0.55, hint: 0.18 },
+  { name: "Rise", at: 0.16, field: 0.42, depth: 0.35, rate: 0.4, drone: 0.55, hint: 0.18 },
   { name: "Plateau", at: 0.42, field: 0.6, depth: 1.0, rate: 1.0, drone: 1.0, hint: 0.5 },
   { name: "Plateau", at: 0.7, field: 0.58, depth: 0.92, rate: 0.85, drone: 0.95, hint: 0.45 },
   { name: "Return", at: 0.9, field: 0.4, depth: 0.3, rate: 0.3, drone: 0.5, hint: 0.15 },

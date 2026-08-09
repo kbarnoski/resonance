@@ -1,6 +1,6 @@
 # 1478 · Sema Ascent
 
-**One-line pitch:** A drug-free Sufi *sema* rendered as a self-evolving six-minute climb — nested rings of light spin at locked polyrhythmic ratios, accelerate, phase-lock into a white-hot peak, then set you gently down. An **ascent**, not a dissolve.
+**One-line pitch:** A Sufi *sema* — purely through light and sound — rendered as a self-evolving six-minute climb — nested rings of light spin at locked polyrhythmic ratios, accelerate, phase-lock into a white-hot peak, then set you gently down. An **ascent**, not a dissolve.
 
 Route: `/dream/1478-sema-ascent`
 

@@ -6,8 +6,8 @@ export const README = `Aurora Wind
 What if the real, LIVE solar wind streaming past Earth right now played a
 cosmic-ambient aurora you fall into?
 
-This is a drug-free altered-states piece — the meditative, oceanic pole of
-boundlessness. On a single "Begin" gesture it fetches NOAA SWPC's live
+This is an altered-states piece — the meditative, oceanic pole of
+boundlessness, reached purely through light and sound. On a single "Begin" gesture it fetches NOAA SWPC's live
 space-weather feeds and lets the real wind drive an endless rising glissando and
 a field of drifting auroral curtains. It keeps evolving (the feed is polled every
 60 seconds) and it runs on slowly-drifting synthetic data when the network fails,
@@ -58,7 +58,7 @@ NAMED REFERENCE — the magnetosphere-sonification lineage
   stand-in.
 
 DESIGN NOTES
-  • Audio composes the shared psych engines (startShepard, startDroneBank,
+  • Audio composes the shared visionary engines (startShepard, startDroneBank,
     createVoidReverb) — no bespoke synthesis beyond the shimmer ping.
   • Everything is smoothed: live-data jumps glide into both sound and image over
     ~1 s so a new 5-minute sample never snaps.

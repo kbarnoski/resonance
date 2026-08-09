@@ -18,7 +18,7 @@ import {
 } from "./modes";
 import { createScene, type SceneHandle } from "./scene";
 import { startAudio, type AudioEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1280 · EARTH BELL

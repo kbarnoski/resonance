@@ -1,8 +1,9 @@
 # 1041 · NDE Tunnel
 
 **The one question:** What if a screen could evoke the phenomenology of the
-near-death / ketamine experience — leaving the body, drifting through a vast
-dark void, down a tunnel toward a being of light — *drug-free*?
+near-death / dissociative experience — leaving the body, drifting through a vast
+dark void, down a tunnel toward a being of light — purely through light and
+sound?
 
 A full-screen WebGL2 raymarched fragment shader flies you endlessly down a
 curving wormhole toward a growing being of light, while a pure Web Audio
@@ -52,7 +53,7 @@ Pure Web Audio API:
 - A **convolution-reverb void** — a `ConvolverNode` fed a *synthetically
   generated* impulse response (exponentially-decaying, low-pass-filtered noise,
   ~4.5 s tail). No external asset; cathedral/underwater vastness.
-- **Dissociation desync.** The audio envelope eases toward the visual `light`
+- **Dissociative desync.** The audio envelope eases toward the visual `light`
   value *slowly*, so the audio swell arrives a beat after the visual surge —
   the two streams the brain normally binds are gently decoupled.
 - A single **time dilation** `TIME_SCALE` stretches the whole clock (visual
@@ -73,7 +74,7 @@ Pause and unmount.
   oxygen/blood-pressure loss constricts the visual field toward the center,
   the leading physiological account of the "tunnel," rendered here as the
   animated vignette.
-- **Ketamine as an NMDA-receptor antagonist** — its thalamocortical
+- **NMDA-receptor antagonism and dissociation** — thalamocortical
   disconnection and dissociative phenomenology motivate the deliberate
   **audio-visual desync**: cross-modal binding is loosened, not synchronized.
 - **Pauline Oliveros**, *Deep Listening* — convolution-reverb vastness and slow
@@ -81,8 +82,8 @@ Pause and unmount.
 
 ## Honesty note
 
-DMT / endogenous-tryptamine theories of the NDE (e.g. speculation about a
-near-death pineal DMT release) are **unproven and contested**. This prototype
+Endogenous-tryptamine theories of the NDE (e.g. speculation about a
+near-death pineal tryptamine release) are **unproven and contested**. This prototype
 does not claim any mechanism for the near-death experience. It evokes the
 reported *phenomenology* — the felt shape of the journey — and nothing more.
 

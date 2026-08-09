@@ -3,7 +3,8 @@
 // ════════════════════════════════════════════════════════════════════════════
 // Fibration (1196)
 //
-// THE ONE QUESTION: "What if you could float, drug-free, INSIDE the Hopf
+// THE ONE QUESTION: "What if you could float, purely through light and sound,
+// INSIDE the Hopf
 // fibration — the way the 3-sphere fibres into interlocked great circles — as an
 // NDE/meditative cosmic-ambient space: hundreds of glowing, mutually-linked
 // rings forming nested tori that slowly rotate through 4D, each ring's position
@@ -383,7 +384,7 @@ export default function FibrationPage() {
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
           <div className="flex flex-col items-center gap-5 rounded-2xl border border-border bg-black/45 px-8 py-7 text-center backdrop-blur-md">
             <p className="max-w-md text-base text-foreground">
-              A drug-free, boundless cosmic-ambient space. The 3-sphere fibres
+              A boundless, meditative cosmic-ambient space. The 3-sphere fibres
               into linked circles; a slow 4D rotation carries you through them
               while the geometry sings in FM bells.
             </p>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { DissolveAudio } from "./audio";
 import {
   MAX_NOTES,
@@ -14,14 +14,14 @@ import {
 } from "./field";
 
 /**
- * 1254 · dissolve — the K-hole where the senses stop agreeing.
+ * 1254 · dissolve — the dissociative void where the senses stop agreeing.
  *
  * You play the computer keyboard (a floating whole-tone scale). At first the sound
  * you hear and the ring you see are tightly bound. Over the session the AUDIO-VISUAL
  * DESYNC ENGINE unbinds them: the visual response lags, drifts out of phase, dilates
  * into slow motion, thins its slow rhythm while a fine grain climbs, and shears into
  * a melting void. "Re-bind" snaps them back so you feel the difference.
- * state: ketamine · pole: dissociative.
+ * state: deep dissociation · pole: dissociative.
  */
 
 // Home-row keys → whole-tone scale degrees 0..8.
@@ -397,7 +397,7 @@ export default function DissolvePage() {
           bound together — then the senses slowly stop agreeing.
         </p>
         <p className="mt-1 font-mono text-sm text-muted-foreground">
-          state: ketamine · pole: dissociative
+          state: deep dissociation · pole: dissociative
         </p>
       </div>
 
@@ -467,7 +467,7 @@ export default function DissolvePage() {
 
         <p className="mb-3 font-mono text-sm text-muted-foreground">
           Keys A S D F G H J K L = a floating whole-tone scale · Spacebar = re-bind ·
-          drag the slider to force the K-hole
+          drag the slider to force the dissociative void
         </p>
 
         {/* On-screen pads (phone-friendly, no physical keyboard needed) */}

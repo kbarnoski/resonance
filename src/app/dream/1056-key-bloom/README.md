@@ -1,10 +1,10 @@
 # 1056 · Key Bloom
 
-**What if a keyboard were a psychedelic organ — each key you play blooms a
+**What if a keyboard were a visionary organ — each key you play blooms a
 chrysanthemum of form-constant geometry, and chords stack into a living mandala
 you compose in real time?**
 
-A drug-free altered-states instrument. `state: psilocybin · pole: intense-warm`.
+An altered-states instrument driven purely through light and sound. `state: warm ecstatic · pole: intense-warm`.
 This is something you **play**, not a screensaver: press a key and you sound a
 warm just-intonation tone *and* seed a blooming form-constant figure that grows,
 folds into an N-fold kaleidoscope ("chrysanthemum opening"), and slowly fades.
@@ -44,7 +44,7 @@ That is four subsystems, above the ambition floor of three.
 
 ## How it composes the shared engines
 
-Imported from `src/app/dream/_shared/psych/`:
+Imported from `src/app/dream/_shared/visionary/`:
 
 - **`logpolar.ts`** — the load-bearing piece. Each bloom's petals are laid out in
   **cortical space** and warped to the screen with `cortexToScreen(u, v)`, with
@@ -69,10 +69,10 @@ Imported from `src/app/dream/_shared/psych/`:
   hallucinations and the retino-cortical (log-polar) map; the formal basis for
   generating stripes/hexagons in cortical space and warping to screen.
 - **Heinrich Klüver** — the four "form constants" (lattices/honeycombs, cobwebs,
-  tunnels/funnels, spirals) recurring across psilocybin, LSD, migraine, flicker.
+  tunnels/funnels, spirals) recurring across visionary states, migraine, flicker.
 - **Iñigo Quílez** — kaleidoscope / domain-folding and domain-warp techniques
   (the N-fold wedge mirroring used for the "chrysanthemum opening").
-- **Psilocybin "open-eye fractal enhancement"** phenomenology — slow organic
+- **Warm-ecstatic "open-eye fractal enhancement"** phenomenology — slow organic
   bloom, warm-saturated palette, breathing geometry that intensifies then settles.
 
 ## Honest notes / unverified

@@ -10,7 +10,7 @@ A euphoric EDM **build-and-drop** journey for the Resonance dream lab.
 > the next DROP with one key?
 
 It is a **journey-engine alternative**: where the app's usual arc is
-psychedelic, this one is an EDM build/drop arc that lives squarely in the
+visionary, this one is an EDM build/drop arc that lives squarely in the
 ecstatic / euphoric / luminous register. Triumphant, never dark.
 
 ## How to use

@@ -3,7 +3,8 @@
 **What if you could reach into the equation behind natural form and play the whole
 morphospace of alien organisms as an instrument — each shape ringing its own chord?**
 
-A drug-free psychedelic instrument built on the **Superformula**. You drag across
+A visionary instrument — purely through light and sound — built on the
+**Superformula**. You drag across
 the canvas to morph a 3D **supershape** live — radiolaria, sea-urchins, diatoms,
 chrysanthemum blooms unfurling and breathing — while the audio re-tunes itself from
 the shape's symmetry. It is Ernst Haeckel's *Kunstformen der Natur* made playable.

@@ -13,7 +13,7 @@
 //   DynamicsCompressor limiter. Voice count is fixed and small.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
 
 const MASTER_PEAK = 0.28;
 const BASE_FREQ = 138; // Hz — low, warm register where beats are clearest

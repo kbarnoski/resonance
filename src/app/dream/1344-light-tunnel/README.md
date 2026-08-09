@@ -59,11 +59,11 @@ See `audio.ts`. Built entirely in Web Audio, no files:
 
 - A slow **Shepard–Risset ascent** — octave-spaced sine partials under a fixed
   Gaussian window, gliding upward forever (the auditory barber-pole). Uses the
-  shared `_shared/psych/shepard.ts` engine.
-- A warm **just-intonation drone bed** (`_shared/psych/droneBank.ts`) on an E1
+  shared `_shared/visionary/shepard.ts` engine.
+- A warm **just-intonation drone bed** (`_shared/visionary/droneBank.ts`) on an E1
   sub floor.
 - Both poured into a synthetic **convolution void**
-  (`_shared/psych/convolutionVoid.ts`).
+  (`_shared/visionary/convolutionVoid.ts`).
 - **Approach speed is the single drive**: it speeds the glide, opens a master
   low-pass, and lifts the wet tail toward the being-of-light moment.
 - A **~0.1 Hz breath swell** breathes over the whole thing.

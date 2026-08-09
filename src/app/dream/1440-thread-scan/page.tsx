@@ -17,7 +17,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { buildHilbert, headAt, type HilbertCurve } from "./hilbert";
 import { PaintField } from "./field";
 import { ThreadRenderer, type Tier, type DrawState } from "./renderer";

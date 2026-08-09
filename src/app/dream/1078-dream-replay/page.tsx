@@ -604,9 +604,9 @@ export default function DreamReplayPage() {
             The <span className="font-mono text-violet-300">α</span> parameter runs
             0→1 across the arc. This is the <strong>oneirogen parameter</strong> of
             Bredenberg et al., <em>&ldquo;Modeling the hallucinatory effects of
-            classical psychedelics in terms of replay-dependent plasticity
+            classical visionary states in terms of replay-dependent plasticity
             mechanisms,&rdquo;</em> eLife 2026;14:RP105968 — where a 2026 model casts
-            psychedelic hallucination as <strong>top-down generative replay of the
+            visionary hallucination as <strong>top-down generative replay of the
             recently-learned world</strong>, not bottom-up sensory noise. α=0 is
             awake (bottom-up / basal); α=1 is fully dreaming (top-down / apical
             replay dominating).
@@ -622,7 +622,7 @@ export default function DreamReplayPage() {
           </p>
           <p className="mb-3">
             Contrast <strong>Carhart-Harris &amp; Friston&apos;s REBUS</strong>{" "}
-            (&ldquo;relaxed beliefs under psychedelics&rdquo;), where flattened
+            (&ldquo;relaxed beliefs under visionary states&rdquo;), where flattened
             high-level priors let bottom-up signals through — a{" "}
             <em>relaxation</em> account rather than an active <em>generative
             replay</em> one. Both live inside predictive-processing / active-

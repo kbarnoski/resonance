@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import {
   deriveDrive,
   neutralParams,
@@ -16,7 +16,7 @@ import { makeAudio, type FaceAudio } from "./audio";
 
 /* ------------------------------------------------------------------ *
  * 1057 — Face Bloom
- * Your FACE is the psychedelic instrument. MediaPipe Face Landmarker
+ * Your FACE is the visionary instrument. MediaPipe Face Landmarker
  * reads 52 live blendshape expression coefficients + a head-pose matrix
  * and sculpts a log-polar form-constant kaleidoscope (Canvas2D) and its
  * just-intonation organ. jawOpen blooms the fold-count, brow raises ring
@@ -323,8 +323,8 @@ export default function FaceBloom() {
             Face Bloom
           </h1>
           <p className="mt-2 max-w-xl text-base text-foreground">
-            Your face is the psychedelic instrument. Your expressions sculpt an
-            altered-state visual field and its sound — no drug, just emotion.
+            Your face is the visionary instrument. Your expressions sculpt an
+            altered-state visual field and its sound — no substances, just emotion.
           </p>
           <p className={`mt-3 font-mono text-base ${statusColor}`}>
             {statusLine[status]}
@@ -455,7 +455,7 @@ export default function FaceBloom() {
               </li>
               <li>
                 <span className="text-violet-300">Turn / tilt your head</span> —
-                sets spiral handedness, inward come-up drift, and tours
+                sets spiral handedness, inward ascent drift, and tours
                 tunnel{"→"}spoke{"→"}spiral{"→"}honeycomb.
               </li>
             </ul>

@@ -252,11 +252,11 @@ export default function TimeDissolvePage() {
             <p className="text-base text-muted-foreground">
               <span className="text-violet-300">The question:</span> what if we
               could dissolve the felt flow and grain of <em>time</em> — the way
-              ketamine / NDE time-dilation makes onset and echo merge and the
+              dissociative / NDE time-dilation makes onset and echo merge and the
               floor of pitch drop away forever?
             </p>
             <p className="text-base text-muted-foreground">
-              <span className="text-violet-300">State · pole:</span> ketamine /
+              <span className="text-violet-300">State · pole:</span> dissociative /
               NDE temporal dissolution &amp; oceanic boundlessness ·
               cosmic-ambient.
             </p>

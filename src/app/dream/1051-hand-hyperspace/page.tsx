@@ -694,7 +694,7 @@ export default function HandHyperspace() {
             </p>
             <p className="mt-3 text-muted-foreground">
               Reference: the Pardesco 4D Polytope Viewer (4d.pardesco.com) and
-              the DMT {"“"}hyperdimensional / more-real-than-real
+              the visionary-state {"“"}hyperdimensional / more-real-than-real
               geometry{"”"} phenomenology — turned from a watch-only viewer
               into a hand-played instrument.
             </p>

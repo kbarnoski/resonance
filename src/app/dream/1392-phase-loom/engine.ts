@@ -10,7 +10,7 @@
 // interference beats stay consonant.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 // Just-intonation major pentatonic, two octaves, over a C3 base.
 const BASE = 130.81; // C3

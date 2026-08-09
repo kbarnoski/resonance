@@ -8,7 +8,7 @@
 //   field is genuinely one stripe/hex pattern seen through the log-polar warp —
 //   tunnels, spokes, spirals, honeycombs — folded N-fold into a kaleidoscope.
 //
-//   The face drives it through DriveState (see mapping.ts). Warm psilocybin
+//   The face drives it through DriveState (see mapping.ts). Warm ember
 //   palette only: deep ember → rust → amber → gold; never cold.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -18,10 +18,10 @@ import {
   honeycomb,
   FORM_PHI,
   type FormConstant,
-} from "../_shared/psych/logpolar";
+} from "../_shared/visionary/logpolar";
 import { formBlend, type DriveState } from "./mapping";
 
-/** Warm psilocybin ramp: t in [0,1] → [r,g,b]. ember→rust→amber→gold.
+/** Warm ember ramp: t in [0,1] → [r,g,b]. ember→rust→amber→gold.
  *  warmth shifts the ramp hotter; never produces a cold hue. */
 function emberColor(t: number, warmth: number, light: number): string {
   // anchor stops (deep ember, rust, amber, gold) in RGB
@@ -68,7 +68,7 @@ function fieldAt(
 }
 
 export interface RenderState {
-  /** smoothed phase (inward come-up drift). */
+  /** smoothed phase (inward ascent drift). */
   phase: number;
   /** smoothed spin angle from handedness. */
   spin: number;
@@ -164,7 +164,7 @@ export function drawFrame(
 
   ctx.globalAlpha = 1;
 
-  // warm central glow (the fovea / come-up point)
+  // warm central glow (the fovea / ascent point)
   const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * (0.5 + drive.bloom * 0.5));
   glow.addColorStop(0, `rgba(255, 200, 110, ${0.1 * light})`);
   glow.addColorStop(0.4, `rgba(200, 80, 24, ${0.06 * light})`);

@@ -10,7 +10,7 @@
  * Every loop varies: riser type, lead motif transposition, fill pattern.
  * Single tension scalar [0,1] drives both audio and visuals simultaneously.
  *
- * Contrast with the existing psychedelic 6-phase journey engine which is slow,
+ * Contrast with the existing visionary 6-phase journey engine which is slow,
  * introspective, and ambient — this is energetic, beat-locked, and club-ready.
  */
 

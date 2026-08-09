@@ -4,7 +4,7 @@
 REAL aurora happening on Earth RIGHT NOW — the live global auroral oval, sonified
 and made into a slow luminous curtain-field?*
 
-Auroral is a drug-free **cosmic-ambient / boundless-void** experience whose
+Auroral is a **cosmic-ambient / boundless-void** experience whose
 structure and intensity are driven by **live real-world space-weather data** —
 the actual current state of Earth's aurora this minute. It is "music about the
 world, not about music." Pole: **cosmic-ambient**, but it spikes toward *intense*
@@ -83,7 +83,7 @@ luminous aurora register, deliberately not a saturated jewel-on-dark object and
 not a flat pale print. Curtain count, brightness, drift, and violet all scale
 with the live intensity. devicePixelRatio is capped at 1.6.
 
-## The audio (shared psych toolkit)
+## The audio (shared visionary toolkit)
 
 Master chain: `masterGain (~0.4, faded in over 3s)` → `DynamicsCompressor`
 limiter → `destination`. Everything routes through a vast code-generated void:

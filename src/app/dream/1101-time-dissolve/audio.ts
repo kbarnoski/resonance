@@ -2,7 +2,7 @@
 // 1101-time-dissolve / audio.ts
 //
 // The carrier sound for a temporal-dissolution piece. It composes the shared
-// psych kit into a slow ~4-minute stateful arc:
+// visionary kit into a slow ~4-minute stateful arc:
 //
 //   Shepard–Risset endless DESCENT  ┐
 //   just-intoned drone bed          ├─► layers bus ─► closing/opening low-pass
@@ -22,9 +22,9 @@
 // Everything is generative — no external files, no network.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 /** A read-only snapshot of the arc, for the visual layer. */
 export interface DissolveState {

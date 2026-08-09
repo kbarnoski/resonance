@@ -513,7 +513,17 @@ export function createScene(mount: HTMLElement, opts: SceneOptions): SceneHandle
     requestPointerLock() {
       if (!hasLockApi) return;
       markInput();
-      canvas.requestPointerLock?.();
+      // Chrome returns a promise that can reject (e.g. lock exited too fast, or
+      // the gesture wasn't user-initiated); swallow it so it never surfaces as
+      // an unhandled rejection / page error.
+      try {
+        const p = canvas.requestPointerLock?.() as unknown;
+        if (p && typeof (p as Promise<void>).catch === "function") {
+          (p as Promise<void>).catch(() => {});
+        }
+      } catch {
+        /* pointer lock unavailable — drag controls still work */
+      }
     },
 
     isPointerLocked() {

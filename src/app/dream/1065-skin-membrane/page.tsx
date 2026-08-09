@@ -10,7 +10,7 @@
 // (render.ts) shades by areal strain: indigo slack, magenta/gold taut, hot
 // rupture rims. Idle = a faint breathing skin. See README.md.
 //
-// state: salvia / DMT membrane-reality · pole: intense
+// state: membrane-reality · pole: intense
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Membrane } from "./membrane";

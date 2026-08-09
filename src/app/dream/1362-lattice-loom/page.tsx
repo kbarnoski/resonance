@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createSafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1362 · LATTICE LOOM   (cycle-2 of 1272 · Lattice Tracker)

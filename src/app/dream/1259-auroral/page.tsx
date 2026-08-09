@@ -7,7 +7,7 @@
 // REAL aurora happening on Earth RIGHT NOW — the live global auroral oval,
 // sonified and made into a slow luminous curtain-field?"
 //
-// A drug-free cosmic-ambient / boundless-void experience whose structure and
+// A meditative cosmic-ambient / boundless-void experience whose structure and
 // intensity are driven by LIVE space-weather data (NOAA SWPC OVATION Aurora +
 // planetary Kp). The piece is literally more overwhelming when Earth's aurora is
 // more active. It is the aurora sibling of 1193-tremor-core (which rang live
@@ -16,7 +16,7 @@
 //   feeds.ts    — the two live NOAA feeds folded into one AuroraState (+ seeded
 //                 offline fallback).
 //   curtains.ts — the Canvas2D luminous auroral curtain field.
-//   audio.ts    — the generative cosmic-ambient bed (shared psych toolkit).
+//   audio.ts    — the generative cosmic-ambient bed (shared visionary toolkit).
 //   page.tsx    — this: mount the field immediately, gesture-gate the audio,
 //                 poll the feeds, and chime the brightest cells.
 // ════════════════════════════════════════════════════════════════════════════

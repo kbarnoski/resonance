@@ -1,13 +1,13 @@
 "use client";
 
 // 1300-carrier-bloom — "Carrier Bloom".
-// Karel's own recorded piano is the CARRIER WAVE for a drug-free psychedelic
+// Karel's own recorded piano is the CARRIER WAVE for a visionary
 // melt you push your hands into. His real solo piano (Welcome Home) is FFT'd
 // every frame and fed into the Bressloff–Cowan log-polar form-constant engine:
 // plane-wave stripes / a hex lattice in cortical space, warped back to the
 // screen by exp(), so one shader breathes tunnels → spirals → honeycombs. An
 // entropy arc (REBUS "priors relax") reorganizes the geometry over the piece,
-// and pointer-drag / device-tilt PERTURBATION steers the trip — you feel like
+// and pointer-drag / device-tilt PERTURBATION steers the journey — you feel like
 // you're playing it, not watching it. A single-performer echo of Refik Anadol's
 // DATALAND, but the "data" is one man's piano.
 
@@ -28,9 +28,9 @@ import {
   stepEntropy,
   EntropyState,
 } from "./entropy";
-import { FORM_LABEL } from "../_shared/psych/logpolar";
-import { createSafeFlicker, SafeFlicker } from "../_shared/psych/safeFlicker";
-import { startShepard, ShepardEngine } from "../_shared/psych/shepard";
+import { FORM_LABEL } from "../_shared/visionary/logpolar";
+import { createSafeFlicker, SafeFlicker } from "../_shared/visionary/safeFlicker";
+import { startShepard, ShepardEngine } from "../_shared/visionary/shepard";
 
 type Phase = "idle" | "loading" | "ready" | "error";
 
@@ -185,7 +185,7 @@ export default function CarrierBloomPage() {
     freqBufRef.current = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
     playingRef.current = true;
 
-    // Reset the entropy arc so the come-up starts now.
+    // Reset the entropy arc so the slow ascent starts now.
     entropyRef.current = makeEntropy();
     setPhase("ready");
   }, [phase, ensureContext]);
@@ -485,10 +485,10 @@ export default function CarrierBloomPage() {
             Carrier Bloom
           </h1>
           <p className="mt-2 text-base text-muted-foreground">
-            Karel&apos;s own recorded piano is the carrier wave for a drug-free
-            psychedelic melt — a log-polar form-constant field driven by his real{" "}
+            Karel&apos;s own recorded piano is the carrier wave for a visionary
+            melt — a log-polar form-constant field driven by his real{" "}
             <span className="text-violet-300">Welcome Home</span> piano. Drag your
-            hands into it (or tilt on mobile) to steer the trip; the geometry
+            hands into it (or tilt on mobile) to steer the journey; the geometry
             reorganizes itself, tunnels to honeycombs, as the piece unfolds.
           </p>
 
@@ -554,7 +554,7 @@ export default function CarrierBloomPage() {
 
             <p className="max-w-2xl text-base text-muted-foreground">
               Drag anywhere on the field to push the warp center under your hand —
-              faster drags deepen the trip and lift a Shepard undertow. Slide up for
+              faster drags deepen the journey and lift a Shepard undertow. Slide up for
               honeycomb, down for tunnels. Let go and it drifts on its own.
             </p>
 

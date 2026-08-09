@@ -8,7 +8,7 @@ invisible inter-brain synchrony between them visible and audible.
 
 ## The one question
 
-What if a psychedelic experience could be *shared*: two beings approaching across
+What if a visionary experience could be *shared*: two beings approaching across
 a void until they meet, and the synchrony between them becomes something you can
 see and hear?
 

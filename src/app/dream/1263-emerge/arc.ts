@@ -9,7 +9,7 @@
 //
 //   The five phases (self/other boundary condense → dissolve → re-condense):
 //     1. Onset       0 – 15%  sparse teal motes in a dark void, near-still.
-//     2. Come-up     15 – 35% particles CONDENSE into a bounded luminous body.
+//     2. Rise     15 – 35% particles CONDENSE into a bounded luminous body.
 //     3. Peak        35 – 60% the boundary DISSOLVES: expansion, turbulence,
 //                             white-gold light, figure/ground merge (ego loss).
 //     4. Plateau     60 – 80% a warm luminous dispersed haze, slow swells.
@@ -56,7 +56,7 @@ export interface ArcState {
 
 const PHASES: ReadonlyArray<{ end: number; name: string }> = [
   { end: 0.15, name: "Onset" },
-  { end: 0.35, name: "Come-up" },
+  { end: 0.35, name: "Rise" },
   { end: 0.6, name: "Peak · breakthrough" },
   { end: 0.8, name: "Plateau" },
   { end: 1.01, name: "Return" },

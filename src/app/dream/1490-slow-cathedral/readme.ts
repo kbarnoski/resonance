@@ -28,6 +28,6 @@ export const NOTES: NoteBlock[] = [
   },
   {
     heading: "Lineage",
-    body: "Terry Riley's In C and Éliane Radigue's hour-long ARP drones (slow structural accretion, long-form evolution); the Buddhist kalpa (deep time); and the growing-cathedral / temple imagery reported in deep meditation and high-dose psilocybin states — architecture assembling itself over subjective aeons.",
+    body: "Terry Riley's In C and Éliane Radigue's hour-long ARP drones (slow structural accretion, long-form evolution); the Buddhist kalpa (deep time); and the growing-cathedral / temple imagery reported in deep meditation and profound visionary states — architecture assembling itself over subjective aeons.",
   },
 ];

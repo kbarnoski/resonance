@@ -29,7 +29,7 @@ the drone. The control is restraint: a reward-for-quiet meditation trainer.
   deepens; overall brightness scales with stillness; `scatter` jitters the radius
   via animated noise. Slow rotation, deep-violet → pale bloom on near-black
   `#05040c`. Per-ring phase offsets are seeded by a deterministic `mulberry32`.
-- **Drone** (`_shared/psych/droneBank.ts`) — a just-intonation detuned bed routed
+- **Drone** (`_shared/visionary/droneBank.ts`) — a just-intonation detuned bed routed
   through a master "swell" gain. `setDrive(stillness)` opens its filter (warm →
   cool) while the swell gain lifts it from near-silence, so the drone genuinely
   emerges from and returns to quiet.

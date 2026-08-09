@@ -2,7 +2,7 @@
 
 **Route:** `/dream/1348-prism-cortex`
 
-> **The one question:** What if a DMT-breakthrough field were a living Gray-Scott
+> **The one question:** What if a visionary breakthrough field were a living Gray-Scott
 > reaction-diffusion chemistry running as a WebGPU *compute* shader, warped
 > through the cortical form-constant map, and you **played** it on a MIDI
 > keyboard?
@@ -74,7 +74,7 @@ depth.
 
 ## Sound
 
-An additive **pad-drone** you play, built on the shared `_shared/psych` kit:
+An additive **pad-drone** you play, built on the shared `_shared/visionary` kit:
 `startDroneBank` (just-intonation drone bed), a detuned three-partial voice per
 held note, and `startShepard` (slow endless-glissando shimmer), all summed into a
 `createVoidReverb` bus. Everything runs through a `DynamicsCompressor` limiter and

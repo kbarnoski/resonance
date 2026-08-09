@@ -30,9 +30,9 @@ If your browser has no WebGL you get a readable rose notice instead of a blank s
 ## Integrated subsystems
 
 - **The morphogenetic memory layer** (`growth.ts`, the distinguishing subsystem): three capped `InstancedMesh` pools (pillars / arches / chimes). Each strike accretes one element with a smooth scale-in ease (never a pop). **Pitch → type + height** (low → tall pillars, high → chimes, middle → arches spanning to the nearest existing foot). **Tempo/density → placement** (dense playing clusters growth tight around you; sparse playing spreads it into open ground). A **decaying histogram of your struck degrees** biases the tuning of new elements toward your *emerging mode*. Each grown element is itself a playable HRTF resonator. Pools are capped (a few hundred total); when full, the element *farthest from you* retires gracefully so the history you're standing in persists.
-- `_shared/psych/droneBank` — the slow just-intonation drone bed; each strike spikes its `drive`, which eases back each frame.
-- `_shared/psych/convolutionVoid` — the long code-generated reverb tail filling the growing volume.
-- `_shared/psych/safeFlicker` (`prefersReducedMotion`) — damps head-bob and chime-swing when the visitor prefers reduced motion.
+- `_shared/visionary/droneBank` — the slow just-intonation drone bed; each strike spikes its `drive`, which eases back each frame.
+- `_shared/visionary/convolutionVoid` — the long code-generated reverb tail filling the growing volume.
+- `_shared/visionary/safeFlicker` (`prefersReducedMotion`) — damps head-bob and chime-swing when the visitor prefers reduced motion.
 
 ## Safety
 

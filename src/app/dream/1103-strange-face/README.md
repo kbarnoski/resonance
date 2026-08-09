@@ -17,7 +17,7 @@ A soft inharmonic **shiver** fires when the *strange-face threshold* is crossed.
 - `page.tsx` — UI, the stillness→dissolve integrator, and the frame loop.
 - `face.ts` — MediaPipe **FaceLandmarker** (CDN, runtime import) measuring facial motion + the **autonomous pseudo-face** fallback (a procedurally drawn, slowly-morphing face that undergoes the same dissolution).
 - `scene.ts` — the WebGL2 kaleidoscope + ping-pong feedback + Troxler vignette.
-- `audio.ts` — a drone whose partials **thin and detune** and a low slow **beat** that deepens as the face dissolves, plus the threshold chime, through a `DynamicsCompressor` limiter. Reuses the shared `_shared/psych/droneBank` bed.
+- `audio.ts` — a drone whose partials **thin and detune** and a low slow **beat** that deepens as the face dissolves, plus the threshold chime, through a `DynamicsCompressor` limiter. Reuses the shared `_shared/visionary/droneBank` bed.
 
 ## Named references
 

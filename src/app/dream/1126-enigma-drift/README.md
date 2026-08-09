@@ -5,7 +5,7 @@ A completely static, high-contrast geometric field — concentric saturated ring
 crossed by a fine radial black spoke grating on warm gallery paper — that makes
 you hallucinate intense streaming rotation that is not there. The motion is
 composed entirely inside your own visual system by your involuntary eye
-movements. No drug, no animation, no strobe.
+movements. No substances, no animation, no strobe.
 
 ## How to view it
 

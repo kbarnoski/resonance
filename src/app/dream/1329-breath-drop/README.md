@@ -2,7 +2,7 @@
 
 **The one question:** *What if you had to **breathe the drop into being**?*
 
-A psychedelic club / altered-states instrument where the EDM build-and-drop
+A visionary club / altered-states instrument where the EDM build-and-drop
 tension is **not** a self-running timer — it is a scalar `T ∈ [0,1]` you *charge*
 with a sustained rising hum into the mic and *release* with a sharp exhale that
 triggers the drop. This is the played, embodied counterpart to the lab's

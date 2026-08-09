@@ -2,7 +2,7 @@
 // audio.ts — the audio-first engine for 1090-threshold-descent.
 //
 //   This piece is SOUND FIRST: eyes closed, on headphones, the ears carry the
-//   whole descent. The graph is built from the shared psych engines plus a
+//   whole descent. The graph is built from the shared visionary engines plus a
 //   hand-rolled HRTF panner ring and a missing-fundamental "light".
 //
 //   depth (0..1, from the tap-pace state machine) drives everything:
@@ -16,12 +16,12 @@
 //       letting go — a missing-fundamental / difference-tone that blooms.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createVoidReverb,
   type VoidReverb,
-} from "../_shared/psych/convolutionVoid";
+} from "../_shared/visionary/convolutionVoid";
 
 export interface DescentAudio {
   /** Feed the current depth 0..1 (deepest = stillness). */

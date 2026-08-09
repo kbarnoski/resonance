@@ -333,7 +333,7 @@ export default function CorticalBloomPage() {
           <div className="mx-auto max-w-2xl text-foreground">
             <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-4 text-base">
-              The geometric hallucinations of a psychedelic state are not painted
+              The geometric hallucinations of a visionary state are not painted
               here — they are <span className="text-violet-300">grown</span>. A
               sheet of excitable neurons is simulated as an excitatory–inhibitory
               neural field (a Gray-Scott activator–inhibitor, equivalent to a

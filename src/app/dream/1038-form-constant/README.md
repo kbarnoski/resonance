@@ -1,23 +1,24 @@
 # 1038 — Form Constant
 
 > The geometry your visual cortex draws on the dark — tunnels, spirals, funnels,
-> honeycomb lattices — sung out of sound through a log-polar warp. No drug.
+> honeycomb lattices — sung out of sound through a log-polar warp. Purely
+> through light and sound.
 
 **The one question:** _What if Resonance could turn your music into the actual
 geometry your visual cortex hallucinates — tunnels, spirals, funnels, honeycomb
-lattices — with no drug?_
+lattices — purely through light and sound?_
 
-This is the lab's first psychedelic / altered-states prototype and the
+This is the lab's first visionary / altered-states prototype and the
 foundational **log-polar / form-constant engine** the rest of the direction
 builds on.
 
 ## Tags
 
-`state: DMT/LSD-form-constant · pole: intense · input: mic (non-pointer) · output: WebGL2 fragment shader · technique: log-polar form-constant warp · palette: neon-iridescent`
+`state: visionary/form-constant · pole: intense · input: mic (non-pointer) · output: WebGL2 fragment shader · technique: log-polar form-constant warp · palette: neon-iridescent`
 
 ## Design notes — the log-polar form-constant engine
 
-Klüver classified drug- and flicker-induced geometric hallucinations into four
+Klüver classified altered-state- and flicker-induced geometric hallucinations into four
 recurring **form constants**: (1) lattices / honeycombs / chequerboards,
 (2) cobwebs, (3) tunnels / funnels / cones, (4) spirals. The key insight
 (Bressloff & Cowan) is that these are **not four patterns but one** — a simple
@@ -62,7 +63,7 @@ analyser so the piece is always audio-visual.
 ### The journey arc
 
 A JS **entropy controller** drives one global 0→1 parameter on a ~5-minute arc
-(it loops): Onset → Come-up → Peak/breakthrough → Plateau → Return. Entropy
+(it loops): Onset → Slow ascent → Peak/breakthrough → Plateau → Return. Entropy
 feeds octave count, flow speed, fold bloom, saturation and symmetry-looseness,
 so minute 5 never looks like minute 1. Everything is lerped — transitions are
 never abrupt. A small unobtrusive phase label + progress bar are shown.

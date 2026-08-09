@@ -4,7 +4,7 @@
 // luminous fog toward a growing white-gold core. The camera translates forward
 // along +z (uZ grows every frame) so the ring-structured walls stream past you —
 // embodied transport, not a pattern on a wall. The log-polar / form-constant
-// engine (imported from _shared/psych/logpolar) shapes the tunnel cross-section:
+// engine (imported from _shared/visionary/logpolar) shapes the tunnel cross-section:
 // concentric rings = the tunnel form constant (phi = 0), warped along depth so
 // they flow toward the viewer as you fly in.
 //
@@ -12,7 +12,7 @@
 // light-tunnel); Klüver's tunnel/funnel form constant; Bressloff–Cowan retino-
 // cortical log map; Íñigo Quílez volumetric fog/raymarch technique.
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT_SRC = /* glsl */ `#version 300 es
 in vec2 a_pos;

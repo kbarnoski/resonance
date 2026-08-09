@@ -5,7 +5,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 import {
   createSafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 import {
   createLandmarker,
   demoDrive,
@@ -20,7 +20,7 @@ import { README } from "./readme";
 
 /* ------------------------------------------------------------------ *
  * 1482 — Face Mandala
- * Your own face conducts a living psychedelic mandala. MediaPipe
+ * Your own face conducts a living visionary mandala. MediaPipe
  * FaceLandmarker v2 reads live blendshapes + head pose and bends an
  * ecstatic kaleidoscopic bloom (three.js InstancedMesh scene-graph)
  * and its affect-coupled synth. Falls back to a synthetic self-demo
@@ -269,7 +269,7 @@ export default function FaceMandala() {
             Face Mandala
           </h1>
           <p className="mt-2 max-w-xl text-base text-muted-foreground">
-            Your own face conducts a living psychedelic mandala — your mouth,
+            Your own face conducts a living visionary mandala — your mouth,
             brows, and gaze bend an ecstatic kaleidoscopic bloom in real 3D.
           </p>
           {phase === "running" && (

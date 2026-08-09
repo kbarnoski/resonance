@@ -13,7 +13,7 @@ import {
   type Circle,
 } from "./gasket";
 import { startAudio, type AudioEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1285 · APOLLONIAN GASKET
@@ -333,14 +333,14 @@ export default function ApollonianGasketPage() {
           <p className="mb-2">
             <strong className="text-foreground">Altered states:</strong> the endless
             self-similar nesting evokes the fractal-regress phenomenology of the Klüver
-            form constants (tunnels, honeycomb, cobweb) — drug-free, driven only by the
-            geometry. All luminance change is slow drift; there is no strobe.
+            form constants (tunnels, honeycomb, cobweb) — driven only by the
+            geometry, purely through light and sound. All luminance change is slow drift; there is no strobe.
           </p>
           <p className="text-muted-foreground">
             Refs: Descartes (1643); Apollonius of Perga, <em>Tangencies</em>; Soddy, &ldquo;The
             Kiss Precise,&rdquo; <em>Nature</em> (1936); Mumford, Series &amp; Wright,{" "}
-            <em>Indra&apos;s Pearls</em> (2002); Klüver, <em>Mescal and Mechanisms of
-            Hallucinations</em> (1966). Not verified on real hardware/ears.
+            <em>Indra&apos;s Pearls</em> (2002); Klüver&apos;s form constants of
+            visionary perception (1966). Not verified on real hardware/ears.
           </p>
         </div>
       )}

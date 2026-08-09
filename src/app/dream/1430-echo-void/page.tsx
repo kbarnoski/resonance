@@ -13,7 +13,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { buildCathedral, SPEED } from "./geometry";
 import { makeViewProjection } from "./camera";
 import { EchoRenderer, type Tier } from "./renderer";

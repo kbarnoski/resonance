@@ -14,7 +14,7 @@
 //   caller via ctx.currentTime, and partial ratios are fixed constants.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 /** Body geometry → acoustic parameters, all normalised 0..1. */
 export interface BodyParams {

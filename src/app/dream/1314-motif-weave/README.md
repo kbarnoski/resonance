@@ -67,7 +67,7 @@ genuinely different from minute 1 — it is not a loop.
   changes across the arc.
 - **Echo:** a feedback delay carries the tails of recalls and canons — memory
   literally echoing.
-- **Undertow:** a faint shared Shepard–Risset glissando (`_shared/psych/shepard`)
+- **Undertow:** a faint shared Shepard–Risset glissando (`_shared/visionary/shepard`)
   under everything, its drive rising with brightness and breath.
 - Master ≤ 0.28 with a ~1.2 s fade-in, through a `DynamicsCompressor` limiter,
   and hard voice-count-limited (16) so overlapping recall never clips or runs

@@ -14,7 +14,7 @@
 // theta phase, never a 40 Hz full-screen luminance strobe.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 const VERT_SRC = /* glsl */ `#version 300 es
 in vec2 a_pos;

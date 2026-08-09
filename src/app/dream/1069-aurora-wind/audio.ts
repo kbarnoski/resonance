@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // audio.ts — the cosmic-ambient aurora voice for 1069-aurora-wind.
 //
-// Composes the shared psych engines:
+// Composes the shared visionary engines:
 //   • startShepard   — endless rising glissando; its drive (and so the speed of
 //                      the eternal ascent) tracks the solar-wind SPEED.
 //   • startDroneBank — low just-intonation bed; its drive tracks a blend of
@@ -13,9 +13,9 @@
 // All mapping math lives in applyWind(); the React layer just hands us samples.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { SolarWind } from "./data";
 
 export interface AuroraAudio {

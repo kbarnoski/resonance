@@ -1,12 +1,12 @@
 # 1059 · Piano Flock
 
-`state: psilocybin / cosmic drift · pole: cosmic-ambient`
+`state: warm ecstatic / cosmic drift · pole: cosmic-ambient`
 
 ## The one question
 
 **What if you could *conduct* a luminous GPU particle flock with your hand/pointer,
 and the flock's living emergent shape re-voiced Karel's *own* piano into a cosmic,
-drifting psychedelic instrument?**
+drifting visionary instrument?**
 
 You move your pointer; the flock chases it like a school of light. The *shape* the
 flock takes — how tight, how aligned, how fast, where its centre sits — is read
@@ -70,7 +70,7 @@ context is taken, we remount cleanly into the Canvas2D path.
   flock's emergent statistics ARE that navigating agent.
 - **The WebGPU canonical "Compute Boids" sample** — the structural model for the
   WGSL storage-buffer ping-pong used in the GPU path.
-- `_shared/psych/logpolar.ts` (Bressloff–Cowan / Klüver form constants) is
+- `_shared/visionary/logpolar.ts` (Bressloff–Cowan / Klüver form constants) is
   available for an optional log-polar bloom warp; left as a next-cycle hook to
   keep the focus on flock + piano.
 
@@ -90,7 +90,7 @@ context is taken, we remount cleanly into the Canvas2D path.
 ## Next-cycle deepening
 
 - Route the additive point render through `cortexToScreen` (log-polar warp) so the
-  flock blooms into tunnels/spirals at high dispersion — psychedelic geometry that
+  flock blooms into tunnels/spirals at high dispersion — visionary geometry that
   tracks the same statistics already driving the audio.
 - Replace the per-grain nearest-pitch selection with a true kNN over the full
   descriptor space (pitch, brightness, RMS) and a kd-tree, closer to MACataRT's

@@ -24,7 +24,7 @@
 //   closes the context after.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { Quake } from "./data";
 
 const MASTER_PEAK = 0.18;

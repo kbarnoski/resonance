@@ -67,7 +67,7 @@ Per-strike synthesis (written in `audio.ts`):
   noise; nodes self-clean on `ended`.
 
 The drone (`startDroneBank`, root 41 Hz) and reverb (`createVoidReverb`, 8s tail)
-are the lab's **shared** psychedelic engines — composed, not reimplemented. The
+are the lab's **shared** visionary engines — composed, not reimplemented. The
 drone swells slightly when many quakes are active.
 
 ## Visual

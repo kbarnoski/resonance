@@ -69,6 +69,10 @@ export default function SolarOrganPage() {
   const [note, setNote] = useState("loading live space weather…");
   const [vol, setVol] = useState(0.8);
   const [muted, setMuted] = useState(false);
+  // Gate wall-clock rendering until after mount so SSR and client first-render
+  // match (Date.now() differs between the two → hydration mismatch otherwise).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [hud, setHud] = useState({
     t: Date.now(),
     kp: 1,
@@ -221,7 +225,7 @@ export default function SolarOrganPage() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-base">
           <span className="text-muted-foreground">
             UTC{" "}
-            <span className="text-foreground">{fmtUTC(hud.t)}</span>
+            <span className="text-foreground">{mounted ? fmtUTC(hud.t) : "—"}</span>
           </span>
           <span className="text-muted-foreground">
             Kp{" "}

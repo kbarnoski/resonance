@@ -1,7 +1,8 @@
 # 1300 · Carrier Bloom
 
 **The one question:** *What if Karel's own recorded piano were the carrier wave
-for a drug-free psychedelic melt you can push your hands into?*
+for a kaleidoscopic melt — purely through light and sound — that you can push
+your hands into?*
 
 A personal, single-performer echo of **Refik Anadol — _DATALAND / Machine Dreams_**
 (opened LA, June 2026), where data and music are melted into a kaleidoscopic
@@ -11,8 +12,8 @@ see is that audio, refracted through visual cortex.
 
 ## The visual: a log-polar form-constant melt
 
-The engine is the single most load-bearing finding in psychedelic-geometry
-research (Bressloff–Cowan, on Klüver's four "form constants"): **all psychedelic
+The engine is the single most load-bearing finding in visionary-geometry
+research (Bressloff–Cowan, on Klüver's four "form constants"): **all visionary
 geometry is one stripe/hex pattern seen through a log-polar warp.** The
 retina→V1 cortical map is a complex logarithm, so:
 
@@ -24,7 +25,7 @@ retina→V1 cortical map is a complex logarithm, so:
 So we generate plane-wave stripes (and a hex Turing lattice) in _cortical_ space
 `(u, v) = (log r, θ)`, then apply the inverse `exp()` warp back to the screen.
 One WebGL2 fragment shader yields all of them. The math is imported read-only
-from `../_shared/psych/logpolar.ts` (its GLSL prelude drives the GPU path; its JS
+from `../_shared/visionary/logpolar.ts` (its GLSL prelude drives the GPU path; its JS
 mirrors drive the Canvas2D fallback so the two agree). If WebGL2 is unavailable
 the piece drops to a real Canvas2D melt (coarser, identical geometry) and posts a
 notice.
@@ -44,8 +45,9 @@ split into three log-spaced bands:
 ## The entropy arc (REBUS "priors relax")
 
 `entropy.ts` holds one scalar `e ∈ [0,1]` that ramps slowly across the piece
-(come-up → peak near ~2.5 min → gentle settle) — Carhart-Harris & Friston's
-_RElaxed Beliefs Under pSychedelics_. It reorganizes the geometry: at low entropy
+(slow ascent → peak near ~2.5 min → gentle settle) — Carhart-Harris & Friston's
+**REBUS** (RElaxed Beliefs Under the visionary state) model. It reorganizes the
+geometry: at low entropy
 a tight **tunnel** (a strong prior); as `e` rises it blends **tunnel → spiral →
 honeycomb**, loosens symmetry (adds warp jitter), and folds in more turbulence
 octaves. **0:20 and 3:00 look genuinely different** — that is the arc, not the
@@ -60,7 +62,7 @@ hand pushed into the field:
   follows you;
 - **drag speed → push energy** that (a) deepens the entropy arc, (b) bumps the
   warp amplitude, and (c) lifts a faint **Shepard-riser undertow**
-  (`../_shared/psych/shepard.ts`) scaled by that energy;
+  (`../_shared/visionary/shepard.ts`) scaled by that energy;
 - **vertical position** biases which form constant dominates — up for honeycomb,
   down for tunnels.
 
@@ -73,7 +75,7 @@ piece animates before Begin and runs with no network.
 There is **no full-screen high-contrast strobe.** All luminance change is smooth
 continuous drift, and the color is soft-rolled-off (`col/(1+col*0.6)`) so no
 frame blows to full white. The only flicker is an **opt-in** toggle routed
-entirely through `../_shared/psych/safeFlicker.ts`: hard-clamped to ≤3 Hz, a soft
+entirely through `../_shared/visionary/safeFlicker.ts`: hard-clamped to ≤3 Hz, a soft
 sine with a luminance floor (never a 0↔1 switch), reduced-motion honored, and an
 **instant kill** on the same tap. When in doubt: drift, don't flash.
 

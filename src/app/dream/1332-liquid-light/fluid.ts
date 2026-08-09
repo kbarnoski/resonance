@@ -31,7 +31,7 @@ interface Emitter {
 
 const BUF_W = 200; // small buffer → coarse, oily, cheap
 
-// saturated oil-slick psychedelic pools on near-black
+// saturated oil-slick kaleidoscopic pools on near-black
 const EMITTERS: Emitter[] = [
   { x: 0.32, y: 0.36, color: [255, 40, 170], edge: [70, 210, 255], phase: 0.0, drift: 0.7 },
   { x: 0.68, y: 0.4, color: [40, 210, 255], edge: [255, 120, 60], phase: 1.7, drift: 0.5 },

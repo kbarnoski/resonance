@@ -20,7 +20,7 @@ const THEMES = [
   { name: "Snowflake", prompt: "crystalline piano, high register, delicate sparse notes, cold ambient drones, winter stillness" },
   { name: "Ghost", prompt: "mysterious minor piano, stone chamber reverb, ethereal atmosphere, single notes, distant echo, 50 BPM" },
   { name: "Inner Fire", prompt: "warm ceremonial drums, building tension, low bass, shamanic atmosphere, 80 BPM" },
-  { name: "Mycelium Dream", prompt: "organic textures, slow evolving drones, underground resonance, psychedelic ambient, 45 BPM" },
+  { name: "Mycelium Dream", prompt: "organic textures, slow evolving drones, underground resonance, visionary ambient, 45 BPM" },
 ];
 
 const DURATIONS = [

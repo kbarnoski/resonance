@@ -1,8 +1,8 @@
 # 1101 · Time, Dissolving
 
-**The one question:** *What if we could dissolve the listener's sense of **when** — the felt flow and grain of time — the way ketamine / NDE time-dilation makes onset and echo merge and the "floor" of pitch drop away forever?*
+**The one question:** *What if we could dissolve the listener's sense of **when** — the felt flow and grain of time — the way dissociative / NDE time-dilation makes onset and echo merge and the "floor" of pitch drop away forever?*
 
-**State · pole:** ketamine / NDE temporal dissolution & oceanic boundlessness · **cosmic-ambient**.
+**State · pole:** dissociative / NDE temporal dissolution & oceanic boundlessness · **cosmic-ambient**.
 
 This is an **audio-first** piece. The sound is the medium; the visual is deliberately minimal and *deliberately desynced* from it. The whole point is to break the brain's normal audio-visual binding — eyes and ears quietly disagree — so you feel time lose its grip. A **Re-bind** toggle snaps them back into sync so you can A/B the dissociation turning on and off.
 
@@ -10,7 +10,7 @@ This is an **audio-first** piece. The sound is the medium; the visual is deliber
 
 ## How it works
 
-### The carrier sound (from `../_shared/psych/`)
+### The carrier sound (from `../_shared/visionary/`)
 Composed into one slow, stateful ~4-minute arc:
 
 1. **Shepard–Risset endless DESCENT** (`startShepard`, `dir: -1`) — sine partials one octave apart under a fixed Gaussian window; as the comb glides down, partials fade in at the top and out at the bottom, so the pitch falls *forever* and no pitch "floor" ever arrives.

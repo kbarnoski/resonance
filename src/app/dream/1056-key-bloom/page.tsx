@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { KeyBloomAudio } from "./audio";
 import {
   createBloom,
@@ -13,11 +13,11 @@ import {
 } from "./bloom";
 
 /**
- * 1056 · Key Bloom — a keyboard as a psychedelic organ.
+ * 1056 · Key Bloom — a keyboard as a visionary organ.
  *
  * Each key plays a just-intonation tone AND seeds a blooming form-constant
  * chrysanthemum (log-polar kaleidoscope). Chords stack into a living mandala you
- * compose in real time. state: psilocybin · pole: intense-warm.
+ * compose in real time. state: visionary · pole: intense-warm.
  */
 
 // Computer-keyboard scale mapping: A S D F G H J K L = scale degrees 0..8.
@@ -326,12 +326,12 @@ export default function KeyBloomPage() {
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 p-5 sm:p-7">
         <h1 className="font-semibold text-2xl text-foreground sm:text-3xl">Key Bloom</h1>
         <p className="mt-1 max-w-xl text-base text-foreground">
-          A keyboard played as a psychedelic organ — each key sounds a
+          A keyboard played as a visionary organ — each key sounds a
           just-intonation tone and blooms a chrysanthemum of form-constant
           geometry; chords stack into a living mandala.
         </p>
         <p className="mt-1 font-mono text-sm text-muted-foreground">
-          state: psilocybin · pole: intense-warm
+          state: visionary · pole: intense-warm
         </p>
         {midiConnected && (
           <p className="mt-1 font-mono text-sm text-violet-300/95">

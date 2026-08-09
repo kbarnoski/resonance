@@ -1,6 +1,6 @@
 # 1354 · Glyph Canon
 
-**The one question:** *What if a psychedelic instrument were played entirely inside a living monospace TEXT field — and its sense of TIME came from a Steve-Reich phase canon, not a drum beat?*
+**The one question:** *What if a visionary instrument were played entirely inside a living monospace TEXT field — and its sense of TIME came from a Steve-Reich phase canon, not a drum beat?*
 
 state: hypnagogic / synaesthetic-text · pole: cosmic-ambient (drifts intense when played densely)
 
@@ -38,7 +38,7 @@ They start in unison and slowly **de-phase**, exactly like Reich's *Piano Phase*
 ## Safety
 
 - **No strobe.** Glyph pulses are *local per-cell* brightenings that fade smoothly; global luminance stays near-constant (the spatial spiral pattern drifts well under 3 Hz). No global luminance flicker is used at all, so no `createSafeFlicker` gate is needed.
-- Honors `prefers-reduced-motion` (imported `prefersReducedMotion()` from `_shared/psych/safeFlicker`) by slowing the field.
+- Honors `prefers-reduced-motion` (imported `prefersReducedMotion()` from `_shared/visionary/safeFlicker`) by slowing the field.
 - **Instant Stop** ramps master gain to 0 in ≤ 80 ms, clears all pulses (freezes the energetic motion), and closes the context. The residual dim field drifts at ~0.1 Hz — effectively still, and safe.
 - Full teardown on unmount: cancels `requestAnimationFrame`, removes key listeners, ramps master down and closes the `AudioContext`.
 - Degrades gracefully: if Web Audio is unavailable it shows a `text-rose-300` notice and keeps the glyph field animating (the idle demo drives visual-only pulses).

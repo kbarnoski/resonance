@@ -3,7 +3,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // GLYPH CANON (1354)
 //
-// THE ONE QUESTION: "What if a psychedelic instrument were played entirely
+// THE ONE QUESTION: "What if a visionary instrument were played entirely
 // inside a living monospace TEXT field — and its sense of TIME came from a
 // Steve-Reich phase canon, not a drum beat?"
 //
@@ -33,7 +33,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { GlyphCanon, degreeToFreq, type Stream } from "./glyph-engine";
 
 // dim → white-hot luminance ramp; index 0 is a blank cell.
@@ -340,7 +340,7 @@ export default function GlyphCanonPage() {
           glyph canon
         </h1>
         <p className="mt-2 max-w-xl text-base text-muted-foreground">
-          A psychedelic instrument played inside a living monospace text field — its sense of{" "}
+          A visionary instrument played inside a living monospace text field — its sense of{" "}
           <span className="text-foreground">time</span> comes from a Steve-Reich phase canon, not a
           drum beat.
         </p>

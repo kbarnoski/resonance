@@ -1,6 +1,6 @@
 # 1482 — Face Mandala
 
-**The one question:** *What if your own face conducted a living psychedelic mandala — your mouth, brows, and gaze bending an ecstatic kaleidoscopic bloom in real 3D?*
+**The one question:** *What if your own face conducted a living visionary mandala — your mouth, brows, and gaze bending an ecstatic kaleidoscopic bloom in real 3D?*
 
 Route: `/dream/1482-face-mandala`
 
@@ -46,10 +46,10 @@ always plays. MediaPipe is loaded from a CDN via a non-static dynamic
 - **MediaPipe FaceLandmarker v2** (Google, 2024–2025) — browser-native face
   blendshapes (52 coefficients) + `facialTransformationMatrixes` head pose.
 - **Klüver's four form constants** + the **Bressloff–Cowan** cortical
-  (log-polar / retino-cortical) map — the account of *why* psychedelic geometry
+  (log-polar / retino-cortical) map — the account of *why* visionary geometry
   is fundamentally radial and rotationally symmetric; the mandala's N-fold
   petal rings are that symmetry made an instrument.
-- **Psilocybin affect-coupling** — imagery shifts with emotional state
+- **Visionary-state affect-coupling** — imagery shifts with emotional state
   (Carhart-Harris **entropic brain** / **REBUS**); here delivered literally by
   coupling live facial affect to the form.
 

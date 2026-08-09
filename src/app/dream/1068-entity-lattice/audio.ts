@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// audio.ts — the DMT-ascent: a composition of the three SHARED psych engines.
+// audio.ts — the visionary ascent: a composition of the three SHARED visionary engines.
 //
 //   • startShepard  → an endless RISING Shepard–Risset glissando. drive scales
 //     the ascent rate + brightness — the felt "rising toward breakthrough".
@@ -13,9 +13,9 @@
 //   Everything passes through a DynamicsCompressor limiter into the destination.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface LatticeAudio {
   setDrive(d: number): void;

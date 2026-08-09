@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // audio.ts — the generative cosmic-ambient BED for Auroral (1259)
 //
-// A boundless-void ambient bed assembled entirely from the shared psych toolkit:
+// A boundless-void ambient bed assembled entirely from the shared visionary toolkit:
 //   • droneBank   — sustained just-intonation drone; drive opens its filter.
 //   • shepard     — an endless-ascent shimmer (barber-pole), drive tracks Kp.
 //   • voidReverb  — a vast code-generated cistern the whole bed sits inside.
@@ -13,9 +13,9 @@
 // (0..1, from live aurora intensity) rises → drone brightens, ascent quickens.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // A just-intonation pentatonic over an aurora-cool register for the chimes.
 const CHIME_RATIOS = [1, 9 / 8, 5 / 4, 3 / 2, 5 / 3, 2, 15 / 4];

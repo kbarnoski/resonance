@@ -1,13 +1,13 @@
 # 1105 · Hidden Eye
 
 **The one question:** *What if a field of pure random-dot noise could reveal a
-living, breathing 3-D psychedelic surface that exists nowhere in the image —
+living, breathing 3-D kaleidoscopic surface that exists nowhere in the image —
 only in your own visual cortex?*
 
 A real-time animated **autostereogram** (SIRDS — Single Image Random-Dot
 Stereogram). What looks like static noise contains a hidden depth surface that
 has **no monocular cue whatsoever**: the 3-D structure is manufactured entirely
-by binocular fusion in your brain. It sits squarely in the psychedelic
+by binocular fusion in your brain. It sits squarely in the visionary
 phenomenology of "a hidden dimension emerges from noise" — sudden, hyper-vivid
 depth.
 
@@ -108,11 +108,11 @@ ideas to fold in next:
 
 - **A "texture" mode** — offer a *repeating-pattern (wallpaper) autostereogram*
   alongside the random-dot one: replace the hashed dots with a tileable,
-  colour-palette psychedelic motif whose **local horizontal period** is
+  colour-palette kaleidoscopic motif whose **local horizontal period** is
   modulated by the same depth field (`period = P0·(1 − μ·depth)`, evaluated as a
   per-row phase prefix-sum `phase(x) = ∫ dx'/period(x')`, `colour =
   pattern(fract(phase))`). Wallpaper stereograms are markedly **easier to
-  free-fuse** than random dots and read as far more overtly psychedelic — best of
+  free-fuse** than random dots and read as far more overtly kaleidoscopic — best of
   both: keep the pure-noise version for the "depth from nothing" hit, add the
   textured version for accessibility + colour.
 - **Sharper parallax reveal** — the sibling re-samples each pixel at

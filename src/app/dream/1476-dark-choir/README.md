@@ -27,7 +27,7 @@ sent anywhere. Each frame we extract two slow signals:
 
 Those two numbers drive the audio graph (`audio.ts`):
 
-1. **A Shepard/Risset endless-rise bed** (shared `_shared/psych/shepard.ts`, 5
+1. **A Shepard/Risset endless-rise bed** (shared `_shared/visionary/shepard.ts`, 5
    octave-spaced partials under a fixed Gaussian spectral window). Your *loudness*
    is its `drive`: the more you give, the brighter and faster the room climbs. This
    is always gliding upward.
@@ -39,10 +39,10 @@ Those two numbers drive the audio graph (`audio.ts`):
    old ones vanish above, so the choir climbs **forever**. Each voice is
    spatialised on a slow **HRTF `PannerNode` orbit**, so the voices circle your
    head.
-3. **A just-intonation drone bed** (shared `_shared/psych/droneBank.ts`, root +
+3. **A just-intonation drone bed** (shared `_shared/visionary/droneBank.ts`, root +
    fifth) is the firm ground of the ascent.
 4. Everything sings into a **code-synthesised cathedral / cistern reverb** (shared
-   `_shared/psych/convolutionVoid.ts`, ~5.5 s tail) for boundlessness, then through
+   `_shared/visionary/convolutionVoid.ts`, ~5.5 s tail) for boundlessness, then through
    a `DynamicsCompressor` limiter and a master gain that ramps up from silence to a
    gentle peak (≤0.22).
 

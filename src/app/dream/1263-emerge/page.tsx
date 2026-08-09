@@ -10,7 +10,7 @@ import {
   createSafeFlicker,
   prefersReducedMotion,
   type SafeFlicker,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 
 // ~6 minutes — a genuine long-form arc, comfortably past the 5-min floor.
 const TOTAL = 360;
@@ -243,7 +243,7 @@ export default function EmergePage() {
           </p>
           <h1 className="mb-4 font-semibold text-3xl text-foreground md:text-5xl">Emerge</h1>
           <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
-            A drug-free psychedelic <em>journey</em> — one six-minute arc from
+            A visionary <em>journey</em> — one six-minute arc from
             stillness, through ego-dissolution, and softly back. A vast cloud of
             ninety thousand GPU particles condenses into a luminous body, then
             dissolves its own boundary into boundless light, then re-condenses.
@@ -357,7 +357,7 @@ export default function EmergePage() {
             />
             <div className="flex w-full max-w-3xl justify-between font-mono text-base text-muted-foreground">
               <span>onset</span>
-              <span>come-up</span>
+              <span>slow ascent</span>
               <button onClick={jumpToPeak} className="text-violet-200/90 hover:text-violet-100">
                 peak ↑
               </button>

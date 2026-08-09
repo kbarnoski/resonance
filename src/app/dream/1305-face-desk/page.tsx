@@ -9,7 +9,7 @@ import {
   type FaceLandmarkerLike,
 } from "./faceLoader";
 import { startDub, STEPS, type DubEngine, type LaneName } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1305 · FACE DESK

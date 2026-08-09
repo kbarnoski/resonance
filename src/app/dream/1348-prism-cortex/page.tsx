@@ -1,7 +1,7 @@
 "use client";
 
 // 1348-prism-cortex — "Prism Cortex".
-// A DMT-breakthrough field rendered as a living Gray-Scott reaction-diffusion
+// A visionary-breakthrough field rendered as a living Gray-Scott reaction-diffusion
 // chemistry running as a WebGPU *compute* shader, warped through the cortical
 // form-constant map (inverse log-polar), and PLAYED on a MIDI keyboard (with a
 // QWERTY fallback). This is the lab's first WGSL compute-shader piece — the GPU
@@ -356,7 +356,7 @@ export default function PrismCortexPage() {
             Prism Cortex
           </h1>
           <p className="mt-3 text-base text-muted-foreground">
-            A DMT-breakthrough field as a living{" "}
+            A visionary-breakthrough field as a living{" "}
             <span className="text-violet-200">Gray-Scott reaction-diffusion</span>{" "}
             chemistry — run as a{" "}
             <span className="text-violet-200">WebGPU compute shader</span>, warped
@@ -486,7 +486,7 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
         <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground">
           <p>
             <span className="font-semibold text-foreground">The question.</span>{" "}
-            What if a DMT-breakthrough field were a living Gray-Scott
+            What if a visionary-breakthrough field were a living Gray-Scott
             reaction-diffusion chemistry running as a WebGPU <em>compute</em>{" "}
             shader, warped through the cortical form-constant map, and you played
             it on a MIDI keyboard?

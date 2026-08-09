@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FRAG_SRC, VERT_SRC } from "./shader";
 import { MoireAudio } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
 // 1316 — Moiré Drift
 //
-// THE QUESTION: What if you could TUNE a psychedelic trance by hand — sliding
+// THE QUESTION: What if you could TUNE a visionary trance by hand — sliding
 // and rotating one fine op-art grating against another until their interference
 // beats out living Klüver form-constants (tunnels, spirals, honeycombs) AND you
 // hear the SAME beat-frequency in the sound?
@@ -21,7 +21,7 @@ import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
 // oscillator pair, so the seen and heard beat are one number. See README.md.
 // ════════════════════════════════════════════════════════════════════════════
 
-const ARC_SECONDS = 180; // onset -> come-up -> peak -> settle
+const ARC_SECONDS = 180; // onset -> slow ascent -> peak -> settle
 
 // Compile + link a WebGL2 program. (Not a hook — not named use*.)
 function makeProgram(gl: WebGL2RenderingContext): WebGLProgram | null {

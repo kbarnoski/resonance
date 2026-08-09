@@ -60,9 +60,9 @@ Hand-written `#version 300 es` shaders, **not three.js, not Canvas2D-as-primary*
 
 ### Audio (`audio.ts`) — composed from the shared engines
 
-- `startDroneBank` (`_shared/psych/droneBank.ts`) — a just-intonation drone bed
+- `startDroneBank` (`_shared/visionary/droneBank.ts`) — a just-intonation drone bed
   whose drive is pushed by **branch density**.
-- `createVoidReverb` (`_shared/psych/convolutionVoid.ts`) — a cavernous
+- `createVoidReverb` (`_shared/visionary/convolutionVoid.ts`) — a cavernous
   convolution tail everything lands in.
 - Per branch: a short **FM pluck**, **pitch ∝ height** (quantized to a minor
   pentatonic scale), plus **band-passed noise crackle**.
@@ -115,7 +115,7 @@ respects `prefers-reduced-motion`) and is **off by default**.
   badge, design-notes modal).
 - `dbm.ts` — the pure-TS Dielectric Breakdown Model / Laplacian-growth engine.
 - `gl.ts` — the hand-written WebGL2 renderer (accumulation FBO + bloom present).
-- `audio.ts` — the Web Audio voice, composed from the shared psych engines.
+- `audio.ts` — the Web Audio voice, composed from the shared visionary engines.
 - `hands.ts` — the MediaPipe HandLandmarker wrapper (CDN ESM, autonomous-safe).
 
 ## References

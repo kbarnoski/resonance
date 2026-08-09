@@ -11,8 +11,8 @@
 // GPU tier fails — this class touches no canvas.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import { VOICES, PARTIALS, type Partial } from "./field";
 
 const MASTER_PEAK = 0.2; // hard cap from the safety brief.

@@ -13,9 +13,9 @@
 //   full teardown that fades out and stops every oscillator.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface TunnelAudio {
   /** Feed the 0..1 approach drive + dt seconds once per animation frame. */

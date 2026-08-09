@@ -5,12 +5,12 @@
 //   • On each downward transition, emitPhoton() strikes a bell-like FM voice at
 //     the Rydberg-derived pitch — so the atom literally plays its own emission
 //     spectrum as a scale.
-//   • Both feed a code-generated convolution reverb (from _shared/psych) then a
+//   • Both feed a code-generated convolution reverb (from _shared/visionary) then a
 //     DynamicsCompressor limiter → destination. Everything starts on a user
 //     gesture and tears down fully on dispose().
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 interface DroneVoice {
   a: OscillatorNode;

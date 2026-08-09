@@ -26,8 +26,8 @@ Two subsystems here have never been built in the lab before:
 Endless self-similar regress: every cusp you fall into contains the whole
 structure again, smaller. That *fractal-regress / infinite-tunnel* percept is
 one of the **Klüver form constants** (tunnels, cobwebs, honeycombs) reported
-across flicker, near-death, and psychedelic states — here reached drug-free,
-driven purely by the geometry of the gasket and the sound of it ringing back at
+across flicker, near-death, and visionary states — here reached purely through
+light and sound, driven by the geometry of the gasket and the sound of it ringing back at
 you. The dive is the felt fall; the resonance cascade is the structure
 answering.
 

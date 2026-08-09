@@ -5,9 +5,9 @@
 //   oscillators + a faint 2-op FM shimmer through a soft attack / long release,
 //   mellowed by a per-voice lowpass so the timbre reads hollow and unmoored — the
 //   whole-tone scale never resolves, which is the point (the dissociative pole:
-//   nothing settles). Voices feed a shared void reverb (`_shared/psych/
+//   nothing settles). Voices feed a shared void reverb (`_shared/visionary/
 //   convolutionVoid`) whose wet OPENS as dissociation deepens, over a hollow
-//   open-fifth drone bed (`_shared/psych/droneBank`). A DynamicsCompressor glues
+//   open-fifth drone bed (`_shared/visionary/droneBank`). A DynamicsCompressor glues
 //   and limits. An AnalyserNode on the dry note bus yields the audio envelope the
 //   visual field tracks — until the desync engine unbinds them.
 //
@@ -15,8 +15,8 @@
 //   property of the VISUAL response (see page.tsx), never of what you hear.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 /** Whole-tone scale, in semitones, for the nine home-row keys A S D F G H J K L.
  *  A whole-tone scale has no leading tone and no perfect fifth of the tonic — it

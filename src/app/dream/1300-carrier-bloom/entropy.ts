@@ -1,10 +1,10 @@
 // entropy.ts — the REBUS "priors relax" arc for 1300-carrier-bloom.
 //
-//   RELaxed Beliefs Under pSychedelics (Carhart-Harris & Friston 2019): over a
-//   psychedelic experience the brain's high-level priors loosen, so perception
+//   The relaxed-beliefs model (Carhart-Harris & Friston 2019): over a
+//   visionary experience the brain's high-level priors loosen, so perception
 //   grows less constrained, more entropic, more geometrically free. We model that
 //   as ONE scalar e ∈ [0,1] that ramps slowly across the piece and then eases
-//   back down (come-up → peak → settle), independent of the beat. Everything that
+//   back down (slow ascent → peak → settle), independent of the beat. Everything that
 //   should be *audibly and visibly different at minute 3 than at 0:20* reads from
 //   this scalar:
 //
@@ -13,7 +13,7 @@
 //     • how many noise octaves fold in    (fine turbulence at the peak)
 //
 //   Pointer/tilt PERTURBATION can nudge `e` up or down so the player can push the
-//   trip deeper or pull it back — the arc is a tide, the hands are a paddle.
+//   journey deeper or pull it back — the arc is a tide, the hands are a paddle.
 //
 //   No React, no DOM: a pure state object stepped once per frame.
 
@@ -31,7 +31,7 @@ export interface EntropyState {
   elapsed: number;
 }
 
-/** Length of the slow arc in seconds. ~3.5 min: come-up, peak, settle. */
+/** Length of the slow arc in seconds. ~3.5 min: slow ascent, peak, settle. */
 const ARC_SECS = 210;
 
 export function makeEntropy(): EntropyState {

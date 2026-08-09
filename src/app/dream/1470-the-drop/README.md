@@ -122,4 +122,4 @@ geometries/materials/renderer, lose the GL context, remove every listener.
 Abelian sandpile / self-organized criticality — **Bak, Tang & Wiesenfeld**,
 PRL 59 (1987); Per Bak, *How Nature Works* (1996). Directed variant — Dhar &
 Ramaswamy, PRL 63 (1989). Built with `three` (InstancedMesh) + the Web Audio API
-+ React only; the drone bed is the lab's shared `_shared/psych/droneBank`.
++ React only; the drone bed is the lab's shared `_shared/visionary/droneBank`.

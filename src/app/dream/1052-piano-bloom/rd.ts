@@ -9,7 +9,7 @@
  * Two backends, feature-detected at runtime:
  *   - WebGPU compute shader (preferred) — the simulation step runs on the GPU
  *     in a compute pass with ping-pong storage buffers. This is the whole
- *     point: bring a real WebGPU compute body to the psych lane.
+ *     point: bring a real WebGPU compute body to the visionary lane.
  *   - CPU / typed-array fallback — a smaller grid stepped in JS, rendered to a
  *     Canvas2D ImageData. Runs everywhere, never a blank screen.
  *
@@ -34,7 +34,7 @@ export interface RDParams {
   dv: number;
 }
 
-/** Warm psilocybin ramp: deep ember floor → rust → amber → ochre → moss → gold.
+/** Warm ember ramp: deep ember floor → rust → amber → ochre → moss → gold.
  *  Never cold. Indexed by a 0..1 scalar derived from V. */
 export const WARM_RAMP: Array<[number, [number, number, number]]> = [
   [0.0, [14, 8, 6]], // near-black ember floor

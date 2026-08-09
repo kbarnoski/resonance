@@ -42,10 +42,15 @@ export default function SolarWindChoirPage() {
 
   // ── Poll one sample, update targets + (if running) the choir ────────────────
   const pull = useCallback(async () => {
-    const sample = await fetchSolarWind();
-    setData(sample);
-    targetsRef.current = computeTargets(sample);
-    audioRef.current?.applyData(sample);
+    try {
+      const sample = await fetchSolarWind();
+      setData(sample);
+      targetsRef.current = computeTargets(sample);
+      audioRef.current?.applyData(sample);
+    } catch {
+      // Live feed failed or returned an unexpected shape — keep the last good
+      // sample rather than crashing the view.
+    }
   }, []);
 
   // ── Mount: size canvas, draw idle immediately, start RAF + live polling ─────

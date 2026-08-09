@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// _shared/psych/safeFlicker.ts — the photosensitive-safe flicker engine.
+// _shared/visionary/safeFlicker.ts — the photosensitive-safe flicker engine.
 //
-//   SAFETY (non-negotiable, AGENT.md + PSYCHEDELIC.md): stroboscopic light
-//   reliably evokes the Klüver form constants with NO drug — but it is also a
+//   SAFETY (non-negotiable, AGENT.md + VISIONARY.md): stroboscopic light
+//   reliably evokes the Klüver form constants purely through light — but it is also a
 //   real photosensitive-epilepsy hazard. The most dangerous band is ~15–25 Hz
 //   hard square-wave luminance flips. Every prototype that flickers MUST route
 //   it through this engine, which guarantees:

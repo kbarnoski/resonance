@@ -17,7 +17,7 @@ import {
   honeycomb,
   FORM_PHI,
   type FormConstant,
-} from "../_shared/psych/logpolar";
+} from "../_shared/visionary/logpolar";
 
 const FORM_ORDER: FormConstant[] = ["tunnel", "spoke", "spiral", "honeycomb"];
 

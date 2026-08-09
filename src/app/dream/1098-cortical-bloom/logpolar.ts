@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // logpolar.ts — local copy of the retino-cortical map math (kept in-folder so
-// this prototype is self-contained). Mirrors _shared/psych/logpolar.ts.
+// this prototype is self-contained). Mirrors _shared/visionary/logpolar.ts.
 //
 // The retina→V1 map is (approximately) a complex logarithm, so a screen point
 // maps to cortical coordinates (log r, theta). Generate stripes/hexagons in

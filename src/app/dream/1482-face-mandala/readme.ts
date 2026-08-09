@@ -1,4 +1,4 @@
-export const README = `FACE MANDALA — your face conducts a living psychedelic mandala
+export const README = `FACE MANDALA — your face conducts a living visionary mandala
 
 WHAT IT IS
 A nested, counter-rotating kaleidoscopic mandala rendered as a real three.js
@@ -28,8 +28,8 @@ REFERENCES
 • MediaPipe FaceLandmarker v2 (Google, 2024–2025) — browser-native 52-value
   face blendshapes + head-pose matrix.
 • Klüver's four form constants + the Bressloff–Cowan cortical (log-polar) map —
-  why psychedelic geometry is radial + rotational symmetry.
-• Psilocybin affect-coupling — patterns shift with emotional state
+  why visionary geometry is radial + rotational symmetry.
+• Visionary-state affect-coupling — patterns shift with emotional state
   (Carhart-Harris entropic-brain / REBUS).
 
 SAFETY

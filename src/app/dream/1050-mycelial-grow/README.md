@@ -10,7 +10,7 @@ territory for as long as you leave it running. Candle-warm, microscope-organic.
 
 ## Tags
 
-- **state:** psilocybin
+- **state:** warm ecstatic
 - **pole:** intense-warm (organic)
 - **INPUT:** mic-breath (analysis-only, NON-pointer)
 - **OUTPUT:** Canvas2D growing-network
@@ -37,7 +37,7 @@ so it stays clean and testable.
 > **Prior use in the lab (honest):** the algorithm itself is **not** lab-first —
 > `322-kids-voice-garden` already used space colonization (voice/touch plant a
 > light, a decorative plant grows toward it and blooms a chime). The fresh axis
-> here is the *register and lifecycle*: an adult psychedelic, **autonomously
+> here is the *register and lifecycle*: an adult visionary, **autonomously
 > long-form** mycelial network that reseeds its own colonization fronts forever
 > (minute 5 ≠ minute 1), with **breath-driven growth rate** and **fork-triggered
 > just-intonation** — growth *is* the instrument, not a garden you tend.

@@ -14,7 +14,7 @@ Web Audio HRTF · **Technique:** Kuramoto phase-coupling re-sync
 
 1063 built the lab's first **audio-visual desync engine**: one control stream
 lagged by different, drifting delays into the visual camera and the audio, so
-cause and effect come unglued (the ketamine K-hole). It then hid its re-sync in a
+cause and effect come unglued (the dissociative void). It then hid its re-sync in a
 single scripted one-frame "clarity snap." **1082 makes the re-binding the star** —
 modelled, participatory, and perceptible.
 
@@ -112,7 +112,7 @@ five **HRTF-spatialised sound motes** orbiting the listener in 3D.
   surge** of hyper-lucid clarity. Modelled as the bright bloom at full coherence
   (the re-binding moment).
 - **Bera, Looger, Proekt & Cichon, "Cortical Mechanisms Contributing to
-  Ketamine-Induced Dissociation," _The Neuroscientist_, 2026** — dissociation as
+  Dissociation," _The Neuroscientist_, 2026** — dissociation as
   sensory-motor **uncoupling** (NMDA-blockade → thalamocortical disconnection).
   The un-bound state (K ≈ 0) it starts from, inherited from 1063.
 

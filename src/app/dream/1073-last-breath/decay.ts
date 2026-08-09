@@ -27,13 +27,13 @@
 //     const s = engine.sample();    // { remaining, held, alive, partials }
 //     await engine.dispose();       // full teardown
 //
-//   It composes the shared psych modules for the bed + tail:
-//     _shared/psych/droneBank.ts      — a sub-drone foundation (kept very low)
-//     _shared/psych/convolutionVoid.ts — a cavernous valedictory reverb tail
+//   It composes the shared visionary modules for the bed + tail:
+//     _shared/visionary/droneBank.ts      — a sub-drone foundation (kept very low)
+//     _shared/visionary/convolutionVoid.ts — a cavernous valedictory reverb tail
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 /** How many partials the finite material is made of. */
 const PARTIAL_COUNT = 9;

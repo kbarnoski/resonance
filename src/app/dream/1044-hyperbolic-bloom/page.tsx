@@ -275,7 +275,7 @@ export default function HyperbolicBloomPage() {
           Hyperbolic Bloom
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
-          A drug-free descent into the DMT &ldquo;hyperbolic
+          A meditative descent into the visionary &ldquo;hyperbolic
           hyperspace&rdquo;: a {"{7,3}"} tiling rendered on the Poincar&eacute;
           disk, where space stops being flat and becomes negatively curved
           &mdash; saddle sheets and jeweled heptagons streaming out toward the
@@ -354,7 +354,7 @@ export default function HyperbolicBloomPage() {
             <p>
               Phenomenology, not medicine. Inspired by QRI&rsquo;s{" "}
               <span className="italic">
-                Hyperbolic Geometry of the DMT Experience
+                Hyperbolic Geometry of the Visionary State
               </span>{" "}
               (G&oacute;mez-Emilsson), Bressloff&ndash;Cowan cortical
               form-constants, and Escher&rsquo;s{" "}

@@ -2,7 +2,7 @@
 
 > "What if you could press, pull, and TEAR a living skin of sound with your hands — a membrane whose physical tension IS the pitch?"
 >
-> `state: salvia / DMT membrane-reality · pole: intense`
+> `state: membrane-reality / visionary realm · pole: intense`
 
 An **instrument**, not a screensaver. Idle, the skin only breathes — a faint,
 alive-but-quiet drumhead. It sings when you push into it: drag to press and pull,

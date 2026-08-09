@@ -5,7 +5,7 @@
 // entropic-brain / REBUS framing (Carhart-Harris). Everything is smooth; phases
 // blend rather than switch.
 //   Onset       -> low entropy, faint breathing
-//   Come-up     -> drift/trails emerge, warmth rises
+//   Rise     -> drift/trails emerge, warmth rises
 //   Peak        -> entropy max: fold bloom, symmetry loosens, saturation peaks
 //   Plateau     -> slower morph, held high
 //   Return      -> symmetry re-forms, entropy decays to calm
@@ -21,7 +21,7 @@ const ARC_SECONDS = 300; // ~5 minutes
 
 const PHASES: { name: string; at: number; e: number }[] = [
   { name: "Onset", at: 0.0, e: 0.05 },
-  { name: "Come-up", at: 0.18, e: 0.4 },
+  { name: "Rise", at: 0.18, e: 0.4 },
   { name: "Peak", at: 0.45, e: 1.0 },
   { name: "Plateau", at: 0.68, e: 0.82 },
   { name: "Return", at: 0.9, e: 0.12 },

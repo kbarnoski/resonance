@@ -3,7 +3,7 @@
 //
 // Pure, side-effect-free helpers for the hidden-eye piece:
 //   1. a procedural depth heightfield depth(x,y,t) that morphs through four
-//      psychedelic "form" states (dome / tunnel / ripples / mandala), and
+//      visionary "form" states (dome / tunnel / ripples / mandala), and
 //   2. a Single Image Random-Dot Stereogram (SIRDS) encoder that turns that
 //      heightfield into a field of dots whose only 3-D content lives in the
 //      viewer's binocular fusion — no monocular depth cue exists in the pixels.
@@ -34,7 +34,7 @@ function clamp01(v: number): number {
   return v < 0 ? 0 : v > 1 ? 1 : v;
 }
 
-// ── the four psychedelic form states, each returning a height in ~0..1 ───────
+// ── the four visionary form states, each returning a height in ~0..1 ───────
 function formVal(f: number, r: number, ang: number, t: number): number {
   if (f === 0) {
     // breathing dome — a hemisphere that slowly inflates and deflates

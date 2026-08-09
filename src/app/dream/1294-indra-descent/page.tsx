@@ -18,7 +18,7 @@ import {
 } from "./gasket";
 import { startAudio, bendToFreq, type AudioEngine } from "./audio";
 import { drawScene, rippleLifetime, type Camera, type Ripple } from "./render";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1294 · INDRA'S DESCENT

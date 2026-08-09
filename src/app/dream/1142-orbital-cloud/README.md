@@ -4,8 +4,8 @@
 orbitals — watching the real quantum probability cloud morph in 3D and hearing
 the atom's actual spectral emission lines?*
 
-A drug-free psychedelic instrument built on genuine quantum mechanics. The
-phenomenology of psychedelic visuals — glowing probability clouds, superposed
+A purely audiovisual visionary instrument built on genuine quantum mechanics. The
+phenomenology of visionary visuals — glowing probability clouds, superposed
 shimmer, structure emerging from a haze — is rendered here as *literal physics*:
 the real hydrogen wavefunction and its real emission spectrum.
 
@@ -63,7 +63,7 @@ current level's binding energy.
 | `page.tsx` | `"use client"` component: state machine, pointer "pump" controls, idle auto-play, morph loop, HUD, WebGL2↔Canvas2D branch, cleanup. |
 | `orbital.ts` | Physics: `radialR`, real `angular` harmonics, `sampleCloud` (rejection sampling of |ψ|²), `rydbergEnergyEv`, `energyToAudibleHz`, `levelToDroneHz`. |
 | `render.ts` | Dependency-free mat4 helpers + the WebGL2 additive point-cloud renderer, plus a Canvas2D projection fallback. |
-| `audio.ts` | Web Audio: FM/additive photon bells + sustained drone → code-generated convolution reverb (`_shared/psych/convolutionVoid`) → DynamicsCompressor limiter. Full teardown on unmount. |
+| `audio.ts` | Web Audio: FM/additive photon bells + sustained drone → code-generated convolution reverb (`_shared/visionary/convolutionVoid`) → DynamicsCompressor limiter. Full teardown on unmount. |
 
 ## Palette
 
@@ -102,8 +102,8 @@ closed) on unmount.
   Lyman (n_f=1), Balmer (n_f=2), Paschen (n_f=3).
 - **Balmer emission spectrum** — the visible hydrogen lines Hα 656 nm, Hβ 486 nm,
   Hγ 434 nm, Hδ 410 nm, used as the colour palette.
-- **Conceptual license only:** the 2026 hypothesis paper *"Psychedelics and the
-  quantum brain"* (PubMed 41988526) is cited **only** as speculative license for
+- **Conceptual license only:** the 2026 hypothesis paper on visionary states and
+  the quantum brain (PubMed 41988526) is cited **only** as speculative license for
   rendering the *phenomenology* of superposition (a shimmering probability
   cloud). This piece makes **no** claim that consciousness is quantum and does
   **not** endorse quantum-consciousness theories — it is a physics visualiser and

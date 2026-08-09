@@ -2,9 +2,9 @@
 
 ## The one question
 
-**What if a drug-free psychedelic visual were organised not by SPATIAL geometry
-(the usual form-constant warp) but by the visual cortex's own psychedelic
-TEMPORAL rhythm** — the ~5 Hz theta oscillation that 5-HT2A psychedelics amplify,
+**What if a purely audiovisual visionary field were organised not by SPATIAL geometry
+(the usual form-constant warp) but by the visual cortex's own visionary
+TEMPORAL rhythm** — the ~5 Hz theta oscillation that 5-HT2A visionary states amplify,
 with ~40 Hz gamma bursts nested inside each theta cycle (theta–gamma
 cross-frequency / phase-amplitude coupling)?
 
@@ -60,7 +60,7 @@ auto-modulates so the page always breathes and sounds.
 
 - The literal 5/40 Hz coupling lives **only in the audio**.
 - Every visual luminance modulation is routed through the shared **SafeFlicker**
-  engine (`_shared/psych/safeFlicker.ts`): hard-capped at ≤8 Hz, ≤3 Hz soft
+  engine (`_shared/visionary/safeFlicker.ts`): hard-capped at ≤8 Hz, ≤3 Hz soft
   default drift (≤6 Hz in deep mode), sine waveform, luminance floor 0.6 — it
   never blacks out and is never a hard strobe.
 - "Gamma" is expressed as a **spatial** sparkle whose amplitude tracks theta
@@ -80,8 +80,8 @@ art prototype that lets you hear and steer a nested rhythm.
 
 ## References
 
-- **"Psychedelic 5-HT2A agonist increases spontaneous and evoked 5-Hz
-  oscillations in visual and retrosplenial cortex"** (2026), NCBI PMC12894671 —
+- **A 2026 study of a 5-HT2A agonist increasing spontaneous and evoked 5-Hz
+  oscillations in visual and retrosplenial cortex**, NCBI PMC12894671 —
   the motivating finding that 5-HT2A agonism amplifies ~5 Hz (theta-band) cortical
   oscillations.
 - **Lisman, J. E. & Jensen, O., "The theta-gamma neural code,"** *Neuron* (2013)

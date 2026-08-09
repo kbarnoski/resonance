@@ -9,7 +9,7 @@ import {
   type SteerInput,
   type InputMode,
 } from "./input";
-import { createSafeFlicker } from "@/app/dream/_shared/psych/safeFlicker";
+import { createSafeFlicker } from "@/app/dream/_shared/visionary/safeFlicker";
 
 type Phase = "idle" | "running" | "error";
 

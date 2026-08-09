@@ -147,7 +147,7 @@ export default function EntityLatticePage() {
             </h1>
             <p className="mt-3 text-base leading-relaxed text-foreground">
               Your whole moving body, multiplied by camera body-tracking into a
-              luminous DMT-style hyperspace lattice — recursive kaleidoscopic
+              luminous hyperspace-state lattice — recursive kaleidoscopic
               copies of yourself across more directions than there should be. The
               harder you move, lift and spread your arms, the faster an endless
               rising glissando climbs toward breakthrough.
@@ -235,7 +235,7 @@ export default function EntityLatticePage() {
             <p className="mt-4 text-base leading-relaxed">
               <span className="text-foreground">The question.</span> What if your
               whole moving body were multiplied — by camera body-tracking — into a
-              luminous DMT-style hyperspace entity-lattice, where the
+              luminous hyperspace-state entity-lattice, where the
               &ldquo;entities&rdquo; are recursive kaleidoscopic copies of yourself
               across more directions than there should be, and the intensity of
               your motion drives an endless rising glissando toward breakthrough?
@@ -276,7 +276,7 @@ export default function EntityLatticePage() {
               with Kinect body tracking, the embodied-installation frontier (Safari
               26, Sept 2025, made WebGPU universal). Graham St John,{" "}
               <em>
-                &ldquo;The Breakthrough Experience: DMT Hyperspace and its Liminal
+                &ldquo;The Breakthrough Experience: Hyperspace and its Liminal
                 Aesthetics&rdquo;
               </em>{" "}
               (Anthropology of Consciousness, 2018) — accelerating geometric

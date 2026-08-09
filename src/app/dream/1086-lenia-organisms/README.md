@@ -1,6 +1,6 @@
 # 1086 — Lenia Organisms
 
-**Tags:** `state: DMT entity-encounter / self-organizing alien life · pole: intense`
+**Tags:** `state: visionary entity-encounter / self-organizing alien life · pole: intense`
 
 ## The question
 
@@ -34,7 +34,7 @@ slowly-drifting structures. The mass-conservative extension is **Flow-Lenia**
 ## Phenomenology
 
 Self-organizing beings that appear, greet you and dissolve are the
-DMT/entity-encounter register made literal (cf. QRI / Andrés Gómez Emilsson on
+visionary entity-encounter register made literal (cf. QRI / Andrés Gómez Emilsson on
 entity/organism phenomenology). Pole: **intense**.
 
 ## Interaction
@@ -106,7 +106,7 @@ only creatures are bright. Sound has an instant on/off.
 
 - Bert Wang-Chak Chan, _Lenia — Biology of Artificial Life_ (2019).
 - Plantec, Chan et al., _Flow-Lenia_ (ALIFE / MIT Press 2025, arXiv:2212.07906).
-- QRI / Andrés Gómez Emilsson on DMT entity/organism phenomenology.
+- QRI / Andrés Gómez Emilsson on visionary entity/organism phenomenology.
 
 ## Files
 

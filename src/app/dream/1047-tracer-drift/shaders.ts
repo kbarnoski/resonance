@@ -67,7 +67,7 @@ out vec4 fragColor;
 uniform sampler2D uPrev;   // previous accumulation frame
 uniform vec2 uRes;
 uniform float uTime;
-uniform float uIntensity;  // 0..1 arc come-up
+uniform float uIntensity;  // 0..1 arc rise
 uniform float uLowEnergy;  // 0..1 -> trail length / zoom / warp amp
 uniform float uLevel;      // 0..1 -> saturation
 uniform float uAspect;

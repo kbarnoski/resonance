@@ -13,7 +13,7 @@ is its pitch, so packing the gasket literally builds a chord.
 
 | axis | value |
 | --- | --- |
-| **state** | altered-states / fractal-regress (drug-free) |
+| **state** | altered-states / fractal-regress (purely audiovisual) |
 | **pole** | instrument (PLAYED, not a screensaver) |
 | **input** | tap-to-spawn-and-sound (pointer / touch — no mic, no sensors) |
 | **output** | Canvas2D nested-tangent-circle **structure** (line drawing, not a filled shader field) |

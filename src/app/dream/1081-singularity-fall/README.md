@@ -7,7 +7,7 @@
 `state: black-hole-infall / ego-dissolution-void · pole: intense`
 
 INTENSE → cosmic-terror pole: the awe and ego-dissolution of the void, the NDE
-tunnel taken to its violent limit. A drug-free altered state.
+tunnel taken to its violent limit. A purely audiovisual altered state.
 
 ## Tags
 
@@ -53,7 +53,7 @@ approximation**, not a full geodesic integrator: rays are bent by a closed-form
    point's angle (spinning up as radius shrinks), flattens it toward the disk,
    stretches + reddens it near the horizon, and fades it out at the shadow.
 4. **Audio synthesis** (`audio.ts`, Web Audio) — reuses the canonical detuned-just
-   drone bed from `_shared/psych/droneBank.ts` (drive opens with arc progress).
+   drone bed from `_shared/visionary/droneBank.ts` (drive opens with arc progress).
    On top: a red-shifting partial pair that **glides down in pitch** toward the
    horizon, a rising sub-bass **"swallow"** whose gain + cutoff grow as the shadow
    fills the view, and a bright inharmonic **bell** struck once at the photon-ring
@@ -86,7 +86,7 @@ Progress `0→1` threads every subsystem, then resets to a fresh approach:
 ## Safety
 
 The horizon-crossing white-out is a **smooth sine luminance ramp** (rise then fall),
-routed through `_shared/psych/safeFlicker.ts` clamped to **≤2 Hz** with a 0.7 floor —
+routed through `_shared/visionary/safeFlicker.ts` clamped to **≤2 Hz** with a 0.7 floor —
 a gentle drift, never a fast full-frame strobe.
 
 ## Graceful degradation

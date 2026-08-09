@@ -71,7 +71,7 @@ Each struck bell is a Web Audio **`PannerNode`** with the **HRTF** panning model
 positioned at the sphere's 3D world coordinates. The **`AudioListener`** is
 driven every frame by the first-person camera (position + forward/up), so a bell
 above-left of you is heard above-left. Voices run through a cistern-like
-convolution reverb (`_shared/psych/convolutionVoid`) and a limiter into a master
+convolution reverb (`_shared/visionary/convolutionVoid`) and a limiter into a master
 gain ≤ 0.3.
 
 ## Controls

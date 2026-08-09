@@ -17,7 +17,7 @@ A self-contained audio-visual prototype:
 
 - **The body** — a real Gray-Scott reaction-diffusion simulation (two chemicals
   U and V, feed/kill, Laplacian diffusion, double-buffered) on a grid. Mapped to
-  a warm psilocybin palette: ember floor → rust → amber → ochre → moss →
+  a warm ecstatic palette: ember floor → rust → amber → ochre → moss →
   luminous gold. Never goes cold.
 - **The voice** — "reader" probes on the field drive granular synthesis of a
   loaded recording, or a felt-piano synth bed when no file is loaded.

@@ -1,7 +1,8 @@
 # 1444 · Troxler Void
 
-**The one question:** *What if stillness itself dissolved the screen?* A drug-free
-staging of sensory / ego boundary-dissolution built on the visual system's **own**
+**The one question:** *What if stillness itself dissolved the screen?* A meditative
+staging of sensory / ego boundary-dissolution — purely through light and sound —
+built on the visual system's **own**
 adaptation. Hold still and the world melts into a uniform void; move and it
 re-forms. The calmer the visitor, the more the field disappears.
 
@@ -79,7 +80,7 @@ the drift softened. Output-only audio (no mic → no feedback/howl path).
   smoothing for the same soft glow).
 - `audio.ts` — drone with per-partial dropout, bloom-driven brightness, and a
   voidness-driven reverb send. Uses the shared code-generated void IR
-  (`_shared/psych/convolutionVoid`); no external audio files.
+  (`_shared/visionary/convolutionVoid`); no external audio files.
 
 ## Honest knocks / unverified-in-headless
 

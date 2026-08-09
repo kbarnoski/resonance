@@ -9,7 +9,7 @@
 //   stacked chords into one breathing organ.
 //
 //   Tuning is 5-limit just intonation off a movable root, so chords beat-lock
-//   into the "luminous" consonance the warm psilocybin pole wants.
+//   into the "luminous" consonance the warm mystic pole wants.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** 5-limit just-intonation ratios for the scale degrees A S D F G H J K L. */

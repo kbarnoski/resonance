@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // audio.ts — the journey's audio bed, slaved to the 5-phase arc.
 //
-//   Built entirely from the SHARED psychedelic toolkit (not reinvented):
+//   Built entirely from the SHARED visionary toolkit (not reinvented):
 //     • startShepard      — an endless Shepard–Risset ascent whose drive (and so
 //                           brightness + glide rate) climbs to the breakthrough.
 //     • startDroneBank    — a just-intonation drone whose lowpass opens with the
@@ -14,9 +14,9 @@
 //   The music is the carrier: it peaks exactly at the visual dissolution.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_GAIN = 0.35;
 

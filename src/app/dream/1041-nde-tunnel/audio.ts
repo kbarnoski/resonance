@@ -4,7 +4,7 @@
  *  convolution-reverb "void" for cathedral/underwater vastness. A low-pass
  *  filter OPENS toward the light and closes on return. The whole rig is
  *  driven from the same timeline as the visuals — but DELIBERATELY LAGGED:
- *  the audio swell trails the visual surge (the ketamine NMDA-antagonist
+ *  the audio swell trails the visual surge (the dissociative NMDA-antagonist
  *  audio-visual desync), so the two normally-bound streams gently decouple.
  *
  *  Master gain is modest and ramps in/out smoothly; teardown is complete.

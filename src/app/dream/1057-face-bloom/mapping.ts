@@ -2,7 +2,7 @@
 // mapping.ts — facial EXPRESSION + head pose → form-constant parameters.
 //
 //   1057-face-bloom turns the face into the controller for a log-polar form-
-//   constant kaleidoscope (see ../_shared/psych/logpolar). MediaPipe's Face
+//   constant kaleidoscope (see ../_shared/visionary/logpolar). MediaPipe's Face
 //   Landmarker emits 52 ARKit-style blendshape coefficients in [0,1] plus a
 //   4×4 facial-transformation matrix (head pose). This module distills those
 //   into the handful of expressive parameters the renderer + audio read, and
@@ -12,7 +12,7 @@
 //   No DOM, no React — pure data transforms, easy to reason about & test.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { FORM_CONSTANTS, type FormConstant } from "../_shared/psych/logpolar";
+import { FORM_CONSTANTS, type FormConstant } from "../_shared/visionary/logpolar";
 
 /** The expressive control vector the rest of the prototype consumes. All
  *  fields are normalized to a comfortable working range (mostly [0,1]). */
@@ -154,7 +154,7 @@ export interface DriveState {
   entropy: number;
   /** spiral handedness + drift sign from yaw, [-1,1]. */
   handedness: number;
-  /** inward come-up phase velocity. */
+  /** inward rise phase velocity. */
   phaseVel: number;
   /** continuous morph position across the four form constants, [0,4). */
   formPos: number;
@@ -173,7 +173,7 @@ export function deriveDrive(p: FaceParams): DriveState {
   const freq = 2.2 + p.browUp * 5.5 + p.smile * 1.0;
   const entropy = clamp((1 - p.eyeOpen) * 0.2 + p.browUp * 0.3 + p.jawOpen * 0.3, 0, 1);
   const handedness = clamp(p.yaw, -1, 1);
-  // come-up: turning the head inward (pitch down / strong yaw) speeds drift.
+  // rise: turning the head inward (pitch down / strong yaw) speeds drift.
   const phaseVel = (0.25 + Math.abs(p.yaw) * 1.4 + p.jawOpen * 0.8) * present;
   // morph across FORM_CONSTANTS via yaw+roll, so head movement tours the geometry.
   const tour = (p.yaw * 0.5 + 0.5) * 2 + (p.roll * 0.5 + 0.5) * 2; // [0,4]

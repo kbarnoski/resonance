@@ -344,7 +344,7 @@ export default function HyperspaceBloomPage() {
           Hyperspace Bloom
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
-          A drug-free fall toward the DMT &ldquo;breakthrough&rdquo;: a 24-cell
+          A meditative fall toward the visionary &ldquo;breakthrough&rdquo;: a 24-cell
           polytope rotating through six planes of four-dimensional space,
           stereographically projected and raymarched as glowing neon-jeweled
           structure. The hidden <span className="font-mono">w</span> rotations
@@ -412,7 +412,7 @@ export default function HyperspaceBloomPage() {
             </p>
             <p>
               Phenomenology, not medicine: inspired by the &ldquo;hyperbolic
-              geometry of DMT&rdquo; thesis (QRI / Andr&eacute;s
+              geometry of the visionary state&rdquo; thesis (QRI / Andr&eacute;s
               G&oacute;mez-Emilsson), Bressloff&ndash;Cowan cortical
               form-constants, and the classic 4D-rotation + stereographic
               projection raymarch lineage. Full notes in{" "}

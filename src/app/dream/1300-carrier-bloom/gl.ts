@@ -6,7 +6,7 @@
 // the form constants over the piece; pointer/tilt perturbs the warp center.
 //
 // Hand-written GLSL ES 3.00 (no three.js, no CDN). The log-polar math is imported
-// read-only from ../_shared/psych/logpolar.ts — the GLSL prelude (LOGPOLAR_GLSL)
+// read-only from ../_shared/visionary/logpolar.ts — the GLSL prelude (LOGPOLAR_GLSL)
 // and its JS mirrors (formConstant/honeycomb/screenToCortex) so the Canvas2D
 // fallback agrees with the GPU path.
 
@@ -15,7 +15,7 @@ import {
   formConstant,
   honeycomb as honeycombJs,
   screenToCortex,
-} from "../_shared/psych/logpolar";
+} from "../_shared/visionary/logpolar";
 
 /** All the per-frame drive the melt needs — shared by both backends. */
 export interface MeltParams {
@@ -102,7 +102,7 @@ float fbm(vec2 p, int oct) {
   return sum;
 }
 
-// DMT neon-iridescent cosine palette (thin-film-ish rainbow on near-black).
+// Visionary neon-iridescent cosine palette (thin-film-ish rainbow on near-black).
 vec3 iridescence(float t) {
   vec3 a = vec3(0.5);
   vec3 b = vec3(0.5);

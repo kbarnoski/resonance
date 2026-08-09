@@ -212,7 +212,7 @@ export default function SemaAscentPage() {
       {(phase === "idle" || phase === "loading") && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#030209]/55 px-6 text-center backdrop-blur-[2px]">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300/95">
-            drug-free sema · ecstatic ascent
+            whirling sema · ecstatic ascent
           </p>
           <h1 className="font-semibold text-4xl text-foreground sm:text-5xl">
             Sema Ascent

@@ -29,7 +29,7 @@ along each ray — classic volumetric fog/raymarching (Íñigo Quílez technique
   rings — is evaluated with the log-radius warped by depth (`c.x + p.z·0.55`) so
   the rings ripple *along* the tunnel and flow past as you advance. A faint
   `honeycomb` lattice adds wall texture. This is the shared
-  `_shared/psych/logpolar` engine (`LOGPOLAR_GLSL`) spliced straight into the
+  `_shared/visionary/logpolar` engine (`LOGPOLAR_GLSL`) spliced straight into the
   shader prelude.
 - **The growing core.** A bright axial term (`exp(-r²·tight)`) is the radiance at
   the tunnel's end. Its brightness and width grow with `uApproach`, and its color

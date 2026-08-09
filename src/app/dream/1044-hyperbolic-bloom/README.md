@@ -1,12 +1,13 @@
 # 1044 · Hyperbolic Bloom
 
-**The one question:** What if a screen could evoke the DMT "hyperbolic
-hyperspace" — the reports that at breakthrough, experienced space stops being
+**The one question:** What if a screen could evoke the "hyperbolic
+hyperspace" of the visionary realm — the reports that at breakthrough, experienced space stops being
 flat and becomes negatively-curved: saddle surfaces everywhere,
 "hyperdimensional bedsheets blowing in the wind," tiles that stream outward
-forever and never run out, every wallpaper-symmetry group at once — drug-free?
+forever and never run out, every wallpaper-symmetry group at once — purely
+through light and sound?
 
-**Tags:** `state: DMT-hyperbolic · pole: intense`
+**Tags:** `state: visionary-hyperbolic · pole: intense`
 INPUT: analysis-only mic (FFT) with a self-sufficient drone fallback ·
 OUTPUT: WebGL2 fragment shader ·
 TECHNIQUE: Poincaré-disk hyperbolic {7,3} tiling rendered per-pixel ·
@@ -45,7 +46,7 @@ A single non-looping `progress` clock (0 → 1 over ~5 minutes) drives the
 shader/audio uniforms:
 
 - **onset** (0–18%) — low recursion depth, slow fall, low saturation
-- **come-up** (18–35%) — depth, fall speed and warp rise
+- **slow ascent** (18–35%) — depth, fall speed and warp rise
 - **breakthrough peak** (~35–60%) — max recursion depth, fastest geodesic
   fall, highest saturation + chromatic aberration
 - **plateau** (60–80%) — slower morph, sustained intensity
@@ -88,7 +89,7 @@ smooth motion. No strobe, no >3 Hz full-screen luminance pulsing.
 
 ## Named references
 
-- Andrés Gómez-Emilsson / QRI — *The Hyperbolic Geometry of the DMT Experience*
+- Andrés Gómez-Emilsson / QRI — *The Hyperbolic Geometry of the Visionary Experience*
   (world-sheets folding into negatively-curved hyperspace, saddles, sheets).
 - Bressloff & Cowan — geometric visual hallucinations / cortical **form
   constants**.

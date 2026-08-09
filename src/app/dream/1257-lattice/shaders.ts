@@ -8,14 +8,14 @@
 //                        a capped simulation resolution.
 //     • makeDisplayFrag(LOGPOLAR_GLSL) — samples the V field through an N-fold
 //                        kaleidoscope + log-polar honeycomb warp (the shared
-//                        _shared/psych/logpolar engine) and colours it with
+//                        _shared/visionary/logpolar engine) and colours it with
 //                        thin-film iridescence on a luminous nacre ground.
 //
 //   The Gray-Scott system (Pearson 1993) is the classic self-replicating-spot /
 //   maze reaction-diffusion model — Alan Turing's "Chemical Basis of
 //   Morphogenesis" (1952) made physical. Sweeping feed (F) and kill (K) walks
 //   the pattern from sparse spots → mitosis → labyrinth, which is exactly the
-//   living, growing "realm-membrane" of the DMT breakthrough phenomenology.
+//   living, growing "realm-membrane" of the breakthrough-state phenomenology.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const VERT_SRC = /* glsl */ `#version 300 es

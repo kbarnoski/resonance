@@ -17,7 +17,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MotifEngine } from "./engine";
 import { drawWeave } from "./weave";
-import { createSafeFlicker, SafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, SafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 type Phase = "idle" | "running";
 

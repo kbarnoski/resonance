@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import {
   makeAdaptField,
   applyPointerMove,
@@ -162,7 +162,7 @@ export default function TroxlerVoidPage() {
         </h1>
         <p className="mt-2 text-base leading-relaxed text-foreground">
           Hold perfectly still and the screen dissolves into a uniform void; move,
-          and the world re-forms. A drug-free staging of boundary-dissolution built
+          and the world re-forms. A meditative staging of boundary-dissolution built
           on your own visual system — Troxler fading inside a Ganzfeld field.
         </p>
 

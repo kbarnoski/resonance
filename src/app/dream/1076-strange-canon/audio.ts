@@ -18,8 +18,8 @@
 // destination. A quiet drone bank sits underneath as the void's continuous bed,
 // driven by overall trajectory speed.
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { ThomasAttractor, TrajPoint } from "./attractor";
 
 /** Just-intonation scale degrees (ratios within an octave). */

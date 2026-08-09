@@ -21,7 +21,7 @@ import {
 } from "./faraday";
 import { createScene, type SceneHandle } from "./scene";
 import { startAudio, type AudioEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1278 · FARADAY RELIEF

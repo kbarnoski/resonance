@@ -10,7 +10,7 @@
 //   effect in page.tsx.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 import { VERT_SRC, SIM_FRAG_SRC, makeDisplayFrag } from "./shaders";
 
 // ── deterministic RNG (no Math.random at module scope) ───────────────────────

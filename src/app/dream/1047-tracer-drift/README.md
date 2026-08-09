@@ -1,11 +1,11 @@
 # 1047 — Tracer Drift
 
-**The one question:** What if a screen could evoke the *LSD* drift — surfaces
+**The one question:** What if a screen could evoke the *visionary* drift — surfaces
 breathing and slowly drifting, motion leaving lagging colour **trails/tracers**
 (positive afterimages), persistent **visual snow**, gentle moiré — the long
-weightless plateau of an acid come-up, drug-free?
+weightless plateau of a slow visionary ascent, purely through light and sound?
 
-`state: LSD · pole: cosmic-ambient (drifting)`
+`state: visionary-drift · pole: cosmic-ambient (drifting)`
 
 ## Tags
 
@@ -28,9 +28,9 @@ weightless plateau of an acid come-up, drug-free?
 
 - **Memo Akten** — feedback / optical-flow image work; the practice of feeding a
   frame back through a warped, decayed transform to make motion smear and bloom.
-- **LSD tracer / positive-afterimage / visual-snow phenomenology** — the lagging
+- **Tracer / positive-afterimage / visual-snow phenomenology** — the lagging
   colour trails behind moving objects, the persistent fine grain, the breathing
-  of static surfaces reported on classic psychedelics.
+  of static surfaces reported in intense visionary states.
 - **Carhart-Harris entropic-brain / REBUS framing** — relaxed priors → drifting
   reorganisation; here mapped to an arc that loosens (longer trails, wider colour
   spread, more warp) into a long plateau, then re-converges.
@@ -81,7 +81,7 @@ fade, then closes the `AudioContext`. The RAF is cancelled on unmount.
 
 ## Arc (~4 min, loops)
 
-onset (clear, faint snow, short trails) → come-up (trails lengthen, breathing
+onset (clear, faint snow, short trails) → slow ascent (trails lengthen, breathing
 warp grows, colour drifts apart) → **plateau** (long luminous tracers, slow
 moiré, the weightless middle — deliberately wide, ~0.40–0.78 of the loop) →
 return (trails shorten, snow fades, colour re-converges). All keyframes blend

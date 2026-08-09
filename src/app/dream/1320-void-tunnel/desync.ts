@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// 1320-khole-tunnel · desync.ts — the audio-visual DESYNC engine.
+// 1320-void-tunnel · desync.ts — the audio-visual DESYNC engine.
 //
 //   The signature mechanic of "Unbinding": the beat you HEAR comes loose from
 //   the flash you SEE. Every frame the render loop pushes the current visual
@@ -9,7 +9,7 @@
 //
 //   This is the phenomenology of dissociative sensory UNBINDING — the uncoupling
 //   of sensory input from awareness described in Bera et al. 2026 ("Cortical
-//   Mechanisms Contributing to Ketamine-Induced Dissociation"), where the
+//   Mechanisms Contributing to Dissociation"), where the
 //   retrosplenial ~3 Hz rhythm rides the same clock but perception comes apart.
 //
 //   The lag is a slow sine (~0.05 Hz) wandering between ~0.3 s and ~1.2 s. A

@@ -14,7 +14,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import * as THREE from "three";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // Just-intonation A Dorian (A B C D E F# G) — a real mode with real semitone
 // steps, NOT a "no-wrong-notes" pentatonic. Ratios above the octave root.

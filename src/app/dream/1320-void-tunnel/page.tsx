@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { FRAG_SRC, VERT_SRC } from "./shaders";
 import { createDesync, type DesyncEngine } from "./desync";
-import { makeKholeAudio, type KholeAudio } from "./audio";
+import { makeVoidAudio, type VoidAudio } from "./audio";
 
 /* Base rate of the ~3 Hz dissociation pulse. SAFETY: never above 3 Hz for a
  * full-field luminance change. Reduced-motion → halved. */
@@ -103,14 +103,14 @@ function makeGLRig(canvas: HTMLCanvasElement): GLRig | null {
   };
 }
 
-export default function KholeTunnelPage() {
+export default function VoidTunnelPage() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [noGL, setNoGL] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rigRef = useRef<GLRig | null>(null);
-  const audioRef = useRef<KholeAudio | null>(null);
+  const audioRef = useRef<VoidAudio | null>(null);
   const acRef = useRef<AudioContext | null>(null);
   const desyncRef = useRef<DesyncEngine | null>(null);
   const rafRef = useRef<number>(0);
@@ -249,7 +249,7 @@ export default function KholeTunnelPage() {
     const ac = new AC();
     await ac.resume();
     acRef.current = ac;
-    audioRef.current = makeKholeAudio(ac);
+    audioRef.current = makeVoidAudio(ac);
     startedRef.current = true;
     setPhase("running");
   }, []);
@@ -325,10 +325,10 @@ export default function KholeTunnelPage() {
       {/* hero / controls */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
         <h1 className="font-semibold text-3xl tracking-tight text-foreground sm:text-4xl">
-          K-Hole Tunnel
+          Void Tunnel
         </h1>
         <p className="mt-3 text-base leading-relaxed text-foreground">
-          A drug-free drift, disembodied, toward a distant being of light — where
+          A drift, disembodied, toward a distant being of light — where
           the beat you hear comes loose from the flash you see, and the world
           un-binds the deeper you go.
         </p>
@@ -367,11 +367,11 @@ export default function KholeTunnelPage() {
         <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/80 p-5 backdrop-blur-md sm:p-10">
           <div className="max-w-2xl py-6 text-foreground">
             <h2 className="font-semibold text-2xl text-foreground sm:text-3xl">
-              K-Hole Tunnel — design notes
+              Void Tunnel — design notes
             </h2>
             <p className="mt-4 text-base leading-relaxed text-foreground">
               <span className="text-violet-300">The one question:</span> what if a
-              drug-free screen could evoke the ketamine k-hole / near-death
+              screen could evoke the dissociative void / near-death
               tunnel-to-light — and make you feel the dissociative{" "}
               <em>unbinding of the senses</em>, where the sound you hear comes
               loose from the light you see?
@@ -402,7 +402,7 @@ export default function KholeTunnelPage() {
             <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               Disembodied forward drift, a hypoxic vignette constricting toward a
               warm being of light, and a smooth gamma clarity-swell on arrival —
-              the reported shape of the k-hole and the near-death tunnel. Nothing
+              the reported shape of the dissociative void and the near-death tunnel. Nothing
               strobes: full-field luminance change stays ≤ 3 Hz and continuous.
             </p>
 
@@ -412,7 +412,7 @@ export default function KholeTunnelPage() {
               works, light as a physical object you inhabit rather than look at.
               <br />
               <span className="text-foreground">Bera et al. 2026</span> — &ldquo;Cortical
-              Mechanisms Contributing to Ketamine-Induced Dissociation&rdquo;:
+              Mechanisms Contributing to Dissociation&rdquo;:
               dissociation as the uncoupling of sensory input from awareness,
               carried on a retrosplenial ~3 Hz rhythm. This desync engine is a
               literal enactment of that uncoupling.
@@ -428,7 +428,7 @@ export default function KholeTunnelPage() {
         </div>
       )}
 
-      <PrototypeNav slugs={["1320-khole-tunnel"]} />
+      <PrototypeNav slugs={["1320-void-tunnel"]} />
     </main>
   );
 }

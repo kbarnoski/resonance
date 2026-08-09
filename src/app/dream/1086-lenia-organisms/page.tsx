@@ -418,7 +418,7 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
           <p>
             <span className="text-foreground font-medium">Phenomenology.</span> Self-
             organizing beings that appear, greet you and dissolve are the
-            DMT/entity-encounter register made literal (cf. QRI / Andrés Gómez
+            visionary entity-encounter register made literal (cf. QRI / Andrés Gómez
             Emilsson on entity phenomenology). You don&apos;t draw them — you feed a
             field and meet what grows.
           </p>

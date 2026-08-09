@@ -9,7 +9,7 @@
 //
 //   No React, no DOM — pure math, importable from the render loop. The render
 //   path warps this height field through the shared log-polar form-constant
-//   engine (_shared/psych/logpolar) so ripples read as breathing tunnels /
+//   engine (_shared/visionary/logpolar) so ripples read as breathing tunnels /
 //   spirals / honeycombs, not flat rings.
 // ─────────────────────────────────────────────────────────────────────────────
 

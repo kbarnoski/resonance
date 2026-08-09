@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { makeHandLandmarker, type HandLandmarkerLike, type HandLandmark } from "./handLoader";
 import { startRhythm, LANES, STEPS, type Lane, type RhythmEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1297 · HAND LOOM

@@ -1,14 +1,14 @@
 # 1090 · Threshold Descent
 
-`state: NDE tunnel-to-light / ketamine dissolution · pole: cosmic-ambient → luminous-intense`
+`state: NDE tunnel-to-light / dissociative dissolution · pole: cosmic-ambient → luminous-intense`
 
-An **audio-first** prototype: a near-death / ketamine "tunnel-to-the-light"
+An **audio-first** prototype: a near-death / dissociative "tunnel-to-the-light"
 dissolution you steer with almost no screen — using only spatial audio and the
 pace of your own body, so you can close your eyes.
 
 ## The one question
 
-> What if Resonance could induce a near-death / ketamine "tunnel-to-the-light"
+> What if Resonance could induce a near-death / dissociative "tunnel-to-the-light"
 > dissolution with almost NO screen — using only spatial audio and the pace of
 > your own body, so you can close your eyes?
 
@@ -64,7 +64,7 @@ gesture (autoplay policy).
 
 ## Shared engines reused
 
-From `src/app/dream/_shared/psych/`:
+From `src/app/dream/_shared/visionary/`:
 
 - `shepard.ts` — `startShepard(..., { dir: -1 })` for the endless fall.
 - `convolutionVoid.ts` — `createVoidReverb` for the cistern-like void tail.

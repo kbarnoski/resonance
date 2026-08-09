@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
 // Answer Piano (1366) — a responsive-partner instrument.

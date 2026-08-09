@@ -25,7 +25,7 @@ When the playhead advances to a new step, every voice whose cell you are occupyi
   - **Hat** — highpassed noise, short (closed) or longer (open) decay.
   - **Clap** — four quick bandpassed noise taps + a short tail (the 808 smear).
   - **Tom** — sine pitched 190→95 Hz.
-  - **Acid stab** — a resonant sawtooth with a filter envelope that only surfaces once the pattern gets dense, so busy grooves get an acid-ish edge instead of turning sterile.
+  - **Resonant stab** — a resonant sawtooth with a filter envelope that only surfaces once the pattern gets dense, so busy grooves get a resonant 303-style edge instead of turning sterile.
 - **Build → drop** — when your overall motion intensity stays high (you dance hard), or you tap **Build → Drop**, a filtered-noise **riser** sweeps up over two bars, driving hats ramp underneath, the groove **strips to silence for a beat**, then **slams back at full density** (probability forced to 1, four-on-the-floor kick, off-beat claps). Time-based drama, not just a filter sweep.
 
 ## Memory / persistence

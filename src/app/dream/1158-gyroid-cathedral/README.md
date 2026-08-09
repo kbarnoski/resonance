@@ -2,7 +2,7 @@
 
 > _What if you could fly forever through an infinite, impossible cathedral made of a single minimal surface — and hear the architecture you pass through?_
 
-A real-time flythrough of Alan Schoen's **gyroid**, a triply-periodic minimal surface. Because the gyroid is space-filling and periodic on all three axes, it forms an endless labyrinthine interior that reads like DMT / mystical architecture. The surface is polygonized **from scratch with marching cubes** into a three.js mesh, tiled infinitely, and sonified into a cavernous drone whose brightness is driven by the geometry you are flying through.
+A real-time flythrough of Alan Schoen's **gyroid**, a triply-periodic minimal surface. Because the gyroid is space-filling and periodic on all three axes, it forms an endless labyrinthine interior that reads like visionary / mystical architecture. The surface is polygonized **from scratch with marching cubes** into a three.js mesh, tiled infinitely, and sonified into a cavernous drone whose brightness is driven by the geometry you are flying through.
 
 ## The math
 
@@ -60,7 +60,7 @@ The geometry→sound coupling is grounded in real physics: gyroid lattices are g
 
 ## Safety
 
-No hard strobe. The only global luminance oscillation is a slow drift routed through `_shared/psych/safeFlicker` at ≤ 0.2 Hz — cosmic-ambient, not flashing. `prefers-reduced-motion` lowers grid resolution and flight speed.
+No hard strobe. The only global luminance oscillation is a slow drift routed through `_shared/visionary/safeFlicker` at ≤ 0.2 Hz — cosmic-ambient, not flashing. `prefers-reduced-motion` lowers grid resolution and flight speed.
 
 ## Known limitations
 

@@ -281,7 +281,7 @@ export default function DissolveVoidPage() {
           </p>
           <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Grounded in Bera, Looger, Proekt &amp; Cichon, &ldquo;Cortical
-            Mechanisms Contributing to Ketamine-Induced Dissociation&rdquo; (The
+            Mechanisms Contributing to Dissociation&rdquo; (The
             Neuroscientist, 2026): a defining feature of the dissociated brain
             state is the uncoupling of sensory input from conscious awareness and
             altered sensory-motor coupling (NMDA-receptor blockade →

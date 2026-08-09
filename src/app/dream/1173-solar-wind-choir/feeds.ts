@@ -55,7 +55,9 @@ async function fetchProduct(url: string): Promise<Row[] | null> {
     const res = await fetch(url, { signal: ctrl.signal, cache: "no-store" });
     if (!res.ok) return null;
     const json: unknown = await res.json();
-    if (!Array.isArray(json) || json.length < 2) return null;
+    // NOAA products are arrays-of-arrays (row[0] is the header). Reject any other
+    // shape (e.g. an array-of-objects error body) so downstream colOf never crashes.
+    if (!Array.isArray(json) || json.length < 2 || !Array.isArray(json[0])) return null;
     return json as Row[];
   } catch {
     return null;

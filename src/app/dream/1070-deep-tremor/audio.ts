@@ -3,7 +3,7 @@
 // HRTF-spatialised to its true compass bearing around the listener, decaying
 // into a long shared reverb void over a very low just-intonation drone.
 //
-//   We compose the lab's shared psychedelic engines (we do NOT reimplement the
+//   We compose the lab's shared visionary engines (we do NOT reimplement the
 //   drone or the reverb):
 //     · createVoidReverb  — the cavernous noise-decay tail every strike rings into
 //     · startDroneBank    — a dark, low just-intonation bed under everything
@@ -22,8 +22,8 @@
 //   burst never clips into noise. Nodes self-clean on `ended`.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { Quake } from "./data";
 
 export interface TremorAudio {

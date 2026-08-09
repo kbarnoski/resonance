@@ -51,8 +51,8 @@ trends toward silence. You are watching, and hearing, a thing disappear.
 - `decay.ts` — the irreversible audio engine. Owns the `AudioContext`. A finite
   pool of partials that erode permanently with held time; `hold()` / `release()`,
   a `remaining` getter via `sample()`, and the erosion update on rAF. Composes
-  `_shared/psych/droneBank.ts` (a very quiet sub foundation) and
-  `_shared/psych/convolutionVoid.ts` (the cavernous valedictory tail). Master →
+  `_shared/visionary/droneBank.ts` (a very quiet sub foundation) and
+  `_shared/visionary/convolutionVoid.ts` (the cavernous valedictory tail). Master →
   gentle `DynamicsCompressorNode` limiter → destination.
 - `notes.ts` — the design-notes string rendered in-page (mirrors this file).
 

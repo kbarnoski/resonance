@@ -7,13 +7,13 @@
 //   reverb, then a master gain (<=0.4) into a DynamicsCompressor limiter. The
 //   AudioContext is created only on the Begin gesture; teardown is complete.
 //
-//   All three engines come from the shared _shared/psych toolkit — this file
+//   All three engines come from the shared _shared/visionary toolkit — this file
 //   only wires and drives them.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export class AscentAudio {
   private ctx: AudioContext | null = null;

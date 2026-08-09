@@ -397,7 +397,7 @@ export default function HiddenEyePage() {
           <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p className="text-foreground">
               What if a field of pure random-dot noise could reveal a breathing
-              3-D psychedelic surface that exists nowhere in the image — only in
+              3-D visionary surface that exists nowhere in the image — only in
               your visual cortex?
             </p>
             <p>

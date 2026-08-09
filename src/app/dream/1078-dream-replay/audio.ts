@@ -7,8 +7,8 @@
 // (the Begin button) — the page keeps the visuals running if audio is blocked.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 /**
  * A one-octave-plus just-intonation diatonic scale as pure ratios over the root.

@@ -14,7 +14,7 @@ Every loop picks new variation seeds (which riser type, which lead motif transpo
 
 ### Contrast with the existing journey engine
 
-The lab's pre-existing journey engine (psychedelic 6-phase arc) is slow, introspective, and ambient — it fades through states over minutes with gentle pads. Drop Engine is its energetic counterpart: beat-locked at club tempo, with hard transients, a building riser, a four-on-the-floor grid, and a visceral impact moment on the DROP beat. Both are "journey engines" in the sense of a parametric arc that self-drives; they differ in genre, timescale, and intention.
+The lab's pre-existing journey engine (visionary 6-phase arc) is slow, introspective, and ambient — it fades through states over minutes with gentle pads. Drop Engine is its energetic counterpart: beat-locked at club tempo, with hard transients, a building riser, a four-on-the-floor grid, and a visceral impact moment on the DROP beat. Both are "journey engines" in the sense of a parametric arc that self-drives; they differ in genre, timescale, and intention.
 
 ## How to use
 

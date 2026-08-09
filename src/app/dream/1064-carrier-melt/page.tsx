@@ -9,7 +9,7 @@
 // guides the journey; the hand decides intensity and where the melt focuses.
 //
 // Refs: Kaelen, "The hidden therapist" (Imperial 2018) — music as the carrier
-// wave in psychedelic therapy; Bressloff–Cowan / Klüver form-constants log-polar
+// wave in visionary-state therapy; Bressloff–Cowan / Klüver form-constants log-polar
 // warp. See README.md.
 
 import { useCallback, useEffect, useRef, useState } from "react";

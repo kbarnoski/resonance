@@ -18,7 +18,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { createVision, type VisionHandle } from "./vision";
 import { createRenderer, type RendererHandle, type RenderState } from "./renderer";
 import { createRoom, type Room } from "./fdn";

@@ -43,8 +43,8 @@ The gesture is a **sustained held tone**, not a click or a strike.
    steady tone commits a new frozen layer, so successive held tones **accumulate
    into a choir** (up to 6 layers, each decaying over ~15–20 s of silence).
 4. **The cathedral space.** Grains are pitch-spread into octaves and fifths and
-   fed through a long code-built **convolution reverb** (`_shared/psych/
-   convolutionVoid`), over a low fixed drone bed (`_shared/psych/droneBank`, C2)
+   fed through a long code-built **convolution reverb** (`_shared/visionary/
+   convolutionVoid`), over a low fixed drone bed (`_shared/visionary/droneBank`, C2)
    and a pitch-following seed drone. As the space grows, the reverb blooms wetter
    and the drone opens.
 5. **Boundlessness arc.** Sustaining climbs a `boundless` value. Visually the
@@ -71,7 +71,7 @@ The gesture is a **sustained held tone**, not a click or a strike.
   breath-paced ~0.1 Hz macro swell. The dissolve to white is **eased in**
   (smoothstep, capped alpha) so it is never a harsh full-white blowout.
 - **prefers-reduced-motion** slows all motion (imported from
-  `_shared/psych/safeFlicker`).
+  `_shared/visionary/safeFlicker`).
 - Master gain **≤0.24**, 1.5 s fade-in, a `DynamicsCompressor` limiter before
   `destination`, hard caps on grains (40), layers (6) and motes (320).
 - **Full teardown on unmount**: cancels rAF, stops all grain sources / oscillators

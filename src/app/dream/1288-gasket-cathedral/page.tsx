@@ -6,7 +6,7 @@ import Link from "next/link";
 import { buildPacking, type Packing } from "./packing";
 import { createScene, type SceneHandle, type StrikeEvent } from "./scene";
 import { startAudio, type AudioEngine } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 /*
  * 1288 · GASKET CATHEDRAL

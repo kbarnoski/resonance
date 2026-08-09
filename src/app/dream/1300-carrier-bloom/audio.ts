@@ -60,7 +60,7 @@ const PHRASE_SEMITONES = [0, 2, 4, 6, 7, 9, 11, 12, 11, 9, 7, 6, 4, 2, 7, 0];
  * Render a ~12s gentle solo-piano-like buffer with an OfflineAudioContext.
  * Each note = a few detuned harmonic partials (the "strings") plus a short
  * filtered-noise hammer transient, plus a faint sub drone so the bass band is
- * always fed. This is the drug-free carrier when the network is unavailable.
+ * always fed. This is the purely musical carrier when the network is unavailable.
  */
 export async function renderFallbackBuffer(sampleRate = 44100): Promise<AudioBuffer> {
   const durationSecs = 12;

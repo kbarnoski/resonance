@@ -18,7 +18,7 @@
 //                   when unbound (the slow visual rhythm drifts out of phase).
 //     • uSlowAmp (= 1-desync) — thins the slow luminous rhythm as desync deepens.
 //     • uShimmer (= desync)   — raises a FINE, LOW-CONTRAST high-frequency grain.
-//   That last pair is the literal EEG mapping of ketamine dissociation (PubMed
+//   That last pair is the literal EEG mapping of deep dissociation (PubMed
 //   41453872): slow binding rhythms desynchronise DOWN while high-gamma shimmer
 //   climbs UP.
 //

@@ -7,7 +7,7 @@
 // outward on jawOpen. Colours ride a gold / violet / cyan iridescent palette.
 //
 // Idea lineage: Klüver's four form constants + the Bressloff–Cowan log-polar
-// cortical map — the geometry of psychedelia is radial + rotational symmetry;
+// cortical map — the geometry of visionary states is radial + rotational symmetry;
 // affect-coupling (patterns shift with feeling, per REBUS / entropic-brain)
 // is delivered here by the live face drive.
 

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import {
   buildGrid,
   cellVisual,
@@ -434,7 +434,7 @@ export default function DissolveRoomPage() {
             </p>
             <p className="mt-2 text-muted-foreground">
               After Blackmore&rsquo;s <em>Dying to Live</em> (1993) and the
-              DMT-models-NDE finding: the tunnel → void → light is a universal,
+              visionary-state-models-NDE finding: the tunnel → void → light is a universal,
               brain-generated scaffold; only its content is personal.
             </p>
           </div>

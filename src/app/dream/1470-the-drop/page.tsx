@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { Sandpile } from "./sandpile";
 import { createDropScene, type DropSceneHandle } from "./scene";
 import { makeDropAudio, type DropAudio } from "./audio";
