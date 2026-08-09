@@ -1,24 +1,23 @@
-# Morning digest — last updated 2026-08-09 (cycle 1065, DEEP)
+# Morning digest — last updated 2026-08-09 (cycle 1066, WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[8632-nearfield](/dream/8632-nearfield)** — **DRAW A CRUSHED SOUND NEAR.** A little piano-bell loop arrives *ruined*: band-limited, muffled, thin, and far away — like music heard through a wall. You **hum or sing into the mic**, and your loudness is the "lean-in": the louder you are, the more it's drawn **near**, and it **blooms** into full, vivid, present sound while a dark gauze **veil parts** over a spectral waterfall and the missing highs & lows visibly fill back in. The restoration is real rule-based DSP — a harmonic exciter regenerates the highs, a subharmonic synth rebuilds the body, a tilt-EQ + room pull it from far/wet to near/dry. **No AI, no drug — just the act of un-muffling a sound, made into the instrument.** **Why open it:** it self-plays on load (a seeded ~10s demo cycles far→near on a synthetic spectrogram, so it reads fully on a **muted phone**), then hum at it and watch the veil part.
-- *2 more explored this fire, banked as ⭐⭐ seeds in IDEAS §1065* — **`8648-gauze`** (RUB THE GAUZE OFF band-by-band — restore just the highs, or just the lows, with your finger, and hear each frequency band *arrive*; the richest DSP idea) and **`8664-farbell`** (ANSWER a distant bell on the keyboard and each note you play pulls it one step nearer — call it home). Both built clean; curated out on the axes below.
+- **[8680-dripsong](/dream/8680-dripsong)** — **AUTHOR A WATER-CLOCK.** Touch a still dark pool to place drips; each one sends a ripple and *plinks*. The trick: the plink's pitch is the **real physics of a dripping tap** — a "plink" isn't the splash, it's a tiny air bubble ringing at its Minnaert resonance (bubble size sets pitch; the tone glides *up* as the bubble shrinks). So a **big drop bloops low, a small drop plinks high**, with the genuine rising-chirp. Place several taps at different rates and they weave a shifting, never-quite-repeating polyrhythm — a musical clepsydra you compose. **Why open it:** it self-plays on load (a seeded 4-tap canon rippling on a **muted phone**), then place your own taps and drag to size them. No AI — just the actual acoustics of water, turned into an instrument.
+- *2 more explored this fire, banked as seeds in IDEAS §1066* — **⭐⭐⭐ `8696-wireworld`** (WIRE A LOGIC CIRCUIT THAT PLAYS ITSELF — draw wires on a grid, electrons race them and fire notes as they pass; build a self-perpetuating loop and it's a generative sequencer — the freshest idea, resurrect first) and **⭐⭐ `8712-mobile`** (HANG A CALDER MOBILE AND PLAY IT BY LEANING — tilt your phone and a kinetic hanging sculpture sways and chimes; pure DOM/CSS, no canvas). Both built clean; curated out on the axes below.
 
-## Why this one (DEEP curate)
-- One concept — *restoring a sound IS the instrument* — built three ways: **hum it near** / **wipe it clear** / **answer it near**. `8632` won on **diversity** (it dodges the two loudest standing complaints at once — raw-WebGL2, off the over-used three.js pile, and mic input, off the over-used pointer/tilt), **live-performance fitness** (you vocalize into it — stage-playable, not desk-bound like the other two), and the **most robust muted read** (a synthetic demo that runs before any audio even exists).
-- Grounded in this week's research: arXiv:2608.00572 "AnyBand" (Aug 2026, neural bandwidth-extension). The papers treat un-muffling as *offline repair*; nobody makes the restoration a real-time thing you *do*. This does.
-- It also opens a register the lab had none of — **presence/restoration** — deliberately off the machine-partner "co-composition" rut of the last several ships and off yesterday's elemental thunder.
+## Why this one (WIDE curate)
+- Three unrelated verbs on three deliberately different **non-GPU** substrates (Canvas / SVG / DOM-CSS) — a clean sweep off the raw-WebGL2 look the last three ships all used, and off the banned three.js. `8680` won on **the research chain** (it's the only lane built from this week's dive), **highest ambition**, the **freshest technique** (physically-modeled plink — grep-0 across 8600+ prototypes), and the tightest coupling (the physics literally *is* the tuning).
+- Grounded in this week's research: **SIGGRAPH 2026 Real-Time Live!** showed a MIDI water-droplet impact instrument (July 2026); the physics is the settled Cambridge finding (Phillips & Agarwal 2018) that the plink is an entrained-bubble resonance. The lab has ~30 water/rain pieces but every one just *triggers* a sample — none modeled the actual sound. This one does.
 
 ## In progress / partial
-- None mid-build. `8632` is demoable. Next-cycle deepenings in its README — the biggest: a true pitch-tracker so it restores **arbitrary imported audio**, which means **your real Path piano recordings could be drawn through the veil**.
+- None mid-build. `8680` is demoable. Biggest next-cycle deepening (README): a real 2D wave-pool so the ripples feed *back* into the audio, and **feed your real Path piano as each drop's timbre** — so you'd be dripping *your* sound.
 
 ## Research findings worth a look
-- **§1065 (RESEARCH.md):** AnyBand spectral-infilling (arXiv:2608.00572, Aug 2026). The un-built move was to make *restoration a felt VERB*. 8632 does it with pure rule-based DSP (exciter + subharmonic + envelope reshaping), no ML.
+- **§1066 (RESEARCH.md):** SIGGRAPH-2026 water-droplet interface + Minnaert bubble resonance (f·r ≈ 3.26). The un-built move was to make a drip's *real physics* the tuning system, not a trigger.
 
 ## Open questions for Karel
-- **Try it with your mic:** does the far→near **bloom** sound dramatic, and does hum-loudness→nearness feel right? The gain/mix constants are reasoned, not ear-tuned — the one thing I couldn't set without your real mic + speakers.
-- Want the veil pointed at your **actual Path recordings** next (needs a real pitch-tracker), or ship one of the two banked runners-up (`8648-gauze`, `8664-farbell`) first?
-- **STRATEGIC (flagged ~11 cycles):** grep-0 "first-ever technique" novelty is exhausted (I killed 3 concept-dups this cycle before building — synth-inversion, arrangement, auditory-illusions all already exist). Worth formally shifting the ambition bar to reward *fresh verb + scope/fusion + diversity*?
-- Long-standing yes/no (~31 cycles): the **AI-pipeline chain** (music→image→video) — fund a `FAL_KEY` budget or strike it permanently?
+- **Try it:** does the plink read as a real "plink" on your speaker, and does the multi-tap canon feel alive? The physics is right; the mix constants are reasoned, not ear-tuned.
+- Two strong banked ideas ready to build next — the **Wireworld circuit-sequencer** (⭐⭐⭐) or the **Calder mobile** (⭐⭐, our first pure-DOM/CSS piece). A preference?
+- **STRATEGIC (flagged ~12 cycles):** "first-ever technique" novelty is exhausted (I confirmed 4 grep-0 targets and killed 5 saturated ones this cycle). Formally shift the ambition bar to reward *fresh verb + scope + diversity*?
+- Long-standing yes/no (~32 cycles): the **AI-pipeline chain** (music→image→video) — fund a `FAL_KEY` budget or strike it?
