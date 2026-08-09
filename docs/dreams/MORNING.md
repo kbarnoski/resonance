@@ -1,38 +1,42 @@
-# Morning digest — last updated 2026-08-09 (cycle 1071, DEEP)
+# Morning digest — last updated 2026-08-09 (cycle 1072, WIDE)
 
-> **Jury verdict today**: The floor's holding and two builds are genuinely excellent (`luthier`, `secondear`) — but the lab has quietly become a physics-simulation-in-blueprint monoculture, so today's order is: ban the sim-instrument, and finally build (or kill) the AI-pipeline you've dodged for 31 cycles. See `docs/dreams/JURY.md`.
+> **I took the fresh jury's order head-on.** Yesterday's verdict: the lab had become a *physics-simulation-in-blueprint monoculture* — ban the sim-instrument, go non-physics, and finally build around your real piano. So this cycle avoids all five banned tags (pointer · raw-WebGL2 · Canvas2D · physics-sim · blueprint) and ships a listening agent.
 
-**Open first:** https://getresonance.vercel.app/dream/8952-tensegrity
+**Open first:** https://getresonance.vercel.app/dream/9016-shadowhand
 
 ## New since yesterday
-- **[8952-tensegrity](/dream/8952-tensegrity)** — the lab's **first tensegrity**: a
-  floating-compression structure (rigid struts that touch nothing, held in a net of
-  tension cables). **Drag one node and the whole coupled net retunes and rings** —
-  each cable's live tension IS its pitch, so the global coupling literally IS the chord.
-  Real lit 3D steel (raw-WebGL2, not a dot-cloud), cool blueprint + copper, 12-TET
-  pentatonic, no drone. *Why open it:* sculpt a Snelson sculpture and hear it re-tune —
-  a genuinely new physical instrument. Self-demos muted (a breeze plucks it); sound on "Begin".
-- **2 more tensegrity approaches explored, banked in IDEAS §1071:** ⭐⭐⭐ `8984-weave`
-  (**author** your own tensegrity from the keyboard — topology = chord; SVG) and
-  ⭐⭐ `8968-tremor` (**tilt** it like a wind-chime; Canvas2D). Both built & clean; not shipped.
+- **[9016-shadowhand](/dream/9016-shadowhand)** — the lab's **first *listening* instrument**,
+  and the **first to actually use your real Path recording** (a ~37-cycle directive that had
+  never truly landed). Press **"Play Karel's piano"** → it fetches your real
+  `/api/audio/549fc519…` take and a **score-following AI accompanist** answers it live:
+  it hears your onsets, pitch and tempo, then plays a soft second voice a third/fifth/sixth
+  below — entering on your beats, **resting when you play dense** — so it *answers* rather than
+  doubles. Two hands drift as a **WebGPU-compute** amber particle field. *Why open it:* it's
+  the cleanest break from the physics rut and finally your own playing at the center.
+  Self-demos muted (both hands breathe with zero audio); sound on the button. **Please check
+  live:** does it pull your REAL recording (a `live piano` badge) or fall back to the synth?
+- **2 more non-physics directions explored, banked in IDEAS §1072:** ⭐⭐⭐ `9032-driftmap`
+  (**walk** a 2D musical latent map, **audio-only / headphones** — tests the screen bias) and
+  ⭐⭐ `9048-seedgrove` (**hum** a motif → an L-system grows it into a branching plant you hear).
+  Both built & clean; not shipped.
 
 ## In progress / partial
-- None — clean DEEP fire: one winner shipped, two banked.
+- None — clean WIDE fire: one winner shipped, two banked.
 
-## Research findings worth a look (RESEARCH §1071)
-- Tonight's dive found the Aug-2026 frontier (P-MUSE / Diff2Mix) is racing to make
-  recordings *structurally editable* — but **the lab already owns that whole verb**.
-  The pre-build grep-audit killed **3** candidate concepts as duplicates
-  (decompose-your-piano ≈ 630/6392; scrub/freeze-your-recording ≈ 1130-spectral-scrub;
-  data-sonification ≈ seismic ×6). Pivoted to a genuinely un-built **physical form**:
-  tensegrity. `catenary` / `domino` / `truss` / `morse` are still grep-0 for future fires.
+## Research findings worth a look (RESEARCH §1072)
+- The 2026 browser wave is data→AI-music **generators** (Lyria/ElevenLabs, AEROSONIC). The
+  un-built inversion — an agent that **listens to a real performance and answers it**
+  (arXiv:2602.05064, *A Design Space for Live Music Agents*) — became tonight's winner.
+- The pre-build grep **killed the real-data family** (live-earthquake ≈ `1193-tremor-core`,
+  live-Wikipedia ≈ `437-wiki-pulse`) — retired as a source of fresh lanes.
 
 ## Open questions for Karel
-- **The big one (flagged ~17 cycles): is it time to change the rubric?** At 8900+ prototypes,
-  "a technique never used" (ambition criterion #1) is asymptotically unreachable, and tonight
-  I could *prove* the two richest spaces — {your piano × any DSP verb} and {real-world data} —
-  are exhausted (3 concepts grep-killed against them). I'd like to formally shift the bar to
-  reward **scope / fusion / fresh-verb / polish-to-depth**, and start a deliberate
-  **"deepen the loved ones" era**. Your call — the lab's highest-leverage decision.
-- **Standing yes/no (~37 cycles):** the **AI-pipeline chain** (music→image→video, needs a
-  `FAL_KEY` budget) — build it or strike it from the queue?
+- **The AI-pipeline chain (jury's headline, ~37 cycles):** music→image→video, needs a `FAL_KEY`
+  budget. The jury's words: "31 cycles of standing yes/no is not a decision — resolve it."
+  **Build it or strike it?**
+- **Deepen a standout (jury #5):** shall the next DEEP cycle *extend* `9016-shadowhand` over
+  2–3 fires (a real minor/modal key-finder; accompany ANY dropped file or a live mic; a second
+  hand that trades phrases) instead of minting the next new verb? I think yes.
+- **Rubric (~17 cycles):** ambition criterion #1 ("a technique never used") is unreachable at
+  1000+ protos — even the jury now says it's carried by grep-0 physical forms. Time to reward
+  scope / fusion / fresh-verb / multi-cycle depth instead?
