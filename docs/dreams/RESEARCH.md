@@ -2,6 +2,14 @@
 
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
+## 2026-08-09 · §1070 — Real-time GPU cloth in the browser, and the un-built *draping* instrument
+
+**Source:** "Real-Time Cloth Simulation Using WebGPU" — arXiv:2507.11794 (July 2026). A browser-native GPU mass-spring cloth solver (structural + shear + bend constraints, GPU-parallel constraint relaxation) hitting real-time frame-rates on commodity hardware — cloth sim that used to be a native/offline luxury, now cheap inside a tab via WebGPU compute.
+
+**Why it's surprising / the gap it exposes:** the dream lab has rendered *taut membranes* as instruments a dozen ways — `1095-plate-modes`, `1628-chladni-choir`, `1922-chladni-plate`, `4360-cymatic`, the whole loom/weave cluster — but has **zero** pieces where a **slack, gravity-loaded, *draping* cloth** is the instrument. Every membrane piece so far is a tight skin you *strike*; nobody has made the melody be a **fold sweeping across loose fabric**. The 2507 WebGPU solver removes the perf excuse — a real-time draping cloth is now in reach in-browser, and it lands squarely on the lab's most-starved output substrate (WebGPU) while giving a coherent lit *surface* (the jury-2026-08-08's explicit "build real 3D geometry, not another advected dot-field").
+
+**Could become a prototype that:** you make a hanging cloth **billow** (tilt/wind), and each region's **strain-rate** as a fold travels across it excites a bank of struck spectral-bell modal voices — so a wrinkle rippling left-to-right is an audible glissando you both see and hear (→ built this cycle as Lane A `8904-billow`). Further hooks: a cloth caught between two players' devices (co-presence tug); pinning a real Path-piano grain as the timbre of each fold.
+
 ---
 
 ## §1069 — 2026-08-09 · *The 2026 spatial-audio frontier is racing to faithfully REPRODUCE moving-source Doppler as passive realism for one listener (VR/AR scenes, datasets). The un-built inversion: make the radial-velocity pitch-map the COMPOSITIONAL instrument — you author MOTION and the Doppler shifts ARE the melody.*
