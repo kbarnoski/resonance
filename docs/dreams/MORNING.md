@@ -1,41 +1,42 @@
-# Morning digest — last updated 2026-08-09 20:20 UTC (cycle 1075, DEEP)
+# Morning digest — last updated 2026-08-09 22:30 UTC (cycle 1076, WIDE)
 
 ## New since yesterday
-- **`9160-tasteprint`** → https://getresonance.vercel.app/dream/9160-tasteprint
-  An instrument that learns your ear from ONE bit and **remembers you**. It plays a short phrase; you
-  press **K (keep)** or **J/P (pass)** — that's the whole interaction. From that stream it builds a model
-  of your taste and starts proposing phrases you're likelier to keep, while drawing a live **self-portrait
-  of your ear** (an 8-axis radar + a taste-space map + a "knows-your-ear" accuracy gauge that climbs).
-  Leave and come back and it greets you: *"Welcome back — you lean toward {your top-2}."* Open it **muted** —
-  the portrait fills itself in ~1s via a seeded demo, so you can *see* it learning without sound; then
-  turn sound on and actually train it.
-  **Why this one matters:** it's the lab's **first true multi-cycle commitment** (we've always shipped
-  one-and-done), and it directly answers your Concept Jury's two loudest orders — extend `secondear` into
-  a taste that remembers you (**jury #5**) and keep the core technique NON-physics (**jury #1**). It deepens
-  a standout instead of minting another one-off — the "climb out of the local minimum" move you asked for.
+- **`9224-timbreloom`** → https://getresonance.vercel.app/dream/9224-timbreloom
+  **Hear yourself become another instrument, in real time.** Sing or play into the mic and it keeps your
+  melody and dynamics but *replaces your timbre* — glass, reed, metal, or wood — while the live harmonic
+  stack scrolls past as a glowing ember spectrum you can watch. It's a **DDSP-style resynthesizer**: it
+  reads your pitch + loudness every frame and drives 64 harmonic partials + a breath-noise band from a
+  per-voice spectral recipe. No neural net, no drone — silence in, silence out.
+  **Why this one matters:** it's the first piece in the lab that **re-voices** you rather than analyzing-
+  and-notating you — my last four ships were all "listen to you → draw a score," and this deliberately
+  breaks that rut. It answers the jury's two live orders: core technique that is **NOT a physics sim**
+  (jury #1) and finally leaning on the **thin WebGPU substrate** (jury #4). Open it **muted** — a seeded
+  demo drives the full ember spectrum in ~1s; if your device lacks WebGPU it renders the identical
+  spectrum on a Canvas2D fallback, so it always shows something.
 
-## Explored this fire, not shipped (banked — IDEAS §1075)
-- **`9176-tastefield`** — the same taste model, but you SEE the whole preference landscape as a live
-  **WebGPU field** the proposal drifts across into your kept region. Built clean; held back only because
-  its GPU payoff is the one thing I can't verify headless (falls back to a coarse SVG without WebGPU).
-- **`9192-tastewhisper`** — listen eyes-closed: it proposes into your headphones and **whispers back, in
-  plain words**, what it's learned ("you keep the dense ones", "syncopation wins"). Held back because that
-  reward is invisible on a muted phone.
+## Explored this fire, not shipped (banked — IDEAS §1076)
+- **`9240-choirvoid`** — eyes closed, headphones on: every note you hum becomes a voice that keeps singing
+  and **orbits your head** (HRTF) until you're standing inside a choir of your own held tones. Built clean;
+  held back only because the reward is binaural/aural and near-invisible on a muted phone. Best resurrect
+  on a headphones/meditative slot — it's the 0×-ever "audio-only" ship the jury keeps asking for.
+- **`9256-tideglass`** — **tilt your phone** and a calm horizon tips while a drone-free arpeggio pours
+  toward your lean, navigating a continuous field of harmony. The best *muted* read of the three; held back
+  only because it's the least ambitious concept. A natural mobile / cosmic-ambient flagship.
 
-## Research worth a look (§1075)
-- The 2026 frontier (Queen Mary's new music-preference benchmark, July 2026; the RLHF-for-music survey
-  arXiv:2511.15038) races to align big models to a *population* of raters. `tasteprint` is the deliberate
-  inverse: a personal, no-dataset, one-bit-at-a-time taste that persists and portrays a *single* ear — yours.
+## Research worth a look (§1076)
+- The 2026 low-latency neural-synth work (arXiv:2503.11562; RAVE→BRAVE) keeps proving the same thing:
+  the load-bearing part of timbre transfer is the **DDSP decoder** (harmonic bank + filtered noise driven
+  by pitch/loudness), which is small enough to run as plain Web Audio. `timbreloom` is that decoder, live.
 
 ## Open questions for you (please decide — these keep recurring)
-1. **AI-pipeline chain (music→image→video, needs a `FAL_KEY` budget)** — flagged ~39 cycles, still grep-0.
-   I won't spend your FAL budget without a yes. **Build it or strike it from the menu?**
-2. **Green-light a "deepen the best ones" era?** At 9000+ prototypes the ambition rubric's #1 ("a technique
-   never used") is nearly unreachable. Tonight I made the first real **#4 (multi-cycle)** claim instead.
-   Say the word and I'll run tasteprint's **cycle 2** (compose at the *edge* of your taste) and **cycle 3**
-   (seed it from your real Path piano).
+1. **AI-pipeline chain (music→image→video, needs a `FAL_KEY` budget)** — flagged ~40 cycles, still grep-0.
+   I won't spend your FAL budget without a yes. **Build it or strike it from the menu?** It's the single
+   largest untouched category and the jury's headline ask.
+2. **Green-light a "deepen the best ones" era?** At 9000+ prototypes the "technique never used" bar is
+   nearly unreachable. Say the word and I'll run **tasteprint cycle 2** or extend `timbreloom` (polyphony,
+   per-partial motion, re-voice a dropped Path track).
 
 ## Caveat (needs your device)
-- Headless review can't hear: whether the phrases sound pleasant + distinct on a phone speaker and whether
-  the portrait reads on a small screen want your ear/eye. The seeded muted self-demo (fills the portrait +
-  climbs the gauge with no audio) + the returning-visitor greet-back are the stand-ins.
+- Headless review can't hear or GPU-render: whether the re-voicing sounds convincingly like glass/reed on a
+  phone speaker, and whether the WebGPU spectrum runs on your device (vs. the Canvas2D fallback), want your
+  ear/eye. The seeded muted demo + the fallback are the stand-ins.
