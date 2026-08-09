@@ -16,7 +16,7 @@ import {
   createSafeFlicker,
   prefersReducedMotion,
   type SafeFlicker,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 
 type Phase = "idle" | "running" | "paused";
 

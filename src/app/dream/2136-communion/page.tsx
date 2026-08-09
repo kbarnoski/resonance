@@ -8,7 +8,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import Link from "next/link";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { CommunionAudio } from "./audio";
 import { bpFreq, xToStep } from "./bp";
 import { mulberry32 } from "./rng";

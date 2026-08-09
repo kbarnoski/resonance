@@ -2,7 +2,7 @@
 // 3048 · CHRYSANTHEMUM — the bloom engine (WebGL2 fragment shader + feedback)
 //
 // One full-screen quad, one scene shader, ping-pong feedback. The scene shader
-// COMPOSES the shared log-polar form-constant engine (_shared/psych/logpolar.ts):
+// COMPOSES the shared log-polar form-constant engine (_shared/visionary/logpolar.ts):
 // it folds screen space into an N-fold kaleidoscope, maps into cortical space
 // via screenToCortex, generates the plane-wave / hex Turing pattern there, and
 // lets the inverse exp() warp turn it into tunnels, spirals, spokes and
@@ -16,7 +16,7 @@
 // Degrades to a Canvas2D threshold pattern when WebGL2 is unavailable.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 import { PALETTE_GLSL } from "../_shared/palette";
 
 export interface BloomUniforms {

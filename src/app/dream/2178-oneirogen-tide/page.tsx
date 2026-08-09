@@ -9,7 +9,7 @@ import {
   type DragEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { SafeFlicker } from "../_shared/psych/safeFlicker";
+import { SafeFlicker } from "../_shared/visionary/safeFlicker";
 
 // ── Oneirogen II · Tide ──────────────────────────────────────────────────────
 // Cycle-2 of 2074-oneirogen. Cycle-1 let you WATCH a single dial α hand the

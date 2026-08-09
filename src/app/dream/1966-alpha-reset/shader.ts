@@ -9,11 +9,11 @@
 // "visual snow". Sound (via the phase-reset controller in page.tsx) snaps the
 // offsets back into alignment on every note onset.
 //
-// The shared log-polar engine (`_shared/psych/logpolar.ts`) is spliced in as
+// The shared log-polar engine (`_shared/visionary/logpolar.ts`) is spliced in as
 // GLSL below — we IMPORT it, we do not re-derive it.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT = /* glsl */ `
 varying vec2 vUv;

@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // audio.ts — the generative bed for 1862-strobe-atlas.
 //
-// A soft detuned drone carrier (from _shared/psych/droneBank.ts) for the
+// A soft detuned drone carrier (from _shared/visionary/droneBank.ts) for the
 // intense-geometric mood, plus an OPT-IN isochronic pulse whose rate is locked
 // to the safe photic rate so, when the Photic-pulse mode is engaged, sound and
 // the safe luminance flicker breathe together. Autonomous — no mic, no FFT.
@@ -10,7 +10,7 @@
 // ~1s master fade-in; ctx.close() on teardown.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 const MASTER_GAIN = 0.18; // <= 0.2, per the safety/loudness ceiling
 

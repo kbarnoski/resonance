@@ -17,8 +17,8 @@
 import * as THREE from "three";
 import type { Pulsar } from "./catalog";
 import { SKY_RADIUS } from "./catalog";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const MASTER_LEVEL = 0.22; // hard ceiling per audio-safety rule
 const MAX_TICK_VOICES = 6; // pooled cap on concurrent discrete ticks

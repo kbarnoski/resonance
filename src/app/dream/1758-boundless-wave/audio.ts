@@ -16,7 +16,7 @@
 //   brief allows.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // Inharmonic pad partials — ratios drift off the harmonic series so sustained
 // chords beat and shimmer (boundless, never a locked drone).

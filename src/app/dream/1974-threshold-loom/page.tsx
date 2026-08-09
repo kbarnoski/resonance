@@ -21,7 +21,7 @@
 // decoupling (PMC7596232); Shepard (1964) / Risset; the Tetris effect.
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { PrototypeNav } from "../_shared/prototype-nav";
 import { ThresholdField, mulberry32 } from "./field";
 import { ThresholdAudio } from "./audio";

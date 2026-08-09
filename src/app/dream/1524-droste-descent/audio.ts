@@ -13,12 +13,12 @@
 //   Public surface is a single graph object; page.tsx drives it every frame.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createVoidReverb,
   type VoidReverb,
-} from "../_shared/psych/convolutionVoid";
+} from "../_shared/visionary/convolutionVoid";
 
 /** Idle glide rate (octaves/levels per second) shared by visuals + audio. */
 export const IDLE_RATE = 0.09;

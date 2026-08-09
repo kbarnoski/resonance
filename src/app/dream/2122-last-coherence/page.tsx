@@ -5,7 +5,7 @@ import { sampleArc } from "./arc";
 import { COMPUTE_WGSL, RENDER_WGSL } from "./shaders";
 import { createAudio, type AudioEngine } from "./audio";
 import { makeRng, SEED } from "./rng";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { README_TEXT } from "./readme-text";
 
 type Tier = "pending" | "gpu" | "canvas" | "none";

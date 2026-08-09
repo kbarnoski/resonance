@@ -5,7 +5,7 @@
 //   the AudioContext) and routed master → limiter → destination at a LOW gain:
 //
 //     • A SHEPARD–RISSET glissando DESCENDING FOREVER (Shepard 1964 / Risset) —
-//       the shared engine in _shared/psych/shepard.ts, run with dir:-1. Sine
+//       the shared engine in _shared/visionary/shepard.ts, run with dir:-1. Sine
 //       partials one octave apart under a fixed Gaussian envelope glide down
 //       endlessly; there is no audible bottom, so the ear is carried downward
 //       toward sleep without ever arriving. As `depth` climbs the glide speeds
@@ -27,7 +27,7 @@
 //   ctx.currentTime (allowed); the glissando advances on the render loop's dt.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
 
 const MASTER_GAIN = 0.16; // ≤ 0.18 ceiling
 const PAD_PARTIALS = [1.0, 1.5017, 2.0, 2.9966]; // gentle off-round JI drone

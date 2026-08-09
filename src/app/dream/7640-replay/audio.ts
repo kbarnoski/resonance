@@ -11,7 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { SCALE_RATIOS } from "./memory";
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
 
 const TONIC = 174.61; // F3 — a low, warm tonic for the tunnel
 

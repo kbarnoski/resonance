@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { VIOLET, MAGENTA } from "../_shared/palette";
 import {
   mulberry32,

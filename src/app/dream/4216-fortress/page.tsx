@@ -5,13 +5,13 @@ import {
   screenToCortex,
   cortexToScreen,
   formConstant,
-} from "../_shared/psych/logpolar";
+} from "../_shared/visionary/logpolar";
 import {
   createSafeFlicker,
   prefersReducedMotion,
   type SafeFlicker,
-} from "../_shared/psych/safeFlicker";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+} from "../_shared/visionary/safeFlicker";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 // ════════════════════════════════════════════════════════════════════════════
 // 4216 — Fortress

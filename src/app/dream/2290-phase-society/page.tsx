@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PhaseSociety, mulberry32, type SocietyParams } from "./kuramoto";
 import { FieldRenderer } from "./gl";
 import { SocietyVoices } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 const MAX_COUPLING = 3.4;
 const IDLE_MS = 3500;

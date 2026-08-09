@@ -17,8 +17,8 @@
 //   • master        — 4 s fade-in on start, fade-out on stop.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 
 type WebAudioWindow = Window & { webkitAudioContext?: typeof AudioContext };
 

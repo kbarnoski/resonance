@@ -12,7 +12,7 @@ import {
 } from "./figure";
 import { EnigmaDrone } from "./audio";
 import { README_TEXT } from "./readme-text";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
 // 2012 — Enigma Drift

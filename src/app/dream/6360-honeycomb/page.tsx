@@ -41,10 +41,10 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ── tiny seeded PRNG (house rule: no Math.random / Date.now / new Date) ───────
 function mulberry32(seed: number): () => number {

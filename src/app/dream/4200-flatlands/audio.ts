@@ -1,6 +1,6 @@
 // 4200-flatlands — audio.ts
 //
-// The dissociative sound-bed, built entirely from the shared _shared/psych
+// The dissociative sound-bed, built entirely from the shared _shared/visionary
 // altered-states infrastructure (not re-derived here):
 //
 //   • startShepard(dir:-1)  — an endless Shepard–Risset DESCENT: the pitch of
@@ -17,9 +17,9 @@
 // Shepard drive, so breathing quickens the descent. Fully self-demos with no
 // mic — micDrive stays 0.
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface FlatAudio {
   /** Push the current arc drives (0..1). */

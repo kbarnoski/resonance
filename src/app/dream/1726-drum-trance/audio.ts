@@ -16,7 +16,7 @@
 // which is the one sanctioned time source.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface PadSpec {
   label: string;

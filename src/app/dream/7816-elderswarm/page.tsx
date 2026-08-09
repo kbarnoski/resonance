@@ -5,7 +5,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 import {
   createSafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 import { createSwarm, stepSwarm, type SwarmState } from "./swarm";
 import { createGLRenderer, type SwarmRenderer } from "./gl";
 import { createCanvas2DRenderer } from "./canvas2d";

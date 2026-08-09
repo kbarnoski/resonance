@@ -13,11 +13,11 @@
 //     glides with the detected pitch and is gated by loudness, so the instrument
 //     always sings back.
 //
-// The form-constant geometry itself lives in _shared/psych/logpolar.ts and is
+// The form-constant geometry itself lives in _shared/visionary/logpolar.ts and is
 // composed by bloom-gl.ts — this module only decides WHICH constant + how dense.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { FormConstant } from "../_shared/psych/logpolar";
+import type { FormConstant } from "../_shared/visionary/logpolar";
 
 // ── pitch helpers ────────────────────────────────────────────────────────────
 

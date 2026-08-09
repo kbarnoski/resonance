@@ -14,7 +14,7 @@
 //   Math.random). Every scheduled change uses ctx.currentTime only.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface MeltAudio {
   /** wPhase: current 4D w-rotation angle (radians). tiltMag: 0..1 interaction. */

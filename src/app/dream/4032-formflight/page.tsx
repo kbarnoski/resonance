@@ -18,8 +18,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FRAG_SRC, VERT_SRC } from "./shader";
 import { FormflightAudio, type AudioFeatures } from "./audio";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
-import { FORM_CONSTANTS, FORM_LABEL } from "../_shared/psych/logpolar";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
+import { FORM_CONSTANTS, FORM_LABEL } from "../_shared/visionary/logpolar";
 
 // Compile + link the WebGL2 program. (Not a hook — must not be named useX.)
 function makeProgram(gl: WebGL2RenderingContext): WebGLProgram | null {

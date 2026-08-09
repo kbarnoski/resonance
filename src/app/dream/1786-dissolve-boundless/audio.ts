@@ -12,8 +12,8 @@
 // pull back to a calm, narrow sub.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 export interface DissolveAudio {
   /** Feed the current cohesion (0..1) + dt each frame; sound follows. */

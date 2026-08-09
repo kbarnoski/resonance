@@ -5,7 +5,7 @@ import {
   createSafeFlicker,
   prefersReducedMotion,
   type SafeFlicker,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 import { BreathAudio } from "./audio";
 import { BreathFollower, makeSyntheticBreath } from "./breath";
 import { drawField, drawIdle } from "./field";

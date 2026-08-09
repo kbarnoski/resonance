@@ -7,11 +7,11 @@
 //   brightens that source's glow on screen. So the ripple you SEE is literally
 //   the amplitude envelope of the tone you HEAR.
 //
-//   Underneath sits a shared just-intonation drone bed (_shared/psych/droneBank)
+//   Underneath sits a shared just-intonation drone bed (_shared/visionary/droneBank)
 //   whose low-pass cutoff OPENS with the plate's propagation speed c — and c is
 //   steered by how far you tilt the phone. Tilt harder → faster waves → tighter
 //   Chladni figures → brighter drone. Everything runs through a shared cavern
-//   reverb (_shared/psych/convolutionVoid).
+//   reverb (_shared/visionary/convolutionVoid).
 //
 //   Signal path (per the brief's hard limits):
 //     pipes + drone → reverb bus → master GainNode (≤0.18) → Compressor → out
@@ -20,8 +20,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { JI_RATIOS, SOURCE_COUNT } from "./wave";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 const ROOT_HZ = 110; // A2 — warm organ root
 

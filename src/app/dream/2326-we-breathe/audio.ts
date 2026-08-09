@@ -11,7 +11,7 @@
 //
 // Master gain is kept modest (≤0.2), 1s fade-in, silent until a user gesture.
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // Harmonic-ish partial ratios over a warm low fundamental — a soft, open voicing.
 const FUNDAMENTAL = 98; // Hz (~G2)

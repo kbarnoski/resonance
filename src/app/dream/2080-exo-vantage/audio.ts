@@ -19,7 +19,7 @@
  * Begin gesture; full teardown on dispose.
  */
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 const F0 = 55; // A1
 const DETUNE_CENTS = -28;

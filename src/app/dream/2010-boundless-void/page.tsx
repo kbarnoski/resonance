@@ -15,7 +15,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SafeFlicker } from "../_shared/psych/safeFlicker";
+import { SafeFlicker } from "../_shared/visionary/safeFlicker";
 
 // ── Harmonic model ───────────────────────────────────────────────────────────
 // NOT a fixed just-intonation partial stack. We keep a small consonant modal set

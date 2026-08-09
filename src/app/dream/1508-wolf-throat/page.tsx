@@ -5,7 +5,7 @@ import { PrototypeNav } from "../_shared/prototype-nav";
 import {
   createSafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 import {
   TUNINGS,
   buildLandscape,

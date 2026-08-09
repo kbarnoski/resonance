@@ -13,10 +13,10 @@
 //       drifting, hazy, translucent "unreal" or crisp, grounded, present "real".
 //
 // The log-polar helpers (screenToCortex / formConstant / honeycomb) are the
-// shared _shared/psych/logpolar engine, spliced in verbatim below.
+// shared _shared/visionary/logpolar engine, spliced in verbatim below.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT_SRC = /* glsl */ `#version 300 es
 in vec2 aPos;

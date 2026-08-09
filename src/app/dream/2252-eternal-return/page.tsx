@@ -30,7 +30,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { EternalReturnAudio, PhraseScheduler, type NoteEvent } from "./audio";
 import { mulberry32, randRange } from "./rng";
 

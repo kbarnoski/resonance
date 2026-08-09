@@ -13,7 +13,7 @@
 // can replace the generative bed through the same analyser.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 type Ctor = typeof AudioContext;
 

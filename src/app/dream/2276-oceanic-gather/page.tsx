@@ -17,7 +17,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { OceanicAudio } from "./audio";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 type Mode = "idle" | "running" | "noaudio";
 type Input = "tilt" | "pointer" | "autopilot";

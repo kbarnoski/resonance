@@ -17,7 +17,7 @@
 // slow-evolution LFO phases; time comes from ctx.currentTime / the analyser.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 /** Deterministic PRNG (inlined, per the lab's replay rule — no Math.random). */
 function mulberry32(seed: number): () => number {

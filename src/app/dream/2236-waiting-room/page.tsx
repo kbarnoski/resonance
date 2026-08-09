@@ -24,7 +24,7 @@
  * ------------------------------------------------------------------ */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { MotionField } from "./motion";
 import { SpectralAudio } from "./audio";
 import { WarpRenderer } from "./warp";

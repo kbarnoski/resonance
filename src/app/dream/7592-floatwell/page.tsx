@@ -21,7 +21,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { startVoidAudio, type VoidAudio } from "./audio";
 import styles from "./floatwell.module.css";
 

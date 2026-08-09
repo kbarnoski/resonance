@@ -20,7 +20,7 @@
 //   uTime = frame/60 (integer-frame driven on the CPU) — no wall-clock time.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT = /* glsl */ `
 varying vec2 vUv;

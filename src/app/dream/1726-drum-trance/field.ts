@@ -17,7 +17,7 @@
 // layer, never in UI chrome. No clock reads; caller passes frame-derived phase.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { formConstant, honeycomb } from "../_shared/psych/logpolar";
+import { formConstant, honeycomb } from "../_shared/visionary/logpolar";
 
 export interface FieldParams {
   /** entrainment scalar in [0,1] — the reward signal */

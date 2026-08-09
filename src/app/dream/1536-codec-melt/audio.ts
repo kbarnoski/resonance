@@ -8,7 +8,7 @@
 // voice is stolen. All gain moves are ramped — no clicks.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 export interface MeltAudio {
   /** Trigger a voice. `intensity` (0..1) opens the filter and lengthens release. */

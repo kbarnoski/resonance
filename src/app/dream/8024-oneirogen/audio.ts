@@ -15,8 +15,8 @@
 // friendly — no Date.now / performance.now / Math.random here).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // Harmonic series over A1 (55 Hz): one representative tone per perceptual band,
 // low band = fundamental sub, high band = upper partial.

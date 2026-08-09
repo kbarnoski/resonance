@@ -5,8 +5,8 @@ import {
   FORM_CONSTANTS,
   FORM_LABEL,
   type FormConstant,
-} from "../_shared/psych/logpolar";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/logpolar";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { createStillpointGL, type StillpointGL } from "./gl";
 import { MotionMeter, syntheticMotion } from "./flow";
 import { startStillpointAudio, type StillpointAudio } from "./audio";

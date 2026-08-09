@@ -34,7 +34,7 @@ import * as THREE from "three";
 import { VERT, FRAG } from "./shader";
 import { OneirogenAudio } from "./audio";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 const PARTICLES = 16000;
 const BAND_RANGES_HZ: ReadonlyArray<[number, number]> = [

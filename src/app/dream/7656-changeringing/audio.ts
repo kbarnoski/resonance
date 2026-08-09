@@ -16,8 +16,8 @@
 // No percussion, no melody line — only the bells themselves and the drone.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 type WebAudioWindow = Window & { webkitAudioContext?: typeof AudioContext };
 

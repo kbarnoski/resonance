@@ -31,7 +31,7 @@
 // ctx.currentTime is used only for Web-Audio scheduling/ramps, which is allowed.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 function makeMulberry32(seed: number): () => number {
   let a = seed >>> 0;

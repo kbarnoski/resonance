@@ -21,7 +21,7 @@
 // Collective Act 2022) — the flicker lineage this piece de-fangs for safety.
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { GanzfeldAudio } from "./audio";
 import { initGanzfeldGpu, type GanzfeldBackend } from "./gpu";
 

@@ -9,7 +9,7 @@
 //   Per frame (all low-frequency → no strobe; SAFETY):
 //     1) DISSOLVE pass → feedback buffer. The mask is sampled twice: once SHARP
 //        (present body) and once WARPED OUTWARD through the inverse log-polar
-//        exp() map (`_shared/psych/logpolar.ts` — the retina→V1 cortical map is a
+//        exp() map (`_shared/visionary/logpolar.ts` — the retina→V1 cortical map is a
 //        complex log, so the body edge un-forms into cortical stripes/hexagons).
 //        A honeycomb + tunnel FORM-CONSTANT field (Bressloff–Cowan / Klüver) is
 //        mixed in as dissolution deepens. A ping-pong FEEDBACK read drifts the
@@ -21,7 +21,7 @@
 //   chrome uses semantic tokens.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 import { GRAB_W, GRAB_H } from "./silhouette";
 
 const VERT = `#version 300 es

@@ -3,7 +3,7 @@
 //
 //   Pure-math helpers for the SVG-DOM form-constant instrument. The heavy
 //   lifting (log-polar warp + cortical plane waves + hex Turing lattice) lives
-//   in the shared engine `_shared/psych/logpolar.ts`; this module only:
+//   in the shared engine `_shared/visionary/logpolar.ts`; this module only:
 //     • lays out a bounded cortical grid and pre-warps it to screen space,
 //     • interpolates the single played "form" parameter F across all four
 //       Klüver constants (tunnel → spoke → spiral → honeycomb),
@@ -19,7 +19,7 @@ import {
   formConstant,
   honeycomb,
   FORM_PHI,
-} from "../_shared/psych/logpolar";
+} from "../_shared/visionary/logpolar";
 
 /** One node of the pre-warped cortical grid. */
 export interface GridNode {

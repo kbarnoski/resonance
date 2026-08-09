@@ -24,7 +24,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { startRingingAudio, type RingingAudio } from "./audio";
 import { Ringer, bellFrequencies, methodInfo, type Row } from "./ringing";
 

@@ -34,8 +34,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ── deterministic PRNG (seeded jitter only) ─────────────────────────────────
 function mulberry32(seed: number): () => number {

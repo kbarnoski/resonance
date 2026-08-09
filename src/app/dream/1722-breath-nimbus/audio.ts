@@ -12,7 +12,7 @@
 //   Only ctx.currentTime is used for scheduling (permitted for audio).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // Non-integer ratios above the root — chosen to beat, not to lock into a chord.
 const RATIOS = [1.0, 1.503, 2.017, 2.711];

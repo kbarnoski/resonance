@@ -14,7 +14,7 @@
 // Tint is clamped ≤ 0.7 — dim violet phosphene light, never a white flash.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT = /* glsl */ `
 varying vec2 vUv;

@@ -16,7 +16,7 @@
 // The math for the concentric rings composes the shared logpolar engine.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { formConstant } from "../_shared/psych/logpolar";
+import { formConstant } from "../_shared/visionary/logpolar";
 
 export interface FieldState {
   /** Visual clock, seconds (already reduced-motion-scaled by the caller). */

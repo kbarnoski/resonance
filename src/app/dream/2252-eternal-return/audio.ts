@@ -22,7 +22,7 @@
 //   underneath regardless of A — you hear the phrase continue while a slice hangs.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import { randRange } from "./rng";
 
 // ── modal material ───────────────────────────────────────────────────────────

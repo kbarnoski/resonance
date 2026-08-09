@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import Link from "next/link";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { ParliamentAudio } from "./audio";
 import {
   bpFreq,

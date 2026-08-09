@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { FRAG_SRC, VERT_SRC } from "./shaders";
 import { PHASE_LABEL, sampleArc, TOTAL_SECONDS, type Phase } from "./arc";
 import { makeSurgeAudio, type SurgeAudio } from "./audio";

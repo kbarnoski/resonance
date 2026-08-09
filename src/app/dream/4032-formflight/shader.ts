@@ -12,7 +12,7 @@
 // the ART LAYER here — raw full-spectrum hue is allowed inside the canvas.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 export const VERT_SRC = `#version 300 es
 precision highp float;

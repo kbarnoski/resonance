@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DissolveAudio } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { PrototypeNav } from "../_shared/prototype-nav";
 
 // ─────────────────────────────────────────────────────────────────────────────

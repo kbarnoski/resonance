@@ -19,7 +19,7 @@
 //   review box is never blank. NO Math.random / Date.now / performance.now.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 const RD_SIZE = 256; // reaction-diffusion simulation resolution (square)
 const CAM_W = 64; // motion-difference downsample width

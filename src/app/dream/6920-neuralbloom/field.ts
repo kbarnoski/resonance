@@ -23,7 +23,7 @@
 // a live "which form-constant dominates" estimate from the field itself.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 import { PALETTE_GLSL } from "../_shared/palette";
 
 export const GRID = 256;

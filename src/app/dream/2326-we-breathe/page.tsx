@@ -18,7 +18,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMicAnalyser } from "../_shared/use-mic-analyser";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { Room } from "./transport";
 import { CollectiveBreath } from "./audio";
 import { FieldRenderer, type FieldPresence } from "./field";

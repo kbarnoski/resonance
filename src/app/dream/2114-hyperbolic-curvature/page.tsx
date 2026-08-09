@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { FRAG_GLSL, UNIFORM_NAMES, VERT_GLSL } from "./shader";
 import {
   HyperbolicAudio,

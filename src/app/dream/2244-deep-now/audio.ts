@@ -18,7 +18,7 @@
 // constant is scaled by 1/timeScale so motion decelerates into an "eternal now".
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // D Dorian, in semitone offsets from the root, spanning two octaves + tonic.
 const DORIAN = [0, 2, 3, 5, 7, 9, 10, 12, 14, 15, 17, 19, 21, 22, 24];

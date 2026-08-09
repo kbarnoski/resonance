@@ -7,7 +7,7 @@ import {
   createSafeFlicker,
   type SafeFlicker,
   prefersReducedMotion,
-} from "../_shared/psych/safeFlicker";
+} from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
 // 1862 — Strobe Atlas

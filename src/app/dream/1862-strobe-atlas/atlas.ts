@@ -4,7 +4,7 @@
 // Seven planform families, one WebGL2 fragment shader. Families 0–3 are the
 // classic Klüver form constants, generated the ONLY way they can be — a
 // periodic pattern seen through the retina→V1 complex-log warp (imported
-// verbatim from _shared/psych/logpolar.ts). Families 4–6 are the motifs a
+// verbatim from _shared/visionary/logpolar.ts). Families 4–6 are the motifs a
 // 2026 large-scale computer-vision study of 10,598 flicker-hallucination
 // drawings found the classic taxonomy MISSES: concentric squares (Chebyshev /
 // L∞ rings), crosses (an axis-aligned Cartesian grid), and a hyperbolic
@@ -18,7 +18,7 @@
 // in the render/arc path — a headless CI gets byte-identical output.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 import { PALETTE_GLSL } from "../_shared/palette";
 
 // ── Family metadata (labels + provenance tag) ───────────────────────────────
@@ -221,7 +221,7 @@ void main() {
   float vig = smoothstep(1.7, 0.2, length(uv));
 
   // uFlicker == 1.0 unless the opt-in Photic pulse is engaged (then a soft,
-  // floor-limited sine <= 3 Hz supplied by _shared/psych/safeFlicker.ts).
+  // floor-limited sine <= 3 Hz supplied by _shared/visionary/safeFlicker.ts).
   col *= drift * vig * uFlicker;
 
   // faint film grain (deterministic hash) so flats never band

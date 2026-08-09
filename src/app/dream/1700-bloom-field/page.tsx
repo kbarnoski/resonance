@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { makeField, type FieldRenderer } from "./render";
 import { makeAudio, type BloomAudio } from "./audio";
 import { NOTES_MD } from "./notes";

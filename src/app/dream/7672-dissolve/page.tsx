@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker } from "../_shared/visionary/safeFlicker";
 import { DissolveScene } from "./scene";
 import { startSilhouette, type SilhouetteRig, type SilhouetteMode } from "./silhouette";
 import { makeDissolveAudio, type DissolveAudio } from "./audio";

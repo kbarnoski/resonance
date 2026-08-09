@@ -18,7 +18,7 @@ import {
   octantName,
   type CGD,
 } from "./valves";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ════════════════════════════════════════════════════════════════════════════
 // 2320 · Three Valves — the C×G×D reducing-valve cube.

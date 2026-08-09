@@ -19,7 +19,7 @@
 // (the sanctioned Web-Audio clock). No Math.random / Date.now / new Date().
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { SoundEvent } from "./stroke";
 
 // Warm just-intonation major pentatonic, tiled across octaves from a low base.

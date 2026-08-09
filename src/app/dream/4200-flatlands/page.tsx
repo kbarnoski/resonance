@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PrototypeNav } from "../_shared/prototype-nav";
-import { createSafeFlicker, prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { createSafeFlicker, prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { createFlatScene, type FlatSceneHandle } from "./scene";
 import { makeFlatAudio, type FlatAudio } from "./audio";
 import { sampleArc, STAGE_LABEL, TOTAL_SECONDS, type Stage } from "./arc";

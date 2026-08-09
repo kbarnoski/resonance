@@ -9,7 +9,7 @@
 // no new deps, full teardown on unmount.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 
 export interface FieldAudio {
   resume(): Promise<void>;

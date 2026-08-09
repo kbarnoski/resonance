@@ -15,8 +15,8 @@
 // gain (<= 0.15) → tanh soft-clip → limiter → destination.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 /** Odd-symmetric tanh-ish soft-clip so the master can never spit harsh peaks. */
 function makeSoftClip(): Float32Array<ArrayBuffer> {

@@ -21,7 +21,7 @@
 //   No Math.random / Date.now / performance.now anywhere.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb } from "../_shared/visionary/convolutionVoid";
 import { STRUCTURES } from "./scene";
 import type { RelStruct } from "./scene";
 

@@ -15,7 +15,7 @@
 //   what swells on screen swells in your ears. That coupling is the whole point.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { FieldStats } from "./sim";
 
 export interface Voice {

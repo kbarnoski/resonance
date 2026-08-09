@@ -3,7 +3,7 @@
 //
 // A fullscreen fragment shader that samples the live camera and, as the valve
 // opens (uValve 0→1), progressively warps that image through the retina→V1
-// log-polar map (imported from _shared/psych/logpolar's LOGPOLAR_GLSL) and
+// log-polar map (imported from _shared/visionary/logpolar's LOGPOLAR_GLSL) and
 // blends it with animated Klüver form-constant geometry — tunnels, spokes,
 // spirals, honeycombs — until at full stillness the camera is almost entirely
 // overwritten by slowly-breathing kaleidoscopic geometry.
@@ -12,7 +12,7 @@
 // the piece still self-plays.
 // ════════════════════════════════════════════════════════════════════════════
 
-import { LOGPOLAR_GLSL } from "../_shared/psych/logpolar";
+import { LOGPOLAR_GLSL } from "../_shared/visionary/logpolar";
 
 const VERT_SRC = `#version 300 es
 precision highp float;

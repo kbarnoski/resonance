@@ -13,7 +13,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { VeilAudio, type Bands } from "./audio";
 import { createVeilScene, type VeilScene } from "./scene";
 

@@ -17,7 +17,7 @@
 // silent until start().
 // ════════════════════════════════════════════════════════════════════════════
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 // Just-intoned modal chord (Phrygian colour): root, b2, m3, P5, m6.
 const RATIOS = [1, 16 / 15, 6 / 5, 3 / 2, 8 / 5];

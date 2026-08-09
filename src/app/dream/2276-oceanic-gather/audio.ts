@@ -9,7 +9,7 @@
 // No React here — this is a plain class the component drives each frame.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import { mulberry32 } from "./rng";
 
 // D-Dorian scale degrees (semitone offsets from D) used to fan the voices out at

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { makeDrumAudio, PAD_SPECS, type DrumAudio } from "./audio";
 import { makeFieldRig, formNameFor, type FieldRig } from "./field";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { PrototypeNav } from "../_shared/prototype-nav";
 
 // ════════════════════════════════════════════════════════════════════════════

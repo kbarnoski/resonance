@@ -20,12 +20,12 @@
 // No microphone, no network. AudioContext is created only from the Start gesture.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
 import {
   createVoidReverb,
   type VoidReverb,
-} from "../_shared/psych/convolutionVoid";
-import { startShepard, type ShepardEngine } from "../_shared/psych/shepard";
+} from "../_shared/visionary/convolutionVoid";
+import { startShepard, type ShepardEngine } from "../_shared/visionary/shepard";
 
 export class TunnelAudio {
   private ctx: AudioContext;

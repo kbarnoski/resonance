@@ -16,7 +16,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { GpuField, requestGpu, type StepArgs, type RenderArgs } from "./gpu";
 import { FallbackField } from "./fallback";
 import { makeThetaAudio } from "./audio";

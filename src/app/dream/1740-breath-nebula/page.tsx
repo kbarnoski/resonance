@@ -13,7 +13,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMicAnalyser } from "../_shared/use-mic-analyser";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 import { NebulaAudio } from "./audio";
 import {
   createNebulaRenderer,

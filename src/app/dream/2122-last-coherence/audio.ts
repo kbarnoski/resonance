@@ -18,8 +18,8 @@
 
 import { makeRng, SEED } from "./rng";
 import { sampleArc, type Phase } from "./arc";
-import { startDroneBank, type DroneBank } from "../_shared/psych/droneBank";
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { startDroneBank, type DroneBank } from "../_shared/visionary/droneBank";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 
 export interface AudioEngine {
   resume(): Promise<void>;

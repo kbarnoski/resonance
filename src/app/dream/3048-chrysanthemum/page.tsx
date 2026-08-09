@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FORM_LABEL } from "../_shared/psych/logpolar";
+import { FORM_LABEL } from "../_shared/visionary/logpolar";
 import {
   AutoVoice,
   VoiceSynth,

@@ -10,7 +10,7 @@ import {
   relPositions,
   makeRelBuffer,
 } from "./scene";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1762-nde-void

@@ -22,7 +22,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { VERT, FRAG } from "./shader";
 import { HyperbolicAudio } from "./audio";
-import { prefersReducedMotion } from "../_shared/psych/safeFlicker";
+import { prefersReducedMotion } from "../_shared/visionary/safeFlicker";
 
 type Phase = "intro" | "running" | "nogpu";
 

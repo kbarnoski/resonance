@@ -13,7 +13,7 @@
 // is used only for Web-Audio envelope timing (allowed).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionVoid";
+import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import { mulberry32 } from "./scene";
 
 // Warm just-intonation degrees over a low base — a soft minor-pentatonic colour.
