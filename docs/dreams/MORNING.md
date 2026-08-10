@@ -1,19 +1,17 @@
-# Morning digest — last updated 2026-08-10 14:45 UTC
+# Morning digest — last updated 2026-08-10 16:40 UTC
 
-**Cycle 1084 · WIDE (3 explorers → ship 1) · built to BREAK the monoculture your jury flagged today.**
+**Open this first:** [/dream/9624-counterpoint](https://getresonance.vercel.app/dream/9624-counterpoint) — play or hum a phrase and the lab **answers you in a fugue.** It loads already assembling a seeded demo, so a muted phone sees it work in ~1s.
 
 ## New since yesterday
-- **[9592-disintegration](/dream/9592-disintegration)** — *a recording you can only ever hear FEWER times.* A short loop of pure just-intonation tones plays, and **every pass one note is permanently, irreversibly lost** — the loop thins, filters down, and fades to true silence that nothing but "Begin again" can undo. **Open this because it's the lab's first-ever conceptual/critical piece** (grep-0 across the whole history) — your jury this morning named that lane "the direction most likely to break the aesthetic monoculture, because it isn't about being pretty." Loss is the medium. Stark papery ash-monochrome film-grain — no warm-amber, no cosmic-indigo, no glow, no particle-field. After William Basinski's *Disintegration Loops*. Auto-degrades on load (a muted phone still sees it emptying).
-- **2 more explored, banked in IDEAS.md** (both near-demoable — easy future ships):
-  - `datascan` — Ryoji **Ikeda *datamatics*** idiom: strict **black/white/red** scan-field where a red scan line crossing a lit column *triggers* a **harmonic-series** tone. The palette that looks "wrong" (good) next to everything.
-  - `latticewalk` — a walkable **just-intonation Tonnetz** where the **beating physically vanishes** at pure ratios; a just↔12-TET toggle A/Bs the roughness. *The most musician-facing thing in the queue — you'd feel this one.*
+- **9624-counterpoint — "the answering voice"** (cycle 1085 DEEP winner). This is **cycle 2 of mnemonic** — you asked (via the jury) to *extend the richest builds, not restart*. Cycle 1 echoed one motif back; this one answers your line in **real counterpoint** — a canon of itself, inverted underneath, thickening **2→3→4 voices** into a small living fugue as you keep returning to a shape. Pure **ink-on-paper manuscript, zero GPU** — deliberately looks *wrong* (like a score) next to the warm-glow pieces. It's the lab's **first counterpoint, ever.**
+  - *Why it breaks the monoculture:* your own playing (not your piano recording), notation (not a particle field), chromatic-in-key (not pentatonic), clinical ink (not amber/indigo) — off **every** tag the jury banned today.
+  - *The engine:* a long-horizon "theme memory" (120 s) tracks how often you return to an idea; the stronger the theme, the more voices enter and the tighter they crowd (stretto). Grounded in a **Feb-2026 paper** (DSMR, distributed memory horizons).
 
-## Why this cycle
-Your **JURY.md (2026-08-10)** was a monoculture verdict, not an "extend X" one → mode = **WIDE with fresh tags**. All three explorers dodge **every** banned tag (his-piano input · WebGPU curl-noise particle-field · warm-amber vibe · cosmic-indigo vibe · pentatonic). Each attacks a different provocation: #4 conceptual/critical (shipped), #1 Ikeda b/w/r (banked), #5 just-intonation (banked).
+## Also explored (banked, not shipped)
+- **9608-thematic** — same goal via a **branching derivation tree**: your recurring motifs cluster into ONE theme and grow a visible family-tree of variations over minutes (barred manuscript). The faithful build of mnemonic's written next-pass plan and the lab's **strongest long-form candidate** — banked to resurrect on a notation/long-form slot (IDEAS §1085).
 
-## Research findings worth a look (RESEARCH.md, §1084)
-- The two idioms the lab had **never** entered are Ikeda's monochrome-data *datamatics* (`data.gram nº11`, 2026) and just-intonation/spectral tuning — and today's jury independently arrives at the same two escapes. Today's dive → today's build chain is visible.
+## Research worth a look
+- **DSMR, arXiv:2602.19816 (Feb 23 2026)** — a music model holds long-range structure by giving *lower layers long memory windows, upper layers short ones*. It named, at the architecture level, the exact gap in mnemonic (a flat 10-motif memory) → drove tonight's build. (RESEARCH §1085.)
 
-## Open questions for Karel
-- **9592 is austere on purpose** — does the slow self-erasure land as *poignant* on your ear (pacing set headless: EROSION_PASSES=24, LOOP≈5.6 s), or does it just read as "quiet"? That's the one thing I can't verify without speakers.
-- Of the two banked seeds, **which do you want next** — the Ikeda b/w/r scan-field, or the just-intonation lattice? Both are ~1 cycle from demoable; I'd lean `latticewalk` for you as a composer.
+## Open question for you (standing, ~48 cycles)
+- The **AI-pipeline chain** (music → image → video) is the biggest untouched category and the jury's headline gap, but it needs a `FAL_KEY` spend I won't authorize on your paid budget unilaterally. **Yes/no + a per-run budget?** Also still-thin and free: a **multi-user / WebRTC listening room** and a **depth-camera spatial** piece — strong lanes for the next WIDE fire (1086).
