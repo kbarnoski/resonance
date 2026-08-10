@@ -1,20 +1,32 @@
-# Morning digest — last updated 2026-08-10 (cycle 1081, DEEP)
+# Morning digest — last updated 2026-08-10 (cycle 1082, WIDE)
 
 ## New since yesterday
-- **[9464-astral](/dream/9464-astral) — fall into your own music as a nebula of light.** Press **"Begin the fall"**: your real *Welcome Home* piano loads and drives a **~90k-particle WebGPU-compute nebula**. Each note's attack spawns fresh star-agents that drift through a curl-noise flow; they accumulate into a glowing field laid under an **ordered-dither veil** (a Bayer grain — the lab's first time using dithering as a whole piece's *look*, not a hidden fix). Then over ~3.5 minutes a **convergence** quietly gathers the diffuse cloud through four phases — Drift → Gathering → Convergence → **Tunnel of light** — so minute 4 is nothing like minute 0. **Why open this:** it's the standing ask you've made for ~38 cycles — *your actual recording carried across an instrument* — finally on the GPU and dead-center in the altered-states direction. Runs on WebGPU (Canvas2D fallback), strobe-free, and a live/offline badge tells you if you're hearing the real take or the synth stand-in.
+- **[9512-heliosong](/dream/9512-heliosong) — the live sky as the carrier wave.** Press **"Play the sky"**:
+  it opens **real-time NOAA space weather** (solar-wind speed/density, magnetic-field Bz, planetary Kp) and
+  turns it into an **infinite, non-looping cosmic drone** under breathing DOM/CSS **aurora**. The storm state
+  is *audible* — southward Bz drops the root and pulls the harmony minor; Kp thickens the pad events; wind
+  speed sets the shimmer. **Why open this:** it's the calmest thing the lab has made, and the music is literally
+  *what's happening in space right now*. Pure DOM/CSS, so it renders on any phone — no camera, no GPU. If the
+  live feed can't be reached it drifts on a seeded synthetic sky, so it's never silent.
 
-## Explored but not shipped (banked → IDEAS §1081)
-Cycle was **DEEP**: one concept — *"fall into his music as an ordered-dither light-field → tunnel-to-light"* — raced via three GPU mechanisms. Shipped the particle-nebula; banked the other two (both built clean, own poles):
-- **⭐⭐ 9480-lumen** — the **intense** pole: a volumetric **tunnel-to-light** you fall down, louder passages pulling you faster toward the core. Near-death phenomenology, calm not frightening.
-- **⭐⭐ 9496-strata** — the **meditative** rest pole: your music as a calm horizon of **aurora light-strata** (16 bands stacked by pitch) you could lie down inside. Best muted-phone read.
+## Explored but not shipped (banked → IDEAS §1082)
+Cycle was **WIDE**: three unrelated directions built in parallel, shipped the strongest, banked two (both built clean):
+- **⭐⭐⭐ handglyph** — your two hands **conduct** a WebGPU glow-field that sings (camera + MediaPipe hand-tracking).
+  The **most ambitious** of the three (6 subsystems); it lost only because I can't verify camera + GPU headless.
+  **This is the one to green-light for a real on-device build** — it wants your webcam to become a headliner.
+- **⭐⭐ tidewalk** — tilt-walk a map of timbres, record paths, layer them into a slowly **phasing canon** (Eno *Bloom*).
 
 ## How this cycle was chosen
-- **DEEP** (ledger-due): one massively-bigger concept, three technical approaches in parallel, ship the strongest.
-- **Research-chained:** Robert Borghesi's *ASTRODITHER* (audio-reactive WebGPU + **ordered dithering**, ~Jul 6 2026) — dither as the aesthetic *point*. Grep says the lab used "dither" in only 3 shaders ever, always as a buried anti-banding trick — so it's a genuinely rested rendering language.
-- Cashes **two jury asks at once**: your real Path piano across an instrument (#3), and **WebGPU-compute as the point** (#4, thin substrate) — while dodging the physics-sim monoculture the jury flagged.
-- **First real multi-cycle claim (criterion #4)** — the jury noted this gate is "never actually claimed." This is cycle 1 of 3.
+- **WIDE** (ledger-due): three divergent explorers, none sharing input × output × technique × palette, ship the best.
+- **Research-chained:** *Helioradar AV* (av.helioradar.com, live since Feb 2026) — NOAA telemetry → an infinite
+  ambient soundscape. The idea that *the current sky is a ready-made generative score* is the one to sit with.
+- Fills the jury's most-named empty category: **real-data sonification** — flagged as absent, and finally shipped
+  (`9432-geomagnet` proposed it months ago but was never built). Dodges the physics-sim monoculture entirely.
 
 ## Open questions for Karel
-- **Deepen `astral` next (multi-cycle), or keep spreading?** Cycle-2 plan: HRTF-spatialize the nebula so the light-grains arrive from *around your head*, and let you **record/keep a "fall"** as a shareable artifact. Cycle-3: live-tune the exposure/spawn constants (I tuned them by reasoning — no GPU here — so your eye may want them nudged).
-- **The AI-pipeline chain (music→image→video) still needs you.** It requires a `FAL_KEY` budget (your paid quota) — flagged ~45 cycles, the jury's headline "build or kill it." Give a rough per-run budget and it's next; otherwise it stays off the menu.
-- Not verifiable headless: whether the ~90k-particle WGSL renders on your device (vs the Canvas2D fallback) and whether the convergence-to-tunnel *feels* like falling. Your eye + ear at 06:30 is the test.
+- **Green-light `handglyph` for a real on-device build?** It's the boldest thing in the queue and only needs your
+  webcam to prove out.
+- **The AI-pipeline chain (music→image→video) still needs you.** It requires a `FAL_KEY` budget (your paid quota) —
+  flagged ~46 cycles, the jury's headline "build it or kill it." A rough per-run cap unblocks it; "drop it" closes it.
+- Not verifiable headless: whether the live NOAA fetch succeeds on your device (vs the synthetic sky) and whether the
+  sonification reads as *musical* on a phone speaker. Your ear at 06:30 is the test.

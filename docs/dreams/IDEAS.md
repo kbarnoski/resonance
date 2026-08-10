@@ -10,6 +10,22 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §1082 (2026-08-10) — WIDE runners-up, banked verbatim (built demoable + compliance-swept, curated OUT; folders removed, never committed)
+
+Cycle 1082 ran **WIDE** — 3 divergent explorers off every live ban. Winner shipped: `9512-heliosong` (the live NOAA sky as an infinite Eno-style cosmic drone-field under DOM/CSS aurora). Both runners-up built demoable, passed the full compliance sweep (`"use client"` L1 · named `PrototypeNav` + self-slug · `createSafeMaster @0.18` · `prefersReducedMotion` · no api route · no off-brand chrome · drug-language clean), and dodged every live ban — genuinely shippable on their own slots.
+
+### ⭐⭐⭐ `handglyph` — hands conduct a boundless field of light & sound (resurrect FIRST) — status: queued
+- **Brief:** camera + **MediaPipe HandLandmarker** (21 landmarks/hand, runtime-CDN `webpackIgnore` loader — no package.json change) → conduct an immersive WebGPU glow-field that sings. Hand height→register, finger-spread→chord width, two-hand distance→shimmer/reverb depth/brightness, pinch→pluck a voice. Seeded two-synthetic-hands auto-demo when no camera; Canvas2D radial-glow fallback when no WebGPU. Meditative/ecstatic, embodied. Ref **WJARR 2026-0860 (MediaPipe+TD, <35 ms)** + MediaPipe Hands (RESEARCH §1082).
+- **Why it was promising:** the HIGHEST-ambition lane of the fire (6 subsystems: camera + tracking model + spatial harmonic field + generative voices + WebGPU render + seeded fallback), and the only *embodied* input in the last 10. Built clean end-to-end (page 565L + gpu/fallback/field/audio/handLoader/rng + README).
+- **Why it lost (WIDE weighting):** camera input AND the WebGPU shader are both **headless-unverifiable** — I can't confirm they run on Karel's device, and MediaPipe spread/pinch thresholds will need on-device tuning, so the 06:30 muted-phone review most likely sees only the auto-demo. Also camera hand-tracking has in-lab precedent (`1590-body-mirror`, `5096-theurgy`, `862-kids-solfege-signs`), so it's less *fresh* than it looks. `9512` won on reliability (pure DOM/CSS always renders) + a thin-gap-that-never-shipped (real-data-sonification) + the freshest substrate.
+- **Resurrect when:** it can get a real on-device pass (camera + GPU). Then it's a strong DEEP headliner — claim criterion #4 and deepen: per-finger voices, both-hands-as-a-two-instrument-duet, record a gesture-score.
+
+### ⭐⭐ `tidewalk` — tilt-walk a latent timbre map, layer paths into a phasing canon — status: queued
+- **Brief:** device-tilt (arrow-key + on-screen drag-pad fallback) walks a **4×4 bilinear-interpolated FM-timbre latent map**; record→replay→layer ≤4 paths, each at a near-unity independent period so they phase (Reich/Eno *Bloom*); inline-SVG cool-indigo nebula (doubles as the drag-pad). Seeded auto-drift + pre-baked canon so it's never blank/silent. Ref Fiebrink/Wekinator + Eno *Bloom*.
+- **Why it was promising:** the phasing canon genuinely drifts-and-re-locks; complete tilt→keys→pad→auto-drift fallback chain; clean build (page 577L + timbre/rng + README). Cross-modal/latent-walk is a jury menu-thin category.
+- **Why it lost:** lowest ambition (2/5), oldest references, and latent-walk is the least-*fresh* verb this fire (it's a re-home of banked `9448-driftmap` / `9336`). Solid but not surprising enough to headline a WIDE.
+- **Resurrect when:** it gets a sharper surprise — two-phone SHARED tilt-map (WebRTC, the 0× multi-user category), or the corner timbres derived from Karel's real Path-piano samples instead of synthetic FM.
+
 ## §1081 (2026-08-10) — DEEP runners-up, banked verbatim (built demoable + compliance-swept, curated OUT; folders removed, never committed)
 
 Cycle 1081 ran **DEEP** — ONE concept ("FALL INTO HIS MUSIC" — Karel's real *Welcome Home* piano as a boundless cosmic light-field you fall through, rendered as a living **ordered-dither veil** [Borghesi *ASTRODITHER*, Jul 2026], evolving into a tunnel-to-light), raced via 3 GPU mechanisms. Winner shipped: `9464-astral` (the particle-nebula that converges to the tunnel). Both runners-up cleared the ambition floor (4/5) and dodged every live ban (jury physics-sim/pointer/raw-WebGL2/Canvas2D/three.js/blueprint + my WebGPU-render/inline-SVG/audio-first ruts); they are genuinely shippable on their own slots.
