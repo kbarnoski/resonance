@@ -1,108 +1,40 @@
-# Concept Jury Verdict — 2026-08-09
+# Concept Jury Verdict — 2026-08-10
 
 ## Summary
-The ambition *floor* is genuinely holding: across the last 15, **zero** builds are
-local-minimum filler — every one clears two-plus criteria, most cite a named reference
-and a same-day research finding, and the honest grep-0 verbs keep coming (tensegrity,
-Minnaert plink, room eigenmodes, mass-interaction luthier). That is real, and two of
-them — `8728-luthier` and `8488-secondear` — are the best things the lab has shipped in
-weeks. The catch is subtler and more dangerous than the old pentatonic-canvas rut,
-*because* every piece is legitimately ambitious: the lab has collapsed into a **physics-
-simulation-instrument monoculture**. Nine of the last fifteen are "simulate a mechanical/
-acoustic system, sonify its state, render it as clean geometry" — and the diversity gate
-is being satisfied on the *surface* (rotate the input device, rotate the substrate) while
-the *deep structure* is identical ~9 times running. Last jury killed three.js-violet; the
-lab dutifully swung to raw-WebGL2-blueprint (5×) and Canvas2D-graphite (4×) — a new
-uniform, not new range. One monoculture came down; a smarter-looking one went up.
+Technically this is one of the stronger recent stretches — four of the last fifteen builds genuinely clear the ambition floor (handflux, astral, heliosong, mnemonic), and **no build sits in the 0–1 local-minimum bucket**. But the lab is quietly collapsing into a monoculture of *taste*, not of ambition: warm amber/ember/gold light on near-black, Karel's real piano as the source, and a GPU particle-field advected by curl-noise. The recipe is ambitious; the *look and feel* have stopped surprising.
 
 ## Diversity audit
-- **Over-represented input: touch/pointer (6×)** — `8392`, `8488`, `8680`, `8728`, `8776`,
-  `8952`. tilt 3× (`8616`, `8856`, `8904`), mic/voice 2× (`8312`, `8632`), keyboard 2×
-  (`8440`, `8568`), camera-optical-flow 1× (`8360`), hand-tracking 1× (`8520`). Input is
-  the *healthiest* axis — but it leans on the mouse.
-- **Over-represented output: raw-WebGL2 hand-written GLSL (5×)** — `8568`, `8616`, `8632`,
-  `8776`, `8952` — AND **Canvas2D (4×)** — `8488`, `8520`, `8680`, `8728`. three.js 2×
-  (`8312`, `8392`), WebGPU 2× (`8360`, `8904`), inline-SVG 1× (`8440`), DOM/CSS 1×
-  (`8856`). The lab over-corrected off the last ban into two new default substrates.
-- **Over-represented technique: physical-modeling / physics-simulation-as-instrument
-  (~9×)** — `8312` sympathetic coupling, `8616` nonlinear modal, `8680` Minnaert bubble,
-  `8728` mass-interaction, `8776` eigenmode, `8856` pendulum/Doppler, `8904` mass-spring
-  cloth, `8952` tensegrity, plus `8360` fluid. This is the real rut. FFT/particle-life/
-  reaction-diffusion/raymarching/latent-walk/generative-model-call all **absent**.
-- **Over-represented vibe: graphite / blueprint / clinical-instructional off-violet (~6×)**
-  — `8440`, `8488`, `8520`, `8568`, `8776`, `8952`. Ordered off the violet-cosmic ban and
-  now hardened into its own house look. cosmic-violet only 2× (`8360`, `8392`).
-- **BANNED for next cycle:** touch/pointer input · raw-WebGL2 · Canvas2D · physics-
-  simulation-as-instrument (mass-spring/Verlet/modal/eigenmode/fluid) · graphite-blueprint
-  palette. Next build must avoid **all five**. That forces something like: mic/voice or
-  MIDI or real-data/API or multi-user input → WebGPU-compute or inline-SVG or DOM/CSS or
-  *audio-only* substrate → a generative-model-call / AI-pipeline / score-following / latent
-  / real-data-sonification technique → a non-blueprint palette.
+- **Over-represented input:** `audio-file` (Karel's real piano) — **4×** (9016, 9128, 9368, 9464). `keyboard` 3×, `tilt` 2×, `mic` 2× are fine.
+- **Over-represented output:** `WebGPU/GPU-render` — **8×** (8904, 8952-WebGL2, 9016, 9224, 9320, 9416, 9464, 9560); `inline-SVG` **4×** (9080, 9128, 9160, 9368).
+- **Over-represented technique:** No single technique hits ≥4 — technique diversity is genuinely healthy. The nearest clusters are *physics/constraint simulation* ×3 (pendulum / cloth / tensegrity) and *curl-noise particle field* ×2 (astral, handflux). Hold this line; it's the one axis that's working.
+- **Over-represented vibe:** `warm ember/amber/gold on near-black` — **~7×** (8856, 9016, 9224, 9304, 9320, 9368, + parchment-warm 8904/9160); a secondary `parchment/ink illuminated-manuscript` cluster **~4×** (8904, 9080, 9128, 9160); `cosmic indigo→violet` **~4×** (9304, 9464, 9512, 9560). Cool, harsh, clinical, or high-clash palettes are effectively extinct.
+- **BANNED for next cycle:** `audio-file (Karel's-piano)` input · `WebGPU curl-noise particle-field` output · `warm ember/amber/gold-on-near-black` vibe · (soft ban) `major/minor-pentatonic` tuning, which is now near-universal.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — no local-minimum builds this window. The floor gate is working.
-- **Hit 2–3 criteria: 6** — `8360`, `8520`, `8616`, `8632`, `8776`, `8856`.
-- **Hit 4–5 criteria: 9** — `8312`, `8392`, `8440`, `8488`, `8568`, `8680`, `8728`, `8904`,
-  `8952`. These are the ones to *extend*, not repeat.
-
-Note on the gate: the floor is being cleared handily, but criterion **#4 (multi-cycle
-commitment) is never actually claimed** — everything ships one-and-done. And #1 (technique
-never used) is now carried almost entirely by grep-0 *physical forms*, which is exactly how
-the monoculture sneaks past the diversity gate: a fresh object, the same verb.
+- **Hit 0–1 criteria: 0** — genuinely nobody phoned it in this stretch. Good.
+- **Hit 2–3 criteria: 11** — 8856(2), 8904(2), 8952(3), 9016(3), 9128(3), 9160(3), 9224(3), 9304(3), 9320(2), 9368(2), 9416(3). The fat middle: they clear the bar, but most clear it by exactly the same two rungs (≥3 subsystems + a named reference) and stop.
+- **Hit 4–5 criteria: 4** — 9080(4), 9512(4), 9464(5), 9560(5). These are the ones to extend. Note they cluster in the most recent cycles **and** in the cosmic-GPU-particle vibe — the ambition and the monoculture are growing on the same branch.
 
 ## Standouts (positive)
-- **`8728-luthier`** — the best of the window. Sample-rate mass-interaction physical
-  modelling in an AudioWorklet where **the picture you see vibrating IS the waveform you
-  hear** — no separate synthesizer. CORDIS-ANIMA / Cadoz lineage, player *wires the
-  instrument*, topology audibly = timbre. This is the player-authored-structure ask the
-  last three juries hammered, finally answered without compromise.
-- **`8488-secondear`** — conceptually the sharpest. Inverts aesthetic selection: the machine
-  models *your* ear from a single keep/pass bit (online logistic regression, no ML lib) and
-  composes toward it, with a visible "knows-your-ear" accuracy meter. Grep-0 verb, closes a
-  standing jury ask verbatim, and courageously off-house graphite-ledger palette.
-- **`8440-duetmind`** (honorable) — the only "play *with* a partner" piece; shows its plan a
-  beat before it sounds (ReaLJam + Voyager). Closes the ~10-cycle "play WITH" gap and does
-  it in the starved inline-SVG register.
-- **`8856-pendulums`** (honorable) — substrate courage: a whole piece in **pure DOM/CSS**
-  that reads on a muted phone, Doppler-wave-as-breathing-chorus. The rare non-GPU ship.
+- **9560-handflux** — 5/5. The first piece to map hand **velocity, not position** (grep-0 in every prior tracking piece), chained same-day off §1083 research. A fast downward strike *booms*; gentle stirring stays quiet. That single axis is what separates "wave at a theremin" from playing an instrument — a real new expressive primitive, not a reskin.
+- **9464-astral** — 5/5. Makes the **ordered-dither veil the rendering *language*** of a whole piece (grep showed dither had only ever been buried anti-banding), over Karel's real recording, converging over minutes toward a tunnel-to-light. The rare case where the long-form arc actually earns "minute four ≠ minute zero."
+- **9080-mnemonic** — the memory ribbon. Conceptually the richest build here: it *captures your motifs and draws them back transformed* (invert/augment/retrograde) as living notation, and proves inline-SVG can carry depth with **zero GPU**. Multi-cycle, Krumhansl key-finding, George Lewis / Robert Rowe lineage — cited, not name-dropped.
+- **9128-rekindle** — the first real **in-browser neural net** (Spotify basic-pitch, TF.js) → transcription → functional reharmonization. Finally cashes the "AI pipeline / TensorFlow.js" menu item that had sat untouched. Ships the model as optional, degrades honestly.
+- **8952-tensegrity** — a genuinely **new physical form** (grep-0 on snelson/prestress/tensegrity): drag one node and the globally-coupled prestress retunes the whole chord. Hand-written WebGL2, real named-reference spine (Snelson, Fuller, Schek, Skelton). Fresh mechanic, not a fresh skin.
+- **9304-passage** — the lab's first true **audio-first** piece; brave enough to make the screen a near-blank bloom and put the entire payoff in HRTF spatialization. The screen-bias experiment the mandate keeps asking for.
 
-## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`8776-roommode`** — the clearest local-minimum-of-*this*-window. Competent eigenmode
-  math and honest grep-0, but it reads as a **physics demo, not an instrument**: the verb is
-  "drag a slider and watch it retune." No authored artifact, no gesture with stakes.
-- **`8632-nearfield`** — a good restoration idea, but it's the Nth raw-WebGL2 physics-
-  sonification and the mic reduces to a single loudness scalar. Rhymes with `8616`/`8952`
-  more than it distinguishes itself.
-- **`8616-thundersheet`** — genuinely nice nonlinear-cascade audio, but as a *concept* it
-  sits squarely inside the "drive a simulated material, hear it ring" cluster it shares with
-  luthier, cloth, and tensegrity. The cluster is the problem, not the piece.
+## Pruning candidates (concept-level, NOT for deletion — immutability rule holds)
+- **9368-afterglow** — beautiful, and squarely inside the frontier STATE.md itself flagged **saturated (§1071)**: Karel's-piano × warm dissolve × granular cloud × amber-SVG. It's the Nth "his recording erodes into warm memory." Nothing wrong with it; there's just no longer any *surprise* in the lane.
+- **8856-pendulums** and **8904-billow** — the "physics toy → pentatonic voices → warm visual" template, twice. Doppler-pendulum-wave and billowing-cloth are the same recipe with a different solver. Competent, legible, and interchangeable at the concept level.
+- **9320-morphochoir** — a gorgeous reaction-diffusion sim with the audio **bolted on**: eight fixed pentatonic probes, and by their own admission "the re-voicing is spatial, not modulating." The sim is the point; the choir is decoration. The audio needs to be *causal to* the morphology, not sampled from it.
 
 ## Provocations for tomorrow's dream cycle
-1. **Ban the sim-instrument for a week.** "Simulate a physical/acoustic system and sonify
-   its state" has been the deep structure of ~9 of the last 15. It is no longer diversity to
-   swap the object (spring → cloth → tensegrity → bubble) or the substrate (WebGL2 →
-   Canvas2D). Do a cycle whose core technique is **not a physics simulation at all** —
-   generative-model-call, latent walk, score-following, or real-data sonification.
-2. **Build the AI-pipeline chain or strike it from the menu.** Music→image→video (needs
-   `FAL_KEY`) has been flagged for ~31 cycles and is **still grep-0**. It is the single
-   largest untouched category and the most direct way to break the physics rut. Thirty-one
-   cycles of "standing yes/no" is not a decision — resolve it.
-3. **Karel's *real* Path piano, finally.** The synthesis-journey (fuse 3 loved engines on
-   his actual recording) keeps getting queued; `8392-longtide` half-delivered it with a
-   *procedural* piano. Spend one DEEP cycle putting his real playing across an instrument —
-   the standing directive with zero true delivery.
-4. **Correct the substrate over-correction toward the empty end.** You didn't diversify off
-   three.js-violet — you re-monocultured onto raw-WebGL2-blueprint (5×) + Canvas2D (4×). The
-   genuinely thin substrates are **WebGPU-compute** (2×, and never as the *point*) and
-   **non-screen / audio-only** (0×). Test the screen bias: ship an embedded/audio-only or
-   WebGPU-compute piece next.
-5. **Claim a multi-cycle build (criterion #4) for once.** Everything ships one-and-done.
-   Take a 4–5-star piece from this window and commit to *deepening* it over 2–3 cycles:
-   `8728-luthier` → save/share your wired instrument; `8488-secondear` → a taste model that
-   remembers you across sessions. Extend a standout instead of minting the next grep-0 verb.
+1. **Kill the warm palette for a week.** Ember/amber/gold-on-near-black (or its parchment cousin) is ~7 of the last 15. Ban warm *and* cosmic-indigo. Force a palette that would look wrong next to everything else in the lab: Ikeda black-white-red, clinical high-key clean, or a deliberate high-chroma clash.
+2. **Bench Karel's piano and the curl-noise particle field, together, for one cycle.** `audio-file×his-piano` is 4/15 and the `{his-piano × warm-dissolve/particle}` space is *explicitly flagged saturated* in STATE.md (§1071). astral + handflux (+ morphochoir, shadowhand) are all "GPU field of glowing points, curl-noise/RD advected, indigo→gold." Build one piece whose source is **neither him nor a synth pad** and whose visual is **not a particle field**.
+3. **Zero embodied-room and zero multi-user in 15 cycles.** handflux is camera-hands but still one flat screen. Spend a cycle on a genuinely thin category: a **WebRTC shared listening/conducting room**, a depth-camera/projection spatial piece, or a real **MIDI/OSC-out** performance tool. The mandate's menu lists these; nothing has touched them.
+4. **Nothing conceptual/critical has shipped.** The menu's boldest lane — an emptiness room, a regret song, a piece you can't hear without paying a cost — is grep-0 across the whole stretch. That's the direction most likely to break the aesthetic monoculture, because it isn't *about* being pretty.
+5. **Ban pentatonic tuning for a cycle.** Major/minor-pentatonic is in pendulums, billow, tensegrity, morphochoir, formcanon, passage, handflux… it's the default that makes everything sound consonant-and-samey. Force microtonal, spectral/just-intonation, serial, or noise-pitched material and let it be a little uncomfortable.
+6. **Extend, don't restart.** mnemonic (multi-cycle, claimed) and handflux (cycle-2 = per-finger vortices + duet) both wrote down their next passes. The 4–5-criteria builds are where depth compounds — pick ONE and ship its cycle 2 instead of minting a fifth cosmic drone.
 
 ## Karel-facing line
-The floor's holding and two builds are genuinely excellent (`luthier`, `secondear`) — but
-the lab has quietly become a physics-simulation-in-blueprint monoculture, so today's order
-is: ban the sim-instrument, and finally build (or kill) the AI-pipeline you've dodged for 31
-cycles.
+Strong week on the merits — four builds that actually clear the ambition bar — but the lab is drifting into one palette, one source, and one particle-field recipe; tomorrow needs to break the monoculture, not polish it.

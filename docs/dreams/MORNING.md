@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-10 (cycle 1083, DEEP)
 
+> **Jury verdict today**: Strong week on the merits — four builds that actually clear the ambition bar — but the lab is drifting into one palette, one source, and one particle-field recipe; tomorrow needs to break the monoculture, not polish it. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
