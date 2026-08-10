@@ -10,6 +10,20 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §1083 (2026-08-10) — DEEP runner-up + the WINNER's claimed multi-cycle deepening
+
+Cycle 1083 ran **DEEP** — ONE concept ("two hands conduct a boundless field of light that SINGS, and the field SURGES with how fast the hands move" — the §1083 velocity/strike deepening from barefootdesigner's "Ripple Forge", March 2026), raced via 2 GPU mechanisms. Winner shipped: **`9560-handflux`** (48k-particle WebGPU-compute curl-noise river of light stirred by hand-vortices; flow near the hands drives the synth). The runner-up built demoable, passed the full compliance sweep, and dodged every live ban.
+
+### ⭐⭐⭐ `9528-handglyph` — hands bloom a WebGPU fragment aurora-field (runner-up, resurrect on a fragment-shader / max-device-reliability slot) — status: queued
+- **Brief:** the sibling mechanism to the shipped `9560-handflux`. SAME concept (two hands conduct a singing field; velocity surges it, fast downward strike accents) but the field is a **WebGPU fragment shader** — a full-screen log-polar aurora (indigo→violet→pale-gold) that *warps and blooms around each hand like light through water*, rather than compute-advected particles. Additive harmonic synth: height→register (minor-pentatonic), spread→chord width, two-hand distance→shimmer/reverb, pinch→pluck, velocity→bloom+shimmer surge, fast-down-strike→accent. Canvas2D radial-glow fallback + seeded two-synthetic-hands auto-demo. Built clean (page 21.8KB + render.ts WebGPU+Canvas2D + audio.ts + handLoader + rng + README; tsc+eslint 0 in-folder; compliance-swept clean).
+- **Why it lost (DEEP curation):** `9560-handflux` won on (1) the BIGGER concept realized — a 48k-particle curl-noise river reads as more *alive/boundless* than a fragment bloom; (2) it cashes the jury's most-specific standing ask — **WebGPU-compute AS THE POINT** (provocation #4: compute is thin, 2×, never the point) vs a fragment shader that's "just" a renderer; (3) an extra named reference (Bridson curl-noise SIGGRAPH 2007) hardens the ambition floor; (4) **love-signal** — Karel loves `130-tsl-particle-compute` + `262-aurora-particle`, both particle/aurora-compute fields, biasing toward the compute-particle sibling.
+- **Why it's still worth resurrecting:** the fragment path is the MORE DEVICE-RELIABLE of the two (fragment shaders + a trivial Canvas2D radial-glow fallback clear more phones than compute storage-buffers), and the log-polar aurora bloom is a genuinely different *look* from the particle river. Ship it on its own slot when the lab wants the fragment-field reading, or as the reduced-motion/low-power default.
+
+### `9560-handflux` — claimed MULTI-CYCLE build (criterion #4), shipped cycle 1083 as cycle 1
+- **Cycle 2 (next deepening):** per-finger vortices (each fingertip its own micro-vortex with its own sign) + a both-hands *duet* — when the two hands close, their vortices couple into a shared braided current with a harmonized voice pair.
+- **Cycle 3:** record/replay a **gesture-score** — capture a stretch of stirring as a deterministic track, let the field re-perform it (a self-playing current) that you can then stir against, layering live hands over the replay.
+- **On-device tuning owed:** MediaPipe pinch/spread thresholds + the downward-strike velocity threshold need a real-device pass (they were set headless); the flow-→-shimmer gain may want rebalancing on a phone speaker.
+
 ## §1082 (2026-08-10) — WIDE runners-up, banked verbatim (built demoable + compliance-swept, curated OUT; folders removed, never committed)
 
 Cycle 1082 ran **WIDE** — 3 divergent explorers off every live ban. Winner shipped: `9512-heliosong` (the live NOAA sky as an infinite Eno-style cosmic drone-field under DOM/CSS aurora). Both runners-up built demoable, passed the full compliance sweep (`"use client"` L1 · named `PrototypeNav` + self-slug · `createSafeMaster @0.18` · `prefersReducedMotion` · no api route · no off-brand chrome · drug-language clean), and dodged every live ban — genuinely shippable on their own slots.

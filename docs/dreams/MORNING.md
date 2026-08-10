@@ -1,32 +1,37 @@
-# Morning digest — last updated 2026-08-10 (cycle 1082, WIDE)
+# Morning digest — last updated 2026-08-10 (cycle 1083, DEEP)
+
+Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[9512-heliosong](/dream/9512-heliosong) — the live sky as the carrier wave.** Press **"Play the sky"**:
-  it opens **real-time NOAA space weather** (solar-wind speed/density, magnetic-field Bz, planetary Kp) and
-  turns it into an **infinite, non-looping cosmic drone** under breathing DOM/CSS **aurora**. The storm state
-  is *audible* — southward Bz drops the root and pulls the harmony minor; Kp thickens the pad events; wind
-  speed sets the shimmer. **Why open this:** it's the calmest thing the lab has made, and the music is literally
-  *what's happening in space right now*. Pure DOM/CSS, so it renders on any phone — no camera, no GPU. If the
-  live feed can't be reached it drifts on a seeded synthetic sky, so it's never silent.
+- **[9560-handflux](/dream/9560-handflux) — conduct a boundless river of light with your two hands.**
+  Press **"Start conducting"**: the camera tracks your hands (MediaPipe) and they become **vortices stirring a
+  48,000-particle WebGPU current** — the way it flows near your hands is what you *hear*. The new thing vs every
+  prior hand piece in the lab: it reads **velocity**, not just position — a **fast downward sweep strikes an
+  accent** (gentle = quiet, fast = boom). **Why open this:** it's the queued `handglyph` idea finally given a real
+  GPU build, it's love-adjacent to your `130-tsl-particle-compute` + `262-aurora-particle`, and no-camera phones
+  get a seeded two-hand auto-demo that conducts (and sounds) on its own — so it plays muted.
 
-## Explored but not shipped (banked → IDEAS §1082)
-Cycle was **WIDE**: three unrelated directions built in parallel, shipped the strongest, banked two (both built clean):
-- **⭐⭐⭐ handglyph** — your two hands **conduct** a WebGPU glow-field that sings (camera + MediaPipe hand-tracking).
-  The **most ambitious** of the three (6 subsystems); it lost only because I can't verify camera + GPU headless.
-  **This is the one to green-light for a real on-device build** — it wants your webcam to become a headliner.
-- **⭐⭐ tidewalk** — tilt-walk a map of timbres, record paths, layer them into a slowly **phasing canon** (Eno *Bloom*).
+## Explored but not shipped (banked → IDEAS §1083)
+Cycle was **DEEP**: one big concept, two GPU mechanisms built in parallel, shipped the stronger.
+- **⭐⭐⭐ handglyph** — the SAME idea via a WebGPU **fragment aurora** that blooms/warps around your hands (vs the
+  particle river). It's the **more device-reliable** of the two and a genuinely different look — ready to ship on
+  its own slot as a low-power default.
+
+## In progress / owed (claimed multi-cycle builds)
+- **handflux cycle 2/3** — per-finger vortices + a both-hands *duet*, then record/replay a **gesture-score**.
+  Needs an on-device pass: the pinch + strike thresholds were set headless.
+- **9464-astral cycle 2** (from §1081, still owed) — HRTF-spatialize the nebula + record/keep a "fall".
 
 ## How this cycle was chosen
-- **WIDE** (ledger-due): three divergent explorers, none sharing input × output × technique × palette, ship the best.
-- **Research-chained:** *Helioradar AV* (av.helioradar.com, live since Feb 2026) — NOAA telemetry → an infinite
-  ambient soundscape. The idea that *the current sky is a ready-made generative score* is the one to sit with.
-- Fills the jury's most-named empty category: **real-data sonification** — flagged as absent, and finally shipped
-  (`9432-geomagnet` proposed it months ago but was never built). Dodges the physics-sim monoculture entirely.
+- **DEEP** (ledger-due) + the 1082 curator queued `handglyph` as "the natural DEEP — resurrect FIRST."
+- **Research-chained (§1083):** the 2026 browser hand-instrument frontier (barefootdesigner "Ripple Forge", Mar
+  2026) says the missing axis is **velocity, not position** — that's exactly what `handflux` builds on, and it was
+  grep-0 in the lab's prior tracking pieces. Answers the jury's "correct the substrate toward WebGPU-compute AS the
+  point" and "ban the sim-instrument."
 
 ## Open questions for Karel
-- **Green-light `handglyph` for a real on-device build?** It's the boldest thing in the queue and only needs your
-  webcam to prove out.
-- **The AI-pipeline chain (music→image→video) still needs you.** It requires a `FAL_KEY` budget (your paid quota) —
-  flagged ~46 cycles, the jury's headline "build it or kill it." A rough per-run cap unblocks it; "drop it" closes it.
-- Not verifiable headless: whether the live NOAA fetch succeeds on your device (vs the synthetic sky) and whether the
-  sonification reads as *musical* on a phone speaker. Your ear at 06:30 is the test.
+- **handflux needs your device to tune** — is the velocity/strike response *playable*? Does the flow read as
+  *musical* on a phone? (headless build can't hear the audio or see the camera).
+- **STANDING yes/no (~47 cycles):** the **AI-pipeline chain** (music→image→video) is the jury's headline gap and
+  the single largest untouched category — but it needs a `FAL_KEY` budget (your paid quota), so I won't spend it
+  unilaterally. A per-run cap unblocks it; "drop it" closes it.
