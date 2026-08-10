@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-08-10 (cycle 1078, WIDE)
+# Morning digest — last updated 2026-08-10 (cycle 1079, DEEP)
 
-## Open this first
-- **[9320-morphochoir](/dream/9320-morphochoir)** — press **letter keys** to seed drops into a living **reaction-diffusion** field (spots grow, split, wander into labyrinths); a ring of 8 probes listens to the pattern and turns its morphogenesis into a shifting **choir**. Number keys **1–4** switch the pattern's "chemistry" (spots / worms / labyrinth / solitons) — each a different visual *and* sonic world. **Muted at 06:30?** It auto-runs with no sound on load, so you'll see a Turing pattern forming and re-forming within a second. Then press **Start sound**.
+## New since yesterday
+- **[9368-afterglow](/dream/9368-afterglow) — your REAL *Welcome Home* piano, re-dreamed.** Press **"Begin the memory"** (headphones help). Your actual recording loads and never just plays back — it **disintegrates**: the clean take fades first, then spectral bands drop into gaps like tape wearing thin, while a **granular cloud regrows the lost material from its own earliest, cleanest fragments**. Over ~78s it dissolves from *you* into *the memory of you*. The SVG cloud dims as cream "memory motes" bloom. **Why open this:** it's the real-Path-piano ask you've made for ~30 cycles, finally delivered — not visualized, *transformed*. (Basinski *Disintegration Loops* + Roads *Microsound*.)
+  - *If the recording can't fetch on your device, it disintegrates a seeded warm-piano phrase instead — never silent. You can also drag-drop any audio file to disintegrate it.*
 
-**Why this one matters:** it's the lab's first time a **reaction-diffusion** field is an *instrument you play*, not wallpaper — the morphology literally drives the harmony. It runs on **WebGPU compute** (the substrate the jury keeps asking for "as the point," not a fallback) with a plain-CPU fallback if your device has no GPU, and it breaks two ruts at once: the physics-sim monoculture the jury flagged, and my own recent lean on machine-listening + manuscript-SVG.
+## Explored but not shipped (banked → IDEAS §1079)
+- **⭐⭐⭐ 9384-hollows** — the DOM/CSS version: onsets in your playing **freeze** into infinite blooming spectral pads → a slow harmonic cathedral, 28 warm light-strata breathing (the best muted-phone read of the three). Eno *Music for Airports*. Resurrect first.
+- **⭐⭐ 9400-recollection** — your recording shattered into a grain corpus, a Markov engine re-sequences it into infinite NEW phrases "in your voice." Held back only because it's closest to `227-paths-granular`/`3808-mosaic`.
 
-## How it was made (WIDE — 3 parallel builders, 1 shipped)
-Three unrelated instruments raced, one per substrate, none touching a banned technique:
-- **morphochoir** (shipped) — WebGPU reaction-diffusion choir; the research-chained, highest-ambition lane.
-- **driftmap** (banked ⭐⭐⭐) — WALK a musical *latent map* by keyboard; record & layer your paths into a slow canon. Strong — resurrecting first (off SVG next time).
-- **tideglass** (banked ⭐⭐) — tilt your phone to pour an arpeggio across a harmonic field; pure DOM/CSS, mobile-friendly.
+## How this cycle was chosen
+- **DEEP** (ledger-due). ONE concept — *the recording remembers itself* — raced via 3 re-dreaming DSP approaches; shipped the strongest.
+- Off the jury's banned physics-sim monoculture AND off my own machine-listening rut (source is your fixed recording, not the live player). Returns to the PRIMARY altered-states direction (hypnagogic / memory-dissolution).
+- Research-chained: 2026's defining audio move is "any sample → a self-playing granular+spectral synth" (Serum 2, etc.) — so your recording becomes the synth.
 
-## Research (today, chained → the build)
-WebGPU compute has matured into the browser's TouchDesigner — audio-reactive compute-shader feedback loops (even GPU-generated audio), plus Three.js's 2026 WebGPU/TSL shift. That makes a reaction-diffusion **feedback loop** (a TouchDesigner staple) feasible as a *played* instrument — exactly the "reaction-diffusion is absent" gap the jury named, and adjacent to your loved compute-field pieces (130 / 236 / 16).
-
-## One standing question for you
-- **The AI-pipeline chain** (music → image → video) is still the single biggest untouched category and the jury's headline — but it needs a `FAL_KEY` image-gen budget, and I won't spend your paid budget without a yes. **Build it, or strike it from the menu?** (~42 cycles flagged.)
+## Open questions for Karel
+- **The AI-pipeline chain (music→image→video) is still the one thing I can't build without you.** It needs a `FAL_KEY` budget (your paid quota) — flagged ~43 cycles, the jury's headline "build or kill it." Say the word (and a rough per-run budget) and it's next; otherwise I'll keep it off the menu.
+- **Afterglow is a claimed multi-cycle build.** Next passes: onset-segment your REAL recording so the *regrowth* uses your actual phrases (not just early-offset grains), add true HRTF spatial, and a "save this memory" so a particular disintegration is keepable. Want me to deepen it next, or spread to a fresh concept?
+- Not verifiable headless: whether the fetch+decode of your recording succeeds on your device and whether the "him → memory" crossfade lands emotionally. Your ear at 06:30 is the test.
