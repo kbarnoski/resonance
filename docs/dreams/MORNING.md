@@ -1,39 +1,19 @@
-# Morning digest — last updated 2026-08-10 (cycle 1083, DEEP)
+# Morning digest — last updated 2026-08-10 14:45 UTC
 
-> **Jury verdict today**: Strong week on the merits — four builds that actually clear the ambition bar — but the lab is drifting into one palette, one source, and one particle-field recipe; tomorrow needs to break the monoculture, not polish it. See `docs/dreams/JURY.md`.
-
-Open the lab: https://getresonance.vercel.app/dream
+**Cycle 1084 · WIDE (3 explorers → ship 1) · built to BREAK the monoculture your jury flagged today.**
 
 ## New since yesterday
-- **[9560-handflux](/dream/9560-handflux) — conduct a boundless river of light with your two hands.**
-  Press **"Start conducting"**: the camera tracks your hands (MediaPipe) and they become **vortices stirring a
-  48,000-particle WebGPU current** — the way it flows near your hands is what you *hear*. The new thing vs every
-  prior hand piece in the lab: it reads **velocity**, not just position — a **fast downward sweep strikes an
-  accent** (gentle = quiet, fast = boom). **Why open this:** it's the queued `handglyph` idea finally given a real
-  GPU build, it's love-adjacent to your `130-tsl-particle-compute` + `262-aurora-particle`, and no-camera phones
-  get a seeded two-hand auto-demo that conducts (and sounds) on its own — so it plays muted.
+- **[9592-disintegration](/dream/9592-disintegration)** — *a recording you can only ever hear FEWER times.* A short loop of pure just-intonation tones plays, and **every pass one note is permanently, irreversibly lost** — the loop thins, filters down, and fades to true silence that nothing but "Begin again" can undo. **Open this because it's the lab's first-ever conceptual/critical piece** (grep-0 across the whole history) — your jury this morning named that lane "the direction most likely to break the aesthetic monoculture, because it isn't about being pretty." Loss is the medium. Stark papery ash-monochrome film-grain — no warm-amber, no cosmic-indigo, no glow, no particle-field. After William Basinski's *Disintegration Loops*. Auto-degrades on load (a muted phone still sees it emptying).
+- **2 more explored, banked in IDEAS.md** (both near-demoable — easy future ships):
+  - `datascan` — Ryoji **Ikeda *datamatics*** idiom: strict **black/white/red** scan-field where a red scan line crossing a lit column *triggers* a **harmonic-series** tone. The palette that looks "wrong" (good) next to everything.
+  - `latticewalk` — a walkable **just-intonation Tonnetz** where the **beating physically vanishes** at pure ratios; a just↔12-TET toggle A/Bs the roughness. *The most musician-facing thing in the queue — you'd feel this one.*
 
-## Explored but not shipped (banked → IDEAS §1083)
-Cycle was **DEEP**: one big concept, two GPU mechanisms built in parallel, shipped the stronger.
-- **⭐⭐⭐ handglyph** — the SAME idea via a WebGPU **fragment aurora** that blooms/warps around your hands (vs the
-  particle river). It's the **more device-reliable** of the two and a genuinely different look — ready to ship on
-  its own slot as a low-power default.
+## Why this cycle
+Your **JURY.md (2026-08-10)** was a monoculture verdict, not an "extend X" one → mode = **WIDE with fresh tags**. All three explorers dodge **every** banned tag (his-piano input · WebGPU curl-noise particle-field · warm-amber vibe · cosmic-indigo vibe · pentatonic). Each attacks a different provocation: #4 conceptual/critical (shipped), #1 Ikeda b/w/r (banked), #5 just-intonation (banked).
 
-## In progress / owed (claimed multi-cycle builds)
-- **handflux cycle 2/3** — per-finger vortices + a both-hands *duet*, then record/replay a **gesture-score**.
-  Needs an on-device pass: the pinch + strike thresholds were set headless.
-- **9464-astral cycle 2** (from §1081, still owed) — HRTF-spatialize the nebula + record/keep a "fall".
-
-## How this cycle was chosen
-- **DEEP** (ledger-due) + the 1082 curator queued `handglyph` as "the natural DEEP — resurrect FIRST."
-- **Research-chained (§1083):** the 2026 browser hand-instrument frontier (barefootdesigner "Ripple Forge", Mar
-  2026) says the missing axis is **velocity, not position** — that's exactly what `handflux` builds on, and it was
-  grep-0 in the lab's prior tracking pieces. Answers the jury's "correct the substrate toward WebGPU-compute AS the
-  point" and "ban the sim-instrument."
+## Research findings worth a look (RESEARCH.md, §1084)
+- The two idioms the lab had **never** entered are Ikeda's monochrome-data *datamatics* (`data.gram nº11`, 2026) and just-intonation/spectral tuning — and today's jury independently arrives at the same two escapes. Today's dive → today's build chain is visible.
 
 ## Open questions for Karel
-- **handflux needs your device to tune** — is the velocity/strike response *playable*? Does the flow read as
-  *musical* on a phone? (headless build can't hear the audio or see the camera).
-- **STANDING yes/no (~47 cycles):** the **AI-pipeline chain** (music→image→video) is the jury's headline gap and
-  the single largest untouched category — but it needs a `FAL_KEY` budget (your paid quota), so I won't spend it
-  unilaterally. A per-run cap unblocks it; "drop it" closes it.
+- **9592 is austere on purpose** — does the slow self-erasure land as *poignant* on your ear (pacing set headless: EROSION_PASSES=24, LOOP≈5.6 s), or does it just read as "quiet"? That's the one thing I can't verify without speakers.
+- Of the two banked seeds, **which do you want next** — the Ikeda b/w/r scan-field, or the just-intonation lattice? Both are ~1 cycle from demoable; I'd lean `latticewalk` for you as a composer.
