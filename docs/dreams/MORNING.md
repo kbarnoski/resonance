@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-08-10 (cycle 1077, DEEP)
+# Morning digest — last updated 2026-08-10 (cycle 1078, WIDE)
 
 ## Open this first
-- **[9304-passage](/dream/9304-passage)** — put on **headphones**, press **Begin**, close your eyes. A ~4:45 journey made of *spatial sound alone*: warm voices stream from ahead of you, past your ears, and behind — a receding tunnel toward a growing light, a lucid clarity-snap, a warm return. The screen is near-blank on purpose. **Muted at 06:30? Tap "Preview the whole journey (~30s)"** — the growing-light arc reads the same timeline the audio does, so you see every phase silently.
+- **[9320-morphochoir](/dream/9320-morphochoir)** — press **letter keys** to seed drops into a living **reaction-diffusion** field (spots grow, split, wander into labyrinths); a ring of 8 probes listens to the pattern and turns its morphogenesis into a shifting **choir**. Number keys **1–4** switch the pattern's "chemistry" (spots / worms / labyrinth / solitons) — each a different visual *and* sonic world. **Muted at 06:30?** It auto-runs with no sound on load, so you'll see a Turing pattern forming and re-forming within a second. Then press **Start sound**.
 
-**Why this one matters:** it's the lab's **first audio-first ship** — the "test the screen bias / ship something audio-only" ask the jury has repeated for weeks (banked 5+ times, always killed at muted review). It also **returns to your primary altered-states direction** after ~10 ships drifted into machine-listening. I fought the muted-review trap head-on: the visual is driven by the same phase clock as the sound, so it survives a silent glance without betraying the eyes-closed, headphones-first thesis.
+**Why this one matters:** it's the lab's first time a **reaction-diffusion** field is an *instrument you play*, not wallpaper — the morphology literally drives the harmony. It runs on **WebGPU compute** (the substrate the jury keeps asking for "as the point," not a fallback) with a plain-CPU fallback if your device has no GPU, and it breaks two ruts at once: the physics-sim monoculture the jury flagged, and my own recent lean on machine-listening + manuscript-SVG.
 
-## How it was made (DEEP — 3 parallel builders, 1 shipped)
-One concept — *altered states through spatial sound alone* — raced across three realizations, all generative (not "listen to your playing"), all DOM/CSS-only (no shaders):
-- **passage** (shipped) — the tunnel-toward-light corridor; best muted read + clearest 3D-sound payoff.
-- **dissolve** (banked ⭐⭐⭐) — a dissociative *void* built by deliberately DES-syncing what you hear from what you see. Sharpest idea of the three; its catch is the desync is invisible with sound off — fix that and it beats passage.
-- **boundless** (banked ⭐⭐) — breath-paced meditative spaciousness; each exhale opens the field.
+## How it was made (WIDE — 3 parallel builders, 1 shipped)
+Three unrelated instruments raced, one per substrate, none touching a banned technique:
+- **morphochoir** (shipped) — WebGPU reaction-diffusion choir; the research-chained, highest-ambition lane.
+- **driftmap** (banked ⭐⭐⭐) — WALK a musical *latent map* by keyboard; record & layer your paths into a slow canon. Strong — resurrecting first (off SVG next time).
+- **tideglass** (banked ⭐⭐) — tilt your phone to pour an arpeggio across a harmonic field; pure DOM/CSS, mobile-friendly.
 
 ## Research (today, chained → the build)
-Sound *alone* moves consciousness: Aparicio-Terrés et al., *Annals NYAS* 2025/26 (neurobiology of altered states from rhythmic sound) + *Neurosci. Biobehav. Rev.* 2026 "rhythms of trance" + PLOS One (Apr 2026) binaural beats & meditative states — spatial (ITD/ILD) + rhythmic auditory cues drive absorption/boundlessness, no screen, no substances. That's the whole thesis of this ship. (The dive opened on neural re-voicing but a grep-audit found the lab already has it — `3808-mosaic` + last night's `9224` — so I redirected.)
+WebGPU compute has matured into the browser's TouchDesigner — audio-reactive compute-shader feedback loops (even GPU-generated audio), plus Three.js's 2026 WebGPU/TSL shift. That makes a reaction-diffusion **feedback loop** (a TouchDesigner staple) feasible as a *played* instrument — exactly the "reaction-diffusion is absent" gap the jury named, and adjacent to your loved compute-field pieces (130 / 236 / 16).
 
 ## One standing question for you
-- **The AI-pipeline chain** (music → image → video) is still the single biggest untouched category and the jury's headline — but it needs a `FAL_KEY` image-gen budget, and I won't spend your paid budget without a yes. **Build it, or strike it from the menu?** (~41 cycles flagged.)
+- **The AI-pipeline chain** (music → image → video) is still the single biggest untouched category and the jury's headline — but it needs a `FAL_KEY` image-gen budget, and I won't spend your paid budget without a yes. **Build it, or strike it from the menu?** (~42 cycles flagged.)
