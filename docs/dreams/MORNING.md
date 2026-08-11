@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-08-11 ~18:40 UTC (cycle 1098)
+# Morning digest — last updated 2026-08-11 ~20:30 UTC (cycle 1099)
 
 ## New since yesterday
-- **`10184-ferrobloom`** — /dream/10184-ferrobloom — **sing and your voice becomes a magnet.** A flat mirror-pool of ferrofluid destabilises under the pull of your own sound and self-organises into a hexagonal lattice of molten metal spikes that ripple, peak, and ring in inharmonic bell-metal. Louder crosses the critical field (more/taller spikes); a brighter voice packs them finer. **Why open this:** it's the cycle's genuine **4/5** and it answers your jury on every axis at once — warm molten metal (not the cold sea), the GPU doing **structure not bloom** (a real Rosensweig instability, not a glow), inharmonic metal (not the just-intonation reflex), and your **voice** in the driver's seat. Best with headphones + mic granted; muted phone still shows spikes rising on a seeded breathing LFO.
+- **`10216-claymemory`** — /dream/10216-claymemory — **the clay remembers your hands.** Reach into the webcam and knead a glowing lump of warm terracotta: an open palm dents it, a pinch pulls a peak — and every mark is **permanent**. It never springs back and never heals; the lump becomes a physical record of everything you did to it. Only "Fresh lump" restores the sphere. **Why open this:** it finally puts your **hands** back in the driver's seat (we'd drifted into 3 mic-driven fires in a row) and it's the lab's first **plastically-deforming** soft body — a real shape-matching solver with a plasticity yield, so it behaves like actual clay, not rubber. Warm, tactile, inharmonic. Best with a webcam + good light; a muted phone still watches the ghost-hands sculpt the lump, deepen the ember-glow as "memory %" climbs, then wipe to a fresh sphere on a loop.
 
 ## In progress / partial
-- WIDE fire built 3, shipped 1. Both runners-up banked (IDEAS §1098), demoable + clean, never committed:
-  - ⭐⭐⭐ **`10152-handclay`** — MediaPipe **hands knead a warm terracotta clay** (mass-spring/Verlet soft body) that squelches in inharmonic granular sound. Resurrect FIRST — it's the **camera** lane (rotates us off mic; last 3 ships were all mic-driven).
-  - ⭐⭐ **`10168-scriptorium`** — the **live Wikipedia edit stream** as gold-leaf blooming on one illuminated manuscript, sonified as a whole-tone organ. The starved real-data/conceptual cell, warm and communal.
+- DEEP fire built 2 solvers of one concept (*knead warm clay*), shipped 1. The runner-up banked (IDEAS §1099), demoable + clean, never committed:
+  - ⭐⭐⭐ **`10200-handclay`** — the **ELASTIC** twin: same hands, same terracotta, but the dents **heal** back to a sphere over ~1.5 s (a mass-spring / Verlet lump — living, breathing clay). **Resurrect FIRST** as the natural cycle-2: one lump with a **toggle** between the elastic and plastic solvers, so you feel the same gesture heal vs. stay — the material *is* the instrument.
 
 ## Research findings worth a look
-- **§1098 — the Rosensweig (normal-field) ferrofluid instability** (Cowley & Rosensweig 1967; Robert Leitl's WebGL ferrofluid): a magnetic pool self-organises into a hexagonal spike lattice — a warm, metallic, inharmonic sound↔structure surface. Chained straight into today's winner. Full note in RESEARCH.md.
+- **§1099 — shape-matching soft bodies with a plasticity threshold** (Müller et al., SIGGRAPH 2005; XPBD, Macklin 2016): the model that makes virtual clay *remember* the hands that shaped it — vs. mass-spring, which springs back. Two opposite souls for the same gesture; that contrast *is* today's DEEP race. Full note in RESEARCH.md.
 
 ## Open questions for Karel
-- **AI-pipeline chain** (music → image → video, the empty menu cell) still needs a `FAL_KEY` budget I won't authorize on my own (Rule #6). Say the word and a per-prototype budget, and I'll build it.
-- Warmth turn is holding (1096 brass/sand, 1097 ember, 1098 molten metal). Want me to keep warm, or swing one cold/cosmic again next?
+- **AI-pipeline chain** (music → image → video, the empty menu cell) still needs a `FAL_KEY` budget I won't authorize on my own (Rule #6). Say the word + a per-prototype budget and I'll build it.
+- Warmth turn is holding strong (1096 brass/sand · 1097 ember · 1098 molten metal · 1099 terracotta clay). Want me to keep warm, or swing one cold/cosmic again next? And the output substrate wants rotating too (three fires of WebGL/WebGPU/three.js) — a Canvas2D-free SVG/DOM lane or a deeper WebGPU-compute-as-structure piece?
 
 ---
-*Cycle 1098 · WIDE · 3 parallel builders → shipped 10184-ferrobloom · build EXIT 0 · one commit to main. Next fire ~2h (DEEP due).*
+*Cycle 1099 · DEEP · 2 parallel builders → shipped 10216-claymemory · build EXIT 0 (1154/1154 pages) · one commit to main. Next fire ~2h (WIDE due).*
