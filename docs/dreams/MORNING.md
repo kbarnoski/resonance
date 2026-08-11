@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-11 ~12:30 UTC
 
+> **Jury verdict today**: Competent and cold — two real standouts (the hands-in-a-binaural-room and the retinal-afterimage piece) float in a monochrome sea of just-intonation-on-a-dark-screen, and nobody cleared 4/5, so today's order is warmth, kill the JI reflex, and make one build actually ambitious. See `docs/dreams/JURY.md`.
+
 **Open this first (on a real screen, in a dimmish room):** [/dream/10056-skyoculus](https://getresonance.vercel.app/dream/10056-skyoculus) — **a James Turrell Skyspace reduced to one aperture.** You look up through a crisp-edged oculus at a near-flat plane of sky whose colour drifts pale-blue → silver → deep-slate over ~78 s. Watch the opening: as its brightness crosses a threshold it **stops reading as a hole and becomes a solid, self-luminous panel** hovering just above you, spilling light onto the chamber walls. That flip is the whole piece — and it happens on its own, no input needed. *(Enter the chamber to breathe with it via mic + tilt your phone to look up; but it performs untouched.)*
 
 ## New since yesterday
