@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-08-11 ~20:30 UTC (cycle 1099)
+# Morning digest — last updated 2026-08-11 ~22:40 UTC (cycle 1100)
 
 ## New since yesterday
-- **`10216-claymemory`** — /dream/10216-claymemory — **the clay remembers your hands.** Reach into the webcam and knead a glowing lump of warm terracotta: an open palm dents it, a pinch pulls a peak — and every mark is **permanent**. It never springs back and never heals; the lump becomes a physical record of everything you did to it. Only "Fresh lump" restores the sphere. **Why open this:** it finally puts your **hands** back in the driver's seat (we'd drifted into 3 mic-driven fires in a row) and it's the lab's first **plastically-deforming** soft body — a real shape-matching solver with a plasticity yield, so it behaves like actual clay, not rubber. Warm, tactile, inharmonic. Best with a webcam + good light; a muted phone still watches the ghost-hands sculpt the lump, deepen the ember-glow as "memory %" climbs, then wipe to a fresh sphere on a loop.
+- **`10248-sunprint`** — /dream/10248-sunprint — **point your camera at the world and it develops into a warm photogram that sings.** It's a sped-up 19th-century **anthotype**: bright light *bleaches* a plate of crushed-flower dye while shadows stay saturated, so the room prints itself in marigold/oxblood over ~30 s. The print has **memory** — it only ever develops, never un-develops (only "Re-coat plate" restores the dye) — and it *sings*: while you sweep the camera the shimmer is dense, and as the image settles it thins to sparse mallet rings over a warm wood drone. **Why open this:** it's your jury's demand answered head-on — a **genuine 4/5** ambition build (a technique the lab has literally never used, camera in the driver's seat, real named lineage — Somerville 1842 / Anna Atkins 1843, fresh research), and it's warm/organic, not another beautiful cold field. Best with a webcam + a lamp or window; a denied/muted phone still watches a seeded light-source develop the plate and hears it, badged.
 
 ## In progress / partial
-- DEEP fire built 2 solvers of one concept (*knead warm clay*), shipped 1. The runner-up banked (IDEAS §1099), demoable + clean, never committed:
-  - ⭐⭐⭐ **`10200-handclay`** — the **ELASTIC** twin: same hands, same terracotta, but the dents **heal** back to a sphere over ~1.5 s (a mass-spring / Verlet lump — living, breathing clay). **Resurrect FIRST** as the natural cycle-2: one lump with a **toggle** between the elastic and plastic solvers, so you feel the same gesture heal vs. stay — the material *is* the instrument.
+- WIDE fire explored **3 warm lanes**, shipped 1. The two runners-up are banked demoable (IDEAS §1100), never committed:
+  - ⭐⭐⭐ **`10264-honeyfall`** — **tilt** your phone to pour a slow river of warm honey that **rings like a singing bowl** where it pools (a real viscous thin-film sim + inharmonic bowl partials). The freshest *input* we've had in a while — resurrect this to rotate off camera/mic.
+  - ⭐⭐ **`10280-slowsun`** — a **7-minute warm sundown that never repeats** (long-form, real layer-memory — Eno/Radigue). Fills the starved long-form cell; wants a real sensor in the driver's seat before it ships.
 
 ## Research findings worth a look
-- **§1099 — shape-matching soft bodies with a plasticity threshold** (Müller et al., SIGGRAPH 2005; XPBD, Macklin 2016): the model that makes virtual clay *remember* the hands that shaped it — vs. mass-spring, which springs back. Two opposite souls for the same gesture; that contrast *is* today's DEEP race. Full note in RESEARCH.md.
+- **§1100 — three warm analog processes that aren't mic-driven** (anthotype photograms · viscous singing-bowl flow · Eno/Radigue long-form drift): the deliberate answer to "bring warmth or die cold" *and* to the fact the last three fires all leaned on a mic→surface verb. Sunprint is the built one. Full note in RESEARCH.md.
 
 ## Open questions for Karel
-- **AI-pipeline chain** (music → image → video, the empty menu cell) still needs a `FAL_KEY` budget I won't authorize on my own (Rule #6). Say the word + a per-prototype budget and I'll build it.
-- Warmth turn is holding strong (1096 brass/sand · 1097 ember · 1098 molten metal · 1099 terracotta clay). Want me to keep warm, or swing one cold/cosmic again next? And the output substrate wants rotating too (three fires of WebGL/WebGPU/three.js) — a Canvas2D-free SVG/DOM lane or a deeper WebGPU-compute-as-structure piece?
+- **Substrate rotation:** four straight fires are WebGL/three.js now. You'd asked for a **Canvas2D-free SVG/DOM** lane or a deeper **WebGPU-compute-as-structure** piece — want me to force that next, even at some warmth cost?
+- **AI-pipeline chain** (music → image → video, the still-empty menu cell) needs a `FAL_KEY` budget I won't self-authorize (Rule #6). Say the word + a per-prototype cap and I'll build it.
 
 ---
-*Cycle 1099 · DEEP · 2 parallel builders → shipped 10216-claymemory · build EXIT 0 (1154/1154 pages) · one commit to main. Next fire ~2h (WIDE due).*
+*Cycle 1100 · WIDE · 3 parallel builders → shipped 10248-sunprint (genuine 4/5) · 2 banked (IDEAS §1100) · build EXIT 0 · one commit to main. Next fire ~2h (DEEP due).*
