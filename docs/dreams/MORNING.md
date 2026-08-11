@@ -1,21 +1,19 @@
-# Morning digest — last updated 2026-08-11 ~12:30 UTC
+# Morning digest — last updated 2026-08-11 14:50 UTC
 
-> **Jury verdict today**: Competent and cold — two real standouts (the hands-in-a-binaural-room and the retinal-afterimage piece) float in a monochrome sea of just-intonation-on-a-dark-screen, and nobody cleared 4/5, so today's order is warmth, kill the JI reflex, and make one build actually ambitious. See `docs/dreams/JURY.md`.
-
-**Open this first (on a real screen, in a dimmish room):** [/dream/10056-skyoculus](https://getresonance.vercel.app/dream/10056-skyoculus) — **a James Turrell Skyspace reduced to one aperture.** You look up through a crisp-edged oculus at a near-flat plane of sky whose colour drifts pale-blue → silver → deep-slate over ~78 s. Watch the opening: as its brightness crosses a threshold it **stops reading as a hole and becomes a solid, self-luminous panel** hovering just above you, spilling light onto the chamber walls. That flip is the whole piece — and it happens on its own, no input needed. *(Enter the chamber to breathe with it via mic + tilt your phone to look up; but it performs untouched.)*
+**Cycle 1096 · WIDE · shipped `10088-resonograph`.** Your fresh 2026-08-11 jury said the lab had gone *cold* — 13 of 15 cosmic-void or clinical-white, just-intonation as a security blanket, Canvas2D 7×, nobody clearing 4/5. This fire is the direct answer: three unrelated **warm, sensor-driven, non-JI, non-Canvas2D** directions, and the winner is the one lane that genuinely swings 4/5.
 
 ## New since yesterday
-- **10056-skyoculus** (cycle 1095 **DEEP** winner). ONE ambitious concept — a breath-and-gaze-conducted Turrell Skyspace — raced 3 technical ways; this is the literal Turrell realization (an architectural oculus + hidden **opponent cove-light**, the trick that flattens sky into an advancing solid).
-  - *The idea, grounded:* it's built on a genuinely fresh finding — the **luminosity threshold** (Duay & Nagai, PLOS ONE, Mar 2026): the exact luminance where your visual system reclassifies a patch from "a lit surface" to "a light source." That perceptual flip *is* the Turrell effect, formalized — and here it's both **visible** (hole → solid panel) and **audible** (the drone's spectrum opens on the same beat).
-  - *Why it won its fire:* most faithful to the actual Skyspace; the flip reads even in a still frame with sound off (best for a muted phone glance); and it's the *conceptual-not-merely-pretty* pick — the two siblings were the glowing-GPU spectacle the jury asked me to rest.
+- **[10088-resonograph](https://getresonance.vercel.app/dream/10088-resonograph)** — **sing a shape into being.** Hold a pitch and ~42k grains of sand crawl across a vibrating brass plate and settle onto the exact **nodal lines** of that tone's standing wave (a virtual Chladni plate). Slide your pitch up → the figure reorganizes into a finer lattice; the plate answers in **inharmonic metal**, not a chord. *Why open this:* warm brass + sand, your **voice** drives it, and it's the first time WebGPU-compute in the lab does emergent **structure** instead of another glowing particle field. Best with a mic + headphones; no mic → it sings itself + a manual slider.
+- *2 more explored this fire (banked, not shipped — see IDEAS.md §1096):*
+  - **emberwell** ⭐⭐⭐ — breath-conducted **campfire** as a real GPU fluid+combustion sim (you breathe on the mic, the flames leap; coals crackle back). The strongest *warmth* of the three — first resurrect candidate.
+  - **rainvessel** ⭐⭐ — a **tilt-poured clay rainstick**: tip your phone and warm seeds tumble, every grain-strike a soft wooden click. Playful, tactile, mobile.
 
-## Also explored this fire (banked, not shipped — IDEAS §1095)
-- **10024-lightnave** ⭐⭐⭐ — a **breath-conducted cathedral of light** (three.js crossed light-shafts + bloom + dust + floor-pools, Turrell lineage): the richest, most *beautiful* of the three, benched only because it's the GPU "glowing field" look I'm resting this week. **Resurrect first** on a spectacular-GPU or installation slot — ideally with real head-tilt so you crane *up* into the shafts.
-- **10040-godsray** ⭐⭐ — the same light down an occluded nave, built the "proper" way: **screen-space god-rays** (a GPU-Gems-3 radial light-scatter post pass) streaking from a bright aperture, columns carving real gaps. A genuinely distinct rendering technique the lab hasn't used — a good seed for a future GPU cycle.
+## In progress / partial
+- None half-built. The two banked seeds are complete, clean, warm builds held back only because WIDE ships one — both are ready to resurrect whole.
 
-## Research worth a look (RESEARCH §1095)
-- **The luminosity threshold** (Duay & Nagai, PLOS ONE, 13 Mar 2026). There's a measurable luminance boundary where the brain flips a patch from "illuminated" to "self-luminous," judged against an internal reference of physically-possible surface colours. It's the causal spine of every Turrell light-space — and a knob we can now drive deliberately. Today's winner sits the sky-plane right on that line and pushes it across.
+## Research findings worth a look
+- **ChladniSonify** (arXiv:2605.09846, 2026-05-11) — a system that *recognizes* a live Chladni figure and maps it back to its driving frequency in real time via Kirchhoff–Love plate theory. Resonograph runs it **backwards** (voice → mode → figure). RESEARCH.md §1096 also banks two deepenings: a **two-plate cymatic duet** (consonance shown as geometric wave-beating, not a JI lattice) and **cymatic memory** (record a sung phrase, replay it as morphing sand).
 
-## Open questions for you (both standing)
-- **A fresh jury pass is overdue** (~57 cycles flagged). The 2026-08-10 provocations are essentially all cashed, and I can feel a *new* recipe forming (GPU light-space + inharmonic drone + numinous-cathedral). **Want me to run a new jury?**
-- The **AI-pipeline chain** (music → image → video) is still the biggest untouched category, but needs a `FAL_KEY` spend I won't authorize on your paid budget unilaterally. **Yes/no + a per-run budget?**
+## Open questions for Karel
+- Does the warmth land, or does it read as a novelty next to the cosmic/visionary body of work? (The jury explicitly asked for a whole cycle of *warm/organic/playful* — this is that cycle. Happy to keep the warmth turn going, or snap back to altered-states.)
+- Resonograph really wants a live device with a mic to feel it settle — worth a hands-on try rather than a muted glance.
