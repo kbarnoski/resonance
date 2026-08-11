@@ -1,19 +1,17 @@
-# Morning digest — last updated 2026-08-11 14:50 UTC
+# Morning digest — last updated 2026-08-11 ~16:40 UTC
 
-**Cycle 1096 · WIDE · shipped `10088-resonograph`.** Your fresh 2026-08-11 jury said the lab had gone *cold* — 13 of 15 cosmic-void or clinical-white, just-intonation as a security blanket, Canvas2D 7×, nobody clearing 4/5. This fire is the direct answer: three unrelated **warm, sensor-driven, non-JI, non-Canvas2D** directions, and the winner is the one lane that genuinely swings 4/5.
+Cycle 1097 · **DEEP** (one concept, 2 solver approaches → shipped 1) · warm on purpose.
 
 ## New since yesterday
-- **[10088-resonograph](https://getresonance.vercel.app/dream/10088-resonograph)** — **sing a shape into being.** Hold a pitch and ~42k grains of sand crawl across a vibrating brass plate and settle onto the exact **nodal lines** of that tone's standing wave (a virtual Chladni plate). Slide your pitch up → the figure reorganizes into a finer lattice; the plate answers in **inharmonic metal**, not a chord. *Why open this:* warm brass + sand, your **voice** drives it, and it's the first time WebGPU-compute in the lab does emergent **structure** instead of another glowing particle field. Best with a mic + headphones; no mic → it sings itself + a manual slider.
-- *2 more explored this fire (banked, not shipped — see IDEAS.md §1096):*
-  - **emberwell** ⭐⭐⭐ — breath-conducted **campfire** as a real GPU fluid+combustion sim (you breathe on the mic, the flames leap; coals crackle back). The strongest *warmth* of the three — first resurrect candidate.
-  - **rainvessel** ⭐⭐ — a **tilt-poured clay rainstick**: tip your phone and warm seeds tumble, every grain-strike a soft wooden click. Playful, tactile, mobile.
+- **[10120-hearthbreath](https://getresonance.vercel.app/dream/10120-hearthbreath)** — **a hearth you keep alive with your own breath.** Press "Light the hearth", then breathe near the mic: the bed of coals is a real **combustion-front cellular automaton** (Drossel–Schwabl forest-fire model) on a WebGPU compute grid — exhale and the fire-front travels and roars, fall silent and the coals cool to grey ash. *Feed it or lose it.* Why open this: it's the **warmth** the jury demanded, it's WebGPU doing **structure not bloom** (a spreading/dying burn-front, not a glowing particle field), the sound is all **inharmonic crackle** (zero just-intonation), and it's a genuine **5/5 ambition** build — the first real forest-fire/percolation CA in the lab.
 
 ## In progress / partial
-- None half-built. The two banked seeds are complete, clean, warm builds held back only because WIDE ships one — both are ready to resurrect whole.
+- **10136-emberchoir** (the DEEP runner-up, built clean, not shipped) — the same hearth as ~40k individual **ember agents** passing heat coal-to-coal (a travelling ignition wave through a swarm) instead of a grid. Banked ⭐⭐⭐ in IDEAS §1097 — the discrete-coal companion, or a cycle-2 that lets you toggle grid↔agent solvers of the same fire.
+- **hearthbreath** is deliberately multi-cycle: cycle-2 = spatialized wind + a longer "let it die and rekindle" arc with memory + a deeper record/replay.
 
 ## Research findings worth a look
-- **ChladniSonify** (arXiv:2605.09846, 2026-05-11) — a system that *recognizes* a live Chladni figure and maps it back to its driving frequency in real time via Kirchhoff–Love plate theory. Resonograph runs it **backwards** (voice → mode → figure). RESEARCH.md §1096 also banks two deepenings: a **two-plate cymatic duet** (consonance shown as geometric wave-beating, not a JI lattice) and **cymatic memory** (record a sung phrase, replay it as morphing sand).
+- **§1097** — WebGPU compute has quietly become the browser's *simulation-as-structure* substrate (Sharma, May 2026; ShaderVine ships 16 WGSL compute sims). The lab's only two GPU-compute pieces were both glowing nebulas — this cycle points compute at a physical **combustion front** instead. Chained straight into today's build.
 
 ## Open questions for Karel
-- Does the warmth land, or does it read as a novelty next to the cosmic/visionary body of work? (The jury explicitly asked for a whole cycle of *warm/organic/playful* — this is that cycle. Happy to keep the warmth turn going, or snap back to altered-states.)
-- Resonograph really wants a live device with a mic to feel it settle — worth a hands-on try rather than a muted glance.
+- Does breath-as-oxygen land on your device's mic, or does it default to the pointer/auto bellows? (The ladder is mic → pointer → self-tending ghost breath, so it's alive on load regardless.)
+- Warm/ritual register vs. the recent cold sea — more of this? And do you want the **agent-embers** twin (10136) shipped as its own piece next?
