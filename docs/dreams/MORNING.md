@@ -1,17 +1,19 @@
-# Morning digest — last updated 2026-08-11 ~16:40 UTC
-
-Cycle 1097 · **DEEP** (one concept, 2 solver approaches → shipped 1) · warm on purpose.
+# Morning digest — last updated 2026-08-11 ~18:40 UTC (cycle 1098)
 
 ## New since yesterday
-- **[10120-hearthbreath](https://getresonance.vercel.app/dream/10120-hearthbreath)** — **a hearth you keep alive with your own breath.** Press "Light the hearth", then breathe near the mic: the bed of coals is a real **combustion-front cellular automaton** (Drossel–Schwabl forest-fire model) on a WebGPU compute grid — exhale and the fire-front travels and roars, fall silent and the coals cool to grey ash. *Feed it or lose it.* Why open this: it's the **warmth** the jury demanded, it's WebGPU doing **structure not bloom** (a spreading/dying burn-front, not a glowing particle field), the sound is all **inharmonic crackle** (zero just-intonation), and it's a genuine **5/5 ambition** build — the first real forest-fire/percolation CA in the lab.
+- **`10184-ferrobloom`** — /dream/10184-ferrobloom — **sing and your voice becomes a magnet.** A flat mirror-pool of ferrofluid destabilises under the pull of your own sound and self-organises into a hexagonal lattice of molten metal spikes that ripple, peak, and ring in inharmonic bell-metal. Louder crosses the critical field (more/taller spikes); a brighter voice packs them finer. **Why open this:** it's the cycle's genuine **4/5** and it answers your jury on every axis at once — warm molten metal (not the cold sea), the GPU doing **structure not bloom** (a real Rosensweig instability, not a glow), inharmonic metal (not the just-intonation reflex), and your **voice** in the driver's seat. Best with headphones + mic granted; muted phone still shows spikes rising on a seeded breathing LFO.
 
 ## In progress / partial
-- **10136-emberchoir** (the DEEP runner-up, built clean, not shipped) — the same hearth as ~40k individual **ember agents** passing heat coal-to-coal (a travelling ignition wave through a swarm) instead of a grid. Banked ⭐⭐⭐ in IDEAS §1097 — the discrete-coal companion, or a cycle-2 that lets you toggle grid↔agent solvers of the same fire.
-- **hearthbreath** is deliberately multi-cycle: cycle-2 = spatialized wind + a longer "let it die and rekindle" arc with memory + a deeper record/replay.
+- WIDE fire built 3, shipped 1. Both runners-up banked (IDEAS §1098), demoable + clean, never committed:
+  - ⭐⭐⭐ **`10152-handclay`** — MediaPipe **hands knead a warm terracotta clay** (mass-spring/Verlet soft body) that squelches in inharmonic granular sound. Resurrect FIRST — it's the **camera** lane (rotates us off mic; last 3 ships were all mic-driven).
+  - ⭐⭐ **`10168-scriptorium`** — the **live Wikipedia edit stream** as gold-leaf blooming on one illuminated manuscript, sonified as a whole-tone organ. The starved real-data/conceptual cell, warm and communal.
 
 ## Research findings worth a look
-- **§1097** — WebGPU compute has quietly become the browser's *simulation-as-structure* substrate (Sharma, May 2026; ShaderVine ships 16 WGSL compute sims). The lab's only two GPU-compute pieces were both glowing nebulas — this cycle points compute at a physical **combustion front** instead. Chained straight into today's build.
+- **§1098 — the Rosensweig (normal-field) ferrofluid instability** (Cowley & Rosensweig 1967; Robert Leitl's WebGL ferrofluid): a magnetic pool self-organises into a hexagonal spike lattice — a warm, metallic, inharmonic sound↔structure surface. Chained straight into today's winner. Full note in RESEARCH.md.
 
 ## Open questions for Karel
-- Does breath-as-oxygen land on your device's mic, or does it default to the pointer/auto bellows? (The ladder is mic → pointer → self-tending ghost breath, so it's alive on load regardless.)
-- Warm/ritual register vs. the recent cold sea — more of this? And do you want the **agent-embers** twin (10136) shipped as its own piece next?
+- **AI-pipeline chain** (music → image → video, the empty menu cell) still needs a `FAL_KEY` budget I won't authorize on my own (Rule #6). Say the word and a per-prototype budget, and I'll build it.
+- Warmth turn is holding (1096 brass/sand, 1097 ember, 1098 molten metal). Want me to keep warm, or swing one cold/cosmic again next?
+
+---
+*Cycle 1098 · WIDE · 3 parallel builders → shipped 10184-ferrobloom · build EXIT 0 · one commit to main. Next fire ~2h (DEEP due).*
