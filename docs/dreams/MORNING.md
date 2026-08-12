@@ -1,50 +1,46 @@
-# Morning digest — last updated 2026-08-12 UTC (cycle 1109)
+# Morning digest — last updated 2026-08-12 UTC (cycle 1110)
 
-Reviewing on your phone? Open the lab, tap the newest tile, glance — everything
-self-performs muted within ~1 s. This one is best with **sound on** and a few
-minutes — it's a long-form passage that changes as it goes.
+Reviewing on your phone? Open the lab, tap the newest tile, glance — it
+self-performs muted within ~1 s. This one is a hard turn away from the cosmic
+void: it's **communal sacred singing**, a warm human register the lab has never
+touched.
 
 ## New since yesterday
-- **`/dream/10712-thresholdway`** — *THRESHOLD: descend a near-death passage.*
-  Press Start and **hold anywhere** to surrender — you fall down an endless tunnel
-  toward a light, a Shepard-tone drone pulling you forever downward. **Type** and
-  your words hang in the tunnel behind you, receding into the dark (a re-readable
-  transcript of your descent). It moves through **five phases** — dissolution →
-  the tunnel → approaching the light → the clear-light **ganzfeld bloom** →
-  boundless void — so minute 5 is unlike minute 1. *Why open it:* this is the
-  **DEEP #4** you asked about last night — I resurrected the NDE tunnel
-  (`10680-thresholds`) and built it out into a real long-form piece with state and
-  memory. Pure **CSS-3D**, no canvas/WebGL. James Turrell *Ganzfeld* + Shepard.
+- **`/dream/10760-fasola`** — *Raise the hollow square.* A **Sacred Harp /
+  shape-note singing school**: a hymn steps across a staff as the four classic
+  shapes — **fa △, sol ○, la ▭, mi ◇** — while a violet playhead lights each
+  note and the four vocal parts (treble/alto/tenor/bass) fill in around a
+  **hollow-square** emblem. Tap a section (or keys 1–4) to raise each part
+  yourself until the whole square is ringing in the tradition's raw **open**
+  harmony of bare fifths and octaves. *Why open it:* it's the lab's **first**
+  Sacred Harp piece in 1060 prototypes — a genuine grep-0 first (the thing the
+  jury kept asking me to actually claim instead of bunting), and the freshest
+  register in weeks. Best with **sound on** to hear the hollow open voicing.
 
-## Also explored tonight (DEEP — 1 concept, 3 substrates, 1 shipped, 2 banked)
-- **`10744-cleardescent`** ⭐⭐⭐ *(banked — resurrect first, best with sound on)* —
-  the **most immersive** version: the same descent as a real **three.js** 3D
-  tunnel (44 rings marching toward an emissive light, a mote-void around you).
-  Genuinely feels like falling. Lost only on the jury's "rest the GPU" order.
-- **`10728-lightpassage`** ⭐⭐ *(banked)* — the same passage in crisp **SVG-DOM**
-  vector light. Clean, but SVG is over-used lately and it reads flattest muted.
+## Also explored tonight (WIDE — 3 absent registers, 1 shipped, 2 banked)
+- **`10776-tradefour`** ⭐⭐⭐ *(banked — jazz, best with sound on)* — **trade
+  fours with a bebop ghost**: play 4 bars, it answers 4 bars over live ii–V–I +
+  a swung walking bass. Real Barry-Harris bebop lines. Lost only for having no
+  genuine first — the jazz register is the win; resurrect on a sound-on slot.
+- **`10792-glowreef`** ⭐⭐⭐ *(banked — camera)* — move in the dark and a **deep-sea
+  bioluminescent reef unfurls *toward* your motion** (Vogel phyllotaxis in the
+  pure CSS compositor, verdant blue→jade→chartreuse). Anchored on 2026 deep-Pacific
+  bioluminescence finds. Resurrect on a camera/verdant slot.
 
 ## Why this shape tonight
-Next fire was DEEP, and the jury told me to "make the next DEEP claim a real #1
-or #4 — stop bunting the firsts." Honest finding: **none of the named "firsts"
-survive** at 10,700+ prototypes (body-tracking 44 files, spatial audio 69, WebRTC
-17). So I did what the jury praised `ferrobloom` for — **declined a fake #1 and
-claimed a genuine #4** (a multi-cycle, ≥4-subsystem, long-form piece) instead of
-inflating the score. It's the near-death/dissolution register — squarely on the
-visionary primary direction — and off every live ban (CSS-3D not the WebGL2 quad ·
-phased descent not a physics sim · cosmic-void→white not warm-molten · hold+type
-not mic/tilt).
-
-## Safety note
-Real Turrell ganzfelds strobe; this one **never does** — every whole-field
-brightness change is a slow multi-second drift, well under 3 Hz.
+The 2026-08-12 jury was ban-heavy (kill the physics-sim family, the ember
+palette, the WebGL2 quad; rotate the *whole* palette; name the absent registers
+**jazz / verdant / playful**). That's a "go WIDE with fresh tags" order, so I
+raced one lane into each absent register. **fasola won because it's the only one
+carrying a real #1** — and it drags the lab out of the void into something warm
+and human. Off every live ban (SVG-DOM not the quad · shape-note part-writing not
+a sim · parchment-ink not molten · pointer/keyboard not mic/tilt).
 
 ## Open questions for you
-- **Cycle-2 for `10712`?** The declared next step is to make **your real Path
-  piano the carrier wave** of the descent (via `/api/audio/[id]`) and add a
-  breath-paced pacer + a "look back / re-read your whole descent" return arc.
-  Want that, or should I resurrect `10744-cleardescent` (the immersive three.js
-  version) on a sound-on slot first?
-- **The standing "sound-on review slot"** still stands — `10712`, `10744`,
-  `10616-lumia`, and `hammermill` are all built to be *heard*, and the muted
-  06:30 review keeps under-selling them. Want a moment to listen at a real device?
+- **Cycle-2 for `10760`?** The honest next step (a declared multi-cycle #4 for
+  the next DEEP fire): real **fuging-tune entries** + **sing the shapes back**
+  via mic pitch-detection (sight-singing you can actually do). Want that, or a
+  different deepening?
+- **The standing "sound-on review slot"** still holds — `10760`, `10776`,
+  `10616-lumia`, `10712` are all built to be *heard*, and the muted 06:30 review
+  keeps under-selling them. A minute at a real device would change the ranking.
