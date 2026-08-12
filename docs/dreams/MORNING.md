@@ -1,23 +1,20 @@
-# Morning digest — last updated 2026-08-12 (cycle 1105)
+# Morning digest — last updated 2026-08-12 (cycle 1106)
 
-**Open this first:** [/dream/10536-inkmirror](https://getresonance.vercel.app/dream/10536-inkmirror)
+**Open this first:** [/dream/10568-thrumline](https://getresonance.vercel.app/dream/10568-thrumline)
 
-## New since yesterday — cycle 1105 (DEEP, 3 approaches → 1 shipped)
-- **[10536-inkmirror](https://getresonance.vercel.app/dream/10536-inkmirror)** — **a mirror that draws you as a living illuminated manuscript.** Point your camera and your silhouette is traced in **self-writing gold-ink calligraphy on vellum**, and every stroke it lays plucks a warm gut-string voice — you're re-drawn as an illuminated figure that *sounds as it's written*.
-  - *Why open it:* it reads **perfectly with sound off and camera denied** — on load a seeded breathing ghost auto-draws in gold within a heartbeat, badged `auto`. Then grant the front camera and it writes **you**. This is the warm/ritual register the last jury said the lab had forgotten — gold, ultramarine, vermilion on cream, a real multi-hue break from the "monochrome sea."
-  - Research-chained to today's finding: **Daito Manabe & Kyle McDonald's *Transformirror*** — a mirror that transforms visitors and generates music from the transformation. inkmirror is the "illuminated-manuscript" take on that idea.
-  - *One honest limit:* the silhouette is a stylised radial outline (deep concavities get smoothed) — intentional-looking for the manuscript aesthetic; a truer edge-trace is the natural cycle-2.
-- **2 more explored, banked to IDEAS §1105:** ⭐⭐⭐ `10552-echomirror` (a mirror that multiplies you into a **canon of your past selves** — jewel-tinted delayed copies, each singing its own voice; strongest long-form build, resurrect first on a movement slot) · ⭐⭐ `10520-slitmirror` (a **slit-scan time-mirror** — stretch your movement across time into a woven tapestry that sings a canon).
+## New since yesterday — cycle 1106 (WIDE, 3 lanes → 1 shipped)
+- **[10568-thrumline](https://getresonance.vercel.app/dream/10568-thrumline)** — **the world's live Wikipedia edits as a re-performable planetary carillon.** Every edit being made to every Wikipedia on Earth, *right now*, arrives as a struck bell on a rotating 90-second clock: angle = when it landed, radius = how big the edit was, hue = which language, human vs bot = two different bell voices. Then **scrub the sweep-hand backward** to re-sound the last 90 seconds — a live global feed you can actually play.
+  - *Why open it:* it reads **with sound off and nothing granted** — press Start and the clock turns and bells bloom on their own; if the live stream can't reach you it falls to a seeded synthetic feed within a second, so it's never blank or silent. This is the **live external-data** direction the last jury said the lab was starved for (its emptiest cell) — music *about something other than music*.
+  - Named ref: **Hatnote's *Listen to Wikipedia*** (2013); thrumline adds the rotating-clock score + the re-performable scrub. Research-chained to today's finding (live data → music: Manifest Audio / DataToMusic; RESEARCH §1106).
+  - This is the cycle's honest **4/5** — the "one genuinely ambitious build" the last jury demanded (≥3 subsystems + named ref + a declared multi-cycle plan + fresh research), without faking a novel-technique claim.
+
+## 2 more explored, banked to IDEAS §1106
+- ⭐⭐⭐ **`10584-clavilux`** — play a **MIDI** keyboard and it renders **Thomas Wilfred's silent "visual music"** (his 1919 Clavilux color-organ) in **pure CSS** — no canvas, no WebGL; each note a slow-drifting colored light, chords blending like real light. *Resurrect first on a MIDI / "sound-on" slot — it's the best fit for you at a real keyboard.*
+- ⭐⭐ **`10600-phasebloom`** — **drop any track** and see its hidden geometry: Takens delay-embedding unfolds the waveform into a rotating 3-D attractor whose repeats light up; brush a region to re-hear that moment. *Resurrect on an audio-analysis slot; can be seeded from your Path tracks.*
 
 ## Why this one (the gate it cleared)
-- The last 10 ships were **~6 physical simulations** in a row — so this cycle *banned* physics-sim and went to a **non-physics camera image-transform** instead. First mirror-as-instrument verb in the lab (10,500+ prototypes).
-
-## Research finding worth a look
-- **Transformirror** (Daito Manabe & Kyle McDonald, Rhizomatiks) + **"A Design Space for Live Music Agents"** ([arXiv:2602.05064](https://arxiv.org/pdf/2602.05064), Feb 2026). The ungrepped move for the lab was the **mirror-as-instrument** — the transformation of your image *is* the composition. Full note in RESEARCH.md §1105.
+- The 3 real body sensors the last jury liked (camera/mic/tilt) are now each **3× in the last 10 ships** — so all three lanes this cycle took genuinely **fresh inputs** off that axis (live-data / MIDI / audio-file), on three different thin outputs (SVG / pure-CSS / WebGL2), all off the warm AND cold palettes the audits have closed.
 
 ## Open questions for you (standing — need your call)
-- **A "sound-on" review slot?** Rhythm-first pieces keep losing curation because a muted 06:30 phone can't hear them — ⭐⭐⭐ `10456-hammermill` (§1103) and `10408-polymeter` (§1102) are the best sound pieces still banked for exactly this reason.
+- **A "sound-on" review slot?** Sound-first pieces keep losing curation to the muted 06:30 phone — ⭐⭐⭐ `10584-clavilux` (today), `10456-hammermill` (§1103), `10408-polymeter` (§1102) are all best-heard, still banked for exactly this reason.
 - **AI-pipeline chain** (music → image → video) — still the emptiest menu category; needs a `FAL_KEY` budget yes/no from you to build or strike.
-
-## Next fire
-WIDE is due (ledger 1103 D · 1104 W · 1105 D → 1106 W). Natural cycle-2 for inkmirror: a true marching-squares edge-trace + a second pen for two-voice counterpoint + keep the finished illuminated page.
