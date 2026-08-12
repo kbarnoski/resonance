@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-08-11 ~22:40 UTC (cycle 1100)
+# Morning digest — last updated 2026-08-12 UTC (cycle 1101)
 
 ## New since yesterday
-- **`10248-sunprint`** — /dream/10248-sunprint — **point your camera at the world and it develops into a warm photogram that sings.** It's a sped-up 19th-century **anthotype**: bright light *bleaches* a plate of crushed-flower dye while shadows stay saturated, so the room prints itself in marigold/oxblood over ~30 s. The print has **memory** — it only ever develops, never un-develops (only "Re-coat plate" restores the dye) — and it *sings*: while you sweep the camera the shimmer is dense, and as the image settles it thins to sparse mallet rings over a warm wood drone. **Why open this:** it's your jury's demand answered head-on — a **genuine 4/5** ambition build (a technique the lab has literally never used, camera in the driver's seat, real named lineage — Somerville 1842 / Anna Atkins 1843, fresh research), and it's warm/organic, not another beautiful cold field. Best with a webcam + a lamp or window; a denied/muted phone still watches a seeded light-source develop the plate and hears it, badged.
+- **`10312-emberflux`** — /dream/10312-emberflux — **tilt your phone and conduct a molten surface as it BOILS.** It's a real **Rayleigh–Bénard convection** layer — the same physics as the Sun's surface and a pot of miso — self-organizing into a honeycomb of overturning cells: molten copper plumes rise, cool oxblood lanes sink, and the whole surface keeps reorganizing (minute 5 ≠ minute 1). Each plume that punches through **rings an inharmonic struck-metal chime**. **Why open this:** it's the substrate rotation you asked for at 06:30 yesterday — after four straight WebGL/three.js fires, this is a genuine **WebGPU-compute** piece pointed at *simulation-as-structure* (a real fluid solver — advection + buoyancy + Poisson projection — not a glowing particle bloom), and it stays warm. Best on a phone you can tilt; a muted/no-tilt review still watches the seeded auto-conductor form and reorganize cells within ~1 s (audio waits for the first tap). Headless caveat: WebGPU is untestable here, so the guaranteed renderer is the WebGL2 fallback — the WebGPU path wants your device.
 
 ## In progress / partial
-- WIDE fire explored **3 warm lanes**, shipped 1. The two runners-up are banked demoable (IDEAS §1100), never committed:
-  - ⭐⭐⭐ **`10264-honeyfall`** — **tilt** your phone to pour a slow river of warm honey that **rings like a singing bowl** where it pools (a real viscous thin-film sim + inharmonic bowl partials). The freshest *input* we've had in a while — resurrect this to rotate off camera/mic.
-  - ⭐⭐ **`10280-slowsun`** — a **7-minute warm sundown that never repeats** (long-form, real layer-memory — Eno/Radigue). Fills the starved long-form cell; wants a real sensor in the driver's seat before it ships.
+- DEEP fire raced **ONE concept — "conduct a warm convective surface that reorganizes and sings"** — across 3 genuinely different realizations, shipped 1. Two runners-up banked demoable (IDEAS §1101), never committed:
+  - ⭐⭐⭐ **`10328-solarskin`** — tilt and watch the **SUN'S OWN SURFACE breathe**: solar granulation as a living Voronoi froth, cells born → merging → subducting at the dark lanes. The strongest *concept* of the fire ("this is literally the photosphere") — resurrect first on a cosmic slot.
+  - ⭐⭐ **`10344-magmacrust`** — a cooling **basalt crust that CRACKS** along the hidden convection cells, molten light glowing up through the fractures. The most tactile image — resurrect on a warm/ritual slot.
 
 ## Research findings worth a look
-- **§1100 — three warm analog processes that aren't mic-driven** (anthotype photograms · viscous singing-bowl flow · Eno/Radigue long-form drift): the deliberate answer to "bring warmth or die cold" *and* to the fact the last three fires all leaned on a mic→surface verb. Sunprint is the built one. Full note in RESEARCH.md.
+- **§1101 — convection is the one self-organizing pattern the lab had never simulated**, and it's simultaneously *cosmic* (the Sun's granulation) and *warm-domestic* (miso, lava, a hot pan). Grounded in Rayleigh–Bénard (Bénard 1900 / Rayleigh 1916) + Stein & Nordlund's solar-granulation sims (ApJ 1998); fresh live-web confirmation it runs in-browser now (mysimulator.uk RB sim updated June 2026, FluidX3D GPU RB, the ShaderVine 2026 WebGPU compute-sim editor). Full note in RESEARCH.md.
 
 ## Open questions for Karel
-- **Substrate rotation:** four straight fires are WebGL/three.js now. You'd asked for a **Canvas2D-free SVG/DOM** lane or a deeper **WebGPU-compute-as-structure** piece — want me to force that next, even at some warmth cost?
-- **AI-pipeline chain** (music → image → video, the still-empty menu cell) needs a `FAL_KEY` budget I won't self-authorize (Rule #6). Say the word + a per-prototype cap and I'll build it.
+- **Substrate rotation — done.** This is your requested WebGPU-compute piece. The two still-open thin substrates are **SVG/DOM** (your other option) and **audio-only** (jury 0×) — want one of those forced next?
+- **Warmth watch:** this is the **4th straight warm fire**. Warmth was the jury's #1 order and is well-answered now — say the word if you want me to rotate back toward a cool/other pole.
+- **AI-pipeline chain** (music → image → video, the still-empty menu cell) needs a `FAL_KEY` budget I won't self-authorize (Rule #6). Give a per-prototype cap and I'll build it.
 
 ---
-*Cycle 1100 · WIDE · 3 parallel builders → shipped 10248-sunprint (genuine 4/5) · 2 banked (IDEAS §1100) · build EXIT 0 · one commit to main. Next fire ~2h (DEEP due).*
+*Cycle 1101 · DEEP · 3 parallel builders → shipped 10312-emberflux (WebGPU-compute Rayleigh–Bénard convection, honest 3/5) · 2 banked (IDEAS §1101) · build EXIT 0 · one commit to main. Next fire ~2h (WIDE due).*
