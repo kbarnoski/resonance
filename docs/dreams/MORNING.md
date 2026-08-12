@@ -1,23 +1,44 @@
-# Morning digest — last updated 2026-08-12 (cycle 1107)
+# Morning digest — last updated 2026-08-12 UTC (cycle 1108)
 
-> **Jury verdict today**: Two real standouts (resonograph, ferrobloom), but the lab fixed "too cold" by going all-molten and quietly became a physics-sim shop — 6 sims, 6 warm palettes, 9 of 15 clearing the floor on the two cheapest criteria; ban the sim family and the ember palette, and make the next DEEP claim a genuine first instead of another dead-inventor name-drop. See `docs/dreams/JURY.md`.
+Reviewing on your phone? Open the lab, tap the newest tile, glance — everything
+self-performs muted within ~1 s.
 
-**Open this first:** [/dream/10616-lumia](https://getresonance.vercel.app/dream/10616-lumia)
+## New since yesterday
+- **`/dream/10664-testfield`** — *SCAN THE DATA WALL.* Drag a red scan-head across
+  a stark **black-white-red** field of pure 1-bit data and **hear** its
+  bit-structure: each lit bit rings a sine partial + a click at the leading edge.
+  A Floyd–Steinberg-dithered 128×64 data wall, variable bit-depth (1/2/4), pure
+  **SVG-DOM** (no canvas, no WebGL). *Why open it:* the lab has been a warm-molten
+  physics-sim monoculture for two weeks — this is the hard cut out of it. Stark
+  high-contrast Ikeda "data sublime," the exact palette the jury asked us to
+  rotate into. Ryoji Ikeda *test pattern* / *datamatics*.
 
-## New since yesterday — cycle 1107 (DEEP, one concept × 3 renderers → 1 shipped)
-- **[10616-lumia](https://getresonance.vercel.app/dream/10616-lumia)** — **play LIGHT itself.** A MIDI keyboard drives Thomas Wilfred's *Lumia* visual music: each note blooms a drifting colored light, chords blend like stained glass, and the **sustain pedal freezes** what you play into standing "super-forms" that don't fade — they accumulate and slowly recompose, so over minutes the screen builds a **living stained-glass cathedral of your performance** (minute 5 looks nothing like minute 1).
-  - *Why open it:* it's the **warmth** the last jury demanded — a jewel/stained-glass palette, not another cold screen — and it's **your** instrument: sit at a MIDI keyboard and it plays you (velocity → brightness, pedal-depth → how much light freezes). No device? A seeded auto-performer starts ~0.3s after Start and works the pedal itself, so the cathedral builds **on a muted phone with nothing plugged in.**
-  - Built in the **pure CSS/DOM compositor** — no canvas, no WebGL (the substrate the jury praised via `9992-afterimage`). Pitches are plain 12-TET — **no just-intonation** (the jury said kill the JI reflex).
-  - This is the cycle's honest **4/5** (≥4 subsystems + named ref + a declared multi-cycle plan + fresh research), and it's the **MIDI / "sound-on" slot** you've had flagged — finally cashed, designed so it *also* wins the muted review.
-  - Named ref: **Thomas Wilfred's *Clavilux* / "Lumia"** (1919) + Payling's Lumia-factors. Research-chained (color-music revival "Color Songs" July 2026 + continuous sustain-pedal-depth as gesture; RESEARCH §1107).
+## Also explored tonight (WIDE — 3 lanes, 1 shipped, 2 banked)
+- **`10680-thresholds`** ⭐⭐⭐ *(banked — resurrect first, best with sound on)* —
+  **type words to descend the near-death tunnel-to-light.** Pure CSS-3D corridor
+  of luminous rings rushing toward a Turrell ganzfeld bloom; your typed letters
+  freeze as glyphs in the dark behind you; a Shepard-tone drone pulls you forward.
+  The freshest concept of the fire — lost only because its magic is *heard*, not
+  seen on a muted phone. Worth a listen at a real keyboard.
+- **`10696-abyssbloom`** ⭐⭐ *(banked)* — move in front of the camera and grow a
+  **verdant bioluminescent** deep-abyss bloom: thousands of three.js light-points
+  unfurling along a golden-angle phyllotactic spiral.
 
-## 2 more explored, banked to IDEAS §1107
-- ⭐⭐⭐ **`10648-lightwell`** — the **same instrument in raw WebGL2** as true emissive light with feedback-buffer trails: the most physically-luminous of the three. *Resurrect first when a GPU / "sound-on" slot is open.*
-- ⭐⭐ **`10632-glasswork`** — the same instrument in **inline SVG** as literal leaded stained-glass panes. *Resurrect when SVG output isn't recently over-used.*
+## Why this shape tonight
+The 2026-08-12 jury called the lab a monoculture (warm-molten 6×, physics-sim
+family 6×, WebGL2-quad 6–8× in the last 15) and ordered a break with fresh tags.
+So: WIDE, three unrelated lanes each landing one of the **three palettes the jury
+named absent** — Ikeda B/W/red · near-death tunnel-to-light · verdant
+bioluminescent — on three fresh inputs (pointer/keyboard/camera) and three thin
+outputs (SVG-DOM / CSS-3D / three.js-points, no fragment-quad).
 
-## Why this one (the gate it cleared)
-- DEEP raced ONE concept across 3 renderers; I shipped the **CSS-compositor** version because it's the **freshest thin output** (SVG-DOM was just used 2× in `10568`/`10472`, GPU ~5–6×) and the substrate the jury liked — while `10648`/`10632` were banked as the richer-light / more-literal-glass versions to bring back later.
+## Honest note
+The Ikeda 1-bit palette wasn't truly "grep-0" — `9720-testcard` (cycle 1088) did
+it once. The winner is a genuinely different verb on it (drag-to-scan a data field
+→ sound, vs the old tone→barcode), so it's an honest 2/5 build, not a novel-first.
 
-## Open questions for you (standing — need your call)
-- The **"sound-on" review slot** is now partly answered — 10616 is built to win muted *and* reward a real keyboard — but ⭐⭐⭐ `10648-lightwell` (today) + `10456-hammermill` still wait for a genuinely *heard* review. Worth a listen at your desk?
-- **AI-pipeline chain** (music → image → video) — still the emptiest menu cell; needs a `FAL_KEY` budget yes/no to build or strike.
+## Open question for you
+- Next fire is DEEP. The real never-built firsts on the bench are **multi-user /
+  WebRTC** (two people in one shared piece — 0× in 15+ cycles) and an **embodied
+  body-tracking → spatial-audio room.** Want me to finally take one of those on,
+  or resurrect `10680-thresholds` (the NDE tunnel) into a full sound-on piece?
