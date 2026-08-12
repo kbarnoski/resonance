@@ -1,44 +1,50 @@
-# Morning digest — last updated 2026-08-12 UTC (cycle 1108)
+# Morning digest — last updated 2026-08-12 UTC (cycle 1109)
 
 Reviewing on your phone? Open the lab, tap the newest tile, glance — everything
-self-performs muted within ~1 s.
+self-performs muted within ~1 s. This one is best with **sound on** and a few
+minutes — it's a long-form passage that changes as it goes.
 
 ## New since yesterday
-- **`/dream/10664-testfield`** — *SCAN THE DATA WALL.* Drag a red scan-head across
-  a stark **black-white-red** field of pure 1-bit data and **hear** its
-  bit-structure: each lit bit rings a sine partial + a click at the leading edge.
-  A Floyd–Steinberg-dithered 128×64 data wall, variable bit-depth (1/2/4), pure
-  **SVG-DOM** (no canvas, no WebGL). *Why open it:* the lab has been a warm-molten
-  physics-sim monoculture for two weeks — this is the hard cut out of it. Stark
-  high-contrast Ikeda "data sublime," the exact palette the jury asked us to
-  rotate into. Ryoji Ikeda *test pattern* / *datamatics*.
+- **`/dream/10712-thresholdway`** — *THRESHOLD: descend a near-death passage.*
+  Press Start and **hold anywhere** to surrender — you fall down an endless tunnel
+  toward a light, a Shepard-tone drone pulling you forever downward. **Type** and
+  your words hang in the tunnel behind you, receding into the dark (a re-readable
+  transcript of your descent). It moves through **five phases** — dissolution →
+  the tunnel → approaching the light → the clear-light **ganzfeld bloom** →
+  boundless void — so minute 5 is unlike minute 1. *Why open it:* this is the
+  **DEEP #4** you asked about last night — I resurrected the NDE tunnel
+  (`10680-thresholds`) and built it out into a real long-form piece with state and
+  memory. Pure **CSS-3D**, no canvas/WebGL. James Turrell *Ganzfeld* + Shepard.
 
-## Also explored tonight (WIDE — 3 lanes, 1 shipped, 2 banked)
-- **`10680-thresholds`** ⭐⭐⭐ *(banked — resurrect first, best with sound on)* —
-  **type words to descend the near-death tunnel-to-light.** Pure CSS-3D corridor
-  of luminous rings rushing toward a Turrell ganzfeld bloom; your typed letters
-  freeze as glyphs in the dark behind you; a Shepard-tone drone pulls you forward.
-  The freshest concept of the fire — lost only because its magic is *heard*, not
-  seen on a muted phone. Worth a listen at a real keyboard.
-- **`10696-abyssbloom`** ⭐⭐ *(banked)* — move in front of the camera and grow a
-  **verdant bioluminescent** deep-abyss bloom: thousands of three.js light-points
-  unfurling along a golden-angle phyllotactic spiral.
+## Also explored tonight (DEEP — 1 concept, 3 substrates, 1 shipped, 2 banked)
+- **`10744-cleardescent`** ⭐⭐⭐ *(banked — resurrect first, best with sound on)* —
+  the **most immersive** version: the same descent as a real **three.js** 3D
+  tunnel (44 rings marching toward an emissive light, a mote-void around you).
+  Genuinely feels like falling. Lost only on the jury's "rest the GPU" order.
+- **`10728-lightpassage`** ⭐⭐ *(banked)* — the same passage in crisp **SVG-DOM**
+  vector light. Clean, but SVG is over-used lately and it reads flattest muted.
 
 ## Why this shape tonight
-The 2026-08-12 jury called the lab a monoculture (warm-molten 6×, physics-sim
-family 6×, WebGL2-quad 6–8× in the last 15) and ordered a break with fresh tags.
-So: WIDE, three unrelated lanes each landing one of the **three palettes the jury
-named absent** — Ikeda B/W/red · near-death tunnel-to-light · verdant
-bioluminescent — on three fresh inputs (pointer/keyboard/camera) and three thin
-outputs (SVG-DOM / CSS-3D / three.js-points, no fragment-quad).
+Next fire was DEEP, and the jury told me to "make the next DEEP claim a real #1
+or #4 — stop bunting the firsts." Honest finding: **none of the named "firsts"
+survive** at 10,700+ prototypes (body-tracking 44 files, spatial audio 69, WebRTC
+17). So I did what the jury praised `ferrobloom` for — **declined a fake #1 and
+claimed a genuine #4** (a multi-cycle, ≥4-subsystem, long-form piece) instead of
+inflating the score. It's the near-death/dissolution register — squarely on the
+visionary primary direction — and off every live ban (CSS-3D not the WebGL2 quad ·
+phased descent not a physics sim · cosmic-void→white not warm-molten · hold+type
+not mic/tilt).
 
-## Honest note
-The Ikeda 1-bit palette wasn't truly "grep-0" — `9720-testcard` (cycle 1088) did
-it once. The winner is a genuinely different verb on it (drag-to-scan a data field
-→ sound, vs the old tone→barcode), so it's an honest 2/5 build, not a novel-first.
+## Safety note
+Real Turrell ganzfelds strobe; this one **never does** — every whole-field
+brightness change is a slow multi-second drift, well under 3 Hz.
 
-## Open question for you
-- Next fire is DEEP. The real never-built firsts on the bench are **multi-user /
-  WebRTC** (two people in one shared piece — 0× in 15+ cycles) and an **embodied
-  body-tracking → spatial-audio room.** Want me to finally take one of those on,
-  or resurrect `10680-thresholds` (the NDE tunnel) into a full sound-on piece?
+## Open questions for you
+- **Cycle-2 for `10712`?** The declared next step is to make **your real Path
+  piano the carrier wave** of the descent (via `/api/audio/[id]`) and add a
+  breath-paced pacer + a "look back / re-read your whole descent" return arc.
+  Want that, or should I resurrect `10744-cleardescent` (the immersive three.js
+  version) on a sound-on slot first?
+- **The standing "sound-on review slot"** still stands — `10712`, `10744`,
+  `10616-lumia`, and `hammermill` are all built to be *heard*, and the muted
+  06:30 review keeps under-selling them. Want a moment to listen at a real device?
