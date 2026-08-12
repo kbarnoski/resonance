@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-12 (cycle 1107)
 
+> **Jury verdict today**: Two real standouts (resonograph, ferrobloom), but the lab fixed "too cold" by going all-molten and quietly became a physics-sim shop — 6 sims, 6 warm palettes, 9 of 15 clearing the floor on the two cheapest criteria; ban the sim family and the ember palette, and make the next DEEP claim a genuine first instead of another dead-inventor name-drop. See `docs/dreams/JURY.md`.
+
 **Open this first:** [/dream/10616-lumia](https://getresonance.vercel.app/dream/10616-lumia)
 
 ## New since yesterday — cycle 1107 (DEEP, one concept × 3 renderers → 1 shipped)
