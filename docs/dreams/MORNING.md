@@ -1,46 +1,33 @@
-# Morning digest — last updated 2026-08-12 UTC (cycle 1110)
+# Morning digest — last updated 2026-08-12 21:23 UTC
 
-Reviewing on your phone? Open the lab, tap the newest tile, glance — it
-self-performs muted within ~1 s. This one is a hard turn away from the cosmic
-void: it's **communal sacred singing**, a warm human register the lab has never
-touched.
+Cycle 1111 · **WIDE** (3 explorers, 1 shipped) · ledger 1108 W · 1109 D · 1110 WIDE → **1111 WIDE**.
+This one directly cashes yesterday's jury headline: *"stop bunting genuine firsts for safe simulations."*
 
-## New since yesterday
-- **`/dream/10760-fasola`** — *Raise the hollow square.* A **Sacred Harp /
-  shape-note singing school**: a hymn steps across a staff as the four classic
-  shapes — **fa △, sol ○, la ▭, mi ◇** — while a violet playhead lights each
-  note and the four vocal parts (treble/alto/tenor/bass) fill in around a
-  **hollow-square** emblem. Tap a section (or keys 1–4) to raise each part
-  yourself until the whole square is ringing in the tradition's raw **open**
-  harmony of bare fifths and octaves. *Why open it:* it's the lab's **first**
-  Sacred Harp piece in 1060 prototypes — a genuine grep-0 first (the thing the
-  jury kept asking me to actually claim instead of bunting), and the freshest
-  register in weeks. Best with **sound on** to hear the hollow open voicing.
+## New since yesterday — OPEN THIS
+- **`/dream/10808-orbitroom`** — **move through the room and the music orbits your body in binaural 3-D.**
+  The front camera reads where your body is (model-free silhouette centroid — no MediaPipe, no network)
+  and walks *you* as the listener through a virtual room ringed with soft ambient voices. On **headphones**
+  the chord genuinely swings around you; on the **top-down map** the pan is *drawn* so you can see it even
+  on a phone speaker. Loads self-demoing (a virtual performer orbits the room, muted, before any gesture).
+  → The lab's **first embodied body-position → HRTF spatial-audio room** — a real grep-0 first (jury §1091),
+    not another physics sim. **Try it on headphones.** Camera lane needs permission; denied → it keeps
+    running on the virtual performer.
 
-## Also explored tonight (WIDE — 3 absent registers, 1 shipped, 2 banked)
-- **`10776-tradefour`** ⭐⭐⭐ *(banked — jazz, best with sound on)* — **trade
-  fours with a bebop ghost**: play 4 bars, it answers 4 bars over live ii–V–I +
-  a swung walking bass. Real Barry-Harris bebop lines. Lost only for having no
-  genuine first — the jazz register is the win; resurrect on a sound-on slot.
-- **`10792-glowreef`** ⭐⭐⭐ *(banked — camera)* — move in the dark and a **deep-sea
-  bioluminescent reef unfurls *toward* your motion** (Vogel phyllotaxis in the
-  pure CSS compositor, verdant blue→jade→chartreuse). Anchored on 2026 deep-Pacific
-  bioluminescence finds. Resurrect on a camera/verdant slot.
+## Also explored (banked, not shipped — see IDEAS.md §1111)
+- **`10824-tradefour`** — trade fours with a **bebop ghost**: you play 4 bars, it answers 4 over a ii–V–I
+  with walking bass, using Barry Harris's sixth-diminished voice-leading. Fills the jazz register the jury
+  keeps naming absent. Built clean; resurrect on a jazz/keyboard slot.
+- **`10840-glowreef`** — conduct a **bioluminescent reef** (Vogel phyllotaxis, pure CSS-compositor bloom).
+  Verdant register, gorgeous light-waves — but the builder slipped to a *pentatonic* chime scale (against
+  your "no more pentatonic" note), so it's banked pending a tuning fix.
 
-## Why this shape tonight
-The 2026-08-12 jury was ban-heavy (kill the physics-sim family, the ember
-palette, the WebGL2 quad; rotate the *whole* palette; name the absent registers
-**jazz / verdant / playful**). That's a "go WIDE with fresh tags" order, so I
-raced one lane into each absent register. **fasola won because it's the only one
-carrying a real #1** — and it drags the lab out of the void into something warm
-and human. Off every live ban (SVG-DOM not the quad · shape-note part-writing not
-a sim · parchment-ink not molten · pointer/keyboard not mic/tilt).
+## Why these three (the gates)
+- Jury 2026-08-12 banned: physics-sim family (2-wk hold) · WebGL2-quad · warm-molten · mic+tilt.
+  All three lanes cleared every ban; three distinct inputs (camera / keyboard / pointer),
+  techniques, and vibes. Winner picked for the genuine **#1 first** the jury demanded.
 
-## Open questions for you
-- **Cycle-2 for `10760`?** The honest next step (a declared multi-cycle #4 for
-  the next DEEP fire): real **fuging-tune entries** + **sing the shapes back**
-  via mic pitch-detection (sight-singing you can actually do). Want that, or a
-  different deepening?
-- **The standing "sound-on review slot"** still holds — `10760`, `10776`,
-  `10616-lumia`, `10712` are all built to be *heard*, and the muted 06:30 review
-  keeps under-selling them. A minute at a real device would change the ranking.
+## Open questions for Karel
+- **orbitroom** is NOT ear-verified (headless has no speakers) — does the binaural orbit actually localise
+  on your headphones, and does seeing the pan on the map carry it on a speaker?
+- Want the next cycle to go **DEEP** on orbitroom (multi-user shared room? your real Path piano as the
+  orbiting voices?), or keep going WIDE to drain the jazz/verdant/first-register backlog?
