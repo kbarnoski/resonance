@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-08-12 (cycle 1106)
+# Morning digest — last updated 2026-08-12 (cycle 1107)
 
-**Open this first:** [/dream/10568-thrumline](https://getresonance.vercel.app/dream/10568-thrumline)
+**Open this first:** [/dream/10616-lumia](https://getresonance.vercel.app/dream/10616-lumia)
 
-## New since yesterday — cycle 1106 (WIDE, 3 lanes → 1 shipped)
-- **[10568-thrumline](https://getresonance.vercel.app/dream/10568-thrumline)** — **the world's live Wikipedia edits as a re-performable planetary carillon.** Every edit being made to every Wikipedia on Earth, *right now*, arrives as a struck bell on a rotating 90-second clock: angle = when it landed, radius = how big the edit was, hue = which language, human vs bot = two different bell voices. Then **scrub the sweep-hand backward** to re-sound the last 90 seconds — a live global feed you can actually play.
-  - *Why open it:* it reads **with sound off and nothing granted** — press Start and the clock turns and bells bloom on their own; if the live stream can't reach you it falls to a seeded synthetic feed within a second, so it's never blank or silent. This is the **live external-data** direction the last jury said the lab was starved for (its emptiest cell) — music *about something other than music*.
-  - Named ref: **Hatnote's *Listen to Wikipedia*** (2013); thrumline adds the rotating-clock score + the re-performable scrub. Research-chained to today's finding (live data → music: Manifest Audio / DataToMusic; RESEARCH §1106).
-  - This is the cycle's honest **4/5** — the "one genuinely ambitious build" the last jury demanded (≥3 subsystems + named ref + a declared multi-cycle plan + fresh research), without faking a novel-technique claim.
+## New since yesterday — cycle 1107 (DEEP, one concept × 3 renderers → 1 shipped)
+- **[10616-lumia](https://getresonance.vercel.app/dream/10616-lumia)** — **play LIGHT itself.** A MIDI keyboard drives Thomas Wilfred's *Lumia* visual music: each note blooms a drifting colored light, chords blend like stained glass, and the **sustain pedal freezes** what you play into standing "super-forms" that don't fade — they accumulate and slowly recompose, so over minutes the screen builds a **living stained-glass cathedral of your performance** (minute 5 looks nothing like minute 1).
+  - *Why open it:* it's the **warmth** the last jury demanded — a jewel/stained-glass palette, not another cold screen — and it's **your** instrument: sit at a MIDI keyboard and it plays you (velocity → brightness, pedal-depth → how much light freezes). No device? A seeded auto-performer starts ~0.3s after Start and works the pedal itself, so the cathedral builds **on a muted phone with nothing plugged in.**
+  - Built in the **pure CSS/DOM compositor** — no canvas, no WebGL (the substrate the jury praised via `9992-afterimage`). Pitches are plain 12-TET — **no just-intonation** (the jury said kill the JI reflex).
+  - This is the cycle's honest **4/5** (≥4 subsystems + named ref + a declared multi-cycle plan + fresh research), and it's the **MIDI / "sound-on" slot** you've had flagged — finally cashed, designed so it *also* wins the muted review.
+  - Named ref: **Thomas Wilfred's *Clavilux* / "Lumia"** (1919) + Payling's Lumia-factors. Research-chained (color-music revival "Color Songs" July 2026 + continuous sustain-pedal-depth as gesture; RESEARCH §1107).
 
-## 2 more explored, banked to IDEAS §1106
-- ⭐⭐⭐ **`10584-clavilux`** — play a **MIDI** keyboard and it renders **Thomas Wilfred's silent "visual music"** (his 1919 Clavilux color-organ) in **pure CSS** — no canvas, no WebGL; each note a slow-drifting colored light, chords blending like real light. *Resurrect first on a MIDI / "sound-on" slot — it's the best fit for you at a real keyboard.*
-- ⭐⭐ **`10600-phasebloom`** — **drop any track** and see its hidden geometry: Takens delay-embedding unfolds the waveform into a rotating 3-D attractor whose repeats light up; brush a region to re-hear that moment. *Resurrect on an audio-analysis slot; can be seeded from your Path tracks.*
+## 2 more explored, banked to IDEAS §1107
+- ⭐⭐⭐ **`10648-lightwell`** — the **same instrument in raw WebGL2** as true emissive light with feedback-buffer trails: the most physically-luminous of the three. *Resurrect first when a GPU / "sound-on" slot is open.*
+- ⭐⭐ **`10632-glasswork`** — the same instrument in **inline SVG** as literal leaded stained-glass panes. *Resurrect when SVG output isn't recently over-used.*
 
 ## Why this one (the gate it cleared)
-- The 3 real body sensors the last jury liked (camera/mic/tilt) are now each **3× in the last 10 ships** — so all three lanes this cycle took genuinely **fresh inputs** off that axis (live-data / MIDI / audio-file), on three different thin outputs (SVG / pure-CSS / WebGL2), all off the warm AND cold palettes the audits have closed.
+- DEEP raced ONE concept across 3 renderers; I shipped the **CSS-compositor** version because it's the **freshest thin output** (SVG-DOM was just used 2× in `10568`/`10472`, GPU ~5–6×) and the substrate the jury liked — while `10648`/`10632` were banked as the richer-light / more-literal-glass versions to bring back later.
 
 ## Open questions for you (standing — need your call)
-- **A "sound-on" review slot?** Sound-first pieces keep losing curation to the muted 06:30 phone — ⭐⭐⭐ `10584-clavilux` (today), `10456-hammermill` (§1103), `10408-polymeter` (§1102) are all best-heard, still banked for exactly this reason.
-- **AI-pipeline chain** (music → image → video) — still the emptiest menu category; needs a `FAL_KEY` budget yes/no from you to build or strike.
+- The **"sound-on" review slot** is now partly answered — 10616 is built to win muted *and* reward a real keyboard — but ⭐⭐⭐ `10648-lightwell` (today) + `10456-hammermill` still wait for a genuinely *heard* review. Worth a listen at your desk?
+- **AI-pipeline chain** (music → image → video) — still the emptiest menu cell; needs a `FAL_KEY` budget yes/no to build or strike.
