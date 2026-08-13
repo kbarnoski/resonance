@@ -1,36 +1,41 @@
 # Morning digest — last updated 2026-08-13 UTC
 
-Cycle 1117 · **WIDE** (3 unrelated directions raced, 1 shipped) · ledger 1114 DEEP · 1115 WIDE · 1116 DEEP → **1117 WIDE**.
-Deliberately answering *your* standing ask — the journey engine has never had an **EDM build-and-drop** arc, and the jury names it absent three verdicts running. So this fire built one.
+Cycle 1118 · **DEEP** (one grep-0-first concept, three renderings of the same engine, 1 shipped) · ledger 1115 WIDE · 1116 DEEP · 1117 WIDE → **1118 DEEP**.
+The jury's last order was blunt: *the next DEEP must claim a real first — and port a **living** technique, not name-drop a dead inventor.* So this fire built the one machine-improviser the lab has never had.
 
 ## New since yesterday — OPEN THIS (sound on)
-- **`/dream/11128-dropforge`** — **the opposite pole to the lab's calm wash.**
-  An autonomous, long-form **EDM build-and-drop tension engine**. It runs itself through the full dramaturgy —
-  **build** (a riser climbs, the filter opens, the snare-roll tightens, tension coils) → **the break** (strips to
-  a pad, ~2 bars of breath-holding near-black) → **THE DROP** (sub-bass arrives for the first time, a luminance
-  bloom + a shockwave ring) → groove → decay → **loops back, evolved** (new key/motif/groove/BPM each pass, so
-  minute 5 ≠ minute 1). Two live controls: an **ENERGY** slider and a **"FORCE THE DROP"** button.
-  → It's the **INTENSE** pole you asked the journey engine to reach, on a **pure-CSS/DOM** renderer (no canvas,
-    no WebGL) in **neon-electric** — a genuine rotation off the ember/cosmic-ambient monoculture. Strobe-safe by
-    design (smooth luminance, `prefers-reduced-motion` honored). *Headless run — I couldn't hear it; the drop
-    wants your ears.*
+- **`/dream/11176-oraclequartet`** — **a self-playing jazz combo that improvises you back, forever.**
+  Feed it a melody — a seeded bebop head on load, or **drop your own recording** — and it grows a **Factor
+  Oracle** of that line (the actual automaton behind IRCAM's OMax improviser) and walks it as a soloist: mostly
+  playing forward, but every so often it **jumps back into an earlier fragment that shares the same recent phrasing**
+  — so the solo is coherent yet never repeats. Underneath, a **walking bass + comping + swung ride** carry it over a
+  looping ii–V–I. A cool **jazz-noir** stage: gold soloist ribbon, cyan bass, teal comp.
+  → This is the lab's **first Factor Oracle** — grep-verified zero prior builds — and its first real **jazz** piece,
+    a register you've asked the journey engine to reach. *Headless run — I couldn't hear it; whether the solo really
+    swings over the band wants your ears.*
 
-## Also explored (banked, not shipped — see IDEAS §1117)
-- **`11096-consort`** ⭐ (my resurrect-first) — a melodic **canon that travels between browser tabs**: play a
-  motif, it relays tab-to-tab over `BroadcastChannel`, each restating it in its own timbre — a living round across
-  screens. This is the jury's #1 unclaimed lever — **multi-user, untouched for 15+ cycles**. Next fire I'd promote
-  it to a DEEP with real **WebRTC** so the round travels across *machines*, not just tabs on one.
-- **`11112-abyssglow`** ⭐ — **your piano growing a deep-sea bioluminescent garden**: onsets/loudness/brightness
-  drive a real **space-colonization** growth (Runions 2007) into branching glowing filaments in three.js. **Drop
-  your own recording** and watch it bloom. Rides your three.js-particle loves; the freshest "use my real music" piece.
+## Also explored (banked, not shipped — see IDEAS §1118)
+- **`11144-oraclon`** ⭐ (my resurrect-first) — the **same engine, but you watch the machine think**: the Factor
+  Oracle drawn as a living node-link graph, the read-head crawling its spine and **flashing the exact memory-arc it
+  jumps along** each time it recombines. The clearest way to actually *see* what a factor oracle is.
+- **`11160-recombinant`** ⭐ — the oracle as a **piano-roll river**: every recombination draws a glowing thread back
+  across time to the fragment it just borrowed. The most legible view of the "borrowing" itself.
 
-## Why dropforge over the other two
-All three were clean and dodged every jury ban. dropforge won because it hits the most at once: your explicit
-journey-engine directive **+** the high-value ambition criterion #4 (long-form, stateful, evolving) **+** a triple
-diversity rotation (palette, energy pole, and substrate). The other two are strong and banked intact.
+## Why oraclequartet over the other two
+All three ran the identical, correct Factor Oracle (I audited the engine in each), so the tiebreak was size + fit:
+the quartet is the **biggest artifact** — a whole self-playing combo, not a diagram — and it lands two things you've
+named at once: a genuine **jazz** arc for the journey engine *and* the jury's "port a living technique" demand
+(OMax/Somax2, still performed today). The two graph-based views are strong and banked intact for a teaching slot.
+
+## Research worth a look (RESEARCH §1118)
+The 2026 frontier is **human↔AI co-performance** — latent-diffusion accompanists, player-piano duet agents — but
+they're all GPU-heavy and un-portable. The Factor Oracle is the browser-runnable technique that delivers the same
+"a machine re-improvises me" verb at zero latency. That's the chain today's build follows.
 
 ## Open questions for Karel
-- **Is EDM the right alt-arc to push on?** If build-and-drop lands, the natural next arcs are **ritual** and
-  **cinematic narrative** — want me to work through your journey-engine list, or go deep on this one?
-- **Multi-user:** `consort` is a real answer to the "collaborative/conducted ensemble" gap. Worth a DEEP next
-  fire to take it cross-machine over WebRTC?
+- **Jazz arc:** if this lands, the soloist is currently locked to one key. Worth deepening into real per-chord
+  modal interchange + a form-aware soloist that builds tension across choruses — or is the trio texture enough?
+- **Use your real piano:** drop one of your *Welcome Home* tracks into oraclequartet and it improvises off your
+  actual playing. If the pitch-tracking on real recordings is rough, that's the first thing I'd sharpen (YIN).
+- Still open from yesterday: **multi-user** (`11096-consort`) remains the jury's single most-named unclaimed lever
+  — a DEEP next fire could take it cross-machine over WebRTC.
