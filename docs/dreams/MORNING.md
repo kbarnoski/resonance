@@ -1,38 +1,16 @@
-# Morning digest — last updated 2026-08-13 UTC
+# Morning digest — last updated 2026-08-13 UTC (cycle 1120)
 
-> **Jury verdict today**: The lab genuinely climbed — physics-sims dead, molten gone, and it shipped seven real grep-0 firsts (embodied spatial-audio room, Factor Oracle, reservoir net, Kohonen SOM, Sacred Harp) instead of bunting — but it cured one monoculture by growing its mirror image: Canvas2D/SVG + desk-input + violet-on-black is the new rut, live sensors nearly vanished, and only two of fifteen cleared 4/5; reclaim a sensor, ship the banked WebGPU piece, and take one first multi-cycle to 5/5. See `docs/dreams/JURY.md`.
+**DEEP cycle — I took your jury's advice and deepened a *proven* first instead of shipping another medium.** The new 2026-08-13 jury said the ceiling is the problem now (seven grep-0 firsts shipped, but only two reached 4/5, none 5/5) and named the exact move: *"spend a DEEP cycle deepening a proven first — orbitroom's HRTF room wants per-source distance reverb."* So this cycle does that, and dodges all three of the jury's bans at once.
 
-Cycle 1119 · **WIDE** (3 divergent explorers, different tags each, 1 shipped) · ledger 1116 DEEP · 1117 WIDE · 1118 DEEP → **1119 WIDE**.
-The jury's order was to rotate the *whole* palette off molten and stop faking "firsts." So this fire built into a register the lab has never touched — and claimed its ambition honestly (no invented grep-0).
+## New since yesterday
+- **[11288-orbithall](https://getresonance.vercel.app/dream/11288-orbithall)** — *see your own binaural spatialisation in 3-D.* The 3-D deepening of your headline standout **10808-orbitroom** (which was a flat top-down map). You orbit a real three.js hall; your listener-body walks among five ambient voices, and **a live tether to each voice draws how dry-and-near vs wet-and-far it currently sounds** — thin/bright/taut = near+dry, thick/dim/hazy = far+wet. **Why open it:** on headphones a voice now goes dry-and-present as you approach and washed-and-dark as you recede — real *felt depth*, not just a rotating pan. The camera reads your body (step around and the room re-mixes); muted, a seeded walker demos it in ~1s.
+  - The new subsystem: **per-source distance reverb** where each voice's wet/dry mix = its **Direct-to-Reverberant Ratio (DRR)** — which the research says IS how we judge distance in a room. This is the exact thing orbitroom's own notes asked for next.
+  - Dodges the jury's whole ban list: **three.js GPU-geometry** (you asked to rest Canvas2D+SVG), **camera body-input** (you asked to reclaim a live sensor), **cool-aqueous** (off the banned violet-on-black).
 
-## New since yesterday — OPEN THIS
-- **`/dream/11240-datamatics`** — **your music stripped to pure information.**
-  An FFT of the sound (a seeded pattern on load, or **drop your own track**) is quantized to a single **1 bit** by an
-  8×8 ordered-dither matrix and painted as a hard **black/white scanning data-tape** that scrolls like film, with
-  sparse pure-**red** index marks on the onsets and Ikeda-style test-pattern bars on the strongest beats.
-  → It's the lab's first piece in **Ryoji Ikeda's black-white-red datamatics register** — a palette you've been
-    missing for a month — and it ports a *living* artist's language, not a dead inventor's name.
-  → **Strobe-safe by design** (the whole point of doing Ikeda responsibly): no full-field flashing anywhere, the scan
-    is spatial scroll only, reduced-motion crawls it. *Headless run — I couldn't hear it; whether it reads rhythmically wants your ears.*
+## Also explored (banked, not shipped — see IDEAS §1120)
+- **11272-depthroom** — the *first-person* version: you ARE the listener, inside the fog-lit hall, with a genuine convolution-reverb room. More immersive on headphones; I banked it RESURRECT-FIRST to fuse with orbithall (a first/third-person toggle) next DEEP.
+- **11304-nearfar** — the *reductive* version: a 3-voice corridor with an extreme near/far morph + a live distance/DRR readout. The clearest single-idea teaching read.
 
-## Also explored (banked, not shipped — see IDEAS §1119)
-- **`11224-choirfold`** ⭐ (my resurrect-first) — **every browser tab you open becomes a voice in a self-tuning choir**:
-  open 2–4 tabs and each contributes a partial to a collective chord, re-voicing as tabs join/leave. This finally
-  revives **multi-user** — the single lever the jury keeps naming as untouched. Next: take it cross-machine over WebRTC.
-- **`11256-spectral-sculpt`** ⭐ — **music as an orbitable 3-D sculpture of ~98k GPU points**, each pushed by a
-  frequency band (a WebGPU compute shader, deliberately not a fluid). Banked because the GPU path can't be verified
-  headless — it ships with a 2-D fallback but wants a real device before it leads.
-
-## Why datamatics over the other two
-All three cleared the bar honestly. Tiebreak: datamatics lands two things you've named at once (the absent **Ikeda**
-palette + a **living**-artist port), it's the safest build (strobe-safe by construction, no unverifiable GPU), and it
-delivers its whole idea on a **single page-open** — choirfold needs several tabs to show its point, so it reads muted
-on a phone. So choirfold is banked intact as the next DEEP.
-
-## Open questions for Karel
-- **Multi-user** (`11224-choirfold`) is now built and banked — it's been the jury's #1 unclaimed lever for 15+ cycles.
-  Want the next DEEP to take it cross-machine (real shared room over WebRTC), or is same-origin-tabs enough to prove it?
-- **Use your real music:** drop a *Welcome Home* track into datamatics — does the 1-bit data-tape read as *your* piano,
-  or does it want a gentler contrast curve / slower scroll for acoustic material?
-- Palette rotation is working (jazz §1118, Ikeda §1119). Still absent: **verdant bioluminescent** (choirfold reaches
-  for it) and **playful** — worth a lane soon?
+## Open questions for you
+- **Ear-check on headphones:** does the DRR actually read as *distance* (near→far), or just as "more reverb"? I can't verify audio headless. If it lands, the orbitroom line is worth a multi-cycle push to a real 5/5.
+- Want the next DEEP to be **depthroom+orbithall fused** (walk *inside* the legible room, first/third-person toggle), or should I finally take the **multi-user / WebRTC** lever the jury keeps naming?
