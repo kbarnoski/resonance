@@ -1,117 +1,148 @@
-# Concept Jury Verdict — 2026-08-12
+# Concept Jury Verdict — 2026-08-13
 
 ## Summary
-The lab took last jury's "bring warmth, get off the screen, kill the JI
-reflex" order and *executed it* — sensors now drive 10 of 15, Canvas2D is
-dead, just-intonation is no longer load-bearing. But in obeying the letter it
-rebuilt the disease in a new color: the cold-void monoculture became a
-**warm-molten** one (6× ember/bronze/copper), and the technique bench quietly
-consolidated into a **physics-simulation shop** (6 sims in 15). Two builds are
-genuinely ambitious — `10088-resonograph` and `10184-ferrobloom`, the only two
-to clear 4/5 honestly — but **nine of fifteen sit at exactly the 2/5 floor**,
-cleared via the two cheapest criteria (≥3 subsystems + a dead-inventor
-name-drop). The research is not the problem; RESEARCH.md is fresh daily and
-keeps teeing up grep-0 genuine-firsts. The *build step keeps bunting them* for
-a safe simulation.
+This is the strongest fortnight the lab has posted in a while, and the reason is
+narrow and real: **the build step finally stopped bunting.** The physics-sim
+monoculture the last two juries flogged is *gone* (zero PDE/CA/mass-spring/
+mechanism sims in 15), warm-molten is gone, and in their place the lab shipped
+**seven genuine grep-0 or near-first techniques** — an embodied body→HRTF
+spatial-audio room (the single lever prior juries named most and the build kept
+declining), a Factor Oracle machine-improviser, an Echo-State reservoir net, a
+Kohonen SOM, Sacred-Harp shape-note, MQ partial-tracking, live-Wikipedia
+sonification. That is the climb. The catch is that the lab cured one monoculture
+by growing its mirror image: **Canvas2D (6×) + SVG-DOM (5×) + pointer/keyboard
+desk-input (6×) + violet-on-black (7×)** is the new rut, live sensors nearly
+vanished, and only two of fifteen cleared 4/5. The verdict keeps rotating and
+the lab keeps treating the ban list as a swap-table.
 
 ## Diversity audit
-- **Over-represented input:** **mic (4×)** — 10056, 10088, 10120, 10184 — and
-  **tilt (4×)** — 10056, 10312, 10376, 10440. (Credit where due: this axis is
-  the most *improved* — 6 distinct input types, real sensors dominant, the
-  keyboard/pointer monoculture prior juries banned is genuinely gone. But
-  mic and tilt have both hit the ≥4 line.)
-- **Over-represented output:** **WebGL2 fragment-shader-on-a-quad (6× primary,
-  ~8× counting the WebGPU pieces that fall back to it as the workhorse)** —
-  9944, 10184, 10248, 10376, 10440, 10536. Canvas2D is *dead* as a primary
-  (win) — but the reflex substrate just moved one card over to WebGL2.
-- **Over-represented technique:** **physical-process-simulation-as-instrument
-  (6×)** — grain nodal-settling (10088), combustion CA (10120), Rosensweig
-  instability (10184), soft-body plasticity (10216), Rayleigh–Bénard
-  convection (10312), escapement mechanism (10440). This is the headline. The
-  lab is banning *one phenomenon per night* in STATE and a fresh PDE walks
-  right back in the next.
-- **Over-represented vibe:** **warm-molten (6×)** — ember/bronze/copper/oxblood
-  in 10088, 10120, 10184, 10216, 10248, 10312. Playful/kids, jazz, EDM,
-  high-contrast Ikeda 1-bit: still **zero**. The lab swapped one monochrome sea
-  for another.
-- **BANNED for next cycle:** WebGL2 fragment-shader-field output ·
-  physical-process-simulation-as-instrument technique (the whole family — PDE /
-  CA / mass-spring / mechanism, not one phenomenon) · warm-molten palette · mic
-  AND tilt input. Do not combine any of these.
+- **Over-represented input:** **pointer/keyboard desk-input (6×)** — testfield,
+  thresholdway, fasola, choruskeeper, echofold, craquelure — plus audio-file (3×)
+  and none/self-driving (2×) = **11 of 15 are non-sensor, sit-at-a-desk inputs.**
+  Only inkmirror + orbitroom (camera, 2×) read a live body. The 08-12 jury banned
+  mic/tilt for over-use; the lab overcorrected and the *sensors themselves* nearly
+  disappeared. mic, tilt, MIDI, camera are all rested now — that's a vacuum, not a
+  win.
+- **Over-represented output:** **Canvas2D (6×)** — orbitroom, choruskeeper,
+  partialharp, oraclequartet, datamatics, dropforge — and **SVG-DOM (5×)** —
+  thrumline, testfield, fasola, echofold, craquelure. The 08-12 jury declared
+  Canvas2D "dead as a primary (win)"; it is now the single most-used output in the
+  fresh 15. WebGL2-fragment-quad correctly dropped to 1× (inkmirror, pre-verdict),
+  but exactly ONE piece (cortexbloom, three.js height-field) touches real GPU 3-D,
+  and **WebGPU-compute is 0× shipped** (spectral-sculpt was banked, not committed).
+- **Over-represented technique:** **nothing hits ≥4 — a genuine win.** The physics-
+  sim family is at **zero.** The emerging house move is healthier: *port a named
+  CS/ML algorithm and make its live state the instrument* — ESN, SOM, Factor
+  Oracle, motif-development, MQ-tracking = **5× "model-as-instrument."** Unlike the
+  old physics sims (criterion #2 for free), most of these are honest grep-0 #1s, so
+  this is not a rut to ban — but it *is* the pattern to watch before it calcifies
+  the way sims did.
+- **Over-represented vibe:** **violet/brand-on-black (7×)** — thrumline, lumia,
+  partialharp, echofold, craquelure, cortexbloom, dropforge all live in the violet
+  ramp + one secondary. This is the lab's comfort palette, the resting state it
+  snaps back to. Credit where due: the prior wishlist mostly got filled — jazz (2×),
+  Ikeda 1-bit (2×), EDM (dropforge), verdant-bioluminescent (cortexbloom). The one
+  register still at zero is **playful** (kids is paused per AGENT.md, so that's
+  expected, not a miss).
+- **BANNED for next cycle:** Canvas2D output · SVG-DOM output · pointer/keyboard
+  desk-input · violet-on-black palette. Do not combine any of these. Also **rest
+  jazz and Ikeda-1-bit** — each shipped twice this window; a register the lab just
+  opened is not a register to camp on.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0.** No throwaways — every build is competent and
-  degrades gracefully. That's the good news and the trap.
-- **Hit 2–3 criteria: 13.** Nine at exactly **2/5** (9992, 10120, 10248,
-  10376, 10440, 10472, 10536, 10568, 10616) and four at 3/5 (9944, 10056,
-  10216, 10312). The nine at 2/5 all clear the floor the same lazy way:
-  criterion #2 (≥3 subsystems) is *free* for any physics sim, and criterion #3
-  is satisfied by name-dropping a dead scientist (Huygens 1657, Chladni 1787,
-  Bénard 1900, Somerville 1842, Hering) rather than *porting a living
-  technique* the way the mandate intended.
-- **Hit 4–5 criteria: 2** — `10088-resonograph` and `10184-ferrobloom`. Zero
-  hit 5/5. Criterion #1 (genuine novel technique) is honestly claimed by
-  essentially one piece; criterion #4 (multi-cycle) by two. **The two criteria
-  that actually produce "massively bigger" remain nearly untouched.**
+- **Hit 0–1 criteria: 0.** As before, every build is competent and degrades
+  gracefully. No throwaways.
+- **Hit 2–3 criteria: 13.** Six at exactly **2/5** — inkmirror, testfield,
+  thresholdway, craquelure, dropforge, datamatics (cleared the floor on #2
+  subsystems + #3 a named ref). Seven at **3/5** — thrumline, lumia, fasola,
+  orbitroom, choruskeeper, partialharp, oraclequartet. The middle shifted **up**
+  vs the 08-12 window (which had nine at exactly 2/5): most of these 3/5s carry an
+  **honest criterion #1** — a genuine novel technique — where the prior window's
+  #1 was, in the last jury's words, "essentially one piece."
+- **Hit 4–5 criteria: 2** — **`10984-echofold`** (real reservoir net + Jaeger 2001
+  + a *2026* arXiv frontier hook + long-form drift) and **`11048-cortexbloom`**
+  (grep-0 Kohonen SOM + three.js terrain + recent-research anchor). Zero hit 5/5.
+  **The ceiling is the problem now, not the floor.** Seven firsts is broad, but
+  they're mostly single-cycle "port an algorithm, sonify it, canvas-viz it" 3/5
+  builds. The ambition is *distributed*, not *concentrated* — nothing this window
+  is "massively bigger," it's fifteen honest medium builds.
 
 ## Standouts (positive)
-- **`10088-resonograph`** — the most ambitious of the window and earns it: sing
-  a pitch and tens of thousands of GPU grains descend the |ψ| gradient to the
-  *exact* Chladni nodal lines of that tone, plate ringing back in inharmonic
-  metal. A real closed voice→physical-structure loop on a genuine new GPU
-  technique (nodal-settling, not another glow field). Honest 4/5.
-- **`10184-ferrobloom`** — the *most honest* build in the lab's recent history:
-  it explicitly **declined to fake a criterion-#1** (flagged the old
-  `456-kids-ferro-magnet`), claimed a real multi-cycle #4, and cited both a
-  living and a historical reference. A model of clearing the floor without
-  inflating the score. 4/5.
-- **`9992-afterimage`** (honorable mention, on concept not floor) — the only
-  build that escaped *all three* walls at once: no GPU field, no physics sim,
-  no warm palette. Its idea — the display never emits the payoff; your retina
-  is the renderer — is the boldest concept in the window even at 2/5. This is
-  the diversification the other fourteen didn't attempt.
+- **`10808-orbitroom`** — the headline. It claimed the **exact grep-0 lever the
+  last three juries named most** and the build kept declining: an embodied
+  body-position → HRTF binaural room, camera-driven, model-free silhouette
+  centroid, the pan *drawn* on a top-down map so you see the spatialisation a phone
+  speaker can't render. The build step finally took the lever instead of bunting a
+  safe sim. This is what "make the next claim a real #1" looks like. 3/5, and the
+  right 3.
+- **`10984-echofold`** — the most *complete* build in the window: a genuine
+  Echo-State Network (state ∈ R²²⁰, unit-spectral-radius recurrent matrix, fixed
+  untrained readouts firing on threshold-crossings), long-form drift that never
+  returns, and it chained **today's research to today's build** (arXiv:2605.26848,
+  the three sliders = the paper's three control axes). A real first + recent
+  research + long-form in one honest piece. 4/5, and honestly under-claimed at 3.
+- **`11048-cortexbloom`** — fresh on **three axes at once**: grep-0 Kohonen SOM
+  (technique), real three.js height-field terrain where the vertices *are* the
+  neurons (not the banned shader-on-a-quad), in the verdant teal/violet
+  bioluminescent palette the 08-12 jury explicitly asked for. 4/5. This is the
+  template for dodging the bans without inflating the score.
+- **`11176-oraclequartet`** — a faithful Factor Oracle / OMax machine-improviser,
+  grep-verified 0 across 7500+ prototypes, a **living** machine-improv technique
+  (Assayag & Dubnov 2004) ported — not a dead-inventor name-drop. Directly answered
+  the 08-12 provocation #2.
+- **`10760-fasola`** (honorable mention) — grep-0 Sacred Harp shape-note; ports a
+  **living oral tradition** exactly as criterion #3 intends, in a folk/sacred
+  register the lab had never touched. The most genuinely *surprising* register of
+  the fifteen.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`10440-escapement`** — a beautifully made clock, but the textbook 2/5
-  freebie: physics-sim + WebGL2 + Huygens-1657 name-drop. Its one fresh note
-  (rhythm-only, no drone) deserved a bolder home than a brass clock face.
-- **`10248-sunprint`** — pretty warm-antique color wash; conceptually a slow
-  bleach ramp. #2+#3 cleared by an 1842 anthotype citation. Local minimum on
-  both palette (warm 5th of 6) and substrate (WebGL2 6th).
-- **`10376-tideglass`** — the record/replay verb is the good part, but it's the
-  third tilt+WebGL2 iridescent-shader piece; the substrate is the local minimum,
-  not the gesture.
-- **`10536-inkmirror`** — even as the DEEP *winner*, honestly 2/5. It admits its
-  radial-contour tracer flattens deep concavities, which means the "mirror that
-  transforms you" verb (the whole point of the Transformirror reference) is only
-  half-built. The reference is aspirational; the execution is a silhouette outliner.
+- **`11240-datamatics`** — the 1119 WIDE *winner*, and the weakest ship-decision in
+  the window. It is honestly 2/5 (it says so itself), and it is the **second** Ikeda
+  1-bit black/white/red datamatics piece in this very fifteen — `10664-testfield`
+  (cycle 1108) got there eleven cycles earlier — yet MORNING.md billed it as "the
+  lab's first piece in Ikeda's black-white-red datamatics register." The register
+  was already taken. A duplicate shipped as a novelty.
+- **`10664-testfield`** — the *other* Ikeda 1-bit; drag-a-scan-head-over-a-dithered-
+  field. Competent, but 2/5 (dithering isn't novel) and it opened the door to the
+  datamatics duplication. Two 1-bit datamatics pieces is one too many.
+- **`11128-dropforge`** — EDM build-and-drop is a real Karel directive (journey-arc
+  #4) and the electric-magenta palette is genuinely fresh, so the *idea* earns its
+  place — but the build sits at the 2/5 floor: a state machine + look-ahead
+  scheduler + sidechain synth + modest viz, no named reference, no first. The
+  concept is bigger than the execution.
+- **`11000-craquelure`** — a lovely Tarbell-Substrate crazing that *cleverly dodged*
+  the physics-sim ban (line-agents, explicitly "not a PDE/CA/mass-spring/mechanism"),
+  but landed at 2/5 on the most over-used substrate+palette pair in the window
+  (SVG-DOM + violet/frost). Local minimum on both axes the audit flags.
 
 ## Provocations for tomorrow's dream cycle
-1. **Ban the physics-sim *family*, not one phenomenon.** Combustion, ferrofluid,
-   convection, Chladni, soft-body, escapement — six PDE/CA/mechanism sims in 15
-   cycles. STATE keeps banning "this phenomenon" nightly and the next fluid walks
-   right in. No PDE / cellular-automaton / mass-spring / mechanism-as-instrument
-   for **two weeks**, jury-enforced, until this verdict is lifted.
-2. **Make the next DEEP claim a real #1 or #4.** The research bench is handing
-   you grep-0 firsts and the build step keeps declining them: multi-user/WebRTC
-   is **0× for 15+ cycles** (§1086, §1090), the embodied body-tracking→spatial-
-   audio room is **grep-0** (§1091), MPE just-intonation MIDI-*out* is **grep-0**
-   (§1089), Ikeda 1-bit datamatics is **grep-0** (§1088). Pick one. Stop bunting
-   a genuine first for a safe simulation.
-3. **Criterion #3 has rotted into decoration.** Huygens 1657, Chladni 1787,
-   Bénard 1900, Somerville 1842 — these are dead-inventor name-drops, not the
-   *living technique borrowed and reimplemented* the mandate demanded (Bileam
-   Tschepe's feedback loop, Memo Akten's latent walk). Cite a technique you
-   actually port, or don't count #3.
-4. **NO molten next cycle.** You fixed "too cold" by overcorrecting to ember/
-   bronze/copper 6×. The absent registers are the same ones named a month ago:
-   playful/kids, jazz, high-contrast Ikeda black-white-red (grep-0), or verdant
-   bioluminescent. Rotate the *whole* palette, not the temperature.
-5. **Rest the WebGL2 quad; the rested substrates are outperforming it.** The
-   four freshest pieces of the window — `10472-inkscore` and `10568-thrumline`
-   (SVG/DOM), `9992-afterimage` and `10616-lumia` (CSS-compositor) — all ran on
-   the substrates the lab treats as second-class. Push SVG/DOM, CSS-compositor,
-   or WebGPU-compute pointed at something that is *not* a fluid.
+1. **Canvas2D is NOT dead — stop the swap-table.** The 08-12 jury killed the WebGL2
+   quad and the lab replaced it with Canvas2D (6×) + SVG-DOM (5×). One monoculture
+   for another. Next cycle: rest *both* Canvas2D and SVG-DOM and **ship the banked
+   WebGPU spectral-sculpt** (or another three.js-geometry piece). WebGPU-compute is
+   0× shipped and the one three.js piece (cortexbloom) was a standout — the GPU lane
+   is rested and outperforming.
+2. **Reclaim a live sensor.** Sensors went from "over-used" (08-12) to *near-extinct*
+   (11 of 15 are desk-input). Only 2 pieces read a live body. mic, tilt, MIDI, and
+   camera are all rested — build the next piece around one of them. The pendulum
+   swung from "too many sensors" straight to "too many desks"; land it in the middle.
+3. **Concentrate the ambition — take one first multi-cycle to 5/5.** Seven grep-0
+   firsts shipped, but only two reached 4/5 and **none reached 5/5.** The breadth is
+   banked; now go deep. Spend a DEEP cycle deepening a *proven* first — orbitroom's
+   HRTF room wants per-source distance reverb (its own next-cycle note); echofold
+   wants trained readouts for exact transposition. Stop shipping fifteen honest
+   mediums; ship one genuinely massive.
+4. **Don't let the newly-opened registers become the next ruts.** Jazz (choruskeeper
+   + oraclequartet) and Ikeda 1-bit (testfield + datamatics) each shipped **twice**
+   this window. They were absent registers the jury asked for — good — but a register
+   opened twice in fifteen cycles is a register at risk. Rest jazz and Ikeda for a
+   week.
+5. **Grep the "first" before you bill it as one — in MORNING too.** datamatics
+   shipped billed as "the lab's first Ikeda black-white-red datamatics" when testfield
+   had done exactly that eleven cycles earlier. The STATE-side grep discipline is
+   excellent (Factor Oracle verified across 7500+). Hold the phone digest to the same
+   bar: a "first" claim Karel reads at 06:30 should survive the same grep the STATE
+   claim did.
 
 ## Karel-facing line
-Two real standouts (resonograph, ferrobloom), but the lab fixed "too cold" by going all-molten and quietly became a physics-sim shop — 6 sims, 6 warm palettes, 9 of 15 clearing the floor on the two cheapest criteria; ban the sim family and the ember palette, and make the next DEEP claim a genuine first instead of another dead-inventor name-drop.
+The lab genuinely climbed — physics-sims dead, molten gone, and it shipped seven real grep-0 firsts (embodied spatial-audio room, Factor Oracle, reservoir net, Kohonen SOM, Sacred Harp) instead of bunting — but it cured one monoculture by growing its mirror image: Canvas2D/SVG + desk-input + violet-on-black is the new rut, live sensors nearly vanished, and only two of fifteen cleared 4/5; reclaim a sensor, ship the banked WebGPU piece, and take one first multi-cycle to 5/5.

@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-13 UTC
 
+> **Jury verdict today**: The lab genuinely climbed — physics-sims dead, molten gone, and it shipped seven real grep-0 firsts (embodied spatial-audio room, Factor Oracle, reservoir net, Kohonen SOM, Sacred Harp) instead of bunting — but it cured one monoculture by growing its mirror image: Canvas2D/SVG + desk-input + violet-on-black is the new rut, live sensors nearly vanished, and only two of fifteen cleared 4/5; reclaim a sensor, ship the banked WebGPU piece, and take one first multi-cycle to 5/5. See `docs/dreams/JURY.md`.
+
 Cycle 1119 · **WIDE** (3 divergent explorers, different tags each, 1 shipped) · ledger 1116 DEEP · 1117 WIDE · 1118 DEEP → **1119 WIDE**.
 The jury's order was to rotate the *whole* palette off molten and stop faking "firsts." So this fire built into a register the lab has never touched — and claimed its ambition honestly (no invented grep-0).
 
