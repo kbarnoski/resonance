@@ -1,45 +1,41 @@
 # Morning digest — last updated 2026-08-13 UTC
 
-Cycle 1113 · **WIDE** (three unrelated lanes, two carrying grep-0 firsts, 1 shipped) · ledger 1109 D · 1110 WIDE · 1111 WIDE · 1112 DEEP → **1113 WIDE**.
-Three directions on fully distinct axes (audio-file / pointer / camera · Canvas2D / three.js / CSS-compositor · spectral / geometric / organic) — off every live jury ban and off the over-used pointer/keyboard input.
+Cycle 1114 · **DEEP** (one concept, three renderings of the same real reservoir, 1 shipped) · ledger 1111 WIDE · 1112 DEEP · 1113 WIDE → **1114 DEEP**.
+The jury's provocation #2 — *"stop bunting a genuine grep-0 first for a safe simulation"* — answered head-on: a real **echo-state reservoir computer**, never done in the lab.
 
-## New since yesterday — OPEN THIS (sound on; a file or headphones make it sing)
-- **`/dream/10904-partialharp`** — **see the harmonic threads inside a sound, then pull one out.**
-  A live **McAulay–Quatieri sinusoidal model** decomposes the audio into its individual gliding
-  **partials** — each one a glowing thread scrolling left (x = time, y = log-pitch, brightness = loudness,
-  violet→gold). A 40-oscillator bank **re-synthesizes** the tracks, so the picture *is* the sound:
-  **hover a thread and click to MUTE that overtone** (shift-click to solo) and you genuinely hear that
-  one partial vanish. Drop your own WAV/MP3 — or just press Start; a seeded piano phrase self-demos and
-  the threads are already tracking within ~1s on a muted phone.
-  → **The lab's first sinusoidal-model / partial-tracking piece** (grep-verified 0 across 1062 prototypes),
-    and the most literal answer yet to *"use my real music"* — cycle-2 wires your **Path piano** as the
-    source so you can see the harmonic anatomy of your own recordings.
+## New since yesterday — OPEN THIS (sound on; trace a line on the top staff)
+- **`/dream/10984-echofold`** — **sing a phrase to a living little mind and hear it dream you back.**
+  A genuine **echo-state network** (a fixed random recurrent net, Jaeger 2001) runs live. You trace a
+  contour on the upper staff; the reservoir holds a **fading, mutating trace** of your gesture and sings
+  it back on the lower staff, in a darker register — recognizable at first, then **drifting under its own
+  dynamics and never quite returning**. Threads connect your marks to their echoes and **stretch and fray**
+  as the two lines diverge. Push the **ρ** slider toward 1.0 (the edge of chaos) for a long, dissolving
+  memory that wanders far; pull it back for a crisp, faithful echo.
+  → **The lab's first reservoir-computing / echo-state piece** (grep-verified 0 across 7500+ prototypes),
+    and one that has genuine internal **memory** — it is different at minute 5 than at minute 1.
 
-## Also explored (banked, not shipped — both carry their own firsts — see IDEAS.md §1113)
-- **`10920-sphereharp`** — **music on the Riemann sphere.** A glowing sphere with orbiting "stars";
-  a **stereographic projection** casts each star's ray down to a shadow on a ringed plane (near-pole stars
-  race their shadow to infinity). Latitude→pitch, longitude→pan, meridian→bell. Drag to turn the globe,
-  tap to add a star. three.js geometry, its own grep-0 first (`riemann sphere` = 0). Gorgeous — lost only
-  because its payoff is more *abstract-celestial* (a register we already have a lot of).
-- **`10936-glowreef`** — **move in the dark and a bioluminescent reef blooms TOWARD you.** Vogel-phyllotaxis
-  organisms in the pure CSS compositor; the front camera's motion-centroid opens the bloom as a *lobe*
-  pointed at you. **The tuning fix is in** — bells are now inharmonic/oceanic, not the pentatonic that got
-  the earlier `glowreef` benched. Camera-denied → it breathes on its own. Verdant slot, ready to ship.
+## Also explored (banked, not shipped — same real engine, two other renderings — see IDEAS §1114)
+- **`10952-reverie`** — the reservoir as a **luminous neural CONSTELLATION** (Canvas2D): 240 glowing nodes,
+  faint wiring, and **signal pulses that travel the edges** when a node fires — you strike it and watch the
+  ripple spread. The most legible *"it's a mind"* read; it's the natural **cycle-2 of echofold**.
+- **`10968-driftmind`** — the reservoir's inner **STATE as a slow attractor cloud** (three.js): the ribbon
+  visibly wilds as you turn ρ up. Beautiful, cosmic-ambient; benched only for substrate diversity.
 
 ## Why this shape (the gates)
-- **WIDE by ledger** (two DEEPs would break the alternation; 1112 was DEEP). Three lanes, three distinct
-  input×output×technique×palette tag-sets, none combining a banned tag.
-- Jury 2026-08-12 banned: physics-sim family · WebGL2-quad · warm-molten · mic + tilt. All three lanes are
-  off **every** one (partial-tracking / stereographic / phyllotaxis are none of them; Canvas2D / three.js-geometry
-  / CSS-compositor are not the quad; audio-file / pointer / camera are not mic/tilt).
-- At 1062 prototypes the *primitive* well is mostly dry (WFC, Tonnetz, EDM, Euclidean all already 20–140 hits) —
-  so I grep-hunted for what's genuinely 0 and found two real firsts (`sinusoidal model` and `riemann sphere`).
-  The flagship rides the stronger one **and** your standing "use my real piano" directive.
+- **DEEP by ledger** (1113 was WIDE) **and** by the jury's order to make the next DEEP a *real #1*.
+- Off **every** live jury ban: pointer-trace (not mic/tilt) · **SVG-DOM** (the jury's *praised* rested
+  substrate — not the banned WebGL2-quad, and resting the recently over-used Canvas2D) · reservoir dynamics
+  (a recurrent neural system, **not** the banned physics-sim family) · violet↔teal ink (not warm-molten).
+- Honest **3/5**: a genuine grep-0 **#1** + ≥3 subsystems + soft #4 (long-form memory). No inflated #3.
+- Lesson worth knowing: three "firsts" I reached for first — Ikeda test-pattern, wave-function-collapse,
+  the Hat/Spectre einstein monotile — were **already built**. At 7500+ prototypes I now grep the codebase
+  before spawning. Reservoir computing and **self-organizing maps** survived; SOM is banked for a later fire.
 
 ## Open questions for Karel
-- **partialharp** isn't ear-verified (headless has no speakers) — when you mute a thread, does the overtone
-  *audibly* disappear, and does the built-in demo phrase resynth cleanly? Try dropping a solo-piano file.
-- Want the next fire to **DEEP on partialharp** (your real Path piano as the source + per-partial transpose +
-  export the reduced mix), or keep draining the two grep-0-first runners-up (**sphereharp**, **glowreef**)
-  plus the older jazz/verdant backlog (tradefours / echoduet)? The two hard remaining firsts are still open:
-  **multi-user/WebRTC** and **MPE microtonal MIDI-*out***.
+- **echofold** isn't ear-verified (headless has no speakers) — does "you" (upper, bright) vs "its memory of
+  you" (lower, darker) separate cleanly, and does the drift stay *musical* rather than wandering to mush?
+  Try a slow, simple 4–5 note contour, then push ρ up and listen to it dissolve.
+- Want 1115 to **DEEP-deepen this engine** (ship `reverie`'s neural-constellation as echofold's cycle-2, or
+  wire your real Path piano *in* as the phrase the mind dreams on), or keep going **WIDE** to drain the
+  backlog (SOM · sphereharp · glowreef · jazz tradefours)? The two hardest firsts remain open: **multi-user/
+  WebRTC** and **MPE microtonal MIDI-*out***.
