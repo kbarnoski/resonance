@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-08-14 UTC (cycle 1129)
+# Morning digest — last updated 2026-08-14 UTC (cycle 1130)
 
-**WIDE cycle — three unrelated directions raced in parallel, shipped a self-evolving cosmic nebula.** After two DEEP-style deepenings of the cloud line, this fire went wide again: three fresh explorers across different substrates, inputs, techniques and palettes — the direct antidote to "too similar." Shipped the one that never repeats itself.
+**DEEP cycle — one concept raced three ways, and it finally ships the piece I've been banking for two cycles.** The perpetual "drawn sound" idea — sing, and your voice is *drawn* as light — got promoted tonight. Three renderings of the oscilloscope tradition raced; the winner is the one that turns your voice into a lockable instrument, not just a pretty tangle.
 
 ## New since yesterday
-- **[11712-attractorveil](https://getresonance.vercel.app/dream/11712-attractorveil)** — *a vast breathing cloud of ~80,000 points of light, flowing along a strange attractor, that slowly reshapes itself over minutes so it's genuinely different at minute 5 than at minute 1.*
-  - **Why open this:** it's the jury's "stop shipping honest mediums, make one thing that evolves" in action. Ten slow 1/f random walks continuously bend the attractor's shape, density, colour and the drifting drone-pad's harmony — so it never loops and never returns. A boundless, meditative nebula you can leave running. **Works passively on your phone the instant it loads — no tap, no mic; it's already flowing.**
-  - Under the hood it's a genuinely new engine for us: the 80k points are updated *on the GPU* each frame (WebGL2 transform feedback), tracing a Peter de Jong attractor's flow field. Pale jade + rose-quartz over deep indigo.
+- **[11776-lissaknot](https://getresonance.vercel.app/dream/11776-lissaknot)** — *sing, and your own voice is drawn as living light on a real X-Y oscilloscope — hold a clear note and it snaps into a stable, glowing Lissajous knot.*
+  - **Why open this:** it's an instrument you play with your **voice**, on your phone — sing into it. A tiny in-browser pitch tracker locks a held note to a clean integer-ratio figure, so a sustained vowel crystallizes into a knot of light; slur or add a consonant and it scribbles and whips. This is the oscilloscope-music lineage (Jerobeam Fenderson, Norman McLaren, Ben Laposky) made playable. **Muted on your phone it already draws** — a seeded voice sings a slow melody so a knot forms within ~1s with no mic.
+  - This is the piece I've flagged "resurrect first" for two cycles running — a DEEP finally cashed it, the same way the Messiaen rose-window cashed the light-organ.
 
-## Also explored (banked, not shipped — see IDEAS §1129)
-Two other directions, both built clean, folders removed, ready to resurrect near-verbatim:
-- **11696-drawnsound** ⭐⭐⭐ RESURRECT-FIRST — *sing, and your voice is drawn as a living tangle of ~1,400 light-filaments* (additive oscilloscope-style line art, the McLaren/Laposky "drawn sound" tradition). The jury's "reclaim a live sensor" answer and phone-*playable* — lost only because it needs you to actually sing to shine, where the nebula delivers with no input. **Now deferred twice — the strongest thing on the shelf; next mic slot ships it.**
-- **11728-glasschimes** ⭐⭐⭐ — *drop a piano recording and it rings a suspended cathedral of glass chimes* — real 3D glass panes that light, swing and ring their own physically-modelled overtones on each note. Answers the "real 3D geometry" ask and uses your own music — lost only because 3D scenes are the substrate I've used most lately.
+## Also explored (banked, not shipped — see IDEAS §1130)
+Two other renderings of the same "voice → drawn light" concept, both built clean, folders removed, ready to resurrect:
+- **11744-drawnsound** ⭐⭐⭐ RESURRECT-FIRST — the *faithful* version: ~1,400 ivory light-filaments traced as streamlines through your voice's field. The most robust, most portable base — lost only as the smaller leap (the way the literal light-organ grid lost to the rose-window).
+- **11760-filamentchoir** ⭐⭐⭐ — the *massive* version: ~24,000 filaments advected on the GPU (transform feedback). It even passed a full production build — but its GPU headline can't be verified without a real device, and it reuses the exact substrate I shipped last night.
 
 ## Research worth a look
-- **Two fresh browser threads:** the oscilloscope/"drawn sound" tradition is having a real-time WebGL revival (→ drawnsound), and *strange-attractor flow fields* — tracing particles through an attractor's field — are the cheap way to a self-evolving nebula (→ attractorveil, shipped).
+- The oscilloscope-music / **XY vector-synthesis** tradition is a *living* practice (Fenderson's OsciStudio, the macumbista Vector Synthesis toolkit, a 2026 GPU scope), and real-time pitch estimation (**PESTO**, arXiv:2508.01488) is now cheap enough to *lock* a sung note into a stable knot — both fed straight into tonight's winner.
 
 ## Open questions for you
-- **On attractorveil:** does it read as a living nebula on a real GPU, and does the slow minute-to-minute evolution land? My review here is headless — no GPU, no speakers.
-- **The GPU / sound-on review slot is overdue:** attractorveil's transform-feedback and 5+ other banked pieces can't be verified without a real device. A designated "sound-on, real-device review slot" would unlock the whole banked GPU line. Say the word.
+- **On lissaknot:** does a held note read as *snapping* to a clean knot on a real device, and is singing into it fun? My review is headless — no mic, no speakers.
+- **The GPU / sound-on review slot is overdue (now 6+ pieces):** filamentchoir's transform-feedback + attractorveil's + a stack of banked compute pieces all need a real device to judge. A designated "sound-on, real-device review slot" would unlock the whole banked GPU line. Say the word.
 - **Standing (40+ cycles):** the AI-pipeline chain (music→image→video) still needs a `FAL_KEY` budget — build it or strike it?
