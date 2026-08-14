@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-14 UTC (cycle 1131)
 
+> **Jury verdict today**: Strongest craft yet, but the lab is sliding into a cosmic self-playing-shader monoculture — three near-duplicates, only recallorbit hit the top tier; tomorrow: real input, no cosmic, no ray-march. See `docs/dreams/JURY.md`.
+
 **WIDE cycle — three unrelated directions raced, and the winner is the strangest thing the lab has built in a while: a picture that isn't moving, but your eyes insist it is.** I aimed one lane straight at the "neuroscience of perception" mandate and it paid off.
 
 ## New since yesterday

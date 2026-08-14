@@ -1,148 +1,40 @@
-# Concept Jury Verdict — 2026-08-13
+# Concept Jury Verdict — 2026-08-14
 
 ## Summary
-This is the strongest fortnight the lab has posted in a while, and the reason is
-narrow and real: **the build step finally stopped bunting.** The physics-sim
-monoculture the last two juries flogged is *gone* (zero PDE/CA/mass-spring/
-mechanism sims in 15), warm-molten is gone, and in their place the lab shipped
-**seven genuine grep-0 or near-first techniques** — an embodied body→HRTF
-spatial-audio room (the single lever prior juries named most and the build kept
-declining), a Factor Oracle machine-improviser, an Echo-State reservoir net, a
-Kohonen SOM, Sacred-Harp shape-note, MQ partial-tracking, live-Wikipedia
-sonification. That is the climb. The catch is that the lab cured one monoculture
-by growing its mirror image: **Canvas2D (6×) + SVG-DOM (5×) + pointer/keyboard
-desk-input (6×) + violet-on-black (7×)** is the new rut, live sensors nearly
-vanished, and only two of fifteen cleared 4/5. The verdict keeps rotating and
-the lab keeps treating the ban list as a swap-table.
+The lab is technically the strongest it has ever been and conceptually the most inbred it has been in a while. The last 15 are full of genuine craft — a real Factor Oracle, a trained Echo-State reservoir, real NOAA data, honest volumetric light transport — but the dominant house style has hardened into a single template: a seeded self-playing drone → analyser → full-screen WebGL2 shader, painted cosmic, that "works muted on a phone." That template shipped ~8 of 15 times, produced two near-duplicate tunnel-of-light pieces two cycles apart, and only **one** prototype in the whole window (recallorbit) cleared four ambition criteria.
 
 ## Diversity audit
-- **Over-represented input:** **pointer/keyboard desk-input (6×)** — testfield,
-  thresholdway, fasola, choruskeeper, echofold, craquelure — plus audio-file (3×)
-  and none/self-driving (2×) = **11 of 15 are non-sensor, sit-at-a-desk inputs.**
-  Only inkmirror + orbitroom (camera, 2×) read a live body. The 08-12 jury banned
-  mic/tilt for over-use; the lab overcorrected and the *sensors themselves* nearly
-  disappeared. mic, tilt, MIDI, camera are all rested now — that's a vacuum, not a
-  win.
-- **Over-represented output:** **Canvas2D (6×)** — orbitroom, choruskeeper,
-  partialharp, oraclequartet, datamatics, dropforge — and **SVG-DOM (5×)** —
-  thrumline, testfield, fasola, echofold, craquelure. The 08-12 jury declared
-  Canvas2D "dead as a primary (win)"; it is now the single most-used output in the
-  fresh 15. WebGL2-fragment-quad correctly dropped to 1× (inkmirror, pre-verdict),
-  but exactly ONE piece (cortexbloom, three.js height-field) touches real GPU 3-D,
-  and **WebGPU-compute is 0× shipped** (spectral-sculpt was banked, not committed).
-- **Over-represented technique:** **nothing hits ≥4 — a genuine win.** The physics-
-  sim family is at **zero.** The emerging house move is healthier: *port a named
-  CS/ML algorithm and make its live state the instrument* — ESN, SOM, Factor
-  Oracle, motif-development, MQ-tracking = **5× "model-as-instrument."** Unlike the
-  old physics sims (criterion #2 for free), most of these are honest grep-0 #1s, so
-  this is not a rut to ban — but it *is* the pattern to watch before it calcifies
-  the way sims did.
-- **Over-represented vibe:** **violet/brand-on-black (7×)** — thrumline, lumia,
-  partialharp, echofold, craquelure, cortexbloom, dropforge all live in the violet
-  ramp + one secondary. This is the lab's comfort palette, the resting state it
-  snaps back to. Credit where due: the prior wishlist mostly got filled — jazz (2×),
-  Ikeda 1-bit (2×), EDM (dropforge), verdant-bioluminescent (cortexbloom). The one
-  register still at zero is **playful** (kids is paused per AGENT.md, so that's
-  expected, not a miss).
-- **BANNED for next cycle:** Canvas2D output · SVG-DOM output · pointer/keyboard
-  desk-input · violet-on-black palette. Do not combine any of these. Also **rest
-  jazz and Ikeda-1-bit** — each shipped twice this window; a register the lab just
-  opened is not a register to camp on.
+- **Over-represented input:** self-playing / none (mic-or-file optional afterthought) — **~7×** (dropforge, datamatics, cloudveil, corridor, attractorveil, snakevoid, oraclequartet). Real input is decoration on most of these, not the point.
+- **Over-represented output:** full-screen WebGL2 fragment shader — **~7×** (veilbreak, cloudveil, corridor, snakevoid, attractorveil, magnetos, lissaknot); +3 more three.js. Nearly everything is a GPU field of light.
+- **Over-represented technique:** analyser-FFT-driven full-screen visual reading a self-generated drone (the muted-phone template) — **~8×**. Ping-pong feedback / ray-march is the recurring engine (cloudveil↔corridor, magnetos, veilbreak).
+- **Over-represented vibe:** cosmic — **~6×** (tiltglide, magnetos, cloudveil, corridor, attractorveil, voxbloom), with a near-death-tunnel-of-light sub-cluster (cloudveil, corridor, +attractorveil nebula).
+- **BANNED for next cycle:** `none/self-playing input` + `full-screen WebGL2 fragment shader output` + `analyser-driven-self-drone technique` + `cosmic / near-death tunnel-of-light vibe`. Also banned this week: **volumetric participating-medium ray-march** (shipped twice back-to-back).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0.** As before, every build is competent and degrades
-  gracefully. No throwaways.
-- **Hit 2–3 criteria: 13.** Six at exactly **2/5** — inkmirror, testfield,
-  thresholdway, craquelure, dropforge, datamatics (cleared the floor on #2
-  subsystems + #3 a named ref). Seven at **3/5** — thrumline, lumia, fasola,
-  orbitroom, choruskeeper, partialharp, oraclequartet. The middle shifted **up**
-  vs the 08-12 window (which had nine at exactly 2/5): most of these 3/5s carry an
-  **honest criterion #1** — a genuine novel technique — where the prior window's
-  #1 was, in the last jury's words, "essentially one piece."
-- **Hit 4–5 criteria: 2** — **`10984-echofold`** (real reservoir net + Jaeger 2001
-  + a *2026* arXiv frontier hook + long-form drift) and **`11048-cortexbloom`**
-  (grep-0 Kohonen SOM + three.js terrain + recent-research anchor). Zero hit 5/5.
-  **The ceiling is the problem now, not the floor.** Seven firsts is broad, but
-  they're mostly single-cycle "port an algorithm, sonify it, canvas-viz it" 3/5
-  builds. The ambition is *distributed*, not *concentrated* — nothing this window
-  is "massively bigger," it's fifteen honest medium builds.
+- **Hit 0–1 criteria — 3** (the local-minimum builds): `11408-tiltglide`, `11128-dropforge`, `11680-corridor`.
+- **Hit 2–3 criteria — 11**: datamatics, orbithall, voxbloom, magnetos, veilbreak, rosewindow, cloudveil, attractorveil, lissaknot, snakevoid, oraclequartet.
+- **Hit 4–5 criteria — 1** (the one to extend): `11376-recallorbit`.
+
+The distribution is the story: the lab has raised its *floor* (almost nothing is embarrassing) but flattened its *ceiling* (almost nothing is exceptional). Eleven competent 2–3s is a plateau, not a climb.
 
 ## Standouts (positive)
-- **`10808-orbitroom`** — the headline. It claimed the **exact grep-0 lever the
-  last three juries named most** and the build kept declining: an embodied
-  body-position → HRTF binaural room, camera-driven, model-free silhouette
-  centroid, the pan *drawn* on a top-down map so you see the spatialisation a phone
-  speaker can't render. The build step finally took the lever instead of bunting a
-  safe sim. This is what "make the next claim a real #1" looks like. 3/5, and the
-  right 3.
-- **`10984-echofold`** — the most *complete* build in the window: a genuine
-  Echo-State Network (state ∈ R²²⁰, unit-spectral-radius recurrent matrix, fixed
-  untrained readouts firing on threshold-crossings), long-form drift that never
-  returns, and it chained **today's research to today's build** (arXiv:2605.26848,
-  the three sliders = the paper's three control axes). A real first + recent
-  research + long-form in one honest piece. 4/5, and honestly under-claimed at 3.
-- **`11048-cortexbloom`** — fresh on **three axes at once**: grep-0 Kohonen SOM
-  (technique), real three.js height-field terrain where the vertices *are* the
-  neurons (not the banned shader-on-a-quad), in the verdant teal/violet
-  bioluminescent palette the 08-12 jury explicitly asked for. 4/5. This is the
-  template for dodging the bans without inflating the score.
-- **`11176-oraclequartet`** — a faithful Factor Oracle / OMax machine-improviser,
-  grep-verified 0 across 7500+ prototypes, a **living** machine-improv technique
-  (Assayag & Dubnov 2004) ported — not a dead-inventor name-drop. Directly answered
-  the 08-12 provocation #2.
-- **`10760-fasola`** (honorable mention) — grep-0 Sacred Harp shape-note; ports a
-  **living oral tradition** exactly as criterion #3 intends, in a folk/sacred
-  register the lab had never touched. The most genuinely *surprising* register of
-  the fifteen.
+- **11376-recallorbit** — the only 4/5 in the window and the model for what "ambitious" means: a genuine Echo-State Network with a *trained* ridge/Cholesky readout (no ML libs, ~200 lines), the DREAM knob morphing exact recall → edge-of-chaos attractor. Novel technique + named lineage (Jaeger, Lukoševičius) + explicit cycle-2 of echofold. Concept and math are one thing.
+- **11176-oraclequartet** — a real Factor Oracle (the OMax engine) that actually improvises, wrapped in a self-playing trio, cited properly (Assayag & Dubnov). First-in-lab technique, and it dodges the shader monoculture entirely (Canvas2D, jazz).
+- **11568-rosewindow** — the best diversity dodge of the fortnight: MIDI + touch + keyboard input, **DOM/CSS** mandala output (not a shader), Messiaen's documented synaesthesia as the color spine. A playable *instrument*, not another self-playing wash.
+- **11488-magnetos** — the only piece that is *about* something outside itself: live NOAA space-weather data driving field and drone. Real external-API sonification is exactly the thin category the mandate keeps asking for.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`11240-datamatics`** — the 1119 WIDE *winner*, and the weakest ship-decision in
-  the window. It is honestly 2/5 (it says so itself), and it is the **second** Ikeda
-  1-bit black/white/red datamatics piece in this very fifteen — `10664-testfield`
-  (cycle 1108) got there eleven cycles earlier — yet MORNING.md billed it as "the
-  lab's first piece in Ikeda's black-white-red datamatics register." The register
-  was already taken. A duplicate shipped as a novelty.
-- **`10664-testfield`** — the *other* Ikeda 1-bit; drag-a-scan-head-over-a-dithered-
-  field. Competent, but 2/5 (dithering isn't novel) and it opened the door to the
-  datamatics duplication. Two 1-bit datamatics pieces is one too many.
-- **`11128-dropforge`** — EDM build-and-drop is a real Karel directive (journey-arc
-  #4) and the electric-magenta palette is genuinely fresh, so the *idea* earns its
-  place — but the build sits at the 2/5 floor: a state machine + look-ahead
-  scheduler + sidechain synth + modest viz, no named reference, no first. The
-  concept is bigger than the execution.
-- **`11000-craquelure`** — a lovely Tarbell-Substrate crazing that *cleverly dodged*
-  the physics-sim ban (line-agents, explicitly "not a PDE/CA/mass-spring/mechanism"),
-  but landed at 2/5 on the most over-used substrate+palette pair in the window
-  (SVG-DOM + violet/frost). Local minimum on both axes the audit flags.
+- **11680-corridor** — the clearest "extend became repeat." Same Beer-Lambert / Henyey-Greenstein volumetric physics as 11600-cloudveil, same cosmic near-death gold, same seeded Am–F–C–G chorale, same "drop your audio" affordance — two cycles apart. Making the open cloud into a tube is a camera change, not a new idea. Hits ~1 criterion.
+- **11408-tiltglide** — three.js endless corridor + Shepard–Risset, both reused; tilt is a pleasant input but the piece clears only the subsystem floor. Cosmic aqua, no named reference, no research hook. A well-built local minimum.
+- **11128-dropforge** — real engineering (look-ahead scheduler, sidechain pump) in service of a genre-swap of the journey engine. Hits subsystems and little else; no named reference, no research chain, not the *first* long-form stateful piece.
 
 ## Provocations for tomorrow's dream cycle
-1. **Canvas2D is NOT dead — stop the swap-table.** The 08-12 jury killed the WebGL2
-   quad and the lab replaced it with Canvas2D (6×) + SVG-DOM (5×). One monoculture
-   for another. Next cycle: rest *both* Canvas2D and SVG-DOM and **ship the banked
-   WebGPU spectral-sculpt** (or another three.js-geometry piece). WebGPU-compute is
-   0× shipped and the one three.js piece (cortexbloom) was a standout — the GPU lane
-   is rested and outperforming.
-2. **Reclaim a live sensor.** Sensors went from "over-used" (08-12) to *near-extinct*
-   (11 of 15 are desk-input). Only 2 pieces read a live body. mic, tilt, MIDI, and
-   camera are all rested — build the next piece around one of them. The pendulum
-   swung from "too many sensors" straight to "too many desks"; land it in the middle.
-3. **Concentrate the ambition — take one first multi-cycle to 5/5.** Seven grep-0
-   firsts shipped, but only two reached 4/5 and **none reached 5/5.** The breadth is
-   banked; now go deep. Spend a DEEP cycle deepening a *proven* first — orbitroom's
-   HRTF room wants per-source distance reverb (its own next-cycle note); echofold
-   wants trained readouts for exact transposition. Stop shipping fifteen honest
-   mediums; ship one genuinely massive.
-4. **Don't let the newly-opened registers become the next ruts.** Jazz (choruskeeper
-   + oraclequartet) and Ikeda 1-bit (testfield + datamatics) each shipped **twice**
-   this window. They were absent registers the jury asked for — good — but a register
-   opened twice in fifteen cycles is a register at risk. Rest jazz and Ikeda for a
-   week.
-5. **Grep the "first" before you bill it as one — in MORNING too.** datamatics
-   shipped billed as "the lab's first Ikeda black-white-red datamatics" when testfield
-   had done exactly that eleven cycles earlier. The STATE-side grep discipline is
-   excellent (Factor Oracle verified across 7500+). Hold the phone digest to the same
-   bar: a "first" claim Karel reads at 06:30 should survive the same grep the STATE
-   claim did.
+1. **Kill the self-drone.** The self-playing-drone→analyser→shader template is ~8 of 15. For one cycle the audio source must come from **outside** the piece: a real recorded track as the driver, live mic as the *primary* instrument (not an optional tap), or external data. If the piece still "works muted on a phone," you built the template again.
+2. **Ban cosmic for a week.** Six cosmic pieces in fifteen. rosewindow (cathedral), datamatics (Ikeda monochrome), oraclequartet (jazz) prove non-cosmic lands. No gold/cyan void palettes until the count resets.
+3. **No volumetric ray-march.** Shipped twice back-to-back (cloudveil §11600, corridor §11680). Retire the participating-medium shader for a week — it has said what it has to say.
+4. **Spend a DEEP cycle on spatial / embodied.** The window has exactly one camera piece (orbithall) and *zero* depth-camera / projection / multi-screen / ambient-room work — the mandate's top "thin" category, untouched. Go there.
+5. **One of {multi-user WebRTC, AI-pipeline chain (2+ models in series), audio-only/non-screen} — pick one.** All three are at 0× in the window and all three are explicitly listed as thin. An audio-only piece would also directly answer #1's "kill the shader."
+6. **Extend recallorbit, don't clone it.** It is the only 4/5. A cycle-3 that lets you *sing your own* melody in and watch the trained readout reproduce it exactly, then dream it apart, honors the real multi-cycle commitment — far better than a fourth tunnel of light.
 
 ## Karel-facing line
-The lab genuinely climbed — physics-sims dead, molten gone, and it shipped seven real grep-0 firsts (embodied spatial-audio room, Factor Oracle, reservoir net, Kohonen SOM, Sacred Harp) instead of bunting — but it cured one monoculture by growing its mirror image: Canvas2D/SVG + desk-input + violet-on-black is the new rut, live sensors nearly vanished, and only two of fifteen cleared 4/5; reclaim a sensor, ship the banked WebGPU piece, and take one first multi-cycle to 5/5.
+Strongest craft yet, but the lab is sliding into a cosmic self-playing-shader monoculture — three near-duplicates, only recallorbit hit the top tier; tomorrow: real input, no cosmic, no ray-march.
