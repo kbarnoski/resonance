@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-08-14 UTC
+# Morning digest — last updated 2026-08-14 (cycle 1134, DEEP)
 
 ## New since yesterday
-- **[11888-chorusrooms](/dream/11888-chorusrooms)** — *every open tab of the page becomes one voice in a shared, phase-locked ambient canon — with NO server.* Open it, then **open a second window** (or a second tab): they discover each other over the browser's `BroadcastChannel`, agree on a leader-elected shared clock, and the shared **phase ribbon** shows both playheads moving in lock-step — the sync, made visible. Move your pointer to shape your voice's brightness + pan. Cashes the jury's "multi-user, 0× in the window" ask *without any backend*, and leaves the cosmic-shader monoculture entirely (SVG-DOM room, jade/moonstone, ensemble-derived audio — no self-drone).
-  - *Muted phone read:* a lone silent tab fills with 3 drifting "phantom" residents in ~0.8s, so it's a living room even before you open a second window or tap Join.
-  - *Best test:* on your phone, open it in two tabs side by side and watch the playheads lock — then tap Join in both.
+- **[12976-dreammedley](https://getresonance.vercel.app/dream/12976-dreammedley)** — sing a few short phrases and a reservoir "mind" turns them into a **five-minute-plus dream**: it recalls each song exactly, wanders the hybrid space *between* them, develops a fragment, sinks into reverie, and finds the long way home. **Why open this:** it's the cycle-3 you asked for — the direct extend of your loved `11376-recallorbit`, now holding **many** of your sung melodies at once and dreaming in the space between them. On a muted phone: watch the journey timeline advance + the memory-map anchors light up as the dream moves; hit **Begin** for sound, sing to teach it your own songs.
 
-## This was a WIDE fire — 2 more built, banked (see IDEAS §1133)
-- **11904-onsetloom** ⭐⭐⭐ (RESURRECT-FIRST) — *your live playing woven into cloth in real time.* Mic is the primary instrument: a real spectral-flux onset detector lays one weft thread per note; steady pulse → even cloth, rubato → ripple. **Phone-exercisable — sing into it.** Lost only as a more familiar mic→canvas shape.
-- **11920-modalgamelan** ⭐⭐⭐ — *walk into a 3-D field of tuned metal and strike it.* Real three.js lattice, modal/banded-waveguide metal-bar synthesis, per-bar HRTF placement, gamelan slendro tuning. A **headphones** piece — its spatial payoff is heard, not seen muted.
+## How it works (30-sec version)
+- One genuine Echo-State Network holds each sung phrase as its own trained readout. They share ONE reservoir basis, so blending two readouts = a real musical hybrid of the two melodies (not noise). The **recall⟷dream** knob unwinds any point past the edge of chaos. Anchor: the *Echo State Transformer* (attention over finite memory slots).
+- **Minute 5 ≠ minute 1, for real:** the arc progresses, per-song "warmth" accumulates, and the reservoir is never reset so its wandering never repeats — then snaps back to exact recall when it returns to one of your songs.
 
-## Open questions for Karel
-- **Sound-on / real-device review slot** — a growing set now needs your ears/phone, not a muted glance: 11888 (does a second window audibly add a voice? do two windows read as lock-step?), 11840-bodyloom (live camera), 11920-modalgamelan (HRTF on headphones), plus stillpoint/honeyveil/filamentchoir. Worth one dedicated sound-on pass?
-- **Cross-*device* chorusrooms?** 11888's honest ceiling is same-origin/same-device (the price of "no server"). A tiny WebRTC/WebSocket relay would make it a real shared room across phones — but that needs a guarded API route + your go-ahead. Build it, or keep it server-free?
-- **AI-pipeline chain** (music→image→video, 2+ models) — still 0× and still standing on your call; needs `FAL_KEY` + a budget. Build or strike?
+## Also explored this fire (2 more, banked to IDEAS §1134)
+- **memoryfold** — a 2-D "memory pad": each song is a pin, drag a cursor to morph one of your songs into another in real time (MusicVAE-style). The most novel *interaction*; resurrect on an explorable-instrument slot.
+- **mirrorduet** — sing live and it answers in **canon** with a blend of your past selves (literal attention over memories). Resurrect on a headphones/sound-on slot.
 
-## Notes
-- Ledger: 1133 was WIDE → **next fire (1134) is DEEP.** Jury still in effect: no cosmic, no volumetric raymarch, kill the self-drone.
-- Everything auto-deploys to getresonance.vercel.app/dream within ~30s of push.
+## Open questions for you
+- **Long-form is the ceiling the jury keeps pointing at.** dreammedley is the lab's most committed 5-min stateful piece yet — does the *arc* land, or does it need tighter movements / a clearer "home"? Sound-on needed.
+- **Seed the memory from your REAL Path piano** (not just sung phrases)? That's the natural cycle-4 for all three — your recordings become the "songs" the mind dreams between.
+- Still awaiting your call on the **AI-pipeline chain** (music→image→video, needs a FAL_KEY budget) — build or strike.
+
+## Verify / caveats
+- `npm run build` = clean (EXIT 0). NOT ear-verified (headless, no speakers) — the muted timeline + warmth-map are the silent stand-in; whether the FM voice + drone + between-song hybrids are pleasant on a speaker wants your device.
