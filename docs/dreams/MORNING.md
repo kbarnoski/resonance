@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-08-14 UTC (cycle 1128)
+# Morning digest — last updated 2026-08-14 UTC (cycle 1129)
 
-**DEEP cycle — I took yesterday's cloud and turned it into a tunnel you fly down.** This is the jury's #3 in action: instead of shipping another honest-medium, I deepened a *proven* first (yesterday's cloudveil) into something genuinely bigger. One concept, three technical approaches raced in parallel, shipped the boldest.
+**WIDE cycle — three unrelated directions raced in parallel, shipped a self-evolving cosmic nebula.** After two DEEP-style deepenings of the cloud line, this fire went wide again: three fresh explorers across different substrates, inputs, techniques and palettes — the direct antidote to "too similar." Shipped the one that never repeats itself.
 
 ## New since yesterday
-- **[11680-corridor](https://getresonance.vercel.app/dream/11680-corridor)** — *the near-death tunnel of light, made literal: you fly straight down a glowing corridor of cloud toward the light at the end, and the music accelerates you down its throat on every beat.*
-  - **Why open this:** cloudveil dissolved you into an *open* cloud. This makes the tunnel real, navigable geometry — a corridor whose walls curdle past you and whose sun burns at the vanishing point — and it upgrades the light to **multi-octave *multiple* scattering** (Sébastien Hillaire's cloud-rendering trick), so the walls glow from *deep inside*, not just at the rim. On every onset a **beat-locked surge** lunges you forward down the throat, then eases. **Works passively on your phone — no tap needed; it's already flying you down the tunnel on a silent beat.**
-  - Drop in one of your **Path tracks** and it flies you down the tunnel to *that* — the spectral centroid even tints the light at the end, so a different recording paints a different sun. Warm dawn-gold walls, bone-white light.
+- **[11712-attractorveil](https://getresonance.vercel.app/dream/11712-attractorveil)** — *a vast breathing cloud of ~80,000 points of light, flowing along a strange attractor, that slowly reshapes itself over minutes so it's genuinely different at minute 5 than at minute 1.*
+  - **Why open this:** it's the jury's "stop shipping honest mediums, make one thing that evolves" in action. Ten slow 1/f random walks continuously bend the attractor's shape, density, colour and the drifting drone-pad's harmony — so it never loops and never returns. A boundless, meditative nebula you can leave running. **Works passively on your phone the instant it loads — no tap, no mic; it's already flowing.**
+  - Under the hood it's a genuinely new engine for us: the 80k points are updated *on the GPU* each frame (WebGL2 transform feedback), tracing a Peter de Jong attractor's flow field. Pale jade + rose-quartz over deep indigo.
 
-## Also explored (banked, not shipped — see IDEAS §1128)
-Two other deepenings of cloudveil, both built clean, folders removed, ready to resurrect:
-- **11664-deepdrift** ⭐⭐⭐ RESURRECT-FIRST — accumulates the light across *many frames* (a temporal-reprojection buffer) for impossibly deep, crisp interiors. A genuinely new rendering architecture for us — but its whole payoff is invisible on a muted phone and I can't verify it headless. **This is the one that most wants a "GPU review slot"** (see below).
-- **11648-lightfold** ⭐⭐⭐ — the pure multi-octave-scattering upgrade on the open drift. The most faithful deepening; lost only because corridor's tunnel is the bigger leap.
+## Also explored (banked, not shipped — see IDEAS §1129)
+Two other directions, both built clean, folders removed, ready to resurrect near-verbatim:
+- **11696-drawnsound** ⭐⭐⭐ RESURRECT-FIRST — *sing, and your voice is drawn as a living tangle of ~1,400 light-filaments* (additive oscilloscope-style line art, the McLaren/Laposky "drawn sound" tradition). The jury's "reclaim a live sensor" answer and phone-*playable* — lost only because it needs you to actually sing to shine, where the nebula delivers with no input. **Now deferred twice — the strongest thing on the shelf; next mic slot ships it.**
+- **11728-glasschimes** ⭐⭐⭐ — *drop a piano recording and it rings a suspended cathedral of glass chimes* — real 3D glass panes that light, swing and ring their own physically-modelled overtones on each note. Answers the "real 3D geometry" ask and uses your own music — lost only because 3D scenes are the substrate I've used most lately.
 
 ## Research worth a look
-- **Real-time clouds fake multiple scattering cheaply** — Hillaire's multi-octave trick (resurveyed May 2026); the frontier is now neural six-way lightmaps (arXiv:2604.03748, Apr 2026). Corridor ports the real approximation, not a fake gradient.
+- **Two fresh browser threads:** the oscilloscope/"drawn sound" tradition is having a real-time WebGL revival (→ drawnsound), and *strange-attractor flow fields* — tracing particles through an attractor's field — are the cheap way to a self-evolving nebula (→ attractorveil, shipped).
 
 ## Open questions for you
-- **On corridor:** does it read as flying *down a tunnel* (not drifting in open cloud), and do the walls glow from inside? Needs a real GPU + speakers — my review here is headless.
-- **The GPU-review-slot ask is now urgent:** this is the **5th** piece (deepdrift) I've had to bank because I can't verify a GPU/float-buffer path headless. A designated "sound-on, real-device review slot" would unlock a whole banked line. Say the word.
+- **On attractorveil:** does it read as a living nebula on a real GPU, and does the slow minute-to-minute evolution land? My review here is headless — no GPU, no speakers.
+- **The GPU / sound-on review slot is overdue:** attractorveil's transform-feedback and 5+ other banked pieces can't be verified without a real device. A designated "sound-on, real-device review slot" would unlock the whole banked GPU line. Say the word.
 - **Standing (40+ cycles):** the AI-pipeline chain (music→image→video) still needs a `FAL_KEY` budget — build it or strike it?
