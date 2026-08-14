@@ -1,0 +1,188 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   rosewindow.module.css — the whole mandala is CSS/DOM: layered radial- and
+   conic-gradients + filter: blur + mix-blend-mode: screen, composited inside
+   an isolation:isolate stage. ZERO canvas, ZERO WebGL/WebGPU, ZERO SVG paths.
+
+   Per-frame JS writes only a handful of CSS custom properties per changed
+   petal (--a = glow alpha 0..1) plus a couple of global ones (--mode-a,
+   --mode-c for the whole-rose mode-colour wash; --ba/--bc for the central
+   boss). Everything else — position, base colour, tracery, the ring guides,
+   the stone frame, the ambient breath — is static or CSS-keyframe animated.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 90% at 50% 38%, #14101c 0%, #0b0812 46%, #060409 100%);
+  overflow: hidden;
+}
+
+.roseWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78vmin;
+  height: 78vmin;
+  /* deliberately uncapped: --rad below is expressed in vmin too, so the
+     whole rose (frame, tracery, boss, petals) scales together with no
+     mismatch at any viewport size. */
+  transform: translate(-50%, -50%);
+}
+
+/* ── decorative stone surround ─────────────────────────────────────────── */
+.frame {
+  position: absolute;
+  inset: -3.2%;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1.6vmin rgba(46, 40, 32, 0.55),
+    0 0 0 1.9vmin rgba(120, 106, 82, 0.22),
+    0 0 5vmin 1.2vmin rgba(0, 0, 0, 0.55) inset;
+  pointer-events: none;
+}
+
+/* ── slow rotator: ONLY the decorative tracery turns, never the petals ──── */
+.rotator {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: spin 210s linear infinite;
+  pointer-events: none;
+}
+.rotator[data-reduced="true"] {
+  animation-duration: 900s;
+}
+
+.tracery {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(228, 220, 255, 0.16) 0deg 0.45deg,
+      transparent 0.45deg 30deg
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 9.3vmin,
+      rgba(210, 200, 235, 0.14) 9.5vmin,
+      transparent 9.7vmin 16.3vmin,
+      rgba(210, 200, 235, 0.14) 16.5vmin,
+      transparent 16.7vmin 23.8vmin,
+      rgba(210, 200, 235, 0.14) 24vmin,
+      transparent 24.2vmin 32.3vmin,
+      rgba(210, 200, 235, 0.14) 32.5vmin,
+      transparent 32.7vmin
+    );
+  opacity: 0.6;
+}
+
+/* ── ambient whole-field breath — a slow, sub-3Hz brightness drift ──────── */
+.breather {
+  position: absolute;
+  inset: 0;
+  animation: breathe 9s ease-in-out infinite;
+}
+.breather[data-reduced="true"] {
+  animation-duration: 26s;
+}
+
+/* ── mode wash: the whole rose leans toward the detected mode's colour ──── */
+.modeWash {
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--mode-c, #7c8aa0) 0%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: var(--mode-a, 0);
+  filter: blur(3vmin);
+  pointer-events: none;
+}
+
+/* ── central boss — the bright heart of the window ──────────────────────── */
+.boss {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15%;
+  height: 15%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--bc-hi, #fff3d6) 0%, var(--bc, #d9b876) 42%, transparent 78%);
+  filter: blur(1vmin);
+  mix-blend-mode: screen;
+  opacity: var(--ba, 0.42);
+  animation: bossBreathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+.boss[data-reduced="true"] {
+  animation-duration: 22s;
+}
+
+/* ── glow layer / petal layer — ALL 48 glows are siblings painted together
+   (so mix-blend-mode: screen lets adjacent lit petals genuinely add into
+   new blended hues), then ALL 48 crisp petal shapes paint on top for sharp
+   jewel identity. --ang / --rad / --c / --hi / --lo are static per petal
+   (set once at mount via inline style). --a is the ONLY property the rAF
+   loop rewrites per frame, directly on each glow/petal element. ─────────── */
+.glowLayer,
+.petalLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glow {
+  --a: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15.5%;
+  height: 24%;
+  transform: translate(-50%, -50%) rotate(var(--ang)) translateY(calc(-1 * var(--rad)));
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--hi) 0%, var(--c) 45%, transparent 74%);
+  filter: blur(2.2vmin);
+  mix-blend-mode: screen;
+  opacity: var(--a);
+}
+
+.petal {
+  --a: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7%;
+  height: 12.5%;
+  transform: translate(-50%, -50%) rotate(var(--ang)) translateY(calc(-1 * var(--rad)));
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 36%, var(--hi) 0%, var(--c) 55%, var(--lo) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+  opacity: calc(0.14 + var(--a) * 0.86);
+}
+
+/* ── the tap surface: one big invisible layer, so touch targets are the
+   whole rose (not 48 sub-44px slivers) — genuinely thumb-playable. ──────── */
+.pointerLayer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  touch-action: none;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes breathe {
+  0%, 100% { filter: brightness(0.96) saturate(0.97); }
+  50% { filter: brightness(1.06) saturate(1.05); }
+}
+@keyframes bossBreathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.92); }
+  50% { transform: translate(-50%, -50%) scale(1.06); }
+}
