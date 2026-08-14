@@ -1,17 +1,19 @@
-# Morning digest — last updated 2026-08-14 UTC (cycle 1132)
+# Morning digest — last updated 2026-08-14 UTC
 
 ## New since yesterday
-- **[11840-bodyloom](https://getresonance.vercel.app/dream/11840-bodyloom)** — *a warm room that RECORDS and LOOPS your moving body.* Stand in front of the camera; move; commit a gesture — and it keeps **looping as a voice standing where you stood**, while you record another over it. In a couple of minutes an empty, silent room fills with a **spatial canon of your own looping past selves**. **Why open this:** it's the DEEP the new jury ordered — spatial/embodied, and it **kills the self-drone** (the audio exists *only* from your motion; a still room is silent). Muted at 06:30 the seeded demo dancer already builds the canon in ~2s, but this one is best **with the camera on** — let it watch you move.
+- **[11888-chorusrooms](/dream/11888-chorusrooms)** — *every open tab of the page becomes one voice in a shared, phase-locked ambient canon — with NO server.* Open it, then **open a second window** (or a second tab): they discover each other over the browser's `BroadcastChannel`, agree on a leader-elected shared clock, and the shared **phase ribbon** shows both playheads moving in lock-step — the sync, made visible. Move your pointer to shape your voice's brightness + pan. Cashes the jury's "multi-user, 0× in the window" ask *without any backend*, and leaves the cosmic-shader monoculture entirely (SVG-DOM room, jade/moonstone, ensemble-derived audio — no self-drone).
+  - *Muted phone read:* a lone silent tab fills with 3 drifting "phantom" residents in ~0.8s, so it's a living room even before you open a second window or tap Join.
+  - *Best test:* on your phone, open it in two tabs side by side and watch the playheads lock — then tap Join in both.
 
-## This was a DEEP (3 approaches, 1 shipped)
-One concept — *the room remembers your body* — raced three ways. Shipped the richest (full-body pose → visible standing ghost-selves). The two others are banked in IDEAS §1132:
-- **11856-shadecanon** ⭐⭐⭐ — the **network-free** version (no MediaPipe): a top-down room-map where *the pan you hear is the position you see*. The robust/offline lane — resurrect-first, or graft as bodyloom's no-CDN fallback.
-- **11872-motionwell** ⭐⭐⭐ — the **ambient grain-cloud** version: where you moved keeps whispering, decaying over ~2 min. The installation-presence lane.
-
-## Research finding worth a look
-- Movement sonification is a live 2026 practice built on **loops** ([CHI 2026, "Interactive Movement Sonification for Hip-Hop Dance"](https://dl.acm.org/doi/full/10.1145/3772318.3790703)): the body is the composer inside a perception–action loop. bodyloom ports that and extends it across *time* — the room remembers. (RESEARCH §1132.)
+## This was a WIDE fire — 2 more built, banked (see IDEAS §1133)
+- **11904-onsetloom** ⭐⭐⭐ (RESURRECT-FIRST) — *your live playing woven into cloth in real time.* Mic is the primary instrument: a real spectral-flux onset detector lays one weft thread per note; steady pulse → even cloth, rubato → ripple. **Phone-exercisable — sing into it.** Lost only as a more familiar mic→canvas shape.
+- **11920-modalgamelan** ⭐⭐⭐ — *walk into a 3-D field of tuned metal and strike it.* Real three.js lattice, modal/banded-waveguide metal-bar synthesis, per-bar HRTF placement, gamelan slendro tuning. A **headphones** piece — its spatial payoff is heard, not seen muted.
 
 ## Open questions for Karel
-1. **The jury's headline:** the lab slid into a *cosmic self-playing-shader monoculture* (~8 of the last 15). This cycle deliberately broke it — real camera input, warm room, no shader, no cosmic. Does this direction feel right, or too far from the light-and-sound core?
-2. **Sound-on / real-device review slot** — still standing. A growing bench needs your phone/headphones to judge: **11808-stillpoint** (audio-first Path-piano void), **11824-honeyveil** (3-D honeycomb), **11760-filamentchoir** (GPU), and now bodyloom's live camera. Worth a dedicated "open these with the camera + speakers on" pass?
-3. **AI-pipeline chain** (music→image→video, needs a `FAL_KEY` budget) — build or strike?
+- **Sound-on / real-device review slot** — a growing set now needs your ears/phone, not a muted glance: 11888 (does a second window audibly add a voice? do two windows read as lock-step?), 11840-bodyloom (live camera), 11920-modalgamelan (HRTF on headphones), plus stillpoint/honeyveil/filamentchoir. Worth one dedicated sound-on pass?
+- **Cross-*device* chorusrooms?** 11888's honest ceiling is same-origin/same-device (the price of "no server"). A tiny WebRTC/WebSocket relay would make it a real shared room across phones — but that needs a guarded API route + your go-ahead. Build it, or keep it server-free?
+- **AI-pipeline chain** (music→image→video, 2+ models) — still 0× and still standing on your call; needs `FAL_KEY` + a budget. Build or strike?
+
+## Notes
+- Ledger: 1133 was WIDE → **next fire (1134) is DEEP.** Jury still in effect: no cosmic, no volumetric raymarch, kill the self-drone.
+- Everything auto-deploys to getresonance.vercel.app/dream within ~30s of push.
