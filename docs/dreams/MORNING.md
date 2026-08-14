@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-08-13 UTC (cycle 1124)
+# Morning digest — last updated 2026-08-14 UTC (cycle 1125)
 
-**DEEP cycle — I pointed the lab at the actual sky.** This one reads **live NOAA space-weather data** — the real solar wind, magnetic field, Kp index, and X-ray flares happening *right now* — and turns them into an intense storm of light and sound. It also breaks a rut I noticed: your last four winners were all three.js-3D, cyan/aqua, cosmic-*ambient*. So this one is deliberately **intense** (your rested visionary pole), a WebGL2 shader (not three.js), and a fresh palette.
+**WIDE cycle — you are the brush.** This one hands the mandala to your own body: point the webcam and your **movement** warps a breakthrough visionary field — wave a hand and the tunnel of light blooms and folds. It's the "reclaim a live sensor" your last jury asked for (the camera), it breaks the three.js-3D rut (your last 4 winners were all three.js; this is a WebGL2 shader), and it's back on the **intense** visionary pole.
 
 ## New since yesterday
-- **[11488-magnetos](https://getresonance.vercel.app/dream/11488-magnetos)** — *see and hear the sun and Earth's magnetosphere, right now.* A living field of magnetic **field-lines** that curl and **reconnect** toward a breakthrough peak — teal when the sky is quiet, folding up through gold and magenta to white as a storm builds.
-  - **It's real data.** Four live NOAA feeds (solar wind, Bz, Kp, X-ray flares), polled each minute — a `LIVE` / `REPLAY` pill tells you which. Conditions were quiet when I built it (Kp 1), so tap **Summon storm** to run a real ~2-min escalation to a G3 storm with a mid-flare shockwave.
-  - **It remembers.** A long-form memory accumulator means the field is *genuinely denser and more folded 3 minutes into a storm than at its start* — not just tracking the instantaneous number. That's the "different at minute 5" property your jury keeps asking for. **Why open this:** it's the intense, breakthrough-building pole your recent run has been missing, and the data is the actual sun tonight.
+- **[11520-veilbreak](https://getresonance.vercel.app/dream/11520-veilbreak)** — *your motion warps a breakthrough mandala.* The screen runs the visual-cortex "form constants" (Klüver / Bressloff–Cowan): stripes and a honeycomb generated in cortical space and warped into tunnels, spirals and lattices. Move, and the noise, flow speed, fold-count and bloom all rise; the piece sounds more intense as you move.
+  - **It reclaims the camera.** Tap **Enter the light** to grant it — your optical flow drives the whole field. No camera (or on a phone you'd rather not)? Tap **Without camera** and it blooms on its own via a synthetic drift. An `input · mode` caption tells you which is live.
+  - **Why open this:** it's the sensor-reclaim + intense-pole your recent run was missing, and it's the first piece where *you* are the input to the mandala. **Best on a laptop with a webcam** — grant the camera and wave.
 
-## Also explored (banked, not shipped — see IDEAS §1124)
-Same live-space-weather concept, two other renderings — both built clean, folders removed, ready to resurrect:
-- **11456-auroral** ⭐⭐ RESURRECT-FIRST — *the live aurora*: layered green→magenta→crimson curtains over a starfield. Honestly the most beautiful + most robust of the three; I banked it only because a serene cosmic sky felt too close to your last four winners. The safe "ship-it-verbatim" pick for a future slot.
-- **11472-heliostorm** ⭐⭐ — *the sun breathing*: a churning corona with solar wind streaming out and a flare shockwave. Great image, but its molten crimson/gold palette is on your standing warm-ember hold, so it needs a re-skin first.
+## Also explored (banked, not shipped — see IDEAS §1125)
+Two other divergent directions, both built clean, folders removed, ready to resurrect:
+- **11504-lumenorgan** ⭐⭐⭐ RESURRECT-FIRST — *a MIDI keyboard as an organ of light*: every note blooms a stained-glass panel of pure CSS, chords blend into new colours. The truest "reclaim MIDI" answer and the freshest substrate — but I've now banked it **three cycles running** because MIDI can't be shown on your review phone. **I think it's overdue: want me to promote it to a full MIDI instrument next cycle?**
+- **11536-swarmlattice** ⭐⭐⭐ — *60k points of light crystallize into a breathing honeycomb and melt apart.* A WebGPU compute-swarm; lost only because its headline GPU path can't be verified without a real device, and it reads no sensor.
 
 ## Open questions for you
-- **On your phone:** does the field-line **reconnection** render right on your GPU (it uses a float-feedback path I can't verify headless — there's an RGBA8 fallback), and does the storm actually read as *building/remembering* rather than just flickering?
-- Does the drone sit musically — Bz bending it flat for tension, flares as soft bells?
-- Want me to promote **auroral** next (it's the crowd-pleaser), or keep pushing the abstract/intense direction?
+- **On veilbreak:** does waving a hand read as *warping the mandala* (vs just brightening it), and does the drone rise musically with motion? On a phone the synthetic-drift path is what you'll see — is that enough, or is this a laptop-first piece?
+- **lumenorgan has now banked 3× in a row.** Say the word and next cycle's DEEP promotes it into a real, playable MIDI light-organ (sustain pedal, aftertouch bloom, rose-window layout) instead of another WIDE explorer.
