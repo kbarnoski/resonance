@@ -34,17 +34,20 @@ describe("installation-machine timing constants", () => {
     const t = CYCLE_INTRO_TIMINGS;
     expect(t.cycleFadeOutStartMs).toBeGreaterThanOrEqual(t.cycleFadeInMs);
     expect(t.bgFadeStartMs).toBeGreaterThanOrEqual(t.cycleFadeOutStartMs);
-    expect(t.journeyMountMs).toBeGreaterThan(t.bgFadeStartMs);
+    expect(t.journeyMountMs).toBeGreaterThanOrEqual(t.bgFadeStartMs);
     expect(t.journeyFadeOutStartMs).toBeGreaterThan(t.journeyMountMs);
     expect(t.phaseChangeMs).toBeGreaterThanOrEqual(
       t.journeyFadeOutStartMs + t.journeyFadeOutMs,
     );
   });
 
-  it("bg is fully gone before journey title mounts", () => {
+  it("bg fade and journey title mount run on the same clock", () => {
+    // Live choreography (installation-intro.tsx): the bg-black layer
+    // starts fading at the exact moment the journey title mounts, and
+    // both run the same 3.8s fade so shader + title emerge together.
     const t = CYCLE_INTRO_TIMINGS;
-    const bgGoneAt = t.bgFadeStartMs + t.bgFadeOutMs;
-    expect(t.journeyMountMs).toBeGreaterThanOrEqual(bgGoneAt);
+    expect(t.bgFadeStartMs).toBe(t.journeyMountMs);
+    expect(t.bgFadeOutMs).toBe(t.journeyFadeInMs);
   });
 });
 

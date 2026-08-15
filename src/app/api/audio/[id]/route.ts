@@ -216,7 +216,8 @@ export async function GET(
     .download(recording.file_name);
 
   if (dlError || !fileData) {
-    return NextResponse.json({ error: `Download failed: ${dlError?.message}` }, { status: 500 });
+    logger.error("audio/[id]", "Download failed:", dlError);
+    return NextResponse.json({ error: "Download failed" }, { status: 500 });
   }
 
   let arrayBuffer = await fileData.arrayBuffer();

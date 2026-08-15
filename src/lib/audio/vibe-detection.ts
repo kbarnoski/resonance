@@ -376,10 +376,12 @@ export const MOOD_REALM_MAP: Record<Mood, string[]> = {
 };
 
 const MOOD_SHADER_MAP: Record<Mood, VisualizerMode> = {
-  melancholic: "nebula",
+  // "nebula" was removed from the shader registry — remapped to
+  // existing calm/cosmic shaders that fit each mood.
+  melancholic: "dusk",
   intense: "inferno",
   dreamy: "drift",
-  mystical: "nebula",
+  mystical: "expanse",
   chaotic: "plasma",
   hypnotic: "drift",
   flowing: "drift",

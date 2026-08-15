@@ -125,7 +125,6 @@ export const useShaderPreferences = create<ShaderPreferencesState>((set, get) =>
     const lsBlocked = readLS(LS_BLOCKED);
     const lsLoved = readLS(LS_LOVED);
     const lsDeleted = readLS(LS_DELETED);
-    const lsHasData = lsBlocked.size > 0 || lsLoved.size > 0 || lsDeleted.size > 0;
 
     // Set from localStorage first so UI renders immediately
     set({ blocked: lsBlocked, loved: lsLoved, deleted: lsDeleted, loaded: true });

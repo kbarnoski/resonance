@@ -38,6 +38,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # claude
 .claude/
@@ -66,3 +67,7 @@ journey-feedback.jsonl
 # LoRA training artifacts (regenerable; ~20MB of images + zip)
 scripts/_*-lora-training/
 scripts/_*-lora-training.zip
+
+# regenerable decks — see docs/build-deck.py
+*.pptx
+*.docx

@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
 
     return Response.json({ url });
   } catch (err) {
-    return Response.json({ error: String(err) }, { status: 500 });
+    // Detail stays server-side; client gets a generic message.
+    console.error("[chatterbox-ghost/upload] Error:", err);
+    return Response.json({ error: "Upload failed" }, { status: 500 });
   }
 }

@@ -54,7 +54,7 @@ const ALL_SHADERS_RAW: string[] = [
   "hesychasm", "kairos", "lectio", "credo",
   // Cosmic (22)
   "pulsar", "quasar", "supernova",
-  "nebula", "singularity", "drift", "expanse",
+  "singularity", "drift", "expanse",
   "protostar", "redshift",
   "nadir", "parsec", "nova", "photon",
   "selene", "kepler", "hubble", "doppler",

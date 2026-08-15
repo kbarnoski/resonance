@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getJourneyEngine } from "./journey-engine";
-// import { getAmbientEngine } from "@/lib/audio/ambient-engine";
 // import { getAudioEngine } from "@/lib/audio/audio-engine";
 import type { JourneyFrame, JourneyPhaseId } from "./types";
 

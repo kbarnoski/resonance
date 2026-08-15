@@ -21,7 +21,8 @@ shippable**. Polish comes from iteration across many cycles.
 2. **Scope fence.** You may only create or edit files inside:
    - `src/app/dream/**`
    - `docs/dreams/**`
-   No exceptions. Never edit `package.json`, `package-lock.json`, `next.config.*`, `.env*`, `.npmrc`, middleware, root layout, or any existing Resonance code outside the dream zone. Never commit lockfiles (`pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`) — this project uses npm exclusively. If your environment lacks node_modules, run `npm ci` (never `pnpm install` or `yarn`).
+   No exceptions. Never edit `package.json`, `package-lock.json`, `next.config.*`, `.env*`, `.npmrc`, middleware, root layout, or any existing Resonance code outside the dream zone.
+   **Clarification (2026-08-14):** the fence binds the AUTONOMOUS agent absolutely. When Karel explicitly directs an out-of-fence change in a live Claude Code session, it is permitted — but it MUST be noted in STATE.md as `Karel-directed out-of-fence: <files>`. (History: 4 of 1,058 dream commits touched files outside the fence — middleware.ts, next.config.ts, docs/content/, scripts/ — all Karel-directed in live sessions.) Never commit lockfiles (`pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`) — this project uses npm exclusively. If your environment lacks node_modules, run `npm ci` (never `pnpm install` or `yarn`).
 3. **Full build check before commit — absolute.** Run `npm run build` (Next's full TypeScript + ESLint + production compile). `tsc --noEmit` alone is NOT enough — Vercel runs ESLint and fails on hook-rule / unused-var errors that `tsc` ignores. If `npm run build` fails: try ONE fix attempt; if it still fails, `git restore .` and log the failure to `docs/dreams/STATE.md` instead of committing broken code. Since you now push straight to main, broken code = broken production. The "I'd rather skip a cycle than break the preview" rule is now "I'd rather skip a cycle than break Karel's app." Common gotchas: function names beginning with `use` are treated as React hooks (use `draw*`, `run*`, `apply*` for helpers); never have unused imports.
 4. **One commit per cycle.** Squash all changes into a single commit with prefix `dream:`. Format: `dream: cycle <N>: <action> — <one-line summary>`.
 5. **Push to main only.** `git push origin main`. Never `--force`. Never push to other refs. The `dream/sandbox` branch is retired — do not push to it.
@@ -47,13 +48,23 @@ shippable**. Polish comes from iteration across many cycles.
     - Reference implementations to study/extend: `700-welcome-home` (spectrum bloom + full catalog selector), `701-catalog-cosmos` (catalog hub), `703-harmonic-bloom` (chord→mandala), `706-keys-of-light` (note-roll aurora), `707-two-track-weave` (equal-power crossfade of any two pieces).
     This holds for EVERY cycle until Karel explicitly changes the direction. Synth-only prototypes are no longer acceptable output.
 
+    **Music-priority ruling (Karel, 2026-08-14):** *"right now the priority is protos using my music so that is priority over using a mic."* Mic / camera / MIDI input may exist as a SECONDARY interaction layer on top of catalog audio (e.g. your voice modulates, filters, or harmonizes with a real track) — but mic-primary or user-synthesized-audio-primary pieces are PAUSED until Karel gives new direction. When jury provocations (JURY.md) conflict with this rule, **rule 10 wins.**
+
 If you ever feel uncertain whether an action violates these rules, **do not perform it**. Log the question to STATE.md and let Karel resolve it in the morning.
+
+### If production breaks — revert runbook (added 2026-08-14)
+
+1. Identify the bad commit: `git log --oneline -5`.
+2. `git revert <sha> --no-edit && npm run build && git push origin main` — **revert, never reset/force-push.**
+3. If the build itself is broken and blocking the revert, revert the merge of the entire cycle commit.
+4. Log the incident to STATE.md.
+5. Vercel redeploys automatically ~30 seconds after push — verify `getresonance.vercel.app` recovers.
 
 ---
 
 ## Per-cycle procedure
 
-Each hourly fire does exactly this sequence:
+Each fire (every 2 hours) does exactly this sequence:
 
 ### 1. Orient (5 min budget)
 - `git fetch && git checkout main && git pull --ff-only origin main`
@@ -63,6 +74,10 @@ Each hourly fire does exactly this sequence:
 - **Fetch Karel's love signal** (no auth needed, public endpoint):
   `curl -s https://getresonance.vercel.app/api/dream/votes`
   Returns `{slug: 1}` for each prototype Karel has loved (other slugs are absent / 0). Use it as a soft bias: lean toward extending themes / techniques / palettes from loved prototypes when picking the next idea. Never delete or modify any prototype — the immutability rule still holds. Note in STATE.md which loved slugs influenced this cycle's choice, if any.
+
+**Log rotation (rule added 2026-08-14) — maintenance you perform yourself as part of Orient.** The steering logs have grown huge (STATE.md ~11MB prepend-style, IDEAS.md ~4.3MB, RESEARCH.md ~3MB; docs/dreams is ~23MB tracked and every 2-hour cycle rewriting the head of an 11MB file mints a new multi-MB blob per commit — .git is at 194MB). So:
+- When **STATE.md, IDEAS.md, or RESEARCH.md exceeds 2MB**, FIRST move all but the newest ~200KB into `docs/dreams/archive/<NAME>-YYYY-MM.md` (create the `archive/` dir if needed), then continue in the slimmed live file.
+- **INDEX.md entries must be ONE line each going forward** (existing entries may stay as they are).
 
 ### 2. Decide (5 min budget)
 Pick ONE action for this cycle, in priority order:
@@ -147,7 +162,7 @@ Do the work. Constraints:
 - `git push origin main`
 
 ### 6. Done
-Exit. The next fire wakes up in ~1 hour.
+Exit. The next fire wakes up in ~2 hours.
 
 ---
 
@@ -190,7 +205,7 @@ Each prototype should answer ONE question: "what if Resonance could do X?"
 
 **Good prototype**:
 - Loads in <1 second
-- Has clear UI: title, one-sentence description, primary action button ("Start mic", "Play sample", "Drop a file")
+- Has clear UI: title, one-sentence description, primary action button ("Start mic" (subordinate to ABSOLUTE rule 10 — see 2026-08-14 music-priority ruling; catalog playback is the primary action, mic at most a secondary layer), "Play sample", "Drop a file")
 - Shows the AV idea immediately on action
 - Has a "Read the design notes" link in the corner that opens its README.md (which the agent also writes)
 - Degrades gracefully (no mic? show a fallback. webgl unavailable? show a notice.)
@@ -262,7 +277,7 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 
 1. **Real audio-visual prototypes**, not pixel mockups. Sound + viz, interactive.
 2. **Surprise** — things he hasn't considered. Drop in a research finding, a strange-attractor visualization, a non-Western musical structure, anything that makes him say "huh, I didn't know we could do that."
-3. **Live performance fitness** — many prototypes should be playable on a stage with mic input, low latency, GPU-only paths.
+3. **Live performance fitness** — many prototypes should be playable on a stage with mic input, low latency, GPU-only paths. (Mic-primary is subordinate to ABSOLUTE rule 10 — see 2026-08-14 music-priority ruling; mic may only be a secondary layer over catalog audio for now.)
 4. **Journey engine alternatives** — the current engine has a visionary 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
 5. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
 
@@ -329,7 +344,7 @@ If your build idea satisfies fewer than 2 of these, **REJECT IT** and pick somet
 
 Before the Decide step picks what to build, run this audit on the **last 10 prototypes** (look at INDEX.md). For each, tag with:
 
-- **INPUT modality** — mic, audio-file, camera, touch, tilt, MIDI, keyboard, none-AI-only, body-tracking, etc.
+- **INPUT modality** — mic (subordinate to ABSOLUTE rule 10 — see 2026-08-14 music-priority ruling: mic counts only as a secondary layer over catalog audio, never as the primary source), audio-file, camera, touch, tilt, MIDI, keyboard, none-AI-only, body-tracking, etc.
 - **OUTPUT modality** — canvas-shader, three.js, WebGPU, audio-only, AI-image, AI-video, speech-synth, projection, etc.
 - **CORE TECHNIQUE** — FFT, particle system, Karplus-Strong, reaction-diffusion, latent walk, generative-model-call, raymarching, fluid sim, granular synth, score-following, etc.
 - **PALETTE / VIBE** — cosmic, ghost, kids, geometric/Ikeda, organic/Anadol, clinical/instructional, ritual, jazz, EDM, ambient, etc.

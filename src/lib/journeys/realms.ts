@@ -33,7 +33,6 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "revelation", "mandorla", "seraph", "halo",
-      "nebula",
       "helix", "drift", "expanse",
       "kenosis", "agape",
     ],
@@ -176,7 +175,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "liquid", "drift", "tide", "ocean",
       "whirlpool", "plankton", "coral",
-      "drift", "nebula", "cascade", "ripple",
+      "drift", "cascade", "ripple",
       "pelagic", "laminar",
       "deep-current", "dark-tide", "abyss-light",
     ],
@@ -268,7 +267,7 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "astral", "nebula",
+      "astral",
       "supernova", "pulsar", "quasar", "singularity",
       "drift", "expanse",
       "cassegrain", "waveform",
@@ -409,7 +408,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "fog", "expanse", "drift",
-      "nebula", "halo",
+      "halo",
       "revelation", "threshold",
     ],
     palette: {
@@ -779,7 +778,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "mandorla", "seraph",
-      "nebula", "mycelium",
+      "mycelium",
       "revelation", "halo",
     ],
     palette: {

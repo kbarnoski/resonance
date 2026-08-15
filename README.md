@@ -49,15 +49,18 @@ Each phase has its own shader pool, AI image prompt sequence, voice cadence, and
 ## Local development
 
 ```bash
-# install
-pnpm install
+# install (npm-only repo — pnpm-lock.yaml is deliberately gitignored)
+npm ci
 
 # environment
 cp .env.example .env.local
-# fill in Supabase URL, anon key, service role key, fal.ai key, Anthropic key, ADMIN_EMAIL
+# fill in: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+# SUPABASE_SERVICE_ROLE_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY (poetry TTS),
+# FAL_KEY, FFMPEG_PATH (audio transcode), ADMIN_EMAIL
+# (optional: KV_REST_API_URL, KV_REST_API_TOKEN for durable rate limiting)
 
 # run
-pnpm dev
+npm run dev
 # → http://localhost:3000
 ```
 
@@ -70,6 +73,8 @@ src/
 ├── app/
 │   ├── (room)/            The Room (visualizer + shared journey view)
 │   ├── (studio)/          The Studio (library, upload, analysis, settings, compare)
+│   ├── dream/             The dream lab — ~700 autonomous AV prototypes (public, no login)
+│   ├── installation/      Kiosk installation mode (served at /installation and /demo via rewrites in next.config.ts)
 │   ├── path/[token]/      Shareable journey paths
 │   ├── share/[token]/     Public recording shares
 │   └── api/               Audio streaming, journey CRUD, AI gen, feedback, analysis
@@ -89,16 +94,13 @@ src/
 │   ├── analysis/          Cross-recording analysis
 │   └── supabase/          Client + server utilities
 └── middleware.ts           Auth + CSP + security headers
+
+docs/dreams/                Dream-agent steering docs (autonomous prototype pipeline)
 ```
 
 ## Deploy
 
-```bash
-pnpm build
-vercel deploy --prod
-```
-
-Set environment variables in the Vercel dashboard. Production deploys auto-fire on `main` push via the Vercel-GitHub integration.
+Production deploys auto-fire on `main` push via the Vercel-GitHub integration — no manual deploy step. Set environment variables in the Vercel dashboard. (`vercel deploy --prod` exists as a manual override only; normally never needed.)
 
 ## Built collaboratively with Claude Code
 

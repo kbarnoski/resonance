@@ -1,3 +1,5 @@
+*Historical (2026-03): pre-Room vision deck — superseded by the 19-slide paper deck.*
+
 # Resonance — Vision Deck
 
 ---

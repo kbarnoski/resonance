@@ -1,5 +1,7 @@
 # Concept Jury Verdict — 2026-08-14
 
+> **OWNER PRIORITY (Karel, 2026-08-14):** prototypes grounded in Karel's real catalog take priority over mic-primary interaction. Provocation #1 (mic as primary instrument) is subordinate to AGENT.md ABSOLUTE rule 10 until Karel says otherwise. Mic may be a secondary layer over catalog audio.
+
 ## Summary
 The lab is technically the strongest it has ever been and conceptually the most inbred it has been in a while. The last 15 are full of genuine craft — a real Factor Oracle, a trained Echo-State reservoir, real NOAA data, honest volumetric light transport — but the dominant house style has hardened into a single template: a seeded self-playing drone → analyser → full-screen WebGL2 shader, painted cosmic, that "works muted on a phone." That template shipped ~8 of 15 times, produced two near-duplicate tunnel-of-light pieces two cycles apart, and only **one** prototype in the whole window (recallorbit) cleared four ambition criteria.
 

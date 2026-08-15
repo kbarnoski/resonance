@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
 import { isAdmin } from "@/lib/auth/require-admin";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
+import { checkOrigin } from "../origin-check";
 
 // Three fal models, billed at very different rates:
 //   schnell — 4 inference steps, ~$0.003/frame   (cheap)
@@ -53,6 +54,12 @@ const COST_FLUX_PULID = 0.055;
 const COST_FLUX_LORA = 0.02;
 
 export async function POST(request: Request) {
+  // Origin allowlist FIRST — random third-party sites can't spend the
+  // fal key. Same-origin pages (/installation, /dream, /demo) pass;
+  // no auth is demanded (the kiosk is anonymous by design).
+  const forbidden = checkOrigin(request);
+  if (forbidden) return forbidden;
+
   if (!process.env.FAL_KEY) {
     return Response.json(
       { error: "AI image generation not configured" },
@@ -76,7 +83,9 @@ export async function POST(request: Request) {
   //      escape hatch when high-fidelity preview is needed.
   //
   // Installation detection is referer-based — match `/installation`
-  // exactly, NOT `/demo`. A spoofed referer can get dev quality but
+  // exactly, NOT `/demo`. The kiosk is anonymous by design, so this
+  // stays referer-based; the origin allowlist above now bounds the
+  // spoofing surface to same-origin callers, and a spoofed referer
   // is still capped by the per-IP rate limit.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

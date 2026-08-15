@@ -17,6 +17,9 @@ import {
   INTRO_MS,
   CREDITS_MS,
   MAX_JOURNEY_MS,
+  STALLED_THRESHOLD_MS,
+  MID_STALL_RELOAD_MS,
+  CYCLE_INTRO_TIMINGS,
   distributedTrackIndex,
 } from "./installation-machine";
 
@@ -540,8 +543,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       try {
         await fetch("/api/installation/heartbeat", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, payload }),
+          headers: {
+            "Content-Type": "application/json",
+            // Token travels in a header (not the body/query) so it
+            // stays out of URL and body logs.
+            "x-installation-token": token,
+          },
+          body: JSON.stringify({ payload }),
           keepalive: true,
         });
       } catch { /* network blip — next tick will retry */ }
@@ -769,10 +777,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // path (/demo) skips that wait because the user has already
       // read the cycle intro on the Begin overlay.
       const isGesture = needsGesture && started;
-      const preStartDelay = isGesture ? 0 : INTRO_MS;
-      const mountDelay = isGesture ? 2000 : INTRO_MS + 3500;
-      const fadeOutDelay = isGesture ? 10_000 : INTRO_MS + 11_500;
-      const phaseChangeDelay = isGesture ? 11_800 : INTRO_MS + 13_300;
+      const preStartDelay = isGesture ? 0 : CYCLE_INTRO_TIMINGS.cycleFadeOutStartMs;
+      const mountDelay = isGesture ? 2000 : CYCLE_INTRO_TIMINGS.journeyMountMs;
+      const fadeOutDelay = isGesture ? 10_000 : CYCLE_INTRO_TIMINGS.journeyFadeOutStartMs;
+      const phaseChangeDelay = isGesture ? 11_800 : CYCLE_INTRO_TIMINGS.phaseChangeMs;
 
       // Pre-start journey 0. The shader needs lead time to compile
       // + start its A/B crossfade before bg starts revealing it.
@@ -1260,9 +1268,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           return;
         }
         const stalledFor = Date.now() - stallFrozenSinceMs;
-        // Stuck at 0: 12s grace (CDN cold-starts).
+        // Stuck at 0: MID_STALL_RELOAD_MS grace (CDN cold-starts).
         // Stuck mid-track: 5s — anything longer is clearly broken.
-        const threshold = t < 0.1 ? 12_000 : 5_000;
+        const threshold = t < 0.1 ? MID_STALL_RELOAD_MS : 5_000;
         if (stalledFor < threshold) return;
 
         stallRecovering = true;
@@ -1306,11 +1314,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
 
     // Subscribe to store; advance when audio finishes or safety expires.
     const startMs = Date.now();
-    // Soft early-advance: after 30s currentTime hasn't moved off 0 we
-    // give up on this track. Generous so slow CDN starts + the mid-
-    // stall re-load attempt (at 12s) both have time to recover. Errors
-    // fire their own immediate skip via the error listener above.
-    const STALLED_THRESHOLD_MS = 30_000;
+    // Soft early-advance: after STALLED_THRESHOLD_MS currentTime hasn't
+    // moved off 0 we give up on this track. Generous so slow CDN starts
+    // + the mid-stall re-load attempt (MID_STALL_RELOAD_MS) both have
+    // time to recover. Errors fire their own immediate skip via the
+    // error listener above. (Imported from ./installation-machine.)
     let raf = 0;
     const tick = () => {
       const { currentTime, duration } = useAudioStore.getState();

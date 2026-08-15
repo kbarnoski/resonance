@@ -40,7 +40,11 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const { token, payload } = body;
+  const { payload } = body;
+  // Token comes from the x-installation-token header (preferred — keeps
+  // it out of URLs/bodies in logs), falling back to the body token for
+  // backwards compat with already-deployed kiosks.
+  const token = request.headers.get("x-installation-token") ?? body.token;
   if (typeof token !== "string" || !TOKEN_RE.test(token)) {
     return Response.json({ error: "Invalid token" }, { status: 400 });
   }
@@ -68,7 +72,10 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const token = url.searchParams.get("token");
+  // Header first (x-installation-token), query param as backwards
+  // compat for already-deployed status pages.
+  const token =
+    request.headers.get("x-installation-token") ?? url.searchParams.get("token");
   if (!token || !TOKEN_RE.test(token)) {
     return Response.json({ error: "Invalid token" }, { status: 400 });
   }

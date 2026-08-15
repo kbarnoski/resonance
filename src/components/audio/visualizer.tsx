@@ -980,8 +980,14 @@ export function VisualizerCore({
     if (layerIs3D) {
       return <Visualizer3D analyser={analyser} dataArray={dataArray} mode={layerMode as Visualizer3DMode} onReady={onShaderReady} />;
     }
-    return SHADERS[layerMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={smoothMotionProp ?? false} onReady={onShaderReady} />
+    // Stale/removed mode ids (e.g. persisted preferences pointing at a
+    // shader that no longer exists) fall back to a safe default instead
+    // of rendering nothing (black screen). "drift" is the most neutral
+    // calm shader in the registry.
+    const DEFAULT_FALLBACK: VisualizerMode = "drift";
+    const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
+    return SHADERS[safeMode] ? (
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} onReady={onShaderReady} />
     ) : null;
   };
 

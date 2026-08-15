@@ -102,9 +102,11 @@ export async function POST(request: Request) {
     }).select().single();
 
     if (error) {
+      // Log the real Postgres error server-side; never leak message/code
+      // to the client.
       logger.error("journeys/create", "Failed to save:", error);
       return Response.json(
-        { error: `Failed to save journey: ${error.message} (${error.code})` },
+        { error: "Could not create journey" },
         { status: 500 }
       );
     }
@@ -119,8 +121,8 @@ export async function POST(request: Request) {
       dbRecord: data,
     });
   } catch (error) {
+    // Detail stays server-side; client gets a generic message.
     logger.error("journeys/create", "error:", error);
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return Response.json({ error: `Failed to create journey: ${message}` }, { status: 500 });
+    return Response.json({ error: "Could not create journey" }, { status: 500 });
   }
 }

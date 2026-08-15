@@ -1,7 +1,14 @@
+import { checkOrigin } from "../origin-check";
+
 let lastWarmTime = 0;
 const WARM_INTERVAL_MS = 5 * 60 * 1000;
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Origin allowlist FIRST — the background pre-warm below spends fal
+  // credits, so third-party origins can't trigger it.
+  const forbidden = checkOrigin(request);
+  if (forbidden) return forbidden;
+
   const enabled = !!process.env.FAL_KEY;
 
   // Return immediately — don't let fal import or warm-up block the response

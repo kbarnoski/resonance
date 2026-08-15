@@ -1,3 +1,5 @@
+*Historical (2026-02): original v1.0 PRD — superseded by shipped product; kept for record.*
+
 # Resonance (Resonance) -- Product Requirements Document
 
 **Version:** 1.0

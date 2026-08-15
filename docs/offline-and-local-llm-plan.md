@@ -1,5 +1,7 @@
 # Disconnected mode + local LLM + local imagery — design notes
 
+> Status note (2026-08-14): audio-side Level 1 was since implemented in the Tauri kiosk cache; local LLM / image persistence / service worker remain unbuilt.
+
 Written 2026-04-13. This is the research doc the user asked for, covering:
 1. What breaks if wifi drops while Resonance is running.
 2. Whether a disconnected mode could be a reliable fallback for installations.

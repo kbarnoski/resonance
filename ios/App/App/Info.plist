@@ -24,6 +24,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Resonance uses the microphone for live audio-reactive visuals and recording.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Resonance uses the camera for camera-reactive visual experiences.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

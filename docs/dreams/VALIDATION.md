@@ -1,6 +1,6 @@
 # Prototype validation
 
-**Last sweep**: 2026-05-21 (manual audit + automated detection)
+**Last sweep**: 2026-08-14 (steering-doc audit; prior full sweep 2026-05-21)
 
 The dashboard at `/dream` now shows a per-prototype badge auto-derived from the code:
 
@@ -15,7 +15,7 @@ Detection rules:
 
 ## Findings (2026-05-21)
 
-**16 prototypes need FAL_KEY:**
+**16 prototypes need FAL_KEY** *(2026-08-14 update: the dream zone has since grown to **32 dream API routes**, all verified calling `guard()` — audit 2026-08-14; the table below is the historical 2026-05-21 snapshot)*:
 
 | Slug | API path |
 |---|---|
@@ -37,7 +37,9 @@ Detection rules:
 
 **Everything else** (~50 prototypes) is pure-local and works without configuration.
 
-## FAL_KEY scope (2026-05-21)
+## FAL_KEY scope (2026-05-21) — **RETIRED FLOW, historical only**
+
+**RETIRED 2026-05-21:** the `dream/sandbox` Preview flow described below no longer exists — the agent commits straight to `main` (the build gate + `guard()` are the controls). Kept for history:
 
 Before today, `FAL_KEY` was only configured for the **Production** scope on Vercel. The `dream/sandbox` branch deploys as a **Preview**, which had no `FAL_KEY` — meaning all 16 FAL-dependent prototypes returned 500 on the public preview URL.
 
@@ -52,13 +54,13 @@ The preview URL is **public, no login required** (Karel's explicit ask). To keep
 3. **Per-IP sliding-window rate limit** — 8 requests / 60s. Returns `429 Retry-After`.
 4. **Per-IP daily quota** — 40 requests per IP per UTC day. Returns `429`.
 
-State is held in process memory, so it's per-lambda-instance and resets on cold starts. For true global rate limiting we'd move to Vercel KV / Upstash. For an experimental public sandbox the in-memory tier raises the bar enough that casual abuse is unprofitable; the FAL account-level budget cap (set in the fal.ai dashboard) is the hard cost backstop.
+**Updated 2026-08-14:** rate limiting uses **Upstash KV** when `KV_REST_API_URL` / `KV_REST_API_TOKEN` are set, falling back to per-lambda in-memory otherwise (`src/lib/rate-limit.ts`). The env vars must be confirmed present on Vercel for the KV tier to be active — in-memory fallback is per-instance and resets on cold starts. The FAL account-level budget cap (set in the fal.ai dashboard) is the hard cost backstop.
 
 The shared `/api/ai-image/generate` route used by `2-ghost-lab` is already protected by Resonance's existing rate limiter (`@/lib/rate-limit`) plus a tiered model selection — anonymous traffic gets the cheap `fal-ai/flux/schnell` model (~$0.003/frame) with burst=8 and refill=0.125/s.
 
 ### Hardening recommended next (in order)
 
-1. **Set a FAL account budget cap** in fal.ai dashboard. Hard backstop on cost.
+1. **Set a FAL account budget cap** in fal.ai dashboard. Hard backstop on cost. **STILL UNVERIFIED as of 2026-08-14 audit — Karel must confirm in fal dashboard.**
 2. **Move guard state to Vercel KV** for cross-instance persistence (small monthly cost).
 3. **Add Cloudflare Turnstile** invisible challenge for the most expensive routes (voice synthesis, music).
 4. **Audit each route for prompt-length caps and parameter bounds** — most have implicit caps but a malicious POST could request `duration_seconds: 600` and burn budget. Add per-route input validation.

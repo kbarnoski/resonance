@@ -36,26 +36,30 @@ export const MID_STALL_RELOAD_MS = 12_000;
  *  can be inspected and tested without re-deriving from the loop
  *  client's setTimeout chains. All are offsets from t=0. */
 export const CYCLE_INTRO_TIMINGS = {
-  /** Cycle text fades in over this duration starting at t=0. */
+  /** Cycle text fades in over this duration starting at t=0
+   *  (installationContentFade in installation-intro.tsx). */
   cycleFadeInMs: 1400,
-  /** Cycle text begins fading out at this offset. */
+  /** Cycle text begins fading out at this offset (kiosk pre-start). */
   cycleFadeOutStartMs: INTRO_MS,
   /** Cycle fade-out duration. */
   cycleFadeOutMs: 1500,
-  /** BG begins fading after the cycle text is gone. */
-  bgFadeStartMs: INTRO_MS + 1500,
-  /** BG fade-out duration (slow — gradual reveal of the shader). */
-  bgFadeOutMs: 4500,
-  /** Journey title mounts after a "shader breathes" beat. */
-  journeyMountMs: INTRO_MS + 7000,
+  /** BG starts fading on the SAME clock as the journey title mount —
+   *  bg fade and title inner fade run together so the shader emerges
+   *  alongside the title (see installation-intro.tsx). */
+  bgFadeStartMs: INTRO_MS + 3500,
+  /** BG fade-out duration — matches the title's inner fade-in clock. */
+  bgFadeOutMs: 3800,
+  /** Journey title mounts after the cycle fade-out window + a short
+   *  black hold for shader compile / A/B crossfade settle. */
+  journeyMountMs: INTRO_MS + 3500,
   /** Journey title inner fade-in animation duration. */
   journeyFadeInMs: 3800,
-  /** Journey title outer fade-out begins here. */
-  journeyFadeOutStartMs: INTRO_MS + 13_000,
+  /** Journey title outer fade-out begins here (~4.2s peak hold). */
+  journeyFadeOutStartMs: INTRO_MS + 11_500,
   /** Journey title outer fade-out duration. */
   journeyFadeOutMs: 1800,
   /** Final phase change to the actual journey-0 phase. */
-  phaseChangeMs: INTRO_MS + 14_800,
+  phaseChangeMs: INTRO_MS + 13_300,
 } as const;
 
 /**
