@@ -56,6 +56,8 @@ The preview URL is **public, no login required** (Karel's explicit ask). To keep
 
 **Updated 2026-08-14:** rate limiting uses **Upstash KV** when `KV_REST_API_URL` / `KV_REST_API_TOKEN` are set, falling back to per-lambda in-memory otherwise (`src/lib/rate-limit.ts`). The env vars must be confirmed present on Vercel for the KV tier to be active — in-memory fallback is per-instance and resets on cold starts. The FAL account-level budget cap (set in the fal.ai dashboard) is the hard cost backstop.
 
+**Global aggregate daily caps (added 2026-08-14):** on top of the per-identity quotas, `api-guard.ts` enforces a lab-wide ceiling of 1,500 fal calls/day (`DREAM_FAL_GLOBAL_DAILY_CAP` to override) and `/api/ai-image/generate` enforces 6,000/day (`AI_IMAGE_GLOBAL_DAILY_CAP`, sized so a full-day installation show at ~514 frames/hr is never blocked). These bound the many-IPs worst case; they are truly global only once KV is connected.
+
 The shared `/api/ai-image/generate` route used by `2-ghost-lab` is already protected by Resonance's existing rate limiter (`@/lib/rate-limit`) plus a tiered model selection — anonymous traffic gets the cheap `fal-ai/flux/schnell` model (~$0.003/frame) with burst=8 and refill=0.125/s.
 
 ### Hardening recommended next (in order)

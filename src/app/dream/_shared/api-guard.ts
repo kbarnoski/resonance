@@ -13,8 +13,10 @@
  *   2. Origin / Referer check — request must originate from a known
  *      Resonance domain (preview / production / localhost). This alone stops
  *      random third-party sites from spending the key.
- *   3. Sliding-window rate limit — 8 requests / 60s, keyed per identity.
- *   4. Daily quota — ~40 requests / day, keyed per identity.
+ *   3. Global daily cap — aggregate ceiling across all identities, so a
+ *      swarm of distinct IPs can't multiply the per-identity quotas.
+ *   4. Sliding-window rate limit — 8 requests / 60s, keyed per identity.
+ *   5. Daily quota — ~40 requests / day, keyed per identity.
  *
  * Identity = the authenticated user id when a session happens to be present
  * (nicer per-user buckets), otherwise the client IP. Login is never demanded.
@@ -50,6 +52,16 @@ const RATE_REFILL_PER_SEC = RATE_MAX / 60;
 // ~40 requests / day: capacity 40 refilling 40 tokens per 24h.
 const DAILY_MAX = 40;
 const DAILY_REFILL_PER_SEC = DAILY_MAX / 86_400;
+// Global aggregate daily cap across ALL identities — bounds the worst case
+// when many IPs each stay under their per-identity quota (e.g. a botnet of
+// 1,000 IPs x 40/day = 40,000 paid calls without this). Truly global only
+// when the KV backend is provisioned; otherwise per-lambda (still a bound).
+// Override via env without a deploy: DREAM_FAL_GLOBAL_DAILY_CAP.
+const GLOBAL_DAILY_MAX = Math.max(
+  1,
+  Number(process.env.DREAM_FAL_GLOBAL_DAILY_CAP) || 1_500,
+);
+const GLOBAL_DAILY_REFILL_PER_SEC = GLOBAL_DAILY_MAX / 86_400;
 
 function originOrReferer(req: NextRequest): string {
   const origin = req.headers.get("origin");
@@ -95,6 +107,23 @@ export async function guard(req: NextRequest): Promise<Response | null> {
   const origin = originOrReferer(req);
   if (!origin || !ALLOWED_ORIGIN_PATTERNS.some((re) => re.test(origin))) {
     return Response.json({ error: "forbidden" }, { status: 403 });
+  }
+
+  // Global ceiling before any per-identity checks — no matter how many
+  // distinct IPs show up, the lab as a whole can't exceed today's budget.
+  const globalDaily = await checkRateLimit(
+    "dream-ai-daily:GLOBAL",
+    GLOBAL_DAILY_MAX,
+    GLOBAL_DAILY_REFILL_PER_SEC,
+  );
+  if (!globalDaily.allowed) {
+    return Response.json(
+      {
+        error: "global daily budget exceeded",
+        hint: "the lab reached today's global generation budget — try again tomorrow",
+      },
+      { status: 429 },
+    );
   }
 
   // No login required (see file header). Key the budget guardrails by

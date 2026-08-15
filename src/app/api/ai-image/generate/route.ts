@@ -53,6 +53,18 @@ const COST_FLUX_DEV = 0.025;
 const COST_FLUX_PULID = 0.055;
 const COST_FLUX_LORA = 0.02;
 
+// Global aggregate daily cap across ALL callers — the abuse ceiling when
+// many IPs each stay under their per-identity limit. Sized so a full-day
+// installation show is never blocked (~514 frames/hr x 8h ≈ 4,100) while
+// still bounding a botnet's worst case. Truly global only when the KV
+// backend is provisioned; otherwise per-lambda (still a bound). Override
+// via env without a deploy: AI_IMAGE_GLOBAL_DAILY_CAP.
+const GLOBAL_DAILY_MAX = Math.max(
+  1,
+  Number(process.env.AI_IMAGE_GLOBAL_DAILY_CAP) || 6_000,
+);
+const GLOBAL_DAILY_REFILL_PER_SEC = GLOBAL_DAILY_MAX / 86_400;
+
 export async function POST(request: Request) {
   // Origin allowlist FIRST — random third-party sites can't spend the
   // fal key. Same-origin pages (/installation, /dream, /demo) pass;
@@ -64,6 +76,23 @@ export async function POST(request: Request) {
     return Response.json(
       { error: "AI image generation not configured" },
       { status: 501 }
+    );
+  }
+
+  // Global ceiling before any per-identity limits — bounds total daily
+  // spend no matter how many distinct IPs are calling.
+  const globalDaily = await checkRateLimit(
+    "ai-image-generate-daily:GLOBAL",
+    GLOBAL_DAILY_MAX,
+    GLOBAL_DAILY_REFILL_PER_SEC,
+  );
+  if (!globalDaily.allowed) {
+    return Response.json(
+      {
+        error: "global daily budget exceeded",
+        hint: "image generation reached today's global budget — try again tomorrow",
+      },
+      { status: 429 },
     );
   }
 
