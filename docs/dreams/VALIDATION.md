@@ -62,7 +62,7 @@ The shared `/api/ai-image/generate` route used by `2-ghost-lab` is already prote
 
 ### Hardening recommended next (in order)
 
-1. **Set a FAL account budget cap** in fal.ai dashboard. Hard backstop on cost. **STILL UNVERIFIED as of 2026-08-14 audit — Karel must confirm in fal dashboard.**
+1. **Set a FAL account budget cap** in fal.ai dashboard. Hard backstop on cost. **DONE — confirmed set by Karel 2026-08-14.**
 2. **Move guard state to Vercel KV** for cross-instance persistence (small monthly cost).
 3. **Add Cloudflare Turnstile** invisible challenge for the most expensive routes (voice synthesis, music).
 4. **Audit each route for prompt-length caps and parameter bounds** — most have implicit caps but a malicious POST could request `duration_seconds: 600` and burn budget. Add per-route input validation.

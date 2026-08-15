@@ -32,8 +32,14 @@ archived, decks untracked, offline plan moved to docs/, 3 unused deps
 removed (M11), 48 new core tests seeded — suite now 124 (M10 partial),
 stale branches pruned (M9), git gc run (H5 partial).
 
-Still open: fal.ai dashboard budget cap + Upstash KV env vars on Vercel
-(H3 — only Karel can verify), deploy-gating on CI green (C1 — needs a
+Update 2026-08-14 (later same day): fal.ai dashboard budget cap SET by
+Karel (H3 hard backstop done). Global aggregate daily caps also shipped
+in code (commit 89b19bb0): dream lab 1,500/day + ai-image 6,000/day,
+env-overridable.
+
+Still open: Upstash KV env vars on Vercel (H3 — confirmed missing;
+connect via Vercel → Storage → Upstash Redis to make rate limits
+cross-instance), deploy-gating on CI green (C1 — needs a
 Vercel settings decision), Tauri download size cap (LOW — needs a local
 Rust build to verify), shader-prefs /tmp persistence (LOW — needs a DB
 table), runtime smoke test (list at end of this doc).
