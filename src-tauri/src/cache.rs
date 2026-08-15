@@ -42,6 +42,11 @@ struct CacheEntry {
     size_bytes: u64,
 }
 
+/// Hard cap per cached download. Generous for lossless audio (the
+/// kiosk normally fetches ~10-20MB AAC transcodes) while bounding a
+/// misconfigured or hostile URL that would otherwise fill the disk.
+const MAX_DOWNLOAD_BYTES: u64 = 512 * 1024 * 1024;
+
 fn cache_dir(app: &AppHandle) -> PathBuf {
     app.path()
         .app_data_dir()
@@ -107,9 +112,10 @@ pub async fn download_and_cache(
     let file_name = format!("{}.{}", recording_id, ext);
     let file_path = dir.join(&file_name);
 
-    // Download
+    // Download — streamed to disk in chunks (never buffer the whole
+    // file in RAM) with a hard size cap.
     let client = reqwest::Client::new();
-    let response = client
+    let mut response = client
         .get(url)
         .send()
         .await
@@ -119,19 +125,44 @@ pub async fn download_and_cache(
         return Err(format!("Download returned status {}", response.status()));
     }
 
-    let bytes = response
-        .bytes()
-        .await
-        .map_err(|e| format!("Failed to read response: {}", e))?;
-
-    let size_bytes = bytes.len() as u64;
+    // Early reject when the server declares an oversized body.
+    if let Some(declared) = response.content_length() {
+        if declared > MAX_DOWNLOAD_BYTES {
+            return Err(format!(
+                "Download of {} bytes exceeds the {} byte cache cap",
+                declared, MAX_DOWNLOAD_BYTES
+            ));
+        }
+    }
 
     let mut file = tokio::fs::File::create(&file_path)
         .await
         .map_err(|e| format!("Failed to create cache file: {}", e))?;
-    file.write_all(&bytes)
-        .await
-        .map_err(|e| format!("Failed to write cache file: {}", e))?;
+    let mut size_bytes: u64 = 0;
+    loop {
+        let chunk = match response.chunk().await {
+            Ok(Some(chunk)) => chunk,
+            Ok(None) => break,
+            Err(e) => {
+                drop(file);
+                let _ = tokio::fs::remove_file(&file_path).await;
+                return Err(format!("Failed to read response: {}", e));
+            }
+        };
+        size_bytes += chunk.len() as u64;
+        if size_bytes > MAX_DOWNLOAD_BYTES {
+            drop(file);
+            let _ = tokio::fs::remove_file(&file_path).await;
+            return Err(format!(
+                "Download exceeded the {} byte cache cap", MAX_DOWNLOAD_BYTES
+            ));
+        }
+        if let Err(e) = file.write_all(&chunk).await {
+            drop(file);
+            let _ = tokio::fs::remove_file(&file_path).await;
+            return Err(format!("Failed to write cache file: {}", e));
+        }
+    }
     file.flush()
         .await
         .map_err(|e| format!("Failed to flush cache file: {}", e))?;

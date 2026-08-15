@@ -37,12 +37,24 @@ Karel (H3 hard backstop done). Global aggregate daily caps also shipped
 in code (commit 89b19bb0): dream lab 1,500/day + ai-image 6,000/day,
 env-overridable.
 
+Second update (same day): Tauri kiosk download now streams to disk
+with a 512MB cap (cache.rs, cargo check green — LOW closed);
+shader-prefs persists to Upstash KV when provisioned, /tmp fallback
+for local dev (LOW closed once KV is connected). Both
+NEEDS-VERIFICATION items verified clean: enforced CSP + all five
+security headers confirmed in next.config.ts AND live on production;
+safe-redirect covers the only attacker-controlled redirect target
+(auth/callback `next` param). Anonymous half of the runtime smoke test
+passed against production: /, /path/d2c79111528a46cf (Welcome Home
+content renders), /demo, /installation, /dream, /login all 200;
+ai-image origin gate returns 403 for foreign/missing origins.
+
 Still open: Upstash KV env vars on Vercel (H3 — confirmed missing;
 connect via Vercel → Storage → Upstash Redis to make rate limits
-cross-instance), deploy-gating on CI green (C1 — needs a
-Vercel settings decision), Tauri download size cap (LOW — needs a local
-Rust build to verify), shader-prefs /tmp persistence (LOW — needs a DB
-table), runtime smoke test (list at end of this doc).
+cross-instance and shader-prefs durable), deploy-gating on CI green
+(C1 — needs a Vercel settings decision), authenticated half of the
+runtime smoke test (sign in → play → Room → journey), kiosk
+end-to-end on real hardware.
 
 ## Baseline health (all green)
 
