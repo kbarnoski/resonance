@@ -39,6 +39,14 @@ shippable**. Polish comes from iteration across many cycles.
    ```
    If it prints any line, rewrite that content to altered-states language before committing. This applies to steering docs too — do not seed IDEAS.md / RESEARCH.md with drug-named ideas.
 
+10. **Ground every prototype in Karel's own music — standing directive (2026-08-14).** Karel: *"all future protos need to be based on my music until i interject again with new direction."* Every new prototype MUST source its audio from Karel's real catalog — his 30 recordings across 5 collections (Welcome Home, Snowflake, 17th St, Folsom St, Sketches) — NOT synthesized tones, oscillators, or generated audio. Use the canonical shared helpers:
+    - `import { COLLECTIONS, REAL_TRACKS, loadRealTrackBuffer } from "../_shared/welcomeHome";` — all 30 tracks (grouped by collection) + a loader that fetches `/api/audio/[id]`, handles the signed-URL JSON or raw bytes, and `decodeAudioData`s into an `AudioBuffer`. All 30 are already anon-servable in production (via Karel's shared paths / featuring), so no auth and no DB writes are needed.
+    - `import { loadTrackAnalysis } from "../_shared/trackAnalysis";` — anon-readable rich musical data per track: `notes[]` (MIDI midi/time/duration/velocity), `chords[]` (time/chord/duration), `events[]`, `summary` (sections, key center, harmonic highlights). Use this to make visuals genuinely *read* his music (harmony, melody, form), not just an FFT of noise.
+    - Always route decoded audio through `createSafeMaster` (ear-safety bus) and drive visuals from `safeMaster.analyser`.
+    - Do NOT use `/api/featured` — that table is empty and silently falls back to synth. Do NOT invent track IDs; only use IDs present in `welcomeHome.ts`.
+    - Reference implementations to study/extend: `700-welcome-home` (spectrum bloom + full catalog selector), `701-catalog-cosmos` (catalog hub), `703-harmonic-bloom` (chord→mandala), `706-keys-of-light` (note-roll aurora), `707-two-track-weave` (equal-power crossfade of any two pieces).
+    This holds for EVERY cycle until Karel explicitly changes the direction. Synth-only prototypes are no longer acceptable output.
+
 If you ever feel uncertain whether an action violates these rules, **do not perform it**. Log the question to STATE.md and let Karel resolve it in the morning.
 
 ---
@@ -75,6 +83,7 @@ Do the work. Constraints:
 - All prototype routes live at `src/app/dream/<n>-<slug>/page.tsx` (e.g. `/dream/3-fluid`).
 - Prototypes must be self-contained: their own audio, viz, UI in their own folder. Cross-prototype imports only from `src/app/dream/_shared/`.
 - Audio-visual prototypes only. **No static pages.** Every prototype must produce sound and visuals (or visuals reacting to audio input).
+- **Audio source = Karel's real catalog (ABSOLUTE rule 10).** Load from `../_shared/welcomeHome` (`loadRealTrackBuffer`) + optionally `../_shared/trackAnalysis` (`loadTrackAnalysis`). No synth/oscillator audio. Route through `createSafeMaster`.
 - Use the existing Resonance audio engine only via READ — don't extend it. If you need primitives, copy them into `src/app/dream/_shared/` first.
 - Prefer Web Audio API + Canvas/WebGL/shaders. Avoid heavy npm dependencies. If you need one, justify it in STATE.md.
 

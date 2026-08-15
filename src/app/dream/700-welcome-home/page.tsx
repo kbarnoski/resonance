@@ -21,7 +21,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   WELCOME_HOME_TRACKS,
-  SNOWFLAKE_TRACKS,
+  COLLECTIONS,
   loadRealTrackBuffer,
 } from "../_shared/welcomeHome";
 import {
@@ -241,9 +241,8 @@ export default function WelcomeHomePage() {
             {title}
           </div>
           <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber-200/40">
-            {SNOWFLAKE_TRACKS.some((t) => t.id === activeId)
-              ? "Snowflake"
-              : "Welcome Home"}{" "}
+            {COLLECTIONS.find((c) => c.tracks.some((t) => t.id === activeId))
+              ?.name ?? "Welcome Home"}{" "}
             · Karel Barnoski
           </div>
           {phase === "playing" && (
@@ -259,17 +258,12 @@ export default function WelcomeHomePage() {
         </div>
       </div>
 
-      {/* track selector — two albums */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-4">
-        {(
-          [
-            ["Welcome Home", WELCOME_HOME_TRACKS],
-            ["Snowflake", SNOWFLAKE_TRACKS],
-          ] as const
-        ).map(([album, tracks]) => (
-          <div key={album} className="flex flex-wrap items-center justify-center gap-1.5">
+      {/* track selector — every collection */}
+      <div className="absolute inset-x-0 bottom-0 flex max-h-[42vh] flex-col items-center gap-1.5 overflow-y-auto p-4">
+        {COLLECTIONS.map(({ name, tracks }) => (
+          <div key={name} className="flex flex-wrap items-center justify-center gap-1.5">
             <span className="mr-1 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">
-              {album}
+              {name}
             </span>
             {tracks.map((tk) => {
               const active = tk.id === activeId;

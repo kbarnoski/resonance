@@ -53,11 +53,50 @@ export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "549fc519-f7fc-4c38-a771-adaad2edbc81", title: "Ghost" },
 ] as const;
 
-/** Every anon-servable real track, across all of Karel's shared albums. */
-export const REAL_TRACKS: readonly WelcomeHomeTrack[] = [
-  ...WELCOME_HOME_TRACKS,
-  ...SNOWFLAKE_TRACKS,
+/** The **17th St** sessions — a set of improvisations from one room. */
+export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [
+  { id: "e49f17ca-7215-4a82-8c80-bf4339cd3e3b", title: "17th St 61" },
+  { id: "64c5cca9-a1db-41b8-8ebf-e3a6f6ede9f5", title: "17th St 62" },
+  { id: "d073c3fb-329d-4126-a27e-3167e2ed605d", title: "17th St 63" },
+  { id: "2ff2768b-98a7-44eb-a498-473d9b7c33dc", title: "17th St 63 (spectre)" },
+  { id: "6a009894-d341-4f84-8a2e-b45a59b68b82", title: "17th St 64" },
+] as const;
+
+/** The **Folsom St** sessions — a second room, a second set of takes. */
+export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [
+  { id: "808f253c-bca9-42e6-b0f7-5762b8d92a92", title: "Folsom St 5" },
+  { id: "ba5ad023-6858-401c-807d-74fb29be81af", title: "Folsom St 6" },
+  { id: "e1553a57-682f-444a-992d-92165ee471d1", title: "Folsom St 8" },
+  { id: "ee0bd856-d565-417d-a9d3-8f307116e043", title: "Folsom St 9" },
+] as const;
+
+/** Loose pieces + alternate takes that don't sit inside a named album. */
+export const SKETCHES_TRACKS: readonly WelcomeHomeTrack[] = [
+  { id: "c3c34efa-76e1-4375-9e01-499eafd8d126", title: "Without a Brightness" },
+  { id: "aafddeb5-5333-49f5-8308-16dd6d59a1f2", title: "That One" },
+  { id: "bcd04d03-8bdc-4868-bb30-f620349f54fe", title: "WYN_MAR4_1.1" },
+  { id: "ca26d632-bf64-4ab8-bbcf-24f49e238b73", title: "Snowflake (Take 1)" },
+  { id: "0d167679-42af-44b9-be6b-0e383c2ef56e", title: "Isolation (alt)" },
+] as const;
+
+export interface Collection {
+  name: string;
+  tracks: readonly WelcomeHomeTrack[];
+}
+
+/** Karel's catalog grouped for display — album/session order. */
+export const COLLECTIONS: readonly Collection[] = [
+  { name: "Welcome Home", tracks: WELCOME_HOME_TRACKS },
+  { name: "Snowflake", tracks: SNOWFLAKE_TRACKS },
+  { name: "17th St", tracks: SEVENTEENTH_ST_TRACKS },
+  { name: "Folsom St", tracks: FOLSOM_ST_TRACKS },
+  { name: "Sketches", tracks: SKETCHES_TRACKS },
 ];
+
+/** Every anon-servable real track, across all of Karel's shared collections. */
+export const REAL_TRACKS: readonly WelcomeHomeTrack[] = COLLECTIONS.flatMap(
+  (c) => c.tracks,
+);
 
 export interface WelcomeHomeBuffer {
   buffer: AudioBuffer;
