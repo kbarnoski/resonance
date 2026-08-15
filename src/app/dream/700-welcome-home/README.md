@@ -7,24 +7,27 @@ This is the **reference proto**. When any future audible piece wants genuine
 music instead of a synth bed, copy this pattern rather than reinventing it.
 
 A soft radial spectrum bloom (warm amber → gold, slow, meditative — no strobe,
-no harsh contrast) plays any of the 13 *Welcome Home* pieces, driven by the
-**tamed** signal off the ear-safety analyser. Press play, or pick a track.
+no harsh contrast) plays any of the 13 *Welcome Home* pieces or the 3 *Snowflake*
+EP pieces, driven by the **tamed** signal off the ear-safety analyser. Press
+play, or pick a track from either album.
 
 ---
 
 ## The pattern (three steps)
 
 1. **Load real audio, no login** — `_shared/welcomeHome.ts`
-   - `WELCOME_HOME_TRACKS` — the 13 real `recordings.id`s, in album order.
-   - `loadWelcomeHomeBuffer(ctx, id)` → `GET /api/audio/<id>`. The route answers
+   - `WELCOME_HOME_TRACKS` (13) + `SNOWFLAKE_TRACKS` (3), and `REAL_TRACKS` = the
+     union — the real `recordings.id`s, in album order.
+   - `loadRealTrackBuffer(ctx, id)` → `GET /api/audio/<id>`. The route answers
      with JSON `{ url }` (a 1-hour signed storage URL) which the helper then
      fetches for bytes; on the transcode path it can stream raw bytes instead —
      both are handled. Then `decodeAudioData` → `AudioBuffer`.
-   - **Why anon works:** every album track hangs off the shared journey path
-     `d2c79111528a46cf`, and `/api/audio/[id]` grants a signed URL to any
-     recording that is `is_featured`, has a `share_token`, or is attached to a
-     shared journey. So a logged-out visitor can hear it. No bucket change, no
-     auth — the dream lab stays login-free.
+   - **Why anon works:** every album track hangs off a shared journey path
+     (Welcome Home = `d2c79111528a46cf`; Snowflake is its own shared path), and
+     `/api/audio/[id]` grants a signed URL to any recording that is
+     `is_featured`, has a `share_token`, or is attached to a shared journey. So a
+     logged-out visitor can hear it. No bucket change, no auth — the dream lab
+     stays login-free.
 
 2. **Route through the ear-safety bus** — `_shared/visionary/safeMaster.ts`
    - `createSafeMaster(ctx)` once; connect the `BufferSource` into `safe.input`.
@@ -43,5 +46,6 @@ music). `welcomeHome.ts` uses the recording IDs that actually serve.
 
 ## Source
 
-Karel Barnoski — *Welcome Home*, 13 solo-piano pieces written through Covid.
-Cosmic / Richter-calm house aesthetic: this proto stays soft and slow on purpose.
+Karel Barnoski — *Welcome Home* (13 solo-piano pieces written through Covid) and
+the *Snowflake* EP (3 improvised pieces: stillness → fire → light). Cosmic /
+Richter-calm house aesthetic: this proto stays soft and slow on purpose.

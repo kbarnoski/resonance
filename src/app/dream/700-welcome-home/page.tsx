@@ -5,8 +5,9 @@
 //
 // This is the canonical example every future audible proto should copy when it
 // wants genuine music instead of a synth bed:
-//   1. `loadWelcomeHomeBuffer(ctx, id)` fetches + decodes a real album track
-//      (anon-playable via the shared journey path — no login).
+//   1. `loadRealTrackBuffer(ctx, id)` fetches + decodes a real album track from
+//      Welcome Home or the Snowflake EP (anon-playable via a shared journey
+//      path — no login).
 //   2. The decoded buffer plays through a BufferSource into `createSafeMaster`,
 //      so the ear-safety bus (high-shelf cut · 14 kHz cap · limiter) sits between
 //      the music and the speakers like it does for every other piece.
@@ -20,7 +21,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   WELCOME_HOME_TRACKS,
-  loadWelcomeHomeBuffer,
+  SNOWFLAKE_TRACKS,
+  loadRealTrackBuffer,
 } from "../_shared/welcomeHome";
 import {
   createSafeMaster,
@@ -97,7 +99,7 @@ export default function WelcomeHomePage() {
 
       let loaded;
       try {
-        loaded = await loadWelcomeHomeBuffer(ctx, id);
+        loaded = await loadRealTrackBuffer(ctx, id);
       } catch (e) {
         setPhase("error");
         setError(e instanceof Error ? e.message : "could not load track");
@@ -239,7 +241,10 @@ export default function WelcomeHomePage() {
             {title}
           </div>
           <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber-200/40">
-            Welcome Home · Karel Barnoski
+            {SNOWFLAKE_TRACKS.some((t) => t.id === activeId)
+              ? "Snowflake"
+              : "Welcome Home"}{" "}
+            · Karel Barnoski
           </div>
           {phase === "playing" && (
             <div className="mt-1 font-mono text-[11px] text-neutral-500">
@@ -254,24 +259,36 @@ export default function WelcomeHomePage() {
         </div>
       </div>
 
-      {/* track selector */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center justify-center gap-1.5 p-4">
-        {WELCOME_HOME_TRACKS.map((tk) => {
-          const active = tk.id === activeId;
-          return (
-            <button
-              key={tk.id}
-              onClick={() => void play(tk.id)}
-              className={`rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-                active
-                  ? "border-amber-200/60 bg-amber-200/10 text-amber-100"
-                  : "border-white/10 text-neutral-400 hover:border-white/25 hover:text-neutral-200"
-              }`}
-            >
-              {tk.title}
-            </button>
-          );
-        })}
+      {/* track selector — two albums */}
+      <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-4">
+        {(
+          [
+            ["Welcome Home", WELCOME_HOME_TRACKS],
+            ["Snowflake", SNOWFLAKE_TRACKS],
+          ] as const
+        ).map(([album, tracks]) => (
+          <div key={album} className="flex flex-wrap items-center justify-center gap-1.5">
+            <span className="mr-1 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">
+              {album}
+            </span>
+            {tracks.map((tk) => {
+              const active = tk.id === activeId;
+              return (
+                <button
+                  key={tk.id}
+                  onClick={() => void play(tk.id)}
+                  className={`rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
+                    active
+                      ? "border-amber-200/60 bg-amber-200/10 text-amber-100"
+                      : "border-white/10 text-neutral-400 hover:border-white/25 hover:text-neutral-200"
+                  }`}
+                >
+                  {tk.title}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </main>
   );

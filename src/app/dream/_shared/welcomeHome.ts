@@ -42,6 +42,23 @@ export const WELCOME_HOME_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "eda30871-c82c-45c4-b352-b158c00528fa", title: "All Together" },
 ] as const;
 
+/**
+ * Karel's **Snowflake** EP — three improvised piano recordings tracing an arc
+ * from stillness, through fire, into light. Same deal: attached to a shared
+ * journey path, so `/api/audio/[id]` serves them to anon clients (verified).
+ */
+export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
+  { id: "734a09ce-84df-4f1f-93c1-11b08d303681", title: "Snowflake" },
+  { id: "6f58d401-1cd0-479e-a252-5d34dc636e3d", title: "Realized" },
+  { id: "549fc519-f7fc-4c38-a771-adaad2edbc81", title: "Ghost" },
+] as const;
+
+/** Every anon-servable real track, across all of Karel's shared albums. */
+export const REAL_TRACKS: readonly WelcomeHomeTrack[] = [
+  ...WELCOME_HOME_TRACKS,
+  ...SNOWFLAKE_TRACKS,
+];
+
 export interface WelcomeHomeBuffer {
   buffer: AudioBuffer;
   title: string;
@@ -49,21 +66,20 @@ export interface WelcomeHomeBuffer {
 }
 
 /**
- * Fetch + decode one Welcome Home track into an AudioBuffer.
+ * Fetch + decode one real track (Welcome Home or Snowflake) into an AudioBuffer.
  *
  * `/api/audio/[id]` normally answers with JSON `{ url }` (a signed storage URL),
  * but can also stream raw bytes on the transcode path — both are handled.
  *
- * Pass a specific `id` (from WELCOME_HOME_TRACKS), or omit it to take the first
- * track. Throws on any failure so the caller can decide whether to surface an
- * error or fall back to a synth bed.
+ * Pass a specific `id` (from REAL_TRACKS), or omit it to take the first Welcome
+ * Home track. Throws on any failure so the caller can decide whether to surface
+ * an error or fall back to a synth bed.
  */
-export async function loadWelcomeHomeBuffer(
+export async function loadRealTrackBuffer(
   ctx: BaseAudioContext,
   id: string = WELCOME_HOME_TRACKS[0].id,
 ): Promise<WelcomeHomeBuffer> {
-  const title =
-    WELCOME_HOME_TRACKS.find((t) => t.id === id)?.title ?? "Welcome Home";
+  const title = REAL_TRACKS.find((t) => t.id === id)?.title ?? "Welcome Home";
 
   const res = await fetch(`/api/audio/${encodeURIComponent(id)}`);
   if (!res.ok) throw new Error(`audio ${id}: HTTP ${res.status}`);
