@@ -3,8 +3,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // 701-catalog-cosmos — Karel's whole catalog as a slow cosmos you can wander.
 //
-// Every one of his real recordings is a glowing body. Each collection (Welcome
-// Home · Snowflake · 17th St · Folsom St · Sketches) is its own orbit, drifting
+// Every one of his real recordings is a glowing body. Each verified album
+// (Welcome Home · Snowflake) is its own orbit, drifting
 // at its own pace. Hover a body to read its title; click to let that piece play
 // — it swells to a small sun and pulses with its own tamed audio, everything
 // else dims to a hush. Nothing is abrupt; the field just keeps breathing.
@@ -34,9 +34,6 @@ interface Body {
 const COLLECTION_HUE: Record<string, number> = {
   "Welcome Home": 34,
   Snowflake: 200,
-  "17th St": 280,
-  "Folsom St": 150,
-  Sketches: 12,
 };
 
 function buildBodies(): Body[] {

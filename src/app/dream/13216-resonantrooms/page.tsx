@@ -1,15 +1,16 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 13216-resonantrooms — KAREL'S FOUR COLLECTIONS AS EIGHT ROOMS IN ONE BUILDING.
+// 13216-resonantrooms — EIGHT SONGS AS EIGHT ROOMS IN ONE BUILDING.
 //
-//   A blueprint floor-plan of eight connected rooms (Welcome Home fills three,
-//   17th St and Folsom St two each, Snowflake one), each with
-//   its own convolution-reverb character (tight practice room → long stone hall).
-//   Walk the listener between rooms by dragging or WASD. Inside a room, its real
-//   recordings play through that room's reverb; standing in a DOORWAY you hear
-//   both adjacent rooms at once, equal-power-crossfaded by your position across
-//   the threshold — so the building's acoustics tell you where you are.
+//   A blueprint floor-plan of eight connected rooms, each named for the ONE
+//   song it plays — five from the Welcome Home album, all three from the
+//   Snowflake EP — each with its own convolution-reverb character (close
+//   bedroom → long stone hall) cast to fit its song. Walk the listener between
+//   rooms by dragging or WASD. Inside a room, its recording loops through that
+//   room's reverb; standing in a DOORWAY you hear both adjacent rooms at once,
+//   equal-power-crossfaded by your position across the threshold — so the
+//   building's acoustics tell you where you are.
 //
 //   Muted-06:30 stand-in: from mount, a seeded auto-tour glides the listener
 //   room→doorway→room so the plan is visibly alive within ~1s with zero audio.
@@ -435,12 +436,13 @@ export default function ResonantRoomsPage() {
       <div className="mx-auto max-w-5xl px-5 pt-10 pb-4">
         <p className={label}>Dream 13216 · Resonant Rooms</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Four collections, eight rooms, one building
+          Eight songs, eight rooms, one building
         </h1>
         <p className="mt-3 max-w-2xl text-base text-muted-foreground">
-          Walk the listener through eight rooms of Karel&apos;s music, each with its own reverb.
-          Stand in a doorway and both rooms sound at once — equal-power-crossfaded by your position
-          across the threshold, so the acoustics tell you where you are. Headphones recommended.
+          Every room is one song — five from Welcome Home, the full Snowflake EP — looping through
+          its own reverb. Stand in a doorway and both rooms sound at once — equal-power-crossfaded
+          by your position across the threshold, so the acoustics tell you where you are.
+          Headphones recommended.
         </p>
 
         <div className="mt-5 flex flex-wrap items-center gap-3">

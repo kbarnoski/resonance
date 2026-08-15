@@ -1,14 +1,15 @@
 export const README = `Resonant Rooms
 
-Karel's four collections re-heard as architectural acoustics — spread across
-EIGHT rooms in one building. The Welcome Home album fills three rooms in
-running order, the 17th St and Folsom St sessions take two rooms each, and
-Snowflake gets a glass conservatory of its own — all drawn as an architect's
-blueprint lit from within. Walk the listener between rooms by dragging (or
-WASD). Each room plays its own real recordings, fed through a convolution
-reverb tuned to that room's size: a 1.0s close bedroom, a tight 1.3s practice
-room, up to a 5.2s stone hall. The rooms sound like different spaces, so you
-can find your way with your eyes closed.
+Eight of Karel's songs re-heard as architectural acoustics — each room in the
+building IS one song and wears its title. The top row walks the Welcome Home
+album's opening (Interplay, Bath, Welcome Home) into Isolation; the bottom row
+holds the full Snowflake EP (Ghost, Realized, Snowflake) and closes at All
+Together — all drawn as an architect's blueprint lit from within. Walk the
+listener between rooms by dragging (or WASD). Each room loops its one real
+recording through a convolution reverb cast to fit the song: Isolation in a
+1.0s close bedroom, Bath in an echoing tiled bath, Snowflake in a 4.4s glass
+conservatory, All Together in a 5.2s stone hall. The rooms sound like
+different spaces, so you can find your way with your eyes closed.
 
 The distinguishing move is acoustic bleed at thresholds. Stand in a doorway and
 you hear BOTH adjacent rooms at once, equal-power-crossfaded (cos/sin law) by how
@@ -21,6 +22,7 @@ among) and Alvin Lucier's I Am Sitting in a Room (a room's resonance as the
 instrument).
 
 Caveats: headphones strongly recommended (HRTF + reverb tails), and browsers
-require one click before any audio can start. If a track can't be fetched
-(headless / offline) that room is marked unreachable and the walk continues
-silently for it.`;
+require one click before any audio can start. Once a room has loaded it loops
+its song with no further network fetches; if a track can't be fetched at all
+(headless / offline) that room is marked unreachable, retried every few
+seconds, and the walk continues.`;

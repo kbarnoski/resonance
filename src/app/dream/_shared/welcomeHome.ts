@@ -53,7 +53,14 @@ export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "549fc519-f7fc-4c38-a771-adaad2edbc81", title: "Ghost" },
 ] as const;
 
-/** The **17th St** sessions — a set of improvisations from one room. */
+// ── QUARANTINED: 17th St + Folsom St are UNVERIFIED as Karel's ──────────────
+// Karel reported (2026-08-14) that a "Folsom St" upload plays one of JOSEPH's
+// drones — so the session uploads below are contaminated and we cannot tell
+// which takes are actually Karel's. Until he verifies each ID, these two
+// collections are pulled from COLLECTIONS/REAL_TRACKS and MUST NOT be used in
+// any proto. Do not re-add them to COLLECTIONS without his per-track sign-off.
+
+/** UNVERIFIED — do not use (see quarantine note above). */
 export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "e49f17ca-7215-4a82-8c80-bf4339cd3e3b", title: "17th St 61" },
   { id: "64c5cca9-a1db-41b8-8ebf-e3a6f6ede9f5", title: "17th St 62" },
@@ -62,7 +69,7 @@ export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "6a009894-d341-4f84-8a2e-b45a59b68b82", title: "17th St 64" },
 ] as const;
 
-/** The **Folsom St** sessions — a second room, a second set of takes. */
+/** UNVERIFIED — do not use (see quarantine note above). */
 export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "808f253c-bca9-42e6-b0f7-5762b8d92a92", title: "Folsom St 5" },
   { id: "ba5ad023-6858-401c-807d-74fb29be81af", title: "Folsom St 6" },
@@ -86,12 +93,14 @@ export interface Collection {
   tracks: readonly WelcomeHomeTrack[];
 }
 
-/** Karel's catalog grouped for display — album/session order. */
+/**
+ * Karel's VERIFIED catalog grouped for display — album order. Only Welcome
+ * Home + Snowflake: the 17th St / Folsom St sessions are quarantined above
+ * (a Joseph drone surfaced in Folsom St) until Karel verifies them per track.
+ */
 export const COLLECTIONS: readonly Collection[] = [
   { name: "Welcome Home", tracks: WELCOME_HOME_TRACKS },
   { name: "Snowflake", tracks: SNOWFLAKE_TRACKS },
-  { name: "17th St", tracks: SEVENTEENTH_ST_TRACKS },
-  { name: "Folsom St", tracks: FOLSOM_ST_TRACKS },
 ];
 
 /** Every anon-servable real track, across all of Karel's shared collections. */

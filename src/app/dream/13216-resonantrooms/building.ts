@@ -3,19 +3,18 @@
 // convolution-reverb specs, the equal-power acoustic-bleed crossfade, and the
 // per-room source engine (lazy decode, HRTF pan, wet/dry routing).
 //
-// Karel's four collections spread across eight ROOMS in one building — Welcome
-// Home fills three rooms, 17th St and Folsom St two each, Snowflake one. Each
-// room has a different convolution tail (a tight bedroom vs a long stone hall),
-// so the building's acoustics tell you where you are with your eyes shut.
-// Standing in a doorway you hear BOTH adjacent rooms, equal-power-crossfaded by
-// how far across the threshold you've stepped.
+// Eight SONGS as eight ROOMS in one building — every room is named for the one
+// piece it plays, drawn only from Karel's two verified albums: five songs from
+// Welcome Home and all three from the Snowflake EP. Each room has a different
+// convolution tail (a tight bedroom vs a long stone hall), so the building's
+// acoustics tell you where you are with your eyes shut. Standing in a doorway
+// you hear BOTH adjacent rooms, equal-power-crossfaded by how far across the
+// threshold you've stepped.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
   WELCOME_HOME_TRACKS,
   SNOWFLAKE_TRACKS,
-  SEVENTEENTH_ST_TRACKS,
-  FOLSOM_ST_TRACKS,
   loadRealTrackBuffer,
   type WelcomeHomeTrack,
 } from "../_shared/welcomeHome";
@@ -45,7 +44,7 @@ export const clamp01 = (v: number) => clamp(v, 0, 1);
 export interface RoomSpec {
   index: number;
   name: string;
-  /** The real recordings this room plays, in rotation. */
+  /** The real recording(s) this room plays — one song per room, looped. */
   tracks: readonly WelcomeHomeTrack[];
   x0: number;
   y0: number;
@@ -60,27 +59,30 @@ export interface RoomSpec {
 }
 
 // Rooms tile the region [40..960]x[40..480] exactly (no gaps, no overlap) as a
-// 4x2 grid, so a listener is always inside exactly one room. Eight rooms carve
-// up Karel's four collections: the Welcome Home album fills the top-left three
-// rooms in running order, Snowflake closes the top row, the 17th St and Folsom
-// St sessions split the bottom row two rooms each. Reverb specs are all
-// distinct (1.0s bedroom → 5.2s stone hall) so each room is unmistakable.
+// 4x2 grid, so a listener is always inside exactly one room. Every room is ONE
+// song and wears its title: the top row walks the Welcome Home album's opening
+// (Interplay → Bath → Welcome Home) into Isolation; the bottom row holds the
+// full Snowflake EP (Ghost, Realized, Snowflake) and closes at All Together.
+// Reverb specs are all distinct (1.0s bedroom → 5.2s stone hall) so each room
+// is unmistakable, and each acoustic is cast to fit its song.
+const WH = WELCOME_HOME_TRACKS;
+const SF = SNOWFLAKE_TRACKS;
 const ROOM_DEFS = [
-  { name: "Welcome Home I", tracks: WELCOME_HOME_TRACKS.slice(0, 5),
+  { name: "Interplay", tracks: [WH[0]],
     x0: 40, y0: 40, x1: 270, y1: 240, seconds: 2.6, decay: 3.4, character: "warm living room" },
-  { name: "Welcome Home II", tracks: WELCOME_HOME_TRACKS.slice(5, 9),
-    x0: 270, y0: 40, x1: 500, y1: 240, seconds: 1.0, decay: 6.0, character: "close bedroom" },
-  { name: "Welcome Home III", tracks: WELCOME_HOME_TRACKS.slice(9, 13),
-    x0: 500, y0: 40, x1: 730, y1: 240, seconds: 3.4, decay: 2.2, character: "open loft" },
-  { name: "Snowflake", tracks: SNOWFLAKE_TRACKS,
-    x0: 730, y0: 40, x1: 960, y1: 240, seconds: 4.4, decay: 1.9, character: "glass conservatory" },
-  { name: "17th St I", tracks: SEVENTEENTH_ST_TRACKS.slice(0, 3),
-    x0: 40, y0: 240, x1: 270, y1: 480, seconds: 1.3, decay: 5.2, character: "tight bright practice room" },
-  { name: "17th St II", tracks: SEVENTEENTH_ST_TRACKS.slice(3, 5),
-    x0: 270, y0: 240, x1: 500, y1: 480, seconds: 2.1, decay: 3.0, character: "dry wood session room" },
-  { name: "Folsom St I", tracks: FOLSOM_ST_TRACKS.slice(0, 2),
-    x0: 500, y0: 240, x1: 730, y1: 480, seconds: 1.6, decay: 4.6, character: "brick studio" },
-  { name: "Folsom St II", tracks: FOLSOM_ST_TRACKS.slice(2, 4),
+  { name: "Bath", tracks: [WH[1]],
+    x0: 270, y0: 40, x1: 500, y1: 240, seconds: 3.0, decay: 2.6, character: "echoing tiled bath" },
+  { name: "Welcome Home", tracks: [WH[2]],
+    x0: 500, y0: 40, x1: 730, y1: 240, seconds: 4.0, decay: 2.0, character: "sunlit atrium" },
+  { name: "Isolation", tracks: [WH[7]],
+    x0: 730, y0: 40, x1: 960, y1: 240, seconds: 1.0, decay: 6.0, character: "close bedroom" },
+  { name: "Ghost", tracks: [SF[2]],
+    x0: 40, y0: 240, x1: 270, y1: 480, seconds: 2.1, decay: 3.0, character: "shadowed attic" },
+  { name: "Realized", tracks: [SF[1]],
+    x0: 270, y0: 240, x1: 500, y1: 480, seconds: 1.3, decay: 5.2, character: "tight bright practice room" },
+  { name: "Snowflake", tracks: [SF[0]],
+    x0: 500, y0: 240, x1: 730, y1: 480, seconds: 4.4, decay: 1.9, character: "glass conservatory" },
+  { name: "All Together", tracks: [WH[12]],
     x0: 730, y0: 240, x1: 960, y1: 480, seconds: 5.2, decay: 1.6, character: "long stone hall" },
 ] as const;
 
@@ -109,11 +111,11 @@ export interface Doorway {
 }
 
 export const DOORWAYS: Doorway[] = [
-  // top row, left to right (Welcome Home I → II → III → Snowflake)
+  // top row, left to right (Interplay → Bath → Welcome Home → Isolation)
   { a: 0, b: 1, axis: "v", at: 270, door: 140, span: 74 },
   { a: 1, b: 2, axis: "v", at: 500, door: 140, span: 74 },
   { a: 2, b: 3, axis: "v", at: 730, door: 140, span: 74 },
-  // bottom row, left to right (17th St I → II → Folsom St I → II)
+  // bottom row, left to right (Ghost → Realized → Snowflake → All Together)
   { a: 4, b: 5, axis: "v", at: 270, door: 360, span: 74 },
   { a: 5, b: 6, axis: "v", at: 500, door: 360, span: 74 },
   { a: 6, b: 7, axis: "v", at: 730, door: 360, span: 74 },
@@ -199,23 +201,23 @@ export function computeRoomGains(x: number, y: number): RoomGains {
 // A seeded, constant-speed glide that threads room→doorway→room so the plan is
 // visibly alive within ~1s with no audio. Waypoints step through doorway centers.
 const TOUR: Array<{ x: number; y: number }> = [
-  { x: 155, y: 140 }, // Welcome Home I
+  { x: 155, y: 140 }, // Interplay
   { x: 270, y: 140 }, // door 0|1
-  { x: 385, y: 140 }, // Welcome Home II
+  { x: 385, y: 140 }, // Bath
   { x: 500, y: 140 }, // door 1|2
-  { x: 615, y: 140 }, // Welcome Home III
+  { x: 615, y: 140 }, // Welcome Home
   { x: 730, y: 140 }, // door 2|3
-  { x: 845, y: 140 }, // Snowflake
+  { x: 845, y: 140 }, // Isolation
   { x: 845, y: 240 }, // door 3|7
-  { x: 845, y: 360 }, // Folsom St II (stone hall)
+  { x: 845, y: 360 }, // All Together (stone hall)
   { x: 730, y: 360 }, // door 6|7
-  { x: 615, y: 360 }, // Folsom St I
+  { x: 615, y: 360 }, // Snowflake
   { x: 500, y: 360 }, // door 5|6
-  { x: 385, y: 360 }, // 17th St II
+  { x: 385, y: 360 }, // Realized
   { x: 270, y: 360 }, // door 4|5
-  { x: 155, y: 360 }, // 17th St I
+  { x: 155, y: 360 }, // Ghost
   { x: 155, y: 240 }, // door 0|4
-  { x: 155, y: 140 }, // back to Welcome Home I
+  { x: 155, y: 140 }, // back to Interplay
 ];
 
 const TOUR_LEN: number[] = (() => {
@@ -262,8 +264,13 @@ interface RoomVoice {
   source: AudioBufferSourceNode | null;
   trackIdx: number;
   loading: boolean;
+  /** ms timestamp of the last failed load — gates retry backoff. */
+  failedAt: number;
   title: string;
 }
+
+/** Don't re-attempt a failed room load more often than this (ms). */
+const RETRY_MS = 5_000;
 
 function setPannerPos(p: PannerNode, x: number, y: number, ctx: AudioContext) {
   // audio field is a top-down plane mapped onto x (L/R) and z (front/back)
@@ -337,7 +344,7 @@ export class RoomEngine {
     roomGain.connect(dryGain);
     dryGain.connect(this.master.input);
 
-    return { reverb, panner, roomGain, dryGain, source: null, trackIdx: 0, loading: false, title: "" };
+    return { reverb, panner, roomGain, dryGain, source: null, trackIdx: 0, loading: false, failedAt: 0, title: "" };
   }
 
   private startSource(v: RoomVoice, buffer: AudioBuffer, roomIndex: number) {
@@ -345,15 +352,21 @@ export class RoomEngine {
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     src.connect(v.panner);
-    src.onended = () => {
-      if (this.disposed) return;
-      const cur = this.voices.get(roomIndex);
-      if (cur !== v || cur.source !== src) return;
-      // advance to the next track in this collection and continue if still live
-      cur.source = null;
-      cur.trackIdx = (cur.trackIdx + 1) % Math.max(1, ROOMS[roomIndex].tracks.length);
-      if (cur.roomGain.gain.value > 0.001) void this.loadInto(roomIndex);
-    };
+    const single = ROOMS[roomIndex].tracks.length === 1;
+    if (single) {
+      // one song per room: loop the decoded buffer forever — no re-fetch, no
+      // re-decode, no network dependence once a room has loaded once
+      src.loop = true;
+    } else {
+      src.onended = () => {
+        if (this.disposed) return;
+        const cur = this.voices.get(roomIndex);
+        if (cur !== v || cur.source !== src) return;
+        cur.source = null;
+        cur.trackIdx = (cur.trackIdx + 1) % Math.max(1, ROOMS[roomIndex].tracks.length);
+        if (cur.roomGain.gain.value > 0.001) void this.loadInto(roomIndex);
+      };
+    }
     v.source = src;
     src.start();
   }
@@ -361,6 +374,7 @@ export class RoomEngine {
   private async loadInto(roomIndex: number) {
     const v = this.voices.get(roomIndex);
     if (!v || v.loading || v.source || this.disposed) return;
+    if (v.failedAt && performance.now() - v.failedAt < RETRY_MS) return;
     const tracks = ROOMS[roomIndex].tracks;
     if (tracks.length === 0) return;
     v.loading = true;
@@ -371,9 +385,11 @@ export class RoomEngine {
       const still = this.voices.get(roomIndex);
       if (still !== v) return;
       v.title = title;
+      v.failedAt = 0;
       this.unreachable.delete(roomIndex);
       this.startSource(v, buffer, roomIndex);
     } catch {
+      v.failedAt = performance.now();
       this.unreachable.add(roomIndex);
     } finally {
       v.loading = false;
