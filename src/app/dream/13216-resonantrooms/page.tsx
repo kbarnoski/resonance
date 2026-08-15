@@ -1,9 +1,10 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 13216-resonantrooms — KAREL'S FIVE COLLECTIONS AS FIVE ROOMS IN ONE BUILDING.
+// 13216-resonantrooms — KAREL'S FOUR COLLECTIONS AS EIGHT ROOMS IN ONE BUILDING.
 //
-//   A blueprint floor-plan of five connected rooms, one per collection, each with
+//   A blueprint floor-plan of eight connected rooms (Welcome Home fills three,
+//   17th St and Folsom St two each, Snowflake one), each with
 //   its own convolution-reverb character (tight practice room → long stone hall).
 //   Walk the listener between rooms by dragging or WASD. Inside a room, its real
 //   recordings play through that room's reverb; standing in a DOORWAY you hear
@@ -40,7 +41,6 @@ const WALL_HOT = "#c4b5fd";
 const GRID = "#1c1633";
 const LABEL = "#8a83b8";
 const PRESENCE = "#a78bfa";
-const RING = "#8b5cf6";
 
 const ringRnd = mulberry32(0x13216);
 const RING_PHASE = ROOMS.map(() => ringRnd() * Math.PI * 2);
@@ -65,8 +65,8 @@ export default function ResonantRoomsPage() {
   const startedRef = useRef(false);
   const draggingRef = useRef(false);
   const keysRef = useRef<Set<string>>(new Set());
-  const posRef = useRef({ x: 200, y: 300 });
-  const liveRef = useRef<Live>({ x: 200, y: 300, gains: ROOMS.map(() => 0), bleed: 0 });
+  const posRef = useRef({ x: 155, y: 140 });
+  const liveRef = useRef<Live>({ x: 155, y: 140, gains: ROOMS.map(() => 0), bleed: 0 });
   const viewRef = useRef({ scale: 1, ox: 0, oy: 0 });
 
   const [started, setStarted] = useState(false);
@@ -435,10 +435,10 @@ export default function ResonantRoomsPage() {
       <div className="mx-auto max-w-5xl px-5 pt-10 pb-4">
         <p className={label}>Dream 13216 · Resonant Rooms</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Five collections, five rooms, one building
+          Four collections, eight rooms, one building
         </h1>
         <p className="mt-3 max-w-2xl text-base text-muted-foreground">
-          Walk the listener between Karel&apos;s five collections, each a room with its own reverb.
+          Walk the listener through eight rooms of Karel&apos;s music, each with its own reverb.
           Stand in a doorway and both rooms sound at once — equal-power-crossfaded by your position
           across the threshold, so the acoustics tell you where you are. Headphones recommended.
         </p>

@@ -1,16 +1,24 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// building.ts — the five-room floor plan, threshold/doorway math, per-room
+// building.ts — the eight-room floor plan, threshold/doorway math, per-room
 // convolution-reverb specs, the equal-power acoustic-bleed crossfade, and the
 // per-room source engine (lazy decode, HRTF pan, wet/dry routing).
 //
-// Karel's five collections become five ROOMS in one building. Each room has a
-// different convolution tail (a tight bedroom vs a long stone hall), so the
-// building's acoustics tell you where you are with your eyes shut. Standing in a
-// doorway you hear BOTH adjacent rooms, equal-power-crossfaded by how far across
-// the threshold you've stepped.
+// Karel's four collections spread across eight ROOMS in one building — Welcome
+// Home fills three rooms, 17th St and Folsom St two each, Snowflake one. Each
+// room has a different convolution tail (a tight bedroom vs a long stone hall),
+// so the building's acoustics tell you where you are with your eyes shut.
+// Standing in a doorway you hear BOTH adjacent rooms, equal-power-crossfaded by
+// how far across the threshold you've stepped.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { COLLECTIONS, loadRealTrackBuffer } from "../_shared/welcomeHome";
+import {
+  WELCOME_HOME_TRACKS,
+  SNOWFLAKE_TRACKS,
+  SEVENTEENTH_ST_TRACKS,
+  FOLSOM_ST_TRACKS,
+  loadRealTrackBuffer,
+  type WelcomeHomeTrack,
+} from "../_shared/welcomeHome";
 import { createVoidReverb, type VoidReverb } from "../_shared/visionary/convolutionVoid";
 import type { SafeMaster } from "../_shared/visionary/safeMaster";
 
@@ -37,6 +45,8 @@ export const clamp01 = (v: number) => clamp(v, 0, 1);
 export interface RoomSpec {
   index: number;
   name: string;
+  /** The real recordings this room plays, in rotation. */
+  tracks: readonly WelcomeHomeTrack[];
   x0: number;
   y0: number;
   x1: number;
@@ -49,21 +59,34 @@ export interface RoomSpec {
   character: string;
 }
 
-// Rooms tile the region [40..960]x[40..480] exactly (no gaps, no overlap) so a
-// listener is always inside exactly one room. Reverb specs run small→huge so the
-// five rooms are unmistakably distinct spaces.
-const GEOM = [
-  { x0: 40, y0: 40, x1: 360, y1: 480, seconds: 2.6, decay: 3.4, character: "warm living room" },
-  { x0: 360, y0: 40, x1: 640, y1: 240, seconds: 1.3, decay: 5.2, character: "tight bright practice room" },
-  { x0: 360, y0: 240, x1: 640, y1: 480, seconds: 2.1, decay: 3.0, character: "dry wood session room" },
-  { x0: 640, y0: 240, x1: 960, y1: 480, seconds: 3.6, decay: 2.2, character: "open loft" },
-  { x0: 640, y0: 40, x1: 960, y1: 240, seconds: 5.2, decay: 1.6, character: "long stone hall" },
+// Rooms tile the region [40..960]x[40..480] exactly (no gaps, no overlap) as a
+// 4x2 grid, so a listener is always inside exactly one room. Eight rooms carve
+// up Karel's four collections: the Welcome Home album fills the top-left three
+// rooms in running order, Snowflake closes the top row, the 17th St and Folsom
+// St sessions split the bottom row two rooms each. Reverb specs are all
+// distinct (1.0s bedroom → 5.2s stone hall) so each room is unmistakable.
+const ROOM_DEFS = [
+  { name: "Welcome Home I", tracks: WELCOME_HOME_TRACKS.slice(0, 5),
+    x0: 40, y0: 40, x1: 270, y1: 240, seconds: 2.6, decay: 3.4, character: "warm living room" },
+  { name: "Welcome Home II", tracks: WELCOME_HOME_TRACKS.slice(5, 9),
+    x0: 270, y0: 40, x1: 500, y1: 240, seconds: 1.0, decay: 6.0, character: "close bedroom" },
+  { name: "Welcome Home III", tracks: WELCOME_HOME_TRACKS.slice(9, 13),
+    x0: 500, y0: 40, x1: 730, y1: 240, seconds: 3.4, decay: 2.2, character: "open loft" },
+  { name: "Snowflake", tracks: SNOWFLAKE_TRACKS,
+    x0: 730, y0: 40, x1: 960, y1: 240, seconds: 4.4, decay: 1.9, character: "glass conservatory" },
+  { name: "17th St I", tracks: SEVENTEENTH_ST_TRACKS.slice(0, 3),
+    x0: 40, y0: 240, x1: 270, y1: 480, seconds: 1.3, decay: 5.2, character: "tight bright practice room" },
+  { name: "17th St II", tracks: SEVENTEENTH_ST_TRACKS.slice(3, 5),
+    x0: 270, y0: 240, x1: 500, y1: 480, seconds: 2.1, decay: 3.0, character: "dry wood session room" },
+  { name: "Folsom St I", tracks: FOLSOM_ST_TRACKS.slice(0, 2),
+    x0: 500, y0: 240, x1: 730, y1: 480, seconds: 1.6, decay: 4.6, character: "brick studio" },
+  { name: "Folsom St II", tracks: FOLSOM_ST_TRACKS.slice(2, 4),
+    x0: 730, y0: 240, x1: 960, y1: 480, seconds: 5.2, decay: 1.6, character: "long stone hall" },
 ] as const;
 
-export const ROOMS: RoomSpec[] = COLLECTIONS.map((c, i) => ({
+export const ROOMS: RoomSpec[] = ROOM_DEFS.map((d, i) => ({
   index: i,
-  name: c.name,
-  ...GEOM[i],
+  ...d,
 }));
 
 export const roomCenter = (r: RoomSpec) => ({
@@ -86,12 +109,19 @@ export interface Doorway {
 }
 
 export const DOORWAYS: Doorway[] = [
-  { a: 0, b: 1, axis: "v", at: 360, door: 140, span: 74 },
-  { a: 0, b: 2, axis: "v", at: 360, door: 360, span: 74 },
-  { a: 1, b: 2, axis: "h", at: 240, door: 500, span: 74 },
-  { a: 1, b: 4, axis: "v", at: 640, door: 140, span: 74 },
-  { a: 2, b: 3, axis: "v", at: 640, door: 360, span: 74 },
-  { a: 3, b: 4, axis: "h", at: 240, door: 800, span: 74 },
+  // top row, left to right (Welcome Home I → II → III → Snowflake)
+  { a: 0, b: 1, axis: "v", at: 270, door: 140, span: 74 },
+  { a: 1, b: 2, axis: "v", at: 500, door: 140, span: 74 },
+  { a: 2, b: 3, axis: "v", at: 730, door: 140, span: 74 },
+  // bottom row, left to right (17th St I → II → Folsom St I → II)
+  { a: 4, b: 5, axis: "v", at: 270, door: 360, span: 74 },
+  { a: 5, b: 6, axis: "v", at: 500, door: 360, span: 74 },
+  { a: 6, b: 7, axis: "v", at: 730, door: 360, span: 74 },
+  // stairwell doors joining the rows: both ends close the loop, plus one
+  // interior shortcut so no room is ever more than three doorways away
+  { a: 0, b: 4, axis: "h", at: 240, door: 155, span: 74 },
+  { a: 1, b: 5, axis: "h", at: 240, door: 385, span: 74 },
+  { a: 3, b: 7, axis: "h", at: 240, door: 845, span: 74 },
 ];
 
 /** World-space center point of a doorway opening. */
@@ -169,19 +199,23 @@ export function computeRoomGains(x: number, y: number): RoomGains {
 // A seeded, constant-speed glide that threads room→doorway→room so the plan is
 // visibly alive within ~1s with no audio. Waypoints step through doorway centers.
 const TOUR: Array<{ x: number; y: number }> = [
-  { x: 200, y: 300 }, // Welcome Home
-  { x: 360, y: 140 }, // door 0|1
-  { x: 500, y: 140 }, // Snowflake
-  { x: 640, y: 140 }, // door 1|4
-  { x: 800, y: 140 }, // Sketches (stone hall)
-  { x: 800, y: 240 }, // door 3|4
-  { x: 800, y: 360 }, // Folsom
-  { x: 640, y: 360 }, // door 2|3
-  { x: 500, y: 360 }, // 17th St
-  { x: 500, y: 240 }, // door 1|2
-  { x: 500, y: 360 },
-  { x: 360, y: 360 }, // door 0|2
-  { x: 200, y: 300 }, // back to Welcome Home
+  { x: 155, y: 140 }, // Welcome Home I
+  { x: 270, y: 140 }, // door 0|1
+  { x: 385, y: 140 }, // Welcome Home II
+  { x: 500, y: 140 }, // door 1|2
+  { x: 615, y: 140 }, // Welcome Home III
+  { x: 730, y: 140 }, // door 2|3
+  { x: 845, y: 140 }, // Snowflake
+  { x: 845, y: 240 }, // door 3|7
+  { x: 845, y: 360 }, // Folsom St II (stone hall)
+  { x: 730, y: 360 }, // door 6|7
+  { x: 615, y: 360 }, // Folsom St I
+  { x: 500, y: 360 }, // door 5|6
+  { x: 385, y: 360 }, // 17th St II
+  { x: 270, y: 360 }, // door 4|5
+  { x: 155, y: 360 }, // 17th St I
+  { x: 155, y: 240 }, // door 0|4
+  { x: 155, y: 140 }, // back to Welcome Home I
 ];
 
 const TOUR_LEN: number[] = (() => {
@@ -317,7 +351,7 @@ export class RoomEngine {
       if (cur !== v || cur.source !== src) return;
       // advance to the next track in this collection and continue if still live
       cur.source = null;
-      cur.trackIdx = (cur.trackIdx + 1) % Math.max(1, COLLECTIONS[roomIndex].tracks.length);
+      cur.trackIdx = (cur.trackIdx + 1) % Math.max(1, ROOMS[roomIndex].tracks.length);
       if (cur.roomGain.gain.value > 0.001) void this.loadInto(roomIndex);
     };
     v.source = src;
@@ -327,7 +361,7 @@ export class RoomEngine {
   private async loadInto(roomIndex: number) {
     const v = this.voices.get(roomIndex);
     if (!v || v.loading || v.source || this.disposed) return;
-    const tracks = COLLECTIONS[roomIndex].tracks;
+    const tracks = ROOMS[roomIndex].tracks;
     if (tracks.length === 0) return;
     v.loading = true;
     const track = tracks[v.trackIdx % tracks.length];
