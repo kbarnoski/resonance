@@ -1,16 +1,16 @@
-# Morning digest — last updated 2026-08-15T00:20Z (cycle 1137, WIDE)
+# Morning digest — last updated 2026-08-15T03:05Z (cycle 1138, DEEP)
 
 ## New since yesterday
-- **[13168-preparedchance](https://getresonance.vercel.app/dream/13168-preparedchance)** — **play a melody and it comes back recognisably yours, but gently estranged.** Each note sounds through a *prepared string* (felt / bolt / harmonic / detuned) and a seeded I-Ching coin-oracle sometimes displaces it in time, transposes it in-scale, doubles it, or silences it — John Cage's prepared piano + *Music of Changes*, turned into a live instrument. **Why open this:** it's built for you specifically — plug in a MIDI keyboard (or just use the QWERTY keys A S D F…), turn the **chance-amount** slider from *faithful* to *estranged*, and hear your own playing re-composed in real time. On a muted phone a seeded demo already plays a phrase silently through the oracle so you can see hexagrams toss and notes shift on the time-lane. The audio comes from *you*, not a self-drone — the jury's #1 ask, answered.
+- **[13216-resonantrooms](https://getresonance.vercel.app/dream/13216-resonantrooms)** — **your five collections re-heard as five rooms in one building; the acoustics tell you where you are.** A blueprint floor-plan where Welcome Home, Snowflake, 17th St, Folsom St and Sketches are each a *room* playing its own real recordings through a reverb tuned to its size — a tight 1.3s practice room up to a 5.2s stone hall. Walk the listener by dragging (or WASD); stand in a **doorway** and you hear BOTH rooms at once, equal-power-crossfaded by how far across the threshold you stand, each still wearing its own reverb. **Why open this (headphones!):** it's the cleanest use of your *actual catalog* in cycles — no synth, your real piano — and it's the spatial/installation direction the concept jury explicitly asked for. On a muted phone a seeded auto-tour already glides room→doorway→room so the plan is alive on the first frame. Refs: Janet Cardiff's *Forty Part Motet*, Alvin Lucier's *I Am Sitting in a Room*.
 
-## Explored this fire (WIDE — 2 more built, banked, not shipped)
-- **heliacal** — geolocation + the sun's real position → a scrubbable *day as a composition*; drag the sun dawn→noon→dusk→midnight and hear the whole circadian arc (Richter *Sleep* lineage). The best long-form of the three. IDEAS §1137, resurrect-first.
-- **tiltbowl** — tip your phone and a singing bowl's hum walks around the rim (Rossing's mode-pair beating). Best "just tilt your phone" review-fitness. IDEAS §1137.
-- Both have deepen notes. All three used a *fresh input* (MIDI / geolocation / tilt) — the point of the fire was to break the mic-and-shader monoculture by varying the interaction modality.
+## Explored this fire (DEEP — 2 more built, banked, not shipped)
+- **atlas** — your catalog laid out as a *map by musical key* (circle of fifths); drag-pan the map and the nearest pieces play, panned in space, key-related pieces joined by ridge lines. The only one reading your real harmony. IDEAS §1138, **resurrect-first** (needs a real-device check that enough tracks have key analysis).
+- **listeningroom** — the simplest, cleanest version: a gallery floor-plan you soundwalk, nearest ~3 plinths HRTF-panned. IDEAS §1138.
+- All three raced ONE concept — *your whole catalog as a walkable, head-panned SPACE* — via three spatial approaches (rooms / map / gallery).
 
 ## Research finding worth a look
-- *A Design Space for Live Music Agents* (arXiv:2602.05064, CHI '26) names **interaction modality** as a first-class axis — which reframes our monoculture as a collapse onto one modality (analyser-of-a-self-drone). Used it as the lens for this WIDE fire. RESEARCH §1137.
+- Head-tracked **binaural sound-field navigation** (the listener moving/turning through a field of sources) is a live 2026 arXiv frontier, and the browser `PannerNode` HRTF + a moving `AudioListener` is the shipping way to do it. That's the engine under all three explorers. RESEARCH §1138.
 
 ## Open questions for Karel
+- **Sound-on / real-device review is now the biggest lever** — resonantrooms genuinely needs headphones to judge whether the five reverbs read as distinct rooms and the doorway bleed lands. Same standing ask: preparedchance (MIDI keyboard), spectralhold (mic), dreammedley (5-min arc).
 - **AI-pipeline chain (music → image → video)** is still the loudest 0× lane — needs a `FAL_KEY` budget + guarded route + your go-ahead. Build or strike?
-- **Sound-on / real-device review** would help most now: preparedchance (needs a MIDI keyboard + speakers to judge if the chance feels like a collaborator), plus the standing backlog (spectralhold, dreammedley's 5-min arc).
