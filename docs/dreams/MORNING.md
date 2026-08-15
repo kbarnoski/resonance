@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-15T~12:00Z (cycle 1142, DEEP)
 
+> **Jury verdict today**: You climbed out of the cosmic-shader rut — six top-tier pieces now vs one last fortnight — but the lab's building a quieter rut: four straight "analyze my playing and draw it" pieces you just press Play on. Tomorrow: let you *play*, not just watch. And ten minutes of your headphones would unblock six of them. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[13440-resonancefield](https://getresonance.vercel.app/dream/13440-resonancefield)** — **the whole piano ringing, not just the notes you played.** Your real recording drives a physical model of all 88 strings as *coupled* resonators: when you strike a key, every string that shares a partial rings in sympathy — so a struck C lights its octave, twelfth and fifth as distinct glowing **ridges** that linger ~3 seconds while unrelated strings stay dark. It paints as a slow scrolling bloom (pitch up, time across). **Why open this:** the lab has now drawn your harmony, timing, space and hands — this is the first time it draws the thing the product is literally *named after*: **sympathetic resonance**, the afterglow ordinary note-visualizers throw away. It reads as *harmony*, not spectrum, because the coupling is selective (a real physics fix — see below). Runs on a WebGPU compute shader with a full CPU fallback, so it blooms even on a muted phone with no GPU. Honest caveat: it's a plausibility model of the coupling, not a measurement of your actual piano.
 
