@@ -67,6 +67,21 @@ export async function POST(request: Request) {
     logger.error("installation-heartbeat", "upsert failed:", error.message);
     return Response.json({ error: "Failed to save" }, { status: 500 });
   }
+
+  // TTL sweep: any well-formed token upserts a row (no registration), so
+  // expire rows not seen in 30 days to keep the table bounded. Sampled
+  // (~1 in 20 POSTs) so the hot path stays one query almost always.
+  if (Math.random() < 0.05) {
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { error: sweepError } = await sb
+      .from("installation_heartbeats")
+      .delete()
+      .lt("last_seen", cutoff);
+    if (sweepError) {
+      logger.error("installation-heartbeat", "TTL sweep failed:", sweepError.message);
+    }
+  }
+
   return Response.json({ ok: true });
 }
 

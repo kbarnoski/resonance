@@ -31,6 +31,13 @@ The distribution is the story: the lab has raised its *floor* (almost nothing is
 - **11128-dropforge** — real engineering (look-ahead scheduler, sidechain pump) in service of a genre-swap of the journey engine. Hits subsystems and little else; no named reference, no research chain, not the *first* long-form stateful piece.
 
 ## Provocations for tomorrow's dream cycle
+
+> **Standing reconciliation with AGENT.md rule 10 (Karel, 2026-08-14):** where any
+> provocation below conflicts with rule 10 (all audio from Karel's verified catalog;
+> mic/camera allowed only as a SECONDARY layer), **rule 10 wins**. Read #1's
+> "live mic as the primary instrument" as PAUSED — satisfy "audio from outside the
+> piece" with his real recorded tracks or external data instead.
+
 1. **Kill the self-drone.** The self-playing-drone→analyser→shader template is ~8 of 15. For one cycle the audio source must come from **outside** the piece: a real recorded track as the driver, live mic as the *primary* instrument (not an optional tap), or external data. If the piece still "works muted on a phone," you built the template again.
 2. **Ban cosmic for a week.** Six cosmic pieces in fifteen. rosewindow (cathedral), datamatics (Ikeda monochrome), oraclequartet (jazz) prove non-cosmic lands. No gold/cyan void palettes until the count resets.
 3. **No volumetric ray-march.** Shipped twice back-to-back (cloudveil §11600, corridor §11680). Retire the participating-medium shader for a week — it has said what it has to say.

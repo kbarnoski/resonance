@@ -49,12 +49,29 @@ passed against production: /, /path/d2c79111528a46cf (Welcome Home
 content renders), /demo, /installation, /dream, /login all 200;
 ai-image origin gate returns 403 for foreign/missing origins.
 
+Third update (same day): verified already-closed in the interim —
+H4 (README now npm-only, `.env.example` exists, env vars listed),
+M6 (installation constants imported from installation-machine.ts and
+live-consumed), M7/M8 (stale root SQL + fix-dates.js deleted), M11
+(@wavesurfer/react + @ffmpeg/* gone from package.json), M5 cadence
+drift, LOW error-leak spots in journeys/create + audio/[id] (generic
+messages now), LOW nebula (remapped in vibe-detection.ts; remaining
+hits are image-prompt prose). Newly closed this sweep: M2 second half
+(heartbeat rows now TTL-expired — sampled 30-day sweep on POST; header
+token + rate limits + payload bound were already in) and M3 (JURY.md
+now carries a standing note that rule 10 wins — mic-primary provocation
+PAUSED, "outside audio" = catalog tracks or external data). M12 remains
+accept-as-designed/documented; H1 accepted risk per owner ruling.
+
 Still open: Upstash KV env vars on Vercel (H3 — confirmed missing;
 connect via Vercel → Storage → Upstash Redis to make rate limits
 cross-instance and shader-prefs durable), deploy-gating on CI green
 (C1 — needs a Vercel settings decision), authenticated half of the
 runtime smoke test (sign in → play → Room → journey), kiosk
-end-to-end on real hardware.
+end-to-end on real hardware, M9 dead-branch review (needs Karel's
+call before deleting), M10 core-path test coverage (larger effort),
+H5 docs/dreams rotation policy (needs an AGENT.md procedure Karel
+signs off on — the agent rewrites an 11MB file every 2h).
 
 ## Baseline health (all green)
 
