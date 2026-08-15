@@ -10,6 +10,8 @@
 // the tracker reads each frame. The AudioContext is created lazily INSIDE a
 // user gesture (iOS-safe) by the page.
 
+import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster"
+
 export type Source = "groove" | "mic"
 
 const GROOVE_BPM = 112
@@ -43,6 +45,7 @@ export class BeatMirrorAudio {
   readonly grooveBpm = GROOVE_BPM
 
   private master: GainNode | null = null
+  private safe: SafeMaster | null = null
   private grooveGain: GainNode | null = null
   private micGain: GainNode | null = null
   private micStream: MediaStream | null = null
@@ -64,11 +67,14 @@ export class BeatMirrorAudio {
     const ctx = new Ctx()
     this.context = ctx
 
-    // Master bus -> destination (audible) and -> analyser (for tracking).
+    // Master bus -> safe-master (ear-safety: tames the 8.5 kHz hat hiss + caps
+    // peaks) -> destination, and -> analyser (for tracking).
     const master = ctx.createGain()
     master.gain.value = 0.9
-    master.connect(ctx.destination)
+    const safe = createSafeMaster(ctx)
+    master.connect(safe.input)
     this.master = master
+    this.safe = safe
 
     const analyser = ctx.createAnalyser()
     analyser.fftSize = 1024
@@ -273,6 +279,7 @@ export class BeatMirrorAudio {
     }
     this.disableMic()
     this.master?.disconnect()
+    this.safe?.disconnect()
     this.grooveGain?.disconnect()
     this.micGain?.disconnect()
     void this.context?.close()

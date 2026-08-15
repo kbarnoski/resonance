@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { makeWordLoop, type Drum, type WordLoop } from "./syllables";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ── Config ──────────────────────────────────────────────────────────────
 const BPM = 112;
@@ -279,7 +280,8 @@ export default function ParadeCaller() {
       const ac = new AC();
       const master = ac.createGain();
       master.gain.value = 0.9;
-      master.connect(ac.destination);
+      // Square-wave percussion + 7 kHz noise shaker are bright — tame the top.
+      master.connect(createSafeMaster(ac).input);
       acRef.current = ac;
       masterRef.current = master;
       noiseRef.current = makeNoiseBuffer(ac);

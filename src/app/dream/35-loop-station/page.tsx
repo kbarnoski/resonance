@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ── constants ──────────────────────────────────────────────────────────────────
 
@@ -176,6 +177,7 @@ async function synthDemoLoop(
 
 export default function LoopStation() {
   const ctxRef = useRef<AudioContext | null>(null);
+  const safeInputRef = useRef<AudioNode | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const slotsRef = useRef<SlotAudio[]>(
     Array.from({ length: N_SLOTS }, makeSlot)
@@ -218,6 +220,9 @@ export default function LoopStation() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).webkitAudioContext;
       ctxRef.current = new Ctx();
+      // Ear-safety bus for the live loop playback (baked hi-hat carries 8 kHz+
+      // noise) — tame the top + cap peaks before the speakers.
+      safeInputRef.current = createSafeMaster(ctxRef.current).input;
     }
     if (ctxRef.current.state === "suspended") {
       void ctxRef.current.resume();
@@ -277,7 +282,7 @@ export default function LoopStation() {
       if (!slot.buffer) return;
       const g = ctx.createGain();
       g.gain.value = 1;
-      g.connect(ctx.destination);
+      g.connect(safeInputRef.current ?? ctx.destination);
       const src = ctx.createBufferSource();
       src.buffer = slot.buffer;
       src.loop = true;
@@ -358,7 +363,7 @@ export default function LoopStation() {
         if (!slot.gainNode) {
           const g = ctx.createGain();
           g.gain.value = 1;
-          g.connect(ctx.destination);
+          g.connect(safeInputRef.current ?? ctx.destination);
           slot.gainNode = g;
         }
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ── Types ──────────────────────────────────────────────────────
 type BarLen = 1 | 2 | 4;
@@ -166,9 +167,12 @@ export default function LoopStation() {
   const getCtx = useCallback((): AudioContext => {
     if (!ctxRef.current || ctxRef.current.state === "closed") {
       ctxRef.current = new AudioContext();
+      // Ear-safety bus: the baked hi-hat loop carries 8.5 kHz noise — tame the
+      // top + cap peaks before all slots reach the speakers.
+      const safeInput = createSafeMaster(ctxRef.current).input;
       gainNodesRef.current = Array.from({ length: N }, () => {
         const g = ctxRef.current!.createGain();
-        g.connect(ctxRef.current!.destination);
+        g.connect(safeInput);
         return g;
       });
     }

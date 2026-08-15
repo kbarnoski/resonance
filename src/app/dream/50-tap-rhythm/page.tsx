@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useMicAnalyser } from "../_shared/use-mic-analyser";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ─── Drum synthesis (module-level) ────────────────────────────────────────────
 
-function playKick(ac: AudioContext, when: number) {
+function playKick(ac: AudioContext, dest: AudioNode, when: number) {
   const osc = ac.createOscillator();
   const env = ac.createGain();
   osc.type = "sine";
@@ -16,12 +17,12 @@ function playKick(ac: AudioContext, when: number) {
   env.gain.linearRampToValueAtTime(0.9, when + 0.005);
   env.gain.exponentialRampToValueAtTime(0.001, when + 0.5);
   osc.connect(env);
-  env.connect(ac.destination);
+  env.connect(dest);
   osc.start(when);
   osc.stop(when + 0.5);
 }
 
-function playSnare(ac: AudioContext, when: number) {
+function playSnare(ac: AudioContext, dest: AudioNode, when: number) {
   const sr = ac.sampleRate;
   const len = Math.floor(sr * 0.12);
   const buf = ac.createBuffer(1, len, sr);
@@ -38,11 +39,11 @@ function playSnare(ac: AudioContext, when: number) {
   env.gain.exponentialRampToValueAtTime(0.001, when + 0.12);
   src.connect(filt);
   filt.connect(env);
-  env.connect(ac.destination);
+  env.connect(dest);
   src.start(when);
 }
 
-function playHiHat(ac: AudioContext, when: number) {
+function playHiHat(ac: AudioContext, dest: AudioNode, when: number) {
   const sr = ac.sampleRate;
   const len = Math.floor(sr * 0.035);
   const buf = ac.createBuffer(1, len, sr);
@@ -58,7 +59,7 @@ function playHiHat(ac: AudioContext, when: number) {
   env.gain.exponentialRampToValueAtTime(0.001, when + 0.035);
   src.connect(filt);
   filt.connect(env);
-  env.connect(ac.destination);
+  env.connect(dest);
   src.start(when);
 }
 
@@ -187,6 +188,7 @@ export default function TapRhythm() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef(0);
   const acRef = useRef<AudioContext | null>(null);
+  const safeInputRef = useRef<AudioNode | null>(null);
   const phaseRef = useRef<Phase>("idle");
   const stepsRef = useRef<DrumStep[]>(steps);
   const bpmRef = useRef(120);
@@ -206,7 +208,12 @@ export default function TapRhythm() {
   useEffect(() => { bpmRef.current = bpm; }, [bpm]);
 
   const ensureAC = () => {
-    if (!acRef.current) acRef.current = new AudioContext();
+    if (!acRef.current) {
+      const ac = new AudioContext();
+      acRef.current = ac;
+      // Ear-safety bus: the hi-hat is 8 kHz-highpassed noise — tame the top.
+      safeInputRef.current = createSafeMaster(ac).input;
+    }
     if (acRef.current.state === "suspended") acRef.current.resume();
     return acRef.current;
   };
@@ -226,9 +233,10 @@ export default function TapRhythm() {
         const s = stepsRef.current[curStepRef.current];
         if (s.active) {
           const t = nextTimeRef.current;
-          if (s.type === "kick") playKick(ac, t);
-          else if (s.type === "snare") playSnare(ac, t);
-          else playHiHat(ac, t);
+          const dest = safeInputRef.current ?? ac.destination;
+          if (s.type === "kick") playKick(ac, dest, t);
+          else if (s.type === "snare") playSnare(ac, dest, t);
+          else playHiHat(ac, dest, t);
         }
         curStepRef.current = (curStepRef.current + 1) % 32;
         nextTimeRef.current += stepDur;

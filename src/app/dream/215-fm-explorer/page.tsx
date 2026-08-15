@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 /* ── constants ──────────────────────────────────────────────────────── */
 
@@ -169,7 +170,8 @@ export default function FmExplorerPage() {
     modGain.connect(carrier.frequency);
     carrier.connect(master);
     master.connect(analyser);
-    analyser.connect(ctx.destination);
+    // High FM index throws wide bright sidebands — tame the top + cap peaks.
+    analyser.connect(createSafeMaster(ctx).input);
 
     const st     = stRef.current;
     const carrHz = xToHz(st.nx);

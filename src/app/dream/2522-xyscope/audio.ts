@@ -16,6 +16,8 @@
 // Both the timbre and the vector figure sharpen in lockstep.
 // ════════════════════════════════════════════════════════════════════════════
 
+import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
+
 export interface ScopeParams {
   /** Base frequency of voice A, in Hz (continuous, ~40–800). */
   base: number;
@@ -71,6 +73,7 @@ export class ScopeEngine {
   private analyserL: AnalyserNode | null = null;
   private analyserR: AnalyserNode | null = null;
   private master: GainNode | null = null;
+  private safe: SafeMaster | null = null;
   private params: ScopeParams;
   private _running = false;
   private lastCurveDrive = -1;
@@ -138,7 +141,11 @@ export class ScopeEngine {
     modGain.connect(oscB.frequency);
 
     merger.connect(master);
-    master.connect(ctx.destination);
+    // Ear-safety master bus: this engine's tanh saturator + FM buzz is bright by
+    // design, so tame the top end and cap peaks before the speakers.
+    const safe = createSafeMaster(ctx);
+    master.connect(safe.input);
+    this.safe = safe;
 
     this.ctx = ctx;
     this.oscA = oscA;
@@ -259,6 +266,12 @@ export class ScopeEngine {
         /* ignore */
       }
     }
+    try {
+      this.safe?.disconnect();
+    } catch {
+      /* ignore */
+    }
+    this.safe = null;
     try {
       if (ctx && ctx.state !== "closed") await ctx.close();
     } catch {

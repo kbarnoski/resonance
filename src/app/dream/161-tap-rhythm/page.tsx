@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 const STEPS = 32; // 2 bars × 16 16th-notes
 const LOOKAHEAD = 0.09; // seconds ahead to schedule
@@ -19,8 +20,9 @@ const DEMO_STEPS: DrumType[] = (() => {
   return s;
 })();
 
-/** Drum synthesis — all Web Audio, no deps. */
-function triggerDrum(ctx: AudioContext, type: DrumType, when: number): void {
+/** Drum synthesis — all Web Audio, no deps. Voices route into `dest` (the
+ *  ear-safety master bus), never straight to the speakers. */
+function triggerDrum(ctx: AudioContext, dest: AudioNode, type: DrumType, when: number): void {
   if (!type) return;
   if (type === "kick") {
     const o = ctx.createOscillator();
@@ -30,7 +32,7 @@ function triggerDrum(ctx: AudioContext, type: DrumType, when: number): void {
     g.gain.setValueAtTime(0.9, when);
     g.gain.exponentialRampToValueAtTime(0.001, when + 0.38);
     o.connect(g);
-    g.connect(ctx.destination);
+    g.connect(dest);
     o.start(when);
     o.stop(when + 0.4);
     return;
@@ -51,7 +53,7 @@ function triggerDrum(ctx: AudioContext, type: DrumType, when: number): void {
     g.gain.exponentialRampToValueAtTime(0.001, when + 0.11);
     src.connect(flt);
     flt.connect(g);
-    g.connect(ctx.destination);
+    g.connect(dest);
     src.start(when);
     src.stop(when + 0.14);
     return;
@@ -71,7 +73,7 @@ function triggerDrum(ctx: AudioContext, type: DrumType, when: number): void {
   g.gain.exponentialRampToValueAtTime(0.001, when + 0.03);
   src.connect(flt);
   flt.connect(g);
-  g.connect(ctx.destination);
+  g.connect(dest);
   src.start(when);
   src.stop(when + 0.038);
 }
@@ -79,6 +81,7 @@ function triggerDrum(ctx: AudioContext, type: DrumType, when: number): void {
 export default function TapRhythm() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const safeInputRef = useRef<AudioNode | null>(null);
   const stepsRef = useRef<DrumType[]>(DEMO_STEPS.slice());
   const bpmRef = useRef(120);
   const currentStepRef = useRef(0);
@@ -107,7 +110,10 @@ export default function TapRhythm() {
 
   const getAudioCtx = useCallback((): AudioContext => {
     if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
-      audioCtxRef.current = new AudioContext();
+      const ctx = new AudioContext();
+      audioCtxRef.current = ctx;
+      // Ear-safety bus: the hi-hat is 8.5 kHz-highpassed noise — tame the top.
+      safeInputRef.current = createSafeMaster(ctx).input;
     }
     if (audioCtxRef.current.state === "suspended") {
       audioCtxRef.current.resume().catch(() => {});
@@ -124,7 +130,7 @@ export default function TapRhythm() {
       const stepDur = 60 / bpmRef.current / 4;
       while (nextStepTimeRef.current < now + LOOKAHEAD) {
         const s = currentStepRef.current;
-        triggerDrum(ctx, stepsRef.current[s], nextStepTimeRef.current);
+        triggerDrum(ctx, safeInputRef.current ?? ctx.destination, stepsRef.current[s], nextStepTimeRef.current);
         if (stepsRef.current[s]) flashAmtRef.current = 1.0;
         currentStepRef.current = (s + 1) % STEPS;
         nextStepTimeRef.current += stepDur;
@@ -190,7 +196,7 @@ export default function TapRhythm() {
     const now = performance.now();
     tapTimestampsRef.current.push(now);
     setTapCount((c) => c + 1);
-    triggerDrum(ctx, tapDrumRef.current, ctx.currentTime);
+    triggerDrum(ctx, safeInputRef.current ?? ctx.destination, tapDrumRef.current, ctx.currentTime);
     if (tapTimeoutRef.current) clearTimeout(tapTimeoutRef.current);
     tapTimeoutRef.current = setTimeout(() => {
       if (phaseRef.current === "tapping") finalizeTaps();

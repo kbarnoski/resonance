@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ── AudioWorklet: FFT spectral magnitude interpolation ─────────────────────
 // Two input channels A and B. Each hop (256 samples) the processor:
@@ -229,7 +230,8 @@ export default function SpectralMorphPage() {
       }
 
       worklet.connect(anlOut);
-      anlOut.connect(ctx.destination);
+      // Sawtooth + noise spectral morph is bright — tame the top + cap peaks.
+      anlOut.connect(createSafeMaster(ctx).input);
       audioRef.current = { ctx, worklet, anlA, anlB, anlOut, srcBNode, stream };
       setMode(launchMode);
       startViz();

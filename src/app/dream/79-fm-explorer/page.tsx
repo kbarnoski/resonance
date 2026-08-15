@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useMicAnalyser } from "../_shared/use-mic-analyser";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ─── Bessel J_n(x) — Miller backward recurrence (stable for all x, n) ────────
 
@@ -197,12 +198,13 @@ export default function FMExplorer() {
     master.gain.value = 0.26;
 
     // FM: modulator → modDepth → carrier.frequency
-    //     carrier → adsr → master → destination
+    //     carrier → adsr → master → safe-master → destination
     modulator.connect(modDepth);
     modDepth.connect(carrier.frequency);
     carrier.connect(adsr);
     adsr.connect(master);
-    master.connect(ac.destination);
+    // High FM index throws wide bright sidebands — tame the top + cap peaks.
+    master.connect(createSafeMaster(ac).input);
 
     carrier.start();
     modulator.start();
