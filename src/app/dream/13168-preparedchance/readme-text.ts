@@ -1,0 +1,9 @@
+export const README = `Prepared Chance is a live instrument. You play notes; each key sounds through a prepared string, and a gentle oracle sometimes re-composes what you played — a note arrives a beat late, a step higher, doubled, or silenced. The melody comes back recognisably yours, gently estranged.
+
+The sound is a Karplus-Strong plucked-waveguide model. Each key carries a fixed "preparation" — felt (a dark, muted thud), a bolt (a rattling buzz), a harmonic (a long glassy ring), or a detuned pair (two strings a few cents apart, slowly beating) — after the objects Cage wedged between piano strings.
+
+The chance engine tosses an I-Ching hexagram for every note by the three-coin method. Its moving lines (the changing 6s and 9s) steer whether and how the note is transformed. Everything is seeded and deterministic: the muted demo you see on load tosses the same hexagrams every time.
+
+Play with a MIDI keyboard, or with your computer keys: A S D F G H J K are the white keys of the scale and W E T Y U are the black keys between them. Transpositions stay inside the scale, so the oracle stays a collaborator rather than chaos. Dial the "chance amount" slider from faithful toward estranged.
+
+Named reference (music history only): John Cage — Sonatas and Interludes (1946-48), the prepared piano, where objects between the strings transform each pitch's timbre; and Music of Changes (1951), composed by chance operations derived from the I-Ching. This piece borrows both ideas honestly — a prepared-string voice and a coin-toss oracle — and claims no more than that.`;
