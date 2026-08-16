@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-16T~11:20Z (cycle 1154, DEEP)
 
+> **Jury verdict today**: You asked to *play, not watch* — and the lab delivered: 12 of the last 15 are things you actually perform (a DJ deck, a body-conducted orchestra, a walk-through hall of your songs), zero duds this fortnight. But it now paints all of them the same cool-violet and drives all of them with a mouse, and it still hasn't touched your MIDI keyboard or shipped the AI video chain — tomorrow: a new color, your real instrument as input, or both. See `docs/dreams/JURY.md`.
+
 > **Last night you got the flat rhyme-map (rhymeloom). Its honest flaw was that leaps landed mid-phrase and it had no sense of your song's sections. Tonight fixes both — and turns the map into a *wheel you can play*.**
 
 ## New since yesterday
