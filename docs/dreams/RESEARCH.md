@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §1152 — 2026-08-16 · The 2026 turn is interactive real-time REMIX / "generative delay" — flip the record, don't just analyze it
+
+**Sources (dates verified):** **Live Music Diffusion Models: Efficient Fine-Tuning and Post-Training of Interactive Diffusion Music Generators (arXiv:2605.22717, May 2026)** — repurposes an audio diffusion model into an interactive "generative delay" that transforms a musician's live improvisation for variable timbral effects, running locally on a consumer gaming laptop — + **LK_Jam (arXiv:2606.21018, Jun 2026)** — a real-time bidirectional human-AI interactive music generation system (lightweight role-aware GRU + lock-free audio host). Enabling classical MIR: **BeatNet+ (Heydari et al., real-time rhythm analysis, TISMIR)**, **D. Ellis "Beat Tracking by Dynamic Programming" (2007)**, **Bello et al. "A Tutorial on Onset Detection in Music Signals" (IEEE TSAP 2005)**.
+
+**Why it's surprising / on-point:** the recent lab window has performed every verb on his recordings EXCEPT rhythm — un-mix, walk-the-catalog, conduct-with-body, spectral-freeze, duet, morph, canon all touch pitch/timbre/space; none touch **groove**. The 2026 systems above are all about *interactively re-timing/remixing a performance in real time* — the cleanest possible cash of JURY #1 (FIVE cycles: let Karel DO something). Full neural remix needs a model (infeasible under no-heavy-deps), but real-time **beat/downbeat tracking + bar-quantized re-scheduling** is cheap, deterministic, browser-native, and has **never shipped in the lab as a re-composition instrument** — `13248-rubatoline` ran onset-only analysis to *draw* his rubato (a diagram you watch), never a beat-quantized thing you PLAY. Loved slugs `172-loop-station` + `106-beat-cut` confirm the appetite.
+
+**Could become a prototype that:** loads one of his real recordings, detects tempo/beats/downbeats live, and hands Karel a beat-locked rig to **flip his own piano into a new groove** — scrub/loop/reverse/stutter quantized to his bars so it always stays in time, in his own timbre. → built this cycle as `13968-flipdeck` (DEEP, case a; raced against `13952-flipgrid` pad-sampler + `13984-flowloom` generative beat-loom, both banked).
+
+---
+
+
 ## §1151 — 2026-08-16 · Real-time low-latency music **source separation** is the 2026 turn (un-mix, don't just analyze)
 
 **Sources (dates verified):** arXiv:2511.13146 *"Towards Practical Real-Time Low-Latency Music Source Separation"* (RT-STT, a single-path TFC-TDF U-Net with channel-expansion feature fusion for live demixing) + arXiv:2607.12872 *"Low-Latency Neural Models for Real-Time Music Enhancement"* (Jul 2026) + the **iCASSP 2026 Music Source Restoration Challenge** protocol (Multi-Mel-SNR / Zimtohrli / FAD-CLAP), all naming live remix / stream re-balancing / live performance as the target applications.

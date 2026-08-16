@@ -5,6 +5,13 @@ a slug (becomes the route `/dream/<n>-<slug>`), and a spec terse enough for
 the Dream Agent to build from. Add new ideas to the bottom; promote
 items by editing status in place.
 
+## §1152 banked runners-up (DEEP "flip your own record — beat/downbeat-tracked live re-composition of his real piano"; winner = `13968-flipdeck`, the WebGL2 turntablist flip-ribbon)
+
+Both cleared the ambition floor (beat/downbeat-tracking MIR + lookahead scheduler + renderer = ≥3 subsystems; refs BeatNet+ / Ellis 2007 DP / Bello 2005; same-day RESEARCH §1152) and dodged every jury ban. Banked near-verbatim — the shared beat engine (hand-rolled STFT → spectral-flux novelty → autocorrelation tempo → phase-aligned 4/4 bar grid + low-band downbeat) is reusable shared-infra worth lifting into `_shared/` if a third rhythm piece lands.
+
+- **`13952-flipgrid`** (⭐⭐⭐, strongest banked — three.js MPC pad-sampler). His track auto-sliced into a 4×4 pad wall of beat-cells; a lookahead 16th-note scheduler locked to detected BPM; a per-pad 16-step sequencer + live tap-record quantised to the nearest step; per-pad reverse; solo-the-original; three.js pads light/scale on trigger (downbeats tinted violet, ambient breathes on the safe-master analyser). Resurrect verbatim once three.js GPU render is device-verifiable — it's the "build a NEW beat on pads from his piano" verb, one step more compositional than the deck. Pre-allocated slug free to reuse.
+- **`13984-flowloom`** (⭐⭐⭐ — SVG steerable generative beat-loom). Detected bars are nodes on a woven ring; a playhead walks bar-by-bar on a steady clock following steerable transition weights (wander / density / smooth↔surprise), with a 4-bar anti-repeat memory + a slowly-drifting focus center so the weave genuinely EVOLVES over minutes (different at minute 3 than minute 1 — the long-form-generative category the lab is thin on). Click an arc to pin/mute a bar. Inline SVG-DOM (arc nodes, glowing active thread, woven trail `<path>`). Banked because "steer a generative navigator of his audio" overlaps the §1146 `dreambetween` reservoir-steer verb — resurrect once that ages off the recent window; the long-form evolution is its distinguishing hook.
+
 ## §1151 banked runners-up (WIDE "let Karel DO something with his recording, on three fresh input×output×technique axes"; winner = `13904-unmixer`, the live median-filter HPSS un-mixer)
 
 Both built demoable + fully compliant (rule-10 catalog audio via `loadRealTrackBuffer`→`createSafeMaster`, 0 synth, semantic-token chrome, `PrototypeNav`, no api route, three.js/WebGPU output — off the Canvas2D ban). `rm -rf`'d after banking, before the authoritative build. Resurrect near-verbatim.
