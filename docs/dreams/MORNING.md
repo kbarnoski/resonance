@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-08-16T~07:00Z (cycle 1152, DEEP)
+# Morning digest — last updated 2026-08-16T~09:10Z (cycle 1153, WIDE)
 
-> **The recent run performed every verb on your recordings EXCEPT rhythm — un-mix, walk-the-catalog, conduct, freeze, duet. Tonight: groove.** Flip your own record — cut and re-loop your piano into a new beat, always in time, always in your own tone.
+> **The recent run kept applying studio *verbs* to your track — flip, un-mix, freeze, morph, conduct. Tonight is a different kind of doing: not transform the take, but *navigate its structure* — play your own song by leaping between the moments that rhyme.**
 
 ## New since yesterday
-- **[13968-flipdeck](https://getresonance.vercel.app/dream/13968-flipdeck)** — **a beat-locked DJ deck built from one of your real solo-piano takes.** It detects your tempo/beats/downbeats, draws your whole waveform as a ribbon with the grid on it, and lets you re-compose your bars into a new groove: **drag to scrub** (snaps to the beat), **drag across bars to set a loop** (1/2/4-bar, repeats perfectly in time), **reverse** (a real backspin), **half-time**, **beat-repeat/stutter** — all over a gapless clock so it never falls out of time. Every sound is a region of your actual recording — no synth, ever. **Why open this:** it's the first time the lab lets you *flip* your own playing instead of just watch it — the 2026 live-remix idea made hands-on and browser-native. Put on **headphones**, press Start, and grab the ribbon.
+- **[14048-rhymeloom](https://getresonance.vercel.app/dream/14048-rhymeloom)** — **play your own recording as an infinite, always-in-tune instrument.** It slices one of your real takes into beat-segments, computes a chroma "fingerprint" of each, and finds every bar that *rhymes* with every other. The self-similarity map draws as a glowing violet weave — its diagonal stripes are literally the passages you repeat. Then you **play** it: click any cell to leap there, press **J** to jump to a rhyming bar, flip on **auto-wander** to let it improvise an endless coherent path through your piece forever, and drag the **coherence** slider from smooth (only the closest matches) to surprising (distant echoes). Every sound is a slice of your actual piano — gapless joins, no synth. **Why open this:** it's the lab's take on Paul Lamere's *Infinite Jukebox*, built on your own catalog — the analysis IS the instrument. Put on **headphones**, hit Weave, then leap.
 
-## Explored this fire (DEEP — one concept, 3 interaction models; 2 banked)
-- **13952-flipgrid** (⭐⭐⭐) — *an MPC pad-sampler*: your track sliced onto a 4×4 pad wall + a 16-step sequencer + live tap-record, three.js pads lighting on trigger. Banked (needs three.js GPU device-verification). IDEAS §1152.
-- **13984-flowloom** (⭐⭐⭐) — *a steerable generative beat-loom*: your bars woven on a ring, a playhead re-threads them by weights you steer (wander/density/smooth↔surprise), evolving over minutes. Banked. IDEAS §1152.
-- Winner chosen on the research chain + build-safety + phone-legibility: the deck is the clearest "flip your own record", raw WebGL2 (zero GPU-render risk), and cashes your loved `172-loop-station` / `106-beat-cut`.
+## Explored this fire (WIDE — 3 divergent directions; 2 banked)
+- **14032-skyscore** (⭐⭐⭐) — *your music, played by the sky right now*: real sun position (computed local, no network) + live weather conduct your catalog into a slow generative bed that's different every hour — midday orbits bright and full, midnight is one dark voice. Gorgeous, but press-play-and-**watch**; banked (IDEAS §1153) for a real long-form/ambient cycle.
+- **14064-tiltpour** (⭐⭐⭐) — *pour your music around the room*: tilt your phone (or drag on a laptop) and your piano flows as a glowing fluid; where the liquid pools is where the sound pans. A real Stam fluid sim. Banked — strongest installation piece to bring back once it's GPU-verified on your hardware.
+- Winner chosen on: it lets you *play* (not watch), the most rigorous technique + two named refs, and it dodges the recent "apply-a-DSP-verb-to-the-whole-track" rut.
 
 ## Research finding worth a look
-- **2026's audio turn is interactive real-time remix / "generative delay"** (Live Music Diffusion arXiv:2605.22717, May 2026; LK_Jam arXiv:2606.21018, Jun 2026). Neural remix needs a model, but classic real-time beat/downbeat tracking (BeatNet+, Ellis DP 2007) is browser-native — tonight is the lab's first beat-tracked re-composition of your catalog. RESEARCH §1152.
+- **Music structure (self-similarity) as a *playable* surface, not a readout.** Foote's 1999 self-similarity matrix + Lamere's *Infinite Jukebox* (2012): the recurrence map of a song is a navigation graph you perform. Fully browser-native (chroma → cosine similarity), no model needed. RESEARCH §1153 → shipped tonight.
 
 ## Open questions for you
-- **Ten minutes with headphones is still the single highest-leverage thing** — for flipdeck especially: does the beat grid actually *lock* to your rubato solo piano, or drift to half/double tempo? (BPM nudge is there for it.) Same ask now blocking 8+ pieces (unmixer, hallofsongs, auroraconductor, dreambetween, callback…).
+- **Ten minutes with headphones is still the single highest-leverage thing** — for rhymeloom especially: do the rhyme-leaps sound coherent on your rubato solo piano, or do low-coherence jumps land mid-phrase? (Beat-quantizing the leaps is next-cycle work.) Same ask now blocks 8+ pieces (flipdeck, unmixer, hallofsongs, auroraconductor, dreambetween…).
 - **The AI-pipeline chain (music → image → video)** is still the loudest never-shipped lane (jury #2): green-light it with a per-prototype FAL_KEY budget + guarded route, or tell me to drop it.
-- **Where next?** 1152 was DEEP → **1153 WIDE** by rotation.
+- **Where next?** 1153 was WIDE → **1154 DEEP** by rotation (likely: beat-quantize rhymeloom's leaps + true structural-boundary segmentation).
