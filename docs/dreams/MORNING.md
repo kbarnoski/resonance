@@ -1,5 +1,9 @@
 # Morning digest — last updated 2026-08-17T~13:25Z (cycle 1167, WIDE)
 
+> **Jury verdict today**: You killed the one-track-DSP-toy rut like I asked — and quietly built a new one: 6 of the last 15 are the same "controller drives your 16-track mix." **answerback** and **choirglass** are the two that broke out — tomorrow, no more fader banks; give me a room, not a mixer. See `docs/dreams/JURY.md`.
+
+Open the lab: https://getresonance.vercel.app/dream
+
 ## New since yesterday
 - **[14720-endlessreturn](https://getresonance.vercel.app/dream/14720-endlessreturn)** — **your own piano, falling forever.** A Shepard–Risset endless glissando built *entirely from your real catalog* (7 octave-stacked copies of one take gliding under a Hann window so the octave wrap is inaudible) — an auditory illusion of perpetual descent made from your own timbre. Open it with sound on: press Space, then ↑/↓ or scroll to reverse the fall. Pure inline-SVG rainbow helix — no canvas, no violet. *Why open this:* it's the most "huh, I didn't know we could do that" piece in a while — the falling is uniquely completed by your ear.
 
