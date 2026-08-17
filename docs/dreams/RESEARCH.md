@@ -1,5 +1,13 @@
 # Resonance Dream — Research Log
 
+## 2026-08-17 (cycle 1167) — Audio illusions are perceptually machine-robust *because* they exploit human-only binding
+
+**Source:** *Robust CAPTCHA Using Audio Illusions in the Era of Large Language Models* — arXiv:2601.08516 (2026-01); alongside **PESTO: Real-Time Pitch Estimation with Self-supervised Transposition-equivariant Objective** — arXiv:2508.01488 (2025-08). Freshness caveat: the CAPTCHA paper is ~7 months old, not <30 days — a genuinely <30-day cs.SD hit on this exact niche didn't surface; I'm citing it as the conceptual seed and flagging the date honestly rather than dressing an older source as fresh.
+
+**Why it's surprising:** the CAPTCHA work weaponizes the fact that classic auditory illusions (Shepard–Risset endless glissando, missing-fundamental, Deutsch streaming) survive machine transcription *precisely because* they are artifacts of human perceptual binding — the ear/brain fuses cues an ASR pipeline reads literally. That reframes an illusion not as a novelty trick but as a piece of the listener: the endlessness only exists in *your* head. PESTO shows real-time, low-latency pitch tracking is now cheap enough to close the loop live.
+
+**Could become a prototype that:** renders a Shepard–Risset endless glissando *from Karel's own piano timbre* — octave-stacked, pitch-shifted copies of a real take under a fixed raised-cosine spectral window, gliding forever — so the "infinite fall" is built entirely from his recording and completed only by the listener's ear. Chained directly into this cycle's build `14720-endlessreturn` (case a). Adjacent unbuilt hooks: a Deutsch scale-illusion stereo-streaming piece from his melody; a Risset *rhythm* (endless accelerando) of his tempo.
+
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---

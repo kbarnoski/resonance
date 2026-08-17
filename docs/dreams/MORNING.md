@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-08-17T~18:20Z (cycle 1166)
-
-Open the lab: https://getresonance.vercel.app/dream
+# Morning digest — last updated 2026-08-17T~13:25Z (cycle 1167, WIDE)
 
 ## New since yesterday
-- **`/dream/14704-choirglass` — hum a harmony and your own catalog becomes a stained-glass choir.** Sixteen of your real piano takes are the panes of a rose window. Hum or sing a note (there's an "auto demo" and A–J keys if you have no mic) and the takes whose live harmony *consonates* with your voice light up and **swell** — sustain a note and the lit panes stack into a chord of your own recordings. Your voice only *steers* the glass; you never hear the mic — 100% of what you hear is your catalog. **Why open this:** it's a genuinely new register for the lab — a luminous full-chromatic SVG rose window instead of the usual violet shader field — and a fresh input (your voice as a harmony controller). Pulled by your love of `1326-voice-cathedral`. Best with a mic + headphones.
+- **[14720-endlessreturn](https://getresonance.vercel.app/dream/14720-endlessreturn)** — **your own piano, falling forever.** A Shepard–Risset endless glissando built *entirely from your real catalog* (7 octave-stacked copies of one take gliding under a Hann window so the octave wrap is inaudible) — an auditory illusion of perpetual descent made from your own timbre. Open it with sound on: press Space, then ↑/↓ or scroll to reverse the fall. Pure inline-SVG rainbow helix — no canvas, no violet. *Why open this:* it's the most "huh, I didn't know we could do that" piece in a while — the falling is uniquely completed by your ear.
 
 ## In progress / partial
-- Nothing half-built. This was a DEEP cycle: 2 full "SIREN" prototypes built in parallel, 1 shipped, 1 banked ready-to-ship (below).
+- Nothing mid-build. This was a clean WIDE fire: 3 divergent prototypes built to demoable in parallel, 1 shipped, 2 banked.
+
+## Also explored this cycle (banked in IDEAS.md §1167 — say the word and I'll ship either)
+- **phasepiano** — Steve Reich *Piano Phase* on your own take: two copies drift out of phase into a shimmering interference, visualized as a crimson WebGL2 moiré field. Clean, graphic, un-pretty. A strong fresh-palette WIDE candidate.
+- **slowaurora** — cosmic-ambient long-form: your whole album dissolved into one endless breathing Paulstretch drone that walks track-to-track *with memory* under a boreal-green aurora. The most ambitious of the three; deserves a DEEP cycle + your ears.
 
 ## Research findings worth a look
-- **"Co-creation agents that listen well" (arXiv:2608.04378, Aug 2026)** — the idea that the machine should hold a listening *memory* and answer musically from it, not just react frame-to-frame. Built this cycle as the choir: it listens to your voice and answers from its memory of your whole catalog.
-- **Banked ⭐⭐⭐⭐: `14688-sirenchoir`** — the same "sing and your catalog answers" idea via live *granular* pitch-matching (YIN) on a WebGL aurora, rather than whole-take swells. The more literal research build + a bigger technical swing; it lost curation only because grains could sound muddy unheard and SVG was the sharper diversity break. Say the word and it ships next.
+- **Audio illusions are machine-robust *because* they exploit human-only perceptual binding** (arXiv:2601.08516 + PESTO real-time pitch arXiv:2508.01488). That reframes an illusion as a piece of *you* — the endlessness lives only in your head. Directly drove today's build. (Freshness caveat noted in RESEARCH.md — the source is ~7mo, not <30 days.)
 
 ## Open questions for Karel
-- **10 min with a mic + headphones on `choirglass`** would tell me whether the sung-note→consonant-pane mapping actually feels like harmony (untested on your real analysis data), and whether 16 swelling loops overlap cleanly vs. muddy. Voice pieces are the most headless-blind.
-- Which banked voice piece next — the **granular** one (sirenchoir) or should I deepen **choirglass** (continuous chroma timeline + "hold to freeze the chord")?
-- **The AI music→image→video chain is still never-shipped — now flagged 4 verdicts running.** It needs a `FAL_KEY` budget + your go-ahead. Green-light with a per-prototype budget, or tell me to drop it permanently?
+- **Ear/device review is the bottleneck.** endlessreturn's whole payoff is auditory — headless I can't confirm the descent reads as *truly* endless or that 7 simultaneous layers sit at the right level. 60 seconds with headphones settles it.
+- **slowaurora vs phasepiano** — want either shipped as its own cycle? slowaurora especially wants the full budget.
+- Standing: the **AI music→image→video chain** still needs a FAL_KEY budget + your go-ahead, or a permanent "drop it."
