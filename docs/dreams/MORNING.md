@@ -1,17 +1,15 @@
-# Morning digest — last updated 2026-08-17T~17:00Z (cycle 1169)
+# Morning digest — last updated 2026-08-17T~19:05Z (cycle 1170)
 
 ## New since yesterday
-- **`14832-disintegration`** → https://getresonance.vercel.app/dream/14832-disintegration — **a take that ages.** Pick one of your recordings and *leave it looping* — over a 1–16 min "Evolve" span it slowly wears itself away: the top rolls off, the loop loses material, wow/flutter widens, a room-tone rises from beneath, and a silver-gelatin film emulsion visibly decays with it. **Different at minute 5 than minute 1.** Press-and-hold the frame to abrade faster. *Why open this:* it's the first piece in the lab that AGES — sit with it a few minutes, don't just glance. In the lineage of Basinski's *Disintegration Loops*.
-- Register break: **pure achromatic grayscale** (silver-gelatin) — full-chromatic had hit 4× in the last-10 window, so this cycle commits to the rare palette you asked for in yesterday's verdict.
+- **`14848-holdlight`** → https://getresonance.vercel.app/dream/14848-holdlight — **a recording with no play button.** Five of your takes are five thin threads of light. There is no start button and no latch: a thread only *sounds while you press-and-hold it* — let go and both the sound and the light fade over a second and a half. You can hold **at most two at once** (attention is finite; a third press is refused). And it **remembers neglect** — a thread you leave untended dims, thins, blooms back slower each time, and if you ignore it long enough it goes **permanently dark for the session.** *Why open this:* it's the opposite of a mixer — presence is *scarce and enacted*, never set-and-forget. **Use your fingers and give it a few minutes** — it's built to reward tending a couple of threads while others go dark. In the lineage of Pauline Oliveros's *Deep Listening*.
+- This is the ⭐⭐⭐⭐ idea I flagged "ship next" yesterday, now live — with the two deepenings added (true permanent loss; a faint afterimage lingers when you release).
 
 ## In progress / partial
-- **2 more explored this fire, banked in IDEAS (WIDE cycle):**
-  - `14848-holdlight` ⭐⭐⭐⭐ — a recording you can only keep present by *holding your attention on it*: hold a thread of light to hear it, release and it decays; max 2 at once; neglected threads dim over the session. Inline-SVG, austere. **Ready to ship next cycle** — the freshest idea of the three.
-  - `14816-afterglow` ⭐⭐⭐ — one take heard from inside a blooming architecture, tunnel-toward-light in grayscale. Held only because it's a bit close to Tuesday's `14784-nave`; ready when that's cooled.
+- **Two fresh seeds banked from today's research** (IDEAS §1170), both extending holdlight's "attention is scarce" verb: `holdlight-gaze` (a webcam notices when your attention *wanders* and reclaims the thread — a sensor that *withholds*, never mixes) and `holdlight-duet` (a thread that sounds only while **two people** hold it — the multi-user room you keep asking for).
 
 ## Research findings worth a look
-- **Nothing in the lab AGES.** *False Memory* (All the Machines, Jul-30) ships an "Evolve" knob that auto-degrades a source over 1–64 min — the seed for today's build. 1,100+ prototypes all react frame-to-frame and stay stable over time; disintegration is the first that uses *decay as the composer*.
+- **Almost nothing in the lab makes you *earn* the sound.** ACM Creativity & Cognition 2026 (soundwalking) + Oliveros frame the listener as a "composer-performer" whose attention is the primary creative tool — sound that exists only for as long as you actively spend attention to sustain it. Holdlight is the first piece here that takes that literally.
 
 ## Open questions for Karel
-- **Patience-review, not just an ear-check:** disintegration only reveals itself over minutes — worth a real sit-down with headphones. And the held-attention piece (holdlight) needs your fingers to judge.
-- **Two lanes still stuck, need a call from you:** (1) a genuinely spatial **multi-user / WebRTC** room (still 0× in the lab); (2) the **AI music→image→video** chain — it's been "queued next" for 5 verdicts. Green-light it with a small FAL_KEY budget, or say drop it permanently and I'll stop listing it.
+- **Please review holdlight with your hands + headphones, not a glance** — the whole payoff is the tactile hold and the slow neglect drift (a thread you can actually *lose*). It's headless-blind otherwise.
+- **The two lanes still stuck, still need your call:** (1) a genuinely **multi-user / WebRTC** room (0× for 15+ cycles — `holdlight-duet` is the cleanest on-ramp I've got); (2) the **AI music→image→video** chain — it's been "queued next" for 6 verdicts now. Green-light it with a small FAL_KEY budget, or tell me to drop it permanently and I'll stop listing it.

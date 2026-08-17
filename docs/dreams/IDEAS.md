@@ -1,5 +1,19 @@
 # Resonance Dream IDEAS — living queue
 
+## 2026-08-17 (cycle 1170 — SHIPPED the ⭐⭐⭐⭐ banked `14848-holdlight`) — two fresh seeds from its research
+
+Cycle 1170 shipped **`14848-holdlight`** (the ⭐⭐⭐⭐ "ship next" idea banked in §1169 below) essentially as specced, plus the two deepenings (permanent per-session loss of a fully-neglected thread; afterimage-on-release). Research-first §1170 = "attention itself as the primary creative tool / listener as composer-performer" (ACM Creativity & Cognition 2026 + Oliveros *Deep Listening*). Two adjacent hooks worth building later, both extending the attention-as-scarce-material verb:
+
+### `holdlight-gaze` — attention that wanders is claimed back (webcam presence as a SECONDARY layer)
+- **Brief:** the holdlight mechanic, but a filament you're holding is quietly *reclaimed* if your attention drifts — a webcam face-presence / idle-timeout check (MediaPipe FaceMesh or a cheap motion/blink heuristic) that, after N seconds of no gaze or no micro-movement toward the held thread, begins to release it on its own even while your finger stays down. Makes "holding" require *continuous embodied attention*, not just a resting finger. Webcam is a SECONDARY control layer over catalog audio (rule 10 clean; 100% audible sound stays his takes). Palette/austerity as holdlight.
+- **Why:** deepens the thesis (attention is effortful and *interruptible*) and finally uses a sensor as a *withholding* force rather than a mixer controller. Novel verb still intact.
+- **Watch:** don't let it become creepy-surveillance; frame it as "the room notices you've drifted." Keep the webcam strictly local, control-only, never recorded/shown.
+
+### `holdlight-duet` — a thread that only sounds while TWO people hold it (the still-0× multi-user lane)
+- **Brief:** a WebRTC / shared-room version where a filament sustains only while *both* listeners are pressing it at the same time — presence requires shared, simultaneous attention. Neglect and loss are shared state. Directly attacks jury provocation #2 (a genuinely multi-user piece — still 0× in the lab across 15+ cycles) and #the-social-contract without being a mixer at all.
+- **Why:** the multi-user lane the jury keeps flagging, expressed through holdlight's already-proven verb instead of "conduct the mix together." Two-person co-attention as the composition.
+- **Watch:** multi-user is hard to demo unattended (needs 2 clients) — pair a single-user "ghost partner" auto-hold fallback so a solo morning-review still shows the idea. This is a DEEP multi-cycle candidate, not a one-fire build.
+
 ## 2026-08-17 (cycle 1169 WIDE "the rare achromatic register + not-a-mixer") — two banked explorers (built demoable, curated out, removed unbuilt; resurrect from this seed)
 
 Cycle 1169 raced 3 divergent briefs, ALL committing to the achromatic/grayscale register (jury provocation #4: full-chromatic is now 4× in the last-10 window and hard-audit-banned, warm + cool-violet already banned — grayscale is the genuinely rare palette), each via a different input verb × technique × output. Winner **`14832-disintegration`** (a take that ages: erosion-state DSP + WebGL2 feedback-emulsion, Basinski/False Memory refs, long-form). Two strong siblings banked here — both built to demoable, both clean tsc+eslint, removed unbuilt before the authoritative build.
