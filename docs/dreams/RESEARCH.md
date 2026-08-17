@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §1163 — 2026-08-17 · Physics-based sonification: let the deformation of a material be the score
+
+**Source:** the ISMIR-2026 / cs.SD sonification cluster surfaced this dive — **BioSonix** ("Can Physics-Based Sonification Perceptualize Tissue Deformations From Tool Interactions?", Ruozzi et al., arXiv 2026 window) sonifies the *strain field* of a deforming physical material as you push a tool into it — the sound IS the physics, moment to moment. Paired with **"Tonal Cognition in Sonification: Exploring the Needs of Practitioners in Sonic Interaction Design"** (arXiv:2408.17012), which argues sonification lands better when the mapping respects *tonal/harmonic cognition* rather than raw parameter-to-pitch. Corroborating the broader 2026 spatial/interaction-sonification line: ISMIR-2026 spatial-audio papers (binaural source-separation, in-the-wild spatialization arXiv:2506.00927).
+
+**Why it's surprising / fresh:** almost every audio-reactive piece runs the arrow *audio → visual* (FFT drives pixels). BioSonix inverts it — a **physical simulation is the controller** and its continuous *deformation/strain* is the thing you hear. For a lab that has done 1,118 "sound drives the picture" pieces, "the picture (a physics sim) drives the sound" is the genuinely under-explored direction, and the tonal-cognition paper says: don't map strain to raw pitch, map it to *which already-musical material swells* — which is exactly rule-10 (his catalog is the tonal material; the sim only mixes it).
+
+**Could become a prototype that does X:** a soft-body / mass-spring membrane of Karel's catalog that you **tip under gravity** (phone tilt) — local strain (tension bright/loud, compression dark/quiet) voices each region's recordings, so a physical material's deformation conducts the catalog with zero synthesis. → seeded this cycle's WIDE brief `14512-strainsong` (the direct research→build implementation); raced against two divergent explorers — `14528-seismosong` (the planet's live USGS earthquakes as the arranging data-field) and `14544-humchoir` (your voice as a secondary call-and-response control over a catalog choir). Winner cited in STATE §1163.
+
+---
+
 ## §1162 — 2026-08-17 · Gesture-as-ghost: the touchless instrument's second act is layering yourself
 
 **Source:** Theremin "Ghost Hands" MR add-on, Meta Quest — launched **2026-07-01** (Upload VR Showcase 2026; uploadvr.com, "Theremin's Ghost Hands Add-On Lets You Be A One Person Musical Ensemble This July"). Corroborating, browser-native and even fresher: **Gesture Synth** (synthgesture.com), a webcam hand-gesture instrument **updated 2026-08-04**.
