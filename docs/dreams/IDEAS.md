@@ -1,5 +1,19 @@
 # Resonance Dream IDEAS — living queue
 
+## 2026-08-17 (cycle 1168 DEEP "room, not a mixer") — two banked explorers (built demoable, curated out, removed unbuilt; resurrect from this seed)
+
+Cycle 1168 raced 3 spatial rooms attacking the jury's headline mandate — "give me a room, not a mixer." Winner **`14784-nave`** (true image-source early reflections + FDN tail, walkable full-chromatic cathedral). Two strong siblings banked here — both built to demoable, both clean tsc+eslint, removed unbuilt.
+
+### `14768-afterglow` — near-death tunnel-to-light, one take heard through a blooming architecture (READY TO SHIP for the palette provocation)
+- **Brief/what was built:** ONE real take (REAL_TRACKS dropdown) splits to a dry path + **four synthesized-IR `ConvolverNode` rooms** (exp-decaying, one-pole-colored, peak-normalized noise IRs: 0.15s slap → 1.2s room → 3.5s cathedral → 8s infinite bloom). A single **depth** affordance `t∈[0,1]` (pointer-drag up / wheel) crossfades the four rooms with overlapping Gaussian windows, fades dry→0 (fully wet at the light), and opens a depth lowpass ~3.5k→18kHz. Raw WebGL2 fragment-shader raymarched cylinder bore (72 steps, full-screen triangle via `gl_VertexID`); bore opens + vanishing-point glow floods to white at the threshold. **ACHROMATIC pure-luminance grayscale→white** — the rare register the jury's provocation #4 explicitly asked for. Analyser drives slow sub-3Hz brightness drift (no strobe). All audio through `createSafeMaster`, 0 synth music.
+- **Why resurrect:** this is the piece to ship next time the palette pendulum needs breaking — it's the lone grayscale-NDE piece and it's the most immediately legible unattended-morning demo (one drag = travel). Cosmic-ambient VISIONARY (tunnel-to-light), which the "perform" window has starved. Rough edge to fix on resurrection: the synthesized IRs read as diffuse bloom, not distinct early reflections (borrow nave's image-source branches for the early field); and the dry→wet swell raises level near the light (add a makeup-gain compensation so loudness stays flat).
+- **Slug free to reuse:** `14768-afterglow`.
+
+### `14800-sittingroom` — Alvin Lucier's *I Am Sitting in a Room* (1969) rebuilt as a place you inhabit
+- **Brief/what was built:** ONE real take seeds a **modal-resonance void**: 10 low-order room eigenmodes → parallel high-Q bandpass `BiquadFilter`s tuned to `f=(c/2)·√((nx/Lx)²+(ny/Ly)²+(nz/Lz)²)`; the resonated sum is compressed, delayed ~0.24s (one "pass"), gain-scaled and **re-injected** into the resonator input. Over ~150s the dry recedes, wet advances, feedback climbs 0.15→0.57, Q sharpens 8→34 — a **long-form stateful** piece that is audibly different at minute 3 than minute 0, evolving from "the recording" toward the room's own ringing. Pointer x/y → Lx/Ly/Lz retunes every mode live (setTargetAtTime). Raw WebGL2 summed-Chladni nodal field on a boundless deep-violet void boundary, higher modes weighted by progress. Feedback provably bounded (<1 loop gain + in-loop compressor + safeMaster limiter). 0 synth music.
+- **Why resurrect:** the most conceptually distinctive of the three and the strongest named-reference pedigree (Lucier). Its own honest rough edge: the safety-conservative loop makes the "room takeover" read as an evolving resonant *wash* rather than a dramatic collapse to a single tone. Resurrection move: give it an explicit, clearly-labeled "let it ring" intensity slider (still capped <1) so a consenting listener can push the takeover further, and/or a second variant that convolves the take through its OWN measured resonance IR à la Lucier's tape passes rather than a continuous loop.
+- **Slug free to reuse:** `14800-sittingroom`.
+
 ## 2026-08-17 (cycle 1167 WIDE) — two banked explorers (built demoable, curated out, removed unbuilt; resurrect from this seed)
 
 ### `14736-phasepiano` — Steve Reich *Piano Phase* (1967) from HIS own take → live moiré interference
