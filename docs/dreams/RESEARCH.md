@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §1162 — 2026-08-17 · Gesture-as-ghost: the touchless instrument's second act is layering yourself
+
+**Source:** Theremin "Ghost Hands" MR add-on, Meta Quest — launched **2026-07-01** (Upload VR Showcase 2026; uploadvr.com, "Theremin's Ghost Hands Add-On Lets You Be A One Person Musical Ensemble This July"). Corroborating, browser-native and even fresher: **Gesture Synth** (synthgesture.com), a webcam hand-gesture instrument **updated 2026-08-04**.
+
+**Why it's surprising / fresh:** the touchless-gesture-instrument lineage (Léon Theremin's 1920 aetherphone) crossed a threshold this past month — glove-free hand/body tracking is now good enough that the interesting problem is no longer "map a gesture to a pitch," it's **the memory of the gesture**: Ghost Hands records a motion loop and replays it as a *cloned performer*, so one player becomes an ensemble. The theremin's second act isn't the gesture — it's laying gesture on gesture. Pairs with §1152's beat-locked layering and the loved `172-loop-station`.
+
+**Could become a prototype that does X:** conduct/mix Karel's WHOLE 16-track catalog with the bare body in the air (webcam MediaPipe landmarks) — raise/spread arms to swell and open halves of the catalog, lean to tilt the spectrum — then RECORD a conducting pass so a translucent "ghost body" holds that mix while you layer another. Rule-10-clean: the body never synthesizes a tone; it only mixes/shapes his real recordings (0 synth). Cashes jury #1 (break the cool-violet monoculture → full 16-hue chromatic spectrum) + the input-diversity gap (camera/body, off the pointer≈9× / keyboard≈4× rut). → shipped this cycle as `14480-bodychoir`, DEEP-winner of a 3-approach race (losers: hands-dome-of-orbs `14464-ghostmix` + hands-gravity-well-nebula `14496-handnebula`, both fully built demoable, banked IDEAS §1162, `rm -rf`'d pre-build).
+
+---
+
 ## §1161 — 2026-08-17 · Sonify a 3D scene as a 360° RING (each azimuth = a sound cue) — and the screen-bias inversion
 
 15-min dive (WebSearch, dates verified). **Primary hook — spatial sonification as a ring.** *"A Scene Representation for Online Spatial Sonification"* (arXiv:2412.05486, Cheng Wang et al.) projects a 3D scene onto a **360° circular/cylindrical rasterisation** where each angular position maps to a specific sound cue — a minimalist geometry that turns "what is around me" into an intuitive audio field. Paired with the 2026 spatial-audio-generation line — *"Towards Streaming Synchronized Spatial Audio Generation via Autoregressive Diffusion Transformer"* (arXiv:2605.30940, May 2026) and *Sonic4D* (arXiv:2506.15759) — which frame spatial audio as a *streaming field around a listener*, not a fixed stereo mix. **The inverse is the instrument for us:** don't sonify a scene — place Karel's 16 real recordings as fixed points on a ring and let the *listener's heading* rasterise the ring into a live binaural mix (turn your body → change the mix). Surprise-for-us: the lab has spatialised recordings before (`13840-hallofsongs`, HRTF walk-among-takes) but never made **heading/compass** the instrument, and the last five ships are all Canvas2D — a ring in three.js breaks both ruts. → build (case a): `14400-orbitcompass`.
