@@ -1,17 +1,16 @@
-# Morning digest — last updated 2026-08-18 ~07:20Z (cycle 1176)
+# Morning digest — last updated 2026-08-18 ~09:10Z (cycle 1177)
 
 ## New since yesterday
-- **`15040-slimenerve` → open this first.** *What if your recording grew its own nervous system?* ~200,000 physarum (slime-mold) agents, simulated entirely in a **WebGPU compute shader**, forage into a living filament web — and the web is driven live by one of your real takes: busy passages knot it into nervy threads, loudness feeds its speed and glow, chord changes re-seed the bright nodes it grows toward. An emergent network **arranged by no one** — the opposite of a fader bank. Achromatic silver-on-black. Drag to drop food. **Needs desktop Chrome/Edge (WebGPU); it says so cleanly if absent.**
-- This was a **WIDE** cycle (3 divergent non-mixer concepts built in parallel, best one shipped) — the direct answer to your jury's "the constraint is breadth / give me a room, not a mixer."
+- **`15104-waveroom` → open this first (desktop, headphones).** *What if one of your recordings became a room you walk through?* One take is dropped as a point source into a simulated resonant chamber; a **real 2D acoustic wave equation** (FDTD, on the GPU) propagates its pressure so wavefronts expand, bounce off the walls, and interfere into **standing waves**. Drag the listener across the field and you hear the room from where you stand: **antinodes are loud and open, nodes fall to a whisper.** Not a mixer — one source, and walking the room is hearing its acoustic modes. Diverging teal↔coral pressure map. This is your jury's *"give me a room, not a mixer,"* taken literally.
+- This was a **DEEP** cycle (one spatial concept, two engines built in parallel, best shipped) — the DEEP spatial cycle your 2026-08-17 jury asked for (provocation #2).
 
 ## In progress / partial (built, vetted, banked — ready to ship a later cycle)
-- **`15056-recurrence`** — see AND *hear* where your recording rhymes with itself: a full self-similarity heatmap of one take; when the playhead crosses a rhyme, a low-gain ghost of that passage fades in, and you can click any cell to teleport there. (Foote 1999.)
-- **`15072-stillness`** — the recording only clears when you hold still: move the cursor and the music smears into haze; hold still and it resolves to full clarity. A deep-listening meditation (Pauline Oliveros). Fills the starved cosmic-ambient lane.
-- Earlier banks still ready: `15024-incommon` (In C leaderless round), `14912-chordlattice` (neo-Riemannian Tonnetz).
+- **`15120-echochamber`** — the *other* engine from tonight: stand INSIDE a 3D shoebox hall, one take radiating from a glowing source; walk your standpoint and the six walls' echoes re-aim in real time (image-source method). The safer, more instantly-legible sibling of waveroom — a natural next ship, and they pair as a wave-based-vs-geometric diptych for one ear-check.
+- Earlier banks still ready: **`15056-recurrence`** (hear where a take rhymes with itself), **`15072-stillness`** (the recording clears only when you hold still — fills the starved calm/cosmic-ambient lane), `15024-incommon` (In C leaderless round), `14912-chordlattice` (Tonnetz).
 
 ## Research worth a look
-- **arXiv:2608.02219 "Sounding Canvas"** (Aug 2026) — sound art where a *running algorithm*, not a mix, is the artwork. Points straight at a multi-visitor `slimenerve` v2 where each tab seeds its own colony into a shared trail-map.
+- **Wave-based room auralization** (Savioja, FDTD room acoustics; Allen–Berkley image-source, JASA 1979) — foundational acoustics techniques the lab had never used as the *anti-fader*. Tonight's `waveroom` is the first; the "modifiable room" (drag the walls and hear the reverb change) and a multi-source spatial braid are the obvious next steps.
 
 ## Open questions for Karel
-- **Sound-on / real-device review is still the #1 unblock.** `15040-slimenerve` needs a desktop-Chrome look (WebGPU) + a live visual-tuning glance; `15056`/`15072` need headphones. Ten minutes would validate or kill several at once.
-- **AI music→image→video chain** (queued across 8+ verdicts, never shipped): green-light a per-prototype FAL_KEY budget + guarded route, or say drop it permanently. It won't ship autonomously — it's your call.
+- **Sound-on / desktop review is still the #1 unblock.** `15104-waveroom` needs a desktop-Chrome look (WebGL2) + headphones to confirm the standing-wave banding reads crisp and the walk gives a clearly musical loud↔quiet swing. Ten minutes validates waveroom + several banked pieces at once.
+- **AI music→image→video chain** (queued across 8+ verdicts, never shipped): green-light a per-prototype FAL_KEY budget + guarded route, or say drop it permanently. It won't ship autonomously — your call.
