@@ -1,16 +1,17 @@
-# Morning digest — last updated 2026-08-18 ~05:10 UTC
+# Morning digest — last updated 2026-08-18 ~07:20Z (cycle 1176)
 
 ## New since yesterday
-- **[15008-sympathy](/dream/15008-sympathy)** — *the leaderless room.* This is the direct answer to your "give me a room, not a mixer / a genuinely multi-user piece" — the thing you've asked for most and hasn't shipped in the last 15. Press Start (**headphones on**): each voice is a phrase of one of your takes, and the voices are coupled like Huygens' two pendulum clocks on a shared beam — they drift, then **find each other and lock into a round with no conductor** (a coherence meter climbs 0→1 as they entrain). **Open a second tab and you become another voice.** Alone, 3 ghost voices seed the room so you still hear the whole thing lock; drag on the field to knock it out of sync and watch it re-form. **Why open this:** it advances past `canoncircle` (which used one elected "leader" tab to impose the grid) into genuinely *emergent* sync — arranged by no one, the same no-conductor contract you liked in `reefmind`, now social. Cheapest multi-user piece to judge: one tab + headphones shows the full lock.
+- **`15040-slimenerve` → open this first.** *What if your recording grew its own nervous system?* ~200,000 physarum (slime-mold) agents, simulated entirely in a **WebGPU compute shader**, forage into a living filament web — and the web is driven live by one of your real takes: busy passages knot it into nervy threads, loudness feeds its speed and glow, chord changes re-seed the bright nodes it grows toward. An emergent network **arranged by no one** — the opposite of a fader bank. Achromatic silver-on-black. Drag to drop food. **Needs desktop Chrome/Edge (WebGPU); it says so cleanly if absent.**
+- This was a **WIDE** cycle (3 divergent non-mixer concepts built in parallel, best one shipped) — the direct answer to your jury's "the constraint is breadth / give me a room, not a mixer."
 
-## In progress / partial
-- **[15024-incommon]** — banked runner-up from tonight's race: your catalog as **Terry Riley's *In C*** — a shared score of phrase-cells, each present player advancing at their own pace but staying near the group, no leader. Authentic but slower to reveal; ships as its own cycle or folds into a sympathy v2 with both sync modes.
-- **[14912-chordlattice]** — still ready-to-ship: your chords walking the neo-Riemannian Tonnetz as a glowing P/L/R path.
-- Recent headless-blind pieces still want your ears: **phantomline** (headphones), **livescore**, **chladnichord**, **betweenus** (two tabs).
+## In progress / partial (built, vetted, banked — ready to ship a later cycle)
+- **`15056-recurrence`** — see AND *hear* where your recording rhymes with itself: a full self-similarity heatmap of one take; when the playhead crosses a rhyme, a low-gain ghost of that passage fades in, and you can click any cell to teleport there. (Foote 1999.)
+- **`15072-stillness`** — the recording only clears when you hold still: move the cursor and the music smears into haze; hold still and it resolves to full clarity. A deep-listening meditation (Pauline Oliveros). Fills the starved cosmic-ambient lane.
+- Earlier banks still ready: `15024-incommon` (In C leaderless round), `14912-chordlattice` (neo-Riemannian Tonnetz).
 
-## Research findings worth a look
-- **Leaderless synchronization** — H2H Music Improv (ISMIR-2026, musicians staying together with no score/leader) read against Kuramoto's coupled oscillators (1975) and Huygens' 1665 "sympathy of clocks." Proof a room can self-organize with no conductor — tonight's sympathy is the direct cash.
+## Research worth a look
+- **arXiv:2608.02219 "Sounding Canvas"** (Aug 2026) — sound art where a *running algorithm*, not a mix, is the artwork. Points straight at a multi-visitor `slimenerve` v2 where each tab seeds its own colony into a shared trail-map.
 
 ## Open questions for Karel
-- **10 min with headphones (+ a second tab for sympathy)** validates or kills sympathy + phantomline + livescore + chladnichord at once — the single biggest unblock (jury #5). Start with **sympathy** (one tab is enough to hear the lock).
-- **AI music→image→video chain** has been "queued next" across 8+ verdicts and won't ship autonomously — it needs a per-prototype `FAL_KEY` budget + guarded route, or a permanent drop. Your call.
+- **Sound-on / real-device review is still the #1 unblock.** `15040-slimenerve` needs a desktop-Chrome look (WebGPU) + a live visual-tuning glance; `15056`/`15072` need headphones. Ten minutes would validate or kill several at once.
+- **AI music→image→video chain** (queued across 8+ verdicts, never shipped): green-light a per-prototype FAL_KEY budget + guarded route, or say drop it permanently. It won't ship autonomously — it's your call.
