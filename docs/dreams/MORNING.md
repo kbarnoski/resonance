@@ -1,17 +1,16 @@
-# Morning digest — last updated 2026-08-17T~23:10Z (cycle 1172)
+# Morning digest — last updated 2026-08-18 ~00:55 UTC
 
 ## New since yesterday
-- **`14896-chladnichord`** → https://getresonance.vercel.app/dream/14896-chladnichord — **the SHAPE of the chord.** Your real piano plays and 11,000 grains of luminous sand migrate to the *nodal lines* of a vibrating plate — the places that stay still — so the figure on screen literally IS the standing-wave geometry of the sound right now. **Each chord crystallizes into its own figure, and the pattern morphs as the harmony moves** (the chord's root + the spectrum's brightness pick the plate's `(m,n)` mode). Drag on the plate to sprinkle fresh sand and watch it re-migrate. *Why open this:* it's a **structural** map, not another loudness meter — you're seeing the physical shape the sound would take if it were vibrating a real plate. Sound on. Lineage: Chladni's 1787 plate experiments + the 2026 *ChladniSonify* paper.
+- **[14928-livescore](/dream/14928-livescore)** — *the score writes itself, in pure type.* No shader, no particles, no color but one violet accent — the whole screen is Geist type on near-black. Your current chord is written **huge in violet at center**, re-writing itself with a blur-and-scale each time it changes and **breathing its weight** with your touch; section names march across the top, melody note-names scatter and fade at the edges, a mono strip reads key / tempo / meter / dB / time. **Why open this:** it's the register the lab has literally never done — a deliberately text-only piece (your jury's provocation #4), and it's the cheapest of the recent batch to judge: just hit Start with headphones, no mic or second device. Pick any Welcome Home track.
 
 ## In progress / partial
-- **This was a WIDE cycle — I explored 3 unrelated non-mixer directions and shipped the strongest.** The two I banked (IDEAS §1172) are both built and ready to ship as their own cycles:
-  - **`livescore`** — a **text-only** score that writes itself: the whole screen is *type*, the chord name a big word breathing with your dynamics, note-names scattering at the edges. This is the "no shader field, no color" register you asked the jury for (provocation #4) — my **priority resurrect**.
-  - **`chordlattice`** — your chords *walk the Tonnetz* (the harmonic lattice), tracing a glowing path and naming each move (P/L/R). Reads your actual voice-leading as geometry.
+- **[14912-chordlattice]** — next ready-to-ship: your chords walking the neo-Riemannian Tonnetz as a glowing path (P/L/R voice-leading made visible). Built demoable last cycle, banked; ships as its own fire.
+- Recent headless-blind pieces still want your ears: **chladnichord** (sound-on), **betweenus** (two tabs + headphones), **holdlight** (fingers + headphones).
 
 ## Research findings worth a look
-- **Almost every audio→visual map in the lab is *statistical* (band energy → brightness/size).** Chladni cymatics is *structural* — the image is the literal standing-wave geometry of the sound. Driving the plate mode from your **harmony** (not raw frequency) is the fresh move, and 2026 tools (Cymatica, CymaVis) show it's a live area, not a curio.
+- **Visual Lyrics (ACM IUI 2026)** — a tool that animates lyric TEXT as the audio-reactive surface (weight/blur/scale/position ARE the visualization). For a lyric-less piano catalog, the "words" become the score's own vocabulary — which is exactly what livescore renders. Live 2026 front, not a curio.
 
 ## Open questions for Karel
-- **Review chladnichord sound-on** — the payoff is watching the sand figure *change shape as your harmony moves*; a muted glance misses it.
-- **betweenus (yesterday) still wants two tabs + headphones** — its whole point is the *meeting* of two presences.
-- **Still needs your call:** the **AI music→image→video** chain — "queued next" for 6+ verdicts now. Green-light it with a small FAL_KEY budget, or tell me to drop it permanently and I'll stop listing it.
+- **10 minutes with headphones** would validate or kill livescore + chladnichord + betweenus + holdlight at once — the single biggest unblock (jury #5). Start with livescore (easiest).
+- **AI music→image→video chain** has been "queued next" across 7+ verdicts and will not ship autonomously — it needs a per-prototype `FAL_KEY` budget + guarded route, or a permanent drop. Your call.
+- Worth a polish pass on livescore: snap the chord re-write to a live onset so the word lands *on* the attack, not a beat late?
