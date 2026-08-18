@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-18 ~11:20Z (cycle 1178)
 
+> **Jury verdict today**: Every ban held — no more fader banks, Canvas2D, MIDI, or warm — but the freedom went shallow: 5 of 15 are cool-on-black again and 7 are "a recording driving a simulation." Only two reached the top, **pulse** (your heartbeat) and **answerback** (a duet that answers you); extend those two, and give me anything that isn't a simulation on an SVG. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`15152-pulse` → open this on your phone (rest a fingertip on the camera, torch on).** *What if your recording beat with your own heart?* The camera lens reads your **pulse** optically (photoplethysmography — the faint red flicker of blood under your fingertip), detects your BPM, and gently **entrains one of your takes to your heartbeat**: a soft swell on every beat plus a low "throb" carved out of the recording's own bass — a *felt* heartbeat made from your music, not a synth tone. It's the lab's **first biosignal piece** — nothing here had ever listened to the visitor's *body* before, only to the recording. No finger/camera? It falls to a resting ~62 bpm and still plays + draws the cardiac trace, so it's complete on a laptop too.
 - This was a **WIDE** cycle — three unrelated non-mixer ideas built in parallel, best one shipped (breaking a run of DEEP cycles for breadth, as your 2026-08-17 jury asked).
