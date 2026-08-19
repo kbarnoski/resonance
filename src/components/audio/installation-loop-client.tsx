@@ -670,6 +670,26 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // visualizer-client also binds F (we let the bubble continue for F).
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Operator break-in combos (modifier = operator, audience keys
+      // have none). Cmd/Ctrl+Shift+B breaks out of the attract loop to
+      // The Room to DJ (full navigation tears the loop down cleanly;
+      // the same combo in The Room returns here). Cmd/Ctrl+Shift+N
+      // skips to the next journey via the phase effect's skip bridge.
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey) {
+        const k = e.key.toLowerCase();
+        if (k === "b") {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.location.href = "/room";
+          return;
+        }
+        if (k === "n") {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.dispatchEvent(new Event("installation-operator-skip"));
+          return;
+        }
+      }
       // Always let browser shortcuts through (reload, devtools, address
       // bar, tab switching, etc). Anything with a modifier key is the
       // operator, not the audience — never trap those.
@@ -1064,6 +1084,15 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       }
     };
 
+    // Operator skip (Cmd+Shift+N) — same path as a natural track end,
+    // so pre-entry pauses and credits wrap-around behave identically.
+    const operatorSkip = () => {
+      // eslint-disable-next-line no-console
+      console.log(`[installation] ${entry.journey.name}: operator skip`);
+      advance();
+    };
+    window.addEventListener("installation-operator-skip", operatorSkip);
+
     // ─── Pre-load next journey's audio ────────────────────────────
     // ~10 seconds before the current track ends, point a HIDDEN
     // <audio> element at the next journey's URL with preload="auto".
@@ -1394,6 +1423,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     }, 2_000);
 
     return () => {
+      window.removeEventListener("installation-operator-skip", operatorSkip);
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);

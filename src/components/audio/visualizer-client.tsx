@@ -11,6 +11,7 @@ import { JourneyCompositor } from "./journey-compositor";
 import { JourneyPhaseIndicator } from "./journey-phase-indicator";
 import { JourneyFeedback, resetPerfMonitor, flushFeedbackEntries, buildSnapshot, appendEntry, getSharedFpsRef, updateShaderUsageFromJourney } from "./journey-feedback";
 import { getTierProfile, getDeviceTier } from "@/lib/audio/device-tier";
+import { isPackActive } from "@/lib/offline/pack-client";
 import { AdminPanel } from "./admin-panel";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { useShallow } from "zustand/react/shallow";
@@ -1491,6 +1492,20 @@ export function VisualizerClient({
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      // Offline kiosk operator: Cmd/Ctrl+Shift+B returns from DJ mode to
+      // the attract loop (mirror of the break-out combo in the loop).
+      // Gated on the pack probe so a stray combo online does nothing.
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "b" &&
+        isPackActive()
+      ) {
+        e.preventDefault();
+        window.location.href = "/room/installation?loop=1";
+        return;
+      }
 
       switch (e.key) {
         case "Escape":

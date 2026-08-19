@@ -236,6 +236,32 @@ work with Wi-Fi off.
 **Never set `OFFLINE_PACK` on Vercel.** It disables auth; it is strictly for
 a trusted-operator kiosk laptop.
 
+**Pre-harvested journey imagery:** the pack also carries fal-generated images
+for every built-in + path journey (`local-images.json` + `images/journeys/`),
+built once on a connected machine with:
+
+```bash
+node --env-file=.env.local scripts/harvest-journey-images.mjs
+```
+
+Re-runs are resumable (already-downloaded images are skipped). Offline, the
+AI image layer pulls these instead of live fal, and the app forces the full
+installation tier — max layering, full resolution, no connection-based
+downgrade.
+
+**Operator hotkeys (offline kiosk):**
+
+| Combo | Where | Action |
+| --- | --- | --- |
+| `Cmd+Shift+B` | attract loop | Break in — exit to The Room to DJ (library `l`, journeys, full control) |
+| `Cmd+Shift+B` | The Room | Return to the attract loop (`/room/installation?loop=1`) |
+| `Cmd+Shift+N` | attract loop | Skip to the next journey in the sequence |
+| `Cmd+Shift+S` | attract loop | Toggle the on-screen status panel |
+
+Audience-facing keys stay trapped — only modifier combos reach the operator
+handlers. The `B` combo in The Room only fires when the offline pack is
+being served, so it is inert in production.
+
 ---
 
 ## 11. When something changes
