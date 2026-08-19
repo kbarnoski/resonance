@@ -12,6 +12,7 @@ import { JourneyPhaseIndicator } from "./journey-phase-indicator";
 import { JourneyFeedback, resetPerfMonitor, flushFeedbackEntries, buildSnapshot, appendEntry, getSharedFpsRef, updateShaderUsageFromJourney } from "./journey-feedback";
 import { getTierProfile, getDeviceTier } from "@/lib/audio/device-tier";
 import { isPackActive } from "@/lib/offline/pack-client";
+import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { AdminPanel } from "./admin-panel";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { useShallow } from "zustand/react/shallow";
@@ -618,6 +619,10 @@ export function VisualizerClient({
       setJourneyOpen(false);
     }
   }, [installationMode, journeyOpen]);
+
+  // Phone remote (offline kiosk) — inside the attract loop the loop
+  // client runs the poller, so this instance stands down.
+  useKioskRemote(installationMode ? null : "room");
 
   // Isolate primary shader — strips dual/tertiary when toggled with R key
   const journeyFrame = useMemo(() => {

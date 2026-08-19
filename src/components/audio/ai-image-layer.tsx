@@ -95,6 +95,30 @@ import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS } from "@/
 // fetched once per session (shared with device-tier's installation probe).
 import { fetchPackLocalImages } from "@/lib/offline/pack-client";
 
+// ── Opportunistic live fal on the kiosk ──
+// Packed images are the guaranteed backbone; when the desert hotspot is
+// actually up, every other gen tick ALSO fires a live fal request as a
+// bonus layer. Failures cost nothing visually (the local image already
+// pushed) and back off for 2 minutes. Requires FAL_KEY in the kiosk env;
+// live attempts respect the image service's session cost cap.
+const LIVE_OVERLAY_BACKOFF_MS = 120_000;
+let liveOverlayEnabled: boolean | null = null;
+let liveOverlayBackoffUntil = 0;
+let liveOverlayTick = 0;
+function shouldAttemptLiveOverlay(): boolean {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return false;
+  if (performance.now() < liveOverlayBackoffUntil) return false;
+  if (liveOverlayEnabled === null) {
+    liveOverlayEnabled = false; // pessimistic until the status check lands
+    getRealtimeImageService()
+      .checkAvailability()
+      .then((ok) => { liveOverlayEnabled = ok; });
+    return false;
+  }
+  if (!liveOverlayEnabled) return false;
+  return liveOverlayTick++ % 2 === 0;
+}
+
 /** Smooth ease-in-out cubic — no jarring linear interpolation */
 function easeInOutCubic(t: number): number {
   return t < 0.5
@@ -328,7 +352,11 @@ export function AiImageLayer({
   // skipCache=true for periodic refreshes (same prompt, want new image)
   const triggerGeneration = useCallback((skipCache = false) => {
     // ── Local-image mode: cycle provided URLs instead of calling fal.ai ──
-    if (localImageUrlsRef.current.length > 0) {
+    // The packed image always pushes (guaranteed cadence); when the
+    // hotspot is reachable we fall through and ALSO fire a live fal gen
+    // as a bonus layer on top of the packed backbone.
+    const isPackOverlay = localImageUrlsRef.current.length > 0;
+    if (isPackOverlay) {
       const urls = localImageUrlsRef.current;
       const idx = localImageIndexRef.current % urls.length;
       localImageIndexRef.current = idx + 1;
@@ -336,7 +364,7 @@ export function AiImageLayer({
       loadImage(urls[idx])
         .then((img) => pushImage(img))
         .catch(() => { /* broken URL, skip */ });
-      return;
+      if (!shouldAttemptLiveOverlay()) return;
     }
 
     const service = getRealtimeImageService();
@@ -462,6 +490,16 @@ export function AiImageLayer({
         highQuality: useAudioStore.getState().highQualityImages,
       })
       .then(async (url) => {
+        // Kiosk overlay mode: a live result is a bonus, a failure just
+        // means the hotspot dropped — back off and let the packed
+        // backbone carry the visuals alone for a while.
+        if (isPackOverlay) {
+          if (!url) {
+            liveOverlayBackoffUntil = performance.now() + LIVE_OVERLAY_BACKOFF_MS;
+            return;
+          }
+          liveOverlayBackoffUntil = 0;
+        }
         if (!url) {
           // fal returned null. If the service has been failing for 3+
           // consecutive calls, switch to the pre-baked fallback library
@@ -512,7 +550,9 @@ export function AiImageLayer({
           pushImage(img);
         } catch { /* load failed, skip */ }
       })
-      .catch(() => {})
+      .catch(() => {
+        if (isPackOverlay) liveOverlayBackoffUntil = performance.now() + LIVE_OVERLAY_BACKOFF_MS;
+      })
       .finally(() => { loadingCountRef.current = Math.max(0, loadingCountRef.current - 1); });
   }, [loadImage, pushImage]);
 

@@ -12,6 +12,7 @@ import { InstallationIntro } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
 import { InstallationStatusPanel } from "./installation-status-panel";
+import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import {
   INTRO_MS,
@@ -77,6 +78,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   const setQueue = useAudioStore((s) => s.setQueue);
   const startJourney = useAudioStore((s) => s.startJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
+
+  // Phone remote (offline kiosk) — no-op unless the pack probe confirms.
+  useKioskRemote("loop");
 
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
   // Stable ref mirror so long-lived effects (heartbeat poster) can read

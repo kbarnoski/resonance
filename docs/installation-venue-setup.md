@@ -262,6 +262,20 @@ Audience-facing keys stay trapped — only modifier combos reach the operator
 handlers. The `B` combo in The Room only fires when the offline pack is
 being served, so it is inert in production.
 
+**Live fal over the hotspot (optional):** put `FAL_KEY` in the kiosk's
+`.env.local`. Packed images remain the guaranteed backbone; when the network
+is actually reachable, every other generation tick also fires a live fal
+request as a bonus layer. Failures fall back silently and retry every 2
+minutes, so a dead hotspot costs nothing. Live gens respect the image
+service's session cost cap.
+
+**Phone remote:** with the phone on the same hotspot as the laptop, open
+`http://<laptop-ip>:3000/remote` (find the IP via `ipconfig getifaddr en0`).
+The page shows now-playing and offers: play/pause, skip journey, break
+in / resume loop, launch any built-in journey, volume. Commands flow
+through an in-memory bus at `/api/pack/remote` — offline-only, 404s in
+production. The kiosk polls every 2s, so allow a beat for commands to land.
+
 ---
 
 ## 11. When something changes
