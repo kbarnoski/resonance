@@ -2,6 +2,15 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { SharedJourneyClient } from "./client";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
+import {
+  isOfflinePack,
+  getJourneyByShareToken,
+  getJourneysByIds,
+  getRecording,
+  getAnalysis,
+  getCueMarkers,
+  getPathByShareToken,
+} from "@/lib/offline/pack";
 
 export const dynamic = "force-dynamic";
 
@@ -18,12 +27,18 @@ export async function generateMetadata({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  const supabase = createAnonClient();
-  const { data: metaRow } = await supabase
-    .from("journeys")
-    .select("name, subtitle, theme")
-    .eq("share_token", token)
-    .single();
+  let metaRow: { name: string; subtitle: string | null; theme: unknown } | null;
+  if (isOfflinePack()) {
+    metaRow = getJourneyByShareToken(token) as typeof metaRow;
+  } else {
+    const supabase = createAnonClient();
+    const { data } = await supabase
+      .from("journeys")
+      .select("name, subtitle, theme")
+      .eq("share_token", token)
+      .single();
+    metaRow = data;
+  }
 
   if (!metaRow) return { title: "Journey Not Found" };
 
@@ -50,13 +65,20 @@ export default async function SharedJourneyPage({
 }) {
   const { token } = await params;
   const { pathToken } = await searchParams;
-  const supabase = createAnonClient();
+  const offline = isOfflinePack();
+  const supabase = offline ? null : createAnonClient();
 
-  const { data: journeyRow } = await supabase
-    .from("journeys")
-    .select("*")
-    .eq("share_token", token)
-    .single();
+  let journeyRow;
+  if (offline) {
+    journeyRow = getJourneyByShareToken(token);
+  } else {
+    const { data } = await supabase!
+      .from("journeys")
+      .select("*")
+      .eq("share_token", token)
+      .single();
+    journeyRow = data;
+  }
 
   if (!journeyRow) notFound();
 
@@ -86,15 +108,24 @@ export default async function SharedJourneyPage({
   let recordingDuration = 0;
 
   if (journeyRow.recording_id) {
-    const [recRes, analysisRes, markersRes] = await Promise.all([
-      supabase.from("recordings").select("artist, duration").eq("id", journeyRow.recording_id).single(),
-      supabase.from("analyses").select("events").eq("recording_id", journeyRow.recording_id).single(),
-      supabase.from("markers").select("time, label").eq("recording_id", journeyRow.recording_id).eq("type", "cue").order("time"),
-    ]);
-    musicArtist = recRes.data?.artist ?? null;
-    recordingDuration = recRes.data?.duration ?? 0;
-    analysisEvents = (analysisRes.data?.events ?? []) as { time: number; type: string; intensity: number }[];
-    cueMarkers = (markersRes.data ?? []) as { time: number; label: string }[];
+    if (offline) {
+      const rec = getRecording(journeyRow.recording_id);
+      const analysis = getAnalysis(journeyRow.recording_id);
+      musicArtist = rec?.artist ?? null;
+      recordingDuration = rec?.duration ?? 0;
+      analysisEvents = (analysis?.events ?? []) as { time: number; type: string; intensity: number }[];
+      cueMarkers = getCueMarkers(journeyRow.recording_id);
+    } else {
+      const [recRes, analysisRes, markersRes] = await Promise.all([
+        supabase!.from("recordings").select("artist, duration").eq("id", journeyRow.recording_id).single(),
+        supabase!.from("analyses").select("events").eq("recording_id", journeyRow.recording_id).single(),
+        supabase!.from("markers").select("time, label").eq("recording_id", journeyRow.recording_id).eq("type", "cue").order("time"),
+      ]);
+      musicArtist = recRes.data?.artist ?? null;
+      recordingDuration = recRes.data?.duration ?? 0;
+      analysisEvents = (analysisRes.data?.events ?? []) as { time: number; type: string; intensity: number }[];
+      cueMarkers = (markersRes.data ?? []) as { time: number; label: string }[];
+    }
   }
 
   // For built-in journeys, use the live definition so design changes propagate immediately.
@@ -152,18 +183,30 @@ export default async function SharedJourneyPage({
     culmination: { journeyId: string; shareToken: string | null; name: string } | null;
   } | null = null;
   if (pathToken) {
-    const { data: pRow } = await supabase
-      .from("journey_paths")
-      .select("name, journey_ids, culmination_journey_id, accent_color, glow_color")
-      .eq("share_token", pathToken)
-      .single();
+    let pRow;
+    if (offline) {
+      pRow = getPathByShareToken(pathToken);
+    } else {
+      const { data } = await supabase!
+        .from("journey_paths")
+        .select("name, journey_ids, culmination_journey_id, accent_color, glow_color")
+        .eq("share_token", pathToken)
+        .single();
+      pRow = data;
+    }
     if (pRow && Array.isArray(pRow.journey_ids)) {
       const allIds = [...(pRow.journey_ids as string[])];
       if (pRow.culmination_journey_id) allIds.push(pRow.culmination_journey_id as string);
-      const { data: stepJourneys } = await supabase
-        .from("journeys")
-        .select("id, name, share_token")
-        .in("id", allIds);
+      let stepJourneys;
+      if (offline) {
+        stepJourneys = getJourneysByIds(allIds);
+      } else {
+        const { data } = await supabase!
+          .from("journeys")
+          .select("id, name, share_token")
+          .in("id", allIds);
+        stepJourneys = data;
+      }
       const byId = new Map<string, { id: string; name: string; share_token: string | null }>();
       for (const j of stepJourneys ?? []) byId.set(j.id as string, j as { id: string; name: string; share_token: string | null });
       const steps = (pRow.journey_ids as string[])

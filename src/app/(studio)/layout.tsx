@@ -1,15 +1,19 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isOfflinePack } from "@/lib/offline/pack";
 import { Sidebar } from "@/components/nav/sidebar";
 import { StudioTracker } from "./studio-tracker";
 import { ProfilePrompt } from "@/components/ui/profile-prompt";
 
 export default async function StudioLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  // Offline kiosk (Tramokyo): no Supabase, trusted operator — skip auth.
+  if (!isOfflinePack()) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
+    if (!user) {
+      redirect("/login");
+    }
   }
 
   return (

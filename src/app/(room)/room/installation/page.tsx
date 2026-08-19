@@ -7,6 +7,7 @@ import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_SEQUENCE } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
+import { isOfflinePack, listRecordings, getCueMarkers } from "@/lib/offline/pack";
 
 // Force dynamic so every request executes server code (and we read
 // fresh auth state instead of returning a cached anon-mode page to a
@@ -51,9 +52,11 @@ export default async function InstallationPage({ searchParams }: Props) {
   // installation without signing up. The fal.ai endpoints are still
   // auth-gated — anon viewers don't trigger AI generation, so we
   // don't burn upstream credits for unauthenticated traffic.
-  const supabaseAuth = await createClient();
-  const { data: { user: authUser } } = await supabaseAuth.auth.getUser();
-  const anonMode = !authUser;
+  const offline = isOfflinePack();
+  const supabaseAuth = offline ? null : await createClient();
+  const authUser = supabaseAuth ? (await supabaseAuth.auth.getUser()).data.user : null;
+  // Offline kiosk gets the full (trusted-operator) experience.
+  const anonMode = offline ? false : !authUser;
 
   // ─── Loop mode: curated sequence of all built-in journeys ─────────
   // Sequence draft = every featured (built-in) journey in declaration
@@ -64,19 +67,29 @@ export default async function InstallationPage({ searchParams }: Props) {
     // Authed users: read with their session (RLS + own tracks).
     // Anon users: read with the anon key (RLS will only return rows
     // explicitly marked is_featured or attached to a shared journey).
-    const supabase = authUser
-      ? await createClient()
-      : createAnonClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        );
+    const supabase = offline
+      ? null
+      : authUser
+        ? await createClient()
+        : createAnonClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          );
 
     // Fallback pool. For authed users: their own recordings (featured
     // first). For anon: only is_featured rows from the entire library
     // (RLS gates this; no cross-user data leaks).
     let featuredRecordings: { id: string; title: string; artist: string | null; duration: number | null }[] = [];
-    if (authUser) {
-      const { data: userRecs } = await supabase
+    if (offline) {
+      type Row = { id: string; title: string; artist: string | null; duration: number | null; is_featured: boolean | null; created_at: string | null };
+      const rows = (listRecordings() as unknown as Row[])
+        .slice()
+        .sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? ""));
+      const featured = rows.filter((r) => r.is_featured);
+      const rest = rows.filter((r) => !r.is_featured);
+      featuredRecordings = [...featured, ...rest].map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
+    } else if (authUser) {
+      const { data: userRecs } = await supabase!
         .from("recordings")
         .select("id, title, artist, duration, is_featured")
         .eq("user_id", authUser.id)
@@ -89,7 +102,7 @@ export default async function InstallationPage({ searchParams }: Props) {
         featuredRecordings = [...featured, ...rest].map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
       }
     } else {
-      const { data: pubRecs } = await supabase
+      const { data: pubRecs } = await supabase!
         .from("recordings")
         .select("id, title, artist, duration")
         .eq("is_featured", true)
@@ -111,11 +124,28 @@ export default async function InstallationPage({ searchParams }: Props) {
     const ilikePatterns = pairedPatterns.filter(([, p]) => !p.startsWith("="));
     const exactPatterns = pairedPatterns.filter(([, p]) => p.startsWith("="));
 
+    // Offline: resolve both pattern forms in memory against the pack.
+    if (offline) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const rows = listRecordings() as any[];
+      for (const [jid, p] of pairedPatterns) {
+        if (p.startsWith("=")) {
+          const exactTitle = p.slice(1);
+          const hit = rows.find((r) => r.title === exactTitle);
+          if (hit) pairedRecordingByJourneyId[jid] = { id: hit.id, title: hit.title, artist: hit.artist ?? null, duration: hit.duration ?? null };
+        } else {
+          const needle = p.replace(/^%|%$/g, "").toLowerCase();
+          const hit = rows.find((r) => (r.title ?? "").toLowerCase().includes(needle));
+          if (hit) pairedRecordingByJourneyId[jid] = { id: hit.id, title: hit.title, artist: hit.artist ?? null, duration: hit.duration ?? null };
+        }
+      }
+    }
+
     // ILIKE patterns — single OR query, scoped to the right rows for
     // the auth state (own tracks for authed users, is_featured for anon).
-    if (ilikePatterns.length > 0) {
+    if (!offline && ilikePatterns.length > 0) {
       const orFilter = ilikePatterns.map(([, p]) => `title.ilike.${p}`).join(",");
-      const base = supabase.from("recordings").select("id, title, artist, duration");
+      const base = supabase!.from("recordings").select("id, title, artist, duration");
       const scoped = authUser
         ? base.eq("user_id", authUser.id)
         : base.eq("is_featured", true);
@@ -132,9 +162,9 @@ export default async function InstallationPage({ searchParams }: Props) {
     }
 
     // Exact matches — one query each (simple .eq, no OR-encoding issues)
-    for (const [jid, p] of exactPatterns) {
+    for (const [jid, p] of offline ? [] : exactPatterns) {
       const exactTitle = p.slice(1);
-      const base = supabase.from("recordings").select("id, title, artist, duration");
+      const base = supabase!.from("recordings").select("id, title, artist, duration");
       const scoped = authUser
         ? base.eq("user_id", authUser.id)
         : base.eq("is_featured", true);
@@ -178,8 +208,13 @@ export default async function InstallationPage({ searchParams }: Props) {
       .map((s) => s.track?.id)
       .filter((id): id is string => !!id);
     const cuesByRecordingId: Record<string, Array<{ time: number; label: string }>> = {};
-    if (trackedRecordingIds.length > 0) {
-      const { data: markerRows } = await supabase
+    if (offline) {
+      for (const rid of trackedRecordingIds) {
+        const cues = getCueMarkers(rid);
+        if (cues.length > 0) cuesByRecordingId[rid] = cues;
+      }
+    } else if (trackedRecordingIds.length > 0) {
+      const { data: markerRows } = await supabase!
         .from("markers")
         .select("recording_id, time, label")
         .in("recording_id", trackedRecordingIds)
@@ -202,26 +237,17 @@ export default async function InstallationPage({ searchParams }: Props) {
 
     return (
       <div className="h-screen w-screen overflow-hidden bg-black">
-        {/* Preload Cormorant Garamond — used by both the cycle intro
-            ("Resonance") and every journey title. Without this preload
-            the cycle title initially rendered in Georgia (system
-            fallback) and re-rendered in Cormorant once the font lazy-
-            loaded from another component, producing a visible "type
-            style change" right as journey 0 started. Loading at the
-            page level guarantees the font is on its way before any
-            cycle text paints. */}
+        {/* Preload Cormorant Garamond (self-hosted) — used by both the
+            cycle intro ("Resonance") and every journey title. Without
+            this preload the cycle title initially painted in Georgia
+            (system fallback) and re-rendered once the font lazy-loaded,
+            producing a visible type-style change as journey 0 started. */}
         <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
+          rel="preload"
+          href="/fonts/cormorant-garamond-latin.woff2"
+          as="font"
+          type="font/woff2"
           crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=block"
         />
         <InstallationLoopClient
           sequence={sequenceWithCues}
@@ -237,7 +263,18 @@ export default async function InstallationPage({ searchParams }: Props) {
 
   // ─── Legacy single-journey kiosk mode (unchanged) ──────────────────
   let tracks: Track[] = [];
-  try {
+  if (offline) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rows = listRecordings() as any[];
+    const featured = rows.filter((r) => r.is_featured);
+    const pool = featured.length > 0 ? featured : rows;
+    tracks = pool.map((r) => ({
+      id: r.id,
+      title: r.title || "Untitled",
+      audioUrl: `/api/audio/${r.id}`,
+      duration: r.duration ?? null,
+    }));
+  } else try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 

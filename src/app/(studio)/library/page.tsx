@@ -1,7 +1,32 @@
 import { createClient } from "@/lib/supabase/server";
 import { LibraryClient } from "@/components/recordings/library-client";
+import { isOfflinePack, listRecordings, getAnalysis } from "@/lib/offline/pack";
 
 export default async function LibraryPage() {
+  if (isOfflinePack()) {
+    const normalized = listRecordings()
+      .slice()
+      .sort((a, b) => ((b.created_at as string) ?? "").localeCompare((a.created_at as string) ?? ""))
+      .map((rec) => {
+        const analysis = getAnalysis(rec.id as string);
+        return {
+          id: rec.id,
+          title: rec.title,
+          duration: rec.duration,
+          createdAt: rec.created_at,
+          recordedAt: rec.recorded_at,
+          fileName: rec.file_name,
+          description: rec.description,
+          artist: rec.artist ?? null,
+          hasAnalysis: !!analysis,
+          keySignature: analysis?.key_signature ?? null,
+          tempo: analysis?.tempo ?? null,
+          tags: [] as { id: string; name: string }[],
+        };
+      });
+    return <LibraryClient recordings={normalized} allTags={[]} />;
+  }
+
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();

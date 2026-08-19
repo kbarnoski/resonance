@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { RecordingDetail } from "@/components/recordings/recording-detail";
 import { EditableDate } from "@/components/recordings/editable-date";
 import { Clock } from "lucide-react";
+import { isOfflinePack, getRecording, getAnalysis } from "@/lib/offline/pack";
 
 function formatDuration(seconds: number): string {
   const m = Math.floor(seconds / 60);
@@ -16,30 +17,44 @@ export default async function RecordingPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
 
-  // Run all queries in parallel to eliminate waterfall
-  const [recordingResult, analysisResult, messagesResult, { data: { user } }] = await Promise.all([
-    supabase.from("recordings").select("*").eq("id", id).single(),
-    supabase.from("analyses").select("*").eq("recording_id", id).single(),
-    supabase
-      .from("chat_messages")
-      .select("*")
-      .eq("recording_id", id)
-      .order("created_at", { ascending: true }),
-    supabase.auth.getUser(),
-  ]);
+  let recording;
+  let analysis;
+  let messages;
+  let readOnly;
 
-  const recording = recordingResult.data;
-  if (!recording) notFound();
+  if (isOfflinePack()) {
+    recording = getRecording(id);
+    if (!recording) notFound();
+    analysis = getAnalysis(id) ?? null;
+    messages = [];
+    // Edit/chat endpoints hit Supabase — keep the kiosk read-only
+    readOnly = true;
+  } else {
+    const supabase = await createClient();
 
-  const readOnly = recording.user_id !== user?.id;
+    // Run all queries in parallel to eliminate waterfall
+    const [recordingResult, analysisResult, messagesResult, { data: { user } }] = await Promise.all([
+      supabase.from("recordings").select("*").eq("id", id).single(),
+      supabase.from("analyses").select("*").eq("recording_id", id).single(),
+      supabase
+        .from("chat_messages")
+        .select("*")
+        .eq("recording_id", id)
+        .order("created_at", { ascending: true }),
+      supabase.auth.getUser(),
+    ]);
+
+    recording = recordingResult.data;
+    if (!recording) notFound();
+
+    readOnly = recording.user_id !== user?.id;
+    analysis = analysisResult.data;
+    messages = messagesResult.data;
+  }
 
   // Use proxy API route — it detects ALAC and transcodes to AAC for Chrome
   const audioUrl = `/api/audio/${id}`;
-
-  const analysis = analysisResult.data;
-  const messages = messagesResult.data;
 
   return (
     <div className="space-y-6">

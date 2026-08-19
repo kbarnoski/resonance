@@ -46,21 +46,7 @@ export function JourneyPhaseIndicator({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fadeInTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number>(0);
-  const fontLoadedRef = useRef(false);
   const usedIndicesRef = useRef<Map<string, number>>(new Map());
-
-  // Load Cormorant Garamond via Google Fonts
-  useEffect(() => {
-    if (fontLoadedRef.current) return;
-    fontLoadedRef.current = true;
-    const id = "journey-guidance-font";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap";
-    document.head.appendChild(link);
-  }, []);
 
   // Reset used indices when journey changes
   useEffect(() => {

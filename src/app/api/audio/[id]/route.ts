@@ -6,6 +6,7 @@ import { writeFile, readFile, unlink, mkdtemp, access } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { logger } from "@/lib/logger";
+import { isOfflinePack, getAudioInfo } from "@/lib/offline/pack";
 
 function resolveFfmpegPath(): string {
   if (process.env.FFMPEG_PATH) return process.env.FFMPEG_PATH;
@@ -182,6 +183,17 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+
+  if (isOfflinePack()) {
+    const info = getAudioInfo(id);
+    if (!info) {
+      return NextResponse.json({ error: "Recording not found" }, { status: 404 });
+    }
+    // Static pack file — Next serves it with range support; no signing,
+    // no transcode (the pack builder already transcoded ALAC).
+    return NextResponse.json(info);
+  }
+
   const result = await resolveRecording(id);
 
   if (!result) {

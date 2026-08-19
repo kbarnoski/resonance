@@ -71,3 +71,7 @@ scripts/_*-lora-training.zip
 # regenerable decks — see docs/build-deck.py
 *.pptx
 *.docx
+
+# Tramokyo offline content pack (GBs of audio/images — built locally by
+# scripts/build-tramokyo-pack.mjs, never committed)
+public/tramokyo-pack/

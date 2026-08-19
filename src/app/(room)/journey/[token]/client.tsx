@@ -121,17 +121,6 @@ export function SharedJourneyClient({
     });
   }, []);
 
-  // Load Cormorant Garamond for start screen + phase indicator
-  useEffect(() => {
-    const id = "journey-shared-font";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap";
-    document.head.appendChild(link);
-  }, []);
-
   // Time display — direct DOM updates, no re-renders
   const timeDisplayRef = useRef<HTMLSpanElement>(null);
   const timeDisplayMobileRef = useRef<HTMLSpanElement>(null);

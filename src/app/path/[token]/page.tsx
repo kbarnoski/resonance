@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { createClient as createServerClient } from "@/lib/supabase/server";
+import { isOfflinePack, getPathByShareToken, getJourneysByIds } from "@/lib/offline/pack";
 import { PathShareButton } from "./share-button";
 import { CulminationCard } from "./culmination-card";
 import { Tracklist } from "./tracklist";
@@ -21,12 +22,18 @@ export async function generateMetadata({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  const supabase = createAnonClient();
-  const { data } = await supabase
-    .from("journey_paths")
-    .select("name, subtitle, description")
-    .eq("share_token", token)
-    .single();
+  let data: { name: string; subtitle: string | null; description: string | null } | null;
+  if (isOfflinePack()) {
+    data = getPathByShareToken(token) as typeof data;
+  } else {
+    const supabase = createAnonClient();
+    const res = await supabase
+      .from("journey_paths")
+      .select("name, subtitle, description")
+      .eq("share_token", token)
+      .single();
+    data = res.data;
+  }
   if (!data) return { title: "Path not found" };
   return {
     title: `${data.name} — Resonance`,
@@ -55,26 +62,40 @@ export default async function SharedPathPage({
 }) {
   const { token } = await params;
   const { view } = await searchParams;
-  const supabase = createAnonClient();
-  const authClient = await createServerClient();
+  const offline = isOfflinePack();
 
-  // Fire auth check + path row fetch in parallel — they're independent and
-  // together dominate page latency. Was ~700ms sequential, ~400ms parallel.
-  const [userResult, pathResult] = await Promise.all([
-    authClient.auth.getUser(),
-    supabase.from("journey_paths").select("*").eq("share_token", token).single(),
-  ]);
-  const user = userResult.data.user;
-  const path = pathResult.data;
-  const pathErr = pathResult.error;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let path: any = null;
+  let pathErr: unknown = null;
+  let isInAppContext: boolean;
 
-  // Two distinct contexts for the same route:
-  //   • In-app (view=app + signed in): shows back arrow, plays tracks
-  //     natively in The Room with full path context.
-  //   • Shared landing (everything else — anon visitors, signed-in users
-  //     who opened the share link directly from email/DM): no back arrow,
-  //     tracks play via the shared /journey/[share] client.
-  const isInAppContext = view === "app" && !!user;
+  if (offline) {
+    // Offline kiosk: the operator is trusted — ?view=app alone grants the
+    // in-app context (there is no Supabase session to check).
+    path = getPathByShareToken(token);
+    isInAppContext = view === "app";
+  } else {
+    const supabase = createAnonClient();
+    const authClient = await createServerClient();
+
+    // Fire auth check + path row fetch in parallel — they're independent and
+    // together dominate page latency. Was ~700ms sequential, ~400ms parallel.
+    const [userResult, pathResult] = await Promise.all([
+      authClient.auth.getUser(),
+      supabase.from("journey_paths").select("*").eq("share_token", token).single(),
+    ]);
+    const user = userResult.data.user;
+    path = pathResult.data;
+    pathErr = pathResult.error;
+
+    // Two distinct contexts for the same route:
+    //   • In-app (view=app + signed in): shows back arrow, plays tracks
+    //     natively in The Room with full path context.
+    //   • Shared landing (everything else — anon visitors, signed-in users
+    //     who opened the share link directly from email/DM): no back arrow,
+    //     tracks play via the shared /journey/[share] client.
+    isInAppContext = view === "app" && !!user;
+  }
 
   if (pathErr || !path) {
     notFound();
@@ -83,10 +104,17 @@ export default async function SharedPathPage({
   // Fetch journeys in the order stored in journey_ids + culmination if present
   const allIds = [...(path.journey_ids as string[])];
   if (path.culmination_journey_id) allIds.push(path.culmination_journey_id);
-  const { data: unordered } = await supabase
-    .from("journeys")
-    .select("id, name, subtitle, description, share_token, theme, recording_id, creator_name, photography_credit")
-    .in("id", allIds);
+  let unordered: JourneyRow[] | null;
+  if (offline) {
+    unordered = getJourneysByIds(allIds) as unknown as JourneyRow[];
+  } else {
+    const supabase = createAnonClient();
+    const res = await supabase
+      .from("journeys")
+      .select("id, name, subtitle, description, share_token, theme, recording_id, creator_name, photography_credit")
+      .in("id", allIds);
+    unordered = res.data as JourneyRow[] | null;
+  }
 
   const journeyMap = new Map<string, JourneyRow>();
   for (const j of (unordered ?? []) as JourneyRow[]) journeyMap.set(j.id, j);

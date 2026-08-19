@@ -53,6 +53,22 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-csp-nonce", cspNonce);
 
+  // Tramokyo offline mode: local kiosk laptop, trusted operator, no
+  // Supabase reachable. Skip auth entirely (no login redirects) — every
+  // page reads from the local content pack. Never set OFFLINE_PACK on
+  // Vercel.
+  if (process.env.OFFLINE_PACK === "1") {
+    const offlineResponse = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
+    offlineResponse.headers.set(
+      "Content-Security-Policy-Report-Only",
+      buildReportOnlyCsp(cspNonce),
+    );
+    offlineResponse.headers.set("x-csp-nonce", cspNonce);
+    return offlineResponse;
+  }
+
   let supabaseResponse = NextResponse.next({
     request: { headers: requestHeaders },
   });
