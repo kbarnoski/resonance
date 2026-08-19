@@ -8,6 +8,15 @@
  * so no cache state can leak between tests.
  */
 import { describe, it, expect, afterEach, vi } from "vitest";
+
+// Offline-pack probe is mocked so tests can flip "installation mode" on/off
+// without a network. vi.hoisted so the state object exists before the
+// hoisted vi.mock factory runs.
+const packState = vi.hoisted(() => ({ active: false }));
+vi.mock("@/lib/offline/pack-client", () => ({
+  isPackActive: () => packState.active,
+  probePack: () => {},
+}));
 import {
   getDeviceTier,
   refreshDeviceTier,
@@ -151,5 +160,29 @@ describe("getTierProfile", () => {
     const p = getTierProfile();
     expect(p.maxAiLayers).toBe(1); // max(1, 2 - 2)
     expect(p.maxConcurrentAiGens).toBe(1);
+  });
+});
+
+describe("offline pack installation override", () => {
+  afterEach(() => {
+    packState.active = false;
+  });
+
+  it("forces high tier even on weak hardware when the pack is active", () => {
+    stubBrowser({ cores: 4, memory: 2 }); // would normally detect low
+    packState.active = true;
+    expect(getDeviceTier()).toBe("high");
+  });
+
+  it("boosted installation profile ignores the connection downgrade", () => {
+    // Dead kiosk network reads as slow — must NOT thin the visuals
+    stubBrowser({ search: "?tier=low", connection: { saveData: true } });
+    packState.active = true;
+    const p = getTierProfile();
+    expect(p.maxAiLayers).toBe(12);
+    expect(p.maxConcurrentAiGens).toBe(6);
+    expect(p.aiImageIntervalMultiplier).toBeLessThan(1);
+    expect(p.enableDualShader).toBe(true);
+    expect(p.bloomScale).toBe(1.0);
   });
 });

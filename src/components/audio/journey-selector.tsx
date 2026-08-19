@@ -424,6 +424,34 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     let pendingCues: { time: number; label: string }[] = [];
     let pendingDuration = 0;
 
+    // Offline pack (Tramokyo kiosk): resolve the track server-side from
+    // the local pack — Supabase is unreachable there. Online the route
+    // 404s and the normal Supabase flow below runs.
+    try {
+      const params = new URLSearchParams();
+      if (journey.recordingId) params.set("recordingId", journey.recordingId);
+      if (pairedSearch) params.set("search", pairedSearch);
+      const packRes = await fetch(`/api/pack/resolve-track?${params}`);
+      if (packRes.ok) {
+        const { track, analysis, cues } = await packRes.json();
+        if (!isCurrent()) return;
+        if (track) {
+          console.log("[journey] offline pack track:", track.title);
+          play({ id: track.id, title: track.title, audioUrl: `/api/audio/${track.id}`, duration: track.duration ?? undefined, artist: track.artist ?? undefined }, 0);
+          if (analysis) useAudioStore.getState().setAnalysis(analysis);
+          const packCues = (cues ?? []) as { time: number; label: string }[];
+          if (packCues.length > 0 && track.duration) {
+            useAudioStore.getState().setCueMarkers(packCues);
+            getJourneyEngine().setEvents(
+              packCues.map((c) => ({ time: c.time, type: "bass_hit" as const, intensity: 1.0 })),
+              track.duration,
+            );
+          }
+        }
+        return;
+      }
+    } catch { /* offline route unavailable — continue with Supabase */ }
+
     // Built-in journeys with a hard-coded recordingId resolve globally —
     // the Ghost track (and others) live in the admin's library but are
     // is_featured / share_token-backed so RLS allows any authenticated

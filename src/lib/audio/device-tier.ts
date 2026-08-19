@@ -24,6 +24,15 @@
 
 export type DeviceTier = "high" | "medium" | "low";
 
+// ── Installation override (Tramokyo offline kiosk) ──
+// When the app is served from the offline content pack (OFFLINE_PACK=1),
+// imagery comes from local files — zero network cost, known-good hardware
+// (the installation laptop). Force the full experience: high tier for all
+// render knobs plus a boosted layer budget, and skip the connection-quality
+// downgrade entirely (the kiosk's dead/absent network would otherwise
+// read as "slow" and thin out the visuals).
+import { isPackActive, probePack } from "@/lib/offline/pack-client";
+
 // Bumped from v1 to v2 when detection logic tightened (older v1 caches wrongly
 // marked old Intel Macs as `high`). Anyone with a stale v1 entry will get a
 // fresh detection run on next page load.
@@ -112,6 +121,18 @@ function tierFromUrlParam(): DeviceTier | null {
 /** Get the active tier (URL > localStorage override > cached > fresh detect). */
 export function getDeviceTier(): DeviceTier {
   if (typeof window === "undefined") return "medium";
+
+  // Offline kiosk always renders at full quality (frame rate, resolution,
+  // shader gates all key off the tier).
+  probePack();
+  if (isPackActive()) {
+    if (!loggedTier) {
+      // eslint-disable-next-line no-console
+      console.log("[Resonance] Device tier: high (offline pack — installation mode)");
+      loggedTier = true;
+    }
+    return "high";
+  }
 
   // URL param override takes top priority — easy testing without clearing storage
   const urlTier = tierFromUrlParam();
@@ -295,10 +316,23 @@ function getConnectionQuality(): ConnectionQuality {
   return "fast";
 }
 
+// Offline kiosk: images decode from disk, so the layer/concurrency budgets
+// that protect against slow network arrivals don't apply. Push past `high`
+// for the densest collage the compositor supports.
+const INSTALLATION_PROFILE: TierProfile = {
+  ...PROFILES.high,
+  aiImageIntervalMultiplier: 0.85, // ~7s cadence — matches the harvest spacing
+  maxAiLayers: 12,
+  maxConcurrentAiGens: 6,
+};
+
 /** Return the tier profile with connection-quality downgrade applied.
  *  On a slow connection, reduce layers by 2 and concurrency by 1 so
  *  the pipeline doesn't stall waiting on slow image arrivals. */
 export function getTierProfile(): TierProfile {
+  probePack();
+  if (isPackActive()) return INSTALLATION_PROFILE;
+
   const base = PROFILES[getDeviceTier()];
   const connection = getConnectionQuality();
   if (connection !== "slow") return base;

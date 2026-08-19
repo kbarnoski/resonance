@@ -31,6 +31,7 @@ interface PackManifest {
 
 interface Pack {
   manifest: PackManifest;
+  localImages: Record<string, string[]>;
   recordings: Map<string, PackRow>;
   recordingsList: PackRow[];
   analysesByRecording: Map<string, PackRow>;
@@ -60,8 +61,28 @@ export function loadPack(): Pack {
   const journeys = readJson<PackRow[]>("data/journeys.json");
   const journeyPaths = readJson<PackRow[]>("data/journey_paths.json");
 
+  // Harvested imagery (scripts/harvest-journey-images.mjs) — merged into
+  // journey rows here rather than written into journeys.json so pack
+  // re-exports never clobber the harvest.
+  let localImages: Record<string, string[]> = {};
+  try {
+    localImages = JSON.parse(
+      readFileSync(path.join(packDir(), "local-images.json"), "utf8"),
+    );
+  } catch { /* no harvest yet */ }
+  for (const j of journeys) {
+    const harvested = localImages[j.id as string];
+    if (
+      harvested?.length &&
+      (!Array.isArray(j.local_image_urls) || j.local_image_urls.length === 0)
+    ) {
+      j.local_image_urls = harvested;
+    }
+  }
+
   const pack: Pack = {
     manifest,
+    localImages,
     recordings: new Map(recordings.map((r) => [r.id as string, r])),
     recordingsList: recordings,
     analysesByRecording: new Map(analyses.map((a) => [a.recording_id as string, a])),
@@ -120,6 +141,11 @@ export function getJourneysByIds(ids: string[]): PackRow[] {
 
 export function getPathByShareToken(token: string): PackRow | null {
   return loadPack().pathsByShareToken.get(token) ?? null;
+}
+
+/** Harvested journey imagery map: journey id (built-in or DB uuid) → pack URLs. */
+export function getLocalImagesMap(): Record<string, string[]> {
+  return loadPack().localImages;
 }
 
 /** Static URL + codec info for a recording's packed audio, or null if absent. */

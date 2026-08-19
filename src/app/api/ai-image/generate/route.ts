@@ -31,22 +31,10 @@ const MODEL_FLUX_PULID = "fal-ai/flux-pulid";
 // face-only $0.055. Authed-only per the cost rationale above.
 const MODEL_FLUX_LORA = "fal-ai/flux-lora";
 
-// Appended to every generated prompt across every journey.
-const STYLE_SUFFIX =
-  "photorealistic cinematic photograph, real photographic materials and lighting, " +
-  "surreal dreamlike but lifelike, luminous, transcendent, ethereal, " +
-  "every celestial body (moon planet earth sun) rendered as a perfect round sphere";
-
-// Global negative prompt — concepts that should NEVER appear, regardless
-// of journey. Callers can extend via the body.negativePrompt field.
-const GLOBAL_NEGATIVE =
-  "bird feathers, bird wings, plumage, feathered wings, " +
-  "additional people, additional figures, multiple people, multiple women, " +
-  "crowds, bystanders, onlookers, distant figures, background person, " +
-  "text, watermark, signature, logo, writing, letters, " +
-  "illustration, cartoon, painting, anime, concept art, 3d render, " +
-  "deformed anatomy, extra limbs, extra arms, missing limb, blurry face, " +
-  "low quality, oversaturated";
+// STYLE_SUFFIX + GLOBAL_NEGATIVE live in prompt-decoration.ts, shared
+// with the offline harvest script (scripts/harvest-journey-images.mjs)
+// so pre-baked images match live generation exactly.
+import { STYLE_SUFFIX, GLOBAL_NEGATIVE } from "@/lib/journeys/prompt-decoration";
 
 const COST_FLUX_SCHNELL = 0.003;
 const COST_FLUX_DEV = 0.025;
