@@ -59,17 +59,10 @@ export default async function PathsPage() {
           </p>
           <Link
             href="/room"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white transition-colors cursor-pointer bg-[rgba(139,92,246,0.85)] hover:bg-[rgba(139,92,246,1)]"
             style={{
-              background: "rgba(139, 92, 246, 0.85)",
               fontSize: "0.82rem",
               fontWeight: 500,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(139, 92, 246, 1)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(139, 92, 246, 0.85)";
             }}
           >
             <Disc3 className="h-4 w-4" />
@@ -82,19 +75,7 @@ export default async function PathsPage() {
             <Link
               key={path.id}
               href={path.share_token ? `/path/${path.share_token}?view=app` : "#"}
-              className="group flex flex-col rounded-xl p-5 transition-all cursor-pointer"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              }}
+              className="group flex flex-col rounded-xl p-5 transition-all cursor-pointer border bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.15)]"
             >
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles
