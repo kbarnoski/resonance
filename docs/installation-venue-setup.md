@@ -199,7 +199,46 @@ Paste the URL into the kiosk URL's `webhook_url` param. You'll get a beacon on b
 
 ---
 
-## 10. When something changes
+## 10. Offline mode — Tramokyo content pack
+
+For fully-offline venues (no reliable network at all), the app can run
+entirely from a local content pack instead of Supabase + fal.
+
+**Build the pack** (on a connected machine, takes a while — downloads all
+library audio + journey images):
+
+```bash
+node --env-file=.env.local scripts/build-tramokyo-pack.mjs
+```
+
+Output lands in `public/tramokyo-pack/` (gitignored, GBs). ALAC files are
+transcoded to AAC automatically so Chromium can play them. Re-runs are
+incremental — already-downloaded files are skipped.
+
+**Run offline:**
+
+```bash
+npm run build
+OFFLINE_PACK=1 npm run start
+```
+
+Then open `http://localhost:3000` — journeys, paths (`/path/<token>?view=app`),
+`/room/installation?loop=1`, the library, and every recording detail page all
+work with Wi-Fi off.
+
+**What OFFLINE_PACK=1 changes:**
+- Middleware skips Supabase auth entirely — no login, no redirects
+- All page data comes from `public/tramokyo-pack/data/*.json`
+- `/api/audio/{id}` returns static pack URLs (range requests supported)
+- Library + recording pages are read-only (edit/chat endpoints need Supabase)
+- Live fal generation is off — journeys use their exported local images
+
+**Never set `OFFLINE_PACK` on Vercel.** It disables auth; it is strictly for
+a trusted-operator kiosk laptop.
+
+---
+
+## 11. When something changes
 
 This doc lives at `docs/installation-venue-setup.md`. Edit + push to main when:
 - New URL params added
