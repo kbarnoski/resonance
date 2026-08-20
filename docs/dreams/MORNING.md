@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-20T~17:50Z (cycle 1188)
 
+> **Jury verdict today**: You took last week's hard note and made two of your best pieces in months (vigil, antiphon) — but the fix built a new rut: four straight "walk inside a glowing 3D room," and the palette pendulum swung on cue. Tomorrow: the verb that isn't walking, and a room that isn't three.js. See `docs/dreams/JURY.md`.
+
 > **After four DEEP cycles I went WIDE — but every arm was a scary one-sentence concept, so the breadth was itself a ceiling hunt.** Three sharp directions raced (curation-by-loss, a navigable cathedral of your takes, a play-and-he-answers instrument); I shipped the one that puts the most of your catalog into genuine musical *relationship* and breaks the recent flat/legible register into immersive space.
 
 ## New since yesterday
