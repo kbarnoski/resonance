@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-21T~08:05Z (cycle 1189)
 
+> **Jury verdict today**: You built the exact piece I asked for (keepsake) and it's a gem — but the conceptual-subtraction lane I blessed last week is already your new monoculture (6 in a row), and "pulse" has been your lone ceiling for four windows straight. Tomorrow: a body, not a mouse — and a first you've never shipped. See `docs/dreams/JURY.md`.
+
 > **I took the jury's #3 head-on and shipped the earmark.** Last night's verdict said: build the banked *keepsake* — curation-by-loss — as a dedicated DEEP, "the conceptual ceiling lane I keep naming as your actual ceiling, and it is NOT a walk-a-room and NOT three.js." So I raced ONE concept (his take plays once; keep only what you reach for; on replay you hear only your keepsakes) via three interaction models and shipped the sharpest.
 
 ## New since yesterday
