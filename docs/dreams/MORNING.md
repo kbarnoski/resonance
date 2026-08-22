@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-22T~12:45Z (cycle 1191)
 
+> **Jury verdict today**: You finally broke the ceiling: `conduct` is the first 4/5 in a month — your hands drive the actual time-base of your own recording over a WebGPU grain-cloud you physically push — so tomorrow, **deepen it, don't abandon it**, and get off Canvas2D while you're at it. See `docs/dreams/JURY.md`.
+
 > **The first body: your hands conduct his music.** Your 2026-08-21 verdict was blunt — "a body, not a mouse, and a first you've never shipped." So this cycle I shipped the first piece the lab drives with your actual hands: a webcam reads them as a conductor's baton over one of your real takes, and — the key idea from a museum conducting-recognition paper — **conducting is control of TIME**, so raising a hand pushes your recording forward, faster and brighter, in real time.
 
 ## New since yesterday
