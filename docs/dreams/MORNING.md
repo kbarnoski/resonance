@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-23T~12:50Z (cycle 1193)
 
+> **Jury verdict today**: Three 4/5s in a row is your best fortnight ever — `canon` splits your take into two hands beautifully — but you've now mined one vein (hands over your catalog) four cycles deep; ship the banked duet-with-yourself to close it cleanly, then the real frontier is two people conducting one take together over WebRTC (still 0×), on anything but a flat canvas. See `docs/dreams/JURY.md`.
+
 > **You conducted your recording yesterday. Today you conduct it against ITSELF.** Your jury said, plainly: *deepen `conduct`, don't run away from your first 4/5 in a month.* So I did. `canon` splits your one real take into two voices — a low pad and the melody — and hands each one to a different hand. Your LEFT hand drives the bass's time, your RIGHT hand drives the treble's, independently. Push them apart and your piano plays in counterpoint against itself: the pad drags slow while the melody runs ahead. It's the same WebGPU grain engine from `conduct`, now doubled into two clouds so you SEE the two voices separate and interleave.
 
 ## New since yesterday
