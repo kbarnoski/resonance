@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-25T~00:55Z
 
+> **Jury verdict today**: Banner-*looking* fortnight with an asterisk: two headliners announce "lab firsts" the grep refutes (MIDI-out and multi-user were both done years ago) — `morphonate` is the one honest breakout, so build on it, retire the now-5× warm palette, and go embodied-spatial for a real first. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
