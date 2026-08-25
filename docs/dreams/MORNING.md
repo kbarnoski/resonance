@@ -1,21 +1,19 @@
-# Morning digest — last updated 2026-08-25T~00:55Z
-
-> **Jury verdict today**: Banner-*looking* fortnight with an asterisk: two headliners announce "lab firsts" the grep refutes (MIDI-out and multi-user were both done years ago) — `morphonate` is the one honest breakout, so build on it, retire the now-5× warm palette, and go embodied-spatial for a real first. See `docs/dreams/JURY.md`.
+# Morning digest — last updated 2026-08-25T~13:00Z
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[16000-morphonate](https://getresonance.vercel.app/dream/16000-morphonate)** — **your harmony GROWS the image.** Your full recording feeds a living GPU reaction-diffusion membrane (Turing morphogenesis): each chord change seeds and re-steers a chemical organism, so a 5-min take paints something never the same at minute 5 as at minute 1. **Why open it:** it's the first piece in 6 cycles that leaves the "you perform your catalog live" vein — this one is *autonomous* and genuinely *reads* your harmony (not an FFT of it). Achromatic ink, WebGL2. Best with the sound up; watch it evolve for a minute.
-  - *2 more explored, banked in IDEAS §1196:* **seismscore** (live global earthquake feed plays grains of your take on a dark shader globe — the Earth as your seismograph) and **inkstroke** (a calligraphic brushstroke *bows* your recording, sumi-e ink blooming behind it — reframes a brand-new Aug-2026 paper).
+- **[16032-headnave](https://getresonance.vercel.app/dream/16032-headnave)** — **your head walks a room of your own recordings.** Six of your real takes stand as fixed HRTF voices in a dark nave; the webcam makes your physical head the listener — *lean and turn* to move through the field, and the mix is nothing but where you're pointing and standing. **Why open it:** this is the jury's #1 provocation cashed — the genuine grep-0 "embodied webcam-head-position spatial-audio room," graduating `15536-antiphon` from keyboard steering to your actual head. Ikeda **black-white-red** (the palette the jury asked for, retiring the 5× warm rut), WebGL2 field. **It opens on a pointer default so it works instantly with no camera** — click *Enable head tracking* to use the webcam. Best with sound up + headphones (HRTF).
+  - *2 more explored, banked in IDEAS §1197:* **leanfield** (robustness-first — nose-centroid + lean-depth, no fragile 6DOF matrix; the ready swap if head-tracking feels jittery for you) and **facingcompass** (turn your head like a compass — the take you face is the bone-white *call*, the one behind you the oxblood *answer*).
 
 ## In progress / partial
-- Nothing mid-build. Three parallel builders ran this cycle; the winner shipped, the other two are banked, ready to ship as-is.
+- Nothing mid-build. Three parallel builders ran this cycle (DEEP ×3 on one concept); the winner shipped, the other two are banked and ready to ship as-is.
 
 ## Research findings worth a look
-- **Calliphony (arXiv:2608.03040, Aug 2026)** — one calligraphic brushstroke is a rich enough surface to perform music live; became the banked `inkstroke` (brush-as-bow over your take).
-- **Aug-2026 harmony-reading cluster** (arXiv:2608.03050 arrangement-style, 2608.04378 co-creation "listening" agents) — systems that read a performance's harmonic structure; seeded morphonate's harmony→morphology mapping.
+- **Navig-AI-tion (CHI 2026)** — directional spatial-audio cues let people navigate by *orientation alone*, measurably better than visual-only. Seeded headnave's "your head is the navigation" mapping.
+- The **webcam→binaural head-tracker** line (MediaPipe 468-landmark 6DOF pose driving an HRTF listener in-browser) — the mechanism that makes a server-free embodied listener feasible in a web page.
 
 ## Open questions for Karel
-- Does an **autonomous** piece where your harmony *grows* the image read as deeper than the live-performance vein — or do you want back on the "you perform it" thread? (Options ready: canon duet-with-yourself `15856`, or `inkstroke`.)
-- The jury flagged 5 straight "you perform your catalog live" pieces as a monoculture — morphonate deliberately breaks out. Is that the right call, or was that vein still worth mining?
+- Does steering the mix with your **actual head** feel like an instrument, or does it want the more robust `leanfield` (lean-toward) or the simpler `facingcompass` (just turn)? The 6DOF translation calibration is my best guess and may want tuning against your live face.
+- The jury's next asks after this: (1) **build ON `16000-morphonate`** (your harmony grows a living surface — `inkstroke` is the banked partner), and (2) **real-world-data-as-carrier** is still 1× — ship the banked `seismscore` (live earthquake feed plays your piano). Which pulls you more?
 - Still open: a small per-prototype **image-gen budget** would unlock the AI music→image→video lane (awaiting your go/no-go).
