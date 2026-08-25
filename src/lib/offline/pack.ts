@@ -39,6 +39,7 @@ interface Pack {
   journeysById: Map<string, PackRow>;
   journeysByShareToken: Map<string, PackRow>;
   pathsByShareToken: Map<string, PackRow>;
+  pathsList: PackRow[];
 }
 
 let cached: Pack | null = null;
@@ -94,6 +95,7 @@ export function loadPack(): Pack {
     pathsByShareToken: new Map(
       journeyPaths.filter((p) => p.share_token).map((p) => [p.share_token as string, p]),
     ),
+    pathsList: journeyPaths,
   };
 
   for (const m of markers) {
@@ -141,6 +143,10 @@ export function getJourneysByIds(ids: string[]): PackRow[] {
 
 export function getPathByShareToken(token: string): PackRow | null {
   return loadPack().pathsByShareToken.get(token) ?? null;
+}
+
+export function listPaths(): PackRow[] {
+  return loadPack().pathsList;
 }
 
 /** Harvested journey imagery map: journey id (built-in or DB uuid) → pack URLs. */

@@ -222,6 +222,23 @@ npm run build
 OFFLINE_PACK=1 npm run start
 ```
 
+> **Node version gotcha:** `next build` dies with `spawn EBADF` during static
+> generation under Node v22.22.0 on macOS (spawn regression). Build with
+> Node 20 (`nvm use 20`) — `next start` is fine on either.
+
+**Or skip the CLI:** double-click **Tramokyo.app** on the Desktop — it starts
+the offline server (if needed) and opens Chrome in kiosk mode on the attract
+loop, with autoplay unlocked. **Tramokyo Stop.app** shuts both down. The apps
+wrap `scripts/tramokyo-kiosk.sh` / `scripts/tramokyo-stop.sh`; rebuild them on
+a new machine with:
+
+```bash
+osacompile -o ~/Desktop/Tramokyo.app -e 'do shell script "<repo>/scripts/tramokyo-kiosk.sh >/dev/null 2>&1"'
+osacompile -o "$HOME/Desktop/Tramokyo Stop.app" -e 'do shell script "<repo>/scripts/tramokyo-stop.sh >/dev/null 2>&1"'
+```
+
+(The launcher needs a production build in `.next` — it alerts if none exists.)
+
 Then open `http://localhost:3000` — journeys, paths (`/path/<token>?view=app`),
 `/room/installation?loop=1`, the library, and every recording detail page all
 work with Wi-Fi off.

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Disc3, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { isOfflinePack, listPaths } from "@/lib/offline/pack";
 
 export const dynamic = "force-dynamic";
 
@@ -18,17 +19,22 @@ interface PathRow {
 }
 
 export default async function PathsPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login?redirectTo=/paths");
+  let paths: PathRow[];
+  if (isOfflinePack()) {
+    paths = listPaths() as PathRow[];
+  } else {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login?redirectTo=/paths");
 
-  const { data: pathRows } = await supabase
-    .from("journey_paths")
-    .select("id, name, subtitle, description, journey_ids, share_token, accent_color")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    const { data: pathRows } = await supabase
+      .from("journey_paths")
+      .select("id, name, subtitle, description, journey_ids, share_token, accent_color")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
-  const paths: PathRow[] = (pathRows ?? []) as PathRow[];
+    paths = (pathRows ?? []) as PathRow[];
+  }
 
   return (
     <div className="space-y-6">
