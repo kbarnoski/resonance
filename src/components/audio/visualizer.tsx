@@ -1572,9 +1572,25 @@ export function VisualizerCore({
             </div>
           )}
 
-          {/* CENTER: Track info + mute — journey mode */}
+          {/* CENTER: Play/pause + track info + mute — journey mode */}
           {journeyActive && currentTrack && (
             <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label={isPlaying ? "Pause" : "Play"}
+                onClick={() => {
+                  ensureResumed();
+                  isPlaying ? storePause() : storeResume();
+                }}
+                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-75"
+                title={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? (
+                  <Pause className="h-4 w-4" fill="currentColor" />
+                ) : (
+                  <Play className="h-4 w-4" fill="currentColor" />
+                )}
+              </button>
               <button
                 type="button"
                 aria-label={isMuted ? "Unmute" : "Mute"}

@@ -11,7 +11,7 @@ import { JourneyCompositor } from "./journey-compositor";
 import { JourneyPhaseIndicator } from "./journey-phase-indicator";
 import { JourneyFeedback, resetPerfMonitor, flushFeedbackEntries, buildSnapshot, appendEntry, getSharedFpsRef, updateShaderUsageFromJourney } from "./journey-feedback";
 import { getTierProfile, getDeviceTier } from "@/lib/audio/device-tier";
-import { isPackActive } from "@/lib/offline/pack-client";
+import { isPackActive, fetchPackLocalImages } from "@/lib/offline/pack-client";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { AdminPanel } from "./admin-panel";
 import { useAudioStore } from "@/lib/audio/audio-store";
@@ -32,6 +32,7 @@ import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
 import { getPathForJourney, getNextInPath, isPathCulminationUnlocked, isGrandCulminationUnlocked, JOURNEY_PATHS, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
 import { createClient } from "@/lib/supabase/client";
 import { ShareSheet, triggerNativeShare } from "@/components/ui/share-sheet";
+import { toast } from "sonner";
 import { Mic } from "lucide-react";
 import { isDesktopApp, enterKioskMode, exitKioskMode, nativeAudioSeek } from "@/lib/tauri";
 import { analyzeAndAdapt, refreshAdaptiveProfile } from "@/lib/journeys/adaptive-engine";
@@ -341,6 +342,12 @@ export function VisualizerClient({
   const [analyser, setAnalyser] = useState<AnalyserLike | null>(null);
   const [dataArray, setDataArray] = useState<Uint8Array<ArrayBuffer> | null>(null);
   const [shareSheet, setShareSheet] = useState<{ url: string; title: string; text?: string } | null>(null);
+
+  // Offline kiosk: share endpoints need Supabase/internet — hide share UI
+  const [packActive, setPackActive] = useState(false);
+  useEffect(() => {
+    fetchPackLocalImages().then(() => setPackActive(isPackActive()));
+  }, []);
 
   // Fullscreen / immersive mode
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -662,7 +669,7 @@ export function VisualizerClient({
     const url = `${window.location.origin}/room/${token}`;
     const trackTitle = currentTrack?.title ?? "The Room";
     const title = `${trackTitle} — Resonance`;
-    if (triggerNativeShare(url, title)) return;
+    if (triggerNativeShare(url, title, undefined, () => setShareSheet({ url, title }))) return;
     setShareSheet({ url, title });
   }, [hudVisible, currentTrack]);
 
@@ -678,6 +685,8 @@ export function VisualizerClient({
     // endpoint and 401s for anon /demo visitors, generating
     // visible noise in the network panel.
     if (installationMode) return;
+    // Offline kiosk: share endpoints need Supabase — don't pre-mint.
+    if (isPackActive()) return;
     const journeyId = activeJourney.id;
     const recordingId = currentTrack?.id ?? null;
     if (
@@ -733,7 +742,7 @@ export function VisualizerClient({
       journeyShareUrl.recordingId === recordingId
     ) {
       const url = journeyShareUrl.url;
-      if (triggerNativeShare(url, title, text)) return;
+      if (triggerNativeShare(url, title, text, () => setShareSheet({ url, title, text }))) return;
       setShareSheet({ url, title, text });
       return;
     }
@@ -760,6 +769,7 @@ export function VisualizerClient({
       setShareSheet({ url, title, text });
     } catch (err) {
       console.error("Share journey failed:", err);
+      toast.error("Couldn't create the share link — try again");
     } finally {
       setSharingJourney(false);
     }
@@ -1792,7 +1802,8 @@ export function VisualizerClient({
               setJourneyOpen(false);
             }
           }}
-          onShareJourney={journeyActive ? handleShareJourney : undefined}
+          onShareRoom={packActive ? undefined : handleShareRoom}
+          onShareJourney={journeyActive && !packActive ? handleShareJourney : undefined}
           isFullscreen={isFullscreen}
           onFullscreenToggle={handleFullscreenToggle}
           onSwitchToVisualize={handleSwitchToVisualize}

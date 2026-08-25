@@ -2,28 +2,25 @@
 
 import { useState } from "react";
 import { Share2, Check } from "lucide-react";
+import { triggerNativeShare } from "@/components/ui/share-sheet";
 
 export function PathShareButton({ token, pathName }: { token: string; pathName: string }) {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/path/${token}` : "";
 
-  const handleShare = async () => {
-    const text = `${pathName} — a path on Resonance`;
-    const navigatorAny = typeof navigator !== "undefined" ? (navigator as Navigator & { share?: (d: ShareData) => Promise<void> }) : null;
-    if (navigatorAny?.share) {
-      try {
-        await navigatorAny.share({ title: pathName, text, url: shareUrl });
-        return;
-      } catch {
-        // User canceled — fall through to clipboard
-      }
-    }
+  const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {}
+  };
+
+  const handleShare = () => {
+    const text = `${pathName} — a path on Resonance`;
+    if (triggerNativeShare(shareUrl, pathName, text, () => void copyLink())) return;
+    void copyLink();
   };
 
   return (
