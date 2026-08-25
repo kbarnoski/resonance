@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-25T~13:00Z
 
+> **Jury verdict today**: `headnave` is real craft and the palette courage I asked for — but it's the third straight "lab first" the grep refutes (`576-presence-room` drove the webcam-head listener years ago, and this time the un-grepped overclaim was mine, not the builder's), the 4/5 band hasn't moved in three windows, and two of my asks — build-on-`morphonate`, real-world-data — are still uncashed; stop announcing firsts and ship the banked seeds. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
