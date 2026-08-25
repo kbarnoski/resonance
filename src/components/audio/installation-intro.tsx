@@ -171,7 +171,7 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
           textTransform: "uppercase",
         }}
       >
-        by
+        composed and performed by
       </div>
       <div
         className="text-white/85 mt-2"
@@ -280,10 +280,15 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
         {(() => {
           // Same join logic as the visualizer-client journey intro so
           // every journey in the installation loop renders identical
-          // credits — Ascension (this component) and journeys 1-4
-          // (visualizer-client) use a shared format.
-          const parts: string[] = [`by ${creator}`];
-          if (trackArtist && trackArtist !== creator) parts.push(`Music by ${trackArtist}`);
+          // credits. When the journey creator IS the track artist,
+          // credit them as composer (per Karel's kiosk feedback) —
+          // otherwise split journey vs. music credits.
+          const parts: string[] = [];
+          if (trackArtist && trackArtist !== creator) {
+            parts.push(`by ${creator}`, `Music by ${trackArtist}`);
+          } else {
+            parts.push(`Composed by ${creator}`);
+          }
           if (journey.photographyCredit) parts.push(`Photography by ${journey.photographyCredit}`);
           return parts.join("  ·  ");
         })()}

@@ -45,10 +45,8 @@ export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
     // INTERIM copy — Karel is sending a fuller Welcome Home write-up;
     // swap this paragraph when it lands.
     description:
-      "Welcome Home — an album of original piano pieces released in " +
-      "2020, during the pandemic. A journey for every track, gathering " +
-      "into the Cosmic Homecoming. AI-generated visuals improvise " +
-      "alongside the music, never the same twice. Recline.",
+      "An album of original piano pieces, composed and recorded at " +
+      "home during lockdown. A journey for every track. Recline.",
     pathShareToken: "d2c79111528a46cf",
     dedication: {
       eyebrow: "Dedicated to",

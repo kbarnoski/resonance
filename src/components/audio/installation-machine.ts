@@ -12,8 +12,10 @@
  *     which is pure and easy to unit-test
  */
 
-/** Cycle intro screen duration before the cycle text begins fading. */
-export const INTRO_MS = 7_000;
+/** Cycle intro screen duration before the cycle text begins fading.
+ *  Karel's kiosk test (2026-08-24): 7s was too short to read the
+ *  program description — hold a few seconds longer. */
+export const INTRO_MS = 11_000;
 
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;

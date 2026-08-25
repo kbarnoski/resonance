@@ -1885,8 +1885,12 @@ export function VisualizerClient({
               "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
             const musicArtist = currentTrack?.artist || recording?.artist;
             const creator = activeJourney.creatorName || "Karel Barnoski";
-            const creditParts: string[] = [`by ${creator}`];
-            if (musicArtist && musicArtist !== creator) creditParts.push(`Music by ${musicArtist}`);
+            const creditParts: string[] = [];
+            if (musicArtist && musicArtist !== creator) {
+              creditParts.push(`by ${creator}`, `Music by ${musicArtist}`);
+            } else {
+              creditParts.push(`Composed by ${creator}`);
+            }
             if (activeJourney.photographyCredit) creditParts.push(`Photography by ${activeJourney.photographyCredit}`);
             return (
               <div

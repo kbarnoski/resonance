@@ -6,6 +6,8 @@ import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { getJourney } from "@/lib/journeys/journeys";
+import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
@@ -95,7 +97,23 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
   const setQueue = useAudioStore((s) => s.setQueue);
   const startJourney = useAudioStore((s) => s.startJourney);
+  const startCustomJourney = useAudioStore((s) => s.startCustomJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
+
+  // Builtins go through startJourney (id lookup + enrichment). DB-row
+  // journeys (Welcome Home path uuids) don't resolve in the builtin
+  // registry — startJourney would silently early-return and the AI
+  // image layer would never mount — so start them from the full object.
+  const startEntryJourney = useCallback(
+    (journey: Journey) => {
+      if (getJourney(journey.id) ?? getCulminationJourney(journey.id)) {
+        startJourney(journey.id);
+      } else {
+        startCustomJourney(journey);
+      }
+    },
+    [startJourney, startCustomJourney],
+  );
 
   // ─── Program machinery ────────────────────────────────────────────
   // The loop plays programs sequentially: each program runs the full
@@ -854,7 +872,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         useAudioStore.getState().setSuppressNextJourneyIntro(true);
         const track = trackForIndex(startIdx);
         if (track) setQueue([track], 0);
-        startJourney(entry.journey.id);
+        startEntryJourney(entry.journey);
         const cues = entry.cues ?? [];
         if (cues.length > 0 && track?.duration) {
           try {
@@ -1070,7 +1088,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // audio-provider to swap src; pausing first only created bugs.
       const track = trackForIndex(phase.index);
       if (track) setQueue([track], 0);
-      startJourney(entry.journey.id);
+      startEntryJourney(entry.journey);
 
       // Apply cue markers to the journey-engine. Without this, per-cue
       // events like Ghost's bass_hit flashes never fire because the engine
@@ -1682,7 +1700,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               marginBottom: "0.5rem",
             }}
           >
-            by
+            composed and performed by
           </div>
           <div
             className="text-white/85"

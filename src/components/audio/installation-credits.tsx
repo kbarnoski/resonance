@@ -121,7 +121,7 @@ export function InstallationCredits({ dedication = DEFAULT_DEDICATION }: Props) 
             textShadow: TEXT_SHADOW,
           }}
         >
-          Resonance  ·  by Karel Barnoski
+          Resonance  ·  composed and performed by Karel Barnoski
         </div>
 
         <p

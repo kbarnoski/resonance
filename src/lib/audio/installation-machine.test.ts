@@ -21,7 +21,7 @@ import {
 
 describe("installation-machine timing constants", () => {
   it("has reasonable absolute durations", () => {
-    expect(INTRO_MS).toBe(7_000);
+    expect(INTRO_MS).toBe(11_000);
     expect(CREDITS_MS).toBeGreaterThanOrEqual(10_000);
     expect(MAX_JOURNEY_MS).toBeGreaterThanOrEqual(5 * 60_000);
   });

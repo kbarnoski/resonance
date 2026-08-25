@@ -19,6 +19,12 @@
  *   node --env-file=.env.local scripts/harvest-journey-images.mjs [flags]
  *     --dry-run        print plan + cost estimate, no fal calls
  *     --journey=<id>   only this journey id (built-in id or DB uuid)
+ *     --path=<token>   only journeys referenced by this path's share token
+ *     --per-journey=N  override the duration-derived image count per journey
+ *     --fresh          delete existing gen-* for the selected targets first
+ *                      (required when raising counts — phase slots are
+ *                      allocated by index, so appending to an old set would
+ *                      leave images in the wrong phase positions)
  *     --limit=N        stop after N generations this run (validation runs)
  *
  * Resumable: existing gen-*.{jpg,png} files are kept and skipped.
@@ -41,6 +47,9 @@ const LOCAL_IMAGES_JSON = path.join(PACK_DIR, "local-images.json");
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const ONLY = process.argv.find((a) => a.startsWith("--journey="))?.slice(10) ?? null;
+const ONLY_PATH = process.argv.find((a) => a.startsWith("--path="))?.slice(7) ?? null;
+const PER_JOURNEY = Number(process.argv.find((a) => a.startsWith("--per-journey="))?.slice(14) ?? 0) || null;
+const FRESH = process.argv.includes("--fresh");
 const LIMIT = Number(process.argv.find((a) => a.startsWith("--limit="))?.slice(8) ?? Infinity);
 
 const GEN_INTERVAL_SEC = 7;
@@ -172,17 +181,37 @@ async function main() {
     });
   }
 
-  const filtered = ONLY ? targets.filter((t) => t.id === ONLY) : targets;
+  let filtered = ONLY ? targets.filter((t) => t.id === ONLY) : targets;
+  if (ONLY_PATH) {
+    const pathRow = dbPaths.find((p) => p.share_token === ONLY_PATH);
+    if (!pathRow) {
+      console.error(`no path with share token ${ONLY_PATH}`);
+      process.exit(1);
+    }
+    const ids = new Set([...(pathRow.journey_ids ?? []), pathRow.culmination_journey_id].filter(Boolean));
+    filtered = filtered.filter((t) => ids.has(t.id));
+  }
   if (filtered.length === 0) {
     console.error(ONLY ? `no target with id ${ONLY}` : "no targets");
     process.exit(1);
+  }
+
+  if (FRESH && !DRY_RUN) {
+    for (const t of filtered) {
+      const dir = path.join(IMAGES_DIR, t.id);
+      if (existsSync(dir)) {
+        const old = (await readdir(dir)).filter((f) => f.startsWith("gen-"));
+        for (const f of old) await rm(path.join(dir, f), { force: true });
+        if (old.length > 0) console.log(`  fresh: cleared ${old.length} images for ${t.name}`);
+      }
+    }
   }
 
   // ── Build the generation plan ──
   const localImages = (await readJson(LOCAL_IMAGES_JSON, {})) ?? {};
   const plan = [];
   for (const t of filtered) {
-    const n = Math.min(MAX_IMAGES, Math.max(MIN_IMAGES, Math.ceil(t.duration / GEN_INTERVAL_SEC)));
+    const n = PER_JOURNEY ?? Math.min(MAX_IMAGES, Math.max(MIN_IMAGES, Math.ceil(t.duration / GEN_INTERVAL_SEC)));
     const counts = allocateByPhase(t.phases, n);
     const dir = path.join(IMAGES_DIR, t.id);
     const existing = existsSync(dir)
