@@ -20,10 +20,23 @@
  * dedication. Same TEXT_SHADOW stack — kept for parity even though
  * credits sits on solid black.
  */
+import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
+
 const TEXT_SHADOW =
   "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
 
-export function InstallationCredits() {
+const DEFAULT_DEDICATION: ProgramDedication = {
+  eyebrow: "In honor of",
+  hero: "my father",
+  secondaryEyebrow: "Special thanks to my life partner",
+  secondary: "Evelina",
+};
+
+interface Props {
+  dedication?: ProgramDedication;
+}
+
+export function InstallationCredits({ dedication = DEFAULT_DEDICATION }: Props) {
   return (
     <div className="absolute inset-0 z-[120] flex flex-col items-center justify-center px-8 text-center">
       {/* No bg layer — the visualizer wrapper fades the shader stack
@@ -45,53 +58,59 @@ export function InstallationCredits() {
             textShadow: TEXT_SHADOW,
           }}
         >
-          In honor of
+          {dedication.eyebrow}
         </div>
 
         <div
-          className="text-white"
+          className="text-white max-w-5xl"
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontStyle: "italic",
             fontWeight: 300,
             fontSize: "clamp(3rem, 6.5vw, 5rem)",
             letterSpacing: "-0.01em",
-            lineHeight: 1.05,
-            marginBottom: "4rem",
+            lineHeight: 1.1,
+            // Tight gap when the secondary line is a continuation of
+            // the hero (no second eyebrow between them).
+            marginBottom: dedication.secondaryEyebrow ? "4rem" : "1.75rem",
             textShadow: TEXT_SHADOW,
           }}
         >
-          my father
+          {dedication.hero}
         </div>
 
-        <div
-          className="text-white/55"
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.78rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            marginBottom: "1.5rem",
-            textShadow: TEXT_SHADOW,
-          }}
-        >
-          Special thanks to my life partner
-        </div>
+        {dedication.secondaryEyebrow && (
+          <div
+            className="text-white/55"
+            style={{
+              fontFamily: "var(--font-geist-mono)",
+              fontSize: "0.78rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              marginBottom: "1.5rem",
+              textShadow: TEXT_SHADOW,
+            }}
+          >
+            {dedication.secondaryEyebrow}
+          </div>
+        )}
 
-        <p
-          className="text-white/75 max-w-xl"
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
-            fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
-            letterSpacing: "0.02em",
-            lineHeight: 1.5,
-            textShadow: TEXT_SHADOW,
-          }}
-        >
-          Evelina
-        </p>
+        {dedication.secondary && (
+          <p
+            className="text-white/75 max-w-xl"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
+              letterSpacing: "0.02em",
+              lineHeight: 1.5,
+              textShadow: TEXT_SHADOW,
+            }}
+          >
+            {dedication.secondary}
+          </p>
+        )}
 
         <div
           className="text-white/65 mt-20"

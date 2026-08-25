@@ -35,9 +35,13 @@ interface Props {
   stage?: Stage;
   journey?: Journey | null;
   trackArtist?: string | null;
+  /** Program-driven italic line: "presenting {presenting}". */
+  presenting?: string;
+  /** Program-driven description paragraph. */
+  description?: string;
 }
 
-export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Props) {
+export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description }: Props) {
   // bg-black: opaque during cycle + fading-cycle, fades out during
   // journey + fading-journey on the SAME 3.8s clock as the journey
   // title's inner fade-in. This keeps the visualizer hidden until the
@@ -79,7 +83,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
             transition: "opacity 1500ms ease-out",
           }}
         >
-          <CycleTextInner />
+          <CycleTextInner presenting={presenting} description={description} />
         </div>
       )}
 
@@ -106,7 +110,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
   );
 }
 
-function CycleTextInner() {
+function CycleTextInner({ presenting, description }: { presenting?: string; description?: string }) {
   return (
     <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
       {/* Resonance brand mark — same stylized branching SVG used in
@@ -144,7 +148,7 @@ function CycleTextInner() {
           letterSpacing: "0.01em",
         }}
       >
-        presenting the Snowflake EP
+        presenting {presenting ?? "the Snowflake EP"}
       </div>
       <p
         className="text-white/55 mt-12 max-w-2xl mx-auto"
@@ -155,10 +159,8 @@ function CycleTextInner() {
           lineHeight: 1.65,
         }}
       >
-        Snowflake, Realized, Ghost — three original improvised piano
-        recordings, tracing an arc from stillness, through fire, into
-        light. AI-generated visuals improvise alongside the music,
-        never the same twice. Recline.
+        {description ??
+          "Snowflake, Realized, Ghost — three original improvised piano recordings, tracing an arc from stillness, through fire, into light. AI-generated visuals improvise alongside the music, never the same twice. Recline."}
       </p>
       <div
         className="text-white/55 mt-14"

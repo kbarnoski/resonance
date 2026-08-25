@@ -1,13 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
-import { InstallationLoopClient, type SequenceEntry } from "@/components/audio/installation-loop-client";
-import { getJourney } from "@/lib/journeys/journeys";
+import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } from "@/components/audio/installation-loop-client";
+import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_SEQUENCE } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
-import { isOfflinePack, listRecordings, getCueMarkers } from "@/lib/offline/pack";
+import {
+  isOfflinePack,
+  listRecordings,
+  getCueMarkers,
+  getPathByShareToken,
+  getJourneysByIds,
+  getRecording,
+} from "@/lib/offline/pack";
 
 // Force dynamic so every request executes server code (and we read
 // fresh auth state instead of returning a cached anon-mode page to a
@@ -31,20 +38,10 @@ export default async function InstallationPage({ searchParams }: Props) {
   // ?once=1 → play through the cycle a single time then end on the
   // credits screen instead of looping back to the intro.
   const isPlayOnce = once === "1" || once === "true";
-  // ?start=N OR ?start=journey-id → jump straight to that journey
-  // in the cycle. Useful for debugging late-cycle bugs (Ghost stops
-  // mid-play, etc.) without sitting through the prior 4 journeys.
-  // Resolved against INSTALLATION_SEQUENCE — out-of-range values
-  // fall back to 0.
-  const startIndexFromParam = (() => {
-    if (!start) return 0;
-    // numeric form
-    const n = Number(start);
-    if (Number.isInteger(n) && n >= 0 && n < INSTALLATION_SEQUENCE.length) return n;
-    // journey-id form (e.g. ?start=ghost)
-    const idx = INSTALLATION_SEQUENCE.indexOf(start);
-    return idx >= 0 ? idx : 0;
-  })();
+  // ?start=N | ?start=journey-id | ?start=program-id → jump straight
+  // to that point in the loop. Resolved against the built programs
+  // further down (after they're assembled) — out-of-range values fall
+  // back to program 0, journey 0.
 
   // Auth is OPTIONAL on this page. Authenticated users see the full
   // experience including AI imagery; anonymous visitors see a public
@@ -180,33 +177,183 @@ export default async function InstallationPage({ searchParams }: Props) {
       artist: r.artist,
     });
 
-    // Walk INSTALLATION_SEQUENCE (explicit ordering with neural-link
-    // skipped + ghost/snowflake last) instead of JOURNEYS so the
-    // installation experience stays curated independent of the
-    // declaration order in journeys.ts.
-    const sequence: SequenceEntry[] = INSTALLATION_SEQUENCE
-      .map((id) => getJourney(id))
-      .filter((j): j is Journey => !!j)
-      .map((j: Journey) => {
-        // Priority 1: explicit recordingId baked into the journey definition.
-        if (j.recordingId) {
-          const direct = featuredRecordings.find((r) => r.id === j.recordingId);
-          if (direct) return { journey: j, track: toTrack(direct) };
-        }
-        // Priority 2: title-pattern pairing (e.g., "ghost" → KB_GHOST_REF).
-        const paired = pairedRecordingByJourneyId[j.id];
-        if (paired) return { journey: j, track: toTrack(paired) };
-        // Priority 3: leave null; loop client will pick from fallback pool.
-        return { journey: j, track: null };
-      });
+    // ─── Program building ─────────────────────────────────────────
+    // Each INSTALLATION_PROGRAMS entry resolves to a SequenceEntry[]:
+    //   - journeyIds     → built-in journeys with the recordingId /
+    //                      PAIRED_TRACKS / fallback pairing chain
+    //   - pathShareToken → a journey_paths row (Welcome Home): its
+    //                      journey_ids in order + culmination last,
+    //                      each DB journey paired via recording_id
+    //                      (culmination falls back to its theme's
+    //                      randomTrackPool when unbound).
+    const buildBuiltinSequence = (ids: string[]): SequenceEntry[] =>
+      ids
+        .map((id) => getJourney(id))
+        .filter((j): j is Journey => !!j)
+        .map((j: Journey) => {
+          // Priority 1: explicit recordingId baked into the journey definition.
+          if (j.recordingId) {
+            const direct = featuredRecordings.find((r) => r.id === j.recordingId);
+            if (direct) return { journey: j, track: toTrack(direct) };
+          }
+          // Priority 2: title-pattern pairing (e.g., "ghost" → KB_GHOST_REF).
+          const paired = pairedRecordingByJourneyId[j.id];
+          if (paired) return { journey: j, track: toTrack(paired) };
+          // Priority 3: leave null; loop client will pick from fallback pool.
+          return { journey: j, track: null };
+        });
 
-    // Pre-fetch cue markers for every paired track in the sequence.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type JourneyRow = Record<string, any>;
+
+    // Same live-merge as /journey/[token]: rows wrapping a built-in use
+    // the live definition (design changes propagate), custom rows use
+    // the DB snapshot. Row id is kept so offline local-image fallback
+    // (keyed by path journey uuid) still resolves.
+    const rowToJourney = (row: JourneyRow): Journey => {
+      const theme = row.theme as Record<string, unknown> | null;
+      const builtinId = theme?.builtinJourneyId as string | undefined;
+      const live = builtinId
+        ? getJourney(builtinId)
+        : JOURNEYS.find((j) => j.name === row.name) ?? null;
+      const extras = {
+        ...(Array.isArray(row.local_image_urls) && row.local_image_urls.length > 0
+          ? { localImageUrls: row.local_image_urls as string[] }
+          : {}),
+        photographyCredit: (row.photography_credit as string | null) ?? null,
+        dedication: (row.dedication as string | null) ?? null,
+        creatorName: (row.creator_name as string | null) ?? null,
+      };
+      if (live) {
+        return { ...live, id: row.id as string, ...extras };
+      }
+      return {
+        id: row.id,
+        name: row.name,
+        subtitle: row.subtitle || "",
+        description: row.description || "",
+        realmId: row.realm_id,
+        phases: row.phases,
+        aiEnabled: row.ai_enabled !== false,
+        ...(row.theme ? { theme: row.theme } : {}),
+        ...extras,
+      } as Journey;
+    };
+
+    const buildPathSequence = async (shareToken: string): Promise<SequenceEntry[]> => {
+      let pRow: JourneyRow | null = null;
+      if (offline) {
+        pRow = getPathByShareToken(shareToken);
+      } else {
+        const { data } = await supabase!
+          .from("journey_paths")
+          .select("journey_ids, culmination_journey_id")
+          .eq("share_token", shareToken)
+          .maybeSingle();
+        pRow = data;
+      }
+      if (!pRow || !Array.isArray(pRow.journey_ids)) return [];
+      const orderedIds = [...(pRow.journey_ids as string[])];
+      if (pRow.culmination_journey_id) orderedIds.push(pRow.culmination_journey_id as string);
+
+      let rows: JourneyRow[] = [];
+      if (offline) {
+        rows = getJourneysByIds(orderedIds);
+      } else {
+        const { data } = await supabase!.from("journeys").select("*").in("id", orderedIds);
+        rows = (data ?? []) as JourneyRow[];
+      }
+      const rowById = new Map(rows.map((r) => [r.id as string, r]));
+
+      // Resolve each journey's recording once (culmination random-pool
+      // pick included) so the meta lookup + track build agree.
+      const recordingIdByJourneyId = new Map<string, string>();
+      for (const jid of orderedIds) {
+        const row = rowById.get(jid);
+        if (!row) continue;
+        let rid = (row.recording_id as string | null) ?? null;
+        const theme = row.theme as Record<string, unknown> | null;
+        const pool = theme?.randomTrackPool;
+        if (!rid && theme?.isCulmination && Array.isArray(pool) && pool.length > 0) {
+          rid = (pool as string[])[Math.floor(Math.random() * pool.length)];
+        }
+        if (rid) recordingIdByJourneyId.set(jid, rid);
+      }
+
+      // Recording meta (title/artist/duration) for credits + end
+      // detection. Missing rows (e.g. anon RLS online) degrade to the
+      // journey name + null duration — /api/audio still serves the
+      // audio for shared-path journeys.
+      const rids = [...new Set(recordingIdByJourneyId.values())];
+      const recMetaById = new Map<string, { title: string | null; artist: string | null; duration: number | null }>();
+      if (offline) {
+        for (const rid of rids) {
+          const rec = getRecording(rid);
+          if (rec) recMetaById.set(rid, { title: rec.title ?? null, artist: rec.artist ?? null, duration: rec.duration ?? null });
+        }
+      } else if (rids.length > 0) {
+        const { data: recRows } = await supabase!
+          .from("recordings")
+          .select("id, title, artist, duration")
+          .in("id", rids);
+        for (const r of (recRows ?? []) as Array<{ id: string; title: string | null; artist: string | null; duration: number | null }>) {
+          recMetaById.set(r.id, { title: r.title, artist: r.artist, duration: r.duration });
+        }
+      }
+
+      return orderedIds
+        .map((jid) => rowById.get(jid))
+        .filter((row): row is JourneyRow => !!row)
+        .map((row) => {
+          const jid = row.id as string;
+          const rid = recordingIdByJourneyId.get(jid) ?? null;
+          const meta = rid ? recMetaById.get(rid) : undefined;
+          const track: Track | null = rid
+            ? {
+                id: rid,
+                title: meta?.title || (row.name as string) || "Untitled",
+                audioUrl: `/api/audio/${rid}`,
+                duration: meta?.duration ?? null,
+                artist: meta?.artist ?? null,
+              }
+            : null;
+          return { journey: rowToJourney(row), track };
+        });
+    };
+
+    const programs: InstallationProgram[] = [];
+    for (const def of INSTALLATION_PROGRAMS) {
+      let seq: SequenceEntry[] = [];
+      if (def.journeyIds) {
+        seq = buildBuiltinSequence(def.journeyIds);
+      } else if (def.pathShareToken) {
+        seq = await buildPathSequence(def.pathShareToken);
+      }
+      // Programs that resolve empty (path missing, RLS-blocked) are
+      // dropped rather than rendered as an intro-to-credits flash.
+      if (seq.length > 0) {
+        programs.push({
+          id: def.id,
+          presenting: def.presenting,
+          description: def.description,
+          dedication: def.dedication,
+          sequence: seq,
+        });
+      }
+    }
+
+    // Pre-fetch cue markers for every paired track across all programs.
     // The journey-engine uses these to fire bass_hit events that drive
     // Ghost's bass flash overlay (and any future per-cue effects). Without
     // this, ghost's iconic flashes never trigger in installation mode.
-    const trackedRecordingIds = sequence
-      .map((s) => s.track?.id)
-      .filter((id): id is string => !!id);
+    const trackedRecordingIds = [
+      ...new Set(
+        programs
+          .flatMap((p) => p.sequence)
+          .map((s) => s.track?.id)
+          .filter((id): id is string => !!id),
+      ),
+    ];
     const cuesByRecordingId: Record<string, Array<{ time: number; label: string }>> = {};
     if (offline) {
       for (const rid of trackedRecordingIds) {
@@ -228,12 +375,41 @@ export default async function InstallationPage({ searchParams }: Props) {
 
     // Attach cues to each sequence entry so the loop client can apply
     // them to the journey-engine when each journey starts.
-    const sequenceWithCues = sequence.map((entry) => ({
-      ...entry,
-      cues: entry.track ? (cuesByRecordingId[entry.track.id] ?? []) : [],
+    const programsWithCues: InstallationProgram[] = programs.map((p) => ({
+      ...p,
+      sequence: p.sequence.map((entry) => ({
+        ...entry,
+        cues: entry.track ? (cuesByRecordingId[entry.track.id] ?? []) : [],
+      })),
     }));
 
     const fallbackTracks = featuredRecordings.map(toTrack);
+
+    // Resolve ?start now that programs exist. Accepts a program id
+    // ("snowflake-ep"), a journey id (builtin like "ghost" or a path
+    // journey uuid), or a numeric index into the first program.
+    let startProgramIndex = 0;
+    let startIndexInProgram = 0;
+    if (start && programsWithCues.length > 0) {
+      const pIdx = programsWithCues.findIndex((p) => p.id === start);
+      if (pIdx >= 0) {
+        startProgramIndex = pIdx;
+      } else {
+        const n = Number(start);
+        if (Number.isInteger(n) && n >= 0) {
+          if (n < programsWithCues[0].sequence.length) startIndexInProgram = n;
+        } else {
+          for (let pi = 0; pi < programsWithCues.length; pi++) {
+            const ji = programsWithCues[pi].sequence.findIndex((e) => e.journey.id === start);
+            if (ji >= 0) {
+              startProgramIndex = pi;
+              startIndexInProgram = ji;
+              break;
+            }
+          }
+        }
+      }
+    }
 
     return (
       <div className="h-screen w-screen overflow-hidden bg-black">
@@ -250,12 +426,13 @@ export default async function InstallationPage({ searchParams }: Props) {
           crossOrigin="anonymous"
         />
         <InstallationLoopClient
-          sequence={sequenceWithCues}
+          programs={programsWithCues}
           fallbackTracks={fallbackTracks}
           debug={isDebug}
           anonMode={anonMode}
           playOnce={isPlayOnce}
-          startIndex={startIndexFromParam}
+          startIndex={startIndexInProgram}
+          startProgramIndex={startProgramIndex}
         />
       </div>
     );

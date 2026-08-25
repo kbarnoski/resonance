@@ -14,6 +14,7 @@ import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hu
 import { InstallationStatusPanel } from "./installation-status-panel";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
+import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
 import {
   INTRO_MS,
   CREDITS_MS,
@@ -34,8 +35,23 @@ export interface SequenceEntry {
   cues?: Array<{ time: number; label: string }>;
 }
 
-interface Props {
+/** One program in the attract loop: intro screen → journeys →
+ *  dedication screen. Programs run back to back; after the last
+ *  program's dedication the loop wraps to the first. Content comes
+ *  from INSTALLATION_PROGRAMS (installation-sequence.ts); the page
+ *  resolves each program's journeys server-side. */
+export interface InstallationProgram {
+  id: string;
+  presenting: string;
+  description: string;
+  dedication: ProgramDedication;
   sequence: SequenceEntry[];
+}
+
+const EMPTY_SEQUENCE: SequenceEntry[] = [];
+
+interface Props {
+  programs: InstallationProgram[];
   /** Featured-recordings pool used when a journey has no paired track. */
   fallbackTracks: Track[];
   /** When true, render the live audio + journey debug overlay. Driven by
@@ -54,11 +70,13 @@ interface Props {
    *  /demo URL — gives reviewers a clean end-of-experience moment
    *  without the loop continuing in the background. */
   playOnce?: boolean;
-  /** Index into `sequence` to start the cycle at. Defaults to 0
-   *  (Ascension). Driven by ?start=N or ?start=journey-id on the
-   *  URL — useful for debugging late-cycle journeys (e.g. Ghost
-   *  audio drops mid-play) without sitting through the prior 4. */
+  /** Journey index within the starting program to begin at. Driven by
+   *  ?start=N or ?start=journey-id on the URL — useful for debugging
+   *  late-cycle journeys without sitting through the prior ones. Only
+   *  applies to the first pass; subsequent programs start at 0. */
   startIndex?: number;
+  /** Program index to begin at (?start=program-id). Defaults to 0. */
+  startProgramIndex?: number;
 }
 
 // ─── Timing ────────────────────────────────────────────────────────────
@@ -71,13 +89,27 @@ type Phase =
   | { kind: "journey"; index: number }
   | { kind: "credits" };
 
-export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOnce, startIndex = 0 }: Props) {
+export function InstallationLoopClient({ programs, fallbackTracks, debug, playOnce, startIndex = 0, startProgramIndex = 0 }: Props) {
   // anonMode is still accepted on the props interface for future use
   // (e.g., a "sign up" CTA), but doesn't currently change behavior.
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
   const setQueue = useAudioStore((s) => s.setQueue);
   const startJourney = useAudioStore((s) => s.startJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
+
+  // ─── Program machinery ────────────────────────────────────────────
+  // The loop plays programs sequentially: each program runs the full
+  // intro → journeys → dedication arc using the existing single-cycle
+  // phase machine below (which reads the CURRENT program's sequence);
+  // the credits timer advances programIndex before wrapping to intro.
+  const [programIndex, setProgramIndex] = useState(() =>
+    programs.length > 0 ? Math.min(Math.max(0, startProgramIndex), programs.length - 1) : 0,
+  );
+  // ?start journey offset applies only to the first pass through the
+  // starting program; every later intro starts at journey 0.
+  const [startIdx, setStartIdx] = useState(startIndex);
+  const program = programs[programIndex] ?? programs[0] ?? null;
+  const sequence = program?.sequence ?? EMPTY_SEQUENCE;
 
   // Phone remote (offline kiosk) — no-op unless the pack probe confirms.
   useKioskRemote("loop");
@@ -527,7 +559,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           ? sequence[phase.index]?.journey.name ?? null
           : phase.kind === "credits"
             ? "credits"
-            : sequence[startIndex]?.journey.name ?? null;
+            : sequence[startIdx]?.journey.name ?? null;
 
       const payload = {
         uptimeS: Math.floor((Date.now() - startedAtMsRef.current) / 1_000),
@@ -566,7 +598,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       clearInterval(id);
       cancelAnimationFrame(raf);
     };
-  }, [sequence, startIndex]);
+  }, [sequence, startIdx]);
 
   // ─── Health-beacon webhook ──────────────────────────────────────
   // If the kiosk URL has `?webhook_url=https://...`, POST a health
@@ -814,13 +846,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           return;
         }
         setIntroStage("fading-cycle");
-        const entry = sequence[startIndex];
+        const entry = sequence[startIdx];
         if (!entry) {
           setPhase({ kind: "credits" });
           return;
         }
         useAudioStore.getState().setSuppressNextJourneyIntro(true);
-        const track = trackForIndex(startIndex);
+        const track = trackForIndex(startIdx);
         if (track) setQueue([track], 0);
         startJourney(entry.journey.id);
         const cues = entry.cues ?? [];
@@ -856,7 +888,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
             earlyRetries++;
             void (async () => {
               try {
-                const t = trackForIndex(startIndex);
+                const t = trackForIndex(startIdx);
                 if (!t?.audioUrl) return;
                 try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
                 const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
@@ -895,7 +927,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // sole visual layer.
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
-        setPhase({ kind: "journey", index: startIndex });
+        setPhase({ kind: "journey", index: startIdx });
       }, phaseChangeDelay);
 
       return () => {
@@ -966,6 +998,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           setStarted(false);
           setStartScreenUnmounted(false);
         }
+        // Advance to the next program (wrapping to the first after the
+        // last). The ?start journey offset only applies to the very
+        // first pass — every subsequent intro begins at journey 0.
+        setStartIdx(0);
+        if (programs.length > 1) {
+          setProgramIndex((p) => (p + 1) % programs.length);
+        }
         setPhase({ kind: "intro" });
       }, delay);
       return () => {
@@ -994,8 +1033,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // intro overlay, and re-showing it now produces a visible duplicate
     // (dots fade in/out twice, journey title appears twice). For the
     // normal kiosk path this is journey 0; with ?start=N it's journey N.
-    // Compare against startIndex, not 0, to handle both cases.
-    if (phase.index !== startIndex) {
+    // Compare against startIdx, not 0, to handle both cases.
+    if (phase.index !== startIdx) {
       setTitleWindow(true);
       // visualizer-client's journey-title overlay runs `journeyIntroAnim
       // 8.5s` in installation mode. Its keyframe holds opacity 1 from
@@ -1454,17 +1493,18 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // panel can show the live phase + journey name without needing to
   // re-derive them from the audio store.
   const statusPhaseLabel =
-    phase.kind === "intro"
+    (programs.length > 1 && program ? `${program.id} · ` : "") +
+    (phase.kind === "intro"
       ? "intro"
       : phase.kind === "journey"
         ? `journey ${phase.index + 1}/${sequence.length}`
-        : "credits";
+        : "credits");
   const statusJourneyName =
     phase.kind === "journey"
       ? sequence[phase.index]?.journey.name ?? null
       : phase.kind === "credits"
         ? "credits"
-        : sequence[startIndex]?.journey.name ?? null;
+        : sequence[startIdx]?.journey.name ?? null;
   return (
     <div ref={containerRef} className="h-full w-full relative">
       {/* Visualizer wrapper — fades the entire shader/AI/post-process
@@ -1520,14 +1560,18 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           aria-hidden
         />
       )}
-      {fontsReady && introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === startIndex && (introStage === "journey" || introStage === "fading-journey"))) && (
+      {fontsReady && introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === startIdx && (introStage === "journey" || introStage === "fading-journey"))) && (
         <InstallationIntro
           stage={introStage}
-          journey={sequence[startIndex]?.journey ?? null}
-          trackArtist={sequence[startIndex]?.track?.artist ?? null}
+          journey={sequence[startIdx]?.journey ?? null}
+          trackArtist={sequence[startIdx]?.track?.artist ?? null}
+          presenting={program?.presenting}
+          description={program?.description}
         />
       )}
-      {phase.kind === "credits" && <InstallationCredits />}
+      {phase.kind === "credits" && (
+        <InstallationCredits dedication={program?.dedication} />
+      )}
 
       {/* /demo Begin overlay — captures the gesture iOS Safari needs
           to unlock audio, plus serves as a clean "start when ready"
@@ -1614,7 +1658,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               marginBottom: "2.5rem",
             }}
           >
-            presenting the Snowflake EP
+            presenting {program?.presenting ?? "the Snowflake EP"}
           </div>
           <p
             className="text-white/55 max-w-2xl mx-auto"
@@ -1626,10 +1670,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               marginBottom: "2.5rem",
             }}
           >
-            Snowflake, Realized, Ghost — three original improvised piano
-            recordings, tracing an arc from stillness, through fire, into
-            light. AI-generated visuals improvise alongside the music,
-            never the same twice. Recline.
+            {program?.description ?? ""}
           </p>
           <div
             className="text-white/55"
@@ -1762,7 +1803,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
 
         const currentIndex =
           phase.kind === "intro"
-            ? startIndex
+            ? startIdx
             : phase.kind === "journey"
               ? phase.index
               : sequence.length;
@@ -1771,6 +1812,14 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           phase.kind === "credits"
             ? null
             : sequence[currentIndex]?.journey.name ?? "";
+
+        // Segment width scales down for long programs (Welcome Home is
+        // 14 journeys) so the stepper stays ~640px wide max. Short
+        // programs keep the original 56px segments.
+        const segWidth = Math.max(
+          18,
+          Math.min(56, Math.round((640 - (sequence.length - 1) * 6) / sequence.length)),
+        );
 
         return (
           <div
@@ -1787,7 +1836,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                 const done = i < currentIndex;
                 const current = !isInIntro
                   ? phase.kind === "journey" && i === currentIndex
-                  : i === startIndex;
+                  : i === startIdx;
                 const skipped = skippedIndices.has(i);
                 const background = skipped
                   ? "rgba(248, 113, 113, 0.55)"
@@ -1805,10 +1854,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                     aria-hidden
                     title={skipped ? "Track failed — skipped" : undefined}
                     style={{
-                      // Uniform width across all 5 segments — current
+                      // Uniform width across all segments — current
                       // segment differentiated by background + glow
                       // alone, not by size.
-                      width: "56px",
+                      width: `${segWidth}px`,
                       height: "4px",
                       borderRadius: "2px",
                       background,
