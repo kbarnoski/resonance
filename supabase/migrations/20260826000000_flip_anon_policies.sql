@@ -56,9 +56,14 @@ drop policy if exists "Anyone can read shared journey_paths" on public.journey_p
 -- journeys: kill blanket anon/shared read (owner policy is unaffected).
 drop policy if exists "Anyone can read shared journeys" on public.journeys;
 
--- recordings: kill the blanket public policy. Owner policy remains; all
--- public reads flow through the SECURITY DEFINER functions / server routes.
-drop policy if exists "recordings_select_public" on public.recordings;
+-- recordings: kill the TWO blanket public policies. Owner policies remain;
+-- all public reads flow through the SECURITY DEFINER functions / server
+-- routes. (2026-08-26 correction, as applied to prod: the original guess
+-- "recordings_select_public" did not exist and `if exists` silently
+-- no-op'd — verified via pg_policies, the real blanket policies are the
+-- two below. No `if exists` so a wrong name fails loudly.)
+drop policy "Anyone can view shared recordings" on public.recordings;
+drop policy "Anyone can view featured recordings" on public.recordings;
 
 -- analyses: NOT dropped — see header. Kept for the anon players.
 -- drop policy if exists "analyses_select_public" on public.analyses;
