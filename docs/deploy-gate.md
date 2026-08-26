@@ -20,28 +20,32 @@ untouched.
 
 **One-time manual setup (≈5 minutes):**
 
-1. **Create the deploy hook** — Vercel dashboard → the Resonance project →
-   *Settings → Git → Deploy Hooks* → Create Hook. Name: `ci-gate`, branch:
-   `main`. Copy the generated URL.
+> **2026-08-25 update:** the original deploy-hook design did NOT work —
+> the Ignored Build Step canceled hook-triggered builds too (five
+> Canceled production builds verified). The gate now deploys via the
+> **Vercel CLI**, which the Ignored Build Step never evaluates.
+
+1. **Create a Vercel token** — vercel.com → avatar → *Account Settings →
+   Tokens* → Create. Scope: the team that owns Resonance. Expiration: your
+   call (no-expiry is convenient; rotate if it ever leaks).
 2. **Add the GitHub secret** — GitHub repo → *Settings → Secrets and
-   variables → Actions* → New repository secret. Name:
-   `VERCEL_DEPLOY_HOOK_URL`, value: the hook URL.
-3. **Turn off git auto-deploy** so the hook becomes the only path to prod.
-   Either:
-   - *Settings → Git* → disable auto-deployments for production, **or**
-   - add an **Ignored Build Step** (Settings → Git → Ignored Build Step) with
-     command `exit 0` for git-triggered builds — deploy-hook builds ignore the
-     ignored-build-step, so only CI-triggered deploys run. This is the
-     safest variant: pushes still register in Vercel, they just don't build.
-4. Push any commit and watch: the *Deploy Gate* action goes green → a
-   production deployment appears in Vercel sourced from the hook.
+   variables → Actions* → New repository secret. Name: `VERCEL_TOKEN`,
+   value: the token.
+3. **Keep the Ignored Build Step** (Settings → Git → Ignored Build Step,
+   command `exit 0`) — it's what blocks direct git pushes from building.
+   The org/project IDs are plain env in the workflow (they're
+   identifiers, not secrets).
+4. Push any commit (or `gh run rerun` the latest Deploy Gate run) and
+   watch: the action goes green → a CLI-sourced production deployment
+   appears in Vercel with the right commit in `/api/version`.
 
-**Rollback:** delete the secret (gate goes inert again) and/or re-enable
-auto-deploy. The workflow never needs to be reverted.
+Housekeeping: the old `ci-gate` deploy hook and the
+`VERCEL_DEPLOY_HOOK_URL` GitHub secret are unused now — delete both at
+leisure.
 
-**Note:** deploy-hook builds clone the branch tip at hook time — a rapid
-second push during a CI run deploys the newer tip; `concurrency` in the
-workflow cancels the stale run, so the last green push wins.
+**Rollback:** delete the `VERCEL_TOKEN` secret (gate goes inert) and clear
+the Ignored Build Step (auto-deploy resumes). The workflow never needs to
+be reverted.
 
 ---
 

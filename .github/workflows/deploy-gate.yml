@@ -56,26 +56,35 @@ jobs:
         run: npm test
 
   deploy:
-    name: Trigger Vercel production deploy
+    name: Vercel production deploy (CLI)
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    # Only meaningful once the secret exists — see docs/deploy-gate.md.
+    timeout-minutes: 20
+    # Deploy hooks turned out NOT to bypass the Ignored Build Step on this
+    # project (verified 2026-08-25: five hook/git builds all Canceled).
+    # CLI deployments are never evaluated by the Ignored Build Step, so
+    # this is the reliable "only CI can deploy" path. The build itself
+    # still runs on Vercel's infra — the runner only uploads sources.
+    # Only meaningful once the VERCEL_TOKEN secret exists — see
+    # docs/deploy-gate.md.
     steps:
-      - name: Hit the Vercel deploy hook
+      - uses: actions/checkout@v4
+
+      - name: Deploy via Vercel CLI
         env:
-          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_nJRqVNTjzHtRvy93vgo1kwHX
+          VERCEL_PROJECT_ID: prj_7xHbLJA0gx114hFP2KFht48ZAxQ9
         run: |
-          if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
-            echo "VERCEL_DEPLOY_HOOK_URL secret not set — gate is inert."
-            echo "Vercel's own git auto-deploy is (still) handling this push."
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN secret not set — gate is inert."
             echo "See docs/deploy-gate.md for the one-time setup."
             exit 0
           fi
-          echo "CI green — triggering production deploy via deploy hook."
-          status=$(curl -s -o /tmp/hook-response.txt -w "%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
-          cat /tmp/hook-response.txt
-          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
-            echo "Deploy hook returned HTTP $status" >&2
-            exit 1
-          fi
+          echo "CI green — deploying to production via Vercel CLI."
+          # VERCEL_GIT_COMMIT_SHA feeds next.config.ts's gitShortSha()
+          # fallback so /api/version keeps reporting the real commit
+          # (CLI uploads don't include .git).
+          npx vercel@latest deploy --prod --yes \
+            --token "$VERCEL_TOKEN" \
+            --build-env VERCEL_GIT_COMMIT_SHA="$GITHUB_SHA"
