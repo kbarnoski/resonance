@@ -46,3 +46,6 @@ jobs:
           # required to compile; runtime would fail without them).
           NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
           NEXT_PUBLIC_SUPABASE_ANON_KEY: "build-time-placeholder"
+          # ~1,250 static pages (dream lab) OOM the default V8 heap on
+          # GitHub's 7GB runner — raise it (Vercel's builder has more).
+          NODE_OPTIONS: "--max-old-space-size=6144"
