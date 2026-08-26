@@ -49,10 +49,28 @@ export async function generateMetadata({
     : JOURNEYS.find((j) => j.name === metaRow.name) ?? null;
   const name = metaBuiltin?.name ?? metaRow.name;
   const subtitle = metaBuiltin?.subtitle ?? metaRow.subtitle;
+  const description = subtitle || "A shared journey on Resonance";
 
   return {
-    title: `${name} — Resonance`,
-    description: subtitle || "A shared journey on Resonance",
+    // Root layout template appends "— Resonance"
+    title: name,
+    description,
+    openGraph: {
+      title: name,
+      description,
+      url: `/journey/${token}`,
+      siteName: "Resonance",
+      type: "website",
+      // Defining openGraph here drops the root file-based image, so
+      // point explicitly at the default brand card route.
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Resonance — a listening space" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: name,
+      description,
+      images: ["/opengraph-image"],
+    },
   };
 }
 

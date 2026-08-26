@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Exploratorium — Resonance Dream Lab",
+  title: { absolute: "Exploratorium — Resonance Dream Lab" },
   description:
     "Walk in. Become the music. A Resonance installation concept for the Exploratorium SF.",
 };

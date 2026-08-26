@@ -14,9 +14,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://getresonance.vercel.app";
+const SITE_DESCRIPTION =
+  "A listening space — immersive visual journeys through original music by Karel Barnoski.";
+
 export const metadata: Metadata = {
-  title: "Resonance",
-  description: "Your personal audio workspace — analyze, visualize, and explore your music",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Resonance",
+    template: "%s — Resonance",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: "Resonance",
+    description: SITE_DESCRIPTION,
+    url: "/",
+    siteName: "Resonance",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Resonance",
+    description: SITE_DESCRIPTION,
+  },
   appleWebApp: {
     capable: true,
     title: "Resonance",

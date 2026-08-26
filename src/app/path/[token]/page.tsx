@@ -1,56 +1,53 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
+import type { Metadata } from "next";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { isOfflinePack, getPathByShareToken, getJourneysByIds } from "@/lib/offline/pack";
+import { getPublicPathPayload, type JourneyRow } from "./path-data";
 import { PathShareButton } from "./share-button";
 import { CulminationCard } from "./culmination-card";
 import { Tracklist } from "./tracklist";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
+// The route stays dynamic (searchParams + auth cookies for ?view=app),
+// but the public payload itself is cached — getPublicPathPayload wraps
+// the Supabase fetches in unstable_cache with a 300s revalidate, so
+// anonymous share-link traffic doesn't hit the database per request.
 export const dynamic = "force-dynamic";
-
-function createAnonClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ token: string }>;
-}) {
+}): Promise<Metadata> {
   const { token } = await params;
   let data: { name: string; subtitle: string | null; description: string | null } | null;
   if (isOfflinePack()) {
     data = getPathByShareToken(token) as typeof data;
   } else {
-    const supabase = createAnonClient();
-    const res = await supabase
-      .from("journey_paths")
-      .select("name, subtitle, description")
-      .eq("share_token", token)
-      .single();
-    data = res.data;
+    data = (await getPublicPathPayload(token))?.path ?? null;
   }
   if (!data) return { title: "Path not found" };
-  return {
-    title: `${data.name} — Resonance`,
-    description: data.subtitle || data.description || "A shared path of journeys on Resonance",
-  };
-}
 
-interface JourneyRow {
-  id: string;
-  name: string;
-  subtitle: string | null;
-  description: string | null;
-  share_token: string | null;
-  theme: { palette?: { accent?: string; glow?: string } } | null;
-  recording_id: string | null;
-  creator_name: string | null;
-  photography_credit: string | null;
+  const description =
+    data.subtitle || data.description || "A shared path of journeys on Resonance";
+  return {
+    // Root layout template appends "— Resonance"
+    title: data.name,
+    description,
+    openGraph: {
+      title: data.name,
+      description,
+      url: `/path/${token}`,
+      siteName: "Resonance",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.name,
+      description,
+    },
+  };
 }
 
 export default async function SharedPathPage({
@@ -66,7 +63,7 @@ export default async function SharedPathPage({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let path: any = null;
-  let pathErr: unknown = null;
+  let unordered: JourneyRow[] | null = null;
   let isInAppContext: boolean;
 
   if (offline) {
@@ -74,46 +71,41 @@ export default async function SharedPathPage({
     // in-app context (there is no Supabase session to check).
     path = getPathByShareToken(token);
     isInAppContext = view === "app";
+    if (path) {
+      const allIds = [...(path.journey_ids as string[])];
+      if (path.culmination_journey_id) allIds.push(path.culmination_journey_id);
+      unordered = getJourneysByIds(allIds) as unknown as JourneyRow[];
+    }
   } else {
-    const supabase = createAnonClient();
-    const authClient = await createServerClient();
+    // Public payload (path row + all journeys in one cached unit) — starts
+    // immediately so the auth round-trip below overlaps with it.
+    const payloadPromise = getPublicPathPayload(token);
 
-    // Fire auth check + path row fetch in parallel — they're independent and
-    // together dominate page latency. Was ~700ms sequential, ~400ms parallel.
-    const [userResult, pathResult] = await Promise.all([
-      authClient.auth.getUser(),
-      supabase.from("journey_paths").select("*").eq("share_token", token).single(),
-    ]);
-    const user = userResult.data.user;
-    path = pathResult.data;
-    pathErr = pathResult.error;
+    // Only touch auth when the in-app context is actually requested —
+    // anonymous share-link visitors skip the Supabase auth round-trip.
+    let userId: string | null = null;
+    if (view === "app") {
+      const authClient = await createServerClient();
+      const { data } = await authClient.auth.getUser();
+      userId = data.user?.id ?? null;
+    }
+
+    const payload = await payloadPromise;
+    path = payload?.path ?? null;
+    unordered = payload?.journeys ?? null;
 
     // Two distinct contexts for the same route:
-    //   • In-app (view=app + signed in): shows back arrow, plays tracks
-    //     natively in The Room with full path context.
-    //   • Shared landing (everything else — anon visitors, signed-in users
-    //     who opened the share link directly from email/DM): no back arrow,
-    //     tracks play via the shared /journey/[share] client.
-    isInAppContext = view === "app" && !!user;
+    //   • In-app (view=app + signed in as the path's OWNER): shows back
+    //     arrow, plays tracks natively in The Room with full path context.
+    //   • Shared landing (everything else — anon visitors, non-owner
+    //     signed-in users, links opened directly from email/DM): no back
+    //     arrow, tracks play via the shared /journey/[share] client.
+    isInAppContext =
+      view === "app" && !!userId && !!path && userId === path.user_id;
   }
 
-  if (pathErr || !path) {
+  if (!path) {
     notFound();
-  }
-
-  // Fetch journeys in the order stored in journey_ids + culmination if present
-  const allIds = [...(path.journey_ids as string[])];
-  if (path.culmination_journey_id) allIds.push(path.culmination_journey_id);
-  let unordered: JourneyRow[] | null;
-  if (offline) {
-    unordered = getJourneysByIds(allIds) as unknown as JourneyRow[];
-  } else {
-    const supabase = createAnonClient();
-    const res = await supabase
-      .from("journeys")
-      .select("id, name, subtitle, description, share_token, theme, recording_id, creator_name, photography_credit")
-      .in("id", allIds);
-    unordered = res.data as JourneyRow[] | null;
   }
 
   const journeyMap = new Map<string, JourneyRow>();
@@ -128,10 +120,7 @@ export default async function SharedPathPage({
   const creator = journeys[0]?.creator_name ?? "Karel Barnoski";
 
   return (
-    <div
-      className="min-h-dvh w-full overflow-y-auto"
-      style={{ backgroundColor: "#000", color: "#fff" }}
-    >
+    <div className="min-h-dvh w-full overflow-y-auto bg-void text-white">
       {/* Top bar — back link only in the in-app context. Shared landings
           (anonymous visitors AND signed-in users opening the share link
           directly) render without it so the page feels like a standalone
@@ -141,8 +130,7 @@ export default async function SharedPathPage({
           <Link
             href="/room"
             prefetch
-            className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors"
-            style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.08em", textTransform: "uppercase" }}
+            className="inline-flex min-h-11 items-center gap-1.5 px-3 -mx-3 -my-3 rounded-md font-mono text-[0.72rem] uppercase tracking-[0.08em] text-ink-faint hover:text-ink transition-colors duration-instant ease-enter outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             ← back
           </Link>
@@ -155,74 +143,37 @@ export default async function SharedPathPage({
       <div className="mx-auto max-w-2xl px-6 pt-10 pb-24">
         {/* Hero */}
         <div className="mb-12 text-center">
-          <div
-            style={{
-              fontSize: "0.68rem",
-              fontFamily: "var(--font-geist-mono)",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.4)",
-              marginBottom: "0.75rem",
-            }}
-          >
+          <Eyebrow className="mb-3 tracking-[0.22em] text-ink-faint">
             a path · by {creator}
-          </div>
-          <h1
+          </Eyebrow>
+          <DisplayTitle
+            className="mb-4"
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 300,
-              fontStyle: "italic",
-              fontSize: "clamp(2.4rem, 7vw, 4rem)",
-              letterSpacing: "0.02em",
-              lineHeight: 1.05,
               background: `linear-gradient(180deg, #fff 0%, ${glow} 100%)`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
               textShadow: `0 0 60px ${accent}30`,
-              marginBottom: "1rem",
             }}
           >
             {path.name}
-          </h1>
+          </DisplayTitle>
           {path.subtitle && (
-            <div
-              style={{
-                fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.85rem",
-                color: "rgba(255,255,255,0.55)",
-                letterSpacing: "0.04em",
-                marginBottom: "1.25rem",
-              }}
-            >
+            <MonoLabel className="mb-5 text-[0.85rem] tracking-[0.04em] text-white/55">
               {path.subtitle}
-            </div>
+            </MonoLabel>
           )}
           {path.description && (
             <p
-              className="mx-auto"
-              style={{
-                fontFamily: "var(--font-geist-sans)",
-                fontSize: "0.95rem",
-                color: "rgba(255,255,255,0.7)",
-                lineHeight: 1.7,
-                maxWidth: "34rem",
-              }}
+              className="mx-auto font-sans text-[0.95rem] leading-[1.7] text-white/70"
+              style={{ maxWidth: "34rem" }}
             >
               {path.description}
             </p>
           )}
-          <div
-            className="mt-5"
-            style={{
-              fontSize: "0.72rem",
-              fontFamily: "var(--font-geist-mono)",
-              color: "rgba(255,255,255,0.45)",
-              letterSpacing: "0.05em",
-            }}
-          >
+          <MonoLabel className="mt-5 text-ink-faint">
             Music by {creator}
-          </div>
+          </MonoLabel>
         </div>
 
         {/* Track list — client component preloads audio on hover */}
@@ -257,17 +208,9 @@ export default async function SharedPathPage({
           />
         )}
 
-        <div
-          className="mt-14 text-center"
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.68rem",
-            letterSpacing: "0.08em",
-            color: "rgba(255,255,255,0.3)",
-          }}
-        >
+        <MonoLabel className="mt-14 text-center text-[0.68rem] tracking-[0.08em] text-ink-faint">
           built with resonance
-        </div>
+        </MonoLabel>
       </div>
     </div>
   );

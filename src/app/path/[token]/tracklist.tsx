@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 interface TrackRow {
   id: string;
@@ -106,9 +107,9 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
           clickable and shows an instant name tooltip on hover. */}
       <div
         className="mb-5 flex items-center justify-center gap-2 flex-wrap"
-        style={{ opacity: mounted ? 1 : 0, transition: "opacity 0.3s ease" }}
+        style={{ opacity: mounted ? 1 : 0, transition: "opacity var(--duration-fast) ease" }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
           {journeys.map((j, i) => {
             const done = completedSet.has(j.id);
             const href = isInAppContext
@@ -128,13 +129,17 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
                 aria-label={j.name}
                 className="group relative inline-flex items-center justify-center"
                 style={{
-                  width: "24px",
-                  height: "24px",
-                  padding: "5px",
+                  width: "28px",
+                  height: "28px",
                 }}
               >
+                {/* Expanded hit area — 44×44 effective touch target while
+                    the visual dot stays 14px. Adjacent targets overlap a
+                    little; the layout pitch (28px + 8px gap) keeps each
+                    dot's exclusive zone comfortably tappable. */}
+                <span aria-hidden className="absolute" style={{ inset: "-8px" }} />
                 <span
-                  className="block transition-all"
+                  className="block transition-[background,box-shadow] duration-instant"
                   style={{
                     width: "14px",
                     height: "14px",
@@ -146,7 +151,7 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
                 {/* Custom instant tooltip — shows immediately on hover,
                     no 1.5s native title delay. */}
                 <span
-                  className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-75"
+                  className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-instant"
                   style={{
                     top: "calc(100% + 10px)",
                     left: "50%",
@@ -169,18 +174,9 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
             );
           })}
         </div>
-        <span
-          className="ml-1"
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.66rem",
-            color: "rgba(255,255,255,0.45)",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
+        <Eyebrow as="span" className="ml-1 tracking-[0.08em] text-ink-faint">
           {completedCount} of {total}
-        </span>
+        </Eyebrow>
       </div>
 
       <div className="space-y-2">
@@ -200,7 +196,7 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
               onMouseEnter={() => preloadTrack(j)}
               onTouchStart={() => preloadTrack(j)}
               onFocus={() => preloadTrack(j)}
-              className="group block rounded-xl px-5 py-4 transition-all hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/25"
+              className="group block rounded-xl px-5 py-4 transition-colors duration-instant hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
               style={{
                 border: done
                   ? `1px solid ${accent}45`
@@ -215,22 +211,16 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
                     fontFamily: "var(--font-geist-mono)",
                     fontSize: "0.7rem",
                     letterSpacing: "0.1em",
-                    color: done ? accent : "rgba(255,255,255,0.35)",
+                    color: done ? accent : "rgba(255,255,255,0.45)",
                     minWidth: "1.75rem",
                   }}
                 >
                   {num}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="transition-colors group-hover:text-white flex items-center gap-2"
-                    style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontStyle: "italic",
-                      fontSize: "1.35rem",
-                      color: "rgba(255,255,255,0.9)",
-                      lineHeight: 1.3,
-                    }}
+                  <DisplayTitle
+                    as="div"
+                    className="flex items-center gap-2 font-normal text-[1.35rem] leading-[1.3] tracking-normal text-white/90 transition-colors duration-instant group-hover:text-white"
                   >
                     {j.name}
                     {done && (
@@ -239,19 +229,11 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
                         style={{ color: accent, opacity: 0.9 }}
                       />
                     )}
-                  </div>
+                  </DisplayTitle>
                   {j.subtitle && (
-                    <div
-                      className="mt-0.5"
-                      style={{
-                        fontFamily: "var(--font-geist-mono)",
-                        fontSize: "0.7rem",
-                        color: "rgba(255,255,255,0.4)",
-                        letterSpacing: "0.03em",
-                      }}
-                    >
+                    <MonoLabel className="mt-0.5 text-[0.7rem] tracking-[0.03em] text-white/40">
                       {j.subtitle}
-                    </div>
+                    </MonoLabel>
                   )}
                   {j.description && (
                     <p
@@ -267,18 +249,12 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
                     </p>
                   )}
                 </div>
-                <div
-                  className="flex-shrink-0 self-center transition-opacity opacity-40 group-hover:opacity-100"
-                  style={{
-                    fontFamily: "var(--font-geist-mono)",
-                    fontSize: "0.65rem",
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    color: accent,
-                  }}
+                <Eyebrow
+                  className="flex-shrink-0 self-center tracking-[0.15em] opacity-40 transition-opacity duration-instant group-hover:opacity-100"
+                  style={{ color: accent }}
                 >
                   {done ? "Replay →" : "Play →"}
-                </div>
+                </Eyebrow>
               </div>
             </Link>
           );

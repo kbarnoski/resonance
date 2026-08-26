@@ -37,7 +37,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${recording.title} — Resonance`,
+    title: recording.title,
     description: recording.description || "Shared recording on Resonance",
   };
 }

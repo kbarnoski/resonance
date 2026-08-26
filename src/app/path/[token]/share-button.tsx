@@ -26,7 +26,7 @@ export function PathShareButton({ token, pathName }: { token: string; pathName: 
   return (
     <button
       onClick={handleShare}
-      className="inline-flex items-center gap-1.5 text-white/50 hover:text-white/90 transition-colors"
+      className="inline-flex min-h-11 items-center gap-1.5 px-3 -mx-3 -my-3 text-white/50 hover:text-white/90 transition-colors"
       style={{
         fontSize: "0.72rem",
         fontFamily: "var(--font-geist-mono)",

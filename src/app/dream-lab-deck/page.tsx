@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Dream Lab — Resonance",
+  title: "Dream Lab",
   description:
     "A public creative R&D loop. An autonomous Claude agent builds audio-visual prototypes for Resonance every hour, 24/7.",
 };
