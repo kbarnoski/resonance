@@ -7,6 +7,7 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { logger } from "@/lib/logger";
 import { isOfflinePack, getAudioInfo } from "@/lib/offline/pack";
+import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
 
 function resolveFfmpegPath(): string {
   if (process.env.FFMPEG_PATH) return process.env.FFMPEG_PATH;
@@ -131,6 +132,26 @@ interface RecordingRow {
 
 const RECORDING_COLUMNS = "file_name, aac_file_name, audio_codec, waveform_peaks";
 
+/**
+ * Client for the shared-recording fallback. Prefers the service-role key
+ * so the "released" checks below keep working after the anon RLS flip
+ * (see supabase/migrations/MIGRATION-NOTES-2026-08-25.md) — file_name
+ * must never be readable through the anon REST surface, but this route
+ * legitimately needs it server-side. Falls back to the anon client when
+ * the service key isn't configured (local dev): identical row set today,
+ * because the current anon policies still expose the same rows.
+ */
+function createSharedResolver() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (serviceKey) {
+    return createAnonClient(url, serviceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+  }
+  return createAnonClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+}
+
 async function resolveRecording(id: string) {
   const supabase = await createClient();
   const { data } = await supabase
@@ -141,22 +162,23 @@ async function resolveRecording(id: string) {
 
   if (data) return { recording: data as RecordingRow, client: supabase, owned: true };
 
-  // Fallback for shared recordings
-  const anonClient = createAnonClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-  const { data: shared } = await anonClient
+  // Fallback for shared recordings. The explicit released-set filters
+  // (own share token / featured / attached to a shared journey) ARE the
+  // authorization here — the resolver client may hold the service key,
+  // so never query it without these filters. The journey-shared branch
+  // is the H1 accepted-risk surface (owner ruling — do not tighten).
+  const sharedClient = createSharedResolver();
+  const { data: shared } = await sharedClient
     .from("recordings")
     .select(RECORDING_COLUMNS)
     .eq("id", id)
     .or("share_token.not.is.null,is_featured.eq.true")
     .single();
 
-  if (shared) return { recording: shared as RecordingRow, client: anonClient, owned: false };
+  if (shared) return { recording: shared as RecordingRow, client: sharedClient, owned: false };
 
   // Fallback for recordings attached to shared journeys
-  const { data: journeyRef } = await anonClient
+  const { data: journeyRef } = await sharedClient
     .from("journeys")
     .select("recording_id")
     .eq("recording_id", id)
@@ -165,15 +187,57 @@ async function resolveRecording(id: string) {
     .maybeSingle();
 
   if (journeyRef) {
-    const { data: journeyRec } = await anonClient
+    const { data: journeyRec } = await sharedClient
       .from("recordings")
       .select(RECORDING_COLUMNS)
       .eq("id", id)
       .single();
-    if (journeyRec) return { recording: journeyRec as RecordingRow, client: anonClient, owned: false };
+    if (journeyRec) return { recording: journeyRec as RecordingRow, client: sharedClient, owned: false };
   }
 
   return null;
+}
+
+/**
+ * Strict single-range parser for `Range: bytes=start-end`.
+ *
+ * The previous implementation ran parseInt on raw header fragments and
+ * sliced on the result — `Range: bytes=abc-` produced slice(NaN), and
+ * reversed/out-of-bounds ranges produced empty or nonsense 206 bodies.
+ *
+ * Returns:
+ *   { start, end }  — a satisfiable, clamped, ordered range
+ *   "unsatisfiable" — syntactically valid but out of bounds → 416
+ *   "invalid"       — malformed / multi-range → ignore, serve full body
+ */
+function parseRangeHeader(
+  header: string,
+  totalBytes: number,
+): { start: number; end: number } | "unsatisfiable" | "invalid" {
+  const match = /^bytes=(\d*)-(\d*)$/.exec(header.trim());
+  if (!match) return "invalid";
+  const [, rawStart, rawEnd] = match;
+  if (rawStart === "" && rawEnd === "") return "invalid";
+
+  if (rawStart === "") {
+    // Suffix range: last N bytes.
+    const suffixLen = Number(rawEnd);
+    if (!Number.isSafeInteger(suffixLen)) return "invalid";
+    if (suffixLen === 0 || totalBytes === 0) return "unsatisfiable";
+    const start = Math.max(0, totalBytes - suffixLen);
+    return { start, end: totalBytes - 1 };
+  }
+
+  const start = Number(rawStart);
+  if (!Number.isSafeInteger(start)) return "invalid";
+  if (start >= totalBytes) return "unsatisfiable";
+
+  let end = rawEnd === "" ? totalBytes - 1 : Number(rawEnd);
+  if (!Number.isSafeInteger(end)) return "invalid";
+  if (end < start) return "invalid";
+  end = Math.min(end, totalBytes - 1);
+
+  return { start, end };
 }
 
 export const maxDuration = 120; // Allow up to 120s for large file transcoding
@@ -194,6 +258,27 @@ export async function GET(
     return NextResponse.json(info);
   }
 
+  // Per-IP rate limits. Two tiers:
+  //   plain lookups — a signed-URL JSON handshake per track start;
+  //     generous (60 burst, ~2/sec sustained) so legit playback,
+  //     pre-buffering, and hover-preload never feel it.
+  //   ?transcode=1 — full storage download + ffmpeg per request, the
+  //     expensive path; tight (20/min/IP).
+  // No auth wall: anon Welcome Home / dream lab playback is by design.
+  const needsTranscode = request.nextUrl.searchParams.get("transcode") === "1";
+  const rl = needsTranscode
+    ? await checkRateLimit(
+        rateLimitKey({ request, scope: "audio-transcode" }),
+        20,
+        20 / 60,
+      )
+    : await checkRateLimit(
+        rateLimitKey({ request, scope: "audio-get" }),
+        60,
+        2,
+      );
+  if (!rl.allowed) return rateLimitedResponse(rl.retryAfterMs);
+
   const result = await resolveRecording(id);
 
   if (!result) {
@@ -201,9 +286,6 @@ export async function GET(
   }
 
   const { recording, client } = result;
-
-  // Check query param to know if client needs transcoded version
-  const needsTranscode = request.nextUrl.searchParams.get("transcode") === "1";
 
   if (!needsTranscode) {
     // If a persisted AAC transcode exists, serve that instead of the original
@@ -274,21 +356,34 @@ export async function GET(
 
   const range = request.headers.get("range");
   if (range) {
-    const parts = range.replace(/bytes=/, "").split("-");
-    const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : arrayBuffer.byteLength - 1;
-    const chunk = arrayBuffer.slice(start, end + 1);
+    const parsed = parseRangeHeader(range, arrayBuffer.byteLength);
+    if (parsed === "invalid") {
+      // Malformed Range (garbage, NaN, multi-range) — per RFC 9110 a
+      // server MAY ignore it; serve the full body below rather than
+      // slicing on NaN like the old code did.
+    } else if (parsed === "unsatisfiable") {
+      return new NextResponse(null, {
+        status: 416,
+        headers: {
+          "Content-Range": `bytes */${arrayBuffer.byteLength}`,
+          "Accept-Ranges": "bytes",
+        },
+      });
+    } else {
+      const { start, end } = parsed;
+      const chunk = arrayBuffer.slice(start, end + 1);
 
-    return new NextResponse(chunk, {
-      status: 206,
-      headers: {
-        "Content-Type": "audio/mp4",
-        "Content-Range": `bytes ${start}-${end}/${arrayBuffer.byteLength}`,
-        "Content-Length": String(chunk.byteLength),
-        "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=3600",
-      },
-    });
+      return new NextResponse(chunk, {
+        status: 206,
+        headers: {
+          "Content-Type": "audio/mp4",
+          "Content-Range": `bytes ${start}-${end}/${arrayBuffer.byteLength}`,
+          "Content-Length": String(chunk.byteLength),
+          "Accept-Ranges": "bytes",
+          "Cache-Control": "public, max-age=3600",
+        },
+      });
+    }
   }
 
   return new NextResponse(arrayBuffer, {

@@ -53,6 +53,10 @@ export default function GlobalError({
           >
             Something went wrong
           </h2>
+          {/* Never render error.message to visitors — it can carry stack
+              fragments, file paths, or backend details. Full error goes
+              to the console above; the digest is enough to correlate
+              with server logs. */}
           <p
             style={{
               fontFamily: "ui-monospace, monospace",
@@ -62,7 +66,8 @@ export default function GlobalError({
               margin: 0,
             }}
           >
-            {error.message || "An unexpected error occurred."}
+            An unexpected error occurred.
+            {error.digest ? ` (ref ${error.digest})` : ""}
           </p>
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <button

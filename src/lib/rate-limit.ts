@@ -128,6 +128,10 @@ interface KvBackend {
 
 let kvBackendPromise: Promise<KvBackend | null> | null = null;
 
+/** One-time flag for the missing-KV warning. Deliberately NOT reset by
+ *  _resetRateLimitState — tests would otherwise spam it. */
+let warnedNoKvBackend = false;
+
 function loadKvBackend(): Promise<KvBackend | null> {
   if (kvBackendPromise) return kvBackendPromise;
 
@@ -135,6 +139,25 @@ function loadKvBackend(): Promise<KvBackend | null> {
   const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
 
   if (!url || !token) {
+    // Loud, once: without KV every "per-IP" and "global daily" limit is
+    // per-lambda — each warm serverless instance has its own buckets,
+    // so real-world caps are limits × instance-count and the fal/vision
+    // global budgets are not actually global. Provisioning is a
+    // 5-minute dashboard task: see docs/deploy-gate.md §2.
+    // Suppressed under vitest and in the Tramokyo offline pack (no
+    // network there by design).
+    if (
+      !warnedNoKvBackend &&
+      !process.env.VITEST &&
+      process.env.OFFLINE_PACK !== "1"
+    ) {
+      warnedNoKvBackend = true;
+      console.warn(
+        "[rate-limit] No KV backend configured (KV_REST_API_URL / KV_REST_API_TOKEN missing). " +
+          "Falling back to per-instance in-memory buckets — rate limits and global daily caps " +
+          "are NOT durable across serverless instances. Provision Upstash KV: docs/deploy-gate.md",
+      );
+    }
     kvBackendPromise = Promise.resolve(null);
     return kvBackendPromise;
   }

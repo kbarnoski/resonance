@@ -37,8 +37,12 @@ function StatusInner() {
     let cancelled = false;
     const fetchOnce = async () => {
       try {
-        const res = await fetch(`/api/installation/heartbeat?token=${encodeURIComponent(token)}`, {
+        // Token travels in a header, not the query string — keeps it out
+        // of server/CDN access logs on the API request. (The heartbeat
+        // GET still accepts ?token= for already-deployed status pages.)
+        const res = await fetch("/api/installation/heartbeat", {
           cache: "no-store",
+          headers: { "x-installation-token": token },
         });
         if (!res.ok) {
           if (cancelled) return;
@@ -71,7 +75,7 @@ function StatusInner() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-black text-white p-8 font-mono">
+      <div className="min-h-screen bg-background text-white p-8 font-mono">
         <h1 className="text-xl mb-4">Installation status</h1>
         <p className="text-white/65">
           Append <code className="bg-white/10 px-1 rounded">?token=YOUR_TOKEN</code> to this URL.
@@ -87,24 +91,24 @@ function StatusInner() {
   const fresh = liveAgeMs < 90_000;
   const stale = liveAgeMs >= 90_000 && liveAgeMs < 5 * 60_000;
   const dead = liveAgeMs >= 5 * 60_000;
-  const healthColor = dead ? "bg-red-500" : stale ? "bg-amber-400" : fresh ? "bg-green-500" : "bg-white/40";
+  const healthColor = dead ? "bg-destructive" : stale ? "bg-amber-500" : fresh ? "bg-emerald-500" : "bg-white/40";
   const healthLabel = dead ? "OFFLINE" : stale ? "STALE" : fresh ? "ALIVE" : "—";
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 font-mono text-sm">
+    <div className="min-h-screen bg-background text-white p-6 font-mono text-sm">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-lg text-white/85">Installation status</h1>
           {data && (
             <div className="flex items-center gap-2">
-              <span className={`inline-block w-2.5 h-2.5 rounded-full ${healthColor}`} />
+              <span className={`inline-block w-2.5 h-2.5 rounded-full transition-colors duration-fast ${healthColor}`} />
               <span className="text-white/65 text-xs">{healthLabel}</span>
             </div>
           )}
         </div>
 
         {error && (
-          <div className="bg-red-950/50 border border-red-500/30 rounded p-3 mb-4 text-red-200">
+          <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-3 mb-4 text-destructive">
             {error}
           </div>
         )}
@@ -138,7 +142,7 @@ function StatusInner() {
           <div className="text-white/55">Waiting for first heartbeat…</div>
         )}
 
-        <div className="mt-8 text-white/40 text-xs">
+        <div className="mt-8 text-ink-faint text-xs">
           Refreshes every 8s. Token: <code className="bg-white/5 px-1 rounded">{token.slice(0, 6)}…</code>
         </div>
       </div>
@@ -177,7 +181,7 @@ function fmtAudio(p: HeartbeatPayload): string {
 
 export default function StatusPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <StatusInner />
     </Suspense>
   );

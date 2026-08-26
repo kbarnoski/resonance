@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { MonoLabel } from "@/components/ui/typography";
 
 /** Per-route error boundary for The Room — keeps a Room crash from
  *  bubbling to the app-level boundary and losing the audio context. */
@@ -16,39 +17,28 @@ export default function RoomError({
   }, [error]);
 
   return (
-    <div
-      className="min-h-dvh flex items-center justify-center"
-      style={{ backgroundColor: "#000", color: "#fff" }}
-    >
+    <div className="min-h-dvh flex items-center justify-center bg-void text-white">
       <div className="flex flex-col items-center gap-6 text-center px-6">
         <h2
-          style={{
-            fontFamily: "var(--font-geist-sans)",
-            fontSize: "1.5rem",
-            fontWeight: 200,
-            color: "rgba(255,255,255,0.9)",
-          }}
+          className="text-2xl font-extralight text-white/90"
+          style={{ fontFamily: "var(--font-geist-sans)" }}
         >
           The Room hit a snag
         </h2>
-        <p
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.78rem",
-            color: "rgba(255,255,255,0.45)",
-            maxWidth: "24rem",
-          }}
+        {/* Never render error.message to visitors — it can carry stack
+            fragments, file paths, or backend details. Full error goes to
+            the console above; the digest is enough to correlate with
+            server logs. */}
+        <MonoLabel
+          as="p"
+          className="max-w-[24rem] text-[0.78rem] tracking-normal text-ink-faint"
         >
-          {error.message || "An unexpected error occurred."}
-        </p>
+          An unexpected error occurred.
+          {error.digest ? ` (ref ${error.digest})` : ""}
+        </MonoLabel>
         <button
           onClick={reset}
-          className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-          style={{
-            border: "1px solid rgba(255,255,255,0.2)",
-            fontSize: "0.8rem",
-            fontFamily: "var(--font-geist-mono)",
-          }}
+          className="rounded-lg border border-white/20 px-5 py-2.5 font-mono text-[0.8rem] text-white/80 transition-colors duration-instant ease-enter hover:bg-white/10 hover:text-white"
         >
           Try again
         </button>

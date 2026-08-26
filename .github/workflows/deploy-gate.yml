@@ -1,0 +1,81 @@
+name: Deploy Gate
+
+# Agent→prod gate (2026-08-25 audit, P1-Security #6 / C1).
+#
+# Today Vercel auto-deploys every push to main and CI runs AFTER the
+# fact — detection, not prevention. The dream agent ships ~12×/day, so
+# a broken push is live before anyone notices.
+#
+# This workflow flips that: CI (lint + typecheck + tests) runs first,
+# and ONLY on success does it hit a Vercel Deploy Hook to trigger the
+# production build.
+#
+# ── INERT-BUT-READY ──────────────────────────────────────────────────
+# Until the one-time manual setup in docs/deploy-gate.md is done
+# (create the deploy hook, add the VERCEL_DEPLOY_HOOK_URL secret,
+# disable Vercel's git auto-deploy), the deploy step below simply
+# skips — current auto-deploy behavior is completely unchanged. This
+# file breaks nothing by existing.
+# ─────────────────────────────────────────────────────────────────────
+#
+# Direct-push-to-main workflow (standing rule): no branches, no PRs —
+# so the gate triggers on push to main only.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (lint + typecheck + tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Tests
+        run: npm test
+
+  deploy:
+    name: Trigger Vercel production deploy
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Only meaningful once the secret exists — see docs/deploy-gate.md.
+    steps:
+      - name: Hit the Vercel deploy hook
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
+            echo "VERCEL_DEPLOY_HOOK_URL secret not set — gate is inert."
+            echo "Vercel's own git auto-deploy is (still) handling this push."
+            echo "See docs/deploy-gate.md for the one-time setup."
+            exit 0
+          fi
+          echo "CI green — triggering production deploy via deploy hook."
+          status=$(curl -s -o /tmp/hook-response.txt -w "%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
+          cat /tmp/hook-response.txt
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "Deploy hook returned HTTP $status" >&2
+            exit 1
+          fi

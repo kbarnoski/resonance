@@ -23,6 +23,29 @@
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
 import { logger } from "@/lib/logger";
+import { checkOrigin } from "../origin-check";
+
+/** Global aggregate daily caps across ALL callers — the abuse ceiling
+ *  when many IPs each stay under their per-identity limit (mirrors the
+ *  pattern in ../generate/route.ts). Truly global only once the KV
+ *  backend is provisioned; per-lambda until then (still a bound).
+ *  Env-overridable without a deploy.
+ *
+ *  POST (proxy → fal compute): sized like generate's cap — a full-day
+ *  installation show (~514 frames/hr × 8h ≈ 4,100) never blocks.
+ *  GET (JWT mint): a mint per kiosk/viewer page-load, not per frame —
+ *  2,000/day is an order of magnitude above legit traffic. */
+const PROXY_GLOBAL_DAILY_MAX = Math.max(
+  1,
+  Number(process.env.AI_IMAGE_TOKEN_GLOBAL_DAILY_CAP) || 6_000,
+);
+const PROXY_GLOBAL_DAILY_REFILL_PER_SEC = PROXY_GLOBAL_DAILY_MAX / 86_400;
+
+const MINT_GLOBAL_DAILY_MAX = Math.max(
+  1,
+  Number(process.env.AI_IMAGE_TOKEN_MINT_GLOBAL_DAILY_CAP) || 2_000,
+);
+const MINT_GLOBAL_DAILY_REFILL_PER_SEC = MINT_GLOBAL_DAILY_MAX / 86_400;
 
 /** Hostnames the proxy will forward POST traffic to. */
 const ALLOWED_FAL_HOSTS = [
@@ -141,6 +164,12 @@ async function mintFalJwt(masterKey: string): Promise<string | null> {
 }
 
 export async function GET(request: Request) {
+  // Origin allowlist FIRST — random third-party sites can't mint JWTs
+  // on the master key. Same-origin pages (/installation, /dream, /demo)
+  // pass; no auth is demanded (the kiosk is anonymous by design).
+  const forbidden = checkOrigin(request);
+  if (forbidden) return forbidden;
+
   // Auth-optional: authenticated users + unauthenticated visitors of
   // /installation both get to mint a fal JWT. Per-IP rate limit
   // bounds anonymous traffic — rateLimitKey() falls back to the
@@ -149,6 +178,23 @@ export async function GET(request: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!process.env.FAL_KEY) {
     return Response.json({ error: "Missing FAL_KEY" }, { status: 501 });
+  }
+
+  // Global ceiling before per-identity limits — bounds total daily
+  // mints no matter how many distinct IPs are calling.
+  const globalDaily = await checkRateLimit(
+    "fal-token-get-daily:GLOBAL",
+    MINT_GLOBAL_DAILY_MAX,
+    MINT_GLOBAL_DAILY_REFILL_PER_SEC,
+  );
+  if (!globalDaily.allowed) {
+    return Response.json(
+      {
+        error: "global daily budget exceeded",
+        hint: "token minting reached today's global budget — try again tomorrow",
+      },
+      { status: 429 },
+    );
   }
 
   // Tighter limit for anonymous visitors than authed users — one
@@ -183,11 +229,32 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  // Origin allowlist FIRST — parity with ../generate. No auth wall.
+  const forbidden = checkOrigin(request);
+  if (forbidden) return forbidden;
+
   // Auth-optional. Per-IP rate limit bounds anon traffic.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!process.env.FAL_KEY) {
     return Response.json({ error: "Missing FAL_KEY" }, { status: 501 });
+  }
+
+  // Global ceiling before per-identity limits — bounds total daily
+  // fal spend through the proxy no matter how many IPs fan out.
+  const globalDaily = await checkRateLimit(
+    "fal-token-post-daily:GLOBAL",
+    PROXY_GLOBAL_DAILY_MAX,
+    PROXY_GLOBAL_DAILY_REFILL_PER_SEC,
+  );
+  if (!globalDaily.allowed) {
+    return Response.json(
+      {
+        error: "global daily budget exceeded",
+        hint: "the image proxy reached today's global budget — try again tomorrow",
+      },
+      { status: 429 },
+    );
   }
 
   // Tighter ceiling for anon (30 burst / 0.5 per sec ≈ 1800/hour)
