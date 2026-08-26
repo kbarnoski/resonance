@@ -17,6 +17,24 @@ const analysisPostSchema = z.object({
   summary: z.record(z.string(), z.unknown()).nullable().optional(),
 }).strict();
 
+/**
+ * Client for the shared-recording fallback. Prefers the service-role key
+ * so the released-set resolution keeps working after the anon RLS flip
+ * (see supabase/migrations/MIGRATION-NOTES-2026-08-25.md). Falls back to
+ * the anon client when the service key isn't configured (local dev).
+ * Same pattern as /api/audio/[id]/route.ts.
+ */
+function createSharedResolver() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (serviceKey) {
+    return createAnonClient(url, serviceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+  }
+  return createAnonClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+}
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -24,62 +42,59 @@ export async function GET(
   const { id } = await params;
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("analyses")
-    .select("*")
-    .eq("recording_id", id)
-    .single();
+  // Owner branch — only consulted when there is an actual session.
+  // Previously the cookie client ran for anonymous requests too, where
+  // it acts as the anon role and matched the public analyses policy for
+  // ANY shared/featured parent — including the quarantined catalog,
+  // which recording_is_released() deliberately excludes. Gating on a
+  // session sends every anonymous request through the released check
+  // below; owners keep their untouched RLS read.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data, error } = await supabase
+      .from("analyses")
+      .select("*")
+      .eq("recording_id", id)
+      .single();
 
-  if (!error && data) {
-    return NextResponse.json(data);
+    if (!error && data) {
+      return NextResponse.json(data);
+    }
   }
 
-  // Tightened anon fallback: ONLY return analyses for recordings that
-  // are actually flagged is_featured (or attached to a shared journey).
-  // Previously we'd fall through on any RLS error from the user client,
-  // which meant a private analysis could surface via the anon client
-  // if RLS policies were ever loosened. Now we positively confirm the
-  // recording is meant to be public before returning anything.
-  const anonClient = createAnonClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  // Shared-recording fallback — mirrors /api/audio/[id]'s resolver: a
+  // service-role client (so the read keeps working after the Phase-2
+  // anon RLS flip), gated on the recording_is_released() SECURITY
+  // DEFINER function. recording_is_released is the single source of
+  // truth for the released set (featured OR own share token OR attached
+  // to a shared journey, minus the quarantined/excluded catalog — see
+  // supabase/migrations/20260825150000_fix_released_leaks.sql). The
+  // released check IS the authorization here: never query the resolver
+  // client without it. Falls back to the anon client when the service
+  // key isn't configured (local dev) — identical row set today while
+  // the public analyses policy is still in place.
+  const sharedClient = createSharedResolver();
+
+  const { data: released, error: releasedError } = await sharedClient.rpc(
+    "recording_is_released",
+    { p_recording_id: id }
   );
 
-  const { data: rec } = await anonClient
-    .from("recordings")
-    .select("id, is_featured")
-    .eq("id", id)
-    .maybeSingle();
-
-  let publiclyVisible = !!rec?.is_featured;
-
-  if (!publiclyVisible) {
-    // Also allow recordings attached to a shared journey.
-    const { data: sharedJourney } = await anonClient
-      .from("journeys")
-      .select("id")
-      .eq("recording_id", id)
-      .not("share_token", "is", null)
-      .limit(1)
-      .maybeSingle();
-    publiclyVisible = !!sharedJourney;
-  }
-
-  if (!publiclyVisible) {
+  if (releasedError || released !== true) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { data: anonData, error: anonError } = await anonClient
+  const { data: sharedData, error: sharedError } = await sharedClient
     .from("analyses")
     .select("*")
     .eq("recording_id", id)
     .single();
 
-  if (anonError || !anonData) {
+  if (sharedError || !sharedData) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json(anonData);
+  return NextResponse.json(sharedData);
 }
 
 export async function POST(

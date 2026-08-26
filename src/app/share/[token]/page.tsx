@@ -26,11 +26,12 @@ export async function generateMetadata({
 }) {
   const { token } = await params;
   const supabase = createAnonClient();
-  const { data: recording } = await supabase
-    .from("recordings")
-    .select("title, description")
-    .eq("share_token", token)
-    .single();
+  // Token-scoped SECURITY DEFINER read — survives the Phase-2 anon RLS
+  // flip (see supabase/migrations/MIGRATION-NOTES-2026-08-25.md).
+  const { data } = await supabase.rpc("get_recording_by_share_token", {
+    p_token: token,
+  });
+  const recording = ((data ?? []) as { title: string; description: string | null }[])[0];
 
   if (!recording) {
     return { title: "Recording Not Found" };
@@ -50,18 +51,29 @@ export default async function SharedRecordingPage({
   const { token } = await params;
   const supabase = createAnonClient();
 
-  const { data: recording } = await supabase
-    .from("recordings")
-    .select("*, analyses(*)")
-    .eq("share_token", token)
-    .single();
+  // Recording via the token-scoped SECURITY DEFINER function; the
+  // analysis is fetched separately by recording id — the public
+  // analyses policy stays in place at flip time (see
+  // MIGRATION-NOTES-2026-08-25.md, analyses/markers follow-up).
+  const { data: recRows } = await supabase.rpc("get_recording_by_share_token", {
+    p_token: token,
+  });
+  const recording = ((recRows ?? []) as Array<{
+    id: string;
+    title: string;
+    description: string | null;
+    artist: string | null;
+    duration: number | null;
+    created_at: string;
+  }>)[0];
 
   if (!recording) notFound();
 
-  const analysis =
-    recording.analyses && recording.analyses.length > 0
-      ? recording.analyses[0]
-      : null;
+  const { data: analysis } = await supabase
+    .from("analyses")
+    .select("*")
+    .eq("recording_id", recording.id)
+    .maybeSingle();
 
   const audioUrl = `/api/audio/${recording.id}`;
 

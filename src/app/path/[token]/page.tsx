@@ -83,11 +83,26 @@ export default async function SharedPathPage({
 
     // Only touch auth when the in-app context is actually requested —
     // anonymous share-link visitors skip the Supabase auth round-trip.
-    let userId: string | null = null;
+    // The public payload comes from get_path_by_token, which deliberately
+    // omits user_id, so ownership is established with a separate
+    // cookie-client read of journey_paths: the .eq("user_id", user.id)
+    // filter makes it owner-only today (while the blanket anon policy
+    // still exists) and the owner RLS policy keeps it working after the
+    // Phase-2 flip.
+    let isOwner = false;
     if (view === "app") {
       const authClient = await createServerClient();
       const { data } = await authClient.auth.getUser();
-      userId = data.user?.id ?? null;
+      const user = data.user;
+      if (user) {
+        const { data: owned } = await authClient
+          .from("journey_paths")
+          .select("id")
+          .eq("share_token", token)
+          .eq("user_id", user.id)
+          .maybeSingle();
+        isOwner = !!owned;
+      }
     }
 
     const payload = await payloadPromise;
@@ -100,8 +115,7 @@ export default async function SharedPathPage({
     //   • Shared landing (everything else — anon visitors, non-owner
     //     signed-in users, links opened directly from email/DM): no back
     //     arrow, tracks play via the shared /journey/[share] client.
-    isInAppContext =
-      view === "app" && !!userId && !!path && userId === path.user_id;
+    isInAppContext = view === "app" && isOwner && !!path;
   }
 
   if (!path) {

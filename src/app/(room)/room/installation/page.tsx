@@ -100,13 +100,16 @@ export default async function InstallationPage({ searchParams }: Props) {
         featuredRecordings = [...featured, ...rest].map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
       }
     } else {
-      const { data: pubRecs } = await supabase!
-        .from("recordings")
-        .select("id, title, artist, duration")
-        .eq("is_featured", true)
-        .order("created_at", { ascending: false });
+      // Anon kiosk: featured pool via the SECURITY DEFINER function
+      // (released-set gated — quarantined uploads excluded at the DB
+      // level too). Survives the Phase-2 anon RLS flip.
+      const { data: pubRecs } = await supabase!.rpc("get_featured_recordings");
       if (pubRecs) {
-        featuredRecordings = pubRecs as typeof featuredRecordings;
+        type FeaturedRow = { id: string; title: string; artist: string | null; duration: number | null; created_at: string | null };
+        featuredRecordings = (pubRecs as FeaturedRow[])
+          .slice()
+          .sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? ""))
+          .map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
       }
     }
 
@@ -139,15 +142,33 @@ export default async function InstallationPage({ searchParams }: Props) {
       }
     }
 
-    // ILIKE patterns — single OR query, scoped to the right rows for
-    // the auth state (own tracks for authed users, is_featured for anon).
-    if (!offline && ilikePatterns.length > 0) {
+    // Anon: resolve both pattern forms in JS against the featured pool
+    // fetched above via get_featured_recordings — the same rows the old
+    // is_featured-scoped SQL queries matched (the pool is ~dozens of
+    // rows). No direct anon table reads → survives the Phase-2 flip.
+    if (!offline && !authUser) {
+      for (const [jid, p] of pairedPatterns) {
+        if (p.startsWith("=")) {
+          const exactTitle = p.slice(1);
+          const hit = featuredRecordings.find((r) => r.title === exactTitle);
+          if (hit) pairedRecordingByJourneyId[jid] = hit;
+        } else {
+          const needle = p.replace(/^%|%$/g, "").toLowerCase();
+          const hit = featuredRecordings.find((r) => (r.title ?? "").toLowerCase().includes(needle));
+          if (hit) pairedRecordingByJourneyId[jid] = hit;
+        }
+      }
+    }
+
+    // ILIKE patterns (authed) — single OR query scoped to the user's
+    // own tracks.
+    if (!offline && authUser && ilikePatterns.length > 0) {
       const orFilter = ilikePatterns.map(([, p]) => `title.ilike.${p}`).join(",");
-      const base = supabase!.from("recordings").select("id, title, artist, duration");
-      const scoped = authUser
-        ? base.eq("user_id", authUser.id)
-        : base.eq("is_featured", true);
-      const { data: ilikeRows } = await scoped.or(orFilter);
+      const { data: ilikeRows } = await supabase!
+        .from("recordings")
+        .select("id, title, artist, duration")
+        .eq("user_id", authUser.id)
+        .or(orFilter);
       if (ilikeRows) {
         for (const [jid, p] of ilikePatterns) {
           const needle = p.replace(/^%|%$/g, "").toLowerCase();
@@ -159,15 +180,19 @@ export default async function InstallationPage({ searchParams }: Props) {
       }
     }
 
-    // Exact matches — one query each (simple .eq, no OR-encoding issues)
-    for (const [jid, p] of offline ? [] : exactPatterns) {
-      const exactTitle = p.slice(1);
-      const base = supabase!.from("recordings").select("id, title, artist, duration");
-      const scoped = authUser
-        ? base.eq("user_id", authUser.id)
-        : base.eq("is_featured", true);
-      const { data: row } = await scoped.eq("title", exactTitle).maybeSingle();
-      if (row) pairedRecordingByJourneyId[jid] = row as typeof featuredRecordings[number];
+    // Exact matches (authed) — one query each (simple .eq, no
+    // OR-encoding issues)
+    if (!offline && authUser) {
+      for (const [jid, p] of exactPatterns) {
+        const exactTitle = p.slice(1);
+        const { data: row } = await supabase!
+          .from("recordings")
+          .select("id, title, artist, duration")
+          .eq("user_id", authUser.id)
+          .eq("title", exactTitle)
+          .maybeSingle();
+        if (row) pairedRecordingByJourneyId[jid] = row as typeof featuredRecordings[number];
+      }
     }
 
     const toTrack = (r: { id: string; title: string; artist: string | null; duration: number | null }): Track => ({
@@ -246,12 +271,12 @@ export default async function InstallationPage({ searchParams }: Props) {
       if (offline) {
         pRow = getPathByShareToken(shareToken);
       } else {
-        const { data } = await supabase!
-          .from("journey_paths")
-          .select("journey_ids, culmination_journey_id")
-          .eq("share_token", shareToken)
-          .maybeSingle();
-        pRow = data;
+        // Token-scoped SECURITY DEFINER reads for the path + its member
+        // journeys — used for BOTH auth states: the functions are granted
+        // to anon and authenticated, and after the Phase-2 flip a direct
+        // read would only work for the path's owner.
+        const { data } = await supabase!.rpc("get_path_by_token", { p_token: shareToken });
+        pRow = ((data ?? []) as JourneyRow[])[0] ?? null;
       }
       if (!pRow || !Array.isArray(pRow.journey_ids)) return [];
       const orderedIds = [...(pRow.journey_ids as string[])];
@@ -261,7 +286,7 @@ export default async function InstallationPage({ searchParams }: Props) {
       if (offline) {
         rows = getJourneysByIds(orderedIds);
       } else {
-        const { data } = await supabase!.from("journeys").select("*").in("id", orderedIds);
+        const { data } = await supabase!.rpc("get_path_journeys", { p_token: shareToken });
         rows = (data ?? []) as JourneyRow[];
       }
       const rowById = new Map(rows.map((r) => [r.id as string, r]));
@@ -292,13 +317,24 @@ export default async function InstallationPage({ searchParams }: Props) {
           const rec = getRecording(rid);
           if (rec) recMetaById.set(rid, { title: rec.title ?? null, artist: rec.artist ?? null, duration: rec.duration ?? null });
         }
-      } else if (rids.length > 0) {
+      } else if (authUser && rids.length > 0) {
         const { data: recRows } = await supabase!
           .from("recordings")
           .select("id, title, artist, duration")
           .in("id", rids);
         for (const r of (recRows ?? []) as Array<{ id: string; title: string | null; artist: string | null; duration: number | null }>) {
           recMetaById.set(r.id, { title: r.title, artist: r.artist, duration: r.duration });
+        }
+      } else if (rids.length > 0) {
+        // Anon: released-set-gated meta, one call per recording (the
+        // sequence is ~a dozen tracks). Missing rows keep degrading to
+        // the journey name + null duration exactly as before.
+        const metaResults = await Promise.all(
+          rids.map((rid) => supabase!.rpc("get_released_recording_meta", { p_recording_id: rid })),
+        );
+        for (const res of metaResults) {
+          const r = ((res.data ?? []) as Array<{ id: string; title: string | null; artist: string | null; duration: number | null }>)[0];
+          if (r) recMetaById.set(r.id, { title: r.title, artist: r.artist, duration: r.duration });
         }
       }
 
@@ -467,11 +503,13 @@ export default async function InstallationPage({ searchParams }: Props) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { data: featured } = await supabase
-      .from("recordings")
-      .select("id, title, duration")
-      .eq("is_featured", true)
-      .order("created_at", { ascending: true });
+    // Featured pool via the SECURITY DEFINER function (granted to anon
+    // AND authenticated) — the direct is_featured read only worked for
+    // anon through the blanket policy that the Phase-2 flip removes.
+    const { data: featuredRows } = await supabase.rpc("get_featured_recordings");
+    const featured = ((featuredRows ?? []) as Array<{ id: string; title: string; duration: number | null; created_at: string | null }>)
+      .slice()
+      .sort((a, b) => (a.created_at ?? "").localeCompare(b.created_at ?? ""));
 
     if (featured && featured.length > 0) {
       tracks = featured.map((r) => ({

@@ -31,13 +31,11 @@ export async function generateMetadata({
   if (isOfflinePack()) {
     metaRow = getJourneyByShareToken(token) as typeof metaRow;
   } else {
+    // Token-scoped SECURITY DEFINER read — survives the Phase-2 anon RLS
+    // flip (see supabase/migrations/MIGRATION-NOTES-2026-08-25.md).
     const supabase = createAnonClient();
-    const { data } = await supabase
-      .from("journeys")
-      .select("name, subtitle, theme")
-      .eq("share_token", token)
-      .single();
-    metaRow = data;
+    const { data } = await supabase.rpc("get_journey_by_token", { p_token: token });
+    metaRow = (data as typeof metaRow[] | null)?.[0] ?? null;
   }
 
   if (!metaRow) return { title: "Journey Not Found" };
@@ -90,12 +88,12 @@ export default async function SharedJourneyPage({
   if (offline) {
     journeyRow = getJourneyByShareToken(token);
   } else {
-    const { data } = await supabase!
-      .from("journeys")
-      .select("*")
-      .eq("share_token", token)
-      .single();
-    journeyRow = data;
+    // get_journey_by_token returns every column this page reads
+    // (recording_id, theme, phases, playback_seed, creator_name, …) —
+    // only user_id is withheld, which this shared view never needs.
+    const { data } = await supabase!.rpc("get_journey_by_token", { p_token: token });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    journeyRow = ((data ?? []) as any[])[0] ?? null;
   }
 
   if (!journeyRow) notFound();
@@ -134,13 +132,22 @@ export default async function SharedJourneyPage({
       analysisEvents = (analysis?.events ?? []) as { time: number; type: string; intensity: number }[];
       cueMarkers = getCueMarkers(journeyRow.recording_id);
     } else {
+      // Recording meta via get_released_recording_meta (released-set gated)
+      // rather than get_recording_for_journey: the culmination case above
+      // picks its recording from theme.randomTrackPool, which the
+      // journey-token-joined function can't see (its recording_id is null
+      // in the DB). The id-keyed function covers both cases — every track
+      // reachable here is in the released set. Analyses + markers stay on
+      // direct anon reads; their public policies remain in place at flip
+      // time (see MIGRATION-NOTES-2026-08-25.md, analyses/markers follow-up).
       const [recRes, analysisRes, markersRes] = await Promise.all([
-        supabase!.from("recordings").select("artist, duration").eq("id", journeyRow.recording_id).single(),
+        supabase!.rpc("get_released_recording_meta", { p_recording_id: journeyRow.recording_id }),
         supabase!.from("analyses").select("events").eq("recording_id", journeyRow.recording_id).single(),
         supabase!.from("markers").select("time, label").eq("recording_id", journeyRow.recording_id).eq("type", "cue").order("time"),
       ]);
-      musicArtist = recRes.data?.artist ?? null;
-      recordingDuration = recRes.data?.duration ?? 0;
+      const recMeta = ((recRes.data ?? []) as { artist: string | null; duration: number | null }[])[0];
+      musicArtist = recMeta?.artist ?? null;
+      recordingDuration = recMeta?.duration ?? 0;
       analysisEvents = (analysisRes.data?.events ?? []) as { time: number; type: string; intensity: number }[];
       cueMarkers = (markersRes.data ?? []) as { time: number; label: string }[];
     }
@@ -205,12 +212,9 @@ export default async function SharedJourneyPage({
     if (offline) {
       pRow = getPathByShareToken(pathToken);
     } else {
-      const { data } = await supabase!
-        .from("journey_paths")
-        .select("name, journey_ids, culmination_journey_id, accent_color, glow_color")
-        .eq("share_token", pathToken)
-        .single();
-      pRow = data;
+      const { data } = await supabase!.rpc("get_path_by_token", { p_token: pathToken });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      pRow = ((data ?? []) as any[])[0] ?? null;
     }
     if (pRow && Array.isArray(pRow.journey_ids)) {
       const allIds = [...(pRow.journey_ids as string[])];
@@ -219,10 +223,10 @@ export default async function SharedJourneyPage({
       if (offline) {
         stepJourneys = getJourneysByIds(allIds);
       } else {
-        const { data } = await supabase!
-          .from("journeys")
-          .select("id, name, share_token")
-          .in("id", allIds);
+        // Members + culmination keyed by the path token; member
+        // share_tokens are returned by design (they build the
+        // /journey/<token> step links — capability delegation).
+        const { data } = await supabase!.rpc("get_path_journeys", { p_token: pathToken });
         stepJourneys = data;
       }
       const byId = new Map<string, { id: string; name: string; share_token: string | null }>();
