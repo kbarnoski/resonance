@@ -3,10 +3,11 @@
   "version": "0.1.1",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "scripts": {
     "dev": "next dev --turbopack",
+    "prebuild": "node scripts/check-build-node.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
