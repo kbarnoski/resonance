@@ -15,8 +15,12 @@ export interface PathProgress {
 }
 
 interface PathProgressState extends PathProgress {
-  /** Record a journey as completed (idempotent) */
-  completeJourney: (journeyId: string) => void;
+  /** Record a journey as completed (idempotent).
+   *  Built-in culminations are detected from JOURNEY_PATHS; DB-backed
+   *  paths (Welcome Home etc.) use UUID culminations this store can't
+   *  recognize on its own — callers pass `isCulmination` so those land
+   *  in completedCulminationIds instead of the regular journey bucket. */
+  completeJourney: (journeyId: string, options?: { isCulmination?: boolean }) => void;
   /** Check if a journey has been completed */
   isCompleted: (journeyId: string) => boolean;
   /** Get progress for a specific path */
@@ -38,8 +42,34 @@ export const usePathProgressStore = create<PathProgressState>()(
     (set, get) => ({
       ...initialState,
 
-      completeJourney: (journeyId) => {
+      completeJourney: (journeyId, options) => {
         const state = get();
+        const isGrandCulmination = journeyId === "the-spirit";
+
+        // Culmination = caller hint (DB/UUID culminations) OR built-in
+        // path detection. Backward compatible: hintless calls behave
+        // exactly as before.
+        const isCulmination =
+          !isGrandCulmination &&
+          (!!options?.isCulmination ||
+            JOURNEY_PATHS.some((p) => p.culminationJourneyId === journeyId));
+
+        // Migrate legacy mis-bucketed entries: DB/UUID culminations that
+        // were recorded into completedJourneyIds before the hint existed.
+        if (isCulmination && state.completedJourneyIds.includes(journeyId)) {
+          if (!state.completedCulminationIds.includes(journeyId)) {
+            const migrated = [...state.completedCulminationIds, journeyId];
+            set({
+              completedJourneyIds: state.completedJourneyIds.filter(
+                (id) => id !== journeyId
+              ),
+              completedCulminationIds: migrated,
+              grandCulminationUnlocked: isGrandCulminationUnlocked(migrated),
+            });
+          }
+          return;
+        }
+
         // Already recorded — idempotent
         if (
           state.completedJourneyIds.includes(journeyId) ||
@@ -48,12 +78,6 @@ export const usePathProgressStore = create<PathProgressState>()(
           return;
 
         const now = new Date().toISOString();
-
-        // Check if this is a culmination journey
-        const isCulmination = JOURNEY_PATHS.some(
-          (p) => p.culminationJourneyId === journeyId
-        );
-        const isGrandCulmination = journeyId === "the-spirit";
 
         if (isGrandCulmination) {
           set({

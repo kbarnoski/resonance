@@ -69,6 +69,12 @@ class JourneyEngine {
   // the visualizer over a static frame instead of competing with
   // dramatic ongoing motion.
   private frozen = false;
+  // Playback-paused gate — orthogonal to `frozen` (which the installation
+  // credits own). While the track is paused, the wall-clock shader timers
+  // must not keep rotating: a long pause would silently exhaust the
+  // journey-wide shader variety and fire an instant switch on resume.
+  private playbackPaused = false;
+  private pausedAtMs = 0;
   private currentPhaseId: JourneyPhaseId | null = null;
   private phaseChangeCallbacks: Set<PhaseChangeCallback> = new Set();
   private frameCallbacks: Set<(frame: JourneyFrame) => void> = new Set();
@@ -161,6 +167,9 @@ class JourneyEngine {
   private eventImpulse = 0;
   private eventType: string | null = null;
   private eventImpulseStartMs = 0;
+  /** Intensity the current event fired at — decay is computed from this,
+   *  not from the already-decayed value (which would compound per frame). */
+  private eventInitialIntensity = 0;
   private firedEvents = new Set<number>();
   private lastProgress = 0;
 
@@ -291,9 +300,12 @@ class JourneyEngine {
     this.shaderDurationMs = 0;
     this.dualShaderStartMs = 0;
     this.dualShaderDurationMs = 0;
+    this.playbackPaused = false;
+    this.pausedAtMs = 0;
     this.random = Math.random;
     this.eventMarkers = [];
     this.eventImpulse = 0;
+    this.eventInitialIntensity = 0;
     this.eventType = null;
     this.firedEvents.clear();
     this.lastProgress = 0;
@@ -363,22 +375,27 @@ class JourneyEngine {
       if (!this.firedEvents.has(evt.progress) && clamped >= evt.progress && clamped <= evt.progress + 0.015) {
         this.firedEvents.add(evt.progress);
         this.eventImpulse = evt.intensity;
+        this.eventInitialIntensity = evt.intensity;
         this.eventType = evt.type;
         this.eventImpulseStartMs = now;
         break;
       }
     }
 
-    // Decay impulse — hold at full intensity, then linear fade
+    // Decay impulse — hold at full intensity, then linear fade over the
+    // configured decaySeconds. Computed from the fired intensity each frame
+    // (NOT the already-decayed value, which compounded per frame and made
+    // every tail collapse far faster than configured).
     if (this.eventImpulse > 0) {
       const holdSeconds = 0.5;
       const decaySeconds = JourneyEngine.EVENT_DECAY[this.eventType ?? "bass_hit"] ?? 1.5;
       const elapsed = (now - this.eventImpulseStartMs) / 1000;
       if (elapsed <= holdSeconds) {
         // Hold at initial intensity — no decay yet
+        this.eventImpulse = this.eventInitialIntensity;
       } else {
         const decayElapsed = elapsed - holdSeconds;
-        this.eventImpulse = Math.max(0, this.eventImpulse * (1.0 - (decayElapsed / decaySeconds)));
+        this.eventImpulse = Math.max(0, this.eventInitialIntensity * (1.0 - decayElapsed / decaySeconds));
       }
       if (this.eventImpulse < 0.01) {
         this.eventImpulse = 0;
@@ -474,7 +491,7 @@ class JourneyEngine {
 
     // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
-    if (shaderLen > 1 && !this.frozen && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       let picked = false;
@@ -517,7 +534,7 @@ class JourneyEngine {
         this.dualShaderMode = null;
       }
     } else if (this.dualShaderInitialized && shaderLen >= 2) {
-      if (!this.frozen && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
+      if (!this.frozen && !this.playbackPaused && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
         this.seenShaders.add(this.dualShaderMode);
@@ -635,7 +652,7 @@ class JourneyEngine {
       poetryIntervalSeconds: iv((p) => p.poetryIntervalSeconds),
       palette,
       ambientLayers,
-      filmGrain: iv((p) => p.filmGrain),
+      filmGrain: 0, // film grain banned globally (design law) — never interpolated
       particleDensity: iv((p) => p.particleDensity),
       halation: iv((p) => p.halation),
       dualShaderMode: this.dualShaderMode ?? undefined,
@@ -851,6 +868,24 @@ class JourneyEngine {
    *  underneath the 3s black fade-in. */
   setFrozen(f: boolean): void {
     this.frozen = f;
+  }
+
+  /** Gate shader switching on playback state. On resume, the shader timers
+   *  are shifted by the paused duration so the pause neither burns through
+   *  journey-wide shader variety nor triggers an instant switch. Separate
+   *  from setFrozen so the installation credits flow is untouched. */
+  setPlaybackPaused(paused: boolean): void {
+    if (paused === this.playbackPaused) return;
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    this.playbackPaused = paused;
+    if (paused) {
+      this.pausedAtMs = now;
+    } else if (this.pausedAtMs > 0) {
+      const pausedFor = now - this.pausedAtMs;
+      this.shaderStartMs += pausedFor;
+      this.dualShaderStartMs += pausedFor;
+      this.pausedAtMs = 0;
+    }
   }
 
   private pickDualShader(phase: JourneyPhase): string {

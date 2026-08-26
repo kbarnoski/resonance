@@ -156,26 +156,62 @@ export function JourneyCompositor({
   // Pre-activation ramp — builds ~1.5s before bass hit (0→1)
   const approach = frame?.eventApproach ?? 0;
 
-  // Bass hit counter + start time — alternates angel, tracks flash timing
+  // Bass hit counter + start time — alternates angel, tracks flash timing.
+  // Rising-edge detection lives in an effect (NOT the render body) so
+  // StrictMode's double render can't double-count and flip the two-beat
+  // dark→white angel variant sequence.
   const bassHitCountRef = useRef(0);
   const bassHitStartRef = useRef(0);
   const inBassHitRef = useRef(false);
-  if (enableBassFlash && impulse > 0.5 && evtType === "bass_hit" && !inBassHitRef.current) {
-    bassHitCountRef.current += 1;
-    bassHitStartRef.current = performance.now();
-    inBassHitRef.current = true;
-    // Drive the Ghost angel-theme state (white ↔ black) off the same hit.
-    // ai-image-layer reads this via getGhostAngelTheme() when substituting
-    // the <<GHOST_ANGEL>> marker, so the main journey imagery swaps from
-    // white → possessed black after flash #1, then back to white after #2.
-    incrementGhostFlashCount();
-  }
-  if (impulse <= 0.1 || evtType !== "bass_hit") {
-    inBassHitRef.current = false;
-  }
-  // White flash opacity — bright for ~0.2s, gentle long tail out to ~1.0s (softened)
-  const flashElapsed = (performance.now() - bassHitStartRef.current) / 1000;
-  const flashOpacity = Math.max(0, 1 - flashElapsed / 1.0) ** 3 * 0.95;
+  const bassHitRising = enableBassFlash && impulse > 0.5 && evtType === "bass_hit";
+  const bassHitReset = impulse <= 0.1 || evtType !== "bass_hit";
+  useEffect(() => {
+    if (bassHitRising && !inBassHitRef.current) {
+      bassHitCountRef.current += 1;
+      bassHitStartRef.current = performance.now();
+      inBassHitRef.current = true;
+      // Drive the Ghost angel-theme state (white ↔ black) off the same hit.
+      // ai-image-layer reads this via getGhostAngelTheme() when substituting
+      // the <<GHOST_ANGEL>> marker, so the main journey imagery swaps from
+      // white → possessed black after flash #1, then back to white after #2.
+      incrementGhostFlashCount();
+    }
+    if (bassHitReset) {
+      inBassHitRef.current = false;
+    }
+  }, [bassHitRising, bassHitReset]);
+
+  // White flash + shockwave ring — driven by a dedicated rAF loop so the
+  // envelope is frame-accurate (not sampled at whatever cadence the
+  // compositor happens to re-render). Onset stays percussive (approved
+  // timing): a ~45ms (2-3 frame) eased rise only removes the literal
+  // single-frame 0→0.95 snap, then the familiar ~1s cubic decay.
+  const flashActive = enableBassFlash && ((impulse > 0 && evtType === "bass_hit") || approach > 0.92);
+  const flashOverlayRef = useRef<HTMLDivElement>(null);
+  const flashRingRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!flashActive) return;
+    let raf = 0;
+    const ATTACK_S = 0.045;
+    const tick = () => {
+      const elapsed = (performance.now() - bassHitStartRef.current) / 1000;
+      const attackT = Math.min(1, Math.max(0, elapsed / ATTACK_S));
+      const attackEnv = 1 - (1 - attackT) * (1 - attackT); // eased rise
+      const decayEnv = Math.max(0, 1 - Math.max(0, elapsed - ATTACK_S) / 1.0) ** 3;
+      const opacity = attackEnv * decayEnv * 0.95;
+      if (flashOverlayRef.current) {
+        flashOverlayRef.current.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+      }
+      if (flashRingRef.current) {
+        const ringT = Math.min(1, elapsed / 1.4);
+        flashRingRef.current.style.background = `radial-gradient(ellipse at center, transparent ${ringT * 30}%, rgba(200,220,255,${(1 - ringT) * (1 - ringT) * 0.35}) ${ringT * 50 + 20}%, transparent ${ringT * 70 + 30}%)`;
+        flashRingRef.current.style.transform = `scale(${1 + ringT * 0.5})`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [flashActive]);
 
   const eventReaction = useMemo(() => {
     if (impulse === 0 || !evtType) {
@@ -335,16 +371,17 @@ export function JourneyCompositor({
       )}
 
       {/* Bass hit full-screen flash — Ghost only, gated by enableBassFlash */}
-      {enableBassFlash && ((impulse > 0 && evtType === "bass_hit") || approach > 0.92) && (
+      {flashActive && (
         <>
-          {/* Full-screen white flash — time-based, bright for ~0.15s, gone by ~0.5s */}
+          {/* Full-screen white flash — rAF-driven envelope (eased attack + ~1s decay) */}
           <div
+            ref={flashOverlayRef}
             style={{
               position: "absolute",
               inset: 0,
               zIndex: 4,
               pointerEvents: "none",
-              backgroundColor: `rgba(255, 255, 255, ${flashOpacity})`,
+              backgroundColor: "rgba(255, 255, 255, 0)",
             }}
           />
           {/* Angel flash — two-beat micro-story:
@@ -385,23 +422,17 @@ export function JourneyCompositor({
               </div>
             );
           })()}
-          {/* Subsonic shockwave ring expanding outward beneath the flash */}
-          {(() => {
-            const ringT = Math.min(1, flashElapsed / 1.4);
-            return (
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  zIndex: 3,
-                  pointerEvents: "none",
-                  background: `radial-gradient(ellipse at center, transparent ${ringT * 30}%, rgba(200,220,255,${(1 - ringT) * (1 - ringT) * 0.35}) ${ringT * 50 + 20}%, transparent ${ringT * 70 + 30}%)`,
-                  transform: `scale(${1 + ringT * 0.5})`,
-                  mixBlendMode: "screen",
-                }}
-              />
-            );
-          })()}
+          {/* Subsonic shockwave ring expanding outward beneath the flash — rAF-driven */}
+          <div
+            ref={flashRingRef}
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 3,
+              pointerEvents: "none",
+              mixBlendMode: "screen",
+            }}
+          />
         </>
       )}
 
@@ -414,7 +445,6 @@ export function JourneyCompositor({
           vignette={(frame.vignette * (0.3 + 0.7 * lightScale)) * adaptiveScale * Math.max(0, 1 - eventReaction.vignetteOpen)}
           bloomIntensity={Math.min(1.5, (frame.bloomIntensity * (0.2 + 0.8 * lightScale)) * adaptiveScale * adaptiveBloom * tier.bloomScale + eventReaction.bloom * 0.3 + approach * approach * 0.4)}
           audioAmplitude={audioAmplitude}
-          filmGrain={0}
           particleDensity={(frame.particleDensity * (0.3 + 0.7 * lightScale)) * adaptiveScale * tier.particleScale}
           halation={Math.min(0.8, (frame.halation * lightScale) * adaptiveScale + eventReaction.halation)}
           palette={frame.palette}

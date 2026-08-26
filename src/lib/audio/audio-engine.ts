@@ -74,6 +74,54 @@ export function getAnalyserNode(): AnalyserNode | null {
   return analyserNode;
 }
 
+// ─── Gain envelopes — the "never abrupt" law, applied to audio ───
+// Every pause / stop / src-swap should ride a short linear ramp instead of
+// cutting. Ramps are deliberately short (~200ms) so rapid transitions
+// (installation loop journey handoffs) never stack or lag, and every ramp
+// cancels previously scheduled values first so overlapping calls can't fight.
+
+/** Canonical ramp length for stop/pause/src-swap fades */
+export const GAIN_RAMP_MS = 200;
+/** Shorter ramp for volume / mute changes — removes the click without lag */
+export const VOLUME_RAMP_MS = 120;
+
+/** The gain the engine should sit at while audibly playing (user volume).
+ *  tryPlay restores to this so no play path can start stuck at 0 after a fade. */
+let targetGain = 1;
+
+/**
+ * Ramp the master gain to `target` over `ms` milliseconds.
+ * Cancels any in-flight ramp first (cancelScheduledValues + re-pin current
+ * value) so back-to-back calls always start from the actual current gain.
+ * Resolves after the ramp duration has elapsed.
+ */
+export function rampGainTo(target: number, ms: number = GAIN_RAMP_MS): Promise<void> {
+  if (!audioContext || !gainNode) return Promise.resolve();
+  try {
+    const now = audioContext.currentTime;
+    const gain = gainNode.gain;
+    gain.cancelScheduledValues(now);
+    gain.setValueAtTime(gain.value, now);
+    gain.linearRampToValueAtTime(Math.max(0, target), now + ms / 1000);
+  } catch {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Set the user-intended volume with a smooth ramp (no gain step click). */
+export function setEngineVolume(volume: number): void {
+  targetGain = Math.max(0, Math.min(1, volume));
+  void rampGainTo(targetGain, VOLUME_RAMP_MS);
+}
+
+/** Fade the master gain to silence, then run the action (pause / src swap /
+ *  stop). Gain stays at 0 afterward — the next tryPlay ramps it back up. */
+export async function fadeOutThen(action: () => void, ms: number = GAIN_RAMP_MS): Promise<void> {
+  await rampGainTo(0, ms);
+  action();
+}
+
 export function getDataArray(): Uint8Array | null {
   if (!analyserNode) return null;
   return new Uint8Array(analyserNode.frequencyBinCount);
@@ -102,6 +150,10 @@ export function setLastPlayError(err: string | null): void { lastPlayError = err
  *  audio-provider, the watchdog, and anywhere else that calls play()
  *  on the engine element should funnel through here. */
 export function tryPlay(el: HTMLAudioElement): Promise<void> {
+  // Restore the master gain toward the user volume with a short ramp.
+  // Every stop/pause fade parks the gain at 0 — without this, any play
+  // path (provider, watchdog, installation loop) could start silent.
+  void rampGainTo(targetGain, GAIN_RAMP_MS);
   const p = el.play();
   if (!p || typeof p.then !== "function") return Promise.resolve();
   return p.then(

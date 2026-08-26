@@ -33,6 +33,7 @@ export function useJourney(): UseJourneyReturn {
   const currentTime = useAudioStore((s) => s.currentTime);
   const duration = useAudioStore((s) => s.duration);
   const activeJourney = useAudioStore((s) => s.activeJourney);
+  const isPlaying = useAudioStore((s) => s.isPlaying);
 
   const [frame, setFrame] = useState<JourneyFrame | null>(null);
   const engineRef = useRef(getJourneyEngine());
@@ -51,6 +52,14 @@ export function useJourney(): UseJourneyReturn {
       journeyStartRef.current = 0;
     }
   }, [activeJourney]);
+
+  // Freeze shader switching while playback is paused — the engine's
+  // wall-clock timers otherwise keep rotating (silently exhausting the
+  // journey-wide shader variety) underneath a paused frame. Orthogonal
+  // to the installation credits' setFrozen flag.
+  useEffect(() => {
+    engineRef.current.setPlaybackPaused(activeJourney !== null && !isPlaying);
+  }, [activeJourney, isPlaying]);
 
   // Compute progress from audio, with wall-clock fallback
   const audioProgress = duration > 0 ? currentTime / duration : 0;

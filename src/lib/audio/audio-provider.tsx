@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { useAudioStore } from "./audio-store";
-import { getAudioEngine, ensureResumed, tryPlay, startAmbient, stopAmbient, initNativeAnalyser } from "./audio-engine";
+import { getAudioEngine, ensureResumed, tryPlay, startAmbient, stopAmbient, initNativeAnalyser, rampGainTo, setEngineVolume } from "./audio-engine";
 import { resolveAudioUrl } from "./resolve-audio-url";
 import {
   isDesktopApp,
@@ -177,16 +177,18 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         stopAmbient();
       } else {
         // Normal async load flow (library browser, queue auto-advance, etc.)
-        // Pause IMMEDIATELY before awaiting resolveAudioUrl. Otherwise
-        // the old audio buffer keeps playing during the URL resolution
-        // window — produces a "previous song bleeds for a moment, then
-        // new song loads" glitch when switching journeys quickly.
-        try { audioElement.pause(); } catch { /* element may not be ready */ }
+        // Never-abrupt law: ramp the master gain to 0 (~200ms) BEFORE the
+        // pause + src swap instead of hard-cutting the old track. The ramp
+        // starts immediately, so the old audio fades (rather than bleeds)
+        // during the URL resolution window; the actual pause/src-swap waits
+        // for both the fade and the resolved URL. tryPlay ramps the gain
+        // back up once the new track starts.
+        const fadeOut = rampGainTo(0);
         stopAmbient();
         loadingNewSrc.current = true;
         lastSrcRef.current = newSrc;
 
-        resolveAudioUrl(newSrc, currentTrack.id).then((resolvedUrl) => {
+        Promise.all([resolveAudioUrl(newSrc, currentTrack.id), fadeOut]).then(([resolvedUrl]) => {
           // A newer track load may have started while this URL was resolving
           // (fast path switching, e.g. close one path → open another). If so,
           // this resolution is stale: applying it would set the wrong/closed
@@ -194,6 +196,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           // track's canplay handler bails and never plays — the intermittent
           // "switch paths, no sound, works on retry" bug. Drop stale loads.
           if (lastSrcRef.current !== newSrc) return;
+          try { audioElement.pause(); } catch { /* element may not be ready */ }
           audioElement.src = resolvedUrl;
           audioElement.load();
         });
@@ -340,7 +343,13 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         tryPlay(audioElement);
       });
     } else {
-      audioElement.pause();
+      // Never-abrupt law: ~200ms gain ramp before the element pauses.
+      void rampGainTo(0).then(() => {
+        // A resume may have landed during the ramp — don't pause under it
+        // (tryPlay has already ramped the gain back up in that case).
+        if (useAudioStore.getState().isPlaying) return;
+        try { audioElement.pause(); } catch { /* element may be gone */ }
+      });
     }
   }, [isPlaying, currentTrack]);
 
@@ -351,8 +360,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     if (!engineReady.current) return;
-    const { gainNode } = getAudioEngine();
-    gainNode.gain.setValueAtTime(volume, 0);
+    getAudioEngine(); // ensure graph exists
+    // Smooth ramp (~120ms) — a bare setValueAtTime step clicks audibly,
+    // worst on mute (0.8 → 0 snap). setEngineVolume also records the
+    // target so tryPlay restores to the right level after fades.
+    setEngineVolume(volume);
   }, [volume]);
 
   // ─── RAF loop — sync currentTime from engine → store at ~15Hz ───
@@ -360,6 +372,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (nativeMode.current) return;
     if (!engineReady.current) return;
+    // No rAF churn while paused — the element isn't advancing, so there's
+    // nothing to sync. The effect re-runs when isPlaying flips true.
+    if (!isPlaying) return;
 
     let lastUpdate = 0;
     const tick = () => {

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { VisualizerCore, type VisualizerMode } from "./visualizer";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 import { AnalysisHUD } from "./analysis-hud";
 import { VisualizerLibrary } from "./visualizer-library";
 import { TonnetzOverlay } from "./tonnetz-overlay";
@@ -16,7 +17,7 @@ import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { AdminPanel } from "./admin-panel";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { useShallow } from "zustand/react/shallow";
-import { MODES_AI, AI_MODE_PROMPTS } from "@/lib/shaders";
+import { MODES_AI, AI_MODE_PROMPTS, SHADERS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, getNativeAnalyser, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 import { useInstallationMode } from "@/lib/audio/use-installation-mode";
 import { useJourney } from "@/lib/journeys/use-journey";
@@ -47,6 +48,19 @@ import {
   SERIF_TITLE,
   OVERLAY_BG,
 } from "./visualizer-styles";
+
+// Lightweight 2D shaders for the instant journey→viz switch. Every id here
+// MUST exist in SHADERS — "nebula" lingered after its registry removal
+// (dead pick), and "cosmos" was a realm name, not a shader id.
+const LIGHT_SHADERS = ["fog", "drift", "dusk", "tide", "ember"];
+
+if (process.env.NODE_ENV !== "production") {
+  for (const id of LIGHT_SHADERS) {
+    if (!SHADERS[id as keyof typeof SHADERS]) {
+      console.error(`[visualizer-client] LIGHT_SHADERS id "${id}" is not registered in SHADERS`);
+    }
+  }
+}
 
 // ─── Component ───
 
@@ -106,14 +120,14 @@ function GestureStartScreen({
     pathName && pathStepIdx >= 0 && pathStepTotal > 0
       ? `${pathName} · ${pathStepIdx + 1} of ${pathStepTotal}`
       : "Journey";
-  const eyebrowColor = pathName ? pathAccent : "rgba(255, 255, 255, 0.3)";
+  const eyebrowColor = pathName ? pathAccent : "rgba(255, 255, 255, 0.45)";
 
   return (
     <div
       role="button"
       tabIndex={0}
       aria-label="Tap to begin journey"
-      className="h-dvh w-screen overflow-hidden bg-black relative flex items-center justify-center"
+      className="h-dvh w-screen overflow-hidden bg-void relative flex items-center justify-center"
       style={{ cursor: "pointer" }}
       onClick={onBegin}
       onKeyDown={(e) => {
@@ -136,96 +150,45 @@ function GestureStartScreen({
         }}
       >
         <div>
-          <div
-            style={{
-              fontSize: "0.6rem",
-              fontFamily: "var(--font-geist-mono)",
-              color: eyebrowColor,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              marginBottom: 14,
-            }}
-          >
+          <Eyebrow className="mb-3.5 text-[0.68rem] tracking-[0.14em]" style={{ color: eyebrowColor }}>
             {eyebrow}
-          </div>
-          <div
-            style={{
-              fontSize: "clamp(2.6rem, 7vw, 4rem)",
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 300,
-              letterSpacing: "0.04em",
-              color: "#fff",
-              lineHeight: 1.2,
-            }}
+          </Eyebrow>
+          <DisplayTitle
+            as="div"
+            className="not-italic text-white text-[clamp(2.6rem,7vw,4rem)] tracking-[0.04em] leading-[1.2]"
           >
             {journeyName}
-          </div>
+          </DisplayTitle>
           {journeySubtitle && (
-            <div
-              style={{
-                fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 300,
-                fontStyle: "italic",
-                color: "rgba(255, 255, 255, 0.45)",
-                marginTop: 8,
-              }}
+            <DisplayTitle
+              as="div"
+              className="mt-2 text-[clamp(0.9rem,2vw,1.1rem)] tracking-normal leading-[normal] text-white/45"
             >
               {journeySubtitle}
-            </div>
+            </DisplayTitle>
           )}
           {creatorName && (
-            <div
-              style={{
-                fontSize: "0.9rem",
-                fontFamily: "var(--font-geist-mono)",
-                color: "rgba(255, 255, 255, 0.85)",
-                letterSpacing: "0.04em",
-                marginTop: 12,
-              }}
-            >
+            <MonoLabel className="mt-3 text-[0.9rem] tracking-[0.04em] text-white/85">
               by {creatorName}
-            </div>
+            </MonoLabel>
           )}
           {musicArtist && (
-            <div
-              style={{
-                fontSize: "0.9rem",
-                fontFamily: "var(--font-geist-mono)",
-                color: "rgba(255, 255, 255, 0.85)",
-                letterSpacing: "0.04em",
-                marginTop: 4,
-              }}
-            >
+            <MonoLabel className="mt-1 text-[0.9rem] tracking-[0.04em] text-white/85">
               Music by {musicArtist}
-            </div>
+            </MonoLabel>
           )}
           {photographyCredit && (
-            <div
-              style={{
-                fontSize: "0.9rem",
-                fontFamily: "var(--font-geist-mono)",
-                color: "rgba(255, 255, 255, 0.85)",
-                letterSpacing: "0.04em",
-                marginTop: 4,
-              }}
-            >
+            <MonoLabel className="mt-1 text-[0.9rem] tracking-[0.04em] text-white/85">
               Photography by {photographyCredit}
-            </div>
+            </MonoLabel>
           )}
           {dedication && (
-            <div
-              style={{
-                fontSize: "1rem",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                color: "rgba(255, 255, 255, 0.75)",
-                letterSpacing: "0.04em",
-                marginTop: 10,
-              }}
+            <DisplayTitle
+              as="div"
+              className="mt-2.5 font-normal text-base tracking-[0.04em] leading-[normal] text-white/75"
             >
               {dedication}
-            </div>
+            </DisplayTitle>
           )}
         </div>
 
@@ -291,17 +254,9 @@ export function VisualizerClient({
 }: VisualizerClientProps) {
   const router = useRouter();
 
-  // Client-side admin fallback — survives HMR/session disruption.
-  // Uses the server-provided ADMIN_EMAIL (not NEXT_PUBLIC_) to avoid
-  // leaking the admin identity to the client bundle.
-  const [clientAdmin, setClientAdmin] = useState(false);
-  useEffect(() => {
-    if (isAdminProp) return;
-    // No client-side email check — rely on server-provided isAdmin prop.
-    // This is intentionally a no-op; the state exists for the isAdmin
-    // derivation below but the actual check runs server-side only.
-  }, [isAdminProp]);
-  const isAdmin = isAdminProp || clientAdmin;
+  // Admin status comes exclusively from the server-provided prop —
+  // ADMIN_EMAIL is server-only and never checked client-side.
+  const isAdmin = isAdminProp;
 
   // Global audio store
   // Batch data selectors with useShallow so the component only re-renders
@@ -368,6 +323,12 @@ export function VisualizerClient({
   // flag gates the start so visuals + audio launch together after a tap.
   const [needsGesture, setNeedsGesture] = useState(false);
   const completedJourneyRef = useRef<string | null>(null);
+  // Monotonic journey-flow session token. Every start/continue/replay/exit
+  // bumps it; async flows capture the value up front and abort after each
+  // await/timeout if a newer flow has started since. This is what keeps two
+  // rapid path-dot clicks from interleaving (journey A's visuals over
+  // journey B's audio) — the timeouts alone can't guarantee ordering.
+  const journeySessionRef = useRef(0);
 
   // Journey intro screen — shows name + subtitle on journey start
   const [journeyIntroVisible, setJourneyIntroVisible] = useState(false);
@@ -502,8 +463,14 @@ export function VisualizerClient({
       );
       setJourneyCompleted(true);
       completedJourneyRef.current = activeJourney.id;
-      // Record completion in path progress store
-      usePathProgressStore.getState().completeJourney(activeJourney.id);
+      // Record completion in path progress store. Custom (DB/UUID)
+      // culminations aren't in JOURNEY_PATHS, so pass an explicit hint —
+      // without it they'd land in completedJourneyIds (mis-bucketed).
+      const customPath = useAudioStore.getState().activePath;
+      const isCustomCulmination =
+        customPath?.culminationJourneyId === activeJourney.id ||
+        !!(activeJourney.theme as { isCulmination?: boolean } | undefined)?.isCulmination;
+      usePathProgressStore.getState().completeJourney(activeJourney.id, { isCulmination: isCustomCulmination });
 
       // Telemetry + adaptive analysis are admin-only features. Skip
       // entirely in installation mode (no admin reading the data,
@@ -781,6 +748,7 @@ export function VisualizerClient({
   const [hasSpeechApi, setHasSpeechApi] = useState(false);
   const recognitionRef = useRef<InstanceType<SpeechRecognitionType> | null>(null);
   const micStreamRef = useRef<MediaStream | null>(null);
+  const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
 
   // Active analysis — use store's analysis, or fallback to prop
   const activeAnalysis = storeAnalysis ?? initialAnalysis;
@@ -994,10 +962,16 @@ export function VisualizerClient({
     if (duration <= 0) return;
     const engine = getJourneyEngine();
 
-    // Auto-detected events from analysis (texture_change, climax, drop, silence, new_idea)
-    // bass_hit events are included but only rendered visually when enableBassFlash is true
+    // Auto-detected events from analysis (texture_change, climax, drop, silence, new_idea).
+    // On enableBassFlash journeys the white flash is a CURATED moment: only
+    // hand-placed cue markers may fire it. Auto-detected bass_hit events are
+    // stripped so a busy analysis can't turn the two-beat dark→white angel
+    // narrative into repeated strobes. (Mirrors /journey/[token]/client.tsx.)
     const analysis = useAudioStore.getState().analysis;
-    const autoEvents = (analysis?.events ?? []) as MusicalEvent[];
+    const rawAutoEvents = (analysis?.events ?? []) as MusicalEvent[];
+    const autoEvents = activeJourney.enableBassFlash
+      ? rawAutoEvents.filter((e) => e.type !== "bass_hit")
+      : rawAutoEvents;
 
     // Only wire cue markers as bass_hit events for journeys that opt in
     let allEvents = autoEvents;
@@ -1029,6 +1003,10 @@ export function VisualizerClient({
       if (recognitionRef.current) {
         recognitionRef.current.stop();
         recognitionRef.current = null;
+      }
+      if (micSourceRef.current) {
+        try { micSourceRef.current.disconnect(); } catch {}
+        micSourceRef.current = null;
       }
       if (micStreamRef.current) {
         micStreamRef.current.getTracks().forEach((t) => t.stop());
@@ -1070,6 +1048,7 @@ export function VisualizerClient({
           const engine = getAudioEngine();
           const micSource = engine.audioContext.createMediaStreamSource(stream);
           micSource.connect(node);
+          micSourceRef.current = micSource;
         } catch {}
       }
     }).catch(() => {});
@@ -1080,6 +1059,12 @@ export function VisualizerClient({
         recognitionRef.current.stop();
         recognitionRef.current = null;
       }
+      // Disconnect the mic source node — stopping the tracks alone leaves
+      // the node wired into the analyser graph forever.
+      if (micSourceRef.current) {
+        try { micSourceRef.current.disconnect(); } catch {}
+        micSourceRef.current = null;
+      }
       if (micStreamRef.current) {
         micStreamRef.current.getTracks().forEach((t) => t.stop());
         micStreamRef.current = null;
@@ -1087,8 +1072,12 @@ export function VisualizerClient({
     };
   }, [liveEnabled, analyser]);
 
-  // Load the full library into the queue so prev/next can navigate
+  // Load the full library into the queue so prev/next can navigate.
+  // queueLoading guards the empty-state auto-reopen below from firing
+  // while the async load is still resolving.
+  const [queueLoading, setQueueLoading] = useState(false);
   const loadLibraryQueue = useCallback(async (autoPlay: boolean) => {
+    setQueueLoading(true);
     try {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
@@ -1124,16 +1113,34 @@ export function VisualizerClient({
       }
     } catch {
       setLibraryOpen(true);
+    } finally {
+      setQueueLoading(false);
     }
   }, []);
 
-  // Load the most recent track from user's library and start playing
-  const handleEnterRoom = useCallback(async () => {
-    await loadLibraryQueue(true);
-  }, [loadLibraryQueue]);
+  // Empty-state guard: with no track loaded, no journey active, and every
+  // surface closed, The Room is a black void with only a bottom bar.
+  // Auto-reopen the journey selector when the last surface closes with
+  // nothing loaded so there's always something to act on.
+  useEffect(() => {
+    if (installationMode) return;
+    if (journeyOpen || libraryOpen || queueLoading) return;
+    if (currentTrack || journeyActive) return;
+    if (needsGesture || initialCustomJourney) return;
+    // Short defer so transient states (journey teardown → restart, queue
+    // hydration) settle before we decide the room is truly empty.
+    const t = setTimeout(() => {
+      const s = useAudioStore.getState();
+      if (s.currentTrack || s.activeJourney) return;
+      setJourneyOpen(true);
+      s.setRoomMode("journey");
+    }, 400);
+    return () => clearTimeout(t);
+  }, [installationMode, journeyOpen, libraryOpen, queueLoading, currentTrack, journeyActive, needsGesture, initialCustomJourney]);
 
   // End the journey after completion — return to journey picker
   const handleEndJourney = useCallback(() => {
+    const session = ++journeySessionRef.current;
     completedJourneyRef.current = null;
     const state = useAudioStore.getState();
     // Inside a custom path: navigate first, stop after — same
@@ -1143,6 +1150,7 @@ export function VisualizerClient({
       router.push(`/path/${activePath.shareToken}?view=app`);
       setJourneyCompleted(false);
       setTimeout(() => {
+        if (session !== journeySessionRef.current) return; // a new flow took over
         const s = useAudioStore.getState();
         if (s.activeJourney) s.stopJourney();
         s.setActivePath(null);
@@ -1162,6 +1170,7 @@ export function VisualizerClient({
   // Fetch + start a custom journey + its recording by UUID, using the
   // signed-in user's context. Clears the current journey first.
   const startCustomById = useCallback(async (journeyId: string) => {
+    const session = ++journeySessionRef.current;
     ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
@@ -1176,6 +1185,7 @@ export function VisualizerClient({
     try {
       const sb = createClient();
       const { data: { user } } = await sb.auth.getUser();
+      if (session !== journeySessionRef.current) return; // stale flow — a newer start took over
       if (!user) return;
       const { data: jRow } = await sb
         .from("journeys")
@@ -1183,6 +1193,7 @@ export function VisualizerClient({
         .eq("id", journeyId)
         .eq("user_id", user.id)
         .single();
+      if (session !== journeySessionRef.current) return; // stale flow
       if (!jRow) return;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const r = jRow as Record<string, any>;
@@ -1220,6 +1231,7 @@ export function VisualizerClient({
           .select("id, title, audio_url, artist")
           .eq("id", journey.recordingId)
           .single();
+        if (session !== journeySessionRef.current) return; // stale flow
         if (rec) {
           useAudioStore.getState().play(
             { id: rec.id, title: rec.title, audioUrl: `/api/audio/${rec.id}`, artist: rec.artist ?? undefined },
@@ -1228,6 +1240,7 @@ export function VisualizerClient({
         }
       }
       setTimeout(() => {
+        if (session !== journeySessionRef.current) return; // stale flow
         useAudioStore.getState().startCustomJourney(journey);
       }, 60);
 
@@ -1262,6 +1275,7 @@ export function VisualizerClient({
   const handleReplayJourney = useCallback(() => {
     const journey = useAudioStore.getState().activeJourney;
     if (!journey) return;
+    const session = ++journeySessionRef.current;
     ensureResumed(); // Unlock audio on mobile — must be in gesture context
     // Pre-arm the completion guard — blocks the completion detector from
     // firing based on stale currentTime for the first 2.5s of replay.
@@ -1290,6 +1304,7 @@ export function VisualizerClient({
     }
     useAudioStore.getState().stopJourney();
     setTimeout(() => {
+      if (session !== journeySessionRef.current) return; // stale flow
       useAudioStore.getState().startJourney(journey.id);
     }, 50);
   }, [startCustomById]);
@@ -1299,6 +1314,7 @@ export function VisualizerClient({
       startCustomById(nextJourneyId);
       return;
     }
+    const session = ++journeySessionRef.current;
     ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
@@ -1311,6 +1327,7 @@ export function VisualizerClient({
     useAudioStore.getState().resume();
     useAudioStore.getState().stopJourney();
     setTimeout(() => {
+      if (session !== journeySessionRef.current) return; // stale flow
       useAudioStore.getState().startJourney(nextJourneyId);
     }, 50);
   }, [startCustomById]);
@@ -1321,22 +1338,42 @@ export function VisualizerClient({
       startCustomById(culminationId);
       return;
     }
+    const session = ++journeySessionRef.current;
     ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     seek(0);
     useAudioStore.getState().stopJourney();
     setTimeout(() => {
+      if (session !== journeySessionRef.current) return; // stale flow
       useAudioStore.getState().startJourney(culminationId);
     }, 50);
   }, [seek, startCustomById]);
+
+  // Fade the completion overlay (~280ms, the app's enter curve) before
+  // running the action that unmounts it — Replay/Continue used to snap the
+  // overlay away in a single frame.
+  const [completionExiting, setCompletionExiting] = useState(false);
+  const completionExitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const withCompletionFade = useCallback((action: () => void) => {
+    if (completionExitTimerRef.current) return; // an action is already pending
+    ensureResumed(); // keep the user-gesture context for mobile audio unlock
+    setCompletionExiting(true);
+    completionExitTimerRef.current = setTimeout(() => {
+      completionExitTimerRef.current = null;
+      setCompletionExiting(false);
+      action();
+    }, 280);
+  }, []);
+  useEffect(() => () => {
+    if (completionExitTimerRef.current) clearTimeout(completionExitTimerRef.current);
+  }, []);
 
   const handleSwitchToVisualize = useCallback(() => {
     if (useAudioStore.getState().activeJourney) {
       useAudioStore.getState().stopJourney();
       // Override the heavy 3D default — pick a lightweight 2D shader
       // so the first switch feels instant
-      const LIGHT_SHADERS = ["cosmos", "fog", "nebula", "drift", "dusk", "tide", "ember"];
       useAudioStore.getState().setVizMode(
         LIGHT_SHADERS[Math.floor(Math.random() * LIGHT_SHADERS.length)]
       );
@@ -1362,6 +1399,7 @@ export function VisualizerClient({
   }, [router]);
 
   const handleExit = useCallback(() => {
+    const session = ++journeySessionRef.current;
     completedJourneyRef.current = null;
     const state = useAudioStore.getState();
     const activePath = state.activePath;
@@ -1378,6 +1416,7 @@ export function VisualizerClient({
     // Defer journey teardown: the small delay lets the route transition
     // begin before the store mutation causes a re-render of this page.
     setTimeout(() => {
+      if (session !== journeySessionRef.current) return; // a new flow took over
       const s = useAudioStore.getState();
       if (s.activeJourney) s.stopJourney();
       s.setActivePath(null);
@@ -1707,8 +1746,7 @@ export function VisualizerClient({
 
   return (
     <div
-      className="relative h-dvh w-screen overflow-hidden"
-      style={{ backgroundColor: "#000" }}
+      className="relative h-dvh w-screen overflow-hidden bg-void"
       onMouseMove={resetControlsTimer}
     >
       {/* Journey compositor wraps everything when active */}
@@ -1782,10 +1820,12 @@ export function VisualizerClient({
               // handleExit to avoid the transition shader flash.
               const activePath = state.activePath;
               if (activePath?.shareToken) {
+                const session = ++journeySessionRef.current;
                 router.push(`/path/${activePath.shareToken}?view=app`);
                 setJourneyCompleted(false);
                 completedJourneyRef.current = null;
                 setTimeout(() => {
+                  if (session !== journeySessionRef.current) return; // a new flow took over
                   const s = useAudioStore.getState();
                   if (s.activeJourney) s.stopJourney();
                   s.setActivePath(null);
@@ -1907,80 +1947,44 @@ export function VisualizerClient({
                     pointerEvents: "none",
                   }}
                 />
-                <span
-                  className="text-white/55"
-                  style={{
-                    position: "relative",
-                    fontFamily: "var(--font-geist-mono)",
-                    fontSize: "0.78rem",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    marginBottom: "1.75rem",
-                    textShadow: TEXT_SHADOW,
-                  }}
+                <Eyebrow
+                  as="span"
+                  className="relative mb-7 text-[0.78rem] tracking-[0.22em] text-white/55"
+                  style={{ textShadow: TEXT_SHADOW }}
                 >
                   Journey
-                </span>
-                <span
-                  className="text-white"
-                  style={{
-                    position: "relative",
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontWeight: 300,
-                    fontSize: "clamp(3rem, 6.5vw, 5rem)",
-                    letterSpacing: "-0.01em",
-                    lineHeight: 1.05,
-                    textShadow: TEXT_SHADOW,
-                  }}
+                </Eyebrow>
+                <DisplayTitle
+                  as="span"
+                  className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
+                  style={{ textShadow: TEXT_SHADOW }}
                 >
                   {activeJourney.name}
-                </span>
+                </DisplayTitle>
                 {activeJourney.subtitle && (
-                  <span
-                    className="text-white/75"
-                    style={{
-                      position: "relative",
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontStyle: "italic",
-                      fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)",
-                      letterSpacing: "0.01em",
-                      marginTop: "1rem",
-                      textShadow: TEXT_SHADOW,
-                    }}
+                  <DisplayTitle
+                    as="span"
+                    className="relative mt-4 font-normal text-[clamp(1.2rem,2.4vw,1.7rem)] tracking-[0.01em] leading-[normal] text-white/75"
+                    style={{ textShadow: TEXT_SHADOW }}
                   >
                     {activeJourney.subtitle}
-                  </span>
+                  </DisplayTitle>
                 )}
-                <span
-                  className="text-white/65"
-                  style={{
-                    position: "relative",
-                    fontFamily: "var(--font-geist-mono)",
-                    fontSize: "1rem",
-                    letterSpacing: "0.06em",
-                    marginTop: "3rem",
-                    textShadow: TEXT_SHADOW,
-                  }}
+                <MonoLabel
+                  as="span"
+                  className="relative mt-12 text-base tracking-[0.06em] text-white/65"
+                  style={{ textShadow: TEXT_SHADOW }}
                 >
                   {creditParts.join("  ·  ")}
-                </span>
+                </MonoLabel>
                 {activeJourney.dedication && (
-                  <span
-                    className="text-white/75"
-                    style={{
-                      position: "relative",
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontStyle: "italic",
-                      fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
-                      letterSpacing: "0.02em",
-                      lineHeight: 1.5,
-                      marginTop: "2rem",
-                      maxWidth: "40rem",
-                      textShadow: TEXT_SHADOW,
-                    }}
+                  <DisplayTitle
+                    as="span"
+                    className="relative mt-8 max-w-[40rem] font-normal text-[clamp(1.15rem,2vw,1.45rem)] tracking-[0.02em] leading-[1.5] text-white/75"
+                    style={{ textShadow: TEXT_SHADOW }}
                   >
                     {activeJourney.dedication}
-                  </span>
+                  </DisplayTitle>
                 )}
               </div>
             );
@@ -2063,7 +2067,17 @@ export function VisualizerClient({
             style={{
               zIndex: 50,
               pointerEvents: "none",
-              animation: "journeyEndFadeIn 3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              // While exiting, swap the entry animation for a short opacity
+              // fade so Replay/Continue never snap the overlay away.
+              ...(completionExiting
+                ? {
+                    animation: "none",
+                    opacity: 0,
+                    transition: "opacity 280ms cubic-bezier(0.16, 1, 0.3, 1)",
+                  }
+                : {
+                    animation: "journeyEndFadeIn 3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+                  }),
             }}
           >
             <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto", maxWidth: "90vw" }}>
@@ -2079,95 +2093,55 @@ export function VisualizerClient({
               />
 
               {/* Title */}
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontWeight: 300,
-                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  color: "#fff",
-                  textShadow: "0 2px 12px rgba(0,0,0,0.9)",
-                }}
+              <DisplayTitle
+                as="span"
+                className="relative not-italic uppercase text-white text-[clamp(2rem,5vw,3.5rem)] tracking-[0.06em] leading-[normal]"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}
               >
                 {isGrandCulm ? "The Spirit" : isCulmination ? activeJourney.name : "Journey Complete"}
-              </span>
+              </DisplayTitle>
 
               {/* Journey name + subtitle */}
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: "italic",
-                  fontWeight: 300,
-                  fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
-                  letterSpacing: "0.04em",
-                  color: "#fff",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                  marginTop: "-0.5rem",
-                  textAlign: "center",
-                }}
+              <DisplayTitle
+                as="span"
+                className="relative -mt-2 text-center text-white text-[clamp(1.4rem,3.5vw,2.2rem)] tracking-[0.04em] leading-[normal]"
+                style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
                 {isCulmination || isGrandCulm ? activeJourney.subtitle : activeJourney.name}
-              </span>
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.9rem",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  letterSpacing: "0.04em",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                }}
+              </DisplayTitle>
+              <MonoLabel
+                as="span"
+                className="relative text-[0.9rem] tracking-[0.04em] text-white/85"
+                style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
                 by {activeJourney.creatorName || "Karel Barnoski"}
-              </span>
+              </MonoLabel>
               {(currentTrack?.artist || recording?.artist) && (
-                <span
-                  style={{
-                    position: "relative",
-                    fontFamily: "var(--font-geist-mono)",
-                    fontSize: "0.9rem",
-                    color: "rgba(255, 255, 255, 0.85)",
-                    letterSpacing: "0.04em",
-                    textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                    marginTop: "-0.75rem",
-                  }}
+                <MonoLabel
+                  as="span"
+                  className="relative -mt-3 text-[0.9rem] tracking-[0.04em] text-white/85"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
                 >
                   Music by {currentTrack?.artist || recording?.artist}
-                </span>
+                </MonoLabel>
               )}
               {activeJourney.photographyCredit && (
-                <span
-                  style={{
-                    position: "relative",
-                    fontFamily: "var(--font-geist-mono)",
-                    fontSize: "0.9rem",
-                    color: "rgba(255, 255, 255, 0.85)",
-                    letterSpacing: "0.04em",
-                    textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                    marginTop: "-0.75rem",
-                  }}
+                <MonoLabel
+                  as="span"
+                  className="relative -mt-3 text-[0.9rem] tracking-[0.04em] text-white/85"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
                 >
                   Photography by {activeJourney.photographyCredit}
-                </span>
+                </MonoLabel>
               )}
               {activeJourney.dedication && (
-                <span
-                  style={{
-                    position: "relative",
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontStyle: "italic",
-                    fontSize: "1.05rem",
-                    color: "rgba(255, 255, 255, 0.75)",
-                    letterSpacing: "0.04em",
-                    textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                    marginTop: "0.25rem",
-                  }}
+                <DisplayTitle
+                  as="span"
+                  className="relative mt-1 font-normal text-[1.05rem] tracking-[0.04em] leading-[normal] text-white/75"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
                 >
                   {activeJourney.dedication}
-                </span>
+                </DisplayTitle>
               )}
 
               {/* Path progress section — for regular journeys in a path */}
@@ -2205,7 +2179,7 @@ export function VisualizerClient({
                         <button
                           key={jid}
                           type="button"
-                          onClick={() => handleContinuePath(jid)}
+                          onClick={() => withCompletionFade(() => handleContinuePath(jid))}
                           aria-label={name}
                           className="group relative inline-flex items-center justify-center"
                           style={{
@@ -2218,7 +2192,7 @@ export function VisualizerClient({
                           }}
                         >
                           <span
-                            className="block transition-all"
+                            className="block transition-[background-color,box-shadow] duration-fast ease-enter"
                             style={{
                               width: "14px",
                               height: "14px",
@@ -2228,7 +2202,7 @@ export function VisualizerClient({
                             }}
                           />
                           <span
-                            className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-75"
+                            className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-instant"
                             style={{
                               bottom: "calc(100% + 10px)",
                               left: "50%",
@@ -2253,8 +2227,8 @@ export function VisualizerClient({
                     <span
                       style={{
                         fontFamily: "var(--font-geist-mono)",
-                        fontSize: "0.65rem",
-                        color: "rgba(255,255,255,0.35)",
+                        fontSize: "0.68rem",
+                        color: "rgba(255,255,255,0.45)",
                         marginLeft: "0.5rem",
                       }}
                     >
@@ -2325,8 +2299,8 @@ export function VisualizerClient({
               {/* Action buttons */}
               <div className="flex items-center gap-3" style={{ position: "relative", marginTop: "0.25rem" }}>
                 <button
-                  onClick={handleReplayJourney}
-                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150 cursor-pointer"
+                  onClick={() => withCompletionFade(handleReplayJourney)}
+                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant cursor-pointer"
                   style={{
                     border: "1px solid rgba(255,255,255,0.2)",
                     fontSize: "0.8rem",
@@ -2341,8 +2315,8 @@ export function VisualizerClient({
                 {/* Continue Path — next journey in sequence */}
                 {nextInPath && (
                   <button
-                    onClick={() => handleContinuePath(nextInPath)}
-                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150 cursor-pointer"
+                    onClick={() => withCompletionFade(() => handleContinuePath(nextInPath))}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant cursor-pointer"
                     style={{
                       border: `1px solid ${path?.palette.accent ?? "rgba(255,255,255,0.2)"}`,
                       fontSize: "0.8rem",
@@ -2358,8 +2332,8 @@ export function VisualizerClient({
                 {/* Enter Culmination — when path just completed */}
                 {justCompletedPath && path && (
                   <button
-                    onClick={() => handleEnterCulmination(path.culminationJourneyId)}
-                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150 cursor-pointer"
+                    onClick={() => withCompletionFade(() => handleEnterCulmination(path.culminationJourneyId))}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant cursor-pointer"
                     style={{
                       border: `1px solid ${path.palette.accent}`,
                       fontSize: "0.8rem",
@@ -2376,8 +2350,8 @@ export function VisualizerClient({
                 {/* Enter Grand Culmination — when all 5 path culminations done */}
                 {justUnlockedGrand && (
                   <button
-                    onClick={() => handleEnterCulmination(GRAND_CULMINATION_ID)}
-                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150 cursor-pointer"
+                    onClick={() => withCompletionFade(() => handleEnterCulmination(GRAND_CULMINATION_ID))}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant cursor-pointer"
                     style={{
                       border: "1px solid rgba(160,128,208,0.6)",
                       fontSize: "0.8rem",
@@ -2393,7 +2367,7 @@ export function VisualizerClient({
 
                 <button
                   onClick={handleEndJourney}
-                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150 cursor-pointer"
+                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant cursor-pointer"
                   style={{
                     border: "1px solid rgba(255,255,255,0.2)",
                     fontSize: "0.8rem",
@@ -2413,11 +2387,11 @@ export function VisualizerClient({
       {/* Live listening indicator — hidden in fullscreen/immersive mode */}
       {liveEnabled && !isFullscreen && (
         <div
-          className="absolute top-6 right-6 flex items-center gap-2 transition-opacity duration-300"
+          className="absolute top-6 right-6 flex items-center gap-2 transition-opacity duration-fast ease-enter"
           style={{ opacity: controlsVisible ? 1 : 0 }}
         >
           <Mic className="h-3.5 w-3.5 animate-pulse text-red-400/80" />
-          <span className="text-white/40 text-xs" style={{ fontFamily: "var(--font-geist-mono)" }}>
+          <span className="text-white/45 text-xs" style={{ fontFamily: "var(--font-geist-mono)" }}>
             Listening
           </span>
         </div>

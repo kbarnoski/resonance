@@ -3,6 +3,8 @@
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
 import type { VisualizerMode } from "@/lib/audio/vibe-detection";
 import type { AnalysisResult } from "@/lib/audio/types";
@@ -23,16 +25,33 @@ import { getDeviceTier } from "@/lib/audio/device-tier";
 // Performance monitor is now FPS-based, started/stopped by JourneyFeedback component
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 
-// Ambient shaders used as backdrop underneath AI imagery modes
+// Ambient shaders used as backdrop underneath AI imagery modes.
+// Every id here MUST exist in SHADERS — "nebula" lingered after its registry
+// removal and produced deterministic black backdrops + 3s crossfade stalls.
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "fog", "nebula", "drift",
+  "fog", "drift",
   "tide", "ember",
 ];
 
-/** Consistent ~2.5s fade duration for all shader transitions (at 60fps) */
-const SHADER_FADE_RATE = 0.0065;
+if (process.env.NODE_ENV !== "production") {
+  for (const id of AI_BACKDROP_SHADERS) {
+    if (!SHADERS[id]) {
+      console.error(`[visualizer] AI_BACKDROP_SHADERS id "${id}" is not registered in SHADERS`);
+    }
+  }
+}
+
+/** Consistent ~2.5s crossfade for all shader transitions. Time-based
+ *  (delta-time per rAF tick) so the duration holds on 30–120Hz displays. */
+const SHADER_FADE_DURATION_MS = 2500;
 const DUAL_SHADER_MAX_OPACITY = 0.85;
 const TERTIARY_SHADER_MAX_OPACITY = 0.60;
+
+/** Advance a crossfade progress value by real elapsed time. Clamps large
+ *  gaps (background tab, hitchy frame) so fades never visibly jump. */
+function advanceFade(progress: number, elapsedMs: number): number {
+  return Math.min(1, progress + Math.min(elapsedMs, 100) / SHADER_FADE_DURATION_MS);
+}
 
 /** Pick a deterministic backdrop shader for an AI mode */
 function getAiBackdropShader(aiMode: string): VisualizerMode {
@@ -140,6 +159,13 @@ const audioNodeCache = new WeakMap<
 
 // Inline shader code removed — now imported from src/lib/shaders/
 
+/* Shared sizing/voice for the glass pill buttons in the bottom bar —
+   geometry matches the historical hand-rolled px-3/py-2 mono pills. */
+const GLASS_PILL = "h-auto gap-1.5 px-3 py-2 font-mono text-[0.72rem] font-normal";
+/* Selected/open state for a glass pill. */
+const GLASS_PILL_ACTIVE =
+  "border-transparent bg-white/15 text-white hover:bg-white/15 hover:text-white";
+
 const LANGUAGES = [
   { code: "en", label: "English" },
   { code: "es", label: "Español" },
@@ -181,6 +207,7 @@ export function ShaderVisualizer({
   fragShader,
   style,
   smoothMotion = false,
+  paused = false,
   onReady,
 }: {
   analyser: AnalyserLike;
@@ -189,12 +216,19 @@ export function ShaderVisualizer({
   style?: React.CSSProperties;
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
-  /** Fires when the shader has compiled and rendered its first frame */
-  onReady?: () => void;
+  /** When true, suspend the draw loop (context + compiled program are kept).
+   *  Used for A/B buffer layers parked at opacity ≈ 0 — an invisible layer
+   *  shouldn't burn a full-screen fragment pass every frame. */
+  paused?: boolean;
+  /** Fires when the shader has compiled and rendered its first frame.
+   *  `ok=false` means compilation/linking failed — callers should abort any
+   *  pending crossfade instead of fading into a dead layer. */
+  onReady?: (ok?: boolean) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
+  const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
 
@@ -212,28 +246,48 @@ export function ShaderVisualizer({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // Chrome sometimes never fires `webglcontextrestored` even after
+    // preventDefault() (same failure mode visualizer-3d works around).
+    // Arm an 8s force-remount so a kiosk can't sit frozen until the
+    // wedge watchdog's last-resort reload.
+    let forceRemountTimer: ReturnType<typeof setTimeout> | null = null;
     const onLost = (e: Event) => {
       e.preventDefault();
       // eslint-disable-next-line no-console
       console.warn("[shader] WebGL context lost — awaiting restore");
+      if (forceRemountTimer) clearTimeout(forceRemountTimer);
+      forceRemountTimer = setTimeout(() => {
+        forceRemountTimer = null;
+        // eslint-disable-next-line no-console
+        console.warn("[shader] restore never fired — forcing GL re-setup");
+        setContextEpoch((n) => n + 1);
+      }, 8000);
     };
     const onRestored = () => {
       // eslint-disable-next-line no-console
       console.warn("[shader] WebGL context restored — recreating resources");
+      if (forceRemountTimer) {
+        clearTimeout(forceRemountTimer);
+        forceRemountTimer = null;
+      }
       setContextEpoch((n) => n + 1);
     };
     canvas.addEventListener("webglcontextlost", onLost);
     canvas.addEventListener("webglcontextrestored", onRestored);
     return () => {
+      if (forceRemountTimer) clearTimeout(forceRemountTimer);
       canvas.removeEventListener("webglcontextlost", onLost);
       canvas.removeEventListener("webglcontextrestored", onRestored);
     };
   }, []);
 
-  // Keep ref in sync without tearing down GL program
+  // Keep refs in sync without tearing down GL program
   useEffect(() => {
     smoothMotionRef.current = smoothMotion;
   }, [smoothMotion]);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -318,16 +372,17 @@ export function ShaderVisualizer({
           }
         }
         // Compilation finished (or was synchronous without ext) — check status.
-        // On failure, signal readiness anyway so the crossfade layer can fall
-        // back. Without this the canvas stays blank indefinitely.
+        // On failure, signal with ok=false so the crossfade layer can ABORT
+        // (keep the healthy layer) instead of fading into a dead canvas.
+        // Without any signal the canvas stays blank until the 3s timeout.
         if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
           console.warn("[shader] Vertex compile failed:", gl.getShaderInfoLog(vs));
-          onReadyRef.current?.();
+          onReadyRef.current?.(false);
           return;
         }
         if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
           console.warn("[shader] Fragment compile failed:", gl.getShaderInfoLog(fs));
-          onReadyRef.current?.();
+          onReadyRef.current?.(false);
           return;
         }
         // Start linking (non-blocking with ext)
@@ -352,6 +407,7 @@ export function ShaderVisualizer({
         }
         if (!gl.getProgramParameter(program!, gl.LINK_STATUS)) {
           console.error("Program link:", gl.getProgramInfoLog(program!));
+          onReadyRef.current?.(false);
           return;
         }
         // Set up vertex buffer and attribute
@@ -379,7 +435,15 @@ export function ShaderVisualizer({
       // Signal readiness on the first rendered frame — triggers crossfade start
       if (!readyFired) {
         readyFired = true;
-        onReadyRef.current?.();
+        onReadyRef.current?.(true);
+      }
+
+      // Suspended (layer parked at opacity ≈ 0) — keep the context + program
+      // alive but skip the draw. Cheap idle poll; resumes on the next frame
+      // after `paused` flips false.
+      if (pausedRef.current) {
+        animId = requestAnimationFrame(render);
+        return;
       }
 
       // ── Normal rendering ──
@@ -455,6 +519,17 @@ export function ShaderVisualizer({
       style={style}
     />
   );
+}
+
+/** Solid-black fallback layer that still reports readiness — a missing
+ *  backdrop frag must not stall the crossfade on the 3s safety timeout. */
+export function BlackFallbackLayer({ onReady }: { onReady?: (ok?: boolean) => void }) {
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+  useEffect(() => {
+    onReadyRef.current?.(true);
+  }, []);
+  return <div style={{ position: "absolute", inset: 0, backgroundColor: "#000" }} />;
 }
 
 function formatTime(s: number): string {
@@ -605,6 +680,9 @@ export function VisualizerCore({
   const actualPrimaryMode = mode as VisualizerMode;
   const [layerAMode, setLayerAMode] = useState<VisualizerMode>(actualPrimaryMode);
   const [layerBMode, setLayerBMode] = useState<VisualizerMode | null>(null);
+  // Primary layer that has fully faded out and can suspend its draw loop.
+  // null while a crossfade is in flight (both layers must draw).
+  const [idlePrimaryLayer, setIdlePrimaryLayer] = useState<'a' | 'b' | null>('b');
   const activeLayerRef = useRef<'a' | 'b'>('a');
   const layerADivRef = useRef<HTMLDivElement>(null);
   const layerBDivRef = useRef<HTMLDivElement>(null);
@@ -649,38 +727,50 @@ export function VisualizerCore({
   const tertiaryNextReadyCbRef = useRef<(() => void) | null>(null);
   const tertiaryNextReadyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const handleLayerAReady = useCallback(() => {
+  // ok=false → shader compile/link failed. Abort the pending crossfade and
+  // keep the healthy active layer on screen — fading into a dead canvas
+  // showed a stale frame / black for the full 3s safety window.
+  const handleLayerAReady = useCallback((ok: boolean = true) => {
     if (primaryWaitingForRef.current === 'a') {
       clearTimeout(primaryReadyTimeoutRef.current);
       const cb = primaryReadyCbRef.current;
-      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
+      primaryReadyCbRef.current = null;
+      primaryWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleLayerBReady = useCallback(() => {
+  const handleLayerBReady = useCallback((ok: boolean = true) => {
     if (primaryWaitingForRef.current === 'b') {
       clearTimeout(primaryReadyTimeoutRef.current);
       const cb = primaryReadyCbRef.current;
-      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
+      primaryReadyCbRef.current = null;
+      primaryWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleDualLayerAReady = useCallback(() => {
+  const handleDualLayerAReady = useCallback((ok: boolean = true) => {
     if (dualWaitingForRef.current === 'a') {
       clearTimeout(dualReadyTimeoutRef.current);
       const cb = dualReadyCbRef.current;
-      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+      dualReadyCbRef.current = null;
+      dualWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleDualLayerBReady = useCallback(() => {
+  const handleDualLayerBReady = useCallback((ok: boolean = true) => {
     if (dualWaitingForRef.current === 'b') {
       clearTimeout(dualReadyTimeoutRef.current);
       const cb = dualReadyCbRef.current;
-      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+      dualReadyCbRef.current = null;
+      dualWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleTertiaryShaderReady = useCallback(() => {
+  const handleTertiaryShaderReady = useCallback((ok: boolean = true) => {
     clearTimeout(tertiaryNextReadyTimeoutRef.current);
     const cb = tertiaryNextReadyCbRef.current;
-    if (cb) { cb(); tertiaryNextReadyCbRef.current = null; }
+    tertiaryNextReadyCbRef.current = null;
+    if (ok && cb) cb();
   }, []);
 
   // Clear all crossfade timeouts on unmount to prevent stale callbacks
@@ -712,6 +802,7 @@ export function VisualizerCore({
     primaryWaitingForRef.current = null;
     setLayerAMode(actualPrimaryMode);
     setLayerBMode(null);
+    setIdlePrimaryLayer('b');
     primaryPrevModeRef.current = actualPrimaryMode;
     activeLayerRef.current = "a";
     if (layerADivRef.current) layerADivRef.current.style.opacity = "1";
@@ -747,16 +838,29 @@ export function VisualizerCore({
     if (activeDivRef.current) activeDivRef.current.style.opacity = "1";
     if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
 
+    // Both layers must draw during the fade — un-suspend the parked one.
+    setIdlePrimaryLayer(null);
+
+    // L15: is the target shader still mounted (compiled) on the inactive
+    // layer? Its onReady already fired once and won't fire again, so
+    // waiting on it would stall until the 3s safety timeout.
+    const inactiveResidentMode = inactive === 'a' ? layerAMode : layerBMode;
+    const alreadyResident = inactiveResidentMode === actualPrimaryMode;
+
     // Set new shader on the inactive layer (compiles in background at opacity 0)
     if (inactive === 'a') setLayerAMode(actualPrimaryMode);
     else setLayerBMode(actualPrimaryMode);
 
-    // Crossfade animation — starts after inactive layer reports ready
+    // Crossfade animation — starts after inactive layer reports ready.
+    // Time-based progress so the ~2.5s duration holds on 30–120Hz displays.
     const startCrossfade = () => {
       if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
       let progress = 0;
+      let lastTs = performance.now();
       const animate = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -766,21 +870,27 @@ export function VisualizerCore({
           primaryFadeRef.current = requestAnimationFrame(animate);
         } else {
           activeLayerRef.current = inactive;
+          // Old layer is invisible now — suspend its draw loop.
+          setIdlePrimaryLayer(active);
         }
       };
       primaryFadeRef.current = requestAnimationFrame(animate);
     };
 
-    primaryWaitingForRef.current = inactive;
-    primaryReadyCbRef.current = startCrossfade;
-    // Safety timeout — start crossfade even if onReady never fires (GL context lost, 3D mode)
-    primaryReadyTimeoutRef.current = setTimeout(() => {
-      if (primaryReadyCbRef.current) {
-        primaryReadyCbRef.current();
-        primaryReadyCbRef.current = null;
-        primaryWaitingForRef.current = null;
-      }
-    }, 3000);
+    if (alreadyResident) {
+      startCrossfade();
+    } else {
+      primaryWaitingForRef.current = inactive;
+      primaryReadyCbRef.current = startCrossfade;
+      // Safety timeout — start crossfade even if onReady never fires (GL context lost, 3D mode)
+      primaryReadyTimeoutRef.current = setTimeout(() => {
+        if (primaryReadyCbRef.current) {
+          primaryReadyCbRef.current();
+          primaryReadyCbRef.current = null;
+          primaryWaitingForRef.current = null;
+        }
+      }, 3000);
+    }
 
     return () => {
       cancelAnimationFrame(primaryFadeRef.current);
@@ -821,8 +931,11 @@ export function VisualizerCore({
           ? parseFloat(activeDivRef.current.style.opacity || "0") : 0;
 
         let progress = 0;
+        let lastTs = performance.now();
         const animate = () => {
-          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const now = performance.now();
+          progress = advanceFade(progress, now - lastTs);
+          lastTs = now;
           const eased = progress < 0.5
             ? 2 * progress * progress
             : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -836,6 +949,11 @@ export function VisualizerCore({
             dualFadeRef.current = requestAnimationFrame(animate);
           } else {
             dualActiveRef.current = inactive;
+            // Old layer finished fading out — null its mode so the canvas
+            // unmounts (an invisible WebGL context otherwise renders a
+            // full-screen frag pass forever and leaks context pressure).
+            if (active === 'a') setDualLayerAMode(null);
+            else setDualLayerBMode(null);
           }
         };
         dualFadeRef.current = requestAnimationFrame(animate);
@@ -851,14 +969,26 @@ export function VisualizerCore({
         }
       }, 3000);
     } else {
-      // Dual shader removed — fade out the active layer
-      if (!activeDivRef.current) return;
+      // Dual shader removed — fade out the active layer, then null both
+      // modes so the canvases unmount (no invisible full-screen frag passes).
+      if (!activeDivRef.current) {
+        setDualLayerAMode(null);
+        setDualLayerBMode(null);
+        return;
+      }
       const startOpacity = parseFloat(activeDivRef.current.style.opacity || "0");
-      if (startOpacity <= 0.001) return;
+      if (startOpacity <= 0.001) {
+        setDualLayerAMode(null);
+        setDualLayerBMode(null);
+        return;
+      }
 
       let progress = 0;
+      let lastTs = performance.now();
       const fadeOut = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -867,6 +997,9 @@ export function VisualizerCore({
         }
         if (progress < 1) {
           dualFadeRef.current = requestAnimationFrame(fadeOut);
+        } else {
+          setDualLayerAMode(null);
+          setDualLayerBMode(null);
         }
       };
       dualFadeRef.current = requestAnimationFrame(fadeOut);
@@ -899,14 +1032,18 @@ export function VisualizerCore({
 
       const startFadeIn = () => {
         let progress = 0;
+        let lastTs = performance.now();
         const fadeIn = () => {
-          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const now = performance.now();
+          progress = advanceFade(progress, now - lastTs);
+          lastTs = now;
           const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
           if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);
           if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
         };
         tertiaryFadeRef.current = requestAnimationFrame(() => {
           if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
+          lastTs = performance.now();
           tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
         });
       };
@@ -933,8 +1070,11 @@ export function VisualizerCore({
         return;
       }
       let progress = 0;
+      let lastTs = performance.now();
       const fadeOut = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
         if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(startOpacity * (1 - eased));
         if (progress < 1) {
@@ -966,7 +1106,7 @@ export function VisualizerCore({
 
   // Renders shader content for a given mode — no wrapper divs, no React keys.
   // Used by A/B buffer layers which handle their own outer/inner wrappers.
-  const renderLayerContent = (layerMode: VisualizerMode, onShaderReady?: () => void) => {
+  const renderLayerContent = (layerMode: VisualizerMode, onShaderReady?: (ok?: boolean) => void, layerPaused = false) => {
     const layerIs3D = MODES_3D.has(layerMode);
     const layerIsAI = MODES_AI.has(layerMode);
 
@@ -974,8 +1114,8 @@ export function VisualizerCore({
       const backdropMode = getAiBackdropShader(layerMode);
       const backdropFrag = SHADERS[backdropMode];
       return backdropFrag ? (
-        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion onReady={onShaderReady} />
-      ) : <div style={{ position: "absolute", inset: 0, backgroundColor: "#000" }} />;
+        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion paused={layerPaused} onReady={onShaderReady} />
+      ) : <BlackFallbackLayer onReady={onShaderReady} />;
     }
     if (layerIs3D) {
       return <Visualizer3D analyser={analyser} dataArray={dataArray} mode={layerMode as Visualizer3DMode} onReady={onShaderReady} />;
@@ -987,7 +1127,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 
@@ -1013,7 +1153,7 @@ export function VisualizerCore({
               opacity: (MODES_AI.has(layerAMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
             }}>
               <div ref={setLayerARef} style={{ position: "absolute", inset: 0 }}>
-                {renderLayerContent(layerAMode, handleLayerAReady)}
+                {renderLayerContent(layerAMode, handleLayerAReady, idlePrimaryLayer === 'a')}
               </div>
             </div>
             {layerBMode && (
@@ -1022,7 +1162,7 @@ export function VisualizerCore({
                 opacity: (MODES_AI.has(layerBMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
               }}>
                 <div ref={setLayerBRef} style={{ position: "absolute", inset: 0 }}>
-                  {renderLayerContent(layerBMode, handleLayerBReady)}
+                  {renderLayerContent(layerBMode, handleLayerBReady, idlePrimaryLayer === 'b')}
                 </div>
               </div>
             )}
@@ -1136,7 +1276,7 @@ export function VisualizerCore({
           />
           <div
             className="shader-picker-panel z-40 flex flex-col"
-            style={{ backgroundColor: "#000" }}
+            style={{ backgroundColor: "var(--void)" }}
           >
             {/* Search bar */}
             <div className="flex items-center gap-2 px-4 pt-4 md:pt-3 pb-2" style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
@@ -1152,17 +1292,17 @@ export function VisualizerCore({
                 onChange={(e) => setModeSearch(e.target.value)}
                 placeholder="Search modes..."
                 autoFocus
-                className="bg-transparent text-white/80 placeholder-white/25 outline-none w-full"
+                className="bg-transparent text-white/80 placeholder-white/45 outline-none w-full"
                 style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}
                 onKeyDown={(e) => {
                   if (e.key === "Escape") { setModePaletteOpen(false); setModeSearch(""); }
                 }}
               />
-              <button type="button" aria-label="Close shader picker" onClick={() => { setModePaletteOpen(false); setModeSearch(""); }} className="text-white/40 hover:text-white/70 md:hidden p-1">
+              <button type="button" aria-label="Close shader picker" onClick={() => { setModePaletteOpen(false); setModeSearch(""); }} className="text-white/45 hover:text-white/70 md:hidden p-1">
                 <X className="h-4 w-4" />
               </button>
               {modeSearch && (
-                <button type="button" aria-label="Clear search" onClick={() => { setModeSearch(""); searchInputRef.current?.focus(); }} className="text-white/30 hover:text-white/60 hidden md:block">
+                <button type="button" aria-label="Clear search" onClick={() => { setModeSearch(""); searchInputRef.current?.focus(); }} className="text-white/45 hover:text-white/70 hidden md:block">
                   <X className="h-3 w-3" />
                 </button>
               )}
@@ -1190,12 +1330,12 @@ export function VisualizerCore({
                       className="flex items-center gap-1.5 mb-2 group w-full text-left"
                     >
                       <p
-                        className="text-white/40 group-hover:text-white/50 transition-colors"
+                        className="text-white/45 group-hover:text-white/60 transition-colors duration-instant"
                         style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
                       >
                         {category}
                       </p>
-                      <span className="text-white/30" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
+                      <span className="text-white/45" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
                         {categoryModes.length}
                       </span>
                       {!search && (
@@ -1210,7 +1350,7 @@ export function VisualizerCore({
                           <button
                             key={m}
                             onClick={() => { setMode(m); setModePaletteOpen(false); setModeSearch(""); }}
-                            className={`flex items-center justify-center rounded-md px-2 py-2.5 transition-all ${
+                            className={`flex items-center justify-center rounded-md px-2 py-2.5 transition-colors duration-instant ${
                               mode === m
                                 ? "bg-white/15 text-white"
                                 : "text-white/50 hover:bg-white/8 hover:text-white/80"
@@ -1235,19 +1375,21 @@ export function VisualizerCore({
 
       {/* ─── Fullscreen toggle — top-right corner (desktop only; iOS doesn't support requestFullscreen) ─── */}
       {!installationMode && onFullscreenToggle && !journeyBrowsing && (currentTrack || journeyActive) && (
-        <button
+        <Button
+          variant="glassIcon"
           onClick={onFullscreenToggle}
-          className="hidden md:flex absolute top-6 right-6 items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
+          className="hidden md:inline-flex absolute top-6 right-6"
           style={{
             zIndex: 10,
             opacity: controlsVisible ? 1 : 0,
             pointerEvents: controlsVisible ? "auto" : "none",
-            border: "1px solid rgba(255,255,255,0.1)",
+            transition:
+              "background-color var(--duration-instant), color var(--duration-instant), opacity var(--duration-instant)",
           }}
           title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
         >
-          {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-        </button>
+          {isFullscreen ? <Minimize2 className="size-3.5" /> : <Maximize2 className="size-3.5" />}
+        </Button>
       )}
 
       {/* ─── Bottom control bar ─── */}
@@ -1269,7 +1411,7 @@ export function VisualizerCore({
         <div
           className="room-bar-desktop items-center px-4"
           style={{
-            background: "#000",
+            background: "var(--void)",
             height: "56px",
           }}
         >
@@ -1278,26 +1420,31 @@ export function VisualizerCore({
             {/* Mode switcher — segmented control */}
             {showJourneyButton && onJourneyToggle && (
               <div
-                className="flex items-center rounded-lg"
+                className="flex items-center rounded-lg overflow-hidden"
                 style={{ border: "1px solid rgba(255,255,255,0.1)" }}
               >
                 <button
                   onClick={journeyActive ? undefined : onJourneyToggle}
-                  className={`px-3 py-2 rounded-l-[7px] transition-colors duration-75 ${
-                    inJourneyMode
-                      ? "bg-white/10 text-white/90"
-                      : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                  disabled={journeyActive}
+                  aria-disabled={journeyActive}
+                  className={`px-3 py-2 rounded-none transition-colors duration-instant ${
+                    journeyActive
+                      ? "bg-white/5 text-white/30 cursor-not-allowed"
+                      : inJourneyMode
+                        ? "bg-white/10 text-white/90"
+                        : "text-white/45 hover:text-white/70 hover:bg-white/10"
                   }`}
-                  style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1, cursor: journeyActive ? "default" : undefined }}
+                  style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
+                  title={journeyActive ? "End the current journey to browse journeys" : undefined}
                 >
                   Journeys
                 </button>
                 <button
                   onClick={inJourneyMode ? onSwitchToVisualize : undefined}
-                  className={`px-3 py-2 rounded-r-[7px] transition-colors duration-75 ${
+                  className={`px-3 py-2 rounded-none transition-colors duration-instant ${
                     !inJourneyMode
                       ? "bg-white/10 text-white/90"
-                      : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                      : "text-white/45 hover:text-white/70 hover:bg-white/10"
                   }`}
                   style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
                 >
@@ -1316,7 +1463,7 @@ export function VisualizerCore({
               >
                 <button
                   onClick={onStopJourney}
-                  className="flex-shrink-0 p-1 rounded text-white/30 hover:text-white/70 hover:bg-white/10 transition-colors duration-75"
+                  className="flex-shrink-0 p-1 rounded text-white/45 hover:text-white/70 hover:bg-white/10 transition-colors duration-instant"
                   title="End journey"
                 >
                   <X className="h-3 w-3" />
@@ -1349,30 +1496,30 @@ export function VisualizerCore({
                     type="button"
                     aria-label="Previous shader"
                     onClick={onPrevShader}
-                    className="flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-75"
+                    className="flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-instant"
                     title="Previous shader"
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
                 )}
-                <button
+                <Button
+                  variant="glass"
                   onClick={() => setModePaletteOpen((v) => !v)}
-                  className={`flex items-center gap-2 rounded-lg px-3.5 py-2 transition-colors duration-75 ${
-                    modePaletteOpen ? "bg-white/15 text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
-                  }`}
-                  style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                  className={cn(
+                    GLASS_PILL,
+                    "gap-2 px-3.5 text-[0.8rem]",
+                    modePaletteOpen && GLASS_PILL_ACTIVE
+                  )}
                 >
-                  <span style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}>
-                    {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
-                  </span>
-                  <ChevronUp className={`h-3.5 w-3.5 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
-                </button>
+                  {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
+                  <ChevronUp className={`size-3.5 transition-transform duration-fast ease-enter ${modePaletteOpen ? "rotate-180" : ""}`} />
+                </Button>
                 {onNextShader && (
                   <button
                     type="button"
                     aria-label="Next shader"
                     onClick={onNextShader}
-                    className="flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-75"
+                    className="flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-instant"
                     title="Next shader"
                   >
                     <ChevronRight className="h-3.5 w-3.5" />
@@ -1385,7 +1532,8 @@ export function VisualizerCore({
             {(!journeyActive && !inJourneyMode && currentTrack) && (
               <>
                 <div className="w-px h-5 bg-white/10 mx-1" />
-                <button
+                <Button
+                  variant="glass"
                   onClick={() => {
                     if (poetryEnabled || storyEnabled) {
                       setWhisperEnabled(false);
@@ -1394,41 +1542,36 @@ export function VisualizerCore({
                       setTextOverlayMode("poetry");
                     }
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75 ${poetryEnabled || storyEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/10"}`}
-                  style={{ border: poetryEnabled || storyEnabled ? "1px solid transparent" : "1px solid rgba(255,255,255,0.1)" }}
+                  className={cn(GLASS_PILL, (poetryEnabled || storyEnabled) && GLASS_PILL_ACTIVE)}
                   title={poetryEnabled || storyEnabled ? "Poetry: On" : "Poetry: Off"}
                 >
-                  <Type className="h-3.5 w-3.5" />
-                  <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}>
-                    Poetry
-                  </span>
-                </button>
-                <button
+                  <Type className="size-3.5" />
+                  Poetry
+                </Button>
+                <Button
+                  variant="glass"
                   onClick={() => setWhisperEnabled(!whisperEnabled)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75 ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/10"}`}
+                  className={cn(GLASS_PILL, whisperEnabled && GLASS_PILL_ACTIVE)}
                   style={{
-                    border: whisperEnabled ? "1px solid transparent" : "1px solid rgba(255,255,255,0.1)",
                     opacity: poetryEnabled || storyEnabled ? 1 : 0,
                     pointerEvents: poetryEnabled || storyEnabled ? "auto" : "none",
-                    transition: "background-color 75ms, color 75ms, border-color 75ms, opacity 75ms",
+                    transition: "background-color var(--duration-instant), color var(--duration-instant), border-color var(--duration-instant), opacity var(--duration-instant)",
                   }}
                   title={whisperEnabled ? "Voice: On" : "Voice: Off"}
                 >
-                  <AudioLines className="h-3.5 w-3.5" />
-                  <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}>
-                    Voice
-                  </span>
-                </button>
+                  <AudioLines className="size-3.5" />
+                  Voice
+                </Button>
                 {showLiveButton && onLiveToggle && !journeyActive && (
                   <button
                     type="button"
                     aria-label={liveEnabled ? "Turn off live mode" : "Turn on live mode"}
                     onClick={onLiveToggle}
-                    className={`flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-75 ${liveEnabled ? "bg-red-500/20 text-red-400" : "text-white/50 hover:text-white/80 hover:bg-white/10"}`}
+                    className={`flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-instant ${liveEnabled ? "bg-red-500/20 text-red-400" : "text-white/50 hover:text-white/80 hover:bg-white/10"}`}
                     style={{
                       opacity: poetryEnabled || storyEnabled ? 1 : 0,
                       pointerEvents: poetryEnabled || storyEnabled ? "auto" : "none",
-                      transition: "background-color 75ms, color 75ms, opacity 75ms",
+                      transition: "background-color var(--duration-instant), color var(--duration-instant), opacity var(--duration-instant)",
                     }}
                     title={liveEnabled ? "Live: On" : "Live: Off"}
                   >
@@ -1438,19 +1581,17 @@ export function VisualizerCore({
                 <div className="relative" style={{
                   opacity: poetryEnabled || storyEnabled ? 1 : 0,
                   pointerEvents: poetryEnabled || storyEnabled ? "auto" : "none",
-                  transition: "opacity 75ms",
+                  transition: "opacity var(--duration-instant)",
                 }}>
-                  <button
+                  <Button
+                    variant="glass"
                     onClick={() => setLangPickerOpen((v) => !v)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75 ${langPickerOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/10"}`}
-                    style={{ border: langPickerOpen ? "1px solid transparent" : "1px solid rgba(255,255,255,0.1)" }}
+                    className={cn(GLASS_PILL, langPickerOpen && GLASS_PILL_ACTIVE)}
                     title="Language"
                   >
-                    <Globe className="h-3.5 w-3.5" />
-                    <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}>
-                      Language
-                    </span>
-                  </button>
+                    <Globe className="size-3.5" />
+                    Language
+                  </Button>
                   {langPickerOpen && (
                     <>
                       <div
@@ -1469,7 +1610,7 @@ export function VisualizerCore({
                       <div
                         className="absolute bottom-12 left-0 z-40 py-2 rounded-xl overflow-hidden min-w-[140px]"
                         style={{
-                          backgroundColor: "#000",
+                          backgroundColor: "var(--void)",
                           border: "1px solid rgba(255, 255, 255, 0.1)",
                         }}
                       >
@@ -1506,7 +1647,7 @@ export function VisualizerCore({
                 type="button"
                 aria-label="Previous track"
                 onClick={playPrev}
-                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-instant"
                 title="Previous track"
               >
                 <SkipBack className="h-3.5 w-3.5" fill="currentColor" />
@@ -1518,7 +1659,7 @@ export function VisualizerCore({
                   ensureResumed();
                   isPlaying ? storePause() : storeResume();
                 }}
-                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-instant"
               >
                 {isPlaying ? (
                   <Pause className="h-4 w-4" fill="currentColor" />
@@ -1530,7 +1671,7 @@ export function VisualizerCore({
                 type="button"
                 aria-label="Next track"
                 onClick={playNext}
-                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-instant"
                 title="Next track"
               >
                 <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
@@ -1539,7 +1680,7 @@ export function VisualizerCore({
                 type="button"
                 aria-label={isMuted ? "Unmute" : "Mute"}
                 onClick={toggleMute}
-                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-instant"
                 title={isMuted ? "Unmute" : "Mute"}
               >
                 {isMuted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
@@ -1551,23 +1692,21 @@ export function VisualizerCore({
                 {currentTrack.title}
               </span>
               <span
-                className="text-white/30"
-                style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+                className="text-white/45"
+                style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
               >
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
               {showLibraryButton && onLibraryToggle && (
-                <button
+                <Button
+                  variant="glass"
                   onClick={onLibraryToggle}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75 ml-3 ${libraryOpen ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70 hover:bg-white/10"}`}
-                  style={{ border: libraryOpen ? "1px solid transparent" : "1px solid rgba(255,255,255,0.1)" }}
+                  className={cn(GLASS_PILL, "ml-3", libraryOpen && GLASS_PILL_ACTIVE)}
                   title="Library"
                 >
-                  <Library className="h-3.5 w-3.5" />
-                  <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}>
-                    Library
-                  </span>
-                </button>
+                  <Library className="size-3.5" />
+                  Library
+                </Button>
               )}
             </div>
           )}
@@ -1582,7 +1721,7 @@ export function VisualizerCore({
                   ensureResumed();
                   isPlaying ? storePause() : storeResume();
                 }}
-                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-instant"
                 title={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? (
@@ -1595,20 +1734,20 @@ export function VisualizerCore({
                 type="button"
                 aria-label={isMuted ? "Unmute" : "Mute"}
                 onClick={toggleMute}
-                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-instant"
                 title={isMuted ? "Unmute" : "Mute"}
               >
                 {isMuted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
               </button>
               <span
-                className="text-white/40 text-sm truncate max-w-[180px]"
+                className="text-white/45 text-sm truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
               >
                 {journeyActive && journeyName ? journeyName : currentTrack.title}
               </span>
               <span
-                className="text-white/25"
-                style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+                className="text-white/45"
+                style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
               >
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
@@ -1630,7 +1769,7 @@ export function VisualizerCore({
             {isAdmin && (currentTrack || journeyActive) && (
               <button
                 onClick={() => setHighQualityImages(!highQualityImages)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-instant"
                 style={{
                   border: highQualityImages
                     ? "1px solid rgba(168, 216, 234, 0.6)"
@@ -1646,25 +1785,25 @@ export function VisualizerCore({
               </button>
             )}
             {(journeyActive ? onShareJourney : onShareRoom) && (
-              <button
+              <Button
+                variant="glass"
                 onClick={journeyActive ? onShareJourney : onShareRoom}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
-                style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
+                className={GLASS_PILL}
                 title={journeyActive ? "Share Journey" : "Share Room"}
               >
-                <Share2 className="h-3.5 w-3.5" />
+                <Share2 className="size-3.5" />
                 Share
-              </button>
+              </Button>
             )}
           {exitLabel === "back" ? (
-            <button
+            <Button
+              variant="glass"
               onClick={onExit}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
-              style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
+              className={GLASS_PILL}
               title="Studio"
             >
               Studio
-            </button>
+            </Button>
           ) : (
             <button
               type="button"
@@ -1681,7 +1820,7 @@ export function VisualizerCore({
               type="button"
               aria-label="Sign out"
               onClick={onSignOut}
-              className="flex items-center justify-center p-2 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/10 transition-colors duration-75"
+              className="flex items-center justify-center p-2 rounded-lg text-white/45 hover:text-white/70 hover:bg-white/10 transition-colors duration-instant"
               title="Sign out"
             >
               <LogOut className="h-3.5 w-3.5" />
@@ -1694,7 +1833,7 @@ export function VisualizerCore({
         <div
           className="room-bar-mobile flex-col"
           style={{
-            background: "#000",
+            background: "var(--void)",
             paddingBottom: "env(safe-area-inset-bottom, 0px)",
           }}
         >
@@ -1704,15 +1843,15 @@ export function VisualizerCore({
             <div className="flex items-center gap-1.5 min-w-0">
               {showJourneyButton && onJourneyToggle && !journeyActive && (
                 <div
-                  className="flex items-center rounded-lg"
+                  className="flex items-center rounded-lg overflow-hidden"
                   style={{ border: "1px solid rgba(255,255,255,0.1)" }}
                 >
                   <button
                     onClick={onJourneyToggle}
-                    className={`px-2.5 py-1.5 rounded-l-[7px] transition-colors duration-75 ${
+                    className={`px-2.5 py-1.5 rounded-none transition-colors duration-instant ${
                       inJourneyMode
                         ? "bg-white/10 text-white/90"
-                        : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                        : "text-white/45 hover:text-white/70 hover:bg-white/10"
                     }`}
                     style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
                   >
@@ -1720,10 +1859,10 @@ export function VisualizerCore({
                   </button>
                   <button
                     onClick={inJourneyMode ? onSwitchToVisualize : undefined}
-                    className={`px-2.5 py-1.5 rounded-r-[7px] transition-colors duration-75 ${
+                    className={`px-2.5 py-1.5 rounded-none transition-colors duration-instant ${
                       !inJourneyMode
                         ? "bg-white/10 text-white/90"
-                        : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                        : "text-white/45 hover:text-white/70 hover:bg-white/10"
                     }`}
                     style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
                   >
@@ -1741,7 +1880,7 @@ export function VisualizerCore({
                 >
                   <button
                     onClick={onStopJourney}
-                    className="flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center rounded text-white/30 hover:text-white/70 hover:bg-white/10 transition-colors duration-75"
+                    className="flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center rounded text-white/45 hover:text-white/70 hover:bg-white/10 transition-colors duration-instant"
                     title="End journey"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -1772,28 +1911,24 @@ export function VisualizerCore({
                   {onPrevShader && (
                     <button
                       onClick={onPrevShader}
-                      className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-75"
+                      className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-instant"
                       title="Previous shader"
                     >
                       <ChevronLeft className="h-3.5 w-3.5" />
                     </button>
                   )}
-                  <button
+                  <Button
+                    variant="glass"
                     onClick={() => setModePaletteOpen((v) => !v)}
-                    className={`min-h-[44px] flex items-center gap-1.5 rounded-lg px-3 transition-colors duration-75 ${
-                      modePaletteOpen ? "bg-white/15 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"
-                    }`}
-                    style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                    className={cn(GLASS_PILL, "min-h-11 px-3 text-[0.68rem]", modePaletteOpen && GLASS_PILL_ACTIVE)}
                   >
-                    <span style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
-                      {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
-                    </span>
-                    <ChevronUp className={`h-3 w-3 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
-                  </button>
+                    {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
+                    <ChevronUp className={`size-3 transition-transform duration-fast ease-enter ${modePaletteOpen ? "rotate-180" : ""}`} />
+                  </Button>
                   {onNextShader && (
                     <button
                       onClick={onNextShader}
-                      className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-75"
+                      className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-instant"
                       title="Next shader"
                     >
                       <ChevronRight className="h-3.5 w-3.5" />
@@ -1813,7 +1948,7 @@ export function VisualizerCore({
                         setTextOverlayMode("poetry");
                       }
                     }}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-75 ${
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-instant ${
                       poetryEnabled || storyEnabled ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
                     }`}
                     title={poetryEnabled || storyEnabled ? "Poetry: On" : "Poetry: Off"}
@@ -1824,7 +1959,7 @@ export function VisualizerCore({
                     <>
                       <button
                         onClick={() => setWhisperEnabled(!whisperEnabled)}
-                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-75 ${
+                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-instant ${
                           whisperEnabled ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
                         }`}
                         title={whisperEnabled ? "Voice: On" : "Voice: Off"}
@@ -1834,7 +1969,7 @@ export function VisualizerCore({
                       {showLiveButton && onLiveToggle && !journeyActive && (
                         <button
                           onClick={onLiveToggle}
-                          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-75 ${
+                          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-instant ${
                             liveEnabled ? "bg-red-500/20 text-red-400" : "text-white/40 hover:text-white/70"
                           }`}
                           title={liveEnabled ? "Live: On" : "Live: Off"}
@@ -1845,7 +1980,7 @@ export function VisualizerCore({
                       <div className="relative">
                         <button
                           onClick={() => setLangPickerOpen((v) => !v)}
-                          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-75 ${
+                          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-instant ${
                             langPickerOpen ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
                           }`}
                           title="Language"
@@ -1870,7 +2005,7 @@ export function VisualizerCore({
                             <div
                               className="absolute bottom-10 left-0 z-40 py-2 rounded-xl overflow-hidden min-w-[140px]"
                               style={{
-                                backgroundColor: "#000",
+                                backgroundColor: "var(--void)",
                                 border: "1px solid rgba(255, 255, 255, 0.1)",
                               }}
                             >
@@ -1907,7 +2042,7 @@ export function VisualizerCore({
                 {showTransport && !journeyActive && (
                   <button
                     onClick={playPrev}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-75"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-instant"
                     title="Previous track"
                   >
                     <SkipBack className="h-3.5 w-3.5" fill="currentColor" />
@@ -1918,7 +2053,7 @@ export function VisualizerCore({
                     ensureResumed();
                     isPlaying ? storePause() : storeResume();
                   }}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/80 hover:text-white transition-colors duration-75"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/80 hover:text-white transition-colors duration-instant"
                 >
                   {isPlaying ? (
                     <Pause className="h-4.5 w-4.5" fill="currentColor" />
@@ -1929,7 +2064,7 @@ export function VisualizerCore({
                 {showTransport && !journeyActive && (
                   <button
                     onClick={playNext}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-75"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-instant"
                     title="Next track"
                   >
                     <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
@@ -1947,8 +2082,8 @@ export function VisualizerCore({
                     {journeyActive && journeyName ? journeyName : currentTrack.title}
                   </span>
                   <span
-                    className="text-white/25 flex-shrink-0"
-                    style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+                    className="text-white/45 flex-shrink-0"
+                    style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
                   >
                     {formatTime(currentTime)}
                   </span>
@@ -1959,7 +2094,7 @@ export function VisualizerCore({
               <div className="flex items-center gap-0.5">
                 <button
                   onClick={toggleMute}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-75"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-instant"
                   title={isMuted ? "Unmute" : "Mute"}
                 >
                   {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
@@ -1967,7 +2102,7 @@ export function VisualizerCore({
                 {showLibraryButton && onLibraryToggle && !journeyActive && (
                   <button
                     onClick={onLibraryToggle}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-75 ${
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-colors duration-instant ${
                       libraryOpen ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
                     }`}
                     title="Library"
@@ -1978,21 +2113,21 @@ export function VisualizerCore({
                 {(journeyActive ? onShareJourney : onShareRoom) && (
                   <button
                     onClick={journeyActive ? onShareJourney : onShareRoom}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-75"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-instant"
                     title={journeyActive ? "Share Journey" : "Share"}
                   >
                     <Share2 className="h-4 w-4" />
                   </button>
                 )}
                 {exitLabel === "back" ? (
-                  <button
+                  <Button
+                    variant="glass"
                     onClick={onExit}
-                    className="flex items-center px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
-                    style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
+                    className={cn(GLASS_PILL, "min-h-11 text-[0.68rem]")}
                     title="Studio"
                   >
                     Studio
-                  </button>
+                  </Button>
                 ) : (
                   <button
                     onClick={onExit}
@@ -2005,7 +2140,7 @@ export function VisualizerCore({
                 {onSignOut && (
                   <button
                     onClick={onSignOut}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/30 hover:text-white/60 transition-colors duration-75"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/45 hover:text-white/70 transition-colors duration-instant"
                     title="Sign out"
                   >
                     <LogOut className="h-3.5 w-3.5" />
@@ -2019,14 +2154,14 @@ export function VisualizerCore({
           {journeyBrowsing && !journeyActive && (
             <div className="flex items-center justify-end px-2" style={{ height: "44px" }}>
               {exitLabel === "back" ? (
-                <button
+                <Button
+                  variant="glass"
                   onClick={onExit}
-                  className="flex items-center px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
-                  style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
+                  className={cn(GLASS_PILL, "min-h-11 text-[0.68rem]")}
                   title="Studio"
                 >
                   Studio
-                </button>
+                </Button>
               ) : (
                 <button
                   onClick={onExit}
@@ -2086,7 +2221,7 @@ export function Visualizer({ audioElement, onClose, analysis }: VisualizerProps)
   }, [handleKeyDown]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
+    <div className="fixed inset-0 z-50 bg-void">
       {analyser && dataArray && (
         <VisualizerCore
           analyser={analyser}

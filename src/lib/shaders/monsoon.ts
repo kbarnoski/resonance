@@ -31,22 +31,31 @@ void main() {
     vec3(1.0, 1.0, 1.0), vec3(0.5, 0.55, 0.7));
   color = mix(color, cloudColor, clouds * 0.7);
 
-  // Lightning flash driven by bass peaks
-  float lightningTrigger = smoothstep(0.7, 0.95, u_bass);
-  float lightningFlicker = step(0.92, fract(sin(floor(u_time * 30.0) * 43758.5453) * 0.5 + 0.5));
-  float lightning = lightningTrigger * lightningFlicker;
+  // Distant lightning — slow-seeded (~0.25 Hz), enveloped glow. Bass raises
+  // intensity but is bounded, so no input level can produce a strobe.
+  float boltCycle = u_time * 0.25;
+  float boltSeed = floor(boltCycle);
+  float boltPhase = fract(boltCycle);
 
-  // Lightning bolt — jagged line from top
-  float boltX = snoise(vec2(floor(u_time * 8.0), 0.0)) * 0.3;
-  float boltDist = abs(uv.x - boltX - snoise(vec2(uv.y * 8.0, floor(u_time * 8.0))) * 0.08);
+  // Gentle rise, long fall — no binary flicker
+  float lightningEnv = smoothstep(0.0, 0.18, boltPhase) * smoothstep(1.0, 0.35, boltPhase);
+  // Graded gate: some cycles bright, some barely visible
+  float lightningGate = smoothstep(0.3, 0.9, fract(sin(boltSeed * 127.1) * 43758.5453));
+  float lightningTrigger = 0.4 + smoothstep(0.7, 0.95, u_bass) * 0.6;
+  float lightning = lightningTrigger * lightningEnv * lightningGate;
+
+  // Lightning bolt — jagged line from top, position held per cycle
+  float boltX = snoise(vec2(boltSeed, 0.0)) * 0.3;
+  float boltDist = abs(uv.x - boltX - snoise(vec2(uv.y * 8.0, boltSeed)) * 0.08);
   float bolt = smoothstep(0.015, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y);
   float boltGlow = smoothstep(0.15, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y) * 0.3;
   vec3 boltColor = palette(0.65 + paletteShift, vec3(0.7, 0.7, 0.9), vec3(0.3, 0.3, 0.2),
     vec3(1.0, 1.0, 1.0), vec3(0.0, 0.1, 0.3));
   color += (bolt + boltGlow) * boltColor * lightning;
 
-  // Flash illumination on whole scene
-  color += lightning * 0.15 * vec3(0.6, 0.65, 0.9);
+  // Localized illumination — soft glow around the bolt, not full-frame
+  float sceneGlow = smoothstep(0.6, 0.0, abs(uv.x - boltX)) * smoothstep(-0.4, 0.6, uv.y);
+  color += lightning * sceneGlow * 0.1 * vec3(0.6, 0.65, 0.9);
 
   // Rain layers with parallax depth (5 layers)
   float rainAccum = 0.0;

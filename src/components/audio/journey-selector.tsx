@@ -12,6 +12,7 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 import { ensureResumed, primeAudioElement } from "@/lib/audio/audio-engine";
 import { createClient } from "@/lib/supabase/client";
 import { ShareSheet } from "@/components/ui/share-sheet";
+import { Button } from "@/components/ui/button";
 import type { Journey } from "@/lib/journeys/types";
 import { PAIRED_TRACKS, PAIRED_STORAGE, applyPairedTrackSearch } from "@/lib/journeys/paired-tracks";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
@@ -77,6 +78,30 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const completedJourneyIds = usePathProgressStore((s) => s.completedJourneyIds);
   const completedCulminationIds = usePathProgressStore((s) => s.completedCulminationIds);
   const grandCulminationUnlocked = usePathProgressStore((s) => s.grandCulminationUnlocked);
+
+  // Fade the selector open/closed (~320ms, the app's enter curve) instead
+  // of popping — the most-touched transition in The Room. `rendered` keeps
+  // the DOM mounted through the fade-out; `visible` drives the opacity.
+  const [rendered, setRendered] = useState(open);
+  const [visible, setVisible] = useState(open);
+  useEffect(() => {
+    if (open) {
+      setRendered(true);
+      // Double-rAF so the initial opacity:0 frame commits before the
+      // transition to 1 starts (otherwise the browser skips the fade).
+      let raf2 = 0;
+      const raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => setVisible(true));
+      });
+      return () => {
+        cancelAnimationFrame(raf1);
+        cancelAnimationFrame(raf2);
+      };
+    }
+    setVisible(false);
+    const t = setTimeout(() => setRendered(false), 340);
+    return () => clearTimeout(t);
+  }, [open]);
 
   // Check AI availability on open
   useEffect(() => {
@@ -392,7 +417,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   // Must live above any conditional return to respect Rules of Hooks.
   const selectTokenRef = useRef(0);
 
-  if (!open) return null;
+  if (!rendered) return null;
 
   const selectJourney = async (journey: Journey, withAi: boolean) => {
     // Unlock AudioContext AND the HTMLAudioElement in the user gesture context —
@@ -685,7 +710,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           translucent fill. */}
       <style>{getDeviceTier() === "high" ? `
         .jcard {
-          transition: background-color 0.15s ease, border-color 0.15s ease;
+          transition: background-color var(--duration-instant) ease, border-color var(--duration-instant) ease;
           -webkit-backdrop-filter: brightness(2.2) saturate(1.2) blur(24px);
           backdrop-filter: brightness(2.2) saturate(1.2) blur(24px);
         }
@@ -701,7 +726,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         }
       ` : `
         .jcard {
-          transition: background-color 0.15s ease, border-color 0.15s ease;
+          transition: background-color var(--duration-instant) ease, border-color var(--duration-instant) ease;
           background-color: rgba(255,255,255,0.025);
         }
         .jcard:not(.jcard-active):hover {
@@ -716,7 +741,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
            so the entry point to the album doesn't feel dead. */
         .wh-path-card {
           transform: translateY(0);
-          transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+          transition: background-color var(--duration-instant) ease, border-color var(--duration-instant) ease, transform var(--duration-instant) ease, box-shadow var(--duration-instant) ease;
         }
         .wh-path-card:hover {
           background-color: rgba(255,255,255,0.055) !important;
@@ -728,7 +753,15 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       {/* Full-area journey browser — solid black, no blur */}
       <div
         className="absolute inset-0 overflow-y-auto overflow-x-hidden"
-        style={{ zIndex: 80, backgroundColor: "#000", willChange: "scroll-position", overscrollBehaviorY: "contain" }}
+        style={{
+          zIndex: 80,
+          backgroundColor: "#000",
+          willChange: "scroll-position",
+          overscrollBehaviorY: "contain",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 320ms cubic-bezier(0.16, 1, 0.3, 1)",
+          pointerEvents: visible ? "auto" : "none",
+        }}
       >
         <div className="mx-auto px-5 md:px-8 pt-10" style={{ maxWidth: "72rem", paddingBottom: "calc(6rem + env(safe-area-inset-bottom, 0px))" }}>
 
@@ -744,13 +777,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   )}
                   <button
                     onClick={() => setView(tab)}
-                    className="relative pb-1.5 transition-colors duration-150"
+                    className="relative pb-1.5 transition-colors duration-instant"
                     style={{
                       fontFamily: "var(--font-geist-mono)",
                       fontSize: "0.72rem",
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
-                      color: view === tab ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.3)",
+                      color: view === tab ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.45)",
                     }}
                   >
                     {tab === "journeys" ? "Journeys" : "Paths"}
@@ -773,27 +806,15 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   sidebar Tier-2 buttons. Outlined ghost at rest, faint
                   accent tint on hover, accent only on the icon.
                   Cursor pointer explicit for Tailwind v4 preflight. */}
-              <button
+              <Button
+                variant="glass"
                 onClick={() => router.push("/create")}
-                className="flex items-center gap-2 px-3 py-2 rounded-md text-white/65 hover:text-white/90 transition-colors duration-150 cursor-pointer"
-                style={{
-                  fontSize: "0.78rem",
-                  fontFamily: "var(--font-geist-sans)",
-                  letterSpacing: "0.01em",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
-                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-                }}
+                className="h-auto gap-2 rounded-md bg-transparent px-3 py-2 text-[0.78rem] font-normal tracking-[0.01em] text-white/65 cursor-pointer hover:border-violet-500/25 hover:bg-violet-500/[0.06] hover:text-white/90"
+                style={{ fontFamily: "var(--font-geist-sans)" }}
               >
-                <Sparkles className="h-3.5 w-3.5" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
+                <Sparkles className="size-3.5" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
                 Create Journey
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -803,9 +824,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
               <span
-                className="text-white/30"
+                className="text-white/45"
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.68rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -859,7 +880,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         backgroundColor: "rgba(255,255,255,0.02)",
                         border: `1px solid rgba(255,255,255,0.08)`,
                         padding: "16px 20px",
-                        transition: "all 0.15s ease",
                       }}
                       onClick={openPath}
                       onKeyDown={(e) => {
@@ -893,7 +913,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           </span>
                           {path.subtitle && (
                             <span
-                              className="text-white/35 block mt-0.5"
+                              className="text-white/45 block mt-0.5"
                               style={{
                                 fontSize: "0.68rem",
                                 fontFamily: "var(--font-geist-mono)",
@@ -908,7 +928,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Copy share link"
                             onClick={copyLink}
-                            className="p-1.5 rounded-md text-white/30 hover:text-white/80 transition-colors shrink-0 cursor-pointer"
+                            className="p-1.5 rounded-md text-white/45 hover:text-white/80 transition-colors duration-instant shrink-0 cursor-pointer"
                             title="Copy share link"
                           >
                             <Share2 className="h-3.5 w-3.5" />
@@ -935,8 +955,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           <span
                             style={{
                               fontFamily: "var(--font-geist-mono)",
-                              fontSize: "0.6rem",
-                              color: "rgba(255,255,255,0.3)",
+                              fontSize: "0.68rem",
+                              color: "rgba(255,255,255,0.45)",
                               marginLeft: "0.4rem",
                             }}
                           >
@@ -946,7 +966,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         <span
                           style={{
                             fontFamily: "var(--font-geist-mono)",
-                            fontSize: "0.6rem",
+                            fontSize: "0.68rem",
                             letterSpacing: "0.14em",
                             textTransform: "uppercase",
                             color: path.accent,
@@ -1015,7 +1035,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             {path.name}
                           </span>
                           <span
-                            className="text-white/35 block mt-0.5"
+                            className="text-white/45 block mt-0.5"
                             style={{
                               fontSize: "0.68rem",
                               fontFamily: "var(--font-geist-mono)",
@@ -1025,7 +1045,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           </span>
                         </div>
                         <ChevronDown
-                          className="h-3.5 w-3.5 text-white/20 shrink-0 mt-1 transition-transform duration-200"
+                          className="h-3.5 w-3.5 text-white/20 shrink-0 mt-1 transition-transform duration-fast"
                           style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0)" }}
                         />
                       </div>
@@ -1047,8 +1067,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         <span
                           style={{
                             fontFamily: "var(--font-geist-mono)",
-                            fontSize: "0.6rem",
-                            color: "rgba(255,255,255,0.3)",
+                            fontSize: "0.68rem",
+                            color: "rgba(255,255,255,0.45)",
                             marginLeft: "0.4rem",
                           }}
                         >
@@ -1087,8 +1107,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                                 <span
                                   style={{
                                     fontFamily: "var(--font-geist-mono)",
-                                    fontSize: "0.6rem",
-                                    color: "rgba(255,255,255,0.25)",
+                                    fontSize: "0.68rem",
+                                    color: "rgba(255,255,255,0.45)",
                                     width: "1rem",
                                     textAlign: "right",
                                   }}
@@ -1175,8 +1195,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                               <span
                                 style={{
                                   fontFamily: "var(--font-geist-mono)",
-                                  fontSize: "0.65rem",
-                                  color: "rgba(255,255,255,0.25)",
+                                  fontSize: "0.68rem",
+                                  color: "rgba(255,255,255,0.45)",
                                 }}
                               >
                                 Complete all journeys to reveal
@@ -1239,8 +1259,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   <span
                     style={{
                       fontFamily: "var(--font-geist-mono)",
-                      fontSize: "0.65rem",
-                      color: "rgba(255,255,255,0.25)",
+                      fontSize: "0.68rem",
+                      color: "rgba(255,255,255,0.45)",
                     }}
                   >
                     the infinite inner landscape
@@ -1269,9 +1289,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   style={{ backgroundColor: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.15)" }}
                 />
                 <span
-                  className="text-white/30"
+                  className="text-white/45"
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.68rem",
                     fontFamily: "var(--font-geist-mono)",
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
@@ -1326,7 +1346,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             {journey.name}
                           </span>
                           <span
-                            className="text-white/35 truncate"
+                            className="text-white/45 truncate"
                             style={{
                               fontSize: "0.75rem",
                               fontFamily: "var(--font-geist-mono)",
@@ -1338,9 +1358,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         <div className="flex items-center gap-2 shrink-0 ml-3">
                           {isActive && (
                             <span
-                              className="text-white/40"
+                              className="text-white/45"
                               style={{
-                                fontSize: "0.6rem",
+                                fontSize: "0.68rem",
                                 fontFamily: "var(--font-geist-mono)",
                                 letterSpacing: "0.08em",
                                 textTransform: "uppercase",
@@ -1353,7 +1373,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Edit journey"
                             onClick={(e) => { e.stopPropagation(); window.location.href = `/edit/${journey.id}`; }}
-                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Edit"
                           >
                             <Pencil className="h-3 w-3" />
@@ -1362,7 +1382,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Share journey"
                             onClick={(e) => handleShare(journey.id, journey.name, e)}
-                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Share"
                             disabled={sharingId === journey.id}
                           >
@@ -1372,7 +1392,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Delete journey"
                             onClick={(e) => handleDelete(journey.id, e)}
-                            className={`p-1.5 rounded-md text-white/45 hover:text-red-400/90 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-red-400/90 transition-[color,opacity] duration-instant ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Delete"
                             disabled={deletingId === journey.id}
                           >
@@ -1405,9 +1425,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
               <span
-                className="text-white/30"
+                className="text-white/45"
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.68rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -1455,9 +1475,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           }}
                         />
                         <span
-                          className="text-white/35"
+                          className="text-white/45"
                           style={{
-                            fontSize: "0.6rem",
+                            fontSize: "0.68rem",
                             fontFamily: "var(--font-geist-mono)",
                             letterSpacing: "0.1em",
                             textTransform: "uppercase",
@@ -1471,9 +1491,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           <div
                             className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
                             style={{
-                              fontSize: "0.55rem",
+                              fontSize: "0.68rem",
                               fontFamily: "var(--font-geist-mono)",
-                              color: "rgba(255, 255, 255, 0.25)",
+                              color: "rgba(255, 255, 255, 0.45)",
                             }}
                           >
                             <Sparkles className="h-2 w-2" />
@@ -1484,7 +1504,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           type="button"
                           aria-label="Share journey"
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all opacity-0 group-hover:opacity-100"
+                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant opacity-0 group-hover:opacity-100"
                           title="Share"
                           disabled={sharingId === journey.id}
                         >
@@ -1521,7 +1541,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     </div>
 
                     <p
-                      className="text-white/35 mb-2"
+                      className="text-white/45 mb-2"
                       style={{
                         fontSize: "0.72rem",
                         fontFamily: "var(--font-geist-mono)",
@@ -1532,7 +1552,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
                     {journey.description && (
                       <p
-                        className="text-white/40 mb-3"
+                        className="text-white/45 mb-3"
                         style={{
                           fontSize: "0.68rem",
                           fontFamily: "var(--font-geist-mono)",
@@ -1555,9 +1575,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
               <span
-                className="text-white/30"
+                className="text-white/45"
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.68rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -1621,7 +1641,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             {journey.name}
                           </span>
                           <span
-                            className="block text-white/35 mt-0.5"
+                            className="block text-white/45 mt-0.5"
                             style={{
                               fontSize: "0.75rem",
                               fontFamily: "var(--font-geist-mono)",
@@ -1635,9 +1655,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       <div className="flex items-center gap-2 shrink-0">
                         {isActive && (
                           <span
-                            className="text-white/40"
+                            className="text-white/45"
                             style={{
-                              fontSize: "0.6rem",
+                              fontSize: "0.68rem",
                               fontFamily: "var(--font-geist-mono)",
                               letterSpacing: "0.08em",
                               textTransform: "uppercase",
@@ -1650,9 +1670,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           <div
                             className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
                             style={{
-                              fontSize: "0.55rem",
+                              fontSize: "0.68rem",
                               fontFamily: "var(--font-geist-mono)",
-                              color: "rgba(255, 255, 255, 0.25)",
+                              color: "rgba(255, 255, 255, 0.45)",
                             }}
                           >
                             <Sparkles className="h-2 w-2" />
@@ -1661,7 +1681,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         )}
                         <button
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                          className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                           title="Share"
                           disabled={sharingId === journey.id}
                         >
@@ -1692,9 +1712,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           <div className="flex items-center gap-4 mb-8">
             <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
             <span
-              className="text-white/30"
+              className="text-white/45"
               style={{
-                fontSize: "0.65rem",
+                fontSize: "0.68rem",
                 fontFamily: "var(--font-geist-mono)",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
@@ -1725,9 +1745,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   }}
                 />
                 <span
-                  className="text-white/35"
+                  className="text-white/45"
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.68rem",
                     fontFamily: "var(--font-geist-mono)",
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
@@ -1790,7 +1810,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                               {journey.name}
                             </span>
                             <span
-                              className="block text-white/35 mt-0.5"
+                              className="block text-white/45 mt-0.5"
                               style={{
                                 fontSize: "0.75rem",
                                 fontFamily: "var(--font-geist-mono)",
@@ -1804,9 +1824,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         <div className="flex items-center gap-2 shrink-0">
                           {isActive && (
                             <span
-                              className="text-white/40"
+                              className="text-white/45"
                               style={{
-                                fontSize: "0.6rem",
+                                fontSize: "0.68rem",
                                 fontFamily: "var(--font-geist-mono)",
                                 letterSpacing: "0.08em",
                                 textTransform: "uppercase",
@@ -1819,9 +1839,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             <div
                               className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
                               style={{
-                                fontSize: "0.55rem",
+                                fontSize: "0.68rem",
                                 fontFamily: "var(--font-geist-mono)",
-                                color: "rgba(255, 255, 255, 0.25)",
+                                color: "rgba(255, 255, 255, 0.45)",
                               }}
                             >
                               <Sparkles className="h-2 w-2" />
@@ -1832,7 +1852,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Share journey"
                             onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Share"
                             disabled={sharingId === journey.id}
                           >
@@ -1905,9 +1925,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           }}
                         />
                         <span
-                          className="text-white/35"
+                          className="text-white/45"
                           style={{
-                            fontSize: "0.6rem",
+                            fontSize: "0.68rem",
                             fontFamily: "var(--font-geist-mono)",
                             letterSpacing: "0.1em",
                             textTransform: "uppercase",
@@ -1921,9 +1941,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           <div
                             className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
                             style={{
-                              fontSize: "0.55rem",
+                              fontSize: "0.68rem",
                               fontFamily: "var(--font-geist-mono)",
-                              color: "rgba(255, 255, 255, 0.25)",
+                              color: "rgba(255, 255, 255, 0.45)",
                             }}
                           >
                             <Sparkles className="h-2 w-2" />
@@ -1934,7 +1954,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           type="button"
                           aria-label="Share journey"
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all opacity-0 group-hover:opacity-100"
+                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-[color,opacity] duration-instant opacity-0 group-hover:opacity-100"
                           title="Share"
                           disabled={sharingId === journey.id}
                         >
@@ -1973,7 +1993,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
                     {/* Subtitle */}
                     <p
-                      className="text-white/35 mb-2"
+                      className="text-white/45 mb-2"
                       style={{
                         fontSize: "0.72rem",
                         fontFamily: "var(--font-geist-mono)",
@@ -1985,7 +2005,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     {/* Description — 2 line clamp */}
                     {journey.description && (
                       <p
-                        className="text-white/40 mb-3 line-clamp-2"
+                        className="text-white/45 mb-3 line-clamp-2"
                         style={{
                           fontSize: "0.68rem",
                           fontFamily: "var(--font-geist-mono)",
@@ -2031,9 +2051,15 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             aria-label="Cancel delete"
             className="fixed inset-0 z-[70]"
             style={{
-              backdropFilter: "blur(12px) saturate(1.1)",
-              WebkitBackdropFilter: "blur(12px) saturate(1.1)",
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              // backdrop-filter re-samples the live visualizer behind the
+              // scrim every frame — high tier only; others get a deeper tint.
+              ...(getDeviceTier() === "high"
+                ? {
+                    backdropFilter: "blur(12px) saturate(1.1)",
+                    WebkitBackdropFilter: "blur(12px) saturate(1.1)",
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                  }
+                : { backgroundColor: "rgba(0, 0, 0, 0.78)" }),
             }}
             onClick={() => setConfirmDelete(null)}
             onKeyDown={(e) => {
@@ -2067,14 +2093,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 This can’t be undone.
               </p>
               <div className="flex gap-3 justify-end">
-                <button
-                  type="button"
+                <Button
+                  variant="glass"
                   onClick={() => setConfirmDelete(null)}
-                  className="px-4 py-2 rounded-lg text-sm text-white/60 hover:text-white/90 transition-colors"
-                  style={{ border: "1px solid rgba(255,255,255,0.12)" }}
+                  className="h-auto px-4 py-2 text-sm font-normal"
                 >
                   Cancel
-                </button>
+                </Button>
                 <button
                   type="button"
                   onClick={performDelete}

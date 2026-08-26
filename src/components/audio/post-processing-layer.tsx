@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { getDeviceTier } from "@/lib/audio/device-tier";
 
 /** Expand 3-char hex (#RGB) to 6-char (#RRGGBB) so alpha bytes can be appended */
 function hex6(color: string): string {
@@ -15,7 +16,6 @@ interface PostProcessingLayerProps {
   vignette: number;           // 0-1
   bloomIntensity: number;     // 0-1
   audioAmplitude: number;     // 0-1
-  filmGrain: number;          // 0-1
   particleDensity: number;    // 0-1
   halation: number;           // 0-1
   palette: {
@@ -37,45 +37,21 @@ interface Particle {
   maxLife: number;
 }
 
-// Pre-generate grain textures once (4 variants for variety)
-const GRAIN_TEXTURES: HTMLCanvasElement[] = [];
-const GRAIN_SIZE = 128;
-
-function ensureGrainTextures() {
-  if (GRAIN_TEXTURES.length > 0) return;
-  for (let t = 0; t < 4; t++) {
-    const c = document.createElement("canvas");
-    c.width = GRAIN_SIZE;
-    c.height = GRAIN_SIZE;
-    const g = c.getContext("2d")!;
-    const img = g.createImageData(GRAIN_SIZE, GRAIN_SIZE);
-    const d = img.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const v = Math.random() * 255;
-      d[i] = v;
-      d[i + 1] = v;
-      d[i + 2] = v;
-      d[i + 3] = 255;
-    }
-    g.putImageData(img, 0, 0);
-    GRAIN_TEXTURES.push(c);
-  }
-}
-
 /**
- * Post-processing overlay layer (canvas-based, 60fps):
+ * Post-processing overlay layer (canvas-based, tier-capped rAF):
  * - Vignette (radial gradient)
  * - Bloom glow (center radial gradient)
- * - Film grain (pre-generated textures, cycled)
  * - Halation (warm glow)
  * - Particles (floating luminous motes)
+ *
+ * Film grain is banned globally (design law) — the grain pipeline was
+ * removed entirely, not just zeroed.
  */
 export function PostProcessingLayer({
   chromaticAberration: _chromaticAberration,
   vignette,
   bloomIntensity,
   audioAmplitude,
-  filmGrain,
   particleDensity,
   halation,
   palette,
@@ -84,12 +60,13 @@ export function PostProcessingLayer({
   const animRef = useRef<number>(0);
   const timeRef = useRef(0);
   const particlesRef = useRef<Particle[]>([]);
-  const grainIndexRef = useRef(0);
+  // CSS size cached by ResizeObserver — avoids per-frame layout reads
+  const sizeRef = useRef({ w: 0, h: 0 });
 
   // Store all props in a ref — rAF loop reads from here instead of closure.
   // This prevents the effect from tearing down/recreating on every prop change.
-  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, filmGrain, particleDensity, halation, palette });
-  propsRef.current = { vignette, bloomIntensity, audioAmplitude, filmGrain, particleDensity, halation, palette };
+  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, palette });
+  propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, palette };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -97,12 +74,39 @@ export function PostProcessingLayer({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    ensureGrainTextures();
+    sizeRef.current = { w: canvas.clientWidth, h: canvas.clientHeight };
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        sizeRef.current = { w: entry.contentRect.width, h: entry.contentRect.height };
+      }
+    });
+    resizeObserver.observe(canvas);
+
+    // Tier frame cap — mirrors the shader visualizer's cap (30fps low,
+    // 45fps medium, uncapped high). Soft overlays don't need more.
+    const tier = getDeviceTier();
+    const minFrameMs = tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
+    let lastFrameTime = 0;
+
+    // Gradients are cached and rebuilt only when their inputs change;
+    // per-frame intensity is applied via globalAlpha (identical output,
+    // no per-frame CanvasGradient allocations).
+    let vigGradient: CanvasGradient | null = null;
+    let bloomGradient: CanvasGradient | null = null;
+    let gradientSizeKey = "";
+    let halGradient: CanvasGradient | null = null;
+    let halKey = "";
 
     let lastTime = performance.now();
 
     function render(now: number) {
       if (!canvas || !ctx) return;
+
+      if (minFrameMs > 0 && now - lastFrameTime < minFrameMs) {
+        animRef.current = requestAnimationFrame(render);
+        return;
+      }
+      lastFrameTime = now;
 
       // Read current prop values from ref (always fresh, no effect restart needed)
       const pp = propsRef.current;
@@ -113,75 +117,70 @@ export function PostProcessingLayer({
       const t = timeRef.current;
 
       const dpr = Math.min(devicePixelRatio, 1); // Cap at 1x — blurry effects don't need retina
-      const cw = canvas.clientWidth;
-      const ch = canvas.clientHeight;
+      const targetW = Math.max(1, Math.round(sizeRef.current.w * dpr));
+      const targetH = Math.max(1, Math.round(sizeRef.current.h * dpr));
 
       // Only resize when needed
-      if (canvas.width !== cw * dpr || canvas.height !== ch * dpr) {
-        canvas.width = cw * dpr;
-        canvas.height = ch * dpr;
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
       }
 
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
+      const sizeKey = `${w}x${h}`;
+      if (gradientSizeKey !== sizeKey) {
+        gradientSizeKey = sizeKey;
+        vigGradient = ctx.createRadialGradient(w / 2, h / 2, w * 0.3, w / 2, h / 2, w * 0.8);
+        vigGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        vigGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+        bloomGradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.5);
+        bloomGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+        bloomGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        halGradient = null; // size changed — rebuild on next use
+      }
+
       // --- Vignette ---
-      if (pp.vignette > 0.01) {
-        const gradient = ctx.createRadialGradient(
-          w / 2, h / 2, w * 0.3,
-          w / 2, h / 2, w * 0.8
-        );
-        gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-        gradient.addColorStop(1, `rgba(0, 0, 0, ${pp.vignette * 0.55})`);
-        ctx.fillStyle = gradient;
+      if (pp.vignette > 0.01 && vigGradient) {
+        ctx.globalAlpha = pp.vignette * 0.55;
+        ctx.fillStyle = vigGradient;
         ctx.fillRect(0, 0, w, h);
+        ctx.globalAlpha = 1;
       }
 
       // --- Bloom glow ---
-      if (pp.bloomIntensity > 0.2) {
-        const glowGradient = ctx.createRadialGradient(
-          w / 2, h / 2, 0,
-          w / 2, h / 2, w * 0.5
-        );
+      if (pp.bloomIntensity > 0.2 && bloomGradient) {
         const glowAlpha = (pp.bloomIntensity - 0.2) * 0.15 * (0.5 + pp.audioAmplitude * 0.5);
-        glowGradient.addColorStop(0, `rgba(255, 255, 255, ${glowAlpha})`);
-        glowGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
         ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = glowGradient;
+        ctx.globalAlpha = glowAlpha;
+        ctx.fillStyle = bloomGradient;
         ctx.fillRect(0, 0, w, h);
+        ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = "source-over";
       }
 
       // --- Halation (warm glow) ---
       if (pp.halation > 0.02) {
-        const halGradient = ctx.createRadialGradient(
-          w * (0.5 + Math.sin(t * 0.3) * 0.1),
-          h * (0.5 + Math.cos(t * 0.2) * 0.1),
-          0,
-          w / 2, h / 2, w * 0.6
-        );
+        const paletteKey = `${sizeKey}|${pp.palette.glow}|${pp.palette.accent}`;
+        if (!halGradient || halKey !== paletteKey) {
+          halKey = paletteKey;
+          halGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, w * 0.6);
+          halGradient.addColorStop(0, `${hex6(pp.palette.glow)}ff`);
+          halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}80`);
+          halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        }
         const halAlpha = pp.halation * 0.12 * (0.6 + pp.audioAmplitude * 0.4);
-        const a1 = Math.round(halAlpha * 255).toString(16).padStart(2, "0");
-        const a2 = Math.round(halAlpha * 128).toString(16).padStart(2, "0");
-        halGradient.addColorStop(0, `${hex6(pp.palette.glow)}${a1}`);
-        halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}${a2}`);
-        halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        const cx = w * (0.5 + Math.sin(t * 0.3) * 0.1);
+        const cy = h * (0.5 + Math.cos(t * 0.2) * 0.1);
+        ctx.save();
+        ctx.translate(cx, cy);
         ctx.globalCompositeOperation = "screen";
+        ctx.globalAlpha = halAlpha;
         ctx.fillStyle = halGradient;
-        ctx.fillRect(0, 0, w, h);
-        ctx.globalCompositeOperation = "source-over";
-      }
-
-      // --- Film grain (pre-generated, cycled) ---
-      if (pp.filmGrain > 0.02 && GRAIN_TEXTURES.length > 0) {
-        const grainAlpha = pp.filmGrain * (0.5 + pp.audioAmplitude * 0.3);
-        grainIndexRef.current = (grainIndexRef.current + 1) % GRAIN_TEXTURES.length;
-        ctx.globalCompositeOperation = "overlay";
-        ctx.globalAlpha = grainAlpha * 0.4;
-        ctx.drawImage(GRAIN_TEXTURES[grainIndexRef.current], 0, 0, w, h);
-        ctx.globalAlpha = 1;
-        ctx.globalCompositeOperation = "source-over";
+        ctx.fillRect(-cx, -cy, w, h);
+        ctx.restore();
       }
 
       // --- Particles ---
@@ -243,6 +242,7 @@ export function PostProcessingLayer({
 
     return () => {
       cancelAnimationFrame(animRef.current);
+      resizeObserver.disconnect();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

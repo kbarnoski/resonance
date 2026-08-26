@@ -31,6 +31,12 @@ const mocks = vi.hoisted(() => {
 
 vi.mock("./audio-engine", () => ({
   getAudioEngine: () => mocks.engine,
+  // Gain-ramp fade before pause — modeled as a microtask so tests can
+  // await the "ramp" without real timers.
+  fadeOutThen: vi.fn(async (action: () => void) => {
+    await Promise.resolve();
+    action();
+  }),
 }));
 vi.mock("@/lib/tauri", () => ({
   isDesktopApp: () => false,
@@ -245,7 +251,7 @@ describe("activePath", () => {
 });
 
 describe("stopJourney", () => {
-  it("clears journey state, stops engines, and pauses the audio element", () => {
+  it("clears journey state, stops engines, and pauses the audio element after the fade", async () => {
     // stopJourney only touches the audio element behind a window guard
     vi.stubGlobal("window", {});
     useAudioStore.setState({ activeJourney: fakeJourney, isPlaying: true, journeyProgress: 0.5 });
@@ -257,10 +263,26 @@ describe("stopJourney", () => {
     expect(s.journeyProgress).toBe(0);
     expect(s.isPlaying).toBe(false);
     expect(mocks.journeyEngine.stop).toHaveBeenCalledOnce();
-    expect(mocks.audioElement.pause).toHaveBeenCalledOnce();
     expect(mocks.imageService.cancelInFlight).toHaveBeenCalledOnce();
+    // The pause rides a ~200ms gain ramp (never-abrupt law) — mocked as a
+    // microtask here. It must NOT have fired synchronously...
+    expect(mocks.audioElement.pause).not.toHaveBeenCalled();
+    // ...but lands once the fade settles.
+    await new Promise((r) => setTimeout(r, 0));
+    expect(mocks.audioElement.pause).toHaveBeenCalledOnce();
     // Outside installation mode, falls back to a random ambient 3D shader
     expect(MODES_3D.has(s.vizMode)).toBe(true);
+  });
+
+  it("does not pause if a new journey resumed playback during the fade", async () => {
+    vi.stubGlobal("window", {});
+    useAudioStore.setState({ activeJourney: fakeJourney, isPlaying: true });
+    useAudioStore.getState().stopJourney();
+    // A rapid path-dot click starts the next journey mid-ramp
+    useAudioStore.setState({ isPlaying: true });
+    vi.unstubAllGlobals();
+    await new Promise((r) => setTimeout(r, 0));
+    expect(mocks.audioElement.pause).not.toHaveBeenCalled();
   });
 
   it("in installation mode keeps the engine's last shader (no flash)", () => {

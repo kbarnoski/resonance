@@ -110,23 +110,33 @@ void main() {
   float lightningZone = smoothstep(0.15, 0.3, dist) * smoothstep(0.8, 0.5, dist);
   lightningZone *= cloudDensity;
 
+  // Slow-seeded, enveloped shimmer — each arm re-seeds ~every 3.3s (≈0.3 Hz)
+  // with a smooth attack/decay envelope. Never a binary on/off strobe.
   float lightningFlash = 0.0;
   for (int l = 0; l < 4; l++) {
     float fl = float(l);
-    float flashTrigger = step(0.92, fract(sin(floor(u_time * 15.0 + fl * 47.0) * 127.1) * 43758.5453));
-    float flashAngle = fract(sin(fl * 311.7 + floor(u_time * 8.0)) * 43758.5453) * 6.28;
-    float flashDist = 0.2 + fract(sin(fl * 173.3 + floor(u_time * 8.0)) * 12345.6) * 0.4;
+    float cycle = u_time * 0.3 + fl * 0.27;
+    float seed = floor(cycle);
+    float phase = fract(cycle);
+
+    // Gentle rise, long fall — distant sheet-lightning glow
+    float env = smoothstep(0.0, 0.22, phase) * smoothstep(1.0, 0.4, phase);
+    // Graded gate: some cycles glow brighter, some barely at all
+    float gate = smoothstep(0.35, 0.9, fract(sin((seed + fl * 47.0) * 127.1) * 43758.5453));
+
+    float flashAngle = fract(sin(fl * 311.7 + seed) * 43758.5453) * 6.28;
+    float flashDist = 0.2 + fract(sin(fl * 173.3 + seed) * 12345.6) * 0.4;
 
     vec2 flashPos = vec2(cos(flashAngle), sin(flashAngle)) * flashDist + eyeCenter;
-    float flashRadius = 0.05 + u_bass * 0.03;
+    float flashRadius = 0.08 + u_bass * 0.03;
     float flash = smoothstep(flashRadius, 0.0, length(uv - flashPos));
-    lightningFlash += flash * flashTrigger;
+    lightningFlash += flash * env * gate;
   }
 
   vec3 lightningColor = palette(0.65 + paletteShift,
     vec3(0.7, 0.7, 0.9), vec3(0.2, 0.2, 0.15),
     vec3(1.0, 1.0, 1.0), vec3(0.5, 0.55, 0.7));
-  color += lightningFlash * lightningColor * lightningZone * (0.5 + u_treble);
+  color += lightningFlash * lightningColor * lightningZone * (0.4 + u_treble * 0.35);
 
   // Cloud top highlights — simulated sunlight from one direction
   vec2 lightDir = normalize(vec2(0.7, 0.5));

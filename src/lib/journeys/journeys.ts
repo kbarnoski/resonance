@@ -166,6 +166,7 @@ const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // Removed from registry — kept here as a safety net so even a stale cache
   // can't pull them back into rotation.
   "nebula",
+  "depths",
 ];
 
 /** Heavy fragment-shader modes excluded on `low` device tier. The mechanism
@@ -362,7 +363,7 @@ export function defaultPhases(
       intensityMultiplier: 0.4,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.2, rain: 0, drone: 0.3, chime: 0, fire: 0 },
-      filmGrain: 0.03,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.02,
       halation: 0.02,
     },
@@ -390,7 +391,7 @@ export function defaultPhases(
       intensityMultiplier: 0.7,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.4, rain: 0.2, drone: 0.6, chime: 0.3, fire: 0 },
-      filmGrain: 0.06,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.05,
       halation: 0.04,
     },
@@ -419,7 +420,7 @@ export function defaultPhases(
       intensityMultiplier: 1.0,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.7, rain: 0.5, drone: 1.0, chime: 0.6, fire: 0.2 },
-      filmGrain: 0.1,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.08,
       halation: 0.08,
     },
@@ -446,7 +447,7 @@ export function defaultPhases(
       intensityMultiplier: 0.75,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.35, rain: 0.15, drone: 0.5, chime: 0.4, fire: 0 },
-      filmGrain: 0.05,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.04,
       halation: 0.05,
     },
@@ -473,7 +474,7 @@ export function defaultPhases(
       intensityMultiplier: 0.5,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.2, rain: 0.05, drone: 0.25, chime: 0.15, fire: 0 },
-      filmGrain: 0.03,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.02,
       halation: 0.03,
     },
@@ -500,7 +501,7 @@ export function defaultPhases(
       intensityMultiplier: 0.3,
       palette: { primary: "#0a0a0a", secondary: "#1a1a1a", accent: "#666", glow: "#888" },
       ambientLayers: { wind: 0.1, rain: 0, drone: 0.15, chime: 0.1, fire: 0 },
-      filmGrain: 0.02,
+      filmGrain: 0, // film grain banned globally (design law)
       particleDensity: 0.01,
       halation: 0.01,
     },

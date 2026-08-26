@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useState, useCallback } from "react";
+import React, { useRef, useMemo, useState, useCallback, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -1227,6 +1227,18 @@ export function Visualizer3D({
     canvas.addEventListener("webglcontextrestored", onRestored);
     // No cleanup — React remount on key change discards the canvas
     // element (and its listeners) entirely.
+  }, []);
+
+  // Clear any pending force-remount timer on unmount — otherwise it can
+  // fire up to 8s after this Visualizer3D is gone and set state on a
+  // dead component (and bump an epoch nobody renders).
+  useEffect(() => {
+    return () => {
+      if (forceRemountTimerRef.current) {
+        clearTimeout(forceRemountTimerRef.current);
+        forceRemountTimerRef.current = null;
+      }
+    };
   }, []);
 
   if (!isWebGL2Available()) {

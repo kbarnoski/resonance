@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getAudioEngine } from "./audio-engine";
+import { getAudioEngine, fadeOutThen } from "./audio-engine";
 import { isDesktopApp, nativeAudioSeek } from "@/lib/tauri";
 import type { Journey, JourneyPhaseId, JourneyTheme } from "@/lib/journeys/types";
 import type { Realm } from "@/lib/journeys/types";
@@ -509,9 +509,18 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     // before stopJourney), audio-provider may already be unmounting
     // and never reacts to isPlaying=false. Symptom: audio kept
     // playing after the user exited the journey.
+    // Never-abrupt law: ride a ~200ms gain ramp into the pause instead
+    // of hard-cutting. The fade + pause run off a plain timeout, so they
+    // complete even if the provider unmounts mid-navigation.
     try {
       if (typeof window !== "undefined") {
-        getAudioEngine().audioElement.pause();
+        const el = getAudioEngine().audioElement;
+        void fadeOutThen(() => {
+          // A new journey may have started during the ramp (rapid
+          // path-dot clicks / installation handoff) — don't pause it.
+          if (get().isPlaying) return;
+          try { el.pause(); } catch { /* element gone */ }
+        });
       }
     } catch { /* engine not initialized yet */ }
     // In installation mode, set vizMode = engine's last shader so

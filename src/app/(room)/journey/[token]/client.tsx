@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ShaderVisualizer, SHADERS, type VisualizerMode } from "@/components/audio/visualizer";
+import { ShaderVisualizer, BlackFallbackLayer, SHADERS, type VisualizerMode } from "@/components/audio/visualizer";
 import type { Visualizer3DMode } from "@/components/audio/visualizer-3d";
 
 // Lazy-load Visualizer3D so three.js doesn't block first paint on shared journey routes.
@@ -24,6 +24,7 @@ import { createClient } from "@/lib/supabase/client";
 import { MODES_3D, MODES_AI } from "@/lib/shaders";
 import type { Journey, JourneyFrame, JourneyPhaseId } from "@/lib/journeys/types";
 import { Pause, Play, Volume2, VolumeX, Share2, Maximize2, Minimize2, RotateCcw, X } from "lucide-react";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 function formatTime(s: number): string {
   if (!s || isNaN(s)) return "0:00";
@@ -32,9 +33,11 @@ function formatTime(s: number): string {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
 
-// Ambient shaders used as backdrop underneath AI imagery modes (same as main app)
+// Ambient shaders used as backdrop underneath AI imagery modes (same as main
+// app). Every id MUST exist in SHADERS — "nebula" lingered here after its
+// registry removal and produced black backdrops + crossfade stalls.
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "fog", "nebula", "drift",
+  "fog", "drift",
   "tide", "ember",
 ];
 
@@ -47,10 +50,46 @@ function getAiBackdropShader(aiMode: string): VisualizerMode {
 // Throttle frame state updates — match main app (~30fps)
 const FRAME_THROTTLE_MS = 33;
 
-// A/B buffer crossfade constants — must match VisualizerCore
-const SHADER_FADE_RATE = 0.008;
+// A/B buffer crossfade constants — must match VisualizerCore.
+// Fades are time-based (delta-time per rAF tick) so the duration holds on
+// 30–120Hz displays instead of stretching/compressing with frame rate.
+const SHADER_FADE_DURATION_MS = 2100;
 const DUAL_SHADER_MAX_OPACITY = 0.85;
 const TERTIARY_SHADER_MAX_OPACITY = 0.60;
+
+/** Advance a crossfade progress value by real elapsed time. Clamps large
+ *  gaps (background tab, hitchy frame) so fades never visibly jump. */
+function advanceFade(progress: number, elapsedMs: number): number {
+  return Math.min(1, progress + Math.min(elapsedMs, 100) / SHADER_FADE_DURATION_MS);
+}
+
+/** Build the engine event list. On enableBassFlash journeys the white flash
+ *  is a CURATED moment: only hand-placed cue markers may fire it, so
+ *  auto-detected bass_hit analysis events are stripped — a busy analysis
+ *  must not turn the two-beat dark→white angel narrative into strobes.
+ *  (Mirrors the same rule in visualizer-client.tsx.) */
+function buildJourneyEvents(
+  analysisEvents: { time: number; type: string; intensity: number }[],
+  cueMarkers: { time: number; label: string }[],
+  enableBassFlash: boolean | undefined,
+): { time: number; type: string; intensity: number }[] {
+  const autoEvents = analysisEvents
+    .filter((e) => !(enableBassFlash && e.type === "bass_hit"))
+    .map((e) => ({
+      time: e.time,
+      type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
+      intensity: e.intensity,
+    }));
+  if (enableBassFlash && cueMarkers.length > 0) {
+    const manualAsEvents = cueMarkers.map((c) => ({
+      time: c.time,
+      type: "bass_hit" as const,
+      intensity: 1.0,
+    }));
+    return [...autoEvents, ...manualAsEvents];
+  }
+  return autoEvents;
+}
 
 interface SharedJourneyClientProps {
   journey: Journey;
@@ -113,6 +152,15 @@ export function SharedJourneyClient({
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const endedRef = useRef(false);
   const resolvedAudioUrlRef = useRef<string | null>(null);
+  // Progress-store completion marker — set once per playthrough at ≥90%
+  // listened (see tick loop). Waiting for the literal `ended` event made
+  // the culmination effectively unreachable for shared-link visitors.
+  const completionMarkedRef = useRef(false);
+  // Culmination journeys must land in completedCulminationIds — DB/UUID
+  // culminations aren't in JOURNEY_PATHS, so pass an explicit hint.
+  const isCulminationJourney =
+    pathContext?.culmination?.journeyId === journey.id ||
+    !!(journey.theme as { isCulmination?: boolean } | undefined)?.isCulmination;
 
   // Check auth state — show signup CTA for unauthenticated viewers
   useEffect(() => {
@@ -140,6 +188,9 @@ export function SharedJourneyClient({
   const shaderMode = (journeyFrame?.shaderMode ?? journey.phases[0]?.shaderModes[0] ?? "cosmos") as VisualizerMode;
   const [layerAMode, setLayerAMode] = useState<VisualizerMode>(shaderMode);
   const [layerBMode, setLayerBMode] = useState<VisualizerMode | null>(null);
+  // Primary layer that has fully faded out and can suspend its draw loop.
+  // null while a crossfade is in flight (both layers must draw).
+  const [idlePrimaryLayer, setIdlePrimaryLayer] = useState<'a' | 'b' | null>('b');
   const activeLayerRef = useRef<'a' | 'b'>('a');
   const layerADivRef = useRef<HTMLDivElement>(null);
   const layerBDivRef = useRef<HTMLDivElement>(null);
@@ -182,38 +233,50 @@ export function SharedJourneyClient({
   const tertiaryNextReadyCbRef = useRef<(() => void) | null>(null);
   const tertiaryNextReadyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const handleLayerAReady = useCallback(() => {
+  // ok=false → shader compile/link failed. Abort the pending crossfade and
+  // keep the healthy active layer on screen instead of fading into a dead
+  // canvas (matches VisualizerCore).
+  const handleLayerAReady = useCallback((ok: boolean = true) => {
     if (primaryWaitingForRef.current === 'a') {
       clearTimeout(primaryReadyTimeoutRef.current);
       const cb = primaryReadyCbRef.current;
-      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
+      primaryReadyCbRef.current = null;
+      primaryWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleLayerBReady = useCallback(() => {
+  const handleLayerBReady = useCallback((ok: boolean = true) => {
     if (primaryWaitingForRef.current === 'b') {
       clearTimeout(primaryReadyTimeoutRef.current);
       const cb = primaryReadyCbRef.current;
-      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
+      primaryReadyCbRef.current = null;
+      primaryWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleDualLayerAReady = useCallback(() => {
+  const handleDualLayerAReady = useCallback((ok: boolean = true) => {
     if (dualWaitingForRef.current === 'a') {
       clearTimeout(dualReadyTimeoutRef.current);
       const cb = dualReadyCbRef.current;
-      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+      dualReadyCbRef.current = null;
+      dualWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleDualLayerBReady = useCallback(() => {
+  const handleDualLayerBReady = useCallback((ok: boolean = true) => {
     if (dualWaitingForRef.current === 'b') {
       clearTimeout(dualReadyTimeoutRef.current);
       const cb = dualReadyCbRef.current;
-      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+      dualReadyCbRef.current = null;
+      dualWaitingForRef.current = null;
+      if (ok && cb) cb();
     }
   }, []);
-  const handleTertiaryShaderReady = useCallback(() => {
+  const handleTertiaryShaderReady = useCallback((ok: boolean = true) => {
     clearTimeout(tertiaryNextReadyTimeoutRef.current);
     const cb = tertiaryNextReadyCbRef.current;
-    if (cb) { cb(); tertiaryNextReadyCbRef.current = null; }
+    tertiaryNextReadyCbRef.current = null;
+    if (ok && cb) cb();
   }, []);
 
   // Primary shader A/B crossfade — triggered when shaderMode changes
@@ -235,6 +298,15 @@ export function SharedJourneyClient({
     if (activeDivRef.current) activeDivRef.current.style.opacity = "1";
     if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
 
+    // Both layers must draw during the fade — un-suspend the parked one.
+    setIdlePrimaryLayer(null);
+
+    // L15: if the target shader is still mounted (compiled) on the inactive
+    // layer, its onReady already fired and won't fire again — start now
+    // instead of stalling on the 3s safety timeout.
+    const inactiveResidentMode = inactive === 'a' ? layerAMode : layerBMode;
+    const alreadyResident = inactiveResidentMode === shaderMode;
+
     // Set new shader on the inactive layer (compiles in background at opacity 0)
     if (inactive === 'a') setLayerAMode(shaderMode);
     else setLayerBMode(shaderMode);
@@ -242,8 +314,11 @@ export function SharedJourneyClient({
     const startCrossfade = () => {
       if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
       let progress = 0;
+      let lastTs = performance.now();
       const animate = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -253,21 +328,27 @@ export function SharedJourneyClient({
           primaryFadeRef.current = requestAnimationFrame(animate);
         } else {
           activeLayerRef.current = inactive;
+          // Old layer is invisible now — suspend its draw loop.
+          setIdlePrimaryLayer(active);
         }
       };
       primaryFadeRef.current = requestAnimationFrame(animate);
     };
 
-    primaryWaitingForRef.current = inactive;
-    primaryReadyCbRef.current = startCrossfade;
-    // Safety timeout — start crossfade even if onReady never fires (GL context lost, 3D mode)
-    primaryReadyTimeoutRef.current = setTimeout(() => {
-      if (primaryReadyCbRef.current) {
-        primaryReadyCbRef.current();
-        primaryReadyCbRef.current = null;
-        primaryWaitingForRef.current = null;
-      }
-    }, 3000);
+    if (alreadyResident) {
+      startCrossfade();
+    } else {
+      primaryWaitingForRef.current = inactive;
+      primaryReadyCbRef.current = startCrossfade;
+      // Safety timeout — start crossfade even if onReady never fires (GL context lost, 3D mode)
+      primaryReadyTimeoutRef.current = setTimeout(() => {
+        if (primaryReadyCbRef.current) {
+          primaryReadyCbRef.current();
+          primaryReadyCbRef.current = null;
+          primaryWaitingForRef.current = null;
+        }
+      }, 3000);
+    }
 
     return () => {
       cancelAnimationFrame(primaryFadeRef.current);
@@ -312,8 +393,11 @@ export function SharedJourneyClient({
           ? parseFloat(activeDivRef.current.style.opacity || "0") : 0;
 
         let progress = 0;
+        let lastTs = performance.now();
         const animate = () => {
-          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const now = performance.now();
+          progress = advanceFade(progress, now - lastTs);
+          lastTs = now;
           const eased = progress < 0.5
             ? 2 * progress * progress
             : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -327,6 +411,10 @@ export function SharedJourneyClient({
             dualFadeRef.current = requestAnimationFrame(animate);
           } else {
             dualActiveRef.current = inactive;
+            // Old layer finished fading out — null its mode so the canvas
+            // unmounts instead of rendering invisibly forever.
+            if (active === 'a') setDualLayerAMode(null);
+            else setDualLayerBMode(null);
           }
         };
         dualFadeRef.current = requestAnimationFrame(animate);
@@ -342,14 +430,26 @@ export function SharedJourneyClient({
         }
       }, 3000);
     } else {
-      // Dual shader removed — fade out the active layer
-      if (!activeDivRef.current) return;
+      // Dual shader removed — fade out the active layer, then null both
+      // modes so the canvases unmount (no invisible full-screen frag passes).
+      if (!activeDivRef.current) {
+        setDualLayerAMode(null);
+        setDualLayerBMode(null);
+        return;
+      }
       const startOpacity = parseFloat(activeDivRef.current.style.opacity || "0");
-      if (startOpacity <= 0.001) return;
+      if (startOpacity <= 0.001) {
+        setDualLayerAMode(null);
+        setDualLayerBMode(null);
+        return;
+      }
 
       let progress = 0;
+      let lastTs = performance.now();
       const fadeOut = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
@@ -358,6 +458,9 @@ export function SharedJourneyClient({
         }
         if (progress < 1) {
           dualFadeRef.current = requestAnimationFrame(fadeOut);
+        } else {
+          setDualLayerAMode(null);
+          setDualLayerBMode(null);
         }
       };
       dualFadeRef.current = requestAnimationFrame(fadeOut);
@@ -389,14 +492,18 @@ export function SharedJourneyClient({
 
       const startFadeIn = () => {
         let progress = 0;
+        let lastTs = performance.now();
         const fadeIn = () => {
-          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const now = performance.now();
+          progress = advanceFade(progress, now - lastTs);
+          lastTs = now;
           const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
           if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);
           if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
         };
         tertiaryFadeRef.current = requestAnimationFrame(() => {
           if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
+          lastTs = performance.now();
           tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
         });
       };
@@ -422,8 +529,11 @@ export function SharedJourneyClient({
         return;
       }
       let progress = 0;
+      let lastTs = performance.now();
       const fadeOut = () => {
-        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
         const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
         if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(startOpacity * (1 - eased));
         if (progress < 1) {
@@ -523,9 +633,11 @@ export function SharedJourneyClient({
             setIsPlaying(false);
             // Record completion in the path-progress store so custom
             // paths (Welcome Home album, etc.) can unveil their culmination
-            // after every constituent journey is finished.
+            // after every constituent journey is finished. Usually already
+            // recorded by the ≥90% marker in the tick loop — idempotent.
+            completionMarkedRef.current = true;
             try {
-              usePathProgressStore.getState().completeJourney(journey.id);
+              usePathProgressStore.getState().completeJourney(journey.id, { isCulmination: isCulminationJourney });
             } catch {}
           });
 
@@ -619,24 +731,9 @@ export function SharedJourneyClient({
 
     if (dur <= 0) return;
 
-    // Auto-detected events from analysis
-    const autoEvents = analysisEvents.map((e) => ({
-      time: e.time,
-      type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
-      intensity: e.intensity,
-    }));
-
-    // Cue markers as bass_hit events (only for journeys with enableBassFlash)
-    let allEvents = autoEvents;
-    if (journey.enableBassFlash && cueMarkers.length > 0) {
-      const manualAsEvents = cueMarkers.map((c) => ({
-        time: c.time,
-        type: "bass_hit" as const,
-        intensity: 1.0,
-      }));
-      allEvents = [...autoEvents, ...manualAsEvents];
-    }
-
+    // Curated flash rule lives in buildJourneyEvents — auto bass_hits are
+    // stripped on enableBassFlash journeys, cue markers become bass_hits.
+    const allEvents = buildJourneyEvents(analysisEvents, cueMarkers, journey.enableBassFlash);
     if (allEvents.length > 0) {
       engine.setEvents(allEvents, dur);
     }
@@ -651,23 +748,7 @@ export function SharedJourneyClient({
     const onDurationChange = () => {
       if (!audio.duration || !isFinite(audio.duration)) return;
       const engine = getJourneyEngine();
-
-      const autoEvents = analysisEvents.map((e) => ({
-        time: e.time,
-        type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
-        intensity: e.intensity,
-      }));
-
-      let allEvents = autoEvents;
-      if (journey.enableBassFlash && cueMarkers.length > 0) {
-        const manualAsEvents = cueMarkers.map((c) => ({
-          time: c.time,
-          type: "bass_hit" as const,
-          intensity: 1.0,
-        }));
-        allEvents = [...autoEvents, ...manualAsEvents];
-      }
-
+      const allEvents = buildJourneyEvents(analysisEvents, cueMarkers, journey.enableBassFlash);
       if (allEvents.length > 0) {
         engine.setEvents(allEvents, audio.duration);
       }
@@ -716,6 +797,20 @@ export function SharedJourneyClient({
       const timeText = `${formatTime(ct)} / ${formatTime(dur)}`;
       if (timeDisplayRef.current) timeDisplayRef.current.textContent = timeText;
       if (timeDisplayMobileRef.current) timeDisplayMobileRef.current.textContent = timeText;
+
+      // Mark the track complete once ≥90% listened — the album's payoff
+      // must not require every track to play to its literal last sample
+      // (silent tails, an early tap to continue, etc. all count).
+      if (
+        !completionMarkedRef.current &&
+        audio && audio.duration > 0 && isFinite(audio.duration) &&
+        ct / audio.duration >= 0.9
+      ) {
+        completionMarkedRef.current = true;
+        try {
+          usePathProgressStore.getState().completeJourney(journey.id, { isCulmination: isCulminationJourney });
+        } catch {}
+      }
 
       // Throttled frame updates — only push to React at ~30fps
       const now = performance.now();
@@ -826,7 +921,7 @@ export function SharedJourneyClient({
 
   // ─── Shader layer content renderer (matching VisualizerCore) ───
   // No wrapper divs — A/B buffer layers handle their own outer/inner wrappers.
-  const renderLayerContent = (layerMode: VisualizerMode, onShaderReady?: () => void) => {
+  const renderLayerContent = (layerMode: VisualizerMode, onShaderReady?: (ok?: boolean) => void, layerPaused = false) => {
     if (!analyser || !dataArray) return null;
     const layerIs3D = MODES_3D.has(layerMode);
     const layerIsAI = MODES_AI.has(layerMode);
@@ -835,45 +930,31 @@ export function SharedJourneyClient({
       const backdropMode = getAiBackdropShader(layerMode);
       const backdropFrag = SHADERS[backdropMode];
       return backdropFrag ? (
-        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion onReady={onShaderReady} />
-      ) : <div style={{ position: "absolute", inset: 0, backgroundColor: "#000" }} />;
+        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion paused={layerPaused} onReady={onShaderReady} />
+      ) : <BlackFallbackLayer onReady={onShaderReady} />;
     }
     if (layerIs3D) {
       return <Visualizer3D analyser={analyser} dataArray={dataArray} mode={layerMode as Visualizer3DMode} onReady={onShaderReady} />;
     }
     return SHADERS[layerMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 
   const creditsBlock = (
-    <div
-      style={{
-        fontSize: "0.9rem",
-        fontFamily: "var(--font-geist-mono)",
-        color: "rgba(255, 255, 255, 0.85)",
-        letterSpacing: "0.04em",
-        lineHeight: 1.7,
-        textAlign: "center",
-      }}
-    >
+    <MonoLabel className="text-center text-[0.9rem] leading-[1.7] tracking-[0.04em] text-ink">
       <div>by {creatorName || "Karel Barnoski"}</div>
       {musicArtist && <div>Music by {musicArtist}</div>}
       {journey.photographyCredit && <div>Photography by {journey.photographyCredit}</div>}
       {journey.dedication && (
-        <div
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "1rem",
-            color: "rgba(255, 255, 255, 0.75)",
-            marginTop: "0.5rem",
-          }}
+        <DisplayTitle
+          as="div"
+          className="mt-2 font-normal text-base leading-[1.7] tracking-[0.04em] text-white/75"
         >
           {journey.dedication}
-        </div>
+        </DisplayTitle>
       )}
-    </div>
+    </MonoLabel>
   );
 
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/journey/${shareToken}`;
@@ -882,6 +963,7 @@ export function SharedJourneyClient({
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       endedRef.current = false;
+      completionMarkedRef.current = false;
       setEnded(false);
       audioRef.current.play();
 
@@ -895,20 +977,9 @@ export function SharedJourneyClient({
         trackDuration: dur > 0 ? dur : undefined,
       });
 
-      // Re-wire events for bass flash
+      // Re-wire events for bass flash (curated-cue rule in buildJourneyEvents)
       if (dur > 0) {
-        const autoEvents = analysisEvents.map((e) => ({
-          time: e.time,
-          type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
-          intensity: e.intensity,
-        }));
-        let allEvents = autoEvents;
-        if (journey.enableBassFlash && cueMarkers.length > 0) {
-          const manualAsEvents = cueMarkers.map((c) => ({
-            time: c.time, type: "bass_hit" as const, intensity: 1.0,
-          }));
-          allEvents = [...autoEvents, ...manualAsEvents];
-        }
+        const allEvents = buildJourneyEvents(analysisEvents, cueMarkers, journey.enableBassFlash);
         if (allEvents.length > 0) engine.setEvents(allEvents, dur);
       }
 
@@ -930,7 +1001,7 @@ export function SharedJourneyClient({
         role="button"
         tabIndex={0}
         aria-label="Start journey"
-        className="h-dvh w-screen overflow-hidden bg-black relative flex items-center justify-center"
+        className="h-dvh w-screen overflow-hidden bg-void relative flex items-center justify-center"
         style={{ cursor: "pointer" }}
         onClick={() => setStarted(true)}
         onKeyDown={(e) => {
@@ -953,96 +1024,48 @@ export function SharedJourneyClient({
           }}
         >
           <div>
-            <div
-              style={{
-                fontSize: "0.6rem",
-                fontFamily: "var(--font-geist-mono)",
-                color: pathContext ? pathContext.accent : "rgba(255, 255, 255, 0.3)",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                marginBottom: "14px",
-              }}
+            <Eyebrow
+              className="mb-3.5 tracking-[0.14em] text-ink-faint"
+              style={pathContext ? { color: pathContext.accent } : undefined}
             >
               {pathContext && pathContext.currentIndex >= 0
                 ? `${pathContext.pathName} · ${pathContext.currentIndex + 1} of ${pathContext.steps.length}`
                 : "Shared Journey"}
-            </div>
-            <div
-              style={{
-                fontSize: "clamp(2.6rem, 7vw, 4rem)",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 300,
-                letterSpacing: "0.04em",
-                color: "#fff",
-                lineHeight: 1.2,
-              }}
+            </Eyebrow>
+            <DisplayTitle
+              as="div"
+              className="not-italic text-[clamp(2.6rem,7vw,4rem)] leading-[1.2] tracking-[0.04em] text-white"
             >
               {journey.name}
-            </div>
+            </DisplayTitle>
             {journey.subtitle && (
-              <div
-                style={{
-                  fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  color: "rgba(255, 255, 255, 0.45)",
-                  marginTop: "8px",
-                }}
+              <DisplayTitle
+                as="div"
+                className="mt-2 text-[clamp(0.9rem,2vw,1.1rem)] leading-normal tracking-normal text-ink-faint"
               >
                 {journey.subtitle}
-              </div>
+              </DisplayTitle>
             )}
-            <div
-              style={{
-                fontSize: "0.9rem",
-                fontFamily: "var(--font-geist-mono)",
-                color: "rgba(255, 255, 255, 0.85)",
-                letterSpacing: "0.04em",
-                marginTop: "12px",
-              }}
-            >
+            <MonoLabel className="mt-3 text-[0.9rem] tracking-[0.04em] text-ink">
               by {creatorName || "Karel Barnoski"}
-            </div>
+            </MonoLabel>
             {musicArtist && (
-              <div
-                style={{
-                  fontSize: "0.9rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  letterSpacing: "0.04em",
-                  marginTop: "4px",
-                }}
-              >
+              <MonoLabel className="mt-1 text-[0.9rem] tracking-[0.04em] text-ink">
                 Music by {musicArtist}
-              </div>
+              </MonoLabel>
             )}
             {journey.photographyCredit && (
-              <div
-                style={{
-                  fontSize: "0.9rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  letterSpacing: "0.04em",
-                  marginTop: "4px",
-                }}
-              >
+              <MonoLabel className="mt-1 text-[0.9rem] tracking-[0.04em] text-ink">
                 Photography by {journey.photographyCredit}
-              </div>
+              </MonoLabel>
             )}
             {journey.dedication && (
-              <div
-                style={{
-                  fontSize: "1rem",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: "italic",
-                  color: "rgba(255, 255, 255, 0.75)",
-                  letterSpacing: "0.04em",
-                  marginTop: "10px",
-                }}
+              <DisplayTitle
+                as="div"
+                className="mt-2.5 font-normal text-base leading-normal tracking-[0.04em] text-white/75"
               >
                 {journey.dedication}
-              </div>
+              </DisplayTitle>
             )}
           </div>
 
@@ -1061,7 +1084,8 @@ export function SharedJourneyClient({
               border: "1px solid rgba(255, 255, 255, 0.2)",
               color: "rgba(255, 255, 255, 0.9)",
               cursor: "pointer",
-              transition: "all 0.2s ease",
+              transition:
+                "background var(--duration-instant) ease, border-color var(--duration-instant) ease",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "rgba(255, 255, 255, 0.15)";
@@ -1075,15 +1099,9 @@ export function SharedJourneyClient({
             <Play style={{ width: 24, height: 24, marginLeft: 3 }} fill="currentColor" />
           </button>
 
-          <div
-            style={{
-              fontSize: "0.65rem",
-              fontFamily: "var(--font-geist-mono)",
-              color: "rgba(255, 255, 255, 0.2)",
-            }}
-          >
+          <MonoLabel className="text-[0.68rem] tracking-normal text-ink-faint">
             Tap anywhere to begin
-          </div>
+          </MonoLabel>
 
           {/* Back to path — sits directly under the pre-start controls
               when launched from a shared path so the listener can bail
@@ -1093,7 +1111,7 @@ export function SharedJourneyClient({
               href={`/path/${pathContext.pathToken}`}
               prefetch
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white/45 hover:text-white/90 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white/45 hover:text-white/90 transition-colors duration-instant ease-enter"
               style={{
                 fontSize: "0.68rem",
                 fontFamily: "var(--font-geist-mono)",
@@ -1112,7 +1130,7 @@ export function SharedJourneyClient({
   }
 
   return (
-    <div className="h-dvh w-screen overflow-hidden bg-black relative">
+    <div className="h-dvh w-screen overflow-hidden bg-void relative">
       {/* Fullscreen toggle — desktop only; iOS Safari doesn't support
           requestFullscreen. Fades + ignores pointer events on the same
           5s idle timer that hides the bottom controls + cursor, so it
@@ -1152,13 +1170,13 @@ export function SharedJourneyClient({
               no WebGL context destruction. Callback refs set initial opacity once. */}
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: MODES_AI.has(layerAMode) ? 0.6 : 1 }}>
             <div ref={setLayerARef} style={{ position: "absolute", inset: 0 }}>
-              {renderLayerContent(layerAMode, handleLayerAReady)}
+              {renderLayerContent(layerAMode, handleLayerAReady, idlePrimaryLayer === 'a')}
             </div>
           </div>
           {layerBMode && (
             <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: MODES_AI.has(layerBMode) ? 0.6 : 1 }}>
               <div ref={setLayerBRef} style={{ position: "absolute", inset: 0 }}>
-                {renderLayerContent(layerBMode, handleLayerBReady)}
+                {renderLayerContent(layerBMode, handleLayerBReady, idlePrimaryLayer === 'b')}
               </div>
             </div>
           )}
@@ -1229,91 +1247,53 @@ export function SharedJourneyClient({
                 pointerEvents: "none",
               }}
             />
-            <span
-              style={{
-                position: "relative",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 300,
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                color: "#fff",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
-              }}
+            <DisplayTitle
+              as="span"
+              className="relative not-italic uppercase text-[clamp(2rem,5vw,3.5rem)] leading-normal tracking-[0.06em] text-white"
+              style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}
             >
               Journey Started
-            </span>
-            <span
-              style={{
-                position: "relative",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
-                letterSpacing: "0.04em",
-                color: "#fff",
-                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                marginTop: "-0.5rem",
-              }}
+            </DisplayTitle>
+            <DisplayTitle
+              as="span"
+              className="relative -mt-2 text-[clamp(1.4rem,3.5vw,2.2rem)] leading-normal tracking-[0.04em] text-white"
+              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
             >
               {journey.name}
-            </span>
-            <span
-              style={{
-                position: "relative",
-                fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.9rem",
-                color: "rgba(255, 255, 255, 0.85)",
-                letterSpacing: "0.04em",
-                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                marginTop: "0.25rem",
-              }}
+            </DisplayTitle>
+            <MonoLabel
+              as="span"
+              className="relative mt-1 text-[0.9rem] tracking-[0.04em] text-ink"
+              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
             >
               by {creatorName || "Karel Barnoski"}
-            </span>
+            </MonoLabel>
             {musicArtist && (
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.9rem",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  letterSpacing: "0.04em",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                }}
+              <MonoLabel
+                as="span"
+                className="relative text-[0.9rem] tracking-[0.04em] text-ink"
+                style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
                 Music by {musicArtist}
-              </span>
+              </MonoLabel>
             )}
             {journey.photographyCredit && (
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.9rem",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  letterSpacing: "0.04em",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                }}
+              <MonoLabel
+                as="span"
+                className="relative text-[0.9rem] tracking-[0.04em] text-ink"
+                style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
                 Photography by {journey.photographyCredit}
-              </span>
+              </MonoLabel>
             )}
             {journey.dedication && (
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: "italic",
-                  fontSize: "1.05rem",
-                  color: "rgba(255, 255, 255, 0.75)",
-                  letterSpacing: "0.04em",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                  marginTop: "0.5rem",
-                }}
+              <DisplayTitle
+                as="span"
+                className="relative mt-2 font-normal text-[1.05rem] leading-normal tracking-[0.04em] text-white/75"
+                style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
                 {journey.dedication}
-              </span>
+              </DisplayTitle>
             )}
           </div>
         </div>
@@ -1352,7 +1332,7 @@ export function SharedJourneyClient({
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a
               href="/"
-              className="text-white/25 hover:text-white/50 transition-colors"
+              className="text-ink-faint hover:text-ink-mute transition-colors duration-instant"
               style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
             >
               Listen on Resonance
@@ -1369,7 +1349,7 @@ export function SharedJourneyClient({
                 type="button"
                 aria-label={isPlaying ? "Pause" : "Play"}
                 onClick={togglePlay}
-                className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-white/80 hover:text-white transition-colors duration-75"
+                className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-white/80 hover:text-white transition-colors duration-instant"
               >
                 {isPlaying ? (
                   <Pause className="h-4 w-4" fill="currentColor" />
@@ -1393,15 +1373,15 @@ export function SharedJourneyClient({
                 type="button"
                 aria-label={muted ? "Unmute" : "Mute"}
                 onClick={toggleMute}
-                className="flex items-center justify-center min-w-[44px] min-h-[44px] p-1.5 text-white/35 hover:text-white/70 transition-colors duration-75"
+                className="flex items-center justify-center min-w-[44px] min-h-[44px] p-1.5 text-white/35 hover:text-white/70 transition-colors duration-instant"
               >
                 {muted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
               </button>
             )}
             <span
               ref={timeDisplayRef}
-              className="text-white/25"
-              style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+              className="text-ink-faint"
+              style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
             >
               0:00 / 0:00
             </span>
@@ -1414,7 +1394,7 @@ export function SharedJourneyClient({
           <div className="flex items-center gap-3">
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-instant"
               style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
               title="Share Journey"
             >
@@ -1427,7 +1407,7 @@ export function SharedJourneyClient({
               <Link
                 href={`/path/${pathContext.pathToken}`}
                 prefetch
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-instant"
                 style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
                 title={`Close — back to ${pathContext.pathName}`}
               >
@@ -1448,8 +1428,8 @@ export function SharedJourneyClient({
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a
               href="/"
-              className="text-white/20 hover:text-white/40 transition-colors"
-              style={{ fontSize: "0.62rem", fontFamily: "var(--font-geist-mono)" }}
+              className="text-ink-faint hover:text-ink-mute transition-colors duration-instant"
+              style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
             >
               Listen on Resonance
             </a>
@@ -1458,7 +1438,7 @@ export function SharedJourneyClient({
                 type="button"
                 aria-label="Share journey"
                 onClick={handleShare}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/35 hover:text-white/65 transition-colors duration-75"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/35 hover:text-white/65 transition-colors duration-instant"
                 title="Share"
               >
                 <Share2 className="h-3.5 w-3.5" />
@@ -1469,8 +1449,8 @@ export function SharedJourneyClient({
                 <Link
                   href={`/path/${pathContext.pathToken}`}
                   prefetch
-                  className="min-h-[44px] flex items-center gap-1 px-2 rounded-lg text-white/35 hover:text-white/65 transition-colors duration-75"
-                  style={{ fontSize: "0.62rem", fontFamily: "var(--font-geist-mono)" }}
+                  className="min-h-[44px] flex items-center gap-1 px-2 rounded-lg text-white/45 hover:text-white/65 transition-colors duration-instant"
+                  style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
                   title={`Close — back to ${pathContext.pathName}`}
                 >
                   <X className="h-3.5 w-3.5" />
@@ -1487,7 +1467,7 @@ export function SharedJourneyClient({
                 type="button"
                 aria-label={isPlaying ? "Pause" : "Play"}
                 onClick={togglePlay}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/80 hover:text-white transition-colors duration-75"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/80 hover:text-white transition-colors duration-instant"
               >
                 {isPlaying ? (
                   <Pause className="h-4.5 w-4.5" fill="currentColor" />
@@ -1511,15 +1491,15 @@ export function SharedJourneyClient({
                 type="button"
                 aria-label={muted ? "Unmute" : "Mute"}
                 onClick={toggleMute}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/35 hover:text-white/65 transition-colors duration-75"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/35 hover:text-white/65 transition-colors duration-instant"
               >
                 {muted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
               </button>
             )}
             <span
               ref={timeDisplayMobileRef}
-              className="text-white/25 flex-shrink-0"
-              style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+              className="text-ink-faint flex-shrink-0"
+              style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
             >
               0:00 / 0:00
             </span>
@@ -1562,34 +1542,20 @@ export function SharedJourneyClient({
           >
 
             {/* Title */}
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 300,
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                color: "#fff",
-              }}
+            <DisplayTitle
+              as="span"
+              className="not-italic uppercase text-[clamp(2rem,5vw,3.5rem)] leading-normal tracking-[0.06em] text-white"
             >
               Journey Complete
-            </span>
+            </DisplayTitle>
 
             {/* Journey name */}
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
-                letterSpacing: "0.04em",
-                color: "#fff",
-                marginTop: "-0.5rem",
-                textAlign: "center",
-              }}
+            <DisplayTitle
+              as="span"
+              className="-mt-2 text-center text-[clamp(1.4rem,3.5vw,2.2rem)] leading-normal tracking-[0.04em] text-white"
             >
               {journey.name}
-            </span>
+            </DisplayTitle>
 
             {/* Credits */}
             {creditsBlock}
@@ -1599,17 +1565,13 @@ export function SharedJourneyClient({
             {pathContext && pathContext.currentIndex >= 0 && (
               <div className="flex flex-col items-center gap-2" style={{ marginTop: "0.25rem" }}>
                 <div style={{ width: "3rem", height: "1px", background: "rgba(255,255,255,0.12)" }} />
-                <span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontWeight: 300,
-                    fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)",
-                    letterSpacing: "0.03em",
-                    color: pathContext.accent,
-                  }}
+                <DisplayTitle
+                  as="span"
+                  className="not-italic text-[clamp(0.85rem,1.8vw,1.1rem)] leading-normal tracking-[0.03em]"
+                  style={{ color: pathContext.accent }}
                 >
                   {pathContext.pathName}
-                </span>
+                </DisplayTitle>
                 <div className="flex items-center gap-2 flex-wrap justify-center">
                   {pathContext.steps.map((s, i) => {
                     const done = i <= pathContext.currentIndex;
@@ -1618,7 +1580,7 @@ export function SharedJourneyClient({
                     const label = `${String(i + 1).padStart(2, "0")} · ${s.name}`;
                     const dot = (
                       <span
-                        className="block transition-all"
+                        className="block transition-[background-color,box-shadow] duration-instant"
                         style={{
                           width: "14px",
                           height: "14px",
@@ -1630,7 +1592,7 @@ export function SharedJourneyClient({
                     );
                     const tooltip = (
                       <span
-                        className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-75"
+                        className="pointer-events-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-instant"
                         style={{
                           bottom: "calc(100% + 10px)",
                           left: "50%",
@@ -1673,16 +1635,12 @@ export function SharedJourneyClient({
                       </div>
                     );
                   })}
-                  <span
-                    style={{
-                      fontFamily: "var(--font-geist-mono)",
-                      fontSize: "0.65rem",
-                      color: "rgba(255,255,255,0.35)",
-                      marginLeft: "0.5rem",
-                    }}
+                  <MonoLabel
+                    as="span"
+                    className="ml-2 text-[0.68rem] tracking-normal text-ink-faint"
                   >
                     {pathContext.currentIndex + 1} of {pathContext.steps.length}
-                  </span>
+                  </MonoLabel>
                 </div>
               </div>
             )}
@@ -1693,18 +1651,12 @@ export function SharedJourneyClient({
             {/* CTA — hidden when in a path since the buttons below do the
                 same job (continue album / return to cover). */}
             {!pathContext && (
-              <span
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: "italic",
-                  fontWeight: 300,
-                  fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
-                  color: "rgba(255,255,255,0.55)",
-                  textAlign: "center",
-                }}
+              <DisplayTitle
+                as="span"
+                className="text-center text-[clamp(0.9rem,2vw,1.1rem)] leading-normal tracking-normal text-white/55"
               >
                 Create your own journeys with your music.
-              </span>
+              </DisplayTitle>
             )}
 
             {/* Action buttons */}
@@ -1719,7 +1671,7 @@ export function SharedJourneyClient({
                   <Link
                     href={`/journey/${next.shareToken}?pathToken=${pathContext.pathToken}`}
                     prefetch
-                    className="px-5 py-2.5 rounded-lg text-white/90 hover:text-white transition-colors duration-150"
+                    className="px-5 py-2.5 rounded-lg text-white/90 hover:text-white transition-colors duration-instant"
                     style={{
                       border: `1px solid ${pathContext.accent}`,
                       fontSize: "0.8rem",
@@ -1734,11 +1686,13 @@ export function SharedJourneyClient({
                 );
               })()}
 
-              {/* Enter The Culmination — shown on the LAST step if all
-                  tracks have been completed on this device. Reads from
+              {/* Enter The Culmination — shown whenever every track in the
+                  path has been completed on this device, regardless of the
+                  order they were played in (finishing track 13 first and
+                  track 7 last still earns the payoff). Reads from
                   path-progress-store (localStorage) so anonymous walkers
                   can unlock it too. */}
-              {pathContext && pathContext.culmination?.shareToken && pathContext.currentIndex === pathContext.steps.length - 1 && (() => {
+              {pathContext && pathContext.culmination?.shareToken && (() => {
                 const completedIds = usePathProgressStore.getState().completedJourneyIds;
                 // Include the current journey — the completeJourney() call
                 // happens inside the ended handler which fires right before
@@ -1750,7 +1704,7 @@ export function SharedJourneyClient({
                   <Link
                     href={`/journey/${pathContext.culmination.shareToken}?pathToken=${pathContext.pathToken}`}
                     prefetch
-                    className="px-5 py-2.5 rounded-lg text-white hover:text-white transition-all duration-150"
+                    className="px-5 py-2.5 rounded-lg text-white hover:text-white transition-colors duration-instant"
                     style={{
                       border: `1px solid ${pathContext.accent}`,
                       fontSize: "0.8rem",
@@ -1772,7 +1726,7 @@ export function SharedJourneyClient({
                 <Link
                   href={`/path/${pathContext.pathToken}`}
                   prefetch
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-150"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-instant"
                   style={{
                     border: "1px solid rgba(255,255,255,0.2)",
                     fontSize: "0.72rem",
@@ -1847,7 +1801,7 @@ export function SharedJourneyClient({
                 <>
                   <button
                     onClick={handleReplay}
-                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant"
                     style={{
                       border: "1px solid rgba(255,255,255,0.2)",
                       fontSize: "0.8rem",
@@ -1859,7 +1813,7 @@ export function SharedJourneyClient({
                   </button>
                   <button
                     onClick={handleShare}
-                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-instant"
                     style={{
                       border: "1px solid rgba(255,255,255,0.2)",
                       fontSize: "0.8rem",

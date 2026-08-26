@@ -92,6 +92,28 @@ describe("completeJourney", () => {
     expect(s.grandCulminationUnlocked).toBe(true);
   });
 
+  it("routes DB/UUID culminations to completedCulminationIds via the isCulmination hint", () => {
+    const uuid = "3f2c8a90-0000-4000-8000-000000000001";
+    usePathProgressStore.getState().completeJourney(uuid, { isCulmination: true });
+    const s = usePathProgressStore.getState();
+    expect(s.completedCulminationIds).toContain(uuid);
+    expect(s.completedJourneyIds).not.toContain(uuid);
+    expect(s.isCompleted(uuid)).toBe(true);
+  });
+
+  it("migrates a legacy mis-bucketed culmination out of completedJourneyIds", () => {
+    const uuid = "3f2c8a90-0000-4000-8000-000000000002";
+    // Legacy call (no hint) — a UUID culmination lands in the journey bucket
+    usePathProgressStore.getState().completeJourney(uuid);
+    expect(usePathProgressStore.getState().completedJourneyIds).toContain(uuid);
+    // Hinted call re-buckets it
+    usePathProgressStore.getState().completeJourney(uuid, { isCulmination: true });
+    const s = usePathProgressStore.getState();
+    expect(s.completedJourneyIds).not.toContain(uuid);
+    expect(s.completedCulminationIds).toContain(uuid);
+    expect(s.isCompleted(uuid)).toBe(true);
+  });
+
   it("records the grand culmination (the-spirit) as its own flag", () => {
     usePathProgressStore.getState().completeJourney("the-spirit");
     const s = usePathProgressStore.getState();
