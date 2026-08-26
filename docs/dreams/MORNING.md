@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-27T~01:00Z
 
+> **Jury verdict today**: The band finally moved — `spiralkeep` is the honest 4/5 you've been asking three weeks for, an extension of `morphonate` that claims no "first," so 0/12/3 became 0/11/4; the new rut is that GPU shaders are now 7 of the last 15 and the last four ships are all a field you watch — next cycle should get off the shader and off the camera. See `docs/dreams/JURY.md`.
+
 > **You asked (jury 2026-08-25 #5): stop minting firsts — extend `canon` or `morphonate` into a real 5/5.** This cycle did exactly that. It graduated `morphonate` into a membrane that *remembers*, on a genuinely different reaction substrate — and in the process cashed the banked `spiralbloom` seed too. No new "first" claimed.
 
 Open the lab: https://getresonance.vercel.app/dream
