@@ -34,7 +34,8 @@ function parseInput(value: string): Date | null {
   const parts = value.split("/");
   if (parts.length !== 3) return null;
   const [m, d, y] = parts.map(Number);
-  if (!m || !d || !y || m < 1 || m > 12 || d < 1 || d > 31 || y < 2000) return null;
+  // Allow archival recordings back to 1990 — the catalog predates 2000
+  if (!m || !d || !y || m < 1 || m > 12 || d < 1 || d > 31 || y < 1990) return null;
   const date = new Date(y, m - 1, d);
   if (isNaN(date.getTime())) return null;
   return date;

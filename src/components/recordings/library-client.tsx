@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { RecordingCard } from "@/components/recordings/recording-card";
 import { Input } from "@/components/ui/input";
@@ -32,9 +32,29 @@ interface LibraryClientProps {
   allTags: Tag[];
 }
 
+const ARTIST_BANNER_KEY = "library-artist-banner-dismissed";
+
 export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
   const [search, setSearch] = useState("");
   const [selectedTagIds, setSelectedTagIds] = useState<Set<string>>(new Set());
+  const [artistBannerDismissed, setArtistBannerDismissed] = useState(false);
+
+  // sessionStorage isn't available during SSR — hydrate the dismissal
+  // in an effect to avoid a server/client markup mismatch.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(ARTIST_BANNER_KEY) === "1") {
+        setArtistBannerDismissed(true);
+      }
+    } catch { /* sessionStorage unavailable */ }
+  }, []);
+
+  const dismissArtistBanner = () => {
+    setArtistBannerDismissed(true);
+    try {
+      sessionStorage.setItem(ARTIST_BANNER_KEY, "1");
+    } catch { /* sessionStorage unavailable */ }
+  };
 
   const toggleTag = (tagId: string) => {
     setSelectedTagIds((prev) => {
@@ -167,10 +187,20 @@ export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
       )}
 
       {/* Missing artist banner */}
-      {recordings.some((r) => !r.artist) && (
-        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-200/70">
-          Some recordings are missing artist names.{" "}
-          <span className="text-amber-200/90">Tap a recording to add one.</span>
+      {!artistBannerDismissed && recordings.some((r) => !r.artist) && (
+        <div className="flex items-start justify-between gap-3 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-200/70">
+          <p>
+            Some recordings are missing artist names.{" "}
+            <span className="text-amber-200/90">Tap a recording to add one.</span>
+          </p>
+          <button
+            type="button"
+            aria-label="Dismiss"
+            onClick={dismissArtistBanner}
+            className="shrink-0 rounded-md p-0.5 text-amber-200/50 transition-colors hover:text-amber-200/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-amber-200/40"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
       )}
 

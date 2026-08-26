@@ -30,6 +30,15 @@ export function getAnalyzingRecordingId(): string | null {
   return currentJob?.recordingId ?? null;
 }
 
+/** Abort the in-flight analysis, if any. The abort takes effect at the
+ *  next checkpoint inside runAnalysis; progress UI is cleared now. */
+export function abortAnalysis(): void {
+  if (!currentJob) return;
+  currentJob.abortController.abort();
+  currentJob = null;
+  useAudioStore.getState().setAnalysisInProgress(null);
+}
+
 /** Start analysis for a recording. Runs in background, writes to store. */
 export async function runAnalysis(
   recordingId: string,

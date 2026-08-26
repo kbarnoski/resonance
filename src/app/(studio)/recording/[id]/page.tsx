@@ -21,6 +21,7 @@ export default async function RecordingPage({
   let recording;
   let analysis;
   let messages;
+  let tags: { id: string; name: string; color: string }[];
   let readOnly;
 
   if (isOfflinePack()) {
@@ -28,13 +29,14 @@ export default async function RecordingPage({
     if (!recording) notFound();
     analysis = getAnalysis(id) ?? null;
     messages = [];
+    tags = [];
     // Edit/chat endpoints hit Supabase — keep the kiosk read-only
     readOnly = true;
   } else {
     const supabase = await createClient();
 
     // Run all queries in parallel to eliminate waterfall
-    const [recordingResult, analysisResult, messagesResult, { data: { user } }] = await Promise.all([
+    const [recordingResult, analysisResult, messagesResult, tagsResult, { data: { user } }] = await Promise.all([
       supabase.from("recordings").select("*").eq("id", id).single(),
       supabase.from("analyses").select("*").eq("recording_id", id).single(),
       supabase
@@ -42,6 +44,10 @@ export default async function RecordingPage({
         .select("*")
         .eq("recording_id", id)
         .order("created_at", { ascending: true }),
+      supabase
+        .from("recording_tags")
+        .select("tags(id, name, color)")
+        .eq("recording_id", id),
       supabase.auth.getUser(),
     ]);
 
@@ -51,6 +57,9 @@ export default async function RecordingPage({
     readOnly = recording.user_id !== user?.id;
     analysis = analysisResult.data;
     messages = messagesResult.data;
+    tags = (tagsResult.data ?? [])
+      .map((rt) => (Array.isArray(rt.tags) ? rt.tags[0] : rt.tags))
+      .filter(Boolean) as { id: string; name: string; color: string }[];
   }
 
   // Use proxy API route — it detects ALAC and transcodes to AAC for Chrome
@@ -97,6 +106,7 @@ export default async function RecordingPage({
         }}
         analysis={analysis}
         initialMessages={messages ?? []}
+        tags={tags}
         readOnly={readOnly}
       />
     </div>

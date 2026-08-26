@@ -7,6 +7,7 @@ import { Play, Pause, SkipBack, SkipForward, AlertCircle, Flag, Sparkles, Loader
 import { useThemeColors } from "@/lib/use-theme-colors";
 import { getAudioEngine } from "@/lib/audio/audio-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
+import { resolveAudioUrl, clearCachedUrl } from "@/lib/audio/resolve-audio-url";
 
 export interface WaveformPlayerHandle {
   seekTo: (time: number) => void;
@@ -36,101 +37,64 @@ function formatTime(seconds: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-function isChromium(): boolean {
-  if (typeof navigator === "undefined") return false;
-  const ua = navigator.userAgent;
-  return /Chrome|Chromium|Edg\//.test(ua);
-}
+/**
+ * Decode waveform peaks from a detached fetch — never touches the shared
+ * global audio element. Used when a recording has no stored peaks yet:
+ * WaveSurfer's own load() would set the media element's src, which
+ * hijacks whatever track the global engine currently holds. Instead we
+ * fetch + decode on a throwaway AudioContext, hand WaveSurfer
+ * pre-computed peaks, and close the context.
+ */
+async function decodePeaksDetached(
+  url: string,
+): Promise<{ peaks: number[][]; duration: number }> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`audio fetch ${res.status}`);
+  const buf = await res.arrayBuffer();
 
-// --- Cached URL helpers with 50-minute TTL ---
-
-interface CachedUrlEntry {
-  url: string;
-  timestamp: number;
-}
-
-const URL_CACHE_TTL_MS = 50 * 60 * 1000; // 50 minutes
-
-function getCachedUrl(recordingId: string): string | null {
+  const Ctor =
+    window.AudioContext ??
+    (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  const ctx = new Ctor();
   try {
-    const raw = sessionStorage.getItem(`audio-url-${recordingId}`);
-    if (!raw) return null;
-    const entry: CachedUrlEntry = JSON.parse(raw);
-    if (Date.now() - entry.timestamp > URL_CACHE_TTL_MS) {
-      sessionStorage.removeItem(`audio-url-${recordingId}`);
-      return null;
-    }
-    return entry.url;
-  } catch {
-    return null;
-  }
-}
-
-function setCachedUrl(recordingId: string, url: string): void {
-  try {
-    const entry: CachedUrlEntry = { url, timestamp: Date.now() };
-    sessionStorage.setItem(`audio-url-${recordingId}`, JSON.stringify(entry));
-  } catch {
-    // sessionStorage may be full or unavailable
-  }
-}
-
-// --- Standalone URL resolution (not a hook) ---
-
-async function resolveAudioUrlImpl(
-  audioUrl: string,
-  recordingId?: string,
-): Promise<string> {
-  // Check cache first
-  if (recordingId) {
-    const cached = getCachedUrl(recordingId);
-    if (cached) return cached;
-  }
-
-  if (!audioUrl.startsWith("/api/")) return audioUrl;
-
-  try {
-    const res = await fetch(audioUrl);
-    const data = await res.json();
-
-    if (data.url) {
-      if (data.hasAac || (data.codec && data.codec !== "alac")) {
-        if (recordingId) setCachedUrl(recordingId, data.url);
-        return data.url;
-      }
-      if (data.codec === "alac" && isChromium()) {
-        return audioUrl + "?transcode=1";
-      }
-      // Unknown codec — test playability
-      const testAudio = new Audio();
-      try {
-        const canPlay = await new Promise<boolean>((resolve) => {
-          testAudio.preload = "metadata";
-          testAudio.onloadedmetadata = () => resolve(true);
-          testAudio.onerror = () => resolve(false);
-          testAudio.src = data.url;
-          setTimeout(() => resolve(false), 5000);
-        });
-        if (canPlay) {
-          if (recordingId) setCachedUrl(recordingId, data.url);
-          return data.url;
+    const audioBuffer = await ctx.decodeAudioData(buf);
+    const channels = Math.min(audioBuffer.numberOfChannels, 2);
+    const buckets = Math.min(1000, audioBuffer.length);
+    const peaks: number[][] = [];
+    for (let c = 0; c < channels; c++) {
+      const data = audioBuffer.getChannelData(c);
+      const step = Math.max(1, Math.floor(data.length / buckets));
+      const channelPeaks = new Array<number>(buckets);
+      for (let i = 0; i < buckets; i++) {
+        const start = i * step;
+        const end = Math.min(start + step, data.length);
+        let max = 0;
+        // Sparse sampling within each bucket — plenty for an 80px waveform
+        for (let j = start; j < end; j += 32) {
+          const v = Math.abs(data[j]);
+          if (v > max) max = v;
         }
-      } finally {
-        testAudio.removeAttribute("src");
-        testAudio.load();
+        channelPeaks[i] = Math.round(max * 1000) / 1000;
       }
+      peaks.push(channelPeaks);
     }
-  } catch {
-    // fall through to transcode
+    return { peaks, duration: audioBuffer.duration };
+  } finally {
+    ctx.close().catch(() => {});
   }
-
-  return audioUrl + "?transcode=1";
 }
 
 export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerProps>(
   function WaveformPlayer({ audioUrl, recordingId, title, peaks, duration: propDuration, onTimeUpdate, markers = [], onVisualizerOpen }, ref) {
     const themeColors = useThemeColors();
-    const hasPeaks = !!(peaks && peaks.length > 0 && propDuration);
+
+    // Peaks decoded client-side when the server has none stored yet
+    const [localPeaks, setLocalPeaks] = useState<number[][] | null>(null);
+    const [localDuration, setLocalDuration] = useState<number | null>(null);
+
+    const effPeaks = peaks && peaks.length > 0 ? peaks : localPeaks;
+    const effDuration = propDuration ?? localDuration;
+    const hasPeaks = !!(effPeaks && effPeaks.length > 0 && effDuration);
 
     // --- Store-driven play state (replaces local isPlaying) ---
     const storeIsPlaying = useAudioStore(s => s.isPlaying && s.currentTrack?.id === recordingId);
@@ -138,10 +102,12 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
 
     // --- State ---
     const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(propDuration ?? 0);
+    const [duration, setDuration] = useState(effDuration ?? 0);
     const [isReady, setIsReady] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoadingAudio, setIsLoadingAudio] = useState(false);
+    // Resolved playable URL — also feeds the fallback <audio> element
+    const [resolvedUrl, setResolvedUrl] = useState<string | null>(null);
 
     // --- Refs ---
     const containerRef = useRef<HTMLDivElement>(null);
@@ -171,27 +137,19 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       },
     }));
 
-    // --- Save peaks to server ---
-    const savePeaks = useCallback((ws: WaveSurfer) => {
+    // --- Save computed peaks to server so next visit skips the decode ---
+    const savePeaksData = useCallback((computedPeaks: number[][], decodedDuration: number) => {
       if (peaksSavedRef.current || !recordingId || !audioUrl.startsWith("/api/")) return;
       peaksSavedRef.current = true;
 
-      try {
-        const exported = ws.exportPeaks({ maxLength: 1000, precision: 3 });
-        if (exported && exported.length > 0) {
-          const wsDuration = ws.getDuration();
-          fetch(`/api/audio/${recordingId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              waveform_peaks: exported,
-              ...(wsDuration && !propDuration ? { duration: wsDuration } : {}),
-            }),
-          }).catch((err) => console.error("[PEAKS] Failed to save:", err));
-        }
-      } catch (err) {
-        console.error("[PEAKS] Failed to export:", err);
-      }
+      fetch(`/api/audio/${recordingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          waveform_peaks: computedPeaks,
+          ...(decodedDuration && !propDuration ? { duration: decodedDuration } : {}),
+        }),
+      }).catch((err) => console.error("[PEAKS] Failed to save:", err));
     }, [recordingId, audioUrl, propDuration]);
 
     // --- Callback ref: creates WaveSurfer with the GLOBAL engine's audio element ---
@@ -214,18 +172,23 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
           return; // SSR guard
         }
 
+        const isCurrent = useAudioStore.getState().currentTrack?.id === recordingId;
+
         const ws = WaveSurfer.create({
           container: node,
           waveColor: "rgba(150,150,150,0.22)",
-          progressColor: "#6366f1",
-          cursorColor: "#6366f1",
+          progressColor: themeColors.primary,
+          cursorColor: themeColors.primary,
           barWidth: 2,
           barGap: 1,
           barRadius: 2,
           height: 80,
           media: audio,
+          // Only the active track's waveform may drive the shared element.
+          // Non-current waveforms adopt the track via the click overlay below.
+          interact: isCurrent,
           ...(hasPeaks
-            ? { peaks: peaks as Array<number[]>, duration: propDuration! }
+            ? { peaks: effPeaks as Array<number[]>, duration: effDuration! }
             : {}),
         });
 
@@ -234,17 +197,12 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
           setDuration(ws.getDuration());
           setIsReady(true);
           setError(null);
-
-          // Save peaks after first audio decode (non-peaks path)
-          if (!hasPeaks) {
-            savePeaks(ws);
-          }
         });
 
         // For peaks mode, waveform renders synchronously — "ready" fires immediately
         // but we also set state explicitly in case it already fired
         if (hasPeaks) {
-          setDuration(propDuration!);
+          setDuration(effDuration!);
           setIsReady(true);
           setError(null);
         }
@@ -311,30 +269,39 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         wavesurferRef.current = ws;
       },
       // Stable deps only
-      [hasPeaks, peaks, propDuration, savePeaks, recordingId]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [hasPeaks, effPeaks, effDuration, recordingId]
     );
 
-    // --- URL resolution effect (runs once on mount) ---
+    // --- URL resolution + detached peaks decode (never loads the shared element) ---
     useEffect(() => {
       cancelledRef.current = false;
 
-      const promise = resolveAudioUrlImpl(audioUrl, recordingId);
+      const promise = resolveAudioUrl(audioUrl, recordingId);
       urlResolvePromiseRef.current = promise;
 
-      promise.then((url) => {
+      promise.then(async (url) => {
         if (cancelledRef.current) return;
         resolvedUrlRef.current = url;
+        setResolvedUrl(url);
 
-        // For no-peaks mode: WaveSurfer needs to decode audio for waveform.
-        // ws.load() sets media.src AND fetches+decodes for rendering.
-        // Only safe if nothing else is actively playing.
-        if (!hasPeaks && wavesurferRef.current) {
-          const store = useAudioStore.getState();
-          if (!store.isPlaying || store.currentTrack?.id === recordingId) {
-            wavesurferRef.current.load(url).catch(() => {
-              if (cancelledRef.current) return;
-              setIsReady(true);
-            });
+        // No stored peaks: decode them from a detached fetch. We deliberately
+        // never call ws.load() here — it would set the global audio element's
+        // src, silently replacing whatever track (playing OR paused) the
+        // store currently owns.
+        if (!hasPeaks) {
+          try {
+            const { peaks: computed, duration: decoded } = await decodePeaksDetached(url);
+            if (cancelledRef.current) return;
+            setLocalPeaks(computed);
+            setLocalDuration(decoded);
+            savePeaksData(computed, decoded);
+          } catch (err) {
+            if (cancelledRef.current) return;
+            // Waveform unavailable, but the track is still playable via the
+            // engine — unlock the controls.
+            console.warn("[PEAKS] Detached decode failed:", err);
+            setIsReady(true);
           }
         }
       });
@@ -342,17 +309,19 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       return () => {
         cancelledRef.current = true;
       };
-    }, [audioUrl, recordingId, hasPeaks]);
+    }, [audioUrl, recordingId, hasPeaks, savePeaksData]);
 
-    // --- Update waveform colors when theme or active track changes ---
+    // --- Update waveform colors + interactivity when theme or active track changes ---
     useEffect(() => {
       if (wavesurferRef.current) {
         const isDark = document.documentElement.classList.contains("dark");
         wavesurferRef.current.setOptions({
           waveColor: isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.2)",
           // Hide progress/cursor when a different track is playing
-          progressColor: isCurrentTrack ? "#6366f1" : "transparent",
-          cursorColor: isCurrentTrack ? "#6366f1" : "transparent",
+          progressColor: isCurrentTrack ? themeColors.primary : "transparent",
+          cursorColor: isCurrentTrack ? themeColors.primary : "transparent",
+          // A non-current waveform must not seek the globally playing track
+          interact: isCurrentTrack,
         });
       }
     }, [themeColors, isCurrentTrack]);
@@ -364,7 +333,6 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         setCurrentTime(store.currentTime);
         onTimeUpdateRef.current?.(store.currentTime);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recordingId]);
 
     // --- Cleanup: destroy WaveSurfer only, NEVER touch the global audio element ---
@@ -377,11 +345,63 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       };
     }, []);
 
+    // --- Adopt this recording as the global track, starting at startTime ---
+    const adoptTrack = useCallback(async (startTime: number) => {
+      if (!recordingId) return;
+      setIsLoadingAudio(true);
+      try {
+        let url = resolvedUrlRef.current;
+        if (!url) {
+          url = await (urlResolvePromiseRef.current ?? resolveAudioUrl(audioUrl, recordingId));
+          resolvedUrlRef.current = url;
+        }
+        if (cancelledRef.current) return;
+
+        const engine = getAudioEngine();
+        await engine.audioContext.resume();
+        const el = engine.audioElement;
+        el.src = url;
+        if (startTime > 0) {
+          // Seeking before metadata loads is silently dropped — wait for it
+          await new Promise<void>((resolve, reject) => {
+            const cleanup = () => {
+              el.removeEventListener("loadedmetadata", onMeta);
+              el.removeEventListener("error", onErr);
+            };
+            const onMeta = () => { cleanup(); resolve(); };
+            const onErr = () => { cleanup(); reject(new Error("Audio failed to load")); };
+            el.addEventListener("loadedmetadata", onMeta);
+            el.addEventListener("error", onErr);
+            el.load();
+          });
+          el.currentTime = startTime;
+        } else {
+          el.currentTime = 0;
+        }
+        await el.play();
+
+        // Update store — skipLoad tells AudioProvider not to reload (we already did)
+        useAudioStore.getState().play(
+          { id: recordingId, title: title ?? "Untitled", audioUrl, duration: effDuration || null },
+          startTime,
+          true, // skipLoad
+        );
+        setCurrentTime(startTime);
+        onTimeUpdateRef.current?.(startTime);
+      } catch (err) {
+        console.error("Failed to play:", err);
+        // Cached URL may be stale (expired signature / codec change) —
+        // clear it so the next attempt re-resolves fresh.
+        clearCachedUrl(recordingId);
+        resolvedUrlRef.current = null;
+        urlResolvePromiseRef.current = null;
+      } finally {
+        setIsLoadingAudio(false);
+      }
+    }, [audioUrl, recordingId, title, effDuration]);
+
     // --- togglePlay: goes through the store, no WaveSurfer playPause ---
     async function togglePlay() {
-      const ws = wavesurferRef.current;
-      if (!ws) return;
-
       const store = useAudioStore.getState();
 
       // Same track already in store — just toggle play/pause
@@ -391,32 +411,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       }
 
       // Different track or first play — load onto global engine and play
-      setIsLoadingAudio(true);
-      try {
-        let url = resolvedUrlRef.current;
-        if (!url) {
-          url = await (urlResolvePromiseRef.current ?? resolveAudioUrlImpl(audioUrl, recordingId));
-          resolvedUrlRef.current = url;
-        }
-        if (cancelledRef.current) return;
-
-        const engine = getAudioEngine();
-        await engine.audioContext.resume();
-        engine.audioElement.src = url;
-        engine.audioElement.currentTime = 0;
-        await engine.audioElement.play();
-
-        // Update store — skipLoad tells AudioProvider not to reload (we already did)
-        store.play(
-          { id: recordingId!, title: title ?? "Untitled", audioUrl, duration: propDuration || null },
-          0,
-          true, // skipLoad
-        );
-      } catch (err) {
-        console.error("Failed to play:", err);
-      } finally {
-        setIsLoadingAudio(false);
-      }
+      await adoptTrack(0);
     }
 
     function skip(seconds: number) {
@@ -429,9 +424,24 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     }
 
     function handleMarkerClick(time: number) {
-      if (wavesurferRef.current && duration > 0 && isCurrentTrack) {
-        wavesurferRef.current.seekTo(time / duration);
+      if (isCurrentTrack) {
+        if (wavesurferRef.current && duration > 0) {
+          wavesurferRef.current.seekTo(time / duration);
+        }
+      } else {
+        // Non-current recording: adopt it, starting at the marker
+        void adoptTrack(time);
       }
+    }
+
+    // Click on a non-current waveform adopts the track at the clicked position
+    function handleAdoptClick(e: React.MouseEvent<HTMLButtonElement>) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const frac = rect.width > 0
+        ? Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1)
+        : 0;
+      const d = duration || effDuration || 0;
+      void adoptTrack(frac * d);
     }
 
     return (
@@ -455,6 +465,18 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               </div>
               <p className="relative z-10 text-xs text-muted-foreground animate-pulse">Loading waveform...</p>
             </div>
+          )}
+          {/* Adopt-on-click overlay for non-current recordings — sits under
+              the marker dots so those stay individually clickable */}
+          {isReady && !isCurrentTrack && !!recordingId && (
+            <button
+              type="button"
+              aria-label={title ? `Play ${title}` : "Play this recording"}
+              title="Click to play this recording"
+              className="absolute inset-y-0 left-3 right-3 cursor-pointer rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50"
+              onClick={handleAdoptClick}
+              disabled={isLoadingAudio}
+            />
           )}
           {/* Marker indicators overlay */}
           {isReady && duration > 0 && markers.length > 0 && (
@@ -492,7 +514,15 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               <p>{error || "Unable to load waveform"}</p>
             </div>
             <p className="text-xs text-muted-foreground">Fallback player:</p>
-            <audio controls src={audioUrl} className="w-full" preload="metadata" aria-label={title ? `Playback controls for ${title}` : "Audio playback controls"}>
+            <audio
+              controls
+              // The raw /api/audio/{id} endpoint returns JSON, not audio —
+              // point the fallback at the resolved playable URL instead.
+              src={resolvedUrl ?? (audioUrl.startsWith("/api/") ? `${audioUrl}?transcode=1` : audioUrl)}
+              className="w-full"
+              preload="metadata"
+              aria-label={title ? `Playback controls for ${title}` : "Audio playback controls"}
+            >
               <track kind="captions" />
               Your browser does not support the audio element.
             </audio>
@@ -508,7 +538,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               size="icon"
               aria-label="Skip back 10 seconds"
               onClick={() => skip(-10)}
-              disabled={!isReady}
+              disabled={!isReady || !isCurrentTrack}
             >
               <SkipBack className="h-4 w-4" />
             </Button>
@@ -531,7 +561,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               size="icon"
               aria-label="Skip forward 10 seconds"
               onClick={() => skip(10)}
-              disabled={!isReady}
+              disabled={!isReady || !isCurrentTrack}
             >
               <SkipForward className="h-4 w-4" />
             </Button>

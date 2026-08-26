@@ -13,7 +13,7 @@ export default async function InsightsPage() {
   const { data: recordings, error } = await supabase
     .from("recordings")
     .select(
-      "id, title, duration, created_at, analyses(key_signature, tempo, time_signature, chords)"
+      "id, title, duration, created_at, analyses(status, key_signature, tempo, time_signature, chords)"
     )
     .eq("user_id", user.id);
 
@@ -24,15 +24,20 @@ export default async function InsightsPage() {
   const allRecordings = recordings ?? [];
   const totalRecordings = allRecordings.length;
 
+  // "Analyzed" means status === "completed" — same semantics as the
+  // library and compare views. A pending/failed row is not an analysis.
   const analysesData = allRecordings
-    .filter((r) => {
-      if (!r.analyses) return false;
-      if (Array.isArray(r.analyses)) return r.analyses.length > 0;
-      return true; // single object means analysis exists
-    })
     .map((r) => {
-      const analysis = Array.isArray(r.analyses) ? r.analyses[0] : r.analyses;
-      const a = analysis as {
+      const list = Array.isArray(r.analyses)
+        ? r.analyses
+        : r.analyses
+          ? [r.analyses]
+          : [];
+      return { ...r, completedAnalysis: list.find((a: { status?: string | null }) => a.status === "completed") ?? null };
+    })
+    .filter((r) => r.completedAnalysis !== null)
+    .map((r) => {
+      const a = r.completedAnalysis as {
         key_signature: string | null;
         tempo: number | null;
         time_signature: string | null;
@@ -61,7 +66,7 @@ export default async function InsightsPage() {
             Upload recordings to get started
           </p>
           <Link
-            href="/recording"
+            href="/upload"
             className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Record or Upload

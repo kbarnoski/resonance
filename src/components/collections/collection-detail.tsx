@@ -19,9 +19,21 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
 import { GripVertical, FileAudio, Clock, Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -111,12 +123,14 @@ export function CollectionDetail({
   initialRecordings: Recording[];
   availableRecordings?: AvailableRecording[];
 }) {
+  const router = useRouter();
   const [recordings, setRecordings] = useState(initialRecordings);
   const [available, setAvailable] = useState(initialAvailable);
   const [showPicker, setShowPicker] = useState(false);
   const [name, setName] = useState(initialName);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editName, setEditName] = useState(initialName);
+  const [deleting, setDeleting] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -162,17 +176,54 @@ export function CollectionDetail({
     const oldIndex = recordings.findIndex((r) => r.id === active.id);
     const newIndex = recordings.findIndex((r) => r.id === over.id);
 
+    const previousOrder = recordings;
     const newOrder = arrayMove(recordings, oldIndex, newIndex);
     setRecordings(newOrder);
 
+    // Batch the position updates instead of a sequential await-per-row
+    // waterfall, and roll the UI back if any of them fail.
     const supabase = createClient();
-    for (let i = 0; i < newOrder.length; i++) {
-      await supabase
-        .from("collection_recordings")
-        .update({ position: i })
-        .eq("collection_id", collectionId)
-        .eq("recording_id", newOrder[i].id);
+    const results = await Promise.all(
+      newOrder.map((rec, i) =>
+        supabase
+          .from("collection_recordings")
+          .update({ position: i })
+          .eq("collection_id", collectionId)
+          .eq("recording_id", rec.id)
+      )
+    );
+
+    if (results.some((r) => r.error)) {
+      toast.error("Failed to save the new order");
+      setRecordings(previousOrder);
     }
+  }
+
+  async function handleDeleteCollection() {
+    setDeleting(true);
+    const supabase = createClient();
+
+    // Clear the join rows first — harmless if the FK cascades, required
+    // if it doesn't.
+    await supabase
+      .from("collection_recordings")
+      .delete()
+      .eq("collection_id", collectionId);
+
+    const { error } = await supabase
+      .from("collections")
+      .delete()
+      .eq("id", collectionId);
+
+    if (error) {
+      toast.error(`Failed to delete collection: ${error.message}`);
+      setDeleting(false);
+      return;
+    }
+
+    toast.success("Collection deleted");
+    router.push("/collections");
+    router.refresh();
   }
 
   async function addRecording(rec: AvailableRecording) {
@@ -267,14 +318,46 @@ export function CollectionDetail({
         <p className="text-sm text-muted-foreground">
           {recordings.length} recording{recordings.length !== 1 ? "s" : ""}
         </p>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowPicker(!showPicker)}
-        >
-          <Plus className="mr-1 h-4 w-4" />
-          Add Recording
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowPicker(!showPicker)}
+          >
+            <Plus className="mr-1 h-4 w-4" />
+            Add Recording
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Delete collection"
+                className="text-muted-foreground hover:text-destructive"
+                disabled={deleting}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete collection?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete &ldquo;{name}&rdquo;. The recordings inside it are not deleted. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteCollection}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
 
       {showPicker && (

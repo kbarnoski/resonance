@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { SettingsClient } from "./settings-client";
 
 export const metadata = {
-  title: "Settings — Resonance",
+  title: "Settings",
 };
 
 export default async function SettingsPage() {

@@ -29,7 +29,9 @@ interface ChatPanelProps {
 }
 
 export function ChatPanel({ recordingId, analysis, initialMessages = [] }: ChatPanelProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // Ref to the ScrollArea VIEWPORT — the Radix Root doesn't scroll, so
+  // setting scrollTop on it was a no-op.
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, append } =
     useChat({
@@ -58,8 +60,8 @@ export function ChatPanel({ recordingId, analysis, initialMessages = [] }: ChatP
     });
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (viewportRef.current) {
+      viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -69,7 +71,7 @@ export function ChatPanel({ recordingId, analysis, initialMessages = [] }: ChatP
 
   return (
     <div className="flex h-[350px] flex-col rounded-lg border sm:h-[500px]">
-      <ScrollArea ref={scrollRef} className="flex-1 p-4">
+      <ScrollArea viewportRef={viewportRef} className="flex-1 p-4">
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <SuggestedPrompts onSelect={handleSuggestedPrompt} />

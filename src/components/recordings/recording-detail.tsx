@@ -33,6 +33,8 @@ import { PianoRoll } from "@/components/analysis/piano-roll";
 import { ExportMidiButton } from "@/components/analysis/export-midi-button";
 import { ChatPanel } from "@/components/chat/chat-panel";
 import { MarkersPanel, type Marker } from "@/components/markers/markers-panel";
+import { TagPicker } from "@/components/tags/tag-picker";
+import { deleteRecording } from "@/components/recordings/delete-recording";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getAudioEngine } from "@/lib/audio/audio-engine";
@@ -59,6 +61,7 @@ interface RecordingDetailProps {
     content: string;
     created_at: string;
   }[];
+  tags?: { id: string; name: string; color: string }[];
   readOnly?: boolean;
 }
 
@@ -66,6 +69,7 @@ export function RecordingDetail({
   recording,
   analysis: initialAnalysis,
   initialMessages,
+  tags,
   readOnly,
 }: RecordingDetailProps) {
   const router = useRouter();
@@ -87,23 +91,12 @@ export function RecordingDetail({
 
   async function handleDelete() {
     setDeleting(true);
-    const supabase = createClient();
-
-    await supabase.storage.from("recordings").remove([recording.file_name]);
-
-    const { error } = await supabase
-      .from("recordings")
-      .delete()
-      .eq("id", recording.id);
-
-    if (error) {
-      toast.error(`Failed to delete: ${error.message}`);
+    const ok = await deleteRecording(recording.id, recording.file_name);
+    if (ok) {
+      router.push("/library");
+    } else {
       setDeleting(false);
-      return;
     }
-
-    toast.success("Recording deleted");
-    router.push("/library");
   }
 
   async function saveDescription() {
@@ -195,7 +188,7 @@ export function RecordingDetail({
   return (
     <>
       {!readOnly && (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Input
             id="recording-artist"
             name="artist"
@@ -299,6 +292,10 @@ export function RecordingDetail({
             </AlertDialogContent>
           </AlertDialog>
         </div>
+      )}
+
+      {!readOnly && (
+        <TagPicker recordingId={recording.id} initialTags={tags} />
       )}
 
       <WaveformPlayer

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wand2, Loader2, RefreshCw } from "lucide-react";
@@ -20,13 +20,15 @@ export function AnalyzeButton({ recordingId, recordingTitle, audioUrl, onComplet
   const inProgress = useAudioStore((s) => s.analysisInProgress);
   const completed = useAudioStore((s) => s.analysisComplete);
 
-  // Check if completed result is waiting for this recording
-  const completedForThis = completed?.recordingId === recordingId ? completed.data : null;
-  if (completedForThis) {
-    // Pick up the result and clear it
-    onComplete(completedForThis);
-    useAudioStore.getState().setAnalysisComplete(null);
-  }
+  // Pick up a completed result waiting for this recording. Must run in an
+  // effect — calling onComplete (parent setState) during render is a React
+  // error and made the pickup dependent on render timing.
+  useEffect(() => {
+    if (completed?.recordingId === recordingId) {
+      onComplete(completed.data);
+      useAudioStore.getState().setAnalysisComplete(null);
+    }
+  }, [completed, recordingId, onComplete]);
 
   const analyzing = inProgress?.recordingId === recordingId;
   const stage = analyzing ? inProgress.stage : "";
@@ -48,7 +50,7 @@ export function AnalyzeButton({ recordingId, recordingTitle, audioUrl, onComplet
               <p className="text-sm font-medium">{stage}</p>
               <div className="mt-2 h-2 w-full rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                  className="h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
                   style={{ width: `${progress}%` }}
                 />
               </div>

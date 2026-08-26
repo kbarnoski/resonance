@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,10 +14,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { FileAudio, Clock, Trash2, Music, Activity } from "lucide-react";
-import { toast } from "sonner";
+import { deleteRecording } from "@/components/recordings/delete-recording";
 
 interface RecordingCardProps {
   id: string;
@@ -68,31 +66,12 @@ export function RecordingCard({
 
   async function handleDelete() {
     setDeleting(true);
-    const supabase = createClient();
-
-    const { error: storageError } = await supabase.storage
-      .from("recordings")
-      .remove([fileName]);
-
-    if (storageError) {
-      toast.error(`Failed to delete file: ${storageError.message}`);
+    const ok = await deleteRecording(id, fileName);
+    if (ok) {
+      router.refresh();
+    } else {
       setDeleting(false);
-      return;
     }
-
-    const { error: dbError } = await supabase
-      .from("recordings")
-      .delete()
-      .eq("id", id);
-
-    if (dbError) {
-      toast.error(`Failed to delete recording: ${dbError.message}`);
-      setDeleting(false);
-      return;
-    }
-
-    toast.success("Recording deleted");
-    router.refresh();
   }
 
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -101,7 +80,7 @@ export function RecordingCard({
     <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
       <Link href={`/recording/${id}`} className="block">
       <Card
-        className="transition-all duration-200 hover:bg-white/[0.03] cursor-pointer"
+        className="transition-colors duration-instant hover:bg-white/[0.03] cursor-pointer"
       >
         <CardContent className="flex items-center gap-2.5 sm:gap-4 px-3 sm:px-6 py-4">
           <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
@@ -139,7 +118,7 @@ export function RecordingCard({
                 {tags.map((tag) => (
                   <span
                     key={tag.id}
-                    className="inline-flex items-center rounded-full border border-white/[0.08] px-2 py-0 text-[10px] font-medium text-white/30"
+                    className="inline-flex items-center rounded-full border border-white/[0.08] px-2 py-0 text-[11px] font-medium text-white/45"
                   >
                     {tag.name}
                   </span>
@@ -150,7 +129,7 @@ export function RecordingCard({
           {hasAnalysis && (
             <>
               {/* Full badge — sm+ only */}
-              <span className="shrink-0 hidden sm:inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 font-mono text-[0.65rem] text-white/40">
+              <span className="shrink-0 hidden sm:inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 font-mono text-[0.68rem] text-white/45">
                 Analyzed
               </span>
               {/* Dot indicator — mobile only */}

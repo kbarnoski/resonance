@@ -105,34 +105,16 @@ export function Sidebar() {
       <div className="px-3 pb-2 space-y-1">
         <Link
           href="/upload"
-          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/65 hover:text-white/90"
-          style={{ border: "1px solid rgba(255, 255, 255, 0.08)" }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-          }}
+          className="w-full flex items-center gap-2.5 rounded-md border border-white/[0.08] px-3 py-2 text-sm text-white/65 transition-colors duration-instant cursor-pointer hover:border-violet-500/25 hover:bg-violet-500/[0.06] hover:text-white/90 focus-visible:outline-none focus-visible:border-violet-500/25 focus-visible:bg-violet-500/[0.06] focus-visible:text-white/90 focus-visible:ring-1 focus-visible:ring-violet-400/40"
         >
-          <Upload className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
+          <Upload className="h-4 w-4 text-violet-300/70" />
           Upload Track
         </Link>
         <Link
           href="/create"
-          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/65 hover:text-white/90"
-          style={{ border: "1px solid rgba(255, 255, 255, 0.08)" }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-          }}
+          className="w-full flex items-center gap-2.5 rounded-md border border-white/[0.08] px-3 py-2 text-sm text-white/65 transition-colors duration-instant cursor-pointer hover:border-violet-500/25 hover:bg-violet-500/[0.06] hover:text-white/90 focus-visible:outline-none focus-visible:border-violet-500/25 focus-visible:bg-violet-500/[0.06] focus-visible:text-white/90 focus-visible:ring-1 focus-visible:ring-violet-400/40"
         >
-          <Sparkles className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
+          <Sparkles className="h-4 w-4 text-violet-300/70" />
           Create Journey
         </Link>
         <button
@@ -145,21 +127,9 @@ export function Sidebar() {
               router.push("/room");
             }
           }}
-          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/85 hover:text-white"
-          style={{
-            background: "rgba(139, 92, 246, 0.08)",
-            border: "1px solid rgba(139, 92, 246, 0.28)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.14)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.4)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.08)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.28)";
-          }}
+          className="w-full flex items-center gap-2.5 rounded-md border border-violet-500/[0.28] bg-violet-500/[0.08] px-3 py-2 text-sm text-white/85 transition-colors duration-instant cursor-pointer hover:border-violet-500/40 hover:bg-violet-500/[0.14] hover:text-white focus-visible:outline-none focus-visible:border-violet-500/40 focus-visible:bg-violet-500/[0.14] focus-visible:text-white focus-visible:ring-1 focus-visible:ring-violet-400/40"
         >
-          <Disc3 className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.9)" }} />
+          <Disc3 className="h-4 w-4 text-violet-300/90" />
           Enter The Room
         </button>
       </div>
@@ -186,7 +156,7 @@ export function Sidebar() {
         })}
         <Button
           variant="ghost"
-          className="w-full justify-start gap-2.5 text-white/30 hover:text-white/60 hover:bg-white/[0.05] text-sm h-9"
+          className="w-full justify-start gap-2.5 text-white/45 hover:text-white/60 hover:bg-white/[0.05] text-sm h-9"
           onClick={handleSignOut}
         >
           <LogOut className="h-4 w-4" />
@@ -199,12 +169,12 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-black px-4 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-background px-4 md:hidden">
         {logo}
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 text-white/40 hover:text-white/70"
+          className="min-h-11 min-w-11 text-white/40 hover:text-white/70"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
@@ -232,7 +202,7 @@ export function Sidebar() {
       {/* Mobile slide-over sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/[0.06] bg-black pt-14 transition-transform duration-200 ease-in-out md:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/[0.06] bg-background pt-14 transition-transform duration-fast ease-in-out md:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

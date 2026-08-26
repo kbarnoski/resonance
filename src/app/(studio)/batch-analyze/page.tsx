@@ -16,8 +16,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { runAnalysis } from "@/lib/audio/analysis-runner";
-import { resetTranscribeBackend } from "@/lib/audio/transcribe";
+import { runAnalysis, abortAnalysis } from "@/lib/audio/analysis-runner";
 import { Loader2, CheckCircle2, AlertCircle, Play } from "lucide-react";
 
 type Status = "pending" | "running" | "done" | "error" | "already-done";
@@ -41,6 +40,9 @@ export default function BatchAnalyzePage() {
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
   const hasAutoStartedRef = useRef(false);
+  // Set by Stop — checked before the between-tracks reload so a stopped
+  // batch actually stays stopped instead of reloading into auto-resume.
+  const stopRequestedRef = useRef(false);
 
   const loadTracks = useCallback(async () => {
     const supabase = createClient();
@@ -150,6 +152,7 @@ export default function BatchAnalyzePage() {
   // older GPUs. localStorage flag keeps the loop going across reloads.
   const runAll = async () => {
     if (running) return;
+    stopRequestedRef.current = false;
     try { localStorage.setItem(AUTORUN_KEY, "1"); } catch {}
     setRunning(true);
     setFinished(false);
@@ -164,15 +167,24 @@ export default function BatchAnalyzePage() {
 
     await runOne(nextIdx, tracks[nextIdx]);
 
+    // Stop was pressed while this track ran — don't reload into the
+    // auto-resume loop.
+    if (stopRequestedRef.current) return;
+
     // Give the DB write a beat, then reload — the useEffect auto-start
     // picks up from here next time the page loads.
     await new Promise((r) => setTimeout(r, 800));
+    if (stopRequestedRef.current) return;
     window.location.reload();
   };
 
   const retryErrored = runAll;
 
   const stopBatch = () => {
+    stopRequestedRef.current = true;
+    // Abort the in-flight transcription (takes effect at its next
+    // checkpoint) instead of only letting the current track run out.
+    abortAnalysis();
     try { localStorage.removeItem(AUTORUN_KEY); } catch {}
     setRunning(false);
     setFinished(false);
@@ -193,7 +205,7 @@ export default function BatchAnalyzePage() {
       </p>
 
       {loading ? (
-        <div className="text-white/30" style={{ fontSize: "0.85rem" }}>Loading tracks…</div>
+        <div className="text-white/45" style={{ fontSize: "0.85rem" }}>Loading tracks…</div>
       ) : tracks.length === 0 ? (
         <div className="text-white/40" style={{ fontSize: "0.85rem" }}>
           No Welcome Home tracks found. Tracks must be named <code>01_Title</code> through <code>13_Title</code>.
@@ -204,7 +216,7 @@ export default function BatchAnalyzePage() {
             <button
               onClick={runAll}
               disabled={running || remaining === 0}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white/85 hover:text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white/85 hover:text-white transition-colors duration-instant disabled:opacity-40 disabled:cursor-not-allowed"
               style={{
                 fontSize: "0.82rem",
                 fontFamily: "var(--font-geist-mono)",
@@ -270,7 +282,7 @@ export default function BatchAnalyzePage() {
                   <div className="text-white/85 truncate" style={{ fontSize: "0.85rem", fontFamily: "var(--font-geist-sans)" }}>
                     {t.cleanTitle}
                   </div>
-                  <div className="text-white/35 truncate" style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>
+                  <div className="text-white/45 truncate" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
                     {t.status === "already-done" && "Already analyzed"}
                     {t.status === "running" && "Analyzing…"}
                     {t.status === "done" && "Analysis saved"}

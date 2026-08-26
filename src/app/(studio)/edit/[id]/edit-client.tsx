@@ -30,7 +30,7 @@ export function EditJourneyClient({ initialJourney }: EditJourneyClientProps) {
         Edit Journey
       </h1>
       <p
-        className="text-white/30 mt-1 mb-8"
+        className="text-white/45 mt-1 mb-8"
         style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
       >
         Tweak the prompts, mood, or imagery setting

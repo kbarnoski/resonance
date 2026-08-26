@@ -102,7 +102,7 @@ export function SettingsClient({
 
       {/* Profile */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-white/30">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-white/45">
           Profile
         </h2>
         <div className="rounded-lg border border-white/[0.08] bg-white/[0.02] p-5">
@@ -147,7 +147,7 @@ export function SettingsClient({
 
       {/* Email */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-white/30">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-white/45">
           Email
         </h2>
         <div className="rounded-lg border border-white/[0.08] bg-white/[0.02] p-5">
@@ -194,7 +194,7 @@ export function SettingsClient({
 
       {/* Password */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-white/30">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-white/45">
           Password
         </h2>
         <div className="rounded-lg border border-white/[0.08] bg-white/[0.02] p-5">
@@ -250,7 +250,7 @@ export function SettingsClient({
 
       {/* Desktop App */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-white/30">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-white/45">
           Desktop App
         </h2>
         <div className="rounded-lg border border-white/[0.08] bg-white/[0.02] p-5">

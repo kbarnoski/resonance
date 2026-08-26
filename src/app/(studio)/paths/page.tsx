@@ -61,12 +61,15 @@ export default async function PathsPage() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {paths.map((path) => (
-            <Link
-              key={path.id}
-              href={path.share_token ? `/path/${path.share_token}?view=app` : "#"}
-            >
-              <Card className="h-full cursor-pointer transition-colors hover:bg-accent/50">
+          {paths.map((path) => {
+            const card = (disabled: boolean) => (
+              <Card
+                className={
+                  disabled
+                    ? "h-full opacity-50"
+                    : "h-full cursor-pointer transition-colors hover:bg-accent/50"
+                }
+              >
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Sparkles
@@ -83,10 +86,27 @@ export default async function PathsPage() {
                   <p className="mt-2 text-xs text-muted-foreground">
                     {(path.journey_ids ?? []).length} journeys
                   </p>
+                  {disabled && (
+                    <p className="mt-2 font-mono text-xs text-white/45">
+                      No share link yet
+                    </p>
+                  )}
                 </CardContent>
               </Card>
-            </Link>
-          ))}
+            );
+
+            // A path without a share token has nowhere to link — render a
+            // quiet disabled card instead of an href="#" dead end.
+            return path.share_token ? (
+              <Link key={path.id} href={`/path/${path.share_token}?view=app`}>
+                {card(false)}
+              </Link>
+            ) : (
+              <div key={path.id} aria-disabled="true" className="cursor-not-allowed">
+                {card(true)}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

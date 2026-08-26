@@ -15,6 +15,7 @@ function SignupForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   // Sanitize redirectTo so an attacker can't craft a link that
@@ -35,6 +36,14 @@ function SignupForm() {
     if (error) {
       setError(error.message);
       setLoading(false);
+    } else if (!data.session) {
+      // Email confirmation is enabled: signUp succeeded but there is no
+      // session yet. Skip the profiles insert (RLS requires an
+      // authenticated user — it would silently fail) and show a
+      // check-your-email state instead of bouncing to a login that
+      // can't succeed until the link is clicked.
+      setLoading(false);
+      setCheckEmail(true);
     } else {
       // Create profile with display name
       if (data.user) {
@@ -46,6 +55,47 @@ function SignupForm() {
       router.push(redirectTo);
       router.refresh();
     }
+  }
+
+  if (checkEmail) {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center bg-background p-4">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
+        </div>
+        <div className="relative w-full max-w-sm space-y-6 text-center">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className="mx-auto h-10 w-10 text-primary"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path d="M12 3C12 3 12 8 12 12C12 16 12 21 12 21" strokeLinecap="round" />
+            <path d="M12 7C14.5 7 16.5 5.5 16.5 3.5" strokeLinecap="round" />
+            <path d="M12 12C9 12 6.5 10 6.5 7.5" strokeLinecap="round" />
+            <path d="M12 17C15 17 17.5 15 17.5 12.5" strokeLinecap="round" />
+          </svg>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Check your email</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We sent a confirmation link to{" "}
+              <span className="text-foreground">{email}</span>. Open it to
+              activate your account, then sign in.
+            </p>
+          </div>
+          <p className="text-center text-sm text-muted-foreground">
+            Already confirmed?{" "}
+            <Link
+              href={`/login?redirectTo=${encodeURIComponent(redirectTo)}`}
+              className="underline hover:text-foreground"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

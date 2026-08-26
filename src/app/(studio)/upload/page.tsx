@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { getMp4CreationDate } from "@/lib/audio/mp4-creation-date";
 import { detectAudioCodec } from "@/lib/audio/detect-codec";
 
 interface UploadingFile {
+  id: string;
   file: File;
   description: string;
   artist: string;
@@ -21,11 +22,39 @@ interface UploadingFile {
   error?: string;
 }
 
+// The drop zone advertises "60 min max" — enforce it before paying for
+// the storage upload.
+const MAX_DURATION_SECONDS = 60 * 60;
+
+/** Probe duration via an audio element (metadata only, no full decode). */
+function probeDuration(file: File): Promise<number | null> {
+  return new Promise((resolve) => {
+    const audio = new Audio();
+    const objectUrl = URL.createObjectURL(file);
+    const done = (value: number | null) => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(value);
+    };
+    audio.preload = "metadata";
+    audio.onloadedmetadata = () => done(isFinite(audio.duration) ? audio.duration : null);
+    audio.onerror = () => done(null);
+    audio.src = objectUrl;
+  });
+}
+
 export default function UploadPage() {
   const [files, setFiles] = useState<UploadingFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  // Mirror of `files` so the upload loop reads the LATEST field values
+  // (artist/description typed while the batch runs), not a stale closure.
+  const filesRef = useRef<UploadingFile[]>(files);
+  useEffect(() => {
+    filesRef.current = files;
+  }, [files]);
 
   const addFiles = useCallback((newFiles: FileList | File[]) => {
     const audioFiles = Array.from(newFiles).filter((f) =>
@@ -47,7 +76,15 @@ export default function UploadPage() {
       }
       return [
         ...prev,
-        ...toAdd.map((file) => ({ file, description: "", artist: "", progress: 0, status: "pending" as const })),
+        ...toAdd.map((file) => ({
+          // Stable row key — array indices shift when rows are removed
+          id: crypto.randomUUID(),
+          file,
+          description: "",
+          artist: "",
+          progress: 0,
+          status: "pending" as const,
+        })),
       ];
     });
   }, []);
@@ -58,11 +95,17 @@ export default function UploadPage() {
     addFiles(e.dataTransfer.files);
   }
 
-  function removeFile(index: number) {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+  function removeFile(id: string) {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+  }
+
+  function updateRow(id: string, patch: Partial<UploadingFile>) {
+    setFiles((prev) => prev.map((f) => (f.id === id ? { ...f, ...patch } : f)));
   }
 
   async function uploadAll() {
+    if (isUploading) return;
+
     const missingArtist = files.some((f) => f.status !== "done" && !f.artist.trim());
     if (missingArtist) {
       toast.error("Artist name is required for all recordings");
@@ -76,22 +119,37 @@ export default function UploadPage() {
       return;
     }
 
+    setIsUploading(true);
+
     let successCount = 0;
     let failCount = 0;
 
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].status === "done") continue;
+    // Snapshot of ids to process; row contents are re-read from filesRef
+    // at each step so late edits still land in the insert.
+    const ids = files.filter((f) => f.status !== "done").map((f) => f.id);
 
-      setFiles((prev) =>
-        prev.map((f, idx) => (idx === i ? { ...f, status: "uploading", progress: 10 } : f))
-      );
+    for (const id of ids) {
+      const row = filesRef.current.find((f) => f.id === id);
+      if (!row || row.status === "done") continue;
 
-      const file = files[i].file;
+      updateRow(id, { status: "uploading", progress: 5, error: undefined });
+
+      const file = row.file;
+
+      // Probe duration BEFORE uploading — enforce the advertised 60-min max
+      const duration = await probeDuration(file);
+      if (duration != null && duration > MAX_DURATION_SECONDS) {
+        updateRow(id, {
+          status: "error",
+          error: `This recording is ${Math.round(duration / 60)} minutes long — the maximum is 60. Please trim it and try again.`,
+        });
+        failCount++;
+        continue;
+      }
+
+      updateRow(id, { progress: 20 });
+
       const fileName = `${user.id}/${Date.now()}-${file.name}`;
-
-      setFiles((prev) =>
-        prev.map((f, idx) => (idx === i ? { ...f, progress: 30 } : f))
-      );
 
       const { error: uploadError } = await supabase.storage
         .from("recordings")
@@ -104,38 +162,12 @@ export default function UploadPage() {
         const msg = uploadError.message.includes("maximum allowed size")
           ? `File too large (${(file.size / 1024 / 1024).toFixed(0)} MB). Increase the limit in Supabase Dashboard → Storage → Settings.`
           : `Storage: ${uploadError.message}`;
-        setFiles((prev) =>
-          prev.map((f, idx) =>
-            idx === i ? { ...f, status: "error", error: msg } : f
-          )
-        );
+        updateRow(id, { status: "error", error: msg });
         failCount++;
         continue;
       }
 
-      setFiles((prev) =>
-        prev.map((f, idx) => (idx === i ? { ...f, progress: 70 } : f))
-      );
-
-      // Detect duration via HTML Audio element (lightweight, no full decode)
-      let duration: number | null = null;
-      try {
-        duration = await new Promise<number | null>((resolve) => {
-          const audio = new Audio();
-          audio.preload = "metadata";
-          audio.onloadedmetadata = () => {
-            resolve(isFinite(audio.duration) ? audio.duration : null);
-            URL.revokeObjectURL(audio.src);
-          };
-          audio.onerror = () => {
-            resolve(null);
-            URL.revokeObjectURL(audio.src);
-          };
-          audio.src = URL.createObjectURL(file);
-        });
-      } catch {
-        // Duration detection failed, continue without it
-      }
+      updateRow(id, { progress: 70 });
 
       const title = file.name.replace(/\.[^/.]+$/, "");
 
@@ -150,6 +182,12 @@ export default function UploadPage() {
       // Detect audio codec from file container
       const audioCodec = await detectAudioCodec(file);
 
+      updateRow(id, { progress: 85 });
+
+      // Re-read the row NOW — the user may have edited artist/description
+      // while earlier files were uploading.
+      const latest = filesRef.current.find((f) => f.id === id) ?? row;
+
       const { error: dbError } = await supabase.from("recordings").insert({
         user_id: user.id,
         title,
@@ -158,26 +196,27 @@ export default function UploadPage() {
         duration,
         file_size: file.size,
         recorded_at: recordedAt,
-        description: files[i].description || null,
+        description: latest.description.trim() || null,
         audio_codec: audioCodec,
-        artist: files[i].artist.trim(),
+        artist: latest.artist.trim(),
       }).select("id").single();
 
       if (dbError) {
-        setFiles((prev) =>
-          prev.map((f, idx) =>
-            idx === i ? { ...f, status: "error", error: `Database: ${dbError.message} (code: ${dbError.code})` } : f
-          )
-        );
+        // Don't strand the storage object — the row never made it to the DB
+        await supabase.storage.from("recordings").remove([fileName]);
+        updateRow(id, {
+          status: "error",
+          error: `Database: ${dbError.message} (code: ${dbError.code})`,
+        });
         failCount++;
         continue;
       }
 
-      setFiles((prev) =>
-        prev.map((f, idx) => (idx === i ? { ...f, status: "done", progress: 100 } : f))
-      );
+      updateRow(id, { status: "done", progress: 100 });
       successCount++;
     }
+
+    setIsUploading(false);
 
     if (successCount > 0 && failCount === 0) {
       toast.success("Upload complete!");
@@ -240,13 +279,13 @@ export default function UploadPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="font-light">{files.length} file(s) selected</h2>
-            <Button onClick={uploadAll} disabled={pendingCount === 0}>
-              Upload {pendingCount > 0 ? `(${pendingCount})` : ""}
+            <Button onClick={uploadAll} disabled={pendingCount === 0 || isUploading}>
+              {isUploading ? "Uploading..." : `Upload ${pendingCount > 0 ? `(${pendingCount})` : ""}`}
             </Button>
           </div>
 
-          {files.map((f, i) => (
-            <Card key={i}>
+          {files.map((f) => (
+            <Card key={f.id}>
               <CardContent className="flex items-center gap-3 py-3">
                 <FileAudio className="h-5 w-5 shrink-0 text-muted-foreground" />
                 <div className="flex-1 min-w-0">
@@ -257,39 +296,25 @@ export default function UploadPage() {
                   {f.status !== "done" && (
                     <>
                       <Input
-                        id={`upload-artist-${i}`}
+                        id={`upload-artist-${f.id}`}
                         name="artist"
                         aria-label="Artist name"
                         autoComplete="off"
                         placeholder="Artist name (required)"
                         value={f.artist}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFiles((prev) =>
-                            prev.map((file, idx) =>
-                              idx === i ? { ...file, artist: value } : file
-                            )
-                          );
-                        }}
+                        onChange={(e) => updateRow(f.id, { artist: e.target.value })}
                         className="mt-1 h-7 text-xs"
                         onClick={(e) => e.stopPropagation()}
                         required
                       />
                       <Input
-                        id={`upload-description-${i}`}
+                        id={`upload-description-${f.id}`}
                         name="description"
                         aria-label="Recording description"
                         autoComplete="off"
                         placeholder="Add a description (optional)"
                         value={f.description}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFiles((prev) =>
-                            prev.map((file, idx) =>
-                              idx === i ? { ...file, description: value } : file
-                            )
-                          );
-                        }}
+                        onChange={(e) => updateRow(f.id, { description: e.target.value })}
                         className="mt-1 h-7 text-xs"
                         onClick={(e) => e.stopPropagation()}
                       />
@@ -298,7 +323,7 @@ export default function UploadPage() {
                   {f.status === "uploading" && (
                     <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
                       <div
-                        className="h-full rounded-full bg-primary transition-all"
+                        className="h-full rounded-full bg-primary transition-[width]"
                         style={{ width: `${f.progress}%` }}
                       />
                     </div>
@@ -314,7 +339,8 @@ export default function UploadPage() {
                     variant="ghost"
                     size="icon"
                     aria-label="Remove file"
-                    onClick={() => removeFile(i)}
+                    onClick={() => removeFile(f.id)}
+                    disabled={isUploading}
                     className="shrink-0"
                   >
                     <X className="h-4 w-4" />

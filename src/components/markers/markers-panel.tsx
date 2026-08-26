@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { Flag, Plus, Trash2, X, Zap } from "lucide-react";
 import { toast } from "sonner";
@@ -86,7 +86,9 @@ export function MarkersPanel({
         user_id: user.id,
         time: currentTime,
         label,
-        color: addingType === "cue" ? "#f59e0b" : "#primary",
+        // Real hex values — "#primary" was an invalid CSS color literal.
+        // #8b5cf6 is the violet accent used across the studio chrome.
+        color: addingType === "cue" ? "#f59e0b" : "#8b5cf6",
         type: addingType,
       })
       .select("id, time, label, color, type")
@@ -258,35 +260,7 @@ export function MarkersPanel({
 
   return (
     <Card>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-            <Flag className="h-4 w-4" />
-            Markers ({markers.length})
-          </CardTitle>
-          {!isAdding && !readOnly && (
-            <div className="flex items-center gap-1.5">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => { setAddingType("note"); setIsAdding(true); }}
-              >
-                <Plus className="mr-1 h-3.5 w-3.5" />
-                Add at {formatTime(currentTime)}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => { setAddingType("cue"); setIsAdding(true); }}
-                className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
-              >
-                <Zap className="mr-1 h-3.5 w-3.5" />
-                Add Cue
-              </Button>
-            </div>
-          )}
-        </div>
-      </CardHeader>
+      <CardHeader className="pb-2">{header}</CardHeader>
       <CardContent>{body}</CardContent>
     </Card>
   );

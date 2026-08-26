@@ -23,11 +23,12 @@ type FullAnalysis = {
   status: string | null;
 };
 
+// Dropdown metadata only — full analyses (chords/notes/summary can be
+// hundreds of KB each) are lazy-loaded for the two selected recordings.
 type Recording = {
   id: string;
   title: string;
   duration: number | null;
-  analyses: FullAnalysis | null;
 };
 
 function formatDuration(seconds: number): string {
@@ -99,7 +100,8 @@ function CompareChat({
   analysisA: FullAnalysis;
   analysisB: FullAnalysis;
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // Ref to the ScrollArea VIEWPORT — the Radix Root doesn't scroll
+  const viewportRef = useRef<HTMLDivElement>(null);
   const chatKey = `${titleA}-${titleB}`;
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, append } =
@@ -110,14 +112,14 @@ function CompareChat({
     });
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (viewportRef.current) {
+      viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
     <div className="flex h-[400px] flex-col rounded-lg border sm:h-[500px]">
-      <ScrollArea ref={scrollRef} className="flex-1 p-4">
+      <ScrollArea viewportRef={viewportRef} className="flex-1 p-4">
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-3">
             <p className="text-sm text-muted-foreground">
@@ -191,6 +193,9 @@ export default function ComparePage() {
   const [loading, setLoading] = useState(true);
   const [idA, setIdA] = useState<string>("");
   const [idB, setIdB] = useState<string>("");
+  // Lazy-loaded full analyses, keyed by recording id. `null` = loaded,
+  // no analysis; absent key = not loaded yet.
+  const [analysesById, setAnalysesById] = useState<Record<string, FullAnalysis | null>>({});
 
   useEffect(() => {
     async function fetchRecordings() {
@@ -202,34 +207,60 @@ export default function ComparePage() {
       }
       const { data } = await supabase
         .from("recordings")
-        .select(
-          "id, title, duration, analyses(key_signature, tempo, time_signature, chords, notes, summary, status)"
-        )
+        .select("id, title, duration")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
       if (data) {
-        const mapped: Recording[] = data.map((r) => ({
-          id: r.id,
-          title: r.title,
-          duration: r.duration,
-          analyses: Array.isArray(r.analyses)
-            ? r.analyses[0] ?? null
-            : r.analyses,
-        }));
-        setRecordings(mapped);
+        setRecordings(data as Recording[]);
       }
       setLoading(false);
     }
     fetchRecordings();
   }, []);
 
+  // Load full analyses only for the two selected recordings
+  useEffect(() => {
+    const idsToLoad = [idA, idB].filter((id) => id && !(id in analysesById));
+    if (idsToLoad.length === 0) return;
+
+    let cancelled = false;
+    (async () => {
+      const supabase = createClient();
+      const results = await Promise.all(
+        idsToLoad.map((id) =>
+          supabase
+            .from("analyses")
+            .select("key_signature, tempo, time_signature, chords, notes, summary, status")
+            .eq("recording_id", id)
+            .maybeSingle()
+        )
+      );
+      if (cancelled) return;
+      setAnalysesById((prev) => {
+        const next = { ...prev };
+        idsToLoad.forEach((id, i) => {
+          next[id] = (results[i].data as FullAnalysis | null) ?? null;
+        });
+        return next;
+      });
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [idA, idB, analysesById]);
+
   const recA = recordings.find((r) => r.id === idA) ?? null;
   const recB = recordings.find((r) => r.id === idB) ?? null;
 
-  const analysisA = recA?.analyses ?? null;
-  const analysisB = recB?.analyses ?? null;
+  const analysesLoading =
+    (!!idA && !(idA in analysesById)) || (!!idB && !(idB in analysesById));
 
+  const analysisA = idA ? analysesById[idA] ?? null : null;
+  const analysisB = idB ? analysesById[idB] ?? null : null;
+
+  // "Analyzed" everywhere means status === "completed"
   const bothAnalyzed =
     analysisA?.status === "completed" && analysisB?.status === "completed";
 
@@ -310,7 +341,11 @@ export default function ComparePage() {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  {!analysisA && !analysisB ? (
+                  {analysesLoading ? (
+                    <p className="py-6 text-center text-sm text-muted-foreground">
+                      Loading analyses...
+                    </p>
+                  ) : !analysisA && !analysisB ? (
                     <p className="py-6 text-center text-sm text-muted-foreground">
                       Neither recording has been analyzed yet.
                     </p>
