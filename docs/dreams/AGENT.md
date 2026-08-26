@@ -36,14 +36,15 @@ shippable**. Polish comes from iteration across many cycles.
    Import: `import { guard } from "../../_shared/api-guard";` (depth `../../../_shared/api-guard` if the route is nested one level deeper). The guard enforces origin checks + per-IP rate limits + daily quotas — without it, the public preview URL exposes Karel's FAL_KEY budget to anyone on the internet. Never bypass.
 9. **NO drug references — hard block.** This lab is art about *altered states*, not substances. NEVER name, reference, or allude to recreational/psychoactive drugs (DMT, ketamine, k-hole, LSD/acid, psilocybin, MDMA, "psychedelic", "psychonaut", "trip", "come-up", etc.) in ANY prototype, page copy, comment, tag, README, slug, or log/idea/research note. Describe the *state* and *phenomenon* instead — visionary, dissociative, ecstatic, mystic, boundless, near-death, hypnagogic, meditative. If a research source names a drug, translate it to the altered-state phenomenology and **do not cite the drug paper by name** — cite the mechanism or a non-drug source instead. Before committing (part of the build gate in rule 3), run this self-check and it MUST return nothing:
    ```bash
-   git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b'
+   git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b|\btrippy\b|\bcome-?up\b|mescaline|peyote|salvia|entheogen'
    ```
    If it prints any line, rewrite that content to altered-states language before committing. This applies to steering docs too — do not seed IDEAS.md / RESEARCH.md with drug-named ideas.
+   - **Judgment check beyond the regex (added 2026-08-25):** dosing metaphors are banned framing even though no substance is named. Never present a state dial as a "dose", "dosage", "titrate/titration", "hit", or "microdose" — use **intensity** or **depth** instead ("depth ∈ [0,1]", "raise the intensity"). The regex catches names; you catch framing. If a control's copy reads like administering a substance, rewrite it before committing.
 
 10. **Ground every prototype in Karel's own music — standing directive (2026-08-14).** Karel: *"all future protos need to be based on my music until i interject again with new direction."* Every new prototype MUST source its audio from Karel's VERIFIED catalog — his 16 recordings across 2 albums (Welcome Home ×13, Snowflake ×3) — NOT synthesized tones, oscillators, or generated audio. **The former "Sketches" collection is JOSEPH's music, not Karel's (Karel, 2026-08-14) — those 5 recordings are permanently OFF-LIMITS for every prototype; they were removed from `welcomeHome.ts` and must never be re-added or referenced by ID. The "17th St" and "Folsom St" session uploads are QUARANTINED as UNVERIFIED (Karel, 2026-08-14: a Folsom St upload plays one of Joseph's drones) — they are pulled from `COLLECTIONS`/`REAL_TRACKS` and must not be used until Karel verifies each track as his.** Use the canonical shared helpers:
     - `import { COLLECTIONS, REAL_TRACKS, loadRealTrackBuffer } from "../_shared/welcomeHome";` — the 16 verified tracks (grouped by album) + a loader that fetches `/api/audio/[id]`, handles the signed-URL JSON or raw bytes, and `decodeAudioData`s into an `AudioBuffer`. All 16 are already anon-servable in production (via Karel's shared paths / featuring), so no auth and no DB writes are needed.
     - `import { loadTrackAnalysis } from "../_shared/trackAnalysis";` — anon-readable rich musical data per track: `notes[]` (MIDI midi/time/duration/velocity), `chords[]` (time/chord/duration), `events[]`, `summary` (sections, key center, harmonic highlights). Use this to make visuals genuinely *read* his music (harmony, melody, form), not just an FFT of noise.
-    - Always route decoded audio through `createSafeMaster` (ear-safety bus) and drive visuals from `safeMaster.analyser`.
+    - **safeMaster is REQUIRED for every audible prototype (standing rule, reaffirmed 2026-08-25)** — not just catalog buffers: EVERY node graph that reaches the speakers (buffer sources, any interaction one-shots, effect tails, kids-proto voices) must terminate in `createSafeMaster(...).input` from `_shared/visionary/safeMaster`, never `ctx.destination` directly. Drive visuals from `safeMaster.analyser`. A proto with any un-bussed path to `destination` fails validation.
     - Do NOT use `/api/featured` — that table is empty and silently falls back to synth. Do NOT invent track IDs; only use IDs present in `welcomeHome.ts`.
     - Reference implementations to study/extend: `700-welcome-home` (spectrum bloom + full catalog selector), `701-catalog-cosmos` (catalog hub), `703-harmonic-bloom` (chord→mandala), `706-keys-of-light` (note-roll aurora), `707-two-track-weave` (equal-power crossfade of any two pieces).
     This holds for EVERY cycle until Karel explicitly changes the direction. Synth-only prototypes are no longer acceptable output.
@@ -51,6 +52,8 @@ shippable**. Polish comes from iteration across many cycles.
     **Music-priority ruling (Karel, 2026-08-14):** *"right now the priority is protos using my music so that is priority over using a mic."* Mic / camera / MIDI input may exist as a SECONDARY interaction layer on top of catalog audio (e.g. your voice modulates, filters, or harmonizes with a real track) — but mic-primary or user-synthesized-audio-primary pieces are PAUSED until Karel gives new direction. When jury provocations (JURY.md) conflict with this rule, **rule 10 wins.**
 
 If you ever feel uncertain whether an action violates these rules, **do not perform it**. Log the question to STATE.md and let Karel resolve it in the morning.
+
+**Sanctioned retrofits (Karel-directed, 2026-08-25)** — a one-time immutability exception, executed in a live session, NOT a precedent for the autonomous agent: `13040-spectralhold`, `7720-mandelbulb`, `8952-tensegrity`, `6296-flowbody`, and kids `100`/`164`/`216` were routed through the shared safeMaster bus; `13168-preparedchance` was retrofitted onto Karel's real catalog (its Karplus-Strong excitation now granulates his recordings); `308-orbit-choir`, `321-spectral-flight`, `323-latent-condensation`, `327-physarum-choir` were rewired off the empty `/api/featured` onto `welcomeHome.ts`; wording scrubs landed in `2332-lock`, `1770-visionary-hyperbolic`, `6360-honeycomb`. The immutability rule still binds you absolutely — do not modify these or any other shipped proto.
 
 ### If production breaks — revert runbook (added 2026-08-14)
 
@@ -105,7 +108,7 @@ Do the work. Constraints:
 ### 4. Validate (5 min budget)
 - **Drug-language self-check (ABSOLUTE rule 9) — run before commit.** It MUST print nothing:
   ```bash
-  git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b'
+  git diff --cached | grep -iE '^\+' | grep -iE '\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b|\btrippy\b|\bcome-?up\b|mescaline|peyote|salvia|entheogen'
   ```
   If it prints, rewrite that content to altered-states/mystic/visionary language (and drop any drug-named citation) before committing.
 - **Normalize to on-brand tokens FIRST.** Before building, run the normalizer on every prototype page you created or edited this cycle:
@@ -247,6 +250,8 @@ Resonance is restrained and minimal. Use these EXACT patterns from the core app 
 - **Rounding scale**: `rounded-md` buttons/inputs, `rounded-lg` dialogs/cards. **Never `rounded-2xl`/`rounded-3xl` on chrome.**
 
 The house style is: semantic tokens, thin `border-border` hairlines, layered opacity for hierarchy, sans everywhere except tiny mono labels. When in doubt, open `src/components/ui/button.tsx` and `dialog.tsx` and copy.
+
+- **No film grain — aesthetic law (added 2026-08-25).** Karel banned film grain product-wide. Never add a grain/noise-overlay pass (fragment-shader grain, `noise()` overlays on the final composite, canvas static textures used as "texture") to any NEW prototype or to any prototype you polish. ~19 older protos ship grain from before this rule — they are immutable, leave them, but do not imitate them or re-introduce the technique.
 
 **Bad prototype** (don't do):
 - Half-built UI with broken buttons

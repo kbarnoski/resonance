@@ -11,7 +11,16 @@ Detection rules:
 
 1. Read `src/app/dream/<slug>/api/route.ts` — if it imports `@fal-ai/client` → fal-required.
 2. Read `src/app/dream/<slug>/page.tsx` — if it fetches `/api/ai-image/*` (the shared Resonance FAL-backed endpoint) → fal-required.
-3. Otherwise → local.
+3. **Non-fal providers count too (added 2026-08-25).** "✓ local" means NO external AI/API dependency of any kind, not merely "no fal". A proto is key-required — and must NOT badge as local — if its route or page references any of:
+   - `@fal-ai/client` / `fal.run` / `fal.ai` URLs (badge: 🔑 FAL_KEY)
+   - ElevenLabs — `elevenlabs` imports, `api.elevenlabs.io`, `ELEVENLABS_API_KEY` / `ELEVEN_API_KEY`
+   - Google — `@google/generative-ai` / `@google/genai`, `generativelanguage.googleapis.com`, `GEMINI_API_KEY` / `GOOGLE_API_KEY`
+   - Anthropic — `@anthropic-ai/sdk`, `api.anthropic.com`, `ANTHROPIC_API_KEY`
+   - OpenAI — `openai` import, `api.openai.com`, `OPENAI_API_KEY`
+   - Replicate / Hugging Face inference — `replicate` import, `api.replicate.com`, `api-inference.huggingface.co`
+   - Generic tells: any `process.env.*_API_KEY` / `*_KEY` read inside a dream route, or a server route that `fetch`es a non-Resonance origin.
+   When any of these match, badge with the provider's key name (e.g. 🔑 ELEVENLABS_API_KEY) rather than the generic FAL badge; the auto-detection in `src/app/dream/page.tsx → loadPrototypes()` must be extended in the same commit that introduces a new provider.
+4. Otherwise → local.
 
 ## Findings (2026-05-21)
 
@@ -73,4 +82,4 @@ The shared `/api/ai-image/generate` route used by `2-ghost-lab` is already prote
 
 ## How this stays current
 
-The dashboard auto-derives the validation badge from the source files on every Vercel build. When the agent adds a new prototype with an `api/route.ts` that imports `@fal-ai/client`, it'll automatically show 🔑 FAL_KEY. If it adds something using a different provider (ElevenLabs, Gemini, OpenAI directly), the detection rules in `src/app/dream/page.tsx → loadPrototypes()` will need updating.
+The dashboard auto-derives the validation badge from the source files on every Vercel build. When the agent adds a new prototype with an `api/route.ts` that imports `@fal-ai/client`, it'll automatically show 🔑 FAL_KEY. If it adds something using a different provider (ElevenLabs, Gemini/Anthropic, OpenAI, Replicate, HF), detection rule 3 above applies: the proto must not badge "✓ local", and `src/app/dream/page.tsx → loadPrototypes()` must be extended for that provider in the same commit.

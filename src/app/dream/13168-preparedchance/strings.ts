@@ -11,9 +11,17 @@
 //   harmonic  — a node-excited, long, glassy ring (a fingertip harmonic)
 //   detune    — two strings a few cents apart, slowly beating (a chorusing pair)
 //
+// REAL-MUSIC BASIS (retrofit 2026-08-25, rule 10): once `setSource()` hands the
+// bank one of Karel's real recordings, the delay line is no longer struck with
+// noise — the excitation is a seeded GRAIN of the recording itself, and a soft
+// half-sine envelope of the raw grain breathes underneath each pluck. Chance
+// operations on real piano, not on synthesized strings. Seeded noise remains
+// only as the pre-load / load-failure fallback (labeled in the UI).
+//
 // Buffers are cached per (midi, prep) so a live player triggers with no cost
-// after the first strike. The noise excitation is seeded (mulberry32) so builds
-// are reproducible — never Math.random.
+// after the first strike; the cache is cleared when the real source arrives.
+// Excitation offsets and noise are seeded (mulberry32) so builds are
+// reproducible — never Math.random.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { mulberry32 } from "./chance";
@@ -46,7 +54,30 @@ export function midiToFreq(midi: number): number {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
-// Run one Karplus-Strong delay line into `out`, mixing additively.
+// Pick a deterministic, lively grain offset in the source: audition a few
+// seeded candidates and keep the one with the most energy, so a quiet passage
+// never yields a dead excitation. Purely rng-driven → reproducible.
+function pickOffset(src: Float32Array, n: number, rng: () => number): number {
+  const max = Math.max(0, src.length - n - 1);
+  if (max === 0) return 0;
+  let best = 0;
+  let bestE = -1;
+  for (let c = 0; c < 6; c++) {
+    const off = Math.floor(rng() * max);
+    const step = Math.max(1, Math.floor(n / 64));
+    let e = 0;
+    for (let i = 0; i < n; i += step) e += Math.abs(src[off + i]);
+    if (e > bestE) {
+      bestE = e;
+      best = off;
+    }
+  }
+  return best;
+}
+
+// Run one Karplus-Strong delay line into `out`, mixing additively. When a
+// `grain` of the real recording is provided it becomes the excitation;
+// otherwise a seeded noise burst is used.
 function runLine(
   out: Float32Array,
   freq: number,
@@ -54,14 +85,25 @@ function runLine(
   p: PrepParams,
   rng: () => number,
   gain: number,
+  grain: Float32Array | null,
 ): void {
   const n = Math.max(2, Math.round(sampleRate / freq));
   const line = new Float32Array(n);
 
-  // Excitation. A harmonic preset excites near a node so odd partials survive;
-  // everything else gets a full noise burst.
+  // Excitation. A harmonic preset excites near a node so odd partials survive.
+  // With a real-recording grain, the string is struck with Karel's piano
+  // itself (normalised to unit peak); without one, a full noise burst.
+  let gPeak = 0;
+  if (grain) {
+    for (let i = 0; i < n && i < grain.length; i++) {
+      gPeak = Math.max(gPeak, Math.abs(grain[i]));
+    }
+  }
   for (let i = 0; i < n; i++) {
-    let v = rng() * 2 - 1;
+    let v =
+      grain && gPeak > 0 && i < grain.length
+        ? grain[i] / gPeak
+        : rng() * 2 - 1;
     if (p.node > 0) {
       // Emphasise the 2nd partial: an antisymmetric burst rings an octave up.
       v *= Math.sin((2 * Math.PI * i) / n) >= 0 ? 1 : -1;
@@ -95,6 +137,7 @@ function renderPluck(
   ctx: BaseAudioContext,
   midi: number,
   prep: Preparation,
+  source: AudioBuffer | null,
 ): AudioBuffer {
   const p = PREP[prep];
   const sr = ctx.sampleRate;
@@ -105,12 +148,33 @@ function renderPluck(
 
   // Seed the excitation from the pitch so the cache is stable + reproducible.
   const rng = mulberry32((midi * 2654435761) >>> 0);
-  runLine(out, freq, sr, p, rng, 1);
+  const ch = source ? source.getChannelData(0) : null;
+  const n = Math.max(2, Math.round(sr / freq));
+  const off = ch ? pickOffset(ch, n, rng) : 0;
+  const grain = ch ? ch.subarray(off, off + n) : null;
+  runLine(out, freq, sr, p, rng, 1, grain);
 
   if (p.detuneCents > 0) {
     const ratio = Math.pow(2, p.detuneCents / 1200);
     const rng2 = mulberry32(((midi + 1) * 40503) >>> 0);
-    runLine(out, freq * ratio, sr, p, rng2, 0.8);
+    const n2 = Math.max(2, Math.round(sr / (freq * ratio)));
+    let grain2: Float32Array | null = null;
+    if (ch) {
+      const off2 = pickOffset(ch, n2, rng2);
+      grain2 = ch.subarray(off2, off2 + n2);
+    }
+    runLine(out, freq * ratio, sr, p, rng2, 0.8, grain2);
+  }
+
+  // The raw recording breathing under the pluck: a soft half-sine-enveloped
+  // grain of Karel's actual piano, so the source material is audibly present —
+  // the prepared string struck *inside* his recording.
+  if (ch) {
+    const gLen = Math.min(total, Math.floor(sr * Math.min(p.decay, 1.2)));
+    for (let i = 0; i < gLen && off + i < ch.length; i++) {
+      const env = Math.sin((Math.PI * i) / gLen);
+      out[i] += ch[off + i] * env * 0.35;
+    }
   }
 
   // Normalise + soft fade-out to kill any tail click.
@@ -130,17 +194,32 @@ function renderPluck(
 export class PreparedStrings {
   private cache = new Map<string, AudioBuffer>();
   private live = new Set<AudioBufferSourceNode>();
+  private source: AudioBuffer | null = null;
 
   constructor(
     private ctx: AudioContext,
     private dest: AudioNode,
   ) {}
 
+  /**
+   * Hand the bank one of Karel's real recordings (rule 10). All subsequent
+   * plucks are excited by seeded grains of this buffer; the render cache is
+   * cleared so already-struck pitches re-render from the real source.
+   */
+  setSource(buf: AudioBuffer): void {
+    this.source = buf;
+    this.cache.clear();
+  }
+
+  get hasSource(): boolean {
+    return this.source !== null;
+  }
+
   private bufferFor(midi: number, prep: Preparation): AudioBuffer {
     const key = `${midi}:${prep}`;
     let buf = this.cache.get(key);
     if (!buf) {
-      buf = renderPluck(this.ctx, midi, prep);
+      buf = renderPluck(this.ctx, midi, prep, this.source);
       this.cache.set(key, buf);
     }
     return buf;

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // ─── constants ──────────────────────────────────────────────────────────────
 const GRID_W = 64; // motion-field grid width  (selfie-mirrored)
@@ -169,7 +170,11 @@ function buildAudio(): AudioGraph {
   masterFilter.frequency.value = 700;
   masterFilter.Q.value = 0.4;
   masterFilter.connect(master);
-  master.connect(ctx.destination);
+  // Route through the shared ear-safety bus (shelf + lowpass + limiter)
+  // instead of connecting to ctx.destination directly. Cleanup relies on the
+  // existing ctx.close() on unmount.
+  const safe = createSafeMaster(ctx);
+  master.connect(safe.input);
 
   // feedback delay for warmth / space
   const delay = ctx.createDelay(1.0);

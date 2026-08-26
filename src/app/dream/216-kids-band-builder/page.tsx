@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
 
 // **For**: kids (4+)
 // Tap a glowing circle to add its voice. Tap again to remove it. Build a whole band!
@@ -49,6 +50,7 @@ type Spark  = { x: number; y: number; vx: number; vy: number; a: number; hue: nu
 
 type St = {
   actx:      AudioContext | null;
+  master:    SafeMaster | null; // shared ear-safety bus (one per actx)
   t0:        number;           // actx.currentTime when beat 0 started
   active:    boolean[];        // which layers are on
   scheduled: Set<string>;      // "li_iter_beat" already fired
@@ -61,13 +63,13 @@ type St = {
 
 // ── audio helpers ─────────────────────────────────────────────────
 function playNote(
-  actx: AudioContext, when: number, hz: number, durS: number, gain: number,
+  actx: AudioContext, dest: AudioNode, when: number, hz: number, durS: number, gain: number,
 ): void {
   const g = actx.createGain();
   g.gain.setValueAtTime(0, when);
   g.gain.linearRampToValueAtTime(gain, when + 0.014);
   g.gain.exponentialRampToValueAtTime(0.001, when + Math.max(durS, 0.04));
-  g.connect(actx.destination);
+  g.connect(dest);
   const osc = actx.createOscillator();
   osc.type = "triangle";
   osc.frequency.value = hz;
@@ -77,8 +79,9 @@ function playNote(
 }
 
 function scheduleActive(st: St): void {
-  if (!st.actx) return;
+  if (!st.actx || !st.master) return;
   const actx = st.actx;
+  const dest = st.master.input;
   const now   = actx.currentTime;
   const iter0 = Math.max(0, Math.floor((now - st.t0) / LDUR) - 1);
   const iter1 = Math.floor((now + LOOK - st.t0) / LDUR) + 1;
@@ -93,7 +96,7 @@ function scheduleActive(st: St): void {
         if (when < now - 0.01 || when > now + LOOK) continue;
         const key = `${li}_${it}_${beat}`;
         if (st.scheduled.has(key)) continue;
-        playNote(actx, when, hz, durB * BEAT, GAINS[li]);
+        playNote(actx, dest, when, hz, durB * BEAT, GAINS[li]);
         st.scheduled.add(key);
       }
     }
@@ -125,7 +128,7 @@ function lyrXY(li: number, W: number, H: number): [number, number] {
 export default function BandBuilder() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stRef = useRef<St>({
-    actx: null, t0: 0,
+    actx: null, master: null, t0: 0,
     active:    [false, false, false, false, false],
     scheduled: new Set(),
     glow:      [0, 0, 0, 0, 0],
@@ -325,8 +328,9 @@ export default function BandBuilder() {
 
         // Wake audio on first touch
         if (!st.actx) {
-          st.actx = new AudioContext();
-          st.t0   = st.actx.currentTime;
+          st.actx   = new AudioContext();
+          st.master = createSafeMaster(st.actx);
+          st.t0     = st.actx.currentTime;
         }
 
         // Toggle layer

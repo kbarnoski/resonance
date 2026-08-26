@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { createSafeMaster } from '../_shared/visionary/safeMaster'
 
 // C major pentatonic, 2 octaves (C3–A4)
 const PENTA_HZ = [130.81, 146.83, 164.81, 196.0, 220.0, 261.63, 293.66, 329.63, 392.0, 440.0]
@@ -28,7 +29,7 @@ interface SongPath {
   fadeStart: number
 }
 
-function playNote(actx: AudioContext, hz: number): void {
+function playNote(actx: AudioContext, dest: AudioNode, hz: number): void {
   const t = actx.currentTime
   const osc = actx.createOscillator()
   osc.type = 'triangle'
@@ -43,17 +44,17 @@ function playNote(actx: AudioContext, hz: number): void {
   const g2 = actx.createGain()
   g2.gain.value = 0.2
   osc2.connect(g2); g2.connect(g)
-  osc.connect(g); g.connect(actx.destination)
+  osc.connect(g); g.connect(dest)
   osc.start(t); osc2.start(t)
   osc.stop(t + 0.6); osc2.stop(t + 0.6)
 }
 
-function startPad(actx: AudioContext): void {
+function startPad(actx: AudioContext, dest: AudioNode): void {
   ;[130.81, 164.81, 196.0].forEach(hz => {
     const osc = actx.createOscillator()
     osc.type = 'triangle'; osc.frequency.value = hz
     const g = actx.createGain(); g.gain.value = 0.022
-    osc.connect(g); g.connect(actx.destination); osc.start()
+    osc.connect(g); g.connect(dest); osc.start()
   })
 }
 
@@ -74,7 +75,11 @@ export default function KidsPaintSong() {
 
     const actx = new AudioContext()
     actxRef.current = actx
-    startPad(actx)
+    // One shared ear-safety bus per context — every voice routes through it
+    // instead of connecting to actx.destination directly. actx.close() on
+    // unmount tears the chain down.
+    const master = createSafeMaster(actx)
+    startPad(actx, master.input)
     let cancelled = false
 
     const resize = () => {
@@ -139,7 +144,7 @@ export default function KidsPaintSong() {
       path.dots.forEach((dot, i) => {
         setTimeout(() => {
           if (cancelled) return
-          playNote(actx, PENTA_HZ[dot.noteIdx])
+          playNote(actx, master.input, PENTA_HZ[dot.noteIdx])
           dot.lit = 1
           if (i === path.dots.length - 1) {
             setTimeout(() => {

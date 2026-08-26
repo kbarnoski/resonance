@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
+import { WELCOME_HOME_TRACKS, loadRealTrackBuffer } from "../_shared/welcomeHome";
 import { ChanceEngine } from "./chance";
 import { PreparedStrings, midiToFreq, type Preparation } from "./strings";
 import {
@@ -30,9 +31,14 @@ import { README } from "./readme-text";
  * deterministic chance engine, after John Cage's *Sonatas and Interludes* and
  * *Music of Changes*. Web MIDI primary, QWERTY fallback, seeded muted demo on
  * load. Palette: graphite / paper / ink with one violet accent for chance.
+ *
+ * Real-music basis (retrofit 2026-08-25, rule 10): the strings are excited by
+ * seeded grains of Karel's own recording — "Interplay" (Welcome Home) — loaded
+ * via the shared welcomeHome helper. Chance operations on real piano.
  */
 
 const FIXED_SEED = 0x13168;
+const SOURCE_TRACK = WELCOME_HOME_TRACKS[0]; // "Interplay"
 const BEAT_FRAMES = 42;
 const PX_PER_FRAME = 1.25;
 
@@ -111,6 +117,9 @@ export default function PreparedChancePage() {
   const [chanceAmount, setChanceAmount] = useState(0.25);
   const [showNotes, setShowNotes] = useState(false);
   const [pressed, setPressed] = useState<Set<string>>(new Set());
+  const [sourceState, setSourceState] = useState<
+    "idle" | "loading" | "ready" | "error"
+  >("idle");
 
   useEffect(() => {
     chanceAmtRef.current = chanceAmount;
@@ -231,6 +240,15 @@ export default function PreparedChancePage() {
       masterRef.current = master;
       stringsRef.current = new PreparedStrings(ctx, master.input);
       await ctx.resume();
+      // Load Karel's real recording as the excitation/source material
+      // (rule 10). Until it arrives, plucks use the labeled noise fallback.
+      setSourceState("loading");
+      loadRealTrackBuffer(ctx, SOURCE_TRACK.id)
+        .then(({ buffer }) => {
+          stringsRef.current?.setSource(buffer);
+          setSourceState("ready");
+        })
+        .catch(() => setSourceState("error"));
     } catch {
       /* audio unavailable — the visual instrument continues */
     }
@@ -418,8 +436,11 @@ export default function PreparedChancePage() {
           </h1>
           <p className="max-w-2xl text-base text-muted-foreground">
             Play a melody and it comes back subtly re-composed — recognisably
-            yours, gently estranged. Each key sounds through a prepared string;
-            a seeded I-Ching oracle sometimes displaces, transposes, doubles, or
+            yours, gently estranged. Each key strikes a prepared string excited
+            by grains of Karel&apos;s own recording —{" "}
+            <span className="text-foreground">&ldquo;{SOURCE_TRACK.title}&rdquo;</span>{" "}
+            from <span className="text-foreground">Welcome Home</span> — and a
+            seeded I-Ching oracle sometimes displaces, transposes, doubles, or
             silences the note. After John Cage&apos;s{" "}
             <span className="text-foreground">Sonatas and Interludes</span> and{" "}
             <span className="text-foreground">Music of Changes</span>.
@@ -460,6 +481,21 @@ export default function PreparedChancePage() {
                     ? "qwerty · no midi device"
                     : "qwerty · no web-midi"}
             </span>
+            {phase === "running" && sourceState !== "idle" && (
+              <span
+                className={`font-mono text-xs uppercase tracking-[0.18em] ${
+                  sourceState === "error"
+                    ? "text-destructive"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {sourceState === "ready"
+                  ? `strings excited by “${SOURCE_TRACK.title}”`
+                  : sourceState === "loading"
+                    ? "loading karel’s recording…"
+                    : "recording unavailable — noise excitation fallback"}
+              </span>
+            )}
           </div>
 
           {/* chance slider */}

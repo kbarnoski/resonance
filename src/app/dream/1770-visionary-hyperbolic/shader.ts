@@ -30,7 +30,7 @@ export const FRAG = /* glsl */ `
   uniform float uMid;      // 0..1  → curvature / apparent {7,q} density
   uniform float uHigh;     // 0..1  → chromatic aberration + fine iridescence
   uniform float uLoud;     // 0..1  → saturation + neural gain
-  uniform float uArc;      // 0..1  → journey (onset→come-up→breakthrough→return)
+  uniform float uArc;      // 0..1  → journey (onset→rise→breakthrough→return)
   uniform float uReduced;  // 1.0 if prefers-reduced-motion
 
   const float PI = 3.14159265359;

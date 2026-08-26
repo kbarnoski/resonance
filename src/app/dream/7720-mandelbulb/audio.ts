@@ -12,6 +12,8 @@
 //   seeded mulberry32(0x7720); all time comes from AudioContext.currentTime.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
+
 function mulberry32(seed: number): () => number {
   let a = seed >>> 0;
   return () => {
@@ -50,7 +52,11 @@ export class MandelbulbAudio {
 
     this.master = ctx.createGain();
     this.master.gain.value = 0.0001;
-    this.master.connect(ctx.destination);
+    // Route through the shared ear-safety bus (shelf + lowpass + limiter)
+    // instead of connecting to ctx.destination directly. The page's ctx.close()
+    // on unmount tears the whole chain down.
+    const safe = createSafeMaster(ctx);
+    this.master.connect(safe.input);
 
     // Slow amplitude LFO (a swell, never a flutter — ~0.15 Hz).
     this.tremGain = ctx.createGain();

@@ -1,6 +1,6 @@
 export const README = `Prepared Chance is a live instrument. You play notes; each key sounds through a prepared string, and a gentle oracle sometimes re-composes what you played — a note arrives a beat late, a step higher, doubled, or silenced. The melody comes back recognisably yours, gently estranged.
 
-The sound is a Karplus-Strong plucked-waveguide model. Each key carries a fixed "preparation" — felt (a dark, muted thud), a bolt (a rattling buzz), a harmonic (a long glassy ring), or a detuned pair (two strings a few cents apart, slowly beating) — after the objects Cage wedged between piano strings.
+The sound is a Karplus-Strong plucked-waveguide model whose strings are struck with Karel's own music: each pluck's excitation is a seeded grain of his recording "Interplay" (Welcome Home), and a soft envelope of the raw grain breathes underneath — chance operations on real piano, not synthesized strings. Each key carries a fixed "preparation" — felt (a dark, muted thud), a bolt (a rattling buzz), a harmonic (a long glassy ring), or a detuned pair (two strings a few cents apart, slowly beating) — after the objects Cage wedged between piano strings.
 
 The chance engine tosses an I-Ching hexagram for every note by the three-coin method. Its moving lines (the changing 6s and 9s) steer whether and how the note is transformed. Everything is seeded and deterministic: the muted demo you see on load tosses the same hexagrams every time.
 

@@ -1,14 +1,14 @@
 "use client";
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6360 · HONEYCOMB — titrate your own breakthrough
+// 6360 · HONEYCOMB — deepen your own breakthrough
 //
 // THE ONE QUESTION: what if you could hold your thumb down and slowly turn a
 // single dial from calm boundlessness up to a full jeweled hyperbolic-lattice
 // breakthrough — flying forward through an ever-multiplying non-Euclidean
 // honeycomb whose folding, speed and sound you control?
 //
-// This is a PLAYED instrument. One continuous scalar `dose ∈ [0,1]` is driven by
+// This is a PLAYED instrument. One continuous scalar `depth ∈ [0,1]` is driven by
 // a press-and-drag gesture (drag UP to climb, DOWN to descend) and that ONE
 // control drives BOTH the geometry AND the audio intensity jointly. Light touch
 // = a slow, sparse honeycomb drifting far away; full press = accelerating flight
@@ -17,15 +17,15 @@
 // TECHNIQUE (what makes this build distinct): a real 3D honeycomb tunnel you fly
 // THROUGH, built from a single THREE.InstancedMesh of glowing hexagonal rings
 // arranged in nested radial layers, repeated down the z-axis and scrolled toward
-// the camera forever. As dose rises: forward speed climbs, radial mirror-symmetry
+// the camera forever. As depth rises: forward speed climbs, radial mirror-symmetry
 // order multiplies, more nested layers ignite, the tunnel twist folds harder,
 // emissive jewel colours saturate and shift indigo → gold → magenta, and an
 // UnrealBloom glow intensifies. Audio: a just-intonation drone (droneBank) whose
-// upper partials open with dose + an endless-rising Shepard glissando, washed
+// upper partials open with depth + an endless-rising Shepard glissando, washed
 // through a code-built void reverb, capped by a limiter at ≤0.18.
 //
 // ALIVE-ON-LOAD: after a single "Begin" gesture an auto-breath slowly oscillates
-// the dose up and down (seeded ~48 s sine) so the piece climbs and descends on
+// the depth up and down (seeded ~48 s sine) so the piece climbs and descends on
 // its own on a silent phone. The MOMENT you press, you take over; the auto-breath
 // resumes a few seconds after you let go.
 //
@@ -91,7 +91,7 @@ interface Engine {
   fog?: THREE.FogExp2;
   onResize?: () => void;
   // play state
-  dose: number;
+  depth: number;
   target: number;
   pressing: boolean;
   lastInputT: number;
@@ -109,8 +109,8 @@ interface Engine {
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-// hue path indigo(0.70) → gold(0.13) → magenta(0.88) as dose climbs
-function doseHue(d: number): number {
+// hue path indigo(0.70) → gold(0.13) → magenta(0.88) as depth climbs
+function depthHue(d: number): number {
   return d < 0.5 ? lerp(0.7, 0.13, d / 0.5) : lerp(0.13, 0.88, (d - 0.5) / 0.5);
 }
 
@@ -152,40 +152,40 @@ export default function Honeycomb() {
         0.5 - 0.42 * Math.cos(ph) - 0.05 * Math.cos(ph * 2 + e.hueDrift);
       e.target = clamp01(breath);
     }
-    // smooth the actual dose toward the target (languid when auto, snappy on grab)
+    // smooth the actual depth toward the target (languid when auto, snappy on grab)
     const tau = e.pressing ? 0.28 : e.reduced ? 1.4 : 0.7;
-    e.dose += (e.target - e.dose) * (1 - Math.exp(-dt / tau));
-    const dose = e.dose;
+    e.depth += (e.target - e.depth) * (1 - Math.exp(-dt / tau));
+    const depth = e.depth;
 
-    // ── audio couples to dose ─────────────────────────────────────────────────
-    e.drone.setDrive(dose);
-    e.shep.setDrive(dose);
+    // ── audio couples to depth ─────────────────────────────────────────────────
+    e.drone.setDrive(depth);
+    e.shep.setDrive(depth);
     e.shep.step(dt);
-    e.reverb.setWet(0.3 + 0.42 * dose);
+    e.reverb.setWet(0.3 + 0.42 * depth);
 
     // ── advance flight ────────────────────────────────────────────────────────
     const speedCap = e.reduced ? 9 : 26;
-    const speed = lerp(1.6, speedCap, dose * dose);
+    const speed = lerp(1.6, speedCap, depth * depth);
     e.scroll += speed * dt;
-    e.spin += dt * (0.08 + dose * (e.reduced ? 0.25 : 0.6));
+    e.spin += dt * (0.08 + depth * (e.reduced ? 0.25 : 0.6));
     e.hueDrift += dt * 0.05;
 
     // ── UI meter (direct DOM, no per-frame React state) ───────────────────────
     if (meterFillRef.current)
-      meterFillRef.current.style.height = `${(dose * 100).toFixed(1)}%`;
-    if (labelRef.current) labelRef.current.textContent = stateWord(dose);
+      meterFillRef.current.style.height = `${(depth * 100).toFixed(1)}%`;
+    if (labelRef.current) labelRef.current.textContent = stateWord(depth);
     if (pctRef.current)
-      pctRef.current.textContent = `${Math.round(dose * 100)}`;
+      pctRef.current.textContent = `${Math.round(depth * 100)}`;
 
     // ── geometry (skip if no WebGL) ───────────────────────────────────────────
     const { mesh, camera, composer, bloom, fog, scene } = e;
     if (mesh && camera && composer && bloom && fog && scene) {
-      const sym = Math.round(lerp(SYM_MIN, SYM_MAX, dose));
-      const activeLayers = Math.max(1, Math.round(lerp(1, LAYERS, dose)));
-      const twist = lerp(0.04, e.reduced ? 0.14 : 0.34, dose) * (Math.PI / 8);
-      const cellScale = lerp(1.35, 1.7, dose);
-      const baseHue = doseHue(dose);
-      const sat = lerp(0.45, 0.96, dose);
+      const sym = Math.round(lerp(SYM_MIN, SYM_MAX, depth));
+      const activeLayers = Math.max(1, Math.round(lerp(1, LAYERS, depth)));
+      const twist = lerp(0.04, e.reduced ? 0.14 : 0.34, depth) * (Math.PI / 8);
+      const cellScale = lerp(1.35, 1.7, depth);
+      const baseHue = depthHue(depth);
+      const sat = lerp(0.45, 0.96, depth);
       const dummy = new THREE.Object3D();
       const col = new THREE.Color();
 
@@ -238,7 +238,7 @@ export default function Honeycomb() {
             // jewel colour: hue drifts per layer/angle + slow global drift
             let hue = baseHue + l * 0.03 + a * 0.006 + e.hueDrift * 0.2 + ja * 0.05;
             hue -= Math.floor(hue);
-            const light = lerp(0.32, 0.62, dose) * (0.4 + 0.6 * fadeIn);
+            const light = lerp(0.32, 0.62, depth) * (0.4 + 0.6 * fadeIn);
             col.setHSL(hue, sat, clamp01(light));
             mesh.setColorAt(idx, col);
           }
@@ -248,14 +248,14 @@ export default function Honeycomb() {
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
 
       // camera: subtle FOV widen (rush) + slow roll (tunnel turn), no bob
-      const fov = lerp(66, 82, dose);
+      const fov = lerp(66, 82, depth);
       if (Math.abs(camera.fov - fov) > 0.05) {
         camera.fov = fov;
         camera.updateProjectionMatrix();
       }
       camera.rotation.z = e.spin * 0.12;
-      fog.density = lerp(0.052, 0.03, dose); // see further at breakthrough
-      bloom.strength = lerp(0.5, e.reduced ? 1.0 : 1.7, dose);
+      fog.density = lerp(0.052, 0.03, depth); // see further at breakthrough
+      bloom.strength = lerp(0.5, e.reduced ? 1.0 : 1.7, depth);
 
       composer.render();
     }
@@ -326,7 +326,7 @@ export default function Honeycomb() {
       drone,
       shep,
       reverb,
-      dose: 0.06,
+      depth: 0.06,
       target: 0.06,
       pressing: false,
       lastInputT: -1e9,
@@ -461,7 +461,7 @@ export default function Honeycomb() {
     };
   }, []);
 
-  // ── pointer → dose (drag up = climb, down = descend) ────────────────────────
+  // ── pointer → depth (drag up = climb, down = descend) ────────────────────────
   const setTargetFromPointer = useCallback((clientY: number) => {
     const e = engineRef.current;
     const wrap = wrapRef.current;
@@ -516,7 +516,7 @@ export default function Honeycomb() {
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
           <p className="max-w-sm text-center text-sm text-destructive">
             WebGL is unavailable, so the honeycomb can’t render — but the sound is
-            still playing. Drag up and down anywhere to titrate the drone.
+            still playing. Drag up and down anywhere to deepen or calm the drone.
           </p>
         </div>
       )}
@@ -532,7 +532,7 @@ export default function Honeycomb() {
               drift
             </div>
             <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span ref={pctRef}>6</span> dose
+              <span ref={pctRef}>6</span> depth
             </div>
           </div>
           <div className="relative h-48 w-1.5 overflow-hidden rounded-md border border-border bg-background/50">
@@ -565,7 +565,7 @@ export default function Honeycomb() {
               Honeycomb
             </h1>
             <p className="mx-auto mt-3 max-w-md text-base text-muted-foreground">
-              Titrate your own breakthrough. Press and hold, then drag your thumb
+              Deepen your own breakthrough. Press and hold, then drag your thumb
               up to fly forward through an ever-multiplying jeweled honeycomb — the
               geometry and the sound climb together — and down to drift back into
               calm boundlessness.
@@ -605,7 +605,7 @@ export default function Honeycomb() {
               Design notes
             </h2>
             <p className="mt-3 text-sm text-muted-foreground">
-              One continuous dial — <span className="text-foreground">dose</span> —
+              One continuous dial — <span className="text-foreground">depth</span> —
               drives everything at once. Light touch is a slow, sparse honeycomb
               drifting far away; full press is accelerating flight through a dense,
               kaleidoscopically-multiplying jeweled lattice. Radial mirror-symmetry
@@ -616,7 +616,7 @@ export default function Honeycomb() {
             <p className="mt-3 text-sm text-muted-foreground">
               The tunnel is one <span className="text-foreground">InstancedMesh</span>{" "}
               of glowing hexagonal rings, scrolled toward the camera forever. On
-              load an auto-breath oscillates the dose so the piece is alive
+              load an auto-breath oscillates the depth so the piece is alive
               untouched; the instant you press, you take over.
             </p>
             <p className="mt-3 text-sm text-muted-foreground">

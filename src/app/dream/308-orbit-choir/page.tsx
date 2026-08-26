@@ -1,13 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  WELCOME_HOME_TRACKS,
+  loadRealTrackBuffer,
+} from "../_shared/welcomeHome";
+import {
+  createSafeMaster,
+  type SafeMaster,
+} from "../_shared/visionary/safeMaster";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Orbit Choir — a head-tracked HRTF spatial piece with a ~6-minute arc.
 //
 // CYCLE 2 (deepen, 2026-06-04): the voices are now Karel's own *Welcome Home*
-// piano recordings, fetched live from the public /api/featured + /api/audio
-// routes. Each track becomes a spatially-panned voice scattered around your
+// piano recordings, loaded through the shared welcomeHome helper (the album's
+// verified recording ids → /api/audio signed URLs, anon-playable).
+// Each track becomes a spatially-panned voice scattered around your
 // head, blurred and detuned; over the arc they orbit inward, sharpen, and
 // settle to natural pitch — you gather his album into a room around you, in the
 // spirit of Janet Cardiff's *The Forty Part Motet* (forty singers as forty
@@ -57,22 +66,6 @@ interface VoiceNodes {
 }
 
 type Phase = "idle" | "loading" | "running" | "resolved" | "no-audio";
-
-// Public /api/featured shape (only the fields we read).
-interface FeaturedRecording {
-  id: string;
-  title?: string | null;
-}
-interface FeaturedTrack {
-  recordings?: FeaturedRecording | FeaturedRecording[] | null;
-}
-interface FeaturedAlbum {
-  id: string;
-  name?: string;
-  artist?: string;
-  description?: string;
-  featured_album_tracks?: FeaturedTrack[];
-}
 
 // Narrow interfaces for legacy Web Audio fallbacks (no `any`).
 interface LegacyPanner {
@@ -216,74 +209,30 @@ function applyListenerForward(
   }
 }
 
-// Pull up to `n` recording rows, spread evenly across the album's track list.
-function spreadTracks(album: FeaturedAlbum, n: number): FeaturedRecording[] {
-  const tracks = album.featured_album_tracks ?? [];
-  const recs: FeaturedRecording[] = [];
-  for (const t of tracks) {
-    const r = Array.isArray(t.recordings) ? t.recordings[0] : t.recordings;
-    if (r && r.id) recs.push(r);
-  }
-  if (recs.length <= n) return recs;
-  const out: FeaturedRecording[] = [];
-  for (let i = 0; i < n; i++) out.push(recs[Math.floor((i * recs.length) / n)]);
-  return out;
-}
-
-// Fetch + decode Karel's featured album into per-voice AudioBuffers.
-// Returns [] on any failure so the caller can fall back to the synth choir.
+// Fetch + decode up to MAX_VOICES of Karel's Welcome Home tracks (spread evenly
+// across the album's running order) via the shared welcomeHome helper.
+// Returns [] on total failure so the caller can fall back to the labeled synth
+// choir.
 async function loadStems(
   actx: AudioContext,
 ): Promise<{ buffer: AudioBuffer; title: string }[]> {
-  let albums: FeaturedAlbum[] = [];
-  try {
-    const res = await fetch("/api/featured");
-    if (!res.ok) return [];
-    albums = (await res.json()) as FeaturedAlbum[];
-  } catch {
-    return [];
+  const chosen: { id: string; title: string }[] = [];
+  for (let i = 0; i < MAX_VOICES; i++) {
+    chosen.push(
+      WELCOME_HOME_TRACKS[
+        Math.floor((i * WELCOME_HOME_TRACKS.length) / MAX_VOICES)
+      ],
+    );
   }
-  if (!Array.isArray(albums) || albums.length === 0) return [];
 
-  // Prefer an album that names "welcome" / "karel"; else the first.
-  const album =
-    albums.find((a) =>
-      `${a.name ?? ""} ${a.artist ?? ""} ${a.description ?? ""}`
-        .toLowerCase()
-        .match(/welcome|karel/),
-    ) ?? albums[0];
-
-  const chosen = spreadTracks(album, MAX_VOICES);
-  if (chosen.length === 0) return [];
-
-  const loadOne = async (
-    rec: FeaturedRecording,
-  ): Promise<{ buffer: AudioBuffer; title: string } | null> => {
-    try {
-      const r = await fetch(`/api/audio/${encodeURIComponent(rec.id)}`);
-      if (!r.ok) return null;
-      const ctype = r.headers.get("content-type") || "";
-      let data: ArrayBuffer;
-      if (ctype.includes("application/json")) {
-        const j = (await r.json()) as { url?: string };
-        if (!j.url) return null;
-        const ar = await fetch(j.url);
-        if (!ar.ok) return null;
-        data = await ar.arrayBuffer();
-      } else {
-        data = await r.arrayBuffer();
-      }
-      const buffer = await actx.decodeAudioData(data);
-      return { buffer, title: rec.title || "untitled" };
-    } catch {
-      return null;
-    }
-  };
-
-  const settled = await Promise.allSettled(chosen.map(loadOne));
+  const settled = await Promise.allSettled(
+    chosen.map((t) => loadRealTrackBuffer(actx, t.id)),
+  );
   const out: { buffer: AudioBuffer; title: string }[] = [];
   for (const s of settled) {
-    if (s.status === "fulfilled" && s.value) out.push(s.value);
+    if (s.status === "fulfilled") {
+      out.push({ buffer: s.value.buffer, title: s.value.title });
+    }
   }
   return out;
 }
@@ -303,6 +252,7 @@ export default function OrbitChoirPage() {
   const actxRef = useRef<AudioContext | null>(null);
   const voicesRef = useRef<VoiceNodes[]>([]);
   const masterRef = useRef<GainNode | null>(null);
+  const safeRef = useRef<SafeMaster | null>(null);
   const startTimeRef = useRef(0);
   const lastSaveRef = useRef(0);
 
@@ -490,9 +440,13 @@ export default function OrbitChoirPage() {
     actxRef.current = actx;
     await actx.resume();
 
+    // ear-safety master bus (shelf cut · 14 kHz cap · limiter) before speakers
+    const safe = createSafeMaster(actx);
+    safeRef.current = safe;
+
     const master = actx.createGain();
     master.gain.value = 0;
-    master.connect(actx.destination);
+    master.connect(safe.input);
     masterRef.current = master;
 
     const convolver = actx.createConvolver();
@@ -624,7 +578,7 @@ export default function OrbitChoirPage() {
     setSourceLabel(
       useStems
         ? `Karel's Welcome Home · ${count} voices`
-        : "synthesised choir (album offline)",
+        : "synthesised choir — his recordings were unreachable",
     );
 
     // resume from however far the room was gathered last session
@@ -683,10 +637,12 @@ export default function OrbitChoirPage() {
       } catch {
         /* noop */
       }
+      safeRef.current?.disconnect();
       actx.close().catch(() => undefined);
     }
     actxRef.current = null;
     masterRef.current = null;
+    safeRef.current = null;
   }, []);
 
   const beginAgain = useCallback(() => {

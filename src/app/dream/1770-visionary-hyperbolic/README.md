@@ -35,7 +35,7 @@ phenomenology of the breakthrough:
 - **overall loudness** → saturation + gain (neural gain rising on V1)
 
 A **journey arc** is derived from the audio energy envelope plus a slow
-frame-based clock: onset (still, faint, low entropy) → come-up (folds emerge) →
+frame-based clock: onset (still, faint, low entropy) → rise (folds emerge) →
 breakthrough (max curvature/entropy/saturation, edges melted) → soft return.
 
 ## How the geometry works

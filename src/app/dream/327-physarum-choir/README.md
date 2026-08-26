@@ -47,14 +47,16 @@ procedural `ConvolverNode` reverb, everything glided with `setTargetAtTime`.
 
 ## How it's built
 
-- **INPUT** — Karel's real recording seeds the food. Public no-auth GET
-  `/api/featured` (album matching `/welcome|karel/i`) → `/api/audio/[id]`
-  (handles both the `{url}` JSON form and a raw audio `arrayBuffer`) → decoded
-  with `decodeAudioData`. A coarse onset + autocorrelation pitch tap turns the
+- **INPUT** — Karel's real recording seeds the food: *All Together*, from his
+  *Welcome Home* album, loaded through the shared `_shared/welcomeHome` helper
+  (verified recording id → public no-auth `/api/audio/[id]`, which hands back
+  either a `{url}` signed-URL JSON or raw audio bytes) → decoded with
+  `decodeAudioData`. A coarse onset + autocorrelation pitch tap turns the
   music into pitch-mapped food positions. Fallbacks: if the fetch fails we
   offline-render a short D-modal arpeggio **and** auto-seed a ring of food, so
-  it is always demoable. Provenance is labeled: emerald `♪ Karel's recording`
-  vs amber `synth fallback`.
+  it is always demoable — and the HUD says so plainly. Provenance is labeled:
+  `♪ Karel's recording — All Together (Welcome Home)` vs
+  `synth fallback — auto-seeded ring (Karel's recording unreachable)`.
 - **OUTPUT** — a **WebGPU compute** trail-field. A move pass advances ~1M agents
   (`x, y, heading`), each sensing ahead-left / center / right of a shared trail
   buffer and steering toward the strongest chemoattractant (Jones/Jenson rule),

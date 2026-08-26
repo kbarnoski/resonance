@@ -5,10 +5,15 @@
 //   that node to the trunk, and fall as the vein dies back. So the live chord
 //   you hear IS the set of currently-connected nodes — the topology is the music.
 //   An always-on faint root drone keeps the field from ever going silent.
-//   Procedural ConvolverNode reverb, master ≤ 0.5 into a brick-wall compressor.
+//   Procedural ConvolverNode reverb, master ≤ 0.5 into a brick-wall compressor,
+//   then out through the shared safeMaster ear-safety bus.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { ROOT_HZ, SCALE, type Seed } from "./source";
+import {
+  createSafeMaster,
+  type SafeMaster,
+} from "../_shared/visionary/safeMaster";
 
 interface Voice {
   osc: OscillatorNode;
@@ -36,6 +41,7 @@ export class ChoirEngine {
   readonly ctx: AudioContext;
   private master: GainNode;
   private comp: DynamicsCompressorNode;
+  private safe: SafeMaster;
   private reverb: ConvolverNode;
   private wet: GainNode;
   private voices: Voice[] = [];
@@ -55,7 +61,9 @@ export class ChoirEngine {
     this.comp.ratio.value = 12;
     this.comp.attack.value = 0.004;
     this.comp.release.value = 0.18;
-    this.comp.connect(this.ctx.destination);
+    // ear-safety master bus (shelf cut · 14 kHz cap · limiter) before speakers
+    this.safe = createSafeMaster(this.ctx);
+    this.comp.connect(this.safe.input);
 
     this.master = this.ctx.createGain();
     this.master.gain.value = 0.0; // faded in on start()
@@ -194,6 +202,7 @@ export class ChoirEngine {
       safeStop(this.bed.src);
       this.bed = null;
     }
+    this.safe.disconnect();
     try {
       if (this.ctx.state !== "closed") void this.ctx.close();
     } catch {

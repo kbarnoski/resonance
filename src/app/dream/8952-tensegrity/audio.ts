@@ -12,6 +12,7 @@
 // pentatonic. No just-intonation, no sustained pad.
 
 import { mulberry32 } from "./prng";
+import { createSafeMaster } from "../_shared/visionary/safeMaster";
 
 // Minor-pentatonic scale degrees (semitones) tiled across octaves.
 const PENT = [0, 3, 5, 7, 10];
@@ -73,7 +74,10 @@ export function createAudioEngine(): AudioEngine | null {
   tone.connect(delay);
   delay.connect(master);
 
-  master.connect(ctx.destination);
+  // Route through the shared ear-safety bus (shelf + lowpass + limiter)
+  // instead of connecting to ctx.destination directly.
+  const safe = createSafeMaster(ctx);
+  master.connect(safe.input);
 
   const noiseRng = mulberry32(0x8952);
   let voiceCount = 0;
@@ -143,6 +147,7 @@ export function createAudioEngine(): AudioEngine | null {
       delay.disconnect();
       fb.disconnect();
       tone.disconnect();
+      safe.disconnect();
     } catch {
       /* already gone */
     }

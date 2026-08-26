@@ -1,7 +1,7 @@
 # 2332 · Lock
 
 **The question:** What if an altered state were not a knob you turn, but a lock
-you have to *earn* — where the trippy bloom only arrives when your own body's
+you have to *earn* — where the earned bloom only arrives when your own body's
 rhythm phase-locks to a drifting pulse, and drifts away the instant you lose the
 lock?
 

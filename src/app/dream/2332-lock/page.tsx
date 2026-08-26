@@ -274,7 +274,7 @@ export default function LockPage() {
             Lock
           </h1>
           <p className="text-base text-muted-foreground">
-            The trippy bloom is not a knob — it is a lock you have to earn. Tap
+            The earned bloom is not a knob — it is a lock. Tap
             along with the drifting pulse (spacebar, click, or your mic). Match
             its tempo <em>and</em> land on its beat and the tunnel snaps into
             coherent rings; lose either and it drifts apart.

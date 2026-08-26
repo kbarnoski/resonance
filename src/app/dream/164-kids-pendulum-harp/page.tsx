@@ -1,10 +1,11 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
+import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster"
 
 // ── audio ─────────────────────────────────────────────────────────────────────
 const FREQS = [130.81, 164.81, 196.00, 220.00, 261.63] // C3 E3 G3 A3 C4
 
-function pluckNote(ac: AudioContext, pitchIdx: number) {
+function pluckNote(ac: AudioContext, dest: AudioNode, pitchIdx: number) {
   const hz    = FREQS[pitchIdx]
   const decay = 0.60 - pitchIdx * 0.05  // C3=0.60s → C4=0.40s
   const now   = ac.currentTime
@@ -19,7 +20,7 @@ function pluckNote(ac: AudioContext, pitchIdx: number) {
     gain.gain.linearRampToValueAtTime(0.20, now + 0.012)
     gain.gain.exponentialRampToValueAtTime(0.001, now + decay)
     osc.connect(gain)
-    gain.connect(ac.destination)
+    gain.connect(dest)
     osc.start(now)
     osc.stop(now + decay + 0.05)
   }
@@ -81,6 +82,7 @@ export default function Page() {
 
   const canvasRef    = useRef<HTMLCanvasElement>(null)
   const actxRef      = useRef<AudioContext | null>(null)
+  const masterRef    = useRef<SafeMaster | null>(null)
   const pendulumsRef = useRef<Pendulum[]>([])
   const rafRef       = useRef<number>(0)
   const dimRef       = useRef({ W: 0, H: 0 })
@@ -91,13 +93,16 @@ export default function Page() {
     if (!canvas) return
     const ctx = canvas.getContext("2d")!
     const ac  = actxRef.current!
+    // Shared ear-safety bus (created alongside the context in handleStart) —
+    // every voice routes through it instead of ac.destination.
+    const dest = masterRef.current!.input
 
     // Soft ambient pad: C3 + G3 sine
     const padOscs = [130.81, 196.00].map(f => {
       const o = ac.createOscillator()
       const g = ac.createGain()
       o.type = "sine"; o.frequency.value = f; g.gain.value = 0.005
-      o.connect(g); g.connect(ac.destination); o.start(); return o
+      o.connect(g); g.connect(dest); o.start(); return o
     })
 
     const resize = () => {
@@ -191,7 +196,7 @@ export default function Page() {
         // Zero-crossing detection: pluck when bob passes through center (fast enough)
         const currSign = p.theta >= 0 ? 1 : -1
         if (currSign !== p.prevSign && Math.abs(p.omega) > 0.35 && ts - p.lastPluck > 200) {
-          pluckNote(ac, p.idx)
+          pluckNote(ac, dest, p.idx)
           p.lastPluck = ts
           p.flash     = 1.0
           const bobX = p.ax + Math.sin(p.theta) * p.L
@@ -286,7 +291,9 @@ export default function Page() {
   }, [])
 
   function handleStart() {
-    actxRef.current = new AudioContext()
+    const ac = new AudioContext()
+    actxRef.current = ac
+    masterRef.current = createSafeMaster(ac)
     setPhase("play")
   }
 

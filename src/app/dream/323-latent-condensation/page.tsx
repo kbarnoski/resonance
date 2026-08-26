@@ -17,13 +17,18 @@
 // is the "condensation" coupling read by the GPU each frame.
 //
 // Degrades gracefully: no WebGPU → readable rose notice + a DOM level-meter that
-// still pulses to the audio. Audio fails → synthesized A-minor piano bed.
+// still pulses to the audio. Audio fails → an explicit error notice (never a
+// silent synth stand-in for his recording).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Analysis, type Phase } from "./analysis";
 import { resolveSource, type SourceResult } from "./audio";
 import { initGpu, type GpuSim, type FrameParams } from "./gpu";
+import {
+  createSafeMaster,
+  type SafeMaster,
+} from "../_shared/visionary/safeMaster";
 
 type Status = "idle" | "loading" | "running" | "error";
 
@@ -54,6 +59,7 @@ export default function LatentCondensationPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<AudioContext | null>(null);
   const srcNodeRef = useRef<AudioBufferSourceNode | null>(null);
+  const safeRef = useRef<SafeMaster | null>(null);
   const simRef = useRef<GpuSim | null>(null);
   const rafRef = useRef<number | null>(null);
   const analysisRef = useRef<Analysis | null>(null);
@@ -83,6 +89,8 @@ export default function LatentCondensationPage() {
       try { srcNodeRef.current.disconnect(); } catch { /* ignore */ }
       srcNodeRef.current = null;
     }
+    safeRef.current?.disconnect();
+    safeRef.current = null;
     if (ctxRef.current) {
       const c = ctxRef.current;
       ctxRef.current = null;
@@ -136,7 +144,7 @@ export default function LatentCondensationPage() {
     }
     setSource(src);
 
-    // 3) wire graph: buffer → analyser → destination
+    // 3) wire graph: buffer → analyser → gain → safeMaster (ear-safety bus)
     const node = ctx.createBufferSource();
     node.buffer = src.buffer;
     node.loop = true;
@@ -145,9 +153,11 @@ export default function LatentCondensationPage() {
     analyser.smoothingTimeConstant = 0.6;
     const gain = ctx.createGain();
     gain.gain.value = 0.9;
+    const safe = createSafeMaster(ctx);
+    safeRef.current = safe;
     node.connect(analyser);
     analyser.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(safe.input);
     node.start();
     srcNodeRef.current = node;
     analysisRef.current = new Analysis(analyser);
@@ -222,9 +232,7 @@ export default function LatentCondensationPage() {
   }, [status, sizeCanvas]);
 
   const sourceBadge = source
-    ? source.real
-      ? { text: `♪ Welcome Home — Karel's recording`, cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
-      : { text: `♪ ${source.title} (synth fallback)`, cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
+    ? { text: `♪ ${source.title} — Karel's Welcome Home recording`, cls: "text-violet-300/95 border-violet-400/30 bg-violet-400/5" }
     : null;
 
   return (
@@ -329,7 +337,8 @@ export default function LatentCondensationPage() {
             )}
             {status === "error" && (
               <span className="text-base text-violet-300">
-                Could not start audio. Reload and try again.
+                Could not load Karel&apos;s recording. Check the connection,
+                reload, and try again.
               </span>
             )}
             <button

@@ -3,7 +3,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // 321-spectral-flight — fly through the INSIDE of Karel's own recording.
 //
-// His "Welcome Home" piano is fetched, decoded, and run through a hand-written
+// His "Welcome Home" title track is loaded via the shared welcomeHome helper,
+// decoded, and run through a hand-written
 // offline STFT into a time × log-frequency magnitude grid. That grid becomes a
 // three.js point-cloud landscape you pilot: the camera flies forward along the
 // time axis locked to playback position, and drag / arrow keys steer the look.
@@ -18,6 +19,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { resolveSource } from "./audio";
 import { buildSpectralGrid } from "./fft";
 import { buildFlightScene, type FlightScene } from "./scene";
+import {
+  createSafeMaster,
+  type SafeMaster,
+} from "../_shared/visionary/safeMaster";
 
 type Phase = "idle" | "loading" | "flying" | "error";
 
@@ -48,6 +53,7 @@ export default function SpectralFlightPage() {
   const bufferRef = useRef<AudioBuffer | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const masterRef = useRef<GainNode | null>(null);
+  const safeRef = useRef<SafeMaster | null>(null);
   const sceneRef = useRef<FlightScene | null>(null);
   const rafRef = useRef<number>(0);
 
@@ -159,17 +165,15 @@ export default function SpectralFlightPage() {
       }
     }
 
-    // master chain: gentle lowpass + a touch of make-up gain
+    // master chain: make-up gain → shared ear-safety bus (shelf cut · 14 kHz
+    // cap · limiter) → speakers
     let master = masterRef.current;
     if (!master) {
       master = ctx.createGain();
       master.gain.value = 0.9;
-      const lp = ctx.createBiquadFilter();
-      lp.type = "lowpass";
-      lp.frequency.value = 14000;
-      lp.Q.value = 0.3;
-      master.connect(lp);
-      lp.connect(ctx.destination);
+      const safe = createSafeMaster(ctx);
+      safeRef.current = safe;
+      master.connect(safe.input);
       masterRef.current = master;
     }
 
@@ -177,7 +181,9 @@ export default function SpectralFlightPage() {
     try {
       source = await resolveSource(ctx);
     } catch {
-      setError("Could not prepare an audio source.");
+      setError(
+        "Could not load Karel's recording — check the connection and try again.",
+      );
       setPhase("error");
       return;
     }
@@ -384,6 +390,8 @@ export default function SpectralFlightPage() {
       }
       sceneRef.current?.dispose();
       sceneRef.current = null;
+      safeRef.current?.disconnect();
+      safeRef.current = null;
       const ctx = ctxRef.current;
       if (ctx && ctx.state !== "closed") void ctx.close();
       ctxRef.current = null;

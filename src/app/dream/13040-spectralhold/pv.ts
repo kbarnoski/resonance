@@ -16,6 +16,8 @@
  * silence until you freeze something.
  */
 
+import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
+
 export const FFT_SIZE = 2048;
 export const HOP = 512; // 75% overlap
 export const HALF = FFT_SIZE / 2; // usable single-sided bins (0..HALF)
@@ -122,6 +124,7 @@ export class FreezeEngine {
   readonly input: GainNode; // connect the mic / synth source here
   readonly output: GainNode; // master out
   readonly node: ScriptProcessorNode;
+  private safeMaster: SafeMaster;
 
   private fft: FFT;
   private wa: Float32Array; // analysis window
@@ -177,7 +180,11 @@ export class FreezeEngine {
     // node output (the frozen resynthesis) -> master -> speakers. The path to
     // the destination is also what keeps the ScriptProcessor's callback firing.
     this.node.connect(this.output);
-    this.output.connect(ctx.destination);
+    // Route through the shared ear-safety bus (shelf + lowpass + limiter)
+    // instead of hitting ctx.destination raw. gain 0.9 preserves the proto's
+    // original hot-master level while the limiter still caps peaks.
+    this.safeMaster = createSafeMaster(ctx, { gain: 0.9 });
+    this.output.connect(this.safeMaster.input);
   }
 
   private process(e: AudioProcessingEvent): void {
@@ -433,6 +440,7 @@ export class FreezeEngine {
       this.input.disconnect();
       this.node.disconnect();
       this.output.disconnect();
+      this.safeMaster.disconnect();
     } catch {
       /* already torn down */
     }

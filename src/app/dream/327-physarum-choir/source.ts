@@ -1,29 +1,20 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // source.ts — where the "food" (tone seeds) comes from.
-//   Primary: Karel's real recording via /api/featured + /api/audio/[id].
-//     We decode it, run a coarse onset+pitch tap, and emit seed tones whose
-//     pitch maps to a position on the canvas. His music plants the tones the
-//     slime then connects.
-//   Fallback: an offline-rendered short D-modal arpeggio AND an auto-seeded
-//     ring of food nodes, so the piece is ALWAYS demoable.
+//   Primary: Karel's real "Welcome Home" recording via the shared welcomeHome
+//     helper (verified recording id → /api/audio/[id] signed URL, anon-
+//     playable). We decode it, run a coarse onset+pitch tap, and emit seed
+//     tones whose pitch maps to a position on the canvas. His music plants the
+//     tones the slime then connects.
+//   Fallback (explicit, labeled in the HUD — never silent): an offline-rendered
+//     short D-modal arpeggio AND an auto-seeded ring of food nodes, so the
+//     piece is ALWAYS demoable.
 // This module has NO side effects beyond GET fetches.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Public /api/featured shape (only the fields we read).
-interface FeaturedRecording {
-  id: string;
-  title?: string | null;
-}
-interface FeaturedTrack {
-  recordings?: FeaturedRecording | FeaturedRecording[] | null;
-}
-interface FeaturedAlbum {
-  id: string;
-  name?: string;
-  artist?: string;
-  description?: string;
-  featured_album_tracks?: FeaturedTrack[];
-}
+import {
+  WELCOME_HOME_TRACKS,
+  loadRealTrackBuffer,
+} from "../_shared/welcomeHome";
 
 /** One detected tone-seed: a normalized canvas position + a scale degree. */
 export interface Seed {
@@ -51,20 +42,6 @@ export interface SourceResult {
 // ratios over the root: 1, 9/8, 6/5, 4/3, 3/2, 5/3, 9/5, 2
 export const SCALE: number[] = [1, 9 / 8, 6 / 5, 4 / 3, 3 / 2, 5 / 3, 9 / 5, 2];
 export const ROOT_HZ = 73.42; // D2
-
-function collectRecordings(album: FeaturedAlbum): FeaturedRecording[] {
-  const out: FeaturedRecording[] = [];
-  for (const t of album.featured_album_tracks ?? []) {
-    const r = t.recordings;
-    if (!r) continue;
-    if (Array.isArray(r)) {
-      for (const one of r) if (one && one.id) out.push(one);
-    } else if (r.id) {
-      out.push(r);
-    }
-  }
-  return out;
-}
 
 /**
  * Map a frequency in Hz to (scale degree, octave). We snap onto the JI modal
@@ -164,52 +141,24 @@ export function ringSeeds(n = 8): Seed[] {
   return seeds;
 }
 
+// "All Together" — the album's closing ensemble of ideas suits a piece about a
+// network joining voices into one chord.
+const CHOIR_TRACK =
+  WELCOME_HOME_TRACKS.find((t) => t.title === "All Together") ??
+  WELCOME_HOME_TRACKS[0];
+
 async function loadReal(ctx: BaseAudioContext): Promise<SourceResult | null> {
-  let albums: FeaturedAlbum[];
   try {
-    const res = await fetch("/api/featured");
-    if (!res.ok) return null;
-    albums = (await res.json()) as FeaturedAlbum[];
-  } catch {
-    return null;
-  }
-  if (!Array.isArray(albums) || albums.length === 0) return null;
-
-  const album =
-    albums.find((a) =>
-      `${a.name ?? ""} ${a.artist ?? ""} ${a.description ?? ""}`
-        .toLowerCase()
-        .match(/welcome|karel/),
-    ) ?? albums[0];
-
-  const rec = collectRecordings(album).find((r) => r.id);
-  if (!rec) return null;
-
-  try {
-    const r = await fetch(`/api/audio/${encodeURIComponent(rec.id)}`);
-    if (!r.ok) return null;
-    const ctype = r.headers.get("content-type") || "";
-    let data: ArrayBuffer;
-    if (ctype.includes("application/json")) {
-      const j = (await r.json()) as { url?: string };
-      if (!j.url) return null;
-      const ar = await fetch(j.url);
-      if (!ar.ok) return null;
-      data = await ar.arrayBuffer();
-    } else {
-      data = await r.arrayBuffer();
-    }
-    const buffer = await ctx.decodeAudioData(data.slice(0));
+    const { buffer, title } = await loadRealTrackBuffer(ctx, CHOIR_TRACK.id);
     let seeds = tapSeeds(buffer);
     if (seeds.length < 4) {
       // recording decoded but onset tap was thin — top up with a ring so the
       // network has enough food to compose something.
       seeds = seeds.concat(ringSeeds(8 - seeds.length));
     }
-    const title = rec.title || album.name || "Welcome Home";
     return {
       real: true,
-      label: `♪ Karel's recording — ${title}`,
+      label: `♪ Karel's recording — ${title} (Welcome Home)`,
       buffer,
       seeds,
     };
@@ -262,7 +211,7 @@ function renderSynthFallback(): Promise<SourceResult> {
 
   return off.startRendering().then((buffer) => ({
     real: false,
-    label: "synth fallback — auto-seeded ring (album unreachable)",
+    label: "synth fallback — auto-seeded ring (Karel's recording unreachable)",
     buffer,
     seeds: ringSeeds(8),
   }));

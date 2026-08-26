@@ -37,12 +37,12 @@ the audio analysis: `0` = pure flow, `1` = fully condensed onto the form.
 
 The source badge tells you what you're hearing:
 
-- **emerald** `♪ Welcome Home — Karel's recording` — the real track loaded from
-  `/api/featured` → `/api/audio/<id>`.
-- **amber** `synth fallback` — the API was unreachable or unauthorized, so a
-  synthesized A-natural-minor piano bed (detuned voices + Karplus-Strong plucks,
-  rendered offline) plays instead. Long chord changes give the phrase state
-  machine clear rises/holds/decays.
+- `♪ <title> — Karel's Welcome Home recording` — the real track, loaded through
+  the shared `_shared/welcomeHome` helper (verified recording id →
+  `/api/audio/<id>` signed URL, anon-playable).
+
+If the recording can't be fetched or decoded, the page shows an explicit error
+notice instead of playing anything — there is no synth stand-in for his piano.
 
 ## The technique
 
@@ -58,9 +58,10 @@ The source badge tells you what you're hearing:
   envelope drive a phrase state machine (`chaos → condense → form → release`).
   Low → turbulence/scale; high → sparkle/brightness; RMS rise/decay → condense or
   release. Output is the `condensation` value the GPU reads each frame.
-- **Audio source** (`audio.ts`): tries Karel's real recording, decodes via
-  `AudioContext.decodeAudioData`, plays through an `AudioBufferSourceNode` tapped
-  by an `AnalyserNode`. Handles both JSON `{url}` and raw arrayBuffer responses.
+- **Audio source** (`audio.ts`): loads Karel's real recording via the shared
+  `welcomeHome` helper (`loadRealTrackBuffer` handles both JSON `{url}` and raw
+  arrayBuffer responses), plays through an `AudioBufferSourceNode` tapped by an
+  `AnalyserNode`, out through the shared `safeMaster` ear-safety bus.
 
 ## References
 
@@ -76,9 +77,10 @@ The source badge tells you what you're hearing:
 - **WebGPU availability**: older Safari / Firefox without WebGPU show a readable
   rose notice and a DOM level-meter that still pulses to the audio — the screen is
   never blank and nothing throws. Tested-path is Chrome/Edge ≥ 113.
-- **Real audio auth**: `/api/audio/<id>` requires an authenticated session for
-  the recording owner. Unauthenticated viewers will transparently fall back to the
-  synth bed (amber badge) — by design, so the piece always has sound.
+- **Real audio availability**: the *Welcome Home* tracks are anon-playable via
+  their shared journey path, so no login is needed. If the audio route is ever
+  unreachable, the page reports the failure plainly rather than substituting a
+  synth bed.
 - **Particle count**: 120k is comfortable on most discrete/integrated GPUs; on
   very weak hardware it may dip below 60fps. Lower `PARTICLE_COUNT` in `gpu.ts`.
 - **WGSL value noise** is cheap-but-grainy; it reads well as a luminous cloud but

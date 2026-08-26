@@ -44,6 +44,22 @@ const CATEGORY_LABELS: Record<Prototype["category"], string> = {
   "fal-required": "🔑 FAL_KEY",
 };
 
+// ── Featured shelf (curated 2026-08-25 — the Tramokyo / portfolio set) ──────
+const FEATURED_SLUGS = [
+  "16032-headnave",
+  "16000-morphonate",
+  "15824-canon",
+  "15536-antiphon",
+  "15440-spheres",
+  "13904-unmixer",
+  "13840-hallofsongs",
+  "14784-nave",
+  "700-welcome-home",
+  "703-harmonic-bloom",
+  "11680-corridor",
+  "1081-singularity-fall",
+] as const;
+
 function cleanProse(s: string): string {
   return s
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
@@ -403,6 +419,11 @@ export default async function DreamPage() {
     recentCycles.length > 0 ? String(recentCycles[0].number) : "";
   const lastUpdated = morningMd.match(/last updated ([^\n]+)/)?.[1] ?? "";
 
+  const bySlug = new Map(prototypes.map((p) => [p.slug, p]));
+  const featured = FEATURED_SLUGS.map((s) => bySlug.get(s)).filter(
+    (p): p is Prototype => p !== undefined
+  );
+
   // Strip the H1 title line from MORNING.md — page already shows cycle info
   const morningContentLines = morningMd.split("\n").slice(1);
 
@@ -412,7 +433,7 @@ export default async function DreamPage() {
       <section className="border-b border-border px-6 py-5">
         <div className="mx-auto flex max-w-3xl flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
+            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">
               Resonance · Dream Lab
               {cycleNum ? ` · cycle ${cycleNum}` : ""}
             </div>
@@ -420,7 +441,7 @@ export default async function DreamPage() {
               What the dream agent built
             </h1>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              {prototypes.length} prototypes · autonomous hourly cycles
+              {prototypes.length} prototypes · autonomous twice-daily cycles
               {lastUpdated ? ` · ${lastUpdated}` : ""}
             </p>
           </div>
@@ -435,7 +456,7 @@ export default async function DreamPage() {
                 : "History"}
             </Link>
             <a
-              href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/IDEAS.md"
+              href="https://github.com/kbarnoski/resonance/blob/main/docs/dreams/IDEAS.md"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-border bg-muted px-3 py-1 transition-colors hover:bg-accent"
@@ -443,7 +464,7 @@ export default async function DreamPage() {
               Ideas
             </a>
             <a
-              href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/RESEARCH.md"
+              href="https://github.com/kbarnoski/resonance/blob/main/docs/dreams/RESEARCH.md"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-border bg-muted px-3 py-1 transition-colors hover:bg-accent"
@@ -462,7 +483,42 @@ export default async function DreamPage() {
         </div>
       </section>
 
-      {/* ── Prototype grid (FIRST — keep above the fold) ─────────── */}
+      {/* ── Featured shelf (curated portfolio — quiet, gallery-grade) ── */}
+      {featured.length > 0 && (
+        <section className="border-b border-border px-6 py-6">
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Featured · start here
+            </div>
+            <ol className="divide-y divide-border/60">
+              {featured.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/dream/${p.slug}`}
+                    prefetch={false}
+                    className="group flex items-baseline gap-3 py-2.5"
+                  >
+                    <span className="w-14 shrink-0 font-mono text-xs text-muted-foreground/70">
+                      c{p.cycle}
+                    </span>
+                    <span className="shrink-0 text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
+                      {p.name}
+                    </span>
+                    <span className="hidden min-w-0 flex-1 truncate text-xs text-muted-foreground sm:block">
+                      {p.description}
+                    </span>
+                    <span className="ml-auto shrink-0 text-sm text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {/* ── Prototype grid ────────────────────────────────────────── */}
       <section className="px-6 pt-6 pb-10">
         <div className="mx-auto max-w-3xl">
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
@@ -486,7 +542,7 @@ export default async function DreamPage() {
                 key={p.slug}
                 href={`/dream/${p.slug}`}
                 prefetch={false}
-                className="group block rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:bg-accent"
+                className="group block rounded-xl border border-border bg-card p-5 transition-colors duration-instant hover:border-primary/30 hover:bg-accent"
               >
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-xs text-muted-foreground/70">
@@ -502,7 +558,7 @@ export default async function DreamPage() {
                     </span>
                   )}
                   <span
-                    className={`rounded-full px-2 py-0.5 text-[10px] tracking-wide ${CATEGORY_STYLES[p.category]}`}
+                    className={`rounded-full px-2 py-0.5 text-[11px] tracking-wide ${CATEGORY_STYLES[p.category]}`}
                     title={
                       p.category === "fal-required"
                         ? "This prototype calls a FAL.ai API and requires the FAL_KEY env var. Configured on Vercel for Production + Preview + Development."
@@ -612,11 +668,11 @@ export default async function DreamPage() {
       )}
 
       <footer className="border-t border-border px-6 py-6 text-center text-xs text-muted-foreground/70">
-        Sandboxed to{" "}
-        <code className="font-mono text-muted-foreground">dream/sandbox</code> ·
-        built by an ambient agent running 24/7 in Anthropic&apos;s cloud.{" "}
+        Built on{" "}
+        <code className="font-mono text-muted-foreground">main</code> by an
+        autonomous agent dreaming twice daily in Anthropic&apos;s cloud.{" "}
         <a
-          href="https://github.com/kbarnoski/resonance/commits/dream/sandbox"
+          href="https://github.com/kbarnoski/resonance/commits/main"
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground transition-colors hover:text-foreground"
@@ -625,7 +681,7 @@ export default async function DreamPage() {
         </a>{" "}
         ·{" "}
         <a
-          href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/AGENT.md"
+          href="https://github.com/kbarnoski/resonance/blob/main/docs/dreams/AGENT.md"
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground transition-colors hover:text-foreground"

@@ -16,20 +16,15 @@ like piloting through a galaxy made of his playing.
 ## How it works (the four subsystems)
 
 1. **Real-stem fetch + decode** (`audio.ts`)
-   - `GET /api/featured` → array of albums. Picks the album whose
-     `name + artist + description` matches `/welcome|karel/i`, else the first.
-   - Collects recording objects from `featured_album_tracks[].recordings`
-     (handles both a single object and an array), picks the first with an `id`.
-   - `GET /api/audio/<recordingId>`. If the response is JSON it reads `{url}`
-     and fetches that; otherwise it reads `arrayBuffer()` directly (the live
-     route streams transcoded AAC bytes). Then `decodeAudioData`.
-   - **Graceful fallback:** if `/api/featured` or `/api/audio` is unreachable,
-     empty, or errors, it synthesizes ~52 s of a warm **A-natural-minor /
-     Dorian-tinted** arpeggio bed (detuned triangle+sine voices, slow 6.5 s
-     chord changes, exponential envelopes, gentle lowpass) into an AudioBuffer
-     via `OfflineAudioContext`. The UI says exactly which source is live:
-     `source: Karel's recording — <title>` vs `source: demo (his album
-     unreachable)`.
+   - Uses the shared `_shared/welcomeHome` helper: `loadRealTrackBuffer` takes
+     the *Welcome Home* title track's verified recording id, hits
+     `GET /api/audio/<recordingId>` (anon-playable; handles both the JSON
+     `{url}` signed-URL form and raw streamed bytes), then `decodeAudioData`.
+   - **Graceful failure:** if the recording can't be fetched or decoded,
+     `resolveSource` throws and the page shows its error state
+     (`Could not load Karel's recording…`). There is no synth stand-in — the
+     flight only ever flies through his real playing, and the UI names the
+     source: `source: Karel's recording — <title>`.
 
 2. **Offline-STFT landscape builder** (`fft.ts`)
    - A from-scratch **radix-2 iterative Cooley–Tukey FFT** (no npm dep).
@@ -47,7 +42,8 @@ like piloting through a galaxy made of his playing.
      and the page shows a readable notice.
 
 4. **Transport-sync** (`page.tsx`)
-   - Web Audio looping `AudioBufferSourceNode` → make-up gain → lowpass →
+   - Web Audio looping `AudioBufferSourceNode` → make-up gain → the shared
+     `safeMaster` ear-safety bus (high-shelf cut · 14 kHz cap · limiter) →
      destination. Play/pause, a `m:ss` clock, and iOS `AudioContext.resume()`
      on gesture. Every rAF frame computes `progress = currentTime / duration`
      and the camera is driven straight from it, so the visual cannot drift from
@@ -85,14 +81,15 @@ performance becomes a place.
 
 - `page.tsx` — `"use client"` React component: source orchestration, transport,
   steering, render loop, UI, full teardown.
-- `audio.ts` — real-recording fetch+decode pipeline + synth fallback.
+- `audio.ts` — real-recording load via the shared `welcomeHome` helper.
 - `fft.ts` — hand-written radix-2 FFT + offline STFT grid builder.
 - `scene.ts` — three.js point-cloud flythrough scene.
 
 ## Degradation
 
 - No WebGL → readable rose notice, no crash.
-- Album unreachable → synth fallback + an explicit "demo" label.
+- Recording unreachable → an explicit error notice; nothing pretends to be his
+  music.
 - iOS → `AudioContext` resumed on the user gesture.
 - Unmount → `cancelAnimationFrame`, audio stopped, three.js geometries /
   materials / textures / renderer `dispose()`d, `AudioContext` closed.

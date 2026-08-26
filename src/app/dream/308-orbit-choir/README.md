@@ -6,14 +6,14 @@ This is the lab's first audio-first / non-screen family member: a head-tracked H
 
 ## Cycle 2 — the voices are now Karel's own album (2026-06-04)
 
-The original (cycle 1) was a synthesised resolving chord. **Cycle 2 replaces the seven synth voices with Karel's actual _Welcome Home_ piano recordings**, fetched live from the public `/api/featured` (which lists his featured album's track recording-ids) → `/api/audio/[id]` (which returns a signed URL for each). Each recording becomes one HRTF-panned voice: it starts scattered around your head, **detuned (a slowed/sharpened `playbackRate`) and dark (a low `lowpass` cutoff)** — a blurred, distant cluster of his own music — and over the arc each one **orbits inward, sharpens (cutoff opens), and settles to true pitch (`playbackRate → 1.0`).** You are literally gathering his album into a clear room around you.
+The original (cycle 1) was a synthesised resolving chord. **Cycle 2 replaces the seven synth voices with Karel's actual _Welcome Home_ piano recordings**, loaded through the shared `_shared/welcomeHome` helper (the album's verified recording ids → `/api/audio/[id]` signed URLs, anon-playable). Each recording becomes one HRTF-panned voice: it starts scattered around your head, **detuned (a slowed/sharpened `playbackRate`) and dark (a low `lowpass` cutoff)** — a blurred, distant cluster of his own music — and over the arc each one **orbits inward, sharpens (cutoff opens), and settles to true pitch (`playbackRate → 1.0`).** You are literally gathering his album into a clear room around you.
 
 Two more deepenings shipped this cycle:
 
 - **Haptics (a lab first).** `navigator.vibrate` pulses a soft 26 ms buzz the instant a voice _you are facing_ locks home, and a short triple-pulse when the whole room resolves — a felt confirmation that one came home.
 - **The room remembers (localStorage).** How far you'd gathered the room is persisted (`resonance.dream.orbit-choir.gather.v1`); return later and the idle button reads **"Return to the room"** with a "your room was N% gathered" note, and the arc resumes where you left it. "Begin again" deliberately clears it and re-scatters.
 
-If `/api/featured` is unreachable or no track decodes (offline, private preview, CDN block), it **falls back to the original synthesised resolving-chord choir** so the piece is always demoable — the top label tells you which source is playing (`Karel's Welcome Home · N voices` vs `synthesised choir (album offline)`).
+If no track can be fetched or decoded (offline, CDN block), it **falls back to the original synthesised resolving-chord choir** so the piece is always demoable — the top label tells you which source is playing (`Karel's Welcome Home · N voices` vs `synthesised choir — his recordings were unreachable`). The fallback is never silent about itself.
 
 ## How to use it
 
@@ -28,7 +28,7 @@ A thin violet ring at the top fills with the arc; a `M:SS — state` label reads
 ## The technique
 
 - **Voices.** Up to 7 voices. With real stems each is a looping `AudioBufferSource` (one of Karel's decoded recordings, started at a staggered offset so they aren't phase-locked) → lowpass `BiquadFilter` (cutoff = the "blur/sharpen" axis) → per-voice `GainNode` (slow breathing LFO on its gain) → its own `PannerNode` (`panningModel = "HRTF"`). The synth fallback is instead 2–3 sine `OscillatorNode`s (fundamental + quiet octave/twelfth harmonics) per voice with a pitch glide.
-- **Stem loading.** `loadStems()` fetches `/api/featured` (anon, no auth — the same public route the loved `227-paths-granular`/`163-paths-visualizer` use), picks the album whose name/artist mentions "welcome"/"karel" (else the first), spreads up to 7 tracks evenly across it, and `Promise.allSettled`s a per-track `/api/audio/[id]` → signed-URL → `fetch` → `decodeAudioData`. Any failure drops that track; <2 decoded → whole synth fallback. No API route is _created_ here, so no guard is needed (these are read-only GETs with no side effects).
+- **Stem loading.** `loadStems()` spreads up to 7 tracks evenly across `WELCOME_HOME_TRACKS` (the shared `_shared/welcomeHome` helper's verified album list) and `Promise.allSettled`s a per-track `loadRealTrackBuffer` (`/api/audio/[id]` → signed-URL → `fetch` → `decodeAudioData`, anon-playable). Any failure drops that track; <2 decoded → whole synth fallback, explicitly labeled. No API route is _created_ here, so no guard is needed (these are read-only GETs with no side effects).
 - **Synthesized reverb.** A shared `ConvolverNode` whose impulse response is generated at runtime from decaying, lowpass-smoothed white noise — no audio files, no dependencies.
 - **The 6-minute convergence state machine (long-form / stateful).** A per-frame scheduler interpolates several axes against an eased global clock:
   - **(a) Azimuth + radius** — each voice orbits from a scattered start azimuth (and a far radius) toward an _even_ slot on the circle (`i / count · 2π`) at a gathered-in radius. Position is written to the panner each frame.
@@ -51,5 +51,5 @@ A thin violet ring at the top fills with the arc; a `M:SS — state` label reads
 
 - **Per-voice "home" chimes / cross-fade.** When a recording locks home, briefly duck the others so the one that arrived is heard clearly for a beat — make the arrival legible, not just felt.
 - **Visual: name the ring.** Render each voice's track title around the orbital map as it gathers, so the screen (still a footnote) becomes a quiet index of which piece is where.
-- **Stem-aware harmony.** Read each track's `analyses.key_signature` from `/api/featured` and bias the scatter/resolve detune so the gathered room is _in key_ with itself — his album tuned to itself in space.
+- **Stem-aware harmony.** Read each track's `analyses.key_signature` and bias the scatter/resolve detune so the gathered room is _in key_ with itself — his album tuned to itself in space.
 - **Real haptic patterns per arrival ordinal** — a richer buzz vocabulary as more voices come home (1st = single, last = the resolve triple), turning the phone into a progress instrument.
