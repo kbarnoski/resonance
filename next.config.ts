@@ -69,13 +69,6 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_BUILD_COMMIT: BUILD_COMMIT,
     NEXT_PUBLIC_BUILD_TIME: BUILD_TIME,
   },
-  // The dynamic per-path OG card reads the satori TTFs with fs at request
-  // time, but Vercel strips public/ from lambda bundles (CDN-served) —
-  // verified 2026-08-26: ENOENT /var/task/public/fonts/*.ttf in prod.
-  // Force-trace them into that route's bundle.
-  outputFileTracingIncludes: {
-    "/path/[token]/opengraph-image": ["./public/fonts/*.ttf"],
-  },
   async headers() {
     return [
       {
@@ -115,6 +108,10 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingIncludes: {
     "/api/audio/[id]": ["./node_modules/ffmpeg-static/**/*"],
+    // The dynamic per-path OG card reads the satori TTFs with fs at
+    // request time, but Vercel strips public/ from lambda bundles
+    // (CDN-served) — verified 2026-08-26: ENOENT in prod. Force-trace.
+    "/path/[token]/opengraph-image": ["./public/fonts/*.ttf"],
   },
   webpack: (config, { isServer }) => {
     // Exclude TensorFlow.js and Basic Pitch from server-side bundling
