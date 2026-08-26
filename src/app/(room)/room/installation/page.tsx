@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } from "@/components/audio/installation-loop-client";
+import { QUARANTINED_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS } from "@/lib/journeys/installation-sequence";
@@ -383,7 +384,14 @@ export default async function InstallationPage({ searchParams }: Props) {
       })),
     }));
 
-    const fallbackTracks = featuredRecordings.map(toTrack);
+    // Fallback/DJ pool for unpaired journeys. Quarantined 17th St /
+    // Folsom St uploads are EXCLUDED (unverified authorship — Karel's
+    // decision, 2026-08-25 audit; see QUARANTINED_RECORDING_IDS). The
+    // filter sits here, not on featuredRecordings, so curated
+    // recordingId / PAIRED_TRACKS pairings above are untouched.
+    const fallbackTracks = featuredRecordings
+      .filter((r) => !QUARANTINED_RECORDING_IDS.has(r.id))
+      .map(toTrack);
 
     // Resolve ?start now that programs exist. Accepts a program id
     // ("snowflake-ep"), a journey id (builtin like "ghost" or a path
@@ -412,7 +420,7 @@ export default async function InstallationPage({ searchParams }: Props) {
     }
 
     return (
-      <div className="h-screen w-screen overflow-hidden bg-black">
+      <div className="h-screen w-screen overflow-hidden bg-void">
         {/* Preload Cormorant Garamond (self-hosted) — used by both the
             cycle intro ("Resonance") and every journey title. Without
             this preload the cycle title initially painted in Georgia
@@ -441,8 +449,12 @@ export default async function InstallationPage({ searchParams }: Props) {
   // ─── Legacy single-journey kiosk mode (unchanged) ──────────────────
   let tracks: Track[] = [];
   if (offline) {
+    // Quarantined uploads excluded here too — this pool feeds the
+    // legacy random-track kiosk directly.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rows = listRecordings() as any[];
+    const rows = (listRecordings() as any[]).filter(
+      (r) => !QUARANTINED_RECORDING_IDS.has(r.id),
+    );
     const featured = rows.filter((r) => r.is_featured);
     const pool = featured.length > 0 ? featured : rows;
     tracks = pool.map((r) => ({
@@ -490,7 +502,7 @@ export default async function InstallationPage({ searchParams }: Props) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         return (
-          <div className="h-screen w-screen overflow-hidden bg-black">
+          <div className="h-screen w-screen overflow-hidden bg-void">
             <InstallationClient tracks={[]} journey={journey} />
           </div>
         );
@@ -515,7 +527,7 @@ export default async function InstallationPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-black">
+    <div className="h-screen w-screen overflow-hidden bg-void">
       <InstallationClient tracks={tracks} journey={journey} />
     </div>
   );

@@ -21,6 +21,7 @@
  * credits sits on solid black.
  */
 import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 const TEXT_SHADOW =
   "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
@@ -47,29 +48,17 @@ export function InstallationCredits({ dedication = DEFAULT_DEDICATION }: Props) 
         className="relative flex flex-col items-center"
         style={{ animation: "creditsContent 14000ms ease-in-out forwards", opacity: 0 }}
       >
-        <div
-          className="text-white/55"
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.78rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            marginBottom: "1.75rem",
-            textShadow: TEXT_SHADOW,
-          }}
+        <Eyebrow
+          className="mb-7 text-[0.78rem] tracking-[0.22em] text-white/55"
+          style={{ textShadow: TEXT_SHADOW }}
         >
           {dedication.eyebrow}
-        </div>
+        </Eyebrow>
 
-        <div
-          className="text-white max-w-5xl"
+        <DisplayTitle
+          as="div"
+          className="max-w-5xl text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em] leading-[1.1]"
           style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
-            fontSize: "clamp(3rem, 6.5vw, 5rem)",
-            letterSpacing: "-0.01em",
-            lineHeight: 1.1,
             // Tight gap when the secondary line is a continuation of
             // the hero (no second eyebrow between them).
             marginBottom: dedication.secondaryEyebrow ? "4rem" : "1.75rem",
@@ -77,67 +66,41 @@ export function InstallationCredits({ dedication = DEFAULT_DEDICATION }: Props) 
           }}
         >
           {dedication.hero}
-        </div>
+        </DisplayTitle>
 
         {dedication.secondaryEyebrow && (
-          <div
-            className="text-white/55"
-            style={{
-              fontFamily: "var(--font-geist-mono)",
-              fontSize: "0.78rem",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              marginBottom: "1.5rem",
-              textShadow: TEXT_SHADOW,
-            }}
+          <Eyebrow
+            className="mb-6 text-[0.78rem] tracking-[0.22em] text-white/55"
+            style={{ textShadow: TEXT_SHADOW }}
           >
             {dedication.secondaryEyebrow}
-          </div>
+          </Eyebrow>
         )}
 
         {dedication.secondary && (
-          <p
-            className="text-white/75 max-w-xl"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
-              letterSpacing: "0.02em",
-              lineHeight: 1.5,
-              textShadow: TEXT_SHADOW,
-            }}
+          <DisplayTitle
+            as="p"
+            className="max-w-xl text-[clamp(1.4rem,2.6vw,1.9rem)] tracking-[0.02em] leading-[1.5] text-white/75"
+            style={{ textShadow: TEXT_SHADOW }}
           >
             {dedication.secondary}
-          </p>
+          </DisplayTitle>
         )}
 
-        <div
-          className="text-white/65 mt-20"
-          style={{
-            fontFamily: "var(--font-geist-mono)",
-            fontSize: "1rem",
-            letterSpacing: "0.06em",
-            textShadow: TEXT_SHADOW,
-          }}
+        <MonoLabel
+          className="mt-20 text-base tracking-[0.06em] text-white/65"
+          style={{ textShadow: TEXT_SHADOW }}
         >
           Resonance  ·  composed and performed by Karel Barnoski
-        </div>
+        </MonoLabel>
 
-        <p
-          className="text-white/75 mt-10 max-w-xl"
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
-            fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
-            letterSpacing: "0.02em",
-            lineHeight: 1.5,
-            textShadow: TEXT_SHADOW,
-          }}
+        <DisplayTitle
+          as="p"
+          className="mt-10 max-w-xl text-[clamp(1.15rem,2vw,1.45rem)] tracking-[0.02em] leading-[1.5] text-white/75"
+          style={{ textShadow: TEXT_SHADOW }}
         >
           Thank you for experiencing Resonance.
-        </p>
+        </DisplayTitle>
       </div>
 
       <style jsx>{`

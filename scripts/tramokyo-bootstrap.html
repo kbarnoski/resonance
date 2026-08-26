@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Resonance</title>
+<!--
+  Tramokyo kiosk bootstrap. Chrome kiosk mode opens THIS local file
+  (file://…/tramokyo-bootstrap.html) instead of localhost directly, so
+  launching — or relaunching — while the offline-pack server is still
+  starting (or being restarted by launchd) shows a quiet black screen
+  that polls :3000 and redirects to the attract loop the moment the
+  server answers. Without it, a reload into a dead/restarting server
+  strands Chrome on a net::ERR_CONNECTION_REFUSED page forever.
+-->
+<style>
+  html, body { height: 100%; margin: 0; background: #000; }
+  body { display: flex; align-items: center; justify-content: center; }
+  .msg {
+    color: rgba(255, 255, 255, 0.3);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 2000ms ease-out 3s forwards;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="msg" id="msg">waiting for server</div>
+<script>
+  var TARGET = "http://localhost:3000/room/installation?loop=1";
+  var POLL_MS = 2000;
+  var attempts = 0;
+  var redirected = false;
+
+  function go() {
+    if (redirected) return;
+    redirected = true;
+    location.replace(TARGET);
+  }
+
+  // Two probes raced per attempt; EITHER succeeding means the server
+  // answered and we redirect. Belt and braces against file://-origin
+  // quirks — retries forever, because an unattended venue display
+  // must never give up.
+  //
+  //   1. fetch(mode:"no-cors") — resolves on ANY http response
+  //      (opaque), rejects on connection refused. Could in theory be
+  //      blocked by Private Network Access policy from a file:// page.
+  //   2. Image() load of /favicon.ico — img elements are exempt from
+  //      CORS/PNA, but would also fail if the favicon ever 404s.
+  function probe() {
+    attempts++;
+    var pending = 2;
+    var retryScheduled = false;
+    function scheduleRetry() {
+      if (redirected || retryScheduled) return;
+      retryScheduled = true;
+      document.getElementById("msg").textContent =
+        "waiting for server · " + attempts;
+      setTimeout(probe, POLL_MS);
+    }
+    function fail() {
+      pending--;
+      if (pending <= 0) scheduleRetry();
+    }
+    // Watchdog: if a probe hangs without settling (half-open socket),
+    // force the retry anyway so polling can never stall.
+    setTimeout(scheduleRetry, 10000);
+    fetch("http://localhost:3000/", { mode: "no-cors", cache: "no-store" })
+      .then(go)
+      .catch(fail);
+    var img = new Image();
+    img.onload = go;
+    img.onerror = fail;
+    img.src = "http://localhost:3000/favicon.ico?t=" + Date.now();
+  }
+  probe();
+</script>
+</body>
+</html>

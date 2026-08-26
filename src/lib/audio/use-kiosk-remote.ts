@@ -31,6 +31,12 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {
     window.location.href = "/room/installation?loop=1";
+  } else if (cmd === "reload") {
+    // Phone-remote recovery: a full page reload fixes most kiosk
+    // wedges (dead shaders, stuck audio element, broken phase machine)
+    // without anyone physically reaching the laptop. Valid in every
+    // context — the attract loop re-enters on its own after reload.
+    window.location.reload();
   } else if (cmd.startsWith("volume:")) {
     const v = Number(cmd.slice(7));
     if (Number.isFinite(v)) store.setVolume(v);

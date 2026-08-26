@@ -20,10 +20,36 @@
 // reasonable time.
 const URL_CACHE_TTL_MS = 5 * 60 * 1000;
 
+// Blob object URLs are NEVER persisted to sessionStorage — a `blob:`
+// URL is scoped to the document that minted it, so a persisted one is
+// dead after any reload (exactly when the kiosk recovers via
+// location.reload()) and the poisoned cache entry would fail every
+// retry until it aged out. Blob URLs live only in this module-level
+// map, keyed by recording id, and the previous URL is revoked whenever
+// a new one is minted for the same recording — without that, an
+// 8-hour installation loop re-blobbing the same tracks accretes
+// hundreds of MB of unreleasable audio buffers.
+const blobUrlById = new Map<string, string>();
+
+function setBlobUrl(recordingId: string, objectUrl: string): void {
+  const prev = blobUrlById.get(recordingId);
+  if (prev && prev !== objectUrl) {
+    try { URL.revokeObjectURL(prev); } catch { /* already revoked */ }
+  }
+  blobUrlById.set(recordingId, objectUrl);
+}
+
 /** Force-clear a cached URL (e.g., after the audio element fires an
  *  error — the cached URL might be pointing at a stale codec or an
- *  expired signature). Next resolveAudioUrl call will re-fetch. */
+ *  expired signature). Also revokes + drops any blob URL held for the
+ *  recording, so recovery paths get a genuinely fresh fetch. Next
+ *  resolveAudioUrl call will re-fetch. */
 export function clearCachedUrl(recordingId: string): void {
+  const blob = blobUrlById.get(recordingId);
+  if (blob) {
+    try { URL.revokeObjectURL(blob); } catch { /* already revoked */ }
+    blobUrlById.delete(recordingId);
+  }
   try {
     sessionStorage.removeItem(`audio-url-${recordingId}`);
   } catch { /* ok */ }
@@ -41,6 +67,13 @@ export function getCachedUrl(recordingId: string): string | null {
     if (!raw) return null;
     const entry = JSON.parse(raw);
     if (Date.now() - entry.timestamp > URL_CACHE_TTL_MS) {
+      sessionStorage.removeItem(`audio-url-${recordingId}`);
+      return null;
+    }
+    // Defensive purge: older builds persisted blob: object URLs here.
+    // They're dead outside the document that minted them — drop on
+    // sight so a reloaded kiosk never replays one into the element.
+    if (typeof entry.url === "string" && entry.url.startsWith("blob:")) {
       sessionStorage.removeItem(`audio-url-${recordingId}`);
       return null;
     }
@@ -65,8 +98,15 @@ export async function resolveAudioUrl(
   options?: { asBlob?: boolean }
 ): Promise<string> {
   if (recordingId) {
-    const cached = getCachedUrl(recordingId);
-    if (cached && !options?.asBlob) return cached;
+    if (options?.asBlob) {
+      // Blob URLs don't expire; reuse the one already held for this
+      // recording instead of re-downloading the whole file.
+      const existingBlob = blobUrlById.get(recordingId);
+      if (existingBlob) return existingBlob;
+    } else {
+      const cached = getCachedUrl(recordingId);
+      if (cached) return cached;
+    }
   }
 
   let signedUrl: string | null = null;
@@ -105,10 +145,15 @@ export async function resolveAudioUrl(
       if (!res.ok) throw new Error(`audio fetch ${res.status}`);
       const blob = await res.blob();
       const objectUrl = URL.createObjectURL(blob);
-      // Cache the object URL too so re-loads within the journey
-      // don't re-fetch. Object URLs are scoped to the document,
-      // last until revoked or unload.
-      if (recordingId) setCachedUrl(recordingId, objectUrl);
+      // Keep the object URL in the module-level map (revoking any
+      // previous one for this recording) so re-loads within the
+      // journey don't re-fetch. sessionStorage gets the SIGNED url —
+      // never the blob: URL — so a post-reload session still skips
+      // the /api/audio round-trip without inheriting a dead blob.
+      if (recordingId) {
+        setBlobUrl(recordingId, objectUrl);
+        setCachedUrl(recordingId, signedUrl);
+      }
       return objectUrl;
     } catch {
       // Fall back to streaming the signed URL.

@@ -16,6 +16,7 @@ import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hu
 import { InstallationStatusPanel } from "./installation-status-panel";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
+import { Eyebrow, DisplayTitle } from "@/components/ui/typography";
 import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
 import {
   INTRO_MS,
@@ -25,6 +26,7 @@ import {
   MID_STALL_RELOAD_MS,
   CYCLE_INTRO_TIMINGS,
   distributedTrackIndex,
+  journeyCapMs,
 } from "./installation-machine";
 
 /** One entry in the curated loop sequence. */
@@ -486,8 +488,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             try {
               const track = trackForIndex(currentPhase.index);
               if (!track?.audioUrl) return;
-              const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
-              try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
+              const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
+              clearCachedUrl(track.id);
               const fresh = await resolveAudioUrl(track.audioUrl, track.id);
               const targetTime = el.currentTime;
               el.src = fresh;
@@ -688,35 +690,54 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
 
   // ─── Auto-reload watchdog ───────────────────────────────────────
   // Last-resort recovery for unattended kiosk operation. If no phase
-  // change in 2x MAX_JOURNEY_MS (16 minutes), the loop is wedged
+  // change in 2x the longest possible journey cap, the loop is wedged
   // beyond what local recovery can fix (a JS error broke the phase
   // machine, audio totally failed to load and didn't trigger advance,
   // sleep/wake recovery silently failed, etc.) and location.reload()
   // is the only thing that gets the venue display back to a working
   // state without a callout.
   //
-  // 16 minutes is well above any legitimate phase: longest journey is
-  // capped at 8 min by MAX_JOURNEY_MS, intro is 7s, credits is 16s.
-  // On /demo we skip the watchdog when the user hasn't pressed Begin
-  // yet — that's a legitimate idle state, not a wedge.
+  // The threshold derives from the tracks actually in play: journey
+  // caps are duration-based now (journeyCapMs), so we take the max
+  // cap across every sequence + fallback track instead of assuming
+  // the old fixed 8-minute cap. Intro is ~11s, credits 16s — the
+  // journey cap dominates. On /demo we skip the watchdog when the
+  // user hasn't pressed Begin yet — that's a legitimate idle state,
+  // not a wedge.
   const lastPhaseChangeRef = useRef(Date.now());
   useEffect(() => {
     lastPhaseChangeRef.current = Date.now();
   }, [phase]);
   useEffect(() => {
+    const maxCapMs = Math.max(
+      MAX_JOURNEY_MS,
+      ...programs.flatMap((p) => p.sequence.map((e) => journeyCapMs(e.track?.duration))),
+      ...fallbackTracks.map((t) => journeyCapMs(t.duration)),
+    );
     const id = setInterval(() => {
       if (playOnce && !started) return;
       const elapsed = Date.now() - lastPhaseChangeRef.current;
-      if (elapsed > 2 * MAX_JOURNEY_MS) {
+      if (elapsed > 2 * maxCapMs) {
         // eslint-disable-next-line no-console
         console.warn(
-          `[installation] Wedged for ${(elapsed / 60_000).toFixed(1)}min — reloading`,
+          `[installation] Wedged for ${(elapsed / 60_000).toFixed(1)}min — reloading when server answers`,
         );
-        window.location.reload();
+        // Only reload into a LIVE server. If the offline-pack node
+        // process is mid-restart (launchd respawn after a crash),
+        // reloading immediately would strand Chrome on a
+        // net::ERR_CONNECTION_REFUSED page — permanently dead screen,
+        // beyond in-page recovery. Probe first; on failure the next
+        // 30s tick retries, so the reload lands as soon as the
+        // server is back.
+        void fetch("/", { cache: "no-store" })
+          .then((res) => {
+            if (res.ok) window.location.reload();
+          })
+          .catch(() => { /* server not back yet — retry next tick */ });
       }
     }, 30_000);
     return () => clearInterval(id);
-  }, [playOnce, started]);
+  }, [playOnce, started, programs, fallbackTracks]);
 
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
@@ -908,8 +929,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               try {
                 const t = trackForIndex(startIdx);
                 if (!t?.audioUrl) return;
-                try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
-                const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+                const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
+                clearCachedUrl(t.id);
                 const fresh = await resolveAudioUrl(t.audioUrl, t.id);
                 el.src = fresh;
                 el.load();
@@ -1267,8 +1288,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             try {
               const t = trackForIndex(phase.index);
               if (!t?.audioUrl) return;
-              try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
-              const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+              const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
+              clearCachedUrl(t.id);
               const fresh = await resolveAudioUrl(t.audioUrl, t.id);
               el.src = fresh;
               el.load();
@@ -1370,8 +1391,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         console.warn(
           `[installation] ${entry.journey.name}: stalled at ${t.toFixed(1)}s for ${(stalledFor/1000).toFixed(0)}s — force-reload`,
         );
-        try { sessionStorage.removeItem(`audio-url-${tk.id}`); } catch { /* ok */ }
-        const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+        const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
+        clearCachedUrl(tk.id);
         const fresh = await resolveAudioUrl(tk.audioUrl, tk.id);
         const targetTime = t;
         // The fresh URL has a different signature than the cached
@@ -1404,6 +1425,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
 
     // Subscribe to store; advance when audio finishes or safety expires.
     const startMs = Date.now();
+    // Per-journey safety cap — derived from the actual track's known
+    // duration (+ margin) rather than a fixed 8 minutes, so a long
+    // fallback pick is never cut mid-piece. Unknown duration falls
+    // back to MAX_JOURNEY_MS. (From ./installation-machine.)
+    const capMs = journeyCapMs(trackForIndex(phase.index)?.duration);
     // Soft early-advance: after STALLED_THRESHOLD_MS currentTime hasn't
     // moved off 0 we give up on this track. Generous so slow CDN starts
     // + the mid-stall re-load attempt (MID_STALL_RELOAD_MS) both have
@@ -1421,7 +1447,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
-      const timedOut = elapsed >= MAX_JOURNEY_MS;
+      const timedOut = elapsed >= capMs;
       // Natural completion takes priority — never warn or mark
       // skipped if the audio actually finished. Without this guard,
       // a laptop sleep mid-journey can push elapsed past
@@ -1469,7 +1495,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
-      const timedOut = elapsed >= MAX_JOURNEY_MS;
+      const timedOut = elapsed >= capMs;
       if (audioEnded || stalled || timedOut) {
         if (audioEnded) {
           // eslint-disable-next-line no-console
@@ -1553,10 +1579,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         startedAt={startedAtMsRef.current}
       />
 
-      {/* Debug HUD intentionally disabled in render. Re-enable by
-          flipping back to `{debug && <InstallationDebugHud />}` —
-          the prop wiring + page param are still in place. */}
-      {false && debug && <InstallationDebugHud />}
+      {/* Live audio + journey debug overlay — enabled with ?debug=1
+          on the page URL (wired through the page's searchParams). */}
+      {debug && <InstallationDebugHud />}
 
       {/* Installation intro overlay — staged. Cycle text, bg, and
           journey title are three independent layers, each conditionally
@@ -1574,7 +1599,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           read as "the title and initial text" jumping size. */}
       {!fontsReady && (
         <div
-          className="absolute inset-0 z-50 bg-black pointer-events-none"
+          className="absolute inset-0 z-50 bg-void pointer-events-none"
           aria-hidden
         />
       )}
@@ -1617,7 +1642,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               setStarted(true);
             }
           }}
-          className="absolute inset-0 z-[130] flex flex-col items-center justify-center bg-black px-8 text-center"
+          className="absolute inset-0 z-[130] flex flex-col items-center justify-center bg-void px-8 text-center"
           style={{
             cursor: started ? "default" : "pointer",
             pointerEvents: started ? "none" : "auto",
@@ -1652,32 +1677,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               margin: "0 auto 1.5rem",
             }}
           />
-          <div
-            className="text-white/90"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 300,
-              fontSize: "clamp(3.5rem, 8vw, 6rem)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-              marginBottom: "0.5rem",
-            }}
+          <DisplayTitle
+            as="div"
+            className="mb-2 not-italic text-white/90 text-[clamp(3.5rem,8vw,6rem)] tracking-[-0.02em]"
           >
             Resonance
-          </div>
-          <div
-            className="text-white/65"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              fontSize: "clamp(1.3rem, 2.8vw, 2rem)",
-              letterSpacing: "0.01em",
-              marginBottom: "2.5rem",
-            }}
+          </DisplayTitle>
+          <DisplayTitle
+            as="div"
+            className="mb-10 text-[clamp(1.3rem,2.8vw,2rem)] tracking-[0.01em] leading-[normal] text-white/65"
           >
             presenting {program?.presenting ?? "the Snowflake EP"}
-          </div>
+          </DisplayTitle>
           <p
             className="text-white/55 max-w-2xl mx-auto"
             style={{
@@ -1690,31 +1701,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           >
             {program?.description ?? ""}
           </p>
-          <div
-            className="text-white/55"
-            style={{
-              fontFamily: "var(--font-geist-mono)",
-              fontSize: "0.85rem",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              marginBottom: "0.5rem",
-            }}
-          >
+          <Eyebrow className="mb-2 text-[0.85rem] tracking-[0.22em] text-white/55">
             composed and performed by
-          </div>
-          <div
-            className="text-white/85"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
-              letterSpacing: "0.02em",
-              marginBottom: "3rem",
-            }}
+          </Eyebrow>
+          <DisplayTitle
+            as="div"
+            className="mb-12 text-[clamp(1.4rem,2.6vw,1.9rem)] tracking-[0.02em] leading-[normal] text-white/85"
           >
             Karel Barnoski
-          </div>
+          </DisplayTitle>
           {/* Play button — same circular shape + fill the shared
               journey start screen uses, for visual consistency. */}
           <button
@@ -1736,7 +1731,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               border: "1px solid rgba(255, 255, 255, 0.2)",
               color: "rgba(255, 255, 255, 0.9)",
               cursor: "pointer",
-              transition: "all 0.2s ease",
+              transition: "background-color var(--duration-fast) var(--ease-enter), border-color var(--duration-fast) var(--ease-enter)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "rgba(255, 255, 255, 0.15)";
@@ -1754,9 +1749,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           <div
             style={{
               marginTop: "1.5rem",
-              fontSize: "0.65rem",
+              fontSize: "0.68rem",
               fontFamily: "var(--font-geist-mono)",
-              color: "rgba(255, 255, 255, 0.3)",
+              color: "rgba(255, 255, 255, 0.45)",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
             }}
@@ -1893,7 +1888,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               className="mt-3 text-white/55"
               style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.65rem",
+                fontSize: "0.68rem",
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 textShadow: "0 1px 8px rgba(0,0,0,0.85)",

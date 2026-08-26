@@ -10,7 +10,16 @@
  *   - timing constants used by both the loop client and any test
  *   - the `distributedTrackIndex` helper for picking a fallback track,
  *     which is pure and easy to unit-test
+ *   - `journeyCapMs` — per-journey safety timeout derived from the
+ *     track's known duration instead of a fixed 8 minutes
+ *   - `QUARANTINED_RECORDING_IDS` — recordings excluded from the
+ *     installation fallback/DJ pool (unverified authorship)
  */
+
+import {
+  SEVENTEENTH_ST_TRACKS,
+  FOLSOM_ST_TRACKS,
+} from "@/app/dream/_shared/welcomeHome";
 
 /** Cycle intro screen duration before the cycle text begins fading.
  *  Karel's kiosk test (2026-08-24): 7s was too short to read the
@@ -20,9 +29,60 @@ export const INTRO_MS = 11_000;
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;
 
-/** Per-journey safety timeout. Generously above the longest journey
- *  so a track that stalls without firing `ended` still advances. */
+/** Per-journey safety-timeout FLOOR. When a track's duration is known,
+ *  `journeyCapMs` derives the real cap from it (duration + margin) and
+ *  only ever raises it above this floor — so bad metadata can't cut a
+ *  piece short, and a long track (e.g. an 18-minute fallback pick) is
+ *  no longer chopped at 8:00. This constant alone is only the fallback
+ *  for tracks with unknown duration. */
 export const MAX_JOURNEY_MS = 8 * 60 * 1_000;
+
+/** Margin added on top of a track's known duration when deriving its
+ *  per-journey safety cap. Generous enough to absorb slow starts,
+ *  mid-track stall recoveries, and the pre-entry breath — the cap is
+ *  a last-resort advance, not a scheduler. */
+export const JOURNEY_CAP_MARGIN_MS = 90_000;
+
+/**
+ * Per-journey safety timeout for a track of the given duration
+ * (seconds, as stored on `recordings.duration`). Returns
+ * `duration + JOURNEY_CAP_MARGIN_MS`, floored at MAX_JOURNEY_MS —
+ * never lower, so suspect duration metadata can only lengthen the
+ * window, never truncate a piece mid-play.
+ */
+export function journeyCapMs(trackDurationSec: number | null | undefined): number {
+  if (
+    typeof trackDurationSec !== "number" ||
+    !Number.isFinite(trackDurationSec) ||
+    trackDurationSec <= 0
+  ) {
+    return MAX_JOURNEY_MS;
+  }
+  return Math.max(
+    MAX_JOURNEY_MS,
+    Math.round(trackDurationSec * 1_000) + JOURNEY_CAP_MARGIN_MS,
+  );
+}
+
+/**
+ * Recording IDs excluded from the installation fallback/DJ pool.
+ *
+ * The 17th St + Folsom St session uploads are quarantined — a Joseph
+ * drone surfaced in a "Folsom St" file (2026-08-14), so authorship of
+ * every take in those sessions is unverified until Karel signs off per
+ * track. Karel's decision (2026-08-25 audit): EXCLUDE them from the
+ * Tramokyo offline fallback/DJ pool. This also removes the 18:40
+ * "17th St 64" that previously overflowed the journey cap.
+ *
+ * The canonical quarantine list lives in
+ * `src/app/dream/_shared/welcomeHome.ts` — imported here rather than
+ * copied so the two can never drift. Curated PAIRED_TRACKS pairings
+ * are a separate mechanism and unaffected (none of the current
+ * installation programs pair a quarantined track).
+ */
+export const QUARANTINED_RECORDING_IDS: ReadonlySet<string> = new Set(
+  [...SEVENTEENTH_ST_TRACKS, ...FOLSOM_ST_TRACKS].map((t) => t.id),
+);
 
 /** Stalled-detector window during a journey phase. If currentTime
  *  hasn't moved off ~0 within this period the loop client gives up

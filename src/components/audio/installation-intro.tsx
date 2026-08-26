@@ -2,6 +2,7 @@
 
 import type { Journey } from "@/lib/journeys/types";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
+import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
  * time this component renders any text, every Cormorant Garamond
@@ -65,7 +66,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
         <div
           className="absolute inset-0 z-[120] pointer-events-none"
           style={{
-            backgroundColor: "black",
+            backgroundColor: "var(--void)",
             opacity: bgOpacity,
             // Match the journey title's inner-fade clock exactly so
             // the shader emerges in-step with the title appearing.
@@ -126,30 +127,18 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
           margin: "0 auto 1.5rem",
         }}
       />
-      <div
-        className="text-white/90"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontWeight: 300,
-          fontSize: "clamp(3.5rem, 8vw, 6rem)",
-          letterSpacing: "-0.02em",
-          lineHeight: 1.05,
-        }}
+      <DisplayTitle
+        as="div"
+        className="not-italic text-white/90 text-[clamp(3.5rem,8vw,6rem)] tracking-[-0.02em]"
       >
         Resonance
-      </div>
-      <div
-        className="text-white/65 mt-4"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(1.3rem, 2.8vw, 2rem)",
-          letterSpacing: "0.01em",
-        }}
+      </DisplayTitle>
+      <DisplayTitle
+        as="div"
+        className="mt-4 text-[clamp(1.3rem,2.8vw,2rem)] tracking-[0.01em] leading-[normal] text-white/65"
       >
         presenting {presenting ?? "the Snowflake EP"}
-      </div>
+      </DisplayTitle>
       <p
         className="text-white/55 mt-12 max-w-2xl mx-auto"
         style={{
@@ -162,29 +151,15 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
         {description ??
           "Snowflake, Realized, Ghost — three original improvised piano recordings, tracing an arc from stillness, through fire, into light. AI-generated visuals improvise alongside the music, never the same twice. Recline."}
       </p>
-      <div
-        className="text-white/55 mt-14"
-        style={{
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.85rem",
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-        }}
-      >
+      <Eyebrow className="mt-14 text-[0.85rem] tracking-[0.22em] text-white/55">
         composed and performed by
-      </div>
-      <div
-        className="text-white/85 mt-2"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
-          letterSpacing: "0.02em",
-        }}
+      </Eyebrow>
+      <DisplayTitle
+        as="div"
+        className="mt-2 text-[clamp(1.4rem,2.6vw,1.9rem)] tracking-[0.02em] leading-[normal] text-white/85"
       >
         Karel Barnoski
-      </div>
+      </DisplayTitle>
     </div>
   );
 }
@@ -224,58 +199,31 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           pointerEvents: "none",
         }}
       />
-      <div
-        className="text-white/55"
-        style={{
-          position: "relative",
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.78rem",
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          marginBottom: "1.75rem",
-          textShadow: TEXT_SHADOW,
-        }}
+      <Eyebrow
+        className="relative mb-7 text-[0.78rem] tracking-[0.22em] text-white/55"
+        style={{ textShadow: TEXT_SHADOW }}
       >
         Journey
-      </div>
-      <div
-        className="text-white"
-        style={{
-          position: "relative",
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontWeight: 300,
-          fontSize: "clamp(3rem, 6.5vw, 5rem)",
-          letterSpacing: "-0.01em",
-          lineHeight: 1.05,
-          textShadow: TEXT_SHADOW,
-        }}
+      </Eyebrow>
+      <DisplayTitle
+        as="div"
+        className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
+        style={{ textShadow: TEXT_SHADOW }}
       >
         {journey.name}
-      </div>
+      </DisplayTitle>
       {journey.subtitle && (
-        <div
-          className="text-white/75 mt-4"
-          style={{
-            position: "relative",
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)",
-            letterSpacing: "0.01em",
-            textShadow: TEXT_SHADOW,
-          }}
+        <DisplayTitle
+          as="div"
+          className="relative mt-4 font-normal text-[clamp(1.2rem,2.4vw,1.7rem)] tracking-[0.01em] leading-[normal] text-white/75"
+          style={{ textShadow: TEXT_SHADOW }}
         >
           {journey.subtitle}
-        </div>
+        </DisplayTitle>
       )}
-      <div
-        className="text-white/65 mt-12"
-        style={{
-          position: "relative",
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "1rem",
-          letterSpacing: "0.06em",
-          textShadow: TEXT_SHADOW,
-        }}
+      <MonoLabel
+        className="relative mt-12 text-base tracking-[0.06em] text-white/65"
+        style={{ textShadow: TEXT_SHADOW }}
       >
         {(() => {
           // Same join logic as the visualizer-client journey intro so
@@ -292,22 +240,15 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           if (journey.photographyCredit) parts.push(`Photography by ${journey.photographyCredit}`);
           return parts.join("  ·  ");
         })()}
-      </div>
+      </MonoLabel>
       {journey.dedication && (
-        <div
-          className="text-white/75 mt-8 max-w-2xl mx-auto"
-          style={{
-            position: "relative",
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
-            letterSpacing: "0.02em",
-            lineHeight: 1.5,
-            textShadow: TEXT_SHADOW,
-          }}
+        <DisplayTitle
+          as="div"
+          className="relative mt-8 max-w-2xl mx-auto font-normal text-[clamp(1.15rem,2vw,1.45rem)] tracking-[0.02em] leading-[1.5] text-white/75"
+          style={{ textShadow: TEXT_SHADOW }}
         >
           {journey.dedication}
-        </div>
+        </DisplayTitle>
       )}
     </div>
   );

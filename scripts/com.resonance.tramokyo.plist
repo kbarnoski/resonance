@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Tramokyo offline-pack server supervision (launchd LaunchAgent).
+
+  TEMPLATE — do not load this file directly. __APP_DIR__ is substituted
+  with the real repo path by scripts/tramokyo-install-supervision.sh,
+  which copies the result to ~/Library/LaunchAgents and loads it.
+
+  KeepAlive restarts the server if node crashes mid-show; RunAtLoad
+  starts it at login (pair with macOS auto-login at the venue so a
+  power cut, then generator restore, boots straight back into a live
+  server without a human). ThrottleInterval keeps a crash-looping
+  server from spinning faster than once per 5s.
+
+  VENUE-ONLY: do not install on a dev laptop — it will hold :3000 and
+  caffeinate forever. Uninstall with:
+    scripts/tramokyo-install-supervision.sh --uninstall
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.resonance.tramokyo</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__APP_DIR__/scripts/tramokyo-server.sh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>5</integer>
+  <key>StandardOutPath</key>
+  <string>/tmp/tramokyo-server.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/tramokyo-server.log</string>
+</dict>
+</plist>

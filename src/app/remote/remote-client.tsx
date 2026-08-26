@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { JOURNEYS } from "@/lib/journeys/journeys";
+import { Button } from "@/components/ui/button";
 
 interface KioskStatus {
   context?: "loop" | "room";
@@ -24,6 +25,7 @@ export function RemoteClient() {
   const [status, setStatus] = useState<KioskStatus | null>(null);
   const [ageMs, setAgeMs] = useState<number | null>(null);
   const [sending, setSending] = useState<string | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   useEffect(() => {
     let stopped = false;
@@ -43,24 +45,37 @@ export function RemoteClient() {
 
   const send = useCallback(async (command: string) => {
     setSending(command);
+    setSendError(null);
     try {
-      await fetch("/api/pack/remote", {
+      const res = await fetch("/api/pack/remote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
       });
-    } catch { /* hotspot blip */ }
+      if (!res.ok) {
+        setSendError(`Command not accepted (HTTP ${res.status}) — try again`);
+      }
+    } catch {
+      // Surfaced instead of silently swallowed — on a hotspot LAN a
+      // dropped command looks identical to a slow kiosk otherwise.
+      setSendError("Command didn't reach the kiosk — check the hotspot connection");
+    }
     setTimeout(() => setSending(null), 600);
   }, []);
 
   const inLoop = status?.context === "loop";
   const stale = ageMs === null || ageMs > 10_000;
 
+  // Glass Button overrides — keep the remote's touch-first sizing and the
+  // readable ink level; active state preserved for tap feedback.
   const btn =
-    "rounded-xl px-4 py-3.5 text-sm text-white/85 bg-white/[0.06] border border-white/10 active:bg-white/[0.15] transition-colors";
+    "h-auto min-h-11 px-4 py-3.5 text-sm font-normal text-ink active:bg-white/[0.15]";
 
   return (
-    <div className="min-h-screen bg-black text-white px-5 py-8 max-w-md mx-auto">
+    <div
+      className="min-h-screen bg-background text-white px-5 py-8 max-w-md mx-auto"
+      style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
+    >
       <div className="flex items-center justify-between mb-6">
         <h1
           className="text-xl text-white/90"
@@ -69,13 +84,13 @@ export function RemoteClient() {
           Resonance Remote
         </h1>
         <span
-          className={`h-2.5 w-2.5 rounded-full ${stale ? "bg-red-500/80" : "bg-emerald-400/90"}`}
+          className={`h-2.5 w-2.5 rounded-full transition-colors duration-fast ${stale ? "bg-destructive" : "bg-emerald-500"}`}
           title={stale ? "Kiosk not reporting" : "Kiosk live"}
         />
       </div>
 
       <div className="rounded-xl p-4 mb-6 bg-white/[0.04] border border-white/10">
-        <div className="text-[11px] uppercase tracking-widest text-white/35 mb-1.5">
+        <div className="text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
           {stale ? "waiting for kiosk…" : inLoop ? "attract loop" : "dj mode"}
         </div>
         <div className="text-base text-white/90 mb-0.5">
@@ -84,7 +99,7 @@ export function RemoteClient() {
         <div className="text-sm text-white/50">
           {status?.track ?? "no track"}
           {status?.duration ? (
-            <span className="text-white/30">
+            <span className="text-ink-faint">
               {" "}· {fmt(status.currentTime)} / {fmt(status.duration)}
               {status.isPlaying === false ? " · paused" : ""}
             </span>
@@ -92,60 +107,83 @@ export function RemoteClient() {
         </div>
       </div>
 
+      {sendError ? (
+        <div className="rounded-xl px-4 py-3 mb-6 text-sm text-destructive bg-destructive/10 border border-destructive/25">
+          {sendError}
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <button className={btn} onClick={() => void send("toggle-play")}>
+        <Button variant="glass" className={btn} onClick={() => void send("toggle-play")}>
           {status?.isPlaying === false ? "Play" : "Pause"}
-        </button>
+        </Button>
         {inLoop ? (
-          <button className={btn} onClick={() => void send("skip")}>
+          <Button variant="glass" className={btn} onClick={() => void send("skip")}>
             Skip journey
-          </button>
+          </Button>
         ) : (
-          <button className={btn} onClick={() => void send("journey:random")}>
+          <Button variant="glass" className={btn} onClick={() => void send("journey:random")}>
             Random journey
-          </button>
+          </Button>
         )}
         {inLoop ? (
-          <button className={`${btn} col-span-2`} onClick={() => void send("break")}>
+          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("break")}>
             Break in — DJ mode
-          </button>
+          </Button>
         ) : (
-          <button className={`${btn} col-span-2`} onClick={() => void send("loop")}>
+          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("loop")}>
             Resume attract loop
-          </button>
+          </Button>
         )}
       </div>
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-white/35">
+      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
         Launch journey {inLoop ? "(breaks into DJ mode first)" : ""}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-8">
         {JOURNEYS.map((j) => (
-          <button
+          <Button
+            variant="glass"
             key={j.id}
-            className={`${btn} py-2.5 text-left ${sending === `journey:${j.id}` ? "bg-white/[0.18]" : ""}`}
+            className={`${btn} py-2.5 justify-start text-left ${sending === `journey:${j.id}` ? "bg-white/[0.18]" : ""}`}
             onClick={() => {
               if (inLoop) void send("break");
               void send(`journey:${j.id}`);
             }}
           >
             <span className="block truncate">{j.name}</span>
-          </button>
+          </Button>
         ))}
       </div>
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-white/35">Volume</div>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Volume</div>
+      <div className="grid grid-cols-5 gap-2 mb-8">
         {[0.2, 0.4, 0.6, 0.8, 1.0].map((v) => (
-          <button
+          <Button
+            variant="glass"
             key={v}
             className={`${btn} px-0 py-2.5 text-center ${status?.volume !== undefined && Math.abs(status.volume - v) < 0.1 ? "border-white/40" : ""}`}
             onClick={() => void send(`volume:${v}`)}
           >
             {Math.round(v * 100)}
-          </button>
+          </Button>
         ))}
       </div>
+
+      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Recovery</div>
+      <Button
+        variant="glass"
+        className={`${btn} w-full ${sending === "reload" ? "bg-white/[0.18]" : ""}`}
+        onClick={() => {
+          // The one recovery that fixes most wedges — confirmed so a
+          // pocket tap can't restart the show mid-journey.
+          if (window.confirm("Reload the kiosk display? The attract loop restarts from its intro.")) {
+            void send("reload");
+          }
+        }}
+      >
+        Reload kiosk display
+      </Button>
     </div>
   );
 }

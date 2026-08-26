@@ -13,10 +13,13 @@ import {
   INTRO_MS,
   CREDITS_MS,
   MAX_JOURNEY_MS,
+  JOURNEY_CAP_MARGIN_MS,
   STALLED_THRESHOLD_MS,
   MID_STALL_RELOAD_MS,
   CYCLE_INTRO_TIMINGS,
   distributedTrackIndex,
+  journeyCapMs,
+  QUARANTINED_RECORDING_IDS,
 } from "../../components/audio/installation-machine";
 
 describe("installation-machine timing constants", () => {
@@ -48,6 +51,63 @@ describe("installation-machine timing constants", () => {
     const t = CYCLE_INTRO_TIMINGS;
     expect(t.bgFadeStartMs).toBe(t.journeyMountMs);
     expect(t.bgFadeOutMs).toBe(t.journeyFadeInMs);
+  });
+});
+
+describe("journeyCapMs", () => {
+  it("falls back to MAX_JOURNEY_MS when the duration is unknown", () => {
+    expect(journeyCapMs(null)).toBe(MAX_JOURNEY_MS);
+    expect(journeyCapMs(undefined)).toBe(MAX_JOURNEY_MS);
+    expect(journeyCapMs(0)).toBe(MAX_JOURNEY_MS);
+    expect(journeyCapMs(-30)).toBe(MAX_JOURNEY_MS);
+    expect(journeyCapMs(Number.NaN)).toBe(MAX_JOURNEY_MS);
+    expect(journeyCapMs(Number.POSITIVE_INFINITY)).toBe(MAX_JOURNEY_MS);
+  });
+
+  it("never drops below the fixed floor for short tracks", () => {
+    // 3:20 track — duration + margin is well under 8 min; the floor
+    // wins so suspect metadata can only widen the window.
+    expect(journeyCapMs(200)).toBe(MAX_JOURNEY_MS);
+  });
+
+  it("extends to duration + margin for tracks past the floor", () => {
+    // The audit's case: an 18:40 track was previously cut at 8:00.
+    const eighteenForty = 18 * 60 + 40;
+    expect(journeyCapMs(eighteenForty)).toBe(
+      eighteenForty * 1_000 + JOURNEY_CAP_MARGIN_MS,
+    );
+    expect(journeyCapMs(eighteenForty)).toBeGreaterThan(MAX_JOURNEY_MS);
+  });
+
+  it("gives the margin real headroom above the stall detectors", () => {
+    expect(JOURNEY_CAP_MARGIN_MS).toBeGreaterThan(STALLED_THRESHOLD_MS);
+  });
+});
+
+describe("QUARANTINED_RECORDING_IDS", () => {
+  it("covers all nine 17th St + Folsom St uploads", () => {
+    // 5 × 17th St + 4 × Folsom St — mirrors the canonical quarantine
+    // in src/app/dream/_shared/welcomeHome.ts (imported, not copied).
+    expect(QUARANTINED_RECORDING_IDS.size).toBe(9);
+    // The 18:40 "17th St 64" the audit flagged:
+    expect(
+      QUARANTINED_RECORDING_IDS.has("6a009894-d341-4f84-8a2e-b45a59b68b82"),
+    ).toBe(true);
+    // The contaminated "Folsom St 5":
+    expect(
+      QUARANTINED_RECORDING_IDS.has("808f253c-bca9-42e6-b0f7-5762b8d92a92"),
+    ).toBe(true);
+  });
+
+  it("does not quarantine verified catalog tracks", () => {
+    // "Snowflake" (verified Snowflake EP) must stay eligible.
+    expect(
+      QUARANTINED_RECORDING_IDS.has("734a09ce-84df-4f1f-93c1-11b08d303681"),
+    ).toBe(false);
+    // "Welcome Home" (verified album) too.
+    expect(
+      QUARANTINED_RECORDING_IDS.has("8dafed88-4761-4dd3-a0f4-93f310441093"),
+    ).toBe(false);
   });
 });
 

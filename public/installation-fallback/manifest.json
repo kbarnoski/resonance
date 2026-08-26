@@ -1,8 +1,6 @@
 {
-  "_comment": "Pre-baked fallback image library. When fal.ai is unreachable for 3+ consecutive frames, the kiosk picks a random image from the journey's bucket below so the visualizer stays alive instead of freezing on the last frame. Drop pre-rendered JPGs/PNGs into /public/installation-fallback/<journey-id>/ then list their public paths under the matching journey-id key. Empty bucket = no fallback for that journey (kiosk will freeze on last frame as before).",
-  "ascension": [],
-  "inferno": [],
+  "_comment": "Pre-baked fallback image library — NOT POPULATED (2026-08-25). For the offline Tramokyo kiosk this is fine: the pre-harvested pack imagery (public/tramokyo-pack/images/journeys) is the guaranteed backbone and this library never triggers. It only matters for an ONLINE /installation kiosk when fal.ai is unreachable for 3+ consecutive frames — then the kiosk picks a random image from the journey's bucket below instead of freezing on the last frame. To populate: drop pre-rendered JPGs/PNGs into /public/installation-fallback/<journey-id>/ and list their public paths under the matching key (~30 per journey reads naturally). Keys are journey ids as seen by the visualizer: built-ins by slug (current Snowflake program: first-snow, inferno, ghost), Welcome Home path journeys by their DB row uuid. Empty bucket = no fallback for that journey (freeze on last frame, default behavior).",
   "first-snow": [],
-  "abyssal-dive": [],
+  "inferno": [],
   "ghost": []
 }
