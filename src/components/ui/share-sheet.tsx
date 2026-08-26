@@ -165,7 +165,7 @@ export function ShareSheet({ open, onClose, url, title, text }: ShareSheetProps)
               type="button"
               aria-label="Close share sheet"
               onClick={onClose}
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/30 hover:text-white/60 transition-colors"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/45 hover:text-white/60 transition-colors duration-instant"
             >
               <X className="h-4 w-4" />
             </button>
@@ -179,7 +179,7 @@ export function ShareSheet({ open, onClose, url, title, text }: ShareSheetProps)
               border: "1px solid rgba(255,255,255,0.06)",
               fontSize: "0.75rem",
               fontFamily: "var(--font-geist-mono)",
-              color: "rgba(255,255,255,0.35)",
+              color: "rgba(255,255,255,0.45)",
             }}
           >
             {url}
@@ -196,7 +196,7 @@ export function ShareSheet({ open, onClose, url, title, text }: ShareSheetProps)
                 <button
                   key={option.id}
                   onClick={() => handleOption(option.id)}
-                  className="flex flex-col items-center gap-2 py-3 px-2 rounded-xl text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
+                  className="flex flex-col items-center gap-2 py-3 px-2 rounded-xl text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors duration-instant"
                   style={{ border: "1px solid rgba(255,255,255,0.04)" }}
                 >
                   <div
@@ -218,7 +218,7 @@ export function ShareSheet({ open, onClose, url, title, text }: ShareSheetProps)
                   </div>
                   <span
                     style={{
-                      fontSize: "0.65rem",
+                      fontSize: "0.68rem",
                       fontFamily: "var(--font-geist-mono)",
                       letterSpacing: "0.02em",
                     }}

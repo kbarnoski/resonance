@@ -24,6 +24,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─── Design tokens: motion + ink + void ───
+   Motion ladder ("never abrupt" made enforceable):
+     --duration-instant  150ms  — hover/focus color + opacity feedback (the floor)
+     --duration-fast     250ms  — small reveals, toggles, chips
+     --duration-surface  400ms  — panels, overlays, scrims, dialogs
+     --duration-scene   2500ms  — scene-level art crossfades (matches shader fades)
+   Easing:
+     --ease-enter — the app's proven entrance curve (decelerating)
+     --ease-exit  — matching exit curve (accelerating)
+   Ink ladder (white-alpha text on dark surfaces):
+     --ink 85% / --ink-mute 60% / --ink-faint 45% (the readable-text floor;
+     alphas below 45% are reserved for borders, hairlines and decorative marks)
+   Two blacks:
+     --void       pure #000 — shader/projection/art surfaces
+                  (The Room, journey playback, path hero, installation, dream)
+     --background violet-black — chrome (studio, auth, operator surfaces) */
+@theme {
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --color-ink: rgb(255 255 255 / 0.85);
+  --color-ink-mute: rgb(255 255 255 / 0.6);
+  --color-ink-faint: rgb(255 255 255 / 0.45);
+  --color-void: #000000;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -68,6 +93,11 @@
 }
 
 :root {
+  --duration-instant: 150ms;
+  --duration-fast: 250ms;
+  --duration-surface: 400ms;
+  --duration-scene: 2500ms;
+  --void: #000000;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -246,6 +276,44 @@ a[href] {
   100% { opacity: 0; }
 }
 
+/* Motion-token duration utilities — Tailwind v4 has no --duration-* theme
+   namespace, so these are explicit utilities over the :root vars. They
+   compose with transition-* and ease-* classes like any duration-N class,
+   and respect the prefers-reduced-motion override below. */
+@utility duration-instant {
+  transition-duration: var(--duration-instant);
+}
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-surface {
+  transition-duration: var(--duration-surface);
+}
+@utility duration-scene {
+  transition-duration: var(--duration-scene);
+}
+
+/* Quiet thin scrollbar for glass panels (library, shader picker, long lists).
+   Standard properties for Firefox/Chrome 121+, WebKit rules for Safari. */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.15) transparent;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.15);
+    border-radius: 9999px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(255 255 255 / 0.25);
+  }
+}
+
 @layer base {
   html {
     overflow-x: hidden;
@@ -255,6 +323,35 @@ a[href] {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Text selection in the brand violet — readable on both blacks. */
+  ::selection {
+    background-color: oklch(0.65 0.25 270 / 0.28);
+    color: oklch(0.985 0 0);
+  }
+}
+
+/* ─── Reduced motion ───
+   Collapse the motion-token ladder and make CSS keyframe choreography
+   (poetry, journey intro/outro fades, pulses) effectively instant while
+   keeping it functional — animations still run and fire their events, so
+   JS sequencing (intro timers, overlay lifecycles) is unaffected.
+   JS/rAF-driven shader crossfades are deliberately NOT gated here: they
+   are the art layer, not interface motion. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0.01ms;
+    --duration-fast: 0.01ms;
+    --duration-surface: 0.01ms;
+    --duration-scene: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

@@ -54,7 +54,7 @@ export function ChordTimeline({
       <div className="relative h-10 rounded-lg border bg-card overflow-hidden">
         {/* Playhead */}
         <div
-          className="absolute top-0 bottom-0 w-0.5 bg-primary z-10 transition-all duration-100"
+          className="absolute top-0 bottom-0 w-0.5 bg-primary z-10 transition-[left] duration-100"
           style={{ left: `${(currentTime / duration) * 100}%` }}
         />
 

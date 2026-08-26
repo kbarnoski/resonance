@@ -140,7 +140,7 @@ export function AdminPanel({ visible, onClose, currentShader, dualShader, tertia
         pointerEvents: visible ? "auto" : "none",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateX(0)" : "translateX(-24px)",
-        transition: "opacity 200ms ease, transform 200ms ease",
+        transition: "opacity var(--duration-fast) ease, transform var(--duration-fast) ease",
       }}
     >
       <div
@@ -259,17 +259,17 @@ export function AdminPanel({ visible, onClose, currentShader, dualShader, tertia
               onClick={() => setActiveTab(tab)}
               style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.55rem",
+                fontSize: "0.68rem",
                 fontWeight: 600,
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
-                color: activeTab === tab ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.30)",
+                color: activeTab === tab ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.45)",
                 background: activeTab === tab ? "rgba(255,255,255,0.10)" : "none",
                 border: `1px solid ${activeTab === tab ? "rgba(255,255,255,0.15)" : "transparent"}`,
                 borderRadius: 5,
                 padding: "4px 8px",
                 cursor: "pointer",
-                transition: "all 150ms ease",
+                transition: "color var(--duration-instant) ease, background-color var(--duration-instant) ease, border-color var(--duration-instant) ease",
               }}
             >
               {label}
@@ -457,7 +457,7 @@ const ShaderRow = forwardRef<HTMLDivElement, {
       opacity: status === "deleted" ? 0.45 : status === "blocked" ? 0.6 : 1,
       background: bgColor,
       borderRadius: isHighlighted ? 6 : undefined,
-      transition: "background 200ms ease",
+      transition: "background-color var(--duration-fast) ease",
     }}>
       {activeLayer && (
         <span style={{
@@ -485,7 +485,7 @@ const ShaderRow = forwardRef<HTMLDivElement, {
       {isNew && (
         <span style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.45rem",
+          fontSize: "0.68rem",
           fontWeight: 700,
           letterSpacing: "0.04em",
           textTransform: "uppercase",
@@ -502,7 +502,7 @@ const ShaderRow = forwardRef<HTMLDivElement, {
       {status && (
         <span style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.45rem",
+          fontSize: "0.68rem",
           fontWeight: 600,
           letterSpacing: "0.04em",
           textTransform: "uppercase",
@@ -541,7 +541,7 @@ function FavButton({ active, onClick }: { active: boolean; onClick: () => void }
         cursor: "pointer",
         padding: 0,
         flexShrink: 0,
-        transition: "all 150ms ease",
+        transition: "background-color var(--duration-instant) ease, border-color var(--duration-instant) ease",
       }}
     >
       <svg width={11} height={11} viewBox="0 0 24 24" fill={active ? "rgba(251, 191, 36, 0.9)" : "none"} stroke={active ? "rgba(251, 191, 36, 0.9)" : "rgba(255,255,255,0.25)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -569,7 +569,7 @@ function SmallButton({ onClick, color, children }: {
       onClick={onClick}
       style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.6rem",
+        fontSize: "0.68rem",
         fontWeight: 600,
         letterSpacing: "0.04em",
         textTransform: "uppercase",
@@ -591,8 +591,8 @@ function EmptyText({ children }: { children: React.ReactNode }) {
   return (
     <span style={{
       fontFamily: "var(--font-geist-mono)",
-      fontSize: "0.65rem",
-      color: "rgba(255,255,255,0.25)",
+      fontSize: "0.68rem",
+      color: "rgba(255,255,255,0.45)",
       fontStyle: "italic",
       paddingLeft: 4,
     }}>
@@ -631,9 +631,9 @@ const closeBtnStyle: React.CSSProperties = {
 
 const categoryTagStyle: React.CSSProperties = {
   fontFamily: "var(--font-geist-mono)",
-  fontSize: "0.55rem",
+  fontSize: "0.68rem",
   fontWeight: 500,
-  color: "rgba(255,255,255,0.20)",
+  color: "rgba(255,255,255,0.45)",
   letterSpacing: "0.08em",
   textTransform: "uppercase",
   paddingLeft: 4,
@@ -653,9 +653,9 @@ const shaderLabelStyle: React.CSSProperties = {
 
 const usageStyle: React.CSSProperties = {
   fontFamily: "var(--font-geist-mono)",
-  fontSize: "0.55rem",
+  fontSize: "0.68rem",
   fontWeight: 500,
-  color: "rgba(255,255,255,0.20)",
+  color: "rgba(255,255,255,0.45)",
   flexShrink: 0,
 };
 

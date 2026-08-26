@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Library, Disc3 } from "lucide-react";
+import { MonoLabel } from "@/components/ui/typography";
 
 const PREF_KEY = "resonance-last-experience";
 
@@ -30,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-black px-6">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
       <div className="mb-12 flex items-center gap-3">
         <svg
           viewBox="0 0 24 24"
@@ -55,9 +56,9 @@ export default function Home() {
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
         <button
           onClick={() => handleChoose("studio")}
-          className="group flex w-72 flex-col items-start rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all hover:border-white/20 hover:bg-white/[0.06]"
+          className="group flex w-72 flex-col items-start rounded-xl border border-white/10 bg-white/[0.03] p-6 text-left transition-colors duration-instant hover:border-white/20 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
-          <Library className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
+          <Library className="mb-4 h-5 w-5 text-white/50 transition-colors duration-instant group-hover:text-white/70" />
           <h2
             className="mb-1.5 text-lg font-medium text-white/90"
             style={{ fontFamily: "var(--font-geist-sans)" }}
@@ -74,9 +75,9 @@ export default function Home() {
 
         <button
           onClick={() => handleChoose("room")}
-          className="group flex w-72 flex-col items-start rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all hover:border-white/20 hover:bg-white/[0.06]"
+          className="group flex w-72 flex-col items-start rounded-xl border border-white/10 bg-white/[0.03] p-6 text-left transition-colors duration-instant hover:border-white/20 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
-          <Disc3 className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
+          <Disc3 className="mb-4 h-5 w-5 text-white/50 transition-colors duration-instant group-hover:text-white/70" />
           <h2
             className="mb-1.5 text-lg font-medium text-white/90"
             style={{ fontFamily: "var(--font-geist-sans)" }}
@@ -92,12 +93,9 @@ export default function Home() {
         </button>
       </div>
 
-      <p
-        className="mt-16 text-xs text-white/20"
-        style={{ fontFamily: "var(--font-geist-mono)" }}
-      >
+      <MonoLabel as="p" className="mt-16 text-xs text-ink-faint">
         Resonance — a personal audio workspace
-      </p>
+      </MonoLabel>
     </div>
   );
 }

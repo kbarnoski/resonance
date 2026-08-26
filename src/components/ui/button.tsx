@@ -5,7 +5,7 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,background-color,border-color,opacity,box-shadow] duration-instant ease-enter disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -19,6 +19,14 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        /* Glass dialect — the canonical white-alpha-on-black language for
+           art-adjacent chrome (The Room bar, journey selector, remote,
+           installation/operator surfaces). Always sits on a dark surface. */
+        glass:
+          "rounded-lg border border-white/[0.08] bg-white/[0.04] text-ink-mute hover:bg-white/[0.08] hover:text-ink focus-visible:border-white/20",
+        /* Glass icon button — same dialect, guaranteed 44px touch target. */
+        glassIcon:
+          "rounded-lg border border-white/[0.08] bg-white/[0.04] text-ink-mute hover:bg-white/[0.08] hover:text-ink focus-visible:border-white/20 min-h-11 min-w-11 p-0",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

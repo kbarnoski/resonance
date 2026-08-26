@@ -122,7 +122,7 @@ function FunctionalChordVocabulary({
                   >
                     {chord.name}
                     {chord.roman && (
-                      <sup className="ml-1 text-[10px] opacity-70">
+                      <sup className="ml-1 text-[11px] opacity-70">
                         {chord.roman}
                       </sup>
                     )}

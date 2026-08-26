@@ -410,7 +410,7 @@ function ThumbDownIcon({ size = 16, color = "rgba(255,255,255,0.5)" }: { size?: 
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
       stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ transition: "stroke 150ms ease" }}>
+      style={{ transition: "stroke var(--duration-instant) ease" }}>
       <path d="M17 14V2" />
       <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
     </svg>
@@ -421,7 +421,7 @@ function ThumbUpIcon({ size = 16, color = "rgba(255,255,255,0.5)" }: { size?: nu
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
       stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ transition: "stroke 150ms ease", transform: "scaleY(-1)" }}>
+      style={{ transition: "stroke var(--duration-instant) ease", transform: "scaleY(-1)" }}>
       <path d="M17 14V2" />
       <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
     </svg>
@@ -455,7 +455,7 @@ function RatingRow({
           border: `1px solid ${flashState === "down" ? "rgba(239, 68, 68, 0.5)" : "rgba(255,255,255,0.10)"}`,
           borderRadius: 6, cursor: "pointer", padding: 0,
           transform: flashState === "down" ? "scale(1.12)" : "scale(1)",
-          transition: "all 150ms ease",
+          transition: "background-color var(--duration-instant) ease, border-color var(--duration-instant) ease, transform var(--duration-instant) ease",
         }}
         title={`Dislike: ${label}`}
       >
@@ -493,7 +493,7 @@ function RatingRow({
           border: `1px solid ${flashState === "up" ? "rgba(74, 222, 128, 0.5)" : "rgba(255,255,255,0.10)"}`,
           borderRadius: 6, cursor: "pointer", padding: 0,
           transform: flashState === "up" ? "scale(1.12)" : "scale(1)",
-          transition: "all 150ms ease",
+          transition: "background-color var(--duration-instant) ease, border-color var(--duration-instant) ease, transform var(--duration-instant) ease",
         }}
         title={`Love: ${label}`}
       >
@@ -647,7 +647,7 @@ export function JourneyFeedback({ visible, shaderMode, dualShaderMode, tertiaryS
               {isolatePrimary && (
                 <span style={{
                   fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.55rem",
+                  fontSize: "0.68rem",
                   fontWeight: 600,
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
@@ -683,7 +683,7 @@ export function JourneyFeedback({ visible, shaderMode, dualShaderMode, tertiaryS
               {hideImagery && (
                 <span style={{
                   fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.55rem",
+                  fontSize: "0.68rem",
                   fontWeight: 600,
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
@@ -707,7 +707,7 @@ export function JourneyFeedback({ visible, shaderMode, dualShaderMode, tertiaryS
           <div
             style={{
               fontFamily: "var(--font-geist-mono)",
-              fontSize: "0.65rem",
+              fontSize: "0.68rem",
               fontWeight: 500,
               color: "rgba(255, 255, 255, 0.6)",
               letterSpacing: "0.03em",
@@ -740,13 +740,13 @@ export function JourneyFeedback({ visible, shaderMode, dualShaderMode, tertiaryS
                 key={evt.id}
                 style={{
                   fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.65rem",
+                  fontSize: "0.68rem",
                   fontWeight: 500,
                   color: `rgba(239, 68, 68, ${0.7 * opacity})`,
                   letterSpacing: "0.03em",
                   textShadow: `0 1px 4px rgba(0, 0, 0, ${0.8 * opacity})`,
                   whiteSpace: "nowrap",
-                  transition: "opacity 300ms ease",
+                  transition: "opacity var(--duration-fast) ease",
                 }}
               >
                 {evt.label}
@@ -781,12 +781,12 @@ function ActiveShaderRow({
       <span
         style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.5rem",
+          fontSize: "0.68rem",
           fontWeight: 600,
           letterSpacing: "0.04em",
           textTransform: "uppercase",
-          color: "rgba(255, 255, 255, 0.25)",
-          width: 50,
+          color: "rgba(255, 255, 255, 0.45)",
+          width: 60,
           flexShrink: 0,
         }}
       >
@@ -827,9 +827,9 @@ function SectionLabel({ text, issueCount }: { text: string; issueCount?: number 
       <span
         style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.6rem",
+          fontSize: "0.68rem",
           fontWeight: 600,
-          color: "rgba(255, 255, 255, 0.30)",
+          color: "rgba(255, 255, 255, 0.45)",
           letterSpacing: "0.12em",
           textTransform: "uppercase",
         }}
@@ -840,7 +840,7 @@ function SectionLabel({ text, issueCount }: { text: string; issueCount?: number 
         <span
           style={{
             fontFamily: "var(--font-geist-mono)",
-            fontSize: "0.6rem",
+            fontSize: "0.68rem",
             fontWeight: 600,
             color: "rgba(239, 68, 68, 0.85)",
             letterSpacing: "0.02em",
@@ -860,7 +860,7 @@ function MiniAction({ label, color, onClick }: { label: string; color: string; o
       onClick={onClick}
       style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.55rem",
+        fontSize: "0.68rem",
         fontWeight: 600,
         letterSpacing: "0.04em",
         textTransform: "uppercase",
@@ -870,7 +870,7 @@ function MiniAction({ label, color, onClick }: { label: string; color: string; o
         cursor: "pointer",
         padding: "1px 0",
         opacity: 0.7,
-        transition: "opacity 150ms ease",
+        transition: "opacity var(--duration-instant) ease",
       }}
       onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
       onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.7"; }}

@@ -190,7 +190,7 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
           role="button"
           tabIndex={-1}
           aria-label="Close library"
-          className="fixed inset-0 bg-black/30 transition-opacity duration-300"
+          className="fixed inset-0 bg-black/30 transition-opacity duration-fast"
           style={{ zIndex: 59 }}
           onClick={onClose}
           onKeyDown={(e) => {
@@ -204,7 +204,7 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
 
       {/* Panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-80 flex flex-col transition-transform duration-fast ease-out ${
           open ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
         style={{
@@ -232,9 +232,9 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
             {filtered.length > 0 && (
               <button
                 onClick={handlePlayAll}
-                className="text-white/40 hover:text-white/70 transition-colors"
+                className="text-white/45 hover:text-white/70 transition-colors duration-instant"
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.68rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.05em",
                 }}
@@ -247,7 +247,7 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
             type="button"
             aria-label="Close library"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-white/30 hover:text-white/60 transition-colors"
+            className="p-1.5 rounded-lg text-white/45 hover:text-white/60 transition-colors duration-instant"
           >
             <X className="h-4 w-4" />
           </button>
@@ -266,7 +266,7 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg pl-9 pr-3 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-white/20 focus:bg-white/8 transition-all"
+              className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg pl-9 pr-3 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-white/20 focus:bg-white/8 transition-colors"
               style={{ fontFamily: "var(--font-geist-sans)" }}
             />
           </div>
@@ -278,9 +278,9 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
           {featuredAlbums && featuredAlbums.length > 0 && (
             <div className="mb-4">
               <p
-                className="text-white/30 px-3 mb-2"
+                className="text-white/45 px-3 mb-2"
                 style={{
-                  fontSize: "0.6rem",
+                  fontSize: "0.68rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
@@ -307,16 +307,16 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
                         {album.name}
                       </p>
                       <p
-                        className="text-white/25 truncate"
-                        style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}
+                        className="text-white/45 truncate"
+                        style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
                       >
                         {album.artist} · {album.tracks.length} tracks
                       </p>
                     </div>
                     <button
                       onClick={(e) => { e.stopPropagation(); handlePlayAlbum(album); }}
-                      className="text-white/30 hover:text-white/60 transition-colors shrink-0"
-                      style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)" }}
+                      className="text-white/45 hover:text-white/60 transition-colors duration-instant shrink-0"
+                      style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
                     >
                       Play
                     </button>
@@ -339,8 +339,8 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
                           </p>
                           {track.duration && (
                             <span
-                              className="text-white/25"
-                              style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}
+                              className="text-white/45"
+                              style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
                             >
                               {formatDuration(track.duration)}
                             </span>
@@ -357,13 +357,13 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
           {loading && (
             <div className="flex flex-col items-center justify-center py-16 gap-2">
               <div className="w-5 h-5 border-2 border-white/10 border-t-white/40 rounded-full animate-spin" />
-              <span className="text-white/20 text-xs" style={{ fontFamily: "var(--font-geist-mono)" }}>Loading</span>
+              <span className="text-white/45 text-xs" style={{ fontFamily: "var(--font-geist-mono)" }}>Loading</span>
             </div>
           )}
 
           {!loading && filtered.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-white/20 text-sm">
+              <p className="text-white/45 text-sm">
                 {search ? "No matches" : "No recordings yet"}
               </p>
             </div>
@@ -377,7 +377,7 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
               <button
                 key={rec.id}
                 onClick={() => handleSelect(rec, idx)}
-                className={`w-full text-left px-3 py-3 rounded-lg transition-all duration-150 group ${
+                className={`w-full text-left px-3 py-3 rounded-lg transition-colors duration-instant group ${
                   isPlaying
                     ? "bg-white/10"
                     : "hover:bg-white/5"
@@ -405,8 +405,8 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
                       {rec.title || "Untitled"}
                     </p>
                     <div
-                      className="flex items-center gap-1.5 mt-1 text-white/30"
-                      style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}
+                      className="flex items-center gap-1.5 mt-1 text-white/45"
+                      style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
                     >
                       <span>{formatDuration(rec.duration)}</span>
                       {analysis?.key_signature && (

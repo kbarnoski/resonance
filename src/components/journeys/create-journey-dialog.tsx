@@ -28,7 +28,7 @@ export function CreateJourneyDialog({
         role="button"
         tabIndex={-1}
         aria-label="Close dialog"
-        className="fixed inset-0 z-[90] transition-opacity duration-300"
+        className="fixed inset-0 z-[90] transition-opacity duration-fast"
         style={{
           backdropFilter: "blur(32px) saturate(1.2)",
           WebkitBackdropFilter: "blur(32px) saturate(1.2)",
@@ -59,7 +59,7 @@ export function CreateJourneyDialog({
                 Create a Journey
               </h2>
               <p
-                className="text-white/30 mt-1"
+                className="text-white/45 mt-1"
                 style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
               >
                 Describe a story, memory, or intention
@@ -69,7 +69,7 @@ export function CreateJourneyDialog({
               type="button"
               aria-label="Close dialog"
               onClick={handleClose}
-              className="p-2 rounded-lg text-white/30 hover:text-white/60 transition-colors"
+              className="p-2 rounded-lg text-white/45 hover:text-white/60 transition-colors duration-instant"
             >
               <X className="h-5 w-5" />
             </button>

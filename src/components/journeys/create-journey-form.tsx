@@ -426,7 +426,7 @@ export function CreateJourneyForm({
         <div className="mb-4">
           <label
             className="block text-white/40 mb-1.5"
-            style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+            style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
           >
             Name
           </label>
@@ -449,7 +449,7 @@ export function CreateJourneyForm({
         <div className="mb-4">
           <label
             className="block text-white/40 mb-1.5"
-            style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+            style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
           >
             Subtitle
           </label>
@@ -472,7 +472,7 @@ export function CreateJourneyForm({
         <div className="mb-5">
           <label
             className="block text-white/40 mb-1.5"
-            style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+            style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
           >
             Description
           </label>
@@ -496,7 +496,7 @@ export function CreateJourneyForm({
         <div className="mb-5">
           <div
             className="text-white/40 mb-2"
-            style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+            style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
           >
             Phases
           </div>
@@ -529,7 +529,7 @@ export function CreateJourneyForm({
                       {idx + 1}. {phase.id}
                     </span>
                     <span
-                      className="text-white/30 truncate"
+                      className="text-white/45 truncate"
                       style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-sans)" }}
                     >
                       · {phase.aiPrompt}
@@ -540,7 +540,7 @@ export function CreateJourneyForm({
                       <div>
                         <label
                           className="block text-white/40 mb-1"
-                          style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+                          style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
                         >
                           Visual prompt
                         </label>
@@ -562,7 +562,7 @@ export function CreateJourneyForm({
                       <div>
                         <label
                           className="block text-white/40 mb-1"
-                          style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+                          style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
                         >
                           Mood
                         </label>
@@ -586,7 +586,7 @@ export function CreateJourneyForm({
                       <div>
                         <label
                           className="block text-white/40 mb-1"
-                          style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+                          style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
                         >
                           Guidance phrases (one per line)
                         </label>
@@ -651,7 +651,7 @@ export function CreateJourneyForm({
           type="button"
           onClick={handleSaveDraft}
           disabled={saving || generating}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white/90 hover:text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white/90 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           style={{
             fontSize: "0.85rem",
             fontFamily: "var(--font-geist-mono)",
@@ -728,7 +728,7 @@ export function CreateJourneyForm({
           <button
             type="button"
             onClick={handleCancel}
-            className="w-full mt-1 px-4 py-2 text-white/25 hover:text-white/40 transition-colors"
+            className="w-full mt-1 px-4 py-2 text-white/45 hover:text-white/60 transition-colors"
             style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
           >
             {cancelLabel}
@@ -796,7 +796,7 @@ export function CreateJourneyForm({
             lineHeight: 1.6,
           }}
         />
-        <p className="mt-2 text-white/30" style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>
+        <p className="mt-2 text-white/45" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
           A sentence or two — we&apos;ll draft the phases, palette, and visual prompts for you to tune.
         </p>
       </div>
@@ -816,7 +816,7 @@ export function CreateJourneyForm({
               type="button"
               onClick={() => !generating && setSelectedRecordingId(null)}
               disabled={generating}
-              className={`w-full rounded-lg px-3 py-2 text-left transition-all ${
+              className={`w-full rounded-lg px-3 py-2 text-left transition-colors ${
                 selectedRecordingId === null ? "text-white/90" : "text-white/40 hover:text-white/60 hover:bg-white/3"
               }`}
               style={{
@@ -835,7 +835,7 @@ export function CreateJourneyForm({
                 type="button"
                 onClick={() => !generating && setSelectedRecordingId(rec.id)}
                 disabled={generating}
-                className={`w-full rounded-lg px-3 py-2 text-left transition-all truncate ${
+                className={`w-full rounded-lg px-3 py-2 text-left transition-colors truncate ${
                   selectedRecordingId === rec.id ? "text-white/90" : "text-white/40 hover:text-white/60 hover:bg-white/3"
                 }`}
                 style={{
@@ -919,7 +919,7 @@ export function CreateJourneyForm({
                 border: `1px solid ${audioArtist.trim() ? "rgba(255,255,255,0.08)" : `${accent}40`}`,
               }}
             />
-            <p className="text-white/40" style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>
+            <p className="text-white/40" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
               {audioFile.name} · {(audioFile.size / 1024 / 1024).toFixed(1)} MB — uploaded with the journey
             </p>
           </div>
@@ -953,7 +953,7 @@ export function CreateJourneyForm({
           style={{ fontFamily: "var(--font-geist-mono)" }}
         />
         {localImageFiles.length > 0 && (
-          <p className="mt-2 text-white/40" style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>
+          <p className="mt-2 text-white/40" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
             {localImageFiles.length} photo{localImageFiles.length === 1 ? "" : "s"} selected — playback will cycle these instead of generating AI imagery
           </p>
         )}
@@ -988,8 +988,8 @@ export function CreateJourneyForm({
               React to music
             </span>
             <span
-              className="block text-white/30"
-              style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}
+              className="block text-white/45"
+              style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}
             >
               Shaders respond to audio frequencies
             </span>
@@ -1002,7 +1002,7 @@ export function CreateJourneyForm({
         type="button"
         onClick={handleGenerateDraft}
         disabled={generating || !storyText.trim()}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white/80 hover:text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white/80 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         style={{
           fontSize: "0.85rem",
           fontFamily: "var(--font-geist-mono)",
@@ -1027,7 +1027,7 @@ export function CreateJourneyForm({
         <button
           type="button"
           onClick={handleCancel}
-          className="w-full mt-2 px-4 py-2 text-white/30 hover:text-white/50 transition-colors"
+          className="w-full mt-2 px-4 py-2 text-white/45 hover:text-white/60 transition-colors"
           style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
         >
           {generating ? "Cancel" : cancelLabel}

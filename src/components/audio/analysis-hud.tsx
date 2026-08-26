@@ -141,7 +141,7 @@ export function AnalysisHUD({ analysis, duration, compact, onSectionChange }: An
           </span>
         )}
         {keySignature && (
-          <span style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }} className="text-white/30">
+          <span style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }} className="text-white/45">
             {keySignature}
           </span>
         )}
@@ -195,7 +195,7 @@ export function AnalysisHUD({ analysis, duration, compact, onSectionChange }: An
 
         {/* Key / Tempo / Time Sig */}
         <div
-          className="flex items-center gap-2 text-white/35 mb-3"
+          className="flex items-center gap-2 text-white/45 mb-3"
           style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)" }}
         >
           {keySignature && <span>{keySignature}</span>}
@@ -208,7 +208,7 @@ export function AnalysisHUD({ analysis, duration, compact, onSectionChange }: An
         {/* Section label */}
         {currentSection && (
           <div
-            className="text-white/25 italic transition-opacity duration-700 mb-3"
+            className="text-white/45 italic transition-opacity duration-700 mb-3"
             style={{
               fontSize: "0.8rem",
               fontFamily: "var(--font-geist-sans)",

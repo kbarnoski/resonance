@@ -10,6 +10,7 @@ const Visualizer3D = dynamic(() => import("@/components/audio/visualizer-3d").th
 });
 import { PoetryOverlay } from "@/components/audio/poetry-overlay";
 import { MODES_3D } from "@/lib/shaders";
+import { MonoLabel } from "@/components/ui/typography";
 
 interface RoomConfig {
   shaderMode: string;
@@ -72,10 +73,10 @@ export default function SharedRoomPage({
 
   if (!config) {
     return (
-      <div className="h-dvh w-screen bg-black flex items-center justify-center">
-        <p className="text-white/30 text-sm" style={{ fontFamily: "var(--font-geist-mono)" }}>
+      <div className="h-dvh w-screen bg-void flex items-center justify-center">
+        <MonoLabel as="p" className="text-sm tracking-normal text-ink-faint">
           Invalid room link
-        </p>
+        </MonoLabel>
       </div>
     );
   }
@@ -87,7 +88,7 @@ export default function SharedRoomPage({
   ) as VisualizerMode;
 
   return (
-    <div className="h-dvh w-screen overflow-hidden bg-black relative">
+    <div className="h-dvh w-screen overflow-hidden bg-void relative">
       {analyser && dataArray && (
         <>
           {MODES_3D.has(shaderMode) ? (

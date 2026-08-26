@@ -89,7 +89,7 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
               <svg
                 width={10} height={10} viewBox="0 0 24 24" fill="none"
                 stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round"
-                style={{ transform: neverUsedExpanded ? "rotate(180deg)" : "rotate(0)", transition: "transform 150ms ease" }}
+                style={{ transform: neverUsedExpanded ? "rotate(180deg)" : "rotate(0)", transition: "transform var(--duration-instant) ease" }}
               >
                 <path d="M6 9l6 6 6-6" />
               </svg>
@@ -103,8 +103,8 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
                     </span>
                     <div style={{
                       fontFamily: "var(--font-geist-mono)",
-                      fontSize: "0.6rem",
-                      color: "rgba(255,255,255,0.35)",
+                      fontSize: "0.68rem",
+                      color: "rgba(255,255,255,0.45)",
                       lineHeight: 1.6,
                       paddingLeft: 4,
                       marginTop: 2,
@@ -128,7 +128,7 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.6rem",
+                fontSize: "0.68rem",
                 fontWeight: 500,
                 color: "rgba(255,255,255,0.5)",
                 letterSpacing: "0.02em",
@@ -137,8 +137,8 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
               </span>
               <span style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.55rem",
-                color: "rgba(255,255,255,0.35)",
+                fontSize: "0.68rem",
+                color: "rgba(255,255,255,0.45)",
               }}>
                 {cat.coveragePct}% ({cat.used}/{cat.active})
               </span>
@@ -154,7 +154,7 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
                 width: `${cat.coveragePct}%`,
                 borderRadius: 2,
                 background: getCategoryColor(cat.category),
-                transition: "width 300ms ease",
+                transition: "width var(--duration-fast) ease",
               }} />
             </div>
           </div>
@@ -211,7 +211,7 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
             <div key={shader.mode} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 22 }}>
               <span style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.6rem",
+                fontSize: "0.68rem",
                 fontWeight: 500,
                 color: "rgba(255,255,255,0.5)",
                 overflow: "hidden",
@@ -223,7 +223,7 @@ export function ShaderStatsPanel({ stats, blocked, deleted }: ShaderStatsPanelPr
               </span>
               <span style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.6rem",
+                fontSize: "0.68rem",
                 fontWeight: 600,
                 color: shader.daysSince > 7 ? "rgba(239, 68, 68, 0.7)" : "rgba(255,255,255,0.4)",
                 flexShrink: 0,
@@ -246,9 +246,9 @@ function HeroNumber({ label, value, detail }: { label: string; value: string; de
     <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
       <span style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.55rem",
+        fontSize: "0.68rem",
         fontWeight: 600,
-        color: "rgba(255,255,255,0.30)",
+        color: "rgba(255,255,255,0.45)",
         letterSpacing: "0.12em",
         textTransform: "uppercase",
       }}>
@@ -266,9 +266,9 @@ function HeroNumber({ label, value, detail }: { label: string; value: string; de
         </span>
         <span style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.6rem",
+          fontSize: "0.68rem",
           fontWeight: 500,
-          color: "rgba(255,255,255,0.30)",
+          color: "rgba(255,255,255,0.45)",
         }}>
           {detail}
         </span>
@@ -289,10 +289,10 @@ function UsageRow({ rank, label, count, maxCount, color }: {
     <div style={{ display: "flex", alignItems: "center", gap: 6, minHeight: 20 }}>
       <span style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.5rem",
+        fontSize: "0.68rem",
         fontWeight: 500,
-        color: "rgba(255,255,255,0.25)",
-        width: 14,
+        color: "rgba(255,255,255,0.45)",
+        width: 20,
         textAlign: "right",
         flexShrink: 0,
       }}>
@@ -300,7 +300,7 @@ function UsageRow({ rank, label, count, maxCount, color }: {
       </span>
       <span style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.6rem",
+        fontSize: "0.68rem",
         fontWeight: 500,
         color: "rgba(255,255,255,0.5)",
         minWidth: 80,
@@ -314,9 +314,9 @@ function UsageRow({ rank, label, count, maxCount, color }: {
       </span>
       <span style={{
         fontFamily: "var(--font-geist-mono)",
-        fontSize: "0.5rem",
+        fontSize: "0.68rem",
         fontWeight: 600,
-        color: "rgba(255,255,255,0.35)",
+        color: "rgba(255,255,255,0.45)",
         width: 28,
         textAlign: "right",
         flexShrink: 0,
@@ -349,18 +349,18 @@ function Divider() {
 
 const sectionLabelStyle: React.CSSProperties = {
   fontFamily: "var(--font-geist-mono)",
-  fontSize: "0.6rem",
+  fontSize: "0.68rem",
   fontWeight: 600,
-  color: "rgba(255, 255, 255, 0.30)",
+  color: "rgba(255, 255, 255, 0.45)",
   letterSpacing: "0.12em",
   textTransform: "uppercase",
 };
 
 const categoryTagStyle: React.CSSProperties = {
   fontFamily: "var(--font-geist-mono)",
-  fontSize: "0.55rem",
+  fontSize: "0.68rem",
   fontWeight: 500,
-  color: "rgba(255,255,255,0.20)",
+  color: "rgba(255,255,255,0.45)",
   letterSpacing: "0.08em",
   textTransform: "uppercase",
 };
