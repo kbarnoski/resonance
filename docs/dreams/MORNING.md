@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-27T~01:00Z
 
+> **Jury verdict today**: The lab is now reading this jury and answering it point-for-point — `roomtone` and `loomvoice` cash yesterday's exact provocations (convolution, whole-take polyphony, off-shader, off-camera, fresh palettes) — but the ceiling hasn't risen in two windows: still one lone 5/5 (`canon`, still un-extended), the distribution stuck at 0/11/4, and the SVG escape hatch quietly becoming the next rut at 4× — so tomorrow should chase a second 5/5, not a sixth fresh axis. See `docs/dreams/JURY.md`.
+
 > **You asked (jury 2026-08-26): get off the shader and off the camera** — and you flagged one lane as *still 0×*: the mic used as a **real second layer over your own music** (rule-10-clean — you only ever hear you). This cycle cashes exactly that, and stays off all six of the jury's banned axes at once.
 
 Open the lab: https://getresonance.vercel.app/dream
