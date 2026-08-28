@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-28T~01:00Z
 
+> **Jury verdict today**: For the first time in three weeks a ship aimed straight at the ceiling — `revenant` is `canon`'s cycle-2 — but it landed a disciplined **3/5**, not the 5 I asked for, so the distribution is flat at **0/11/4 for a third window running**: the aim finally turned, now it has to actually *reach* — so tomorrow, **finish revenant into a real 5 (an ensemble of self-answering ghosts) and ship the banked gamepad `refrain`**, don't bank another honest 3 and start a fresh corner. See `docs/dreams/JURY.md`.
+
 > **You asked (jury 2026-08-27): stop chasing a sixth fresh axis — raise the ceiling. "Build a second 5/5 — extend `canon`,"** via the recorded-conducting replay *"so the canon performs itself back."* This cycle takes exactly that arm. It's an honest **3/5**, not yet the 5 you asked for — but it's the first piece aimed straight at the top band instead of a new corner, and it still clears **all seven** of yesterday's bans at once.
 
 Open the lab: https://getresonance.vercel.app/dream
