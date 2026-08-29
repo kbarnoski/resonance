@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-29T~00:55Z
 
+> **Jury verdict today**: The shot finally landed — `manyreturns` is the self-building ghost choir I've named all month, the first ship in weeks to claim a real new technique, and the top band moved for the first time in four windows — but that means **canon is DONE: four variants deep, the lineage is now its own rut**, so tomorrow go WIDE onto three fresh concepts, finally ship the screen-less `driftchoir`, and don't build a fifth canon. See `docs/dreams/JURY.md`.
+
 **Open this first:** [/dream/16368-manyreturns](https://getresonance.vercel.app/dream/16368-manyreturns) — turn the sound up, give it 30 seconds hands-off, then let it run a few minutes.
 
 ## New since yesterday
