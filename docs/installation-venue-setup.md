@@ -346,9 +346,31 @@ operator handlers.
 
 ## 10. Phone remote (offline monitoring + control)
 
-With the phone on the same hotspot as the laptop, open
+### Getting phone ↔ laptop networked with NO cell and NO venue wifi
+
+The remote is a web page served by the laptop — the phone just needs any
+IP network to it (not Bluetooth). No internet required. Three ways,
+best first:
+
+1. **Battery travel router (recommended — pack one).** e.g. GL.iNet
+   Mango, USB-powered. It broadcasts its own Wi-Fi with no upstream;
+   laptop + phone both join it. Independent of the Mac's sleep/wake
+   state — the most desert-proof option.
+2. **Mac broadcasts its own network**: System Settings → General →
+   Sharing → Internet Sharing ⓘ → share from any *unused* interface →
+   "To devices using: Wi-Fi" → name/password → toggle on. Phone joins,
+   opens `http://192.168.2.1:3000/remote` (the Mac is always `.2.1` on
+   its own shared network). Caveat: sleep/wake can drop the shared
+   network, and re-enabling requires the laptop — test during the dress
+   rehearsal.
+3. **iPhone Personal Hotspot** — sometimes works as a pure LAN with zero
+   signal, but iOS can refuse to enable it without cellular service.
+   Backup only; do not plan the show around it.
+
+With the phone on the same network as the laptop, open
 `http://<laptop-ip>:3000/remote` (find the IP via
-`ipconfig getifaddr en0`). Shows now-playing and offers:
+`ipconfig getifaddr en0`; on a Mac-shared network it's `192.168.2.1`).
+Shows now-playing and offers:
 
 - play/pause, skip journey, break in / resume loop
 - launch any built-in journey, volume presets
