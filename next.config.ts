@@ -112,6 +112,11 @@ const nextConfig: NextConfig = {
     // request time, but Vercel strips public/ from lambda bundles
     // (CDN-served) — verified 2026-08-26: ENOENT in prod. Force-trace.
     "/path/[token]/opengraph-image": ["./public/fonts/*.ttf"],
+    // The /dream index renders in a lambda (the dream layout's
+    // force-dynamic wins over its force-static) and reads the digest
+    // markdowns at request time — trace them in. The proto catalog
+    // itself is bundled JSON (see scripts/generate-dream-catalog.mjs).
+    "/dream": ["./docs/dreams/MORNING.md", "./docs/dreams/STATE.md"],
   },
   webpack: (config, { isServer }) => {
     // Exclude TensorFlow.js and Basic Pitch from server-side bundling

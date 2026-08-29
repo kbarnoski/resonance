@@ -204,6 +204,26 @@ The research log is itself a deliverable — Karel reads it and explicitly value
 
 ## How to write prototypes
 
+### Deployment model — added 2026-08-26, do not regress
+
+The lab's ~1,150+ protos were the bulk of every production build (93% of
+1,243 static pages), pushing deploys past 9 minutes. The model is now:
+
+- **Protos render on demand.** `src/app/dream/layout.tsx` sets
+  `dynamic = "force-dynamic"` for the whole segment. NEVER add
+  `force-static`, `generateStaticParams`, or build-time `fs` reads to a
+  numbered proto — proto pages are pure client shells and the source tree
+  does not exist inside the production lambda.
+- **The index shows featured + the newest ~60**; everything older lives in
+  the paginated archive at `/dream/archive/[page]`. The catalog is
+  generated BEFORE the build by `scripts/generate-dream-catalog.mjs`
+  (package.json "prebuild") into `archive/catalog.generated.json`, which
+  the routes import as bundled data — no fs at render time. If you change
+  README conventions (H1 format, **Status** line), keep that script's
+  parsers working.
+- New protos appear on the index automatically (newest-first slice) — do
+  not hand-edit the index to add your proto.
+
 Each prototype should answer ONE question: "what if Resonance could do X?"
 
 **Good prototype**:

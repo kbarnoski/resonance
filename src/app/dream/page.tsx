@@ -1,47 +1,29 @@
-import { readFile, readdir } from "fs/promises";
+import { readFile } from "fs/promises";
 import path from "path";
 import Link from "next/link";
 import { VoteIndicator, VoteButtons } from "./_shared/vote-buttons";
 import type { ReactNode } from "react";
+import {
+  loadPrototypes,
+  RECENT_COUNT,
+  STATUS_STYLES,
+  CATEGORY_STYLES,
+  CATEGORY_LABELS,
+  type Prototype,
+} from "./archive/_scan";
 
+// Prerendered at build (overrides the dream layout's force-dynamic default).
+// The catalog scan lives in ./archive/_scan — one shared build-time sweep
+// feeds this index, the paginated archive, and the nav manifest.
 export const dynamic = "force-static";
 
 // ── Types ──────────────────────────────────────────────────────────────────
-
-type Prototype = {
-  slug: string;
-  cycle: number;
-  name: string;
-  status: string;
-  description: string;
-  /** Validation category — auto-derived from code: pure-local vs depends on FAL_KEY. */
-  category: "local" | "fal-required";
-};
 
 type RecentCycle = {
   number: number;
   title: string;
   date: string;
   decision: string;
-};
-
-// ── Helpers ────────────────────────────────────────────────────────────────
-
-const STATUS_STYLES: Record<string, string> = {
-  skeleton: "bg-muted text-muted-foreground",
-  wip: "bg-primary/10 text-primary/90 border border-primary/20",
-  demoable: "bg-primary/15 text-primary",
-  polished: "bg-primary/20 text-primary border border-primary/30",
-};
-
-const CATEGORY_STYLES: Record<Prototype["category"], string> = {
-  local: "bg-primary/10 text-primary/90 border border-primary/20",
-  "fal-required": "bg-muted text-muted-foreground border border-border",
-};
-
-const CATEGORY_LABELS: Record<Prototype["category"], string> = {
-  local: "✓ local",
-  "fal-required": "🔑 FAL_KEY",
 };
 
 // ── Featured shelf (curated 2026-08-25 — the Tramokyo / portfolio set) ──────
@@ -59,15 +41,6 @@ const FEATURED_SLUGS = [
   "11680-corridor",
   "1081-singularity-fall",
 ] as const;
-
-function cleanProse(s: string): string {
-  return s
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/\s+/g, " ")
-    .trim();
-}
 
 // ── Markdown renderer ─────────────────────────────────────────────────────
 // Supports: ## headings, - bullets (with indented continuation), 1. ordered
@@ -263,107 +236,6 @@ function renderMdSection(lines: string[], baseKey: string): ReactNode[] {
 
 // ── Data loading ──────────────────────────────────────────────────────────
 
-async function loadPrototypes(): Promise<Prototype[]> {
-  const dreamDir = path.join(process.cwd(), "src/app/dream");
-  const entries = await readdir(dreamDir, { withFileTypes: true });
-  const dirs = entries
-    .filter((e) => e.isDirectory() && /^\d+-/.test(e.name))
-    .map((e) => e.name);
-
-  const results: Prototype[] = await Promise.all(
-    dirs.map(async (slug) => {
-      const cycle = parseInt(slug.split("-")[0], 10);
-      let readme = "";
-      try {
-        readme = await readFile(
-          path.join(dreamDir, slug, "README.md"),
-          "utf-8"
-        );
-      } catch {
-        readme = "";
-      }
-
-      // Agent's READMEs use 3 different H1 patterns inconsistently:
-      //   "# /dream/1-live — Real Name"       → drop slug, keep "Real Name"
-      //   "# Real Name — design notes"        → drop "design notes", keep "Real Name"
-      //   "# Real Name"                       → use as-is
-      // Pick the part that's neither a slug nor a generic descriptor.
-      const slugTitle = slug
-        .split("-")
-        .slice(1)
-        .map((w) => w[0].toUpperCase() + w.slice(1))
-        .join(" ");
-
-      let name = slugTitle;
-      const h1 = readme.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? "";
-      if (h1) {
-        const parts = h1.split(/\s+[—-]\s+/).map((s) => s.trim());
-        const isSluglike = (s: string): boolean =>
-          /^(\/?dream\/?|\d+)([\s/_-]|$)/i.test(s);
-        const isGeneric = (s: string): boolean =>
-          /^design\s*notes?$/i.test(s);
-        const good = parts.find((p) => !isSluglike(p) && !isGeneric(p));
-        name = good ?? parts.find((p) => !isSluglike(p)) ?? slugTitle;
-      }
-
-      const statusMatch = readme.match(/\*\*Status\*\*:\s*(\w+)/i);
-      const status = statusMatch ? statusMatch[1].toLowerCase() : "demoable";
-
-      const lines = readme.split("\n");
-      const para: string[] = [];
-      for (const raw of lines) {
-        const line = raw.trim();
-        if (line.startsWith("#")) {
-          if (para.length) break;
-          continue;
-        }
-        if (line === "---") {
-          if (para.length) break;
-          continue;
-        }
-        if (/^\*\*(Status|Route|Question|Cycle)/i.test(line)) continue;
-        if (line === "") {
-          if (para.length) break;
-          continue;
-        }
-        para.push(line);
-      }
-      const description = cleanProse(para.join(" ")).slice(0, 180);
-
-      // Validation category — derived by inspecting the prototype's own API
-      // route (if it imports @fal-ai/client) or fetches the shared FAL-backed
-      // /api/ai-image/* endpoints from page.tsx.
-      let category: Prototype["category"] = "local";
-      try {
-        const apiSource = await readFile(
-          path.join(dreamDir, slug, "api", "route.ts"),
-          "utf-8"
-        );
-        if (apiSource.includes("@fal-ai/client")) category = "fal-required";
-      } catch {
-        // no api/route.ts for this prototype
-      }
-      if (category === "local") {
-        try {
-          const pageSource = await readFile(
-            path.join(dreamDir, slug, "page.tsx"),
-            "utf-8"
-          );
-          if (/fetch\(['"`]\/api\/ai-image/.test(pageSource)) {
-            category = "fal-required";
-          }
-        } catch {
-          // no page.tsx — leave as local
-        }
-      }
-
-      return { slug, cycle, name, status, description, category };
-    })
-  );
-
-  return results.sort((a, b) => b.cycle - a.cycle);
-}
-
 async function loadMorning(): Promise<string> {
   try {
     return await readFile(
@@ -423,6 +295,11 @@ export default async function DreamPage() {
   const featured = FEATURED_SLUGS.map((s) => bySlug.get(s)).filter(
     (p): p is Prototype => p !== undefined
   );
+
+  // The index ships lean: featured + the newest RECENT_COUNT. Everything
+  // older lives in the static paginated archive (/dream/archive/1..N).
+  const recent = prototypes.slice(0, RECENT_COUNT);
+  const archivedCount = prototypes.length - recent.length;
 
   // Strip the H1 title line from MORNING.md — page already shows cycle info
   const morningContentLines = morningMd.split("\n").slice(1);
@@ -523,7 +400,7 @@ export default async function DreamPage() {
         <div className="mx-auto max-w-3xl">
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
             <div className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              {prototypes.length} prototypes · newest first
+              latest {recent.length} of {prototypes.length} · newest first
             </div>
             <div className="flex flex-wrap gap-3 text-[11px] text-muted-foreground">
               <span>
@@ -537,7 +414,7 @@ export default async function DreamPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {prototypes.map((p) => (
+            {recent.map((p) => (
               <Link
                 key={p.slug}
                 href={`/dream/${p.slug}`}
@@ -587,6 +464,19 @@ export default async function DreamPage() {
               </Link>
             ))}
           </div>
+
+          {/* Doorway to the full archive — everything older than the
+              recent grid, ~60 per static page. */}
+          {archivedCount > 0 && (
+            <div className="mt-8 text-center">
+              <Link
+                href="/dream/archive/1"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-5 py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-fast hover:border-primary/30 hover:text-primary"
+              >
+                Browse the archive · {archivedCount} more →
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
