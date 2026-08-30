@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-08-29T~13:00Z (cycle 1206, 05:45 PT)
+# Morning digest — last updated 2026-08-30T~00:55Z (cycle 1207, 17:45 PT)
 
-> **Jury verdict landed overnight (2026-08-29)** — and this cycle already acted on it: it says *`manyreturns` finally landed the shot (the top band moved for the first time in four windows), but **canon is DONE — four variants deep, the lineage is now its own rut** → go WIDE onto fresh concepts, don't build a fifth canon.* **Cycle 1206 did exactly that** — WIDE, broke the canon run, returned to the visionary direction with `phosphene`. Still owed from the verdict: finally ship the screen-less `driftchoir`. See `docs/dreams/JURY.md`.
+> **The debt is paid.** The jury has said for weeks — and its 2026-08-29 verdict said again as #3 — *finally ship the screen-less audio-only/haptic `driftchoir`; it's been `rm`'d unshipped THREE times in favor of a flashier screen piece.* This cycle shipped it. It's also the cleanest diversity pass in weeks: removing the screen removes the very surface + palette (Canvas2D + grey-mono) the jury flagged as calcifying. See `docs/dreams/JURY.md`.
 
-**Open this first:** [/dream/16448-phosphene](https://getresonance.vercel.app/dream/16448-phosphene) — on a phone, sound up. (Last night's ensemble the jury praised: [/dream/16368-manyreturns](https://getresonance.vercel.app/dream/16368-manyreturns) — 30s hands-off, then let it run.)
+**Open this first — but this one is for your EARS, not your eyes:** [/dream/16464-driftchoir](https://getresonance.vercel.app/dream/16464-driftchoir) — headphones or speakers up, and try closing your eyes. Let it run ~30s hands-off, then press & hold to conduct.
 
 ## New since yesterday
-- **16448-phosphene** — *his music grows a crystalline light-body you turn in your hands.* One of your real "Welcome Home" takes plays and grows a single luminous jewel — ~15k glowing points folded into kaleidoscopic symmetry inside a silver facet-cage — and **your harmony carves it**: chord changes re-cut the facets (3–8 lobes), swing the color (minor→amethyst, major→teal) and shear the spiral twist; onsets fire a bloom outward. **Turn it with your hands** — tilt on phone, drag+wheel on desktop. It's an *object you orbit*, not a room and not a shader-field you watch. Entoptic / visionary-breakthrough pole (Klüver form-constants).
-- **The honest question for your eye:** does the harmony visibly *carve* it, does tilt feel like turning it in your hands, and does it read as an object you hold rather than a field you watch? All three want you at the page — headless can't judge them.
+- **16464-driftchoir** — *one of your "Welcome Home" takes grows itself into an endless ghost choir you LISTEN to, no primary visual.* N copies of the same short window loop at incommensurate lengths so they drift through phase forever and never re-sync (the Eno *Music for Airports* trick), each aging Basinski-style so minute 5 ≠ minute 1. The moments two voices swing into alignment are **felt in your hand** (haptic, on phone) and **heard** as a soft swell of your own sound (on desktop, so it reads without a phone). It self-builds to five voices hands-off; **press & hold** blooms a new voice, release lets the oldest fade. The only thing on screen is a spare strip of phase/age bars — the art is the sound field.
+- **The honest question for your ears:** does the choir breathe as a real evolving texture (not a wash), and does the desktop coincidence-swell carry the piece without a phone? Both want you at the page with sound up — headless can't hear it.
 
-## Why this cycle looks different
-- I went **WIDE** and deliberately **broke a 4-cycle canon-lineage run** (loomvoice→revenant→ringcanon→manyreturns) — that streak was drifting into exactly the "too similar in design and theme" you flagged. This returns to your stated **visionary / altered-states** primary direction, on the *intense* pole the recent cosmic run neglected. It's a fresh surface too (three.js, off two straight Canvas2D ships).
-- **manyreturns (last night's ensemble) is the standing canon bid** — I paused piling more canon variations on it until your page-verdict says whether it reached the 5. Didn't want to bury it under near-duplicates.
+## Why this cycle looks (sounds) different
+- It's deliberately a **no-primary-visual** piece — the jury's owed 0× output modality. This is the direct test of the screen bias: can a Resonance piece hold you with sound + touch alone?
+- `phosphene` (yesterday's turning jewel) and `manyreturns` (the ghost choir) are your two most recent screen pieces if you want a visual contrast.
 
 ## Banked, ready to ship
-- **16432-stillwater** — *his music only flows while you hold perfectly still; moving dissolves it to ripples.* Built demoable this cycle, lost the coin-flip to phosphene on phone-legibility (its depth pays off after ~75s of held stillness). But its **accumulated-stillness reserve** genuinely makes minute-4 ≠ minute-0 (reverb opens, a 2nd octave voice of the same take surfaces) — the "real state/memory" quality the jury keeps asking for, on a calm meditative axis. Worth resurrecting; I'd add cross-session persistence so the pool remembers you.
+- **16480-driftorbit** — the *spatial* sibling built this cycle: each ghost-voice circles your head in 3D (HRTF binaural), and you turn your listening head by tilting the phone / dragging. Lost the coin-flip only because its payoff needs headphones — worth resurrecting headphone-forward.
+- **16432-stillwater** (§1206) — his music only flows while you hold perfectly still; still the cleanest "minute 5 ≠ minute 0" bid on a calm axis.
 
 ## Open questions for Karel
-- Is breaking the canon run the right call, or do you want me to keep pushing manyreturns toward a 5 first?
-- phosphene vs stillwater — if the jewel doesn't land on your phone, stillwater is a one-cycle ship away.
+- Does an audio-only/haptic piece land for you, or do you want every piece to carry a strong visual? Your answer reshapes how much I invest in the screen-less lane.
+- On a phone: does the haptic pulse on phase-alignment actually add something, or is the audio swell enough on its own?
