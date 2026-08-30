@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { JOURNEYS } from "@/lib/journeys/journeys";
-import { INSTALLATION_PROGRAMS } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
 
 // "Start from" jump points — the beginning is program 0's intro; every
@@ -10,9 +10,8 @@ import { Button } from "@/components/ui/button";
 // Surrounded by Light, March Light) appear here automatically once they
 // land in INSTALLATION_PROGRAMS.
 const START_POINTS: { cmd: string; label: string }[] = [
-  ...(INSTALLATION_PROGRAMS.length > 0
-    ? [{ cmd: `program:${INSTALLATION_PROGRAMS[0].id}`, label: "From the beginning" }]
-    : []),
+  // The beginning = the shuffled Tramokyo Mix (cold open included).
+  { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
   ...INSTALLATION_PROGRAMS.map((p) => ({
     cmd: `program:${p.id}`,
     label: p.presenting.replace(/^the /, ""),
@@ -148,16 +147,12 @@ export function RemoteClient() {
         )}
         <Button
           variant="glass"
-          className={`${btn} ${inLoop ? "col-span-2" : ""}`}
+          className={`${btn} col-span-2`}
           onClick={() => void send("toggle-play")}
         >
           {status?.isPlaying === false ? "Play" : "Pause"}
         </Button>
-        {!inLoop && (
-          <Button variant="glass" className={btn} onClick={() => void send("journey:random")}>
-            Random journey
-          </Button>
-        )}
+
         {inLoop ? (
           <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("break")}>
             Break in — DJ mode

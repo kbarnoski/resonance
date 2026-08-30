@@ -158,6 +158,9 @@ function ExperienceTextInner() {
       <MonoLabel className="mt-10 block text-sm tracking-[0.08em] text-white/55">
         {EXPERIENCE_INTRO.credit}
       </MonoLabel>
+      <MonoLabel className="mt-2 block text-xs tracking-[0.08em] text-white/45">
+        {EXPERIENCE_INTRO.thanks}
+      </MonoLabel>
     </div>
   );
 }

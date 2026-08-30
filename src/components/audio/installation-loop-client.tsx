@@ -55,6 +55,11 @@ export interface InstallationProgram {
 
 const EMPTY_SEQUENCE: SequenceEntry[] = [];
 
+// Dot stepper + "N of M" counter retired for Tramokyo (Karel 2026-08-30)
+// — the mix is an unnumbered flow. Typed (not literal false) so TS keeps
+// narrowing inside the retired render; flip for a future tour.
+const SHOW_DOT_STEPPER: boolean = false;
+
 interface Props {
   programs: InstallationProgram[];
   /** Featured-recordings pool used when a journey has no paired track. */
@@ -1137,9 +1142,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // last). The ?start journey offset only applies to the very
         // first pass — every subsequent intro begins at journey 0.
         setStartIdx(0);
-        if (programs.length > 1) {
-          setProgramIndex((p) => (p + 1) % programs.length);
-        }
+        // Always return to program 0 — the shuffled Tramokyo Mix is the
+        // ambient default; albums (selected from the phone) hand back to
+        // it when they finish instead of chaining into each other.
+        setProgramIndex(0);
         setPhase({ kind: "intro" });
       }, delay);
       return () => {
@@ -1907,7 +1913,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             • Credits: dots stay hidden — they faded out with the last
               journey's title and shouldn't pop back in over the
               dedication screen. */}
-      {sequence.length > 0 && (() => {
+      {/* Dot stepper + "N of M" counter retired for Tramokyo (Karel
+          2026-08-30) — the mix is an unnumbered flow, not a tracked
+          album side. Render short-circuits; machinery kept for a
+          future tour where progress display makes sense again. */}
+      {SHOW_DOT_STEPPER && sequence.length > 0 && (() => {
         const inIntroJourney = phase.kind === "intro" && introStage === "journey";
         const inIntroFadingJourney = phase.kind === "intro" && introStage === "fading-journey";
         const inJourneyTitle = phase.kind === "journey" && titleWindow;

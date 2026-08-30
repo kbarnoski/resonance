@@ -5,7 +5,7 @@ import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } 
 import { QUARANTINED_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_PROGRAMS } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 import {
@@ -377,6 +377,41 @@ export default async function InstallationPage({ searchParams }: Props) {
           sequence: seq,
         });
       }
+    }
+
+    // ── Tramokyo Mix — the default ambient program (Karel 2026-08-30) ──
+    // A shuffle of everything: every album program's sequence plus the
+    // paired featured built-ins not already present. Shuffled fresh per
+    // server boot; the loop always returns here after an album plays.
+    // Albums stay selectable from the phone's Start-from buttons.
+    if (programs.length > 0) {
+      const seen = new Set(
+        programs.flatMap((p) => p.sequence.map((e) => e.journey.id)),
+      );
+      const extraBuiltinIds = Object.keys(PAIRED_TRACKS).filter(
+        (id) => !seen.has(id),
+      );
+      const pool = [
+        ...programs.flatMap((p) => p.sequence),
+        ...buildBuiltinSequence(extraBuiltinIds),
+      ];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      programs.unshift({
+        id: TRAMOKYO_MIX_ID,
+        presenting: "an evening of selections",
+        description:
+          "Pieces from across the catalog — Welcome Home, Snowflake, and " +
+          "the featured journeys — in an order of their own.",
+        dedication: {
+          eyebrow: "with gratitude to",
+          hero: "Johnny and our hosts",
+          secondary: "for opening their land to this evening",
+        },
+        sequence: pool,
+      });
     }
 
     // Pre-fetch cue markers for every paired track across all programs.

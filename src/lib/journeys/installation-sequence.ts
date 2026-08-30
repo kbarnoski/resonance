@@ -44,6 +44,10 @@ export interface InstallationProgramDef {
  * artist statement in docs/installation-brief.md. One-off for the
  * installation; nothing outside the kiosk renders this.
  */
+/** Program id of the shuffled default mix (built in the installation
+ *  page, not from INSTALLATION_PROGRAMS defs). */
+export const TRAMOKYO_MIX_ID = "tramokyo-mix";
+
 export const EXPERIENCE_INTRO = {
   eyebrow: "a one-night installation",
   title: "Resonance",
@@ -58,6 +62,7 @@ export const EXPERIENCE_INTRO = {
     "others.",
   invitation: "Recline. Eyes up.",
   credit: "composed and performed by Karel Barnoski",
+  thanks: "with thanks to Johnny and our hosts",
 } as const;
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [

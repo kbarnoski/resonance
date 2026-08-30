@@ -1943,7 +1943,10 @@ export function VisualizerClient({
             const creditParts: string[] = [];
             if (musicArtist && musicArtist !== creator) {
               creditParts.push(`by ${creator}`, `Music by ${musicArtist}`);
-            } else {
+            } else if (!installationMode) {
+              // Installation: authorship lives in the cold open + program
+              // intro, never on per-track cards (Karel 2026-08-30). The
+              // main app keeps the credit.
               creditParts.push(`Composed by ${creator}`);
             }
             if (activeJourney.photographyCredit) creditParts.push(`Photography by ${activeJourney.photographyCredit}`);
