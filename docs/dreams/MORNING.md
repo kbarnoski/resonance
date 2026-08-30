@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-08-30T~00:55Z (cycle 1207, 17:45 PT)
 
+> **Jury verdict today**: Real diversity win — the owed audio-only `driftchoir` finally shipped and `phosphene`'s harmony-carved crystal broke the visual rut, and camera/granular/warm all fell off the ban floor — but the diversity was bought at the top band's expense (two floor-minimum ships, top band slid 5→3), and underneath the fresh surfaces **five of the last fifteen pieces are the same one audio idea (his take looped against itself)**: tomorrow needs a genuinely different DSP and a real swing at a 4, not a sixth drifting-loop piece. See `docs/dreams/JURY.md`.
+
 > **The debt is paid.** The jury has said for weeks — and its 2026-08-29 verdict said again as #3 — *finally ship the screen-less audio-only/haptic `driftchoir`; it's been `rm`'d unshipped THREE times in favor of a flashier screen piece.* This cycle shipped it. It's also the cleanest diversity pass in weeks: removing the screen removes the very surface + palette (Canvas2D + grey-mono) the jury flagged as calcifying. See `docs/dreams/JURY.md`.
 
 **Open this first — but this one is for your EARS, not your eyes:** [/dream/16464-driftchoir](https://getresonance.vercel.app/dream/16464-driftchoir) — headphones or speakers up, and try closing your eyes. Let it run ~30s hands-off, then press & hold to conduct.
