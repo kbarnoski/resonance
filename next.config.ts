@@ -105,6 +105,12 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
+    // Cap build workers: with NODE_OPTIONS max-old-space-size (needed to
+    // compile the 1,160-proto dream lab), a per-CPU worker fleet each
+    // reserving that heap can make macOS refuse the spawns entirely
+    // (`spawn EBADF` at "Generating static pages" — seen 2026-08-30).
+    // 110 static pages need nowhere near a full fleet.
+    cpus: 4,
   },
   outputFileTracingIncludes: {
     "/api/audio/[id]": ["./node_modules/ffmpeg-static/**/*"],

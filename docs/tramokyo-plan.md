@@ -124,3 +124,15 @@ Phone (hotspot) ──▶ /remote ──▶ /api/pack/remote (in-memory bus, off
 Tramokyo Stop.app ──▶ tramokyo-stop.sh  (Chrome profile, bootout launchd,
                                          PID-filed server group + caffeinate — nothing else)
 ```
+
+## Backlog (Karel, 2026-08-30 — not yet built)
+
+- **"Surrounded by Light" section** — new installation program/section.
+  When built, add to `INSTALLATION_PROGRAMS` in
+  `src/lib/journeys/installation-sequence.ts`; the phone remote's
+  "Start from" buttons and `?start=<program-id>` pick it up automatically.
+- **"March Light"** — same treatment, same pipeline.
+- Shipped 2026-08-30 in support of the above: phone-remote **Start from**
+  section (From the beginning / per-program jump points), working both
+  in-loop (in-place restart at the program's intro) and from any other
+  context (navigates to `?loop=1&start=<program-id>`).

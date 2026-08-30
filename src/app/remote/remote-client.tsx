@@ -2,7 +2,22 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { JOURNEYS } from "@/lib/journeys/journeys";
+import { INSTALLATION_PROGRAMS } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
+
+// "Start from" jump points — the beginning is program 0's intro; every
+// program also gets its own starting point. New programs (backlog:
+// Surrounded by Light, March Light) appear here automatically once they
+// land in INSTALLATION_PROGRAMS.
+const START_POINTS: { cmd: string; label: string }[] = [
+  ...(INSTALLATION_PROGRAMS.length > 0
+    ? [{ cmd: `program:${INSTALLATION_PROGRAMS[0].id}`, label: "From the beginning" }]
+    : []),
+  ...INSTALLATION_PROGRAMS.map((p) => ({
+    cmd: `program:${p.id}`,
+    label: p.presenting.replace(/^the /, ""),
+  })),
+];
 
 interface KioskStatus {
   context?: "loop" | "room";
@@ -166,6 +181,25 @@ export function RemoteClient() {
             onClick={() => void send(`volume:${v}`)}
           >
             {Math.round(v * 100)}
+          </Button>
+        ))}
+      </div>
+
+      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Start from</div>
+      <div className="mb-8 grid gap-2">
+        {START_POINTS.map((sp) => (
+          <Button
+            variant="glass"
+            key={sp.label}
+            className={`${btn} w-full ${sending === sp.cmd ? "bg-white/[0.18]" : ""}`}
+            onClick={() => {
+              // Confirmed — a pocket tap mid-journey would restart the show.
+              if (window.confirm(`Jump the loop to “${sp.label}”?`)) {
+                void send(sp.cmd);
+              }
+            }}
+          >
+            {sp.label}
           </Button>
         ))}
       </div>

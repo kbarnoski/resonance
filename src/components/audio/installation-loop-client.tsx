@@ -140,6 +140,27 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // effect on every phase change).
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
+
+  // Operator program jump (phone remote "Start from" buttons) — restart
+  // the loop at a given program's intro, from ANY phase. Mirrors the
+  // credits→next-program transition so audio teardown, ?start offsets,
+  // and intro choreography behave identically to a natural wrap.
+  useEffect(() => {
+    const onJump = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      const idx = programs.findIndex((p) => p.id === id);
+      if (idx < 0) return;
+      // eslint-disable-next-line no-console
+      console.log(`[installation] operator jump → program ${id}`);
+      try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      setStartIdx(0);
+      setProgramIndex(idx);
+      setPhase({ kind: "intro" });
+    };
+    window.addEventListener("installation-operator-program", onJump);
+    return () =>
+      window.removeEventListener("installation-operator-program", onJump);
+  }, [programs]);
   // Title-card window: matches the visualizer-client's built-in journey
   // intro overlay (~6s when each journey starts). Drives the dot stepper
   // visibility — dots only show during this window + during credits.

@@ -42,6 +42,19 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     if (Number.isFinite(v)) store.setVolume(v);
   } else if (cmd.startsWith("journey:") && context === "room") {
     void launchJourney(cmd.slice(8));
+  } else if (cmd.startsWith("program:")) {
+    // Jump the attract loop to a program's starting point. In the loop
+    // context the client restarts in place; from anywhere else (e.g.
+    // broken into /room) navigate back into the loop at that program —
+    // the page already resolves ?start=<program-id>.
+    const id = cmd.slice(8);
+    if (context === "loop") {
+      window.dispatchEvent(
+        new CustomEvent("installation-operator-program", { detail: id })
+      );
+    } else {
+      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(id)}`;
+    }
   }
 }
 
