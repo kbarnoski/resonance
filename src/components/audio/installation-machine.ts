@@ -28,6 +28,10 @@ export const INTRO_MS = 11_000;
 /** Tramokyo cold open — the experience-level "Resonance" card shown
  *  once per full cycle, before program 0's intro. */
 export const EXPERIENCE_INTRO_MS = 15_000;
+/** Mid-show artist-statement interstitial: shown between journeys every
+ *  N tracks so a 30-minute drop-in still meets the statement. */
+export const STATEMENT_INTERSTITIAL_MS = 12_000;
+export const STATEMENT_EVERY_N_JOURNEYS = 5;
 
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;

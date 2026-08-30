@@ -10,7 +10,7 @@ import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import type { Journey } from "@/lib/journeys/types";
-import { InstallationIntro } from "./installation-intro";
+import { InstallationIntro, ExperienceTextInner } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
 import { InstallationStatusPanel } from "./installation-status-panel";
@@ -21,6 +21,8 @@ import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
 import {
   INTRO_MS,
   EXPERIENCE_INTRO_MS,
+  STATEMENT_INTERSTITIAL_MS,
+  STATEMENT_EVERY_N_JOURNEYS,
   CREDITS_MS,
   MAX_JOURNEY_MS,
   STALLED_THRESHOLD_MS,
@@ -97,6 +99,9 @@ interface Props {
 type Phase =
   | { kind: "intro" }
   | { kind: "journey"; index: number }
+  // Mid-show artist-statement interstitial; `index` = the journey that
+  // plays after it.
+  | { kind: "statement"; index: number }
   | { kind: "credits" };
 
 export function InstallationLoopClient({ programs, fallbackTracks, debug, playOnce, startIndex = 0, startProgramIndex = 0 }: Props) {
@@ -210,6 +215,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // intro overlay (~6s when each journey starts). Drives the dot stepper
   // visibility — dots only show during this window + during credits.
   const [titleWindow, setTitleWindow] = useState(false);
+  // Artist-statement interstitial fade (opacity out over its last 1.5s).
+  const [statementFading, setStatementFading] = useState(false);
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
@@ -1083,6 +1090,42 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       };
     }
 
+    // ─── Artist-statement interstitial ───────────────────────────
+    if (phase.kind === "statement") {
+      // Ramped silence under the card (never-abrupt law): pausing the
+      // STORE (not just the element) keeps every watchdog honest —
+      // they all treat a store-paused kiosk as intentional.
+      useAudioStore.getState().pause();
+      setStatementFading(false);
+      const fadeT = setTimeout(
+        () => setStatementFading(true),
+        STATEMENT_INTERSTITIAL_MS - 1_500,
+      );
+      const doneT = setTimeout(() => {
+        setPhase({ kind: "journey", index: phase.index });
+      }, STATEMENT_INTERSTITIAL_MS);
+      // Next/Previous stay live during the card: next ends it early,
+      // previous backs into the journey before it.
+      const onSkip = () => {
+        clearTimeout(fadeT);
+        clearTimeout(doneT);
+        setPhase({ kind: "journey", index: phase.index });
+      };
+      const onPrev = () => {
+        clearTimeout(fadeT);
+        clearTimeout(doneT);
+        setPhase({ kind: "journey", index: Math.max(0, phase.index - 1) });
+      };
+      window.addEventListener("installation-operator-skip", onSkip);
+      window.addEventListener("installation-operator-prev", onPrev);
+      return () => {
+        clearTimeout(fadeT);
+        clearTimeout(doneT);
+        window.removeEventListener("installation-operator-skip", onSkip);
+        window.removeEventListener("installation-operator-prev", onPrev);
+      };
+    }
+
     if (phase.kind === "credits") {
       // Dots stay hidden during credits — they've already faded out
       // alongside Ghost's title.
@@ -1250,6 +1293,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     let advanceTimer: ReturnType<typeof setTimeout> | null = null;
     const advance = () => {
       if (phase.index + 1 < sequence.length) {
+        // Every Nth journey, pause the flow for the artist-statement
+        // interstitial so a short visit still meets the statement
+        // (Karel 2026-08-30). The statement phase hands off to the
+        // next journey itself.
+        if ((phase.index + 1) % STATEMENT_EVERY_N_JOURNEYS === 0) {
+          setPhase({ kind: "statement", index: phase.index + 1 });
+          return;
+        }
         const nextJourneyId = sequence[phase.index + 1]?.journey.id;
         const pauseMs = nextJourneyId ? PRE_ENTRY_PAUSE_MS[nextJourneyId] ?? 0 : 0;
         if (pauseMs > 0) {
@@ -1750,6 +1801,27 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           description={program?.description}
         />
       )}
+      {phase.kind === "statement" && (
+        <div
+          className="absolute inset-0 z-[120] flex flex-col items-center justify-center px-8 text-center"
+          style={{
+            backgroundColor: "var(--void)",
+            opacity: statementFading ? 0 : 1,
+            transition: "opacity 1500ms ease-out",
+          }}
+        >
+          <div style={{ animation: "installationStatementFade 1400ms ease-out forwards", opacity: 0 }}>
+            <ExperienceTextInner animate={false} />
+          </div>
+          <style jsx>{`
+            @keyframes installationStatementFade {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+        </div>
+      )}
+
       {phase.kind === "credits" && (
         <InstallationCredits dedication={program?.dedication} />
       )}

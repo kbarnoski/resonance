@@ -132,9 +132,12 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   );
 }
 
-function ExperienceTextInner() {
+export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
+  // animate=false when a host (the mid-show statement interstitial)
+  // drives the fade itself — the keyframes here are scoped to
+  // InstallationIntro's style block and don't exist elsewhere.
   return (
-    <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
+    <div style={animate ? { animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 } : undefined}>
       <ResonanceMark className="mx-auto mb-8 h-16 w-16 text-white/80" />
       <Eyebrow className="text-white/55">{EXPERIENCE_INTRO.eyebrow}</Eyebrow>
       <DisplayTitle
