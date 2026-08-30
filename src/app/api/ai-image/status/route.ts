@@ -9,7 +9,14 @@ export async function GET(request: Request) {
   const forbidden = checkOrigin(request);
   if (forbidden) return forbidden;
 
-  const enabled = !!process.env.FAL_KEY;
+  // Kiosk (OFFLINE_PACK) default: the downloaded image library IS the
+  // show — live fal is opt-in via TRAMOKYO_LIVE_FAL=1 in the kiosk env,
+  // so a home test with internet + dev FAL_KEY behaves exactly like the
+  // desert. Production (non-pack) behavior is unchanged.
+  const packOnly =
+    process.env.OFFLINE_PACK === "1" &&
+    process.env.TRAMOKYO_LIVE_FAL !== "1";
+  const enabled = !packOnly && !!process.env.FAL_KEY;
 
   // Return immediately — don't let fal import or warm-up block the response
   const response = Response.json({

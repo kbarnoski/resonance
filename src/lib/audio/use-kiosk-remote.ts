@@ -44,6 +44,18 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     if (Number.isFinite(v)) store.setVolume(v);
   } else if (cmd.startsWith("journey:") && context === "room") {
     void launchJourney(cmd.slice(8));
+  } else if (cmd.startsWith("jump:")) {
+    // Jump the loop to a specific journey (grouped phone browser). The
+    // loop client resolves the journey id across its programs; outside
+    // the loop, ?start=<journey-id> resolves it during page build.
+    const jid = cmd.slice(5);
+    if (context === "loop") {
+      window.dispatchEvent(
+        new CustomEvent("installation-operator-jump-journey", { detail: jid })
+      );
+    } else {
+      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(jid)}`;
+    }
   } else if (cmd.startsWith("program:")) {
     // Jump the attract loop to a program's starting point. In the loop
     // context the client restarts in place; from anywhere else (e.g.
@@ -131,6 +143,9 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               currentTime: Math.round(s.currentTime),
               duration: Math.round(s.duration),
               volume: s.volume,
+              programs:
+                (window as unknown as Record<string, unknown>)
+                  .__resonanceKioskPrograms ?? null,
             },
           }),
         });

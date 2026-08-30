@@ -19,8 +19,15 @@ const START_POINTS: { cmd: string; label: string }[] = [
   })),
 ];
 
+interface KioskProgram {
+  id: string;
+  label: string;
+  journeys: { id: string; name: string }[];
+}
+
 interface KioskStatus {
   context?: "loop" | "room";
+  programs?: KioskProgram[] | null;
   journey?: string | null;
   track?: string | null;
   isPlaying?: boolean;
@@ -162,8 +169,35 @@ export function RemoteClient() {
         )}
       </div>
 
+      {/* Program sections — track lists straight from the kiosk's built
+          programs (Welcome Home, Snowflake EP, and any future program —
+          Surrounded by Light / March Light — appear automatically).
+          Names only, numbered; a tap jumps the loop to that journey. */}
+      {(status?.programs ?? []).map((prog) => (
+        <div key={prog.id}>
+          <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
+            {prog.label}
+          </div>
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {prog.journeys.map((j, i) => (
+              <Button
+                variant="glass"
+                key={j.id}
+                className={`${btn} py-2.5 justify-start text-left ${sending === `jump:${j.id}` ? "bg-white/[0.18]" : ""}`}
+                onClick={() => void send(`jump:${j.id}`)}
+              >
+                <span className="mr-2 shrink-0 font-mono text-[10px] text-ink-faint">
+                  {i + 1}
+                </span>
+                <span className="block truncate">{j.name}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
+      ))}
+
       <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
-        Launch journey {inLoop ? "(breaks into DJ mode first)" : ""}
+        Featured journeys {inLoop ? "(breaks into DJ mode first)" : ""}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-8">
         {JOURNEYS.map((j) => (

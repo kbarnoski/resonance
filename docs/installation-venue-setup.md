@@ -326,7 +326,13 @@ bootstrap page waits for :3000 and enters the loop.
 **Never set `OFFLINE_PACK` on Vercel.** It disables auth; it is strictly
 for a trusted-operator kiosk laptop.
 
-**Live fal over the hotspot (optional):** put `FAL_KEY` in the kiosk's
+**Pack-only imagery is the default (2026-08-30):** in OFFLINE_PACK mode
+the downloaded image library is the whole show — the kiosk will NOT call
+fal even when internet + FAL_KEY are present, so home tests match the
+desert exactly. To opt into the live bonus overlay, set
+`TRAMOKYO_LIVE_FAL=1` in the kiosk env (runtime env — no rebuild needed).
+
+**Live fal over the hotspot (opt-in):** put `FAL_KEY` in the kiosk's
 `.env.local`. Packed images remain the guaranteed backbone; live gens are
 a bonus layer when the network happens to work, with silent fallback.
 

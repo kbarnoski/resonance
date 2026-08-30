@@ -161,6 +161,37 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     return () =>
       window.removeEventListener("installation-operator-program", onJump);
   }, [programs]);
+
+  // Publish the built program structure (labels + ordered journey ids)
+  // for the phone remote's grouped browser, and handle per-journey jumps.
+  // Tramokyo-only plumbing — nothing outside the kiosk reads these.
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).__resonanceKioskPrograms =
+      programs.map((p) => ({
+        id: p.id,
+        label: p.presenting.replace(/^the /, ""),
+        journeys: p.sequence.map((e) => ({ id: e.journey.id, name: e.journey.name })),
+      }));
+    const onJumpJourney = (e: Event) => {
+      const jid = (e as CustomEvent<string>).detail;
+      for (let pi = 0; pi < programs.length; pi++) {
+        const ji = programs[pi].sequence.findIndex((en) => en.journey.id === jid);
+        if (ji < 0) continue;
+        // eslint-disable-next-line no-console
+        console.log(`[installation] operator jump → ${programs[pi].id} · journey ${ji + 1}`);
+        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+        setStartIdx(0);
+        setProgramIndex(pi);
+        setPhase({ kind: "journey", index: ji });
+        return;
+      }
+    };
+    window.addEventListener("installation-operator-jump-journey", onJumpJourney);
+    return () => {
+      delete (window as unknown as Record<string, unknown>).__resonanceKioskPrograms;
+      window.removeEventListener("installation-operator-jump-journey", onJumpJourney);
+    };
+  }, [programs]);
   // Title-card window: matches the visualizer-client's built-in journey
   // intro overlay (~6s when each journey starts). Drives the dot stepper
   // visibility — dots only show during this window + during credits.
@@ -340,6 +371,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // - element is in error state
         // - we're at the very end of a track (avoid play() racing
         //   with the natural end-of-playback signal)
+        // Respect an intentional operator pause (phone remote /
+        // spacebar): the store is the intent; only fight pauses the
+        // operator didn't ask for (autoplay-block, wake glitches).
+        if (!useAudioStore.getState().isPlaying) return;
         if (
           el.paused &&
           !el.ended &&
@@ -737,6 +772,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     );
     const id = setInterval(() => {
       if (playOnce && !started) return;
+      if (
+        phaseRef.current.kind === "journey" &&
+        !useAudioStore.getState().isPlaying
+      ) {
+        // Operator pause — freeze the wedge clock instead of reloading
+        // a deliberately paused show.
+        lastPhaseChangeRef.current = Date.now();
+        return;
+      }
       const elapsed = Date.now() - lastPhaseChangeRef.current;
       if (elapsed > 2 * maxCapMs) {
         // eslint-disable-next-line no-console
@@ -1367,6 +1411,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // near-end. Calling play() on an ended element rejects with
         // AbortError "interrupted by end of playback" — the user's
         // console showed 100s of these stacking up after Ghost ended.
+        // Respect an intentional operator pause (phone remote /
+        // spacebar): the store is the intent; only fight pauses the
+        // operator didn't ask for (autoplay-block, wake glitches).
+        if (!useAudioStore.getState().isPlaying) return;
         if (
           el.paused &&
           !el.ended &&
@@ -1468,6 +1516,23 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     // fallback pick is never cut mid-piece. Unknown duration falls
     // back to MAX_JOURNEY_MS. (From ./installation-machine.)
     const capMs = journeyCapMs(trackForIndex(phase.index)?.duration);
+    // Operator-pause clock freeze: while the store is intentionally
+    // paused (phone remote / spacebar), the journey's wall-clock stops —
+    // otherwise the cap would advance a paused show and the stalled
+    // check would mark it skipped. Tracked via store transitions so
+    // both tick loops share one accumulator.
+    let pausedTotalMs = 0;
+    let pausedSinceMs = useAudioStore.getState().isPlaying ? 0 : Date.now();
+    const unsubPauseClock = useAudioStore.subscribe((s) => {
+      if (!s.isPlaying && pausedSinceMs === 0) pausedSinceMs = Date.now();
+      else if (s.isPlaying && pausedSinceMs !== 0) {
+        pausedTotalMs += Date.now() - pausedSinceMs;
+        pausedSinceMs = 0;
+      }
+    });
+    const journeyElapsed = () =>
+      Date.now() - startMs - pausedTotalMs -
+      (pausedSinceMs !== 0 ? Date.now() - pausedSinceMs : 0);
     // Soft early-advance: after STALLED_THRESHOLD_MS currentTime hasn't
     // moved off 0 we give up on this track. Generous so slow CDN starts
     // + the mid-stall re-load attempt (MID_STALL_RELOAD_MS) both have
@@ -1483,7 +1548,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const expectedDuration = entry.track?.duration ?? 0;
       const durationLooksReal = expectedDuration === 0 || duration >= expectedDuration * 0.5;
       const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
-      const elapsed = Date.now() - startMs;
+      const elapsed = journeyElapsed();
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= capMs;
       // Natural completion takes priority — never warn or mark
@@ -1531,7 +1596,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const expectedDuration = entry.track?.duration ?? 0;
       const durationLooksReal = expectedDuration === 0 || duration >= expectedDuration * 0.5;
       const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
-      const elapsed = Date.now() - startMs;
+      const elapsed = journeyElapsed();
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= capMs;
       if (audioEnded || stalled || timedOut) {
@@ -1548,6 +1613,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     }, 2_000);
 
     return () => {
+      unsubPauseClock();
       window.removeEventListener("installation-operator-skip", operatorSkip);
       window.removeEventListener("installation-operator-prev", operatorPrev);
       cancelAnimationFrame(raf);
