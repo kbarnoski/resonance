@@ -23,6 +23,7 @@ import {
   EXPERIENCE_INTRO_MS,
   STATEMENT_INTERSTITIAL_MS,
   STATEMENT_EVERY_N_JOURNEYS,
+  INTER_JOURNEY_BREATH_MS,
   CREDITS_MS,
   MAX_JOURNEY_MS,
   STALLED_THRESHOLD_MS,
@@ -1302,7 +1303,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           return;
         }
         const nextJourneyId = sequence[phase.index + 1]?.journey.id;
-        const pauseMs = nextJourneyId ? PRE_ENTRY_PAUSE_MS[nextJourneyId] ?? 0 : 0;
+        // Universal breath: every journey→journey transition holds a
+        // few seconds of silent black; per-journey values only extend it.
+        const pauseMs = Math.max(
+          INTER_JOURNEY_BREATH_MS,
+          nextJourneyId ? PRE_ENTRY_PAUSE_MS[nextJourneyId] ?? 0 : 0,
+        );
         if (pauseMs > 0) {
           // Pause audio immediately so the breath actually IS silent —
           // without this, audio-provider's onEnded handler keeps

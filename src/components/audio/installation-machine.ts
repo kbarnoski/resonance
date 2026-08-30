@@ -30,7 +30,11 @@ export const INTRO_MS = 11_000;
 export const EXPERIENCE_INTRO_MS = 15_000;
 /** Mid-show artist-statement interstitial: shown between journeys every
  *  N tracks so a 30-minute drop-in still meets the statement. */
-export const STATEMENT_INTERSTITIAL_MS = 12_000;
+export const STATEMENT_INTERSTITIAL_MS = 14_000;
+/** Universal quiet breath between consecutive journeys — a few seconds
+ *  of silence before each next track begins (Karel 2026-08-30). Per-
+ *  journey PRE_ENTRY_PAUSE values can lengthen it, never shorten it. */
+export const INTER_JOURNEY_BREATH_MS = 3_000;
 export const STATEMENT_EVERY_N_JOURNEYS = 5;
 
 /** Closing credits hold duration before the loop returns to intro. */

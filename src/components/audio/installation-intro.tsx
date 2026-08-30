@@ -153,6 +153,12 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
         {EXPERIENCE_INTRO.bodySecond}
       </p>
       <DisplayTitle
+        as="p"
+        className="mx-auto mt-5 max-w-2xl font-normal text-[clamp(1.1rem,1.9vw,1.4rem)] leading-[1.6] text-white/75"
+      >
+        {EXPERIENCE_INTRO.why}
+      </DisplayTitle>
+      <DisplayTitle
         as="div"
         className="mt-8 text-[clamp(1.2rem,2.2vw,1.6rem)] tracking-[0.02em] text-white/80"
       >

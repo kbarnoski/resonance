@@ -52,14 +52,17 @@ export const EXPERIENCE_INTRO = {
   eyebrow: "a one-night installation",
   title: "Resonance",
   body:
-    "A generative audiovisual instrument — composed music driving a " +
-    "slow-moving visual landscape that never repeats. Built for " +
-    "personal listening; tonight, a shared room. The same engine, the " +
-    "same patience, just larger and quieter.",
+    "An audiovisual experience with no beginning, no end — and never " +
+    "the same. Its inspiration is drawn from nature and the universe.",
   bodySecond:
-    "Featuring music selections from Karel's catalog of recordings — " +
-    "Welcome Home, Surrounded by Light, March Light, Snowflake, and " +
-    "others.",
+    "Every journey is generated live and never visually repeats. " +
+    "Tonight's program is randomized from Karel's catalog of " +
+    "recordings — Welcome Home, Surrounded by Light, March Light, " +
+    "Snowflake, and others.",
+  why:
+    "For the artist, Resonance — like the music itself — is a way to " +
+    "stay connected and keep creating, an answer to a world of " +
+    "unhealthy distractions.",
   invitation: "Recline. Eyes up.",
   credit: "composed and performed by Karel Barnoski",
   thanks: "with thanks to Johnny and our hosts",
