@@ -1,5 +1,21 @@
 [
  {
+  "slug": "16496-terrafret",
+  "cycle": 16496,
+  "name": "The Earth Plays the Piano",
+  "status": "demoable",
+  "description": "What if the living Earth played Karel's piano — every earthquake on the planet in the last hour becomes a phrase of his real recording?",
+  "category": "local"
+ },
+ {
+  "slug": "16464-driftchoir",
+  "cycle": 16464,
+  "name": "Driftchoir",
+  "status": "demoable",
+  "description": "An audio-only / haptic piece. There is deliberately no primary visual — the art is the sound field, and the screen carries only a spare \"witness.\" Put on headphones, close your eye",
+  "category": "local"
+ },
+ {
   "slug": "16448-phosphene",
   "cycle": 16448,
   "name": "Phosphene",
