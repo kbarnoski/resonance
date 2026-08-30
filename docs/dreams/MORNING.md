@@ -1,23 +1,21 @@
-# Morning digest — last updated 2026-08-30T~00:55Z (cycle 1207, 17:45 PT)
+# Morning digest — last updated 2026-08-30T~13:00Z (cycle 1208, 05:45 PT)
 
-> **Jury verdict today**: Real diversity win — the owed audio-only `driftchoir` finally shipped and `phosphene`'s harmony-carved crystal broke the visual rut, and camera/granular/warm all fell off the ban floor — but the diversity was bought at the top band's expense (two floor-minimum ships, top band slid 5→3), and underneath the fresh surfaces **five of the last fifteen pieces are the same one audio idea (his take looped against itself)**: tomorrow needs a genuinely different DSP and a real swing at a 4, not a sixth drifting-loop piece. See `docs/dreams/JURY.md`.
+> **Went WIDE — and a new jury verdict landed the same morning.** The 2026-08-29 verdict asked for **#2 go WIDE onto three un-adjacent concepts** (the last runs were all DEEP canon) and **#4 cash a still-0× *category*.** This cycle did both — three fresh-category builders in parallel, shipped the strongest, banked the other two fully-built. The fresh **2026-08-30 verdict** (in `docs/dreams/JURY.md`) adds the sharp new note that *underneath the fresh surfaces, the AUDIO has become a monoculture — five of the last fifteen pieces are "one take looped against itself" — so the next ship's DSP must genuinely change and swing for a 4.* Good news: **terrafret already breaks exactly that** — its audio is event-triggered *phrases* driven by a live external data feed, not a self-loop — so this WIDE fire lands on the right side of the new steer.
 
-> **The debt is paid.** The jury has said for weeks — and its 2026-08-29 verdict said again as #3 — *finally ship the screen-less audio-only/haptic `driftchoir`; it's been `rm`'d unshipped THREE times in favor of a flashier screen piece.* This cycle shipped it. It's also the cleanest diversity pass in weeks: removing the screen removes the very surface + palette (Canvas2D + grey-mono) the jury flagged as calcifying. See `docs/dreams/JURY.md`.
-
-**Open this first — but this one is for your EARS, not your eyes:** [/dream/16464-driftchoir](https://getresonance.vercel.app/dream/16464-driftchoir) — headphones or speakers up, and try closing your eyes. Let it run ~30s hands-off, then press & hold to conduct.
+**Open this first — and turn the sound up:** [/dream/16496-terrafret](https://getresonance.vercel.app/dream/16496-terrafret) — press start, then listen. Every earthquake on the planet in the last hour becomes a phrase of *your own piano.*
 
 ## New since yesterday
-- **16464-driftchoir** — *one of your "Welcome Home" takes grows itself into an endless ghost choir you LISTEN to, no primary visual.* N copies of the same short window loop at incommensurate lengths so they drift through phase forever and never re-sync (the Eno *Music for Airports* trick), each aging Basinski-style so minute 5 ≠ minute 1. The moments two voices swing into alignment are **felt in your hand** (haptic, on phone) and **heard** as a soft swell of your own sound (on desktop, so it reads without a phone). It self-builds to five voices hands-off; **press & hold** blooms a new voice, release lets the oldest fade. The only thing on screen is a spare strip of phase/age bars — the art is the sound field.
-- **The honest question for your ears:** does the choir breathe as a real evolving texture (not a wash), and does the desktop coincidence-swell carry the piece without a phone? Both want you at the page with sound up — headless can't hear it.
+- **16496-terrafret** — *the living Earth plays your piano.* A live public seismic feed (USGS, every quake worldwide in the last hour) drives the piece: each earthquake fires an enveloped phrase of one of your real recordings — bigger quake = deeper & louder, deep quakes come muffled/subterranean, longitude pans it, latitude picks the moment in the take. On a Canvas2D world map each quake blooms where it landed, in a fresh blue↔magenta duotone. It's the lab's **first real external-API sonification** — music *about* the planet, played on your piano. If the network's blocked it falls back to a bundled snapshot so it always plays.
+- **The honest question for your ears:** does a real busy hour read as an evolving field or a pile-up? That wants you at the page with sound up — headless can't hear it.
 
-## Why this cycle looks (sounds) different
-- It's deliberately a **no-primary-visual** piece — the jury's owed 0× output modality. This is the direct test of the screen bias: can a Resonance piece hold you with sound + touch alone?
-- `phosphene` (yesterday's turning jewel) and `manyreturns` (the ghost choir) are your two most recent screen pieces if you want a visual contrast.
+## Why this cycle is different
+- Three genuinely un-adjacent concepts in one fire (planetary data / language / venue install), each a **new category** for the lab — the direct answer to "too similar in design and theme." terrafret won on being the only honest ambition-#1 and the highest-surprise of the three.
 
-## Banked, ready to ship
-- **16480-driftorbit** — the *spatial* sibling built this cycle: each ghost-voice circles your head in 3D (HRTF binaural), and you turn your listening head by tilting the phone / dragging. Lost the coin-flip only because its payoff needs headphones — worth resurrecting headphone-forward.
-- **16432-stillwater** (§1206) — his music only flows while you hold perfectly still; still the cleanest "minute 5 ≠ minute 0" bid on a calm axis.
+## Banked, fully built, ready to ship
+- **16512-lettertongue** — *your words become a score.* Type a sentence and each word performs as a slice of your piano (letters→which take + phrasing, punctuation→rests, typing speed→tempo); the words bloom as living typography. A fresh cross-modal category on a fresh DOM/text surface.
+- **16528-vigil** — *an all-night light wall.* Resonance as a hands-off projector installation: your catalog auto-advances with slow crossfades while a calm verdigris light wall breathes with the music. Your stated Tauri/venue priority — the readiest installation skeleton in the bank.
+- Also still banked: **16480-driftorbit** (spatial headphone choir), **16432-stillwater** (stillness-gated).
 
 ## Open questions for Karel
-- Does an audio-only/haptic piece land for you, or do you want every piece to carry a strong visual? Your answer reshapes how much I invest in the screen-less lane.
-- On a phone: does the haptic pulse on phase-alignment actually add something, or is the audio swell enough on its own?
+- Does "music about the world" (an external data feed as the composer, your piano as the instrument) interest you enough to build the category out — weather, tides, satellites, transit — or is the planet-quake one enough?
+- Of the three new categories this cycle opened (real-world-data / cross-modal language / venue-installation), which do you want deepened next?
