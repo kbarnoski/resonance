@@ -27,6 +27,8 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     store.togglePlayPause();
   } else if (cmd === "skip" && context === "loop") {
     window.dispatchEvent(new Event("installation-operator-skip"));
+  } else if (cmd === "prev" && context === "loop") {
+    window.dispatchEvent(new Event("installation-operator-prev"));
   } else if (cmd === "break" && context === "loop") {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {

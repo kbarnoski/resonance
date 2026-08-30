@@ -129,14 +129,24 @@ export function RemoteClient() {
       ) : null}
 
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <Button variant="glass" className={btn} onClick={() => void send("toggle-play")}>
+        {inLoop && (
+          <>
+            <Button variant="glass" className={btn} onClick={() => void send("prev")}>
+              ◀ Previous
+            </Button>
+            <Button variant="glass" className={btn} onClick={() => void send("skip")}>
+              Next ▶
+            </Button>
+          </>
+        )}
+        <Button
+          variant="glass"
+          className={`${btn} ${inLoop ? "col-span-2" : ""}`}
+          onClick={() => void send("toggle-play")}
+        >
           {status?.isPlaying === false ? "Play" : "Pause"}
         </Button>
-        {inLoop ? (
-          <Button variant="glass" className={btn} onClick={() => void send("skip")}>
-            Skip journey
-          </Button>
-        ) : (
+        {!inLoop && (
           <Button variant="glass" className={btn} onClick={() => void send("journey:random")}>
             Random journey
           </Button>

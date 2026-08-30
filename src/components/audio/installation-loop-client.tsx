@@ -785,6 +785,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           window.dispatchEvent(new Event("installation-operator-skip"));
           return;
         }
+        if (k === "p") {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.dispatchEvent(new Event("installation-operator-prev"));
+          return;
+        }
       }
       // Always let browser shortcuts through (reload, devtools, address
       // bar, tab switching, etc). Anything with a modifier key is the
@@ -1196,6 +1202,17 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     };
     window.addEventListener("installation-operator-skip", operatorSkip);
 
+    // Operator previous (Cmd+Shift+P / phone remote ◀) — step back one
+    // journey; on the first journey it restarts the current one. Pause
+    // first so the outgoing track never bleeds into the new intro.
+    const operatorPrev = () => {
+      // eslint-disable-next-line no-console
+      console.log(`[installation] ${entry.journey.name}: operator previous`);
+      try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      setPhase({ kind: "journey", index: Math.max(0, phase.index - 1) });
+    };
+    window.addEventListener("installation-operator-prev", operatorPrev);
+
     // ─── Pre-load next journey's audio ────────────────────────────
     // ~10 seconds before the current track ends, point a HIDDEN
     // <audio> element at the next journey's URL with preload="auto".
@@ -1532,6 +1549,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
 
     return () => {
       window.removeEventListener("installation-operator-skip", operatorSkip);
+      window.removeEventListener("installation-operator-prev", operatorPrev);
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
