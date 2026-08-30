@@ -84,6 +84,9 @@ async function launchJourney(id: string): Promise<void> {
   if (!journey) return;
 
   ensureResumed();
+  // Close the kiosk's selector/library overlays — an auto-opened
+  // journey browser otherwise sits opaque over the launched visuals.
+  window.dispatchEvent(new Event("kiosk-remote-journey-launch"));
   const store = useAudioStore.getState();
   store.setAiImageEnabled(journey.aiEnabled);
   store.startJourney(journey.id);

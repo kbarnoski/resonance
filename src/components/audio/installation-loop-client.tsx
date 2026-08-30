@@ -20,6 +20,7 @@ import { Eyebrow, DisplayTitle } from "@/components/ui/typography";
 import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
 import {
   INTRO_MS,
+  EXPERIENCE_INTRO_MS,
   CREDITS_MS,
   MAX_JOURNEY_MS,
   STALLED_THRESHOLD_MS,
@@ -213,7 +214,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   //                     together.
   //   fading-journey  — title fades out over 1.8s; bg already gone.
   //   gone            — everything unmounted; phase change to journey 0
-  type IntroStage = "cycle" | "fading-cycle" | "journey" | "fading-journey" | "gone";
+  type IntroStage = "experience" | "cycle" | "fading-cycle" | "journey" | "fading-journey" | "gone";
   // Initial stage. Kiosk path (/installation) starts at "cycle" so
   // the InstallationIntro fades the cycle text in. Gesture path
   // (/demo, where playOnce=true) starts at "fading-cycle" so the
@@ -898,9 +899,20 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // "fading-cycle" so the bg-black is opaque but the cycle text
       // doesn't mount a second time (the duplicate-titling bug the
       // user saw on mobile when both overlays rendered cycle text).
-      setIntroStage(needsGesture && started ? "fading-cycle" : "cycle");
+      // Tramokyo cold open: on the auto-start path, each full cycle
+      // (program 0) opens with the experience-level "Resonance" card
+      // before the program intro. Gesture-started sessions skip it —
+      // the Begin overlay already presented the experience.
+      const expMs =
+        !(needsGesture && started) && programIndex === 0
+          ? EXPERIENCE_INTRO_MS
+          : 0;
+      setIntroStage(
+        needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
+      );
 
       // Refs to scoped timers so an early error listener can abort them.
+      let expToCycle: ReturnType<typeof setTimeout> | null = null;
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
       let mountJourney: ReturnType<typeof setTimeout> | null = null;
       let fadeJourneyStart: ReturnType<typeof setTimeout> | null = null;
@@ -943,10 +955,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // path (/demo) skips that wait because the user has already
       // read the cycle intro on the Begin overlay.
       const isGesture = needsGesture && started;
-      const preStartDelay = isGesture ? 0 : CYCLE_INTRO_TIMINGS.cycleFadeOutStartMs;
-      const mountDelay = isGesture ? 2000 : CYCLE_INTRO_TIMINGS.journeyMountMs;
-      const fadeOutDelay = isGesture ? 10_000 : CYCLE_INTRO_TIMINGS.journeyFadeOutStartMs;
-      const phaseChangeDelay = isGesture ? 11_800 : CYCLE_INTRO_TIMINGS.phaseChangeMs;
+      // Every downstream offset shifts by the cold open's duration.
+      const preStartDelay = isGesture ? 0 : expMs + CYCLE_INTRO_TIMINGS.cycleFadeOutStartMs;
+      const mountDelay = isGesture ? 2000 : expMs + CYCLE_INTRO_TIMINGS.journeyMountMs;
+      const fadeOutDelay = isGesture ? 10_000 : expMs + CYCLE_INTRO_TIMINGS.journeyFadeOutStartMs;
+      const phaseChangeDelay = isGesture ? 11_800 : expMs + CYCLE_INTRO_TIMINGS.phaseChangeMs;
+      if (expMs > 0) {
+        expToCycle = setTimeout(() => setIntroStage("cycle"), expMs);
+      }
 
       // Pre-start journey 0. The shader needs lead time to compile
       // + start its A/B crossfade before bg starts revealing it.
@@ -1041,6 +1057,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       }, phaseChangeDelay);
 
       return () => {
+        if (expToCycle) clearTimeout(expToCycle);
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
         if (mountJourney) clearTimeout(mountJourney);
         if (fadeJourneyStart) clearTimeout(fadeJourneyStart);

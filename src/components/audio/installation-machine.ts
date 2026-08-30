@@ -25,6 +25,9 @@ import {
  *  Karel's kiosk test (2026-08-24): 7s was too short to read the
  *  program description — hold a few seconds longer. */
 export const INTRO_MS = 11_000;
+/** Tramokyo cold open — the experience-level "Resonance" card shown
+ *  once per full cycle, before program 0's intro. */
+export const EXPERIENCE_INTRO_MS = 15_000;
 
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;

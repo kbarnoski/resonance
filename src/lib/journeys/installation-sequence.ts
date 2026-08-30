@@ -38,6 +38,24 @@ export interface InstallationProgramDef {
   dedication: ProgramDedication;
 }
 
+/**
+ * Tramokyo cold open — experience-level opening credits shown once per
+ * full cycle before the first program's intro. Copy drawn from Karel's
+ * artist statement in docs/installation-brief.md. One-off for the
+ * installation; nothing outside the kiosk renders this.
+ */
+export const EXPERIENCE_INTRO = {
+  eyebrow: "a one-night installation",
+  title: "Resonance",
+  body:
+    "A generative audiovisual instrument — composed music driving a " +
+    "slow-moving visual landscape that never repeats. Built for " +
+    "personal listening; tonight, a shared room. The same engine, the " +
+    "same patience, just larger and quieter.",
+  invitation: "Recline. Eyes up.",
+  credit: "composed and performed by Karel Barnoski",
+} as const;
+
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
   {
     id: "welcome-home",

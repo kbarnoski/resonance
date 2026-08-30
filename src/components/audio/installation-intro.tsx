@@ -1,6 +1,7 @@
 "use client";
 
 import type { Journey } from "@/lib/journeys/types";
+import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
@@ -27,6 +28,7 @@ import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
  */
 type Stage =
   | "cycle"
+  | "experience"
   | "fading-cycle"
   | "journey"
   | "fading-journey"
@@ -51,6 +53,12 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   const bgOpacity =
     stage === "journey" || stage === "fading-journey" ? 0 : 1;
 
+  // Experience (Tramokyo cold open) mounted during its own stage and
+  // through "cycle" so it fades OUT while the cycle card fades in —
+  // both over the opaque bg, so the handoff is a soft crossfade.
+  const expMounted = stage === "experience" || stage === "cycle";
+  const expOpacity = stage === "experience" ? 1 : 0;
+
   // Cycle text mounted in cycle + fading-cycle, fades in fading-cycle.
   const cycleMounted = stage === "cycle" || stage === "fading-cycle";
   const cycleOpacity = stage === "fading-cycle" ? 0 : 1;
@@ -73,6 +81,19 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
             transition: "opacity 3800ms ease-out",
           }}
         />
+      )}
+
+      {expMounted && (
+        <div
+          className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center px-8 text-center"
+          style={{
+            zIndex: 122,
+            opacity: expOpacity,
+            transition: "opacity 1800ms ease-out",
+          }}
+        >
+          <ExperienceTextInner />
+        </div>
       )}
 
       {cycleMounted && (
@@ -108,6 +129,33 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
         }
       `}</style>
     </>
+  );
+}
+
+function ExperienceTextInner() {
+  return (
+    <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
+      <ResonanceMark className="mx-auto mb-8 h-16 w-16 text-white/80" />
+      <Eyebrow className="text-white/55">{EXPERIENCE_INTRO.eyebrow}</Eyebrow>
+      <DisplayTitle
+        as="h1"
+        className="mt-3 text-[clamp(2.6rem,6vw,4.5rem)] tracking-[0.01em] text-white/90"
+      >
+        {EXPERIENCE_INTRO.title}
+      </DisplayTitle>
+      <p className="mx-auto mt-6 max-w-2xl text-[clamp(1rem,1.6vw,1.2rem)] leading-[1.7] text-white/70">
+        {EXPERIENCE_INTRO.body}
+      </p>
+      <DisplayTitle
+        as="div"
+        className="mt-8 text-[clamp(1.2rem,2.2vw,1.6rem)] tracking-[0.02em] text-white/80"
+      >
+        {EXPERIENCE_INTRO.invitation}
+      </DisplayTitle>
+      <MonoLabel className="mt-10 block text-sm tracking-[0.08em] text-white/55">
+        {EXPERIENCE_INTRO.credit}
+      </MonoLabel>
+    </div>
   );
 }
 
@@ -221,26 +269,27 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           {journey.subtitle}
         </DisplayTitle>
       )}
-      <MonoLabel
-        className="relative mt-12 text-base tracking-[0.06em] text-white/65"
-        style={{ textShadow: TEXT_SHADOW }}
-      >
-        {(() => {
-          // Same join logic as the visualizer-client journey intro so
-          // every journey in the installation loop renders identical
-          // credits. When the journey creator IS the track artist,
-          // credit them as composer (per Karel's kiosk feedback) —
-          // otherwise split journey vs. music credits.
-          const parts: string[] = [];
-          if (trackArtist && trackArtist !== creator) {
-            parts.push(`by ${creator}`, `Music by ${trackArtist}`);
-          } else {
-            parts.push(`Composed by ${creator}`);
-          }
-          if (journey.photographyCredit) parts.push(`Photography by ${journey.photographyCredit}`);
-          return parts.join("  ·  ");
-        })()}
-      </MonoLabel>
+      {(() => {
+        // No per-track self-credit — the program intro already says
+        // "composed and performed by Karel Barnoski" once (Karel's
+        // 2026-08-30 kiosk feedback: don't repeat it on every track).
+        // Credits render only when someone ELSE shares the card; with
+        // nothing to credit the label (and its margin) is omitted.
+        const parts: string[] = [];
+        if (trackArtist && trackArtist !== creator) {
+          parts.push(`by ${creator}`, `Music by ${trackArtist}`);
+        }
+        if (journey.photographyCredit) parts.push(`Photography by ${journey.photographyCredit}`);
+        if (parts.length === 0) return null;
+        return (
+          <MonoLabel
+            className="relative mt-12 text-base tracking-[0.06em] text-white/65"
+            style={{ textShadow: TEXT_SHADOW }}
+          >
+            {parts.join("  ·  ")}
+          </MonoLabel>
+        );
+      })()}
       {journey.dedication && (
         <DisplayTitle
           as="div"

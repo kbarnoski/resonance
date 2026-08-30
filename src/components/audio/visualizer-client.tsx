@@ -594,6 +594,21 @@ export function VisualizerClient({
     }
   }, [installationMode, journeyOpen]);
 
+  // Phone remote journey launch (offline kiosk DJ mode): the remote
+  // starts audio + engine through the store, but the selector/library
+  // overlays are local state it can't reach — an open selector sits
+  // opaque over the visuals ("music but no viz" after break-in, since
+  // the empty-room state auto-opens the selector). Close them on launch.
+  useEffect(() => {
+    const onRemoteLaunch = () => {
+      setJourneyOpen(false);
+      setLibraryOpen(false);
+    };
+    window.addEventListener("kiosk-remote-journey-launch", onRemoteLaunch);
+    return () =>
+      window.removeEventListener("kiosk-remote-journey-launch", onRemoteLaunch);
+  }, []);
+
   // Phone remote (offline kiosk) — inside the attract loop the loop
   // client runs the poller, so this instance stands down.
   useKioskRemote(installationMode ? null : "room");
