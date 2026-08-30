@@ -146,6 +146,9 @@ function ExperienceTextInner() {
       <p className="mx-auto mt-6 max-w-2xl text-[clamp(1rem,1.6vw,1.2rem)] leading-[1.7] text-white/70">
         {EXPERIENCE_INTRO.body}
       </p>
+      <p className="mx-auto mt-4 max-w-2xl text-[clamp(0.95rem,1.5vw,1.1rem)] leading-[1.7] text-white/60">
+        {EXPERIENCE_INTRO.bodySecond}
+      </p>
       <DisplayTitle
         as="div"
         className="mt-8 text-[clamp(1.2rem,2.2vw,1.6rem)] tracking-[0.02em] text-white/80"

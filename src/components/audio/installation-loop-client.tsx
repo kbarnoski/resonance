@@ -154,6 +154,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // eslint-disable-next-line no-console
       console.log(`[installation] operator jump → program ${id}`);
       try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      useAudioStore.getState().setSuppressNextJourneyIntro(false);
       setStartIdx(0);
       setProgramIndex(idx);
       setPhase({ kind: "intro" });
@@ -181,6 +182,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // eslint-disable-next-line no-console
         console.log(`[installation] operator jump → ${programs[pi].id} · journey ${ji + 1}`);
         try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+        // Kill the intro title layer: jumping during journey 0's title
+        // window otherwise leaves InstallationIntro mounted, titling the
+        // landing journey at the same time as the standard journey
+        // overlay (the doubled/overlapping title Karel saw). One title
+        // system owns the card: the visualizer-client overlay.
+        setIntroStage("gone");
+        useAudioStore.getState().setSuppressNextJourneyIntro(false);
         setStartIdx(0);
         setProgramIndex(pi);
         setPhase({ kind: "journey", index: ji });
@@ -1270,6 +1278,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // eslint-disable-next-line no-console
       console.log(`[installation] ${entry.journey.name}: operator previous`);
       try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      setIntroStage("gone");
+      useAudioStore.getState().setSuppressNextJourneyIntro(false);
       setPhase({ kind: "journey", index: Math.max(0, phase.index - 1) });
     };
     window.addEventListener("installation-operator-prev", operatorPrev);

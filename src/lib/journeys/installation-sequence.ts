@@ -52,6 +52,10 @@ export const EXPERIENCE_INTRO = {
     "slow-moving visual landscape that never repeats. Built for " +
     "personal listening; tonight, a shared room. The same engine, the " +
     "same patience, just larger and quieter.",
+  bodySecond:
+    "Featuring music selections from Karel's catalog of recordings — " +
+    "Welcome Home, Surrounded by Light, March Light, Snowflake, and " +
+    "others.",
   invitation: "Recline. Eyes up.",
   credit: "composed and performed by Karel Barnoski",
 } as const;
