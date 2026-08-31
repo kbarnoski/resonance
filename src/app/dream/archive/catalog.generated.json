@@ -1,5 +1,13 @@
 [
  {
+  "slug": "16560-spectralbraid",
+  "cycle": 16560,
+  "name": "Spectralbraid",
+  "status": "demoable",
+  "description": "state: demoable · pole: cross-synthesis / painterly DSP",
+  "category": "local"
+ },
+ {
   "slug": "16496-terrafret",
   "cycle": 16496,
   "name": "The Earth Plays the Piano",
