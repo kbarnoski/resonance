@@ -126,9 +126,17 @@ export default async function InstallationPage({ searchParams }: Props) {
     const exactPatterns = pairedPatterns.filter(([, p]) => p.startsWith("="));
 
     // Offline: resolve both pattern forms in memory against the pack.
+    // QUARANTINE (Karel's ruling + the-tempest overnight stall): the pack
+    // physically contains the quarantined 17th St / Folsom St files —
+    // several are ALAC, which Chrome cannot decode, and a pairing that
+    // resolves to one stalls the journey. Filter them out of pairing
+    // entirely; those journeys draw verified tracks from the fallback
+    // pool instead.
     if (offline) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const rows = listRecordings() as any[];
+      const rows = (listRecordings() as any[]).filter(
+        (r) => !QUARANTINED_RECORDING_IDS.has(r.id),
+      );
       for (const [jid, p] of pairedPatterns) {
         if (p.startsWith("=")) {
           const exactTitle = p.slice(1);

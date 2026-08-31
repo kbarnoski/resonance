@@ -222,6 +222,20 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // NEXT track during breaths/statements — journey starts then play
   // from cache instead of glitching through a cold network/disk read.
   const preloadElRef = useRef<HTMLAudioElement | null>(null);
+  // Flight recorder: fire-and-forget lifecycle events to the server-side
+  // log (/tmp/tramokyo-events.log) that survives page reloads — overnight
+  // diagnosis without console access. Offline-pack only (route 404s
+  // elsewhere and this never throws).
+  const postEvent = (event: string) => {
+    try {
+      void fetch("/api/pack/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ event }),
+        keepalive: true,
+      }).catch(() => {});
+    } catch { /* never let logging hurt the show */ }
+  };
   const preloadTrack = (track: { id: string; audioUrl?: string | null } | null | undefined) => {
     if (!track?.audioUrl) return;
     void (async () => {
@@ -837,7 +851,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // server is back.
         void fetch("/", { cache: "no-store" })
           .then((res) => {
-            if (res.ok) window.location.reload();
+            if (res.ok) {
+              postEvent(
+                `WEDGE-RELOAD phase=${phaseRef.current.kind} after ${(elapsed / 1000 / 60).toFixed(0)}min without a phase change`,
+              );
+              window.location.reload();
+            }
           })
           .catch(() => { /* server not back yet — retry next tick */ });
       }
@@ -1115,6 +1134,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // STORE (not just the element) keeps every watchdog honest —
       // they all treat a store-paused kiosk as intentional.
       useAudioStore.getState().pause();
+      postEvent(`statement before journey ${phase.index + 1}`);
       preloadTrack(trackForIndex(phase.index));
       setStatementFading(false);
       const fadeT = setTimeout(
@@ -1223,6 +1243,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       setPhase({ kind: "credits" });
       return;
     }
+    postEvent(
+      `journey ${phase.index + 1}/${sequence.length} ${entry.journey.name}` +
+        (entry.track ? ` [${entry.track.title}]` : " [fallback]"),
+    );
 
     // Show dots while the per-journey title overlay is up — but ONLY
     // when there's actually a title overlay being shown. For journey 0
@@ -1357,6 +1381,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     const operatorSkip = () => {
       // eslint-disable-next-line no-console
       console.log(`[installation] ${entry.journey.name}: operator skip`);
+      postEvent(`skip ${entry.journey.name}`);
       advance();
     };
     window.addEventListener("installation-operator-skip", operatorSkip);
@@ -1367,6 +1392,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     const operatorPrev = () => {
       // eslint-disable-next-line no-console
       console.log(`[installation] ${entry.journey.name}: operator previous`);
+      postEvent(`prev ${entry.journey.name}`);
       try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
       setIntroStage("gone");
       useAudioStore.getState().setSuppressNextJourneyIntro(false);
@@ -1594,6 +1620,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         console.warn(
           `[installation] ${entry.journey.name}: stalled at ${t.toFixed(1)}s for ${(stalledFor/1000).toFixed(0)}s — force-reload`,
         );
+        postEvent(`stall-reload ${entry.journey.name} t=${t.toFixed(0)} stalled=${(stalledFor/1000).toFixed(0)}s`);
         const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
         clearCachedUrl(tk.id);
         const fresh = await resolveAudioUrl(tk.audioUrl, tk.id);
@@ -1677,6 +1704,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       if (audioEnded) {
         // eslint-disable-next-line no-console
         console.log(`[installation] ${entry.journey.name}: tick → audioEnded (t=${currentTime.toFixed(1)} / dur=${duration.toFixed(1)} / expected=${expectedDuration.toFixed(1)})`);
+        postEvent(`ended ${entry.journey.name} t=${currentTime.toFixed(0)}`);
         advance();
         return;
       }
@@ -1687,6 +1715,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           : `safety timeout after ${(elapsed/1000).toFixed(0)}s`;
         // eslint-disable-next-line no-console
         console.warn(`[installation] ${entry.journey.name}: ${reason}`);
+        postEvent(`skip-auto ${entry.journey.name} ${reason}`);
         logInstallFailure({
           journey: entry.journey.name,
           track: t?.title ?? "(no track)",
