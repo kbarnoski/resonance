@@ -222,6 +222,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // NEXT track during breaths/statements — journey starts then play
   // from cache instead of glitching through a cold network/disk read.
   const preloadElRef = useRef<HTMLAudioElement | null>(null);
+  const bootLoggedRef = useRef(false);
+  useEffect(() => {
+    if (bootLoggedRef.current) return;
+    bootLoggedRef.current = true;
+    postEvent(`BOOT build=${process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev"}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Flight recorder: fire-and-forget lifecycle events to the server-side
   // log (/tmp/tramokyo-events.log) that survives page reloads — overnight
   // diagnosis without console access. Offline-pack only (route 404s
@@ -934,6 +941,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     if (needsGesture && !started) return;
 
     if (phase.kind === "intro") {
+      postEvent(
+        `cycle-start ${program?.id ?? "?"} (${sequence.length} journeys)`,
+      );
       // Unfreeze the journey engine — credits screen had it frozen so
       // shaders wouldn't keep mutating during the bg fade-in. Now the
       // new cycle is starting, normal shader switching resumes.
@@ -1167,6 +1177,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     }
 
     if (phase.kind === "credits") {
+      postEvent(`cycle-complete ${program?.id ?? "?"}`);
       // Dots stay hidden during credits — they've already faded out
       // alongside Ghost's title.
       setTitleWindow(false);
