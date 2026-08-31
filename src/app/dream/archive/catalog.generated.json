@@ -1,5 +1,13 @@
 [
  {
+  "slug": "16608-longvigil",
+  "cycle": 16608,
+  "name": "The Sediment Wall",
+  "status": "demoable",
+  "description": "A hands-off, all-night venue installation for a projector: it plays Karel's catalog forever and slowly accretes a persistent geological record of everything it has played — the wal",
+  "category": "local"
+ },
+ {
   "slug": "16560-spectralbraid",
   "cycle": 16560,
   "name": "Spectralbraid",
