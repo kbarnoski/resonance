@@ -62,7 +62,7 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "ghost", //  3. Ghost
   "27f52cf0-5fad-420f-8324-8017c414f1f8", //  4. Interplay
   "mycelium-dream", //  5. Mycelium Dream (fallback music)
-  "the-tempest", //  6. The Tempest (fallback music)
+  // "the-tempest", // PULLED 2026-08-30 — stalled the sequence with its paired track (Karel kiosk test); re-add after diagnosis
   "neural-link", //  7. Neural Link (fallback music)
   "38daff92-ae34-4448-8868-5f1df6029b94", //  8. Rolling
   "cosmic-drift", //  9. Cosmic Drift (fallback music)
