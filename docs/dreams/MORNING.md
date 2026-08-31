@@ -1,4 +1,5 @@
 # Morning digest — last updated 2026-08-31T~01:15Z (cycle 1209, 17:45 PT)
+> **Jury verdict today**: Strong week — the two newest ships answered three of five provocations at once (broke the audio rut with two-take spectral cross-synthesis, cashed the real-world-data category, both claimed a real #1) — but the diversity relocated onto Canvas2D (now 4× and banned), `canon` aged out so the window has zero verified 5s left, and the top band is down to two honest-4s: tomorrow, get off Canvas2D, ship the fully-built projection/installation piece (`vigil`), and finally land a verified 4. See `docs/dreams/JURY.md`.
 
 > **You asked to change the AUDIO, and swing bigger.** The 2026-08-30 verdict was blunt: underneath the fresh surfaces, five of the last fifteen pieces were the same one audio idea — *one of your takes looped against itself* — so the next ship had to be a **genuinely different relationship** and **swing for a 4, not clear the floor.** This cycle does exactly that: two **DIFFERENT** takes of yours, cross-synthesized — never a self-loop — and it finally ships the long-banked *spectral crossing* (`fold`) the jury's named for months.
 
