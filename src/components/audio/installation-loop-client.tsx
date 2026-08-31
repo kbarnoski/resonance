@@ -218,6 +218,25 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const [titleWindow, setTitleWindow] = useState(false);
   // Artist-statement interstitial fade (opacity out over its last 1.5s).
   const [statementFading, setStatementFading] = useState(false);
+  // Hidden audio element that warms the browser's media cache with the
+  // NEXT track during breaths/statements — journey starts then play
+  // from cache instead of glitching through a cold network/disk read.
+  const preloadElRef = useRef<HTMLAudioElement | null>(null);
+  const preloadTrack = (track: { id: string; audioUrl?: string | null } | null | undefined) => {
+    if (!track?.audioUrl) return;
+    void (async () => {
+      try {
+        const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+        const url = await resolveAudioUrl(track.audioUrl!, track.id);
+        const a = (preloadElRef.current ??= new Audio());
+        a.preload = "auto";
+        if (a.src !== url) {
+          a.src = url;
+          a.load();
+        }
+      } catch { /* best-effort warm-up */ }
+    })();
+  };
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
@@ -924,16 +943,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // (program 0) opens with the experience-level "Resonance" card
       // before the program intro. Gesture-started sessions skip it —
       // the Begin overlay already presented the experience.
-      const expMs =
-        !(needsGesture && started) && programIndex === 0
-          ? EXPERIENCE_INTRO_MS
-          : 0;
+      // ONE intro screen (Karel 2026-08-30): every auto-start intro —
+      // mix or album jump — shows only the statement card; the per-
+      // program "presenting…" card is retired (its stage renders at
+      // opacity 0 and exists purely as choreography timing).
+      const expMs = !(needsGesture && started) ? EXPERIENCE_INTRO_MS : 0;
       setIntroStage(
         needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
       );
 
       // Refs to scoped timers so an early error listener can abort them.
-      let expToCycle: ReturnType<typeof setTimeout> | null = null;
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
       let mountJourney: ReturnType<typeof setTimeout> | null = null;
       let fadeJourneyStart: ReturnType<typeof setTimeout> | null = null;
@@ -977,13 +996,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // read the cycle intro on the Begin overlay.
       const isGesture = needsGesture && started;
       // Every downstream offset shifts by the cold open's duration.
-      const preStartDelay = isGesture ? 0 : expMs + CYCLE_INTRO_TIMINGS.cycleFadeOutStartMs;
-      const mountDelay = isGesture ? 2000 : expMs + CYCLE_INTRO_TIMINGS.journeyMountMs;
-      const fadeOutDelay = isGesture ? 10_000 : expMs + CYCLE_INTRO_TIMINGS.journeyFadeOutStartMs;
-      const phaseChangeDelay = isGesture ? 11_800 : expMs + CYCLE_INTRO_TIMINGS.phaseChangeMs;
-      if (expMs > 0) {
-        expToCycle = setTimeout(() => setIntroStage("cycle"), expMs);
-      }
+      // Statement holds EXPERIENCE_INTRO_MS; journey 0 pre-starts
+      // behind it, the journey title mounts after a short black hold,
+      // then the normal title choreography plays out.
+      const preStartDelay = isGesture ? 0 : Math.max(0, expMs - 4_500);
+      const mountDelay = isGesture ? 2000 : expMs + 800;
+      const fadeOutDelay = isGesture ? 10_000 : mountDelay + 8_000;
+      const phaseChangeDelay = isGesture ? 11_800 : mountDelay + 9_800;
 
       // Pre-start journey 0. The shader needs lead time to compile
       // + start its A/B crossfade before bg starts revealing it.
@@ -1078,7 +1097,6 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       }, phaseChangeDelay);
 
       return () => {
-        if (expToCycle) clearTimeout(expToCycle);
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
         if (mountJourney) clearTimeout(mountJourney);
         if (fadeJourneyStart) clearTimeout(fadeJourneyStart);
@@ -1097,6 +1115,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // STORE (not just the element) keeps every watchdog honest —
       // they all treat a store-paused kiosk as intentional.
       useAudioStore.getState().pause();
+      preloadTrack(trackForIndex(phase.index));
       setStatementFading(false);
       const fadeT = setTimeout(
         () => setStatementFading(true),
@@ -1310,6 +1329,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           nextJourneyId ? PRE_ENTRY_PAUSE_MS[nextJourneyId] ?? 0 : 0,
         );
         if (pauseMs > 0) {
+          // Warm the next track during the breath so playback starts
+          // from cache — the breath exists to make the entry perfect.
+          preloadTrack(trackForIndex(phase.index + 1));
           // Pause audio immediately so the breath actually IS silent —
           // without this, audio-provider's onEnded handler keeps
           // currentTrack mounted and the audio element could re-fire.

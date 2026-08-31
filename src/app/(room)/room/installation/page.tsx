@@ -5,7 +5,7 @@ import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } 
 import { QUARANTINED_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID, TRAMOKYO_SETLIST } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 import {
@@ -391,17 +391,24 @@ export default async function InstallationPage({ searchParams }: Props) {
       const extraBuiltinIds = Object.keys(PAIRED_TRACKS).filter(
         (id) => !seen.has(id),
       );
-      const pool = [
+      const rawPool = [
         ...programs.flatMap((p) => p.sequence),
         ...buildBuiltinSequence(extraBuiltinIds),
       ];
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
+      // Curated order (Karel 2026-08-30): follow TRAMOKYO_SETLIST;
+      // anything built but unlisted is appended so nothing silently
+      // vanishes when the list is tweaked.
+      const byId = new Map(rawPool.map((e) => [e.journey.id, e]));
+      const pool = TRAMOKYO_SETLIST.map((id) => byId.get(id)).filter(
+        (e): e is SequenceEntry => !!e,
+      );
+      const listed = new Set(TRAMOKYO_SETLIST);
+      for (const e of rawPool) {
+        if (!listed.has(e.journey.id)) pool.push(e);
       }
       programs.unshift({
         id: TRAMOKYO_MIX_ID,
-        presenting: "an evening of selections",
+        presenting: "an evening of selections",  // intro card no longer shown — statement only
         description:
           "Pieces from across the catalog — Welcome Home, Snowflake, and " +
           "the featured journeys — in an order of their own.",

@@ -56,7 +56,8 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   // Experience (Tramokyo cold open) mounted during its own stage and
   // through "cycle" so it fades OUT while the cycle card fades in —
   // both over the opaque bg, so the handoff is a soft crossfade.
-  const expMounted = stage === "experience" || stage === "cycle";
+  const expMounted =
+    stage === "experience" || stage === "cycle" || stage === "fading-cycle";
   const expOpacity = stage === "experience" ? 1 : 0;
 
   // Cycle text mounted in cycle + fading-cycle, fades in fading-cycle.

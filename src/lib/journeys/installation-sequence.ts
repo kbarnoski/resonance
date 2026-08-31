@@ -48,6 +48,43 @@ export interface InstallationProgramDef {
  *  page, not from INSTALLATION_PROGRAMS defs). */
 export const TRAMOKYO_MIX_ID = "tramokyo-mix";
 
+/**
+ * TRAMOKYO SETLIST — curated order (Karel 2026-08-30). Opens Snowflake →
+ * Realized → Ghost, then a fixed one-time randomization of the full
+ * catalog mix (Welcome Home album + featured journeys). Tweak freely:
+ * reorder/remove lines; anything not listed is appended at the end.
+ * Journeys marked "fallback music" pair to quarantined tracks and draw
+ * verified substitutes from the fallback pool.
+ */
+export const TRAMOKYO_SETLIST: readonly string[] = [
+  "first-snow", //  1. Snowflake
+  "inferno", //  2. Realized
+  "ghost", //  3. Ghost
+  "27f52cf0-5fad-420f-8324-8017c414f1f8", //  4. Interplay
+  "mycelium-dream", //  5. Mycelium Dream (fallback music)
+  "the-tempest", //  6. The Tempest (fallback music)
+  "neural-link", //  7. Neural Link (fallback music)
+  "38daff92-ae34-4448-8868-5f1df6029b94", //  8. Rolling
+  "cosmic-drift", //  9. Cosmic Drift (fallback music)
+  "the-bloom", // 10. The Bloom (fallback music)
+  "the-ascent", // 11. The Ascent (fallback music)
+  "cd517f5a-c4eb-4d50-8a53-044aa668d087", // 12. Stir Crazy
+  "abyssal-dive", // 13. Abyssal Dive (fallback music)
+  "8997623d-8770-41ce-863d-f359d1a213c4", // 14. Rebound
+  "the-ascension", // 15. The Ascension (fallback music)
+  "019e1e1d-c7e2-4609-a9c6-364a2755b115", // 16. Quarantine
+  "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b", // 17. Playa
+  "b207b557-e984-4a06-ae71-83124bcd80d5", // 18. All Together
+  "eb79818b-c7e8-45a7-886c-2a432fe83332", // 19. 2019
+  "5a3beb75-4788-4448-a024-4bfae30040c3", // 20. The Knife (Jam)
+  "00fcca2b-bc1e-461a-8dcd-3fff74587f3e", // 21. The Knife
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 22. Welcome Home
+  "08f4c26e-4185-440a-a25c-2440e8e7ae47", // 23. Isolation
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 24. Bath
+  "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // 25. COSMIC HOMECOMING
+] as const;
+
+
 export const EXPERIENCE_INTRO = {
   eyebrow: "a one-night installation",
   title: "Resonance",

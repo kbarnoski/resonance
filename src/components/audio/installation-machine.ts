@@ -34,8 +34,8 @@ export const STATEMENT_INTERSTITIAL_MS = 14_000;
 /** Universal quiet breath between consecutive journeys — a few seconds
  *  of silence before each next track begins (Karel 2026-08-30). Per-
  *  journey PRE_ENTRY_PAUSE values can lengthen it, never shorten it. */
-export const INTER_JOURNEY_BREATH_MS = 3_000;
-export const STATEMENT_EVERY_N_JOURNEYS = 5;
+export const INTER_JOURNEY_BREATH_MS = 4_000;
+export const STATEMENT_EVERY_N_JOURNEYS = 7;
 
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;
