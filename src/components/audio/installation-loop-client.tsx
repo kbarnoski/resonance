@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
-import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay } from "@/lib/audio/audio-engine";
+import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay, rampGainTo } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getJourney } from "@/lib/journeys/journeys";
@@ -1332,10 +1332,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           // Warm the next track during the breath so playback starts
           // from cache — the breath exists to make the entry perfect.
           preloadTrack(trackForIndex(phase.index + 1));
-          // Pause audio immediately so the breath actually IS silent —
-          // without this, audio-provider's onEnded handler keeps
-          // currentTrack mounted and the audio element could re-fire.
-          try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+          // Sound transition: ramp the outgoing audio to silence over
+          // 2s (visuals keep flowing — no black), THEN pause so the
+          // provider's onEnded machinery can't re-fire play. The next
+          // track fades back in via the engine's play-ramp.
+          try {
+            void rampGainTo(0, 2_000).finally(() => {
+              try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+            });
+          } catch { /* ok */ }
           advanceTimer = setTimeout(() => {
             setPhase({ kind: "journey", index: phase.index + 1 });
           }, pauseMs);
