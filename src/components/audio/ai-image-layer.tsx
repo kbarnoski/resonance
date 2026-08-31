@@ -229,9 +229,16 @@ export function AiImageLayer({
       genCountRef.current = 0;
       firstImageFiredRef.current = false;
 
+      // Installation (Tramokyo): NEVER purge to black between journeys —
+      // the previous journey's imagery holds until the new journey's
+      // first (local pack) image displaces it, so transitions crossfade
+      // image→image with no void window (Karel 2026-08-30). The main
+      // app keeps the purge for prompt correctness.
+      const skipPurge = useAudioStore.getState().installationMode;
       const now = performance.now();
       const existingLayers = layersRef.current;
       for (const layer of existingLayers) {
+        if (skipPurge) break;
         if (layer.state !== "fading-out") {
           layer.fadeStartOpacity = layer.opacity;
           layer.state = "fading-out";

@@ -1887,7 +1887,9 @@ export function VisualizerClient({
       </JourneyCompositor>}
 
       {/* Journey phase indicator — hidden during intro + 2s buffer */}
-      {journeyActive && activeJourney && !journeyOpen && phaseIndicatorReady && (
+      {/* Phase words (threshold/integration/…) pull focus in the
+          installation — hidden there, kept in the main app. */}
+      {journeyActive && activeJourney && !journeyOpen && phaseIndicatorReady && !installationMode && (
         <JourneyPhaseIndicator
           key={`phase-indicator-${activeJourney.id}-${overlayRemountKey}`}
           journey={activeJourney}
