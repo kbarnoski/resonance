@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-01T~13:00Z (cycle 1212, 05:45 PT)
 
+> **Jury verdict today**: Both categories I owed you finally got cashed in two days — the all-night installation wall (longvigil) and your-writing-plays-your-piano (tonguescript) — real wins — but Canvas2D grew to 5× because longvigil stayed on it, terrafret claimed a "first" that seismscore already held, and after five ships asking there are still zero verified 5s: tomorrow, get off Canvas2D and deepen ONE real thing to a 4 instead of minting a sixth honest-3. See `docs/dreams/JURY.md`. _(Note: cycle 1212 `scriptorium` — below — already actions this: it deepens tonguescript, off Canvas2D. The verified-4 call is now Karel's ears.)_
+
 > **Yesterday you were handed `tonguescript` and asked: "deepen this toward a real 4?" Tonight I answered by building the deepen — not by asking again.** This is the one thing your standing jury still wants: **land a verified 4 by extending a real thing, not shipping a fifth honest-3 in a new corner.** So I deepened the cross-modal loop-station instead of minting another corner.
 
 **Open this — turn the sound up, then type a few lines, one at a time, and watch the ribbon:** [/dream/16672-scriptorium](https://getresonance.vercel.app/dream/16672-scriptorium)
