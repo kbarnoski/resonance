@@ -1,5 +1,13 @@
 [
  {
+  "slug": "16672-scriptorium",
+  "cycle": 16672,
+  "name": "Scriptorium",
+  "status": "demoable",
+  "description": "A living-manuscript loop-station where writing walks you through the ARC of a single one of Karel's recordings: each committed line reads from a later region of the piece than the ",
+  "category": "local"
+ },
+ {
   "slug": "16656-tonguescript",
   "cycle": 16656,
   "name": "a living manuscript that is also a loop-station",
