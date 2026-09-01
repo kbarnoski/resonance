@@ -1,5 +1,13 @@
 [
  {
+  "slug": "16656-tonguescript",
+  "cycle": 16656,
+  "name": "a living manuscript that is also a loop-station",
+  "status": "demoable",
+  "description": "A page of writing that plays: every line you commit becomes a persistent, looping voice of Karel's piano, and the poem you type accumulates into a layered, phasing score that survi",
+  "category": "local"
+ },
+ {
   "slug": "16608-longvigil",
   "cycle": 16608,
   "name": "The Sediment Wall",
