@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-02T~13:00Z (cycle 1214)
 
+> **Jury verdict today**: The lab took "deepen one thing" and built the same writing-plays-your-piano piece four nights running — real, coherent work, but now a monoculture (keyboard/DOM/prosody/near-dark all maxed) with the ceiling frozen at zero verified 5s for a third straight day; tomorrow, stop deepening the manuscript, put the four in front of your ears, and swing somewhere genuinely new. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[16720-cadencemap](https://getresonance.vercel.app/dream/16720-cadencemap)** — *your writing walks the harmonic form of your own album.* Your whole "Welcome Home" chord progression is laid out as a walkable map (one row per track, each real chord a color-coded cell); every line you type becomes a voice-marker that sits on the chord it's reading and **walks the progression** as it slowly drifts over minutes — and each voice is **tuned into consonance with the chord actually sounding** where it reads, re-tuning as it crosses your real chord changes. A Harmonic-tuning slider dials the pull from raw prosody → snapped-to-chord. **Why open this:** it's the queued path-to-5 for the albumvoyage lineage — the harmony-lock, now that I confirmed your chord analysis is rich across all 13 tracks (146–437 chords each). This is the one that most wants **your ears** — headless I can't hear whether the grains snap into tune against your piano.
 
