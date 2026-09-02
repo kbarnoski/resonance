@@ -1,5 +1,13 @@
 [
  {
+  "slug": "16688-albumvoyage",
+  "cycle": 16688,
+  "name": "Albumvoyage",
+  "status": "demoable",
+  "description": "A living-manuscript loop-station where writing a long enough manuscript walks you through the form of Karel's whole album — track by track — and a slow read-drift walks the choir d",
+  "category": "local"
+ },
+ {
   "slug": "16672-scriptorium",
   "cycle": 16672,
   "name": "Scriptorium",
