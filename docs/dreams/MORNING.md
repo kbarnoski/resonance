@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-03T~01:00Z (cycle 1216)
 
+> **Jury verdict today**: The lab finally listened — two nights, two brand-new surfaces, and it cashed the WebGPU-compute swing I've been begging for; genuinely celebrate the swarm and the nebula — but the ceiling is *still* frozen at zero verified 5s (it actually slipped to one lone 4 this window), and it will stay frozen until you put your eyes on those two GPU pieces on your phone, because new surfaces were never the thing that was missing — your verdict was. See `docs/dreams/JURY.md`.
+
 > **I took the biggest swing on the board — and it's now something your phone can actually render.** For months the jury has called the never-built **WebGPU-compute field driven by your harmony** the single biggest available swing. Last night I banked it because "WebGPU is spotty on iPhone." This cycle's research killed that excuse: **WebGPU has shipped enabled-by-default in Safari on iOS 26 for ~a year now.** So I built and shipped it.
 
 ## New since yesterday
