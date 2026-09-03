@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-09-02T~13:00Z (cycle 1214)
+# Morning digest — last updated 2026-09-03T~13:00Z (cycle 1215)
 
-> **Jury verdict today**: The lab took "deepen one thing" and built the same writing-plays-your-piano piece four nights running — real, coherent work, but now a monoculture (keyboard/DOM/prosody/near-dark all maxed) with the ceiling frozen at zero verified 5s for a third straight day; tomorrow, stop deepening the manuscript, put the four in front of your ears, and swing somewhere genuinely new. See `docs/dreams/JURY.md`.
+> **I broke the monoculture.** Yesterday's jury was blunt: I'd built the same writing-plays-your-piano piece four nights running (keyboard/DOM/prosody/near-dark all maxed). So today: a **WIDE** fire — three unrelated non-manuscript briefs on three genuinely new surfaces — and I shipped the one you can actually *see and be transported by* on your phone.
 
 ## New since yesterday
-- **[16720-cadencemap](https://getresonance.vercel.app/dream/16720-cadencemap)** — *your writing walks the harmonic form of your own album.* Your whole "Welcome Home" chord progression is laid out as a walkable map (one row per track, each real chord a color-coded cell); every line you type becomes a voice-marker that sits on the chord it's reading and **walks the progression** as it slowly drifts over minutes — and each voice is **tuned into consonance with the chord actually sounding** where it reads, re-tuning as it crosses your real chord changes. A Harmonic-tuning slider dials the pull from raw prosody → snapped-to-chord. **Why open this:** it's the queued path-to-5 for the albumvoyage lineage — the harmony-lock, now that I confirmed your chord analysis is rich across all 13 tracks (146–437 chords each). This is the one that most wants **your ears** — headless I can't hear whether the grains snap into tune against your piano.
+- **[16752-chordnebula](https://getresonance.vercel.app/dream/16752-chordnebula)** — *drift **inside** one of your recordings as a boundless glowing cloud.* A full-screen volumetric shader raymarches you slowly forward through a nebula that **breathes with your music** — bass swells the medium, and the **chord actually sounding** lights up colored cores inside the cloud (consonant chords open calm luminous caverns; denser/altered chords thicken and darken it). Pointer or phone-tilt steers your gaze. **Why open this:** it's the cosmic-ambient, altered-states direction you set as the top driver — pure light + sound, no text, no reading. Runs on your phone. Open it, sound up, and let it carry you.
 
-## The one thing I need from you (jury's standing ask)
-- **A listen.** There are now SEVEN audio-forward ships I built but literally cannot hear (driftchoir, spectralbraid, longvigil, tonguescript, scriptorium, albumvoyage, cadencemap). The jury says — and I agree — the "land a verified 4/5" goal is no longer a build problem, it's a **listen** problem. If you open one thing today, open cadencemap with sound up and tell me: does the harmony-lock read? That unblocks the whole ceiling.
+## Also built, banked ready-to-ship (2 of 3 explored)
+- **16736-harmonicswarm** — the **WebGPU-compute** swing the jury called "the biggest single swing available": 30k GPU particles whose *rules of attraction* ARE your chord progression (major → they cohere into filaments; minor/tense → they scatter). Fully built and clean — I **banked** it only because WebGPU is still spotty on iPhone, so you'd likely see a "needs WebGPU" notice at phone review. It ships the moment you're at a desktop. (IDEAS §1215)
+- **16768-tonefold** — raw-WebGL **reaction-diffusion**: your harmony *grows* a living coral/maze pattern that never repeats, chord changes steering the morphology. Also built + clean, banked. (IDEAS §1215)
 
 ## How this cycle went
-- **DEEP ×2**, orchestrated: 2 builders raced the harmony-lock via different readings — a whole-album **map** (shipped) vs per-grain **precision** (16704-chordbind, banked). They compose, so next step folds the precise per-voice locked-chord readout into cadencemap.
-- **Cost I'm owning:** cadencemap is the 4th straight DOM/typography ship — that's now the ban floor. The next NEW build (not another deepen of this lineage) is surface-locked OFF DOM: three.js, audio-only, or the never-once-built WebGPU compute.
+- **WIDE ×3**, orchestrated: three parallel builders, three unrelated surfaces (WebGPU compute · three.js volumetric · WebGL reaction-diffusion), none sharing a single banned lineage tag. Shipped one, banked two as ready-to-ship seeds. Every banned tag from yesterday cleared.
 
-## Research worth a look
-- Chord-progression as a *structural prior* is the current path to long-form harmonic coherence in generation (Chord-Transformer / chord-aligned positional encoding, 2026) — the theory behind making your real chord the tonal target the written voices track. RESEARCH.md §2026-09-02.
+## The one thing I still need from you (unchanged)
+- **A listen.** The audio-forward manuscript backlog (cadencemap etc.) still can't be verified without your ears — that's the frozen ceiling, and no amount of building unblocks it. But chordnebula is different: it's mostly an **eye** call, and your phone can render it. Two verifications in one if you open it with sound up.
 
 ## Open questions for Karel
-- Does the harmony-lock actually sound in-tune, or does snapping the playback-rate of a piano grain just sound like a pitch-shift? (Structural consonance, not pitch-detected — the honest limit.)
-- Is a ~13-row harmonic map legible on your screen, or too dense? Would a single-track focus mode read better?
+- Does the nebula read as one coherent boundless *place*, or as noise? Are the chord-driven hue/structure shifts legible as the harmony moves?
+- Want me to ship the WebGPU swarm next cycle assuming you'll review it on desktop — or keep prioritizing phone-verifiable pieces?
