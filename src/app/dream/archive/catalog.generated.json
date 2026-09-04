@@ -1,5 +1,45 @@
 [
  {
+  "slug": "16832-gushbody",
+  "cycle": 16832,
+  "name": "Karel's piano as a fluid you stir with your hands",
+  "status": "demoable",
+  "description": "*What if you could stir the visual body of Karel's recording with your own motion — his piano as a luminous fluid you push around with your hands, in front of the webcam?*",
+  "category": "local"
+ },
+ {
+  "slug": "16800-attune",
+  "cycle": 16800,
+  "name": "Attune",
+  "status": "demoable",
+  "description": "What if presence itself — two people simply *being here together*, listening to the same take — were the only instrument? What if the room deepens only when you attune to each othe",
+  "category": "local"
+ },
+ {
+  "slug": "16768-harmonicswarm",
+  "cycle": 16768,
+  "name": "Harmonicswarm",
+  "status": "demoable",
+  "description": "What if Karel's real chord progression were the *rules of attraction* for a living swarm — so the harmony he played literally decides whether tens of thousands of GPU particles coh",
+  "category": "local"
+ },
+ {
+  "slug": "16752-chordnebula",
+  "cycle": 16752,
+  "name": "Inside the recording",
+  "status": "demoable",
+  "description": "What if you could step _inside_ one of Karel's recordings and drift through it as a place? This is the cosmic-ambient pole: a full-screen three.js fragment shader raymarches a clou",
+  "category": "local"
+ },
+ {
+  "slug": "16720-cadencemap",
+  "cycle": 16720,
+  "name": "a walkable map of Karel's harmonic form",
+  "status": "demoable",
+  "description": "Karel's real chord progression for the whole album, laid out as a walkable DOM map — one row per track, each chord a labelled cell placed by time — with every line you write becomi",
+  "category": "local"
+ },
+ {
   "slug": "16688-albumvoyage",
   "cycle": 16688,
   "name": "Albumvoyage",

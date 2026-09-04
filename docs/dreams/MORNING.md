@@ -1,21 +1,16 @@
-# Morning digest — last updated 2026-09-04T~01:15Z (cycle 1217)
+# Morning digest — last updated 2026-09-04 (cycle 1218)
 
-> **Jury verdict yesterday**: two nights, two brand-new surfaces (the swarm + the nebula), and it cashed the WebGPU swing — genuinely celebrate those — but the ceiling is *still* frozen at zero verified 5s, and it stays frozen until you put your eyes/ears on the backlog, because new surfaces were never what was missing — your verdict was. See `docs/dreams/JURY.md`.
-
-> **I cashed the LAST swing on the board — the one it's been begging for for months.** The jury kept naming a **multi-user / WebRTC shared listening room** as the final uncashed category. Turns out the hard part (a peer-to-peer transport with a shared clock, `_shared/peerSync`) was already written and sitting unused. So I built the room on top of it.
+> **The one thing (unchanged, and now the ceiling): I need your eyes/ears.** Four+ straight days the lab has cashed new surfaces on command, but zero of them have a verdict from you — and the jury is blunt that *verification*, not new surfaces, is what's frozen. So tonight is a deliberate **20-second eye-call**, not another swing at a new category.
 
 ## New since yesterday
-- **[16800-attune](https://getresonance.vercel.app/dream/16800-attune)** — *a shared listening room where presence itself is the instrument.* Two people (or **two tabs of your own browser** — zero setup) join ONE synchronized session; your take plays sample-close on both. Each of you is a soft warm glow in a candlelit field. The catch: **you cannot deepen the room alone.** A hidden "attunement" only rises when both presences are **close together AND moving slowly** — and as it rises the field blooms warmer and the recording itself audibly *opens* (a filter lifts). It's the opposite of last week's `duetlink` (which had each person conduct a voice) — here nobody performs; the art is shared *attention*. **Why open this:** open it, then open a second tab, and drift the two glows together slowly — watch the room deepen. Pauline Oliveros' *Deep Listening*, as a place.
+- **[16832-gushbody](https://getresonance.vercel.app/dream/16832-gushbody)** — *Karel's piano as a luminous fluid you stir with your own hands.* Open it on a laptop, hit **Play & stir**, allow the camera — then move your hands in front of it. His recording is injected into the field as warm chord-tinted "ink," and your motion (real optical flow) smears and pushes it around. **Why open this:** it's the fastest verdict on the board — you'll know in 20 seconds whether motion visibly stirs the light and whether the harmony reads in the ember. No camera? It still plays and stirs itself. (Ports Adam Ferriss' *Gush* — Horn–Schunck optical-flow feedback — onto your audio.)
 
-## Also built, banked ready-to-ship (2 of 2 explored)
-- **16816-tether** — the co-presence sibling: one luminous **thread** joins the two listeners, your harmony travels along it as a **standing wave**, and moving gently *in phase* blooms the thread and opens the recording. Fully built + clean — banked because `attune` is the purer meditative read. Ships on a future non-cosmic cycle (not right after this one, so co-presence doesn't become its own rut). (IDEAS §1217)
+## Also explored, banked (2 of 2 — WIDE ×2)
+- **tunevoice** — the audio-forward sibling: **sing a note that belongs to the sounding chord and his recording audibly OPENS** (a veil lifts, a resonance blooms on the chord root); drift dissonant and it settles back. Mic is analysis-only (no synth, no howl). Built clean; banked because gushbody is the faster *eye*-call and camera was the bigger diversity win. It's the lab's best **audio-forward** piece — resurrect it the night you want an *ears* test. (IDEAS §1218)
 
 ## How this cycle went
-- **DEEP ×2**, orchestrated: two parallel builders, one concept (a WebRTC co-presence shared listening room over your synced take), two treatments (a co-presence *field* vs a co-presence *thread*). Both raw WebGL2 (off Canvas2D, off three.js which is at its ceiling), both warm-candlelit (off the near-dark manuscript palette AND off the bright-cosmic-field the jury warned not to overdo). Shipped the purer one; banked the other.
+- **WIDE ×2**, orchestrated (2 parallel builders, curated 1). Two unrelated fresh **sensor** families as SECONDARY layers over your catalog — **body-motion** (camera) and **voice** (mic) — both live-performance-fit, both clearing every jury ban (not three.js, not Canvas2D, not DOM, not a cosmic field, not co-presence-again). Deliberately 2 not 3: the jury asked the lab to *stop proliferating surfaces*.
 
-## The one thing I still need from you (unchanged)
-- **A listen / a look.** attune is a two-tab **eye** call you can do on your phone in 20 seconds (open, second tab, drift the glows together). The audio-forward manuscript backlog (cadencemap etc.) still needs your **ears** — no build unblocks that.
-
-## Open questions for Karel
-- Two tabs, glows drifting slowly together: does the room visibly + audibly *deepen*, or does the attunement feel too fiddly to trigger?
-- Does "co-presence, nobody conducting" land as its own thing, distinct from duetlink's two-voice duet?
+## Open questions for you
+- gushbody: does moving your hands visibly **stir** the fluid, and does the chord **tint** read as harmony — or is it just pretty motion?
+- Which do you want next: keep the fresh-sensor thread (resurrect tunevoice for an ears test), or go DEEP on `manyreturns` (the lone high-ambition piece) on a new axis?
