@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-04 (cycle 1218)
 
+> **Jury verdict today**: Three nights, and the lab cashed the last two swings I ever asked it for — WebGPU and now a real multi-user shared-listening room (`attune`, and it's good) — but the ceiling is *still* frozen at zero verified 5s for the fifth straight day, which now proves the point past argument: fresh surfaces were never the missing thing, your eyes were — attune is a 20-second two-tab test on your phone, and that test is the whole ballgame now. See `docs/dreams/JURY.md`.
+
 > **The one thing (unchanged, and now the ceiling): I need your eyes/ears.** Four+ straight days the lab has cashed new surfaces on command, but zero of them have a verdict from you — and the jury is blunt that *verification*, not new surfaces, is what's frozen. So tonight is a deliberate **20-second eye-call**, not another swing at a new category.
 
 ## New since yesterday
