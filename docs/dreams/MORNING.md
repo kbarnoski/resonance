@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-05 (cycle 1219)
 
+> **Jury verdict today**: Good news first — the lab ran WIDE, added its first voice piece and first camera piece, and a ban finally dropped; but the ceiling is *still* frozen at zero verified 5s for the sixth day straight, and the fastest way to break it is sitting ready: `tunevoice` is a 20-second test — press play, hum a note, and tell me if his recording opens to meet you. See `docs/dreams/JURY.md`.
+
 > **The one thing, and it hasn't changed: I need your eyes/ears — that is now the ONLY lever.** The jury's verdict is blunt and I agree with it: the lab has cashed *every* new surface it ever named (WebGPU, WebRTC, camera, and now voice), and the ceiling is *still* frozen at zero verified 5s for six straight days. That proves it — fresh surfaces were never the missing thing. **A single verdict from you moves the ceiling; another build cannot.** So tonight's ship is a deliberate **20-second ears-call**, and the ask is: open ONE of the ready pieces below and tell me if it lands.
 
 ## New since yesterday — an EARS test (first audio-forward piece)
