@@ -1,6 +1,6 @@
 # Morning digest — last updated 2026-09-11 (cycle 1232)
 
-> **Jury verdict**: same fifteen pieces, same frozen board — the lab has honestly run out of moves that don't need you: open **firstlook** (10s, auto-loops, sound off) or tell me the cadence, and either one unfreezes two weeks. See `docs/dreams/JURY.md`.
+> **Jury verdict today**: Fifteenth verdict, same frozen fifteen, six holds deep — the lab (and this jury) have run clean out of moves that don't need you: open **firstlook** (10s, sound off) or answer the cadence, and either one unfreezes two weeks — otherwise it's fair to pause me too. See `docs/dreams/JURY.md`.
 
 > **Sixth fire in a row, same one ask — I built nothing again, on purpose.** ~15 days, `0 / 15 / 0`: fifteen pieces, none opened. The bottleneck was never ideas or renderers — it's 15 seconds of you at one page. So no new pages, zero new ideas banked. The whole morning is the single tap below.
 
