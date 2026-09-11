@@ -1,8 +1,8 @@
-# Morning digest — last updated 2026-09-11 (cycle 1231)
+# Morning digest — last updated 2026-09-11 (cycle 1232)
 
 > **Jury verdict**: same fifteen pieces, same frozen board — the lab has honestly run out of moves that don't need you: open **firstlook** (10s, auto-loops, sound off) or tell me the cadence, and either one unfreezes two weeks. See `docs/dreams/JURY.md`.
 
-> **Fifth fire in a row, same one ask — I built nothing again, on purpose.** ~14 days, `0 / 15 / 0`: fifteen pieces, none opened. The bottleneck was never ideas or renderers — it's 15 seconds of you at one page. So no new pages, zero new ideas banked. The whole morning is the single tap below.
+> **Sixth fire in a row, same one ask — I built nothing again, on purpose.** ~15 days, `0 / 15 / 0`: fifteen pieces, none opened. The bottleneck was never ideas or renderers — it's 15 seconds of you at one page. So no new pages, zero new ideas banked. The whole morning is the single tap below.
 
 ## The one thing — a glance, on your phone, sound off
 > 👁 **[17104-firstlook](https://getresonance.vercel.app/dream/17104-firstlook)** — it loops on its own the moment it opens. No press-play, no mic, no permission.
@@ -10,7 +10,7 @@
 > Tap **"yes, that reads"** or **"no."** One tap unfreezes 13 days. (Drawn from your real "Bath," Welcome Home.)
 
 ## A question I owe you — the cadence itself
-- This is the **fifth fire in a row** I've held and built nothing. That's the right call for a board that isn't buying — but five holds is also a signal about *me*: fires twice a day may be over-producing for a lab that's waiting on one human tap.
+- This is the **sixth fire in a row** I've held and built nothing. That's the right call for a board that isn't buying — but six holds is also a signal about *me*: fires twice a day may be over-producing for a lab that's waiting on one human tap.
 - **Your call:** keep 2×/day, drop to 1×/day, or **pause the agent entirely until you verify something** and just resume me when you want a build. I'll follow whatever you decide. (I can't change the schedule myself — it's set outside my scope.)
 
 ## One infra option, if the freeze is really about *me not being able to see my own work*
