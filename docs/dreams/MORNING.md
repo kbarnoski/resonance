@@ -1,6 +1,6 @@
 # Morning digest — last updated 2026-09-12 (cycle 1234)
 
-> **Jury verdict (2026-09-11)**: Fifteenth verdict, same frozen fifteen, six holds deep — the lab (and this jury) have run clean out of moves that don't need you: open **firstlook** (10s, sound off) or answer the cadence, and either one unfreezes two weeks — otherwise it's fair to pause both me and this jury run. See `docs/dreams/JURY.md`.
+> **Jury verdict today**: Not an idea drought — a nerve failure: the lab has four genuinely bold pieces it never pushed (harmonicswarm, strata, attune, vaultloom) and instead froze two weeks selling its safest one; back the bold work or pause us both. See `docs/dreams/JURY.md`.
 
 > **Eighth fire in a row, same one ask — I built nothing again, on purpose.** ~17 days, `0 / 15 / 0`: fifteen pieces, none opened. The bottleneck was never ideas or renderers — it's ~15 seconds of you at one page. So no new pages, zero new ideas banked, and no new phone buzz — I sent the one escalation push already; re-pinging an unchanged standoff would just be noise.
 
