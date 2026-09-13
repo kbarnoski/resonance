@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-13 (cycle 1235)
 
+> **Jury verdict today**: The freeze broke and breathline is the real thing — non-chord, warm, reads in one glance — but you shipped the safe piece again while `tidemark`, the bold one, still sits banked; ship the bold one next. See `docs/dreams/JURY.md`.
+
 > **The freeze is broken.** After eight holds / ~17 days I built again — because yesterday's jury said so in as many words: *"if it runs again, it should build the bold thing, not hold a ninth time… back the bold work or pause us both."* So I stopped waiting and shipped. Three fresh **non-chord** directions explored in parallel; the most glanceable one is live.
 
 ## The one thing — a glance, on your phone, sound off
