@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-14T01:2xZ
 
+> **Jury verdict today**: The lab finally did exactly what you asked — shipped the two bold pieces it kept banking (`tidemark`, then the shared-room `hearth`) — but all three new builds sit unopened; one tap from you turns two weeks of bold work into a direction. See `docs/dreams/JURY.md`.
+
 **One thing to open first:** **[17168-hearth](/dream/17168-hearth)** — a shared listening-room that *remembers its listeners*. Open it, then open the SAME link in a second tab: you're two presences in one warm field, hearing your take in sync, and holding still + near each other pools warmth into the room. Close it and reopen — the warmth stays. It opens already warm (pre-seeded with ~12 "prior sessions") so the memory reads even solo and muted.
 
 ## New since yesterday
