@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-09-14 (cycle 1236)
+# Morning digest — last updated 2026-09-14T01:2xZ
 
-> **Did what the jury asked.** Today's jury verdict (`docs/dreams/JURY.md`) opened with one instruction — *"Ship `tidemark` next"* — the bold memory piece it's named #1 twice. **It's shipped, this cycle**, and pre-seeded so it reads on a cold glance (the lure fix the jury endorsed). Second build in a row — no relapse into holds. Yesterday breathline; today the memory shelf.
+**One thing to open first:** **[17168-hearth](/dream/17168-hearth)** — a shared listening-room that *remembers its listeners*. Open it, then open the SAME link in a second tab: you're two presences in one warm field, hearing your take in sync, and holding still + near each other pools warmth into the room. Close it and reopen — the warmth stays. It opens already warm (pre-seeded with ~12 "prior sessions") so the memory reads even solo and muted.
 
-## The one thing — a glance, on your phone, sound off
-> 🪨 **[17136-tidemark](https://getresonance.vercel.app/dream/17136-tidemark)** — open it and just look.
-> A recording that **remembers being heard.** Every listen lays down a thin warm layer whose shape records *where* attention lingered, so the piece grows a geological **core-sample** of how it's been listened to — and the tideline crest marks the most-returned passage (with the timecode). It's **pre-seeded** so the layered history reads the instant it loads (no waiting, no cold empty screen — that's the fix for why I held this back last time). Then press Play on your real "Bath" and watch a fresh stratum stack on top when you pause.
-> **Does the core-sample read as listening-history in ~3 seconds?** That glance is the verification I keep asking for.
+## New since yesterday
+- **hearth** — the jury's twice-named #1 swing (`tidemark × attune` = memory × co-presence) finally built: multi-user (two tabs / WebRTC), raw-WebGPU warmth field, persists per-room across sessions. The live-body + off-Canvas2D build the 2026-09-13 jury demanded.
+- Built DEEP ×2 — the co-presence sibling **commons** (a live 9k-particle ember *weave* between two listeners) is banked (IDEAS §1237), a genuinely distinct second take.
 
-## Still standing from yesterday
-- 🫁 **[17120-breathline](https://getresonance.vercel.app/dream/17120-breathline)** — the hidden ~0.36 Hz *breath* under your rubato; the field inhales when you lag, exhales when you rush. Also a 3-second glance. Either one verifying unblocks the next build.
+## In progress / partial (still awaiting your eyes)
+- **[17136-tidemark](/dream/17136-tidemark)** — a recording that remembers being heard (geological core-sample of collective listening). Shipped last fire, not yet verified.
+- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz "breath" recovered from your rubato. Shipped, not yet verified.
 
-## Also built (banked, ready the instant you want it)
-- **ringmemory** — the same "remembers being heard" idea as **tree-rings**: one growth-ring per listen, so a much-heard piece is a visibly bigger, denser tree. Distinct enough from tidemark to ship next; I passed it over only because tidemark's left-right timeline reads *when* you lingered more clearly than a ring's angle.
-- **thehush** (silence-as-material) — still banked from cycle 1235.
+## Research worth a look
+- Two on-view-NOW installations reframe listening as a shared, inhabited ROOM (not a private stream): **Devon Turnbull's Listening Room Dream No.3** (Cooper Hewitt, through Jul 2026) and **UCL's Urban Listening Room** (2026). Both seeded hearth. (RESEARCH §c1237)
 
-## Open question for you
-- **Cadence** (keep 2×/day · drop to 1× · pause) still stands, but not urgent — I've resumed building per the jury. Mostly: **open tidemark (or breathline)** and tell me if the memory reads. If either lands, I deepen it or ship ringmemory next.
+## Open questions for you
+- Three built pieces now stand unverified (breathline, tidemark, hearth). A love/tap on any one tells me which direction to deepen — right now I'm choosing for you.
+- **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've had a chance to review? (open ~2 weeks)

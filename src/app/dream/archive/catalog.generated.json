@@ -1,5 +1,93 @@
 [
  {
+  "slug": "17168-hearth",
+  "cycle": 17168,
+  "name": "A room that remembers being listened in",
+  "status": "demoable",
+  "description": "WebGPU field; open a second tab for instant two-tab co-presence. Runs solo (ambient presence), degrades to a static warm still where WebGPU is missing, and stays in-memory where st",
+  "category": "local"
+ },
+ {
+  "slug": "17136-tidemark",
+  "cycle": 17136,
+  "name": "Tidemark",
+  "status": "demoable",
+  "description": "What if a recording remembered being heard — growing a geological cross-section of collective attention across every listening session?",
+  "category": "local"
+ },
+ {
+  "slug": "17120-breathline",
+  "cycle": 17120,
+  "name": "Breathline",
+  "status": "demoable",
+  "description": "Does Karel's rubato *breathe* on a hidden slow pulse — and can you SEE that breath as the living substrate of his whole take? A performer's beat-by-beat timing variability (rubato)",
+  "category": "local"
+ },
+ {
+  "slug": "17104-firstlook",
+  "cycle": 17104,
+  "name": "Firstlook",
+  "status": "demoable",
+  "description": "A 10-second, auto-looping lure for 17024-inkpressure. Its entire job is to make one specific verification — *does the ink line swell where he leans in and thin where he lifts?* — r",
+  "category": "local"
+ },
+ {
+  "slug": "17088-voiceloom",
+  "cycle": 17088,
+  "name": "Voiceloom",
+  "status": "demoable",
+  "description": "What if the counterpoint inside Karel's real piano recording were woven — each independent voice a thread on a loom, so when two voices move against each other (contrary motion) th",
+  "category": "local"
+ },
+ {
+  "slug": "17024-inkpressure",
+  "cycle": 17024,
+  "name": "Inkpressure",
+  "status": "demoable",
+  "description": "Can you see the weight of Karel's touch — the physical dynamic pressure of his real piano playing — as living ink under variable pressure: a calligraphic line that swells black-hea",
+  "category": "local"
+ },
+ {
+  "slug": "16992-vaultloom",
+  "cycle": 16992,
+  "name": "Vaultloom",
+  "status": "demoable",
+  "description": "What if Karel's harmony wove *architecture* — literal Xenakis ruled-surface vaults lofting into being over the length of a piece, so the finished space is the shape of the whole pe",
+  "category": "local"
+ },
+ {
+  "slug": "16960-tensethread",
+  "cycle": 16960,
+  "name": "TENSE THREAD",
+  "status": "demoable",
+  "description": "Because you can *watch Karel's harmony pull on something.* A suspended web of luminous filaments hangs in a dark space and plays one of his real piano takes. When the harmony is co",
+  "category": "local"
+ },
+ {
+  "slug": "16944-nodalfigure",
+  "cycle": 16944,
+  "name": "Nodal Figure",
+  "status": "demoable",
+  "description": "_What if you could SEE the consonance of Karel's chords as a single drawn figure — a harmonograph whose symmetry LOCKS into a clean closed loop when his harmony is consonant, and f",
+  "category": "local"
+ },
+ {
+  "slug": "16896-strata",
+  "cycle": 16896,
+  "name": "the recording keeps a diary of being heard",
+  "status": "demoable",
+  "description": "What if a recording could remember being heard — could Karel's track accrete a visible geology of every past listening, so returning re-forms the sediment of all previous visits?",
+  "category": "local"
+ },
+ {
+  "slug": "16848-tunevoice",
+  "cycle": 16848,
+  "name": "Tune Voice",
+  "status": "demoable",
+  "description": "What if singing a pitch that BELONGS to Karel's sounding chord made his recording audibly OPEN to meet you? This is audio-forward: the reward is HEARD, not watched. The WebGL2 visu",
+  "category": "local"
+ },
+ {
   "slug": "16832-gushbody",
   "cycle": 16832,
   "name": "Karel's piano as a fluid you stir with your hands",
