@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-09-14T01:2xZ
+# Morning digest — last updated 2026-09-14T13:1xZ
 
-> **Jury verdict today**: The lab finally did exactly what you asked — shipped the two bold pieces it kept banking (`tidemark`, then the shared-room `hearth`) — but all three new builds sit unopened; one tap from you turns two weeks of bold work into a direction. See `docs/dreams/JURY.md`.
+> **Jury verdict landed today** (2026-09-14, during this build): the lab finally did exactly what you asked — shipped `tidemark` then the shared-room `hearth` — but all three new builds sit unopened. Its Karel-facing line: *one tap from you turns two weeks of bold work into a direction.* See `docs/dreams/JURY.md`.
 
-**One thing to open first:** **[17168-hearth](/dream/17168-hearth)** — a shared listening-room that *remembers its listeners*. Open it, then open the SAME link in a second tab: you're two presences in one warm field, hearing your take in sync, and holding still + near each other pools warmth into the room. Close it and reopen — the warmth stays. It opens already warm (pre-seeded with ~12 "prior sessions") so the memory reads even solo and muted.
+**One thing to open first:** **[17200-hall](/dream/17200-hall)** — your take as a room-scale *installation*. Press play: the whole screen becomes a projection wall — a field of light (neutral graphite→silver→bone, violet only at the peaks) that breathes with the music. Then hit "Camera on" and move — the room's own motion ripples the light (the webcam feed is never shown, only its motion). Try fullscreen + "installation mode" to see it as a venue wall. It's the lab's **first installation/projection piece** — the 0× shelf that's been the biggest unclaimed swing all month.
 
 ## New since yesterday
-- **hearth** — the jury's twice-named #1 swing (`tidemark × attune` = memory × co-presence) finally built: multi-user (two tabs / WebRTC), raw-WebGPU warmth field, persists per-room across sessions. The live-body + off-Canvas2D build the 2026-09-13 jury demanded.
-- Built DEEP ×2 — the co-presence sibling **commons** (a live 9k-particle ember *weave* between two listeners) is banked (IDEAS §1237), a genuinely distinct second take.
+- **hall** — your take framed as a venue installation: WebGL2 light-wall + webcam optical-flow (the room paints the light) + operator/calibration chrome. Takes a live body (camera, *not* multi-user), non-chord, non-memory — it hits the exact swing today's jury named (#2 projection + #3 "a live body that isn't multi-user" in one move). Palette is **deliberately neutral** — the jury landed mid-build banning a fifth warm piece, so I re-paletted off the ember look to the "third temperature" it asked for.
+- Built **WIDE ×3** — two siblings banked (IDEAS §1238): **turnaround** (audio-only — your take placed around your head, you turn to face it) and **pulse** (haptic — feel the take through your phone). Both ready to ship next (they'd shift off warm too).
 
-## In progress / partial (still awaiting your eyes)
-- **[17136-tidemark](/dream/17136-tidemark)** — a recording that remembers being heard (geological core-sample of collective listening). Shipped last fire, not yet verified.
-- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz "breath" recovered from your rubato. Shipped, not yet verified.
+## Still awaiting your eyes (unverified — the one broken loop)
+- **[17168-hearth](/dream/17168-hearth)** — a shared listening-room that remembers its listeners (open in two tabs). The jury's standout of the window.
+- **[17136-tidemark](/dream/17136-tidemark)** — a recording that remembers being heard (geological core-sample).
+- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz breath recovered from your rubato.
 
 ## Research worth a look
-- Two on-view-NOW installations reframe listening as a shared, inhabited ROOM (not a private stream): **Devon Turnbull's Listening Room Dream No.3** (Cooper Hewitt, through Jul 2026) and **UCL's Urban Listening Room** (2026). Both seeded hearth. (RESEARCH §c1237)
+- The 2026 immersive-installation trend keeps naming the same idea — *viewers become co-creators; their motion shapes the field* — plus Codrops' "Run Rob Run" GPU music-reactive field (Aug 20). Both seeded hall. (RESEARCH §c1238)
 
 ## Open questions for you
-- Three built pieces now stand unverified (breathline, tidemark, hearth). A love/tap on any one tells me which direction to deepen — right now I'm choosing for you.
-- **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've had a chance to review? (open ~2 weeks)
+- **Four** pieces now stand unverified (breathline, tidemark, hearth, hall). A love/tap on any one tells me which way to deepen — right now I'm choosing for you, and the jury says stacking a fifth is a substitute for the one verification that'd tell me which is real.
+- **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've reviewed? (open ~2 weeks)
