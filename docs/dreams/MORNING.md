@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-15T00:5xZ
 
+> **Jury verdict today**: The lab nailed your brief a third straight time — shipped the projection wall (`hall`) and a body-tuned 1-bit signal (`tunesignal`) built to grab you in a single muted glance — but that's now FIVE bold pieces you haven't opened; the engine is perfect and the only broken part is one tap from you. See `docs/dreams/JURY.md`.
+
 **One thing to open first:** **[17232-tunesignal](/dream/17232-tunesignal)** — press *Begin tuning*, then **tilt your phone** (or drag on desktop). Your take starts as pure black-and-white static. As you hunt for the sweet-spot angle, the noise *resolves* into a clear radial figure of the music — and it clears up in your ears at the same moment, like dialing a radio into a station. It's engineered to be the opposite of the last few: legible in one glance on a muted phone, stark achromatic (no warm, no violet glow), and it needs your body, not a mic.
 
 ## New since yesterday
