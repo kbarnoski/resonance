@@ -1,21 +1,17 @@
-# Morning digest — last updated 2026-09-14T13:1xZ
+# Morning digest — last updated 2026-09-15T00:5xZ
 
-> **Jury verdict landed today** (2026-09-14, during this build): the lab finally did exactly what you asked — shipped `tidemark` then the shared-room `hearth` — but all three new builds sit unopened. Its Karel-facing line: *one tap from you turns two weeks of bold work into a direction.* See `docs/dreams/JURY.md`.
-
-**One thing to open first:** **[17200-hall](/dream/17200-hall)** — your take as a room-scale *installation*. Press play: the whole screen becomes a projection wall — a field of light (neutral graphite→silver→bone, violet only at the peaks) that breathes with the music. Then hit "Camera on" and move — the room's own motion ripples the light (the webcam feed is never shown, only its motion). Try fullscreen + "installation mode" to see it as a venue wall. It's the lab's **first installation/projection piece** — the 0× shelf that's been the biggest unclaimed swing all month.
+**One thing to open first:** **[17232-tunesignal](/dream/17232-tunesignal)** — press *Begin tuning*, then **tilt your phone** (or drag on desktop). Your take starts as pure black-and-white static. As you hunt for the sweet-spot angle, the noise *resolves* into a clear radial figure of the music — and it clears up in your ears at the same moment, like dialing a radio into a station. It's engineered to be the opposite of the last few: legible in one glance on a muted phone, stark achromatic (no warm, no violet glow), and it needs your body, not a mic.
 
 ## New since yesterday
-- **hall** — your take framed as a venue installation: WebGL2 light-wall + webcam optical-flow (the room paints the light) + operator/calibration chrome. Takes a live body (camera, *not* multi-user), non-chord, non-memory — it hits the exact swing today's jury named (#2 projection + #3 "a live body that isn't multi-user" in one move). Palette is **deliberately neutral** — the jury landed mid-build banning a fifth warm piece, so I re-paletted off the ember look to the "third temperature" it asked for.
-- Built **WIDE ×3** — two siblings banked (IDEAS §1238): **turnaround** (audio-only — your take placed around your head, you turn to face it) and **pulse** (haptic — feel the take through your phone). Both ready to ship next (they'd shift off warm too).
+- **tunesignal** — a 1-bit *signal* you tune with your body. Achromatic Bayer-dither over the whole screen; a hidden focus point you find by tilting; a log-polar warp unwinds and the take's lowpass opens together as you lock on. Built **DEEP ×2** — one banked sibling: **vectorlock** (an X-Y oscilloscope Lissajous with phosphor trails you align in 3D — IDEAS §1239, ready to resurrect).
+- Why this shape: yesterday's jury said stop stacking *warm memory* pieces, take a live non-social body, and build something impossible to ignore on a cold glance. This hits all four (live body · non-memory/non-chord · third temperature · whole-screen resolve).
 
-## Still awaiting your eyes (unverified — the one broken loop)
-- **[17168-hearth](/dream/17168-hearth)** — a shared listening-room that remembers its listeners (open in two tabs). The jury's standout of the window.
-- **[17136-tidemark](/dream/17136-tidemark)** — a recording that remembers being heard (geological core-sample).
-- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz breath recovered from your rubato.
+## Still awaiting your eyes (the one broken loop)
+- **FIVE** bold thin-shelf pieces now sit unverified, ~2 weeks, zero opens: **breathline · tidemark · hearth · hall · tunesignal**. The build engine is healthy; the review loop isn't. One love/tap on any of them turns two-plus weeks of work into a direction — right now I'm choosing for you.
 
 ## Research worth a look
-- The 2026 immersive-installation trend keeps naming the same idea — *viewers become co-creators; their motion shapes the field* — plus Codrops' "Run Rob Run" GPU music-reactive field (Aug 20). Both seeded hall. (RESEARCH §c1238)
+- Fused two threads into tunesignal: Robert Borghesi's *ASTRODITHER* (WebGPU dither-*as-signal*) + the 2026 "the moving body shapes the field" installation trend. (RESEARCH §2026-09-15)
 
 ## Open questions for you
-- **Four** pieces now stand unverified (breathline, tidemark, hearth, hall). A love/tap on any one tells me which way to deepen — right now I'm choosing for you, and the jury says stacking a fifth is a substitute for the one verification that'd tell me which is real.
+- Of the five unverified pieces, which one is worth deepening? A tap tells me. If none land, I'll stop stacking and build the tightest possible front door for the best one instead of a sixth.
 - **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've reviewed? (open ~2 weeks)
