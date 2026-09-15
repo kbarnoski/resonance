@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-09-15T00:5xZ
+# Morning digest — last updated 2026-09-15T12:5xZ
 
-> **Jury verdict today**: The lab nailed your brief a third straight time — shipped the projection wall (`hall`) and a body-tuned 1-bit signal (`tunesignal`) built to grab you in a single muted glance — but that's now FIVE bold pieces you haven't opened; the engine is perfect and the only broken part is one tap from you. See `docs/dreams/JURY.md`.
+> **Jury verdict today**: The lab nailed your brief a third straight time — shipped the projection wall (`hall`) and a body-tuned 1-bit signal (`tunesignal`) built to grab you in a single muted glance — but that's now FIVE bold pieces you haven't opened; the engine is perfect and the only broken part is one tap from you. See `docs/dreams/JURY.md`. **This morning's cycle answers that verdict directly** — not a sixth new piece, but a front door onto the five.
 
-**One thing to open first:** **[17232-tunesignal](/dream/17232-tunesignal)** — press *Begin tuning*, then **tilt your phone** (or drag on desktop). Your take starts as pure black-and-white static. As you hunt for the sweet-spot angle, the noise *resolves* into a clear radial figure of the music — and it clears up in your ears at the same moment, like dialing a radio into a station. It's engineered to be the opposite of the last few: legible in one glance on a muted phone, stark achromatic (no warm, no violet glow), and it needs your body, not a mic.
+**One thing to open first:** **[17264-vestibule](/dream/17264-vestibule)** — *The five are waiting.* One page, five living doors. Each door is a piece I built this week that you haven't opened yet — breathline, tidemark, hearth, hall, tunesignal — and each is **alive right now**, breathing to your music even before you press play. Tap **▶ Play Karel's take**, watch them deepen, then tap any door to walk through into the full thing. It's built to be impossible to scroll past on a muted phone glance.
 
-## New since yesterday
-- **tunesignal** — a 1-bit *signal* you tune with your body. Achromatic Bayer-dither over the whole screen; a hidden focus point you find by tilting; a log-polar warp unwinds and the take's lowpass opens together as you lock on. Built **DEEP ×2** — one banked sibling: **vectorlock** (an X-Y oscilloscope Lissajous with phosphor trails you align in 3D — IDEAS §1239, ready to resurrect).
-- Why this shape: yesterday's jury said stop stacking *warm memory* pieces, take a live non-social body, and build something impossible to ignore on a cold glance. This hits all four (live body · non-memory/non-chord · third temperature · whole-screen resolve).
+## Why I built a front door instead of a sixth new piece
+This is the honest move, not a cop-out. Six fires in a row I've shipped bold, thin-shelf pieces — and **not one has been opened** (votes flat ~2 weeks). The build engine is healthy; the *review loop* is the only broken thing. Your own concept jury said it plainly: stop stacking a seventh unverified piece, and instead "build the lure hearth deserves." So this cycle re-fronts the work already made instead of adding to the pile.
 
 ## Still awaiting your eyes (the one broken loop)
-- **FIVE** bold thin-shelf pieces now sit unverified, ~2 weeks, zero opens: **breathline · tidemark · hearth · hall · tunesignal**. The build engine is healthy; the review loop isn't. One love/tap on any of them turns two-plus weeks of work into a direction — right now I'm choosing for you.
+- **FIVE** bold pieces sit unverified, ~2 weeks, zero opens: **breathline · tidemark · hearth · hall · tunesignal** — all now behind the vestibule front door.
+- **One ♥ or tap on any door turns two-plus weeks of work into a direction.** Right now I'm choosing for you across all five with no signal.
 
-## Research worth a look
-- Fused two threads into tunesignal: Robert Borghesi's *ASTRODITHER* (WebGPU dither-*as-signal*) + the 2026 "the moving body shapes the field" installation trend. (RESEARCH §2026-09-15)
+## The line I'm drawing (please read)
+- If the loop *still* doesn't move after this front door, **the next fire won't build** — it'll be a genuine pause pending your review, not a sixth-then-seventh stacked piece. Continuing to produce into silence is noise, not dreaming.
 
 ## Open questions for you
-- Of the five unverified pieces, which one is worth deepening? A tap tells me. If none land, I'll stop stacking and build the tightest possible front door for the best one instead of a sixth.
+- Of the five, which is worth deepening? (hearth → an ensemble/venue cycle-3; tunesignal → phosphor-persistence Lissajous fold-in are both ready.)
 - **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've reviewed? (open ~2 weeks)
