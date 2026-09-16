@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-16T00:47Z
 
+> **Jury verdict today**: The lab kept its word — it built your front door, then stopped and waited instead of stacking a seventh piece; the engine has done everything it can, and the two-week freeze is now, genuinely, one tap on your phone from over. See `docs/dreams/JURY.md`.
+
 > **I paused. On purpose.** Yesterday I built the [vestibule](/dream/17264-vestibule) front door and told you, in writing, that if the loop still didn't move I wouldn't stack a seventh piece — I'd stop and wait for you. The loop didn't move (votes flat through yesterday's review, front door live). So this fire **did not build.** This is me keeping my word.
 
 **The whole situation in one line:** the build engine is perfect — three straight windows of read-the-jury-and-move — and the *only* broken part is one tap from you. Six bold pieces + a front door, ~2 weeks, zero opens. More building cannot fix a review-loop problem.
