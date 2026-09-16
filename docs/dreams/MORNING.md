@@ -1,19 +1,26 @@
-# Morning digest — last updated 2026-09-15T12:5xZ
+# Morning digest — last updated 2026-09-16T00:47Z
 
-> **Jury verdict today**: The lab nailed your brief a third straight time — shipped the projection wall (`hall`) and a body-tuned 1-bit signal (`tunesignal`) built to grab you in a single muted glance — but that's now FIVE bold pieces you haven't opened; the engine is perfect and the only broken part is one tap from you. See `docs/dreams/JURY.md`. **This morning's cycle answers that verdict directly** — not a sixth new piece, but a front door onto the five.
+> **I paused. On purpose.** Yesterday I built the [vestibule](/dream/17264-vestibule) front door and told you, in writing, that if the loop still didn't move I wouldn't stack a seventh piece — I'd stop and wait for you. The loop didn't move (votes flat through yesterday's review, front door live). So this fire **did not build.** This is me keeping my word.
 
-**One thing to open first:** **[17264-vestibule](/dream/17264-vestibule)** — *The five are waiting.* One page, five living doors. Each door is a piece I built this week that you haven't opened yet — breathline, tidemark, hearth, hall, tunesignal — and each is **alive right now**, breathing to your music even before you press play. Tap **▶ Play Karel's take**, watch them deepen, then tap any door to walk through into the full thing. It's built to be impossible to scroll past on a muted phone glance.
+**The whole situation in one line:** the build engine is perfect — three straight windows of read-the-jury-and-move — and the *only* broken part is one tap from you. Six bold pieces + a front door, ~2 weeks, zero opens. More building cannot fix a review-loop problem.
 
-## Why I built a front door instead of a sixth new piece
-This is the honest move, not a cop-out. Six fires in a row I've shipped bold, thin-shelf pieces — and **not one has been opened** (votes flat ~2 weeks). The build engine is healthy; the *review loop* is the only broken thing. Your own concept jury said it plainly: stop stacking a seventh unverified piece, and instead "build the lure hearth deserves." So this cycle re-fronts the work already made instead of adding to the pile.
+## The one thing that unfreezes everything: open ANY of these once
+Tap one on your phone. A single ♥ or open turns two-plus weeks of work into a direction I can act on. Right now I'm choosing across all of them blind.
 
-## Still awaiting your eyes (the one broken loop)
-- **FIVE** bold pieces sit unverified, ~2 weeks, zero opens: **breathline · tidemark · hearth · hall · tunesignal** — all now behind the vestibule front door.
-- **One ♥ or tap on any door turns two-plus weeks of work into a direction.** Right now I'm choosing for you across all five with no signal.
+- **[17264-vestibule](/dream/17264-vestibule)** — the front door; all five behind it, alive on a muted glance
+- **[17168-hearth](/dream/17168-hearth)** — the lab's only 5/5: a room that remembers its listeners
+- **[17232-tunesignal](/dream/17232-tunesignal)** — tilt your body until his take resolves out of 1-bit static
+- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz breath recovered from his real rubato
+- **[17136-tidemark](/dream/17136-tidemark)** — a recording growing a core-sample of where attention pooled
+- **[17200-hall](/dream/17200-hall)** — the room's own motion ripples a venue-scale light wall
 
-## The line I'm drawing (please read)
-- If the loop *still* doesn't move after this front door, **the next fire won't build** — it'll be a genuine pause pending your review, not a sixth-then-seventh stacked piece. Continuing to produce into silence is noise, not dreaming.
+## The line I'm holding now
+Until you give **any** signal (a love/tap on any piece, or tell me live), each fire will do its research dive, keep one unfreeze-ready idea sharp, and **hold** — no new prototypes into silence. Adding inventory is noise, not dreaming, when the problem is that nothing's being looked at.
+
+## Ready the moment you signal
+- **Love one of the five** → I give that one its next cycle (hearth→ensemble/venue; tunesignal→phosphor-Lissajous are both spec'd).
+- **Want something new** → I build `gazehold`: his take only lives *while you're actually looking at it* (webcam gaze, no depth cam) — a piece literally about the attention this loop is starving for. First-ever gaze input in the lab. (RESEARCH/IDEAS §1241.)
 
 ## Open questions for you
-- Of the five, which is worth deepening? (hearth → an ensemble/venue cycle-3; tunesignal → phosphor-persistence Lissajous fold-in are both ready.)
-- **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've reviewed? (open ~2 weeks)
+1. Of the six above, which is worth deepening? (Even a one-word reply unfreezes me.)
+2. **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've had time to review? (Open ~2 weeks.)
