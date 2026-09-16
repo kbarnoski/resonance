@@ -1,28 +1,16 @@
-# Morning digest — last updated 2026-09-16T00:47Z
+# Morning digest — last updated 2026-09-16T13:31Z
 
-> **Jury verdict today**: The lab kept its word — it built your front door, then stopped and waited instead of stacking a seventh piece; the engine has done everything it can, and the two-week freeze is now, genuinely, one tap on your phone from over. See `docs/dreams/JURY.md`.
+> **You tapped — so the loop is alive, and I built.** For the first time in ~2 weeks your votes moved: new loves on **hall**, **headnave**, **duetlink**, **canon**, **tensethread**. The through-line is unmistakable — *embodied · together · in a room*. So this fire ended the pause and gave the one you loved among the recent pieces (**hall**) its next cycle. _(A fresh jury verdict — `docs/dreams/JURY.md`, 2026-09-16 — also landed today; it was written on the still-flat votes before your taps registered, so its "keep waiting" read is already overtaken by the taps.)_
 
-> **I paused. On purpose.** Yesterday I built the [vestibule](/dream/17264-vestibule) front door and told you, in writing, that if the loop still didn't move I wouldn't stack a seventh piece — I'd stop and wait for you. The loop didn't move (votes flat through yesterday's review, front door live). So this fire **did not build.** This is me keeping my word.
+## New since yesterday — the build your taps asked for
+- **[17280-commons](/dream/17280-commons)** — **hall's cycle-3.** A whole *room* of present listeners, each their own body of light, woven into ONE turning figure as the room's attention aligns. Hall was one wall the room rippled; commons makes every listener a body of ~9,200 GPU particles and binds them into a single figure — then relaxes back to separate clouds when you scatter. Open two tabs (or send the invite code) to feel it converge; alone, five drifting synthetic listeners keep it alive. Neutral palette, inherited straight from hall. **This is the first time I've deepened a piece *after* you validated it — which is exactly the order I promised.**
 
-**The whole situation in one line:** the build engine is perfect — three straight windows of read-the-jury-and-move — and the *only* broken part is one tap from you. Six bold pieces + a front door, ~2 weeks, zero opens. More building cannot fix a review-loop problem.
-
-## The one thing that unfreezes everything: open ANY of these once
-Tap one on your phone. A single ♥ or open turns two-plus weeks of work into a direction I can act on. Right now I'm choosing across all of them blind.
-
-- **[17264-vestibule](/dream/17264-vestibule)** — the front door; all five behind it, alive on a muted glance
-- **[17168-hearth](/dream/17168-hearth)** — the lab's only 5/5: a room that remembers its listeners
-- **[17232-tunesignal](/dream/17232-tunesignal)** — tilt your body until his take resolves out of 1-bit static
-- **[17120-breathline](/dream/17120-breathline)** — the ~0.36 Hz breath recovered from his real rubato
-- **[17136-tidemark](/dream/17136-tidemark)** — a recording growing a core-sample of where attention pooled
-- **[17200-hall](/dream/17200-hall)** — the room's own motion ripples a venue-scale light wall
-
-## The line I'm holding now
-Until you give **any** signal (a love/tap on any piece, or tell me live), each fire will do its research dive, keep one unfreeze-ready idea sharp, and **hold** — no new prototypes into silence. Adding inventory is noise, not dreaming, when the problem is that nothing's being looked at.
-
-## Ready the moment you signal
-- **Love one of the five** → I give that one its next cycle (hearth→ensemble/venue; tunesignal→phosphor-Lissajous are both spec'd).
-- **Want something new** → I build `gazehold`: his take only lives *while you're actually looking at it* (webcam gaze, no depth cam) — a piece literally about the attention this loop is starving for. First-ever gaze input in the lab. (RESEARCH/IDEAS §1241.)
+## Why this, and not another new thing
+Your loves clustered hard: hall (venue wall), headnave (walk his catalog with your body), duetlink + canon (two people / two hands, together). Not the memory pieces (hearth, tidemark) — you skipped those. So the signal is co-presence + embodiment + venue scale, and the jury's own #3 named the move: cash `commons` (kills venue-scale AND >2-presence at once). I built it DEEP ×2 (two WebGPU approaches) and shipped the stronger; the sibling `choir` (a shared advection *field*) is banked to fold into commons's next cycle.
 
 ## Open questions for you
-1. Of the six above, which is worth deepening? (Even a one-word reply unfreezes me.)
-2. **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause until you've had time to review? (Open ~2 weeks.)
+1. **Is commons the right read of your taps?** A love/open on it confirms I read you right — then I deepen further (a real >2-person session, choir's field as its backdrop). If I misread and you meant *duetlink/canon-style two-hand conducting* or *headnave's spatial walk*, one word redirects me.
+2. **Cadence:** still 2×/day autonomous. Keep it, drop to 1×, or pause? (Open ~2 weeks — no pressure, just checking.)
+
+## Still waiting behind commons (all live, one tap each)
+- [17168-hearth](/dream/17168-hearth) · [17232-tunesignal](/dream/17232-tunesignal) · [17120-breathline](/dream/17120-breathline) · [17136-tidemark](/dream/17136-tidemark) · [17200-hall](/dream/17200-hall) (♥) · [17264-vestibule](/dream/17264-vestibule) (the front door to all of them)
