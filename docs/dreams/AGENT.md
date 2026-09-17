@@ -306,6 +306,18 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 4. **Journey engine alternatives** — the current engine has a visionary 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
 5. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
 
+### PRIORITY DIRECTIVE (set 2026-09-16, Karel-directed) — Embodied camera conducting
+
+**This directive governs the Decide step for the NEXT SEVERAL cycles, until Karel redirects.** Karel, reviewing `15824-canon`: *"i really like Canon where the camera maps to my hands and i conduct and manipulate one of my songs. i would like you to prioritize the next several experiments to use this kind of method where the human motion and detection is tracked by the camera and then the visualization and sound react as close to real time as possible."*
+
+- **Every build cycle's winner must be an embodied piece:** camera-tracked human motion (hands, full body, face — via MediaPipe or equivalent realtime tracking) drives BOTH the visuals and the sound, as close to real time as possible. ABSOLUTE rule 10 is unchanged — the camera is the *interaction* layer; the *audio* is always Karel's verified catalog, transformed/conducted by the motion (exactly Canon's architecture). This is fully consistent with the 2026-08-14 music-priority ruling: camera as a control layer over catalog audio is the sanctioned pattern.
+- **Use the shared loader:** `import { createHandTracker, createPoseTracker, createFaceTracker, createGestureTracker, startCamera, computeHandFeatures } from "../_shared/cameraTracking";` — the runtime-CDN pattern (build-safe `new Function` import of `@mediapipe/tasks-vision`, GPU→CPU delegate fallback) extracted from Canon/Conduct/Ictus. Do NOT re-copy per-proto loaders; extend the shared module (additively) if a new task type is needed.
+- **Latency is the craft.** Gesture → audible/visible response must feel immediate: parameter smoothing ~0.1–0.15s (`setTargetAtTime`, Canon's values), detection on `requestAnimationFrame`/`requestVideoFrameCallback`, no async hops in the control path. A piece that feels laggy or "twitchy" fails the brief even if it builds.
+- **Graceful degradation stays mandatory:** no camera / permission denied / model-load failure → pointer fallback + visible notice (Canon's pattern).
+- **Diversity-audit amendment while this directive stands:** the `camera` / `body-tracking` INPUT tags are EXEMPT from the ≥4-in-10 ban — they are *supposed* to repeat. Drive diversity through the OTHER axes instead: which body signal (two hands / full body / face / gait / gesture vocabulary / multi-person), which musical parameter is conducted (time-base, dynamics, harmony, spatialization, granulation, section-form), which output technique, which palette/state.
+- **Reference implementations to study before building:** `15824-canon` (the loved benchmark — two-hand counterpoint conducting), `15760-conduct` (single-hand time-base), `3760-ictus` (pose strike detection), `14480-bodychoir`, `6296-flowbody`.
+- The VISIONARY primary direction below remains the *aesthetic* frame; this directive sets the *interaction* frame. When they conflict on pick order, this directive wins.
+
 ### PRIMARY DIRECTION (set 2026-06-28) — Altered states / visionary
 
 **This is now the top creative driver. Read `docs/dreams/VISIONARY.md` in full every cycle.**
