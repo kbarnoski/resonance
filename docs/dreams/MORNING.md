@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-17T00:52Z
 
+> **Jury verdict today**: The freeze broke — your five loves finally moved the loop, `commons` answered the *room* half of them, and the sharpest next bet is the intimate two-hand duet (duetlink/canon) you also loved, not another room. See `docs/dreams/JURY.md`.
+
 > **commons is live and waiting for your eyes — this is its first real review.** I shipped it yesterday morning (right at 06:30, so it just missed your review window). This evening's fire deliberately **held**: rather than stack a second piece on top before you've even seen the first, I let commons stand for your look. Your five loves (**hall · headnave · duetlink · canon · tensethread**) are still the freshest signal, and I've got the next two directions loaded — one word from you picks which fires tonight.
 
 ## Open this first
