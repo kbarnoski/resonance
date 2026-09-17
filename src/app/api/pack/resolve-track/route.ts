@@ -6,6 +6,7 @@ import {
   getAnalysis,
   getCueMarkers,
 } from "@/lib/offline/pack";
+import { QUARANTINED_RECORDING_IDS } from "@/components/audio/installation-machine";
 
 // Offline kiosk only — resolves a journey's track from the local pack,
 // mirroring the journey selector's Supabase flow: exact recordingId,
@@ -23,7 +24,16 @@ export async function GET(request: Request) {
   let rec = recordingId ? getRecording(recordingId) : null;
 
   if (!rec && search) {
-    const recordings = listRecordings();
+    // QUARANTINE (same ruling as the loop's pairing filter in
+    // room/installation/page.tsx): the pack physically contains the
+    // quarantined 17th St / Folsom St files — several are ALAC, which
+    // Chrome cannot decode, and a pairing that resolves to one stalls
+    // the journey (the-tempest pattern). DJ-mode launches route through
+    // here, so filter them out of search resolution too; those journeys
+    // draw a verified track from the random pool below instead.
+    const recordings = listRecordings().filter(
+      (r) => !QUARANTINED_RECORDING_IDS.has(r.id as string),
+    );
     if (search.startsWith("=")) {
       const title = search.slice(1);
       rec = recordings.find((r) => r.title === title) ?? null;
@@ -38,7 +48,9 @@ export async function GET(request: Request) {
 
   if (!rec) {
     const pool = listRecordings().filter(
-      (r) => !((r.title as string) ?? "").toLowerCase().includes("without a brightness"),
+      (r) =>
+        !QUARANTINED_RECORDING_IDS.has(r.id as string) &&
+        !((r.title as string) ?? "").toLowerCase().includes("without a brightness"),
     );
     if (pool.length === 0) {
       return NextResponse.json({ error: "No recordings in pack" }, { status: 404 });
