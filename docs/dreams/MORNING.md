@@ -1,22 +1,24 @@
-# Morning digest — last updated 2026-09-17T00:52Z
+# Morning digest — last updated 2026-09-17T13:05Z
 
-> **Jury verdict today**: The freeze broke — your five loves finally moved the loop, `commons` answered the *room* half of them, and the sharpest next bet is the intimate two-hand duet (duetlink/canon) you also loved, not another room. See `docs/dreams/JURY.md`.
+> **First build under your embodied-camera direction — and it answers today's jury too.** You loved Canon and asked me to prioritize the "camera maps to my hands, I conduct and manipulate my song" method for the next several experiments — so this fire built exactly that, in a new musical direction. Today's jury (JURY.md) independently named "the intimate two-hand duet (duetlink/canon) — each hand shaping a different layer, negotiated into resolve" as the single sharpest next bet: **timeheads is that piece** (two hands = two independent voices woven from one take). (Votes still flat at 48; this fired ~45 min before your 06:30 look, so commons also gets its first real review today — see below.)
 
-> **commons is live and waiting for your eyes — this is its first real review.** I shipped it yesterday morning (right at 06:30, so it just missed your review window). This evening's fire deliberately **held**: rather than stack a second piece on top before you've even seen the first, I let commons stand for your look. Your five loves (**hall · headnave · duetlink · canon · tensethread**) are still the freshest signal, and I've got the next two directions loaded — one word from you picks which fires tonight.
+## Open this first — conduct it with your hands
+- **[17312-timeheads](/dream/17312-timeheads)** — **each of your two hands becomes an independent tape-head reading a *different* moment of the SAME solo take at once.** So one monophonic piano recording turns into live two-voice **counterpoint** that you weave with your bare hands. Left/right hand = two playheads (position + hard L/R pan), height = pitch, openness = grain density, fist = mute that voice; the gap between your hands snaps to a consonant interval so the two voices stay in tune, and the streams braid + brighten when your hands cross. Camera → sound is synchronous (~50 ms target). **The test:** allow the camera, play, and move each hand independently — do you hear one recording become a canon you're conducting? (No camera → pointer + sliders still play it.)
 
-## Open this first
-- **[17280-commons](/dream/17280-commons)** — **hall's cycle-3, built from your taps.** A whole *room* of present listeners, each their own body of ~9,200 light-particles, woven into ONE turning figure as the room's attention aligns — then relaxing back to separate clouds when you scatter. **Two questions only you can answer:** does a lone muted glance read as a living room of distinct light-bodies? And does opening a second tab visibly pull them into one figure? A ♥ or open confirms I read your taps right.
+## Also awaiting its first review
+- **[17280-commons](/dream/17280-commons)** — hall's cycle-3 (a whole room of listeners woven into one figure of light) shipped yesterday right at 06:30 and just missed your window. A ♥ or open tells me whether the many-body read landed.
 
-## Why I held tonight instead of building
-Your loves moved the loop for the first time in ~2 weeks — real signal. I answered it once (commons). Answering the *same* signal with a second build tonight, before you've reviewed the first, is the over-supply that broke this loop to begin with: the review moves ~once a fortnight, and stacking faster just buries the work. So — exactly as I told you I would after vestibule — one ship, then let it breathe for your review. **Not a re-freeze** (you signaled; I'm building again), just the right beat.
+## Why timeheads, and what I explored
+- Went DEEP: two builders, same concept (conduct your recording as a live granular cloud with your hands), two approaches. **timeheads won** — it's the boldest heir to Canon (two hands → two voices). The runner-up, **grainfield** (both hands sculpt ONE cloud — scrub, bloom, freeze), is banked and could return as a "unison mode" toggle for timeheads.
+- Research anchor: **GestureSync (ACM MMSys 2026)** puts a number on the latency that makes hands→sound feel *immediate* (~50 ms) — I built to that budget.
 
 ## The fork for tonight's fire — your call
-1. **Love / open commons** → its cycle-2: a real >2-person session + `choir`'s shared advected *field* as the backdrop the bodies weave over (banked, ready).
-2. **You meant the *intimate* loves** (duetlink / canon = two people, two hands together) → I build **that** instead: an asymmetric two-hand duet where each hand shapes a *different* layer of your take and you must negotiate them into resolve (fresh research anchor below — Huì Sù).
-3. **Fresh direction** → `gazehold` (your take only lives while you're actually looking at it) is razor-sharp and ready.
+1. **Love/open timeheads or Canon** → I deepen the two-voice granular idea (a third head via head-tilt, or fold grainfield's unison mode in).
+2. **You meant the many-body / venue loves (commons, hall)** → an embodied-camera piece where your body conducts the whole room's shared field.
+3. **A different body signal** → uncashed under the directive: full-body gait→tempo, gesture-vocabulary (open palm / fist / point as a conducting language), or two people at once.
 
 ## Housekeeping
-- **Cadence:** still 2×/day autonomous — keep, drop to 1×, or pause? (Genuinely no pressure.)
+- **Cadence:** still 2×/day autonomous — keep, drop to 1×, or pause? No pressure.
 
 ## All live, one tap each
-- [17280-commons](/dream/17280-commons) (newest) · [17264-vestibule](/dream/17264-vestibule) (front door to all five) · [17232-tunesignal](/dream/17232-tunesignal) · [17200-hall](/dream/17200-hall) (♥) · [17168-hearth](/dream/17168-hearth) · [17136-tidemark](/dream/17136-tidemark) · [17120-breathline](/dream/17120-breathline)
+- [17312-timeheads](/dream/17312-timeheads) (newest) · [17280-commons](/dream/17280-commons) · [17264-vestibule](/dream/17264-vestibule) · [17232-tunesignal](/dream/17232-tunesignal) · [17200-hall](/dream/17200-hall) (♥) · [15824-canon](/dream/15824-canon) (♥)
