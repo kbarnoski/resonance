@@ -26,6 +26,11 @@
  *                      allocated by index, so appending to an old set would
  *                      leave images in the wrong phase positions)
  *     --limit=N        stop after N generations this run (validation runs)
+ *     --treatment=tramokyo  apply the Tramokyo grade (Karel's 2026-09-16
+ *                      vibe brief in prompt-decoration.ts): phase-keyed
+ *                      color/light grade appended to every prompt +
+ *                      peak-forward phase allocation. Use with --fresh —
+ *                      graded and ungraded images must not mix.
  *
  * Resumable: existing gen-*.{jpg,png} files are kept and skipped.
  * Output: public/tramokyo-pack/images/journeys/{id}/gen-NNN.* and
@@ -51,6 +56,11 @@ const ONLY_PATH = process.argv.find((a) => a.startsWith("--path="))?.slice(7) ??
 const PER_JOURNEY = Number(process.argv.find((a) => a.startsWith("--per-journey="))?.slice(14) ?? 0) || null;
 const FRESH = process.argv.includes("--fresh");
 const LIMIT = Number(process.argv.find((a) => a.startsWith("--limit="))?.slice(8) ?? Infinity);
+const TREATMENT = process.argv.find((a) => a.startsWith("--treatment="))?.slice(12) ?? null;
+if (TREATMENT && TREATMENT !== "tramokyo") {
+  console.error(`Unknown --treatment=${TREATMENT} (only "tramokyo" exists)`);
+  process.exit(1);
+}
 
 const GEN_INTERVAL_SEC = 7;
 const MIN_IMAGES = 12;
@@ -73,7 +83,8 @@ async function loadAppModules() {
         export { GHOST_LORA_URL } from "@/lib/journeys/ghost-lora";
         export { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
-          STYLE_SUFFIX, GLOBAL_NEGATIVE } from "@/lib/journeys/prompt-decoration";
+          STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
+          TRAMOKYO_PHASE_WEIGHT } from "@/lib/journeys/prompt-decoration";
       `,
       resolveDir: ROOT,
       loader: "ts",
@@ -104,9 +115,15 @@ function matchPairedTrack(spec, recordings) {
   return recordings.find((r) => (r.title ?? "").toLowerCase().includes(needle)) ?? null;
 }
 
-/** Largest-remainder allocation of n images across phases by length. */
-function allocateByPhase(phases, n) {
-  const weights = phases.map((p) => Math.max(0, (p.end ?? 1) - (p.start ?? 0)));
+/** Largest-remainder allocation of n images across phases by length.
+ *  With --treatment=tramokyo, phase lengths are multiplied by the
+ *  peak-forward weights (transcendence/illumination oversampled). */
+function allocateByPhase(phases, n, phaseWeight = null) {
+  const weights = phases.map((p) => {
+    const len = Math.max(0, (p.end ?? 1) - (p.start ?? 0));
+    const mult = phaseWeight ? (phaseWeight[p.id] ?? 1) : 1;
+    return len * mult;
+  });
   const total = weights.reduce((a, b) => a + b, 0) || 1;
   const raw = weights.map((w) => (w / total) * n);
   const counts = raw.map(Math.floor);
@@ -212,9 +229,16 @@ async function main() {
   const plan = [];
   for (const t of filtered) {
     const n = PER_JOURNEY ?? Math.min(MAX_IMAGES, Math.max(MIN_IMAGES, Math.ceil(t.duration / GEN_INTERVAL_SEC)));
-    const counts = allocateByPhase(t.phases, n);
+    const counts = allocateByPhase(
+      t.phases,
+      n,
+      TREATMENT === "tramokyo" ? app.TRAMOKYO_PHASE_WEIGHT : null,
+    );
     const dir = path.join(IMAGES_DIR, t.id);
-    const existing = existsSync(dir)
+    // On a --fresh --dry-run the deletion is skipped (dry runs never
+    // touch disk) — treat existing files as absent so the printed plan
+    // and cost estimate match what the real --fresh run would generate.
+    const existing = existsSync(dir) && !(FRESH && DRY_RUN)
       ? new Set((await readdir(dir)).filter((f) => f.startsWith("gen-")).map((f) => f.split(".")[0]))
       : new Set();
 
@@ -254,6 +278,11 @@ async function main() {
           const interp = app.PROMPT_INTERPRETATIONS[Math.floor(Math.random() * app.PROMPT_INTERPRETATIONS.length)];
           const mood = app.PROMPT_MOODS[Math.floor(Math.random() * app.PROMPT_MOODS.length)];
           varied = `${base}, ${pov}, ${interp}, ${mood}, no snowflakes`;
+        }
+        if (TREATMENT === "tramokyo") {
+          // Grade goes on BOTH branches — it is color/light only, so it
+          // re-tints strict-camera journeys without fighting their framing.
+          varied = `${varied}, ${app.tramokyoGradeForPhase(phase.id)}`;
         }
 
         plan.push({ target: t, stem, dir, prompt: varied });

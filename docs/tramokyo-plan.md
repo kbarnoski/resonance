@@ -57,8 +57,31 @@ Chromium), auth skipped, incremental pack builder
 `scripts/harvest-journey-images.mjs` exports fal imagery for every
 built-in + path journey; offline, the AI image layer plays these and the
 app forces the full installation tier (max layering, full resolution).
-**Deferred**: the bespoke Tramokyo image set — waiting on Karel's vibe
-brief before harvesting a curated desert-specific look.
+**Vibe brief LANDED (Karel, 2026-09-16)** — the bespoke set is a *grade*,
+not new worlds:
+
+- **Keep journey worlds.** Each journey keeps its existing imagery
+  identity (Ghost stays Ghost, Snowflake stays Snowflake); the bespoke
+  set only re-grades toward a unified treatment. No desert content is
+  injected into prompts.
+- **Palette (all four, layered):** light-out-of-blackness (the
+  LED-reveal aesthetic — pure black fields, luminous forms emerging),
+  deep night violet base, ember & gold warmth, full spectral peaks
+  reserved for transcendence.
+- **Figures:** keep per-journey defaults (no set-wide figure policy).
+- **Intensity: PEAK-FORWARD** — lean into the sublime; the image budget
+  shifts toward transcendence/illumination phases (weights 1.5/1.25 vs
+  0.8–1.1 elsewhere).
+
+Implementation: `TRAMOKYO_BASE_GRADE` / `TRAMOKYO_PHASE_GRADE` /
+`TRAMOKYO_PHASE_WEIGHT` / `tramokyoGradeForPhase()` in
+`src/lib/journeys/prompt-decoration.ts`; harvest with
+`--treatment=tramokyo --fresh` (graded and ungraded images must not
+mix — phase slots are index-allocated AND the look must be uniform);
+`ai-image-layer.tsx` appends the same grade to opportunistic live gens
+whenever the pack is active, so live bonus frames match the packed look.
+The pre-show re-harvest (PRE-SHOW #2) is the natural moment this
+treatment ships to the venue laptop.
 
 ### Phase 3 — Operator experience · PARTIAL
 Hotkeys shipped (`⌘⇧B` / `⌘⇧N` / `⌘⇧S`, audience keys trapped).

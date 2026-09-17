@@ -119,6 +119,66 @@ export const STYLE_SUFFIX =
   "surreal dreamlike but lifelike, luminous, transcendent, ethereal, " +
   "every celestial body (moon planet earth sun) rendered as a perfect round sphere";
 
+/**
+ * TRAMOKYO TREATMENT — Karel's bespoke-set vibe brief (2026-09-16).
+ *
+ * The brief: journeys KEEP their own worlds (Ghost stays Ghost, Snowflake
+ * stays Snowflake — no desert content injected); the bespoke set is a
+ * unified COLOR/LIGHT GRADE over all of them: grounded in pure black
+ * (luminous forms revealed out of darkness — the LED-reveal aesthetic),
+ * deep violet night as the base, ember & gold warmth, and full spectral
+ * iridescence reserved for the peaks. Intensity: PEAK-FORWARD — more of
+ * each journey's image budget goes to the transcendence/illumination
+ * phases (this is a one-night show; the walls should dissolve).
+ *
+ * Used by scripts/harvest-journey-images.mjs (--treatment=tramokyo) for
+ * the packed backbone AND by ai-image-layer.tsx for opportunistic live
+ * gens when the offline pack is active, so live bonus frames match the
+ * packed look. Wording is deliberately grade-language (color + light
+ * only) so it re-tints each journey's world without changing its content.
+ */
+export const TRAMOKYO_BASE_GRADE =
+  "unified nocturnal color grade grounded in pure black, " +
+  "luminous forms emerging from darkness, high-contrast luminosity";
+
+export const TRAMOKYO_PHASE_GRADE: Record<string, string> = {
+  threshold:
+    "deep violet night tones, faint silver starlight, a first ember of warm gold light",
+  expansion:
+    "deep violet and indigo night, forms revealed out of blackness, ember and gold light strengthening",
+  transcendence:
+    "full spectral iridescence erupting from blackness, prismatic color peak, molten gold and radiant violet",
+  illumination:
+    "radiant gold against deep violet darkness, spectral refractions, brilliant light carving out of black",
+  return:
+    "ember and gold warmth settling back into deep violet night",
+  integration:
+    "near-black stillness, deep violet dusk, last ember glow, quiet luminance",
+};
+
+/** Full grade line for a phase — base grade + the phase's palette move. */
+export function tramokyoGradeForPhase(phaseId: string | null | undefined): string {
+  const phase =
+    TRAMOKYO_PHASE_GRADE[phaseId ?? "threshold"] ?? TRAMOKYO_PHASE_GRADE.threshold;
+  return `${TRAMOKYO_BASE_GRADE}, ${phase}`;
+}
+
+/**
+ * Peak-forward image allocation (multiplies the duration-based phase
+ * weights in the harvest's largest-remainder split): transcendence and
+ * illumination get a larger share of each journey's image budget, the
+ * quiet bookends slightly less. Relative values only — the total per
+ * journey is unchanged.
+ */
+export const TRAMOKYO_PHASE_WEIGHT: Record<string, number> = {
+  threshold: 0.85,
+  expansion: 1.1,
+  transcendence: 1.5,
+  illumination: 1.25,
+  return: 0.85,
+  integration: 0.8,
+};
+
 /** Global negative prompt — concepts that should NEVER appear, regardless
  *  of journey. Callers can extend via the request's negativePrompt field. */
 export const GLOBAL_NEGATIVE =

@@ -83,7 +83,7 @@ const KEN_BURNS_DURATION = 50; // seconds — full motion cycle
 // Cinematic POV + interpretation/mood vocabularies live in
 // prompt-decoration.ts, shared with the offline harvest script so
 // pre-baked images use the identical prompt assembly.
-import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS } from "@/lib/journeys/prompt-decoration";
+import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS, tramokyoGradeForPhase } from "@/lib/journeys/prompt-decoration";
 
 // Figures removed — Ghost journey has its own figure prompts baked into aiPrompts.
 // All other journeys generate imagery from their aiPrompt only.
@@ -93,7 +93,7 @@ import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS } from "@/
 // journey ids → pre-harvested image URLs, letting built-in journeys use
 // packed imagery instead of live fal. Online the route 404s → null,
 // fetched once per session (shared with device-tier's installation probe).
-import { fetchPackLocalImages } from "@/lib/offline/pack-client";
+import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
 
 // ── Opportunistic live fal on the kiosk ──
 // Packed images are the guaranteed backbone; when the desert hotspot is
@@ -451,6 +451,13 @@ export function AiImageLayer({
       const mood = PROMPT_MOODS[Math.floor(rng() * PROMPT_MOODS.length)];
 
       variedPrompt = `${basePrompt}, ${pov}, ${interp}, ${mood}, no snowflakes`;
+    }
+    // Tramokyo kiosk: opportunistic live gens carry the same grade the
+    // packed backbone was harvested with, so a live bonus frame never
+    // reads as un-graded next to packed imagery. Color/light only, so it
+    // also applies on the strict-camera branch.
+    if (isPackActive()) {
+      variedPrompt = `${variedPrompt}, ${tramokyoGradeForPhase(getJourneyEngine().getCurrentPhase())}`;
     }
 
     // Capture the journey id at dispatch time. We only discard landings if
