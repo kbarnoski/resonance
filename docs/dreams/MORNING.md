@@ -1,24 +1,24 @@
-# Morning digest — last updated 2026-09-17T13:05Z
+# Morning digest — last updated 2026-09-18T00:5xZ
 
-> **First build under your embodied-camera direction — and it answers today's jury too.** You loved Canon and asked me to prioritize the "camera maps to my hands, I conduct and manipulate my song" method for the next several experiments — so this fire built exactly that, in a new musical direction. Today's jury (JURY.md) independently named "the intimate two-hand duet (duetlink/canon) — each hand shaping a different layer, negotiated into resolve" as the single sharpest next bet: **timeheads is that piece** (two hands = two independent voices woven from one take). (Votes still flat at 48; this fired ~45 min before your 06:30 look, so commons also gets its first real review today — see below.)
+> **The intimate two-hand duet you were owed — your two hands now hold *different* powers over one take.** timeheads (yesterday) made your two hands two *identical* tape-heads. This one goes asymmetric, which is what the jury (and the duetlink/canon loves) actually pointed at: right hand sings the melody, left hand shapes the harmony underneath it, and the piece only *resolves* when you bring them into agreement. Built warm on purpose — the lab's been drifting cool for weeks. (Votes still flat at 48; timeheads got its first look yesterday and drew no ♥ — no worries, these bold ones tend to sit unrated.)
 
-## Open this first — conduct it with your hands
-- **[17312-timeheads](/dream/17312-timeheads)** — **each of your two hands becomes an independent tape-head reading a *different* moment of the SAME solo take at once.** So one monophonic piano recording turns into live two-voice **counterpoint** that you weave with your bare hands. Left/right hand = two playheads (position + hard L/R pan), height = pitch, openness = grain density, fist = mute that voice; the gap between your hands snaps to a consonant interval so the two voices stay in tune, and the streams braid + brighten when your hands cross. Camera → sound is synchronous (~50 ms target). **The test:** allow the camera, play, and move each hand independently — do you hear one recording become a canon you're conducting? (No camera → pointer + sliders still play it.)
+## Open this first — conduct it with both hands
+- **[17344-resonantpair](/dream/17344-resonantpair)** — **your two hands do genuinely different jobs over one solo take.** RIGHT hand = the VOICE: a granular scrubber (move = playhead, height = pitch, open fingers = density, fist = mute). LEFT hand = the GROUND: a sustained resonant wash of the *same* recording (move = which harmonic register rings, height = level, open = resonance, fist = mute). **The game:** aim the left hand's ringing band at where the right hand is actually singing — when they match, the two halves *lock*: the screen's two warring wave-fields snap into one warm standing lattice and a resonance ring sounds. Miss, and it tears into two contending fields. **The test:** allow the camera, play, and hunt the lock with your left hand. (No camera → pointer sings the voice + sliders shape the ground.)
 
-## Also awaiting its first review
-- **[17280-commons](/dream/17280-commons)** — hall's cycle-3 (a whole room of listeners woven into one figure of light) shipped yesterday right at 06:30 and just missed your window. A ♥ or open tells me whether the many-body read landed.
+## Why this, and what I explored
+- Went DEEP: two builders, same asymmetric-duet concept, two renderers. **resonantpair won** — its WebGL2 interference lattice is the more striking image *and* it breaks a sameness trap (timeheads was three.js points; a second points piece in a row would look too alike). The runner-up, **duetresolve** (three.js braided column), is banked — it actually has a *truer* lock mechanic (it listens to the voice alone, not the whole mix), which I'll fold into resonantpair next.
+- Anchor: **Huì Sù (arXiv 2604.25207)** + 2026 bimanual-piano/guitar control — two hands on one instrument are never mirrors; they hold different roles and the music is the negotiation.
 
-## Why timeheads, and what I explored
-- Went DEEP: two builders, same concept (conduct your recording as a live granular cloud with your hands), two approaches. **timeheads won** — it's the boldest heir to Canon (two hands → two voices). The runner-up, **grainfield** (both hands sculpt ONE cloud — scrub, bloom, freeze), is banked and could return as a "unison mode" toggle for timeheads.
-- Research anchor: **GestureSync (ACM MMSys 2026)** puts a number on the latency that makes hands→sound feel *immediate* (~50 ms) — I built to that budget.
+## Still awaiting a first look
+- **[17312-timeheads](/dream/17312-timeheads)** (two hands = two independent voices of one take) · **[17280-commons](/dream/17280-commons)** (a room of listeners woven into one figure). A ♥ or open on any tells me which thread to deepen.
 
 ## The fork for tonight's fire — your call
-1. **Love/open timeheads or Canon** → I deepen the two-voice granular idea (a third head via head-tilt, or fold grainfield's unison mode in).
-2. **You meant the many-body / venue loves (commons, hall)** → an embodied-camera piece where your body conducts the whole room's shared field.
-3. **A different body signal** → uncashed under the directive: full-body gait→tempo, gesture-vocabulary (open palm / fist / point as a conducting language), or two people at once.
+1. **Love/open resonantpair or canon/timeheads** → I deepen the asymmetric duet (fold in the truer lock, or add a third power via head-lean).
+2. **You meant the many-body loves (commons/hall)** → an embodied piece where your body conducts a whole room's shared field.
+3. **A different body signal** → uncashed: full-body gait→tempo, a gesture vocabulary (open palm / fist / point as conducting), or two people at once.
 
 ## Housekeeping
 - **Cadence:** still 2×/day autonomous — keep, drop to 1×, or pause? No pressure.
 
 ## All live, one tap each
-- [17312-timeheads](/dream/17312-timeheads) (newest) · [17280-commons](/dream/17280-commons) · [17264-vestibule](/dream/17264-vestibule) · [17232-tunesignal](/dream/17232-tunesignal) · [17200-hall](/dream/17200-hall) (♥) · [15824-canon](/dream/15824-canon) (♥)
+- [17344-resonantpair](/dream/17344-resonantpair) (newest) · [17312-timeheads](/dream/17312-timeheads) · [17280-commons](/dream/17280-commons) · [17232-tunesignal](/dream/17232-tunesignal) · [17200-hall](/dream/17200-hall) (♥) · [15824-canon](/dream/15824-canon) (♥)
