@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-18T12:5xZ (cycle 1246)
 
+> **Jury verdict today**: You asked for the intimate duet and got it twice (timeheads, resonantpair) — but timeheads drew no love on review and both are two hands of *one* person; the sharper uncashed bet is two real PEOPLE sharing one take (your loved duetlink), before "two hands" becomes its own monoculture. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
