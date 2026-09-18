@@ -20,6 +20,7 @@ import {
   SEVENTEENTH_ST_TRACKS,
   FOLSOM_ST_TRACKS,
   REAL_TRACKS,
+  WELCOME_HOME_TRACKS,
 } from "@/app/dream/_shared/welcomeHome";
 
 /** Cycle intro screen duration before the cycle text begins fading.
@@ -115,6 +116,20 @@ export const QUARANTINED_RECORDING_IDS: ReadonlySet<string> = new Set(
  */
 export const VERIFIED_RECORDING_IDS: ReadonlySet<string> = new Set(
   REAL_TRACKS.map((t) => t.id),
+);
+
+/**
+ * The pool RANDOM/fallback selection may draw from — Welcome Home only.
+ *
+ * Karel (2026-09-18): the Snowflake EP tracks (Snowflake / Realized /
+ * Ghost) are welded to their prescribed journeys (first-snow / inferno /
+ * ghost) and must never appear in rotation elsewhere. Pairing resolution
+ * still uses VERIFIED_RECORDING_IDS (it must find the EP refs by title
+ * for their own journeys); this narrower set is only for the fallback
+ * pool and random draws.
+ */
+export const FALLBACK_ELIGIBLE_RECORDING_IDS: ReadonlySet<string> = new Set(
+  WELCOME_HOME_TRACKS.map((t) => t.id),
 );
 
 /** Stalled-detector window during a journey phase. If currentTime

@@ -6,7 +6,7 @@ import {
   getAnalysis,
   getCueMarkers,
 } from "@/lib/offline/pack";
-import { VERIFIED_RECORDING_IDS } from "@/components/audio/installation-machine";
+import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 
 // Offline kiosk only — resolves a journey's track from the local pack,
 // mirroring the journey selector's Supabase flow: exact recordingId,
@@ -47,8 +47,10 @@ export async function GET(request: Request) {
   }
 
   if (!rec) {
+    // Random draws exclude the EP refs — they are welded to their own
+    // journeys (Karel, 2026-09-18); only Welcome Home tracks rotate.
     const pool = listRecordings().filter(
-      (r) => VERIFIED_RECORDING_IDS.has(r.id as string),
+      (r) => FALLBACK_ELIGIBLE_RECORDING_IDS.has(r.id as string),
     );
     if (pool.length === 0) {
       return NextResponse.json({ error: "No recordings in pack" }, { status: 404 });

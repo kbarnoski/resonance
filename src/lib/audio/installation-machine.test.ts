@@ -21,6 +21,7 @@ import {
   journeyCapMs,
   QUARANTINED_RECORDING_IDS,
   VERIFIED_RECORDING_IDS,
+  FALLBACK_ELIGIBLE_RECORDING_IDS,
 } from "../../components/audio/installation-machine";
 
 describe("installation-machine timing constants", () => {
@@ -142,6 +143,27 @@ describe("VERIFIED_RECORDING_IDS (2026-09-18 incident guard)", () => {
       "0d167679-42af-44b9-be6b-0e383c2ef56e",
     ]) {
       expect(VERIFIED_RECORDING_IDS.has(id)).toBe(false);
+    }
+  });
+});
+
+describe("FALLBACK_ELIGIBLE_RECORDING_IDS (EP refs welded to their journeys)", () => {
+  it("is the 13 Welcome Home tracks only", () => {
+    expect(FALLBACK_ELIGIBLE_RECORDING_IDS.size).toBe(13);
+    for (const id of FALLBACK_ELIGIBLE_RECORDING_IDS) {
+      expect(VERIFIED_RECORDING_IDS.has(id)).toBe(true);
+    }
+  });
+
+  it("excludes the Snowflake EP refs (Karel, 2026-09-18)", () => {
+    // Snowflake / Realized / Ghost only ever play in first-snow /
+    // inferno / ghost — never in fallback rotation.
+    for (const id of [
+      "734a09ce-84df-4f1f-93c1-11b08d303681",
+      "6f58d401-1cd0-479e-a252-5d34dc636e3d",
+      "549fc519-f7fc-4c38-a771-adaad2edbc81",
+    ]) {
+      expect(FALLBACK_ELIGIBLE_RECORDING_IDS.has(id)).toBe(false);
     }
   });
 });

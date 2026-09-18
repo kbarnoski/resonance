@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } from "@/components/audio/installation-loop-client";
-import { VERIFIED_RECORDING_IDS } from "@/components/audio/installation-machine";
+import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID, TRAMOKYO_SETLIST } from "@/lib/journeys/installation-sequence";
@@ -477,8 +477,10 @@ export default async function InstallationPage({ searchParams }: Props) {
     // the pack's stale is_featured snapshot put unverified tracks in
     // featuredRecordings, and the denylist only caught the 9 quarantined
     // ids). See VERIFIED_RECORDING_IDS in installation-machine.ts.
+    // Narrower than VERIFIED: the Snowflake EP refs are welded to their
+    // own journeys (Karel, 2026-09-18) and never rotate as fallbacks.
     const fallbackTracks = featuredRecordings
-      .filter((r) => VERIFIED_RECORDING_IDS.has(r.id))
+      .filter((r) => FALLBACK_ELIGIBLE_RECORDING_IDS.has(r.id))
       .map(toTrack);
 
     // Resolve ?start now that programs exist. Accepts a program id
@@ -537,11 +539,12 @@ export default async function InstallationPage({ searchParams }: Props) {
   // ─── Legacy single-journey kiosk mode (unchanged) ──────────────────
   let tracks: Track[] = [];
   if (offline) {
-    // Verified-only here too — this pool feeds the legacy random-track
-    // kiosk directly (allowlist, same 2026-09-18 incident).
+    // Fallback-eligible only here too — this pool feeds the legacy
+    // random-track kiosk directly (allowlist, 2026-09-18 incident; EP
+    // refs reserved for their own journeys).
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = (listRecordings() as any[]).filter(
-      (r) => VERIFIED_RECORDING_IDS.has(r.id),
+      (r) => FALLBACK_ELIGIBLE_RECORDING_IDS.has(r.id),
     );
     const featured = rows.filter((r) => r.is_featured);
     const pool = featured.length > 0 ? featured : rows;
