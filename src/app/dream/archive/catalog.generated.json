@@ -1,5 +1,61 @@
 [
  {
+  "slug": "17408-bodycast",
+  "cycle": 17408,
+  "name": "BODYCAST",
+  "status": "demoable",
+  "description": "Route: /dream/17408-bodycast",
+  "category": "local"
+ },
+ {
+  "slug": "17344-resonantpair",
+  "cycle": 17344,
+  "name": "Resonant Pair",
+  "status": "demoable",
+  "description": "An asymmetric two-hand camera-conducting instrument where your right hand is the melodic VOICE and your left hand is the harmonic GROUND over one solo-piano recording — and the two",
+  "category": "local"
+ },
+ {
+  "slug": "17312-timeheads",
+  "cycle": 17312,
+  "name": "two hands, two tape heads, one take: live counterpoint from a single solo-piano recording",
+  "status": "demoable",
+  "description": "Route: /dream/17312-timeheads",
+  "category": "local"
+ },
+ {
+  "slug": "17280-commons",
+  "cycle": 17280,
+  "name": "Commons",
+  "status": "demoable",
+  "description": "_What if listening to Karel's take together — not two people but a whole ROOM of present listeners — visibly wove everyone's attention into ONE collective figure of light, venue-sc",
+  "category": "local"
+ },
+ {
+  "slug": "17264-vestibule",
+  "cycle": 17264,
+  "name": "\"The five are waiting\"",
+  "status": "demoable",
+  "description": "A front door, not a sixth stack. Status: demoable.",
+  "category": "local"
+ },
+ {
+  "slug": "17232-tunesignal",
+  "cycle": 17232,
+  "name": "Tune the Signal",
+  "status": "demoable",
+  "description": "Karel's real piano take is rendered as a stark achromatic 1-bit ordered-dither signal field that resolves out of pure static only when you physically tune your body toward a sweet-",
+  "category": "local"
+ },
+ {
+  "slug": "17200-hall",
+  "cycle": 17200,
+  "name": "Hall",
+  "status": "demoable",
+  "description": "_What if Resonance were a venue installation — Karel's take projected room-scale on a wall, and the room's own movement rippled the light?_",
+  "category": "local"
+ },
+ {
   "slug": "17168-hearth",
   "cycle": 17168,
   "name": "A room that remembers being listened in",
