@@ -39,14 +39,24 @@ export const PAIRED_TRACKS: Record<string, string> = {
   //     Interplay, Stir Crazy, Rolling, Quarantine, All Together,
   //     2019, Isolation, Rebound
   // All Karel's tracks; none in Welcome Home album.
+  // RESTORED 2026-09-18 — Karel verified these six session takes as his
+  // and asked for the original pairings back (they resolve again because
+  // the takes moved from quarantine to VERIFIED_SESSION_TRACKS).
   "the-ascension":    "=17th St 63",           // 3:20 — exact match (avoids "spectre" collision)
-  "mycelium-dream":   "%Folsom St 8%",         // 6:25 alac
-  "abyssal-dive":     "%Folsom St 9%",         // 3:35 alac (per user 2026-05-04)
-  "the-ascent":       "%Folsom St 5%",         // 4:41 alac
+  "mycelium-dream":   "%Folsom St 8%",         // 6:25
+  "the-ascent":       "%Folsom St 5%",         // 4:41
   "the-tempest":      "=17th St 63 spectre",   // exact match (counterpart to ascension's exact)
-  "the-bloom":        "%Folsom St 9%",         // 3:35 alac (also paired by Abyssal in
-                                                //   the installation; the-bloom isn't in
-                                                //   INSTALLATION_SEQUENCE so no conflict)
+  "the-bloom":        "%Folsom St 9%",         // 3:35 — Folsom St 9 is welded to the-bloom
+  // "abyssal-dive":  "%Folsom St 9%",         // ORIGINAL pairing shared F9 with the-bloom;
+                                                //   both are in TRAMOKYO_SETLIST now (pos 10 +
+                                                //   13), so restoring it would repeat the track
+                                                //   3 slots apart. Karel did not restore this
+                                                //   one — abyssal draws from the WH fallback
+                                                //   pool until he picks a track for it.
+  // neural-link keeps "%17th St 64%" above, but 17th St 64 (18:40) is
+  // still quarantined AND excluded by Karel ("dont offer 17th St 64 for
+  // now") — the pairing cannot resolve, so neural-link stays on the WH
+  // fallback pool until he assigns something else.
 
   // ─── Unpaired (TODO) ────────────────────────────────────────────
   // Not currently in INSTALLATION_SEQUENCE. Previous WH-conflicting

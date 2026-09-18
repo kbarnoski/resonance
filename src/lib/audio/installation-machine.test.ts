@@ -87,18 +87,23 @@ describe("journeyCapMs", () => {
 });
 
 describe("QUARANTINED_RECORDING_IDS", () => {
-  it("covers all nine 17th St + Folsom St uploads", () => {
-    // 5 × 17th St + 4 × Folsom St — mirrors the canonical quarantine
-    // in src/app/dream/_shared/welcomeHome.ts (imported, not copied).
-    expect(QUARANTINED_RECORDING_IDS.size).toBe(9);
-    // The 18:40 "17th St 64" the audit flagged:
+  it("covers the three still-unverified session takes", () => {
+    // Karel verified six takes on 2026-09-18 (restored pairings);
+    // 17th St 62 + 17th St 64 + Folsom St 6 remain quarantined —
+    // mirrors the canonical lists in welcomeHome.ts (imported, not copied).
+    expect(QUARANTINED_RECORDING_IDS.size).toBe(3);
+    // The 18:40 "17th St 64" (also excluded by Karel for length):
     expect(
       QUARANTINED_RECORDING_IDS.has("6a009894-d341-4f84-8a2e-b45a59b68b82"),
     ).toBe(true);
-    // The contaminated "Folsom St 5":
+    // "Folsom St 6":
+    expect(
+      QUARANTINED_RECORDING_IDS.has("ba5ad023-6858-401c-807d-74fb29be81af"),
+    ).toBe(true);
+    // "Folsom St 5" was verified + restored to the-ascent:
     expect(
       QUARANTINED_RECORDING_IDS.has("808f253c-bca9-42e6-b0f7-5762b8d92a92"),
-    ).toBe(true);
+    ).toBe(false);
   });
 
   it("does not quarantine verified catalog tracks", () => {
@@ -114,8 +119,12 @@ describe("QUARANTINED_RECORDING_IDS", () => {
 });
 
 describe("VERIFIED_RECORDING_IDS (2026-09-18 incident guard)", () => {
-  it("is exactly Karel's verified catalog — 13 Welcome Home + 3 Snowflake EP", () => {
-    expect(VERIFIED_RECORDING_IDS.size).toBe(16);
+  it("is Karel's verified catalog — 13 WH + 3 EP + 6 verified session takes", () => {
+    expect(VERIFIED_RECORDING_IDS.size).toBe(22);
+    // A restored session take (Folsom St 8 → mycelium-dream):
+    expect(
+      VERIFIED_RECORDING_IDS.has("e1553a57-682f-444a-992d-92165ee471d1"),
+    ).toBe(true);
     // Snowflake EP refs the setlist's opening programs play:
     expect(
       VERIFIED_RECORDING_IDS.has("734a09ce-84df-4f1f-93c1-11b08d303681"),

@@ -53,28 +53,39 @@ export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "549fc519-f7fc-4c38-a771-adaad2edbc81", title: "Ghost" },
 ] as const;
 
-// ── QUARANTINED: 17th St + Folsom St are UNVERIFIED as Karel's ──────────────
+// ── QUARANTINED: remaining 17th St + Folsom St takes, UNVERIFIED as Karel's ──
 // Karel reported (2026-08-14) that a "Folsom St" upload plays one of JOSEPH's
-// drones — so the session uploads below are contaminated and we cannot tell
-// which takes are actually Karel's. Until he verifies each ID, these two
-// collections are pulled from COLLECTIONS/REAL_TRACKS and MUST NOT be used in
-// any proto. Do not re-add them to COLLECTIONS without his per-track sign-off.
+// drones, quarantining both sessions. On 2026-09-18 Karel VERIFIED six takes
+// as his own by restoring their installation pairings (see
+// VERIFIED_SESSION_TRACKS below). The three takes still listed here remain
+// unverified: do not use them anywhere until he signs off per track.
 
 /** UNVERIFIED — do not use (see quarantine note above). */
 export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [
-  { id: "e49f17ca-7215-4a82-8c80-bf4339cd3e3b", title: "17th St 61" },
   { id: "64c5cca9-a1db-41b8-8ebf-e3a6f6ede9f5", title: "17th St 62" },
-  { id: "d073c3fb-329d-4126-a27e-3167e2ed605d", title: "17th St 63" },
-  { id: "2ff2768b-98a7-44eb-a498-473d9b7c33dc", title: "17th St 63 (spectre)" },
   { id: "6a009894-d341-4f84-8a2e-b45a59b68b82", title: "17th St 64" },
 ] as const;
 
 /** UNVERIFIED — do not use (see quarantine note above). */
 export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [
-  { id: "808f253c-bca9-42e6-b0f7-5762b8d92a92", title: "Folsom St 5" },
   { id: "ba5ad023-6858-401c-807d-74fb29be81af", title: "Folsom St 6" },
-  { id: "e1553a57-682f-444a-992d-92165ee471d1", title: "Folsom St 8" },
-  { id: "ee0bd856-d565-417d-a9d3-8f307116e043", title: "Folsom St 9" },
+] as const;
+
+/**
+ * Session takes Karel VERIFIED as his own (2026-09-18) when he asked for
+ * their original installation pairings back. They are INSTALLATION-scoped:
+ * each is welded to its paired journey (see PAIRED_TRACKS) and never enters
+ * fallback/random rotation. They are deliberately NOT added to COLLECTIONS /
+ * REAL_TRACKS — dream protos keep using the album catalog only, until Karel
+ * says otherwise.
+ */
+export const VERIFIED_SESSION_TRACKS: readonly WelcomeHomeTrack[] = [
+  { id: "e49f17ca-7215-4a82-8c80-bf4339cd3e3b", title: "17th St 61" }, // cosmic-drift
+  { id: "d073c3fb-329d-4126-a27e-3167e2ed605d", title: "17th St 63" }, // the-ascension
+  { id: "2ff2768b-98a7-44eb-a498-473d9b7c33dc", title: "17th St 63 (spectre)" }, // the-tempest
+  { id: "808f253c-bca9-42e6-b0f7-5762b8d92a92", title: "Folsom St 5" }, // the-ascent
+  { id: "e1553a57-682f-444a-992d-92165ee471d1", title: "Folsom St 8" }, // mycelium-dream
+  { id: "ee0bd856-d565-417d-a9d3-8f307116e043", title: "Folsom St 9" }, // the-bloom
 ] as const;
 
 // ── DO NOT USE: the "Sketches" uploads are JOSEPH's music, not Karel's ──────

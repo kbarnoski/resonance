@@ -61,17 +61,17 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "inferno", //  2. Realized
   "ghost", //  3. Ghost
   "27f52cf0-5fad-420f-8324-8017c414f1f8", //  4. Interplay
-  "mycelium-dream", //  5. Mycelium Dream (fallback music)
-  "the-tempest", //  6. The Tempest (fallback music) — RE-ADDED 2026-09-16: its "=17th St 63 spectre" pairing resolved to a quarantined ALAC file Chrome can't decode (the 2026-08-30 stall); pairing resolution now filters quarantined ids on both the loop and DJ paths, so it draws a verified fallback track. Validate on the next overnight soak (flight recorder is armed).
-  "neural-link", //  7. Neural Link (fallback music)
+  "mycelium-dream", //  5. Mycelium Dream — Folsom St 8 (restored pairing 2026-09-18)
+  "the-tempest", //  6. The Tempest — 17th St 63 spectre (restored pairing 2026-09-18; take verified as Karel's)
+  "neural-link", //  7. Neural Link (fallback music — original 17th St 64 excluded by Karel for now)
   "38daff92-ae34-4448-8868-5f1df6029b94", //  8. Rolling
-  "cosmic-drift", //  9. Cosmic Drift (fallback music)
-  "the-bloom", // 10. The Bloom (fallback music)
-  "the-ascent", // 11. The Ascent (fallback music)
+  "cosmic-drift", //  9. Cosmic Drift — 17th St 61 (restored pairing 2026-09-18)
+  "the-bloom", // 10. The Bloom — Folsom St 9 (restored pairing 2026-09-18)
+  "the-ascent", // 11. The Ascent — Folsom St 5 (restored pairing 2026-09-18)
   "cd517f5a-c4eb-4d50-8a53-044aa668d087", // 12. Stir Crazy
-  "abyssal-dive", // 13. Abyssal Dive (fallback music)
+  "abyssal-dive", // 13. Abyssal Dive (fallback music — original F9 now welded to the-bloom; awaiting Karel's pick)
   "8997623d-8770-41ce-863d-f359d1a213c4", // 14. Rebound
-  "the-ascension", // 15. The Ascension (fallback music)
+  "the-ascension", // 15. The Ascension — 17th St 63 (restored pairing 2026-09-18)
   "019e1e1d-c7e2-4609-a9c6-364a2755b115", // 16. Quarantine
   "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b", // 17. Playa
   "b207b557-e984-4a06-ae71-83124bcd80d5", // 18. All Together

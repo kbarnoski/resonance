@@ -21,6 +21,7 @@ import {
   FOLSOM_ST_TRACKS,
   REAL_TRACKS,
   WELCOME_HOME_TRACKS,
+  VERIFIED_SESSION_TRACKS,
 } from "@/app/dream/_shared/welcomeHome";
 
 /** Cycle intro screen duration before the cycle text begins fading.
@@ -115,7 +116,7 @@ export const QUARANTINED_RECORDING_IDS: ReadonlySet<string> = new Set(
  * from his library page) is not gated here — only automatic selection.
  */
 export const VERIFIED_RECORDING_IDS: ReadonlySet<string> = new Set(
-  REAL_TRACKS.map((t) => t.id),
+  [...REAL_TRACKS, ...VERIFIED_SESSION_TRACKS].map((t) => t.id),
 );
 
 /**
