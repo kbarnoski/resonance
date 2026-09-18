@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } from "@/components/audio/installation-loop-client";
-import { QUARANTINED_RECORDING_IDS } from "@/components/audio/installation-machine";
+import { VERIFIED_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID, TRAMOKYO_SETLIST } from "@/lib/journeys/installation-sequence";
@@ -126,16 +126,17 @@ export default async function InstallationPage({ searchParams }: Props) {
     const exactPatterns = pairedPatterns.filter(([, p]) => p.startsWith("="));
 
     // Offline: resolve both pattern forms in memory against the pack.
-    // QUARANTINE (Karel's ruling + the-tempest overnight stall): the pack
-    // physically contains the quarantined 17th St / Folsom St files —
-    // several are ALAC, which Chrome cannot decode, and a pairing that
-    // resolves to one stalls the journey. Filter them out of pairing
-    // entirely; those journeys draw verified tracks from the fallback
-    // pool instead.
+    // ALLOWLIST (2026-09-18 incident — see VERIFIED_RECORDING_IDS): only
+    // Karel's verified catalog may resolve here. The pack physically
+    // contains quarantined/Joseph/unverified files (several ALAC, which
+    // Chrome cannot decode — the-tempest stall pattern), so a pairing
+    // that matches one either stalls the journey or, worse, plays music
+    // that isn't Karel's. Unresolved pairings draw verified tracks from
+    // the fallback pool instead.
     if (offline) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const rows = (listRecordings() as any[]).filter(
-        (r) => !QUARANTINED_RECORDING_IDS.has(r.id),
+        (r) => VERIFIED_RECORDING_IDS.has(r.id),
       );
       for (const [jid, p] of pairedPatterns) {
         if (p.startsWith("=")) {
@@ -470,13 +471,14 @@ export default async function InstallationPage({ searchParams }: Props) {
       })),
     }));
 
-    // Fallback/DJ pool for unpaired journeys. Quarantined 17th St /
-    // Folsom St uploads are EXCLUDED (unverified authorship — Karel's
-    // decision, 2026-08-25 audit; see QUARANTINED_RECORDING_IDS). The
-    // filter sits here, not on featuredRecordings, so curated
-    // recordingId / PAIRED_TRACKS pairings above are untouched.
+    // Fallback/DJ pool for unpaired journeys — VERIFIED CATALOG ONLY.
+    // Was a quarantine denylist; flipped to the allowlist after the
+    // 2026-09-18 incident (Joseph's track played under Mycelium Dream —
+    // the pack's stale is_featured snapshot put unverified tracks in
+    // featuredRecordings, and the denylist only caught the 9 quarantined
+    // ids). See VERIFIED_RECORDING_IDS in installation-machine.ts.
     const fallbackTracks = featuredRecordings
-      .filter((r) => !QUARANTINED_RECORDING_IDS.has(r.id))
+      .filter((r) => VERIFIED_RECORDING_IDS.has(r.id))
       .map(toTrack);
 
     // Resolve ?start now that programs exist. Accepts a program id
@@ -535,11 +537,11 @@ export default async function InstallationPage({ searchParams }: Props) {
   // ─── Legacy single-journey kiosk mode (unchanged) ──────────────────
   let tracks: Track[] = [];
   if (offline) {
-    // Quarantined uploads excluded here too — this pool feeds the
-    // legacy random-track kiosk directly.
+    // Verified-only here too — this pool feeds the legacy random-track
+    // kiosk directly (allowlist, same 2026-09-18 incident).
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = (listRecordings() as any[]).filter(
-      (r) => !QUARANTINED_RECORDING_IDS.has(r.id),
+      (r) => VERIFIED_RECORDING_IDS.has(r.id),
     );
     const featured = rows.filter((r) => r.is_featured);
     const pool = featured.length > 0 ? featured : rows;

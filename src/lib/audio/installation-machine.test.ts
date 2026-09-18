@@ -20,6 +20,7 @@ import {
   distributedTrackIndex,
   journeyCapMs,
   QUARANTINED_RECORDING_IDS,
+  VERIFIED_RECORDING_IDS,
 } from "../../components/audio/installation-machine";
 
 describe("installation-machine timing constants", () => {
@@ -108,6 +109,40 @@ describe("QUARANTINED_RECORDING_IDS", () => {
     expect(
       QUARANTINED_RECORDING_IDS.has("8dafed88-4761-4dd3-a0f4-93f310441093"),
     ).toBe(false);
+  });
+});
+
+describe("VERIFIED_RECORDING_IDS (2026-09-18 incident guard)", () => {
+  it("is exactly Karel's verified catalog — 13 Welcome Home + 3 Snowflake EP", () => {
+    expect(VERIFIED_RECORDING_IDS.size).toBe(16);
+    // Snowflake EP refs the setlist's opening programs play:
+    expect(
+      VERIFIED_RECORDING_IDS.has("734a09ce-84df-4f1f-93c1-11b08d303681"),
+    ).toBe(true); // Snowflake
+    expect(
+      VERIFIED_RECORDING_IDS.has("549fc519-f7fc-4c38-a771-adaad2edbc81"),
+    ).toBe(true); // Ghost
+  });
+
+  it("is disjoint from the quarantine list", () => {
+    for (const id of QUARANTINED_RECORDING_IDS) {
+      expect(VERIFIED_RECORDING_IDS.has(id)).toBe(false);
+    }
+  });
+
+  it("excludes Joseph's tracks (the ones that leaked on 2026-09-18)", () => {
+    // "WYN_MAR4_1.1", "That One", "Without a Brightness",
+    // "Snowflake (Take 1)" / KB_SFLAKE_TK1, "Isolation (alt)" — flagged
+    // as Joseph's in welcomeHome.ts and never allowed to auto-play.
+    for (const id of [
+      "bcd04d03-8bdc-4868-bb30-f620349f54fe",
+      "aafddeb5-5333-49f5-8308-16dd6d59a1f2",
+      "c3c34efa-76e1-4375-9e01-499eafd8d126",
+      "ca26d632-bf64-4ab8-bbcf-24f49e238b73",
+      "0d167679-42af-44b9-be6b-0e383c2ef56e",
+    ]) {
+      expect(VERIFIED_RECORDING_IDS.has(id)).toBe(false);
+    }
   });
 });
 

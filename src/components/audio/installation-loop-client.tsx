@@ -1254,9 +1254,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       setPhase({ kind: "credits" });
       return;
     }
+    // Log the RESOLVED track title even for fallback picks — the
+    // 2026-09-18 incident (Joseph's track under Mycelium Dream) was
+    // invisible in the events log because it only said "[fallback]".
+    const resolvedForLog = trackForIndex(phase.index);
     postEvent(
       `journey ${phase.index + 1}/${sequence.length} ${entry.journey.name}` +
-        (entry.track ? ` [${entry.track.title}]` : " [fallback]"),
+        (entry.track
+          ? ` [${entry.track.title}]`
+          : ` [fallback: ${resolvedForLog?.title ?? "none"}]`),
     );
 
     // Show dots while the per-journey title overlay is up — but ONLY

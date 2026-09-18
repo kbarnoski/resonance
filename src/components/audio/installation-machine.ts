@@ -19,6 +19,7 @@
 import {
   SEVENTEENTH_ST_TRACKS,
   FOLSOM_ST_TRACKS,
+  REAL_TRACKS,
 } from "@/app/dream/_shared/welcomeHome";
 
 /** Cycle intro screen duration before the cycle text begins fading.
@@ -93,6 +94,27 @@ export function journeyCapMs(trackDurationSec: number | null | undefined): numbe
  */
 export const QUARANTINED_RECORDING_IDS: ReadonlySet<string> = new Set(
   [...SEVENTEENTH_ST_TRACKS, ...FOLSOM_ST_TRACKS].map((t) => t.id),
+);
+
+/**
+ * ALLOWLIST — the only recordings the installation may ever select
+ * AUTOMATICALLY (fallback pools, pairing search, random draws).
+ *
+ * Incident (Karel, 2026-09-18): the kiosk played one of JOSEPH's tracks
+ * under Mycelium Dream. The quarantine DENYLIST above only covers the 9
+ * unverified 17th St / Folsom St uploads — but the offline pack carries
+ * the whole 34-track library with a STALE is_featured snapshot (exported
+ * 08-18, before the 08-26 DB cleanup), so the fallback pool contained
+ * Joseph's tracks ("WYN_MAR4_1.1", "Without a brightness", "champa",
+ * "Naive 2026-01-18", "KB_SFLAKE_TK1_REF_2.0"). Denylists rot; this
+ * allowlist cannot. It is Karel's VERIFIED catalog (Welcome Home ×13 +
+ * Snowflake EP ×3) imported from the canonical `welcomeHome.ts` list.
+ *
+ * Deliberate, human-initiated playback (Karel DJing a specific track
+ * from his library page) is not gated here — only automatic selection.
+ */
+export const VERIFIED_RECORDING_IDS: ReadonlySet<string> = new Set(
+  REAL_TRACKS.map((t) => t.id),
 );
 
 /** Stalled-detector window during a journey phase. If currentTime
