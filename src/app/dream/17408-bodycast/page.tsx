@@ -26,6 +26,7 @@ import {
 } from "../_shared/cameraTracking";
 import { loadRealTrackBuffer, REAL_TRACKS } from "../_shared/welcomeHome";
 import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
+import { useImmersive, ImmersiveToggle } from "../_shared/immersive";
 
 // ── Register voices ───────────────────────────────────────────────────────────
 // Four parallel bands off the single source. `lat` is the signed lateral factor
@@ -172,15 +173,18 @@ function computeFeat(pts: Record<number, Pt>): PoseData["feat"] {
 }
 
 // Live landmarks → mirrored PoseData, or null when the core body isn't visible.
+//
+// FIX (Karel, 2026-09-18): the original gate required HIPS at ≥0.3
+// visibility — at a desk/laptop webcam the hips are out of frame, so
+// readPose returned null on every frame and the piece never left the
+// autonomous ghost body ("it didn't respond to me moving"). Only the
+// SHOULDERS are required now; when the hips aren't visible they are
+// synthesized directly below the shoulders (lean reads ~0, everything
+// arm-driven still works seated or framed from the waist up).
 function readPose(lms: Landmark[]): PoseData | null {
   if (!lms || lms.length <= POSE_LM.rightHip) return null;
-  const core = [
-    POSE_LM.leftShoulder,
-    POSE_LM.rightShoulder,
-    POSE_LM.leftHip,
-    POSE_LM.rightHip,
-  ];
-  for (const i of core) {
+  const shoulders = [POSE_LM.leftShoulder, POSE_LM.rightShoulder];
+  for (const i of shoulders) {
     if ((lms[i]?.visibility ?? 0) < 0.3) return null;
   }
   const pts: Record<number, Pt> = {};
@@ -192,6 +196,22 @@ function readPose(lms: Landmark[]): PoseData | null {
       z: l.z ?? 0,
       v: l.visibility ?? 1,
     };
+  }
+  // Hips out of frame → stand them in below the shoulders so computeFeat
+  // (lean, bones) stays well-defined for a waist-up framing.
+  const hipDrop = Math.abs(pts[POSE_LM.leftShoulder].x - pts[POSE_LM.rightShoulder].x) * 1.4 + 0.18;
+  for (const [hip, shoulder] of [
+    [POSE_LM.leftHip, POSE_LM.leftShoulder],
+    [POSE_LM.rightHip, POSE_LM.rightShoulder],
+  ] as const) {
+    if ((lms[hip]?.visibility ?? 0) < 0.3) {
+      pts[hip] = {
+        x: pts[shoulder].x,
+        y: pts[shoulder].y + hipDrop,
+        z: pts[shoulder].z,
+        v: 0,
+      };
+    }
   }
   return { pts, feat: computeFeat(pts) };
 }
@@ -413,6 +433,7 @@ export default function BodycastPage() {
   const [trackTitle, setTrackTitle] = useState<string>("");
   const [cameraOn, setCameraOn] = useState(false);
   const [demoMode, setDemoMode] = useState(true);
+  const { immersive, toggle: toggleImmersive } = useImmersive();
   const [notice, setNotice] = useState<string | null>(null);
   const [glError, setGlError] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
@@ -821,7 +842,8 @@ export default function BodycastPage() {
         </div>
       )}
 
-      {/* header */}
+      {/* header — hidden in immersive/fullscreen mode */}
+      {!immersive && (
       <div className="pointer-events-none absolute left-0 top-0 max-w-md p-5 sm:p-7">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
           Resonance dream lab
@@ -840,9 +862,10 @@ export default function BodycastPage() {
           </p>
         )}
       </div>
+      )}
 
       {/* legend of the four registers */}
-      {phase === "running" && (
+      {phase === "running" && !immersive && (
         <div className="pointer-events-none absolute right-4 top-4 flex flex-col gap-1.5 rounded-md border border-border bg-background/60 p-3 backdrop-blur-sm">
           {VOICES.map((v) => (
             <div key={v.key} className="flex items-center gap-2">
@@ -902,19 +925,41 @@ export default function BodycastPage() {
         </div>
       )}
 
-      {cameraOn && (
+      {cameraOn && !immersive && (
         <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
           camera stays on-device · nothing stored or sent
         </p>
       )}
 
-      {/* design notes */}
-      <button
-        onClick={() => setShowNotes(true)}
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground"
-      >
-        Read the design notes
-      </button>
+      {/* tracking status — always visible once the camera is on, so demo
+          mode can never masquerade as live tracking (Karel, 2026-09-18) */}
+      {cameraOn && (
+        <p
+          className={`pointer-events-none absolute bottom-4 left-4 font-mono text-xs uppercase tracking-[0.18em] ${
+            demoMode ? "text-destructive" : "text-muted-foreground"
+          }`}
+        >
+          {demoMode
+            ? "tracking lost — face the camera, shoulders in frame"
+            : "tracking · live"}
+        </p>
+      )}
+
+      {/* design notes + fullscreen */}
+      {!immersive && (
+        <div className="absolute bottom-4 right-4 flex gap-2">
+          <ImmersiveToggle immersive={immersive} onToggle={toggleImmersive} />
+          <button
+            onClick={() => setShowNotes(true)}
+            className="pointer-events-auto min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground"
+          >
+            Read the design notes
+          </button>
+        </div>
+      )}
+      {immersive && (
+        <ImmersiveToggle immersive={immersive} onToggle={toggleImmersive} />
+      )}
 
       {showNotes && (
         <div

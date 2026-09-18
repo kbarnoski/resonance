@@ -317,6 +317,24 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 - **Diversity-audit amendment while this directive stands:** the `camera` / `body-tracking` INPUT tags are EXEMPT from the ≥4-in-10 ban — they are *supposed* to repeat. Drive diversity through the OTHER axes instead: which body signal (two hands / full body / face / gait / gesture vocabulary / multi-person), which musical parameter is conducted (time-base, dynamics, harmony, spatialization, granulation, section-form), which output technique, which palette/state.
 - **Reference implementations to study before building:** `15824-canon` (the loved benchmark — two-hand counterpoint conducting), `15760-conduct` (single-hand time-base), `3760-ictus` (pose strike detection), `14480-bodychoir`, `6296-flowbody`.
 - The VISIONARY primary direction below remains the *aesthetic* frame; this directive sets the *interaction* frame. When they conflict on pick order, this directive wins.
+- **Full body: YES (Karel, 2026-09-18).** Answering MORNING's question after `17408-bodycast`: *"have the agent do full body stuff too."* Full-body pieces are wanted ALONGSIDE the two-hand intimate space, not instead of it. Face, gaze, gait, and multi-person body signals are all in scope — rotate across them.
+
+#### WORKS-WHEN-SHIPPED — hard gate on every interactive proto (Karel, 2026-09-18)
+
+Karel tested `17408-bodycast` and it did not respond to his movement (*"never release a proto unless it works"*). Root cause: `readPose` required HIP visibility ≥0.3 — at a desk/laptop webcam the hips are out of frame, so every frame fell through to the autonomous ghost body, silently. This gate exists so that class of failure can never ship again:
+
+1. **Design for the realistic framing.** A laptop/desk webcam sees the person from the waist up, seated, ~60–150cm away. Gate tracking ONLY on the landmarks the interaction actually needs (shoulders/wrists for arm pieces — never hips/ankles unless the piece is explicitly floor-staged, and then say so on screen). Synthesize missing lower-body landmarks rather than rejecting the frame.
+2. **Tracking state must be VISIBLE.** Every camera proto shows a small mono status line whenever the camera is on: `tracking · live` vs a `text-destructive` lost-state with a actionable hint ("face the camera, shoulders in frame"). An autonomous/demo/ghost fallback is welcome, but it must NEVER be visually indistinguishable from live tracking — label it.
+3. **Trace the control path before shipping.** The orchestrator personally reads the chain landmark → feature → parameter → audible/visible change for the winner and records `interaction-verified: <what was traced, what couldn't be>` in STATE.md. Check the classic breaks: visibility gates too strict, mirrored-x inconsistencies, smoothing so heavy motion disappears, features normalized to ranges a seated person can't reach.
+4. **Unverifiable ≠ demoable.** You cannot point a webcam at yourself in the cloud. If the end-to-end interaction could not be verified, ship it as `status: wip` in INDEX.md and say plainly in MORNING.md "camera path untested — needs your 30-second check". NEVER present unverified interaction as working. A proto Karel opens that ignores his movement costs more trust than a cycle that ships nothing.
+
+#### Fullscreen immersion — required on every new proto (Karel, 2026-09-18)
+
+*"The protos need a full screen ability so the write-up instruction isn't visible and the experience focuses on the proto."*
+
+- Use the shared helper: `import { useImmersive, ImmersiveToggle } from "../_shared/immersive";` — native Fullscreen API with a chrome-hiding focus-mode fallback, house-styled toggle, low-opacity `exit` pill while immersive.
+- While immersive, hide ALL write-up chrome: title, description, legend, design-notes button, meta captions. Keep only the art, functional error notices, the tracking-status line, and the exit pill. Reference retrofit: `17408-bodycast`.
+- Polish cycles: when touching an existing proto (especially loved ones), retrofit the toggle as part of the polish.
 
 ### PRIMARY DIRECTION (set 2026-06-28) — Altered states / visionary
 
