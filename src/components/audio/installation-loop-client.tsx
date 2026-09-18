@@ -29,7 +29,6 @@ import {
   STALLED_THRESHOLD_MS,
   MID_STALL_RELOAD_MS,
   CYCLE_INTRO_TIMINGS,
-  distributedTrackIndex,
   journeyCapMs,
 } from "./installation-machine";
 
@@ -52,7 +51,9 @@ export interface InstallationProgram {
   id: string;
   presenting: string;
   description: string;
-  dedication: ProgramDedication;
+  /** Omitted on the non-final Tramokyo sets — those end on a short
+   *  black breath instead of a dedication card (Karel 2026-09-18). */
+  dedication?: ProgramDedication;
   sequence: SequenceEntry[];
 }
 
@@ -336,20 +337,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     void ensureResumed();
   }, []);
 
-  // Pick the right track for this index — paired first, then a
-  // distributed pick from the fallback pool. We avoid using `i %
-  // length` directly because consecutive unpaired journeys would all
-  // land on adjacent tracks and a single bad track would cluster
-  // failures. Use a simple hash-shuffle instead so picks scatter.
+  // DETERMINISTIC (Karel 2026-09-18): every setlist journey carries an
+  // explicit pairing — there is no random substitution. A journey whose
+  // pairing failed to resolve returns null here and is SKIPPED (with a
+  // flight-recorder event) rather than handed a stand-in track. The
+  // old distributed fallback pick is retired; `fallbackTracks` remains
+  // only as a prop for cap computation compatibility.
   const trackForIndex = useCallback(
-    (i: number): Track | null => {
-      const entry = sequence[i];
-      if (entry?.track) return entry.track;
-      if (fallbackTracks.length === 0) return null;
-      const idx = distributedTrackIndex(i, fallbackTracks.length);
-      return fallbackTracks[idx] ?? fallbackTracks[0] ?? null;
-    },
-    [sequence, fallbackTracks],
+    (i: number): Track | null => sequence[i]?.track ?? null,
+    [sequence],
   );
 
   // ─── Mount: kiosk + installation flag ─────────────────────────────
@@ -1222,7 +1218,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       //                 to false so the start screen re-mounts. The
       //                 reviewer sees the full intro again with the
       //                 play button — no replay click required.
-      const delay = playOnce ? 14_000 : CREDITS_MS;
+      // Sets without a dedication (Tramokyo Sets I + II) take a short
+      // black breath instead of the 16s credits hold — the next set's
+      // Resonance statement card is the real punctuation.
+      const delay = playOnce ? 14_000 : program?.dedication ? CREDITS_MS : 5_000;
       const t = setTimeout(() => {
         // One more pause right before the phase change — defense
         // against any pending audio-provider effect that re-fires
@@ -1236,10 +1235,17 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // last). The ?start journey offset only applies to the very
         // first pass — every subsequent intro begins at journey 0.
         setStartIdx(0);
-        // Always return to program 0 — the shuffled Tramokyo Mix is the
-        // ambient default; albums (selected from the phone) hand back to
-        // it when they finish instead of chaining into each other.
-        setProgramIndex(0);
+        // Tramokyo sets chain in order (Set I → II → III → back to I),
+        // giving the Resonance statement card roughly every ~33 minutes
+        // (Karel 2026-09-18). Albums (selected from the phone) still
+        // hand back to Set I when they finish instead of chaining.
+        const isSet = (p?: InstallationProgram) =>
+          !!p && p.id.startsWith("tramokyo-mix");
+        setProgramIndex(
+          isSet(program) && isSet(programs[programIndex + 1])
+            ? programIndex + 1
+            : 0,
+        );
         setPhase({ kind: "intro" });
       }, delay);
       return () => {
@@ -1254,15 +1260,22 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       setPhase({ kind: "credits" });
       return;
     }
-    // Log the RESOLVED track title even for fallback picks — the
-    // 2026-09-18 incident (Joseph's track under Mycelium Dream) was
-    // invisible in the events log because it only said "[fallback]".
-    const resolvedForLog = trackForIndex(phase.index);
+    // DETERMINISTIC: no pairing resolved → skip the journey and say so
+    // in the flight recorder. Never substitute a track (the 2026-09-18
+    // incident: a random fallback played one of Joseph's tracks).
+    if (!entry.track) {
+      postEvent(
+        `skip-unpaired ${entry.journey.name} — pairing did not resolve; deterministic mode never substitutes`,
+      );
+      setPhase(
+        phase.index + 1 < sequence.length
+          ? { kind: "journey", index: phase.index + 1 }
+          : { kind: "credits" },
+      );
+      return;
+    }
     postEvent(
-      `journey ${phase.index + 1}/${sequence.length} ${entry.journey.name}` +
-        (entry.track
-          ? ` [${entry.track.title}]`
-          : ` [fallback: ${resolvedForLog?.title ?? "none"}]`),
+      `journey ${phase.index + 1}/${sequence.length} ${entry.journey.name} [${entry.track.title}]`,
     );
 
     // Show dots while the per-journey title overlay is up — but ONLY
@@ -1901,8 +1914,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         </div>
       )}
 
-      {phase.kind === "credits" && (
-        <InstallationCredits dedication={program?.dedication} />
+      {/* Dedication card only for programs that carry one — dedication-less
+          sets breathe to black instead (InstallationCredits would otherwise
+          fall back to its default dedication). */}
+      {phase.kind === "credits" && program?.dedication && (
+        <InstallationCredits dedication={program.dedication} />
       )}
 
       {/* /demo Begin overlay — captures the gesture iOS Safari needs

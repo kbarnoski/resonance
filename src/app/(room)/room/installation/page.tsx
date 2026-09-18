@@ -5,7 +5,7 @@ import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } 
 import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID, TRAMOKYO_SETLIST } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETS } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 import {
@@ -408,26 +408,35 @@ export default async function InstallationPage({ searchParams }: Props) {
       // anything built but unlisted is appended so nothing silently
       // vanishes when the list is tweaked.
       const byId = new Map(rawPool.map((e) => [e.journey.id, e]));
-      const pool = TRAMOKYO_SETLIST.map((id) => byId.get(id)).filter(
-        (e): e is SequenceEntry => !!e,
-      );
       const listed = new Set(TRAMOKYO_SETLIST);
-      for (const e of rawPool) {
-        if (!listed.has(e.journey.id)) pool.push(e);
-      }
-      programs.unshift({
-        id: TRAMOKYO_MIX_ID,
-        presenting: "an evening of selections",  // intro card no longer shown — statement only
-        description:
-          "Pieces from across the catalog — Welcome Home, Snowflake, and " +
-          "the featured journeys — in an order of their own.",
-        dedication: {
-          eyebrow: "with gratitude to",
-          hero: "Johnny and our hosts",
-          secondary: "for opening their land to this evening",
-        },
-        sequence: pool,
-      });
+      const extras = rawPool.filter((e) => !listed.has(e.journey.id));
+      // Three chained SETS (Karel 2026-09-18): the loop plays Set I →
+      // II → III → back to I forever, showing the Resonance statement
+      // card at each set boundary (~every 33 min). Each set's sequence
+      // is its slice of TRAMOKYO_SETLIST (by id, so a journey that
+      // failed to build never shifts the boundaries); anything built
+      // but unlisted is appended to the final set so nothing silently
+      // vanishes when the list is tweaked.
+      const setPrograms = TRAMOKYO_SETS.map((def, i) => {
+        const ids = TRAMOKYO_SETLIST.slice(
+          i === 0 ? 0 : TRAMOKYO_SETS[i - 1].end,
+          def.end,
+        );
+        const sequence = ids
+          .map((id) => byId.get(id))
+          .filter((e): e is SequenceEntry => !!e);
+        if (i === TRAMOKYO_SETS.length - 1) sequence.push(...extras);
+        return {
+          id: def.id,
+          presenting: def.presenting, // intro card retired — statement only
+          description:
+            "Pieces from across the catalog — Welcome Home, Snowflake, and " +
+            "the featured journeys — in an order of their own.",
+          dedication: def.dedication,
+          sequence,
+        };
+      }).filter((p) => p.sequence.length > 0);
+      programs.unshift(...setPrograms);
     }
 
     // Pre-fetch cue markers for every paired track across all programs.
@@ -477,11 +486,11 @@ export default async function InstallationPage({ searchParams }: Props) {
     // the pack's stale is_featured snapshot put unverified tracks in
     // featuredRecordings, and the denylist only caught the 9 quarantined
     // ids). See VERIFIED_RECORDING_IDS in installation-machine.ts.
-    // Narrower than VERIFIED: the Snowflake EP refs are welded to their
-    // own journeys (Karel, 2026-09-18) and never rotate as fallbacks.
-    const fallbackTracks = featuredRecordings
-      .filter((r) => FALLBACK_ELIGIBLE_RECORDING_IDS.has(r.id))
-      .map(toTrack);
+    // DETERMINISTIC (Karel 2026-09-18): every setlist journey has an
+    // explicit pairing, so the loop gets NO fallback pool — a pairing
+    // that fails to resolve is skipped (and flight-recorded), never
+    // substituted. The prop remains for cap-computation compatibility.
+    const fallbackTracks: Track[] = [];
 
     // Resolve ?start now that programs exist. Accepts a program id
     // ("snowflake-ep"), a journey id (builtin like "ghost" or a path

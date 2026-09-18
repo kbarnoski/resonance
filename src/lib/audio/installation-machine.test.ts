@@ -87,19 +87,19 @@ describe("journeyCapMs", () => {
 });
 
 describe("QUARANTINED_RECORDING_IDS", () => {
-  it("covers the three still-unverified session takes", () => {
-    // Karel verified six takes on 2026-09-18 (restored pairings);
-    // 17th St 62 + 17th St 64 + Folsom St 6 remain quarantined —
-    // mirrors the canonical lists in welcomeHome.ts (imported, not copied).
-    expect(QUARANTINED_RECORDING_IDS.size).toBe(3);
-    // The 18:40 "17th St 64" (also excluded by Karel for length):
+  it("covers the one still-unverified session take", () => {
+    // Karel verified six takes on 2026-09-18 (restored pairings), then
+    // two more (17th St 62 → abyssal-dive, Folsom St 6 → neural-link).
+    // Only the 18:40 "17th St 64" remains quarantined (also excluded by
+    // Karel for length) — mirrors welcomeHome.ts (imported, not copied).
+    expect(QUARANTINED_RECORDING_IDS.size).toBe(1);
     expect(
       QUARANTINED_RECORDING_IDS.has("6a009894-d341-4f84-8a2e-b45a59b68b82"),
     ).toBe(true);
-    // "Folsom St 6":
+    // "Folsom St 6" is verified now (neural-link):
     expect(
       QUARANTINED_RECORDING_IDS.has("ba5ad023-6858-401c-807d-74fb29be81af"),
-    ).toBe(true);
+    ).toBe(false);
     // "Folsom St 5" was verified + restored to the-ascent:
     expect(
       QUARANTINED_RECORDING_IDS.has("808f253c-bca9-42e6-b0f7-5762b8d92a92"),
@@ -119,8 +119,8 @@ describe("QUARANTINED_RECORDING_IDS", () => {
 });
 
 describe("VERIFIED_RECORDING_IDS (2026-09-18 incident guard)", () => {
-  it("is Karel's verified catalog — 13 WH + 3 EP + 6 verified session takes", () => {
-    expect(VERIFIED_RECORDING_IDS.size).toBe(22);
+  it("is Karel's verified catalog — 13 WH + 3 EP + 8 verified session takes", () => {
+    expect(VERIFIED_RECORDING_IDS.size).toBe(24);
     // A restored session take (Folsom St 8 → mycelium-dream):
     expect(
       VERIFIED_RECORDING_IDS.has("e1553a57-682f-444a-992d-92165ee471d1"),

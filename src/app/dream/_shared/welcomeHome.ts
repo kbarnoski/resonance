@@ -62,14 +62,11 @@ export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
 
 /** UNVERIFIED — do not use (see quarantine note above). */
 export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [
-  { id: "64c5cca9-a1db-41b8-8ebf-e3a6f6ede9f5", title: "17th St 62" },
   { id: "6a009894-d341-4f84-8a2e-b45a59b68b82", title: "17th St 64" },
 ] as const;
 
 /** UNVERIFIED — do not use (see quarantine note above). */
-export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [
-  { id: "ba5ad023-6858-401c-807d-74fb29be81af", title: "Folsom St 6" },
-] as const;
+export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [] as const;
 
 /**
  * Session takes Karel VERIFIED as his own (2026-09-18) when he asked for
@@ -81,9 +78,11 @@ export const FOLSOM_ST_TRACKS: readonly WelcomeHomeTrack[] = [
  */
 export const VERIFIED_SESSION_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "e49f17ca-7215-4a82-8c80-bf4339cd3e3b", title: "17th St 61" }, // cosmic-drift
+  { id: "64c5cca9-a1db-41b8-8ebf-e3a6f6ede9f5", title: "17th St 62" }, // abyssal-dive (verified 2026-09-18 round 2)
   { id: "d073c3fb-329d-4126-a27e-3167e2ed605d", title: "17th St 63" }, // the-ascension
   { id: "2ff2768b-98a7-44eb-a498-473d9b7c33dc", title: "17th St 63 (spectre)" }, // the-tempest
   { id: "808f253c-bca9-42e6-b0f7-5762b8d92a92", title: "Folsom St 5" }, // the-ascent
+  { id: "ba5ad023-6858-401c-807d-74fb29be81af", title: "Folsom St 6" }, // neural-link (verified 2026-09-18 round 2)
   { id: "e1553a57-682f-444a-992d-92165ee471d1", title: "Folsom St 8" }, // mycelium-dream
   { id: "ee0bd856-d565-417d-a9d3-8f307116e043", title: "Folsom St 9" }, // the-bloom
 ] as const;

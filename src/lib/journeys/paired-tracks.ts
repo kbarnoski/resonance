@@ -28,7 +28,9 @@ export const PAIRED_TRACKS: Record<string, string> = {
   "first-snow": "=KB_SFLAKE_TK5_MOOG_REF_2.0",
   "inferno": "%KB_REALIZED%",
   "cosmic-drift": "%17th St 61%",
-  "neural-link": "%17th St 64%",
+  // neural-link: originally "%17th St 64%" (18:40 — excluded by Karel);
+  // re-paired 2026-09-18 to Folsom St 6 (5:20, verified as his).
+  "neural-link": "%Folsom St 6%",
   "ghost": "%KB_GHOST_REF%",
 
   // ─── Installation pairings (2026-05-03) ───
@@ -47,16 +49,10 @@ export const PAIRED_TRACKS: Record<string, string> = {
   "the-ascent":       "%Folsom St 5%",         // 4:41
   "the-tempest":      "=17th St 63 spectre",   // exact match (counterpart to ascension's exact)
   "the-bloom":        "%Folsom St 9%",         // 3:35 — Folsom St 9 is welded to the-bloom
-  // "abyssal-dive":  "%Folsom St 9%",         // ORIGINAL pairing shared F9 with the-bloom;
-                                                //   both are in TRAMOKYO_SETLIST now (pos 10 +
-                                                //   13), so restoring it would repeat the track
-                                                //   3 slots apart. Karel did not restore this
-                                                //   one — abyssal draws from the WH fallback
-                                                //   pool until he picks a track for it.
-  // neural-link keeps "%17th St 64%" above, but 17th St 64 (18:40) is
-  // still quarantined AND excluded by Karel ("dont offer 17th St 64 for
-  // now") — the pairing cannot resolve, so neural-link stays on the WH
-  // fallback pool until he assigns something else.
+  // abyssal-dive: originally shared "%Folsom St 9%" with the-bloom (both
+  // now in the setlist → would repeat 3 slots apart). Re-paired
+  // 2026-09-18 to 17th St 62 (4:42, verified as Karel's).
+  "abyssal-dive":     "%17th St 62%",
 
   // ─── Unpaired (TODO) ────────────────────────────────────────────
   // Not currently in INSTALLATION_SEQUENCE. Previous WH-conflicting

@@ -10,8 +10,11 @@ import { Button } from "@/components/ui/button";
 // Surrounded by Light, March Light) appear here automatically once they
 // land in INSTALLATION_PROGRAMS.
 const START_POINTS: { cmd: string; label: string }[] = [
-  // The beginning = the shuffled Tramokyo Mix (cold open included).
+  // The beginning = Tramokyo Set I (cold open included).
   { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
+  // Direct jumps to the later sets (Karel 2026-09-18 set structure).
+  { cmd: "program:tramokyo-mix-2", label: "Set II" },
+  { cmd: "program:tramokyo-mix-3", label: "Set III" },
   ...INSTALLATION_PROGRAMS.map((p) => ({
     cmd: `program:${p.id}`,
     label: p.presenting.replace(/^the /, ""),

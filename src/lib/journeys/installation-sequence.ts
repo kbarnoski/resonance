@@ -35,7 +35,9 @@ export interface InstallationProgramDef {
   description: string;
   journeyIds?: string[];
   pathShareToken?: string;
-  dedication: ProgramDedication;
+  /** Optional — the non-final Tramokyo sets end on a short black breath
+   *  instead of a dedication card. */
+  dedication?: ProgramDedication;
 }
 
 /**
@@ -53,8 +55,10 @@ export const TRAMOKYO_MIX_ID = "tramokyo-mix";
  * Realized → Ghost, then a fixed one-time randomization of the full
  * catalog mix (Welcome Home album + featured journeys). Tweak freely:
  * reorder/remove lines; anything not listed is appended at the end.
- * Journeys marked "fallback music" pair to quarantined tracks and draw
- * verified substitutes from the fallback pool.
+ * FULLY DETERMINISTIC (Karel 2026-09-18): every journey below has an
+ * explicit track pairing (path journeys carry exact recording ids;
+ * built-ins resolve via PAIRED_TRACKS). There is no fallback pool — an
+ * unresolved pairing is skipped and flight-recorded, never substituted.
  */
 export const TRAMOKYO_SETLIST: readonly string[] = [
   "first-snow", //  1. Snowflake
@@ -63,13 +67,13 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "27f52cf0-5fad-420f-8324-8017c414f1f8", //  4. Interplay
   "mycelium-dream", //  5. Mycelium Dream — Folsom St 8 (restored pairing 2026-09-18)
   "the-tempest", //  6. The Tempest — 17th St 63 spectre (restored pairing 2026-09-18; take verified as Karel's)
-  "neural-link", //  7. Neural Link (fallback music — original 17th St 64 excluded by Karel for now)
+  "neural-link", //  7. Neural Link — Folsom St 6 (re-paired 2026-09-18; take verified as Karel's)
   "38daff92-ae34-4448-8868-5f1df6029b94", //  8. Rolling
   "cosmic-drift", //  9. Cosmic Drift — 17th St 61 (restored pairing 2026-09-18)
   "the-bloom", // 10. The Bloom — Folsom St 9 (restored pairing 2026-09-18)
   "the-ascent", // 11. The Ascent — Folsom St 5 (restored pairing 2026-09-18)
   "cd517f5a-c4eb-4d50-8a53-044aa668d087", // 12. Stir Crazy
-  "abyssal-dive", // 13. Abyssal Dive (fallback music — original F9 now welded to the-bloom; awaiting Karel's pick)
+  "abyssal-dive", // 13. Abyssal Dive — 17th St 62 (re-paired 2026-09-18; take verified as Karel's)
   "8997623d-8770-41ce-863d-f359d1a213c4", // 14. Rebound
   "the-ascension", // 15. The Ascension — 17th St 63 (restored pairing 2026-09-18)
   "019e1e1d-c7e2-4609-a9c6-364a2755b115", // 16. Quarantine
@@ -84,6 +88,40 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // 25. COSMIC HOMECOMING
 ] as const;
 
+/**
+ * The setlist split into three SETS (Karel 2026-09-18: "a set list that
+ * repeats forever with that title screen roughly every 30 minutes").
+ * Each set is its own loop program, so the Resonance statement card
+ * (the cold open) plays at every set boundary; the loop chains
+ * Set I → II → III → back to I, forever. Music per set: ~33 / ~32 /
+ * ~33 minutes (paired-track durations), ≈35 with transitions.
+ *
+ * `end` is an exclusive index into TRAMOKYO_SETLIST. Only the final set
+ * carries the dedication — Sets I and II exhale to black for ~5s and
+ * the next set's statement card is the punctuation.
+ */
+export interface TramokyoSetDef {
+  id: string;
+  presenting: string;
+  end: number;
+  dedication?: ProgramDedication;
+}
+
+export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
+  { id: "tramokyo-mix", presenting: "the first set", end: 8 }, //  1-8: Snowflake → Rolling
+  { id: "tramokyo-mix-2", presenting: "the second set", end: 17 }, //  9-17: Cosmic Drift → Playa
+  {
+    id: "tramokyo-mix-3",
+    presenting: "the final set",
+    end: 25, // 18-25: All Together → COSMIC HOMECOMING
+    dedication: {
+      eyebrow: "with gratitude to",
+      hero: "Johnny and our hosts",
+      secondary: "for opening their land to this evening",
+    },
+  },
+] as const;
+
 
 export const EXPERIENCE_INTRO = {
   eyebrow: "a one-night installation",
@@ -93,7 +131,7 @@ export const EXPERIENCE_INTRO = {
     "the same. Its inspiration is drawn from nature and the universe.",
   bodySecond:
     "Every journey is generated live and never visually repeats. " +
-    "Tonight's program is randomized from Karel's catalog of " +
+    "Tonight's program is drawn from Karel's catalog of " +
     "recordings — Welcome Home, Surrounded by Light, March Light, " +
     "Snowflake, and others.",
   why:

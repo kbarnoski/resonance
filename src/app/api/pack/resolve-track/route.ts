@@ -6,7 +6,7 @@ import {
   getAnalysis,
   getCueMarkers,
 } from "@/lib/offline/pack";
-import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
+import { VERIFIED_RECORDING_IDS } from "@/components/audio/installation-machine";
 
 // Offline kiosk only — resolves a journey's track from the local pack,
 // mirroring the journey selector's Supabase flow: exact recordingId,
@@ -47,15 +47,13 @@ export async function GET(request: Request) {
   }
 
   if (!rec) {
-    // Random draws exclude the EP refs — they are welded to their own
-    // journeys (Karel, 2026-09-18); only Welcome Home tracks rotate.
-    const pool = listRecordings().filter(
-      (r) => FALLBACK_ELIGIBLE_RECORDING_IDS.has(r.id as string),
+    // DETERMINISTIC (Karel 2026-09-18): no random substitution, ever.
+    // A journey whose pairing doesn't resolve gets a 404 and the client
+    // degrades (skip / no audio) instead of playing a stand-in track.
+    return NextResponse.json(
+      { error: "No paired track — deterministic mode never substitutes" },
+      { status: 404 },
     );
-    if (pool.length === 0) {
-      return NextResponse.json({ error: "No recordings in pack" }, { status: 404 });
-    }
-    rec = pool[Math.floor(Math.random() * pool.length)];
   }
 
   const id = rec.id as string;
