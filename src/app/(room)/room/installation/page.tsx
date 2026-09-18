@@ -5,7 +5,7 @@ import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } 
 import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETS } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETS, TRAMOKYO_EXCLUDED_JOURNEYS } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 import {
@@ -409,7 +409,11 @@ export default async function InstallationPage({ searchParams }: Props) {
       // vanishes when the list is tweaked.
       const byId = new Map(rawPool.map((e) => [e.journey.id, e]));
       const listed = new Set(TRAMOKYO_SETLIST);
-      const extras = rawPool.filter((e) => !listed.has(e.journey.id));
+      const extras = rawPool.filter(
+        (e) =>
+          !listed.has(e.journey.id) &&
+          !TRAMOKYO_EXCLUDED_JOURNEYS.has(e.journey.id),
+      );
       // Three chained SETS (Karel 2026-09-18): the loop plays Set I →
       // II → III → back to I forever, showing the Resonance statement
       // card at each set boundary (~every 33 min). Each set's sequence

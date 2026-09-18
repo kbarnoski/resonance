@@ -87,9 +87,19 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "cd517f5a-c4eb-4d50-8a53-044aa668d087", // 21. Stir Crazy · 2:46
   "38daff92-ae34-4448-8868-5f1df6029b94", // 22. Rolling · 4:35
   "019e1e1d-c7e2-4609-a9c6-364a2755b115", // 23. Quarantine · 2:56
-  "b207b557-e984-4a06-ae71-83124bcd80d5", // 24. All Together · 3:39
-  "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // 25. COSMIC HOMECOMING — Welcome Home · 4:53
+  "b207b557-e984-4a06-ae71-83124bcd80d5", // 24. All Together · 3:39 — the closer
 ] as const;
+
+/**
+ * Journeys explicitly EXCLUDED from the Tramokyo show (Karel
+ * 2026-09-18). The setlist builder appends any built-but-unlisted
+ * journey to the final set as a safety net — these ids are exempt from
+ * that net, so leaving them off the list actually leaves them out.
+ * They remain playable via their album programs / the phone remote.
+ */
+export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
+  "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // COSMIC HOMECOMING — cut from the mix (still closes the Welcome Home album program)
+]);
 
 /**
  * The setlist split into three SETS (Karel 2026-09-18: "a set list that
@@ -118,7 +128,7 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   {
     id: "tramokyo-mix-3",
     presenting: "the final set",
-    end: 25, // 17-25: The Knife (Jam) → COSMIC HOMECOMING
+    end: 24, // 17-24: The Knife (Jam) → All Together (~30 min)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
