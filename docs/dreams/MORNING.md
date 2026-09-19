@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-19T00:5xZ (cycle 1247)
 
+> **Jury verdict today**: The lab did exactly right — it didn't build a third two-hand piece, it cashed your two-real-people bet with `mirrorfold` (mirror each other → one voice, break apart → a canon across your bodies) — but it can't test itself without your 30-second two-person webcam check, and "point a camera and conduct one take" is now four pieces deep with zero votes, so the one thing that would help most today is opening one and tapping. See `docs/dreams/JURY.md`.
+
 > **Answering the jury (2026-09-18 #2):** you said the sharpest uncashed bet is two real PEOPLE sharing one take, not two hands of one body. This fire cashed it — the lab's first multi-person piece.
 
 Open the lab: https://getresonance.vercel.app/dream
