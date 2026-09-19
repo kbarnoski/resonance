@@ -66,12 +66,12 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "inferno", //  2. Realized — Realized · 4:02
   "ghost", //  3. Ghost — Ghost · 3:39
   // ── The featured journeys (verified session-take pairings) ──
+  "the-ascension", //  4. The Ascension — 17th St 63 · 3:20 (moved after Ghost, Karel 2026-09-19)
   "mycelium-dream", //  4. Mycelium Dream — Folsom St 8 · 6:25
   "cosmic-drift", //  7. Cosmic Drift — 17th St 61 · 4:42
   "the-bloom", //  8. The Bloom — Folsom St 9 · 3:35
   "the-ascent", //  9. The Ascent — Folsom St 5 · 4:42
   "abyssal-dive", // 10. Abyssal Dive — 17th St 62 · 4:42
-  "the-ascension", // 11. The Ascension — 17th St 63 · 3:20
   // ── The Welcome Home album, in album order ──
   "27f52cf0-5fad-420f-8324-8017c414f1f8", // 12. Interplay · 2:38
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 13. Bath · 2:29
@@ -123,8 +123,8 @@ export interface TramokyoSetDef {
 export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // Title card ~every 30 min: boundaries fall after The Bloom (~34 min
   // of music) and after 2019 (~29 min), leaving a ~35-min final act.
-  { id: "tramokyo-mix", presenting: "the first set", end: 7 }, //  1-7: Snowflake → The Ascent (~29 min)
-  { id: "tramokyo-mix-2", presenting: "the second set", end: 15 }, //  8-15: Abyssal Dive → The Knife (Jam) (~30 min)
+  { id: "tramokyo-mix", presenting: "the first set", end: 7 }, //  1-7: Snowflake → The Bloom (~29 min)
+  { id: "tramokyo-mix-2", presenting: "the second set", end: 15 }, //  8-15: The Ascent → The Knife (Jam) (~30 min)
   {
     id: "tramokyo-mix-3",
     presenting: "the final set",
