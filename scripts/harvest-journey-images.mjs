@@ -85,6 +85,7 @@ async function loadAppModules() {
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
           STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
           TRAMOKYO_PHASE_WEIGHT } from "@/lib/journeys/prompt-decoration";
+        export { allocateByPhase } from "@/lib/journeys/pack-image-allocation";
       `,
       resolveDir: ROOT,
       loader: "ts",
@@ -115,23 +116,10 @@ function matchPairedTrack(spec, recordings) {
   return recordings.find((r) => (r.title ?? "").toLowerCase().includes(needle)) ?? null;
 }
 
-/** Largest-remainder allocation of n images across phases by length.
- *  With --treatment=tramokyo, phase lengths are multiplied by the
- *  peak-forward weights (transcendence/illumination oversampled). */
-function allocateByPhase(phases, n, phaseWeight = null) {
-  const weights = phases.map((p) => {
-    const len = Math.max(0, (p.end ?? 1) - (p.start ?? 0));
-    const mult = phaseWeight ? (phaseWeight[p.id] ?? 1) : 1;
-    return len * mult;
-  });
-  const total = weights.reduce((a, b) => a + b, 0) || 1;
-  const raw = weights.map((w) => (w / total) * n);
-  const counts = raw.map(Math.floor);
-  let rem = n - counts.reduce((a, b) => a + b, 0);
-  const order = raw.map((r, i) => [r - counts[i], i]).sort((a, b) => b[0] - a[0]);
-  for (let k = 0; k < order.length && rem > 0; k++, rem--) counts[order[k][1]]++;
-  return counts;
-}
+// Allocation math lives in src/lib/journeys/pack-image-allocation.ts —
+// SHARED with the offline player, which selects images by phase slice.
+// Harvest and playback must never drift (2026-09-19: they did, and the
+// journey storylines played out of order on the kiosk).
 
 async function main() {
   if (!DRY_RUN && !process.env.FAL_KEY) {
@@ -229,7 +217,7 @@ async function main() {
   const plan = [];
   for (const t of filtered) {
     const n = PER_JOURNEY ?? Math.min(MAX_IMAGES, Math.max(MIN_IMAGES, Math.ceil(t.duration / GEN_INTERVAL_SEC)));
-    const counts = allocateByPhase(
+    const counts = app.allocateByPhase(
       t.phases,
       n,
       TREATMENT === "tramokyo" ? app.TRAMOKYO_PHASE_WEIGHT : null,

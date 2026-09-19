@@ -84,6 +84,7 @@ const KEN_BURNS_DURATION = 50; // seconds — full motion cycle
 // prompt-decoration.ts, shared with the offline harvest script so
 // pre-baked images use the identical prompt assembly.
 import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS, tramokyoGradeForPhase } from "@/lib/journeys/prompt-decoration";
+import { packImageIndexForProgress } from "@/lib/journeys/pack-image-allocation";
 
 // Figures removed — Ghost journey has its own figure prompts baked into aiPrompts.
 // All other journeys generate imagery from their aiPrompt only.
@@ -173,6 +174,9 @@ export function AiImageLayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localImageUrls, packUrls]);
   const localImageIndexRef = useRef(0);
+  // Last phase-mapped pack index pushed — slow phases hold a frame
+  // across multiple 7s ticks, so redundant pushes are skipped.
+  const lastPackIndexRef = useRef(-1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
@@ -358,19 +362,39 @@ export function AiImageLayer({
   // Trigger an image generation (REST)
   // skipCache=true for periodic refreshes (same prompt, want new image)
   const triggerGeneration = useCallback((skipCache = false) => {
-    // ── Local-image mode: cycle provided URLs instead of calling fal.ai ──
+    // ── Local-image mode: packed URLs instead of calling fal.ai ──
     // The packed image always pushes (guaranteed cadence); when the
     // hotspot is reachable we fall through and ALSO fire a live fal gen
     // as a bonus layer on top of the packed backbone.
+    //
+    // PHASE-AWARE SELECTION (2026-09-19): pack images are generated in
+    // phase order with weighted per-phase counts, so the story position
+    // is encoded in the slot index. Selecting by playback progress +
+    // phase slice keeps the journey's narrative aligned with the music
+    // — a blind fixed-cadence cycle runs ahead of weighted allocations
+    // and plays the arc out of order (Ghost's storyline appeared
+    // "almost backwards" to Karel). Falls back to sequential cycling
+    // when progress/phases are unavailable.
     const isPackOverlay = localImageUrlsRef.current.length > 0;
     if (isPackOverlay) {
       const urls = localImageUrlsRef.current;
-      const idx = localImageIndexRef.current % urls.length;
-      localImageIndexRef.current = idx + 1;
+      const { currentTime, duration } = useAudioStore.getState();
+      const progress = duration > 0 ? currentTime / duration : -1;
+      const journeyPhases = getJourneyEngine().getJourney()?.phases;
+      let idx = packImageIndexForProgress(journeyPhases, urls.length, progress);
+      if (idx < 0) {
+        idx = localImageIndexRef.current % urls.length;
+        localImageIndexRef.current = idx + 1;
+      }
       lastGenTimeRef.current = performance.now();
-      loadImage(urls[idx])
-        .then((img) => pushImage(img))
-        .catch(() => { /* broken URL, skip */ });
+      // Slow phases have fewer images than 7s ticks — holding the same
+      // frame is intentional; skip the redundant push.
+      if (idx !== lastPackIndexRef.current) {
+        lastPackIndexRef.current = idx;
+        loadImage(urls[idx])
+          .then((img) => pushImage(img))
+          .catch(() => { /* broken URL, skip */ });
+      }
       if (!shouldAttemptLiveOverlay()) return;
     }
 

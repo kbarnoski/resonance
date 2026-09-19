@@ -559,7 +559,8 @@ export const GHOST_ANGEL_WHITE =
   GHOST_ANGEL_BODY +
   ", eyes closed peaceful serene mysterious expression (always closed throughout the journey), " +
   WINGS_CLAUSE +
-  ", wardrobe: SNOW WHITE long flowing spiral fibonacci hair (NEVER blonde, NEVER yellow, NEVER gold, NEVER braided), SNOW WHITE translucent dress, SNOW WHITE translucent wispy wings, WHITE particles";
+  ", wardrobe: SNOW WHITE long flowing spiral fibonacci hair (NEVER blonde, NEVER yellow, NEVER gold, NEVER braided), SNOW WHITE translucent dress, SNOW WHITE translucent wispy wings, WHITE particles" +
+  ", her whole figure GHOSTLY SEMI-TRANSPARENT like drifting mist, the scene faintly visible through her form, never solid or flesh-and-blood";
 
 // Winged black — possessed devil variant between flash #1 and flash #2.
 // She already has the wings by the time any flash fires.
@@ -641,6 +642,7 @@ export function getGhostOverlayForPhase(phase: string | null): string {
  *  watermarks, and random people; this one adds Ghost-specific exclusions
  *  (wrong hair color, yellow flower centers, etc.). */
 export const GHOST_NEGATIVE_PROMPT =
+  "solid opaque body, fully opaque figure, flesh-and-blood realism, solid human skin, corporeal weight, " +
   "blonde hair, gold hair, yellow hair, brown hair, red hair, " +
   "braids, braided hair, plaited hair, cornrows, french braid, " +
   "face visible, front view of face, face-forward shot, full face view, face close-up, portrait, face-focused composition, looking at camera, looking toward viewer, head turned toward camera, three-quarter front view, frontal pose, " +
@@ -1075,7 +1077,10 @@ export const JOURNEYS: Journey[] = [
   },
   {
     id: "the-ascent",
-    name: "The Ascent",
+    // Renamed from "The Ascent" (Karel 2026-09-19: too close to "The
+    // Ascension" on the Tramokyo title cards). The id stays — pack
+    // imagery, pairings, and votes are keyed by it.
+    name: "The Summit",
     subtitle: "climbing into thin air",
     description:
       "The infinite ridge rises through cloud layers. You climb past the last trees, past the snow line, past the atmosphere itself, and return with the view.",
