@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, statSync } from "fs";
 import path from "path";
 
 /**
@@ -160,9 +160,27 @@ export function getAudioInfo(
 ): { url: string; codec: string | null; hasAac: boolean } | null {
   const entry = loadPack().manifest.audio[id];
   if (!entry) return null;
+  // Cache-bust with the file's mtime: when a pack audio file is repaired
+  // in place (2026-09-19: The Tempest's truncated take was fixed on disk
+  // but Chrome's media cache kept replaying the stale bytes for the same
+  // URL), the new query string makes the browser fetch fresh bytes. The
+  // static file server ignores the query. mtime is read lazily per call
+  // and cached — the pack is otherwise immutable while the server runs.
+  let v = "";
+  try {
+    if (!audioMtimeCache.has(id)) {
+      const st = statSync(path.join(packDir(), entry.file));
+      audioMtimeCache.set(id, String(Math.floor(st.mtimeMs)));
+    }
+    v = `?v=${audioMtimeCache.get(id)}`;
+  } catch {
+    /* stat failed — serve without buster rather than break playback */
+  }
   return {
-    url: `/tramokyo-pack/${entry.file}`,
+    url: `/tramokyo-pack/${entry.file}${v}`,
     codec: entry.codec,
     hasAac: entry.hasAac,
   };
 }
+
+const audioMtimeCache = new Map<string, string>();
