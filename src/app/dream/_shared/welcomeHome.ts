@@ -87,15 +87,17 @@ export const VERIFIED_SESSION_TRACKS: readonly WelcomeHomeTrack[] = [
   { id: "ee0bd856-d565-417d-a9d3-8f307116e043", title: "Folsom St 9" }, // the-bloom
 ] as const;
 
-// ── DO NOT USE: the "Sketches" uploads are JOSEPH's music, not Karel's ──────
-// (confirmed by Karel 2026-08-14). The protos mandate is Karel's OWN music
-// only, so these recordings must never appear in any dream proto or the
-// autonomous agent's work. Listed here (commented out) so a grep for any of
-// these IDs or titles lands on this warning instead of silently re-adding them:
+// ── DELETED 2026-09-19: Joseph's tracks removed from Resonance ENTIRELY ─────
+// (Karel's order). The five "Sketches" uploads flagged 2026-08-14 — plus
+// three unverified strays (champa, Naive 2026-01-18, New Recording 18) —
+// were deleted from the prod DB, Supabase storage, and the Tramokyo pack;
+// their two dependent journeys went with them. Audio archived locally at
+// ~/Documents/Music/Removed-from-Resonance-2026-09-19/. Dead ids kept as
+// tombstones so any stale reference greps land here:
 //   c3c34efa-76e1-4375-9e01-499eafd8d126  "Without a Brightness"
 //   aafddeb5-5333-49f5-8308-16dd6d59a1f2  "That One"
 //   bcd04d03-8bdc-4868-bb30-f620349f54fe  "WYN_MAR4_1.1"
-//   ca26d632-bf64-4ab8-bbcf-24f49e238b73  "Snowflake (Take 1)"
+//   ca26d632-bf64-4ab8-bbcf-24f49e238b73  "Snowflake (Take 1)" / KB_SFLAKE_TK1_REF_2.0
 //   0d167679-42af-44b9-be6b-0e383c2ef56e  "Isolation (alt)"
 
 export interface Collection {
