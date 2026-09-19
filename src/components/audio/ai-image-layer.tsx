@@ -232,6 +232,13 @@ export function AiImageLayer({
       lastGenTimeRef.current = 0;
       genCountRef.current = 0;
       firstImageFiredRef.current = false;
+      // 2026-09-19 audit: the pack-cadence refs must reset per journey.
+      // Without this, journey B's first phase-mapped index (often 0)
+      // equals journey A's last, the dedupe skips the push, and — since
+      // installation mode never purges — journey A's imagery lingers
+      // over journey B until progress crosses into slice 1.
+      lastPackIndexRef.current = -1;
+      localImageIndexRef.current = 0;
 
       // Installation (Tramokyo): NEVER purge to black between journeys —
       // the previous journey's imagery holds until the new journey's
@@ -381,7 +388,13 @@ export function AiImageLayer({
       const { currentTime, duration } = useAudioStore.getState();
       const progress = duration > 0 ? currentTime / duration : -1;
       const journeyPhases = getJourneyEngine().getJourney()?.phases;
-      let idx = packImageIndexForProgress(journeyPhases, urls.length, progress);
+      // Phase mapping applies only to PACK-harvested lists (generated in
+      // phase order with the tramokyo weights). Curated prop-supplied
+      // localImageUrls (local-image journey mode) have no phase encoding
+      // — they keep the classic sequential cycle (2026-09-19 audit).
+      let idx = hasPropLocalImages
+        ? -1
+        : packImageIndexForProgress(journeyPhases, urls.length, progress);
       if (idx < 0) {
         idx = localImageIndexRef.current % urls.length;
         localImageIndexRef.current = idx + 1;
@@ -592,7 +605,7 @@ export function AiImageLayer({
         if (isPackOverlay) liveOverlayBackoffUntil = performance.now() + LIVE_OVERLAY_BACKOFF_MS;
       })
       .finally(() => { loadingCountRef.current = Math.max(0, loadingCountRef.current - 1); });
-  }, [loadImage, pushImage]);
+  }, [loadImage, pushImage, hasPropLocalImages]);
 
   // Poetry-driven generation: poll journey engine for new poetry lines
   useEffect(() => {
@@ -658,7 +671,15 @@ export function AiImageLayer({
       } catch { /* skip broken frames */ }
     });
 
-    return () => { cancelled = true; clearInterval(retryId); };
+    return () => {
+      cancelled = true;
+      clearInterval(retryId);
+      // 2026-09-19 audit: without clearing the singleton's frame
+      // callback, it retains a closure over this unmounted component's
+      // whole layer stack (HTMLImageElements included) until the next
+      // journey overwrites it.
+      try { getRealtimeImageService().clearFrameCallback(); } catch { /* fine */ }
+    };
   }, [enabled, hasLocalImages, loadImage, pushImage]);
 
   // Generation loop — fires 2 requests immediately for fast initial imagery,
@@ -714,8 +735,30 @@ export function AiImageLayer({
     let lastW = 0;
     let lastH = 0;
 
+    // 2026-09-19 audit: this loop used to redraw every display frame
+    // (120fps on ProMotion) forever, even with zero layers — a constant
+    // compositor load that raises the GPU pressure driving overnight
+    // context loss. Cap to the device tier's frame budget and skip the
+    // whole draw when there is nothing to composite.
+    // 45fps is indistinguishable for slow crossfades + Ken Burns pans
+    // and halves the fill cost on 90-120Hz panels.
+    const minFrameMs = 1000 / 45;
+    let lastDraw = 0;
+
     function render() {
       if (!canvas || !ctx) return;
+      const nowTs = performance.now();
+      if (nowTs - lastDraw < minFrameMs || layersRef.current.length === 0) {
+        // Still keep the canvas clear when the last layer just vanished.
+        if (layersRef.current.length === 0 && lastW > 0) {
+          ctx.clearRect(0, 0, lastW, lastH);
+          lastW = 0;
+          lastH = 0;
+        }
+        animRef.current = requestAnimationFrame(render);
+        return;
+      }
+      lastDraw = nowTs;
 
       // Cap at 1.5x — AI images are blended/panned, full retina is wasted GPU fill
       const dpr = Math.min(devicePixelRatio, 1.5);

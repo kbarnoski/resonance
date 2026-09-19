@@ -116,7 +116,13 @@ export async function resolveAudioUrl(
       const res = await fetch(audioUrl);
       const data = await res.json();
       if (data.url) {
-        if (data.hasAac || (data.codec && data.codec !== "alac")) {
+        // Offline pack URLs are static files — the pack build already
+        // transcoded everything Chromium can't decode, and the offline
+        // /api/audio route ignores ?transcode=1 entirely (it would feed
+        // JSON to the audio element; 2026-09-19 audit). Never route a
+        // pack URL through the transcode path.
+        const isPackUrl = typeof data.url === "string" && data.url.startsWith("/tramokyo-pack/");
+        if (isPackUrl || data.hasAac || (data.codec && data.codec !== "alac")) {
           signedUrl = data.url;
         } else if (data.codec === "alac" && isChromium()) {
           signedUrl = audioUrl + "?transcode=1";

@@ -57,8 +57,8 @@ export const SNOWFLAKE_TRACKS: readonly WelcomeHomeTrack[] = [
 // Karel reported (2026-08-14) that a "Folsom St" upload plays one of JOSEPH's
 // drones, quarantining both sessions. On 2026-09-18 Karel VERIFIED six takes
 // as his own by restoring their installation pairings (see
-// VERIFIED_SESSION_TRACKS below). The three takes still listed here remain
-// unverified: do not use them anywhere until he signs off per track.
+// VERIFIED_SESSION_TRACKS below; two more verified 2026-09-18 evening). The
+// takes still listed here remain unverified: do not use them anywhere until he signs off per track.
 
 /** UNVERIFIED — do not use (see quarantine note above). */
 export const SEVENTEENTH_ST_TRACKS: readonly WelcomeHomeTrack[] = [

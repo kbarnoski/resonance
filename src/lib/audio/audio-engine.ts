@@ -129,7 +129,15 @@ export function getDataArray(): Uint8Array | null {
 
 /** Resume AudioContext after user gesture (browser autoplay policy) */
 export async function ensureResumed(): Promise<void> {
-  if (audioContext && audioContext.state === "suspended") {
+  // iOS Safari parks the context in "interrupted" (not "suspended")
+  // after a phone call / Siri / route change; without resuming it the
+  // element keeps advancing silently while every watchdog reports
+  // healthy playback (2026-09-19 audit).
+  if (
+    audioContext &&
+    (audioContext.state === "suspended" ||
+      (audioContext.state as string) === "interrupted")
+  ) {
     await audioContext.resume();
   }
 }

@@ -226,6 +226,20 @@ export function ShaderVisualizer({
   onReady?: (ok?: boolean) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Latest GL context — released explicitly at UNMOUNT (2026-09-19
+  // audit): dual/tertiary layers unmount every 14-60s (~250 contexts/hr
+  // on the kiosk); without loseContext() old contexts linger until GC,
+  // Chrome's ~16-context cap force-loses the OLDEST — the persistent
+  // primary A/B layers — and the overnight black-screen bursts begin.
+  const glForUnmountRef = useRef<WebGLRenderingContext | null>(null);
+  useEffect(() => {
+    return () => {
+      try {
+        glForUnmountRef.current?.getExtension("WEBGL_lose_context")?.loseContext();
+      } catch { /* context already gone */ }
+      glForUnmountRef.current = null;
+    };
+  }, []);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
   const pausedRef = useRef(paused);
@@ -295,6 +309,7 @@ export function ShaderVisualizer({
 
     const gl = canvas.getContext("webgl");
     if (!gl) return;
+    glForUnmountRef.current = gl;
 
     // KHR_parallel_shader_compile: supported in Chrome 76+, Firefox 95+, Safari 15.4+.
     // With this extension, compileShader() and linkProgram() return immediately
@@ -509,11 +524,23 @@ export function ShaderVisualizer({
       // No canvas.width=0 — React unmounts the canvas element on mode change
       // (key={layerMode}), so zeroing dimensions just wastes GPU cycles on
       // framebuffer reallocation for a canvas that's about to be removed.
+      // NOTE: do NOT loseContext() here — this cleanup also runs on
+      // fragShader changes that REUSE the same canvas; releasing the
+      // context is unmount-only (see the dedicated effect below).
     };
   }, [analyser, dataArray, fragShader, contextEpoch]); // smoothMotion + onReady read via refs
 
   return (
     <canvas
+      // 2026-09-19 audit (overnight-wedge root cause): the epoch bump on
+      // "restore never fired" used to re-run GL setup on the SAME canvas,
+      // whose getContext() returns the SAME lost context — every GL call
+      // a no-op, first render() bails on isContextLost() without
+      // rescheduling, and the layer stays black until the 18-min wedge
+      // reload. Keying the element on the epoch makes React mount a
+      // FRESH canvas with a fresh context — the same pattern
+      // Visualizer3D already uses (key={contextEpoch} on its Canvas).
+      key={contextEpoch}
       ref={canvasRef}
       className="absolute inset-0 w-full h-full"
       style={style}

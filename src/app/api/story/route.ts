@@ -1,4 +1,5 @@
 import { generateObject } from "ai";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { defaultModel } from "@/lib/ai/providers";
 import { LANGUAGE_NAMES } from "@/lib/audio/languages";
 import { createClient } from "@/lib/supabase/server";
@@ -25,7 +26,11 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { journeyName, realmId, mood, language, phases, poetryImagery } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "story");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { journeyName, realmId, mood, language, phases, poetryImagery } = body;
 
     if (!journeyName || !phases) {
       return Response.json({ error: "Missing journeyName or phases" }, { status: 400 });

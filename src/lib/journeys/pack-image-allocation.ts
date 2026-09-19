@@ -63,6 +63,13 @@ export function packImageIndexForProgress(
   phaseWeight: Record<string, number> | null = TRAMOKYO_PHASE_WEIGHT,
 ): number {
   if (!phases || phases.length === 0 || n <= 0 || !(progress >= 0)) return -1;
+  // DB-snapshot custom journeys can carry phase JSON without start/end;
+  // defaulting them (end ?? 1) collapses every phase to "contains all
+  // progress" and only the first slice ever displays (2026-09-19 audit).
+  // Bail to the caller's sequential fallback instead.
+  if (phases.some((p) => typeof p.start !== "number" || typeof p.end !== "number")) {
+    return -1;
+  }
   const counts = allocateByPhase(phases, n, phaseWeight);
   let offset = 0;
   for (let i = 0; i < phases.length; i++) {

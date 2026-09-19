@@ -49,6 +49,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     try {
       getAudioEngine();
       engineReady.current = true;
+      // 2026-09-19 audit: the volume-sync effect runs once at mount,
+      // bails on engineReady=false, and never re-runs until the user
+      // moves the slider — so the engine played at gain 1.0 while the
+      // store said 0.8, and the first slider touch caused an audible
+      // drop. Apply the store volume the moment the engine exists.
+      setEngineVolume(useAudioStore.getState().volume);
     } catch {
       // SSR guard
     }

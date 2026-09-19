@@ -284,8 +284,12 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     set({
       queue: tracks,
       queueIndex: idx,
-      currentTrack: tracks[idx],
-      isPlaying: true,
+      // 2026-09-19 audit: setQueue([], 0) used to set currentTrack:
+      // undefined and force isPlaying: true — re-arming the play
+      // watchdogs 15 lines after the credits handler deliberately set
+      // isPlaying false. Empty queue = nothing playing.
+      currentTrack: tracks[idx] ?? null,
+      isPlaying: tracks.length > 0,
       currentTime: 0,
       duration: tracks[idx]?.duration ?? 0,
       analysis: null,
@@ -426,9 +430,20 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     // guarantees that open → close → reopen always starts at the
     // beginning even if play() isn't called separately (e.g. the same
     // track is already loaded from a prior session).
+    //
+    // 2026-09-19 audit: scrub ONLY when the element still holds THIS
+    // track. Scrubbing while the previous journey's src is loaded
+    // clears el.ended, and the play watchdogs then audibly restart the
+    // OLD track at full gain during the intro/jump window (the provider
+    // resets position on the new src load anyway).
     try {
       if (typeof window !== "undefined") {
-        getAudioEngine().audioElement.currentTime = 0;
+        const el = getAudioEngine().audioElement;
+        // Never scrub an ENDED element: clearing el.ended re-arms the
+        // play watchdogs against the PREVIOUS journey's still-loaded
+        // src, audibly restarting it at full gain during the intro
+        // (2026-09-19 audit). A fresh src load resets position anyway.
+        if (!el.ended) el.currentTime = 0;
       }
     } catch { /* engine not ready yet; store change will drive seek */ }
 
@@ -460,9 +475,12 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     const firstMode = engine.getCurrentShaderMode();
     // Same guarantee as startJourney: open/close/reopen always starts
     // from the beginning regardless of whether play() gets called.
+    // Same 2026-09-19 same-track guard as startJourney (see above).
     try {
       if (typeof window !== "undefined") {
-        getAudioEngine().audioElement.currentTime = 0;
+        const el = getAudioEngine().audioElement;
+        // Same ended-guard as startJourney (2026-09-19 audit).
+        if (!el.ended) el.currentTime = 0;
       }
     } catch { /* engine not ready yet */ }
     set({

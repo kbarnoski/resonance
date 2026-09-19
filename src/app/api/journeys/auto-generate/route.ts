@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { buildJourneyFromAnalysis } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
 import { logger } from "@/lib/logger";
@@ -20,7 +21,11 @@ export async function POST(request: Request) {
       .single();
     const creatorName = profile?.display_name ?? null;
 
-    const { recordingId, realmId } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "journeys-auto");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { recordingId, realmId } = body;
 
     if (!recordingId) {
       return Response.json({ error: "Missing recordingId" }, { status: 400 });

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { JOURNEYS } from "@/lib/journeys/journeys";
+import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
 
@@ -197,14 +198,25 @@ export function RemoteClient() {
         Featured journeys {inLoop ? "(breaks into DJ mode first)" : ""}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-8">
-        {JOURNEYS.map((j) => (
+        {/* Paired journeys only (2026-09-19 audit): deterministic mode
+            404s unpaired resolves, which used to strand a silent journey.
+            The break→journey pair is also sequenced — both commands in
+            one poll batch made the loop-context kiosk drop journey:. */}
+        {JOURNEYS.filter((j) => j.recordingId || PAIRED_TRACKS[j.id]).map((j) => (
           <Button
             variant="glass"
             key={j.id}
             className={`${btn} py-2.5 justify-start text-left ${sending === `journey:${j.id}` ? "bg-white/[0.18]" : ""}`}
             onClick={() => {
-              if (inLoop) void send("break");
-              void send(`journey:${j.id}`);
+              if (inLoop) {
+                void send("break");
+                // The kiosk drains the bus every ~2s and drops journey:
+                // while still in loop context — give the break a beat to
+                // land and navigate before the journey command arrives.
+                setTimeout(() => void send(`journey:${j.id}`), 3500);
+              } else {
+                void send(`journey:${j.id}`);
+              }
             }}
           >
             <span className="block truncate">{j.name}</span>

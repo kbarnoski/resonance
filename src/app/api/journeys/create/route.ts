@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { buildJourneyFromStory } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
 import type { Journey } from "@/lib/journeys/types";
@@ -21,6 +22,10 @@ export async function POST(request: Request) {
       .single();
     const creatorName = profile?.display_name ?? null;
 
+    const limited = await enforceLlmLimit(request, user.id, "journeys-create");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
     const {
       storyText,
       realmId,
@@ -30,7 +35,7 @@ export async function POST(request: Request) {
       aiEnabled,
       localImageUrls,
       draft,
-    } = await request.json();
+    } = body;
     // Default true; the toggle in the create form lets users opt out for
     // shader-only (viz-only) journeys.
     const aiEnabledFlag: boolean = aiEnabled === false ? false : true;

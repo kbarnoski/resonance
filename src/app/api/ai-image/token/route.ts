@@ -48,15 +48,9 @@ const MINT_GLOBAL_DAILY_MAX = Math.max(
 const MINT_GLOBAL_DAILY_REFILL_PER_SEC = MINT_GLOBAL_DAILY_MAX / 86_400;
 
 /** Hostnames the proxy will forward POST traffic to. */
-const ALLOWED_FAL_HOSTS = [
-  "fal.run",
-  "fal.ai",
-  "queue.fal.run",
-  "rest.fal.run",
-  "v3.fal.media",
-  "fal.media",
-  "gateway.fal.ai",
-];
+/** Media hosts that only serve result assets — read-only CDN, no app
+ *  scoping needed. Exact host or a subdomain of fal.media. */
+const ALLOWED_MEDIA_HOSTS = ["fal.media"];
 
 /** Apps the minted JWT is allowed to access. Tightening this list
  *  reduces the damage if a JWT is exfiltrated — the token can only
@@ -90,20 +84,22 @@ function isAllowedFalUrl(raw: string): boolean {
   try {
     const parsed = new URL(raw);
     if (parsed.protocol !== "https:") return false;
-    const hostAllowed = ALLOWED_FAL_HOSTS.some(
-      (host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`),
-    );
-    if (!hostAllowed) return false;
-    // On compute hosts, the path must name an allowlisted app so the master
-    // key can't be used to invoke arbitrary fal models. Media/asset hosts
-    // (which only serve result images) are not app-scoped, so they pass on
-    // the host check alone.
+    // SECURITY (2026-09-19 audit): matching used to allow ANY subdomain
+    // of fal.ai / fal.run — including rest.alpha.fal.ai, fal's token-mint
+    // REST API, which is NOT in FAL_COMPUTE_HOSTS and therefore skipped
+    // the app-path check. A caller could proxy a token-mint request and
+    // receive a long-lived JWT scoped to ANY model, escaping every rate
+    // limit here. Now: compute hosts are EXACT matches and always
+    // app-path-scoped; media hosts are fal.media (or a subdomain of it)
+    // only; everything else — token mint, account, billing — is refused.
     if (FAL_COMPUTE_HOSTS.has(parsed.hostname)) {
       return ALLOWED_APP_PATHS.some(
         (app) => parsed.pathname === app || parsed.pathname.startsWith(`${app}/`),
       );
     }
-    return true;
+    return ALLOWED_MEDIA_HOSTS.some(
+      (host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`),
+    );
   } catch {
     return false;
   }

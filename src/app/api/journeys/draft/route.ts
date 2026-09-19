@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { buildJourneyFromStory } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
 import { logger } from "@/lib/logger";
@@ -20,7 +21,11 @@ export async function POST(request: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { storyText, realmId, recordingId } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "journeys-draft");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { storyText, realmId, recordingId } = body;
     if (!storyText || typeof storyText !== "string" || !storyText.trim()) {
       return Response.json({ error: "Missing storyText" }, { status: 400 });
     }
@@ -45,7 +50,7 @@ export async function POST(request: Request) {
     return Response.json({ journey });
   } catch (error) {
     logger.error("journeys/draft", "error:", error);
-    const message = error instanceof Error ? error.message : "Unknown error";
+    const message = "generation failed";  // provider error text withheld (2026-09-19 audit)
     return Response.json(
       { error: `Failed to generate draft: ${message}` },
       { status: 500 },

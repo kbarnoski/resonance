@@ -162,20 +162,30 @@ async function resolveRecording(id: string) {
 
   if (data) return { recording: data as RecordingRow, client: supabase, owned: true };
 
-  // Fallback for shared recordings. The explicit released-set filters
-  // (own share token / featured / attached to a shared journey) ARE the
+  // Fallback for shared recordings. The released-set check IS the
   // authorization here — the resolver client may hold the service key,
-  // so never query it without these filters. The journey-shared branch
-  // is the H1 accepted-risk surface (owner ruling — do not tighten).
+  // so never query it ungated. The journey-shared branch below is the
+  // H1 accepted-risk surface (owner ruling — do not tighten).
+  //
+  // 2026-09-19 audit: this branch used the raw filter
+  // `share_token.not.is.null OR is_featured` while the analysis route
+  // used the `recording_is_released()` SECURITY DEFINER fn (which also
+  // excludes the quarantined/excluded catalog). A quarantined track
+  // with a leftover share token was anonymously fetchable by UUID.
+  // Both routes now agree on recording_is_released() as the single
+  // source of truth.
   const sharedClient = createSharedResolver();
-  const { data: shared } = await sharedClient
-    .from("recordings")
-    .select(RECORDING_COLUMNS)
-    .eq("id", id)
-    .or("share_token.not.is.null,is_featured.eq.true")
-    .single();
-
-  if (shared) return { recording: shared as RecordingRow, client: sharedClient, owned: false };
+  const { data: released } = await sharedClient.rpc("recording_is_released", {
+    p_recording_id: id,
+  });
+  if (released === true) {
+    const { data: shared } = await sharedClient
+      .from("recordings")
+      .select(RECORDING_COLUMNS)
+      .eq("id", id)
+      .single();
+    if (shared) return { recording: shared as RecordingRow, client: sharedClient, owned: false };
+  }
 
   // Fallback for recordings attached to shared journeys
   const { data: journeyRef } = await sharedClient

@@ -1,4 +1,5 @@
 import { generateObject } from "ai";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { defaultModel } from "@/lib/ai/providers";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
@@ -23,7 +24,11 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { analysisId, analysis, title } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "analysis-summarize");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { analysisId, analysis, title } = body;
 
     if (!analysis || !analysisId) {
       return Response.json({ error: "Missing analysis data" }, { status: 400 });

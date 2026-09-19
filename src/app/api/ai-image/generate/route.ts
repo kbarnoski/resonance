@@ -133,6 +133,30 @@ export async function POST(request: Request) {
     const { prompt, negativePrompt, referenceImageUrl, characterLora, width, height, disableSafetyChecker } =
       await request.json();
 
+    // 2026-09-19 audit: characterLora used to be forwarded to fal
+    // unvalidated — a caller could run an arbitrary remote .safetensors
+    // on our fal account (and point referenceImageUrl anywhere). Both
+    // must be https URLs on fal's asset CDN (fal.media or a subdomain,
+    // where our trained LoRAs and generated references live).
+    const isAllowedAssetUrl = (raw: unknown): boolean => {
+      if (typeof raw !== "string" || raw.length === 0) return false;
+      try {
+        const u = new URL(raw);
+        return (
+          u.protocol === "https:" &&
+          (u.hostname === "fal.media" || u.hostname.endsWith(".fal.media"))
+        );
+      } catch {
+        return false;
+      }
+    };
+    if (characterLora !== undefined && characterLora !== null && !isAllowedAssetUrl(characterLora)) {
+      return Response.json({ error: "characterLora host not allowed" }, { status: 400 });
+    }
+    if (referenceImageUrl !== undefined && referenceImageUrl !== null && referenceImageUrl !== "" && !isAllowedAssetUrl(referenceImageUrl)) {
+      return Response.json({ error: "referenceImageUrl host not allowed" }, { status: 400 });
+    }
+
     if (!prompt || typeof prompt !== "string") {
       return Response.json({ error: "Missing prompt" }, { status: 400 });
     }

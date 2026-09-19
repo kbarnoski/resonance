@@ -21,9 +21,17 @@ export function fetchPackLocalImages(): Promise<Record<
       .then((res) => (res.ok ? res.json() : null))
       .then((map: Record<string, string[]> | null) => {
         if (map) packActive = true;
+        // 2026-09-19 audit: a single failed probe (server mid-respawn at
+        // page load) used to be cached for the whole session — silently
+        // disabling the phone remote AND pack imagery for the night.
+        // Null results clear the cache so the next caller retries.
+        else packLocalImagesPromise = null;
         return map;
       })
-      .catch(() => null);
+      .catch(() => {
+        packLocalImagesPromise = null;
+        return null;
+      });
   }
   return packLocalImagesPromise;
 }

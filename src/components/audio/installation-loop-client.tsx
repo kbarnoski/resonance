@@ -166,6 +166,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // eslint-disable-next-line no-console
       console.log(`[installation] operator jump → program ${id}`);
       try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      // 2026-09-19 audit: without pausing the STORE, the play watchdog
+      // resumed the outgoing track at full gain 250ms later and it
+      // played under the statement card for ~10s until the intro's
+      // pre-start replaced the queue.
+      useAudioStore.setState({ isPlaying: false });
       useAudioStore.getState().setSuppressNextJourneyIntro(false);
       setStartIdx(0);
       setProgramIndex(idx);
@@ -194,6 +199,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // eslint-disable-next-line no-console
         console.log(`[installation] operator jump → ${programs[pi].id} · journey ${ji + 1}`);
         try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+        useAudioStore.setState({ isPlaying: false });
+        // Jumping out of credits left the journey engine FROZEN for the
+        // rest of the set (the only unfreeze lived in the intro phase) —
+        // shader rotation dead for up to ~35 min (2026-09-19 audit).
+        try { getJourneyEngine().setFrozen(false); } catch { /* engine gone */ }
         // Kill the intro title layer: jumping during journey 0's title
         // window otherwise leaves InstallationIntro mounted, titling the
         // landing journey at the same time as the standard journey
@@ -343,10 +353,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // flight-recorder event) rather than handed a stand-in track. The
   // old distributed fallback pick is retired; `fallbackTracks` remains
   // only as a prop for cap computation compatibility.
+  // Live mirror for []-dep effects (sleep/wake recovery): the interval
+  // captures the MOUNT-TIME trackForIndex otherwise, and after a program
+  // transition it resolves tracks from the WRONG program's sequence
+  // (2026-09-19 audit — wrong music under a journey after a >60s gap).
+  const trackForIndexRef = useRef<(i: number) => Track | null>(() => null);
   const trackForIndex = useCallback(
     (i: number): Track | null => sequence[i]?.track ?? null,
     [sequence],
   );
+  useEffect(() => { trackForIndexRef.current = trackForIndex; }, [trackForIndex]);
 
   // ─── Mount: kiosk + installation flag ─────────────────────────────
   useEffect(() => {
@@ -370,9 +386,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // pre-cache.
       void (async () => {
         try {
-          const tracks = sequence
-            .map((entry, i) => entry.track ?? trackForIndex(i))
-            .filter((t): t is Track => t !== null && t !== undefined && !!t.audioUrl);
+          // ALL programs (2026-09-19 audit): this mount effect used to
+          // warm only the starting program, so Set 2 / album tracks
+          // cold-loaded at every transition.
+          const seenIds = new Set<string>();
+          const tracks = programs
+            .flatMap((p) => p.sequence)
+            .map((entry) => entry.track)
+            .filter((t): t is Track => !!t && !!t.audioUrl && !seenIds.has(t.id) && !!seenIds.add(t.id));
           const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
           const { nativeAudioPrefetch } = await import("@/lib/tauri");
           const resolved = await Promise.all(
@@ -453,11 +474,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       if (isDesktopApp()) exitKioskMode().catch(() => {});
       document.removeEventListener("click", onAnyClick);
       document.removeEventListener("touchstart", onAnyClick);
-      // Tear down the hidden preload audio element if it was created.
-      if (preloadAudioRef.current) {
-        try { preloadAudioRef.current.pause(); } catch { /* ignore */ }
-        try { preloadAudioRef.current.src = ""; } catch { /* ignore */ }
-        preloadAudioRef.current = null;
+      // Tear down BOTH hidden preload audio elements if created
+      // (2026-09-19 audit: preloadElRef was never released — one leaked
+      // buffered element per break-in/return cycle).
+      for (const ref of [preloadAudioRef, preloadElRef]) {
+        if (ref.current) {
+          try { ref.current.pause(); } catch { /* ignore */ }
+          try { ref.current.src = ""; } catch { /* ignore */ }
+          ref.current = null;
+        }
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -600,7 +625,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         if (gap > 60_000) {
           void (async () => {
             try {
-              const track = trackForIndex(currentPhase.index);
+              const track = trackForIndexRef.current(currentPhase.index);
               if (!track?.audioUrl) return;
               const { resolveAudioUrl, clearCachedUrl } = await import("@/lib/audio/resolve-audio-url");
               clearCachedUrl(track.id);
@@ -608,13 +633,21 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
               const targetTime = el.currentTime;
               el.src = fresh;
               el.load();
+              // 2026-09-19 audit: the once-listener needs a removal
+              // timeout and a phase guard — a wake whose load never
+              // reaches canplay leaves it armed, and the NEXT journey's
+              // canplay would seek that track to the OLD targetTime.
+              const armedAtIndex = currentPhase.index;
               const onCanPlay = () => {
                 el.removeEventListener("canplay", onCanPlay);
+                const p = phaseRef.current;
+                if (p.kind !== "journey" || p.index !== armedAtIndex) return;
                 try { el.currentTime = targetTime; } catch { /* seek beyond duration, ignore */ }
                 const { isPlaying: shouldPlay } = useAudioStore.getState();
                 if (shouldPlay && !el.ended) tryPlay(el);
               };
               el.addEventListener("canplay", onCanPlay, { once: true });
+              setTimeout(() => el.removeEventListener("canplay", onCanPlay), 8_000);
             } catch { /* best-effort; watchdog will eventually advance */ }
           })();
           return;
@@ -1121,7 +1154,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         setPhase({ kind: "journey", index: startIdx });
       }, phaseChangeDelay);
 
+      // Operator skip during the intro cuts the ~26s choreography and
+      // drops straight into journey 0 (2026-09-19 audit: Next was dead
+      // for the whole set-boundary intro).
+      const introSkip = () => {
+        setIntroStage("gone");
+        useAudioStore.getState().setSuppressNextJourneyIntro(false);
+        setPhase({ kind: "journey", index: startIdx });
+      };
+      window.addEventListener("installation-operator-skip", introSkip);
+
       return () => {
+        window.removeEventListener("installation-operator-skip", introSkip);
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
         if (mountJourney) clearTimeout(mountJourney);
         if (fadeJourneyStart) clearTimeout(fadeJourneyStart);
@@ -1222,7 +1266,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // black breath instead of the 16s credits hold — the next set's
       // Resonance statement card is the real punctuation.
       const delay = playOnce ? 14_000 : program?.dedication ? CREDITS_MS : 5_000;
-      const t = setTimeout(() => {
+      // Operator skip during credits fast-forwards the boundary
+      // (2026-09-19 audit: Next was dead during the 16s credits hold
+      // and the set-boundary intro — the operator couldn't shorten
+      // either from the phone).
+      const goNext = () => {
         // One more pause right before the phase change — defense
         // against any pending audio-provider effect that re-fires
         // play() during the credits→intro transition.
@@ -1247,10 +1295,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             : 0,
         );
         setPhase({ kind: "intro" });
-      }, delay);
+      };
+      const t = setTimeout(goNext, delay);
+      const creditsSkip = () => { clearTimeout(t); goNext(); };
+      window.addEventListener("installation-operator-skip", creditsSkip);
       return () => {
         clearTimeout(t);
         clearTimeout(fadeoutHandoff);
+        window.removeEventListener("installation-operator-skip", creditsSkip);
       };
     }
 
@@ -1390,8 +1442,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           // 2s (visuals keep flowing — no black), THEN pause so the
           // provider's onEnded machinery can't re-fire play. The next
           // track fades back in via the engine's play-ramp.
+          // Pause the STORE too (2026-09-19 audit): with isPlaying
+          // still true and el.ended false mid-track, the 250ms play
+          // watchdogs resumed the OUTGOING track at full gain in the
+          // middle of every operator-skip breath. setQueue at the next
+          // journey restores isPlaying. The .finally is also guarded on
+          // phase so a shortened breath can never pause the NEW track.
+          useAudioStore.setState({ isPlaying: false });
+          const breathFromIndex = phase.index;
           try {
             void rampGainTo(0, 2_000).finally(() => {
+              const pNow = phaseRef.current;
+              if (pNow.kind === "journey" && pNow.index !== breathFromIndex) return;
               try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
             });
           } catch { /* ok */ }
@@ -1509,6 +1571,22 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           console.warn(
             `[installation] ${entry.journey.name}: ignoring 'ended' — element duration ${dur.toFixed(1)}s is far short of track duration ${trackDuration.toFixed(1)}s (metadata bug)`,
           );
+          // 2026-09-19 audit (the-tempest class): a TRUNCATED file ends
+          // here for real — the element is ended+paused and every other
+          // advance path rejects it, so the show used to sit frozen in
+          // silence until the 8-min journey cap. If the element is
+          // still ended+paused 10s from now, the track is failed:
+          // flight-record it and advance instead of waiting the cap out.
+          setTimeout(() => {
+            const pNow = phaseRef.current;
+            if (pNow.kind !== "journey" || pNow.index !== phase.index) return;
+            if (el.ended && el.paused) {
+              postEvent(
+                `skip-auto ${entry.journey.name} — audio ended at ${dur.toFixed(0)}s of a ${trackDuration.toFixed(0)}s track (truncated file?)`,
+              );
+              advance();
+            }
+          }, 10_000);
           return;
         }
         if (t < dur - 2) {

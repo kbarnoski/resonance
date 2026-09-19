@@ -35,7 +35,8 @@ export async function GET() {
     .order("position", { ascending: true });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Generic message to anon callers — raw Supabase errors leak schema detail (2026-09-19 audit).
+    return NextResponse.json({ error: "Failed to load featured recordings" }, { status: 500 });
   }
 
   // Sort tracks within each album by position

@@ -696,9 +696,17 @@ export default function ResonantRoomPage() {
     let usingRealAudio = false;
     try {
       const ctx0 = new AudioContext();
+      // 2026-09-19 audit fix: /api/audio returns a JSON envelope
+      // ({url, codec, hasAac}), not audio bytes — decoding the envelope
+      // always threw, so the "real piano" branch was dead and this proto
+      // silently ran on synth. Follow the pointer like every other proto.
       const res = await fetch("/api/audio/549fc519-f7fc-4c38-a771-adaad2edbc81");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const ab = await res.arrayBuffer();
+      const meta = (await res.json()) as { url?: string };
+      if (!meta.url) throw new Error("no audio url");
+      const audioRes = await fetch(meta.url);
+      if (!audioRes.ok) throw new Error(`HTTP ${audioRes.status}`);
+      const ab = await audioRes.arrayBuffer();
       audioBuf = await ctx0.decodeAudioData(ab);
       await ctx0.close();
       usingRealAudio = true;

@@ -77,9 +77,13 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
 // on the kiosk the pack route is always the right path anyway. Audio is
 // already gesture-unlocked by the time a remote command can arrive.
 async function launchJourney(id: string): Promise<void> {
+  // Deterministic mode (2026-09-19): only journeys with an explicit
+  // pairing are launchable — resolve-track 404s everything else, which
+  // used to strand a silent journey with no operator feedback.
+  const launchable = JOURNEYS.filter((j) => j.recordingId || PAIRED_TRACKS[j.id]);
   const journey =
     id === "random"
-      ? JOURNEYS[Math.floor(Math.random() * JOURNEYS.length)]
+      ? launchable[Math.floor(Math.random() * launchable.length)]
       : getJourney(id);
   if (!journey) return;
 
@@ -97,7 +101,15 @@ async function launchJourney(id: string): Promise<void> {
     const pairedSearch = PAIRED_TRACKS[journey.id];
     if (pairedSearch) params.set("search", pairedSearch);
     const res = await fetch(`/api/pack/resolve-track?${params}`);
-    if (!res.ok) return;
+    if (!res.ok) {
+      // Flight-record the strand instead of failing silently.
+      void fetch("/api/pack/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ event: `dj-launch-failed ${journey.id} — no paired track (HTTP ${res.status})` }),
+      }).catch(() => {});
+      return;
+    }
     const { track, analysis, cues } = await res.json();
     if (!track) return;
     // A newer remote/user selection may have superseded this launch

@@ -164,15 +164,14 @@ export function getAudioInfo(
   // in place (2026-09-19: The Tempest's truncated take was fixed on disk
   // but Chrome's media cache kept replaying the stale bytes for the same
   // URL), the new query string makes the browser fetch fresh bytes. The
-  // static file server ignores the query. mtime is read lazily per call
-  // and cached — the pack is otherwise immutable while the server runs.
+  // static file server ignores the query. stat runs on EVERY call — a
+  // module-level cache here defeated the buster's purpose (a file
+  // repaired while the server ran kept its old ?v); statSync on a local
+  // SSD is microseconds, correctness wins.
   let v = "";
   try {
-    if (!audioMtimeCache.has(id)) {
-      const st = statSync(path.join(packDir(), entry.file));
-      audioMtimeCache.set(id, String(Math.floor(st.mtimeMs)));
-    }
-    v = `?v=${audioMtimeCache.get(id)}`;
+    const st = statSync(path.join(packDir(), entry.file));
+    v = `?v=${Math.floor(st.mtimeMs)}`;
   } catch {
     /* stat failed — serve without buster rather than break playback */
   }
@@ -183,4 +182,3 @@ export function getAudioInfo(
   };
 }
 
-const audioMtimeCache = new Map<string, string>();

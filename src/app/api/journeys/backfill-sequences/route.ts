@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { z } from "zod";
@@ -51,7 +52,11 @@ export async function POST(request: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { journeyId } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "journeys-backfill");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { journeyId } = body;
     if (!journeyId || typeof journeyId !== "string") {
       return Response.json({ error: "Missing journeyId" }, { status: 400 });
     }
@@ -113,7 +118,7 @@ Preserve the narrative thread of each original aiPrompt — you're enriching it,
     if (writeErr) {
       logger.error("journeys/backfill-sequences", "write failed:", writeErr);
       return Response.json(
-        { error: `Failed to save enriched phases: ${writeErr.message}` },
+        { error: "Failed to save enriched phases" },  // Postgres text withheld (2026-09-19 audit)
         { status: 500 },
       );
     }

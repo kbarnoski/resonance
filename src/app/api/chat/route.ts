@@ -1,4 +1,5 @@
 import { streamText } from "ai";
+import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { defaultModel } from "@/lib/ai/providers";
 import { buildRecordingSystemPrompt } from "@/lib/ai/build-system-prompt";
 import { createClient } from "@/lib/supabase/server";
@@ -12,7 +13,12 @@ export async function POST(request: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { messages, recordingId, analysis } = await request.json();
+    const limited = await enforceLlmLimit(request, user.id, "chat");
+    if (limited) return limited;
+    const body = await readCappedJson(request);
+    if (body instanceof Response) return body;
+    const { messages, recordingId, analysis } = body;
+    if (!Array.isArray(messages)) return Response.json({ error: "messages must be an array" }, { status: 400 });
 
     if (!messages || !Array.isArray(messages)) {
       return new Response("Invalid messages format", { status: 400 });
