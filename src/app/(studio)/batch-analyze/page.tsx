@@ -32,7 +32,7 @@ interface Track {
   progress?: number;
 }
 
-const AUTORUN_KEY = "wh-batch-autorun";
+const AUTORUN_KEY = "batch-autorun";
 
 export default function BatchAnalyzePage() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -58,9 +58,14 @@ export default function BatchAnalyzePage() {
       .eq("user_id", user.id)
       .order("title", { ascending: true });
 
-    const welcomeHome = (recs ?? []).filter((r) => /^(0?[1-9]|1[0-3])[_\-\s.]/.test(r.title));
+    // Generalized 2026-09-19 (was hard-filtered to Welcome Home's
+    // numbered titles): every recording of the user's is a candidate —
+    // already-analyzed ones show as done, the rest are pending. This is
+    // what lets new album imports (Surrounded by Light, March Light…)
+    // batch-analyze without touching this page again.
+    const candidates = recs ?? [];
 
-    const ids = welcomeHome.map((r) => r.id);
+    const ids = candidates.map((r) => r.id);
     const { data: existing } = await supabase
       .from("analyses")
       .select("recording_id, status")
@@ -68,10 +73,10 @@ export default function BatchAnalyzePage() {
     const analyzedIds = new Set((existing ?? []).filter((a) => a.status === "completed").map((a) => a.recording_id));
 
     setTracks(
-      welcomeHome.map((r) => ({
+      candidates.map((r) => ({
         id: r.id,
         title: r.title,
-        cleanTitle: r.title.replace(/^(0?[1-9]|1[0-3])[_\-\s.]+/, "").replace(/\.[a-z0-9]+$/i, "").trim(),
+        cleanTitle: r.title.replace(/^\d{1,2}[_\-\s.]+/, "").replace(/\.[a-z0-9]+$/i, "").trim(),
         hadAnalysis: analyzedIds.has(r.id),
         status: analyzedIds.has(r.id) ? "already-done" : "pending",
       }))
@@ -198,7 +203,7 @@ export default function BatchAnalyzePage() {
   return (
     <div className="max-w-2xl">
       <h1 className="text-white/90 text-2xl tracking-tight mb-1" style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 200 }}>
-        Batch Analyze — Welcome Home
+        Batch Analyze
       </h1>
       <p className="text-white/40 mb-6" style={{ fontSize: "0.78rem", fontFamily: "var(--font-geist-mono)" }}>
         Runs the full Studio analysis pipeline on every album track. Keep this tab open until it finishes.
