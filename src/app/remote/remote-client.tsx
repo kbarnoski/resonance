@@ -12,9 +12,8 @@ import { Button } from "@/components/ui/button";
 const START_POINTS: { cmd: string; label: string }[] = [
   // The beginning = Tramokyo Set I (cold open included).
   { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
-  // Direct jumps to the later sets (Karel 2026-09-18 set structure).
-  { cmd: "program:tramokyo-mix-2", label: "Set II" },
-  { cmd: "program:tramokyo-mix-3", label: "Set III" },
+  // Direct jump to the second set (Karel 2026-09-19 two-set structure).
+  { cmd: "program:tramokyo-mix-2", label: "Welcome Home set" },
   ...INSTALLATION_PROGRAMS.map((p) => ({
     cmd: `program:${p.id}`,
     label: p.presenting.replace(/^the /, ""),

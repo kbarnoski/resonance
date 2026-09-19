@@ -121,14 +121,16 @@ export interface TramokyoSetDef {
 }
 
 export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
-  // Title card ~every 30 min: boundaries fall after The Bloom (~34 min
-  // of music) and after 2019 (~29 min), leaving a ~35-min final act.
-  { id: "tramokyo-mix", presenting: "the first set", end: 7 }, //  1-7: Snowflake → The Bloom (~29 min)
-  { id: "tramokyo-mix-2", presenting: "the second set", end: 15 }, //  8-15: The Ascension → The Knife (Jam) (~30 min)
+  // TWO SETS (Karel 2026-09-19): Set 1 = the Snowflake EP + all the
+  // featured journeys (Snowflake → Abyssal Dive, ~35 min of music);
+  // Set 2 = the Welcome Home album in album order (~46 min). More sets
+  // may be added later. Title card plays at each set boundary; the
+  // dedication closes the final set.
+  { id: "tramokyo-mix", presenting: "the first set", end: 9 }, //  1-9: Snowflake → Abyssal Dive
   {
-    id: "tramokyo-mix-3",
-    presenting: "the final set",
-    end: 22, // 16-22: Playa → All Together (~23 min)
+    id: "tramokyo-mix-2",
+    presenting: "Welcome Home",
+    end: 22, // 10-22: Interplay → All Together
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
