@@ -1,0 +1,78 @@
+{
+  "pathId": "f0d81720-7fad-4f2b-8d0c-9f5e88c7d531",
+  "pathShareToken": "a2401f8a54d54236",
+  "journeys": [
+    {
+      "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+      "name": "Rise",
+      "recordingId": "a116b2f1-913b-43ba-8840-22073d47e867",
+      "cleanTitle": "Rise"
+    },
+    {
+      "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+      "name": "Surrender",
+      "recordingId": "317152bd-59b9-452a-9c07-e5f347069303",
+      "cleanTitle": "Surrender"
+    },
+    {
+      "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+      "name": "Openings",
+      "recordingId": "284215e3-d415-4dc6-9d93-860cf7be82d6",
+      "cleanTitle": "Openings"
+    },
+    {
+      "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+      "name": "Surrounded By Light",
+      "recordingId": "6b3c2919-447f-425f-ae2e-52613b6c0b67",
+      "cleanTitle": "Surrounded By Light"
+    },
+    {
+      "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+      "name": "Drift: A Journey Through Light",
+      "recordingId": "7b40d97b-ef5a-4d3f-85cf-f6e18a1877c7",
+      "cleanTitle": "Drift"
+    },
+    {
+      "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+      "name": "A journey through \"Self\"",
+      "recordingId": "fb743c6e-ad7a-42d2-80f2-5b6b4e7ae263",
+      "cleanTitle": "Self"
+    },
+    {
+      "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+      "name": "Message",
+      "recordingId": "f2fb7c51-4f5b-4231-b230-33721832a6ba",
+      "cleanTitle": "Message"
+    },
+    {
+      "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+      "name": "Grace",
+      "recordingId": "96146a9f-d80c-4635-b5f9-65455c1ea157",
+      "cleanTitle": "Grace"
+    },
+    {
+      "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+      "name": "Complete",
+      "recordingId": "0d903ef0-dd21-4d16-b806-c6157f649958",
+      "cleanTitle": "Complete"
+    },
+    {
+      "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+      "name": "Held",
+      "recordingId": "5cdb1816-373d-431c-9866-be64bfb50a9a",
+      "cleanTitle": "Held"
+    },
+    {
+      "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+      "name": "Sway",
+      "recordingId": "e254fa00-2272-415d-ab24-12c81fe25a33",
+      "cleanTitle": "Sway"
+    },
+    {
+      "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+      "name": "Mystic",
+      "recordingId": "6d769562-26e0-424a-9d99-a4a67aca51f3",
+      "cleanTitle": "Mystic"
+    }
+  ]
+}

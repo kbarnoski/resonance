@@ -15,6 +15,7 @@ const START_POINTS: { cmd: string; label: string }[] = [
   { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
   // Direct jump to the second set (Karel 2026-09-19 two-set structure).
   { cmd: "program:tramokyo-mix-2", label: "Welcome Home set" },
+  { cmd: "program:tramokyo-mix-3", label: "Surrounded by Light set" },
   ...INSTALLATION_PROGRAMS.map((p) => ({
     cmd: `program:${p.id}`,
     label: p.presenting.replace(/^the /, ""),

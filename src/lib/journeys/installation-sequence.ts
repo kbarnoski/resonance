@@ -84,7 +84,20 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "cd517f5a-c4eb-4d50-8a53-044aa668d087", // 21. Stir Crazy · 2:46
   "38daff92-ae34-4448-8868-5f1df6029b94", // 22. Rolling · 4:35
   "019e1e1d-c7e2-4609-a9c6-364a2755b115", // 23. Quarantine · 2:56
-  "b207b557-e984-4a06-ae71-83124bcd80d5", // 24. All Together · 3:39 — the closer
+  "b207b557-e984-4a06-ae71-83124bcd80d5", // 21. All Together · 3:39
+  // ── The Surrounded by Light album, in album order (added 2026-09-19) ──
+  "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1", // 1. Rise
+  "db22c975-8f03-487b-ae44-437f7f153ac1", // 2. Surrender
+  "f24cc5d9-66cd-4fae-a03a-14dda1698566", // 3. Openings
+  "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3", // 4. Surrounded By Light
+  "8b163c8b-cda5-4d7d-995b-41dd68fdd059", // 5. Drift
+  "89ff944d-f242-4f77-9b95-7cb1d3dc0af6", // 6. Self
+  "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a", // 7. Message
+  "4ca8d765-71a2-401a-85eb-eb02c2780bc3", // 8. Grace
+  "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1", // 9. Complete
+  "549719aa-4a15-4981-8a9a-34ee66fca156", // 10. Held
+  "a5de2004-f606-4277-a4cb-032c35e56c43", // 11. Sway
+  "c110af67-40be-4a06-9878-eeec2a22bb3d", // 12. Mystic
 ] as const;
 
 /**
@@ -127,10 +140,11 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // may be added later. Title card plays at each set boundary; the
   // dedication closes the final set.
   { id: "tramokyo-mix", presenting: "the first set", end: 8 }, //  1-8: Snowflake → Mycelium Dream
+  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 21 }, //  9-21: Interplay → All Together
   {
-    id: "tramokyo-mix-2",
-    presenting: "Welcome Home",
-    end: 21, // 9-21: Interplay → All Together
+    id: "tramokyo-mix-3",
+    presenting: "Surrounded by Light",
+    end: 33, // 22-33: Rise → Mystic (~35 min; added 2026-09-19)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
@@ -161,6 +175,20 @@ export const EXPERIENCE_INTRO = {
 } as const;
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
+  {
+    id: "surrounded-by-light",
+    presenting: "the Surrounded by Light album",
+    description:
+      "Twelve pieces released on the artist's birthday — March 2, 2023. " +
+      "An arc of luminous states, from Rise to Mystic: light being born " +
+      "out of darkness. Recline.",
+    pathShareToken: "a2401f8a54d54236",
+    dedication: {
+      eyebrow: "Released on the artist's birthday",
+      hero: "March 2, 2023",
+      secondary: "light, born out of darkness",
+    },
+  },
   {
     id: "welcome-home",
     presenting: "the Welcome Home album",
