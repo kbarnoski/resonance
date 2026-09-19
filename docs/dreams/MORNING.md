@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-09-18T12:5xZ (cycle 1246)
+# Morning digest — last updated 2026-09-19T00:5xZ (cycle 1247)
 
-> **Jury verdict today**: You asked for the intimate duet and got it twice (timeheads, resonantpair) — but timeheads drew no love on review and both are two hands of *one* person; the sharper uncashed bet is two real PEOPLE sharing one take (your loved duetlink), before "two hands" becomes its own monoculture. See `docs/dreams/JURY.md`.
+> **Answering the jury (2026-09-18 #2):** you said the sharpest uncashed bet is two real PEOPLE sharing one take, not two hands of one body. This fire cashed it — the lab's first multi-person piece.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[17408-bodycast](https://getresonance.vercel.app/dream/17408-bodycast)** — **your whole body becomes the spatial mixing stage for one of your solo takes.** Each register of the piano (bass / low-mid / high-mid / treble) casts a visible BEAM of light from a part of your body out into the room; you sculpt WHERE the music radiates from by reaching, spreading and lifting. Arms wide → the voices fan across the room (treble farthest, bass at centre); arms in → an intimate near-mono in front of you; lift a wrist to swell that side; lean to rotate the whole field. Press Play (it's alive on a swaying ghost body immediately), then "Step onto the stage" to conduct it with your webcam. *Why open this:* it's the first FULL-BODY piece under your camera directive — a real 4-voice HRTF spatializer where your body is the console, and the beams make the placement visible even muted.
+- **[17504-mirrorfold](https://getresonance.vercel.app/dream/17504-mirrorfold)** — **the lab's FIRST two-PEOPLE piece: two of you, one webcam, share one of your takes — and your MIRROR-SYMMETRY is the instrument.** Move as each other's mirror image and the recording folds into ONE central unison voice (a bright amethyst braid weaves tight between you); break symmetry and it tears into a live two-voice CANON spread across your two bodies — the vertical gap between you sets the canon's interval. The split isn't a failure, it's a musical state you play. *Why open this:* it answers your loved `duetlink`/`canon` head-on — two real people, not two hands — and it's a genuinely new relationship (mirror→unison / break→canon), not another "negotiate it into a lock." Grab someone and stand side by side.
 
 ## In progress / partial
-- This was a DEEP fire: two builders attacked the same concept two ways. Shipped the beam-casting version; the sibling **`limbchoir`** rendered it as a warm particle body with glowing voice-orbs — banked to IDEAS §1246, and its two best ideas (arm-span → convolution-reverb room size; a particle aura under the beams) are folded into bodycast's "deepen next."
+- **Camera path untested with two live people — needs your 30-second check.** I can't point a two-person webcam at myself in the cloud, so I traced the control chain (two bodies → mirror-synchrony → pan/delay/level → unison vs canon) but couldn't verify the *feel* or the synchrony thresholds. Shipped as `status: wip` and honest about it. If it ignores you, it's the threshold tuning, not the plumbing — tell me and I'll fix it next fire. (You can partly test solo: one person → "1 of 2, waiting for a second person" drives one voice + an auto-canon.)
+- DEEP fire: the sibling **`twaincircle`** did the *asymmetric* two-person reading (one of you = resonant GROUND, one = granular VOICE, negotiated to a lock) on a WebGPU compute-particle weave — banked to IDEAS §1247 as mirrorfold's cycle-2 and the WebGPU substrate to reach for next.
 
 ## Research findings worth a look
-- Anchor: **"Sounding Bodies" (arXiv 2311.06285)** — an ML model that predicts the 3D spatial sound a body radiates *from its pose*. Bodycast inverts it: your pose decides where each voice of the take radiates from. (Logged honestly as a foundational anchor, not a <30-day find — that niche isn't shipping fresh this month.)
+- Fresh anchor (<30 days): **SoundMHPE — "Sound-based Multi-Person 3D Pose Estimation" (arXiv 2609.04902, 2026-09-04)** — the first method to recover *multiple people's* 3D poses purely from overlapping sound. mirrorfold inverts it: two poses SHAPE the sound instead of sound inferring the poses. (Also leans on Vrengt, Huì Sù, and Krueger's *Videoplace* for the two-body-instrument lineage.)
 
 ## Open questions for Karel
-- Bodycast moves the body-signal off the recent two-hand run (canon/timeheads/resonantpair) to FULL BODY. Is full-body spatial conducting a direction you want more of, or do you prefer staying in the intimate two-hand space you loved (canon)?
-- Next diverse embodied signals queued but unbuilt: FACE/gaze, GAIT/step-tempo, MULTI-PERSON (two bodies co-placing the field — the natural two-person bodycast). Any preference?
-- Palette watch: warm is filling up (resonantpair + bodycast). Want me to deliberately swing neutral or audio-forward next?
+- Is the two-PEOPLE direction the one you want deepened (this + a networked remote version, an ensemble of 3+ bodies), or was the love about two *hands* after all? Your tap on mirrorfold vs the two-hand pieces will tell me.
+- Palette watch: all three temperatures are now camped (cool 4× / warm 4× / neutral 5×). I used a violet-duotone-split here to stay off a single wash; next fire I'll go audio-forward or a substrate off three.js. Any steer?
