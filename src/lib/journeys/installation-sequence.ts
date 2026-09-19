@@ -67,7 +67,6 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "ghost", //  3. Ghost — Ghost · 3:39
   // ── The featured journeys (verified session-take pairings) ──
   "mycelium-dream", //  4. Mycelium Dream — Folsom St 8 · 6:25
-  "neural-link", //  6. Neural Link — Folsom St 6 · 5:20
   "cosmic-drift", //  7. Cosmic Drift — 17th St 61 · 4:42
   "the-bloom", //  8. The Bloom — Folsom St 9 · 3:35
   "the-ascent", //  9. The Ascent — Folsom St 5 · 4:42
@@ -99,6 +98,7 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
 export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
   "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // COSMIC HOMECOMING — cut from the mix (still closes the Welcome Home album program)
   "the-tempest", // PULLED 2026-09-19 (Karel) — its paired take (17th St 63 spectre) is truncated in storage to 1:12; out of the show until re-uploaded/re-paired
+  "neural-link", // PULLED 2026-09-19 (Karel) — out of the show for now
 ]);
 
 /**
@@ -123,12 +123,12 @@ export interface TramokyoSetDef {
 export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // Title card ~every 30 min: boundaries fall after The Bloom (~34 min
   // of music) and after 2019 (~29 min), leaving a ~35-min final act.
-  { id: "tramokyo-mix", presenting: "the first set", end: 7 }, //  1-7: Snowflake → The Bloom (~31 min)
-  { id: "tramokyo-mix-2", presenting: "the second set", end: 15 }, //  8-15: The Ascent → 2019 (~26 min)
+  { id: "tramokyo-mix", presenting: "the first set", end: 7 }, //  1-7: Snowflake → The Ascent (~29 min)
+  { id: "tramokyo-mix-2", presenting: "the second set", end: 15 }, //  8-15: Abyssal Dive → The Knife (Jam) (~30 min)
   {
     id: "tramokyo-mix-3",
     presenting: "the final set",
-    end: 23, // 16-23: The Knife (Jam) → All Together (~30 min)
+    end: 22, // 16-22: Playa → All Together (~23 min)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
