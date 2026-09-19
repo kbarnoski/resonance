@@ -71,7 +71,6 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "the-bloom", //  6. The Bloom — Folsom St 9 · 3:35
   "cosmic-drift", //  7. Cosmic Drift — 17th St 61 · 4:42
   "mycelium-dream", //  8. Mycelium Dream — Folsom St 8 · 6:25
-  "abyssal-dive", // 10. Abyssal Dive — 17th St 62 · 4:42
   // ── The Welcome Home album, in album order ──
   "27f52cf0-5fad-420f-8324-8017c414f1f8", // 12. Interplay · 2:38
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 13. Bath · 2:29
@@ -99,6 +98,7 @@ export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
   "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // COSMIC HOMECOMING — cut from the mix (still closes the Welcome Home album program)
   "the-tempest", // PULLED 2026-09-19 (Karel) — its paired take (17th St 63 spectre) is truncated in storage to 1:12; out of the show until re-uploaded/re-paired
   "neural-link", // PULLED 2026-09-19 (Karel) — out of the show for now
+  "abyssal-dive", // PULLED 2026-09-19 — its "17th St 62" upload is a byte-level DUPLICATE of 17th St 63 (envelope correlation 1.000), so it played the same audio as The Ascension; benched until Karel re-uploads the true take 62
 ]);
 
 /**
@@ -126,11 +126,11 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // Set 2 = the Welcome Home album in album order (~46 min). More sets
   // may be added later. Title card plays at each set boundary; the
   // dedication closes the final set.
-  { id: "tramokyo-mix", presenting: "the first set", end: 9 }, //  1-9: Snowflake → Abyssal Dive
+  { id: "tramokyo-mix", presenting: "the first set", end: 8 }, //  1-8: Snowflake → Mycelium Dream
   {
     id: "tramokyo-mix-2",
     presenting: "Welcome Home",
-    end: 22, // 10-22: Interplay → All Together
+    end: 21, // 9-21: Interplay → All Together
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",

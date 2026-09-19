@@ -38,7 +38,12 @@ export const STATEMENT_INTERSTITIAL_MS = 14_000;
  *  of silence before each next track begins (Karel 2026-08-30). Per-
  *  journey PRE_ENTRY_PAUSE values can lengthen it, never shorten it. */
 export const INTER_JOURNEY_BREATH_MS = 4_000;
-export const STATEMENT_EVERY_N_JOURNEYS = 7;
+/** RETIRED 2026-09-19 (Karel): with the two-set structure, each set
+ *  opens with the Resonance statement card — a mid-set interstitial on
+ *  top of that read as "the title screen appearing too early". Set to
+ *  Infinity to disable (kept, not deleted, in case a future long set
+ *  wants it back). */
+export const STATEMENT_EVERY_N_JOURNEYS = Infinity;
 
 /** Closing credits hold duration before the loop returns to intro. */
 export const CREDITS_MS = 16_000;
