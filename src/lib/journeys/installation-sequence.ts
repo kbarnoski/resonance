@@ -67,10 +67,10 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "ghost", //  3. Ghost — Ghost · 3:39
   // ── The featured journeys (verified session-take pairings) ──
   "the-ascent", //  4. The Summit — Folsom St 5 · 3:22 (swapped with Ascension, Karel 2026-09-19)
-  "mycelium-dream", //  4. Mycelium Dream — Folsom St 8 · 6:25
+  "the-ascension", //  5. The Ascension — 17th St 63 · 3:20 (swapped with Mycelium, Karel 2026-09-19)
   "cosmic-drift", //  7. Cosmic Drift — 17th St 61 · 4:42
   "the-bloom", //  8. The Bloom — Folsom St 9 · 3:35
-  "the-ascension", //  8. The Ascension — 17th St 63 · 3:20
+  "mycelium-dream", //  8. Mycelium Dream — Folsom St 8 · 6:25
   "abyssal-dive", // 10. Abyssal Dive — 17th St 62 · 4:42
   // ── The Welcome Home album, in album order ──
   "27f52cf0-5fad-420f-8324-8017c414f1f8", // 12. Interplay · 2:38
