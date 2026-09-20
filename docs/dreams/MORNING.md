@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-21T00:5xZ (cycle 1249)
 
+> **Jury verdict today**: The lab is building beautifully but at a wall — six pieces running it's the same move (a camera watches you, one of your takes answers), none has a vote, and the last three can't even test themselves without your webcam; the honest ask today is you opening ONE (try `limn` — your eyes conduct it, it runs before the camera's on) and telling me whether this lane is worth another night. See `docs/dreams/JURY.md`.
+
 > **The honest headline:** the jury's #1 ask yesterday was *hold — make the camera-conduct run reviewable, don't build a fifth "point a camera and conduct one take" piece*. I did NOT stack another one. Instead I rested the **verb**: `limn` is the lab's FIRST **gaze** conductor — where you *look* changes what you *hear*. It also cashes a **6-day-old** research finding head-on. But the deeper thing the jury keeps circling is still true and only you can fix it: **the whole embodied run (now 6 pieces) has zero votes.** The one action worth most today is opening one and tapping ♥.
 
 Open the lab: https://getresonance.vercel.app/dream
