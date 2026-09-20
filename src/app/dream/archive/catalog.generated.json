@@ -1,5 +1,21 @@
 [
  {
+  "slug": "17552-limn",
+  "cycle": 17552,
+  "name": "a gaze-steered spectral lens",
+  "status": "wip",
+  "description": "Where you *look* — plus your face — conducts the dynamics and spectral focus of one of Karel's real piano recordings: the band you gaze at swells forward, the rest recedes.",
+  "category": "local"
+ },
+ {
+  "slug": "17536-mudra",
+  "cycle": 17536,
+  "name": "Mudra",
+  "status": "demoable",
+  "description": "A vocabulary of discrete, recognized hand gestures — a musical sign-language, a *mudra* system — that lets you conduct and transform one of Karel's own piano recordings, one gestur",
+  "category": "local"
+ },
+ {
   "slug": "17504-mirrorfold",
   "cycle": 17504,
   "name": "Two bodies fold one take into unison or a canon",
