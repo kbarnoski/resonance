@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 const out = JSON.parse(readFileSync("scripts/sbl-output.json", "utf8"));
 
-const TAIL = ", no moon no planets no celestial spheres, no people no human figures no silhouettes of people, no text no signatures no watermarks no letters no writing";
+const TAIL = ", asymmetric off-center composition with strong diagonal weight, no text no signatures no watermarks no letters no writing";
 
 const WORLDS = {
   "Rise": {

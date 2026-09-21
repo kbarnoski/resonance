@@ -6,7 +6,7 @@
 import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
-const TAIL = ", no moon no planets no celestial spheres, no people no human figures no silhouettes of people, no text no signatures no watermarks no letters no writing";
+const TAIL = ", asymmetric off-center composition with strong diagonal weight, no text no signatures no watermarks no letters no writing";
 
 // Journey ids from TRAMOKYO_SETLIST (WH block, album order).
 const WH = [

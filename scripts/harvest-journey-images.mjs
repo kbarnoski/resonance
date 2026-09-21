@@ -84,7 +84,8 @@ async function loadAppModules() {
         export { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
           STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
-          TRAMOKYO_PHASE_WEIGHT } from "@/lib/journeys/prompt-decoration";
+          TRAMOKYO_PHASE_WEIGHT, TRAMOKYO_EXTRA_NEGATIVE,
+          TRAMOKYO_STYLE_SUFFIX } from "@/lib/journeys/prompt-decoration";
         export { allocateByPhase } from "@/lib/journeys/pack-image-allocation";
       `,
       resolveDir: ROOT,
@@ -294,10 +295,16 @@ async function main() {
 
   async function generateOne(item) {
     const { target: t, stem, dir, prompt } = item;
-    const fullPrompt = `${prompt}, ${app.STYLE_SUFFIX}`;
-    const negative = t.isGhost
+    const suffix = TREATMENT === "tramokyo" ? app.TRAMOKYO_STYLE_SUFFIX : app.STYLE_SUFFIX;
+    const fullPrompt = `${prompt}, ${suffix}`;
+    let negative = t.isGhost
       ? `${app.GLOBAL_NEGATIVE}, ${app.GHOST_NEGATIVE_PROMPT}`
       : app.GLOBAL_NEGATIVE;
+    // Treated runs ban moons/planets/humans in the REAL negative (the
+    // in-prompt "no moon" phrasing reads as "moon" — 2026-09-21).
+    // Ghost keeps her figure: skip the human terms for the LoRA journey.
+    if (TREATMENT === "tramokyo" && !t.isGhost) negative = `${negative}, ${app.TRAMOKYO_EXTRA_NEGATIVE}`;
+    if (TREATMENT === "tramokyo" && t.isGhost) negative = `${negative}, moon, moons, full moon, planet, planets`;
     const useLora = !!t.loraUrl;
     const input = {
       prompt: fullPrompt,

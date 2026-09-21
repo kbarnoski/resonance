@@ -179,6 +179,26 @@ export const TRAMOKYO_PHASE_WEIGHT: Record<string, number> = {
   integration: 0.8,
 };
 
+/**
+ * Tramokyo-treatment additions to the NEGATIVE prompt (2026-09-21):
+ * "no moon" written in the positive prompt reads as "moon" to diffusion
+ * models — Playa rendered a giant pink moon dead center despite the
+ * in-prompt ban. Real bans live here, applied by the harvest whenever
+ * --treatment=tramokyo runs, alongside GLOBAL_NEGATIVE.
+ */
+export const TRAMOKYO_EXTRA_NEGATIVE =
+  "moon, moons, full moon, crescent moon, glowing moon, moon orb, " +
+  "planet, planets, planetary sphere, large celestial sphere, orb in sky, " +
+  "person, people, human figure, human figures, human silhouette, " +
+  "man, woman, child, body, face";
+
+/** STYLE_SUFFIX for treated (Tramokyo) harvests — the standard suffix's
+ *  "every celestial body rendered as a perfect round sphere" clause
+ *  INVITES moons; treated runs drop it. */
+export const TRAMOKYO_STYLE_SUFFIX =
+  "photorealistic cinematic photograph, real photographic materials and lighting, " +
+  "surreal dreamlike but lifelike, luminous, transcendent, ethereal";
+
 /** Global negative prompt — concepts that should NEVER appear, regardless
  *  of journey. Callers can extend via the request's negativePrompt field. */
 export const GLOBAL_NEGATIVE =
