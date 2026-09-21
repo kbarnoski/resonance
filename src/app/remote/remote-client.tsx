@@ -199,14 +199,24 @@ export function RemoteClient() {
       ))}
 
       <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
-        Featured journeys {inLoop ? "(breaks into DJ mode first)" : ""}
+        Extras — DJ mode {inLoop ? "(plays one journey, then Resume the loop)" : ""}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-8">
         {/* Paired journeys only (2026-09-19 audit): deterministic mode
             404s unpaired resolves, which used to strand a silent journey.
             The break→journey pair is also sequenced — both commands in
             one poll batch made the loop-context kiosk drop journey:. */}
-        {JOURNEYS.filter((j) => j.recordingId || PAIRED_TRACKS[j.id]).map((j) => (
+        {/* Karel 2026-09-20: journeys IN the show are tapped from their
+            program sections above (loop jump → continues in setlist
+            order). This DJ section offers only the extras, so choosing
+            a show track can never strand playback outside the loop. */}
+        {JOURNEYS.filter((j) => {
+          if (!(j.recordingId || PAIRED_TRACKS[j.id])) return false;
+          const inShow = (status?.programs ?? []).some((p) =>
+            p.journeys.some((pj) => pj.id === j.id),
+          );
+          return !inShow;
+        }).map((j) => (
           <Button
             variant="glass"
             key={j.id}
