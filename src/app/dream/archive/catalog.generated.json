@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17664-strand",
+  "cycle": 17664,
+  "name": "A take that remembers itself",
+  "status": "demoable",
+  "description": "One of Karel's takes is cut into short motifs, held in a memory of five, and slowly re-composed over 5+ minutes so the piece is audibly different at minute five than at minute one ",
+  "category": "local"
+ },
+ {
   "slug": "17616-tremor",
   "cycle": 17616,
   "name": "The Earth's Tremors Play His Piano",
