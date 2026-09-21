@@ -1,5 +1,21 @@
 [
  {
+  "slug": "17616-tremor",
+  "cycle": 17616,
+  "name": "The Earth's Tremors Play His Piano",
+  "status": "demoable",
+  "description": "quake as a transformed fragment of one of Karel's real piano takes; falls back to bundled sample quakes when the network is unavailable, so it always plays.",
+  "category": "local"
+ },
+ {
+  "slug": "17584-stillpoint",
+  "cycle": 17584,
+  "name": "the instrument is stillness",
+  "status": "wip",
+  "description": "One of Karel's real piano takes plays whole and present only when you hold your body still; any movement scatters it, granulating and blurring the recording toward a distant whispe",
+  "category": "local"
+ },
+ {
   "slug": "17552-limn",
   "cycle": 17552,
   "name": "a gaze-steered spectral lens",
