@@ -1,4 +1,5 @@
 import type { Journey, JourneyPhase } from "./types";
+import { applyAnalysisBounds } from "./analysis-phase-bounds";
 import { MODE_META } from "@/lib/shaders";
 import { seededShuffle } from "./seeded-random";
 import { applyShaderPreferences } from "./adaptive-engine";
@@ -1788,6 +1789,12 @@ export const JOURNEYS: Journey[] = [
     }),
   },
 ];
+
+// Overlay analysis-derived phase boundaries (see analysis-phase-bounds.ts)
+// so every consumer — app, engine, harvest, kiosk — climaxes with the
+// music. Runs once at module load; Ghost intentionally untouched.
+for (const j of JOURNEYS) applyAnalysisBounds(j);
+
 
 export function getJourney(id: string): Journey | undefined {
   return JOURNEYS.find((j) => j.id === id);
