@@ -1967,13 +1967,8 @@ export function VisualizerClient({
                     pointerEvents: "none",
                   }}
                 />
-                <Eyebrow
-                  as="span"
-                  className="relative mb-7 text-[0.78rem] tracking-[0.22em] text-white/55"
-                  style={{ textShadow: TEXT_SHADOW }}
-                >
-                  Journey
-                </Eyebrow>
+                {/* Karel 2026-09-20: name alone — no "Journey" eyebrow,
+                    no subtitle. Mirrors installation-intro. */}
                 <DisplayTitle
                   as="span"
                   className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
@@ -1981,15 +1976,6 @@ export function VisualizerClient({
                 >
                   {activeJourney.name}
                 </DisplayTitle>
-                {activeJourney.subtitle && (
-                  <DisplayTitle
-                    as="span"
-                    className="relative mt-4 font-normal text-[clamp(1.2rem,2.4vw,1.7rem)] tracking-[0.01em] leading-[normal] text-white/75"
-                    style={{ textShadow: TEXT_SHADOW }}
-                  >
-                    {activeJourney.subtitle}
-                  </DisplayTitle>
-                )}
                 <MonoLabel
                   as="span"
                   className="relative mt-12 text-base tracking-[0.06em] text-white/65"

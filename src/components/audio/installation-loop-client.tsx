@@ -1009,6 +1009,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       setIntroStage(
         needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
       );
+      (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel =
+        `Title card — ${program?.presenting ?? "Resonance"}`;
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
@@ -1265,6 +1267,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // Sets without a dedication (Tramokyo Sets I + II) take a short
       // black breath instead of the 16s credits hold — the next set's
       // Resonance statement card is the real punctuation.
+      (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel =
+        program?.dedication ? "Dedication" : "…";
       const delay = playOnce ? 14_000 : program?.dedication ? CREDITS_MS : 5_000;
       // Operator skip during credits fast-forwards the boundary
       // (2026-09-19 audit: Next was dead during the 16s credits hold
@@ -1329,6 +1333,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     postEvent(
       `journey ${phase.index + 1}/${sequence.length} ${entry.journey.name} [${entry.track.title}]`,
     );
+    (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel =
+      entry.journey.name;
 
     // Show dots while the per-journey title overlay is up — but ONLY
     // when there's actually a title overlay being shown. For journey 0

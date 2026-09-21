@@ -118,7 +118,10 @@ export function RemoteClient() {
         <div className="text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
           {stale ? "waiting for kiosk…" : inLoop ? "attract loop" : "dj mode"}
         </div>
-        <div className="text-base text-white/90 mb-0.5">
+        <div
+          className="text-2xl text-white/95 mb-0.5"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400 }}
+        >
           {status?.journey ?? "—"}
         </div>
         <div className="text-sm text-white/50">

@@ -152,7 +152,14 @@ export function useKioskRemote(context: KioskRemoteContext): void {
             role: "kiosk",
             status: {
               context,
-              journey: s.activeJourney?.name ?? null,
+              // Karel 2026-09-20: the remote must ALWAYS name what is on
+              // screen. Between journeys the loop publishes a phase label
+              // (set title card / dedication) on window; fall back to it.
+              journey:
+                s.activeJourney?.name ??
+                ((window as unknown as Record<string, unknown>)
+                  .__resonanceKioskPhaseLabel as string | undefined) ??
+                null,
               track: s.currentTrack?.title ?? null,
               isPlaying: s.isPlaying,
               currentTime: Math.round(s.currentTime),

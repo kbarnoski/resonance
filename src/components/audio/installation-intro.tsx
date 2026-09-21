@@ -263,12 +263,8 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           pointerEvents: "none",
         }}
       />
-      <Eyebrow
-        className="relative mb-7 text-[0.78rem] tracking-[0.22em] text-white/55"
-        style={{ textShadow: TEXT_SHADOW }}
-      >
-        Journey
-      </Eyebrow>
+      {/* Karel 2026-09-20: title cards carry the NAME ALONE — no
+          "Journey" eyebrow label, no subtitle. Simple. */}
       <DisplayTitle
         as="div"
         className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
@@ -276,15 +272,6 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
       >
         {journey.name}
       </DisplayTitle>
-      {journey.subtitle && (
-        <DisplayTitle
-          as="div"
-          className="relative mt-4 font-normal text-[clamp(1.2rem,2.4vw,1.7rem)] tracking-[0.01em] leading-[normal] text-white/75"
-          style={{ textShadow: TEXT_SHADOW }}
-        >
-          {journey.subtitle}
-        </DisplayTitle>
-      )}
       {(() => {
         // No per-track self-credit — the program intro already says
         // "composed and performed by Karel Barnoski" once (Karel's
