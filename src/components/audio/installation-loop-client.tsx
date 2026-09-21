@@ -1623,6 +1623,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           phaseRetries++;
           // eslint-disable-next-line no-console
           console.warn(`[installation] error on ${entry.journey.name}: ${reason} — retry ${phaseRetries}/${MAX_PHASE_RETRIES}`);
+          // 2026-09-21: media errors were CONSOLE-ONLY — an entire night
+          // of silent 34s cuts was invisible in the flight recorder.
+          postEvent(`audio-error ${entry.journey.name} ${reason} — retry ${phaseRetries}/${MAX_PHASE_RETRIES}`);
           void (async () => {
             try {
               const t = trackForIndex(phase.index);
@@ -1638,6 +1641,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         }
         // eslint-disable-next-line no-console
         console.warn(`[installation] ${entry.journey.name}: ${reason} — retries exhausted, advancing`);
+        postEvent(`skip-error ${entry.journey.name} ${reason} — retries exhausted`);
         logInstallFailure({
           journey: entry.journey.name,
           track: trackForIndex(phase.index)?.title ?? "(none)",
