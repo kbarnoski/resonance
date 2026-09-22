@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17728-overhead",
+  "cycle": 17728,
+  "name": "The Station Conducts a Take",
+  "status": "demoable",
+  "description": "What if the one crewed outpost overhead — the International Space Station crossing the sky right now — conducted one of Karel's real piano takes as it passes, sounding present and ",
+  "category": "local"
+ },
+ {
   "slug": "17664-strand",
   "cycle": 17664,
   "name": "A take that remembers itself",
