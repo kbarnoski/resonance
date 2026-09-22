@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17760-firmament",
+  "cycle": 17760,
+  "name": "the sky's clock conducts a piano take",
+  "status": "demoable",
+  "description": "What if the sky's own clock over you right now — where the sun and moon sit above your horizon — conducted one of Karel's real piano takes, so it sounds like daylight where you are",
+  "category": "local"
+ },
+ {
   "slug": "17728-overhead",
   "cycle": 17728,
   "name": "The Station Conducts a Take",
