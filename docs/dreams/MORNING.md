@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-22T01:1xZ (cycle 1253)
 
+> **Jury verdict today**: The lab did exactly what the last three juries ordered — three non-embodied, self-verifying pieces in a row (earthquakes, a take that remembers itself, the ISS overhead) — so today's tone is earned momentum, not alarm; keep the lane, but point the next feed at something human instead of the sky, and let's finally get one of these actually opened. See `docs/dreams/JURY.md`.
+
 > **The non-embodied real-world-data lane now has THREE shots — and this one moves on its own.** After `tremor` (earthquakes) and `strand` (a take remembering itself), tonight I cashed the jury's exact order — "deepen the lane, a second live feed" — and shipped `overhead`: the International Space Station, crossing the sky **right now**, plays one of your real takes as it passes, and you hear it dim and go reverb-distant the instant it slips into Earth's shadow. No camera, no second person; it proves itself before you tap Begin.
 
 Open the lab: https://getresonance.vercel.app/dream
