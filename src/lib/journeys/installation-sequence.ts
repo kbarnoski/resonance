@@ -98,6 +98,17 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "549719aa-4a15-4981-8a9a-34ee66fca156", // 10. Held
   "a5de2004-f606-4277-a4cb-032c35e56c43", // 11. Sway
   "c110af67-40be-4a06-9878-eeec2a22bb3d", // 12. Mystic
+  // ── The March Light album, in album order (added 2026-09-21) ──
+  "5a07f0af-654f-4dab-b42c-aef83983b33f", // 1. The First
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", // 2. The First (Expanded)
+  "9d901645-b8dd-4a62-b3e2-2613ccd64335", // 3. Dad's Song II
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", // 4. Yellow Bird
+  "800ed3f9-08d4-4b73-8a32-86ed8370e752", // 5. Spectre
+  "f7b01537-af1b-4ade-b788-f21c6565b057", // 6. Surrounded By Light
+  "a985d483-a948-4e3b-bad3-841a68f9992f", // 7. Mexican Boy
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 8. Afterglow
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", // 9. Grasshopper
+  "46216435-4340-4ad4-9033-101e66fb29e7", // 10. Love Again
 ] as const;
 
 /**
@@ -141,10 +152,11 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // dedication closes the final set.
   { id: "tramokyo-mix", presenting: "the first set", end: 8 }, //  1-8: Snowflake → Mycelium Dream
   { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 21 }, //  9-21: Interplay → All Together
+  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 33 }, // 22-33: Rise → Mystic (~35 min)
   {
-    id: "tramokyo-mix-3",
-    presenting: "Surrounded by Light",
-    end: 33, // 22-33: Rise → Mystic (~35 min; added 2026-09-19)
+    id: "tramokyo-mix-4",
+    presenting: "March Light",
+    end: 43, // 34-43: The First → Love Again (~32 min; added 2026-09-21)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
@@ -175,6 +187,14 @@ export const EXPERIENCE_INTRO = {
 } as const;
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
+  {
+    id: "march-light",
+    presenting: "the March Light album",
+    description:
+      "Ten pieces of March Light — from The First\u0027s thaw to Love " +
+      "Again\u0027s bloom in the burned forest. Recline.",
+    pathShareToken: "f97032da08df46f5",
+  },
   {
     id: "surrounded-by-light",
     presenting: "the Surrounded by Light album",

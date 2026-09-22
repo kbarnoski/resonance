@@ -1,0 +1,66 @@
+{
+  "pathId": "8c1649f4-a402-4b49-b5b5-2b6e246e08a3",
+  "pathShareToken": "f97032da08df46f5",
+  "journeys": [
+    {
+      "order": 1,
+      "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+      "recordingId": "65c9a439-5e39-4f95-adf2-dcf2743c8c12",
+      "title": "The First"
+    },
+    {
+      "order": 2,
+      "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+      "recordingId": "8bb4e2af-7fef-4f85-bbf3-74bb80529573",
+      "title": "The First (Expanded)"
+    },
+    {
+      "order": 3,
+      "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+      "recordingId": "4bdd084d-a13b-45db-985f-8e15877fe70a",
+      "title": "Dad's Song II"
+    },
+    {
+      "order": 4,
+      "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+      "recordingId": "df1b0ee6-7a80-450c-8baa-846662bfb50a",
+      "title": "Yellow Bird"
+    },
+    {
+      "order": 5,
+      "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+      "recordingId": "229751ea-e016-40c1-b9d6-76b0d3c874c0",
+      "title": "Spectre"
+    },
+    {
+      "order": 6,
+      "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+      "recordingId": "838f8d4e-d5c2-4695-b88f-a6abf7de1357",
+      "title": "Surrounded By Light"
+    },
+    {
+      "order": 7,
+      "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+      "recordingId": "42b45003-a970-481b-9c72-2b52b688ab81",
+      "title": "Mexican Boy"
+    },
+    {
+      "order": 8,
+      "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+      "recordingId": "d4ab7a87-2f75-4fa4-b6e6-d64886803029",
+      "title": "Afterglow"
+    },
+    {
+      "order": 9,
+      "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+      "recordingId": "a267aa80-7bd3-4cc5-9001-a199e401abb8",
+      "title": "Grasshopper"
+    },
+    {
+      "order": 10,
+      "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+      "recordingId": "38ff4e30-a679-419d-b1f1-d0f5e1ad5f2a",
+      "title": "Love Again"
+    }
+  ]
+}
