@@ -65,6 +65,104 @@ export function useImmersive(): {
   return { immersive, enter, exit, toggle };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ImmersiveHud — Karel's directive (2026-09-23): fullscreen must be a
+// professional viewing mode, not just hidden chrome. While immersive the
+// viewer can summon a glass info overlay (title, what it is, how it works)
+// without leaving fullscreen, so "you know what you're looking at and how
+// it works". Keyboard: F toggles fullscreen, I toggles info, Esc exits.
+// Usage (preferred over bare ImmersiveToggle for all new protos):
+//
+//   const { immersive, toggle } = useImmersive();
+//   <ImmersiveHud immersive={immersive} onToggle={toggle}
+//     title="Canon" description="Two-hand counterpoint conducting…"
+//     howTo={["Allow the camera…", "Raise your right hand to…"]} />
+// ─────────────────────────────────────────────────────────────────────────────
+
+const HUD_PILL =
+  "min-h-[44px] min-w-[44px] rounded-md border border-border/40 bg-background/30 px-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/70 opacity-40 backdrop-blur-sm transition-opacity hover:opacity-100 focus-visible:opacity-100";
+
+export function ImmersiveHud({
+  immersive,
+  onToggle,
+  title,
+  description,
+  howTo,
+}: {
+  immersive: boolean;
+  onToggle: () => void;
+  title: string;
+  description: string;
+  howTo?: string[];
+}) {
+  const [info, setInfo] = useState(false);
+
+  // Keyboard: F fullscreen, I info (ignored while typing in a field).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.key === "f" || e.key === "F") onToggle();
+      if ((e.key === "i" || e.key === "I") && immersive) setInfo((v) => !v);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [immersive, onToggle]);
+
+  // Leaving immersive mode always closes the overlay.
+  useEffect(() => {
+    if (!immersive) setInfo(false);
+  }, [immersive]);
+
+  if (!immersive) {
+    return <ImmersiveToggle immersive={false} onToggle={onToggle} />;
+  }
+
+  return (
+    <>
+      <div className="fixed bottom-4 right-4 z-50 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setInfo((v) => !v)}
+          aria-label={info ? "Hide info" : "What am I looking at?"}
+          className={HUD_PILL}
+        >
+          info
+        </button>
+        <button type="button" onClick={onToggle} aria-label="Exit fullscreen" className={HUD_PILL}>
+          exit
+        </button>
+      </div>
+      {info && (
+        <div
+          className="fixed inset-0 z-40 flex items-end justify-start bg-black/30 p-6 sm:p-10"
+          onClick={() => setInfo(false)}
+        >
+          <div
+            className="max-w-lg rounded-lg border border-border/60 bg-background/80 p-6 shadow-lg backdrop-blur-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">{description}</p>
+            {howTo && howTo.length > 0 && (
+              <ul className="mt-4 space-y-1.5">
+                {howTo.map((line) => (
+                  <li key={line} className="text-sm leading-relaxed text-muted-foreground">
+                    · {line}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/70">
+              i — info · f — fullscreen · esc — exit
+            </p>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 export function ImmersiveToggle({
   immersive,
   onToggle,

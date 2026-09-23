@@ -10,8 +10,11 @@ Karel. He iterates with you (via Claude Code conversation) and you
 incorporate his direction on subsequent cycles.
 
 You are not building production features. You are dreaming, prototyping,
-researching, and proposing. Quality bar: **demoable, interactive, not
-shippable**. Polish comes from iteration across many cycles.
+researching, and proposing. But the quality bar was RAISED by Karel on
+2026-09-23: **everything you ship must be 100% production-level quality —
+working, aesthetic, and self-explanatory. A proto that doesn't work is
+unacceptable in all cases.** Ambition still comes from iteration across
+many cycles; brokenness never ships (see the QA GATE section).
 
 ---
 
@@ -318,6 +321,7 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 - **Reference implementations to study before building:** `15824-canon` (the loved benchmark — two-hand counterpoint conducting), `15760-conduct` (single-hand time-base), `3760-ictus` (pose strike detection), `14480-bodychoir`, `6296-flowbody`.
 - The VISIONARY primary direction below remains the *aesthetic* frame; this directive sets the *interaction* frame. When they conflict on pick order, this directive wins.
 - **Full body: YES (Karel, 2026-09-18).** Answering MORNING's question after `17408-bodycast`: *"have the agent do full body stuff too."* Full-body pieces are wanted ALONGSIDE the two-hand intimate space, not instead of it. Face, gaze, gait, and multi-person body signals are all in scope — rotate across them.
+- **Richness bar (Karel, 2026-09-23):** *"i want incredibly rich and dynamic vizes reacting and a wide diversity of them"* — and the motion must control the SOUND, not just the picture. A single particle field wiggling to hand position is below the bar. Rich means: layered visual systems (e.g. fluid + light + geometry composited), the full body signal exploited (velocity and gesture shape, not just position), and an audible consequence for every visible one. Diversity means each cycle's piece should look and behave unlike the last five embodied pieces — vary the visual engine, the conducted musical parameter, and the palette every time.
 
 #### WORKS-WHEN-SHIPPED — hard gate on every interactive proto (Karel, 2026-09-18)
 
@@ -328,13 +332,28 @@ Karel tested `17408-bodycast` and it did not respond to his movement (*"never re
 3. **Trace the control path before shipping.** The orchestrator personally reads the chain landmark → feature → parameter → audible/visible change for the winner and records `interaction-verified: <what was traced, what couldn't be>` in STATE.md. Check the classic breaks: visibility gates too strict, mirrored-x inconsistencies, smoothing so heavy motion disappears, features normalized to ranges a seated person can't reach.
 4. **Unverifiable ≠ demoable.** You cannot point a webcam at yourself in the cloud. If the end-to-end interaction could not be verified, ship it as `status: wip` in INDEX.md and say plainly in MORNING.md "camera path untested — needs your 30-second check". NEVER present unverified interaction as working. A proto Karel opens that ignores his movement costs more trust than a cycle that ships nothing.
 
-#### Fullscreen immersion — required on every new proto (Karel, 2026-09-18)
+#### Fullscreen immersion + info overlay — required on every new proto (Karel, 2026-09-18; upgraded 2026-09-23)
 
-*"The protos need a full screen ability so the write-up instruction isn't visible and the experience focuses on the proto."*
+*"The protos need a full screen ability so the write-up instruction isn't visible and the experience focuses on the proto."* Upgraded 2026-09-23: *"i could def see the need to have it show and hide even in full screen tho so you know what youre looking at and how it works. right now even the cool ones have all this content and nav and then a small content space. i want professional grade full screen vizes."*
 
-- Use the shared helper: `import { useImmersive, ImmersiveToggle } from "../_shared/immersive";` — native Fullscreen API with a chrome-hiding focus-mode fallback, house-styled toggle, low-opacity `exit` pill while immersive.
-- While immersive, hide ALL write-up chrome: title, description, legend, design-notes button, meta captions. Keep only the art, functional error notices, the tracking-status line, and the exit pill. Reference retrofit: `17408-bodycast`.
-- Polish cycles: when touching an existing proto (especially loved ones), retrofit the toggle as part of the polish.
+- **Use `ImmersiveHud`, not bare `ImmersiveToggle`:** `import { useImmersive, ImmersiveHud } from "../_shared/immersive";` then `<ImmersiveHud immersive={immersive} onToggle={toggle} title={…} description={…} howTo={[…]} />`. While immersive it renders `info` + `exit` ghost pills; `info` (or the `i` key) summons a glass overlay with the title, one-paragraph description, and how-to steps — so the viewer always knows what they're looking at and how it works WITHOUT leaving fullscreen. `f` toggles fullscreen. Write the `howTo` lines as instructions to a person standing at the piece, not as design notes.
+- While immersive, hide ALL write-up chrome: title, description, legend, design-notes button, nav, meta captions. Keep only the art, functional error notices, the tracking-status line, and the HUD pills. Reference retrofit: `17408-bodycast`.
+- **Viz-first layout even OUTSIDE fullscreen (2026-09-23).** Karel's critique of the old layout: "all this content and nav and then a small content space." The visualization is the page: a viewport-filling stage (`h-dvh` / `fixed inset-0`) with the title/description/controls as a light overlay or a strip that scrolls BELOW the fold — never a big header stack that squeezes the art into a small box. The write-up is secondary in every state, not just in fullscreen.
+- Polish cycles: when touching an existing proto (especially loved ones), retrofit `ImmersiveHud` + viz-first layout as part of the polish.
+
+#### QA GATE — programmatic, absolute (Karel, 2026-09-23)
+
+*"Sometimes it creates one that isn't working and that is unacceptable in all cases so make sure you program in a QA check and fix if it's not 100% production level quality. and keep aesthetics in mind in all cases."*
+
+Every candidate — the winner especially — passes through this gate before commit. It sits BETWEEN curation and `npm run build`:
+
+1. **Run the gate on the winner's folder:** `node docs/dreams/tools/qa-proto.mjs src/app/dream/<n>-<slug>`. Any `FAIL` line = fix it and re-run until PASS. If it cannot be brought to PASS within the cycle budget, the proto does NOT ship — `rm -rf` its folder, bank the brief to IDEAS.md, and log why to STATE.md. Shipping nothing beats shipping something broken, every time.
+2. **Resolve every WARN by eye.** WARNs are judgment calls (possible destination leaks, off-brand hues, layout smells) — the orchestrator reads the flagged code and either fixes it or records in STATE.md why it's fine (`qa-warns-resolved: <one line each>`).
+3. **The works-when-shipped trace (above) is part of this gate** — `interaction-verified:` in STATE.md is mandatory for every interactive winner; unverifiable camera paths ship as `status: wip` with the plain MORNING.md callout, never as "working".
+4. **Aesthetic pass, always.** Before commit, look at the piece the way Karel will at 06:30: does the first screen look intentional (composition, palette from the violet ramp / the piece's own art palette, typography per the rules)? Does idle state look alive, not blank? Is the empty/error state designed? A proto that works but looks careless fails the bar too — fix or don't ship.
+5. `npm run build` stays absolute and runs LAST, after QA passes.
+
+The gate script is maintained at `docs/dreams/tools/qa-proto.mjs` (inside the fence — extend it when a new failure class is discovered; every incident Karel reports should become a permanent check).
 
 ### PRIMARY DIRECTION (set 2026-06-28) — Altered states / visionary
 
