@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17856-ledger",
+  "cycle": 17856,
+  "name": "Ledger",
+  "status": "demoable",
+  "description": "What if the world's live financial trades — the mundane torrent of money changing hands right now — conducted one of Karel's real piano recordings? Ledger takes a live tape of real",
+  "category": "local"
+ },
+ {
   "slug": "17792-scriptorium",
   "cycle": 17792,
   "name": "Scriptorium",
