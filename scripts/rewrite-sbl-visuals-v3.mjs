@@ -92,7 +92,7 @@ const WORLDS = {
   ],
   "Drift": [ // streaming sand, lateral sheets, tidal mirrors, fog veils
     ["DARK BACKGROUND, ground-level macro — sand grains streaming sideways across a dune crest in razor focus, each grain a lit particle in laminar flow",
-     "extreme macro — one grain tumbling in the stream at closest range, its quartz facets flashing as it rolls, the flow around it a blur of gold threads",
+     "extreme macro — one quartz grain tumbling through the warm golden sand-stream at closest range, its facets flashing amber as it rolls, the flow around it a blur of gold threads over dark desert sand",
      "wide — a black dune field at night with pale streams of sand smoking off every crest in the same direction, the desert quietly leaving"],
     ["wide aerial — an ocean of dunes from high above under storm-lit clouds, ridgelines migrating in visible sheets, grain-rivers braiding between shadowed troughs",
      "interior — down in a trough between two moving dunes, walls of soft sand sliding past on both sides, gold veils spilling off the crests overhead against indigo cloud",
