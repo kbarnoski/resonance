@@ -106,7 +106,7 @@ const WORLDS = {
       "DARK BACKGROUND, wide — a burned forest at night, charred trunks in wet black rows, rain-glisten on carbon, and low in the frame one impossible point of soft green lit as if from within, beginning against all of it",
       "extreme macro — the shoot itself at close range, a curled fern head unrolling in sharp focus, its inner light catching rain beads along the frond, black ash bokeh behind",
       "monumental bloom — the charred canopy erupting in pale pink and white flowers along every scorched limb, petals lit rose against carbon dark, glowing ferns waist-high below, the burned cathedral flowering wall to wall, richest bloom climbing the leaning trunks",
-      "aerial — the recovering forest from above, green constellations spreading through the black burn scar in branching patterns like slow luminous lichen, the wound visibly closing from its edges inward",
+      "cosmic — from the edge of the night sky, the burn scar a black continent on the dark earth with new green-gold light spreading through it in branching constellations, a galaxy growing back inside the wound, stars thick above the curve of the world",
       "intimate spirit-touch — a gentle drift of pale rose light moving among the blossoms at branch height, pausing at the newest flowers as if greeting each one, formless and tender, petals stirring faintly in its wake",
       "macro finale — one late blossom glowing faintly rose in the low dark beside wet char, a petal resting on the black bark like a kept promise",
     ],

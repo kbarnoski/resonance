@@ -50,6 +50,16 @@ music videos, not static images on a fireplace."*
 5. **Unfolding, not looping.** Motion language in every prompt — things
    build, break, travel, decay. Phase N should feel like a consequence of
    phase N-1.
+   - **Progress through SPACE AND TIME (Karel, 2026-09-23).** The Mexican
+     Boy lesson: register variety alone isn't enough if all six shots share
+     one place, one palette, one hour of light — on the wall that reads as
+     the same image for six minutes ("boring"). Every journey must (a) move
+     through space — each phase a different vantage or world, with at least
+     one full cosmic or abstract escape (galaxy / mandala / void register),
+     and (b) move through time — the light state must evolve across the arc
+     (dusk→night→dawn, build→peak→rest, storm→clearing). Audit test: no
+     location noun in 4+ phases unless the place IS the subject (Isolation's
+     island) — and even then, time must visibly pass.
 6. **NO humans, ever — not even silhouettes.** Ghost is the single
    exception (her figure is the design). FLUX inserts scale-figures into
    vast empty landscapes: anchor foregrounds with objects/details, write
