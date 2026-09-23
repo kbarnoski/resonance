@@ -685,7 +685,7 @@ export const JOURNEYS: Journey[] = [
         poetryMood: "transcendent",
       },
       transcendence: {
-        aiPrompt: "monumental golden cathedral of pure light seen from directly below — colossal vaults and ribs of radiant gold geometry arching overhead in fibonacci curves, white brilliance blazing at the apex where all the architecture converges, luminous particles raining slowly downward through the vast interior like lit snow, the scale overwhelming and weightless, the apex burning off-center in the upper frame with deep amber shadow pooling at the edges, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "suspended weightless inside a monumental vault of pure golden light with no floor and no ground anywhere — colossal ribs of radiant gold geometry filling the entire frame in fibonacci curves above and below and to every side, white brilliance blazing at the convergence point off-center, luminous particles drifting through the vast interior like lit snow, only light architecture and glowing air in all directions, completely uninhabited, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["you are light...", "there is no boundary...", "this is home..."],
         poetryMood: "transcendent",
       },
