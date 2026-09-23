@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17792-scriptorium",
+  "cycle": 17792,
+  "name": "Scriptorium",
+  "status": "demoable",
+  "description": "The live, worldwide stream of Wikipedia edits conducts one of Karel's real piano takes — each edit sounds a grain of his recording, and drifts up as a warm glyph of the article bei",
+  "category": "local"
+ },
+ {
   "slug": "17760-firmament",
   "cycle": 17760,
   "name": "the sky's clock conducts a piano take",
