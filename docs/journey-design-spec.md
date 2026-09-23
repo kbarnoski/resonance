@@ -34,6 +34,27 @@ music videos, not static images on a fireplace."*
    radically different shots of one theme — never the same scene, POV, or
    framing twice. If every phase could be a crop of the same photograph,
    the journey is broken.
+   - **Every phase is itself a mini shot-list (Karel, 2026-09-23).** One
+     prompt per phase means the viewer stares at ~a minute of variations
+     of one image — "a photo series, not a music video." Every phase gets
+     an `aiPromptSequence` of 3 shots that travel (different register /
+     world / POV expressing the same narrative beat), so an 18-shot
+     journey plays like Ghost: continuous travel, worlds within worlds.
+     The harvest and the live player both consume the sequence in order
+     across the phase.
+   - **Spirit entities as abstract hints (Karel, 2026-09-23) — all
+     journeys, not just SBL/ML.** One or two shots per journey may
+     half-gather light into an ALMOST-figure: "half-gathered",
+     "translucent and featureless", "made only of light", "dissolving at
+     its edges". Never a clean or realistic human form — that remains
+     Ghost's alone.
+   - **Shaders: never let phases[].shaderModes sit empty** — empty means
+     the engine falls back to ONE default shader and the whole album
+     looks the same. Run `scripts/assign-journey-shaders.mjs` after
+     building any journey; it seeds the registry's own
+     regenerateJourneyShaders per journey (~30 distinct shaders each,
+     LRU variety across journeys). The viewer should never sense a
+     limited set.
 2. **Scale traversal is mandatory.** Across its six phases every journey
    must move through at least four scale registers: microscopic detail,
    intimate/object scale, landscape, aerial/planetary, cosmic/abstract.

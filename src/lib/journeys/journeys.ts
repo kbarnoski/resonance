@@ -769,31 +769,61 @@ export const JOURNEYS: Journey[] = [
 
       threshold: {
         aiPrompt: "enormous moss-covered boulder floating in deep dark space emerging from the lower right, the boulder photorealistic grey granite with thick green moss carpeting its top and sides, luminous mushrooms growing from crevices in the rock — their caps translucent and glowing soft cyan and warm gold bioluminescence, dangling roots and delicate ferns hanging from the boulder underside reaching into the void below, bioluminescent spores drifting upward from the mushroom gills in lazy spirals like tiny green-gold stars, the boulder detail anchored in one third of the frame with vast darkness and faint scattered spore-light above and left, macro texture visible on the moss and mushroom surfaces, asymmetric composition with visual weight low and right, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "enormous moss-covered boulder floating in deep dark space, grey granite carpeted in thick green moss, luminous mushrooms glowing soft cyan and warm gold in its crevices, roots and ferns hanging from its underside into the void, bioluminescent spores spiraling upward like tiny green-gold stars, asymmetric weight low and right, vast darkness above, no text no signatures no watermarks no letters no writing",
+          "extreme macro — one translucent mushroom cap at closest range, cyan light glowing through its flesh like a paper lantern, a single spore lifting off its gill edge lit gold, moss fronds soft and dark around the small light, no text no signatures no watermarks no letters no writing",
+          "wide — a dark drifting archipelago of mossy boulders at many depths in black space, each carrying its own faint colony of glowing caps, thin spore-currents of green-gold light drifting between them like trade routes, the nearest island bright, the farthest a rumor, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["the spores are waking...", "feel the soil...", "life begins small..."],
         poetryMood: "mystical",
       },
       expansion: {
         aiPrompt: "DEEP BROWN-BLACK BACKGROUND — forest floor cross-section at cosmic scale floating in dark void, viewed from the side like a floating terrarium slice sweeping diagonally from upper left, visible layers of dark rich soil with embedded pale roots threading horizontally, fallen autumn leaves in various stages of decomposition compressed between soil strata, tiny translucent organisms and pale mycorrhizal threads glowing faint green-gold at the root interfaces, the cross-section edge raw and organic with soil crumbling away and fine earth particles dispersing into open dark void below, the top surface shows a miniature landscape of moss and tiny seedlings, infinite depth through layered translucent soil planes, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "DEEP BROWN-BLACK BACKGROUND — forest floor cross-section at cosmic scale floating in dark void like a terrarium slice, layers of dark soil threaded with pale roots, mycorrhizal threads glowing faint green-gold at the root interfaces, soil crumbling from the raw edge into the dark, a miniature moss landscape on its top surface, no text no signatures no watermarks no letters no writing",
+          "microscopic — inside the soil between two root hairs, a single glowing mycelial thread reaching across the dark gap grain by grain, green-gold light pulsing along it as the connection closes, earth crystals glinting around the meeting, no text no signatures no watermarks no letters no writing",
+          "aerial surreal — a night forest floor seen from above with the soil rendered faintly transparent, the buried network glowing beneath the dark leaf litter like a city seen through fog, brightest along the old roots, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["it's growing...", "everything connects...", "feel the network..."],
         poetryMood: "mystical",
       },
       transcendence: {
         aiPrompt: "cosmic-scale bioluminescent network sweeping across infinite brown-black void — millions of luminous green-gold points connected by hair-thin filaments forming a web-like structure that could be neurons or galaxies or mycorrhizal connections, the network dense and intricate in the upper-right third but dissolving into scattered individual points at its edges, warm amber pulses traveling along the filaments between nodes creating a sense of living communication, the spaces between filled with drifting spore-like particles of pale green light, composition fills the frame off-center with the densest cluster upper-right and filament bridges reaching across into generous darkness lower-left, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "cosmic-scale bioluminescent network sweeping across infinite brown-black void, millions of green-gold points joined by hair-thin filaments like neurons or galaxies, amber pulses traveling between nodes, drifting spore-light filling the spaces, densest cluster upper-right with bridges reaching into generous darkness, no text no signatures no watermarks no letters no writing",
+          "interior kinetic — flying along one filament inside the network, node-lights flaring past like stations, amber signal-pulses overtaking and racing ahead, branches curving away into deep green-black on every side, no text no signatures no watermarks no letters no writing",
+          "planetary — the network wrapped around a dark curved world seen from high orbit, green-gold veins netting the whole sphere, slow pulses crossing continents of darkness, one hemisphere blazing awake, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["you are the network...", "all is one organism...", "breathe with the forest..."],
         poetryMood: "transcendent",
       },
       illumination: {
         aiPrompt: "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale arranged along the left edge and lower third of vast dark void, viewed from below looking up at the luminous gill structure radiating outward in precise geometric patterns, the gills glowing warm gold and soft green bioluminescence, tiny ferns and curling moss growing on the cap surface visible at the edges, photorealistic water droplets hanging from the gill ridges catching and refracting the bioluminescent light into tiny prismatic spectra, fine spore particles drifting downward from the gills like luminous snow into dark void below, asymmetric leaving the upper right vast and open, quiet power in the contrast of organic intricacy against boundless darkness, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale from below, luminous gill structure radiating in precise geometry, warm gold and soft green bioluminescence, water droplets on the gill ridges refracting tiny prismatic spectra, spore particles drifting down like luminous snow, no text no signatures no watermarks no letters no writing",
+          "macro — one water droplet hanging from a gill ridge at closest range, the whole radiating gill-cathedral curved inside it upside down, a prism-spark burning at its heart, no text no signatures no watermarks no letters no writing",
+          "abstract — the gill geometry alone: radiating blades of gold-green light fanning from an unseen center across darkness, spore-snow drifting through the spokes, architecture grown rather than built, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["the garden knows you...", "every leaf is aware...", "this intelligence is ancient..."],
         poetryMood: "mystical",
       },
       return: {
         aiPrompt: "fallen log covered in thick moss and small plants floating in deep space arcing from lower left toward upper right, the log photorealistic with weathered bark and soft green moss texture, shelf fungi growing in tiers along its length glowing faint warm amber and pale green, tiny seedlings and unfurling fern fronds emerging from the decomposing bark, seeds and luminous spores trailing off from the log into generous dark negative space above and right like a comet tail of organic matter, the forms impossibly detailed even as they thin and dissolve into pure particle at the trailing edge, composition weighted to the lower half with cosmic darkness opening above, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "fallen log covered in thick moss floating in deep space arcing lower left to upper right, shelf fungi in glowing amber tiers along its length, seedlings and fern fronds unfurling from the bark, luminous spores trailing off like a comet tail into the dark, no text no signatures no watermarks no letters no writing",
+          "intimate — among the shelf fungi at close range, tiered amber lights stacked up the dark bark like lantern balconies, one new fern frond unrolling into their glow, no text no signatures no watermarks no letters no writing",
+          "wide surreal — the log-comet seen from far off crossing a field of faint spore-stars, its luminous tail curving behind it, a slow green-gold visitor passing through the dark, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["the forest settles...", "roots remember...", "return to soil..."],
         poetryMood: "flowing",
       },
       integration: {
         aiPrompt: "sparse scattered bioluminescent particles drifting across vast brown-black silence — some green-gold some pale amber — moving in barely perceptible spiral paths like the memory of a network dissolving, one faintly brighter point in the lower-left corner pulsing with gathered light as if all the network's energy has condensed to a single node, the faintest filament trails still connecting it to a few nearby motes before they fade to nothing, enormous open darkness everywhere, asymmetric and quiet — the last signal in an infinite dark, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+        aiPromptSequence: [
+          "sparse scattered bioluminescent particles drifting across vast brown-black silence, green-gold and pale amber motes in barely perceptible spirals, one brighter point pulsing with gathered light, the faintest filament trails fading around it, enormous open darkness, no text no signatures no watermarks no letters no writing",
+          "extreme macro — the single bright node at closest range, a seed of condensed green-gold light with the memory of filaments still flickering faint at its rim, darkness pressing close and kind, no text no signatures no watermarks no letters no writing",
+          "cosmic finale — the dark from very far away, one green-gold point alone in brown-black immensity, indistinguishable from a first star or a last spore, holding everything either way, no text no signatures no watermarks no letters no writing",
+        ],
         guidancePhrases: ["one spore holds everything...", "you carry the forest..."],
         poetryMood: "flowing",
       },
