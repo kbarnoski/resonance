@@ -675,32 +675,32 @@ export const JOURNEYS: Journey[] = [
     phases: defaultPhases("heaven", {
 
       threshold: {
-        aiPrompt: "dark cosmic void with clusters of crystalline mineral formations emerging from the lower right — raw quartz and obsidian facets catching faint blue and violet bioluminescence from within, thousands of fine luminous particles dispersing upward from the crystal surfaces into infinite black space like spores or stardust, the mineral detail anchored in one third of the frame with the rest vast open darkness and distant stars, macro texture on the crystal surfaces visible at cosmic scale, asymmetric composition with visual weight low and right, no ground no horizon, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "extreme macro in deep darkness — a single seed of golden light cracking open at closest range, thin filaments of warm luminance reaching upward out of the split like the first roots of a sunrise, fine gold dust lifting off the fracture, everything beyond the seed soft black with faint violet depth, the awakening small and low in the frame with vast dark above, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["breathe...", "feel the warmth...", "light is coming..."],
         poetryMood: "dreamy",
       },
       expansion: {
-        aiPrompt: "WHITE BACKGROUND — sculptural golden metallic forms and translucent glass-like structures sweeping diagonally from upper left, fibonacci curves visible in the architecture, warm light refracting through prismatic crystal edges casting rainbow caustics against brilliant pale ground, thousands of fine golden particles streaming from the structures trailing into scattered luminous dust and open white space below, surfaces shift between polished metal and organic coral-like growth, infinite depth through layered translucency, ascending and expanding, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "vertical ascent through layered golden strata — rivers of luminous particles streaming straight upward past translucent amber membranes stacked like sky above sky, each layer brighter than the one below, the viewpoint rising with the current, gold dust accelerating along the climb, warm light strengthening toward an unseen brilliance overhead, strong vertical energy with the densest stream off-center left, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["rise...", "the light knows you...", "open..."],
         poetryMood: "transcendent",
       },
       transcendence: {
-        aiPrompt: "cosmic nebula at impossible scale with embedded material textures — vast swirling gas and particle fields in deep blue and electric violet pierced by veins of molten gold, within the nebula dense clusters of bioluminescent coral-like organic structures glow from within, millions of particles streaming between the organic nodes and the cosmic gas creating bridges of light, the macro nebula contains micro biological detail visible at every scale, composition fills the frame off-center with the densest structure upper right and particle streams reaching across, no ground no horizon, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "monumental golden cathedral of pure light seen from directly below — colossal vaults and ribs of radiant gold geometry arching overhead in fibonacci curves, white brilliance blazing at the apex where all the architecture converges, luminous particles raining slowly downward through the vast interior like lit snow, the scale overwhelming and weightless, the apex burning off-center in the upper frame with deep amber shadow pooling at the edges, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["you are light...", "there is no boundary...", "this is home..."],
         poetryMood: "transcendent",
       },
       illumination: {
-        aiPrompt: "PALE BACKGROUND — weathered stone and ancient marble architectural fragments arranged along the left edge and lower third of an immense soft white field, the stone surfaces impossibly detailed with veins of gold and embedded crystalline deposits catching warm light, luminous particles rising from the stone like heat shimmer or ascending fireflies, cool blue shadows on the carved surfaces, an infinite cosmic quality to the vast emptiness above, the grounded weight of stone against the weightlessness of light and particles, asymmetric leaving the upper right open and boundless, no ground no horizon, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["see how vast you are...", "every direction is warmth...", "stay in this light..."],
         poetryMood: "transcendent",
       },
       return: {
-        aiPrompt: "organic botanical forms — impossible flowers and seed pods with translucent petals — arcing from lower left across a deep indigo cosmos, prismatic light refracting through the petal surfaces in spectrum from blue to violet to rose to warm gold, fine pollen particles and luminous spores dispersing from the botanical structures into generous dark negative space above and right, the organic forms impossibly beautiful and detailed even as they thin and dissolve into pure particle at the edges, composition weighted to the lower half with cosmic darkness and stars opening above, no ground no horizon, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "intimate slow descent through hanging veils of warm amber light, translucent petals of gold luminance planing gently downward past the viewpoint in long glide paths, each catching rose and violet iridescence as it turns, the veils parting softly ahead and closing above, warmth deepening from white-gold toward ember amber with the fall, tender unhurried motion, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["gently now...", "the glow remains...", "carry the warmth..."],
         poetryMood: "flowing",
       },
       integration: {
-        aiPrompt: "sparse scattered particles — some crystalline some organic — drifting across vast blue-black cosmos, one small sculptural form in the lower left corner that could be a mineral growth or a seed catching faint violet and gold light, thousands of fine luminous particles trailing diagonally upward from it toward infinite upper darkness like a slow dissolution, the particles carry the memory of every material — stone metal glass petal — as they scatter and thin, enormous open cosmos with stars everywhere above, asymmetric and quiet — almost nothing against everything, no ground no horizon, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "macro stillness — one small warm amber glow resting in deep soft darkness, a faint halo of concentric golden rings breathing around it, a few last luminous motes settling toward it like snow finding ground, the light steady and kept, enormous quiet dark all around with the glow held low in the frame, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["you are changed...", "the light lives in you now..."],
         poetryMood: "flowing",
       },
@@ -719,37 +719,37 @@ export const JOURNEYS: Journey[] = [
     phases: defaultPhases("hell", {
 
       threshold: {
-        aiPrompt: "interconnected ember constellation entering from the lower right corner against deep black void, fractal fire filaments branching between white-hot nodes with internal orange glow, fine ash particles dispersed along geometric pathways into vast dark negative space above and left, cosmic scale where the ember network could be a dying star's skeleton, asymmetric composition with visual weight low and right, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "extreme macro — a single hairline crack in a plane of black volcanic glass, deep orange heat glowing from inside the fracture at closest range, the crack's edge razor sharp with fine ash dust settled along it, faint heat shimmer rising off the seam, everything beyond the crack absolute polished black, the fracture running one diagonal with vast dark negative space around it, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["descend...", "there is no turning back...", "alone now..."],
         poetryMood: "mystical",
         voice: "onyx",
       },
       expansion: {
-        aiPrompt: "WHITE BACKGROUND — volcanic glass lattice sweeping diagonally from upper left toward lower right, the structure designed and architectural with obsidian facets reflecting deep orange internal fire, cool ash-grey shadows and white-hot edges defining the interwoven form against brilliant pale ground, dense ember detail in the upper third trailing into scattered spark particles and open white space below, infinite depth through layered translucent smoke, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "vertical plunge down a narrow chasm of sheer obsidian — mirror-black walls streaked with veins of ember light rushing upward past the falling viewpoint, the shaft tightening with depth, orange glow strengthening from far below while the last cool grey light shrinks to a slit high above, sparks streaming up the walls like reversed rain, claustrophobic vertical momentum, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["deeper...", "the walls are burning...", "no one is coming..."],
         poetryMood: "intense",
         voice: "onyx",
       },
       transcendence: {
-        aiPrompt: "cosmic-scale fractal fire network sweeping across infinite black in a vast descending spiral arc, white-hot nodes pulsing at the intersections with deep orange and amber light coursing through interconnected ember filaments, the structure dense and intricate where it crosses the frame but dissolving into ash particle trails and open void at both edges, fire bridges and heat-shimmer rays stretching toward infinite darkness below, composition fills the frame but is not centered — the spiral core sits upper right with burning streamers reaching across, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "the furnace heart at monumental scale — a colossal chamber of interlocking white-hot fire lattice, immense burning arches and columns of ember filament crossing at every depth, heat rendered as visible pressure waves bending the air between the structures, deep orange and amber coursing through the network with blinding white at the load points, the chamber's core blazing off-center with black smoke architecture framing the edges, overwhelming enclosing intensity, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["everything burns...", "let it take you...", "witness..."],
         poetryMood: "chaotic",
         voice: "onyx",
       },
       illumination: {
-        aiPrompt: "PALE BACKGROUND — intricate dark charcoal ember threads and connected volcanic glass forms arranged along the left edge and lower third of an immense soft ash-white field, fractal fire detail like glowing wireframes with dispersed spark particles trailing rightward into open pale space, faint orange light at the joints, the design clusters asymmetrically leaving the upper right vast and open, quiet power in the contrast of dark interwoven ember intricacy against boundless cool white, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "intimate ember field after the roar — a bed of countless small coals breathing in the low dark at close range, each ember's glow swelling and dimming out of phase with its neighbors like slow embers thinking, fine white ash skinned over the cooler stones, one brighter coal burning stubborn in the lower third, warmth without flame, quiet crackling stillness, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["see what survives the fire...", "even here there is truth...", "the ashes glow..."],
         poetryMood: "intense",
         voice: "onyx",
       },
       return: {
-        aiPrompt: "connected ember lattice arcing from lower left across a deep charcoal cosmos, prismatic heat threading through the structure — orange to amber to rose to cool silver, dispersed ash particles catching warm spectrum as they drift upward into generous dark negative space above and right, the interwoven form is dynamic and ascending not static, composition weighted to the lower half with cool darkness opening above, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "vertical rise up a widening shaft of cooling air — sparks streaming upward past the climbing viewpoint and greying to silver as they climb, the obsidian walls opening outward and losing their ember veins to cool charcoal, a pale slit of grey-blue light widening high above, ash falling away below into recovered darkness, the heat releasing its grip degree by degree, ascending relief, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["climb...", "the air is cooler here...", "leave the fire below..."],
         poetryMood: "mystical",
         voice: "onyx",
       },
       integration: {
-        aiPrompt: "sparse dispersed ash particles and fading ember traces drifting across vast cool grey-black silence, the last connected fire forms clustered small in the lower left corner dissolving into scattered sparks that trail diagonally toward infinite upper darkness, faint orange light in the final ember nodes, enormous open space everywhere above, the particles carry the fire's memory as they cool and scatter, asymmetric and quiet — almost nothing against everything, no lava flows no volcanoes no landscapes, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "PURE WHITE BACKGROUND — aftermath as white silence, a thin drift of dark ash motes falling slowly across a boundless soft white field, two or three motes still carrying the faintest orange core, the dark particles sparse and scattered low across the frame with the vast white open above, the fire survived and the air clean, almost nothing against everything, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["you walked through the fire...", "it changed you..."],
         poetryMood: "flowing",
         voice: "onyx",
