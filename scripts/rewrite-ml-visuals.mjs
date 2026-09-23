@@ -71,14 +71,14 @@ const WORLDS = {
       "wide finale — evening returning to the clearing, the ring of trunks holding violet dusk, one low sideways ray recrossing the mist as farewell along the bottom edge",
     ],
   },
-  "Mexican Boy": { // motifs: marigold rivers, terracotta geometry, papel color washes, warm dusk air — a full arc, not candles
+  "Mexican Boy": { // A Major, 366s, dense, quiet ending — marigold FIRE across every register: cell → whirlwind → galaxy → mandala → land → water. No village, no architecture.
     phases: [
-      "DARK BACKGROUND, extreme macro — a single marigold blossom at close range in low warm light, its layered orange petals sharp against deep shadow, one petal lifting free on the evening air",
-      "medium — petals streaming between stacked terracotta planes in a warm wind, rivers of orange and rose riding the updrafts of a canyon of adobe geometry, long dusk shadows knitting the terraces",
-      "monumental color-wash — the whole canyon in full celebration of light, magenta and gold color-washes sweeping the stepped walls like breaking waves, strings of glowing paper shapes swaying overhead, marigold rivers pouring luminous down the terraces, joyous chromatic abundance filling every terrace",
-      "aerial — the terraced canyon from above at dusk, petal-rivers tracing bright orange veins through the geometry, warm light pooling in the courtyards like held embers, violet night pressing at the plateau edges",
-      "intimate spirit-touch — a small warm current of light weaving low through drifted petals, lifting a few in a slow spiral as it passes, playful and formless, the terracotta glowing where it lingers",
-      "macro finale — petals at rest in a stone corner under deep blue night, one paper shape's soft glow reflected across them, warmth kept for tomorrow",
+      "DARK BACKGROUND, microscopic — inside a single marigold petal backlit like stained glass, cellular architecture in fire-orange and rose glowing wall to wall, luminous veins branching through the tissue, one brilliant seam running the diagonal",
+      "intimate kinetic — a column of marigold petals rising on a warm updraft into darkness, each petal an ember catching light as it turns, the spiral tightening as it climbs, gold dust streaming in its wake against deep black",
+      "cosmic — a spiral galaxy made entirely of marigold fire wheeling in black space, arms of orange and magenta petal-dust curving through rose nebular glow, its core a furnace of gold, the whole bloom of it off-center with vast darkness claiming one side",
+      "abstract mandala — concentric rings of orange, magenta and gold light unfolding outward like a flower opening inside a flower inside a flower, each layer's petal-geometry finer than the last, radiant fractal bloom breathing against blackness, the center burning white-gold off-axis",
+      "aerial — a dark high desert at dusk from above, braided rivers of glowing petals and warm ember-dust winding across the black land toward a deep amber horizon, violet night pressing in from the edges, the earth carrying the celebration like slow lava made of flowers",
+      "macro finale — one marigold petal drifting down onto still black water at night, its ember glow doubled in the reflection, fine rings spreading and fading, the long song ending quiet",
     ],
   },
   "Afterglow": { // motifs: sourceless sky-fire, alpenglow, banked strata, remembered heat
