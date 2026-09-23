@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-23T01:15Z
 
+> **Jury verdict today**: Two real standouts (commons, limn), but the camera-conduct verb quietly grew to 7 of 15 and the data lane re-camped the sky the day after we said not to — the engine builds beautifully and lands nothing, so tomorrow's job is one tap, not one more floor-compliant ship. See `docs/dreams/JURY.md`.
+
 The lane finally leaves the sky. After three "music about the sky" ships
 (quakes, the ISS, stillness), the jury ordered a **human-scale** feed — so
 today the feed is *people*.
