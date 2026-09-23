@@ -1,12 +1,12 @@
-// Welcome Home visual rewrite — SNOWFLAKE-CLASS compositions (2026-09-20).
-// The WH path journeys were April generator output (~31 words/phase);
-// Karel's design spec demands full compositions. One unique domain per
-// track, rooted in the album's heart: composed at home through lockdown,
-// coming home to a place, a self, a state of being. NO humans, NO moons.
+// Welcome Home visual rewrite v4 — THE MUSIC-VIDEO DOCTRINE
+// (docs/journey-design-spec.md, extended to WH 2026-09-22). Six radically
+// different shots per journey across micro↔cosmic registers; motif family
+// per track kept from the album's heart (composed at home through
+// lockdown). NO humans, NO moons — skies occupied, never negated.
 import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
-const TAIL = ", asymmetric off-center composition with strong diagonal weight, no text no signatures no watermarks no letters no writing";
+const TAIL = ", completely uninhabited, no text no signatures no watermarks no letters no writing";
 
 // Journey ids from TRAMOKYO_SETLIST (WH block, album order).
 const WH = [
@@ -26,147 +26,147 @@ const WH = [
 ];
 
 const WORLDS = {
-  "Interplay": {
+  "Interplay": { // motifs: two voices — warm amber + river-blue — braiding, grazing, exchanging
     palette: { primary: "#f0a860", secondary: "#0e1420", accent: "#6fb8d8", glow: "#ffe0b8" },
     phases: [
-      "DARK BACKGROUND — two thin streams of light entering opposite corners of black space, one warm amber from the lower left, one cool river-blue from the upper right, each advancing hesitantly toward the other and pausing, their glow not yet touching, the darkness between them charged, minimal and expectant, extreme corner-weighted asymmetry",
-      "the two light-streams meeting mid-frame and beginning to braid, amber winding over blue winding over amber in slow helical turns, sparks of pale gold where the currents graze, each keeping its color while borrowing the other's motion, the braid drifting diagonally upward with loose strands trailing into open dark, dialogue as luminous weaving",
-      "the interweaving at full ecstatic complexity — dozens of amber and blue currents braided into a river of counterpoint sweeping the frame corner to corner, crossings flaring white-gold, eddies where one voice circles the other, the pattern dense and songlike yet never tangled, boundless conversational energy, weight along the diagonal with black depth behind",
-      "the braid opening into a broad shining delta, the two colors now flowing side by side in wide calm bands, boundaries feathered where they exchange glints, sandbar-like islands of darkness parting the flow, clarity after intricacy, the current heading toward a bright horizon low in the frame",
-      "the streams thinning and slowing, unbraiding gently into parallel ribbons that dim as they travel, small last crossings sparking faintly farewell, the black regaining ground between them, tenderness in the separation",
-      "DARK BACKGROUND — two faint glows resting at opposite corners once more, each carrying a trace of the other's color now — the amber cooled slightly blue, the blue warmed slightly gold — changed by the meeting, vast quiet dark between",
+      "DARK BACKGROUND, extreme macro — two dew threads on a single strand of silk, one catching amber light, one catching blue, sliding slowly toward each other, the space between them charged, everything else black",
+      "abstract — two currents of luminous smoke braiding in dark space, amber winding over blue over amber in slow helical turns, pale gold sparks where they graze, loose strands trailing off the diagonal into open dark",
+      "cosmic — two vast rivers of stars streaming past one another in black space, one warm-toned and one cool, their edges pulling filaments across the gap, crossings flaring white-gold, counterpoint at galactic scale, weight swept corner to corner",
+      "aerial — two real rivers converging in dark terrain at dusk, one running gold with late sun, one blue with sky, their merged current striped with both colors for miles downstream, banks black on either side",
+      "intimate — beneath dark water, two currents of glow grazing and parting, sediment sparks lifting where they touch, tenderness in the near-miss, deep tea-dark all around",
+      "DARK BACKGROUND, macro finale — two faint glows resting apart, each stained with a trace of the other's color now, the amber cooled slightly blue, the blue warmed slightly gold, changed by the meeting",
     ],
   },
-  "Bath": {
+  "Bath": { // motifs: warm water, steam veils, caustic light-nets, wet stone
     palette: { primary: "#f5c98a", secondary: "#141210", accent: "#8fc9c0", glow: "#ffe9c9" },
     phases: [
-      "DARK BACKGROUND — a dark tiled space holding still water, one shaft of warm gold light entering steeply from a high unseen opening and landing on the surface at the lower right, steam beginning to climb the beam in slow curls, everything outside the light lost to soft black, wet stone glints at the shaft's edge, intimate hush",
-      "steam thickening into luminous layers, the golden shaft diffusing into broad soft volumes that drift and fold, water surface trembling with fine rings where condensation falls, teal shadows pooling in the fog's recesses, warmth becoming an atmosphere rather than a beam, the brightness blooming leftward through the veils",
-      "full immersion seen from beneath the surface — a ceiling of liquid gold rippling overhead, caustic light nets sweeping across everything in slow celebration, columns of bubbles rising like silver chandeliers through amber depth, steam-light flaring where the surface breaks, complete envelopment in warmth at dream scale, radiance densest above with deep tea-dark water below",
-      "the water stilled to glass, caustics settled into slow-breathing gold lace across pale stone beneath, steam thinned to a shine in the air, every surface rinsed and luminous, clean clarity with jade shadows in the corners, weight low and serene",
-      "the light shaft softening toward evening amber, steam curls fewer and slower, rings on the water spaced like long breaths, the tiles dimming from gold to bronze at the edges of the pool of light, warmth banking down for the night",
-      "DARK BACKGROUND — the bath at rest in near dark, one last patch of warm light shrinking gently on still water in the lower left, a single steam wisp rising through it, the room's darkness soft as towels, comfort remembered by the water",
+      "DARK BACKGROUND, macro — one drop of warm water swelling at the lip of dark stone, gold light bent through its belly, a curl of steam crossing behind it, wet mineral glinting at the edge of focus",
+      "underwater — looking up at a ceiling of liquid gold rippling overhead, caustic light-nets sweeping across amber depth, columns of silver bubbles rising like chandeliers, complete warm envelopment",
+      "monumental — vast natural hot-spring terraces steaming at dusk, tier upon tier of glowing mineral pools descending into dark, gold vapor climbing off every rim, teal shadows pooled between the shelves, cathedral steam",
+      "aerial — thermal pools from high above at night, rounds of impossible aquamarine and amber glowing through drifting steam, dark stone lacing between them like lead in stained glass",
+      "abstract — inside the steam itself, layered luminous veils folding and drifting, warmth as an atmosphere, jade shadows in the recesses, brightness blooming through the fog off-center",
+      "DARK BACKGROUND, macro finale — one last patch of warm light shrinking on still water, a single steam wisp rising through it, fine rings spaced like long breaths, comfort remembered by the water",
     ],
   },
-  "Welcome Home": {
+  "Welcome Home": { // motifs: distant window-light, snow, hearth amber, the path home
     palette: { primary: "#ffbe6e", secondary: "#0d1322", accent: "#9db8e8", glow: "#ffd9a0" },
     phases: [
-      "DARK BACKGROUND — a vast dark landscape under deep blue night, one small warm window of light glowing far away in the lower right, a thread of chimney smoke rising silver above it, snow-dusted fields rolling black between here and there, the immense cold made bearable by one distant promise of warmth, enormous negative space",
-      "the way home unspooling — a winding path of faintly luminous ground weaving through dark hedgerows and sleeping fields toward the growing window-light, frost sparkling where the path catches the glow, the warm light strengthening from ember to lantern as distance closes, the blue night yielding degree by degree, motion homeward along a soft diagonal",
-      "arrival at radiant scale — the home's light no longer a window but a golden atmosphere flooding outward, doorway-glow spilling across snow in a broad delta of warmth, every icicle on the dark eaves ablaze with amber, the cold pushed back to the frame's far edges where it hangs respectful and blue, homecoming rendered as light embracing ground, overwhelming warm welcome",
-      "the interior glow at rest — honeyed light lying in long panes across worn wooden floorboards, dust motes turning slowly in the brightness, a hearth's flicker breathing on the walls, the windows now looking out at the tamed blue dark, safety as illumination, warm geometry low and left",
-      "the house light banking down, amber deepening to ember-rose in the panes, the night outside softened from cold blue to velvet, the smoke thread slower, warmth settling into the walls for keeping, quiet gratitude",
-      "DARK BACKGROUND — the window small again but seen from inside the warmth now, night pressed harmlessly against the glass upper left, one ember pulse of hearth-light in the low dark of the room, home holding, stillness complete",
+      "DARK BACKGROUND, vast wide — a dark snow-dusted landscape under deep blue night, one small warm window glowing far away low in the frame, a silver thread of chimney smoke above it, enormous cold made bearable by one promise of warmth",
+      "macro — frost ferns on window glass at closest range, melting from the inside out, warm amber light widening through the thinning ice architecture, each crystal edge burning gold as it releases",
+      "landscape in motion — a winding path of faintly luminous ground weaving through dark hedgerows toward the growing house-light, frost sparkling where the path catches the glow, the blue night yielding degree by degree along the diagonal",
+      "monumental arrival — doorway-gold flooding outward across snow in a broad delta of warmth, every icicle on the dark eaves ablaze with amber, the cold pushed back to the frame's edges where it hangs respectful and blue",
+      "aerial — a snowbound valley from above at night, one homestead's warm light pooling in the white like an ember in ash, its glow tracing the near fences and trees, blue dark holding the rest of the world gently",
+      "DARK BACKGROUND, interior finale — honeyed light lying in long panes across worn wooden floorboards, dust motes turning slowly, a hearth's flicker breathing on the walls, night pressed harmless against the glass",
     ],
   },
-  "The Knife": {
+  "The Knife": { // motifs: obsidian planes, razor light, red glints, clean severance
     palette: { primary: "#d8dde8", secondary: "#0a0a0f", accent: "#e85f7a", glow: "#f0f4ff" },
     phases: [
-      "DARK BACKGROUND — one razor-thin vertical line of white light splitting pure black slightly right of center, its edges impossibly sharp, faint cold gleam pooling narrowly at its base, the darkness on either side pressurized and absolute, tension as geometry, nothing else",
-      "the line multiplying — several thin blades of light at slicing angles, each cut revealing a sliver of steel-blue depth behind the black surface, edges catching rose-red glints at their points, shards of dark beginning to separate and slide, precision escalating, composition strung along aggressive diagonals with black mass upper left",
-      "the dark shattered wide — obsidian planes suspended mid-split across the whole frame, white light flooding through every fracture in hard clean sheets, edges burning thin crimson, the shards' mirror-faces reflecting other cuts recursively, a frozen explosion of severance at architectural scale, exhilarating and exact, densest fracture sweeping lower left to upper right",
-      "the cuts resolved into a still composition of separated planes, each obsidian face now calmly lit along its cut edge, light standing in the gaps like blades at rest, cold clarity, the red glints faded to warm steel, order made from severing, balanced asymmetry",
-      "the planes drifting slowly apart and dimming, gaps widening into soft grey light, edges losing their burn, the sharpness relaxing into space, black faces turning away one by one",
-      "DARK BACKGROUND — one thin line of light remaining low in the frame, horizontal now and soft at its ends, the cut healed into a seam of quiet brightness, dark whole again above and below",
+      "DARK BACKGROUND, minimal — one razor-thin vertical line of white light splitting pure black slightly off-center, edges impossibly sharp, faint cold gleam pooling at its base, tension as geometry",
+      "extreme macro — the edge itself, a blade-thin plane of light meeting black glass at closest range, a single rose-red glint burning at the point of contact, molecular precision",
+      "monumental — a canyon of sheared obsidian faces, thin sheets of white light standing in every fracture, walls mirror-smooth and towering into dark, crimson edge-light tracing the newest cuts, severance at architectural scale",
+      "aerial — a black glacier field from above, crevasses glowing cold white in branching cuts across the dark ice, one long master fracture running the diagonal with rose light welling in its depth",
+      "abstract — obsidian planes suspended mid-split, light flooding through every gap in hard clean sheets, shards' mirror-faces reflecting other cuts recursively, a frozen explosion of separation, densest sweep lower left to upper right",
+      "DARK BACKGROUND, macro finale — one thin horizontal seam of light resting low in the frame, soft at its ends, the cut healed into quiet brightness, dark whole again above and below",
     ],
   },
-  "2019": {
+  "2019": { // motifs: golden late-summer memory, fireflies, seed-light, amber horizon
     palette: { primary: "#e8b86a", secondary: "#161310", accent: "#a8c47f", glow: "#ffe6ae" },
     phases: [
-      "DARK BACKGROUND — late-summer dusk field remembered through haze, tall dry grass in silhouette across the lower quarter, a deep amber glow banked along the horizon like the day refusing to end, fireflies' first sparse lights blinking in the middle dark, the air thick with golden particulate memory, softness on every edge",
-      "the remembered light swelling — long amber rays raking across rolling meadow from a low unseen sun, grass tips ignited in lines that stripe the slopes, drifting seed-fluff glowing as it crosses the beams, green-gold shadows stretching enormous and unhurried, the abundance of an ordinary evening, warm diagonals sweeping right",
-      "golden hour at the scale of a whole world — endless meadows and orchards layered ridge upon ridge into honeyed distance, every layer holding its own tone of amber, colossal soft cumulus catching peach fire above, pollen and seed-light thick as slow snow through the whole air, the fullness of the time before, nostalgic radiant maximal, horizon set low with the lit sky vast",
-      "the scene clarified into a single perfect detail — dew beading a spider's orb-web strung between dark grass stems, each drop holding the amber sky in miniature, the great glowing field soft-focused beyond, the whole era kept in small crystal spheres, macro tenderness against golden blur",
-      "the amber banking down through rose to plum along the horizon, field sounds implied by stillness, the fireflies more confident now in the gathering dark, warmth becoming keepsake, gentle recession",
-      "DARK BACKGROUND — full night over the remembered field, a thin band of deepest amber still refusing to leave the horizon's edge lower left, two or three fireflies keeping the year lit, memory banked like coals",
+      "DARK BACKGROUND, macro — dew beading a spider's orb-web between dark grass stems, each drop holding a miniature amber sky, the golden field soft-focused beyond, a whole era kept in small crystal spheres",
+      "landscape — long amber rays raking across rolling meadow from a low unseen sun, grass tips ignited in stripes, drifting seed-fluff glowing as it crosses the beams, green-gold shadows stretching enormous",
+      "cosmic — golden hour at the scale of a whole world, meadows and orchards layered ridge upon ridge into honeyed distance, colossal soft cumulus catching peach fire and filling the sky entirely, pollen-light thick as slow snow through all the air",
+      "intimate — dusk thickening between dark grass silhouettes, the first fireflies blinking sparse and confident in the middle dark, one drifting close and near-blinding in its smallness, amber banked along the horizon behind",
+      "aerial — orchard ridges from above at last light, rows curving with the land like combed velvet, plum shadow flooding the valleys while the crests keep a rim of honey, the day folding itself away",
+      "DARK BACKGROUND, finale — full night over the remembered field, a thin band of deepest amber refusing to leave the horizon's edge, two or three fireflies keeping the year lit, memory banked like coals",
     ],
   },
-  "The Knife (Jam)": {
+  "The Knife (Jam)": { // motifs: molten seams, live fracture, copper filigree, improvisation
     palette: { primary: "#e8e2d0", secondary: "#0c0a10", accent: "#ff7a5c", glow: "#fff0dd" },
     phases: [
-      "DARK BACKGROUND — the healed seam of light from the knife's rest beginning to glow again low in the frame, molten orange bleeding into its white this time, faint crackling branches of light testing outward from the line like the first licks of improvisation, the dark leaning in to listen",
-      "the line breaking rank — light forking and rejoining in jagged live paths, obsidian dark splitting along unplanned seams, molten gold welling through the newest cracks while older cuts cool white, the pattern refusing symmetry, riffing across the frame in bursts, energy discovering its own route",
-      "full improvisational shatter-flow at maximum — a kaleidoscopic storm of obsidian shards and molten seams tumbling through black space, every fragment mid-turn with light streaming off its edges, cuts spawning cuts in cascades, white heat and ember orange trading lead, controlled chaos dancing at cosmic scale, the storm's core burning off-center left with debris arcing across the whole frame",
-      "the wildness finding form — the tumbling shards slowing into a vast slow-rotating mobile, molten seams cooled to glowing copper filigree binding the fragments in mid-air, the improvisation revealed as architecture in motion, luminous balance discovered not designed",
-      "the mobile drifting apart with grace, fragments dimming to charcoal, copper light thinning to threads, the last few pieces still trading small sparks as they separate, the jam winding down through quotations of itself",
-      "DARK BACKGROUND — stillness with heat in it, scattered shards resting in the low dark, each holding one faint ember line where it was cut, the silence after improvisation fuller than the silence before, weight low and settling",
+      "DARK BACKGROUND, macro — a healed seam of light glowing again at closest range, molten orange bleeding into its white, first crackling branches testing outward from the line like opening riffs, the dark leaning in",
+      "abstract kinetic — light forking and rejoining in jagged live paths, obsidian splitting along unplanned seams, molten gold welling through new cracks while older cuts cool white, the pattern refusing symmetry, riffing in bursts",
+      "cosmic storm — a kaleidoscope of obsidian shards and molten seams tumbling through black space, every fragment mid-turn with light streaming off its edges, cuts spawning cuts in cascades, white heat and ember orange trading lead, the core burning off-center",
+      "aerial — a black volcanic plain from high above at night, molten filigree veining the dark crust in branching copper rivers, fresh gold breaking through in pulses along the master seam, improvisation written on a landscape",
+      "monumental — the tumble slowed into a vast rotating mobile of dark fragments bound by cooled copper filigree, light standing in the bindings, the wildness revealed as architecture in motion",
+      "DARK BACKGROUND, macro finale — scattered shards resting in the low dark, each holding one faint ember line where it was cut, small last sparks traded between the nearest two, the silence after improvisation fuller than the silence before",
     ],
   },
-  "Playa": {
+  "Playa": { // motifs: cracked clay mosaic, luminous dust, mirage bands, salt crystals
     palette: { primary: "#e8cba0", secondary: "#141018", accent: "#d87fb0", glow: "#fff2d9" },
     phases: [
-      "DARK BACKGROUND — cracked playa floor stretching from the foreground into deep dusk, the mud-polygon mosaic catching a thin low light that rakes across from the right, each crack a fine dark seam in pale clay, the pattern dissolving into blue-violet distance, huge quiet flatness, geometry supplied by drought",
-      "heat memory shimmering above the completely uninhabited flats — the horizon dissolved into stacked liquid mirage bands and layers of glowing dust-haze that fill the sky edge to edge, the crack-mosaic glowing warm bone and rose beneath, dust-devils of pale gold tracing brief spirals far off, no open sky anywhere, banded composition low and wide",
-      "the uninhabited flats at full alien majesty — the cracked mosaic sweeping unbroken to every edge of frame, colossal luminous dust storms walling the entire horizon, the sky a low ceiling of rose-and-violet lit dust pressing down with no clear air above it, monumental dust columns wandering the middle distance like slow weather, desolation as splendor, ground plane vast with the glowing dust ceiling claiming everything else",
-      "detail after immensity — one crack-polygon in macro, its curled clay edges catching pink dusk light, fine salt crystals glittering in the fissures like embedded stars, the great flatness soft beyond, the whole desert's logic legible in one tile",
-      "the light lying down — cracks filling with cool shadow as the raking sun releases the flats, the mosaic dimming from bone to lavender-grey, the last mirage folding itself away, stillness reclaiming the miles",
-      "DARK BACKGROUND — the uninhabited playa at night beneath a sky veiled entirely in thin high dust glowing faint violet, the crack-pattern faintly phosphorescent as if the ground remembered the day, one distant dust column resting motionless against the hazed dark, silence with texture",
+      "DARK BACKGROUND, macro — one crack-polygon of pale clay at closest range, curled edges catching pink dusk light, fine salt crystals glittering in the fissures like embedded stars, the flatness soft beyond",
+      "ground-level — the crack mosaic raking away into blue-violet distance under thin low light, each seam a fine dark line in bone clay, the pattern dissolving into stacked mirage bands that fill the far air edge to edge",
+      "monumental — colossal luminous dust storms walling the entire horizon of the empty flats, the sky a low ceiling of rose-and-violet lit dust pressing down with no clear air above, monumental dust columns wandering the middle distance like slow weather",
+      "aerial — the playa from high above at dusk, the crack mosaic a vast pale net across dark ground, a single gold dust-devil's spiral track written across it, glowing haze pooled at the basin's rim",
+      "abstract — inside the mirage itself, stacked bands of liquid light and rose haze bending and doubling, the ground's bone glow smeared into slow ribbons, heat memory as pure color",
+      "DARK BACKGROUND, finale — the flats at night beneath a sky veiled entirely in thin high dust glowing faint violet, the crack-pattern faintly phosphorescent as if the ground remembered the day, one dust column resting motionless far off",
     ],
   },
-  "Isolation": {
+  "Isolation": { // motifs: lone island pine, fog sea, one faithful light, gold doorway
     palette: { primary: "#7fa8c9", secondary: "#0a0f16", accent: "#e8d9a8", glow: "#c9dcee" },
     phases: [
-      "DARK BACKGROUND — one small rocky island bearing a single wind-bent pine, alone in a sea of night fog that fills every direction, the island lit by a pale cold sheen from nowhere, fog surface lapping its shore in slow silence, placed small in the lower left of an enormous empty frame, aloneness made visible and dignified",
-      "the fog sea deepening and moving — long slow swells of grey-blue vapor rolling past the island at different depths, the pine's silhouette holding still while everything else drifts, occasional soft rifts in the fog revealing black depth below, the island's little light unwavering, solitude weathering the currents",
-      "isolation at its most vast — the fog sea stretched to a curved horizon under an immense dark sky, the island now a speck of held light in the lower distance, colossal slow fog-swells crossing the whole frame like the breathing of the world, the single pine still discernible by its faithful gleam, one small brightness refusing the enormity, sublime and aching, negative space nearly total",
-      "a tall narrow vertical curtain of gold light opening in the fog directly above the island — a sharp-edged towering slot of brightness like a doorway standing in the grey, its straight luminous walls reaching from the fog ceiling down to the pine, needles warm-edged in the fall of light, the world acknowledging the one who stayed, hard vertical geometry of light in a horizontal vastness",
-      "the fog thinning everywhere into loose silver scarves, other small islands appearing faintly in the middle distance — never near, but there — the light more general now and kinder, the isolation revealed as one among scattered many",
-      "DARK BACKGROUND — night clear at last, the fog gone, the little island and its pine resting beneath a sky of fine sharp pinpoint stars scattered through high thin haze, its own small light banked low and steady at the shoreline, alone still but no longer surrounded, peace at the edge of the frame",
+      "DARK BACKGROUND, wide — one small rocky island bearing a single wind-bent pine, alone in a sea of night fog filling every direction, lit by a pale cold sheen, placed small in the corner of an enormous empty frame",
+      "macro — the pine's needles at closest range, each holding a bead of condensed fog lit faint silver-blue, one needle's drop about to fall into the grey below, endurance in fine detail",
+      "cosmic — the fog sea stretched to a curved horizon under an immense dark sky filled with high thin luminous haze, the island a speck of held light in the lower distance, colossal slow fog-swells crossing the frame like the breathing of the world",
+      "monumental — a tall narrow vertical curtain of gold light standing open in the fog directly above the island, sharp-edged like a doorway, its luminous walls reaching from fog ceiling to pine crown, hard vertical geometry in a horizontal vastness",
+      "aerial — the fog sea from above, long rifts opening in the grey to show black water far below, the island's small light glowing up through its own clear well, other faint islands appearing in distant rifts — never near, but there",
+      "DARK BACKGROUND, finale — night clear at last, the island and its pine beneath fine sharp pinpoint stars scattered through high thin haze, its own small light banked steady at the shoreline, alone still but no longer surrounded",
     ],
   },
-  "Rebound": {
+  "Rebound": { // motifs: ripple rings, interference lace, standing waves, canyon echo
     palette: { primary: "#6dd4c0", secondary: "#0d1214", accent: "#f5b060", glow: "#c9f2e6" },
     phases: [
-      "DARK BACKGROUND — a dark canyon pool at night, one single drop's ripple-ring expanding across black water from a point low right, the ring's crest catching thin teal light, the canyon walls absorbing all else, the first impulse sent out into the world, minimal concentric motion in stillness",
-      "the ripple reaching the far stone and returning — reflected rings crossing the incoming ones in sharpening interference lace, the water's surface waking into geometry, amber glints kindling where crests collide, energy learning it comes back, the pattern building left to right",
-      "full rebound at canyon scale — waves of light-laced water and echoing luminous air-pressure rings leaping wall to wall, each return amplified, spray lifting off collision crests in glowing arcs, the whole gorge ringing visibly with answered energy, teal and gold shockwaves interleaving down the corridor of stone into depth, exuberant elastic power everywhere at once",
-      "the echoes organized into standing waves — stable shining ridges of water holding their positions mid-pool, light standing in place upon them, the chaos resolved into resonant structure, the canyon and the water agreed on a shape, serene power, symmetry deliberately broken by one taller crest off-center",
-      "the standing waves subsiding ring by ring, returns arriving softer and farther apart, the interference lace opening back into simple circles, amber cooling out of the teal, momentum spending itself with grace",
-      "DARK BACKGROUND — the pool nearly still, one last faint ring arriving back at its origin point low right and closing there, the water holding a slight luminous tremble in memory, the canyon dark and satisfied",
+      "DARK BACKGROUND, extreme macro — a single drop's crown rising off black water at the instant of impact, teal light caught in the thin liquid coronet, droplets suspended above it, the first impulse frozen",
+      "surface abstract — reflected rings crossing incoming ones in sharpening interference lace, the water's skin waking into geometry, amber glints kindling where crests collide, the pattern building along the diagonal",
+      "monumental — a dark canyon ringing wall to wall with answered energy, waves of light-laced water and luminous pressure-rings leaping stone to stone, spray lifting off collision crests in glowing arcs, teal and gold shockwaves interleaving down the corridor into depth",
+      "aerial — the canyon pool from high above, concentric rings and their echoes written across black water as bright interlocking circles, the stone walls' reflections cutting the pattern into crescents, energy mapped from the sky",
+      "intimate — standing waves holding their positions mid-pool, stable shining ridges with light standing in place upon them, chaos resolved into resonant structure, one taller crest deliberately off-center",
+      "DARK BACKGROUND, macro finale — one last faint ring arriving back at its origin point and closing there, the water holding a slight luminous tremble in memory, the canyon dark and satisfied",
     ],
   },
-  "Stir Crazy": {
+  "Stir Crazy": { // motifs: leaf-and-ember vortex, stone cylinder, violet static, release
     palette: { primary: "#e89a5c", secondary: "#120e14", accent: "#b06fd8", glow: "#ffd9ad" },
     phases: [
-      "DARK BACKGROUND — a high-walled circular hollow of dark stone open only to night sky, dry leaves and glowing dust lying restless on its floor, small twitching spirals kicking up and collapsing in the corners, faint amber charge in the disturbed air, contained energy with nowhere to go, walls dominating the frame",
-      "the agitation organizing — a single coherent vortex of luminous leaves and ember dust winding up the hollow's center, tightening and accelerating, violet static flickering along its skin, loose debris orbiting in from the edges to join, the walls streaked with the light of circulation, restlessness becoming a engine",
-      "the vortex at furious glory filling the stone cylinder wall to wall — a tower of spiraling ember-and-violet fire-dust roaring upward, leaves flashing gold as they whip through the light bands, the enclosure's rim glowing with overflow, the trapped energy magnificent precisely because it is trapped, kinetic saturation, the column leaning hard off-axis with its crown bursting past the upper frame",
-      "the spout finding the sky — the vortex's crown breaking over the rim and unraveling into the open night as long luminous streamers, pressure venting into beauty, the column below relaxing its spin, ember light escaping upward in ribbons, release as clarity",
-      "the spiral slowing to a wide lazy carousel of drifting sparks, leaves planing gently back toward the floor in long arcs, violet static gone, the hollow's air soft with settling gold",
-      "DARK BACKGROUND — the hollow at rest under the open sky it finally touched, leaves lying in a perfect spiral signature on the floor, three or four motes still circling slowly above it out of habit, energy spent into pattern",
+      "DARK BACKGROUND, macro — one dry leaf trembling on dark stone at closest range, ember dust crawling across it, a thread of violet static licking along its curled edge, energy with nowhere to go",
+      "interior wide — a high-walled circular hollow of dark stone open only to night sky, small twitching spirals of glowing dust kicking up and collapsing in the corners, faint amber charge in the disturbed air, the walls dominating",
+      "monumental — the vortex at furious glory filling the stone cylinder wall to wall, a tower of spiraling ember-and-violet fire-dust roaring upward, leaves flashing gold through the light bands, the column leaning hard off-axis with its crown bursting past the frame",
+      "aerial — looking straight down into the spinning eye from above the rim, rings of ember and violet turning at different speeds around a dark calm center, leaves orbiting in lit streaks, the geometry of trapped fury",
+      "release — the vortex's crown breaking over the rim and unraveling into open night as long luminous streamers, pressure venting into beauty, ember light escaping upward in ribbons while the column below relaxes its spin",
+      "DARK BACKGROUND, finale — the hollow at rest, leaves lying in a perfect spiral signature on the stone floor, three or four motes still circling slowly above it out of habit, energy spent into pattern",
     ],
   },
-  "Rolling": {
+  "Rolling": { // motifs: hill swells, traveling light bands, wind-combed grass, valley fog
     palette: { primary: "#a8c86f", secondary: "#0e1310", accent: "#f0d080", glow: "#e0f0b8" },
     phases: [
-      "DARK BACKGROUND — pre-dawn hills as long stacked silhouettes rolling to the horizon, each ridge a softer blue-green than the one before, a pale gold seam of first light lying in the deepest saddle low right, ground fog pooled in the valleys like slow rivers, the landscape mid-breath, layered horizontals with one warm accent",
-      "the rolling awakening — cloud shadows and light bands beginning to pour across the slopes in alternating waves, each hillcrest igniting green-gold as the light wave crests it then dimming as shadow follows, grasses streaming in the same rhythm, the whole terrain moving without moving, undulation as music made land",
-      "world-scale rolling — an ocean of hills to every horizon with waves of light, shadow, wind-bent grass and low cloud all traveling the land in grand overlapping swells, valleys flooding with luminous fog then emptying, ridgelines flashing in sequence like a slow keyboard, the planet's surface frankly liquid, majestic perpetual motion, no single center, the largest swell cresting off-right",
-      "one hilltop in clarity — wind-combed grass in close detail flowing like fur under warm light, seed heads flickering gold, the great green swells soft in the distance beyond, the vast motion present in each blade's small bend",
-      "the waves lengthening and slowing, light bands broadening into steady afternoon amber, cloud shadows fewer and enormous, the hills' breathing deepening toward rest, long soft gradients",
-      "DARK BACKGROUND — dusk stilling the swells, ridgelines resting in deepening layers of blue-green dark, the last light-wave dissolving on the farthest crest, fog returning to the valleys for the night, the roll complete",
+      "DARK BACKGROUND, macro — one grass blade bending under wind at closest range, a bead of dawn light riding its curve, neighboring blades soft behind it all leaning the same way, the great motion present in one small bend",
+      "wide — pre-dawn hills as long stacked silhouettes rolling to the horizon, each ridge softer blue-green than the last, a pale gold seam of first light lying in the deepest saddle, ground fog pooled in the valleys like slow rivers",
+      "landscape in motion — cloud shadows and light bands pouring across the slopes in alternating waves, each hillcrest igniting green-gold as the wave crests it then dimming as shadow follows, grasses streaming in the same rhythm",
+      "planetary — an ocean of hills to every horizon with waves of light, shadow, and low cloud traveling the land in grand overlapping swells, valleys flooding with luminous fog then emptying, ridgelines flashing in slow sequence, the largest swell cresting off-center",
+      "aerial — cloud shadow archipelagos drifting across the green swells from high above, their dark shapes sliding over crests and pouring down slopes, sunlit islands of meadow opening and closing between them",
+      "DARK BACKGROUND, finale — dusk stilling the swells, ridgelines resting in deepening layers of blue-green dark, the last light-wave dissolving on the farthest crest, fog returning to the valleys for the night",
     ],
   },
-  "Quarantine": {
+  "Quarantine": { // motifs: rain-beaded glass, one amber interior reflection, two worlds one pane
     palette: { primary: "#8fb8d8", secondary: "#11131a", accent: "#f0c98a", glow: "#d0e4f2" },
     phases: [
-      "DARK BACKGROUND — rain-streaked window glass filling the frame, the world beyond reduced to smeared blue-grey luminance and the soft running lights of weather, each raindrop trail refracting a thread of the outside, the interior side of the glass in shadow save one warm amber reflection floating faint in the pane's corner, inside looking out",
-      "the rain heavying — droplet trails multiplying into a beaded curtain of small lenses, every bead carrying an inverted miniature of the grey world, the outside's cold light rippling as gusts press the glass, the little amber interior reflection holding steady among the blue, two worlds sharing one surface",
-      "the pane at cosmic intimacy — the beaded glass becoming a field of thousands of trembling worlds, each droplet-lens flaring as lightning washes the sky beyond, cold silver-blue cascading through the bead-field in waves while the one amber reflection burns quietly unmoved, the enormity outside pressed against the thin clear boundary, spectacular and safe at once, the storm's brightness sweeping diagonally",
-      "the rain easing to slow single drops, long clean trails cutting clarity-paths through the mist on the glass, through them the outside visible true for the first time — washed streets of light, breathing trees — the amber reflection now sharing the pane comfortably with the world's returning color",
-      "the glass drying in patches, the boundary less certain, outside air implied by the first open clarity at the window's edge, the interior warmth reaching through as a broadening gold cast on the sill, the separation ending gently",
-      "DARK BACKGROUND — the window open at last, night air moving the curtain-shadow softly at the frame's edge, the glass standing clear and drop-less catching one star and the room's small amber light together in the same reflection, inside and outside reconciled",
+      "DARK BACKGROUND, extreme macro — one raindrop-lens on dark glass at closest range, a whole inverted grey world held miniature inside it, one thread of warm amber reflected at its rim from a light behind the pane",
+      "abstract — the beaded curtain, thousands of small trembling lenses across the glass, every bead carrying the cold outside light rippling as gusts press the pane, one steady amber reflection floating unmoved among the blue",
+      "monumental — lightning washing the sky beyond the glass, cold silver-blue cascading through the whole bead-field in waves, each droplet flaring in sequence, the enormity outside pressed against the thin clear boundary, spectacular and safe at once",
+      "clarity paths — slow single drops cutting long clean trails through the mist on the glass, through them the outside visible true for the first time, washed streets of light and breathing trees, returning color sharing the pane",
+      "aerial — rain-lit rooftops from above at night, wet slates and skylights each holding a bead of the storm's silver, one small amber-lit window among them all, the sheltered and the weather seen in one map",
+      "DARK BACKGROUND, finale — the window open at last, the glass standing clear and drop-less, catching one star and the room's small amber light together in the same reflection, inside and outside reconciled",
     ],
   },
-  "All Together": {
+  "All Together": { // motifs: scattered lights, luminous tributaries, the confluence river, delta
     palette: { primary: "#f5c26b", secondary: "#101020", accent: "#7fd0c9", glow: "#ffe8bd" },
     phases: [
-      "DARK BACKGROUND — many small separate lights scattered across a vast dark watershed — a glint in a high valley, a gleam in a wood, a spark on a far slope — each alone in its own pool of night, thin threads of luminous water beginning to leave each one, descending, the gathering not yet visible but begun",
-      "the threads finding each other — luminous rivulets of teal and gold merging pair by pair into brighter streams, each confluence flaring softly at the joining point, the network of light growing dendritic across the dark terrain, tributaries bending toward a common valley, union as watershed",
-      "the great confluence — every stream arriving at once into one immense braided river of light sweeping through the frame, gold and teal currents interleaved but unseparated now, the joined flow broad and blazing between dark banks, all the small lonely lights present inside the one brightness, the river running toward a glowing sea implied beyond the frame's edge, overwhelming communion, the flow entering from many corners and leaving as one",
-      "the river's surface in calm glory — currents from different sources visible as gentle internal ribbons of tone, all moving at one speed, sandbars of soft dark parting and rejoining the flow without dividing it, togetherness with texture, wide serene power",
-      "the river broadening into a slow delta at dusk, the light distributing itself generously across many calm channels — separate again in shape yet all one water, rose and amber settling on every branch equally, the giving-back",
-      "DARK BACKGROUND — a still estuary at night holding the sky, all the water there is resting in one dark shining body, small lights along its far edge glowing like the first scattered sparks come home, completion as calm plenty, horizon low, the shine unbroken",
+      "DARK BACKGROUND, vast wide — many small separate lights scattered across a dark watershed, a glint in a high valley, a gleam in a wood, a spark on a far slope, each alone in its own pool of night, thin luminous threads just beginning to leave each one",
+      "macro — one confluence at closest range, two thin rivulets of teal and gold light meeting between dark stones, the joining point flaring softly, the merged thread brighter than either was alone",
+      "aerial — the network grown dendritic across dark terrain from high above, luminous tributaries bending toward a common valley, every branching lit, the gathering visible as a tree of light lying on the land",
+      "monumental — the great confluence, every stream arriving at once into one immense braided river of light between dark banks, gold and teal interleaved, all the small lonely lights present inside the one brightness, the flow entering from many corners and leaving as one",
+      "intimate — the river's surface up close in calm glory, currents from different sources visible as gentle internal ribbons of tone all moving at one speed, soft dark sandbars parting the flow without dividing it",
+      "DARK BACKGROUND, finale — a still estuary at night holding the sky, all the water there is resting in one dark shining body, small lights along its far edge glowing like the first scattered sparks come home",
     ],
   },
 };
