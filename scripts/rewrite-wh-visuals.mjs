@@ -65,8 +65,8 @@ const WORLDS = {
       "DARK BACKGROUND, minimal — one razor-thin vertical line of white light splitting pure black slightly off-center, edges impossibly sharp, faint cold gleam pooling at its base, tension as geometry",
       "extreme macro — the edge itself, a blade-thin plane of light meeting black glass at closest range, a single rose-red glint burning at the point of contact, molecular precision",
       "monumental — a canyon of sheared obsidian faces, thin sheets of white light standing in every fracture, walls mirror-smooth and towering into dark, crimson edge-light tracing the newest cuts, severance at architectural scale",
-      "aerial — a black glacier field from above, crevasses glowing cold white in branching cuts across the dark ice, one long master fracture running the diagonal with rose light welling in its depth",
-      "abstract — obsidian planes suspended mid-split, light flooding through every gap in hard clean sheets, shards' mirror-faces reflecting other cuts recursively, a frozen explosion of separation, densest sweep lower left to upper right",
+      "aerial — a vast field of black glass from above, fractures glowing cold white in branching cuts across the dark surface, one long master fracture running the diagonal with rose light welling in its depth",
+      "abstract — obsidian planes suspended mid-split, light flooding through every gap in hard clean sheets, shards' mirror-faces reflecting other cuts recursively, a suspended explosion of separation, densest sweep lower left to upper right",
       "DARK BACKGROUND, macro finale — one thin horizontal seam of light resting low in the frame, soft at its ends, the cut healed into quiet brightness, dark whole again above and below",
     ],
   },
@@ -75,8 +75,8 @@ const WORLDS = {
     phases: [
       "DARK BACKGROUND, macro — dew beading a spider's orb-web between dark grass stems, each drop holding a miniature amber sky, the golden field soft-focused beyond, a whole era kept in small crystal spheres",
       "landscape — long amber rays raking across rolling meadow from a low unseen sun, grass tips ignited in stripes, drifting seed-fluff glowing as it crosses the beams, green-gold shadows stretching enormous",
-      "cosmic — golden hour at the scale of a whole world, meadows and orchards layered ridge upon ridge into honeyed distance, colossal soft cumulus catching peach fire and filling the sky entirely, pollen-light thick as slow snow through all the air",
-      "intimate — dusk thickening between dark grass silhouettes, the first fireflies blinking sparse and confident in the middle dark, one drifting close and near-blinding in its smallness, amber banked along the horizon behind",
+      "cosmic — golden hour at the scale of a whole world, meadows and orchards layered ridge upon ridge into honeyed distance, colossal soft cumulus catching peach fire and filling the sky entirely, pollen-light drifting thick and slow through all the air",
+      "intimate — dusk thickening between dark grass stems, the first fireflies blinking sparse and confident in the middle dark, one drifting close and near-blinding in its smallness, amber banked along the horizon behind",
       "aerial — orchard ridges from above at last light, rows curving with the land like combed velvet, plum shadow flooding the valleys while the crests keep a rim of honey, the day folding itself away",
       "DARK BACKGROUND, finale — full night over the remembered field, a thin band of deepest amber refusing to leave the horizon's edge, two or three fireflies keeping the year lit, memory banked like coals",
     ],
@@ -117,7 +117,7 @@ const WORLDS = {
   "Rebound": { // motifs: ripple rings, interference lace, standing waves, canyon echo
     palette: { primary: "#6dd4c0", secondary: "#0d1214", accent: "#f5b060", glow: "#c9f2e6" },
     phases: [
-      "DARK BACKGROUND, extreme macro — a single drop's crown rising off black water at the instant of impact, teal light caught in the thin liquid coronet, droplets suspended above it, the first impulse frozen",
+      "DARK BACKGROUND, extreme macro — a single drop's crown rising off black water at the instant of impact, teal light caught in the thin liquid coronet, droplets suspended above it, the first impulse held mid-instant",
       "surface abstract — reflected rings crossing incoming ones in sharpening interference lace, the water's skin waking into geometry, amber glints kindling where crests collide, the pattern building along the diagonal",
       "monumental — a dark canyon ringing wall to wall with answered energy, waves of light-laced water and luminous pressure-rings leaping stone to stone, spray lifting off collision crests in glowing arcs, teal and gold shockwaves interleaving down the corridor into depth",
       "aerial — the canyon pool from high above, concentric rings and their echoes written across black water as bright interlocking circles, the stone walls' reflections cutting the pattern into crescents, energy mapped from the sky",
@@ -140,7 +140,7 @@ const WORLDS = {
     palette: { primary: "#a8c86f", secondary: "#0e1310", accent: "#f0d080", glow: "#e0f0b8" },
     phases: [
       "DARK BACKGROUND, macro — one grass blade bending under wind at closest range, a bead of dawn light riding its curve, neighboring blades soft behind it all leaning the same way, the great motion present in one small bend",
-      "wide — pre-dawn hills as long stacked silhouettes rolling to the horizon, each ridge softer blue-green than the last, a pale gold seam of first light lying in the deepest saddle, ground fog pooled in the valleys like slow rivers",
+      "wide — pre-dawn hills as long stacked dark ridgelines rolling to the horizon, each ridge softer blue-green than the last, a pale gold seam of first light lying in the deepest saddle, ground fog pooled in the valleys like slow rivers",
       "landscape in motion — cloud shadows and light bands pouring across the slopes in alternating waves, each hillcrest igniting green-gold as the wave crests it then dimming as shadow follows, grasses streaming in the same rhythm",
       "planetary — an ocean of hills to every horizon with waves of light, shadow, and low cloud traveling the land in grand overlapping swells, valleys flooding with luminous fog then emptying, ridgelines flashing in slow sequence, the largest swell cresting off-center",
       "aerial — cloud shadow archipelagos drifting across the green swells from high above, their dark shapes sliding over crests and pouring down slopes, sunlit islands of meadow opening and closing between them",

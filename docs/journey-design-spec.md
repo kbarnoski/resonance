@@ -9,6 +9,27 @@ music videos, not static images on a fireplace."*
 
 ## The laws
 
+0. **THEME IS DERIVED FROM THE MUSIC — the founding law (Karel, 2026-09-23).**
+   Every journey's image theme comes from three inputs, in this order: the
+   track's MUSICAL ANALYSIS (key/mode, tempo, note density, register,
+   velocity, dynamic arc — compute a profile from the stored notes), its
+   MOOD, and its NAME. Never from the title alone, and never by borrowing
+   another journey's material. *"This is literally the entire point of this
+   app and project."* Failure case to never repeat: The First / The First
+   (Expanded) were themed as ice-thaw off the word "first" — but the music
+   is F Major, dense, low-register, warm; the right theme was an amber
+   underground dawn. Check the theme AGAINST the profile before authoring:
+   cold sparse themes need cold sparse music.
+   - **Material exclusivity:** ice/frost/snow/crystal/aurora belong to
+     Snowflake alone (Welcome Home may use snow only as the winter dark the
+     hearth defeats). If two journeys would share a dominant material,
+     one of them is wrong.
+   - **Summoning-risk words — never use in prompts:** "silhouette(s)",
+     "figure(s)", "streets", "station", any negation of people ("without a
+     single figure" summons one). A cathedral/hall WITH A FLOOR summons a
+     congregation — remove the floor or fill the ground with the theme's
+     own material.
+
 1. **A journey is a SHOT LIST, not a location.** The six phases are six
    radically different shots of one theme — never the same scene, POV, or
    framing twice. If every phase could be a crop of the same photograph,

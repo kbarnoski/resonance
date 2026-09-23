@@ -12,21 +12,21 @@ const out = JSON.parse(readFileSync("scripts/sbl-output.json", "utf8"));
 const TAIL = ", completely uninhabited, no text no signatures no watermarks no letters no writing";
 
 const WORLDS = {
-  "Rise": { // motifs: amber filament light, strata, updraft, aurora columns
+  "Rise": { // D Major, 103s, dense, massive Q3 climax — daybreak surge: filament, canyon veins, gold flood breaking through cloud
     palette: { primary: "#ffb347", secondary: "#0b1026", accent: "#7fd8ff", glow: "#ffe9c4" },
     phases: [
       "DARK BACKGROUND, extreme macro — a single amber filament of light threading through black mineral grain, sharp focus on one glowing junction lower right, bokeh sparks of deeper filaments defocused behind, vast dark negative space above",
       "aerial view straight down onto a canyon system at night, its branching gorges veined with rising amber light like a luminous root map, updraft dust glowing as it climbs out of the deepest forks, diagonal fracture from lower left to upper right",
-      "cosmic scale — towering columns of aurora fire climbing through a torn cloud deck seen from among them, curtains of amber and cyan ascending past the viewpoint at vertiginous speed, ice crystals streaming upward like reverse snow, the curved horizon burning far below at one corner, boundless vertical euphoria",
+      "cosmic scale — an ocean of dark cloud torn open by the risen sun seen from inside the tear, immense waves of gold light flooding through and breaking over the cloud ridges below, radiant spray of lit mist climbing past the viewpoint, the curved horizon burning far below at one corner, boundless vertical euphoria",
       "intimate scale — one updraft caught in a shaft of high-altitude light, a slow intentional current of pale luminous air rising through it like a breath that knows its way, thin gold particles orbiting the current, deep indigo emptiness around, spirit-quiet",
       "wide planetary shot — the atmosphere's curved rim as a knife-thin band of stacked gold-rose-indigo across the lower frame, one soft ribbon of light drifting above it with unhurried purpose, enormous dark space claiming the rest",
-      "macro again, transformed — a single ice crystal at rest on dark stone at the top of the world, the whole ascent's amber caught as one point of light refracting inside it, everything else soft black stillness",
+      "macro again, transformed — a single bead of dew at rest on dark stone at the top of the world, the whole risen morning caught as one point of amber light refracting inside it, everything else soft black stillness",
     ],
   },
   "Surrender": { // motifs: black water, teal light shafts, dissolving boundaries, sediment galaxies
     palette: { primary: "#3fa7c4", secondary: "#0a1420", accent: "#e8f4f8", glow: "#9fdce8" },
     phases: [
-      "DARK BACKGROUND, violent close-up — whitewater frozen mid-explosion against black, every droplet crystalline and straining, cold steel light on the spray, the torrent occupying one hard diagonal band, blackness pressing in from the rest",
+      "DARK BACKGROUND, violent close-up — whitewater caught mid-explosion against black, every droplet sharp and straining, warm dusk light on the spray, the torrent occupying one hard diagonal band, blackness pressing in from the rest",
       "underwater medium shot — sediment clouds unfurling in slow galaxies through tilted shafts of teal light, streamlines visibly loosening, bubbles spiraling up unhurried, dark water deepening leftward",
       "aerial cosmic view — a river delta from great height dissolving into a luminous ocean, freshwater and saltwater interleaving in vast glowing turquoise fractals across the whole lower frame, the last dark thread of river vanishing at the edge, release rendered as geography",
       "abstract immersion — no horizon, suspended in mid-water where colossal cathedral shafts of light cross at angles, motes glittering along each beam, one slow pale current of luminous water moving through with gentle intention, like being breathed",
@@ -71,7 +71,7 @@ const WORLDS = {
     palette: { primary: "#9fd8cb", secondary: "#0d1117", accent: "#e6c99f", glow: "#d8efe9" },
     phases: [
       "DARK BACKGROUND, wide and strange — a mirror lake so still the mountain and its reflection fuse into one symmetric diamond form floating in blackness, the sole deliberate symmetry, one faint teal glow bleeding from beneath the waterline",
-      "extreme macro — frost ferns growing across dark glass, each crystalline branch sprouting smaller identical branches at every scale, gold backlight on the newest micro-tips, self-similarity in the act of becoming",
+      "extreme macro — a living fern frond unfurling against dark glass, each branch sprouting smaller identical branches at every scale, gold backlight on the newest micro-tips, self-similarity in the act of becoming",
       "monumental recursion — a fractal canyon where every wall contains smaller canyons containing smaller ones forever, terraced teal-grey stone descending without end, warm amber light threading every scale simultaneously, vertigo rendered serene",
       "aerial overlay — nautilus spiral, fern coil, and branching river delta ghosted through one another from high above in luminous line-work, the single signature beneath all forms flaring where the curves agree, deep charcoal ground",
       "intimate — a slow ribbon of pale luminous mist crossing the dark lake surface with quiet intention, its reflection moving in perfect unison below, two presences that are one, mountains soft in the far dark",
@@ -81,7 +81,7 @@ const WORLDS = {
   "Message": { // motifs: bioluminescent pulses, ripple codes, lightning script, expanding rings
     palette: { primary: "#59d4a8", secondary: "#071019", accent: "#f2e75e", glow: "#b9f5dd" },
     phases: [
-      "DARK BACKGROUND, macro — a single bioluminescent pulse traveling through shallow black water at close range, plankton igniting in its wake like a spoken word made visible, wet stone silhouettes framing darkness",
+      "DARK BACKGROUND, macro — a single bioluminescent pulse traveling through shallow black water at close range, plankton igniting in its wake like a spoken word made visible, wet dark stones framing the black water",
       "wide lagoon shot — expanding luminous rings crossing each other in moiré blooms across black water, calls entering from one edge, replies rising from another, yellow-green sparks where wavefronts intersect, the conversation quickening",
       "cosmic storm scale — an entire ocean surface alive with cascading teal fire to the horizon while branching lightning writes brilliant fractal script across the sky, sky-signal and sea-signal locked in call and response, overwhelming synchronous radiance on the storm's diagonal",
       "aerial afterglow — glowing plankton wakes tracing slow spirals across calming water seen from above, each wake a sentence in emerald cursive winding toward the others, generous dark water between the lines",
@@ -93,7 +93,7 @@ const WORLDS = {
     palette: { primary: "#f2d59a", secondary: "#171126", accent: "#e88fb0", glow: "#fbeed3" },
     phases: [
       "DARK BACKGROUND, wide — a sky banked edge to edge with soft charcoal clouds over black pine ridges, one slow gold meteor thread descending through a cloud gap, landing softly beyond the ridge without violence, rose afterglow on the cloud edges",
-      "macro — a single ember of falling light passing a pine branch at arm's length, needles igniting in rim-gold as it drifts by slower than snow, bokeh of further falling lights defocused in the dark behind",
+      "macro — a single ember of falling light passing a pine branch at arm's length, needles igniting in rim-gold as it drifts by slower than a falling leaf, bokeh of further falling lights defocused in the dark behind",
       "cosmic abundance — the entire sky filled with descending ember trails so every light above is a moving falling streak, radiance landing on lake and canopy without a single impact, mountains washed in falling shimmer, tender overwhelming generosity at landscape scale",
       "aerial — the gilded valley from above after the fall, every ridge and river edged in settled gold like circuitry of grace, thin mist pooling luminous in the hollows, violet dusk pressing at the frame's edges",
       "intimate spirit-touch — a slow veil of warm light drifting between dark trunks at ground level, pausing as if attending to the moss it gilds, petals of light settling around its passage, near-presence without form",
@@ -122,13 +122,13 @@ const WORLDS = {
       "macro finale — the pulse of light under the stone's skin at closest range, a slow amber heartbeat in the rock, all edges lost to warm dark",
     ],
   },
-  "Sway": { // motifs: kelp pendulums, aurora curtains, shared rhythm, G-minor emerald dark
+  "Sway": { // motifs: kelp pendulums, plankton-glow currents, shared rhythm, G-minor emerald dark
     palette: { primary: "#2e8b74", secondary: "#06110e", accent: "#c4b1e0", glow: "#7fceb4" },
     phases: [
-      "DARK BACKGROUND, low underwater wide — emerald kelp columns as black-green silhouettes beginning one synchronized lean, dim teal light catching only the frond edges, the seafloor lost, first beat of an enormous rhythm",
+      "DARK BACKGROUND, low underwater wide — emerald kelp columns in dim black-green outline beginning one synchronized lean, dim teal light catching only the frond edges, the seafloor lost, first beat of an enormous rhythm",
       "macro — a single kelp blade arcing through the frame in close focus, micro-bubbles beading its surface, light rocking across it like a slow pendulum, deep green dark behind",
-      "cosmic double-world — kelp forests below and aurora curtains above a rippling mirror surface, emerald arcs and violet sky-folds trading direction in one immense shared rhythm, sea and heavens bound to a single tempo, dense motion left dissolving to open dark right",
-      "aerial — aurora ribbons from high above folding over dark water, green and violet exchanging places along each fold, reflections stretching and releasing with the swell, the pendulum made entirely of light",
+      "cosmic double-world — kelp forests below and vast drifting sheets of plankton-glow riding the underside of a rippling mirror surface above, emerald arcs and violet light-folds trading direction in one immense shared rhythm, the whole water column bound to a single tempo, dense motion left dissolving to open dark right",
+      "aerial — ribbons of bioluminescent bloom from high above folding across dark swell, green and violet exchanging places along each fold, the glow stretching and releasing with the water's roll, the pendulum made entirely of light",
       "intimate spirit-touch — one pale ribbon of luminous water weaving slowly between the swaying stalks with unmistakable intention, brushing each column as it passes, formless and gentle in the emerald dark",
       "macro finale — a single frond settling upright in still water, the last arc of its motion remembered in its curve, black-green depth everywhere",
     ],

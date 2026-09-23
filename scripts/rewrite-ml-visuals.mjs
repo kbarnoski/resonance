@@ -11,24 +11,24 @@ const out = JSON.parse(readFileSync("scripts/ml-output.json", "utf8"));
 const TAIL = ", completely uninhabited, no text no signatures no watermarks no letters no writing";
 
 const WORLDS = {
-  "The First": { // motifs: thaw, meltwater bead, freed current, ice light
+  "The First": { // F Major, 109s, dense low-register warmth (d29.8, reg 52) — the first light waking INSIDE the earth: seed, roots, amber veins in dark loam
     phases: [
-      "DARK BACKGROUND, extreme macro — one bead of meltwater forming at the tip of an ice blade, holding a spark of first pale gold, frost architecture receding soft behind, the world waiting on a single drop",
-      "abstract interior — beneath translucent ice looking up, melt threading in bright veins overhead, trapped bubbles freeing in silver strings, pale aqua fractures spreading like slow lightning across the ceiling of the world",
-      "landscape release — a brook bursting its ice in braided ribbons of aqua and white-gold, shattered panes turning and glinting on the new current, spray hanging lit, dense sparkling motion on the lower diagonal against dark banks",
-      "aerial — the freed stream from high above winding as a bright thread through snow-shadowed forest, its meltline glowing faintly along both banks, one soft current of luminous air following the water's course with quiet intention",
-      "macro — sunlight reaching a streambed pebble at close range, amber stone under silk-threads of current, one last ice fragment dissolving mid-drift into transparency beside it",
-      "cosmic finale — the thaw motif at heaven's scale, rivers of pale light branching across a dark landmass seen from far above at dusk, every vein the first one, the beginning everywhere at once",
+      "DARK BACKGROUND, extreme macro — a seed casing splitting open in dark loam at closest range, one vein of warm amber light waking along the crack, soil grains glinting where the glow touches them, everything else deep brown-black",
+      "abstract interior — inside the dark earth, a lattice of fine roots beginning to carry light, warm amber threading root to root in slow pulses, the network waking one junction at a time against soft black depth",
+      "monumental — a cavern of ancient roots at cathedral scale, every column and arch of living wood seamed with running amber light, motes of gold drifting up through the warm dark, the underground dawn at full glow",
+      "aerial — a dark forest floor from above at first light, seams of warm gold opening along the ground between the trunks like slow lightning made of dawn, low mist catching the color as it rises",
+      "intimate — one pale green shoot breaking the surface into low amber light, soil falling away from its curve, the first arrival lit from the side against deep dark",
+      "DARK BACKGROUND, macro finale — the young shoot at dusk holding one drop of amber light at its tip like a lantern carried up from below, vast quiet dark around",
     ],
   },
-  "The First (Expanded)": { // motifs: same thaw, valley scale, mist columns, chain ruptures
+  "The First (Expanded)": { // same F Major material even denser (d39) — the same underground dawn at forest and valley magnitude
     phases: [
-      "DARK BACKGROUND, wide — a frozen valley from a high ridge in pre-dawn blue, the river a motionless pale vein through dark forest, thin gold rimming the far ridgeline, vast crystalline stillness — the same morning, seen from the mountain",
-      "macro — one icebound branch at close range as light arrives, melt beading along its underside in a row of lit drops, the first letting go in sharp focus against soft blue depth",
-      "monumental — the river bursting its ice in a chain of slow luminous ruptures down its whole winding length, mist columns climbing gold, a hundred released streams flashing down the slopes, the mountain's snowmelt singing at once",
-      "abstract — inside a rising mist column, weightless gold vapor curling around the viewpoint in slow spirals, droplets orbiting like small worlds, one warmer current threading upward through the veil as if leading the way",
-      "aerial — the flooded valley from above in full morning, meadows emerging green-gold at the banks, sheets of thinning ice riding the broad river like glass leaves toward the frame's edge",
-      "intimate finale — dusk pooled on a wet meadow stone, the valley's first free night reflected in a hand-sized puddle, cloud bands moving across its miniature sky",
+      "DARK BACKGROUND, wide — a dark valley of sleeping trees before first light, one faint seam of warm amber glowing along the lowest fold of the land, the same dawn about to happen everywhere at once",
+      "macro — tree bark at closest range as the light arrives inside it, the grain's ridges filling with warm gold like channels flooding, one resin bead igniting amber on the dark surface",
+      "monumental — the whole forest waking at once, every trunk seamed with climbing amber light, the canopy catching fire-gold from beneath, waves of warm luminance rolling trunk to trunk through the dark wood",
+      "abstract — inside the rising warmth, layered veils of gold air climbing through darkness, motes streaming upward in slow rivers, the color deepening from ember to full morning amber with the climb",
+      "aerial — the lit valley from above, rivers of warm gold branching through the dark canopy along every fold of the land, morning claiming the terrain vein by vein",
+      "DARK BACKGROUND, finale — the valley at rest in full soft morning, low warm light lying in the folds, one seam of deeper amber still glowing along the first fold that woke",
     ],
   },
   "Dad's Song II": { // motifs: wood grain, window light, resin glow, kept song
@@ -37,7 +37,7 @@ const WORLDS = {
       "extreme macro — inside the wood grain itself, ridges and valleys of honeyed timber flowing like canyon terrain, a knot blooming as a dark sun ringed in gold, resin veins glinting, years readable as verses",
       "monumental — the interior become instrument, beams and rafters of glowing grain arching like the hull of a great cello, light moving through the wooden vault in slow warm waves as if the room were being played, sawdust rising lit like slow sparks",
       "intimate spirit-touch — the dust in the window beam gathering briefly into a warmer drift of light that leans over a worked surface, attentive and formless, then loosening back into motes, the plane-marks below shining where it paused",
-      "aerial abstraction — wood grain from impossibly far above, the pattern continental now, rivers of dark figure winding through golden timber lands, one bright knot like a warm city in the grain",
+      "aerial abstraction — wood grain from impossibly far above, the pattern continental now, rivers of dark grain winding through golden timber lands, one bright knot like a warm city in the grain",
       "macro finale — a single seam of grain still faintly luminous in the near dark, like a voice remembered by the wood, the high window a dim blue square far behind",
     ],
   },
@@ -55,9 +55,9 @@ const WORLDS = {
     phases: [
       "DARK BACKGROUND, macro — one pale wisp of cold light at close range drifting between dead reeds, its silver-blue slightly iridescent, doubled broken in black water below, the air listening",
       "wide marsh shot — slow columns of spectral luminance rising off the water at many depths, each veiled in its own fog halo, pale violet threading the silver, the dark between them deepening",
-      "monumental haunting — tall aurora-like curtains of cold iridescent light standing and slowly turning above black water, sheets passing through one another leaving brighter seams, the marsh doubling everything into a second world below, brightest curtain leaning off-axis",
+      "monumental haunting — tall curtains of pale iridescent light standing and slowly turning above black water, sheets passing through one another leaving brighter seams, the marsh doubling everything into a second world below, brightest curtain leaning off-axis",
       "abstract interior — inside the fog itself, a luminous chamber of pearl-grey light with no edges, one presence of paler light moving through with unhurried awareness, brightening as it nears and dimming as it passes, formless as breath",
-      "aerial — the marsh from high above at night, wisps as scattered cold sparks across a black labyrinth of channels, one long curtain of light lying across the water like a fallen ribbon of aurora",
+      "aerial — the marsh from high above at night, wisps as scattered cold sparks across a black labyrinth of channels, one long curtain of pale light lying across the water like a fallen luminous ribbon",
       "macro finale — a single cold spark hovering just above its own reflection, fading and unfaded at once, reeds soft in the near dark, the visitation complete",
     ],
   },
@@ -75,7 +75,7 @@ const WORLDS = {
     phases: [
       "DARK BACKGROUND, extreme macro — a single marigold blossom at close range in low warm light, its layered orange petals sharp against deep shadow, one petal lifting free on the evening air",
       "medium — petals streaming between stacked terracotta planes in a warm wind, rivers of orange and rose riding the updrafts of a canyon of adobe geometry, long dusk shadows knitting the terraces",
-      "monumental color-wash — the whole canyon in full celebration of light, magenta and gold color-washes sweeping the stepped walls like breaking waves, strings of glowing paper shapes swaying overhead, marigold rivers pouring luminous down the terraces, joyous chromatic abundance without a single figure",
+      "monumental color-wash — the whole canyon in full celebration of light, magenta and gold color-washes sweeping the stepped walls like breaking waves, strings of glowing paper shapes swaying overhead, marigold rivers pouring luminous down the terraces, joyous chromatic abundance filling every terrace",
       "aerial — the terraced canyon from above at dusk, petal-rivers tracing bright orange veins through the geometry, warm light pooling in the courtyards like held embers, violet night pressing at the plateau edges",
       "intimate spirit-touch — a small warm current of light weaving low through drifted petals, lifting a few in a slow spiral as it passes, playful and formless, the terracotta glowing where it lingers",
       "macro finale — petals at rest in a stone corner under deep blue night, one paper shape's soft glow reflected across them, warmth kept for tomorrow",
@@ -83,7 +83,7 @@ const WORLDS = {
   },
   "Afterglow": { // motifs: sourceless sky-fire, alpenglow, banked strata, remembered heat
     phases: [
-      "DARK BACKGROUND, wide — the minutes after sundown over a mountain lake, the sky above the ridge banded rose to ember to violet in smooth strata that own it entirely, alpenglow pink on the far snow, the lake doubling everything in calm",
+      "DARK BACKGROUND, wide — the minutes after sundown over a mountain lake, the sky above the ridge banded rose to ember to violet in smooth strata that own it entirely, alpenglow pink on the high bare peaks, the lake doubling everything in calm",
       "macro — heat remembered by stone at close range, a rock face still holding soft red along its grain as the air cools, one thin line of ember light along its top edge against deepening blue",
       "cosmic — the whole heaven a graded sourceless fire of rose, salmon and burnt gold layered edge to edge, no bright body anywhere, the air itself holding color like a struck bell holds tone, the deepest ember banked hard along the low left horizon",
       "aerial — ridgelines from above as black cutouts stacked in violet haze, each valley between them pooled with a different temperature of afterglow, a slow gradient archipelago fading toward night",
