@@ -1,48 +1,18 @@
-# Morning digest — last updated 2026-09-23T13:0xZ
+# Morning digest — last updated 2026-09-24T01:2xZ
 
-> **Jury verdict today**: Two real standouts (commons, limn), but the camera-conduct verb quietly grew to 7 of 15 and the data lane re-camped the sky the day after we said not to — the engine builds beautifully and lands nothing, so tomorrow's job is one tap, not one more floor-compliant ship. See `docs/dreams/JURY.md`.
-
-Off the sky, still onto people — but a new temperature. After scriptorium
-(the crowd *writing*), today the feed is the crowd *trading*: money as the
-instrument.
+**Open this first:** [/dream/17904-reharmonize](https://getresonance.vercel.app/dream/17904-reharmonize)
 
 ## New since yesterday
-- **[17856-ledger](/dream/17856-ledger)** — **the world's live market
-  conducts your piano.** Every trade crossing the order books right now
-  (real Coinbase feed, keyless) plays a grain of one of your real
-  recordings and drifts across a warm river of money-as-light: buys higher
-  and to the right, sells lower and to the left, and a rising market lifts
-  and brightens the whole piece. Not a chart — a living river. Cashes the
-  jury's own #1 example ("currency/interest ticks") and brings a genuinely
-  new mood (the mundane pulse of markets), distinct from scriptorium's warm
-  crowd.
-  → **30-sec check I couldn't do from the cloud:** open it, tap Begin, and
-  confirm (a) the grains sound musical by ear and (b) the status line flips
-  from `demo · synthetic tape` to `live · coinbase` after a moment (it works
-  fully on the built-in synthetic tape either way, so it's demoable cold).
+- **Reharmonize** — *play chords on your OWN recorded piano.* Tap Begin, then play the on-screen keys (or plug in a MIDI keyboard): each key you hold voices a transposed, sustained copy of one of your real takes, so a triad stacks three pitch-shifted versions of the SAME recording into a live choir of itself. Warm amber beams, one per voice. This is a **playable instrument built entirely from your audio** — a clean break off both the data-feed lane (6 fires deep) and the camera lane.
+- ⏱️ **30-second check I couldn't do from the cloud (no speakers here):** does the stacked choir sound *good* by ear — do a few held chords bloom into something you'd play with, or does the ±transpose get muddy? That's the one thing I can't verify headless.
 
-## Also built, not shipped (banked → IDEAS §1256)
-- **crosspollen** — the long-requested **cycle-2 of `strand`**: TWO of your
-  takes share one memory and cross-pollinate motifs until minute 6 is a
-  hybrid neither take was. The jury's rarest un-cashed criterion
-  (multi-cycle). Held back only because the headline steer was a human FEED;
-  it's one step from a ship.
-- **natality** — the world's real birth/death rates as a gentle Poisson
-  pulse ("the breath of the species"), warm bloom, fully offline. The most
-  reviewable of the three; held back as a *simulation* (not a live feed) and
-  mood-adjacent to scriptorium.
+## Why this cycle looks different
+- The **fresh jury (2026-09-23)** landed after yesterday's ship and is blunt: *13+ builds, zero ♥ — the review loop is the only problem. Build for the ONE tap, not the floor.* It hard-banned the comfort zones (camera, three.js, granular-scrub, data-sonification, cool-violet, "the sky") and said: **warm-only or achromatic, and make one piece so singular you open it.**
+- So I went to the most *you*-specific idea I could: you're a pianist — so play your own recordings. Warm-only, off every ban.
 
-## The one thing that matters
-The vote is flat **15 pieces running** — the engine BUILDS but hasn't
-LANDED, and today's jury says exactly that: tomorrow's job is one tap, not
-one more floor-compliant ship. ledger is the biggest surprise the human lane
-has made. If any piece deserves your tap, this is the shot — and it tells me
-which temperature to chase next.
+## Also explored (banked, one rebuild from a ship — IDEAS §1257)
+- **Antiphon** — the achromatic 1-bit *call-and-response duet*: the recording plays a phrase, hands you the keys, then answers you back. The jury literally asked for a rigorously-achromatic datamatics piece — this is it, and it's the best way to break the warm streak. **Resurrect-next** if Reharmonize doesn't land, or if you want the duet register.
+- **Mixhand** — *play the mix*: keys/pads swell and spatialize 8 frequency bands of one take, so you perform the EQ and room of your own recording.
 
-## Open questions for you
-- Which human world next? A named transit line's arrivals · search/trend
-  curves · a city's live noise level — each a different feed, none the sky.
-- Want the ready **crosspollen** (deepen strand) or **natality** (warm
-  population) resurrected — or, given the jury's "lands nothing" verdict, is
-  a flat vote after two human feeds a sign the loop needs a different kind of
-  provocation entirely?
+## Open question for you
+- **This is bet #16 on "one singular piece."** If Reharmonize earns a tap, I'll deepen the playable-instrument direction (Antiphon next). If it's *still* flat after you look — I think guessing a 17th time is the wrong move. **What would actually make you tap ♥?** One sentence from you beats another cycle of me guessing.

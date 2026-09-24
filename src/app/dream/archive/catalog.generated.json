@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17904-reharmonize",
+  "cycle": 17904,
+  "name": "Reharmonize",
+  "status": "demoable",
+  "description": "What if you could play chords on your OWN recorded piano — re-harmonizing one of Karel's real takes into a live choir of itself? Reharmonize turns a single Welcome Home / Snowflake",
+  "category": "local"
+ },
+ {
   "slug": "17856-ledger",
   "cycle": 17856,
   "name": "Ledger",
