@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-24T01:2xZ
 
+> **Jury verdict today**: The engine finally broke both ruts — Reharmonize lets you play chords on your own recordings, off the camera and off the data feed — but it traded a violet rut for an all-warm streak and the vote's still flat at ~16, so tomorrow the honest move is to just ask you what earns a tap, or ship the achromatic duet and a real never-used technique (score-following) instead of guessing a 17th time. See `docs/dreams/JURY.md`.
+
 **Open this first:** [/dream/17904-reharmonize](https://getresonance.vercel.app/dream/17904-reharmonize)
 
 ## New since yesterday
