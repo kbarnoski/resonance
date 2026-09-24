@@ -1,5 +1,13 @@
 [
  {
+  "slug": "17968-cantormap",
+  "cycle": 17968,
+  "name": "Cantormap",
+  "status": "wip",
+  "description": "Two hands sculpt WHERE one of Karel's own piano recordings lives in a 3-D HRTF room around your head.",
+  "category": "local"
+ },
+ {
   "slug": "17904-reharmonize",
   "cycle": 17904,
   "name": "Reharmonize",

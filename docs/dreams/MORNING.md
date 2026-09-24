@@ -1,21 +1,23 @@
-# Morning digest — last updated 2026-09-24T01:2xZ
+# Morning digest — last updated 2026-09-24T~01:2xZ (17:45 PT fire)
 
-> **Jury verdict today**: The engine finally broke both ruts — Reharmonize lets you play chords on your own recordings, off the camera and off the data feed — but it traded a violet rut for an all-warm streak and the vote's still flat at ~16, so tomorrow the honest move is to just ask you what earns a tap, or ship the achromatic duet and a real never-used technique (score-following) instead of guessing a 17th time. See `docs/dreams/JURY.md`.
+> **Note:** a fresh `JURY.md` (2026-09-24) also landed this morning — but it was written *before* the mudra-love below was spotted, so its "ask what earns a tap / ship achromatic + score-following" steer is now partly answered: **a camera piece earned the tap.** Read this digest first, then `docs/dreams/JURY.md` for the (pre-love) verdict.
 
-**Open this first:** [/dream/17904-reharmonize](https://getresonance.vercel.app/dream/17904-reharmonize)
+**Open this first:** [/dream/17968-cantormap](https://getresonance.vercel.app/dream/17968-cantormap)
 
-## New since yesterday
-- **Reharmonize** — *play chords on your OWN recorded piano.* Tap Begin, then play the on-screen keys (or plug in a MIDI keyboard): each key you hold voices a transposed, sustained copy of one of your real takes, so a triad stacks three pitch-shifted versions of the SAME recording into a live choir of itself. Warm amber beams, one per voice. This is a **playable instrument built entirely from your audio** — a clean break off both the data-feed lane (6 fires deep) and the camera lane.
-- ⏱️ **30-second check I couldn't do from the cloud (no speakers here):** does the stacked choir sound *good* by ear — do a few held chords bloom into something you'd play with, or does the ±transpose get muddy? That's the one thing I can't verify headless.
+## The big news: your love finally landed — and it landed on a CAMERA piece
+- The votes API now shows **`17536-mudra` loved** — your first ♥ on a 17xxx piece since `hall` (~2.5 weeks / ~16 pieces). It's a **camera + gesture** conductor. That single tap **falsifies** the premise the last *five* juries built on ("13+ ships, zero love → camera is dead, pivot to data"). Your whole loved-recent set is the same family: `canon`, `headnave`, `duetlink`, `tensethread`, now `mudra`.
+- So I did the honest thing and **went back to the lane you actually love** — embodied conducting of your own recordings — instead of guessing a 17th data/warm piece. (This overrides the jury's camera ban; a real ♥ from you outranks the jury.)
 
-## Why this cycle looks different
-- The **fresh jury (2026-09-23)** landed after yesterday's ship and is blunt: *13+ builds, zero ♥ — the review loop is the only problem. Build for the ONE tap, not the floor.* It hard-banned the comfort zones (camera, three.js, granular-scrub, data-sonification, cool-violet, "the sky") and said: **warm-only or achromatic, and make one piece so singular you open it.**
-- So I went to the most *you*-specific idea I could: you're a pianist — so play your own recordings. Warm-only, off every ban.
+## New since yesterday — Cantormap
+- **Your two hands grab the voices of your own recording and move them around your head in real 3D.** One take is split into 4 band-voices, each on its own HRTF panner; **pinch pulls a voice near and loud, hands wide scatter the field, hands together collapse it to an intimate centre.** The conducted parameter is *where your piano lives in the room* — a parameter no prior piece touched (mudra did timbre/tempo, canon did counterpoint).
+- Warm amber-gold WebGL2 orbs leave light-trails as they move. Off every other live ban (no three.js, no granular, no violet).
 
-## Also explored (banked, one rebuild from a ship — IDEAS §1257)
-- **Antiphon** — the achromatic 1-bit *call-and-response duet*: the recording plays a phrase, hands you the keys, then answers you back. The jury literally asked for a rigorously-achromatic datamatics piece — this is it, and it's the best way to break the warm streak. **Resurrect-next** if Reharmonize doesn't land, or if you want the duet register.
-- **Mixhand** — *play the mix*: keys/pads swell and spatialize 8 frequency bands of one take, so you perform the EQ and room of your own recording.
+## ⏱️ The one check I can't do from the cloud (30 seconds)
+- **Does the webcam hand-tracking actually respond, and does moving a voice around your head *sound* spatial in headphones?** No camera/GPU/speakers here, so I shipped it **`wip`, not "working"** — exactly the honesty gate you asked for after bodycast. If it tracks and the HRTF feels real, this is the one to deepen.
 
-## Open questions for you
-- **This is bet #16 on "one singular piece."** If Reharmonize earns a tap, I'll deepen the playable-instrument direction (Antiphon next). If it's *still* flat after you look — I think guessing a 17th time is the wrong move. **What would actually make you tap ♥?** One sentence from you beats another cycle of me guessing.
-- 🔧 **Build-infra fix needed (out of my fence):** `npm run build` now FAILS in the cloud cycle env — `scripts/run-build.sh` clamps `ulimit -n 10240` (a macOS fix) but this Linux box needs more, so the 1,200-proto build throws EMFILE. I worked around it this cycle (fd=20000 + 8GB heap, direct `next build`) and it built clean, but **future autonomous cycles will keep tripping on it** and could waste cycles. Quick fix: make that ulimit env-adaptive (raise toward the hard cap, don't clamp below it) and bump the default heap. Details in STATE.md §1257.
+## Also explored (banked, one rebuild from a ship — IDEAS §1258)
+- **Aureole** — an **achromatic** face+breath conductor: *lean in* pulls the recording intimate & dry, *lean back* opens a cathedral of reverb; mouth-open swells it. RESURRECT-NEXT to break the warm streak.
+- **Plumbline** — a **full-body** conductor (you asked for full-body too): arms wide = a great dynamic swell, reach up = it brightens, lean into a step = it presses forward.
+
+## Open question for you
+- If Cantormap's camera path works for you, do you want the next cycles to **stay in this embodied-conducting lane** (aureole → plumbline → deepen mudra/canon) now that we know it's what earns your ♥? One word back steers the whole next week.
