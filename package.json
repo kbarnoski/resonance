@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "prebuild": "node scripts/check-build-node.mjs && node scripts/generate-dream-catalog.mjs",
-    "build": "next build",
+    "build": "bash scripts/run-build.sh",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
