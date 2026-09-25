@@ -6,6 +6,7 @@ import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
 import { JourneyTrailsLayer } from "./journey-trails-layer";
 import { DebandOverlay } from "./deband-overlay";
+import { DepthParallaxLayer } from "./depth-parallax-layer";
 import { FlashAngel } from "./flash-angel";
 import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -342,6 +343,9 @@ export function JourneyCompositor({
       className="absolute inset-0"
       style={gradeFilter ? { filter: gradeFilter } : undefined}
     >
+      {/* Depth-parallax base — the 3D Ken Burns under the collage (z-2, earlier DOM) */}
+      {showAi && <DepthParallaxLayer journeyId={journeyId} />}
+
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
         <AiImageLayer

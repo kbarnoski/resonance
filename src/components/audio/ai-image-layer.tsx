@@ -169,6 +169,7 @@ export function AiImageLayer({
   // macOS hardware-decodes it. Fall back to the 8-bit H.264 elsewhere.
   const canHevcRef = useRef<boolean | null>(null);
   const lastClipPhaseRef = useRef<number>(-1);
+  const heroPushedForRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
     if (!isPackActive()) return;
@@ -262,7 +263,8 @@ export function AiImageLayer({
       // over journey B until progress crosses into slice 1.
       lastPackIndexRef.current = -1;
       localImageIndexRef.current = 0;
-      lastClipPhaseRef.current = -1; // hero clips re-arm per journey
+      lastClipPhaseRef.current = -1; // clips re-arm per journey
+      heroPushedForRef.current = -1;
 
       // Installation (Tramokyo): NEVER purge to black between journeys —
       // the previous journey's imagery holds until the new journey's
@@ -435,14 +437,25 @@ export function AiImageLayer({
       // frame is intentional; skip the redundant push.
       if (idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
-        loadImage(urls[idx])
-          .then((img) => pushImage(img))
+        const stillUrl = urls[idx];
+        loadImage(stillUrl)
+          .then((img) => {
+            pushImage(img);
+            // Feed the depth-parallax base layer (it no-ops without depth coverage)
+            if (stillUrl.includes("/images/journeys/")) {
+              window.dispatchEvent(new CustomEvent("resonance:pack-still", {
+                detail: {
+                  src: stillUrl,
+                  depthSrc: stillUrl.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg(\?.*)?$/, ".png"),
+                },
+              }));
+            }
+          })
           .catch(() => { /* broken URL, skip */ });
       }
 
-      // ── Hero video loops (Wave 2 pilot): once per phase, if the pack
-      // carries a clip for the current phase, push it as a living layer.
-      // One video at a time; high-tier only (decode cost).
+      // ── Living video (Wave 2): travel morphs at phase boundaries +
+      // hero loops within phases. High tier only; one video at a time.
       const clips = journeyId ? clipsRef.current?.[journeyId] : null;
       if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
         const posSec = progress * duration;
@@ -451,33 +464,49 @@ export function AiImageLayer({
           const ph = journeyPhases[i] as { start?: number; end?: number };
           if (typeof ph.start === "number" && typeof ph.end === "number" && posSec >= ph.start && posSec < ph.end) { phaseIdx = i; break; }
         }
-        const clipEntry = phaseIdx >= 0 ? clips[String(phaseIdx)] : undefined;
         if (canHevcRef.current === null) {
           const probe = document.createElement("video");
           canHevcRef.current = probe.canPlayType('video/mp4; codecs="hvc1.2.4.L120.B0"') !== "";
         }
-        const clipUrl = typeof clipEntry === "string"
-          ? clipEntry
-          : clipEntry
-            ? (canHevcRef.current && clipEntry.hevc ? clipEntry.hevc : clipEntry.h264)
-            : undefined;
-        const videoBusy = activeVideoRef.current && !activeVideoRef.current.ended && activeVideoRef.current.isConnected !== false && layersRef.current.some((l) => l.img === activeVideoRef.current);
-        if (clipUrl && phaseIdx !== lastClipPhaseRef.current && !videoBusy) {
-          lastClipPhaseRef.current = phaseIdx;
+        const pick = (e?: string | { h264: string; hevc?: string }) =>
+          typeof e === "string" ? e : e ? (canHevcRef.current && e.hevc ? e.hevc : e.h264) : undefined;
+        const pushVideoUrl = (url: string) => {
           const v = document.createElement("video");
           v.muted = true;
-          v.loop = false; // play once, hold last frame — loop restarts visibly jump
+          v.loop = false; // play once, hold last frame — restarts visibly jump
           v.playsInline = true;
           v.preload = "auto";
-          v.src = clipUrl;
+          v.src = url;
           v.addEventListener("canplay", () => {
             activeVideoRef.current = v;
-            v.play().catch(() => { /* autoplay policy — layer just holds first frame */ });
+            v.play().catch(() => { /* autoplay policy — holds first frame */ });
             pushImage(v);
           }, { once: true });
           v.load();
+        };
+        const av = activeVideoRef.current;
+        const videoBusy = !!av && !av.ended && layersRef.current.some((l) => l.img === av);
+
+        const prevPhase = lastClipPhaseRef.current;
+        if (phaseIdx >= 0 && phaseIdx !== prevPhase) {
+          lastClipPhaseRef.current = phaseIdx;
+          heroPushedForRef.current = -1; // new phase — hero re-arms
+          // Travel morph: one continuous camera move prev → this phase
+          const travel = prevPhase >= 0 && phaseIdx === prevPhase + 1
+            ? pick(clips["t" + prevPhase] as string | { h264: string; hevc?: string })
+            : undefined;
+          if (travel && !videoBusy) {
+            heroPushedForRef.current = -2; // hero waits for the morph to finish
+            pushVideoUrl(travel);
+          }
+        }
+        const heroUrl = pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string });
+        if (heroUrl && phaseIdx >= 0 && heroPushedForRef.current !== phaseIdx && !videoBusy) {
+          heroPushedForRef.current = phaseIdx;
+          pushVideoUrl(heroUrl);
         }
       }
+
       if (!shouldAttemptLiveOverlay()) return;
     }
 
