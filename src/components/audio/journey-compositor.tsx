@@ -5,6 +5,7 @@ import { AiImageLayer } from "./ai-image-layer";
 import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
 import { JourneyTrailsLayer } from "./journey-trails-layer";
+import { DebandOverlay } from "./deband-overlay";
 import { FlashAngel } from "./flash-angel";
 import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -373,7 +374,14 @@ export function JourneyCompositor({
       )}
 
       {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
-      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.6} />}
+      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.35} />}
+
+      {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
+          gradients, imagery, H.264 — quantizes to 8 bits and bands in slow
+          dark gradients. One static noise tile over the WHOLE composite in
+          overlay blend breaks the contours everywhere at once. Sub-
+          perceptual: this is dithering, not grain. */}
+      {frame && <DebandOverlay />}
 
       {/* Pre-activation glow — bloom buildup before bass hit (Ghost only) */}
       {enableBassFlash && approach > 0.1 && (

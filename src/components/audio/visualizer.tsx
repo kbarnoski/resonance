@@ -363,7 +363,12 @@ export function ShaderVisualizer({
     // bloom the softness is invisible.
     const tier = getDeviceTier();
     const tierScale = tier === "low" ? 0.55 : tier === "medium" ? 0.75 : 1.0;
-    const dpr = Math.min(devicePixelRatio, 1) * tierScale;
+    // 2026-09-25b (Karel: "shaders not clear"): high tier renders at up to
+    // 1.5x DPR — on retina/projector the old min(dpr,1) drew shaders at HALF
+    // native resolution and upscaled, softening every line. Low/medium keep
+    // the 1x cap (fragment-bound hardware).
+    const dprCeil = tier === "high" ? 1.5 : 1;
+    const dpr = Math.min(devicePixelRatio, dprCeil) * tierScale;
     // Frame-rate cap on weak hardware — halves GPU work vs uncapped rAF. 30fps
     // still reads as "smooth" for abstract shader motion; 45fps on medium is a
     // gentle safety net for hardware that can't quite sustain 60.

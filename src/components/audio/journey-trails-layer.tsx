@@ -39,7 +39,7 @@ export function JourneyTrailsLayer({
     const SCALE = 0.5; // half-res buffer — echoes are soft by nature
     const FPS_MS = 1000 / 30;
     const DECAY = 0.045; // per-frame history erase — ~1.2s visible tail
-    const FEED = 0.22; // per-frame accumulation of the live composite
+    const FEED = 0.15; // per-frame accumulation of the live composite
     let last = 0;
 
     function render(now: number) {

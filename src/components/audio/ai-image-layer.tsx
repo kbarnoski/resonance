@@ -164,7 +164,10 @@ export function AiImageLayer({
   // ── Living video loops (Wave 2 pilot) ──
   // /tramokyo-pack/local-clips.json maps journeyId → { phaseIdx: clipUrl }.
   // Static file in the pack — offline-safe, 404s to null online.
-  const clipsRef = useRef<Record<string, Record<string, string>> | null>(null);
+  const clipsRef = useRef<Record<string, Record<string, string | { h264: string; hevc?: string }>> | null>(null);
+  // HEVC main10 kills gradient banding at the source (10-bit); Chrome on
+  // macOS hardware-decodes it. Fall back to the 8-bit H.264 elsewhere.
+  const canHevcRef = useRef<boolean | null>(null);
   const lastClipPhaseRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
@@ -448,7 +451,16 @@ export function AiImageLayer({
           const ph = journeyPhases[i] as { start?: number; end?: number };
           if (typeof ph.start === "number" && typeof ph.end === "number" && posSec >= ph.start && posSec < ph.end) { phaseIdx = i; break; }
         }
-        const clipUrl = phaseIdx >= 0 ? clips[String(phaseIdx)] : undefined;
+        const clipEntry = phaseIdx >= 0 ? clips[String(phaseIdx)] : undefined;
+        if (canHevcRef.current === null) {
+          const probe = document.createElement("video");
+          canHevcRef.current = probe.canPlayType('video/mp4; codecs="hvc1.2.4.L120.B0"') !== "";
+        }
+        const clipUrl = typeof clipEntry === "string"
+          ? clipEntry
+          : clipEntry
+            ? (canHevcRef.current && clipEntry.hevc ? clipEntry.hevc : clipEntry.h264)
+            : undefined;
         const videoBusy = activeVideoRef.current && !activeVideoRef.current.ended && activeVideoRef.current.isConnected !== false && layersRef.current.some((l) => l.img === activeVideoRef.current);
         if (clipUrl && phaseIdx !== lastClipPhaseRef.current && !videoBusy) {
           lastClipPhaseRef.current = phaseIdx;
@@ -788,7 +800,6 @@ export function AiImageLayer({
   // Burns scale; bass leans into the pan rate. Smoothed here (one-pole)
   // so imagery swells with phrases, never twitches — meditative by law.
   const audioRef = useRef({ amp: 0, bass: 0 });
-  const ditherTileRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
     const a = audioRef.current;
     a.amp = a.amp * 0.9 + (audioAmplitude || 0) * 0.1;
@@ -944,34 +955,6 @@ export function AiImageLayer({
         ctx.drawImage(layer.img, dx, dy, sw, sh);
       }
 
-      // Deband dither (2026-09-25): smooth dark gradients in JPEG/H.264 media
-      // band visibly at 8 bits. A STATIC fine noise tile at 1.2% overlay
-      // breaks the contours without reading as grain (film grain remains
-      // banned as an aesthetic — this is sub-perceptual dithering).
-      if (!ditherTileRef.current) {
-        const t = document.createElement("canvas");
-        t.width = 128; t.height = 128;
-        const tctx = t.getContext("2d");
-        if (tctx) {
-          const id = tctx.createImageData(128, 128);
-          for (let p = 0; p < id.data.length; p += 4) {
-            const v = 118 + Math.floor(Math.random() * 20);
-            id.data[p] = v; id.data[p + 1] = v; id.data[p + 2] = v; id.data[p + 3] = 255;
-          }
-          tctx.putImageData(id, 0, 0);
-          ditherTileRef.current = t;
-        }
-      }
-      if (ditherTileRef.current && layers.length > 0) {
-        ctx.globalCompositeOperation = "overlay";
-        ctx.globalAlpha = 0.012 * 2;
-        const tile = ditherTileRef.current;
-        for (let ty = 0; ty < h; ty += 128) {
-          for (let tx = 0; tx < w; tx += 128) {
-            ctx.drawImage(tile, tx, ty);
-          }
-        }
-      }
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
       animRef.current = requestAnimationFrame(render);
