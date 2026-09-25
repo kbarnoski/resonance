@@ -75,8 +75,20 @@ if [ -z "$ok" ]; then
   osascript -e 'display notification "Server not up yet — Chrome will keep retrying. Check /tmp/tramokyo-server.log if this persists." with title "Tramokyo"' >/dev/null 2>&1
 fi
 
+# Kill any prior kiosk-profile Chrome first. If one is still alive,
+# `open -na` hands the URL to the EXISTING process, which ignores
+# --kiosk entirely — result: a second tab in a normal window plus a
+# zombie tab (the doubled-audio incident, and the two-tabs-not-
+#-fullscreen symptom). A fresh process is the only way the kiosk
+# flags apply. Regular Chrome (default profile) is untouched.
+pkill -f "user-data-dir=$HOME/.tramokyo-chrome" 2>/dev/null || true
+sleep 1
+
 open -na "Google Chrome" --args \
   --user-data-dir="$HOME/.tramokyo-chrome" \
   --kiosk \
+  --no-first-run \
+  --no-default-browser-check \
+  --disable-session-crashed-bubble \
   --autoplay-policy=no-user-gesture-required \
   "file://$APP_DIR/scripts/tramokyo-bootstrap.html"
