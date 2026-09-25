@@ -454,7 +454,7 @@ export function AiImageLayer({
           lastClipPhaseRef.current = phaseIdx;
           const v = document.createElement("video");
           v.muted = true;
-          v.loop = true;
+          v.loop = false; // play once, hold last frame — loop restarts visibly jump
           v.playsInline = true;
           v.preload = "auto";
           v.src = clipUrl;
@@ -788,6 +788,7 @@ export function AiImageLayer({
   // Burns scale; bass leans into the pan rate. Smoothed here (one-pole)
   // so imagery swells with phrases, never twitches — meditative by law.
   const audioRef = useRef({ amp: 0, bass: 0 });
+  const ditherTileRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
     const a = audioRef.current;
     a.amp = a.amp * 0.9 + (audioAmplitude || 0) * 0.1;
@@ -943,6 +944,34 @@ export function AiImageLayer({
         ctx.drawImage(layer.img, dx, dy, sw, sh);
       }
 
+      // Deband dither (2026-09-25): smooth dark gradients in JPEG/H.264 media
+      // band visibly at 8 bits. A STATIC fine noise tile at 1.2% overlay
+      // breaks the contours without reading as grain (film grain remains
+      // banned as an aesthetic — this is sub-perceptual dithering).
+      if (!ditherTileRef.current) {
+        const t = document.createElement("canvas");
+        t.width = 128; t.height = 128;
+        const tctx = t.getContext("2d");
+        if (tctx) {
+          const id = tctx.createImageData(128, 128);
+          for (let p = 0; p < id.data.length; p += 4) {
+            const v = 118 + Math.floor(Math.random() * 20);
+            id.data[p] = v; id.data[p + 1] = v; id.data[p + 2] = v; id.data[p + 3] = 255;
+          }
+          tctx.putImageData(id, 0, 0);
+          ditherTileRef.current = t;
+        }
+      }
+      if (ditherTileRef.current && layers.length > 0) {
+        ctx.globalCompositeOperation = "overlay";
+        ctx.globalAlpha = 0.012 * 2;
+        const tile = ditherTileRef.current;
+        for (let ty = 0; ty < h; ty += 128) {
+          for (let tx = 0; tx < w; tx += 128) {
+            ctx.drawImage(tile, tx, ty);
+          }
+        }
+      }
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
       animRef.current = requestAnimationFrame(render);

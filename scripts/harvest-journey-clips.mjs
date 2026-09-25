@@ -48,7 +48,7 @@ const manifest = existsSync(manifestPath)
   : {};
 
 let spent = 0;
-const COST_PER_CLIP = 0.25; // Wan 2.6 ≈ $0.05/s × 5s
+const COST_PER_CLIP = 0.5; // Wan 2.6 1080p ≈ $0.05/s × 10s
 
 for (const jid of journeyIds) {
   const journey = app.JOURNEYS.find((j) => j.id === jid);
@@ -90,8 +90,8 @@ for (const jid of journeyIds) {
         input: {
           prompt,
           image_url: `data:image/jpeg;base64,${b64}`,
-          duration: "5",
-          resolution: "720p",
+          duration: "10",
+          resolution: "1080p",
           negative_prompt: "text, watermark, captions, people, faces, jump cut, flicker",
           enable_prompt_expansion: false,
         },
