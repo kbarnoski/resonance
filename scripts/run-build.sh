@@ -11,7 +11,14 @@
 # limit forbids it, and a clean first attempt exits immediately.
 set -uo pipefail
 
-ulimit -n 10240 2>/dev/null || true
+# macOS ONLY: its pathological default fd limits break Next's static
+# workers (spawn EBADF) and an explicit sane limit fixes it. On Linux/
+# Vercel the defaults are correct and clamping them causes the opposite
+# failure (EMFILE during static generation — broke prod deploys
+# 2026-09-25, run "dream: cycle 1259"). Never apply it off-Darwin.
+if [ "$(uname)" = "Darwin" ]; then
+  ulimit -n 10240 2>/dev/null || true
+fi
 export NODE_OPTIONS="${NODE_OPTIONS:---max-old-space-size=4096}"
 
 for attempt in 1 2 3; do
