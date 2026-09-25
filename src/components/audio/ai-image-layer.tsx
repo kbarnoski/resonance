@@ -75,7 +75,12 @@ const GEN_INTERVAL_MIN_BASE = 6500;
 const GEN_INTERVAL_MAX_BASE = 7500;
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
 const PROMPT_DEBOUNCE = 1500; // 1.5s debounce on prompt changes
-const KEN_BURNS_DURATION = 50; // seconds — full motion cycle
+// Ken Burns rebuilt 2026-09-25 (frontier deep-dive): the old 50s cycle on a
+// ~20s layer life yielded ~1.5% zoom — imperceptible, "a slideshow". The
+// cycle now matches the layer's actual life so every image completes a
+// visible cinematic move (10-22% scale travel), and direction alternates
+// between push-in and pull-back for shot variety.
+const KEN_BURNS_DURATION = 22; // seconds — matches ~20s layer life
 // Layer count and concurrency are device-tier driven (see getTierProfile).
 // Resolved per-render via the tier profile so values stay in sync with the
 // rest of the perf budget (bloom, particles, gen cadence).
@@ -345,8 +350,14 @@ export function AiImageLayer({
     // Favor source-over — screen/lighten between layers can cause additive blow-out
     const roll = Math.random();
     const blendMode: GlobalCompositeOperation = roll < 0.65 ? "source-over" : roll < 0.85 ? "screen" : "lighten";
-    const scaleStart = 1.0 + Math.random() * 0.12; // 1.0 - 1.12
-    const scaleEnd = 1.04 + Math.random() * 0.16;  // 1.04 - 1.20
+    // Visible cinematic travel: 10-22% scale change per layer life, alternating
+    // push-in and pull-back. Both endpoints stay ≥1.06 so cover-fit always
+    // overflows and the pan never exposes an edge.
+    const travel = 0.10 + Math.random() * 0.12; // 10-22%
+    const pushIn = Math.random() < 0.6; // 60% push in, 40% pull back
+    const nearScale = 1.06 + Math.random() * 0.04; // 1.06-1.10
+    const scaleStart = pushIn ? nearScale : nearScale + travel;
+    const scaleEnd = pushIn ? nearScale + travel : nearScale;
     const panX = (Math.random() - 0.5) * 2;        // -1 to 1
     const panY = (Math.random() - 0.5) * 2;        // -1 to 1
 
@@ -725,6 +736,17 @@ export function AiImageLayer({
   const aiOnlyRef = useRef(aiOnly);
   useEffect(() => { aiOnlyRef.current = aiOnly; }, [aiOnly]);
 
+  // Audio → imagery (2026-09-25): the music finally touches the pictures.
+  // Amplitude breathes layer luminance and adds a micro push on the Ken
+  // Burns scale; bass leans into the pan rate. Smoothed here (one-pole)
+  // so imagery swells with phrases, never twitches — meditative by law.
+  const audioRef = useRef({ amp: 0, bass: 0 });
+  useEffect(() => {
+    const a = audioRef.current;
+    a.amp = a.amp * 0.9 + (audioAmplitude || 0) * 0.1;
+    a.bass = a.bass * 0.9 + (audioBass || 0) * 0.1;
+  }, [audioAmplitude, audioBass]);
+
   // 60fps render loop — smooth cross-dissolve compositing
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -826,14 +848,18 @@ export function AiImageLayer({
         if (layer.opacity <= 0.001 || !layer.img.complete) continue;
 
         ctx.globalCompositeOperation = i === 0 ? "source-over" : layer.blendMode;
-        ctx.globalAlpha = layer.opacity;
+        // Amplitude breathes luminance: quiet passages settle to ~92%,
+        // full phrases lift to 100% — a slow living swell, never a flicker.
+        const amp = audioRef.current.amp;
+        ctx.globalAlpha = Math.min(1, layer.opacity * (0.92 + amp * 0.1));
 
         // Ken Burns: uses createdTime (never reset) for perfectly smooth motion
         const layerAge = (now - layer.createdTime) / 1000;
         const kenBurnsT = Math.min(1, layerAge / KEN_BURNS_DURATION);
         // Ease the Ken Burns motion too for a dreamy feel
         const kenBurnsEased = easeInOutCubic(kenBurnsT);
-        const scale = layer.scaleStart + (layer.scaleEnd - layer.scaleStart) * kenBurnsEased;
+        // Micro push from amplitude (≤1.5%) rides on top of the authored move.
+        const scale = (layer.scaleStart + (layer.scaleEnd - layer.scaleStart) * kenBurnsEased) * (1 + amp * 0.015);
         const maxPan = (scale - 1) * 0.5;
         const panOffsetX = layer.panX * maxPan * kenBurnsEased * w;
         const panOffsetY = layer.panY * maxPan * kenBurnsEased * h;

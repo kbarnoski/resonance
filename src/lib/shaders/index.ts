@@ -686,6 +686,10 @@ export const MODE_META: ModeMeta[] = [
   { mode: "seabed", label: "Seabed", category: "3D Worlds" },
 
   { mode: "cage", label: "Cage", category: "3D Worlds" },
+  { mode: "field", label: "Star Field", category: "3D Worlds" },
+  { mode: "aurora", label: "Aurora Ribbons", category: "3D Worlds" },
+  { mode: "bonfire", label: "Bonfire", category: "3D Worlds" },
+  { mode: "lotus", label: "Lotus Field", category: "3D Worlds" },
   // Dark
   { mode: "umbra",    label: "Umbra",    category: "Dark" },
   { mode: "inferno",  label: "Inferno",  category: "Dark" },
@@ -884,6 +888,10 @@ export const MODES_3D: Set<string> = new Set([
   "cloud",
   "wave", "seabed",
   "cage",
+  // 2026-09-25: four finished scenes that were implemented but never
+  // registered — an 8,000-point nebula, a 5,000-point fire, ribbon aurora
+  // (3D geometry, not the banned image material), and a lotus field.
+  "field", "aurora", "bonfire", "lotus",
 ]);
 
 /** AI-only modes — no shader rendered, AI images are the sole visual */

@@ -1168,13 +1168,13 @@ export function SharedJourneyClient({
           {/* ── Primary shader: A/B buffer ──
               Two persistent layers swap roles. Only opacity changes — no remounting,
               no WebGL context destruction. Callback refs set initial opacity once. */}
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: MODES_AI.has(layerAMode) ? 0.6 : 1 }}>
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${MODES_AI.has(layerAMode) ? 0.6 : 1})` }}>
             <div ref={setLayerARef} style={{ position: "absolute", inset: 0 }}>
               {renderLayerContent(layerAMode, handleLayerAReady, idlePrimaryLayer === 'a')}
             </div>
           </div>
           {layerBMode && (
-            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: MODES_AI.has(layerBMode) ? 0.6 : 1 }}>
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${MODES_AI.has(layerBMode) ? 0.6 : 1})` }}>
               <div ref={setLayerBRef} style={{ position: "absolute", inset: 0 }}>
                 {renderLayerContent(layerBMode, handleLayerBReady, idlePrimaryLayer === 'b')}
               </div>

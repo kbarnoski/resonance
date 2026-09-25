@@ -50,12 +50,18 @@ export function AiOverlayElements({
    *  journey change so overlay elements don't snap-disappear; they
    *  drift away as the new journey's elements come in. */
   const purgeAll = useCallback(() => {
-    const FADE_MS = 1500;
+    const FADE_MS = 4000;
     for (const clone of activeClonesRef.current) {
       const el = clone.el;
       const styleEl = clone.styleEl;
-      // Override the keyframe animation with a smooth fade-to-zero.
+      // Freeze at the CURRENT animated opacity before killing the keyframe —
+      // killing the animation first snapped the element to opacity 1 for a
+      // frame (the "image drops out" pop Karel saw at every journey
+      // boundary, 2026-09-25). Capture → pin → reflow → then fade.
+      const currentOpacity = getComputedStyle(el).opacity;
       el.style.animation = "none";
+      el.style.opacity = currentOpacity;
+      void el.offsetWidth; // force reflow so the pin lands before the fade
       el.style.transition = `opacity ${FADE_MS}ms ease-out`;
       el.style.opacity = "0";
       setTimeout(() => {

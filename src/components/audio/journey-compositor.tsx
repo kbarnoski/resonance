@@ -4,6 +4,7 @@ import { useEffect, useRef, useMemo, useCallback, useState } from "react";
 import { AiImageLayer } from "./ai-image-layer";
 import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
+import { JourneyTrailsLayer } from "./journey-trails-layer";
 import { FlashAngel } from "./flash-angel";
 import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -12,6 +13,9 @@ import { getTierProfile } from "@/lib/audio/device-tier";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
+  /** Feedback-trails layer (frontier pilot) — luminous echoes of the live
+   *  composite. Set from the journey's `trails` flag; tier-gated inside. */
+  enableTrails?: boolean;
   audioAmplitude: number;
   audioBass: number;
   aiEnabled: boolean;
@@ -53,6 +57,7 @@ interface JourneyCompositorProps {
  */
 export function JourneyCompositor({
   frame,
+  enableTrails = false,
   audioAmplitude,
   audioBass,
   aiEnabled,
@@ -320,10 +325,21 @@ export function JourneyCompositor({
     }
   }, [approach, impulse, evtType, enableBassFlash]);
 
+  // colorTemperature (dead knob wired 2026-09-25): a whole-composite grade.
+  // 0.5 is neutral (no filter at all); warm phases pull amber, cool pull blue.
+  const ct = frame?.colorTemperature ?? 0.5;
+  const ctDev = ct - 0.5;
+  const gradeFilter = Math.abs(ctDev) < 0.05
+    ? undefined
+    : ctDev > 0
+      ? `sepia(${(ctDev * 0.5).toFixed(3)}) hue-rotate(${(-ctDev * 14).toFixed(1)}deg) saturate(${(1 + ctDev * 0.25).toFixed(3)})`
+      : `hue-rotate(${(-ctDev * 18).toFixed(1)}deg) saturate(${(1 - ctDev * 0.15).toFixed(3)})`;
+
   return (
     <div
       ref={rootRef}
       className="absolute inset-0"
+      style={gradeFilter ? { filter: gradeFilter } : undefined}
     >
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
@@ -355,6 +371,9 @@ export function JourneyCompositor({
           />
         </div>
       )}
+
+      {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
+      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.45} />}
 
       {/* Pre-activation glow — bloom buildup before bass hit (Ghost only) */}
       {enableBassFlash && approach > 0.1 && (
@@ -447,6 +466,7 @@ export function JourneyCompositor({
           audioAmplitude={audioAmplitude}
           particleDensity={(frame.particleDensity * (0.3 + 0.7 * lightScale)) * adaptiveScale * tier.particleScale}
           halation={Math.min(0.8, (frame.halation * lightScale) * adaptiveScale + eventReaction.halation)}
+          intensityMultiplier={frame.intensityMultiplier ?? 1}
           palette={frame.palette}
         />
       )}

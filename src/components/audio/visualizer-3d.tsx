@@ -69,18 +69,39 @@ interface AudioData {
 }
 
 function useAudioData(
-  _analyser: AnalyserLike,
-  _dataArray: Uint8Array<ArrayBuffer>
+  analyser: AnalyserLike,
+  dataArray: Uint8Array<ArrayBuffer>
 ): React.MutableRefObject<AudioData> {
   const ref = useRef<AudioData>({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
 
+  // 2026-09-25: the 3D scenes finally hear the music. Real FFT split with
+  // heavy one-pole smoothing (meditative, never twitchy), blended over a
+  // slow synthetic floor so silence still breathes; the sines alone were
+  // all these scenes ever received before, despite the wired uniforms.
   useFrame((state) => {
     const time = state.clock.elapsedTime;
     const s = ref.current;
-    s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
-    s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
-    s.treble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
-    s.amplitude = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
+    let bass = 0, mid = 0, treble = 0;
+    let live = false;
+    try {
+      if (analyser && dataArray && dataArray.length >= 64) {
+        analyser.getByteFrequencyData(dataArray);
+        let b = 0, m = 0, tr = 0;
+        for (let i = 0; i <= 5; i++) b += dataArray[i];
+        for (let i = 6; i <= 30; i++) m += dataArray[i];
+        for (let i = 31; i <= 63; i++) tr += dataArray[i];
+        bass = b / (6 * 255); mid = m / (25 * 255); treble = tr / (33 * 255);
+        live = bass + mid + treble > 0.005;
+      }
+    } catch { /* analyser detached — fall through to floor */ }
+    const floorB = 0.22 + 0.1 * Math.sin(time * 0.13);
+    const floorM = 0.18 + 0.08 * Math.sin(time * 0.17 + 1.0);
+    const floorT = 0.15 + 0.06 * Math.sin(time * 0.23 + 2.0);
+    const k = 0.06; // smoothing
+    s.bass += ((live ? Math.max(floorB, bass) : floorB) - s.bass) * k;
+    s.mid += ((live ? Math.max(floorM, mid) : floorM) - s.mid) * k;
+    s.treble += ((live ? Math.max(floorT, treble) : floorT) - s.treble) * k;
+    s.amplitude += (((s.bass + s.mid + s.treble) / 3) - s.amplitude) * k;
   });
 
   return ref;

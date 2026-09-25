@@ -1771,10 +1771,11 @@ export function VisualizerClient({
         audioBass={audioFeaturesRef.current.bass}
         aiEnabled={((journeyActive && aiImageEnabled) || isAiOnlyMode) && !hideImagery}
         aiPrompt={aiPrompt}
-        aiOnly={isAiOnlyMode}
+        aiOnly={isAiOnlyMode && !journeyActive /* 2026-09-25: a stored AI-only viz mode must not black-fill over a journey's shaders */}
         aiGenerating={isPlaying}
         journeyId={activeJourney?.id}
         enableBassFlash={activeJourney?.enableBassFlash}
+        enableTrails={activeJourney?.trails}
         localImageUrls={activeJourney?.localImageUrls}
       >
         {/* Shader layer */}

@@ -142,6 +142,7 @@ export type VisualizerMode =
   | "wave"
   | "seabed"
   | "cage"
+  | "field" | "aurora" | "bonfire" | "lotus" // 3D scenes registered 2026-09-25
   // AI Imagery
   | "dreamscape"
   | "visions"

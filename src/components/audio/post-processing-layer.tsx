@@ -18,6 +18,8 @@ interface PostProcessingLayerProps {
   audioAmplitude: number;     // 0-1
   particleDensity: number;    // 0-1
   halation: number;           // 0-1
+  /** Event-response gain — scales bloom/halation/particle energy (default 1) */
+  intensityMultiplier?: number;
   palette: {
     primary: string;
     accent: string;
@@ -54,6 +56,7 @@ export function PostProcessingLayer({
   audioAmplitude,
   particleDensity,
   halation,
+  intensityMultiplier = 1,
   palette,
 }: PostProcessingLayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -65,8 +68,8 @@ export function PostProcessingLayer({
 
   // Store all props in a ref — rAF loop reads from here instead of closure.
   // This prevents the effect from tearing down/recreating on every prop change.
-  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, palette });
-  propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, palette };
+  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, palette });
+  propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, palette };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -151,8 +154,12 @@ export function PostProcessingLayer({
       }
 
       // --- Bloom glow ---
-      if (pp.bloomIntensity > 0.2 && bloomGradient) {
-        const glowAlpha = (pp.bloomIntensity - 0.2) * 0.15 * (0.5 + pp.audioAmplitude * 0.5);
+      // 2026-09-25 frontier fix: the old (v-0.2)*0.15 curve peaked at alpha
+      // 0.075 and rendered nothing below v=0.2 — homeopathic. New curve is
+      // visible across the authored range and answers the music.
+      if (pp.bloomIntensity > 0.05 && bloomGradient) {
+        const gain = pp.intensityMultiplier ?? 1;
+        const glowAlpha = Math.min(0.4, pp.bloomIntensity * 0.32 * (0.45 + pp.audioAmplitude * 0.55) * gain);
         ctx.globalCompositeOperation = "screen";
         ctx.globalAlpha = glowAlpha;
         ctx.fillStyle = bloomGradient;
@@ -171,7 +178,7 @@ export function PostProcessingLayer({
           halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}80`);
           halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         }
-        const halAlpha = pp.halation * 0.12 * (0.6 + pp.audioAmplitude * 0.4);
+        const halAlpha = Math.min(0.3, pp.halation * 0.5 * (0.55 + pp.audioAmplitude * 0.45) * (pp.intensityMultiplier ?? 1));
         const cx = w * (0.5 + Math.sin(t * 0.3) * 0.1);
         const cy = h * (0.5 + Math.cos(t * 0.2) * 0.1);
         ctx.save();
@@ -185,7 +192,10 @@ export function PostProcessingLayer({
 
       // --- Particles ---
       if (pp.particleDensity > 0.02) {
-        const targetCount = Math.floor(pp.particleDensity * 60);
+        // Density now reads as authored: 0.3 → ~54 motes, 0.8 → ~144.
+        // Amplitude adds up to +40% population so crescendos visibly bloom.
+        const gain = pp.intensityMultiplier ?? 1;
+        const targetCount = Math.floor(pp.particleDensity * 180 * (0.8 + pp.audioAmplitude * 0.4) * gain);
         const particles = particlesRef.current;
 
         // Spawn new particles (capped per frame)
@@ -227,7 +237,7 @@ export function PostProcessingLayer({
           }
 
           // Single draw call per particle (no separate glow)
-          ctx.globalAlpha = pt.alpha * 0.5 * pp.particleDensity;
+          ctx.globalAlpha = Math.min(0.55, pt.alpha * (0.25 + pp.particleDensity * 0.4));
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.size * dpr, 0, Math.PI * 2);
           ctx.fill();
