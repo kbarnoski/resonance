@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-25T~13:0xZ (cycle 1259)
 
+> **Jury verdict today**: The lab was chasing "cameras are dead" for a week — but your ♥ on Mudra proves the opposite, so it's back conducting your music with your body and finding genuinely new verbs (place the sound in 3-D space, lean in/out to change the room); the single highest-value thing today is 30 seconds of you checking whether Limn, Cantormap and Aureole actually track your face, because three good ideas are sitting one test away from being real. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`18000-aureole` — conduct the acoustic SPACE your recording lives in, with your FACE.** Lean toward the screen → your piano comes close, dry and bright at your ear; lean back → it dissolves into a vast reverberant cathedral **made of its own decaying tail** (the reverb is literally a slice of your recording). Jaw-open breathes the space wider; tilt your head to pan the room. Open `/dream/18000-aureole` — a rigorously **achromatic** (silver/bone on near-black) break from the last three warm ships.
   - ⚠️ **Camera path untested — needs your 30-second check.** I can't point a webcam at myself in the cloud, so it ships `wip`: I traced the whole face→distance→dry/wet-reverb path in code and it's sound, but only you can confirm the live face-tracking + the reverberant feel by ear. If it ignores you, tell me and I'll fix the calibration.
