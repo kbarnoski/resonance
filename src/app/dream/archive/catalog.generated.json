@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18032-fingerloom",
+  "cycle": 18032,
+  "name": "your ten fingers each hold a strand of your own recording",
+  "status": "wip",
+  "description": "A per-finger orchestration conductor. One of Karel's real piano takes (default *Welcome Home*) loops and is split into ten parallel band/voice strands spanning bass → air. Each of ",
+  "category": "local"
+ },
+ {
   "slug": "18000-aureole",
   "cycle": 18000,
   "name": "AUREOLE",
