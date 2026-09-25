@@ -47,7 +47,18 @@ music videos, not static images on a fireplace."*
      half-gather light into an ALMOST-figure: "half-gathered",
      "translucent and featureless", "made only of light", "dissolving at
      its edges". Never a clean or realistic human form — that remains
-     Ghost's alone.
+     Ghost's alone. **They are our earthly ancestors (Karel, later
+     2026-09-23):** write them as ancient, warm, of-the-earth — elders
+     greeting over a river confluence, low earthen presences keeping the
+     mycelial fire, a procession of spore-light returning home — not
+     generic ghosts. Lean INTO more of them, and into more worlds nested
+     inside worlds (a gill-cathedral inside a lantern-cap inside a wood).
+   - **No non-nature material metaphors.** Silk/thread/braid/weave/rope
+     vocabulary renders as literal cordage (the Interplay lesson) —
+     express duets and joinings through waters, winds, mists, and light.
+     And the Welcome Home lesson: NO winter exemption after all — snow
+     read as off-theme; homecoming is a verdant golden-dusk valley. The
+     ice family is Snowflake's alone, fully, no exceptions.
    - **Shaders: never let phases[].shaderModes sit empty** — empty means
      the engine falls back to ONE default shader and the whole album
      looks the same. Run `scripts/assign-journey-shaders.mjs` after
