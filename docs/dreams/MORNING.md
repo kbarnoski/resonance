@@ -1,23 +1,14 @@
-# Morning digest — last updated 2026-09-24T~01:2xZ (17:45 PT fire)
+# Morning digest — last updated 2026-09-25T~13:0xZ (cycle 1259)
 
-> **Note:** a fresh `JURY.md` (2026-09-24) also landed this morning — but it was written *before* the mudra-love below was spotted, so its "ask what earns a tap / ship achromatic + score-following" steer is now partly answered: **a camera piece earned the tap.** Read this digest first, then `docs/dreams/JURY.md` for the (pre-love) verdict.
+## New since yesterday
+- **`18000-aureole` — conduct the acoustic SPACE your recording lives in, with your FACE.** Lean toward the screen → your piano comes close, dry and bright at your ear; lean back → it dissolves into a vast reverberant cathedral **made of its own decaying tail** (the reverb is literally a slice of your recording). Jaw-open breathes the space wider; tilt your head to pan the room. Open `/dream/18000-aureole` — a rigorously **achromatic** (silver/bone on near-black) break from the last three warm ships.
+  - ⚠️ **Camera path untested — needs your 30-second check.** I can't point a webcam at myself in the cloud, so it ships `wip`: I traced the whole face→distance→dry/wet-reverb path in code and it's sound, but only you can confirm the live face-tracking + the reverberant feel by ear. If it ignores you, tell me and I'll fix the calibration.
+- Same cycle explored **2 more** (built, banked, not shipped — see IDEAS §1259): `18032-plumbline` (full-body wingspan→swell — cashes your "do full body too" ask, RESURRECT-NEXT) and `18064-cantus` (two hands re-harmonize your take live, parallel-organum).
 
-**Open this first:** [/dream/17968-cantormap](https://getresonance.vercel.app/dream/17968-cantormap)
+## Why this piece / what drove it
+- **Your `17536-mudra` love is still the newest ♥** — it keeps the embodied-camera lane open (per your 2026-09-16 directive). So I stayed in the loved lane but conducted a genuinely NEW verb (**reverberance / distance**, not timbre/time/spatialization) and made it achromatic to break the warm-amber streak the jury flagged. cantormap (yesterday's ship) is still awaiting your review.
 
-## The big news: your love finally landed — and it landed on a CAMERA piece
-- The votes API now shows **`17536-mudra` loved** — your first ♥ on a 17xxx piece since `hall` (~2.5 weeks / ~16 pieces). It's a **camera + gesture** conductor. That single tap **falsifies** the premise the last *five* juries built on ("13+ ships, zero love → camera is dead, pivot to data"). Your whole loved-recent set is the same family: `canon`, `headnave`, `duetlink`, `tensethread`, now `mudra`.
-- So I did the honest thing and **went back to the lane you actually love** — embodied conducting of your own recordings — instead of guessing a 17th data/warm piece. (This overrides the jury's camera ban; a real ♥ from you outranks the jury.)
-
-## New since yesterday — Cantormap
-- **Your two hands grab the voices of your own recording and move them around your head in real 3D.** One take is split into 4 band-voices, each on its own HRTF panner; **pinch pulls a voice near and loud, hands wide scatter the field, hands together collapse it to an intimate centre.** The conducted parameter is *where your piano lives in the room* — a parameter no prior piece touched (mudra did timbre/tempo, canon did counterpoint).
-- Warm amber-gold WebGL2 orbs leave light-trails as they move. Off every other live ban (no three.js, no granular, no violet).
-
-## ⏱️ The one check I can't do from the cloud (30 seconds)
-- **Does the webcam hand-tracking actually respond, and does moving a voice around your head *sound* spatial in headphones?** No camera/GPU/speakers here, so I shipped it **`wip`, not "working"** — exactly the honesty gate you asked for after bodycast. If it tracks and the HRTF feels real, this is the one to deepen.
-
-## Also explored (banked, one rebuild from a ship — IDEAS §1258)
-- **Aureole** — an **achromatic** face+breath conductor: *lean in* pulls the recording intimate & dry, *lean back* opens a cathedral of reverb; mouth-open swells it. RESURRECT-NEXT to break the warm streak.
-- **Plumbline** — a **full-body** conductor (you asked for full-body too): arms wide = a great dynamic swell, reach up = it brightens, lean into a step = it presses forward.
-
-## Open question for you
-- If Cantormap's camera path works for you, do you want the next cycles to **stay in this embodied-conducting lane** (aureole → plumbline → deepen mudra/canon) now that we know it's what earns your ♥? One word back steers the whole next week.
+## Open questions for Karel
+1. **Do the camera pieces actually work on your desk webcam?** aureole + cantormap both ship `wip` because I can't verify them headless. A 30-sec check on each tells me whether to keep deepening this lane or pivot.
+2. **`commons` (WebGPU multi-user room) is still un-deepened after 3 juries** — it's the strongest concept in the lab but impossible for me to fill/review solo at 06:30. Worth a cycle if you'll co-drive it; otherwise I keep deferring it and should stop pretending I'll get to it alone.
+3. The jury's honest alternative if the camera lane keeps not-landing: a **score-follower** (your take follows YOU) — finger-testable on your phone, a real lab-first, off the camera. Want me to build that next instead of a 4th camera piece?

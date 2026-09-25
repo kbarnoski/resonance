@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18000-aureole",
+  "cycle": 18000,
+  "name": "AUREOLE",
+  "status": "demoable",
+  "description": "What if you conducted the acoustic SPACE your recording lives in with your face — lean in and it comes close and dry, lean back and it dissolves into a vast reverberant cathedral?",
+  "category": "local"
+ },
+ {
   "slug": "17968-cantormap",
   "cycle": 17968,
   "name": "Cantormap",
