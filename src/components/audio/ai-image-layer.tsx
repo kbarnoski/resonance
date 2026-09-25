@@ -42,7 +42,9 @@ interface AiImageLayerProps {
 }
 
 interface ImageLayer {
-  img: HTMLImageElement;
+  /** Still image OR a living video loop (Wave 2, 2026-09-25) — canvas
+   *  drawImage handles both; videos are muted, looping, playsInline. */
+  img: HTMLImageElement | HTMLVideoElement;
   opacity: number;
   state: "fading-in" | "peak" | "fading-out";
   /** Time when fade state last changed — used for fade progress */
@@ -159,6 +161,19 @@ export function AiImageLayer({
   localImageUrls,
 }: AiImageLayerProps) {
   const [packUrls, setPackUrls] = useState<string[] | null>(null);
+  // ── Living video loops (Wave 2 pilot) ──
+  // /tramokyo-pack/local-clips.json maps journeyId → { phaseIdx: clipUrl }.
+  // Static file in the pack — offline-safe, 404s to null online.
+  const clipsRef = useRef<Record<string, Record<string, string>> | null>(null);
+  const lastClipPhaseRef = useRef<number>(-1);
+  const activeVideoRef = useRef<HTMLVideoElement | null>(null);
+  useEffect(() => {
+    if (!isPackActive()) return;
+    fetch("/tramokyo-pack/local-clips.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((m) => { clipsRef.current = m; })
+      .catch(() => { clipsRef.current = null; });
+  }, []);
   const hasPropLocalImages = Array.isArray(localImageUrls) && localImageUrls.length > 0;
   useEffect(() => {
     if (hasPropLocalImages || !journeyId) return;
@@ -244,6 +259,7 @@ export function AiImageLayer({
       // over journey B until progress crosses into slice 1.
       lastPackIndexRef.current = -1;
       localImageIndexRef.current = 0;
+      lastClipPhaseRef.current = -1; // hero clips re-arm per journey
 
       // Installation (Tramokyo): NEVER purge to black between journeys —
       // the previous journey's imagery holds until the new journey's
@@ -296,9 +312,10 @@ export function AiImageLayer({
   // Push new image onto the layer stack — keeps 2-3 images visible simultaneously.
   // Only the OLDEST layer fades out when at capacity; recent layers stay at peak.
   // This creates a sense of video — imagery is always moving and always in transition.
-  const pushImage = useCallback((img: HTMLImageElement) => {
+  const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement) => {
     const service = getRealtimeImageService();
-    service.cacheImage(promptRef.current, img);
+    // Only stills enter the LRU cache — videos are pack-local loops.
+    if ("complete" in img) service.cacheImage(promptRef.current, img);
 
     // Signal parent that first AI image is ready (for intro gating)
     if (!firstImageFiredRef.current) {
@@ -418,6 +435,36 @@ export function AiImageLayer({
         loadImage(urls[idx])
           .then((img) => pushImage(img))
           .catch(() => { /* broken URL, skip */ });
+      }
+
+      // ── Hero video loops (Wave 2 pilot): once per phase, if the pack
+      // carries a clip for the current phase, push it as a living layer.
+      // One video at a time; high-tier only (decode cost).
+      const clips = journeyId ? clipsRef.current?.[journeyId] : null;
+      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
+        const posSec = progress * duration;
+        let phaseIdx = -1;
+        for (let i = 0; i < journeyPhases.length; i++) {
+          const ph = journeyPhases[i] as { start?: number; end?: number };
+          if (typeof ph.start === "number" && typeof ph.end === "number" && posSec >= ph.start && posSec < ph.end) { phaseIdx = i; break; }
+        }
+        const clipUrl = phaseIdx >= 0 ? clips[String(phaseIdx)] : undefined;
+        const videoBusy = activeVideoRef.current && !activeVideoRef.current.ended && activeVideoRef.current.isConnected !== false && layersRef.current.some((l) => l.img === activeVideoRef.current);
+        if (clipUrl && phaseIdx !== lastClipPhaseRef.current && !videoBusy) {
+          lastClipPhaseRef.current = phaseIdx;
+          const v = document.createElement("video");
+          v.muted = true;
+          v.loop = true;
+          v.playsInline = true;
+          v.preload = "auto";
+          v.src = clipUrl;
+          v.addEventListener("canplay", () => {
+            activeVideoRef.current = v;
+            v.play().catch(() => { /* autoplay policy — layer just holds first frame */ });
+            pushImage(v);
+          }, { once: true });
+          v.load();
+        }
       }
       if (!shouldAttemptLiveOverlay()) return;
     }
@@ -827,6 +874,10 @@ export function AiImageLayer({
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);
           if (rawProgress >= 1) {
+            const media = layers[i].img;
+            if (!("complete" in media)) {
+              try { (media as HTMLVideoElement).pause(); (media as HTMLVideoElement).removeAttribute("src"); (media as HTMLVideoElement).load(); } catch { /* torn down */ }
+            }
             layers.splice(i, 1);
             continue;
           }
@@ -845,7 +896,10 @@ export function AiImageLayer({
       // long one (center-cropped), which matches object-fit: cover.
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
-        if (layer.opacity <= 0.001 || !layer.img.complete) continue;
+        const ready = "complete" in layer.img
+          ? (layer.img as HTMLImageElement).complete
+          : (layer.img as HTMLVideoElement).readyState >= 2;
+        if (layer.opacity <= 0.001 || !ready) continue;
 
         ctx.globalCompositeOperation = i === 0 ? "source-over" : layer.blendMode;
         // Amplitude breathes luminance: quiet passages settle to ~92%,
@@ -865,8 +919,9 @@ export function AiImageLayer({
         const panOffsetY = layer.panY * maxPan * kenBurnsEased * h;
 
         // Cover-fit: fill canvas without distorting the image's own aspect.
-        const imgW = layer.img.naturalWidth || layer.img.width || 1;
-        const imgH = layer.img.naturalHeight || layer.img.height || 1;
+        const isVideo = !("complete" in layer.img);
+        const imgW = (isVideo ? (layer.img as HTMLVideoElement).videoWidth : (layer.img as HTMLImageElement).naturalWidth) || layer.img.width || 1;
+        const imgH = (isVideo ? (layer.img as HTMLVideoElement).videoHeight : (layer.img as HTMLImageElement).naturalHeight) || layer.img.height || 1;
         const imgAspect = imgW / imgH;
         const canvasAspect = w / h;
         let baseW: number;
