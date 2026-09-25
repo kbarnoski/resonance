@@ -135,6 +135,8 @@ export interface VisualizerCoreProps {
   journeyAccent?: string | null;
   /** When true, shaders use smooth sine waves instead of audio reactivity */
   smoothMotion?: boolean;
+  /** Music-paced shader clock (see ShaderVisualizer.tempoFlow) */
+  tempoFlow?: boolean;
   /** Sign out handler */
   onSignOut?: () => void;
   /** Cycle to previous shader */
@@ -207,6 +209,7 @@ export function ShaderVisualizer({
   fragShader,
   style,
   smoothMotion = false,
+  tempoFlow = false,
   paused = false,
   onReady,
 }: {
@@ -216,6 +219,11 @@ export function ShaderVisualizer({
   style?: React.CSSProperties;
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
+  /** Music-paced time dilation (2026-09-25, Karel): the shader CLOCK slows
+   *  and quickens with the track's energy — lines travel at the music's
+   *  pace — while the animation itself stays on smooth curves. No
+   *  parameter fidget, no reacting-while-animating. */
+  tempoFlow?: boolean;
   /** When true, suspend the draw loop (context + compiled program are kept).
    *  Used for A/B buffer layers parked at opacity ≈ 0 — an invisible layer
    *  shouldn't burn a full-screen fragment pass every frame. */
@@ -242,6 +250,8 @@ export function ShaderVisualizer({
   }, []);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
+  const tempoFlowRef = useRef(tempoFlow);
+  const tempoAmpRef = useRef(0.3); // seconds-scale smoothed energy
   const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -299,6 +309,7 @@ export function ShaderVisualizer({
   useEffect(() => {
     smoothMotionRef.current = smoothMotion;
   }, [smoothMotion]);
+  useEffect(() => { tempoFlowRef.current = tempoFlow; }, [tempoFlow]);
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
@@ -370,7 +381,22 @@ export function ShaderVisualizer({
       }
       const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
       lastFrameTime = now;
-      cumTime += dt;
+      if (tempoFlowRef.current && analyser && dataArray) {
+        // Ultra-smoothed energy (≈3s time constant) → clock rate 0.65-1.35×.
+        // The pace of the piece becomes the pace of the light; individual
+        // notes never twitch the picture.
+        try {
+          analyser.getByteFrequencyData(dataArray);
+          let total = 0;
+          for (let i = 0; i < dataArray.length; i++) total += dataArray[i];
+          const raw = total / (dataArray.length * 255);
+          tempoAmpRef.current += (raw - tempoAmpRef.current) * Math.min(1, dt / 3);
+        } catch { /* analyser detached */ }
+        const rate = 0.65 + Math.min(1, tempoAmpRef.current * 2.2) * 0.7;
+        cumTime += dt * rate;
+      } else {
+        cumTime += dt;
+      }
       const time = cumTime;
 
       // ── Async compilation state machine ──
@@ -617,6 +643,7 @@ export function VisualizerCore({
   onSwitchToVisualize,
   journeyAccent,
   smoothMotion: smoothMotionProp,
+  tempoFlow: tempoFlowProp,
   onSignOut,
   onPrevShader,
   onNextShader,
@@ -1154,7 +1181,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} paused={layerPaused} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 
@@ -1206,6 +1233,7 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerAMode as VisualizerMode]!}
                 smoothMotion={smoothMotionProp ?? false}
+                tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerAReady}
               />
             </div>
@@ -1219,6 +1247,7 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerBMode as VisualizerMode]!}
                 smoothMotion={smoothMotionProp ?? false}
+                tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerBReady}
               />
             </div>
@@ -1234,6 +1263,7 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
                 smoothMotion={smoothMotionProp ?? false}
+                tempoFlow={tempoFlowProp ?? false}
                 onReady={handleTertiaryShaderReady}
               />
             </div>

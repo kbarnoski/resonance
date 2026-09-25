@@ -136,12 +136,19 @@ export function PostProcessingLayer({
       const sizeKey = `${w}x${h}`;
       if (gradientSizeKey !== sizeKey) {
         gradientSizeKey = sizeKey;
+        // Eased multi-stop gradients (2026-09-25): two-stop linear ramps over
+        // half the screen band visibly at 8-bit ("looks cheap and low res" —
+        // Karel). Smoothstep-spaced stops keep the derivative continuous, which
+        // is what kills the visible banding contours.
+        const ease = (t: number) => t * t * (3 - 2 * t);
         vigGradient = ctx.createRadialGradient(w / 2, h / 2, w * 0.3, w / 2, h / 2, w * 0.8);
-        vigGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-        vigGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+        for (let i = 0; i <= 8; i++) {
+          vigGradient.addColorStop(i / 8, `rgba(0,0,0,${ease(i / 8).toFixed(4)})`);
+        }
         bloomGradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.5);
-        bloomGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-        bloomGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        for (let i = 0; i <= 8; i++) {
+          bloomGradient.addColorStop(i / 8, `rgba(255,255,255,${(1 - ease(i / 8)).toFixed(4)})`);
+        }
         halGradient = null; // size changed — rebuild on next use
       }
 
@@ -175,7 +182,10 @@ export function PostProcessingLayer({
           halKey = paletteKey;
           halGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, w * 0.6);
           halGradient.addColorStop(0, `${hex6(pp.palette.glow)}ff`);
+          halGradient.addColorStop(0.25, `${hex6(pp.palette.glow)}b8`);
           halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}80`);
+          halGradient.addColorStop(0.75, `${hex6(pp.palette.accent)}38`);
+          halGradient.addColorStop(0.92, `${hex6(pp.palette.accent)}10`);
           halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         }
         const halAlpha = Math.min(0.3, pp.halation * 0.5 * (0.55 + pp.audioAmplitude * 0.45) * (pp.intensityMultiplier ?? 1));

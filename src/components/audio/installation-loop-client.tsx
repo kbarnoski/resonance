@@ -154,6 +154,25 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
 
+  // ── Singleton guard (2026-09-25): Karel saw THREE loop tabs after
+  // exiting fullscreen — duplicate instances double audio and fight for
+  // the projector. Newest instance always wins: every mount broadcasts a
+  // claim; any older tab that hears a newer claim immediately silences
+  // itself and leaves for about:blank (audio dies with the page).
+  useEffect(() => {
+    if (typeof BroadcastChannel === "undefined") return;
+    const myClaim = Date.now() + Math.random();
+    const bc = new BroadcastChannel("tramokyo-loop-singleton");
+    bc.onmessage = (e) => {
+      if (e.data?.type === "claim" && e.data.claim > myClaim) {
+        try { bc.close(); } catch { /* already closed */ }
+        window.location.replace("about:blank");
+      }
+    };
+    bc.postMessage({ type: "claim", claim: myClaim });
+    return () => { try { bc.close(); } catch { /* noop */ } };
+  }, []);
+
   // Operator program jump (phone remote "Start from" buttons) — restart
   // the loop at a given program's intro, from ANY phase. Mirrors the
   // credits→next-program transition so audio teardown, ?start offsets,

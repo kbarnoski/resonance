@@ -38,8 +38,8 @@ export function JourneyTrailsLayer({
 
     const SCALE = 0.5; // half-res buffer — echoes are soft by nature
     const FPS_MS = 1000 / 30;
-    const DECAY = 0.055; // per-frame history erase — ~1.2s visible tail
-    const FEED = 0.14; // per-frame accumulation of the live composite
+    const DECAY = 0.045; // per-frame history erase — ~1.2s visible tail
+    const FEED = 0.22; // per-frame accumulation of the live composite
     let last = 0;
 
     function render(now: number) {
@@ -64,8 +64,11 @@ export function JourneyTrailsLayer({
       // 2) feed the live composite (sibling canvases in the compositor)
       const parent = canvas.parentElement;
       if (parent) {
+        // Only 2D-canvas sources marked data-trail-src — WebGL canvases with
+        // preserveDrawingBuffer:false read back blank, which is why the
+        // first pass was nearly invisible (Karel: "not sure I noticed").
         const sources = parent.querySelectorAll<HTMLCanvasElement>(
-          "canvas:not([data-trails])"
+          "canvas[data-trail-src]"
         );
         ctx.globalCompositeOperation = "lighter";
         ctx.globalAlpha = FEED;

@@ -373,7 +373,7 @@ export function JourneyCompositor({
       )}
 
       {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
-      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.45} />}
+      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.6} />}
 
       {/* Pre-activation glow — bloom buildup before bass hit (Ghost only) */}
       {enableBassFlash && approach > 0.1 && (

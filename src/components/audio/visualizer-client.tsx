@@ -1865,6 +1865,7 @@ export function VisualizerClient({
           onSwitchToVisualize={handleSwitchToVisualize}
           journeyAccent={activeTheme?.palette?.accent ?? activeRealm?.palette?.accent ?? null}
           smoothMotion={activeJourney ? !activeJourney.audioReactive : false}
+        tempoFlow={activeJourney?.tempoFlow ?? false}
           onSignOut={handleSignOut}
           onPrevShader={() => useAudioStore.getState().cycleVizModePrev()}
           onNextShader={() => useAudioStore.getState().cycleVizMode()}

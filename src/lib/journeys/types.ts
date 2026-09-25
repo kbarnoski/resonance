@@ -144,6 +144,10 @@ export interface Journey {
   /** Feedback-trails layer pilot (2026-09-25) — luminous echo buffer over
    *  the live composite. High/installation tier only. */
   trails?: boolean;
+  /** Music-paced shader clock: energy dilates u_time (0.65-1.35×) while
+   *  animation stays on smooth curves. Karel's preferred reactivity —
+   *  pace, not parameter fidget. */
+  tempoFlow?: boolean;
   /** Seconds before track end to trigger "Journey Complete" (default 0.5).
    *  Use for tracks with silence at the end so completion aligns with the music. */
   completionOffset?: number;
