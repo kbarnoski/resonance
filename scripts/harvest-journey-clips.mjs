@@ -7,6 +7,9 @@
 //
 // Usage: node --env-file=.env.local scripts/harvest-journey-clips.mjs inferno first-snow
 import { fal } from "@fal-ai/client";
+import { createClient } from "@supabase/supabase-js";
+import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { build } from "esbuild";
 import { mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -14,7 +17,27 @@ import path from "node:path";
 import os from "node:os";
 import { pathToFileURL } from "node:url";
 
+const require = createRequire(import.meta.url);
+const FFMPEG = require("ffmpeg-static");
 const ROOT = process.cwd();
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+
+function encodeDual(rawPath, outBase) {
+  const opts = { stdio: "pipe", maxBuffer: 32 * 1024 * 1024 };
+  execFileSync(FFMPEG, ["-hide_banner", "-nostats", "-loglevel", "error", "-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
+    "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p",
+    "-movflags", "+faststart", "-an", `${outBase}.mp4`], opts);
+  execFileSync(FFMPEG, ["-hide_banner", "-nostats", "-loglevel", "error", "-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
+    "-c:v", "libx265", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p10le",
+    "-tag:v", "hvc1", "-movflags", "+faststart", "-an", `${outBase}.hevc.mp4`], opts);
+}
+
+async function resolveJourney(jid, JOURNEYS) {
+  const builtin = JOURNEYS.find((j) => j.id === jid);
+  if (builtin) return builtin;
+  const { data } = await supabase.from("journeys").select("id, name, phases").eq("id", jid).single();
+  return data ?? null;
+}
 fal.config({ credentials: process.env.FAL_KEY });
 
 const journeyIds = process.argv.slice(2).filter((a) => !a.startsWith("--"));
@@ -24,7 +47,7 @@ if (journeyIds.length === 0) {
 }
 
 // Bundle journeys.ts for phases + allocation weights (same trick as image harvest)
-const outfile = path.join(os.tmpdir(), ".tmp-clips-bundle.mjs");
+const outfile = path.join(ROOT, ".tmp-clips-bundle.mjs");
 await build({
   stdin: {
     contents: `
@@ -56,7 +79,7 @@ let spent = 0;
 const COST_PER_CLIP = 0.5; // Wan 2.6 1080p ≈ $0.05/s × 10s
 
 for (const jid of journeyIds) {
-  const journey = app.JOURNEYS.find((j) => j.id === jid);
+  const journey = await resolveJourney(jid, app.JOURNEYS);
   if (!journey) { console.warn(`skip: no built-in journey ${jid}`); continue; }
   const imgDir = path.join(PACK, "images", "journeys", jid);
   if (!existsSync(imgDir)) { console.warn(`skip: no pack images for ${jid}`); continue; }
@@ -71,7 +94,8 @@ for (const jid of journeyIds) {
   for (let pi = 0; pi < journey.phases.length; pi++) {
     const firstIdx = cursor;
     cursor += counts[pi];
-    const clipPath = path.join(clipDir, `phase-${pi}.mp4`);
+    const outBase = path.join(clipDir, `phase-${pi}`);
+    const clipPath = `${outBase}.mp4`;
     const publicUrl = `/tramokyo-pack/clips/journeys/${jid}/phase-${pi}.mp4`;
     if (existsSync(clipPath)) {
       const hevcPath = clipPath.replace(/\.mp4$/, ".hevc.mp4");
@@ -108,13 +132,19 @@ for (const jid of journeyIds) {
       const url = result?.data?.video?.url ?? result?.video?.url;
       if (!url) throw new Error("no video url in result");
       const res = await fetch(url);
-      const buf = Buffer.from(await res.arrayBuffer());
-      await writeFile(clipPath, buf);
+      const raw = `${outBase}.raw.mp4`;
+      await writeFile(raw, Buffer.from(await res.arrayBuffer()));
+      try {
+        encodeDual(raw, outBase);
+      } finally {
+        await rm(raw, { force: true });
+      }
       spent += COST_PER_CLIP;
-      manifest[jid][String(pi)] = publicUrl;
-      console.log(`  ✓ ${jid} phase ${pi} — ${(buf.length / 1e6).toFixed(1)}MB ($${spent.toFixed(2)})`);
+      manifest[jid][String(pi)] = { h264: publicUrl, hevc: publicUrl.replace(/\.mp4$/, ".hevc.mp4") };
+      console.log(`  ✓ ${jid} phase ${pi} ($${spent.toFixed(2)})`);
     } catch (err) {
       console.error(`  ✗ ${jid} phase ${pi}: ${err.message ?? err}`);
+      if (err.stderr) console.error(String(err.stderr).slice(-1500));
     }
   }
 }

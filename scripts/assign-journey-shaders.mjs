@@ -16,7 +16,7 @@ import { pathToFileURL } from "node:url";
 const ROOT = process.cwd();
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
-const outfile = path.join(os.tmpdir(), ".tmp-shader-bundle.mjs");
+const outfile = path.join(ROOT, ".tmp-shader-bundle.mjs");
 await build({
   stdin: {
     contents: `export { regenerateJourneyShaders } from "@/lib/journeys/journeys";`,

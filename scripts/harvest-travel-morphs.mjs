@@ -6,6 +6,7 @@
 // Manifest keys: "t<N>" = transition N→N+1.
 // Usage: node --env-file=.env.local scripts/harvest-travel-morphs.mjs inferno first-snow
 import { fal } from "@fal-ai/client";
+import { createClient } from "@supabase/supabase-js";
 import { build } from "esbuild";
 import { mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -18,10 +19,17 @@ import { pathToFileURL } from "node:url";
 const require = createRequire(import.meta.url);
 const FFMPEG = require("ffmpeg-static");
 const ROOT = process.cwd();
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+async function resolveJourney(jid, JOURNEYS) {
+  const builtin = JOURNEYS.find((j) => j.id === jid);
+  if (builtin) return builtin;
+  const { data } = await supabase.from("journeys").select("id, name, phases").eq("id", jid).single();
+  return data ?? null;
+}
 fal.config({ credentials: process.env.FAL_KEY });
 const ids = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
-const outfile = path.join(os.tmpdir(), ".tmp-morph-bundle.mjs");
+const outfile = path.join(ROOT, ".tmp-morph-bundle.mjs");
 await build({
   stdin: {
     contents: `
@@ -80,7 +88,7 @@ function encodeDual(rawPath, outBase) {
 }
 
 for (const jid of ids) {
-  const journey = app.JOURNEYS.find((j) => j.id === jid);
+  const journey = await resolveJourney(jid, app.JOURNEYS);
   if (!journey) { console.warn(`skip ${jid}`); continue; }
   const imgDir = path.join(PACK, "images", "journeys", jid);
   const clipDir = path.join(PACK, "clips", "journeys", jid);
