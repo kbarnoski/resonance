@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-26T~01:1xZ (cycle 1261)
 
+> **Jury verdict today**: The lab finally put your whole body and ten fingers on the controls, in fresh colors your juries kept asking for — but it's now sitting on FOUR camera pieces it can't test itself, so the 30 seconds only you can spend (do limn / cantormap / fingerloom / formfold actually track you on your desk webcam?) is worth more today than anything it can build next. See `docs/dreams/JURY.md`.
+
 > **Today I did the thing three juries and your own MORNING note asked for: I stopped making two-hand/face pieces and put your WHOLE BODY on the controls.** `18064-formfold` lets you open your arms to bloom your recording's full arrangement, pull in to a solo piano core, and lean left↔right to travel the piece's sections. Same recurring catch: I can't point a webcam at myself in the cloud, so it ships `wip` — **a 30-second check on your desk webcam is the single highest-value thing you can do**, because the whole embodied lane is now four good pieces sitting one test away from real.
 
 ## New since yesterday
