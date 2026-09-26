@@ -41,6 +41,7 @@ async function resolveJourney(jid, JOURNEYS) {
 fal.config({ credentials: process.env.FAL_KEY });
 
 const journeyIds = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+const FRESH_HEROES = process.argv.includes("--fresh-heroes");
 if (journeyIds.length === 0) {
   console.error("usage: harvest-journey-clips.mjs <journey-id> [...]");
   process.exit(1);
@@ -70,6 +71,110 @@ try {
 }
 
 const PACK = path.join(ROOT, "public", "tramokyo-pack");
+
+// ── Motion identity system (Karel 2026-09-26: "these should all be
+// considered music videos with their own themes — not all bursts").
+// Motion language = phase ROLE (the arc position) × the track's PACE
+// class (note density from its analysis). Hard anti-burst guardrails on
+// every prompt; Wan's default is to compress 10s into a flourish.
+const MOTION = {
+  threshold: {
+    glacial: "almost imperceptible motion, one element stirring in stillness, the camera barely breathing forward",
+    flowing: "very slow drift forward, soft elements waking one at a time",
+    lively: "gentle continuous drift, a few elements beginning to move in different depths",
+  },
+  expansion: {
+    glacial: "slow patient swelling, elements unfurling at a dream's pace",
+    flowing: "gradual building motion, elements multiplying and traveling softly across the frame",
+    lively: "steady flowing motion, currents of movement weaving through the scene",
+  },
+  transcendence: {
+    glacial: "vast slow-motion billowing, enormous forms turning with weight",
+    flowing: "full flowing motion, waves of movement traveling through the whole scene",
+    lively: "rich continuous motion at many depths, everything alive but unhurried",
+  },
+  illumination: {
+    glacial: "suspended stillness with faint shimmer, dust hanging in light",
+    flowing: "hovering micro-drift, light breathing across surfaces",
+    lively: "delicate motion everywhere, small elements glinting and turning slowly",
+  },
+  return: {
+    glacial: "motion releasing into rest, elements descending like sediment",
+    flowing: "settling motion, things drifting down and coming to rest softly",
+    lively: "gentle unwinding motion, currents slowing and separating",
+  },
+  integration: {
+    glacial: "near-total stillness, one small motion remaining, breath-slow",
+    flowing: "quiet residual drift, the scene exhaling",
+    lively: "soft afterglow motion, the last few elements settling",
+  },
+};
+const PHASE_ROLES = ["threshold", "expansion", "transcendence", "illumination", "return", "integration"];
+
+// Per-journey MOTION SOUL (Karel 2026-09-26: "each journey treated
+// thematic, based on the vibe and soul of the piece — this is art").
+// The soul leads the prompt; role/pace shape its intensity.
+const MOTION_SOUL = {
+  "Realized": "the motion of fire — heat shimmer, embers rising, flame tongues licking upward, consuming and breathing",
+  "Snowflake": "the motion of snowfall — weightless crystalline drift, hushed slow descent, settling in silence",
+  "The Summit": "upward striving — things climbing, lifting, straining gently toward height",
+  "The Ascension": "weightless vertical rising — light ascending, everything released upward",
+  "The Bloom": "organic unfurling — petals opening, fronds uncoiling, growth in slow bloom",
+  "Cosmic Drift": "weightless orbital drift — slow tumbling through vacuum, silent rotation",
+  "Mycelium Dream": "creeping organic spread — pulses traveling filaments, spores lofting, the network breathing",
+  "Interplay": "two currents courting — approaching, entwining, parting and returning",
+  "Bath": "liquid motion — ripples widening, steam curling, caustic light swaying on stone",
+  "Welcome Home": "hearth warmth — candle-flicker, smoke rising in a thread, a slow homeward approach",
+  "The Knife": "held tension and clean release — long stillness, then one precise gliding slide",
+  "2019": "golden nostalgia — pollen drifting, long light crawling across the field, fireflies wandering",
+  "The Knife (Jam)": "improvised angular motion — riffs of movement trading, breaking pattern, rejoining",
+  "Playa": "heat shimmer and dust drift — mirage wobble, slow dust columns wandering",
+  "Isolation": "fog breathing — slow swells crossing, patient near-stillness, one faithful glow",
+  "Rebound": "ripples radiating and returning — elastic echoes, waves answering waves",
+  "Stir Crazy": "restless circling — spirals tightening, venting upward, releasing",
+  "Rolling": "undulating land — waves of light and shadow sweeping crest to crest",
+  "Quarantine": "rain on glass — runnels sliding, droplets beading and merging, the outside trembling through water",
+  "All Together": "convergence — tributaries bending together, currents merging into one flow",
+  "Rise": "dawn surge — light flooding upward, breaking through, cresting",
+  "Surrender": "release into current — loosening, dissolving, being carried without resistance",
+  "Openings": "seams parting — light leaking through cracks, thresholds slowly breathing open",
+  "Surrounded By Light": "prismatic sweep — beams gliding, spectra migrating across surfaces",
+  "Drift": "lateral migration — sheets and veils sliding sideways at sleep's pace",
+  "Self": "mirrored unison — reflections moving together, recursion breathing in and out",
+  "Message": "pulse propagation — rings expanding, signals traveling outward and answered",
+  "Grace": "gentle descent — lights falling soft as leaves, settling as gifts",
+  "Complete": "circular closure — orbits completing, rings closing without a seam",
+  "Held": "enclosing warmth — a slow embrace of glow, convection like a heartbeat",
+  "Sway": "pendulum rhythm — kelp-sway, metronomic rocking, one shared tempo",
+  "Mystic": "sacred unfolding — geometry etching itself, nested layers opening inward",
+  "The First": "first awakening — light waking through veins, sap rising, one seam opening",
+  "The First (Expanded)": "a forest waking — waves of dawn rolling trunk to trunk, warmth climbing",
+  "Dad's Song II": "dust in window light — motes turning slow, grain flowing like remembered music",
+  "Yellow Bird": "flocking flight — banking, wheeling, long gliding descents",
+  "Spectre": "spectral hover — wisps gliding, pale curtains slowly turning",
+  "Mexican Boy": "festive whirl — petal spirals, ember dance, joy in slow orbit",
+  "Afterglow": "banked fading — colors cooling band by band, light lying down",
+  "Grasshopper": "coiled spring — held tension, sudden gentle leap arcs, dew launching and falling",
+  "Love Again": "tender regrowth — unfurling through char, blossoms opening one by one",
+};
+const GUARDRAILS = "smooth constant camera speed, single continuous take, meditative pace throughout, no speed ramps, no time-lapse, no sudden bursts";
+const MOTION_NEGATIVE = "time-lapse, hyperlapse, speed ramp, fast motion, sudden movement, jump cut, flicker, camera shake, text, watermark, people, faces";
+
+// Pace class from the paired recording's note density (analyses in pack data).
+function paceClassFor(journey) {
+  try {
+    const analyses = JSON.parse(require("node:fs").readFileSync(path.join(PACK, "data", "analyses.json"), "utf8"));
+    const rows = Array.isArray(analyses) ? analyses : Object.values(analyses);
+    const rec = journey.recording_id ?? journey.recordingId;
+    const a = rows.find((r) => r.recording_id === rec);
+    if (a?.notes?.length) {
+      const dur = Math.max(...a.notes.map((n) => n.time + n.duration));
+      const d = a.notes.length / Math.max(1, dur);
+      return d < 18 ? "glacial" : d < 27 ? "flowing" : "lively";
+    }
+  } catch { /* no analysis — default */ }
+  return "flowing";
+}
 const manifestPath = path.join(PACK, "local-clips.json");
 const manifest = existsSync(manifestPath)
   ? JSON.parse(await readFile(manifestPath, "utf8"))
@@ -97,7 +202,7 @@ for (const jid of journeyIds) {
     const outBase = path.join(clipDir, `phase-${pi}`);
     const clipPath = `${outBase}.mp4`;
     const publicUrl = `/tramokyo-pack/clips/journeys/${jid}/phase-${pi}.mp4`;
-    if (existsSync(clipPath)) {
+    if (existsSync(clipPath) && !FRESH_HEROES) {
       const hevcPath = clipPath.replace(/\.mp4$/, ".hevc.mp4");
       manifest[jid][String(pi)] = existsSync(hevcPath)
         ? { h264: publicUrl, hevc: publicUrl.replace(/\.mp4$/, ".hevc.mp4") }
@@ -110,11 +215,11 @@ for (const jid of journeyIds) {
 
     const b64 = (await readFile(stillPath)).toString("base64");
     const phase = journey.phases[pi];
-    const motion = (phase.aiPrompt ?? "").split(",").slice(0, 3).join(",");
-    const prompt =
-      `slow cinematic camera drift through this scene, ${motion}, ` +
-      `gentle continuous motion, elements drifting and breathing, meditative pace, ` +
-      `seamless dreamlike movement, no cuts, no camera shake`;
+    const motifs = (phase.aiPrompt ?? "").split(",").slice(0, 3).join(",");
+    const role = PHASE_ROLES[Math.min(pi, PHASE_ROLES.length - 1)];
+    const pace = paceClassFor(journey);
+    const soul = MOTION_SOUL[journey.name] ?? MOTION_SOUL[journey.title] ?? "";
+    const prompt = `${soul ? soul + ", " : ""}${MOTION[role][pace]}, ${motifs}, ${GUARDRAILS}`;
 
     console.log(`  → ${jid} phase ${pi} (from gen-${String(firstIdx).padStart(3, "0")})`);
     try {
@@ -124,7 +229,7 @@ for (const jid of journeyIds) {
           image_url: `data:image/jpeg;base64,${b64}`,
           duration: "10",
           resolution: "1080p",
-          negative_prompt: "text, watermark, captions, people, faces, jump cut, flicker",
+          negative_prompt: MOTION_NEGATIVE,
           enable_prompt_expansion: false,
         },
         logs: false,
