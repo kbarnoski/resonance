@@ -51,7 +51,7 @@ for (const jid of ids) {
     }
   }));
   console.log(`  ${jid}: ${done} done, ${failed} failed`);
-  if (failed === 0) manifest[jid] = true;
+  manifest[jid] = failed === 0; // two-way: coverage can REGRESS (perf audit H1)
 }
 await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
 console.log(`manifest → ${manifestPath}`);

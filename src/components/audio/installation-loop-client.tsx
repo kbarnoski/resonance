@@ -154,22 +154,41 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
 
-  // ── Singleton guard (2026-09-25): Karel saw THREE loop tabs after
-  // exiting fullscreen — duplicate instances double audio and fight for
-  // the projector. Newest instance always wins: every mount broadcasts a
-  // claim; any older tab that hears a newer claim immediately silences
-  // itself and leaves for about:blank (audio dies with the page).
+  // ── Singleton guard (2026-09-25; rebuilt after correctness audit #16):
+  // duplicate loop instances double audio and fight for the projector.
+  // Claimless protocol — a channel never receives its own messages, so
+  // "any instance that hears a claim stands down" IS newest-wins, with no
+  // clock dependence (Date.now() goes backward on NTP sync) and no
+  // collisions. Policy exception: a FULLSCREEN incumbent outranks a
+  // windowed newcomer (the pkill-miss case opens the bad tab last), so
+  // the incumbent replies and the newcomer stands down instead.
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return;
-    const myClaim = Date.now() + Math.random();
     const bc = new BroadcastChannel("tramokyo-loop-singleton");
+    let stoodDown = false;
+    const standDown = () => {
+      if (stoodDown) return;
+      stoodDown = true;
+      try { bc.close(); } catch { /* closed */ }
+      // Document discard kills audio + timers reliably; the bootstrap
+      // page self-heals the projector tab on the next Start.
+      window.location.replace("about:blank");
+    };
     bc.onmessage = (e) => {
-      if (e.data?.type === "claim" && e.data.claim > myClaim) {
-        try { bc.close(); } catch { /* already closed */ }
-        window.location.replace("about:blank");
+      if (stoodDown) return;
+      if (e.data?.type === "claim") {
+        if (document.fullscreenElement && !e.data.fullscreen) {
+          // We are the fullscreen projector tab — the newcomer yields.
+          bc.postMessage({ type: "incumbent-keep" });
+          return;
+        }
+        standDown();
+      } else if (e.data?.type === "incumbent-keep") {
+        // A fullscreen incumbent exists — this (newer, windowed) tab yields.
+        if (!document.fullscreenElement) standDown();
       }
     };
-    bc.postMessage({ type: "claim", claim: myClaim });
+    bc.postMessage({ type: "claim", fullscreen: !!document.fullscreenElement });
     return () => { try { bc.close(); } catch { /* noop */ } };
   }, []);
 
@@ -691,6 +710,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // needs visibility.
   const heartbeatTokenRef = useRef<string | null>(null);
   const fpsRef = useRef({ frames: 0, sampledAt: performance.now(), fps: 0 });
+  const contextLossCountRef = useRef(0);
+  useEffect(() => {
+    const onLost = () => { contextLossCountRef.current++; };
+    window.addEventListener("webglcontextlost", onLost, true);
+    return () => window.removeEventListener("webglcontextlost", onLost, true);
+  }, []);
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
@@ -760,6 +785,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         lastPrimingError: lastPrimingError ?? null,
         userAgent: navigator.userAgent.slice(0, 200),
         viewport: `${window.innerWidth}×${window.innerHeight}`,
+        // Perf audit M5 (2026-09-25): the three fields that turn GPU-memory
+        // regressions into a graph instead of a dead morning show.
+        devicePixelRatio: window.devicePixelRatio,
+        jsHeapMB: Math.round(((performance as unknown as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? 0) / 1e6),
+        contextLosses: contextLossCountRef.current,
       };
 
       try {

@@ -171,8 +171,13 @@ export function AiImageLayer({
   const lastClipPhaseRef = useRef<number>(-1);
   const heroPushedForRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
+  const pendingVideoRef = useRef<HTMLVideoElement | null>(null);
+  const pendingMorphRef = useRef<{ forPhase: number; url: string } | null>(null);
+  const journeyEpochRef = useRef(0);
   useEffect(() => {
-    if (!isPackActive()) return;
+    // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
+    // at mount (probe still in flight), which permanently disabled clips.
+    // Fetch unconditionally — the file 404s online and the catch handles it.
     fetch("/tramokyo-pack/local-clips.json")
       .then((r) => (r.ok ? r.json() : null))
       .then((m) => { clipsRef.current = m; })
@@ -265,6 +270,10 @@ export function AiImageLayer({
       localImageIndexRef.current = 0;
       lastClipPhaseRef.current = -1; // clips re-arm per journey
       heroPushedForRef.current = -1;
+      pendingMorphRef.current = null;
+      journeyEpochRef.current++;
+      activeVideoRef.current = null;
+      pendingVideoRef.current = null;
 
       // Installation (Tramokyo): NEVER purge to black between journeys —
       // the previous journey's imagery holds until the new journey's
@@ -275,7 +284,10 @@ export function AiImageLayer({
       const now = performance.now();
       const existingLayers = layersRef.current;
       for (const layer of existingLayers) {
-        if (skipPurge) break;
+        // Installation keeps STILLS across the boundary (no-void rule), but
+        // videos must always fade — a surviving clip holds a decoder and
+        // can defer the next journey's clips forever (perf audit C1/#22).
+        if (skipPurge && "complete" in layer.img) continue;
         if (layer.state !== "fading-out") {
           layer.fadeStartOpacity = layer.opacity;
           layer.state = "fading-out";
@@ -314,10 +326,18 @@ export function AiImageLayer({
     });
   }, []);
 
+  /** Release a media element's decoder + buffers (perf audit C1). Stills no-op. */
+  const releaseMedia = useCallback((m: HTMLImageElement | HTMLVideoElement) => {
+    if ("complete" in m) return;
+    try { m.pause(); m.removeAttribute("src"); m.load(); } catch { /* torn down */ }
+    if (activeVideoRef.current === m) activeVideoRef.current = null;
+    if (pendingVideoRef.current === m) pendingVideoRef.current = null;
+  }, []);
+
   // Push new image onto the layer stack — keeps 2-3 images visible simultaneously.
   // Only the OLDEST layer fades out when at capacity; recent layers stay at peak.
   // This creates a sense of video — imagery is always moving and always in transition.
-  const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement) => {
+  const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement): boolean => {
     const service = getRealtimeImageService();
     // Only stills enter the LRU cache — videos are pack-local loops.
     if ("complete" in img) service.cacheImage(promptRef.current, img);
@@ -328,8 +348,9 @@ export function AiImageLayer({
       onFirstImageRef.current?.();
     }
 
-    // Notify overlay layer of new image
-    onImageReadyRef.current?.(img.src);
+    // Notify overlay layer of new image — STILLS ONLY (correctness #10:
+    // an .mp4 src spawns an invisible clone that squats a clone slot).
+    if ("complete" in img) onImageReadyRef.current?.(img.src);
 
     const layers = layersRef.current;
     const now = performance.now();
@@ -337,6 +358,7 @@ export function AiImageLayer({
     // Evict fully invisible layers first
     for (let i = layers.length - 1; i >= 0; i--) {
       if (layers[i].opacity <= 0 && layers[i].state === "fading-out") {
+        releaseMedia(layers[i].img);
         layers.splice(i, 1);
       }
     }
@@ -356,7 +378,7 @@ export function AiImageLayer({
         // NOTE: createdTime is NOT touched — Ken Burns continues smoothly
       } else {
         // All visible layers are still within their minimum peak hold — drop incoming image
-        return;
+        return false;
       }
     }
 
@@ -364,6 +386,7 @@ export function AiImageLayer({
     if (layers.length >= getTierProfile().maxAiLayers + 1) {
       const oldestFadingIdx = layers.findIndex((l) => l.state === "fading-out");
       if (oldestFadingIdx >= 0) {
+        releaseMedia(layers[oldestFadingIdx].img);
         layers.splice(oldestFadingIdx, 1);
       }
     }
@@ -397,7 +420,8 @@ export function AiImageLayer({
       panY,
       blendMode,
     });
-  }, []);
+    return true;
+  }, [releaseMedia]);
 
   // Trigger an image generation (REST)
   // skipCache=true for periodic refreshes (same prompt, want new image)
@@ -454,15 +478,19 @@ export function AiImageLayer({
           .catch(() => { /* broken URL, skip */ });
       }
 
-      // ── Living video (Wave 2): travel morphs at phase boundaries +
-      // hero loops within phases. High tier only; one video at a time.
+      // ── Living video (Wave 2, rebuilt after 2026-09-25 audits): travel
+      // morphs at phase boundaries + hero loops within phases. High tier
+      // only; one video pending/active at a time; every element released.
       const clips = journeyId ? clipsRef.current?.[journeyId] : null;
       if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
-        const posSec = progress * duration;
+        // Correctness #1: phase.start/end are NORMALIZED 0-1 fractions —
+        // the old seconds comparison never matched and the feature was dead.
         let phaseIdx = -1;
         for (let i = 0; i < journeyPhases.length; i++) {
           const ph = journeyPhases[i] as { start?: number; end?: number };
-          if (typeof ph.start === "number" && typeof ph.end === "number" && posSec >= ph.start && posSec < ph.end) { phaseIdx = i; break; }
+          if (typeof ph.start !== "number" || typeof ph.end !== "number") continue;
+          const isLast = i === journeyPhases.length - 1;
+          if (progress >= ph.start && (progress < ph.end || (isLast && progress <= 1))) { phaseIdx = i; break; }
         }
         if (canHevcRef.current === null) {
           const probe = document.createElement("video");
@@ -470,40 +498,57 @@ export function AiImageLayer({
         }
         const pick = (e?: string | { h264: string; hevc?: string }) =>
           typeof e === "string" ? e : e ? (canHevcRef.current && e.hevc ? e.hevc : e.h264) : undefined;
-        const pushVideoUrl = (url: string) => {
+        const pushVideoUrl = (url: string, onRejected?: () => void) => {
+          const epoch = journeyEpochRef.current;
           const v = document.createElement("video");
           v.muted = true;
           v.loop = false; // play once, hold last frame — restarts visibly jump
           v.playsInline = true;
           v.preload = "auto";
           v.src = url;
+          pendingVideoRef.current = v; // synchronous — busy is honest (#8)
+          v.addEventListener("error", () => {
+            if (pendingVideoRef.current === v) pendingVideoRef.current = null;
+            releaseMedia(v);
+            onRejected?.(); // re-arm so the phase can retry (#9)
+          }, { once: true });
           v.addEventListener("canplay", () => {
+            if (pendingVideoRef.current === v) pendingVideoRef.current = null;
+            if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
+            if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
             activeVideoRef.current = v;
             v.play().catch(() => { /* autoplay policy — holds first frame */ });
-            pushImage(v);
           }, { once: true });
           v.load();
         };
-        const av = activeVideoRef.current;
-        const videoBusy = !!av && !av.ended && layersRef.current.some((l) => l.img === av);
+        const busyNow = () => {
+          if (pendingVideoRef.current) return true;
+          const av = activeVideoRef.current;
+          return !!av && !av.ended && layersRef.current.some((l) => l.img === av);
+        };
 
         const prevPhase = lastClipPhaseRef.current;
         if (phaseIdx >= 0 && phaseIdx !== prevPhase) {
           lastClipPhaseRef.current = phaseIdx;
           heroPushedForRef.current = -1; // new phase — hero re-arms
-          // Travel morph: one continuous camera move prev → this phase
           const travel = prevPhase >= 0 && phaseIdx === prevPhase + 1
             ? pick(clips["t" + prevPhase] as string | { h264: string; hevc?: string })
             : undefined;
-          if (travel && !videoBusy) {
-            heroPushedForRef.current = -2; // hero waits for the morph to finish
-            pushVideoUrl(travel);
-          }
+          if (travel) pendingMorphRef.current = { forPhase: phaseIdx, url: travel };
         }
-        const heroUrl = pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string });
-        if (heroUrl && phaseIdx >= 0 && heroPushedForRef.current !== phaseIdx && !videoBusy) {
-          heroPushedForRef.current = phaseIdx;
-          pushVideoUrl(heroUrl);
+        // Morph first (retried across ticks if a video was busy — #22),
+        // hero only when nothing video is pending or playing.
+        const morph = pendingMorphRef.current;
+        if (morph && morph.forPhase === phaseIdx && !busyNow()) {
+          pendingMorphRef.current = null;
+          pushVideoUrl(morph.url);
+        } else if (!morph || morph.forPhase !== phaseIdx) {
+          if (morph) pendingMorphRef.current = null; // phase moved on — drop stale morph
+          const heroUrl = pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string });
+          if (heroUrl && phaseIdx >= 0 && heroPushedForRef.current !== phaseIdx && !busyNow()) {
+            heroPushedForRef.current = phaseIdx;
+            pushVideoUrl(heroUrl, () => { if (heroPushedForRef.current === phaseIdx) heroPushedForRef.current = -1; });
+          }
         }
       }
 
@@ -945,16 +990,18 @@ export function AiImageLayer({
         ctx.globalCompositeOperation = i === 0 ? "source-over" : layer.blendMode;
         // Amplitude breathes luminance: quiet passages settle to ~92%,
         // full phrases lift to 100% — a slow living swell, never a flicker.
-        const amp = audioRef.current.amp;
-        ctx.globalAlpha = Math.min(1, layer.opacity * (0.92 + amp * 0.1));
+        // Normalized to the real music range (mean-spectrum amp rarely
+        // exceeds ~0.3 — correctness audit #11).
+        const lift = Math.min(1, audioRef.current.amp / 0.3);
+        ctx.globalAlpha = Math.min(1, layer.opacity * (0.92 + lift * 0.08));
 
         // Ken Burns: uses createdTime (never reset) for perfectly smooth motion
         const layerAge = (now - layer.createdTime) / 1000;
         const kenBurnsT = Math.min(1, layerAge / KEN_BURNS_DURATION);
         // Ease the Ken Burns motion too for a dreamy feel
         const kenBurnsEased = easeInOutCubic(kenBurnsT);
-        // Micro push from amplitude (≤1.5%) rides on top of the authored move.
-        const scale = (layer.scaleStart + (layer.scaleEnd - layer.scaleStart) * kenBurnsEased) * (1 + amp * 0.015);
+        // Micro push from amplitude (≤1.2%) rides on top of the authored move.
+        const scale = (layer.scaleStart + (layer.scaleEnd - layer.scaleStart) * kenBurnsEased) * (1 + lift * 0.012);
         const maxPan = (scale - 1) * 0.5;
         const panOffsetX = layer.panX * maxPan * kenBurnsEased * w;
         const panOffsetY = layer.panY * maxPan * kenBurnsEased * h;
@@ -990,7 +1037,15 @@ export function AiImageLayer({
     }
 
     animRef.current = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(animRef.current);
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      // Perf audit C1: every held video must release its decoder on unmount.
+      for (const l of layersRef.current) releaseMedia(l.img);
+      layersRef.current = [];
+      activeVideoRef.current = null;
+      pendingVideoRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Cleanup poetry timer on unmount

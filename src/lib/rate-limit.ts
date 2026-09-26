@@ -265,8 +265,14 @@ export function rateLimitKey(opts: {
 }): string {
   const { userId, request, scope } = opts;
   if (userId) return `${scope}:user:${userId}`;
+  // Security (2026-09-25 H-2): the FIRST x-forwarded-for hop is client-
+  // supplied and freely spoofable — rotating it defeated every per-IP
+  // limit. Vercel/proxies APPEND the real peer address, so trust the
+  // LAST hop; x-real-ip (proxy-set) is the tiebreaker.
+  const real = request.headers.get("x-real-ip");
   const fwd = request.headers.get("x-forwarded-for") ?? "";
-  const ip = fwd.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "anon";
+  const hops = fwd.split(",").map((h) => h.trim()).filter(Boolean);
+  const ip = real || hops[hops.length - 1] || "anon";
   return `${scope}:ip:${ip}`;
 }
 

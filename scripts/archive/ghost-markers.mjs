@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 const url = 'https://mgzgyisesfvftrfowsus.supabase.co';
-const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nemd5aXNlc2Z2ZnRyZm93c3VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyMTk3MDYsImV4cCI6MjA4Njc5NTcwNn0.yCctCfTwMQSccWN46UaqIyPt3iW4hv36VddERtbrNGc';
+const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const sb = createClient(url, key);
 
 const { data: rec, error: recErr } = await sb.from('recordings').select('id, title, duration').ilike('title', '%KB_GHOST_REF%').limit(1);

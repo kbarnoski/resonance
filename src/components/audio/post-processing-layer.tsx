@@ -20,6 +20,10 @@ interface PostProcessingLayerProps {
   halation: number;           // 0-1
   /** Event-response gain — scales bloom/halation/particle energy (default 1) */
   intensityMultiplier?: number;
+  /** SIGNED color grade: 0 = neutral, + warm, - cool (types.ts contract).
+   *  Rendered as a canvas overlay tint — replaces the root CSS filter,
+   *  which forced the whole composite through a Skia pass (audit H4). */
+  colorTemperature?: number;
   palette: {
     primary: string;
     accent: string;
@@ -57,6 +61,7 @@ export function PostProcessingLayer({
   particleDensity,
   halation,
   intensityMultiplier = 1,
+  colorTemperature = 0,
   palette,
 }: PostProcessingLayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -68,8 +73,8 @@ export function PostProcessingLayer({
 
   // Store all props in a ref — rAF loop reads from here instead of closure.
   // This prevents the effect from tearing down/recreating on every prop change.
-  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, palette });
-  propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, palette };
+  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, colorTemperature, palette });
+  propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, colorTemperature, palette };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -158,6 +163,17 @@ export function PostProcessingLayer({
         ctx.fillStyle = vigGradient;
         ctx.fillRect(0, 0, w, h);
         ctx.globalAlpha = 1;
+      }
+
+      // --- Color-temperature grade (signed; 0 neutral) ---
+      const ct = pp.colorTemperature ?? 0;
+      if (Math.abs(ct) > 0.04) {
+        ctx.globalCompositeOperation = "overlay";
+        ctx.globalAlpha = Math.min(0.22, Math.abs(ct) * 0.45);
+        ctx.fillStyle = ct > 0 ? "rgb(255, 168, 92)" : "rgb(96, 150, 255)";
+        ctx.fillRect(0, 0, w, h);
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
       }
 
       // --- Bloom glow ---

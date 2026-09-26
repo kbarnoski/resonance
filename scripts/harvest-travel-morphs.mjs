@@ -12,6 +12,7 @@ import { existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import path from "node:path";
+import os from "node:os";
 import { pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
@@ -20,7 +21,7 @@ const ROOT = process.cwd();
 fal.config({ credentials: process.env.FAL_KEY });
 const ids = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
-const outfile = path.join(ROOT, ".tmp-morph-bundle.mjs");
+const outfile = path.join(os.tmpdir(), ".tmp-morph-bundle.mjs");
 await build({
   stdin: {
     contents: `
@@ -34,8 +35,12 @@ await build({
   alias: { "@": path.join(ROOT, "src") },
   outfile,
 });
-const app = await import(pathToFileURL(outfile).href);
-await rm(outfile, { force: true });
+let app;
+try {
+  app = await import(pathToFileURL(outfile).href);
+} finally {
+  await rm(outfile, { force: true });
+}
 
 const PACK = path.join(ROOT, "public", "tramokyo-pack");
 const manifestPath = path.join(PACK, "local-clips.json");
@@ -43,10 +48,12 @@ const manifest = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPa
 
 async function kling(prompt, startB64, endB64) {
   const variants = [
-    { id: "fal-ai/kling-video/o3/standard/image-to-video",
-      input: { prompt, start_image_url: `data:image/jpeg;base64,${startB64}`, end_image_url: `data:image/jpeg;base64,${endB64}`, duration: "5" } },
+    // Known-good shape first (audit #21: the old order burned a guaranteed
+    // 422 round-trip per morph).
     { id: "fal-ai/kling-video/o3/standard/image-to-video",
       input: { prompt, image_url: `data:image/jpeg;base64,${startB64}`, end_image_url: `data:image/jpeg;base64,${endB64}`, duration: "5" } },
+    { id: "fal-ai/kling-video/o3/standard/image-to-video",
+      input: { prompt, start_image_url: `data:image/jpeg;base64,${startB64}`, end_image_url: `data:image/jpeg;base64,${endB64}`, duration: "5" } },
     { id: "fal-ai/kling-video/v2.6/pro/image-to-video",
       input: { prompt, image_url: `data:image/jpeg;base64,${startB64}`, end_image_url: `data:image/jpeg;base64,${endB64}`, duration: "5" } },
   ];
@@ -63,12 +70,13 @@ async function kling(prompt, startB64, endB64) {
 }
 
 function encodeDual(rawPath, outBase) {
-  execFileSync(FFMPEG, ["-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
+  const opts = { stdio: "pipe", maxBuffer: 32 * 1024 * 1024 };
+  execFileSync(FFMPEG, ["-hide_banner", "-nostats", "-loglevel", "error", "-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
     "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p",
-    "-movflags", "+faststart", "-an", `${outBase}.mp4`], { stdio: "pipe" });
-  execFileSync(FFMPEG, ["-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
+    "-movflags", "+faststart", "-an", `${outBase}.mp4`], opts);
+  execFileSync(FFMPEG, ["-hide_banner", "-nostats", "-loglevel", "error", "-y", "-i", rawPath, "-vf", "gradfun=strength=4:radius=16",
     "-c:v", "libx265", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p10le",
-    "-tag:v", "hvc1", "-movflags", "+faststart", "-an", `${outBase}.hevc.mp4`], { stdio: "pipe" });
+    "-tag:v", "hvc1", "-movflags", "+faststart", "-an", `${outBase}.hevc.mp4`], opts);
 }
 
 for (const jid of ids) {
@@ -87,7 +95,11 @@ for (const jid of ids) {
     const outBase = path.join(clipDir, `travel-${pi}`);
     const pub = `/tramokyo-pack/clips/journeys/${jid}/travel-${pi}`;
     if (existsSync(`${outBase}.mp4`)) {
-      manifest[jid][`t${pi}`] = { h264: `${pub}.mp4`, hevc: `${pub}.hevc.mp4` };
+      // Manifest honesty (audit #9): only claim the hevc variant if the
+      // file actually exists — a phantom URL silently kills the clip.
+      const entry = { h264: `${pub}.mp4` };
+      if (existsSync(`${outBase}.hevc.mp4`)) entry.hevc = `${pub}.hevc.mp4`;
+      manifest[jid][`t${pi}`] = entry;
       console.log(`  keep ${jid} t${pi}`);
       continue;
     }
@@ -108,12 +120,18 @@ for (const jid of ids) {
       const raw = `${outBase}.raw.mp4`;
       const res = await fetch(url);
       await writeFile(raw, Buffer.from(await res.arrayBuffer()));
-      encodeDual(raw, outBase);
-      await rm(raw, { force: true });
-      manifest[jid][`t${pi}`] = { h264: `${pub}.mp4`, hevc: `${pub}.hevc.mp4` };
+      try {
+        encodeDual(raw, outBase);
+      } finally {
+        await rm(raw, { force: true }); // never orphan raws in the pack (M6)
+      }
+      const entry = { h264: `${pub}.mp4` };
+      if (existsSync(`${outBase}.hevc.mp4`)) entry.hevc = `${pub}.hevc.mp4`;
+      manifest[jid][`t${pi}`] = entry;
       console.log(`  ✓ ${jid} t${pi}`);
     } catch (e) {
       console.error(`  ✗ ${jid} t${pi}: ${e.message ?? e}`);
+      if (e.stderr) console.error(String(e.stderr).slice(-2000)); // real ffmpeg cause (audit #21)
     }
   }
 }

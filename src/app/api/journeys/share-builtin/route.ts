@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { canAttachRecording } from "@/lib/api/validate-recording-access";
 import { randomUUID, randomInt } from "crypto";
 import { getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS, applyPairedTrackSearch } from "@/lib/journeys/paired-tracks";
@@ -33,6 +34,10 @@ export async function POST(request: Request) {
     }
 
     // Resolve recording: prefer paired track, then client-provided recordingId
+    // Security (2026-09-25 H-1): a client-provided id must be RLS-visible.
+    if (recordingId && !(await canAttachRecording(supabase, recordingId))) {
+      return Response.json({ error: "Recording not found" }, { status: 403 });
+    }
     let resolvedRecordingId = recordingId ?? null;
     const pairedSearch = PAIRED_TRACKS[journeyId];
     if (pairedSearch) {

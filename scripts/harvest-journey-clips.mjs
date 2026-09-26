@@ -11,6 +11,7 @@ import { build } from "esbuild";
 import { mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
+import os from "node:os";
 import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
@@ -23,7 +24,7 @@ if (journeyIds.length === 0) {
 }
 
 // Bundle journeys.ts for phases + allocation weights (same trick as image harvest)
-const outfile = path.join(ROOT, ".tmp-clips-bundle.mjs");
+const outfile = path.join(os.tmpdir(), ".tmp-clips-bundle.mjs");
 await build({
   stdin: {
     contents: `
@@ -38,8 +39,12 @@ await build({
   alias: { "@": path.join(ROOT, "src") },
   outfile,
 });
-const app = await import(pathToFileURL(outfile).href);
-await rm(outfile, { force: true });
+let app;
+try {
+  app = await import(pathToFileURL(outfile).href);
+} finally {
+  await rm(outfile, { force: true });
+}
 
 const PACK = path.join(ROOT, "public", "tramokyo-pack");
 const manifestPath = path.join(PACK, "local-clips.json");
@@ -69,7 +74,10 @@ for (const jid of journeyIds) {
     const clipPath = path.join(clipDir, `phase-${pi}.mp4`);
     const publicUrl = `/tramokyo-pack/clips/journeys/${jid}/phase-${pi}.mp4`;
     if (existsSync(clipPath)) {
-      manifest[jid][String(pi)] = publicUrl;
+      const hevcPath = clipPath.replace(/\.mp4$/, ".hevc.mp4");
+      manifest[jid][String(pi)] = existsSync(hevcPath)
+        ? { h264: publicUrl, hevc: publicUrl.replace(/\.mp4$/, ".hevc.mp4") }
+        : publicUrl;
       console.log(`  keep ${jid} phase ${pi}`);
       continue;
     }

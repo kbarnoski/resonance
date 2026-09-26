@@ -10,12 +10,13 @@ import { createClient } from "@supabase/supabase-js";
 import { build } from "esbuild";
 import { rm } from "node:fs/promises";
 import path from "node:path";
+import os from "node:os";
 import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
-const outfile = path.join(ROOT, ".tmp-shader-bundle.mjs");
+const outfile = path.join(os.tmpdir(), ".tmp-shader-bundle.mjs");
 await build({
   stdin: {
     contents: `export { regenerateJourneyShaders } from "@/lib/journeys/journeys";`,
@@ -26,8 +27,12 @@ await build({
   alias: { "@": path.join(ROOT, "src") },
   outfile,
 });
-const app = await import(pathToFileURL(outfile).href);
-await rm(outfile, { force: true });
+let app;
+try {
+  app = await import(pathToFileURL(outfile).href);
+} finally {
+  await rm(outfile, { force: true });
+}
 
 // Deterministic RNG per journey id so re-runs are stable.
 function mulberry32(seed) {

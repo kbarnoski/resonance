@@ -64,19 +64,23 @@ function formatReport(raw: unknown): string {
   return JSON.stringify(raw).slice(0, 500);
 }
 
+// Security (2026-09-25 M-7): unauthenticated log-write amplifier — cap the
+// body and throttle per instance. Reports are best-effort telemetry.
+const CAP = 16 * 1024;
+let windowCount = 0;
+let windowResetAt = 0;
+
 export async function POST(request: Request) {
+  const now = Date.now();
+  if (now > windowResetAt) { windowResetAt = now + 10_000; windowCount = 0; }
+  if (++windowCount > 50) return new Response(null, { status: 204 });
   let raw: unknown = null;
   try {
-    raw = await request.json();
+    const text = await request.text();
+    if (text.length > CAP) return new Response(null, { status: 204 });
+    raw = JSON.parse(text);
   } catch {
-    // Some browsers POST as application/csp-report which Next.js may
-    // not auto-parse the same way; try text fallback.
-    try {
-      const text = await request.text();
-      raw = JSON.parse(text);
-    } catch {
-      return new Response(null, { status: 204 });
-    }
+    return new Response(null, { status: 204 });
   }
 
   logger.warn("csp-report", formatReport(raw));

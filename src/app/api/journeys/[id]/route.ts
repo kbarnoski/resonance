@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { canAttachRecording } from "@/lib/api/validate-recording-access";
 
 export async function GET(
   _request: Request,
@@ -65,6 +66,11 @@ export async function PATCH(
 
   if (Object.keys(updates).length === 0) {
     return Response.json({ error: "No editable fields in request" }, { status: 400 });
+  }
+
+  // Security (2026-09-25 H-1): attaching a recording requires RLS visibility.
+  if (typeof updates.recording_id === "string" && !(await canAttachRecording(supabase, updates.recording_id))) {
+    return Response.json({ error: "Recording not found" }, { status: 403 });
   }
 
   const { data, error } = await supabase

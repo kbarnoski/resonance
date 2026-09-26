@@ -79,9 +79,16 @@ function originOrReferer(req: NextRequest): string {
 
 /** Client IP from the standard proxy headers (Vercel sets x-forwarded-for). */
 function clientIp(req: NextRequest): string {
+  // Last XFF hop is proxy-appended and trustworthy; the first is client-
+  // supplied and spoofable (2026-09-25 security audit H-2).
+  const real = req.headers.get("x-real-ip");
+  if (real) return real;
   const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
+  if (xff) {
+    const hops = xff.split(",").map((h) => h.trim()).filter(Boolean);
+    if (hops.length) return hops[hops.length - 1];
+  }
+  return "unknown";
 }
 
 /** Rate-limit identity: the user id if a session is present, else client IP.

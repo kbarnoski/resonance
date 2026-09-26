@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { canAttachRecording } from "@/lib/api/validate-recording-access";
 import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
 import { buildJourneyFromStory } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
@@ -87,6 +88,12 @@ export async function POST(request: Request) {
         realmId || undefined,
         analysis,
       );
+    }
+
+    // Security (2026-09-25 H-1): recording_id must be visible to the caller
+    // under RLS (owned or publicly released) before it can be attached.
+    if (recordingId && !(await canAttachRecording(supabase, recordingId))) {
+      return Response.json({ error: "Recording not found" }, { status: 403 });
     }
 
     // Store in database

@@ -103,13 +103,13 @@ describe("rateLimitKey", () => {
     expect(key).toBe("test:user:abc");
   });
 
-  it("falls back to first x-forwarded-for IP", () => {
+  it("uses the LAST x-forwarded-for hop (proxy-appended, not spoofable)", () => {
     const key = rateLimitKey({
       userId: null,
       request: mkRequest({ "x-forwarded-for": "1.2.3.4, 5.6.7.8" }),
       scope: "test",
     });
-    expect(key).toBe("test:ip:1.2.3.4");
+    expect(key).toBe("test:ip:5.6.7.8");
   });
 
   it("falls back to x-real-ip if x-forwarded-for is missing", () => {

@@ -108,7 +108,6 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   const referer = request.headers.get("referer") || "";
   const isInstallationKiosk = /\/installation(\?|$|\/)/.test(referer);
-  const isAuthed = !!user;
   // Pre-parse body to read the highQuality opt-in flag. Re-parsed
   // below for the rest of the request shape — the cost is trivial.
   let bodyForFlag: { highQuality?: unknown } = {};

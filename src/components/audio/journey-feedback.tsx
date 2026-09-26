@@ -272,18 +272,40 @@ export { startFpsTracker, stopFpsTracker };
 // When FPS drops below threshold for 2+ consecutive polls, logs a real
 // performance issue with the active shader names.
 const FPS_THRESHOLD = 18;
+// Perf audit M5: a second, softer band — sustained sub-40 is exactly how the
+// new layer stack would degrade (60→35) without ever tripping the hard 18.
+const FPS_SOFT_THRESHOLD = 40;
 const FPS_POLL_MS = 500;
 let _perfIntervalId: ReturnType<typeof setInterval> | null = null;
 let _perfLowCount = 0;
 let _perfLastLogTime = 0;
 let _perfRefCount = 0;
 
+let _perfSoftCount = 0;
+let _perfSoftLastLog = 0;
+
 export function startPerfMonitor() {
   if (_perfRefCount++ > 0) return;
   _perfLowCount = 0;
+  _perfSoftCount = 0;
   _perfIntervalId = setInterval(() => {
     const fps = _sharedFps.current;
     if (fps === null) return;
+
+    // Soft band (audit M5): sustained sub-40 for ~10s = degradation the
+    // hard threshold never sees. One warn per 5 minutes, telemetry only.
+    if (fps < FPS_SOFT_THRESHOLD && fps >= FPS_THRESHOLD) {
+      _perfSoftCount++;
+      if (_perfSoftCount >= 5 && performance.now() - _perfSoftLastLog > 300_000) {
+        _perfSoftLastLog = performance.now();
+        addPerfEvent(`soft-degrade @ ${fps}fps`);
+        const entry = buildSnapshot("glitch", _sharedFps);
+        entry.aiPromptSnippet = `soft-fps: sustained ${fps}fps`;
+        appendEntry(entry);
+      }
+    } else if (fps >= FPS_SOFT_THRESHOLD) {
+      _perfSoftCount = 0;
+    }
 
     if (fps < FPS_THRESHOLD) {
       _perfLowCount++;

@@ -75,7 +75,7 @@
     var img = new Image();
     img.onload = go;
     img.onerror = fail;
-    img.src = "http://localhost:3000/favicon.ico?t=" + Date.now();
+    img.src = "http://localhost:3000/icon?t=" + Date.now(); // /favicon.ico does not exist (audit #4) — /icon is the app icon route
   }
   probe();
 </script>

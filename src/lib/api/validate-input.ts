@@ -127,10 +127,14 @@ export function requireStringArray(
   return { ok: true, value: out };
 }
 
-/** Parse JSON body, returning a 400 on parse failure rather than 500. */
+/** Parse JSON body, returning a 400 on parse failure rather than 500.
+ *  Capped at 64KB (2026-09-25 M-4) — an uncapped read was a memory
+ *  amplifier on every route that used it. */
 export async function readJsonBody(request: Request): Promise<ValidationResult<unknown>> {
   try {
-    return { ok: true, value: await request.json() };
+    const text = await request.text();
+    if (text.length > 64 * 1024) return fail("Body too large");
+    return { ok: true, value: JSON.parse(text) };
   } catch {
     return fail("Invalid JSON body");
   }

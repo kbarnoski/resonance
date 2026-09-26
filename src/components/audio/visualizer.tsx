@@ -3,6 +3,27 @@
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
+
+// Shared music-energy clock for tempoFlow (perf audit L3/#17): ONE analyser
+// read per frame regardless of how many shader layers are mounted, and one
+// shared smoothed value so A/B crossfade partners run the same clock rate.
+const tempoShared = { t: 0, raw: 0, smoothed: 0.3 };
+function readTempoEnergy(analyser: AnalyserLike | null, dataArray: Uint8Array | null, now: number, dt: number): number {
+  if (!analyser || !dataArray || dataArray.length === 0) return tempoShared.smoothed;
+  if (now - tempoShared.t > 16) {
+    tempoShared.t = now;
+    try {
+      analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
+      let total = 0;
+      for (let i = 0; i < dataArray.length; i++) total += dataArray[i];
+      tempoShared.raw = total / (dataArray.length * 255);
+    } catch { /* detached */ }
+  }
+  // Frame-rate-independent 3s pole (audit L4).
+  const k = 1 - Math.exp(-dt / 3);
+  tempoShared.smoothed += (tempoShared.raw - tempoShared.smoothed) * k;
+  return tempoShared.smoothed;
+}
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
@@ -251,7 +272,6 @@ export function ShaderVisualizer({
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
   const tempoFlowRef = useRef(tempoFlow);
-  const tempoAmpRef = useRef(0.3); // seconds-scale smoothed energy
   const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -364,10 +384,12 @@ export function ShaderVisualizer({
     const tier = getDeviceTier();
     const tierScale = tier === "low" ? 0.55 : tier === "medium" ? 0.75 : 1.0;
     // 2026-09-25b (Karel: "shaders not clear"): high tier renders at up to
-    // 1.5x DPR — on retina/projector the old min(dpr,1) drew shaders at HALF
-    // native resolution and upscaled, softening every line. Low/medium keep
-    // the 1x cap (fragment-bound hardware).
-    const dprCeil = tier === "high" ? 1.5 : 1;
+    // 1.5x DPR — on retina the old min(dpr,1) drew shaders at HALF native
+    // resolution and upscaled. Perf audit H3: gate on total device pixels so
+    // a native-4K projector (already 8.3Mpx at dpr 1) never takes the 2.25x
+    // fill-rate bump on top.
+    const totalPx = (typeof innerWidth !== "undefined" ? innerWidth * innerHeight : 0) * devicePixelRatio * devicePixelRatio;
+    const dprCeil = tier === "high" && totalPx > 0 && totalPx < 4.5e6 * 2.25 ? 1.5 : 1;
     const dpr = Math.min(devicePixelRatio, dprCeil) * tierScale;
     // Frame-rate cap on weak hardware — halves GPU work vs uncapped rAF. 30fps
     // still reads as "smooth" for abstract shader motion; 45fps on medium is a
@@ -386,18 +408,14 @@ export function ShaderVisualizer({
       }
       const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
       lastFrameTime = now;
-      if (tempoFlowRef.current && analyser && dataArray) {
-        // Ultra-smoothed energy (≈3s time constant) → clock rate 0.65-1.35×.
-        // The pace of the piece becomes the pace of the light; individual
-        // notes never twitch the picture.
-        try {
-          analyser.getByteFrequencyData(dataArray);
-          let total = 0;
-          for (let i = 0; i < dataArray.length; i++) total += dataArray[i];
-          const raw = total / (dataArray.length * 255);
-          tempoAmpRef.current += (raw - tempoAmpRef.current) * Math.min(1, dt / 3);
-        } catch { /* analyser detached */ }
-        const rate = 0.65 + Math.min(1, tempoAmpRef.current * 2.2) * 0.7;
+      if (tempoFlowRef.current) {
+        // Ultra-smoothed SHARED energy (one FFT read/frame across all
+        // layers) → clock rate 0.65-1.35×. The pace of the piece becomes
+        // the pace of the light; individual notes never twitch it.
+        // Parked layers reuse the shared value without reading (#17) —
+        // the compile state machine below must still run while parked.
+        const energy = pausedRef.current ? 0.3 : readTempoEnergy(analyser, dataArray, now, dt);
+        const rate = 0.65 + Math.min(1, energy * 2.2) * 0.7;
         cumTime += dt * rate;
       } else {
         cumTime += dt;

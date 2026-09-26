@@ -19,15 +19,30 @@ set -uo pipefail
 if [ "$(uname)" = "Darwin" ]; then
   ulimit -n 10240 2>/dev/null || true
 fi
-export NODE_OPTIONS="${NODE_OPTIONS:---max-old-space-size=4096}"
+# APPEND the heap bump (audit #20: ":-" silently dropped it whenever
+# NODE_OPTIONS was already set, e.g. on CI).
+case "${NODE_OPTIONS:-}" in
+  *max-old-space-size*) : ;;
+  "") export NODE_OPTIONS="--max-old-space-size=4096" ;;
+  *) export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=4096" ;;
+esac
 
+ERRLOG="${TMPDIR:-/tmp}/run-build-$$.err"
+: > "$ERRLOG"
 for attempt in 1 2 3; do
-  next build
+  : > "$ERRLOG"
+  next build > >(tee -a "$ERRLOG") 2> >(tee -a "$ERRLOG" >&2)
   code=$?
-  [ $code -eq 0 ] && exit 0
+  [ $code -eq 0 ] && { rm -f "$ERRLOG"; exit 0; }
   echo "run-build: attempt ${attempt} failed (exit ${code})" >&2
-  # Only the EBADF class is worth retrying blindly; real compile/type
-  # errors fail identically every time, so cap at 3 and surface the code.
+  # Retry ONLY the transient fd classes (audit #20) — a genuine type error
+  # would otherwise cost 3× a 1,200-page build.
+  if ! grep -q "spawn EBADF\|EMFILE" "$ERRLOG" 2>/dev/null; then
+    echo "run-build: not the EBADF/EMFILE class — not retrying" >&2
+    rm -f "$ERRLOG"
+    exit $code
+  fi
 done
+rm -f "$ERRLOG"
 echo "run-build: giving up after 3 attempts" >&2
 exit $code

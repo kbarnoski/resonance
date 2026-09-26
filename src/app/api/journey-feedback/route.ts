@@ -17,7 +17,13 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const body = await request.json();
+    // 2026-09-25 M-4: cap the body (100 entries × unbounded size bloated
+    // Postgres) and bound entry size after parse.
+    const text = await request.text();
+    if (text.length > 256 * 1024) {
+      return NextResponse.json({ error: "Body too large" }, { status: 413 });
+    }
+    const body = JSON.parse(text);
     const entries: FeedbackEntry[] = Array.isArray(body) ? body : [body];
 
     if (entries.length === 0 || entries.length > 100) {
