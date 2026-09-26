@@ -32,6 +32,30 @@ function encodeDual(rawPath, outBase) {
     "-tag:v", "hvc1", "-movflags", "+faststart", "-an", `${outBase}.hevc.mp4`], opts);
 }
 
+
+// ── Clip QA gate (Karel 2026-09-26: "i cant tolerate any glitches under
+// any circumstances"). Generative video occasionally bakes in a frame
+// jump; a smooth meditative clip must contain ZERO cut-level scene
+// scores. Any spike ≥ 0.35 fails the clip; the caller regenerates with a
+// new seed, and a clip that cannot pass DOES NOT SHIP (stills only —
+// absence beats a glitch).
+function qaClip(clipPath) {
+  try {
+    const out = execFileSync(FFMPEG, [
+      "-hide_banner", "-nostats", "-i", clipPath,
+      "-vf", "select='gt(scene,0.35)',metadata=print:file=-",
+      "-f", "null", "-",
+    ], { stdio: ["ignore", "pipe", "pipe"], maxBuffer: 8 * 1024 * 1024 }).toString();
+    const spikes = (out.match(/scene_score/g) || []).length;
+    return { ok: spikes === 0, spikes };
+  } catch (e) {
+    const out = String(e.stdout ?? "");
+    const spikes = (out.match(/scene_score/g) || []).length;
+    if (out.length > 0) return { ok: spikes === 0, spikes };
+    return { ok: false, spikes: -1 }; // unreadable clip = fail
+  }
+}
+
 async function resolveJourney(jid, JOURNEYS) {
   const builtin = JOURNEYS.find((j) => j.id === jid);
   if (builtin) return builtin;
@@ -222,34 +246,52 @@ for (const jid of journeyIds) {
     const prompt = `${soul ? soul + ", " : ""}${MOTION[role][pace]}, ${motifs}, ${GUARDRAILS}`;
 
     console.log(`  → ${jid} phase ${pi} (from gen-${String(firstIdx).padStart(3, "0")})`);
-    try {
-      const result = await fal.subscribe("wan/v2.6/image-to-video", {
-        input: {
-          prompt,
-          image_url: `data:image/jpeg;base64,${b64}`,
-          duration: "10",
-          resolution: "1080p",
-          negative_prompt: MOTION_NEGATIVE,
-          enable_prompt_expansion: false,
-        },
-        logs: false,
-      });
-      const url = result?.data?.video?.url ?? result?.video?.url;
-      if (!url) throw new Error("no video url in result");
-      const res = await fetch(url);
-      const raw = `${outBase}.raw.mp4`;
-      await writeFile(raw, Buffer.from(await res.arrayBuffer()));
+    let shipped = false;
+    for (let attempt = 0; attempt < 3 && !shipped; attempt++) {
       try {
-        encodeDual(raw, outBase);
-      } finally {
-        await rm(raw, { force: true });
+        const result = await fal.subscribe("wan/v2.6/image-to-video", {
+          input: {
+            prompt,
+            image_url: `data:image/jpeg;base64,${b64}`,
+            duration: "10",
+            resolution: "1080p",
+            negative_prompt: MOTION_NEGATIVE,
+            enable_prompt_expansion: false,
+            seed: 1000 + pi * 101 + attempt * 7919,
+          },
+          logs: false,
+        });
+        const url = result?.data?.video?.url ?? result?.video?.url;
+        if (!url) throw new Error("no video url in result");
+        const res = await fetch(url);
+        const raw = `${outBase}.raw.mp4`;
+        await writeFile(raw, Buffer.from(await res.arrayBuffer()));
+        spent += COST_PER_CLIP;
+        const qa = qaClip(raw);
+        if (!qa.ok) {
+          await rm(raw, { force: true });
+          console.warn(`  ⟳ ${jid} phase ${pi} attempt ${attempt + 1}: ${qa.spikes} glitch spike(s) — regenerating`);
+          continue;
+        }
+        try {
+          encodeDual(raw, outBase);
+        } finally {
+          await rm(raw, { force: true });
+        }
+        manifest[jid][String(pi)] = { h264: publicUrl, hevc: publicUrl.replace(/\.mp4$/, ".hevc.mp4") };
+        console.log(`  ✓ ${jid} phase ${pi} QA-clean ($${spent.toFixed(2)})`);
+        shipped = true;
+      } catch (err) {
+        console.error(`  ✗ ${jid} phase ${pi}: ${err.message ?? err}`);
+        if (err.stderr) console.error(String(err.stderr).slice(-1500));
+        break;
       }
-      spent += COST_PER_CLIP;
-      manifest[jid][String(pi)] = { h264: publicUrl, hevc: publicUrl.replace(/\.mp4$/, ".hevc.mp4") };
-      console.log(`  ✓ ${jid} phase ${pi} ($${spent.toFixed(2)})`);
-    } catch (err) {
-      console.error(`  ✗ ${jid} phase ${pi}: ${err.message ?? err}`);
-      if (err.stderr) console.error(String(err.stderr).slice(-1500));
+    }
+    if (!shipped) {
+      delete manifest[jid][String(pi)];
+      await rm(`${outBase}.mp4`, { force: true });
+      await rm(`${outBase}.hevc.mp4`, { force: true });
+      console.warn(`  ∅ ${jid} phase ${pi}: no QA-clean clip in 3 attempts — SHIPPING STILLS ONLY (no-glitch law)`);
     }
   }
 }

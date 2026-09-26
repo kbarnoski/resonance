@@ -20,6 +20,30 @@ const require = createRequire(import.meta.url);
 const FFMPEG = require("ffmpeg-static");
 const ROOT = process.cwd();
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+
+// ── Clip QA gate (Karel 2026-09-26: "i cant tolerate any glitches under
+// any circumstances"). Generative video occasionally bakes in a frame
+// jump; a smooth meditative clip must contain ZERO cut-level scene
+// scores. Any spike ≥ 0.35 fails the clip; the caller regenerates with a
+// new seed, and a clip that cannot pass DOES NOT SHIP (stills only —
+// absence beats a glitch).
+function qaClip(clipPath) {
+  try {
+    const out = execFileSync(FFMPEG, [
+      "-hide_banner", "-nostats", "-i", clipPath,
+      "-vf", "select='gt(scene,0.35)',metadata=print:file=-",
+      "-f", "null", "-",
+    ], { stdio: ["ignore", "pipe", "pipe"], maxBuffer: 8 * 1024 * 1024 }).toString();
+    const spikes = (out.match(/scene_score/g) || []).length;
+    return { ok: spikes === 0, spikes };
+  } catch (e) {
+    const out = String(e.stdout ?? "");
+    const spikes = (out.match(/scene_score/g) || []).length;
+    if (out.length > 0) return { ok: spikes === 0, spikes };
+    return { ok: false, spikes: -1 }; // unreadable clip = fail
+  }
+}
+
 async function resolveJourney(jid, JOURNEYS) {
   const builtin = JOURNEYS.find((j) => j.id === jid);
   if (builtin) return builtin;
@@ -121,22 +145,39 @@ for (const jid of ids) {
       "the world transforming gradually and seamlessly along the way, dreamlike travel, " +
       "meditative pace, no cuts, no flicker";
     console.log(`  → ${jid} travel ${pi}→${pi + 1}`);
+    let shipped = false;
     try {
-      const url = await kling(prompt,
-        (await readFile(fromPath)).toString("base64"),
-        (await readFile(toPath)).toString("base64"));
-      const raw = `${outBase}.raw.mp4`;
-      const res = await fetch(url);
-      await writeFile(raw, Buffer.from(await res.arrayBuffer()));
-      try {
-        encodeDual(raw, outBase);
-      } finally {
-        await rm(raw, { force: true }); // never orphan raws in the pack (M6)
+      for (let attempt = 0; attempt < 3 && !shipped; attempt++) {
+        const url = await kling(prompt,
+          (await readFile(fromPath)).toString("base64"),
+          (await readFile(toPath)).toString("base64"));
+        const raw = `${outBase}.raw.mp4`;
+        const res = await fetch(url);
+        await writeFile(raw, Buffer.from(await res.arrayBuffer()));
+        // Travel morphs CROSS worlds — allow exactly the intentional
+        // transformation but no hard jumps: same zero-spike bar on the
+        // interior (Kling's start/end conditioning keeps it continuous).
+        const qa = qaClip(raw);
+        if (!qa.ok) {
+          await rm(raw, { force: true });
+          console.warn(`  ⟳ ${jid} t${pi} attempt ${attempt + 1}: ${qa.spikes} glitch spike(s) — regenerating`);
+          continue;
+        }
+        try {
+          encodeDual(raw, outBase);
+        } finally {
+          await rm(raw, { force: true }); // never orphan raws in the pack (M6)
+        }
+        const entry = { h264: `${pub}.mp4` };
+        if (existsSync(`${outBase}.hevc.mp4`)) entry.hevc = `${pub}.hevc.mp4`;
+        manifest[jid][`t${pi}`] = entry;
+        console.log(`  ✓ ${jid} t${pi} QA-clean`);
+        shipped = true;
       }
-      const entry = { h264: `${pub}.mp4` };
-      if (existsSync(`${outBase}.hevc.mp4`)) entry.hevc = `${pub}.hevc.mp4`;
-      manifest[jid][`t${pi}`] = entry;
-      console.log(`  ✓ ${jid} t${pi}`);
+      if (!shipped) {
+        delete manifest[jid][`t${pi}`];
+        console.warn(`  ∅ ${jid} t${pi}: no QA-clean morph in 3 attempts — hard crossfade instead (no-glitch law)`);
+      }
     } catch (e) {
       console.error(`  ✗ ${jid} t${pi}: ${e.message ?? e}`);
       if (e.stderr) console.error(String(e.stderr).slice(-2000)); // real ffmpeg cause (audit #21)
