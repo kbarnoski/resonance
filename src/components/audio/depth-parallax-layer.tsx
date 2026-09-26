@@ -98,11 +98,15 @@ let depthManifest: Record<string, boolean> | null | undefined;
 export function DepthParallaxLayer({
   journeyId,
   imageryOpacity = 0.4,
+  onCoveredChange,
 }: {
   journeyId?: string;
   /** The imagery budget — pass 1 - shaderOpacity so this layer shares the
    *  collage's mix contract instead of occluding the shaders (#7). */
   imageryOpacity?: number;
+  /** Fires when depth coverage resolves — the compositor uses it to split
+   *  the imagery budget between this base and the collage (2026-09-26). */
+  onCoveredChange?: (covered: boolean) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sizeRef = useRef({ w: 0, h: 0 });
@@ -112,7 +116,9 @@ export function DepthParallaxLayer({
     if (!journeyId) { setCovered(false); return; }
     let cancelled = false;
     const apply = (m: Record<string, boolean> | null) => {
-      if (!cancelled) setCovered(!!m?.[journeyId]);
+      if (cancelled) return;
+      setCovered(!!m?.[journeyId]);
+      onCoveredChange?.(!!m?.[journeyId]);
     };
     if (depthManifest !== undefined) {
       apply(depthManifest);
@@ -267,7 +273,7 @@ export function DepthParallaxLayer({
       style={{
         zIndex: 2,
         mixBlendMode: "screen",
-        opacity: Math.max(0.2, Math.min(0.7, imageryOpacity)),
+        opacity: Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55)),
       }}
     />
   );

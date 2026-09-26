@@ -130,6 +130,7 @@ export function JourneyCompositor({
   // Holding the last journey value instead means the shader stays
   // exactly where it was at journey end, and the visualizer wrapper's
   // opacity transition handles the fade smoothly from there.
+  const [parallaxCovered, setParallaxCovered] = useState(false);
   const lastShaderOpacityRef = useRef<number>(1.0);
   if (frame?.shaderOpacity != null) {
     lastShaderOpacityRef.current = frame.shaderOpacity;
@@ -333,7 +334,7 @@ export function JourneyCompositor({
       className="absolute inset-0"
     >
       {/* Depth-parallax base — the 3D Ken Burns under the collage (z-2, earlier DOM) */}
-      {showAi && <DepthParallaxLayer journeyId={journeyId} imageryOpacity={1 - effectiveShaderOpacity} />}
+      {showAi && <DepthParallaxLayer journeyId={journeyId} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} />}
 
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
@@ -347,6 +348,7 @@ export function JourneyCompositor({
           aiOnly={aiOnly}
           generating={aiGenerating}
           shaderOpacity={effectiveShaderOpacity}
+          imageryScale={parallaxCovered ? 0.6 : 1}
           promptSeed={promptSeed}
           journeyId={journeyId}
           localImageUrls={localImageUrls}
@@ -367,7 +369,7 @@ export function JourneyCompositor({
       )}
 
       {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
-      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.35} />}
+      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.28} />}
 
       {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
           gradients, imagery, H.264 — quantizes to 8 bits and bands in slow

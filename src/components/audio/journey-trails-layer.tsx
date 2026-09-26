@@ -38,7 +38,7 @@ export function JourneyTrailsLayer({
 
     const SCALE = 0.5; // half-res buffer — echoes are soft by nature
     const FPS_MS = 1000 / 30;
-    const DECAY = 0.045; // per-frame history erase — ~1.2s visible tail
+    const DECAY = 0.07; // faster history erase — white-heavy journeys were hazing over shaders (Karel 2026-09-26) // per-frame history erase — ~1.2s visible tail
     const FEED = 0.15; // per-frame accumulation of the live composite
     let last = 0;
 

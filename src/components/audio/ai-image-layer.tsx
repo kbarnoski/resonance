@@ -27,6 +27,11 @@ interface AiImageLayerProps {
   /** Journey shader opacity (0-1). Controls AI layer opacity inversely —
    *  higher shaderOpacity = lower AI presence. Default 1.0 (AI minimal). */
   shaderOpacity?: number;
+  /** Imagery-budget share (0-1). When the depth-parallax base is active it
+   *  takes part of the imagery budget, and this scales the collage down so
+   *  imagery NEVER doubles up and buries the shaders (Karel 2026-09-26:
+   *  "shaders need to be on average 50% of the experience"). */
+  imageryScale?: number;
   /** Fires once when the first AI image is ready and painted */
   onFirstImage?: () => void;
   /** Optional seed for deterministic prompt variation (shared playback) */
@@ -63,6 +68,8 @@ interface ImageLayer {
   blendMode: GlobalCompositeOperation;
   /** Fast fade — used when purging layers for a new journey */
   purge?: boolean;
+  /** Graceful 8s boundary fade (installation journey change) */
+  boundaryFade?: boolean;
 }
 
 // Pacing — spec v3 §6: slow crossfades and long tails so images BUILD
@@ -72,6 +79,11 @@ interface ImageLayer {
 const DISSOLVE_DURATION = 6000;
 const FADEOUT_DURATION = 10000;
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
+// Installation boundary fade (Karel 2026-09-26: Snowflake's ice lingered
+// into Realized): old-journey stills fade over 8s — long enough that the
+// new journey's first image lands first (no void), short enough that no
+// cross-journey imagery survives past the first breath.
+const BOUNDARY_FADEOUT_DURATION = 8000;
 const MIN_PEAK_DURATION = 4000;
 const GEN_INTERVAL_MIN_BASE = 6500;
 const GEN_INTERVAL_MAX_BASE = 7500;
@@ -154,6 +166,7 @@ export function AiImageLayer({
   aiOnly = false,
   generating = true,
   shaderOpacity = 1.0,
+  imageryScale = 1,
   onFirstImage,
   promptSeed,
   journeyId,
@@ -284,10 +297,19 @@ export function AiImageLayer({
       const now = performance.now();
       const existingLayers = layersRef.current;
       for (const layer of existingLayers) {
-        // Installation keeps STILLS across the boundary (no-void rule), but
-        // videos must always fade — a surviving clip holds a decoder and
-        // can defer the next journey's clips forever (perf audit C1/#22).
-        if (skipPurge && "complete" in layer.img) continue;
+        // Installation: old-journey stills get the graceful BOUNDARY fade
+        // (Karel 2026-09-26 — ice from Snowflake was lingering minutes
+        // into Realized under the old keep-forever rule); videos always
+        // fade normally (decoder hygiene).
+        if (skipPurge && "complete" in layer.img) {
+          if (layer.state !== "fading-out") {
+            layer.fadeStartOpacity = layer.opacity;
+            layer.state = "fading-out";
+            layer.fadeStartTime = now;
+            layer.boundaryFade = true;
+          }
+          continue;
+        }
         if (layer.state !== "fading-out") {
           layer.fadeStartOpacity = layer.opacity;
           layer.state = "fading-out";
@@ -955,7 +977,7 @@ export function AiImageLayer({
         } else if (layer.state === "fading-out") {
           // Slow fade-out keeps images visible longer during transitions
           // Purge layers use a fast 2s fade to clear old journey imagery quickly
-          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : FADEOUT_DURATION;
+          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : FADEOUT_DURATION;
           const rawProgress = Math.min(1, elapsed / fadeDuration);
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);
@@ -1064,7 +1086,7 @@ export function AiImageLayer({
     ? undefined
     : shaderOpacity >= 1.0
       ? 0.85
-      : Math.max(0.15, Math.min(0.65, 1 - shaderOpacity));
+      : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
 
   return (
     <canvas
