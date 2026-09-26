@@ -154,41 +154,48 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
 
-  // ── Singleton guard (2026-09-25; rebuilt after correctness audit #16):
-  // duplicate loop instances double audio and fight for the projector.
-  // Claimless protocol — a channel never receives its own messages, so
-  // "any instance that hears a claim stands down" IS newest-wins, with no
-  // clock dependence (Date.now() goes backward on NTP sync) and no
-  // collisions. Policy exception: a FULLSCREEN incumbent outranks a
-  // windowed newcomer (the pkill-miss case opens the bad tab last), so
-  // the incumbent replies and the newcomer stands down instead.
+  // ── Singleton guard (P0 rebuild 2026-09-26): exactly ONE Resonance
+  // instance, and the PROJECTOR instance always wins. The kiosk launch
+  // path carries ?kiosk=1 (set by tramokyo-bootstrap.html) — that is the
+  // identity check; document.fullscreenElement is USELESS here because
+  // --kiosk fullscreen never sets it (the previous guard blanked the real
+  // projector tab in favor of a session-restored zombie).
+  // Claimless protocol: a channel never receives its own messages, so
+  // "yield when you hear a claim from an equal-or-higher rank" is
+  // newest-wins within a rank with zero clock dependence.
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return;
+    const isKioskInstance =
+      new URLSearchParams(window.location.search).has("kiosk") ||
+      window.location.hash.includes("kiosk");
     const bc = new BroadcastChannel("tramokyo-loop-singleton");
     let stoodDown = false;
     const standDown = () => {
       if (stoodDown) return;
       stoodDown = true;
       try { bc.close(); } catch { /* closed */ }
-      // Document discard kills audio + timers reliably; the bootstrap
-      // page self-heals the projector tab on the next Start.
+      // Document discard kills audio + timers reliably; the surviving
+      // instance owns the projector.
       window.location.replace("about:blank");
     };
     bc.onmessage = (e) => {
       if (stoodDown) return;
-      if (e.data?.type === "claim") {
-        if (document.fullscreenElement && !e.data.fullscreen) {
-          // We are the fullscreen projector tab — the newcomer yields.
-          bc.postMessage({ type: "incumbent-keep" });
+      const d = e.data ?? {};
+      if (d.type === "claim") {
+        if (isKioskInstance && !d.kiosk) {
+          // A non-kiosk instance appeared (phone remote, stray tab) —
+          // the projector holds; the newcomer yields.
+          bc.postMessage({ type: "kiosk-holds" });
           return;
         }
+        // Equal rank (or we are outranked): newest wins — yield.
         standDown();
-      } else if (e.data?.type === "incumbent-keep") {
-        // A fullscreen incumbent exists — this (newer, windowed) tab yields.
-        if (!document.fullscreenElement) standDown();
+      } else if (d.type === "kiosk-holds") {
+        // The projector answered our claim — non-kiosk instances yield.
+        if (!isKioskInstance) standDown();
       }
     };
-    bc.postMessage({ type: "claim", fullscreen: !!document.fullscreenElement });
+    bc.postMessage({ type: "claim", kiosk: isKioskInstance });
     return () => { try { bc.close(); } catch { /* noop */ } };
   }, []);
 

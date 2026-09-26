@@ -84,6 +84,17 @@ fi
 pkill -f "user-data-dir=$HOME/.tramokyo-chrome" 2>/dev/null || true
 sleep 1
 
+# P0 2026-09-26: pkill reads as a CRASH to Chrome, and the next launch
+# silently session-restores the OLD loop tab alongside the new bootstrap
+# tab — two instances, doubled audio, and the singleton guard blanking
+# the wrong one. Scrub the crash markers and delete restorable sessions
+# so a kiosk launch is ALWAYS exactly one tab.
+PREFS="$HOME/.tramokyo-chrome/Default/Preferences"
+if [ -f "$PREFS" ]; then
+  sed -i '' 's/"exit_type":"Crashed"/"exit_type":"Normal"/; s/"exited_cleanly":false/"exited_cleanly":true/' "$PREFS" 2>/dev/null || true
+fi
+rm -rf "$HOME/.tramokyo-chrome/Default/Sessions" "$HOME/.tramokyo-chrome/Default/Session Storage" 2>/dev/null || true
+
 open -na "Google Chrome" --args \
   --user-data-dir="$HOME/.tramokyo-chrome" \
   --kiosk \
