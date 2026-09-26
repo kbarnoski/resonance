@@ -813,11 +813,11 @@ export const JOURNEYS: Journey[] = [
         voice: "onyx",
       },
       integration: {
-        aiPrompt: "PURE WHITE BACKGROUND — aftermath as white silence, a thin drift of dark ash motes falling slowly across a boundless soft white field, two or three motes still carrying the faintest orange core, the dark particles sparse and scattered low across the frame with the vast white open above, the fire survived and the air clean, almost nothing against everything, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "aftermath — a boundless field of fine pale-grey ASH under a smoke-hazed dawn sky, powder and cinder in every ridge, charred stubs of the burnt lattice half-buried in the grey, thin last wisps of smoke rising far apart, one ember's faint orange breathing under the ash crust, the fire survived and the air clean, no text no signatures no watermarks no letters no writing",
         aiPromptSequence: [
           "PURE WHITE BACKGROUND — aftermath as white silence, a thin drift of dark ash motes falling slowly across a boundless soft white field, two or three motes still carrying the faintest orange core, the dark particles sparse and scattered low across the frame with the vast white open above, the fire survived and the air clean, almost nothing against everything, no text no signatures no watermarks no letters no writing",
-          "macro — one dark ash mote on the boundless white at closest range, its faint orange core the last living coal of the whole descent, no text no signatures no watermarks no letters no writing",
-          "wide — the white silence from further back, the thin drift of dark motes settling low across it like the final bars of the song, completely uninhabited, no text no signatures no watermarks no letters no writing",
+          "macro — one flake of charcoal ash resting on the powder-grey field at closest range, its edge still carrying the faintest orange core, fine cinder grains and a burnt splinter beside it, the last living coal of the whole descent, no text no signatures no watermarks no letters no writing",
+          "wide — the grey ash plain from further back under the smoke-hazed sky, sparse cinder flakes settling out of the warm air, blackened stubs dotting the field to the horizon, the silence after fire — not winter — completely uninhabited, no text no signatures no watermarks no letters no writing",
         ],
         guidancePhrases: ["you walked through the fire...", "it changed you..."],
         shaderOpacity: 0.7, bloomIntensity: 0.28, halation: 0.03, vignette: 0.12, particleDensity: 0.2, colorTemperature: -0.1, intensityMultiplier: 0.75,
