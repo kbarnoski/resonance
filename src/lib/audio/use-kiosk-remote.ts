@@ -145,7 +145,7 @@ export function useKioskRemote(context: KioskRemoteContext): void {
     const tick = async () => {
       const s = useAudioStore.getState();
       try {
-        const res = await fetch("/api/pack/remote", {
+        const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

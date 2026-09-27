@@ -18,9 +18,24 @@ const bus: RemoteBus = ((globalThis as { __packRemoteBus?: RemoteBus }).__packRe
   statusAt: 0,
 });
 
+// Optional shared key (maturity pass 2026-09-26, audit M-3): the hotspot
+// is open, so anyone joining it could drive the show. Set
+// TRAMOKYO_REMOTE_KEY in the kiosk env to require ?key= / x-remote-key
+// on every bus call; unset keeps today's open behavior.
+function keyOk(request: Request): boolean {
+  const required = process.env.TRAMOKYO_REMOTE_KEY;
+  if (!required) return true;
+  const url = new URL(request.url);
+  const given = request.headers.get("x-remote-key") ?? url.searchParams.get("key");
+  return given === required;
+}
+
 export async function POST(request: Request) {
   if (!isOfflinePack()) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+  if (!keyOk(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const body = (await request.json().catch(() => ({}))) as {
     role?: string;
@@ -43,9 +58,12 @@ export async function POST(request: Request) {
   return NextResponse.json({ error: "Bad request" }, { status: 400 });
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!isOfflinePack()) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+  if (!keyOk(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   return NextResponse.json({
     status: bus.status,

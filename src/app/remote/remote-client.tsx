@@ -57,7 +57,7 @@ export function RemoteClient() {
     let stopped = false;
     const poll = async () => {
       try {
-        const res = await fetch("/api/pack/remote");
+        const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`);
         if (!res.ok || stopped) return;
         const data = await res.json();
         setStatus(data.status ?? null);
@@ -73,7 +73,7 @@ export function RemoteClient() {
     setSending(command);
     setSendError(null);
     try {
-      const res = await fetch("/api/pack/remote", {
+      const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
