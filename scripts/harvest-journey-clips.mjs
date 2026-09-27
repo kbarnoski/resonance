@@ -257,6 +257,7 @@ for (const jid of journeyIds) {
             resolution: "1080p",
             negative_prompt: MOTION_NEGATIVE,
             enable_prompt_expansion: false,
+            enable_safety_checker: false, // false-flags glowing mushrooms + flame imagery (2026-09-26)
             seed: 1000 + pi * 101 + attempt * 7919,
           },
           logs: false,
