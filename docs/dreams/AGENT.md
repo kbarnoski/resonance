@@ -226,6 +226,12 @@ The lab's ~1,150+ protos were the bulk of every production build (93% of
   parsers working.
 - New protos appear on the index automatically (newest-first slice) — do
   not hand-edit the index to add your proto.
+- **Test file naming (added 2026-09-26)**: `*.test.ts` under
+  `src/app/dream/` is picked up by the production CI vitest run — a
+  `.test.ts` file MUST contain real vitest suites (`describe`/`it`) or CI
+  fails the deploy with "No test suite found". A standalone node-run
+  self-check harness (exporting `selfTest()`, using `process.exit`, etc.)
+  must be named `*.selftest.ts` instead.
 
 Each prototype should answer ONE question: "what if Resonance could do X?"
 

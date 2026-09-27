@@ -65,7 +65,7 @@ export default function BreathFlutePage() {
   // proves the bore is tuned (each scale note within ±60 cents). See flute.test.ts.
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") {
-      void import("./flute.test").then(({ selfTest }) => {
+      void import("./flute.selftest").then(({ selfTest }) => {
         const r = selfTest();
         // eslint-disable-next-line no-console
         console.log("[breath-flute] " + r.summary);
