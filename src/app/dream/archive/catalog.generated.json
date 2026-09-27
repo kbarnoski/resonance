@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18272-tidewell",
+  "cycle": 18272,
+  "name": "Tidewell",
+  "status": "demoable",
+  "description": "Tilt your head to conduct the tonal register of Karel's real piano recording — tip right and the air/treble rises and pours right, tip left and the body/bass swells left, while the",
+  "category": "local"
+ },
+ {
   "slug": "18264-gazehall",
   "cycle": 18264,
   "name": "look at your recording to hear it",
