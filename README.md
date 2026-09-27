@@ -50,6 +50,7 @@ Each phase has its own shader pool, AI image prompt sequence, voice cadence, and
 
 ```bash
 # install (npm-only repo — pnpm-lock.yaml is deliberately gitignored)
+nvm use 20   # macOS builds require Node 20 (see scripts/check-build-node.mjs)
 npm ci
 
 # environment

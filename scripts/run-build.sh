@@ -23,8 +23,8 @@ fi
 # NODE_OPTIONS was already set, e.g. on CI).
 case "${NODE_OPTIONS:-}" in
   *max-old-space-size*) : ;;
-  "") export NODE_OPTIONS="--max-old-space-size=4096" ;;
-  *) export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=4096" ;;
+  "") export NODE_OPTIONS="--max-old-space-size=6144" ;;
+  *) export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=6144" ;;
 esac
 
 ERRLOG="${TMPDIR:-/tmp}/run-build-$$.err"

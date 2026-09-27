@@ -45,6 +45,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Audit (high+ fails the gate)
+        run: npm audit --omit=dev --audit-level=high || (echo '::warning::npm audit found high+ prod vulns' && exit 1)
 
       - name: Lint
         run: npm run lint

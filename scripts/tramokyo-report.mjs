@@ -6,7 +6,7 @@ import { readFileSync } from "fs";
 
 let raw;
 try {
-  raw = readFileSync("/tmp/tramokyo-events.log", "utf-8");
+  raw = readFileSync(process.env.HOME + "/Library/Logs/Tramokyo/tramokyo-events.log", "utf-8");
 } catch {
   console.log("No events log at /tmp/tramokyo-events.log — has the kiosk run?");
   process.exit(0);

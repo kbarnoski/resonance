@@ -4,10 +4,29 @@ Operator runbook for deploying Resonance to a venue kiosk — online (Vercel +
 fal) or fully offline (the Tramokyo content pack). Everything you need to
 install, keep alive, and monitor.
 
-Last updated: 2026-08-25 (post full-system audit — supervision, sleep,
+Last updated: 2026-09-26 (living-media pack: video clips, depth parallax, dual-codec) (post full-system audit — supervision, sleep,
 phone-remote reload, quarantine exclusion, derived journey caps all landed).
 
-## What the loop actually plays (2026-08 format)
+## What the loop actually plays (2026-09 living-media format)
+
+> **2026-09 upgrade — the pack is now living media (12GB).** Each of the
+> 43 journeys carries, on top of its 90 stills:
+> - **6 hero video clips** (10s, one per phase) + **up to 5 travel morphs**
+>   (5s camera journeys across phase boundaries). Every clip ships in TWO
+>   codecs side by side: `phase-N.mp4` (H.264, compatibility) and
+>   `phase-N.hevc.mp4` (10-bit HEVC, banding-free — playback probes
+>   `canPlayType` and prefers HEVC). **Both files must survive any
+>   copy/restore.** A missing morph is intentional (QA'd out — plays as a
+>   crossfade).
+> - **90 depth maps** (`depth/journeys/<id>/gen-NNN.png`) driving the
+>   2.5D parallax base layer.
+> - Manifests: `local-clips.json` and `local-depth.json` (separate from
+>   `manifest.json`). If they ever disagree with disk (parallel harvests
+>   clobbering, partial copies): `node scripts/rebuild-pack-manifests.mjs`
+>   — disk is the source of truth.
+>
+> Pack composition: clips 7.8G · images 3.5G · depth 0.4G · audio 0.3G.
+
 
 The attract loop runs a **two-program cycle, ~65 minutes end to end**, then
 wraps:
@@ -463,3 +482,51 @@ The accompanying memory entry at
 `~/.claude/projects/-Users-karelbarnoski/memory/project_installation_venue_setup.md`
 reminds Claude to check + update this doc whenever installation-mode work
 happens.
+
+
+## Pre-show preflight (2026-09-26 — run this FIRST)
+
+```
+npm run preflight
+```
+
+One command verifies: Node, disk, clip/depth manifest completeness,
+manifest→disk integrity for every clip URL, random-sample clip decode,
+audio presence, server health, flight recorder. `PREFLIGHT PASS` = show
+the show. It is also the post-restore verifier after
+`scripts/tramokyo-backup.sh <drive> restore`.
+
+## Backup (do this before travel and before every show)
+
+```
+scripts/tramokyo-backup.sh /Volumes/YourDrive          # ~12GB, minutes on USB3
+scripts/tramokyo-backup.sh /Volumes/YourDrive restore  # + auto-preflight
+```
+
+The pack exists in exactly one place otherwise.
+
+## Logs moved off /tmp (2026-09-26)
+
+`/tmp` is wiped on macOS reboot — exactly when you need the trail.
+Both logs now live in `~/Library/Logs/Tramokyo/`:
+`tramokyo-events.log` (flight recorder; `scripts/tramokyo-report.mjs`
+reads it) and `tramokyo-server.log`.
+
+## Additional troubleshooting (2026-09 stack)
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| A phase shows stills but no motion | That phase QA'd out or clip missing | `npm run preflight`; regenerate via `harvest-journey-clips.mjs <id>` |
+| Manifest points at missing file (preflight FAIL) | Partial copy / clobbered manifest | `node scripts/rebuild-pack-manifests.mjs` |
+| Two kiosk tabs / blank white fullscreen | Session-restored zombie (pre-09-26 launcher) | Relaunch via Tramokyo.app (launcher now scrubs sessions; singleton guard keeps ?kiosk=1 tab) |
+| Imagery vanished mid-show, shaders still running | Imagery stack crashed → boundary degraded gracefully | Show survives; check flight recorder for `imagery-crash`; next journey auto-retries |
+| Videos band in dark gradients | Playing H.264 fallback | Confirm Chrome (HEVC path); check hevc files exist |
+
+## Mid-show escalation ladder (print this)
+
+1. Phone remote `/remote` → Next journey (10s)
+2. Phone remote → reload loop (30s)
+3. `launchctl kickstart -k gui/$(id -u)/com.resonance.tramokyo` (1min)
+4. Relaunch Tramokyo.app (2min)
+5. Reboot laptop, Tramokyo.app auto-path (5min)
+6. Backup laptop + restored pack (15min)

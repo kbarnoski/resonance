@@ -1,0 +1,16 @@
+# Maturity audit 2026-09-26 #16 — 45 vulnerabilities accumulated silently
+# with no update automation. Weekly npm PRs, grouped to keep noise low.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"

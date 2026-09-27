@@ -159,3 +159,18 @@ Tramokyo Stop.app ──▶ tramokyo-stop.sh  (Chrome profile, bootout launchd,
   section (From the beginning / per-program jump points), working both
   in-loop (in-place restart at the program's intro) and from any other
   context (navigates to `?loop=1&start=<program-id>`).
+
+
+## Phase 5 — Living media (2026-09, SHIPPED)
+
+All 43 journeys upgraded to the world-class stack: analysis-derived
+themes → 18-shot music-video phases → motion-soul hero clips (258) +
+travel morphs (215) + depth-parallax (43/43), all zero-glitch QA-gated,
+dual-codec (H.264 + 10-bit HEVC debanded). Engine: music-paced shaders
+(tempoFlow), feedback trails, imagery/shader budget split, boundary
+fades, singleton kiosk guard, imagery error boundary (degrades to
+shaders). Ops: `npm run preflight`, `tramokyo-backup.sh`, watchdog cron,
+logs in ~/Library/Logs/Tramokyo. Audits: docs/full-audit-2026-09-25.md +
+docs/maturity-audit-2026-09-26.md. Open (Karel): Upstash KV env, CSP
+enforce (needs report review), OFFLINE_PACK binding or TRAMOKYO_REMOTE_KEY
+at the venue, Supabase anon-key rotation.

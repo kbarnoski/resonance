@@ -7,6 +7,7 @@ import { PostProcessingLayer } from "./post-processing-layer";
 import { JourneyTrailsLayer } from "./journey-trails-layer";
 import { DebandOverlay } from "./deband-overlay";
 import { DepthParallaxLayer } from "./depth-parallax-layer";
+import { ImageryErrorBoundary } from "./imagery-error-boundary";
 import { FlashAngel } from "./flash-angel";
 import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -333,6 +334,10 @@ export function JourneyCompositor({
       ref={rootRef}
       className="absolute inset-0"
     >
+      {/* Imagery stack — parallax, collage, clones, trails — inside a
+          boundary that degrades to shaders-only on any throw (never take
+          the show down; maturity audit #8). */}
+      <ImageryErrorBoundary resetKey={journeyId}>
       {/* Depth-parallax base — the 3D Ken Burns under the collage (z-2, earlier DOM) */}
       {showAi && <DepthParallaxLayer journeyId={journeyId} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} />}
 
@@ -370,6 +375,7 @@ export function JourneyCompositor({
 
       {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
       {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.28} />}
+      </ImageryErrorBoundary>
 
       {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
           gradients, imagery, H.264 — quantizes to 8 bits and bands in slow

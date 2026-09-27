@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { MonoLabel } from "@/components/ui/typography";
 
 export default function GlobalError({
@@ -41,13 +42,12 @@ export default function GlobalError({
           >
             Try again
           </button>
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a
+          <Link
             href="/"
             className="rounded-lg border border-white/20 px-5 py-2.5 font-mono text-[0.8rem] text-white/80 no-underline transition-colors duration-instant ease-enter hover:bg-white/10 hover:text-white"
           >
             Go home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

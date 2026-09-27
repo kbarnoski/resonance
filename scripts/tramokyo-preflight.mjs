@@ -28,10 +28,23 @@ try {
   else ok(`${freeGB}GB free disk`);
 } catch { warns.push("could not read disk space"); }
 
-// 3) Pack manifests + coverage
-const clips = JSON.parse(await readFile(path.join(PACK, "local-clips.json"), "utf8"));
-const depth = JSON.parse(await readFile(path.join(PACK, "local-depth.json"), "utf8"));
-const journeyDirs = await readdir(path.join(PACK, "images", "journeys"));
+// 3) Pack manifests + coverage — a missing/half-copied pack is the exact
+// failure this tool exists to catch, so it must FAIL cleanly, not crash.
+if (!existsSync(PACK)) {
+  console.log("\n  ✗ pack directory missing entirely: " + PACK);
+  console.log("\nPREFLIGHT FAIL — no pack. Restore from backup or rebuild.");
+  process.exit(1);
+}
+let clips, depth, journeyDirs;
+try {
+  clips = JSON.parse(await readFile(path.join(PACK, "local-clips.json"), "utf8"));
+  depth = JSON.parse(await readFile(path.join(PACK, "local-depth.json"), "utf8"));
+  journeyDirs = await readdir(path.join(PACK, "images", "journeys"));
+} catch (e) {
+  console.log(`\n  ✗ pack incomplete: ${e.message}`);
+  console.log("\nPREFLIGHT FAIL — pack manifests unreadable. Run rebuild-pack-manifests.mjs or restore from backup.");
+  process.exit(1);
+}
 let clipGaps = 0;
 for (const [jid, e] of Object.entries(clips)) {
   const h = Object.keys(e).filter((k) => !k.startsWith("t")).length;
@@ -62,7 +75,9 @@ else fails.push(`${missing} manifest URLs missing on disk — run rebuild-pack-m
 // 5) Sample clip integrity (ffprobe decode-check 5 random clips)
 const FFMPEG = require("ffmpeg-static");
 const allClips = [];
-for (const jid of await readdir(path.join(PACK, "clips", "journeys"))) {
+const clipsRoot = path.join(PACK, "clips", "journeys");
+if (!existsSync(clipsRoot)) { fails.push("clips directory missing"); }
+for (const jid of existsSync(clipsRoot) ? await readdir(clipsRoot) : []) {
   for (const f of await readdir(path.join(PACK, "clips", "journeys", jid))) {
     if (f.endsWith(".mp4")) allClips.push(path.join(PACK, "clips", "journeys", jid, f));
   }
@@ -93,7 +108,7 @@ try {
 
 // 8) Flight recorder writable
 try {
-  const st = await stat("/tmp/tramokyo-events.log").catch(() => null);
+  const st = await stat(`${process.env.HOME}/Library/Logs/Tramokyo/tramokyo-events.log`).catch(() => null);
   ok(`flight recorder ${st ? `present (${Math.round(st.size / 1024)}KB)` : "will be created on first event"}`);
 } catch { /* fine */ }
 

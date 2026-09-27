@@ -17,7 +17,7 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: false,
-    include: ["src/lib/**/*.test.ts"],
+    include: ["src/lib/**/*.test.ts", "src/app/dream/**/*.test.ts"], // dream tests were silently never running (maturity audit 2026-09-26 #6)
   },
   resolve: {
     alias: {

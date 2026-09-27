@@ -1,4 +1,4 @@
-import { appendFile, stat, rename } from "fs/promises";
+import { appendFile, stat, rename, mkdir } from "fs/promises";
 import { isOfflinePack } from "@/lib/offline/pack";
 
 // ── Kiosk flight recorder (Tramokyo, offline-pack only) ─────────────────
@@ -7,7 +7,10 @@ import { isOfflinePack } from "@/lib/offline/pack";
 // them — timestamped — to a plain-text log that SURVIVES page reloads.
 // Overnight failures stop being archaeology: read the file, see the
 // night. 404s in production exactly like the /api/pack/remote bus.
-const LOG_PATH = "/tmp/tramokyo-events.log";
+// Maturity audit #13: /tmp is wiped on macOS reboot — the flight record
+// vanished exactly after power-loss failures. Persist under ~/Library/Logs.
+const LOG_DIR = `${process.env.HOME ?? "/tmp"}/Library/Logs/Tramokyo`;
+const LOG_PATH = `${LOG_DIR}/tramokyo-events.log`;
 // Security (2026-09-25 M-2): unbounded appendFile let anyone on the venue
 // hotspot fill the kiosk disk. Rotate at 10MB (one .1 generation kept) and
 // throttle per-IP to 5 events/sec in memory.
@@ -46,6 +49,7 @@ export async function POST(request: Request) {
         await rename(LOG_PATH, `${LOG_PATH}.1`); // keep one generation
       }
     } catch { /* no log yet */ }
+    await mkdir(LOG_DIR, { recursive: true }).catch(() => { /* exists */ });
     const line = `${new Date().toISOString()} ${event}\n`;
     await appendFile(LOG_PATH, line);
     return Response.json({ ok: true });

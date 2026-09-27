@@ -18,7 +18,8 @@
     "tauri:build": "tauri build",
     "ios:sync": "cap sync ios",
     "ios:open": "cap open ios",
-    "ios:run": "cap run ios"
+    "ios:run": "cap run ios",
+    "preflight": "node scripts/tramokyo-preflight.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
@@ -46,11 +47,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "ffmpeg-static": "^5.3.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
-    "next": "^15.5.15",
+    "next": "^15.5.24",
     "next-themes": "^0.4.6",
     "openai": "^6.27.0",
+    "postcss": "^8.5.28",
     "postprocessing": "^6.38.3",
     "radix-ui": "^1.4.3",
     "react": "19.1.0",
@@ -71,12 +74,11 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tauri-apps/cli": "^2.10.1",
-    "@types/node": "^20",
+    "@types/node": "^24.19.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.12",
-    "ffmpeg-static": "^5.3.0",
     "playwright": "^1.59.1",
     "pptxgenjs": "^4.0.1",
     "shadcn": "^3.8.4",
@@ -84,5 +86,9 @@
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.9.3",
     "vitest": "^2.1.9"
+  },
+  "overrides": {
+    "jsondiffpatch": "^0.7.6",
+    "postcss": "^8.5.23"
   }
 }

@@ -14,7 +14,9 @@
 set -u
 
 APP_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-LOG=/tmp/tramokyo-server.log
+LOGDIR="$HOME/Library/Logs/Tramokyo"
+mkdir -p "$LOGDIR"
+LOG="$LOGDIR/tramokyo-server.log"
 SERVER_PID_FILE=/tmp/tramokyo-server.pid
 CAFFEINATE_PID_FILE=/tmp/tramokyo-caffeinate.pid
 LABEL="com.resonance.tramokyo"
@@ -72,7 +74,7 @@ for _ in $(seq 1 30); do
   sleep 1
 done
 if [ -z "$ok" ]; then
-  osascript -e 'display notification "Server not up yet — Chrome will keep retrying. Check /tmp/tramokyo-server.log if this persists." with title "Tramokyo"' >/dev/null 2>&1
+  osascript -e 'display notification "Server not up yet — Chrome will keep retrying. Check ~/Library/Logs/Tramokyo/tramokyo-server.log if this persists." with title "Tramokyo"' >/dev/null 2>&1
 fi
 
 # Kill any prior kiosk-profile Chrome first. If one is still alive,
