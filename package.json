@@ -43,7 +43,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "@tonejs/midi": "^2.0.28",
     "@types/three": "^0.182.0",
-    "ai": "^4.3.19",
+    "ai": "^7.0.113",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
