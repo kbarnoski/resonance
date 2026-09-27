@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18264-gazehall",
+  "cycle": 18264,
+  "name": "look at your recording to hear it",
+  "status": "demoable",
+  "description": "What if you could LOOK at your recording to hear it — turn your head to sweep a spectral searchlight across one of Karel's piano takes, so wherever your gaze lands, that band of th",
+  "category": "local"
+ },
+ {
   "slug": "18196-breathtide-flow",
   "cycle": 18196,
   "name": "Breathtide (flow)",
