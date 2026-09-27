@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-27T~01:1xZ (cycle 1263)
 
+> **Jury verdict today**: The lab finally cracked its own trap — `gazehall` ships a camera piece you can watch working before you even turn the webcam on, and that trick should now be law; but it's still sitting on six untested camera pieces and just traded its three.js rut for a Canvas2D one, so the 30 seconds only you can spend (do limn / stillpoint / cantormap / fingerloom / formfold / breathtide actually track you?) still buys more than its next build. See `docs/dreams/JURY.md`.
+
 > **Today: LOOK at your recording to hear it.** `18264-gazehall` puts a luminous searchlight in a dark hall, and where you turn your head is what you hear — look UP and the air & treble of your piano bloom out of the black; look DOWN and the bass & body swell; turn LEFT/RIGHT and the sound sweeps across the stereo field while the spectral focus slides with it. It's pitch-clean (only *which* frequencies you hear change, never the pitch — your piano is never mangled). **New this time: it ships `demoable`, not `wip`** — it runs a self-driving demo sweep on load with no camera, so the whole look→sound→light mechanism is provably alive before you touch anything. Open `/dream/18264-gazehall` and just watch first, then hit "Use camera" to conduct it with your head.
 
 ## New since yesterday
