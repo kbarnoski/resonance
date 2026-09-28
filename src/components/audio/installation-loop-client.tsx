@@ -379,6 +379,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // cache so the main audio element's load() at transition time hits
   // the cache instead of cold-fetching from Supabase.
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
+  // Hidden video element reused to prewarm the next journey's phase-0
+  // hero clip into the media cache (2026-09-27 transition fix).
+  const preloadVideoRef = useRef<HTMLVideoElement | null>(null);
 
   // Audio unlock helper. Idempotent — safe to call multiple times.
   // Runs on mount (works automatically in the desktop app where Tauri
@@ -522,7 +525,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // Tear down BOTH hidden preload audio elements if created
       // (2026-09-19 audit: preloadElRef was never released — one leaked
       // buffered element per break-in/return cycle).
-      for (const ref of [preloadAudioRef, preloadElRef]) {
+      for (const ref of [preloadAudioRef, preloadElRef, preloadVideoRef]) {
         if (ref.current) {
           try { ref.current.pause(); } catch { /* ignore */ }
           try { ref.current.src = ""; } catch { /* ignore */ }
@@ -1596,6 +1599,55 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           preloadAudioRef.current.src = resolved;
           preloadAudioRef.current.load();
         } catch { /* preload best-effort; advance will resolve again */ }
+
+        // ── Visual prewarm (2026-09-27, Karel/Johnny/Joseph review) ──
+        // The journey switch previously started COLD on the visual side:
+        // journey B's first stills, depth maps, and phase-0 hero clip were
+        // only fetched AFTER the switch, so every boundary showed a dip
+        // while old imagery faded and new content loaded — the "visual
+        // change then recovers" glitch. Warm them in the same ~10s window
+        // the audio warmer uses. Best-effort: a cold switch still works.
+        try {
+          const nextJourneyId = nextEntry.journey?.id;
+          if (nextJourneyId) {
+            const { fetchPackLocalImages } = await import("@/lib/offline/pack-client");
+            const map = await fetchPackLocalImages();
+            const urls = map?.[nextJourneyId] ?? [];
+            for (const u of urls.slice(0, 3)) {
+              new Image().src = u; // HTTP-cache warm; decode stays lazy
+              if (u.includes("/images/journeys/")) {
+                new Image().src = u
+                  .replace("/images/journeys/", "/depth/journeys/")
+                  .replace(/\.jpg(\?.*)?$/, ".png");
+              }
+            }
+            // Hero clip: warm through a hidden VIDEO element — same
+            // media-cache reasoning as the audio warmer above (fetch()
+            // fills the wrong bucket). One reused element, like the
+            // audio warmer, keeps decoder handles bounded.
+            const clipsMap = await fetch("/tramokyo-pack/local-clips.json")
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null);
+            const heroEntry = clipsMap?.[nextJourneyId]?.["0"];
+            if (heroEntry) {
+              const probe = document.createElement("video");
+              const canHevc = probe.canPlayType('video/mp4; codecs="hvc1.2.4.L120.B0"') !== "";
+              const heroUrl = typeof heroEntry === "string"
+                ? heroEntry
+                : canHevc && heroEntry.hevc ? heroEntry.hevc : heroEntry.h264;
+              if (heroUrl) {
+                if (!preloadVideoRef.current) {
+                  const v = document.createElement("video");
+                  v.preload = "auto";
+                  v.muted = true;
+                  preloadVideoRef.current = v;
+                }
+                preloadVideoRef.current.src = heroUrl;
+                preloadVideoRef.current.load();
+              }
+            }
+          }
+        } catch { /* visual prewarm best-effort */ }
       })();
     }, 1000);
 

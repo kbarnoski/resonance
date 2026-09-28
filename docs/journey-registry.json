@@ -1,0 +1,4663 @@
+{
+ "generatedAt": "2026-09-28",
+ "auditFile": "docs/journey-material-audit-2026-09-27.json",
+ "counts": {
+  "total": 46,
+  "withClips": 43,
+  "verdicts": {
+   "violations": 24,
+   "unaudited": 3,
+   "needs-recheck": 9,
+   "clean": 9,
+   "reference": 1
+  }
+ },
+ "journeys": {
+  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9": {
+   "name": "Realized",
+   "source": "builtin-wrapper:inferno",
+   "created": "2026-04-11",
+   "recordingId": "6f58d401-1cd0-479e-a252-5d34dc636e3d",
+   "mood": null,
+   "ambient": null,
+   "palette": null,
+   "hasTheme": false,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.1
+    ],
+    [
+     0.1,
+     0.26
+    ],
+    [
+     0.26,
+     0.48
+    ],
+    [
+     0.48,
+     0.65
+    ],
+    [
+     0.65,
+     0.82
+    ],
+    [
+     0.82,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "galaxy",
+     "deep-current",
+     "soma",
+     "mycelium",
+     "involute"
+    ],
+    [
+     "jubilee",
+     "fractal-tree",
+     "ember",
+     "rapture",
+     "expanse",
+     "meristem"
+    ],
+    [
+     "obsidian-flow",
+     "roulette",
+     "aurora-wave",
+     "whorl",
+     "credo",
+     "lightning-field"
+    ],
+    [
+     "lectio",
+     "vestige",
+     "dusk",
+     "molten-vein",
+     "constellation"
+    ],
+    [
+     "empyrean",
+     "biofilm",
+     "zenith",
+     "doppler"
+    ],
+    [
+     "pollen",
+     "protostar",
+     "smoke-signal",
+     "nebula"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Realized",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow patches in lava-block channel (phase-1), frost-covered forest floor (phase-3), snow-covered canyon (phase-4)",
+      "confidence": "high",
+      "tiles": [
+       "phase-1",
+       "phase-3",
+       "phase-4"
+      ]
+     }
+    ],
+    "note": "April legacy row wrapping inferno builtin; no theme/palette in DB; shader list still references removed 'nebula'"
+   }
+  },
+  "9eb3df10-7835-4107-b995-4c9ad6f2edf1": {
+   "name": "Ghost",
+   "source": "builtin-wrapper:ghost",
+   "created": "2026-04-11",
+   "recordingId": "549fc519-f7fc-4c38-a771-adaad2edbc81",
+   "mood": null,
+   "ambient": null,
+   "palette": null,
+   "hasTheme": false,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.14
+    ],
+    [
+     0.14,
+     0.35
+    ],
+    [
+     0.35,
+     0.63
+    ],
+    [
+     0.63,
+     0.78
+    ],
+    [
+     0.78,
+     0.871
+    ],
+    [
+     0.871,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "interference",
+     "blood-moon",
+     "satori",
+     "whorl",
+     "guilloche"
+    ],
+    [
+     "selene",
+     "empyrean",
+     "flux",
+     "ocean",
+     "seraph",
+     "chrysalis"
+    ],
+    [
+     "lichen",
+     "starfield",
+     "lightyear",
+     "stamen",
+     "threshold",
+     "soma"
+    ],
+    [
+     "kepler",
+     "maelstrom",
+     "magma",
+     "cardioid",
+     "umbra"
+    ],
+    [
+     "vortex",
+     "chakra",
+     "cissoid",
+     "pollen"
+    ],
+    [
+     "ruled-surface",
+     "rosette",
+     "photon",
+     "zooid"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": null,
+   "audit": {
+    "verdict": "unaudited"
+   }
+  },
+  "1895014a-ce59-4640-aa23-b9421b588d70": {
+   "name": "Snowflake",
+   "source": "builtin-wrapper:first-snow",
+   "created": "2026-04-14",
+   "recordingId": "734a09ce-84df-4f1f-93c1-11b08d303681",
+   "mood": null,
+   "ambient": null,
+   "palette": null,
+   "hasTheme": false,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.1
+    ],
+    [
+     0.1,
+     0.26
+    ],
+    [
+     0.26,
+     0.48
+    ],
+    [
+     0.48,
+     0.65
+    ],
+    [
+     0.68,
+     0.86
+    ],
+    [
+     0.86,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "crystal",
+     "nebula",
+     "umbra",
+     "spore",
+     "chakra"
+    ],
+    [
+     "waveform",
+     "cirrus",
+     "chinook",
+     "hesychasm",
+     "geodesic",
+     "zooid"
+    ],
+    [
+     "whorl",
+     "merkaba",
+     "vestige",
+     "vortex",
+     "biolume",
+     "kenosis"
+    ],
+    [
+     "cascade",
+     "synapse",
+     "lightning-field",
+     "pilgrimage",
+     "smoke-signal"
+    ],
+    [
+     "satori",
+     "aureole",
+     "parsec",
+     "dark-tide"
+    ],
+    [
+     "catacomb-torch",
+     "starfield",
+     "trefoil",
+     "yantra"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": null,
+   "audit": {
+    "verdict": "unaudited"
+   }
+  },
+  "27f52cf0-5fad-420f-8324-8017c414f1f8": {
+   "name": "Interplay",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "d57cfae6-f234-4d24-85fe-72a8ad93a44a",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffe0b8",
+    "accent": "#6fb8d8",
+    "primary": "#f0a860",
+    "secondary": "#0e1420"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "lightyear",
+     "r3-auroradream",
+     "chrysalis",
+     "fibonacci-spiral",
+     "coral"
+    ],
+    [
+     "r3-stellarribbon",
+     "stigmata",
+     "r3-dreamtendrils",
+     "r2-curlswarm",
+     "obsidian-flow",
+     "stamen"
+    ],
+    [
+     "constellation",
+     "redshift",
+     "radiance",
+     "r3-monsoonveil",
+     "r3-pulseringssoft",
+     "numinous"
+    ],
+    [
+     "nadir",
+     "deluge",
+     "aurora-borealis",
+     "aurora-wave",
+     "trefoil"
+    ],
+    [
+     "harmonograph",
+     "singularity",
+     "tide",
+     "r2-kelvin"
+    ],
+    [
+     "moire",
+     "r-mercury",
+     "wave",
+     "r3-heatshimmer"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Interplay",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "possible snow banks along dark waterway",
+      "confidence": "low",
+      "tiles": [
+       "r4c1"
+      ]
+     }
+    ]
+   }
+  },
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342": {
+   "name": "Bath",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "eba95845-cdbf-41d8-9c5d-8679686811ad",
+   "mood": "dreamy",
+   "ambient": "ocean",
+   "palette": {
+    "glow": "#ffe9c9",
+    "accent": "#8fc9c0",
+    "primary": "#f5c98a",
+    "secondary": "#141210"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.454
+    ],
+    [
+     0.454,
+     0.662
+    ],
+    [
+     0.662,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "redshift",
+     "typhoon",
+     "neon",
+     "r3-fairyglow",
+     "r2-fibers"
+    ],
+    [
+     "guilloche",
+     "revelation",
+     "kepler",
+     "rosette",
+     "brachistochrone",
+     "r3-moltenglass"
+    ],
+    [
+     "r3-memoryflow",
+     "zenith",
+     "r3-silkwind",
+     "expanse",
+     "astral",
+     "dark-nebula"
+    ],
+    [
+     "anima",
+     "pelagic",
+     "r3-underwatervines",
+     "r3-dreamtendrils",
+     "involute"
+    ],
+    [
+     "torrent",
+     "enzyme",
+     "r2-portalrim",
+     "r3-aurorastreams"
+    ],
+    [
+     "ruled-surface",
+     "cage",
+     "deluge",
+     "hubble"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Bath",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "two moons in sky over golden river",
+      "confidence": "high",
+      "tiles": [
+       "r3c3"
+      ]
+     }
+    ]
+   }
+  },
+  "79e33115-7f1e-44bc-b950-7adf5055dd55": {
+   "name": "Welcome Home",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "8dafed88-4761-4dd3-a0f4-93f310441093",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffd9a0",
+    "accent": "#9db8e8",
+    "primary": "#ffbe6e",
+    "secondary": "#0d1322"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.423
+    ],
+    [
+     0.423,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "epicycle",
+     "dark-aurora",
+     "vestige",
+     "guilloche",
+     "ember-drift"
+    ],
+    [
+     "r-kaleido",
+     "mycelium",
+     "r3-silkwind",
+     "rime",
+     "r3-dreamtendrils",
+     "r2-thermal"
+    ],
+    [
+     "merkaba",
+     "chrysalis",
+     "whirlpool",
+     "r2-interference",
+     "spore",
+     "zooid"
+    ],
+    [
+     "cardioid",
+     "lectio",
+     "starfield",
+     "r3-memoryflow",
+     "plasma"
+    ],
+    [
+     "chinook",
+     "r3-softorbit",
+     "aurora-wave",
+     "r3-plasmastorm"
+    ],
+    [
+     "shadow-fire",
+     "hubble",
+     "r2-coral",
+     "roulette"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Welcome Home",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "full moon in sky over lake / moon sphere closeup",
+      "confidence": "high",
+      "tiles": [
+       "r2c3",
+       "r2c4",
+       "r4c2",
+       "r4c3"
+      ]
+     }
+    ]
+   }
+  },
+  "00fcca2b-bc1e-461a-8dcd-3fff74587f3e": {
+   "name": "The Knife",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "aaaa7e9a-a3ac-4cad-9390-6720555f00a7",
+   "mood": "mystical",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#f0f4ff",
+    "accent": "#e85f7a",
+    "primary": "#d8dde8",
+    "secondary": "#0a0a0f"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.199
+    ],
+    [
+     0.199,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "doppler",
+     "supernova",
+     "r3-peelingbark",
+     "helix",
+     "r3-heatshimmer"
+    ],
+    [
+     "kairos",
+     "r3-silkwind",
+     "astroid",
+     "r2-kelvin",
+     "ruled-surface",
+     "r3-dreamtendrils"
+    ],
+    [
+     "r3-fernunfurl",
+     "blood-moon",
+     "r-blackhole",
+     "apophatic",
+     "soma",
+     "constellation"
+    ],
+    [
+     "r2-coral",
+     "dharma",
+     "meristem",
+     "torrent",
+     "r2-spore"
+    ],
+    [
+     "cascade",
+     "ripple",
+     "roulette",
+     "r3-auroradream"
+    ],
+    [
+     "pedal-curve",
+     "diatom",
+     "r3-stellarribbon",
+     "plankton"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "The Knife",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-covered canyon floor",
+      "confidence": "high",
+      "tiles": [
+       "r1c5",
+       "r1c6",
+       "r3c4"
+      ]
+     },
+     {
+      "issue": "two human faces in profile over water",
+      "confidence": "high",
+      "tiles": [
+       "r4c3",
+       "r4c4"
+      ]
+     }
+    ]
+   }
+  },
+  "eb79818b-c7e8-45a7-886c-2a432fe83332": {
+   "name": "2019",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "1f0a541e-df60-44a9-b839-5dc69a007d9f",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffe6ae",
+    "accent": "#a8c47f",
+    "primary": "#e8b86a",
+    "secondary": "#161310"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.217
+    ],
+    [
+     0.217,
+     0.474
+    ],
+    [
+     0.474,
+     0.569
+    ],
+    [
+     0.569,
+     0.806
+    ],
+    [
+     0.806,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "flux",
+     "r-smokerings",
+     "shadow-fire",
+     "seabed",
+     "seraph"
+    ],
+    [
+     "moire",
+     "cloud",
+     "aureole",
+     "protostar",
+     "mycelium",
+     "r3-coralpulse"
+    ],
+    [
+     "brachistochrone",
+     "photon",
+     "volcanic",
+     "quatrefoil",
+     "involute",
+     "halo"
+    ],
+    [
+     "kelp",
+     "dusk",
+     "nadir",
+     "r-silk",
+     "eclipse-ring"
+    ],
+    [
+     "deluge",
+     "interference",
+     "anima",
+     "radiance"
+    ],
+    [
+     "smolder",
+     "empyrean",
+     "pollen",
+     "ruled-surface"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "2019",
+    "verdict": "clean",
+    "findings": []
+   }
+  },
+  "5a3beb75-4788-4448-a024-4bfae30040c3": {
+   "name": "The Knife (Jam)",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "72151c23-f1a0-460f-b2ba-8909b8278e43",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#fff0dd",
+    "accent": "#ff7a5c",
+    "primary": "#e8e2d0",
+    "secondary": "#0c0a10"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.836
+    ],
+    [
+     0.836,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "r3-seaweedsway",
+     "dark-crystal",
+     "r-silk",
+     "dark-aurora",
+     "quatrefoil"
+    ],
+    [
+     "r-blackhole",
+     "r3-coronastreams",
+     "kepler",
+     "astral",
+     "interference",
+     "synapse"
+    ],
+    [
+     "epicycle",
+     "anima",
+     "vestige",
+     "merkaba",
+     "agape",
+     "ocean"
+    ],
+    [
+     "r3-pulseringssoft",
+     "blood-moon",
+     "cardioid",
+     "roulette",
+     "rapture"
+    ],
+    [
+     "brachistochrone",
+     "r3-memoryflow",
+     "apophatic",
+     "zenith"
+    ],
+    [
+     "furnace",
+     "trefoil",
+     "r-smokerings",
+     "r2-portalrim"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "The Knife (Jam)",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "ice-like glowing crystal shards (could be glass/quartz per knife theme)",
+      "confidence": "medium",
+      "tiles": [
+       "r2c5",
+       "r2c6",
+       "r4c3",
+       "r4c4"
+      ]
+     }
+    ]
+   }
+  },
+  "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b": {
+   "name": "Playa",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "7816dc66-794b-4fb1-8796-c2ef00c3f943",
+   "mood": "mystical",
+   "ambient": "desert",
+   "palette": {
+    "glow": "#fff2d9",
+    "accent": "#d87fb0",
+    "primary": "#e8cba0",
+    "secondary": "#141018"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.51
+    ],
+    [
+     0.51,
+     0.834
+    ],
+    [
+     0.834,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "r3-peelingbark",
+     "hesychasm",
+     "ember-drift",
+     "seabed",
+     "cloud"
+    ],
+    [
+     "catacomb-torch",
+     "ripple",
+     "volcanic",
+     "r3-stellarribbon",
+     "r2-infrared",
+     "aureole"
+    ],
+    [
+     "vestige",
+     "cymatic",
+     "ocean",
+     "r-tendrils",
+     "r3-memoryflow",
+     "wave"
+    ],
+    [
+     "pedal-curve",
+     "satori",
+     "plankton",
+     "thermal",
+     "flux"
+    ],
+    [
+     "maelstrom-dark",
+     "r2-kelvin",
+     "ruled-surface",
+     "zoetrope"
+    ],
+    [
+     "r3-spirittrails",
+     "deep-current",
+     "r-stardust",
+     "plasma"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Playa",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "human silhouette standing on flat",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c2",
+       "r4c1",
+       "r4c2"
+      ]
+     },
+     {
+      "issue": "moon in sky",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c2"
+      ]
+     },
+     {
+      "issue": "white crust is salt (Playa) — allowed, not ice",
+      "confidence": "note",
+      "tiles": []
+     }
+    ]
+   }
+  },
+  "08f4c26e-4185-440a-a25c-2440e8e7ae47": {
+   "name": "Isolation",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "dad56bd6-8e53-442f-bb19-75ce4cc3e11c",
+   "mood": "mystical",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#c9dcee",
+    "accent": "#e8d9a8",
+    "primary": "#7fa8c9",
+    "secondary": "#0a0f16"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.348
+    ],
+    [
+     0.348,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "dark-crystal",
+     "iron-forge",
+     "r3-coralpulse",
+     "spore",
+     "cardioid"
+    ],
+    [
+     "furnace",
+     "quasar",
+     "cymatic",
+     "catenary",
+     "epicycloid",
+     "plankton"
+    ],
+    [
+     "smolder",
+     "fibonacci-spiral",
+     "fractal-tree",
+     "diatom",
+     "cascade",
+     "event-horizon"
+    ],
+    [
+     "quatrefoil",
+     "r-embers",
+     "lectio",
+     "nadir",
+     "night-forest"
+    ],
+    [
+     "r3-shadowflow",
+     "r2-pixie",
+     "zoetrope",
+     "satori"
+    ],
+    [
+     "interference",
+     "agape",
+     "molten-vein",
+     "kepler"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Isolation",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "frost/ice crystals on pine branch with frozen droplet",
+      "confidence": "high",
+      "tiles": [
+       "r1c3",
+       "r1c4",
+       "r3c2"
+      ]
+     },
+     {
+      "issue": "moon in sky",
+      "confidence": "high",
+      "tiles": [
+       "r1c2",
+       "r4c3"
+      ]
+     }
+    ]
+   }
+  },
+  "8997623d-8770-41ce-863d-f359d1a213c4": {
+   "name": "Rebound",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "788fc202-db77-4f36-a7ff-dd0b6702ca20",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#c9f2e6",
+    "accent": "#f5b060",
+    "primary": "#6dd4c0",
+    "secondary": "#0d1214"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "r2-thermal",
+     "epicycloid",
+     "pelagic",
+     "gnosis",
+     "threshold"
+    ],
+    [
+     "r-blackhole",
+     "zooid",
+     "r-tendrils",
+     "r-smokerings",
+     "rosette",
+     "cloud"
+    ],
+    [
+     "guilloche",
+     "typhoon",
+     "involute",
+     "kairos",
+     "aurora-borealis",
+     "r3-arcdischarge"
+    ],
+    [
+     "r3-magneticwisps",
+     "cardioid",
+     "lightning",
+     "pedal-curve",
+     "maelstrom"
+    ],
+    [
+     "weave",
+     "iron-forge",
+     "monsoon",
+     "enzyme"
+    ],
+    [
+     "astroid",
+     "aureole",
+     "vortex",
+     "cataphatic"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Rebound",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "literal snowflake/frost crystal macro",
+      "confidence": "high",
+      "tiles": [
+       "r3c3"
+      ]
+     },
+     {
+      "issue": "moon over canyon river",
+      "confidence": "medium",
+      "tiles": [
+       "r3c1"
+      ]
+     },
+     {
+      "issue": "possible ice floes around glowing spire",
+      "confidence": "medium",
+      "tiles": [
+       "r2c3",
+       "r2c4",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "cd517f5a-c4eb-4d50-8a53-044aa668d087": {
+   "name": "Stir Crazy",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "c3ae569c-bda3-47b2-8f8d-63cd708e2c2f",
+   "mood": "intense",
+   "ambient": "machine",
+   "palette": {
+    "glow": "#ffd9ad",
+    "accent": "#b06fd8",
+    "primary": "#e89a5c",
+    "secondary": "#120e14"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "mobius-strip",
+     "r-silk",
+     "halo",
+     "r-droplets",
+     "pelagic"
+    ],
+    [
+     "dharma",
+     "obsidian-flow",
+     "credo",
+     "umbra",
+     "covenant",
+     "r3-underwatervines"
+    ],
+    [
+     "cissoid",
+     "night-forest",
+     "seraph",
+     "empyrean",
+     "r3-stellarribbon",
+     "tide"
+    ],
+    [
+     "flame",
+     "apophatic",
+     "r-stardust",
+     "plankton",
+     "cascade"
+    ],
+    [
+     "furnace",
+     "kenosis",
+     "flagella",
+     "r2-magnetic"
+    ],
+    [
+     "r3-sleepingbloom",
+     "r2-kelvin",
+     "threshold",
+     "shadow-fire"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Stir Crazy",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "vortex tunnel material reads as snowbank",
+      "confidence": "medium",
+      "tiles": [
+       "r2c3"
+      ]
+     }
+    ]
+   }
+  },
+  "38daff92-ae34-4448-8868-5f1df6029b94": {
+   "name": "Rolling",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "d2eeee58-832b-4872-a4be-8fbf030b981d",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#e0f0b8",
+    "accent": "#f0d080",
+    "primary": "#a8c86f",
+    "secondary": "#0e1310"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.28
+    ],
+    [
+     0.28,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "kairos",
+     "r3-arcdischarge",
+     "ruled-surface",
+     "r3-magneticwisps",
+     "r3-stellarribbon"
+    ],
+    [
+     "interference",
+     "r2-infrared",
+     "r3-pulseringssoft",
+     "shadow-fire",
+     "nova",
+     "astroid"
+    ],
+    [
+     "wave",
+     "aurora-borealis",
+     "r2-kelvin",
+     "dharma",
+     "r3-silkwind",
+     "r-droplets"
+    ],
+    [
+     "starfield",
+     "r3-coronastreams",
+     "r3-peelingbark",
+     "plasma",
+     "kelp"
+    ],
+    [
+     "r-growth",
+     "portal",
+     "r-silk",
+     "supernova"
+    ],
+    [
+     "caustic-pool",
+     "r3-memoryflow",
+     "ember-drift",
+     "r3-aurorastreams"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Rolling",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "possible tiny human figure on hillside",
+      "confidence": "low",
+      "tiles": [
+       "r1c5",
+       "r3c4"
+      ]
+     }
+    ]
+   }
+  },
+  "019e1e1d-c7e2-4609-a9c6-364a2755b115": {
+   "name": "Quarantine",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "8a67fc03-181f-46a8-beaa-65468506c920",
+   "mood": "mystical",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#d0e4f2",
+    "accent": "#f0c98a",
+    "primary": "#8fb8d8",
+    "secondary": "#11131a"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.68
+    ],
+    [
+     0.68,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "aureole",
+     "r2-fibers",
+     "strophoid",
+     "r3-ghostribbons",
+     "flame"
+    ],
+    [
+     "dark-tide",
+     "r3-ripplecascade",
+     "r2-infrared",
+     "meristem",
+     "guilloche",
+     "r3-monsoonveil"
+    ],
+    [
+     "plankton",
+     "night-forest",
+     "kenosis",
+     "lichen",
+     "epicycloid",
+     "lightning-field"
+    ],
+    [
+     "kelp",
+     "lightning",
+     "spiral",
+     "agnesi",
+     "event-horizon"
+    ],
+    [
+     "diatom",
+     "geodesic",
+     "molten-vein",
+     "r2-sunsetcascade"
+    ],
+    [
+     "r-kaleido",
+     "r2-magnetic",
+     "r3-silkwind",
+     "r3-innerglow"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Quarantine",
+    "verdict": "clean",
+    "findings": []
+   }
+  },
+  "b207b557-e984-4a06-ae71-83124bcd80d5": {
+   "name": "All Together",
+   "source": "db",
+   "created": "2026-04-14",
+   "recordingId": "eda30871-c82c-45c4-b352-b158c00528fa",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffe8bd",
+    "accent": "#7fd0c9",
+    "primary": "#f5c26b",
+    "secondary": "#101020"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.278
+    ],
+    [
+     0.278,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "pulsar",
+     "agnesi",
+     "flame",
+     "cirrus",
+     "zenith"
+    ],
+    [
+     "parabola",
+     "r3-seaweedsway",
+     "night-forest",
+     "guilloche",
+     "biolume",
+     "chladni"
+    ],
+    [
+     "rosette",
+     "dark-nebula",
+     "parsec",
+     "r3-softorbit",
+     "gnosis",
+     "pelagic"
+    ],
+    [
+     "r3-underwatervines",
+     "chakra",
+     "kelp",
+     "maelstrom",
+     "astral"
+    ],
+    [
+     "spore",
+     "numinous",
+     "r-droplets",
+     "cataphatic"
+    ],
+    [
+     "hesychasm",
+     "eclipse-ring",
+     "r3-spirittrails",
+     "interference"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "All Together",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "moon over sea with light column",
+      "confidence": "high",
+      "tiles": [
+       "r4c4"
+      ]
+     },
+     {
+      "issue": "dim moon over water",
+      "confidence": "medium",
+      "tiles": [
+       "r2c5",
+       "r2c6"
+      ]
+     }
+    ]
+   }
+  },
+  "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f": {
+   "name": "COSMIC HOMECOMING",
+   "source": "db",
+   "created": "2026-04-15",
+   "recordingId": "8dafed88-4761-4dd3-a0f4-93f310441093",
+   "mood": "transcendent",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#f4c430",
+    "accent": "#d4845f",
+    "primary": "#1a0f3d",
+    "secondary": "#0a0612"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.1
+    ],
+    [
+     0.1,
+     0.26
+    ],
+    [
+     0.26,
+     0.48
+    ],
+    [
+     0.48,
+     0.65
+    ],
+    [
+     0.65,
+     0.82
+    ],
+    [
+     0.82,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.75,
+    1,
+    0.85,
+    0.6,
+    0.4
+   ],
+   "shaders": [
+    [
+     "event-horizon",
+     "r3-stellarribbon",
+     "flux",
+     "whirlpool",
+     "pilgrimage"
+    ],
+    [
+     "catenary",
+     "blood-moon",
+     "torrent",
+     "seabed",
+     "kenosis",
+     "volcanic"
+    ],
+    [
+     "yantra",
+     "quasar",
+     "diatom",
+     "r3-auroradream",
+     "smolder",
+     "pollen"
+    ],
+    [
+     "ocean",
+     "galaxy",
+     "empyrean",
+     "vestige",
+     "starfield"
+    ],
+    [
+     "inferno",
+     "soma",
+     "fractal-tree",
+     "vespers"
+    ],
+    [
+     "dusk",
+     "mobius-strip",
+     "r2-sunsetcascade",
+     "cymatic"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": null,
+   "audit": {
+    "verdict": "unaudited"
+   }
+  },
+  "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1": {
+   "name": "Rise",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "a116b2f1-913b-43ba-8840-22073d47e867",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffe9c4",
+    "accent": "#7fd8ff",
+    "primary": "#ffb347",
+    "secondary": "#0b1026"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.458
+    ],
+    [
+     0.458,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "halo",
+     "astral",
+     "zenith",
+     "plasma",
+     "r3-lightrivers"
+    ],
+    [
+     "yantra",
+     "r3-waveveil",
+     "r-silk",
+     "thermal",
+     "laminar",
+     "constellation"
+    ],
+    [
+     "witch-light",
+     "r2-coral",
+     "dark-aurora",
+     "whirlpool",
+     "galaxy",
+     "r2-fibers"
+    ],
+    [
+     "stamen",
+     "coral",
+     "deep-current",
+     "diatom",
+     "furnace"
+    ],
+    [
+     "expanse",
+     "r2-portalrim",
+     "kepler",
+     "r3-fairyglow"
+    ],
+    [
+     "r-growth",
+     "monsoon",
+     "maelstrom",
+     "r3-arcdischarge"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Rise",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "stone dusted with snow/frost on dark rock",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c3"
+      ]
+     },
+     {
+      "issue": "distant snow-capped peaks behind beach sunrise",
+      "confidence": "medium",
+      "tiles": [
+       "r2c6"
+      ]
+     }
+    ]
+   }
+  },
+  "db22c975-8f03-487b-ae44-437f7f153ac1": {
+   "name": "Surrender",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "317152bd-59b9-452a-9c07-e5f347069303",
+   "mood": "chaotic",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#9fdce8",
+    "accent": "#e8f4f8",
+    "primary": "#3fa7c4",
+    "secondary": "#0a1420"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.172
+    ],
+    [
+     0.172,
+     0.314
+    ],
+    [
+     0.314,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "catacomb-torch",
+     "lightning",
+     "r3-monsoonveil",
+     "hubble",
+     "covenant"
+    ],
+    [
+     "thermal",
+     "yantra",
+     "biolume",
+     "helix",
+     "zooid",
+     "aurora-wave"
+    ],
+    [
+     "gnosis",
+     "aureole",
+     "r2-kelvin",
+     "r-blackhole",
+     "smoke-signal",
+     "revelation"
+    ],
+    [
+     "pedal-curve",
+     "catenary",
+     "mobius-strip",
+     "galaxy",
+     "starfield"
+    ],
+    [
+     "jubilee",
+     "vortex",
+     "nova",
+     "deltoid"
+    ],
+    [
+     "vespers",
+     "empyrean",
+     "moire",
+     "r3-seaweedsway"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Surrender",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "crescent moon + snowy footprinted ground at white arch",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c1"
+      ]
+     }
+    ]
+   }
+  },
+  "f24cc5d9-66cd-4fae-a03a-14dda1698566": {
+   "name": "Openings",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "284215e3-d415-4dc6-9d93-860cf7be82d6",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffd9ae",
+    "accent": "#b57edc",
+    "primary": "#e08a4e",
+    "secondary": "#160d18"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.273
+    ],
+    [
+     0.273,
+     0.418
+    ],
+    [
+     0.418,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "orb",
+     "r3-seaweedsway",
+     "r-mercury",
+     "r3-arcdischarge",
+     "parsec"
+    ],
+    [
+     "r3-monsoonveil",
+     "protostar",
+     "r-embers",
+     "nephroid",
+     "shadow-fire",
+     "hesychasm"
+    ],
+    [
+     "hubble",
+     "r3-stellarribbon",
+     "mobius-strip",
+     "r3-magneticwisps",
+     "monsoon",
+     "dusk"
+    ],
+    [
+     "trefoil",
+     "pedal-curve",
+     "r3-ripplecascade",
+     "spiral",
+     "vestige"
+    ],
+    [
+     "flagella",
+     "r2-photon",
+     "magma",
+     "stamen"
+    ],
+    [
+     "tide",
+     "r2-coral",
+     "synapse",
+     "umbra"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Openings",
+    "verdict": "clean",
+    "findings": [
+     {
+      "issue": "possible distant snowy peaks at night lake",
+      "confidence": "low",
+      "tiles": [
+       "r3c1"
+      ]
+     }
+    ]
+   }
+  },
+  "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3": {
+   "name": "Surrounded By Light",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "6b3c2919-447f-425f-ae2e-52613b6c0b67",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffffff",
+    "accent": "#ff9de2",
+    "primary": "#fff2cc",
+    "secondary": "#141021"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.78
+    ],
+    [
+     0.78,
+     0.901
+    ],
+    [
+     0.901,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "r-stardust",
+     "r3-softorbit",
+     "r3-shadowflow",
+     "strophoid",
+     "r3-waveveil"
+    ],
+    [
+     "roulette",
+     "wave",
+     "r3-magneticwisps",
+     "protostar",
+     "molten-vein",
+     "flame"
+    ],
+    [
+     "hubble",
+     "cloud",
+     "yantra",
+     "volcanic",
+     "r3-auroradream",
+     "r2-portalrim"
+    ],
+    [
+     "tangent-field",
+     "weave",
+     "apophatic",
+     "r2-photon",
+     "nova"
+    ],
+    [
+     "astroid",
+     "parsec",
+     "obsidian-flow",
+     "lissajous"
+    ],
+    [
+     "seraph",
+     "epicycloid",
+     "ember-drift",
+     "r3-plasmastorm"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Surrounded By Light",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "human figure walking on road / in bright corridor",
+      "confidence": "high",
+      "tiles": [
+       "r3c1",
+       "r3c5"
+      ]
+     },
+     {
+      "issue": "waterfall between icy/snowy cliffs with tiny figure",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c3"
+      ]
+     },
+     {
+      "issue": "moon-like dark sphere over ocean",
+      "confidence": "medium",
+      "tiles": [
+       "r2c3",
+       "r2c4",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "8b163c8b-cda5-4d7d-995b-41dd68fdd059": {
+   "name": "Drift",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "7b40d97b-ef5a-4d3f-85cf-f6e18a1877c7",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#f0e6cf",
+    "accent": "#8fb8c9",
+    "primary": "#d9c7a0",
+    "secondary": "#101624"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "mandorla",
+     "geodesic",
+     "stamen",
+     "weave",
+     "r3-aurorastreams"
+    ],
+    [
+     "aurora-wave",
+     "satori",
+     "trefoil",
+     "lightning-field",
+     "r2-coral",
+     "mycelium"
+    ],
+    [
+     "typhoon",
+     "aureole",
+     "epicycle",
+     "ripple",
+     "covenant",
+     "deltoid"
+    ],
+    [
+     "pollen",
+     "yantra",
+     "apophatic",
+     "r3-balllightning",
+     "smoke-signal"
+    ],
+    [
+     "r-stardust",
+     "r3-stellarribbon",
+     "r3-heartwarmth",
+     "r-droplets"
+    ],
+    [
+     "deep-current",
+     "flagella",
+     "hubble",
+     "harmonograph"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Drift",
+    "verdict": "clean",
+    "findings": []
+   }
+  },
+  "89ff944d-f242-4f77-9b95-7cb1d3dc0af6": {
+   "name": "Self",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "fb743c6e-ad7a-42d2-80f2-5b6b4e7ae263",
+   "mood": "dreamy",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#d8efe9",
+    "accent": "#e6c99f",
+    "primary": "#9fd8cb",
+    "secondary": "#0d1117"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.408
+    ],
+    [
+     0.408,
+     0.528
+    ],
+    [
+     0.528,
+     0.588
+    ],
+    [
+     0.588,
+     0.815
+    ],
+    [
+     0.815,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "inferno",
+     "r-blackhole",
+     "apophatic",
+     "r3-stellarribbon",
+     "r2-magnetic"
+    ],
+    [
+     "r3-heartwarmth",
+     "revelation",
+     "r3-softorbit",
+     "ocean",
+     "plankton",
+     "cardioid"
+    ],
+    [
+     "deltoid",
+     "enzyme",
+     "parabola",
+     "lightyear",
+     "empyrean",
+     "r3-lightningveil"
+    ],
+    [
+     "constellation",
+     "r2-kelvin",
+     "pulsar",
+     "aurora-borealis",
+     "rosette"
+    ],
+    [
+     "r3-pulseringssoft",
+     "r2-curlswarm",
+     "thermal",
+     "meristem"
+    ],
+    [
+     "eclipse-ring",
+     "epicycloid",
+     "synapse",
+     "r3-plasmastorm"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Self",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-capped mountain peaks over lake",
+      "confidence": "high",
+      "tiles": [
+       "r1c1",
+       "r1c2"
+      ]
+     },
+     {
+      "issue": "row of ice-like crystal diamonds",
+      "confidence": "medium",
+      "tiles": [
+       "r3c1"
+      ]
+     },
+     {
+      "issue": "dim moon-like orb over lake",
+      "confidence": "medium",
+      "tiles": [
+       "r2c3",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a": {
+   "name": "Message",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "f2fb7c51-4f5b-4231-b230-33721832a6ba",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#b9f5dd",
+    "accent": "#f2e75e",
+    "primary": "#59d4a8",
+    "secondary": "#071019"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.188
+    ],
+    [
+     0.188,
+     0.482
+    ],
+    [
+     0.482,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "soma",
+     "witch-light",
+     "seabed",
+     "typhoon",
+     "agape"
+    ],
+    [
+     "maelstrom",
+     "vortex",
+     "cage",
+     "quatrefoil",
+     "halo",
+     "pedal-curve"
+    ],
+    [
+     "monsoon",
+     "dharma",
+     "lectio",
+     "r3-heatshimmer",
+     "chinook",
+     "zoetrope"
+    ],
+    [
+     "rosette",
+     "cardioid",
+     "involute",
+     "molten-vein",
+     "r3-monsoonveil"
+    ],
+    [
+     "eclipse-ring",
+     "vespers",
+     "agnesi",
+     "fractal-tree"
+    ],
+    [
+     "drift",
+     "strophoid",
+     "r3-seaweedsway",
+     "meristem"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Message",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "readable glowing TEXT ('wale mosta') written on water",
+      "confidence": "high",
+      "tiles": [
+       "r4c1"
+      ]
+     },
+     {
+      "issue": "dim moon over beach/canal",
+      "confidence": "low-medium",
+      "tiles": [
+       "r2c3",
+       "r3c1"
+      ]
+     }
+    ]
+   }
+  },
+  "4ca8d765-71a2-401a-85eb-eb02c2780bc3": {
+   "name": "Grace",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "96146a9f-d80c-4635-b5f9-65455c1ea157",
+   "mood": "dreamy",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#fbeed3",
+    "accent": "#e88fb0",
+    "primary": "#f2d59a",
+    "secondary": "#171126"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.442
+    ],
+    [
+     0.442,
+     0.562
+    ],
+    [
+     0.562,
+     0.622
+    ],
+    [
+     0.622,
+     0.83
+    ],
+    [
+     0.83,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "galaxy",
+     "dark-aurora",
+     "flagella",
+     "r3-moltenglass",
+     "synapse"
+    ],
+    [
+     "plasma",
+     "crystal",
+     "numinous",
+     "threshold",
+     "parsec",
+     "vespers"
+    ],
+    [
+     "moire",
+     "obsidian-flow",
+     "iron-forge",
+     "lightning",
+     "cymatic",
+     "dark-tide"
+    ],
+    [
+     "voronoi-flow",
+     "zoetrope",
+     "stamen",
+     "r-stardust",
+     "helix"
+    ],
+    [
+     "aurora-borealis",
+     "orb",
+     "dark-crystal",
+     "credo"
+    ],
+    [
+     "volcanic",
+     "r3-heatshimmer",
+     "r3-ghostribbons",
+     "cassegrain"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Grace",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "white specks on pine needles could be snow dust vs bokeh",
+      "confidence": "low",
+      "tiles": [
+       "r1c3",
+       "r3c2"
+      ]
+     }
+    ]
+   }
+  },
+  "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1": {
+   "name": "Complete",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "0d903ef0-dd21-4d16-b806-c6157f649958",
+   "mood": "dreamy",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#e6dcff",
+    "accent": "#f5c96a",
+    "primary": "#c9b3f5",
+    "secondary": "#0e0b1e"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.548
+    ],
+    [
+     0.548,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "empyrean",
+     "r3-fairyglow",
+     "r3-auroradream",
+     "jubilee",
+     "singularity"
+    ],
+    [
+     "credo",
+     "tide",
+     "epicycloid",
+     "roulette",
+     "zenith",
+     "starfield"
+    ],
+    [
+     "r2-kelvin",
+     "voronoi-flow",
+     "r3-heatshimmer",
+     "biolume",
+     "helix",
+     "selene"
+    ],
+    [
+     "hubble",
+     "photon",
+     "r2-coral",
+     "thermal",
+     "r-blackhole"
+    ],
+    [
+     "meristem",
+     "numinous",
+     "night-forest",
+     "vestige"
+    ],
+    [
+     "yantra",
+     "seraph",
+     "cymatic",
+     "r3-softorbit"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Complete",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "possibly snowy path under bare tree",
+      "confidence": "low",
+      "tiles": [
+       "r3c3"
+      ]
+     }
+    ]
+   }
+  },
+  "549719aa-4a15-4981-8a9a-34ee66fca156": {
+   "name": "Held",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "5cdb1816-373d-431c-9866-be64bfb50a9a",
+   "mood": "dreamy",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#ffdec2",
+    "accent": "#8fd0b6",
+    "primary": "#e8a87c",
+    "secondary": "#140f0d"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "epicycle",
+     "lichen",
+     "r3-fairyglow",
+     "wave",
+     "cardioid"
+    ],
+    [
+     "r2-spiralgal",
+     "pulsar",
+     "guilloche",
+     "spiral",
+     "doppler",
+     "catacomb-torch"
+    ],
+    [
+     "flagella",
+     "torrent",
+     "parabola",
+     "supernova",
+     "obsidian-flow",
+     "deltoid"
+    ],
+    [
+     "radiance",
+     "r2-kelvin",
+     "r3-wishtrails",
+     "r3-ghostribbons",
+     "astral"
+    ],
+    [
+     "r3-aurorastreams",
+     "shadow-fire",
+     "r3-auroradream",
+     "aurora-borealis"
+    ],
+    [
+     "r3-heatshimmer",
+     "whorl",
+     "r3-balllightning",
+     "r-kaleido"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Held",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "small human silhouette standing in cave archway",
+      "confidence": "high",
+      "tiles": [
+       "r1c5",
+       "r1c6",
+       "r3c4"
+      ]
+     },
+     {
+      "issue": "ice-like translucent chunks in rock (could be quartz)",
+      "confidence": "medium",
+      "tiles": [
+       "r1c3",
+       "r1c4",
+       "r3c2"
+      ]
+     }
+    ]
+   }
+  },
+  "a5de2004-f606-4277-a4cb-032c35e56c43": {
+   "name": "Sway",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "e254fa00-2272-415d-ab24-12c81fe25a33",
+   "mood": "mystical",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#7fceb4",
+    "accent": "#c4b1e0",
+    "primary": "#2e8b74",
+    "secondary": "#06110e"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "vortex",
+     "dark-tide",
+     "wave",
+     "maelstrom-dark",
+     "cage"
+    ],
+    [
+     "eclipse-ring",
+     "vespers",
+     "r3-pulseringssoft",
+     "expanse",
+     "cymatic",
+     "r3-dreamtendrils"
+    ],
+    [
+     "cassegrain",
+     "r3-silkwind",
+     "pedal-curve",
+     "r3-innerglow",
+     "constellation",
+     "numinous"
+    ],
+    [
+     "hubble",
+     "r2-interference",
+     "r-embers",
+     "quasar",
+     "threshold"
+    ],
+    [
+     "whorl",
+     "kenosis",
+     "trefoil",
+     "fibonacci-spiral"
+    ],
+    [
+     "zenith",
+     "parabola",
+     "r-stardust",
+     "crucible"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Sway",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-covered forest floor with glowing trail",
+      "confidence": "high",
+      "tiles": [
+       "r4c3"
+      ]
+     }
+    ]
+   }
+  },
+  "c110af67-40be-4a06-9878-eeec2a22bb3d": {
+   "name": "Mystic",
+   "source": "db",
+   "created": "2026-09-19",
+   "recordingId": "6d769562-26e0-424a-9d99-a4a67aca51f3",
+   "mood": "dreamy",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#cdbdfa",
+    "accent": "#5ee8d8",
+    "primary": "#7a5fd0",
+    "secondary": "#0a0918"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.665
+    ],
+    [
+     0.665,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "radiance",
+     "r2-thermal",
+     "smoke-signal",
+     "vestige",
+     "singularity"
+    ],
+    [
+     "coral",
+     "fibonacci-spiral",
+     "apophatic",
+     "credo",
+     "chakra",
+     "r-blackhole"
+    ],
+    [
+     "jubilee",
+     "molten-vein",
+     "dharma",
+     "r2-sunsetcascade",
+     "r3-lightrivers",
+     "dark-nebula"
+    ],
+    [
+     "r3-wishtrails",
+     "seabed",
+     "r3-silkwind",
+     "drift",
+     "r2-photon"
+    ],
+    [
+     "cissoid",
+     "biofilm",
+     "portal",
+     "spore"
+    ],
+    [
+     "night-forest",
+     "r3-innerglow",
+     "r-tendrils",
+     "laminar"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Mystic",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "person walking snowy footprinted alley toward light",
+      "confidence": "high",
+      "tiles": [
+       "r4c3"
+      ]
+     },
+     {
+      "issue": "glass citadel / golden temple on snowfield",
+      "confidence": "high",
+      "tiles": [
+       "r2c1",
+       "r3c6",
+       "r4c1"
+      ]
+     },
+     {
+      "issue": "snowy footprinted corridor path",
+      "confidence": "medium",
+      "tiles": [
+       "r2c3",
+       "r2c4",
+       "r4c2"
+      ]
+     },
+     {
+      "issue": "ice-crystal mandala motifs",
+      "confidence": "medium",
+      "tiles": [
+       "r1c5",
+       "r1c6",
+       "r3c4"
+      ]
+     }
+    ]
+   }
+  },
+  "5a07f0af-654f-4dab-b42c-aef83983b33f": {
+   "name": "The First",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "65c9a439-5e39-4f95-adf2-dcf2743c8c12",
+   "mood": "dreamy",
+   "ambient": "forest",
+   "palette": {
+    "glow": "#e8fff8",
+    "accent": "#ffd9a0",
+    "primary": "#bfe8e0",
+    "secondary": "#0c1416"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "lichen",
+     "parabola",
+     "astroid",
+     "whirlpool",
+     "flux"
+    ],
+    [
+     "threshold",
+     "lightning",
+     "moire",
+     "thermal",
+     "kepler",
+     "cardioid"
+    ],
+    [
+     "cascade",
+     "r-tendrils",
+     "ruled-surface",
+     "dharma",
+     "quatrefoil",
+     "synapse"
+    ],
+    [
+     "r-mercury",
+     "weave",
+     "torrent",
+     "chrysalis",
+     "voronoi-flow"
+    ],
+    [
+     "selene",
+     "r2-curlswarm",
+     "r-silk",
+     "r3-arcdischarge"
+    ],
+    [
+     "catenary",
+     "deluge",
+     "r2-kelvin",
+     "flagella"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "The First",
+    "verdict": "clean",
+    "findings": [],
+    "note": "post-law regeneration confirmed working"
+   }
+  },
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc": {
+   "name": "The First (Expanded)",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "8bb4e2af-7fef-4f85-bbf3-74bb80529573",
+   "mood": "dreamy",
+   "ambient": "forest",
+   "palette": {
+    "glow": "#d9f7ef",
+    "accent": "#ffcf8a",
+    "primary": "#8fd4c9",
+    "secondary": "#0a1218"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "rime",
+     "r3-dreamtendrils",
+     "ripple",
+     "thermal",
+     "threshold"
+    ],
+    [
+     "pilgrimage",
+     "dark-aurora",
+     "smolder",
+     "cirrus",
+     "r-kaleido",
+     "r3-coralpulse"
+    ],
+    [
+     "stamen",
+     "astral",
+     "r3-moltenglass",
+     "vestige",
+     "zenith",
+     "r2-thermal"
+    ],
+    [
+     "strophoid",
+     "r3-lightningveil",
+     "caustic-pool",
+     "furnace",
+     "quatrefoil"
+    ],
+    [
+     "apophatic",
+     "redshift",
+     "deluge",
+     "parsec"
+    ],
+    [
+     "obsidian-flow",
+     "singularity",
+     "nova",
+     "nadir"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "The First (Expanded)",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-covered road with footprints / snowy forest floor",
+      "confidence": "high",
+      "tiles": [
+       "r1c1",
+       "r1c2",
+       "r3c3"
+      ]
+     },
+     {
+      "issue": "distant snow-capped peaks",
+      "confidence": "medium",
+      "tiles": [
+       "r3c1"
+      ]
+     }
+    ],
+    "note": "base 'The First' was regenerated post-law; the Expanded variant was NOT"
+   }
+  },
+  "9d901645-b8dd-4a62-b3e2-2613ccd64335": {
+   "name": "Dad's Song II",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "4bdd084d-a13b-45db-985f-8e15877fe70a",
+   "mood": "flowing",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#ffe4b0",
+    "accent": "#8fb8a0",
+    "primary": "#d8a05f",
+    "secondary": "#171009"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.512
+    ],
+    [
+     0.512,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "roulette",
+     "r3-heartwarmth",
+     "numinous",
+     "lightning",
+     "chinook"
+    ],
+    [
+     "brachistochrone",
+     "credo",
+     "r2-interference",
+     "thermal",
+     "halo",
+     "r-silk"
+    ],
+    [
+     "redshift",
+     "quatrefoil",
+     "hesychasm",
+     "r3-magneticwisps",
+     "monsoon",
+     "r2-fibers"
+    ],
+    [
+     "r-smokerings",
+     "expanse",
+     "ripple",
+     "chladni",
+     "smolder"
+    ],
+    [
+     "r-droplets",
+     "whorl",
+     "r3-plasmastorm",
+     "trefoil"
+    ],
+    [
+     "cymatic",
+     "synapse",
+     "catacomb-torch",
+     "night-rain"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Dad's Song II",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "aerial conifers look frost-dusted",
+      "confidence": "medium-low",
+      "tiles": [
+       "r2c3",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62": {
+   "name": "Yellow Bird",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "df1b0ee6-7a80-450c-8baa-846662bfb50a",
+   "mood": "dreamy",
+   "ambient": "forest",
+   "palette": {
+    "glow": "#fff0a8",
+    "accent": "#7fb0d8",
+    "primary": "#ffd94d",
+    "secondary": "#101408"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "r3-moltenglass",
+     "flagella",
+     "eclipse-ring",
+     "r2-magnetic",
+     "galaxy"
+    ],
+    [
+     "catacomb-torch",
+     "guilloche",
+     "r3-fairyglow",
+     "r3-spirittrails",
+     "swell",
+     "photon"
+    ],
+    [
+     "voronoi-flow",
+     "kelp",
+     "maelstrom",
+     "starfield",
+     "singularity",
+     "wave"
+    ],
+    [
+     "cataphatic",
+     "mandorla",
+     "r3-arcdischarge",
+     "r2-interference",
+     "r-blackhole"
+    ],
+    [
+     "zenith",
+     "cirrus",
+     "monsoon",
+     "chinook"
+    ],
+    [
+     "r-silk",
+     "deluge",
+     "synapse",
+     "r-embers"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Yellow Bird",
+    "verdict": "clean",
+    "findings": [
+     {
+      "issue": "possible light frost on twig (likely dew)",
+      "confidence": "low",
+      "tiles": [
+       "r1c1",
+       "r1c2"
+      ]
+     }
+    ]
+   }
+  },
+  "800ed3f9-08d4-4b73-8a32-86ed8370e752": {
+   "name": "Spectre",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "229751ea-e016-40c1-b9d6-76b0d3c874c0",
+   "mood": "mystical",
+   "ambient": "abyss",
+   "palette": {
+    "glow": "#e0f4ff",
+    "accent": "#c9a8f0",
+    "primary": "#a8d8e8",
+    "secondary": "#0a0d14"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "smoke-signal",
+     "tangent-field",
+     "vestige",
+     "r3-coronastreams",
+     "thermal"
+    ],
+    [
+     "pollen",
+     "magma",
+     "roulette",
+     "eclipse-ring",
+     "vespers",
+     "starfield"
+    ],
+    [
+     "chrysalis",
+     "catacomb-torch",
+     "r-smokerings",
+     "cascade",
+     "plankton",
+     "dark-tide"
+    ],
+    [
+     "iron-forge",
+     "cataphatic",
+     "protostar",
+     "seabed",
+     "monsoon"
+    ],
+    [
+     "zenith",
+     "r3-peelingbark",
+     "r3-silkwind",
+     "witch-light"
+    ],
+    [
+     "interference",
+     "empyrean",
+     "soma",
+     "r2-marble"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Spectre",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "possible fallen figure/foot with sparkler in alley",
+      "confidence": "low",
+      "tiles": [
+       "r2c5",
+       "r4c4"
+      ]
+     }
+    ]
+   }
+  },
+  "f7b01537-af1b-4ade-b788-f21c6565b057": {
+   "name": "Surrounded By Light",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "838f8d4e-d5c2-4695-b88f-a6abf7de1357",
+   "mood": "transcendent",
+   "ambient": "forest",
+   "palette": {
+    "glow": "#fff8dd",
+    "accent": "#a8d88f",
+    "primary": "#ffe9b0",
+    "secondary": "#12160c"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.505
+    ],
+    [
+     0.505,
+     0.674
+    ],
+    [
+     0.674,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "inferno",
+     "vortex",
+     "mandorla",
+     "parabola",
+     "monsoon"
+    ],
+    [
+     "r3-auroradream",
+     "rapture",
+     "pollen",
+     "synapse",
+     "quasar",
+     "r3-ripplecascade"
+    ],
+    [
+     "r3-magneticwisps",
+     "chladni",
+     "hesychasm",
+     "ocean",
+     "r3-lightrivers",
+     "r-stardust"
+    ],
+    [
+     "tangent-field",
+     "whorl",
+     "r3-dreamtendrils",
+     "r3-heartwarmth",
+     "redshift"
+    ],
+    [
+     "r-molten",
+     "mycelium",
+     "blood-moon",
+     "constellation"
+    ],
+    [
+     "pulsar",
+     "weave",
+     "seraph",
+     "kelp"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Surrounded By Light (forest)",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "human figure walking in forest light beam",
+      "confidence": "high",
+      "tiles": [
+       "r1c5",
+       "r1c6"
+      ]
+     },
+     {
+      "issue": "golden net in snowy footprinted forest",
+      "confidence": "high",
+      "tiles": [
+       "r3c3"
+      ]
+     },
+     {
+      "issue": "frost-pale forest path / white-dusted pines",
+      "confidence": "medium",
+      "tiles": [
+       "r1c1",
+       "r1c2",
+       "r2c1",
+       "r2c2"
+      ]
+     }
+    ]
+   }
+  },
+  "a985d483-a948-4e3b-bad3-841a68f9992f": {
+   "name": "Mexican Boy",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "42b45003-a970-481b-9c72-2b52b688ab81",
+   "mood": "flowing",
+   "ambient": "desert",
+   "palette": {
+    "glow": "#ffd0a0",
+    "accent": "#e84a8f",
+    "primary": "#f08a4a",
+    "secondary": "#1a0d10"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.817
+    ],
+    [
+     0.817,
+     0.918
+    ],
+    [
+     0.918,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "numinous",
+     "lightning",
+     "r3-auroradream",
+     "vortex",
+     "r3-peelingbark"
+    ],
+    [
+     "kelp",
+     "blood-moon",
+     "empyrean",
+     "r2-magnetic",
+     "r3-plasmastorm",
+     "stigmata"
+    ],
+    [
+     "plankton",
+     "nadir",
+     "dark-aurora",
+     "stamen",
+     "rosette",
+     "expanse"
+    ],
+    [
+     "r3-underwatervines",
+     "maelstrom",
+     "yantra",
+     "pulsar",
+     "r3-sleepingbloom"
+    ],
+    [
+     "revelation",
+     "symbiosis",
+     "flux",
+     "r3-fernunfurl"
+    ],
+    [
+     "astroid",
+     "neon",
+     "lichen",
+     "crucible"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Mexican Boy",
+    "verdict": "clean",
+    "findings": [],
+    "note": "old one-place failure fully fixed — strong variety now"
+   }
+  },
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad": {
+   "name": "Afterglow",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "d4ab7a87-2f75-4fa4-b6e6-d64886803029",
+   "mood": "transcendent",
+   "ambient": "heaven",
+   "palette": {
+    "glow": "#ffc9a8",
+    "accent": "#8f9fd8",
+    "primary": "#f0876a",
+    "secondary": "#141019"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.55
+    ],
+    [
+     0.55,
+     0.72
+    ],
+    [
+     0.72,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "credo",
+     "aurora-wave",
+     "lissajous",
+     "lichen",
+     "r3-memoryflow"
+    ],
+    [
+     "obsidian-flow",
+     "moire",
+     "r3-silkwind",
+     "roulette",
+     "hubble",
+     "strophoid"
+    ],
+    [
+     "r3-softorbit",
+     "cage",
+     "constellation",
+     "crucible",
+     "r2-fibers",
+     "cardioid"
+    ],
+    [
+     "magma",
+     "kelp",
+     "maelstrom-dark",
+     "r-molten",
+     "geodesic"
+    ],
+    [
+     "cloud",
+     "pollen",
+     "ocean",
+     "r3-ripplecascade"
+    ],
+    [
+     "whorl",
+     "r-embers",
+     "biofilm",
+     "drift"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Afterglow",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-capped mountain ranges at dusk lake",
+      "confidence": "high",
+      "tiles": [
+       "r1c1",
+       "r1c2",
+       "r2c1",
+       "r2c2",
+       "r3c1"
+      ]
+     },
+     {
+      "issue": "snow/frost dusting on lava-crack rocks",
+      "confidence": "high",
+      "tiles": [
+       "r1c3",
+       "r1c4",
+       "r3c2"
+      ]
+     },
+     {
+      "issue": "lava vent on snowy slope with pink smoke",
+      "confidence": "high",
+      "tiles": [
+       "r3c3"
+      ]
+     }
+    ]
+   }
+  },
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f": {
+   "name": "Grasshopper",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "a267aa80-7bd3-4cc5-9001-a199e401abb8",
+   "mood": "hypnotic",
+   "ambient": "forest",
+   "palette": {
+    "glow": "#d0f0a8",
+    "accent": "#e8e05f",
+    "primary": "#9fd86a",
+    "secondary": "#0a1408"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.224
+    ],
+    [
+     0.224,
+     0.593
+    ],
+    [
+     0.593,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "cissoid",
+     "galaxy",
+     "cataphatic",
+     "nadir",
+     "r3-shadowflow"
+    ],
+    [
+     "pollen",
+     "flame",
+     "laminar",
+     "blood-moon",
+     "r2-fibers",
+     "chladni"
+    ],
+    [
+     "voronoi-flow",
+     "whirlpool",
+     "r-kaleido",
+     "smoke-signal",
+     "shadow-fire",
+     "numinous"
+    ],
+    [
+     "r3-heartwarmth",
+     "r3-fernunfurl",
+     "cage",
+     "synapse",
+     "satori"
+    ],
+    [
+     "cymatic",
+     "deep-current",
+     "lightning",
+     "r-blackhole"
+    ],
+    [
+     "harmonograph",
+     "parabola",
+     "r3-ghostribbons",
+     "seabed"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Grasshopper",
+    "verdict": "clean",
+    "findings": [
+     {
+      "issue": "motion-soul phrase leaked into imagery: literal metal springs/slinky coils under flowers",
+      "confidence": "high",
+      "tiles": [
+       "r1c3",
+       "r1c4",
+       "r2c3",
+       "r2c4",
+       "r2c6"
+      ],
+      "class": "quality-not-law"
+     }
+    ]
+   }
+  },
+  "46216435-4340-4ad4-9033-101e66fb29e7": {
+   "name": "Love Again",
+   "source": "db",
+   "created": "2026-09-22",
+   "recordingId": "38ff4e30-a679-419d-b1f1-d0f5e1ad5f2a",
+   "mood": "transcendent",
+   "ambient": "sacred",
+   "palette": {
+    "glow": "#ffe0e8",
+    "accent": "#8fd0a8",
+    "primary": "#e88fa8",
+    "secondary": "#130f10"
+   },
+   "hasTheme": true,
+   "phaseCount": 6,
+   "phaseBounds": [
+    [
+     0,
+     0.05
+    ],
+    [
+     0.05,
+     0.16
+    ],
+    [
+     0.16,
+     0.324
+    ],
+    [
+     0.324,
+     0.84
+    ],
+    [
+     0.84,
+     0.92
+    ],
+    [
+     0.92,
+     1
+    ]
+   ],
+   "intensityArc": [
+    0.4,
+    0.7,
+    1,
+    0.75,
+    0.5,
+    0.3
+   ],
+   "shaders": [
+    [
+     "empyrean",
+     "obsidian-flow",
+     "r3-memoryflow",
+     "satori",
+     "stigmata"
+    ],
+    [
+     "geodesic",
+     "r3-ghostribbons",
+     "threshold",
+     "diatom",
+     "umbra",
+     "chinook"
+    ],
+    [
+     "witch-light",
+     "dark-aurora",
+     "lectio",
+     "cascade",
+     "harmonograph",
+     "protostar"
+    ],
+    [
+     "r3-plasmastorm",
+     "r3-heatshimmer",
+     "astral",
+     "r3-seaweedsway",
+     "fibonacci-spiral"
+    ],
+    [
+     "dusk",
+     "zoetrope",
+     "fractal-tree",
+     "roulette"
+    ],
+    [
+     "flux",
+     "cymatic",
+     "r3-fernunfurl",
+     "stamen"
+    ]
+   ],
+   "duplicateShadersWithinJourney": [],
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "Love Again",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "green aurora light pillars",
+      "confidence": "high",
+      "tiles": [
+       "r2c1",
+       "r2c2",
+       "r3c6",
+       "r4c1",
+       "r4c2"
+      ]
+     },
+     {
+      "issue": "human figure standing on snowfield under aurora",
+      "confidence": "high",
+      "tiles": [
+       "r4c1",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "cosmic-drift": {
+   "name": "(builtin) cosmic-drift",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) Cosmic Drift",
+    "verdict": "needs-recheck",
+    "findings": [
+     {
+      "issue": "possible snowy road with lights at night",
+      "confidence": "medium",
+      "tiles": [
+       "r4c3"
+      ]
+     }
+    ]
+   }
+  },
+  "first-snow": {
+   "name": "(builtin) first-snow",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) First Snow / Snowflake",
+    "verdict": "reference",
+    "findings": [],
+    "note": "the ONLY journey allowed snow/ice/frost/aurora — content correct"
+   }
+  },
+  "inferno": {
+   "name": "(builtin) inferno",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) Inferno",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "burnt fence posts in snowy field / fire on white snowfield",
+      "confidence": "high",
+      "tiles": [
+       "r2c5",
+       "r2c6"
+      ]
+     },
+     {
+      "issue": "small human silhouette in fire cathedral",
+      "confidence": "medium-high",
+      "tiles": [
+       "r3c3",
+       "r3c4"
+      ]
+     }
+    ]
+   }
+  },
+  "mycelium-dream": {
+   "name": "(builtin) mycelium-dream",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) Mycelium Dream",
+    "verdict": "clean",
+    "findings": []
+   }
+  },
+  "the-ascension": {
+   "name": "(builtin) the-ascension",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) The Ascension",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "woman in dress standing/walking in forest stream",
+      "confidence": "high",
+      "tiles": [
+       "r2c3",
+       "r2c4",
+       "r4c2"
+      ]
+     }
+    ]
+   }
+  },
+  "the-ascent": {
+   "name": "(builtin) the-ascent",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) The Ascent",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "snow-covered spires with icicles; balanced rock on snowfield",
+      "confidence": "high",
+      "tiles": [
+       "r1c1",
+       "r1c2",
+       "r2c1",
+       "r2c2",
+       "r3c6"
+      ]
+     }
+    ]
+   }
+  },
+  "the-bloom": {
+   "name": "(builtin) the-bloom",
+   "source": "builtin",
+   "clips": {
+    "heroes": 6,
+    "travels": 5
+   },
+   "audit": {
+    "name": "(builtin) The Bloom",
+    "verdict": "violations",
+    "findings": [
+     {
+      "issue": "golden female figure (limbs/dress discernible — beyond featureless spirit-hint)",
+      "confidence": "medium-high",
+      "tiles": [
+       "r4c1"
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

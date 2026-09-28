@@ -1,0 +1,128 @@
+{
+  "auditDate": "2026-09-27",
+  "auditor": "Claude (Fable 5), visual review of extracted frames",
+  "method": "2 frames per non-HEVC clip (0.5s and 1s-before-end) via scripts/audit-extract-frames.mjs; tiled 6-wide per journey (row-major, tiles sorted h0-a..h5-b then t0-a..t4-b); every sheet reviewed against the material law. Tile refs below are (row,col) on that grid, 1-indexed. Re-derive the exact clip: tileIndex = (row-1)*6 + col, then sheets-index.json order.",
+  "law": {
+    "exclusiveMaterials": {
+      "snow-ice-frost-aurora": ["first-snow", "1895014a-ce59-4640-aa23-b9421b588d70"],
+      "humans": ["ghost", "9eb3df10"]
+    },
+    "bannedEverywhere": ["moons in sky", "readable text/writing", "drug references"],
+    "notes": "Spirit-hints (featureless drifts of glow) are allowed per journey-design-spec law; a figure with limbs/clothing/face is a violation. Salt crust (Playa), sand, foam, clouds, quartz-like glowing crystals are NOT ice."
+  },
+  "journeys": {
+    "00fcca2b-bc1e-461a-8dcd-3fff74587f3e": { "name": "The Knife", "verdict": "violations", "findings": [
+      { "issue": "snow-covered canyon floor", "confidence": "high", "tiles": ["r1c5", "r1c6", "r3c4"] },
+      { "issue": "two human faces in profile over water", "confidence": "high", "tiles": ["r4c3", "r4c4"] } ] },
+    "019e1e1d-c7e2-4609-a9c6-364a2755b115": { "name": "Quarantine", "verdict": "clean", "findings": [] },
+    "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1": { "name": "Complete", "verdict": "needs-recheck", "findings": [
+      { "issue": "possibly snowy path under bare tree", "confidence": "low", "tiles": ["r3c3"] } ] },
+    "08f4c26e-4185-440a-a25c-2440e8e7ae47": { "name": "Isolation", "verdict": "violations", "findings": [
+      { "issue": "frost/ice crystals on pine branch with frozen droplet", "confidence": "high", "tiles": ["r1c3", "r1c4", "r3c2"] },
+      { "issue": "moon in sky", "confidence": "high", "tiles": ["r1c2", "r4c3"] } ] },
+    "27f52cf0-5fad-420f-8324-8017c414f1f8": { "name": "Interplay", "verdict": "needs-recheck", "findings": [
+      { "issue": "possible snow banks along dark waterway", "confidence": "low", "tiles": ["r4c1"] } ] },
+    "38daff92-ae34-4448-8868-5f1df6029b94": { "name": "Rolling", "verdict": "needs-recheck", "findings": [
+      { "issue": "possible tiny human figure on hillside", "confidence": "low", "tiles": ["r1c5", "r3c4"] } ] },
+    "46216435-4340-4ad4-9033-101e66fb29e7": { "name": "Love Again", "verdict": "violations", "findings": [
+      { "issue": "green aurora light pillars", "confidence": "high", "tiles": ["r2c1", "r2c2", "r3c6", "r4c1", "r4c2"] },
+      { "issue": "human figure standing on snowfield under aurora", "confidence": "high", "tiles": ["r4c1", "r4c2"] } ] },
+    "4ca8d765-71a2-401a-85eb-eb02c2780bc3": { "name": "Grace", "verdict": "needs-recheck", "findings": [
+      { "issue": "white specks on pine needles could be snow dust vs bokeh", "confidence": "low", "tiles": ["r1c3", "r3c2"] } ] },
+    "549719aa-4a15-4981-8a9a-34ee66fca156": { "name": "Held", "verdict": "violations", "findings": [
+      { "issue": "small human silhouette standing in cave archway", "confidence": "high", "tiles": ["r1c5", "r1c6", "r3c4"] },
+      { "issue": "ice-like translucent chunks in rock (could be quartz)", "confidence": "medium", "tiles": ["r1c3", "r1c4", "r3c2"] } ] },
+    "5a07f0af-654f-4dab-b42c-aef83983b33f": { "name": "The First", "verdict": "clean", "findings": [], "note": "post-law regeneration confirmed working" },
+    "5a3beb75-4788-4448-a024-4bfae30040c3": { "name": "The Knife (Jam)", "verdict": "needs-recheck", "findings": [
+      { "issue": "ice-like glowing crystal shards (could be glass/quartz per knife theme)", "confidence": "medium", "tiles": ["r2c5", "r2c6", "r4c3", "r4c4"] } ] },
+    "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b": { "name": "Playa", "verdict": "violations", "findings": [
+      { "issue": "human silhouette standing on flat", "confidence": "medium-high", "tiles": ["r3c2", "r4c1", "r4c2"] },
+      { "issue": "moon in sky", "confidence": "medium-high", "tiles": ["r3c2"] },
+      { "issue": "white crust is salt (Playa) — allowed, not ice", "confidence": "note", "tiles": [] } ] },
+    "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3": { "name": "Surrounded By Light", "verdict": "violations", "findings": [
+      { "issue": "human figure walking on road / in bright corridor", "confidence": "high", "tiles": ["r3c1", "r3c5"] },
+      { "issue": "waterfall between icy/snowy cliffs with tiny figure", "confidence": "medium-high", "tiles": ["r3c3"] },
+      { "issue": "moon-like dark sphere over ocean", "confidence": "medium", "tiles": ["r2c3", "r2c4", "r4c2"] } ] },
+    "79e33115-7f1e-44bc-b950-7adf5055dd55": { "name": "Welcome Home", "verdict": "violations", "findings": [
+      { "issue": "full moon in sky over lake / moon sphere closeup", "confidence": "high", "tiles": ["r2c3", "r2c4", "r4c2", "r4c3"] } ] },
+    "800ed3f9-08d4-4b73-8a32-86ed8370e752": { "name": "Spectre", "verdict": "needs-recheck", "findings": [
+      { "issue": "possible fallen figure/foot with sparkler in alley", "confidence": "low", "tiles": ["r2c5", "r4c4"] } ] },
+    "8997623d-8770-41ce-863d-f359d1a213c4": { "name": "Rebound", "verdict": "violations", "findings": [
+      { "issue": "literal snowflake/frost crystal macro", "confidence": "high", "tiles": ["r3c3"] },
+      { "issue": "moon over canyon river", "confidence": "medium", "tiles": ["r3c1"] },
+      { "issue": "possible ice floes around glowing spire", "confidence": "medium", "tiles": ["r2c3", "r2c4", "r4c2"] } ] },
+    "89ff944d-f242-4f77-9b95-7cb1d3dc0af6": { "name": "Self", "verdict": "violations", "findings": [
+      { "issue": "snow-capped mountain peaks over lake", "confidence": "high", "tiles": ["r1c1", "r1c2"] },
+      { "issue": "row of ice-like crystal diamonds", "confidence": "medium", "tiles": ["r3c1"] },
+      { "issue": "dim moon-like orb over lake", "confidence": "medium", "tiles": ["r2c3", "r4c2"] } ] },
+    "8b163c8b-cda5-4d7d-995b-41dd68fdd059": { "name": "Drift", "verdict": "clean", "findings": [] },
+    "9d901645-b8dd-4a62-b3e2-2613ccd64335": { "name": "Dad's Song II", "verdict": "needs-recheck", "findings": [
+      { "issue": "aerial conifers look frost-dusted", "confidence": "medium-low", "tiles": ["r2c3", "r4c2"] } ] },
+    "a5b5f0cf-9a6b-451a-8293-3d98f3904342": { "name": "Bath", "verdict": "violations", "findings": [
+      { "issue": "two moons in sky over golden river", "confidence": "high", "tiles": ["r3c3"] } ] },
+    "a5de2004-f606-4277-a4cb-032c35e56c43": { "name": "Sway", "verdict": "violations", "findings": [
+      { "issue": "snow-covered forest floor with glowing trail", "confidence": "high", "tiles": ["r4c3"] } ] },
+    "a985d483-a948-4e3b-bad3-841a68f9992f": { "name": "Mexican Boy", "verdict": "clean", "findings": [], "note": "old one-place failure fully fixed — strong variety now" },
+    "b207b557-e984-4a06-ae71-83124bcd80d5": { "name": "All Together", "verdict": "violations", "findings": [
+      { "issue": "moon over sea with light column", "confidence": "high", "tiles": ["r4c4"] },
+      { "issue": "dim moon over water", "confidence": "medium", "tiles": ["r2c5", "r2c6"] } ] },
+    "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1": { "name": "Rise", "verdict": "violations", "findings": [
+      { "issue": "stone dusted with snow/frost on dark rock", "confidence": "medium-high", "tiles": ["r3c3"] },
+      { "issue": "distant snow-capped peaks behind beach sunrise", "confidence": "medium", "tiles": ["r2c6"] } ] },
+    "c110af67-40be-4a06-9878-eeec2a22bb3d": { "name": "Mystic", "verdict": "violations", "findings": [
+      { "issue": "person walking snowy footprinted alley toward light", "confidence": "high", "tiles": ["r4c3"] },
+      { "issue": "glass citadel / golden temple on snowfield", "confidence": "high", "tiles": ["r2c1", "r3c6", "r4c1"] },
+      { "issue": "snowy footprinted corridor path", "confidence": "medium", "tiles": ["r2c3", "r2c4", "r4c2"] },
+      { "issue": "ice-crystal mandala motifs", "confidence": "medium", "tiles": ["r1c5", "r1c6", "r3c4"] } ] },
+    "c80a89bc-2c88-4bde-bec8-4be6916acb62": { "name": "Yellow Bird", "verdict": "clean", "findings": [
+      { "issue": "possible light frost on twig (likely dew)", "confidence": "low", "tiles": ["r1c1", "r1c2"] } ] },
+    "cd517f5a-c4eb-4d50-8a53-044aa668d087": { "name": "Stir Crazy", "verdict": "needs-recheck", "findings": [
+      { "issue": "vortex tunnel material reads as snowbank", "confidence": "medium", "tiles": ["r2c3"] } ] },
+    "db22c975-8f03-487b-ae44-437f7f153ac1": { "name": "Surrender", "verdict": "violations", "findings": [
+      { "issue": "crescent moon + snowy footprinted ground at white arch", "confidence": "medium-high", "tiles": ["r3c1"] } ] },
+    "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a": { "name": "Message", "verdict": "violations", "findings": [
+      { "issue": "readable glowing TEXT ('wale mosta') written on water", "confidence": "high", "tiles": ["r4c1"] },
+      { "issue": "dim moon over beach/canal", "confidence": "low-medium", "tiles": ["r2c3", "r3c1"] } ] },
+    "eb79818b-c7e8-45a7-886c-2a432fe83332": { "name": "2019", "verdict": "clean", "findings": [] },
+    "f0362f24-75f1-4717-8487-cc9cf12c7bcc": { "name": "The First (Expanded)", "verdict": "violations", "findings": [
+      { "issue": "snow-covered road with footprints / snowy forest floor", "confidence": "high", "tiles": ["r1c1", "r1c2", "r3c3"] },
+      { "issue": "distant snow-capped peaks", "confidence": "medium", "tiles": ["r3c1"] } ],
+      "note": "base 'The First' was regenerated post-law; the Expanded variant was NOT" },
+    "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9": { "name": "Realized", "verdict": "violations", "findings": [
+      { "issue": "snow patches in lava-block channel (phase-1), frost-covered forest floor (phase-3), snow-covered canyon (phase-4)", "confidence": "high", "tiles": ["phase-1", "phase-3", "phase-4"] } ],
+      "note": "April legacy row wrapping inferno builtin; no theme/palette in DB; shader list still references removed 'nebula'" },
+    "f24cc5d9-66cd-4fae-a03a-14dda1698566": { "name": "Openings", "verdict": "clean", "findings": [
+      { "issue": "possible distant snowy peaks at night lake", "confidence": "low", "tiles": ["r3c1"] } ] },
+    "f7b01537-af1b-4ade-b788-f21c6565b057": { "name": "Surrounded By Light (forest)", "verdict": "violations", "findings": [
+      { "issue": "human figure walking in forest light beam", "confidence": "high", "tiles": ["r1c5", "r1c6"] },
+      { "issue": "golden net in snowy footprinted forest", "confidence": "high", "tiles": ["r3c3"] },
+      { "issue": "frost-pale forest path / white-dusted pines", "confidence": "medium", "tiles": ["r1c1", "r1c2", "r2c1", "r2c2"] } ] },
+    "fb56b19e-ee23-43c6-ad41-5714e7969aad": { "name": "Afterglow", "verdict": "violations", "findings": [
+      { "issue": "snow-capped mountain ranges at dusk lake", "confidence": "high", "tiles": ["r1c1", "r1c2", "r2c1", "r2c2", "r3c1"] },
+      { "issue": "snow/frost dusting on lava-crack rocks", "confidence": "high", "tiles": ["r1c3", "r1c4", "r3c2"] },
+      { "issue": "lava vent on snowy slope with pink smoke", "confidence": "high", "tiles": ["r3c3"] } ] },
+    "fdc6470e-5c7e-43b4-968c-3e907f1fa88f": { "name": "Grasshopper", "verdict": "clean", "findings": [
+      { "issue": "motion-soul phrase leaked into imagery: literal metal springs/slinky coils under flowers", "confidence": "high", "tiles": ["r1c3", "r1c4", "r2c3", "r2c4", "r2c6"], "class": "quality-not-law" } ] },
+    "cosmic-drift": { "name": "(builtin) Cosmic Drift", "verdict": "needs-recheck", "findings": [
+      { "issue": "possible snowy road with lights at night", "confidence": "medium", "tiles": ["r4c3"] } ] },
+    "first-snow": { "name": "(builtin) First Snow / Snowflake", "verdict": "reference", "findings": [], "note": "the ONLY journey allowed snow/ice/frost/aurora — content correct" },
+    "inferno": { "name": "(builtin) Inferno", "verdict": "violations", "findings": [
+      { "issue": "burnt fence posts in snowy field / fire on white snowfield", "confidence": "high", "tiles": ["r2c5", "r2c6"] },
+      { "issue": "small human silhouette in fire cathedral", "confidence": "medium-high", "tiles": ["r3c3", "r3c4"] } ] },
+    "mycelium-dream": { "name": "(builtin) Mycelium Dream", "verdict": "clean", "findings": [] },
+    "the-ascension": { "name": "(builtin) The Ascension", "verdict": "violations", "findings": [
+      { "issue": "woman in dress standing/walking in forest stream", "confidence": "high", "tiles": ["r2c3", "r2c4", "r4c2"] } ] },
+    "the-ascent": { "name": "(builtin) The Ascent", "verdict": "violations", "findings": [
+      { "issue": "snow-covered spires with icicles; balanced rock on snowfield", "confidence": "high", "tiles": ["r1c1", "r1c2", "r2c1", "r2c2", "r3c6"] } ] },
+    "the-bloom": { "name": "(builtin) The Bloom", "verdict": "violations", "findings": [
+      { "issue": "golden female figure (limbs/dress discernible — beyond featureless spirit-hint)", "confidence": "medium-high", "tiles": ["r4c1"] } ] }
+  },
+  "summary": {
+    "clean": 10,
+    "reference": 1,
+    "violations": 23,
+    "needsRecheck": 9,
+    "rootCause": "The 2026-09-26 harvest animated stills wholesale; only journeys regenerated after the 2026-09-23 founding law (The First, Grasshopper, Mexican Boy, Drift, 2019, Quarantine, Yellow Bird, Openings, mycelium-dream) are clean. The QA gate screened for glitches, never for material law.",
+    "commonViolations": ["snow/frost outside first-snow (15 journeys)", "moons in sky (9 journeys)", "human figures (9 journeys)", "aurora (1)", "readable text (1)"]
+  }
+}

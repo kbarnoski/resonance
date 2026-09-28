@@ -287,6 +287,15 @@ export function AiImageLayer({
       journeyEpochRef.current++;
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
+      // Same staleness class for STILLS (2026-09-27): a 400ms gen tick can
+      // land between the journey-id change and the new journey's pack URLs
+      // resolving, pushing old-journey stills under the new journey's
+      // phases. Drop them synchronously; the pack fetch effect repopulates
+      // (cached promise — resolves in a microtask).
+      if (!hasPropLocalImages) {
+        localImageUrlsRef.current = [];
+        setPackUrls(null);
+      }
 
       // Installation (Tramokyo): NEVER purge to black between journeys —
       // the previous journey's imagery holds until the new journey's
@@ -503,7 +512,14 @@ export function AiImageLayer({
       // ── Living video (Wave 2, rebuilt after 2026-09-25 audits): travel
       // morphs at phase boundaries + hero loops within phases. High tier
       // only; one video pending/active at a time; every element released.
-      const clips = journeyId ? clipsRef.current?.[journeyId] : null;
+      // 2026-09-27 review (Johnny/Joseph): read the id via ref, NOT the
+      // prop. This callback's deps intentionally omit journeyId, and in
+      // the installation loop the layer never remounts across journeys —
+      // so the prop capture froze the clip set at the mount-time journey
+      // (Snowflake's clips played through the entire set). The fal path
+      // already reads journeyIdRef; clips must too.
+      const clipJourneyId = journeyIdRef.current;
+      const clips = clipJourneyId ? clipsRef.current?.[clipJourneyId] : null;
       if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
         // Correctness #1: phase.start/end are NORMALIZED 0-1 fractions —
         // the old seconds comparison never matched and the feature was dead.
