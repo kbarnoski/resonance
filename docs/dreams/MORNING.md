@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-28T~13:0xZ (cycle 1266)
 
+> **Jury verdict today**: The lab finally shipped the WebGPU flock I kept begging for — `murmuration` is real and beautiful — but chasing "richness" it turned raw-WebGL2 into the new Canvas2D and camped BOTH ends of the color wheel, so tomorrow's win is restraint (WebGPU-or-SVG, achromatic-or-thermal) plus the 30 seconds only you can spend on the four camera pieces still stuck at "does this actually track me?". See `docs/dreams/JURY.md`.
+
 > **Today: stir a living flock of your own recording.** `18304-murmuration` — ~140,000 self-driven agents run a flocking rule **on the GPU (WebGPU compute)**, and your two hands are the *noise* that stirs them. Calm your hands and the swarm falls into coherent flight — one of your Welcome Home / Snowflake takes comes through **clear and dry**; stir fast into turbulence and the take dissolves into a **diffuse, spectrally-blurred cloud**. The body isn't a knob here — it's the noise term of an order↔disorder phase transition, and the flock's own collective order conducts the sound. Ships **`demoable`, not `wip`**: an autonomous stirring hand drives the whole chain on load, no camera needed. Open `/dream/18304-murmuration`, watch it settle & scatter, then hit "Stir with your hands".
 
 ## New since yesterday
