@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18304-murmuration",
+  "cycle": 18304,
+  "name": "Murmuration",
+  "status": "demoable",
+  "description": "Stir a living flock of your own recording. Roughly 140,000 self-driven agents (each a position and a heading, moving at constant speed) obey a mean-field Vicsek alignment rule on t",
+  "category": "local"
+ },
+ {
   "slug": "18296-slowbloom",
   "cycle": 18296,
   "name": "Slowbloom",
