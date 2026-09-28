@@ -62,16 +62,29 @@ describe("composition conductor", () => {
     expect(quietEnd.every((f) => !f.dualShaderMode)).toBe(true);
   });
 
-  it("reserves the tertiary layer for the climax", () => {
+  it("reserves the tertiary layer for the climax (activation-gated)", () => {
     const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3]));
+    // The tertiary may ride through a breath valley once active, but it
+    // only ever ACTIVATES at climax intensity: check the first frame of
+    // each contiguous tertiary episode.
+    let prevTertiary = false;
     for (const f of frames) {
-      if (f.tertiaryShaderMode) {
-        // tertiary only while interpolated intensity is at climax level
-        expect(f.intensityMultiplier).toBeGreaterThanOrEqual(0.8 - 1e-9);
+      const has = !!f.tertiaryShaderMode;
+      if (has && !prevTertiary) {
+        expect(f.intensityMultiplier).toBeGreaterThanOrEqual(0.85 - 1e-9);
       }
+      prevTertiary = has;
     }
     // and the climax actually gets its third layer at some point
     expect(frames.some((f) => !!f.tertiaryShaderMode)).toBe(true);
+  });
+
+  it("schedules stillness windows that drop the journey to a held sparse moment", () => {
+    const frames = run(makeJourney([1, 1, 1, 1, 1, 1]));
+    // Even a flat-max journey now breathes: some mid-journey frames sit
+    // at the stillness level (one static image, one shader).
+    const still = frames.filter((f) => f.progress > 0.15 && f.progress < 0.9 && f.intensityMultiplier <= 0.32);
+    expect(still.length).toBeGreaterThan(0);
   });
 
   it("keeps a flat-max journey fully layered (legacy behavior preserved)", () => {

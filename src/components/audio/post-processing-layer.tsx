@@ -75,6 +75,13 @@ export function PostProcessingLayer({
   // This prevents the effect from tearing down/recreating on every prop change.
   const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, colorTemperature, palette });
   propsRef.current = { vignette, bloomIntensity, audioAmplitude, particleDensity, halation, intensityMultiplier, colorTemperature, palette };
+  // Cross-journey continuity (Karel 2026-09-28: "a little darkness
+  // change" at every handoff): frame values interpolate WITHIN a
+  // journey but STEP across journey boundaries — vignette/bloom jumping
+  // in one frame reads as the room dimming. Smooth every scalar toward
+  // its target (~1.5s time constant) so handoffs ease like everything
+  // else. The smoothed values are what the draw loop consumes.
+  const smoothRef = useRef({ vignette, bloomIntensity, particleDensity, halation, intensityMultiplier, colorTemperature });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -117,10 +124,24 @@ export function PostProcessingLayer({
       lastFrameTime = now;
 
       // Read current prop values from ref (always fresh, no effect restart needed)
-      const pp = propsRef.current;
+      const raw = propsRef.current;
 
       const dt = Math.min((now - lastTime) / 1000, 0.05); // Cap at 50ms
       lastTime = now;
+      // Ease all scalars toward their targets (~1.5s tau) — see
+      // smoothRef note above. `pp` keeps the same shape the rest of
+      // the draw loop expects; palette passes through untouched.
+      {
+        const k = 1 - Math.exp(-dt / 1.5);
+        const sm = smoothRef.current;
+        sm.vignette += (raw.vignette - sm.vignette) * k;
+        sm.bloomIntensity += (raw.bloomIntensity - sm.bloomIntensity) * k;
+        sm.particleDensity += (raw.particleDensity - sm.particleDensity) * k;
+        sm.halation += (raw.halation - sm.halation) * k;
+        sm.intensityMultiplier += (raw.intensityMultiplier - sm.intensityMultiplier) * k;
+        sm.colorTemperature += (raw.colorTemperature - sm.colorTemperature) * k;
+      }
+      const pp = { ...raw, ...smoothRef.current };
       timeRef.current += dt;
       const t = timeRef.current;
 

@@ -133,8 +133,8 @@ class JourneyEngine {
   /** Grace period will never exceed this fraction of the phase's total duration */
   private static readonly GRACE_MAX_PHASE_FRACTION = 0.4;
   /** Wall-clock shader switch timer — simple, reliable, no schedule drift */
-  private static readonly SHADER_SWITCH_MIN_SECS = 10;
-  private static readonly SHADER_SWITCH_MAX_SECS = 16;
+  private static readonly SHADER_SWITCH_MIN_SECS = 20; // slowed 2026-09-28 — 10-16s rotation read as churn
+  private static readonly SHADER_SWITCH_MAX_SECS = 30;
   /** Extra time for the first shader to compensate for compile + fade-in delay */
   private static readonly FIRST_SHADER_BUFFER_MS = 3000;
   /** Dual shader switches on a different cadence — offset from primary for variety */
@@ -169,6 +169,19 @@ class JourneyEngine {
   /** Opening ramp: every journey starts simple and builds (2026-09-28). */
   private static readonly OPENING_RAMP_SECS = 40;
   private static readonly OPENING_FLOOR = 0.3;
+  /** The journey BREATHES (Karel 2026-09-28: "hitting viewers over the
+   *  head without time to catch a breath"). Two seeded per-journey
+   *  rhythms modulate the authored intensity so even long climax phases
+   *  periodically relax — not deterministic rules, seeded weather:
+   *  - a slow breath wave (BREATH_PERIOD_SECS cycle, dipping to
+   *    BREATH_FLOOR of the authored value)
+   *  - occasional stillness windows: one crisp static image, one
+   *    shader, nothing else (intensity clamped to STILLNESS_LEVEL). */
+  private static readonly BREATH_FLOOR = 0.55;
+  private static readonly STILLNESS_LEVEL = 0.3;
+  private breathPeriodSecs = 70;
+  private breathPhase = 0;
+  private stillnessMoments: TertiaryMoment[] = [];
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
@@ -270,6 +283,20 @@ class JourneyEngine {
     // Schedule tertiary shader moments (~every 60s)
     this.scheduleTertiaryMoments(random);
     this.precomputeTertiaryPicks(random);
+    // Breath wave + stillness windows — seeded per journey.
+    this.breathPeriodSecs = 55 + random() * 30;   // 55-85s cycle
+    this.breathPhase = random() * Math.PI * 2;
+    this.stillnessMoments = [];
+    {
+      // A ~20s stillness window every ~2.5-3.5 min, avoiding the first
+      // minute (the opening ramp already holds that space).
+      let cursor = (70 + random() * 40) / Math.max(1, this.trackDuration);
+      const winFrac = (16 + random() * 8) / Math.max(1, this.trackDuration);
+      while (cursor < 0.9) {
+        this.stillnessMoments.push({ startProgress: cursor, endProgress: Math.min(0.93, cursor + winFrac) });
+        cursor += (150 + random() * 60) / Math.max(1, this.trackDuration);
+      }
+    }
     this.precomputeGuidancePhraseIndices(random);
   }
 
@@ -521,13 +548,31 @@ class JourneyEngine {
     const elapsedSec = clamped * this.trackDuration;
     const openingCap = JourneyEngine.OPENING_FLOOR
       + (1 - JourneyEngine.OPENING_FLOOR) * Math.min(1, elapsedSec / JourneyEngine.OPENING_RAMP_SECS);
-    const conductorIntensity = Math.min(Number.isFinite(rawIntensity) ? rawIntensity : 1, openingCap);
+    let conducted = Math.min(Number.isFinite(rawIntensity) ? rawIntensity : 1, openingCap);
+    // Breath wave: multiplies intensity by BREATH_FLOOR..1 on a slow
+    // seeded cycle — climaxes still peak, but the grip releases in
+    // rhythm and the dual layer/motion ease off in the valleys.
+    const breath = JourneyEngine.BREATH_FLOOR
+      + (1 - JourneyEngine.BREATH_FLOOR) * (0.5 + 0.5 * Math.sin(this.breathPhase + (elapsedSec * Math.PI * 2) / this.breathPeriodSecs));
+    conducted *= breath;
+    // Stillness windows: a held, sparse, crisp moment — one static
+    // image, one shader. The rotation below also holds during these.
+    for (const m of this.stillnessMoments) {
+      if (clamped >= m.startProgress && clamped <= m.endProgress) {
+        conducted = Math.min(conducted, JourneyEngine.STILLNESS_LEVEL);
+        break;
+      }
+    }
+    const conductorIntensity = conducted;
     if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
     else if (this.dualAllowed && conductorIntensity < JourneyEngine.DUAL_OFF_INTENSITY) this.dualAllowed = false;
 
     // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
-    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && now - this.shaderStartMs > this.shaderDurationMs) {
+    // Stillness = hold: a shader switch is itself an event, and the
+    // stillness window's whole point is that nothing happens.
+    const inStillness = conductorIntensity <= JourneyEngine.STILLNESS_LEVEL + 0.02;
+    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -547,7 +592,23 @@ class JourneyEngine {
           break;
         }
       }
-      // If every shader in pool is blocked, keep current (don't flash)
+      // Phase pool exhausted: BORROW an unseen shader from the journey's
+      // other phases before ever repeating (Karel 2026-09-28: "the same
+      // shader used numerous times... have a big diverse set"). The
+      // journey-wide program stays generative — this only widens the
+      // pool the seeded pick draws from.
+      if (!picked && this.journey) {
+        const live = new Set([this.dualShaderMode, this.tertiaryShaderMode]);
+        const borrow = this.journey.phases
+          .flatMap((p) => p.shaderModes)
+          .filter((m) => !this.seenShaders.has(m) && this.isShaderAllowed(m) && !live.has(m) && m !== this.currentShaderMode);
+        if (borrow.length > 0) {
+          this.currentShaderMode = borrow[Math.floor(this.random() * borrow.length)];
+          this.seenShaders.add(this.currentShaderMode);
+          picked = true;
+        }
+      }
+      // If every shader everywhere is spent/blocked, keep current (don't flash)
       if (!picked) {
         this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
       }

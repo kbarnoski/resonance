@@ -132,6 +132,13 @@ export function JourneyCompositor({
   // exactly where it was at journey end, and the visualizer wrapper's
   // opacity transition handles the fade smoothly from there.
   const [parallaxCovered, setParallaxCovered] = useState(false);
+  // Trails stay mounted ~3s after the flag drops so the fade above can run.
+  const [trailsMounted, setTrailsMounted] = useState(enableTrails);
+  useEffect(() => {
+    if (enableTrails) { setTrailsMounted(true); return; }
+    const t = setTimeout(() => setTrailsMounted(false), 3000);
+    return () => clearTimeout(t);
+  }, [enableTrails]);
   const lastShaderOpacityRef = useRef<number>(1.0);
   if (frame?.shaderOpacity != null) {
     lastShaderOpacityRef.current = frame.shaderOpacity;
@@ -375,7 +382,15 @@ export function JourneyCompositor({
       )}
 
       {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
-      {enableTrails && frame && <JourneyTrailsLayer enabled intensity={0.28} />}
+      {trailsMounted && frame && (
+        /* Trails handoff (Karel 2026-09-28): when the next journey has no
+           trails flag the echo layer used to hard-unmount — its luminous
+           echoes vanished in one frame at the boundary (the "tiny glitch").
+           It now fades over 2.5s and unmounts after. */
+        <div style={{ opacity: enableTrails ? 1 : 0, transition: "opacity 2500ms ease-out" }}>
+          <JourneyTrailsLayer enabled intensity={0.28} />
+        </div>
+      )}
       </ImageryErrorBoundary>
 
       {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
