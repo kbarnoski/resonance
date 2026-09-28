@@ -99,6 +99,14 @@ describe("journey content registry gate", () => {
     expect(offenders).toEqual([]);
   });
 
+  it("every registered shader carries a hue-family tag (palette coordination)", async () => {
+    const { SHADER_HUES } = await import("@/lib/shaders/shader-hues.generated");
+    const missing = MODE_META
+      .filter((m) => m.category !== "AI Imagery" && !(m.mode in SHADER_HUES))
+      .map((m) => m.mode);
+    expect(missing, "run scripts/analyze-shader-hues.mjs after adding shaders").toEqual([]);
+  });
+
   it("audit file referenced by the registry exists and parses", () => {
     const audit = JSON.parse(readFileSync(join(process.cwd(), registry.auditFile), "utf8"));
     expect(audit.journeys).toBeTruthy();

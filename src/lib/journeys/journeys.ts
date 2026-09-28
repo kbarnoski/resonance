@@ -6,6 +6,80 @@ import { applyShaderPreferences } from "./adaptive-engine";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { GHOST_LORA_URL } from "./ghost-lora";
+import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
+
+// ─── Shader ↔ palette coordination (2026-09-27 review) ───
+// "Colored shaders overlay and clash with the colors of what's shown in
+// images." Every shader carries a generated dominant-hue family
+// (shader-hues.generated.ts); a journey's palette maps to compatible
+// families (its own hues + ring-adjacent neighbors), and selection
+// prefers those. Neutral and prismatic shaders are always compatible,
+// so variety survives — the filter removes clashes, not character.
+
+type JourneyPalette = { primary: string; secondary: string; accent: string; glow: string };
+
+const HUE_RING = ["ember", "gold", "green", "teal", "blue", "violet", "magenta"] as const;
+
+function hexToHsv(hex: string): { h: number; s: number; v: number } | null {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  if (d > 0) {
+    if (max === r) h = 60 * (((g - b) / d) % 6);
+    else if (max === g) h = 60 * ((b - r) / d + 2);
+    else h = 60 * ((r - g) / d + 4);
+  }
+  return { h: ((h % 360) + 360) % 360, s: max === 0 ? 0 : d / max, v: max };
+}
+
+function familyOfHue(h: number): (typeof HUE_RING)[number] {
+  if (h >= 345 || h < 25) return "ember";
+  if (h < 70) return "gold";
+  if (h < 160) return "green";
+  if (h < 200) return "teal";
+  if (h < 250) return "blue";
+  if (h < 305) return "violet";
+  return "magenta";
+}
+
+/** Compatible hue families for a palette: each chromatic swatch's family
+ *  plus its ring neighbors (analogous hues never clash). Empty set = no
+ *  chromatic information → no filtering. */
+export function paletteHueFamilies(palette: Partial<JourneyPalette> | null | undefined): Set<string> {
+  const out = new Set<string>();
+  if (!palette) return out;
+  for (const key of ["primary", "accent", "glow"] as const) {
+    const hex = palette[key];
+    if (!hex) continue;
+    const hsv = hexToHsv(hex);
+    if (!hsv || hsv.s < 0.2 || hsv.v < 0.15) continue; // neutral swatch — no constraint
+    const idx = HUE_RING.indexOf(familyOfHue(hsv.h));
+    out.add(HUE_RING[idx]);
+    out.add(HUE_RING[(idx + 1) % HUE_RING.length]);
+    out.add(HUE_RING[(idx + HUE_RING.length - 1) % HUE_RING.length]);
+  }
+  return out;
+}
+
+function shaderCompatible(mode: string, families: Set<string>): boolean {
+  const fam = SHADER_HUES[mode];
+  return !fam || fam === "neutral" || fam === "prismatic" || families.has(fam);
+}
+
+/** Drop palette-clashing shaders from a pool, topping back up only if the
+ *  harmonious pool would be too small to sustain a full journey program. */
+export function filterShadersForPalette(modes: string[], families: Set<string>): string[] {
+  if (families.size === 0) return modes;
+  const MIN_POOL = 40;
+  const ok = modes.filter((m) => shaderCompatible(m, families));
+  if (ok.length >= MIN_POOL) return ok;
+  const okSet = new Set(ok);
+  const rest = modes.filter((m) => !okSet.has(m));
+  return [...ok, ...rest.slice(0, MIN_POOL - ok.length)];
+}
 
 // ─── LRU Shader Recency Tracking ───
 // Soft bias: recently-used shaders sort toward the back so consecutive journeys
@@ -232,7 +306,7 @@ const REALM_SHADER_MUSTINCLUDE: Record<string, string[]> = {
 
 
 function pickJourneyShaders(
-  options: { realmId?: string; shaderCategories?: string[]; isCustom?: boolean },
+  options: { realmId?: string; shaderCategories?: string[]; isCustom?: boolean; palette?: Partial<JourneyPalette> | null },
   random: () => number = Math.random,
 ): string[] {
   const { realmId, shaderCategories } = options;
@@ -280,11 +354,18 @@ function pickJourneyShaders(
   const affinityCount = affinityPool.length;
   const varietyCount = varietyPool.length;
 
-  const picked = [
+  const pickedRaw = [
     ...mustInclude, // always first
     ...shuffleArray(affinityPool, random).filter(s => !mustInclude.includes(s)).slice(0, affinityCount),
     ...shuffleArray(varietyPool, random).filter(s => !mustInclude.includes(s)).slice(0, varietyCount),
   ];
+
+  // Palette coordination: trim shaders whose dominant hue clashes with the
+  // journey's palette. Realm must-includes survive regardless (realm law).
+  const paletteFamilies = paletteHueFamilies(options.palette);
+  const picked = paletteFamilies.size > 0
+    ? [...new Set([...mustInclude, ...filterShadersForPalette(pickedRaw, paletteFamilies)])]
+    : pickedRaw;
 
   // LRU recency bias: sort recently-used shaders toward the back
   const recent = new Set(getRecentShaders());
@@ -304,12 +385,18 @@ function pickJourneyShaders(
   return applyShaderPreferences(shuffled, realmId ?? "custom");
 }
 
-/** Pick `count` shaders from pool, avoiding `used` set. Guarantees at least 2 (minimum for layering). */
-function pickShaders(pool: string[], count: number, used: Set<string>, random: () => number = Math.random): string[] {
+/** Pick `count` shaders from pool, avoiding `used` set. Guarantees at least 2 (minimum for layering).
+ *  When `phaseFamilies` is given, palette-compatible shaders are drawn first
+ *  (stable within the shuffle), so each phase leans toward its own palette. */
+function pickShaders(pool: string[], count: number, used: Set<string>, random: () => number = Math.random, phaseFamilies?: Set<string>): string[] {
   const MIN_SHADERS = 2;
   const target = Math.max(MIN_SHADERS, count);
   const unused = pool.filter((s) => !used.has(s));
   const shuffled = shuffleArray(unused, random);
+  if (phaseFamilies && phaseFamilies.size > 0) {
+    // Stable partition: compatible shaders first, shuffle order preserved.
+    shuffled.sort((a, b) => Number(shaderCompatible(b, phaseFamilies)) - Number(shaderCompatible(a, phaseFamilies)));
+  }
   const picked = shuffled.slice(0, Math.min(target, shuffled.length));
   for (const s of picked) used.add(s);
 
@@ -2021,6 +2108,9 @@ export function regenerateJourneyShaders(
       realmId: journey.theme ? undefined : journey.realmId,
       shaderCategories: journey.theme?.shaderCategories,
       isCustom: !!journey.userId,
+      // Palette coordination: the journey's authored palette trims
+      // hue-clashing shaders from the whole program (2026-09-27 review).
+      palette: journey.theme?.palette ?? journey.phases[0]?.palette ?? null,
     },
     random,
   );
@@ -2057,6 +2147,9 @@ export function regenerateJourneyShaders(
       phaseBudgets[phase.id] ?? 5,
       usedShaders,
       random,
+      // Per-phase lean: each phase prefers shaders matching ITS palette,
+      // so the shader wash tracks the imagery as the journey moves.
+      paletteHueFamilies(phase.palette),
     ),
   }));
 
