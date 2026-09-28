@@ -44,6 +44,17 @@ export default function ClipReviewPage() {
   }, [journeys, journeyFilter, onlyUnreviewed, verdicts]);
 
   const current = queue[Math.min(idx, Math.max(0, queue.length - 1))];
+  // Anchor: when the queue recomputes (verdict cleared while filtered,
+  // filter toggled off, etc.), stay on the same clip instead of letting
+  // the index land on a different one (Karel 2026-09-28: "I hit U and
+  // clips play one after another").
+  const anchorVid = current?.vid;
+  useEffect(() => {
+    if (!anchorVid) return;
+    const at = queue.findIndex((c) => c.vid === anchorVid);
+    if (at >= 0 && at !== idx) setIdx(at);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queue]);
   const total = useMemo(() => journeys?.reduce((n, j) => n + j.clips.length, 0) ?? 0, [journeys]);
   const reviewed = Object.keys(verdicts).length;
   const bad = Object.values(verdicts).filter((v) => v.verdict === "bad").length;
