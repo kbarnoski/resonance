@@ -133,8 +133,8 @@ class JourneyEngine {
   /** Grace period will never exceed this fraction of the phase's total duration */
   private static readonly GRACE_MAX_PHASE_FRACTION = 0.4;
   /** Wall-clock shader switch timer — simple, reliable, no schedule drift */
-  private static readonly SHADER_SWITCH_MIN_SECS = 20; // slowed 2026-09-28 — 10-16s rotation read as churn
-  private static readonly SHADER_SWITCH_MAX_SECS = 30;
+  private static readonly SHADER_SWITCH_MIN_SECS = 12; // Karel 2026-09-28: "~15s is enough — no shader on and on"
+  private static readonly SHADER_SWITCH_MAX_SECS = 18;
   /** Extra time for the first shader to compensate for compile + fade-in delay */
   private static readonly FIRST_SHADER_BUFFER_MS = 3000;
   /** Dual shader switches on a different cadence — offset from primary for variety */
@@ -177,11 +177,12 @@ class JourneyEngine {
    *    BREATH_FLOOR of the authored value)
    *  - occasional stillness windows: one crisp static image, one
    *    shader, nothing else (intensity clamped to STILLNESS_LEVEL). */
-  private static readonly BREATH_FLOOR = 0.55;
+  private static readonly BREATH_FLOOR = 0.5; // deepened 2026-09-28 — "don't be afraid of negative space"
   private static readonly STILLNESS_LEVEL = 0.3;
   private breathPeriodSecs = 70;
   private breathPhase = 0;
   private stillnessMoments: TertiaryMoment[] = [];
+  private wasInStillness = false;
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
@@ -291,10 +292,10 @@ class JourneyEngine {
       // A ~20s stillness window every ~2.5-3.5 min, avoiding the first
       // minute (the opening ramp already holds that space).
       let cursor = (70 + random() * 40) / Math.max(1, this.trackDuration);
-      const winFrac = (16 + random() * 8) / Math.max(1, this.trackDuration);
+      const winFrac = (12 + random() * 4) / Math.max(1, this.trackDuration); // 12-16s — a held breath, not a parked shader
       while (cursor < 0.9) {
         this.stillnessMoments.push({ startProgress: cursor, endProgress: Math.min(0.93, cursor + winFrac) });
-        cursor += (150 + random() * 60) / Math.max(1, this.trackDuration);
+        cursor += (120 + random() * 60) / Math.max(1, this.trackDuration); // every 2-3 min
       }
     }
     this.precomputeGuidancePhraseIndices(random);
@@ -572,6 +573,12 @@ class JourneyEngine {
     // Stillness = hold: a shader switch is itself an event, and the
     // stillness window's whole point is that nothing happens.
     const inStillness = conductorIntensity <= JourneyEngine.STILLNESS_LEVEL + 0.02;
+    if (this.wasInStillness && !inStillness) {
+      // Coming out of a stillness hold: bring a fresh shader within ~3s
+      // so the held one doesn't ALSO ride out a full rotation timer.
+      this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + 3000);
+    }
+    this.wasInStillness = inStillness;
     if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.

@@ -192,7 +192,7 @@ export function AiImageLayer({
     // Solo band: at opening/integration quiet (<0.35) exactly ONE image
     // holds the frame — the crisp asymmetric negative-space moment
     // (Karel 2026-09-28 design principle).
-    const cap = t < 0.35 ? 1 : t < 0.6 ? 2 : t < 0.85 ? 3 : 4;
+    const cap = t < 0.4 ? 1 : t < 0.6 ? 2 : t < 0.85 ? 3 : 4; // solo band widened 2026-09-28
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
@@ -1179,7 +1179,7 @@ export function AiImageLayer({
   const aiLayerOpacity = aiOnly
     ? undefined
     : videoSpotlight
-      ? Math.max(baseAiOpacity, 0.8)
+      ? Math.max(baseAiOpacity, 0.62)
       : baseAiOpacity;
 
   return (
@@ -1191,7 +1191,7 @@ export function AiImageLayer({
       style={
         aiOnly
           ? { zIndex: 2, pointerEvents: "none" }
-          : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 1800ms ease-in-out", pointerEvents: "none" }
+          : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out", pointerEvents: "none" }
       }
     />
   );
