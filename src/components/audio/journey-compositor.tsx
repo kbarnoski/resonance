@@ -183,6 +183,11 @@ export function JourneyCompositor({
   const bassHitReset = impulse <= 0.1 || evtType !== "bass_hit";
   useEffect(() => {
     if (bassHitRising && !inBassHitRef.current) {
+      // Conductor (Karel 2026-09-28: Ghost should "start minimal and
+      // simple and build up... and reduce simpler as it concludes"):
+      // flashes belong to the build and climax. Quiet stretches let a
+      // bass hit pass without the white flash / angel apparition.
+      if ((frame?.intensityMultiplier ?? 1) < 0.55) return;
       bassHitCountRef.current += 1;
       bassHitStartRef.current = performance.now();
       inBassHitRef.current = true;

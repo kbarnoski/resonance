@@ -148,6 +148,7 @@ export function DepthParallaxLayer({
   const [glEpoch, setGlEpoch] = useState(0);
   const intensityRef = useRef(intensity);
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
+  const camAmpRef = useRef(0);
 
   useEffect(() => {
     if (!covered || getDeviceTier() !== "high") return;
@@ -198,6 +199,7 @@ export function DepthParallaxLayer({
     let slotA: Slot | null = null;
     let slotB: Slot | null = null;
     let mixStart = 0;
+    let lastAmpMs = 0;
     const MIX_MS = 2600;
     let disposed = false;
     let loadSeq = 0;
@@ -221,8 +223,16 @@ export function DepthParallaxLayer({
       const t = (now - t0) / 1000;
       // Conductor: the drift-through-the-picture is MOTION — the quiet
       // base holds still, the build gets a whisper, the climax drifts.
+      // EASED, not stepped (Karel 2026-09-28: big images visibly jumped
+      // when intensity crossed a band — the amp step displaced the
+      // whole full-bleed base in one frame). ~2s time constant.
+      const nowMs = performance.now();
+      const dt = Math.min((nowMs - (lastAmpMs || nowMs)) / 1000, 0.1);
+      lastAmpMs = nowMs;
       const ti = intensityRef.current;
-      const camAmp = ti < 0.6 ? 0 : ti < 0.85 ? 0.35 : 1;
+      const targetAmp = ti < 0.6 ? 0 : ti < 0.85 ? 0.35 : 1;
+      camAmpRef.current += (targetAmp - camAmpRef.current) * (1 - Math.exp(-dt / 2));
+      const camAmp = camAmpRef.current;
       const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
       const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016 * camAmp;
       const m = Math.min(1, (now - mixStart) / MIX_MS);
@@ -299,6 +309,7 @@ export function DepthParallaxLayer({
         zIndex: 2,
         mixBlendMode: "screen",
         opacity: Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55)),
+        transition: "opacity 1200ms ease-out",
       }}
     />
   );
