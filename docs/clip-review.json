@@ -38,5 +38,49 @@
  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9/0": {
   "verdict": "bad",
   "at": "2026-09-28T19:27:10.879Z"
+ },
+ "first-snow/0": {
+  "verdict": "bad",
+  "at": "2026-09-28T19:40:41.989Z"
+ },
+ "first-snow/1": {
+  "verdict": "good",
+  "at": "2026-09-28T19:40:53.993Z"
+ },
+ "first-snow/2": {
+  "verdict": "bad",
+  "at": "2026-09-28T19:41:00.379Z"
+ },
+ "first-snow/3": {
+  "verdict": "bad",
+  "at": "2026-09-28T19:41:07.324Z"
+ },
+ "first-snow/4": {
+  "verdict": "bad",
+  "at": "2026-09-28T19:41:13.440Z"
+ },
+ "first-snow/5": {
+  "verdict": "bad",
+  "at": "2026-09-28T19:41:19.276Z"
+ },
+ "first-snow/t0": {
+  "verdict": "good",
+  "at": "2026-09-28T19:41:25.965Z"
+ },
+ "first-snow/t1": {
+  "verdict": "good",
+  "at": "2026-09-28T19:41:32.225Z"
+ },
+ "first-snow/t2": {
+  "verdict": "good",
+  "at": "2026-09-28T19:41:38.173Z"
+ },
+ "first-snow/t3": {
+  "verdict": "good",
+  "at": "2026-09-28T19:41:44.624Z"
+ },
+ "first-snow/t4": {
+  "verdict": "good",
+  "at": "2026-09-28T19:41:55.935Z"
  }
 }
