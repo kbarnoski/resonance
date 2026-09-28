@@ -35,7 +35,7 @@ jobs:
     name: ${{ matrix.label }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install Node.js
         uses: actions/setup-node@v4

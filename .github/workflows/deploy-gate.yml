@@ -36,7 +36,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v4
         with:
@@ -81,7 +81,7 @@ jobs:
     # or ambiguous deploys both. Verify (lint+typecheck+tests) always
     # covers the whole repo either way.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
