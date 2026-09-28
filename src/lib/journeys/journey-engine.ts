@@ -154,6 +154,21 @@ class JourneyEngine {
    *  drops framerate into the teens. The shader still runs happily as primary. */
   private static readonly NEVER_DUAL_PRIMARIES = new Set<string>(["thermal"]);
 
+  /** ─── Composition conductor (2026-09-27, Karel/Johnny/Joseph review) ───
+   *  The authored per-phase intensity arc (0.4 → 1.0 → 0.3) must shape HOW
+   *  MUCH is on screen, not just three post-processing alphas. Layer count
+   *  now follows the music: threshold/integration run a single shader,
+   *  the dual layer joins in the build, and the tertiary layer is reserved
+   *  for the climax. Interpolated intensity + hysteresis, so layers engage
+   *  and release smoothly across phase crossfades (the renderer's existing
+   *  dual fade handles the visual transition — same path as
+   *  NEVER_DUAL_PRIMARIES). */
+  private static readonly DUAL_ON_INTENSITY = 0.6;
+  private static readonly DUAL_OFF_INTENSITY = 0.5;
+  private static readonly TERTIARY_MIN_INTENSITY = 0.8;
+  /** Hysteresis state: whether the dual layer is currently permitted. */
+  private dualAllowed = false;
+
   /** Shaders that have already appeared (as primary or dual) in the current journey —
    *  used for journey-wide uniqueness: picks prefer unused modes first, fall back if exhausted. */
   private seenShaders = new Set<string>();
@@ -284,6 +299,7 @@ class JourneyEngine {
     this.dualShaderMode = null;
     this.tertiaryShaderMode = null;
     this.dualShaderInitialized = false;
+    this.dualAllowed = false;
     this.tertiaryActive = false;
     this.tertiaryMoments = [];
     this.tertiaryPicks.clear();
@@ -489,17 +505,27 @@ class JourneyEngine {
       this.graceActive = false;
     }
 
+    // ─── Composition conductor: interpolated intensity drives layer count ───
+    const rawIntensity = interpolateValue(phases, phaseIndex, nextPhaseIndex, blend, (p) => p.intensityMultiplier);
+    const conductorIntensity = Number.isFinite(rawIntensity) ? rawIntensity : 1;
+    if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
+    else if (this.dualAllowed && conductorIntensity < JourneyEngine.DUAL_OFF_INTENSITY) this.dualAllowed = false;
+
     // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
     if (shaderLen > 1 && !this.frozen && !this.playbackPaused && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
+      // BOTH passes exclude whatever is live on the dual/tertiary layers —
+      // the same shader must never render on two layers at once (2026-09-27
+      // review: "the same shader appeared multiple times within Realized").
       let picked = false;
       for (let pass = 0; pass < 2 && !picked; pass++) {
         for (let attempt = 0; attempt < shaderLen; attempt++) {
           this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
           const candidate = currentPhase.shaderModes[this.currentShaderIndex];
           if (!this.isShaderAllowed(candidate)) continue;
+          if (candidate === this.dualShaderMode || candidate === this.tertiaryShaderMode) continue;
           if (pass === 0 && this.seenShaders.has(candidate)) continue;
           this.currentShaderMode = candidate;
           this.seenShaders.add(candidate);
@@ -527,7 +553,9 @@ class JourneyEngine {
     // Switches on its own timer, independent of primary. Prefers Geometry shaders.
     // The visualizer's existing fade-in/out handles the visual transition.
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
-    const primaryBansDual = JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode);
+    // The conductor also holds the dual back while the music is quiet
+    // (threshold / return / integration): a second layer is earned by the build.
+    const primaryBansDual = JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed;
     if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
@@ -571,14 +599,30 @@ class JourneyEngine {
       const m = this.tertiaryMoments[i];
       if (clamped >= m.startProgress && clamped <= m.endProgress) {
         inTertiaryMoment = true;
+        // Conductor: the third layer belongs to the climax. A moment that
+        // falls in a quiet stretch simply doesn't fire — threshold and
+        // integration stay spare instead of "always max layers".
+        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY) break;
         if (!this.tertiaryActive && !this.frozen) {
-          const tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
+          let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
-          this.tertiaryShaderMode = tertiaryCandidate && this.isShaderAllowed(tertiaryCandidate)
-            ? tertiaryCandidate
-            : null;
+          if (tertiaryCandidate && !this.isShaderAllowed(tertiaryCandidate)) tertiaryCandidate = null;
+          // Cross-layer exclusion: never mirror the live primary or dual.
+          // The precomputed pick was chosen blind at journey start; resolve
+          // collisions here against what is actually on screen right now.
+          if (tertiaryCandidate === this.currentShaderMode || tertiaryCandidate === this.dualShaderMode) {
+            const alternates = currentPhase.shaderModes.filter(
+              (m2) => !MODES_3D.has(m2) && this.isShaderAllowed(m2)
+                && m2 !== this.currentShaderMode && m2 !== this.dualShaderMode,
+            );
+            tertiaryCandidate = alternates.length > 0
+              ? alternates[Math.floor(this.random() * alternates.length)]
+              : null; // no collision-free option — sit this moment out
+          }
+          this.tertiaryShaderMode = tertiaryCandidate;
           this.tertiaryActive = true;
           if (this.tertiaryShaderMode) {
+            this.seenShaders.add(this.tertiaryShaderMode);
             this.shaderHistory.push({
               mode: this.tertiaryShaderMode,
               role: "tertiary",
@@ -826,6 +870,17 @@ class JourneyEngine {
     const firstPhase = this.journey.phases[0];
     if (firstPhase.shaderModes.length < 2) return;
 
+    // Conductor: threshold opens with a single voice. If the first phase's
+    // authored intensity sits below the dual threshold, start without a
+    // second layer — it engages when the build crosses DUAL_ON_INTENSITY.
+    const firstIntensity = Number.isFinite(firstPhase.intensityMultiplier) ? firstPhase.intensityMultiplier : 1;
+    if (firstIntensity < JourneyEngine.DUAL_ON_INTENSITY) {
+      this.dualShaderMode = null;
+      this.dualShaderInitialized = true;
+      return;
+    }
+    this.dualAllowed = true;
+
     // If the first primary bans duals, start without one — it will engage when primary rotates
     if (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode)) {
       this.dualShaderMode = null;
@@ -890,11 +945,15 @@ class JourneyEngine {
 
   private pickDualShader(phase: JourneyPhase): string {
     const candidates = phase.shaderModes.filter(
-      m => m !== this.currentShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m)
+      m => m !== this.currentShaderMode && m !== this.tertiaryShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m)
     );
     if (candidates.length === 0) {
-      // Fallback: skip preference filter — better to show something than nothing
-      const fallback = phase.shaderModes.filter(m => !MODES_3D.has(m))[0] ?? phase.shaderModes[0] ?? "cosmos";
+      // Fallback: drop the preference filters, but still refuse to mirror
+      // the live primary — a duplicated layer reads as a glitch (2026-09-27
+      // review). Only when the phase genuinely has no second option does
+      // the primary repeat.
+      const nonPrimary = phase.shaderModes.filter(m => !MODES_3D.has(m) && m !== this.currentShaderMode);
+      const fallback = nonPrimary[0] ?? phase.shaderModes.filter(m => !MODES_3D.has(m))[0] ?? phase.shaderModes[0] ?? "cosmos";
       return fallback;
     }
 
