@@ -337,6 +337,7 @@ class JourneyEngine {
     this.tertiaryShaderMode = null;
     this.dualShaderInitialized = false;
     this.dualAllowed = false;
+    this.lastAnySwitchMs = 0; // must reset — a stale value blocks all switch spacing (singleton engine)
     this.tertiaryActive = false;
     this.tertiaryMoments = [];
     this.tertiaryPicks.clear();
