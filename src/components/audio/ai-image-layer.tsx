@@ -195,6 +195,21 @@ export function AiImageLayer({
     const cap = t < 0.35 ? 1 : t < 0.6 ? 2 : t < 0.85 ? 3 : 4;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
+  // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
+  // lot of great detail gets lost... because of effects"): while a
+  // living clip is playing, the imagery canvas eases up toward 0.8 so
+  // the film reads clearly through the shader wash, then settles back.
+  // Hooks live up here with the rest (rules-of-hooks).
+  const [videoSpotlight, setVideoSpotlight] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => {
+      const active = layersRef.current.some(
+        (l) => !("complete" in l.img) && l.state !== "fading-out" && !(l.img as HTMLVideoElement).ended,
+      );
+      setVideoSpotlight((prev) => (prev === active ? prev : active));
+    }, 500);
+    return () => clearInterval(id);
+  }, []);
   const [packUrls, setPackUrls] = useState<string[] | null>(null);
   // ── Living video loops (Wave 2 pilot) ──
   // /tramokyo-pack/local-clips.json maps journeyId → { phaseIdx: clipUrl }.
@@ -1150,21 +1165,6 @@ export function AiImageLayer({
   // AI layer opacity: inverse of shader opacity, clamped for visual balance.
   // When shaderOpacity is high (0.7+), AI is subtle. When low (0.3-0.5), AI is prominent.
   // For non-journey usage (shaderOpacity=1.0), defaults to 0.85 for backwards compat.
-  // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
-  // lot of great detail gets lost... because of effects"): while a
-  // living clip is playing, the imagery canvas eases up toward 0.8 so
-  // the film reads clearly through the shader wash, then settles back.
-  const [videoSpotlight, setVideoSpotlight] = useState(false);
-  useEffect(() => {
-    const id = setInterval(() => {
-      const active = layersRef.current.some(
-        (l) => !("complete" in l.img) && l.state !== "fading-out" && !(l.img as HTMLVideoElement).ended,
-      );
-      setVideoSpotlight((prev) => (prev === active ? prev : active));
-    }, 500);
-    return () => clearInterval(id);
-  }, []);
-
   const baseAiOpacity = shaderOpacity >= 1.0
     ? 0.85
     : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
