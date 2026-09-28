@@ -218,6 +218,7 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 /** Per-realm shader blocklist — these modes are excluded for that realm */
 /** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
+  "r3-coralpulse", // Karel 2026-09-28: "not use that pulsing shader in our journeys"
   "snow", // only appropriate for winter/snowflake or user-created journeys
   "rain", // only appropriate for water-related realms (ocean, storm)
   // Too subtle / invisible over journey imagery
@@ -2132,9 +2133,9 @@ export function regenerateJourneyShaders(
   // triples the budget, pulling from the full shader pool.
   const durationScale = Math.max(1, trackDuration / 300);
   const baseBudgets: Record<string, number> = {
-    threshold: 5, expansion: 6, transcendence: 6,
+    threshold: 6, expansion: 6, transcendence: 7,
     illumination: 5, return: 4, integration: 4,
-  };
+  }; // +2 total 2026-09-28 — Karel: "snowflake needed another 2 for variety without overdoing it"
   const phaseBudgets: Record<string, number> = {};
   for (const [phase, base] of Object.entries(baseBudgets)) {
     phaseBudgets[phase] = Math.ceil(base * durationScale);

@@ -151,6 +151,14 @@ export function DepthParallaxLayer({
   const intensityRef = useRef(intensity);
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
   const camAmpRef = useRef(0);
+  const crossJourneyMixRef = useRef(false);
+  const prevJourneyRef = useRef(journeyId);
+  useEffect(() => {
+    if (journeyId !== prevJourneyRef.current) {
+      prevJourneyRef.current = journeyId;
+      crossJourneyMixRef.current = true; // next still = the new journey's base
+    }
+  }, [journeyId]);
 
   useEffect(() => {
     if (!covered || getDeviceTier() !== "high") return;
@@ -203,6 +211,13 @@ export function DepthParallaxLayer({
     let mixStart = 0;
     let lastAmpMs = 0;
     const MIX_MS = 2600;
+    // First mix after a journey change gets the long treatment — the
+    // new journey's base can be radically brighter (Realized's ember
+    // corner over Snowflake's ice) and 2.6s reads as a pop at the
+    // boundary (Karel 2026-09-28: "lower right had a quick increase in
+    // brightness"). 6.5s matches the imagery boundary fades.
+    const MIX_MS_LONG = 6500;
+    let mixDur = MIX_MS;
     let disposed = false;
     let loadSeq = 0;
     let raf = 0;
@@ -237,7 +252,7 @@ export function DepthParallaxLayer({
       const camAmp = camAmpRef.current;
       const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
       const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016 * camAmp;
-      const m = Math.min(1, (now - mixStart) / MIX_MS);
+      const m = Math.min(1, (now - mixStart) / mixDur);
 
       gl.useProgram(prog);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, slotA.img); gl.uniform1i(u.imgA, 0);
@@ -274,9 +289,12 @@ export function DepthParallaxLayer({
           // First still seeds BOTH slots — one image is enough to draw.
           slotA = incoming;
           slotB = incoming;
+          mixDur = MIX_MS;
           mixStart = performance.now() - MIX_MS;
         } else {
-          glitchRecord("parallax-mix");
+          mixDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
+          crossJourneyMixRef.current = false;
+          glitchRecord("parallax-mix", mixDur === MIX_MS_LONG ? "long-cross-journey" : undefined);
           const retiring = slotA;
           slotA = slotB;
           slotB = incoming;
