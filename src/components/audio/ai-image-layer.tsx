@@ -962,7 +962,7 @@ export function AiImageLayer({
       // Conductor: quiet phases breathe slower — fewer arrivals, longer
       // holds; the climax keeps the full cadence (Karel 2026-09-28).
       const t = intensityRef.current;
-      const paceMul = t < 0.5 ? 1.8 : t < 0.8 ? 1.3 : 1;
+      const paceMul = t < 0.5 ? 1.4 : t < 0.8 ? 1.15 : 1; // eased 2026-09-28 — Karel: an image 'hung out for a long time'; balance static vs overwhelm
       nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul;
       triggerGeneration(true); // always skip cache for ongoing gens
     };

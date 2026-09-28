@@ -27,32 +27,12 @@ interface FlashAngelProps {
  */
 export const FlashAngel = memo(function FlashAngel({ opacity, blurPx, variant }: FlashAngelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [src, setSrc] = useState<string>("/images/flash-angel-1.png");
-
-  useEffect(() => {
-    const cached = getGhostFlashUrl(variant);
-    if (cached) {
-      setSrc(cached);
-      return;
-    }
-    let cancelled = false;
-    let tries = 0;
-    const id = setInterval(() => {
-      if (cancelled) return;
-      tries++;
-      const url = getGhostFlashUrl(variant);
-      if (url) {
-        setSrc(url);
-        clearInterval(id);
-      } else if (tries > 10) {
-        clearInterval(id);
-      }
-    }, 500);
-    return () => {
-      cancelled = true;
-      clearInterval(id);
-    };
-  }, [variant]);
+  // ONE image per flash (Karel 2026-09-28: the second flash showed two
+  // different angels in quick succession — the old code mounted with
+  // the fallback and then swapped in the cached image mid-flash via a
+  // 500ms poll). The src is resolved exactly once per mount: cached
+  // image if it's ready, the fallback for this whole flash if not.
+  const [src] = useState<string>(() => getGhostFlashUrl(variant) ?? "/images/flash-angel-1.png");
 
   useEffect(() => {
     const canvas = canvasRef.current;
