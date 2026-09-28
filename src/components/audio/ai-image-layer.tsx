@@ -637,15 +637,23 @@ export function AiImageLayer({
             : undefined;
           if (travel) pendingMorphRef.current = { forPhase: phaseIdx, url: travel };
         }
-        // Morph first (retried across ticks if a video was busy — #22),
-        // hero only when nothing video is pending or playing.
+        // Morph first (retried across ticks if a video was busy — #22).
+        // HERO CLIPS DISABLED (Karel 2026-09-28: "i do not want you to
+        // use any hero movies... they dont meet my quality bar" — wan's
+        // open-ended animation judders even without the 4.83s seam,
+        // while Kling's still-to-still morphs are inherently smooth).
+        // Journeys are crisp stills; the morphs are the only living
+        // video, exactly at phase transitions where motion belongs.
+        // Flip HEROES_ENABLED if a better generator earns its way back
+        // (sample-before-batch law applies).
+        const HEROES_ENABLED = false;
         const morph = pendingMorphRef.current;
         if (morph && morph.forPhase === phaseIdx && !busyNow()) {
           pendingMorphRef.current = null;
           pushVideoUrl(morph.url);
         } else if (!morph || morph.forPhase !== phaseIdx) {
           if (morph) pendingMorphRef.current = null; // phase moved on — drop stale morph
-          const heroUrl = pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string });
+          const heroUrl = HEROES_ENABLED ? pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string }) : undefined;
           if (heroUrl && phaseIdx >= 0 && heroPushedForRef.current !== phaseIdx && !busyNow()) {
             heroPushedForRef.current = phaseIdx;
             pushVideoUrl(heroUrl, () => { if (heroPushedForRef.current === phaseIdx) heroPushedForRef.current = -1; });
