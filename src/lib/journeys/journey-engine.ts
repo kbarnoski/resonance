@@ -1,4 +1,5 @@
 import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers } from "./types";
+import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { regenerateJourneyShaders } from "./journeys";
@@ -565,9 +566,11 @@ class JourneyEngine {
     conducted *= breath;
     // Stillness windows: a held, sparse, crisp moment — one static
     // image, one shader. The rotation below also holds during these.
+    let inStillnessWindow = false;
     for (const m of this.stillnessMoments) {
       if (clamped >= m.startProgress && clamped <= m.endProgress) {
         conducted = Math.min(conducted, JourneyEngine.STILLNESS_LEVEL);
+        inStillnessWindow = true;
         break;
       }
     }
@@ -583,7 +586,15 @@ class JourneyEngine {
     // dropped" right before the next journey): no new shader layers in
     // the final 4% — anything born there dies at the boundary.
     const endFreeze = clamped > 0.96;
-    const inStillness = conductorIntensity <= JourneyEngine.STILLNESS_LEVEL + 0.02;
+    // Stillness means a SCHEDULED window, not merely low intensity. The
+    // old level-based test (conducted <= 0.32) fired at the start of
+    // EVERY journey — the opening ramp caps intensity at exactly 0.3 —
+    // so every boundary logged a phantom enter/exit and the exit hook
+    // forced a fresh shader ~3s later, planting a compile + crossfade
+    // directly under the title card (z2wg4u: dark-tide @186.8s = the
+    // "brightness glitch as Realized titling came in"). Breath valleys
+    // triggered the same whipsaw mid-journey.
+    const inStillness = inStillnessWindow;
     if (inStillness && !this.wasInStillness) glitchRecord("stillness-enter", `@p${clamped.toFixed(3)}`);
     if (this.wasInStillness && !inStillness) {
       glitchRecord("stillness-exit", `@p${clamped.toFixed(3)}`);
@@ -592,7 +603,11 @@ class JourneyEngine {
       this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + 3000);
     }
     this.wasInStillness = inStillness;
-    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !endFreeze && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
+    // Morph quiet window: a shader compile lands invisibly on held
+    // stills but reads as a dropped frame under a playing morph — the
+    // rotation simply waits the few seconds until the clip has faded.
+    const morphOnScreen = isVideoActive();
+    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !endFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -659,7 +674,7 @@ class JourneyEngine {
         this.dualShaderMode = null;
       }
     } else if (this.dualShaderInitialized && shaderLen >= 2 && !endFreeze) {
-      if (!this.frozen && !this.playbackPaused && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
+      if (!this.frozen && !this.playbackPaused && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
         this.seenShaders.add(this.dualShaderMode);
@@ -704,7 +719,7 @@ class JourneyEngine {
         // Tertiary gets a SHORTER spacing slot (2.5s) — with primary+dual
         // averaging one switch per ~7s, a full 4s-clear window rarely
         // exists and the third layer would be starved out entirely.
-        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze || now - this.lastAnySwitchMs <= 2500) break;
+        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started

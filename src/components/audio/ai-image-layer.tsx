@@ -10,6 +10,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
+import { isVideoActive, markVideoActive } from "@/lib/journeys/video-activity";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -545,6 +546,11 @@ export function AiImageLayer({
       // is already alive plays through and hands off via the boundary
       // crossfades.
       if (progress > 0.96) return;
+      // Morph quiet window (z2wg4u: layer-evict + still-push 9ms before
+      // a 108ms frame gap while a morph eased out): still churn waits
+      // the few seconds a clip is visible — a decode stall on held
+      // stills is invisible, one under playing video is a glitch.
+      if (isVideoActive()) return;
       const journeyPhases = getJourneyEngine().getJourney()?.phases;
       // Phase mapping applies only to PACK-harvested lists (generated in
       // phase order with the tramokyo weights). Curated prop-supplied
@@ -628,11 +634,15 @@ export function AiImageLayer({
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
             activeVideoRef.current = v;
+            // Quiet window for the whole visible life of the clip:
+            // playback + the long ended-fade, plus a settle margin.
+            markVideoActive(((Number.isFinite(v.duration) && v.duration > 0 ? v.duration : 5) * 1000) + 4500);
             // Karel 2026-09-28: a snowing clip that "just comes to a
             // stop" reads as a glitch. When the video ends, ease the
             // layer out over the normal long fade instead of freezing.
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
+              markVideoActive(4000); // cover the ease-out fade
               const layer = layersRef.current.find((l) => l.img === v);
               if (layer && layer.state !== "fading-out") {
                 layer.fadeStartOpacity = layer.opacity;
