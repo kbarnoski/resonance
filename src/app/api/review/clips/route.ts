@@ -60,6 +60,9 @@ export async function GET() {
     id: jid,
     name: names.get(jid) ?? jid,
     clips: Object.entries(clips)
+      // Heroes retired (Karel 2026-09-28) — the station reviews Kling
+      // travel morphs only while wan heroes sit out of the product.
+      .filter(([key]) => key.startsWith("t"))
       .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
       .map(([key, entry]) => ({
         key,
