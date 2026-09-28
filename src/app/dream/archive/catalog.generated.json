@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18296-slowbloom",
+  "cycle": 18296,
+  "name": "Slowbloom",
+  "status": "demoable",
+  "description": "The stiller you hold your whole body, the slower TIME flows through Karel's real piano recording — with the pitch frozen, so a single chord blooms and hangs for many seconds. Whole",
+  "category": "local"
+ },
+ {
   "slug": "18272-tidewell",
   "cycle": 18272,
   "name": "Tidewell",
