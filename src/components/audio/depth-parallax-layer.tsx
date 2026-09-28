@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+import { inBoundarySettle } from "@/lib/journeys/video-activity";
 
 /**
  * Depth-parallax layer (Wave 2c; rebuilt after the 2026-09-25 audits).
@@ -208,6 +209,7 @@ export function DepthParallaxLayer({
 
     let slotA: Slot | null = null;
     let slotB: Slot | null = null;
+    let pendingStill: Slot | null = null;
     let mixStart = 0;
     let lastAmpMs = 0;
     const MIX_MS = 2600;
@@ -252,6 +254,20 @@ export function DepthParallaxLayer({
       const camAmp = camAmpRef.current;
       const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
       const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016 * camAmp;
+      if (pendingStill && !inBoundarySettle()) {
+        mixDur = MIX_MS_LONG;
+        crossJourneyMixRef.current = false;
+        glitchRecord("parallax-mix", "post-settle");
+        const retiring = slotA;
+        slotA = slotB;
+        slotB = pendingStill;
+        pendingStill = null;
+        if (retiring !== slotA && retiring !== slotB) {
+          gl.deleteTexture(retiring.img);
+          gl.deleteTexture(retiring.depth);
+        }
+        mixStart = performance.now();
+      }
       const m = Math.min(1, (now - mixStart) / mixDur);
 
       gl.useProgram(prog);
@@ -291,6 +307,17 @@ export function DepthParallaxLayer({
           slotB = incoming;
           mixDur = MIX_MS;
           mixStart = performance.now() - MIX_MS;
+        } else if (inBoundarySettle()) {
+          // Boundary freeze protocol: the base HOLDS the outgoing
+          // journey's still through the title seconds. The incoming
+          // still waits (latest wins) and mixes in — slowly — only
+          // after the settle window closes (see render loop).
+          if (pendingStill) {
+            gl.deleteTexture(pendingStill.img);
+            gl.deleteTexture(pendingStill.depth);
+          }
+          pendingStill = incoming;
+          glitchRecord("parallax-hold", "boundary-settle");
         } else {
           mixDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
           crossJourneyMixRef.current = false;
@@ -315,6 +342,11 @@ export function DepthParallaxLayer({
       ro.disconnect();
       window.removeEventListener("resonance:pack-still", onStill);
       canvas.removeEventListener("webglcontextlost", onCtxLost);
+      if (pendingStill) {
+        gl.deleteTexture(pendingStill.img);
+        gl.deleteTexture(pendingStill.depth);
+        pendingStill = null;
+      }
       const ext = gl.getExtension("WEBGL_lose_context");
       ext?.loseContext();
     };

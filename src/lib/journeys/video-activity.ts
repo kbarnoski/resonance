@@ -35,4 +35,31 @@ export function isVideoActive(): boolean {
 /** Test hook — clears the window. */
 export function resetVideoActivity(): void {
   activeUntilMs = 0;
+  boundaryUntilMs = 0;
+}
+
+/**
+ * Boundary settle window (Karel 2026-09-28: "the transition remains a
+ * big problem" — after months of fixing individual boundary movers,
+ * the design changes: during the handoff NOTHING moves at once).
+ *
+ * At a journey change, four transitions used to fire within 300ms of
+ * each other: every old still flips to fading, the parallax base
+ * starts its cross-journey mix, the incoming journey's first shader
+ * compiles + crossfades, and post-processing glides to the new palette
+ * on a fast 1.5s curve. Individually gentle; stacked in one instant
+ * they read as flicker. This window staggers them: while it is open
+ * (the title-card seconds), the parallax HOLDS its old base, post-
+ * processing slows its glide ~4x, and no clips play. The old stills'
+ * 8s boundary fade and the title's compositor-threaded text fade are
+ * the only movers.
+ */
+let boundaryUntilMs = 0;
+
+export function markJourneyBoundary(settleMs: number): void {
+  boundaryUntilMs = Math.max(boundaryUntilMs, nowMs() + settleMs);
+}
+
+export function inBoundarySettle(): boolean {
+  return nowMs() < boundaryUntilMs;
 }

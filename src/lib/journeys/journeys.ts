@@ -219,6 +219,7 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 /** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "r3-coralpulse", // Karel 2026-09-28: "not use that pulsing shader in our journeys"
+  "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
   "snow", // only appropriate for winter/snowflake or user-created journeys
   "rain", // only appropriate for water-related realms (ocean, storm)
   // Too subtle / invisible over journey imagery

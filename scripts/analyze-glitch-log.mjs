@@ -31,7 +31,12 @@ for (const [sid, es] of sessions) {
   console.log(`\n════ session ${sid} — ${es.length} events, ${es[0].wall} → ${es[es.length - 1].wall} ════`);
 
   const gaps = es.filter((e) => e.type === "FRAME-GAP");
-  console.log(`dropped-frame events: ${gaps.length}`);
+  const micro = es.filter((e) => e.type === "microgap");
+  console.log(`dropped-frame events: ${gaps.length} (+ ${micro.length} micro-gaps 50-80ms)`);
+  for (const g of micro) {
+    const causes = es.filter((e) => e !== g && g.t - e.t >= 0 && g.t - e.t <= 1500 && e.type !== "FRAME-GAP" && e.type !== "microgap");
+    if (causes.length) console.log(`  ~${sec(g)}s  micro ${g.detail}  ← ${causes.map((c) => `${c.type}${c.detail ? `(${c.detail})` : ""}`).join(", ")}`);
+  }
   for (const g of gaps) {
     const causes = es.filter((e) => e !== g && g.t - e.t >= 0 && g.t - e.t <= 1500 && e.type !== "FRAME-GAP");
     const cs = causes.map((c) => `${c.type}${c.detail ? `(${c.detail})` : ""} -${g.t - c.t}ms`).join(", ") || "no event in prior 1.5s (external stall?)";

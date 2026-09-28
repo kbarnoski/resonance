@@ -10,7 +10,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
-import { isVideoActive, markVideoActive } from "@/lib/journeys/video-activity";
+import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle } from "@/lib/journeys/video-activity";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -328,6 +328,9 @@ export function AiImageLayer({
       pendingMorphRef.current = null;
       glitchRecord("journey-change", `${prevJourneyId ?? "-"} -> ${journeyId}`);
       glitchFlush("journey-change");
+      // Boundary freeze protocol: open the settle window for the title
+      // seconds — parallax holds, post glides slowly, no clips.
+      if (prevJourneyId != null) markJourneyBoundary(10500);
       journeyEpochRef.current++;
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -596,7 +599,11 @@ export function AiImageLayer({
       // already reads journeyIdRef; clips must too.
       const clipJourneyId = journeyIdRef.current;
       const clips = clipJourneyId ? clipsRef.current?.[clipJourneyId] : null;
-      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
+      // No morphs in the journey's final act (Karel 2026-09-28: the
+      // p0.93 morph "comes in and then sits and is kind of a blob") —
+      // the ending belongs to held stills easing toward the boundary.
+      // And none during the boundary settle window after a handoff.
+      if (clips && journeyPhases && progress >= 0 && progress <= 0.85 && !inBoundarySettle() && getTierProfile().maxAiLayers >= 8) {
         // (2026-09-28b: the >=0.5 intensity gate here was meant for hero
         // clips — now disabled entirely — but also delayed early travel
         // morphs. Morphs are phase transitions; they always play.)
@@ -633,6 +640,7 @@ export function AiImageLayer({
             if (pendingVideoRef.current === v) pendingVideoRef.current = null;
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
+            glitchRecord("clip", url.split("/").pop() ?? url);
             activeVideoRef.current = v;
             // Quiet window for the whole visible life of the clip:
             // playback + the long ended-fade, plus a settle margin.

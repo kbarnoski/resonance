@@ -1,5 +1,7 @@
 "use client";
 
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+
 import { useEffect, useRef, useCallback } from "react";
 import { getTierProfile } from "@/lib/audio/device-tier";
 

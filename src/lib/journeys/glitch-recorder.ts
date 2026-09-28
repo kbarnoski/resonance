@@ -74,11 +74,15 @@ function startMonitors(): void {
       last = now;
       // >80ms between frames = at least 4 dropped frames at 60Hz —
       // a gap a viewer can see on moving content.
-      if (gap > 80) {
+      // >80ms = FRAME-GAP (4+ dropped frames, viewer-visible on motion).
+      // 50-80ms = micro-gap: logged for forensics — Karel has spotted
+      // flickers in sessions with zero 80ms gaps, so the recorder must
+      // see below its old floor.
+      if (gap > 50) {
         buffer.push({
           t: Math.round(now),
           wall: new Date().toISOString().slice(11, 23),
-          type: "FRAME-GAP",
+          type: gap > 80 ? "FRAME-GAP" : "microgap",
           detail: `${Math.round(gap)}ms`,
         });
       }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
+import { inBoundarySettle } from "@/lib/journeys/video-activity";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 
@@ -65,13 +66,18 @@ if (process.env.NODE_ENV !== "production") {
 /** Consistent ~2.5s crossfade for all shader transitions. Time-based
  *  (delta-time per rAF tick) so the duration holds on 30–120Hz displays. */
 const SHADER_FADE_DURATION_MS = 2500;
+/** During the boundary settle window the incoming journey's first
+ *  shader eases in much slower — a 2.5s background change under the
+ *  title card was one of the stacked movers reading as boundary
+ *  flicker (Karel 2026-09-28). */
+const BOUNDARY_SHADER_FADE_MS = 6000;
 const DUAL_SHADER_MAX_OPACITY = 0.85;
 const TERTIARY_SHADER_MAX_OPACITY = 0.60;
 
 /** Advance a crossfade progress value by real elapsed time. Clamps large
  *  gaps (background tab, hitchy frame) so fades never visibly jump. */
 function advanceFade(progress: number, elapsedMs: number): number {
-  return Math.min(1, progress + Math.min(elapsedMs, 100) / SHADER_FADE_DURATION_MS);
+  return Math.min(1, progress + Math.min(elapsedMs, 100) / (inBoundarySettle() ? BOUNDARY_SHADER_FADE_MS : SHADER_FADE_DURATION_MS));
 }
 
 /** Pick a deterministic backdrop shader for an AI mode */

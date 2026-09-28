@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { getDeviceTier } from "@/lib/audio/device-tier";
+import { inBoundarySettle } from "@/lib/journeys/video-activity";
 
 /** Expand 3-char hex (#RGB) to 6-char (#RRGGBB) so alpha bytes can be appended */
 function hex6(color: string): string {
@@ -132,7 +133,10 @@ export function PostProcessingLayer({
       // smoothRef note above. `pp` keeps the same shape the rest of
       // the draw loop expects; palette passes through untouched.
       {
-        const k = 1 - Math.exp(-dt / 1.5);
+        // Boundary settle: the new journey's palette/brightness params
+        // glide in over ~6s instead of 1.5s — a fast post shift under
+        // the title reads as a "brightness change of sorts".
+        const k = 1 - Math.exp(-dt / (inBoundarySettle() ? 6 : 1.5));
         const sm = smoothRef.current;
         sm.vignette += (raw.vignette - sm.vignette) * k;
         sm.bloomIntensity += (raw.bloomIntensity - sm.bloomIntensity) * k;
