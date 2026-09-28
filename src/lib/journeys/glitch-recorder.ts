@@ -58,6 +58,13 @@ function startMonitors(): void {
   if (!uploaderStarted) {
     uploaderStarted = true;
     setInterval(() => void upload("interval"), 20_000);
+    // Short sessions must not vanish (a 60s viewing killed by a server
+    // restart lost its evidence, 2026-09-28): flush on hide/unload too.
+    // fetch keepalive lets the request outlive the page.
+    window.addEventListener("pagehide", () => void upload("pagehide"));
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") void upload("hidden");
+    });
   }
   if (!rafMonitorStarted) {
     rafMonitorStarted = true;
