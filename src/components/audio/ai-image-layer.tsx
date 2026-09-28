@@ -13,6 +13,12 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 interface AiImageLayerProps {
   /** AI prompt for image generation */
   prompt: string;
+  /** Composition conductor (Karel 2026-09-28 review — "too busy, all the
+   *  highest layering all of the time"): the journey's interpolated
+   *  phase intensity (0-1). Drives how many image layers may coexist,
+   *  how fast new ones arrive, and how much Ken Burns motion they get.
+   *  Quiet phases = fewer, stiller images; the climax earns the rest. */
+  intensity?: number;
   /** Denoising strength (0-1) — higher = more visual transformation */
   denoisingStrength: number;
   /** Target generation FPS */
@@ -172,7 +178,20 @@ export function AiImageLayer({
   journeyId,
   onImageReady,
   localImageUrls,
+  intensity = 1,
 }: AiImageLayerProps) {
+  // Conductor state — ref so the RAF/interval closures always see the
+  // live phase intensity without rebuilding.
+  const intensityRef = useRef(intensity);
+  useEffect(() => { intensityRef.current = intensity; }, [intensity]);
+  /** How many image layers the current musical moment supports. The old
+   *  behavior (tier cap always — 8 on high, 12 on installation) is what
+   *  read as "a wall of moving images" (Karel 2026-09-28). */
+  const conductedMaxLayers = useCallback(() => {
+    const t = intensityRef.current;
+    const cap = t < 0.5 ? 2 : t < 0.8 ? 3 : 5;
+    return Math.min(getTierProfile().maxAiLayers, cap);
+  }, []);
   const [packUrls, setPackUrls] = useState<string[] | null>(null);
   // ── Living video loops (Wave 2 pilot) ──
   // /tramokyo-pack/local-clips.json maps journeyId → { phaseIdx: clipUrl }.
@@ -397,7 +416,7 @@ export function AiImageLayer({
     // Only fade out the OLDEST visible layer when at capacity —
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
-    if (layers.length >= getTierProfile().maxAiLayers) {
+    if (layers.length >= conductedMaxLayers()) {
       const oldestVisible = layers.find((l) =>
         (l.state === "fading-in") ||
         (l.state === "peak" && now - l.peakStartTime >= MIN_PEAK_DURATION)
@@ -414,7 +433,7 @@ export function AiImageLayer({
     }
 
     // Hard cap: if still over limit after starting a fade, force-remove oldest fading
-    if (layers.length >= getTierProfile().maxAiLayers + 1) {
+    if (layers.length >= conductedMaxLayers() + 1) {
       const oldestFadingIdx = layers.findIndex((l) => l.state === "fading-out");
       if (oldestFadingIdx >= 0) {
         releaseMedia(layers[oldestFadingIdx].img);
@@ -426,16 +445,24 @@ export function AiImageLayer({
     // Favor source-over — screen/lighten between layers can cause additive blow-out
     const roll = Math.random();
     const blendMode: GlobalCompositeOperation = roll < 0.65 ? "source-over" : roll < 0.85 ? "screen" : "lighten";
-    // Visible cinematic travel: 10-22% scale change per layer life, alternating
-    // push-in and pull-back. Both endpoints stay ≥1.06 so cover-fit always
-    // overflows and the pan never exposes an edge.
-    const travel = 0.10 + Math.random() * 0.12; // 10-22%
+    const isVideo = !("complete" in img);
+    // Conductor (Karel 2026-09-28): motion follows the music. Quiet
+    // phases get a gentle drift, the climax gets the full cinematic
+    // move — and VIDEOS play STILL: they carry their own generated
+    // motion, and panning/scaling a playing 1080p clip both compounds
+    // the nausea and is a prime frame-stutter suspect.
+    const motionScale = isVideo ? 0 : 0.4 + 0.6 * intensityRef.current;
+    // Visible cinematic travel: up to 10-22% scale change per layer life,
+    // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
+    // so cover-fit always overflows and the pan never exposes an edge;
+    // videos render at exact cover with zero pan.
+    const travel = (0.10 + Math.random() * 0.12) * motionScale;
     const pushIn = Math.random() < 0.6; // 60% push in, 40% pull back
-    const nearScale = 1.06 + Math.random() * 0.04; // 1.06-1.10
+    const nearScale = isVideo ? 1.0 : 1.06 + Math.random() * 0.04; // 1.06-1.10
     const scaleStart = pushIn ? nearScale : nearScale + travel;
     const scaleEnd = pushIn ? nearScale + travel : nearScale;
-    const panX = (Math.random() - 0.5) * 2;        // -1 to 1
-    const panY = (Math.random() - 0.5) * 2;        // -1 to 1
+    const panX = (Math.random() - 0.5) * 2 * motionScale; // -1 to 1, conducted
+    const panY = (Math.random() - 0.5) * 2 * motionScale;
 
     layers.push({
       img,
@@ -452,7 +479,7 @@ export function AiImageLayer({
       blendMode,
     });
     return true;
-  }, [releaseMedia]);
+  }, [releaseMedia, conductedMaxLayers]);
 
   // Trigger an image generation (REST)
   // skipCache=true for periodic refreshes (same prompt, want new image)
@@ -888,7 +915,11 @@ export function AiImageLayer({
       if (now - lastGenTimeRef.current < nextInterval) return;
       genCountRef.current++;
       const tierMul = getTierProfile().aiImageIntervalMultiplier;
-      nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul;
+      // Conductor: quiet phases breathe slower — fewer arrivals, longer
+      // holds; the climax keeps the full cadence (Karel 2026-09-28).
+      const t = intensityRef.current;
+      const paceMul = t < 0.5 ? 1.8 : t < 0.8 ? 1.3 : 1;
+      nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul;
       triggerGeneration(true); // always skip cache for ongoing gens
     };
 

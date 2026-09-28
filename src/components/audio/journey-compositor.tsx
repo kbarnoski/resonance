@@ -354,6 +354,7 @@ export function JourneyCompositor({
           generating={aiGenerating}
           shaderOpacity={effectiveShaderOpacity}
           imageryScale={parallaxCovered ? 0.6 : 1}
+          intensity={frame?.intensityMultiplier ?? 1}
           promptSeed={promptSeed}
           journeyId={journeyId}
           localImageUrls={localImageUrls}

@@ -1959,13 +1959,19 @@ export function VisualizerClient({
                 className="flex flex-col items-center text-center"
                 style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw" }}
               >
+                {/* Karel 2026-09-28: the old inset:-50% scrim covered
+                    essentially the whole screen — every journey handoff
+                    read as "the screen suddenly darkens". The darker
+                    element now hugs the text (a soft local halo) and
+                    fades with the title like any other element; the
+                    3-layer text shadow carries legibility. */}
                 <div
                   style={{
                     position: "absolute",
-                    inset: "-50%",
+                    inset: "-10% -16%",
                     background:
-                      "radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.45) 30%, rgba(0,0,0,0.15) 55%, transparent 75%)",
-                    filter: "blur(48px)",
+                      "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.32) 45%, rgba(0,0,0,0.1) 70%, transparent 88%)",
+                    filter: "blur(36px)",
                     pointerEvents: "none",
                   }}
                 />

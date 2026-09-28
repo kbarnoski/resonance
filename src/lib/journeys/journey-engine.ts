@@ -165,7 +165,7 @@ class JourneyEngine {
    *  NEVER_DUAL_PRIMARIES). */
   private static readonly DUAL_ON_INTENSITY = 0.6;
   private static readonly DUAL_OFF_INTENSITY = 0.5;
-  private static readonly TERTIARY_MIN_INTENSITY = 0.8;
+  private static readonly TERTIARY_MIN_INTENSITY = 0.85; // raised 2026-09-28 — Karel: still too busy
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
