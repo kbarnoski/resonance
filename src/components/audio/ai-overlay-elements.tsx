@@ -63,18 +63,20 @@ export function AiOverlayElements({
     // 8s — matches the collage layers' boundary fade so the whole
     // image world dims as ONE slow motion, not two speeds.
     const FADE_MS = 8000;
-    for (const clone of activeClonesRef.current) {
-      const el = clone.el;
-      const styleEl = clone.styleEl;
-      // Freeze at the CURRENT animated opacity before killing the keyframe —
-      // killing the animation first snapped the element to opacity 1 for a
-      // frame (the "image drops out" pop Karel saw at every journey
-      // boundary, 2026-09-25). Capture → pin → reflow → then fade.
-      const currentOpacity = getComputedStyle(el).opacity;
-      glitchRecord("clone-purge", `pinned=${currentOpacity}`);
-      el.style.animation = "none";
-      el.style.opacity = currentOpacity;
-      void el.offsetWidth; // force reflow so the pin lands before the fade
+    // BATCHED read phase then write phase — the old per-clone
+    // capture->pin->reflow forced FIVE synchronous layouts inside the
+    // journey-change tick (part of the recorded 177ms handoff stall,
+    // session 1ebs19). One reflow total now.
+    const clones = activeClonesRef.current;
+    const pinned = clones.map((c) => getComputedStyle(c.el).opacity);
+    clones.forEach((c, i) => {
+      glitchRecord("clone-purge", `pinned=${pinned[i]}`);
+      c.el.style.animation = "none";
+      c.el.style.opacity = pinned[i];
+    });
+    if (clones.length > 0) void clones[0].el.offsetWidth; // single reflow
+    for (const c of clones) {
+      const { el, styleEl } = c;
       el.style.transition = `opacity ${FADE_MS}ms ease-out`;
       el.style.opacity = "0";
       setTimeout(() => {

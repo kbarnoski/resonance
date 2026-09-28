@@ -78,6 +78,8 @@ interface ImageLayer {
   purge?: boolean;
   /** Graceful 8s boundary fade (installation journey change) */
   boundaryFade?: boolean;
+  /** Per-layer fade-in override — settle-born layers ease in over 8s. */
+  fadeInMs?: number;
 }
 
 // Pacing — spec v3 §6: slow crossfades and long tails so images BUILD
@@ -229,6 +231,7 @@ export function AiImageLayer({
   const pendingVideoRef = useRef<HTMLVideoElement | null>(null);
   const pendingMorphRef = useRef<{ forPhase: number; url: string } | null>(null);
   const journeyEpochRef = useRef(0);
+  const journeyChangeAtRef = useRef(0);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -332,6 +335,7 @@ export function AiImageLayer({
       // seconds — parallax holds, post glides slowly, no clips.
       if (prevJourneyId != null) markJourneyBoundary(10500);
       journeyEpochRef.current++;
+      journeyChangeAtRef.current = performance.now();
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
       // Same staleness class for STILLS (2026-09-27): a 400ms gen tick can
@@ -517,6 +521,12 @@ export function AiImageLayer({
     glitchRecord(isVideo ? "layer-push-video" : "layer-push-still", `n=${layers.length + 1} motion=${motionScale.toFixed(2)}`);
     layers.push({
       img,
+      // Boundary settle: the new journey's first still must EASE in over
+      // 8s, matching the outgoing 8s fades — recorded firsthand
+      // (frames f0203-f0204, session 1ebs19): Realized's ember still
+      // popped in at the right edge on the default fade = Karel's
+      // "lower right quick increase in brightness".
+      fadeInMs: !isVideo && inBoundarySettle() ? 8000 : undefined,
       opacity: 0,
       state: "fading-in",
       fadeStartTime: now,
@@ -568,6 +578,10 @@ export function AiImageLayer({
       // upload landing within 2.5s of a shader switch stacks stalls
       // into a visible hitch on whatever is moving. The imagery yields.
       if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
+      // Handoff holdoff: the journey-change tick itself stalls ~180ms
+      // (purges + engine restart + title mount) — the first new still
+      // waits out that window so its birth isn't part of the pile-up.
+      if (performance.now() - journeyChangeAtRef.current < 1500) return;
       const journeyPhases = getJourneyEngine().getJourney()?.phases;
       // Phase mapping applies only to PACK-harvested lists (generated in
       // phase order with the tramokyo weights). Curated prop-supplied
@@ -1120,7 +1134,7 @@ export function AiImageLayer({
         const elapsed = now - layer.fadeStartTime;
 
         if (layer.state === "fading-in") {
-          const rawProgress = Math.min(1, elapsed / DISSOLVE_DURATION);
+          const rawProgress = Math.min(1, elapsed / (layer.fadeInMs ?? DISSOLVE_DURATION));
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = easedProgress;
           if (rawProgress >= 1) {
