@@ -1,0 +1,3789 @@
+{
+ "analyzedAt": "2026-09-28T19:18:32.233Z",
+ "clips": [
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-0",
+   "maxJump": 0.2887,
+   "atSec": 4.83,
+   "jumpsOver010": 24,
+   "jumpsOver006": 48
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-5",
+   "maxJump": 0.2441,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 7
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-1",
+   "maxJump": 0.2255,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-4",
+   "maxJump": 0.225,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-2",
+   "maxJump": 0.2217,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-2",
+   "maxJump": 0.2054,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 11
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-3",
+   "maxJump": 0.1998,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 34
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-3",
+   "maxJump": 0.1977,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 17
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-3",
+   "maxJump": 0.1948,
+   "atSec": 6.13,
+   "jumpsOver010": 3,
+   "jumpsOver006": 5
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-3",
+   "maxJump": 0.1892,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-2",
+   "maxJump": 0.188,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 9
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-2",
+   "maxJump": 0.1825,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 22
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-2",
+   "maxJump": 0.182,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 15
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-3",
+   "maxJump": 0.1807,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 26
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-1",
+   "maxJump": 0.1793,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-2",
+   "maxJump": 0.1776,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 12
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-2",
+   "maxJump": 0.1718,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-1",
+   "maxJump": 0.1709,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 9
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-4",
+   "maxJump": 0.1675,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 6
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-4",
+   "maxJump": 0.1654,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-1",
+   "maxJump": 0.1653,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 16
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-4",
+   "maxJump": 0.1643,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 6
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-2",
+   "maxJump": 0.1634,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 9
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-3",
+   "maxJump": 0.162,
+   "atSec": 8.57,
+   "jumpsOver010": 6,
+   "jumpsOver006": 8
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-5",
+   "maxJump": 0.1579,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 6
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-4",
+   "maxJump": 0.1545,
+   "atSec": 4.83,
+   "jumpsOver010": 3,
+   "jumpsOver006": 5
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-4",
+   "maxJump": 0.1521,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-2",
+   "maxJump": 0.1513,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 21
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-3",
+   "maxJump": 0.1502,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-2",
+   "maxJump": 0.1495,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-1",
+   "maxJump": 0.1477,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-4",
+   "maxJump": 0.1471,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-0",
+   "maxJump": 0.1467,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-0",
+   "maxJump": 0.1453,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-2",
+   "maxJump": 0.1422,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-3",
+   "maxJump": 0.1417,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-5",
+   "maxJump": 0.1405,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-3",
+   "maxJump": 0.1394,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-4",
+   "maxJump": 0.1392,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-3",
+   "maxJump": 0.1375,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-3",
+   "maxJump": 0.1366,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-4",
+   "maxJump": 0.1363,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-4",
+   "maxJump": 0.1362,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-5",
+   "maxJump": 0.1337,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-2",
+   "maxJump": 0.1325,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-2",
+   "maxJump": 0.1317,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-4",
+   "maxJump": 0.1313,
+   "atSec": 8.47,
+   "jumpsOver010": 3,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-3",
+   "maxJump": 0.1279,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-0",
+   "maxJump": 0.1273,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-2",
+   "maxJump": 0.1269,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-1",
+   "maxJump": 0.1243,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-0",
+   "maxJump": 0.1241,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-2",
+   "maxJump": 0.1235,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-0",
+   "maxJump": 0.1232,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 9
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-3",
+   "maxJump": 0.1222,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-1",
+   "maxJump": 0.1221,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-1",
+   "maxJump": 0.1219,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 5
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-3",
+   "maxJump": 0.1218,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-1",
+   "maxJump": 0.1214,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-1",
+   "maxJump": 0.1212,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-0",
+   "maxJump": 0.1201,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-1",
+   "maxJump": 0.1196,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-1",
+   "maxJump": 0.1196,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-3",
+   "maxJump": 0.1188,
+   "atSec": 4.83,
+   "jumpsOver010": 2,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-5",
+   "maxJump": 0.1185,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-2",
+   "maxJump": 0.1183,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-2",
+   "maxJump": 0.1167,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-4",
+   "maxJump": 0.1166,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-0",
+   "maxJump": 0.1166,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-0",
+   "maxJump": 0.1159,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 4
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-2",
+   "maxJump": 0.1153,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-1",
+   "maxJump": 0.1152,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-4",
+   "maxJump": 0.1148,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-3",
+   "maxJump": 0.1141,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 7
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-1",
+   "maxJump": 0.1105,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-1",
+   "maxJump": 0.1105,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 5
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-2",
+   "maxJump": 0.1084,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-0",
+   "maxJump": 0.1083,
+   "atSec": 3.93,
+   "jumpsOver010": 1,
+   "jumpsOver006": 7
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-4",
+   "maxJump": 0.1082,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-1",
+   "maxJump": 0.1074,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-4",
+   "maxJump": 0.1053,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-2",
+   "maxJump": 0.1049,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-4",
+   "maxJump": 0.1046,
+   "atSec": 0.07,
+   "jumpsOver010": 2,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-3",
+   "maxJump": 0.1038,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-5",
+   "maxJump": 0.1031,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-1",
+   "maxJump": 0.103,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-2",
+   "maxJump": 0.1028,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-3",
+   "maxJump": 0.1021,
+   "atSec": 2.1,
+   "jumpsOver010": 1,
+   "jumpsOver006": 6
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-2",
+   "maxJump": 0.1016,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-4",
+   "maxJump": 0.1012,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-2",
+   "maxJump": 0.1006,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-1",
+   "maxJump": 0.1005,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-5",
+   "maxJump": 0.1002,
+   "atSec": 4.83,
+   "jumpsOver010": 1,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-5",
+   "maxJump": 0.099,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-1",
+   "maxJump": 0.0966,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-2",
+   "maxJump": 0.0965,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-0",
+   "maxJump": 0.095,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-0",
+   "maxJump": 0.0948,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-5",
+   "maxJump": 0.0948,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-4",
+   "maxJump": 0.0947,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-3",
+   "maxJump": 0.0943,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-2",
+   "maxJump": 0.094,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-4",
+   "maxJump": 0.0936,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-3",
+   "maxJump": 0.0926,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-1",
+   "maxJump": 0.0925,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-2",
+   "maxJump": 0.0925,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-5",
+   "maxJump": 0.0923,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-4",
+   "maxJump": 0.0912,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-2",
+   "maxJump": 0.0911,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-0",
+   "maxJump": 0.0905,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-2",
+   "maxJump": 0.0897,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-0",
+   "maxJump": 0.0893,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-4",
+   "maxJump": 0.0888,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-0",
+   "maxJump": 0.0888,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-2",
+   "maxJump": 0.0877,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-0",
+   "maxJump": 0.0873,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 10
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-3",
+   "maxJump": 0.0869,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-4",
+   "maxJump": 0.0869,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-1",
+   "maxJump": 0.0852,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-2",
+   "maxJump": 0.0851,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-5",
+   "maxJump": 0.0847,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-0",
+   "maxJump": 0.0845,
+   "atSec": 6.63,
+   "jumpsOver010": 0,
+   "jumpsOver006": 22
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-1",
+   "maxJump": 0.084,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-1",
+   "maxJump": 0.0836,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-3",
+   "maxJump": 0.0831,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-1",
+   "maxJump": 0.0829,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-1",
+   "maxJump": 0.0804,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-5",
+   "maxJump": 0.0794,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-5",
+   "maxJump": 0.0788,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-1",
+   "maxJump": 0.0787,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-1",
+   "maxJump": 0.0783,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-4",
+   "maxJump": 0.0781,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-0",
+   "maxJump": 0.078,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-3",
+   "maxJump": 0.0772,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-0",
+   "maxJump": 0.0767,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-5",
+   "maxJump": 0.0765,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-1",
+   "maxJump": 0.0761,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-1",
+   "maxJump": 0.0753,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-1",
+   "maxJump": 0.0747,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-5",
+   "maxJump": 0.0745,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-0",
+   "maxJump": 0.0745,
+   "atSec": 4.87,
+   "jumpsOver010": 0,
+   "jumpsOver006": 3
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-0",
+   "maxJump": 0.0745,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "phase-2",
+   "maxJump": 0.0744,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-5",
+   "maxJump": 0.0733,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-3",
+   "maxJump": 0.0722,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "phase-4",
+   "maxJump": 0.0717,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-2",
+   "maxJump": 0.0716,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-4",
+   "maxJump": 0.0714,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-2",
+   "maxJump": 0.0713,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-3",
+   "maxJump": 0.0712,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-1",
+   "maxJump": 0.0712,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 5
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-3",
+   "maxJump": 0.0707,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-2",
+   "maxJump": 0.0702,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-1",
+   "maxJump": 0.07,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-5",
+   "maxJump": 0.0698,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-0",
+   "maxJump": 0.0689,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-2",
+   "maxJump": 0.0686,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-3",
+   "maxJump": 0.068,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-3",
+   "maxJump": 0.0677,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-4",
+   "maxJump": 0.0676,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-0",
+   "maxJump": 0.0676,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-1",
+   "maxJump": 0.0674,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-4",
+   "maxJump": 0.0672,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-3",
+   "maxJump": 0.067,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "travel-1",
+   "maxJump": 0.0664,
+   "atSec": 0.08,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-4",
+   "maxJump": 0.0662,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-0",
+   "maxJump": 0.0661,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "travel-1",
+   "maxJump": 0.066,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "travel-2",
+   "maxJump": 0.0654,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "phase-2",
+   "maxJump": 0.0652,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-5",
+   "maxJump": 0.0649,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-0",
+   "maxJump": 0.0646,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-1",
+   "maxJump": 0.0643,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 2
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-1",
+   "maxJump": 0.0638,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-5",
+   "maxJump": 0.0636,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-1",
+   "maxJump": 0.0632,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-5",
+   "maxJump": 0.0623,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-0",
+   "maxJump": 0.0621,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-0",
+   "maxJump": 0.0617,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-2",
+   "maxJump": 0.0615,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "travel-4",
+   "maxJump": 0.061,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "phase-1",
+   "maxJump": 0.0607,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-0",
+   "maxJump": 0.0604,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 1
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-5",
+   "maxJump": 0.0599,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-0",
+   "maxJump": 0.0596,
+   "atSec": 3.93,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-2",
+   "maxJump": 0.0593,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-2",
+   "maxJump": 0.0583,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-2",
+   "maxJump": 0.0578,
+   "atSec": 0.08,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-4",
+   "maxJump": 0.0577,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-0",
+   "maxJump": 0.0576,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-2",
+   "maxJump": 0.0575,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "phase-0",
+   "maxJump": 0.0572,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-4",
+   "maxJump": 0.0571,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-4",
+   "maxJump": 0.0567,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-0",
+   "maxJump": 0.0564,
+   "atSec": 9.33,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-0",
+   "maxJump": 0.0546,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "phase-5",
+   "maxJump": 0.0545,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-4",
+   "maxJump": 0.0544,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "phase-1",
+   "maxJump": 0.0543,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-2",
+   "maxJump": 0.0538,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-0",
+   "maxJump": 0.0537,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "phase-3",
+   "maxJump": 0.0527,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-4",
+   "maxJump": 0.0522,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-1",
+   "maxJump": 0.0521,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-5",
+   "maxJump": 0.0518,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "travel-4",
+   "maxJump": 0.0514,
+   "atSec": 4.58,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "phase-3",
+   "maxJump": 0.0511,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-0",
+   "maxJump": 0.051,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-5",
+   "maxJump": 0.0501,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "travel-2",
+   "maxJump": 0.0498,
+   "atSec": 4.88,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "travel-3",
+   "maxJump": 0.0498,
+   "atSec": 1.25,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "phase-0",
+   "maxJump": 0.0493,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-3",
+   "maxJump": 0.0492,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-4",
+   "maxJump": 0.0489,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-5",
+   "maxJump": 0.0488,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "phase-3",
+   "maxJump": 0.0488,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "phase-4",
+   "maxJump": 0.0484,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "phase-5",
+   "maxJump": 0.0479,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-5",
+   "maxJump": 0.0477,
+   "atSec": 8.9,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "travel-4",
+   "maxJump": 0.0469,
+   "atSec": 1.92,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "phase-0",
+   "maxJump": 0.0467,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-4",
+   "maxJump": 0.0459,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-5",
+   "maxJump": 0.0456,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "phase-1",
+   "maxJump": 0.0456,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-0",
+   "maxJump": 0.0453,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "phase-4",
+   "maxJump": 0.0449,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "phase-3",
+   "maxJump": 0.0445,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-3",
+   "maxJump": 0.0442,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-3",
+   "maxJump": 0.0433,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-4",
+   "maxJump": 0.043,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "phase-4",
+   "maxJump": 0.0427,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "travel-2",
+   "maxJump": 0.0426,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "travel-0",
+   "maxJump": 0.0421,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "phase-5",
+   "maxJump": 0.0413,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "travel-2",
+   "maxJump": 0.0413,
+   "atSec": 4.21,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-0",
+   "maxJump": 0.0409,
+   "atSec": 4.83,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "travel-3",
+   "maxJump": 0.0405,
+   "atSec": 0.04,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-2",
+   "maxJump": 0.0405,
+   "atSec": 2.58,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "01a395f7-04d6-4ff9-aecf-f8dacdcae0b1",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "46216435-4340-4ad4-9033-101e66fb29e7",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "4ca8d765-71a2-401a-85eb-eb02c2780bc3",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "549719aa-4a15-4981-8a9a-34ee66fca156",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a07f0af-654f-4dab-b42c-aef83983b33f",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "phase-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "800ed3f9-08d4-4b73-8a32-86ed8370e752",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "phase-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "89ff944d-f242-4f77-9b95-7cb1d3dc0af6",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "8b163c8b-cda5-4d7d-995b-41dd68fdd059",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "9d901645-b8dd-4a62-b3e2-2613ccd64335",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a5de2004-f606-4277-a4cb-032c35e56c43",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "a985d483-a948-4e3b-bad3-841a68f9992f",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c110af67-40be-4a06-9878-eeec2a22bb3d",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "c80a89bc-2c88-4bde-bec8-4be6916acb62",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "phase-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "cosmic-drift",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "db22c975-8f03-487b-ae44-437f7f153ac1",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "dd2ed3c9-67e9-4450-a9ca-c1426087fa9a",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f0362f24-75f1-4717-8487-cc9cf12c7bcc",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "phase-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f24cc5d9-66cd-4fae-a03a-14dda1698566",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "f7b01537-af1b-4ade-b788-f21c6565b057",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fb56b19e-ee23-43c6-ad41-5714e7969aad",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "fdc6470e-5c7e-43b4-968c-3e907f1fa88f",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "phase-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "first-snow",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "inferno",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "phase-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "mycelium-dream",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascension",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-ascent",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "travel-0",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "travel-1",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "travel-2",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "travel-3",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "phase-5",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  },
+  {
+   "journeyId": "the-bloom",
+   "clip": "travel-4",
+   "maxJump": 0,
+   "atSec": null,
+   "jumpsOver010": 0,
+   "jumpsOver006": 0
+  }
+ ]
+}

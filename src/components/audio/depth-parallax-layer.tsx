@@ -97,10 +97,14 @@ let depthManifest: Record<string, boolean> | null | undefined;
 
 export function DepthParallaxLayer({
   journeyId,
+  intensity = 1,
   imageryOpacity = 0.4,
   onCoveredChange,
 }: {
   journeyId?: string;
+  /** Conductor (Karel 2026-09-28): quiet phases hold a STILL image —
+   *  the parallax camera only drifts once the music builds. */
+  intensity?: number;
   /** The imagery budget — pass 1 - shaderOpacity so this layer shares the
    *  collage's mix contract instead of occluding the shaders (#7). */
   imageryOpacity?: number;
@@ -142,6 +146,8 @@ export function DepthParallaxLayer({
   // properly: glEpoch re-keys the canvas only on a real
   // webglcontextlost event.
   const [glEpoch, setGlEpoch] = useState(0);
+  const intensityRef = useRef(intensity);
+  useEffect(() => { intensityRef.current = intensity; }, [intensity]);
 
   useEffect(() => {
     if (!covered || getDeviceTier() !== "high") return;
@@ -213,8 +219,12 @@ export function DepthParallaxLayer({
         gl.viewport(0, 0, w, h);
       }
       const t = (now - t0) / 1000;
-      const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022;
-      const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016;
+      // Conductor: the drift-through-the-picture is MOTION — the quiet
+      // base holds still, the build gets a whisper, the climax drifts.
+      const ti = intensityRef.current;
+      const camAmp = ti < 0.6 ? 0 : ti < 0.85 ? 0.35 : 1;
+      const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
+      const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016 * camAmp;
       const m = Math.min(1, (now - mixStart) / MIX_MS);
 
       gl.useProgram(prog);

@@ -192,7 +192,7 @@ export function AiImageLayer({
     // Solo band: at opening/integration quiet (<0.35) exactly ONE image
     // holds the frame — the crisp asymmetric negative-space moment
     // (Karel 2026-09-28 design principle).
-    const cap = t < 0.35 ? 1 : t < 0.5 ? 2 : t < 0.8 ? 3 : 5;
+    const cap = t < 0.35 ? 1 : t < 0.6 ? 2 : t < 0.85 ? 3 : 4;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   const [packUrls, setPackUrls] = useState<string[] | null>(null);
@@ -454,7 +454,13 @@ export function AiImageLayer({
     // move — and VIDEOS play STILL: they carry their own generated
     // motion, and panning/scaling a playing 1080p clip both compounds
     // the nausea and is a prime frame-stutter suspect.
-    const motionScale = isVideo ? 0 : 0.4 + 0.6 * intensityRef.current;
+    // Karel 2026-09-28 (final motion law): the base state is a STILL,
+    // crisp image — no Ken Burns at all below the build. Movement is
+    // earned: gentle drift in the build, the full cinematic move only
+    // near the climax. Videos always render static (their motion is
+    // in the file).
+    const t0 = intensityRef.current;
+    const motionScale = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : 1;
     // Visible cinematic travel: up to 10-22% scale change per layer life,
     // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
     // so cover-fit always overflows and the pan never exposes an edge;
@@ -550,7 +556,8 @@ export function AiImageLayer({
       // already reads journeyIdRef; clips must too.
       const clipJourneyId = journeyIdRef.current;
       const clips = clipJourneyId ? clipsRef.current?.[clipJourneyId] : null;
-      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
+      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8
+          && intensityRef.current >= 0.5) { // conductor: video = motion; quiet phases stay still (Karel 2026-09-28)
         // Correctness #1: phase.start/end are NORMALIZED 0-1 fractions —
         // the old seconds comparison never matched and the feature was dead.
         let phaseIdx = -1;
@@ -585,6 +592,17 @@ export function AiImageLayer({
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
             activeVideoRef.current = v;
+            // Karel 2026-09-28: a snowing clip that "just comes to a
+            // stop" reads as a glitch. When the video ends, ease the
+            // layer out over the normal long fade instead of freezing.
+            v.addEventListener("ended", () => {
+              const layer = layersRef.current.find((l) => l.img === v);
+              if (layer && layer.state !== "fading-out") {
+                layer.fadeStartOpacity = layer.opacity;
+                layer.state = "fading-out";
+                layer.fadeStartTime = performance.now();
+              }
+            }, { once: true });
             v.play().catch(() => { /* autoplay policy — holds first frame */ });
           }, { once: true });
           v.load();

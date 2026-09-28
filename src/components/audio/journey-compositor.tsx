@@ -339,7 +339,7 @@ export function JourneyCompositor({
           the show down; maturity audit #8). */}
       <ImageryErrorBoundary resetKey={journeyId}>
       {/* Depth-parallax base — the 3D Ken Burns under the collage (z-2, earlier DOM) */}
-      {showAi && <DepthParallaxLayer journeyId={journeyId} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} />}
+      {showAi && <DepthParallaxLayer journeyId={journeyId} intensity={frame?.intensityMultiplier ?? 1} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} />}
 
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
