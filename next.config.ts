@@ -121,7 +121,10 @@ const nextConfig: NextConfig = {
       // API routes (/dream/*/api/*) pass through with all methods, and
       // relative fetches from proto code (/api/ai-image, /api/audio)
       // land on the core origin, which serves both.
-      ...(DREAM_ORIGIN
+      // CORE ONLY: the dream build also has DREAM_ORIGIN (for its
+      // assetPrefix) — with the rewrite active there, any 404 fell
+      // through to a proxy pointed at ITSELF (508 loop, 2026-09-28).
+      ...(DREAM_ORIGIN && !IS_DREAM_TARGET
         ? [
             { source: "/dream", destination: `${DREAM_ORIGIN}/dream` },
             { source: "/dream/:path*", destination: `${DREAM_ORIGIN}/dream/:path*` },
