@@ -92,7 +92,7 @@ const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 // new journey's first image lands first (no void), short enough that no
 // cross-journey imagery survives past the first breath.
 const BOUNDARY_FADEOUT_DURATION = 8000;
-const MIN_PEAK_DURATION = 4000;
+const MIN_PEAK_DURATION = 7000; // Karel 2026-09-28: no "really fast images coming in only to transition out fast"
 const GEN_INTERVAL_MIN_BASE = 6500;
 const GEN_INTERVAL_MAX_BASE = 7500;
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
@@ -468,7 +468,10 @@ export function AiImageLayer({
 
     // Hard cap: if still over limit after starting a fade, force-remove oldest fading
     if (layers.length >= conductedMaxLayers() + 1) {
-      const oldestFadingIdx = layers.findIndex((l) => l.state === "fading-out");
+      // Never hard-remove a layer the viewer can still see — a splice at
+      // opacity 0.5 IS the "image drops out" glitch. Visible layers keep
+      // fading; the momentary cap overshoot costs one extra drawImage.
+      const oldestFadingIdx = layers.findIndex((l) => l.state === "fading-out" && l.opacity <= 0.05);
       if (oldestFadingIdx >= 0) {
         releaseMedia(layers[oldestFadingIdx].img);
         layers.splice(oldestFadingIdx, 1);
@@ -491,7 +494,14 @@ export function AiImageLayer({
     // near the climax. Videos always render static (their motion is
     // in the file).
     const t0 = intensityRef.current;
-    const motionScale = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : 1;
+    // Full cinematic move is earned by the ARC, not a breath-wave peak:
+    // sqxfce pushed motion=1.00 images at p0.30 (the wave crested to
+    // 0.85+ a third of the way in) — Karel: "a big image came in and
+    // moved... I don't want really fast images". The full move needs
+    // both climax intensity AND the journey's second half.
+    const { currentTime: mCur, duration: mDur } = useAudioStore.getState();
+    const mProg = mDur > 0 ? mCur / mDur : 0;
+    const motionScale = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : mProg > 0.45 ? 1 : 0.35;
     // Visible cinematic travel: up to 10-22% scale change per layer life,
     // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
     // so cover-fit always overflows and the pan never exposes an edge;
@@ -554,6 +564,10 @@ export function AiImageLayer({
       // the few seconds a clip is visible — a decode stall on held
       // stills is invisible, one under playing video is a glitch.
       if (isVideoActive()) return;
+      // One mover at a time (sqxfce forensics): a still push + parallax
+      // upload landing within 2.5s of a shader switch stacks stalls
+      // into a visible hitch on whatever is moving. The imagery yields.
+      if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
       const journeyPhases = getJourneyEngine().getJourney()?.phases;
       // Phase mapping applies only to PACK-harvested lists (generated in
       // phase order with the tramokyo weights). Curated prop-supplied
@@ -574,15 +588,20 @@ export function AiImageLayer({
         const stillUrl = urls[idx];
         loadImage(stillUrl)
           .then((img) => {
-            pushImage(img);
-            // Feed the depth-parallax base layer (it no-ops without depth coverage)
+            if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");
+            // Feed the depth-parallax base layer (it no-ops without depth
+            // coverage) — STAGGERED 1.5s behind the collage push: the
+            // texture upload (2x 1024^2) landing in the same frame as the
+            // collage's first draw stacked into one visible stall.
             if (stillUrl.includes("/images/journeys/")) {
-              window.dispatchEvent(new CustomEvent("resonance:pack-still", {
-                detail: {
-                  src: stillUrl,
-                  depthSrc: stillUrl.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg(\?.*)?$/, ".png"),
-                },
-              }));
+              setTimeout(() => {
+                window.dispatchEvent(new CustomEvent("resonance:pack-still", {
+                  detail: {
+                    src: stillUrl,
+                    depthSrc: stillUrl.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg(\?.*)?$/, ".png"),
+                  },
+                }));
+              }, 1500);
             }
           })
           .catch(() => { /* broken URL, skip */ });
@@ -1002,7 +1021,11 @@ export function AiImageLayer({
       // Conductor: quiet phases breathe slower — fewer arrivals, longer
       // holds; the climax keeps the full cadence (Karel 2026-09-28).
       const t = intensityRef.current;
-      const paceMul = t < 0.5 ? 1.4 : t < 0.8 ? 1.15 : 1; // eased 2026-09-28 — Karel: an image 'hung out for a long time'; balance static vs overwhelm
+      // 2026-09-28c: climax churn was every ~6s (push+evict pairs) —
+      // "too abrupt and causes glitches". Each image now breathes
+      // longer at every intensity; the static-vs-overwhelm balance
+      // lives in MIN_PEAK + cap, not raw turnover speed.
+      const paceMul = t < 0.5 ? 1.6 : t < 0.8 ? 1.35 : 1.2;
       nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul;
       triggerGeneration(true); // always skip cache for ongoing gens
     };

@@ -61,6 +61,7 @@ export function AiOverlayElements({
       // frame (the "image drops out" pop Karel saw at every journey
       // boundary, 2026-09-25). Capture → pin → reflow → then fade.
       const currentOpacity = getComputedStyle(el).opacity;
+      glitchRecord("clone-purge", `pinned=${currentOpacity}`);
       el.style.animation = "none";
       el.style.opacity = currentOpacity;
       void el.offsetWidth; // force reflow so the pin lands before the fade
@@ -84,6 +85,7 @@ export function AiOverlayElements({
       if (activeClonesRef.current.length >= maxClones) return;
 
       const id = ++cloneIdCounter;
+      glitchRecord("clone-spawn", src.split("/").pop() ?? "");
 
       // Pick a random focal point — avoid edges, favor off-center
       const focalX = 15 + Math.random() * 70; // 15-85% from left

@@ -857,6 +857,15 @@ class JourneyEngine {
   }
 
   /** Get the active journey */
+  /** Ms since the last primary/dual/tertiary shader switch. Imagery
+   *  consults this so layer births stay out of shader-switch windows —
+   *  the 2026-09-28 sqxfce session showed stills + evictions + parallax
+   *  uploads landing in the same seconds as switches, stacking into
+   *  130-190ms stalls on a moving image. One mover at a time. */
+  getMsSinceAnySwitch(): number {
+    return this.lastAnySwitchMs === 0 ? Number.POSITIVE_INFINITY : performance.now() - this.lastAnySwitchMs;
+  }
+
   getJourney(): Journey | null {
     return this.journey;
   }
