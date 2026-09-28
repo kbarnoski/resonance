@@ -1,6 +1,7 @@
 "use client";
 
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+import { inBoundarySettle } from "@/lib/journeys/video-activity";
 
 import { useEffect, useRef, useCallback } from "react";
 import { getTierProfile } from "@/lib/audio/device-tier";
@@ -11,6 +12,10 @@ interface AiOverlayElementsProps {
   enabled: boolean;
   phase: string;
   journeyId?: string;
+  /** Conductor intensity — clones follow the music like every other
+   *  layer (boundary forensics 2026-09-28: FIVE 0.5-opacity clones
+   *  were live at a quiet journey ending, then all purged at once). */
+  intensity?: number;
 }
 
 /** Base max simultaneous active clones on screen — multiplied by tier.cloneScale. */
@@ -36,12 +41,15 @@ export function AiOverlayElements({
   enabled,
   phase,
   journeyId,
+  intensity = 1,
 }: AiOverlayElementsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeClonesRef = useRef<CloneRecord[]>([]);
   // Initialize as undefined so the first journey load triggers the purge
   // effect — otherwise prev would equal current on first mount and any
   // stale clones from a previous mount/HMR could survive.
+  const intensityRef = useRef(intensity);
+  useEffect(() => { intensityRef.current = intensity; }, [intensity]);
   const prevJourneyRef = useRef<string | undefined>(undefined);
   const prevPhaseRef = useRef(phase);
   const imageCountRef = useRef(0);
@@ -52,7 +60,9 @@ export function AiOverlayElements({
    *  journey change so overlay elements don't snap-disappear; they
    *  drift away as the new journey's elements come in. */
   const purgeAll = useCallback(() => {
-    const FADE_MS = 4000;
+    // 8s — matches the collage layers' boundary fade so the whole
+    // image world dims as ONE slow motion, not two speeds.
+    const FADE_MS = 8000;
     for (const clone of activeClonesRef.current) {
       const el = clone.el;
       const styleEl = clone.styleEl;
@@ -80,8 +90,16 @@ export function AiOverlayElements({
     (src: string) => {
       const container = containerRef.current;
       if (!container) return;
+      // Boundary settle: a 40%-viewport clone fading in during the
+      // title card was the un-conducted mover at every handoff
+      // (headless run eog2tz: clone-spawn 300ms after journey-change).
+      if (inBoundarySettle()) return;
       const tier = getTierProfile();
-      const maxClones = Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale));
+      // Conducted census: quiet passages hold at most one clone, the
+      // build two, only the climax earns the full tier count.
+      const t = intensityRef.current;
+      const conductedCap = t < 0.4 ? 1 : t < 0.6 ? 2 : Number.POSITIVE_INFINITY;
+      const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 
       const id = ++cloneIdCounter;

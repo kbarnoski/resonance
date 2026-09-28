@@ -380,6 +380,7 @@ export function JourneyCompositor({
       {showAi && (
         <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none" }}>
           <AiOverlayElements
+            intensity={frame?.intensityMultiplier ?? 1}
             imageUrl={latestAiImage}
             enabled={aiEnabled}
             phase={frame?.phase ?? ""}
