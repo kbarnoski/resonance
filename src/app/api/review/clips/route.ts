@@ -54,6 +54,20 @@ export async function GET() {
     for (const [id, existing] of names) if (existing === nm) names.set(id, `${nm} (unused variant)`);
     names.set(slug, nm);
   }
+  // Same title on two albums (e.g. "Surrounded By Light" exists on both
+  // the SBL album and March Light — different compositions): append the
+  // album path name ONLY when journey names collide, so admin lists are
+  // unambiguous while artistic title cards stay pure.
+  const pathRows = await readJson<Array<{ name?: string; journey_ids?: string[] }>>(
+    path.join(ROOT, "public/tramokyo-pack/data/journey_paths.json"), []);
+  const pathOf = new Map<string, string>();
+  for (const pr of pathRows) for (const jid of pr.journey_ids ?? []) if (pr.name) pathOf.set(jid, pr.name);
+  const nameCounts = new Map<string, number>();
+  for (const n of names.values()) nameCounts.set(n, (nameCounts.get(n) ?? 0) + 1);
+  for (const [id, n] of names) {
+    if ((nameCounts.get(n) ?? 0) > 1 && pathOf.has(id)) names.set(id, `${n} — ${pathOf.get(id)}`);
+  }
+
   const verdicts = await readJson<Record<string, { verdict: string; at: string }>>(REVIEW_PATH, {});
 
   const journeys = Object.entries(clipsMap).map(([jid, clips]) => ({
