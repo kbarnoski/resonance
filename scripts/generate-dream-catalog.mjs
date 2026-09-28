@@ -16,9 +16,18 @@
 // BOTH this file and docs/dreams/AGENT.md's deployment-model section.
 import { readFile, readdir, writeFile } from "fs/promises";
 import path from "path";
+import { existsSync } from "fs";
 
 const dreamDir = path.join(process.cwd(), "src/app/dream");
 const outPath = path.join(dreamDir, "archive", "catalog.generated.json");
+
+// Project split (2026-09-27): the core build prunes the dream-lab routes
+// (scripts/prune-for-target.mjs) — no /dream pages remain to consume the
+// catalog, so skip generation instead of crashing on the missing dirs.
+if (process.env.BUILD_TARGET === "core" || !existsSync(path.join(dreamDir, "archive"))) {
+  console.log("generate-dream-catalog: core build (dream lab pruned) — skipping");
+  process.exit(0);
+}
 
 function cleanProse(s) {
   return s

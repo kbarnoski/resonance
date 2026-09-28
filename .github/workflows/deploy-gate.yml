@@ -61,7 +61,7 @@ jobs:
     name: Vercel production deploy (CLI)
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     # Deploy hooks turned out NOT to bypass the Ignored Build Step on this
     # project (verified 2026-08-25: five hook/git builds all Canceled).
     # CLI deployments are never evaluated by the Ignored Build Step, so
@@ -69,10 +69,47 @@ jobs:
     # still runs on Vercel's infra — the runner only uploads sources.
     # Only meaningful once the VERCEL_TOKEN secret exists — see
     # docs/deploy-gate.md.
+    #
+    # ── Dream-lab project split (2026-09-27) ──
+    # Two Vercel projects build this repo (scripts/prune-for-target.mjs):
+    #   resonance        — the real app, dream routes pruned (~23s build);
+    #                      /dream/* proxies to the dream project.
+    #   resonance-dream  — the full app serving the dream lab.
+    # Path-aware deploys: a pure dream-lab push (the agent's twice-daily
+    # protos) deploys ONLY resonance-dream; a push that never touches the
+    # dream tree or shared runtime deploys ONLY resonance; anything mixed
+    # or ambiguous deploys both. Verify (lint+typecheck+tests) always
+    # covers the whole repo either way.
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Deploy via Vercel CLI
+      - name: Decide deploy targets from changed paths
+        id: targets
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE" 2>/dev/null || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "No usable base commit — deploying both."
+            echo "core=true"  >> "$GITHUB_OUTPUT"
+            echo "dream=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
+          echo "Changed files:"; echo "$CHANGED"
+          DREAM=false; CORE=false
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              src/app/dream/*|docs/dreams/*) DREAM=true ;;
+              *) CORE=true; DREAM=true ;;  # shared code: dream build embeds it too
+            esac
+          done <<< "$CHANGED"
+          echo "core=$CORE"   >> "$GITHUB_OUTPUT"
+          echo "dream=$DREAM" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy resonance (core)
+        if: steps.targets.outputs.core == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: team_nJRqVNTjzHtRvy93vgo1kwHX
@@ -80,13 +117,28 @@ jobs:
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
             echo "VERCEL_TOKEN secret not set — gate is inert."
-            echo "See docs/deploy-gate.md for the one-time setup."
             exit 0
           fi
-          echo "CI green — deploying to production via Vercel CLI."
+          echo "CI green — deploying CORE to production via Vercel CLI."
           # VERCEL_GIT_COMMIT_SHA feeds next.config.ts's gitShortSha()
           # fallback so /api/version keeps reporting the real commit
           # (CLI uploads don't include .git).
-          npx vercel@latest deploy --prod --yes \
+          npx vercel@latest deploy --prod --yes --archive=tgz \
+            --token "$VERCEL_TOKEN" \
+            --build-env VERCEL_GIT_COMMIT_SHA="$GITHUB_SHA"
+
+      - name: Deploy resonance-dream (dream lab)
+        if: steps.targets.outputs.dream == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_nJRqVNTjzHtRvy93vgo1kwHX
+          VERCEL_PROJECT_ID: prj_XMJc3VKwgIu8SwopH3peO8kUzb8e
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN secret not set — gate is inert."
+            exit 0
+          fi
+          echo "CI green — deploying DREAM LAB to production via Vercel CLI."
+          npx vercel@latest deploy --prod --yes --archive=tgz \
             --token "$VERCEL_TOKEN" \
             --build-env VERCEL_GIT_COMMIT_SHA="$GITHUB_SHA"

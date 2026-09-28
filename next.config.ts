@@ -17,6 +17,20 @@ function gitShortSha(): string {
 const BUILD_COMMIT = gitShortSha();
 const BUILD_TIME = new Date().toISOString();
 
+// ─── Dream-lab project split (2026-09-27) ───
+// Two Vercel projects build this one repo (see scripts/prune-for-target.mjs):
+//   BUILD_TARGET=core  → the real app, dream routes pruned; /dream/* is
+//                        transparently proxied to DREAM_ORIGIN so every
+//                        public URL keeps working unchanged.
+//   BUILD_TARGET=dream → full app on resonance-dream.vercel.app; its
+//                        chunks/CSS get an ABSOLUTE assetPrefix so pages
+//                        served through the core-domain proxy still load
+//                        their static assets from the dream deployment.
+// Neither var set (local dev, kiosk, CI tests) → single full app,
+// exactly as before.
+const DREAM_ORIGIN = process.env.DREAM_ORIGIN; // e.g. https://resonance-dream.vercel.app
+const IS_DREAM_TARGET = process.env.BUILD_TARGET === "dream";
+
 // CSP for the app — *enforced*. Kept loose so production traffic
 // works while we validate a tighter version in Report-Only mode (see
 // CSP_REPORT_ONLY_DIRECTIVES below). Needs 'unsafe-eval' +
@@ -65,6 +79,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Dream project only: absolute asset URLs so chunks/CSS resolve when the
+  // page HTML is served through the core domain's /dream proxy.
+  ...(IS_DREAM_TARGET && DREAM_ORIGIN ? { assetPrefix: DREAM_ORIGIN } : {}),
   env: {
     NEXT_PUBLIC_BUILD_COMMIT: BUILD_COMMIT,
     NEXT_PUBLIC_BUILD_TIME: BUILD_TIME,
@@ -99,6 +116,17 @@ const nextConfig: NextConfig = {
       { source: "/demo", destination: "/room/installation?loop=1&once=1" },
       { source: "/snowflake", destination: "/room/installation?loop=1&once=1" },
       { source: "/installation", destination: "/room/installation?loop=1" },
+      // Project split: on the pruned core build, /dream/* proxies to the
+      // dream project. The address bar stays on the core domain, proto
+      // API routes (/dream/*/api/*) pass through with all methods, and
+      // relative fetches from proto code (/api/ai-image, /api/audio)
+      // land on the core origin, which serves both.
+      ...(DREAM_ORIGIN
+        ? [
+            { source: "/dream", destination: `${DREAM_ORIGIN}/dream` },
+            { source: "/dream/:path*", destination: `${DREAM_ORIGIN}/dream/:path*` },
+          ]
+        : []),
     ];
   },
   experimental: {
@@ -123,6 +151,15 @@ const nextConfig: NextConfig = {
     // markdowns at request time — trace them in. The proto catalog
     // itself is bundled JSON (see scripts/generate-dream-catalog.mjs).
     "/dream": ["./docs/dreams/MORNING.md", "./docs/dreams/STATE.md"],
+  },
+  // The 12GB offline Tramokyo pack lives in public/ on the kiosk laptop
+  // only (gitignored). CI deploys never see it, but a LOCAL `vercel
+  // deploy` does — and /api/audio's fs reads made Next trace the whole
+  // pack into the lambda (11.6GB function, hard deploy failure,
+  // 2026-09-27). Excluded from tracing everywhere; prod behavior is
+  // unchanged since the pack is never uploaded.
+  outputFileTracingExcludes: {
+    "*": ["./public/tramokyo-pack/**"],
   },
   webpack: (config, { isServer }) => {
     // Exclude TensorFlow.js and Basic Pitch from server-side bundling
