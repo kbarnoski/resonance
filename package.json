@@ -22,7 +22,7 @@
     "preflight": "node scripts/tramokyo-preflight.mjs"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.2.12",
+    "@ai-sdk/anthropic": "^4.0.62",
     "@ai-sdk/react": "^1.2.12",
     "@capacitor/core": "^8.3.0",
     "@capacitor/ios": "^8.3.0",
