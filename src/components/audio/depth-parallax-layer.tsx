@@ -131,10 +131,24 @@ export function DepthParallaxLayer({
     return () => { cancelled = true; };
   }, [journeyId]);
 
+  // Cross-journey continuity (Karel 2026-09-28: "when Realized loads
+  // there was again a glitch and a slight darkening"): the canvas was
+  // keyed by journeyId, so every handoff destroyed the bright screen-
+  // blended base in ONE FRAME and mounted an empty (black) canvas until
+  // the next still landed — a visible luminance drop exactly at the
+  // boundary. The canvas now lives across journeys and the new
+  // journey's first still arrives through the SAME uMix crossfade used
+  // within a journey. Context-loss protection (audit #12) is preserved
+  // properly: glEpoch re-keys the canvas only on a real
+  // webglcontextlost event.
+  const [glEpoch, setGlEpoch] = useState(0);
+
   useEffect(() => {
     if (!covered || getDeviceTier() !== "high") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const onCtxLost = (e: Event) => { e.preventDefault(); setGlEpoch((n) => n + 1); };
+    canvas.addEventListener("webglcontextlost", onCtxLost);
     const gl = canvas.getContext("webgl", { alpha: true, antialias: false });
     if (!gl) return;
 
@@ -259,15 +273,16 @@ export function DepthParallaxLayer({
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener("resonance:pack-still", onStill);
+      canvas.removeEventListener("webglcontextlost", onCtxLost);
       const ext = gl.getExtension("WEBGL_lose_context");
       ext?.loseContext();
     };
-  }, [covered, journeyId]);
+  }, [covered, glEpoch]);
 
   if (!covered) return null;
   return (
     <canvas
-      key={journeyId}
+      key={glEpoch}
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
       style={{

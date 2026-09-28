@@ -189,7 +189,10 @@ export function AiImageLayer({
    *  read as "a wall of moving images" (Karel 2026-09-28). */
   const conductedMaxLayers = useCallback(() => {
     const t = intensityRef.current;
-    const cap = t < 0.5 ? 2 : t < 0.8 ? 3 : 5;
+    // Solo band: at opening/integration quiet (<0.35) exactly ONE image
+    // holds the frame — the crisp asymmetric negative-space moment
+    // (Karel 2026-09-28 design principle).
+    const cap = t < 0.35 ? 1 : t < 0.5 ? 2 : t < 0.8 ? 3 : 5;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   const [packUrls, setPackUrls] = useState<string[] | null>(null);

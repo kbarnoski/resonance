@@ -166,6 +166,9 @@ class JourneyEngine {
   private static readonly DUAL_ON_INTENSITY = 0.6;
   private static readonly DUAL_OFF_INTENSITY = 0.5;
   private static readonly TERTIARY_MIN_INTENSITY = 0.85; // raised 2026-09-28 — Karel: still too busy
+  /** Opening ramp: every journey starts simple and builds (2026-09-28). */
+  private static readonly OPENING_RAMP_SECS = 40;
+  private static readonly OPENING_FLOOR = 0.3;
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
@@ -507,7 +510,18 @@ class JourneyEngine {
 
     // ─── Composition conductor: interpolated intensity drives layer count ───
     const rawIntensity = interpolateValue(phases, phaseIndex, nextPhaseIndex, blend, (p) => p.intensityMultiplier);
-    const conductorIntensity = Number.isFinite(rawIntensity) ? rawIntensity : 1;
+    // Opening ramp (Karel 2026-09-28: "each journey should start simple
+    // and build" — Snowflake's authored threshold opens hot). For the
+    // first OPENING_RAMP_SECS of every journey the effective intensity
+    // is capped by a floor-to-1 ramp, so openings are a single quiet
+    // voice with one asymmetric image and real negative space, no
+    // matter what the authored arc says. Progress-based (pause-safe,
+    // deterministic); every consumer (imagery cap, Ken Burns, cadence,
+    // dual/tertiary gates, post alphas) inherits it through the frame.
+    const elapsedSec = clamped * this.trackDuration;
+    const openingCap = JourneyEngine.OPENING_FLOOR
+      + (1 - JourneyEngine.OPENING_FLOOR) * Math.min(1, elapsedSec / JourneyEngine.OPENING_RAMP_SECS);
+    const conductorIntensity = Math.min(Number.isFinite(rawIntensity) ? rawIntensity : 1, openingCap);
     if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
     else if (this.dualAllowed && conductorIntensity < JourneyEngine.DUAL_OFF_INTENSITY) this.dualAllowed = false;
 
@@ -690,7 +704,7 @@ class JourneyEngine {
       chromaticAberration: iv((p) => p.chromaticAberration),
       colorTemperature: iv((p) => p.colorTemperature),
       vignette: iv((p) => p.vignette),
-      intensityMultiplier: iv((p) => p.intensityMultiplier),
+      intensityMultiplier: conductorIntensity,
       voice: currentPhase.voice,
       poetryMood: currentPhase.poetryMood,
       poetryIntervalSeconds: iv((p) => p.poetryIntervalSeconds),
