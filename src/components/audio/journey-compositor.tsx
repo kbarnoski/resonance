@@ -13,6 +13,7 @@ import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
 import { getTierProfile } from "@/lib/audio/device-tier";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
@@ -188,6 +189,7 @@ export function JourneyCompositor({
       // flashes belong to the build and climax. Quiet stretches let a
       // bass hit pass without the white flash / angel apparition.
       if ((frame?.intensityMultiplier ?? 1) < 0.55) return;
+      glitchRecord("bass-flash", `#${bassHitCountRef.current + 1}`);
       bassHitCountRef.current += 1;
       bassHitStartRef.current = performance.now();
       inBassHitRef.current = true;

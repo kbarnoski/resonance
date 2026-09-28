@@ -1,5 +1,6 @@
 import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers } from "./types";
 import { getRealm } from "./realms";
+import { glitchRecord } from "./glitch-recorder";
 import { regenerateJourneyShaders } from "./journeys";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
@@ -572,14 +573,20 @@ class JourneyEngine {
     const shaderLen = currentPhase.shaderModes.length;
     // Stillness = hold: a shader switch is itself an event, and the
     // stillness window's whole point is that nothing happens.
+    // End-freeze (Karel 2026-09-28: a shader "loaded small and then just
+    // dropped" right before the next journey): no new shader layers in
+    // the final 4% — anything born there dies at the boundary.
+    const endFreeze = clamped > 0.96;
     const inStillness = conductorIntensity <= JourneyEngine.STILLNESS_LEVEL + 0.02;
+    if (inStillness && !this.wasInStillness) glitchRecord("stillness-enter", `@p${clamped.toFixed(3)}`);
     if (this.wasInStillness && !inStillness) {
+      glitchRecord("stillness-exit", `@p${clamped.toFixed(3)}`);
       // Coming out of a stillness hold: bring a fresh shader within ~3s
       // so the held one doesn't ALSO ride out a full rotation timer.
       this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + 3000);
     }
     this.wasInStillness = inStillness;
-    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !endFreeze && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -630,6 +637,7 @@ class JourneyEngine {
       });
       this.shaderStartMs = now;
       this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
+      glitchRecord("shader-primary", `${this.currentShaderMode} @p${clamped.toFixed(3)}`);
     }
     // ─── Dual shader (persistent 2nd layer) ───
     // Switches on its own timer, independent of primary. Prefers Geometry shaders.
@@ -643,7 +651,7 @@ class JourneyEngine {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = null;
       }
-    } else if (this.dualShaderInitialized && shaderLen >= 2) {
+    } else if (this.dualShaderInitialized && shaderLen >= 2 && !endFreeze) {
       if (!this.frozen && !this.playbackPaused && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
@@ -657,6 +665,7 @@ class JourneyEngine {
         });
         this.dualShaderStartMs = now;
         this.dualShaderDurationMs = this.randomDuration(this.random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
+        glitchRecord("shader-dual", `${this.dualShaderMode} @p${clamped.toFixed(3)}`);
       } else if (this.dualShaderMode === null) {
         // Primary just rotated away from a banned shader — re-engage a dual now
         this.dualShaderMode = this.pickDualShader(currentPhase);
@@ -684,7 +693,7 @@ class JourneyEngine {
         // Conductor: the third layer belongs to the climax. A moment that
         // falls in a quiet stretch simply doesn't fire — threshold and
         // integration stay spare instead of "always max layers".
-        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY) break;
+        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
@@ -703,6 +712,7 @@ class JourneyEngine {
           }
           this.tertiaryShaderMode = tertiaryCandidate;
           this.tertiaryActive = true;
+          if (tertiaryCandidate) glitchRecord("shader-tertiary-on", `${tertiaryCandidate} @p${clamped.toFixed(3)}`);
           if (this.tertiaryShaderMode) {
             this.seenShaders.add(this.tertiaryShaderMode);
             this.shaderHistory.push({
@@ -718,6 +728,7 @@ class JourneyEngine {
       }
     }
     if (!inTertiaryMoment && this.tertiaryActive) {
+      if (this.tertiaryShaderMode) glitchRecord("shader-tertiary-off", `${this.tertiaryShaderMode} @p${clamped.toFixed(3)}`);
       this.closeHistoryEntry("tertiary", now);
       this.tertiaryShaderMode = null;
       this.tertiaryActive = false;

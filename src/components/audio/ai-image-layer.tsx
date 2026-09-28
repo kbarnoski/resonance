@@ -9,6 +9,7 @@ import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
+import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -206,7 +207,10 @@ export function AiImageLayer({
       const active = layersRef.current.some(
         (l) => !("complete" in l.img) && l.state !== "fading-out" && !(l.img as HTMLVideoElement).ended,
       );
-      setVideoSpotlight((prev) => (prev === active ? prev : active));
+      setVideoSpotlight((prev) => {
+        if (prev !== active) glitchRecord("spotlight", active ? "on" : "off");
+        return prev === active ? prev : active;
+      });
     }, 500);
     return () => clearInterval(id);
   }, []);
@@ -321,6 +325,8 @@ export function AiImageLayer({
       lastClipPhaseRef.current = -1; // clips re-arm per journey
       heroPushedForRef.current = -1;
       pendingMorphRef.current = null;
+      glitchRecord("journey-change", `${prevJourneyId ?? "-"} -> ${journeyId}`);
+      glitchFlush("journey-change");
       journeyEpochRef.current++;
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -440,6 +446,7 @@ export function AiImageLayer({
         (l.state === "peak" && now - l.peakStartTime >= MIN_PEAK_DURATION)
       );
       if (oldestVisible) {
+        glitchRecord("layer-evict", `cap=${conductedMaxLayers()}`);
         oldestVisible.fadeStartOpacity = oldestVisible.opacity;
         oldestVisible.state = "fading-out";
         oldestVisible.fadeStartTime = now;
@@ -488,6 +495,7 @@ export function AiImageLayer({
     const panX = (Math.random() - 0.5) * 2 * motionScale; // -1 to 1, conducted
     const panY = (Math.random() - 0.5) * 2 * motionScale;
 
+    glitchRecord(isVideo ? "layer-push-video" : "layer-push-still", `n=${layers.length + 1} motion=${motionScale.toFixed(2)}`);
     layers.push({
       img,
       opacity: 0,
@@ -526,6 +534,12 @@ export function AiImageLayer({
       const urls = localImageUrlsRef.current;
       const { currentTime, duration } = useAudioStore.getState();
       const progress = duration > 0 ? currentTime / duration : -1;
+      // Boundary quiet zone (Karel 2026-09-28: "not allow new elements
+      // to come in at a certain point... the outcome we want is pure
+      // seamlessness"): nothing new is born in the final 4% — whatever
+      // is already alive plays through and hands off via the boundary
+      // crossfades.
+      if (progress > 0.96) return;
       const journeyPhases = getJourneyEngine().getJourney()?.phases;
       // Phase mapping applies only to PACK-harvested lists (generated in
       // phase order with the tramokyo weights). Curated prop-supplied
@@ -571,8 +585,10 @@ export function AiImageLayer({
       // already reads journeyIdRef; clips must too.
       const clipJourneyId = journeyIdRef.current;
       const clips = clipJourneyId ? clipsRef.current?.[clipJourneyId] : null;
-      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8
-          && intensityRef.current >= 0.5) { // conductor: video = motion; quiet phases stay still (Karel 2026-09-28)
+      if (clips && journeyPhases && progress >= 0 && getTierProfile().maxAiLayers >= 8) {
+        // (2026-09-28b: the >=0.5 intensity gate here was meant for hero
+        // clips — now disabled entirely — but also delayed early travel
+        // morphs. Morphs are phase transitions; they always play.)
         // Correctness #1: phase.start/end are NORMALIZED 0-1 fractions —
         // the old seconds comparison never matched and the feature was dead.
         let phaseIdx = -1;
@@ -611,6 +627,7 @@ export function AiImageLayer({
             // stop" reads as a glitch. When the video ends, ease the
             // layer out over the normal long fade instead of freezing.
             v.addEventListener("ended", () => {
+              glitchRecord("video-ended");
               const layer = layersRef.current.find((l) => l.img === v);
               if (layer && layer.state !== "fading-out") {
                 layer.fadeStartOpacity = layer.opacity;

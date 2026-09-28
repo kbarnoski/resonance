@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { getDeviceTier } from "@/lib/audio/device-tier";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 
 /**
  * Depth-parallax layer (Wave 2c; rebuilt after the 2026-09-25 audits).
@@ -121,6 +122,7 @@ export function DepthParallaxLayer({
     let cancelled = false;
     const apply = (m: Record<string, boolean> | null) => {
       if (cancelled) return;
+      glitchRecord("parallax-covered", String(!!m?.[journeyId]));
       setCovered(!!m?.[journeyId]);
       onCoveredChange?.(!!m?.[journeyId]);
     };
@@ -274,6 +276,7 @@ export function DepthParallaxLayer({
           slotB = incoming;
           mixStart = performance.now() - MIX_MS;
         } else {
+          glitchRecord("parallax-mix");
           const retiring = slotA;
           slotA = slotB;
           slotB = incoming;
