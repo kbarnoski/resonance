@@ -381,6 +381,7 @@ export function ShaderVisualizer({
     let lastW = 0;
     let lastH = 0;
     let compilePhase: "compiling" | "linking" | "ready" = "compiling";
+    const settleBrakeLastRef = { current: 0 };
     let readyFired = false;
 
     // Render-resolution scaling. Already capped at 1x DPR (retina is wasted on
@@ -514,6 +515,21 @@ export function ShaderVisualizer({
       if (pausedRef.current) {
         animId = requestAnimationFrame(render);
         return;
+      }
+
+      // Boundary settle frame brake: while the title card is up the
+      // whole stack animates its handoff fades — and the recorded
+      // 2026-09-28 runs (session 7k7fg4) show the incoming journey's
+      // shaders cratering the frame rate to 7-10fps exactly then,
+      // which renders every fade as visible steps. 30fps here is
+      // imperceptible on a dark title card and halves the budget.
+      if (inBoundarySettle()) {
+        const nowMs = performance.now();
+        if (nowMs - settleBrakeLastRef.current < 33) {
+          animId = requestAnimationFrame(render);
+          return;
+        }
+        settleBrakeLastRef.current = nowMs;
       }
 
       // ── Normal rendering ──

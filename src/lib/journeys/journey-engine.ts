@@ -261,6 +261,7 @@ class JourneyEngine {
         "cosmos";
       this.currentShaderMode = initial;
       this.seenShaders.add(this.currentShaderMode);
+      glitchRecord("shader-initial", initial);
     }
 
     // Initialize shader history
