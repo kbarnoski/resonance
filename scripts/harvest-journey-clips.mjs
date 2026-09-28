@@ -182,7 +182,10 @@ const MOTION_SOUL = {
   "Love Again": "tender regrowth — unfurling through char, blossoms opening one by one",
 };
 const GUARDRAILS = "smooth constant camera speed, single continuous take, meditative pace throughout, no speed ramps, no time-lapse, no sudden bursts";
-const MOTION_NEGATIVE = "time-lapse, hyperlapse, speed ramp, fast motion, sudden movement, jump cut, flicker, camera shake, text, watermark, people, faces";
+const MOTION_NEGATIVE = "time-lapse, hyperlapse, speed ramp, fast motion, sudden movement, jump cut, flicker, camera shake, text, watermark, people, faces, " +
+  // 2026-09-27 material pass: wan drifted a warm emberlit canyon to icy
+  // white over the clip duration (Realized phase-4). Pin the palette.
+  "snow, frost, ice, snowfall, turning white, fading to white, desaturating";
 
 // Pace class from the paired recording's note density (analyses in pack data).
 function paceClassFor(journey) {
@@ -258,7 +261,7 @@ for (const jid of journeyIds) {
             negative_prompt: MOTION_NEGATIVE,
             enable_prompt_expansion: false,
             enable_safety_checker: false, // false-flags glowing mushrooms + flame imagery (2026-09-26)
-            seed: 1000 + pi * 101 + attempt * 7919,
+            seed: (Number(process.env.CLIP_SEED_OFFSET) || 0) + 1000 + pi * 101 + attempt * 7919, // offset: force a fresh roll on re-harvest
           },
           logs: false,
         });

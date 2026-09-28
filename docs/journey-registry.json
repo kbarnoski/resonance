@@ -5,10 +5,9 @@
   "total": 46,
   "withClips": 43,
   "verdicts": {
-   "violations": 24,
+   "clean": 33,
    "unaudited": 3,
    "needs-recheck": 9,
-   "clean": 9,
    "reference": 1
   }
  },
@@ -108,8 +107,15 @@
    },
    "audit": {
     "name": "Realized",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "note": "April legacy row wrapping inferno builtin; no theme/palette in DB; shader list still references removed 'nebula'",
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 21,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow patches in lava-block channel (phase-1), frost-covered forest floor (phase-3), snow-covered canyon (phase-4)",
       "confidence": "high",
@@ -119,8 +125,7 @@
        "phase-4"
       ]
      }
-    ],
-    "note": "April legacy row wrapping inferno builtin; no theme/palette in DB; shader list still references removed 'nebula'"
+    ]
    }
   },
   "9eb3df10-7835-4107-b995-4c9ad6f2edf1": {
@@ -523,8 +528,14 @@
    },
    "audit": {
     "name": "Bath",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 13,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "two moons in sky over golden river",
       "confidence": "high",
@@ -635,8 +646,14 @@
    },
    "audit": {
     "name": "Welcome Home",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 9,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "full moon in sky over lake / moon sphere closeup",
       "confidence": "high",
@@ -750,8 +767,14 @@
    },
    "audit": {
     "name": "The Knife",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 27,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-covered canyon floor",
       "confidence": "high",
@@ -1091,8 +1114,14 @@
    },
    "audit": {
     "name": "Playa",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 27,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "human silhouette standing on flat",
       "confidence": "medium-high",
@@ -1217,8 +1246,14 @@
    },
    "audit": {
     "name": "Isolation",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 27,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "frost/ice crystals on pine branch with frozen droplet",
       "confidence": "high",
@@ -1339,8 +1374,14 @@
    },
    "audit": {
     "name": "Rebound",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 14,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "literal snowflake/frost crystal macro",
       "confidence": "high",
@@ -1796,8 +1837,14 @@
    },
    "audit": {
     "name": "All Together",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 10,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "moon over sea with light column",
       "confidence": "high",
@@ -2015,8 +2062,14 @@
    },
    "audit": {
     "name": "Rise",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 10,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "stone dusted with snow/frost on dark rock",
       "confidence": "medium-high",
@@ -2134,8 +2187,14 @@
    },
    "audit": {
     "name": "Surrender",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 7,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "crescent moon + snowy footprinted ground at white arch",
       "confidence": "medium-high",
@@ -2358,8 +2417,14 @@
    },
    "audit": {
     "name": "Surrounded By Light",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 25,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "human figure walking on road / in bright corridor",
       "confidence": "high",
@@ -2591,8 +2656,14 @@
    },
    "audit": {
     "name": "Self",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 16,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-capped mountain peaks over lake",
       "confidence": "high",
@@ -2719,8 +2790,14 @@
    },
    "audit": {
     "name": "Message",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 15,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "readable glowing TEXT ('wale mosta') written on water",
       "confidence": "high",
@@ -3064,8 +3141,14 @@
    },
    "audit": {
     "name": "Held",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 10,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "small human silhouette standing in cave archway",
       "confidence": "high",
@@ -3187,8 +3270,14 @@
    },
    "audit": {
     "name": "Sway",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 10,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-covered forest floor with glowing trail",
       "confidence": "high",
@@ -3299,8 +3388,14 @@
    },
    "audit": {
     "name": "Mystic",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 35,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "person walking snowy footprinted alley toward light",
       "confidence": "high",
@@ -3543,8 +3638,15 @@
    },
    "audit": {
     "name": "The First (Expanded)",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "note": "base 'The First' was regenerated post-law; the Expanded variant was NOT",
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 18,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-covered road with footprints / snowy forest floor",
       "confidence": "high",
@@ -3561,8 +3663,7 @@
        "r3c1"
       ]
      }
-    ],
-    "note": "base 'The First' was regenerated post-law; the Expanded variant was NOT"
+    ]
    }
   },
   "9d901645-b8dd-4a62-b3e2-2613ccd64335": {
@@ -4004,8 +4105,14 @@
    },
    "audit": {
     "name": "Surrounded By Light (forest)",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 19,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "human figure walking in forest light beam",
       "confidence": "high",
@@ -4239,8 +4346,14 @@
    },
    "audit": {
     "name": "Afterglow",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 40,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-capped mountain ranges at dusk lake",
       "confidence": "high",
@@ -4488,8 +4601,14 @@
    },
    "audit": {
     "name": "Love Again",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 15,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "green aurora light pillars",
       "confidence": "high",
@@ -4556,8 +4675,14 @@
    },
    "audit": {
     "name": "(builtin) Inferno",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 18,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "burnt fence posts in snowy field / fire on white snowfield",
       "confidence": "high",
@@ -4599,8 +4724,14 @@
    },
    "audit": {
     "name": "(builtin) The Ascension",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 14,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "woman in dress standing/walking in forest stream",
       "confidence": "high",
@@ -4622,8 +4753,14 @@
    },
    "audit": {
     "name": "(builtin) The Ascent",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 12,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "snow-covered spires with icicles; balanced rock on snowfield",
       "confidence": "high",
@@ -4647,8 +4784,14 @@
    },
    "audit": {
     "name": "(builtin) The Bloom",
-    "verdict": "violations",
-    "findings": [
+    "verdict": "clean",
+    "findings": [],
+    "regeneration": {
+     "date": "2026-09-27",
+     "slotsRegenerated": 8,
+     "note": "All flagged stills regenerated under corrected prompts + TRAMOKYO_MATERIAL_NEGATIVE, every slot visually re-verified law-clean across 6 roll/surgery rounds; affected hero clips + travel morphs re-harvested from the clean stills through the zero-glitch QA gate and frame-verified."
+    },
+    "originalFindings": [
      {
       "issue": "golden female figure (limbs/dress discernible — beyond featureless spirit-hint)",
       "confidence": "medium-high",

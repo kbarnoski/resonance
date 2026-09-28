@@ -85,6 +85,7 @@ async function loadAppModules() {
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
           STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
           TRAMOKYO_PHASE_WEIGHT, TRAMOKYO_EXTRA_NEGATIVE,
+          TRAMOKYO_MATERIAL_NEGATIVE, SNOW_EXEMPT_JOURNEY_IDS,
           TRAMOKYO_STYLE_SUFFIX } from "@/lib/journeys/prompt-decoration";
         export { allocateByPhase } from "@/lib/journeys/pack-image-allocation";
       `,
@@ -258,15 +259,22 @@ async function main() {
           base = `${age}. ${overlay}. ${base}`;
         }
 
+        // 2026-09-27 material audit: the old ", no snowflakes" tail is
+        // GONE from both branches. FLUX reads in-prompt negation as the
+        // word itself (documented for "no moon" on 2026-09-21) — every
+        // still in the pack was being whispered "snowflakes", which is
+        // how snowflake-shaped fire and frost crystals reached Realized
+        // and Rebound. Snow suppression now lives in the real negative
+        // (TRAMOKYO_MATERIAL_NEGATIVE below), never in the prompt.
         let varied;
         if (t.strictCamera) {
-          varied = `${base}, no snowflakes`;
+          varied = base;
         } else {
           const povs = app.CINEMATIC_PERSPECTIVES[phase.id ?? "threshold"] ?? app.CINEMATIC_PERSPECTIVES.threshold;
           const pov = povs[Math.floor(Math.random() * povs.length)];
           const interp = app.PROMPT_INTERPRETATIONS[Math.floor(Math.random() * app.PROMPT_INTERPRETATIONS.length)];
           const mood = app.PROMPT_MOODS[Math.floor(Math.random() * app.PROMPT_MOODS.length)];
-          varied = `${base}, ${pov}, ${interp}, ${mood}, no snowflakes`;
+          varied = `${base}, ${pov}, ${interp}, ${mood}`;
         }
         if (TREATMENT === "tramokyo") {
           // Grade goes on BOTH branches — it is color/light only, so it
@@ -305,6 +313,11 @@ async function main() {
     // Ghost keeps her figure: skip the human terms for the LoRA journey.
     if (TREATMENT === "tramokyo" && !t.isGhost) negative = `${negative}, ${app.TRAMOKYO_EXTRA_NEGATIVE}`;
     if (TREATMENT === "tramokyo" && t.isGhost) negative = `${negative}, moon, moons, full moon, planet, planets`;
+    // Material law: ban the ice family everywhere EXCEPT the Snowflake
+    // journeys themselves (2026-09-27 audit — 15 journeys shipped snow).
+    if (TREATMENT === "tramokyo" && !app.SNOW_EXEMPT_JOURNEY_IDS.has(t.id)) {
+      negative = `${negative}, ${app.TRAMOKYO_MATERIAL_NEGATIVE}`;
+    }
     const useLora = !!t.loraUrl;
     const input = {
       prompt: fullPrompt,

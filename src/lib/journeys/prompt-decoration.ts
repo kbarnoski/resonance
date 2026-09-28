@@ -192,6 +192,22 @@ export const TRAMOKYO_EXTRA_NEGATIVE =
   "person, people, human figure, human figures, human silhouette, " +
   "man, woman, child, body, face";
 
+// Material law (2026-09-27 audit): the ice family belongs to Snowflake
+// alone — 15 journeys shipped snow/frost from the 09-23 batch. Applied
+// by the stills harvester to every treated journey EXCEPT the Snowflake
+// journeys (first-snow + its DB wrapper), which need their snow.
+// Weakly honored by FLUX; the real lever is positive occupation in the
+// shot text, but every bit of pressure helps.
+export const TRAMOKYO_MATERIAL_NEGATIVE =
+  "snow, snowy ground, snowfield, snowdrift, frost, frosted, hoarfrost, " +
+  "ice, icicles, frozen ground, winter, aurora borealis";
+
+/** Journeys exempt from TRAMOKYO_MATERIAL_NEGATIVE (the snow world). */
+export const SNOW_EXEMPT_JOURNEY_IDS = new Set([
+  "first-snow",
+  "1895014a-ce59-4640-aa23-b9421b588d70", // Snowflake (DB wrapper)
+]);
+
 /** STYLE_SUFFIX for treated (Tramokyo) harvests — the standard suffix's
  *  "every celestial body rendered as a perfect round sphere" clause
  *  INVITES moons; treated runs drop it. */
