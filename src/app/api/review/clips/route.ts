@@ -36,6 +36,24 @@ export async function GET() {
   const rows = await readJson<Array<{ id: string; name?: string }>>(
     path.join(ROOT, "public/tramokyo-pack/data/journeys.json"), []);
   const names = new Map(rows.map((r) => [r.id, r.name ?? r.id]));
+  // Built-in journeys live in code, not the DB — show their real names
+  // (Karel 2026-09-28: "i dont see snowflake in the list").
+  const BUILTIN_NAMES: Record<string, string> = {
+    "first-snow": "Snowflake",
+    "inferno": "Realized",
+    "ghost": "Ghost",
+    "cosmic-drift": "Cosmic Drift",
+    "mycelium-dream": "Mycelium Dream",
+    "the-ascension": "The Ascension",
+    "the-ascent": "The Ascent",
+    "the-bloom": "The Bloom",
+  };
+  for (const [slug, nm] of Object.entries(BUILTIN_NAMES)) {
+    // The builtin IS what the kiosk plays; a DB row with the same name
+    // is an unused variant — label it so the dropdown isn't ambiguous.
+    for (const [id, existing] of names) if (existing === nm) names.set(id, `${nm} (unused variant)`);
+    names.set(slug, nm);
+  }
   const verdicts = await readJson<Record<string, { verdict: string; at: string }>>(REVIEW_PATH, {});
 
   const journeys = Object.entries(clipsMap).map(([jid, clips]) => ({
