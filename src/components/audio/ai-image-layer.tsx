@@ -1150,11 +1150,29 @@ export function AiImageLayer({
   // AI layer opacity: inverse of shader opacity, clamped for visual balance.
   // When shaderOpacity is high (0.7+), AI is subtle. When low (0.3-0.5), AI is prominent.
   // For non-journey usage (shaderOpacity=1.0), defaults to 0.85 for backwards compat.
+  // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
+  // lot of great detail gets lost... because of effects"): while a
+  // living clip is playing, the imagery canvas eases up toward 0.8 so
+  // the film reads clearly through the shader wash, then settles back.
+  const [videoSpotlight, setVideoSpotlight] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => {
+      const active = layersRef.current.some(
+        (l) => !("complete" in l.img) && l.state !== "fading-out" && !(l.img as HTMLVideoElement).ended,
+      );
+      setVideoSpotlight((prev) => (prev === active ? prev : active));
+    }, 500);
+    return () => clearInterval(id);
+  }, []);
+
+  const baseAiOpacity = shaderOpacity >= 1.0
+    ? 0.85
+    : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
   const aiLayerOpacity = aiOnly
     ? undefined
-    : shaderOpacity >= 1.0
-      ? 0.85
-      : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
+    : videoSpotlight
+      ? Math.max(baseAiOpacity, 0.8)
+      : baseAiOpacity;
 
   return (
     <canvas
@@ -1165,7 +1183,7 @@ export function AiImageLayer({
       style={
         aiOnly
           ? { zIndex: 2, pointerEvents: "none" }
-          : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, pointerEvents: "none" }
+          : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 1800ms ease-in-out", pointerEvents: "none" }
       }
     />
   );
