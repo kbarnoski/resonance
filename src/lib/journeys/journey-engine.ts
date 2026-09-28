@@ -700,7 +700,10 @@ class JourneyEngine {
         // Conductor: the third layer belongs to the climax. A moment that
         // falls in a quiet stretch simply doesn't fire — threshold and
         // integration stay spare instead of "always max layers".
-        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze || now - this.lastAnySwitchMs <= JourneyEngine.SWITCH_SPACING_MS) break;
+        // Tertiary gets a SHORTER spacing slot (2.5s) — with primary+dual
+        // averaging one switch per ~7s, a full 4s-clear window rarely
+        // exists and the third layer would be starved out entirely.
+        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze || now - this.lastAnySwitchMs <= 2500) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
