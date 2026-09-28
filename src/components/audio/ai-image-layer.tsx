@@ -441,8 +441,13 @@ export function AiImageLayer({
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
     if (layers.length >= conductedMaxLayers()) {
+      // Never cut a layer mid-entrance (Karel 2026-09-28: "right after
+      // the text an image dropped"): a fading-in layer is only evictable
+      // once it's been arriving for 2.5s+. If nothing can gracefully
+      // leave, the INCOMING image waits — dropping something the viewer
+      // hasn't seen yet is invisible; dropping a half-born one is a glitch.
       const oldestVisible = layers.find((l) =>
-        (l.state === "fading-in") ||
+        (l.state === "fading-in" && now - l.fadeStartTime >= 2500) ||
         (l.state === "peak" && now - l.peakStartTime >= MIN_PEAK_DURATION)
       );
       if (oldestVisible) {
