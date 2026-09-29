@@ -233,6 +233,7 @@ export function AiImageLayer({
   const pendingMorphRef = useRef<{ forPhase: number; url: string } | null>(null);
   const journeyEpochRef = useRef(0);
   const journeyChangeAtRef = useRef(0);
+  const videoCanvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -1088,6 +1089,9 @@ export function AiImageLayer({
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    // Morph cinema canvas — see render loop + JSX notes.
+    const vCanvas = videoCanvasRef.current;
+    const vctx = vCanvas ? vCanvas.getContext("2d") : null;
 
     let lastW = 0;
     let lastH = 0;
@@ -1125,9 +1129,11 @@ export function AiImageLayer({
       if (w !== lastW || h !== lastH) {
         canvas.width = w;
         canvas.height = h;
+        if (vCanvas) { vCanvas.width = w; vCanvas.height = h; }
         lastW = w;
         lastH = h;
       }
+      if (vctx) vctx.clearRect(0, 0, w, h);
 
       // In aiOnly mode, fill black so shaders never show through during cross-dissolves
       if (aiOnlyRef.current) {
@@ -1189,13 +1195,23 @@ export function AiImageLayer({
           : (layer.img as HTMLVideoElement).readyState >= 2;
         if (layer.opacity <= 0.001 || !ready) continue;
 
-        ctx.globalCompositeOperation = i === 0 ? "source-over" : layer.blendMode;
+        // Morph cinema (Karel 2026-09-29: "how come so much detail of
+        // the morphs is lost?"): the collage canvas composites with
+        // mixBlendMode SCREEN — which only ADDS light, so a morph's
+        // blacks and dark microstructure vanish entirely and the clip
+        // plays as a translucent ghost over the shaders. Videos now
+        // render to their OWN canvas above the collage with normal
+        // blending: true blacks, full detail, easing in and out on the
+        // layer's opacity envelope while the stills canvas recedes.
+        const layerIsVideo = !("complete" in layer.img);
+        const tctx = layerIsVideo && vctx ? vctx : ctx;
+        tctx.globalCompositeOperation = layerIsVideo ? "source-over" : (i === 0 ? "source-over" : layer.blendMode);
         // Amplitude breathes luminance: quiet passages settle to ~92%,
         // full phrases lift to 100% — a slow living swell, never a flicker.
         // Normalized to the real music range (mean-spectrum amp rarely
         // exceeds ~0.3 — correctness audit #11).
         const lift = Math.min(1, audioRef.current.amp / 0.3);
-        ctx.globalAlpha = Math.min(1, layer.opacity * (0.92 + lift * 0.08));
+        tctx.globalAlpha = Math.min(1, layer.opacity * (layerIsVideo ? 0.94 : 0.92 + lift * 0.08));
 
         // Ken Burns: uses createdTime (never reset) for perfectly smooth motion
         const layerAge = (now - layer.createdTime) / 1000;
@@ -1209,7 +1225,7 @@ export function AiImageLayer({
         const panOffsetY = layer.panY * maxPan * kenBurnsEased * h;
 
         // Cover-fit: fill canvas without distorting the image's own aspect.
-        const isVideo = !("complete" in layer.img);
+        const isVideo = layerIsVideo;
         const imgW = (isVideo ? (layer.img as HTMLVideoElement).videoWidth : (layer.img as HTMLImageElement).naturalWidth) || layer.img.width || 1;
         const imgH = (isVideo ? (layer.img as HTMLVideoElement).videoHeight : (layer.img as HTMLImageElement).naturalHeight) || layer.img.height || 1;
         const imgAspect = imgW / imgH;
@@ -1230,11 +1246,12 @@ export function AiImageLayer({
         const dx = (w - sw) / 2 + panOffsetX;
         const dy = (h - sh) / 2 + panOffsetY;
 
-        ctx.drawImage(layer.img, dx, dy, sw, sh);
+        tctx.drawImage(layer.img, dx, dy, sw, sh);
       }
 
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
+      if (vctx) { vctx.globalCompositeOperation = "source-over"; vctx.globalAlpha = 1; }
       animRef.current = requestAnimationFrame(render);
     }
 
@@ -1265,23 +1282,34 @@ export function AiImageLayer({
   const baseAiOpacity = shaderOpacity >= 1.0
     ? 0.85
     : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
+  // Spotlight semantics flipped with the cinema canvas: the morph no
+  // longer lives in this canvas, so while it plays the stills RECEDE.
   const aiLayerOpacity = aiOnly
     ? undefined
     : videoSpotlight
-      ? Math.max(baseAiOpacity, 0.62)
+      ? Math.min(baseAiOpacity, 0.35)
       : baseAiOpacity;
 
   return (
-    <canvas
-      data-trail-src="1"
-      ref={canvasRef}
-      data-ai-image-canvas
-      className="absolute inset-0 w-full h-full"
-      style={
-        aiOnly
-          ? { zIndex: 2, pointerEvents: "none" }
-          : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out", pointerEvents: "none" }
-      }
-    />
+    <>
+      <canvas
+        data-trail-src="1"
+        ref={canvasRef}
+        data-ai-image-canvas
+        className="absolute inset-0 w-full h-full"
+        style={
+          aiOnly
+            ? { zIndex: 2, pointerEvents: "none" }
+            : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out", pointerEvents: "none" }
+        }
+      />
+      {/* Morph cinema canvas — normal blending so clips keep their true
+          blacks and full detail (content self-fades via layer opacity). */}
+      <canvas
+        ref={videoCanvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ zIndex: 3, pointerEvents: "none" }}
+      />
+    </>
   );
 }
