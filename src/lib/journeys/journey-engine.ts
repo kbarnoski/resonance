@@ -135,8 +135,8 @@ class JourneyEngine {
   /** Grace period will never exceed this fraction of the phase's total duration */
   private static readonly GRACE_MAX_PHASE_FRACTION = 0.4;
   /** Wall-clock shader switch timer — simple, reliable, no schedule drift */
-  private static readonly SHADER_SWITCH_MIN_SECS = 12; // Karel 2026-09-28: "~15s is enough — no shader on and on"
-  private static readonly SHADER_SWITCH_MAX_SECS = 18;
+  private static readonly SHADER_SWITCH_MIN_SECS = 10; // Karel 2026-09-28/29: "~15s is enough" + "ensure variety"
+  private static readonly SHADER_SWITCH_MAX_SECS = 15;
   /** Extra time for the first shader to compensate for compile + fade-in delay */
   private static readonly FIRST_SHADER_BUFFER_MS = 3000;
   /** Dual shader switches on a different cadence — offset from primary for variety */
@@ -1136,8 +1136,17 @@ class JourneyEngine {
     }
 
     // Journey-wide uniqueness: prefer shaders we haven't used yet in this journey.
-    // If every candidate has been seen, fall back to the full candidate list.
     const unseenCandidates = candidates.filter(m => !this.seenShaders.has(m));
+    // Phase pool exhausted: BORROW an unseen shader journey-wide before
+    // repeating (session e7jidb: strophoid ran dual twice + primary once
+    // — the dual picker lacked the borrow step the primary has).
+    if (unseenCandidates.length === 0 && this.journey) {
+      const live = new Set([this.currentShaderMode, this.tertiaryShaderMode]);
+      const borrow = this.journey.phases
+        .flatMap((p) => p.shaderModes)
+        .filter((m) => !this.seenShaders.has(m) && !MODES_3D.has(m) && this.isShaderAllowed(m) && !live.has(m));
+      if (borrow.length > 0) return borrow[Math.floor(this.random() * borrow.length)];
+    }
     const pool = unseenCandidates.length > 0 ? unseenCandidates : candidates;
 
     const geoModes = getGeometryModes();

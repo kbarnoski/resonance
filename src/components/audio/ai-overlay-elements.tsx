@@ -100,9 +100,10 @@ export function AiOverlayElements({
       // Conducted census: quiet passages hold at most one clone, the
       // build two, only the climax earns the full tier count.
       const t = intensityRef.current;
-      // Sparse (Karel 2026-09-29): no clones at all in quiet passages,
-      // one in the build, two at the climax — never a cloud of copies.
-      const conductedCap = t < 0.5 ? 0 : t < 0.85 ? 1 : 2;
+      // Midpoint (Karel 2026-09-29b: "bring back some of the layers"):
+      // quiet stays clone-free, the build carries one or two, the
+      // climax three — still never a cloud of copies.
+      const conductedCap = t < 0.45 ? 0 : t < 0.7 ? 1 : t < 0.85 ? 2 : 3;
       const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 

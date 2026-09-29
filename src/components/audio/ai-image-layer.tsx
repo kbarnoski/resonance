@@ -94,6 +94,9 @@ const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 // new journey's first image lands first (no void), short enough that no
 // cross-journey imagery survives past the first breath.
 const BOUNDARY_FADEOUT_DURATION = 8000;
+/** Per-journey layering bias over the archetype (Karel 2026-09-29:
+ *  "ghost is the one to push layering more so than our archetype"). */
+const JOURNEY_LAYER_BIAS: Record<string, number> = { ghost: 1 };
 const MIN_PEAK_DURATION = 7000; // Karel 2026-09-28: no "really fast images coming in only to transition out fast"
 const GEN_INTERVAL_MIN_BASE = 6500;
 const GEN_INTERVAL_MAX_BASE = 7500;
@@ -196,11 +199,12 @@ export function AiImageLayer({
     // Solo band: at opening/integration quiet (<0.35) exactly ONE image
     // holds the frame — the crisp asymmetric negative-space moment
     // (Karel 2026-09-28 design principle).
-    // Sparse composition (Karel 2026-09-29: "you continue to fill up
-    // most of the frame... i want sparse to cosmic climactic and
-    // elegant and understated"): the climax earns THREE stills, never
-    // four; the build holds two; everything quieter is a solo frame.
-    const cap = t < 0.5 ? 1 : t < 0.85 ? 2 : 3;
+    // Composition midpoint (Karel 2026-09-29b: "you pulled back too
+    // much and now at times the visuals are too boring... bring back
+    // some of the layers" — while keeping quiet openings quiet).
+    // Ghost pushes layering harder than the archetype by design.
+    const bias = JOURNEY_LAYER_BIAS[journeyIdRef.current ?? ""] ?? 0;
+    const cap = (t < 0.4 ? 1 : t < 0.65 ? 2 : t < 0.85 ? 3 : 4) + bias;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
@@ -240,6 +244,7 @@ export function AiImageLayer({
   const videoCanvasRef = useRef<HTMLCanvasElement>(null);
   const heldAiOpacityRef = useRef<number | undefined>(undefined);
   const morphCoverPendingRef = useRef(false);
+  const coverBoostRef = useRef(false);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -520,7 +525,13 @@ export function AiImageLayer({
     // both climax intensity AND the journey's second half.
     const { currentTime: mCur, duration: mDur } = useAudioStore.getState();
     const mProg = mDur > 0 ? mCur / mDur : 0;
-    const motionScale = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : mProg > 0.45 ? 1 : 0.35;
+    // Morph-end cover demands motion (Karel 2026-09-29: "when a morph
+    // ends there is shader and a layer moving and action or else it
+    // looks dead") — the covering still always drifts, at any intensity.
+    const coverBoost = !isVideo && coverBoostRef.current;
+    if (coverBoost) coverBoostRef.current = false;
+    const baseMotion = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : mProg > 0.45 ? 1 : 0.35;
+    const motionScale = coverBoost ? Math.max(0.35, baseMotion) : baseMotion;
     // Visible cinematic travel: up to 10-22% scale change per layer life,
     // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
     // so cover-fit always overflows and the pan never exposes an edge;
@@ -541,7 +552,7 @@ export function AiImageLayer({
       // (frames f0203-f0204, session 1ebs19): Realized's ember still
       // popped in at the right edge on the default fade = Karel's
       // "lower right quick increase in brightness".
-      fadeInMs: !isVideo && inBoundarySettle() ? 8000 : undefined,
+      fadeInMs: coverBoost ? 3000 : !isVideo && inBoundarySettle() ? 8000 : undefined,
       opacity: 0,
       state: "fading-in",
       fadeStartTime: now,
@@ -632,7 +643,10 @@ export function AiImageLayer({
         // a row. Skip only the push — clips below still schedule.
         const dupStill = stillUrl === lastPackUrlRef.current;
         if (!dupStill) lastPackUrlRef.current = stillUrl;
-        if (!dupStill) morphCoverPendingRef.current = false;
+        if (!dupStill && morphCoverPendingRef.current) {
+          morphCoverPendingRef.current = false;
+          coverBoostRef.current = true; // arriving over a morph's freeze-frame — bring ACTION
+        }
         if (!dupStill) loadImage(stillUrl)
           .then((img) => {
             if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");

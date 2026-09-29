@@ -219,6 +219,7 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 /** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"
+  "quasar", "neon", // Karel 2026-09-29 LAW: no full-screen intensity monsters anywhere — "shaders that interplay with the images in a perfect dance"
   "doppler", // Karel 2026-09-29: THE "pulsing full screen shader" (played in both flagged sessions; r3-coralpulse was the wrong guess)
   "roulette", // Karel 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 straight seconds — perf hazard
   "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
@@ -270,6 +271,8 @@ const REALM_SHADER_ALLOW: Record<string, string[]> = {
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
     "r3-fernunfurl", "fractal-tree", // green fractals — Karel 2026-09-29: "no bright green fractile spinning over snowflake" (fernunfurl was also the boundary "green twirl")
+    "molten-vein", "smolder", "obsidian-flow", "ember-drift", "shadow-fire", // fire-toned darks — Karel 2026-09-29: "that red shader dont work on snowflake"
+    "volcanic", "blood-moon", "furnace", "crucible", "iron-forge", "catacomb-torch", "r2-thermal", "r2-infrared",
     "zooid", "coral", "biofilm", "spore", "symbiosis", "plankton", // celly organics — Karel 2026-09-29: "small cells hanging out" clash with the crystalline world
     "magma", "inferno", "flame", // fire
     "orb", // wrong vibe
@@ -2138,9 +2141,9 @@ export function regenerateJourneyShaders(
   // triples the budget, pulling from the full shader pool.
   const durationScale = Math.max(1, trackDuration / 300);
   const baseBudgets: Record<string, number> = {
-    threshold: 6, expansion: 6, transcendence: 7,
+    threshold: 6, expansion: 7, transcendence: 8,
     illumination: 5, return: 4, integration: 4,
-  }; // +2 total 2026-09-28 — Karel: "snowflake needed another 2 for variety without overdoing it"
+  }; // 2026-09-29 — Karel: "ensure variety of shaders which i continue to see limited"
   const phaseBudgets: Record<string, number> = {};
   for (const [phase, base] of Object.entries(baseBudgets)) {
     phaseBudgets[phase] = Math.ceil(base * durationScale);
