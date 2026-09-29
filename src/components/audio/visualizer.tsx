@@ -776,7 +776,21 @@ export function VisualizerCore({
   // renders the current shader at full opacity. When mode changes, the INACTIVE
   // layer silently compiles the new shader (at opacity 0). Once ready, a rAF-based
   // crossfade swaps them. No React key remounting, no WebGL context destruction.
-  const actualPrimaryMode = mode as VisualizerMode;
+  // During the boundary settle the incoming journey's first shader is
+  // handed to the compile layer 400ms late — compileShader's synchronous
+  // frontend work otherwise lands in the same tick as the journey
+  // handoff (engine restart, purges, title mount), the recorded ~92ms
+  // stall (session 7wh3oi). The old shader keeps rendering meanwhile.
+  const immediatePrimaryMode = mode as VisualizerMode;
+  const [actualPrimaryMode, setActualPrimaryMode] = useState<VisualizerMode>(immediatePrimaryMode);
+  useEffect(() => {
+    if (actualPrimaryMode === immediatePrimaryMode) return;
+    if (inBoundarySettle()) {
+      const id = setTimeout(() => setActualPrimaryMode(immediatePrimaryMode), 400);
+      return () => clearTimeout(id);
+    }
+    setActualPrimaryMode(immediatePrimaryMode);
+  }, [immediatePrimaryMode, actualPrimaryMode]);
   const [layerAMode, setLayerAMode] = useState<VisualizerMode>(actualPrimaryMode);
   const [layerBMode, setLayerBMode] = useState<VisualizerMode | null>(null);
   // Primary layer that has fully faded out and can suspend its draw loop.
