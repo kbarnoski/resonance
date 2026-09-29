@@ -6,6 +6,8 @@ import type { Realm } from "@/lib/journeys/types";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealm } from "@/lib/journeys/realms";
+import { PINNED_TAKES } from "@/lib/journeys/pinned-takes";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { applyBuiltInEnrichment } from "@/lib/journeys/built-in-enrichments";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
@@ -419,7 +421,11 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     const realm = getRealm(journey.realmId);
     const engine = getJourneyEngine();
     const { duration } = get();
-    engine.start(journey, { trackDuration: duration > 0 ? duration : undefined });
+    // Every run is a numbered TAKE — same seed, same performance
+    // (see pinned-takes.ts). Logged so a loved run can be pinned.
+    const takeSeed = PINNED_TAKES[journey.id] ?? Math.floor(Math.random() * 2147483647);
+    glitchRecord("take-seed", `${journey.id} #${takeSeed}${PINNED_TAKES[journey.id] != null ? " (pinned)" : ""}`);
+    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined });
 
     // Read initial shader from the engine (after regeneration) to avoid
     // a flash where the store has a different shader than the engine
@@ -471,7 +477,9 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     const realm = getRealm(journey.realmId);
     const engine = getJourneyEngine();
     const { duration } = get();
-    engine.start(journey, { trackDuration: duration > 0 ? duration : undefined });
+    const takeSeed = PINNED_TAKES[journey.id] ?? Math.floor(Math.random() * 2147483647);
+    glitchRecord("take-seed", `${journey.id} #${takeSeed}${PINNED_TAKES[journey.id] != null ? " (pinned)" : ""}`);
+    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined });
     const firstMode = engine.getCurrentShaderMode();
     // Same guarantee as startJourney: open/close/reopen always starts
     // from the beginning regardless of whether play() gets called.
