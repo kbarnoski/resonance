@@ -117,15 +117,29 @@ export function DepthParallaxLayer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sizeRef = useRef({ w: 0, h: 0 });
   const [covered, setCovered] = useState(false);
+  // Coverage loss must not unmount the canvas in one frame — a 0.6-
+  // opacity screen-blend base vanishing IS a glitch (Ghost has no
+  // depth pack: parallax-covered flips false at the boundary, session
+  // yqwy2e — "the ghost titling transition glitched"). Retire: fade
+  // 8s, then unmount.
+  const [retiring, setRetiring] = useState(false);
 
   useEffect(() => {
     if (!journeyId) { setCovered(false); return; }
     let cancelled = false;
     const apply = (m: Record<string, boolean> | null) => {
       if (cancelled) return;
-      glitchRecord("parallax-covered", String(!!m?.[journeyId]));
-      setCovered(!!m?.[journeyId]);
-      onCoveredChange?.(!!m?.[journeyId]);
+      const next = !!m?.[journeyId];
+      glitchRecord("parallax-covered", String(next));
+      setCovered((prev) => {
+        if (prev && !next) {
+          setRetiring(true);
+          setTimeout(() => { setRetiring(false); setCovered(false); }, 8600);
+          return prev; // keep mounted while the 8s fade runs
+        }
+        return next;
+      });
+      onCoveredChange?.(next);
     };
     if (depthManifest !== undefined) {
       apply(depthManifest);
@@ -358,7 +372,7 @@ export function DepthParallaxLayer({
   // HOLD through the boundary settle like every other on-screen value.
   const computedOpacity = Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55));
   if (!inBoundarySettle() || heldOpacityRef.current === null) heldOpacityRef.current = computedOpacity;
-  const opacity = inBoundarySettle() ? heldOpacityRef.current : computedOpacity;
+  const opacity = retiring ? 0 : inBoundarySettle() ? heldOpacityRef.current : computedOpacity;
   return (
     <canvas
       key={glEpoch}
@@ -368,7 +382,7 @@ export function DepthParallaxLayer({
         zIndex: 2,
         mixBlendMode: "screen",
         opacity,
-        transition: "opacity 1200ms ease-out",
+        transition: retiring ? "opacity 8000ms ease-out" : "opacity 1200ms ease-out",
       }}
     />
   );

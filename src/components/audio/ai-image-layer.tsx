@@ -239,6 +239,7 @@ export function AiImageLayer({
   const journeyChangeAtRef = useRef(0);
   const videoCanvasRef = useRef<HTMLCanvasElement>(null);
   const heldAiOpacityRef = useRef<number | undefined>(undefined);
+  const morphCoverPendingRef = useRef(false);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -587,15 +588,22 @@ export function AiImageLayer({
       // a 108ms frame gap while a morph eased out): still churn waits
       // the few seconds a clip is visible — a decode stall on held
       // stills is invisible, one under playing video is a glitch.
-      if (isVideoActive()) return;
-      // One mover at a time (sqxfce forensics): a still push + parallax
-      // upload landing within 2.5s of a shader switch stacks stalls
-      // into a visible hitch on whatever is moving. The imagery yields.
-      if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
-      // Stillness = nothing happens: no image births during a held
-      // window, so the cap-crush can't evict what the viewer is
-      // holding their breath with.
-      if (getJourneyEngine().isInStillness()) return;
+      // Morph-end cover bypasses the quiet gates — its whole job is
+      // to arrive WHILE the ended clip fades (Karel: "incorporating
+      // morphs only works if theres layering to hide that last still
+      // frame").
+      const morphCover = morphCoverPendingRef.current;
+      if (!morphCover) {
+        if (isVideoActive()) return;
+        // One mover at a time (sqxfce forensics): a still push + parallax
+        // upload landing within 2.5s of a shader switch stacks stalls
+        // into a visible hitch on whatever is moving. The imagery yields.
+        if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
+        // Stillness = nothing happens: no image births during a held
+        // window, so the cap-crush can't evict what the viewer is
+        // holding their breath with.
+        if (getJourneyEngine().isInStillness()) return;
+      }
       // Handoff holdoff: the journey-change tick itself stalls ~180ms
       // (purges + engine restart + title mount) — the first new still
       // waits out that window so its birth isn't part of the pile-up.
@@ -624,6 +632,7 @@ export function AiImageLayer({
         // a row. Skip only the push — clips below still schedule.
         const dupStill = stillUrl === lastPackUrlRef.current;
         if (!dupStill) lastPackUrlRef.current = stillUrl;
+        if (!dupStill) morphCoverPendingRef.current = false;
         if (!dupStill) loadImage(stillUrl)
           .then((img) => {
             if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");
@@ -713,6 +722,11 @@ export function AiImageLayer({
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
               markVideoActive(4000); // cover the ease-out fade
+              // Layering hides the last frame (Karel 2026-09-29): the
+              // next still pushes IMMEDIATELY so an image blooms over
+              // the morph's freeze-frame while it fades.
+              morphCoverPendingRef.current = true;
+              lastGenTimeRef.current = 0;
               const layer = layersRef.current.find((l) => l.img === v);
               if (layer && layer.state !== "fading-out") {
                 layer.fadeStartOpacity = layer.opacity;

@@ -181,6 +181,8 @@ class JourneyEngine {
    *    shader, nothing else (intensity clamped to STILLNESS_LEVEL). */
   private static readonly BREATH_FLOOR = 0.5; // deepened 2026-09-28 — "don't be afraid of negative space"
   private static readonly STILLNESS_LEVEL = 0.3;
+  /** Progress where the ending wind-down begins (mirror of the opening ramp). */
+  private static readonly WIND_DOWN_START = 0.80;
   private breathPeriodSecs = 70;
   private breathPhase = 0;
   private stillnessMoments: TertiaryMoment[] = [];
@@ -560,6 +562,17 @@ class JourneyEngine {
     const openingCap = JourneyEngine.OPENING_FLOOR
       + (1 - JourneyEngine.OPENING_FLOOR) * Math.min(1, elapsedSec / JourneyEngine.OPENING_RAMP_SECS);
     let conducted = Math.min(Number.isFinite(rawIntensity) ? rawIntensity : 1, openingCap);
+    // Ending wind-down — the mirror of the opening ramp (Karel
+    // 2026-09-29: "you built up the most complexity as the song was
+    // heading towards ending... that should be quieting down"). From
+    // 80% progress conducted intensity glides to the quiet floor,
+    // which by construction sheds the dual, blocks tertiary, drops
+    // the imagery cap and stills all motion.
+    if (clamped > JourneyEngine.WIND_DOWN_START) {
+      const remain = Math.max(0, (1 - clamped) / (1 - JourneyEngine.WIND_DOWN_START));
+      const endingCap = JourneyEngine.OPENING_FLOOR + (1 - JourneyEngine.OPENING_FLOOR) * remain;
+      conducted = Math.min(conducted, endingCap);
+    }
     // Breath wave: multiplies intensity by BREATH_FLOOR..1 on a slow
     // seeded cycle — climaxes still peak, but the grip releases in
     // rhythm and the dual layer/motion ease off in the valleys.
@@ -698,7 +711,7 @@ class JourneyEngine {
         this.dualShaderMode = null;
       }
     } else if (this.dualShaderInitialized && shaderLen >= 2 && !endFreeze) {
-      if (!this.frozen && !this.playbackPaused && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
+      if (!this.frozen && !this.playbackPaused && !morphOnScreen && !rotationFreeze && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
         this.seenShaders.add(this.dualShaderMode);
