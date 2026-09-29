@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-29T~13:0xZ (cycle 1267)
 
+> **Jury verdict today**: The lab finally broke its own ambition ceiling — `timbrefold` conducts your piano's *vowels* instead of another reverb and it's the first build in three weeks grounded in fresh research — but it did it by minting a fifth beautiful demoable instead of spending the 30 seconds only you can spend proving the four camera pieces it *already built* actually track you; tomorrow's real win is finishing inventory, not making more of it. See `docs/dreams/JURY.md`.
+
 > **Today: your piano learns to sing — you shape its throat with your hands.** `18320-timbrefold` — one of your Welcome Home / Snowflake takes plays untouched, and a **vocal tract made of four resonant formants** rides on top of it. Raise your **right hand** to shrink and brighten the resonant body, your **left** to tilt it dark/woody or bright/glassy, **spread both hands** to make it sing, and **slide them left↔right** to sweep the vowel from *oo* to *ee*. The melody and pitch never move a hair — only the *body* of the sound morphs. Ships **`demoable`, not `wip`**: a labeled demo hand shapes it on load, no camera needed. Open `/dream/18320-timbrefold`, hit Play, then "Shape it with your hands".
 
 ## New since yesterday
