@@ -11,6 +11,7 @@ import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
 import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle } from "@/lib/journeys/video-activity";
+import { isKineticJourneyName } from "@/lib/journeys/kinetic";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -210,6 +211,9 @@ export function AiImageLayer({
     // much and now at times the visuals are too boring... bring back
     // some of the layers" — while keeping quiet openings quiet).
     // Ghost pushes layering harder than the archetype by design.
+    // Kinetic journeys: shaders dominate; imagery is a whisper — one
+    // still as texture, never a collage.
+    if (isKineticJourneyName(useAudioStore.getState().activeJourney?.name)) return 1;
     const bias = JOURNEY_LAYER_BIAS[journeyIdRef.current ?? ""] ?? 0;
     const cap = (t < 0.4 ? 1 : t < 0.65 ? 2 : t < 0.85 ? 3 : 4) + bias;
     return Math.min(getTierProfile().maxAiLayers, cap);
@@ -249,6 +253,8 @@ export function AiImageLayer({
   const journeyEpochRef = useRef(0);
   const journeyChangeAtRef = useRef(0);
   const videoCanvasRef = useRef<HTMLCanvasElement>(null);
+  // Subscribed ABOVE all early returns (rules of hooks).
+  const kineticWhisper = isKineticJourneyName(useAudioStore((s) => s.activeJourney?.name));
   const heldAiOpacityRef = useRef<number | undefined>(undefined);
   const morphCoverPendingRef = useRef(false);
   const coverBoostRef = useRef(false);
@@ -1410,9 +1416,11 @@ export function AiImageLayer({
   // AI layer opacity: inverse of shader opacity, clamped for visual balance.
   // When shaderOpacity is high (0.7+), AI is subtle. When low (0.3-0.5), AI is prominent.
   // For non-journey usage (shaderOpacity=1.0), defaults to 0.85 for backwards compat.
-  const baseAiOpacity = shaderOpacity >= 1.0
-    ? 0.85
-    : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
+  const baseAiOpacity = kineticWhisper
+    ? 0.2
+    : shaderOpacity >= 1.0
+      ? 0.85
+      : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
   // Spotlight semantics flipped with the cinema canvas: the morph no
   // longer lives in this canvas, so while it plays the stills RECEDE.
   // Quiet passages skip the spotlight dim entirely — with one still on

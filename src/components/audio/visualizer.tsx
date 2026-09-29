@@ -41,6 +41,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
+import { isKineticJourneyName } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -162,6 +163,9 @@ export interface VisualizerCoreProps {
   journeyAccent?: string | null;
   /** When true, shaders use smooth sine waves instead of audio reactivity */
   smoothMotion?: boolean;
+  /** Kinetic band-split: this layer listens to ONE band — bass (primary),
+   *  mid (dual) or treble (tertiary). Undefined = classic blend. */
+  bandFocus?: "bass" | "mid" | "treble";
   /** Music-paced shader clock (see ShaderVisualizer.tempoFlow) */
   tempoFlow?: boolean;
   /** Sign out handler */
@@ -236,6 +240,7 @@ export function ShaderVisualizer({
   fragShader,
   style,
   smoothMotion = false,
+  bandFocus,
   tempoFlow = false,
   paused = false,
   onReady,
@@ -246,6 +251,7 @@ export function ShaderVisualizer({
   style?: React.CSSProperties;
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
+  bandFocus?: "bass" | "mid" | "treble";
   /** Music-paced time dilation (2026-09-25, Karel): the shader CLOCK slows
    *  and quickens with the track's energy — lines travel at the music's
    *  pace — while the animation itself stays on smooth curves. No
@@ -277,6 +283,8 @@ export function ShaderVisualizer({
   }, []);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
+  const bandFocusRef = useRef(bandFocus);
+  useEffect(() => { bandFocusRef.current = bandFocus; }, [bandFocus]);
   const tempoFlowRef = useRef(tempoFlow);
   const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
@@ -544,6 +552,20 @@ export function ShaderVisualizer({
       }
 
       const s = smoothRef.current;
+      // Kinetic band-split: the layer hears only its assigned band —
+      // that band drives amplitude and is boosted; the others whisper.
+      const applyBandFocus = () => {
+        const f = bandFocusRef.current;
+        if (!f) return;
+        const focusVal = f === "bass" ? s.bass : f === "mid" ? s.mid : s.treble;
+        const damp = 0.25;
+        if (f !== "bass") s.bass *= damp;
+        if (f !== "mid") s.mid *= damp;
+        if (f !== "treble") s.treble *= damp;
+        const boosted = Math.min(1, focusVal * 1.5);
+        if (f === "bass") s.bass = boosted; else if (f === "mid") s.mid = boosted; else s.treble = boosted;
+        s.amplitude = boosted;
+      };
       if (smoothMotionRef.current) {
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
         s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
@@ -573,6 +595,7 @@ export function ShaderVisualizer({
       gl.useProgram(program!);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
+      applyBandFocus();
       gl.uniform1f(uBass, s.bass * REACTIVITY);
       gl.uniform1f(uMid, s.mid * REACTIVITY);
       gl.uniform1f(uTreble, s.treble * REACTIVITY);
@@ -751,6 +774,12 @@ export function VisualizerCore({
   const queueIndex = useAudioStore((s) => s.queueIndex);
 
   const language = useAudioStore((s) => s.language);
+  // Kinetic band-split journeys: each shader layer listens to one band.
+  const kineticName = useAudioStore((s) => s.activeJourney?.name);
+  const kinetic = isKineticJourneyName(kineticName);
+  const bandPrimary = kinetic ? ("bass" as const) : undefined;
+  const bandDual = kinetic ? ("mid" as const) : undefined;
+  const bandTertiary = kinetic ? ("treble" as const) : undefined;
   const setLanguage = useAudioStore((s) => s.setLanguage);
 
   const [vibe, setVibe] = useState<Mood | null>(defaultMood ?? null);
@@ -1240,7 +1269,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} paused={layerPaused} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 
@@ -1291,6 +1320,7 @@ export function VisualizerCore({
                 analyser={analyser}
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerAMode as VisualizerMode]!}
+                bandFocus={bandDual}
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerAReady}
@@ -1305,6 +1335,7 @@ export function VisualizerCore({
                 analyser={analyser}
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerBMode as VisualizerMode]!}
+                bandFocus={bandDual}
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerBReady}
@@ -1321,6 +1352,7 @@ export function VisualizerCore({
                 analyser={analyser}
                 dataArray={dataArray}
                 fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
+                bandFocus={bandTertiary}
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleTertiaryShaderReady}
