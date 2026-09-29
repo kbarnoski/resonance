@@ -108,8 +108,8 @@
   "at": "2026-09-28T19:45:51.783Z"
  },
  "inferno/t0": {
-  "verdict": "good",
-  "at": "2026-09-28T19:45:58.347Z"
+  "verdict": "bad",
+  "at": "2026-09-29T03:40:00.000Z"
  },
  "inferno/t1": {
   "verdict": "good",
