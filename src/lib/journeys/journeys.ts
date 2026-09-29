@@ -269,6 +269,7 @@ const REALM_SHADER_ALLOW: Record<string, string[]> = {
 
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
+    "r3-fernunfurl", "fractal-tree", // green fractals — Karel 2026-09-29: "no bright green fractile spinning over snowflake" (fernunfurl was also the boundary "green twirl")
     "zooid", "coral", "biofilm", "spore", "symbiosis", "plankton", // celly organics — Karel 2026-09-29: "small cells hanging out" clash with the crystalline world
     "magma", "inferno", "flame", // fire
     "orb", // wrong vibe

@@ -438,6 +438,12 @@ export function AiImageLayer({
 
     const layers = layersRef.current;
     const now = performance.now();
+    // Morphs live on the cinema canvas, not the screen-blend collage —
+    // they neither crowd the composition nor compete for its slots.
+    // Cap/evict below applies to STILLS only (session wnotel: a full
+    // cap of entrance-protected stills silently rejected the morph —
+    // Karel: "including that morph i love!").
+    const isVideoPush = !("complete" in img);
 
     // Evict fully invisible layers first
     for (let i = layers.length - 1; i >= 0; i--) {
@@ -450,7 +456,8 @@ export function AiImageLayer({
     // Only fade out the OLDEST visible layer when at capacity —
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
-    if (layers.length >= conductedMaxLayers()) {
+    const stillCount = layers.filter((l) => "complete" in l.img).length;
+    if (!isVideoPush && stillCount >= conductedMaxLayers()) {
       // Never cut a layer mid-entrance (Karel 2026-09-28: "right after
       // the text an image dropped"): a fading-in layer is only evictable
       // once it's been arriving for 2.5s+. If nothing can gracefully
@@ -473,7 +480,7 @@ export function AiImageLayer({
     }
 
     // Hard cap: if still over limit after starting a fade, force-remove oldest fading
-    if (layers.length >= conductedMaxLayers() + 1) {
+    if (!isVideoPush && stillCount >= conductedMaxLayers() + 1) {
       // Never hard-remove a layer the viewer can still see — a splice at
       // opacity 0.5 IS the "image drops out" glitch. Visible layers keep
       // fading; the momentary cap overshoot costs one extra drawImage.
@@ -488,7 +495,7 @@ export function AiImageLayer({
     // Favor source-over — screen/lighten between layers can cause additive blow-out
     const roll = Math.random();
     const blendMode: GlobalCompositeOperation = roll < 0.65 ? "source-over" : roll < 0.85 ? "screen" : "lighten";
-    const isVideo = !("complete" in img);
+    const isVideo = isVideoPush;
     // Conductor (Karel 2026-09-28): motion follows the music. Quiet
     // phases get a gentle drift, the climax gets the full cinematic
     // move — and VIDEOS play STILL: they carry their own generated
@@ -736,7 +743,13 @@ export function AiImageLayer({
         const morph = pendingMorphRef.current;
         if (morph && morph.forPhase === phaseIdx && !busyNow()) {
           pendingMorphRef.current = null;
-          pushVideoUrl(morph.url);
+          const attempt = morph;
+          pushVideoUrl(morph.url, () => {
+            // Transient failure (decode error, stale epoch): re-arm so
+            // the next tick retries instead of losing the morph.
+            glitchRecord("clip-fail", attempt.url.split("/").pop() ?? "");
+            if (pendingMorphRef.current == null) pendingMorphRef.current = attempt;
+          });
         } else if (!morph || morph.forPhase !== phaseIdx) {
           if (morph) pendingMorphRef.current = null; // phase moved on — drop stale morph
           const heroUrl = HEROES_ENABLED ? pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string }) : undefined;

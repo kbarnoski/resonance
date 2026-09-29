@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useCallback, useState } from "react";
+import { inBoundarySettle } from "@/lib/journeys/video-activity";
 import { AiImageLayer } from "./ai-image-layer";
 import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
@@ -300,9 +301,35 @@ export function JourneyCompositor({
       };
     }
 
-    // Normal update — set directly (skip if intro ramp is active)
+    // Normal update. LARGE steps ramp instead of snap — the incoming
+    // journey's higher authored shaderOpacity used to jump the var in
+    // one frame, visibly brightening whatever shader was still
+    // crossfading ("that green shader twirl got a bit brighter when
+    // realized loaded", session wnotel). Settle ramps ~3x slower.
     if (!introRampRafRef.current && rootRef.current) {
-      rootRef.current.style.setProperty("--shader-opacity", String(effectiveShaderOpacity));
+      const el = rootRef.current;
+      const parsed = parseFloat(el.style.getPropertyValue("--shader-opacity"));
+      const from = Number.isFinite(parsed) ? parsed : prev;
+      if (Math.abs(effectiveShaderOpacity - from) > 0.05) {
+        let current = from;
+        const rate = inBoundarySettle() ? 0.012 : 0.04;
+        const ramp = () => {
+          const target = shaderOpacityRef.current;
+          current += (target - current) * rate;
+          if (Math.abs(current - target) < 0.005) {
+            current = target;
+            introRampRafRef.current = 0;
+          }
+          el.style.setProperty("--shader-opacity", String(current));
+          if (current !== target) introRampRafRef.current = requestAnimationFrame(ramp);
+        };
+        introRampRafRef.current = requestAnimationFrame(ramp);
+        return () => {
+          cancelAnimationFrame(introRampRafRef.current);
+          introRampRafRef.current = 0;
+        };
+      }
+      el.style.setProperty("--shader-opacity", String(effectiveShaderOpacity));
     }
   }, [effectiveShaderOpacity]);
 
