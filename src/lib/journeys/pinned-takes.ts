@@ -15,6 +15,23 @@
  * shader pool is unchanged — banning a shader reshuffles the draws.
  * Cull the duds first, then pin the take that sings.
  */
-export const PINNED_TAKES: Record<string, number> = {
-  // "first-snow": 123456789,
+/**
+ * A journey maps to one take (always that performance) or a LIBRARY of
+ * loved takes — the kiosk picks one at random each run (Karel
+ * 2026-09-29: "record multiple takes i like and when it runs it
+ * chooses one — deterministic brought back in a very compelling way").
+ * The generative engine becomes the composer; the pinned list is the
+ * album of approved performances.
+ */
+export const PINNED_TAKES: Record<string, number | number[]> = {
+  // "first-snow": [123456789, 987654321],
 };
+
+/** Resolve tonight's take for a journey: a pinned one (or a random
+ *  pick from its library), else null = fresh generative take. */
+export function pickPinnedTake(journeyId: string): number | null {
+  const p = PINNED_TAKES[journeyId];
+  if (p == null) return null;
+  if (Array.isArray(p)) return p.length ? p[Math.floor(Math.random() * p.length)] : null;
+  return p;
+}
