@@ -42,17 +42,6 @@ interface PostProcessingLayerProps {
   };
 }
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  alpha: number;
-  life: number;
-  maxLife: number;
-}
-
 /**
  * Post-processing overlay layer (canvas-based, tier-capped rAF):
  * - Vignette (radial gradient)
@@ -77,7 +66,6 @@ export function PostProcessingLayer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
   const timeRef = useRef(0);
-  const particlesRef = useRef<Particle[]>([]);
   // CSS size cached by ResizeObserver — avoids per-frame layout reads
   const sizeRef = useRef({ w: 0, h: 0 });
 
@@ -91,7 +79,7 @@ export function PostProcessingLayer({
   // in one frame reads as the room dimming. Smooth every scalar toward
   // its target (~1.5s time constant) so handoffs ease like everything
   // else. The smoothed values are what the draw loop consumes.
-  const smoothRef = useRef({ vignette, bloomIntensity, particleDensity, halation, intensityMultiplier, colorTemperature });
+  const smoothRef = useRef({ vignette, bloomIntensity, halation, intensityMultiplier, colorTemperature });
   const paletteSmoothRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
@@ -150,7 +138,6 @@ export function PostProcessingLayer({
         const sm = smoothRef.current;
         sm.vignette += (raw.vignette - sm.vignette) * k;
         sm.bloomIntensity += (raw.bloomIntensity - sm.bloomIntensity) * k;
-        sm.particleDensity += (raw.particleDensity - sm.particleDensity) * k;
         sm.halation += (raw.halation - sm.halation) * k;
         sm.intensityMultiplier += (raw.intensityMultiplier - sm.intensityMultiplier) * k;
         sm.colorTemperature += (raw.colorTemperature - sm.colorTemperature) * k;
@@ -166,11 +153,6 @@ export function PostProcessingLayer({
         }
       }
       const pp = { ...raw, ...smoothRef.current, palette: { ...raw.palette, ...paletteSmoothRef.current } };
-      // The floating motes follow the music now (Karel 2026-09-29: tiny
-      // bubbles "lasted all of snowflake and continuously into realized"
-      // — they ran at constant density through every journey). Quiet
-      // passages have none; they earn their way in with the build.
-      pp.particleDensity *= Math.max(0, Math.min(1, (pp.intensityMultiplier - 0.45) / 0.4));
       timeRef.current += dt;
       const t = timeRef.current;
 
@@ -266,60 +248,12 @@ export function PostProcessingLayer({
         ctx.restore();
       }
 
-      // --- Particles ---
-      if (pp.particleDensity > 0.02) {
-        // Density now reads as authored: 0.3 → ~54 motes, 0.8 → ~144.
-        // Amplitude adds up to +40% population so crescendos visibly bloom.
-        const gain = pp.intensityMultiplier ?? 1;
-        const targetCount = Math.floor(pp.particleDensity * 180 * (0.8 + pp.audioAmplitude * 0.4) * gain);
-        const particles = particlesRef.current;
-
-        // Spawn new particles (capped per frame)
-        let spawned = 0;
-        while (particles.length < targetCount && spawned < 3) {
-          particles.push({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: -0.2 - Math.random() * 0.5,
-            size: 1 + Math.random() * 2,
-            alpha: 0,
-            life: 0,
-            maxLife: 3 + Math.random() * 5,
-          });
-          spawned++;
-        }
-
-        ctx.fillStyle = pp.palette.glow;
-
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const pt = particles[i];
-          pt.life += dt;
-          pt.x += pt.vx + Math.sin(t + pt.y * 0.01) * 0.3;
-          pt.y += pt.vy;
-
-          const lifeProgress = pt.life / pt.maxLife;
-          if (lifeProgress < 0.2) {
-            pt.alpha = lifeProgress / 0.2;
-          } else if (lifeProgress > 0.8) {
-            pt.alpha = (1 - lifeProgress) / 0.2;
-          } else {
-            pt.alpha = 1;
-          }
-
-          if (pt.life >= pt.maxLife || pt.y < -10 || pt.x < -10 || pt.x > w + 10) {
-            particles.splice(i, 1);
-            continue;
-          }
-
-          // Single draw call per particle (no separate glow)
-          ctx.globalAlpha = Math.min(0.55, pt.alpha * (0.25 + pp.particleDensity * 0.4));
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, pt.size * dpr, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-      }
+      // Particles/motes DELETED entirely (Karel 2026-09-29: "what is a
+      // post processing mote? nothing should exist like this i know
+      // of"). Imagery is the pack stills and morphs, motion is the
+      // shaders — a third free-floating dust system answering to
+      // neither is off-architecture. Same treatment as film grain:
+      // removed, not zeroed.
 
       animRef.current = requestAnimationFrame(render);
     }
