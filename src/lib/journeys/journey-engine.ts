@@ -568,10 +568,16 @@ class JourneyEngine {
     // 80% progress conducted intensity glides to the quiet floor,
     // which by construction sheds the dual, blocks tertiary, drops
     // the imagery cap and stills all motion.
+    let windDownShaderScale = 1;
     if (clamped > JourneyEngine.WIND_DOWN_START) {
       const remain = Math.max(0, (1 - clamped) / (1 - JourneyEngine.WIND_DOWN_START));
       const endingCap = JourneyEngine.OPENING_FLOOR + (1 - JourneyEngine.OPENING_FLOOR) * remain;
       conducted = Math.min(conducted, endingCap);
+      // The parked final shader must recede WITH the music (Karel
+      // 2026-09-29: r3-lightrivers "two bright lit lines just sitting
+      // there" for the frozen last 36s). Brightness eases toward 45%
+      // across the wind-down; the rotation freeze can then hold safely.
+      windDownShaderScale = 0.45 + 0.55 * remain;
     }
     // Breath wave: multiplies intensity by BREATH_FLOOR..1 on a slow
     // seeded cycle — climaxes still peak, but the grip releases in
@@ -841,7 +847,7 @@ class JourneyEngine {
       progress: clamped,
       phaseProgress,
       shaderMode: effectiveShader,
-      shaderOpacity: iv((p) => p.shaderOpacity),
+      shaderOpacity: (iv((p) => p.shaderOpacity)) * windDownShaderScale,
       aiPrompt,
       denoisingStrength: mapAudioToDenoising(
         this.audioFeatures.bass,

@@ -80,6 +80,8 @@ interface ImageLayer {
   boundaryFade?: boolean;
   /** Per-layer fade-in override — settle-born layers ease in over 8s. */
   fadeInMs?: number;
+  /** Morph-cover stills hold peak longer before any eviction. */
+  coverHold?: boolean;
 }
 
 // Pacing — spec v3 §6: slow crossfades and long tails so images BUILD
@@ -101,7 +103,8 @@ const BOUNDARY_FADEOUT_DURATION = 8000;
 /** Per-journey layering bias over the archetype (Karel 2026-09-29:
  *  "ghost is the one to push layering more so than our archetype"). */
 const JOURNEY_LAYER_BIAS: Record<string, number> = { ghost: 1 };
-const MIN_PEAK_DURATION = 7000; // Karel 2026-09-28: no "really fast images coming in only to transition out fast"
+const MIN_PEAK_DURATION = 9000; // Karel 2026-09-29: big changes can't chase each other at the climax
+const COVER_PEAK_DURATION = 12000; // morph-cover stills hold longest — they ARE the big change // Karel 2026-09-28: no "really fast images coming in only to transition out fast"
 const GEN_INTERVAL_MIN_BASE = 6500;
 const GEN_INTERVAL_MAX_BASE = 7500;
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
@@ -484,8 +487,8 @@ export function AiImageLayer({
       // leave, the INCOMING image waits — dropping something the viewer
       // hasn't seen yet is invisible; dropping a half-born one is a glitch.
       const oldestVisible = layers.find((l) =>
-        (l.state === "fading-in" && now - l.fadeStartTime >= 2500) ||
-        (l.state === "peak" && now - l.peakStartTime >= MIN_PEAK_DURATION)
+        (l.state === "fading-in" && !l.coverHold && now - l.fadeStartTime >= 2500) ||
+        (l.state === "peak" && now - l.peakStartTime >= (l.coverHold ? COVER_PEAK_DURATION : MIN_PEAK_DURATION))
       );
       if (oldestVisible) {
         glitchRecord("layer-evict", `cap=${conductedMaxLayers()}`);
@@ -566,6 +569,7 @@ export function AiImageLayer({
       // popped in at the right edge on the default fade = Karel's
       // "lower right quick increase in brightness".
       fadeInMs: coverBoost ? 3000 : !isVideo && inBoundarySettle() ? 8000 : undefined,
+      coverHold: coverBoost || undefined,
       opacity: 0,
       state: "fading-in",
       fadeStartTime: now,
@@ -627,6 +631,13 @@ export function AiImageLayer({
         // window, so the cap-crush can't evict what the viewer is
         // holding their breath with.
         if (getJourneyEngine().isInStillness()) return;
+        // Solo-frame hold (Karel 2026-09-29: Realized's opener swapped
+        // out 11s in — "something dropped out"): when ONE image holds
+        // the frame alone, it holds at least 18s before the next.
+        if (conductedMaxLayers() === 1) {
+          const solo = layersRef.current.find((l) => ("complete" in l.img) && l.opacity > 0.3);
+          if (solo && performance.now() - solo.createdTime < 18000) return;
+        }
       }
       // Handoff holdoff: the journey-change tick itself stalls ~180ms
       // (purges + engine restart + title mount) — the first new still
@@ -1129,7 +1140,7 @@ export function AiImageLayer({
       // "too abrupt and causes glitches". Each image now breathes
       // longer at every intensity; the static-vs-overwhelm balance
       // lives in MIN_PEAK + cap, not raw turnover speed.
-      const paceMul = t < 0.5 ? 1.6 : t < 0.8 ? 1.35 : 1.2;
+      const paceMul = t < 0.5 ? 1.6 : t < 0.8 ? 1.35 : 1.35; // climax calmed 1.2->1.35 (2026-09-29)
       nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul;
       triggerGeneration(true); // always skip cache for ongoing gens
     };
