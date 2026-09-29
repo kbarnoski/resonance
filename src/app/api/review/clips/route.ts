@@ -26,7 +26,8 @@ async function readJson<T>(p: string, fallback: T): Promise<T> {
   try { return JSON.parse(await readFile(p, "utf8")) as T; } catch { return fallback; }
 }
 
-type ClipEntry = string | { h264: string; hevc?: string };
+type ClipVariant = string | { h264: string; hevc?: string };
+type ClipEntry = ClipVariant | ClipVariant[];
 
 export async function GET() {
   if (!gated()) return NextResponse.json({ error: "not available" }, { status: 404 });
@@ -78,6 +79,8 @@ export async function GET() {
       // travel morphs only while wan heroes sit out of the product.
       .filter(([key]) => key.startsWith("t"))
       .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+      // A slot may hold a POOL of morphs (2026-09-29) — one review row each.
+      .flatMap(([key, entry]) => (Array.isArray(entry) ? entry.map((v, i) => [`${key}#${i + 1}`, v] as const) : [[key, entry] as const]))
       .map(([key, entry]) => ({
         key,
         // Always review the H.264 variant — it's what most playback uses.

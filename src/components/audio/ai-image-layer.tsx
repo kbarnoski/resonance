@@ -245,6 +245,7 @@ export function AiImageLayer({
   const heldAiOpacityRef = useRef<number | undefined>(undefined);
   const morphCoverPendingRef = useRef(false);
   const coverBoostRef = useRef(false);
+  const runJitterRef = useRef(0);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -349,6 +350,7 @@ export function AiImageLayer({
       if (prevJourneyId != null) markJourneyBoundary(10500);
       journeyEpochRef.current++;
       journeyChangeAtRef.current = performance.now();
+      runJitterRef.current = Math.floor(Math.random() * 4); // 0..3
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
       // Same staleness class for STILLS (2026-09-27): a 400ms gen tick can
@@ -442,10 +444,6 @@ export function AiImageLayer({
       firstImageFiredRef.current = true;
       onFirstImageRef.current?.();
     }
-
-    // Notify overlay layer of new image — STILLS ONLY (correctness #10:
-    // an .mp4 src spawns an invisible clone that squats a clone slot).
-    if ("complete" in img) onImageReadyRef.current?.(img.src);
 
     const layers = layersRef.current;
     const now = performance.now();
@@ -544,6 +542,10 @@ export function AiImageLayer({
     const panX = (Math.random() - 0.5) * 2 * motionScale; // -1 to 1, conducted
     const panY = (Math.random() - 0.5) * 2 * motionScale;
 
+    // Notify the overlay clone layer only for stills that actually
+    // ENTERED the collage (it used to fire before the cap check —
+    // clones of images the viewer never saw).
+    if (!isVideo) onImageReadyRef.current?.((img as HTMLImageElement).src);
     glitchRecord(isVideo ? "layer-push-video" : "layer-push-still", `n=${layers.length + 1} motion=${motionScale.toFixed(2)}`);
     layers.push({
       img,
@@ -627,6 +629,11 @@ export function AiImageLayer({
       let idx = hasPropLocalImages
         ? -1
         : packImageIndexForProgress(journeyPhases, urls.length, progress);
+      // Per-run walk jitter (Karel 2026-09-29: "you use the same images
+      // in the beginning every time") — the deterministic slot mapping
+      // shifts by a small per-journey-run offset so each take opens
+      // differently while keeping the arc order.
+      if (idx >= 0) idx = Math.min(urls.length - 1, idx + runJitterRef.current);
       if (idx < 0) {
         idx = localImageIndexRef.current % urls.length;
         localImageIndexRef.current = idx + 1;
@@ -705,8 +712,13 @@ export function AiImageLayer({
           const probe = document.createElement("video");
           canHevcRef.current = probe.canPlayType('video/mp4; codecs="hvc1.2.4.L120.B0"') !== "";
         }
-        const pick = (e?: string | { h264: string; hevc?: string }) =>
-          typeof e === "string" ? e : e ? (canHevcRef.current && e.hevc ? e.hevc : e.h264) : undefined;
+        // A slot may hold a POOL of approved morphs — one chosen per
+        // run (Karel 2026-09-29: "its ok to have more than 5 morphs to
+        // select from").
+        const pick = (e?: string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>): string | undefined => {
+          if (Array.isArray(e)) e = e.length ? e[Math.floor(Math.random() * e.length)] : undefined;
+          return typeof e === "string" ? e : e ? (canHevcRef.current && e.hevc ? e.hevc : e.h264) : undefined;
+        };
         const pushVideoUrl = (url: string, onRejected?: () => void) => {
           const epoch = journeyEpochRef.current;
           const v = document.createElement("video");
@@ -763,7 +775,7 @@ export function AiImageLayer({
           lastClipPhaseRef.current = phaseIdx;
           heroPushedForRef.current = -1; // new phase — hero re-arms
           const travel = prevPhase >= 0 && phaseIdx === prevPhase + 1
-            ? pick(clips["t" + prevPhase] as string | { h264: string; hevc?: string })
+            ? pick(clips["t" + prevPhase] as string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>)
             : undefined;
           if (travel) pendingMorphRef.current = { forPhase: phaseIdx, url: travel };
         }
@@ -789,7 +801,7 @@ export function AiImageLayer({
           });
         } else if (!morph || morph.forPhase !== phaseIdx) {
           if (morph) pendingMorphRef.current = null; // phase moved on — drop stale morph
-          const heroUrl = HEROES_ENABLED ? pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string }) : undefined;
+          const heroUrl = HEROES_ENABLED ? pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>) : undefined;
           if (heroUrl && phaseIdx >= 0 && heroPushedForRef.current !== phaseIdx && !busyNow()) {
             heroPushedForRef.current = phaseIdx;
             pushVideoUrl(heroUrl, () => { if (heroPushedForRef.current === phaseIdx) heroPushedForRef.current = -1; });
@@ -1334,9 +1346,12 @@ export function AiImageLayer({
     : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
   // Spotlight semantics flipped with the cinema canvas: the morph no
   // longer lives in this canvas, so while it plays the stills RECEDE.
+  // Quiet passages skip the spotlight dim entirely — with one still on
+  // screen the dip reads as a scene-wide brightness change (Karel
+  // 2026-09-29: "subtle change in brightness during the opening").
   const computedAiOpacity = aiOnly
     ? undefined
-    : videoSpotlight
+    : videoSpotlight && intensity >= 0.5
       ? Math.min(baseAiOpacity, 0.35)
       : baseAiOpacity;
   // Freeze protocol v2: during the boundary settle this canvas's
