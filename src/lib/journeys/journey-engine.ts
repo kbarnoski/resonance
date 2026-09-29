@@ -912,6 +912,15 @@ class JourneyEngine {
     return this.inStillnessNow;
   }
 
+  /** Pull the next primary switch to ~delayMs from now (never pushes it
+   *  later). Used when a morph ends so fresh shader motion greets the
+   *  departing clip (Karel 2026-09-29: the ending frame "just sits"). */
+  nudgeShaderRotation(delayMs: number): void {
+    if (!this.running) return;
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + delayMs);
+  }
+
   getMsSinceAnySwitch(): number {
     return this.lastAnySwitchMs === 0 ? Number.POSITIVE_INFINITY : performance.now() - this.lastAnySwitchMs;
   }

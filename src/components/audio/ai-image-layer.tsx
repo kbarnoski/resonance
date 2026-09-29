@@ -88,6 +88,10 @@ interface ImageLayer {
 // every ~7s. Total life 20s with ~3 images overlapping at any time.
 const DISSOLVE_DURATION = 6000;
 const FADEOUT_DURATION = 10000;
+// Ended morphs leave much faster — a frozen last frame lingering 10s
+// "just sits there" (Karel 2026-09-29); the cover still blooms over
+// this fade, and a nudged shader arrives as it departs.
+const VIDEO_FADEOUT_DURATION = 3500;
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 // Installation boundary fade (Karel 2026-09-26: Snowflake's ice lingered
 // into Realized): old-journey stills fade over 8s — long enough that the
@@ -350,7 +354,7 @@ export function AiImageLayer({
       if (prevJourneyId != null) markJourneyBoundary(10500);
       journeyEpochRef.current++;
       journeyChangeAtRef.current = performance.now();
-      runJitterRef.current = Math.floor(Math.random() * 4); // 0..3
+      runJitterRef.current = Math.floor(Math.random() * 6); // 0..5 — six distinct openers
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
       // Same staleness class for STILLS (2026-09-27): a 400ms gen tick can
@@ -753,6 +757,10 @@ export function AiImageLayer({
               // the morph's freeze-frame while it fades.
               morphCoverPendingRef.current = true;
               lastGenTimeRef.current = 0;
+              // Fresh shader ~4.5s out (right after the video quiet
+              // window lifts): "when it lands on its ending frame
+              // there is something happening".
+              getJourneyEngine().nudgeShaderRotation(4500);
               const layer = layersRef.current.find((l) => l.img === v);
               if (layer && layer.state !== "fading-out") {
                 layer.fadeStartOpacity = layer.opacity;
@@ -1225,7 +1233,7 @@ export function AiImageLayer({
         } else if (layer.state === "fading-out") {
           // Slow fade-out keeps images visible longer during transitions
           // Purge layers use a fast 2s fade to clear old journey imagery quickly
-          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : FADEOUT_DURATION;
+          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : !("complete" in layer.img) ? VIDEO_FADEOUT_DURATION : FADEOUT_DURATION;
           const rawProgress = Math.min(1, elapsed / fadeDuration);
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);
