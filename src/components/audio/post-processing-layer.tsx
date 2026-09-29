@@ -5,6 +5,15 @@ import { getDeviceTier } from "@/lib/audio/device-tier";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
 
 /** Expand 3-char hex (#RGB) to 6-char (#RRGGBB) so alpha bytes can be appended */
+function hexToRgb(color: string): [number, number, number] {
+  const h = hex6(color).slice(1);
+  return [parseInt(h.slice(0, 2), 16) || 0, parseInt(h.slice(2, 4), 16) || 0, parseInt(h.slice(4, 6), 16) || 0];
+}
+function rgbToHex(r: number, g: number, b: number): string {
+  const c = (v: number) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+  return `#${c(r)}${c(g)}${c(b)}`;
+}
+
 function hex6(color: string): string {
   if (color.length === 4 && color[0] === "#") {
     return `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`;
@@ -83,6 +92,7 @@ export function PostProcessingLayer({
   // its target (~1.5s time constant) so handoffs ease like everything
   // else. The smoothed values are what the draw loop consumes.
   const smoothRef = useRef({ vignette, bloomIntensity, particleDensity, halation, intensityMultiplier, colorTemperature });
+  const paletteSmoothRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -144,8 +154,18 @@ export function PostProcessingLayer({
         sm.halation += (raw.halation - sm.halation) * k;
         sm.intensityMultiplier += (raw.intensityMultiplier - sm.intensityMultiplier) * k;
         sm.colorTemperature += (raw.colorTemperature - sm.colorTemperature) * k;
+        // Palette COLORS glide too (Karel 2026-09-29: quick light/dark
+        // shift the instant the title loads — the glow/halation hues
+        // snapped to the new journey's palette in one frame while only
+        // their intensities were smoothed).
+        for (const key of ["primary", "accent", "glow", "secondary"] as const) {
+          const cur = paletteSmoothRef.current[key] ?? raw.palette[key];
+          const [cr, cg, cb] = hexToRgb(cur);
+          const [tr, tg, tb] = hexToRgb(raw.palette[key]);
+          paletteSmoothRef.current[key] = rgbToHex(cr + (tr - cr) * k, cg + (tg - cg) * k, cb + (tb - cb) * k);
+        }
       }
-      const pp = { ...raw, ...smoothRef.current };
+      const pp = { ...raw, ...smoothRef.current, palette: { ...raw.palette, ...paletteSmoothRef.current } };
       timeRef.current += dt;
       const t = timeRef.current;
 

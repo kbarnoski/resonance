@@ -226,6 +226,7 @@ export function AiImageLayer({
   // macOS hardware-decodes it. Fall back to the 8-bit H.264 elsewhere.
   const canHevcRef = useRef<boolean | null>(null);
   const lastClipPhaseRef = useRef<number>(-1);
+  const lastPackUrlRef = useRef<string | null>(null);
   const heroPushedForRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
   const pendingVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -600,7 +601,13 @@ export function AiImageLayer({
       if (idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
         const stillUrl = urls[idx];
-        loadImage(stillUrl)
+        // URL dedupe (session 66wil0: gen-107 pushed twice back-to-back
+        // via two different slots) — curated bands repeat URLs across
+        // adjacent slots by design; never push the same image twice in
+        // a row. Skip only the push — clips below still schedule.
+        const dupStill = stillUrl === lastPackUrlRef.current;
+        if (!dupStill) lastPackUrlRef.current = stillUrl;
+        if (!dupStill) loadImage(stillUrl)
           .then((img) => {
             if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");
             // Feed the depth-parallax base layer (it no-ops without depth
@@ -636,7 +643,12 @@ export function AiImageLayer({
       // p0.93 morph "comes in and then sits and is kind of a blob") —
       // the ending belongs to held stills easing toward the boundary.
       // And none during the boundary settle window after a handoff.
-      if (clips && journeyPhases && progress >= 0 && progress <= 0.85 && !inBoundarySettle() && getTierProfile().maxAiLayers >= 8) {
+      // Clips get their OWN boundary gate (title span only, 9s) — the
+      // full 10.5s settle window was starving the early morph Karel
+      // loves (~10s in, right after the title). Late cutoff 0.90: the
+      // very-end morph read as "comes in and sits", but the p0.85-0.90
+      // ones are wanted.
+      if (clips && journeyPhases && progress >= 0 && progress <= 0.90 && performance.now() - journeyChangeAtRef.current > 9000 && getTierProfile().maxAiLayers >= 8) {
         // (2026-09-28b: the >=0.5 intensity gate here was meant for hero
         // clips — now disabled entirely — but also delayed early travel
         // morphs. Morphs are phase transitions; they always play.)
