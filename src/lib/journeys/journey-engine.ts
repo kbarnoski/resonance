@@ -584,7 +584,12 @@ class JourneyEngine {
     // which by construction sheds the dual, blocks tertiary, drops
     // the imagery cap and stills all motion.
     let windDownShaderScale = 1;
-    if (clamped > JourneyEngine.WIND_DOWN_START) {
+    // Arc reflects the analysis (Karel 2026-09-29): a journey authored
+    // to CREST at its end (final-phase intensity >= 0.6, e.g. The
+    // Other Side 10 — the song builds to its last bar) is exempt from
+    // the ending wind-down.
+    const finalPhaseIntensity = phases[phases.length - 1]?.intensityMultiplier ?? 0.3;
+    if (finalPhaseIntensity < 0.6 && clamped > JourneyEngine.WIND_DOWN_START) {
       const remain = Math.max(0, (1 - clamped) / (1 - JourneyEngine.WIND_DOWN_START));
       const endingCap = JourneyEngine.OPENING_FLOOR + (1 - JourneyEngine.OPENING_FLOOR) * remain;
       conducted = Math.min(conducted, endingCap);

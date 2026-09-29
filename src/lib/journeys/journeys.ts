@@ -226,6 +226,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "r-growth", // Karel 2026-09-29: the "colored helix" — coiling growth spirals in Snowflake take #1955860385
   "helix",    // belt + suspenders with the winter pool block
   "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
+  "apophatic", // Karel 2026-09-29 screenshot: the grey ring-cloud — "dont use this shader in general"
 ]);
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
@@ -235,6 +236,8 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
     "r-molten", // Karel 2026-09-29: the dual that "sat over the whole journey and gave it a tint"
     "whorl", // Karel 2026-09-29 mastering: "i hate that swirl shader" — the swirl was whorl, not just maelstrom/vortex
+    "r2-spiralgal", // Karel 2026-09-29 screenshot: the purple spiral — another swirl out of Snowflake
+    "eclipse-ring", // Karel 2026-09-29 screenshot: "this one sits idle" — static ring under the take
   ]),
 };
 

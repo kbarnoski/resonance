@@ -784,6 +784,15 @@ export function AiImageLayer({
             // layer out over the normal long fade instead of freezing.
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
+              // END-ON-MORPH (Karel 2026-09-29: "id like snowflake to
+              // end on that morph"): a clip that finishes in the final
+              // stretch HOLDS its last frame — no fade, no cover, no
+              // fresh shader — and the boundary takes it from there.
+              {
+                const st = useAudioStore.getState();
+                const prog = st.duration > 0 ? st.currentTime / st.duration : 0;
+                if (prog > 0.82) { glitchRecord("morph-finale-hold"); return; }
+              }
               // Ending-frame DWELL (Karel 2026-09-29: "the viewer needs
               // a couple of seconds on the ending frame since its a huge
               // transition"): the final frame holds 2.5s as itself, THEN
@@ -816,8 +825,13 @@ export function AiImageLayer({
           glitchRecord("clip-arm", `phase ${prevPhase}->${phaseIdx}`);
           lastClipPhaseRef.current = phaseIdx;
           heroPushedForRef.current = -1; // new phase — hero re-arms
-          const travel = prevPhase >= 0 && phaseIdx === prevPhase + 1
-            ? pick(clips["t" + prevPhase] as string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>)
+          // Late-witness arming (session og0b3e: phase 0 is SHORTER than
+          // the first scheduling tick, so t0 could never arm — "shocked
+          // you didnt include travel morph t0#1... my favorite"): any
+          // forward phase change arms the most recent transition's
+          // morph, even if the tick missed the phase before it.
+          const travel = phaseIdx >= 1 && phaseIdx > prevPhase
+            ? pick(clips["t" + (phaseIdx - 1)] as string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>)
             : undefined;
           if (travel) pendingMorphRef.current = { forPhase: phaseIdx, url: travel };
         }
