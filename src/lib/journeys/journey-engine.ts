@@ -587,6 +587,10 @@ class JourneyEngine {
     // dropped" right before the next journey): no new shader layers in
     // the final 4% — anything born there dies at the boundary.
     const endFreeze = clamped > 0.96;
+    // Rotation freezes earlier than layer end-freeze: a fresh primary at
+    // p0.926 was still mid-crossfade when the next journey loaded
+    // (session oc9dr2 — "a shader glitched when realized loaded").
+    const rotationFreeze = clamped > 0.90;
     // Stillness means a SCHEDULED window, not merely low intensity. The
     // old level-based test (conducted <= 0.32) fired at the start of
     // EVERY journey — the opening ramp caps intensity at exactly 0.3 —
@@ -608,14 +612,18 @@ class JourneyEngine {
     // stills but reads as a dropped frame under a playing morph — the
     // rotation simply waits the few seconds until the clip has faded.
     const morphOnScreen = isVideoActive();
-    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !endFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !rotationFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
       // the same shader must never render on two layers at once (2026-09-27
       // review: "the same shader appeared multiple times within Realized").
       let picked = false;
-      for (let pass = 0; pass < 2 && !picked; pass++) {
+      // Pass order matters (session oc9dr2: roulette ran dual@p0.478
+      // then PRIMARY again @p0.743): unseen-in-phase first, then the
+      // journey-wide borrow below, and only as a last resort repeat a
+      // seen shader (the seenPass after the borrow).
+      for (let pass = 0; pass < 1 && !picked; pass++) {
         for (let attempt = 0; attempt < shaderLen; attempt++) {
           this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
           const candidate = currentPhase.shaderModes[this.currentShaderIndex];
@@ -642,6 +650,19 @@ class JourneyEngine {
           this.currentShaderMode = borrow[Math.floor(this.random() * borrow.length)];
           this.seenShaders.add(this.currentShaderMode);
           picked = true;
+        }
+      }
+      // Every unseen option exhausted: NOW allow repeating a seen shader.
+      if (!picked) {
+        for (let attempt = 0; attempt < shaderLen; attempt++) {
+          this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
+          const candidate = currentPhase.shaderModes[this.currentShaderIndex];
+          if (!this.isShaderAllowed(candidate)) continue;
+          if (candidate === this.dualShaderMode || candidate === this.tertiaryShaderMode) continue;
+          if (candidate === this.currentShaderMode) continue;
+          this.currentShaderMode = candidate;
+          picked = true;
+          break;
         }
       }
       // If every shader everywhere is spent/blocked, keep current (don't flash)
@@ -728,11 +749,17 @@ class JourneyEngine {
           // Cross-layer exclusion: never mirror the live primary or dual.
           // The precomputed pick was chosen blind at journey start; resolve
           // collisions here against what is actually on screen right now.
-          if (tertiaryCandidate === this.currentShaderMode || tertiaryCandidate === this.dualShaderMode) {
-            const alternates = currentPhase.shaderModes.filter(
+          // Cross-ROLE reuse (session oc9dr2: zooid ran as primary at
+          // p0.55 then AGAIN as tertiary at p0.72 — "overused"): a
+          // pick the journey has already shown re-resolves too.
+          if (tertiaryCandidate && this.seenShaders.has(tertiaryCandidate)) tertiaryCandidate = null;
+          if (tertiaryCandidate == null || tertiaryCandidate === this.currentShaderMode || tertiaryCandidate === this.dualShaderMode) {
+            const pool = currentPhase.shaderModes.filter(
               (m2) => !MODES_3D.has(m2) && this.isShaderAllowed(m2)
                 && m2 !== this.currentShaderMode && m2 !== this.dualShaderMode,
             );
+            const unseen = pool.filter((m2) => !this.seenShaders.has(m2));
+            const alternates = unseen.length > 0 ? unseen : pool;
             tertiaryCandidate = alternates.length > 0
               ? alternates[Math.floor(this.random() * alternates.length)]
               : null; // no collision-free option — sit this moment out

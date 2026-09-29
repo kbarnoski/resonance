@@ -219,6 +219,8 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 /** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"
+  "doppler", // Karel 2026-09-29: THE "pulsing full screen shader" (played in both flagged sessions; r3-coralpulse was the wrong guess)
+  "roulette", // Karel 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 straight seconds — perf hazard
   "r3-coralpulse", // Karel 2026-09-28: "not use that pulsing shader in our journeys"
   "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
   "snow", // only appropriate for winter/snowflake or user-created journeys
@@ -268,6 +270,7 @@ const REALM_SHADER_ALLOW: Record<string, string[]> = {
 
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
+    "zooid", "coral", "biofilm", "spore", "symbiosis", "plankton", // celly organics — Karel 2026-09-29: "small cells hanging out" clash with the crystalline world
     "magma", "inferno", "flame", // fire
     "orb", // wrong vibe
     "neon", "moire", // solid/geometric
