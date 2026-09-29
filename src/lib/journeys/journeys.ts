@@ -225,7 +225,16 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "r-growth", // Karel 2026-09-29: the "colored helix" — coiling growth spirals in Snowflake take #1955860385
   "helix",    // belt + suspenders with the winter pool block
+  "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
 ]);
+
+/** Per-realm pick-time bans — same pin-safe semantics, scoped. */
+export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
+  winter: new Set([
+    "r2-sunsetcascade", // Karel 2026-09-29: "the 2 colored horizontal colors shader"
+    "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
+  ]),
+};
 
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"

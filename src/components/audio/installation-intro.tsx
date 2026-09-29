@@ -139,36 +139,14 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
   // InstallationIntro's style block and don't exist elsewhere.
   return (
     <div style={animate ? { animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 } : undefined}>
-      <ResonanceMark className="mx-auto mb-8 h-16 w-16 text-white/80" />
-      <Eyebrow className="text-white/55">{EXPERIENCE_INTRO.eyebrow}</Eyebrow>
+      <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <DisplayTitle
         as="h1"
-        className="mt-3 text-[clamp(2.6rem,6vw,4.5rem)] tracking-[0.01em] text-white/90"
+        className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[0.01em] text-white/90"
       >
         {EXPERIENCE_INTRO.title}
       </DisplayTitle>
-      <p className="mx-auto mt-6 max-w-2xl text-[clamp(1rem,1.6vw,1.2rem)] leading-[1.7] text-white/70">
-        {EXPERIENCE_INTRO.body}
-      </p>
-      <p className="mx-auto mt-4 max-w-2xl text-[clamp(0.95rem,1.5vw,1.1rem)] leading-[1.7] text-white/60">
-        {EXPERIENCE_INTRO.bodySecond}
-      </p>
-      <DisplayTitle
-        as="p"
-        className="mx-auto mt-5 max-w-2xl font-normal text-[clamp(1.1rem,1.9vw,1.4rem)] leading-[1.6] text-white/75"
-      >
-        {EXPERIENCE_INTRO.why}
-      </DisplayTitle>
-      <DisplayTitle
-        as="div"
-        className="mt-8 text-[clamp(1.2rem,2.2vw,1.6rem)] tracking-[0.02em] text-white/80"
-      >
-        {EXPERIENCE_INTRO.invitation}
-      </DisplayTitle>
       <MonoLabel className="mt-10 block text-sm tracking-[0.08em] text-white/55">
-        {EXPERIENCE_INTRO.credit}
-      </MonoLabel>
-      <MonoLabel className="mt-2 block text-xs tracking-[0.08em] text-white/45">
         {EXPERIENCE_INTRO.thanks}
       </MonoLabel>
     </div>
@@ -199,30 +177,9 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
       </DisplayTitle>
       <DisplayTitle
         as="div"
-        className="mt-4 text-[clamp(1.3rem,2.8vw,2rem)] tracking-[0.01em] leading-[normal] text-white/65"
+        className="mt-4 text-[clamp(1.6rem,3.4vw,2.6rem)] tracking-[0.01em] leading-[normal] text-white/70"
       >
-        presenting {presenting ?? "the Snowflake EP"}
-      </DisplayTitle>
-      <p
-        className="text-white/55 mt-12 max-w-2xl mx-auto"
-        style={{
-          fontFamily: "var(--font-geist-sans)",
-          fontWeight: 400,
-          fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)",
-          lineHeight: 1.65,
-        }}
-      >
-        {description ??
-          "Snowflake, Realized, Ghost — three original improvised piano recordings, tracing an arc from stillness, through fire, into light. AI-generated visuals improvise alongside the music, never the same twice. Recline."}
-      </p>
-      <Eyebrow className="mt-14 text-[0.85rem] tracking-[0.22em] text-white/55">
-        composed and performed by
-      </Eyebrow>
-      <DisplayTitle
-        as="div"
-        className="mt-2 text-[clamp(1.4rem,2.6vw,1.9rem)] tracking-[0.02em] leading-[normal] text-white/85"
-      >
-        Karel Barnoski
+        {presenting ?? "the Snowflake EP"}
       </DisplayTitle>
     </div>
   );

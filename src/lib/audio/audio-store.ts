@@ -6,7 +6,7 @@ import type { Realm } from "@/lib/journeys/types";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealm } from "@/lib/journeys/realms";
-import { pickPinnedTake } from "@/lib/journeys/pinned-takes";
+import { pickPinnedTake, SCRIPTED_TAKES } from "@/lib/journeys/pinned-takes";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { applyBuiltInEnrichment } from "@/lib/journeys/built-in-enrichments";
@@ -425,8 +425,9 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     // (see pinned-takes.ts). Logged so a loved run can be pinned.
     const pinned = pickPinnedTake(journey.id);
     const takeSeed = pinned ?? Math.floor(Math.random() * 2147483647);
-    glitchRecord("take-seed", `${journey.id} #${takeSeed}${pinned != null ? " (pinned)" : ""}`);
-    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined });
+    const script = SCRIPTED_TAKES[journey.id];
+    glitchRecord("take-seed", `${journey.id} #${takeSeed}${script ? " (scripted)" : pinned != null ? " (pinned)" : ""}`);
+    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined, script });
 
     // Read initial shader from the engine (after regeneration) to avoid
     // a flash where the store has a different shader than the engine
@@ -480,8 +481,9 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     const { duration } = get();
     const pinned = pickPinnedTake(journey.id);
     const takeSeed = pinned ?? Math.floor(Math.random() * 2147483647);
-    glitchRecord("take-seed", `${journey.id} #${takeSeed}${pinned != null ? " (pinned)" : ""}`);
-    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined });
+    const script = SCRIPTED_TAKES[journey.id];
+    glitchRecord("take-seed", `${journey.id} #${takeSeed}${script ? " (scripted)" : pinned != null ? " (pinned)" : ""}`);
+    engine.start(journey, { seed: takeSeed, trackDuration: duration > 0 ? duration : undefined, script });
     const firstMode = engine.getCurrentShaderMode();
     // Same guarantee as startJourney: open/close/reopen always starts
     // from the beginning regardless of whether play() gets called.

@@ -2,7 +2,8 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
-import { regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST } from "./journeys";
+import { regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
+import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
@@ -188,6 +189,9 @@ class JourneyEngine {
   private stillnessMoments: TertiaryMoment[] = [];
   private wasInStillness = false;
   private inStillnessNow = false;
+  /** Scripted take: recorded shader timeline replayed by progress. */
+  private takeScript: TakeScriptEntry[] | null = null;
+  private takeSeedValue: number | null = null;
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
    *  flight-recorder finding: 3 switches in 4s = visible frame-gap storm). */
@@ -216,9 +220,11 @@ class JourneyEngine {
   private lastProgress = 0;
 
   /** Start a journey. Pass a seed for deterministic (shared) playback. */
-  start(journey: Journey, options?: { seed?: number; trackDuration?: number }): void {
+  start(journey: Journey, options?: { seed?: number; trackDuration?: number; script?: TakeScriptEntry[] }): void {
     this.stop();
 
+    this.takeScript = options?.script?.length ? options.script : null;
+    this.takeSeedValue = options?.seed ?? null;
     const random = options?.seed != null
       ? createSeededRandom(options.seed)
       : Math.random;
@@ -258,7 +264,10 @@ class JourneyEngine {
     // burn a Canvas remount immediately.
     if (this.journey.phases.length > 0) {
       const firstPhase = this.journey.phases[0];
+      const scriptedInitial = this.takeScript
+        ?.filter((e) => e.role === "primary" && this.isShaderAllowed(e.mode))[0]?.mode;
       const initial =
+        scriptedInitial ??
         firstPhase.shaderModes.find((m) => this.isShaderAllowed(m)) ??
         firstPhase.shaderModes[0] ??
         "cosmos";
@@ -322,7 +331,13 @@ class JourneyEngine {
       // The new pools may differ but the active shaders stay until the next timer expiry.
       const prevShader = this.currentShaderMode;
       const prevDual = this.dualShaderMode;
-      this.journey = regenerateJourneyShaders(this.journey, this.random, duration);
+      // Deterministic under pinned takes (2026-09-29): the old path
+      // consumed this.random at a WALL-CLOCK-dependent moment (audio
+      // metadata arrival), so the same seed played different takes.
+      const regenRandom = this.takeSeedValue != null
+        ? createSeededRandom(this.takeSeedValue + Math.round(duration))
+        : this.random;
+      this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
       this.currentShaderMode = prevShader;
       this.dualShaderMode = prevDual;
     }
@@ -633,7 +648,8 @@ class JourneyEngine {
     // stills but reads as a dropped frame under a playing morph — the
     // rotation simply waits the few seconds until the clip has faded.
     const morphOnScreen = isVideoActive();
-    if (shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !rotationFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (this.takeScript) this.applyTakeScript(clamped, now);
+    if (!this.takeScript && shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !rotationFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -710,8 +726,8 @@ class JourneyEngine {
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
     // The conductor also holds the dual back while the music is quiet
     // (threshold / return / integration): a second layer is earned by the build.
-    const primaryBansDual = JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed;
-    if (primaryBansDual) {
+    const primaryBansDual = !this.takeScript && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
+    if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = null;
@@ -751,8 +767,8 @@ class JourneyEngine {
     }
 
     // ─── Tertiary shader (sprinkled in every ~60s) ───
-    let inTertiaryMoment = false;
-    for (let i = 0; i < this.tertiaryMoments.length; i++) {
+    let inTertiaryMoment = this.takeScript ? this.tertiaryActive : false;
+    for (let i = 0; !this.takeScript && i < this.tertiaryMoments.length; i++) {
       const m = this.tertiaryMoments[i];
       if (clamped >= m.startProgress && clamped <= m.endProgress) {
         inTertiaryMoment = true;
@@ -916,6 +932,54 @@ class JourneyEngine {
    *  cap-1 evictions = "elements dropped after halfway"). */
   isInStillness(): boolean {
     return this.inStillnessNow;
+  }
+
+  /** Scripted take playback: recompute desired primary/dual/tertiary
+   *  from the recorded timeline at this progress; banned entries are
+   *  skipped (the previous shader holds). */
+  private applyTakeScript(clamped: number, now: number): void {
+    if (!this.takeScript) return;
+    let prim: string | null = null;
+    let dual: string | null = null;
+    let tert: string | null = null;
+    for (const en of this.takeScript) {
+      if (en.p > clamped) break;
+      if (en.role === "primary") { if (this.isShaderAllowed(en.mode)) prim = en.mode; }
+      else if (en.role === "dual") { if (this.isShaderAllowed(en.mode)) dual = en.mode; }
+      else if (en.role === "tertiary-on") { tert = this.isShaderAllowed(en.mode) ? en.mode : null; }
+      else if (en.role === "tertiary-off") { tert = null; }
+    }
+    if (prim && prim !== this.currentShaderMode) {
+      this.closeHistoryEntry("primary", now);
+      this.currentShaderMode = prim;
+      this.seenShaders.add(prim);
+      this.shaderHistory.push({ mode: prim, role: "primary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
+      this.shaderStartMs = now;
+      glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} (scripted)`);
+      this.lastAnySwitchMs = now;
+    }
+    if (dual !== this.dualShaderMode) {
+      this.closeHistoryEntry("dual", now);
+      this.dualShaderMode = dual;
+      if (dual) {
+        this.seenShaders.add(dual);
+        this.shaderHistory.push({ mode: dual, role: "dual", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
+        glitchRecord("shader-dual", `${dual} @p${clamped.toFixed(3)} (scripted)`);
+        this.lastAnySwitchMs = now;
+      }
+    }
+    if (tert !== this.tertiaryShaderMode) {
+      if (this.tertiaryShaderMode) glitchRecord("shader-tertiary-off", `${this.tertiaryShaderMode} @p${clamped.toFixed(3)} (scripted)`);
+      this.closeHistoryEntry("tertiary", now);
+      this.tertiaryShaderMode = tert;
+      this.tertiaryActive = tert != null;
+      if (tert) {
+        this.seenShaders.add(tert);
+        this.shaderHistory.push({ mode: tert, role: "tertiary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
+        glitchRecord("shader-tertiary-on", `${tert} @p${clamped.toFixed(3)} (scripted)`);
+        this.lastAnySwitchMs = now;
+      }
+    }
   }
 
   /** Pull the next primary switch to ~delayMs from now (never pushes it
@@ -1099,6 +1163,8 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
+    const realmBans = this.journey ? PICKTIME_REALM_BLOCKLIST[this.journey.realmId] : undefined;
+    if (realmBans?.has(mode)) return false;
     // Karel 2026-09-29: "full screen web of colored lines... like an
     // animated cartoon spider web — ejected." The entire Geometry
     // curve-lattice family, banned at pick time (pin-safe).

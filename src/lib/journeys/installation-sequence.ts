@@ -169,13 +169,15 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // Set 2 = the Welcome Home album in album order (~46 min). More sets
   // may be added later. Title card plays at each set boundary; the
   // dedication closes the final set.
-  { id: "tramokyo-mix", presenting: "the first set", end: 8 }, //  1-8: Snowflake → Mycelium Dream
-  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 21 }, //  9-21: Interplay → All Together
-  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 33 }, // 22-33: Rise → Mystic (~35 min)
+  { id: "tramokyo-mix", presenting: "the Snowflake EP", end: 3 }, //  1-3: the Snowflake EP
+  { id: "tramokyo-mix-exp", presenting: "Expansion", end: 9 }, // 4-9: the Expansion set (added 2026-09-29)
+  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 14 }, // 10-14: The Summit → Mycelium Dream
+  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 27 }, // 15-27: Interplay → All Together
+  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 39 }, // 28-39: Rise → Mystic (~35 min)
   {
     id: "tramokyo-mix-4",
     presenting: "March Light",
-    end: 43, // 34-43: The First → Love Again (~32 min; added 2026-09-21)
+    end: 49, // 40-49: The First → Love Again (~32 min; added 2026-09-21; +6 for Expansion 2026-09-29)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
@@ -186,26 +188,23 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
 
 
 export const EXPERIENCE_INTRO = {
-  eyebrow: "a one-night installation",
+  // Karel 2026-09-29: "much too long. Just have it be Resonance with
+  // the logo. dont have my name on it for tramokyo. just have it say
+  // thank you to the hosts and organizers."
   title: "Resonance",
-  body:
-    "An audiovisual experience with no beginning, no end — and never " +
-    "the same. Its inspiration is drawn from nature and the universe.",
-  bodySecond:
-    "Every journey is generated live and never visually repeats. " +
-    "Tonight's program is drawn from Karel's catalog of " +
-    "recordings — Welcome Home, Surrounded by Light, March Light, " +
-    "Snowflake, and others.",
-  why:
-    "For the artist, Resonance — like the music itself — is a way to " +
-    "stay connected and keep creating, an answer to a world of " +
-    "unhealthy distractions.",
-  invitation: "Recline. Eyes up.",
-  credit: "composed and performed by Karel Barnoski",
-  thanks: "with thanks to Johnny and our hosts",
+  thanks: "with gratitude to the hosts and organizers of this evening",
 } as const;
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
+  {
+    id: "expansion",
+    presenting: "the Expansion set",
+    description:
+      "Six new pieces, six worlds: drowned light, luminous nothing, the " +
+      "visible wind, the mirrored threshold, the northern immensity, and " +
+      "one line that was never in question. Recline.",
+    pathShareToken: "3422c91db7ee4769",
+  },
   {
     id: "march-light",
     presenting: "the March Light album",

@@ -30,10 +30,10 @@ import {
 export const INTRO_MS = 11_000;
 /** Tramokyo cold open — the experience-level "Resonance" card shown
  *  once per full cycle, before program 0's intro. */
-export const EXPERIENCE_INTRO_MS = 15_000;
+export const EXPERIENCE_INTRO_MS = 8_000; // Karel 2026-09-29: intro much too long
 /** Mid-show artist-statement interstitial: shown between journeys every
  *  N tracks so a 30-minute drop-in still meets the statement. */
-export const STATEMENT_INTERSTITIAL_MS = 14_000;
+export const STATEMENT_INTERSTITIAL_MS = 8_000; // minimal card since 2026-09-29
 /** Universal quiet breath between consecutive journeys — a few seconds
  *  of silence before each next track begins (Karel 2026-08-30). Per-
  *  journey PRE_ENTRY_PAUSE values can lengthen it, never shorten it. */
