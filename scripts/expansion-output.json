@@ -1,0 +1,42 @@
+{
+  "pathId": "c278ba7e-94a8-4f73-b9ce-4d433900c896",
+  "pathShareToken": "3422c91db7ee4769",
+  "journeys": [
+    {
+      "order": 1,
+      "journeyId": "6251d682-b5e4-46b6-98cf-ceb6b609a7bc",
+      "recordingId": "e75884a0-8d1c-4c69-90bd-8552e454b025",
+      "title": "Surrounded by Light 6"
+    },
+    {
+      "order": 2,
+      "journeyId": "79cad85a-13fa-4db9-b4cd-a507b62a6084",
+      "recordingId": "30f2ca9e-baf9-473d-801c-12944d77a539",
+      "title": "Nothing 30"
+    },
+    {
+      "order": 3,
+      "journeyId": "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80",
+      "recordingId": "bb6e1c6e-107c-44b7-97c5-86a3724820d7",
+      "title": "Night Wind 2"
+    },
+    {
+      "order": 4,
+      "journeyId": "6499ac06-2cb1-4970-b75f-1258587c84d8",
+      "recordingId": "896ba781-7e9c-4f91-991c-80b71325283f",
+      "title": "The Other Side 10"
+    },
+    {
+      "order": 5,
+      "journeyId": "13e71555-03d6-4b27-ad32-2c6834559c24",
+      "recordingId": "a1c8649f-c817-4595-8e54-37d635d3f5f5",
+      "title": "Northern Plane 5"
+    },
+    {
+      "order": 6,
+      "journeyId": "6407bf5c-7862-49e8-883d-59754c4caf18",
+      "recordingId": "bfc84ef2-3452-4dd5-9a13-5ed6d7435ef0",
+      "title": "No question 8"
+    }
+  ]
+}
