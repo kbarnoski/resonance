@@ -1023,6 +1023,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         window.dispatchEvent(new Event(e.key === "ArrowRight" ? "installation-operator-skip" : "installation-operator-prev"));
         return;
       }
+      // R replays the CURRENT journey from its beginning — the
+      // mastering-session key (Karel 2026-09-29: "a simpler and faster
+      // way i can work on one at a time").
+      if (e.key === "r" || e.key === "R") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const jid = useAudioStore.getState().activeJourney?.id;
+        if (jid) window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: jid }));
+        return;
+      }
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
         e.stopImmediatePropagation();
