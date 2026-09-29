@@ -185,6 +185,7 @@ class JourneyEngine {
   private breathPhase = 0;
   private stillnessMoments: TertiaryMoment[] = [];
   private wasInStillness = false;
+  private inStillnessNow = false;
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
    *  flight-recorder finding: 3 switches in 4s = visible frame-gap storm). */
@@ -600,6 +601,7 @@ class JourneyEngine {
     // "brightness glitch as Realized titling came in"). Breath valleys
     // triggered the same whipsaw mid-journey.
     const inStillness = inStillnessWindow;
+    this.inStillnessNow = inStillness;
     if (inStillness && !this.wasInStillness) glitchRecord("stillness-enter", `@p${clamped.toFixed(3)}`);
     if (this.wasInStillness && !inStillness) {
       glitchRecord("stillness-exit", `@p${clamped.toFixed(3)}`);
@@ -890,6 +892,13 @@ class JourneyEngine {
    *  the 2026-09-28 sqxfce session showed stills + evictions + parallax
    *  uploads landing in the same seconds as switches, stacking into
    *  130-190ms stalls on a moving image. One mover at a time. */
+  /** True while a scheduled stillness window is active — imagery holds
+   *  its breath too (session yqwy2e: pushes during stillness forced
+   *  cap-1 evictions = "elements dropped after halfway"). */
+  isInStillness(): boolean {
+    return this.inStillnessNow;
+  }
+
   getMsSinceAnySwitch(): number {
     return this.lastAnySwitchMs === 0 ? Number.POSITIVE_INFINITY : performance.now() - this.lastAnySwitchMs;
   }

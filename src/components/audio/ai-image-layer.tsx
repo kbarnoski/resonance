@@ -592,6 +592,10 @@ export function AiImageLayer({
       // upload landing within 2.5s of a shader switch stacks stalls
       // into a visible hitch on whatever is moving. The imagery yields.
       if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
+      // Stillness = nothing happens: no image births during a held
+      // window, so the cap-crush can't evict what the viewer is
+      // holding their breath with.
+      if (getJourneyEngine().isInStillness()) return;
       // Handoff holdoff: the journey-change tick itself stalls ~180ms
       // (purges + engine restart + title mount) — the first new still
       // waits out that window so its birth isn't part of the pile-up.

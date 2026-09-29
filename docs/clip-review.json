@@ -65,7 +65,7 @@
  },
  "first-snow/t0": {
   "verdict": "good",
-  "at": "2026-09-28T19:41:25.965Z"
+  "at": "2026-09-29T04:05:00.000Z"
  },
  "first-snow/t1": {
   "verdict": "good",
@@ -76,8 +76,8 @@
   "at": "2026-09-28T19:41:38.173Z"
  },
  "first-snow/t3": {
-  "verdict": "bad",
-  "at": "2026-09-29T00:55:00.000Z"
+  "verdict": "good",
+  "at": "2026-09-29T04:05:00.000Z"
  },
  "first-snow/t4": {
   "verdict": "good",
