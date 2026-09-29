@@ -620,25 +620,20 @@ export function AiImageLayer({
       // to arrive WHILE the ended clip fades (Karel: "incorporating
       // morphs only works if theres layering to hide that last still
       // frame").
+      // Quiet gates guard STILL churn only — a blocked tick must never
+      // cost a morph its phase window (session ln0394: the solo-hold
+      // gate returned through travel-0's window and the loved morph
+      // never played). Clips below always get their scheduling pass.
       const morphCover = morphCoverPendingRef.current;
-      if (!morphCover) {
-        if (isVideoActive()) return;
-        // One mover at a time (sqxfce forensics): a still push + parallax
-        // upload landing within 2.5s of a shader switch stacks stalls
-        // into a visible hitch on whatever is moving. The imagery yields.
-        if (getJourneyEngine().getMsSinceAnySwitch() < 2500) return;
-        // Stillness = nothing happens: no image births during a held
-        // window, so the cap-crush can't evict what the viewer is
-        // holding their breath with.
-        if (getJourneyEngine().isInStillness()) return;
-        // Solo-frame hold (Karel 2026-09-29: Realized's opener swapped
-        // out 11s in — "something dropped out"): when ONE image holds
-        // the frame alone, it holds at least 18s before the next.
-        if (conductedMaxLayers() === 1) {
+      const stillsBlocked = !morphCover && (
+        isVideoActive() ||
+        getJourneyEngine().getMsSinceAnySwitch() < 2500 ||
+        getJourneyEngine().isInStillness() ||
+        (conductedMaxLayers() === 1 && (() => {
           const solo = layersRef.current.find((l) => ("complete" in l.img) && l.opacity > 0.3);
-          if (solo && performance.now() - solo.createdTime < 18000) return;
-        }
-      }
+          return !!solo && performance.now() - solo.createdTime < 18000;
+        })())
+      );
       // Handoff holdoff: the journey-change tick itself stalls ~180ms
       // (purges + engine restart + title mount) — the first new still
       // waits out that window so its birth isn't part of the pile-up.
@@ -663,7 +658,7 @@ export function AiImageLayer({
       lastGenTimeRef.current = performance.now();
       // Slow phases have fewer images than 7s ticks — holding the same
       // frame is intentional; skip the redundant push.
-      if (idx !== lastPackIndexRef.current) {
+      if (!stillsBlocked && idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
         const stillUrl = urls[idx];
         // URL dedupe (session 66wil0: gen-107 pushed twice back-to-back
@@ -769,22 +764,22 @@ export function AiImageLayer({
             // layer out over the normal long fade instead of freezing.
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
-              markVideoActive(4000); // cover the ease-out fade
-              // Layering hides the last frame (Karel 2026-09-29): the
-              // next still pushes IMMEDIATELY so an image blooms over
-              // the morph's freeze-frame while it fades.
-              morphCoverPendingRef.current = true;
-              lastGenTimeRef.current = 0;
-              // Fresh shader ~4.5s out (right after the video quiet
-              // window lifts): "when it lands on its ending frame
-              // there is something happening".
-              getJourneyEngine().nudgeShaderRotation(4500);
-              const layer = layersRef.current.find((l) => l.img === v);
-              if (layer && layer.state !== "fading-out") {
-                layer.fadeStartOpacity = layer.opacity;
-                layer.state = "fading-out";
-                layer.fadeStartTime = performance.now();
-              }
+              // Ending-frame DWELL (Karel 2026-09-29: "the viewer needs
+              // a couple of seconds on the ending frame since its a huge
+              // transition"): the final frame holds 2.5s as itself, THEN
+              // the fade begins with the cover still blooming over it.
+              markVideoActive(2500 + 4000);
+              getJourneyEngine().nudgeShaderRotation(2500 + 4500);
+              setTimeout(() => {
+                morphCoverPendingRef.current = true;
+                lastGenTimeRef.current = 0;
+                const layer = layersRef.current.find((l) => l.img === v);
+                if (layer && layer.state !== "fading-out") {
+                  layer.fadeStartOpacity = layer.opacity;
+                  layer.state = "fading-out";
+                  layer.fadeStartTime = performance.now();
+                }
+              }, 2500);
             }, { once: true });
             v.play().catch(() => { /* autoplay policy — holds first frame */ });
           }, { once: true });

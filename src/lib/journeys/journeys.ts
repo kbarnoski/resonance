@@ -233,6 +233,7 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   winter: new Set([
     "r2-sunsetcascade", // Karel 2026-09-29: "the 2 colored horizontal colors shader"
     "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
+    "r-molten", // Karel 2026-09-29: the dual that "sat over the whole journey and gave it a tint"
   ]),
 };
 
