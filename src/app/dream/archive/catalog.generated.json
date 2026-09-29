@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18320-timbrefold",
+  "cycle": 18320,
+  "name": "Timbrefold",
+  "status": "demoable",
+  "description": "What if you could reshape the *resonant body* / vocal tract of your own recording with your two hands — bending its timbre from glassy to woody to vowel-like, while its pitch and m",
+  "category": "local"
+ },
+ {
   "slug": "18304-murmuration",
   "cycle": 18304,
   "name": "Murmuration",
