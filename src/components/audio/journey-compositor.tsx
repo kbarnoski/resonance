@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useCallback, useState } from "react";
-import { inBoundarySettle } from "@/lib/journeys/video-activity";
+import { inBoundarySettle, inBoundarySettleExtended } from "@/lib/journeys/video-activity";
 import { AiImageLayer } from "./ai-image-layer";
 import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
@@ -280,7 +280,7 @@ export function JourneyCompositor({
     // During the boundary settle NOTHING writes this var — it HOLDS at
     // the outgoing journey's value; the step-ramp below glides it to
     // the new journey's value only after the title has settled.
-    if (inBoundarySettle()) return;
+    if (inBoundarySettleExtended(3000)) return; // +3s grace: stagger this release past the parallax mix and first still
 
     // Detect journey start: opacity drops from 1.0 (no frame) to journey value
     const isJourneyStart = wasDefaultOpacityRef.current && effectiveShaderOpacity < 1.0;
@@ -320,7 +320,10 @@ export function JourneyCompositor({
       const from = Number.isFinite(parsed) ? parsed : prev;
       if (Math.abs(effectiveShaderOpacity - from) > 0.05) {
         let current = from;
-        const rate = inBoundarySettle() ? 0.012 : 0.04;
+        // 0.012/frame ~= 2s time constant — the recorded settle-end
+        // blip (session q0z43f f0363) was the old 0.04 catch-up moving
+        // ~1%/frame on its first frames.
+        const rate = 0.012;
         const ramp = () => {
           const target = shaderOpacityRef.current;
           current += (target - current) * rate;

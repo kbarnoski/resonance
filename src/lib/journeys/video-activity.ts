@@ -63,3 +63,10 @@ export function markJourneyBoundary(settleMs: number): void {
 export function inBoundarySettle(): boolean {
   return nowMs() < boundaryUntilMs;
 }
+
+/** Settle plus a grace tail — consumers whose catch-up is itself
+ *  visible (the shader-opacity ramp) hold a little longer so the
+ *  settle-end releases don't all land in the same second. */
+export function inBoundarySettleExtended(extraMs: number): boolean {
+  return nowMs() < boundaryUntilMs + extraMs;
+}
