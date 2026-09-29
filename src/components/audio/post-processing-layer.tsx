@@ -79,7 +79,7 @@ export function PostProcessingLayer({
   // in one frame reads as the room dimming. Smooth every scalar toward
   // its target (~1.5s time constant) so handoffs ease like everything
   // else. The smoothed values are what the draw loop consumes.
-  const smoothRef = useRef({ vignette, bloomIntensity, halation, intensityMultiplier, colorTemperature });
+  const smoothRef = useRef({ vignette, intensityMultiplier, colorTemperature });
   const paletteSmoothRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
@@ -106,10 +106,7 @@ export function PostProcessingLayer({
     // per-frame intensity is applied via globalAlpha (identical output,
     // no per-frame CanvasGradient allocations).
     let vigGradient: CanvasGradient | null = null;
-    let bloomGradient: CanvasGradient | null = null;
     let gradientSizeKey = "";
-    let halGradient: CanvasGradient | null = null;
-    let halKey = "";
 
     let lastTime = performance.now();
 
@@ -137,8 +134,6 @@ export function PostProcessingLayer({
         const k = inBoundarySettle() ? 0 : 1 - Math.exp(-dt / 1.5);
         const sm = smoothRef.current;
         sm.vignette += (raw.vignette - sm.vignette) * k;
-        sm.bloomIntensity += (raw.bloomIntensity - sm.bloomIntensity) * k;
-        sm.halation += (raw.halation - sm.halation) * k;
         sm.intensityMultiplier += (raw.intensityMultiplier - sm.intensityMultiplier) * k;
         sm.colorTemperature += (raw.colorTemperature - sm.colorTemperature) * k;
         // Palette COLORS glide too (Karel 2026-09-29: quick light/dark
@@ -182,11 +177,6 @@ export function PostProcessingLayer({
         for (let i = 0; i <= 8; i++) {
           vigGradient.addColorStop(i / 8, `rgba(0,0,0,${ease(i / 8).toFixed(4)})`);
         }
-        bloomGradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.5);
-        for (let i = 0; i <= 8; i++) {
-          bloomGradient.addColorStop(i / 8, `rgba(255,255,255,${(1 - ease(i / 8)).toFixed(4)})`);
-        }
-        halGradient = null; // size changed — rebuild on next use
       }
 
       // --- Vignette ---
@@ -208,45 +198,11 @@ export function PostProcessingLayer({
         ctx.globalCompositeOperation = "source-over";
       }
 
-      // --- Bloom glow ---
-      // 2026-09-25 frontier fix: the old (v-0.2)*0.15 curve peaked at alpha
-      // 0.075 and rendered nothing below v=0.2 — homeopathic. New curve is
-      // visible across the authored range and answers the music.
-      if (pp.bloomIntensity > 0.05 && bloomGradient) {
-        const gain = pp.intensityMultiplier ?? 1;
-        const glowAlpha = Math.min(0.4, pp.bloomIntensity * 0.32 * (0.45 + pp.audioAmplitude * 0.55) * gain);
-        ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = glowAlpha;
-        ctx.fillStyle = bloomGradient;
-        ctx.fillRect(0, 0, w, h);
-        ctx.globalAlpha = 1;
-        ctx.globalCompositeOperation = "source-over";
-      }
-
-      // --- Halation (warm glow) ---
-      if (pp.halation > 0.02) {
-        const paletteKey = `${sizeKey}|${pp.palette.glow}|${pp.palette.accent}`;
-        if (!halGradient || halKey !== paletteKey) {
-          halKey = paletteKey;
-          halGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, w * 0.6);
-          halGradient.addColorStop(0, `${hex6(pp.palette.glow)}ff`);
-          halGradient.addColorStop(0.25, `${hex6(pp.palette.glow)}b8`);
-          halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}80`);
-          halGradient.addColorStop(0.75, `${hex6(pp.palette.accent)}38`);
-          halGradient.addColorStop(0.92, `${hex6(pp.palette.accent)}10`);
-          halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-        }
-        const halAlpha = Math.min(0.3, pp.halation * 0.5 * (0.55 + pp.audioAmplitude * 0.45) * (pp.intensityMultiplier ?? 1));
-        const cx = w * (0.5 + Math.sin(t * 0.3) * 0.1);
-        const cy = h * (0.5 + Math.cos(t * 0.2) * 0.1);
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = halAlpha;
-        ctx.fillStyle = halGradient;
-        ctx.fillRect(-cx, -cy, w, h);
-        ctx.restore();
-      }
+      // Bloom + halation DELETED (Karel 2026-09-29, measured A/B):
+      // additive full-frame washes that lifted the black levels into
+      // fog — the exact opposite of the light-out-of-darkness
+      // aesthetic. Zero perf cost, negative visual value. Vignette and
+      // color temperature remain as the only grading.
 
       // Particles/motes DELETED entirely (Karel 2026-09-29: "what is a
       // post processing mote? nothing should exist like this i know
