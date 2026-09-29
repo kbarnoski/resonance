@@ -48,6 +48,9 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     if (Number.isFinite(v)) store.setVolume(v);
   } else if (cmd.startsWith("journey:") && context === "room") {
     void launchJourney(cmd.slice(8));
+  } else if (cmd.startsWith("master:") && context === "loop") {
+    const v = cmd.slice(7);
+    window.dispatchEvent(new CustomEvent("installation-operator-master", { detail: v === "off" ? null : v }));
   } else if (cmd.startsWith("jump:")) {
     // Jump the loop to a specific journey (grouped phone browser). The
     // loop client resolves the journey id across its programs; outside

@@ -113,6 +113,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
   const setQueue = useAudioStore((s) => s.setQueue);
   const startJourney = useAudioStore((s) => s.startJourney);
+  const masteringJourneyRef = useRef<string | null>(null);
   const startCustomJourney = useAudioStore((s) => s.startCustomJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
 
@@ -278,10 +279,21 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const target = starts[(setIdx + dir + starts.length) % starts.length];
       window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: flat[target] }));
     };
+    // Mastering hold (Karel 2026-09-29: "i need to say im working on
+    // what journey and master... a simple way that i just keep
+    // iterating"): master:<jid> jumps there and REPLAYS that journey
+    // at its end instead of advancing, until master:off.
+    const onMaster = (e: Event) => {
+      const jid = (e as CustomEvent<string | null>).detail;
+      masteringJourneyRef.current = jid;
+      if (jid) window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: jid }));
+    };
+    window.addEventListener("installation-operator-master", onMaster);
     window.addEventListener("installation-operator-jump-journey", onJumpJourney);
     window.addEventListener("installation-operator-set", onSetJump);
     return () => {
       delete (window as unknown as Record<string, unknown>).__resonanceKioskPrograms;
+      window.removeEventListener("installation-operator-master", onMaster);
       window.removeEventListener("installation-operator-jump-journey", onJumpJourney);
       window.removeEventListener("installation-operator-set", onSetJump);
     };
@@ -1527,6 +1539,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     };
     let advanceTimer: ReturnType<typeof setTimeout> | null = null;
     const advance = () => {
+      // Mastering hold: replay the same journey instead of advancing.
+      const masterId = masteringJourneyRef.current;
+      if (masterId && sequence[phase.index]?.journey.id === masterId) {
+        window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: masterId }));
+        return;
+      }
       if (phase.index + 1 < sequence.length) {
         // Every Nth journey, pause the flow for the artist-statement
         // interstitial so a short visit still meets the statement
