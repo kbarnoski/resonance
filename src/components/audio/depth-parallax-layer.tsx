@@ -153,6 +153,7 @@ export function DepthParallaxLayer({
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
   const camAmpRef = useRef(0);
   const crossJourneyMixRef = useRef(false);
+  const heldOpacityRef = useRef<number | null>(null);
   const prevJourneyRef = useRef(journeyId);
   useEffect(() => {
     if (journeyId !== prevJourneyRef.current) {
@@ -353,6 +354,11 @@ export function DepthParallaxLayer({
   }, [covered, glEpoch]);
 
   if (!covered) return null;
+  // Freeze protocol v2: opacity derives from shaderOpacity and must
+  // HOLD through the boundary settle like every other on-screen value.
+  const computedOpacity = Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55));
+  if (!inBoundarySettle() || heldOpacityRef.current === null) heldOpacityRef.current = computedOpacity;
+  const opacity = inBoundarySettle() ? heldOpacityRef.current : computedOpacity;
   return (
     <canvas
       key={glEpoch}
@@ -361,7 +367,7 @@ export function DepthParallaxLayer({
       style={{
         zIndex: 2,
         mixBlendMode: "screen",
-        opacity: Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55)),
+        opacity,
         transition: "opacity 1200ms ease-out",
       }}
     />

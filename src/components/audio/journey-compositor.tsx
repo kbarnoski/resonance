@@ -274,6 +274,14 @@ export function JourneyCompositor({
     const prev = shaderOpacityRef.current;
     shaderOpacityRef.current = effectiveShaderOpacity;
 
+    // FREEZE PROTOCOL v2 (Karel 2026-09-29: "if you just ensured the
+    // values of things on screen dont change with the introduction of
+    // the next journey elements... imagine it was all one big journey").
+    // During the boundary settle NOTHING writes this var — it HOLDS at
+    // the outgoing journey's value; the step-ramp below glides it to
+    // the new journey's value only after the title has settled.
+    if (inBoundarySettle()) return;
+
     // Detect journey start: opacity drops from 1.0 (no frame) to journey value
     const isJourneyStart = wasDefaultOpacityRef.current && effectiveShaderOpacity < 1.0;
     wasDefaultOpacityRef.current = effectiveShaderOpacity >= 1.0;

@@ -196,7 +196,11 @@ export function AiImageLayer({
     // Solo band: at opening/integration quiet (<0.35) exactly ONE image
     // holds the frame — the crisp asymmetric negative-space moment
     // (Karel 2026-09-28 design principle).
-    const cap = t < 0.4 ? 1 : t < 0.6 ? 2 : t < 0.85 ? 3 : 4; // solo band widened 2026-09-28
+    // Sparse composition (Karel 2026-09-29: "you continue to fill up
+    // most of the frame... i want sparse to cosmic climactic and
+    // elegant and understated"): the climax earns THREE stills, never
+    // four; the build holds two; everything quieter is a solo frame.
+    const cap = t < 0.5 ? 1 : t < 0.85 ? 2 : 3;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
@@ -234,6 +238,7 @@ export function AiImageLayer({
   const journeyEpochRef = useRef(0);
   const journeyChangeAtRef = useRef(0);
   const videoCanvasRef = useRef<HTMLCanvasElement>(null);
+  const heldAiOpacityRef = useRef<number | undefined>(undefined);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -1297,11 +1302,19 @@ export function AiImageLayer({
     : Math.max(0.12, Math.min(0.65, 1 - shaderOpacity) * imageryScale);
   // Spotlight semantics flipped with the cinema canvas: the morph no
   // longer lives in this canvas, so while it plays the stills RECEDE.
-  const aiLayerOpacity = aiOnly
+  const computedAiOpacity = aiOnly
     ? undefined
     : videoSpotlight
       ? Math.min(baseAiOpacity, 0.35)
       : baseAiOpacity;
+  // Freeze protocol v2: during the boundary settle this canvas's
+  // opacity HOLDS — it derives from shaderOpacity, and its glide was
+  // the residual "slight opacity change for a short bit" at every
+  // title (Karel 2026-09-29).
+  if (!inBoundarySettle() || heldAiOpacityRef.current === undefined) {
+    heldAiOpacityRef.current = computedAiOpacity;
+  }
+  const aiLayerOpacity = inBoundarySettle() ? heldAiOpacityRef.current : computedAiOpacity;
 
   return (
     <>

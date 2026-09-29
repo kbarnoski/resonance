@@ -143,10 +143,10 @@ export function PostProcessingLayer({
       // smoothRef note above. `pp` keeps the same shape the rest of
       // the draw loop expects; palette passes through untouched.
       {
-        // Boundary settle: the new journey's palette/brightness params
-        // glide in over ~6s instead of 1.5s — a fast post shift under
-        // the title reads as a "brightness change of sorts".
-        const k = 1 - Math.exp(-dt / (inBoundarySettle() ? 6 : 1.5));
+        // Freeze protocol v2 (Karel 2026-09-29): during the boundary
+        // settle post params don't glide — they HOLD. Any movement
+        // under the title, however slow, reads as a lightness change.
+        const k = inBoundarySettle() ? 0 : 1 - Math.exp(-dt / 1.5);
         const sm = smoothRef.current;
         sm.vignette += (raw.vignette - sm.vignette) * k;
         sm.bloomIntensity += (raw.bloomIntensity - sm.bloomIntensity) * k;
