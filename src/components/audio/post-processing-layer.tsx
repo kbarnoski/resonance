@@ -166,6 +166,11 @@ export function PostProcessingLayer({
         }
       }
       const pp = { ...raw, ...smoothRef.current, palette: { ...raw.palette, ...paletteSmoothRef.current } };
+      // The floating motes follow the music now (Karel 2026-09-29: tiny
+      // bubbles "lasted all of snowflake and continuously into realized"
+      // — they ran at constant density through every journey). Quiet
+      // passages have none; they earn their way in with the build.
+      pp.particleDensity *= Math.max(0, Math.min(1, (pp.intensityMultiplier - 0.45) / 0.4));
       timeRef.current += dt;
       const t = timeRef.current;
 

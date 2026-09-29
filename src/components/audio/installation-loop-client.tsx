@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { TRAMOKYO_SET_STARTS } from "@/lib/journeys/installation-sequence";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay, rampGainTo } from "@/lib/audio/audio-engine";
@@ -262,10 +263,27 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         return;
       }
     };
+    // Set-level transport: jump to the next/previous SET START in the
+    // flattened sequence (rides the same jump-journey path).
+    const onSetJump = (e: Event) => {
+      const dir = (e as CustomEvent<number>).detail >= 0 ? 1 : -1;
+      const flat = programs.flatMap((p) => p.sequence.map((en) => en.journey.id));
+      if (flat.length === 0) return;
+      const starts = TRAMOKYO_SET_STARTS.map((id) => flat.indexOf(id)).filter((i) => i >= 0).sort((x, y) => x - y);
+      if (starts.length === 0) return;
+      const curId = useAudioStore.getState().activeJourney?.id;
+      const cur = curId ? flat.indexOf(curId) : 0;
+      let setIdx = 0;
+      for (let i = 0; i < starts.length; i++) if (starts[i] <= cur) setIdx = i;
+      const target = starts[(setIdx + dir + starts.length) % starts.length];
+      window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: flat[target] }));
+    };
     window.addEventListener("installation-operator-jump-journey", onJumpJourney);
+    window.addEventListener("installation-operator-set", onSetJump);
     return () => {
       delete (window as unknown as Record<string, unknown>).__resonanceKioskPrograms;
       window.removeEventListener("installation-operator-jump-journey", onJumpJourney);
+      window.removeEventListener("installation-operator-set", onSetJump);
     };
   }, [programs]);
   // Title-card window: matches the visualizer-client's built-in journey
@@ -995,6 +1013,22 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // bar, tab switching, etc). Anything with a modifier key is the
       // operator, not the audience — never trap those.
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // Laptop transport (Karel 2026-09-29: "a keyboard command that
+      // lets me go next and back... and per setlist"): plain arrows.
+      // Left/Right step journeys; Up/Down step SETS (set starts from
+      // TRAMOKYO_SET_STARTS).
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.dispatchEvent(new Event(e.key === "ArrowRight" ? "installation-operator-skip" : "installation-operator-prev"));
+        return;
+      }
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.dispatchEvent(new CustomEvent("installation-operator-set", { detail: e.key === "ArrowDown" ? 1 : -1 }));
+        return;
+      }
       // Allow F through — visualizer-client handles it (fullscreen).
       if (e.key === "f" || e.key === "F") return;
       // Eat Escape so visualizer-client.handleExit() can't fire.

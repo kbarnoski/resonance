@@ -249,7 +249,10 @@ export function AiImageLayer({
   const heldAiOpacityRef = useRef<number | undefined>(undefined);
   const morphCoverPendingRef = useRef(false);
   const coverBoostRef = useRef(false);
-  const runJitterRef = useRef(0);
+  // Seeded at declaration — the first render tick runs BEFORE the
+  // journey effect, so a 0-init meant every session opened on slot 0
+  // (Karel 2026-09-29: "the opening image behind the title... same one").
+  const runJitterRef = useRef(Math.floor(Math.random() * 6));
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
@@ -457,6 +460,10 @@ export function AiImageLayer({
     // cap of entrance-protected stills silently rejected the morph —
     // Karel: "including that morph i love!").
     const isVideoPush = !("complete" in img);
+    // Morph-end cover stills also skip cap pressure — at wind-down cap 1
+    // the cover push EVICTED the only visible image (session sm78v1
+    // 158s, the "abrupt drop"). The momentary overshoot just fades.
+    const isCoverPush = !isVideoPush && coverBoostRef.current;
 
     // Evict fully invisible layers first
     for (let i = layers.length - 1; i >= 0; i--) {
@@ -470,7 +477,7 @@ export function AiImageLayer({
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
     const stillCount = layers.filter((l) => "complete" in l.img).length;
-    if (!isVideoPush && stillCount >= conductedMaxLayers()) {
+    if (!isVideoPush && !isCoverPush && stillCount >= conductedMaxLayers()) {
       // Never cut a layer mid-entrance (Karel 2026-09-28: "right after
       // the text an image dropped"): a fading-in layer is only evictable
       // once it's been arriving for 2.5s+. If nothing can gracefully
@@ -493,7 +500,7 @@ export function AiImageLayer({
     }
 
     // Hard cap: if still over limit after starting a fade, force-remove oldest fading
-    if (!isVideoPush && stillCount >= conductedMaxLayers() + 1) {
+    if (!isVideoPush && !isCoverPush && stillCount >= conductedMaxLayers() + 1) {
       // Never hard-remove a layer the viewer can still see — a splice at
       // opacity 0.5 IS the "image drops out" glitch. Visible layers keep
       // fading; the momentary cap overshoot costs one extra drawImage.
@@ -1199,11 +1206,23 @@ export function AiImageLayer({
       if (w !== lastW || h !== lastH) {
         canvas.width = w;
         canvas.height = h;
-        if (vCanvas) { vCanvas.width = w; vCanvas.height = h; }
         lastW = w;
         lastH = h;
       }
-      if (vctx) vctx.clearRect(0, 0, w, h);
+      // Cinema canvas is DORMANT (1x1) unless a morph is actually on
+      // screen — compositing + clearing a second full-screen canvas
+      // every frame stacked with shader crossfades into sustained
+      // ~10fps trains (session sm78v1, Karel: "slow downs in frame
+      // rates"). It wakes only for the seconds a clip lives.
+      const hasVideoLayer = layersRef.current.some((l) => !("complete" in l.img));
+      if (vCanvas && vctx) {
+        if (hasVideoLayer) {
+          if (vCanvas.width !== w || vCanvas.height !== h) { vCanvas.width = w; vCanvas.height = h; }
+          vctx.clearRect(0, 0, w, h);
+        } else if (vCanvas.width > 1) {
+          vCanvas.width = 1; vCanvas.height = 1;
+        }
+      }
 
       // In aiOnly mode, fill black so shaders never show through during cross-dissolves
       if (aiOnlyRef.current) {

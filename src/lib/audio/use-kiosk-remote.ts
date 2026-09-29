@@ -29,6 +29,10 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     window.dispatchEvent(new Event("installation-operator-skip"));
   } else if (cmd === "prev" && context === "loop") {
     window.dispatchEvent(new Event("installation-operator-prev"));
+  } else if (cmd === "set-next" && context === "loop") {
+    window.dispatchEvent(new CustomEvent("installation-operator-set", { detail: 1 }));
+  } else if (cmd === "set-prev" && context === "loop") {
+    window.dispatchEvent(new CustomEvent("installation-operator-set", { detail: -1 }));
   } else if (cmd === "break" && context === "loop") {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {

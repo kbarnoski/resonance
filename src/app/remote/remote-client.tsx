@@ -151,6 +151,12 @@ export function RemoteClient() {
             <Button variant="glass" className={btn} onClick={() => void send("skip")}>
               Next ▶
             </Button>
+            <Button variant="glass" className={btn} onClick={() => void send("set-prev")}>
+              ◀ Set
+            </Button>
+            <Button variant="glass" className={btn} onClick={() => void send("set-next")}>
+              Set ▶
+            </Button>
           </>
         )}
         <Button

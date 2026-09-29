@@ -60,6 +60,17 @@ export const TRAMOKYO_MIX_ID = "tramokyo-mix";
  * via PAIRED_TRACKS). There is no fallback pool — an unresolved pairing
  * is skipped and flight-recorded, never substituted.
  */
+/** First journey of each SET in the setlist — transport set-jumps
+ *  (laptop arrows / phone remote) land on these (Karel 2026-09-29). */
+export const TRAMOKYO_SET_STARTS: readonly string[] = [
+  "first-snow", // Snowflake EP
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // Expansion
+  "the-ascent", // Featured journeys
+  "27f52cf0-5fad-420f-8324-8017c414f1f8", // Welcome Home
+  "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1", // Surrounded by Light
+  "5a07f0af-654f-4dab-b42c-aef83983b33f", // March Light
+];
+
 export const TRAMOKYO_SETLIST: readonly string[] = [
   // ── The Snowflake EP, in order ──
   "first-snow", //  1. Snowflake — Snowflake · 2:58
