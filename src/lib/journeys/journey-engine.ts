@@ -699,7 +699,7 @@ class JourneyEngine {
       this.lastAnySwitchMs = now;
     }
     // ─── Dual shader (persistent 2nd layer) ───
-    // Switches on its own timer, independent of primary. Prefers Geometry shaders.
+    // Switches on its own timer, independent of primary.
     // The visualizer's existing fade-in/out handles the visual transition.
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
     // The conductor also holds the dual back while the music is quiet
@@ -1084,7 +1084,7 @@ class JourneyEngine {
 
   /**
    * Pick a dual shader from the phase's pool.
-   * Prefers Geometry shaders (~70% of the time) for visual impact.
+   * (Geometry pick-banned 2026-09-29 — the spider-web ejection.)
    * Avoids picking the same shader as the primary.
    */
   /** Check live user preferences — blocked or deleted shaders should be skipped.
@@ -1093,6 +1093,10 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
+    // Karel 2026-09-29: "full screen web of colored lines... like an
+    // animated cartoon spider web — ejected." The entire Geometry
+    // curve-lattice family, banned at pick time (pin-safe).
+    if (getGeometryModes().has(mode)) return false;
     if (this.multiLayerMode && MODES_3D.has(mode)) return false;
     const blocked = getUserBlockedShaders();
     const deleted = getUserDeletedShaders();
@@ -1159,10 +1163,11 @@ class JourneyEngine {
     }
     const pool = unseenCandidates.length > 0 ? unseenCandidates : candidates;
 
+    // Geometry is pick-banned (2026-09-29) so geoCandidates is always
+    // empty — but the random() draw below MUST stay: removing it would
+    // shift the seeded stream and scramble every pinned take.
     const geoModes = getGeometryModes();
     const geoCandidates = pool.filter(m => geoModes.has(m));
-
-    // 70% chance to pick a geometry shader if available
     if (geoCandidates.length > 0 && this.random() < 0.7) {
       return geoCandidates[Math.floor(this.random() * geoCandidates.length)];
     }
