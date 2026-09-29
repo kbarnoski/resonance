@@ -217,6 +217,16 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
  */
 /** Per-realm shader blocklist — these modes are excluded for that realm */
 /** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
+/** Pick-time blocklist — enforced when shaders are CHOSEN, not when
+ *  pools are generated. Bans added here do NOT reshuffle seeded pools,
+ *  so pinned takes keep their exact sequences (the banned shader's
+ *  slot just picks the next candidate). Use this for any ban after a
+ *  take is loved (Karel 2026-09-29: "retain that take... no helix"). */
+export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
+  "r-growth", // Karel 2026-09-29: the "colored helix" — coiling growth spirals in Snowflake take #1955860385
+  "helix",    // belt + suspenders with the winter pool block
+]);
+
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"
   "quasar", "neon", // Karel 2026-09-29 LAW: no full-screen intensity monsters anywhere — "shaders that interplay with the images in a perfect dance"
@@ -843,7 +853,6 @@ export const JOURNEYS: Journey[] = [
     // PILOT (2026-09-25→25b): Karel — no parameter fidget; the music sets
     // the PACE of the light instead (tempoFlow time dilation).
     tempoFlow: true,
-    trails: true,
     blockedShaders: ["rain", "monsoon", "deluge", "torrent", "night-rain", "r3-monsoonveil"],
     phaseLabels: { threshold: "Entrance", expansion: "Descent", transcendence: "Furnace", illumination: "Embers", return: "Ascent", integration: "Aftermath" },
     phases: defaultPhases("hell", {
@@ -1538,7 +1547,6 @@ export const JOURNEYS: Journey[] = [
     // PILOT (2026-09-25→25b): Karel — no parameter fidget; the music sets
     // the PACE of the light instead (tempoFlow time dilation).
     tempoFlow: true,
-    trails: true,
     completionOffset: 3,
     blockedShaders: ["rain", "monsoon", "deluge", "torrent", "night-rain", "r3-monsoonveil"],
     phaseLabels: { threshold: "Chill", expansion: "Falling", transcendence: "Whiteout", illumination: "Silence", return: "Warmth", integration: "Stillness" },

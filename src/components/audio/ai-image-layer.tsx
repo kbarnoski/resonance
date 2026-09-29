@@ -1393,7 +1393,6 @@ export function AiImageLayer({
   return (
     <>
       <canvas
-        data-trail-src="1"
         ref={canvasRef}
         data-ai-image-canvas
         className="absolute inset-0 w-full h-full"

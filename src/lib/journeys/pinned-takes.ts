@@ -24,7 +24,10 @@
  * album of approved performances.
  */
 export const PINNED_TAKES: Record<string, number | number[]> = {
-  // "first-snow": [123456789, 987654321],
+  // Karel 2026-09-29: "i really liked the take up until the helix...
+  // retain that" — the r-growth slot re-picks via the pick-time ban;
+  // everything else replays exactly.
+  "first-snow": 1955860385,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random

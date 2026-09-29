@@ -1023,16 +1023,6 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         window.dispatchEvent(new Event(e.key === "ArrowRight" ? "installation-operator-skip" : "installation-operator-prev"));
         return;
       }
-      // T toggles the trails layer live (Karel 2026-09-29: "unsure
-      // about the trails" — judge by eye mid-journey; trails run on
-      // Snowflake + Realized only).
-      if (e.key === "t" || e.key === "T") {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const c = document.querySelector<HTMLCanvasElement>("canvas[data-trails]");
-        if (c) c.style.display = c.style.display === "none" ? "" : "none";
-        return;
-      }
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
         e.stopImmediatePropagation();

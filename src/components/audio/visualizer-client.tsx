@@ -1775,7 +1775,6 @@ export function VisualizerClient({
         aiGenerating={isPlaying}
         journeyId={activeJourney?.id}
         enableBassFlash={activeJourney?.enableBassFlash}
-        enableTrails={activeJourney?.trails}
         localImageUrls={activeJourney?.localImageUrls}
       >
         {/* Shader layer */}

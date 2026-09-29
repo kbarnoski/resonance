@@ -2,7 +2,7 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
-import { regenerateJourneyShaders } from "./journeys";
+import { regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST } from "./journeys";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
@@ -1092,6 +1092,7 @@ class JourneyEngine {
    *  WebGL context that pushes 5+ simultaneous canvases over the
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
+    if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
     if (this.multiLayerMode && MODES_3D.has(mode)) return false;
     const blocked = getUserBlockedShaders();
     const deleted = getUserDeletedShaders();

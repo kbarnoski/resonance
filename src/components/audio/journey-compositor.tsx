@@ -5,7 +5,6 @@ import { inBoundarySettle, inBoundarySettleExtended } from "@/lib/journeys/video
 import { AiImageLayer } from "./ai-image-layer";
 import { AiOverlayElements } from "./ai-overlay-elements";
 import { PostProcessingLayer } from "./post-processing-layer";
-import { JourneyTrailsLayer } from "./journey-trails-layer";
 import { DebandOverlay } from "./deband-overlay";
 import { DepthParallaxLayer } from "./depth-parallax-layer";
 import { ImageryErrorBoundary } from "./imagery-error-boundary";
@@ -18,9 +17,6 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
-  /** Feedback-trails layer (frontier pilot) — luminous echoes of the live
-   *  composite. Set from the journey's `trails` flag; tier-gated inside. */
-  enableTrails?: boolean;
   audioAmplitude: number;
   audioBass: number;
   aiEnabled: boolean;
@@ -62,7 +58,6 @@ interface JourneyCompositorProps {
  */
 export function JourneyCompositor({
   frame,
-  enableTrails = false,
   audioAmplitude,
   audioBass,
   aiEnabled,
@@ -134,13 +129,6 @@ export function JourneyCompositor({
   // exactly where it was at journey end, and the visualizer wrapper's
   // opacity transition handles the fade smoothly from there.
   const [parallaxCovered, setParallaxCovered] = useState(false);
-  // Trails stay mounted ~3s after the flag drops so the fade above can run.
-  const [trailsMounted, setTrailsMounted] = useState(enableTrails);
-  useEffect(() => {
-    if (enableTrails) { setTrailsMounted(true); return; }
-    const t = setTimeout(() => setTrailsMounted(false), 3000);
-    return () => clearTimeout(t);
-  }, [enableTrails]);
   const lastShaderOpacityRef = useRef<number>(1.0);
   if (frame?.shaderOpacity != null) {
     lastShaderOpacityRef.current = frame.shaderOpacity;
@@ -386,7 +374,7 @@ export function JourneyCompositor({
       ref={rootRef}
       className="absolute inset-0"
     >
-      {/* Imagery stack — parallax, collage, clones, trails — inside a
+      {/* Imagery stack — parallax, collage, clones — inside a
           boundary that degrades to shaders-only on any throw (never take
           the show down; maturity audit #8). */}
       <ImageryErrorBoundary resetKey={journeyId}>
@@ -427,16 +415,6 @@ export function JourneyCompositor({
         </div>
       )}
 
-      {/* Feedback trails — luminous echoes (pilot journeys, high tier only) */}
-      {trailsMounted && frame && (
-        /* Trails handoff (Karel 2026-09-28): when the next journey has no
-           trails flag the echo layer used to hard-unmount — its luminous
-           echoes vanished in one frame at the boundary (the "tiny glitch").
-           It now fades over 2.5s and unmounts after. */
-        <div style={{ opacity: enableTrails ? 1 : 0, transition: "opacity 2500ms ease-out" }}>
-          <JourneyTrailsLayer enabled intensity={0.28} />
-        </div>
-      )}
       </ImageryErrorBoundary>
 
       {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
