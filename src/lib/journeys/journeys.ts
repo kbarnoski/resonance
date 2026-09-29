@@ -234,6 +234,7 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "r2-sunsetcascade", // Karel 2026-09-29: "the 2 colored horizontal colors shader"
     "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
     "r-molten", // Karel 2026-09-29: the dual that "sat over the whole journey and gave it a tint"
+    "whorl", // Karel 2026-09-29 mastering: "i hate that swirl shader" — the swirl was whorl, not just maelstrom/vortex
   ]),
 };
 
@@ -1564,7 +1565,7 @@ export const JOURNEYS: Journey[] = [
       threshold: {
         aiPrompt: "interconnected frost constellation entering from the lower right corner and radiating upward across deep black void, the dense interwoven ice and powder detail anchored in one third of the frame with the rest open darkness, white sand-like particles dispersed along geometric pathways, cool blue light at the crystalline joints, a slow spiral current carrying the finest particles outward toward the upper left emptiness, cosmic scale where the frost could be star clusters or nebulae, asymmetric composition with visual weight low and right, no trees no roots no plants, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["the air changes...", "feel it cooling...", "something is coming..."],
-        shaderOpacity: 0.55, bloomIntensity: 0.22, halation: 0.04, vignette: 0.3, particleDensity: 0.25, colorTemperature: -0.08, intensityMultiplier: 0.9,
+        shaderOpacity: 0.65, bloomIntensity: 0.22, halation: 0.04, vignette: 0.3, particleDensity: 0.25, colorTemperature: -0.08, intensityMultiplier: 0.9,
         poetryMood: "melancholic",
         voice: "shimmer",
       },

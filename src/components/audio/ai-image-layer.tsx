@@ -256,11 +256,12 @@ export function AiImageLayer({
   // journey effect, so a 0-init meant every session opened on slot 0
   // (Karel 2026-09-29: "the opening image behind the title... same one").
   const runJitterRef = useRef(Math.floor(Math.random() * 6));
+  const lastProgressRef = useRef(0);
   useEffect(() => {
     // Correctness audit 2026-09-25 #2: isPackActive() is synchronously false
     // at mount (probe still in flight), which permanently disabled clips.
     // Fetch unconditionally — the file 404s online and the catch handles it.
-    fetch("/tramokyo-pack/local-clips.json")
+    fetch("/tramokyo-pack/local-clips.json", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((m) => { clipsRef.current = m; })
       .catch(() => { clipsRef.current = null; });
@@ -612,6 +613,25 @@ export function AiImageLayer({
       // is already alive plays through and hands off via the boundary
       // crossfades.
       if (progress > 0.96) return;
+      // Replay/rewind detect (mastering loops jump p~1 -> 0): treat a
+      // big backward jump as a journey start — fade what's on screen,
+      // re-roll the opener, re-arm clips — so the intro never pops.
+      if (progress < lastProgressRef.current - 0.5) {
+        glitchRecord("replay-reset", `p ${lastProgressRef.current.toFixed(2)} -> ${progress.toFixed(2)}`);
+        runJitterRef.current = Math.floor(Math.random() * 6);
+        lastPackIndexRef.current = -1;
+        lastPackUrlRef.current = null;
+        lastClipPhaseRef.current = -1;
+        pendingMorphRef.current = null;
+        journeyChangeAtRef.current = 0; // replays skip the 9s clip holdoff
+        const nowR = performance.now();
+        for (const l of layersRef.current) {
+          if (l.state !== "fading-out") {
+            l.fadeStartOpacity = l.opacity; l.state = "fading-out"; l.fadeStartTime = nowR; l.boundaryFade = true;
+          }
+        }
+      }
+      lastProgressRef.current = progress;
       // Morph quiet window (z2wg4u: layer-evict + still-push 9ms before
       // a 108ms frame gap while a morph eased out): still churn waits
       // the few seconds a clip is visible — a decode stall on held
@@ -793,6 +813,7 @@ export function AiImageLayer({
 
         const prevPhase = lastClipPhaseRef.current;
         if (phaseIdx >= 0 && phaseIdx !== prevPhase) {
+          glitchRecord("clip-arm", `phase ${prevPhase}->${phaseIdx}`);
           lastClipPhaseRef.current = phaseIdx;
           heroPushedForRef.current = -1; // new phase — hero re-arms
           const travel = prevPhase >= 0 && phaseIdx === prevPhase + 1
@@ -811,6 +832,7 @@ export function AiImageLayer({
         // (sample-before-batch law applies).
         const HEROES_ENABLED = false;
         const morph = pendingMorphRef.current;
+        if (morph && busyNow()) glitchRecord("clip-blocked", `busy for t? phase ${phaseIdx}`);
         if (morph && morph.forPhase === phaseIdx && !busyNow()) {
           pendingMorphRef.current = null;
           const attempt = morph;
