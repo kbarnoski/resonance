@@ -950,6 +950,23 @@ class JourneyEngine {
   sparseInterludeActive(): boolean {
     const j = this.journey;
     if (!j) return false;
+    // Analysis-first (Karel 2026-09-30: "based on the analysis be
+    // uniquely treated"): when the journey has a pronounced interior
+    // valley — a low-intensity phase between 30% and 90% — the sparse
+    // passage lives THERE, where the music actually thins. The hash
+    // window is only the fallback for flat arcs. Both deterministic.
+    let valley: { start: number; end: number } | null = null;
+    let valleyInt = 0.56;
+    for (const ph of j.phases) {
+      if (ph.start < 0.3 || ph.end > 0.9) continue;
+      const iv = ph.intensityMultiplier ?? 1;
+      if (iv < valleyInt) { valleyInt = iv; valley = { start: ph.start, end: ph.end }; }
+    }
+    if (valley) {
+      const mid = (valley.start + valley.end) / 2;
+      const half = Math.min(valley.end - valley.start, 0.13) / 2;
+      return this.lastProgress >= mid - half && this.lastProgress < mid + half;
+    }
     let h = 2166136261 ^ ((this.takeSeedValue ?? 0) >>> 0);
     for (let i = 0; i < j.id.length; i++) h = Math.imul(h ^ j.id.charCodeAt(i), 16777619);
     const start = 0.46 + (((h >>> 0) % 1000) / 1000) * 0.14; // opens in 0.46-0.60
