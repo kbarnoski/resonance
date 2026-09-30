@@ -65,6 +65,9 @@ interface ImageLayer {
   fadeStartTime: number;
   /** Opacity at the moment fade-out began — prevents jump from partial→1 */
   fadeStartOpacity: number;
+  /** Per-layer fade override (finale slow-melt uses 14s so the frame
+   *  carries into the boundary title cover — no coverage dropout). */
+  fadeDurationMs?: number;
   /** Time when layer was created — used for Ken Burns, never modified */
   createdTime: number;
   /** Time when layer reached peak opacity — used for MIN_PEAK_DURATION hold */
@@ -712,7 +715,7 @@ export function AiImageLayer({
       // stillness windows breathe slower but still breathe.
       const idleFloor = Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
       const idleMs = performance.now() - idleFloor;
-      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 32_000 : 22_000;
+      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 22_000 : 14_000; // tightened 2026-09-30b: "the max is too long"
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
       if (idleRescue && urls.length > 1) {
         let walked = 0;
@@ -859,7 +862,13 @@ export function AiImageLayer({
                       layer.fadeStartOpacity = layer.opacity;
                       layer.state = "fading-out";
                       layer.fadeStartTime = performance.now();
-                      glitchRecord("morph-finale-melt", "immediate");
+                      // Slow melt (Karel 2026-09-30: a 6s melt finished
+                      // ~15s before the boundary and the composition
+                      // dipped right at the Realized title): starts NOW
+                      // but breathes out over 14s, carrying into the
+                      // title cover.
+                      layer.fadeDurationMs = 14_000;
+                      glitchRecord("morph-finale-melt", "immediate-slow");
                     }
                   }
                   return;
@@ -1371,7 +1380,7 @@ export function AiImageLayer({
         } else if (layer.state === "fading-out") {
           // Slow fade-out keeps images visible longer during transitions
           // Purge layers use a fast 2s fade to clear old journey imagery quickly
-          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : !("complete" in layer.img) ? VIDEO_FADEOUT_DURATION : FADEOUT_DURATION;
+          const fadeDuration = layer.fadeDurationMs ?? (layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : !("complete" in layer.img) ? VIDEO_FADEOUT_DURATION : FADEOUT_DURATION);
           const rawProgress = Math.min(1, elapsed / fadeDuration);
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);

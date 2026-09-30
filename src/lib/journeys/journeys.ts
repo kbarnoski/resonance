@@ -247,6 +247,7 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "snow", // Karel 2026-09-30 screenshot: recast landed on it at p0.676 — full-frame frost dendrites, near-static, "hung out too long at this point"
     "r3-pulseringssoft", "r3-coralpulse", // Karel 2026-09-30 screenshot: full-screen rainbow concentric-ring wash (both pulse-ring recasts in that window) — "dont use this full screen shader"
     "umbra", "r3-wishtrails", // Karel 2026-09-30 screenshot: the dark-iris/web-eye family ("ugly web looking shaders... those type should never be used in snowflake")
+    "lichen", // Karel 2026-09-30: "subtle web like shader with some green" — lichen dual recast at p0.314
   ]),
   hell: new Set([
     "nova", // Karel 2026-09-30 screenshot: the concentric shockwave rings over the comet clip (nova @p0.744) — "dont use this morph in realized" (it was the shader, not a morph)
