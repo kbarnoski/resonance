@@ -77,6 +77,17 @@ if [ -z "$ok" ]; then
   osascript -e 'display notification "Server not up yet — Chrome will keep retrying. Check ~/Library/Logs/Tramokyo/tramokyo-server.log if this persists." with title "Tramokyo"' >/dev/null 2>&1
 fi
 
+# BUILD VERIFICATION (Karel 2026-09-30: "when i open the app it does
+# the check and then opens once it verifies its opening the latest").
+# The server must be serving the repo's HEAD; if not, say so plainly
+# instead of silently opening something old.
+HEAD_COMMIT="$(git -C "$APP_DIR" rev-parse --short=8 HEAD 2>/dev/null || echo unknown)"
+SERVER_COMMIT="$(curl -s --max-time 3 http://localhost:3000/api/version | /usr/bin/python3 -c 'import json,sys;print(json.load(sys.stdin).get("commit","?"))' 2>/dev/null || echo '?')"
+if [ "$HEAD_COMMIT" != "unknown" ] && [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ]; then
+  CHOICE=$(osascript -e "button returned of (display dialog \"Server build ($SERVER_COMMIT) is older than the latest code ($HEAD_COMMIT). Ask Claude to deploy, or open the current server version anyway.\" with title \"Tramokyo\" buttons {\"Cancel\", \"Open Anyway\"} default button \"Open Anyway\")" 2>/dev/null || echo "Open Anyway")
+  if [ "$CHOICE" = "Cancel" ]; then exit 0; fi
+fi
+
 # Kill any prior kiosk-profile Chrome first. If one is still alive,
 # `open -na` hands the URL to the EXISTING process, which ignores
 # --kiosk entirely — result: a second tab in a normal window plus a

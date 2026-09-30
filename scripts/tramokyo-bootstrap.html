@@ -38,7 +38,10 @@
   function go() {
     if (redirected) return;
     redirected = true;
-    location.replace(TARGET);
+    // Cache-buster (2026-09-30): every open gets a unique URL, so
+    // Chrome can never serve a stale cached document. The in-app
+    // build watchdog covers long-lived pages after deploys.
+    location.replace(TARGET + "&v=" + Date.now());
   }
 
   // Two probes raced per attempt; EITHER succeeding means the server
