@@ -554,19 +554,24 @@ export function ShaderVisualizer({
       const s = smoothRef.current;
       // Kinetic band-split: the layer hears only its assigned band —
       // that band drives amplitude and is boosted; the others whisper.
+      // Adaptive band range (2026-09-30 probe: fixed 2.4x clamps at
+      // 1.0 and flatlines — an EQ needs contrast, not gain). Tracks
+      // the band's own recent floor/peak and maps onto full range.
+      let bandPeak = 0.25;
+      let bandFloor = 0.05;
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
         if (!f) return;
         const focusVal = f === "bass" ? s.bass : f === "mid" ? s.mid : s.treble;
-        // Punchier drive (Karel 2026-09-30: chain verified live but "i
-        // see nothing responding" — 1.5x/0.25 read as ambient drift).
         const damp = 0.12;
         if (f !== "bass") s.bass *= damp;
         if (f !== "mid") s.mid *= damp;
         if (f !== "treble") s.treble *= damp;
-        const boosted = Math.min(1, focusVal * 2.4);
-        if (f === "bass") s.bass = boosted; else if (f === "mid") s.mid = boosted; else s.treble = boosted;
-        s.amplitude = boosted;
+        bandPeak = Math.max(focusVal, bandPeak * 0.9975); // ~7s half-life
+        bandFloor = Math.min(focusVal, bandFloor * 1.002 + 0.0004);
+        const norm = Math.min(1, Math.max(0, (focusVal - bandFloor) / Math.max(0.04, bandPeak - bandFloor)));
+        if (f === "bass") s.bass = norm; else if (f === "mid") s.mid = norm; else s.treble = norm;
+        s.amplitude = norm;
       };
       if (smoothMotionRef.current) {
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
@@ -615,9 +620,9 @@ export function ShaderVisualizer({
       // flashes with kicks, mid breathes with melody, treble sparkles.
       if (bandFocusRef.current) {
         const f2 = bandFocusRef.current;
-        const lv = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble;
-        canvas.style.filter = `brightness(${(0.45 + lv * 1.35).toFixed(3)})`;
-        canvas.style.transform = `scale(${(1 + lv * 0.055).toFixed(4)})`;
+        const lv = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble; // normalized 0..1
+        canvas.style.filter = `brightness(${(0.35 + lv * 1.25).toFixed(3)})`;
+        canvas.style.transform = `scale(${(1 + lv * 0.06).toFixed(4)})`;
         // Ground-truth probe for self-verification runs.
         (window as unknown as Record<string, unknown>).__resonanceBands = { f: f2, bass: s.bass, mid: s.mid, treble: s.treble, t: Date.now() };
       } else if (canvas.style.filter) {
