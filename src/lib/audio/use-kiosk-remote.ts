@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAudioStore } from "./audio-store";
-import { ensureResumed } from "./audio-engine";
+import { ensureResumed, getAnalyserNode } from "./audio-engine";
+import { isKineticJourneyName } from "@/lib/journeys/kinetic";
 import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
 import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
@@ -163,6 +164,13 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               // the PAGE (not just the server) is running the new build
               // (2026-09-30: two deploys ran under a stale page).
               build: process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev",
+              // Kinetic diagnostics (2026-09-30: "i see nothing
+              // responding to sound" — this pinpoints the dead link).
+              diag: {
+                ar: s.activeJourney?.audioReactive ?? null,
+                kin: isKineticJourneyName(s.activeJourney?.name),
+                an: !!getAnalyserNode(),
+              },
               // Karel 2026-09-20: the remote must ALWAYS name what is on
               // screen. Between journeys the loop publishes a phase label
               // (set title card / dedication) on window; fall back to it.

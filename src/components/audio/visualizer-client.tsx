@@ -153,12 +153,31 @@ function GestureStartScreen({
           <Eyebrow className="mb-3.5 text-[0.68rem] tracking-[0.14em]" style={{ color: eyebrowColor }}>
             {eyebrow}
           </Eyebrow>
-          <DisplayTitle
-            as="div"
-            className="not-italic text-white text-[clamp(2.6rem,7vw,4rem)] tracking-[0.04em] leading-[1.2]"
-          >
-            {journeyName}
-          </DisplayTitle>
+          {(() => {
+            // Brand sans + classical catalogue treatment (Karel
+            // 2026-09-30) — THIS overlay is the card the kiosk loop
+            // shows; the serif DisplayTitle here was the "wrong font".
+            const m = /^(.*?)\s+(\d+)$/.exec(journeyName ?? "");
+            const SANS = "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif";
+            return (
+              <>
+                <div
+                  className="text-white text-[clamp(1.95rem,5.25vw,3rem)] tracking-[-0.01em] leading-[1.2]"
+                  style={{ fontFamily: SANS, fontWeight: 300 }}
+                >
+                  {m ? m[1] : journeyName}
+                </div>
+                {m && (
+                  <div
+                    className="mt-4 text-[clamp(0.85rem,1.4vw,1.1rem)] tracking-[0.32em] uppercase text-white/60"
+                    style={{ fontFamily: SANS, fontWeight: 400 }}
+                  >
+                    No.&thinsp;{m[2]}
+                  </div>
+                )}
+              </>
+            );
+          })()}
           {journeySubtitle && (
             <DisplayTitle
               as="div"
