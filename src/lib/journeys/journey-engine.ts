@@ -992,6 +992,19 @@ class JourneyEngine {
 
   private applyTakeScript(clamped: number, now: number): void {
     if (!this.takeScript) return;
+    // Tail release (Karel 2026-09-30: "sat like this for like a minute...
+    // the entire last third is boring"): a recorded take's final entry can
+    // land as early as p0.82, freezing rotation for the rest of the track
+    // (scripts also ignore nudges). Past the last entry + a beat, hand the
+    // journey back to procedural rotation so the ending keeps breathing.
+    const lastP = this.takeScript[this.takeScript.length - 1]?.p ?? 1;
+    if (clamped > lastP + 0.04) {
+      this.takeScript = null;
+      this.shaderDurationMs = 12_000 + this.random() * 6_000;
+      this.shaderStartMs = now;
+      glitchRecord("script-tail-release", `@p${clamped.toFixed(3)}`);
+      return;
+    }
     let prim: string | null = null;
     let dual: string | null = null;
     let tert: string | null = null;

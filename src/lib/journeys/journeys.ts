@@ -242,6 +242,9 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "whorl", // Karel 2026-09-29 mastering: "i hate that swirl shader" — the swirl was whorl, not just maelstrom/vortex
     "r2-spiralgal", // Karel 2026-09-29 screenshot: the purple spiral — another swirl out of Snowflake
   ]),
+  hell: new Set([
+    "nova", // Karel 2026-09-30 screenshot: the concentric shockwave rings over the comet clip (nova @p0.744) — "dont use this morph in realized" (it was the shader, not a morph)
+  ]),
 };
 
 const GLOBAL_SHADER_BLOCKLIST: string[] = [

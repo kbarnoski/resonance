@@ -687,6 +687,13 @@ export function AiImageLayer({
       // shifts by a small per-journey-run offset so each take opens
       // differently while keeping the arc order.
       if (idx >= 0) idx = Math.min(urls.length - 1, idx + runJitterRef.current);
+      // A pending morph cover must ALWAYS land (session 04cmm4: the
+      // finale's cover mapped to the still already on screen, the
+      // dedupe below swallowed it, and the held frame melted with
+      // nothing built over it) — walk to the neighboring slot instead.
+      if (morphCoverPendingRef.current && idx === lastPackIndexRef.current && urls.length > 1) {
+        idx = (idx + 1) % urls.length;
+      }
       if (idx < 0) {
         idx = localImageIndexRef.current % urls.length;
         localImageIndexRef.current = idx + 1;
