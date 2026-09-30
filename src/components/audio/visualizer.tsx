@@ -618,6 +618,8 @@ export function ShaderVisualizer({
         const lv = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble;
         canvas.style.filter = `brightness(${(0.45 + lv * 1.35).toFixed(3)})`;
         canvas.style.transform = `scale(${(1 + lv * 0.055).toFixed(4)})`;
+        // Ground-truth probe for self-verification runs.
+        (window as unknown as Record<string, unknown>).__resonanceBands = { f: f2, bass: s.bass, mid: s.mid, treble: s.treble, t: Date.now() };
       } else if (canvas.style.filter) {
         canvas.style.filter = "";
         canvas.style.transform = "";
