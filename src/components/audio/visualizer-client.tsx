@@ -1995,13 +1995,33 @@ export function VisualizerClient({
                 />
                 {/* Karel 2026-09-20: name alone — no "Journey" eyebrow,
                     no subtitle. Mirrors installation-intro. */}
-                <DisplayTitle
-                  as="span"
-                  className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
-                  style={{ textShadow: TEXT_SHADOW }}
-                >
-                  {activeJourney.name}
-                </DisplayTitle>
+                {(() => {
+                  // THE journey title card the kiosk loop actually
+                  // shows (Karel 2026-09-30: serif hunted through
+                  // three components — this was the live one). Brand
+                  // sans, light weight, 25% smaller, classical
+                  // catalogue number below the name.
+                  const nm = /^(.*?)\s+(\d+)$/.exec(activeJourney.name);
+                  const SANS = "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif";
+                  return (
+                    <>
+                      <span
+                        className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.01em]"
+                        style={{ textShadow: TEXT_SHADOW, fontFamily: SANS, fontWeight: 300 }}
+                      >
+                        {nm ? nm[1] : activeJourney.name}
+                      </span>
+                      {nm && (
+                        <span
+                          className="relative mt-5 text-[clamp(0.9rem,1.5vw,1.2rem)] tracking-[0.32em] uppercase text-white/60"
+                          style={{ textShadow: TEXT_SHADOW, fontFamily: SANS, fontWeight: 400 }}
+                        >
+                          No.&thinsp;{nm[2]}
+                        </span>
+                      )}
+                    </>
+                  );
+                })()}
                 <MonoLabel
                   as="span"
                   className="relative mt-12 text-base tracking-[0.06em] text-white/65"

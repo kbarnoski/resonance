@@ -558,11 +558,13 @@ export function ShaderVisualizer({
         const f = bandFocusRef.current;
         if (!f) return;
         const focusVal = f === "bass" ? s.bass : f === "mid" ? s.mid : s.treble;
-        const damp = 0.25;
+        // Punchier drive (Karel 2026-09-30: chain verified live but "i
+        // see nothing responding" — 1.5x/0.25 read as ambient drift).
+        const damp = 0.12;
         if (f !== "bass") s.bass *= damp;
         if (f !== "mid") s.mid *= damp;
         if (f !== "treble") s.treble *= damp;
-        const boosted = Math.min(1, focusVal * 1.5);
+        const boosted = Math.min(1, focusVal * 2.4);
         if (f === "bass") s.bass = boosted; else if (f === "mid") s.mid = boosted; else s.treble = boosted;
         s.amplitude = boosted;
       };
@@ -586,10 +588,14 @@ export function ShaderVisualizer({
         const rawMid = midSum / (25 * 255);
         const rawTreble = trebleSum / (33 * 255);
         const rawAmplitude = totalSum / (len * 255);
-        s.bass += (rawBass - s.bass) * SMOOTHING;
-        s.mid += (rawMid - s.mid) * SMOOTHING;
-        s.treble += (rawTreble - s.treble) * SMOOTHING;
-        s.amplitude += (rawAmplitude - s.amplitude) * SMOOTHING;
+        // Kinetic layers track the music, not a moving average — 0.06
+        // smoothing lags transients ~1s, which erased the band-split
+        // (Karel 2026-09-30: "i see nothing responding to sound").
+        const k = bandFocusRef.current ? 0.3 : SMOOTHING;
+        s.bass += (rawBass - s.bass) * k;
+        s.mid += (rawMid - s.mid) * k;
+        s.treble += (rawTreble - s.treble) * k;
+        s.amplitude += (rawAmplitude - s.amplitude) * k;
       }
 
       gl.useProgram(program!);
