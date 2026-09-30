@@ -159,6 +159,10 @@ export function useKioskRemote(context: KioskRemoteContext): void {
             role: "kiosk",
             status: {
               context,
+              // Build identity — the deploy script polls this to verify
+              // the PAGE (not just the server) is running the new build
+              // (2026-09-30: two deploys ran under a stale page).
+              build: process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev",
               // Karel 2026-09-20: the remote must ALWAYS name what is on
               // screen. Between journeys the loop publishes a phase label
               // (set title card / dedication) on window; fall back to it.
