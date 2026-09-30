@@ -98,7 +98,7 @@ const FADEOUT_DURATION = 10000;
 // morph a bit and then transition" — after the 2.5s dwell the frame
 // LINGERS while the cover still and fresh shader arrive over it,
 // then melts away underneath. 3.5s read as a wholesale reset.
-const VIDEO_FADEOUT_DURATION = 9000;
+const VIDEO_FADEOUT_DURATION = 6000; // tightened 2026-09-29c — hold reads long past ~6s
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 // Installation boundary fade (Karel 2026-09-26: Snowflake's ice lingered
 // into Realized): old-journey stills fade over 8s — long enough that the
@@ -807,7 +807,7 @@ export function AiImageLayer({
               // a couple of seconds on the ending frame since its a huge
               // transition"): the final frame holds 2.5s as itself, THEN
               // the fade begins with the cover still blooming over it.
-              markVideoActive(2500 + 4000);
+              markVideoActive(1200 + 4000);
               // Building begins IMMEDIATELY on the completed frame
               // (Karel: "it swells to its completed end, stays, and
               // stuff builds on it before you transition") — cover
@@ -815,7 +815,7 @@ export function AiImageLayer({
               // only the frame's own slow melt waits out the dwell.
               morphCoverPendingRef.current = true;
               lastGenTimeRef.current = 0;
-              getJourneyEngine().nudgeShaderRotation(3000);
+              getJourneyEngine().nudgeShaderRotation(2000);
               setTimeout(() => {
                 const layer = layersRef.current.find((l) => l.img === v);
                 if (layer && layer.state !== "fading-out") {
@@ -823,7 +823,7 @@ export function AiImageLayer({
                   layer.state = "fading-out";
                   layer.fadeStartTime = performance.now();
                 }
-              }, 2500);
+              }, 1200); // short dwell — the frame is already being built on
             }, { once: true });
             v.play().catch(() => { /* autoplay policy — holds first frame */ });
           }, { once: true });
