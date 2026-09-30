@@ -192,6 +192,7 @@ class JourneyEngine {
   /** Scripted take: recorded shader timeline replayed by progress. */
   private takeScript: TakeScriptEntry[] | null = null;
   private takeSeedValue: number | null = null;
+  private scriptSubs = new Map<string, string | null>();
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
    *  flight-recorder finding: 3 switches in 4s = visible frame-gap storm). */
@@ -224,6 +225,7 @@ class JourneyEngine {
     this.stop();
 
     this.takeScript = options?.script?.length ? options.script : null;
+    this.scriptSubs = new Map();
     this.takeSeedValue = options?.seed ?? null;
     const random = options?.seed != null
       ? createSeededRandom(options.seed)
@@ -942,16 +944,37 @@ class JourneyEngine {
   /** Scripted take playback: recompute desired primary/dual/tertiary
    *  from the recorded timeline at this progress; banned entries are
    *  skipped (the previous shader holds). */
+  /** Banned script entries are RECAST, not skipped (Karel 2026-09-29:
+   *  holds compounded into 46s freezes as bans gutted the take) — a
+   *  deterministic substitute keeps the take's switch rhythm intact. */
+  private substituteFor(mode: string): string | null {
+    const cached = this.scriptSubs.get(mode);
+    if (cached !== undefined) return cached;
+    const pool = (this.journey?.phases ?? [])
+      .flatMap((p) => p.shaderModes)
+      .filter((m, i, arr) => arr.indexOf(m) === i && !MODES_3D.has(m) && this.isShaderAllowed(m));
+    let sub: string | null = null;
+    if (pool.length > 0) {
+      let h = 0;
+      for (let i = 0; i < mode.length; i++) h = (h * 31 + mode.charCodeAt(i)) >>> 0;
+      sub = pool[h % pool.length];
+    }
+    this.scriptSubs.set(mode, sub);
+    if (sub) glitchRecord("script-recast", `${mode} -> ${sub}`);
+    return sub;
+  }
+
   private applyTakeScript(clamped: number, now: number): void {
     if (!this.takeScript) return;
     let prim: string | null = null;
     let dual: string | null = null;
     let tert: string | null = null;
+    const resolve = (m: string) => (this.isShaderAllowed(m) ? m : this.substituteFor(m));
     for (const en of this.takeScript) {
       if (en.p > clamped) break;
-      if (en.role === "primary") { if (this.isShaderAllowed(en.mode)) prim = en.mode; }
-      else if (en.role === "dual") { if (this.isShaderAllowed(en.mode)) dual = en.mode; }
-      else if (en.role === "tertiary-on") { tert = this.isShaderAllowed(en.mode) ? en.mode : null; }
+      if (en.role === "primary") { const r = resolve(en.mode); if (r) prim = r; }
+      else if (en.role === "dual") { const r = resolve(en.mode); if (r) dual = r; }
+      else if (en.role === "tertiary-on") { tert = resolve(en.mode); }
       else if (en.role === "tertiary-off") { tert = null; }
     }
     if (prim && prim !== this.currentShaderMode) {
