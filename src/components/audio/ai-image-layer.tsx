@@ -309,6 +309,9 @@ export function AiImageLayer({
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
   const lastGenTimeRef = useRef(0);
+  /** Wall-clock of the last ACTUAL visual push (still or clip) — the
+   *  idle-rescue guarantee measures from here, not from tick time. */
+  const lastVisualPushRef = useRef(0);
   const [available, setAvailable] = useState<boolean | null>(null);
   const promptRef = useRef(prompt);
   const denoisingRef = useRef(denoisingStrength);
@@ -577,6 +580,7 @@ export function AiImageLayer({
     // ENTERED the collage (it used to fire before the cap check —
     // clones of images the viewer never saw).
     if (!isVideo) onImageReadyRef.current?.((img as HTMLImageElement).src);
+    lastVisualPushRef.current = performance.now();
     glitchRecord(isVideo ? "layer-push-video" : "layer-push-still", `n=${layers.length + 1} motion=${motionScale.toFixed(2)}`);
     layers.push({
       img,
@@ -699,9 +703,29 @@ export function AiImageLayer({
         localImageIndexRef.current = idx + 1;
       }
       lastGenTimeRef.current = performance.now();
-      // Slow phases have fewer images than 7s ticks — holding the same
-      // frame is intentional; skip the redundant push.
-      if (!stillsBlocked && idx !== lastPackIndexRef.current) {
+      // IDLE RESCUE (Karel 2026-09-30 deep analysis: 30 parks >25s
+      // across ALL journeys — the phase-slot dedupe below can hold one
+      // frame for an entire slow phase, and the stillness/solo-hold
+      // gates stack on top of it): when nothing has pushed for too
+      // long, walk to the next slot and push through the soft gates.
+      // Video playback and boundary settles stay sacred. Sparse and
+      // stillness windows breathe slower but still breathe.
+      const idleFloor = Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
+      const idleMs = performance.now() - idleFloor;
+      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 32_000 : 22_000;
+      const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
+      if (idleRescue && urls.length > 1) {
+        let walked = 0;
+        while (walked < urls.length && (idx === lastPackIndexRef.current || urls[idx] === lastPackUrlRef.current)) {
+          idx = (idx + 1) % urls.length;
+          walked++;
+        }
+        glitchRecord("idle-rescue", `${Math.round(idleMs / 1000)}s idle`);
+        if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
+      }
+      // Slow phases have fewer images than 7s ticks — a repeated slot
+      // skips (the idle rescue above bounds how long that can hold).
+      if ((!stillsBlocked || idleRescue) && idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
         const stillUrl = urls[idx];
         // URL dedupe (session 66wil0: gen-107 pushed twice back-to-back
