@@ -563,8 +563,9 @@ export function ShaderVisualizer({
       // level ~constant, so level mapping pinned at 1.0 — the beat
       // lives in the TRANSIENT). Positive spectral flux of the focused
       // band drives a fast-attack ~350ms-decay envelope.
-      let prevRawBand = 0;
       let pulseEnv = 0;
+      let lastOnsetVal = 0;
+      let lastOnsetMs = 0;
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
         if (!f) return;
@@ -610,10 +611,18 @@ export function ShaderVisualizer({
         if (bandFocusRef.current) {
           const fb = bandFocusRef.current;
           const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
-          const onset = Math.max(0, raw - prevRawBand);
-          prevRawBand = raw;
           const prof = BAND_PROFILES[fb];
-          pulseEnv = Math.max(pulseEnv * prof.decay, Math.min(1, onset * prof.gain));
+          // Windowed onset (harness 2026-09-30: per-frame deltas turn
+          // FFT jitter into constant "onsets" — env pinned at 1.0).
+          // 70ms windows + a noise gate read real hits only.
+          const nowMs = time * 1000;
+          pulseEnv *= prof.decay;
+          if (nowMs - lastOnsetMs > 70) {
+            const d = raw - lastOnsetVal - 0.02;
+            lastOnsetVal = raw;
+            lastOnsetMs = nowMs;
+            if (d > 0) pulseEnv = Math.max(pulseEnv, Math.min(1, d * prof.gain * 0.6));
+          }
         }
       }
 

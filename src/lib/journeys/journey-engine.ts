@@ -791,7 +791,7 @@ class JourneyEngine {
         // Tertiary gets a SHORTER spacing slot (2.5s) — with primary+dual
         // averaging one switch per ~7s, a full 4s-clear window rarely
         // exists and the third layer would be starved out entirely.
-        if (conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
+        if ((!this.kineticEq && conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY) || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
