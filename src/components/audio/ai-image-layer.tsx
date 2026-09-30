@@ -218,6 +218,10 @@ export function AiImageLayer({
     // Kinetic journeys: shaders dominate; imagery is a whisper — one
     // still as texture, never a collage.
     if (isWhisperImageryName(useAudioStore.getState().activeJourney?.name)) return 1;
+    // Cosmic-sparse interlude: one seeded window mid-journey where a
+    // single small still rides under the dominant shaders (Karel
+    // 2026-09-30 — loved it in Snowflake, promoted to every journey).
+    if (getJourneyEngine().sparseInterludeActive()) return 1;
     const bias = JOURNEY_LAYER_BIAS[journeyIdRef.current ?? ""] ?? 0;
     // Climax trimmed 4->3 (Karel 2026-09-30: "stop overdoing these
     // compositions" — the top band stacked into walls again).
@@ -811,6 +815,21 @@ export function AiImageLayer({
                   morphCoverPendingRef.current = true;
                   lastGenTimeRef.current = 0;
                   getJourneyEngine().nudgeShaderRotation(2000);
+                  // ...but the frame never sits to the very end (Karel
+                  // 2026-09-30: "shader and an image come in and
+                  // transition OUT of the morph, not sit and end with
+                  // it"): once the build over it has established, the
+                  // held frame melts on the long fade and the journey
+                  // closes on the composition that grew from it.
+                  setTimeout(() => {
+                    const layer = layersRef.current.find((l) => l.img === v);
+                    if (layer && layer.state !== "fading-out") {
+                      layer.fadeStartOpacity = layer.opacity;
+                      layer.state = "fading-out";
+                      layer.fadeStartTime = performance.now();
+                      glitchRecord("morph-finale-melt");
+                    }
+                  }, 9000);
                   return;
                 }
               }

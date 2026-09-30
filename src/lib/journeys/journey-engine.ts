@@ -941,6 +941,22 @@ class JourneyEngine {
     return this.inStillnessNow;
   }
 
+  /** Cosmic-sparse interlude (Karel 2026-09-30: "you go cosmic sparse
+   *  with a couple shaders and you transition back into some imaging.
+   *  it makes for a story or journey") — one seeded mid-journey window
+   *  per take where imagery thins to a single small still and the two
+   *  shader layers carry the frame. Hash-derived from journey+seed (no
+   *  random-stream consumption, so take determinism stays intact). */
+  sparseInterludeActive(): boolean {
+    const j = this.journey;
+    if (!j) return false;
+    let h = 2166136261 ^ ((this.takeSeedValue ?? 0) >>> 0);
+    for (let i = 0; i < j.id.length; i++) h = Math.imul(h ^ j.id.charCodeAt(i), 16777619);
+    const start = 0.46 + (((h >>> 0) % 1000) / 1000) * 0.14; // opens in 0.46-0.60
+    const width = 0.08 + (((h >>> 10) % 100) / 100) * 0.05;  // 8-13% of the journey
+    return this.lastProgress >= start && this.lastProgress < Math.min(start + width, 0.78);
+  }
+
   /** Scripted take playback: recompute desired primary/dual/tertiary
    *  from the recorded timeline at this progress; banned entries are
    *  skipped (the previous shader holds). */

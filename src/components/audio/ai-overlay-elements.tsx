@@ -1,6 +1,7 @@
 "use client";
 
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
 
 import { useEffect, useRef, useCallback } from "react";
@@ -103,7 +104,9 @@ export function AiOverlayElements({
       // Midpoint (Karel 2026-09-29b: "bring back some of the layers"):
       // quiet stays clone-free, the build carries one or two, the
       // climax three — still never a cloud of copies.
-      const conductedCap = t < 0.45 ? 0 : t < 0.7 ? 1 : 2; // top trimmed 3->2 (2026-09-30)
+      const conductedCap = getJourneyEngine().sparseInterludeActive()
+        ? 0 // cosmic-sparse interlude: shaders + one small still only
+        : t < 0.45 ? 0 : t < 0.7 ? 1 : 2; // top trimmed 3->2 (2026-09-30)
       const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 

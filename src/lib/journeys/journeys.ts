@@ -235,6 +235,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
 export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   winter: new Set([
     "credo", // Karel 2026-09-30 screenshot: concentric golden rings + radial spokes — "violates everything" (in Snowflake)
+    "enzyme", // Karel 2026-09-30 screenshot: the veined membrane/moth (enzyme dual at p0.704 of the take) — "i hate this image in snowflake"
     "r2-sunsetcascade", // Karel 2026-09-29: "the 2 colored horizontal colors shader"
     "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
     "r-molten", // Karel 2026-09-29: the dual that "sat over the whole journey and gave it a tint"
