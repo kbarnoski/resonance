@@ -45,7 +45,7 @@ export function DebandOverlay() {
         backgroundImage: `url(${tileUrl})`,
         backgroundRepeat: "repeat",
         mixBlendMode: "overlay",
-        opacity: 0.14,
+        opacity: 0.2, // strengthened 2026-09-30 — banding still visible in the darkest gradient shaders
       }}
     />
   );
