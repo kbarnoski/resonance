@@ -138,6 +138,8 @@ import { FRAG as MAELSTROM_FRAG } from "./maelstrom";
 import { FRAG as DELUGE_FRAG } from "./deluge";
 // Elemental (nature)
 import { FRAG as RAIN_FRAG } from "./rain";
+import { FRAG as SPARKLER_FRAG } from "./sparkler";
+import { FRAG as RESONANT_RINGS_FRAG } from "./resonant-rings";
 import { FRAG as RIPPLE_FRAG } from "./ripple";
 // Elemental (new batch)
 import { FRAG as RIME_FRAG } from "./rime";
@@ -469,6 +471,8 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "r-mercury": R_MERCURY,
   "r-tendrils": R_TENDRILS,
   "r-stardust": R_STARDUST,
+  "sparkler": SPARKLER_FRAG,
+  "resonant-rings": RESONANT_RINGS_FRAG,
   "r-embers": R_EMBERS,
   "r-kaleido": R_KALEIDO,
   "r-blackhole": R_BLACKHOLE,
@@ -814,6 +818,8 @@ export const MODE_META: ModeMeta[] = [
   { mode: "r-molten", label: "Molten Gold", category: "Elemental" },
   { mode: "r-droplets", label: "Mercury Droplets", category: "Elemental" },
   { mode: "r-stardust", label: "Stardust River", category: "Cosmic" },
+  { mode: "sparkler", label: "Sparkler", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "resonant-rings", label: "Resonant Rings", category: "Cosmic", addedDate: "2026-09-30" },
   { mode: "r-blackhole", label: "Black Hole", category: "Cosmic" },
   { mode: "r-tendrils", label: "Plasma Tendrils", category: "Cosmic" },
   { mode: "r-kaleido", label: "Kaleidoscope", category: "Geometry" },

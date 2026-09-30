@@ -220,7 +220,9 @@ export function AiImageLayer({
     // Ghost pushes layering harder than the archetype by design.
     // Kinetic journeys: shaders dominate; imagery is a whisper — one
     // still as texture, never a collage.
-    if (isWhisperImageryName(useAudioStore.getState().activeJourney?.name)) return 1;
+    // Pure-shader mode (Karel 2026-09-30: "hide the imaging layer for
+    // now to see what just shaders against black background is like").
+    if (isWhisperImageryName(useAudioStore.getState().activeJourney?.name)) return 0;
     // Cosmic-sparse interlude: one seeded window mid-journey where a
     // single small still rides under the dominant shaders (Karel
     // 2026-09-30 — loved it in Snowflake, promoted to every journey).

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { isWhisperImageryName } from "@/lib/journeys/kinetic";
+import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
@@ -97,12 +99,7 @@ function loadTex(gl: WebGLRenderingContext, url: string): Promise<{ tex: WebGLTe
 // never blank the layer waiting on a refetch.
 let depthManifest: Record<string, boolean> | null | undefined;
 
-export function DepthParallaxLayer({
-  journeyId,
-  intensity = 1,
-  imageryOpacity = 0.4,
-  onCoveredChange,
-}: {
+export function DepthParallaxLayer(props: {
   journeyId?: string;
   /** Conductor (Karel 2026-09-28): quiet phases hold a STILL image —
    *  the parallax camera only drifts once the music builds. */
@@ -112,6 +109,24 @@ export function DepthParallaxLayer({
   imageryOpacity?: number;
   /** Fires when depth coverage resolves — the compositor uses it to split
    *  the imagery budget between this base and the collage (2026-09-26). */
+  onCoveredChange?: (covered: boolean) => void;
+}) {
+  // Pure-shader journeys (Karel 2026-09-30): no imagery ground at all —
+  // shaders breathe on true black.
+  const whisper = useAudioStore((st) => isWhisperImageryName(st.activeJourney?.name));
+  if (whisper) return null;
+  return <DepthParallaxLayerInner {...props} />;
+}
+
+function DepthParallaxLayerInner({
+  journeyId,
+  intensity = 1,
+  imageryOpacity = 0.4,
+  onCoveredChange,
+}: {
+  journeyId?: string;
+  intensity?: number;
+  imageryOpacity?: number;
   onCoveredChange?: (covered: boolean) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

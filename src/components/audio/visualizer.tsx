@@ -418,6 +418,7 @@ export function ShaderVisualizer({
     // construction, oscillates at any loudness.
     let slowEma = 0.3;
     let eqLv = 0.4;
+    let rateSm = 1; // slewed time-dilation — motion ACCELERATES, never snaps (nausea note 2026-09-30)
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
 
@@ -432,9 +433,12 @@ export function ShaderVisualizer({
       lastFrameTime = now;
       if (bandFocusRef.current) {
         // Kinetic EQ: this layer's CLOCK rides its band — motion, not
-        // luminance, carries the beat (WCAG 2.3.1: no flash).
+        // luminance, carries the beat (WCAG 2.3.1: no flash). The rate
+        // itself is slewed (~400ms) so speed swells and eases — jitter
+        // reads as nausea (Karel 2026-09-30).
         const prof0 = BAND_PROFILES[bandFocusRef.current];
-        cumTime += dt * (prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo));
+        rateSm += (prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo) - rateSm) * 0.045;
+        cumTime += dt * rateSm;
       } else if (tempoFlowRef.current) {
         // Ultra-smoothed SHARED energy (one FFT read/frame across all
         // layers) → clock rate 0.65-1.35×. The pace of the piece becomes

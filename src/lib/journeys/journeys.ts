@@ -274,7 +274,7 @@ const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "roulette", // Karel 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 straight seconds — perf hazard
   "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
   "snow", // only appropriate for winter/snowflake or user-created journeys
-  "rain", // only appropriate for water-related realms (ocean, storm)
+  "rain", "night-rain", // banned ENTIRELY (Karel 2026-09-30) — no realm exceptions
   // Too subtle / invisible over journey imagery
   "abyss-light", // output 0.0–0.15, tiny particles on near-black base
   "terminus",    // void-colored base, faint dying light
@@ -314,8 +314,8 @@ const LOW_TIER_BLOCKED_SHADERS: string[] = [
 /** Realms that ARE allowed to use globally-blocked shaders */
 const REALM_SHADER_ALLOW: Record<string, string[]> = {
   winter: ["snow"], // snow is core to the winter realm
-  ocean: ["rain"],  // rain fits underwater/water themes
-  storm: ["rain"],  // rain is core to storm imagery
+  // rain allowances removed (Karel 2026-09-30: "the rain shader...
+  // should be banned entirely from resonance")
 };
 
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
