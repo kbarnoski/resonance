@@ -219,7 +219,9 @@ export function AiImageLayer({
     // still as texture, never a collage.
     if (isWhisperImageryName(useAudioStore.getState().activeJourney?.name)) return 1;
     const bias = JOURNEY_LAYER_BIAS[journeyIdRef.current ?? ""] ?? 0;
-    const cap = (t < 0.4 ? 1 : t < 0.65 ? 2 : t < 0.85 ? 3 : 4) + bias;
+    // Climax trimmed 4->3 (Karel 2026-09-30: "stop overdoing these
+    // compositions" — the top band stacked into walls again).
+    const cap = (t < 0.4 ? 1 : t < 0.65 ? 2 : 3) + bias;
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
@@ -801,7 +803,16 @@ export function AiImageLayer({
               {
                 const st = useAudioStore.getState();
                 const prog = st.duration > 0 ? st.currentTime / st.duration : 0;
-                if (prog > 0.82) { glitchRecord("morph-finale-hold"); return; }
+                if (prog > 0.82) {
+                  // Finale hold still gets its keep-alive (Karel: "it
+                  // needs a layer over it and shader") — build on the
+                  // held frame; only the fade is skipped.
+                  glitchRecord("morph-finale-hold");
+                  morphCoverPendingRef.current = true;
+                  lastGenTimeRef.current = 0;
+                  getJourneyEngine().nudgeShaderRotation(2000);
+                  return;
+                }
               }
               // Ending-frame DWELL (Karel 2026-09-29: "the viewer needs
               // a couple of seconds on the ending frame since its a huge

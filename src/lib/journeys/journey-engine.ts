@@ -957,7 +957,17 @@ class JourneyEngine {
     if (pool.length > 0) {
       let h = 0;
       for (let i = 0; i < mode.length; i++) h = (h * 31 + mode.charCodeAt(i)) >>> 0;
-      sub = pool[h % pool.length];
+      // Collision-proof (session x89v52: the sub hashed onto the shader
+      // already playing, so the recast was a silent no-op and credo
+      // held 54s): walk until unused by other recasts AND different
+      // from the scripted neighbors.
+      const used = new Set(this.scriptSubs.values());
+      const scripted = new Set((this.takeScript ?? []).map((e) => e.mode));
+      for (let k = 0; k < pool.length; k++) {
+        const cand = pool[(h + k) % pool.length];
+        if (!used.has(cand) && !scripted.has(cand)) { sub = cand; break; }
+      }
+      if (!sub) sub = pool[h % pool.length];
     }
     this.scriptSubs.set(mode, sub);
     if (sub) glitchRecord("script-recast", `${mode} -> ${sub}`);

@@ -103,7 +103,7 @@ export function AiOverlayElements({
       // Midpoint (Karel 2026-09-29b: "bring back some of the layers"):
       // quiet stays clone-free, the build carries one or two, the
       // climax three — still never a cloud of copies.
-      const conductedCap = t < 0.45 ? 0 : t < 0.7 ? 1 : t < 0.85 ? 2 : 3;
+      const conductedCap = t < 0.45 ? 0 : t < 0.7 ? 1 : 2; // top trimmed 3->2 (2026-09-30)
       const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 

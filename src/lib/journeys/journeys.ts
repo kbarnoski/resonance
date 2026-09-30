@@ -227,6 +227,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "helix",    // belt + suspenders with the winter pool block
   "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
   "apophatic", // Karel 2026-09-29 screenshot: the grey ring-cloud — "dont use this shader in general"
+  "r2-coral", // Karel 2026-09-30 screenshot: the ember crescent-ring — "dont use this shader in anything. it covers all screen and yuck"
 ]);
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
