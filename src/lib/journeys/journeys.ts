@@ -243,6 +243,7 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "r2-spiralgal", // Karel 2026-09-29 screenshot: the purple spiral — another swirl out of Snowflake
     "event-horizon", "stamen", // Karel 2026-09-30 screenshot: "dont use this circle thing in snowflake" — the giant dim sphere (both were recast picks)
     "flux", // Karel 2026-09-30: "that colored shader gradient that is full screen over snowflake" — the wavy rainbow field-lines wash
+    "snow", // Karel 2026-09-30 screenshot: recast landed on it at p0.676 — full-frame frost dendrites, near-static, "hung out too long at this point"
   ]),
   hell: new Set([
     "nova", // Karel 2026-09-30 screenshot: the concentric shockwave rings over the comet clip (nova @p0.744) — "dont use this morph in realized" (it was the shader, not a morph)
