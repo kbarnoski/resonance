@@ -142,14 +142,14 @@ export function ExperienceTextInner({ animate = true, showAbout = false }: { ani
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+        style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
       >
         {EXPERIENCE_INTRO.title}
       </h1>
       {showAbout && (
         <div
           className="mt-8 text-[clamp(1.1rem,2vw,1.5rem)] tracking-[0.01em] text-white/70"
-          style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+          style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
         >
           {EXPERIENCE_INTRO.about}
         </div>
@@ -170,13 +170,13 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+        style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
       >
         Resonance
       </h1>
       <div
         className="mt-6 text-[clamp(1.4rem,2.8vw,2.1rem)] tracking-[-0.01em] leading-[normal] text-white/70"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+        style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
       >
         {presenting ?? "the Snowflake EP"}
       </div>
@@ -230,16 +230,16 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           <>
             <div
               className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
-              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
             >
               {m ? m[1] : journey.name}
             </div>
             {m && (
               <div
-                className="relative mt-3 text-[clamp(1.1rem,1.9vw,1.5rem)] tracking-[0.04em] text-white/65"
-                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 400 }}
+                className="relative mt-5 text-[clamp(0.9rem,1.5vw,1.2rem)] tracking-[0.32em] uppercase text-white/60"
+                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 400 }}
               >
-                No. {m[2]}
+                No.&thinsp;{m[2]}
               </div>
             )}
           </>

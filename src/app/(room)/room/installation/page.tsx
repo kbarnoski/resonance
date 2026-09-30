@@ -255,6 +255,10 @@ export default async function InstallationPage({ searchParams }: Props) {
         ...(Array.isArray(row.local_image_urls) && row.local_image_urls.length > 0
           ? { localImageUrls: row.local_image_urls as string[] }
           : {}),
+        // audio_reactive was never mapped here — kinetic journeys got
+        // smoothMotion (synthetic motion) instead of real FFT (Karel
+        // 2026-09-30: "i saw no responsiveness to the music").
+        ...(row.audio_reactive != null ? { audioReactive: !!row.audio_reactive } : {}),
         photographyCredit: (row.photography_credit as string | null) ?? null,
         dedication: (row.dedication as string | null) ?? null,
         creatorName: (row.creator_name as string | null) ?? null,
