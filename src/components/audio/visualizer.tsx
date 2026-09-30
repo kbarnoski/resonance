@@ -621,10 +621,13 @@ export function ShaderVisualizer({
           const nowMs = performance.now(); // NOT cumTime — tempoFlow warps it
           pulseEnv *= prof.decay;
           if (nowMs - lastOnsetMs > 70) {
-            const d = raw - lastOnsetVal - 0.02;
+            // RELATIVE flux (raw probe 2026-09-30: the band idles at
+            // 0.7-0.95 — near clipping — so absolute deltas fire on
+            // every wobble): percent-rise over a 10% dead zone.
+            const rel = (raw - lastOnsetVal) / Math.max(0.15, lastOnsetVal);
             lastOnsetVal = raw;
             lastOnsetMs = nowMs;
-            if (d > 0) pulseEnv = Math.max(pulseEnv, Math.min(1, d * prof.gain * 0.6));
+            if (rel > 0.10) pulseEnv = Math.max(pulseEnv, Math.min(1, (rel - 0.10) * prof.gain * 0.35));
           }
         }
       }

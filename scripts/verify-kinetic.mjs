@@ -28,7 +28,7 @@ try {
     if (v.length < 20) { console.log(`FAIL ${b}: layer absent (${v.length} samples)`); pass = false; continue; }
     const max = Math.max(...v), mean = v.reduce((a, x) => a + x, 0) / v.length;
     const sd = Math.sqrt(v.reduce((a, x) => a + (x - mean) ** 2, 0) / v.length);
-    const ok = max > 0.45 && sd > 0.07;
+    const ok = max > 0.45 && sd > 0.07 && mean < 0.75; // pinned-high = fail
     console.log(`${ok ? "PASS" : "FAIL"} ${b}: n=${v.length} max=${max.toFixed(2)} mean=${mean.toFixed(2)} sd=${sd.toFixed(2)}`);
     if (!ok) pass = false;
   }
