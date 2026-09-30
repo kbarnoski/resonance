@@ -9,6 +9,7 @@ export type Mood =
   | "flowing"
   | "transcendent";
 export type VisualizerMode =
+  | "sparkler" | "resonant-rings" // kinetic EQ shaders (2026-09-30)
   // Original
   | "neon"
   | "astral"
