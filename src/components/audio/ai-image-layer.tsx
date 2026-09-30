@@ -808,10 +808,15 @@ export function AiImageLayer({
               // transition"): the final frame holds 2.5s as itself, THEN
               // the fade begins with the cover still blooming over it.
               markVideoActive(2500 + 4000);
-              getJourneyEngine().nudgeShaderRotation(2500 + 4500);
+              // Building begins IMMEDIATELY on the completed frame
+              // (Karel: "it swells to its completed end, stays, and
+              // stuff builds on it before you transition") — cover
+              // still and fresh shader arrive over the held morph;
+              // only the frame's own slow melt waits out the dwell.
+              morphCoverPendingRef.current = true;
+              lastGenTimeRef.current = 0;
+              getJourneyEngine().nudgeShaderRotation(3000);
               setTimeout(() => {
-                morphCoverPendingRef.current = true;
-                lastGenTimeRef.current = 0;
                 const layer = layersRef.current.find((l) => l.img === v);
                 if (layer && layer.state !== "fading-out") {
                   layer.fadeStartOpacity = layer.opacity;
