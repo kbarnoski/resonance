@@ -559,6 +559,12 @@ export function ShaderVisualizer({
       // the band's own recent floor/peak and maps onto full range.
       let bandPeak = 0.25;
       let bandFloor = 0.05;
+      // Onset envelope (2026-09-30 probe: a sustained bassline holds
+      // level ~constant, so level mapping pinned at 1.0 — the beat
+      // lives in the TRANSIENT). Positive spectral flux of the focused
+      // band drives a fast-attack ~350ms-decay envelope.
+      let prevRawBand = 0;
+      let pulseEnv = 0;
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
         if (!f) return;
@@ -601,6 +607,13 @@ export function ShaderVisualizer({
         s.mid += (rawMid - s.mid) * k;
         s.treble += (rawTreble - s.treble) * k;
         s.amplitude += (rawAmplitude - s.amplitude) * k;
+        if (bandFocusRef.current) {
+          const fb = bandFocusRef.current;
+          const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
+          const onset = Math.max(0, raw - prevRawBand);
+          prevRawBand = raw;
+          pulseEnv = Math.max(pulseEnv * 0.9, Math.min(1, onset * 16));
+        }
       }
 
       gl.useProgram(program!);
@@ -620,11 +633,12 @@ export function ShaderVisualizer({
       // flashes with kicks, mid breathes with melody, treble sparkles.
       if (bandFocusRef.current) {
         const f2 = bandFocusRef.current;
-        const lv = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble; // normalized 0..1
-        canvas.style.filter = `brightness(${(0.35 + lv * 1.25).toFixed(3)})`;
+        const norm = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble; // normalized 0..1
+        const lv = Math.max(norm * 0.3, pulseEnv); // presence floor + beat flash
+        canvas.style.filter = `brightness(${(0.4 + lv * 1.2).toFixed(3)})`;
         canvas.style.transform = `scale(${(1 + lv * 0.06).toFixed(4)})`;
         // Ground-truth probe for self-verification runs.
-        (window as unknown as Record<string, unknown>).__resonanceBands = { f: f2, bass: s.bass, mid: s.mid, treble: s.treble, t: Date.now() };
+        (window as unknown as Record<string, unknown>).__resonanceBands = { f: f2, bass: s.bass, mid: s.mid, treble: s.treble, pulse: pulseEnv, t: Date.now() };
       } else if (canvas.style.filter) {
         canvas.style.filter = "";
         canvas.style.transform = "";
