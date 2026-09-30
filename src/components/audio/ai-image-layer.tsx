@@ -94,7 +94,11 @@ const FADEOUT_DURATION = 10000;
 // Ended morphs leave much faster — a frozen last frame lingering 10s
 // "just sits there" (Karel 2026-09-29); the cover still blooms over
 // this fade, and a nudged shader arrives as it departs.
-const VIDEO_FADEOUT_DURATION = 3500;
+// Karel 2026-09-29b: "its good to build on top of the completed
+// morph a bit and then transition" — after the 2.5s dwell the frame
+// LINGERS while the cover still and fresh shader arrive over it,
+// then melts away underneath. 3.5s read as a wholesale reset.
+const VIDEO_FADEOUT_DURATION = 9000;
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 // Installation boundary fade (Karel 2026-09-26: Snowflake's ice lingered
 // into Realized): old-journey stills fade over 8s — long enough that the
