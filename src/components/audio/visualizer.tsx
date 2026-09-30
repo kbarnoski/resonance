@@ -615,7 +615,7 @@ export function ShaderVisualizer({
           // Windowed onset (harness 2026-09-30: per-frame deltas turn
           // FFT jitter into constant "onsets" — env pinned at 1.0).
           // 70ms windows + a noise gate read real hits only.
-          const nowMs = time * 1000;
+          const nowMs = performance.now(); // NOT cumTime — tempoFlow warps it
           pulseEnv *= prof.decay;
           if (nowMs - lastOnsetMs > 70) {
             const d = raw - lastOnsetVal - 0.02;
