@@ -791,7 +791,11 @@ class JourneyEngine {
         // Tertiary gets a SHORTER spacing slot (2.5s) — with primary+dual
         // averaging one switch per ~7s, a full 4s-clear window rarely
         // exists and the third layer would be starved out entirely.
-        if ((!this.kineticEq && conductorIntensity < JourneyEngine.TERTIARY_MIN_INTENSITY) || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
+        // Gate on the PHASE's intended intensity, not the instantaneous
+        // breath-modulated value (2026-09-30: the ~70s breath wave dips
+        // a flat-max journey to ~0.70 and could veto every moment).
+        const phaseIntent = currentPhase.intensityMultiplier ?? conductorIntensity;
+        if ((!this.kineticEq && phaseIntent < JourneyEngine.TERTIARY_MIN_INTENSITY) || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started

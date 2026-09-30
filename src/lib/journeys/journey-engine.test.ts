@@ -65,13 +65,17 @@ describe("composition conductor", () => {
   it("reserves the tertiary layer for the climax (activation-gated)", () => {
     const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3]));
     // The tertiary may ride through a breath valley once active, but it
-    // only ever ACTIVATES at climax intensity: check the first frame of
-    // each contiguous tertiary episode.
+    // only ever ACTIVATES inside a climax-intent PHASE (2026-09-30: the
+    // gate reads the composer's phase intensity, not the instantaneous
+    // breath-modulated value — a breath dip must not veto the climax's
+    // third layer, and equally must not admit one in a quiet phase).
+    // Arc journey: only transcendence (0.3-0.6) carries intent >= 0.85.
     let prevTertiary = false;
     for (const f of frames) {
       const has = !!f.tertiaryShaderMode;
       if (has && !prevTertiary) {
-        expect(f.intensityMultiplier).toBeGreaterThanOrEqual(0.85 - 1e-9);
+        expect(f.progress).toBeGreaterThanOrEqual(0.3 - 1e-9);
+        expect(f.progress).toBeLessThan(0.6 + 1e-9);
       }
       prevTertiary = has;
     }
