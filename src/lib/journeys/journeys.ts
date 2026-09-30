@@ -228,6 +228,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
   "apophatic", // Karel 2026-09-29 screenshot: the grey ring-cloud — "dont use this shader in general"
   "r2-coral", // Karel 2026-09-30 screenshot: the ember crescent-ring — "dont use this shader in anything. it covers all screen and yuck"
+  "r3-softorbit", // Karel 2026-09-30 screenshot: the out-of-focus bokeh-mush blobs — "ban this shader from resonance"
   "selene", // Karel 2026-09-30: the QUARTER-MOON shader — the one moon he doesn't want ("i love moon eclipse i just wanted that quarter moon shader removed")
 ]);
 
