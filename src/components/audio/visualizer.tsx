@@ -582,14 +582,15 @@ export function ShaderVisualizer({
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
         if (!f) return;
-        const focusVal = f === "bass" ? s.bass : f === "mid" ? s.mid : s.treble;
-        const damp = 0.12;
-        if (f !== "bass") s.bass *= damp;
-        if (f !== "mid") s.mid *= damp;
-        if (f !== "treble") s.treble *= damp;
-        if (f === "bass") s.bass = eqLv; else if (f === "mid") s.mid = eqLv; else s.treble = eqLv;
+        // NO damping, NO overwrites (Karel 2026-09-30: "a shader that
+        // responds in a certain way... should respond the same way if
+        // it is brought back" — damping u_bass to 12% on non-primary
+        // layers changed a shader's personality by layer role). Every
+        // layer hears the TRUE bands; layer identity lives in time-
+        // dilation, presence, and scale. u_amplitude carries the
+        // layer's own voice for band-agnostic shaders.
         s.amplitude = eqLv;
-        void focusVal;
+        void f;
       };
       if (smoothMotionRef.current) {
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
@@ -658,10 +659,12 @@ export function ShaderVisualizer({
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
         if (f2 !== "bass") {
           // Structural presence — the layer belongs to its band's part
-          // in the arrangement. Slow by construction (4s EMA): a fade,
-          // never a flash.
-          const presence = Math.min(1, Math.max(0, (actEma - 0.04) * 4.5));
-          canvas.style.opacity = (0.08 + presence * 0.92).toFixed(3);
+          // in the arrangement. Slow by construction (4s EMA), and it
+          // goes ALL THE WAY to absent (Karel 2026-09-30: "starts with
+          // a shader against empty black space... builds up and then
+          // back, following the arc of the song").
+          const presence = Math.min(1, Math.max(0, (actEma - 0.08) * 4.0));
+          canvas.style.opacity = presence.toFixed(3);
         }
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;

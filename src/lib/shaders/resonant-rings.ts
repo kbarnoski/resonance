@@ -51,6 +51,9 @@ void main() {
     }
   }
 
+
+  // 8-bit dither — soft glow gradients band without it (Karel 2026-09-30).
+  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 128.0;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
