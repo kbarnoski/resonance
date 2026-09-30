@@ -129,7 +129,18 @@ export default function BatchAnalyzePage() {
       prev.map((p, idx) => (idx === i ? { ...p, status: "running", error: undefined, stage: "Starting...", progress: 0 } : p))
     );
     try {
-      const audioUrl = `/api/audio/${t.id}`;
+      // Offline kiosk: /api/audio returns a JSON descriptor {url} for
+      // pack-local audio (the player follows it; the analyzer must
+      // too, or every track "fails over and over" — 2026-09-29).
+      let audioUrl = `/api/audio/${t.id}`;
+      try {
+        const probe = await fetch(audioUrl, { headers: { Accept: "application/json" } });
+        const ct = probe.headers.get("content-type") ?? "";
+        if (ct.includes("application/json")) {
+          const j = await probe.json();
+          if (j?.url) audioUrl = j.url;
+        }
+      } catch { /* fall through with the API url */ }
       await runAnalysis(t.id, audioUrl, t.cleanTitle);
       // Post-hoc verify — runAnalysis eats errors via internal toast handling.
       const ok = await verifyAnalysis(t.id);

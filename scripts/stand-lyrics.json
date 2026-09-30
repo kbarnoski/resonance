@@ -1,0 +1,38 @@
+{
+ "src": "/Users/karelbarnoski/Desktop/Suno Songs/Stand 10.m4a",
+ "text": " I was I was Into water I walk into water",
+ "chunks": [
+  {
+   "timestamp": [
+    0.40221875,
+    17.22221875
+   ],
+   "text": " I was",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    17.22221875,
+    18.22221875
+   ],
+   "text": " I was",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    18.22221875,
+    27.10221875
+   ],
+   "text": " Into water",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    214.79909375000003,
+    230.51909375000002
+   ],
+   "text": " I walk into water",
+   "speaker": null
+  }
+ ]
+}

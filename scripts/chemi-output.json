@@ -1,0 +1,36 @@
+{
+  "pathId": "2c622c2f-0958-4752-8a41-d1a07328690b",
+  "pathShareToken": "adce2b2d52114bbc",
+  "journeys": [
+    {
+      "order": 1,
+      "journeyId": "9f7d1b51-aeac-4dfc-a39f-b00101a403f9",
+      "recordingId": "3a3e196f-2abf-49de-8c91-e743f15d5bd1",
+      "title": "Chemiluminescence 1"
+    },
+    {
+      "order": 2,
+      "journeyId": "061528d4-e9a3-49c3-ad3c-f23cf9cf2251",
+      "recordingId": "f6a70f3b-65fb-45a0-a380-4d2e2ff0ae7d",
+      "title": "Rolling 2"
+    },
+    {
+      "order": 3,
+      "journeyId": "84a82478-f0f2-4c49-b800-b4fe722f1df5",
+      "recordingId": "874855cb-2dc7-48f2-ae50-b9f91f8b9140",
+      "title": "Stand 10"
+    },
+    {
+      "order": 4,
+      "journeyId": "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac",
+      "recordingId": "785d0927-f278-4cc5-a472-e2a30856a28b",
+      "title": "Cabin Soul 8"
+    },
+    {
+      "order": 5,
+      "journeyId": "b5247327-b1fd-45ce-a249-0a58a8a3c57e",
+      "recordingId": "f88c2d3b-d93d-4e8d-9bce-7a4bb6db207e",
+      "title": "Cabin Soul 5"
+    }
+  ]
+}

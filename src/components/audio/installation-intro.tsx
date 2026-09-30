@@ -140,12 +140,12 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
   return (
     <div style={animate ? { animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 } : undefined}>
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
-      <DisplayTitle
-        as="h1"
-        className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[0.01em] text-white/90"
+      <h1
+        className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
       >
         {EXPERIENCE_INTRO.title}
-      </DisplayTitle>
+      </h1>
       <MonoLabel className="mt-10 block text-sm tracking-[0.08em] text-white/55">
         {EXPERIENCE_INTRO.thanks}
       </MonoLabel>
@@ -175,12 +175,12 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
       >
         Resonance
       </DisplayTitle>
-      <DisplayTitle
-        as="div"
-        className="mt-4 text-[clamp(1.6rem,3.4vw,2.6rem)] tracking-[0.01em] leading-[normal] text-white/70"
+      <div
+        className="mt-4 text-[clamp(1.6rem,3.4vw,2.6rem)] tracking-[-0.01em] leading-[normal] text-white/70"
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
       >
         {presenting ?? "the Snowflake EP"}
-      </DisplayTitle>
+      </div>
     </div>
   );
 }
@@ -222,13 +222,12 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
       />
       {/* Karel 2026-09-20: title cards carry the NAME ALONE — no
           "Journey" eyebrow label, no subtitle. Simple. */}
-      <DisplayTitle
-        as="div"
-        className="relative not-italic text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.01em]"
-        style={{ textShadow: TEXT_SHADOW }}
+      <div
+        className="relative text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.015em]"
+        style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
       >
         {journey.name}
-      </DisplayTitle>
+      </div>
       {(() => {
         // No per-track self-credit — the program intro already says
         // "composed and performed by Karel Barnoski" once (Karel's

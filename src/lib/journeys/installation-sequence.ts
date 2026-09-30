@@ -197,6 +197,14 @@ export const EXPERIENCE_INTRO = {
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
   {
+    id: "kinetic-lab",
+    presenting: "the Kinetic Lab",
+    description:
+      "Experiments where the shaders listen — bass, mids and highs each " +
+      "driving a layer of light. Meditative and kinetic, together.",
+    pathShareToken: "adce2b2d52114bbc",
+  },
+  {
     id: "expansion",
     presenting: "the Expansion set",
     description:

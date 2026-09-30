@@ -1,0 +1,38 @@
+{
+ "src": "/Users/karelbarnoski/Desktop/Suno Songs/Cabin Soul 5.m4a",
+ "text": " I'm not sure if I can do it. To love you again To love you I see your scars",
+ "chunks": [
+  {
+   "timestamp": [
+    4.26659375,
+    14.68659375
+   ],
+   "text": " I'm not sure if I can do it.",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    37.189718750000004,
+    39.189718750000004
+   ],
+   "text": " To love you again",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    47.74971875000001,
+    49.74971875000001
+   ],
+   "text": " To love you",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    58.44971875,
+    60.44971875
+   ],
+   "text": " I see your scars",
+   "speaker": null
+  }
+ ]
+}

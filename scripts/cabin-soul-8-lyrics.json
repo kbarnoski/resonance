@@ -1,0 +1,22 @@
+{
+ "src": "/Users/karelbarnoski/Desktop/Suno Songs/Cabin Soul 8.m4a",
+ "text": " Ah Thank you.",
+ "chunks": [
+  {
+   "timestamp": [
+    8.586593750000002,
+    10.246593750000002
+   ],
+   "text": " Ah",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    55.110968750000005,
+    57.45096875
+   ],
+   "text": " Thank you.",
+   "speaker": null
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "src": "/Users/karelbarnoski/Desktop/Suno Songs/Rolling 2*.m4a",
+ "text": " Rolling into the deep Warm embrace of light Sound and dreams I'm sorry. Mm.",
+ "chunks": [
+  {
+   "timestamp": [
+    8.35034375,
+    22.67034375
+   ],
+   "text": " Rolling into the deep",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    22.67034375,
+    27.57034375
+   ],
+   "text": " Warm embrace of light",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    27.57034375,
+    31.57034375
+   ],
+   "text": " Sound and dreams",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    142.75971875000002,
+    171.65971875000002
+   ],
+   "text": " I'm sorry.",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    179.32784375,
+    179.66784375
+   ],
+   "text": " Mm.",
+   "speaker": null
+  }
+ ]
+}

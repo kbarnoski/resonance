@@ -1,0 +1,22 @@
+{
+ "src": "/Users/karelbarnoski/Desktop/Suno Songs/Chemiluminescence 1.m4a",
+ "text": " Ah! you",
+ "chunks": [
+  {
+   "timestamp": [
+    0.03096875,
+    3.43096875
+   ],
+   "text": " Ah!",
+   "speaker": null
+  },
+  {
+   "timestamp": [
+    144.78471875,
+    146.84471875
+   ],
+   "text": " you",
+   "speaker": null
+  }
+ ]
+}
