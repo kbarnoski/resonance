@@ -144,7 +144,36 @@ async function launchJourney(id: string): Promise<void> {
   } catch { /* pack route unreachable — visuals still started */ }
 }
 
+/** Build-freshness watchdog (Karel 2026-09-30: "i opened the app...
+ *  im not sure its up to date which is a huge issue in our testing
+ *  workflow"): a page opened from browser cache can be STALE even
+ *  when the server is new. Poll the server's build id; on mismatch,
+ *  reload once (sessionStorage-guarded against loops). Any stale
+ *  window self-heals within ~20s of opening. */
+function useBuildWatchdog(enabled: boolean): void {
+  useEffect(() => {
+    if (!enabled) return;
+    const mine = process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev";
+    if (mine === "dev") return;
+    const id = setInterval(async () => {
+      try {
+        const r = await fetch("/api/version", { cache: "no-store" });
+        if (!r.ok) return;
+        const { commit } = (await r.json()) as { commit?: string };
+        if (commit && commit !== mine && commit !== "dev") {
+          const key = `resonance-reload-${commit}`;
+          if (sessionStorage.getItem(key)) return; // already tried once
+          sessionStorage.setItem(key, "1");
+          window.location.reload();
+        }
+      } catch { /* server briefly down — holding page handles it */ }
+    }, 20_000);
+    return () => clearInterval(id);
+  }, [enabled]);
+}
+
 export function useKioskRemote(context: KioskRemoteContext): void {
+  useBuildWatchdog(!!context);
   useEffect(() => {
     if (!context) return;
     let stopped = false;
