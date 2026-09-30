@@ -411,6 +411,13 @@ export function ShaderVisualizer({
     // gentle safety net for hardware that can't quite sustain 60.
     const minFrameMs = tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
 
+    // EQ persistent state — EFFECT scope, NOT per-frame (2026-09-30:
+    // these lived inside render() and reset every frame; the probe's
+    // frozen 0.76 was exactly one attack step from init). Drive =
+    // deviation from the band's own ~400ms average — zero-mean by
+    // construction, oscillates at any loudness.
+    let slowEma = 0.3;
+    let eqLv = 0.4;
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
 
@@ -554,15 +561,6 @@ export function ShaderVisualizer({
       const s = smoothRef.current;
       // Kinetic band-split: the layer hears only its assigned band —
       // that band drives amplitude and is boosted; the others whisper.
-      // Adaptive band range (2026-09-30 probe: fixed 2.4x clamps at
-      // 1.0 and flatlines — an EQ needs contrast, not gain). Tracks
-      // the band's own recent floor/peak and maps onto full range.
-      // EQ drive = deviation from the band's own ~400ms average —
-      // zero-mean by construction, so it oscillates with the music at
-      // any loudness (2026-09-30 traces: peak-normalization and flux
-      // gating both pinned at 1.0 on dense mixes).
-      let slowEma = 0.3;
-      let eqLv = 0.4;
       // Onset envelope (2026-09-30 probe: a sustained bassline holds
       // level ~constant, so level mapping pinned at 1.0 — the beat
       // lives in the TRANSIENT). Positive spectral flux of the focused
