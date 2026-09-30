@@ -557,15 +557,16 @@ export function ShaderVisualizer({
       // Adaptive band range (2026-09-30 probe: fixed 2.4x clamps at
       // 1.0 and flatlines — an EQ needs contrast, not gain). Tracks
       // the band's own recent floor/peak and maps onto full range.
-      let bandPeak = 0.25;
-      let bandFloor = 0.05;
+      // EQ drive = deviation from the band's own ~400ms average —
+      // zero-mean by construction, so it oscillates with the music at
+      // any loudness (2026-09-30 traces: peak-normalization and flux
+      // gating both pinned at 1.0 on dense mixes).
+      let slowEma = 0.3;
+      let eqLv = 0.4;
       // Onset envelope (2026-09-30 probe: a sustained bassline holds
       // level ~constant, so level mapping pinned at 1.0 — the beat
       // lives in the TRANSIENT). Positive spectral flux of the focused
       // band drives a fast-attack ~350ms-decay envelope.
-      let pulseEnv = 0;
-      let lastOnsetVal = 0;
-      let lastOnsetMs = 0;
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
         if (!f) return;
@@ -574,11 +575,9 @@ export function ShaderVisualizer({
         if (f !== "bass") s.bass *= damp;
         if (f !== "mid") s.mid *= damp;
         if (f !== "treble") s.treble *= damp;
-        bandPeak = Math.max(focusVal, bandPeak * 0.9975); // ~7s half-life
-        bandFloor = Math.min(focusVal, bandFloor * 1.002 + 0.0004);
-        const norm = Math.min(1, Math.max(0, (focusVal - bandFloor) / Math.max(0.04, bandPeak - bandFloor)));
-        if (f === "bass") s.bass = norm; else if (f === "mid") s.mid = norm; else s.treble = norm;
-        s.amplitude = norm;
+        if (f === "bass") s.bass = eqLv; else if (f === "mid") s.mid = eqLv; else s.treble = eqLv;
+        s.amplitude = eqLv;
+        void focusVal;
       };
       if (smoothMotionRef.current) {
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
@@ -615,20 +614,11 @@ export function ShaderVisualizer({
           const fb = bandFocusRef.current;
           const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
           const prof = BAND_PROFILES[fb];
-          // Windowed onset (harness 2026-09-30: per-frame deltas turn
-          // FFT jitter into constant "onsets" — env pinned at 1.0).
-          // 70ms windows + a noise gate read real hits only.
-          const nowMs = performance.now(); // NOT cumTime — tempoFlow warps it
-          pulseEnv *= prof.decay;
-          if (nowMs - lastOnsetMs > 70) {
-            // RELATIVE flux (raw probe 2026-09-30: the band idles at
-            // 0.7-0.95 — near clipping — so absolute deltas fire on
-            // every wobble): percent-rise over a 10% dead zone.
-            const rel = (raw - lastOnsetVal) / Math.max(0.15, lastOnsetVal);
-            lastOnsetVal = raw;
-            lastOnsetMs = nowMs;
-            if (rel > 0.10) pulseEnv = Math.max(pulseEnv, Math.min(1, (rel - 0.10) * prof.gain * 0.35));
-          }
+          slowEma += (raw - slowEma) * 0.04; // ~400ms baseline
+          const dev = (raw - slowEma) * prof.gain * 0.45;
+          const target = Math.min(1, Math.max(0.05, 0.5 + dev));
+          // fast attack up, banded release down (keeps flashes snappy)
+          eqLv += (target - eqLv) * (target > eqLv ? 0.6 : 1 - prof.decay);
         }
       }
 
@@ -649,14 +639,13 @@ export function ShaderVisualizer({
       // flashes with kicks, mid breathes with melody, treble sparkles.
       if (bandFocusRef.current) {
         const f2 = bandFocusRef.current;
-        const norm = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble; // normalized 0..1
         const prof2 = BAND_PROFILES[f2];
-        const lv = Math.max(norm * prof2.floor, pulseEnv);
+        const lv = eqLv;
         canvas.style.filter = `brightness(${(prof2.brightLo + lv * (prof2.brightHi - prof2.brightLo)).toFixed(3)})`;
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
-        (w.__resonanceEq ??= {})[f2] = { pulse: +pulseEnv.toFixed(3), norm: +norm.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
+        (w.__resonanceEq ??= {})[f2] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
       } else if (canvas.style.filter) {
         canvas.style.filter = "";
         canvas.style.transform = "";
