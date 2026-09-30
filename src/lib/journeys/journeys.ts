@@ -232,6 +232,16 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "selene", // Karel 2026-09-30: the QUARTER-MOON shader — the one moon he doesn't want ("i love moon eclipse i just wanted that quarter moon shader removed")
 ]);
 
+/** Per-realm RECAST SAFELIST (Karel 2026-09-30: "no web shaders allowed
+ *  ever again" — the run pool reshuffles per lap, so recasts kept pulling
+ *  unvetted shaders into Snowflake: mycelium, lichen, umbra, flux...).
+ *  When a realm has a safelist, scripted-take substitutions come ONLY
+ *  from it — every entry has already played in Snowflake without
+ *  complaint. */
+export const RECAST_SAFELIST: Record<string, readonly string[]> = {
+  winter: ["radiance", "empyrean", "chinook", "dark-aurora", "r3-aurorastreams", "r3-ghostribbons", "drift", "cirrus", "r-droplets"],
+};
+
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
 export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   winter: new Set([

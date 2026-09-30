@@ -2,7 +2,7 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
-import { regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
+import { RECAST_SAFELIST, regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
@@ -983,9 +983,11 @@ class JourneyEngine {
   private substituteFor(mode: string): string | null {
     const cached = this.scriptSubs.get(mode);
     if (cached !== undefined) return cached;
-    const pool = (this.journey?.phases ?? [])
-      .flatMap((p) => p.shaderModes)
-      .filter((m, i, arr) => arr.indexOf(m) === i && !MODES_3D.has(m) && this.isShaderAllowed(m));
+    const safelist = RECAST_SAFELIST[this.journey?.realmId ?? ""];
+    const pool = (safelist
+      ? [...safelist]
+      : (this.journey?.phases ?? []).flatMap((p) => p.shaderModes)
+    ).filter((m, i, arr) => arr.indexOf(m) === i && !MODES_3D.has(m) && this.isShaderAllowed(m));
     let sub: string | null = null;
     if (pool.length > 0) {
       let h = 0;
