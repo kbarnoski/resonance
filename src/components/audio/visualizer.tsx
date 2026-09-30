@@ -41,7 +41,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isKineticJourneyName } from "@/lib/journeys/kinetic";
+import { isKineticJourneyName, BAND_PROFILES } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -612,7 +612,8 @@ export function ShaderVisualizer({
           const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
           const onset = Math.max(0, raw - prevRawBand);
           prevRawBand = raw;
-          pulseEnv = Math.max(pulseEnv * 0.9, Math.min(1, onset * 16));
+          const prof = BAND_PROFILES[fb];
+          pulseEnv = Math.max(pulseEnv * prof.decay, Math.min(1, onset * prof.gain));
         }
       }
 
@@ -634,11 +635,13 @@ export function ShaderVisualizer({
       if (bandFocusRef.current) {
         const f2 = bandFocusRef.current;
         const norm = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble; // normalized 0..1
-        const lv = Math.max(norm * 0.3, pulseEnv); // presence floor + beat flash
-        canvas.style.filter = `brightness(${(0.4 + lv * 1.2).toFixed(3)})`;
-        canvas.style.transform = `scale(${(1 + lv * 0.06).toFixed(4)})`;
-        // Ground-truth probe for self-verification runs.
-        (window as unknown as Record<string, unknown>).__resonanceBands = { f: f2, bass: s.bass, mid: s.mid, treble: s.treble, pulse: pulseEnv, t: Date.now() };
+        const prof2 = BAND_PROFILES[f2];
+        const lv = Math.max(norm * prof2.floor, pulseEnv);
+        canvas.style.filter = `brightness(${(prof2.brightLo + lv * (prof2.brightHi - prof2.brightLo)).toFixed(3)})`;
+        canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
+        // Per-band ground-truth probe for self-verification runs.
+        const w = window as unknown as Record<string, Record<string, unknown>>;
+        (w.__resonanceEq ??= {})[f2] = { pulse: +pulseEnv.toFixed(3), norm: +norm.toFixed(3), t: Date.now() };
       } else if (canvas.style.filter) {
         canvas.style.filter = "";
         canvas.style.transform = "";

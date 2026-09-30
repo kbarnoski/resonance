@@ -2,6 +2,7 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
+import { isKineticJourneyName } from "./kinetic";
 import { RECAST_SAFELIST, regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
@@ -191,6 +192,9 @@ class JourneyEngine {
   private inStillnessNow = false;
   /** Scripted take: recorded shader timeline replayed by progress. */
   private takeScript: TakeScriptEntry[] | null = null;
+  /** Kinetic EQ journeys: dual locked on, tertiary continuous — all
+   *  three band layers stay on screen (Karel 2026-09-30). */
+  private kineticEq = false;
   private takeSeedValue: number | null = null;
   private scriptSubs = new Map<string, string | null>();
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
@@ -225,6 +229,7 @@ class JourneyEngine {
     this.stop();
 
     this.takeScript = options?.script?.length ? options.script : null;
+    this.kineticEq = isKineticJourneyName(journey.name);
     this.scriptSubs = new Map();
     this.takeSeedValue = options?.seed ?? null;
     const random = options?.seed != null
@@ -618,7 +623,8 @@ class JourneyEngine {
       }
     }
     const conductorIntensity = conducted;
-    if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
+    if (this.kineticEq) this.dualAllowed = true; // EQ: the mid voice never drops out
+    else if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
     else if (this.dualAllowed && conductorIntensity < JourneyEngine.DUAL_OFF_INTENSITY) this.dualAllowed = false;
 
     // ─── Primary shader switching (wall-clock timer) ───
@@ -733,7 +739,7 @@ class JourneyEngine {
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
     // The conductor also holds the dual back while the music is quiet
     // (threshold / return / integration): a second layer is earned by the build.
-    const primaryBansDual = !this.takeScript && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
+    const primaryBansDual = !this.takeScript && !this.kineticEq && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
     if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
@@ -1338,6 +1344,11 @@ class JourneyEngine {
    */
   private scheduleTertiaryMoments(random: () => number): void {
     this.tertiaryMoments = [];
+    if (this.kineticEq) {
+      // EQ mode: the treble voice rides nearly the whole track.
+      this.tertiaryMoments.push({ startProgress: 0.04, endProgress: 0.97 });
+      return;
+    }
 
     // Convert 60s intervals to progress fractions
     const intervalProgress = this.trackDuration > 0 ? 60 / this.trackDuration : 0.20;
