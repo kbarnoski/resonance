@@ -146,7 +146,13 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
       >
         {EXPERIENCE_INTRO.title}
       </h1>
-      <MonoLabel className="mt-10 block text-sm tracking-[0.08em] text-white/55">
+      <div
+        className="mt-8 text-[clamp(1.1rem,2vw,1.5rem)] tracking-[0.01em] text-white/70"
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+      >
+        {EXPERIENCE_INTRO.about}
+      </div>
+      <MonoLabel className="mt-6 block text-sm tracking-[0.08em] text-white/55">
         {EXPERIENCE_INTRO.thanks}
       </MonoLabel>
     </div>
@@ -156,27 +162,18 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
 function CycleTextInner({ presenting, description }: { presenting?: string; description?: string }) {
   return (
     <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
-      {/* Resonance brand mark — same stylized branching SVG used in
-          the sidebar nav. Sized to feel grand without competing with
-          the typographic title underneath. */}
-      <ResonanceMark
-        color="rgba(255, 255, 255, 0.9)"
-        strokeWidth={1.2}
-        style={{
-          display: "block",
-          width: "clamp(72px, 8vw, 112px)",
-          height: "clamp(72px, 8vw, 112px)",
-          margin: "0 auto 1.5rem",
-        }}
-      />
-      <DisplayTitle
-        as="div"
-        className="not-italic text-white/90 text-[clamp(3.5rem,8vw,6rem)] tracking-[-0.02em]"
+      {/* Set cards mirror the title screen exactly (Karel 2026-09-30:
+          "same Resonance and logo at same size and placement as title
+          screen but then the set list name below it"). */}
+      <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
+      <h1
+        className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
       >
         Resonance
-      </DisplayTitle>
+      </h1>
       <div
-        className="mt-4 text-[clamp(1.6rem,3.4vw,2.6rem)] tracking-[-0.01em] leading-[normal] text-white/70"
+        className="mt-6 text-[clamp(1.4rem,2.8vw,2.1rem)] tracking-[-0.01em] leading-[normal] text-white/70"
         style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
       >
         {presenting ?? "the Snowflake EP"}
@@ -222,12 +219,30 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
       />
       {/* Karel 2026-09-20: title cards carry the NAME ALONE — no
           "Journey" eyebrow label, no subtitle. Simple. */}
-      <div
-        className="relative text-white text-[clamp(3rem,6.5vw,5rem)] tracking-[-0.015em]"
-        style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
-      >
-        {journey.name}
-      </div>
+      {(() => {
+        // Numbered titles split (Karel 2026-09-30: "the name and then
+        // below it No. 1 or whatever that number is"); size trimmed
+        // 25% across all journey titles the same day.
+        const m = /^(.*?)\s+(\d+)$/.exec(journey.name);
+        return (
+          <>
+            <div
+              className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
+              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+            >
+              {m ? m[1] : journey.name}
+            </div>
+            {m && (
+              <div
+                className="relative mt-3 text-[clamp(1.1rem,1.9vw,1.5rem)] tracking-[0.04em] text-white/65"
+                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+              >
+                No. {m[2]}
+              </div>
+            )}
+          </>
+        );
+      })()}
       {(() => {
         // No per-track self-credit — the program intro already says
         // "composed and performed by Karel Barnoski" once (Karel's
