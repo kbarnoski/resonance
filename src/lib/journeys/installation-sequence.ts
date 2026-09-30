@@ -64,6 +64,7 @@ export const TRAMOKYO_MIX_ID = "tramokyo-mix";
  *  (laptop arrows / phone remote) land on these (Karel 2026-09-29). */
 export const TRAMOKYO_SET_STARTS: readonly string[] = [
   "first-snow", // Snowflake EP
+  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", // the Kinetic Lab (2026-09-30 — was missing: set-jumps skipped the Lab entirely)
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // Expansion
   "the-ascent", // Featured journeys
   "27f52cf0-5fad-420f-8324-8017c414f1f8", // Welcome Home

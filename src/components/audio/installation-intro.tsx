@@ -93,7 +93,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
             transition: "opacity 1800ms ease-out",
           }}
         >
-          <ExperienceTextInner />
+          <ExperienceTextInner showAbout />
         </div>
       )}
 
@@ -133,7 +133,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   );
 }
 
-export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
+export function ExperienceTextInner({ animate = true, showAbout = false }: { animate?: boolean; showAbout?: boolean }) {
   // animate=false when a host (the mid-show statement interstitial)
   // drives the fade itself — the keyframes here are scoped to
   // InstallationIntro's style block and don't exist elsewhere.
@@ -142,16 +142,18 @@ export function ExperienceTextInner({ animate = true }: { animate?: boolean }) {
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
       >
         {EXPERIENCE_INTRO.title}
       </h1>
-      <div
-        className="mt-8 text-[clamp(1.1rem,2vw,1.5rem)] tracking-[0.01em] text-white/70"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
-      >
-        {EXPERIENCE_INTRO.about}
-      </div>
+      {showAbout && (
+        <div
+          className="mt-8 text-[clamp(1.1rem,2vw,1.5rem)] tracking-[0.01em] text-white/70"
+          style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+        >
+          {EXPERIENCE_INTRO.about}
+        </div>
+      )}
       <MonoLabel className="mt-6 block text-sm tracking-[0.08em] text-white/55">
         {EXPERIENCE_INTRO.thanks}
       </MonoLabel>
@@ -168,13 +170,13 @@ function CycleTextInner({ presenting, description }: { presenting?: string; desc
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
       >
         Resonance
       </h1>
       <div
         className="mt-6 text-[clamp(1.4rem,2.8vw,2.1rem)] tracking-[-0.01em] leading-[normal] text-white/70"
-        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+        style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
       >
         {presenting ?? "the Snowflake EP"}
       </div>
@@ -228,14 +230,14 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           <>
             <div
               className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
-              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
             >
               {m ? m[1] : journey.name}
             </div>
             {m && (
               <div
                 className="relative mt-3 text-[clamp(1.1rem,1.9vw,1.5rem)] tracking-[0.04em] text-white/65"
-                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 500 }}
+                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans)", fontWeight: 400 }}
               >
                 No. {m[2]}
               </div>
