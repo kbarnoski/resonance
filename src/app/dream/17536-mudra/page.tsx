@@ -34,7 +34,7 @@ import {
   REAL_TRACKS,
   loadRealTrackBuffer,
 } from "../_shared/welcomeHome";
-import { useImmersive, ImmersiveToggle } from "../_shared/immersive";
+import { useImmersive, ImmersiveHud } from "../_shared/immersive";
 
 // ── Gesture vocabulary ───────────────────────────────────────────────────────
 
@@ -745,7 +745,23 @@ interface Engine {
   detectHandle: number;
   detecting: boolean;
   camLive: boolean;
+  // labelled autonomous demo: when no live hands, cycle the vocabulary so the
+  // gesture→sound+field chain is alive & verifiable with no camera (never faked
+  // as live control — the status line reads "demo · autonomous").
+  demo: { active: boolean; name: GestureName | null; depth: number };
 }
+
+// The demo cycles a legible arc through the vocabulary (~2.6s per gesture).
+const DEMO_SEQUENCE: readonly GestureName[] = [
+  "Open_Palm",
+  "Pointing_Up",
+  "Victory",
+  "Thumb_Up",
+  "ILoveYou",
+  "Thumb_Down",
+  "Closed_Fist",
+];
+const DEMO_HOLD_FRAMES = 150; // ~2.5s at 60fps per gesture
 
 function makeImpulse(ac: AudioContext, seconds = 2.4): AudioBuffer {
   const len = Math.floor(ac.sampleRate * seconds);
@@ -885,6 +901,18 @@ export default function MudraPage() {
       LOST_FRAMES;
     setCamLost((prev) => (prev === !recentlySaw ? prev : !recentlySaw));
 
+    // ── labelled autonomous demo: with no live hands, cycle the vocabulary so
+    // the gesture→sound+field chain stays alive & verifiable headless. Never
+    // masquerades as live — the status line reads "demo · autonomous". ────────
+    const demoOn = !recentlySaw;
+    if (demoOn) {
+      const idx = Math.floor(eng.frame / DEMO_HOLD_FRAMES) % DEMO_SEQUENCE.length;
+      const depth = 0.65 + 0.3 * Math.sin(eng.frame * 0.018);
+      eng.demo = { active: true, name: DEMO_SEQUENCE[idx], depth };
+    } else {
+      eng.demo = { active: false, name: null, depth: 0 };
+    }
+
     // ── fold committed mudras → audio params (visuals recompute their own) ────
     const params: AudioParams = { ...REST_PARAMS };
     for (const slot of eng.slots) {
@@ -892,6 +920,9 @@ export default function MudraPage() {
         const depth = 0.5 + Math.max(0, Math.min(1, slot.height)) * 0.7;
         applyMudra(params, slot.committed, depth);
       }
+    }
+    if (eng.demo.active && eng.demo.name) {
+      applyMudra(params, eng.demo.name, eng.demo.depth);
     }
 
     // ramp every parameter smoothly (~0.12s) — switching gestures glides
@@ -911,8 +942,12 @@ export default function MudraPage() {
       const nameOf = (s: SlotState): string =>
         s.committed ? MUDRA_BY_NAME[s.committed].label : "—";
       setHandLabels((prev) => {
-        const a = nameOf(eng.slots[0]);
-        const b = nameOf(eng.slots[1]);
+        // while the demo runs, mirror the demo gesture so the readout matches
+        // what is sounding; the status line still reads "demo · autonomous".
+        const demoLabel =
+          eng.demo.active && eng.demo.name ? MUDRA_BY_NAME[eng.demo.name].label : null;
+        const a = demoLabel ?? nameOf(eng.slots[0]);
+        const b = demoLabel ? "—" : nameOf(eng.slots[1]);
         return prev[0] === a && prev[1] === b ? prev : [a, b];
       });
     }
@@ -954,6 +989,10 @@ export default function MudraPage() {
           const depth = 0.5 + Math.max(0, Math.min(1, slot.height)) * 0.7;
           applyMudraField(forces, slot.committed, depth);
         }
+      }
+      // the same labelled demo that drives the audio also stirs the field
+      if (eng.demo.active && eng.demo.name) {
+        applyMudraField(forces, eng.demo.name, eng.demo.depth);
       }
 
       const canvas = canvasRef.current;
@@ -1162,6 +1201,7 @@ export default function MudraPage() {
       detectHandle: 0,
       detecting: true,
       camLive: false,
+      demo: { active: true, name: DEMO_SEQUENCE[0], depth: 0.8 },
     };
     engineRef.current = eng;
 
@@ -1241,8 +1281,11 @@ export default function MudraPage() {
       {running && (
         <div className="fixed left-4 top-4 z-30 font-mono text-xs uppercase tracking-[0.18em]">
           {camLost ? (
-            <span className="text-destructive">
-              sensor lost · show your hands to the camera
+            <span className="text-muted-foreground">
+              demo · autonomous
+              <span className="ml-2 text-muted-foreground/70">
+                {handLabels[0]} · show your hands to conduct
+              </span>
             </span>
           ) : (
             <span className="text-primary">
@@ -1303,7 +1346,6 @@ export default function MudraPage() {
                   Stop
                 </button>
               )}
-              <ImmersiveToggle immersive={immersive} onToggle={toggle} />
             </div>
 
             {/* track selector */}
@@ -1378,8 +1420,21 @@ export default function MudraPage() {
         </>
       )}
 
-      {/* exit pill lives in ImmersiveToggle while immersive */}
-      {immersive && <ImmersiveToggle immersive={immersive} onToggle={toggle} />}
+      <div className="fixed right-4 top-4 z-40">
+        <ImmersiveHud
+          immersive={immersive}
+          onToggle={toggle}
+          title="Mudra — a hand-sign language for your piano"
+          description="Hold a recognized hand-gesture and one of Karel's real takes glides to a distinct held transformation — one gesture, one event. Two hands can hold two mudras at once; hand height sets the depth."
+          howTo={[
+            "Allow the camera and sound, then hold a shape, palm to the camera, until it commits.",
+            "✋ open = reverb bloom · ✊ fist = choke · ☝ point-up = bright lift · 👍/👎 = quicken/deepen.",
+            "✌ victory = octave shimmer · 🤟 = warm widening. Raise a hand higher to deepen its effect.",
+            "Hold two mudras at once — one per hand — to stack two transformations.",
+            "No camera? A labelled demo cycles the vocabulary so the sound and field stay alive.",
+          ]}
+        />
+      </div>
 
       {/* ── design notes modal ── */}
       {showNotes && (

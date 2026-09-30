@@ -2,7 +2,7 @@
 
 Where you *look* — plus your face — conducts the dynamics and spectral focus of one of Karel's real piano recordings: the band you gaze at swells forward, the rest recedes.
 
-**Status**: wip — audio graph + WebGL2 render path built and control path traceable; camera/gaze path untested headless (no webcam in the build environment).
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check) — audio graph + WebGL2 render path built and control path traceable; camera/gaze path untested headless (no webcam in the build environment).
 
 ## The idea
 

@@ -1,6 +1,6 @@
 # 17968-cantormap
 
-**Status**: wip
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check)
 
 Two hands sculpt WHERE one of Karel's own piano recordings lives in a 3-D HRTF room around your head.
 

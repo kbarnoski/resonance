@@ -63,7 +63,10 @@ if (usesCamera) {
     fails.push("no visible tracking-status indicator (live vs lost must be shown on screen)");
   if (!/catch/.test(joined))
     fails.push("no error handling anywhere — camera/model failures must degrade visibly");
-  if (/visibility\s*[><]=?\s*0?\.[3-9]/.test(joined) && /hip|ankle|knee/i.test(joined))
+  // Only warn when a lower-body landmark is ACTUALLY visibility-gated on the
+  // same line — not when a comment/README merely mentions hips/ankles to say it
+  // does NOT require them (false positives forced cosmetic reword-hacks).
+  if (joined.split("\n").some((l) => /visibility\s*[><]=?\s*0?\.[3-9]/.test(l) && /\b(hip|ankle|knee)\b/i.test(l)))
     warns.push("visibility gate on hips/ankles/knees — laptop webcams don't see them (bodycast lesson); synthesize instead");
 }
 
@@ -75,7 +78,10 @@ if (!/ImmersiveHud/.test(joined))
 // ── 5. Language + aesthetic laws ────────────────────────────────────────────
 const drugs = joined.match(/\bk-?hole\b|\bdmt\b|\bpsychedelic\b|psychonaut|ketamine|\blsd\b|\bacid\b|psilocybin|\bmdma\b|ayahuasca|\bdxm\b|\btrippy\b|\bcome-?up\b|mescaline|peyote|salvia|entheogen|\bdose\b|\bdosage\b|titrat|microdose/i);
 if (drugs) fails.push(`banned language: "${drugs[0]}" — altered-states framing only`);
-if (/font-serif/.test(joined)) fails.push("font-serif — Resonance ships no serif font");
+// font-serif is only a defect when actually applied in code (a className) —
+// a README/comment that documents "no `font-serif`" is compliance prose, not a use.
+if (code.some(([, c]) => c.split("\n").some((l) => /font-serif/.test(l) && !/\b(no|not|never|without|avoid)\b[^\n]*font-serif/i.test(l))))
+  fails.push("font-serif — Resonance ships no serif font");
 for (const [f, c] of code) {
   if (/filmGrain|film-grain|grainAmount|grainIntensity/i.test(c)) fails.push(`film grain in ${path.basename(f)} — banned product-wide`);
   if (/\bgrain\b/i.test(c) && !/filmGrain/i.test(c)) warns.push(`"grain" mentioned in ${path.basename(f)} — confirm it's granular synthesis, not a grain overlay`);

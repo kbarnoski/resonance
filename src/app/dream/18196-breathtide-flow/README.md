@@ -30,4 +30,4 @@ A quiet always-on core keeps silence from going dead.
 
 **Degradation & gating.** Gates *only* on the shoulders to place the ROI — never hips/torso/ankles — so a seated desk webcam works; if shoulders aren't found it falls back to a fixed centered chest ROI rather than rejecting the frame, and holds the last good estimate briefly when tracking drops. A labeled **autonomous demo** breath curve runs before any camera (visibly and audibly alive), and a **Spacebar / press-and-hold** pointer fallback covers denied permission or model-load failure. Tracking state is always shown: `breathing · live` with a live breaths/min readout, vs. a `text-destructive` low-signal / lost hint. No-canvas → notice.
 
-**Status** wip
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check)

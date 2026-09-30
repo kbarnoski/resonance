@@ -1,6 +1,6 @@
 # 17536-mudra
 
-**Status:** wip
+**Status**: demoable — a labelled autonomous demo cycles the mudra vocabulary so the gesture→sound+field chain is alive and verifiable with no camera (it never masquerades as live; the status line reads "demo · autonomous"). Live two-hand gesture feel wants a real webcam + speakers.
 
 A vocabulary of discrete, recognized hand gestures — a musical sign-language, a
 *mudra* system — that lets you conduct and transform one of Karel's own piano

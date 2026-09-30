@@ -37,7 +37,7 @@ import {
   REAL_TRACKS,
   loadRealTrackBuffer,
 } from "../_shared/welcomeHome";
-import { useImmersive, ImmersiveToggle } from "../_shared/immersive";
+import { useImmersive, ImmersiveHud } from "../_shared/immersive";
 
 // Default track: "Bath" — a calm one, fitting for stillness.
 const DEFAULT_TRACK_ID = "eba95845-cdbf-41d8-9c5d-8679686811ad";
@@ -639,7 +639,6 @@ export default function StillpointPage() {
                     : "Enable camera"}
                 </button>
               )}
-              <ImmersiveToggle immersive={immersive} onToggle={toggle} />
             </div>
 
             {/* fallback / degradation notices */}
@@ -705,8 +704,20 @@ export default function StillpointPage() {
         </>
       )}
 
-      {/* exit pill lives in ImmersiveToggle while immersive */}
-      {immersive && <ImmersiveToggle immersive={immersive} onToggle={toggle} />}
+      <div className="fixed right-4 top-4 z-40">
+        <ImmersiveHud
+          immersive={immersive}
+          onToggle={toggle}
+          title="Stillpoint — be still and the take clarifies"
+          description="One of Karel's real piano takes plays as a single breathing halo. Whole-body stillness is the instrument: the calmer you hold, the clearer and closer his recording resolves; move and it softens back into a granular haze of itself."
+          howTo={[
+            "Allow the camera and sit waist-up in frame, then let yourself go still.",
+            "Hold still and the take clarifies — a clean loop rises over the granular haze and the halo settles.",
+            "Move and it blurs back: motion re-scatters the sound and widens the halo.",
+            "No camera? A labelled auto-demo breathes moving → still → moving, or hold the pointer still over the field.",
+          ]}
+        />
+      </div>
 
       {/* ── design notes modal ── */}
       {showNotes && (

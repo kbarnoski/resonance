@@ -2,7 +2,7 @@
 
 One of Karel's real piano takes plays whole and present only when you hold your body still; any movement scatters it, granulating and blurring the recording toward a distant whisper.
 
-**Status**: wip — audio graph (clean loop ⇄ granular reader crossfade) + Canvas2D halo built, control path fully synchronous and traceable; pose/motion path untested headless (no webcam in the build environment), verified via the auto-demo and pointer fallback.
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check) — audio graph (clean loop ⇄ granular reader crossfade) + Canvas2D halo built, control path fully synchronous and traceable; pose/motion path untested headless (no webcam in the build environment), verified via the auto-demo and pointer fallback.
 
 ## The idea
 

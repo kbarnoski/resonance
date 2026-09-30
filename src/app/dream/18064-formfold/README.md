@@ -2,7 +2,7 @@
 
 *What if you could conduct the ARRANGEMENT and navigate the FORM of your own recording with your whole body — opening your arms to bloom the full texture, contracting to a solo core, and leaning left↔right to travel the piece's sections?*
 
-**Status** wip *(the camera/pose path can't be verified headless in this environment; audio graph, form derivation, fallbacks and visuals were built and reviewed against the shared APIs and the 18032-fingerloom / 15824-canon patterns).*
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check) — *(the camera/pose path can't be verified headless in this environment; audio graph, form derivation, fallbacks and visuals were built and reviewed against the shared APIs and the 18032-fingerloom / 15824-canon patterns).*
 
 | | |
 |---|---|

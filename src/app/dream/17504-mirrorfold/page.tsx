@@ -29,7 +29,7 @@ import {
 } from "../_shared/cameraTracking";
 import { loadRealTrackBuffer, REAL_TRACKS } from "../_shared/welcomeHome";
 import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
-import { useImmersive, ImmersiveToggle } from "../_shared/immersive";
+import { useImmersive, ImmersiveHud } from "../_shared/immersive";
 
 // A solo take from Karel's verified catalog (Welcome Home — "Interplay").
 const DEFAULT_TRACK_ID = REAL_TRACKS[0].id;
@@ -1239,10 +1239,9 @@ export default function MirrorfoldPage() {
         </p>
       )}
 
-      {/* design notes + fullscreen */}
+      {/* design notes */}
       {!immersive && (
         <div className="absolute bottom-4 right-4 flex gap-2">
-          <ImmersiveToggle immersive={immersive} onToggle={toggleImmersive} />
           <button
             onClick={() => setShowNotes(true)}
             className="pointer-events-auto min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground"
@@ -1251,7 +1250,20 @@ export default function MirrorfoldPage() {
           </button>
         </div>
       )}
-      {immersive && <ImmersiveToggle immersive={immersive} onToggle={toggleImmersive} />}
+      <div className="fixed right-4 top-4 z-40">
+        <ImmersiveHud
+          immersive={immersive}
+          onToggle={toggleImmersive}
+          title="Mirrorfold — two bodies, one take"
+          description="Two people in one webcam frame share one of Karel's recordings, and their mirror-symmetry is the instrument: move as each other's mirror image and the take folds to a single unison voice; break symmetry and it tears into a two-voice canon spread across your two bodies."
+          howTo={[
+            "Allow the camera and stand two people waist-up in frame (or one person with a mirror).",
+            "Move as each other's mirror image — the take folds into one bright central unison braid.",
+            "Break the symmetry and it opens into a two-voice canon; the gap between you sets the delay.",
+            "Alone or no camera? A labelled two-body ghost demo shows the fold — it never poses as live.",
+          ]}
+        />
+      </div>
 
       {showNotes && (
         <div

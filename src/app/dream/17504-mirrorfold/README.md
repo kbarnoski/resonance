@@ -1,6 +1,6 @@
 # 17504-mirrorfold — Two bodies fold one take into unison or a canon
 
-**Status:** Demoable. `tsc --noEmit` passes; `next lint` on this file is clean. Audio is Karel's real catalog (Welcome Home / Snowflake) via `loadRealTrackBuffer`, routed entirely through `createSafeMaster`. Two-person MediaPipe pose (`numPoses=2`) with ghost-demo, single-person, slider, and Canvas2D fallbacks.
+**Status**: demoable. `tsc --noEmit` passes; `next lint` on this file is clean. Audio is Karel's real catalog (Welcome Home / Snowflake) via `loadRealTrackBuffer`, routed entirely through `createSafeMaster`. Two-person MediaPipe pose (`numPoses=2`) with ghost-demo, single-person, slider, and Canvas2D fallbacks.
 
 ## The one question
 

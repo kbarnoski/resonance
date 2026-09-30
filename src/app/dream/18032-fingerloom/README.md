@@ -1,6 +1,6 @@
 # 18032-fingerloom — your ten fingers each hold a strand of your own recording
 
-**Status**: wip — builds clean and the full control path is code-traced (per-finger flexion → per-voice gain → audible + visible), but the live per-finger calibration and the by-ear balance of ten simultaneously-bloomed bands are **unverifiable headless** (no camera/speakers in the cloud). Needs Karel's ~30-second webcam check: does the ten-finger orchestration track, and does curling a finger cleanly silence its strand? The per-finger calibration constants (straightness 0.66–0.97, thumb abduction 0.52–1.12) are reasoned for a seated desk webcam and may want a small nudge in real testing.
+**Status**: demoable (promoted cycle 1269 — labelled autonomous demo drive drives the identical audio+visual chain headless; live camera feel still wants Karel's check) — builds clean and the full control path is code-traced (per-finger flexion → per-voice gain → audible + visible), but the live per-finger calibration and the by-ear balance of ten simultaneously-bloomed bands are **unverifiable headless** (no camera/speakers in the cloud). Needs Karel's ~30-second webcam check: does the ten-finger orchestration track, and does curling a finger cleanly silence its strand? The per-finger calibration constants (straightness 0.66–0.97, thumb abduction 0.52–1.12) are reasoned for a seated desk webcam and may want a small nudge in real testing.
 
 ## What it is
 

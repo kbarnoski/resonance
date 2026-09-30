@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useImmersive, ImmersiveToggle } from "../_shared/immersive";
+import { useImmersive, ImmersiveHud } from "../_shared/immersive";
 import {
   REAL_TRACKS,
   loadRealTrackBuffer,
@@ -723,7 +723,6 @@ export default function Limn() {
                     : "Enable camera"}
                 </button>
               )}
-              <ImmersiveToggle immersive={immersive} onToggle={toggle} />
             </div>
 
             <div className="absolute bottom-4 left-4 z-30 max-w-md space-y-1">
@@ -751,8 +750,22 @@ export default function Limn() {
           </>
         )}
 
-        {immersive && phase === "running" && (
-          <ImmersiveToggle immersive={immersive} onToggle={toggle} />
+        {phase === "running" && (
+          <div className="fixed right-4 top-4 z-40">
+            <ImmersiveHud
+              immersive={immersive}
+              onToggle={toggle}
+              title="Limn — a gaze-steered spectral lens"
+              description="One of Karel's real piano recordings plays with its spectrum laid low-to-high across the frame; where you look becomes a resonant focus lens that boosts the band you gaze at and lets the rest recede."
+              howTo={[
+                "Allow the camera, then look around the frame — the band you gaze at blooms forward.",
+                "Lean in to swell the whole voice closer.",
+                "Raise your brows for air; open your jaw to open a vowel-like formant.",
+                "Close your eyes and everything collapses to a whisper.",
+                "With no camera, a labelled auto-demo gaze sweeps the lens so the piece stays alive.",
+              ]}
+            />
+          </div>
         )}
 
         {/* design-notes overlay */}
