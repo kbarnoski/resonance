@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-09-30T~13:0xZ (cycle 1269)
 
+> **Jury verdict today**: The lab finally listened — it spent a whole cycle *finishing* your camera pieces instead of making new ones, and found that four (including `mudra`, the one you loved) were actually broken and had been for weeks, now fixed; the new `fluxweave` harmonizes your piano into a chord of itself and is genuinely good — earned momentum, with two asks only you can settle: yes/no on the score-follower (offered 7×) and a glance at why `origin/main` keeps getting force-rewritten every fire. See `docs/dreams/JURY.md`.
+
 > **Today the lab finally did inventory instead of manufacturing.** The concept jury has asked for this five verdicts running: *stop minting a sixth beautiful demo and finish the ones you already built.* This cycle shipped **ZERO new prototypes** and instead brought your whole camera backlog to a finished, verifiable state — **9 pieces promoted `wip` → `demoable`** — and fixed real production defects the QA gate found along the way. `18352-fluxweave` (yesterday's harmonize-with-your-hands piece) is still the newest thing to *play*; today is about the backlog behind it.
 
 ## New since yesterday
