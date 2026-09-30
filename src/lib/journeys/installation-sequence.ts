@@ -84,6 +84,14 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "6499ac06-2cb1-4970-b75f-1258587c84d8", //  4. The Other Side 10 · 2:05
   "13e71555-03d6-4b27-ad32-2c6834559c24", //  5. Northern Plane 5 · 2:34
   "6407bf5c-7862-49e8-883d-59754c4caf18", //  6. No question 8 · 2:55
+  // ── The Kinetic Lab (added 2026-09-30, Karel: "i didnt see the
+  //    journeys in expansion i expected... responsive kinetic and the
+  //    combo med and kinetic") — band-split reactive shaders ──
+  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", //  1. Chemiluminescence 1 (kinetic, whisper imagery)
+  "061528d4-e9a3-49c3-ad3c-f23cf9cf2251", //  2. Rolling 2 (kinetic + epic imaging)
+  "84a82478-f0f2-4c49-b800-b4fe722f1df5", //  3. Stand 10 (meditative + kinetic)
+  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", //  4. Cabin Soul 8 (med + kin, lyrics)
+  "b5247327-b1fd-45ce-a249-0a58a8a3c57e", //  5. Cabin Soul 5 (med + kin, lyrics)
   // ── The featured journeys (verified session-take pairings) ──
   "the-ascent", //  4. The Summit — Folsom St 5 · 3:22 (swapped with Ascension, Karel 2026-09-19)
   "the-ascension", //  5. The Ascension — 17th St 63 · 3:20 (swapped with Mycelium, Karel 2026-09-19)
@@ -171,13 +179,14 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // dedication closes the final set.
   { id: "tramokyo-mix", presenting: "the Snowflake EP", end: 3 }, //  1-3: the Snowflake EP
   { id: "tramokyo-mix-exp", presenting: "Expansion", end: 9 }, // 4-9: the Expansion set (added 2026-09-29)
-  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 14 }, // 10-14: The Summit → Mycelium Dream
-  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 27 }, // 15-27: Interplay → All Together
-  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 39 }, // 28-39: Rise → Mystic (~35 min)
+  { id: "tramokyo-mix-kin", presenting: "the Kinetic Lab", end: 14 }, // 10-14: the Kinetic Lab (added 2026-09-30)
+  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 19 }, // 15-19: The Summit → Mycelium Dream
+  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 32 }, // 20-32: Interplay → All Together
+  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 44 }, // 33-44: Rise → Mystic (~35 min)
   {
     id: "tramokyo-mix-4",
     presenting: "March Light",
-    end: 49, // 40-49: The First → Love Again (~32 min; added 2026-09-21; +6 for Expansion 2026-09-29)
+    end: 54, // 45-54: The First → Love Again (~32 min; +6 Expansion 2026-09-29; +5 Kinetic Lab 2026-09-30)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
