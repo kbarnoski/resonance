@@ -26,15 +26,18 @@ export type BandFocus = "bass" | "mid" | "treble";
  *  own response so when they all are shown its a cohesive eq visual
  *  experience"). Bass punches, mid swells, treble shimmers. */
 export type BandProfile = {
-  gain: number;    // onset (spectral flux) -> envelope attack gain
-  decay: number;   // per-frame envelope decay (60fps)
-  floor: number;   // how much of the level-norm keeps the layer present
-  scale: number;   // max scale punch
-  brightLo: number;
-  brightHi: number;
+  gain: number;    // deviation -> drive gain
+  decay: number;   // release rate (1-decay per frame)
+  scale: number;   // max scale breath (gentle — mass, not flash)
+  rateLo: number;  // time-dilation floor (music quiet = motion slows)
+  rateHi: number;  // time-dilation ceiling (the kick SURGES the world)
 };
+/** MOTION-mapped EQ (research pass 2026-09-30: Milkdrop/TouchDesigner
+ *  practice maps bands to distinct physical attributes; WCAG 2.3.1
+ *  bans luminance flashing — so the music drives TIME, not brightness.
+ *  Each layer's clock accelerates with its band. */
 export const BAND_PROFILES: Record<BandFocus, BandProfile> = {
-  bass:   { gain: 16, decay: 0.88,  floor: 0.28, scale: 0.075, brightLo: 0.40, brightHi: 1.35 },
-  mid:    { gain: 11, decay: 0.945, floor: 0.34, scale: 0.030, brightLo: 0.50, brightHi: 1.05 },
-  treble: { gain: 22, decay: 0.78,  floor: 0.22, scale: 0.020, brightLo: 0.42, brightHi: 1.30 },
+  bass:   { gain: 16, decay: 0.88,  scale: 0.035, rateLo: 0.30, rateHi: 2.30 },
+  mid:    { gain: 11, decay: 0.945, scale: 0.015, rateLo: 0.55, rateHi: 1.50 },
+  treble: { gain: 22, decay: 0.78,  scale: 0.010, rateLo: 0.50, rateHi: 2.60 },
 };

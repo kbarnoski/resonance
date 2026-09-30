@@ -430,7 +430,12 @@ export function ShaderVisualizer({
       }
       const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
       lastFrameTime = now;
-      if (tempoFlowRef.current) {
+      if (bandFocusRef.current) {
+        // Kinetic EQ: this layer's CLOCK rides its band — motion, not
+        // luminance, carries the beat (WCAG 2.3.1: no flash).
+        const prof0 = BAND_PROFILES[bandFocusRef.current];
+        cumTime += dt * (prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo));
+      } else if (tempoFlowRef.current) {
         // Ultra-smoothed SHARED energy (one FFT read/frame across all
         // layers) → clock rate 0.65-1.35×. The pace of the piece becomes
         // the pace of the light; individual notes never twitch it.
@@ -639,13 +644,12 @@ export function ShaderVisualizer({
         const f2 = bandFocusRef.current;
         const prof2 = BAND_PROFILES[f2];
         const lv = eqLv;
-        canvas.style.filter = `brightness(${(prof2.brightLo + lv * (prof2.brightHi - prof2.brightLo)).toFixed(3)})`;
+        // Motion carries the music; only a gentle mass-breath on scale.
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
         (w.__resonanceEq ??= {})[f2] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
-      } else if (canvas.style.filter) {
-        canvas.style.filter = "";
+      } else if (canvas.style.transform) {
         canvas.style.transform = "";
       }
       animId = requestAnimationFrame(render);
