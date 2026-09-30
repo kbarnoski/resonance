@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18384-throatmorph",
+  "cycle": 18384,
+  "name": "Throatmorph",
+  "status": "demoable",
+  "description": "What if you could reshape the *resonant body / vocal tract* of your own piano recording with your two hands — morphing its timbre continuously from glassy → woody → vowel-like, whi",
+  "category": "local"
+ },
+ {
   "slug": "18352-fluxweave",
   "cycle": 18352,
   "name": "Harmonize your recording in a current of light",
