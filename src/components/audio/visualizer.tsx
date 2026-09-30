@@ -600,6 +600,9 @@ export function ShaderVisualizer({
         const rawMid = midSum / (25 * 255);
         const rawTreble = trebleSum / (33 * 255);
         const rawAmplitude = totalSum / (len * 255);
+        (s as unknown as Record<string, number>).__rawB = rawBass;
+        (s as unknown as Record<string, number>).__rawM = rawMid;
+        (s as unknown as Record<string, number>).__rawT = rawTreble;
         // Kinetic layers track the music, not a moving average — 0.06
         // smoothing lags transients ~1s, which erased the band-split
         // (Karel 2026-09-30: "i see nothing responding to sound").
@@ -650,7 +653,7 @@ export function ShaderVisualizer({
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
-        (w.__resonanceEq ??= {})[f2] = { pulse: +pulseEnv.toFixed(3), norm: +norm.toFixed(3), t: Date.now() };
+        (w.__resonanceEq ??= {})[f2] = { pulse: +pulseEnv.toFixed(3), norm: +norm.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
       } else if (canvas.style.filter) {
         canvas.style.filter = "";
         canvas.style.transform = "";
