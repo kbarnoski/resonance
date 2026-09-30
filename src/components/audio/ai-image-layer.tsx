@@ -243,12 +243,12 @@ export function AiImageLayer({
   // the only thing on screen and no boundary/video moment is running.
   useEffect(() => {
     const id = setInterval(() => {
-      if (inBoundarySettle() || isVideoActive()) return;
+      if (inBoundarySettle() || isVideoActive() || getJourneyEngine().isInStillness()) return;
       const now = performance.now();
       const stills = layersRef.current.filter((l) => ("complete" in l.img) && l.state !== "fading-out");
       if (stills.length < 2) return;
       for (const l of stills) {
-        if (now - l.createdTime > 24_000) {
+        if (now - l.createdTime > 13_000) { // 24->13 (Karel 2026-09-30d: "more like 12 ish")
           l.fadeStartOpacity = l.opacity;
           l.state = "fading-out";
           l.fadeStartTime = now;
@@ -736,7 +736,7 @@ export function AiImageLayer({
       // stillness windows breathe slower but still breathe.
       const idleFloor = Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
       const idleMs = performance.now() - idleFloor;
-      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 22_000 : 14_000; // tightened 2026-09-30b: "the max is too long"
+      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 20_000 : 10_000; // 14->10 so the replacement lands before the 13s age fade
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
       if (idleRescue && urls.length > 1) {
         let walked = 0;
