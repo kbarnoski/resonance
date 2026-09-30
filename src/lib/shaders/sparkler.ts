@@ -34,7 +34,7 @@ void main() {
   vec2 headScreen = headP.xy / headP.z;
   float headD = length(uv - headScreen);
   // Incandescent head: hot white core, warm gold corona.
-  col += vec3(1.0, 0.95, 0.82) * 0.06 / (headD * headD * headP.z * headP.z + 0.004);
+  col += vec3(1.0, 0.95, 0.82) * 0.012 / (headD * headD * headP.z * headP.z + 0.0012);
 
   // Spark trail: 56 embers sampled back along the path, each with its
   // own spray velocity, drifting outward and fading as it ages.
@@ -45,7 +45,7 @@ void main() {
     vec3 sp = path(birth);
     vec3 rnd = hash3(floor(birth * 18.0) + fi * 7.31) - 0.5;
     // Spray: velocity spread grows with age; bass bursts the radius.
-    float spread = age * (0.55 + u_bass * 0.9);
+    float spread = age * (0.32 + u_bass * 0.75);
     sp += rnd * spread;
     sp.y -= age * age * 0.10; // gentle gravity
     if (sp.z < 0.35) continue;
@@ -55,12 +55,12 @@ void main() {
     if (life <= 0.0) continue;
     // Treble twinkle — sparks shimmer, never strobe the frame.
     float tw = 0.55 + 0.45 * sin(u_time * (5.0 + hash(fi) * 9.0) * (0.6 + u_treble) + fi);
-    float b = 0.0016 / (d * d + 0.00025) * life * life * tw;
+    float b = 0.0035 / (d * d + 0.00012) * life * life * tw;
     // Ember color: white-gold young, cooling to teal-cyan with age
     // (Chemiluminescence's palette).
     vec3 young = vec3(1.0, 0.9, 0.7);
     vec3 old = vec3(0.35, 0.85, 0.9);
-    col += mix(young, old, age / 3.1) * b * 0.06;
+    col += mix(young, old, age / 3.1) * b * 0.22;
   }
 
   // Whisper of depth: ultra-faint distant dust so space reads endless.
