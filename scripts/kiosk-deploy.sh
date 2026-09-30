@@ -9,7 +9,22 @@ cd "$(dirname "$0")/.."
 HEAD=$(git rev-parse --short=8 HEAD)
 echo "deploying $HEAD"
 launchctl bootout "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
-npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
+# Holding page on :3000 during the build — a kiosk page that reloads
+# mid-deploy gets an auto-retrying "updating" screen instead of dying
+# on a browser error page (2026-09-30: every deploy killed the page).
+python3 - <<'PYEOF' > /tmp/kiosk-hold.log 2>&1 &
+from http.server import BaseHTTPRequestHandler, HTTPServer
+PAGE = b"""<!doctype html><html><head><meta http-equiv=refresh content=4><title>Resonance</title></head><body style='background:#000;color:rgba(255,255,255,0.5);font-family:system-ui;display:flex;align-items:center;justify-content:center;height:100vh;margin:0'>updatingâ¦</body></html>"""
+class H(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200); self.send_header("Content-Type","text/html"); self.end_headers(); self.wfile.write(PAGE)
+    do_POST = do_GET
+    def log_message(self, *a): pass
+HTTPServer(("127.0.0.1", 3000), H).serve_forever()
+PYEOF
+HOLD_PID=$!
+npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { kill $HOLD_PID 2>/dev/null; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
+kill $HOLD_PID 2>/dev/null; sleep 1
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.resonance.tramokyo.plist" 2>/dev/null \
   || launchctl kickstart -k "gui/$(id -u)/com.resonance.tramokyo"
 # server up + on the new commit
