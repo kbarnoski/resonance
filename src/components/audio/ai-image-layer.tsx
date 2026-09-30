@@ -822,21 +822,22 @@ export function AiImageLayer({
                   morphCoverPendingRef.current = true;
                   lastGenTimeRef.current = 0;
                   getJourneyEngine().nudgeShaderRotation(2000);
-                  // ...but the frame never sits to the very end (Karel
-                  // 2026-09-30: "shader and an image come in and
-                  // transition OUT of the morph, not sit and end with
-                  // it"): once the build over it has established, the
-                  // held frame melts on the long fade and the journey
-                  // closes on the composition that grew from it.
-                  setTimeout(() => {
+                  // ...and it releases IMMEDIATELY (Karel 2026-09-30:
+                  // "you HAVE to transition from that last morph when
+                  // it completes and do not wait. its blocking the
+                  // whole view"): the long fade starts the moment the
+                  // clip ends, while the cover still and nudged shader
+                  // arrive OVER the fading frame — build and melt
+                  // overlap instead of queueing.
+                  {
                     const layer = layersRef.current.find((l) => l.img === v);
                     if (layer && layer.state !== "fading-out") {
                       layer.fadeStartOpacity = layer.opacity;
                       layer.state = "fading-out";
                       layer.fadeStartTime = performance.now();
-                      glitchRecord("morph-finale-melt");
+                      glitchRecord("morph-finale-melt", "immediate");
                     }
-                  }, 9000);
+                  }
                   return;
                 }
               }
