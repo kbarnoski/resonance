@@ -14,8 +14,10 @@ float hash(float n) { return fract(sin(n) * 43758.5453); }
 
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-  // Slightly off-center, drifting very slowly — asymmetry law.
-  vec2 c = vec2(sin(u_time * 0.05) * 0.22 - 0.08, cos(u_time * 0.041) * 0.14 + 0.05);
+  // CONSTANT shared anchor (Karel 2026-09-30: "circles if layered
+  // should have the same centerpoint so the circles stay concentric")
+  // — every instance of this shader, on any layer, centers here.
+  vec2 c = vec2(-0.08, 0.05);
   vec2 p = uv - c;
   float r = length(p);
   float ang = atan(p.y, p.x);

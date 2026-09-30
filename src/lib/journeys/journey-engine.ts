@@ -242,7 +242,10 @@ class JourneyEngine {
 
     // Fresh shaders — seeded for shared, random for personal
     // Pass track duration so long tracks get more shaders per phase
-    this.journey = regenerateJourneyShaders(journey, random, this.trackDuration);
+    // Kinetic journeys keep their HAND-CURATED cast (2026-09-30: the
+    // regeneration was silently discarding Chemi's particle cast every
+    // run — the sparkler never played once).
+    this.journey = this.kineticEq ? journey : regenerateJourneyShaders(journey, random, this.trackDuration);
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;
@@ -344,7 +347,7 @@ class JourneyEngine {
       const regenRandom = this.takeSeedValue != null
         ? createSeededRandom(this.takeSeedValue + Math.round(duration))
         : this.random;
-      this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
+      if (!this.kineticEq) this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
       this.currentShaderMode = prevShader;
       this.dualShaderMode = prevDual;
     }

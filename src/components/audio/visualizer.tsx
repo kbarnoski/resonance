@@ -418,7 +418,12 @@ export function ShaderVisualizer({
     // construction, oscillates at any loudness.
     let slowEma = 0.3;
     let eqLv = 0.4;
-    let rateSm = 1; // slewed time-dilation — motion ACCELERATES, never snaps (nausea note 2026-09-30)
+    let rateSm = 1;
+    // Structural presence (~4s EMA of the band's raw energy): mid and
+    // treble LAYERS fade out when their band leaves the arrangement —
+    // sparse -> build -> sparse follows the SONG, never a forced arc
+    // (Karel 2026-09-30). The bass/primary layer always carries.
+    let actEma = 0.2; // slewed time-dilation — motion ACCELERATES, never snaps (nausea note 2026-09-30)
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
 
@@ -622,6 +627,7 @@ export function ShaderVisualizer({
           const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
           const prof = BAND_PROFILES[fb];
           slowEma += (raw - slowEma) * 0.04; // ~400ms baseline
+          actEma += (raw - actEma) * 0.008;   // ~4s structural envelope
           const dev = (raw - slowEma) * prof.gain * 0.45;
           const target = Math.min(1, Math.max(0.05, 0.5 + dev));
           // fast attack up, banded release down (keeps flashes snappy)
@@ -650,6 +656,13 @@ export function ShaderVisualizer({
         const lv = eqLv;
         // Motion carries the music; only a gentle mass-breath on scale.
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
+        if (f2 !== "bass") {
+          // Structural presence — the layer belongs to its band's part
+          // in the arrangement. Slow by construction (4s EMA): a fade,
+          // never a flash.
+          const presence = Math.min(1, Math.max(0, (actEma - 0.04) * 4.5));
+          canvas.style.opacity = (0.08 + presence * 0.92).toFixed(3);
+        }
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
         (w.__resonanceEq ??= {})[f2] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
