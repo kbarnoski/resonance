@@ -608,6 +608,20 @@ export function ShaderVisualizer({
       gl.uniform1f(uAmplitude, s.amplitude * REACTIVITY);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      // EQ embodiment (Karel 2026-09-30: "basically an incredible eq
+      // viz" — uniforms alone read as ambient because most shaders use
+      // them subtly): a band-focused LAYER pulses as a whole, its
+      // brightness and scale riding its band directly. Bass layer
+      // flashes with kicks, mid breathes with melody, treble sparkles.
+      if (bandFocusRef.current) {
+        const f2 = bandFocusRef.current;
+        const lv = f2 === "bass" ? s.bass : f2 === "mid" ? s.mid : s.treble;
+        canvas.style.filter = `brightness(${(0.45 + lv * 1.35).toFixed(3)})`;
+        canvas.style.transform = `scale(${(1 + lv * 0.055).toFixed(4)})`;
+      } else if (canvas.style.filter) {
+        canvas.style.filter = "";
+        canvas.style.transform = "";
+      }
       animId = requestAnimationFrame(render);
     }
 
