@@ -237,6 +237,27 @@ export function AiImageLayer({
   // the film reads clearly through the shader wash, then settles back.
   // Hooks live up here with the rest (rules-of-hooks).
   const [videoSpotlight, setVideoSpotlight] = useState(false);
+  // Hard visible-age cap (Karel 2026-09-30c: "just dont let images
+  // linger and this goes for all journeys"): any still older than 24s
+  // starts its fade regardless of push cadence, as long as it isn't
+  // the only thing on screen and no boundary/video moment is running.
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (inBoundarySettle() || isVideoActive()) return;
+      const now = performance.now();
+      const stills = layersRef.current.filter((l) => ("complete" in l.img) && l.state !== "fading-out");
+      if (stills.length < 2) return;
+      for (const l of stills) {
+        if (now - l.createdTime > 24_000) {
+          l.fadeStartOpacity = l.opacity;
+          l.state = "fading-out";
+          l.fadeStartTime = now;
+          glitchRecord("still-age-fade", `${Math.round((now - l.createdTime) / 1000)}s`);
+        }
+      }
+    }, 2_000);
+    return () => clearInterval(id);
+  }, []);
   useEffect(() => {
     const id = setInterval(() => {
       const active = layersRef.current.some(
@@ -862,13 +883,19 @@ export function AiImageLayer({
                       layer.fadeStartOpacity = layer.opacity;
                       layer.state = "fading-out";
                       layer.fadeStartTime = performance.now();
-                      // Slow melt (Karel 2026-09-30: a 6s melt finished
-                      // ~15s before the boundary and the composition
-                      // dipped right at the Realized title): starts NOW
-                      // but breathes out over 14s, carrying into the
+                      // Boundary-timed melt (Karel 2026-09-30c: fixed
+                      // durations always leave a hole — travel-3 ends
+                      // ~25s before the boundary, so a 14s melt still
+                      // dropped out 11s early): starts NOW, but its
+                      // length is computed from the time actually left
+                      // in the track, dissolving continuously into the
                       // title cover.
-                      layer.fadeDurationMs = 14_000;
-                      glitchRecord("morph-finale-melt", "immediate-slow");
+                      {
+                        const st2 = useAudioStore.getState();
+                        const remainMs = st2.duration > 0 ? Math.max(0, (st2.duration - st2.currentTime) * 1000) : 12_000;
+                        layer.fadeDurationMs = Math.min(45_000, Math.max(8_000, remainMs + 4_000));
+                        glitchRecord("morph-finale-melt", `to-boundary ${Math.round(layer.fadeDurationMs / 1000)}s`);
+                      }
                     }
                   }
                   return;

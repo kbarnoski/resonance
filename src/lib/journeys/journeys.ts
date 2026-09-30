@@ -239,7 +239,10 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
  *  from it — every entry has already played in Snowflake without
  *  complaint. */
 export const RECAST_SAFELIST: Record<string, readonly string[]> = {
-  winter: ["radiance", "empyrean", "chinook", "dark-aurora", "r3-aurorastreams", "r3-ghostribbons", "drift", "cirrus", "r-droplets"],
+  // Trimmed 2026-09-30c (Karel: "any full screen shader that changes the
+  // color and tint of the entire image is no good for snowflake" — the
+  // washes empyrean/dark-aurora/chinook are out; particle/linear only).
+  winter: ["radiance", "r3-aurorastreams", "r3-ghostribbons", "drift", "cirrus", "r-droplets"],
 };
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
