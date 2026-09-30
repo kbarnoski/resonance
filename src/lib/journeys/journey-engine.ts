@@ -1352,8 +1352,16 @@ class JourneyEngine {
   private scheduleTertiaryMoments(random: () => number): void {
     this.tertiaryMoments = [];
     if (this.kineticEq) {
-      // EQ mode: the treble voice rides nearly the whole track.
-      this.tertiaryMoments.push({ startProgress: 0.04, endProgress: 0.97 });
+      // EQ mode: many SHORT treble windows, each with a fresh pick
+      // (2026-09-30: one continuous window held the sparkler for the
+      // entire journey — "i was expecting diversity"). Small gaps
+      // between windows double as breathing room.
+      let cursor = 0.05;
+      while (cursor < 0.94) {
+        const end = Math.min(0.96, cursor + 0.10 + random() * 0.06);
+        this.tertiaryMoments.push({ startProgress: cursor, endProgress: end });
+        cursor = end + 0.015 + random() * 0.035;
+      }
       return;
     }
 
