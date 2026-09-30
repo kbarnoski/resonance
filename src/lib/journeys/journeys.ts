@@ -228,8 +228,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
   "apophatic", // Karel 2026-09-29 screenshot: the grey ring-cloud — "dont use this shader in general"
   "r2-coral", // Karel 2026-09-30 screenshot: the ember crescent-ring — "dont use this shader in anything. it covers all screen and yuck"
-  "selene", "blood-moon", // Karel 2026-09-30: "i dont like the moon shaped themed shader"
-  "eclipse-ring", // globalized 2026-09-30 — the ring-and-rays web keeps reappearing across journeys
+  "selene", // Karel 2026-09-30: the QUARTER-MOON shader — the one moon he doesn't want ("i love moon eclipse i just wanted that quarter moon shader removed")
 ]);
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
@@ -241,7 +240,6 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "r-molten", // Karel 2026-09-29: the dual that "sat over the whole journey and gave it a tint"
     "whorl", // Karel 2026-09-29 mastering: "i hate that swirl shader" — the swirl was whorl, not just maelstrom/vortex
     "r2-spiralgal", // Karel 2026-09-29 screenshot: the purple spiral — another swirl out of Snowflake
-    "eclipse-ring", // Karel 2026-09-29 screenshot: "this one sits idle" — static ring under the take
   ]),
 };
 
