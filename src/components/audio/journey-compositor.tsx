@@ -173,11 +173,11 @@ export function JourneyCompositor({
   const bassHitReset = impulse <= 0.1 || evtType !== "bass_hit";
   useEffect(() => {
     if (bassHitRising && !inBassHitRef.current) {
-      // Conductor (Karel 2026-09-28: Ghost should "start minimal and
-      // simple and build up... and reduce simpler as it concludes"):
-      // flashes belong to the build and climax. Quiet stretches let a
-      // bass hit pass without the white flash / angel apparition.
-      if ((frame?.intensityMultiplier ?? 1) < 0.55) return;
+      // No intensity gate (Karel 2026-10-01: "give it the white flash
+      // too"). Bass flashes only come from hand-placed cues, so every
+      // cue is intentional — the old quiet-stretch gate suppressed the
+      // white flash on Ghost's 2nd hit while the angel still showed,
+      // and skipped the counter so that angel rendered the wrong variant.
       glitchRecord("bass-flash", `#${bassHitCountRef.current + 1}`);
       bassHitCountRef.current += 1;
       bassHitStartRef.current = performance.now();
