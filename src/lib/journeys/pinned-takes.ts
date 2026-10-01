@@ -33,14 +33,17 @@ export type TakeScriptEntry = { p: number; role: "primary" | "dual" | "tertiary-
 export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   // Snowflake — session dl8fbj ("i like all of the shaders used in
   // this take"); r3-lightrivers is pick-banned so r-silk holds the ending.
+  // PINNED to the loved lap of 2026-10-01 03:34 ("the flight recorder
+  // knows what i loved") — recast-lottery removed: every slot names
+  // its final shader. Dual rests until pendulum-dust's loved entrance.
   "first-snow": [
     {"p":0,"role":"primary","mode":"plasma"},{"p":0.112,"role":"primary","mode":"swell"},
-    {"p":0.183,"role":"primary","mode":"r2-photon"},{"p":0.292,"role":"primary","mode":"whorl"},
-    {"p":0.314,"role":"dual","mode":"r-molten"},{"p":0.354,"role":"primary","mode":"r3-spirittrails"},
-    {"p":0.429,"role":"primary","mode":"r2-spiralgal"},{"p":0.498,"role":"primary","mode":"credo"},
-    {"p":0.616,"role":"primary","mode":"eclipse-ring"},{"p":0.676,"role":"primary","mode":"apophatic"},
-    {"p":0.704,"role":"dual","mode":"enzyme"},{"p":0.753,"role":"primary","mode":"r-silk"},
-    {"p":0.82,"role":"primary","mode":"r3-lightrivers"},
+    {"p":0.183,"role":"primary","mode":"r2-photon"},{"p":0.292,"role":"primary","mode":"cirrus"},
+    {"p":0.354,"role":"primary","mode":"r3-spirittrails"},
+    {"p":0.429,"role":"primary","mode":"murmuration"},{"p":0.498,"role":"primary","mode":"firefly-field"},
+    {"p":0.616,"role":"primary","mode":"eclipse-ring"},{"p":0.676,"role":"primary","mode":"r-droplets"},
+    {"p":0.704,"role":"dual","mode":"pendulum-dust"},{"p":0.753,"role":"primary","mode":"r-silk"},
+    {"p":0.82,"role":"primary","mode":"drift"},
   ],
   // Ghost — session p4jv6o ("ghost take you should keep"); lightrivers
   // filtered here too per the same ban (dharma holds through p0.637).
@@ -58,7 +61,7 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   // Realized — locked 2026-09-30 ("keep every take of what you have and
   // we will start mastering from here") — latest complete lap, flight log.
   "inferno": [
-    {"p":0,"role":"primary","mode":"chakra"},{"p":0.094,"role":"primary","mode":"maelstrom-dark"},{"p":0.148,"role":"dual","mode":"eclipse-ring"},{"p":0.165,"role":"primary","mode":"redshift"},{"p":0.217,"role":"dual","mode":"photon"},{"p":0.234,"role":"primary","mode":"singularity"},{"p":0.279,"role":"primary","mode":"lectio"},{"p":0.295,"role":"dual","mode":"biolume"},{"p":0.331,"role":"primary","mode":"r3-dreamtendrils"},{"p":0.366,"role":"dual","mode":"r-silk"},{"p":0.382,"role":"primary","mode":"catacomb-torch"},{"p":0.47,"role":"primary","mode":"numinous"},{"p":0.525,"role":"primary","mode":"parsec"},{"p":0.598,"role":"primary","mode":"seraph"},{"p":0.609,"role":"tertiary-on","mode":"r3-coronastreams"},{"p":0.614,"role":"tertiary-off","mode":""},{"p":0.625,"role":"dual","mode":"radiance"},{"p":0.65,"role":"primary","mode":"hesychasm"},{"p":0.724,"role":"primary","mode":"revelation"},{"p":0.782,"role":"primary","mode":"maelstrom"},{"p":0.84,"role":"primary","mode":"portal"},{"p":0.851,"role":"tertiary-on","mode":"maelstrom"},{"p":0.876,"role":"dual","mode":"r3-aurorastreams"},{"p":0.893,"role":"primary","mode":"cataphatic"},{"p":0.932,"role":"tertiary-off","mode":""},
+    {"p":0,"role":"primary","mode":"ember"},{"p":0.094,"role":"primary","mode":"maelstrom-dark"},{"p":0.148,"role":"dual","mode":"eclipse-ring"},{"p":0.165,"role":"primary","mode":"redshift"},{"p":0.217,"role":"dual","mode":"photon"},{"p":0.234,"role":"primary","mode":"singularity"},{"p":0.279,"role":"primary","mode":"lectio"},{"p":0.295,"role":"dual","mode":"biolume"},{"p":0.331,"role":"primary","mode":"r3-dreamtendrils"},{"p":0.366,"role":"dual","mode":"r-silk"},{"p":0.382,"role":"primary","mode":"catacomb-torch"},{"p":0.47,"role":"primary","mode":"numinous"},{"p":0.525,"role":"primary","mode":"parsec"},{"p":0.598,"role":"primary","mode":"seraph"},{"p":0.609,"role":"tertiary-on","mode":"r3-coronastreams"},{"p":0.614,"role":"tertiary-off","mode":""},{"p":0.625,"role":"dual","mode":"radiance"},{"p":0.65,"role":"primary","mode":"hesychasm"},{"p":0.724,"role":"primary","mode":"revelation"},{"p":0.782,"role":"primary","mode":"maelstrom"},{"p":0.84,"role":"primary","mode":"portal"},{"p":0.851,"role":"tertiary-on","mode":"maelstrom"},{"p":0.876,"role":"dual","mode":"r3-aurorastreams"},{"p":0.893,"role":"primary","mode":"cataphatic"},{"p":0.932,"role":"tertiary-off","mode":""},
   ],
   // Surrounded by Light 6 — locked 2026-09-30 ("keep every take of what you have and
   // we will start mastering from here") — latest complete lap, flight log.

@@ -1119,6 +1119,27 @@ class JourneyEngine {
     this.nudgeForce = true;
   }
 
+  /** IMMEDIATE primary switch, no gates (2026-10-01: the finale needs
+   *  a guaranteed shader arrival — freeze, stillness, spacing and
+   *  script all yield). Picks the next allowed unseen mode. */
+  forceShaderSwitch(): void {
+    if (!this.running || !this.journey) return;
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    const phases = this.journey.phases;
+    const phase = phases.find((p) => this.lastProgress >= p.start && this.lastProgress <= p.end) ?? phases[phases.length - 1];
+    const pool = (phase?.shaderModes ?? []).filter((m) => !MODES_3D.has(m) && this.isShaderAllowed(m) && m !== this.currentShaderMode && m !== this.dualShaderMode);
+    if (pool.length === 0) return;
+    const unseen = pool.filter((m) => !this.seenShaders.has(m));
+    const pick = (unseen.length ? unseen : pool)[Math.floor(this.random() * (unseen.length ? unseen.length : pool.length))];
+    this.closeHistoryEntry("primary", now);
+    this.currentShaderMode = pick;
+    this.seenShaders.add(pick);
+    this.shaderHistory.push({ mode: pick, role: "primary", phaseId: this.currentPhaseId ?? "forced", startMs: now, endMs: 0 });
+    this.shaderStartMs = now;
+    this.lastAnySwitchMs = now; this.nudgeForce = false;
+    glitchRecord("shader-primary", `${pick} @p${this.lastProgress.toFixed(3)} (finale-forced)`);
+  }
+
   getMsSinceAnySwitch(): number {
     return this.lastAnySwitchMs === 0 ? Number.POSITIVE_INFINITY : performance.now() - this.lastAnySwitchMs;
   }

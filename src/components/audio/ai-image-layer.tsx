@@ -347,6 +347,9 @@ export function AiImageLayer({
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
   const lastGenTimeRef = useRef(0);
+  /** Direct handle so the finale can push its cover NOW, not on the
+   *  next tick (2026-10-01: "something substantial has to be done"). */
+  const triggerGenerationRef = useRef<((skipCache?: boolean) => void) | null>(null);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
@@ -892,7 +895,10 @@ export function AiImageLayer({
                   glitchRecord("morph-finale-hold");
                   morphCoverPendingRef.current = true;
                   lastGenTimeRef.current = 0;
-                  getJourneyEngine().nudgeShaderRotation(800);
+                  // DIRECT drive — cover pushed synchronously and the
+                  // shader switched NOW, no tick, no gate roulette.
+                  triggerGenerationRef.current?.(true);
+                  getJourneyEngine().forceShaderSwitch();
                   // ...and it releases IMMEDIATELY (Karel 2026-09-30:
                   // "you HAVE to transition from that last morph when
                   // it completes and do not wait. its blocking the
@@ -1200,6 +1206,8 @@ export function AiImageLayer({
       })
       .finally(() => { loadingCountRef.current = Math.max(0, loadingCountRef.current - 1); });
   }, [loadImage, pushImage, hasPropLocalImages]);
+  useEffect(() => { triggerGenerationRef.current = triggerGeneration; }, [triggerGeneration]);
+
 
   // Poetry-driven generation: poll journey engine for new poetry lines
   useEffect(() => {
