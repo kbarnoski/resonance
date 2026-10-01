@@ -3,6 +3,7 @@ import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName } from "./kinetic";
+import { TAKE_FINALE_SHADERS } from "./pinned-takes";
 import { RECAST_SAFELIST, regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
@@ -1128,9 +1129,17 @@ class JourneyEngine {
     const phases = this.journey.phases;
     const phase = phases.find((p) => this.lastProgress >= p.start && this.lastProgress <= p.end) ?? phases[phases.length - 1];
     const pool = (phase?.shaderModes ?? []).filter((m) => !MODES_3D.has(m) && this.isShaderAllowed(m) && m !== this.currentShaderMode && m !== this.dualShaderMode);
-    if (pool.length === 0) return;
-    const unseen = pool.filter((m) => !this.seenShaders.has(m));
-    const pick = (unseen.length ? unseen : pool)[Math.floor(this.random() * (unseen.length ? unseen.length : pool.length))];
+    // Pinned finale (Karel 2026-10-01): a mastered take names its
+    // ending shader — no random draw at the most-watched moment.
+    const pinnedFinale = TAKE_FINALE_SHADERS[this.journey.id];
+    const pick = pinnedFinale && this.isShaderAllowed(pinnedFinale) && pinnedFinale !== this.currentShaderMode
+      ? pinnedFinale
+      : (() => {
+          if (pool.length === 0) return null;
+          const unseen = pool.filter((m) => !this.seenShaders.has(m));
+          return (unseen.length ? unseen : pool)[Math.floor(this.random() * (unseen.length ? unseen.length : pool.length))];
+        })();
+    if (!pick) return;
     this.closeHistoryEntry("primary", now);
     this.currentShaderMode = pick;
     this.seenShaders.add(pick);

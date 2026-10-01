@@ -111,3 +111,17 @@ export function pickPinnedTake(journeyId: string): number | null {
   if (Array.isArray(p)) return p.length ? p[Math.floor(Math.random() * p.length)] : null;
   return p;
 }
+
+/** Pinned TITLING still — the image under the journey title card,
+ *  every lap (Karel 2026-10-01: "keep that intro image always in
+ *  titling section"). */
+export const TAKE_INTRO_STILLS: Record<string, string> = {
+  "first-snow": "/tramokyo-pack/images/journeys/first-snow/gen-106.jpg",
+};
+
+/** Pinned FINALE shader — the forced switch at the last morph's end
+ *  (Karel 2026-10-01: "dont end on that green tinted shader").
+ *  first-snow ends on the loved colored-lines photon. */
+export const TAKE_FINALE_SHADERS: Record<string, string> = {
+  "first-snow": "r2-photon",
+};

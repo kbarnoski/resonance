@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { TAKE_INTRO_STILLS } from "@/lib/journeys/pinned-takes";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
 import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT, getGhostAgeForPhase, getGhostOverlayForPhase } from "@/lib/journeys/journeys";
 import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
@@ -350,6 +351,7 @@ export function AiImageLayer({
   /** Direct handle so the finale can push its cover NOW, not on the
    *  next tick (2026-10-01: "something substantial has to be done"). */
   const triggerGenerationRef = useRef<((skipCache?: boolean) => void) | null>(null);
+  const pendingIntroStillRef = useRef<string | null>(null);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
@@ -421,6 +423,7 @@ export function AiImageLayer({
       if (prevJourneyId != null) markJourneyBoundary(10500);
       journeyEpochRef.current++;
       journeyChangeAtRef.current = performance.now();
+      pendingIntroStillRef.current = TAKE_INTRO_STILLS[journeyIdRef.current ?? ""] ?? null;
       runJitterRef.current = Math.floor(Math.random() * 6); // 0..5 — six distinct openers
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -753,6 +756,14 @@ export function AiImageLayer({
         localImageIndexRef.current = idx + 1;
       }
       lastGenTimeRef.current = performance.now();
+      // Pinned titling still (Karel 2026-10-01): the title card sits
+      // over ONE chosen image, every lap — jitter does not apply to
+      // the opening slot.
+      if (pendingIntroStillRef.current) {
+        const wanted = urls.indexOf(pendingIntroStillRef.current);
+        pendingIntroStillRef.current = null;
+        if (wanted >= 0) idx = wanted;
+      }
       // IDLE RESCUE (Karel 2026-09-30 deep analysis: 30 parks >25s
       // across ALL journeys — the phase-slot dedupe below can hold one
       // frame for an entire slow phase, and the stillness/solo-hold
