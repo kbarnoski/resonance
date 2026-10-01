@@ -203,7 +203,6 @@ export function JourneyCompositor({
     if (!enableBassFlash) return;
     const warm = () => {
       void warmFlashAngel("/images/flash-angel-1.png");
-      void warmFlashAngel(flashAngelSrc(0));
       void warmFlashAngel(flashAngelSrc(1));
     };
     warm();
@@ -470,24 +469,14 @@ export function JourneyCompositor({
               backgroundColor: "rgba(255, 255, 255, 0)",
             }}
           />
-          {/* Angel flash — two-beat micro-story:
-                Flash #1 → dark possessed angel (variant 0)
-                Flash #2+ → white angel returned (variant 1)
+          {/* Angel flash — the white angel on every flash (possession
+                micro-story retired 2026-10-01).
               Transparency via luminance chroma-key so the figure floats
               cleanly above the shader without a rectangular black frame. */}
           {(() => {
             const flashImpulse = impulse > 0 ? impulse : Math.max(0, (approach - 0.92) / 0.08);
-            // During the approach phase (before the impulse crosses the
-            // threshold that increments bassHitCountRef), count is still
-            // the value from the PREVIOUS hit. If we just used
-            // `bassHitCountRef.current`, the approach window of flash #2
-            // would pre-render variant 0 (dark) — the viewer sees dark,
-            // then it snaps to white when the impulse fires. Add +1
-            // during the approach so the variant for the upcoming hit
-            // is used all the way through.
-            const isApproachOnly = impulse <= 0 && approach > 0.92;
-            const effectiveCount = bassHitCountRef.current + (isApproachOnly ? 1 : 0);
-            const flashVariant: 0 | 1 = effectiveCount <= 1 ? 0 : 1;
+            // Both flashes are the white angel (Karel 2026-10-01).
+            const flashVariant = 1 as const;
             return (
               <div
                 style={{

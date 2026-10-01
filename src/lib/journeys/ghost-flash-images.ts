@@ -2,13 +2,11 @@
  * Ghost flash-angel image pool.
  *
  * The Ghost journey's bass-hit flash shows an angelic figure on the beat.
- * Per the user's direction the flash sequence tells a micro-story:
+ * Both flashes show the WHITE angel (Karel 2026-10-01: the possession
+ * micro-story — dark angel on flash #1, black dress until flash #2 — is
+ * retired with the rest of the possession arc).
  *
- *   Flash 1 — DARK possessed angel (hair, dress, wings all black/shadow)
- *   Flash 2 — WHITE angel returned (same figure, white theme back)
- *   Flash 3+ — WHITE angel (same as flash 2)
- *
- * Two images are generated once per session and consumed by `FlashAngel`
+ * The white image is generated once per session and consumed by `FlashAngel`
  * via `getGhostFlashUrl(variant)`. Rendered with client-side luminance
  * chroma-keying in FlashAngel so pure-black pixels become truly transparent.
  *
@@ -31,21 +29,15 @@ const FLASH_PORTRAIT_BASE =
   "ALWAYS TWO translucent flowing wispy angel wings attached anatomically to her upper BACK at the shoulder blades (BOTH LEFT and RIGHT wings fully visible and symmetrical, NEVER missing a wing, NEVER one-winged, NEVER detached). wings are translucent flowing wisps of light and mist, like flowing smoke or silk trailing behind her, thin and ethereal, made of pure light and particle mist. NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER butterfly, NEVER segmented, NEVER insect-like, NEVER panels, NEVER membrane, NEVER filigree, NEVER opaque, NEVER bulky. " +
   "strong rim light from above outlining her edges against the void, dramatic chiaroscuro, photographic product-shot isolation, not illustration, not concept art";
 
-const DARK_FLASH_PROMPT =
-  FLASH_PORTRAIT_BASE +
-  ", pose: standing facing camera front-on, BOTH ARMS RAISED high above her head, " +
-  "eyes wide OPEN with PURE JET BLACK orbs (solid void black eyes, possessed stare), " +
-  "wardrobe: the dark-reflection possessed form — her SNOW WHITE spiral hair has stayed white (white particles still spiraling along every strand), but her dress has turned JET BLACK translucent shadow-mist and her wings on her back are JET BLACK translucent flowing wisps of shadow and dark mist like flowing smoke or silk with BLACK particles streaming from them. the striking contrast of white spiral hair cascading over jet black translucent wardrobe marks the possession moment";
-
 const WHITE_FLASH_PROMPT =
   FLASH_PORTRAIT_BASE +
   ", pose: SOARING freely with both arms fully outstretched UPWARD in transcendent flight, head tilted BACK, body angled upward rising into infinity — the same transcendent flight pose from the golden cosmos finale scene, " +
   "eyes closed peaceful serene ecstatic expression, " +
   "wardrobe: returned to light. hair is SNOW WHITE (NEVER blonde, NEVER yellow, NEVER gold), dress is SNOW WHITE translucent mist-and-light, wings on her back are SNOW WHITE translucent flowing wisps of light and mist like flowing smoke or silk, particles wrapped in her braids and streaming from her dress and wings are WHITE";
 
-// Index 0 = dark possessed (shown on flash #1)
-// Index 1 = white returned (shown on flash #2+)
-const FLASH_PROMPTS = [DARK_FLASH_PROMPT, WHITE_FLASH_PROMPT];
+// Index 1 = the white angel (both flashes). Index 0 is the retired dark
+// variant — never generated; getGhostFlashUrl() maps every variant to 1.
+const FLASH_PROMPTS: (string | null)[] = [null, WHITE_FLASH_PROMPT];
 
 const flashUrls: (string | null)[] = [null, null];
 let preparePromise: Promise<void> | null = null;
@@ -68,7 +60,7 @@ export function getGhostFlashCount(): number {
   return ghostFlashCount;
 }
 export function getGhostAngelTheme(): "white" | "black" {
-  return ghostFlashCount === 1 ? "black" : "white";
+  return "white"; // possession retired 2026-10-01 — never the black dress
 }
 
 export function prepareGhostFlashImages(journeyId: string): Promise<void> {
@@ -88,6 +80,7 @@ export function prepareGhostFlashImages(journeyId: string): Promise<void> {
   preparePromise = (async () => {
     await Promise.all(
       FLASH_PROMPTS.map(async (prompt, idx) => {
+        if (!prompt) return;
         try {
           const res = await fetch("/api/ai-image/generate", {
             method: "POST",
@@ -117,7 +110,8 @@ export function prepareGhostFlashImages(journeyId: string): Promise<void> {
 
 /** Get the flash image URL for a variant. 0 = dark/possessed, 1 = white/returned. */
 export function getGhostFlashUrl(variant: 0 | 1 = 1): string | null {
-  return flashUrls[variant] ?? null;
+  void variant; // both flashes are white
+  return flashUrls[1] ?? null;
 }
 
 /** Clear cached flash images and abort any in-flight generation — called on journey stop. */
