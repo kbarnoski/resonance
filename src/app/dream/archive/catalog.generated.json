@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18512-facescore",
+  "cycle": 18512,
+  "name": "Facescore",
+  "status": "demoable",
+  "description": "One real recording from Karel's catalog loops at normal speed. Your face conducts its articulation and brightness, and the sound is drawn as a living ink line-score. Input is the f",
+  "category": "local"
+ },
+ {
   "slug": "18416-chordfold",
   "cycle": 18416,
   "name": "Harmonize your recording in the chord of the moment",
