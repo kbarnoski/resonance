@@ -353,6 +353,7 @@ export function AiImageLayer({
   const triggerGenerationRef = useRef<((skipCache?: boolean) => void) | null>(null);
   const pendingIntroStillRef = useRef<string | null>(null);
   const pendingFinaleStillRef = useRef<string | null>(null);
+  const lastPushedPhaseStartRef = useRef(-1);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
@@ -426,6 +427,7 @@ export function AiImageLayer({
       journeyChangeAtRef.current = performance.now();
       pendingIntroStillRef.current = TAKE_INTRO_STILLS[journeyIdRef.current ?? ""] ?? null;
       pendingFinaleStillRef.current = TAKE_FINALE_STILLS[journeyIdRef.current ?? ""] ?? null;
+      lastPushedPhaseStartRef.current = -1;
       runJitterRef.current = Math.floor(Math.random() * 6); // 0..5 — six distinct openers
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -749,6 +751,14 @@ export function AiImageLayer({
         idx = Math.min(phaseSlice ? phaseSlice.end - 1 : urls.length - 1, idx + j);
       }
       const isFresh = (i: number) => i !== lastPackIndexRef.current && urls[i] !== lastPackUrlRef.current;
+      // Phase entry (arc law): the first push in a new phase lands on that
+      // phase's FIRST slot and goes through the soft gates like an idle
+      // rescue — a 20s gate stall at 0.14 once skipped Ghost's whole
+      // tunnel entrance (session after 3ad7cc6d). Video and boundary
+      // settles stay sacred; the entry stays pending until they clear.
+      const phaseEntry = !!phaseSlice && phaseSlice.start !== lastPushedPhaseStartRef.current
+        && !isVideoActive() && !inBoundarySettle();
+      if (phaseEntry && phaseSlice) idx = phaseSlice.start;
       // A pending morph cover must ALWAYS land (session 04cmm4: the
       // finale's cover mapped to the still already on screen, the
       // dedupe below swallowed it, and the held frame melted with
@@ -780,14 +790,6 @@ export function AiImageLayer({
         pendingIntroStillRef.current = null;
         if (wanted >= 0) idx = wanted;
       }
-      // Pinned finale still: the first unblocked push inside the last
-      // phase (consumed only when it can actually land).
-      const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
-      if (pendingFinaleStillRef.current && !stillsBlocked && typeof lastPhaseStart === "number" && progress >= lastPhaseStart) {
-        const wanted = urls.indexOf(pendingFinaleStillRef.current);
-        pendingFinaleStillRef.current = null;
-        if (wanted >= 0) idx = wanted;
-      }
       // IDLE RESCUE (Karel 2026-09-30 deep analysis: 30 parks >25s
       // across ALL journeys — the phase-slot dedupe below can hold one
       // frame for an entire slow phase, and the stillness/solo-hold
@@ -812,10 +814,22 @@ export function AiImageLayer({
         glitchRecord("idle-rescue", `${Math.round(idleMs / 1000)}s idle`);
         if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
       }
+      // Pinned finale still: the first push inside the last phase, on
+      // whichever path that push takes (the 3ad7cc6d run's ending landed
+      // via idle rescue and skipped a pin gated on !stillsBlocked).
+      const canPush = !stillsBlocked || idleRescue || phaseEntry;
+      const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
+      if (canPush && pendingFinaleStillRef.current && typeof lastPhaseStart === "number" && progress >= lastPhaseStart) {
+        const wanted = urls.indexOf(pendingFinaleStillRef.current);
+        pendingFinaleStillRef.current = null;
+        if (wanted >= 0) idx = wanted;
+      }
       // Slow phases have fewer images than 7s ticks — a repeated slot
       // skips (the idle rescue above bounds how long that can hold).
-      if ((!stillsBlocked || idleRescue) && idx !== lastPackIndexRef.current) {
+      if (canPush && idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
+        if (phaseSlice) lastPushedPhaseStartRef.current = phaseSlice.start;
+        if (phaseEntry) glitchRecord("phase-entry", `slot ${idx}`);
         const stillUrl = urls[idx];
         // URL dedupe (session 66wil0: gen-107 pushed twice back-to-back
         // via two different slots) — curated bands repeat URLs across
