@@ -2,6 +2,7 @@
 
 import { memo, useLayoutEffect, useRef, useState } from "react";
 import { getGhostFlashUrl } from "@/lib/journeys/ghost-flash-images";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 
 interface FlashAngelProps {
   /** 0-1 fade opacity. Applied on the canvas directly. */
@@ -150,11 +151,15 @@ export const FlashAngel = memo(function FlashAngel({ opacity, blurPx, variant }:
     const canvas = canvasRef.current;
     if (!canvas) return;
     let cancelled = false;
+    const mountedAt = performance.now();
     const paint = (source: HTMLCanvasElement | null) => {
       if (cancelled || !source) return;
       canvas.width = source.width;
       canvas.height = source.height;
       canvas.getContext("2d")?.drawImage(source, 0, 0);
+      // Flight recorder: 0ms = painted with the flash; anything more is
+      // the angel trailing the white flash.
+      glitchRecord("angel-paint", `v${variant} ${Math.round(performance.now() - mountedAt)}ms ${src === FALLBACK_SRC ? "fallback" : "generated"}`);
     };
     const ready = keyed.get(src);
     if (ready) paint(ready);
@@ -162,7 +167,7 @@ export const FlashAngel = memo(function FlashAngel({ opacity, blurPx, variant }:
     return () => {
       cancelled = true;
     };
-  }, [src]);
+  }, [src, variant]);
 
   return (
     <canvas

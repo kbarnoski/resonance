@@ -193,14 +193,23 @@ export function JourneyCompositor({
     }
   }, [bassHitRising, bassHitReset]);
 
-  // Pre-key both angel variants while the approach ramp builds (~1.1s
-  // before the hit fires) so FlashAngel paints on the flash's first frame.
-  const approachWarm = enableBassFlash && approach > 0.1;
+  // Pre-key both angel variants from journey start so FlashAngel paints
+  // on the flash's first frame. Karel 2026-10-01: flash #1's angel still
+  // landed late — warming only ~1.1s ahead lost the race against the
+  // session-generated images arriving + keying; by flash #2 everything
+  // was ready. Re-warm every 2s (no-op once keyed) so a late-arriving
+  // generated image is keyed long before the first hit.
   useEffect(() => {
-    if (!approachWarm) return;
-    void warmFlashAngel(flashAngelSrc(0));
-    void warmFlashAngel(flashAngelSrc(1));
-  }, [approachWarm]);
+    if (!enableBassFlash) return;
+    const warm = () => {
+      void warmFlashAngel("/images/flash-angel-1.png");
+      void warmFlashAngel(flashAngelSrc(0));
+      void warmFlashAngel(flashAngelSrc(1));
+    };
+    warm();
+    const id = window.setInterval(warm, 2000);
+    return () => window.clearInterval(id);
+  }, [enableBassFlash]);
 
   // White flash + shockwave ring — driven by a dedicated rAF loop so the
   // envelope is frame-accurate (not sampled at whatever cadence the
