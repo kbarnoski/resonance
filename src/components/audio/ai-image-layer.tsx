@@ -258,7 +258,7 @@ export function AiImageLayer({
       // Stillness slows the cap but no longer suspends it (2026-10-01
       // mastering log: fades firing at 22-28s — "sitting on this image
       // really long").
-      const ageMax = getJourneyEngine().isInStillness() ? 16_000 : 11_000; // 2026-10-01: "gotta keep these images moving"
+      const ageMax = 11_000; // uniform 2026-10-01b: "images are still sitting far too long in that latter half"
       const stills = layersRef.current.filter((l) => ("complete" in l.img) && l.state !== "fading-out");
       if (stills.length < 2) return;
       for (const l of stills) {
@@ -735,8 +735,15 @@ export function AiImageLayer({
       // finale's cover mapped to the still already on screen, the
       // dedupe below swallowed it, and the held frame melted with
       // nothing built over it) — walk to the neighboring slot instead.
-      if (morphCoverPendingRef.current && idx === lastPackIndexRef.current && urls.length > 1) {
-        idx = (idx + 1) % urls.length;
+      if (morphCoverPendingRef.current && urls.length > 1) {
+        // URL-aware walk (2026-10-01: tail duplicates defeated the
+        // one-step walk — the finale cover NEVER landed): advance to
+        // the next DISTINCT image.
+        let guard = 0;
+        while (guard < urls.length && (idx === lastPackIndexRef.current || urls[idx] === lastPackUrlRef.current)) {
+          idx = (idx + 1) % urls.length;
+          guard++;
+        }
       }
       if (idx < 0) {
         idx = localImageIndexRef.current % urls.length;
@@ -752,7 +759,7 @@ export function AiImageLayer({
       // stillness windows breathe slower but still breathe.
       const idleFloor = Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
       const idleMs = performance.now() - idleFloor;
-      const idleMax = getJourneyEngine().sparseInterludeActive() || getJourneyEngine().isInStillness() ? 20_000 : 10_000; // 14->10 so the replacement lands before the 13s age fade
+      const idleMax = 10_000; // uniform 2026-10-01b — stillness no longer slows replacements
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
       if (idleRescue && urls.length > 1) {
         let walked = 0;

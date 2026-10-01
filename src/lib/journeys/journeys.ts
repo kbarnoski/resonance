@@ -228,6 +228,7 @@ export const PICKTIME_SHADER_BLOCKLIST: ReadonlySet<string> = new Set([
   "r3-lightrivers", // Karel 2026-09-29: "2 lines of colored animated shader" — banned from Snowflake AND Ghost; global
   "apophatic", // Karel 2026-09-29 screenshot: the grey ring-cloud — "dont use this shader in general"
   "r2-coral", // Karel 2026-09-30 screenshot: the ember crescent-ring — "dont use this shader in anything. it covers all screen and yuck"
+  "deep-current", // Karel 2026-10-01: vertical falling lights, "creates banding and i dont want that used in resonance"
   "r3-softorbit", // Karel 2026-09-30 screenshot: the out-of-focus bokeh-mush blobs — "ban this shader from resonance"
   "selene", // Karel 2026-09-30: the QUARTER-MOON shader — the one moon he doesn't want ("i love moon eclipse i just wanted that quarter moon shader removed")
 ]);
@@ -244,7 +245,7 @@ export const RECAST_SAFELIST: Record<string, readonly string[]> = {
   // washes empyrean/dark-aurora/chinook are out; particle/linear only).
   // 2026-10-01 mastering: radiance + r3-aurorastreams convicted as
   // full-frame color washes; contained company particles join.
-  winter: ["drift", "cirrus", "r-droplets", "r3-ghostribbons", "murmuration", "pendulum-dust", "firefly-field"],
+  winter: ["drift", "cirrus", "r-droplets", "murmuration", "pendulum-dust", "firefly-field"], // ghostribbons out 2026-10-01 ("horizontal white lights persisting")
 };
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */

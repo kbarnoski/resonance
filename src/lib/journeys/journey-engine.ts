@@ -197,6 +197,11 @@ class JourneyEngine {
   private kineticEq = false;
   private takeSeedValue: number | null = null;
   private dualStartMs = 0;
+  private nudgeForce = false;
+  /** Scripted dual that was rested — stays down until the script
+   *  offers a DIFFERENT dual (2026-10-01: the script reasserted
+   *  ghostribbons 4s after every rest — "persisting too long"). */
+  private dualRestedMode: string | null = null;
   private scriptSubs = new Map<string, string | null>();
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
@@ -232,6 +237,8 @@ class JourneyEngine {
     this.takeScript = options?.script?.length ? options.script : null;
     this.kineticEq = isKineticJourneyName(journey.name);
     this.scriptSubs = new Map();
+    this.dualRestedMode = null;
+    this.nudgeForce = false;
     this.takeSeedValue = options?.seed ?? null;
     const random = options?.seed != null
       ? createSeededRandom(options.seed)
@@ -670,7 +677,7 @@ class JourneyEngine {
     // rotation simply waits the few seconds until the clip has faded.
     const morphOnScreen = isVideoActive();
     if (this.takeScript) this.applyTakeScript(clamped, now);
-    if (!this.takeScript && shaderLen > 1 && !this.frozen && !this.playbackPaused && !inStillness && !rotationFreeze && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (!this.takeScript && shaderLen > 1 && !this.frozen && !this.playbackPaused && (!inStillness || this.nudgeForce) && (!rotationFreeze || this.nudgeForce) && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -739,7 +746,7 @@ class JourneyEngine {
       this.shaderStartMs = now;
       this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
       glitchRecord("shader-primary", `${this.currentShaderMode} @p${clamped.toFixed(3)}`);
-      this.lastAnySwitchMs = now;
+      this.lastAnySwitchMs = now; this.nudgeForce = false;
     }
     // ─── Dual shader (persistent 2nd layer) ───
     // Switches on its own timer, independent of primary.
@@ -768,7 +775,7 @@ class JourneyEngine {
         this.dualShaderStartMs = now;
         this.dualShaderDurationMs = this.randomDuration(this.random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
         glitchRecord("shader-dual", `${this.dualShaderMode} @p${clamped.toFixed(3)}`);
-        this.lastAnySwitchMs = now;
+        this.lastAnySwitchMs = now; this.nudgeForce = false;
       } else if (this.dualShaderMode === null) {
         // Primary just rotated away from a banned shader — re-engage a dual now
         this.dualShaderMode = this.pickDualShader(currentPhase);
@@ -828,7 +835,7 @@ class JourneyEngine {
           }
           this.tertiaryShaderMode = tertiaryCandidate;
           this.tertiaryActive = true;
-          if (tertiaryCandidate) { glitchRecord("shader-tertiary-on", `${tertiaryCandidate} @p${clamped.toFixed(3)}`); this.lastAnySwitchMs = now; }
+          if (tertiaryCandidate) { glitchRecord("shader-tertiary-on", `${tertiaryCandidate} @p${clamped.toFixed(3)}`); this.lastAnySwitchMs = now; this.nudgeForce = false; }
           if (this.tertiaryShaderMode) {
             this.seenShaders.add(this.tertiaryShaderMode);
             this.shaderHistory.push({
@@ -1060,12 +1067,18 @@ class JourneyEngine {
       this.shaderHistory.push({ mode: prim, role: "primary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
       this.shaderStartMs = now;
       glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} (scripted)`);
-      this.lastAnySwitchMs = now;
+      this.lastAnySwitchMs = now; this.nudgeForce = false;
     }
     // Dual REST (Karel 2026-10-01 note #4: ghostribbons rode a 70s
     // scripted dual slot — "they stay and stay"): a scripted dual that
     // has held 35s rests (layer breathes away) until the next entry.
+    if (dual && this.dualRestedMode && dual === this.dualRestedMode) {
+      dual = null; // rested — the script must offer something NEW
+    } else if (dual && dual !== this.dualRestedMode) {
+      this.dualRestedMode = null;
+    }
     if (dual && dual === this.dualShaderMode && this.dualStartMs > 0 && now - this.dualStartMs > 35_000) {
+      this.dualRestedMode = dual;
       dual = null;
     }
     if (dual !== this.dualShaderMode) {
@@ -1076,7 +1089,7 @@ class JourneyEngine {
         this.seenShaders.add(dual);
         this.shaderHistory.push({ mode: dual, role: "dual", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
         glitchRecord("shader-dual", `${dual} @p${clamped.toFixed(3)} (scripted)`);
-        this.lastAnySwitchMs = now;
+        this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
     }
     if (tert !== this.tertiaryShaderMode) {
@@ -1088,7 +1101,7 @@ class JourneyEngine {
         this.seenShaders.add(tert);
         this.shaderHistory.push({ mode: tert, role: "tertiary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
         glitchRecord("shader-tertiary-on", `${tert} @p${clamped.toFixed(3)} (scripted)`);
-        this.lastAnySwitchMs = now;
+        this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
     }
   }
@@ -1100,6 +1113,10 @@ class JourneyEngine {
     if (!this.running) return;
     const now = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + delayMs);
+    // One forced switch even inside the >0.90 rotation freeze (Karel
+    // 2026-10-01: the finale morph "comes to its end and sits there
+    // and nothing happens" — the freeze was eating the finale nudge).
+    this.nudgeForce = true;
   }
 
   getMsSinceAnySwitch(): number {
