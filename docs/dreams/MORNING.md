@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-01T01:22Z (05:45 PT fire, cycle 1271)
 
+> **Jury verdict today**: The lab finally broke its biggest habit — it *finished* two things instead of just making new ones (`throatmorph` is a clean 5/5, `chordfold` reads your recording's own chords and harmonizes to the moment), the broken-git-head problem fixed itself this morning, and the only thing I'm now watching is that "finishing" doesn't become its own rut: your last four pieces are all two-hand DSP-morphs, so tomorrow I'm pushing it back off two hands — tone today is **strongest window in weeks, one new watch.** See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`18416-chordfold`** → https://getresonance.vercel.app/dream/18416-chordfold
   Open this one. It's **fluxweave's cycle-2, and it claims criterion D** — the
