@@ -8,7 +8,7 @@ import { PostProcessingLayer } from "./post-processing-layer";
 import { DebandOverlay } from "./deband-overlay";
 import { DepthParallaxLayer } from "./depth-parallax-layer";
 import { ImageryErrorBoundary } from "./imagery-error-boundary";
-import { FlashAngel } from "./flash-angel";
+import { FlashAngel, flashAngelSrc, warmFlashAngel } from "./flash-angel";
 import { incrementGhostFlashCount } from "@/lib/journeys/ghost-flash-images";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
@@ -192,6 +192,15 @@ export function JourneyCompositor({
       inBassHitRef.current = false;
     }
   }, [bassHitRising, bassHitReset]);
+
+  // Pre-key both angel variants while the approach ramp builds (~1.1s
+  // before the hit fires) so FlashAngel paints on the flash's first frame.
+  const approachWarm = enableBassFlash && approach > 0.1;
+  useEffect(() => {
+    if (!approachWarm) return;
+    void warmFlashAngel(flashAngelSrc(0));
+    void warmFlashAngel(flashAngelSrc(1));
+  }, [approachWarm]);
 
   // White flash + shockwave ring — driven by a dedicated rAF loop so the
   // envelope is frame-accurate (not sampled at whatever cadence the
