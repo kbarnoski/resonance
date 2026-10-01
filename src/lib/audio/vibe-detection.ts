@@ -10,6 +10,8 @@ export type Mood =
   | "transcendent";
 export type VisualizerMode =
   | "sparkler" | "resonant-rings" // kinetic EQ shaders (2026-09-30)
+  | "comet-swarm" | "ember-fountain" | "firefly-field" | "ribbon-of-light" | "orbit-weaver" | "meteor-rain" | "murmuration" | "will-o-wisp" | "galaxy-seed" // lead-actor company (2026-09-30b)
+  | "pendulum-dust" | "helix-stream" | "fracture-light" | "rose-window" | "cascade-veil" | "binary-stars" // company second six (2026-09-30c)
   // Original
   | "neon"
   | "astral"

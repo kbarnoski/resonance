@@ -17,7 +17,10 @@ export function isKineticJourneyName(name?: string | null): boolean {
  *  only; Rolling/Stand keep epic imagery under their reactive light. */
 export function isWhisperImageryName(name?: string | null): boolean {
   if (!name) return false;
-  return /^chemiluminescence/i.test(name.trim());
+  // Imaging PAUSED for the whole Kinetic Lab for now (Karel 2026-09-30:
+  // "make them all kinetic with their imaging paused") — pure shaders
+  // on black while the lead-actor language matures.
+  return isKineticJourneyName(name);
 }
 
 export type BandFocus = "bass" | "mid" | "treble";

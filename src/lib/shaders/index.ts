@@ -139,6 +139,21 @@ import { FRAG as DELUGE_FRAG } from "./deluge";
 // Elemental (nature)
 import { FRAG as RAIN_FRAG } from "./rain";
 import { FRAG as SPARKLER_FRAG } from "./sparkler";
+import { FRAG as COMET_SWARM_FRAG } from "./comet-swarm";
+import { FRAG as EMBER_FOUNTAIN_FRAG } from "./ember-fountain";
+import { FRAG as FIREFLY_FIELD_FRAG } from "./firefly-field";
+import { FRAG as RIBBON_OF_LIGHT_FRAG } from "./ribbon-of-light";
+import { FRAG as ORBIT_WEAVER_FRAG } from "./orbit-weaver";
+import { FRAG as METEOR_RAIN_FRAG } from "./meteor-rain";
+import { FRAG as MURMURATION_FRAG } from "./murmuration";
+import { FRAG as WILL_O_WISP_FRAG } from "./will-o-wisp";
+import { FRAG as GALAXY_SEED_FRAG } from "./galaxy-seed";
+import { FRAG as PENDULUM_DUST_FRAG } from "./pendulum-dust";
+import { FRAG as HELIX_STREAM_FRAG } from "./helix-stream";
+import { FRAG as FRACTURE_LIGHT_FRAG } from "./fracture-light";
+import { FRAG as ROSE_WINDOW_FRAG } from "./rose-window";
+import { FRAG as CASCADE_VEIL_FRAG } from "./cascade-veil";
+import { FRAG as BINARY_STARS_FRAG } from "./binary-stars";
 import { FRAG as RESONANT_RINGS_FRAG } from "./resonant-rings";
 import { FRAG as RIPPLE_FRAG } from "./ripple";
 // Elemental (new batch)
@@ -472,6 +487,21 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "r-tendrils": R_TENDRILS,
   "r-stardust": R_STARDUST,
   "sparkler": SPARKLER_FRAG,
+  "comet-swarm": COMET_SWARM_FRAG,
+  "ember-fountain": EMBER_FOUNTAIN_FRAG,
+  "firefly-field": FIREFLY_FIELD_FRAG,
+  "ribbon-of-light": RIBBON_OF_LIGHT_FRAG,
+  "orbit-weaver": ORBIT_WEAVER_FRAG,
+  "meteor-rain": METEOR_RAIN_FRAG,
+  "murmuration": MURMURATION_FRAG,
+  "will-o-wisp": WILL_O_WISP_FRAG,
+  "galaxy-seed": GALAXY_SEED_FRAG,
+  "pendulum-dust": PENDULUM_DUST_FRAG,
+  "helix-stream": HELIX_STREAM_FRAG,
+  "fracture-light": FRACTURE_LIGHT_FRAG,
+  "rose-window": ROSE_WINDOW_FRAG,
+  "cascade-veil": CASCADE_VEIL_FRAG,
+  "binary-stars": BINARY_STARS_FRAG,
   "resonant-rings": RESONANT_RINGS_FRAG,
   "r-embers": R_EMBERS,
   "r-kaleido": R_KALEIDO,
@@ -820,6 +850,21 @@ export const MODE_META: ModeMeta[] = [
   { mode: "r-stardust", label: "Stardust River", category: "Cosmic" },
   { mode: "sparkler", label: "Sparkler", category: "Cosmic", addedDate: "2026-09-30" },
   { mode: "resonant-rings", label: "Resonant Rings", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "comet-swarm", label: "Comet Swarm", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "ember-fountain", label: "Ember Fountain", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "firefly-field", label: "Firefly Field", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "ribbon-of-light", label: "Ribbon of Light", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "orbit-weaver", label: "Orbit Weaver", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "meteor-rain", label: "Meteor Rain", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "murmuration", label: "Murmuration", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "will-o-wisp", label: "Will-o-Wisp", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "galaxy-seed", label: "Galaxy Seed", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "pendulum-dust", label: "Pendulum Dust", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "helix-stream", label: "Helix Stream", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "fracture-light", label: "Fracture Light", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "rose-window", label: "Rose Window", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "cascade-veil", label: "Cascade Veil", category: "Cosmic", addedDate: "2026-09-30" },
+  { mode: "binary-stars", label: "Binary Stars", category: "Cosmic", addedDate: "2026-09-30" },
   { mode: "r-blackhole", label: "Black Hole", category: "Cosmic" },
   { mode: "r-tendrils", label: "Plasma Tendrils", category: "Cosmic" },
   { mode: "r-kaleido", label: "Kaleidoscope", category: "Geometry" },
