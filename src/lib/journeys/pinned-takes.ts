@@ -123,7 +123,10 @@ export const TAKE_INTRO_STILLS: Record<string, string> = {
  *  journey's last phase, every lap (Karel 2026-10-01: Ghost must END on
  *  the angel unifying with light amidst the cosmos; one run ended on a
  *  stone corridor). Filled per journey once Karel approves the image. */
-export const TAKE_FINALE_STILLS: Record<string, string> = {};
+export const TAKE_FINALE_STILLS: Record<string, string> = {
+  // Stage 8 c1 (approved 2026-10-01) — first integration slot.
+  "ghost": "/tramokyo-pack/images/journeys/ghost/gen-080.jpg",
+};
 
 /** Pinned FINALE shader — the forced switch at the last morph's end
  *  (Karel 2026-10-01: "dont end on that green tinted shader").
