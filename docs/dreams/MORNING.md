@@ -1,36 +1,39 @@
-# Morning digest — last updated 2026-09-30T~01:10Z (17:45 PT fire, cycle 1270)
-
-> **Jury verdict today** (2026-09-30, on the morning inventory fire): The lab finally listened — it spent a whole cycle *finishing* your camera pieces instead of making new ones, and found that four (including `mudra`, the one you loved) were actually broken and had been for weeks, now fixed; `fluxweave` harmonizes your piano into a chord of itself and is genuinely good. Two asks only you can settle: yes/no on the score-follower (offered 7×), and a glance at why `origin/main` keeps getting force-rewritten every fire. See `docs/dreams/JURY.md`. (This 17:45 fire then shipped `18384-throatmorph`, below.)
+# Morning digest — last updated 2026-10-01T01:22Z (05:45 PT fire, cycle 1271)
 
 ## New since yesterday
-- **`18384-throatmorph`** → https://getresonance.vercel.app/dream/18384-throatmorph
-  Open this one. It's the piece that finally **claims criterion D** — the multi-cycle
-  commitment the jury has flagged as unclaimed by *anybody* for five verdicts. It's
-  timbrefold's banked cycle-2, delivered: your two hands reshape the **vocal tract of
-  your own recording continuously** — glassy → woody → vowel — while the pitch and
-  melody stay exactly put. Where timbrefold hopped between 5 discrete vowel presets,
-  this lifts your recording's OWN spectral envelope with the real cepstrum and morphs
-  *that* (the same formant-vs-texture split a plugin called **NEUON — Cepstral Morph**
-  shipped 5 days ago). Slide both hands left↔right to sweep the timbre, raise them to
-  morph deeper, spread them to slide the vowel. Rendered as an achromatic **ultrasound
-  formant-surface** — a genuine palette + render departure from timbrefold's prismatic SVG.
+- **`18416-chordfold`** → https://getresonance.vercel.app/dream/18416-chordfold
+  Open this one. It's **fluxweave's cycle-2, and it claims criterion D** — the
+  multi-cycle "finish what you make" the jury has flagged as unclaimed by *anybody*
+  for six verdicts. Fluxweave fanned your take into a *fixed* chord of itself;
+  chordfold reads your recording's **own chord track** and re-voices the fan to
+  **whatever chord is actually playing right now** — pull your hands apart over a
+  minor passage and the fan sounds minor; over a major chord it warms and sounds
+  major, gliding smoothly as the harmony moves. The current of light tells you the
+  harmony too: its hue tracks the chord root around the circle of fifths and
+  warms/cools with major vs minor (a new restrained `harmonic-chroma` register —
+  off the banned amber & cyan/violet, not the pearl of fluxweave). Hands together =
+  clear unison; raise them to swell the chord; move faster to shimmer it.
 
 ## In progress / partial
-- Nothing half-built. This was a DEEP ×2 fire: two DSP approaches to the same concept
-  built in parallel; the cepstral-STFT one shipped, the LSF-biquad sibling (`vowelbend`)
-  was banked to IDEAS as the safe, guaranteed-clean alternative.
+- Nothing half-built. This was a DEEP ×2 fire: two harmony methods built in
+  parallel; chordfold (parse the real chord's own notes) shipped; `chordwell`
+  (key/scale voice-leading glide + chord-change surge) was banked to IDEAS as the
+  cycle-3 merge candidate — fold its smooth part-writing onto chordfold's richer parse.
 
 ## Research findings worth a look
-- **NEUON — Cepstral Morph** (Dystopian Waves, 2026-09-25): cepstral spectral morphing /
-  cross-synthesis with independent **formant vs. texture** control — the exact technique,
-  productized this week. It points straight at throatmorph's cycle-3: a true two-source
-  cross-synthesis (make one of your takes "speak" in the envelope of another).
+- **MIDIBack** (arXiv:2609.28008, 2026-09-23): harmony-aware singing pitch
+  correction — a note is corrected *by the chord around it*, not to a fixed grid.
+  That premise is exactly what chordfold implements over your catalog, and it points
+  at a cycle-3: nearest-neighbor voice leading so the added voices move by the
+  smallest step from chord to chord (chordwell's banked idea).
 
 ## Open questions for Karel
-- **30-second check:** does throatmorph track your hands on your webcam? (Cloud can't test
-  a camera. Audio + demo-drive + pointer paths are verified and the DSP is offline-proven
-  transparent-at-rest; only the live-camera feel and the hiss character on real piano are
-  unconfirmed.) If it tracks, want its cycle-3 — a two-take cepstral cross-synthesis?
-- **Score-follower** (your recording follows *you* via onset/beat detection) is now offered
-  7×. It's phone-testable and self-verifying but needs your explicit go over the camera
-  directive. Green-light it or I'll stop offering it.
+- **30-second check:** does chordfold track your hands on your webcam, and does the
+  fan audibly follow the chords? (Cloud can't test a camera or play audio — the
+  demo drive, audio graph, chord parser, and control path are all code-verified; the
+  live feel and the sound against your real take are the only unconfirmed parts.)
+- **Score-follower** (your recording follows *you* via onset/beat detection) — the
+  jury's standing ask, offered 7× and awaiting your one word over the camera
+  directive. Green-light it or it comes off the board.
+- Good news on the recurring one: `main` did **not** get force-rewritten this fire —
+  origin was a clean fast-forward (your 15 hero shaders). First quiet sync in ~6 fires.
