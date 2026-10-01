@@ -265,6 +265,8 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "lichen", // Karel 2026-09-30: "subtle web like shader with some green" — lichen dual recast at p0.314
   ]),
   hell: new Set([
+    "halo", // Karel 2026-10-01: "the radiant circles shader doesnt work great for realized"
+    "spore", // Karel 2026-10-01: "the colored dots full screen shader... should not be used in this journey"
     "eclipse-ring", // Karel 2026-10-01: "the bright circles shader in realized doesnt work" (Snowflake keeps its own)
     "catacomb-torch", // Karel 2026-10-01: "realized shouldnt end with full color shader over it" — the take's closer
     "nova", // Karel 2026-09-30 screenshot: the concentric shockwave rings over the comet clip (nova @p0.744) — "dont use this morph in realized" (it was the shader, not a morph)
