@@ -6,6 +6,74 @@ touches Ghost imagery cites the section it derives from.
 
 ---
 
+## 0. Arc law 2026-10-01 (SUPERSEDES everything below where they conflict)
+
+Karel, after watching Ghost on the kiosk, 2026-10-01 (verbatim):
+
+> "the arc is she starts in the room with window like you have which is
+> correct. then she is at an entrance to the tunnel into the depths of
+> earth which you kind of have but jump right to being inside. then she
+> travels deeper and deeper into the tunnel some of which you have and
+> gets to that beautiful pool with infinite floating flowers which you
+> kind of have. then she travel more and sees a light at end of this
+> tunnel above and comes out and sees that tree on a distant planet
+> which you have an image of kind of. then she flies through infinite
+> space and gets closer to the tree and as she gets closer the blossoms
+> grow some of which you have. she then merges with the tree in a
+> spiritual union and tree fully infinite blossoms and her hair infinite
+> spiral some of which you have. then the scene is the angel unifying
+> with light amidst the cosmos which you end with and you lost that."
+>
+> "when you ended with the angel back in the stone room that is off."
+
+The eight stages, in order — every beat and every pack still belongs to
+exactly one, and the order never runs backwards:
+
+1. **Stone room with window** (threshold).
+2. **At the ENTRANCE of a tunnel into the depths of the earth** — seen
+   from outside, before she enters (expansion beats 1–2).
+3. **Deeper and deeper in the tunnel** — enclosed deep beneath the
+   earth, never a forest (expansion beats 3–7).
+4. **The pool with infinite floating flowers** (transcendence 1–6) — pure, no possession.
+5. **Light at the end of the tunnel ABOVE** — she rises, emerges, sees
+   the tree on a distant planet (transcendence 7–8, illumination 1–2).
+6. **Flight through infinite space toward the tree** — the pure white
+   flowers GROW as she nears, ~5% → ~40% (illumination 3–7).
+7. **Spiritual union with the tree** — full infinite bloom, her hair an
+   infinite spiral through the canopy (return, ~45% → 100%).
+8. **The angel unifying with light amidst the cosmos** — the ending
+   (integration, from progress 0.85). No tree, roots, tunnel, pool, castle, stone, chamber,
+   window, archway or portal.
+
+**No stone-room / castle / portal content after stage 1. Ever.**
+Enforced by `src/lib/journeys/ghost-arc.test.ts` (stage map lives in
+`src/lib/journeys/ghost-arc.ts`).
+
+**RETIRED by this law:**
+- v3 Phase 6 "surreal cosmic ZOOM-OUT tableau revealing the castle,
+  portal, and blooming tree" (§9 v3) — RETIRED. The ending is stage 8.
+- "Tree begins with NO flowers … blooms only from her touch" (§4
+  Phase 4 dead-tree rule, §4 Phase 5 stage 1, §9 v3 Phase 5) — RETIRED.
+  Karel's arc wins: the flowers grow as she approaches (stage 6) and
+  reach full bloom in the union (stage 7).
+- Phase 2 portal "at the far end of the castle chamber" — RETIRED; the
+  entrance is a natural opening into the earth, seen from outside.
+- Phase 4 light "at the far end of the cavern passage" (horizontal) —
+  the light is ABOVE; she rises up and out.
+
+- Phase 3 POSSESSION story (dark reflection, black wings rising from
+  the pool, merger with black wings) — RETIRED by Karel 2026-10-01. The
+  pool beats are pure: infinite floating pure white flowers; she finds
+  translucent WHITE wings among the flowers (v1 wings-find). §3c dark
+  variant / §5 between-flash dark imagery are retired with it for the
+  pool beats (runtime flash-theme substitution is a separate change).
+
+**Stage 8 timing:** integration (stage 8) starts at progress **0.85**
+(return 0.72–0.85, integration 0.85–1.0) so the ending gets room
+before the 0.96 no-new-stills quiet zone.
+
+---
+
 ## 1. Core intent
 
 Ghost is about **infinite spaces** — vast chambers, endless root
@@ -207,6 +275,11 @@ and distant.
 
 ### Phase 3 — Possession (the magnificent pool)
 
+> **Arc law §0:** pool = stage 4 (infinite floating pure white flowers).
+> The possession material below is **RETIRED (Karel 2026-10-01)** —
+> no dark reflection, no black wings; she finds translucent white wings
+> among the flowers. Kept below for history only.
+
 **Setting.** A **magnificent natural cavern deep underground** with
 a **vast infinite pool** of still dark mirror-water stretching
 impossibly far in every direction, covered in pure white water
@@ -248,6 +321,11 @@ distance):**
 
 ### Phase 4 — Recognition (emerging to the dead tree)
 
+> **Arc law §0 — partly RETIRED:** the light is ABOVE (she rises up and
+> out, stage 5), and the tree's pure white flowers GROW as she approaches
+> (stage 6, ~5% → ~40%). The "completely dead / no flowers" rule below is
+> RETIRED.
+
 **Setting.** She emerges from the deep-earth passage out into open
 **infinite cosmos**. Ahead of her, on **its own perfectly round
 spherical dark rocky PLANET** (a whole planet, not a chunk, not a
@@ -278,6 +356,11 @@ dark dead branches with faint amber.
    shoulders, the dead tree filling much of the background.
 
 ### Phase 5 — Release (touch → progressive bloom → merge)
+
+> **Arc law §0:** stage 7, spiritual union, ~45% → 100% bloom (bloom
+> already began during the approach). "Stage 1 earliest: first 2-3 tiny
+> flowers" below is RETIRED. Union is light and hair spiraling into the
+> canopy — no body-dissolving-into-wood language; arms stay healthy.
 
 **Setting.** She arrives at the dead tree on its spherical planet,
 universe sky behind. She reaches out and **touches** the trunk.
@@ -316,6 +399,10 @@ Progression over the phase:
 merged**.
 
 ### Phase 6 — Grace (released into golden cosmos)
+
+> **Arc law §0:** stage 8 — the angel unifying with light amidst the
+> cosmos. No tree, roots, tunnel, pool, castle, stone, chamber, window,
+> archway or portal. The v3 zoom-out collage (§9) is RETIRED.
 
 **Setting.** She has been released from the tree into **infinite
 golden cosmos**. Deep indigo cosmos pierced by volumetric amber
@@ -525,9 +612,11 @@ dark-to-white snap.
       sees a small dark tree on ITS OWN small planet with cosmos
       and a sunset behind; flash #2 fires on arrival returning her
       to white
-    - Phase 5 white-angel returned; tree begins with NO flowers and
+    - [RETIRED 2026-10-01 by Arc law §0 — flowers grow during the
+      approach] Phase 5 white-angel returned; tree begins with NO flowers and
       blooms slowly as she merges; seen always from great distance
-    - Phase 6 is a surreal cosmic ZOOM-OUT tableau revealing the
+    - [RETIRED 2026-10-01 by Arc law §0 — the ending is stage 8, the
+      angel unifying with light; NO castle/portal/tree collage] Phase 6 is a surreal cosmic ZOOM-OUT tableau revealing the
       castle, portal, and blooming tree all together in one
       infinite view, then soaring in golden light. Transcendent
       but explicitly NOT religious.
@@ -536,3 +625,8 @@ dark-to-white snap.
       instead of switching
     - Max layers bumped 6→8 on high tier for the "infinite surreal
       collage" accumulation
+- **v4 — ARC LAW.** 2026-10-01. Karel's 8-stage arc (§0) supersedes
+  the v3 collage ending and the no-flowers-until-touch rule. Beats in
+  journeys.ts rewritten to the stages; arc test added
+  (`src/lib/journeys/ghost-arc.test.ts`). Possession story retired;
+  integration starts at 0.85.

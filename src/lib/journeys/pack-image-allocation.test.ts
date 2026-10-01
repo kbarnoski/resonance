@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { allocateByPhase, packImageIndexForProgress } from "./pack-image-allocation";
+import { allocateByPhase, packImageIndexForProgress, packPhaseSliceForProgress, packSlotForProgress, nextSlotInSlice } from "./pack-image-allocation";
 import { TRAMOKYO_PHASE_WEIGHT } from "./prompt-decoration";
 
 // The "Ghost played backwards" bug family (2026-09-19): harvest and
@@ -62,5 +62,39 @@ describe("packImageIndexForProgress", () => {
 
   it("bails to -1 on invalid progress", () => {
     expect(packImageIndexForProgress(PHASES, 90, -1)).toBe(-1);
+  });
+});
+
+describe("phase-bounded slots (arc law 2026-10-01)", () => {
+  const phases = [
+    { id: "threshold", start: 0, end: 0.14 },
+    { id: "expansion", start: 0.14, end: 0.3 },
+    { id: "transcendence", start: 0.3, end: 0.55 },
+    { id: "illumination", start: 0.55, end: 0.72 },
+    { id: "return", start: 0.72, end: 0.88 },
+    { id: "integration", start: 0.88, end: 1 },
+  ];
+  it("jitter never leaves the phase slice and never skips a phase's first slot", () => {
+    for (let jitter = 0; jitter <= 5; jitter++) {
+      let prev = -1;
+      let prevSliceStart = -1;
+      for (let k = 0; k <= 1000; k++) {
+        const p = k / 1000;
+        const slice = packPhaseSliceForProgress(phases, 90, p)!;
+        const idx = packSlotForProgress(phases, 90, p, jitter);
+        expect(idx).toBeGreaterThanOrEqual(slice.start);
+        expect(idx).toBeLessThan(slice.end);
+        if (slice.start !== prevSliceStart) expect(idx).toBe(slice.start); // phase opens on its first image
+        expect(idx).toBeGreaterThanOrEqual(prev);
+        prev = idx;
+        prevSliceStart = slice.start;
+      }
+    }
+  });
+  it("walks stay inside the slice and never wrap", () => {
+    const slice = { start: 82, end: 90 };
+    expect(nextSlotInSlice(89, slice, (i) => i !== 89)).toBe(88);
+    expect(nextSlotInSlice(85, slice, (i) => i === 86)).toBe(86);
+    expect(nextSlotInSlice(85, slice, () => false)).toBe(85);
   });
 });

@@ -119,6 +119,12 @@ export const TAKE_INTRO_STILLS: Record<string, string> = {
   "first-snow": "/tramokyo-pack/images/journeys/first-snow/gen-106.jpg",
 };
 
+/** Pinned FINALE still — shown once as soon as playback enters the
+ *  journey's last phase, every lap (Karel 2026-10-01: Ghost must END on
+ *  the angel unifying with light amidst the cosmos; one run ended on a
+ *  stone corridor). Filled per journey once Karel approves the image. */
+export const TAKE_FINALE_STILLS: Record<string, string> = {};
+
 /** Pinned FINALE shader — the forced switch at the last morph's end
  *  (Karel 2026-10-01: "dont end on that green tinted shader").
  *  first-snow ends on the loved colored-lines photon. */

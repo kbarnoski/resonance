@@ -87,3 +87,60 @@ export function packImageIndexForProgress(
   }
   return -1;
 }
+
+/**
+ * Slot range [start, end) of the phase containing `progress`, or null
+ * when the inputs can't be mapped. Arc law (Karel 2026-10-01): per-run
+ * jitter and idle/morph walks must stay inside this slice — crossing it
+ * skipped Ghost's tunnel entrance and wrapped the ending back to the
+ * opening stone room.
+ */
+export function packPhaseSliceForProgress(
+  phases: readonly PhaseSpan[] | undefined | null,
+  n: number,
+  progress: number,
+  phaseWeight: Record<string, number> | null = TRAMOKYO_PHASE_WEIGHT,
+): { start: number; end: number } | null {
+  if (!phases || phases.length === 0 || n <= 0 || !(progress >= 0)) return null;
+  if (phases.some((p) => typeof p.start !== "number" || typeof p.end !== "number")) return null;
+  const counts = allocateByPhase(phases, n, phaseWeight);
+  let offset = 0;
+  for (let i = 0; i < phases.length; i++) {
+    if (progress < (phases[i].end ?? 1) || i === phases.length - 1) {
+      const start = Math.min(offset, n - 1);
+      return { start, end: Math.max(start + 1, Math.min(n, offset + counts[i])) };
+    }
+    offset += counts[i];
+  }
+  return null;
+}
+
+/** packImageIndexForProgress + per-run jitter, clamped to the phase slice. */
+export function packSlotForProgress(
+  phases: readonly PhaseSpan[] | undefined | null,
+  n: number,
+  progress: number,
+  jitter: number,
+  phaseWeight: Record<string, number> | null = TRAMOKYO_PHASE_WEIGHT,
+): number {
+  const idx = packImageIndexForProgress(phases, n, progress, phaseWeight);
+  if (idx < 0) return idx;
+  const slice = packPhaseSliceForProgress(phases, n, progress, phaseWeight);
+  if (!slice) return Math.min(n - 1, idx + jitter);
+  return Math.min(slice.end - 1, idx + Math.min(jitter, idx - slice.start));
+}
+
+/**
+ * Next slot after `idx` for a walk (idle rescue / morph cover), staying
+ * inside [slice.start, slice.end): forward first, then backward from
+ * idx — never wrapping into another phase.
+ */
+export function nextSlotInSlice(
+  idx: number,
+  slice: { start: number; end: number },
+  accept: (i: number) => boolean,
+): number {
+  for (let i = idx + 1; i < slice.end; i++) if (accept(i)) return i;
+  for (let i = idx - 1; i >= slice.start; i--) if (accept(i)) return i;
+  return idx;
+}

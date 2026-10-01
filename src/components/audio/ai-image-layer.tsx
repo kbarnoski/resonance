@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
-import { TAKE_INTRO_STILLS } from "@/lib/journeys/pinned-takes";
+import { TAKE_FINALE_STILLS, TAKE_INTRO_STILLS } from "@/lib/journeys/pinned-takes";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
 import { GHOST_NEGATIVE_PROMPT, composeGhostPrompt } from "@/lib/journeys/journeys";
 import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
@@ -132,7 +132,7 @@ const KEN_BURNS_DURATION = 22; // seconds — matches ~20s layer life
 // prompt-decoration.ts, shared with the offline harvest script so
 // pre-baked images use the identical prompt assembly.
 import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS, tramokyoGradeForPhase } from "@/lib/journeys/prompt-decoration";
-import { packImageIndexForProgress } from "@/lib/journeys/pack-image-allocation";
+import { packImageIndexForProgress, packPhaseSliceForProgress, nextSlotInSlice } from "@/lib/journeys/pack-image-allocation";
 
 // Figures removed — Ghost journey has its own figure prompts baked into aiPrompts.
 // All other journeys generate imagery from their aiPrompt only.
@@ -352,6 +352,7 @@ export function AiImageLayer({
    *  next tick (2026-10-01: "something substantial has to be done"). */
   const triggerGenerationRef = useRef<((skipCache?: boolean) => void) | null>(null);
   const pendingIntroStillRef = useRef<string | null>(null);
+  const pendingFinaleStillRef = useRef<string | null>(null);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
@@ -424,6 +425,7 @@ export function AiImageLayer({
       journeyEpochRef.current++;
       journeyChangeAtRef.current = performance.now();
       pendingIntroStillRef.current = TAKE_INTRO_STILLS[journeyIdRef.current ?? ""] ?? null;
+      pendingFinaleStillRef.current = TAKE_FINALE_STILLS[journeyIdRef.current ?? ""] ?? null;
       runJitterRef.current = Math.floor(Math.random() * 6); // 0..5 — six distinct openers
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -736,7 +738,17 @@ export function AiImageLayer({
       // in the beginning every time") — the deterministic slot mapping
       // shifts by a small per-journey-run offset so each take opens
       // differently while keeping the arc order.
-      if (idx >= 0) idx = Math.min(urls.length - 1, idx + runJitterRef.current);
+      // Arc law (Karel 2026-10-01): jitter and the walks below stay inside
+      // the current phase's slice — crossing it skipped Ghost's tunnel
+      // entrance and wrapped the ending back to the opening stone room.
+      const phaseSlice = idx >= 0 ? packPhaseSliceForProgress(journeyPhases, urls.length, progress) : null;
+      // The jitter ramps in from each phase's first slot (never above the
+      // steps already taken) so every phase OPENS on its first image.
+      if (idx >= 0) {
+        const j = phaseSlice ? Math.min(runJitterRef.current, idx - phaseSlice.start) : runJitterRef.current;
+        idx = Math.min(phaseSlice ? phaseSlice.end - 1 : urls.length - 1, idx + j);
+      }
+      const isFresh = (i: number) => i !== lastPackIndexRef.current && urls[i] !== lastPackUrlRef.current;
       // A pending morph cover must ALWAYS land (session 04cmm4: the
       // finale's cover mapped to the still already on screen, the
       // dedupe below swallowed it, and the held frame melted with
@@ -745,10 +757,14 @@ export function AiImageLayer({
         // URL-aware walk (2026-10-01: tail duplicates defeated the
         // one-step walk — the finale cover NEVER landed): advance to
         // the next DISTINCT image.
-        let guard = 0;
-        while (guard < urls.length && (idx === lastPackIndexRef.current || urls[idx] === lastPackUrlRef.current)) {
-          idx = (idx + 1) % urls.length;
-          guard++;
+        if (phaseSlice) {
+          if (!isFresh(idx)) idx = nextSlotInSlice(idx, phaseSlice, isFresh);
+        } else {
+          let guard = 0;
+          while (guard < urls.length && !isFresh(idx)) {
+            idx = (idx + 1) % urls.length;
+            guard++;
+          }
         }
       }
       if (idx < 0) {
@@ -764,6 +780,14 @@ export function AiImageLayer({
         pendingIntroStillRef.current = null;
         if (wanted >= 0) idx = wanted;
       }
+      // Pinned finale still: the first unblocked push inside the last
+      // phase (consumed only when it can actually land).
+      const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
+      if (pendingFinaleStillRef.current && !stillsBlocked && typeof lastPhaseStart === "number" && progress >= lastPhaseStart) {
+        const wanted = urls.indexOf(pendingFinaleStillRef.current);
+        pendingFinaleStillRef.current = null;
+        if (wanted >= 0) idx = wanted;
+      }
       // IDLE RESCUE (Karel 2026-09-30 deep analysis: 30 parks >25s
       // across ALL journeys — the phase-slot dedupe below can hold one
       // frame for an entire slow phase, and the stillness/solo-hold
@@ -776,10 +800,14 @@ export function AiImageLayer({
       const idleMax = 10_000; // uniform 2026-10-01b — stillness no longer slows replacements
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
       if (idleRescue && urls.length > 1) {
-        let walked = 0;
-        while (walked < urls.length && (idx === lastPackIndexRef.current || urls[idx] === lastPackUrlRef.current)) {
-          idx = (idx + 1) % urls.length;
-          walked++;
+        if (phaseSlice) {
+          if (!isFresh(idx)) idx = nextSlotInSlice(idx, phaseSlice, isFresh);
+        } else {
+          let walked = 0;
+          while (walked < urls.length && !isFresh(idx)) {
+            idx = (idx + 1) % urls.length;
+            walked++;
+          }
         }
         glitchRecord("idle-rescue", `${Math.round(idleMs / 1000)}s idle`);
         if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
