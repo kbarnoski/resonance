@@ -76,7 +76,7 @@ async function loadAppModules() {
   await build({
     stdin: {
       contents: `
-        export { JOURNEYS, getGhostAgeForPhase, getGhostOverlayForPhase,
+        export { JOURNEYS, getGhostAgeForPhase, getGhostOverlayForPhase, composeGhostPrompt,
           GHOST_ANGEL_WHITE, GHOST_ANGEL_WINGLESS_WHITE,
           GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER,
           GHOST_NEGATIVE_PROMPT } from "@/lib/journeys/journeys";
@@ -247,16 +247,12 @@ async function main() {
           : phase.aiPrompt;
         if (!base) continue;
 
+        let tail = "";
         if (t.isGhost) {
-          if (base.includes(app.GHOST_ANGEL_WINGLESS_MARKER)) {
-            base = base.split(app.GHOST_ANGEL_WINGLESS_MARKER).join(app.GHOST_ANGEL_WINGLESS_WHITE);
-          }
-          if (base.includes(app.GHOST_ANGEL_MARKER)) {
-            base = base.split(app.GHOST_ANGEL_MARKER).join(app.GHOST_ANGEL_WHITE);
-          }
-          const age = app.getGhostAgeForPhase(phase.id);
-          const overlay = app.getGhostOverlayForPhase(phase.id);
-          base = `${age}. ${overlay}. ${base}`;
+          // Front-loaded order (2026-10-01) — see composeGhostPrompt.
+          const c = app.composeGhostPrompt(base, phase.id, "white");
+          base = c.scene;
+          tail = c.tail;
         }
 
         // 2026-09-27 material audit: the old ", no snowflakes" tail is
@@ -282,7 +278,7 @@ async function main() {
           varied = `${varied}, ${app.tramokyoGradeForPhase(phase.id)}`;
         }
 
-        plan.push({ target: t, stem, dir, prompt: varied });
+        plan.push({ target: t, stem, dir, prompt: varied, tail });
       }
     });
   }
@@ -302,9 +298,9 @@ async function main() {
   let done = 0, failed = 0, spent = 0;
 
   async function generateOne(item) {
-    const { target: t, stem, dir, prompt } = item;
+    const { target: t, stem, dir, prompt, tail } = item;
     const suffix = TREATMENT === "tramokyo" ? app.TRAMOKYO_STYLE_SUFFIX : app.STYLE_SUFFIX;
-    const fullPrompt = `${prompt}, ${suffix}`;
+    const fullPrompt = tail ? `${prompt}, ${suffix}, ${tail}` : `${prompt}, ${suffix}`;
     let negative = t.isGhost
       ? `${app.GLOBAL_NEGATIVE}, ${app.GHOST_NEGATIVE_PROMPT}`
       : app.GLOBAL_NEGATIVE;

@@ -682,47 +682,44 @@ export function defaultPhases(
 // echoes of herself overlapping (multi-exposure collage effect).
 // Spiritual / NOT sexy. Face always obscured (never front-on).
 const GHOST_ANGEL_BODY =
-  "one main ethereal angel woman (no different people, no companions, no crowds, no onlookers — SOLO figure scene) accompanied by 2 or 3 translucent ghostly spirit-echoes of HERSELF overlapping her at slight offsets like a long-exposure photograph, multi-exposure film effect of her own motion-trails, the echoes are ethereal duplicates of the same angel bleeding through the main figure (not different people), " +
-  "spiritual serene ethereal pure luminous being — NEVER sexy, NEVER sensual, NEVER revealing, NEVER provocative, NEVER seductive, " +
-  "naturally proportioned healthy body with soft graceful form (NEVER skinny, NEVER skeletal, NEVER waif, NEVER emaciated, NEVER anorexic, NEVER unhealthy-thin, NEVER fashion-model thin — a real, healthy, naturally-formed body), " +
-  "pale luminous skin, " +
-  "her BACK is to the camera so her face is HIDDEN — the back of her head faces the viewer, face always obscured behind her long flowing hair, turned fully away; any side or frontal angle ONLY as a dark featureless backlit silhouette with no facial features readable (NEVER a lit profile, NEVER a visible nose, lips or eyelids, NEVER a front-on view, NEVER face-forward, NEVER a full face shot, NEVER a portrait, NEVER eye contact, always mysterious), " +
-  "her hair is VERY LONG and FREE-FLOWING (NEVER braided, NEVER plaited) — thick INTENSE fibonacci spiral da Vinci fractal strands forming endless visible spiral curls and swirls, cascading from her head down past her waist all the way to the ground AND trailing upward and outward in the air like flowing spiraling streamers and ribbons, spirals within spirals within spirals at every scale, the hair itself is a dense field of fibonacci spirals and curling fractal patterns, wrapped with dense swirling particles that spiral along every strand in fibonacci curves, " +
-  "the hair flows seamlessly into her dress — hair and dress read as one continuous translucent fibonacci-spiral ribbon from head to beyond her feet, " +
-  "wearing a long floor-length flowing translucent MODEST dress of woven mist and light that covers her body, somewhat see-through rippling with fibonacci spiral patterns of swirling particles (translucent is mist-like NOT skin-revealing), " +
-  "abundant swirling fibonacci spiral particle motion filling the air around her body and streaming from her hair, dress, and wings in visible spiral patterns everywhere in the frame";
+  "one main ethereal angel woman, a SOLO figure, accompanied by 2 or 3 translucent spirit-echoes of HERSELF overlapping at slight offsets like a long-exposure photograph of her own motion-trails, " +
+  "a serene, spiritual, modest and pure luminous being, " +
+  "a real, healthy, naturally-formed body with softly rounded graceful arms and shoulders, pale luminous skin, " +
+  "seen from behind: her back to the camera, the back of her head covered by her long flowing hair, her face turned fully away into the distance, " +
+  "her hair VERY LONG and free-flowing — thick fibonacci spiral da Vinci fractal strands in endless spiral curls, cascading past her waist to the ground and streaming upward and outward like spiraling ribbons, spirals within spirals, wrapped in swirling particles that spiral along every strand, " +
+  "the hair flowing seamlessly into her dress as one continuous fibonacci-spiral ribbon, " +
+  "a long floor-length modest dress of woven mist and light rippling with spiral particle patterns, " +
+  "abundant swirling fibonacci spiral particles streaming from her hair, dress and wings";
 
 // Wing language per spec Section 3a — translucent flowing wisps of light
 // and mist, like smoke or silk. Explicitly NOT butterfly / NOT membrane /
 // NOT segmented / NOT filigree / NOT panels. NEVER any of the listed
 // failure modes.
 const WINGS_CLAUSE =
-  "ALWAYS TWO translucent flowing wispy angel wings attached anatomically to her upper BACK at the shoulder blades (BOTH LEFT and RIGHT wings symmetrical, never missing a wing, never one-winged, never detached, never floating separately). " +
-  "the wings are translucent flowing wisps of light and mist, like flowing smoke or silk trailing behind her, thin and ethereal, made of pure light and particle mist. " +
-  "NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER butterfly wings, NEVER segmented, NEVER insect-like, NEVER panels, NEVER membrane, NEVER filigree, NEVER opaque, NEVER bulky";
+  "two symmetrical translucent angel wings rooted at her shoulder blades, made of flowing wisps of light and mist like trailing smoke or silk, thin, ethereal and luminous";
 
 // Wingless — used in phases 1 (window), 2 (underground passage), and the
 // opening of phase 3 before she finds the wings.
 export const GHOST_ANGEL_WINGLESS_WHITE =
   GHOST_ANGEL_BODY +
-  ", eyes closed peaceful serene mysterious expression, NO WINGS YET (her back is bare — she has not yet found her wings, absolutely no wings visible on her back or anywhere near her), " +
-  "wardrobe: SNOW WHITE long flowing spiral fibonacci hair (NEVER blonde, NEVER yellow, NEVER gold, NEVER braided), SNOW WHITE translucent dress, WHITE particles";
+  ", eyes closed, peaceful and mysterious, her bare back wingless (she has not yet found her wings), " +
+  "wardrobe: snow-white spiral fibonacci hair, snow-white translucent dress, white particles";
 
 // Winged white — after she finds and puts on the wings at the pool.
 export const GHOST_ANGEL_WHITE =
   GHOST_ANGEL_BODY +
-  ", eyes closed peaceful serene mysterious expression (always closed throughout the journey), " +
+  ", eyes closed, peaceful and mysterious, " +
   WINGS_CLAUSE +
-  ", wardrobe: SNOW WHITE long flowing spiral fibonacci hair (NEVER blonde, NEVER yellow, NEVER gold, NEVER braided), SNOW WHITE translucent dress, SNOW WHITE translucent wispy wings, WHITE particles" +
-  ", her whole figure GHOSTLY SEMI-TRANSPARENT like drifting mist, the scene faintly visible through her form, never solid or flesh-and-blood";
+  ", wardrobe: snow-white spiral fibonacci hair, snow-white translucent dress, snow-white wispy wings, white particles" +
+  ", her figure softly luminous and ethereal, translucent only at its misty edges";
 
 // Winged black — possessed devil variant between flash #1 and flash #2.
 // She already has the wings by the time any flash fires.
 export const GHOST_ANGEL_BLACK =
   GHOST_ANGEL_BODY +
-  ", eyes closed peaceful serene mysterious expression (face obscured as in the white version), " +
+  ", eyes closed, peaceful and mysterious, " +
   WINGS_CLAUSE +
-  ", wardrobe: the angel has been possessed under a mysterious spell — her hair stays SNOW WHITE (NEVER blonde, NEVER yellow, NEVER gold) but her DRESS has turned JET BLACK translucent shadow-mist and her WINGS have turned JET BLACK translucent shadow-mist wisps on her back. BLACK particles stream from the black dress and wings; WHITE particles still spiral along her white hair. the striking contrast of white spiral fibonacci hair cascading over jet black translucent wardrobe marks the possession";
+  ", wardrobe: the angel has been possessed under a mysterious spell — her hair stays snow-white but her DRESS has turned JET BLACK translucent shadow-mist and her WINGS have turned JET BLACK translucent shadow-mist wisps on her back. BLACK particles stream from the black dress and wings; WHITE particles still spiral along her white hair. the striking contrast of white spiral fibonacci hair cascading over jet black translucent wardrobe marks the possession";
 
 /** Marker substituted with the WINGED angel (flash-count driven) at gen time. */
 export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
@@ -791,12 +788,55 @@ export function getGhostOverlayForPhase(phase: string | null): string {
   }
 }
 
+// ─── Ghost prompt order (2026-10-01) ─────────────────────────────────
+// FLUX reads ~512 tokens and fal-ai/flux-lora has NO negative_prompt
+// field. With the full angel descriptor substituted inline, the scene
+// beat, grade and realism suffix fell past the cut — stills drifted
+// painterly/cartoonish and off-story, and NEVER-lists ("NEVER skinny")
+// primed the very thin, ill-looking arms they banned. Karel approved
+// the front-loaded order: realism → scene (short angel reference) →
+// face-away / arms / ethereal → caller's grade+style → age, overlay and
+// the full descriptor LAST, where truncation costs the least.
+export const GHOST_REALISM_LEAD =
+  "PHOTOGRAPHIC REALISM: a real photograph shot on a full-frame cinema camera, natural true-to-life skin texture, real individual hair strands, real fabric folds, physically accurate light and soft depth of field — lifelike like a still from a live-action film";
+const GHOST_FACE_AWAY =
+  "REAR VIEW ONLY: camera behind her, we see only the back of her head and her back, her head faces straight away from the camera into the distance, the back of her head fully covered by long flowing hair";
+const GHOST_ARMS =
+  "her arms are healthy, graceful and naturally full — softly rounded shoulders, upper arms and forearms with a healthy living warmth, an athletic dancer's grace";
+const GHOST_ETHEREAL =
+  "she is a little more spirit than human: a faint inner luminescence glowing softly from within her skin, the outer edges of her hair, dress and wings dissolving into soft drifting light-mist, subtle translucency only at the fringes, while her body itself stays solid, real and present";
+
+/** Split a Ghost beat into a front-loaded scene and a trailing
+ *  descriptor. Callers build `${scene}, <grade/style…>, ${tail}`. */
+export function composeGhostPrompt(
+  beat: string,
+  phaseId: string | null,
+  theme: "white" | "black" = "white",
+): { scene: string; tail: string } {
+  const winged = beat.includes(GHOST_ANGEL_MARKER);
+  const wingless = beat.includes(GHOST_ANGEL_WINGLESS_MARKER);
+  const ref = theme === "black"
+    ? "the white-haired winged angel woman in her jet-black shadow-mist dress"
+    : "the white-haired winged angel woman";
+  const body = beat
+    .split(GHOST_ANGEL_WINGLESS_MARKER).join("the white-haired wingless angel woman")
+    .split(GHOST_ANGEL_MARKER).join(ref);
+  const angel = winged || wingless;
+  const scene = [GHOST_REALISM_LEAD, body, ...(angel ? [GHOST_FACE_AWAY, GHOST_ARMS, GHOST_ETHEREAL] : [])].join(". ");
+  const descriptor = winged
+    ? (theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE)
+    : wingless ? GHOST_ANGEL_WINGLESS_WHITE : null;
+  const tail = [getGhostAgeForPhase(phaseId), getGhostOverlayForPhase(phaseId), descriptor].filter(Boolean).join(". ");
+  return { scene, tail };
+}
+
 /** Shared negative prompt for every Ghost generation — flux/dev reads this
  *  as a hard exclusion list. The global API-level negative covers feathers,
  *  watermarks, and random people; this one adds Ghost-specific exclusions
  *  (wrong hair color, yellow flower centers, etc.). */
 export const GHOST_NEGATIVE_PROMPT =
-  "solid opaque body, fully opaque figure, flesh-and-blood realism, solid human skin, corporeal weight, " +
+  "illustration, cartoon, anime, 3d render, cgi, digital painting, stylized, plastic skin, airbrushed, " +
+  "thin arms, skinny arms, frail arms, bony arms, sickly, ill, grey skin, " +
   "blonde hair, gold hair, yellow hair, brown hair, red hair, " +
   "braids, braided hair, plaited hair, cornrows, french braid, " +
   "face visible, front view of face, face-forward shot, profile view, side profile, face in profile, lit profile, visible nose, visible lips, visible eyelids, facial features, illuminated face, jawline, head turned sideways, full face view, face close-up, portrait, face-focused composition, looking at camera, looking toward viewer, head turned toward camera, three-quarter front view, frontal pose, " +
@@ -2076,15 +2116,15 @@ export const JOURNEYS: Journey[] = [
           // Beat 1 — arrives at DEAD tree, 0% bloom, NO merge yet.
           "photorealistic cinematic wide three-quarter shot of " + GHOST_ANGEL + " arriving at a small ancient gnarled tree standing COMPLETELY DEAD AND BARE on its tiny spherical planet in vast infinite cosmos, the tree is 100% EMPTY with ZERO FLOWERS on any branch, dark dead twisting branches reaching outward, warm sunset glow behind rimming the dead silhouette, universe sky of stars nebulae and spiral galaxies. she is small and WHOLE next to the trunk with her back to the camera, arms extending toward the dead trunk, long white spiral hair cascading, translucent wispy wings spread. mysterious ethereal arrival at dead tree before any merge or bloom, no text no watermarks",
           // Beat 2 — palm touches trunk, FIRST flowers bloom from contact point, arm starts dissolving.
-          "photorealistic cinematic close-range shot of " + GHOST_ANGEL + "'s outstretched palm just making CONTACT with the dark bare trunk of the dead tree on its tiny planet in cosmos, a RING of the very first tiny pure white flowers (all-white centers, NO yellow) bursting into bloom at the point of her touch — only about 3 PERCENT of the tree now has flowers, all radiating outward from her contact point — her forearm beginning to become TRANSLUCENT with wood-grain showing through her pale skin where it meets the bark. her back to the camera, long white spiral hair cascading, warm sunset glow behind. mysterious ethereal the-merge-begins-bloom-begins, no text no watermarks",
+          "photorealistic cinematic close-range shot of " + GHOST_ANGEL + "'s outstretched palm just making CONTACT with the dark bare trunk of the dead tree on its tiny planet in cosmos, a RING of the very first tiny pure white flowers (all-white centers, NO yellow) bursting into bloom at the point of her touch — only about 3 PERCENT of the tree now has flowers, all radiating outward from her contact point — a soft white-gold glow beginning to pass between her healthy forearm and the bark where they meet. her back to the camera, long white spiral hair cascading, warm sunset glow behind. mysterious ethereal the-merge-begins-bloom-begins, no text no watermarks",
           // Beat 3 — ~15% bloom radiating from trunk, her arm fully merged into wood.
-          "photorealistic cinematic wide rear shot of a small gnarled tree on its tiny spherical planet in cosmos, roughly 15 PERCENT of the branches nearest the trunk now covered in fresh pure white flowers (bloom expanding outward from one contact branch, remaining 85% still dead and bare), warm sunset glow and universe sky. " + GHOST_ANGEL + " small at the trunk with her ENTIRE LEFT ARM fully dissolved INTO the wood grain (the arm is now tree-bark colored with wood-grain running through it and has become part of the trunk itself), her torso and other arm still intact with pale skin, long white spiral hair beginning to blend with the branches overhead. mysterious ethereal merge-spreading-bloom-spreading, no text no watermarks",
+          "photorealistic cinematic wide rear shot of a small gnarled tree on its tiny spherical planet in cosmos, roughly 15 PERCENT of the branches nearest the trunk now covered in fresh pure white flowers (bloom expanding outward from one contact branch, remaining 85% still dead and bare), warm sunset glow and universe sky. " + GHOST_ANGEL + " small at the trunk with her left palm resting on the bark, a warm white-gold light flowing from her hand into the wood and up through the branches, long white spiral hair beginning to blend with the branches overhead. mysterious ethereal merge-spreading-bloom-spreading, no text no watermarks",
           // Beat 4 — ~35% bloom, her right side of body dissolved.
           "photorealistic cinematic wide low-angle shot of a small gnarled tree on its tiny spherical planet in cosmos, about 35 PERCENT of the branches now covered in dense pure white flowers (the bloom wave radiating outward from the trunk, 65% of branches still dead), warm sunset glow, universe sky. " + GHOST_ANGEL + " small at the trunk with her ENTIRE RIGHT SIDE from shoulder to hip to leg fully dissolved into the wood (that half of her body is now bark and wood-grain, indistinguishable from the trunk), her left side still pale-skinned and white-dressed, long white spiral hair flowing UP and INTO the blooming branches overhead like ribbons becoming wood. mysterious ethereal half-merged-half-bloomed, no text no watermarks",
           // Beat 5 — ~55% bloom, her torso fully wood.
           "photorealistic cinematic wide three-quarter shot of a small gnarled tree on its tiny spherical planet in cosmos, about 55 PERCENT of the branches now covered in pure white flowers (45% still bare), warm sunset glow, universe sky of stars nebulae galaxies. " + GHOST_ANGEL + " small at the trunk with her entire TORSO now fully merged INTO the tree trunk (her torso is indistinguishable from the bark, all wood-grain, no longer a separate figure), only her head (back-of-head, face not visible) and long white spiral hair remain as human form, her hair beginning to split into finer branch-like filaments reaching upward into the canopy. mysterious ethereal deep-merge-spreading-bloom, no text no watermarks",
           // Beat 6 — ~75% bloom, body gone, hair becoming branches.
-          "photorealistic cinematic extreme wide shot of a small gnarled tree on its tiny spherical planet in cosmos, roughly 75 PERCENT of the branches covered in dense pure white flowers (only outermost branch tips still bare and dark), warm sunset glow rimming everything, universe sky of stars nebulae galaxies. " + GHOST_ANGEL + " now barely recognizable at the trunk — her body has been ENTIRELY ABSORBED into the tree and is gone, only her LONG WHITE SPIRAL HAIR remains as streaming fibonacci filaments blending into and BECOMING additional branches of the tree's canopy, white particles scattering throughout. mysterious ethereal near-complete-merge-near-full-bloom, no text no watermarks",
+          "photorealistic cinematic extreme wide shot of a small gnarled tree on its tiny spherical planet in cosmos, roughly 75 PERCENT of the branches covered in dense pure white flowers (only outermost branch tips still bare and dark), warm sunset glow rimming everything, universe sky of stars nebulae galaxies. " + GHOST_ANGEL + " softly glowing at the trunk — her body still present, standing against the trunk and beginning to dissolve into soft light where it meets the tree, her LONG WHITE SPIRAL HAIR streaming upward as fibonacci filaments blending into and BECOMING additional branches of the tree's canopy, white particles scattering throughout. mysterious ethereal near-complete-merge-near-full-bloom, no text no watermarks",
           // Beat 7 — ~90% bloom, hair is now branches.
           "photorealistic cinematic wide low-angle shot looking up at a small gnarled tree on its tiny spherical planet in cosmos, about 90 PERCENT of the branches covered in dense pure white flowers (only a few outermost twigs still bare), warm golden-sunset light streaming through the canopy in radiant shafts, universe sky. the angel's physical form is GONE — only her long white spiral fibonacci hair remains visible WOVEN INTO the branches as glowing filaments of light cascading through the canopy, her translucent wispy wings now are branch-shapes of light woven through the bloom. mysterious ethereal almost-fully-merged-almost-fully-bloomed, no text no watermarks",
           // Beat 8 — 100% bloom + fully merged, radiant.

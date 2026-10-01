@@ -5,7 +5,7 @@ import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { TAKE_INTRO_STILLS } from "@/lib/journeys/pinned-takes";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
-import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT, getGhostAgeForPhase, getGhostOverlayForPhase } from "@/lib/journeys/journeys";
+import { GHOST_NEGATIVE_PROMPT, composeGhostPrompt } from "@/lib/journeys/journeys";
 import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
@@ -1068,23 +1068,16 @@ export function AiImageLayer({
     // <<GHOST_ANGEL>> is the winged angel, white or possessed-black
     // depending on the bass-flash count.
     let basePrompt = currentPrompt;
+    let ghostTail = "";
     if (activeJourney?.id === "ghost") {
-      const currentGhostPhase = getJourneyEngine().getCurrentPhase();
-      const age = getGhostAgeForPhase(currentGhostPhase);
-      const overlay = getGhostOverlayForPhase(currentGhostPhase);
-
-      if (basePrompt.includes(GHOST_ANGEL_WINGLESS_MARKER)) {
-        basePrompt = basePrompt.split(GHOST_ANGEL_WINGLESS_MARKER).join(GHOST_ANGEL_WINGLESS_WHITE);
-      }
-      if (basePrompt.includes(GHOST_ANGEL_MARKER)) {
-        const theme = getGhostAngelTheme();
-        const descriptor = theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE;
-        basePrompt = basePrompt.split(GHOST_ANGEL_MARKER).join(descriptor);
-      }
-
-      // Prepend age + overlay so every Ghost frame carries them without
-      // needing to hand-edit all ~40 sequence entries.
-      basePrompt = `${age}. ${overlay}. ${basePrompt}`;
+      // Front-loaded order — see composeGhostPrompt (journeys.ts).
+      const { scene, tail } = composeGhostPrompt(
+        basePrompt,
+        getJourneyEngine().getCurrentPhase(),
+        getGhostAngelTheme(),
+      );
+      basePrompt = scene;
+      ghostTail = tail;
     }
 
     let variedPrompt: string;
@@ -1107,6 +1100,7 @@ export function AiImageLayer({
     if (isPackActive()) {
       variedPrompt = `${variedPrompt}, ${tramokyoGradeForPhase(getJourneyEngine().getCurrentPhase())}`;
     }
+    if (ghostTail) variedPrompt = `${variedPrompt}, ${ghostTail}`;
 
     // Capture the journey id at dispatch time. We only discard landings if
     // the journey itself changed — sequence-driven prompt changes happen
