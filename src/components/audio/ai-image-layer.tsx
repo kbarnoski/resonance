@@ -231,6 +231,14 @@ export function AiImageLayer({
     // Climax trimmed 4->3 (Karel 2026-09-30: "stop overdoing these
     // compositions" — the top band stacked into walls again).
     const cap = (t < 0.4 ? 1 : t < 0.65 ? 2 : 3) + bias;
+    // Pre-finale imaging floor (Karel 2026-10-01 note #8: "the sparse
+    // image in ending section before final morph boring"): the 72-88%
+    // approach keeps at least two layers building into the finale.
+    {
+      const st = useAudioStore.getState();
+      const prog = st.duration > 0 ? st.currentTime / st.duration : 0;
+      if (prog > 0.72 && prog < 0.88) return Math.min(getTierProfile().maxAiLayers, Math.max(2, cap));
+    }
     return Math.min(getTierProfile().maxAiLayers, cap);
   }, []);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
@@ -245,12 +253,16 @@ export function AiImageLayer({
   // the only thing on screen and no boundary/video moment is running.
   useEffect(() => {
     const id = setInterval(() => {
-      if (inBoundarySettle() || isVideoActive() || getJourneyEngine().isInStillness()) return;
+      if (inBoundarySettle() || isVideoActive()) return;
       const now = performance.now();
+      // Stillness slows the cap but no longer suspends it (2026-10-01
+      // mastering log: fades firing at 22-28s — "sitting on this image
+      // really long").
+      const ageMax = getJourneyEngine().isInStillness() ? 20_000 : 13_000;
       const stills = layersRef.current.filter((l) => ("complete" in l.img) && l.state !== "fading-out");
       if (stills.length < 2) return;
       for (const l of stills) {
-        if (now - l.createdTime > 13_000) { // 24->13 (Karel 2026-09-30d: "more like 12 ish")
+        if (now - l.createdTime > ageMax) {
           l.fadeStartOpacity = l.opacity;
           l.state = "fading-out";
           l.fadeStartTime = now;

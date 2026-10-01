@@ -196,6 +196,7 @@ class JourneyEngine {
    *  three band layers stay on screen (Karel 2026-09-30). */
   private kineticEq = false;
   private takeSeedValue: number | null = null;
+  private dualStartMs = 0;
   private scriptSubs = new Map<string, string | null>();
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
@@ -455,8 +456,12 @@ class JourneyEngine {
     this.lastProgress = clamped;
 
     // Check event markers
+    // Visual lead (Karel 2026-10-01 note: the angel flash lands ~1/4s
+    // after its bass cue): fire events 250ms EARLY so the flash's
+    // mount+decode latency puts it ON the beat, not behind it.
+    const leadFrac = this.trackDuration > 0 ? 0.25 / this.trackDuration : 0.001;
     for (const evt of this.eventMarkers) {
-      if (!this.firedEvents.has(evt.progress) && clamped >= evt.progress && clamped <= evt.progress + 0.015) {
+      if (!this.firedEvents.has(evt.progress) && clamped >= evt.progress - leadFrac && clamped <= evt.progress + 0.015) {
         this.firedEvents.add(evt.progress);
         this.eventImpulse = evt.intensity;
         this.eventInitialIntensity = evt.intensity;
@@ -1057,9 +1062,16 @@ class JourneyEngine {
       glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} (scripted)`);
       this.lastAnySwitchMs = now;
     }
+    // Dual REST (Karel 2026-10-01 note #4: ghostribbons rode a 70s
+    // scripted dual slot — "they stay and stay"): a scripted dual that
+    // has held 35s rests (layer breathes away) until the next entry.
+    if (dual && dual === this.dualShaderMode && this.dualStartMs > 0 && now - this.dualStartMs > 35_000) {
+      dual = null;
+    }
     if (dual !== this.dualShaderMode) {
       this.closeHistoryEntry("dual", now);
       this.dualShaderMode = dual;
+      this.dualStartMs = dual ? now : 0;
       if (dual) {
         this.seenShaders.add(dual);
         this.shaderHistory.push({ mode: dual, role: "dual", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });

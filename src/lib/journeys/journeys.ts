@@ -242,7 +242,9 @@ export const RECAST_SAFELIST: Record<string, readonly string[]> = {
   // Trimmed 2026-09-30c (Karel: "any full screen shader that changes the
   // color and tint of the entire image is no good for snowflake" — the
   // washes empyrean/dark-aurora/chinook are out; particle/linear only).
-  winter: ["radiance", "r3-aurorastreams", "r3-ghostribbons", "drift", "cirrus", "r-droplets"],
+  // 2026-10-01 mastering: radiance + r3-aurorastreams convicted as
+  // full-frame color washes; contained company particles join.
+  winter: ["drift", "cirrus", "r-droplets", "r3-ghostribbons", "murmuration", "pendulum-dust", "firefly-field"],
 };
 
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
@@ -263,6 +265,8 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "lichen", // Karel 2026-09-30: "subtle web like shader with some green" — lichen dual recast at p0.314
   ]),
   hell: new Set([
+    "eclipse-ring", // Karel 2026-10-01: "the bright circles shader in realized doesnt work" (Snowflake keeps its own)
+    "catacomb-torch", // Karel 2026-10-01: "realized shouldnt end with full color shader over it" — the take's closer
     "nova", // Karel 2026-09-30 screenshot: the concentric shockwave rings over the comet clip (nova @p0.744) — "dont use this morph in realized" (it was the shader, not a morph)
   ]),
 };
