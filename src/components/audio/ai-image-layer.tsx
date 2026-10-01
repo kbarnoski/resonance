@@ -258,7 +258,7 @@ export function AiImageLayer({
       // Stillness slows the cap but no longer suspends it (2026-10-01
       // mastering log: fades firing at 22-28s — "sitting on this image
       // really long").
-      const ageMax = getJourneyEngine().isInStillness() ? 20_000 : 13_000;
+      const ageMax = getJourneyEngine().isInStillness() ? 16_000 : 11_000; // 2026-10-01: "gotta keep these images moving"
       const stills = layersRef.current.filter((l) => ("complete" in l.img) && l.state !== "fading-out");
       if (stills.length < 2) return;
       for (const l of stills) {
@@ -627,7 +627,9 @@ export function AiImageLayer({
       // (frames f0203-f0204, session 1ebs19): Realized's ember still
       // popped in at the right edge on the default fade = Karel's
       // "lower right quick increase in brightness".
-      fadeInMs: coverBoost ? 3000 : !isVideo && inBoundarySettle() ? 8000 : undefined,
+      // Cover blooms fast (Karel 2026-10-01: morph end-frame moment
+      // "just a bit too paused") — 1.2s instead of 3s.
+      fadeInMs: coverBoost ? 1200 : !isVideo && inBoundarySettle() ? 8000 : undefined,
       coverHold: coverBoost || undefined,
       opacity: 0,
       state: "fading-in",
@@ -883,7 +885,7 @@ export function AiImageLayer({
                   glitchRecord("morph-finale-hold");
                   morphCoverPendingRef.current = true;
                   lastGenTimeRef.current = 0;
-                  getJourneyEngine().nudgeShaderRotation(2000);
+                  getJourneyEngine().nudgeShaderRotation(800);
                   // ...and it releases IMMEDIATELY (Karel 2026-09-30:
                   // "you HAVE to transition from that last morph when
                   // it completes and do not wait. its blocking the
@@ -927,7 +929,7 @@ export function AiImageLayer({
               // only the frame's own slow melt waits out the dwell.
               morphCoverPendingRef.current = true;
               lastGenTimeRef.current = 0;
-              getJourneyEngine().nudgeShaderRotation(2000);
+              getJourneyEngine().nudgeShaderRotation(800);
               setTimeout(() => {
                 const layer = layersRef.current.find((l) => l.img === v);
                 if (layer && layer.state !== "fading-out") {

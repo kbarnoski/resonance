@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18416-chordfold",
+  "cycle": 18416,
+  "name": "Harmonize your recording in the chord of the moment",
+  "status": "demoable",
+  "description": "The one question. What if your two hands harmonized your own piano recording *in the key and chord of the moment* — pull your hands apart and the single take fans open into a chord",
+  "category": "local"
+ },
+ {
   "slug": "18384-throatmorph",
   "cycle": 18384,
   "name": "Throatmorph",
