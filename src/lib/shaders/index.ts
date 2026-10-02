@@ -240,7 +240,7 @@ import {
   R_MERCURY, R_TENDRILS, R_STARDUST, R_EMBERS,
   R_KALEIDO, R_BLACKHOLE,
   R_MOLTEN, R_SMOKERINGS,
-  R_GROWTH, R_SILK, R_DROPLETS,
+  R_GROWTH, R_SILK, R_DROPLETS, R_PETALS,
 } from "./review-pack";
 // Pack #2 survivors only — deleted entries removed from import list.
 import {
@@ -511,6 +511,7 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "r-growth": R_GROWTH,
   "r-silk": R_SILK,
   "r-droplets": R_DROPLETS,
+  "r-petals": R_PETALS, // Ghost ending only (pinned via the scripted take; globally blocked from rotation)
   // ─── Review pack #2 survivors ───
   "r2-curlswarm": R2_CURLSWARM,
   "r2-spiralgal": R2_SPIRALGAL,
@@ -847,6 +848,7 @@ export const MODE_META: ModeMeta[] = [
   { mode: "r-embers", label: "Ember Storm", category: "Elemental" },
   { mode: "r-molten", label: "Molten Gold", category: "Elemental" },
   { mode: "r-droplets", label: "Mercury Droplets", category: "Elemental" },
+  { mode: "r-petals", label: "Cherry Petals", category: "Cosmic" },
   { mode: "r-stardust", label: "Stardust River", category: "Cosmic" },
   { mode: "sparkler", label: "Sparkler", category: "Cosmic", addedDate: "2026-09-30" },
   { mode: "resonant-rings", label: "Resonant Rings", category: "Cosmic", addedDate: "2026-09-30" },

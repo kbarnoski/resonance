@@ -281,6 +281,7 @@ const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "roulette", // Karel 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 straight seconds — perf hazard
   "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
   "snow", // only appropriate for winter/snowflake or user-created journeys
+  "r-petals", // Ghost-ending-only pink particle shader (Karel 2026-10-01) — scripted take only, never rotation
   "rain", "night-rain", // banned ENTIRELY (Karel 2026-09-30) — no realm exceptions
   // Too subtle / invisible over journey imagery
   "abyss-light", // output 0.0–0.15, tiny particles on near-black base

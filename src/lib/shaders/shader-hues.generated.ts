@@ -158,6 +158,7 @@ export const SHADER_HUES: Record<string, ShaderHueFamily> = {
   "r-kaleido": "blue",
   "r-mercury": "blue",
   "r-molten": "gold",
+  "r-petals": "magenta",
   "r-silk": "blue",
   "r-smokerings": "neutral",
   "r-stardust": "blue",

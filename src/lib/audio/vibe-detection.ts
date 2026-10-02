@@ -293,6 +293,7 @@ export type VisualizerMode =
   | "r-stained"
   | "r-pollen"
   | "r-droplets"
+  | "r-petals"
   | "r-prism"
   // Review pack #2
   | "r2-curlswarm"
