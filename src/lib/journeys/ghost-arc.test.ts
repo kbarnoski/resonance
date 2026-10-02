@@ -175,7 +175,7 @@ describe("Ghost arc law — beat text honors its stage", () => {
 
   it("the tree is saturated cherry-pink throughout stages 5–7 — never a white tree, never a moon", () => {
     const treeBeats = beats.filter((b) => b.stage >= 5 && b.stage <= 7 && /\btree\b(?! roots)/i.test(b.text));
-    expect(treeBeats.length).toBeGreaterThanOrEqual(8);
+    expect(treeBeats.length).toBeGreaterThanOrEqual(6); // round 5b: the two union-mandala beats avoid the word "tree" (it drew orchards)
     for (const b of treeBeats) {
       expect(b.text, label(b)).toMatch(/cherry-pink/i);
       expect(b.text, label(b)).not.toMatch(/pure white flowers|white flowers|perfectly round planet/i);
@@ -214,7 +214,9 @@ describe("Ghost arc law — beat text honors its stage", () => {
   });
 
   it("identical wings + da Vinci spiral hair are stated up front in EVERY frame's prompt", () => {
-    for (const b of beats) {
+    // Integration is the deliberate exception: the distance branch drops the
+    // detail lines so she stays a tiny speck (round 5b).
+    for (const b of beats.filter((x) => x.phase !== "integration")) {
       const { scene } = composeGhostPrompt(b.text, b.phase, "white");
       expect(scene, label(b)).toMatch(/translucent veils of glowing mist and light unfurling from her shoulder blades like wings/);
       expect(scene, label(b)).toMatch(/Leonardo da Vinci fibonacci spiral curls/);
@@ -280,6 +282,8 @@ describe("Ghost arc law — stage-8 distance pipeline (Karel 2026-10-01, round 4
     for (const b of beats.filter((x) => x.phase === "integration")) {
       const { scene, tail } = composeGhostPrompt(b.text, "integration", "white");
       expect(scene, label(b)).toContain("EXTREME LONG SHOT");
+      expect(scene, label(b)).toMatch(/tiny speck/);
+      expect(scene, label(b)).toMatch(/one tenth of the frame height/);
       expect(scene, label(b)).not.toContain("REAR VIEW ONLY");
       expect(scene, label(b)).not.toMatch(/her arms are healthy/);
       expect(scene, label(b)).not.toMatch(/skin texture/);
@@ -296,8 +300,8 @@ describe("Ghost arc law — stage-8 distance pipeline (Karel 2026-10-01, round 4
     }
   });
 
-  it("LoRA scale: 0.4 for the ending, 0.9 everywhere else", () => {
-    expect(ghostLoraScaleForPhase("integration")).toBe(0.4);
+  it("LoRA scale: 0.25 for the ending, 0.9 everywhere else", () => {
+    expect(ghostLoraScaleForPhase("integration")).toBe(0.25);
     for (const id of ["threshold", "expansion", "transcendence", "illumination", "return", null]) {
       expect(ghostLoraScaleForPhase(id)).toBe(0.9);
     }
