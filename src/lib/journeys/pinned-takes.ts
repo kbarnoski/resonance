@@ -47,6 +47,10 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   ],
   // Ghost — session p4jv6o ("ghost take you should keep"); lightrivers
   // filtered here too per the same ban (dharma holds through p0.637).
+  // LOCKED 2026-10-01 (Karel: "everything else use that take as far as
+  // images and shaders etc. lock it in") — mastered Ghost take. Pack
+  // stills snapshot: ~/Documents/Resonance/ghost-LOCKED-2026-10-01/.
+  // Change only on Karel's explicit note.
   "ghost": [
     // Rebuilt 2026-10-01 (Karel: "dont use the full screen shaders that
     // lighten the screen it looks bad and removes detail" — the first
@@ -66,11 +70,11 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0.52,"role":"primary","mode":"will-o-wisp"},
     {"p":0.576,"role":"primary","mode":"r3-fairyglow"},
     {"p":0.637,"role":"primary","mode":"r2-curlswarm"},
-    {"p":0.69,"role":"primary","mode":"sparkler"},
+    {"p":0.69,"role":"primary","mode":"pendulum-dust"}, // sparkler out (Karel 2026-10-01: "dont use that bright white sparkle shader in ghost")
     {"p":0.749,"role":"primary","mode":"starfield"},
     {"p":0.817,"role":"primary","mode":"murmuration"}, // r3-spirittrails out: colored light streaks across the flight
-    {"p":0.877,"role":"primary","mode":"drift"},
-    {"p":0.91,"role":"primary","mode":"r-petals"}, // ending: "joining an infinite light in the cosmos with some pink particle shader" (Karel 2026-10-01)
+        {"p":0.85,"role":"primary","mode":"r-petals"}, // petals over the TREE/union only (Karel: "cool with that tree scene but dont have it over the cosmos scene after")
+    {"p":0.91,"role":"primary","mode":"starfield"}, // the cosmos ending: "another subtle shader"
   ],
   // Realized — locked 2026-09-30 ("keep every take of what you have and
   // we will start mastering from here") — latest complete lap, flight log.
