@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18544-gaitpulse",
+  "cycle": 18544,
+  "name": "Gaitpulse",
+  "status": "demoable",
+  "description": "The one question: *What if your whole body's SWAY became the PULSE of one of Karel's recordings — conduct the rhythm with your body, not your hands?*",
+  "category": "local"
+ },
+ {
   "slug": "18512-facescore",
   "cycle": 18512,
   "name": "Facescore",
