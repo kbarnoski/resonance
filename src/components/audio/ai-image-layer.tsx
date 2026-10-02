@@ -354,6 +354,8 @@ export function AiImageLayer({
   const pendingIntroStillRef = useRef<string | null>(null);
   const pendingFinaleStillRef = useRef<string | null>(null);
   const lastPushedPhaseStartRef = useRef(-1);
+  const phaseEntryRetriesRef = useRef(0);
+  const lastRetryPhaseRef = useRef(-1);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
@@ -830,6 +832,10 @@ export function AiImageLayer({
         lastPackIndexRef.current = idx;
         if (phaseSlice) lastPushedPhaseStartRef.current = phaseSlice.start;
         if (phaseEntry) glitchRecord("phase-entry", `slot ${idx}`);
+        if (phaseSlice && phaseSlice.start !== lastRetryPhaseRef.current) {
+          lastRetryPhaseRef.current = phaseSlice.start;
+          phaseEntryRetriesRef.current = 0;
+        }
         const stillUrl = urls[idx];
         // URL dedupe (session 66wil0: gen-107 pushed twice back-to-back
         // via two different slots) — curated bands repeat URLs across
@@ -844,6 +850,16 @@ export function AiImageLayer({
         if (!dupStill) loadImage(stillUrl)
           .then((img) => {
             if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");
+            else if (phaseEntry && lastPackIndexRef.current === idx && phaseEntryRetriesRef.current < 3) {
+              phaseEntryRetriesRef.current++;
+              // A phase's opening image refused (e.g. the 9s peak hold —
+              // run after 2a634fe8 lost Ghost's stage-5 opener 054 that
+              // way): re-arm so the next tick retries the same slot.
+              lastPushedPhaseStartRef.current = -1;
+              lastPackIndexRef.current = -1;
+              lastPackUrlRef.current = null;
+              glitchRecord("phase-entry-retry", `slot ${idx}`);
+            }
             // Feed the depth-parallax base layer (it no-ops without depth
             // coverage) — STAGGERED 1.5s behind the collage push: the
             // texture upload (2x 1024^2) landing in the same frame as the
