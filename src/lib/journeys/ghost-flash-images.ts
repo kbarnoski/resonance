@@ -63,7 +63,22 @@ export function getGhostAngelTheme(): "white" | "black" {
   return "white"; // possession retired 2026-10-01 — never the black dress
 }
 
+/** Baked flash angel (2026-10-01): made from the SAME reference angel as
+ *  every Ghost still, so the flash matches her — and it works OFFLINE (the
+ *  desert kiosk has no fal access; the old per-session gen silently fell
+ *  back to an unrelated dark feathered angel). */
+export const GHOST_FLASH_ANGEL_SRC = "/images/ghost-flash-angel.png";
+
 export function prepareGhostFlashImages(journeyId: string): Promise<void> {
+  // Baked image only — no live generation (consistency + offline).
+  if (GHOST_FLASH_ANGEL_SRC) {
+    currentJourneyId = journeyId;
+    ghostFlashCount = 0;
+    flashUrls[0] = GHOST_FLASH_ANGEL_SRC;
+    flashUrls[1] = GHOST_FLASH_ANGEL_SRC;
+    preparePromise = Promise.resolve();
+    return preparePromise;
+  }
   if (currentJourneyId !== journeyId) {
     abortController?.abort();
     currentJourneyId = journeyId;

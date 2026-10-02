@@ -26,7 +26,7 @@ interface FlashAngelProps {
  * by ancestor stacking contexts AND couldn't handle fal.ai's JPEG near-black
  * (RGB 5,5,5) artifacts.
  */
-const FALLBACK_SRC = "/images/flash-angel-1.png";
+const FALLBACK_SRC = "/images/ghost-flash-angel.png"; // baked canon-consistent angel (2026-10-01)
 
 // Keyed-canvas cache (Karel 2026-10-01: "the angel needs to come in at
 // same time as the white flash"). Keying used to start when FlashAngel

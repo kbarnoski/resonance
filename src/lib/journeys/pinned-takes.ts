@@ -63,7 +63,7 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0,"role":"primary","mode":"starfield"},
     {"p":0.152,"role":"primary","mode":"drift"},
     {"p":0.208,"role":"primary","mode":"yantra"},
-    {"p":0.272,"role":"primary","mode":"magma"},
+    {"p":0.272,"role":"primary","mode":"coral"}, // amber web ONLY in the build-up to flash #2 (Karel 2026-10-01: "not twice")
     {"p":0.33,"role":"primary","mode":"murmuration"},
     {"p":0.389,"role":"primary","mode":"drift"},
     {"p":0.453,"role":"primary","mode":"r-stardust"},

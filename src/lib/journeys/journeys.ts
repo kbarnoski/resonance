@@ -884,6 +884,7 @@ export const GHOST_NEGATIVE_PROMPT =
   "membrane wings, filigree wings, panel wings, wing panels, " +
   "missing wing, one wing, detached wings, floating wings, " +
   "man-made tunnel, brick wall, stone masonry, carved corridor, " +
+  "mushrooms, mushroom, toadstools, fungi, fungus, glowing mushrooms, " +
   "different people, crowds of angels, group of women, multiple different figures, sibling, child, " +
   "distant person, background silhouette, figure in distance";
 
@@ -2033,8 +2034,8 @@ export const JOURNEYS: Journey[] = [
           "photorealistic cinematic extreme wide shot of a vast underground cave far beneath the surface of the earth in total subterranean darkness, colossal columns of dark rock and ancient root tendrils, enclosed in dark earth on every side, a natural root path spiraling ever downward through it like a great descending staircase, pale bioluminescent teal glow, roots hanging from the earthen ceiling like stalactites. " + GHOST_ANGEL + " tiny far below on the descending path with her back to the camera, arms crossed peacefully over her chest, long white spiral fibonacci hair trailing with white particles. mysterious ethereal the depths of the earth, no text no watermarks",
           // Stage 3 — deeper: overhead, straight down a spiral shaft into the earth.
           "photorealistic cinematic extreme overhead shot looking straight DOWN a vast spiraling cave shaft of dark earth and rock laced with ancient root tendrils plunging into the depths of the earth, rings of pale bioluminescent teal lichen receding into darkness far below. " + GHOST_ANGEL + " a tiny figure far below descending the spiral with her arms outstretched to her sides, long white spiral fibonacci hair fanning behind her in a fibonacci curve on the dark earth, white particles. mysterious ethereal descent into the deep, no text no watermarks",
-          // Stage 3 — deeper still: side passages, drifting luminous spores.
-          "photorealistic cinematic worm's-eye low-angle wide shot deeper still beneath the earth in total subterranean darkness, towering cave walls of dark earth and rock laced with ancient root tendrils rising on both sides of the descending passage, dark side passages branching away into the deep, luminous spores drifting in the still air, pale bioluminescent teal lichen glowing, enclosed underground with no sky. " + GHOST_ANGEL + " small hovering downward between the towering root walls with her back to the camera, arms trailing softly behind her, long white spiral fibonacci hair trailing upward with white particles. mysterious ethereal the deepest passage, no text no watermarks",
+          // Stage 3 — deeper still: side passages, drifting motes of light (round 6d: no spores/fungi — Karel: no mushrooms).
+          "photorealistic cinematic worm's-eye low-angle wide shot deeper still beneath the earth in total subterranean darkness, towering cave walls of dark earth and rock laced with ancient root tendrils rising on both sides of the descending passage, dark side passages branching away into the deep, tiny motes of soft light drifting in the still air, pale bioluminescent teal lichen glowing, enclosed underground with no sky. " + GHOST_ANGEL + " small hovering downward between the towering root walls with her back to the camera, arms trailing softly behind her, long white spiral fibonacci hair trailing upward with white particles. mysterious ethereal the deepest passage, no text no watermarks",
           // Stage 3 — the deepest stretch: a faint teal glow ahead is the water (leads into stage 4).
           "photorealistic cinematic forward-looking wide shot from behind deep into the final stretch of the passage far beneath the earth, the walls of gnarled tree roots and dark earth opening toward a distant glow of pale teal light far ahead where still water waits. " + GHOST_ANGEL + " small in the middle of the passage with her back to the camera and her arms now reaching forward toward the distant glow, long white spiral fibonacci hair streaming with white particles. mysterious ethereal the deep passage ends at the water, no text no watermarks",
         ],
@@ -2045,7 +2046,7 @@ export const JOURNEYS: Journey[] = [
         guidancePhrases: ["the portal opens...", "she is stepping through...", "listen between the notes..."],
         poetryMood: "hypnotic",
         voice: "ash",
-        aiOverlayPrompt: "cluster of pale bioluminescent spores drifting with organic luminescent tendrils, cold blue-green glow, isolated single element on pure black background, photorealistic, cinematic lighting, no text no signatures no watermarks no letters no writing",
+        aiOverlayPrompt: "cluster of pale glowing motes of light drifting with soft luminous light-threads, cold blue-green glow, isolated single element on pure black background, photorealistic, cinematic lighting, no text no signatures no watermarks no letters no writing",
       },
 
       // ── Possession: still water, white water lilies, reflection, light at end ──

@@ -202,7 +202,7 @@ export function JourneyCompositor({
   useEffect(() => {
     if (!enableBassFlash) return;
     const warm = () => {
-      void warmFlashAngel("/images/flash-angel-1.png");
+      void warmFlashAngel("/images/ghost-flash-angel.png");
       void warmFlashAngel(flashAngelSrc(1));
     };
     warm();
