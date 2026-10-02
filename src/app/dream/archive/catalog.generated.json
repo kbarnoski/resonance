@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18576-ebbline",
+  "cycle": 18576,
+  "name": "Ebbline",
+  "status": "demoable",
+  "description": "What if leaning your body forward and back made one of Karel's real piano recordings flow forward or run backward — your torso the live performer the playback engine follows, in ra",
+  "category": "local"
+ },
+ {
   "slug": "18544-gaitpulse",
   "cycle": 18544,
   "name": "Gaitpulse",

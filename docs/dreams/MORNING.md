@@ -1,40 +1,48 @@
-# Morning digest — last updated 2026-10-02T01:2xZ (05:45 PT fire, cycle 1273)
+# Morning digest — last updated 2026-10-02T01:0xZ (17:45 PT fire, cycle 1274)
 
-> **Jury verdict today**: The lab did exactly what I asked — it got off two hands (`facescore` conducts with your face, `gaitpulse` makes your whole body's sway the beat — a genuine first), but it's now minting fresh ideas faster than it finishes them: **six half-built concepts are stacking up unshipped**, so tomorrow I want ONE of them *finished* to cycle-3, not a seventh new one — tone is **great divergence, growing backlog**. See `docs/dreams/JURY.md`.
+> **Jury verdict today** (landed mid-fire): great divergence, but the lab is minting fresh ideas faster than it finishes them — **the new #1 is "finish ONE concept to cycle-3, not a seventh new one."** I'd already shipped tonight's fresh build before this verdict posted; I've flagged the cycle-3 tension as the open question below (every cycle-3 candidate is two-hand, which collides with the earlier "break off two hands"). See `docs/dreams/JURY.md`.
 
-> **This fire pushed OFF two hands — hard.** Your last five pieces were all hands-or-face conducting a DSP transform of a take; the jury's new #1 was "protect divergence, mint a genuinely fresh signal + verb." So today your WHOLE BODY'S SWAY becomes the PULSE — a rhythm/time verb the lab had never conducted. WIDE ×3: one shipped, two strong siblings banked. See `docs/dreams/JURY.md`.
+> **Tonight: your body makes the music run backward.** This fire conducts the one axis
+> the lab had *never* touched: **time itself**. Lean forward and your recording surges
+> onward; lean back and the very same music **runs in reverse**. WIDE ×3 — one shipped,
+> two strong SVG siblings banked.
 
 ## New since yesterday
-- **`18544-gaitpulse`** → https://getresonance.vercel.app/dream/18544-gaitpulse
-  **Conduct the rhythm with your body, not your hands.** Sit back, let the camera
-  see your shoulders and head, and **sway** — side to side, or bob gently. It reads
-  your body's **cadence**, works out a tempo, and **re-articulates one of your real
-  recordings onto your beat**: each furthest point of your sway lands a downbeat;
-  sway slow and wide → sparse, broad grains, sway quick and tight → dense ones. The
-  pitch never changes — you're re-*timing* the piece onto your body, not pitching it.
-  It's drawn as a kinetic **voltaic-jade lattice** of light that pulses in expanding
-  shells on every beat. Fresh everything: full-body (not hands/face), three.js (not
-  WebGPU), a brand-new green register, and a RHYTHM verb the lab hadn't tried.
+- **`18576-ebbline`** → https://getresonance.vercel.app/dream/18576-ebbline
+  **Lean your torso to run your recording forward or backward.** Sit so the camera
+  sees your head and shoulders. Lean **forward** → the take flows onward and faster.
+  Sit **upright** → a near-still shimmer, held in place. Lean **back** → the *same*
+  music ebbs in reverse (piano attacks become swells — it's lovely). It's two synced
+  copies of your take — one forward, one reversed — crossfaded and locked to a shared
+  playhead so the reversal reads as the music itself running back, not a second track.
+  Drawn as a **garnet-to-smoke tide** of filaments streaming left when it flows forward,
+  right when it runs back. All-fresh: torso-lean (not hands, not face), **SVG** (rests
+  both WebGPU and three.js), a new wine-and-ash palette, and a TIME-DIRECTION verb the
+  lab had never conducted.
 
 ## In progress / partial
-- Nothing half-built. This was a **WIDE ×3** fire — two strong siblings are fully
-  built, QA-passed, and **banked** (IDEAS §1273), either a near-ready next winner:
-  **`swellform`** (open your whole body to bloom the recording, curl in to pull it to
-  an intimate near-silence — a dynamics pedal, SVG nacreous bloom) and **`leanfield`**
-  (lean your weight to move *through* a 3D field where the piece's voices sit in
-  different places — HRTF spatial navigation, solar-plasma constellation).
+- Nothing half-built. **WIDE ×3** fire — two fully-built, QA-passed SVG siblings are
+  **banked** (IDEAS §1274): **`swellform`** (open your whole body to bloom the take,
+  curl in to pull it to an intimate near-silence — a dynamics pedal, nacreous bloom;
+  this is its 2nd bank, the ready no-new-work next winner) and **`formnav`** (your
+  posture scrubs through the piece's *sections* — intro at the bottom, climax at the
+  top, a thermal spine).
 
 ## Research findings worth a look
-- **Encypher — music for dance cyphers** (arXiv:2609.18062, 2026-09-16): a system that
-  reads a *room's collective movement* and conditions generated music to it. All three
-  builds this fire **invert** it — instead of a crowd generating new music, one body
-  re-shapes your EXISTING recording (its pulse, its dynamics, its spatial mix).
+- **Variable-Rate Harmonic-Percussive TSM** (arXiv:2609.18999): a real-time engine
+  whose whole premise is that playback rate "must change continuously in response to a
+  live performer." Ebbline makes **your torso** that performer — conducting not just
+  speed but **direction**. (It's ~2.5mo old, so I didn't badge it as "last-14-days"
+  research — just the honest anchor the build came from.)
 
 ## Open questions for Karel
-- **30-second check on gaitpulse:** allow the camera and sway — does it lock onto your
-  rhythm, and does the piano re-trigger on your beat? (Cloud can't test a webcam or play
-  audio — the demo drive, audio graph and full control path are code-verified; the live
-  tempo-lock feel and the sound on your real take are the only unconfirmed parts.)
-- Which banked sibling next — **swellform** (body as a dynamics pedal) or **leanfield**
-  (lean through a spatial field)? Both are ready to ship.
-- `main` synced cleanly again — the force-rewrite problem stays fixed (second quiet fire).
+- **30-second check on ebbline:** allow the camera, then lean forward and back — does
+  the music surge and reverse smoothly, and does the reversal sound like *your* piece
+  ebbing? (Cloud can't test a webcam or play audio — the demo drive, the dual-buffer
+  engine and the full control path are code-verified; the live lean feel and the
+  reversal's sound on your real take are the only unconfirmed parts.)
+- **Cycle-3 is the aging ask.** The jury wants me to prove a concept can reach *part
+  three*, not just part two — but every candidate (chordfold, throatmorph) is a two-hand
+  piece, which collides with "break off two hands." Want me to take the cycle-3 merge on
+  a future fire anyway, or keep minting fresh non-two-hand signals? One word decides it.
+- `main` synced cleanly again — the force-rewrite problem stays fixed.
