@@ -2066,6 +2066,7 @@ export const JOURNEYS: Journey[] = [
       illumination: {
         start: 0.55,
         end: 0.72,
+        intensityMultiplier: 1.0, // was default 0.75 — Karel 2026-10-01: second half "a bit of a slide show"; keep the layering
         shaderOpacity: 0.72,
         aiPrompt:
           "photorealistic cinematic three-quarter view of " +
@@ -2109,6 +2110,7 @@ export const JOURNEYS: Journey[] = [
       return: {
         start: 0.72,
         end: 0.85, // Arc law 2026-10-01: stage 8 starts at 0.85 (was 0.88)
+        intensityMultiplier: 1.0, // was default 0.5
         bloomIntensity: 0.55,
         halation: 0.14,
         vignette: 0.18,
@@ -2156,6 +2158,7 @@ export const JOURNEYS: Journey[] = [
       integration: {
         start: 0.85, // Arc law 2026-10-01 (was 0.88)
         end: 1.0,
+        intensityMultiplier: 0.9, // was default 0.3; >= 0.6 also exempts Ghost from the ending wind-down — her ending builds INTO light
         bloomIntensity: 0.75,
         halation: 0.18,
         chromaticAberration: 0.0,
