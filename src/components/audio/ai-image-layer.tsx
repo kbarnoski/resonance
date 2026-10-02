@@ -819,13 +819,12 @@ export function AiImageLayer({
         if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
       }
       // Pinned finale still = the CLOSING image (Karel 2026-10-01: Ghost
-      // must END on her at a distance in the cosmos). Due ~30% into the
-      // last phase so at least one ~7s tick lands before the 0.96
-      // no-new-stills cutoff (run on bb75d3f4: a 0.95 due-point fell
-      // between ticks and never showed), pushed through the soft gates,
-      // and HELD — nothing replaces it for the rest of the journey.
+      // must END on her at a distance in the cosmos). It OPENS the last
+      // phase and is HELD to the end — runs on bb75d3f4 and 654bf741
+      // showed any later due-point falls between ~8s ticks and the 0.96
+      // no-new-stills cutoff. Pushed through the soft gates.
       const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
-      const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart + 0.3 * (1 - lastPhaseStart) : Infinity;
+      const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart : Infinity;
       const finaleDue = !!pendingFinaleStillRef.current && progress >= finaleAt && !isVideoActive() && !inBoundarySettle();
       const canPush = (!stillsBlocked || idleRescue || phaseEntry || finaleDue) && !finaleHeldRef.current;
       if (finaleDue) {
