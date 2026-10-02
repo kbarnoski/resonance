@@ -45,6 +45,16 @@ exactly one, and the order never runs backwards:
    (integration, from progress 0.85). No tree, roots, tunnel, pool, castle, stone, chamber,
    window, archway or portal.
 
+**PINK TREE (Karel 2026-10-01):** the tree is a SATURATED CHERRY-PINK
+blossoming tree throughout stages 5–7, standing on its own small dark
+rocky planet with a faint blue atmosphere rim (wording that keeps the
+planet from rendering as a moon). The bloom still GROWS: soft pink
+clusters on mostly bare branches when first seen → a full infinite
+pink canopy at the union. The pool flowers (stage 4) and the stage-2
+entrance flowers stay PURE WHITE. The earlier "all-white tree flowers /
+NO color" rule for the tree (§4 Phase 5 Flowers rule, §7 "no colored
+flowers") is RETIRED for the tree only.
+
 **No stone-room / castle / portal content after stage 1. Ever.**
 Enforced by `src/lib/journeys/ghost-arc.test.ts` (stage map lives in
 `src/lib/journeys/ghost-arc.ts`).
@@ -392,7 +402,7 @@ Progression over the phase:
    blooming tree — her long spiral hair now branches, her wings now
    branch-shapes of light. Wide / mid shot of the integrated tree.
 
-**Flowers rule.** All-white petals, all-white centers. **NO** yellow.
+**Flowers rule.** [RETIRED for the tree 2026-10-01 — PINK TREE, §0] All-white petals, all-white centers. **NO** yellow.
 **NO** color.
 
 **Angel state.** White, **winged**, **eventually translucent and
@@ -630,3 +640,7 @@ dark-to-white snap.
   journeys.ts rewritten to the stages; arc test added
   (`src/lib/journeys/ghost-arc.test.ts`). Possession story retired;
   integration starts at 0.85.
+- **v4.1 — PINK TREE.** 2026-10-01. Karel chose a saturated cherry-pink
+  tree throughout stages 5–7 (pool + entrance flowers stay pure white).
+  Ghost beats, GHOST_NEGATIVE_PROMPT (dropped "pink flower") and the arc
+  test updated; pack slots 054–079 regenerated.

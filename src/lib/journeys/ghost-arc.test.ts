@@ -77,6 +77,7 @@ describe("Ghost arc law — beat text honors its stage", () => {
     const s4 = beats.filter((b) => b.stage === 4);
     for (const b of s4) {
       expect(b.text, label(b)).toMatch(/infinite floating pure white flowers/i);
+      expect(b.text, label(b)).not.toMatch(/\bpink\b|blossom/i);
       expect(b.text, label(b)).not.toMatch(/\bblack\b|\bjet\b|possess|dark reflection|shadow/i);
     }
   });
@@ -127,7 +128,25 @@ describe("Ghost arc law — beat text honors its stage", () => {
       expect(b.text.includes(GHOST_ANGEL_MARKER) || b.text.includes(GHOST_ANGEL_WINGLESS_MARKER), label(b)).toBe(true);
       expect(b.text, label(b)).not.toMatch(FROZEN);
       expect(b.text, label(b)).not.toMatch(DRUG);
-      expect(b.text, label(b)).not.toMatch(/\bpink\b|blossom/i);
+      // Pink belongs to the TREE only (stages 5–7, Karel 2026-10-01).
+      if (b.stage < 5 || b.stage > 7) expect(b.text, label(b)).not.toMatch(/\bpink\b|blossom/i);
+    }
+  });
+
+  it("the tree is saturated cherry-pink throughout stages 5–7 — never a white tree, never a moon", () => {
+    const treeBeats = beats.filter((b) => b.stage >= 5 && b.stage <= 7 && /\btree\b(?! roots)/i.test(b.text));
+    expect(treeBeats.length).toBeGreaterThanOrEqual(15);
+    for (const b of treeBeats) {
+      expect(b.text, label(b)).toMatch(/cherry-pink/i);
+      expect(b.text, label(b)).not.toMatch(/pure white flowers|white flowers|perfectly round planet/i);
+      if (/planet/i.test(b.text)) expect(b.text, label(b)).toMatch(/dark rocky planet/i);
+    }
+  });
+
+  it("stage-2 entrance flowers stay pure white", () => {
+    for (const b of beats.filter((x) => x.stage === 2 && /flowers/.test(x.text))) {
+      expect(b.text, label(b)).toMatch(/pure white flowers/i);
+      expect(b.text, label(b)).not.toMatch(/\bpink\b/i);
     }
   });
 
