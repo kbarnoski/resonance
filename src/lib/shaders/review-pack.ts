@@ -283,11 +283,13 @@ void main() {
 `;
 
 // 15. Falling cherry blossom petals
+// Pure-black base (2026-10-01): Ghost's ending shader — any lifted base
+// shows through the image layers as a grey wash ("removes detail").
 export const R_PETALS = HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.3;
-  vec3 col = vec3(0.05, 0.04, 0.07);
+  vec3 col = vec3(0.0);
   for (int i = 0; i < 40; i++) {
     float fi = float(i);
     float speed = 0.2 + fract(fi * 0.27) * 0.3;

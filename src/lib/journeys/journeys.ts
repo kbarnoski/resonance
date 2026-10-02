@@ -2056,6 +2056,13 @@ export const JOURNEYS: Journey[] = [
         start: 0.30, // phase retime 2026-10-01 (both flashes underground)
         end: 0.76,
         shaderOpacity: 0.72,
+        // Post toned down 2026-10-01 (Karel: the screen-lightening "looks bad
+        // and removes detail"): the cosmos defaults (bloom 0.7, warm temp
+        // 0.3, vignette 0.15) lifted the tunnel/pool black floor to ~20 on
+        // screen though the stills themselves sit at true black.
+        bloomIntensity: 0.3,
+        colorTemperature: 0.05,
+        vignette: 0.3,
         aiPrompt:
           "photorealistic cinematic overhead top-down shot of " +
           GHOST_ANGEL +
@@ -2114,17 +2121,17 @@ export const JOURNEYS: Journey[] = [
         aiPrompt:
           "photorealistic cinematic three-quarter view of " +
           GHOST_ANGEL +
-          " hovering forward through infinite cosmos toward a tree crowned with saturated cherry-pink blossoms standing alone on its own small dark rocky planet with a faint blue atmosphere rim ahead, the entire universe sky with stars nebulae and galaxies behind, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
+          " hovering forward through infinite cosmos toward a tree crowned with saturated cherry-pink blossoms standing alone on its own small planet of black obsidian — glassy black volcanic glass, faceted, veined with cracks of glowing white-gold and pink light, never Earth-like (no oceans, no continents, no clouds, no atmosphere) ahead, the entire universe sky with stars nebulae and galaxies behind, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
         aiPromptSequence: [
           // Round 5: beat 1 = stage 5, she arrives at the tunnel mouth and looks
           // out at the cosmos and the pink tree on its distant planet; beats 2-5 =
           // stage 6, flight through space, the blossoms growing more and more.
           // Stage 5 — at the mouth of the tunnel she looks out: the cosmos, and the pink tree on a distant planet.
-          "photorealistic cinematic wide rear shot of her standing at the mouth of the tunnel where it opens onto vast open infinite cosmos — warm light pouring in around her, she looks out at the universe sky of stars, nebulae and spiral galaxies, and far, far away a tiny tree crowned with soft spirals of saturated cherry-pink blossoms standing alone on its own small dark rocky planet with a faint blue atmosphere rim. " + GHOST_ANGEL + " small at the tunnel exit with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair trailing with white particles. mysterious ethereal looking out at the cosmos, no text no watermarks",
+          "photorealistic cinematic wide rear shot of her standing at the mouth of the tunnel where it opens onto vast open infinite cosmos — warm light pouring in around her, she looks out at the universe sky of stars, nebulae and spiral galaxies, and far, far away a tiny tree crowned with soft spirals of saturated cherry-pink blossoms standing alone on its own small planet of black obsidian — glassy black volcanic glass, faceted, veined with cracks of glowing white-gold and pink light, never Earth-like (no oceans, no continents, no clouds, no atmosphere). " + GHOST_ANGEL + " small at the tunnel exit with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair trailing with white particles. mysterious ethereal looking out at the cosmos, no text no watermarks",
           // Stage 6 — flight, spirit-tree far: about 5 PERCENT, the first sparse spirals of blossoms on threads of light (round 6: spirit tree, never a normal tree with a trunk).
-          "photorealistic cinematic extreme wide shot of infinite space like a long-exposure astrophotograph, far, far away a small luminous spirit-tree of pure light floating above its own small dark rocky planet with a faint blue atmosphere rim — no bark and no wooden trunk, its form woven of white-gold light-threads, its roots unravelling into drifting light — only the first few sparse fibonacci spirals of saturated cherry-pink blossoms glowing on its threads of light, most of it still bare light — about 5 PERCENT in bloom, universe sky of stars nebulae and spiral galaxies. " + GHOST_ANGEL + " small in the foreground flying toward it with her back to the camera, translucent wispy wings spread, long white spiral fibonacci hair trailing like a comet-tail with white particles. mysterious ethereal flight through infinite space, no text no watermarks",
+          "photorealistic cinematic extreme wide shot of infinite space like a long-exposure astrophotograph, far, far away a small luminous spirit-tree of pure light floating above its own small planet of black obsidian — glassy black volcanic glass, faceted, veined with cracks of glowing white-gold and pink light, never Earth-like (no oceans, no continents, no clouds, no atmosphere) — no bark and no wooden trunk, its form woven of white-gold light-threads, its roots unravelling into drifting light — only the first few sparse fibonacci spirals of saturated cherry-pink blossoms glowing on its threads of light, most of it still bare light — about 5 PERCENT in bloom, universe sky of stars nebulae and spiral galaxies. " + GHOST_ANGEL + " small in the foreground flying toward it with her back to the camera, translucent wispy wings spread, long white spiral fibonacci hair trailing like a comet-tail with white particles. mysterious ethereal flight through infinite space, no text no watermarks",
           // Stage 6 — closer: about 15 PERCENT, spirals of blossoms spreading along the light-threads.
-          "photorealistic cinematic low-angle wide shot looking up through infinite space at the spirit-tree of light growing nearer above its own small dark rocky planet with a faint blue atmosphere rim — no trunk and no bark, a floating crown of white-gold light-threads branching fractally — fibonacci spirals of saturated cherry-pink blossoms spreading along the light-threads, spirals budding smaller spirals, most threads still bare light — about 15 PERCENT in bloom, soft nebula light, universe sky of stars nebulae and galaxies. " + GHOST_ANGEL + " small flying upward toward it, face not visible from this angle, translucent wispy wings spread, long white spiral fibonacci hair cascading behind her with white particles. mysterious ethereal approach, no text no watermarks",
+          "photorealistic cinematic low-angle wide shot looking up through infinite space at the spirit-tree of light growing nearer above its own small planet of black obsidian — glassy black volcanic glass, faceted, veined with cracks of glowing white-gold and pink light, never Earth-like (no oceans, no continents, no clouds, no atmosphere) — no trunk and no bark, a floating crown of white-gold light-threads branching fractally — fibonacci spirals of saturated cherry-pink blossoms spreading along the light-threads, spirals budding smaller spirals, most threads still bare light — about 15 PERCENT in bloom, soft nebula light, universe sky of stars nebulae and galaxies. " + GHOST_ANGEL + " small flying upward toward it, face not visible from this angle, translucent wispy wings spread, long white spiral fibonacci hair cascading behind her with white particles. mysterious ethereal approach, no text no watermarks",
           // Stage 6 — nearer: about 25 PERCENT, the galaxy-like blossom crown, spirals within spirals.
           "photorealistic cinematic three-quarter behind-the-shoulder wide view of the spirit-tree larger ahead in infinite space — NO trunk and NO central column, no bark and no wood — a great floating spherical crown of saturated cherry-pink blossoms like a spiral galaxy made of flowers, held together only by fine luminous white-gold light-threads that branch fractally through the blossoms and trail away below into drifting particles of light — fractal fibonacci spirals of blossoms opening within spirals, about 25 PERCENT in bloom, the blossoms growing denser toward its glowing heart, surreal yet photographic, soft nebula light and universe sky of stars nebulae and galaxies. " + GHOST_ANGEL + " small in the foreground flying toward it with her back to the camera, arms outstretched forward, translucent wispy wings spread, long white spiral fibonacci hair trailing with white particles. mysterious ethereal nearer, no text no watermarks",
           // Stage 6 — arriving: about 40 PERCENT, the blossom crown denser and denser.
@@ -2148,14 +2155,14 @@ export const JOURNEYS: Journey[] = [
         start: 0.85, // phase retime 2026-10-01 (both flashes underground; flight +3% from the ending, Karel)
         end: 0.91,
         intensityMultiplier: 1.0, // was default 0.5
-        bloomIntensity: 0.55,
-        halation: 0.14,
-        vignette: 0.18,
+        bloomIntensity: 0.35, // was 0.55 — same black-floor wash (2026-10-01)
+        halation: 0.1,
+        vignette: 0.25,
         palette: { primary: "#1a0e05", secondary: "#2a1c10", accent: "#e8b868", glow: "#ffd890" },
         aiPrompt:
           "photorealistic cinematic close-up of " +
           GHOST_ANGEL +
-          "'s hand on the dark trunk of a gnarled tree with saturated cherry-pink blossoms blooming outward across every branch from the point of her touch, the tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
+          "'s hand on the dark trunk of a gnarled tree with saturated cherry-pink blossoms blooming outward across every branch from the point of her touch, the tree on its own small planet of black obsidian — glassy black volcanic glass, faceted, veined with cracks of glowing white-gold and pink light, never Earth-like (no oceans, no continents, no clouds, no atmosphere) in infinite cosmos, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
         aiPromptSequence: [
           // Round 5: stage 7 — she arrives and completely unifies into the
           // infinite blossom tree; the frame fills with kaleidoscopic visionary pink
@@ -2189,10 +2196,10 @@ export const JOURNEYS: Journey[] = [
         start: 0.91, // phase retime 2026-10-01 (both flashes underground)
         end: 1.0,
         intensityMultiplier: 0.9, // was default 0.3; >= 0.6 also exempts Ghost from the ending wind-down — her ending builds INTO light
-        bloomIntensity: 0.75,
-        halation: 0.18,
+        bloomIntensity: 0.4, // was 0.75 — the distant ending needs deep black space (2026-10-01)
+        halation: 0.1,
         chromaticAberration: 0.0,
-        vignette: 0.10,
+        vignette: 0.2,
         palette: { primary: "#1a1408", secondary: "#2a2010", accent: "#f0c060", glow: "#ffe0a0" },
         aiPrompt:
           "photorealistic cinematic wide shot of " +

@@ -48,15 +48,28 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   // Ghost — session p4jv6o ("ghost take you should keep"); lightrivers
   // filtered here too per the same ban (dharma holds through p0.637).
   "ghost": [
-    {"p":0,"role":"primary","mode":"starfield"}, // chakra out (Karel 2026-10-01: lightened + banded the screen as the first image aged out)
-    {"p":0.134,"role":"dual","mode":"lightning-field"},{"p":0.152,"role":"primary","mode":"redshift"},
-    {"p":0.208,"role":"primary","mode":"yantra"},{"p":0.272,"role":"primary","mode":"gnosis"},
-    {"p":0.389,"role":"primary","mode":"magma"},{"p":0.453,"role":"primary","mode":"smoke-signal"},
-    {"p":0.472,"role":"dual","mode":"chrysalis"},{"p":0.52,"role":"primary","mode":"dharma"},
-    {"p":0.558,"role":"dual","mode":"cymatic"},{"p":0.576,"role":"primary","mode":"r3-lightrivers"},
-    {"p":0.637,"role":"primary","mode":"furnace"},{"p":0.69,"role":"primary","mode":"biofilm"},
-    {"p":0.749,"role":"primary","mode":"drift"}, // night-rain is banned app-wide (2026-09-30){"p":0.817,"role":"primary","mode":"lectio"},
-    {"p":0.877,"role":"primary","mode":"r-droplets"},
+    // Rebuilt 2026-10-01 (Karel: "dont use the full screen shaders that
+    // lighten the screen it looks bad and removes detail" — the first
+    // section's exit and "that oval one in tunnel"). Measured over the
+    // pack (headed harness): lightning-field/redshift/gnosis/magma/
+    // smoke-signal/chrysalis/dharma/protostar/threshold/furnace/biofilm
+    // lifted the black floor to 21-27 and washed the imagery; only dark
+    // particle shaders here, no duals. r-petals = the ending's pink
+    // particles (Karel 2026-10-01).
+    {"p":0,"role":"primary","mode":"starfield"},
+    {"p":0.152,"role":"primary","mode":"drift"},
+    {"p":0.208,"role":"primary","mode":"yantra"},
+    {"p":0.272,"role":"primary","mode":"pendulum-dust"},
+    {"p":0.33,"role":"primary","mode":"murmuration"},
+    {"p":0.389,"role":"primary","mode":"firefly-field"},
+    {"p":0.453,"role":"primary","mode":"r-stardust"},
+    {"p":0.52,"role":"primary","mode":"will-o-wisp"},
+    {"p":0.576,"role":"primary","mode":"r3-fairyglow"},
+    {"p":0.637,"role":"primary","mode":"r2-curlswarm"},
+    {"p":0.69,"role":"primary","mode":"sparkler"},
+    {"p":0.749,"role":"primary","mode":"starfield"},
+    {"p":0.817,"role":"primary","mode":"murmuration"}, // r3-spirittrails out: colored light streaks across the flight
+    {"p":0.877,"role":"primary","mode":"drift"},
     {"p":0.91,"role":"primary","mode":"r-petals"}, // ending: "joining an infinite light in the cosmos with some pink particle shader" (Karel 2026-10-01)
   ],
   // Realized — locked 2026-09-30 ("keep every take of what you have and

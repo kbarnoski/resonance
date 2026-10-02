@@ -179,7 +179,7 @@ describe("Ghost arc law — beat text honors its stage", () => {
     for (const b of treeBeats) {
       expect(b.text, label(b)).toMatch(/cherry-pink/i);
       expect(b.text, label(b)).not.toMatch(/pure white flowers|white flowers|perfectly round planet/i);
-      if (/planet/i.test(b.text)) expect(b.text, label(b)).toMatch(/dark rocky planet/i);
+      if (/planet/i.test(b.text)) expect(b.text, label(b)).toMatch(/planet of black obsidian/i); // round 6b (Karel): obsidian with glowing light veins, never Earth-like
     }
   });
 
