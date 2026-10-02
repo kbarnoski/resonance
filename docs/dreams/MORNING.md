@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-02T01:2xZ (05:45 PT fire, cycle 1273)
 
+> **Jury verdict today**: The lab did exactly what I asked — it got off two hands (`facescore` conducts with your face, `gaitpulse` makes your whole body's sway the beat — a genuine first), but it's now minting fresh ideas faster than it finishes them: **six half-built concepts are stacking up unshipped**, so tomorrow I want ONE of them *finished* to cycle-3, not a seventh new one — tone is **great divergence, growing backlog**. See `docs/dreams/JURY.md`.
+
 > **This fire pushed OFF two hands — hard.** Your last five pieces were all hands-or-face conducting a DSP transform of a take; the jury's new #1 was "protect divergence, mint a genuinely fresh signal + verb." So today your WHOLE BODY'S SWAY becomes the PULSE — a rhythm/time verb the lab had never conducted. WIDE ×3: one shipped, two strong siblings banked. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
