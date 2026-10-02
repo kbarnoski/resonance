@@ -816,15 +816,19 @@ export function AiImageLayer({
         glitchRecord("idle-rescue", `${Math.round(idleMs / 1000)}s idle`);
         if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
       }
-      // Pinned finale still: the first push inside the last phase, on
-      // whichever path that push takes (the 3ad7cc6d run's ending landed
-      // via idle rescue and skipped a pin gated on !stillsBlocked).
-      const canPush = !stillsBlocked || idleRescue || phaseEntry;
+      // Pinned finale still = the CLOSING image (Karel 2026-10-01: Ghost
+      // must END on her at a distance in the cosmos). Due ~55% into the
+      // last phase — before the 0.96 no-new-stills cutoff — and pushed
+      // through the soft gates so a hold can't swallow it.
       const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
-      if (canPush && pendingFinaleStillRef.current && typeof lastPhaseStart === "number" && progress >= lastPhaseStart) {
-        const wanted = urls.indexOf(pendingFinaleStillRef.current);
+      const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart + 0.55 * (1 - lastPhaseStart) : Infinity;
+      const finaleDue = !!pendingFinaleStillRef.current && progress >= finaleAt && !isVideoActive() && !inBoundarySettle();
+      const canPush = !stillsBlocked || idleRescue || phaseEntry || finaleDue;
+      if (finaleDue) {
+        const wanted = urls.indexOf(pendingFinaleStillRef.current!);
         pendingFinaleStillRef.current = null;
         if (wanted >= 0) idx = wanted;
+        glitchRecord("finale-still", `slot ${idx}`);
       }
       // Slow phases have fewer images than 7s ticks — a repeated slot
       // skips (the idle rescue above bounds how long that can hold).

@@ -124,8 +124,12 @@ export const TAKE_INTRO_STILLS: Record<string, string> = {
  *  the angel unifying with light amidst the cosmos; one run ended on a
  *  stone corridor). Filled per journey once Karel approves the image. */
 export const TAKE_FINALE_STILLS: Record<string, string> = {
-  // Stage 8 c1 (approved 2026-10-01) — first integration slot.
-  "ghost": "/tramokyo-pack/images/journeys/ghost/gen-080.jpg",
+  // Round 4 (Karel 2026-10-01): c9 — the MOST DISTANT image, the angel
+  // small in a spiral of light amidst the cosmos. Lives in the LAST
+  // integration slot (089); the pin makes sure it is seen the moment
+  // the ending begins (the slot walk rarely reaches 089 before the 0.96
+  // quiet zone).
+  "ghost": "/tramokyo-pack/images/journeys/ghost/gen-089.jpg",
 };
 
 /** Pinned FINALE shader — the forced switch at the last morph's end

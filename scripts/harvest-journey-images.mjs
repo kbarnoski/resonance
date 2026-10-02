@@ -76,7 +76,7 @@ async function loadAppModules() {
   await build({
     stdin: {
       contents: `
-        export { JOURNEYS, getGhostAgeForPhase, getGhostOverlayForPhase, composeGhostPrompt,
+        export { JOURNEYS, getGhostAgeForPhase, getGhostOverlayForPhase, composeGhostPrompt, ghostLoraScaleForPhase,
           GHOST_ANGEL_WHITE, GHOST_ANGEL_WINGLESS_WHITE,
           GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER,
           GHOST_NEGATIVE_PROMPT } from "@/lib/journeys/journeys";
@@ -278,7 +278,7 @@ async function main() {
           varied = `${varied}, ${app.tramokyoGradeForPhase(phase.id)}`;
         }
 
-        plan.push({ target: t, stem, dir, prompt: varied, tail });
+        plan.push({ target: t, stem, dir, prompt: varied, tail, phaseId: phase.id ?? null });
       }
     });
   }
@@ -323,7 +323,9 @@ async function main() {
       guidance_scale: 3.5,
       seed: Math.floor(Math.random() * 4294967295),
       enable_safety_checker: true,
-      ...(useLora ? { loras: [{ path: t.loraUrl, scale: 1.2 }] } : {}),
+      // Ghost: per-phase scale (journeys.ts ghostLoraScaleForPhase — 0.9,
+      // the ending 0.4 so she stays distant). Other LoRA journeys keep 1.2.
+      ...(useLora ? { loras: [{ path: t.loraUrl, scale: t.isGhost ? app.ghostLoraScaleForPhase(item.phaseId) : 1.2 }] } : {}),
     };
     const model = useLora ? "fal-ai/flux-lora" : "fal-ai/flux/dev";
 

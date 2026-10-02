@@ -31,11 +31,16 @@ export type GhostArcStage = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export const GHOST_BEAT_STAGES: Record<string, GhostArcStage[]> = {
   threshold:     [1, 1, 1, 1, 1, 1],
   expansion:     [2, 2, 3, 3, 3, 3, 3],
-  transcendence: [4, 4, 4, 4, 4, 4, 5, 5],
-  illumination:  [5, 5, 6, 6, 6, 6, 6],
-  return:        [7, 7, 7, 7, 7, 7, 7, 7],
-  integration:   [8, 8, 8, 8, 8, 8, 8],
+  transcendence: [4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5],
+  illumination:  [5, 6, 6, 6, 6],
+  return:        [7, 7, 7, 7],
+  integration:   [8, 8, 8, 8, 8, 8],
 };
+
+/** Bass-flash cue progress for the Ghost recording (98.3s / 160.1s of
+ *  219.4s). Karel 2026-10-01: "both flashes happen while underground" —
+ *  they must land inside stages 2–5. */
+export const GHOST_FLASH_PROGRESS = [0.448, 0.73] as const;
 
 /** Phase order the stage map assumes. */
 export const GHOST_PHASE_ORDER = ["threshold", "expansion", "transcendence", "illumination", "return", "integration"] as const;

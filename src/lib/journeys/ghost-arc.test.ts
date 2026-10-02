@@ -3,8 +3,8 @@
  * Runs before every build with the rest of src/lib/journeys.
  */
 import { describe, it, expect } from "vitest";
-import { getJourney, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER } from "./journeys";
-import { GHOST_BEAT_STAGES, GHOST_PHASE_ORDER, ghostSlotStages, type GhostArcStage } from "./ghost-arc";
+import { getJourney, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, composeGhostPrompt, ghostLoraScaleForPhase } from "./journeys";
+import { GHOST_BEAT_STAGES, GHOST_FLASH_PROGRESS, GHOST_PHASE_ORDER, ghostSlotStages, type GhostArcStage } from "./ghost-arc";
 import { packSlotForProgress, packPhaseSliceForProgress, nextSlotInSlice } from "./pack-image-allocation";
 
 const ghost = getJourney("ghost")!;
@@ -25,15 +25,39 @@ const FROZEN = /\b(ice|icy|frost|frosted|frozen|snow|snowy|crystal|crystalline)\
 const DRUG = /\b(psychedelic|dmt|k-hole|ketamine|lsd|trip|tripping|hallucinat\w*|mushrooms?|ayahuasca)\b/i;
 
 describe("Ghost arc law — stage map", () => {
-  it("phases are the six expected ids, contiguous 0→1, stage 8 from 0.85", () => {
+  it("phases are the six expected ids, contiguous 0→1, retimed 2026-10-01 (stage 8 from 0.89)", () => {
     expect(phases.map((p) => p.id)).toEqual([...GHOST_PHASE_ORDER]);
     expect(phases[0].start).toBe(0);
     expect(phases[phases.length - 1].end).toBe(1);
     for (let i = 1; i < phases.length; i++) expect(phases[i].start).toBe(phases[i - 1].end);
     const ret = phases.find((p) => p.id === "return")!;
     const integ = phases.find((p) => p.id === "integration")!;
-    expect(ret.end).toBe(0.85);
-    expect(integ.start).toBe(0.85);
+    expect(phases.map((p) => [p.start, p.end])).toEqual([
+      [0, 0.12], [0.12, 0.3], [0.3, 0.76], [0.76, 0.82], [0.82, 0.89], [0.89, 1],
+    ]);
+    expect(ret.end).toBe(0.89);
+    expect(integ.start).toBe(0.89);
+  });
+
+  it("both bass flashes happen UNDERGROUND (stages 2–5), never after emerging", () => {
+    for (const fp of GHOST_FLASH_PROGRESS) {
+      const ph = phases.find((p) => fp >= p.start! && fp < p.end!)!;
+      const stages = GHOST_BEAT_STAGES[ph.id];
+      for (const st of stages) expect(st, `flash @${fp} in ${ph.id}`).toBeGreaterThanOrEqual(2);
+      for (const st of stages) expect(st, `flash @${fp} in ${ph.id}`).toBeLessThanOrEqual(5);
+      // the beat playing at the flash moment (by time fraction) is underground too
+      const seq = ph.aiPromptSequence!;
+      const k = Math.min(seq.length - 1, Math.floor(((fp - ph.start!) / (ph.end! - ph.start!)) * seq.length));
+      expect(stages[k], `beat at flash ${fp}`).toBeGreaterThanOrEqual(2);
+      expect(stages[k], `beat at flash ${fp}`).toBeLessThanOrEqual(5);
+      expect(seq[k], `beat at flash ${fp}`).toMatch(/deep|beneath the earth|underground|shaft|cavern/i);
+      // and the pack still shown at that moment, for every jitter
+      for (let j = 0; j <= 5; j++) {
+        const st = ghostSlotStages(phases, 90)[packSlotForProgress(phases, 90, fp, j)];
+        expect(st, `pack slot at flash ${fp} j=${j}`).toBeGreaterThanOrEqual(2);
+        expect(st, `pack slot at flash ${fp} j=${j}`).toBeLessThanOrEqual(5);
+      }
+    }
   });
 
   it("every phase's stage list matches its beat count", () => {
@@ -73,11 +97,10 @@ describe("Ghost arc law — beat text honors its stage", () => {
     }
   });
 
-  it("stage 4 is the pool of infinite floating pure white flowers — possession retired", () => {
+  it("stage 4 is the pool of infinite floating cherry-pink blossoms (same as the tree) — possession retired", () => {
     const s4 = beats.filter((b) => b.stage === 4);
     for (const b of s4) {
-      expect(b.text, label(b)).toMatch(/infinite floating pure white flowers/i);
-      expect(b.text, label(b)).not.toMatch(/\bpink\b|blossom/i);
+      expect(b.text, label(b)).toMatch(/infinite floating saturated cherry-pink blossoms/i);
       expect(b.text, label(b)).not.toMatch(/\bblack\b|\bjet\b|possess|dark reflection|shadow/i);
     }
   });
@@ -120,7 +143,13 @@ describe("Ghost arc law — beat text honors its stage", () => {
       expect(b.text, label(b)).toMatch(/\blight\b/i);
       expect(b.text, label(b)).toMatch(/\bcosmos\b/i);
       expect(b.text, label(b)).not.toMatch(NOT_IN_ENDING);
+      expect(b.text, label(b)).toMatch(/\b(extreme wide|wide)\b/i);
+      expect(b.text, label(b)).toMatch(/\b(small|tiny|distant)\b/i);
+      expect(b.text, label(b)).not.toMatch(/\bclose|medium shot|mid shot|mid-wide|portrait/i);
+      expect(b.text, label(b)).toMatch(/cherry-blossom petals/i);
     }
+    const s8 = beats.filter((x) => x.stage === 8);
+    expect(s8[s8.length - 1].text, "the final beat is the most distant").toMatch(/most distant/i);
   });
 
   it("Ghost laws hold on every beat: angel marker, pure-white flowers, no frozen/drug words", () => {
@@ -128,14 +157,14 @@ describe("Ghost arc law — beat text honors its stage", () => {
       expect(b.text.includes(GHOST_ANGEL_MARKER) || b.text.includes(GHOST_ANGEL_WINGLESS_MARKER), label(b)).toBe(true);
       expect(b.text, label(b)).not.toMatch(FROZEN);
       expect(b.text, label(b)).not.toMatch(DRUG);
-      // Pink belongs to the TREE only (stages 5–7, Karel 2026-10-01).
-      if (b.stage < 5 || b.stage > 7) expect(b.text, label(b)).not.toMatch(/\bpink\b|blossom/i);
+      // Every flower is the SAME saturated cherry-pink blossom (Karel 2026-10-01).
+      expect(b.text, label(b)).not.toMatch(/white flowers|water lil|\byellow\b/i);
     }
   });
 
   it("the tree is saturated cherry-pink throughout stages 5–7 — never a white tree, never a moon", () => {
     const treeBeats = beats.filter((b) => b.stage >= 5 && b.stage <= 7 && /\btree\b(?! roots)/i.test(b.text));
-    expect(treeBeats.length).toBeGreaterThanOrEqual(15);
+    expect(treeBeats.length).toBeGreaterThanOrEqual(8);
     for (const b of treeBeats) {
       expect(b.text, label(b)).toMatch(/cherry-pink/i);
       expect(b.text, label(b)).not.toMatch(/pure white flowers|white flowers|perfectly round planet/i);
@@ -143,11 +172,17 @@ describe("Ghost arc law — beat text honors its stage", () => {
     }
   });
 
-  it("stage-2 entrance flowers stay pure white", () => {
-    for (const b of beats.filter((x) => x.stage === 2 && /flowers/.test(x.text))) {
-      expect(b.text, label(b)).toMatch(/pure white flowers/i);
-      expect(b.text, label(b)).not.toMatch(/\bpink\b/i);
-    }
+  it("tunnel flowers (stage-2 entrance) are the same cherry-pink blossoms as the tree", () => {
+    const s2 = beats.filter((x) => x.stage === 2 && /blossom|flower/i.test(x.text));
+    expect(s2.length).toBeGreaterThanOrEqual(1);
+    for (const b of s2) expect(b.text, label(b)).toMatch(/saturated cherry-pink blossoms/i);
+  });
+
+  it("stages 6–7: the blossoms grow in SPIRALS; at the union they are ENTANGLED in her spiraling hair", () => {
+    for (const b of beats.filter((x) => x.stage === 6 || x.stage === 7)) expect(b.text, label(b)).toMatch(/spiral/i);
+    const s7 = beats.filter((x) => x.stage === 7);
+    expect(s7.some((b) => /entangled/i.test(b.text) && /weaving in and out/i.test(b.text))).toBe(true);
+    expect(/entangled/i.test(s7[s7.length - 1].text)).toBe(true);
   });
 
   it("wingless only before the wings are found; winged never before the pool", () => {
@@ -205,6 +240,45 @@ describe("Ghost arc law — pack slots and playback", () => {
         expect(next).toBeLessThan(slice.end);
         expect(slotStages[next], `walk from ${idx} at p=${p.toFixed(2)}`).toBeGreaterThan(1);
       }
+    }
+  });
+});
+
+describe("Ghost arc law — stage-8 distance pipeline (Karel 2026-10-01, round 4)", () => {
+  it("integration prompts are EXTREME LONG SHOT, never the close rear-view framing", () => {
+    for (const b of beats.filter((x) => x.phase === "integration")) {
+      const { scene, tail } = composeGhostPrompt(b.text, "integration", "white");
+      expect(scene, label(b)).toContain("EXTREME LONG SHOT");
+      expect(scene, label(b)).not.toContain("REAR VIEW ONLY");
+      expect(scene, label(b)).not.toMatch(/her arms are healthy/);
+      expect(scene, label(b)).not.toMatch(/skin texture/);
+      expect(`${scene} ${tail}`, label(b)).not.toMatch(/\bclose|portrait/i);
+    }
+  });
+
+  it("every other phase keeps the rear-view / healthy-arms framing", () => {
+    for (const b of beats.filter((x) => x.phase !== "integration")) {
+      const { scene } = composeGhostPrompt(b.text, b.phase, "white");
+      expect(scene, label(b)).toContain("REAR VIEW ONLY");
+      expect(scene, label(b)).toMatch(/her arms are healthy/);
+      expect(scene, label(b)).not.toContain("EXTREME LONG SHOT:");
+    }
+  });
+
+  it("LoRA scale: 0.4 for the ending, 0.9 everywhere else", () => {
+    expect(ghostLoraScaleForPhase("integration")).toBe(0.4);
+    for (const id of ["threshold", "expansion", "transcendence", "illumination", "return", null]) {
+      expect(ghostLoraScaleForPhase(id)).toBe(0.9);
+    }
+  });
+
+  it("pool beats before the wings are found keep her WINGLESS", () => {
+    const t = phases.find((p) => p.id === "transcendence")!.aiPromptSequence!;
+    const findIdx = t.findIndex((x) => /resting on the water/.test(x));
+    expect(findIdx).toBeGreaterThan(0);
+    for (let i = 0; i <= findIdx; i++) {
+      expect(t[i], `transcendence beat ${i + 1}`).toContain(GHOST_ANGEL_WINGLESS_MARKER);
+      expect(t[i], `transcendence beat ${i + 1}`).not.toContain(GHOST_ANGEL_MARKER);
     }
   });
 });

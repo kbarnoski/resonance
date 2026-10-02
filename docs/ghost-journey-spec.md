@@ -55,6 +55,34 @@ entrance flowers stay PURE WHITE. The earlier "all-white tree flowers /
 NO color" rule for the tree (§4 Phase 5 Flowers rule, §7 "no colored
 flowers") is RETIRED for the tree only.
 
+**ROUND 4 (Karel 2026-10-01, verbatim):** "you shouldnt be out of the
+tunnel scene that fast. both flashes happen while underground. the
+flowers in the tunnel should have the same pink blossoms as the tree.
+the blossoms on the tree need to grow in spiral infinite blossoms
+growing more and more until when the angel unifies with the tree they
+are entangled in her spiraling hair weaving in and out. and that final
+scene should be the angel unified with light and the cosmos with
+blossoms integrated subtle into the cosmic infinite scene behind her. it
+should not end on a close up of her but her in the cosmos at a
+distance."
+
+- **Phase retime:** threshold 0–0.12 · expansion 0.12–0.30 (stages 2–3)
+  · transcendence 0.30–0.76 (stage 4 pool, then stage 5 light ABOVE —
+  still underground) · illumination 0.76–0.82 (emerge + flight) ·
+  return 0.82–0.89 (union) · integration 0.89–1.0 (ending). Both bass
+  flashes (p 0.448 and 0.730) fall underground (test-enforced).
+- **Pink everywhere:** every flower — stage-2 entrance, the stage-4 pool
+  (infinite floating cherry-pink blossoms on dark water) and the tree —
+  is the SAME saturated cherry-pink blossom. Pure-white flowers are
+  RETIRED everywhere. Still never yellow.
+- **Spiral growth:** the tree's blossoms grow in fibonacci SPIRALS, more
+  and more, infinite; at the union they are ENTANGLED in her spiraling
+  white hair, weaving in and out of the strands.
+- **Distant ending:** stage 8 is WIDE / EXTREME WIDE only — she is small
+  and distant, unified with light amidst the cosmos, pink petals subtly
+  woven into the cosmic scene. No close-ups or medium shots; the final
+  beat is the most distant of the journey.
+
 **No stone-room / castle / portal content after stage 1. Ever.**
 Enforced by `src/lib/journeys/ghost-arc.test.ts` (stage map lives in
 `src/lib/journeys/ghost-arc.ts`).
@@ -644,3 +672,7 @@ dark-to-white snap.
   tree throughout stages 5–7 (pool + entrance flowers stay pure white).
   Ghost beats, GHOST_NEGATIVE_PROMPT (dropped "pink flower") and the arc
   test updated; pack slots 054–079 regenerated.
+- **v4.2 — ROUND 4.** 2026-10-01. Phase retime (both flashes underground),
+  pink blossoms everywhere (pool + entrance + tree), spiral bloom entangled in
+  her hair at the union, stage 8 always wide/distant. Beat counts now
+  6/7/12/5/4/6.
