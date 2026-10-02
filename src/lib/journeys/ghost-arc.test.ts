@@ -3,7 +3,7 @@
  * Runs before every build with the rest of src/lib/journeys.
  */
 import { describe, it, expect } from "vitest";
-import { getJourney, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, composeGhostPrompt, ghostLoraScaleForPhase } from "./journeys";
+import { getJourney, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, composeGhostPrompt, ghostLoraScaleForPhase, getGhostAgeForPhase } from "./journeys";
 import { GHOST_BEAT_STAGES, GHOST_FLASH_PROGRESS, GHOST_PHASE_ORDER, ghostSlotStages, type GhostArcStage } from "./ghost-arc";
 import { packSlotForProgress, packPhaseSliceForProgress, nextSlotInSlice } from "./pack-image-allocation";
 
@@ -105,11 +105,21 @@ describe("Ghost arc law — beat text honors its stage", () => {
     }
   });
 
-  it("stage 5: the light is ABOVE — she rises and emerges", () => {
+  it("stage 5: blossoms lead her deeper toward the distant EXIT light ahead, then she looks out", () => {
     for (const b of beats.filter((x) => x.stage === 5)) {
-      expect(b.text, label(b)).toMatch(/\b(above|upward|up)\b/i);
+      expect(b.text, label(b)).toMatch(/\b(ahead|exit|mouth|looks out)\b/i);
       expect(b.text, label(b)).toMatch(/\blight\b/i);
     }
+    const tunnel = beats.filter((b) => b.stage === 5 && b.phase === "transcendence");
+    expect(tunnel.length).toBeGreaterThanOrEqual(4);
+    for (const b of tunnel) {
+      expect(b.text, label(b)).toMatch(/tunnel exit/i);
+      expect(b.text, label(b)).toMatch(/distant/i);
+      expect(b.text, label(b)).toMatch(/cherry blossoms|cherry-pink blossoms/i);
+      expect(b.text, label(b)).toMatch(/deep beneath the earth|deep underground/i);
+    }
+    const out = beats.filter((b) => b.stage === 5 && b.phase === "illumination");
+    expect(out.some((b) => /mouth of the tunnel/i.test(b.text) && /looks out/i.test(b.text))).toBe(true);
     // the emergence beat sees the tree on its distant planet
     expect(beats.filter((b) => b.stage === 5).some((b) => /tree/.test(b.text) && /planet/.test(b.text))).toBe(true);
   });
@@ -146,7 +156,8 @@ describe("Ghost arc law — beat text honors its stage", () => {
       expect(b.text, label(b)).toMatch(/\b(extreme wide|wide)\b/i);
       expect(b.text, label(b)).toMatch(/\b(small|tiny|distant)\b/i);
       expect(b.text, label(b)).not.toMatch(/\bclose|medium shot|mid shot|mid-wide|portrait/i);
-      expect(b.text, label(b)).toMatch(/cherry-blossom petals/i);
+      expect(b.text, label(b)).toMatch(/pink particles/i);
+      expect(b.text, label(b)).toMatch(/moving away/i);
     }
     const s8 = beats.filter((x) => x.stage === 8);
     expect(s8[s8.length - 1].text, "the final beat is the most distant").toMatch(/most distant/i);
@@ -182,13 +193,32 @@ describe("Ghost arc law — beat text honors its stage", () => {
     for (const b of beats.filter((x) => x.stage === 6 || x.stage === 7)) expect(b.text, label(b)).toMatch(/spiral/i);
     const s7 = beats.filter((x) => x.stage === 7);
     expect(s7.some((b) => /entangled/i.test(b.text) && /weaving in and out/i.test(b.text))).toBe(true);
-    expect(/entangled/i.test(s7[s7.length - 1].text)).toBe(true);
+    expect(s7.some((b) => /kaleidoscopic/i.test(b.text) && /visionary/i.test(b.text) && /FILLED/.test(b.text))).toBe(true);
+    expect(s7[s7.length - 1].text, "last union beat: light from the top of the tree").toMatch(/light (shining|shines) (down )?from the top of the tree/i);
   });
 
-  it("wingless only before the wings are found; winged never before the pool", () => {
+  it("one consistent ADULT angel with her wings in EVERY beat (round 5) — never wingless, never a child", () => {
     for (const b of beats) {
-      if (b.text.includes(GHOST_ANGEL_WINGLESS_MARKER)) expect(b.stage, label(b)).toBeLessThanOrEqual(4);
-      if (b.text.includes(GHOST_ANGEL_MARKER)) expect(b.stage, label(b)).toBeGreaterThanOrEqual(4);
+      expect(b.text, label(b)).toContain(GHOST_ANGEL_MARKER);
+      expect(b.text, label(b)).not.toContain(GHOST_ANGEL_WINGLESS_MARKER);
+      expect(b.text, label(b)).not.toMatch(/\b(child|children|young|youthful|adolescent|girl|wingless)\b/i);
+      expect(b.text, label(b)).not.toMatch(/finds?\b.*\bwings|wings attach/i);
+    }
+    for (const p of phases) {
+      expect(p.aiPrompt ?? "", p.id).not.toContain(GHOST_ANGEL_WINGLESS_MARKER);
+      const age = getGhostAgeForPhase(p.id);
+      expect(age).toBe(getGhostAgeForPhase("threshold"));
+      expect(age).toMatch(/adult/i);
+      expect(age).not.toMatch(/\b(child|young|adolescent)\b/i);
+    }
+  });
+
+  it("identical wings + da Vinci spiral hair are stated up front in EVERY frame's prompt", () => {
+    for (const b of beats) {
+      const { scene } = composeGhostPrompt(b.text, b.phase, "white");
+      expect(scene, label(b)).toMatch(/translucent veils of glowing mist and light unfurling from her shoulder blades like wings/);
+      expect(scene, label(b)).toMatch(/Leonardo da Vinci fibonacci spiral curls/);
+      expect(scene, label(b)).not.toMatch(/wingless/i);
     }
   });
 });
@@ -273,13 +303,4 @@ describe("Ghost arc law — stage-8 distance pipeline (Karel 2026-10-01, round 4
     }
   });
 
-  it("pool beats before the wings are found keep her WINGLESS", () => {
-    const t = phases.find((p) => p.id === "transcendence")!.aiPromptSequence!;
-    const findIdx = t.findIndex((x) => /resting on the water/.test(x));
-    expect(findIdx).toBeGreaterThan(0);
-    for (let i = 0; i <= findIdx; i++) {
-      expect(t[i], `transcendence beat ${i + 1}`).toContain(GHOST_ANGEL_WINGLESS_MARKER);
-      expect(t[i], `transcendence beat ${i + 1}`).not.toContain(GHOST_ANGEL_MARKER);
-    }
-  });
 });

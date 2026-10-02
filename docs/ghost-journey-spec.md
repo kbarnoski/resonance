@@ -83,6 +83,37 @@ distance."
   woven into the cosmic scene. No close-ups or medium shots; the final
   beat is the most distant of the journey.
 
+**ROUND 5 (Karel 2026-10-01, verbatim excerpt):** "ghost needs to have a
+consistent angel from start to end. her size in the first frame needs to
+stay consistent as an adult ethereal angel. the hair needs to always be
+the spiraling fractal hair davinci style and stay consistent. the wings
+need to always be the same and ethereal and translucent not thick
+feathers." … "the section in the tunnel where she is in the water needs
+to keep progressing after the water to going further into the tunnel and
+seeing those pink blossoms leading her deeper towards a distant light
+which is the tunnel exit." …
+
+- **One consistent ADULT angel**, every frame: the child → peak-adult age
+  ramp (§3a age progression, §9 v3 "CHILD") is RETIRED. She has her WINGS
+  from the first frame; the wingless state (§3d) and the find-the-wings
+  pool beats are RETIRED.
+- **Identical wings + hair up front in every prompt:** "two vast
+  translucent veils of glowing mist and light unfurling from her shoulder
+  blades like wings — sheer chiffon-like luminous fog and soft light-rays"
+  and "very long spiraling fractal hair in Leonardo da Vinci fibonacci
+  spiral curls". (Wing test: no-LoRA draws the THICKEST feathers — the base
+  model's angel prior; the LoRA at 0.9 plus this veil wording up front is
+  the wispiest.)
+- **Stage 5 is now the tunnel AFTER the water:** pink blossoms lead her
+  deeper toward a distant light AHEAD — the tunnel exit (both flashes stay
+  underground); then she stands at the tunnel mouth and looks out at the
+  cosmos and the pink tree on its distant planet. "Light ABOVE" is RETIRED.
+- **Union:** she completely unifies into the infinite blossom tree, the
+  frame FILLED with kaleidoscopic, visionary pink blossoms (never the drug
+  word); the last union beat is a light shining from the top of the tree.
+- **Ending:** she joins an infinite light in the cosmos, moving away toward
+  the cosmos at a distance, pink particles in the scene.
+
 **No stone-room / castle / portal content after stage 1. Ever.**
 Enforced by `src/lib/journeys/ghost-arc.test.ts` (stage map lives in
 `src/lib/journeys/ghost-arc.ts`).
@@ -677,3 +708,7 @@ dark-to-white snap.
   her hair at the union, stage 8 always wide/distant. Beat counts now
   6/7/12/5/4/6.
 - **v4.3** — 2026-10-01. Flight lengthened from the ending (Karel): illumination 0.76–0.85, return 0.85–0.91, integration 0.91–1.0. Finale pin is the CLOSING image (due 30% into integration, held to the end). Pack re-slotted (7/15/51/8/4/5); 087 (medium shot) dropped from the ending.
+- **v4.3 — ROUND 5.** 2026-10-01. One consistent adult angel with identical
+  veil-of-light wings and da Vinci spiral hair in every frame; tunnel after the
+  pool leads toward the distant exit light; kaleidoscopic union + light from the
+  top of the tree; ending moves away into the cosmos with pink particles.

@@ -696,14 +696,21 @@ const GHOST_ANGEL_BODY =
 // and mist, like smoke or silk. Explicitly NOT butterfly / NOT membrane /
 // NOT segmented / NOT filigree / NOT panels. NEVER any of the listed
 // failure modes.
+// Round 5 (Karel 2026-10-01: "the wings need to always be the same and
+// ethereal and translucent not thick feathers"). Wing test: the base
+// model's angel prior draws thick feathers (LoRA 0 = the THICKEST); the
+// LoRA at 0.9-1.2 plus this veil wording, stated up front, gives the
+// wispiest light-mist wings. The same clause leads every frame.
 const WINGS_CLAUSE =
-  "two symmetrical translucent angel wings rooted at her shoulder blades, made of flowing wisps of light and mist like trailing smoke or silk, thin, ethereal and luminous";
+  "two vast translucent veils of glowing mist and light unfurling from her shoulder blades like wings — sheer chiffon-like luminous fog and soft light-rays, smoke-like and see-through, no solid structure";
 
 // Wingless — used in phases 1 (window), 2 (underground passage), and the
 // opening of phase 3 before she finds the wings.
-export const GHOST_ANGEL_WINGLESS_WHITE =
+// DEPRECATED (round 5, Karel: one consistent angel, wings from the first
+// frame) — kept as an alias so old scripts resolve; she is never wingless.
+export const GHOST_ANGEL_WINGLESS_WHITE_LEGACY =
   GHOST_ANGEL_BODY +
-  ", eyes closed, peaceful and mysterious, her bare back wingless (she has not yet found her wings), " +
+  ", eyes closed, peaceful and mysterious, " +
   "wardrobe: snow-white spiral fibonacci hair, snow-white translucent dress, white particles";
 
 // Winged white — after she finds and puts on the wings at the pool.
@@ -711,8 +718,11 @@ export const GHOST_ANGEL_WHITE =
   GHOST_ANGEL_BODY +
   ", eyes closed, peaceful and mysterious, " +
   WINGS_CLAUSE +
-  ", wardrobe: snow-white spiral fibonacci hair, snow-white translucent dress, snow-white wispy wings, white particles" +
+  ", wardrobe: snow-white spiral fibonacci hair, snow-white translucent dress, snow-white veils of mist for wings, white particles" +
   ", her figure softly luminous and ethereal, translucent only at its misty edges";
+
+/** Round 5: the wingless variant is retired — same angel, same wings, every frame. */
+export const GHOST_ANGEL_WINGLESS_WHITE = GHOST_ANGEL_WHITE;
 
 // Winged black — possessed devil variant between flash #1 and flash #2.
 // She already has the wings by the time any flash fires.
@@ -727,15 +737,11 @@ export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
 /** Marker substituted with the WINGLESS white angel at gen time (always white). */
 export const GHOST_ANGEL_WINGLESS_MARKER = "<<GHOST_ANGEL_WINGLESS>>";
 
-// Per-phase age descriptors (spec v3 §3a). She starts as a child in
-// the castle window scene and grows through the journey, reaching peak
-// adult spiritual power when she merges with the blooming tree.
-const AGE_CHILD = "the angel is a CHILD — small, youthful, innocent, spiritual in her child-body";
-const AGE_YOUNG = "the angel is YOUNG and youthful, slight of build";
-const AGE_GROWING = "the angel is a young adolescent, growing into her form";
-const AGE_EMERGING = "the angel is a young adult, growing into her power";
-const AGE_APPROACHING_PEAK = "the angel is nearing her peak — grown, radiant, almost full adult form";
-const AGE_PEAK = "the angel is in her FULLY GROWN peak adult form — her most beautiful spiritual state, longest flowing hair, widest wings, most particles, brightest radiant light";
+// Round 5 (Karel 2026-10-01): "ghost needs to have a consistent angel
+// from start to end. her size in the first frame needs to stay
+// consistent as an adult ethereal angel." One adult descriptor, every
+// phase — the old child → peak-adult age ramp is RETIRED.
+const AGE_ADULT = "the angel is one consistent grown ADULT woman, the same ethereal adult angel with the same body, size and look in every frame of the journey";
 
 // Subtle surreal overlay strings (spec v3 §2). Varied per phase so
 // different infinities bleed through different parts of the journey.
@@ -748,22 +754,8 @@ const OVERLAY_COSMOS = "subtle translucent overlay of deep cosmic nebulae and fa
 const OVERLAY_ROOTS = "subtle translucent overlay of vast underground root networks and fibonacci spiral particle streams bleeding through the scene like a dreamlike double-exposure";
 
 /** Age descriptor for the current Ghost phase (spec v3 §3a). */
-export function getGhostAgeForPhase(phase: string | null): string {
-  switch (phase) {
-    case "threshold":
-      return AGE_CHILD;
-    case "expansion":
-      return AGE_YOUNG;
-    case "transcendence":
-      return AGE_GROWING;
-    case "illumination":
-      return AGE_EMERGING;
-    case "return":
-    case "integration":
-      return AGE_PEAK;
-    default:
-      return AGE_APPROACHING_PEAK;
-  }
+export function getGhostAgeForPhase(_phase: string | null): string {
+  return AGE_ADULT;
 }
 
 /** Surreal-overlay descriptor for the current Ghost phase (spec v3 §2).
@@ -804,6 +796,10 @@ const GHOST_FACE_AWAY =
   "REAR VIEW ONLY: camera behind her, we see only the back of her head and her back, her head faces straight away from the camera into the distance, the back of her head fully covered by long flowing hair";
 const GHOST_ARMS =
   "her arms are healthy, graceful and naturally full — softly rounded shoulders, upper arms and forearms with a healthy living warmth, an athletic dancer's grace";
+/** Round 5: identical wings + hair stated up front in EVERY frame. */
+const GHOST_WINGS_FRONT = WINGS_CLAUSE;
+const GHOST_HAIR_FRONT =
+  "very long spiraling fractal hair in Leonardo da Vinci fibonacci spiral curls";
 const GHOST_ETHEREAL =
   "she is a little more spirit than human: a faint inner luminescence glowing softly from within her skin, the outer edges of her hair, dress and wings dissolving into soft drifting light-mist, subtle translucency only at the fringes, while her body itself stays solid, real and present";
 
@@ -835,26 +831,28 @@ export function composeGhostPrompt(
   phaseId: string | null,
   theme: "white" | "black" = "white",
 ): { scene: string; tail: string } {
-  const winged = beat.includes(GHOST_ANGEL_MARKER);
-  const wingless = beat.includes(GHOST_ANGEL_WINGLESS_MARKER);
+  // Round 5: she always has her wings — the wingless marker (if any old
+  // beat still carries it) resolves to the same winged angel.
+  const winged = beat.includes(GHOST_ANGEL_MARKER) || beat.includes(GHOST_ANGEL_WINGLESS_MARKER);
+  const wingless = false;
   const ref = theme === "black"
     ? "the white-haired winged angel woman in her jet-black shadow-mist dress"
     : "the white-haired winged angel woman";
   const body = beat
-    .split(GHOST_ANGEL_WINGLESS_MARKER).join("the white-haired wingless angel woman")
+    .split(GHOST_ANGEL_WINGLESS_MARKER).join(ref)
     .split(GHOST_ANGEL_MARKER).join(ref);
   const angel = winged || wingless;
   if (phaseId === "integration") {
     // Distance branch: no rear-view close framing, no arms line, no full
     // descriptor — she is tiny and far away in the cosmos.
-    const scene = [GHOST_DISTANT_REALISM_LEAD, body, ...(angel ? [GHOST_DISTANT_FRAMING, GHOST_ETHEREAL] : [])].join(". ");
+    const scene = [GHOST_DISTANT_REALISM_LEAD, body, ...(angel ? [GHOST_DISTANT_FRAMING, GHOST_WINGS_FRONT, GHOST_HAIR_FRONT, GHOST_ETHEREAL] : [])].join(". ");
     const tail = [getGhostAgeForPhase(phaseId), getGhostOverlayForPhase(phaseId)].filter(Boolean).join(". ");
     return { scene, tail };
   }
-  const scene = [GHOST_REALISM_LEAD, body, ...(angel ? [GHOST_FACE_AWAY, GHOST_ARMS, GHOST_ETHEREAL] : [])].join(". ");
+  const scene = [GHOST_REALISM_LEAD, body, ...(angel ? [GHOST_WINGS_FRONT, GHOST_HAIR_FRONT, GHOST_FACE_AWAY, GHOST_ARMS, GHOST_ETHEREAL] : [])].join(". ");
   const descriptor = winged
     ? (theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE)
-    : wingless ? GHOST_ANGEL_WINGLESS_WHITE : null;
+    : wingless ? GHOST_ANGEL_WHITE : null;
   const tail = [getGhostAgeForPhase(phaseId), getGhostOverlayForPhase(phaseId), descriptor].filter(Boolean).join(". ");
   return { scene, tail };
 }
@@ -1978,17 +1976,17 @@ export const JOURNEYS: Journey[] = [
         shaderOpacity: 0.75,
         aiPrompt:
           "photorealistic cinematic three-quarter back view of " +
-          GHOST_ANGEL_WINGLESS +
+          GHOST_ANGEL +
           " standing alone by a tall arched stone window in an ancient dark stone chamber at night, cosmic void of faint stars beyond the window, diagonal silver moonlight across a worn stone floor cracked with ancient tree roots, her long fibonacci spiral braided hair streaming with white particles. mysterious ethereal, deep shadows, no text no watermarks",
         aiPromptSequence: [
           // Spec v3 §4 Phase 1 — grand medieval castle stone room, child
           // angel seen from GREAT distance, natural light through window.
-          "photorealistic cinematic extreme wide establishing shot of a grand medieval castle stone room with soaring vaulted stone ceilings, a tall arched stone window far across the room pouring natural silver-white light inward across a worn stone floor, ancient tree roots cracking through the stone, massive stone columns, deep atmospheric shadows. " + GHOST_ANGEL_WINGLESS + " tiny and very distant (child-sized, small child figure) by the window bathed in the streaming light, long white spiral fibonacci hair cascading to the ground with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
-          "photorealistic cinematic wide shot of a grand medieval castle chamber with stone pillars and vaulted ceiling, beams of soft natural light streaming down from a tall arched window filled with cosmic void, ancient tree roots in the stone floor, deep shadows. " + GHOST_ANGEL_WINGLESS + " very distant and small (child, slight of build) standing in the light by the window with her back to the camera, long white spiral fibonacci hair cascading past her to the floor, white particles spiraling. grand medieval castle, mysterious ethereal, no text no watermarks",
-          "photorealistic cinematic low-angle wide shot of a tall arched stone window in a grand medieval castle, beams of soft white natural light pouring in across a worn stone floor, stone arch towering overhead, deep shadows. " + GHOST_ANGEL_WINGLESS + " a small child silhouette at the base of the window (face not visible), long white spiral hair trailing, white particles dancing in the light. grand medieval castle, mysterious ethereal, no text no watermarks",
-          "photorealistic cinematic overhead top-down view from high in a vaulted medieval stone ceiling, looking far down at a grand castle chamber floor cracked with ancient tree roots, shafts of natural silver-white light streaming from a tall arched window onto the floor. " + GHOST_ANGEL_WINGLESS + " a very small child figure alone in the light on the stone floor far below, long white spiral hair cascading around her on the floor in a fibonacci pattern, white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
-          "photorealistic cinematic distant shot looking through a tall interior stone archway in a grand medieval castle into a further chamber where natural light pours in from a window beyond, layered stone columns and deep shadows, ancient tree roots cracking the stone. " + GHOST_ANGEL_WINGLESS + " small and distant in the far chamber (child figure), her back to the camera, long white spiral hair trailing to the ground with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
-          "photorealistic cinematic wide side-silhouette view across a grand medieval castle chamber with tall arched stone window pouring natural light, stone columns in the foreground, ancient tree roots on the floor, deep atmospheric shadows. " + GHOST_ANGEL_WINGLESS + " a tiny child silhouette standing in the distant window-light with her long white spiral hair cascading to the ground and trailing in the air like ribbons of light with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic extreme wide establishing shot of a grand medieval castle stone room with soaring vaulted stone ceilings, a tall arched stone window far across the room pouring natural silver-white light inward across a worn stone floor, ancient tree roots cracking through the stone, massive stone columns, deep atmospheric shadows. " + GHOST_ANGEL + " small and distant — the same fully grown adult angel — by the window bathed in the streaming light, long white spiral fibonacci hair cascading to the ground with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic wide shot of a grand medieval castle chamber with stone pillars and vaulted ceiling, beams of soft natural light streaming down from a tall arched window filled with cosmic void, ancient tree roots in the stone floor, deep shadows. " + GHOST_ANGEL + " distant — the same fully grown adult angel — standing in the light by the window with her back to the camera, long white spiral fibonacci hair cascading past her to the floor, white particles spiraling. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic low-angle wide shot of a tall arched stone window in a grand medieval castle, beams of soft white natural light pouring in across a worn stone floor, stone arch towering overhead, deep shadows. " + GHOST_ANGEL + " an adult silhouette at the base of the window (face not visible), long white spiral hair trailing, white particles dancing in the light. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic overhead top-down view from high in a vaulted medieval stone ceiling, looking far down at a grand castle chamber floor cracked with ancient tree roots, shafts of natural silver-white light streaming from a tall arched window onto the floor. " + GHOST_ANGEL + " a small adult figure alone in the light on the stone floor far below, long white spiral hair cascading around her on the floor in a fibonacci pattern, white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic distant shot looking through a tall interior stone archway in a grand medieval castle into a further chamber where natural light pours in from a window beyond, layered stone columns and deep shadows, ancient tree roots cracking the stone. " + GHOST_ANGEL + " small and distant in the far chamber, her back to the camera, long white spiral hair trailing to the ground with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
+          "photorealistic cinematic wide side-silhouette view across a grand medieval castle chamber with tall arched stone window pouring natural light, stone columns in the foreground, ancient tree roots on the floor, deep atmospheric shadows. " + GHOST_ANGEL + " an adult silhouette standing in the distant window-light with her long white spiral hair cascading to the ground and trailing in the air like ribbons of light with white particles. grand medieval castle, mysterious ethereal, no text no watermarks",
         ],
         aiPromptModifiers: {
           highBass: "subsonic pressure ripple shuddering the windowpanes, fibonacci hair rippling, white particles scattering",
@@ -2010,7 +2008,7 @@ export const JOURNEYS: Journey[] = [
         shaderOpacity: 0.65,
         aiPrompt:
           "photorealistic cinematic rear tracking shot of " +
-          GHOST_ANGEL_WINGLESS +
+          GHOST_ANGEL +
           " hovering forward through a vast natural deep-earth passage lined with massive gnarled tree roots forming walls and a high vaulted ceiling far above, pale bioluminescent teal lichen glowing on the roots, saturated cherry-pink blossoms blooming on the earth floor in her wake, her fibonacci spiral braids streaming behind her with white particles spiraling, no text no watermarks",
         aiPromptSequence: [
           // Arc law 2026-10-01 (docs/ghost-journey-spec.md §0, stage map in ghost-arc.ts):
@@ -2018,19 +2016,19 @@ export const JOURNEYS: Journey[] = [
           // no chamber); beats 3-7 = stage 3 deeper and deeper (enclosed deep
           // beneath the earth — never a forest).
           // Stage 2 — at the ENTRANCE, outside, before she enters.
-          "photorealistic cinematic extreme wide shot at the ENTRANCE to a tunnel into the depths of the earth — a colossal natural opening in the ground, a great dark mouth of the earth framed by massive ancient gnarled tree roots curling over its rim like a living gateway, saturated cherry-pink blossoms blooming along the roots, a root-woven path sloping DOWN into deep darkness, open night sky of faint stars above the opening. " + GHOST_ANGEL_WINGLESS + " small and distant standing at the very threshold with her back to the camera, looking down into the descent, long white spiral fibonacci hair cascading to the ground with white particles, she has not yet entered. mysterious ethereal threshold of the deep earth, no text no watermarks",
+          "photorealistic cinematic extreme wide shot at the ENTRANCE to a tunnel into the depths of the earth — a colossal natural opening in the ground, a great dark mouth of the earth framed by massive ancient gnarled tree roots curling over its rim like a living gateway, saturated cherry-pink blossoms blooming along the roots, a root-woven path sloping DOWN into deep darkness, open night sky of faint stars above the opening. " + GHOST_ANGEL + " small and distant standing at the very threshold with her back to the camera, looking down into the descent, long white spiral fibonacci hair cascading to the ground with white particles, she has not yet entered. mysterious ethereal threshold of the deep earth, no text no watermarks",
           // Stage 2 — first steps down from the entrance, the opening still behind and above her.
-          "photorealistic cinematic wide rear shot from just inside the entrance to the earth looking DOWN a vast descending tunnel of massive gnarled tree roots and layered dark earth, the opening behind and above her still glowing with faint starlight, the passage sloping steeply downward into the depths, pale bioluminescent teal lichen beginning on the roots. " + GHOST_ANGEL_WINGLESS + " small taking her first steps down past the threshold with her back to the camera, arms softly at her sides, long white spiral fibonacci hair trailing back toward the light of the entrance with white particles. mysterious ethereal the descent begins, no text no watermarks",
+          "photorealistic cinematic wide rear shot from just inside the entrance to the earth looking DOWN a vast descending tunnel of massive gnarled tree roots and layered dark earth, the opening behind and above her still glowing with faint starlight, the passage sloping steeply downward into the depths, pale bioluminescent teal lichen beginning on the roots. " + GHOST_ANGEL + " small taking her first steps down past the threshold with her back to the camera, arms softly at her sides, long white spiral fibonacci hair trailing back toward the light of the entrance with white particles. mysterious ethereal the descent begins, no text no watermarks",
           // Stage 3 — deeper: the entrance now a tiny point of light far above.
-          "photorealistic cinematic wide rear tracking shot deep underground in total subterranean darkness, a spacious natural cave tunnel of dark earth and rock laced with ancient root tendrils descending ever deeper beneath the earth, the entrance far above now only a tiny point of faint light, lit only by pale bioluminescent teal lichen glowing on the cave walls, a high cave ceiling of dark earth and rock far above her, enclosed underground on every side. " + GHOST_ANGEL_WINGLESS + " small and distant drifting downward with her back to the camera, long white spiral fibonacci hair streaming upward behind her with white particles. mysterious ethereal deeper into the earth, no text no watermarks",
+          "photorealistic cinematic wide rear tracking shot deep underground in total subterranean darkness, a spacious natural cave tunnel of dark earth and rock laced with ancient root tendrils descending ever deeper beneath the earth, the entrance far above now only a tiny point of faint light, lit only by pale bioluminescent teal lichen glowing on the cave walls, a high cave ceiling of dark earth and rock far above her, enclosed underground on every side. " + GHOST_ANGEL + " small and distant drifting downward with her back to the camera, long white spiral fibonacci hair streaming upward behind her with white particles. mysterious ethereal deeper into the earth, no text no watermarks",
           // Stage 3 — deeper: vast cavern far beneath the surface, spiral root path going down.
-          "photorealistic cinematic extreme wide shot of a vast underground cave far beneath the surface of the earth in total subterranean darkness, colossal columns of dark rock and ancient root tendrils, enclosed in dark earth on every side, a natural root path spiraling ever downward through it like a great descending staircase, pale bioluminescent teal glow, roots hanging from the earthen ceiling like stalactites. " + GHOST_ANGEL_WINGLESS + " tiny far below on the descending path with her back to the camera, arms crossed peacefully over her chest, long white spiral fibonacci hair trailing with white particles. mysterious ethereal the depths of the earth, no text no watermarks",
+          "photorealistic cinematic extreme wide shot of a vast underground cave far beneath the surface of the earth in total subterranean darkness, colossal columns of dark rock and ancient root tendrils, enclosed in dark earth on every side, a natural root path spiraling ever downward through it like a great descending staircase, pale bioluminescent teal glow, roots hanging from the earthen ceiling like stalactites. " + GHOST_ANGEL + " tiny far below on the descending path with her back to the camera, arms crossed peacefully over her chest, long white spiral fibonacci hair trailing with white particles. mysterious ethereal the depths of the earth, no text no watermarks",
           // Stage 3 — deeper: overhead, straight down a spiral shaft into the earth.
-          "photorealistic cinematic extreme overhead shot looking straight DOWN a vast spiraling cave shaft of dark earth and rock laced with ancient root tendrils plunging into the depths of the earth, rings of pale bioluminescent teal lichen receding into darkness far below. " + GHOST_ANGEL_WINGLESS + " a tiny figure far below descending the spiral with her arms outstretched to her sides, long white spiral fibonacci hair fanning behind her in a fibonacci curve on the dark earth, white particles. mysterious ethereal descent into the deep, no text no watermarks",
+          "photorealistic cinematic extreme overhead shot looking straight DOWN a vast spiraling cave shaft of dark earth and rock laced with ancient root tendrils plunging into the depths of the earth, rings of pale bioluminescent teal lichen receding into darkness far below. " + GHOST_ANGEL + " a tiny figure far below descending the spiral with her arms outstretched to her sides, long white spiral fibonacci hair fanning behind her in a fibonacci curve on the dark earth, white particles. mysterious ethereal descent into the deep, no text no watermarks",
           // Stage 3 — deeper still: side passages, drifting luminous spores.
-          "photorealistic cinematic worm's-eye low-angle wide shot deeper still beneath the earth in total subterranean darkness, towering cave walls of dark earth and rock laced with ancient root tendrils rising on both sides of the descending passage, dark side passages branching away into the deep, luminous spores drifting in the still air, pale bioluminescent teal lichen glowing, enclosed underground with no sky. " + GHOST_ANGEL_WINGLESS + " small hovering downward between the towering root walls with her back to the camera, arms trailing softly behind her, long white spiral fibonacci hair trailing upward with white particles. mysterious ethereal the deepest passage, no text no watermarks",
+          "photorealistic cinematic worm's-eye low-angle wide shot deeper still beneath the earth in total subterranean darkness, towering cave walls of dark earth and rock laced with ancient root tendrils rising on both sides of the descending passage, dark side passages branching away into the deep, luminous spores drifting in the still air, pale bioluminescent teal lichen glowing, enclosed underground with no sky. " + GHOST_ANGEL + " small hovering downward between the towering root walls with her back to the camera, arms trailing softly behind her, long white spiral fibonacci hair trailing upward with white particles. mysterious ethereal the deepest passage, no text no watermarks",
           // Stage 3 — the deepest stretch: a faint teal glow ahead is the water (leads into stage 4).
-          "photorealistic cinematic forward-looking wide shot from behind deep into the final stretch of the passage far beneath the earth, the walls of gnarled tree roots and dark earth opening toward a distant glow of pale teal light far ahead where still water waits. " + GHOST_ANGEL_WINGLESS + " small in the middle of the passage with her back to the camera and her arms now reaching forward toward the distant glow, long white spiral fibonacci hair streaming with white particles. mysterious ethereal the deep passage ends at the water, no text no watermarks",
+          "photorealistic cinematic forward-looking wide shot from behind deep into the final stretch of the passage far beneath the earth, the walls of gnarled tree roots and dark earth opening toward a distant glow of pale teal light far ahead where still water waits. " + GHOST_ANGEL + " small in the middle of the passage with her back to the camera and her arms now reaching forward toward the distant glow, long white spiral fibonacci hair streaming with white particles. mysterious ethereal the deep passage ends at the water, no text no watermarks",
         ],
         aiPromptModifiers: {
           highBass: "subsonic shockwave reverberating through roots, portal light flaring, white particles exploding outward",
@@ -2055,35 +2053,35 @@ export const JOURNEYS: Journey[] = [
           GHOST_ANGEL +
           " hovering above an infinite pool of floating cherry-pink blossoms deep in a natural underground cavern, her perfect reflection visible in the still mirror-water below, infinite floating saturated cherry-pink blossoms drifting on the dark water, her fibonacci spiral braids streaming with white particles, no text no watermarks",
         aiPromptSequence: [
-          // Arc law + phase retime 2026-10-01: transcendence 0.30-0.76 stays
-          // UNDERGROUND — both flashes (p 0.448, 0.730) happen here. Beats 1-9 =
-          // stage 4, the pool of infinite floating cherry-pink blossoms (the same
-          // blossoms as the tree, Karel 2026-10-01); beats 10-12 = stage 5, the
-          // light at the end of the tunnel ABOVE (still below ground).
+          // Round 5 (Karel 2026-10-01): beats 1-6 = stage 4, the pool of infinite
+          // floating cherry-pink blossoms (she has her wings from the first frame —
+          // no find-the-wings beats). Beats 7-12 = stage 5: after the water she
+          // continues DEEPER into the tunnel, pink blossoms leading her toward a
+          // distant light AHEAD — the tunnel exit. Both flashes fall here, underground.
           // Stage 4 — arrival at the pool of infinite floating pink blossoms.
-          "photorealistic cinematic wide shot of a magnificent infinite natural cavern deep in the earth, a vast pool of still dark mirror-water stretching impossibly far with INFINITE FLOATING saturated cherry-pink blossoms drifting all the way to the horizon, enclosed by walls and a high vaulted ceiling of dark rock far above, deep underground, pale bioluminescent teal glow. " + GHOST_ANGEL_WINGLESS + " small hovering at the edge of the pool with her back to the camera, her bare shoulders and bare upper back visible, long white spiral fibonacci hair cascading to the ground, arms at her sides. mysterious ethereal infinite blossom pool, no text no watermarks",
+          "photorealistic cinematic wide shot of a magnificent infinite natural cavern deep in the earth, a vast pool of still dark mirror-water stretching impossibly far with INFINITE FLOATING saturated cherry-pink blossoms drifting all the way to the horizon, enclosed by walls and a high vaulted ceiling of dark rock far above, deep underground, pale bioluminescent teal glow. " + GHOST_ANGEL + " small hovering at the edge of the pool with her back to the camera, long white spiral fibonacci hair cascading to the ground, arms at her sides. mysterious ethereal infinite blossom pool, no text no watermarks",
           // Stage 4 — low angle across the endless blossoms, her perfect reflection.
-          "photorealistic cinematic wide low-angle shot from just above the water across an endless field of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) on still dark mirror-water deep beneath the earth, the blossoms receding to the horizon in every direction, soft light glowing from the petals. " + GHOST_ANGEL_WINGLESS + " small hovering above the water in the middle distance with her back to the camera, her bare shoulders and bare upper back visible, her perfect white reflection in the mirror-water below, long white spiral fibonacci hair trailing across the surface with white particles. mysterious ethereal the beautiful pool, no text no watermarks",
-          // Stage 4 — deeper into the pool cavern, the blossoms vanishing into darkness.
-          "photorealistic cinematic extreme wide shot deep beneath the earth of a colossal underground cavern whose pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) stretches on into darkness, cavern after cavern, the root-vaulted ceiling lost far above, pale bioluminescent teal glow. " + GHOST_ANGEL_WINGLESS + " tiny and distant drifting deeper across the water with her back to the camera, her bare shoulders and bare upper back visible, long white spiral fibonacci hair trailing behind her with white particles. mysterious ethereal ever deeper, no text no watermarks",
-          // Stage 4 — she finds translucent white wings floating among the blossoms (flash #1 window).
-          "photorealistic cinematic wide shot of a vast still pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) deep beneath the earth, a pair of glowing translucent white wispy wings of light and mist resting on the water between the blossoms. " + GHOST_ANGEL_WINGLESS + " small leaning gently down toward the wings with her back to the camera, her bare shoulders and bare upper back visible, her healthy arms reaching out, long white spiral fibonacci hair cascading forward toward the water with white particles. mysterious ethereal the wings among the blossoms, no text no watermarks",
-          // Stage 4 — the wings attach: a burst of light and swirling petals.
-          "photorealistic cinematic wide shot of the moment translucent white wispy wings of light attach to her upper back at the shoulder blades above a vast pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground), a soft burst of white light and swirling pink petals spreading outward in fibonacci spirals across the water, magnificent cavern deep beneath the earth. " + GHOST_ANGEL + " small at the center of the light with her back to the camera, long white spiral fibonacci hair rippling in the burst. mysterious ethereal the wings are found, no text no watermarks",
-          // Stage 4 — overhead: newly winged above the infinite blossoms.
-          "photorealistic cinematic extreme high overhead view looking straight down at a vast still pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) deep in a magnificent cavern, the blossoms spreading in every direction like a field of soft pink light. " + GHOST_ANGEL + " small and newly winged hovering horizontally above the water with her body spread wide, long white spiral fibonacci hair fanning around her in fibonacci patterns, translucent white wispy wings spread, face not visible from above, her perfect reflection below. mysterious ethereal, no text no watermarks",
-          // Stage 4 — deeper still: rivers of floating blossoms flowing into further chambers.
+          "photorealistic cinematic wide low-angle shot from just above the water across an endless field of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) on still dark mirror-water deep beneath the earth, the blossoms receding to the horizon in every direction, soft light glowing from the petals. " + GHOST_ANGEL + " small hovering above the water in the middle distance with her back to the camera, her perfect white reflection in the mirror-water below, long white spiral fibonacci hair trailing across the surface with white particles. mysterious ethereal the beautiful pool, no text no watermarks",
+          // Stage 4 — deeper into the pool cavern.
+          "photorealistic cinematic extreme wide shot deep beneath the earth of a colossal underground cavern whose pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) stretches on into darkness, cavern after cavern, the root-vaulted ceiling lost far above, pale bioluminescent teal glow. " + GHOST_ANGEL + " tiny and distant drifting deeper across the water with her back to the camera, long white spiral fibonacci hair trailing behind her with white particles. mysterious ethereal ever deeper, no text no watermarks",
+          // Stage 4 — overhead above the infinite blossoms (flash #1 window).
+          "photorealistic cinematic extreme high overhead view looking straight down at a vast still pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) deep beneath the earth in a magnificent cavern, the blossoms spreading in every direction like a field of soft pink light. " + GHOST_ANGEL + " small hovering horizontally above the water with her body spread wide, long white spiral fibonacci hair fanning around her in fibonacci patterns, translucent white wispy wings spread, face not visible from above, her perfect reflection below. mysterious ethereal, no text no watermarks",
+          // Stage 4 — rivers of floating blossoms flowing into further caverns.
           "photorealistic cinematic wide rear shot deep beneath the earth, the pool narrowing into slow dark rivers of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) flowing on through further caverns, gnarled root columns rising from the water, pale bioluminescent teal glow. " + GHOST_ANGEL + " small hovering low over the water with her back to the camera, translucent white wispy wings spread, long white spiral fibonacci hair trailing across the blossoms. mysterious ethereal deeper into the underground waters, no text no watermarks",
-          // Stage 4 — a first faint glimpse of light far above through the cavern ceiling.
-          "photorealistic cinematic wide low-angle shot of a vast underground cavern far beneath the earth, a pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) below, and high above in the dark root-vaulted ceiling the faintest thread of warm light filtering down from somewhere far overhead. " + GHOST_ANGEL + " small on the water with her back to the camera, head lifted toward the distant glimmer, translucent white wispy wings folded, long white spiral fibonacci hair cascading onto the blossoms. mysterious ethereal a glimpse of light, no text no watermarks",
           // Stage 4 — she drifts on across the pool toward where the tunnel continues.
           "photorealistic cinematic wide rear tracking shot of her hovering forward across a vast still pool of infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) deep beneath the earth, the blossoms rippling softly in her wake, the cavern continuing into a dark tunnel ahead. " + GHOST_ANGEL + " small with her back to the camera, translucent white wispy wings spread, long white spiral fibonacci hair trailing behind her across the water with white particles. mysterious ethereal across the infinite blossoms, no text no watermarks",
-          // Stage 5 — past the pool the tunnel turns UPWARD; the light is ABOVE her.
-          "photorealistic cinematic wide low-angle shot beyond the far end of the infinite flower pool, where the deep-earth tunnel turns UPWARD into a tall natural cave shaft of dark earth and rock, a brilliant warm white-gold light pouring DOWN from an opening far ABOVE at the top of the shaft — the light at the end of the tunnel — infinite floating saturated cherry-pink blossoms (loose blossom heads drifting on the dark water of an enclosed rock cavern deep underground) drifting on the dark water below. " + GHOST_ANGEL + " small, rising up off the water toward the light above with her back to the camera, translucent wispy wings opening, long white spiral fibonacci hair trailing downward with white particles. mysterious ethereal the light above, no text no watermarks",
-          // Stage 5 — rising up the shaft, the light above swelling (flash #2 window, still underground).
-          "photorealistic cinematic wide shot inside a tall natural cave shaft of dark earth and rock deep underground, a brilliant warm white-gold light pouring down from far ABOVE and swelling brighter, pink blossom petals drifting upward around her. " + GHOST_ANGEL + " small, rising up the shaft toward the light above with her back to the camera, translucent wispy wings spread, long white spiral fibonacci hair streaming down beneath her with white particles. mysterious ethereal rising toward the light at the end of the tunnel, no text no watermarks",
-          // Stage 5 — worm's-eye straight UP the shaft toward the blazing opening.
-          "photorealistic cinematic worm's-eye view looking straight UP a tall natural shaft of ancient tree roots and dark earth toward a round opening far above blazing with warm white-gold light and the first glimpse of stars beyond it. " + GHOST_ANGEL + " a small silhouette ascending up the shaft toward the light above, seen from below with her back and wings to the camera, translucent wispy wings spread, long white spiral fibonacci hair streaming down behind her with white particles. mysterious ethereal ascent to the light at the end of the tunnel, no text no watermarks",
+          // Stage 5 — after the water: deeper into the tunnel, blossoms leading her toward the distant exit light.
+          "photorealistic cinematic wide rear shot deep beneath the earth as she leaves the pool and continues deeper into a long natural rock tunnel, pink cherry blossoms drifting in the air and lining the path ahead of her, leading her deeper, and a distant warm light far ahead at the end of the tunnel — the tunnel exit, a tiny glowing point. " + GHOST_ANGEL + " small with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair trailing with white particles. mysterious ethereal led deeper by the blossoms, no text no watermarks",
+          // Stage 5 — low angle: a stream of floating blossoms along the tunnel floor, the distant exit light ahead.
+          "photorealistic cinematic wide low-angle shot from the tunnel floor deep beneath the earth, a slow dark stream carrying saturated cherry-pink blossoms along the rock tunnel, the blossoms floating ahead of her like a guiding path toward a distant warm light far ahead at the end of the tunnel — the tunnel exit. " + GHOST_ANGEL + " small walking forward along the stream with her back to the camera, translucent wings of light-mist folded, long white spiral fibonacci hair cascading onto the blossoms. mysterious ethereal following the blossoms, no text no watermarks",
+          // Stage 5 — blossoms spiraling around her like a guiding trail toward the distant light.
+          "photorealistic cinematic wide rear tracking shot deep underground in a vast rock tunnel, saturated cherry-pink blossoms spiraling through the air around her in a fibonacci trail that winds on ahead toward a distant warm light far ahead at the end of the tunnel — the tunnel exit, the light a little larger now. " + GHOST_ANGEL + " small with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair trailing through the spiral of blossoms. mysterious ethereal the blossoms lead the way, no text no watermarks",
+          // Stage 5 — extreme wide: a river of glowing blossoms leading her toward the distant exit.
+          "photorealistic cinematic extreme wide shot of a colossal rock tunnel deep beneath the earth, a river of softly glowing saturated cherry-pink blossoms winding along its floor and into the distance toward a distant warm light far ahead at the end of the tunnel — the tunnel exit. " + GHOST_ANGEL + " tiny and distant following the river of blossoms with her back to the camera, translucent wings of light-mist trailing, long white spiral fibonacci hair streaming behind her. mysterious ethereal the long way to the light, no text no watermarks",
+          // Stage 5 — nearer the exit: the distant light ahead grows brighter, blossoms everywhere.
+          "photorealistic cinematic wide rear shot deep beneath the earth near the end of the long rock tunnel, pink cherry blossoms drifting in the air and lining the path and drifting all around her, a distant warm light far ahead at the end of the tunnel — the tunnel exit now growing larger and brighter ahead. " + GHOST_ANGEL + " small walking toward the light with her back to the camera, translucent wings of light-mist opening, long white spiral fibonacci hair glowing at its edges. mysterious ethereal approaching the light, no text no watermarks",
+          // Stage 5 — the blossom-lit passage toward the exit light (flash #2 window, still underground).
+          "photorealistic cinematic wide shot deep beneath the earth of the final blossom-lit passage of the tunnel, saturated cherry-pink blossoms glowing along the rock walls and floating in the air, a distant warm light far ahead at the end of the tunnel — the tunnel exit filling the far end of the passage ahead with warm white-gold light. " + GHOST_ANGEL + " small in silhouette against the exit light with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair streaming. mysterious ethereal the light at the end of the tunnel, no text no watermarks",
         ],
         aiPromptModifiers: {
           highBass: "subsonic pulse rippling the mirror-water, floating cherry-pink blossoms trembling, fibonacci hair pulsing visibly, white particles exploding outward",
@@ -2110,12 +2108,11 @@ export const JOURNEYS: Journey[] = [
           GHOST_ANGEL +
           " hovering forward through infinite cosmos toward a tree crowned with saturated cherry-pink blossoms standing alone on its own small dark rocky planet with a faint blue atmosphere rim ahead, the entire universe sky with stars nebulae and galaxies behind, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
         aiPromptSequence: [
-          // Arc law + retime 2026-10-01: illumination 0.76-0.82. Beat 1 = stage 5
-          // (she rises UP out of the opening, sees the pink tree on its distant
-          // planet); beats 2-5 = stage 6, flight through infinite space — the
-          // blossoms grow in SPIRALS, more and more (~5% -> ~40%).
-          // Stage 5 — she rises UP out of the opening into cosmos; the distant pink tree.
-          "photorealistic cinematic extreme wide shot of her emerging UP out of a round opening in the dark earth into vast open infinite cosmos — the light of the opening glowing beneath her, the universe sky of stars, nebulae and spiral galaxies opening all around and above, and far, far away a tiny tree crowned with soft spirals of saturated cherry-pink blossoms standing alone on its own small dark rocky planet with a faint blue atmosphere rim. " + GHOST_ANGEL + " small rising up from the opening with her back to the camera, translucent wispy wings spread, long white spiral fibonacci hair trailing down behind her with white particles. mysterious ethereal emergence into the light above, no text no watermarks",
+          // Round 5: beat 1 = stage 5, she arrives at the tunnel mouth and looks
+          // out at the cosmos and the pink tree on its distant planet; beats 2-5 =
+          // stage 6, flight through space, the blossoms growing more and more.
+          // Stage 5 — at the mouth of the tunnel she looks out: the cosmos, and the pink tree on a distant planet.
+          "photorealistic cinematic wide rear shot of her standing at the mouth of the tunnel where it opens onto vast open infinite cosmos — warm light pouring in around her, she looks out at the universe sky of stars, nebulae and spiral galaxies, and far, far away a tiny tree crowned with soft spirals of saturated cherry-pink blossoms standing alone on its own small dark rocky planet with a faint blue atmosphere rim. " + GHOST_ANGEL + " small at the tunnel exit with her back to the camera, translucent wings of light-mist spread, long white spiral fibonacci hair trailing with white particles. mysterious ethereal looking out at the cosmos, no text no watermarks",
           // Stage 6 — flight, tree far: about 5 PERCENT, the first spirals of blossoms.
           "photorealistic cinematic extreme wide shot of infinite space, a small tree standing on its own small dark rocky planet with a faint blue atmosphere rim still far away in the universe sky of stars nebulae and spiral galaxies, its dark branches almost entirely bare, the first tiny fibonacci spirals of saturated cherry-pink blossoms winding outward along its branches — about 5 PERCENT in bloom. " + GHOST_ANGEL + " tiny and distant flying toward the tree-planet with her back to the camera, translucent wispy wings spread, long white spiral fibonacci hair trailing like a comet-tail with white particles. mysterious ethereal flight through infinite space, no text no watermarks",
           // Stage 6 — closer: about 15 PERCENT, spirals of blossoms spreading.
@@ -2152,18 +2149,19 @@ export const JOURNEYS: Journey[] = [
           GHOST_ANGEL +
           "'s hand on the dark trunk of a gnarled tree with saturated cherry-pink blossoms blooming outward across every branch from the point of her touch, the tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, her translucent butterfly-angel wings spread, her fibonacci spiral braids streaming with white particles, no text no watermarks",
         aiPromptSequence: [
-          // Arc law + retime 2026-10-01: return 0.82-0.89 = stage 7, spiritual
-          // union. The blossoms keep growing in infinite spirals until they are
-          // ENTANGLED in her spiraling white hair, weaving in and out of the
-          // strands. Healthy arms; no dissolving.
-          // Stage 7 — about 60 PERCENT; her palm on the trunk, spirals of blossoms racing outward.
+          // Round 5: stage 7 — she arrives and completely unifies into the
+          // infinite blossom tree; the frame fills with kaleidoscopic visionary pink
+          // blossoms, her spiraling hair entangled in them; the last beat: a light
+          // shines from the top of the tree (hand-off to the ending). Never the
+          // drug word — 'kaleidoscopic', 'visionary', 'infinite' only.
+          // Stage 7 — about 60 PERCENT; she arrives, palm on the trunk.
           "photorealistic cinematic wide three-quarter rear shot of a tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, about 60 PERCENT of its branches covered in fibonacci spirals of saturated cherry-pink blossoms winding outward along its branches, the spirals racing outward from the point of her touch, warm glow behind, universe sky of stars nebulae and spiral galaxies. " + GHOST_ANGEL + " small and whole beside the trunk with her back to the camera, her healthy arm extended and her palm resting gently on the bark, her long white spiral fibonacci hair beginning to lift up into the canopy, translucent wispy wings spread. mysterious ethereal the union begins, no text no watermarks",
-          // Stage 7 — about 80 PERCENT; blossoms ENTANGLED in her spiraling hair, weaving in and out.
-          "photorealistic cinematic wide low-angle shot of a tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, about 80 PERCENT of its branches covered in fibonacci spirals of saturated cherry-pink blossoms winding outward along its branches. " + GHOST_ANGEL + " small at the heart of the trunk with her back to the camera, both healthy arms resting on the bark, her long white spiral fibonacci hair rising up through the canopy in great spirals, the pink blossoms ENTANGLED in her spiraling hair, weaving in and out of the white strands — her long white strands wrapping around the branches, pink blossoms caught and tangled throughout her spiraling hair. mysterious ethereal blossoms woven into her hair, no text no watermarks",
-          // Stage 7 — about 95 PERCENT; an infinite spiral of hair and blossoms through the whole crown.
-          "photorealistic cinematic extreme wide shot of a tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, about 95 PERCENT of its branches covered in infinite fibonacci spirals of saturated cherry-pink blossoms winding outward along its branches, radiant warm white-gold light streaming through the canopy. " + GHOST_ANGEL + " small and radiant at the heart of the tree with her back to the camera, her long white spiral fibonacci hair now an INFINITE SPIRAL flowing through the whole crown, blossoms entangled in every strand, hair and blossoms weaving in and out of each other — her long white strands wrapping around the branches, pink blossoms caught and tangled throughout her spiraling hair, her translucent wispy wings unfolding as shapes of light among the branches. mysterious ethereal infinite spiral, no text no watermarks",
-          // Stage 7 — 100 PERCENT; spiritual union: infinite blossoms entangled in her infinite spiral hair.
-          "photorealistic cinematic extreme wide shot of a tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos with EVERY BRANCH 100 PERCENT covered in infinite fibonacci spirals of saturated cherry-pink blossoms winding outward along its branches, endless pink reaching outward without limit, warm golden light streaming through every branch. " + GHOST_ANGEL + " (white, peak adult) one with the tree in spiritual union, a radiant presence at its heart with her back to the camera, her long white spiral fibonacci hair an infinite spiral woven through the whole crown, the blossoms entangled in her hair, weaving in and out of the strands — her long white strands wrapping around the branches, pink blossoms caught and tangled throughout her spiraling hair, her translucent wispy wings shapes of light among the branches. she and the tree are ONE. mysterious ethereal spiritual union complete, no text no watermarks",
+          // Stage 7 — about 85 PERCENT; she completely unifies with the tree, the frame filling with blossoms.
+          "photorealistic cinematic wide shot of a tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, about 85 PERCENT in bloom with saturated cherry-pink blossoms in infinite fibonacci spirals, the blossoms multiplying until the whole frame FILLED with kaleidoscopic visionary saturated cherry-pink blossoms in infinite fibonacci spirals. " + GHOST_ANGEL + " small at the heart of the tree with her back to the camera, completely unifying with it in spiritual union, her long white spiral fibonacci hair an INFINITE SPIRAL rising through the crown, the pink blossoms ENTANGLED in her spiraling hair, weaving in and out of the white strands. mysterious ethereal union, no text no watermarks",
+          // Stage 7 — 100 PERCENT; the infinite blossom tree fills the screen, she and the tree are one.
+          "photorealistic cinematic extreme wide shot of an infinite blossom tree with EVERY BRANCH 100 PERCENT covered in saturated cherry-pink blossoms spiraling outward without limit, the whole frame FILLED with kaleidoscopic visionary saturated cherry-pink blossoms in infinite fibonacci spirals, warm golden light glowing through. " + GHOST_ANGEL + " a small radiant presence at its heart with her back to the camera, one with the tree, her infinite spiral hair entangled with the blossoms, weaving in and out of the strands. she and the tree are ONE. mysterious ethereal infinite visionary bloom, no text no watermarks",
+          // Stage 7 — 100 PERCENT; a light shines from the top of the tree (hand-off to stage 8).
+          "photorealistic cinematic wide low-angle shot of the infinite blossom tree on its own small dark rocky planet with a faint blue atmosphere rim in infinite cosmos, every branch 100 PERCENT covered in saturated cherry-pink blossoms in infinite spirals, and a brilliant soft white-gold light shining down from the top of the tree, rays streaming through the blossoms. " + GHOST_ANGEL + " small and radiant within the crown with her back to the camera, her infinite spiral hair entangled in the blossoms and glowing in the light from the top of the tree. mysterious ethereal the light from the top of the tree, no text no watermarks",
         ],
         aiPromptModifiers: {
           highBass: "subsonic pulse surging through the merged branches, every hair-thread and wood fiber pulsing with gold, particles scattering outward",
@@ -2193,24 +2191,22 @@ export const JOURNEYS: Journey[] = [
           GHOST_ANGEL +
           " soaring freely through infinite golden cosmos with both arms outstretched upward, her translucent butterfly-angel wings spread trailing golden particle streams, her fibonacci spiral braids streaming back with white and gold particles, deep indigo cosmos pierced by volumetric amber sunrays, no text no watermarks",
         aiPromptSequence: [
-          // Arc law + retime 2026-10-01: integration 0.89-1.0 = stage 8, the
-          // angel unified with light and the cosmos, pink blossoms subtly woven
-          // into the infinite scene behind her. ALWAYS WIDE / EXTREME WIDE — she
-          // is small and distant; the final beat is the most distant of all.
-          // NO tree, roots, tunnel, pool, castle, stone, chamber, window, archway
-          // or portal.
-          // Stage 8 — extreme wide: rising small into a column of light, petals far behind.
-          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of infinite cosmos, a vast column of soft white-gold light rising through deep indigo space among stars, nebulae and spiral galaxies, faint drifting nebulae of pink cherry-blossom petals glowing subtly far behind. " + GHOST_ANGEL + " (white, peak adult) a tiny distant figure filling only a tiny fraction of the frame, rising into the column of light with her back to the camera, arms opening upward, translucent wispy wings spread, long white spiral fibonacci hair streaming below her in an infinite spiral with white and gold particles. mysterious ethereal the angel unifying with light amidst the cosmos, no text no watermarks",
-          // Stage 8 — wide from far below: she small, ascending into radiance.
-          "photorealistic cinematic EXTREME LONG SHOT from very far below, wide low-angle shot looking up into infinite cosmos at a vast radiance of soft white-gold light among the stars, volumetric rays pouring outward through deep indigo space, faint drifting nebulae of pink cherry-blossom petals drifting through the rays. " + GHOST_ANGEL + " (peak adult) a tiny distant figure filling only a tiny fraction of the frame, ascending into the light with both arms outstretched upward (face not visible from this angle), translucent wispy wings of light spread, long white spiral fibonacci hair trailing beneath her. mysterious ethereal unifying with light, no text no watermarks",
-          // Stage 8 — extreme wide: tiny at the heart of a nebula of light, petal-spirals in the nebula.
-          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of a great nebula of luminous white-gold light in infinite cosmos, faint spirals of pink cherry-blossom petals woven subtly into the nebula clouds, distant stars and spiral galaxies all around. " + GHOST_ANGEL + " (peak adult) a tiny distant radiant figure filling only a tiny fraction of the frame at the very heart of the light with her back to the camera, the outer edges of her wings, dress and hair softly melting into the surrounding light. mysterious ethereal becoming light amidst the cosmos, no text no watermarks",
-          // Stage 8 — extreme wide: wings and hair unfurling into rivers of light among the stars.
-          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot across infinite cosmos pierced by volumetric white-gold light, deep indigo space, distant stars and galaxies, faint drifting nebulae of pink cherry-blossom petals scattered subtly among the stars. " + GHOST_ANGEL + " (peak adult) a tiny distant figure filling only a tiny fraction of the frame with her back to the camera, arms outstretched, her translucent wispy wings and very long white spiral fibonacci hair unfurling into endless rivers of light that flow outward and merge with the stars. mysterious ethereal unifying with light, no text no watermarks",
-          // Stage 8 — extreme wide: a tiny figure of light at the center of a spiral galaxy dusted with petals.
-          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of a vast spiral galaxy of soft white-gold light in infinite cosmos, its spiral arms faintly dusted with drifting pink cherry-blossom petals, stars and distant galaxies everywhere. " + GHOST_ANGEL + " (peak adult) a tiny distant luminous figure filling only a tiny fraction of the frame at its bright center, seen from very far away, almost entirely light now, wings spread and long white spiral hair curling into the spiral arms, face not visible. mysterious ethereal cosmic union with light (NOT religious — cosmic and spiritual), no text no watermarks",
-          // Stage 8 — THE ENDING, the most distant shot: the angel and the light are one in the infinite cosmos.
-          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot, the most distant view of the whole journey: infinite cosmos stretching in every direction, deep indigo space full of stars, nebulae and spiral galaxies, faint spirals of pink cherry-blossom petals drifting subtly among them. " + GHOST_ANGEL + " (peak adult) a tiny distant point of soft white-gold light far away at the center of the frame, the angel and the light now one, the faint trace of her spiral hair and wings glowing around it. mysterious ethereal the angel unified with light and the cosmos — transcendent, NOT religious, no text no watermarks",
+          // Round 5: stage 8 — she joins an infinite light in the cosmos, moving
+          // away toward the cosmos at a distance, pink particles in the cosmic
+          // scene. ALWAYS WIDE / EXTREME WIDE, small and distant; the final beat
+          // is the most distant of all.
+          // Stage 8 — beat 1.
+          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of infinite cosmos, a vast column of soft white-gold light rising through deep indigo space among stars, nebulae and spiral galaxies, faint drifting pink particles glowing subtly far behind. " + GHOST_ANGEL + " (white, peak adult) a tiny distant figure filling only a tiny fraction of the frame, rising into the column of light with her back to the camera, moving away from us toward the infinite cosmos, arms opening upward, translucent wispy wings spread, long white spiral fibonacci hair streaming below her in an infinite spiral with white and gold particles. mysterious ethereal the angel unifying with light amidst the cosmos, no text no watermarks",
+          // Stage 8 — beat 2.
+          "photorealistic cinematic EXTREME LONG SHOT from very far below, wide low-angle shot looking up into infinite cosmos at a vast radiance of soft white-gold light among the stars, volumetric rays pouring outward through deep indigo space, faint drifting pink particles drifting through the rays. " + GHOST_ANGEL + " (peak adult) a tiny distant figure filling only a tiny fraction of the frame, ascending into the light with both arms outstretched upward (face not visible from this angle), translucent wispy wings of light spread, long white spiral fibonacci hair trailing beneath her, moving away from us toward the infinite cosmos. mysterious ethereal unifying with light, no text no watermarks",
+          // Stage 8 — beat 3.
+          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of a great nebula of luminous white-gold light in infinite cosmos, faint spirals of pink particles woven subtly into the nebula clouds, distant stars and spiral galaxies all around. " + GHOST_ANGEL + " (peak adult) a tiny distant radiant figure filling only a tiny fraction of the frame at the very heart of the light with her back to the camera, moving away from us toward the infinite cosmos, the outer edges of her wings, dress and hair softly melting into the surrounding light. mysterious ethereal becoming light amidst the cosmos, no text no watermarks",
+          // Stage 8 — beat 4.
+          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot across infinite cosmos pierced by volumetric white-gold light, deep indigo space, distant stars and galaxies, faint drifting pink particles scattered subtly among the stars. " + GHOST_ANGEL + " (peak adult) a tiny distant figure filling only a tiny fraction of the frame with her back to the camera, moving away from us toward the infinite cosmos, arms outstretched, her translucent wispy wings and very long white spiral fibonacci hair unfurling into endless rivers of light that flow outward and merge with the stars. mysterious ethereal unifying with light, no text no watermarks",
+          // Stage 8 — beat 5.
+          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot of a vast spiral galaxy of soft white-gold light in infinite cosmos, its spiral arms faintly dusted with drifting pink particles, stars and distant galaxies everywhere. " + GHOST_ANGEL + " (peak adult) a tiny distant luminous figure filling only a tiny fraction of the frame at its bright center, seen from very far away, almost entirely light now, wings spread and long white spiral hair curling into the spiral arms, face not visible, moving away from us toward the infinite cosmos. mysterious ethereal cosmic union with light (NOT religious — cosmic and spiritual), no text no watermarks",
+          // Stage 8 — beat 6.
+          "photorealistic cinematic EXTREME LONG SHOT from very far away, extreme wide shot, the most distant view of the whole journey: infinite cosmos stretching in every direction, deep indigo space full of stars, nebulae and spiral galaxies, faint spirals of pink particles drifting subtly among them. " + GHOST_ANGEL + " (peak adult) a tiny distant point of soft white-gold light far away at the center of the frame, the angel and the light now one, the faint trace of her spiral hair and wings glowing around it, moving away from us toward the infinite cosmos. mysterious ethereal the angel unified with light and the cosmos — transcendent, NOT religious, no text no watermarks",
         ],
         aiPromptModifiers: {
           highBass: "gold light pulsing with deep resonant warmth, visible waves of radiance outward, particles scattering in golden shockwaves",

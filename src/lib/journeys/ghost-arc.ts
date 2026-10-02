@@ -31,7 +31,7 @@ export type GhostArcStage = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export const GHOST_BEAT_STAGES: Record<string, GhostArcStage[]> = {
   threshold:     [1, 1, 1, 1, 1, 1],
   expansion:     [2, 2, 3, 3, 3, 3, 3],
-  transcendence: [4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5],
+  transcendence: [4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5],
   illumination:  [5, 6, 6, 6, 6],
   return:        [7, 7, 7, 7],
   integration:   [8, 8, 8, 8, 8, 8],
