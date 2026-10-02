@@ -7,9 +7,43 @@
  * visualizer uses the real FFT instead of the synthetic slow waves.
  * Lab piece #1: Chemiluminescence.
  */
+/**
+ * The EXPANSION journeys — kinetic WITH imaging (Karel 2026-10-01: "just
+ * make all in expansion and these batches kinetic with the imaging as
+ * well"). Exact names (case-insensitive), because several Expansion
+ * pieces share a prefix with a mastered Kinetic Lab journey whose
+ * imaging stays paused ("Chemiluminescence" vs "Chemiluminescence 1",
+ * "Cabin Soul 6" vs "Cabin Soul 5/8"). Set 1 (2026-09-29) + set 2.
+ */
+export const EXPANSION_KINETIC_NAMES: ReadonlySet<string> = new Set(
+  [
+    // Set 1
+    "Surrounded by Light 6", "Nothing 30", "Night Wind 2", "The Other Side 10",
+    "Northern Plane 5", "No question 8",
+    // Set 2 (the rest of ~/Desktop/Suno Songs, deduped 2026-10-01)
+    "Amboise 1", "Amboise 2", "Bells 1", "Cabin Soul 6", "Chemiluminescence",
+    "Chenin 3", "Chenin 5", "Horses 1", "Loire 2", "Loire 5A", "Never Forget 4",
+    "Night Wind 4", "Night Wind 5", "Night Wind 9", "Night Wind 11",
+    "No question 7", "Northern Plane 3", "Rattler 2", "Redwoods Sway 2",
+    "Rise 1", "Roll Away 8", "Sancerre Cry 4", "Singular 4",
+    "Surrounded by Light 3", "Surrounded by Light 19", "The Other Side 9",
+    "Torraine 5", "Torraine 6", "Torraine 7",
+    "Tranquility 3", "Tranquility 8", "Tranquility 11", "Tranquility 17",
+    "Tranquility 21", "Tranquility 30", "Tranquility 33", "Tranquility 34",
+    "Tranquility 35", "Tranquility 36", "Tranquility 38",
+    "Velvet Tears 1", "Yellow Bird 3", "Yellow Bird 6",
+  ].map((n) => n.toLowerCase()),
+);
+
+export function isExpansionKineticName(name?: string | null): boolean {
+  if (!name) return false;
+  return EXPANSION_KINETIC_NAMES.has(name.trim().toLowerCase());
+}
+
 /** Band-split reactive shaders (bass/mid/treble per layer). */
 export function isKineticJourneyName(name?: string | null): boolean {
   if (!name) return false;
+  if (isExpansionKineticName(name)) return true;
   return /^(chemiluminescence|rolling|stand|cabin soul)/i.test(name.trim());
 }
 
@@ -17,6 +51,8 @@ export function isKineticJourneyName(name?: string | null): boolean {
  *  only; Rolling/Stand keep epic imagery under their reactive light. */
 export function isWhisperImageryName(name?: string | null): boolean {
   if (!name) return false;
+  // Expansion = kinetic shaders OVER full imaging (Karel 2026-10-01).
+  if (isExpansionKineticName(name)) return false;
   // Imaging PAUSED for the whole Kinetic Lab for now (Karel 2026-09-30:
   // "make them all kinetic with their imaging paused") — pure shaders
   // on black while the lead-actor language matures.

@@ -5,13 +5,16 @@
 // live kiosk; samples every band layer's envelope + screen luminance,
 // asserts all three voices exist and PULSE. Exit 0 = verified.
 // Usage: node scripts/verify-kinetic.mjs [journeyId] [settleSecs]
+//   VERIFY_BASE=http://localhost:3001 to run against a dev server instead
+//   of the kiosk (default http://localhost:3000).
 import { chromium } from "playwright";
 const JID = process.argv[2] ?? "9f7d1b51-aeac-4dfc-a39f-b00101a403f9"; // Chemiluminescence 1
 const SETTLE = Number(process.argv[3] ?? 25) * 1000;
+const BASE = process.env.VERIFY_BASE ?? "http://localhost:3000";
 const browser = await chromium.launch({ headless: false, args: ["--autoplay-policy=no-user-gesture-required", "--window-size=1440,900"] });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(`http://localhost:3000/room/installation?loop=1&start=${JID}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${BASE}/room/installation?loop=1&start=${JID}`, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(3000);
   const btn = page.locator("button[aria-label='Begin']");
   if (await btn.count()) await btn.first().click().catch(() => {});

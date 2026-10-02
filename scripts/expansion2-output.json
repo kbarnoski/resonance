@@ -1,0 +1,307 @@
+{
+  "pathId": "c278ba7e-94a8-4f73-b9ce-4d433900c896",
+  "pathShareToken": "3422c91db7ee4769",
+  "journeys": [
+    {
+      "order": 7,
+      "journeyId": "a96b4696-c02b-4004-a1a5-a0b1eee09308",
+      "recordingId": "c6ac7113-7393-45a8-91df-4a713eb45429",
+      "title": "Loire 2",
+      "lead": "cascade-veil"
+    },
+    {
+      "order": 8,
+      "journeyId": "6ee9f014-8203-437c-b05c-9d8bd0de9d3e",
+      "recordingId": "1c3dac22-2c73-49bc-be68-3b44e1d21e72",
+      "title": "Chenin 5",
+      "lead": "pollen"
+    },
+    {
+      "order": 9,
+      "journeyId": "666436a4-eabf-4b0a-b6bc-665520daa687",
+      "recordingId": "57a79a37-edeb-4119-818b-94d6bfc1f7cb",
+      "title": "Tranquility 3",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 10,
+      "journeyId": "ecf0d90f-7e1b-4ecb-a654-ecea936caca8",
+      "recordingId": "d47a73f5-eeec-4252-b067-e85bf5064e36",
+      "title": "Bells 1",
+      "lead": "rose-window"
+    },
+    {
+      "order": 11,
+      "journeyId": "1f83e254-a0c8-45ec-974f-8b363038a98d",
+      "recordingId": "d3a4578c-38ba-40e8-952c-3a30f9487675",
+      "title": "Rise 1",
+      "lead": "ember-drift"
+    },
+    {
+      "order": 12,
+      "journeyId": "06b07942-bf94-4513-8e71-ef00508ced3e",
+      "recordingId": "ab3958ec-3eed-4fe1-8257-e54ba6452bdb",
+      "title": "Surrounded by Light 3",
+      "lead": "orbit-weaver"
+    },
+    {
+      "order": 13,
+      "journeyId": "6ff51cde-f4ca-4285-8707-0f77eaf9394c",
+      "recordingId": "638c11ea-a317-4897-9be7-ffbc6f9d8c64",
+      "title": "Amboise 1",
+      "lead": "r2-spiralgal"
+    },
+    {
+      "order": 14,
+      "journeyId": "85124aed-c3b4-42e2-870a-b14bc5425b72",
+      "recordingId": "9850c195-25e8-4118-9389-61ca7da1d441",
+      "title": "Night Wind 9",
+      "lead": "murmuration"
+    },
+    {
+      "order": 15,
+      "journeyId": "0b4eb01a-9ac7-4a04-8877-05f905b14f8b",
+      "recordingId": "862949f2-9162-4e1c-a204-f7ba6088eef7",
+      "title": "Tranquility 8",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 16,
+      "journeyId": "8f3e82e2-0a30-499f-ba74-5158208a07a0",
+      "recordingId": "b855f80b-1f4d-4b7b-83cb-c7df0533e64a",
+      "title": "Never Forget 4",
+      "lead": "r3-dreamtendrils"
+    },
+    {
+      "order": 17,
+      "journeyId": "3f42929f-8b8e-4206-a3c8-057bf479d4e7",
+      "recordingId": "dc9bdbca-9057-4add-8da1-be4c84beda92",
+      "title": "Torraine 5",
+      "lead": "constellation"
+    },
+    {
+      "order": 18,
+      "journeyId": "4dac5718-517d-4183-ad27-e1a6c583e305",
+      "recordingId": "0926b1e9-40a1-490b-8611-358b099ac160",
+      "title": "Tranquility 30",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 19,
+      "journeyId": "6cb979ce-3b76-4851-a0ba-3f100fddfcb3",
+      "recordingId": "73ebd706-5936-4251-8635-51dd89f23fee",
+      "title": "Yellow Bird 3",
+      "lead": "r2-curlswarm"
+    },
+    {
+      "order": 20,
+      "journeyId": "d8705068-f8a9-4dd7-95a5-c6f1160fed22",
+      "recordingId": "edff3c8a-fd57-4b73-85b9-e39f9c28805b",
+      "title": "Roll Away 8",
+      "lead": "will-o-wisp"
+    },
+    {
+      "order": 21,
+      "journeyId": "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f",
+      "recordingId": "8ada2869-9167-4bb9-ac2a-6a5587bad5a0",
+      "title": "Singular 4",
+      "lead": "r3-magneticwisps"
+    },
+    {
+      "order": 22,
+      "journeyId": "24101852-61ee-4ac9-8fd7-da2ae19ab0a3",
+      "recordingId": "701f855f-b655-4e0b-a1f8-ea47120db6b9",
+      "title": "The Other Side 9",
+      "lead": "binary-stars"
+    },
+    {
+      "order": 23,
+      "journeyId": "86b64938-26ea-40b9-9ea1-461323a049d5",
+      "recordingId": "24b92aaa-c3b7-4c46-a6ab-bc109613a9a3",
+      "title": "Chenin 3",
+      "lead": "pollen"
+    },
+    {
+      "order": 24,
+      "journeyId": "2ff26268-997a-438f-8dac-d280d50da3a1",
+      "recordingId": "703b4f98-9ad1-4c10-95f9-c3fcdad5472b",
+      "title": "Tranquility 11",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 25,
+      "journeyId": "954a7000-91ba-42eb-b5a7-a8d5bc21c8c2",
+      "recordingId": "0e5b296f-ce9b-4744-b8ae-c9e70c6291d0",
+      "title": "Night Wind 5",
+      "lead": "murmuration"
+    },
+    {
+      "order": 26,
+      "journeyId": "112c3e16-3c98-43ca-902e-a9c2b510ee3d",
+      "recordingId": "fcfacd1b-f906-4516-b87c-0b737c13b284",
+      "title": "Cabin Soul 6",
+      "lead": "starfield"
+    },
+    {
+      "order": 27,
+      "journeyId": "05664df7-d355-40b7-85d2-e2badf26123a",
+      "recordingId": "98d13a80-dc18-47f0-abec-d1d38bbc4782",
+      "title": "Torraine 6",
+      "lead": "constellation"
+    },
+    {
+      "order": 28,
+      "journeyId": "68b4289e-2247-41d6-8b9d-064345da9769",
+      "recordingId": "52e54c3f-e470-49e6-aba1-26156c32d778",
+      "title": "Tranquility 17",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 29,
+      "journeyId": "99b7ad2c-a212-440e-85fa-0c670c1e4296",
+      "recordingId": "9962e0eb-5860-49ff-9d80-ba153c8ead8c",
+      "title": "Redwoods Sway 2",
+      "lead": "firefly-field"
+    },
+    {
+      "order": 30,
+      "journeyId": "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a",
+      "recordingId": "7d91eb8d-3651-47af-b009-4a472ca7afe8",
+      "title": "Horses 1",
+      "lead": "meteor-rain"
+    },
+    {
+      "order": 31,
+      "journeyId": "e9beec7a-6aa4-41bb-83f0-c827603ed51d",
+      "recordingId": "7d291b0a-c21d-4116-b3f1-73aabcaa98bd",
+      "title": "Northern Plane 3",
+      "lead": "r-stardust"
+    },
+    {
+      "order": 32,
+      "journeyId": "1f5e3884-5317-4146-ba18-4742eaf74ce9",
+      "recordingId": "1519d577-1138-44c3-b103-5fb7475438f1",
+      "title": "Chemiluminescence",
+      "lead": "r3-fairyglow"
+    },
+    {
+      "order": 33,
+      "journeyId": "7b39db5e-68fa-4915-8ff1-83078c18edac",
+      "recordingId": "562d1b97-d5aa-4c56-a352-af9c980c73e3",
+      "title": "Tranquility 33",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 34,
+      "journeyId": "4d17da19-6834-4005-a944-34c27a88a320",
+      "recordingId": "a8f06e78-57e5-4b25-a3ea-500dd5f77df3",
+      "title": "Amboise 2",
+      "lead": "r2-spiralgal"
+    },
+    {
+      "order": 35,
+      "journeyId": "e4658610-336d-452f-a4f8-7b652b339db6",
+      "recordingId": "2466ea2a-433f-4244-b631-4b7f8756e8f7",
+      "title": "Night Wind 11",
+      "lead": "murmuration"
+    },
+    {
+      "order": 36,
+      "journeyId": "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6",
+      "recordingId": "d61ec05f-1332-40fd-a627-332b359cf281",
+      "title": "Velvet Tears 1",
+      "lead": "r-droplets"
+    },
+    {
+      "order": 37,
+      "journeyId": "71b71375-8d7f-4e84-86c8-76d9e85a6eb0",
+      "recordingId": "33fede29-78b5-4af9-b488-0e1a0b28e59c",
+      "title": "Tranquility 34",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 38,
+      "journeyId": "aeb508d6-6447-4fb5-8468-636924520f82",
+      "recordingId": "35f827c7-5d49-4c04-9160-0ec3541d57a7",
+      "title": "Yellow Bird 6",
+      "lead": "r2-curlswarm"
+    },
+    {
+      "order": 39,
+      "journeyId": "3814f116-5c54-499c-9d9b-355201700fdc",
+      "recordingId": "1db19947-48f0-4968-8edf-e6ff0802d5b3",
+      "title": "Rattler 2",
+      "lead": "r-embers"
+    },
+    {
+      "order": 40,
+      "journeyId": "4922ecbd-d1ab-4eec-a13d-735dcdc655da",
+      "recordingId": "41ec11f7-a241-4f61-895f-f244dc8cf801",
+      "title": "Tranquility 21",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 41,
+      "journeyId": "81683231-3b3c-4542-8696-13dfcf56469a",
+      "recordingId": "4985b6a0-03ae-4e89-8d41-20ba2659233d",
+      "title": "Loire 5A",
+      "lead": "cascade-veil"
+    },
+    {
+      "order": 42,
+      "journeyId": "87009cf3-8c07-48eb-88d8-e7acb6a14e41",
+      "recordingId": "9e7c1cb1-c281-46c9-80a2-2147da939152",
+      "title": "Night Wind 4",
+      "lead": "murmuration"
+    },
+    {
+      "order": 43,
+      "journeyId": "e181df12-049b-4199-8a1b-4bc1c3edd8e7",
+      "recordingId": "c678230a-0116-4b4b-95c4-a672f3da57cf",
+      "title": "Tranquility 35",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 44,
+      "journeyId": "19acdb4c-5a52-4532-99bd-a59652c7ff8e",
+      "recordingId": "678c7c2a-c10b-45d0-97f1-c5701a9a2572",
+      "title": "No question 7",
+      "lead": "ribbon-of-light"
+    },
+    {
+      "order": 45,
+      "journeyId": "4ef43223-42cf-4ce8-9088-7578569f7de6",
+      "recordingId": "d1841080-1f42-4836-b716-7e9f24fc87d4",
+      "title": "Sancerre Cry 4",
+      "lead": "fracture-light"
+    },
+    {
+      "order": 46,
+      "journeyId": "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1",
+      "recordingId": "2b0cbbaf-22e9-4663-b983-24d17794dd6f",
+      "title": "Tranquility 36",
+      "lead": "pendulum-dust"
+    },
+    {
+      "order": 47,
+      "journeyId": "9d0ad58d-e490-4cc3-b24d-7c97d1fa3c0d",
+      "recordingId": "6e274fc1-ba5c-4f08-b9ca-c5f5403c094f",
+      "title": "Torraine 7",
+      "lead": "constellation"
+    },
+    {
+      "order": 48,
+      "journeyId": "21448504-ec00-48c3-8b0a-c92da2cf216a",
+      "recordingId": "f9a6f35c-efd9-4508-8c06-628857b7de97",
+      "title": "Surrounded by Light 19",
+      "lead": "orbit-weaver"
+    },
+    {
+      "order": 49,
+      "journeyId": "9662fec9-04fa-4202-9859-8f01cd287aad",
+      "recordingId": "fa93df8a-6674-444c-b34e-ab703ba8ae62",
+      "title": "Tranquility 38",
+      "lead": "pendulum-dust"
+    }
+  ]
+}

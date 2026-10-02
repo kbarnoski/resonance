@@ -66,6 +66,10 @@ export const TRAMOKYO_SET_STARTS: readonly string[] = [
   "first-snow", // Snowflake EP
   "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", // the Kinetic Lab (2026-09-30 — was missing: set-jumps skipped the Lab entirely)
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // Expansion
+  "06b07942-bf94-4513-8e71-ef00508ced3e", // Expansion II (Surrounded by Light 3)
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // Expansion III (The Other Side 9)
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9", // Expansion IV (Chemiluminescence)
+  "81683231-3b3c-4542-8696-13dfcf56469a", // Expansion V (Loire 5A)
   "the-ascent", // Featured journeys
   "27f52cf0-5fad-420f-8324-8017c414f1f8", // Welcome Home
   "b583c8d2-b3c3-4df8-9c51-9b035be2d3e1", // Surrounded by Light
@@ -91,6 +95,56 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "6499ac06-2cb1-4970-b75f-1258587c84d8", //  4. The Other Side 10 · 2:05
   "13e71555-03d6-4b27-ad32-2c6834559c24", //  5. Northern Plane 5 · 2:34
   "6407bf5c-7862-49e8-883d-59754c4caf18", //  6. No question 8 · 2:55
+  // ── Expansion set 2 (Karel 2026-10-01: "cue up the entire folder") —
+  //    43 more takes, all KINETIC WITH IMAGING, five ~30-min sets.
+  //    Expansion I continues straight on from set 1's six. ──
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", //  7. Loire 2 · 1:43 (lead cascade-veil)
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", //  8. Chenin 5 · 3:12 (lead pollen)
+  "666436a4-eabf-4b0a-b6bc-665520daa687", //  9. Tranquility 3 · 3:25 (lead pendulum-dust)
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 10. Bells 1 · 3:13 (lead rose-window)
+  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 11. Rise 1 · 2:35 (lead ember-drift)
+  // ── Expansion II ──
+  "06b07942-bf94-4513-8e71-ef00508ced3e", // 12. Surrounded by Light 3 · 3:23 (lead orbit-weaver)
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 13. Amboise 1 · 3:13 (lead r2-spiralgal)
+  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 14. Night Wind 9 · 3:30 (lead murmuration)
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 15. Tranquility 8 · 3:40 (lead pendulum-dust)
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 16. Never Forget 4 · 3:28 (lead r3-dreamtendrils)
+  "3f42929f-8b8e-4206-a3c8-057bf479d4e7", // 17. Torraine 5 · 3:55 (lead constellation)
+  "4dac5718-517d-4183-ad27-e1a6c583e305", // 18. Tranquility 30 · 3:30 (lead pendulum-dust)
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 19. Yellow Bird 3 · 2:26 (lead r2-curlswarm)
+  "d8705068-f8a9-4dd7-95a5-c6f1160fed22", // 20. Roll Away 8 · 1:39 (lead will-o-wisp)
+  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 21. Singular 4 · 1:47 (lead r3-magneticwisps)
+  // ── Expansion III ──
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 22. The Other Side 9 · 3:20 (lead binary-stars)
+  "86b64938-26ea-40b9-9ea1-461323a049d5", // 23. Chenin 3 · 3:10 (lead pollen)
+  "2ff26268-997a-438f-8dac-d280d50da3a1", // 24. Tranquility 11 · 2:52 (lead pendulum-dust)
+  "954a7000-91ba-42eb-b5a7-a8d5bc21c8c2", // 25. Night Wind 5 · 3:30 (lead murmuration)
+  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 26. Cabin Soul 6 · 2:34 (lead starfield)
+  "05664df7-d355-40b7-85d2-e2badf26123a", // 27. Torraine 6 · 3:09 (lead constellation)
+  "68b4289e-2247-41d6-8b9d-064345da9769", // 28. Tranquility 17 · 3:30 (lead pendulum-dust)
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 29. Redwoods Sway 2 · 2:19 (lead firefly-field)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 30. Horses 1 · 3:59 (lead meteor-rain)
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d", // 31. Northern Plane 3 · 2:53 (lead r-stardust)
+  // ── Expansion IV ──
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 32. Chemiluminescence · 2:37 (lead r3-fairyglow)
+  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 33. Tranquility 33 · 3:26 (lead pendulum-dust)
+  "4d17da19-6834-4005-a944-34c27a88a320", // 34. Amboise 2 · 3:21 (lead r2-spiralgal)
+  "e4658610-336d-452f-a4f8-7b652b339db6", // 35. Night Wind 11 · 3:24 (lead murmuration)
+  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 36. Velvet Tears 1 · 3:60 (lead r-droplets)
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 37. Tranquility 34 · 3:40 (lead pendulum-dust)
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 38. Yellow Bird 6 · 2:13 (lead r2-curlswarm)
+  "3814f116-5c54-499c-9d9b-355201700fdc", // 39. Rattler 2 · 3:55 (lead r-embers)
+  "4922ecbd-d1ab-4eec-a13d-735dcdc655da", // 40. Tranquility 21 · 3:40 (lead pendulum-dust)
+  // ── Expansion V ──
+  "81683231-3b3c-4542-8696-13dfcf56469a", // 41. Loire 5A · 3:42 (lead cascade-veil)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 42. Night Wind 4 · 3:30 (lead murmuration)
+  "e181df12-049b-4199-8a1b-4bc1c3edd8e7", // 43. Tranquility 35 · 3:50 (lead pendulum-dust)
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 44. No question 7 · 2:40 (lead ribbon-of-light)
+  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 45. Sancerre Cry 4 · 3:60 (lead fracture-light)
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 46. Tranquility 36 · 3:25 (lead pendulum-dust)
+  "9d0ad58d-e490-4cc3-b24d-7c97d1fa3c0d", // 47. Torraine 7 · 3:52 (lead constellation)
+  "21448504-ec00-48c3-8b0a-c92da2cf216a", // 48. Surrounded by Light 19 · 3:19 (lead orbit-weaver)
+  "9662fec9-04fa-4202-9859-8f01cd287aad", // 49. Tranquility 38 · 3:40 (lead pendulum-dust)
   // ── The featured journeys (verified session-take pairings) ──
   "the-ascent", //  4. The Summit — Folsom St 5 · 3:22 (swapped with Ascension, Karel 2026-09-19)
   "the-ascension", //  5. The Ascension — 17th St 63 · 3:20 (swapped with Mycelium, Karel 2026-09-19)
@@ -178,14 +232,18 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // dedication closes the final set.
   { id: "tramokyo-mix", presenting: "the Snowflake EP", end: 3 }, //  1-3: the Snowflake EP
   { id: "tramokyo-mix-kin", presenting: "the Kinetic Lab", end: 8 }, // 4-8: the Kinetic Lab (right after the EP, Karel 2026-09-30)
-  { id: "tramokyo-mix-exp", presenting: "Expansion", end: 14 }, // 9-14: the Expansion set
-  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 19 }, // 15-19: The Summit → Mycelium Dream
-  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 32 }, // 20-32: Interplay → All Together
-  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 44 }, // 33-44: Rise → Mystic (~35 min)
+  { id: "tramokyo-mix-exp", presenting: "Expansion", end: 19 }, // 9-19: Expansion I — set 1's six + Loire 2 → Rise 1 (~31 min)
+  { id: "tramokyo-mix-exp2", presenting: "Expansion II", end: 29 }, // 20-29: Surrounded by Light 3 → Singular 4 (~31 min)
+  { id: "tramokyo-mix-exp3", presenting: "Expansion III", end: 39 }, // 30-39: The Other Side 9 → Northern Plane 3 (~31 min)
+  { id: "tramokyo-mix-exp4", presenting: "Expansion IV", end: 48 }, // 40-48: Chemiluminescence → Tranquility 21 (~30 min)
+  { id: "tramokyo-mix-exp5", presenting: "Expansion V", end: 57 }, // 49-57: Loire 5A → Tranquility 38 (~32 min)
+  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 62 }, // 58-62: The Summit → Mycelium Dream
+  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 75 }, // 63-75: Interplay → All Together
+  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 87 }, // 76-87: Rise → Mystic (~35 min)
   {
     id: "tramokyo-mix-4",
     presenting: "March Light",
-    end: 54, // 45-54: The First → Love Again (~32 min; +6 Expansion 2026-09-29; +5 Kinetic Lab 2026-09-30)
+    end: 97, // 88-97: The First → Love Again (~32 min; +6 Expansion 2026-09-29; +5 Kinetic Lab 2026-09-30; +43 Expansion set 2 2026-10-01)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
@@ -217,9 +275,9 @@ export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
     id: "expansion",
     presenting: "the Expansion set",
     description:
-      "Six new pieces, six worlds: drowned light, luminous nothing, the " +
-      "visible wind, the mirrored threshold, the northern immensity, and " +
-      "one line that was never in question. Recline.",
+      "Forty-nine new pieces, each its own world, where the light listens — " +
+      "bass, mids and highs each move a layer while the imagery travels. " +
+      "Recline.",
     pathShareToken: "3422c91db7ee4769",
   },
   {
