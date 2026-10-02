@@ -112,6 +112,10 @@ const BOUNDARY_FADEOUT_DURATION = 8000;
 /** Per-journey layering bias over the archetype (Karel 2026-09-29:
  *  "ghost is the one to push layering more so than our archetype"). */
 const JOURNEY_LAYER_BIAS: Record<string, number> = { ghost: 1 };
+// Per-journey image pace (multiplies the conducted interval). Ghost
+// (Karel 2026-10-01): "need just a little bit more progression of
+// images ... add more inbetween so its not a slide show" — ~9.5s -> ~6.6s.
+const JOURNEY_PACE_MUL: Record<string, number> = { ghost: 0.7 };
 const MIN_PEAK_DURATION = 9000; // Karel 2026-09-29: big changes can't chase each other at the climax
 const COVER_PEAK_DURATION = 12000; // morph-cover stills hold longest — they ARE the big change // Karel 2026-09-28: no "really fast images coming in only to transition out fast"
 const GEN_INTERVAL_MIN_BASE = 6500;
@@ -1390,7 +1394,8 @@ export function AiImageLayer({
       // longer at every intensity; the static-vs-overwhelm balance
       // lives in MIN_PEAK + cap, not raw turnover speed.
       const paceMul = t < 0.5 ? 1.6 : t < 0.8 ? 1.35 : 1.35; // climax calmed 1.2->1.35 (2026-09-29)
-      nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul;
+      const journeyPace = JOURNEY_PACE_MUL[journeyIdRef.current ?? ""] ?? 1;
+      nextInterval = (GEN_INTERVAL_MIN_BASE + Math.random() * (GEN_INTERVAL_MAX_BASE - GEN_INTERVAL_MIN_BASE)) * tierMul * paceMul * journeyPace;
       triggerGeneration(true); // always skip cache for ongoing gens
     };
 
