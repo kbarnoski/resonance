@@ -676,3 +676,4 @@ dark-to-white snap.
   pink blossoms everywhere (pool + entrance + tree), spiral bloom entangled in
   her hair at the union, stage 8 always wide/distant. Beat counts now
   6/7/12/5/4/6.
+- **v4.3** — 2026-10-01. Flight lengthened from the ending (Karel): illumination 0.76–0.85, return 0.85–0.91, integration 0.91–1.0. Finale pin is the CLOSING image (due 30% into integration, held to the end). Pack re-slotted (7/15/51/8/4/5); 087 (medium shot) dropped from the ending.

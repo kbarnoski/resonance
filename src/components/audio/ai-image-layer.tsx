@@ -354,6 +354,7 @@ export function AiImageLayer({
   const pendingIntroStillRef = useRef<string | null>(null);
   const pendingFinaleStillRef = useRef<string | null>(null);
   const lastPushedPhaseStartRef = useRef(-1);
+  const finaleHeldRef = useRef(false);
   const phaseEntryRetriesRef = useRef(0);
   const lastRetryPhaseRef = useRef(-1);
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
@@ -430,6 +431,7 @@ export function AiImageLayer({
       pendingIntroStillRef.current = TAKE_INTRO_STILLS[journeyIdRef.current ?? ""] ?? null;
       pendingFinaleStillRef.current = TAKE_FINALE_STILLS[journeyIdRef.current ?? ""] ?? null;
       lastPushedPhaseStartRef.current = -1;
+      finaleHeldRef.current = false;
       runJitterRef.current = Math.floor(Math.random() * 6); // 0..5 — six distinct openers
       activeVideoRef.current = null;
       pendingVideoRef.current = null;
@@ -817,18 +819,21 @@ export function AiImageLayer({
         if (getJourneyEngine().getMsSinceAnySwitch() > 25_000) getJourneyEngine().nudgeShaderRotation(1000);
       }
       // Pinned finale still = the CLOSING image (Karel 2026-10-01: Ghost
-      // must END on her at a distance in the cosmos). Due ~55% into the
-      // last phase — before the 0.96 no-new-stills cutoff — and pushed
-      // through the soft gates so a hold can't swallow it.
+      // must END on her at a distance in the cosmos). Due ~30% into the
+      // last phase so at least one ~7s tick lands before the 0.96
+      // no-new-stills cutoff (run on bb75d3f4: a 0.95 due-point fell
+      // between ticks and never showed), pushed through the soft gates,
+      // and HELD — nothing replaces it for the rest of the journey.
       const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
-      const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart + 0.55 * (1 - lastPhaseStart) : Infinity;
+      const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart + 0.3 * (1 - lastPhaseStart) : Infinity;
       const finaleDue = !!pendingFinaleStillRef.current && progress >= finaleAt && !isVideoActive() && !inBoundarySettle();
-      const canPush = !stillsBlocked || idleRescue || phaseEntry || finaleDue;
+      const canPush = (!stillsBlocked || idleRescue || phaseEntry || finaleDue) && !finaleHeldRef.current;
       if (finaleDue) {
         const wanted = urls.indexOf(pendingFinaleStillRef.current!);
         pendingFinaleStillRef.current = null;
         if (wanted >= 0) idx = wanted;
         glitchRecord("finale-still", `slot ${idx}`);
+        finaleHeldRef.current = wanted >= 0;
       }
       // Slow phases have fewer images than 7s ticks — a repeated slot
       // skips (the idle rescue above bounds how long that can hold).

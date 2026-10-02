@@ -2101,7 +2101,7 @@ export const JOURNEYS: Journey[] = [
       // yet; that's phase Release.
       illumination: {
         start: 0.76, // phase retime 2026-10-01 (both flashes underground)
-        end: 0.82,
+        end: 0.85,
         intensityMultiplier: 1.0, // was default 0.75 — Karel 2026-10-01: second half "a bit of a slide show"; keep the layering
         shaderOpacity: 0.72,
         aiPrompt:
@@ -2139,8 +2139,8 @@ export const JOURNEYS: Journey[] = [
       // translucent, wood-grain showing through skin, hair spiraling
       // seamlessly into branches. Golden light streams through everything.
       return: {
-        start: 0.82, // phase retime 2026-10-01 (both flashes underground)
-        end: 0.89,
+        start: 0.85, // phase retime 2026-10-01 (both flashes underground; flight +3% from the ending, Karel)
+        end: 0.91,
         intensityMultiplier: 1.0, // was default 0.5
         bloomIntensity: 0.55,
         halation: 0.14,
@@ -2179,7 +2179,7 @@ export const JOURNEYS: Journey[] = [
       // through the tree into the cosmos and is now soaring with arms up,
       // hair fully suffused with gold, particles everywhere.
       integration: {
-        start: 0.89, // phase retime 2026-10-01 (both flashes underground)
+        start: 0.91, // phase retime 2026-10-01 (both flashes underground)
         end: 1.0,
         intensityMultiplier: 0.9, // was default 0.3; >= 0.6 also exempts Ghost from the ending wind-down — her ending builds INTO light
         bloomIntensity: 0.75,

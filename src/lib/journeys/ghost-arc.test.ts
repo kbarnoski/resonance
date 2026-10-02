@@ -25,7 +25,7 @@ const FROZEN = /\b(ice|icy|frost|frosted|frozen|snow|snowy|crystal|crystalline)\
 const DRUG = /\b(psychedelic|dmt|k-hole|ketamine|lsd|trip|tripping|hallucinat\w*|mushrooms?|ayahuasca)\b/i;
 
 describe("Ghost arc law — stage map", () => {
-  it("phases are the six expected ids, contiguous 0→1, retimed 2026-10-01 (stage 8 from 0.89)", () => {
+  it("phases are the six expected ids, contiguous 0→1, retimed 2026-10-01 (flight +3% from the ending: stage 8 from 0.91)", () => {
     expect(phases.map((p) => p.id)).toEqual([...GHOST_PHASE_ORDER]);
     expect(phases[0].start).toBe(0);
     expect(phases[phases.length - 1].end).toBe(1);
@@ -33,10 +33,10 @@ describe("Ghost arc law — stage map", () => {
     const ret = phases.find((p) => p.id === "return")!;
     const integ = phases.find((p) => p.id === "integration")!;
     expect(phases.map((p) => [p.start, p.end])).toEqual([
-      [0, 0.12], [0.12, 0.3], [0.3, 0.76], [0.76, 0.82], [0.82, 0.89], [0.89, 1],
+      [0, 0.12], [0.12, 0.3], [0.3, 0.76], [0.76, 0.85], [0.85, 0.91], [0.91, 1],
     ]);
-    expect(ret.end).toBe(0.89);
-    expect(integ.start).toBe(0.89);
+    expect(ret.end).toBe(0.91);
+    expect(integ.start).toBe(0.91);
   });
 
   it("both bass flashes happen UNDERGROUND (stages 2–5), never after emerging", () => {
@@ -203,7 +203,8 @@ describe("Ghost arc law — pack slots and playback", () => {
     for (const s of [1, 2, 3, 4, 5, 6, 7, 8] as const) {
       expect(slotStages.filter((x) => x === s).length, `stage ${s} slots`).toBeGreaterThanOrEqual(2);
     }
-    expect(slotStages.filter((x) => x === 8).length).toBeGreaterThanOrEqual(6);
+    // 5 since the flight took 3% from the ending (Karel 2026-10-01)
+    expect(slotStages.filter((x) => x === 8).length).toBeGreaterThanOrEqual(5);
   });
 
   it("playback: for every per-run jitter the shown stage never runs backwards; stage 8 owns the ending", () => {
