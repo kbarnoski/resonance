@@ -377,7 +377,10 @@ export function AiImageLayer({
   const promptSeedRef = useRef(promptSeed);
   promptSeedRef.current = promptSeed;
 
-  const journeyIdRef = useRef(journeyId);
+  // Starts EMPTY so the journey-start reset below also runs for the first
+  // journey after a page load (2026-10-01: seeded with journeyId, a fresh
+  // kiosk load / remote jump never armed the intro or finale still pins).
+  const journeyIdRef = useRef<string | undefined>(undefined);
 
   // Sync props → refs
   useEffect(() => { generatingRef.current = generating; }, [generating]);
