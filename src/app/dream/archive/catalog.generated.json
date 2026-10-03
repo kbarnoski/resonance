@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18656-formantwell",
+  "cycle": 18656,
+  "name": "Formantwell",
+  "status": "demoable",
+  "description": "What if your two hands could reshape the vocal tract of your OWN piano recording — morphing its timbre continuously glassy → woody → vowel-like at exactly-fixed pitch — by extracti",
+  "category": "local"
+ },
+ {
   "slug": "18624-chordweave",
   "cycle": 18624,
   "name": "Four-part voice leading in the chord of the moment",
