@@ -1,48 +1,50 @@
-# Morning digest — last updated 2026-10-02T01:0xZ (17:45 PT fire, cycle 1274)
+# Morning digest — last updated 2026-10-03T01:24Z (17:45 PT fire, cycle 1275)
 
-> **Jury verdict today** (landed mid-fire): great divergence, but the lab is minting fresh ideas faster than it finishes them — **the new #1 is "finish ONE concept to cycle-3, not a seventh new one."** I'd already shipped tonight's fresh build before this verdict posted; I've flagged the cycle-3 tension as the open question below (every cycle-3 candidate is two-hand, which collides with the earlier "break off two hands"). See `docs/dreams/JURY.md`.
-
-> **Tonight: your body makes the music run backward.** This fire conducts the one axis
-> the lab had *never* touched: **time itself**. Lean forward and your recording surges
-> onward; lean back and the very same music **runs in reverse**. WIDE ×3 — one shipped,
-> two strong SVG siblings banked.
+> **The lab finished something — for the first time ever.** You've been asking
+> (via the jury) for a concept to reach **cycle-3**, not a seventh fresh part-one.
+> Tonight it did: `chordweave` is the finished `chordwell`→`chordfold` merge, built
+> **DEEP ×2** (two voice-leading algorithms raced, one shipped, **nothing banked** —
+> the six-deep backlog did NOT grow). See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **`18576-ebbline`** → https://getresonance.vercel.app/dream/18576-ebbline
-  **Lean your torso to run your recording forward or backward.** Sit so the camera
-  sees your head and shoulders. Lean **forward** → the take flows onward and faster.
-  Sit **upright** → a near-still shimmer, held in place. Lean **back** → the *same*
-  music ebbs in reverse (piano attacks become swells — it's lovely). It's two synced
-  copies of your take — one forward, one reversed — crossfaded and locked to a shared
-  playhead so the reversal reads as the music itself running back, not a second track.
-  Drawn as a **garnet-to-smoke tide** of filaments streaming left when it flows forward,
-  right when it runs back. All-fresh: torso-lean (not hands, not face), **SVG** (rests
-  both WebGPU and three.js), a new wine-and-ash palette, and a TIME-DIRECTION verb the
-  lab had never conducted.
+- **`18624-chordweave`** → https://getresonance.vercel.app/dream/18624-chordweave
+  **Harmonize your recording in the chord of the moment — now with real
+  four-part voice leading.** Play one of your takes, then pull your two hands
+  apart: the single recording fans into a chord of *itself*, diatonic to whatever
+  chord the piece is actually playing right now (read live from its own chord
+  track). The deepening over cycle-2 (`chordfold`): when the harmony changes, the
+  four voices no longer each jump to their nearest tone independently — a **global
+  solver moves the whole stack the least total distance and never lets voices
+  cross** (it'll swap two voices if that's smoother), gliding to the new chord.
+  Every chord boundary now **blooms a surge** through the current so you can *see*
+  the harmonic rhythm. Harmonic-chroma light: warm over major, cool over minor.
 
 ## In progress / partial
-- Nothing half-built. **WIDE ×3** fire — two fully-built, QA-passed SVG siblings are
-  **banked** (IDEAS §1274): **`swellform`** (open your whole body to bloom the take,
-  curl in to pull it to an intimate near-silence — a dynamics pedal, nacreous bloom;
-  this is its 2nd bank, the ready no-new-work next winner) and **`formnav`** (your
-  posture scrubs through the piece's *sections* — intro at the bottom, climax at the
-  top, a thermal spine).
+- **Nothing half-built, and nothing new banked** — this was a deliberate
+  *consolidation* fire. The DEEP sibling `18608-chordglide` (a per-voice greedy
+  glide with an explicit audible-portamento engine) lost the curation and its two
+  good ideas were folded into chordweave's README as **cycle-4 notes**, not added
+  to the backlog.
+- The backlog is still ~6 deep (swellform, leanfield, swellbody, steppulse,
+  vowelbend). Next fire I lean toward a **second** finish — `vowelbend`→`throatmorph`
+  (throatmorph is the window's 5/5 best) — to prove cycle-3 is repeatable, not a fluke.
 
 ## Research findings worth a look
-- **Variable-Rate Harmonic-Percussive TSM** (arXiv:2609.18999): a real-time engine
-  whose whole premise is that playback rate "must change continuously in response to a
-  live performer." Ebbline makes **your torso** that performer — conducting not just
-  speed but **direction**. (It's ~2.5mo old, so I didn't badge it as "last-14-days"
-  research — just the honest anchor the build came from.)
+- **Minimal Audio *Lucid*** (2026) ships real-time **grain scale-lock** — every
+  grain retuned to a *fixed* key. chordweave inverts it: lock the harmonizer's
+  grains to the take's **own moving chords** with minimum-motion part-writing.
+  (~4mo old, so honestly not badged as last-14-days research — just the anchor.)
 
 ## Open questions for Karel
-- **30-second check on ebbline:** allow the camera, then lean forward and back — does
-  the music surge and reverse smoothly, and does the reversal sound like *your* piece
-  ebbing? (Cloud can't test a webcam or play audio — the demo drive, the dual-buffer
-  engine and the full control path are code-verified; the live lean feel and the
-  reversal's sound on your real take are the only unconfirmed parts.)
-- **Cycle-3 is the aging ask.** The jury wants me to prove a concept can reach *part
-  three*, not just part two — but every candidate (chordfold, throatmorph) is a two-hand
-  piece, which collides with "break off two hands." Want me to take the cycle-3 merge on
-  a future fire anyway, or keep minting fresh non-two-hand signals? One word decides it.
-- `main` synced cleanly again — the force-rewrite problem stays fixed.
+- **30-second check on chordweave:** allow the camera, play a track, and pull your
+  hands apart through a chord change — do the four voices glide smoothly (not jump),
+  and does the chord fan sound diatonic to your piece? (Cloud can't test a webcam or
+  play audio — the solver, the detune glide, the surge in both renderers, and the
+  full control path are code-verified; the live hand-feel and the sound of the
+  part-writing on your real take are the only unconfirmed parts.)
+- **I took the cycle-3 merge despite the two-hand tension** (your open question from
+  yesterday) because the jury promoted FINISH to #1 and named chordfold itself — a
+  cycle-3 *deepening* is exempt from the "break off two hands" ban (that's for fresh
+  mints). If you'd rather I keep minting fresh non-two-hand signals instead, one word
+  flips it back.
+- `main` fast-forwarded cleanly a **4th** fire running — the force-rewrite problem stays fixed.
