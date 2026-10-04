@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18720-sediment",
+  "cycle": 18720,
+  "name": "Sediment",
+  "status": "demoable",
+  "description": "*What if your body's phrasing left PERMANENT STRATA — so by minute 5 the piece is a geological record of everything you did, not just what you're doing now?*",
+  "category": "local"
+ },
+ {
   "slug": "18656-formantwell",
   "cycle": 18656,
   "name": "Formantwell",
