@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18816-rerise",
+  "cycle": 18816,
+  "name": "Rerise",
+  "status": "demoable",
+  "description": "What if memory were bidirectional? Instead of only depositing new states as you conduct, you can settle and descend back down through everything you've already laid down — and the ",
+  "category": "local"
+ },
+ {
   "slug": "18720-sediment",
   "cycle": 18720,
   "name": "Sediment",
