@@ -23,6 +23,14 @@ import { fileURLToPath } from "node:url";
 import { RETHEME, BEAT_OVERRIDES } from "./retheme-worlds.mjs";
 import { groupPhases } from "./lib/phase-grouping.mjs";
 
+// 2026-10-05: this rewrites the FULL phase list of 53 journeys. The
+// Snowflake-standard redesign now owns their shot lists — refuse unless
+// explicitly told to overwrite them.
+if (!process.argv.includes("--overwrite-shot-lists")) {
+  console.error("retheme-from-analysis: refusing — it would clobber the Snowflake-standard shot lists. Pass --overwrite-shot-lists to force.");
+  process.exit(1);
+}
+
 const DRY = process.argv.includes("--dry-run");
 const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7).split(",") ?? null;
 const jiti = createJiti(import.meta.url, { alias: { "@": fileURLToPath(new URL("../src", import.meta.url)) } });
