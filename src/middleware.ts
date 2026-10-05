@@ -71,13 +71,20 @@ function isPrivatePath(pathname: string): boolean {
  * a release cycle before promoting to enforcement.
  */
 function buildReportOnlyCsp(nonce: string): string {
+  // Dream pages proxied from the dream project load assets from its origin.
+  let dreamSrc = "";
+  try {
+    if (process.env.DREAM_ORIGIN) dreamSrc = ` ${new URL(process.env.DREAM_ORIGIN).origin}`;
+  } catch {
+    /* malformed env — keep the base policy */
+  }
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' 'wasm-unsafe-eval' blob:`,
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' 'wasm-unsafe-eval' blob:${dreamSrc}`,
+    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com${dreamSrc}`,
     "img-src 'self' data: blob: https://*.supabase.co https://*.fal.media https://fal.media https://v3.fal.media",
     "media-src 'self' data: blob: https://*.supabase.co",
-    "font-src 'self' data: https://fonts.gstatic.com",
+    `font-src 'self' data: https://fonts.gstatic.com${dreamSrc}`,
     "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.fal.run https://fal.run https://*.fal.ai https://*.fal.media https://fal.media https://api.openai.com https://api.anthropic.com wss://*.fal.run wss://*.fal.ai blob:",
     "worker-src 'self' blob:",
     "frame-ancestors 'none'",

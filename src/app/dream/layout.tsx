@@ -24,13 +24,17 @@ export default function DreamLayout({
 }: {
   children: ReactNode;
 }) {
-  // Vercel sets VERCEL_ENV to "production" on main, "preview" on branch
-  // deploys, "development" locally. Only label the dream lab as a
-  // sandbox on previews / dev — production has the canonical /dream
-  // URL and shouldn't claim to be a sandbox.
-  const env = process.env.VERCEL_ENV ?? "development";
+  // Only an actual Vercel preview deploy is a "sandbox". The old check
+  // defaulted a MISSING VERCEL_ENV to "development" → the preview label —
+  // and the CLI-created resonance-dream project (2026-09-28 split) doesn't
+  // expose VERCEL_ENV to its lambdas, so production /dream claimed to be
+  // a preview branch. Absent/production → "live"; local dev → "local".
   const subtitle =
-    env === "production" ? "live" : "sandbox — preview branch";
+    process.env.VERCEL_ENV === "preview"
+      ? "sandbox — preview branch"
+      : process.env.NODE_ENV === "development"
+        ? "local"
+        : "live";
 
   return (
     <DreamVotesProvider>

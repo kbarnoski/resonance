@@ -37,23 +37,31 @@ const IS_DREAM_TARGET = process.env.BUILD_TARGET === "dream";
 // 'wasm-unsafe-eval' because @tensorflow/tfjs + @spotify/basic-pitch
 // compile WASM at runtime. Needs 'unsafe-inline' for Next.js runtime
 // scripts and Tailwind inline styles.
+// Project split: dream pages served through the core-domain /dream proxy
+// load their chunks, CSS and next/font woff2 files from DREAM_ORIGIN
+// (absolute assetPrefix). Under a 'self'-only policy the browser blocked
+// ALL of them — every proxied /dream page rendered unstyled (Times on
+// white, no Resonance tokens/fonts) and no client JS ran (2026-09-28 →
+// 2026-10-05). The dream origin must be allowed for script/style/font.
+const DREAM_ASSET_SRC = DREAM_ORIGIN ? ` ${new URL(DREAM_ORIGIN).origin}` : "";
+
 const CSP_DIRECTIVES = [
   "default-src 'self'",
   // cdn.jsdelivr.net: dream prototypes import ESM modules at runtime (MediaPipe
   // FaceLandmarker, three.js addons, etc.) via dynamic import(), which is
   // governed by script-src — without this the CDN module load is blocked and
   // camera/face-tracking prototypes silently fall back to their self-demo.
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net",
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net${DREAM_ASSET_SRC}`,
   // Google Fonts stylesheets are loaded at runtime by journey/poetry code.
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com${DREAM_ASSET_SRC}`,
   "img-src 'self' data: blob: https:",
   // data: needed by primeAudioElement (silent WAV used to unlock <audio>
   // on first user gesture so subsequent track plays don't get blocked).
   "media-src 'self' data: blob: https:",
   // Google Fonts ship the actual woff2 files from fonts.gstatic.com.
-  "font-src 'self' data: https://fonts.gstatic.com",
+  `font-src 'self' data: https://fonts.gstatic.com${DREAM_ASSET_SRC}`,
   "connect-src 'self' https: wss: blob:",
-  "worker-src 'self' blob:",
+  `worker-src 'self' blob:${DREAM_ASSET_SRC}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",
