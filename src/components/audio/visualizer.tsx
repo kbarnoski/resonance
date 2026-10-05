@@ -41,7 +41,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isKineticJourneyName, BAND_PROFILES, expansionLayerGain } from "@/lib/journeys/kinetic";
+import { isKineticJourneyName, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -846,12 +846,14 @@ export function VisualizerCore({
   const language = useAudioStore((s) => s.language);
   // Kinetic band-split journeys: each shader layer listens to one band.
   const kineticName = useAudioStore((s) => s.activeJourney?.name);
+  const activeJourneyId = useAudioStore((s) => s.activeJourney?.id);
   const kinetic = isKineticJourneyName(kineticName);
   const bandPrimary = kinetic ? ("bass" as const) : undefined;
   const bandDual = kinetic ? ("mid" as const) : undefined;
   const bandTertiary = kinetic ? ("treble" as const) : undefined;
   // BRIGHTNESS-NORMALIZED LAYERS (Karel 2026-10-05, Expansion shader
-  // diversity): each Expansion kinetic layer runs at a per-shader
+  // diversity; every non-mastered, non-Kinetic-Lab journey since the
+  // featured/album recast): each layer runs at a per-shader
   // opacity gain from the vetting measurements, so brighter shaders can
   // join the pool without washing the blacks. STICKY per slot: the gain
   // is fixed when a shader lands on a slot (always while that slot is
@@ -862,7 +864,7 @@ export function VisualizerCore({
     const m = layerMode ?? null;
     const cur = layerGainRef.current[slot];
     if (cur && cur.mode === m) return cur.gain;
-    const gain = expansionLayerGain(kineticName, m);
+    const gain = journeyLayerGain({ id: activeJourneyId, name: kineticName }, m);
     layerGainRef.current[slot] = { mode: m, gain };
     return gain;
   };

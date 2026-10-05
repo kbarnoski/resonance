@@ -12,7 +12,12 @@
 // The recorder logs no build id, so scope to runs after a deploy with
 //   --since-line=N   (skip the first N-1 lines; `wc -l` before deploying)
 //   --since-wall=HH:MM:SS  wall-clock floor (the log has no date — same-day runs only)
-// Usage: node scripts/shader-diversity-report.mjs [--since-line=N] [--since-wall=HH:MM:SS] [--top=20] [--log=path]
+//
+// Since the featured/album recast (2026-10-05, scripts/recast-featured.mjs)
+// it covers EVERY cast journey: --set=expansion | featured | all (default
+// all). "featured" = the featured built-ins + Welcome Home / Surrounded by
+// Light / March Light albums + Cosmic Homecoming + off-loop built-ins.
+// Usage: node scripts/shader-diversity-report.mjs [--set=all] [--since-line=N] [--since-wall=HH:MM:SS] [--top=20] [--log=path]
 import { readFileSync } from "node:fs";
 
 const arg = (k) => process.argv.find((a) => a.startsWith(`--${k}=`))?.split("=").slice(1).join("=");
@@ -21,9 +26,16 @@ const SINCE_WALL = arg("since-wall") ?? null;
 const TOP = Number(arg("top") ?? 20);
 const LOG = arg("log") ?? "docs/glitch-events.jsonl";
 
+const SET = arg("set") ?? "all";
 const recast = JSON.parse(readFileSync("scripts/expansion-recast.json", "utf8"));
-const TITLE = new Map(recast.journeys.map((j) => [j.id, j.title]));
-const CAST = new Map(recast.journeys.map((j) => [j.id, new Set(Object.values(j.cast).flat())]));
+const featured = JSON.parse(readFileSync("scripts/featured-recast.json", "utf8"));
+const castJourneys = [
+  ...(SET === "featured" ? [] : recast.journeys.map((j) => ({ id: j.id, title: j.title, cast: j.cast }))),
+  ...(SET === "expansion" ? [] : featured.journeys.map((j) => ({ id: j.id, title: j.name, cast: j.cast }))),
+];
+const LABEL = { expansion: "Expansion", featured: "Featured + album", all: "Cast-journey" }[SET] ?? SET;
+const TITLE = new Map(castJourneys.map((j) => [j.id, j.title]));
+const CAST = new Map(castJourneys.map((j) => [j.id, new Set(Object.values(j.cast).flat().filter(Boolean))]));
 
 const lines = readFileSync(LOG, "utf8").split("\n");
 const SHADER_EVENTS = new Set(["shader-initial", "shader-primary", "shader-dual", "shader-tertiary-on"]);
@@ -54,7 +66,7 @@ for (let i = Math.max(0, SINCE_LINE - 1); i < lines.length; i++) {
 }
 
 const exp = runs.filter((r) => TITLE.has(r.journey) && r.shaders.length > 0);
-if (exp.length === 0) { console.log(`No Expansion runs with shader events in ${parsed} lines (since line ${SINCE_LINE}${SINCE_WALL ? `, wall ${SINCE_WALL}` : ""}).`); process.exit(0); }
+if (exp.length === 0) { console.log(`No ${LABEL} runs with shader events in ${parsed} lines (since line ${SINCE_LINE}${SINCE_WALL ? `, wall ${SINCE_WALL}` : ""}).`); process.exit(0); }
 
 const freq = new Map(); // mode -> appearances (events)
 const runCount = new Map(); // mode -> runs it appeared in
@@ -65,7 +77,7 @@ for (const r of exp) {
 const offCast = [];
 for (const r of exp) for (const m of new Set(r.shaders.map((s) => s.mode))) if (!CAST.get(r.journey).has(m)) offCast.push(`${TITLE.get(r.journey)}: ${m}`);
 
-// consecutive Expansion runs within a session
+// consecutive cast-journey runs within a session
 let pairs = 0, shared = 0;
 const sharedList = new Map();
 for (const s of sessions.values()) {
@@ -78,12 +90,12 @@ for (const s of sessions.values()) {
   }
 }
 
-console.log(`Expansion shader diversity — ${exp.length} runs (${new Set(exp.map((r) => r.journey)).size} journeys, ${new Set(exp.map((r) => r.session)).size} sessions) from ${LOG} since line ${SINCE_LINE}${SINCE_WALL ? ` / wall ${SINCE_WALL}` : ""}`);
+console.log(`${LABEL} shader diversity — ${exp.length} runs (${new Set(exp.map((r) => r.journey)).size} journeys, ${new Set(exp.map((r) => r.session)).size} sessions) from ${LOG} since line ${SINCE_LINE}${SINCE_WALL ? ` / wall ${SINCE_WALL}` : ""}`);
 console.log(`distinct shaders seen: ${freq.size}`);
 const per = exp.map((r) => new Set(r.shaders.map((s) => s.mode)).size);
 console.log(`distinct per run: min ${Math.min(...per)} · avg ${(per.reduce((a, b) => a + b, 0) / per.length).toFixed(1)} · max ${Math.max(...per)}`);
 console.log(`\ntop ${TOP} by runs appeared in (events in parentheses):`);
 for (const [m, n] of [...runCount].sort((a, b) => b[1] - a[1] || freq.get(b[0]) - freq.get(a[0])).slice(0, TOP)) console.log(`  ${m.padEnd(22)} ${String(n).padStart(3)} runs (${freq.get(m)})`);
-console.log(`\nconsecutive Expansion runs: ${pairs} pairs · avg shared shaders ${pairs ? (shared / pairs).toFixed(2) : "n/a"}`);
+console.log(`\nconsecutive ${LABEL} runs: ${pairs} pairs · avg shared shaders ${pairs ? (shared / pairs).toFixed(2) : "n/a"}`);
 if (sharedList.size) console.log(`  shared: ${[...sharedList].sort((a, b) => b[1] - a[1]).map(([m, n]) => `${m}×${n}`).join(", ")}`);
 if (offCast.length) console.log(`\nWARNING ${offCast.length} shader(s) played outside the journey's recast cast (stale pack/DB?):\n  ${offCast.slice(0, 20).join("\n  ")}`);

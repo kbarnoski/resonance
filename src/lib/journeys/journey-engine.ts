@@ -4,7 +4,7 @@ import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName } from "./kinetic";
 import { TAKE_FINALE_SHADERS } from "./pinned-takes";
-import { RECAST_SAFELIST, regenerateJourneyShaders, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
+import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
@@ -254,7 +254,9 @@ class JourneyEngine {
     // Kinetic journeys keep their HAND-CURATED cast (2026-09-30: the
     // regeneration was silently discarding Chemi's particle cast every
     // run — the sparkler never played once).
-    this.journey = this.kineticEq ? journey : regenerateJourneyShaders(journey, random, this.trackDuration);
+    // Cast journeys (every non-mastered, non-kinetic journey since
+    // 2026-10-05) play their deterministic, diversity-spaced cast.
+    this.journey = this.kineticEq ? journey : (castJourneyShaders(journey) ?? regenerateJourneyShaders(journey, random, this.trackDuration));
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;
@@ -356,7 +358,7 @@ class JourneyEngine {
       const regenRandom = this.takeSeedValue != null
         ? createSeededRandom(this.takeSeedValue + Math.round(duration))
         : this.random;
-      if (!this.kineticEq) this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
+      if (!this.kineticEq && !getJourneyCast(this.journey)) this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
       this.currentShaderMode = prevShader;
       this.dualShaderMode = prevDual;
     }

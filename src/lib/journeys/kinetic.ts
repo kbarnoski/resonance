@@ -1,4 +1,5 @@
 import { SHADER_SUPPORT_GAIN, SHADER_LEAD_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
+import { isMasteredJourneyLike } from "./mastered";
 
 /**
  * KINETIC journeys (Karel 2026-09-29): a second species alongside the
@@ -55,11 +56,28 @@ export function expansionLayerGain(name?: string | null, mode?: string | null): 
   return SHADER_SUPPORT_GAIN[mode] ?? 1;
 }
 
+/** Per-shader opacity gain for ANY journey's layer (Karel 2026-10-05:
+ *  "everything besides snowflake, realized, ghost is getting the
+ *  treatment"). Expansion -> its own lead/support gains; the mastered
+ *  three and the Kinetic Lab (approved casts) -> 1, untouched; every
+ *  other journey -> the vetted support gain, so its brighter shaders sit
+ *  at the same layer budget instead of washing the blacks. */
+export function journeyLayerGain(journey?: { id?: string | null; name?: string | null } | null, mode?: string | null): number {
+  if (!mode || !journey) return 1;
+  if (isExpansionKineticName(journey.name)) return expansionLayerGain(journey.name, mode);
+  if (isKineticJourneyName(journey.name)) return 1; // Kinetic Lab
+  if (isMasteredJourneyLike(journey)) return 1;
+  return SHADER_SUPPORT_GAIN[mode] ?? 1;
+}
+
 /** Band-split reactive shaders (bass/mid/treble per layer). */
 export function isKineticJourneyName(name?: string | null): boolean {
   if (!name) return false;
   if (isExpansionKineticName(name)) return true;
-  return /^(chemiluminescence|rolling|stand|cabin soul)/i.test(name.trim());
+  // Lab pieces carry a take number ("Rolling 2", "Cabin Soul 8"). The
+  // bare prefix also caught the Welcome Home album's "Rolling" (2026-10-05):
+  // it played as a kinetic lab piece — imagery whispered, its cast frozen.
+  return /^(chemiluminescence|rolling|stand|cabin soul)\s+\d/i.test(name.trim());
 }
 
 /** Imagery whisper (one low-opacity still) — pure-shader lab pieces

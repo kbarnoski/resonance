@@ -7,6 +7,8 @@ import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-prefe
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { GHOST_LORA_URL } from "./ghost-lora";
 import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
+import { JOURNEY_CASTS, VETTED_SHADER_POOL } from "./journey-casts.generated";
+import { isMasteredJourneyLike } from "./mastered";
 
 // ─── Shader ↔ palette coordination (2026-09-27 review) ───
 // "Colored shaders overlay and clash with the colors of what's shown in
@@ -190,7 +192,7 @@ function shuffleArray<T>(arr: T[], random: () => number = Math.random): T[] {
 }
 
 /** Realm → preferred shader categories (70% drawn from these, 30% variety) */
-const REALM_SHADER_AFFINITY: Record<string, string[]> = {
+export const REALM_SHADER_AFFINITY: Record<string, string[]> = {
   heaven:    ["Visionary", "Cosmic", "3D Worlds"],
   hell:      ["Dark", "Elemental", "3D Worlds"],
   garden:    ["Organic", "Elemental", "3D Worlds"],
@@ -274,7 +276,7 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   ]),
 };
 
-const GLOBAL_SHADER_BLOCKLIST: string[] = [
+export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even
   // when dimmed — "full screen ones that brighten the screen and makes
@@ -318,7 +320,7 @@ const GLOBAL_SHADER_BLOCKLIST: string[] = [
  *  is conservative — start small and grow as user reports lag on specific
  *  shaders. The render-resolution scale already gets us most of the way; this
  *  list is for anything still too expensive even at 0.55× DPR. */
-const LOW_TIER_BLOCKED_SHADERS: string[] = [
+export const LOW_TIER_BLOCKED_SHADERS: string[] = [
   "dark-nebula", // dense fbm + raymarched volume
   "supernova",   // multi-octave fbm explosion
   "quasar",      // volumetric jets
@@ -333,7 +335,7 @@ const REALM_SHADER_ALLOW: Record<string, string[]> = {
   // should be banned entirely from resonance")
 };
 
-const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
+export const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
     "r3-fernunfurl", "fractal-tree", // green fractals — Karel 2026-09-29: "no bright green fractile spinning over snowflake" (fernunfurl was also the boundary "green twirl")
     "molten-vein", "smolder", "obsidian-flow", "ember-drift", "shadow-fire", // fire-toned darks — Karel 2026-09-29: "that red shader dont work on snowflake"
@@ -2258,6 +2260,41 @@ export function getJourneysByRealm(realmId: string): Journey[] {
   return JOURNEYS.filter((j) => j.realmId === realmId);
 }
 
+/** The deterministic cast for a journey (scripts/recast-featured.mjs), by
+ *  id — or, for a shared row wrapping a built-in (DB uuid id, live name),
+ *  by the built-in's name. Never for the mastered three. */
+export function getJourneyCast(journey: Pick<Journey, "id" | "name">): Readonly<Record<string, readonly string[]>> | null {
+  if (isMasteredJourneyLike(journey)) return null;
+  const byId = JOURNEY_CASTS[journey.id];
+  if (byId) return byId.cast;
+  const builtin = JOURNEYS.find((j) => j.name === journey.name);
+  return builtin ? JOURNEY_CASTS[builtin.id]?.cast ?? null : null;
+}
+
+/**
+ * DIVERSITY (Karel 2026-10-05): play the journey's constrained cast —
+ * per-phase shaderModes from the vetted pool, spaced across the kiosk
+ * loop and its album path — instead of regenerating random pools (which
+ * drew ~30 shaders per journey from the same library, so every journey
+ * looked like the last). The journey's own blockedShaders and the
+ * low-tier heavy list still apply. Returns null when the journey has no
+ * cast (it regenerates as before).
+ */
+export function castJourneyShaders(journey: Journey): Journey | null {
+  const cast = getJourneyCast(journey);
+  if (!cast) return null;
+  const blocked = new Set<string>(journey.blockedShaders ?? []);
+  if (getDeviceTier() === "low") for (const s of LOW_TIER_BLOCKED_SHADERS) blocked.add(s);
+  const phases = journey.phases.map((phase) => {
+    const list = cast[phase.id];
+    if (!list) return phase;
+    const allowed = list.filter((m) => !blocked.has(m));
+    return { ...phase, shaderModes: allowed.length > 0 ? allowed : [...list] };
+  });
+  recordUsedShaders(phases.flatMap((p) => p.shaderModes));
+  return { ...journey, phases };
+}
+
 /**
  * Regenerate fresh random shaders for every phase of a journey.
  * Called at journey start so every play gets a completely unique set.
@@ -2289,9 +2326,16 @@ export function regenerateJourneyShaders(
   if (getDeviceTier() === "low") {
     for (const s of LOW_TIER_BLOCKED_SHADERS) journeyBlocked.add(s);
   }
-  const allShaders = journeyBlocked.size > 0
+  const blockedFiltered = journeyBlocked.size > 0
     ? rawShaders.filter((m) => !journeyBlocked.has(m))
     : rawShaders;
+  // QUALITY (Karel 2026-10-05: "everything besides snowflake, realized,
+  // ghost is getting the treatment"): an uncast journey (a user's own, a
+  // new import) rotates only through the vetted, brightness-normalized
+  // pool. The mastered three keep their exact pools (pinned takes).
+  const allShaders = isMasteredJourneyLike(journey)
+    ? blockedFiltered
+    : blockedFiltered.filter((m) => VETTED_SHADER_POOL.has(m));
   const usedShaders = new Set<string>();
 
   // Base budgets for a ~5min track (30 total). Scale up for longer tracks

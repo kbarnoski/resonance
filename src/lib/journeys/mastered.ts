@@ -20,3 +20,13 @@ export const LEGACY_SLIDESHOW_JOURNEYS: ReadonlySet<string> = new Set(["first-sn
 export function isMasteredJourney(id?: string | null): boolean {
   return !!id && MASTERED_JOURNEYS.has(id);
 }
+
+/** Names the mastered journeys play under. A shared/path row that wraps a
+ *  built-in carries its DB uuid as id but the live name, so protection
+ *  checks match on either. */
+export const MASTERED_JOURNEY_NAMES: ReadonlySet<string> = new Set(["snowflake", "realized", "ghost"]);
+
+export function isMasteredJourneyLike(j?: { id?: string | null; name?: string | null } | null): boolean {
+  if (!j) return false;
+  return isMasteredJourney(j.id) || MASTERED_JOURNEY_NAMES.has((j.name ?? "").trim().toLowerCase());
+}
