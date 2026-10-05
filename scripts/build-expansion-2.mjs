@@ -46,6 +46,10 @@ export const ORDER = [
   "Tranquility 36", "Torraine 7", "Surrounded by Light 19", "Tranquility 38",
 ];
 
+// SEAL RETIRED (harvest QA 2026-10-04: even under AERIAL the sealed
+// deck rendered cloud seas with a sunrise on the seam). Kept for history.
+// SEAL once rode with AERIAL (harvest QA 2026-10-04: on sky-facing
+// worlds the sealed cloud deck became a cloud-sea horizon WITH a sunrise).
 // Sun/orb guard (sample review 2026-10-01: dawn/dusk/horizon worlds
 // summoned sun discs). Occupy the sky positively — never name the disc.
 const SEAL = ", every source of light hidden behind a sealed deck of layered cloud, the glow arriving only as long soft horizontal seams and reflections";
@@ -81,7 +85,7 @@ function sequenceFor(world, phaseIdx) {
   const abs = a.replace("%A", world.abstract);
   // threshold opens micro-first (archetype arc: micro -> cosmic)
   const shots = id === "threshold" ? [micro, line, abs] : id === "transcendence" ? [line, abs, micro] : [line, micro, abs];
-  return shots.map((s) => s + (world.aerial ? AERIAL + SEAL : world.sealSky ? SEAL : "") + TAIL);
+  return shots.map((s) => s + (world.aerial ? AERIAL : "") + TAIL);
 }
 
 // Deterministic per-title PRNG so re-runs give identical casts.
