@@ -35,11 +35,11 @@ export const WORLDS = {
       // [0] Low Embers Waking 0:00–0:24 (I 0.10, hushed, grounded)
       "DARK BACKGROUND — a vast tidal estuary before dawn seen from high above, a dark plain of wet sand and mud cut by braided water channels, one single channel in the lower left holding the faintest pewter seam of reflected light, everything else unlit and still",
       // [1] Plagal Tide 0:24–1:00 (I 0.87, warm, rocking, settled)
-      "the estuary at early grey-blue dawn from above, shallow tide sliding in and drawing back across the flats in slow overlapping sheets, the braided channels filling with soft slate and pewter reflections, a low mist lying in long bands across the sand",
+      "a top-down map-like view of wet tidal sand and braided water channels in the cool blue hour, the patterned sand filling the entire frame, shallow tide sliding in slow overlapping sheets, the channels holding soft slate and pewter reflections, thin mist lying in long bands across the sand, the light arriving only as soft reflections across the wet surface",
       // [2] Suspended Questions 1:00–1:21 (I 0.79, searching, first Lydian glint)
       "thin pale streaks of light appearing along the edges of the water channels as the mist parts, a few channels suddenly bright as hairlines of silver-gold while the flats between stay dark, the braid half-revealed, searching",
       // [3] Subdominant Dawn 1:21–1:58 (I 1.00 PEAK, radiant, expansive, reverent)
-      "the entire braided estuary lit at once from above, hundreds of branching channels glowing warm amber-gold across the dark sand like a vast living river-tree of light, low mist glowing from within along the water, the brightest confluence set right of center, morning arrived",
+      "looking straight down onto the entire braided estuary lit at once, hundreds of fine branching water channels glowing soft amber-gold across the dark sand like a vast living river-tree of light filling the frame, low mist glowing from within along the water, the brightest confluence set right of center, morning arrived",
       // [4] Lydian Afterglow 1:58–2:14 (I 0.27, tender, weightless)
       "the flats under even pale morning light, the channels softened to milky rose and pearl, the last mist lifting off the water in slow transparent veils, no shadows anywhere",
       // [5] Lydian Afterglow → silence 2:14–2:30 (I 0.27, peaceful)
@@ -65,7 +65,7 @@ export const WORLDS = {
       // [0] Opening Calls 0:00–0:21 (I 0.10, searching, hushed)
       "DARK BACKGROUND — a deep valley filled with pale pre-dawn mist, one small soft wave of warm light leaving the lower left and spreading slowly through the haze, the far side of the valley still dark and waiting",
       // [1] Widening Answer 0:21–0:41 (I 0.76, yearning, bittersweet)
-      "the valley mist alive with travelling waves of light, each call widening as a soft luminous arc through the haze and touching the slopes in rose-gold, an answering arc returning faintly from the far ridge, longing made visible",
+      "looking down into a deep forested valley filled with mist so the slopes fill the whole frame, the mist alive with travelling waves of light, each call widening as a soft luminous arc through the haze and touching the slopes in rose-gold, an answering arc returning faintly from the far slope, longing made visible",
       // [2] Plateau of the Fourth 0:41–0:56 (I 0.71, luminous, contemplative)
       "a broad hillside meadow under high open haze, slow wide arcs of honey light lingering over the grass instead of moving on, the air warm and suspended, everything held",
       // [3] Plateau, melody rising to C6 0:56–1:11 (I 0.71, warm, suspended)
@@ -123,13 +123,13 @@ export const WORLDS = {
       // [0] Wavering Invocation 0:00–0:36 (I 0.69, hesitant, ambivalent)
       "a darkening meadow at evening, the air above it holding a few drifting seeds of thistle-down that turn between pale gold and slate as thin cloud moves across the light, undecided",
       // [1] Pedal-Tone Hymn 0:36–0:49 (I 0.83, serene, reverent)
-      "warm amber evening air thick with slowly drifting seed-down, each seed lit along its silk, all drifting the same gentle diagonal like a hymn repeated",
+      "warm amber evening air above a dark meadow thick with hundreds of small round thistle-down seeds drifting slowly, each tiny puff lit along its silk, all drifting the same gentle diagonal like a hymn repeated",
       // [2] Pedal-Tone Hymn 0:49–1:01 (I 0.83, warm, assured)
       "the drift steady and even across the whole meadow, long low light laying warm gold along the grasses below, the floating seeds glowing in calm unbroken procession",
       // [3] Borrowed Shadow 1:01–1:21 (I 0.85, yearning, aching)
       "a violet-grey cloud shadow sliding over the meadow, the drifting seed-down dimmed to cool lilac and slate, one high cold glint catching a few seeds at the top of the frame",
       // [4] Radiant Return 1:21–1:41 (I 1.00 PEAK, radiant, consoling)
-      "the air suddenly full of light — thousands of seeds of down glowing gold as the cloud shadow lifts, a vast luminous drift filling the sky over the meadow toward a far horizon of warm haze, the densest glow set left of center, grace returning",
+      "the air suddenly full of light — seen from directly above the meadow looking straight down onto the dark grass, thousands of seeds of down glowing gold as the cloud shadow lifts, a vast luminous drift of floating seeds spread evenly across the whole frame from edge to edge, the densest glow set left of center, grace returning",
       // [5] Evening Dissolve 1:41–1:58 (I 0.10, still, lingering)
       "DARK BACKGROUND — deep blue dusk over the meadow, the last few seeds of down settling slowly with a faint warm glow, one single seed still drifting in the lower right",
     ],
@@ -153,7 +153,7 @@ export const WORLDS = {
       // [0] Shadowed Invocation 0:00–0:22 (I 0.66, veiled, solemn)
       "an evening sea of cloud seen from high above, slate and violet banks filling every valley edge to edge, a faint warm glow buried deep inside one bank in the lower left, veiled",
       // [1] First Warmth → Descent to Dominant 0:22–1:07 (I 0.75, consoling then brooding)
-      "the cloud-sea seen from above at dusk, an amber glow opening inside the banks for a moment and then sinking again beneath heavy slate folds pressing low, the light and the weight trading places",
+      "looking straight down from high above onto an evening sea of cloud filling the entire frame edge to edge, a broad diffuse amber glow spreading along a long seam between the billowed banks for a moment and then sinking again beneath heavy slate folds, the light and the weight trading places",
       // [2] Lydian Ascent 1:07–1:35 (I 1.00 PEAK, surging, radiant, aching)
       "the cloud-sea broken open from within — a great luminous rift of warm gold light pouring up between the slate banks seen from above, the cloud edges blazing amber around it, the brightest breach set right of center, then the light tempered by a violet hush along the folds",
       // [3] Major Benediction 1:35–1:57 (I 0.95, luminous, grateful, serene)

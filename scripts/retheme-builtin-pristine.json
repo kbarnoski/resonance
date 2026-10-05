@@ -1,0 +1,592 @@
+{
+ "the-ascent": [
+  {
+   "aiPrompt": "vertical cliff face of layered sedimentary rock floating in deep black void — bands of slate and sandstone and limestone in warm earth tones split apart to reveal seams where tiny alpine wildflowers in purple and white grow from the cracks, a thin mountain goat trail visible as a worn diagonal line across the rock face, ice and frozen water seeping from fissures and forming small icicles that catch faint blue light, the formation anchored in the lower-right third of the frame, fine stone particles and ice crystals dispersing upward-left along steep diagonal paths into vast dark negative space filling two-thirds of the frame, connected frozen water threads bridging between separated rock layers, asymmetric composition with visual weight low and right, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "vertical cliff face of layered sedimentary rock floating in deep black void — bands of slate and sandstone and limestone in warm earth tones split apart to reveal seams where tiny alpine wildflowers in purple and white grow from the cracks, a thin mountain goat trail visible as a worn diagonal line across the rock face, ice and frozen water seeping from fissures and forming small icicles that catch faint blue light, the formation anchored in the lower-right third of the frame, fine stone particles and ice crystals dispersing upward-left along steep diagonal paths into vast dark negative space filling two-thirds of the frame, connected frozen water threads bridging between separated rock layers, asymmetric composition with visual weight low and right, no figures no text no signatures no watermarks no letters no writing",
+    "extreme macro — one alpine wildflower in a rock seam at closest range, purple petals lit against dark stone, fine grit falling past it into the void below, no text no signatures no watermarks no letters no writing",
+    "wide — the whole cliff from below at dusk, its layered bands rising out of sight, quartz glints climbing the height like a ladder of small promises, completely uninhabited, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "look up...",
+    "the summit is a rumor...",
+    "begin..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near total darkness, just the faintest breath of light on a surface"
+   },
+   "start": 0,
+   "end": 0.05,
+   "intensityMultiplier": 0.4
+  },
+  {
+   "aiPrompt": "DEEP MIDNIGHT-BLACK BACKGROUND — massive floating boulder field at cosmic scale, moss-covered rocks tumbling upward defying gravity with thick bright green moss and grey lichen on their surfaces, small mountain streams flowing between the boulders in impossible directions — some flowing upward and others curving around rocks in spiral paths — catching cool blue-white light, wisps of cloud and mist drifting between the boulder gaps, the densest boulder cluster in the lower third with the rocks dispersing upward into vast dark alpine void above, fine water droplets and moss spores trailing from the streams into darkness, connected thin water threads flowing impossibly between separated boulders, asymmetric composition ascending steeply with generous darkness above, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DEEP MIDNIGHT-BLACK BACKGROUND — massive floating boulder field at cosmic scale, moss-covered rocks tumbling upward defying gravity with thick bright green moss and grey lichen on their surfaces, small mountain streams flowing between the boulders in impossible directions — some flowing upward and others curving around rocks in spiral paths — catching cool blue-white light, wisps of cloud and mist drifting between the boulder gaps, the densest boulder cluster in the lower third with the rocks dispersing upward into vast dark alpine void above, fine water droplets and moss spores trailing from the streams into darkness, connected thin water threads flowing impossibly between separated boulders, asymmetric composition ascending steeply with generous darkness above, no figures no text no signatures no watermarks no letters no writing",
+    "interior — drifting up between the floating boulders, moss walls sliding past close on both sides, a mountain stream crossing overhead in a silver arch, no text no signatures no watermarks no letters no writing",
+    "macro — a moss tuft on one boulder at closest range, dew beads riding its fronds, a thread of water leaving the rock and rising instead of falling, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "higher...",
+    "the air thins and thoughts clarify...",
+    "don't look down..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "tectonic scale, massive cliff faces or canyons, deep geological weight",
+    "highTreble": "ice crystals catching light, prismatic refraction through real glass or water"
+   },
+   "start": 0.05,
+   "end": 0.534,
+   "intensityMultiplier": 0.7
+  },
+  {
+   "aiPrompt": "atmospheric pressure gradient rendered as translucent membrane layers stacked vertically across infinite black void — dozens of gossamer-thin curved planes of different densities from thick luminous indigo at the bottom to nearly invisible pale gold film at the top, each membrane a different hue shifting from deep blue through ice-blue to electric white-gold at the highest layers, the membranes entering from the upper-right third curving across the frame with light refracting between them creating prismatic halos at the layer boundaries, fine particles streaming upward between the membrane gaps, the thinning of atmosphere rendered as light at cosmic scale, no trees no ground no horizon no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "atmospheric pressure gradient rendered as translucent membrane layers stacked vertically across infinite black void — dozens of gossamer-thin curved planes of different densities from thick luminous indigo at the bottom to nearly invisible pale gold film at the top, each membrane a different hue shifting from deep blue through ice-blue to electric white-gold at the highest layers, the membranes entering from the upper-right third curving across the frame with light refracting between them creating prismatic halos at the layer boundaries, fine particles streaming upward between the membrane gaps, the thinning of atmosphere rendered as light at cosmic scale, no trees no ground no horizon no figures no text no signatures no watermarks no letters no writing",
+    "macro — the boundary of two membranes at closest range, indigo film touching pale gold film, a prismatic halo breathing slowly along the join, no text no signatures no watermarks no letters no writing",
+    "interior kinetic — rising through membrane after membrane, each layer flaring around the viewpoint and thinning, the light whitening with altitude, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you are above everything...",
+    "the summit is a feeling not a place...",
+    "breathe the infinite..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "earthquake scale, ground splitting open, massive geological upheaval",
+    "highTreble": "shattered ice or glass refracting blinding light in every direction",
+    "highAmplitude": "total sensory overload, standing in the center of a supercell storm"
+   },
+   "start": 0.534,
+   "end": 0.656,
+   "intensityMultiplier": 1
+  },
+  {
+   "aiPrompt": "PALE WARM BONE-MIST BACKGROUND — single ancient wind-sculpted rock balanced impossibly on a tiny point against warm pale haze, the rock anchored in the left third of the frame with photorealistic weathered granite texture showing wind-erosion patterns and orange lichen patches, streaks of orange lichen and wind-polished granite catching prismatic light, three or four small dark birds circling at a distance against the pale haze, fine stone fragments dispersing rightward into generous warm pale negative space filling two-thirds of the frame, the rock casting a subtle cool shadow beneath it, asymmetric composition weighted left with boundless warm haze above and right, no figures no trees no plants, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "PALE WARM BONE-MIST BACKGROUND — single ancient wind-sculpted rock balanced impossibly on a tiny point against warm pale haze, the rock anchored in the left third of the frame with photorealistic weathered granite texture showing wind-erosion patterns and orange lichen patches, streaks of orange lichen and wind-polished granite catching prismatic light, three or four small dark birds circling at a distance against the pale haze, fine stone fragments dispersing rightward into generous warm pale negative space filling two-thirds of the frame, the rock casting a subtle cool shadow beneath it, asymmetric composition weighted left with boundless warm haze above and right, no figures no trees no plants, no text no signatures no watermarks no letters no writing",
+    "extreme macro — the balance point itself, tons of granite meeting stone at a contact smaller than a coin, white light pooling in the impossible gap, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — beside the balanced rock, the thin summit air half-gathers into a steady ancestral almost-presence of pale light, translucent and featureless, keeping the balance company, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "see how far you've come...",
+    "the view is the reward...",
+    "everything is below you..."
+   ],
+   "aiPromptModifiers": {
+    "highTreble": "light refracting through crystal formations or stained glass, casting real caustic patterns on stone"
+   },
+   "start": 0.656,
+   "end": 0.716,
+   "intensityMultiplier": 0.75
+  },
+  {
+   "aiPrompt": "waterfall cascading from a floating cliff fragment in deep warm indigo void — the water pouring over a mossy ledge and dissolving into mist and then individual luminous droplets that drift upward into cosmic darkness defying gravity, thick green ferns and trailing moss growing along the cliff edge where the water flows, the rock face showing layered geological color from warm amber to cool grey in the exposed strata, the waterfall arcing gently from upper-right toward lower-left with fine water droplets and mist particles streaming upward into generous dark negative space above, connected threads of flowing water trailing between separating rock fragments below, warm golden light catching the water surface, composition weighted to the upper half with cosmic warmth opening below, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "waterfall cascading from a floating cliff fragment in deep warm indigo void — the water pouring over a mossy ledge and dissolving into mist and then individual luminous droplets that drift upward into cosmic darkness defying gravity, thick green ferns and trailing moss growing along the cliff edge where the water flows, the rock face showing layered geological color from warm amber to cool grey in the exposed strata, the waterfall arcing gently from upper-right toward lower-left with fine water droplets and mist particles streaming upward into generous dark negative space above, connected threads of flowing water trailing between separating rock fragments below, warm golden light catching the water surface, composition weighted to the upper half with cosmic warmth opening below, no figures no text no signatures no watermarks no letters no writing",
+    "macro — one luminous droplet leaving the fall and rising at closest range, the whole indigo void and its warm gold light curved inside it, no text no signatures no watermarks no letters no writing",
+    "wide — the floating cliff and its upward-raining fall from far off, a slow silver plume climbing into cosmic dark, ferns glowing faint at its lip, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "descend gently...",
+    "the mountain stays...",
+    "carry the height..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "almost dark, just the last trace of sunset color on the edge of the world"
+   },
+   "start": 0.716,
+   "end": 0.872,
+   "intensityMultiplier": 0.5
+  },
+  {
+   "aiPrompt": "single dimensionless point of warm amber-white light suspended in the lower-left region of vast blue-black infinite void, from the point a barely visible halo of faintest concentric ripples expanding outward like the memory of altitude dissolving, the ripples gossamer rings of ice-blue and warm gold fading to nothing within a short radius, the rest of the frame vast empty silent cosmos with microscopic luminous motes scattered sparsely, asymmetric composition with the point small and anchored lower-left and nearly the entire frame open darkness, no trees no ground no horizon no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "single dimensionless point of warm amber-white light suspended in the lower-left region of vast blue-black infinite void, from the point a barely visible halo of faintest concentric ripples expanding outward like the memory of altitude dissolving, the ripples gossamer rings of ice-blue and warm gold fading to nothing within a short radius, the rest of the frame vast empty silent cosmos with microscopic luminous motes scattered sparsely, asymmetric composition with the point small and anchored lower-left and nearly the entire frame open darkness, no trees no ground no horizon no figures no text no signatures no watermarks no letters no writing",
+    "macro — the point at closest range, a seed of amber-white light with its gossamer rings breathing outward and fading before they finish, no text no signatures no watermarks no letters no writing",
+    "cosmic finale — the vast blue-black void from further back, the one point steady in the lower dark, all that altitude remembered as a single light, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you climbed...",
+    "the summit lives in you now..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near darkness, just one small warm light source in an enormous quiet space"
+   },
+   "start": 0.872,
+   "end": 1,
+   "intensityMultiplier": 0.3
+  }
+ ],
+ "cosmic-drift": [
+  {
+   "aiPrompt": "small floating asteroid of dark iron-rich rock drifting through a field of distant stars in deep black cosmic void, the asteroid surface catching faint blue starlight with photorealistic pitted and cratered texture, a single luminous crystal formation growing from a fissure in the rock surface — pale blue and translucent like frozen light, the asteroid anchored in the upper-left third of the frame with fine mineral dust particles and micro-crystal fragments dispersing downward-right along gentle curved paths into vast empty black two thirds of the frame, the crystal catching distant starlight and refracting it into subtle prismatic points, asymmetric composition with visual weight high and left, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "small floating asteroid of dark iron-rich rock drifting through a field of distant stars in deep black cosmic void, the asteroid surface catching faint blue starlight with photorealistic pitted and cratered texture, a single luminous crystal formation growing from a fissure in the rock surface — pale blue and translucent like frozen light, the asteroid anchored in the upper-left third of the frame with fine mineral dust particles and micro-crystal fragments dispersing downward-right along gentle curved paths into vast empty black two thirds of the frame, the crystal catching distant starlight and refracting it into subtle prismatic points, asymmetric composition with visual weight high and left, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+    "extreme macro — the crystal in the fissure at closest range, pale blue light branching through its lattice, starlight entering one face and leaving another as a fan of tiny spectra, no text no signatures no watermarks no letters no writing",
+    "wide — the little asteroid from far off, a dark grain adrift on a field of stars, its one crystal winking each time it slowly turns, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "look up...",
+    "the stars are ancient light...",
+    "you are moving without moving..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near total darkness, just the faintest breath of light on a surface"
+   },
+   "start": 0,
+   "end": 0.05,
+   "intensityMultiplier": 0.4
+  },
+  {
+   "aiPrompt": "DEEP COSMIC-BLACK BACKGROUND — enormous asteroid field sweeping diagonally from upper left toward lower right, dozens of dark rocky bodies at different scales and distances tumbling slowly through deep space, the nearest asteroids showing photorealistic pitted basalt and iron-ore surfaces with thin veins of luminous mineral glowing amber and blue-white at the fracture lines, fine dust trails streaming behind each asteroid creating luminous comet-like tails of warm particles, a distant nebula in deep violet and blue providing faint ambient glow behind the asteroid field, infinite depth through scale variation from massive foreground rocks to tiny distant points, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DEEP COSMIC-BLACK BACKGROUND — enormous asteroid field sweeping diagonally from upper left toward lower right, dozens of dark rocky bodies at different scales and distances tumbling slowly through deep space, the nearest asteroids showing photorealistic pitted basalt and iron-ore surfaces with thin veins of luminous mineral glowing amber and blue-white at the fracture lines, fine dust trails streaming behind each asteroid creating luminous comet-like tails of warm particles, a distant nebula in deep violet and blue providing faint ambient glow behind the asteroid field, infinite depth through scale variation from massive foreground rocks to tiny distant points, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+    "interior — drifting between the tumbling rocks, pitted walls sliding past at every depth, amber mineral veins glowing as shadows sweep across them, the violet nebula breathing behind, no text no signatures no watermarks no letters no writing",
+    "macro — two asteroids grazing at closest range, dust bursting from the touch in a slow lit bloom, small fragments spinning away trailing sparks, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "stars are being born...",
+    "creation is happening now...",
+    "feel the scale..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "tectonic scale, massive cliff faces or canyons, deep geological weight",
+    "highTreble": "ice crystals catching light, prismatic refraction through real glass or water"
+   },
+   "start": 0.05,
+   "end": 0.513,
+   "intensityMultiplier": 0.7
+  },
+  {
+   "aiPrompt": "supernova explosion at cosmic scale — the expanding shockwave a brilliant sphere of white-gold plasma erupting from the blast center in the upper-right of the frame, concentric rings of superheated gas in crimson and electric blue and molten gold radiating outward, within the debris ring tumbling fragments of the destroyed star — chunks of crystallized carbon catching prismatic light, molten iron droplets cooling to dark spheres, diamond-like shards refracting blinding color — all frozen mid-explosion against deep black space, fine particles of stellar dust and plasma dispersing from the outermost wavefront into vast darkness, the death of a star rendered as photorealistic cosmic violence at impossible scale, composition offset with the blast core upper-right and debris streaming across, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "supernova explosion at cosmic scale — the expanding shockwave a brilliant sphere of white-gold plasma erupting from the blast center in the upper-right of the frame, concentric rings of superheated gas in crimson and electric blue and molten gold radiating outward, within the debris ring tumbling fragments of the destroyed star — chunks of crystallized carbon catching prismatic light, molten iron droplets cooling to dark spheres, diamond-like shards refracting blinding color — all frozen mid-explosion against deep black space, fine particles of stellar dust and plasma dispersing from the outermost wavefront into vast darkness, the death of a star rendered as photorealistic cosmic violence at impossible scale, composition offset with the blast core upper-right and debris streaming across, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+    "interior — inside the debris ring, crystallized shards wheeling past the viewpoint refracting the blast's gold and crimson, the shockwave a rising wall of light beyond them, no text no signatures no watermarks no letters no writing",
+    "macro — one diamond-like shard at closest range, the entire explosion burning in miniature inside its facets, black space holding the frame's edge, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "witness the supernova...",
+    "death is creation...",
+    "you are stardust remembering..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "earthquake scale, ground splitting open, massive geological upheaval",
+    "highTreble": "shattered ice or glass refracting blinding light in every direction",
+    "highAmplitude": "total sensory overload, standing in the center of a supercell storm"
+   },
+   "start": 0.513,
+   "end": 0.699,
+   "intensityMultiplier": 1
+  },
+  {
+   "aiPrompt": "dark matter web visible as gossamer luminous filaments stretched between glowing nodes in deep indigo-black void, the web a vast cosmic structure with fibonacci-curved tension lines between each warm gold node, the filaments translucent and impossibly thin yet visible through their accumulated light, the web arranged asymmetrically along the left edge and lower third with the largest membrane-like spans catching faint prismatic reflections, fine particles of luminous matter condensing along the filament surfaces, leaving the upper right open and boundless, quiet cosmic architecture at the largest possible scale, no planets no earth no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "dark matter web visible as gossamer luminous filaments stretched between glowing nodes in deep indigo-black void, the web a vast cosmic structure with fibonacci-curved tension lines between each warm gold node, the filaments translucent and impossibly thin yet visible through their accumulated light, the web arranged asymmetrically along the left edge and lower third with the largest membrane-like spans catching faint prismatic reflections, fine particles of luminous matter condensing along the filament surfaces, leaving the upper right open and boundless, quiet cosmic architecture at the largest possible scale, no planets no earth no figures no text no signatures no watermarks no letters no writing",
+    "macro — one filament at closest range, gossamer light condensed along its length in slow beads, a node's warm gold glow soft in the distance beyond, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — at a quiet node, the web's light half-gathers into a vast slow ancestral almost-presence, translucent and featureless, older than the web, holding the threads the way roots hold a hill, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "everything came from this...",
+    "your atoms were forged in stars...",
+    "cosmic recycling..."
+   ],
+   "aiPromptModifiers": {
+    "highTreble": "light refracting through crystal formations or stained glass, casting real caustic patterns on stone"
+   },
+   "start": 0.699,
+   "end": 0.763,
+   "intensityMultiplier": 0.75
+  },
+  {
+   "aiPrompt": "cooling abstract forms drifting through deep indigo cosmos — irregular masses of iridescent light catching spectrum from cyan to violet to warm gold across their curved surfaces, the forms like solidified nebula gas slowly dispersing at their edges into fine prismatic particles and luminous flakes, each form at a different stage of dissolution shedding light as it drifts from lower-left toward upper-right, generous dark negative space filling two-thirds of the frame, composition weighted to the lower half with cosmic darkness opening infinitely above, no planets no earth no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "cooling abstract forms drifting through deep indigo cosmos — irregular masses of iridescent light catching spectrum from cyan to violet to warm gold across their curved surfaces, the forms like solidified nebula gas slowly dispersing at their edges into fine prismatic particles and luminous flakes, each form at a different stage of dissolution shedding light as it drifts from lower-left toward upper-right, generous dark negative space filling two-thirds of the frame, composition weighted to the lower half with cosmic darkness opening infinitely above, no planets no earth no figures no text no signatures no watermarks no letters no writing",
+    "macro — one iridescent mass's edge at closest range, cyan-violet skin dissolving into prismatic flakes that drift free one by one, no text no signatures no watermarks no letters no writing",
+    "wide — the drifting forms from far back, a slow procession of dimming lights crossing the indigo, each leaving a fainter copy of itself in dust, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the universe settles...",
+    "new light from old death...",
+    "drift now..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "almost dark, just the last trace of sunset color on the edge of the world"
+   },
+   "start": 0.763,
+   "end": 0.893,
+   "intensityMultiplier": 0.5
+  },
+  {
+   "aiPrompt": "single small dark meteorite fragment floating in the lower-left corner of vast blue-black cosmos, barely visible against the immense darkness, the rock surface showing faint metallic sheen where iron catches distant starlight, a thin trail of luminous dust particles extending diagonally upward-right from the meteorite and dissolving into infinite darkness like the last exhale of a dying star, the rock rough and ancient with microscopic crystal inclusions catching the faintest light at its edges, enormous open cosmos with scattered faint stars everywhere above, asymmetric and quiet — almost nothing against everything, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "single small dark meteorite fragment floating in the lower-left corner of vast blue-black cosmos, barely visible against the immense darkness, the rock surface showing faint metallic sheen where iron catches distant starlight, a thin trail of luminous dust particles extending diagonally upward-right from the meteorite and dissolving into infinite darkness like the last exhale of a dying star, the rock rough and ancient with microscopic crystal inclusions catching the faintest light at its edges, enormous open cosmos with scattered faint stars everywhere above, asymmetric and quiet — almost nothing against everything, no planets no trees no plants no figures, no text no signatures no watermarks no letters no writing",
+    "extreme macro — the meteorite's surface at closest range, iron sheen and microscopic crystal points catching the last of the starlight, no text no signatures no watermarks no letters no writing",
+    "cosmic finale — the fragment from farther still, its dust trail a fading diagonal whisper on the blue-black, almost nothing against everything, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you are the cosmos looking at itself...",
+    "drift home..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near darkness, just one small warm light source in an enormous quiet space"
+   },
+   "start": 0.893,
+   "end": 1,
+   "intensityMultiplier": 0.3
+  }
+ ],
+ "the-ascension": [
+  {
+   "aiPrompt": "extreme macro in deep darkness — a single seed of golden light cracking open at closest range, thin filaments of warm luminance reaching upward out of the split like the first roots of a sunrise, fine gold dust lifting off the fracture, everything beyond the seed soft black with faint violet depth, the awakening small and low in the frame with vast dark above, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "extreme macro in deep darkness — a single seed of golden light cracking open at closest range, thin filaments of warm luminance reaching upward out of the split like the first roots of a sunrise, fine gold dust lifting off the fracture, everything beyond the seed soft black with faint violet depth, the awakening small and low in the frame with vast dark above, no text no signatures no watermarks no letters no writing",
+    "microscopic — inside the seed's crack, a stair of light no wider than a vein climbing out of the dark kernel, gold dust rising through it in single grains, no text no signatures no watermarks no letters no writing",
+    "wide — a dark plain under starless black, one small gold glow waking low in the frame, its light reaching upward in a thin first thread, completely uninhabited, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "breathe...",
+    "feel the warmth...",
+    "light is coming..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near total darkness, just the faintest breath of light on a surface"
+   },
+   "start": 0,
+   "end": 0.05,
+   "intensityMultiplier": 0.4
+  },
+  {
+   "aiPrompt": "vertical ascent through layered golden strata — rivers of luminous particles streaming straight upward past translucent amber membranes stacked like sky above sky, each layer brighter than the one below, the viewpoint rising with the current, gold dust accelerating along the climb, warm light strengthening toward an unseen brilliance overhead, strong vertical energy with the densest stream off-center left, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "vertical ascent through layered golden strata — rivers of luminous particles streaming straight upward past translucent amber membranes stacked like sky above sky, each layer brighter than the one below, the viewpoint rising with the current, gold dust accelerating along the climb, warm light strengthening toward an unseen brilliance overhead, strong vertical energy with the densest stream off-center left, no text no signatures no watermarks no letters no writing",
+    "interior — passing through one amber membrane, the layer parting around the viewpoint like warm mist, the next brighter sky already glowing through from above, no text no signatures no watermarks no letters no writing",
+    "macro — one gold particle of the climb at closest range, its facets flashing the layered skies above and below as it spins in the updraft, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "rise...",
+    "the light knows you...",
+    "open..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "tectonic scale, massive cliff faces or canyons, deep geological weight",
+    "highTreble": "ice crystals catching light, prismatic refraction through real glass or water"
+   },
+   "start": 0.05,
+   "end": 0.16,
+   "intensityMultiplier": 0.7
+  },
+  {
+   "aiPrompt": "suspended weightless inside a monumental vault of pure golden light with no floor and no ground anywhere — colossal ribs of radiant gold geometry filling the entire frame in fibonacci curves above and below and to every side, white brilliance blazing at the convergence point off-center, luminous particles drifting through the vast interior like slow embers, only light architecture and glowing air in all directions, completely uninhabited, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "suspended weightless inside a monumental vault of pure golden light with no floor and no ground anywhere — colossal ribs of radiant gold geometry filling the entire frame in fibonacci curves above and below and to every side, white brilliance blazing at the convergence point off-center, luminous particles drifting through the vast interior like slow embers, only light architecture and glowing air in all directions, completely uninhabited, no text no signatures no watermarks no letters no writing",
+    "macro — one rib of the golden vault at closest range, light flowing inside it like sap in a branch of dawn, luminous motes drifting slowly past, no text no signatures no watermarks no letters no writing",
+    "cosmic — the vault seen from outside, a lantern of gold geometry hanging alone in black space, its light spilling through its own ribs in long still rays, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you are light...",
+    "there is no boundary...",
+    "this is home..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "earthquake scale, ground splitting open, massive geological upheaval",
+    "highTreble": "shattered ice or glass refracting blinding light in every direction",
+    "highAmplitude": "total sensory overload, standing in the center of a supercell storm"
+   },
+   "start": 0.16,
+   "end": 0.624,
+   "intensityMultiplier": 1
+  },
+  {
+   "aiPrompt": "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
+    "intimate — skimming the radiant cloud-tops, gold vapor curling past the viewpoint, a deep well opening ahead with white-gold light standing in it like a pillar, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — over the cloud sea, the light half-gathers into a tall ancestral almost-presence of white-gold, translucent and featureless, standing on nothing, opening back into brightness, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "see how vast you are...",
+    "every direction is warmth...",
+    "stay in this light..."
+   ],
+   "aiPromptModifiers": {
+    "highTreble": "light refracting through crystal formations or stained glass, casting real caustic patterns on stone"
+   },
+   "start": 0.624,
+   "end": 0.84,
+   "intensityMultiplier": 0.75
+  },
+  {
+   "aiPrompt": "intimate slow descent through hanging veils of warm amber light, translucent petals of gold luminance planing gently downward past the viewpoint in long glide paths, each catching rose and violet iridescence as it turns, the veils parting softly ahead and closing above, warmth deepening from white-gold toward ember amber with the fall, tender unhurried motion, completely uninhabited, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "intimate slow descent through hanging veils of warm amber light, translucent petals of gold luminance planing gently downward past the viewpoint in long glide paths, each catching rose and violet iridescence as it turns, the veils parting softly ahead and closing above, warmth deepening from white-gold toward ember amber with the fall, tender unhurried motion, completely uninhabited, no text no signatures no watermarks no letters no writing",
+    "macro — one petal of gold light planing down at closest range, rose iridescence sweeping across its face as it turns over, no text no signatures no watermarks no letters no writing",
+    "wide — the veils from below, layer after amber layer parting as the light descends toward a warm deep glow waiting at the bottom of the frame, completely uninhabited, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "gently now...",
+    "the glow remains...",
+    "carry the warmth..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "almost dark, just the last trace of sunset color on the edge of the world"
+   },
+   "start": 0.84,
+   "end": 0.92,
+   "intensityMultiplier": 0.5
+  },
+  {
+   "aiPrompt": "macro stillness — one small warm amber glow resting in deep soft darkness, a faint halo of concentric golden rings breathing around it, a few last luminous motes settling toward it like sparks coming to rest, the light steady and kept, enormous quiet dark all around with the glow held low in the frame, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "macro stillness — one small warm amber glow resting in deep soft darkness, a faint halo of concentric golden rings breathing around it, a few last luminous motes settling toward it like sparks coming to rest, the light steady and kept, enormous quiet dark all around with the glow held low in the frame, no text no signatures no watermarks no letters no writing",
+    "extreme macro — the glow's heart at closest range, a slow gold pulse inside soft dark, the last motes settling into it like dust after glory, no text no signatures no watermarks no letters no writing",
+    "cosmic finale — the small warm glow seen from very far away, one gold point in vast dark, the whole ascent kept inside it, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you are changed...",
+    "the light lives in you now..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near darkness, just one small warm light source in an enormous quiet space"
+   },
+   "start": 0.92,
+   "end": 1,
+   "intensityMultiplier": 0.3
+  }
+ ],
+ "mycelium-dream": [
+  {
+   "aiPrompt": "enormous moss-covered boulder floating in deep dark space emerging from the lower right, the boulder photorealistic grey granite with thick green moss carpeting its top and sides, luminous mushrooms growing from crevices in the rock — their caps translucent and glowing soft cyan and warm gold bioluminescence, dangling roots and delicate ferns hanging from the boulder underside reaching into the void below, bioluminescent spores drifting upward from the mushroom gills in lazy spirals like tiny green-gold stars, the boulder detail anchored in one third of the frame with vast darkness and faint scattered spore-light above and left, macro texture visible on the moss and mushroom surfaces, asymmetric composition with visual weight low and right, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "night forest floor at ground level, a great mossy boulder among dark roots, luminous mushrooms glowing soft cyan and warm gold in its crevices, ferns arching over it in silhouette, bioluminescent spores spiraling up like tiny green-gold stars into the black canopy, asymmetric weight low and right, no text no signatures no watermarks no letters no writing",
+    "extreme macro — one translucent mushroom cap at closest range, cyan light glowing through its flesh like a paper lantern, a single spore lifting off its gill edge lit gold, moss fronds soft and dark around the small light, no text no signatures no watermarks no letters no writing",
+    "surreal — inside one glowing mushroom cap, a vaulted gill-cathedral of gold-green light, and through its translucent wall the dim shapes of the whole dark forest beyond, a chapel inside a lantern inside a wood, worlds nested three deep, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the spores are waking...",
+    "feel the soil...",
+    "life begins small..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near total darkness, just the faintest breath of light on a surface"
+   },
+   "start": 0,
+   "end": 0.05,
+   "intensityMultiplier": 0.4
+  },
+  {
+   "aiPrompt": "DEEP BROWN-BLACK BACKGROUND — forest floor cross-section at cosmic scale floating in dark void, viewed from the side like a floating terrarium slice sweeping diagonally from upper left, visible layers of dark rich soil with embedded pale roots threading horizontally, fallen autumn leaves in various stages of decomposition compressed between soil strata, tiny translucent organisms and pale mycorrhizal threads glowing faint green-gold at the root interfaces, the cross-section edge raw and organic with soil crumbling away and fine earth particles dispersing into open dark void below, the top surface shows a miniature landscape of moss and tiny seedlings, infinite depth through layered translucent soil planes, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DEEP BROWN-BLACK BACKGROUND — beneath the forest floor, dark soil strata threaded with pale roots at every depth, mycorrhizal threads glowing faint green-gold where root meets root, small hollow chambers opening like dark rooms in the earth, the buried network pulsing softly through it all, no text no signatures no watermarks no letters no writing",
+    "microscopic — inside the soil between two root hairs, a single glowing mycelial thread reaching across the dark gap grain by grain, green-gold light pulsing along it as the connection closes, earth crystals glinting around the meeting, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — in a root-hollow deep under the forest, the green-gold glow half-gathers into low ancient earthen almost-presences, translucent and featureless, made of spore-light, gathered around the brightest root the way ancestors keep a fire, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "it's growing...",
+    "everything connects...",
+    "feel the network..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "tectonic scale, massive cliff faces or canyons, deep geological weight",
+    "highTreble": "ice crystals catching light, prismatic refraction through real glass or water"
+   },
+   "start": 0.05,
+   "end": 0.485,
+   "intensityMultiplier": 0.7
+  },
+  {
+   "aiPrompt": "cosmic-scale bioluminescent network sweeping across infinite brown-black void — millions of luminous green-gold points connected by hair-thin filaments forming a web-like structure that could be neurons or galaxies or mycorrhizal connections, the network dense and intricate in the upper-right third but dissolving into scattered individual points at its edges, warm amber pulses traveling along the filaments between nodes creating a sense of living communication, the spaces between filled with drifting spore-like particles of pale green light, composition fills the frame off-center with the densest cluster upper-right and filament bridges reaching across into generous darkness lower-left, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "cosmic-scale bioluminescent network sweeping across infinite brown-black void, millions of green-gold points joined by hair-thin filaments like neurons or galaxies, amber pulses traveling between nodes, drifting spore-light filling the spaces, densest cluster upper-right with bridges reaching into generous darkness, no text no signatures no watermarks no letters no writing",
+    "interior kinetic — flying along one filament inside the network, node-lights flaring past like stations, amber signal-pulses overtaking and racing ahead, branches curving away into deep green-black on every side, no text no signatures no watermarks no letters no writing",
+    "planetary — the network wrapped around a dark curved world seen from high orbit, green-gold veins netting the whole sphere, slow pulses crossing continents of darkness, one hemisphere blazing awake, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you are the network...",
+    "all is one organism...",
+    "breathe with the forest..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "earthquake scale, ground splitting open, massive geological upheaval",
+    "highTreble": "shattered ice or glass refracting blinding light in every direction",
+    "highAmplitude": "total sensory overload, standing in the center of a supercell storm"
+   },
+   "start": 0.485,
+   "end": 0.605,
+   "intensityMultiplier": 1
+  },
+  {
+   "aiPrompt": "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale arranged along the left edge and lower third of vast dark void, viewed from below looking up at the luminous gill structure radiating outward in precise geometric patterns, the gills glowing warm gold and soft green bioluminescence, tiny ferns and curling moss growing on the cap surface visible at the edges, photorealistic water droplets hanging from the gill ridges catching and refracting the bioluminescent light into tiny prismatic spectra, fine spore particles drifting downward from the gills like luminous snow into dark void below, asymmetric leaving the upper right vast and open, quiet power in the contrast of organic intricacy against boundless darkness, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale from below, luminous gill structure radiating in precise geometry, warm gold and soft green bioluminescence, water droplets on the gill ridges refracting tiny prismatic spectra, spore particles drifting down like luminous snow, no text no signatures no watermarks no letters no writing",
+    "macro — one water droplet hanging from a gill ridge at closest range, the whole radiating gill-cathedral curved inside it upside down, a prism-spark burning at its heart, no text no signatures no watermarks no letters no writing",
+    "abstract — the gill geometry alone: radiating blades of gold-green light fanning from an unseen center across darkness, spore-snow drifting through the spokes, architecture grown rather than built, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the garden knows you...",
+    "every leaf is aware...",
+    "this intelligence is ancient..."
+   ],
+   "aiPromptModifiers": {
+    "highTreble": "light refracting through crystal formations or stained glass, casting real caustic patterns on stone"
+   },
+   "start": 0.605,
+   "end": 0.84,
+   "intensityMultiplier": 0.75
+  },
+  {
+   "aiPrompt": "fallen log covered in thick moss and small plants floating in deep space arcing from lower left toward upper right, the log photorealistic with weathered bark and soft green moss texture, shelf fungi growing in tiers along its length glowing faint warm amber and pale green, tiny seedlings and unfurling fern fronds emerging from the decomposing bark, seeds and luminous spores trailing off from the log into generous dark negative space above and right like a comet tail of organic matter, the forms impossibly detailed even as they thin and dissolve into pure particle at the trailing edge, composition weighted to the lower half with cosmic darkness opening above, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "a fallen log at rest on the night forest floor, shelf fungi in glowing amber tiers along its mossy length, seedlings and fern fronds unfurling from the soft bark, luminous spores drifting up from it lit against the dark trunks beyond, no text no signatures no watermarks no letters no writing",
+    "intimate — among the shelf fungi at close range, tiered amber lights stacked up the dark bark like lantern balconies, one new fern frond unrolling into their glow, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — above the old log, the rising spore-light half-gathers into a slow procession of small ancestral almost-presences, translucent and featureless, drifting up between the dark trunks like elders returning home, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the forest settles...",
+    "roots remember...",
+    "return to soil..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "almost dark, just the last trace of sunset color on the edge of the world"
+   },
+   "start": 0.84,
+   "end": 0.92,
+   "intensityMultiplier": 0.5
+  },
+  {
+   "aiPrompt": "sparse scattered bioluminescent particles drifting across vast brown-black silence — some green-gold some pale amber — moving in barely perceptible spiral paths like the memory of a network dissolving, one faintly brighter point in the lower-left corner pulsing with gathered light as if all the network's energy has condensed to a single node, the faintest filament trails still connecting it to a few nearby motes before they fade to nothing, enormous open darkness everywhere, asymmetric and quiet — the last signal in an infinite dark, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "sparse scattered bioluminescent particles drifting across vast brown-black silence, green-gold and pale amber motes in barely perceptible spirals, one brighter point pulsing with gathered light, the faintest filament trails fading around it, enormous open darkness, no text no signatures no watermarks no letters no writing",
+    "extreme macro — the single bright node at closest range, a seed of condensed green-gold light with the memory of filaments still flickering faint at its rim, darkness pressing close and kind, no text no signatures no watermarks no letters no writing",
+    "cosmic finale — the dark from very far away, one green-gold point alone in brown-black immensity, indistinguishable from a first star or a last spore, holding everything either way, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "one spore holds everything...",
+    "you carry the forest..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near darkness, just one small warm light source in an enormous quiet space"
+   },
+   "start": 0.92,
+   "end": 1,
+   "intensityMultiplier": 0.3
+  }
+ ],
+ "the-bloom": [
+  {
+   "aiPrompt": "DARK BACKGROUND, enormous seed pod cracking open in the lower-right third of deep brown-black void, the pod shell rendered with photorealistic dark bark-like texture split along fibonacci spiral lines, but inside the pod instead of seeds there is a miniature world — tiny trees with green canopies, a winding stream of blue-silver water, clusters of wildflowers in white and gold, all contained within the pod shell like a terrarium, warm green-gold light spilling from the interior world into the surrounding darkness, fine spores and tiny flower petals ejecting from the opening along diagonal paths upward-left into vast dark space, the impossible nursery of an entire landscape inside a seed at cosmic scale, two-thirds of the frame open dark void above and left, asymmetric composition with the pod anchored low-right, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DARK BACKGROUND, enormous seed pod cracking open in the lower-right third of deep brown-black void, the pod shell rendered with photorealistic dark bark-like texture split along fibonacci spiral lines, but inside the pod instead of seeds there is a miniature world — tiny trees with green canopies, a winding stream of blue-silver water, clusters of wildflowers in white and gold, all contained within the pod shell like a terrarium, warm green-gold light spilling from the interior world into the surrounding darkness, fine spores and tiny flower petals ejecting from the opening along diagonal paths upward-left into vast dark space, the impossible nursery of an entire landscape inside a seed at cosmic scale, two-thirds of the frame open dark void above and left, asymmetric composition with the pod anchored low-right, no figures no text no signatures no watermarks no letters no writing",
+    "interior — inside the pod's miniature world, at the bank of its tiny silver stream under trees no taller than grass, the shell curving overhead like a wooden sky with day leaking through the split, no text no signatures no watermarks no letters no writing",
+    "macro — the pod's split edge at closest range, bark fibers parting one by one, green-gold interior light flooding out across the dark shell like dawn under a door, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "wait for it...",
+    "feel the thaw beginning...",
+    "something stirs beneath..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near total darkness, just the faintest breath of light on a surface"
+   },
+   "start": 0,
+   "end": 0.05,
+   "intensityMultiplier": 0.4
+  },
+  {
+   "aiPrompt": "DARK BACKGROUND, giant fiddlehead fern unfurling at cosmic scale from a tight coil in the upper-left corner of deep green-black void, but as each frond unfurls it reveals a different spring scene contained within — one frond opens to show cherry blossoms in pale pink, another reveals meadow wildflowers in gold and white, another shows new translucent green leaves — like pages of a book of spring turning open, the spiral structure following a golden ratio with photorealistic fern texture and translucent hairs along the rachis catching warm gold backlight, fine pollen particles of pale rose and chartreuse dispersing from the unfurling tips rightward and downward into vast dark void filling two-thirds of the frame, the frond architecture impossibly detailed as if viewing a fern the size of a galaxy, asymmetric composition with the coil anchored upper-left, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DARK BACKGROUND, giant fiddlehead fern unfurling at cosmic scale from a tight coil in the upper-left corner of deep green-black void, but as each frond unfurls it reveals a different spring scene contained within — one frond opens to show cherry blossoms in pale pink, another reveals meadow wildflowers in gold and white, another shows new translucent green leaves — like pages of a book of spring turning open, the spiral structure following a golden ratio with photorealistic fern texture and translucent hairs along the rachis catching warm gold backlight, fine pollen particles of pale rose and chartreuse dispersing from the unfurling tips rightward and downward into vast dark void filling two-thirds of the frame, the frond architecture impossibly detailed as if viewing a fern the size of a galaxy, asymmetric composition with the coil anchored upper-left, no figures no text no signatures no watermarks no letters no writing",
+    "macro — one unfurling frond-tip at closest range caught mid-turn, the spring scene inside it half-revealed, translucent hairs along the coil lit gold, no text no signatures no watermarks no letters no writing",
+    "wide — the giant fern from far back, its opened fronds glowing like lit pages held at many angles in the green-black void, pollen drifting between them, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "it's happening...",
+    "the green is unstoppable...",
+    "everything at once..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "tectonic scale, massive cliff faces or canyons, deep geological weight",
+    "highTreble": "ice crystals catching light, prismatic refraction through real glass or water"
+   },
+   "start": 0.05,
+   "end": 0.55,
+   "intensityMultiplier": 0.7
+  },
+  {
+   "aiPrompt": "vast cross-section of vascular architecture rendered at impossible scale against deep black-green void — luminous circular vessels and tubular channels arranged in a designed ring pattern at cosmic scale, each vessel a different size with green-gold bioluminescent fluid flowing through them in visible currents, between the vessels a matrix of cellular forms glowing soft rose-pink and warm gold, fine particles of luminous sap streaming from the vessel ends into surrounding darkness, the living architecture of growth at cosmic scale where each vessel could be a tunnel through a galaxy, asymmetric composition offset lower-left with generous dark void upper-right, no landscape no ground no soil no figures, no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "vast cross-section of vascular architecture rendered at impossible scale against deep black-green void — luminous circular vessels and tubular channels arranged in a designed ring pattern at cosmic scale, each vessel a different size with green-gold bioluminescent fluid flowing through them in visible currents, between the vessels a matrix of cellular forms glowing soft rose-pink and warm gold, fine particles of luminous sap streaming from the vessel ends into surrounding darkness, the living architecture of growth at cosmic scale where each vessel could be a tunnel through a galaxy, asymmetric composition offset lower-left with generous dark void upper-right, no landscape no ground no soil no figures, no text no signatures no watermarks no letters no writing",
+    "interior kinetic — riding a vessel's current, green-gold sap-light streaming past, rose cell-chambers glowing as they pass, the channel curving toward a brightness ahead, no text no signatures no watermarks no letters no writing",
+    "macro — one cell at the vessel wall at closest range, its membrane a warm rose lantern, gold fluid pulsing past in the channel beyond it, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "this is what was waiting...",
+    "every cell remembers this...",
+    "the bloom is you..."
+   ],
+   "aiPromptModifiers": {
+    "highBass": "earthquake scale, ground splitting open, massive geological upheaval",
+    "highTreble": "shattered ice or glass refracting blinding light in every direction",
+    "highAmplitude": "total sensory overload, standing in the center of a supercell storm"
+   },
+   "start": 0.55,
+   "end": 0.72,
+   "intensityMultiplier": 1
+  },
+  {
+   "aiPrompt": "DARK BACKGROUND, field of wildflowers on a floating chunk of meadow earth viewed from within at eye-level with the flower heads, the flowers rendered with photorealistic detail — daisies, poppies in warm red, cornflowers in deep blue, buttercups in bright gold — swaying gently, bees and butterflies visible among the blooms with iridescent wing detail, the earth fragment visible at the edges where the meadow surface drops away revealing soil layers and dangling roots above deep cosmic blue void below, warm golden sunlight illuminating the flowers from the upper-left casting soft shadows, fine pollen particles drifting in the warm light, the meadow anchored across the lower two-thirds with cosmic blue space visible beyond the earth edge, the impossible intimacy of standing in a floating garden at atmospheric scale, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DARK BACKGROUND, field of wildflowers on a floating chunk of meadow earth viewed from within at eye-level with the flower heads, the flowers rendered with photorealistic detail — daisies, poppies in warm red, cornflowers in deep blue, buttercups in bright gold — swaying gently, bees and butterflies visible among the blooms with iridescent wing detail, the earth fragment visible at the edges where the meadow surface drops away revealing soil layers and dangling roots above deep cosmic blue void below, warm golden sunlight illuminating the flowers from the upper-left casting soft shadows, fine pollen particles drifting in the warm light, the meadow anchored across the lower two-thirds with cosmic blue space visible beyond the earth edge, the impossible intimacy of standing in a floating garden at atmospheric scale, no figures no text no signatures no watermarks no letters no writing",
+    "extreme macro — inside one poppy at eye level with its stamens, red petal-walls glowing with sunlight, pollen grains like gold boulders on the curved floor, no text no signatures no watermarks no letters no writing",
+    "spirit-hint — across the floating meadow, the pollen-light half-gathers into a soft drifting cloud of radiance among the blooms, translucent and featureless, warm light moving like a careful wind, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the garden is complete...",
+    "everything is alive...",
+    "rest here in the green..."
+   ],
+   "aiPromptModifiers": {
+    "highTreble": "light refracting through crystal formations or stained glass, casting real caustic patterns on stone"
+   },
+   "start": 0.72,
+   "end": 0.84,
+   "intensityMultiplier": 0.75
+  },
+  {
+   "aiPrompt": "DARK BACKGROUND, dandelion seed-head at macro scale in the right third of deep blue-black void, the sphere of seed-parachutes rendered with photorealistic detail — each individual pappus a perfect radial structure of impossibly fine silver-white filaments, several seeds detaching and drifting leftward and upward into the darkness, each floating seed-parachute catching faint warm gold and spring green light as it separates, the most distant seeds already tiny luminous points dissolving into deep space like newborn stars, fine individual filaments trailing behind each drifting seed, the main seed-head still holding dozens of seeds with the stem visible below, vast quiet dark void filling two-thirds of the frame at left, the beautiful dispersal of life into the cosmos at impossible scale, asymmetric composition weighted right, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DARK BACKGROUND, dandelion seed-head at macro scale in the right third of deep blue-black void, the sphere of seed-parachutes rendered with photorealistic detail — each individual pappus a perfect radial structure of impossibly fine silver-white filaments, several seeds detaching and drifting leftward and upward into the darkness, each floating seed-parachute catching faint warm gold and spring green light as it separates, the most distant seeds already tiny luminous points dissolving into deep space like newborn stars, fine individual filaments trailing behind each drifting seed, the main seed-head still holding dozens of seeds with the stem visible below, vast quiet dark void filling two-thirds of the frame at left, the beautiful dispersal of life into the cosmos at impossible scale, asymmetric composition weighted right, no figures no text no signatures no watermarks no letters no writing",
+    "macro — a single seed-parachute mid-flight at closest range, its silver filaments a perfect radial star, deep space soft and dark behind it, no text no signatures no watermarks no letters no writing",
+    "cosmic — the drifting seeds from far back scattered across the dark like a new constellation being sown, the seed-head a dim sphere at one edge of the frame, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "the day was full...",
+    "the garden sleeps...",
+    "carry the pollen with you..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "almost dark, just the last trace of sunset color on the edge of the world"
+   },
+   "start": 0.84,
+   "end": 0.92,
+   "intensityMultiplier": 0.5
+  },
+  {
+   "aiPrompt": "DARK BACKGROUND, single thin plant stem with one closed bud at its tip rising from a tiny mound of dark rich earth floating in the lower-left corner of absolute black void, the stem rendered in muted olive-green with photorealistic cellular texture, the bud a small tight spiral of pale green and faint rose holding the memory of everything the bloom was inside its folded layers, a single dewdrop clinging to the bud tip catching faint warm prismatic light — a tiny spectrum visible in the drop, nearly the entire frame vast dark silence with only this single living form and its single drop of light, the quiet promise that what bloomed will bloom again at infinite scale, asymmetric composition with the stem small and anchored lower-left, no figures no text no signatures no watermarks no letters no writing",
+   "aiPromptSequence": [
+    "DARK BACKGROUND, single thin plant stem with one closed bud at its tip rising from a tiny mound of dark rich earth floating in the lower-left corner of absolute black void, the stem rendered in muted olive-green with photorealistic cellular texture, the bud a small tight spiral of pale green and faint rose holding the memory of everything the bloom was inside its folded layers, a single dewdrop clinging to the bud tip catching faint warm prismatic light — a tiny spectrum visible in the drop, nearly the entire frame vast dark silence with only this single living form and its single drop of light, the quiet promise that what bloomed will bloom again at infinite scale, asymmetric composition with the stem small and anchored lower-left, no figures no text no signatures no watermarks no letters no writing",
+    "extreme macro — the dewdrop on the bud tip at closest range, a tiny living spectrum inside it, the folded petals a soft green-rose spiral behind the glass, no text no signatures no watermarks no letters no writing",
+    "wide — the small stem and its bud alone in vast dark from further back, the single point of prismatic light the only color in the silence, no text no signatures no watermarks no letters no writing"
+   ],
+   "guidancePhrases": [
+    "you bloomed...",
+    "the spring is in you now..."
+   ],
+   "aiPromptModifiers": {
+    "lowAmplitude": "near darkness, just one small warm light source in an enormous quiet space"
+   },
+   "start": 0.92,
+   "end": 1,
+   "intensityMultiplier": 0.3
+  }
+ ]
+}

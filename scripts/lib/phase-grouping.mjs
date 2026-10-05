@@ -16,7 +16,16 @@ export function groupPhases(sections, duration) {
     const splits = len > 50 ? 3 : len > 22 ? 2 : 1;
     for (let k = 1; k < splits; k++) pts.add(Math.round(s.start + (len * k) / splits));
   }
-  const cuts = [...pts].filter((t) => t > 0 && t < duration).sort((a, b) => a - b);
+  let cuts = [...pts].filter((t) => t > 0 && t < duration).sort((a, b) => a - b);
+  // short pieces with few sections: halve the longest gaps until there
+  // are enough candidate cuts for 6 phases (only kicks in when the
+  // measured sections alone cannot form 6 — existing groupings unchanged)
+  while (cuts.length < 5) {
+    const B0 = [0, ...cuts, duration];
+    let bi = 0;
+    for (let i = 1; i < B0.length - 1; i++) if (B0[i + 1] - B0[i] > B0[bi + 1] - B0[bi]) bi = i;
+    cuts = [...cuts, Math.round((B0[bi] + B0[bi + 1]) / 2)].sort((a, b) => a - b);
+  }
   const B = [0, ...cuts, duration];
   const inten = (t) => (sections.find((s) => t >= s.start && t < s.end) ?? sections[sections.length - 1]).intensity;
   const cost = (a, b) => {

@@ -18,22 +18,28 @@
 export const ANALYSIS_PHASE_BOUNDS: Record<string, readonly number[]> = {
   "first-snow": [0, 0.05, 0.221, 0.387, 0.84, 0.92, 1],
   "inferno": [0, 0.05, 0.55, 0.67, 0.73, 0.879, 1],
-  "the-ascent": [0, 0.05, 0.534, 0.656, 0.716, 0.872, 1],
-  "the-ascension": [0, 0.05, 0.16, 0.624, 0.84, 0.92, 1],
-  "the-bloom": [0, 0.05, 0.55, 0.72, 0.84, 0.92, 1],
-  "cosmic-drift": [0, 0.05, 0.513, 0.699, 0.763, 0.893, 1],
-  "mycelium-dream": [0, 0.05, 0.485, 0.605, 0.84, 0.92, 1],
+  "the-ascent": [0, 0.158, 0.465, 0.569, 0.673, 0.886, 1],
+  "the-ascension": [0, 0.12, 0.299, 0.494, 0.614, 0.873, 1],
+  "the-bloom": [0, 0.107, 0.339, 0.617, 0.785, 0.896, 1],
+  "cosmic-drift": [0, 0.167, 0.252, 0.348, 0.748, 0.848, 1],
+  "mycelium-dream": [0, 0.101, 0.197, 0.265, 0.423, 0.896, 1],
 };
 
-/** Overlay analysis bounds onto a journey's phases in place. */
+import { BUILTIN_ANALYSIS_RETHEME } from "./analysis-retheme.generated";
+
+/** Overlay analysis bounds (and, for journeys re-themed from their v2
+ *  deep analysis, the measured per-phase intensity + beats) onto a
+ *  journey's phases in place. */
 export function applyAnalysisBounds<T extends { id: string; phases: Array<{ start?: number; end?: number }> }>(
   journey: T,
 ): T {
   const bounds = ANALYSIS_PHASE_BOUNDS[journey.id];
   if (!bounds || journey.phases.length !== bounds.length - 1) return journey;
+  const over = BUILTIN_ANALYSIS_RETHEME[journey.id];
   journey.phases.forEach((p, i) => {
     p.start = bounds[i];
     p.end = bounds[i + 1];
+    if (over?.[i]) Object.assign(p, over[i]);
   });
   return journey;
 }

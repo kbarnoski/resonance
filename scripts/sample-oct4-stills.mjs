@@ -38,7 +38,9 @@ for (const j of out.journeys) {
     jobs.push({ title: row.name, tag, phase: ph.id, role: ph.analysisRole, prompt: `${varied}, ${D.TRAMOKYO_STYLE_SUFFIX}` });
   }
 }
-writeFileSync(path.join(OUT, "plan.json"), JSON.stringify(jobs, null, 1));
+const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7).split(",") ?? null; // "Title:a-early"
+if (ONLY) jobs.splice(0, jobs.length, ...jobs.filter((j) => ONLY.includes(`${j.title}:${j.tag}`)));
+if (!ONLY) writeFileSync(path.join(OUT, "plan.json"), JSON.stringify(jobs, null, 1));
 if (process.argv.includes("--plan-only")) { console.log(`${jobs.length} prompts -> ${path.join(OUT, "plan.json")}`); process.exit(0); }
 const negative = `${D.GLOBAL_NEGATIVE}, ${D.TRAMOKYO_EXTRA_NEGATIVE}, ${D.TRAMOKYO_MATERIAL_NEGATIVE}`;
 let spent = 0;
@@ -54,5 +56,5 @@ await Promise.all(jobs.map(async (job) => {
   log.push({ ...job, seed, file });
   console.log(`✓ ${job.title} ${job.tag} (${job.phase}/${job.role})`);
 }));
-writeFileSync(path.join(OUT, "samples.json"), JSON.stringify(log, null, 1));
+writeFileSync(path.join(OUT, ONLY ? `samples-reroll-${Date.now()}.json` : "samples.json"), JSON.stringify(log, null, 1));
 console.log(`${log.length} stills, ~$${spent.toFixed(2)}`);
