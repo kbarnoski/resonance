@@ -6,7 +6,7 @@
 // engineer's file name, the take number from his "tkN" tag (title cards
 // render "Name" + "No. N"); no take tag → plain name. The OCT4 date and the
 // "1.2_BSREF" mix-version tag are the engineer's, not part of the title.
-//   CALLING_tk3 → "Calling 3"   TESTIMONY_tk3 → "Testimony 3"
+//   CALLING_tk3 → "Calling"   TESTIMONY_tk3 → "Testimony 3"
 //   VESPERS_tk2 → "Vespers 2"   VESPERS_tk3 → "Vespers 3"
 //   FIRSTLIGHT → "First Light"  LANTERN → "Lantern"  OPENJAM → "Open Jam"
 // Transcode = the app's streaming/pack spec (AAC-LC 192k, 48 kHz stereo,
@@ -35,8 +35,11 @@ export function titleFromFile(file) {
   if (!m) throw new Error(`unparsed file name ${file}`);
   const raw = m[1].toUpperCase();
   const name = NAME_FIX[raw] ?? raw.charAt(0) + raw.slice(1).toLowerCase();
+  // Karel 2026-10-05: "just calling" — plain title despite the tk3 tag.
+  if (TITLE_OVERRIDE[raw]) return TITLE_OVERRIDE[raw];
   return m[2] ? `${name} ${Number(m[2])}` : name;
 }
+const TITLE_OVERRIDE = { CALLING: "Calling" };
 
 let prior = [];
 try { prior = JSON.parse(readFileSync(OUT, "utf8")); } catch {}

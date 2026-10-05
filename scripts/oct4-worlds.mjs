@@ -15,7 +15,7 @@
 // Shape matches expansion2-worlds.mjs: palette, cats, ambient, voice,
 // mood, micro + abstract (shots 2/3 of each 3-shot sequence), phases[6].
 
-export const ORDER = ["First Light", "Calling 3", "Testimony 3", "Vespers 3", "Vespers 2", "Lantern", "Open Jam"];
+export const ORDER = ["First Light", "Calling", "Testimony 3", "Vespers 3", "Vespers 2", "Lantern", "Open Jam"];
 
 export const WORLDS = {
   // ── FIRST LIGHT — 54 BPM, free time (steadiness 0.15), sparse 1.6
@@ -52,7 +52,7 @@ export const WORLDS = {
   //    wide melodic LEAPS "like calls across open space"; two crests
   //    (0:40 and the 1:31 summit, landing on a suspended Fmaj9/G — answered
   //    but open); register G1–A5, 40 dB range; dusk recession.
-  "Calling 3": {
+  "Calling": {
     world: "a mist-filled valley where every call travels as a widening wave of warm light through the haze",
     why: "Wide melodic leaps over plagal rocking = a call sent across distance and answered; pure major with no dominant pull = warm, unhurried longing rather than drama; the 40 dB arch with a suspended (unclosed) summit at 1:31 = the valley filling with converging waves of light that keep travelling; elastic 85 BPM = slow travelling pulses through mist. 'Calling' names the gesture; the music measures its warmth, distance and openness.",
     subtitle: "a call across the valley, answered in light",
