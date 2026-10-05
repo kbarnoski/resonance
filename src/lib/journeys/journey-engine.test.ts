@@ -110,3 +110,50 @@ describe("composition conductor", () => {
     }
   });
 });
+
+/** Phase-owned choreography (Snowflake Standard, 2026-10-05 — Karel:
+ *  "a lot of the shaders stick around for the whole journey"). */
+describe("phase-owned shader choreography", () => {
+  beforeEach(() => vi.restoreAllMocks());
+  afterEach(() => getJourneyEngine().stop());
+
+  const POOLS = [["starfield", "drift"], ["murmuration", "pollen"], ["kenosis", "jubilee", "satori"], ["kenosis", "aureole"], ["cirrus", "ember"], ["photon"]];
+  function owned(name: string, intensities: [number, number, number, number, number, number]): Journey {
+    const j = makeJourney(intensities);
+    return { ...j, id: "test-owned", name, phases: j.phases.map((p, i) => ({ ...p, shaderModes: POOLS[i], shaderOwned: true })) };
+  }
+
+  for (const [label, name] of [["meditative", "Owned Test"], ["kinetic (Expansion)", "Nothing 30"]] as const) {
+    it(`${label}: no layer ever shows a later phase's shader (no journey-wide borrow)`, () => {
+      const j = owned(name, [0.4, 0.7, 1, 0.9, 0.5, 0.3]);
+      const frames = run(j, 600);
+      for (const f of frames) {
+        const pi = j.phases.findIndex((p) => f.progress >= p.start && (f.progress < p.end || p.end === 1));
+        const allowed = new Set([...(j.phases[pi]?.shaderModes ?? []), ...(j.phases[pi - 1]?.shaderModes ?? [])]);
+        for (const m of [f.shaderMode, f.dualShaderMode, f.tertiaryShaderMode].filter(Boolean)) expect(allowed.has(m as string)).toBe(true);
+      }
+      // and a phase's shaders mostly stay inside it (stray only during the hand-off)
+      const stray = frames.filter((f) => {
+        const p = j.phases.find((q) => f.progress >= q.start && (f.progress < q.end || q.end === 1));
+        return p && !p.shaderModes.includes(f.shaderMode);
+      });
+      expect(stray.length / frames.length).toBeLessThan(0.15);
+    });
+  }
+
+  it("kinetic journeys earn their layers when owned (no locked dual in the quiet opening)", () => {
+    const frames = run(owned("Nothing 30", [0.4, 0.7, 1, 0.9, 0.5, 0.3]), 600);
+    expect(frames.filter((f) => f.progress < 0.08).every((f) => !f.dualShaderMode)).toBe(true);
+    expect(frames.some((f) => !!f.dualShaderMode)).toBe(true);
+  });
+
+  it("never mirrors a shader across layers, even from a one-shader pool", () => {
+    for (const f of run(owned("Owned Test", [1, 1, 1, 1, 1, 1]), 600)) {
+      if (f.dualShaderMode) expect(f.dualShaderMode).not.toBe(f.shaderMode);
+      if (f.tertiaryShaderMode) {
+        expect(f.tertiaryShaderMode).not.toBe(f.shaderMode);
+        expect(f.tertiaryShaderMode).not.toBe(f.dualShaderMode ?? "");
+      }
+    }
+  });
+});

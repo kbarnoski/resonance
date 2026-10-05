@@ -209,6 +209,10 @@ class JourneyEngine {
    *  flight-recorder finding: 3 switches in 4s = visible frame-gap storm). */
   private lastAnySwitchMs = 0;
   private static readonly SWITCH_SPACING_MS = 4000;
+  /** Phase-owned choreography: how soon after a boundary the outgoing
+   *  phase's primary yields (clears the phase-title moment). */
+  private static readonly OWNED_ENTRY_DELAY_MS = 3500;
+  private ownedPhaseId: string | null = null;
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
@@ -256,7 +260,10 @@ class JourneyEngine {
     // run — the sparkler never played once).
     // Cast journeys (every non-mastered, non-kinetic journey since
     // 2026-10-05) play their deterministic, diversity-spaced cast.
-    this.journey = this.kineticEq ? journey : (castJourneyShaders(journey) ?? regenerateJourneyShaders(journey, random, this.trackDuration));
+    // Phase-owned journeys (JourneyPhase.shaderOwned) play their authored
+    // per-phase pools as written — regeneration would scatter them.
+    const authoredOwned = journey.phases.some((p) => p.shaderOwned === true);
+    this.journey = this.kineticEq ? journey : (castJourneyShaders(journey) ?? (authoredOwned ? journey : regenerateJourneyShaders(journey, random, this.trackDuration)));
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;
@@ -366,6 +373,7 @@ class JourneyEngine {
 
   /** Stop the current journey */
   stop(): void {
+    this.ownedPhaseId = null;
     // Close all open shader history entries
     const now = typeof performance !== "undefined" ? performance.now() : Date.now();
     for (const entry of this.shaderHistory) {
@@ -641,7 +649,20 @@ class JourneyEngine {
       }
     }
     const conductorIntensity = conducted;
-    if (this.kineticEq) this.dualAllowed = true; // EQ: the mid voice never drops out
+    // Phase-owned choreography (opt-in, see JourneyPhase.shaderOwned).
+    const owned = currentPhase.shaderOwned === true && !this.takeScript;
+    if (owned && this.ownedPhaseId !== currentPhase.id) {
+      this.ownedPhaseId = currentPhase.id;
+      // The outgoing phase's shaders leave soon after the boundary (once
+      // the phase title has settled) rather than riding a full timer.
+      if (!currentPhase.shaderModes.includes(this.currentShaderMode)) {
+        this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + JourneyEngine.OWNED_ENTRY_DELAY_MS);
+      }
+      if (this.dualShaderMode && !currentPhase.shaderModes.includes(this.dualShaderMode)) {
+        this.dualShaderStartMs = Math.min(this.dualShaderStartMs, now - this.dualShaderDurationMs + JourneyEngine.OWNED_ENTRY_DELAY_MS + 3000);
+      }
+    }
+    if (this.kineticEq && !owned) this.dualAllowed = true; // EQ: the mid voice never drops out
     else if (!this.dualAllowed && conductorIntensity >= JourneyEngine.DUAL_ON_INTENSITY) this.dualAllowed = true;
     else if (this.dualAllowed && conductorIntensity < JourneyEngine.DUAL_OFF_INTENSITY) this.dualAllowed = false;
 
@@ -680,7 +701,8 @@ class JourneyEngine {
     // rotation simply waits the few seconds until the clip has faded.
     const morphOnScreen = isVideoActive();
     if (this.takeScript) this.applyTakeScript(clamped, now);
-    if (!this.takeScript && shaderLen > 1 && !this.frozen && !this.playbackPaused && (!inStillness || this.nudgeForce) && (!rotationFreeze || this.nudgeForce) && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
+    const ownedStray = owned && !currentPhase.shaderModes.includes(this.currentShaderMode);
+    if (!this.takeScript && (shaderLen > 1 || ownedStray) && !this.frozen && !this.playbackPaused && (!inStillness || this.nudgeForce) && (!rotationFreeze || this.nudgeForce) && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       // BOTH passes exclude whatever is live on the dual/tertiary layers —
@@ -709,7 +731,7 @@ class JourneyEngine {
       // shader used numerous times... have a big diverse set"). The
       // journey-wide program stays generative — this only widens the
       // pool the seeded pick draws from.
-      if (!picked && this.journey) {
+      if (!picked && this.journey && !owned) {
         const live = new Set([this.dualShaderMode, this.tertiaryShaderMode]);
         const borrow = this.journey.phases
           .flatMap((p) => p.shaderModes)
@@ -757,12 +779,36 @@ class JourneyEngine {
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
     // The conductor also holds the dual back while the music is quiet
     // (threshold / return / integration): a second layer is earned by the build.
-    const primaryBansDual = !this.takeScript && !this.kineticEq && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
+    const primaryBansDual = !this.takeScript && (!this.kineticEq || owned) && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
     if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = null;
       }
+    } else if (owned && this.dualShaderInitialized && !endFreeze) {
+      // Phase-owned dual: drawn only from this phase's pool, rests (null)
+      // when the pool has no shader free of the other layers.
+      const due = now - this.dualShaderStartMs > this.dualShaderDurationMs;
+      const stray = !!this.dualShaderMode && !currentPhase.shaderModes.includes(this.dualShaderMode);
+      if (!this.frozen && !this.playbackPaused && !morphOnScreen && !rotationFreeze && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && (due || stray || this.dualShaderMode === null)) {
+        const next = this.pickOwnedDual(currentPhase);
+        if (next === this.dualShaderMode) {
+          this.dualShaderStartMs = now; // still the right voice — hold it another cycle
+        } else {
+          this.closeHistoryEntry("dual", now);
+          this.dualShaderMode = next;
+          this.dualShaderStartMs = now;
+          this.dualShaderDurationMs = this.randomDuration(this.random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
+          if (next) {
+            this.seenShaders.add(next);
+            this.shaderHistory.push({ mode: next, role: "dual", phaseId: currentPhase.id, startMs: now, endMs: 0 });
+            glitchRecord("shader-dual", `${next} @p${clamped.toFixed(3)}`);
+            this.lastAnySwitchMs = now; this.nudgeForce = false;
+          }
+        }
+      }
+      // never mirror the primary (it may have rotated onto the dual's shader)
+      if (this.dualShaderMode && this.dualShaderMode === this.currentShaderMode) { this.closeHistoryEntry("dual", now); this.dualShaderMode = null; }
     } else if (this.dualShaderInitialized && shaderLen >= 2 && !endFreeze) {
       if (!this.frozen && !this.playbackPaused && !morphOnScreen && !rotationFreeze && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
@@ -813,7 +859,7 @@ class JourneyEngine {
         // breath-modulated value (2026-09-30: the ~70s breath wave dips
         // a flat-max journey to ~0.70 and could veto every moment).
         const phaseIntent = currentPhase.intensityMultiplier ?? conductorIntensity;
-        if ((!this.kineticEq && phaseIntent < JourneyEngine.TERTIARY_MIN_INTENSITY) || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
+        if (((!this.kineticEq || owned) && phaseIntent < JourneyEngine.TERTIARY_MIN_INTENSITY) || endFreeze || morphOnScreen || now - this.lastAnySwitchMs <= 2500) break;
         if (!this.tertiaryActive && !this.frozen) {
           let tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
@@ -825,6 +871,7 @@ class JourneyEngine {
           // p0.55 then AGAIN as tertiary at p0.72 — "overused"): a
           // pick the journey has already shown re-resolves too.
           if (tertiaryCandidate && this.seenShaders.has(tertiaryCandidate)) tertiaryCandidate = null;
+          if (owned && tertiaryCandidate && !currentPhase.shaderModes.includes(tertiaryCandidate)) tertiaryCandidate = null;
           if (tertiaryCandidate == null || tertiaryCandidate === this.currentShaderMode || tertiaryCandidate === this.dualShaderMode) {
             const pool = currentPhase.shaderModes.filter(
               (m2) => !MODES_3D.has(m2) && this.isShaderAllowed(m2)
@@ -1365,6 +1412,22 @@ class JourneyEngine {
       this.dualShaderStartMs += pausedFor;
       this.pausedAtMs = 0;
     }
+  }
+
+  /** Phase-owned dual pick: this phase's pool only, never a shader live
+   *  on another layer, unseen first; null = the dual layer rests. Draws
+   *  from the seeded stream only when there is a real choice. */
+  private pickOwnedDual(phase: JourneyPhase): string | null {
+    const candidates = phase.shaderModes.filter(
+      (m) => m !== this.currentShaderMode && m !== this.tertiaryShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m),
+    );
+    if (candidates.length === 0) return null;
+    const unseen = candidates.filter((m) => !this.seenShaders.has(m));
+    const pool = unseen.length > 0 ? unseen : candidates;
+    if (pool.length === 1) return pool[0];
+    // keep the current dual if it is still a valid member (no churn)
+    if (this.dualShaderMode && pool.includes(this.dualShaderMode) && unseen.length === 0) return this.dualShaderMode;
+    return pool[Math.floor(this.random() * pool.length)];
   }
 
   private pickDualShader(phase: JourneyPhase): string {

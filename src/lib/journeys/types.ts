@@ -24,6 +24,17 @@ export interface JourneyPhase {
   end: number;
   /** Shader pool for this phase */
   shaderModes: string[];
+  /** Phase-owned shader choreography (Snowflake Standard H-rules,
+   *  2026-10-05 — Karel: "a lot of the shaders stick around for the
+   *  whole journey"). When true the phase's shaderModes are the ONLY
+   *  shaders any layer may show while it plays: no journey-wide borrow,
+   *  an outgoing phase's shaders leave within seconds of the boundary,
+   *  a one-shader pool is honoured, a layer with no free candidate rests
+   *  instead of mirroring, and kinetic journeys EARN their dual/tertiary
+   *  layers by intensity instead of locking them on. Opt-in per phase;
+   *  journeys without it play exactly as before (mastered takes are
+   *  scripted and never carry it). */
+  shaderOwned?: boolean;
   /** 0-1, allows AI layer to show through when < 1 */
   shaderOpacity: number;
   /** Base prompt for AI image generation */
