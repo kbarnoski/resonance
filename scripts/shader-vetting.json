@@ -13,20 +13,18 @@
   "registry": 252,
   "excluded": 111,
   "tested": 141,
-  "pass": 98
+  "pass": 92,
+  "karelRejected": 6
  },
  "pass": [
   "astral",
   "aureole",
   "binary-stars",
   "biofilm",
-  "biolume",
   "cascade-veil",
-  "chakra",
   "chinook",
   "chrysalis",
   "cirrus",
-  "coral",
   "covenant",
   "dark-nebula",
   "dark-tide",
@@ -41,7 +39,6 @@
   "flame",
   "fracture-light",
   "furnace",
-  "gnosis",
   "hubble",
   "iron-forge",
   "jubilee",
@@ -82,7 +79,6 @@
   "r2-spiralgal",
   "r2-spore",
   "r2-thermal",
-  "r3-balllightning",
   "r3-fairyglow",
   "r3-fernunfurl",
   "r3-heartwarmth",
@@ -92,7 +88,6 @@
   "r3-sleepingbloom",
   "r3-waveveil",
   "rapture",
-  "redshift",
   "resonant-rings",
   "ribbon-of-light",
   "ripple",
@@ -529,8 +524,10 @@
    "motion": 2.81
   },
   "redshift": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: the concentric rings — \"that oval one\""
+   ],
    "hue": "prismatic",
    "category": "Cosmic",
    "mode": "redshift",
@@ -760,8 +757,10 @@
    "motion": 3.22
   },
   "coral": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: bright white sparkle (\"dont use that bright white sparkle shader\")"
+   ],
    "hue": "blue",
    "category": "Organic",
    "mode": "coral",
@@ -776,8 +775,10 @@
    "motion": 0.84
   },
   "biolume": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: built-in bass flash (bassFlash strobe)"
+   ],
    "hue": "blue",
    "category": "Organic",
    "mode": "biolume",
@@ -840,8 +841,10 @@
    "motion": 5.66
   },
   "gnosis": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: glowing oval sun in the tunnel"
+   ],
    "hue": "gold",
    "category": "Visionary",
    "mode": "gnosis",
@@ -856,8 +859,10 @@
    "motion": 5.42
   },
   "chakra": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: banded/lightened the screen in Ghost"
+   ],
    "hue": "gold",
    "category": "Visionary",
    "mode": "chakra",
@@ -2439,8 +2444,10 @@
    "motion": 3.67
   },
   "r3-balllightning": {
-   "pass": true,
-   "reasons": [],
+   "pass": false,
+   "reasons": [
+    "karelRejected: bright white sparkle (\"dont use that bright white sparkle shader\")"
+   ],
    "hue": "blue",
    "category": "Dark",
    "mode": "r3-balllightning",

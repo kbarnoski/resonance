@@ -54,6 +54,15 @@ const OTHER = ["r-petals", "snow", "rain", "night-rain", "deluge", // rain-famil
 // concentric shockwave rings; full-color closers.
 export const CONVICTED = ["selene", "blood-moon", "eclipse-ring", "spore", "r3-pulseringssoft", "r3-coralpulse", "umbra", "lichen", "nova", "halo", "catacomb-torch", "flux", "credo", "enzyme", "maelstrom", "vortex", "whorl", "r2-coral", "r2-sunsetcascade", "r-molten"];
 
+// Rejected by Karel IN PERSON (2026-10-04) — overrides any metric pass.
+export const KAREL_REJECTED = {
+  chakra: "banded/lightened the screen in Ghost",
+  redshift: "the concentric rings — \"that oval one\"",
+  gnosis: "glowing oval sun in the tunnel",
+  biolume: "built-in bass flash (bassFlash strobe)",
+  coral: "bright white sparkle (\"dont use that bright white sparkle shader\")",
+  "r3-balllightning": "bright white sparkle (\"dont use that bright white sparkle shader\")",
+};
 const meta = new Map(reg.MODE_META.map((m) => [m.mode, m]));
 const excluded = {};
 const candidates = [];
@@ -160,6 +169,7 @@ const verdicts = {};
 const thumbs = {};
 for (const r of results) {
   const reasons = [];
+  if (KAREL_REJECTED[r.mode]) reasons.push(`karelRejected: ${KAREL_REJECTED[r.mode]}`);
   if (r.error) reasons.push("compile error");
   else {
     if (r.max < 30) reasons.push(`blank (peak luma ${r.max})`);
