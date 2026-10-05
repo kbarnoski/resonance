@@ -2,10 +2,10 @@ import { describe, it, expect } from "vitest";
 import { isKineticJourneyName, isWhisperImageryName, isExpansionKineticName, EXPANSION_KINETIC_NAMES } from "./kinetic";
 
 describe("kinetic species flags", () => {
-  it("keeps the mastered Kinetic Lab journeys kinetic with imaging paused", () => {
+  it("keeps the Kinetic Lab journeys kinetic, now WITH imaging (Karel 2026-10-05)", () => {
     for (const n of ["Chemiluminescence 1", "Rolling 2", "Stand 10", "Cabin Soul 8", "Cabin Soul 5"]) {
       expect(isKineticJourneyName(n)).toBe(true);
-      expect(isWhisperImageryName(n)).toBe(true);
+      expect(isWhisperImageryName(n)).toBe(false);
       expect(isExpansionKineticName(n)).toBe(false);
     }
   });

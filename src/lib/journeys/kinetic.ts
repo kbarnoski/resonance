@@ -86,10 +86,11 @@ export function isWhisperImageryName(name?: string | null): boolean {
   if (!name) return false;
   // Expansion = kinetic shaders OVER full imaging (Karel 2026-10-01).
   if (isExpansionKineticName(name)) return false;
-  // Imaging PAUSED for the whole Kinetic Lab for now (Karel 2026-09-30:
-  // "make them all kinetic with their imaging paused") — pure shaders
-  // on black while the lead-actor language matures.
-  return isKineticJourneyName(name);
+  // Imaging back ON everywhere (Karel 2026-10-05: "why does chemi not have
+  // the imaging layering? all journeys besides Snowflake and Ghost should
+  // have the imaging and kinetics.") — the 09-30 Kinetic Lab pause
+  // ("make them all kinetic with their imaging paused") is lifted.
+  return false;
 }
 
 export type BandFocus = "bass" | "mid" | "treble";
