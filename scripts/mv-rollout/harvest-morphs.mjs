@@ -81,7 +81,15 @@ for (const j of JOURNEYS) {
     const to = P.slots.find((s) => s.phaseIdx === k + 1);
     if (!from?.file || !to?.file) { log.push(`${j.name} t${k}: missing still`); continue; }
     const base = `${dir}/travel-${k}`;
-    if (existsSync(`${base}.mp4`)) continue;
+    const ends = JSON.stringify({ from: from.file, to: to.file, move: j.morphs[k] });
+    if (existsSync(`${base}.mp4`)) {
+      // a morph is bound to its two endpoint stills + camera move: if QA
+      // swapped either still (or the move changed), it is stale
+      const prev = existsSync(`${base}.ends.json`) ? readFileSync(`${base}.ends.json`, "utf8") : ends;
+      if (prev === ends) continue;
+      for (const e of ["mp4", "hevc.mp4", "raw.mp4"]) if (existsSync(`${base}.${e}`)) renameSync(`${base}.${e}`, `${base}.STALE-${Date.now()}.${e}`);
+    }
+    writeFileSync(`${base}.ends.json`, ends);
     const prompt = `one continuous slow camera journey: ${j.morphs[k]}, sparse luminous forms, most of the frame remains deep dark negative space at every moment, soft diffuse glow, meditative pace, no cuts, no flicker`;
     jobs.push({ j, k, from: from.file, to: to.file, base, prompt });
   }

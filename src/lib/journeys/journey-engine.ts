@@ -668,6 +668,8 @@ class JourneyEngine {
       // the phase title has settled) rather than riding a full timer.
       if (!currentPhase.shaderModes.includes(this.currentShaderMode)) {
         this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + JourneyEngine.OWNED_ENTRY_DELAY_MS);
+        // walk the new pool from its head — casts list the phase's lead first
+        this.currentShaderIndex = -1;
       }
       if (this.dualShaderMode && !currentPhase.shaderModes.includes(this.dualShaderMode)) {
         this.dualShaderStartMs = Math.min(this.dualShaderStartMs, now - this.dualShaderDurationMs + JourneyEngine.OWNED_ENTRY_DELAY_MS + 3000);
@@ -1352,7 +1354,10 @@ class JourneyEngine {
   private initDualShader(now: number, random: () => number): void {
     if (!this.journey || this.journey.phases.length === 0) return;
     const firstPhase = this.journey.phases[0];
-    if (firstPhase.shaderModes.length < 2) return;
+    // Phase-owned journeys may open on a single dark voice; the dual
+    // still has to be armed for the build later (2026-10-05: Calling's
+    // peak never got its second layer).
+    if (firstPhase.shaderModes.length < 2) { if (this.journey.phases.some((p) => p.shaderOwned === true)) this.dualShaderInitialized = true; return; }
 
     // Conductor: threshold opens with a single voice. If the first phase's
     // authored intensity sits below the dual threshold, start without a

@@ -262,12 +262,20 @@ function ownedLayout(t, shaders) {
   const pf = paletteFamilies(t.palette);
   const lead = [...shaders].sort((a, b) => fit(b, pf) - fit(a, pf) || effMean(b) - effMean(a) || a.localeCompare(b))[0];
   const supports = byCalm.filter((m) => m !== lead);
-  // seat counts per phase
-  const want = t.phases.map((p, q) => (p.sparse ? 1 : I[q] < 0.5 ? 2 : 2));
+  // seat counts per phase: enough voices for the layers the conductor will
+  // run there PLUS one so the primary can still rotate (a 3-layer peak
+  // with a 3-shader pool would freeze all three for the whole phase);
+  // sparse/quiet phases one voice, the dual zone two-three.
+  const layersAt = (i) => (I[i] >= 0.85 ? 4 : I[i] >= 0.6 ? 3 : I[i] >= 0.5 ? 2 : 1);
+  const want = t.phases.map((p, q) => Math.max(p.sparse ? 1 : 1, (p.sparse ? 1 : layersAt(q)) - (leadPhases.includes(q) ? 1 : 0)));
+  const weight = (q) => Ls[q] * (0.4 + I[q]) / want[q];
   let left = supports.length - want.reduce((a, b) => a + b, 0);
-  while (left < 0) { const q = want.map((w, i) => [w, i]).filter(([w, i]) => w > 1 && !t.phases[i].sparse).sort((a, b) => I[a[1]] - I[b[1]])[0][1]; want[q]--; left++; }
+  while (left < 0) { // shed seats where they are least needed (short/quiet per seat)
+    const q = t.phases.map((p, i) => [want[i] > 1 && !p.sparse ? weight(i) : Infinity, i]).sort((a, b) => a[0] - b[0])[0][1];
+    want[q]--; left++;
+  }
   while (left > 0) { // extra seats to the loud, long phases
-    const q = t.phases.map((p, i) => [p.sparse ? -1 : Ls[i] * (0.4 + I[i]) / want[i], i]).sort((a, b) => b[0] - a[0])[0][1];
+    const q = t.phases.map((p, i) => [p.sparse ? -1 : weight(i), i]).sort((a, b) => b[0] - a[0])[0][1];
     want[q]++; left--;
   }
   // calm supports to quiet phases: order phases by intensity, fill seats

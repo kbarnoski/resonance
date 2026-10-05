@@ -199,3 +199,17 @@ describe("Snowflake Standard engine gaps (2026-10-05)", () => {
     }
   });
 });
+
+describe("phase-owned: single-voice opening still builds layers", () => {
+  afterEach(() => { getJourneyEngine().stop(); vi.restoreAllMocks(); });
+  it("arms the dual even when the opening phase owns one shader, and leads each phase with its first shader", () => {
+    const j = makeJourney([0.3, 0.7, 1, 0.9, 0.5, 0.3]);
+    const pools = [["starfield"], ["murmuration", "pollen"], ["kenosis", "jubilee", "satori", "aureole"], ["kepler", "lectio", "dharma"], ["cirrus", "ember"], ["photon"]];
+    const owned = { ...j, id: "test-owned-1", phases: j.phases.map((p, i) => ({ ...p, shaderModes: pools[i], shaderOwned: true })) };
+    const frames = run(owned, 600);
+    expect(frames.filter((f) => f.progress > 0.3 && f.progress < 0.6).some((f) => !!f.dualShaderMode)).toBe(true);
+    // the phase's lead (listed first) is on screen early in its phase
+    const early = frames.filter((f) => f.progress > 0.3 && f.progress < 0.4);
+    expect(early.some((f) => f.shaderMode === "kenosis" || f.dualShaderMode === "kenosis")).toBe(true);
+  });
+});

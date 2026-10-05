@@ -54,7 +54,8 @@ for (const j of JOURNEYS) {
     const stem = `gen-${String(s.slot).padStart(3, "0")}`;
     const letters = REROLL ? REROLL.filter(([id, sl]) => id === j.id && Number(sl) === s.slot).map(() => null) : null;
     if (REROLL && letters.length === 0) continue;
-    const opts = REROLL ? ["c", "d"] : "abcdefgh".slice(0, OPTIONS).split("");
+    const taken = (l) => existsSync(`${dir}/${stem}-${l}.jpg`);
+    const opts = REROLL ? "cdefghijklmn".split("").filter((l) => !taken(l)).slice(0, 2) : "abcdefgh".slice(0, OPTIONS).split("");
     for (const o of opts) { const f = `${dir}/${stem}-${o}.jpg`; if (!existsSync(f)) jobs.push({ f, prompt }); }
   }
 }

@@ -1,11 +1,10 @@
-# Snowflake Standard scorecard — 2026-10-05T21:06Z
+# Snowflake Standard scorecard — 2026-10-05T21:59Z
 
 96 non-mastered loop journeys vs the reference (first-snow). Checks per docs/snowflake-standard.md; ✗ = fails.
 
 | # | Journey | Set | Score | Literal | Shots (distinct/total) | Registers · alt | Place lock | Shaders · top share · longest run · layers | Stills dup · centred · neg | Morphs | Measured stills/min · repeats · top shader presence | Fails |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 1 | Snowflake | REFERENCE | 11/11 | 0% | 6/6 | 2 · 20% | field×2 | 14 · drift 18% · 18% · 1.3 | 17% · 31% · 48% (n42) | 5/5 | 4.3 · 0 · r2-photon 23% |  |
-| 10 | Vespers 2 | Vigil | 3/16 | 89% | 8/18 | 2 · 35% | sea×5 | 7 · dharma 48% · 17% · 1.7 | 52% · 8% · 27% (n25) | 0/5 | no run | L1 S1 S2 S3 S4 S5 S6 S7 H1 H2 P1 P3 M1 |
 | 48 | Tranquility 33 | Expansion IV | 3/16 | 89% | 2/18 | 3 · 41% | sea×6 | 7 · drift 58% · 42% · 2.8 | 87% · 0% · 25% (n30) | 0/5 | no run | L1 S1 S2 S3 S4 S6 H1 H2 H4 H5 P1 P3 M1 |
 | 20 | Northern Plane 5 | Expansion | 4/19 | 83% | 4/6 | 3 · 80% | sky×6 | 7 · r3-waveveil 64% · 57% · 2.7 | 78% · 43% · 38% (n23) | 1/5 | 3.7 · 0 · r3-waveveil 62% | L1 S1 S2 S4 S5 S6 H1 H2 H4 H5 P1 P2 P3 M1 C3 |
 | 52 | Tranquility 34 | Expansion IV | 4/16 | 89% | 2/18 | 2 · 35% | forest×1 | 7 · kenosis 59% · 47% · 2.8 | 41% · 9% · 61% (n32) | 0/5 | no run | L1 S1 S2 S3 S5 S6 H1 H2 H4 H5 P1 M1 |
@@ -22,7 +21,6 @@
 | 28 | Amboise 1 | Expansion II | 7/19 | 11% | 9/18 | 4 · 88% | river×6 | 7 · kenosis 70% · 50% · 2.8 | 46% · 39% · 63% (n28) | 0/5 | 3.6 · 0 · kenosis 69% | S1 S4 S5 S6 H1 H2 H4 H5 P1 P2 M1 C3 |
 | 32 | Torraine 5 | Expansion II | 7/19 | 0% | 9/18 | 3 · 76% | sky×4 | 6 · jubilee 88% · 35% · 2.8 | 82% · 65% · 75% (n34) | 0/5 | 4.1 · 0 · jubilee 95% | S1 S2 S4 S6 H1 H2 H4 H5 P1 P2 M1 C3 |
 | 64 | Tranquility 38 | Expansion V | 7/19 | 6% | 9/18 | 2 · 53% | -×0 | 7 · mycelium 64% · 55% · 2.7 | 84% · 59% · 58% (n32) | 0/5 | 3.8 · 0 · binary-stars 58% | S1 S2 S3 S6 H1 H2 H4 H5 P1 P2 M1 C3 |
-| 14 | Calling | Vigil | 6/16 | 56% | 8/18 | 3 · 65% | valley×6 | 7 · kepler 40% · 27% · 1.4 | 37% · 26% · 52% (n19) | 0/5 | no run | L1 S1 S2 S4 S5 H1 H2 H4 P1 M1 |
 | 31 | Never Forget 4 | Expansion II | 6/16 | 22% | 9/18 | 4 · 71% | beach×3 | 7 · pollen 54% · 36% · 2.7 | 33% · 30% · 84% (n30) | 0/5 | no run | L1 S1 S6 S7 H1 H2 H4 H5 P1 M1 |
 | 35 | Roll Away 8 | Expansion II | 6/16 | 33% | 12/18 | 5 · 82% | valley×6 | 6 · drift 79% · 56% · 2.7 | 40% · 13% · 36% (n15) | 0/5 | no run | L1 S4 S6 H1 H2 H4 H5 P1 P3 M1 |
 | 40 | Night Wind 5 | Expansion III | 6/16 | 6% | 10/18 | 4 · 59% | ocean×1 | 6 · merkaba 76% · 33% · 2.8 | 20% · 40% · 82% (n30) | 0/5 | no run | S1 S3 S5 S6 H1 H2 H4 H5 P2 M1 |
@@ -38,7 +36,6 @@
 | 25 | Bells 1 | Expansion | 8/19 | 50% | 8/18 | 3 · 76% | sky×1 | 7 · r2-spiralgal 78% · 55% · 2.8 | 36% · 64% · 73% (n28) | 0/5 | 3.7 · 0 · r2-spiralgal 79% | L1 S1 S2 H1 H2 H4 H5 P1 P2 M1 C3 |
 | 26 | Rise 1 | Expansion | 8/19 | 0% | 9/18 | 3 · 76% | -×0 | 7 · seraph 55% · 29% · 2.8 | 78% · 39% · 75% (n23) | 0/5 | 3.5 · 0 · murmuration 53% | S1 S2 H1 H2 H4 H5 P1 P2 M1 C1 C3 |
 | 33 | Tranquility 30 | Expansion II | 8/19 | 89% | 5/18 | 4 · 100% | sky×1 | 7 · rapture 85% · 49% · 2.8 | 43% · 0% · 32% (n30) | 0/5 | 3.8 · 0 · r2-portalrim 36% | L1 S1 S6 H1 H2 H4 H5 P1 P3 M1 C3 |
-| 15 | First Light | Vigil | 7/16 | 56% | 9/18 | 3 · 71% | plain×6 | 7 · obsidian-flow 33% · 15% · 1.6 | 41% · 9% · 57% (n22) | 0/5 | no run | L1 S1 S2 S4 S5 S6 H1 P1 M1 |
 | 30 | Tranquility 8 | Expansion II | 7/16 | 0% | 9/18 | 3 · 82% | -×0 | 7 · parsec 58% · 34% · 2.7 | 53% · 22% · 49% (n32) | 0/5 | no run | S1 S2 S6 H1 H2 H4 H5 P1 M1 |
 | 44 | Redwoods Sway 2 | Expansion III | 7/16 | 61% | 9/18 | 4 · 82% | forest×6 | 7 · r-embers 68% · 27% · 2.7 | 45% · 10% · 59% (n20) | 0/5 | no run | L1 S1 S4 H1 H2 H4 H5 P1 M1 |
 | 45 | Horses 1 | Expansion III | 7/16 | 89% | 4/18 | 5 · 94% | plain×1 | 7 · r2-spiralgal 81% · 65% · 2.8 | 69% · 29% · 53% (n35) | 0/5 | no run | L1 S1 S6 H1 H2 H4 H5 P1 M1 |
@@ -50,10 +47,6 @@
 | 23 | Chenin 5 | Expansion | 9/19 | 61% | 9/18 | 3 · 71% | -×0 | 7 · r3-heartwarmth 58% · 51% · 2.8 | 14% · 21% · 63% (n28) | 0/5 | 3.2 · 0 · hubble 56% | L1 S1 S2 H1 H2 H4 H5 M1 C1 C3 |
 | 41 | Cabin Soul 6 | Expansion III | 9/19 | 0% | 9/18 | 5 · 82% | sky×6 | 7 · r2-thermal 67% · 53% · 2.8 | 0% · 13% · 73% (n23) | 0/5 | 3.2 · 0 · dusk 47% | S1 S4 S6 H1 H2 H4 H5 M1 C1 C3 |
 | 54 | Rattler 2 | Expansion IV | 9/19 | 39% | 11/18 | 4 · 82% | river×6 | 6 · torrent 74% · 33% · 2.7 | 26% · 26% · 56% (n34) | 0/5 | 4.8 · 0 · r3-monsoonveil 71% | L1 S1 S4 H1 H2 H4 H5 P1 M1 C3 |
-| 9 | Vespers 3 | Vigil | 8/16 | 61% | 9/18 | 5 · 88% | meadow×6 | 7 · merkaba 38% · 26% · 1.6 | 18% · 29% · 64% (n17) | 0/5 | no run | L1 S1 S4 S6 H1 H2 H4 M1 |
-| 11 | Lantern | Vigil | 8/16 | 83% | 8/18 | 5 · 88% | sky×1 | 6 · diatom 50% · 17% · 1.7 | 71% · 64% · 78% (n45) | 0/5 | no run | L1 S1 S6 H1 H2 P1 P2 M1 |
-| 12 | Open Jam | Vigil | 8/16 | 50% | 9/18 | 5 · 100% | ocean×6 | 8 · torrent 38% · 13% · 1.5 | 4% · 16% · 37% (n49) | 0/5 | no run | L1 S1 S4 S6 H1 H2 P3 M1 |
-| 13 | Testimony 3 | Vigil | 8/16 | 17% | 9/18 | 4 · 88% | river×6 | 7 · mycelium 42% · 14% · 1.8 | 27% · 69% · 57% (n26) | 0/5 | no run | L1 S1 S4 H1 H2 P1 P2 M1 |
 | 38 | Chenin 3 | Expansion III | 8/16 | 100% | 12/18 | 5 · 82% | vineyard×1 | 6 · r2-spore 88% · 79% · 2.7 | 68% · 29% · 74% (n28) | 0/5 | no run | L1 S7 H1 H2 H4 H5 P1 M1 |
 | 43 | Tranquility 17 | Expansion III | 8/16 | 11% | 12/18 | 4 · 82% | forest×2 | 6 · pollen 68% · 33% · 2.7 | 63% · 13% · 41% (n30) | 0/5 | no run | S6 H1 H2 H4 H5 P1 P3 M1 |
 | 51 | Velvet Tears 1 | Expansion IV | 8/16 | 0% | 11/18 | 4 · 82% | field×1 | 6 · merkaba 61% · 57% · 2.7 | 23% · 51% · 75% (n35) | 0/5 | no run | S1 H1 H2 H4 H5 P1 P2 M1 |
@@ -99,26 +92,33 @@
 | 86 | Surrounded By Light | Surrounded by Light | 13/16 | 22% | 18/18 | 5 · 88% | hall×3 | 7 · kepler 42% · 18% · 1.5 | 14% · 22% · 64% (n36) | 5/5 | no run | L1 H1 H2 |
 | 88 | Self | Surrounded by Light | 13/16 | 28% | 18/18 | 6 · 88% | lake×3 | 7 · resonant-rings 51% · 14% · 1.8 | 0% · 33% · 67% (n33) | 5/5 | no run | L1 H1 H2 |
 | 98 | Yellow Bird | March Light | 13/16 | 39% | 18/18 | 7 · 88% | sky×2 | 7 · flame 35% · 22% · 1.6 | 10% · 40% · 79% (n20) | 5/5 | no run | L1 H1 P2 |
+| 9 | Vespers 3 | Vigil | 14/16 | 6% | 18/18 | 6 · 94% | river×1 | 10 · r2-pixie 15% · 15% · 1.2 | 44% · 39% · 78% (n36) | 5/5 | no run | P1 P2 |
+| 15 | First Light | Vigil | 14/16 | 0% | 17/18 | 5 · 88% | -×0 | 9 · starfield 19% · 19% · 1.2 | 22% · 31% · 82% (n36) | 5/5 | no run | H1 P1 |
 | 70 | Interplay | Welcome Home | 14/16 | 56% | 18/18 | 5 · 94% | river×3 | 7 · satori 35% · 17% · 1.6 | 9% · 26% · 64% (n23) | 5/5 | no run | L1 H1 |
 | 73 | The Knife | Welcome Home | 14/16 | 11% | 18/18 | 6 · 88% | canyon×1 | 7 · r-smokerings 34% · 21% · 1.5 | 24% · 29% · 73% (n21) | 5/5 | no run | H1 P1 |
+| 10 | Vespers 2 | Vigil | 15/16 | 0% | 18/18 | 6 · 76% | river×1 | 11 · furnace 25% · 25% · 1.3 | 25% · 19% · 66% (n36) | 5/5 | no run | P1 |
+| 11 | Lantern | Vigil | 15/16 | 6% | 18/18 | 6 · 88% | river×1 | 11 · murmuration 25% · 25% · 1.3 | 10% · 33% · 79% (n40) | 5/5 | no run | H4 |
+| 12 | Open Jam | Vigil | 15/16 | 0% | 18/18 | 6 · 100% | field×1 | 12 · chrysalis 26% · 26% · 1.6 | 17% · 8% · 77% (n36) | 5/5 | no run | H4 |
+| 13 | Testimony 3 | Vigil | 15/16 | 6% | 16/18 | 6 · 100% | river×1 | 11 · r-smokerings 17% · 17% · 1.5 | 17% · 44% · 71% (n36) | 5/5 | no run | P2 |
+| 14 | Calling | Vigil | 15/16 | 0% | 17/18 | 6 · 100% | sky×2 | 10 · hubble 24% · 24% · 1.2 | 19% · 42% · 71% (n36) | 5/5 | no run | P2 |
 
 ## Failure counts (of 96)
 
-- H1: 96
-- H2: 83
-- L1: 77
-- M1: 77
-- P1: 74
+- H1: 90
+- H2: 77
+- P1: 72
+- L1: 70
+- M1: 70
 - H4: 55
-- S1: 54
 - H5: 49
-- P2: 47
-- S6: 44
-- S4: 37
-- S2: 20
+- P2: 48
+- S1: 47
+- S6: 39
+- S4: 31
 - C3: 20
-- P3: 12
-- S5: 10
-- S3: 7
+- S2: 17
+- P3: 10
+- S5: 7
 - C1: 7
-- S7: 4
+- S3: 6
+- S7: 3

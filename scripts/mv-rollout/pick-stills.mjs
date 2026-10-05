@@ -5,8 +5,8 @@
 // blown-highlight / disc risk, white-ground penalty, and near-duplicate
 // (16 px zero-mean correlation >= 0.85) against the journey's earlier
 // picks so a phase never becomes a slideshow. Human QA then overrides via
-// <out>/overrides.json {"<journeyId>": {"<slot>": "c"}} (or "skip" to
-// force a re-roll) before install.
+// <out>/overrides.json {"<journeyId>": {"<slot>": "c", reject: ["12a"],
+// only: {"<slot>": ["g","h"]}}} ("skip" forces a re-roll) before install.
 // Usage: node scripts/mv-rollout/pick-stills.mjs --out=<dir>
 import sharp from "sharp";
 import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
@@ -39,6 +39,8 @@ for (const [id, j] of Object.entries(slots)) {
       const letter = f.slice(stem.length + 1, -4);
       if (forced && forced !== "skip" && letter !== forced) continue;
       if (overrides[id]?.reject?.includes(`${s.slot}${letter}`)) continue;
+      const only = overrides[id]?.only?.[s.slot];
+      if (only && !only.includes(letter)) continue;
       const st = await stats(`${dir}/${f}`);
       const dup = chosen.some((c) => corr(c.vec, st.vec) >= 0.85);
       const score = Math.min(st.dark, 0.75) + Math.min(st.off, 0.2) - (st.hot > 0.03 ? 0.4 : 0) - (st.mean > 0.55 ? 0.3 : 0) - (dup ? 1 : 0);
