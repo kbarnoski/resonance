@@ -101,9 +101,9 @@ export const WORLDS = {
     micro: "the bronze lip of a vast bell in close detail, a shiver of light running along its curved rim",
     abstract: "concentric rings of bronze light expanding through dark air, each ring fainter and wider than the last",
     phases: [
-      "DARK BACKGROUND — the first stroke: a single ring of bronze light bursting outward through dark dusk air over still water, its echo already a second fainter ring behind it",
+      "DARK BACKGROUND — the first stroke: a single thin ring of bronze light expanding through dark dusk air over still water, its centre empty and dark, its echo already a second fainter ring behind it",
       "the tone spreading — concentric rings of warm bronze light rolling outward across the darkness, the water below trembling in matching circles",
-      "the full peal — wave upon wave of luminous bronze rings filling the whole sky and water, overlapping and interfering into a vast shimmering lattice of resonance, the struck centre glowing just left of middle",
+      "the full peal — wave upon wave of luminous bronze rings filling the whole sky and water, overlapping and interfering into a vast shimmering lattice of resonance, the rings' common centre an open dark point just left of middle, all the light living in the rings themselves",
       "the resonance sustained, broad slow rings of amber passing through the dusk, the air humming in light",
       "the tone decaying, rings widening apart and dimming to faint copper lines",
       "DARK BACKGROUND — silence returning, one last faint bronze ring expanding at the edge of the dark water",
@@ -150,6 +150,7 @@ export const WORLDS = {
 
   // ── CHENIN — the honeyed Loire grape: gold, nectar, morning dew.
   "Chenin 3": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "D Major, dense (31 n/s), high sustained energy building to a late peak (88898795) — golden abundance ripening to a harvest blaze",
     palette: { primary: "#f0c060", secondary: "#100c04", accent: "#a8c878", glow: "#fff0b0" },
     cats: ["Organic", "Elemental"], ambient: "forest", voice: "fable", mood: "flowing",
@@ -165,6 +166,7 @@ export const WORLDS = {
     ],
   },
   "Chenin 5": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "D Major, sparse (16 n/s), HIGH register (median 62), early peak then gentle breathing (48966464) — airy morning freshness: dew on vine tendrils",
     palette: { primary: "#e8e098", secondary: "#0a0c08", accent: "#98d0b8", glow: "#fffbe0" },
     cats: ["Organic", "Visionary"], ambient: "forest", voice: "shimmer", mood: "dreamy",
@@ -173,7 +175,7 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — a single curling vine tendril in pre-dawn darkness, one dew drop on its tip catching the faintest pale gold",
       "first light — dew drops along a lattice of fine tendrils glittering pale gold, morning mist moving softly between the dark leaves",
-      "the bright morning — a whole vineyard slope glittering with millions of dew drops lit pale gold by low clear light, tendrils spiraling everywhere in delicate luminous curls, the airiest brightness upper left",
+      "the bright morning — a whole vineyard slope glittering with millions of dew drops lit pale gold by soft diffuse light, tendrils spiraling everywhere in delicate luminous curls, the airiest brightness upper left",
       "the dew softening, light pale and even across the leaves, tendrils swaying gently",
       "the drops evaporating into faint shimmering haze, the green deepening",
       "DARK BACKGROUND — one tendril curl remaining in soft shadow, a last glint of gold on its tip",
@@ -182,23 +184,25 @@ export const WORLDS = {
 
   // ── HORSES — galloping energy, made of weather (no animals drawn).
   "Horses 1": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs — look DOWN, no horizon in frame
     why: "F Minor, the most minor-heavy track (63% minor chords), opens hard and sustains high (99887886) across a long 4 minutes — relentless gallop: storm-manes and dust plumes racing across a dusk steppe",
     palette: { primary: "#c8784a", secondary: "#0c0806", accent: "#8a98b0", glow: "#f0b080" },
     cats: ["Elemental", "Dark"], ambient: "desert", voice: "echo", mood: "flowing",
     micro: "a plume of fine dust lifting off dry ground, each grain lit copper by a low light",
     abstract: "long racing streaks of copper dust and grey cloud drawn horizontally across a darkening steppe",
     phases: [
-      "DARK BACKGROUND — a vast dusk steppe, a long plume of copper dust already racing across the horizon in the lower left, storm cloud streaming above it like a mane",
-      "the gallop — waves of wind-driven dust sweeping across the plain in long copper streaks, low storm clouds tearing past overhead in streaming manes",
-      "full stampede of weather — the whole steppe alive with racing walls of lit dust and torn cloud streaming in one direction, colossal speed and weight, copper light flashing through the plumes, the leading wave just right of center",
-      "the run steadying, long even streaks of dust riding the wind, cloud manes flowing level",
+      "DARK BACKGROUND — a vast dusk steppe, a long plume of copper dust already racing across the horizon in the lower left, storm cloud streaming low above it",
+      "the rush — waves of wind-driven dust sweeping across the plain in long copper streaks, low storm clouds tearing past overhead in long streamers",
+      "full force of the weather — the whole steppe alive with racing walls of lit dust and torn cloud streaming in one direction, colossal speed and weight, copper light glowing inside the plumes, the leading wave just right of center",
+      "the run steadying, long even streaks of dust riding the wind, cloud streamers flowing level",
       "the wind easing, dust settling in slow copper veils over the darkening grass",
-      "DARK BACKGROUND — the steppe still at nightfall, one thin trail of dust hanging in the air where the gallop passed",
+      "DARK BACKGROUND — the steppe still at nightfall, one thin trail of copper dust hanging in the air over the empty grass",
     ],
   },
 
   // ── LOIRE — the river itself.
   "Loire 2": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "C Major, short (1:43), HIGH register (60), quiet start building to a late peak (36689496) — a bright young river racing over braided sandbars",
     palette: { primary: "#a8d0e0", secondary: "#060c10", accent: "#f0d8a0", glow: "#e8f8ff" },
     cats: ["Elemental", "Organic"], ambient: "forest", voice: "shimmer", mood: "flowing",
@@ -231,6 +235,7 @@ export const WORLDS = {
 
   // ── NEVER FORGET — lyric: "the whole of a beach ... where are you?"
   "Never Forget 4": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "G# Minor, mid register, soft velocity (49), rises to a mid peak then falls away (76779652), lyric 'the whole of a beach ... where are you?' — memory: a vast low-tide beach where every pool keeps the sky",
     palette: { primary: "#b8a8d0", secondary: "#08070c", accent: "#e8c8a0", glow: "#ece0ff" },
     cats: ["Elemental", "Visionary"], ambient: "abyss", voice: "ballad", mood: "dreamy",
@@ -264,6 +269,7 @@ export const WORLDS = {
     ],
   },
   "Night Wind 5": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs — look DOWN, no horizon in frame
     why: "B Major, early peak (19%) then long even sustain (69886664) — the gust arrives at once and keeps blowing: night wind streaming sand off dune crests",
     palette: { primary: "#c8b090", secondary: "#0a0806", accent: "#8fa8b8", glow: "#f0e0c8" },
     cats: ["Elemental", "Cosmic"], ambient: "desert", voice: "echo", mood: "flowing",
@@ -271,8 +277,8 @@ export const WORLDS = {
     abstract: "long ribbons of wind-blown sand streaming in parallel across dark dune ridges",
     phases: [
       "DARK BACKGROUND — dark dunes at night under a fast cloud sky, a thin veil of pale sand already streaming off one sharp crest in the lower left",
-      "the dunes smoking — sand pouring off every ridge in luminous plumes, ripples racing across the slopes, the wind drawing itself in fine grains",
-      "the great wind over the dunes — an endless sea of dune crests each trailing long glowing veils of sand into the night, the whole landscape streaming in one direction under torn racing cloud, the highest crest smoking left of center",
+      "the dunes streaming — sand pouring off every ridge in luminous plumes, ripples racing across the slopes, the wind drawing itself in fine grains",
+      "the great wind over the dunes — an endless sea of dune crests each trailing long glowing veils of sand into the night, the whole landscape streaming in one direction under torn racing cloud, the highest crest streaming sand left of center",
       "the wind steady, sand veils long and even, ripples flowing across the slopes",
       "the gusts easing, plumes thinning to faint wisps along the crests",
       "DARK BACKGROUND — the dunes still in darkness, one last wisp of sand curling off a crest",
@@ -294,6 +300,7 @@ export const WORLDS = {
     ],
   },
   "Night Wind 11": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "B Major, sparse, opens at its peak (98856787) then winds down — the wind already high in the sky: cloud rivers torn into streamers above dark hills",
     palette: { primary: "#a0a8c8", secondary: "#06060c", accent: "#c8b8a0", glow: "#e0e4f8" },
     cats: ["Cosmic", "Elemental"], ambient: "desert", voice: "shimmer", mood: "dreamy",
@@ -302,7 +309,7 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — dark rolling hills beneath a sky of torn cloud streamers already racing overhead, pale edges lit by the hidden sky",
       "streamers multiplying — layer upon layer of cloud ribbons flying across the sky at different speeds, their silver edges braiding",
-      "the sky river at full force — the entire sky a torrent of streaming cloud filaments over the dark hills, silver and violet ribbons pulled into immense parallel currents, the brightest seam of torn cloud crossing upper left",
+      "the sky river at full force — the entire sky a torrent of streaming cloud filaments over the dark hills, pale silver ribbons of cloud pulled into immense parallel currents, the whole sky made of streaming vapor",
       "the cloud rivers slowing into long smooth bands, silver edges softening",
       "the sky calming, streamers thinning apart into wide dark gaps",
       "DARK BACKGROUND — dark hills under a quiet sky, one last silver streamer drifting slowly overhead",
@@ -318,12 +325,12 @@ export const WORLDS = {
     micro: "a thin vertical filament of warm light seen close, motes of dust drifting slowly through it",
     abstract: "a single perfectly straight vertical line of warm light dividing deep darkness",
     phases: [
-      "DARK BACKGROUND — a deep dark forest clearing at night, and one thin perfectly vertical line of warm light standing in it from ground to canopy just right of center, nothing else lit",
-      "the line strengthening — the vertical beam widening slightly and glowing into the mist around it, dust motes drifting through it, the dark trunks catching faint warmth",
-      "the certainty at full height — the line of light a radiant column rising through the whole clearing and into the dark sky beyond the canopy, mist glowing around it in soft layers, the forest leaning toward it, unbroken and unmistakable",
-      "the column steady, its warmth settled into the mist, the clearing calm in its light",
+      "DARK BACKGROUND — seen from above the treetops at night, a sea of dark forest canopy under mist, and one thin perfectly vertical line of warm light rising out of the canopy into the dark sky just right of center, nothing else lit",
+      "the line strengthening — the vertical beam widening slightly and glowing into the mist around it, dust motes drifting through it, the treetops around it catching faint warmth",
+      "the certainty at full height — the line of light a radiant column rising out of a dense sea of mist over the dark canopy high into the sky, its base lost in the glowing mist, unbroken and unmistakable",
+      "the column steady, its warmth settled into the mist over the treetops",
       "the beam narrowing back toward a thread, the mist cooling",
-      "DARK BACKGROUND — dark forest, one thin vertical thread of warm light still standing true",
+      "DARK BACKGROUND — dark canopy under mist, one thin vertical thread of warm light still standing true",
     ],
   },
 
@@ -331,6 +338,7 @@ export const WORLDS = {
   //    higher-registered and brighter: the plain at the long northern
   //    twilight, lakes as mirrors.
   "Northern Plane 3": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "C Major, HIGH register (60, vs 43 in take 5), tiny chord vocabulary (47) — monolithic calm, steady breathing envelope — the long northern twilight over a plain of mirror lakes",
     palette: { primary: "#b8c8e0", secondary: "#080a10", accent: "#e8c0a0", glow: "#eef4ff" },
     cats: ["Cosmic", "Elemental"], ambient: "desert", voice: "sage", mood: "dreamy",
@@ -374,8 +382,8 @@ export const WORLDS = {
     abstract: "towering trunks rising into swaying crowns seen straight up from the forest floor, silver light between them",
     phases: [
       "DARK BACKGROUND — looking straight up a colossal redwood trunk into swaying crowns at night, silver light painting the edges of its mighty limbs, a few golden fireflies drifting near the bark",
-      "the grove glowing — several great trunks rising around the view, crowns swaying slowly against the silver-lit sky, fireflies multiplying in the dark air between",
-      "the whole forest humming — an immense grove of giant redwoods seen from the floor, crowns swaying in a slow wide circle against a luminous silver sky, thousands of golden fireflies drifting through the vast vertical spaces, the brightest gap in the canopy right of center",
+      "the grove glowing — looking straight up as several great trunks rise around the view, crowns swaying slowly against the silver-lit sky, fireflies multiplying in the dark air between",
+      "the whole forest humming — looking straight up the trunks of an immense grove of giant redwoods, crowns swaying in a slow wide circle against a luminous silver sky, thousands of golden fireflies drifting through the vast vertical spaces, the brightest gap in the canopy right of center",
       "the sway calm and steady, fireflies settling along the bark, silver light quiet in the crowns",
       "the night deepening, crowns stilling, fireflies dimming one by one",
       "DARK BACKGROUND — one great trunk in darkness, a single firefly glowing against its bark",
@@ -384,15 +392,16 @@ export const WORLDS = {
 
   // ── RISE 1 — a Suno take distinct from the album's "Rise".
   "Rise 1": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "F Major, sparse (16.5 n/s), high plateau with mid peak (87698878), lyric hum — a slow steady ascent: sparks and warm motes rising out of a dark valley at dawn",
     palette: { primary: "#f0a868", secondary: "#0c0706", accent: "#c8a8d8", glow: "#ffd8b0" },
     cats: ["Visionary", "Elemental"], ambient: "sacred", voice: "fable", mood: "transcendent",
     micro: "a single warm spark climbing through dark air, a faint trail of light beneath it",
     abstract: "countless warm motes rising in long vertical columns through deep violet air",
     phases: [
-      "DARK BACKGROUND — a deep dark valley before dawn, a single warm spark lifting from the valley floor in the lower left, the air violet-black",
-      "the rising — warm motes lifting from the valley in slow streams, the sky above beginning to blush rose, mist beginning to climb",
-      "the great rise — the whole valley releasing columns of warm golden motes and lit mist that climb into a vast rose and violet dawn sky, everything ascending together, the densest column rising right of center",
+      "DARK BACKGROUND — a deep dark valley at night, a single warm spark lifting from the valley floor in the lower left, the air violet-black",
+      "the rising — warm motes lifting from the valley in slow streams, the rising mist beginning to glow violet",
+      "the great rise — the whole valley releasing drifting clouds of warm golden motes and lit mist that climb through vast violet lit mist, everything ascending together, the densest cloud of motes rising right of center",
       "the ascent steady and calm, motes drifting high in warm light",
       "the motes thinning as they climb out of sight, the valley settling",
       "DARK BACKGROUND — the valley in soft dark, one last warm spark rising alone into violet air",
@@ -402,18 +411,19 @@ export const WORLDS = {
   // ── ROLL AWAY — lyric: "climb to the top of the mountain and look down
   //    over the valley. Build a campfire ... get lost with me".
   "Roll Away 8": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "A Major, short (1:39), high register (63), builds to an ecstatic late plateau (65689999) — the lyric's mountaintop at night: a valley of lights far below and a sky of wishing trails above",
     palette: { primary: "#e8b878", secondary: "#060810", accent: "#90b0e0", glow: "#fff0d0" },
     cats: ["Cosmic", "Elemental"], ambient: "desert", voice: "fable", mood: "transcendent",
-    micro: "a small campfire's sparks spiraling up from the dark summit rock",
+    micro: "warm sparks spiraling up out of a hollow in dark summit rock",
     abstract: "long luminous trails arcing across a deep blue mountain sky over a valley of mist",
     phases: [
-      "DARK BACKGROUND — a dark mountaintop at night looking down over a misty valley, a small campfire's warm glow at the lower edge, a few sparks lifting",
-      "the view opening — the valley far below filling with silver mist, distant ridges layered blue, sparks spiraling up into a sky beginning to show long faint trails",
-      "lost in the mountains — from the summit, an immense panorama of misty valleys and blue ridges under a sky streaked with long luminous arcing trails, the campfire's sparks rising to meet them, the brightest trail sweeping across the upper right",
+      "DARK BACKGROUND — a dark mountaintop at night looking down over a misty valley, a few warm sparks spiraling up out of a hollow in the dark summit rock at the lower edge",
+      "the view opening — the valley far below filling with silver mist, distant ridges layered blue, warm sparks spiraling up into a sky beginning to show long faint trails",
+      "lost in the mountains — from the summit, an immense panorama of misty valleys and blue ridges under a sky streaked with long luminous arcing trails, warm sparks rising from the summit rocks to meet them, the brightest trail sweeping across the upper right",
       "the night wide and calm, trails fading slowly overhead, the mist glowing in the valley",
-      "the campfire burning low, the sky quieting, ridges darkening",
-      "DARK BACKGROUND — embers on the summit, one last trail of light crossing the dark sky",
+      "the sparks thinning, the sky quieting, ridges darkening",
+      "DARK BACKGROUND — dark summit rock, one last trail of light crossing the dark sky",
     ],
   },
 
@@ -427,8 +437,8 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — a tall dark grove of straight trunks whose high branches arch together overhead, one fractured shaft of pale violet light slanting down in the upper left",
       "the sanctuary lighting — more shafts breaking through the high canopy, each splitting into prismatic violet and gold fragments, the arching boughs closing into a high darkness",
-      "light and light — the whole arching grove pierced by countless fractured shafts of violet and gold crossing in a vast luminous lattice, the arched canopy glowing, light pouring and breaking everywhere, the brightest crossing just left of center",
-      "the shafts steady and softened, prismatic glow resting on the forest floor",
+      "light and light — close among the high arching branches, countless fractured shafts of violet and gold crossing between the leaves in a vast luminous lattice, every leaf edge glowing, light pouring and breaking everywhere, the brightest crossing just left of center",
+      "the shafts steady and softened, prismatic glow resting in the leaves",
       "the light withdrawing upward, shafts thinning to single threads",
       "DARK BACKGROUND — the arching grove dark, one last pale violet shaft standing in the gloom",
     ],
@@ -455,15 +465,16 @@ export const WORLDS = {
   //    March Light = forest corona, SBL 6 = drowned light. Two more
   //    distinct domains of being surrounded.
   "Surrounded by Light 3": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "A Major, dense (30 n/s), early peak (31%) then a long fall (47976352), lyric 'surrounded by light ... as I was falling ... I light your soul' — FALLING into light: a descent through ring after ring of luminous cloud",
     palette: { primary: "#f0d8a8", secondary: "#0a0806", accent: "#a8c8e8", glow: "#fff4dc" },
     cats: ["Visionary", "Cosmic"], ambient: "sacred", voice: "fable", mood: "transcendent",
     micro: "soft luminous vapor curling at the edge of a cloud ring, lit gold from within",
-    abstract: "concentric rings of glowing cloud seen from above, receding downward into a bright center",
+    abstract: "concentric rings of glowing cloud seen from above, their walls glowing from within",
     phases: [
-      "DARK BACKGROUND — looking down into a deep shaft of dark cloud, a faint ring of warm light glowing far below",
-      "falling inward — descending through rings of cloud, each ring brighter than the last, warm gold light rising to meet the fall",
-      "surrounded — in the middle of the fall, enclosed on every side by a vast tunnel of luminous gold and pale blue cloud, rings of light circling all around and receding into a radiant core below, light everywhere, held",
+      "DARK BACKGROUND — inside a deep shaft of dark cloud, its walls faintly warm-lit, the depth below soft grey",
+      "falling inward — descending past walls of cloud that glow brighter as the fall continues, warm gold light living inside the vapor",
+      "surrounded — in the middle of the fall, enclosed on every side by luminous gold and pale blue vapor glowing evenly like lit fog, billows passing close on all sides, light everywhere and nowhere in particular, held",
       "the fall slowing into a gentle drift, the rings of light wide and soft all around",
       "the cloud thinning, light diffusing into a warm pale haze",
       "DARK BACKGROUND — a dim soft dark with one wide faint ring of gold still encircling the view",
@@ -494,9 +505,9 @@ export const WORLDS = {
     micro: "a curtain of fine drifting mist glowing faintly from light behind it",
     abstract: "layers of luminous mist curtains receding one behind another into soft light",
     phases: [
-      "DARK BACKGROUND — a dark still lake and on its far side a hanging curtain of mist, faintly glowing from something behind it",
-      "approaching the veil — the mist curtain growing tall and luminous, soft light seeping through its folds, the water reflecting its glow",
-      "the crossing — passing into the curtain itself, layer upon layer of glowing mist parting ahead, a pale luminous far shore emerging beyond in blue and rose light, the veil's brightest opening right of center",
+      "DARK BACKGROUND — seen from far across a wide dark lake, a towering hanging curtain of mist on the far water, faintly glowing from something behind it",
+      "the veil brightening — the mist curtain towering and luminous, soft light seeping through its folds, the water reflecting its glow",
+      "the crossing — the view drifting into the curtain itself above the water, layer upon layer of glowing mist parting ahead, a pale luminous far shore emerging beyond in blue and rose light, the veil's brightest opening right of center",
       "the far side — calm luminous mist lying over quiet water, the light soft and sourceless",
       "the mist closing gently behind, its glow dimming",
       "DARK BACKGROUND — dark water and the faint glowing curtain of mist, the other side kept within it",
@@ -507,28 +518,30 @@ export const WORLDS = {
   //    tell me your favorite color, your favorite truth". Naming the
   //    stars: a sky being called into being point by point.
   "Torraine 5": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "C Major, dense (32 n/s), long (3:55), wavering build to a late peak (46736966), lyric 'tell me your name so I can call it true' — a night sky whose stars light up one by one as they are named, joined by threads of light",
     palette: { primary: "#c8d0f0", secondary: "#05060c", accent: "#f0d098", glow: "#f0f4ff" },
     cats: ["Cosmic", "Geometry"], ambient: "sacred", voice: "fable", mood: "mystical",
     micro: "one star brightening as a fine thread of light reaches it from another",
     abstract: "a web of stars joined by delicate luminous threads across a deep blue sky",
     phases: [
-      "DARK BACKGROUND — a deep blue night sky over a dark rolling vineyard, one star brightening in the upper left as if just named",
+      "DARK BACKGROUND — a deep blue night sky over dark rolling hills of vines, one star brightening in the upper left as if just named",
       "the naming — star after star kindling across the sky, fine threads of light joining each new star to the last",
-      "every name called true — the entire sky a vast luminous web of named stars joined by delicate threads of gold and silver light above the dark rolling hills, patterns forming everywhere, the brightest knot of threads right of center",
+      "every name called true — the entire sky a vast luminous web of named stars joined by delicate threads of gold and silver light above dark rolling hills of vines, patterns forming everywhere, the brightest knot of threads right of center",
       "the web steady and quiet, threads softly glowing, stars calm",
       "the threads fading, stars remaining as scattered points",
       "DARK BACKGROUND — the dark hills and a few named stars, one thin thread of light between two of them",
     ],
   },
   "Torraine 6": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "D# Minor, soft velocity (47), early peak then wavering (55986696), 147 chords, lyric 'tell me your favorite color, tell me your favorite truth' — the names become COLORS: a river valley at dusk where each named star drops its color into the water",
     palette: { primary: "#e0a8c8", secondary: "#08060c", accent: "#98d0d8", glow: "#ffe8f4" },
     cats: ["Cosmic", "Elemental"], ambient: "sacred", voice: "shimmer", mood: "dreamy",
     micro: "a single colored point of light reflected as a long trembling streak in dark water",
     abstract: "streaks of rose, teal and gold light reflected in long lines across a dark river",
     phases: [
-      "DARK BACKGROUND — a wide dark river at dusk, one rose-colored star above it and its reflection trembling in the water",
+      "DARK BACKGROUND — a wide dark river deep in the night, one rose-colored star above it and its reflection trembling in the water",
       "colors called — new stars appearing each in its own color, rose, teal, gold, violet, each dropping a long trembling reflection into the river",
       "the favorite truths — the sky above the broad river filled with stars of every color joined by faint threads, the water below a vast shimmering field of colored reflections streaming toward the viewer, the richest colors crossing left of center",
       "the colors calm, reflections lengthening and softening in the slow current",
@@ -541,14 +554,14 @@ export const WORLDS = {
     palette: { primary: "#d0c8f0", secondary: "#050508", accent: "#f0c8a0", glow: "#f4f0ff" },
     cats: ["Cosmic", "Visionary"], ambient: "abyss", voice: "sage", mood: "mystical",
     micro: "two stars close together joined by a fine bright thread of light",
-    abstract: "a single long arc of light connecting two distant stars over a dark horizon",
+    abstract: "a single long curved arc of fine light connecting two distant stars across a night sky",
     phases: [
-      "DARK BACKGROUND — a vast quiet plain at night under a deep sky, two faint stars low on opposite sides of the frame",
-      "the call — a fine thread of light beginning to reach from one star toward the other across the sky, other stars waking softly",
-      "called true — a long luminous arc of gold light spanning the entire sky between the two stars, the plain below glowing faintly in its light, the sky around filled with quiet answering stars",
+      "DARK BACKGROUND — seen from high above a sea of dark night clouds that fills the lower frame, two faint stars on opposite sides of the frame",
+      "high above a sea of night cloud, the call — a fine thread of light beginning to reach from one star toward the other across the sky, other stars waking softly",
+      "called true — a long gently curved arc of fine gold light bowing across the entire sky from one star to the other like a rainbow drawn in thread, the cloud sea below glowing faintly in its light, the sky around filled with quiet answering stars",
       "the arc steady and soft, the two stars bright at its ends",
-      "the arc thinning to a hair of light, the plain darkening",
-      "DARK BACKGROUND — two stars over the dark plain, the faintest thread still between them",
+      "the arc thinning to a hair of light, the cloud sea darkening",
+      "DARK BACKGROUND — two stars over the dark cloud sea, the faintest curved thread still between them",
     ],
   },
 
@@ -571,15 +584,16 @@ export const WORLDS = {
     ],
   },
   "Tranquility 8": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, sparse (16 n/s), softest velocity (49), quiet start swelling mid-piece then settling (24795454) — a sea of cloud seen from above at dawn, a slow swell of rose light",
     palette: { primary: "#e8b8b0", secondary: "#0a080c", accent: "#a8b8e0", glow: "#fff0ec" },
     cats: ["Cosmic", "Visionary"], ambient: "sacred", voice: "shimmer", mood: "dreamy",
     micro: "the soft rolling crest of a cloud billow catching rose light",
     abstract: "an endless soft sea of cloud billows from above, rose and lavender light across their tops",
     phases: [
-      "DARK BACKGROUND — high above a sea of cloud before dawn, the billows dark grey-blue, the faintest rose seam along the far edge",
+      "DARK BACKGROUND — high above a sea of cloud before morning, the billows dark grey-blue, the faintest rose tint on their tops",
       "the cloud sea warming — rose light spreading across the tops of the slow billows, deep lavender in the hollows",
-      "the dawn swell — an endless ocean of soft cloud from high above glowing rose and gold, slow billows rolling in long calm waves to the far curve of the world, peaceful immensity, the brightest crests left of center",
+      "the dawn swell — an endless ocean of soft cloud from high above glowing rose and gold, slow billows rolling in long calm waves across the whole frame, peaceful immensity, the brightest crests left of center",
       "the cloud sea calm in full soft light, billows barely moving",
       "the rose light fading to pearl, the billows flattening",
       "DARK BACKGROUND — a pale-grey sea of cloud in dim light, one last rose crest",
@@ -594,7 +608,7 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — clear shallow water at late evening, a single small net of rippling light dancing on the pale sand in the lower right",
       "the light nets spreading — shimmering caustic patterns rippling across the sandy floor, the water turning luminous teal",
-      "the lagoon alive with light — an immense warm shallow lagoon seen from just above the water, the whole sandy floor covered in rippling golden-teal nets of light, calm and shimmering everywhere, the brightest pattern right of center",
+      "the lagoon alive with light — an immense warm shallow lagoon seen from high directly above, the whole sandy floor covered in rippling golden-teal nets of light, calm and shimmering everywhere, the brightest pattern right of center",
       "the shimmer calm and slow, nets of light drifting softly over the sand",
       "the light lowering, the patterns fading into deeper teal",
       "DARK BACKGROUND — dark water over dim sand, one last faint ripple of light",
@@ -616,21 +630,23 @@ export const WORLDS = {
     ],
   },
   "Tranquility 21": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, low-mid register (49), late peak (69%), lyric 'I'll sit at home in my darkness ... I'll see a way for me' — calm darkness that opens a way: a canyon at night with a slow glowing river of mist leading out to dawn",
     palette: { primary: "#c8a8e0", secondary: "#07050a", accent: "#f0c890", glow: "#f4e8ff" },
     cats: ["Visionary", "Elemental"], ambient: "abyss", voice: "ballad", mood: "mystical",
     micro: "a slow tendril of glowing mist drifting along the dark floor of a canyon",
-    abstract: "a winding river of soft luminous mist between dark canyon walls leading toward light",
+    abstract: "a winding river of soft luminous mist between dark canyon walls leading toward glowing walls",
     phases: [
       "DARK BACKGROUND — the floor of a deep dark canyon at night, calm and quiet, one faint tendril of glowing mist drifting along the bottom",
-      "the way appearing — the mist gathering into a slow luminous river winding between the dark walls, a pale violet glow far ahead",
-      "a way for me — the canyon from above, a long winding river of softly glowing mist flowing calmly between the towering dark walls out toward a wide opening of warm gold and violet dawn, the path of light unmistakable, the opening right of center",
+      "the way appearing — the mist gathering into a slow luminous river winding between the dark walls, a pale violet glow on the far walls",
+      "a way for me — the canyon from above, a long winding river of softly glowing mist flowing calmly between the towering dark walls out toward the canyon's far end where the walls glow warm gold and violet, the way unmistakable, the brightest walls right of center",
       "the mist river steady and calm, the dawn glow softly filling the canyon",
       "the glow settling, the mist thinning to a quiet stream",
       "DARK BACKGROUND — the dark canyon, a thin luminous thread of mist still showing the way",
     ],
   },
   "Tranquility 30": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, opens at full strength and stays there (99989487), widest Tranquility harmony (161) — calm on the largest scale: an open ocean horizon at golden hour, long slow swells",
     palette: { primary: "#f0c890", secondary: "#080808", accent: "#90b8d0", glow: "#fff0d8" },
     cats: ["Elemental", "Cosmic"], ambient: "abyss", voice: "fable", mood: "transcendent",
@@ -639,13 +655,14 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — an immense calm ocean in warm dusk light, long slow swells already glowing gold along their backs, a low band of haze at the horizon",
       "the swells rolling — wide glassy waves lifting and lowering in slow rhythm, golden light lying long across them",
-      "the great calm — an endless open ocean at golden hour to the far horizon, long slow swells catching gold and amber in parallel bands under layered warm haze, vast peace in motion, the brightest swell left of center",
+      "the great calm — an endless open ocean seen from above in warm evening light, long slow swells catching gold and amber in parallel bands across the whole frame, vast peace in motion, the brightest swell left of center",
       "the swells easing, gold softening to honey on the water",
       "the light lowering, swells darkening to pewter",
       "DARK BACKGROUND — the dark ocean, one long swell still holding a line of gold",
     ],
   },
   "Tranquility 33": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "F# Major (the one Tranquility not in B), low-mid register (49), broad mid plateau (68889765) — a different key, a different calm: valley fog at blue hour with ridges floating as soft islands",
     palette: { primary: "#98a8d8", secondary: "#05060c", accent: "#e8b8a8", glow: "#e0e8ff" },
     cats: ["Elemental", "Cosmic"], ambient: "desert", voice: "sage", mood: "dreamy",
@@ -653,14 +670,15 @@ export const WORLDS = {
     abstract: "layer upon layer of blue ridges floating in a still sea of fog",
     phases: [
       "DARK BACKGROUND — a deep valley filled with fog at blue hour, one dark ridge rising from it like an island in the lower left",
-      "the layers revealing — more ridges emerging from the still fog in receding blue layers, a soft rose glow at the far horizon",
-      "the floating world — an immense landscape of blue ridges floating as soft islands in a motionless sea of fog stretching to the horizon, layered in deepening blues with a band of rose light above, the brightest fog right of center",
+      "the layers revealing — more ridges emerging from the still fog in receding blue layers, a soft rose glow resting on the fog",
+      "the floating world — an immense landscape of blue ridges floating as soft islands in a motionless sea of fog seen from above, layered in deepening blues, rose light resting on the fog, the brightest fog right of center",
       "the fog calm, ridges quiet in the blue light",
       "the blue deepening, fog darkening around the ridges",
       "DARK BACKGROUND — dark fog, one faint ridge line against the last blue",
     ],
   },
   "Tranquility 34": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, higher register (58), sparse (19 n/s), plateau then clean fade (68899524), lyric 'but I'm never going away' — calm that stays: an autumn pool where amber leaves turn slowly on still water",
     palette: { primary: "#e8a860", secondary: "#0a0705", accent: "#90a8b8", glow: "#ffe0b8" },
     cats: ["Organic", "Elemental"], ambient: "forest", voice: "ballad", mood: "dreamy",
@@ -676,6 +694,7 @@ export const WORLDS = {
     ],
   },
   "Tranquility 35": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, higher register (58), dense (28 n/s), the longest Tranquility (3:50) with a mid plateau and long fade (77789555) — calm across great distance: high mesas under slowly drifting cloud shadows in late afternoon",
     palette: { primary: "#e0a878", secondary: "#0a0706", accent: "#90b0d0", glow: "#ffe4c8" },
     cats: ["Elemental", "Cosmic"], ambient: "desert", voice: "sage", mood: "transcendent",
@@ -691,15 +710,16 @@ export const WORLDS = {
     ],
   },
   "Tranquility 36": {
+    aerial: true, // samples 2026-10-01: horizon framings summoned sun discs twice — look DOWN, no horizon in frame
     why: "B Major, latest Tranquility peak (81%), lyric 'here's a power of shadow ... the bed is waking' — calm that wakes: long shadows withdrawing as warm dawn light spreads over rolling grass hills",
     palette: { primary: "#f0c080", secondary: "#08070a", accent: "#a8a8d8", glow: "#fff0d0" },
     cats: ["Elemental", "Visionary"], ambient: "forest", voice: "fable", mood: "transcendent",
     micro: "dew-wet grass blades catching the first warm light as a shadow edge retreats",
     abstract: "long blue shadows and warm gold light dividing rolling hills in soft bands",
     phases: [
-      "DARK BACKGROUND — rolling grass hills before dawn, deep blue shadow over everything, a single line of warm light touching one crest in the upper right",
+      "DARK BACKGROUND — rolling grass hills under a high sealed ceiling of pale cloud, deep blue shadow over everything, a single line of warm light touching one crest in the upper right",
       "the waking — warm light spreading slowly over the hills, long shadows withdrawing down the slopes, dew glinting",
-      "the power of shadow and light — immense rolling hills at sunrise striped with long sweeping shadows and bands of warm gold light, mist lifting from the hollows, the whole land waking, the brightest crest left of center",
+      "the power of shadow and light — immense rolling hills under an even pale cloud ceiling, striped with long sweeping shadows and bands of warm gold light, mist lifting from the hollows, the whole land waking, the brightest crest left of center",
       "the morning calm and full, light resting on the hills, shadows short and soft",
       "the light softening, mist settling in the hollows",
       "DARK BACKGROUND — dim hills, one crest still holding a line of warm light",
@@ -741,18 +761,19 @@ export const WORLDS = {
   // ── YELLOW BIRD 3 / 6 — Suno takes distinct from the album's "Yellow
   //    Bird". Lyric (3): "little bird singing ... fly me home".
   "Yellow Bird 3": {
+    sealSky: true, // samples 2026-10-01 summoned sun/orb discs — light sources sealed behind cloud
     why: "F Major, early peak (31%) with a high sustained flight (78968988), lyric 'little bird singing ... fly me home' — flight homeward at golden evening: a flock of light streaming across a warm sky toward a lit valley",
     palette: { primary: "#f0d060", secondary: "#0c0a04", accent: "#90b8d8", glow: "#fff4c0" },
     cats: ["Elemental", "Visionary"], ambient: "forest", voice: "fable", mood: "flowing",
     micro: "a single golden feather of light drifting in warm evening air",
     abstract: "a long flowing ribbon of golden light-points streaming across a warm sky like a flock",
     phases: [
-      "DARK BACKGROUND — a dark evening sky over low hills, a single small point of golden light flitting across the lower left",
+      "DARK BACKGROUND — a dark evening sky filling the whole frame with soft layered cloud, a single small point of golden light drifting across the lower left",
       "the flock gathering — more golden points joining in a flowing ribbon across the warming sky, sweeping and turning together",
       "fly me home — a vast shimmering murmuration of golden light streaming across a warm amber evening sky toward a glowing valley far below, the ribbon folding and unfolding in huge graceful curves, the densest swirl right of center",
       "the flock settling into a long calm stream of gold over the valley",
       "the points descending toward the valley, the sky dimming to rose",
-      "DARK BACKGROUND — dusk over the hills, one golden point of light coming home",
+      "DARK BACKGROUND — dusk over the hills, one golden point of light drifting down through dusky cloud",
     ],
   },
   "Yellow Bird 6": {
@@ -764,7 +785,7 @@ export const WORLDS = {
     phases: [
       "DARK BACKGROUND — a dark meadow before dawn, one small point of yellow light perched on a grass tip in the lower right",
       "waking — yellow points lifting from the grass in small curving flights, the sky beginning to pale",
-      "the meadow in flight — thousands of small yellow lights rising from the whole meadow and wheeling together in great curving flights against a pale gold morning sky, the brightest swirl upper left",
+      "the meadow in flight — thousands of small yellow lights rising from the whole meadow and wheeling together in great curving flights against a pale gold morning mist, the brightest swirl upper left of the mist",
       "the flights calm, yellow points drifting over the meadow in the soft light",
       "the points settling back into the grass, the light quieting",
       "DARK BACKGROUND — the dim meadow, one small yellow light on a grass tip",

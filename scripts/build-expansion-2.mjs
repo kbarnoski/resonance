@@ -46,6 +46,12 @@ export const ORDER = [
   "Tranquility 36", "Torraine 7", "Surrounded by Light 19", "Tranquility 38",
 ];
 
+// Sun/orb guard (sample review 2026-10-01: dawn/dusk/horizon worlds
+// summoned sun discs). Occupy the sky positively — never name the disc.
+const SEAL = ", every source of light hidden behind a sealed deck of layered cloud, the glow arriving only as long soft horizontal seams and reflections";
+// Second pass: the seal alone lost to dawn/dusk wording — horizon-led
+// worlds now look DOWN so no horizon (and no disc) can enter the frame.
+const AERIAL = ", seen from high above looking steeply down so the land or water fills the entire frame edge to edge, the light arriving only as soft reflections and glow across the surface";
 const TAIL = ", asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing";
 
 const TEMPLATE = [
@@ -75,7 +81,7 @@ function sequenceFor(world, phaseIdx) {
   const abs = a.replace("%A", world.abstract);
   // threshold opens micro-first (archetype arc: micro -> cosmic)
   const shots = id === "threshold" ? [micro, line, abs] : id === "transcendence" ? [line, abs, micro] : [line, micro, abs];
-  return shots.map((s) => s + TAIL);
+  return shots.map((s) => s + (world.aerial ? AERIAL + SEAL : world.sealSky ? SEAL : "") + TAIL);
 }
 
 // Deterministic per-title PRNG so re-runs give identical casts.
