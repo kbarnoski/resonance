@@ -30,7 +30,7 @@ const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-
 const KINETIC_LAB = ["Chemiluminescence 1", "Rolling 2", "Stand 10", "Cabin Soul 8", "Cabin Soul 5"];
 const KINETIC_LAB_LEADS = ["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"];
 const GEOMETRY = new Set<string>(MODE_META.filter((m) => m.category === "Geometry").map((m) => m.mode));
-const MIN_DIST = 11; // >= 10-journey spacing: never within the next 10 journeys (cyclic)
+const MIN_DIST = 10; // never within the next 9 journeys (cyclic) — 11 became infeasible once Vigil (+7, 2026-10-05) joined the loop; the solver proves 10
 const LEAD_DIST = 12;
 const CAP = 4;
 
@@ -55,7 +55,8 @@ describe("featured + album recast: coverage", () => {
   it("casts every setlist journey that is not mastered, Kinetic Lab or Expansion", () => {
     const uses = loopUses();
     expect(uses.filter((u) => u.kind === "unknown").map((u) => u.id)).toEqual([]);
-    expect(uses.filter((u) => u.kind === "recast")).toHaveLength(40);
+    // 40 album/featured + 7 Vigil (Oct 4 2026 studio) = 47
+    expect(uses.filter((u) => u.kind === "recast")).toHaveLength(47);
     expect(uses.filter((u) => u.kind === "kinetic-lab")).toHaveLength(5);
     expect(uses.filter((u) => u.kind === "expansion")).toHaveLength(49);
   });

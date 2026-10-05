@@ -65,6 +65,7 @@ export const TRAMOKYO_MIX_ID = "tramokyo-mix";
 export const TRAMOKYO_SET_STARTS: readonly string[] = [
   "first-snow", // Snowflake EP
   "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", // the Kinetic Lab (2026-09-30 — was missing: set-jumps skipped the Lab entirely)
+  "01c987f6-17de-469b-b155-000922b479a1", // Vigil (Vespers 3)
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // Expansion
   "06b07942-bf94-4513-8e71-ef00508ced3e", // Expansion II (Surrounded by Light 3)
   "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // Expansion III (The Other Side 9)
@@ -87,6 +88,16 @@ export const TRAMOKYO_SETLIST: readonly string[] = [
   "84a82478-f0f2-4c49-b800-b4fe722f1df5", //  3. Stand 10 (meditative + kinetic)
   "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", //  4. Cabin Soul 8 (med + kin, lyrics)
   "b5247327-b1fd-45ce-a249-0a58a8a3c57e", //  5. Cabin Soul 5 (med + kin, lyrics)
+  // ── Vigil (Karel's Oct 4 2026 studio session; named for the set's
+  //    vibe — evening prayer → lantern-light → storm → testimony →
+  //    a call → daybreak) ──
+  "01c987f6-17de-469b-b155-000922b479a1", //  1. Vespers 3
+  "4413b320-e6b5-471e-9163-10d1c496a67d", //  2. Vespers 2
+  "910e6b62-abb8-40d1-bd31-ccdf6038f122", //  3. Lantern
+  "bd748991-a67b-41dc-af94-ac3f612a27c4", //  4. Open Jam
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  5. Testimony 3
+  "d92c2d3a-4283-4300-abc3-d71ed7c6848d", //  6. Calling
+  "87e106f9-4d74-4886-b944-fd625a827b02", //  7. First Light
   // ── The Expansion set, in set order (added 2026-09-29, Karel:
   //    "show after Ghost for now and before the following set") ──
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  1. Surrounded by Light 6 · 2:55
@@ -232,18 +243,19 @@ export const TRAMOKYO_SETS: readonly TramokyoSetDef[] = [
   // dedication closes the final set.
   { id: "tramokyo-mix", presenting: "the Snowflake EP", end: 3 }, //  1-3: the Snowflake EP
   { id: "tramokyo-mix-kin", presenting: "the Kinetic Lab", end: 8 }, // 4-8: the Kinetic Lab (right after the EP, Karel 2026-09-30)
-  { id: "tramokyo-mix-exp", presenting: "Expansion", end: 19 }, // 9-19: Expansion I — set 1's six + Loire 2 → Rise 1 (~31 min)
-  { id: "tramokyo-mix-exp2", presenting: "Expansion II", end: 29 }, // 20-29: Surrounded by Light 3 → Singular 4 (~31 min)
-  { id: "tramokyo-mix-exp3", presenting: "Expansion III", end: 39 }, // 30-39: The Other Side 9 → Northern Plane 3 (~31 min)
-  { id: "tramokyo-mix-exp4", presenting: "Expansion IV", end: 48 }, // 40-48: Chemiluminescence → Tranquility 21 (~30 min)
-  { id: "tramokyo-mix-exp5", presenting: "Expansion V", end: 57 }, // 49-57: Loire 5A → Tranquility 38 (~32 min)
-  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 62 }, // 58-62: The Summit → Mycelium Dream
-  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 75 }, // 63-75: Interplay → All Together
-  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 87 }, // 76-87: Rise → Mystic (~35 min)
+  { id: "tramokyo-mix-vigil", presenting: "Vigil", end: 15 }, // 9-15: Vigil — the Oct 4 2026 studio session (Karel 2026-10-05)
+  { id: "tramokyo-mix-exp", presenting: "Expansion", end: 26 }, // 9-19: Expansion I — set 1's six + Loire 2 → Rise 1 (~31 min)
+  { id: "tramokyo-mix-exp2", presenting: "Expansion II", end: 36 }, // 20-29: Surrounded by Light 3 → Singular 4 (~31 min)
+  { id: "tramokyo-mix-exp3", presenting: "Expansion III", end: 46 }, // 30-39: The Other Side 9 → Northern Plane 3 (~31 min)
+  { id: "tramokyo-mix-exp4", presenting: "Expansion IV", end: 55 }, // 40-48: Chemiluminescence → Tranquility 21 (~30 min)
+  { id: "tramokyo-mix-exp5", presenting: "Expansion V", end: 64 }, // 49-57: Loire 5A → Tranquility 38 (~32 min)
+  { id: "tramokyo-mix-1b", presenting: "the featured journeys", end: 69 }, // 58-62: The Summit → Mycelium Dream
+  { id: "tramokyo-mix-2", presenting: "Welcome Home", end: 82 }, // 63-75: Interplay → All Together
+  { id: "tramokyo-mix-3", presenting: "Surrounded by Light", end: 94 }, // 76-87: Rise → Mystic (~35 min)
   {
     id: "tramokyo-mix-4",
     presenting: "March Light",
-    end: 97, // 88-97: The First → Love Again (~32 min; +6 Expansion 2026-09-29; +5 Kinetic Lab 2026-09-30; +43 Expansion set 2 2026-10-01)
+    end: 104, // 88-97: The First → Love Again (~32 min; +6 Expansion 2026-09-29; +5 Kinetic Lab 2026-09-30; +43 Expansion set 2 2026-10-01)
     dedication: {
       eyebrow: "with gratitude to",
       hero: "Johnny and our hosts",
@@ -263,6 +275,15 @@ export const EXPERIENCE_INTRO = {
 } as const;
 
 export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
+  {
+    id: "vigil",
+    presenting: "Vigil",
+    description:
+      "Seven solo piano pieces recorded in the studio on October 4, 2026 — " +
+      "a night watch kept from evening prayer, through lantern-light and " +
+      "storm, to first light. Recline.",
+    pathShareToken: "c62f3672cfc54d5d",
+  },
   {
     id: "kinetic-lab",
     presenting: "the Kinetic Lab",
