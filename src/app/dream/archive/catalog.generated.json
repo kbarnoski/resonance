@@ -1,5 +1,13 @@
 [
  {
+  "slug": "18888-emberfield",
+  "cycle": 18888,
+  "name": "Emberfield",
+  "status": "demoable",
+  "description": "Your memory of one of Karel's recordings as a field of embers that fade unless your attention keeps them warm — so what survives at minute five is a self-portrait of where you look",
+  "category": "local"
+ },
+ {
   "slug": "18816-rerise",
   "cycle": 18816,
   "name": "Rerise",
