@@ -156,9 +156,9 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "the-ascension": [
     {
       "intensityMultiplier": 0.75,
-      "aiPrompt": "extreme macro in deep darkness — a single seed of golden light cracking open at closest range, thin filaments of warm luminance reaching upward out of the split like the first roots of a sunrise, fine gold dust lifting off the fracture, everything beyond the seed soft black with faint violet depth, the awakening small and low in the frame with vast dark above, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "extreme macro in deep darkness — a single seed of golden light cracking open on dark soil at closest range, thin filaments of warm light reaching upward out of the split, fine gold dust lifting off it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "extreme macro in deep darkness — a single seed of golden light cracking open at closest range, thin filaments of warm luminance reaching upward out of the split like the first roots of a sunrise, fine gold dust lifting off the fracture, everything beyond the seed soft black with faint violet depth, the awakening small and low in the frame with vast dark above, no text no signatures no watermarks no letters no writing",
+        "extreme macro in deep darkness — a single seed of golden light cracking open on dark soil at closest range, thin filaments of warm light reaching upward out of the split, fine gold dust lifting off it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "microscopic — inside the seed's crack, a stair of light no wider than a vein climbing out of the dark kernel, gold dust rising through it in single grains, no text no signatures no watermarks no letters no writing",
         "wide — a dark plain under starless black, one small gold glow waking low in the frame, its light reaching upward in a thin first thread, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
@@ -188,9 +188,9 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.75,
-      "aiPrompt": "aerial view looking straight down into a boundless sea of golden cloud filling the entire frame, slow immense swells, deep wells opening where shafts of white-gold light pour down into amber depth, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "aerial view looking straight down into a boundless sea of golden cloud filling the entire frame, slow immense swells, deep wells opening where shafts of white-gold light pour down into amber depth, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "intimate — skimming the radiant cloud-tops, gold vapor curling past the viewpoint, a deep well opening ahead with white-gold light standing in it like a pillar, no text no signatures no watermarks no letters no writing",
         "spirit-hint — over the cloud sea, the light half-gathers into a tall ancestral almost-presence of white-gold, translucent and featureless, standing on nothing, opening back into brightness, no text no signatures no watermarks no letters no writing"
       ],

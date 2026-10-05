@@ -168,5 +168,45 @@
         ]
       }
     }
+  },
+  "round3": {
+    "date": "2026-10-05",
+    "stoneArchFixed": {
+      "Stir Crazy": [
+        1,
+        10,
+        11
+      ],
+      "Held": [
+        5
+      ],
+      "Mystic": [
+        10,
+        13
+      ],
+      "Openings": [
+        15
+      ],
+      "Spectre": [
+        0,
+        15,
+        16
+      ],
+      "Quarantine": [
+        20
+      ],
+      "The Ascension": [
+        0
+      ]
+    },
+    "fallbackCopies": {
+      "Spectre": [
+        [
+          18,
+          11
+        ]
+      ]
+    },
+    "note": "Spectre 18 kept rendering a small figure in fog after 3 rolls (beat rewritten) -> copy of slot 11. Dad's Song II pending a full abstract re-theme (Karel, 2026-10-05) - slot 6 and the journey re-harvest wait for approval."
   }
 }

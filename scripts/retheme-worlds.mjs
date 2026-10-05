@@ -495,10 +495,30 @@ export const BEAT_OVERRIDES = {
     "0.0": "DARK BACKGROUND, close — a shaft of warm afternoon light falling across dark wood grain, dust motes turning gold in the beam",
     "3.0": "intimate spirit-hint — dust in a warm light beam over dark wood gathering briefly into a warmer drift of light, attentive and formless, then loosening back into drifting gold",
     "0.2": "surreal — dark wood grain turning into still dark water, a shaft of light standing in it like a golden pillar, the grain reflected as rippling patterns",
-    "2.0": "monumental — wood grain become instrument, glowing grain arching like the hull of a great cello seen from inside, light moving through it in slow warm waves",
+    "2.0": "monumental — a flat surface of polished wood grain seen straight-on filling the entire frame, its grain sweeping in vast slow curving rivers of warm glowing amber, light moving along them in slow waves",
     "2.2": "aerial surreal — looking down at a vast landscape of honeyed wood grain, a golden beam crossing it far below through honeyed dusk",
     "4.1": "surreal — a soft opening of pale morning light within colossal wood grain, the grain's rivers flowing around it",
     "5.0": "macro finale — a single seam of grain still faintly luminous in the near dark, like a voice remembered by the wood, dim blue dusk around it",
     "5.1": "intimate — the light returned as night-blue on dark wood, the grain's shapes soft charcoal, one thin line of warmth along it",
   },
+  // Stone/arch pass (approved 2026-10-05): no arches, doorways, portals,
+  // windows or stone slabs.
+  [ids["Stir Crazy"]]: {
+    "0.0": "DARK BACKGROUND, macro — one dry leaf trembling on dark ground, ember dust crawling across it, violet static licking its curled edge",
+    "2.0": "abstract — a vortex of spiraling ember-and-violet fire-dust at furious glory seen from directly above, filling the frame, leaves flashing gold through the light",
+  },
+  [ids["Held"]]: { "1.1": "abstract — layered warm haze deepening from blue-grey to honey, the glow strengthening softly at its center, soft and enveloping, being drawn kindly in" },
+  [ids["Mystic"]]: {
+    "4.0": "intimate spirit-hint — a slender current of pale light moving between floating translucent crystal planes, formless, tracing their geometry, dimming softly",
+    "5.1": "macro — the open ends of an incomplete circle of faint light at closest range against black, both tips still softly bright, neither reaching for the other yet",
+  },
+  [ids["Openings"]]: { "4.1": "spirit-hint — over the desert floor seen from above, a gold veil of light half-gathers into a soft formless glow, holding a moment before thinning into the air" },
+  [ids["Spectre"]]: {
+    "0.0": "DARK BACKGROUND, macro — one pale wisp of cold light drifting low between dead reeds in an open marsh, silver-blue and slightly iridescent, doubled in black water below",
+    "3.0": "abstract — inside the fog, layers of pearl-grey light with no edges, one paler current of light drifting through unhurried",
+    "3.1": "surreal — banks of brighter fog drifting within the fog, each glowing a slightly different grey, layers of weather receding into the distance",
+    "4.0": "monumental haunting — looking down at black marsh water filling the frame, tall plumes of pale iridescent mist rising from it and slowly turning, passing through one another and leaving brighter seams",
+  },
+  [ids["Quarantine"]]: { "3.2": "intimate — wet garden leaves close up in the rain, dark branches breathing in wind, drops falling from leaf to leaf in relayed sparks of grey light" },
+  [ids["The Ascension"]]: { "0.0": "extreme macro in deep darkness — a single seed of golden light cracking open on dark soil at closest range, thin filaments of warm light reaching upward out of the split, fine gold dust lifting off it" },
 };
