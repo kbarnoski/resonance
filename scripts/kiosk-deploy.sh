@@ -8,6 +8,11 @@ export PATH="$HOME/.nvm/versions/node/v20.20.0/bin:$PATH"
 cd "$(dirname "$0")/.."
 HEAD=$(git rev-parse --short=8 HEAD)
 echo "deploying $HEAD"
+# Was the kiosk window open before we started? Only then may we relaunch
+# it below — never pop the kiosk onto Karel's screen unasked (2026-10-04).
+KIOSK_PROFILE="user-data-dir=$HOME/.tramokyo-chrome"
+KIOSK_WAS_OPEN=0
+pgrep -f "$KIOSK_PROFILE" >/dev/null && KIOSK_WAS_OPEN=1
 launchctl bootout "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
 # Holding page on :3000 during the build — a kiosk page that reloads
 # mid-deploy gets an auto-retrying "updating" screen instead of dying
@@ -51,10 +56,31 @@ for i in $(seq 1 45); do
   PAGE=$(curl -s -m 3 localhost:3000/api/pack/remote | python3 -c "import json,sys;d=json.load(sys.stdin);print((d.get('status') or {}).get('build',''))" 2>/dev/null)
   [ "$PAGE" = "$HEAD" ] && break
 done
+# Post-deploy stall (seen 2026-10-01..04): the page sometimes reports the
+# new build but sits idle (no journey, not playing), or never checks in.
+# A fresh kiosk-browser launch fixes it — do that automatically, but ONLY
+# if the kiosk window was open when the deploy started.
+playing() {
+  curl -s -m 3 localhost:3000/api/pack/remote | python3 -c "import json,sys;d=json.load(sys.stdin);s=d.get('status') or {};print('yes' if s.get('build')=='$HEAD' and s.get('isPlaying') else 'no')" 2>/dev/null
+}
+STALLED=1
 if [ "$PAGE" = "$HEAD" ]; then
-  echo "page OK ($PAGE) — kiosk fully on $HEAD"
+  for i in $(seq 1 15); do [ "$(playing)" = "yes" ] && { STALLED=0; break; }; sleep 2; done
+fi
+if [ $STALLED -eq 1 ] && [ $KIOSK_WAS_OPEN -eq 1 ]; then
+  echo "page ${PAGE:+on $PAGE but }not playing — relaunching the kiosk browser"
+  pkill -f "$KIOSK_PROFILE"; sleep 2
+  nohup scripts/tramokyo-kiosk.sh > /tmp/kiosk-launch.log 2>&1 &
+  for i in $(seq 1 45); do sleep 2; [ "$(playing)" = "yes" ] && { STALLED=0; break; }; done
+fi
+if [ $STALLED -eq 0 ]; then
+  echo "page OK ($HEAD) and playing — kiosk fully on $HEAD"
+elif [ "$PAGE" = "$HEAD" ] && [ $KIOSK_WAS_OPEN -eq 0 ]; then
+  echo "page OK ($PAGE) — kiosk fully on $HEAD (window was closed; not relaunched)"
+elif [ $KIOSK_WAS_OPEN -eq 0 ]; then
+  echo "server on $HEAD; kiosk window is closed (not relaunched) — open Tramokyo.app to watch"
 else
-  echo "WARNING: page build not confirmed (last seen '${PAGE:-none}') — send another reload or check the kiosk window"
+  echo "WARNING: kiosk still not playing $HEAD after a relaunch (last seen '${PAGE:-none}') — check the kiosk window"
   exit 2
 fi
 if [ $# -ge 1 ]; then
