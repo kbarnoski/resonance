@@ -17,6 +17,18 @@ if ! npx vitest run src/lib/journeys/mastered-lock.test.ts > /tmp/mastered-lock.
   exit 3
 fi
 echo "mastered lock OK"
+# Every pack recording must be in the pack's audio index, or the kiosk
+# silently skips it (2026-10-05: all 7 Vigil tracks were skipped because
+# their files were copied without manifest.json entries).
+MISSING=$(python3 - <<'PYEOF'
+import json
+m=json.load(open("public/tramokyo-pack/manifest.json"))["audio"]
+r=json.load(open("public/tramokyo-pack/data/recordings.json"))
+print(", ".join(x.get("title","?") for x in r if x["id"] not in m))
+PYEOF
+)
+if [ -n "$MISSING" ]; then echo "REFUSED: pack recordings missing from manifest.json audio: $MISSING"; exit 4; fi
+echo "pack audio index OK"
 # Was the kiosk window open before we started? Only then may we relaunch
 # it below — never pop the kiosk onto Karel's screen unasked (2026-10-04).
 KIOSK_PROFILE="user-data-dir=$HOME/.tramokyo-chrome"
