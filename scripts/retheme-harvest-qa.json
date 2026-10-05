@@ -1,28 +1,172 @@
 {
   "date": "2026-10-05",
   "note": "Pack stills still carrying a sun/moon-like disc after the $50 budget was reached (no figures/planets/hearts/aurora remain among QA'd stills). Re-roll per journey: delete images/journeys/<id>/gen-NNN.jpg then run harvest-journey-images.mjs --journey=<id> --treatment=tramokyo (no --fresh), then delete matching depth png and run harvest-depth-maps.mjs <id>.",
-  "residualSunDiscSlots": {
-    "Torraine 6": [3, 4, 5, 6, 21, 26],
-    "Chemiluminescence": [3, 10, 11, 14, 17, 18, 19],
-    "Loire 2": [11, 13],
-    "Never Forget 4": [6, 7],
-    "Playa": [3, 4, 14, 16, 18],
-    "Isolation": [13, 18, 19, 23],
-    "Message": [22],
-    "Night Wind 11": [3],
-    "Nothing 30": [16],
-    "The Ascension": [8, 9, 10],
-    "2019": [5, 8, 9, 26],
-    "Rolling": [8, 11, 21, 24, 25, 38],
-    "Grace": [17],
-    "Surrounded By Light (March Light)": [38, 39, 40],
-    "Spectre": [13, 22],
-    "Quarantine": [22],
-    "All Together": [27],
-    "Self": [32],
-    "Afterglow": [21],
-    "Welcome Home": [38],
-    "Bath": [20]
-  },
-  "clipsMovedToBackup": "~/resonance-pack-backups/retheme-2026-10-05/clips/ (24 re-themed/re-ordered journeys whose hero clips + travel morphs showed the OLD worlds / beat order)"
+  "residualSunDiscSlots": {},
+  "clipsMovedToBackup": "~/resonance-pack-backups/retheme-2026-10-05/clips/ (24 re-themed/re-ordered journeys whose hero clips + travel morphs showed the OLD worlds / beat order)",
+  "round2": {
+    "date": "2026-10-05",
+    "fixed": "All residual sun/moon-disc slots re-rolled (round 1 as-is, round 2 after per-beat text repairs in retheme-worlds.mjs BEAT_OVERRIDES), plus the coordinator-flagged Welcome Home doorway, Dad's Song II window/room, Testimony 3 lightning, Nothing 30 and Night Wind 2 horizon-glow slots.",
+    "fallbackCopies": {
+      "Nothing 30": [
+        [
+          7,
+          12
+        ],
+        [
+          8,
+          13
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          11,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          16,
+          12
+        ],
+        [
+          17,
+          13
+        ],
+        [
+          23,
+          20
+        ]
+      ],
+      "Welcome Home": [
+        [
+          32,
+          28
+        ],
+        [
+          34,
+          29
+        ],
+        [
+          35,
+          30
+        ]
+      ],
+      "Torraine 6": [
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          26,
+          22
+        ]
+      ],
+      "Chemiluminescence": [
+        [
+          18,
+          14
+        ]
+      ],
+      "Loire 2": [
+        [
+          11,
+          7
+        ]
+      ],
+      "Never Forget 4": [
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "Isolation": [
+        [
+          18,
+          21
+        ],
+        [
+          19,
+          26
+        ],
+        [
+          23,
+          20
+        ]
+      ],
+      "Rolling": [
+        [
+          11,
+          14
+        ]
+      ],
+      "Testimony 3": [
+        [
+          14,
+          11
+        ],
+        [
+          15,
+          12
+        ]
+      ]
+    },
+    "fallbackNote": "[dst, src] = slot gen-dst replaced by a copy of passing still gen-src (>= 3 slots away) after 3+ failed rolls; the beat text was repaired for future harvests.",
+    "flaggedForKarel": {
+      "Welcome Home 23-27": "the re-written arrival beat now renders a warm lit house seen from its garden path (no doorway close-up, no figures) - home architecture, kept; replace with copies or re-roll if Karel reads it as cliche",
+      "Dad's Song II 6": "a literal cello (instrument), from the cello-hull beat",
+      "stone/arch pass (not fixed, budget)": {
+        "Stir Crazy": [
+          1,
+          10,
+          11
+        ],
+        "Held": [
+          5
+        ],
+        "Mystic": [
+          10,
+          13
+        ],
+        "Openings": [
+          15
+        ],
+        "Spectre": [
+          0,
+          15,
+          16,
+          18
+        ],
+        "Quarantine": [
+          20
+        ],
+        "The Ascension": [
+          0
+        ]
+      }
+    }
+  }
 }

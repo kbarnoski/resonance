@@ -188,9 +188,9 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.75,
-      "aiPrompt": "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "aerial view looking straight down into a boundless sea of golden cloud filling the entire frame, slow immense swells, deep wells opening where shafts of white-gold light pour down into amber depth, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "aerial view looking straight down into a boundless sea of golden cloud filling the entire frame, slow immense swells, deep wells opening where shafts of white-gold light pour down into amber depth, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "intimate — skimming the radiant cloud-tops, gold vapor curling past the viewpoint, a deep well opening ahead with white-gold light standing in it like a pillar, no text no signatures no watermarks no letters no writing",
         "spirit-hint — over the cloud sea, the light half-gathers into a tall ancestral almost-presence of white-gold, translucent and featureless, standing on nothing, opening back into brightness, no text no signatures no watermarks no letters no writing"
       ],

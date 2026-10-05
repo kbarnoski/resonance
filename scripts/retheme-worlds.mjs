@@ -113,7 +113,7 @@ export const RETHEME = {
     world: "quiet living light in still tide pools and a calm bay",
     why: "Slow, introspective and suspended = light that glows from within still water, not breaking waves; the single subdominant bloom = the whole calm bay softly alight.",
     micro: "a cluster of tiny living sparks of green-gold light suspended in clear dark water",
-    abstract: "soft clouds of glowing light diffusing slowly through dark water",
+    abstract: "soft drifts of glowing light suspended in clear dark water, seen from directly above, the water filling the frame",
     phases: [
       "DARK BACKGROUND — a still rock pool at night, one tiny point of cold green-gold light glimmering beneath the surface in the lower left",
       "looking straight down into still dark shallows filling the frame, faint living glows gathering small green-gold clouds of light drifting under the dark surface, inward and calm",
@@ -181,11 +181,11 @@ export const RETHEME = {
     world: "a warm luminous emptiness — honey-grey haze and one amber mote",
     why: "The emptiness stays (the name), but the music is warm, tender major — so the void is warm umber and honey, not cold silver; the full-hearted peak opens the haze around a calm center.",
     micro: "fine grains of warm amber dust drifting through soft dark haze, seen close",
-    abstract: "slow horizontal veils of warm haze at many depths in darkness",
+    abstract: "an abstract texture of slow horizontal veils of warm haze layered in darkness, the glow spread evenly along them",
     phases: [
       "DARK BACKGROUND — an immense empty dark with the faintest horizontal veils of warm grey haze at different depths, a fine drift of warm dust grains crossing the lower right",
       "the veils of warm haze drifting slowly past one another, their edges catching a soft honey light, fine warm dust drifting between them",
-      "the haze deepening into wide umber shadows between the veils, fine dust drifting slowly through them, searching",
+      "abstract — the haze deepening into wide umber shade between the veils, fine dust drifting slowly through them",
       "a vast warm haze filling the entire frame in every direction, layered veils of honey and rose glowing softly from within above and below, the light diffused evenly through all of them, fine warm dust drifting through every layer like held breaths, a softer darker hollow right of middle, full-hearted",
       "the veils swaying gently back into long quiet strata, the warm light dimming to soft grey-gold",
       "DARK BACKGROUND — near-total warm dark, a faint drift of warm dust settling low in the frame",
@@ -297,7 +297,7 @@ export const RETHEME = {
     world: "the lone pine island in fog — the hopeful doorway removed",
     why: "The measured 'hollow return' is drained and numb, not a door of hope; the fog closes back in, cold and grey.",
     micro: "fog beads on dark pine needles, cold and grey",
-    abstract: "dense cold fog drifting in slow layers over dark water",
+    abstract: "dense cold fog drifting in slow even grey layers over dark water, seen from above",
     phases: [0, 1, 2, "the fog closing in around the small island again, the light dimmed to a cold pale grey, the single pine still and small in the vast grey, drained and quiet", 4, 5],
   },
   "8997623d-8770-41ce-863d-f359d1a213c4": {
@@ -444,3 +444,61 @@ Object.assign(RETHEME["a5de2004-f606-4277-a4cb-032c35e56c43"], { kind: "re-order
 Object.assign(RETHEME["f0362f24-75f1-4717-8487-cc9cf12c7bcc"], { kind: "re-order", world: "same waking-forest world — beats re-ordered", why: "The forest-waking monument lands on the measured homecoming glow; the quiet open-fifth farewell (last 20%) holds the resting valley instead of a bright aerial.", phases: [0, 1, 3, 2, 5, 5] });
 Object.assign(RETHEME["800ed3f9-08d4-4b73-8a32-86ed8370e752"], { kind: "re-order", world: "same marsh-wisp world — beats re-ordered", why: "The standing curtains of pale light now land on the measured peak (1:54–2:15); the aerial marsh takes the plateau.", phases: [0, 1, 4, 3, 2, 5] });
 Object.assign(RETHEME["46216435-4340-4ad4-9033-101e66fb29e7"], { kind: "re-order", world: "same burned-forest regrowth — beats re-ordered", why: "Love Again peaks EARLY (0:25–1:00, falling shape): the monumental bloom moves to the peak, the fern-shoot macro follows.", phases: [0, 2, 1, 3, 4, 5] });
+
+// Per-beat repairs from harvest QA (2026-10-05): slots that kept rendering
+// sun/moon discs, horizons, people or architecture. Keyed "phase.shot".
+const ids = Object.fromEntries(Object.entries(RETHEME).map(([id, e]) => [e.name, id]));
+export const BEAT_OVERRIDES = {
+  [ids["2019"]]: {
+    "1.0": "landscape — looking down across a rolling meadow from just above the grass, long amber light raking along the grass tips in stripes, seed-fluff glowing as it crosses the beams",
+    "2.0": "aerial — warm golden light across meadows and orchards seen from high above, layered ridges filling the entire frame in honeyed tones",
+    "4.2": "close — a dark ridge-line seen from above, gold fading to rose along its crest, the day's colors beginning their descent",
+  },
+  [ids["Torraine 6"]]: {
+    "1.0": "looking straight down at the broad dark river surface filling the entire frame up to its top edge, a few muted ribbons of reflected light trembling as long streaks on the water, dusty rose and slate",
+    "5.0": "looking straight down at still dark water filling the entire frame, a single muted ribbon of reflected light on its surface",
+  },
+  [ids["Loire 2"]]: {
+    "4.0": "looking straight down at the slow river surface filling the entire frame, gold reflections fading to muted rose and slate, still and reflective, nostalgic",
+    "5.0": "looking straight down at the river surface between trailing willow leaves filling the frame, a quiet mirror, one last warm reflection on the current",
+  },
+  [ids["Never Forget 4"]]: { "1.0": "looking straight down at the wet tidal flats filling the frame, a cloud shadow dimming the pools to slate, thin ribbons of water threading between them" },
+  [ids["Playa"]]: {
+    "0.2": "close — looking down at the cracked clay mosaic from knee height, curled edges lit on one side in rose light, dark all around",
+    "3.1": "aerial — looking straight down at the cracked basin filling the frame, a pale pattern of cracked land among dark ridges, glowing faintly",
+  },
+  [ids["Isolation"]]: {
+    "2.0": "aerial — looking straight down at a vast fog sea filling the frame, the small island a speck of held light, slow fog-swells crossing",
+    "2.2": "aerial — looking straight down at the grey fog shroud filling the frame, one small warm point of light showing through it",
+  },
+  [ids["Message"]]: { "4.2": "aerial — looking straight down at the shoreline, faint teal light rising and falling along the water's edge in slow synchrony, the message received everywhere" },
+  [ids["Night Wind 11"]]: { "1.0": "looking down at dark hills from above, warm air rising, a few long cloud ribbons unspooling over them, their edges lit pale gold" },
+  [ids["The Ascension"]]: { "2.0": "aerial view looking straight down into a boundless sea of golden cloud filling the entire frame, slow immense swells, deep wells opening where shafts of white-gold light pour down into amber depth" },
+  [ids["Rolling"]]: {
+    "1.2": "intimate — down in the fog at the valley floor, the world a pearl-grey room of mist, a dark ridge looming above",
+    "3.1": "a small bright pool of gold light traveling across the hills seen from above, touching them one by one",
+    "4.0": "aerial — looking straight down at an ocean of hills filling the entire frame, waves of light, shadow and low cloud traveling across them in grand overlapping swells, the largest cresting off-center",
+    "5.2": "aerial finale — the rolling country seen from high above at night, ridgelines faint as sleeping waves, one last seam of green-gold along a crest",
+  },
+  [ids["Surrounded By Light (March Light)"]]: { "4.2": "wide — inside the forest clearing, the light beams softening into general gold, mist lifting off the ground in bright sheets between dark trunks" },
+  [ids["Spectre"]]: { "5.1": "intimate — looking straight down at black seamless water filling the frame, one last iridescent sheen crossing it like breath on glass" },
+  [ids["Quarantine"]]: { "4.1": "over the wet roofs seen from above, a drift of pale rain-mist glowing softly above the one amber skylight before thinning into weather" },
+  [ids["All Together"]]: { "4.1": "seen from above the moving river, its glow rising as a broad low mist of light keeping pace with the water" },
+  [ids["Self"]]: { "5.2": "aerial finale — looking straight down at a dark mountainside filling the frame, a single gold point of light on it, the smallest self holding everything" },
+  [ids["Afterglow"]]: { "5.2": "aerial finale — looking straight down at the dark ridge at full night, the faintest rose stain on the rock where the warmth was" },
+  [ids["Bath"]]: { "5.1": "surreal — looking straight down through clear water, slow descending veils of amber settling into the deep" },
+  [ids["Welcome Home"]]: {
+    "3.0": "monumental arrival — warm gold light flooding out across the dark garden from the lit house, every leaf and stem edged with amber, the dusk pushed back to the hedges where it waits soft and blue",
+    "3.2": "spirit-hint — in the garden's flood of warm gold, the light half-gathers among the leaves into a soft drifting glow, translucent and formless, then opens back into brightness",
+  },
+  [ids["Dad's Song II"]]: {
+    "0.0": "DARK BACKGROUND, close — a shaft of warm afternoon light falling across dark wood grain, dust motes turning gold in the beam",
+    "3.0": "intimate spirit-hint — dust in a warm light beam over dark wood gathering briefly into a warmer drift of light, attentive and formless, then loosening back into drifting gold",
+    "0.2": "surreal — dark wood grain turning into still dark water, a shaft of light standing in it like a golden pillar, the grain reflected as rippling patterns",
+    "2.0": "monumental — wood grain become instrument, glowing grain arching like the hull of a great cello seen from inside, light moving through it in slow warm waves",
+    "2.2": "aerial surreal — looking down at a vast landscape of honeyed wood grain, a golden beam crossing it far below through honeyed dusk",
+    "4.1": "surreal — a soft opening of pale morning light within colossal wood grain, the grain's rivers flowing around it",
+    "5.0": "macro finale — a single seam of grain still faintly luminous in the near dark, like a voice remembered by the wood, dim blue dusk around it",
+    "5.1": "intimate — the light returned as night-blue on dark wood, the grain's shapes soft charcoal, one thin line of warmth along it",
+  },
+};

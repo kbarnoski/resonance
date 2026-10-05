@@ -20,7 +20,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createJiti } from "jiti";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { RETHEME } from "./retheme-worlds.mjs";
+import { RETHEME, BEAT_OVERRIDES } from "./retheme-worlds.mjs";
 import { groupPhases } from "./lib/phase-grouping.mjs";
 
 const DRY = process.argv.includes("--dry-run");
@@ -141,6 +141,12 @@ for (const [id, entry] of Object.entries(RETHEME)) {
       analysisRole: role, gradeAs: ROLE_GRADE[role], analysisSections: g.sections,
     };
   });
+  for (const [k, text] of Object.entries(BEAT_OVERRIDES[id] ?? {})) {
+    const [pi, si] = k.split(".").map(Number);
+    const seq = [...newPhases[pi].aiPromptSequence];
+    seq[si] = withTail(text);
+    newPhases[pi] = { ...newPhases[pi], aiPromptSequence: seq, ...(si === 0 ? { aiPrompt: seq[0] } : {}) };
+  }
   const changed = perm.some((p, i) => p !== i);
   report.push({
     id, name: entry.name, kind: perm.some((p) => typeof p === "string") ? "re-theme" : perm.some((p, i) => p !== i) ? "re-order" : "arc",
