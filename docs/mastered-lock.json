@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-05T16:01:05.843Z",
+  "updated": "2026-10-05T22:07:36.881Z",
   "journeys": {
     "ghost": {
       "definition": "66a38a10f81f6446",
@@ -18,15 +18,6 @@
       "finaleShader": "095a76a4b4e4a4eb",
       "legacySlideshow": "true",
       "packStills": "138640da67831bdc"
-    },
-    "inferno": {
-      "definition": "8ce24a4e0c1be1a9",
-      "scriptedTake": "a517d3a6fa4f8cc9",
-      "introStill": "74234e98afe7498f",
-      "finaleStill": "74234e98afe7498f",
-      "finaleShader": "74234e98afe7498f",
-      "legacySlideshow": "true",
-      "packStills": "7f072d7dc26a0fa4"
     }
   }
 }

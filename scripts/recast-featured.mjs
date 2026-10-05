@@ -96,7 +96,9 @@ function paletteFamilies(p) { const core = new Set(), near = new Set(); for (con
 function fit(mode, pf) { const h = V[mode]?.hue ?? "neutral"; if (pf.core.has(h)) return 3; if (pf.near.has(h)) return 2; if (h === "prismatic" || h === "neutral") return 1; return 0; }
 
 // ── journeys ──
-const masteredLike = (id, name) => MASTERED_JOURNEYS.has(id) || ["snowflake", "realized", "ghost"].includes((name ?? "").trim().toLowerCase());
+// Realized is no longer mastered (2026-10-05) but its scripted shader take
+// owns its shaders, so it is still never cast here.
+const masteredLike = (id, name) => MASTERED_JOURNEYS.has(id) || id === "inferno" || ["snowflake", "realized", "ghost"].includes((name ?? "").trim().toLowerCase());
 const { data: rows, error } = await sb.from("journeys").select("id,name,realm_id,phases,theme,recording_id");
 if (error) throw error;
 const dbById = new Map(rows.map((r) => [r.id, r]));

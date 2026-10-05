@@ -9,6 +9,7 @@ import {
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
 import { SCRIPTED_TAKES } from "./pinned-takes";
 import { MASTERED_JOURNEYS } from "./mastered";
+import { SCRIPTED_TAKES } from "./pinned-takes";
 import { journeyLayerGain, expansionLayerGain, isKineticJourneyName, isWhisperImageryName } from "./kinetic";
 import { SHADER_SUPPORT_GAIN } from "@/lib/shaders/shader-gain.generated";
 import { MODE_META, MODES_3D } from "@/lib/shaders";
@@ -69,7 +70,9 @@ describe("featured + album recast: coverage", () => {
 
   it("casts every non-mastered built-in, and never a mastered, Kinetic Lab or Expansion journey", () => {
     for (const j of JOURNEYS) {
-      if (MASTERED_JOURNEYS.has(j.id)) {
+      // Realized left the mastered lock 2026-10-05 but keeps its scripted
+      // shader take (Karel's mastered roster), so it stays uncast.
+      if (MASTERED_JOURNEYS.has(j.id) || SCRIPTED_TAKES[j.id]) {
         expect(JOURNEY_CASTS[j.id], j.id).toBeUndefined();
         expect(getJourneyCast(j)).toBeNull();
         expect(castJourneyShaders(j)).toBeNull();
@@ -211,9 +214,11 @@ describe("the engine plays the cast", () => {
 describe("brightness gain reaches every journey except the mastered three and the Kinetic Lab", () => {
   const bright = Object.keys(SHADER_SUPPORT_GAIN).find((m) => SHADER_SUPPORT_GAIN[m] < 0.9)!;
 
-  it("leaves the mastered three at full level (built-in ids, shared-row ids by name)", () => {
+  it("leaves Snowflake + Ghost at full level (built-in ids, shared-row ids by name)", () => {
     for (const id of MASTERED_JOURNEYS) expect(journeyLayerGain({ id, name: getJourney(id)!.name }, bright)).toBe(1);
-    for (const name of ["Snowflake", "Realized", "Ghost"]) expect(journeyLayerGain({ id: "db-uuid", name }, bright)).toBe(1);
+    for (const name of ["Snowflake", "Ghost"]) expect(journeyLayerGain({ id: "db-uuid", name }, bright)).toBe(1);
+    // Realized gets the global features now (Karel 2026-10-05), gain included.
+    expect(journeyLayerGain({ id: "inferno", name: "Realized" }, bright)).toBeLessThan(1);
   });
 
   it("leaves the Kinetic Lab at full level", () => {

@@ -11,7 +11,6 @@ export const ANALYSIS_FROZEN_RECORDINGS: Readonly<Record<string, string>> = {
   // Final mastering — Snowflake EP
   "549fc519-f7fc-4c38-a771-adaad2edbc81": "Ghost (KB_GHOST_REF_2.0) — journey ghost, LOCKED",
   "734a09ce-84df-4f1f-93c1-11b08d303681": "Snowflake (KB_SFLAKE_TK5_MOOG_REF_2.0) — journey first-snow",
-  "6f58d401-1cd0-479e-a252-5d34dc636e3d": "Realized (KB_REALIZED_REF_2.0) — journey inferno",
   // Mastered Kinetic Lab journeys
   "3a3e196f-2abf-49de-8c91-e743f15d5bd1": "Chemiluminescence 1 — Kinetic Lab",
   "f6a70f3b-65fb-45a0-a380-4d2e2ff0ae7d": "Rolling 2 — Kinetic Lab",
