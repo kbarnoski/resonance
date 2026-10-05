@@ -275,6 +275,13 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
 };
 
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
+  // Measured full-screen washes / flicker (scripts/shader-vetting.json,
+  // 2026-10-05): they lift the black floor or brighten the frame even
+  // when dimmed — "full screen ones that brighten the screen and makes
+  // things look banded and low quality" (Karel). Never in rotation.
+  "agape", "cascade", "empyrean", "numinous", "portal", "r2-kelvin", "r2-marble",
+  "r3-heatshimmer", "r3-peelingbark", "r3-shadowflow", "revelation", "swell",
+  "thermal", "whirlpool", "lightning", "biolume",
   "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"
   "quasar", "neon", // Karel 2026-09-29 LAW: no full-screen intensity monsters anywhere — "shaders that interplay with the images in a perfect dance"
   "doppler", // Karel 2026-09-29: THE "pulsing full screen shader" (played in both flagged sessions; r3-coralpulse was the wrong guess)
