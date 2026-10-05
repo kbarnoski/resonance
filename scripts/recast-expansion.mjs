@@ -43,6 +43,14 @@
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync, writeFileSync } from "node:fs";
 
+// 2026-10-05: per-phase intensities on the Expansion now come from the v2
+// deep analysis (scripts/retheme-report.json). This script's older
+// note-energy intensities would overwrite them — refuse unless explicit.
+if (!process.argv.includes("--overwrite-measured-arcs")) {
+  console.error("recast-expansion: refusing — it would overwrite the v2 measured arcs. Re-run the re-theme after, or pass --overwrite-measured-arcs.");
+  process.exit(1);
+}
+
 const DRY = process.argv.includes("--dry-run");
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 const vet = JSON.parse(readFileSync("scripts/shader-vetting.json", "utf8"));

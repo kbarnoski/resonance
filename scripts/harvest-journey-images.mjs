@@ -275,7 +275,7 @@ async function main() {
         if (TREATMENT === "tramokyo") {
           // Grade goes on BOTH branches — it is color/light only, so it
           // re-tints strict-camera journeys without fighting their framing.
-          varied = `${varied}, ${app.tramokyoGradeForPhase(phase.id)}`;
+          varied = `${varied}, ${app.tramokyoGradeForPhase(phase.gradeAs ?? phase.id)}`;
         }
 
         plan.push({ target: t, stem, dir, prompt: varied, tail, phaseId: phase.id ?? null });
