@@ -9,7 +9,6 @@ import {
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
 import { SCRIPTED_TAKES } from "./pinned-takes";
 import { MASTERED_JOURNEYS } from "./mastered";
-import { SCRIPTED_TAKES } from "./pinned-takes";
 import { journeyLayerGain, expansionLayerGain, isKineticJourneyName, isWhisperImageryName } from "./kinetic";
 import { SHADER_SUPPORT_GAIN } from "@/lib/shaders/shader-gain.generated";
 import { MODE_META, MODES_3D } from "@/lib/shaders";
