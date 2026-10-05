@@ -1,0 +1,685 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// particle-engine.ts — Resonance's real GPU particle system (WebGL2).
+//
+// Why: every journey layer today is a full-screen fragment shader where
+// "particles" are faked per pixel and the music arrives as a handful of
+// uniforms. Here every particle is a real simulated body (100k–1M), and EACH
+// one listens to its OWN frequency band: the FFT is folded into 128 log bands
+// and uploaded every frame as a texture the simulation samples per particle.
+//
+// Architecture (one frame):
+//   1. SIM   — GPGPU: N×N RGBA32F position(+age) / velocity textures,
+//              ping-ponged, both written in one MRT pass. Soul force laws
+//              (vortex · smoke · bloom · murmuration) blend during a soul
+//              change, so a transition is the particles FLOWING into a new
+//              structure — never a cut.
+//   2. DRAW  — gl.POINTS × N², attribute-less (texelFetch by gl_VertexID),
+//              soft gaussian sprites at native DPR, additive into an RGBA16F
+//              HDR target that carries trail persistence (prev × decay).
+//   3. LUM   — every few frames: mip-downsample the HDR frame to 16×16 and
+//              read it back ASYNC (PBO + fence, no stall) → mean displayed
+//              luminance → the exposure governor (governExposure): global
+//              brightness may only drift ≤2%/update. WCAG 2.3.1: the music
+//              never drives brightness; this is the backstop for density.
+//   4. COMP  — tonemap 1-e^(-x·exposure), sRGB, black-gated dither → canvas.
+//
+// The audio contract is SpectrumFrame (spectrum.ts). Pass a getter in
+// options.audio; null = silence (the field idles, alive but calm).
+//
+// Probe: `stats()` (fps, count, bands, swell, lum, sampled particle state) —
+// the dream proto mirrors it to window.__resonanceParticles.
+// ─────────────────────────────────────────────────────────────────────────────
+
+import {
+  QUAD_VS,
+  SIM_FS,
+  DRAW_VS,
+  DRAW_FS,
+  FADE_FS,
+  LUM_FS,
+  COMP_FS,
+} from "./shaders";
+import {
+  SOULS,
+  soulById,
+  lerpPalette,
+  texSideFor,
+  governExposure,
+  type SoulId,
+  type ParticlePalette,
+} from "./souls";
+import type { SpectrumFrame } from "./spectrum";
+
+export interface ParticleEngineOptions {
+  /** Requested particle count (rounded to a square texture). Default 409,600. */
+  count?: number;
+  /** Device-pixel-ratio cap. Default min(devicePixelRatio, 2). */
+  dpr?: number;
+  soul?: SoulId;
+  /** Override the soul palettes (casting into a journey's colours). */
+  palette?: ParticlePalette | null;
+  /** Audio source, polled once per frame. Return null for silence. */
+  audio?: (dt: number) => SpectrumFrame | null;
+  /** Sprite base diameter in CSS px. Default 2.2. */
+  pointSize?: number;
+  onContextLost?: () => void;
+}
+
+export interface ParticleStats {
+  fps: number;
+  /** 5th-percentile fps over the last ~2 s (stutter detector). */
+  fpsLow: number;
+  frameMs: number;
+  count: number;
+  texSide: number;
+  dpr: number;
+  width: number;
+  height: number;
+  soul: SoulId;
+  transition: number;
+  bands: { bass: number; mid: number; treble: number };
+  bandLevels: { bass: number; mid: number; treble: number };
+  rates: { bass: number; mid: number; treble: number };
+  swell: number;
+  onsets: number;
+  audio: boolean;
+  exposure: number;
+  meanLum: number;
+  /** Largest |Δ meanLum| between consecutive lum readings so far. */
+  maxLumStep: number;
+  /** Sampled particle state (one texture row, async readback). */
+  state: {
+    meanSpeed: number;
+    speedByBand: [number, number, number];
+    meanRadius: number;
+    radiusByBand: [number, number, number];
+    samples: number;
+    t: number;
+  };
+  frames: number;
+}
+
+export interface ParticleEngine {
+  start(): void;
+  stop(): void;
+  dispose(): void;
+  setSoul(id: SoulId, seconds?: number): void;
+  setPalette(p: ParticlePalette | null): void;
+  setCount(n: number): void;
+  setAudio(fn: ParticleEngineOptions["audio"]): void;
+  resize(): void;
+  stats(): ParticleStats;
+}
+
+// ── tiny mat4 helpers (column-major) ─────────────────────────────────────────
+function perspective(fovy: number, aspect: number, near: number, far: number): Float32Array {
+  const f = 1 / Math.tan(fovy / 2);
+  const nf = 1 / (near - far);
+  return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);
+}
+function lookAt(e: number[], c: number[], up: number[]): Float32Array {
+  let zx = e[0] - c[0], zy = e[1] - c[1], zz = e[2] - c[2];
+  let l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+  let xx = up[1] * zz - up[2] * zy, xy = up[2] * zx - up[0] * zz, xz = up[0] * zy - up[1] * zx;
+  l = Math.hypot(xx, xy, xz); xx /= l; xy /= l; xz /= l;
+  const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+  return new Float32Array([
+    xx, yx, zx, 0, xy, yy, zy, 0, xz, yz, zz, 0,
+    -(xx * e[0] + xy * e[1] + xz * e[2]), -(yx * e[0] + yy * e[1] + yz * e[2]), -(zx * e[0] + zy * e[1] + zz * e[2]), 1,
+  ]);
+}
+function mul(a: Float32Array, b: Float32Array): Float32Array {
+  const o = new Float32Array(16);
+  for (let i = 0; i < 4; i++)
+    for (let j = 0; j < 4; j++) {
+      let s = 0;
+      for (let k = 0; k < 4; k++) s += a[k * 4 + j] * b[i * 4 + k];
+      o[i * 4 + j] = s;
+    }
+  return o;
+}
+
+// ── GL helpers ───────────────────────────────────────────────────────────────
+type GL = WebGL2RenderingContext;
+
+function compile(gl: GL, type: number, src: string): WebGLShader {
+  const s = gl.createShader(type)!;
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+    const log = gl.getShaderInfoLog(s);
+    gl.deleteShader(s);
+    throw new Error(`particle shader compile: ${log}`);
+  }
+  return s;
+}
+
+interface Prog {
+  p: WebGLProgram;
+  u: Record<string, WebGLUniformLocation | null>;
+}
+function program(gl: GL, vs: string, fs: string): Prog {
+  const p = gl.createProgram()!;
+  const v = compile(gl, gl.VERTEX_SHADER, vs);
+  const f = compile(gl, gl.FRAGMENT_SHADER, fs);
+  gl.attachShader(p, v);
+  gl.attachShader(p, f);
+  gl.linkProgram(p);
+  gl.deleteShader(v);
+  gl.deleteShader(f);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(`particle link: ${gl.getProgramInfoLog(p)}`);
+  const u: Prog["u"] = {};
+  const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS) as number;
+  for (let i = 0; i < n; i++) {
+    const info = gl.getActiveUniform(p, i);
+    if (info) u[info.name] = gl.getUniformLocation(p, info.name);
+  }
+  return { p, u };
+}
+
+function floatTex(gl: GL, w: number, h: number, data: Float32Array | null): WebGLTexture {
+  const t = gl.createTexture()!;
+  gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w, h, 0, gl.RGBA, gl.FLOAT, data);
+  return t;
+}
+
+/** Async GPU→CPU read: PBO + fence, polled on later frames (never stalls). */
+class AsyncRead {
+  private pbo: WebGLBuffer;
+  private sync: WebGLSync | null = null;
+  readonly out: Float32Array;
+  constructor(private gl: GL, floats: number) {
+    this.out = new Float32Array(floats);
+    this.pbo = gl.createBuffer()!;
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    gl.bufferData(gl.PIXEL_PACK_BUFFER, floats * 4, gl.STREAM_READ);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+  }
+  get busy() { return this.sync !== null; }
+  /** Read from the currently bound READ_FRAMEBUFFER / readBuffer. */
+  request(x: number, y: number, w: number, h: number) {
+    const gl = this.gl;
+    if (this.sync) return;
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    gl.readPixels(x, y, w, h, gl.RGBA, gl.FLOAT, 0);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+    this.sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+    gl.flush();
+  }
+  /** True when fresh data landed in `out`. */
+  poll(): boolean {
+    const gl = this.gl;
+    if (!this.sync) return false;
+    const st = gl.getSyncParameter(this.sync, gl.SYNC_STATUS);
+    if (st !== gl.SIGNALED) return false;
+    gl.deleteSync(this.sync);
+    this.sync = null;
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, this.out);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+    return true;
+  }
+  dispose() {
+    if (this.sync) this.gl.deleteSync(this.sync);
+    this.gl.deleteBuffer(this.pbo);
+  }
+}
+
+export class ParticleEngineUnsupported extends Error {}
+
+/** Throws ParticleEngineUnsupported when WebGL2 float render targets are missing. */
+export function createParticleEngine(
+  canvas: HTMLCanvasElement,
+  opts: ParticleEngineOptions = {},
+): ParticleEngine {
+  const gl = canvas.getContext("webgl2", {
+    antialias: false,
+    alpha: false,
+    depth: false,
+    stencil: false,
+    premultipliedAlpha: false,
+    preserveDrawingBuffer: false,
+    powerPreference: "high-performance",
+  });
+  if (!gl) throw new ParticleEngineUnsupported("WebGL2 unavailable");
+  if (!gl.getExtension("EXT_color_buffer_float"))
+    throw new ParticleEngineUnsupported("float render targets unavailable");
+
+  const BINS = 128;
+  let audioFn = opts.audio ?? null;
+  let paletteOverride: ParticlePalette | null = opts.palette ?? null;
+  const pointCss = opts.pointSize ?? 2.2;
+
+  const sim = program(gl, QUAD_VS, SIM_FS);
+  const draw = program(gl, DRAW_VS, DRAW_FS);
+  const fade = program(gl, QUAD_VS, FADE_FS);
+  const lum = program(gl, QUAD_VS, LUM_FS);
+  const comp = program(gl, QUAD_VS, COMP_FS);
+  const vao = gl.createVertexArray();
+
+  // ── spectrum texture ─────────────────────────────────────────────────────
+  const specData = new Float32Array(BINS * 2);
+  const specTex = gl.createTexture()!;
+  gl.bindTexture(gl.TEXTURE_2D, specTex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG16F, BINS, 1, 0, gl.RG, gl.FLOAT, specData);
+
+  // ── particle state ───────────────────────────────────────────────────────
+  let side = texSideFor(opts.count ?? 409_600);
+  let count = side * side;
+  let posTex: WebGLTexture[] = [];
+  let velTex: WebGLTexture[] = [];
+  let seedTex: WebGLTexture | null = null;
+  let simFbo: WebGLFramebuffer[] = [];
+  let seedBand = new Float32Array(0); // CPU copy of row 0 bands (probe)
+  let cur = 0;
+  let stateRead: AsyncRead | null = null;
+  let velRead: AsyncRead | null = null;
+
+  function buildParticles() {
+    for (const t of [...posTex, ...velTex]) gl!.deleteTexture(t);
+    if (seedTex) gl!.deleteTexture(seedTex);
+    for (const f of simFbo) gl!.deleteFramebuffer(f);
+    stateRead?.dispose();
+    velRead?.dispose();
+
+    count = side * side;
+    const pos = new Float32Array(count * 4);
+    const seed = new Float32Array(count * 4);
+    for (let i = 0; i < count; i++) {
+      // uniform ball, slight disk bias: the first frame is already a nebula
+      const u = Math.random(), v = Math.random(), w = Math.cbrt(Math.random()) * 1.6;
+      const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1);
+      pos[i * 4] = Math.sin(ph) * Math.cos(th) * w;
+      pos[i * 4 + 1] = Math.cos(ph) * w * 0.4;
+      pos[i * 4 + 2] = Math.sin(ph) * Math.sin(th) * w;
+      pos[i * 4 + 3] = Math.random() * 15; // staggered ages
+      // band: skew toward the lower half (piano lives low-mid), keep a dusting of treble
+      seed[i * 4] = Math.pow(Math.random(), 1.25);
+      seed[i * 4 + 1] = Math.random();
+      seed[i * 4 + 2] = Math.random();
+      seed[i * 4 + 3] = Math.random();
+    }
+    seedBand = new Float32Array(side);
+    for (let x = 0; x < side; x++) seedBand[x] = seed[x * 4];
+    posTex = [floatTex(gl!, side, side, pos), floatTex(gl!, side, side, null)];
+    velTex = [floatTex(gl!, side, side, new Float32Array(count * 4)), floatTex(gl!, side, side, null)];
+    seedTex = floatTex(gl!, side, side, seed);
+    simFbo = [0, 1].map((k) => {
+      const f = gl!.createFramebuffer()!;
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, f);
+      gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, posTex[k], 0);
+      gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT1, gl!.TEXTURE_2D, velTex[k], 0);
+      gl!.drawBuffers([gl!.COLOR_ATTACHMENT0, gl!.COLOR_ATTACHMENT1]);
+      if (gl!.checkFramebufferStatus(gl!.FRAMEBUFFER) !== gl!.FRAMEBUFFER_COMPLETE)
+        throw new ParticleEngineUnsupported("sim framebuffer incomplete");
+      return f;
+    });
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+    cur = 0;
+    stateRead = new AsyncRead(gl!, side * 4);
+    velRead = new AsyncRead(gl!, side * 4);
+    fadeIn = 0;
+  }
+
+  // ── HDR targets ──────────────────────────────────────────────────────────
+  let W = 1, H = 1, levels = 1;
+  let hdrTex: WebGLTexture[] = [];
+  let hdrFbo: WebGLFramebuffer[] = [];
+  let hcur = 0;
+  const lumTex = floatTex(gl, 16, 16, null);
+  const lumFbo = gl.createFramebuffer()!;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, lumFbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, lumTex, 0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  const lumRead = new AsyncRead(gl, 16 * 16 * 4);
+  const dprCap = opts.dpr ?? Math.min(window.devicePixelRatio || 1, 2);
+  let dpr = dprCap;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+    const r = canvas.getBoundingClientRect();
+    const w = Math.max(16, Math.round(r.width * dpr));
+    const h = Math.max(16, Math.round(r.height * dpr));
+    if (w === W && h === H && hdrTex.length) return;
+    W = w; H = h;
+    canvas.width = W;
+    canvas.height = H;
+    for (const t of hdrTex) gl!.deleteTexture(t);
+    for (const f of hdrFbo) gl!.deleteFramebuffer(f);
+    levels = Math.floor(Math.log2(Math.max(W, H))) + 1;
+    hdrTex = [0, 1].map(() => {
+      const t = gl!.createTexture()!;
+      gl!.bindTexture(gl!.TEXTURE_2D, t);
+      gl!.texStorage2D(gl!.TEXTURE_2D, levels, gl!.RGBA16F, W, H);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, gl!.LINEAR_MIPMAP_LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, gl!.LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
+      return t;
+    });
+    hdrFbo = hdrTex.map((t) => {
+      const f = gl!.createFramebuffer()!;
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, f);
+      gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, t, 0);
+      gl!.clearColor(0, 0, 0, 1);
+      gl!.clear(gl!.COLOR_BUFFER_BIT);
+      return f;
+    });
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+  }
+
+  // ── soul + camera state ─────────────────────────────────────────────────
+  let soulA = soulById(opts.soul ?? "vortex");
+  let soulB = soulA;
+  let mix = 0;
+  let mixDur = 7;
+  let az = 0;
+  let exposure = 1;
+  let meanLum = 0;
+  let lastLum = -1;
+  let maxLumStep = 0;
+  let fadeIn = 0;
+  const clocks = { bass: 0, mid: 0, treble: 0 };
+  let lastFrame: SpectrumFrame | null = null;
+
+  const state: ParticleStats["state"] = {
+    meanSpeed: 0, speedByBand: [0, 0, 0], meanRadius: 0, radiusByBand: [0, 0, 0], samples: 0, t: 0,
+  };
+  const frameTimes: number[] = [];
+  let fpsEma = 60;
+  let frames = 0;
+  let time = 0;
+  let raf = 0;
+  let running = false;
+  let lastT = 0;
+  let lost = false;
+
+  const onLost = (e: Event) => {
+    e.preventDefault();
+    lost = true;
+    running = false;
+    cancelAnimationFrame(raf);
+    opts.onContextLost?.();
+  };
+  canvas.addEventListener("webglcontextlost", onLost);
+
+  buildParticles();
+  resize();
+
+  function bindTex(unit: number, tex: WebGLTexture | null, loc: WebGLUniformLocation | null | undefined) {
+    gl!.activeTexture(gl!.TEXTURE0 + unit);
+    gl!.bindTexture(gl!.TEXTURE_2D, tex);
+    if (loc) gl!.uniform1i(loc, unit);
+  }
+
+  function frame(now: number) {
+    if (!running || lost) return;
+    raf = requestAnimationFrame(frame);
+    const g = gl!;
+    const rawDt = lastT ? (now - lastT) / 1000 : 1 / 60;
+    lastT = now;
+    const dt = Math.min(1 / 20, Math.max(1 / 240, rawDt));
+    time += dt;
+    frames++;
+
+    // fps bookkeeping (raw, unclamped)
+    if (rawDt > 0 && rawDt < 1) {
+      frameTimes.push(rawDt);
+      if (frameTimes.length > 120) frameTimes.shift();
+      fpsEma += (1 / rawDt - fpsEma) * 0.05;
+    }
+
+    resize();
+
+    // ── audio → spectrum texture ───────────────────────────────────────────
+    const f = audioFn ? audioFn(dt) : null;
+    lastFrame = f;
+    if (f) {
+      for (let i = 0; i < BINS; i++) {
+        const k = Math.min(f.bins - 1, Math.floor((i / BINS) * f.bins));
+        specData[i * 2] = f.levels[k];
+        specData[i * 2 + 1] = f.drive[k];
+      }
+    } else {
+      for (let i = 0; i < BINS * 2; i++) specData[i] *= 0.94;
+    }
+    g.bindTexture(g.TEXTURE_2D, specTex);
+    g.texSubImage2D(g.TEXTURE_2D, 0, 0, 0, BINS, 1, g.RG, g.FLOAT, specData);
+    const rates = f?.rates ?? { bass: 1, mid: 1, treble: 1 };
+    clocks.bass += dt * rates.bass;
+    clocks.mid += dt * rates.mid;
+    clocks.treble += dt * rates.treble;
+
+    // ── soul transition ───────────────────────────────────────────────────
+    if (soulB !== soulA) {
+      mix = Math.min(1, mix + dt / mixDur);
+      if (mix >= 1) { soulA = soulB; mix = 0; }
+    }
+    const e = mix * mix * (3 - 2 * mix);
+    const smokeW = (soulA.id === "smoke" ? 1 - e : 0) + (soulB !== soulA && soulB.id === "smoke" ? e : 0);
+
+    // ── 1. SIM ────────────────────────────────────────────────────────────
+    const nxt = 1 - cur;
+    g.disable(g.BLEND);
+    g.bindVertexArray(vao);
+    g.bindFramebuffer(g.FRAMEBUFFER, simFbo[nxt]);
+    g.viewport(0, 0, side, side);
+    g.useProgram(sim.p);
+    bindTex(0, posTex[cur], sim.u.uPos);
+    bindTex(1, velTex[cur], sim.u.uVel);
+    bindTex(2, seedTex, sim.u.uSeed);
+    bindTex(3, specTex, sim.u.uSpec);
+    g.uniform1f(sim.u.uDt, dt);
+    g.uniform1f(sim.u.uTime, time);
+    g.uniform3f(sim.u.uClock, clocks.bass, clocks.mid, clocks.treble);
+    g.uniform3f(sim.u.uBands, f?.bands.bass ?? 0, f?.bands.mid ?? 0, f?.bands.treble ?? 0);
+    g.uniform3f(sim.u.uBandLv, f?.bandLevels.bass ?? 0, f?.bandLevels.mid ?? 0, f?.bandLevels.treble ?? 0);
+    g.uniform1f(sim.u.uSwell, f?.swell ?? 0);
+    g.uniform1i(sim.u.uSoulA, soulA.index);
+    g.uniform1i(sim.u.uSoulB, soulB.index);
+    g.uniform1f(sim.u.uMix, soulB === soulA ? 0 : e);
+    g.uniform1i(sim.u.uTexW, side);
+    g.uniform1f(sim.u.uCount, count);
+    g.uniform1f(sim.u.uSmokeW, smokeW);
+    g.drawArrays(g.TRIANGLES, 0, 3);
+    cur = nxt;
+
+    // sampled particle state for the probe (row 0, async)
+    if (stateRead && velRead) {
+      if (stateRead.poll()) digestState(stateRead.out, "pos");
+      if (velRead.poll()) digestState(velRead.out, "vel");
+      if (frames % 12 === 0 && !stateRead.busy && !velRead.busy) {
+        g.bindFramebuffer(g.READ_FRAMEBUFFER, simFbo[cur]);
+        g.readBuffer(g.COLOR_ATTACHMENT0);
+        stateRead.request(0, 0, side, 1);
+        g.readBuffer(g.COLOR_ATTACHMENT1);
+        velRead.request(0, 0, side, 1);
+        g.bindFramebuffer(g.READ_FRAMEBUFFER, null);
+      }
+    }
+
+    // ── camera + palette ──────────────────────────────────────────────────
+    const lerp = (a: number, b: number) => a + (b - a) * e;
+    az += dt * lerp(soulA.camSpin, soulB.camSpin);
+    const elev = lerp(soulA.camElev, soulB.camElev);
+    const dist = lerp(soulA.camDist, soulB.camDist);
+    const eye = [Math.cos(az) * Math.cos(elev) * dist, Math.sin(elev) * dist, Math.sin(az) * Math.cos(elev) * dist];
+    const proj = perspective(0.85, W / H, 0.05, 50);
+    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
+    const vp = mul(proj, view);
+    const pal = paletteOverride ?? lerpPalette(soulA.palette, soulB.palette, e);
+    const trail = lerp(soulA.trail, soulB.trail);
+    const intensity = lerp(soulA.intensity, soulB.intensity);
+    fadeIn = Math.min(1, fadeIn + dt / 2.5);
+
+    // ── 2. FADE + DRAW into HDR ───────────────────────────────────────────
+    const hn = 1 - hcur;
+    g.bindFramebuffer(g.FRAMEBUFFER, hdrFbo[hn]);
+    g.viewport(0, 0, W, H);
+    g.useProgram(fade.p);
+    bindTex(0, hdrTex[hcur], fade.u.uPrev);
+    g.uniform1f(fade.u.uDecay, Math.pow(trail, dt * 60));
+    g.drawArrays(g.TRIANGLES, 0, 3);
+
+    g.enable(g.BLEND);
+    g.blendFunc(g.ONE, g.ONE);
+    g.useProgram(draw.p);
+    bindTex(0, posTex[cur], draw.u.uPos);
+    bindTex(1, velTex[cur], draw.u.uVel);
+    bindTex(2, seedTex, draw.u.uSeed);
+    g.uniformMatrix4fv(draw.u.uVP, false, vp);
+    g.uniform1i(draw.u.uTexW, side);
+    g.uniform1f(draw.u.uPointPx, pointCss * dpr);
+    g.uniform1f(draw.u.uFocal, dist);
+    // energy normalised to count so density presets stay in the same budget;
+    // trails accumulate ~1/(1-trail), compensate so souls sit at equal energy
+    const alpha = 0.06 * intensity * fadeIn * (409_600 / count) * (1 - trail * 0.85);
+    g.uniform1f(draw.u.uAlpha, alpha);
+    g.uniform3fv(draw.u.uPalLow, pal.low);
+    g.uniform3fv(draw.u.uPalMid, pal.mid);
+    g.uniform3fv(draw.u.uPalHigh, pal.high);
+    g.uniform1f(draw.u.uSmokeW, smokeW);
+    g.drawArrays(g.POINTS, 0, count);
+    g.disable(g.BLEND);
+    hcur = hn;
+
+    // ── 3. LUM governor (async) ───────────────────────────────────────────
+    if (lumRead.poll()) {
+      let s = 0;
+      for (let i = 0; i < 256; i++) s += lumRead.out[i * 4];
+      const m = s / 256;
+      if (lastLum >= 0) maxLumStep = Math.max(maxLumStep, Math.abs(m - lastLum));
+      lastLum = m;
+      meanLum = m;
+      exposure = governExposure(exposure, meanLum);
+    }
+    if (frames % 4 === 0 && !lumRead.busy) {
+      g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
+      g.generateMipmap(g.TEXTURE_2D);
+      g.bindFramebuffer(g.FRAMEBUFFER, lumFbo);
+      g.viewport(0, 0, 16, 16);
+      g.useProgram(lum.p);
+      bindTex(0, hdrTex[hcur], lum.u.uHdr);
+      g.uniform1f(lum.u.uLod, Math.max(0, Math.log2(Math.max(W, H) / 16)));
+      g.uniform1f(lum.u.uExposure, exposure);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      g.bindFramebuffer(g.READ_FRAMEBUFFER, lumFbo);
+      g.readBuffer(g.COLOR_ATTACHMENT0);
+      lumRead.request(0, 0, 16, 16);
+      g.bindFramebuffer(g.READ_FRAMEBUFFER, null);
+    }
+
+    // ── 4. COMPOSITE ──────────────────────────────────────────────────────
+    g.bindFramebuffer(g.FRAMEBUFFER, null);
+    g.viewport(0, 0, W, H);
+    g.useProgram(comp.p);
+    bindTex(0, hdrTex[hcur], comp.u.uHdr);
+    g.uniform1f(comp.u.uExposure, exposure);
+    g.drawArrays(g.TRIANGLES, 0, 3);
+    g.bindVertexArray(null);
+  }
+
+  let pendingPos: Float32Array | null = null;
+  function digestState(buf: Float32Array, kind: "pos" | "vel") {
+    if (kind === "pos") { pendingPos = buf.slice(); return; }
+    const n = side;
+    let sp = 0, rr = 0;
+    const sb = [0, 0, 0], rb = [0, 0, 0], cb = [0, 0, 0];
+    for (let x = 0; x < n; x++) {
+      const v = Math.hypot(buf[x * 4], buf[x * 4 + 1], buf[x * 4 + 2]);
+      const r = pendingPos ? Math.hypot(pendingPos[x * 4], pendingPos[x * 4 + 1], pendingPos[x * 4 + 2]) : 0;
+      const b = seedBand[x] < 0.33 ? 0 : seedBand[x] < 0.66 ? 1 : 2;
+      sp += v; rr += r; sb[b] += v; rb[b] += r; cb[b]++;
+    }
+    state.meanSpeed = sp / n;
+    state.meanRadius = rr / n;
+    state.speedByBand = [0, 1, 2].map((k) => (cb[k] ? sb[k] / cb[k] : 0)) as [number, number, number];
+    state.radiusByBand = [0, 1, 2].map((k) => (cb[k] ? rb[k] / cb[k] : 0)) as [number, number, number];
+    state.samples = n;
+    state.t = time;
+  }
+
+  return {
+    start() {
+      if (running || lost) return;
+      running = true;
+      lastT = 0;
+      raf = requestAnimationFrame(frame);
+    },
+    stop() {
+      running = false;
+      cancelAnimationFrame(raf);
+    },
+    dispose() {
+      running = false;
+      cancelAnimationFrame(raf);
+      canvas.removeEventListener("webglcontextlost", onLost);
+      if (lost) return;
+      stateRead?.dispose();
+      velRead?.dispose();
+      lumRead.dispose();
+      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex]) gl.deleteTexture(t);
+      if (seedTex) gl.deleteTexture(seedTex);
+      for (const fb of [...simFbo, ...hdrFbo, lumFbo]) gl.deleteFramebuffer(fb);
+      for (const p of [sim, draw, fade, lum, comp]) gl.deleteProgram(p.p);
+      gl.deleteVertexArray(vao);
+    },
+    setSoul(id, seconds = 7) {
+      const next = soulById(id);
+      if (soulB !== soulA) { soulA = soulB; mix = 0; } // settle a transition in flight
+      if (next === soulA) return;
+      soulB = next;
+      mix = 0;
+      mixDur = Math.max(0.5, seconds);
+    },
+    setPalette(p) { paletteOverride = p; },
+    setCount(n) {
+      const s = texSideFor(n);
+      if (s === side) return;
+      side = s;
+      buildParticles();
+    },
+    setAudio(fn) { audioFn = fn ?? null; },
+    resize,
+    stats(): ParticleStats {
+      const sorted = [...frameTimes].sort((a, b) => b - a);
+      const p95 = sorted.length ? sorted[Math.floor(sorted.length * 0.05)] : 1 / 60;
+      const lf = lastFrame;
+      return {
+        fps: Math.round(fpsEma * 10) / 10,
+        fpsLow: Math.round((1 / p95) * 10) / 10,
+        frameMs: Math.round((1000 / fpsEma) * 100) / 100,
+        count,
+        texSide: side,
+        dpr,
+        width: W,
+        height: H,
+        soul: (soulB !== soulA ? soulB : soulA).id,
+        transition: soulB !== soulA ? mix : 0,
+        bands: lf ? { ...lf.bands } : { bass: 0, mid: 0, treble: 0 },
+        bandLevels: lf ? { ...lf.bandLevels } : { bass: 0, mid: 0, treble: 0 },
+        rates: lf ? { ...lf.rates } : { bass: 1, mid: 1, treble: 1 },
+        swell: lf?.swell ?? 0,
+        onsets: lf?.onsets ?? 0,
+        audio: !!lf,
+        exposure,
+        meanLum,
+        maxLumStep,
+        state: { ...state, speedByBand: [...state.speedByBand], radiusByBand: [...state.radiusByBand] },
+        frames,
+      };
+    },
+  };
+}
+
+export { SOULS };
+export type { SoulId, ParticlePalette };
