@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-05T~01:30Z
 
+> **Jury verdict today**: Rigorous and productive, but we've shipped 15 straight variations of "one body, one webcam, one piano take on a screen" — the memory lane is the real gold; tomorrow, get off the webcam or out of the single take. See `docs/dreams/JURY.md`.
+
 > **MEMORY is now a lineage.** Three fires, three memory mechanisms: `sediment` (accretion — deposit permanent strata) → `rerise` (retrieval — descend to re-audition, dwelling reconsolidates) → today `emberfield` (**forgetting** — embers fade unless you look at them). That's the parallel to the two cycle-3 DSP finishes: a brand-new category proven it can *sustain*, not stall as a one-off.
 
 ## New since yesterday
