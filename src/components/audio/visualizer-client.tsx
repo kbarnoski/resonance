@@ -19,6 +19,7 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 import { useShallow } from "zustand/react/shallow";
 import { MODES_AI, AI_MODE_PROMPTS, SHADERS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, getNativeAnalyser, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
+import { particleLeadFor, withParticleLeadSupports } from "@/lib/journeys/particle-lead";
 import { useInstallationMode } from "@/lib/audio/use-installation-mode";
 import { useJourney } from "@/lib/journeys/use-journey";
 import { useStoryGeneration } from "@/lib/journeys/use-story";
@@ -633,10 +634,17 @@ export function VisualizerClient({
   useKioskRemote(installationMode ? null : "room");
 
   // Isolate primary shader — strips dual/tertiary when toggled with R key
+  // A particle-lead journey also runs ONE supporting shader (perf budget +
+  // the lead reads as the lead) — src/lib/journeys/particle-lead.ts.
+  const particleLead = useMemo(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("particles") === "0") return null;
+    return particleLeadFor(activeJourney);
+  }, [activeJourney]);
   const journeyFrame = useMemo(() => {
-    if (!rawJourneyFrame || !isolatePrimary) return rawJourneyFrame;
-    return { ...rawJourneyFrame, dualShaderMode: undefined, tertiaryShaderMode: undefined };
-  }, [rawJourneyFrame, isolatePrimary]);
+    if (!rawJourneyFrame) return rawJourneyFrame;
+    if (isolatePrimary) return { ...rawJourneyFrame, dualShaderMode: undefined, tertiaryShaderMode: undefined };
+    return withParticleLeadSupports(rawJourneyFrame, particleLead);
+  }, [rawJourneyFrame, isolatePrimary, particleLead]);
 
   // Installation mode auto-cycling
   useInstallationMode();
@@ -1793,6 +1801,8 @@ export function VisualizerClient({
         aiOnly={isAiOnlyMode && !journeyActive /* 2026-09-25: a stored AI-only viz mode must not black-fill over a journey's shaders */}
         aiGenerating={isPlaying}
         journeyId={activeJourney?.id}
+        journeyName={activeJourney?.name}
+        analyser={analyser}
         enableBassFlash={activeJourney?.enableBassFlash}
         localImageUrls={activeJourney?.localImageUrls}
       >

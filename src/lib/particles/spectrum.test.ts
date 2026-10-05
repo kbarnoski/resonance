@@ -91,13 +91,32 @@ describe("luminance governor (WCAG 2.3.1 backstop)", () => {
 });
 
 describe("souls", () => {
-  it("has four distinct souls with indices matching the shader branches", () => {
-    expect(SOULS.map((s) => s.index)).toEqual([0, 1, 2, 3]);
-    expect(new Set(SOULS.map((s) => s.id)).size).toBe(4);
+  it("has five distinct souls with indices matching the shader branches", () => {
+    expect(SOULS.map((s) => s.index)).toEqual([0, 1, 2, 3, 4]);
+    expect(new Set(SOULS.map((s) => s.id)).size).toBe(5);
   });
   it("texSideFor rounds to a clamped square", () => {
     expect(texSideFor(409_600)).toBe(640);
     expect(texSideFor(10)).toBe(64);
     expect(texSideFor(5e6)).toBe(1024);
+  });
+});
+
+describe("kinetic source (shared journey analyser)", () => {
+  it("maps virtual bins onto the kinetic EQ band split, a third each", () => {
+    const p = new SpectrumProcessor({ bins: 96, source: "kinetic" });
+    const bytes = new Uint8Array(128);
+    // energy only in FFT bins 0-5 (the kinetic "bass")
+    for (let i = 0; i <= 5; i++) bytes[i] = 0;
+    for (let f = 0; f < 120; f++) { p.ingestBytes(bytes); p.step(1 / 60); }
+    for (let i = 0; i <= 5; i++) bytes[i] = 230;
+    for (let f = 0; f < 12; f++) { p.ingestBytes(bytes); p.step(1 / 60); }
+    expect(p.bands.bass).toBeGreaterThan(0.2);
+    expect(Math.abs(p.bands.mid)).toBeLessThan(0.02);
+    expect(Math.abs(p.bands.treble)).toBeLessThan(0.02);
+    // first third of the virtual bins carry the bass
+    expect(p.levels[0]).toBeGreaterThan(0.3);
+    expect(p.levels[31]).toBeGreaterThan(0.3);
+    expect(p.levels[32]).toBeLessThan(0.05);
   });
 });

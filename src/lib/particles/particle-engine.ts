@@ -45,6 +45,9 @@ import {
   lerpPalette,
   texSideFor,
   governExposure,
+  dissolveEnvelope,
+  DISSOLVE_SEC,
+  DISSOLVE_SNAP_SEC,
   type SoulId,
   type ParticlePalette,
 } from "./souls";
@@ -63,6 +66,13 @@ export interface ParticleEngineOptions {
   /** Sprite base diameter in CSS px. Default 2.2. */
   pointSize?: number;
   onContextLost?: () => void;
+  /** Transparent canvas (premultiplied; black = see-through) so the field can
+   *  composite additively over a journey's scene. Default false (opaque black). */
+  transparent?: boolean;
+  /** Multiplier on every soul's trail persistence (0 = no trails). Default 1. */
+  trailScale?: number;
+  /** Overall energy multiplier (layer gain). Default 1. */
+  gain?: number;
 }
 
 export interface ParticleStats {
@@ -97,6 +107,8 @@ export interface ParticleStats {
     t: number;
   };
   frames: number;
+  density: number;
+  dissolve: number | null;
 }
 
 export interface ParticleEngine {
@@ -107,6 +119,17 @@ export interface ParticleEngine {
   setPalette(p: ParticlePalette | null): void;
   setCount(n: number): void;
   setAudio(fn: ParticleEngineOptions["audio"]): void;
+  /** World visibility fraction 0..1 (sparse motes ↔ full field); glides. */
+  setDensity(d: number): void;
+  /**
+   * Image dissolve ↔ reform: the field becomes the PREVIOUS still, breaks
+   * into a music-driven swirl and reassembles into `next`. The first call
+   * only primes the outgoing slot (returns false). Returns true when a
+   * dissolve started; false if one is already running.
+   */
+  dissolveTo(next: HTMLCanvasElement | HTMLImageElement | ImageBitmap | ImageData, aspect: number, start?: boolean): boolean;
+  /** Seconds into the running dissolve, or null. */
+  dissolveTime(): number | null;
   resize(): void;
   stats(): ParticleStats;
 }
@@ -237,12 +260,15 @@ export function createParticleEngine(
   canvas: HTMLCanvasElement,
   opts: ParticleEngineOptions = {},
 ): ParticleEngine {
+  const transparent = !!opts.transparent;
+  const trailScale = opts.trailScale ?? 1;
+  const layerGain = opts.gain ?? 1;
   const gl = canvas.getContext("webgl2", {
     antialias: false,
-    alpha: false,
+    alpha: transparent,
     depth: false,
     stencil: false,
-    premultipliedAlpha: false,
+    premultipliedAlpha: transparent,
     preserveDrawingBuffer: false,
     powerPreference: "high-performance",
   });
@@ -390,6 +416,25 @@ export function createParticleEngine(
   let fadeIn = 0;
   const clocks = { bass: 0, mid: 0, treble: 0 };
   let lastFrame: SpectrumFrame | null = null;
+  let density = 1;
+  let densityTarget = 1;
+
+  // ── image slots (A = outgoing still, B = incoming) ──────────────────────
+  const mkImgTex = () => {
+    const t = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+    return t;
+  };
+  let imgTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
+  let imgAspect: [number, number] = [16 / 9, 16 / 9];
+  let haveB = false;
+  let dissolveT: number | null = null;
+  let snapped = false;
 
   const state: ParticleStats["state"] = {
     meanSpeed: 0, speedByBand: [0, 0, 0], meanRadius: 0, radiusByBand: [0, 0, 0], samples: 0, t: 0,
@@ -465,7 +510,38 @@ export function createParticleEngine(
       if (mix >= 1) { soulA = soulB; mix = 0; }
     }
     const e = mix * mix * (3 - 2 * mix);
-    const smokeW = (soulA.id === "smoke" ? 1 - e : 0) + (soulB !== soulA && soulB.id === "smoke" ? e : 0);
+    const soulW = (id: SoulId) => (soulA.id === id ? 1 - e : 0) + (soulB !== soulA && soulB.id === id ? e : 0);
+    const smokeW = soulW("smoke");
+    const motesW = soulW("motes");
+
+    // world density glides (~2.5 s) — motes appear/vanish one by one
+    density += (densityTarget - density) * (1 - Math.exp(-dt / 2.5));
+
+    // dissolve timeline
+    let snapNow = false;
+    if (dissolveT !== null) {
+      const prevT = dissolveT;
+      dissolveT += dt;
+      if (!snapped && prevT < DISSOLVE_SNAP_SEC && dissolveT >= DISSOLVE_SNAP_SEC) { snapNow = true; snapped = true; }
+      if (dissolveT >= DISSOLVE_SEC) dissolveT = null;
+    }
+    const env = dissolveEnvelope(dissolveT);
+
+    // camera (the image plane faces it, so compute before the sim)
+    const lerp = (a: number, b: number) => a + (b - a) * e;
+    az += dt * lerp(soulA.camSpin, soulB.camSpin);
+    const elev = lerp(soulA.camElev, soulB.camElev);
+    const dist = lerp(soulA.camDist, soulB.camDist);
+    const eye = [Math.cos(az) * Math.cos(elev) * dist, Math.sin(elev) * dist, Math.sin(az) * Math.cos(elev) * dist];
+    const FOV = 0.85;
+    const proj = perspective(FOV, W / H, 0.05, 50);
+    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
+    const vp = mul(proj, view);
+    // camera basis from the view matrix rows (column-major)
+    const right = [view[0], view[4], view[8]];
+    const up = [view[1], view[5], view[9]];
+    const halfH = dist * Math.tan(FOV / 2);
+    const halfW = halfH * (W / H);
 
     // ── 1. SIM ────────────────────────────────────────────────────────────
     const nxt = 1 - cur;
@@ -490,6 +566,15 @@ export function createParticleEngine(
     g.uniform1i(sim.u.uTexW, side);
     g.uniform1f(sim.u.uCount, count);
     g.uniform1f(sim.u.uSmokeW, smokeW);
+    g.uniform1f(sim.u.uMotesW, motesW);
+    g.uniform1f(sim.u.uImgForm, env.imgForm);
+    g.uniform1f(sim.u.uImgShow, env.imgShow);
+    g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
+    g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
+    g.uniform3f(sim.u.uPlaneR, right[0] * halfW, right[1] * halfW, right[2] * halfW);
+    g.uniform3f(sim.u.uPlaneU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
+    g.uniform1f(sim.u.uImgAspect, imgAspect[1]);
+    g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
     cur = nxt;
 
@@ -507,17 +592,9 @@ export function createParticleEngine(
       }
     }
 
-    // ── camera + palette ──────────────────────────────────────────────────
-    const lerp = (a: number, b: number) => a + (b - a) * e;
-    az += dt * lerp(soulA.camSpin, soulB.camSpin);
-    const elev = lerp(soulA.camElev, soulB.camElev);
-    const dist = lerp(soulA.camDist, soulB.camDist);
-    const eye = [Math.cos(az) * Math.cos(elev) * dist, Math.sin(elev) * dist, Math.sin(az) * Math.cos(elev) * dist];
-    const proj = perspective(0.85, W / H, 0.05, 50);
-    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
-    const vp = mul(proj, view);
+    // ── palette ───────────────────────────────────────────────────────────
     const pal = paletteOverride ?? lerpPalette(soulA.palette, soulB.palette, e);
-    const trail = lerp(soulA.trail, soulB.trail);
+    const trail = lerp(soulA.trail, soulB.trail) * trailScale;
     const intensity = lerp(soulA.intensity, soulB.intensity);
     fadeIn = Math.min(1, fadeIn + dt / 2.5);
 
@@ -542,12 +619,24 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uFocal, dist);
     // energy normalised to count so density presets stay in the same budget;
     // trails accumulate ~1/(1-trail), compensate so souls sit at equal energy
-    const alpha = 0.06 * intensity * fadeIn * (409_600 / count) * (1 - trail * 0.85);
+    const alpha = 0.06 * layerGain * intensity * fadeIn * (409_600 / count) * (1 - trail * 0.85);
     g.uniform1f(draw.u.uAlpha, alpha);
     g.uniform3fv(draw.u.uPalLow, pal.low);
     g.uniform3fv(draw.u.uPalMid, pal.mid);
     g.uniform3fv(draw.u.uPalHigh, pal.high);
     g.uniform1f(draw.u.uSmokeW, smokeW);
+    g.uniform1f(draw.u.uMotesW, motesW);
+    g.uniform1f(draw.u.uDensity, density);
+    g.uniform1f(draw.u.uWorldFade, env.worldFade);
+    bindTex(3, imgTex[0], draw.u.uImgA);
+    bindTex(4, imgTex[1], draw.u.uImgB);
+    g.uniform1f(draw.u.uColorMix, env.colorMix);
+    g.uniform1f(draw.u.uImgShow, env.imgShow);
+    // an image formed by ~N soft sprites: per-sprite gain so the particle
+    // still sits near (below) the real still's brightness
+    g.uniform1f(draw.u.uImgGain, 0.5 * (409_600 / count) * fadeIn * (W * H) / (2880 * 1800));
+    g.uniform1f(draw.u.uImgAspect, imgAspect[1]);
+    g.uniform1f(draw.u.uScrAspect, W / H);
     g.drawArrays(g.POINTS, 0, count);
     g.disable(g.BLEND);
     hcur = hn;
@@ -584,6 +673,7 @@ export function createParticleEngine(
     g.useProgram(comp.p);
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
     g.uniform1f(comp.u.uExposure, exposure);
+    g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
   }
@@ -627,7 +717,7 @@ export function createParticleEngine(
       stateRead?.dispose();
       velRead?.dispose();
       lumRead.dispose();
-      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex]) gl.deleteTexture(t);
+      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex]) gl.deleteTexture(t);
       if (seedTex) gl.deleteTexture(seedTex);
       for (const fb of [...simFbo, ...hdrFbo, lumFbo]) gl.deleteFramebuffer(fb);
       for (const p of [sim, draw, fade, lum, comp]) gl.deleteProgram(p.p);
@@ -649,6 +739,22 @@ export function createParticleEngine(
       buildParticles();
     },
     setAudio(fn) { audioFn = fn ?? null; },
+    setDensity(d) { densityTarget = Math.max(0, Math.min(1, d)); },
+    dissolveTo(next, aspect, start = true) {
+      if (dissolveT !== null || lost) return false;
+      // B becomes A (the outgoing still), the new still lands in B
+      imgTex = [imgTex[1], imgTex[0]];
+      imgAspect = [imgAspect[1], aspect > 0 ? aspect : 16 / 9];
+      gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, next);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      if (!haveB || !start) { haveB = true; return false; }
+      dissolveT = 0;
+      snapped = false;
+      return true;
+    },
+    dissolveTime() { return dissolveT; },
     resize,
     stats(): ParticleStats {
       const sorted = [...frameTimes].sort((a, b) => b - a);
@@ -676,6 +782,8 @@ export function createParticleEngine(
         maxLumStep,
         state: { ...state, speedByBand: [...state.speedByBand], radiusByBand: [...state.radiusByBand] },
         frames,
+        density,
+        dissolve: dissolveT,
       };
     },
   };

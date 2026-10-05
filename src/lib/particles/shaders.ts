@@ -87,6 +87,19 @@ vec3 hash31(float p){
 }
 `;
 
+// Each particle's home on the image plane: its own texel uv (jittered),
+// cover-fit to the screen like the journey stills (1.06 overscan).
+const IMG_UV = /* glsl */ `
+vec2 imgUv(ivec2 c, vec4 s, int texW){
+  return (vec2(c) + 0.5 + (s.gb - 0.5) * 0.9) / float(texW);
+}
+vec2 coverNdc(vec2 uv, float imgAspect, float scrAspect){
+  vec2 d = (uv - 0.5) * 2.0 * 1.06;
+  if (imgAspect > scrAspect) d.x *= imgAspect / scrAspect; else d.y *= scrAspect / imgAspect;
+  return d;
+}
+`;
+
 export const SIM_FS = /* glsl */ `#version 300 es
 precision highp float;
 precision highp int;
@@ -106,9 +119,20 @@ uniform float uMix;
 uniform int uTexW;
 uniform float uCount;
 uniform float uSmokeW;    // weight of the smoke soul (respawn gate)
+uniform float uMotesW;    // weight of the motes soul (respawn gate)
+// image dissolve / reform (particle-engine dissolveTo)
+uniform float uImgForm;   // spring toward the image plane 0..1
+uniform float uImgShow;   // image presence (dissolve swirl gate)
+uniform float uSnap;      // 1 for one frame: teleport onto the image plane
+uniform vec3 uPlaneC;     // image plane centre (world)
+uniform vec3 uPlaneR;     // plane right × half-width
+uniform vec3 uPlaneU;     // plane up × half-height
+uniform float uImgAspect;
+uniform float uScrAspect;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
+${IMG_UV}
 
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 
@@ -175,6 +199,16 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     vec3 a = (home - p) * 6.0;
     return vec4(a, 3.4);
   }
+  if (soul == 4) {
+    // ── MOTES: glowing seed-lantern embers rising through the dark ──
+    // bass lifts them, mids sway them on a slow curl, treble shimmers.
+    vec3 tv = vec3(0.0, 0.05 + 0.1 * s.b + 0.3 * max(uBands.x, 0.0) * (0.4 + bassW) + 0.25 * up * bassW, 0.0);
+    tv += curlNoise(p * 0.65 + vec3(0.0, -uClock.y * 0.05, uClock.x * 0.02)) * 0.13 * (0.6 + 2.4 * up * midW);
+    tv += (hash31(s.a * 1e3 + floor(uTime * 16.0)) - 0.5) * 0.6 * up * trebW;
+    vec3 a = (tv - v) * 1.6;
+    a.xz -= p.xz * smoothstep(2.2, 3.0, length(p.xz)) * 1.5;
+    return vec4(a, 0.0);
+  }
   // ── MURMURATION: a lagged ribbon chasing a wandering leader ──
   float t = uClock.x * 0.55 - s.g * 4.5;
   vec3 lead = vec3(sin(t * 0.61) * 1.25 + sin(t * 0.23) * 0.3,
@@ -212,11 +246,31 @@ void main(){
   vec4 f = soulForce(uSoulA, p, v, s, fid, lvl, drv);
   if (uMix > 0.001) f = mix(f, soulForce(uSoulB, p, v, s, fid, lvl, drv), uMix);
 
+  // image dissolve / reform: spring onto the image plane; while released,
+  // the particles swirl with their own band (mids curl, bass surges)
+  vec3 imgT = vec3(0.0);
+  if (uImgForm > 0.001 || uImgShow > 0.001 || uSnap > 0.5) {
+    vec2 ndc = coverNdc(imgUv(c, s, uTexW), uImgAspect, uScrAspect);
+    imgT = uPlaneC + uPlaneR * ndc.x + uPlaneU * ndc.y;
+    f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
+    float rel = uImgShow * (1.0 - uImgForm);
+    f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
+  }
+
   v += f.xyz * dt;
   v *= exp(-f.w * dt);
   float sp2 = length(v);
   if (sp2 > 3.5) v *= 3.5 / sp2;
   p += v * dt;
+
+  if (uSnap > 0.5) { p = imgT; v = vec3(0.0); }
+
+  // motes rise and re-enter below (out of view — the draw fades the edges)
+  if (uMotesW > 0.5 && uImgShow < 0.01 && p.y > 2.0) {
+    vec3 r = hash31(s.a * 4271.0 + floor(uTime));
+    p = vec3((r.x - 0.5) * 4.4, -2.0, (r.z - 0.5) * 3.2);
+    v = vec3(0.0);
+  }
 
   float age = P4.w + uDt;
   float life = lifeOf(s);
@@ -254,8 +308,19 @@ uniform vec3 uPalLow;
 uniform vec3 uPalMid;
 uniform vec3 uPalHigh;
 uniform float uSmokeW;
+uniform float uMotesW;
+uniform float uDensity;    // world visibility fraction (1 = all)
+uniform float uWorldFade;  // world element fade (dissolve hides it)
+uniform sampler2D uImgA;   // outgoing still
+uniform sampler2D uImgB;   // incoming still
+uniform float uColorMix;   // A → B
+uniform float uImgShow;    // image presence 0..1
+uniform float uImgGain;
+uniform float uImgAspect;
+uniform float uScrAspect;
 out vec3 vCol;
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
+${IMG_UV}
 void main(){
   int id = gl_VertexID;
   ivec2 c = ivec2(id % uTexW, id / uTexW);
@@ -267,11 +332,18 @@ void main(){
   gl_Position = clip;
 
   float band = s.r;
+  // world visibility: a stable rank per particle; particle 0 is the last
+  // ember (rank 0) so the field can settle to exactly one light
+  float rank = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
+  float visW = uDensity >= 0.999 ? 1.0 : 1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rank);
+  float sparse = 1.0 - clamp(uDensity * 25.0, 0.0, 1.0);
+  float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
+  boost = mix(boost, 1.0, uImgShow);
   // bass = heavier motes, treble = the finest dust
-  float size = mix(1.55, 0.5, band) * (0.65 + 0.7 * s.b * s.b) * uPointPx * (uFocal / clip.w);
+  float size = mix(1.55, 0.5, band) * (0.65 + 0.7 * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost;
   float a = uAlpha;
   if (size < 1.0) { a *= size * size; size = 1.0; }
-  gl_PointSize = min(size, 24.0);
+  gl_PointSize = min(size, 32.0);
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   col = mix(col, uPalHigh, clamp(length(v.xyz) * 0.12, 0.0, 0.25));
@@ -279,7 +351,20 @@ void main(){
   float life = lifeOf(s);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW));
-  vCol = col * a;
+  // motes fade at the top/bottom edges, where they wrap
+  a *= mix(1.0, smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y), smoothstep(0.0, 0.5, uMotesW) * (1.0 - uImgShow));
+  vec3 world = col * a * visW * mix(1.0, 4.0, sparse) * uWorldFade;
+
+  // image mode: the particle wears its pixel of the still (sRGB → linear)
+  vec3 img = vec3(0.0);
+  if (uImgShow > 0.001) {
+    vec2 uv = imgUv(c, s, uTexW);
+    vec3 ia = texture(uImgA, uv).rgb;
+    vec3 ib = texture(uImgB, uv).rgb;
+    img = pow(mix(ia, ib, uColorMix), vec3(2.2));
+    if (size <= 1.0) img *= a / max(uAlpha, 1e-6); // sub-pixel energy rule
+  }
+  vCol = mix(world, img * uImgGain, uImgShow);
 }
 `;
 
@@ -323,6 +408,7 @@ export const COMP_FS = /* glsl */ `#version 300 es
 precision highp float;
 uniform sampler2D uHdr;
 uniform float uExposure;
+uniform float uTransparent; // 1 = premultiplied alpha = brightest channel
 out vec4 o;
 // interleaved-gradient dither (Jimenez) — kills 8-bit banding in the glow
 // falloff; gated off on pure black so the floor stays RGB 0,0,0.
@@ -333,6 +419,9 @@ void main(){
   vec3 t = 1.0 - exp(-h * uExposure);
   vec3 srgb = pow(t, vec3(1.0 / 2.2));
   srgb += (ign(gl_FragCoord.xy) - 0.5) / 255.0 * step(0.002, max(t.r, max(t.g, t.b)));
-  o = vec4(max(srgb, 0.0), 1.0);
+  srgb = max(srgb, 0.0);
+  // transparent: black is fully see-through and light composites additively
+  // (premultiplied, alpha = brightest channel) over whatever lies beneath
+  o = uTransparent > 0.5 ? vec4(srgb, max(srgb.r, max(srgb.g, srgb.b))) : vec4(srgb, 1.0);
 }
 `;

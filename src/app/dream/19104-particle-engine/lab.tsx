@@ -156,6 +156,18 @@ export function LabView() {
         lastSwitchRef.current = performance.now();
       },
       setCount: (c: number) => engine.setCount(c),
+      setDensity: (d: number) => engine.setDensity(d),
+      // image dissolve ↔ reform test hook: two calls (prime, then dissolve)
+      dissolveTo: async (url: string) => {
+        const img = new Image();
+        img.src = url;
+        await img.decode();
+        const cv = document.createElement("canvas");
+        cv.width = 384;
+        cv.height = Math.round((384 * img.naturalHeight) / img.naturalWidth);
+        cv.getContext("2d")?.drawImage(img, 0, 0, cv.width, cv.height);
+        return engine.dissolveTo(cv, img.naturalWidth / img.naturalHeight);
+      },
       setAuto: (on: boolean) => {
         autoRef.current = on;
         setAuto(on);

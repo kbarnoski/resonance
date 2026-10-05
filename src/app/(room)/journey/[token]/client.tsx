@@ -1,5 +1,6 @@
 "use client";
 
+import { particleLeadFor, withParticleLeadSupports } from "@/lib/journeys/particle-lead";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -138,6 +139,9 @@ export function SharedJourneyClient({
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [journeyFrame, setJourneyFrame] = useState<JourneyFrame | null>(null);
+  // opt-in GPU particle lead (read inside the rAF tick via ref)
+  const particleLeadRef = useRef(particleLeadFor(journey));
+  particleLeadRef.current = particleLeadFor(journey);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [shareSheet, setShareSheet] = useState(false);
@@ -828,7 +832,8 @@ export function SharedJourneyClient({
 
         if (visuallyChanged || now - lastFrameTimeRef.current >= FRAME_THROTTLE_MS) {
           lastFrameTimeRef.current = now;
-          setJourneyFrame(newFrame);
+          // particle-lead journeys run ONE supporting shader
+          setJourneyFrame(withParticleLeadSupports(newFrame, particleLeadRef.current));
         }
       }
 
@@ -1163,6 +1168,8 @@ export function SharedJourneyClient({
           enableBassFlash={journey.enableBassFlash}
           promptSeed={playbackSeed ? parseInt(playbackSeed, 10) : undefined}
           journeyId={journey.id}
+          journeyName={journey.name}
+          analyser={analyser}
           localImageUrls={journey.localImageUrls}
         >
           {/* ── Primary shader: A/B buffer ──

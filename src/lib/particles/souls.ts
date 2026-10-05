@@ -14,9 +14,11 @@
 //               breath · mid → petal rotation · treble → shimmer along normals
 //   murmuration bass → flock sweep speed · mid → turning curl · treble →
 //               edge scatter
+//   motes       bass → buoyant lift · mid → slow curl sway · treble → shimmer
+//               (a world element: pair with setDensity for sparse ↔ swarm)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type SoulId = "vortex" | "smoke" | "bloom" | "murmuration";
+export type SoulId = "vortex" | "smoke" | "bloom" | "murmuration" | "motes";
 
 /** Three linear-RGB stops: low band → mid band → high band. */
 export interface ParticlePalette {
@@ -91,6 +93,18 @@ export const SOULS: readonly SoulPreset[] = [
     camSpin: 0.015,
     intensity: 0.95,
   },
+  {
+    id: "motes",
+    index: 4,
+    title: "Lantern Motes",
+    line: "seed-lantern embers rising through the dark",
+    palette: { low: [1.0, 0.5, 0.18], mid: [1.0, 0.7, 0.35], high: [1.0, 0.85, 0.6] },
+    trail: 0.6,
+    camElev: 0.06,
+    camDist: 4.6,
+    camSpin: 0.012,
+    intensity: 1.0,
+  },
 ] as const;
 
 export function soulById(id: SoulId): SoulPreset {
@@ -134,4 +148,47 @@ export function governExposure(
   if (meanLum > cap && meanLum > 1e-6) want = Math.min(base, exposure * (cap / meanLum));
   const ratio = Math.max(1 - maxStep, Math.min(1 + maxStep, want / Math.max(exposure, 1e-6)));
   return Math.max(min, Math.min(base, exposure * ratio));
+}
+
+// ── image dissolve ↔ reform timeline ─────────────────────────────────────────
+/** Total length of one dissolve (s). */
+export const DISSOLVE_SEC = 10.5;
+/** When the field snaps onto the outgoing still (after the world fades). */
+export const DISSOLVE_SNAP_SEC = 0.6;
+
+export interface DissolveEnvelope {
+  /** world element visibility 0..1 */
+  worldFade: number;
+  /** image presence 0..1 (particles wear the stills) */
+  imgShow: number;
+  /** spring toward the image plane 0..1 (0 = released to swirl) */
+  imgForm: number;
+  /** outgoing → incoming still colours */
+  colorMix: number;
+}
+
+const ss = (a: number, b: number, x: number) => {
+  const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+/**
+ * The dissolve, t seconds after a still change (null = idle):
+ *  0.0–0.6  world element fades out (no particle ever pops)
+ *  0.6      snap onto the image plane — invisible (imgShow still 0)
+ *  0.6–2.0  the outgoing still materialises AS particles
+ *  2.3–5.0  it breaks: released into a music-driven swirl, colours turning
+ *           toward the incoming still (2.8–5.5)
+ *  5.0–7.5  reform: the swirl reassembles into the incoming still
+ *  8.3–10.0 the particle still dissolves into the real one beneath
+ *  9.0–10.5 the world element returns
+ * Every ramp is a smoothstep — nothing in this sequence is abrupt.
+ */
+export function dissolveEnvelope(t: number | null): DissolveEnvelope {
+  if (t === null || t < 0 || t >= DISSOLVE_SEC) return { worldFade: 1, imgShow: 0, imgForm: 0, colorMix: 0 };
+  const worldFade = 1 - ss(0, DISSOLVE_SNAP_SEC, t) + ss(9.0, DISSOLVE_SEC, t);
+  const imgShow = ss(0.6, 2.0, t) * (1 - ss(8.3, 10.0, t));
+  const imgForm = t < 5.0 ? ss(0.1, DISSOLVE_SNAP_SEC, t) * (1 - ss(2.3, 5.0, t)) : ss(5.0, 7.5, t) * (1 - ss(9.6, DISSOLVE_SEC, t));
+  const colorMix = ss(2.8, 5.5, t);
+  return { worldFade: Math.min(1, worldFade), imgShow, imgForm, colorMix };
 }

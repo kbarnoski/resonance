@@ -14,6 +14,9 @@ import type { JourneyFrame } from "@/lib/journeys/types";
 import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+import { ParticleLeadLayer } from "./particle-lead-layer";
+import { particleLeadFor } from "@/lib/journeys/particle-lead";
+import type { AnalyserLike } from "@/lib/audio/audio-engine";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
@@ -34,6 +37,10 @@ interface JourneyCompositorProps {
   enableBassFlash?: boolean;
   /** When present, cycle these URLs as imagery instead of generating via AI */
   localImageUrls?: string[];
+  /** Journey display name (mastered guard for the particle lead) */
+  journeyName?: string;
+  /** The analyser the shader stack reads — the particle lead hears the same one */
+  analyser?: AnalyserLike | null;
   children: React.ReactNode;
 }
 
@@ -68,8 +75,17 @@ export function JourneyCompositor({
   journeyId,
   enableBassFlash: enableBassFlashProp = false,
   localImageUrls,
+  journeyName,
+  analyser = null,
   children,
 }: JourneyCompositorProps) {
+  // Opt-in GPU particle lead actor (src/lib/journeys/particle-lead.ts) —
+  // null for every journey not cast, and always for mastered journeys.
+  // `?particles=0` turns it off for an A/B look at the same journey.
+  const particleLead = useMemo(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("particles") === "0") return null;
+    return particleLeadFor({ id: journeyId, name: journeyName });
+  }, [journeyId, journeyName]);
   // Tier gate: bass flash is heavy (full-screen overlay + animated SVG +
   // shader spike). Disable on low-tier devices regardless of journey opt-in.
   const enableBassFlash = enableBassFlashProp && getTierProfile().enableBassFlash;
@@ -433,6 +449,14 @@ export function JourneyCompositor({
       )}
 
       </ImageryErrorBoundary>
+
+      {/* Particle lead actor — additive above imagery + shaders, below post.
+          Own boundary: a GPU failure drops the lead, never the show. */}
+      {particleLead && journeyId && (
+        <ImageryErrorBoundary resetKey={journeyId}>
+          <ParticleLeadLayer cast={particleLead} journeyId={journeyId} frame={frame} analyser={analyser} imageSrc={latestAiImage} paused={!aiGenerating} />
+        </ImageryErrorBoundary>
+      )}
 
       {/* Composite-wide deband (2026-09-25b): every layer — shaders, glow
           gradients, imagery, H.264 — quantizes to 8 bits and bands in slow

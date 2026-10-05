@@ -35,7 +35,19 @@ export interface SpectrumOptions {
   minDb?: number;
   /** dB ceiling mapped to 1. Default -25. */
   maxDb?: number;
+  /**
+   * "log" (default): log-spaced bands from a high-resolution float FFT.
+   * "kinetic": read the journeys' shared 256-pt analyser BYTE spectrum with
+   * the kinetic EQ's own band split (bins 0-5 bass · 6-30 mid · 31-63
+   * treble, visualizer.tsx) — the same analyser and the same numbers the
+   * shader EQ hears. Each band gets a third of the virtual bins, so a third
+   * of the particles belong to each voice.
+   */
+  source?: "log" | "kinetic";
 }
+
+/** Kinetic EQ FFT-bin ranges (visualizer.tsx band split), inclusive. */
+export const KINETIC_BINS = [[0, 5], [6, 30], [31, 63]] as const;
 
 export interface SpectrumFrame {
   bins: number;
@@ -94,6 +106,8 @@ export class SpectrumProcessor {
   private readonly ema: Float32Array;
   private readonly prev: Float32Array;
   private readonly bandOf: Uint8Array; // 0 bass, 1 mid, 2 treble
+  private readonly fftBinOf: Uint8Array; // kinetic mode: virtual bin -> FFT bin
+  readonly source: "log" | "kinetic";
   private readonly minDb: number;
   private readonly maxDb: number;
   private fluxMean = 0;
@@ -119,9 +133,29 @@ export class SpectrumProcessor {
     this.ema = new Float32Array(this.bins);
     this.prev = new Float32Array(this.bins);
     this.bandOf = new Uint8Array(this.bins);
+    this.fftBinOf = new Uint8Array(this.bins);
+    this.source = opts.source ?? "log";
     for (let i = 0; i < this.bins; i++) {
-      const c = Math.sqrt(this.edges[i] * this.edges[i + 1]);
-      this.bandOf[i] = c < BAND_SPLIT_HZ.bassMax ? 0 : c < BAND_SPLIT_HZ.midMax ? 1 : 2;
+      if (this.source === "kinetic") {
+        const seg = Math.min(2, Math.floor((i * 3) / this.bins));
+        const lo = (seg * this.bins) / 3;
+        const t = (i - lo) / (this.bins / 3);
+        const [a, b] = KINETIC_BINS[seg];
+        this.bandOf[i] = seg;
+        this.fftBinOf[i] = Math.min(b, a + Math.floor(t * (b - a + 1)));
+      } else {
+        const c = Math.sqrt(this.edges[i] * this.edges[i + 1]);
+        this.bandOf[i] = c < BAND_SPLIT_HZ.bassMax ? 0 : c < BAND_SPLIT_HZ.midMax ? 1 : 2;
+      }
+    }
+  }
+
+  /** Kinetic mode: fold a byte spectrum (getByteFrequencyData of the shared
+   *  256-pt analyser) into the virtual bins. Pass null for silence. */
+  ingestBytes(bytes: Uint8Array | null): void {
+    for (let i = 0; i < this.bins; i++) {
+      const k = this.fftBinOf[i];
+      this.raw[i] = bytes && k < bytes.length ? bytes[k] / 255 : 0;
     }
   }
 
