@@ -13,7 +13,7 @@ import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
 import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle } from "@/lib/journeys/video-activity";
-import { isWhisperImageryName } from "@/lib/journeys/kinetic";
+import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -1468,8 +1468,10 @@ export function AiImageLayer({
       }
       lastDraw = nowTs;
 
-      // Cap at 1.5x — AI images are blended/panned, full retina is wasted GPU fill
-      const dpr = Math.min(devicePixelRatio, 1.5);
+      // Native DPR (<=2) when the backing store stays <= ~6.5Mpx (2026-10-05,
+      // "looks rasterized": a 1.5x canvas on a DPR-2 panel is resampled
+      // twice). Mastered journeys keep their 1.5x ceiling.
+      const dpr = Math.min(devicePixelRatio, imageryDprCeil(canvas.clientWidth, canvas.clientHeight, useAudioStore.getState().activeJourney));
       const w = canvas.clientWidth * dpr;
       const h = canvas.clientHeight * dpr;
 

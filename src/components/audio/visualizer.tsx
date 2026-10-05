@@ -41,7 +41,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isKineticJourneyName, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
+import { isKineticJourneyName, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -241,6 +241,7 @@ export function ShaderVisualizer({
   style,
   smoothMotion = false,
   bandFocus,
+  bandDriveOnly = false,
   tempoFlow = false,
   paused = false,
   onReady,
@@ -252,6 +253,10 @@ export function ShaderVisualizer({
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
   bandFocus?: "bass" | "mid" | "treble";
+  /** Audio-reactive (non-kinetic) journeys: the band drives ONLY this
+   *  layer's clock + scale breath. Uniforms keep their normal values
+   *  (smooth or classic), no amplitude override, no presence fade. */
+  bandDriveOnly?: boolean;
   /** Music-paced time dilation (2026-09-25, Karel): the shader CLOCK slows
    *  and quickens with the track's energy — lines travel at the music's
    *  pace — while the animation itself stays on smooth curves. No
@@ -285,6 +290,8 @@ export function ShaderVisualizer({
   const smoothMotionRef = useRef(smoothMotion);
   const bandFocusRef = useRef(bandFocus);
   useEffect(() => { bandFocusRef.current = bandFocus; }, [bandFocus]);
+  const bandDriveOnlyRef = useRef(bandDriveOnly);
+  useEffect(() => { bandDriveOnlyRef.current = bandDriveOnly; }, [bandDriveOnly]);
   const tempoFlowRef = useRef(tempoFlow);
   const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
@@ -405,6 +412,10 @@ export function ShaderVisualizer({
     // fill-rate bump on top.
     const totalPx = (typeof innerWidth !== "undefined" ? innerWidth * innerHeight : 0) * devicePixelRatio * devicePixelRatio;
     const dprCeil = tier === "high" && totalPx > 0 && totalPx < 4.5e6 * 2.25 ? 1.5 : 1;
+    // Shaders stay at this 1.5x ceiling (2026-10-05 headed sweep on the
+    // kiosk M4 Pro, 1512x982 CSS / DPR 2): native 2x and 1.75x shaders
+    // dropped The Bloom and Expansion to ~45-61fps; 1.5x holds ~71-84fps.
+    // The imagery canvases DO run native (imageryDprCeil) — free in the sweep.
     const dpr = Math.min(devicePixelRatio, dprCeil) * tierScale;
     // Frame-rate cap on weak hardware — halves GPU work vs uncapped rAF. 30fps
     // still reads as "smooth" for abstract shader motion; 45fps on medium is a
@@ -442,7 +453,10 @@ export function ShaderVisualizer({
         // itself is slewed (~400ms) so speed swells and eases — jitter
         // reads as nausea (Karel 2026-09-30).
         const prof0 = BAND_PROFILES[bandFocusRef.current];
-        rateSm += (prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo) - rateSm) * 0.045;
+        const rateTarget = bandDriveOnlyRef.current
+          ? driveOnlyRate(prof0, eqLv)
+          : prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
+        rateSm += (rateTarget - rateSm) * 0.045;
         cumTime += dt * rateSm;
       } else if (tempoFlowRef.current) {
         // Ultra-smoothed SHARED energy (one FFT read/frame across all
@@ -581,7 +595,7 @@ export function ShaderVisualizer({
       // band drives a fast-attack ~350ms-decay envelope.
       const applyBandFocus = () => {
         const f = bandFocusRef.current;
-        if (!f) return;
+        if (!f || bandDriveOnlyRef.current) return;
         // NO damping, NO overwrites (Karel 2026-09-30: "a shader that
         // responds in a certain way... should respond the same way if
         // it is brought back" — damping u_bass to 12% on non-primary
@@ -592,12 +606,16 @@ export function ShaderVisualizer({
         s.amplitude = eqLv;
         void f;
       };
-      if (smoothMotionRef.current) {
+      // Drive-only layers on a smooth-motion journey still READ the FFT
+      // (for the clock drive) but keep the synthetic uniforms below.
+      const smoothUniforms = smoothMotionRef.current;
+      if (smoothUniforms) {
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
         s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
         s.treble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
         s.amplitude = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
-      } else {
+      }
+      if (!smoothUniforms || bandFocusRef.current) {
         analyser.getByteFrequencyData(dataArray);
         let bassSum = 0, midSum = 0, trebleSum = 0, totalSum = 0;
         const len = dataArray.length;
@@ -618,11 +636,13 @@ export function ShaderVisualizer({
         // Kinetic layers track the music, not a moving average — 0.06
         // smoothing lags transients ~1s, which erased the band-split
         // (Karel 2026-09-30: "i see nothing responding to sound").
-        const k = bandFocusRef.current ? 0.3 : SMOOTHING;
-        s.bass += (rawBass - s.bass) * k;
-        s.mid += (rawMid - s.mid) * k;
-        s.treble += (rawTreble - s.treble) * k;
-        s.amplitude += (rawAmplitude - s.amplitude) * k;
+        if (!smoothUniforms) {
+          const k = bandFocusRef.current && !bandDriveOnlyRef.current ? 0.3 : SMOOTHING;
+          s.bass += (rawBass - s.bass) * k;
+          s.mid += (rawMid - s.mid) * k;
+          s.treble += (rawTreble - s.treble) * k;
+          s.amplitude += (rawAmplitude - s.amplitude) * k;
+        }
         if (bandFocusRef.current) {
           const fb = bandFocusRef.current;
           const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
@@ -657,7 +677,7 @@ export function ShaderVisualizer({
         const lv = eqLv;
         // Motion carries the music; only a gentle mass-breath on scale.
         canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
-        if (f2 !== "bass") {
+        if (f2 !== "bass" && !bandDriveOnlyRef.current) {
           // Structural presence — the layer belongs to its band's part
           // in the arrangement. Slow by construction (4s EMA), and it
           // goes ALL THE WAY to absent (Karel 2026-09-30: "starts with
@@ -665,6 +685,8 @@ export function ShaderVisualizer({
           // back, following the arc of the song").
           const presence = Math.min(1, Math.max(0, (actEma - 0.08) * 4.0));
           canvas.style.opacity = presence.toFixed(3);
+        } else if (canvas.style.opacity) {
+          canvas.style.opacity = ""; // persistent layer left a kinetic journey
         }
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
@@ -848,9 +870,15 @@ export function VisualizerCore({
   const kineticName = useAudioStore((s) => s.activeJourney?.name);
   const activeJourneyId = useAudioStore((s) => s.activeJourney?.id);
   const kinetic = isKineticJourneyName(kineticName);
-  const bandPrimary = kinetic ? ("bass" as const) : undefined;
-  const bandDual = kinetic ? ("mid" as const) : undefined;
-  const bandTertiary = kinetic ? ("treble" as const) : undefined;
+  // AUDIO-REACTIVE (Karel 2026-10-05, "this goes for all"): every other
+  // non-mastered journey gets the same band drive on its shader clocks —
+  // drive-only, none of the kinetic-mode behaviours (see kinetic.ts).
+  const journeyRef = { id: activeJourneyId, name: kineticName };
+  const audioReactive = kinetic || isAudioReactiveJourney(journeyRef);
+  const bandDriveOnly = audioReactive && !kinetic;
+  const bandPrimary = audioReactive ? ("bass" as const) : undefined;
+  const bandDual = audioReactive ? ("mid" as const) : undefined;
+  const bandTertiary = audioReactive ? ("treble" as const) : undefined;
   // BRIGHTNESS-NORMALIZED LAYERS (Karel 2026-10-05, Expansion shader
   // diversity; every non-mastered, non-Kinetic-Lab journey since the
   // featured/album recast): each layer runs at a per-shader
@@ -1357,7 +1385,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} paused={layerPaused} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} bandDriveOnly={bandDriveOnly} paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 
@@ -1409,6 +1437,8 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerAMode as VisualizerMode]!}
                 bandFocus={bandDual}
+                bandDriveOnly={bandDriveOnly}
+               
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerAReady}
@@ -1424,6 +1454,8 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[dualLayerBMode as VisualizerMode]!}
                 bandFocus={bandDual}
+                bandDriveOnly={bandDriveOnly}
+               
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleDualLayerBReady}
@@ -1441,6 +1473,8 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
                 bandFocus={bandTertiary}
+                bandDriveOnly={bandDriveOnly}
+               
                 smoothMotion={smoothMotionProp ?? false}
                 tempoFlow={tempoFlowProp ?? false}
                 onReady={handleTertiaryShaderReady}

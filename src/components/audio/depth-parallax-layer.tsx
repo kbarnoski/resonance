@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { isWhisperImageryName } from "@/lib/journeys/kinetic";
+import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
@@ -262,7 +262,7 @@ function DepthParallaxLayerInner({
       raf = requestAnimationFrame(render);
       if (disposed || now - last < FPS_MS || !slotA || !slotB) return;
       last = now;
-      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(devicePixelRatio || 1, imageryDprCeil(sizeRef.current.w, sizeRef.current.h, useAudioStore.getState().activeJourney));
       const w = Math.max(1, Math.round(sizeRef.current.w * dpr));
       const h = Math.max(1, Math.round(sizeRef.current.h * dpr));
       if (canvas.width !== w || canvas.height !== h) {

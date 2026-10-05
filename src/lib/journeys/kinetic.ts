@@ -108,8 +108,61 @@ export type BandProfile = {
  *  practice maps bands to distinct physical attributes; WCAG 2.3.1
  *  bans luminance flashing — so the music drives TIME, not brightness.
  *  Each layer's clock accelerates with its band. */
+/** +20% RESPONSE (Karel 2026-10-05: "the shaders could respond another
+ *  20% more responsive to the sound than they do. a lot of times it is
+ *  really subtle"): gain x1.2, scale x1.2, and the rate swing widened
+ *  20% around 1.0 (lo = 1-(1-lo)*1.2, hi = 1+(hi-1)*1.2). Decay — the
+ *  release slew — is unchanged, so the extra drive swells, never jitters;
+ *  still motion only, never luminance. Pre-bump values:
+ *  bass 16/0.035/0.30-2.30, mid 11/0.015/0.55-1.50, treble 22/0.010/0.50-2.60. */
 export const BAND_PROFILES: Record<BandFocus, BandProfile> = {
-  bass:   { gain: 16, decay: 0.88,  scale: 0.035, rateLo: 0.30, rateHi: 2.30 },
-  mid:    { gain: 11, decay: 0.945, scale: 0.015, rateLo: 0.55, rateHi: 1.50 },
-  treble: { gain: 22, decay: 0.78,  scale: 0.010, rateLo: 0.50, rateHi: 2.60 },
+  bass:   { gain: 19.2, decay: 0.88,  scale: 0.042, rateLo: 0.16, rateHi: 2.56 },
+  mid:    { gain: 13.2, decay: 0.945, scale: 0.018, rateLo: 0.46, rateHi: 1.60 },
+  treble: { gain: 26.4, decay: 0.78,  scale: 0.012, rateLo: 0.40, rateHi: 2.92 },
 };
+
+/** AUDIO-REACTIVE gate (Karel 2026-10-05, "this goes for all" — every
+ *  journey EXCEPT the mastered three). Non-kinetic journeys (featured,
+ *  the albums, Vigil, built-ins) get the same per-layer band drive on
+ *  their shader clocks — time-dilation / flow / shimmer — but NONE of
+ *  the other kinetic-mode behaviours: no imagery whisper, no locked
+ *  dual+tertiary, no structural-presence fades, casts and layer counts
+ *  untouched, and their uniforms keep their existing (smooth) values so
+ *  no shader's luminance ever couples to the music. */
+export function isAudioReactiveJourney(journey?: { id?: string | null; name?: string | null } | null): boolean {
+  if (!journey || (!journey.id && !journey.name)) return false;
+  return !isMasteredJourneyLike(journey);
+}
+
+/** Drive-only clock rate: same band profile and swing as kinetic mode,
+ *  but centred on the journey's own resting pace (1.0 at lv=0.5) so a
+ *  meditative journey keeps its tempo between phrases and only surges /
+ *  slows with the music. Clamped to the profile's floor and ceiling. */
+export function driveOnlyRate(prof: BandProfile, lv: number): number {
+  const r = 1 + (lv - 0.5) * (prof.rateHi - prof.rateLo);
+  return Math.min(prof.rateHi, Math.max(prof.rateLo, r));
+}
+
+/** Pixel-budget ceiling for native-resolution layers: a backing store up
+ *  to ~6.5Mpx (a 3024x1964 retina panel is 5.9Mpx) renders at native DPR
+ *  (<=2); bigger surfaces (4K projectors) stay at 1x. */
+export const NATIVE_RES_MAX_PX = 6.5e6;
+
+/** DPR ceiling for the imagery canvases (ai-image + depth-parallax).
+ *  2026-10-05 ("looks rasterized" — Johnny via Karel): a 1.5x canvas on a
+ *  DPR-2 panel is resampled twice, so imagery renders at native DPR where
+ *  the budget allows — measured free on the kiosk M4 Pro (The Bloom 83fps,
+ *  Expansion 74fps, same as 1.5x). Shader layers stay at 1.5x: native
+ *  shaders cost ~25-35fps (see visualizer.tsx). Mastered journeys keep
+ *  the 1.5x ceiling they were mastered on. */
+export function imageryDprCeil(
+  cssW: number,
+  cssH: number,
+  journey?: { id?: string | null; name?: string | null } | null,
+  dpr: number = typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 1,
+): number {
+  if (isMasteredJourneyLike(journey)) return 1.5;
+  const native = Math.min(dpr, 2);
+  if (native <= 1.5) return 1.5;
+  return cssW * cssH * native * native <= NATIVE_RES_MAX_PX ? 2 : 1.5;
+}
