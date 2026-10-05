@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Calling 3",
+    "id": "bc0d1cdf-0b2b-459e-acab-8be77457f36a",
+    "duration": 128.34,
+    "source": "CALLING_tk3_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "First Light",
+    "id": "9bc8cd95-76ee-4585-a524-3ba108f6633f",
+    "duration": 149.85,
+    "source": "FIRSTLIGHT_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "Lantern",
+    "id": "4516fc4b-3320-4e4d-bf17-40fa7ca99365",
+    "duration": 308.57,
+    "source": "LANTERN_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "Open Jam",
+    "id": "7466b76a-6255-4fc8-9202-c49386d541df",
+    "duration": 336.55,
+    "source": "OPENJAM_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "Testimony 3",
+    "id": "c8fe950e-9e2f-48b4-b618-0e03f4aff1be",
+    "duration": 181.25,
+    "source": "TESTIMONY_tk3_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "Vespers 2",
+    "id": "0a41527a-b8aa-483e-8373-1156faf8c9fe",
+    "duration": 170.67000000000002,
+    "source": "VESPERS_tk2_OCT4_1.2_BSREF.wav"
+  },
+  {
+    "title": "Vespers 3",
+    "id": "f9e4aa30-b274-4d12-aeb0-eff9a0b11c23",
+    "duration": 118.44,
+    "source": "VESPERS_tk3_OCT4_1.2_BSREF.wav"
+  }
+]

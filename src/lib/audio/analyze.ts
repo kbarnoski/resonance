@@ -1,6 +1,7 @@
 import { Chord } from "tonal";
 import type { NoteEvent, ChordEvent, AnalysisResult } from "./types";
 import { detectEvents } from "./detect-events";
+import { estimateTempoFromNotes } from "./music-profile";
 
 const PITCH_CLASSES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -119,9 +120,12 @@ function detectKey(notes: NoteEvent[]): { key: string; confidence: number } | nu
   let bestCorr = -Infinity;
 
   for (let i = 0; i < 12; i++) {
-    // ROTATE THE PROFILE to test each possible tonic against the fixed histogram
-    const rotatedMajor = [...majorProfile.slice(i), ...majorProfile.slice(0, i)];
-    const rotatedMinor = [...minorProfile.slice(i), ...minorProfile.slice(0, i)];
+    // ROTATE THE PROFILE so its tonic weight (index 0) lands on pitch class i:
+    // rotated[k] = profile[(k - i) mod 12]. (Fixed 2026-10-05: the previous
+    // slice(i)-first rotation put the tonic on pitch class (12 - i) — every
+    // key except C and F# was mislabelled, e.g. G minor reported as F minor.)
+    const rotatedMajor = [...majorProfile.slice(12 - i), ...majorProfile.slice(0, 12 - i)];
+    const rotatedMinor = [...minorProfile.slice(12 - i), ...minorProfile.slice(0, 12 - i)];
 
     const majCorr = correlate(rotatedMajor);
     if (majCorr > bestCorr) {
@@ -321,11 +325,20 @@ function detectProgressions(chords: ChordEvent[]): string[] {
     .map(([pattern, count]) => `${pattern} (×${count})`);
 }
 
-export function analyzeNotes(notes: NoteEvent[]): AnalysisResult {
-  const tempo = estimateTempo(notes);
+const CHORD_GRID_TEMPO = 120;
+
+export function analyzeNotes(notes: NoteEvent[], audioTempoBpm?: number | null): AnalysisResult {
+  // Audio-derived tempo (music-profile.ts) when the caller has the decoded
+  // audio; otherwise the same estimator on a note-onset envelope. The old
+  // IOI-histogram estimateTempo returned 120 for 100/102 tracks.
+  const est = audioTempoBpm ?? estimateTempoFromNotes(notes)?.bpm ?? estimateTempo(notes);
+  const tempo = est ? Math.round(est) : null;
   const keyResult = detectKey(notes);
   const key_signature = keyResult?.key ?? null;
-  const chords = detectChords(notes, tempo);
+  // Chord windows stay at the historical 0.5 s grid (every stored analysis
+  // was cut at 60/120 because tempo was always 120) so chord timelines
+  // remain comparable across the library; the real tempo is reported.
+  const chords = detectChords(notes, CHORD_GRID_TEMPO);
   const time_signature = detectTimeSignature(notes, tempo);
   const melody = extractMelody(notes);
   const bassLine = extractBassLine(notes);

@@ -1,0 +1,41 @@
+{
+  "pathId": "ba0f164d-5d11-46d9-8ce2-ea80c8893d75",
+  "pathShareToken": "c62f3672cfc54d5d",
+  "journeys": [
+    {
+      "journeyId": "87e106f9-4d74-4886-b944-fd625a827b02",
+      "recordingId": "9bc8cd95-76ee-4585-a524-3ba108f6633f",
+      "title": "First Light"
+    },
+    {
+      "journeyId": "d92c2d3a-4283-4300-abc3-d71ed7c6848d",
+      "recordingId": "bc0d1cdf-0b2b-459e-acab-8be77457f36a",
+      "title": "Calling 3"
+    },
+    {
+      "journeyId": "dc8d9705-785a-485e-b91f-a12c85bf7b92",
+      "recordingId": "c8fe950e-9e2f-48b4-b618-0e03f4aff1be",
+      "title": "Testimony 3"
+    },
+    {
+      "journeyId": "01c987f6-17de-469b-b155-000922b479a1",
+      "recordingId": "f9e4aa30-b274-4d12-aeb0-eff9a0b11c23",
+      "title": "Vespers 3"
+    },
+    {
+      "journeyId": "4413b320-e6b5-471e-9163-10d1c496a67d",
+      "recordingId": "0a41527a-b8aa-483e-8373-1156faf8c9fe",
+      "title": "Vespers 2"
+    },
+    {
+      "journeyId": "910e6b62-abb8-40d1-bd31-ccdf6038f122",
+      "recordingId": "4516fc4b-3320-4e4d-bf17-40fa7ca99365",
+      "title": "Lantern"
+    },
+    {
+      "journeyId": "bd748991-a67b-41dc-af94-ac3f612a27c4",
+      "recordingId": "7466b76a-6255-4fc8-9202-c49386d541df",
+      "title": "Open Jam"
+    }
+  ]
+}

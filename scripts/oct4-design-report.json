@@ -1,0 +1,636 @@
+[
+ {
+  "title": "First Light",
+  "world": "a tidal estuary at daybreak seen from above — braided water channels receiving the first light",
+  "why": "Very slow free time + sparse attacks + a low, dark C pedal = a flat, patient world close to the ground; pure major with Lydian glints = light that arrives as thin bright threads, never a blaze; the single long wave peaking on IV at 1:57 = the whole braid of channels lighting at once, then an even, shadowless afterglow. 'First Light' gives the dawn; the music says it is low, slow and reflected — so the light lives in water, seen from above.",
+  "tempo": {
+   "bpm": 54,
+   "feel": "very slow",
+   "pulse": "free time",
+   "method": "audio-flux-acf",
+   "alt_bpm": 107,
+   "confidence": 0.1,
+   "onset_rate": 1.59,
+   "steadiness": 0.15,
+   "description": "It feels very slow and unmetered. The measured tactus is 53.7 BPM (alternative level 107.4), but pulse clarity is only 0.06 and steadiness 0.15. Local tempo drifts from 51.6 BPM (intro) down to 43.1 and 41 BPM in the two loudest sections, then back to 53.8 in the coda. The music actually broadens as it gets louder, a sign of expressive rubato rather than drive. Attacks are sparse (1.59/s overall, 1.22/s in Section 1), yet each attack carries a thick, pedaled chord: roughly 27 transcribed notes per attack in Section 1, partly overtone inflation. So the ear hears slow, deep strokes that ring and bloom. Harmonic rhythm is mostly one change every 1–2.5 s, with longer holds of 3–6 s (FMadd9/G at 1:40, CM at 2:17). Those holds read as breaths rather than bars.",
+   "pulse_clarity": 0.06
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.16",
+    "I": 0.37,
+    "role": "dark",
+    "shaders": [
+     "r2-pixie",
+     "r2-spore",
+     "lectio"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.16-0.401",
+    "I": 0.91,
+    "role": "gathering",
+    "shaders": [
+     "r2-pixie",
+     "r2-spore",
+     "lectio",
+     "r3-fernunfurl",
+     "pollen"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.401-0.541",
+    "I": 0.85,
+    "role": "gathering",
+    "shaders": [
+     "r2-pixie",
+     "chinook",
+     "lectio",
+     "r3-fernunfurl",
+     "pollen"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.541-0.788",
+    "I": 1,
+    "role": "peak",
+    "shaders": [
+     "chinook",
+     "pollen",
+     "dharma"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.788-0.895",
+    "I": 0.49,
+    "role": "lowering",
+    "shaders": [
+     "chinook",
+     "seraph",
+     "dharma"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.895-1",
+    "I": 0.49,
+    "role": "last",
+    "shaders": [
+     "seraph",
+     "chinook",
+     "dharma"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Calling 3",
+  "world": "a mist-filled valley where every call travels as a widening wave of warm light through the haze",
+  "why": "Wide melodic leaps over plagal rocking = a call sent across distance and answered; pure major with no dominant pull = warm, unhurried longing rather than drama; the 40 dB arch with a suspended (unclosed) summit at 1:31 = the valley filling with converging waves of light that keep travelling; elastic 85 BPM = slow travelling pulses through mist. 'Calling' names the gesture; the music measures its warmth, distance and openness.",
+  "tempo": {
+   "bpm": 85,
+   "feel": "moderate",
+   "pulse": "elastic rubato",
+   "method": "audio-flux-acf",
+   "alt_bpm": 170,
+   "confidence": 0.41,
+   "onset_rate": 2.66,
+   "steadiness": 0.7,
+   "description": "The measured tactus is 84.7 BPM (alternative level 169.5), and with 2.66 attacks per second the piece feels moderate: unhurried, flowing, never static. Pulse clarity is low (0.22) and rubato is elastic, so the beat is felt as breath rather than a grid. The local tempo drifts upward through the piece: 75.4 BPM in the opening, then 80.2, 82.6, and 86.7 at the climax, settling to 83.7 in the coda. This gives a sense of gradually gathering momentum and then easing off. Harmonic rhythm is about one chord every 1–2 seconds (roughly every two beats), with occasional 2–2.5 s holds (C/G at 0:22, Fmaj9 at 1:16) that act as resting points. At the climax the attack rate rises to 3.72/s, so the music feels faster there even though the tempo barely changes.",
+   "pulse_clarity": 0.22
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.164",
+    "I": 0.37,
+    "role": "dark",
+    "shaders": [
+     "hubble",
+     "merkaba",
+     "vestige"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.164-0.32",
+    "I": 0.83,
+    "role": "gathering",
+    "shaders": [
+     "hubble",
+     "merkaba",
+     "rapture",
+     "vestige"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.32-0.436",
+    "I": 0.8,
+    "role": "gathering",
+    "shaders": [
+     "rapture",
+     "kairos",
+     "vestige"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.436-0.553",
+    "I": 0.8,
+    "role": "gathering",
+    "shaders": [
+     "rapture",
+     "covenant",
+     "kairos"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.553-0.748",
+    "I": 1,
+    "role": "peak",
+    "shaders": [
+     "jubilee",
+     "covenant",
+     "kairos",
+     "aureole"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.748-1",
+    "I": 0.39,
+    "role": "last",
+    "shaders": [
+     "jubilee",
+     "aureole",
+     "covenant"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Testimony 3",
+  "world": "amber resin on ancient bark — light kept, preserved and finally declared",
+  "why": "A slow hymn held back by its own pedal = something that holds and preserves before it speaks; warm plagal major (E♭ radiance) = honey and amber light; one cloud of minor iv at 1:32 = a shadow passing over the resin; the arch to a 1:55 declaration then a whispered amen = the resin lit through at full voice, then one last drop at dusk. 'Testimony' = bearing witness — amber is the earth's own testimony, light and time kept inside it.",
+  "tempo": {
+   "bpm": 80,
+   "feel": "moderate",
+   "pulse": "free time",
+   "method": "audio-flux-acf",
+   "alt_bpm": 40,
+   "confidence": 0.38,
+   "onset_rate": 2.34,
+   "steadiness": 0.69,
+   "description": "The measured tactus is 79.6 BPM (alternative level 39.8). Pulse clarity is only 0.17 and steadiness 0.69, so the beat is more implied than played. This is free time with rubato, where phrases breathe rather than march. At 2.34 attacks per second the surface is spacious. The harmonic rhythm is slow: chords like B♭/F are held 2.5–3.5 s (0:02, 0:28, 2:10, 2:22) and B♭add9 for 4 s at 2:50. As a result the piece feels slower than 80 BPM, closer to a half-time hymn pulse near 40. Local tempo creeps from 74.8 BPM (opening) to 80–83 BPM (sections 2 and 4), giving the middle a gentle forward lean. The coda's 91 BPM reading reflects sparse, isolated attacks rather than real acceleration.",
+   "pulse_clarity": 0.17
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.116",
+    "I": 0.6,
+    "role": "dark",
+    "shaders": [
+     "r3-fairyglow",
+     "r-droplets",
+     "yantra"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.116-0.32",
+    "I": 0.85,
+    "role": "gathering",
+    "shaders": [
+     "r3-fairyglow",
+     "yantra",
+     "r-droplets",
+     "kenosis"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.32-0.491",
+    "I": 1,
+    "role": "peak",
+    "shaders": [
+     "r3-fairyglow",
+     "yantra",
+     "r-droplets",
+     "kenosis",
+     "satori"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.491-0.618",
+    "I": 0.96,
+    "role": "calm",
+    "shaders": [
+     "biofilm",
+     "r3-heartwarmth",
+     "r-smokerings",
+     "kenosis",
+     "satori"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.618-0.855",
+    "I": 0.92,
+    "role": "calm",
+    "shaders": [
+     "biofilm",
+     "r3-heartwarmth",
+     "kelp",
+     "r-smokerings"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.855-1",
+    "I": 0.37,
+    "role": "last",
+    "shaders": [
+     "biofilm",
+     "r3-heartwarmth",
+     "kelp"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Vespers 3",
+  "world": "evening seed-down drifting through golden air above a darkening meadow",
+  "why": "A steady, hymn-like 87 BPM sway in plain major = a calm, even drift; spacious attacks (2.4/s) and sus/add9 shells blurring into each other = soft floating particles rather than hard forms; the single borrowed-minor shadow then a radiant major return = one violet cloud passing over the drifting down before the air fills with gold; the open G5 ending = the last seeds settling. 'Vespers' sets it at evening; the music's steadiness makes it a gentle drift, not a storm.",
+  "tempo": {
+   "bpm": 87,
+   "feel": "moderate",
+   "pulse": "elastic rubato",
+   "method": "audio-flux-acf",
+   "alt_bpm": 174,
+   "confidence": 0.61,
+   "onset_rate": 2.43,
+   "steadiness": 0.91,
+   "description": "Measured tactus is 87 BPM, with an alternative level at 174 that reflects the eighth-note subdivision in the inner voices. Steadiness is 0.91, but pulse clarity is only 0.41, so the beat is felt more as a breathing sway than a marked meter, with elastic rubato at phrase ends. The attack rate of 2.43 onsets/s is spacious, and the harmonic rhythm is slow: many chords last 1.5–2.5 s, such as GMadd9 at 0:39 (2.0 s), C69#11/D at 0:55 (2.0 s) and Gsus2 at 1:44 (2.5 s). The result feels moderate-to-slow, like a walking processional that keeps pausing to let resonance bloom. Local tempo hardly moves (86.1–87.9 BPM). It nudges up slightly through Sections 2–3 (87.8, 87.9) and relaxes to 86.1 in the coda.",
+   "pulse_clarity": 0.41
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.304",
+    "I": 0.78,
+    "role": "gathering",
+    "shaders": [
+     "diatom",
+     "symbiosis",
+     "r3-sleepingbloom"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.304-0.414",
+    "I": 0.88,
+    "role": "gathering",
+    "shaders": [
+     "diatom",
+     "symbiosis",
+     "r3-sleepingbloom"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.414-0.515",
+    "I": 0.88,
+    "role": "gathering",
+    "shaders": [
+     "symbiosis",
+     "r3-sleepingbloom",
+     "chrysalis"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.515-0.684",
+    "I": 0.9,
+    "role": "gathering",
+    "shaders": [
+     "chrysalis",
+     "tide",
+     "symbiosis"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.684-0.853",
+    "I": 1,
+    "role": "peak",
+    "shaders": [
+     "chrysalis",
+     "tide",
+     "astral"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.853-1",
+    "I": 0.37,
+    "role": "last",
+    "shaders": [
+     "flagella",
+     "pelagic",
+     "astral"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Vespers 2",
+  "world": "an evening cloud-sea seen from above — slate cloud filling the valleys, light breaking open inside it",
+  "why": "A low open-fifth floor under shifting major/minor thirds = a heavy, ambiguous evening layer; the D7♭9 weight and 'heavy slate cloud' sections = low cloud pressing down; the Lydian burst at 1:25 then a major benediction = light breaking open from inside the cloud and then lying broad and warm across it; the bare fifth ending = the cloud-sea gone indigo. 'Vespers' = evening prayer; the music's bittersweet thirds keep it shadowed, never simply golden.",
+  "tempo": {
+   "bpm": 86,
+   "feel": "moderate",
+   "pulse": "elastic rubato",
+   "method": "audio-flux-acf",
+   "alt_bpm": 171,
+   "confidence": 0.44,
+   "onset_rate": 2.95,
+   "steadiness": 0.68,
+   "description": "The measured tactus is 85.7 BPM, but with pulse clarity of only 0.29 and steadiness of 0.68 the piece feels like breath more than metre. Phrases stretch and settle with elastic rubato, and local tempi range from 79 BPM in section 1 to 96 BPM in the thin coda, where few attacks make the estimate unreliable. The attack rate is about 2.6–3.4 per second, which reads as moderate, yet the harmonic rhythm is slow. Chords typically hold 1–3 seconds (G5 for 3.0 s at 0:22, D7 for 2.5 s at 1:11, G5 for 3.0 s at 2:32), and the bass pedal barely moves. The result is a calm, unhurried andante whose surface ripples while the ground stays still. The 171 BPM alternative reading reflects the inner eighth-note motion, not a faster felt pulse.",
+   "pulse_clarity": 0.29
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.129",
+    "I": 0.76,
+    "role": "gathering",
+    "shaders": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "orbit-weaver",
+     "zenith"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.129-0.393",
+    "I": 0.83,
+    "role": "gathering",
+    "shaders": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "orbit-weaver",
+     "zenith"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.393-0.557",
+    "I": 1,
+    "role": "peak",
+    "shaders": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "orbit-weaver",
+     "zenith"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.557-0.685",
+    "I": 0.96,
+    "role": "calm",
+    "shaders": [
+     "pendulum-dust",
+     "murmuration",
+     "r-mercury",
+     "r2-spiralgal"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.685-0.861",
+    "I": 0.87,
+    "role": "calm",
+    "shaders": [
+     "pendulum-dust",
+     "meteor-rain",
+     "murmuration",
+     "r-mercury",
+     "r2-spiralgal"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.861-1",
+    "I": 0.37,
+    "role": "last",
+    "shaders": [
+     "pendulum-dust",
+     "meteor-rain",
+     "r-mercury",
+     "r2-spiralgal"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Lantern",
+  "world": "physalis lantern-husks — papery seed lanterns glowing from within against the dark",
+  "why": "A single warm point-source over an E♭ pedal, swelling and dimming in slow waves = a lantern glow that breathes; dense arpeggio flow = many small lights multiplying; borrowed C♭/A♭m6 shadows = husks dimming to their veined lace skeletons; the suspended D♭maj13 summit = a vast constellation of glowing lanterns rising into blue hour; the open E♭add9 ending = one lace lantern still glowing in the dark. 'Lantern' gives the object; the analysis makes it organic, devotional and wave-shaped — nature's own lanterns.",
+  "tempo": {
+   "bpm": 90,
+   "feel": "moderate",
+   "pulse": "free time",
+   "method": "audio-flux-acf",
+   "alt_bpm": 180,
+   "confidence": 0.22,
+   "onset_rate": 3.83,
+   "steadiness": 0.45,
+   "description": "The measured tactus is about 90 BPM, but pulse clarity is only 0.06 and steadiness 0.45, so it plays in free time with no felt bar line. The 3.83 attacks/s come from rolling arpeggiation inside each voicing, which gives a gently flowing, moderate surface. Underneath, the real harmonic rhythm is slow: one pedal-bound colour lasts 1.5–3.5 s (Fm11/E♭ for 2.0 s at 0:29, D♭maj13/F for 3.5 s at 3:58). The result feels like a slow ballad carried on a moving current. Local tempo leans forward slightly in the building passages (96.9 BPM at the opening, 98 at 2:19). It broadens toward the end (83.3 BPM at 4:11, 86.5 in the coda), a natural rubato ritardando into the final fade.",
+   "pulse_clarity": 0.06
+  },
+  "mode": "major-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.081",
+    "I": 0.64,
+    "role": "dark",
+    "shaders": [
+     "binary-stars",
+     "will-o-wisp",
+     "ember",
+     "stigmata"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.081-0.175",
+    "I": 0.92,
+    "role": "gathering",
+    "shaders": [
+     "binary-stars",
+     "will-o-wisp",
+     "r2-curlswarm",
+     "cirrus",
+     "ember"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.175-0.279",
+    "I": 0.74,
+    "role": "gathering",
+    "shaders": [
+     "binary-stars",
+     "will-o-wisp",
+     "r2-curlswarm",
+     "parsec",
+     "cirrus"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.279-0.703",
+    "I": 0.83,
+    "role": "gathering",
+    "shaders": [
+     "r2-curlswarm",
+     "parsec",
+     "cirrus",
+     "r3-waveveil"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.703-0.907",
+    "I": 0.99,
+    "role": "peak",
+    "shaders": [
+     "firefly-field",
+     "fracture-light",
+     "r3-waveveil"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.907-1",
+    "I": 0.37,
+    "role": "last",
+    "shaders": [
+     "firefly-field",
+     "fracture-light",
+     "r3-waveveil"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Open Jam",
+  "world": "the black basalt storm coast — a sea cave, a heaving night ocean, smouldering rock",
+  "why": "A low E1 drone in free time = a cavernous, oceanic space that resonates; minor-dominant, brooding, with swells every 30–40 s and rising crests = a heaving night sea building toward a storm; the C- and G-major clearings = shafts of warm light through broken cloud; the E7#9 peak = the storm at full force; the Phrygian lament = ember-red seams glowing in wet black rock; the unresolved end = the tide drawing back into dark. 'Open Jam' = open-ended improvisation — the sea is the most open-ended thing there is.",
+  "tempo": {
+   "bpm": 79,
+   "feel": "slow",
+   "pulse": "free time",
+   "method": "audio-flux-acf",
+   "alt_bpm": 157,
+   "confidence": 0.25,
+   "onset_rate": 2.67,
+   "steadiness": 0.5,
+   "description": "The measured tactus is 78.6 BPM, but pulse clarity is only 0.08 and steadiness 0.5, so it is genuinely free time: the ear follows waves of intensity, not a beat. Attack rate stays near 2.3–2.9/s, rising only in the peak section (3.41/s at 2:57–3:31), which keeps the felt speed slow even when it gets loud. The note count per second runs much higher (25–48/s), meaning each attack is a rolled, pedalled cluster over the drone rather than fast running lines. Harmonic rhythm is slow at the root level, with E in the bass for long stretches, but the upper voices churn every half-second (Esus4→Emadd4→E5). This produces a sense of stillness with surface shimmer. Local tempo estimates wander from 69 BPM (0:39–1:06) to about 100 BPM (1:59–2:26). These readings likely reflect denser rhythmic figuration in the middle swells rather than a true tempo change.",
+   "pulse_clarity": 0.08
+  },
+  "mode": "minor-dominant",
+  "phases": [
+   {
+    "id": "threshold",
+    "t": "0-0.116",
+    "I": 0.37,
+    "role": "dark",
+    "shaders": [
+     "rose-window",
+     "resonant-rings",
+     "r-embers",
+     "r2-photon",
+     "molten-vein"
+    ]
+   },
+   {
+    "id": "expansion",
+    "t": "0.116-0.273",
+    "I": 0.83,
+    "role": "gathering",
+    "shaders": [
+     "rose-window",
+     "resonant-rings",
+     "r-embers",
+     "r2-photon",
+     "molten-vein"
+    ]
+   },
+   {
+    "id": "transcendence",
+    "t": "0.273-0.354",
+    "I": 0.58,
+    "role": "gathering",
+    "shaders": [
+     "r-embers",
+     "dark-tide",
+     "r2-photon",
+     "molten-vein",
+     "ripple"
+    ]
+   },
+   {
+    "id": "illumination",
+    "t": "0.354-0.627",
+    "I": 0.89,
+    "role": "peak",
+    "shaders": [
+     "dark-tide",
+     "ripple",
+     "ocean"
+    ]
+   },
+   {
+    "id": "return",
+    "t": "0.627-0.853",
+    "I": 0.83,
+    "role": "calm",
+    "shaders": [
+     "dark-tide",
+     "dark-nebula",
+     "typhoon",
+     "ripple"
+    ]
+   },
+   {
+    "id": "integration",
+    "t": "0.853-1",
+    "I": 0.64,
+    "role": "last",
+    "shaders": [
+     "dark-nebula",
+     "typhoon",
+     "dark-tide"
+    ]
+   }
+  ]
+ }
+]

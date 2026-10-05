@@ -118,10 +118,12 @@ export default function BatchAnalyzePage() {
     const supabase = createClient();
     const { data } = await supabase
       .from("analyses")
-      .select("status")
+      .select("status, deep:summary->version")
       .eq("recording_id", recordingId)
       .maybeSingle();
-    return data?.status === "completed";
+    // A track is only done when the deep analysis v2 (tempo, sections,
+    // mood, narrative, imagery cues) landed too — not just the notes.
+    return data?.status === "completed" && Number((data as { deep?: unknown }).deep) === 2;
   };
 
   const runOne = async (i: number, t: Track) => {
@@ -148,7 +150,7 @@ export default function BatchAnalyzePage() {
         prev.map((p, idx) => (idx === i ? {
           ...p,
           status: ok ? "done" : "error",
-          error: ok ? undefined : "Analysis did not save — retry this one.",
+          error: ok ? undefined : "Analysis or deep summary did not save — retry this one.",
           progress: ok ? 100 : p.progress,
         } : p))
       );

@@ -48,6 +48,13 @@ export async function runAnalysis(
   // If already analyzing this recording, skip
   if (currentJob?.recordingId === recordingId) return;
 
+  // Frozen recordings (final-mastered journeys) — the Room reads their
+  // analyses at runtime; re-analysis would change how they play.
+  const { isAnalysisFrozen } = await import("@/lib/audio/analysis-protected");
+  if (isAnalysisFrozen(recordingId)) {
+    throw new Error("This recording's analysis is frozen (mastered journey) — not re-analyzed.");
+  }
+
   // Cancel any previous job
   if (currentJob) {
     currentJob.abortController.abort();
@@ -66,14 +73,23 @@ export async function runAnalysis(
 
     if (abortController.signal.aborted) return;
 
-    const notes = await transcribeAudio(audioUrl, (stageMsg, prog) => {
-      if (abortController.signal.aborted) return;
-      useAudioStore.getState().setAnalysisInProgress({
-        recordingId,
-        stage: stageMsg,
-        progress: prog,
-      });
-    });
+    const { computeAudioFeatures, buildMusicProfile } = await import("@/lib/audio/music-profile");
+    let audioFeatures: import("@/lib/audio/music-profile").AudioFeatures | null = null;
+    const notes = await transcribeAudio(
+      audioUrl,
+      (stageMsg, prog) => {
+        if (abortController.signal.aborted) return;
+        useAudioStore.getState().setAnalysisInProgress({
+          recordingId,
+          stage: stageMsg,
+          progress: prog,
+        });
+      },
+      (samples, sr) => {
+        // Real tempo / dynamics / sections come from the audio itself.
+        audioFeatures = computeAudioFeatures(samples, sr);
+      },
+    );
 
     if (abortController.signal.aborted) return;
 
@@ -83,7 +99,16 @@ export async function runAnalysis(
       progress: 90,
     });
 
-    const result = analyzeNotes(notes);
+    const af = audioFeatures as import("@/lib/audio/music-profile").AudioFeatures | null;
+    const preResult = analyzeNotes(notes);
+    const profile = buildMusicProfile({
+      notes,
+      chords: preResult.chords,
+      duration: af?.duration ?? null,
+      keySignature: preResult.key_signature,
+      audio: af,
+    });
+    const result = profile.tempo ? { ...preResult, tempo: Math.round(profile.tempo.bpm) } : preResult;
 
     if (abortController.signal.aborted) return;
 
@@ -115,28 +140,38 @@ export async function runAnalysis(
 
     useAudioStore.getState().setAnalysisInProgress({
       recordingId,
-      stage: "Generating teaching summary...",
+      stage: "Deep analysis (tempo, sections, mood, narrative)...",
       progress: 97,
     });
 
-    // Generate AI teaching summary (non-blocking failure)
-    try {
-      const res = await fetch("/api/analysis/summarize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          analysisId: data.id,
-          analysis: data,
-          title: recordingTitle,
-        }),
-        signal: abortController.signal,
-      });
-      if (res.ok) {
-        const { summary } = await res.json();
-        data.summary = summary;
+    // Deep analysis v2 — ALWAYS part of an analysis run. Only the id +
+    // the compact measured profile are sent (the server reads notes/chords
+    // from the DB); posting the full row is what silently 413'd for 80
+    // tracks. One retry; a failure is surfaced, not swallowed.
+    let summaryError: string | null = null;
+    for (let attempt = 0; attempt < 2 && !data.summary?.version; attempt++) {
+      try {
+        const res = await fetch("/api/analysis/summarize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ analysisId: data.id, title: recordingTitle, profile }),
+          signal: abortController.signal,
+        });
+        if (res.ok) {
+          const { summary } = await res.json();
+          data.summary = summary;
+          if (summary?.tempo?.bpm && !summary?.frozen) data.tempo = summary.tempo.bpm;
+        } else {
+          summaryError = `deep summary HTTP ${res.status}`;
+        }
+      } catch (err) {
+        if (abortController.signal.aborted) return;
+        summaryError = err instanceof Error ? err.message : String(err);
       }
-    } catch {
-      // Non-fatal
+    }
+    if (!data.summary?.version && summaryError) {
+      const { toast } = await import("sonner");
+      toast.error(`Deep analysis failed for ${recordingTitle ?? "track"}: ${summaryError.slice(0, 100)}`);
     }
 
     if (abortController.signal.aborted) return;

@@ -21,7 +21,10 @@ export async function resetTranscribeBackend(): Promise<void> {
 
 export async function transcribeAudio(
   audioUrl: string,
-  onProgress?: (stage: string, progress: number) => void
+  onProgress?: (stage: string, progress: number) => void,
+  /** Receives the decoded mono samples (22.05 kHz) for audio-level
+   *  analysis (tempo, dynamics, sections — music-profile.ts). */
+  onAudio?: (samples: Float32Array, sampleRate: number) => void,
 ): Promise<NoteEvent[]> {
   onProgress?.("Loading audio...", 10);
 
@@ -61,6 +64,11 @@ export async function transcribeAudio(
 
   if (fullData.length > maxSamples) {
     onProgress?.("Analyzing first 10 minutes...", 25);
+  }
+  try {
+    onAudio?.(audioData, audioBuffer.sampleRate);
+  } catch (err) {
+    console.warn("[transcribe] audio feature hook failed:", err);
   }
 
   onProgress?.("Loading AI model...", 30);

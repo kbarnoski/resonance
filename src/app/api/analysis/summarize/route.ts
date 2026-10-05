@@ -1,22 +1,22 @@
-import { generateObject } from "ai";
 import { enforceLlmLimit, readCappedJson } from "@/lib/api/llm-guard";
-import { defaultModel } from "@/lib/ai/providers";
 import { createClient } from "@/lib/supabase/server";
-import { z } from "zod";
 import { logger } from "@/lib/logger";
+import { generateDeepSummary } from "@/lib/audio/deep-summary";
+import { isAnalysisFrozen } from "@/lib/audio/analysis-protected";
+import type { MusicProfile } from "@/lib/audio/music-profile";
 
-const summarySchema = z.object({
-  overview: z.string().describe("A 2-3 sentence overview of the piece's character, style, and mood"),
-  key_center: z.string().describe("The key center with any modulations or tonicizations noted"),
-  sections: z.array(z.object({
-    label: z.string().describe("Section label with timestamp range, e.g. 'Intro (0:00-0:15)'"),
-    description: z.string().describe("What happens musically in this section — chords, melody, texture"),
-  })).describe("Musical sections in chronological order"),
-  chord_vocabulary: z.array(z.string()).describe("All unique chords used, listed in order of importance"),
-  harmonic_highlights: z.string().describe("Notable harmonic moments — strongest cadences, interesting substitutions, modal borrowing"),
-  rhythm_and_feel: z.string().describe("Rhythmic character, harmonic rhythm, tempo feel"),
-  relearning_tips: z.string().describe("Practical advice for relearning this piece — which section to start with, voicing suggestions, practice order"),
-});
+/**
+ * Deep analysis v2 (see src/lib/audio/deep-summary.ts).
+ *
+ * The client sends only { analysisId, title, profile? } — the notes,
+ * chords and events are read from the DB here. (Root cause of 80 missing
+ * summaries, 2026-09-19 → 10-05: the runner used to POST the whole
+ * analysis row — 10k+ notes, ~1 MB — and readCappedJson's 64 KB cap
+ * rejected every one with a 413 that the runner swallowed.)
+ * `profile` is the browser-computed MusicProfile (audio tempo, sections,
+ * dynamics); without it the server builds one from the notes alone.
+ */
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   try {
@@ -24,69 +24,53 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-    const limited = await enforceLlmLimit(request, user.id, "analysis-summarize");
+    // Batch-analyze runs one per track — allow a deeper burst than chat.
+    const limited = await enforceLlmLimit(request, user.id, "analysis-summarize", { burst: 40, refillPerSec: 0.1 });
     if (limited) return limited;
-    const body = await readCappedJson(request);
+    const body = await readCappedJson(request, 256 * 1024);
     if (body instanceof Response) return body;
-    const { analysisId, analysis, title } = body;
+    const { analysisId, title, profile } = body as { analysisId?: string; title?: string; profile?: MusicProfile };
 
-    if (!analysis || !analysisId) {
-      return Response.json({ error: "Missing analysis data" }, { status: 400 });
+    if (!analysisId) {
+      return Response.json({ error: "Missing analysisId" }, { status: 400 });
     }
 
-    const { data: ownedAnalysis } = await supabase
+    const { data: row } = await supabase
       .from("analyses")
-      .select("id, recordings!inner(user_id)")
+      .select("id, recording_id, key_signature, notes, chords, events, recordings!inner(user_id, title, duration)")
       .eq("id", analysisId)
       .eq("recordings.user_id", user.id)
       .maybeSingle();
-    if (!ownedAnalysis) {
+    if (!row) {
       return Response.json({ error: "Analysis not found" }, { status: 404 });
     }
+    const rec = row.recordings as unknown as { title: string; duration: number | null };
 
-    const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-    function midiToNote(midi: number): string {
-      return `${NOTE_NAMES[midi % 12]}${Math.floor(midi / 12) - 1}`;
-    }
+    const usableProfile =
+      profile && typeof profile === "object" && profile.version === 2 && Array.isArray(profile.sections) && profile.sections.length > 0
+        ? profile
+        : null;
 
-    // Build chord progression string
-    const chordProgression = (analysis.chords ?? [])
-      .map((c: { chord: string; time: number; duration: number }) =>
-        `${c.chord} (${formatTime(c.time)}, ${c.duration.toFixed(1)}s)`
-      )
-      .join(" | ");
-
-    // Note range
-    const notes = analysis.notes ?? [];
-    const midiValues = notes.map((n: { midi: number }) => n.midi);
-    const minNote = midiValues.length > 0 ? midiToNote(Math.min(...midiValues)) : "N/A";
-    const maxNote = midiValues.length > 0 ? midiToNote(Math.max(...midiValues)) : "N/A";
-
-    const prompt = `Analyze this piano voice memo recording titled "${title ?? "Untitled"}" and generate a teaching summary that would help the pianist relearn and develop this piece.
-
-## Raw Analysis Data
-
-**Key:** ${analysis.key_signature ?? "Unknown"} (confidence: ${Math.round((analysis.key_confidence ?? 0) * 100)}%)
-**Tempo:** ${analysis.tempo ? `~${analysis.tempo} BPM` : "Unknown"}
-**Time Signature:** ${analysis.time_signature ?? "Unknown"}
-**Notes Detected:** ${notes.length}
-**Range:** ${minNote} to ${maxNote}
-
-**Full Chord Progression (with timestamps):**
-${chordProgression || "No chords detected"}
-
-Think about this as a music teacher would: identify natural sections, explain the harmonic language, and give practical relearning advice. Be specific about the actual chords and progressions found.`;
-
-    const { object: summary } = await generateObject({
-      model: defaultModel,
-      schema: summarySchema,
-      prompt,
+    const { summary, profile: used } = await generateDeepSummary({
+      title: title ?? rec?.title ?? null,
+      notes: row.notes ?? [],
+      chords: row.chords ?? [],
+      events: row.events ?? [],
+      duration: rec?.duration ?? null,
+      keySignature: row.key_signature,
+      profile: usableProfile,
     });
 
-    const { error } = await supabase
-      .from("analyses")
-      .update({ summary })
-      .eq("id", analysisId);
+    // Frozen recordings (Ghost/Snowflake/Realized/Kinetic Lab): the Room
+    // reads these columns at runtime — never write them automatically.
+    if (isAnalysisFrozen(row.recording_id)) {
+      return Response.json({ summary, frozen: true });
+    }
+
+    const update: Record<string, unknown> = { summary };
+    if (used.tempo) update.tempo = Math.round(used.tempo.bpm);
+    if (used.key.detected) update.key_signature = used.key.detected;
+    const { error } = await supabase.from("analyses").update(update).eq("id", analysisId);
 
     if (error) {
       logger.error("analysis/summarize", "Failed to save summary:", error);
@@ -101,10 +85,4 @@ Think about this as a music teacher would: identify natural sections, explain th
       { status: 500 }
     );
   }
-}
-
-function formatTime(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  return `${m}:${s.toString().padStart(2, "0")}`;
 }
