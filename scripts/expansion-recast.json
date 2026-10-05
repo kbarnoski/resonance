@@ -1,0 +1,2889 @@
+{
+ "generated": "2026-10-05T05:31:55.864Z",
+ "pool": {
+  "vettedPass": 98,
+  "leads": 49,
+  "supportPool": 35
+ },
+ "supportUses": {
+  "binary-stars": 21,
+  "biofilm": 21,
+  "cascade-veil": 21,
+  "coral": 21,
+  "dark-tide": 21,
+  "ember": 21,
+  "firefly-field": 21,
+  "fracture-light": 21,
+  "meteor-rain": 21,
+  "mycelium": 21,
+  "nadir": 21,
+  "parsec": 21,
+  "pendulum-dust": 21,
+  "r-mercury": 21,
+  "r2-portalrim": 21,
+  "r2-thermal": 21,
+  "r3-lightningveil": 21,
+  "r3-monsoonveil": 21,
+  "r3-sleepingbloom": 21,
+  "ribbon-of-light": 21,
+  "rose-window": 21,
+  "supernova": 21,
+  "will-o-wisp": 21,
+  "dark-nebula": 20,
+  "kepler": 20,
+  "maelstrom-dark": 20,
+  "mandorla": 20,
+  "molten-vein": 20,
+  "obsidian-flow": 20,
+  "plankton": 20,
+  "r3-balllightning": 20,
+  "r3-plasmastorm": 20,
+  "resonant-rings": 20,
+  "starfield": 20,
+  "volcanic": 20
+ },
+ "journeys": [
+  {
+   "id": "6251d682-b5e4-46b6-98cf-ceb6b609a7bc",
+   "title": "Surrounded by Light 6",
+   "lead": "kenosis",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.56,
+   "energy": [
+    0.37,
+    0.67,
+    0.91,
+    0.43,
+    0.17,
+    0.16
+   ],
+   "intensity": [
+    0.3,
+    0.63,
+    1,
+    0.3,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "kenosis",
+     "firefly-field",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "dark-tide",
+     "r3-balllightning",
+     "molten-vein"
+    ],
+    "transcendence": [
+     "kenosis",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "illumination": [
+     "kenosis",
+     "fracture-light",
+     "rose-window"
+    ],
+    "return": [
+     "kenosis",
+     "binary-stars",
+     "resonant-rings"
+    ],
+    "integration": [
+     "kenosis",
+     "biofilm",
+     "volcanic"
+    ]
+   }
+  },
+  {
+   "id": "79cad85a-13fa-4db9-b4cd-a507b62a6084",
+   "title": "Nothing 30",
+   "lead": "zenith",
+   "leadHue": "violet",
+   "leadFit": 2,
+   "leadCoverage": 0.58,
+   "energy": [
+    0.4,
+    0.59,
+    0.87,
+    0.59,
+    0.65,
+    0.42
+   ],
+   "intensity": [
+    0.3,
+    0.55,
+    1,
+    0.55,
+    0.65,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "meteor-rain",
+     "cascade-veil"
+    ],
+    "expansion": [
+     "zenith",
+     "coral",
+     "r3-plasmastorm"
+    ],
+    "transcendence": [
+     "zenith",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "r2-thermal",
+     "dark-nebula",
+     "mandorla"
+    ],
+    "return": [
+     "nadir",
+     "r-mercury",
+     "supernova"
+    ],
+    "integration": [
+     "zenith",
+     "will-o-wisp",
+     "parsec"
+    ]
+   }
+  },
+  {
+   "id": "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80",
+   "title": "Night Wind 2",
+   "lead": "kairos",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.53,
+   "energy": [
+    0.61,
+    0.6,
+    0.84,
+    0.74,
+    0.52,
+    0.27
+   ],
+   "intensity": [
+    0.62,
+    0.6,
+    1,
+    0.84,
+    0.48,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "kairos",
+     "kepler",
+     "mycelium"
+    ],
+    "expansion": [
+     "volcanic",
+     "r3-lightningveil",
+     "obsidian-flow"
+    ],
+    "transcendence": [
+     "kairos",
+     "r3-monsoonveil",
+     "ember"
+    ],
+    "illumination": [
+     "kairos",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "return": [
+     "kairos",
+     "starfield",
+     "biofilm"
+    ],
+    "integration": [
+     "kairos",
+     "fracture-light",
+     "maelstrom-dark"
+    ]
+   }
+  },
+  {
+   "id": "6499ac06-2cb1-4970-b75f-1258587c84d8",
+   "title": "The Other Side 10",
+   "lead": "astral",
+   "leadHue": "violet",
+   "leadFit": 3,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.66,
+    0.74,
+    0.7,
+    0.92,
+    0.9,
+    0.64
+   ],
+   "intensity": [
+    0.61,
+    0.73,
+    0.66,
+    1,
+    0.97,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "illumination",
+   "cast": {
+    "threshold": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "rose-window"
+    ],
+    "expansion": [
+     "astral",
+     "coral",
+     "r3-plasmastorm"
+    ],
+    "transcendence": [
+     "binary-stars",
+     "resonant-rings",
+     "parsec"
+    ],
+    "illumination": [
+     "astral",
+     "nadir",
+     "r-mercury"
+    ],
+    "return": [
+     "dark-tide",
+     "dark-nebula",
+     "r3-balllightning"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "meteor-rain",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "13e71555-03d6-4b27-ad32-2c6834559c24",
+   "title": "Northern Plane 5",
+   "lead": "r3-waveveil",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.61,
+    0.66,
+    0.82,
+    0.48,
+    0.67,
+    0.47
+   ],
+   "intensity": [
+    0.64,
+    0.73,
+    1,
+    0.42,
+    0.75,
+    0.4
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "r2-thermal",
+     "kepler",
+     "mycelium"
+    ],
+    "expansion": [
+     "mandorla",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "r3-waveveil",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "starfield",
+     "r3-lightningveil",
+     "obsidian-flow"
+    ],
+    "return": [
+     "r3-waveveil",
+     "ember",
+     "supernova"
+    ],
+    "integration": [
+     "r3-waveveil",
+     "will-o-wisp",
+     "maelstrom-dark"
+    ]
+   }
+  },
+  {
+   "id": "6407bf5c-7862-49e8-883d-59754c4caf18",
+   "title": "No question 8",
+   "lead": "iron-forge",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.67,
+   "energy": [
+    0.58,
+    0.71,
+    0.85,
+    0.61,
+    0.57,
+    0.26
+   ],
+   "intensity": [
+    0.56,
+    0.77,
+    1,
+    0.61,
+    0.54,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "resonant-rings",
+     "parsec",
+     "biofilm"
+    ],
+    "expansion": [
+     "iron-forge",
+     "dark-nebula",
+     "nadir"
+    ],
+    "transcendence": [
+     "iron-forge",
+     "r-mercury",
+     "molten-vein"
+    ],
+    "illumination": [
+     "volcanic",
+     "r3-plasmastorm",
+     "dark-tide"
+    ],
+    "return": [
+     "cascade-veil",
+     "fracture-light",
+     "ribbon-of-light"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "meteor-rain",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "a96b4696-c02b-4004-a1a5-a0b1eee09308",
+   "title": "Loire 2",
+   "lead": "tide",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.23,
+    0.57,
+    0.85,
+    0.57,
+    0.71,
+    0.64
+   ],
+   "intensity": [
+    0.3,
+    0.54,
+    1,
+    0.54,
+    0.77,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "rose-window",
+     "binary-stars",
+     "will-o-wisp"
+    ],
+    "expansion": [
+     "maelstrom-dark",
+     "coral",
+     "obsidian-flow"
+    ],
+    "transcendence": [
+     "tide",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "tide",
+     "r2-thermal",
+     "kepler"
+    ],
+    "return": [
+     "tide",
+     "ember",
+     "supernova"
+    ],
+    "integration": [
+     "tide",
+     "mycelium",
+     "r3-balllightning"
+    ]
+   }
+  },
+  {
+   "id": "6ee9f014-8203-437c-b05c-9d8bd0de9d3e",
+   "title": "Chenin 5",
+   "lead": "shadow-fire",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.25,
+    0.61,
+    0.86,
+    0.44,
+    0.47,
+    0.44
+   ],
+   "intensity": [
+    0.3,
+    0.59,
+    1,
+    0.31,
+    0.36,
+    0.32
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "meteor-rain",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "shadow-fire",
+     "dark-nebula",
+     "mandorla"
+    ],
+    "transcendence": [
+     "shadow-fire",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "cascade-veil",
+     "resonant-rings",
+     "starfield"
+    ],
+    "return": [
+     "r3-lightningveil",
+     "r3-plasmastorm",
+     "dark-tide"
+    ],
+    "integration": [
+     "shadow-fire",
+     "biofilm",
+     "volcanic"
+    ]
+   }
+  },
+  {
+   "id": "666436a4-eabf-4b0a-b6bc-665520daa687",
+   "title": "Tranquility 3",
+   "lead": "cirrus",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.37,
+    0.66,
+    0.9,
+    0.55,
+    0.56,
+    0.46
+   ],
+   "intensity": [
+    0.3,
+    0.62,
+    1,
+    0.45,
+    0.47,
+    0.32
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "firefly-field",
+     "fracture-light",
+     "rose-window"
+    ],
+    "expansion": [
+     "cirrus",
+     "r3-monsoonveil",
+     "ember"
+    ],
+    "transcendence": [
+     "cirrus",
+     "supernova",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "parsec",
+     "coral",
+     "obsidian-flow"
+    ],
+    "return": [
+     "r3-balllightning",
+     "nadir",
+     "r-mercury"
+    ],
+    "integration": [
+     "binary-stars",
+     "will-o-wisp",
+     "maelstrom-dark"
+    ]
+   }
+  },
+  {
+   "id": "ecf0d90f-7e1b-4ecb-a654-ecea936caca8",
+   "title": "Bells 1",
+   "lead": "flame",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.75,
+    0.87,
+    0.76,
+    0.71,
+    0.73,
+    0.77
+   ],
+   "intensity": [
+    0.8,
+    1,
+    0.82,
+    0.73,
+    0.77,
+    0.84
+   ],
+   "crests": true,
+   "peakPhase": "expansion",
+   "cast": {
+    "threshold": [
+     "starfield",
+     "biofilm",
+     "volcanic"
+    ],
+    "expansion": [
+     "flame",
+     "molten-vein",
+     "plankton"
+    ],
+    "transcendence": [
+     "r3-lightningveil",
+     "r2-thermal",
+     "dark-tide"
+    ],
+    "illumination": [
+     "flame",
+     "pendulum-dust",
+     "meteor-rain"
+    ],
+    "return": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "resonant-rings"
+    ],
+    "integration": [
+     "kepler",
+     "mycelium",
+     "mandorla"
+    ]
+   }
+  },
+  {
+   "id": "1f83e254-a0c8-45ec-974f-8b363038a98d",
+   "title": "Rise 1",
+   "lead": "seraph",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.58,
+    0.7,
+    0.86,
+    0.74,
+    0.69,
+    0.77
+   ],
+   "intensity": [
+    0.55,
+    0.75,
+    1,
+    0.8,
+    0.73,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "seraph",
+     "firefly-field",
+     "fracture-light"
+    ],
+    "expansion": [
+     "dark-nebula",
+     "r3-balllightning",
+     "nadir"
+    ],
+    "transcendence": [
+     "seraph",
+     "r3-monsoonveil",
+     "ember"
+    ],
+    "illumination": [
+     "seraph",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "return": [
+     "seraph",
+     "maelstrom-dark",
+     "parsec"
+    ],
+    "integration": [
+     "seraph",
+     "binary-stars",
+     "will-o-wisp"
+    ]
+   }
+  },
+  {
+   "id": "06b07942-bf94-4513-8e71-ef00508ced3e",
+   "title": "Surrounded by Light 3",
+   "lead": "yantra",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.38,
+    0.55,
+    0.85,
+    0.62,
+    0.34,
+    0.28
+   ],
+   "intensity": [
+    0.3,
+    0.51,
+    1,
+    0.63,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "yantra",
+     "cascade-veil",
+     "rose-window"
+    ],
+    "expansion": [
+     "yantra",
+     "kepler",
+     "mycelium"
+    ],
+    "transcendence": [
+     "yantra",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "yantra",
+     "mandorla",
+     "supernova"
+    ],
+    "return": [
+     "starfield",
+     "r3-lightningveil",
+     "coral"
+    ],
+    "integration": [
+     "obsidian-flow",
+     "r3-plasmastorm",
+     "r2-thermal"
+    ]
+   }
+  },
+  {
+   "id": "6ff51cde-f4ca-4285-8707-0f77eaf9394c",
+   "title": "Amboise 1",
+   "lead": "merkaba",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.7,
+    0.79,
+    0.82,
+    0.58,
+    0.43,
+    0.35
+   ],
+   "intensity": [
+    0.8,
+    0.96,
+    1,
+    0.59,
+    0.33,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "biofilm",
+     "dark-tide",
+     "r3-balllightning"
+    ],
+    "expansion": [
+     "merkaba",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "transcendence": [
+     "merkaba",
+     "r3-monsoonveil",
+     "ember"
+    ],
+    "illumination": [
+     "will-o-wisp",
+     "maelstrom-dark",
+     "resonant-rings"
+    ],
+    "return": [
+     "fracture-light",
+     "ribbon-of-light",
+     "binary-stars"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "meteor-rain",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "85124aed-c3b4-42e2-870a-b14bc5425b72",
+   "title": "Night Wind 9",
+   "lead": "r2-curlswarm",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.67,
+   "energy": [
+    0.49,
+    0.68,
+    0.83,
+    0.77,
+    0.65,
+    0.52
+   ],
+   "intensity": [
+    0.43,
+    0.75,
+    1,
+    0.9,
+    0.69,
+    0.48
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "rose-window",
+     "starfield",
+     "parsec"
+    ],
+    "expansion": [
+     "r2-curlswarm",
+     "mycelium",
+     "dark-nebula"
+    ],
+    "transcendence": [
+     "r2-curlswarm",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "mandorla",
+     "nadir",
+     "r-mercury"
+    ],
+    "return": [
+     "r3-plasmastorm",
+     "r2-thermal",
+     "kepler"
+    ],
+    "integration": [
+     "r3-lightningveil",
+     "coral",
+     "obsidian-flow"
+    ]
+   }
+  },
+  {
+   "id": "0b4eb01a-9ac7-4a04-8877-05f905b14f8b",
+   "title": "Tranquility 8",
+   "lead": "singularity",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.17,
+    0.4,
+    0.84,
+    0.58,
+    0.38,
+    0.39
+   ],
+   "intensity": [
+    0.3,
+    0.3,
+    1,
+    0.56,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "meteor-rain",
+     "firefly-field"
+    ],
+    "expansion": [
+     "singularity",
+     "fracture-light",
+     "ribbon-of-light"
+    ],
+    "transcendence": [
+     "singularity",
+     "r3-monsoonveil",
+     "supernova"
+    ],
+    "illumination": [
+     "dark-tide",
+     "r3-balllightning",
+     "r2-portalrim"
+    ],
+    "return": [
+     "cascade-veil",
+     "binary-stars",
+     "will-o-wisp"
+    ],
+    "integration": [
+     "singularity",
+     "resonant-rings",
+     "volcanic"
+    ]
+   }
+  },
+  {
+   "id": "8f3e82e2-0a30-499f-ba74-5158208a07a0",
+   "title": "Never Forget 4",
+   "lead": "pollen",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.73,
+    0.75,
+    0.89,
+    0.66,
+    0.29,
+    0.26
+   ],
+   "intensity": [
+    0.75,
+    0.79,
+    1,
+    0.64,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pollen",
+     "r2-thermal",
+     "kepler"
+    ],
+    "expansion": [
+     "mycelium",
+     "mandorla",
+     "molten-vein"
+    ],
+    "transcendence": [
+     "pollen",
+     "ember",
+     "plankton"
+    ],
+    "illumination": [
+     "pollen",
+     "r3-lightningveil",
+     "obsidian-flow"
+    ],
+    "return": [
+     "pollen",
+     "maelstrom-dark",
+     "starfield"
+    ],
+    "integration": [
+     "pollen",
+     "parsec",
+     "biofilm"
+    ]
+   }
+  },
+  {
+   "id": "3f42929f-8b8e-4206-a3c8-057bf479d4e7",
+   "title": "Torraine 5",
+   "lead": "magma",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.67,
+   "energy": [
+    0.38,
+    0.55,
+    0.78,
+    0.76,
+    0.53,
+    0.57
+   ],
+   "intensity": [
+    0.3,
+    0.59,
+    1,
+    0.97,
+    0.56,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "meteor-rain",
+     "firefly-field",
+     "cascade-veil"
+    ],
+    "expansion": [
+     "magma",
+     "coral",
+     "r3-plasmastorm"
+    ],
+    "transcendence": [
+     "magma",
+     "supernova",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "dark-nebula",
+     "nadir",
+     "r-mercury"
+    ],
+    "return": [
+     "binary-stars",
+     "resonant-rings",
+     "volcanic"
+    ],
+    "integration": [
+     "ribbon-of-light",
+     "fracture-light",
+     "rose-window"
+    ]
+   }
+  },
+  {
+   "id": "4dac5718-517d-4183-ad27-e1a6c583e305",
+   "title": "Tranquility 30",
+   "lead": "r-blackhole",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.56,
+    0.83,
+    0.81,
+    0.68,
+    0.51,
+    0.63
+   ],
+   "intensity": [
+    0.55,
+    1,
+    0.98,
+    0.75,
+    0.46,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "expansion",
+   "cast": {
+    "threshold": [
+     "parsec",
+     "biofilm",
+     "r3-lightningveil"
+    ],
+    "expansion": [
+     "r-blackhole",
+     "ember",
+     "plankton"
+    ],
+    "transcendence": [
+     "molten-vein",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "illumination": [
+     "r-blackhole",
+     "mycelium",
+     "mandorla"
+    ],
+    "return": [
+     "r-blackhole",
+     "maelstrom-dark",
+     "starfield"
+    ],
+    "integration": [
+     "obsidian-flow",
+     "r2-thermal",
+     "kepler"
+    ]
+   }
+  },
+  {
+   "id": "6cb979ce-3b76-4851-a0ba-3f100fddfcb3",
+   "title": "Yellow Bird 3",
+   "lead": "chakra",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.62,
+    0.76,
+    0.87,
+    0.79,
+    0.86,
+    0.77
+   ],
+   "intensity": [
+    0.6,
+    0.82,
+    1,
+    0.87,
+    0.98,
+    0.84
+   ],
+   "crests": true,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "cascade-veil",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "rose-window",
+     "binary-stars",
+     "will-o-wisp"
+    ],
+    "transcendence": [
+     "chakra",
+     "supernova",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "chakra",
+     "dark-tide",
+     "dark-nebula"
+    ],
+    "return": [
+     "r3-balllightning",
+     "nadir",
+     "r-mercury"
+    ],
+    "integration": [
+     "volcanic",
+     "coral",
+     "r3-plasmastorm"
+    ]
+   }
+  },
+  {
+   "id": "d8705068-f8a9-4dd7-95a5-c6f1160fed22",
+   "title": "Roll Away 8",
+   "lead": "event-horizon",
+   "leadHue": "gold",
+   "leadFit": 3,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.58,
+    0.6,
+    0.88,
+    0.92,
+    0.92,
+    0.92
+   ],
+   "intensity": [
+    0.48,
+    0.52,
+    0.94,
+    1,
+    1,
+    1
+   ],
+   "crests": true,
+   "peakPhase": "return",
+   "cast": {
+    "threshold": [
+     "meteor-rain",
+     "firefly-field",
+     "fracture-light"
+    ],
+    "expansion": [
+     "event-horizon",
+     "maelstrom-dark",
+     "resonant-rings"
+    ],
+    "transcendence": [
+     "starfield",
+     "parsec",
+     "biofilm"
+    ],
+    "illumination": [
+     "event-horizon",
+     "obsidian-flow",
+     "mycelium"
+    ],
+    "return": [
+     "event-horizon",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "integration": [
+     "event-horizon",
+     "r3-monsoonveil",
+     "ember"
+    ]
+   }
+  },
+  {
+   "id": "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f",
+   "title": "Singular 4",
+   "lead": "redshift",
+   "leadHue": "prismatic",
+   "leadFit": 1,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.97,
+    0.65,
+    0.84,
+    0.62,
+    0.48,
+    0.37
+   ],
+   "intensity": [
+    1,
+    0.54,
+    0.81,
+    0.5,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "threshold",
+   "cast": {
+    "threshold": [
+     "redshift",
+     "supernova",
+     "r3-sleepingbloom"
+    ],
+    "expansion": [
+     "redshift",
+     "dark-nebula",
+     "mandorla"
+    ],
+    "transcendence": [
+     "r3-balllightning",
+     "nadir",
+     "r-mercury"
+    ],
+    "illumination": [
+     "redshift",
+     "dark-tide",
+     "kepler"
+    ],
+    "return": [
+     "pendulum-dust",
+     "rose-window",
+     "will-o-wisp"
+    ],
+    "integration": [
+     "volcanic",
+     "coral",
+     "r3-plasmastorm"
+    ]
+   }
+  },
+  {
+   "id": "24101852-61ee-4ac9-8fd7-da2ae19ab0a3",
+   "title": "The Other Side 9",
+   "lead": "orbit-weaver",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.51,
+    0.64,
+    0.81,
+    0.58,
+    0.38,
+    0.24
+   ],
+   "intensity": [
+    0.47,
+    0.7,
+    1,
+    0.6,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "binary-stars",
+     "resonant-rings",
+     "parsec"
+    ],
+    "expansion": [
+     "orbit-weaver",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "transcendence": [
+     "orbit-weaver",
+     "r3-monsoonveil",
+     "plankton"
+    ],
+    "illumination": [
+     "biofilm",
+     "r3-lightningveil",
+     "r2-thermal"
+    ],
+    "return": [
+     "meteor-rain",
+     "firefly-field",
+     "ribbon-of-light"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "cascade-veil",
+     "fracture-light"
+    ]
+   }
+  },
+  {
+   "id": "86b64938-26ea-40b9-9ea1-461323a049d5",
+   "title": "Chenin 3",
+   "lead": "threshold",
+   "leadHue": "prismatic",
+   "leadFit": 1,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.44,
+    0.78,
+    0.6,
+    0.88,
+    0.61,
+    0.41
+   ],
+   "intensity": [
+    0.3,
+    0.84,
+    0.55,
+    1,
+    0.57,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "illumination",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "rose-window",
+     "maelstrom-dark"
+    ],
+    "expansion": [
+     "threshold",
+     "r3-balllightning",
+     "r-mercury"
+    ],
+    "transcendence": [
+     "obsidian-flow",
+     "r3-plasmastorm",
+     "dark-tide"
+    ],
+    "illumination": [
+     "threshold",
+     "ember",
+     "supernova"
+    ],
+    "return": [
+     "kepler",
+     "mycelium",
+     "mandorla"
+    ],
+    "integration": [
+     "starfield",
+     "volcanic",
+     "coral"
+    ]
+   }
+  },
+  {
+   "id": "2ff26268-997a-438f-8dac-d280d50da3a1",
+   "title": "Tranquility 11",
+   "lead": "biolume",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.44,
+    0.63,
+    0.86,
+    0.62,
+    0.31,
+    0.11
+   ],
+   "intensity": [
+    0.31,
+    0.63,
+    1,
+    0.6,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "biolume",
+     "resonant-rings",
+     "biofilm"
+    ],
+    "expansion": [
+     "nadir",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "transcendence": [
+     "biolume",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "r3-lightningveil",
+     "r2-thermal",
+     "dark-nebula"
+    ],
+    "return": [
+     "biolume",
+     "meteor-rain",
+     "cascade-veil"
+    ],
+    "integration": [
+     "biolume",
+     "binary-stars",
+     "will-o-wisp"
+    ]
+   }
+  },
+  {
+   "id": "954a7000-91ba-42eb-b5a7-a8d5bc21c8c2",
+   "title": "Night Wind 5",
+   "lead": "pulsar",
+   "leadHue": "prismatic",
+   "leadFit": 1,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.5,
+    0.64,
+    0.82,
+    0.77,
+    0.61,
+    0.46
+   ],
+   "intensity": [
+    0.45,
+    0.69,
+    1,
+    0.9,
+    0.64,
+    0.39
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pulsar",
+     "fracture-light",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "volcanic",
+     "coral",
+     "dark-tide"
+    ],
+    "transcendence": [
+     "pulsar",
+     "r3-monsoonveil",
+     "ember"
+    ],
+    "illumination": [
+     "pulsar",
+     "r3-balllightning",
+     "r-mercury"
+    ],
+    "return": [
+     "rose-window",
+     "maelstrom-dark",
+     "parsec"
+    ],
+    "integration": [
+     "pulsar",
+     "pendulum-dust",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "112c3e16-3c98-43ca-902e-a9c2b510ee3d",
+   "title": "Cabin Soul 6",
+   "lead": "dusk",
+   "leadHue": "prismatic",
+   "leadFit": 1,
+   "leadCoverage": 0.52,
+   "energy": [
+    0.34,
+    0.51,
+    0.83,
+    0.67,
+    0.57,
+    0.18
+   ],
+   "intensity": [
+    0.3,
+    0.46,
+    1,
+    0.73,
+    0.57,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "dusk",
+     "will-o-wisp",
+     "starfield"
+    ],
+    "expansion": [
+     "r3-plasmastorm",
+     "r2-thermal",
+     "mycelium"
+    ],
+    "transcendence": [
+     "dusk",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "dusk",
+     "nadir",
+     "supernova"
+    ],
+    "return": [
+     "dusk",
+     "dark-nebula",
+     "mandorla"
+    ],
+    "integration": [
+     "dusk",
+     "r3-lightningveil",
+     "obsidian-flow"
+    ]
+   }
+  },
+  {
+   "id": "05664df7-d355-40b7-85d2-e2badf26123a",
+   "title": "Torraine 6",
+   "lead": "torrent",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.44,
+    0.47,
+    0.82,
+    0.66,
+    0.57,
+    0.7
+   ],
+   "intensity": [
+    0.35,
+    0.41,
+    1,
+    0.73,
+    0.57,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "torrent",
+     "pendulum-dust",
+     "firefly-field"
+    ],
+    "expansion": [
+     "torrent",
+     "cascade-veil",
+     "ribbon-of-light"
+    ],
+    "transcendence": [
+     "torrent",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "dark-tide",
+     "kepler",
+     "r3-balllightning"
+    ],
+    "return": [
+     "maelstrom-dark",
+     "parsec",
+     "biofilm"
+    ],
+    "integration": [
+     "torrent",
+     "rose-window",
+     "binary-stars"
+    ]
+   }
+  },
+  {
+   "id": "68b4289e-2247-41d6-8b9d-064345da9769",
+   "title": "Tranquility 17",
+   "lead": "r2-pixie",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.69,
+    0.7,
+    0.85,
+    0.63,
+    0.81,
+    0.56
+   ],
+   "intensity": [
+    0.74,
+    0.76,
+    1,
+    0.64,
+    0.94,
+    0.54
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "r3-lightningveil",
+     "obsidian-flow",
+     "r3-plasmastorm"
+    ],
+    "expansion": [
+     "r2-thermal",
+     "mycelium",
+     "mandorla"
+    ],
+    "transcendence": [
+     "r2-pixie",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "r2-pixie",
+     "starfield",
+     "volcanic"
+    ],
+    "return": [
+     "r2-pixie",
+     "molten-vein",
+     "ember"
+    ],
+    "integration": [
+     "r2-pixie",
+     "will-o-wisp",
+     "resonant-rings"
+    ]
+   }
+  },
+  {
+   "id": "99b7ad2c-a212-440e-85fa-0c670c1e4296",
+   "title": "Redwoods Sway 2",
+   "lead": "r-embers",
+   "leadHue": "ember",
+   "leadFit": 3,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.97,
+    0.56,
+    0.63,
+    0.55,
+    0.47,
+    0.47
+   ],
+   "intensity": [
+    1,
+    0.42,
+    0.51,
+    0.39,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "threshold",
+   "cast": {
+    "threshold": [
+     "r-embers",
+     "r3-monsoonveil",
+     "r3-sleepingbloom"
+    ],
+    "expansion": [
+     "r-embers",
+     "dark-nebula",
+     "r3-balllightning"
+    ],
+    "transcendence": [
+     "nadir",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "r-embers",
+     "coral",
+     "kepler"
+    ],
+    "return": [
+     "meteor-rain",
+     "firefly-field",
+     "fracture-light"
+    ],
+    "integration": [
+     "maelstrom-dark",
+     "parsec",
+     "biofilm"
+    ]
+   }
+  },
+  {
+   "id": "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a",
+   "title": "Horses 1",
+   "lead": "r2-spiralgal",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.78,
+    0.9,
+    0.84,
+    0.76,
+    0.81,
+    0.49
+   ],
+   "intensity": [
+    0.81,
+    1,
+    0.91,
+    0.78,
+    0.86,
+    0.37
+   ],
+   "crests": false,
+   "peakPhase": "expansion",
+   "cast": {
+    "threshold": [
+     "will-o-wisp",
+     "resonant-rings",
+     "volcanic"
+    ],
+    "expansion": [
+     "r2-spiralgal",
+     "ember",
+     "supernova"
+    ],
+    "transcendence": [
+     "mycelium",
+     "mandorla",
+     "molten-vein"
+    ],
+    "illumination": [
+     "r2-spiralgal",
+     "rose-window",
+     "binary-stars"
+    ],
+    "return": [
+     "r3-lightningveil",
+     "r3-plasmastorm",
+     "dark-tide"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "ribbon-of-light",
+     "cascade-veil"
+    ]
+   }
+  },
+  {
+   "id": "e9beec7a-6aa4-41bb-83f0-c827603ed51d",
+   "title": "Northern Plane 3",
+   "lead": "dharma",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.41,
+    0.48,
+    0.87,
+    0.62,
+    0.7,
+    0.61
+   ],
+   "intensity": [
+    0.3,
+    0.37,
+    1,
+    0.59,
+    0.73,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "dharma",
+     "meteor-rain",
+     "fracture-light"
+    ],
+    "expansion": [
+     "maelstrom-dark",
+     "starfield",
+     "biofilm"
+    ],
+    "transcendence": [
+     "dharma",
+     "r3-sleepingbloom",
+     "plankton"
+    ],
+    "illumination": [
+     "dharma",
+     "r2-thermal",
+     "kepler"
+    ],
+    "return": [
+     "dark-nebula",
+     "nadir",
+     "r3-monsoonveil"
+    ],
+    "integration": [
+     "dharma",
+     "coral",
+     "obsidian-flow"
+    ]
+   }
+  },
+  {
+   "id": "1f5e3884-5317-4146-ba18-4742eaf74ce9",
+   "title": "Chemiluminescence",
+   "lead": "jubilee",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.1,
+    0.35,
+    0.4,
+    0.84,
+    0.89,
+    0.48
+   ],
+   "intensity": [
+    0.3,
+    0.3,
+    0.3,
+    0.93,
+    1,
+    0.35
+   ],
+   "crests": false,
+   "peakPhase": "return",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "cascade-veil",
+     "binary-stars"
+    ],
+    "expansion": [
+     "jubilee",
+     "will-o-wisp",
+     "resonant-rings"
+    ],
+    "transcendence": [
+     "parsec",
+     "volcanic",
+     "r3-lightningveil"
+    ],
+    "illumination": [
+     "r3-balllightning",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "return": [
+     "jubilee",
+     "ember",
+     "supernova"
+    ],
+    "integration": [
+     "jubilee",
+     "mycelium",
+     "mandorla"
+    ]
+   }
+  },
+  {
+   "id": "7b39db5e-68fa-4915-8ff1-83078c18edac",
+   "title": "Tranquility 33",
+   "lead": "drift",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.48,
+    0.71,
+    0.85,
+    0.64,
+    0.59,
+    0.46
+   ],
+   "intensity": [
+    0.39,
+    0.76,
+    1,
+    0.65,
+    0.56,
+    0.35
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "drift",
+     "ribbon-of-light",
+     "fracture-light"
+    ],
+    "expansion": [
+     "dark-nebula",
+     "nadir",
+     "r-mercury"
+    ],
+    "transcendence": [
+     "drift",
+     "r3-monsoonveil",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "drift",
+     "r3-plasmastorm",
+     "dark-tide"
+    ],
+    "return": [
+     "drift",
+     "rose-window",
+     "coral"
+    ],
+    "integration": [
+     "drift",
+     "meteor-rain",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "4d17da19-6834-4005-a944-34c27a88a320",
+   "title": "Amboise 2",
+   "lead": "furnace",
+   "leadHue": "ember",
+   "leadFit": 2,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.8,
+    0.68,
+    0.82,
+    0.64,
+    0.7,
+    0.39
+   ],
+   "intensity": [
+    0.96,
+    0.76,
+    1,
+    0.69,
+    0.8,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "furnace",
+     "molten-vein",
+     "ember"
+    ],
+    "expansion": [
+     "furnace",
+     "obsidian-flow",
+     "r2-thermal"
+    ],
+    "transcendence": [
+     "furnace",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "biofilm",
+     "volcanic",
+     "r3-lightningveil"
+    ],
+    "return": [
+     "furnace",
+     "kepler",
+     "mandorla"
+    ],
+    "integration": [
+     "furnace",
+     "maelstrom-dark",
+     "starfield"
+    ]
+   }
+  },
+  {
+   "id": "e4658610-336d-452f-a4f8-7b652b339db6",
+   "title": "Night Wind 11",
+   "lead": "diatom",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.58,
+   "energy": [
+    0.82,
+    0.61,
+    0.61,
+    0.63,
+    0.86,
+    0.48
+   ],
+   "intensity": [
+    0.94,
+    0.59,
+    0.6,
+    0.63,
+    1,
+    0.38
+   ],
+   "crests": false,
+   "peakPhase": "return",
+   "cast": {
+    "threshold": [
+     "dark-nebula",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "expansion": [
+     "diatom",
+     "ribbon-of-light",
+     "cascade-veil"
+    ],
+    "transcendence": [
+     "fracture-light",
+     "rose-window",
+     "binary-stars"
+    ],
+    "illumination": [
+     "will-o-wisp",
+     "coral",
+     "dark-tide"
+    ],
+    "return": [
+     "diatom",
+     "r3-monsoonveil",
+     "r3-sleepingbloom"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "meteor-rain",
+     "firefly-field"
+    ]
+   }
+  },
+  {
+   "id": "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6",
+   "title": "Velvet Tears 1",
+   "lead": "chrysalis",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.45,
+    0.68,
+    0.84,
+    0.6,
+    0.53,
+    0.45
+   ],
+   "intensity": [
+    0.35,
+    0.74,
+    1,
+    0.6,
+    0.48,
+    0.35
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "chrysalis",
+     "maelstrom-dark",
+     "resonant-rings"
+    ],
+    "expansion": [
+     "kepler",
+     "mycelium",
+     "r3-balllightning"
+    ],
+    "transcendence": [
+     "chrysalis",
+     "nadir",
+     "plankton"
+    ],
+    "illumination": [
+     "chrysalis",
+     "r3-plasmastorm",
+     "r2-thermal"
+    ],
+    "return": [
+     "chrysalis",
+     "volcanic",
+     "obsidian-flow"
+    ],
+    "integration": [
+     "chrysalis",
+     "starfield",
+     "parsec"
+    ]
+   }
+  },
+  {
+   "id": "71b71375-8d7f-4e84-86c8-76d9e85a6eb0",
+   "title": "Tranquility 34",
+   "lead": "typhoon",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.61,
+   "energy": [
+    0.29,
+    0.77,
+    0.86,
+    0.53,
+    0.35,
+    0.4
+   ],
+   "intensity": [
+    0.3,
+    0.86,
+    1,
+    0.47,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "typhoon",
+     "pendulum-dust",
+     "firefly-field"
+    ],
+    "expansion": [
+     "typhoon",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "typhoon",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "dark-nebula",
+     "molten-vein",
+     "r-mercury"
+    ],
+    "return": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "fracture-light"
+    ],
+    "integration": [
+     "rose-window",
+     "binary-stars",
+     "dark-tide"
+    ]
+   }
+  },
+  {
+   "id": "aeb508d6-6447-4fb5-8468-636924520f82",
+   "title": "Yellow Bird 6",
+   "lead": "hubble",
+   "leadHue": "ember",
+   "leadFit": 2,
+   "leadCoverage": 0.66,
+   "energy": [
+    0.47,
+    0.52,
+    0.84,
+    0.63,
+    0.58,
+    0.38
+   ],
+   "intensity": [
+    0.38,
+    0.47,
+    1,
+    0.66,
+    0.57,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "parsec",
+     "biofilm",
+     "r3-lightningveil"
+    ],
+    "expansion": [
+     "obsidian-flow",
+     "r3-plasmastorm",
+     "r2-thermal"
+    ],
+    "transcendence": [
+     "hubble",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "hubble",
+     "r3-balllightning",
+     "nadir"
+    ],
+    "return": [
+     "kepler",
+     "mycelium",
+     "mandorla"
+    ],
+    "integration": [
+     "will-o-wisp",
+     "resonant-rings",
+     "starfield"
+    ]
+   }
+  },
+  {
+   "id": "3814f116-5c54-499c-9d9b-355201700fdc",
+   "title": "Rattler 2",
+   "lead": "gnosis",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.59,
+   "energy": [
+    0.66,
+    0.77,
+    0.84,
+    0.7,
+    0.38,
+    0.21
+   ],
+   "intensity": [
+    0.69,
+    0.88,
+    1,
+    0.76,
+    0.3,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "rose-window",
+     "binary-stars",
+     "maelstrom-dark"
+    ],
+    "expansion": [
+     "gnosis",
+     "molten-vein",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "gnosis",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "volcanic",
+     "coral",
+     "dark-tide"
+    ],
+    "return": [
+     "gnosis",
+     "pendulum-dust",
+     "meteor-rain"
+    ],
+    "integration": [
+     "gnosis",
+     "firefly-field",
+     "fracture-light"
+    ]
+   }
+  },
+  {
+   "id": "4922ecbd-d1ab-4eec-a13d-735dcdc655da",
+   "title": "Tranquility 21",
+   "lead": "ripple",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.67,
+   "energy": [
+    0.66,
+    0.69,
+    0.81,
+    0.75,
+    0.62,
+    0.62
+   ],
+   "intensity": [
+    0.73,
+    0.79,
+    1,
+    0.89,
+    0.67,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "r3-plasmastorm",
+     "r2-thermal",
+     "dark-nebula"
+    ],
+    "expansion": [
+     "ripple",
+     "mandorla",
+     "r3-balllightning"
+    ],
+    "transcendence": [
+     "ripple",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "nadir",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "return": [
+     "parsec",
+     "biofilm",
+     "r3-lightningveil"
+    ],
+    "integration": [
+     "cascade-veil",
+     "ribbon-of-light",
+     "will-o-wisp"
+    ]
+   }
+  },
+  {
+   "id": "81683231-3b3c-4542-8696-13dfcf56469a",
+   "title": "Loire 5A",
+   "lead": "r3-fairyglow",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.84,
+    0.58,
+    0.6,
+    0.5,
+    0.42,
+    0.31
+   ],
+   "intensity": [
+    1,
+    0.56,
+    0.61,
+    0.43,
+    0.31,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "threshold",
+   "cast": {
+    "threshold": [
+     "r3-fairyglow",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "expansion": [
+     "r3-fairyglow",
+     "kepler",
+     "mycelium"
+    ],
+    "transcendence": [
+     "r3-fairyglow",
+     "molten-vein",
+     "r3-monsoonveil"
+    ],
+    "illumination": [
+     "coral",
+     "obsidian-flow",
+     "dark-tide"
+    ],
+    "return": [
+     "rose-window",
+     "resonant-rings",
+     "starfield"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "meteor-rain",
+     "fracture-light"
+    ]
+   }
+  },
+  {
+   "id": "87009cf3-8c07-48eb-88d8-e7acb6a14e41",
+   "title": "Night Wind 4",
+   "lead": "lectio",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.72,
+    0.77,
+    0.87,
+    0.69,
+    0.49,
+    0.34
+   ],
+   "intensity": [
+    0.76,
+    0.85,
+    1,
+    0.72,
+    0.39,
+    0.3
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "r3-lightningveil",
+     "r2-thermal",
+     "dark-nebula"
+    ],
+    "expansion": [
+     "lectio",
+     "mandorla",
+     "nadir"
+    ],
+    "transcendence": [
+     "lectio",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "parsec",
+     "biofilm",
+     "volcanic"
+    ],
+    "return": [
+     "lectio",
+     "will-o-wisp",
+     "maelstrom-dark"
+    ],
+    "integration": [
+     "firefly-field",
+     "cascade-veil",
+     "binary-stars"
+    ]
+   }
+  },
+  {
+   "id": "e181df12-049b-4199-8a1b-4bc1c3edd8e7",
+   "title": "Tranquility 35",
+   "lead": "lightyear",
+   "leadHue": "violet",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.64,
+    0.73,
+    0.88,
+    0.54,
+    0.49,
+    0.49
+   ],
+   "intensity": [
+    0.62,
+    0.75,
+    1,
+    0.45,
+    0.38,
+    0.38
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "obsidian-flow",
+     "r3-plasmastorm",
+     "kepler"
+    ],
+    "expansion": [
+     "mycelium",
+     "r3-balllightning",
+     "r-mercury"
+    ],
+    "transcendence": [
+     "lightyear",
+     "molten-vein",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "lightyear",
+     "starfield",
+     "coral"
+    ],
+    "return": [
+     "lightyear",
+     "meteor-rain",
+     "ribbon-of-light"
+    ],
+    "integration": [
+     "lightyear",
+     "fracture-light",
+     "resonant-rings"
+    ]
+   }
+  },
+  {
+   "id": "19acdb4c-5a52-4532-99bd-a59652c7ff8e",
+   "title": "No question 7",
+   "lead": "symbiosis",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.6,
+    0.65,
+    0.77,
+    0.82,
+    0.63,
+    0.46
+   ],
+   "intensity": [
+    0.62,
+    0.71,
+    0.9,
+    1,
+    0.68,
+    0.39
+   ],
+   "crests": false,
+   "peakPhase": "illumination",
+   "cast": {
+    "threshold": [
+     "rose-window",
+     "binary-stars",
+     "will-o-wisp"
+    ],
+    "expansion": [
+     "symbiosis",
+     "volcanic",
+     "dark-tide"
+    ],
+    "transcendence": [
+     "dark-nebula",
+     "nadir",
+     "r3-monsoonveil"
+    ],
+    "illumination": [
+     "symbiosis",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "return": [
+     "maelstrom-dark",
+     "parsec",
+     "biofilm"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "firefly-field",
+     "cascade-veil"
+    ]
+   }
+  },
+  {
+   "id": "4ef43223-42cf-4ce8-9088-7578569f7de6",
+   "title": "Sancerre Cry 4",
+   "lead": "r-stardust",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.51,
+    0.71,
+    0.81,
+    0.74,
+    0.65,
+    0.71
+   ],
+   "intensity": [
+    0.48,
+    0.84,
+    1,
+    0.88,
+    0.72,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "r-stardust",
+     "meteor-rain",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "kepler",
+     "mycelium",
+     "r3-balllightning"
+    ],
+    "transcendence": [
+     "r-stardust",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "r-stardust",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "return": [
+     "obsidian-flow",
+     "r3-plasmastorm",
+     "r2-thermal"
+    ],
+    "integration": [
+     "starfield",
+     "r3-lightningveil",
+     "coral"
+    ]
+   }
+  },
+  {
+   "id": "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1",
+   "title": "Tranquility 36",
+   "lead": "flagella",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.62,
+   "energy": [
+    0.5,
+    0.63,
+    0.67,
+    0.73,
+    0.72,
+    0.41
+   ],
+   "intensity": [
+    0.56,
+    0.81,
+    0.87,
+    1,
+    0.97,
+    0.38
+   ],
+   "crests": false,
+   "peakPhase": "illumination",
+   "cast": {
+    "threshold": [
+     "fracture-light",
+     "rose-window",
+     "binary-stars"
+    ],
+    "expansion": [
+     "flagella",
+     "will-o-wisp",
+     "resonant-rings"
+    ],
+    "transcendence": [
+     "parsec",
+     "biofilm",
+     "dark-tide"
+    ],
+    "illumination": [
+     "flagella",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "return": [
+     "mandorla",
+     "nadir",
+     "r3-monsoonveil"
+    ],
+    "integration": [
+     "pendulum-dust",
+     "firefly-field",
+     "cascade-veil"
+    ]
+   }
+  },
+  {
+   "id": "9d0ad58d-e490-4cc3-b24d-7c97d1fa3c0d",
+   "title": "Torraine 7",
+   "lead": "vestige",
+   "leadHue": "gold",
+   "leadFit": 2,
+   "leadCoverage": 0.67,
+   "energy": [
+    0.52,
+    0.62,
+    0.81,
+    0.78,
+    0.79,
+    0.65
+   ],
+   "intensity": [
+    0.5,
+    0.67,
+    1,
+    0.95,
+    0.98,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "meteor-rain",
+     "ribbon-of-light",
+     "maelstrom-dark"
+    ],
+    "expansion": [
+     "vestige",
+     "coral",
+     "obsidian-flow"
+    ],
+    "transcendence": [
+     "vestige",
+     "supernova",
+     "plankton"
+    ],
+    "illumination": [
+     "r2-thermal",
+     "kepler",
+     "mycelium"
+    ],
+    "return": [
+     "molten-vein",
+     "r-mercury",
+     "r2-portalrim"
+    ],
+    "integration": [
+     "starfield",
+     "volcanic",
+     "r3-lightningveil"
+    ]
+   }
+  },
+  {
+   "id": "21448504-ec00-48c3-8b0a-c92da2cf216a",
+   "title": "Surrounded by Light 19",
+   "lead": "murmuration",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.6,
+   "energy": [
+    0.31,
+    0.49,
+    0.91,
+    0.53,
+    0.51,
+    0.71
+   ],
+   "intensity": [
+    0.3,
+    0.35,
+    1,
+    0.41,
+    0.39,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "pendulum-dust",
+     "firefly-field",
+     "fracture-light"
+    ],
+    "expansion": [
+     "murmuration",
+     "cascade-veil",
+     "rose-window"
+    ],
+    "transcendence": [
+     "murmuration",
+     "ember",
+     "r3-sleepingbloom"
+    ],
+    "illumination": [
+     "murmuration",
+     "dark-tide",
+     "dark-nebula"
+    ],
+    "return": [
+     "resonant-rings",
+     "biofilm",
+     "r3-plasmastorm"
+    ],
+    "integration": [
+     "mandorla",
+     "r3-balllightning",
+     "r3-monsoonveil"
+    ]
+   }
+  },
+  {
+   "id": "9662fec9-04fa-4202-9859-8f01cd287aad",
+   "title": "Tranquility 38",
+   "lead": "ocean",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.54,
+   "energy": [
+    0.36,
+    0.54,
+    0.87,
+    0.74,
+    0.63,
+    0.63
+   ],
+   "intensity": [
+    0.3,
+    0.47,
+    1,
+    0.8,
+    0.62,
+    0.55
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "cast": {
+    "threshold": [
+     "ocean",
+     "meteor-rain",
+     "ribbon-of-light"
+    ],
+    "expansion": [
+     "binary-stars",
+     "will-o-wisp",
+     "parsec"
+    ],
+    "transcendence": [
+     "ocean",
+     "r2-portalrim",
+     "supernova"
+    ],
+    "illumination": [
+     "ocean",
+     "nadir",
+     "r-mercury"
+    ],
+    "return": [
+     "ocean",
+     "r2-thermal",
+     "mycelium"
+    ],
+    "integration": [
+     "ocean",
+     "r3-lightningveil",
+     "coral"
+    ]
+   }
+  }
+ ]
+}
