@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { TAKE_FINALE_STILLS, TAKE_INTRO_STILLS } from "@/lib/journeys/pinned-takes";
+import { LEGACY_SLIDESHOW_JOURNEYS } from "@/lib/journeys/mastered";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
 import { GHOST_NEGATIVE_PROMPT, composeGhostPrompt } from "@/lib/journeys/journeys";
 import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
@@ -754,7 +755,11 @@ export function AiImageLayer({
       // Arc law (Karel 2026-10-01): jitter and the walks below stay inside
       // the current phase's slice — crossing it skipped Ghost's tunnel
       // entrance and wrapped the ending back to the opening stone room.
-      const phaseSlice = idx >= 0 ? packPhaseSliceForProgress(journeyPhases, urls.length, progress) : null;
+      // Snowflake + Realized keep the pre-arc-law sequencing they were
+      // mastered with (src/lib/journeys/mastered.ts): no slice -> the old
+      // unbounded jitter, no forced phase entry, wrap-around walks.
+      const legacySlideshow = LEGACY_SLIDESHOW_JOURNEYS.has(journeyIdRef.current ?? "");
+      const phaseSlice = idx >= 0 && !legacySlideshow ? packPhaseSliceForProgress(journeyPhases, urls.length, progress) : null;
       // The jitter ramps in from each phase's first slot (never above the
       // steps already taken) so every phase OPENS on its first image.
       if (idx >= 0) {

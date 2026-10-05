@@ -1,0 +1,32 @@
+{
+  "updated": "2026-10-05T16:01:05.843Z",
+  "journeys": {
+    "ghost": {
+      "definition": "66a38a10f81f6446",
+      "scriptedTake": "a5d99246332140dd",
+      "introStill": "74234e98afe7498f",
+      "finaleStill": "ba2d108e9cbbcf43",
+      "finaleShader": "74234e98afe7498f",
+      "legacySlideshow": "false",
+      "packStills": "d4dc40a12f7951be"
+    },
+    "first-snow": {
+      "definition": "65dbdf31c9cd9fde",
+      "scriptedTake": "a7827555351dcc3b",
+      "introStill": "00da9f69e0e5d4e3",
+      "finaleStill": "74234e98afe7498f",
+      "finaleShader": "095a76a4b4e4a4eb",
+      "legacySlideshow": "true",
+      "packStills": "138640da67831bdc"
+    },
+    "inferno": {
+      "definition": "8ce24a4e0c1be1a9",
+      "scriptedTake": "a517d3a6fa4f8cc9",
+      "introStill": "74234e98afe7498f",
+      "finaleStill": "74234e98afe7498f",
+      "finaleShader": "74234e98afe7498f",
+      "legacySlideshow": "true",
+      "packStills": "7f072d7dc26a0fa4"
+    }
+  }
+}

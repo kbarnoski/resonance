@@ -8,6 +8,15 @@ export PATH="$HOME/.nvm/versions/node/v20.20.0/bin:$PATH"
 cd "$(dirname "$0")/.."
 HEAD=$(git rev-parse --short=8 HEAD)
 echo "deploying $HEAD"
+# Mastered-journey lock (Karel 2026-10-05): refuse to ship anything that
+# changed Snowflake, Realized or Ghost — incl. their pack stills, which
+# only exist on this Mac.
+if ! npx vitest run src/lib/journeys/mastered-lock.test.ts > /tmp/mastered-lock.log 2>&1; then
+  echo "REFUSED: a mastered journey (Snowflake/Realized/Ghost) changed — see /tmp/mastered-lock.log"
+  grep -E "changed|expected" /tmp/mastered-lock.log | head -5
+  exit 3
+fi
+echo "mastered lock OK"
 # Was the kiosk window open before we started? Only then may we relaunch
 # it below — never pop the kiosk onto Karel's screen unasked (2026-10-04).
 KIOSK_PROFILE="user-data-dir=$HOME/.tramokyo-chrome"
