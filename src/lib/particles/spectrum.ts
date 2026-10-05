@@ -78,6 +78,12 @@ export function logBandEdges(bins: number, minHz: number, maxHz: number): Float3
   return e;
 }
 
+/** Per-band (bass/mid/treble) AGC floor and drive scale. Bass keeps the
+ *  original 0.25 scale; mid and treble get more so all three bands visibly
+ *  move their particles (still slewed, still zero-mean). */
+const AGC_FLOOR = [0.08, 0.05, 0.025] as const;
+const DRIVE_SCALE = [0.25, 0.42, 0.5] as const;
+
 export class SpectrumProcessor {
   readonly bins: number;
   readonly edges: Float32Array;
@@ -161,7 +167,11 @@ export class SpectrumProcessor {
 
     for (let i = 0; i < this.bins; i++) {
       const x = this.raw[i];
-      this.peak[i] = Math.max(x, this.peak[i] * peakDecay, 0.08);
+      const band = this.bandOf[i];
+      // per-band AGC floor: piano treble sits ~30 dB under the mids, so a
+      // single floor left the high band starved (verify 2026-10-05: treble
+      // drive sd 0.08 vs 0.2 for bass/mid).
+      this.peak[i] = Math.max(x, this.peak[i] * peakDecay, AGC_FLOOR[band]);
       const norm = Math.min(1, x / this.peak[i]);
       const L = this.levels[i];
       this.levels[i] = L + (norm - L) * (norm > L ? kAtk : kRel);
@@ -170,11 +180,10 @@ export class SpectrumProcessor {
       this.prev[i] = this.levels[i];
 
       this.ema[i] += (this.levels[i] - this.ema[i]) * kEma;
-      const band = this.bandOf[i];
       const gain = BAND_PROFILES[band === 0 ? "bass" : band === 1 ? "mid" : "treble"].gain;
       // gain/4: BAND_PROFILES gains are tuned for the shader band envelope
       // (0..1 RMS-ish); per-bin deviations are larger, so scale them down.
-      const target = Math.tanh((this.levels[i] - this.ema[i]) * gain * 0.25);
+      const target = Math.tanh((this.levels[i] - this.ema[i]) * gain * DRIVE_SCALE[band]);
       this.drive[i] += (target - this.drive[i]) * kSlew;
 
       acc[band] += this.drive[i];
@@ -208,8 +217,8 @@ export class SpectrumProcessor {
     const kRate = smoothK(dt, 0.4);
     const r = this.rates;
     r.bass += (driveToRate("bass", this.bands.bass * 2.2) - r.bass) * kRate;
-    r.mid += (driveToRate("mid", this.bands.mid * 2.2) - r.mid) * kRate;
-    r.treble += (driveToRate("treble", this.bands.treble * 2.2) - r.treble) * kRate;
+    r.mid += (driveToRate("mid", this.bands.mid * 2.6) - r.mid) * kRate;
+    r.treble += (driveToRate("treble", this.bands.treble * 3.0) - r.treble) * kRate;
     this.clocks.bass += dt * r.bass;
     this.clocks.mid += dt * r.mid;
     this.clocks.treble += dt * r.treble;

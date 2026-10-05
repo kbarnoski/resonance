@@ -135,17 +135,23 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float y = (hash11(s.a * 331.0) - 0.5) * 0.16 * exp(-r0 * 0.7)
             + (hash11(s.a * 77.0) - 0.5) * 0.45 * exp(-r0 * 4.0);
     vec3 home = vec3(cos(ang) * R, y, sin(ang) * R);
+    // treble: the finest dust sprays off the arms along its own fixed
+    // direction while its band is up, and settles back as it falls
+    home += normalize(hash31(s.a * 613.0) - 0.5) * 0.32 * up * trebW;
     vec3 a = (home - p) * 7.0;
-    a += curlNoise(p * 1.7 + vec3(0.0, uClock.y * 0.12, 0.0)) * (0.2 + 1.3 * up * midW) * 0.25;
-    a += (hash31(s.a * 1e3 + floor(uTime * 24.0)) - 0.5) * 22.0 * up * trebW;
+    // mid: the arms' own current — a tangential swirl surge + curl eddies
+    vec3 tang = normalize(vec3(-p.z, 0.0, p.x) + 1e-4);
+    a += tang * 2.4 * up * midW;
+    a += curlNoise(p * 1.7 + vec3(0.0, uClock.y * 0.12, 0.0)) * (0.2 + 2.6 * up * midW) * 0.3;
+    a += (hash31(s.a * 1e3 + floor(uTime * 24.0)) - 0.5) * 10.0 * up * trebW;
     return vec4(a, 3.2);
   }
   if (soul == 1) {
     // ── SMOKE OF LIGHT: a curl-noise current rising like breath ──
     vec3 q = p * 0.85 + vec3(0.0, -uClock.y * 0.16, uClock.x * 0.06);
-    vec3 c = curlNoise(q) * 0.22 * (0.55 + 1.7 * up * midW + 0.7 * uSwell);
+    vec3 c = curlNoise(q) * 0.22 * (0.55 + 3.0 * up * midW + 0.7 * uSwell);
     vec3 tv = c + vec3(0.0, 0.2 + 0.5 * max(uBands.x, 0.0) * (0.5 + bassW), 0.0);
-    tv += curlNoise(p * 3.1 + uClock.z * 0.2) * 0.25 * up * trebW;
+    tv += curlNoise(p * 3.1 + uClock.z * 0.2) * 0.7 * up * trebW;
     vec3 a = (tv - v) * 2.2;
     float d = length(p.xz);
     a.xz -= p.xz * smoothstep(0.55, 1.2, d) * 2.0;
@@ -157,7 +163,7 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float site = floor(clamp(mix(fid, band, 0.65), 0.0, 0.9999) * sites);
     float sf = (site + 0.5) / sites;
     float open = 0.42 + 0.5 * smoothstep(0.0, 1.0, uSwell) + 0.08 * uBandLv.y;
-    float th = site * 2.39996323 + uClock.y * 0.12 * (1.2 - sf)
+    float th = site * 2.39996323 + uClock.y * 0.12 * (1.2 - sf) + 0.45 * up * midW
              + (1.0 - open) * 3.2 * (1.0 - sf);
     float r = sqrt(sf) * 1.55 * open * (1.0 + 0.08 * uBands.x + 0.3 * up * bassW);
     float cup = (1.0 - open) * 1.1;
@@ -165,7 +171,7 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
             + 0.07 * sin(r * 8.0 - uClock.x * 1.6) * (0.4 + 0.6 * uBandLv.x);
     vec3 jit = (hash31(s.a * 4093.0) - 0.5) * (0.012 + 0.03 * r);
     vec3 home = vec3(cos(th) * r, y, sin(th) * r) + jit;
-    home.y += (hash31(s.a * 1e3 + floor(uTime * 20.0)).x - 0.5) * 0.24 * up * trebW;
+    home += normalize(hash31(s.a * 613.0) - 0.5) * 0.28 * up * trebW;
     vec3 a = (home - p) * 6.0;
     return vec4(a, 3.4);
   }
@@ -177,11 +183,10 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   vec3 h = hash31(s.a * 2971.0) - 0.5;
   float spread = 0.55 + 0.25 * uSwell;
   vec3 off = vec3(h.x * 1.6, h.y * 0.25, h.z * 1.6) * spread;
-  vec3 target = lead + off;
+  vec3 target = lead + off + normalize(h + 1e-4) * 0.45 * up * trebW;
   vec3 desired = (target - p) * (2.0 + 1.2 * max(uBands.x, 0.0));
   vec3 a = (desired - v) * (1.4 + 1.6 * s.b);
-  a += curlNoise(p * 1.1 + uClock.y * 0.08) * (0.3 + 1.8 * up * midW) * 0.5;
-  a += (hash31(s.a * 1e3 + floor(uTime * 22.0)) - 0.5) * 16.0 * up * trebW * step(0.8, s.b);
+  a += curlNoise(p * 1.1 + uClock.y * 0.08) * (0.3 + 3.2 * up * midW) * 0.5;
   return vec4(a, 0.0);
 }
 
@@ -201,7 +206,7 @@ void main(){
   vec3 v = V4.xyz;
 
   // kinetic time dilation, per particle, from its own band
-  float rate = 1.0 + clamp(drv, -0.7, 1.0) * mix(1.25, 0.75, s.r);
+  float rate = 1.0 + clamp(drv, -0.7, 1.0) * mix(1.25, 1.0, s.r);
   float dt = uDt * rate;
 
   vec4 f = soulForce(uSoulA, p, v, s, fid, lvl, drv);

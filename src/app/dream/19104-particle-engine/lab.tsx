@@ -78,7 +78,8 @@ function fmtCount(n: number): string {
   return n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : `${Math.round(n / 1000)}k`;
 }
 
-export default function ParticleEnginePage() {
+/** The original lab UI (controls, density, readouts) — reachable via ?lab=1. */
+export function LabView() {
   const { immersive, toggle } = useImmersive();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const engineRef = useRef<ParticleEngine | null>(null);
@@ -299,7 +300,7 @@ export default function ParticleEnginePage() {
   const bar = (v: number) => `${Math.round(Math.max(0, Math.min(1, 0.5 + v)) * 100)}%`;
 
   return (
-    <main className="fixed inset-0 overflow-hidden bg-black text-foreground">
+    <main className="fixed inset-0 z-[60] overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-label="GPU particle field reacting to the music" />
 
       <ImmersiveHud
@@ -317,7 +318,7 @@ export default function ParticleEnginePage() {
       />
 
       {/* live readout — always visible, quiet */}
-      <div className="pointer-events-none absolute left-4 top-16 z-30 flex flex-col gap-1 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
+      <div className="pointer-events-none absolute left-4 top-4 z-30 flex flex-col gap-1 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
         <span>
           {fmtCount(readout.count)} particles · {readout.fps.toFixed(0)} fps
         </span>
@@ -341,7 +342,7 @@ export default function ParticleEnginePage() {
 
       {!immersive && (
         <>
-          <div className="pointer-events-none absolute right-4 top-16 z-30">
+          <div className="pointer-events-none absolute right-4 top-4 z-30">
             <Link
               href="/dream"
               className="pointer-events-auto text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
