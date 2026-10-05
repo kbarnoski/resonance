@@ -21,8 +21,14 @@ import { createSeededRandom } from "./seeded-random";
 // featured/album recast (scripts/recast-featured.mjs) the same way
 // expansion-recast.test.ts guards the Expansion.
 const read = (p: string) => JSON.parse(readFileSync(join(process.cwd(), p), "utf8"));
-type FJ = { id: string; name: string; builtin: boolean; setlistPos: number | null; path: string; pathIdx: number | null; pathLen: number | null; shaders: string[]; cast: Record<string, string[]> };
-const featured = read("scripts/featured-recast.json") as { journeys: FJ[]; kineticLabCasts: Record<string, string[]> };
+type FJ = { id: string; name: string; builtin: boolean; setlistPos: number | null; path: string; pathIdx: number | null; pathLen: number | null; shaders: string[]; cast: Record<string, string[]>; owned?: boolean; lead?: string };
+const featured = read("scripts/featured-recast.json") as { journeys: FJ[]; kineticLabCasts: Record<string, string[]>; constraints: { owned?: { minDist: number; cap: number } } };
+// Snowflake Standard rollout (Karel 2026-10-05): rolled-out journeys carry
+// PHASE-OWNED casts (10-12 shaders, one phase each, lead on the peak) under
+// a loosened loop cap and the closest spacing the 95-shader pool allows.
+const OWNED = new Set(featured.journeys.filter((j) => j.owned).map((j) => j.id));
+const OWNED_DIST = featured.constraints.owned?.minDist ?? Infinity;
+const OWNED_CAP = featured.constraints.owned?.cap ?? 0;
 const expansion = read("scripts/expansion-recast.json") as { journeys: { id: string; lead: string; cast: Record<string, (string | null)[]> }[] };
 const vet = read("scripts/shader-vetting.json") as { pool: string[] };
 
@@ -103,8 +109,9 @@ describe("featured + album recast: quality", () => {
     }
   });
 
-  it("gives every phase >= 3 distinct shaders and keeps each shader on ONE contiguous run of phases", () => {
-    for (const { name, cast } of Object.values(JOURNEY_CASTS)) {
+  it("gives every legacy phase >= 3 distinct shaders and keeps each shader on ONE contiguous run of phases", () => {
+    for (const [id, { name, cast }] of Object.entries(JOURNEY_CASTS)) {
+      if (OWNED.has(id)) continue;
       const phases = Object.values(cast);
       for (const list of phases) { expect(list.length, name).toBeGreaterThanOrEqual(3); expect(new Set(list).size, name).toBe(list.length); }
       for (const m of new Set(phases.flat())) {
@@ -114,8 +121,25 @@ describe("featured + album recast: quality", () => {
     }
   });
 
-  it("gives every journey 7-9 distinct shaders", () => {
-    for (const id of Object.keys(JOURNEY_CASTS)) { const n = castShaders(id).length; expect(n).toBeGreaterThanOrEqual(7); expect(n).toBeLessThanOrEqual(9); }
+  it("gives every legacy journey 7-9 distinct shaders and every rolled-out journey 10-12", () => {
+    for (const id of Object.keys(JOURNEY_CASTS)) {
+      const n = castShaders(id).length;
+      const [lo, hi] = OWNED.has(id) ? [10, 12] : [7, 9];
+      expect(n, JOURNEY_CASTS[id].name).toBeGreaterThanOrEqual(lo); expect(n, JOURNEY_CASTS[id].name).toBeLessThanOrEqual(hi);
+    }
+  });
+
+  it("rolled-out journeys: every support lives in ONE phase, the lead on <= 2 adjacent phases, no empty phase", () => {
+    for (const j of featured.journeys.filter((x) => x.owned)) {
+      const phases = Object.values(j.cast);
+      for (const list of phases) { expect(list.length, j.name).toBeGreaterThanOrEqual(1); expect(new Set(list).size, j.name).toBe(list.length); }
+      expect(JOURNEY_CASTS[j.id].cast, j.name).toEqual(j.cast);
+      for (const m of new Set(phases.flat())) {
+        const idx = phases.map((l, i) => (l.includes(m) ? i : -1)).filter((i) => i >= 0);
+        if (m === j.lead) { expect(idx.length, `${j.name}: lead ${m}`).toBeLessThanOrEqual(2); expect(idx.at(-1)! - idx[0], `${j.name}: lead ${m} adjacent`).toBeLessThanOrEqual(1); }
+        else expect(idx.length, `${j.name}: ${m} spans ${idx.length} phases`).toBe(1);
+      }
+    }
   });
 });
 
@@ -127,17 +151,17 @@ describe("featured + album recast: diversity across the WHOLE kiosk loop", () =>
       uses.forEach((v, k) => {
         if (k === i) return;
         for (const m of u.modes) if (v.modes.includes(m)) {
-          const min = v.lead === m ? LEAD_DIST : MIN_DIST;
+          const min = v.lead === m ? LEAD_DIST : (OWNED.has(u.id) || OWNED.has(v.id) ? Math.min(MIN_DIST, OWNED_DIST) : MIN_DIST);
           expect(cdist(i, k, L), `${m}: #${i} ${JOURNEY_CASTS[u.id].name} / #${k} ${v.kind} ${v.id}`).toBeGreaterThanOrEqual(min);
         }
       });
     });
   });
 
-  it(`caps every shader at ${CAP} uses among the recast loop journeys`, () => {
+  it(`caps every shader at ${CAP} uses among the recast loop journeys (the loosened rollout cap once any journey is rolled out)`, () => {
     const n = new Map<string, number>();
     for (const u of loopUses()) if (u.kind === "recast") for (const m of u.modes) n.set(m, (n.get(m) ?? 0) + 1);
-    for (const [m, c] of n) expect(c, m).toBeLessThanOrEqual(CAP);
+    for (const [m, c] of n) expect(c, m).toBeLessThanOrEqual(OWNED.size ? Math.max(CAP, OWNED_CAP) : CAP);
   });
 
   it("spaces repeats within each album path (each also loops alone as its own program)", () => {

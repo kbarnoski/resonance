@@ -35,13 +35,38 @@
 // truth, ships in the bundle -> works offline), scripts/featured-recast.json
 // (report), and mirrors the casts into the DB rows' phases[].shaderModes
 // + the Tramokyo pack data (when present).
-// Usage: node --env-file=.env.local scripts/recast-featured.mjs [--dry-run]
+//
+// SNOWFLAKE STANDARD ROLLOUT (Karel approved 2026-10-05, set by set):
+//   --rollout=<set>  (scripts/mv-rollout/shotlists/<set>.mjs) recasts ONLY
+//   that set's journeys, plus every journey already rolled out (report
+//   `owned: true`), as PHASE-OWNED casts: 10-12 shaders by length, each
+//   support living in ONE phase (sparse phase = one dark voice, quiet
+//   phases two, the build/peak more), one lead on the peak phase(s) (<= 2
+//   adjacent), DB phases keep shaderOwned. Every other journey is FROZEN to
+//   its previous cast (scripts/featured-recast.json) byte-for-byte and
+//   counts as fixed use. Loosened loop cap (Karel: ~8-10 journeys per
+//   shader); spacing as close to 10 journeys as the pool allows — with 95
+//   vetted shaders a 10-wide window cannot hold 10 x 10, so the solver
+//   relaxes the distance in order and reports what it achieved.
+//   Without --rollout the legacy full recast runs (refuses once any journey
+//   is owned, so a rollout is never silently undone; --force-legacy).
+// Usage: node --env-file=.env.local scripts/recast-featured.mjs [--rollout=<set>] [--dry-run]
 import { createClient } from "@supabase/supabase-js";
 import { createJiti } from "jiti";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { readPackJson } from "./lib/pack-json.mjs";
 
 const DRY = process.argv.includes("--dry-run");
+const ROLLOUT = process.argv.find((a) => a.startsWith("--rollout="))?.slice(10) ?? null;
+const PRIOR = existsSync("scripts/featured-recast.json") ? JSON.parse(readFileSync("scripts/featured-recast.json", "utf8")) : null;
+const priorById = new Map((PRIOR?.journeys ?? []).map((j) => [j.id, j]));
+const rolloutIds = ROLLOUT ? (await import(`./mv-rollout/shotlists/${ROLLOUT}.mjs`)).JOURNEYS.map((j) => j.id) : [];
+const OWNED = new Set([...(PRIOR?.journeys ?? []).filter((j) => j.owned).map((j) => j.id), ...rolloutIds]);
+if (!ROLLOUT && OWNED.size && !process.argv.includes("--force-legacy")) {
+  console.error(`recast-featured: ${OWNED.size} journeys are rolled out to the Snowflake Standard — a legacy full recast would undo them. Use --rollout=<set> (or --force-legacy).`);
+  process.exit(1);
+}
 const jiti = createJiti(import.meta.url, { alias: { "@": fileURLToPath(new URL("../src", import.meta.url)) } });
 const J = await jiti.import("../src/lib/journeys/journeys.ts");
 const REG = await jiti.import("../src/lib/shaders/index.ts");
@@ -128,7 +153,7 @@ const OFF_N = offLoop.length;
 const cdist = (a, b, n) => { const d = Math.abs(a - b); return Math.min(d, n - d); };
 const LEAD_SUPPORT_DIST = 12;
 const PATH_MIN = (len) => Math.floor(len / 2);
-const kFor = (dur, c) => c.base + (c.mid && dur > c.mid ? 1 : 0) + (dur > 330 ? 1 : 0) + (dur > 420 ? 1 : 0);
+const kFor = (dur, c) => (c.owned ? 10 + (dur > 150 ? 1 : 0) + (dur > 240 ? 1 : 0) : c.base + (c.mid && dur > c.mid ? 1 : 0) + (dur > 330 ? 1 : 0) + (dur > 420 ? 1 : 0));
 const CONFIGS = [
   { label: "8-10/journey (by length), dist 11", minDist: 11, base: 8, cap: 4, offDist: 6 },
   { label: "7-10/journey (by length: +1 over 4:00, 5:30, 7:00), dist 11", minDist: 11, base: 7, mid: 240, cap: 4, offDist: 6 },
@@ -140,7 +165,8 @@ function rng(seed) { let x = seed >>> 0 || 1; return () => { x ^= x << 13; x >>>
 
 function solve(c, iters = 300000) {
   const N = T.length;
-  const ns = T.map((t) => kFor(t.dur, c));
+  const frozen = T.map((t) => (ROLLOUT ? !OWNED.has(t.id) : false));
+  const ns = T.map((t, j) => (frozen[j] ? priorById.get(t.id).shaders.length : kFor(t.dur, c)));
   const pfs = T.map((t) => paletteFamilies(t.palette));
   const domain = T.map((t) => {
     const ban = new Set([...(t.blocked ?? []), ...(J.REALM_SHADER_BLOCKLIST[t.realm] ?? []), ...(J.PICKTIME_REALM_BLOCKLIST[t.realm] ?? [])]);
@@ -168,13 +194,15 @@ function solve(c, iters = 300000) {
   const cost = (m, j) => conf(m, j) * 100 + at.get(m).size * 2 - fit(m, pfs[j]) * 0.8 - affinity(m, j) * 0.6 + rand() * 1.5;
   const add = (m, j) => { sets[j].add(m); at.get(m).add(j); };
   const del = (m, j) => { sets[j].delete(m); at.get(m).delete(j); };
+  for (let j = 0; j < N; j++) if (frozen[j]) for (const m of priorById.get(T[j].id).shaders) add(m, j);
   for (let j = 0; j < N; j++) {
+    if (frozen[j]) continue;
     if (domain[j].length < ns[j]) return { fail: `${T[j].name}: domain ${domain[j].length} < ${ns[j]}` };
     while (sets[j].size < ns[j]) { const best = domain[j].filter((m) => !sets[j].has(m)).map((m) => [m, cost(m, j)]).sort((x, y) => x[1] - y[1])[0][0]; add(best, j); }
   }
   for (let it = 0; it < iters; it++) {
     const bad = [];
-    for (let j = 0; j < N; j++) for (const m of sets[j]) if (conf(m, j) > 0) bad.push([m, j]);
+    for (let j = 0; j < N; j++) if (!frozen[j]) for (const m of sets[j]) if (conf(m, j) > 0) bad.push([m, j]);
     if (bad.length === 0) return { sets: sets.map((x) => [...x]), ns, tries: it };
     const [m, j] = bad[Math.floor(rand() * bad.length)];
     del(m, j);
@@ -184,8 +212,13 @@ function solve(c, iters = 300000) {
   }
   return { fail: "local search exhausted" };
 }
+// Rollout configs: 10-12 shaders by length (Snowflake: 14), cap 10 loop
+// uses, distance relaxed from 10 only as far as needed. The frozen
+// legacy journeys keep their own (wider) spacing among themselves.
+const kOwned = (dur) => 10 + (dur > 150 ? 1 : 0) + (dur > 240 ? 1 : 0);
+const ROLLOUT_CONFIGS = [10, 9, 8, 7, 6, 5].map((d) => ({ label: `owned 10-12/journey (by length), cap 10, dist ${d}`, minDist: d, base: 10, cap: 10, offDist: 5, owned: true }));
 let solved = null, config = null; const relaxed = [];
-for (const c of CONFIGS) {
+for (const c of ROLLOUT ? ROLLOUT_CONFIGS : CONFIGS) {
   const s = solve(c);
   if (!s.fail) { solved = s; config = c; break; }
   relaxed.push(`${c.label}: ${s.fail}`);
@@ -213,7 +246,45 @@ function layout(t, shaders) {
   }
   throw new Error(`${t.name}: no layout`);
 }
-T.forEach((t, j) => { t.shaders = solved.sets[j]; t.cast = layout(t, t.shaders); });
+// ── owned layout (Snowflake Standard): each support ONE phase, one lead on
+// the peak (<= 2 adjacent phases), sparse phase = one dark voice, quiet
+// phases two, louder/longer phases more; calm shaders on quiet phases.
+function ownedLayout(t, shaders) {
+  const P = t.phases.length;
+  const I = t.phases.map((p) => p.intensityMultiplier ?? DEFAULT_I[p.id] ?? 0.6);
+  const Ls = t.phases.map((p) => Math.max(0.01, (p.end ?? 1) - (p.start ?? 0)));
+  const byCalm = [...shaders].sort((a, b) => effMean(a) - effMean(b) || a.localeCompare(b));
+  const peak = I.indexOf(Math.max(...I));
+  const leadPhases = [peak];
+  const nb = [peak - 1, peak + 1].filter((q) => q >= 0 && q < P && I[q] >= 0.85).sort((a, b) => I[b] - I[a])[0];
+  if (nb != null) leadPhases.push(nb);
+  // lead: the brightest-reading shader that fits the palette (it carries the peak)
+  const pf = paletteFamilies(t.palette);
+  const lead = [...shaders].sort((a, b) => fit(b, pf) - fit(a, pf) || effMean(b) - effMean(a) || a.localeCompare(b))[0];
+  const supports = byCalm.filter((m) => m !== lead);
+  // seat counts per phase
+  const want = t.phases.map((p, q) => (p.sparse ? 1 : I[q] < 0.5 ? 2 : 2));
+  let left = supports.length - want.reduce((a, b) => a + b, 0);
+  while (left < 0) { const q = want.map((w, i) => [w, i]).filter(([w, i]) => w > 1 && !t.phases[i].sparse).sort((a, b) => I[a[1]] - I[b[1]])[0][1]; want[q]--; left++; }
+  while (left > 0) { // extra seats to the loud, long phases
+    const q = t.phases.map((p, i) => [p.sparse ? -1 : Ls[i] * (0.4 + I[i]) / want[i], i]).sort((a, b) => b[0] - a[0])[0][1];
+    want[q]++; left--;
+  }
+  // calm supports to quiet phases: order phases by intensity, fill seats
+  const order = t.phases.map((_, i) => i).sort((a, b) => (t.phases[b].sparse ? 1 : 0) - (t.phases[a].sparse ? 1 : 0) || I[a] - I[b] || a - b);
+  const cast = Object.fromEntries(t.phases.map((p) => [p.id, []]));
+  let k = 0;
+  for (const q of order) for (let s = 0; s < want[q]; s++) cast[t.phases[q].id].push(supports[k++]);
+  for (const q of leadPhases) cast[t.phases[q].id].unshift(lead);
+  return { cast, lead };
+}
+T.forEach((t, j) => {
+  t.shaders = solved.sets[j];
+  t.owned = OWNED.has(t.id);
+  if (ROLLOUT && !t.owned) { const pr = priorById.get(t.id); t.cast = pr.cast; t.shaders = pr.shaders; return; }
+  if (t.owned) { const o = ownedLayout(t, t.shaders); t.cast = o.cast; t.lead = o.lead; }
+  else t.cast = layout(t, t.shaders);
+});
 
 // ── report ──
 const loopIdx = T.map((t, j) => (t.pos != null ? j : -1)).filter((j) => j >= 0);
@@ -227,18 +298,22 @@ const histCounts = {}; for (const [, u] of hist) histCounts[u] = (histCounts[u] 
 console.log(`pool ${POOL.length} · loop targets ${loopTargets.length} · culminations ${culms.length} · off-loop ${offLoop.length} · distinct used in loop ${uses.size} · uses histogram ${JSON.stringify(histCounts)} · min spacing recast/recast ${minSpacing} · recast/fixed ${minSpacingAll}`);
 for (const t of T) console.log(`${String(t.pos ?? "-").padStart(3)} ${t.name.padEnd(22)} ${t.shaders.length}  ${t.shaders.join(" ")}`);
 
-writeFileSync("scripts/featured-recast.json", JSON.stringify({
+const OUT_REPORT = DRY ? `${process.env.TMPDIR ?? "/tmp"}/featured-recast.dry.json` : "scripts/featured-recast.json";
+const OUT_TS = DRY ? `${process.env.TMPDIR ?? "/tmp"}/journey-casts.dry.ts` : "src/lib/journeys/journey-casts.generated.ts";
+writeFileSync(OUT_REPORT, JSON.stringify({
   generated: new Date().toISOString(),
   pool: POOL,
-  constraints: { config: config.label, minDist: config.minDist, cap: config.cap, offDist: config.offDist, leadSupportDist: LEAD_SUPPORT_DIST, pathMin: "floor(len/2) cyclic within each album path", relaxed },
+  constraints: ROLLOUT
+    ? { legacy: PRIOR?.constraints?.legacy ?? PRIOR?.constraints, owned: { config: config.label, minDist: config.minDist, cap: config.cap, leadSupportDist: LEAD_SUPPORT_DIST, relaxed, rollouts: [...new Set([...(PRIOR?.constraints?.owned?.rollouts ?? []), ROLLOUT])] } }
+    : { config: config.label, minDist: config.minDist, cap: config.cap, offDist: config.offDist, leadSupportDist: LEAD_SUPPORT_DIST, pathMin: "floor(len/2) cyclic within each album path", relaxed },
   fixedInLoop: fixedSummary,
   kineticLabCasts,
   achieved: { minSpacingRecast: minSpacing, minSpacingVsFixed: minSpacingAll, distinctInLoop: uses.size, usesHistogram: histCounts },
   uses: Object.fromEntries(hist),
-  journeys: T.map((t) => ({ id: t.id, name: t.name, builtin: t.builtin, setlistPos: t.pos, path: pathOf.get(t.id)?.name ?? (t.off != null ? "off-loop built-in" : "featured"), pathIdx: pathOf.get(t.id)?.idx ?? null, pathLen: pathOf.get(t.id)?.len ?? null, dur: Math.round(t.dur), shaders: t.shaders, cast: t.cast })),
+  journeys: T.map((t) => ({ id: t.id, name: t.name, builtin: t.builtin, setlistPos: t.pos, path: pathOf.get(t.id)?.name ?? (t.off != null ? "off-loop built-in" : "featured"), pathIdx: pathOf.get(t.id)?.idx ?? null, pathLen: pathOf.get(t.id)?.len ?? null, dur: Math.round(t.dur), shaders: t.shaders, cast: t.cast, ...(t.owned ? { owned: true, lead: t.lead } : {}) })),
 }, null, 1));
 
-writeFileSync("src/lib/journeys/journey-casts.generated.ts", `// GENERATED by scripts/recast-featured.mjs — do not edit by hand.
+writeFileSync(OUT_TS, `// GENERATED by scripts/recast-featured.mjs — do not edit by hand.
 // Deterministic per-phase shader casts for every journey that is not
 // mastered (Snowflake / Realized / Ghost), not the Kinetic Lab and not
 // the Expansion (Karel 2026-10-05: "everything besides snowflake,
@@ -254,9 +329,10 @@ export const VETTED_SHADER_POOL: ReadonlySet<string> = new Set(${JSON.stringify(
 `);
 
 // ── mirror into DB + pack (runtime reads the generated TS by id) ──
-const dbTargets = T.filter((t) => !t.builtin);
+const dbTargets = T.filter((t) => !t.builtin && (!ROLLOUT || t.owned));
 const PACK = "public/tramokyo-pack/data/journeys.json";
-const pack = existsSync(PACK) ? JSON.parse(readFileSync(PACK, "utf8")) : null;
+const packFile = existsSync(PACK) ? readPackJson(PACK) : null;
+const pack = packFile?.data ?? null;
 for (const t of dbTargets) {
   if (DRY) continue;
   const { data: fresh, error: e1 } = await sb.from("journeys").select("phases").eq("id", t.id).single(); // re-read right before writing
@@ -267,5 +343,5 @@ for (const t of dbTargets) {
   const pr = pack?.find((x) => x.id === t.id);
   if (pr) pr.phases = pr.phases.map((p) => ({ ...p, shaderModes: t.cast[p.id] ?? p.shaderModes }));
 }
-if (pack && !DRY) writeFileSync(PACK, JSON.stringify(pack));
+if (pack && !DRY) packFile.write(pack);
 console.log(`${DRY ? "DRY RUN" : `DB updated (${dbTargets.length} rows)${pack ? " + pack data" : ""}`} → src/lib/journeys/journey-casts.generated.ts, scripts/featured-recast.json`);

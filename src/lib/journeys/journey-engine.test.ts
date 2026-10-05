@@ -157,3 +157,45 @@ describe("phase-owned shader choreography", () => {
     }
   });
 });
+
+describe("Snowflake Standard engine gaps (2026-10-05)", () => {
+  beforeEach(() => vi.restoreAllMocks());
+  afterEach(() => getJourneyEngine().stop());
+
+  function std(intensities: [number, number, number, number, number, number], sparseIdx: number | null, owned = true): Journey {
+    const j = makeJourney(intensities);
+    return { ...j, id: "test-std", phases: j.phases.map((p, i) => ({ ...p, shaderModes: ["starfield", "drift", "murmuration", "pollen"], shaderOwned: owned, sparse: i === sparseIdx ? true : undefined })) };
+  }
+
+  it("an authored sparse phase is the sparse interlude, even inside the first 30%", () => {
+    const j = std([0.4, 0.5, 1, 0.9, 0.5, 0.3], 1); // expansion 0.1-0.3
+    const eng = getJourneyEngine();
+    let clock = 0;
+    vi.spyOn(performance, "now").mockImplementation(() => clock);
+    eng.start(j, { seed: 1, trackDuration: 600 });
+    const at = (p: number) => { clock += 1000; eng.getFrame(p); return eng.sparseInterludeActive(); };
+    expect(at(0.05)).toBe(false);
+    expect(at(0.12)).toBe(true);
+    expect(at(0.25)).toBe(true);
+    expect(at(0.5)).toBe(false);
+  });
+
+  it("phase-owned journeys never hold a stillness window over a build/peak phase", () => {
+    for (const owned of [true, false]) {
+      const j = std([0.4, 0.9, 1, 0.95, 0.85, 0.3], null, owned);
+      const eng = getJourneyEngine();
+      let clock = 0;
+      vi.spyOn(performance, "now").mockImplementation(() => clock);
+      eng.start(j, { seed: 5, trackDuration: 900 });
+      let loudStill = 0;
+      for (let i = 0; i <= 900; i++) {
+        clock += 1000;
+        const f = eng.getFrame(i / 900);
+        if (f && eng.isInStillness() && f.progress > 0.1 && f.progress < 0.9) loudStill++;
+      }
+      eng.stop();
+      // owned: none; legacy behaviour (unflagged) still places them blind
+      if (owned) expect(loudStill).toBe(0); else expect(loudStill).toBeGreaterThan(0);
+    }
+  });
+});

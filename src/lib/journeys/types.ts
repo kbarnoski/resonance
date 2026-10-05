@@ -35,6 +35,12 @@ export interface JourneyPhase {
    *  journeys without it play exactly as before (mastered takes are
    *  scripted and never carry it). */
   shaderOwned?: boolean;
+  /** The journey's authored sparse moment (Snowflake Standard): while
+   *  the first ≤16% of the track inside this phase plays, imagery thins
+   *  to one small still under the dark shader voice
+   *  (JourneyEngine.sparseInterludeActive). At most one phase sets it;
+   *  without it the engine infers the valley from phase intensities. */
+  sparse?: boolean;
   /** 0-1, allows AI layer to show through when < 1 */
   shaderOpacity: number;
   /** Base prompt for AI image generation */

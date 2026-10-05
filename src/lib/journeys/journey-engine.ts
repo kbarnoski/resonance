@@ -212,6 +212,8 @@ class JourneyEngine {
   /** Phase-owned choreography: how soon after a boundary the outgoing
    *  phase's primary yields (clears the phase-title moment). */
   private static readonly OWNED_ENTRY_DELAY_MS = 3500;
+  /** Phase-owned journeys: stillness windows avoid phases at/above this. */
+  private static readonly STILLNESS_MAX_PHASE_INTENSITY = 0.8;
   private ownedPhaseId: string | null = null;
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
@@ -344,6 +346,15 @@ class JourneyEngine {
       while (cursor < 0.9) {
         this.stillnessMoments.push({ startProgress: cursor, endProgress: Math.min(0.93, cursor + winFrac) });
         cursor += (120 + random() * 60) / Math.max(1, this.trackDuration); // every 2-3 min
+      }
+      // Snowflake Standard journeys (phase-owned): a held breath never
+      // lands on the music's build or peak (2026-10-05 audit: a blind
+      // window swallowed Vespers 2's climax entry). Filter only — the
+      // seeded stream is untouched, and unflagged journeys (the mastered
+      // takes, the Kinetic Lab) keep their windows exactly.
+      if (this.journey.phases.some((p) => p.shaderOwned === true)) {
+        const loud = this.journey.phases.filter((p) => (p.intensityMultiplier ?? 1) >= JourneyEngine.STILLNESS_MAX_PHASE_INTENSITY);
+        this.stillnessMoments = this.stillnessMoments.filter((m) => !loud.some((p) => m.startProgress < p.end && m.endProgress > p.start));
       }
     }
     this.precomputeGuidancePhraseIndices(random);
@@ -1025,6 +1036,15 @@ class JourneyEngine {
   sparseInterludeActive(): boolean {
     const j = this.journey;
     if (!j) return false;
+    // Authored sparse moment (JourneyPhase.sparse, Snowflake Standard):
+    // the shot list places its "black + one small close-up" shot at the
+    // start of that phase, so the passage opens with the phase and lasts
+    // up to 16% of the track — wherever the valley sits (the inferred
+    // rule below cannot reach a valley in the first 30%).
+    const authored = j.phases.find((ph) => ph.sparse === true);
+    if (authored) {
+      return this.lastProgress >= authored.start && this.lastProgress < Math.min(authored.end, authored.start + 0.16);
+    }
     // Analysis-first (Karel 2026-09-30: "based on the analysis be
     // uniquely treated"): when the journey has a pronounced interior
     // valley — a low-intensity phase between 30% and 90% — the sparse
