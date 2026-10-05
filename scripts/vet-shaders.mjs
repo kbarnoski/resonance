@@ -146,7 +146,7 @@ window.vet = (mode) => {
   motion /= frames.length - 1;
   const p99 = p99s.reduce((a, b) => a + b, 0) / N; const pmax = maxs.reduce((a, b) => a + b, 0) / N; const p5 = p5s.reduce((a, b) => a + b, 0) / N, bright = brights.reduce((a, b) => a + b, 0) / N;
   gl.deleteProgram(p);
-  return { mode, mean: +mean.toFixed(1), p5: +p5.toFixed(1), p99: +p99.toFixed(1), max: +pmax.toFixed(1), bright: +(bright * 100).toFixed(2), lumaStd: +std.toFixed(2), maxJump: +maxJump.toFixed(1), flashesPerSec: +flashesPerSec.toFixed(2), motion: +motion.toFixed(2), thumb };
+  return { mode, mean: +mean.toFixed(1), p5: +p5.toFixed(1), p99: +p99.toFixed(1), max: +pmax.toFixed(1), bright: +(bright * 100).toFixed(2), lumaStd: +std.toFixed(2), maxJump: +maxJump.toFixed(1), flashesPerSec: +flashesPerSec.toFixed(2), motion: +motion.toFixed(2), thumb, series: means.map((x) => +x.toFixed(2)) };
 };
 </script></body></html>`;
 const htmlPath = path.join(tmp, "vet.html");
@@ -164,6 +164,37 @@ try {
   }
 } finally { await browser.close(); }
 
+// ── BRIGHTNESS-NORMALIZED LAYERS (Karel 2026-10-05: "the pool of
+// shaders used in expansion journeys seems super limited ... create a
+// solution that ensures there is true diversity"). The single-layer
+// darkness cap (support mean <= 25, black floor <= 6) cut the pool,
+// because three screen-blended layers washed the blacks. Instead each
+// shader gets an OPACITY GAIN that brings it down to the target; a
+// layer at opacity g over black scales every byte by g (luma, black
+// floor and frame-to-frame jumps all scale linearly), so the gained
+// metrics are exact. Applied on screen to Expansion kinetic layers
+// only (src/lib/shaders/shader-gain.generated.ts). A shader that needs
+// less than GAIN_MIN to fit is a wash, not a voice — still excluded.
+export const SUPPORT_TARGET = { mean: 25, p5: 6 };
+export const LEAD_TARGET = { mean: 45, p5: 10 };
+export const GAIN_MIN = 0.35;
+const gainTo = (r, t) => Math.min(1, t.mean / Math.max(r.mean, 0.01), t.p5 / Math.max(r.p5, 0.01));
+function flashesAt(series, g) {
+  let swings = 0, lastExt = series[0] * g, dir = 0;
+  for (let k = 1; k < series.length; k++) { const x = series[k] * g; const dlt = x - lastExt; if (Math.abs(dlt) >= 25.5) { const nd = Math.sign(dlt); if (nd !== dir) { swings++; dir = nd; } lastExt = x; } else if (Math.sign(x - series[k - 1] * g) === dir) lastExt = x; }
+  return swings / 2 / (series.length / 20);
+}
+function gainedVerdict(r, hardReasons) {
+  if (r.error || hardReasons.length) return { gain: null, leadGain: null, gainedPass: false, gainedReasons: hardReasons };
+  const gs = gainTo(r, SUPPORT_TARGET), gl = gainTo(r, LEAD_TARGET);
+  const reasons = [];
+  if (gs < GAIN_MIN) reasons.push(`wash even at gain ${GAIN_MIN} (needs ${gs.toFixed(2)})`);
+  const g = Math.max(GAIN_MIN, gs);
+  const jump = r.maxJump * g, fps = r.series ? flashesAt(r.series, g) : r.flashesPerSec * g;
+  if (jump > 25.5 || fps > 3) reasons.push(`flicker at gain ${g.toFixed(2)} (jump ${jump.toFixed(1)}, ${fps.toFixed(2)}/s)`);
+  return { gain: +Math.min(1, g).toFixed(3), leadGain: +Math.max(GAIN_MIN, Math.min(1, gl)).toFixed(3), gainedPass: reasons.length === 0, gainedReasons: reasons };
+}
+
 // Verdicts
 const verdicts = {};
 const thumbs = {};
@@ -178,15 +209,19 @@ for (const r of results) {
     if (r.maxJump > 25.5 || r.flashesPerSec > 3) reasons.push(`flicker (jump ${r.maxJump}, ${r.flashesPerSec}/s)`);
     if (r.motion / Math.max(r.mean, 1) < 0.015) reasons.push(`static (motion ${r.motion}) — can't carry the kinetic time drive`);
   }
-  const { thumb, ...stats } = r;
+  const { thumb, series, ...stats } = r;
   if (thumb) thumbs[r.mode] = thumb;
-  verdicts[r.mode] = { pass: reasons.length === 0, reasons, hue: reg.SHADER_HUES[r.mode] ?? "neutral", category: meta.get(r.mode)?.category, ...stats };
+  // Hard failures no gain can fix: rejection, compile, blank, static.
+  const hard = reasons.filter((x) => !x.startsWith("full-frame wash") && !x.startsWith("flicker"));
+  verdicts[r.mode] = { pass: reasons.length === 0, reasons, hue: reg.SHADER_HUES[r.mode] ?? "neutral", category: meta.get(r.mode)?.category, ...stats, ...gainedVerdict(r, hard) };
 }
 const pass = Object.entries(verdicts).filter(([, v]) => v.pass).map(([m]) => m).sort();
-const out = { generated: new Date().toISOString(), method: "headed Chromium WebGL1 512x320, 80 frames @20fps synthetic 120bpm kinetic drive (bass time-dilation 0.30-2.30x), luma on full-res every-2nd-px sample; 'p99' = 99.9th percentile (peak of the contained forms)", thresholds: { washBlackFloorP5: 15, washMean: 70, flickerMaxJump: 25.5, flickerFlashesPerSec: 3, staticRelMotion: 0.015, blankPeakLuma: 30 }, counts: { registry: Object.keys(reg.SHADERS).length, excluded: Object.keys(excluded).length, tested: results.length, pass: pass.length }, pass, excluded, verdicts };
+// THE POOL: everything that passes floor/mean/flicker WITH its gain.
+const pool = Object.entries(verdicts).filter(([, v]) => v.gainedPass).map(([m]) => m).sort();
+const out = { generated: new Date().toISOString(), method: "headed Chromium WebGL1 512x320, 80 frames @20fps synthetic 120bpm kinetic drive (bass time-dilation 0.30-2.30x), luma on full-res every-2nd-px sample; 'p99' = 99.9th percentile (peak of the contained forms)", thresholds: { washBlackFloorP5: 15, washMean: 70, flickerMaxJump: 25.5, flickerFlashesPerSec: 3, staticRelMotion: 0.015, blankPeakLuma: 30 }, gain: { supportTarget: SUPPORT_TARGET, leadTarget: LEAD_TARGET, min: GAIN_MIN, note: "gain = clamp(min(target.mean/mean, target.p5/p5), GAIN_MIN, 1); 'pool' = passes floor/mean/flicker WITH its support gain" }, counts: { registry: Object.keys(reg.SHADERS).length, excluded: Object.keys(excluded).length, tested: results.length, pass: pass.length, pool: pool.length }, pass, pool, excluded, verdicts };
 if (!ONLY) writeFileSync(path.join(ROOT, "scripts/shader-vetting.json"), JSON.stringify(out, null, 1));
 if (ONLY) for (const m of Object.keys(verdicts)) { const { thumb, ...v } = verdicts[m]; console.log(m, JSON.stringify(v)); }
-console.log(`tested ${results.length} · PASS ${pass.length} · fail ${results.length - pass.length}`);
+console.log(`tested ${results.length} · PASS ${pass.length} (raw) · POOL ${pool.length} (with gain) · fail ${results.length - pass.length}`);
 
 if (SHEET) {
   const b2 = await chromium.launch();

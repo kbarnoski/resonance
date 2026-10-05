@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-05T05:00:48.461Z",
+ "generated": "2026-10-05T15:39:11.973Z",
  "method": "headed Chromium WebGL1 512x320, 80 frames @20fps synthetic 120bpm kinetic drive (bass time-dilation 0.30-2.30x), luma on full-res every-2nd-px sample; 'p99' = 99.9th percentile (peak of the contained forms)",
  "thresholds": {
   "washBlackFloorP5": 15,
@@ -9,12 +9,24 @@
   "staticRelMotion": 0.015,
   "blankPeakLuma": 30
  },
+ "gain": {
+  "supportTarget": {
+   "mean": 25,
+   "p5": 6
+  },
+  "leadTarget": {
+   "mean": 45,
+   "p5": 10
+  },
+  "min": 0.35,
+  "note": "gain = clamp(min(target.mean/mean, target.p5/p5), GAIN_MIN, 1); 'pool' = passes floor/mean/flicker WITH its support gain"
+ },
  "counts": {
   "registry": 252,
   "excluded": 111,
   "tested": 141,
   "pass": 92,
-  "karelRejected": 6
+  "pool": 95
  },
  "pass": [
   "astral",
@@ -74,6 +86,103 @@
   "r-smokerings",
   "r-stardust",
   "r2-curlswarm",
+  "r2-pixie",
+  "r2-portalrim",
+  "r2-spiralgal",
+  "r2-spore",
+  "r2-thermal",
+  "r3-fairyglow",
+  "r3-fernunfurl",
+  "r3-heartwarmth",
+  "r3-lightningveil",
+  "r3-monsoonveil",
+  "r3-plasmastorm",
+  "r3-sleepingbloom",
+  "r3-waveveil",
+  "rapture",
+  "resonant-rings",
+  "ribbon-of-light",
+  "ripple",
+  "rose-window",
+  "satori",
+  "seraph",
+  "shadow-fire",
+  "singularity",
+  "starfield",
+  "stigmata",
+  "supernova",
+  "symbiosis",
+  "threshold",
+  "tide",
+  "torrent",
+  "typhoon",
+  "vestige",
+  "volcanic",
+  "will-o-wisp",
+  "yantra",
+  "zenith"
+ ],
+ "pool": [
+  "astral",
+  "aureole",
+  "binary-stars",
+  "biofilm",
+  "cascade-veil",
+  "chinook",
+  "chrysalis",
+  "cirrus",
+  "covenant",
+  "dark-nebula",
+  "dark-tide",
+  "dharma",
+  "diatom",
+  "drift",
+  "dusk",
+  "ember",
+  "event-horizon",
+  "firefly-field",
+  "flagella",
+  "flame",
+  "fracture-light",
+  "furnace",
+  "hubble",
+  "iron-forge",
+  "jubilee",
+  "kairos",
+  "kelp",
+  "kenosis",
+  "kepler",
+  "lectio",
+  "lightyear",
+  "maelstrom-dark",
+  "magma",
+  "mandorla",
+  "merkaba",
+  "meteor-rain",
+  "molten-vein",
+  "monsoon",
+  "murmuration",
+  "mycelium",
+  "nadir",
+  "obsidian-flow",
+  "ocean",
+  "orbit-weaver",
+  "parsec",
+  "pelagic",
+  "pendulum-dust",
+  "photon",
+  "plankton",
+  "pollen",
+  "protostar",
+  "pulsar",
+  "r-blackhole",
+  "r-droplets",
+  "r-embers",
+  "r-mercury",
+  "r-smokerings",
+  "r-stardust",
+  "r2-curlswarm",
+  "r2-photon",
   "r2-pixie",
   "r2-portalrim",
   "r2-spiralgal",
@@ -238,7 +347,11 @@
    "lumaStd": 1.94,
    "maxJump": 5.8,
    "flashesPerSec": 0,
-   "motion": 0.52
+   "motion": 0.52,
+   "gain": 0.749,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "ocean": {
    "pass": true,
@@ -254,7 +367,11 @@
    "lumaStd": 4.68,
    "maxJump": 14.1,
    "flashesPerSec": 0,
-   "motion": 1.57
+   "motion": 1.57,
+   "gain": 0.714,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "cascade": {
    "pass": false,
@@ -272,7 +389,13 @@
    "lumaStd": 0.8,
    "maxJump": 2.5,
    "flashesPerSec": 0,
-   "motion": 1.35
+   "motion": 1.35,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.16)"
+   ]
   },
   "whirlpool": {
    "pass": false,
@@ -291,7 +414,13 @@
    "lumaStd": 5.87,
    "maxJump": 19.5,
    "flashesPerSec": 0,
-   "motion": 21.29
+   "motion": 21.29,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.08)"
+   ]
   },
   "monsoon": {
    "pass": true,
@@ -307,7 +436,11 @@
    "lumaStd": 0.88,
    "maxJump": 2.9,
    "flashesPerSec": 0,
-   "motion": 0.62
+   "motion": 0.62,
+   "gain": 0.488,
+   "leadGain": 0.813,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "magma": {
    "pass": true,
@@ -323,7 +456,11 @@
    "lumaStd": 1.35,
    "maxJump": 4.2,
    "flashesPerSec": 0,
-   "motion": 11.95
+   "motion": 11.95,
+   "gain": 0.874,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "typhoon": {
    "pass": true,
@@ -339,7 +476,11 @@
    "lumaStd": 3.27,
    "maxJump": 10.1,
    "flashesPerSec": 0,
-   "motion": 3.4
+   "motion": 3.4,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "astral": {
    "pass": true,
@@ -355,7 +496,11 @@
    "lumaStd": 5.22,
    "maxJump": 12.3,
    "flashesPerSec": 0,
-   "motion": 4.79
+   "motion": 4.79,
+   "gain": 0.877,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "ember": {
    "pass": true,
@@ -371,7 +516,11 @@
    "lumaStd": 4.41,
    "maxJump": 1.2,
    "flashesPerSec": 0,
-   "motion": 16.79
+   "motion": 16.79,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "tide": {
    "pass": true,
@@ -387,7 +536,11 @@
    "lumaStd": 0.89,
    "maxJump": 2.6,
    "flashesPerSec": 0,
-   "motion": 2.41
+   "motion": 2.41,
+   "gain": 0.796,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "inferno": {
    "pass": false,
@@ -405,7 +558,13 @@
    "lumaStd": 0.1,
    "maxJump": 0.4,
    "flashesPerSec": 0,
-   "motion": 0.15
+   "motion": 0.15,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 18.9)"
+   ]
   },
   "plasma": {
    "pass": false,
@@ -423,7 +582,13 @@
    "lumaStd": 0.11,
    "maxJump": 0.6,
    "flashesPerSec": 0,
-   "motion": 0.14
+   "motion": 0.14,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 11)"
+   ]
   },
   "pulsar": {
    "pass": true,
@@ -439,7 +604,11 @@
    "lumaStd": 3.61,
    "maxJump": 11.4,
    "flashesPerSec": 0,
-   "motion": 11.05
+   "motion": 11.05,
+   "gain": 0.652,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "supernova": {
    "pass": true,
@@ -455,7 +624,11 @@
    "lumaStd": 3.53,
    "maxJump": 7.2,
    "flashesPerSec": 0,
-   "motion": 15.29
+   "motion": 15.29,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "singularity": {
    "pass": true,
@@ -471,7 +644,11 @@
    "lumaStd": 2.12,
    "maxJump": 6.7,
    "flashesPerSec": 0,
-   "motion": 0.92
+   "motion": 0.92,
+   "gain": 0.8,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "drift": {
    "pass": true,
@@ -487,7 +664,11 @@
    "lumaStd": 0.82,
    "maxJump": 0.7,
    "flashesPerSec": 0,
-   "motion": 3.99
+   "motion": 3.99,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "expanse": {
    "pass": false,
@@ -505,7 +686,13 @@
    "lumaStd": 0.01,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.01
+   "motion": 0.01,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.01) — can't carry the kinetic time drive"
+   ]
   },
   "protostar": {
    "pass": true,
@@ -521,7 +708,11 @@
    "lumaStd": 1.74,
    "maxJump": 5,
    "flashesPerSec": 0,
-   "motion": 2.81
+   "motion": 2.81,
+   "gain": 0.386,
+   "leadGain": 0.696,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "redshift": {
    "pass": false,
@@ -539,7 +730,13 @@
    "lumaStd": 3.38,
    "maxJump": 11.1,
    "flashesPerSec": 0,
-   "motion": 22.71
+   "motion": 22.71,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: the concentric rings — \"that oval one\""
+   ]
   },
   "portal": {
    "pass": false,
@@ -558,7 +755,13 @@
    "lumaStd": 10.66,
    "maxJump": 33.5,
    "flashesPerSec": 1.88,
-   "motion": 12.88
+   "motion": 12.88,
+   "gain": 0.35,
+   "leadGain": 0.558,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.31)"
+   ]
   },
   "revelation": {
    "pass": false,
@@ -578,7 +781,13 @@
    "lumaStd": 19.65,
    "maxJump": 63.5,
    "flashesPerSec": 1.88,
-   "motion": 21.05
+   "motion": 21.05,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.12)"
+   ]
   },
   "threshold": {
    "pass": true,
@@ -594,7 +803,11 @@
    "lumaStd": 1.75,
    "maxJump": 3,
    "flashesPerSec": 0,
-   "motion": 3.03
+   "motion": 3.03,
+   "gain": 0.612,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "rapture": {
    "pass": true,
@@ -610,7 +823,11 @@
    "lumaStd": 3.62,
    "maxJump": 12.4,
    "flashesPerSec": 0,
-   "motion": 7.92
+   "motion": 7.92,
+   "gain": 0.535,
+   "leadGain": 0.964,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "mandorla": {
    "pass": true,
@@ -626,7 +843,11 @@
    "lumaStd": 1.96,
    "maxJump": 6.9,
    "flashesPerSec": 0,
-   "motion": 3.14
+   "motion": 3.14,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "seraph": {
    "pass": true,
@@ -642,7 +863,11 @@
    "lumaStd": 0.76,
    "maxJump": 2.5,
    "flashesPerSec": 0,
-   "motion": 12.38
+   "motion": 12.38,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "chrysalis": {
    "pass": true,
@@ -658,7 +883,11 @@
    "lumaStd": 4.73,
    "maxJump": 15.9,
    "flashesPerSec": 0,
-   "motion": 26.07
+   "motion": 26.07,
+   "gain": 0.71,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "plankton": {
    "pass": true,
@@ -674,7 +903,11 @@
    "lumaStd": 0.19,
    "maxJump": 0.7,
    "flashesPerSec": 0,
-   "motion": 16.43
+   "motion": 16.43,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "pollen": {
    "pass": true,
@@ -690,7 +923,11 @@
    "lumaStd": 1.77,
    "maxJump": 6.3,
    "flashesPerSec": 0,
-   "motion": 6.32
+   "motion": 6.32,
+   "gain": 0.762,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "symbiosis": {
    "pass": true,
@@ -706,7 +943,11 @@
    "lumaStd": 0.29,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 1.83
+   "motion": 1.83,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "kelp": {
    "pass": true,
@@ -722,7 +963,11 @@
    "lumaStd": 1.36,
    "maxJump": 4.1,
    "flashesPerSec": 0,
-   "motion": 1.63
+   "motion": 1.63,
+   "gain": 0.583,
+   "leadGain": 0.971,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "flagella": {
    "pass": true,
@@ -738,7 +983,11 @@
    "lumaStd": 0.3,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 2.7
+   "motion": 2.7,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "mycelium": {
    "pass": true,
@@ -754,7 +1003,11 @@
    "lumaStd": 0.71,
    "maxJump": 2,
    "flashesPerSec": 0,
-   "motion": 3.22
+   "motion": 3.22,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "coral": {
    "pass": false,
@@ -772,7 +1025,13 @@
    "lumaStd": 0.69,
    "maxJump": 1.9,
    "flashesPerSec": 0,
-   "motion": 0.84
+   "motion": 0.84,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: bright white sparkle (\"dont use that bright white sparkle shader\")"
+   ]
   },
   "biolume": {
    "pass": false,
@@ -790,7 +1049,13 @@
    "lumaStd": 2.86,
    "maxJump": 9.6,
    "flashesPerSec": 0,
-   "motion": 1.54
+   "motion": 1.54,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: built-in bass flash (bassFlash strobe)"
+   ]
   },
   "diatom": {
    "pass": true,
@@ -806,7 +1071,11 @@
    "lumaStd": 0.2,
    "maxJump": 0.7,
    "flashesPerSec": 0,
-   "motion": 1.15
+   "motion": 1.15,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "biofilm": {
    "pass": true,
@@ -822,7 +1091,11 @@
    "lumaStd": 1.56,
    "maxJump": 5.3,
    "flashesPerSec": 0,
-   "motion": 0.91
+   "motion": 0.91,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "dharma": {
    "pass": true,
@@ -838,7 +1111,11 @@
    "lumaStd": 0.83,
    "maxJump": 1.9,
    "flashesPerSec": 0,
-   "motion": 5.66
+   "motion": 5.66,
+   "gain": 0.796,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "gnosis": {
    "pass": false,
@@ -856,7 +1133,13 @@
    "lumaStd": 0.47,
    "maxJump": 0.8,
    "flashesPerSec": 0,
-   "motion": 5.42
+   "motion": 5.42,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: glowing oval sun in the tunnel"
+   ]
   },
   "chakra": {
    "pass": false,
@@ -874,7 +1157,13 @@
    "lumaStd": 0.59,
    "maxJump": 2.1,
    "flashesPerSec": 0,
-   "motion": 0.23
+   "motion": 0.23,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: banded/lightened the screen in Ghost"
+   ]
   },
   "vestige": {
    "pass": true,
@@ -890,7 +1179,11 @@
    "lumaStd": 2.21,
    "maxJump": 4.9,
    "flashesPerSec": 0,
-   "motion": 1.76
+   "motion": 1.76,
+   "gain": 0.767,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "empyrean": {
    "pass": false,
@@ -909,7 +1202,13 @@
    "lumaStd": 1.99,
    "maxJump": 3,
    "flashesPerSec": 0,
-   "motion": 2.69
+   "motion": 2.69,
+   "gain": 0.35,
+   "leadGain": 0.368,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.22)"
+   ]
   },
   "stigmata": {
    "pass": true,
@@ -925,7 +1224,11 @@
    "lumaStd": 2.28,
    "maxJump": 7.8,
    "flashesPerSec": 0,
-   "motion": 2.59
+   "motion": 2.59,
+   "gain": 0.487,
+   "leadGain": 0.877,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "aureole": {
    "pass": true,
@@ -941,7 +1244,11 @@
    "lumaStd": 7.1,
    "maxJump": 21.5,
    "flashesPerSec": 0.13,
-   "motion": 2.38
+   "motion": 2.38,
+   "gain": 0.363,
+   "leadGain": 0.653,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "yantra": {
    "pass": true,
@@ -957,7 +1264,11 @@
    "lumaStd": 0.15,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 1.24
+   "motion": 1.24,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "satori": {
    "pass": true,
@@ -973,7 +1284,11 @@
    "lumaStd": 6.1,
    "maxJump": 3.7,
    "flashesPerSec": 0,
-   "motion": 11.38
+   "motion": 11.38,
+   "gain": 0.381,
+   "leadGain": 0.685,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "merkaba": {
    "pass": true,
@@ -989,7 +1304,11 @@
    "lumaStd": 0.34,
    "maxJump": 0.6,
    "flashesPerSec": 0,
-   "motion": 2.72
+   "motion": 2.72,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "nadir": {
    "pass": true,
@@ -1005,7 +1324,11 @@
    "lumaStd": 0.41,
    "maxJump": 0.8,
    "flashesPerSec": 0,
-   "motion": 0.59
+   "motion": 0.59,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "parsec": {
    "pass": true,
@@ -1021,7 +1344,11 @@
    "lumaStd": 0.22,
    "maxJump": 0.6,
    "flashesPerSec": 0,
-   "motion": 0.18
+   "motion": 0.18,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "photon": {
    "pass": false,
@@ -1039,7 +1366,11 @@
    "lumaStd": 0.86,
    "maxJump": 1.5,
    "flashesPerSec": 0,
-   "motion": 2.86
+   "motion": 2.86,
+   "gain": 0.392,
+   "leadGain": 0.654,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "kepler": {
    "pass": true,
@@ -1055,7 +1386,11 @@
    "lumaStd": 0.45,
    "maxJump": 1.6,
    "flashesPerSec": 0,
-   "motion": 1.64
+   "motion": 1.64,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "hubble": {
    "pass": true,
@@ -1071,7 +1406,11 @@
    "lumaStd": 0.12,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.16
+   "motion": 0.16,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "zenith": {
    "pass": true,
@@ -1087,7 +1426,11 @@
    "lumaStd": 2.21,
    "maxJump": 7.8,
    "flashesPerSec": 0,
-   "motion": 2.13
+   "motion": 2.13,
+   "gain": 0.562,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "lightyear": {
    "pass": true,
@@ -1103,7 +1446,11 @@
    "lumaStd": 0.05,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.21
+   "motion": 0.21,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "event-horizon": {
    "pass": true,
@@ -1119,7 +1466,11 @@
    "lumaStd": 0.17,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 1.11
+   "motion": 1.11,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "chinook": {
    "pass": true,
@@ -1135,7 +1486,11 @@
    "lumaStd": 2.97,
    "maxJump": 8.5,
    "flashesPerSec": 0,
-   "motion": 1.01
+   "motion": 1.01,
+   "gain": 0.476,
+   "leadGain": 0.794,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "thermal": {
    "pass": false,
@@ -1153,7 +1508,13 @@
    "lumaStd": 2.95,
    "maxJump": 8.6,
    "flashesPerSec": 0,
-   "motion": 0.61
+   "motion": 0.61,
+   "gain": 0.35,
+   "leadGain": 0.452,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.27)"
+   ]
   },
   "lightning": {
    "pass": false,
@@ -1171,7 +1532,13 @@
    "lumaStd": 12.67,
    "maxJump": 45,
    "flashesPerSec": 0.25,
-   "motion": 9.8
+   "motion": 9.8,
+   "gain": 0.923,
+   "leadGain": 1,
+   "gainedPass": false,
+   "gainedReasons": [
+    "flicker at gain 0.92 (jump 41.5, 0.25/s)"
+   ]
   },
   "ripple": {
    "pass": true,
@@ -1187,7 +1554,11 @@
    "lumaStd": 1.72,
    "maxJump": 0.6,
    "flashesPerSec": 0,
-   "motion": 15.71
+   "motion": 15.71,
+   "gain": 0.674,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "rime": {
    "pass": false,
@@ -1206,7 +1577,13 @@
    "lumaStd": 0.96,
    "maxJump": 3.1,
    "flashesPerSec": 0,
-   "motion": 0.8
+   "motion": 0.8,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.8) — can't carry the kinetic time drive"
+   ]
   },
   "cirrus": {
    "pass": true,
@@ -1222,7 +1599,11 @@
    "lumaStd": 0.36,
    "maxJump": 0.4,
    "flashesPerSec": 0,
-   "motion": 0.63
+   "motion": 0.63,
+   "gain": 0.667,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "torrent": {
    "pass": true,
@@ -1238,7 +1619,11 @@
    "lumaStd": 1.16,
    "maxJump": 3.6,
    "flashesPerSec": 0,
-   "motion": 1.19
+   "motion": 1.19,
+   "gain": 0.682,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "swell": {
    "pass": false,
@@ -1256,7 +1641,13 @@
    "lumaStd": 20.45,
    "maxJump": 25.3,
    "flashesPerSec": 0.13,
-   "motion": 8.76
+   "motion": 8.76,
+   "gain": 0.35,
+   "leadGain": 0.49,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.27)"
+   ]
   },
   "flame": {
    "pass": true,
@@ -1272,7 +1663,11 @@
    "lumaStd": 0.32,
    "maxJump": 1,
    "flashesPerSec": 0,
-   "motion": 0.78
+   "motion": 0.78,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "starfield": {
    "pass": true,
@@ -1288,7 +1683,11 @@
    "lumaStd": 0.03,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.24
+   "motion": 0.24,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "radiance": {
    "pass": false,
@@ -1308,7 +1707,13 @@
    "lumaStd": 0.99,
    "maxJump": 3,
    "flashesPerSec": 0,
-   "motion": 0.57
+   "motion": 0.57,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.57) — can't carry the kinetic time drive"
+   ]
   },
   "maelstrom-dark": {
    "pass": true,
@@ -1324,7 +1729,11 @@
    "lumaStd": 0.1,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.18
+   "motion": 0.18,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "obsidian-flow": {
    "pass": true,
@@ -1340,7 +1749,11 @@
    "lumaStd": 1.14,
    "maxJump": 4.5,
    "flashesPerSec": 0,
-   "motion": 4.36
+   "motion": 4.36,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "furnace": {
    "pass": true,
@@ -1356,7 +1769,11 @@
    "lumaStd": 3.23,
    "maxJump": 12.1,
    "flashesPerSec": 0,
-   "motion": 1.54
+   "motion": 1.54,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "pelagic": {
    "pass": false,
@@ -1374,7 +1791,11 @@
    "lumaStd": 0.54,
    "maxJump": 1.8,
    "flashesPerSec": 0,
-   "motion": 0.77
+   "motion": 0.77,
+   "gain": 0.357,
+   "leadGain": 0.595,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "zooid": {
    "pass": false,
@@ -1392,7 +1813,13 @@
    "lumaStd": 0.01,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.09
+   "motion": 0.09,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.09) — can't carry the kinetic time drive"
+   ]
   },
   "laminar": {
    "pass": false,
@@ -1411,7 +1838,14 @@
    "lumaStd": 0.01,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.02
+   "motion": 0.02,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 15)",
+    "static (motion 0.02) — can't carry the kinetic time drive"
+   ]
   },
   "stamen": {
    "pass": false,
@@ -1429,7 +1863,13 @@
    "lumaStd": 0.02,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.05
+   "motion": 0.05,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.05) — can't carry the kinetic time drive"
+   ]
   },
   "meristem": {
    "pass": false,
@@ -1447,7 +1887,13 @@
    "lumaStd": 0.14,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 0.17
+   "motion": 0.17,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.17) — can't carry the kinetic time drive"
+   ]
   },
   "smolder": {
    "pass": false,
@@ -1466,7 +1912,14 @@
    "lumaStd": 0.01,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.05
+   "motion": 0.05,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 12.6)",
+    "static (motion 0.05) — can't carry the kinetic time drive"
+   ]
   },
   "crucible": {
    "pass": false,
@@ -1484,7 +1937,13 @@
    "lumaStd": 0.06,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0
+   "motion": 0,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0) — can't carry the kinetic time drive"
+   ]
   },
   "ember-drift": {
    "pass": false,
@@ -1502,7 +1961,13 @@
    "lumaStd": 0.05,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.05
+   "motion": 0.05,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 5.1)"
+   ]
   },
   "molten-vein": {
    "pass": true,
@@ -1518,7 +1983,11 @@
    "lumaStd": 0.42,
    "maxJump": 1.5,
    "flashesPerSec": 0,
-   "motion": 1.94
+   "motion": 1.94,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "dark-aurora": {
    "pass": false,
@@ -1536,7 +2005,13 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.13
+   "motion": 0.13,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 5.2)"
+   ]
   },
   "shadow-fire": {
    "pass": true,
@@ -1552,7 +2027,11 @@
    "lumaStd": 0.04,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.06
+   "motion": 0.06,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "dark-tide": {
    "pass": true,
@@ -1568,7 +2047,11 @@
    "lumaStd": 0.64,
    "maxJump": 1.5,
    "flashesPerSec": 0,
-   "motion": 1.25
+   "motion": 1.25,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "smoke-signal": {
    "pass": false,
@@ -1586,7 +2069,13 @@
    "lumaStd": 0.23,
    "maxJump": 0.7,
    "flashesPerSec": 0,
-   "motion": 0.09
+   "motion": 0.09,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 18.2)"
+   ]
   },
   "iron-forge": {
    "pass": true,
@@ -1602,7 +2091,11 @@
    "lumaStd": 0.43,
    "maxJump": 1.6,
    "flashesPerSec": 0,
-   "motion": 0.35
+   "motion": 0.35,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "witch-light": {
    "pass": false,
@@ -1621,7 +2114,14 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.03
+   "motion": 0.03,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 25.2)",
+    "static (motion 0.03) — can't carry the kinetic time drive"
+   ]
   },
   "dark-crystal": {
    "pass": false,
@@ -1639,7 +2139,13 @@
    "lumaStd": 0.3,
    "maxJump": 0.9,
    "flashesPerSec": 0,
-   "motion": 0.43
+   "motion": 0.43,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 29.6)"
+   ]
   },
   "volcanic": {
    "pass": true,
@@ -1655,7 +2161,11 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.16
+   "motion": 0.16,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "lightning-field": {
    "pass": false,
@@ -1673,7 +2183,13 @@
    "lumaStd": 9.42,
    "maxJump": 9.2,
    "flashesPerSec": 0.13,
-   "motion": 4.87
+   "motion": 4.87,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 25.8)"
+   ]
   },
   "dark-nebula": {
    "pass": true,
@@ -1689,7 +2205,11 @@
    "lumaStd": 0.34,
    "maxJump": 0.5,
    "flashesPerSec": 0,
-   "motion": 0.66
+   "motion": 0.66,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "night-forest": {
    "pass": false,
@@ -1707,7 +2227,13 @@
    "lumaStd": 0.09,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 0.05
+   "motion": 0.05,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.05) — can't carry the kinetic time drive"
+   ]
   },
   "kenosis": {
    "pass": true,
@@ -1723,7 +2249,11 @@
    "lumaStd": 2.23,
    "maxJump": 2.3,
    "flashesPerSec": 0,
-   "motion": 2.44
+   "motion": 2.44,
+   "gain": 0.7,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "numinous": {
    "pass": false,
@@ -1742,7 +2272,13 @@
    "lumaStd": 0.83,
    "maxJump": 1.2,
    "flashesPerSec": 0,
-   "motion": 1.77
+   "motion": 1.77,
+   "gain": 0.35,
+   "leadGain": 0.433,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.24)"
+   ]
   },
   "anima": {
    "pass": false,
@@ -1760,7 +2296,13 @@
    "lumaStd": 0.16,
    "maxJump": 0.5,
    "flashesPerSec": 0,
-   "motion": 0.31
+   "motion": 0.31,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.31) — can't carry the kinetic time drive"
+   ]
   },
   "covenant": {
    "pass": true,
@@ -1776,7 +2318,11 @@
    "lumaStd": 1.03,
    "maxJump": 2.1,
    "flashesPerSec": 0,
-   "motion": 1.31
+   "motion": 1.31,
+   "gain": 0.503,
+   "leadGain": 0.905,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "agape": {
    "pass": false,
@@ -1795,7 +2341,13 @@
    "lumaStd": 1.15,
    "maxJump": 3.1,
    "flashesPerSec": 0,
-   "motion": 16.14
+   "motion": 16.14,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.18)"
+   ]
   },
   "vespers": {
    "pass": false,
@@ -1815,7 +2367,13 @@
    "lumaStd": 0.49,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 0.21
+   "motion": 0.21,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.21) — can't carry the kinetic time drive"
+   ]
   },
   "jubilee": {
    "pass": true,
@@ -1831,7 +2389,11 @@
    "lumaStd": 0.66,
    "maxJump": 0.4,
    "flashesPerSec": 0,
-   "motion": 1.86
+   "motion": 1.86,
+   "gain": 0.573,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "pilgrimage": {
    "pass": false,
@@ -1849,7 +2411,13 @@
    "lumaStd": 0.25,
    "maxJump": 0.7,
    "flashesPerSec": 0,
-   "motion": 0.12
+   "motion": 0.12,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.12) — can't carry the kinetic time drive"
+   ]
   },
   "cataphatic": {
    "pass": false,
@@ -1868,7 +2436,13 @@
    "lumaStd": 0.9,
    "maxJump": 3.1,
    "flashesPerSec": 0,
-   "motion": 0.2
+   "motion": 0.2,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.2) — can't carry the kinetic time drive"
+   ]
   },
   "hesychasm": {
    "pass": false,
@@ -1886,7 +2460,13 @@
    "lumaStd": 0.1,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 0.07
+   "motion": 0.07,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.07) — can't carry the kinetic time drive"
+   ]
   },
   "kairos": {
    "pass": true,
@@ -1902,7 +2482,11 @@
    "lumaStd": 0.08,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 1.48
+   "motion": 1.48,
+   "gain": 0.767,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "lectio": {
    "pass": true,
@@ -1918,7 +2502,11 @@
    "lumaStd": 0.15,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 0.57
+   "motion": 0.57,
+   "gain": 0.857,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-mercury": {
    "pass": true,
@@ -1934,7 +2522,11 @@
    "lumaStd": 0.1,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 2.54
+   "motion": 2.54,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-stardust": {
    "pass": true,
@@ -1950,7 +2542,11 @@
    "lumaStd": 0.75,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 2.28
+   "motion": 2.28,
+   "gain": 0.619,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "firefly-field": {
    "pass": true,
@@ -1966,7 +2562,11 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.32
+   "motion": 0.32,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "ribbon-of-light": {
    "pass": true,
@@ -1982,7 +2582,11 @@
    "lumaStd": 0.04,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.38
+   "motion": 0.38,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "orbit-weaver": {
    "pass": true,
@@ -1998,7 +2602,11 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 1
+   "motion": 1,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "meteor-rain": {
    "pass": true,
@@ -2014,7 +2622,11 @@
    "lumaStd": 0.05,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.38
+   "motion": 0.38,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "murmuration": {
    "pass": true,
@@ -2030,7 +2642,11 @@
    "lumaStd": 0.04,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.56
+   "motion": 0.56,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "will-o-wisp": {
    "pass": true,
@@ -2046,7 +2662,11 @@
    "lumaStd": 0.1,
    "maxJump": 0.4,
    "flashesPerSec": 0,
-   "motion": 0.45
+   "motion": 0.45,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "pendulum-dust": {
    "pass": true,
@@ -2062,7 +2682,11 @@
    "lumaStd": 0.02,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.23
+   "motion": 0.23,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "fracture-light": {
    "pass": true,
@@ -2078,7 +2702,11 @@
    "lumaStd": 0.26,
    "maxJump": 0.8,
    "flashesPerSec": 0,
-   "motion": 0.28
+   "motion": 0.28,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "rose-window": {
    "pass": true,
@@ -2094,7 +2722,11 @@
    "lumaStd": 0.05,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.34
+   "motion": 0.34,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "cascade-veil": {
    "pass": true,
@@ -2110,7 +2742,11 @@
    "lumaStd": 0.07,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.31
+   "motion": 0.31,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "binary-stars": {
    "pass": true,
@@ -2126,7 +2762,11 @@
    "lumaStd": 0.06,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 0.39
+   "motion": 0.39,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "resonant-rings": {
    "pass": true,
@@ -2142,7 +2782,11 @@
    "lumaStd": 0.13,
    "maxJump": 0.5,
    "flashesPerSec": 0,
-   "motion": 2.13
+   "motion": 2.13,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-embers": {
    "pass": true,
@@ -2158,7 +2802,11 @@
    "lumaStd": 1.21,
    "maxJump": 2,
    "flashesPerSec": 0,
-   "motion": 4.62
+   "motion": 4.62,
+   "gain": 0.632,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-blackhole": {
    "pass": true,
@@ -2174,7 +2822,11 @@
    "lumaStd": 0.09,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 4.85
+   "motion": 4.85,
+   "gain": 0.725,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-smokerings": {
    "pass": true,
@@ -2190,7 +2842,11 @@
    "lumaStd": 2.04,
    "maxJump": 7,
    "flashesPerSec": 0,
-   "motion": 11.46
+   "motion": 11.46,
+   "gain": 0.476,
+   "leadGain": 0.794,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r-droplets": {
    "pass": true,
@@ -2206,7 +2862,11 @@
    "lumaStd": 0.78,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 9.93
+   "motion": 9.93,
+   "gain": 0.4,
+   "leadGain": 0.667,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-curlswarm": {
    "pass": true,
@@ -2222,7 +2882,11 @@
    "lumaStd": 0.05,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 1.01
+   "motion": 1.01,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-spiralgal": {
    "pass": true,
@@ -2238,7 +2902,11 @@
    "lumaStd": 0.56,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 2.97
+   "motion": 2.97,
+   "gain": 0.638,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-marble": {
    "pass": false,
@@ -2256,7 +2924,13 @@
    "lumaStd": 1.81,
    "maxJump": 0.4,
    "flashesPerSec": 0,
-   "motion": 24.35
+   "motion": 24.35,
+   "gain": 0.35,
+   "leadGain": 0.436,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.24)"
+   ]
   },
   "r2-kelvin": {
    "pass": false,
@@ -2274,7 +2948,13 @@
    "lumaStd": 0.06,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 1.89
+   "motion": 1.89,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.12)"
+   ]
   },
   "r2-thermal": {
    "pass": true,
@@ -2290,7 +2970,11 @@
    "lumaStd": 0.88,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 7.9
+   "motion": 7.9,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-photon": {
    "pass": false,
@@ -2308,7 +2992,11 @@
    "lumaStd": 3.87,
    "maxJump": 3.7,
    "flashesPerSec": 0,
-   "motion": 5.33
+   "motion": 5.33,
+   "gain": 0.351,
+   "leadGain": 0.585,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-pixie": {
    "pass": true,
@@ -2324,7 +3012,11 @@
    "lumaStd": 1.39,
    "maxJump": 2.2,
    "flashesPerSec": 0,
-   "motion": 4.8
+   "motion": 4.8,
+   "gain": 0.612,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-infrared": {
    "pass": false,
@@ -2342,7 +3034,13 @@
    "lumaStd": 0.09,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.17
+   "motion": 0.17,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "blank (peak luma 14)"
+   ]
   },
   "r2-portalrim": {
    "pass": true,
@@ -2358,7 +3056,11 @@
    "lumaStd": 0.01,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 2.01
+   "motion": 2.01,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r2-spore": {
    "pass": true,
@@ -2374,7 +3076,11 @@
    "lumaStd": 1,
    "maxJump": 1.7,
    "flashesPerSec": 0,
-   "motion": 2.01
+   "motion": 2.01,
+   "gain": 0.4,
+   "leadGain": 0.667,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-shadowflow": {
    "pass": false,
@@ -2393,7 +3099,13 @@
    "lumaStd": 0.43,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 2.54
+   "motion": 2.54,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.09)"
+   ]
   },
   "r3-waveveil": {
    "pass": true,
@@ -2409,7 +3121,11 @@
    "lumaStd": 0.04,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 1.48
+   "motion": 1.48,
+   "gain": 0.936,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-plasmastorm": {
    "pass": true,
@@ -2425,7 +3141,11 @@
    "lumaStd": 0.3,
    "maxJump": 1,
    "flashesPerSec": 0,
-   "motion": 2.77
+   "motion": 2.77,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-lightningveil": {
    "pass": true,
@@ -2441,7 +3161,11 @@
    "lumaStd": 2.44,
    "maxJump": 0.8,
    "flashesPerSec": 0,
-   "motion": 3.67
+   "motion": 3.67,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-balllightning": {
    "pass": false,
@@ -2459,7 +3183,13 @@
    "lumaStd": 0.17,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 2.89
+   "motion": 2.89,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "karelRejected: bright white sparkle (\"dont use that bright white sparkle shader\")"
+   ]
   },
   "r3-fernunfurl": {
    "pass": true,
@@ -2475,7 +3205,11 @@
    "lumaStd": 0.23,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 12.78
+   "motion": 12.78,
+   "gain": 0.51,
+   "leadGain": 0.918,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-sleepingbloom": {
    "pass": true,
@@ -2491,7 +3225,11 @@
    "lumaStd": 2.75,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 1.27
+   "motion": 1.27,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-peelingbark": {
    "pass": false,
@@ -2509,7 +3247,13 @@
    "lumaStd": 0.23,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 3.02
+   "motion": 3.02,
+   "gain": 0.35,
+   "leadGain": 0.385,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.23)"
+   ]
   },
   "r3-heatshimmer": {
    "pass": false,
@@ -2528,7 +3272,13 @@
    "lumaStd": 0.25,
    "maxJump": 0.2,
    "flashesPerSec": 0,
-   "motion": 8.78
+   "motion": 8.78,
+   "gain": 0.35,
+   "leadGain": 0.35,
+   "gainedPass": false,
+   "gainedReasons": [
+    "wash even at gain 0.35 (needs 0.07)"
+   ]
   },
   "r3-monsoonveil": {
    "pass": true,
@@ -2544,7 +3294,11 @@
    "lumaStd": 0.77,
    "maxJump": 0.3,
    "flashesPerSec": 0,
-   "motion": 7.51
+   "motion": 7.51,
+   "gain": 1,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-fairyglow": {
    "pass": true,
@@ -2560,7 +3314,11 @@
    "lumaStd": 0.35,
    "maxJump": 0.1,
    "flashesPerSec": 0,
-   "motion": 0.56
+   "motion": 0.56,
+   "gain": 0.667,
+   "leadGain": 1,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-heartwarmth": {
    "pass": true,
@@ -2576,7 +3334,11 @@
    "lumaStd": 19.89,
    "maxJump": 4,
    "flashesPerSec": 0.13,
-   "motion": 7.91
+   "motion": 7.91,
+   "gain": 0.488,
+   "leadGain": 0.813,
+   "gainedPass": true,
+   "gainedReasons": []
   },
   "r3-innerglow": {
    "pass": false,
@@ -2595,7 +3357,13 @@
    "lumaStd": 0.02,
    "maxJump": 0,
    "flashesPerSec": 0,
-   "motion": 0.7
+   "motion": 0.7,
+   "gain": null,
+   "leadGain": null,
+   "gainedPass": false,
+   "gainedReasons": [
+    "static (motion 0.7) — can't carry the kinetic time drive"
+   ]
   }
  }
 }

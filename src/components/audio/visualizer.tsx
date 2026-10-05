@@ -41,7 +41,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isKineticJourneyName, BAND_PROFILES } from "@/lib/journeys/kinetic";
+import { isKineticJourneyName, BAND_PROFILES, expansionLayerGain } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -850,6 +850,22 @@ export function VisualizerCore({
   const bandPrimary = kinetic ? ("bass" as const) : undefined;
   const bandDual = kinetic ? ("mid" as const) : undefined;
   const bandTertiary = kinetic ? ("treble" as const) : undefined;
+  // BRIGHTNESS-NORMALIZED LAYERS (Karel 2026-10-05, Expansion shader
+  // diversity): each Expansion kinetic layer runs at a per-shader
+  // opacity gain from the vetting measurements, so brighter shaders can
+  // join the pool without washing the blacks. STICKY per slot: the gain
+  // is fixed when a shader lands on a slot (always while that slot is
+  // invisible or at a hard cut) and never re-evaluated mid-life — a
+  // journey boundary must not step the brightness of a fading layer.
+  const layerGainRef = useRef<Record<string, { mode: string | null; gain: number }>>({});
+  const layerGain = (slot: string, layerMode: string | null | undefined): number => {
+    const m = layerMode ?? null;
+    const cur = layerGainRef.current[slot];
+    if (cur && cur.mode === m) return cur.gain;
+    const gain = expansionLayerGain(kineticName, m);
+    layerGainRef.current[slot] = { mode: m, gain };
+    return gain;
+  };
   const setLanguage = useAudioStore((s) => s.setLanguage);
 
   const [vibe, setVibe] = useState<Mood | null>(defaultMood ?? null);
@@ -1362,7 +1378,7 @@ export function VisualizerCore({
           <>
             <div style={{
               position: "absolute", inset: 0, pointerEvents: "none",
-              opacity: (MODES_AI.has(layerAMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
+              opacity: `calc(var(--shader-opacity, 1) * ${(MODES_AI.has(layerAMode) ? 0.6 : 1) * layerGain("a", layerAMode)})` as unknown as number,
             }}>
               <div ref={setLayerARef} style={{ position: "absolute", inset: 0 }}>
                 {renderLayerContent(layerAMode, handleLayerAReady, idlePrimaryLayer === 'a')}
@@ -1371,7 +1387,7 @@ export function VisualizerCore({
             {layerBMode && (
               <div style={{
                 position: "absolute", inset: 0, pointerEvents: "none",
-                opacity: (MODES_AI.has(layerBMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
+                opacity: `calc(var(--shader-opacity, 1) * ${(MODES_AI.has(layerBMode) ? 0.6 : 1) * layerGain("b", layerBMode)})` as unknown as number,
               }}>
                 <div ref={setLayerBRef} style={{ position: "absolute", inset: 0 }}>
                   {renderLayerContent(layerBMode, handleLayerBReady, idlePrimaryLayer === 'b')}
@@ -1384,7 +1400,7 @@ export function VisualizerCore({
         {/* ── Dual shader: A/B buffer ──
             Same persistent-layer pattern. mixBlendMode: screen for overlay effect. */}
         {dualLayerAMode && SHADERS[dualLayerAMode as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualA", dualLayerAMode)})` as unknown as number }}>
             <div ref={setDualLayerARef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
@@ -1399,7 +1415,7 @@ export function VisualizerCore({
           </div>
         )}
         {dualLayerBMode && SHADERS[dualLayerBMode as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualB", dualLayerBMode)})` as unknown as number }}>
             <div ref={setDualLayerBRef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
@@ -1416,7 +1432,7 @@ export function VisualizerCore({
 
         {/* Tertiary shader — single layer with fade in/out (kept simple) */}
         {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("tertiary", tertiaryShaderVisible)})` as unknown as number }}>
             <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}

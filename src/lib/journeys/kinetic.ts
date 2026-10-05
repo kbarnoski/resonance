@@ -1,3 +1,5 @@
+import { SHADER_SUPPORT_GAIN, SHADER_LEAD_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
+
 /**
  * KINETIC journeys (Karel 2026-09-29): a second species alongside the
  * meditative default. Shaders dominate and LISTEN — the primary layer
@@ -38,6 +40,19 @@ export const EXPANSION_KINETIC_NAMES: ReadonlySet<string> = new Set(
 export function isExpansionKineticName(name?: string | null): boolean {
   if (!name) return false;
   return EXPANSION_KINETIC_NAMES.has(name.trim().toLowerCase());
+}
+
+/** Per-shader opacity gain for an Expansion kinetic layer (Karel
+ *  2026-10-05: "i swear that the pool of shaders used in expansion
+ *  journeys seems super limited ... ensure there is true diversity").
+ *  Brighter vetted shaders are normalized down to the layer budget
+ *  (support mean <= 25 / black floor <= 6; a journey's own lead mean
+ *  <= 45 / floor <= 10) instead of being excluded — measured by
+ *  scripts/vet-shaders.mjs. Every other journey is unchanged (1). */
+export function expansionLayerGain(name?: string | null, mode?: string | null): number {
+  if (!mode || !isExpansionKineticName(name)) return 1;
+  if (EXPANSION_LEADS[name!.trim().toLowerCase()] === mode) return SHADER_LEAD_GAIN[mode] ?? 1;
+  return SHADER_SUPPORT_GAIN[mode] ?? 1;
 }
 
 /** Band-split reactive shaders (bass/mid/treble per layer). */
