@@ -11,7 +11,7 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
       "aiPrompt": "DARK BACKGROUND — extreme close detail: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
         "DARK BACKGROUND — extreme close detail: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — a high bare mountain ridge at night, dark rock against a deep indigo sky with a few faint stars, one thin seam of cold silver light along the crest in the lower right, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — looking down along a high bare ridge of dark rock at night, mist pooled on both sides, one thin seam of cold silver light along the crest in the lower right, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "DARK BACKGROUND — abstract: slow luminous rivers of cloud flowing over dark ridgelines, only the faintest light, wide negative space, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -23,7 +23,7 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
       "aiPrompt": "slow rivers of cloud flowing through a dark mountain saddle at night, their tops lit faint silver, the ridges rising above them, yearning and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
         "slow rivers of cloud flowing through a dark mountain saddle at night, their tops lit faint silver, the ridges rising above them, yearning and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, the light gathering, more of the world glimpsed beyond, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "close study: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow luminous rivers of cloud flowing over dark ridgelines, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -36,7 +36,7 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
       "aiPromptSequence": [
         "a long ridge of bare black rock at night seen from high above, an immense sea of moving cloud pouring over its saddle in a slow luminous cascade, cold silver and dusky violet light along every cloud edge, the brightest flow right of center, brooding and resolute, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "abstract at the largest scale: slow luminous rivers of cloud flowing over dark ridgelines, at full radiance, filling the frame with asymmetric weight, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro at the height of the light: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, glowing at full strength, the vast world beyond it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "macro at the height of the light: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, glowing at full strength against deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "peak",
@@ -44,9 +44,9 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.96,
-      "aiPrompt": "the cloud cascade catching a warmer pale gold seam along its crest, light and shadow trading across the ridges, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "looking down at the cloud cascade pouring over the dark ridge, a warmer pale gold seam along its crest, light and shadow trading across the rock, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "the cloud cascade catching a warmer pale gold seam along its crest, light and shadow trading across the ridges, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking down at the cloud cascade pouring over the dark ridge, a warmer pale gold seam along its crest, light and shadow trading across the rock, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "close: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, in broad steady calm light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow luminous rivers of cloud flowing over dark ridgelines, the light broad, steady and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
@@ -56,9 +56,9 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.69,
-      "aiPrompt": "the cloud sinking slowly back into the valleys below the ridge, the sky above lightening to soft blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "looking straight down at the cloud sinking slowly back into the valleys between dark ridges, its surface softening to blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "the cloud sinking slowly back into the valleys below the ridge, the sky above lightening to soft blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down at the cloud sinking slowly back into the valleys between dark ridges, its surface softening to blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "close: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, in broad steady calm light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow luminous rivers of cloud flowing over dark ridgelines, the light broad, steady and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
@@ -82,10 +82,10 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "cosmic-drift": [
     {
       "intensityMultiplier": 0.53,
-      "aiPrompt": "DARK BACKGROUND — extreme close detail: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — extreme close detail: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — extreme close detail: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — a small dark asteroid drifting slowly through deep space in the lower left, its surface catching a faint warm amber rim light, distant stars, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — extreme close detail: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a loose scatter of small jagged irregular rock shards drifting slowly through deep space in the lower left, their broken edges catching a faint warm amber light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "DARK BACKGROUND — abstract: slow flowing currents of glowing golden dust in deep space, only the faintest light, wide negative space, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -94,10 +94,10 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.87,
-      "aiPrompt": "a gentle field of small dark asteroids drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "a gentle field of jagged irregular rock shards of many sizes drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "a gentle field of small dark asteroids drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, the light gathering, more of the world glimpsed beyond, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "a gentle field of jagged irregular rock shards of many sizes drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -106,10 +106,10 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.43,
-      "aiPrompt": "DARK BACKGROUND — wide empty space, one small rock hovering in a faint warm haze, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — wide empty dark space with a faint drift of warm golden dust across it, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — wide empty space, one small rock hovering in a faint warm haze, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, the light gathering, more of the world glimpsed beyond, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — wide empty dark space with a faint drift of warm golden dust across it, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -118,10 +118,10 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.94,
-      "aiPrompt": "the asteroid field drifting through a vast cloud of warm golden dust, the rocks rim-lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "jagged rock shards drifting through a vast cloud of warm golden dust, their broken faces lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "the asteroid field drifting through a vast cloud of warm golden dust, the rocks rim-lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, the light gathering, more of the world glimpsed beyond, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "jagged rock shards drifting through a vast cloud of warm golden dust, their broken faces lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -130,11 +130,11 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 1,
-      "aiPrompt": "an immense slow river of glowing golden dust flowing through deep space, dozens of dark asteroids drifting within it rim-lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "an immense slow river of glowing golden dust flowing diagonally through deep space, countless small jagged rock shards carried within it lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "an immense slow river of glowing golden dust flowing through deep space, dozens of dark asteroids drifting within it rim-lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "an immense slow river of glowing golden dust flowing diagonally through deep space, countless small jagged rock shards carried within it lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "abstract at the largest scale: slow flowing currents of glowing golden dust in deep space, at full radiance, filling the frame with asymmetric weight, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro at the height of the light: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, glowing at full strength, the vast world beyond it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "macro at the height of the light: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, glowing at full strength against deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "peak",
@@ -142,10 +142,10 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
     },
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "DARK BACKGROUND — a single small rock drifting away into deep dark, a faint warm glow on its edge, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — the last thin thread of golden dust and a few tiny jagged shards drifting away into deep dark, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — a single small rock drifting away into deep dark, a faint warm glow on its edge, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — close: the rough surface of a small dark asteroid rim-lit warm amber, fine dust lifting off it, the last glow in near darkness, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — the last thin thread of golden dust and a few tiny jagged shards drifting away into deep dark, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — close: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the last glow in near darkness, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
         "DARK BACKGROUND — slow flowing currents of glowing golden dust in deep space, almost entirely dark, one last trace of light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
@@ -321,7 +321,7 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
       "aiPromptSequence": [
         "cosmic-scale bioluminescent network sweeping across infinite brown-black void, millions of green-gold points joined by hair-thin filaments like neurons or galaxies, amber pulses traveling between nodes, drifting spore-light filling the spaces, densest cluster upper-right with bridges reaching into generous darkness, no text no signatures no watermarks no letters no writing",
         "interior kinetic — flying along one filament inside the network, node-lights flaring past like stations, amber signal-pulses overtaking and racing ahead, branches curving away into deep green-black on every side, no text no signatures no watermarks no letters no writing",
-        "planetary — the network wrapped around a dark curved world seen from high orbit, green-gold veins netting the whole sphere, slow pulses crossing continents of darkness, one hemisphere blazing awake, no text no signatures no watermarks no letters no writing"
+        "aerial — the network spread across a dark ground filling the frame seen from very high above, green-gold veins netting the whole dark ground, slow pulses crossing wide fields of darkness, one region blazing awake, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "you are the network...",

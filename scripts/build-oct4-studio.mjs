@@ -61,8 +61,8 @@ import { groupPhases, PHASE_IDS } from "./lib/phase-grouping.mjs";
 // Shot lighting keyed by the phase's ROLE in this piece's measured arc.
 const SHOT_LIGHT = {
   dark: ["DARK BACKGROUND — extreme close detail: %M, barely lit, deep darkness all around it", "DARK BACKGROUND — abstract: %A, only the faintest light, wide negative space"],
-  gathering: ["close study: %M, the light gathering, more of the world glimpsed beyond", "%A, the light gathering and spreading outward"],
-  peak: ["macro at the height of the light: %M, glowing at full strength, the vast world beyond it", "abstract at the largest scale: %A, at full radiance, filling the frame with asymmetric weight"],
+  gathering: ["close study: %M, the light gathering softly around it in deep surrounding dark", "%A, the light gathering and spreading outward"],
+  peak: ["macro at the height of the light: %M, glowing at full strength against deep surrounding dark", "abstract at the largest scale: %A, at full radiance, filling the frame with asymmetric weight"],
   calm: ["close: %M, in broad steady calm light", "%A, the light broad, steady and calm"],
   lowering: ["close: %M, the light lowering and thinning", "%A, dimming, darkness returning between the forms"],
   last: ["DARK BACKGROUND — close: %M, the last glow in near darkness", "DARK BACKGROUND — %A, almost entirely dark, one last trace of light"],
@@ -214,6 +214,7 @@ for (const title of ORDER) {
     ambientTheme: world.ambient,
     worldRationale: world.why,
     analysisVersion: 2,
+    strictCamera: true, // world lines carry their own (horizon-free) framing
   };
   const fields = {
     name: title, subtitle: world.subtitle ?? "",

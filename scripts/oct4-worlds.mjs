@@ -33,17 +33,17 @@ export const WORLDS = {
     abstract: "braided ribbons of reflective water branching slowly across a dark plain, seen from directly above",
     phases: [
       // [0] Low Embers Waking 0:00–0:24 (I 0.10, hushed, grounded)
-      "DARK BACKGROUND — a vast tidal estuary before dawn seen from high above, a dark plain of wet sand and mud cut by braided water channels, one single channel in the lower left holding the faintest pewter seam of reflected light, everything else unlit and still",
+      "DARK BACKGROUND — looking straight down from high above onto a vast tidal estuary in deep blue dark, the flats filling the entire frame, a dark plain of wet sand and mud cut by braided water channels, one single channel in the lower left holding the faintest pewter seam of reflected light, everything else unlit and still",
       // [1] Plagal Tide 0:24–1:00 (I 0.87, warm, rocking, settled)
       "a top-down map-like view of wet tidal sand and braided water channels in the cool blue hour, the patterned sand filling the entire frame, shallow tide sliding in slow overlapping sheets, the channels holding soft slate and pewter reflections, thin mist lying in long bands across the sand, the light arriving only as soft reflections across the wet surface",
       // [2] Suspended Questions 1:00–1:21 (I 0.79, searching, first Lydian glint)
-      "thin pale streaks of light appearing along the edges of the water channels as the mist parts, a few channels suddenly bright as hairlines of silver-gold while the flats between stay dark, the braid half-revealed, searching",
+      "looking straight down onto the flats filling the frame, thin pale streaks of light appearing along the edges of the water channels as the mist parts, a few channels suddenly bright as hairlines of silver-gold while the flats between stay dark, the braid half-revealed, searching",
       // [3] Subdominant Dawn 1:21–1:58 (I 1.00 PEAK, radiant, expansive, reverent)
       "looking straight down onto the entire braided estuary lit at once, hundreds of fine branching water channels glowing soft amber-gold across the dark sand like a vast living river-tree of light filling the frame, low mist glowing from within along the water, the brightest confluence set right of center, morning arrived",
       // [4] Lydian Afterglow 1:58–2:14 (I 0.27, tender, weightless)
-      "the flats under even pale morning light, the channels softened to milky rose and pearl, the last mist lifting off the water in slow transparent veils, no shadows anywhere",
+      "a top-down map-like view of wet sand and water channels filling the entire frame, tinted milky rose and pearl, thin transparent mist drifting across the channels",
       // [5] Lydian Afterglow → silence 2:14–2:30 (I 0.27, peaceful)
-      "DARK BACKGROUND — the estuary settling toward stillness, the water channels dimmed to faint pearl threads on the dark sand, one last small pool holding a soft pale glow in the upper right",
+      "DARK BACKGROUND — looking straight down onto the estuary settling toward stillness, the water channels dimmed to faint pearl threads on the dark sand, one last small pool holding a soft pale glow in the upper right",
     ],
   },
 
@@ -59,21 +59,21 @@ export const WORLDS = {
     palette: { primary: "#e3b46e", secondary: "#0d0c10", accent: "#a9bcd0", glow: "#f6e3bf" },
     cats: ["Elemental", "Cosmic"], ambient: "forest", voice: "fable", mood: "flowing",
     phaseMoods: ["mystical", "dreamy", "flowing", "flowing", "transcendent", "dreamy"],
-    micro: "a single bead of mist on a long grass blade trembling as a thin ring of warm light passes through it",
-    abstract: "soft wavefronts of warm light travelling outward through layered translucent haze",
+    micro: "a single bead of mist on a long grass blade trembling as a thin ring of warm light passes through it, dark grass all around",
+    abstract: "long luminous arcs of warm light rippling along layered mist like ripples on water, seen from above, the light spread evenly along each arc",
     phases: [
       // [0] Opening Calls 0:00–0:21 (I 0.10, searching, hushed)
-      "DARK BACKGROUND — a deep valley filled with pale pre-dawn mist, one small soft wave of warm light leaving the lower left and spreading slowly through the haze, the far side of the valley still dark and waiting",
+      "DARK BACKGROUND — looking straight down from high above into a deep valley filled with pale mist so the slopes fill the entire frame, one small soft wave of warm light leaving the lower left and spreading slowly through the haze, the far side of the valley still dark and waiting",
       // [1] Widening Answer 0:21–0:41 (I 0.76, yearning, bittersweet)
       "looking down into a deep forested valley filled with mist so the slopes fill the whole frame, the mist alive with travelling waves of light, each call widening as a soft luminous arc through the haze and touching the slopes in rose-gold, an answering arc returning faintly from the far slope, longing made visible",
       // [2] Plateau of the Fourth 0:41–0:56 (I 0.71, luminous, contemplative)
-      "a broad hillside meadow under high open haze, slow wide arcs of honey light lingering over the grass instead of moving on, the air warm and suspended, everything held",
+      "looking straight down into the misty valley so the forested slopes fill the entire frame, slow wide arcs of honey light lingering along the mist instead of moving on, warm and suspended, everything held",
       // [3] Plateau, melody rising to C6 0:56–1:11 (I 0.71, warm, suspended)
-      "the waves of light lifting from the meadow into the high mist above the valley, layered translucent veils glowing amber one above another, the valley breathing upward",
+      "looking straight down into the valley, its layered mist glowing amber along long rippling arcs as the waves of light lift through it, the forested slopes dark between them, the valley breathing upward",
       // [4] Full-Voiced Summit 1:11–1:36 (I 1.00 PEAK, affirming, radiant)
-      "the whole valley flooded — great converging wavefronts of warm gold light arriving from every ridge at once and crossing in the luminous mist, every slope glowing, the brightest crossing set left of center, the waves still travelling outward, answered and open",
+      "looking straight down from high above into the whole valley so the slopes and mist fill the entire frame, flooded with great converging wavefronts of warm gold light arriving from every ridge at once and crossing in the luminous mist, every slope glowing, the brightest crossing set left of center, the waves still travelling outward, answered and open",
       // [5] Receding Echo 1:36–2:08 (I 0.13, wistful, fading)
-      "DARK BACKGROUND — a still lake on the valley floor at dusk, its surface a dark mirror, one last faint ring of warm light spreading slowly across the water in the lower right and fading into blue",
+      "DARK BACKGROUND — looking straight down into the dark valley, the mist settled low on the valley floor, one last faint arc of warm light fading along it in the lower right",
     ],
   },
 
@@ -147,21 +147,21 @@ export const WORLDS = {
     palette: { primary: "#b48a6a", secondary: "#0b0c14", accent: "#7d86b8", glow: "#f0cf9c" },
     cats: ["Cosmic", "Elemental"], ambient: "sacred", voice: "echo", mood: "mystical",
     phaseMoods: ["melancholic", "mystical", "transcendent", "transcendent", "dreamy", "melancholic"],
-    micro: "the soft billowed edge of a slate-grey cloud, its folds faintly lit from within by warm amber",
-    abstract: "layered banks of cloud seen from above, folding slowly, glowing faintly from inside",
+    micro: "looking straight down at the soft billowed top of a slate-grey cloud filling the frame, its folds faintly lit from within by warm amber",
+    abstract: "layered banks of cloud seen from directly above filling the frame edge to edge, folding slowly, glowing faintly from inside",
     phases: [
       // [0] Shadowed Invocation 0:00–0:22 (I 0.66, veiled, solemn)
-      "an evening sea of cloud seen from high above, slate and violet banks filling every valley edge to edge, a faint warm glow buried deep inside one bank in the lower left, veiled",
+      "looking straight down from high above onto an evening sea of cloud, slate and violet banks filling the entire frame edge to edge, a faint warm glow buried deep inside one bank in the lower left, veiled",
       // [1] First Warmth → Descent to Dominant 0:22–1:07 (I 0.75, consoling then brooding)
       "looking straight down from high above onto an evening sea of cloud filling the entire frame edge to edge, a broad diffuse amber glow spreading along a long seam between the billowed banks for a moment and then sinking again beneath heavy slate folds, the light and the weight trading places",
       // [2] Lydian Ascent 1:07–1:35 (I 1.00 PEAK, surging, radiant, aching)
-      "the cloud-sea broken open from within — a great luminous rift of warm gold light pouring up between the slate banks seen from above, the cloud edges blazing amber around it, the brightest breach set right of center, then the light tempered by a violet hush along the folds",
+      "looking straight down onto the cloud-sea filling the frame, broken open from within — a great luminous rift of warm gold light pouring up between the slate banks seen from above, the cloud edges blazing amber around it, the brightest breach set right of center, then the light tempered by a violet hush along the folds",
       // [3] Major Benediction 1:35–1:57 (I 0.95, luminous, grateful, serene)
-      "warm golden-hour light lying evenly across the entire cloud-sea from above, soft rolling billows glowing honey and rose, calm and wide, the blessing",
+      "a top-down texture of soft rolling cloud billows filling the entire frame, the tops of the billows tinted honey and rose, the warm tint spread evenly across every billow, a gentle blessing",
       // [4] Evening Recedes 1:57–2:27 (I 0.82, reflective, wistful)
-      "the cloud-sea cooling, the warm glow withdrawing into the deep folds, blue-grey banks rolling slowly beneath, a few seams of amber still lit between them",
+      "looking straight down onto the cloud-sea filling the frame, cooling, the warm glow withdrawing into the deep folds, blue-grey banks rolling slowly beneath, a few seams of amber still lit between them",
       // [5] Vanishing Fifth 2:27–2:51 (I 0.10, hushed, unresolved)
-      "DARK BACKGROUND — the cloud-sea gone deep indigo from above, almost invisible, one last faint ember seam of warm light along a single fold in the lower left",
+      "DARK BACKGROUND — looking straight down onto the cloud-sea gone deep indigo, filling the frame, almost invisible, one last faint ember seam of warm light along a single fold in the lower left",
     ],
   },
 

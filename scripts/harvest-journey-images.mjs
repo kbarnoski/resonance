@@ -180,7 +180,10 @@ async function main() {
       id: row.id,
       name: row.name,
       phases,
-      strictCamera: isGhost,
+      // theme.strictCamera (2026-10-05): worlds whose framing is part of
+      // the design (top-down / horizon-free) skip the random POV decoration,
+      // which kept re-introducing horizons — and sun discs — into them.
+      strictCamera: isGhost || row.theme?.strictCamera === true,
       isGhost,
       loraUrl: isGhost ? app.GHOST_LORA_URL : null,
       duration: recById.get(row.recording_id)?.duration ?? DEFAULT_DURATION_SEC,

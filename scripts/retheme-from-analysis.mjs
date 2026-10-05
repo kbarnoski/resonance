@@ -37,8 +37,8 @@ const r2 = (x) => Math.round(x * 100) / 100;
 const TAIL = ", asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing";
 const SHOT_LIGHT = {
   dark: ["DARK BACKGROUND — extreme close detail: %M, barely lit, deep darkness all around it", "DARK BACKGROUND — abstract: %A, only the faintest light, wide negative space"],
-  gathering: ["close study: %M, the light gathering, more of the world glimpsed beyond", "%A, the light gathering and spreading outward"],
-  peak: ["macro at the height of the light: %M, glowing at full strength, the vast world beyond it", "abstract at the largest scale: %A, at full radiance, filling the frame with asymmetric weight"],
+  gathering: ["close study: %M, the light gathering softly around it in deep surrounding dark", "%A, the light gathering and spreading outward"],
+  peak: ["macro at the height of the light: %M, glowing at full strength against deep surrounding dark", "abstract at the largest scale: %A, at full radiance, filling the frame with asymmetric weight"],
   calm: ["close: %M, in broad steady calm light", "%A, the light broad, steady and calm"],
   lowering: ["close: %M, the light lowering and thinning", "%A, dimming, darkness returning between the forms"],
   last: ["DARK BACKGROUND — close: %M, the last glow in near darkness", "DARK BACKGROUND — %A, almost entirely dark, one last trace of light"],
@@ -52,6 +52,29 @@ function roleOf(ph, i, phases) {
   if (i < peak) return "gathering";
   return ph.intensity >= 0.55 ? "calm" : "lowering";
 }
+// Harvest QA 2026-10-05: older album beats asked for "planetary" / "from
+// orbit" / "dark curved world" shots (rendered as Earth globes, ringed
+// planets and horizon-arcs), "the storm's heart" (rendered as hearts) and
+// "wading-height" / "spirit-hint" presences (rendered as people). Rewrite
+// those phrases into horizon-free, figure-free aerial language.
+const SANITIZE = [
+  [/\bplanetary —/g, "aerial —"], [/\bwide planetary —/g, "wide aerial —"], [/\baerial cosmic —/g, "aerial —"],
+  [/ from orbit/g, " from very high above, the ground filling the entire frame"],
+  [/at planetary scale/g, "at vast scale"], [/planetary scale/g, "vast scale"],
+  [/(a |on a |across a |the )?(vast )?dark curved (world|surface|landmass)( far below)?/g, "$1dark ground filling the frame"],
+  [/the curved sleeping earth/g, "the sleeping land below"], [/a dark sphere/g, "dark ground"],
+  [/, a planet wearing the duet/g, ""], [/the amber planet/g, "the amber light"],
+  [/, the amber horizon a thin burning arc/g, ""], [/along the low horizon/g, "along the lower edge of the frame"],
+  [/the storm's heart: /g, "the storm's center: "], [/wading-height in/g, "low above"],
+  [/stars thin above the arc, /g, ""], [/\bplanetary surreal —/g, "aerial surreal —"],
+  [/from planetary rings to stellar clusters/g, "from fine dust to stellar clusters"], [/at planetary quiet/g, "at vast quiet"],
+  [/a dark curved ocean/g, "a dark ocean filling the frame"], [/a dark curved forest world/g, "a dark forest filling the frame"],
+  [/ seen from high orbit/g, " seen from very high above"], [/the whole sphere/g, "the whole dark ground"],
+  [/continents of darkness/g, "wide fields of darkness"], [/one hemisphere blazing/g, "one region blazing"],
+  [/wrapped around a dark ground filling the frame/g, "spread across a dark ground filling the frame"],
+  [/wrapped around a dark world as glowing bands, trading places at the poles/g, "laid across dark ground filling the frame as glowing bands, trading places"],
+];
+const sanitize = (t) => (typeof t === "string" ? SANITIZE.reduce((a, [re, rep]) => a.replace(re, rep), t) : t);
 const withTail = (s) => (/completely uninhabited/.test(s) ? s : s + TAIL);
 function sequenceFor(entry, line, i, role) {
   const [m, a] = SHOT_LIGHT[role];
@@ -105,7 +128,7 @@ for (const [id, entry] of Object.entries(RETHEME)) {
     let content;
     if (typeof src === "number") {
       const o = oldPhases[src];
-      content = { aiPrompt: o.aiPrompt, aiPromptSequence: o.aiPromptSequence, guidancePhrases: o.guidancePhrases, aiPromptModifiers: o.aiPromptModifiers };
+      content = { aiPrompt: sanitize(o.aiPrompt), aiPromptSequence: (o.aiPromptSequence ?? []).map(sanitize), guidancePhrases: o.guidancePhrases, aiPromptModifiers: o.aiPromptModifiers };
     } else {
       const seq = sequenceFor(entry, src, i, role);
       content = { aiPrompt: seq[0], aiPromptSequence: seq, guidancePhrases: [] };
@@ -135,11 +158,15 @@ for (const [id, entry] of Object.entries(RETHEME)) {
     builtinBounds[id] = [0, ...newPhases.map((p) => p.end)];
     builtinOverrides[id] = newPhases.map((p) => ({ intensityMultiplier: p.intensityMultiplier, aiPrompt: p.aiPrompt, aiPromptSequence: p.aiPromptSequence, guidancePhrases: p.guidancePhrases, analysisRole: p.analysisRole, gradeAs: p.gradeAs }));
   } else {
-    const theme = { ...row.theme, ...themePatch, preRetheme: row.theme?.preRetheme ?? { phases: row.phases.map(beatsOf) } };
+    // strictCamera: the harvest's random POV decoration ("archway,
+    // silhouetted", "room toward a window", "bright distant horizon")
+    // put doorways, figures and sun discs into 2026-10-05's stills.
+    const theme = { ...row.theme, ...themePatch, strictCamera: true, preRetheme: row.theme?.preRetheme ?? { phases: row.phases.map(beatsOf) } };
     if (report.at(-1).kind === "re-theme") {
       const peak = newPhases.find((p) => p.analysisRole === "peak");
       theme.poetryImagery = peak.aiPrompt.replace(/, asymmetric off-center.*$/, "").slice(0, 160);
       theme.worldRationale = entry.why;
+
     }
     const { error } = await sb.from("journeys").update({ phases: newPhases, theme }).eq("id", id);
     if (error) throw error;

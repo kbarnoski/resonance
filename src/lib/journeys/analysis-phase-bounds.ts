@@ -36,6 +36,10 @@ export function applyAnalysisBounds<T extends { id: string; phases: Array<{ star
   const bounds = ANALYSIS_PHASE_BOUNDS[journey.id];
   if (!bounds || journey.phases.length !== bounds.length - 1) return journey;
   const over = BUILTIN_ANALYSIS_RETHEME[journey.id];
+  // Re-themed built-ins carry their own framing in every beat: skip the
+  // random POV decoration (its "archway, silhouetted" / "toward the
+  // horizon" options summoned figures and sun discs — 2026-10-05 QA).
+  if (over) (journey as unknown as { strictCameraPrompt?: boolean }).strictCameraPrompt = true;
   journey.phases.forEach((p, i) => {
     p.start = bounds[i];
     p.end = bounds[i + 1];

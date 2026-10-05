@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-05",
+  "note": "Pack stills still carrying a sun/moon-like disc after the $50 budget was reached (no figures/planets/hearts/aurora remain among QA'd stills). Re-roll per journey: delete images/journeys/<id>/gen-NNN.jpg then run harvest-journey-images.mjs --journey=<id> --treatment=tramokyo (no --fresh), then delete matching depth png and run harvest-depth-maps.mjs <id>.",
+  "residualSunDiscSlots": {
+    "Torraine 6": [3, 4, 5, 6, 21, 26],
+    "Chemiluminescence": [3, 10, 11, 14, 17, 18, 19],
+    "Loire 2": [11, 13],
+    "Never Forget 4": [6, 7],
+    "Playa": [3, 4, 14, 16, 18],
+    "Isolation": [13, 18, 19, 23],
+    "Message": [22],
+    "Night Wind 11": [3],
+    "Nothing 30": [16],
+    "The Ascension": [8, 9, 10],
+    "2019": [5, 8, 9, 26],
+    "Rolling": [8, 11, 21, 24, 25, 38],
+    "Grace": [17],
+    "Surrounded By Light (March Light)": [38, 39, 40],
+    "Spectre": [13, 22],
+    "Quarantine": [22],
+    "All Together": [27],
+    "Self": [32],
+    "Afterglow": [21],
+    "Welcome Home": [38],
+    "Bath": [20]
+  },
+  "clipsMovedToBackup": "~/resonance-pack-backups/retheme-2026-10-05/clips/ (24 re-themed/re-ordered journeys whose hero clips + travel morphs showed the OLD worlds / beat order)"
+}
