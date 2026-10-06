@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-06T17:17:34.555Z",
+  "updated": "2026-10-06T17:51:01.432Z",
   "journeys": {
     "ghost": {
       "definition": "66a38a10f81f6446",
@@ -8,7 +8,7 @@
       "finaleStill": "ba2d108e9cbbcf43",
       "finaleShader": "74234e98afe7498f",
       "legacySlideshow": "false",
-      "particleCast": "7faa41fbbc20e4a6",
+      "particleCast": "869d4df86c12f0f6",
       "packStills": "d4dc40a12f7951be"
     },
     "first-snow": {
@@ -18,7 +18,7 @@
       "finaleStill": "74234e98afe7498f",
       "finaleShader": "095a76a4b4e4a4eb",
       "legacySlideshow": "true",
-      "particleCast": "d70bb420708ca12d",
+      "particleCast": "05367f15b9b7ad1d",
       "packStills": "138640da67831bdc"
     }
   }

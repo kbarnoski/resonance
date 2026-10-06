@@ -881,7 +881,7 @@ void main(){
   float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
   boost = mix(boost, 1.0, uImgShow);
   // bass = heavier motes, treble = the finest dust
-  float size = mix(1.55, 0.5, band) * (0.65 + 0.7 * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 1.0, uImgShow);
+  float size = mix(1.55, 0.5, band) * (0.45 + 1.6 * s.b * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 1.0, uImgShow);
   float a = uAlpha;
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 32.0);

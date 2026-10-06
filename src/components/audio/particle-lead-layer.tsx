@@ -186,13 +186,13 @@ export function ParticleLeadLayer({
     // signature phases: their entry always raises the journey's own form,
     // travel clip or not (Ghost's spirit — some boundaries are crossfades)
     let lastPhaseIdx = -1;
+    let angelAt = -1;
+    const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
       const pbs = cast.phaseBounds ?? [];
       const idx = pbs.filter((x) => x <= t).length;
-      if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && cast.signatureMorphs?.includes(idx)) {
-        const em = emergeRef.current;
-        const soul = cast.morphSouls[Math.min(idx, cast.morphSouls.length - 1)] ?? cast.souls.transition;
-        if (!em || t > em.end - 3 || em.soul !== soul) emergeRef.current = { start: t, end: t + 26, soul };
+      if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && cast.signatureMorphs?.includes(idx) && cast.signatureImage === "angel") {
+        angelAt = t; // the field forms the angel (real image), off-centre
         counters.current.emergences++;
       }
       lastPhaseIdx = idx;
@@ -224,16 +224,34 @@ export function ParticleLeadLayer({
     let formDur = 14_000;
     let cycleIdx = 0;
     let densK = 0.7;
+    let densKS = 0.7;
     let appearN = 0;
+    // dolly + placement (Karel 2026-10-06: "they always land in a shape at
+    // same distance away … always hover dead center … i need dynamics")
+    let dollyFrom = 1, dollyTo = 1, dollyAt = performance.now();
+    let offX = 0.3, offY = 0.1;
     const rand01 = (k: number) => { let x = Math.imul((appearN + 1) * 0x9e3779b9 ^ k * 0x85ebca6b ^ journeyId.length * 0xc2b2ae35, 2246822519); x ^= x >>> 15; x = Math.imul(x, 3266489917); x ^= x >>> 13; return (x >>> 0) / 4294967296; };
     const appearance = () => {
       appearN++;
-      // near & large ↔ far & small: weighted toward NEAR (the field is the
-      // closest element — depth is its gift)
-      const r = rand01(1);
-      engine.setCamScale(0.58 + 0.95 * r * r);
-      densK = 0.3 + 0.7 * rand01(2);
+      // distance: log-uniform from close & large (0.45) to far & small (2.3),
+      // then a slow dolly in or out across the appearance
+      // Ghost: never over-obscure the imaging — further, sparser, off to a side
+      const quietImaging = journeyId === "ghost";
+      const kLo = quietImaging ? 0.9 : 0.45;
+      const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(2.3) - Math.log(kLo)));
+      dollyFrom = k;
+      dollyTo = k * (0.62 + 0.85 * rand01(4));
+      dollyAt = performance.now();
+      densK = quietImaging ? 0.22 + 0.4 * rand01(2) : 0.3 + 0.7 * rand01(2);
       formDur = 10_000 + 9_000 * rand01(3);
+      // placement (Karel 2026-10-06: "in general centered, but needs
+      // variety especially in ghost"): centred about half the time, else a
+      // gentle shift to a side; Ghost mostly sits beside the imagery
+      const side = rand01(5) < 0.5 ? -1 : 1;
+      const centred = rand01(6) < (quietImaging ? 0.2 : 0.5);
+      offX = centred ? 0 : side * (quietImaging ? 0.25 + 0.25 * rand01(7) : 0.1 + 0.2 * rand01(7));
+      offY = centred ? 0 : (rand01(8) - 0.5) * (quietImaging ? 0.4 : 0.25);
+      engine.setSizeScale(0.6 + 1.4 * rand01(9));
     };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
@@ -248,10 +266,19 @@ export function ParticleLeadLayer({
     // flash form (Ghost)
     let flashTail = 0;
     let flashLoaded = false;
+    // ambient presence (Karel 2026-10-06: "on average particles should be
+    // part of the journey around 60% of the time"): between conducted
+    // windows the field returns for 20–34 s after 8–15 s away
+    let ambientUntil = -1;
+    let outSince = 0;
+    let ambientGap = 8 + 7 * rand01(21);
     let lastTick = performance.now();
     let palVoiceKey = "";
-    const FADE_IN_SEC = 1.5;
-    const FADE_OUT_SEC = 3.5;
+    // Karel 2026-10-06 (again): "fade out smoothly not drop out" — longer,
+    // and EASED on screen (smoothstep of the slewed value), so the last
+    // stretch of a fade never reads as a cut
+    const FADE_IN_SEC = 2.5;
+    const FADE_OUT_SEC = 6;
     const slew = (cur: number, target: number, dt: number) =>
       target > cur ? Math.min(target, cur + dt / FADE_IN_SEC) : Math.max(target, cur - dt / FADE_OUT_SEC);
     // per-appearance shape seed: the same soul never repeats its exact figure
@@ -300,9 +327,28 @@ export function ParticleLeadLayer({
         if (img) { engine.loadFormImage(img, img.width / Math.max(1, img.height)); flashLoaded = true; glitchRecord("particle-flash", "gather"); }
       }
       flashTail = Math.max(flashTail - tickDt / 3.2, flashNow);
-      if (flashLoaded) engine.setImageForm(flashNow, flashTail);
-      if (flashLoaded && flashTail < 0.01 && fa < 0.3) { flashLoaded = false; engine.setImageForm(0, 0); }
-      const flashP = flashLoaded ? flashTail : 0;
+      // the angel signature: gather 4 s, hold (breathing), dissipate over 6 s
+      let angelForm = 0, angelShow = 0;
+      if (angelAt >= 0) {
+        const a = t - angelAt;
+        const ssf = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
+        angelForm = ssf(0, 4, a) * (1 - ssf(ANGEL_SEC - 8, ANGEL_SEC - 3, a)) * (0.9 + 0.1 * Math.sin(a * 0.8));
+        angelShow = ssf(0.5, 4.5, a) * (1 - ssf(ANGEL_SEC - 5, ANGEL_SEC, a));
+        if (a > ANGEL_SEC) angelAt = -1;
+        if ((angelForm > 0.02 || angelShow > 0.02) && !flashLoaded) {
+          const img = keyedFlashAngel(1);
+          if (img) { engine.loadFormImage(img, img.width / Math.max(1, img.height)); flashLoaded = true; glitchRecord("particle-flash", "angel signature"); }
+        }
+      }
+      const flashing = flashNow > 0.02 || flashTail > 0.02;
+      if (flashLoaded) {
+        // a flash is centred (it matches the flash image); the signature angel
+        // is smaller and sits off-centre
+        engine.setImageScale(flashing ? 1 : 0.62);
+        engine.setImageForm(Math.max(flashNow, angelForm), Math.max(flashTail, angelShow));
+      }
+      if (flashLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01) { flashLoaded = false; engine.setImageForm(0, 0); }
+      const flashP = flashLoaded ? Math.max(flashTail, angelShow) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
       // the form pulls together — dispersing a visible form was the "drop out"
@@ -318,7 +364,7 @@ export function ParticleLeadLayer({
         if (w.soul !== lastAsked) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
-        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densK * (0.3 + 0.7 * shown));
+        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * shown));
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -338,8 +384,29 @@ export function ParticleLeadLayer({
       // the track's last seconds: everything has already faded (no drop at the handoff)
       const dur = useAudioStore.getState().duration || 0;
       const endFade = dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
-      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP) * endFade;
+      // ambient: return between windows so the field is present ~60 % overall
+      if (pr.presence <= 0 && flashP <= 0 && !next) {
+        if (shown < 0.01) outSince += tickDt; else outSince = 0;
+        if (ambientUntil < t && outSince > ambientGap) {
+          ambientUntil = t + 20 + 14 * rand01(22 + appearN);
+          ambientGap = 8 + 7 * rand01(23 + appearN);
+          const nxt = cast.formCycle?.[(++cycleIdx) % Math.max(1, cast.formCycle.length)];
+          if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
+          glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
+        }
+      } else outSince = 0;
+      const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
+      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * shown));
+      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP) * endFade;
       shown = slew(shown, targetPresence, tickDt);
+      densKS += (densK - densKS) * (1 - Math.exp(-tickDt / 6));
+      // dynamics: the dolly glides through each appearance; placement holds
+      // its third (a flash centres itself to meet the flash image)
+      {
+        const prog = Math.min(1, (performance.now() - dollyAt) / Math.max(4000, formDur * 1.6));
+        engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
+        engine.setOffset(flashing ? 0 : offX, flashing ? 0 : offY);
+      }
       if (!wasShown && shown > 0.05) { wasShown = true; glitchRecord("particle-in", `${currentSoul} t=${t.toFixed(1)}`); }
       else if (wasShown && shown < 0.01) { wasShown = false; glitchRecord("particle-out", `t=${t.toFixed(1)}`); }
       const wantRun = targetPresence > 0 || !!next || dissolving || shown > 0;
@@ -367,8 +434,8 @@ export function ParticleLeadLayer({
         }
       }
 
-      // presence + break veil (CSS opacity), slew-limited above
-      const presence = shown;
+      // presence + break veil (CSS opacity): slew-limited above, eased here
+      const presence = shown * shown * (3 - 2 * shown);
       // presence alone — NOT --shader-opacity: phases that favour imagery turn
       // the shaders down, and the particles were fading out with them (Karel
       // v3: "they often times get lost over the imaging")
@@ -390,6 +457,8 @@ export function ParticleLeadLayer({
       veilShown = slew(veilShown, (guard ? 0 : pr.breakVeil) * endFade, tickDt);
       const veil = veilShown;
       if (veilRef.current) veilRef.current.style.opacity = veil.toFixed(3);
+      // alone on black, the field answers the music strongly (Karel 2026-10-06)
+      engine.setReact(1.15 + 1.6 * veil);
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();

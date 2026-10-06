@@ -35,9 +35,8 @@ describe("particle lead registry (v3 rollout)", () => {
   });
 
   it("only gathering SHAPE souls are cast — no full-volume swarms (journey signatures aside)", () => {
-    for (const [id, c] of Object.entries(PARTICLE_LEADS)) {
-      const sig = JOURNEY_SIGNATURES[id]?.soul;
-      for (const s of [...Object.values(c.souls), ...c.morphSouls]) if (s !== sig) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
+    for (const c of Object.values(PARTICLE_LEADS)) {
+      for (const s of [...Object.values(c.souls), ...c.morphSouls, ...c.formCycle]) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
     }
   });
 
@@ -49,11 +48,19 @@ describe("particle lead registry (v3 rollout)", () => {
     }
   });
 
-  it("Ghost carries its spirit at two travel morphs (transcendence, integration)", () => {
+  it("Ghost forms its ANGEL (the real angel image) at transcendence + integration — no figurative spirit", () => {
     const g = PARTICLE_LEADS["ghost"];
-    expect(g.morphSouls.filter((s) => s === "spirit")).toHaveLength(2);
-    expect(g.morphSouls[2]).toBe("spirit");
-    expect(g.morphSouls[5]).toBe("spirit");
+    expect(g.signatureImage).toBe("angel");
+    expect(g.signatureMorphs).toEqual([2, 5]);
+    expect(JOURNEY_SIGNATURES["ghost"].image).toBe("angel");
+    for (const c of Object.values(PARTICLE_LEADS)) expect([...c.morphSouls, ...c.formCycle]).not.toContain("spirit");
+  });
+
+  it("the full-screen still dissolve is rare: about one journey in five, never mastered", () => {
+    const all = Object.values(PARTICLE_LEADS);
+    const on = all.filter((c) => c.dissolve);
+    expect(on.length / all.length).toBeLessThan(0.3);
+    for (const c of on) expect(c.mastered).toBe(false);
   });
 
   it("loop neighbours never share a lead (peak) form, and morph forms change every phase", () => {

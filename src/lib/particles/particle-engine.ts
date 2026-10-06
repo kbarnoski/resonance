@@ -161,6 +161,14 @@ export interface ParticleEngine {
   setShape(shape: [number, number, number, number], snap?: boolean): void;
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
+  /** Off-centre placement: screen fractions of half-width / half-height. */
+  setOffset(x: number, y: number): void;
+  /** Image-form plane size (1 = full frame). */
+  setImageScale(k: number): void;
+  /** Particle sprite size multiplier. */
+  setSizeScale(k: number): void;
+  /** Sound reactivity multiplier (motion only — never luminance). */
+  setReact(k: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
   loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number): void;
   /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
@@ -552,6 +560,12 @@ export function createParticleEngine(
   const camScaleBase = opts.camScale ?? 1;
   let camScale = camScaleBase;
   let camScaleTarget = camScaleBase;
+  // v6 dynamics (Karel 2026-10-06): off-centre placement (asymmetry), image
+  // plane scale, particle size scale, sound reactivity — all glide
+  let offX = 0, offY = 0, offTX = 0, offTY = 0;
+  let imgScaleS = 1, imgScaleT = 1;
+  let sizeScaleS = 1, sizeScaleT = 1;
+  let reactS = 1, reactT = 1;
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
   let disperseNext = false;
@@ -643,7 +657,7 @@ export function createParticleEngine(
       for (let i = 0; i < BINS; i++) {
         const k = Math.min(f.bins - 1, Math.floor((i / BINS) * f.bins));
         specData[i * 2] = f.levels[k];
-        specData[i * 2 + 1] = f.drive[k];
+        specData[i * 2 + 1] = f.drive[k] * reactS;
       }
     } else {
       for (let i = 0; i < BINS * 2; i++) specData[i] *= 0.94;
@@ -732,6 +746,13 @@ export function createParticleEngine(
       env = { worldFade: 1 - 0.85 * imgShowExt, imgShow: imgShowExt, imgForm: imgFormExt, colorMix: 1 };
     }
     camScale += (camScaleTarget - camScale) * (1 - Math.exp(-dt / 5));
+    {
+      const k4 = 1 - Math.exp(-dt / 4);
+      offX += (offTX - offX) * k4; offY += (offTY - offY) * k4;
+      imgScaleS += (imgScaleT - imgScaleS) * (1 - Math.exp(-dt / 1.5));
+      sizeScaleS += (sizeScaleT - sizeScaleS) * k4;
+      reactS += (reactT - reactS) * (1 - Math.exp(-dt / 1.2));
+    }
 
     // camera (the image plane faces it, so compute before the sim)
     const lerp = (a: number, b: number) => a + (b - a) * e;
@@ -741,13 +762,17 @@ export function createParticleEngine(
     const eye = [Math.cos(az) * Math.cos(elev) * dist, Math.sin(elev) * dist, Math.sin(az) * Math.cos(elev) * dist];
     const FOV = 0.85;
     const proj = perspective(FOV, W / H, 0.05, 50);
-    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
-    const vp = mul(proj, view);
+    const view0 = lookAt(eye, [0, 0, 0], [0, 1, 0]);
     // camera basis from the view matrix rows (column-major)
-    const right = [view[0], view[4], view[8]];
-    const up = [view[1], view[5], view[9]];
+    const right = [view0[0], view0[4], view0[8]];
+    const up = [view0[1], view0[5], view0[9]];
     const halfH = dist * Math.tan(FOV / 2);
     const halfW = halfH * (W / H);
+    // asymmetric placement: translate the camera in its own plane, so the
+    // form sits off-centre (it appears opposite the offset)
+    const o3 = [0, 1, 2].map((i) => right[i] * offX * halfW + up[i] * offY * halfH);
+    const view = lookAt([eye[0] + o3[0], eye[1] + o3[1], eye[2] + o3[2]], o3, [0, 1, 0]);
+    const vp = mul(proj, view);
 
     // ── 1. SIM ────────────────────────────────────────────────────────────
     const nxt = 1 - cur;
@@ -764,9 +789,9 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uDt, simDt);
     g.uniform1f(sim.u.uTime, time);
     g.uniform3f(sim.u.uClock, clocks.bass, clocks.mid, clocks.treble);
-    g.uniform3f(sim.u.uBands, f?.bands.bass ?? 0, f?.bands.mid ?? 0, f?.bands.treble ?? 0);
-    g.uniform3f(sim.u.uBandLv, f?.bandLevels.bass ?? 0, f?.bandLevels.mid ?? 0, f?.bandLevels.treble ?? 0);
-    g.uniform1f(sim.u.uSwell, f?.swell ?? 0);
+    g.uniform3f(sim.u.uBands, (f?.bands.bass ?? 0) * reactS, (f?.bands.mid ?? 0) * reactS, (f?.bands.treble ?? 0) * reactS);
+    g.uniform3f(sim.u.uBandLv, Math.min(1, (f?.bandLevels.bass ?? 0) * reactS), Math.min(1, (f?.bandLevels.mid ?? 0) * reactS), Math.min(1, (f?.bandLevels.treble ?? 0) * reactS));
+    g.uniform1f(sim.u.uSwell, Math.min(1, (f?.swell ?? 0) * reactS));
     g.uniform1i(sim.u.uSoulA, soulA.index);
     g.uniform1i(sim.u.uSoulB, soulB.index);
     g.uniform1f(sim.u.uMix, soulB === soulA ? 0 : e);
@@ -790,8 +815,8 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
     g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
-    g.uniform3f(sim.u.uPlaneR, right[0] * halfW, right[1] * halfW, right[2] * halfW);
-    g.uniform3f(sim.u.uPlaneU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
+    g.uniform3f(sim.u.uPlaneR, right[0] * halfW * imgScaleS, right[1] * halfW * imgScaleS, right[2] * halfW * imgScaleS);
+    g.uniform3f(sim.u.uPlaneU, up[0] * halfH * imgScaleS, up[1] * halfH * imgScaleS, up[2] * halfH * imgScaleS);
     g.uniform1f(sim.u.uImgAspect, imgAspect[1]);
     g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
@@ -846,7 +871,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uSmokeW, smokeW);
     g.uniform1f(draw.u.uInkW, inkW);
     g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
-    g.uniform1f(draw.u.uSize, sizeK);
+    g.uniform1f(draw.u.uSize, sizeK * sizeScaleS);
     g.uniform1f(draw.u.uHue, hue);
     g.uniform1f(draw.u.uSat, sat);
     g.uniform1f(draw.u.uHueSpread, hueSpread);
@@ -884,8 +909,12 @@ export function createParticleEngine(
       g.useProgram(expo.p);
       bindTex(0, lumTex, expo.u.uLum);
       bindTex(1, expTex[ecur], expo.u.uPrev);
-      g.uniform1f(expo.u.uCap, 0.13);
-      g.uniform1f(expo.u.uMaxStep, 0.02);
+      // TIME-based glide (Karel 2026-10-06: particles "drop out"): 2 % per
+      // update was ~45 %/s at 120 fps — a close or dense form dimmed in
+      // under a second. Now ≤ ~25 %/s either way; cap raised a touch so
+      // near forms are not throttled into the dark.
+      g.uniform1f(expo.u.uCap, 0.16);
+      g.uniform1f(expo.u.uMaxStep, 1 - Math.exp(-0.3 * 4 * Math.min(dt, 0.05)));
       g.uniform1f(expo.u.uInit, expInit ? 1 : 0);
       g.drawArrays(g.TRIANGLES, 0, 3);
       expInit = false;
@@ -1149,7 +1178,11 @@ export function createParticleEngine(
     },
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
-    setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.5, Math.min(2, k)); },
+    setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
+    setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
+    setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
+    setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
+    setReact(k) { reactT = Math.max(0.5, Math.min(3, k)); },
     loadFormImage(src, aspect) {
       if (lost) return;
       gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);

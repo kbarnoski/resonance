@@ -14,7 +14,7 @@
  * nothing else about how they play changes (mastered-lock fingerprints the
  * cast so any later change is deliberate).
  */
-import type { ParticlePalette, SoulId } from "@/lib/particles/souls";
+import type { ParticlePalette } from "@/lib/particles/souls";
 import { isMasteredJourney, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { castSet, type ParticleCast } from "./particle-casting";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
@@ -36,6 +36,14 @@ export interface ParticleLeadCast extends ParticleCast {
   /** Phases whose entry ALWAYS raises an emergence (journey signature), even
    *  when that boundary is a plain crossfade with no travel clip. */
   signatureMorphs?: readonly number[];
+  /** What the signature forms: the real image the journey's flashes use. */
+  signatureImage?: "angel";
+}
+
+function hash01(str: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h >>> 0) / 4294967296;
 }
 
 const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MASTERED_JOURNEY_NAMES.has(name.trim().toLowerCase());
@@ -45,8 +53,11 @@ const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MAST
  *  particles should ghost like moving form at a couple points"): the spirit
  *  rises with the morph into transcendence (out of the tunnel toward the
  *  light) and again into integration (joining the light). */
-export const JOURNEY_SIGNATURES: Readonly<Record<string, { soul: SoulId; morphs: readonly number[] }>> = {
-  ghost: { soul: "spirit", morphs: [2, 5] },
+export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morphs: readonly number[] }>> = {
+  // Karel 2026-10-06: "not into that figurative shape … if you can make that
+  // look like an angel like in the images that would work" — the field forms
+  // the ANGEL from the real angel image (as in the flashes), off-centre
+  ghost: { image: "angel", morphs: [2, 5] },
 };
 
 /** Casts for the registry — built once, in loop order, neighbours differ. */
@@ -58,11 +69,14 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     const cast: ParticleLeadCast = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
     const sig = JOURNEY_SIGNATURES[id];
     if (sig) {
-      const morphSouls = [...cast.morphSouls];
-      for (const k of sig.morphs) if (k < morphSouls.length) morphSouls[k] = sig.soul;
-      cast.morphSouls = morphSouls;
       cast.signatureMorphs = sig.morphs;
+      cast.signatureImage = sig.image;
     }
+    // the full-screen still-to-particles dissolve: BARELY EVER (Karel
+    // 2026-10-06: "barely ever do i want that huge full screen particle
+    // transition between big images") — about one journey in five
+    if (!cast.mastered && hash01(id) < 0.2) cast.dissolve = true;
+    else cast.dissolve = false;
     out[id] = cast;
   });
   return out;
@@ -174,9 +188,11 @@ export function particlePaletteFrom(p?: { primary: string; secondary: string; ac
   const best = hsvs.reduce((a, b) => (b[1] > a[1] ? b : a));
   const hue = best[1] > 0.08 ? best[0] : 0.7;
   return {
-    low: lift(chroma(hexToLinear(v[0]), hue, 0.6)),
-    mid: lift(chroma(hexToLinear(v[1]), (hue + 0.04) % 1, 0.55)),
-    high: lift(chroma(hexToLinear(v[2]), (hue + 0.96) % 1, 0.4), 0.7),
+    // the theme's colour, strongly (Karel 2026-10-06: "absorb color from
+    // the journey theme more") — even the brightest stop stays tinted
+    low: lift(chroma(hexToLinear(v[0]), hue, 0.78)),
+    mid: lift(chroma(hexToLinear(v[1]), (hue + 0.04) % 1, 0.72)),
+    high: lift(chroma(hexToLinear(v[2]), (hue + 0.96) % 1, 0.6), 0.7),
   };
 }
 
