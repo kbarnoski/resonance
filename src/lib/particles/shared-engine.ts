@@ -39,12 +39,9 @@ export function disableParticlesForSession(why: string): void {
     sh.engine.stop();
     sh.canvas.style.transition = "opacity 1.8s linear";
     sh.canvas.style.opacity = "0";
-    setTimeout(() => {
-      sh.canvas.style.visibility = "hidden";
-      try {
-        (sh.canvas.getContext("webgl2") as WebGL2RenderingContext | null)?.getExtension("WEBGL_lose_context")?.loseContext();
-      } catch { /* already gone */ }
-    }, 2000);
+    // hide only — releasing the context (loseContext) stalled the GPU process
+    // ~2.8 s on the kiosk; a stopped engine costs nothing
+    setTimeout(() => { sh.canvas.style.visibility = "hidden"; }, 2000);
   }
   setParticlePresent(false);
   if (typeof window !== "undefined") (window as unknown as Record<string, unknown>).__resonanceParticlesDisabled = why;
@@ -87,7 +84,7 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
       probe, // read-back only for verification runs (?particleprobe=1)
       audio: (dt) => hooks.audio?.(dt) ?? null,
       onContextLost: () => disableParticlesForSession("webgl context lost"),
-      watchdog: { cpuMs: 50, gapMs: 400, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
+      watchdog: { cpuMs: 50, gapMs: 1000, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
     });
     sharedEnginesCreated++;
     shared = { canvas, engine, hooks };

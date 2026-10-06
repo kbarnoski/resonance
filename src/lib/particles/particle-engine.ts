@@ -596,6 +596,8 @@ export function createParticleEngine(
     meanSpeed: 0, maxSpeed: 0, speedByBand: [0, 0, 0], meanRadius: 0, radiusByBand: [0, 0, 0], samples: 0, t: 0,
   };
   const frameTimes: number[] = [];
+  const gapLog: number[] = [];
+  const cpuLog: number[] = [];
   let fpsEma = 60;
   let frames = 0;
   let time = 0;
@@ -633,9 +635,17 @@ export function createParticleEngine(
     framesSinceStart++;
     // WATCHDOG: a long rAF gap while we run (the page was blocked) disarms us
     const wd = opts.watchdog;
+    // Only REPEATED severe gaps (or one very long one) count: the page has
+    // ~0.6–0.8 s hitches without particles (still decodes) and a single one
+    // switched the field off for the session (kiosk 2026-10-06)
     if (wd && framesSinceStart > 3 && rawDt * 1000 > wd.gapMs && typeof document !== "undefined" && document.visibilityState === "visible") {
-      stall(`frame gap ${Math.round(rawDt * 1000)} ms`);
-      return;
+      const nowMs = performance.now();
+      gapLog.push(nowMs);
+      while (gapLog.length && nowMs - gapLog[0] > 60_000) gapLog.shift();
+      if (rawDt > 4 || gapLog.length >= 3) {
+        stall(`frame gap ${Math.round(rawDt * 1000)} ms (${gapLog.length} in 60 s)`);
+        return;
+      }
     }
     const dt = Math.min(1 / 20, Math.max(1 / 240, rawDt));
     time += dt;
@@ -947,7 +957,12 @@ export function createParticleEngine(
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;
-    if (wd && framesSinceStart > 3 && cpu > wd.cpuMs) stall(`frame cpu ${Math.round(cpu)} ms`);
+    if (wd && framesSinceStart > 3 && cpu > wd.cpuMs) {
+      const nowMs = performance.now();
+      cpuLog.push(nowMs);
+      while (cpuLog.length && nowMs - cpuLog[0] > 60_000) cpuLog.shift();
+      if (cpuLog.length >= 5) stall(`frame cpu ${Math.round(cpu)} ms (${cpuLog.length} in 60 s)`);
+    }
   }
 
   // ── prewarm: compile polling + ONE 1-pixel warm draw per call ──────────────
@@ -1065,7 +1080,8 @@ export function createParticleEngine(
     warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
     if (warmLog.length > 40) warmLog.shift();
     const cpu = performance.now() - t0;
-    if (opts.watchdog && cpu > opts.watchdog.cpuMs) stall(`prewarm cpu ${Math.round(cpu)} ms`);
+    // a warm draw is a pipeline build by design (invisible, once per program) — logged, never fatal
+    if (cpu > 50) warmLog.push(["slow-warm", Math.round(tw), Math.round(cpu)]);
   }
 
   let pendingPos: Float32Array | null = null;

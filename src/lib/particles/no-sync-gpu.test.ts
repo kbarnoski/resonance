@@ -177,20 +177,38 @@ describe("one engine / one WebGL context per session + watchdog", () => {
     expect((a!.canvas as unknown as { getContextCalls: number }).getContextCalls).toBe(1);
   });
 
-  it("a long frame gap while particles run disables them for the session", async () => {
+  const warmStart = async () => {
     const mod = await import("./shared-engine");
     mod.__resetSharedParticleEngineForTest();
     const sh = mod.acquireSharedParticleEngine({ count: 4096, dpr: 1.5, trailScale: 1 })!;
     sh.engine.prepare(["rings"]);
     for (let i = 0; i < 80 && !sh.engine.isWarm(); i++) { now += 400; sh.engine.prewarm(); }
-    let notified = false;
-    mod.onParticlesDisabled(() => { notified = true; });
     sh.engine.start();
     step(16.7, 10);
-    step(700, 1); // the page stalled 700 ms
+    return mod;
+  };
+
+  it("ONE ordinary hitch (still decode, ~0.8 s) does NOT switch particles off (kiosk 2026-10-06)", async () => {
+    const mod = await warmStart();
+    step(850, 1);
+    step(16.7, 10);
+    expect(mod.particlesDisabledReason()).toBeNull();
+  });
+
+  it("repeated severe gaps (3 × >1 s in a minute) disable them for the session", async () => {
+    const mod = await warmStart();
+    let notified = false;
+    mod.onParticlesDisabled(() => { notified = true; });
+    for (let k = 0; k < 3; k++) { step(1200, 1); step(16.7, 10); }
     expect(mod.particlesDisabledReason()).toMatch(/watchdog: frame gap/);
     expect(notified).toBe(true);
     expect(mod.acquireSharedParticleEngine({ count: 4096, dpr: 1.5, trailScale: 1 })).toBeNull();
+  });
+
+  it("a single very long gap (>4 s) disables them at once", async () => {
+    const mod = await warmStart();
+    step(4500, 1);
+    expect(mod.particlesDisabledReason()).toMatch(/watchdog: frame gap/);
   });
 
   it("context loss disables particles for the session", async () => {
