@@ -316,7 +316,8 @@ export function ParticleLeadLayer({
         if (pb !== undefined) {
           const em = emergeRef.current;
           const soul = morphSoulAt(pb + 1);
-          if (!em || em.end < pb + 24) emergeRef.current = { start: Math.min(em?.start ?? t, t), end: pb + 30, soul: em && em.end > t ? em.soul : soul };
+          // armed through the boundary; a travel clip then extends it to its end + 18 s
+          if (!em || em.end < pb + 8) emergeRef.current = { start: Math.min(em?.start ?? t, t), end: pb + 12, soul: em && em.end > t ? em.soul : soul };
         }
       }
       const pr0 = presenceAt(cast, t);
