@@ -203,7 +203,6 @@ export function ParticleLeadLayer({
     let running = false;
     let absentSince = performance.now();
     let current: ParticlePalette | null = null;
-    let lastSoul = "";
     let lastOnsets = 0;
     const onsetTimes: number[] = [];
     let lastScatter = -1e9;
