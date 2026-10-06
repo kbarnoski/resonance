@@ -1,5 +1,21 @@
 [
  {
+  "slug": "19360-vicinity",
+  "cycle": 19360,
+  "name": "Vicinity",
+  "status": "wip",
+  "description": "Several of Karel's recordings live at different places in one dark room, each pinned in true 3D with HRTF spatial audio. Your body is the listener: move side to side to pass betwee",
+  "category": "local"
+ },
+ {
+  "slug": "19104-particle-engine",
+  "cycle": 19104,
+  "name": "Particle Engine",
+  "status": "demoable",
+  "description": "The showcase (default). One question for Karel: *do I want this crisp, sound-driven particle look as the lead visual in journeys, instead of shader-drawn particles?* Pure black, no",
+  "category": "local"
+ },
+ {
   "slug": "18960-surgeline",
   "cycle": 18960,
   "name": "Surgeline",
