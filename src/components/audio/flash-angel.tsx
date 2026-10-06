@@ -134,6 +134,13 @@ export function flashAngelSrc(variant: 0 | 1): string {
   return getGhostFlashUrl(variant) ?? FALLBACK_SRC;
 }
 
+/** The keyed angel a flash would paint right now (null until keyed) — the
+ *  particle field forms around the same image (Karel 2026-10-06). */
+export function keyedFlashAngel(variant: 0 | 1): HTMLCanvasElement | null {
+  const preferred = flashAngelSrc(variant);
+  return keyed.get(preferred) ?? keyed.get(FALLBACK_SRC) ?? null;
+}
+
 export const FlashAngel = memo(function FlashAngel({ opacity, blurPx, variant }: FlashAngelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // ONE image per flash (Karel 2026-09-28: the second flash showed two

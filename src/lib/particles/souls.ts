@@ -276,7 +276,7 @@ export function governExposure(
 /** Total length of one dissolve (s). */
 export const DISSOLVE_SEC = 10.5;
 /** When the field snaps onto the outgoing still (after the world fades). */
-export const DISSOLVE_SNAP_SEC = 0.6;
+export const DISSOLVE_SNAP_SEC = 1.6;
 
 export interface DissolveEnvelope {
   /** world element visibility 0..1 */
@@ -308,9 +308,11 @@ const ss = (a: number, b: number, x: number) => {
  */
 export function dissolveEnvelope(t: number | null): DissolveEnvelope {
   if (t === null || t < 0 || t >= DISSOLVE_SEC) return { worldFade: 1, imgShow: 0, imgForm: 0, colorMix: 0 };
-  const worldFade = 1 - ss(0, DISSOLVE_SNAP_SEC, t) + ss(9.0, DISSOLVE_SEC, t);
-  const imgShow = ss(0.6, 2.0, t) * (1 - ss(8.3, 10.0, t));
-  const imgForm = t < 5.0 ? ss(0.1, DISSOLVE_SNAP_SEC, t) * (1 - ss(2.3, 5.0, t)) : ss(5.0, 7.5, t) * (1 - ss(9.6, DISSOLVE_SEC, t));
-  const colorMix = ss(2.8, 5.5, t);
+  // the world form FADES (1.5 s — a 0.6 s fade read as a drop-out, Karel
+  // 2026-10-06) before the invisible snap onto the image plane
+  const worldFade = 1 - ss(0, 1.5, t) + ss(9.0, DISSOLVE_SEC, t);
+  const imgShow = ss(DISSOLVE_SNAP_SEC, 3.0, t) * (1 - ss(8.3, 10.0, t));
+  const imgForm = t < 5.6 ? ss(0.1, DISSOLVE_SNAP_SEC, t) * (1 - ss(3.2, 5.6, t)) : ss(5.6, 7.8, t) * (1 - ss(9.6, DISSOLVE_SEC, t));
+  const colorMix = ss(3.4, 6.0, t);
   return { worldFade: Math.min(1, worldFade), imgShow, imgForm, colorMix };
 }

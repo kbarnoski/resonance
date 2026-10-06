@@ -40,6 +40,8 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { isVideoActive, inBoundarySettle, onClipEnded, onClipStarted } from "@/lib/journeys/video-activity";
 import { setParticlePresent } from "@/lib/journeys/particle-presence";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
+import { keyedFlashAngel } from "./flash-angel";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
 import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
@@ -66,6 +68,7 @@ const TIER_BUDGET = {
 function soulSequence(cast: ParticleLeadCast): SoulId[] {
   const ev: [number, SoulId][] = [[3, cast.morphSouls[0] ?? cast.souls.transition]];
   for (const w of cast.windows) ev.push([w.start, w.soul]);
+  (cast.formCycle ?? []).forEach((id, i) => ev.push([1e6 + i, id])); // the evolving forms (one union program)
   (cast.phaseBounds ?? []).forEach((b, i) => ev.push([b, cast.morphSouls[Math.min(i + 1, cast.morphSouls.length - 1)] ?? cast.souls.transition]));
   return ev.sort((a, b) => a[0] - b[0]).map((x) => x[1]);
 }
@@ -77,6 +80,7 @@ export function ParticleLeadLayer({
   analyser,
   imageSrc = null,
   paused = false,
+  flash = null,
 }: {
   cast: ParticleLeadCast;
   journeyId: string;
@@ -85,6 +89,9 @@ export function ParticleLeadLayer({
   /** The still that just entered the collage (dissolve trigger). */
   imageSrc?: string | null;
   paused?: boolean;
+  /** Ghost's angel flash (approach ramp + hit impulse): the field gathers
+   *  INTO the angel, wears it, then dissipates (Karel 2026-10-06). */
+  flash?: { approach: number; impulse: number } | null;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const veilRef = useRef<HTMLDivElement | null>(null);
@@ -98,6 +105,8 @@ export function ParticleLeadLayer({
   const engineRef = useRef<ParticleEngine | null>(null);
   const analyserRef = useRef<AnalyserLike | null>(analyser);
   const pausedRef = useRef(paused);
+  const flashRef = useRef(flash);
+  flashRef.current = flash;
   const paletteTarget = useRef<ParticlePalette | null>(null);
   const palRef = useRef<JourneyFrame["palette"] | null>(null);
   const phaseRef = useRef<{ phase: string | undefined; at: number }>({ phase: undefined, at: 0 });
@@ -207,6 +216,39 @@ export function ParticleLeadLayer({
     // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
     let shown = 0;
     let veilShown = 0;
+    // variety (Karel 2026-10-06: "limited amount of shapes … always the same
+    // amount and the same distance"): forms evolve while visible, and every
+    // appearance draws its own figure, distance and density
+    let lastAsked = "";
+    let currentSoul = "";
+    let formAt = performance.now();
+    let formDur = 14_000;
+    let cycleIdx = 0;
+    let densK = 0.7;
+    let appearN = 0;
+    const rand01 = (k: number) => { let x = Math.imul((appearN + 1) * 0x9e3779b9 ^ k * 0x85ebca6b ^ journeyId.length * 0xc2b2ae35, 2246822519); x ^= x >>> 15; x = Math.imul(x, 3266489917); x ^= x >>> 13; return (x >>> 0) / 4294967296; };
+    const appearance = () => {
+      appearN++;
+      // near & large ↔ far & small: weighted toward NEAR (the field is the
+      // closest element — depth is its gift)
+      const r = rand01(1);
+      engine.setCamScale(0.58 + 0.95 * r * r);
+      densK = 0.3 + 0.7 * rand01(2);
+      formDur = 10_000 + 9_000 * rand01(3);
+    };
+    const switchForm = (soul: SoulId, t: number) => {
+      const quiet = shown < 0.05;
+      engine.setSoul(soul, quiet ? 0.5 : 7);
+      engine.setShape(shapeSeed(soul, t + appearN * 11), quiet);
+      currentSoul = soul;
+      formAt = performance.now();
+      appearance();
+      glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
+    };
+    let wasShown = false;
+    // flash form (Ghost)
+    let flashTail = 0;
+    let flashLoaded = false;
     let lastTick = performance.now();
     let palVoiceKey = "";
     const FADE_IN_SEC = 1.5;
@@ -248,31 +290,59 @@ export function ParticleLeadLayer({
       const w = useEm ? { soul: emSoul, density: 0.5 } : pr.window ?? next ?? null;
       windowRef.current = pr.window ? { kind: pr.window.kind, start: pr.window.start } : null;
 
-      // every entrance GATHERS: scatter wide while invisible, then the form
-      // pulls together with the speed cap ramping up — never a burst
-      const visibleSoon = pr.presence > 0 || !!next;
+      // ── Ghost's angel flash: gather into the angel, wear it, dissipate ──
+      const fl = flashRef.current;
+      const fa = fl?.approach ?? 0;
+      const fi = fl?.impulse ?? 0;
+      const gather = fa <= 0.45 ? 0 : fa >= 0.9 ? 1 : ((fa - 0.45) / 0.45) ** 2 * (3 - 2 * ((fa - 0.45) / 0.45));
+      const flashNow = Math.max(gather, fi);
+      if (flashNow > 0.02 && !flashLoaded) {
+        const img = keyedFlashAngel(1);
+        if (img) { engine.loadFormImage(img, img.width / Math.max(1, img.height)); flashLoaded = true; glitchRecord("particle-flash", "gather"); }
+      }
+      flashTail = Math.max(flashTail - tickDt / 3.2, flashNow);
+      if (flashLoaded) engine.setImageForm(flashNow, flashTail);
+      if (flashLoaded && flashTail < 0.01 && fa < 0.3) { flashLoaded = false; engine.setImageForm(0, 0); }
+      const flashP = flashLoaded ? flashTail : 0;
+
+      // every entrance GATHERS: scatter wide ONLY while truly invisible, then
+      // the form pulls together — dispersing a visible form was the "drop out"
+      // glitch Karel saw (the whole shape vanished in one frame)
+      const visibleSoon = pr.presence > 0 || !!next || flashP > 0;
       if (visibleSoon && !wasVisible) {
-        engine.enter();
-        counters.current.entries++;
+        if (shown < 0.02) { engine.enter(); counters.current.entries++; }
       }
       wasVisible = visibleSoon;
 
-      if (w) {
-        if (w.soul !== lastSoul) {
-          engine.setSoul(w.soul, shown > 0.05 ? 8 : 0.5); // flows when visible, forms quietly when not
-          engine.setShape(shapeSeed(w.soul, t), shown < 0.05); // a fresh figure each appearance
-          lastSoul = w.soul;
-        }
-        // sparse → form: density grows with presence (the gather)
-        const target = pr.window ? pr.density : w.density;
-        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * (0.25 + 0.75 * pr.presence));
-      }
       const dissolving = engine.dissolveTime() !== null;
+      if (w) {
+        if (w.soul !== lastAsked) { lastAsked = w.soul; switchForm(w.soul, t); }
+        // sparse → form: density grows with what is SHOWN (never ahead of the fade)
+        const target = pr.window ? pr.density : w.density;
+        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densK * (0.3 + 0.7 * shown));
+      }
+      // evolve while visible: a new form (or the same form, a new figure),
+      // morphing over ~7 s — never a cut
+      if (shown > 0.6 && !dissolving && flashP < 0.05 && performance.now() - formAt > formDur && cast.formCycle?.length) {
+        cycleIdx++;
+        if (cycleIdx % 3 === 0 && currentSoul) {
+          engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);
+          formAt = performance.now();
+          appearance();
+          glitchRecord("particle-form", `${currentSoul} refigure`);
+        } else {
+          let nxt = cast.formCycle[cycleIdx % cast.formCycle.length];
+          if (nxt === currentSoul) nxt = cast.formCycle[(cycleIdx + 1) % cast.formCycle.length];
+          switchForm(nxt, t);
+        }
+      }
       // the track's last seconds: everything has already faded (no drop at the handoff)
       const dur = useAudioStore.getState().duration || 0;
       const endFade = dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
-      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0) * endFade;
+      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP) * endFade;
       shown = slew(shown, targetPresence, tickDt);
+      if (!wasShown && shown > 0.05) { wasShown = true; glitchRecord("particle-in", `${currentSoul} t=${t.toFixed(1)}`); }
+      else if (wasShown && shown < 0.01) { wasShown = false; glitchRecord("particle-out", `t=${t.toFixed(1)}`); }
       const wantRun = targetPresence > 0 || !!next || dissolving || shown > 0;
       // compile/warm while invisible — at most one warm draw per 400 ms, and
       // never while a clip is decoding (a warm draw builds a GPU pipeline)

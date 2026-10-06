@@ -145,12 +145,39 @@ function lift(c: [number, number, number], floor = 0.55): [number, number, numbe
 
 /** The journey's phase palette → particle palette: bass motes wear the
  *  primary, mid motes the accent, the finest treble dust the glow. */
+type RGB = [number, number, number];
+function toHsv([r, g, b]: RGB): RGB {
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  let h = 0;
+  if (d > 1e-6) h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return [((h / 6) + 1) % 1, mx > 1e-6 ? d / mx : 0, mx];
+}
+function fromHsv([h, s, v]: RGB): RGB {
+  const f = (n: number) => { const k = (n + h * 6) % 6; return v - v * s * Math.max(0, Math.min(k, 4 - k, 1)); };
+  return [f(5), f(3), f(1)];
+}
+/** Chroma floor (Karel 2026-10-06: "they should almost always have color"):
+ *  grey / white palette stops borrow the palette's most saturated hue. */
+function chroma(c: RGB, hueFrom: number, floor: number): RGB {
+  const [h, sat, v] = toHsv(c);
+  if (sat >= floor) return c;
+  return fromHsv([sat < 0.08 ? hueFrom : h, floor, v]);
+}
+
 export function particlePaletteFrom(p?: { primary: string; secondary: string; accent: string; glow: string } | null, voice = 1): ParticlePalette | null {
   if (!p) return null;
   // voicings of the journey's own palette (low / mid / high band), dark → bright
   const P = p.primary, S = p.secondary, A = p.accent, G = p.glow;
   const v = [[S, P, A], [P, A, G], [A, P, G], [P, G, A]][Math.max(0, Math.min(3, Math.round(voice)))];
-  return { low: lift(hexToLinear(v[0])), mid: lift(hexToLinear(v[1])), high: lift(hexToLinear(v[2]), 0.7) };
+  // the palette's own most colourful hue (cool violet if the palette is all grey)
+  const hsvs = [P, S, A, G].map((x) => toHsv(hexToLinear(x)));
+  const best = hsvs.reduce((a, b) => (b[1] > a[1] ? b : a));
+  const hue = best[1] > 0.08 ? best[0] : 0.7;
+  return {
+    low: lift(chroma(hexToLinear(v[0]), hue, 0.6)),
+    mid: lift(chroma(hexToLinear(v[1]), (hue + 0.04) % 1, 0.55)),
+    high: lift(chroma(hexToLinear(v[2]), (hue + 0.96) % 1, 0.4), 0.7),
+  };
 }
 
 /** Strip dual + tertiary shaders while particles are PRESENT (one supporting

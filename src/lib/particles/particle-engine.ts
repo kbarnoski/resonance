@@ -159,6 +159,12 @@ export interface ParticleEngine {
   setForm(form: [number, number, number, number]): void;
   /** Per-appearance shape seed (0..1 ×4): petals, gears, symmetry, solid — glides. */
   setShape(shape: [number, number, number, number], snap?: boolean): void;
+  /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
+  setCamScale(k: number): void;
+  /** Load an image the field can form into (no dissolve timeline). */
+  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number): void;
+  /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
+  setImageForm(form: number, show: number): void;
   /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
   setMotion(k: number): void;
   /** Playful impulse — motion only. */
@@ -543,7 +549,9 @@ export function createParticleEngine(
   const melody: [number, number, number] = [0, 0, 0];
   let melodyTarget: [number, number, number] = [0, 0, 0];
   let melodyW = 0, melodyWTarget = 0;
-  const camScale = opts.camScale ?? 1;
+  const camScaleBase = opts.camScale ?? 1;
+  let camScale = camScaleBase;
+  let camScaleTarget = camScaleBase;
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
   let disperseNext = false;
@@ -563,6 +571,10 @@ export function createParticleEngine(
   let imgTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
+  let imgFormExt = 0;
+  let imgShowExt = 0;
+  let imgFormTgt = 0;
+  let imgShowTgt = 0;
   let dissolveT: number | null = null;
   let snapped = false;
 
@@ -711,7 +723,15 @@ export function createParticleEngine(
       if (!snapped && prevT < DISSOLVE_SNAP_SEC && dissolveT >= DISSOLVE_SNAP_SEC) { snapNow = true; snapped = true; }
       if (dissolveT >= DISSOLVE_SEC) dissolveT = null;
     }
-    const env = dissolveEnvelope(dissolveT);
+    let env = dissolveEnvelope(dissolveT);
+    // externally conducted image form (Ghost's angel flashes): particles
+    // gather into the image, wear it, then release and dissipate
+    imgFormExt += (imgFormTgt - imgFormExt) * (1 - Math.exp(-dt / 0.35));
+    imgShowExt += (imgShowTgt - imgShowExt) * (1 - Math.exp(-dt / 0.6));
+    if (dissolveT === null && (imgFormExt > 0.001 || imgShowExt > 0.001)) {
+      env = { worldFade: 1 - 0.85 * imgShowExt, imgShow: imgShowExt, imgForm: imgFormExt, colorMix: 1 };
+    }
+    camScale += (camScaleTarget - camScale) * (1 - Math.exp(-dt / 5));
 
     // camera (the image plane faces it, so compute before the sim)
     const lerp = (a: number, b: number) => a + (b - a) * e;
@@ -1123,6 +1143,20 @@ export function createParticleEngine(
     },
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
+    setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.5, Math.min(2, k)); },
+    loadFormImage(src, aspect) {
+      if (lost) return;
+      gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      imgAspect = [imgAspect[0], aspect > 0 ? aspect : 1];
+      haveB = true;
+    },
+    setImageForm(form, show) {
+      imgFormTgt = Math.max(0, Math.min(1, form));
+      imgShowTgt = Math.max(0, Math.min(1, show));
+    },
     setShape(sh, snap = false) {
       shapeTarget = sh.map((x) => Math.max(0, Math.min(0.999, x))) as [number, number, number, number];
       if (snap) for (let i = 0; i < 4; i++) shape[i] = shapeTarget[i];

@@ -93,6 +93,9 @@ export interface ParticleCast {
   motion: number;
   /** cymatic plate mode (n, m) + lissajous ratios from the harmony */
   form: [number, number, number, number];
+  /** forms the field EVOLVES through while visible (Karel 2026-10-06: "i
+   *  notice a limited amount of shapes") — ~12 per journey, neighbours differ */
+  formCycle: SoulId[];
   /** journey phase boundaries (s) — the layer's dissolve look-ahead */
   phaseBounds: number[];
   /** v3: the form that GATHERS at the end of each travel morph, per phase
@@ -420,8 +423,18 @@ export function castJourney(p: ParticleProfile, avoid: Set<SoulId> = new Set()):
     if (i > 0 && id === morphSouls[i - 1]) id = ranked[(i * 2 + 1) % ranked.length];
     morphSouls.push(id);
   }
+  // the evolving form cycle: every soul this journey already casts, then the
+  // rest of the shape pool in this journey's own ranked order
+  const pool = [...new Set<SoulId>([...morphSouls, ...Object.values(souls), ...rankSouls("build", m, seed + 13, new Set())])].filter((x) => SHAPE_SOULS.includes(x));
+  const formCycle: SoulId[] = [];
+  for (let i = 0; i < pool.length && formCycle.length < 12; i++) {
+    const id = pool[(i * 5 + (seed % 7)) % pool.length];
+    if (!formCycle.includes(id)) formCycle.push(id);
+  }
+  for (const id of pool) if (formCycle.length < 12 && !formCycle.includes(id)) formCycle.push(id);
   return {
     name: p.name,
+    formCycle,
     windows,
     breaks,
     colors: sectionColors(p),

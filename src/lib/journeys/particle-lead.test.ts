@@ -11,7 +11,7 @@ import {
   particlePaletteFrom,
   withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
-import { dissolveEnvelope, DISSOLVE_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
+import { dissolveEnvelope, DISSOLVE_SEC, DISSOLVE_SNAP_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
 
 describe("particle lead registry (v3 rollout)", () => {
@@ -111,7 +111,7 @@ describe("dissolve: only some transitions, never fighting a morph", () => {
     }
   });
   it("the snap is invisible: image presence is 0 when the field teleports", () => {
-    expect(dissolveEnvelope(0.6).imgShow).toBeLessThan(0.01);
-    expect(dissolveEnvelope(0.6).worldFade).toBeLessThan(0.01);
+    expect(dissolveEnvelope(DISSOLVE_SNAP_SEC).imgShow).toBeLessThan(0.01);
+    expect(dissolveEnvelope(DISSOLVE_SNAP_SEC).worldFade).toBeLessThan(0.01);
   });
 });

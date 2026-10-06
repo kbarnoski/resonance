@@ -989,7 +989,12 @@ float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.005
 void main(){
   ivec2 c = ivec2(gl_FragCoord.xy);
   vec3 h = texelFetch(uHdr, c, 0).rgb;
-  vec3 t = 1.0 - exp(-h * texelFetch(uExp, ivec2(0), 0).r);
+  // HUE-PRESERVING tone map (Karel 2026-10-06: "they should almost always
+  // have color"): compress the brightest channel and scale the others with
+  // it — per-channel 1-exp() bleached every dense overlap to white
+  vec3 he = h * texelFetch(uExp, ivec2(0), 0).r;
+  float hm = max(he.r, max(he.g, he.b));
+  vec3 t = hm > 1e-6 ? he * ((1.0 - exp(-hm)) / hm) : he;
   vec3 srgb = pow(t, vec3(1.0 / 2.2));
   srgb += (ign(gl_FragCoord.xy) - 0.5) / 255.0 * step(0.002, max(t.r, max(t.g, t.b)));
   srgb = max(srgb, 0.0);

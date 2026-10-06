@@ -454,7 +454,7 @@ export function JourneyCompositor({
           Own boundary: a GPU failure drops the lead, never the show. */}
       {particleLead && journeyId && (
         <ImageryErrorBoundary resetKey={journeyId}>
-          <ParticleLeadLayer cast={particleLead} journeyId={journeyId} frame={frame} analyser={analyser} imageSrc={latestAiImage} paused={!aiGenerating} />
+          <ParticleLeadLayer cast={particleLead} journeyId={journeyId} frame={frame} analyser={analyser} imageSrc={latestAiImage} paused={!aiGenerating} flash={enableBassFlash ? { approach, impulse: evtType === "bass_hit" ? impulse : 0 } : null} />
         </ImageryErrorBoundary>
       )}
 
