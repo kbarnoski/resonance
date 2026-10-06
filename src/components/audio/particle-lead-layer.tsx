@@ -286,6 +286,7 @@ export function ParticleLeadLayer({
     // windows the field returns for 12–22 s after 12–20 s away (measured
     // ~80 % with longer returns — tuned toward 60 %)
     let ambientUntil = -1;
+    let onSec = 0;
     let outSince = 0;
     let ambientGap = 12 + 8 * rand01(21);
     let lastTick = performance.now();
@@ -419,7 +420,8 @@ export function ParticleLeadLayer({
       // ambient: return between windows so the field is present ~60 % overall
       if (pr.presence <= 0 && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
-        if (ambientUntil < t && outSince > ambientGap) {
+        // only where this journey is running UNDER budget (few morphs)
+        if (ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
           ambientGap = 12 + 8 * rand01(23 + appearN);
           const nxt = cast.formCycle?.[(++cycleIdx) % Math.max(1, cast.formCycle.length)];
@@ -431,6 +433,7 @@ export function ParticleLeadLayer({
       if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * densP));
       const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP) * endFade;
       shown = slew(shown, targetPresence, tickDt);
+      if (shown > 0.3) onSec += tickDt;
       if (shown >= densP || shown < 0.005) densP = shown; // rise with the gather, hold through the fade
       densKS += (densK - densKS) * (1 - Math.exp(-tickDt / 6));
       // dynamics: the dolly glides through each appearance; placement holds

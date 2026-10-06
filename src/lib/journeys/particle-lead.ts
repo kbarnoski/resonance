@@ -77,6 +77,11 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     // transition between big images") — about one journey in five
     if (!cast.mastered && hash01(id) < 0.2) cast.dissolve = true;
     else cast.dissolve = false;
+    // presence budget (Karel 2026-10-06: "around 60% of the time"): the
+    // morph law alone covers ~64 % on average, so between morphs only the
+    // essentials remain — the summit, the solo-on-black breaks, the coda
+    // (transition windows only where the rare dissolve lives)
+    cast.windows = cast.windows.filter((w) => w.kind === "peak" || w.kind === "break" || w.kind === "coda" || (w.kind === "transition" && cast.dissolve));
     out[id] = cast;
   });
   return out;
