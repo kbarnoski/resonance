@@ -53,7 +53,7 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
  *  Snowflake right as particles first emerged (~0:08-0:09; 1.1s frame gap
  *  then a hang), reproducibly. Headless GPU checks never caught it. Off
  *  everywhere until the hang is root-caused and verified in kiosk Chrome. */
-export const PARTICLES_ENABLED = false;
+export const PARTICLES_ENABLED = true;
 
 export function particleLeadFor(journey?: { id?: string | null; name?: string | null } | null): ParticleLeadCast | null {
   if (!PARTICLES_ENABLED) return null;
