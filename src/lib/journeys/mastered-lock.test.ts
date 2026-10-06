@@ -10,6 +10,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { JOURNEYS } from "./journeys";
 import { SCRIPTED_TAKES, TAKE_INTRO_STILLS, TAKE_FINALE_STILLS, TAKE_FINALE_SHADERS } from "./pinned-takes";
 import { MASTERED_JOURNEYS, LEGACY_SLIDESHOW_JOURNEYS } from "./mastered";
+import { PARTICLE_LEADS } from "./particle-lead";
 
 const LOCK = "docs/mastered-lock.json";
 const h = (v: unknown) => createHash("sha256").update(JSON.stringify(v)).digest("hex").slice(0, 16);
@@ -25,6 +26,9 @@ function fingerprint() {
       finaleStill: h(TAKE_FINALE_STILLS[id] ?? null),
       finaleShader: h(TAKE_FINALE_SHADERS[id] ?? null),
       legacySlideshow: String(LEGACY_SLIDESHOW_JOURNEYS.has(id)),
+      // Particle layer (Karel 2026-10-05: "roll particles out … including
+      // snowflake and ghost") — the ONLY addition; locks their particle cast.
+      particleCast: h(PARTICLE_LEADS[id] ?? null),
     };
     // Pack stills (gitignored — checked where the pack exists, i.e. the kiosk Mac).
     const dir = `public/tramokyo-pack/images/journeys/${id}`;

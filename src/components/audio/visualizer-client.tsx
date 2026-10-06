@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { VisualizerCore, type VisualizerMode } from "./visualizer";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
@@ -20,6 +20,7 @@ import { useShallow } from "zustand/react/shallow";
 import { MODES_AI, AI_MODE_PROMPTS, SHADERS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, getNativeAnalyser, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 import { particleLeadFor, withParticleLeadSupports } from "@/lib/journeys/particle-lead";
+import { getParticlePresent, subscribeParticlePresent } from "@/lib/journeys/particle-presence";
 import { useInstallationMode } from "@/lib/audio/use-installation-mode";
 import { useJourney } from "@/lib/journeys/use-journey";
 import { useStoryGeneration } from "@/lib/journeys/use-story";
@@ -636,6 +637,7 @@ export function VisualizerClient({
   // Isolate primary shader — strips dual/tertiary when toggled with R key
   // A particle-lead journey also runs ONE supporting shader (perf budget +
   // the lead reads as the lead) — src/lib/journeys/particle-lead.ts.
+  const particlesPresent = useSyncExternalStore(subscribeParticlePresent, getParticlePresent, () => false);
   const particleLead = useMemo(() => {
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("particles") === "0") return null;
     return particleLeadFor(activeJourney);
@@ -643,8 +645,8 @@ export function VisualizerClient({
   const journeyFrame = useMemo(() => {
     if (!rawJourneyFrame) return rawJourneyFrame;
     if (isolatePrimary) return { ...rawJourneyFrame, dualShaderMode: undefined, tertiaryShaderMode: undefined };
-    return withParticleLeadSupports(rawJourneyFrame, particleLead);
-  }, [rawJourneyFrame, isolatePrimary, particleLead]);
+    return withParticleLeadSupports(rawJourneyFrame, particleLead, particlesPresent);
+  }, [rawJourneyFrame, isolatePrimary, particleLead, particlesPresent]);
 
   // Installation mode auto-cycling
   useInstallationMode();

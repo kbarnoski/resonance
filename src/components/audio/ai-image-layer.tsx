@@ -12,7 +12,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
-import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle } from "@/lib/journeys/video-activity";
+import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded } from "@/lib/journeys/video-activity";
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 
 interface AiImageLayerProps {
@@ -970,6 +970,7 @@ export function AiImageLayer({
             // layer out over the normal long fade instead of freezing.
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
+              emitClipEnded(url); // particle layer: emerge at the end of a morph
               // END-ON-MORPH (Karel 2026-09-29: "id like snowflake to
               // end on that morph"): a clip that finishes in the final
               // stretch HOLDS its last frame — no fade, no cover, no
