@@ -109,6 +109,10 @@ export interface ParticleStats {
   frames: number;
   density: number;
   dissolve: number | null;
+  hue: number;
+  sat: number;
+  scatter: number;
+  bounce: number;
 }
 
 export interface ParticleEngine {
@@ -130,6 +134,18 @@ export interface ParticleEngine {
   dissolveTo(next: HTMLCanvasElement | HTMLImageElement | ImageBitmap | ImageData, aspect: number, start?: boolean): boolean;
   /** Seconds into the running dissolve, or null. */
   dissolveTime(): number | null;
+  /** Start a dissolve between the two stills already loaded (A → B). */
+  startDissolve(): boolean;
+  /** Luma-preserving colour: hue rotation (rad) + saturation; glides ~3 s. */
+  setHue(hue: number, sat?: number): void;
+  /** Soul form parameters (cymatic plate mode n,m · lissajous ratios); glide. */
+  setForm(form: [number, number, number, number]): void;
+  /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
+  setMotion(k: number): void;
+  /** Playful impulse — motion only. */
+  impulse(kind: "scatter" | "bounce", strength?: number): void;
+  /** Melodic attractor for ~14% follower particles (null = off). */
+  setMelody(pos: [number, number, number] | null, weight?: number): void;
   resize(): void;
   stats(): ParticleStats;
 }
@@ -418,6 +434,14 @@ export function createParticleEngine(
   let lastFrame: SpectrumFrame | null = null;
   let density = 1;
   let densityTarget = 1;
+  let hue = 0, hueTarget = 0, sat = 1, satTarget = 1;
+  const form: [number, number, number, number] = [3, 5, 1.5, 2];
+  let formTarget: [number, number, number, number] = [3, 5, 1.5, 2];
+  let motion = 1, motionTarget = 1;
+  let scatterEnv = 0, scatterTarget = 0, bounceEnv = 0, bounceSign = 1;
+  const melody: [number, number, number] = [0, 0, 0];
+  let melodyTarget: [number, number, number] = [0, 0, 0];
+  let melodyW = 0, melodyWTarget = 0;
 
   // ── image slots (A = outgoing still, B = incoming) ──────────────────────
   const mkImgTex = () => {
@@ -512,10 +536,27 @@ export function createParticleEngine(
     const e = mix * mix * (3 - 2 * mix);
     const soulW = (id: SoulId) => (soulA.id === id ? 1 - e : 0) + (soulB !== soulA && soulB.id === id ? e : 0);
     const smokeW = soulW("smoke");
-    const motesW = soulW("motes");
+    const lerpS = (k: (x: typeof soulA) => number) => k(soulA) + (k(soulB) - k(soulA)) * (soulB === soulA ? 0 : e);
+    const wrap = [0, 1, 2].map((i) => lerpS((x) => x.wrap[i]));
+    const inkW = lerpS((x) => (x.respawn === "ink" ? 1 : 0));
+    const fountainW = lerpS((x) => (x.respawn === "fountain" ? 1 : 0));
+    const sizeK = lerpS((x) => x.size);
+    const densityCap = lerpS((x) => x.maxDensity);
 
     // world density glides (~2.5 s) — motes appear/vanish one by one
     density += (densityTarget - density) * (1 - Math.exp(-dt / 2.5));
+    const kHue = 1 - Math.exp(-dt / 3);
+    hue += (hueTarget - hue) * kHue;
+    sat += (satTarget - sat) * kHue;
+    for (let i = 0; i < 4; i++) form[i] += (formTarget[i] - form[i]) * (1 - Math.exp(-dt / 4));
+    motion += (motionTarget - motion) * (1 - Math.exp(-dt / 2));
+    // impulses: scatter rises ~0.3 s then the target decays (~1.8 s); bounce rings ~0.35 s
+    scatterEnv += (scatterTarget - scatterEnv) * (1 - Math.exp(-dt / 0.3));
+    scatterTarget *= Math.exp(-dt / 1.8);
+    bounceEnv *= Math.exp(-dt / 0.35);
+    for (let i = 0; i < 3; i++) melody[i] += (melodyTarget[i] - melody[i]) * (1 - Math.exp(-dt / 0.6));
+    melodyW += (melodyWTarget - melodyW) * (1 - Math.exp(-dt / 1.5));
+    const simDt = dt * motion;
 
     // dissolve timeline
     let snapNow = false;
@@ -554,7 +595,7 @@ export function createParticleEngine(
     bindTex(1, velTex[cur], sim.u.uVel);
     bindTex(2, seedTex, sim.u.uSeed);
     bindTex(3, specTex, sim.u.uSpec);
-    g.uniform1f(sim.u.uDt, dt);
+    g.uniform1f(sim.u.uDt, simDt);
     g.uniform1f(sim.u.uTime, time);
     g.uniform3f(sim.u.uClock, clocks.bass, clocks.mid, clocks.treble);
     g.uniform3f(sim.u.uBands, f?.bands.bass ?? 0, f?.bands.mid ?? 0, f?.bands.treble ?? 0);
@@ -566,7 +607,14 @@ export function createParticleEngine(
     g.uniform1i(sim.u.uTexW, side);
     g.uniform1f(sim.u.uCount, count);
     g.uniform1f(sim.u.uSmokeW, smokeW);
-    g.uniform1f(sim.u.uMotesW, motesW);
+    g.uniform3f(sim.u.uWrap, wrap[0], wrap[1], wrap[2]);
+    g.uniform1f(sim.u.uInkW, inkW);
+    g.uniform1f(sim.u.uFountainW, fountainW);
+    g.uniform4f(sim.u.uForm, form[0], form[1], form[2], form[3]);
+    g.uniform1f(sim.u.uScatter, scatterEnv);
+    g.uniform1f(sim.u.uBounce, bounceEnv * bounceSign);
+    g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
+    g.uniform1f(sim.u.uMelodyW, melodyW);
     g.uniform1f(sim.u.uImgForm, env.imgForm);
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
@@ -625,8 +673,12 @@ export function createParticleEngine(
     g.uniform3fv(draw.u.uPalMid, pal.mid);
     g.uniform3fv(draw.u.uPalHigh, pal.high);
     g.uniform1f(draw.u.uSmokeW, smokeW);
-    g.uniform1f(draw.u.uMotesW, motesW);
-    g.uniform1f(draw.u.uDensity, density);
+    g.uniform1f(draw.u.uInkW, inkW);
+    g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
+    g.uniform1f(draw.u.uSize, sizeK);
+    g.uniform1f(draw.u.uHue, hue);
+    g.uniform1f(draw.u.uSat, sat);
+    g.uniform1f(draw.u.uDensity, Math.min(density, densityCap));
     g.uniform1f(draw.u.uWorldFade, env.worldFade);
     bindTex(3, imgTex[0], draw.u.uImgA);
     bindTex(4, imgTex[1], draw.u.uImgB);
@@ -755,6 +807,25 @@ export function createParticleEngine(
       return true;
     },
     dissolveTime() { return dissolveT; },
+    startDissolve() {
+      if (dissolveT !== null || lost || !haveB) return false;
+      dissolveT = 0;
+      snapped = false;
+      return true;
+    },
+    setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
+    setForm(f) { formTarget = [...f] as [number, number, number, number]; },
+    setMotion(k) { motionTarget = Math.max(0.5, Math.min(1.6, k)); },
+    impulse(kind, strength = 1) {
+      const k = Math.max(0, Math.min(1, strength));
+      if (kind === "scatter") scatterTarget = Math.max(scatterTarget, k);
+      else { bounceSign = -bounceSign; bounceEnv = Math.max(bounceEnv, k); }
+    },
+    setMelody(pos, w = 0.6) {
+      if (!pos) { melodyWTarget = 0; return; }
+      melodyTarget = [...pos] as [number, number, number];
+      melodyWTarget = Math.max(0, Math.min(1, w));
+    },
     resize,
     stats(): ParticleStats {
       const sorted = [...frameTimes].sort((a, b) => b - a);
@@ -784,6 +855,10 @@ export function createParticleEngine(
         frames,
         density,
         dissolve: dissolveT,
+        hue,
+        sat,
+        scatter: scatterEnv,
+        bounce: bounceEnv,
       };
     },
   };

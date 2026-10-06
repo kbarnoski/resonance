@@ -91,9 +91,9 @@ describe("luminance governor (WCAG 2.3.1 backstop)", () => {
 });
 
 describe("souls", () => {
-  it("has five distinct souls with indices matching the shader branches", () => {
-    expect(SOULS.map((s) => s.index)).toEqual([0, 1, 2, 3, 4]);
-    expect(new Set(SOULS.map((s) => s.id)).size).toBe(5);
+  it("indices match the shader branches (one per soul, in order)", () => {
+    expect(SOULS.map((s) => s.index)).toEqual(SOULS.map((_, i) => i));
+    expect(new Set(SOULS.map((s) => s.id)).size).toBe(SOULS.length);
   });
   it("texSideFor rounds to a clamped square", () => {
     expect(texSideFor(409_600)).toBe(640);

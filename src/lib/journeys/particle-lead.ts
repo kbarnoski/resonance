@@ -1,136 +1,52 @@
 /**
- * PARTICLE LEAD — the real GPU particle engine (src/lib/particles/) cast as a
- * journey's lead actor (Karel 2026-10-05: "i had wanted you to explore a
- * particle engine as part of the app"). OPT-IN per journey via this map —
- * every journey not listed plays exactly as before.
+ * PARTICLE LEAD — registry of journeys that carry the GPU particle language
+ * (src/lib/particles/ + particle-casting.ts). OPT-IN: every journey not
+ * listed plays exactly as before.
  *
- * Casting:
- *  - souls: the soul sequence, one per journey PHASE in arc order (wraps);
- *    at each phase change the field FLOWS into the next soul (8 s blend —
- *    never a cut).
- *  - palette: always the journey's own phase palette (frame.palette, which
- *    comes from its analysis-derived theme) — never derived from the title.
+ * v2 (Karel 2026-10-05, after the Lantern pilot: "i do like how they
+ * transition as part of imaging. having them always there and always part of
+ * every transition gets too much … sometimes … particle against the black"):
+ * particles are CONDUCTED from each journey's v2 deep analysis — present only
+ * for chosen moments (a few section-change transitions, builds, the summit,
+ * the coda), with 2–3 particle-only breaks (imagery + shaders veiled to
+ * black), colour following the harmony, playfulness from the texture.
  *
- * While particles lead, the shader stack drops to ONE supporting shader
- * (the primary; dual + tertiary stripped) — the perf budget, and so the
- * lead reads as the lead.
- *
- * NEVER on mastered journeys (Snowflake, Ghost) — particleLeadFor() refuses
- * them even if listed, and particle-lead.test.ts guards the map.
+ * Review set: Lantern (devotional waves), Stir Crazy (restless, circling,
+ * rhythmic), Open Jam (brooding E-minor drone) — contrasting on purpose.
+ * NEVER Snowflake / Ghost (mastered) until Karel says so.
  */
-import type { SoulId, ParticlePalette } from "@/lib/particles/souls";
-import type { JourneyPhaseId } from "./types";
+import type { ParticlePalette } from "@/lib/particles/souls";
 import { isMasteredJourneyLike } from "./mastered";
+import { castJourney, type ParticleCast } from "./particle-casting";
+import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 
-export interface ArcKey {
-  /** seconds into the track */
-  t: number;
-  soul: SoulId;
-  /** world visibility fraction (0 = only the last ember, 1 = all) */
-  density: number;
-}
+export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
+export const STIR_CRAZY_ID = "cd517f5a-c4eb-4d50-8a53-044aa668d087";
+export const OPEN_JAM_ID = "bd748991-a67b-41dc-af94-ac3f612a27c4";
 
-export interface ParticleLeadCast {
-  /** Journey name (for logs/review — matching is by id). */
-  name: string;
-  /** Soul per phase, arc order; wraps if shorter than the phase list.
-   *  Ignored when `arc` is present. */
-  souls: readonly SoulId[];
-  /** World-element arc keyed to the track's own timeline (from its v2 deep
-   *  analysis). Soul = the last key at or before now; density interpolates. */
-  arc?: readonly ArcKey[];
-  /** Image dissolve ↔ reform between stills inside phases. */
-  dissolve?: boolean;
+/** Cast order (Lantern → Open Jam are loop neighbours in Vigil). */
+export const PARTICLE_JOURNEY_IDS: readonly string[] = [LANTERN_ID, OPEN_JAM_ID, STIR_CRAZY_ID];
+
+export interface ParticleLeadCast extends ParticleCast {
+  /** Image dissolve ↔ reform on (some) transitions. */
+  dissolve: boolean;
   /** Layer gain (energy) — 1 = engine default. */
   gain?: number;
 }
 
-/**
- * The PILOT (Karel 2026-10-05: "build the particle engine into ONE journey
- * for joint review"): Vigil · Lantern. Its v2 deep analysis (recording
- * 4516fc4b…, 308.6 s, "a warm, glowing devotion that swells and recedes in
- * waves … settling into an open, unresolved calm"): quiet opening 0–25 s;
- * waves cresting ~55 s / ~100 s / ~160 s; valleys ~85 s / ~140 s / ~185 s;
- * the build 195→ the D♭maj13 summit at 221 s (intensity 0.85); a second
- * wave to 270 s; fading to the quietest moment at 303 s.
- * World element = seed-lantern motes: sparse in the opening and the valleys,
- * a swarm on each build, a full cosmic swirl at the summit, one ember at
- * the end.
- */
-export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
-
-export const LANTERN_ARC: readonly ArcKey[] = [
-  { t: 0, soul: "motes", density: 0.0015 }, // a few hundred lantern motes
-  { t: 22, soul: "motes", density: 0.004 },
-  { t: 30, soul: "murmuration", density: 0.12 }, // first wave — a swarm gathers
-  { t: 58, soul: "murmuration", density: 0.15 },
-  { t: 70, soul: "motes", density: 0.004 }, // valley ~85 s
-  { t: 88, soul: "motes", density: 0.004 },
-  { t: 94, soul: "murmuration", density: 0.3 }, // wave to ~100 s
-  { t: 128, soul: "murmuration", density: 0.22 },
-  { t: 136, soul: "motes", density: 0.003 }, // valley ~140 s
-  { t: 150, soul: "murmuration", density: 0.3 }, // build 150–177 s
-  { t: 176, soul: "murmuration", density: 0.25 },
-  { t: 182, soul: "motes", density: 0.004 }, // the breath before the summit
-  { t: 197, soul: "murmuration", density: 0.5 }, // the build
-  { t: 210, soul: "vortex", density: 1.0 }, // cosmic swirl — summit 221 s
-  { t: 236, soul: "vortex", density: 0.85 },
-  { t: 250, soul: "vortex", density: 0.45 }, // dip ~250 s
-  { t: 262, soul: "vortex", density: 0.7 }, // second wave ~270 s
-  { t: 278, soul: "motes", density: 0.02 }, // the long fade
-  { t: 292, soul: "motes", density: 0.003 },
-  { t: 302, soul: "motes", density: 0 }, // one ember
-];
-
-export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = {
-  [LANTERN_ID]: {
-    name: "Lantern",
-    souls: ["motes"],
-    arc: LANTERN_ARC,
-    dissolve: true,
-  },
-};
-
-/** Arc state at time t (seconds). */
-export function arcAt(arc: readonly ArcKey[], t: number): { soul: SoulId; density: number } {
-  if (!arc.length) return { soul: "motes", density: 1 };
-  if (t <= arc[0].t) return { soul: arc[0].soul, density: arc[0].density };
-  for (let i = 0; i < arc.length - 1; i++) {
-    const a = arc[i], b = arc[i + 1];
-    if (t < b.t) {
-      const k = (t - a.t) / (b.t - a.t);
-      return { soul: a.soul, density: a.density + (b.density - a.density) * k };
-    }
+/** Casts for the registry — built once; review set avoids sharing any soul. */
+export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() => {
+  const out: Record<string, ParticleLeadCast> = {};
+  const used = new Set<ParticleCast["souls"]["peak"]>();
+  for (const id of PARTICLE_JOURNEY_IDS) {
+    const prof = PARTICLE_PROFILES[id];
+    if (!prof) continue;
+    const cast = castJourney(prof, used);
+    for (const s of Object.values(cast.souls)) used.add(s);
+    out[id] = { ...cast, dissolve: true };
   }
-  const last = arc[arc.length - 1];
-  return { soul: last.soul, density: last.density };
-}
-
-/** Dissolve gate: restraint rules for image dissolve ↔ reform. */
-export function dissolveAllowed(o: {
-  t: number;
-  duration: number;
-  density: number;
-  sinceLastDissolve: number;
-  sincePhaseChange: number;
-  morphActive: boolean;
-  boundarySettle: boolean;
-}): boolean {
-  if (o.morphActive || o.boundarySettle) return false; // never fight a travel morph / handoff
-  if (o.sincePhaseChange < 8) return false; // phase changes belong to the morphs
-  if (o.t < 12 || (o.duration > 0 && o.t > o.duration - 15)) return false; // opening + the last ember
-  if (o.density > 0.35) return false; // the summit belongs to the swirl
-  return o.sinceLastDissolve >= 18; // ~every other still, never wallpaper
-}
-
-export const PHASE_ORDER: readonly JourneyPhaseId[] = [
-  "threshold",
-  "expansion",
-  "transcendence",
-  "illumination",
-  "return",
-  "integration",
-];
+  return out;
+})();
 
 /** The cast for a journey, or null (not opted in, or mastered — never). */
 export function particleLeadFor(journey?: { id?: string | null; name?: string | null } | null): ParticleLeadCast | null {
@@ -139,9 +55,29 @@ export function particleLeadFor(journey?: { id?: string | null; name?: string | 
   return PARTICLE_LEADS[journey.id] ?? null;
 }
 
-export function soulForPhase(cast: ParticleLeadCast, phase?: string | null): SoulId {
-  const i = Math.max(0, PHASE_ORDER.indexOf((phase ?? "threshold") as JourneyPhaseId));
-  return cast.souls[i % cast.souls.length];
+/** Travel morphs ride the phase changes (and the journey handoff), so the
+ *  particle system stays out of their way for this long after one. Hero
+ *  clips inside a phase are imagery like the stills — not guarded (headless
+ *  2026-10-05: a clip-guard held every dissolve and break in pack mode). */
+export const MORPH_GUARD_SEC = 14;
+
+export function morphGuard(sincePhaseChange: number, boundarySettle: boolean): boolean {
+  return boundarySettle || sincePhaseChange < MORPH_GUARD_SEC;
+}
+
+/** Dissolve gate: only inside a conducted transition window, once per window,
+ *  and never against a travel morph / handoff. */
+export function dissolveAllowed(o: {
+  inTransitionWindow: boolean;
+  windowAlreadyDissolved: boolean;
+  sincePhaseChange: number;
+  boundarySettle: boolean;
+  /** seconds until the next phase change (Infinity if none) */
+  untilPhaseChange?: number;
+}): boolean {
+  if (morphGuard(o.sincePhaseChange, o.boundarySettle)) return false;
+  if ((o.untilPhaseChange ?? Infinity) < 12) return false; // a 10.5 s dissolve must finish before the morph
+  return o.inTransitionWindow && !o.windowAlreadyDissolved;
 }
 
 function hexToLinear(hex: string): [number, number, number] {
@@ -155,8 +91,7 @@ function hexToLinear(hex: string): [number, number, number] {
   return [c[0], c[1], c[2]];
 }
 
-/** Lift a colour so its brightest channel is at least `floor` (keeps hue).
- *  A theme's "primary" can be a deep tone that would vanish as light. */
+/** Lift a colour so its brightest channel is at least `floor` (keeps hue). */
 function lift(c: [number, number, number], floor = 0.55): [number, number, number] {
   const mx = Math.max(c[0], c[1], c[2], 1e-4);
   const k = mx < floor ? floor / mx : 1;

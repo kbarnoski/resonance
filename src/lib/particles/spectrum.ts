@@ -236,10 +236,12 @@ export class SpectrumProcessor {
     this.fluxMean += dev * kF;
     this.fluxVar += (dev * dev - this.fluxVar) * kF;
     this.refractory = Math.max(0, this.refractory - dt);
-    const thresh = this.fluxMean + 1.8 * Math.sqrt(this.fluxVar) + 0.004;
+    // the journeys' shared analyser is pre-smoothed (0.8) — flux is gentler there
+    const kSig = this.source === "kinetic" ? 1.2 : 1.8;
+    const thresh = this.fluxMean + kSig * Math.sqrt(this.fluxVar) + 0.004;
     if (flux > thresh && this.refractory === 0) {
       this.onsets++;
-      this.refractory = 0.28;
+      this.refractory = this.source === "kinetic" ? 0.18 : 0.28;
       const strength = Math.min(1, (flux - thresh) / (thresh + 1e-4) + 0.45);
       this.swellTarget = Math.max(this.swellTarget, strength);
     }

@@ -1,30 +1,48 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// souls.ts — the particle engine's "souls" (presets). Each soul is a force
-// law in the simulation shader (particle-engine.ts, `soulForce`) plus the
-// staging knobs here: camera, trail persistence, palette. Palettes are
-// swappable so a soul can be CAST as a journey lead actor in that journey's
-// colours later (setPalette).
+// souls.ts — the particle LANGUAGE: a library of "souls", each a force law in
+// the simulation shader (shaders.ts `soulForce`, branch = index) plus staging
+// knobs (camera, trail, sprite size, wrap/respawn) and CASTING TRAITS that
+// particle-casting.ts scores against a journey's v2 deep analysis.
 //
-// Band → attribute map (kinetic EQ law — motion, never brightness):
-//   vortex      bass → orbit radius surge + spin dilation · mid → curl drift ·
-//               treble → finest dust scatters off the arms
-//   smoke       bass → plume lift + field breath · mid → curl speed ·
-//               treble → filament shimmer
-//   bloom       swell (onsets) → phyllotaxis opens / unfurls · bass → shell
-//               breath · mid → petal rotation · treble → shimmer along normals
-//   murmuration bass → flock sweep speed · mid → turning curl · treble →
-//               edge scatter
-//   motes       bass → buoyant lift · mid → slow curl sway · treble → shimmer
-//               (a world element: pair with setDensity for sparse ↔ swarm)
+// Every soul obeys the kinetic EQ law — the music moves MOTION and STRUCTURE,
+// never luminance (WCAG 2.3.1): bass = mass / surge / lift, mids = flow /
+// sway / twist, treble = shimmer / scatter of the finest motes. Colour moves
+// by luma-preserving hue/saturation rotation only (engine setHue).
+// No ice/frost/crystal (Snowflake-only), no rain, no lightning, nothing
+// literal — visionary forms of light.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type SoulId = "vortex" | "smoke" | "bloom" | "murmuration" | "motes";
+export const SOUL_IDS = [
+  "vortex", "smoke", "bloom", "murmuration", "motes",
+  "petals", "embers", "duststorm", "pollen", "tendrils",
+  "threads", "ribbons", "fireflies", "ink", "branches",
+  "geometry", "orbitals", "waves", "cymatics", "nebula",
+  "arcs", "kaleido", "helix", "knot", "fountain",
+  "harmonics", "lissajous",
+] as const;
+
+export type SoulId = (typeof SOUL_IDS)[number];
 
 /** Three linear-RGB stops: low band → mid band → high band. */
 export interface ParticlePalette {
   low: [number, number, number];
   mid: [number, number, number];
   high: [number, number, number];
+}
+
+/** Casting traits (0..1) — what music a soul belongs to. */
+export interface SoulTraits {
+  /** calm 0 … driving 1 */
+  energy: number;
+  /** fits playful / rhythmic music */
+  playful: number;
+  /** fits dark / minor / brooding music */
+  dark: number;
+  /** fits a visual break (particles alone on black) */
+  solo: number;
+  /** can carry a summit (dense, cosmic) */
+  peak: number;
+  family: "cosmic" | "organic" | "geometric" | "elemental" | "flow";
 }
 
 export interface SoulPreset {
@@ -42,70 +60,130 @@ export interface SoulPreset {
   camSpin: number;
   /** Overall energy (pre-exposure). */
   intensity: number;
+  /** Sprite size multiplier. */
+  size: number;
+  /** Wrap weights: [x-flow, rising, falling] — particles re-enter off-edge. */
+  wrap: [number, number, number];
+  /** Age-based respawn: smoke (rising source), ink (drops), fountain (launch). */
+  respawn: "smoke" | "ink" | "fountain" | null;
+  /** Density ceiling — volume-filling souls stay sparse so they can never
+   *  become a full-frame wash (Karel's wash ban), whatever the conductor asks. */
+  maxDensity: number;
+  traits: SoulTraits;
 }
 
+type C3 = [number, number, number];
+const pal = (low: C3, mid: C3, high: C3): ParticlePalette => ({ low, mid, high });
+const S = (
+  id: SoulId,
+  title: string,
+  line: string,
+  palette: ParticlePalette,
+  stage: { trail: number; elev: number; dist: number; spin?: number; intensity?: number; size?: number; wrap?: C3; respawn?: SoulPreset["respawn"]; maxD?: number },
+  traits: SoulTraits,
+): SoulPreset => ({
+  id,
+  index: SOUL_IDS.indexOf(id),
+  title,
+  line,
+  palette,
+  trail: stage.trail,
+  camElev: stage.elev,
+  camDist: stage.dist,
+  camSpin: stage.spin ?? 0.02,
+  intensity: stage.intensity ?? 1,
+  size: stage.size ?? 1,
+  wrap: stage.wrap ?? [0, 0, 0],
+  respawn: stage.respawn ?? null,
+  maxDensity: stage.maxD ?? 1,
+  traits,
+});
+
+const AMBER = pal([1.0, 0.55, 0.22], [0.75, 0.42, 1.0], [0.45, 0.78, 1.0]);
+
 export const SOULS: readonly SoulPreset[] = [
-  {
-    id: "vortex",
-    index: 0,
-    title: "Vortex",
-    line: "a galaxy that breathes with the bass",
-    palette: { low: [1.0, 0.55, 0.22], mid: [0.75, 0.42, 1.0], high: [0.45, 0.78, 1.0] },
-    trail: 0.5,
-    camElev: 0.95,
-    camDist: 5.0,
-    camSpin: 0.035,
-    intensity: 1.0,
-  },
-  {
-    id: "smoke",
-    index: 1,
-    title: "Smoke of Light",
-    line: "a curl-noise current, slow as breath",
-    palette: { low: [0.35, 0.3, 1.0], mid: [0.25, 0.85, 0.85], high: [0.95, 0.9, 1.0] },
-    trail: 0.72,
-    camElev: 0.12,
-    camDist: 5.2,
-    camSpin: 0.02,
-    intensity: 0.75,
-  },
-  {
-    id: "bloom",
-    index: 2,
-    title: "Fibonacci Bloom",
-    line: "a golden-angle flower that opens on swells",
-    palette: { low: [1.0, 0.32, 0.45], mid: [1.0, 0.72, 0.3], high: [1.0, 0.95, 0.75] },
-    trail: 0.55,
-    camElev: 1.2,
-    camDist: 3.9,
-    camSpin: 0.025,
-    intensity: 0.95,
-  },
-  {
-    id: "murmuration",
-    index: 3,
-    title: "Murmuration",
-    line: "a flock of light folding through the dark",
-    palette: { low: [0.3, 0.5, 1.0], mid: [0.6, 0.55, 1.0], high: [0.85, 1.0, 0.95] },
-    trail: 0.65,
-    camElev: 0.25,
-    camDist: 4.6,
-    camSpin: 0.015,
-    intensity: 0.95,
-  },
-  {
-    id: "motes",
-    index: 4,
-    title: "Lantern Motes",
-    line: "seed-lantern embers rising through the dark",
-    palette: { low: [1.0, 0.5, 0.18], mid: [1.0, 0.7, 0.35], high: [1.0, 0.85, 0.6] },
-    trail: 0.6,
-    camElev: 0.06,
-    camDist: 4.6,
-    camSpin: 0.012,
-    intensity: 1.0,
-  },
-] as const;
+  S("vortex", "Vortex", "a galaxy that breathes with the bass", AMBER,
+    { trail: 0.5, elev: 0.95, dist: 5.0, spin: 0.035 },
+    { energy: 0.6, playful: 0.2, dark: 0.4, solo: 0.3, peak: 1.0, family: "cosmic" }),
+  S("smoke", "Smoke of Light", "a curl-noise current, slow as breath", pal([0.35, 0.3, 1.0], [0.25, 0.85, 0.85], [0.95, 0.9, 1.0]),
+    { trail: 0.72, elev: 0.12, dist: 5.2, intensity: 0.75, respawn: "smoke", maxD: 0.6 },
+    { energy: 0.35, playful: 0.1, dark: 0.6, solo: 0.6, peak: 0.4, family: "flow" }),
+  S("bloom", "Fibonacci Bloom", "golden-angle florets that open on swells", pal([1.0, 0.32, 0.45], [1.0, 0.72, 0.3], [1.0, 0.95, 0.75]),
+    { trail: 0.55, elev: 1.2, dist: 3.9, spin: 0.025, intensity: 0.95 },
+    { energy: 0.4, playful: 0.3, dark: 0.1, solo: 0.5, peak: 0.7, family: "organic" }),
+  S("murmuration", "Murmuration", "a flock of light folding through the dark", pal([0.3, 0.5, 1.0], [0.6, 0.55, 1.0], [0.85, 1.0, 0.95]),
+    { trail: 0.65, elev: 0.25, dist: 4.6, spin: 0.015, intensity: 0.95 },
+    { energy: 0.7, playful: 0.6, dark: 0.4, solo: 0.4, peak: 0.6, family: "organic" }),
+  S("motes", "Lantern Motes", "seed-lantern embers rising through the dark", pal([1.0, 0.5, 0.18], [1.0, 0.7, 0.35], [1.0, 0.85, 0.6]),
+    { trail: 0.6, elev: 0.06, dist: 4.6, spin: 0.012, wrap: [0, 1, 0], maxD: 0.06, intensity: 2.2 },
+    { energy: 0.2, playful: 0.2, dark: 0.3, solo: 0.9, peak: 0.1, family: "elemental" }),
+  S("petals", "Petals of Light", "luminous petals tumbling, lifted by the bass", pal([1.0, 0.45, 0.6], [1.0, 0.7, 0.75], [1.0, 0.92, 0.85]),
+    { trail: 0.45, elev: 0.15, dist: 4.6, size: 1.7, wrap: [0, 0, 1], maxD: 0.08, intensity: 1.6 },
+    { energy: 0.3, playful: 0.5, dark: 0.1, solo: 0.8, peak: 0.2, family: "organic" }),
+  S("embers", "Embers", "sparks spiralling upward on a turbulent breath", pal([1.0, 0.3, 0.08], [1.0, 0.55, 0.15], [1.0, 0.85, 0.5]),
+    { trail: 0.72, elev: 0.1, dist: 4.4, wrap: [0, 1, 0], maxD: 0.25 },
+    { energy: 0.75, playful: 0.4, dark: 0.6, solo: 0.6, peak: 0.6, family: "elemental" }),
+  S("duststorm", "Dust Storm", "a river of dust streaming sideways, gusting with the mids", pal([0.9, 0.6, 0.35], [0.85, 0.5, 0.6], [1.0, 0.85, 0.7]),
+    { trail: 0.75, elev: 0.08, dist: 4.6, intensity: 0.85, wrap: [1, 0, 0], maxD: 0.2 },
+    { energy: 0.85, playful: 0.5, dark: 0.5, solo: 0.3, peak: 0.7, family: "elemental" }),
+  S("pollen", "Pollen Drift", "a hush of fine motes hanging in a slow sunbeam", pal([1.0, 0.85, 0.5], [0.9, 0.95, 0.7], [1.0, 1.0, 0.9]),
+    { trail: 0.4, elev: 0.2, dist: 4.4, intensity: 1.8, size: 0.9, maxD: 0.12 },
+    { energy: 0.1, playful: 0.1, dark: 0.0, solo: 1.0, peak: 0.0, family: "elemental" }),
+  S("tendrils", "Tendrils", "luminous growth reaching upward, swaying with the melody", pal([0.3, 0.9, 0.6], [0.5, 0.7, 1.0], [0.95, 1.0, 0.8]),
+    { trail: 0.55, elev: 0.15, dist: 4.8 },
+    { energy: 0.45, playful: 0.3, dark: 0.5, solo: 0.6, peak: 0.5, family: "organic" }),
+  S("threads", "Threads", "strings of light that vibrate in the piano's own modes", pal([0.9, 0.5, 0.3], [0.7, 0.6, 1.0], [0.8, 0.95, 1.0]),
+    { trail: 0.35, elev: 0.0, dist: 4.4, spin: 0.0, size: 0.8 },
+    { energy: 0.5, playful: 0.7, dark: 0.3, solo: 0.9, peak: 0.4, family: "geometric" }),
+  S("ribbons", "Ribbons", "three twisting bands of light looping through space", pal([0.95, 0.4, 0.7], [0.5, 0.5, 1.0], [0.6, 1.0, 0.95]),
+    { trail: 0.6, elev: 0.4, dist: 4.6 },
+    { energy: 0.6, playful: 0.6, dark: 0.3, solo: 0.6, peak: 0.6, family: "flow" }),
+  S("fireflies", "Fireflies", "slow wanderers that dart when the treble sparkles", pal([0.8, 1.0, 0.4], [1.0, 0.85, 0.4], [0.9, 1.0, 0.8]),
+    { trail: 0.5, elev: 0.1, dist: 4.4, size: 1.8, maxD: 0.03, intensity: 1.5 },
+    { energy: 0.3, playful: 0.8, dark: 0.3, solo: 0.9, peak: 0.1, family: "organic" }),
+  S("ink", "Ink in Water", "clouds of light blooming from drops and unfurling", pal([0.25, 0.35, 1.0], [0.7, 0.3, 0.9], [0.95, 0.75, 1.0]),
+    { trail: 0.78, elev: 0.15, dist: 4.4, intensity: 0.8, respawn: "ink", maxD: 0.5 },
+    { energy: 0.35, playful: 0.2, dark: 0.8, solo: 0.7, peak: 0.4, family: "flow" }),
+  S("branches", "Branching", "a fractal tree of light that breathes its angles", pal([1.0, 0.6, 0.3], [0.6, 0.9, 0.5], [1.0, 0.95, 0.8]),
+    { trail: 0.45, elev: 0.1, dist: 5.0, spin: 0.03 },
+    { energy: 0.35, playful: 0.2, dark: 0.3, solo: 0.6, peak: 0.6, family: "organic" }),
+  S("geometry", "Sacred Geometry", "nested wireframes of light turning on their own bands", pal([1.0, 0.75, 0.35], [0.6, 0.5, 1.0], [0.85, 0.95, 1.0]),
+    { trail: 0.5, elev: 0.35, dist: 5.2, size: 0.8 },
+    { energy: 0.55, playful: 0.3, dark: 0.5, solo: 0.5, peak: 0.8, family: "geometric" }),
+  S("orbitals", "Orbitals", "dozens of tilted rings, each orbit its own register", pal([1.0, 0.5, 0.3], [0.5, 0.6, 1.0], [0.9, 0.9, 1.0]),
+    { trail: 0.6, elev: 0.5, dist: 5.2 },
+    { energy: 0.6, playful: 0.4, dark: 0.4, solo: 0.5, peak: 0.9, family: "cosmic" }),
+  S("waves", "Waves of Light", "a field of motes rolling like a sea of sound", pal([0.2, 0.4, 1.0], [0.3, 0.8, 0.9], [0.85, 1.0, 1.0]),
+    { trail: 0.4, elev: 0.45, dist: 4.8, spin: 0.012 },
+    { energy: 0.5, playful: 0.3, dark: 0.5, solo: 0.6, peak: 0.6, family: "flow" }),
+  S("cymatics", "Cymatics", "sand of light finding the nodal lines of a resonating plate", pal([1.0, 0.8, 0.5], [0.8, 0.6, 1.0], [1.0, 1.0, 0.95]),
+    { trail: 0.3, elev: 1.25, dist: 4.0, spin: 0.01, size: 0.9 },
+    { energy: 0.5, playful: 0.6, dark: 0.3, solo: 0.9, peak: 0.5, family: "geometric" }),
+  S("nebula", "Breathing Nebula", "a soft cloud that inhales on the bass", pal([0.6, 0.25, 0.9], [0.95, 0.4, 0.6], [0.6, 0.85, 1.0]),
+    { trail: 0.7, elev: 0.3, dist: 5.0, intensity: 0.8, maxD: 0.6 },
+    { energy: 0.25, playful: 0.1, dark: 0.7, solo: 0.7, peak: 0.7, family: "cosmic" }),
+  S("arcs", "Arcs", "smooth bridges of light arching between poles", pal([0.5, 0.6, 1.0], [0.9, 0.6, 1.0], [1.0, 0.95, 1.0]),
+    { trail: 0.5, elev: 0.25, dist: 5.0 },
+    { energy: 0.55, playful: 0.4, dark: 0.5, solo: 0.6, peak: 0.6, family: "geometric" }),
+  S("kaleido", "Kaleidoscope", "mirrored flow folded into eight sectors", pal([1.0, 0.4, 0.6], [0.5, 0.6, 1.0], [1.0, 0.9, 0.6]),
+    { trail: 0.45, elev: 1.35, dist: 4.4, spin: 0.0 },
+    { energy: 0.6, playful: 0.7, dark: 0.3, solo: 0.6, peak: 0.7, family: "geometric" }),
+  S("helix", "Helix", "a double spiral column turning on the mids", pal([0.4, 0.9, 1.0], [0.7, 0.5, 1.0], [1.0, 0.9, 0.95]),
+    { trail: 0.5, elev: 0.2, dist: 4.8, spin: 0.0 },
+    { energy: 0.5, playful: 0.4, dark: 0.4, solo: 0.6, peak: 0.5, family: "geometric" }),
+  S("knot", "Torus Knot", "a single thread of light tied into a turning knot", pal([1.0, 0.45, 0.25], [0.95, 0.4, 0.75], [0.6, 0.8, 1.0]),
+    { trail: 0.55, elev: 0.5, dist: 4.6 },
+    { energy: 0.5, playful: 0.4, dark: 0.5, solo: 0.7, peak: 0.6, family: "geometric" }),
+  S("fountain", "Fountain", "light thrown upward that falls in slow arcs", pal([1.0, 0.7, 0.35], [0.6, 0.8, 1.0], [1.0, 1.0, 0.9]),
+    { trail: 0.55, elev: 0.15, dist: 4.8, wrap: [0, 0, 1], respawn: "fountain", maxD: 0.45 },
+    { energy: 0.7, playful: 0.8, dark: 0.2, solo: 0.5, peak: 0.6, family: "elemental" }),
+  S("harmonics", "Harmonic Sphere", "a sphere that ripples in spherical harmonics, one band per order", pal([0.95, 0.5, 0.3], [0.5, 0.55, 1.0], [0.9, 1.0, 1.0]),
+    { trail: 0.45, elev: 0.35, dist: 4.4 },
+    { energy: 0.5, playful: 0.5, dark: 0.4, solo: 0.7, peak: 0.8, family: "cosmic" }),
+  S("lissajous", "Lissajous", "a figure traced by the music's own intervals", pal([1.0, 0.6, 0.4], [0.7, 0.55, 1.0], [0.85, 1.0, 1.0]),
+    { trail: 0.6, elev: 0.3, dist: 4.4, size: 0.9 },
+    { energy: 0.45, playful: 0.6, dark: 0.3, solo: 0.8, peak: 0.5, family: "geometric" }),
+];
 
 export function soulById(id: SoulId): SoulPreset {
   const s = SOULS.find((x) => x.id === id);

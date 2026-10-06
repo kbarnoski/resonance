@@ -119,7 +119,15 @@ uniform float uMix;
 uniform int uTexW;
 uniform float uCount;
 uniform float uSmokeW;    // weight of the smoke soul (respawn gate)
-uniform float uMotesW;    // weight of the motes soul (respawn gate)
+uniform vec3 uWrap;       // wrap weights: x-flow, rising, falling
+uniform float uInkW;      // ink respawn weight
+uniform float uFountainW; // fountain respawn weight
+uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
+// playful impulses (particle-lead conductor)
+uniform float uScatter;   // scatter-and-regroup envelope 0..1
+uniform float uBounce;    // bounce envelope (signed)
+uniform vec3 uMelody;     // melodic attractor
+uniform float uMelodyW;   // follower weight
 // image dissolve / reform (particle-engine dissolveTo)
 uniform float uImgForm;   // spring toward the image plane 0..1
 uniform float uImgShow;   // image presence (dissolve swirl gate)
@@ -135,6 +143,8 @@ ${NOISE}
 ${IMG_UV}
 
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
+mat3 rotY(float a){ float c = cos(a), sn = sin(a); return mat3(c, 0.0, -sn, 0.0, 1.0, 0.0, sn, 0.0, c); }
+mat3 rotX(float a){ float c = cos(a), sn = sin(a); return mat3(1.0, 0.0, 0.0, 0.0, c, sn, 0.0, -sn, c); }
 
 // Returns xyz = acceleration, w = linear drag.
 vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv){
@@ -209,19 +219,300 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     a.xz -= p.xz * smoothstep(2.2, 3.0, length(p.xz)) * 1.5;
     return vec4(a, 0.0);
   }
-  // ── MURMURATION: a lagged ribbon chasing a wandering leader ──
-  float t = uClock.x * 0.55 - s.g * 4.5;
-  vec3 lead = vec3(sin(t * 0.61) * 1.25 + sin(t * 0.23) * 0.3,
-                   sin(t * 0.47 + 1.0) * 0.45,
-                   sin(t * 0.39 + 2.0) * 0.95);
-  vec3 h = hash31(s.a * 2971.0) - 0.5;
-  float spread = 0.55 + 0.25 * uSwell;
-  vec3 off = vec3(h.x * 1.6, h.y * 0.25, h.z * 1.6) * spread;
-  vec3 target = lead + off + normalize(h + 1e-4) * 0.45 * up * trebW;
-  vec3 desired = (target - p) * (2.0 + 1.2 * max(uBands.x, 0.0));
-  vec3 a = (desired - v) * (1.4 + 1.6 * s.b);
-  a += curlNoise(p * 1.1 + uClock.y * 0.08) * (0.3 + 3.2 * up * midW) * 0.5;
-  return vec4(a, 0.0);
+  if (soul == 3) {
+    // ── MURMURATION: a lagged ribbon chasing a wandering leader ──
+    float t = uClock.x * 0.55 - s.g * 4.5;
+    vec3 lead = vec3(sin(t * 0.61) * 1.25 + sin(t * 0.23) * 0.3,
+                     sin(t * 0.47 + 1.0) * 0.45,
+                     sin(t * 0.39 + 2.0) * 0.95);
+    vec3 h = hash31(s.a * 2971.0) - 0.5;
+    float spread = 0.55 + 0.25 * uSwell;
+    vec3 off = vec3(h.x * 1.6, h.y * 0.25, h.z * 1.6) * spread;
+    vec3 target = lead + off + normalize(h + 1e-4) * 0.45 * up * trebW;
+    vec3 desired = (target - p) * (2.0 + 1.2 * max(uBands.x, 0.0));
+    vec3 a = (desired - v) * (1.4 + 1.6 * s.b);
+    a += curlNoise(p * 1.1 + uClock.y * 0.08) * (0.3 + 3.2 * up * midW) * 0.5;
+    return vec4(a, 0.0);
+  }
+  if (soul == 5) {
+    // ── PETALS: tumbling fall with a sideways flutter; bass gusts lift ──
+    vec3 tv = vec3(sin(uClock.y * 0.7 + s.a * 40.0) * 0.22,
+                   -0.1 - 0.08 * s.b + 0.45 * max(uBands.x, 0.0) * (0.3 + bassW),
+                   cos(uClock.y * 0.5 + s.g * 30.0) * 0.18);
+    tv += curlNoise(p * 0.5 + uClock.y * 0.04) * 0.15 * (0.6 + 2.0 * up * midW);
+    tv.xz += (hash31(s.a * 1e3 + floor(uTime * 10.0)).xz - 0.5) * 0.8 * up * trebW;
+    vec3 a = (tv - v) * 1.4;
+    a.xz -= p.xz * smoothstep(2.2, 3.0, length(p.xz)) * 1.5;
+    return vec4(a, 0.0);
+  }
+  if (soul == 6) {
+    // ── EMBERS: sparks spiralling upward on turbulent breath ──
+    vec3 tv = vec3(0.0, 0.35 + 0.45 * s.b + 0.8 * max(uBands.x, 0.0), 0.0);
+    tv += curlNoise(p * 1.4 + vec3(0.0, -uClock.y * 0.4, 0.0)) * 0.55 * (0.5 + 2.0 * up * midW);
+    tv += (hash31(s.a * 1e3 + floor(uTime * 20.0)) - 0.5) * 1.2 * up * trebW;
+    vec3 a = (tv - v) * 2.2;
+    a.xz -= p.xz * smoothstep(1.4, 2.4, length(p.xz)) * 2.0;
+    return vec4(a, 0.0);
+  }
+  if (soul == 7) {
+    // ── DUST STORM: a river of dust streaming sideways ──
+    vec3 tv = vec3(0.5 + 1.1 * max(uBands.y, 0.0) + 0.7 * up * midW + 0.3 * uBandLv.x, 0.0, 0.0);
+    tv += curlNoise(p * 0.8 + vec3(-uClock.y * 0.3, 0.0, 0.0)) * 0.5 * (0.7 + 1.5 * up);
+    vec3 a = (tv - v) * 1.6;
+    a.y -= (p.y - sin(p.x * 0.8 + uClock.x * 0.3) * 0.4) * 1.2;
+    a.z -= p.z * smoothstep(1.2, 2.2, abs(p.z)) * 1.5;
+    return vec4(a, 0.0);
+  }
+  if (soul == 8) {
+    // ── POLLEN: a hush of fine motes hanging in a slow beam ──
+    vec3 tv = curlNoise(p * 0.9 + uClock.y * 0.03) * 0.08 * (1.0 + 3.0 * up * midW) + vec3(0.0, -0.015, 0.0);
+    tv += (hash31(s.a * 1e3 + floor(uTime * 8.0)) - 0.5) * 0.25 * up * trebW;
+    vec3 a = (tv - v) * 1.0;
+    a -= p * smoothstep(1.8, 2.6, length(p)) * 1.2;
+    return vec4(a, 0.4);
+  }
+  if (soul == 9) {
+    // ── TENDRILS: luminous growth reaching upward, swaying with the melody ──
+    float k = floor(s.b * 7.0);
+    float reach = 0.55 + 0.45 * smoothstep(0.0, 1.0, uSwell + uBandLv.y * 0.5);
+    float u = min(s.g, reach);
+    vec3 root = vec3((k - 3.0) * 0.55, -1.9, sin(k * 2.3) * 0.5);
+    vec3 home = root + vec3(sin(u * 3.0 + k + uClock.y * 0.3) * 0.45 * u,
+                            u * 3.6,
+                            cos(u * 2.5 + k * 1.7 + uClock.y * 0.25) * 0.45 * u);
+    home += curlNoise(vec3(k * 3.1, u * 2.0, uClock.y * 0.12)) * 0.12 * u * (1.0 + 2.0 * up * midW);
+    home += (hash31(s.a * 77.0) - 0.5) * 0.05 * (1.0 + 4.0 * up * trebW);
+    return vec4((home - p) * 8.0, 4.0);
+  }
+  if (soul == 10) {
+    // ── THREADS: strings of light vibrating in standing-wave modes ──
+    float k = floor(s.b * 9.0);
+    float x = (s.g - 0.5) * 5.6;
+    float xn = s.g;
+    float bandAmp = k < 3.0 ? uBandLv.x + max(uBands.x, 0.0) : k < 6.0 ? uBandLv.y + max(uBands.y, 0.0) : uBandLv.z + max(uBands.z, 0.0);
+    float n = 1.0 + mod(k, 3.0) + (k >= 6.0 ? 2.0 : 0.0);
+    float disp = sin(3.14159265 * xn * n) * sin(uClock.y * (1.4 + n * 0.6) + k) * 0.22 * (0.25 + bandAmp);
+    vec3 home = vec3(x, (k - 4.0) * 0.36 + disp, sin(k * 1.7) * 0.2);
+    home.y += (hash11(s.a * 41.0) - 0.5) * 0.012;
+    return vec4((home - p) * 12.0, 5.0);
+  }
+  if (soul == 11) {
+    // ── RIBBONS: three twisting bands looping through space ──
+    float r = floor(s.b * 3.0);
+    float t = s.g * 6.2831853 + uClock.y * 0.18 + r * 2.1;
+    vec3 c0 = vec3(sin(t) * 1.4, sin(t * 2.0 + r) * 0.5, cos(t) * 1.1 * cos(t * 0.5 + r));
+    vec3 c1 = vec3(sin(t + 0.01) * 1.4, sin((t + 0.01) * 2.0 + r) * 0.5, cos(t + 0.01) * 1.1 * cos((t + 0.01) * 0.5 + r));
+    vec3 T = normalize(c1 - c0 + 1e-5);
+    vec3 N = normalize(cross(T, vec3(0.0, 1.0, 0.0)) + 1e-4);
+    vec3 B = cross(T, N);
+    float tw = s.g * 8.0 + uClock.x * 0.6;
+    float w = (s.a - 0.5) * 0.32 * (1.0 + 0.8 * up * midW);
+    vec3 home = c0 + (N * cos(tw) + B * sin(tw)) * w;
+    home += normalize(hash31(s.a * 613.0) - 0.5) * 0.15 * up * trebW;
+    return vec4((home - p) * 8.0, 4.0);
+  }
+  if (soul == 12) {
+    // ── FIREFLIES: slow wanderers that dart when the treble sparkles ──
+    vec3 base = (hash31(s.a * 91.0) - 0.5) * vec3(4.4, 2.8, 3.0);
+    vec3 wander = vec3(sin(uClock.y * 0.3 * (0.5 + s.g) + s.a * 30.0),
+                       sin(uClock.y * 0.23 * (0.5 + s.b) + s.g * 40.0) * 0.6,
+                       cos(uClock.y * 0.27 + s.b * 20.0)) * 0.5;
+    vec3 a = (base + wander - p) * 1.6;
+    a += (hash31(s.a * 1e3 + floor(uTime * 3.0)) - 0.5) * 9.0 * up * trebW;
+    return vec4(a, 1.4);
+  }
+  if (soul == 13) {
+    // ── INK IN WATER: clouds of light unfurling from drops ──
+    vec3 tv = curlNoise(p * 1.1 + vec3(0.0, uClock.y * 0.1, 0.0)) * 0.35 * (0.6 + 2.2 * up * midW + 0.4 * uBandLv.x);
+    tv.y -= 0.05;
+    vec3 a = (tv - v) * 1.2;
+    a -= p * smoothstep(2.0, 2.8, length(p)) * 1.2;
+    return vec4(a, 0.0);
+  }
+  if (soul == 14) {
+    // ── BRANCHING: a fractal tree whose angles breathe ──
+    float idx = floor(fid * 128.0);
+    float L = 7.0;
+    float lev = floor(s.g * L);
+    float frac = fract(s.g * L);
+    vec3 pos = vec3(0.0, -1.9, 0.0);
+    vec3 dir = vec3(0.0, 1.0, 0.0);
+    float len = 0.85;
+    float spreadA = 0.42 + 0.12 * sin(uClock.y * 0.2) + 0.18 * max(uBands.x, 0.0);
+    for (int i = 0; i < 7; i++) {
+      if (float(i) > lev) break;
+      float seg = float(i) == lev ? frac : 1.0;
+      pos += dir * len * seg;
+      float bit = mod(floor(idx / exp2(float(i))), 2.0) * 2.0 - 1.0;
+      float ang = bit * spreadA * (1.0 + 0.15 * sin(uClock.y * 0.5 + float(i)));
+      float yaw = float(i) * 1.3 + uClock.x * 0.05;
+      vec3 axis = normalize(vec3(cos(yaw), 0.0, sin(yaw)));
+      dir = normalize(dir * cos(ang) + cross(axis, dir) * sin(ang));
+      len *= 0.74;
+    }
+    pos += (hash31(s.a * 19.0) - 0.5) * 0.03 * (1.0 + 5.0 * up * trebW);
+    return vec4((pos - p) * 8.0, 4.0);
+  }
+  if (soul == 15) {
+    // ── SACRED GEOMETRY: nested wireframes turning on their own bands ──
+    float shell = floor(s.b * 3.0);
+    float e = floor(fract(s.b * 3.0) * 12.0);
+    float t = s.g * 2.0 - 1.0;
+    vec3 q;
+    if (shell == 1.0) {
+      float pair = floor(e / 4.0);
+      vec2 sg = vec2(mod(e, 2.0) * 2.0 - 1.0, mod(floor(e / 2.0), 2.0) * 2.0 - 1.0);
+      vec3 ai = pair == 0.0 ? vec3(1, 0, 0) : pair == 1.0 ? vec3(0, 1, 0) : vec3(0, 0, 1);
+      vec3 aj = pair == 0.0 ? vec3(0, 1, 0) : pair == 1.0 ? vec3(0, 0, 1) : vec3(1, 0, 0);
+      q = mix(ai * sg.x, aj * sg.y, s.g) * 1.35;
+    } else {
+      float axis = floor(e / 4.0);
+      vec2 sg = vec2(mod(e, 2.0) * 2.0 - 1.0, mod(floor(e / 2.0), 2.0) * 2.0 - 1.0);
+      q = axis == 0.0 ? vec3(t, sg.x, sg.y) : axis == 1.0 ? vec3(sg.x, t, sg.y) : vec3(sg.x, sg.y, t);
+      q *= shell == 0.0 ? 0.95 : 0.45;
+    }
+    float clk = shell == 0.0 ? uClock.x : shell == 1.0 ? uClock.y : uClock.z;
+    q = rotY(clk * 0.25 * (shell == 1.0 ? -1.0 : 1.0)) * rotX(clk * 0.17) * q;
+    q *= 1.0 + 0.06 * max(uBands.x, 0.0);
+    q += (hash31(s.a * 29.0) - 0.5) * 0.02 * (1.0 + 6.0 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 16) {
+    // ── ORBITALS: tilted rings, each orbit its own register ──
+    float k = floor(s.b * 24.0);
+    float kn = k / 24.0;
+    float r = 0.35 + kn * 1.6 + (hash11(s.a * 7.0) - 0.5) * 0.04;
+    vec3 tilt = hash31(k * 13.7) * 6.2831853;
+    float clk = kn < 0.33 ? uClock.x : kn < 0.66 ? uClock.y : uClock.z;
+    float ang = s.g * 6.2831853 + clk * 0.9 / pow(0.4 + r, 1.5);
+    vec3 q = vec3(cos(ang) * r, 0.0, sin(ang) * r);
+    q.y += sin(ang * 3.0 + uClock.y) * 0.03 * (1.0 + 3.0 * up * midW);
+    q = rotY(tilt.x) * rotX(tilt.y * 0.5) * q;
+    q *= 1.0 + 0.08 * up * bassW;
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 17) {
+    // ── WAVES: a field of motes rolling like a sea of sound ──
+    float x = (s.g - 0.5) * 6.4;
+    float z = (s.b - 0.5) * 4.4;
+    float y = 0.26 * sin(x * 1.1 - uClock.x * 1.4) * (0.4 + uBandLv.x + max(uBands.x, 0.0))
+            + 0.12 * sin(z * 2.3 + x * 0.7 - uClock.y * 2.0) * (0.4 + uBandLv.y)
+            + 0.05 * sin(x * 7.0 + z * 5.0 - uClock.z * 4.0) * (0.3 + uBandLv.z + up * trebW) - 0.5;
+    return vec4((vec3(x, y, z) - p) * 9.0, 4.2);
+  }
+  if (soul == 18) {
+    // ── CYMATICS: sand of light seeking a resonating plate's nodal lines ──
+    vec2 nm = uForm.xy;
+    vec2 q = p.xz / 1.7;
+    float PI = 3.14159265;
+    float f = cos(nm.x * PI * q.x) * cos(nm.y * PI * q.y) - cos(nm.y * PI * q.x) * cos(nm.x * PI * q.y);
+    vec2 g = vec2(
+      -nm.x * PI * sin(nm.x * PI * q.x) * cos(nm.y * PI * q.y) + nm.y * PI * sin(nm.y * PI * q.x) * cos(nm.x * PI * q.y),
+      -nm.y * PI * cos(nm.x * PI * q.x) * sin(nm.y * PI * q.y) + nm.x * PI * cos(nm.y * PI * q.x) * sin(nm.x * PI * q.y));
+    vec3 a = vec3(-f * g.x, 0.0, -f * g.y) * 0.9;
+    a.xz += (hash31(s.a * 1e3 + floor(uTime * 14.0)).xz - 0.5) * abs(f) * (2.0 + 6.0 * uBandLv.x + 6.0 * up);
+    a.y = (0.04 * abs(f) * (1.0 + 3.0 * up) - p.y) * 8.0;
+    a.xz -= p.xz * smoothstep(1.6, 1.9, max(abs(p.x), abs(p.z))) * 6.0;
+    return vec4(a, 3.0);
+  }
+  if (soul == 19) {
+    // ── BREATHING NEBULA: a soft cloud that inhales on the bass ──
+    vec3 h = hash31(s.a * 211.0);
+    vec3 h2 = hash31(s.a * 977.0);
+    vec3 gauss = vec3(sqrt(-2.0 * log(max(h.x, 1e-4))) * cos(6.2831853 * h.y),
+                      sqrt(-2.0 * log(max(h.z, 1e-4))) * sin(6.2831853 * h2.x),
+                      sqrt(-2.0 * log(max(h2.y, 1e-4))) * cos(6.2831853 * h2.z));
+    float breath = 1.0 + 0.18 * sin(uClock.x * 0.4) + 0.22 * max(uBands.x, 0.0);
+    vec3 home = gauss * vec3(0.9, 0.5, 0.8) * breath;
+    home += curlNoise(home * 0.6 + uClock.y * 0.05) * 0.35 * (1.0 + 1.5 * up * midW);
+    home += normalize(hash31(s.a * 613.0) - 0.5) * 0.2 * up * trebW;
+    return vec4((home - p) * 3.0, 2.2);
+  }
+  if (soul == 20) {
+    // ── ARCS: smooth bridges of light between poles ──
+    float k = floor(s.b * 9.0);
+    float th = k * 0.698 + uClock.x * 0.03;
+    vec3 A = vec3(cos(th) * 1.6, -1.3, sin(th) * 1.6);
+    vec3 Bp = vec3(cos(th + 2.6) * 1.6, -1.3, sin(th + 2.6) * 1.6);
+    float t = clamp(s.g + (hash11(s.a * 3.0) - 0.5) * 0.04 * up * trebW, 0.0, 1.0);
+    float h = 1.3 + 0.35 * sin(uClock.y * 0.3 + k) + 0.35 * up * bassW;
+    vec3 side = normalize(cross(Bp - A, vec3(0.0, 1.0, 0.0)) + 1e-4);
+    vec3 home = mix(A, Bp, t) + vec3(0.0, sin(3.14159265 * t) * h, 0.0)
+              + side * sin(3.14159265 * t) * 0.25 * sin(uClock.y * 0.7 + k);
+    home += (hash31(s.a * 47.0) - 0.5) * 0.035;
+    return vec4((home - p) * 9.0, 4.2);
+  }
+  if (soul == 21) {
+    // ── KALEIDOSCOPE: mirrored flow folded into eight sectors ──
+    float r = 0.15 + 1.6 * s.g;
+    float wedge = 3.14159265 / 8.0;
+    float tb = s.b * wedge + 0.25 * sin(uClock.y * 0.4 + r * 3.0) * wedge + 0.1 * up * midW;
+    float k = floor(s.a * 8.0);
+    float mirror = mod(floor(s.a * 16.0), 2.0);
+    float th = k * 2.0 * wedge + (mirror > 0.5 ? -tb : tb) + uClock.x * 0.05;
+    r *= 1.0 + 0.08 * sin(tb * 16.0 + uClock.y) + 0.12 * up * bassW;
+    vec3 home = vec3(cos(th) * r, 0.2 * sin(r * 4.0 - uClock.y * 1.2) * (0.3 + uBandLv.y), sin(th) * r);
+    return vec4((home - p) * 8.0, 4.0);
+  }
+  if (soul == 22) {
+    // ── HELIX: a double spiral column ──
+    float strand = step(0.5, s.b);
+    float y = (s.g - 0.5) * 4.0;
+    float rung = step(s.a, 0.15);
+    float yq = rung > 0.5 ? floor(y * 3.0) / 3.0 : y;
+    float ang = yq * 2.2 * (1.0 + 0.3 * max(uBands.x, 0.0)) + uClock.y * 0.6;
+    float r = 0.55 + 0.08 * sin(yq * 3.0 + uClock.x);
+    vec3 s0 = vec3(cos(ang) * r, yq, sin(ang) * r);
+    vec3 s1 = vec3(cos(ang + 3.14159) * r, yq, sin(ang + 3.14159) * r);
+    vec3 home = rung > 0.5 ? mix(s0, s1, fract(s.b * 7.0)) : (strand > 0.5 ? s1 : s0);
+    home += (hash31(s.a * 61.0) - 0.5) * 0.04 * (1.0 + 5.0 * up * trebW);
+    return vec4((home - p) * 9.0, 4.2);
+  }
+  if (soul == 23) {
+    // ── TORUS KNOT: one thread of light tied into a turning knot ──
+    float ph = s.g * 6.2831853;
+    float P = 2.0, Q = 3.0;
+    float rr = cos(Q * ph) + 2.0;
+    vec3 c = vec3(rr * cos(P * ph), -sin(Q * ph), rr * sin(P * ph)) * 0.55;
+    vec3 tube = normalize(hash31(s.a * 37.0) - 0.5) * 0.1 * (1.0 + 1.2 * up * midW);
+    vec3 home = rotY(uClock.y * 0.15) * rotX(uClock.x * 0.08) * (c + tube);
+    home *= 1.0 + 0.06 * max(uBands.x, 0.0);
+    return vec4((home - p) * 9.0, 4.2);
+  }
+  if (soul == 24) {
+    // ── FOUNTAIN: light thrown upward, falling in slow arcs ──
+    vec3 a = vec3(0.0, -1.6, 0.0);
+    a += curlNoise(p * 0.9 + uClock.y * 0.1) * 0.25 * (1.0 + 2.0 * up * midW);
+    a.xz += (hash31(s.a * 1e3 + floor(uTime * 12.0)).xz - 0.5) * 1.5 * up * trebW;
+    return vec4(a, 0.15);
+  }
+  if (soul == 25) {
+    // ── HARMONIC SPHERE: ripples in spherical-harmonic orders, one per band ──
+    float i = fid * uCount;
+    float yy = 1.0 - 2.0 * fid;
+    float rad = sqrt(max(0.0, 1.0 - yy * yy));
+    float phi = i * 2.39996323;
+    vec3 d = vec3(cos(phi) * rad, yy, sin(phi) * rad);
+    float th = acos(clamp(d.y, -1.0, 1.0));
+    float az = atan(d.z, d.x) + uClock.y * 0.1;
+    float R = 1.15
+      + 0.22 * cos(2.0 * th) * cos(2.0 * az + uClock.x * 0.5) * (0.3 + uBandLv.x + max(uBands.x, 0.0))
+      + 0.1 * cos(4.0 * th) * cos(4.0 * az - uClock.y * 0.6) * (0.3 + uBandLv.y + max(uBands.y, 0.0))
+      + 0.05 * cos(8.0 * th) * cos(8.0 * az + uClock.z) * (0.3 + uBandLv.z + up * trebW);
+    return vec4((d * R - p) * 10.0, 4.5);
+  }
+  if (soul == 26) {
+    // ── LISSAJOUS: a figure traced by the music's own intervals ──
+    float t = s.g * 6.2831853 * 2.0;
+    vec3 rat = vec3(1.0, uForm.z, uForm.w);
+    vec3 q = vec3(sin(rat.x * t + uClock.y * 0.2),
+                  sin(rat.y * t),
+                  sin(rat.z * t + 1.3 + uClock.x * 0.1)) * vec3(1.6, 1.1, 1.2);
+    q += normalize(hash31(s.a * 53.0) - 0.5) * (0.025 + 0.12 * up * trebW + 0.04 * up * midW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  return vec4(-v, 1.0);
+
 }
 
 void main(){
@@ -257,6 +548,11 @@ void main(){
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
   }
 
+  // playful impulses — motion only (scatter outward, bounce, follow the melody)
+  if (uScatter > 0.001) f.xyz += normalize(p + (hash31(s.a * 5.0) - 0.5) * 0.3) * uScatter * 7.0 * (0.4 + s.g);
+  if (abs(uBounce) > 0.001) f.y += uBounce * 9.0 * (0.4 + s.b);
+  if (uMelodyW > 0.001) f.xyz += (uMelody - p) * 3.0 * uMelodyW * step(0.86, s.b);
+
   v += f.xyz * dt;
   v *= exp(-f.w * dt);
   float sp2 = length(v);
@@ -265,11 +561,20 @@ void main(){
 
   if (uSnap > 0.5) { p = imgT; v = vec3(0.0); }
 
-  // motes rise and re-enter below (out of view — the draw fades the edges)
-  if (uMotesW > 0.5 && uImgShow < 0.01 && p.y > 2.0) {
+  // wrapping souls re-enter off-edge (out of view — the draw fades the edges)
+  if (uImgShow < 0.01) {
     vec3 r = hash31(s.a * 4271.0 + floor(uTime));
-    p = vec3((r.x - 0.5) * 4.4, -2.0, (r.z - 0.5) * 3.2);
-    v = vec3(0.0);
+    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x - 0.5) * 4.4, -2.0, (r.z - 0.5) * 3.2); v = vec3(0.0); }
+    if (uWrap.z > 0.5 && p.y < -2.0) {
+      if (uFountainW > 0.5) {
+        vec2 d = normalize(r.xz - 0.5 + 1e-4);
+        p = vec3(d.x * 0.08, -1.95, d.y * 0.08);
+        v = vec3(d.x * (0.3 + 0.6 * r.y), 2.4 + 0.6 * r.z + 0.9 * max(uBands.x, 0.0), d.y * (0.3 + 0.6 * r.y));
+      } else {
+        p = vec3((r.x - 0.5) * 4.4, 2.0, (r.z - 0.5) * 3.2); v = vec3(0.0);
+      }
+    }
+    if (uWrap.x > 0.5 && p.x > 3.0) { p.x = -3.0; p.y = (r.y - 0.5) * 1.6; }
   }
 
   float age = P4.w + uDt;
@@ -282,6 +587,13 @@ void main(){
       float th = r.y * 6.2831853;
       p = vec3(cos(th) * rr, -1.5 + r.z * 0.25, sin(th) * rr);
       v = vec3(0.0);
+    } else if (uInkW > 0.5) {
+      // a new drop every ~5 s; each particle re-blooms from the current drop
+      float epoch = floor(uTime / 5.0);
+      vec3 drop = (hash31(epoch * 17.3) - 0.5) * vec3(2.6, 1.4, 1.6);
+      vec3 r = hash31(s.a * 7919.0 + epoch);
+      p = drop + (r - 0.5) * 0.2;
+      v = normalize(r - 0.5 + 1e-4) * (0.4 + 0.5 * max(uBands.x, 0.0));
     }
   }
   if (any(isnan(p)) || any(isinf(p)) || length(p) > 30.0) {
@@ -308,7 +620,11 @@ uniform vec3 uPalLow;
 uniform vec3 uPalMid;
 uniform vec3 uPalHigh;
 uniform float uSmokeW;
-uniform float uMotesW;
+uniform float uInkW;
+uniform vec3 uWrap;        // x-flow, rising, falling — edge fades where they wrap
+uniform float uSize;       // soul sprite size
+uniform float uHue;        // hue rotation (radians, luma-preserving YIQ)
+uniform float uSat;        // saturation multiplier
 uniform float uDensity;    // world visibility fraction (1 = all)
 uniform float uWorldFade;  // world element fade (dissolve hides it)
 uniform sampler2D uImgA;   // outgoing still
@@ -321,6 +637,17 @@ uniform float uScrAspect;
 out vec3 vCol;
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 ${IMG_UV}
+// Rotate hue / scale saturation in YIQ: luma (Y) is untouched, so colour can
+// follow the harmony without ever changing brightness (WCAG 2.3.1).
+vec3 hueSat(vec3 c, float h, float sat){
+  float Y = dot(c, vec3(0.299, 0.587, 0.114));
+  float I = dot(c, vec3(0.596, -0.274, -0.322));
+  float Q = dot(c, vec3(0.211, -0.523, 0.312));
+  float ch = cos(h), sh = sin(h);
+  float I2 = (I * ch - Q * sh) * sat;
+  float Q2 = (I * sh + Q * ch) * sat;
+  return max(vec3(Y + 0.956 * I2 + 0.621 * Q2, Y - 0.272 * I2 - 0.647 * Q2, Y - 1.106 * I2 + 1.703 * Q2), 0.0);
+}
 void main(){
   int id = gl_VertexID;
   ivec2 c = ivec2(id % uTexW, id / uTexW);
@@ -336,23 +663,26 @@ void main(){
   // ember (rank 0) so the field can settle to exactly one light
   float rank = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
   float visW = uDensity >= 0.999 ? 1.0 : 1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rank);
-  float sparse = 1.0 - clamp(uDensity * 25.0, 0.0, 1.0);
+  float sparse = 1.0 - clamp(uDensity * 8.0, 0.0, 1.0); // sparse fields: fewer, bigger, brighter motes
   float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
   boost = mix(boost, 1.0, uImgShow);
   // bass = heavier motes, treble = the finest dust
-  float size = mix(1.55, 0.5, band) * (0.65 + 0.7 * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost;
+  float size = mix(1.55, 0.5, band) * (0.65 + 0.7 * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 1.0, uImgShow);
   float a = uAlpha;
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 32.0);
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   col = mix(col, uPalHigh, clamp(length(v.xyz) * 0.12, 0.0, 0.25));
+  col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat, uSat);
 
   float life = lifeOf(s);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
-  a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW));
-  // motes fade at the top/bottom edges, where they wrap
-  a *= mix(1.0, smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y), smoothstep(0.0, 0.5, uMotesW) * (1.0 - uImgShow));
+  a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
+  // wrapping souls fade at the edges where they re-enter
+  float edgeY = smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y);
+  a *= mix(1.0, edgeY, smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
+  a *= mix(1.0, smoothstep(3.0, 2.3, abs(p.x)), smoothstep(0.0, 0.5, uWrap.x) * (1.0 - uImgShow));
   vec3 world = col * a * visW * mix(1.0, 4.0, sparse) * uWorldFade;
 
   // image mode: the particle wears its pixel of the still (sRGB → linear)
