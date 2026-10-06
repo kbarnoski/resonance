@@ -215,6 +215,12 @@ class JourneyEngine {
    *  offers a DIFFERENT dual (2026-10-01: the script reasserted
    *  ghostribbons 4s after every rest — "persisting too long"). */
   private dualRestedMode: string | null = null;
+  /** The scripted primary last APPLIED. The script is edge-triggered: it
+   *  applies its primary only when the scripted choice CHANGES, so a
+   *  forceShaderSwitch() (the finale) stands until the next script entry
+   *  — level-triggering reverted it 2-54 ms later, re-targeting a running
+   *  crossfade (Realized's finale, glitch RCA 2026-10-06). */
+  private lastScriptPrim: string | null = null;
   private scriptSubs = new Map<string, string | null>();
   /** Wall-clock of the last shader-layer switch on ANY layer — switches
    *  are spaced ≥4s apart so compile stalls never cluster (2026-09-28
@@ -254,6 +260,7 @@ class JourneyEngine {
     this.stop();
 
     this.takeScript = options?.script?.length ? options.script : null;
+    this.lastScriptPrim = null;
     this.kineticEq = isKineticJourneyName(journey.name);
     this.scriptSubs = new Map();
     this.dualRestedMode = null;
@@ -1148,7 +1155,9 @@ class JourneyEngine {
       else if (en.role === "tertiary-on") { tert = resolve(en.mode); }
       else if (en.role === "tertiary-off") { tert = null; }
     }
-    if (prim && prim !== this.currentShaderMode) {
+    // Edge-triggered: only a CHANGE of the scripted choice is applied.
+    if (prim && prim !== this.lastScriptPrim && prim !== this.currentShaderMode) {
+      this.lastScriptPrim = prim;
       this.closeHistoryEntry("primary", now);
       this.currentShaderMode = prim;
       this.seenShaders.add(prim);
@@ -1156,6 +1165,8 @@ class JourneyEngine {
       this.shaderStartMs = now;
       glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} (scripted)`);
       this.lastAnySwitchMs = now; this.nudgeForce = false;
+    } else if (prim) {
+      this.lastScriptPrim = prim;
     }
     // Dual REST (Karel 2026-10-01 note #4: ghostribbons rode a 70s
     // scripted dual slot — "they stay and stay"): a scripted dual that

@@ -429,6 +429,10 @@ export function AiImageLayer({
       lastClipPhaseRef.current = -1; // clips re-arm per journey
       heroPushedForRef.current = -1;
       pendingMorphRef.current = null;
+      // A new journey starts at p≈0: the previous journey's last progress
+      // made the replay detector fire on EVERY journey change, zeroing the
+      // handoff holdoffs set below (glitch RCA 2026-10-06).
+      lastProgressRef.current = 0;
       glitchRecord("journey-change", `${prevJourneyId ?? "-"} -> ${journeyId}`);
       glitchFlush("journey-change");
       // Boundary freeze protocol: open the settle window for the title
@@ -698,7 +702,9 @@ export function AiImageLayer({
       // Replay/rewind detect (mastering loops jump p~1 -> 0): treat a
       // big backward jump as a journey start — fade what's on screen,
       // re-roll the opener, re-arm clips — so the intro never pops.
-      if (progress < lastProgressRef.current - 0.5) {
+      // (Never within 2 s of a journey change: the store's clock can still
+      // carry the outgoing track for a tick — that is a handoff, not a replay.)
+      if (progress < lastProgressRef.current - 0.5 && performance.now() - journeyChangeAtRef.current > 2000) {
         glitchRecord("replay-reset", `p ${lastProgressRef.current.toFixed(2)} -> ${progress.toFixed(2)}`);
         runJitterRef.current = Math.floor(Math.random() * 6);
         lastPackIndexRef.current = -1;

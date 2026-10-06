@@ -148,6 +148,10 @@ export function LabView() {
     // ?inst=n — field mode: n copies of the form
     const instQ = Number(q.get("inst"));
     if (instQ > 1) engine.setInstances(instQ, 0.37);
+    // ?dens= ?size= ?cam= — reproduce a journey state (perf benches)
+    const densQ = Number(q.get("dens")); if (densQ > 0) engine.setDensity(densQ);
+    const sizeQ = Number(q.get("size")); if (sizeQ > 0) engine.setSizeScale(sizeQ);
+    const camQ = Number(q.get("cam")); if (camQ > 0) engine.setCamScale(camQ);
     engine.start();
 
     const onResize = () => engine.resize();

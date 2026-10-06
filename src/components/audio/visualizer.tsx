@@ -20,6 +20,9 @@ function readTempoEnergy(analyser: AnalyserLike | null, dataArray: Uint8Array | 
       tempoShared.raw = total / (dataArray.length * 255);
     } catch { /* detached */ }
   }
+  // Silence (track end, the inter-journey breath) holds the pace — it
+  // used to decay the clock to 0.65x across the breath and surge back.
+  if (isSilentLevel(tempoShared.raw)) return tempoShared.smoothed;
   // Frame-rate-independent 3s pole (audit L4).
   const k = 1 - Math.exp(-dt / 3);
   tempoShared.smoothed += (tempoShared.raw - tempoShared.smoothed) * k;
@@ -45,6 +48,10 @@ import { isKineticJourneyName, isAudioReactiveJourney, driveOnlyRate, BAND_PROFI
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
+import {
+  frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
+  crossfadeRetarget, dequeueAfterFade, tertiaryStep, type DriveFlags, type TertiaryPhase,
+} from "@/lib/journeys/shader-drive";
 // Performance monitor is now FPS-based, started/stopped by JourneyFeedback component
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 
@@ -291,12 +298,16 @@ export function ShaderVisualizer({
     };
   }, []);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
-  const smoothMotionRef = useRef(smoothMotion);
-  const bandFocusRef = useRef(bandFocus);
-  useEffect(() => { bandFocusRef.current = bandFocus; }, [bandFocus]);
-  const bandDriveOnlyRef = useRef(bandDriveOnly);
-  useEffect(() => { bandDriveOnlyRef.current = bandDriveOnly; }, [bandDriveOnly]);
-  const tempoFlowRef = useRef(tempoFlow);
+  // Drive flags are LATCHED per shader (glitch RCA 2026-10-06): the props
+  // follow the CURRENT journey, but a layer still on screen from the
+  // previous journey must keep the motion it landed with — flipping them
+  // at the journey change snapped the outgoing shader's scale and clock.
+  // `latestFlagsRef` mirrors the props every render; `flagsRef` is what
+  // the render loop uses — set when the shader lands (GL setup effect) and
+  // re-latched only while parked or after the handoff window (eased).
+  const latestFlagsRef = useRef<DriveFlags>({ smoothMotion, tempoFlow, bandFocus, bandDriveOnly });
+  latestFlagsRef.current = { smoothMotion, tempoFlow, bandFocus, bandDriveOnly };
+  const flagsRef = useRef<DriveFlags>(latestFlagsRef.current);
   const pausedRef = useRef(paused);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -351,10 +362,6 @@ export function ShaderVisualizer({
   }, []);
 
   // Keep refs in sync without tearing down GL program
-  useEffect(() => {
-    smoothMotionRef.current = smoothMotion;
-  }, [smoothMotion]);
-  useEffect(() => { tempoFlowRef.current = tempoFlow; }, [tempoFlow]);
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
@@ -439,6 +446,26 @@ export function ShaderVisualizer({
     // sparse -> build -> sparse follows the SONG, never a forced arc
     // (Karel 2026-09-30). The bass/primary layer always carries.
     let actEma = 0.2; // slewed time-dilation — motion ACCELERATES, never snaps (nausea note 2026-09-30)
+
+    // Latch the drive flags NOW — the shader just landed on this layer.
+    flagsRef.current = latestFlagsRef.current;
+    // Flag MIXES (0..1): when a parked or post-handoff layer adopts new
+    // flags, the clock rate, scale breath, presence and uniform source
+    // glide between the two behaviours (~1 s) instead of stepping.
+    const mixTargets = (f: DriveFlags) => ({
+      band: f.bandFocus ? 1 : 0,
+      driveOnly: f.bandDriveOnly ? 1 : 0,
+      fft: f.smoothMotion ? 0 : 1,
+      kin: f.bandFocus && !f.bandDriveOnly ? 1 : 0,
+      pres: f.bandFocus && f.bandFocus !== "bass" && !f.bandDriveOnly ? 1 : 0,
+      tempo: f.tempoFlow ? 1 : 0,
+    });
+    const mix = mixTargets(flagsRef.current);
+    let lastBand: "bass" | "mid" | "treble" | null = flagsRef.current.bandFocus ?? null;
+    // FFT-smoothed uniforms, kept apart from the synthetic slow waves so
+    // the two can be blended.
+    const fftSm = { bass: 0, mid: 0, treble: 0, amplitude: 0 };
+    const MIX_K = 0.0165; // ~1 s time constant at 60 fps
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
 
@@ -451,29 +478,39 @@ export function ShaderVisualizer({
       }
       const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
       lastFrameTime = now;
-      if (bandFocusRef.current) {
-        // Kinetic EQ: this layer's CLOCK rides its band — motion, not
-        // luminance, carries the beat (WCAG 2.3.1: no flash). The rate
-        // itself is slewed (~400ms) so speed swells and eases — jitter
-        // reads as nausea (Karel 2026-09-30).
-        const prof0 = BAND_PROFILES[bandFocusRef.current];
-        const rateTarget = bandDriveOnlyRef.current
-          ? driveOnlyRate(prof0, eqLv)
-          : prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
-        rateSm += (rateTarget - rateSm) * 0.045;
-        cumTime += dt * rateSm;
-      } else if (tempoFlowRef.current) {
-        // Ultra-smoothed SHARED energy (one FFT read/frame across all
-        // layers) → clock rate 0.65-1.35×. The pace of the piece becomes
-        // the pace of the light; individual notes never twitch it.
-        // Parked layers reuse the shared value without reading (#17) —
-        // the compile state machine below must still run while parked.
-        const energy = pausedRef.current ? 0.3 : readTempoEnergy(analyser, dataArray, now, dt);
-        const rate = 0.65 + Math.min(1, energy * 2.2) * 0.7;
-        cumTime += dt * rate;
-      } else {
-        cumTime += dt;
+
+      // Re-latch only while parked (invisible) or after the handoff window.
+      if (shouldRelatchDriveFlags(flagsRef.current, latestFlagsRef.current, pausedRef.current, inBoundarySettle())) {
+        flagsRef.current = latestFlagsRef.current;
       }
+      const fl = flagsRef.current;
+      if (fl.bandFocus) lastBand = fl.bandFocus;
+      {
+        const tg = mixTargets(fl);
+        const k = pausedRef.current ? 1 : frameAlpha(MIX_K, dt);
+        for (const key of Object.keys(tg) as (keyof typeof tg)[]) mix[key] += (tg[key] - mix[key]) * k;
+      }
+
+      // Clock. Kinetic EQ: the layer's CLOCK rides its band — motion, not
+      // luminance, carries the beat (WCAG 2.3.1: no flash). Tempo flow:
+      // ultra-smoothed SHARED energy -> 0.65-1.35x. The rate is ALWAYS
+      // slewed (~400 ms) so speed swells and eases — and a flag change
+      // can never step the velocity (Karel 2026-09-30: jitter = nausea).
+      let baseRate = 1;
+      if (mix.tempo > 0.001) {
+        // Parked layers reuse the shared value without reading (#17).
+        const energy = pausedRef.current ? 0.3 : readTempoEnergy(analyser, dataArray, now, dt);
+        baseRate = 1 + (0.65 + Math.min(1, energy * 2.2) * 0.7 - 1) * mix.tempo;
+      }
+      let rateTarget = baseRate;
+      if (lastBand && mix.band > 0.001) {
+        const prof0 = BAND_PROFILES[lastBand];
+        const kinRate = prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
+        const bandRate = kinRate + (driveOnlyRate(prof0, eqLv) - kinRate) * mix.driveOnly;
+        rateTarget = baseRate + (bandRate - baseRate) * mix.band;
+      }
+      rateSm += (rateTarget - rateSm) * frameAlpha(0.045, dt);
+      cumTime += dt * rateSm;
       const time = cumTime;
 
       // ── Async compilation state machine ──
@@ -591,35 +628,16 @@ export function ShaderVisualizer({
       }
 
       const s = smoothRef.current;
-      // Kinetic band-split: the layer hears only its assigned band —
-      // that band drives amplitude and is boosted; the others whisper.
-      // Onset envelope (2026-09-30 probe: a sustained bassline holds
-      // level ~constant, so level mapping pinned at 1.0 — the beat
-      // lives in the TRANSIENT). Positive spectral flux of the focused
-      // band drives a fast-attack ~350ms-decay envelope.
-      const applyBandFocus = () => {
-        const f = bandFocusRef.current;
-        if (!f || bandDriveOnlyRef.current) return;
-        // NO damping, NO overwrites (Karel 2026-09-30: "a shader that
-        // responds in a certain way... should respond the same way if
-        // it is brought back" — damping u_bass to 12% on non-primary
-        // layers changed a shader's personality by layer role). Every
-        // layer hears the TRUE bands; layer identity lives in time-
-        // dilation, presence, and scale. u_amplitude carries the
-        // layer's own voice for band-agnostic shaders.
-        s.amplitude = eqLv;
-        void f;
-      };
+      // Synthetic slow waves (smooth-motion journeys) and the FFT-smoothed
+      // values are kept apart and blended by the flag mix, so a layer that
+      // adopts a journey's other uniform source glides instead of jumping.
+      const synBass = 0.3 + 0.12 * Math.sin(time * 0.13);
+      const synMid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
+      const synTreble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
+      const synAmp = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
       // Drive-only layers on a smooth-motion journey still READ the FFT
-      // (for the clock drive) but keep the synthetic uniforms below.
-      const smoothUniforms = smoothMotionRef.current;
-      if (smoothUniforms) {
-        s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
-        s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
-        s.treble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
-        s.amplitude = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
-      }
-      if (!smoothUniforms || bandFocusRef.current) {
+      // (for the clock drive) but keep the synthetic uniforms.
+      if (mix.fft > 0.001 || (lastBand && mix.band > 0.001)) {
         analyser.getByteFrequencyData(dataArray);
         let bassSum = 0, midSum = 0, trebleSum = 0, totalSum = 0;
         const len = dataArray.length;
@@ -637,33 +655,48 @@ export function ShaderVisualizer({
         (s as unknown as Record<string, number>).__rawB = rawBass;
         (s as unknown as Record<string, number>).__rawM = rawMid;
         (s as unknown as Record<string, number>).__rawT = rawTreble;
+        // SILENCE (track ended, paused, the inter-journey breath): the
+        // running means FREEZE and the drive parks at neutral — silence
+        // used to brake every clock to its floor and the first note after
+        // it surged the clock to its ceiling (glitch RCA 2026-10-06).
+        const silent = isSilentLevel(rawAmplitude);
         // Kinetic layers track the music, not a moving average — 0.06
         // smoothing lags transients ~1s, which erased the band-split
         // (Karel 2026-09-30: "i see nothing responding to sound").
-        if (!smoothUniforms) {
-          const k = bandFocusRef.current && !bandDriveOnlyRef.current ? 0.3 : SMOOTHING;
-          s.bass += (rawBass - s.bass) * k;
-          s.mid += (rawMid - s.mid) * k;
-          s.treble += (rawTreble - s.treble) * k;
-          s.amplitude += (rawAmplitude - s.amplitude) * k;
+        if (!silent) {
+          const k = frameAlpha(mix.kin > 0.5 ? 0.3 : SMOOTHING, dt);
+          fftSm.bass += (rawBass - fftSm.bass) * k;
+          fftSm.mid += (rawMid - fftSm.mid) * k;
+          fftSm.treble += (rawTreble - fftSm.treble) * k;
+          fftSm.amplitude += (rawAmplitude - fftSm.amplitude) * k;
         }
-        if (bandFocusRef.current) {
-          const fb = bandFocusRef.current;
-          const raw = fb === "bass" ? rawBass : fb === "mid" ? rawMid : rawTreble;
-          const prof = BAND_PROFILES[fb];
-          slowEma += (raw - slowEma) * 0.04; // ~400ms baseline
-          actEma += (raw - actEma) * 0.008;   // ~4s structural envelope
-          const dev = (raw - slowEma) * prof.gain * 0.45;
-          const target = Math.min(1, Math.max(0.05, 0.5 + dev));
+        if (lastBand) {
+          const raw = lastBand === "bass" ? rawBass : lastBand === "mid" ? rawMid : rawTreble;
+          const prof = BAND_PROFILES[lastBand];
+          if (!silent) {
+            slowEma += (raw - slowEma) * frameAlpha(0.04, dt); // ~400ms baseline
+            actEma += (raw - actEma) * frameAlpha(0.008, dt);  // ~2s structural envelope
+          }
+          // Shared envelope: eases the drive OUT (~1.5 s) whenever playback
+          // stops or a journey handoff is open, back IN (~3 s) after.
+          const env = readSharedDriveEnvelope(now, useAudioStore.getState().isPlaying && !inBoundarySettle() && !silent);
+          const target = driveTarget(raw, slowEma, prof.gain, env, silent);
           // fast attack up, banded release down (keeps flashes snappy)
-          eqLv += (target - eqLv) * (target > eqLv ? 0.6 : 1 - prof.decay);
+          eqLv += (target - eqLv) * frameAlpha(target > eqLv ? 0.6 : 1 - prof.decay, dt);
         }
       }
+      s.bass = synBass + (fftSm.bass - synBass) * mix.fft;
+      s.mid = synMid + (fftSm.mid - synMid) * mix.fft;
+      s.treble = synTreble + (fftSm.treble - synTreble) * mix.fft;
+      s.amplitude = synAmp + (fftSm.amplitude - synAmp) * mix.fft;
+      // Kinetic (not drive-only) layers: u_amplitude carries the layer's
+      // own band voice. NO damping of the true bands (Karel 2026-09-30:
+      // a shader must respond the same way whatever its layer role).
+      if (mix.kin > 0.001) s.amplitude += (eqLv - s.amplitude) * mix.kin;
 
       gl.useProgram(program!);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      applyBandFocus();
       gl.uniform1f(uBass, s.bass * REACTIVITY);
       gl.uniform1f(uMid, s.mid * REACTIVITY);
       gl.uniform1f(uTreble, s.treble * REACTIVITY);
@@ -673,30 +706,27 @@ export function ShaderVisualizer({
       // EQ embodiment (Karel 2026-09-30: "basically an incredible eq
       // viz" — uniforms alone read as ambient because most shaders use
       // them subtly): a band-focused LAYER pulses as a whole, its
-      // brightness and scale riding its band directly. Bass layer
-      // flashes with kicks, mid breathes with melody, treble sparkles.
-      if (bandFocusRef.current) {
-        const f2 = bandFocusRef.current;
-        const prof2 = BAND_PROFILES[f2];
-        const lv = eqLv;
-        // Motion carries the music; only a gentle mass-breath on scale.
-        canvas.style.transform = `scale(${(1 + lv * prof2.scale).toFixed(4)})`;
-        if (f2 !== "bass" && !bandDriveOnlyRef.current) {
-          // Structural presence — the layer belongs to its band's part
-          // in the arrangement. Slow by construction (4s EMA), and it
-          // goes ALL THE WAY to absent (Karel 2026-09-30: "starts with
-          // a shader against empty black space... builds up and then
-          // back, following the arc of the song").
-          const presence = Math.min(1, Math.max(0, (actEma - 0.08) * 4.0));
-          canvas.style.opacity = presence.toFixed(3);
-        } else if (canvas.style.opacity) {
-          canvas.style.opacity = ""; // persistent layer left a kinetic journey
-        }
+      // scale riding its band. Motion carries the music; only a gentle
+      // mass-breath on scale — eased in/out by the band mix.
+      if (lastBand && mix.band > 0.0005) {
+        const prof2 = BAND_PROFILES[lastBand];
+        canvas.style.transform = `scale(${(1 + mix.band * eqLv * prof2.scale).toFixed(4)})`;
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
-        (w.__resonanceEq ??= {})[f2] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[f2 === "bass" ? "__rawB" : f2 === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
+        (w.__resonanceEq ??= {})[lastBand] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[lastBand === "bass" ? "__rawB" : lastBand === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
       } else if (canvas.style.transform) {
         canvas.style.transform = "";
+      }
+      // Structural presence (kinetic mid/treble layers) — the layer belongs
+      // to its band's part in the arrangement. Slow by construction, and
+      // it goes ALL THE WAY to absent (Karel 2026-09-30: "starts with a
+      // shader against empty black space... builds up and then back").
+      // The pres mix eases a layer into / out of this behaviour.
+      if (mix.pres > 0.0005) {
+        const presence = Math.min(1, Math.max(0, (actEma - 0.08) * 4.0));
+        canvas.style.opacity = (1 + (presence - 1) * mix.pres).toFixed(3);
+      } else if (canvas.style.opacity) {
+        canvas.style.opacity = "";
       }
       animId = requestAnimationFrame(render);
     }
@@ -1047,6 +1077,15 @@ export function VisualizerCore({
     };
   }, []);
 
+  // Crossfade re-target queue (glitch RCA 2026-10-06): a new target that
+  // arrives while a fade is VISIBLY in flight waits for it to complete —
+  // snapping the half-faded pair back was a hard cut (Realized's finale,
+  // the incoming journey's first scripted switch inside the 6 s handoff).
+  const primaryFadingRef = useRef(false);
+  const primaryQueuedRef = useRef<VisualizerMode | undefined>(undefined);
+  /** The mode on the active layer, or fading in / compiling on the other. */
+  const primaryLandingRef = useRef<VisualizerMode>(actualPrimaryMode);
+
   // Pre-paint snap when the shader subtree un-hides (picker closes after a
   // journey was selected). Without this the subtree re-mounts carrying the
   // pre-picker layerAMode, paints one frame of the OLD shader, then the
@@ -1063,6 +1102,9 @@ export function VisualizerCore({
     clearTimeout(primaryReadyTimeoutRef.current);
     primaryReadyCbRef.current = null;
     primaryWaitingForRef.current = null;
+    primaryFadingRef.current = false;
+    primaryQueuedRef.current = undefined;
+    primaryLandingRef.current = actualPrimaryMode;
     setLayerAMode(actualPrimaryMode);
     setLayerBMode(null);
     setIdlePrimaryLayer('b');
@@ -1073,19 +1115,14 @@ export function VisualizerCore({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shadersHidden]);
 
-  // Primary shader A/B crossfade — triggered when actualPrimaryMode changes
-  // (from mode change, dimmed→undimmed transition, or journey shader switch)
-  useEffect(() => {
-    // Skip crossfade work while shaders are hidden — nothing is visible and
-    // the layout-effect above will resync state when we un-hide.
-    if (shadersHidden) {
-      primaryPrevModeRef.current = actualPrimaryMode;
-      return;
-    }
-    if (actualPrimaryMode === primaryPrevModeRef.current) return;
-    primaryPrevModeRef.current = actualPrimaryMode;
-
-    // Cancel any in-progress crossfade
+  // Start a primary transition to `target`. Only ever called while no fade
+  // is visibly in flight (idle, or the inactive layer still compiling at
+  // opacity 0) — so the opacity reset below never cuts anything visible.
+  // Re-assigned every render so a call from a finished fade's rAF sees
+  // current layer state.
+  const beginPrimaryTransitionRef = useRef<(target: VisualizerMode) => void>(() => {});
+  beginPrimaryTransitionRef.current = (target: VisualizerMode) => {
+    // Cancel a pending (not yet started) crossfade
     cancelAnimationFrame(primaryFadeRef.current);
     clearTimeout(primaryReadyTimeoutRef.current);
     primaryReadyCbRef.current = null;
@@ -1095,9 +1132,19 @@ export function VisualizerCore({
     const inactive: 'a' | 'b' = active === 'a' ? 'b' : 'a';
     const activeDivRef = active === 'a' ? layerADivRef : layerBDivRef;
     const inactiveDivRef = inactive === 'a' ? layerADivRef : layerBDivRef;
+    const activeMode = active === 'a' ? layerAMode : layerBMode;
+    primaryLandingRef.current = target;
 
-    // Snap opacities: active stays visible, inactive stays hidden.
-    // This handles interruptions — if a crossfade was at 50%, snap back cleanly.
+    // Re-target back to what the active layer already shows (a queued
+    // A -> B -> A while compiling): just stand down.
+    if (activeMode === target) {
+      if (activeDivRef.current) activeDivRef.current.style.opacity = "1";
+      if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
+      setIdlePrimaryLayer(inactive);
+      return;
+    }
+
+    // Active stays visible, inactive stays hidden (no fade is in flight).
     if (activeDivRef.current) activeDivRef.current.style.opacity = "1";
     if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
 
@@ -1108,16 +1155,17 @@ export function VisualizerCore({
     // layer? Its onReady already fired once and won't fire again, so
     // waiting on it would stall until the 3s safety timeout.
     const inactiveResidentMode = inactive === 'a' ? layerAMode : layerBMode;
-    const alreadyResident = inactiveResidentMode === actualPrimaryMode;
+    const alreadyResident = inactiveResidentMode === target;
 
     // Set new shader on the inactive layer (compiles in background at opacity 0)
-    if (inactive === 'a') setLayerAMode(actualPrimaryMode);
-    else setLayerBMode(actualPrimaryMode);
+    if (inactive === 'a') setLayerAMode(target);
+    else setLayerBMode(target);
 
     // Crossfade animation — starts after inactive layer reports ready.
     // Time-based progress so the ~2.5s duration holds on 30–120Hz displays.
     const startCrossfade = () => {
       if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
+      primaryFadingRef.current = true;
       let progress = 0;
       let lastTs = performance.now();
       const animate = () => {
@@ -1133,8 +1181,13 @@ export function VisualizerCore({
           primaryFadeRef.current = requestAnimationFrame(animate);
         } else {
           activeLayerRef.current = inactive;
+          primaryFadingRef.current = false;
           // Old layer is invisible now — suspend its draw loop.
           setIdlePrimaryLayer(active);
+          // A target that arrived mid-fade starts now, from a clean pair.
+          const next = dequeueAfterFade(primaryQueuedRef.current, target);
+          primaryQueuedRef.current = undefined;
+          if (next.start && next.target) beginPrimaryTransitionRef.current(next.target as VisualizerMode);
         }
       };
       primaryFadeRef.current = requestAnimationFrame(animate);
@@ -1154,23 +1207,53 @@ export function VisualizerCore({
         }
       }, 3000);
     }
+  };
 
-    return () => {
-      cancelAnimationFrame(primaryFadeRef.current);
-      clearTimeout(primaryReadyTimeoutRef.current);
-      primaryReadyCbRef.current = null;
-      primaryWaitingForRef.current = null;
-    };
+  // Primary shader A/B crossfade — triggered when actualPrimaryMode changes
+  // (from mode change, dimmed→undimmed transition, or journey shader switch)
+  useEffect(() => {
+    // Skip crossfade work while shaders are hidden — nothing is visible and
+    // the layout-effect above will resync state when we un-hide.
+    if (shadersHidden) {
+      primaryPrevModeRef.current = actualPrimaryMode;
+      return;
+    }
+    if (actualPrimaryMode === primaryPrevModeRef.current) return;
+    primaryPrevModeRef.current = actualPrimaryMode;
+    const decision = crossfadeRetarget(actualPrimaryMode, primaryLandingRef.current, primaryFadingRef.current);
+    if (decision === "queue") { primaryQueuedRef.current = actualPrimaryMode; return; }
+    if (decision === "noop") return;
+    beginPrimaryTransitionRef.current(actualPrimaryMode);
   }, [actualPrimaryMode]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // In-flight fades are never cancelled by a re-target (they queue) — only
+  // at unmount.
+  useEffect(() => () => {
+    cancelAnimationFrame(primaryFadeRef.current);
+    clearTimeout(primaryReadyTimeoutRef.current);
+    primaryReadyCbRef.current = null;
+    primaryWaitingForRef.current = null;
+  }, []);
 
   // Dual shader A/B crossfade — handles both shader-to-shader swaps and removal
   const dualShaderTarget = journeyDualShaderMode && SHADERS[journeyDualShaderMode as VisualizerMode]
     ? journeyDualShaderMode : null;
 
-  useEffect(() => {
-    if (dualShaderTarget === dualPrevTargetRef.current) return;
-    dualPrevTargetRef.current = dualShaderTarget;
-
+  // Re-target queue (see primary): a new dual target that arrives while a
+  // dual fade is visibly in flight waits for it — the old code snapped the
+  // half-faded incoming layer to 0 (a hard cut).
+  const dualFadingRef = useRef(false);
+  const dualQueuedRef = useRef<string | null | undefined>(undefined);
+  const dualLandingRef = useRef<string | null>(null);
+  const beginDualTransitionRef = useRef<(target: string | null) => void>(() => {});
+  const onDualFadeDone = (landed: string | null) => {
+    dualFadingRef.current = false;
+    const next = dequeueAfterFade(dualQueuedRef.current, landed);
+    dualQueuedRef.current = undefined;
+    if (next.start) beginDualTransitionRef.current(next.target);
+  };
+  beginDualTransitionRef.current = (target: string | null) => {
+    dualLandingRef.current = target;
     cancelAnimationFrame(dualFadeRef.current);
     clearTimeout(dualReadyTimeoutRef.current);
     dualReadyCbRef.current = null;
@@ -1181,15 +1264,16 @@ export function VisualizerCore({
     const activeDivRef = active === 'a' ? dualLayerADivRef : dualLayerBDivRef;
     const inactiveDivRef = inactive === 'a' ? dualLayerADivRef : dualLayerBDivRef;
 
-    if (dualShaderTarget) {
+    if (target) {
       // New or changed dual shader — crossfade from active to inactive
       if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
 
       // Set new shader on inactive layer
-      if (inactive === 'a') setDualLayerAMode(dualShaderTarget);
-      else setDualLayerBMode(dualShaderTarget);
+      if (inactive === 'a') setDualLayerAMode(target);
+      else setDualLayerBMode(target);
 
       const startDualCrossfade = () => {
+        dualFadingRef.current = true;
         const activeStartOpacity = activeDivRef.current
           ? parseFloat(activeDivRef.current.style.opacity || "0") : 0;
 
@@ -1217,6 +1301,7 @@ export function VisualizerCore({
             // full-screen frag pass forever and leaks context pressure).
             if (active === 'a') setDualLayerAMode(null);
             else setDualLayerBMode(null);
+            onDualFadeDone(target);
           }
         };
         dualFadeRef.current = requestAnimationFrame(animate);
@@ -1246,6 +1331,7 @@ export function VisualizerCore({
         return;
       }
 
+      dualFadingRef.current = true;
       let progress = 0;
       let lastTs = performance.now();
       const fadeOut = () => {
@@ -1263,18 +1349,29 @@ export function VisualizerCore({
         } else {
           setDualLayerAMode(null);
           setDualLayerBMode(null);
+          onDualFadeDone(null);
         }
       };
       dualFadeRef.current = requestAnimationFrame(fadeOut);
     }
 
-    return () => {
-      cancelAnimationFrame(dualFadeRef.current);
-      clearTimeout(dualReadyTimeoutRef.current);
-      dualReadyCbRef.current = null;
-      dualWaitingForRef.current = null;
-    };
-  }, [dualShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
+  };
+
+  useEffect(() => {
+    if (dualShaderTarget === dualPrevTargetRef.current) return;
+    dualPrevTargetRef.current = dualShaderTarget;
+    const decision = crossfadeRetarget(dualShaderTarget, dualLandingRef.current, dualFadingRef.current);
+    if (decision === "queue") { dualQueuedRef.current = dualShaderTarget; return; }
+    if (decision === "noop") return;
+    beginDualTransitionRef.current(dualShaderTarget);
+  }, [dualShaderTarget]);
+
+  useEffect(() => () => {
+    cancelAnimationFrame(dualFadeRef.current);
+    clearTimeout(dualReadyTimeoutRef.current);
+    dualReadyCbRef.current = null;
+    dualWaitingForRef.current = null;
+  }, []);
 
   // Tertiary shader layer — third layer for even richer visuals during journey moments
   const [tertiaryShaderVisible, setTertiaryShaderVisible] = useState<string | null>(null);
@@ -1284,54 +1381,34 @@ export function VisualizerCore({
   const tertiaryShaderTarget = journeyTertiaryShaderMode && SHADERS[journeyTertiaryShaderMode as VisualizerMode]
     ? journeyTertiaryShaderMode : null;
 
-  useEffect(() => {
-    if (tertiaryShaderTarget) {
-      // Hide immediately via ref BEFORE React re-renders — prevents flash of black canvas
-      if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
-      setTertiaryShaderVisible(tertiaryShaderTarget);
-      cancelAnimationFrame(tertiaryFadeRef.current);
-      clearTimeout(tertiaryNextReadyTimeoutRef.current);
-      tertiaryNextReadyCbRef.current = null;
+  // Single layer, so a visible shader is NEVER swapped in place (the old
+  // code zeroed a visible tertiary to load the next one — a hard cut): it
+  // fades out from wherever it is, and the latest wanted mode is loaded
+  // when that fade completes (glitch RCA 2026-10-06).
+  const tertiaryWantRef = useRef<string | null>(null);
+  const tertiaryMountedRef = useRef<string | null>(null);
+  const tertiaryPhaseRef = useRef<TertiaryPhase>("idle");
+  const driveTertiaryRef = useRef<() => void>(() => {});
+  driveTertiaryRef.current = () => {
+    const el = tertiaryShaderRef.current;
+    const opacity = el ? parseFloat(el.style.opacity || "0") : 0;
+    const action = tertiaryStep(tertiaryWantRef.current, tertiaryMountedRef.current, opacity, tertiaryPhaseRef.current);
+    if (action === "none") return;
+    cancelAnimationFrame(tertiaryFadeRef.current);
+    clearTimeout(tertiaryNextReadyTimeoutRef.current);
+    tertiaryNextReadyCbRef.current = null;
 
-      const startFadeIn = () => {
-        let progress = 0;
-        let lastTs = performance.now();
-        const fadeIn = () => {
-          const now = performance.now();
-          progress = advanceFade(progress, now - lastTs);
-          lastTs = now;
-          const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-          if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);
-          if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
-        };
-        tertiaryFadeRef.current = requestAnimationFrame(() => {
-          if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
-          lastTs = performance.now();
-          tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
-        });
-      };
+    if (action === "unmount") {
+      tertiaryMountedRef.current = null;
+      tertiaryPhaseRef.current = "idle";
+      setTertiaryShaderVisible(null);
+      driveTertiaryRef.current();
+      return;
+    }
 
-      // Wait for async compilation to finish before fading in
-      tertiaryNextReadyCbRef.current = startFadeIn;
-      tertiaryNextReadyTimeoutRef.current = setTimeout(() => {
-        if (tertiaryNextReadyCbRef.current) {
-          tertiaryNextReadyCbRef.current();
-          tertiaryNextReadyCbRef.current = null;
-        }
-      }, 3000);
-    } else {
-      cancelAnimationFrame(tertiaryFadeRef.current);
-      clearTimeout(tertiaryNextReadyTimeoutRef.current);
-      tertiaryNextReadyCbRef.current = null;
-      if (!tertiaryShaderRef.current) {
-        setTertiaryShaderVisible(null);
-        return;
-      }
-      const startOpacity = parseFloat(tertiaryShaderRef.current.style.opacity || "0");
-      if (startOpacity <= 0.001) {
-        setTertiaryShaderVisible(null);
-        return;
-      }
+    if (action === "fade-out") {
+      tertiaryPhaseRef.current = "out";
+      const startOpacity = opacity;
       let progress = 0;
       let lastTs = performance.now();
       const fadeOut = () => {
@@ -1343,17 +1420,68 @@ export function VisualizerCore({
         if (progress < 1) {
           tertiaryFadeRef.current = requestAnimationFrame(fadeOut);
         } else {
+          tertiaryMountedRef.current = null;
+          tertiaryPhaseRef.current = "idle";
           setTertiaryShaderVisible(null);
+          driveTertiaryRef.current(); // load whatever is wanted NOW
         }
       };
       tertiaryFadeRef.current = requestAnimationFrame(fadeOut);
+      return;
     }
-    return () => {
-      cancelAnimationFrame(tertiaryFadeRef.current);
-      clearTimeout(tertiaryNextReadyTimeoutRef.current);
-      tertiaryNextReadyCbRef.current = null;
+
+    // load: nothing visible is mounted — swap in the wanted shader at 0
+    const want = tertiaryWantRef.current;
+    if (el) el.style.opacity = "0";
+    tertiaryMountedRef.current = want;
+    tertiaryPhaseRef.current = "waiting";
+    setTertiaryShaderVisible(want);
+    const startFadeIn = () => {
+      tertiaryPhaseRef.current = "in";
+      let progress = 0;
+      let lastTs = performance.now();
+      const fadeIn = () => {
+        const now = performance.now();
+        progress = advanceFade(progress, now - lastTs);
+        lastTs = now;
+        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);
+        if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
+        else {
+          tertiaryPhaseRef.current = "shown";
+          driveTertiaryRef.current(); // the target may have moved on meanwhile
+        }
+      };
+      tertiaryFadeRef.current = requestAnimationFrame(() => {
+        if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
+        lastTs = performance.now();
+        tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
+      });
     };
-  }, [tertiaryShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Wait for async compilation to finish before fading in
+    tertiaryNextReadyCbRef.current = startFadeIn;
+    tertiaryNextReadyTimeoutRef.current = setTimeout(() => {
+      if (tertiaryNextReadyCbRef.current) {
+        tertiaryNextReadyCbRef.current();
+        tertiaryNextReadyCbRef.current = null;
+      }
+    }, 3000);
+  };
+
+  useEffect(() => {
+    tertiaryWantRef.current = tertiaryShaderTarget;
+    const phase = tertiaryPhaseRef.current;
+    // Removal while fading in: fade out from the current opacity (never a
+    // cut) — the step function only fades out a DIFFERENT mounted mode.
+    if (phase === "in" && tertiaryShaderTarget !== tertiaryMountedRef.current) tertiaryPhaseRef.current = "shown";
+    driveTertiaryRef.current();
+  }, [tertiaryShaderTarget]);
+
+  useEffect(() => () => {
+    cancelAnimationFrame(tertiaryFadeRef.current);
+    clearTimeout(tertiaryNextReadyTimeoutRef.current);
+    tertiaryNextReadyCbRef.current = null;
+  }, []);
 
   // Sync config ref for parent to read
   useEffect(() => {
