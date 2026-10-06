@@ -17,6 +17,21 @@ export default function RoomError({
   useEffect(() => {
     console.error("[Resonance] Room error:", error);
   }, [error]);
+  // Unattended kiosk (Karel 2026-10-05: "says the room hit a snag" after a
+  // deploy swapped the server under the page): nobody is there to press
+  // "Try again", so the installation retries on its own — re-render first,
+  // then a full reload to the loop if that fails again.
+  useEffect(() => {
+    if (!window.location.pathname.startsWith("/room/installation")) return;
+    let tries = 0;
+    try { tries = Number(window.sessionStorage.getItem("room-error-retries") ?? 0); } catch { /* blocked */ }
+    const id = window.setTimeout(() => {
+      try { window.sessionStorage.setItem("room-error-retries", String(tries + 1)); } catch { /* blocked */ }
+      if (tries % 2 === 0) reset();
+      else window.location.href = "/room/installation?loop=1";
+    }, 4000);
+    return () => window.clearTimeout(id);
+  }, [reset]);
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-void text-white">
