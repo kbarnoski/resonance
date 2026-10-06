@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-06T~13:10Z
 
+> **Jury verdict today**: The single-take monoculture finally cracked — vicinity is the first spatial, first multi-take piece and a direct answer to yesterday — but it's one swing against thirteen; tomorrow, prove it by shipping a *second* non-single-take (antiphon/cantor are ready) or go for the two-person WebRTC room. See `docs/dreams/JURY.md`.
+
 > **Took the jury's push head-on.** Yesterday's verdict: "15 straight variations of one body, one webcam, one piano take on a screen — get off the webcam or out of the single take." Today breaks the **source monoculture** three ways at once (WIDE ×3) and ships the one that breaks it hardest — and opens a brand-new category the jury said was empty.
 
 ## New since yesterday
