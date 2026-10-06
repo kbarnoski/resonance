@@ -1098,6 +1098,12 @@ export function createParticleEngine(
     prepare(souls) {
       const idx = [...new Set(souls.map((x) => soulById(x).index).concat([soulA.index, soulB.index]))].sort((a, b) => a - b);
       const key = `u:${idx.join(",")}`;
+      // a previous journey's programs that never warmed must NOT be warmed
+      // later by the idle prewarm (kiosk 2026-10-06: Snowflake's cold union
+      // built mid-Ghost — a 2.5 s stall); warm ones stay cached for revisits
+      for (const [k, pr] of [...simProgs]) {
+        if (k !== key && !pr.warm) { gl!.deleteProgram(pr.p); simProgs.delete(k); }
+      }
       let prog = simProgs.get(key);
       if (!prog) {
         prog = startProgram(gl!, QUAD_VS, buildSimFS(idx));
