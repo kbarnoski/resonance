@@ -68,12 +68,12 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
   } else if (cmd === "loop" && context !== "loop") {
     window.location.href = "/room/installation?loop=1";
   } else if (cmd === "particles-on" || cmd === "particles-default") {
-    // session-only A/B switch (kiosk tab); reload so the journey mounts clean
+    // session-only A/B switch (kiosk tab). No reload — a reloaded kiosk page
+    // is autoplay-blocked; it takes effect on the next journey mount (jump).
     try {
       if (cmd === "particles-on") window.sessionStorage.setItem(PARTICLES_SESSION_KEY, "1");
       else window.sessionStorage.removeItem(PARTICLES_SESSION_KEY);
     } catch { /* storage blocked */ }
-    window.location.reload();
   } else if (cmd === "particles-off") {
     // A/B performance check on the real kiosk GPU without a reload
     disableParticlesForSession("remote: particles-off");
