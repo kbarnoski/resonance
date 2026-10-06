@@ -278,10 +278,11 @@ export function ParticleLeadLayer({
     let flashLoaded = false;
     // ambient presence (Karel 2026-10-06: "on average particles should be
     // part of the journey around 60% of the time"): between conducted
-    // windows the field returns for 20–34 s after 8–15 s away
+    // windows the field returns for 12–22 s after 12–20 s away (measured
+    // ~80 % with longer returns — tuned toward 60 %)
     let ambientUntil = -1;
     let outSince = 0;
-    let ambientGap = 8 + 7 * rand01(21);
+    let ambientGap = 12 + 8 * rand01(21);
     let lastTick = performance.now();
     let palVoiceKey = "";
     // Karel 2026-10-06 (again): "fade out smoothly not drop out" — longer,
@@ -413,8 +414,8 @@ export function ParticleLeadLayer({
       if (pr.presence <= 0 && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
         if (ambientUntil < t && outSince > ambientGap) {
-          ambientUntil = t + 20 + 14 * rand01(22 + appearN);
-          ambientGap = 8 + 7 * rand01(23 + appearN);
+          ambientUntil = t + 12 + 10 * rand01(22 + appearN);
+          ambientGap = 12 + 8 * rand01(23 + appearN);
           const nxt = cast.formCycle?.[(++cycleIdx) % Math.max(1, cast.formCycle.length)];
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
