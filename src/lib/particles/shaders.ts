@@ -123,6 +123,8 @@ uniform vec3 uWrap;       // wrap weights: x-flow, rising, falling
 uniform float uInkW;      // ink respawn weight
 uniform float uFountainW; // fountain respawn weight
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
+uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
+uniform vec4 uShape;      // per-appearance shape seed 0..1 (v4 variety: petals, gears, symmetry, solid)
 uniform float uMaxSpeed;  // speed cap (entry ramps it up — no sudden bursts)
 uniform float uDisperse;  // 1 for one frame: scatter wide so the form GATHERS
 // playful impulses (particle-lead conductor)
@@ -147,6 +149,46 @@ ${IMG_UV}
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 mat3 rotY(float a){ float c = cos(a), sn = sin(a); return mat3(c, 0.0, -sn, 0.0, 1.0, 0.0, sn, 0.0, c); }
 mat3 rotX(float a){ float c = cos(a), sn = sin(a); return mat3(1.0, 0.0, 0.0, 0.0, c, sn, 0.0, -sn, c); }
+
+// ── v4 geometric helpers ──
+float superF(float th, float m, float n1, float n2, float n3){
+  float a = pow(abs(cos(m * th * 0.25)), n2) + pow(abs(sin(m * th * 0.25)), n3);
+  return pow(max(a, 1e-4), -1.0 / n1);
+}
+vec3 polyVert(int kind, int i){
+  const float PHI = 1.6180339887;
+  if (kind == 0) { // icosahedron
+    int g = i / 4; float a = (i % 2 == 0) ? 1.0 : -1.0; float b = ((i / 2) % 2 == 0) ? PHI : -PHI;
+    if (g == 0) return vec3(0.0, a, b);
+    if (g == 1) return vec3(a, b, 0.0);
+    return vec3(b, 0.0, a);
+  }
+  if (kind == 1) { // dodecahedron
+    if (i < 8) return vec3((i & 1) == 0 ? 1.0 : -1.0, (i & 2) == 0 ? 1.0 : -1.0, (i & 4) == 0 ? 1.0 : -1.0);
+    int j = i - 8; int g = j / 4; float a = (j % 2 == 0) ? 1.0 / PHI : -1.0 / PHI; float b = ((j / 2) % 2 == 0) ? PHI : -PHI;
+    if (g == 0) return vec3(0.0, a, b);
+    if (g == 1) return vec3(a, b, 0.0);
+    return vec3(b, 0.0, a);
+  }
+  int ax = i / 2; float sg = (i % 2 == 0) ? 1.0 : -1.0; // octahedron
+  return ax == 0 ? vec3(sg, 0.0, 0.0) : ax == 1 ? vec3(0.0, sg, 0.0) : vec3(0.0, 0.0, sg);
+}
+vec3 polyEdgePoint(int kind, float h1, float h2, float t){
+  int nV = kind == 0 ? 12 : kind == 1 ? 20 : 6;
+  float e2 = kind == 0 ? 4.0 : kind == 1 ? 1.527864 : 2.0;
+  int deg = kind == 0 ? 5 : kind == 1 ? 3 : 4;
+  int i = min(nV - 1, int(floor(h1 * float(nV))));
+  vec3 A = polyVert(kind, i);
+  int want = min(deg - 1, int(floor(h2 * float(deg))));
+  int c = 0; vec3 B = A;
+  for (int j = 0; j < 20; j++) {
+    if (j >= nV) break;
+    vec3 V = polyVert(kind, j);
+    vec3 dv = V - A;
+    if (abs(dot(dv, dv) - e2) < 0.05) { if (c == want) { B = V; break; } c++; }
+  }
+  return mix(A, B, t);
+}
 
 // Returns xyz = acceleration, w = linear drag.
 vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv){
@@ -447,20 +489,22 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 21) {
     // ── KALEIDOSCOPE: mirrored flow folded into eight sectors ──
     float r = 0.15 + 1.6 * s.g;
-    float wedge = 3.14159265 / 8.0;
+    float nSec = 5.0 + floor(uShape.x * 7.999);
+    float wedge = 3.14159265 / nSec;
     float tb = s.b * wedge + 0.25 * sin(uClock.y * 0.4 + r * 3.0) * wedge + 0.1 * up * midW;
-    float k = floor(s.a * 8.0);
-    float mirror = mod(floor(s.a * 16.0), 2.0);
+    float k = floor(s.a * nSec);
+    float mirror = mod(floor(s.a * nSec * 2.0), 2.0);
     float th = k * 2.0 * wedge + (mirror > 0.5 ? -tb : tb) + uClock.x * 0.05;
-    r *= 1.0 + 0.08 * sin(tb * 16.0 + uClock.y) + 0.12 * up * bassW;
+    r *= 1.0 + 0.08 * sin(tb * nSec * 2.0 + uClock.y) + 0.12 * up * bassW;
     vec3 home = vec3(cos(th) * r, 0.2 * sin(r * 4.0 - uClock.y * 1.2) * (0.3 + uBandLv.y), sin(th) * r);
     return vec4((home - p) * 8.0, 4.0);
   }
   if (soul == 22) {
     // ── HELIX: three abstract strands twisting round a breathing column ──
-    float strand = floor(s.b * 3.0);
+    float nStr = 2.0 + floor(uShape.y * 4.999);
+    float strand = floor(s.b * nStr);
     float y = (s.g - 0.5) * 3.6;
-    float ang = y * 2.0 * (1.0 + 0.3 * max(uBands.x, 0.0)) + uClock.y * 0.5 + strand * 2.0943951;
+    float ang = y * (1.4 + 1.4 * uShape.z) * (1.0 + 0.3 * max(uBands.x, 0.0)) + uClock.y * 0.5 + strand * 6.2831853 / nStr;
     float r = 0.42 + 0.22 * sin(y * 1.3 + uClock.x * 0.4 + strand) + 0.1 * up * bassW;
     vec3 home = vec3(cos(ang) * r, y, sin(ang) * r);
     home += (hash31(s.a * 61.0) - 0.5) * 0.035 * (1.0 + 5.0 * up * trebW);
@@ -469,7 +513,9 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 23) {
     // ── TORUS KNOT: one thread of light tied into a turning knot ──
     float ph = s.g * 6.2831853;
-    float P = 2.0, Q = 3.0;
+    // coprime (P, Q) only — a shared factor collapses the knot into a loop
+    float P = 2.0 + floor(uShape.x * 2.999);
+    float Q = P == 3.0 ? (uShape.y < 0.34 ? 4.0 : uShape.y < 0.67 ? 5.0 : 7.0) : P + 1.0 + 2.0 * floor(uShape.y * 2.999);
     float rr = cos(Q * ph) + 2.0;
     vec3 c = vec3(rr * cos(P * ph), -sin(Q * ph), rr * sin(P * ph)) * 0.55;
     vec3 tube = normalize(hash31(s.a * 37.0) - 0.5) * 0.1 * (1.0 + 1.2 * up * midW);
@@ -494,7 +540,7 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float th = acos(clamp(d.y, -1.0, 1.0));
     float az = atan(d.z, d.x) + uClock.y * 0.1;
     float R = 1.15
-      + 0.22 * cos(2.0 * th) * cos(2.0 * az + uClock.x * 0.5) * (0.3 + uBandLv.x + max(uBands.x, 0.0))
+      + 0.22 * cos((2.0 + floor(uShape.x * 2.999)) * th) * cos((2.0 + floor(uShape.y * 3.999)) * az + uClock.x * 0.5) * (0.3 + uBandLv.x + max(uBands.x, 0.0))
       + 0.1 * cos(4.0 * th) * cos(4.0 * az - uClock.y * 0.6) * (0.3 + uBandLv.y + max(uBands.y, 0.0))
       + 0.05 * cos(8.0 * th) * cos(8.0 * az + uClock.z) * (0.3 + uBandLv.z + up * trebW);
     return vec4((d * R - p) * 10.0, 4.5);
@@ -511,14 +557,158 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 27) {
     // ── RINGS: concentric rings breathing outward on the bass ──
-    float k = floor(s.b * 12.0);
-    float r = 0.22 + k * 0.12;
+    float nR = 7.0 + floor(uShape.x * 7.999);
+    float k = floor(s.b * nR);
+    float r = 0.22 + k * 1.32 / nR;
     r *= 1.0 + 0.09 * sin(uClock.x * 0.8 - k * 0.55) + 0.12 * up * bassW;
     float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
     float ang = s.g * 6.2831853 + uClock.y * 0.12 * dir;
     vec3 q = vec3(cos(ang) * r, 0.07 * sin(ang * 3.0 + uClock.y) * (0.3 + uBandLv.y + up * midW), sin(ang) * r);
     q += normalize(hash31(s.a * 71.0) - 0.5) * (0.012 + 0.05 * up * trebW);
-    q = rotX(0.85 + 0.1 * sin(uClock.y * 0.07)) * q;
+    q = rotX(0.55 + 0.7 * uShape.z + 0.1 * sin(uClock.y * 0.07)) * q;
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 28) {
+    // ── ROSE CURVES: nested rhodonea petals turning against each other ──
+    float layer = floor(s.b * 3.0);
+    float n = 2.0 + floor(uShape.x * 5.999) + layer;
+    float d = 1.0 + floor(uShape.y * 2.999);
+    float th = s.g * 6.2831853 * d;
+    float r = cos(n / d * th) * (1.5 - layer * 0.4) * (1.0 + 0.08 * max(uBands.x, 0.0));
+    float rot = uClock.y * 0.08 * (mod(layer, 2.0) < 0.5 ? 1.0 : -1.0) + layer * 0.4;
+    vec3 q = vec3(cos(th + rot) * r, 0.06 * sin(n * th + uClock.y) * (0.3 + uBandLv.y), sin(th + rot) * r);
+    q += normalize(hash31(s.a * 83.0) - 0.5) * (0.012 + 0.05 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 29) {
+    // ── SPIROGRAPH: a hypotrochoid drawn by the music's own gears ──
+    float ga = 1.0 + floor(uShape.x * 4.999);
+    float gb = ga + 1.0 + floor(uShape.y * 5.999);
+    float rr = ga / gb;
+    float dd = 0.35 + 0.6 * uShape.z;
+    float t = s.g * 6.2831853 * gb;
+    float kk = (1.0 - rr) / rr;
+    vec2 c2 = vec2((1.0 - rr) * cos(t) + dd * rr * cos(kk * t), (1.0 - rr) * sin(t) - dd * rr * sin(kk * t));
+    float inner = step(s.b, 0.3);
+    float rot = uClock.y * 0.06 * (inner > 0.5 ? -1.0 : 1.0);
+    c2 = mat2(cos(rot), -sin(rot), sin(rot), cos(rot)) * c2 * mix(1.5, 0.62, inner) * (1.0 + 0.07 * max(uBands.x, 0.0));
+    vec3 q = vec3(c2.x, 0.05 * sin(t * 3.0 + uClock.y) * (0.3 + uBandLv.y), c2.y);
+    q += normalize(hash31(s.a * 89.0) - 0.5) * (0.012 + 0.05 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 30) {
+    // ── SUPERFORMULA: a wireframe shell whose symmetry the harmony rewrites ──
+    float th = s.g * 6.2831853 - 3.14159265;
+    float ph = asin(clamp(2.0 * s.b - 1.0, -1.0, 1.0));
+    // particles ride latitude OR longitude lines: a legible mesh, not a cloud
+    if (s.a < 0.5) ph = (floor((ph / 3.14159265 + 0.5) * 11.0) + 0.5) / 11.0 * 3.14159265 - 1.5707963;
+    else th = (floor((th / 6.2831853 + 0.5) * 16.0) + 0.5) / 16.0 * 6.2831853 - 3.14159265;
+    float m1 = 2.0 + floor(uShape.x * 7.999), m2 = 2.0 + floor(uShape.y * 5.999);
+    float n1 = 0.5 + uShape.z * 2.0, n2 = 0.7 + uShape.w * 1.6;
+    float r1 = superF(th, m1, n1, n2, n2), r2 = superF(ph, m2, n1, n2, n2);
+    vec3 q = vec3(r1 * cos(th) * r2 * cos(ph), r2 * sin(ph), r1 * sin(th) * r2 * cos(ph));
+    q *= min(1.0, 1.6 / max(length(q), 1e-3));
+    q *= 1.05 * (1.0 + 0.08 * max(uBands.x, 0.0) + 0.04 * sin(uClock.x * 0.5));
+    q = rotY(uClock.y * 0.12) * rotX(uClock.x * 0.07 + 0.4) * q;
+    q += normalize(hash31(s.a * 101.0) - 0.5) * (0.012 + 0.05 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 31) {
+    // ── PLATONIC LIGHT: edges of a turning solid, its dual nested inside ──
+    float sel = floor(uShape.x * 2.999);
+    float inner = step(s.b, 0.35);
+    int kind = int(inner > 0.5 ? mod(sel + 1.0, 3.0) : sel);
+    vec3 q = polyEdgePoint(kind, s.a, fract(s.a * 7.31 + s.b), s.g);
+    float rad = kind == 0 ? 1.902 : kind == 1 ? 1.732 : 1.0;
+    q = q / rad * (inner > 0.5 ? 0.55 : 1.35);
+    q = rotY(uClock.y * 0.14 * (inner > 0.5 ? -1.0 : 1.0)) * rotX(uClock.x * 0.09 + 0.3) * q;
+    q *= 1.0 + 0.06 * max(uBands.x, 0.0);
+    q += normalize(hash31(s.a * 107.0) - 0.5) * (0.01 + 0.045 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 32) {
+    // ── MANDALA: rings of n-fold petals, alternate rings counter-turning ──
+    float k = floor(s.b * 7.0);
+    float n = 4.0 + floor(uShape.x * 8.999) + k * floor(uShape.y * 2.999);
+    float th = s.g * 6.2831853;
+    float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
+    float r = 0.2 + k * 0.2 + (0.06 + 0.02 * k) * pow(abs(cos(n * th * 0.5)), 0.5 + uShape.w * 2.5);
+    r *= 1.0 + 0.05 * sin(uClock.x * 0.6 - k * 0.7) + 0.08 * up * bassW;
+    float a = th + uClock.y * 0.05 * dir;
+    vec3 q = vec3(cos(a) * r, 0.04 * sin(n * th + uClock.y) * (0.3 + uBandLv.y), sin(a) * r);
+    q += normalize(hash31(s.a * 109.0) - 0.5) * (0.01 + 0.045 * up * trebW);
+    return vec4((q - p) * 10.0, 4.5);
+  }
+  if (soul == 33) {
+    // ── SPIRIT: a veiled presence drifting through — crown, flowing sleeves,
+    // a billowing hem that trails wisps. Abstract: no face, no features. ──
+    float drift = uTime * 0.03 + uShape.x * 6.2831853;
+    float cx = 1.0 * sin(drift);
+    float vx = cos(drift);
+    float top = 1.2 + 0.1 * sin(uTime * 0.33);
+    float wave = uClock.y * 0.7;
+    vec3 q;
+    if (s.a < 0.58) {
+      // the veil: a surface of revolution, rounded crown → narrow → wide hem
+      float u = pow(s.g, 0.65); // more motes toward the wide hem, not piled on the crown
+      float va = s.b * 6.2831853;
+      float rad;
+      if (u < 0.14) rad = 0.26 * sqrt(max(0.0, 1.0 - pow((0.14 - u) / 0.14, 2.0)));
+      else if (u < 0.26) rad = mix(0.26, 0.22, (u - 0.14) / 0.12);
+      else rad = mix(0.22, 1.0, smoothstep(0.26, 1.0, u));
+      float billow = 1.0 + (0.14 * sin(va * 3.0 + wave - u * 6.0) + 0.08 * sin(va * 5.0 - wave * 1.3 + u * 9.0)) * smoothstep(0.2, 1.0, u)
+                   + 0.1 * up * bassW;
+      rad *= billow * (0.97 + 0.05 * hash11(s.a * 131.0));
+      q = vec3(cos(va) * rad, top - u * 2.3, sin(va) * rad * 0.5);
+      q.x += -vx * 0.4 * u * u;
+      q += curlNoise(q * 0.9 + vec3(0.0, uClock.y * 0.04, 0.0)) * 0.05 * u;
+    } else if (s.a < 0.84) {
+      // two flowing sleeves from the shoulders, rippling toward their tips
+      float side = s.a < 0.71 ? -1.0 : 1.0;
+      float t = s.g;
+      vec3 A = vec3(side * 0.3, top - 0.6, 0.0);
+      vec3 C = vec3(side * (1.45 + 0.12 * sin(wave * 0.6 + side)), top - 0.75 + 0.25 * sin(uClock.y * 0.35 + side * 1.7), 0.15);
+      vec3 M = vec3(side * 0.85, top - 0.4 + 0.12 * sin(uClock.y * 0.3 + side), 0.05);
+      vec3 c = mix(mix(A, M, t), mix(M, C, t), t);
+      c.y += 0.08 * sin(t * 9.0 - wave * 1.6) * t;
+      // a veil hanging from the arm: the sleeve drapes downward, widening
+      float tube = (0.1 * (1.0 - t) + 0.03) * (1.0 + 0.4 * up * midW);
+      c.y -= hash11(s.b * 29.0) * (0.04 + 0.22 * t) * (0.7 + 0.3 * sin(t * 6.0 - wave));
+      q = c + normalize(hash31(s.a * 151.0) - 0.5) * tube * hash11(s.b * 17.0);
+      q.x += -vx * 0.25;
+    } else {
+      // wisps: streams peeling off the hem, trailing behind the drift
+      float w = s.g;
+      float va = s.b * 6.2831853;
+      vec3 h = vec3(cos(va) * 0.95, top - 2.3, sin(va) * 0.45);
+      h.x += -vx * 0.4;
+      w *= 0.75;
+      q = h + vec3(-vx * 1.0 * w, -0.12 * w + 0.3 * w * w, 0.0);
+      q += curlNoise(vec3(h.xz * 1.7, s.b * 7.0) + uClock.y * 0.03) * 0.18 * w;
+    }
+    q.x += -vx * 0.12 * (q.y - top);
+    q.y -= 0.1;
+    q *= 0.74; // the whole presence fits the frame, crown to trailing wisps
+    q.x += cx;
+    // local (right, up, depth) → world, facing the camera whatever its orbit
+    vec3 camR = vec3(sin(uCamAz), 0.0, -cos(uCamAz));
+    vec3 camD = vec3(cos(uCamAz), 0.0, sin(uCamAz));
+    q = camR * q.x + vec3(0.0, q.y, 0.0) + camD * q.z;
+    q += normalize(hash31(s.a * 97.0) - 0.5) * (0.01 + 0.03 * up * trebW);
+    return vec4((q - p) * 6.5, 3.4);
+  }
+  if (soul == 34) {
+    // ── TORUS LATTICE: a woven torus rolling through itself ──
+    float nl = 8.0 + floor(uShape.y * 15.999);
+    float L = floor(s.b * nl);
+    float tw = (1.0 + floor(uShape.z * 3.999)) * (s.a < 0.5 ? 1.0 : -1.0);
+    float uu = s.g * 6.2831853;
+    float vv = tw * uu + L * 6.2831853 / nl + uClock.y * 0.2;
+    float R = 1.0, r = 0.38 + uShape.x * 0.3;
+    vec3 q = vec3((R + r * cos(vv)) * cos(uu), r * sin(vv), (R + r * cos(vv)) * sin(uu)) * 1.15;
+    q = rotY(uClock.y * 0.1) * rotX(0.9 + 0.15 * sin(uClock.x * 0.1)) * q;
+    q *= 1.0 + 0.06 * max(uBands.x, 0.0);
+    q += normalize(hash31(s.a * 113.0) - 0.5) * (0.01 + 0.045 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
   }
   return vec4(-v, 1.0);

@@ -87,6 +87,10 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Local previews MUST NOT share .next with the kiosk's production server
+  // (2026-10-05: a `next dev` preview overwrote the build the kiosk serves).
+  // NEXT_DIST_DIR=.next-preview npx next dev -p 3100
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // Dream project only: absolute asset URLs so chunks/CSS resolve when the
   // page HTML is served through the core domain's /dream proxy.
   ...(IS_DREAM_TARGET && DREAM_ORIGIN ? { assetPrefix: DREAM_ORIGIN } : {}),

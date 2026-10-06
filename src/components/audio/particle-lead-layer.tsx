@@ -99,6 +99,7 @@ export function ParticleLeadLayer({
   const analyserRef = useRef<AnalyserLike | null>(analyser);
   const pausedRef = useRef(paused);
   const paletteTarget = useRef<ParticlePalette | null>(null);
+  const palRef = useRef<JourneyFrame["palette"] | null>(null);
   const phaseRef = useRef<{ phase: string | undefined; at: number }>({ phase: undefined, at: 0 });
   const windowRef = useRef<{ kind: string; start: number } | null>(null);
   const dissolvedWindow = useRef<number | null>(null);
@@ -119,7 +120,12 @@ export function ParticleLeadLayer({
     if (!host) return;
     const sh = acquireSharedParticleEngine({ count: budgetFor().count, dpr: budgetFor().dpr, trailScale: budgetFor().trailScale });
     if (!sh) { setFailed(true); return; }
-    const offDisable = onParticlesDisabled(() => setFailed(true));
+    // failsafe: veils fade on their own CSS transitions; unmount after
+    const offDisable = onParticlesDisabled(() => {
+      if (veilRef.current) veilRef.current.style.opacity = "0";
+      if (contrastRef.current) contrastRef.current.style.opacity = "0";
+      window.setTimeout(() => setFailed(true), 2200);
+    });
     const engine = sh.engine;
     const tier = getDeviceTier();
     host.appendChild(sh.canvas);
@@ -182,9 +188,29 @@ export function ParticleLeadLayer({
     let wasVisible = false;
     let warmTick = 0;
     let presentFlag = false;
+    // SMOOTH FADES ONLY (Karel 2026-10-05: "the particles always need to
+    // smoothly fade out not drop out"): what is shown is slew-limited —
+    // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
+    let shown = 0;
+    let veilShown = 0;
+    let lastTick = performance.now();
+    let palVoiceKey = "";
+    const FADE_IN_SEC = 1.5;
+    const FADE_OUT_SEC = 3.5;
+    const slew = (cur: number, target: number, dt: number) =>
+      target > cur ? Math.min(target, cur + dt / FADE_IN_SEC) : Math.max(target, cur - dt / FADE_OUT_SEC);
+    // per-appearance shape seed: the same soul never repeats its exact figure
+    const shapeSeed = (soul: string, t: number): [number, number, number, number] => {
+      let h = 2166136261;
+      for (const ch of `${journeyId}:${soul}:${Math.floor(t / 7)}`) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
+      const r = (k: number) => { let x = Math.imul(h ^ (k * 0x9e3779b9), 2246822519); x ^= x >>> 13; x = Math.imul(x, 3266489917); x ^= x >>> 16; return (x >>> 0) / 4294967296; };
+      return [r(1), r(2), r(3), r(4)];
+    };
     const tick = () => {
       if (particlesDisabledReason()) { window.clearInterval(iv); return; } // failsafe tripped: stand down
       const now = performance.now();
+      const tickDt = Math.min(0.5, (now - lastTick) / 1000);
+      lastTick = now;
       const t = useAudioStore.getState().currentTime || 0;
       const pr0 = presenceAt(cast, t);
       // emergence window after a travel morph (3 s gather in, 3 s out)
@@ -218,7 +244,8 @@ export function ParticleLeadLayer({
 
       if (w) {
         if (w.soul !== lastSoul) {
-          engine.setSoul(w.soul, pr.presence > 0.05 ? 8 : 0.5); // flows when visible, forms quietly when not
+          engine.setSoul(w.soul, shown > 0.05 ? 8 : 0.5); // flows when visible, forms quietly when not
+          engine.setShape(shapeSeed(w.soul, t), shown < 0.05); // a fresh figure each appearance
           lastSoul = w.soul;
         }
         // sparse → form: density grows with presence (the gather)
@@ -226,7 +253,12 @@ export function ParticleLeadLayer({
         engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * (0.25 + 0.75 * pr.presence));
       }
       const dissolving = engine.dissolveTime() !== null;
-      const wantRun = pr.presence > 0 || !!next || dissolving;
+      // the track's last seconds: everything has already faded (no drop at the handoff)
+      const dur = useAudioStore.getState().duration || 0;
+      const endFade = dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
+      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0) * endFade;
+      shown = slew(shown, targetPresence, tickDt);
+      const wantRun = targetPresence > 0 || !!next || dissolving || shown > 0;
       // compile/warm while invisible — at most one warm draw per 400 ms, and
       // never while a clip is decoding (a warm draw builds a GPU pipeline)
       if (!running && warmTick++ % 4 === 0 && !isVideoActive()) engine.prewarm();
@@ -251,8 +283,8 @@ export function ParticleLeadLayer({
         }
       }
 
-      // presence + break veil (CSS opacity with long transitions)
-      const presence = Math.max(pr.presence, dissolving ? 1 : 0);
+      // presence + break veil (CSS opacity), slew-limited above
+      const presence = shown;
       // presence alone — NOT --shader-opacity: phases that favour imagery turn
       // the shaders down, and the particles were fading out with them (Karel
       // v3: "they often times get lost over the imaging")
@@ -271,13 +303,18 @@ export function ParticleLeadLayer({
       else if (presentFlag && presence < 0.05) { presentFlag = false; setParticlePresent(false); }
       // never veil a travel morph (they ride phase changes / the handoff)
       const guard = morphGuard((now - phaseRef.current.at) / 1000, inBoundarySettle());
-      const veil = guard ? 0 : pr.breakVeil;
+      veilShown = slew(veilShown, (guard ? 0 : pr.breakVeil) * endFade, tickDt);
+      const veil = veilShown;
       if (veilRef.current) veilRef.current.style.opacity = veil.toFixed(3);
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();
       const c = colorAt(cast, t);
-      engine.setHue(c.hue + 0.18 * st.swell, c.sat * (1 + 0.12 * st.swell));
+      engine.setHue(c.hue + 0.06 * st.swell, c.sat * (1 + 0.1 * st.swell));
+      // the journey's palette, voiced for this section
+      const pp = palRef.current;
+      const vk = pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${c.voice}` : "";
+      if (pp && vk !== palVoiceKey) { paletteTarget.current = particlePaletteFrom(pp, c.voice); palVoiceKey = vk; }
       const target = paletteTarget.current;
       if (target) {
         current = current ? lerpPalette(current, target, 0.06) : target;
@@ -360,8 +397,10 @@ export function ParticleLeadLayer({
     };
   }, [cast, journeyId]);
 
-  // palette target follows the phase palette (theme)
+  // palette follows the phase palette (theme); the tick picks the section's
+  // voicing of it (which palette colours sit on low / mid / high)
   useEffect(() => {
+    palRef.current = pal ?? null;
     paletteTarget.current = particlePaletteFrom(pal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [palKey]);

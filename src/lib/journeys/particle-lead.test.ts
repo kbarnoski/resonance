@@ -9,7 +9,7 @@ import {
   MORPH_GUARD_SEC,
   particleLeadFor,
   particlePaletteFrom,
-  withParticleLeadSupports, PARTICLES_ENABLED } from "./particle-lead";
+  withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { dissolveEnvelope, DISSOLVE_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
@@ -34,10 +34,26 @@ describe("particle lead registry (v3 rollout)", () => {
     expect(MASTERED_JOURNEY_NAMES.has("snowflake")).toBe(true);
   });
 
-  it("only gathering SHAPE souls are cast — no full-volume swarms", () => {
-    for (const c of Object.values(PARTICLE_LEADS)) {
-      for (const s of [...Object.values(c.souls), ...c.morphSouls]) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
+  it("only gathering SHAPE souls are cast — no full-volume swarms (journey signatures aside)", () => {
+    for (const [id, c] of Object.entries(PARTICLE_LEADS)) {
+      const sig = JOURNEY_SIGNATURES[id]?.soul;
+      for (const s of [...Object.values(c.souls), ...c.morphSouls]) if (s !== sig) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
     }
+  });
+
+  it("never the tree or the cube (Karel 2026-10-05)", () => {
+    expect(SHAPE_SOULS).not.toContain("branches");
+    expect(SHAPE_SOULS).not.toContain("geometry");
+    for (const c of Object.values(PARTICLE_LEADS)) {
+      for (const s of [...Object.values(c.souls), ...c.morphSouls]) expect(["branches", "geometry"], `${c.name}:${s}`).not.toContain(s);
+    }
+  });
+
+  it("Ghost carries its spirit at two travel morphs (transcendence, integration)", () => {
+    const g = PARTICLE_LEADS["ghost"];
+    expect(g.morphSouls.filter((s) => s === "spirit")).toHaveLength(2);
+    expect(g.morphSouls[2]).toBe("spirit");
+    expect(g.morphSouls[5]).toBe("spirit");
   });
 
   it("loop neighbours never share a lead (peak) form, and morph forms change every phase", () => {

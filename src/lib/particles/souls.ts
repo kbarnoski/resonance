@@ -19,6 +19,9 @@ export const SOUL_IDS = [
   "geometry", "orbitals", "waves", "cymatics", "nebula",
   "arcs", "kaleido", "helix", "knot", "fountain",
   "harmonics", "lissajous", "rings",
+  // v4 geometric family (Karel 2026-10-05: "geometric patterns … incredible
+  // variety of shapes") + Ghost's spirit — appended so indices stay stable
+  "rose", "spirograph", "superformula", "polyhedron", "mandala", "spirit", "torus",
 ] as const;
 
 export type SoulId = (typeof SOUL_IDS)[number];
@@ -186,6 +189,27 @@ export const SOULS: readonly SoulPreset[] = [
   S("rings", "Resonant Rings", "concentric rings breathing outward on the bass", pal([1.0, 0.6, 0.35], [0.7, 0.55, 1.0], [0.85, 0.95, 1.0]),
     { trail: 0.45, elev: 0.3, dist: 4.4 },
     { energy: 0.45, playful: 0.4, dark: 0.4, solo: 0.8, peak: 0.7, family: "geometric" }),
+  S("rose", "Rose Curves", "nested rhodonea petals turning against each other", pal([1.0, 0.5, 0.55], [0.7, 0.55, 1.0], [1.0, 0.92, 0.85]),
+    { trail: 0.5, elev: 1.1, dist: 4.2, spin: 0.0, size: 0.85 },
+    { energy: 0.4, playful: 0.5, dark: 0.2, solo: 0.8, peak: 0.6, family: "geometric" }),
+  S("spirograph", "Spirograph", "a hypotrochoid drawn by the music's own gears", pal([1.0, 0.65, 0.35], [0.55, 0.6, 1.0], [0.95, 1.0, 1.0]),
+    { trail: 0.55, elev: 1.0, dist: 4.4, spin: 0.0, size: 0.85 },
+    { energy: 0.5, playful: 0.7, dark: 0.3, solo: 0.8, peak: 0.6, family: "geometric" }),
+  S("superformula", "Superformula", "a shell of light whose symmetry the harmony rewrites", pal([0.9, 0.45, 0.8], [0.45, 0.7, 1.0], [1.0, 0.95, 0.8]),
+    { trail: 0.45, elev: 0.4, dist: 4.4, size: 0.85 },
+    { energy: 0.5, playful: 0.4, dark: 0.5, solo: 0.6, peak: 0.9, family: "geometric" }),
+  S("polyhedron", "Platonic Light", "edges of a turning platonic solid, its star nested inside", pal([1.0, 0.7, 0.4], [0.6, 0.5, 1.0], [0.9, 0.97, 1.0]),
+    { trail: 0.5, elev: 0.35, dist: 5.0, size: 0.8 },
+    { energy: 0.55, playful: 0.3, dark: 0.5, solo: 0.6, peak: 0.85, family: "geometric" }),
+  S("mandala", "Mandala", "rings of n-fold petals, each ring its own register", pal([1.0, 0.55, 0.35], [0.85, 0.45, 0.9], [1.0, 0.95, 0.8]),
+    { trail: 0.45, elev: 1.3, dist: 4.2, spin: 0.0, size: 0.85 },
+    { energy: 0.45, playful: 0.5, dark: 0.3, solo: 0.8, peak: 0.8, family: "geometric" }),
+  S("spirit", "Spirit", "a veiled presence of light drifting through, trailing wisps", pal([0.75, 0.8, 1.0], [1.0, 0.75, 0.85], [1.0, 1.0, 1.0]),
+    { trail: 0.8, elev: 0.05, dist: 5.2, spin: 0.0, intensity: 0.7, size: 0.85, maxD: 0.55 },
+    { energy: 0.3, playful: 0.1, dark: 0.6, solo: 0.9, peak: 0.4, family: "flow" }),
+  S("torus", "Torus Lattice", "a woven torus of light rolling through itself", pal([0.45, 0.75, 1.0], [0.9, 0.5, 0.85], [1.0, 0.95, 0.85]),
+    { trail: 0.5, elev: 0.45, dist: 4.8, size: 0.85 },
+    { energy: 0.55, playful: 0.4, dark: 0.4, solo: 0.6, peak: 0.8, family: "geometric" }),
 ];
 
 /**
@@ -197,8 +221,12 @@ export const SOULS: readonly SoulPreset[] = [
  * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
  */
 export const SHAPE_SOULS: readonly SoulId[] = [
-  "geometry", "harmonics", "orbitals", "lissajous", "cymatics", "knot",
-  "kaleido", "bloom", "helix", "arcs", "rings", "vortex", "ribbons", "branches", "threads",
+  // no "geometry" (nested cubes) and no "branches" (a tree) — Karel
+  // 2026-10-05: "dont use that tree or cube image"; "spirit" is cast only
+  // as a journey signature (Ghost), never from the general pool
+  "harmonics", "orbitals", "lissajous", "cymatics", "knot",
+  "kaleido", "bloom", "helix", "arcs", "rings", "vortex", "ribbons", "threads",
+  "rose", "spirograph", "superformula", "polyhedron", "mandala", "torus",
 ];
 
 export function soulById(id: SoulId): SoulPreset {

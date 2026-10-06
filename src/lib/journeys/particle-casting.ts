@@ -68,9 +68,14 @@ export interface PresenceWindow {
 export interface SectionColor {
   start: number;
   end: number;
-  /** YIQ hue rotation (rad): + cooler/violet (minor), − warmer/golden (major) */
+  /** YIQ hue rotation (rad) — a small drift only; the colour itself comes
+   *  from the journey palette (Karel 2026-10-05: "truly reflect and
+   *  integrate coloring of the palette of the journey") */
   hue: number;
   sat: number;
+  /** palette voicing 0..3 (dark/minor → bright/major): which of the
+   *  journey's palette colours sit on the low / mid / high bands */
+  voice: number;
 }
 
 export interface ParticleCast {
@@ -196,11 +201,22 @@ export function sectionColors(p: ParticleProfile): SectionColor[] {
   const mean = raw.reduce((a, b) => a + b, 0) / Math.max(1, raw.length);
   const meanI = p.sections.reduce((a, s) => a + s.intensity, 0) / Math.max(1, p.sections.length);
   const centre = Math.max(-0.6, Math.min(0.9, mean));
+  // colour evolution = moving through the journey's OWN palette (voicings),
+  // darkest voicing for the most minor/tense sections, brightest for major
+  // swells; hue only drifts a few degrees around the palette
+  const order = raw.map((r, i) => ({ i, k: -r + (p.sections[i].intensity - meanI) * 0.8 })).sort((a, b) => a.k - b.k);
+  const voiceOf = new Array<number>(raw.length).fill(1);
+  order.forEach((o, rank) => { voiceOf[o.i] = Math.min(3, Math.floor((rank / Math.max(1, order.length)) * 4)); });
+  let prevVoice = -1;
   return p.sections.map((s, i) => {
-    const hue = Math.max(-1.1, Math.min(1.3, centre + (raw[i] - mean) + (s.intensity - meanI) * 1.2));
+    const swing = centre + (raw[i] - mean) + (s.intensity - meanI) * 1.2;
+    const hue = Math.max(-0.12, Math.min(0.12, swing * 0.1));
     const reg = ((s.centerMidi ?? midMedian) - midMedian) / 12;
-    const sat = Math.max(0.8, Math.min(1.5, 1.05 + reg * 0.3 + (s.intensity - 0.6) * 0.6));
-    return { start: s.start, end: s.end, hue: Math.round(hue * 100) / 100, sat: Math.round(sat * 100) / 100 };
+    const sat = Math.max(0.85, Math.min(1.3, 1.05 + reg * 0.25 + (s.intensity - 0.6) * 0.5));
+    let voice = voiceOf[i];
+    if (voice === prevVoice) voice = (voice + (i % 2 === 0 ? 1 : 3)) % 4; // neighbours always re-voice
+    prevVoice = voice;
+    return { start: s.start, end: s.end, hue: Math.round(hue * 100) / 100, sat: Math.round(sat * 100) / 100, voice };
   });
 }
 
@@ -375,9 +391,9 @@ export function presenceAt(cast: Pick<ParticleCast, "windows">, t: number): { pr
   };
 }
 
-export function colorAt(cast: Pick<ParticleCast, "colors">, t: number): { hue: number; sat: number } {
+export function colorAt(cast: Pick<ParticleCast, "colors">, t: number): { hue: number; sat: number; voice: number } {
   const c = cast.colors.find((x) => t >= x.start && t < x.end) ?? cast.colors[cast.colors.length - 1];
-  return c ? { hue: c.hue, sat: c.sat } : { hue: 0, sat: 1 };
+  return c ? { hue: c.hue, sat: c.sat, voice: c.voice ?? 1 } : { hue: 0, sat: 1, voice: 1 };
 }
 
 /** Cast one journey (avoid = souls its loop neighbours already lead with). */
@@ -416,7 +432,8 @@ export function castJourney(p: ParticleProfile, avoid: Set<SoulId> = new Set()):
     form: formOf(p),
     phaseBounds: p.phaseBounds ?? [],
     morphSouls,
-    hueSpread: Math.round((0.3 + p.mood.arousal * 0.45) * 100) / 100,
+    // gradient across the form stays inside the palette's neighbourhood
+    hueSpread: Math.round((0.06 + p.mood.arousal * 0.12) * 100) / 100,
   };
 }
 

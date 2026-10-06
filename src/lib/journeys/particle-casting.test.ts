@@ -39,10 +39,12 @@ describe("conducting — restraint (every journey)", () => {
       for (const x of p.phaseBounds ?? []) for (const b of c.breaks) expect(x >= b.end + 1 - 1e-6 || x <= b.start - 14 + 1e-6, p.name).toBe(true);
     }
   });
-  it("colour travels: every journey with 2+ sections spans a visible hue range", () => {
+  it("colour travels through the journey's OWN palette: voicing changes every section, hue drift stays small", () => {
     for (const p of profiles.filter((x) => x.sections.length >= 3)) {
-      const hs = castJourney(p).colors.map((c) => c.hue);
-      expect(Math.max(...hs) - Math.min(...hs), p.name).toBeGreaterThanOrEqual(0.15);
+      const cs = castJourney(p).colors;
+      for (let i = 1; i < cs.length; i++) expect(cs[i].voice, `${p.name} §${i}`).not.toBe(cs[i - 1].voice);
+      expect(new Set(cs.map((c) => c.voice)).size, p.name).toBeGreaterThanOrEqual(2);
+      for (const c of cs) expect(Math.abs(c.hue), p.name).toBeLessThanOrEqual(0.12);
     }
   });
 });

@@ -34,11 +34,17 @@ export function disableParticlesForSession(why: string): void {
   disabledWhy = why;
   const sh = shared;
   if (sh) {
+    // stop simulating at once (the stall is the reason), but FADE the last
+    // frame out on the compositor — never a drop (Karel 2026-10-05)
     sh.engine.stop();
-    sh.canvas.style.visibility = "hidden";
-    try {
-      (sh.canvas.getContext("webgl2") as WebGL2RenderingContext | null)?.getExtension("WEBGL_lose_context")?.loseContext();
-    } catch { /* already gone */ }
+    sh.canvas.style.transition = "opacity 1.8s linear";
+    sh.canvas.style.opacity = "0";
+    setTimeout(() => {
+      sh.canvas.style.visibility = "hidden";
+      try {
+        (sh.canvas.getContext("webgl2") as WebGL2RenderingContext | null)?.getExtension("WEBGL_lose_context")?.loseContext();
+      } catch { /* already gone */ }
+    }, 2000);
   }
   setParticlePresent(false);
   if (typeof window !== "undefined") (window as unknown as Record<string, unknown>).__resonanceParticlesDisabled = why;

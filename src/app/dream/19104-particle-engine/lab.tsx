@@ -142,6 +142,9 @@ export function LabView() {
       return;
     }
     engineRef.current = engine;
+    // ?shape=a,b,c,d — a specific figure of the form (v4 per-appearance seed)
+    const shapeQ = q.get("shape")?.split(",").map(Number);
+    if (shapeQ && shapeQ.length === 4 && shapeQ.every(Number.isFinite)) engine.setShape(shapeQ as [number, number, number, number], true);
     engine.start();
 
     const onResize = () => engine.resize();

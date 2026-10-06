@@ -157,6 +157,8 @@ export interface ParticleEngine {
   setHue(hue: number, sat?: number): void;
   /** Soul form parameters (cymatic plate mode n,m · lissajous ratios); glide. */
   setForm(form: [number, number, number, number]): void;
+  /** Per-appearance shape seed (0..1 ×4): petals, gears, symmetry, solid — glides. */
+  setShape(shape: [number, number, number, number], snap?: boolean): void;
   /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
   setMotion(k: number): void;
   /** Playful impulse — motion only. */
@@ -528,6 +530,8 @@ export function createParticleEngine(
   let densityTarget = 1;
   let hue = 0, hueTarget = 0, sat = 1, satTarget = 1;
   const form: [number, number, number, number] = [3, 5, 1.5, 2];
+  const shape: [number, number, number, number] = [0, 0.3, 0.5, 0.5];
+  let shapeTarget: [number, number, number, number] = [0, 0.3, 0.5, 0.5];
   let formTarget: [number, number, number, number] = [3, 5, 1.5, 2];
   let motion = 1, motionTarget = 1;
   let scatterEnv = 0, scatterTarget = 0, bounceEnv = 0, bounceSign = 1;
@@ -676,6 +680,7 @@ export function createParticleEngine(
     hue += (hueTarget - hue) * kHue;
     sat += (satTarget - sat) * kHue;
     for (let i = 0; i < 4; i++) form[i] += (formTarget[i] - form[i]) * (1 - Math.exp(-dt / 4));
+    for (let i = 0; i < 4; i++) shape[i] += (shapeTarget[i] - shape[i]) * (1 - Math.exp(-dt / 2.5));
     motion += (motionTarget - motion) * (1 - Math.exp(-dt / 2));
     // impulses: scatter rises ~0.3 s then the target decays (~1.8 s); bounce rings ~0.35 s
     scatterEnv += (scatterTarget - scatterEnv) * (1 - Math.exp(-dt / 0.3));
@@ -747,6 +752,8 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uInkW, inkW);
     g.uniform1f(sim.u.uFountainW, fountainW);
     g.uniform4f(sim.u.uForm, form[0], form[1], form[2], form[3]);
+    if (sim.u.uShape) g.uniform4f(sim.u.uShape, shape[0], shape[1], shape[2], shape[3]);
+    if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
     g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
     g.uniform1f(sim.u.uDisperse, disperseNow ? 1 : 0);
     g.uniform1f(sim.u.uScatter, scatterEnv);
@@ -1107,6 +1114,10 @@ export function createParticleEngine(
     },
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
+    setShape(sh, snap = false) {
+      shapeTarget = sh.map((x) => Math.max(0, Math.min(0.999, x))) as [number, number, number, number];
+      if (snap) for (let i = 0; i < 4; i++) shape[i] = shapeTarget[i];
+    },
     setMotion(k) { motionTarget = Math.max(0.5, Math.min(1.6, k)); },
     impulse(kind, strength = 1) {
       const k = Math.max(0, Math.min(1, strength));

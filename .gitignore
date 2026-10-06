@@ -21,6 +21,7 @@ bun.lockb
 
 # next.js
 /.next/
+/.next-preview/
 /out/
 
 # production

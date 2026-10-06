@@ -14,7 +14,7 @@
  * nothing else about how they play changes (mastered-lock fingerprints the
  * cast so any later change is deliberate).
  */
-import type { ParticlePalette } from "@/lib/particles/souls";
+import type { ParticlePalette, SoulId } from "@/lib/particles/souls";
 import { isMasteredJourney, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { castSet, type ParticleCast } from "./particle-casting";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
@@ -37,13 +37,29 @@ export interface ParticleLeadCast extends ParticleCast {
 
 const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MASTERED_JOURNEY_NAMES.has(name.trim().toLowerCase());
 
+/** Theme signatures: a journey's own particle form at chosen travel morphs
+ *  (index = the morph INTO that phase). Ghost (Karel 2026-10-05: "the
+ *  particles should ghost like moving form at a couple points"): the spirit
+ *  rises with the morph into transcendence (out of the tunnel toward the
+ *  light) and again into integration (joining the light). */
+export const JOURNEY_SIGNATURES: Readonly<Record<string, { soul: SoulId; morphs: readonly number[] }>> = {
+  ghost: { soul: "spirit", morphs: [2, 5] },
+};
+
 /** Casts for the registry — built once, in loop order, neighbours differ. */
 export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() => {
   const ids = PARTICLE_JOURNEY_IDS;
   const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]));
   const out: Record<string, ParticleLeadCast> = {};
   ids.forEach((id, i) => {
-    out[id] = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
+    const cast = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
+    const sig = JOURNEY_SIGNATURES[id];
+    if (sig) {
+      const morphSouls = [...cast.morphSouls];
+      for (const k of sig.morphs) if (k < morphSouls.length) morphSouls[k] = sig.soul;
+      cast.morphSouls = morphSouls;
+    }
+    out[id] = cast;
   });
   return out;
 })();
@@ -125,9 +141,12 @@ function lift(c: [number, number, number], floor = 0.55): [number, number, numbe
 
 /** The journey's phase palette → particle palette: bass motes wear the
  *  primary, mid motes the accent, the finest treble dust the glow. */
-export function particlePaletteFrom(p?: { primary: string; secondary: string; accent: string; glow: string } | null): ParticlePalette | null {
+export function particlePaletteFrom(p?: { primary: string; secondary: string; accent: string; glow: string } | null, voice = 1): ParticlePalette | null {
   if (!p) return null;
-  return { low: lift(hexToLinear(p.primary)), mid: lift(hexToLinear(p.accent)), high: lift(hexToLinear(p.glow), 0.7) };
+  // voicings of the journey's own palette (low / mid / high band), dark → bright
+  const P = p.primary, S = p.secondary, A = p.accent, G = p.glow;
+  const v = [[S, P, A], [P, A, G], [A, P, G], [P, G, A]][Math.max(0, Math.min(3, Math.round(voice)))];
+  return { low: lift(hexToLinear(v[0])), mid: lift(hexToLinear(v[1])), high: lift(hexToLinear(v[2]), 0.7) };
 }
 
 /** Strip dual + tertiary shaders while particles are PRESENT (one supporting
