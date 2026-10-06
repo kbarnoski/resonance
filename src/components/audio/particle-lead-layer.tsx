@@ -73,6 +73,9 @@ const TIER_BUDGET = {
  *  presence (morphs every ~30 s); 10 s keeps the law and lands near 60 %. */
 const MORPH_TAIL_SEC = 10;
 
+/** Following a particle-like shader (see sampleFollow) — off: kiosk stalls. */
+const FOLLOW_ENABLED = false;
+
 function soulSequence(cast: ParticleLeadCast): SoulId[] {
   const ev: [number, SoulId][] = [[3, cast.morphSouls[0] ?? cast.souls.transition]];
   for (const w of cast.windows) ev.push([w.start, w.soul]);
@@ -505,7 +508,11 @@ export function ParticleLeadLayer({
         // the imagery's movement sets the pace (flicker livelier, drift calmer)
         engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1));
         // a shader with its own moving particles: follow + trail them
-        if (mode && PARTICLE_LIKE_SHADERS.has(mode) && shown > 0.2) sampleFollow(mode);
+        // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
+        // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)
+        // and saw nothing — the next step is motion measured INSIDE the
+        // shader renderer (tiny FBO + async read), proven on the kiosk first
+        if (FOLLOW_ENABLED && mode && PARTICLE_LIKE_SHADERS.has(mode) && shown > 0.2) sampleFollow(mode);
         else if (followOn) { engine.setFollow(0, 0, 0); followOn = false; }
       }
       if (!wasShown && shown > 0.05) { wasShown = true; glitchRecord("particle-in", `${currentSoul} t=${t.toFixed(1)}`); }
