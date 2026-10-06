@@ -55,7 +55,7 @@ C=""
 for attempt in 1 2 3; do
   launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.resonance.tramokyo.plist" 2>/dev/null \
     || launchctl kickstart -k "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
-  for i in $(seq 1 20); do
+  for i in $(seq 1 30); do
     C=$(curl -s -m 3 localhost:3000/api/version | python3 -c "import json,sys;print(json.load(sys.stdin).get('commit',''))" 2>/dev/null)
     [ "$C" = "$HEAD" ] && break
     sleep 2
