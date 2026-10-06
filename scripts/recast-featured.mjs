@@ -63,7 +63,11 @@ const PRIOR = existsSync("scripts/featured-recast.json") ? JSON.parse(readFileSy
 const priorById = new Map((PRIOR?.journeys ?? []).map((j) => [j.id, j]));
 const rolloutIds = ROLLOUT ? (await import(`./mv-rollout/shotlists/${ROLLOUT}.mjs`)).JOURNEYS.map((j) => j.id) : [];
 const OWNED = new Set([...(PRIOR?.journeys ?? []).filter((j) => j.owned).map((j) => j.id), ...rolloutIds]);
-if (!ROLLOUT && OWNED.size && !process.argv.includes("--force-legacy")) {
+// --keep-owned: a legacy recast of everything EXCEPT the rolled-out journeys
+// (frozen with their prior casts) — e.g. purging a newly banned shader
+// (biofilm, Karel 2026-10-06) without undoing a Snowflake-Standard rollout
+const KEEP_OWNED = process.argv.includes("--keep-owned");
+if (!ROLLOUT && OWNED.size && !process.argv.includes("--force-legacy") && !KEEP_OWNED) {
   console.error(`recast-featured: ${OWNED.size} journeys are rolled out to the Snowflake Standard — a legacy full recast would undo them. Use --rollout=<set> (or --force-legacy).`);
   process.exit(1);
 }
@@ -167,7 +171,7 @@ function rng(seed) { let x = seed >>> 0 || 1; return () => { x ^= x << 13; x >>>
 
 function solve(c, iters = 300000) {
   const N = T.length;
-  const frozen = T.map((t) => (ROLLOUT ? !OWNED.has(t.id) : false));
+  const frozen = T.map((t) => (ROLLOUT ? !OWNED.has(t.id) : KEEP_OWNED ? OWNED.has(t.id) : false));
   const ns = T.map((t, j) => (frozen[j] ? priorById.get(t.id).shaders.length : kFor(t.dur, c)));
   const pfs = T.map((t) => paletteFamilies(t.palette));
   const domain = T.map((t) => {
@@ -194,7 +198,7 @@ function solve(c, iters = 300000) {
   };
   const affinity = (m, j) => (T[j].cats.includes(V[m].category) ? 1 : 0);
   const cost = (m, j) => conf(m, j) * 100 + at.get(m).size * 2 - fit(m, pfs[j]) * 0.8 - affinity(m, j) * 0.6 + rand() * 1.5;
-  const add = (m, j) => { sets[j].add(m); at.get(m).add(j); };
+  const add = (m, j) => { sets[j].add(m); if (!at.has(m)) at.set(m, new Set()); at.get(m).add(j); };
   const del = (m, j) => { sets[j].delete(m); at.get(m).delete(j); };
   for (let j = 0; j < N; j++) if (frozen[j]) for (const m of priorById.get(T[j].id).shaders) add(m, j);
   for (let j = 0; j < N; j++) {
@@ -292,6 +296,7 @@ T.forEach((t, j) => {
   t.shaders = solved.sets[j];
   t.owned = OWNED.has(t.id);
   if (ROLLOUT && !t.owned) { const pr = priorById.get(t.id); t.cast = pr.cast; t.shaders = pr.shaders; return; }
+  if (KEEP_OWNED && t.owned) { const pr = priorById.get(t.id); t.cast = pr.cast; t.shaders = pr.shaders; t.lead = pr.lead; return; }
   if (t.owned) { const o = ownedLayout(t, t.shaders); t.cast = o.cast; t.lead = o.lead; }
   else t.cast = layout(t, t.shaders);
 });

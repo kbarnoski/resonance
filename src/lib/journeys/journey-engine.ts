@@ -4,7 +4,7 @@ import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName } from "./kinetic";
 import { TAKE_FINALE_SHADERS } from "./pinned-takes";
-import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST } from "./journeys";
+import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
@@ -54,6 +54,18 @@ function getGeometryModes(): Set<string> {
     );
   }
   return _geometryModes;
+}
+
+const GLOBAL_BLOCKED = new Set(GLOBAL_SHADER_BLOCKLIST);
+function withoutGlobalBlocked(j: Journey): Journey {
+  if (!j.phases.some((p) => p.shaderModes?.some((m) => GLOBAL_BLOCKED.has(m)))) return j;
+  return {
+    ...j,
+    phases: j.phases.map((p) => {
+      const kept = (p.shaderModes ?? []).filter((m) => !GLOBAL_BLOCKED.has(m));
+      return { ...p, shaderModes: kept.length ? kept : ["drift"] };
+    }),
+  };
 }
 
 class JourneyEngine {
@@ -266,6 +278,10 @@ class JourneyEngine {
     // per-phase pools as written — regeneration would scatter them.
     const authoredOwned = journey.phases.some((p) => p.shaderOwned === true);
     this.journey = this.kineticEq ? journey : (castJourneyShaders(journey) ?? (authoredOwned ? journey : regenerateJourneyShaders(journey, random, this.trackDuration)));
+    // FINAL GUARD (2026-10-06): a globally banned shader can never play,
+    // whatever a stored cast, DB row or procedural tail says (biofilm sat in
+    // Expansion DB casts and Ghost's tail after it was banned)
+    this.journey = withoutGlobalBlocked(this.journey);
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;

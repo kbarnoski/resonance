@@ -277,6 +277,9 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
 };
 
 export const GLOBAL_SHADER_BLOCKLIST: string[] = [
+  // Karel 2026-10-06: "that bright green cellular shader should never be
+  // used. it doesnt work" (seen in Ghost) — banned everywhere.
+  "biofilm",
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even
   // when dimmed — "full screen ones that brighten the screen and makes
