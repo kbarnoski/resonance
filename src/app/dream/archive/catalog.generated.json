@@ -1,5 +1,13 @@
 [
  {
+  "slug": "19440-cantor",
+  "cycle": 19440,
+  "name": "Cantor",
+  "status": "wip",
+  "description": "What if you could sing *with* one of Karel's recordings — not over it, but *into* it — so that your sung note made his piano resonate at that pitch?",
+  "category": "local"
+ },
+ {
   "slug": "19360-vicinity",
   "cycle": 19360,
   "name": "Vicinity",
