@@ -122,7 +122,7 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
  *  Snowflake right as particles first emerged (~0:08-0:09; 1.1s frame gap
  *  then a hang), reproducibly. Headless GPU checks never caught it. Off
  *  everywhere until the hang is root-caused and verified in kiosk Chrome. */
-export const PARTICLES_ENABLED = true;
+export const PARTICLES_ENABLED = false;
 
 /** On-kiosk A/B (2026-10-05): the remote's "particles-on" sets this for the
  *  kiosk tab only (sessionStorage), so particles can be measured on the real
