@@ -122,6 +122,7 @@ export function LabView() {
     let engine: ParticleEngine;
     try {
       engine = createParticleEngine(canvas, {
+        probe: true, // dream lab: verification read-back is fine here (never in journeys)
         count: n,
         dpr: dprQ,
         soul: initialSoul,

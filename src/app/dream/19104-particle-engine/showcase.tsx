@@ -80,6 +80,7 @@ export function ShowcaseView() {
     let engine: ParticleEngine;
     try {
       engine = createParticleEngine(canvas, {
+        probe: true, // dream lab: verification read-back is fine here (never in journeys)
         count: 409_600,
         soul: "vortex",
         onContextLost: () => setFatal("The GPU context was lost — reload to restore the field."),

@@ -32,7 +32,10 @@
 
 import {
   QUAD_VS,
-  SIM_FS,
+  buildSimFS,
+  EXPO_FS,
+  SEED_INIT_FS,
+  POS_INIT_FS,
   DRAW_VS,
   DRAW_FS,
   FADE_FS,
@@ -44,7 +47,6 @@ import {
   soulById,
   lerpPalette,
   texSideFor,
-  governExposure,
   dissolveEnvelope,
   DISSOLVE_SEC,
   DISSOLVE_SNAP_SEC,
@@ -77,6 +79,12 @@ export interface ParticleEngineOptions {
   camScale?: number;
   /** Speed cap (world units/s). Default 3.5. */
   maxSpeed?: number;
+  /** Verification probe: async state + luminance read-back. OFF in journeys —
+   *  getBufferSubData is a synchronous round trip in Chrome (the kiosk hang). */
+  probe?: boolean;
+  /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
+   *  while running exceeds the budget, or a program fails. */
+  watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
 }
 
 export interface ParticleStats {
@@ -119,6 +127,9 @@ export interface ParticleStats {
   sat: number;
   scatter: number;
   bounce: number;
+  programs: { compiling: number; ready: number; warm: number; failed: number };
+  /** [program, t (ms), call ms] for each warm draw */
+  warmLog: [string, number, number][];
 }
 
 export interface ParticleEngine {
@@ -159,6 +170,14 @@ export interface ParticleEngine {
   setHueSpread(spread: number): void;
   /** Layer gain (energy), glides ~1.5 s — e.g. lifted over bright imagery. */
   setGain(k: number): void;
+  /** Queue async compiles for these souls (and the blends between neighbours
+   *  in the list) — call at journey start, long before they are visible. */
+  prepare(souls: SoulId[]): void;
+  /** Idle step while the field is invisible: poll compiles, warm ONE program
+   *  (a 1-pixel draw builds its GPU pipeline). Cheap; call ~10×/s. */
+  prewarm(): void;
+  /** Every queued program compiled + warmed. */
+  isWarm(): boolean;
   resize(): void;
   stats(): ParticleStats;
 }
@@ -194,39 +213,57 @@ function mul(a: Float32Array, b: Float32Array): Float32Array {
 // ── GL helpers ───────────────────────────────────────────────────────────────
 type GL = WebGL2RenderingContext;
 
-function compile(gl: GL, type: number, src: string): WebGLShader {
-  const s = gl.createShader(type)!;
-  gl.shaderSource(s, src);
-  gl.compileShader(s);
-  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    const log = gl.getShaderInfoLog(s);
-    gl.deleteShader(s);
-    throw new Error(`particle shader compile: ${log}`);
-  }
-  return s;
-}
-
+// ── programs: compiled ASYNCHRONOUSLY, never blocking the main thread ──────
+// (kiosk hang 2026-10-05: a synchronous compile/link of one giant shader, then
+// its Metal pipeline built at first draw, froze real Chrome). Programs are
+// compiled with KHR_parallel_shader_compile; status is only queried once the
+// driver says it is complete, and every program is "warmed" (one 1-pixel
+// draw) while the field is invisible before it is ever used on screen.
 interface Prog {
   p: WebGLProgram;
   u: Record<string, WebGLUniformLocation | null>;
+  vs: WebGLShader | null;
+  fs: WebGLShader | null;
+  state: "compiling" | "ready" | "failed";
+  warm: boolean;
+  error?: string;
 }
-function program(gl: GL, vs: string, fs: string): Prog {
+
+function startProgram(gl: GL, vsSrc: string, fsSrc: string): Prog {
   const p = gl.createProgram()!;
-  const v = compile(gl, gl.VERTEX_SHADER, vs);
-  const f = compile(gl, gl.FRAGMENT_SHADER, fs);
-  gl.attachShader(p, v);
-  gl.attachShader(p, f);
+  const vs = gl.createShader(gl.VERTEX_SHADER)!;
+  const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+  gl.shaderSource(vs, vsSrc);
+  gl.shaderSource(fs, fsSrc);
+  gl.compileShader(vs);
+  gl.compileShader(fs);
+  gl.attachShader(p, vs);
+  gl.attachShader(p, fs);
   gl.linkProgram(p);
-  gl.deleteShader(v);
-  gl.deleteShader(f);
-  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(`particle link: ${gl.getProgramInfoLog(p)}`);
-  const u: Prog["u"] = {};
-  const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS) as number;
-  for (let i = 0; i < n; i++) {
-    const info = gl.getActiveUniform(p, i);
-    if (info) u[info.name] = gl.getUniformLocation(p, info.name);
+  return { p, u: {}, vs, fs, state: "compiling", warm: false };
+}
+
+/** Non-blocking: true once linked. Without the parallel-compile extension the
+ *  first status query waits for the compile (the only blocking fallback). */
+function pollProgram(gl: GL, pr: Prog, par: { COMPLETION_STATUS_KHR: number } | null): boolean {
+  if (pr.state === "ready") return true;
+  if (pr.state === "failed") return false;
+  if (par && !gl.getProgramParameter(pr.p, par.COMPLETION_STATUS_KHR)) return false;
+  if (!gl.getProgramParameter(pr.p, gl.LINK_STATUS)) {
+    pr.state = "failed";
+    pr.error = `${gl.getProgramInfoLog(pr.p) ?? ""} ${pr.fs ? gl.getShaderInfoLog(pr.fs) ?? "" : ""}`.slice(0, 400);
+    return false;
   }
-  return { p, u };
+  const n = gl.getProgramParameter(pr.p, gl.ACTIVE_UNIFORMS) as number;
+  for (let i = 0; i < n; i++) {
+    const info = gl.getActiveUniform(pr.p, i);
+    if (info) pr.u[info.name] = gl.getUniformLocation(pr.p, info.name);
+  }
+  if (pr.vs) gl.deleteShader(pr.vs);
+  if (pr.fs) gl.deleteShader(pr.fs);
+  pr.vs = pr.fs = null;
+  pr.state = "ready";
+  return true;
 }
 
 function floatTex(gl: GL, w: number, h: number, data: Float32Array | null): WebGLTexture {
@@ -284,6 +321,15 @@ class AsyncRead {
 
 export class ParticleEngineUnsupported extends Error {}
 
+/** JS mirror of SEED_INIT_FS's hash (probe only). */
+function seedHash(px: number, py: number, k: number): number {
+  const fr = (x: number) => x - Math.floor(x);
+  let qx = fr(px * 0.1031 + k), qy = fr(py * 0.1030 + k), qz = fr(px * 0.0973 + k);
+  const d = qx * (qy + 33.33) + qy * (qz + 33.33) + qz * (qx + 33.33);
+  qx += d; qy += d; qz += d;
+  return fr((qx + qy) * qz);
+}
+
 /** Throws ParticleEngineUnsupported when WebGL2 float render targets are missing. */
 export function createParticleEngine(
   canvas: HTMLCanvasElement,
@@ -311,11 +357,36 @@ export function createParticleEngine(
   let paletteOverride: ParticlePalette | null = opts.palette ?? null;
   const pointCss = opts.pointSize ?? 2.2;
 
-  const sim = program(gl, QUAD_VS, SIM_FS);
-  const draw = program(gl, DRAW_VS, DRAW_FS);
-  const fade = program(gl, QUAD_VS, FADE_FS);
-  const lum = program(gl, QUAD_VS, LUM_FS);
-  const comp = program(gl, QUAD_VS, COMP_FS);
+  const par = gl.getExtension("KHR_parallel_shader_compile") as { COMPLETION_STATUS_KHR: number } | null;
+  const probe = !!opts.probe;
+  const draw = startProgram(gl, DRAW_VS, DRAW_FS);
+  const fade = startProgram(gl, QUAD_VS, FADE_FS);
+  const lum = startProgram(gl, QUAD_VS, LUM_FS);
+  const expo = startProgram(gl, QUAD_VS, EXPO_FS);
+  const comp = startProgram(gl, QUAD_VS, COMP_FS);
+  const seedInit = startProgram(gl, QUAD_VS, SEED_INIT_FS);
+  const posInit = startProgram(gl, QUAD_VS, POS_INIT_FS);
+  const fixedProgs = [seedInit, posInit, draw, fade, lum, expo, comp];
+  let particlesInitialised = false;
+  // which program warmed when, and how long the call took (diagnostics)
+  const warmLog: [string, number, number][] = [];
+  // simulation variants: one per soul pair, only the force laws they need
+  const simProgs = new Map<string, Prog>();
+  const simProgFor = (a: number, b: number): Prog => {
+    const k = a <= b ? `${a},${b}` : `${b},${a}`;
+    let pr = simProgs.get(k);
+    if (!pr) {
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([a, b]));
+      simProgs.set(k, pr);
+    }
+    return pr;
+  };
+  let stalled = false;
+  const stall = (why: string) => {
+    if (stalled) return;
+    stalled = true;
+    opts.watchdog?.onStall(why);
+  };
   const vao = gl.createVertexArray();
 
   // ── spectrum texture ─────────────────────────────────────────────────────
@@ -335,6 +406,7 @@ export function createParticleEngine(
   let velTex: WebGLTexture[] = [];
   let seedTex: WebGLTexture | null = null;
   let simFbo: WebGLFramebuffer[] = [];
+  let seedFbo: WebGLFramebuffer | null = null;
   let seedBand = new Float32Array(0); // CPU copy of row 0 bands (probe)
   let cur = 0;
   let stateRead: AsyncRead | null = null;
@@ -348,41 +420,32 @@ export function createParticleEngine(
     velRead?.dispose();
 
     count = side * side;
-    const pos = new Float32Array(count * 4);
-    const seed = new Float32Array(count * 4);
-    for (let i = 0; i < count; i++) {
-      // uniform ball, slight disk bias: the first frame is already a nebula
-      const u = Math.random(), v = Math.random(), w = Math.cbrt(Math.random()) * 1.6;
-      const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1);
-      pos[i * 4] = Math.sin(ph) * Math.cos(th) * w;
-      pos[i * 4 + 1] = Math.cos(ph) * w * 0.4;
-      pos[i * 4 + 2] = Math.sin(ph) * Math.sin(th) * w;
-      pos[i * 4 + 3] = Math.random() * 15; // staggered ages
-      // band: skew toward the lower half (piano lives low-mid), keep a dusting of treble
-      seed[i * 4] = Math.pow(Math.random(), 1.25);
-      seed[i * 4 + 1] = Math.random();
-      seed[i * 4 + 2] = Math.random();
-      seed[i * 4 + 3] = Math.random();
-    }
+    // contents are written on the GPU (SEED_INIT / POS_INIT) once those
+    // programs are ready — no JS loop, no multi-MB uploads on the main thread
     seedBand = new Float32Array(side);
-    for (let x = 0; x < side; x++) seedBand[x] = seed[x * 4];
-    posTex = [floatTex(gl!, side, side, pos), floatTex(gl!, side, side, null)];
-    velTex = [floatTex(gl!, side, side, new Float32Array(count * 4)), floatTex(gl!, side, side, null)];
-    seedTex = floatTex(gl!, side, side, seed);
+    for (let x = 0; x < side; x++) seedBand[x] = Math.pow(seedHash(x + 0.5, 0.5, 0.17), 1.25); // probe: row-0 bands (mirrors SEED_INIT)
+    posTex = [floatTex(gl!, side, side, null), floatTex(gl!, side, side, null)];
+    velTex = [floatTex(gl!, side, side, null), floatTex(gl!, side, side, null)];
+    seedTex = floatTex(gl!, side, side, null);
+    particlesInitialised = false;
     simFbo = [0, 1].map((k) => {
       const f = gl!.createFramebuffer()!;
       gl!.bindFramebuffer(gl!.FRAMEBUFFER, f);
       gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, posTex[k], 0);
       gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT1, gl!.TEXTURE_2D, velTex[k], 0);
       gl!.drawBuffers([gl!.COLOR_ATTACHMENT0, gl!.COLOR_ATTACHMENT1]);
-      if (gl!.checkFramebufferStatus(gl!.FRAMEBUFFER) !== gl!.FRAMEBUFFER_COMPLETE)
-        throw new ParticleEngineUnsupported("sim framebuffer incomplete");
+      // (no checkFramebufferStatus: a synchronous GPU round trip — RGBA32F MRT
+      // is complete whenever EXT_color_buffer_float exists, checked above)
       return f;
     });
+    if (seedFbo) gl!.deleteFramebuffer(seedFbo);
+    seedFbo = gl!.createFramebuffer()!;
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, seedFbo);
+    gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, seedTex, 0);
     gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
     cur = 0;
-    stateRead = new AsyncRead(gl!, side * 4);
-    velRead = new AsyncRead(gl!, side * 4);
+    stateRead = probe ? new AsyncRead(gl!, side * 4) : null;
+    velRead = probe ? new AsyncRead(gl!, side * 4) : null;
     fadeIn = 0;
   }
 
@@ -396,7 +459,18 @@ export function createParticleEngine(
   gl.bindFramebuffer(gl.FRAMEBUFFER, lumFbo);
   gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, lumTex, 0);
   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  const lumRead = new AsyncRead(gl, 16 * 16 * 4);
+  // GPU exposure governor: 1×1 ping-pong (r = exposure, g = mean luminance)
+  const expTex = [floatTex(gl, 1, 1, new Float32Array([1, 0, 0, 1])), floatTex(gl, 1, 1, new Float32Array([1, 0, 0, 1]))];
+  const expFbo = expTex.map((t) => {
+    const f = gl.createFramebuffer()!;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+    return f;
+  });
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  let ecur = 0;
+  let expInit = true;
+  const lumRead = probe ? new AsyncRead(gl, 4) : null; // probe only: the 1×1 exposure/mean
   const dprCap = opts.dpr ?? Math.min(window.devicePixelRatio || 1, 2);
   let dpr = dprCap;
 
@@ -438,6 +512,10 @@ export function createParticleEngine(
   let soulB = soulA;
   let mix = 0;
   let mixDur = 7;
+  // a requested soul waits here until its blend program is compiled + warm
+  let pendingSoul: ReturnType<typeof soulById> | null = null;
+  let pendingDur = 7;
+  let framesSinceStart = 0;
   let az = 0;
   let exposure = 1;
   let meanLum = 0;
@@ -502,6 +580,7 @@ export function createParticleEngine(
 
   buildParticles();
   resize();
+  simProgFor(soulA.index, soulA.index); // the opening soul starts compiling now
 
   function bindTex(unit: number, tex: WebGLTexture | null, loc: WebGLUniformLocation | null | undefined) {
     gl!.activeTexture(gl!.TEXTURE0 + unit);
@@ -510,11 +589,19 @@ export function createParticleEngine(
   }
 
   function frame(now: number) {
-    if (!running || lost) return;
+    if (!running || lost || stalled) return;
     raf = requestAnimationFrame(frame);
     const g = gl!;
+    const frameT0 = performance.now();
     const rawDt = lastT ? (now - lastT) / 1000 : 1 / 60;
     lastT = now;
+    framesSinceStart++;
+    // WATCHDOG: a long rAF gap while we run (the page was blocked) disarms us
+    const wd = opts.watchdog;
+    if (wd && framesSinceStart > 3 && rawDt * 1000 > wd.gapMs && typeof document !== "undefined" && document.visibilityState === "visible") {
+      stall(`frame gap ${Math.round(rawDt * 1000)} ms`);
+      return;
+    }
     const dt = Math.min(1 / 20, Math.max(1 / 240, rawDt));
     time += dt;
     frames++;
@@ -546,6 +633,27 @@ export function createParticleEngine(
     clocks.bass += dt * rates.bass;
     clocks.mid += dt * rates.mid;
     clocks.treble += dt * rates.treble;
+
+    // ── readiness: never draw with a program that is not compiled + warm ────
+    for (const pr of fixedProgs) pollProgram(g, pr, par);
+    if (pendingSoul && soulB === soulA) {
+      const pp = simProgFor(soulA.index, pendingSoul.index);
+      if (pollProgram(g, pp, par) && !pp.warm) prewarmStep(); // not pre-queued: warm it now (one small program)
+      if (pp.state === "ready" && pp.warm) {
+        soulB = pendingSoul;
+        mix = 0;
+        mixDur = pendingDur;
+        pendingSoul = null;
+      }
+    }
+    {
+      const sp = simProgFor(soulA.index, soulB.index);
+      pollProgram(g, sp, par);
+      if (!fixedProgs.every((pr) => pr.warm) || !sp.warm || !particlesInitialised) {
+        prewarmStep(); // warm one program, draw nothing yet (the layer keeps us hidden)
+        return;
+      }
+    }
 
     // ── soul transition ───────────────────────────────────────────────────
     if (soulB !== soulA) {
@@ -617,6 +725,7 @@ export function createParticleEngine(
     g.bindVertexArray(vao);
     g.bindFramebuffer(g.FRAMEBUFFER, simFbo[nxt]);
     g.viewport(0, 0, side, side);
+    const sim = simProgFor(soulA.index, soulB.index);
     g.useProgram(sim.p);
     bindTex(0, posTex[cur], sim.u.uPos);
     bindTex(1, velTex[cur], sim.u.uVel);
@@ -725,30 +834,45 @@ export function createParticleEngine(
     g.disable(g.BLEND);
     hcur = hn;
 
-    // ── 3. LUM governor (async) ───────────────────────────────────────────
-    if (lumRead.poll()) {
-      let s = 0;
-      for (let i = 0; i < 256; i++) s += lumRead.out[i * 4];
-      const m = s / 256;
-      if (lastLum >= 0) maxLumStep = Math.max(maxLumStep, Math.abs(m - lastLum));
-      lastLum = m;
-      meanLum = m;
-      exposure = governExposure(exposure, meanLum);
-    }
-    if (frames % 4 === 0 && !lumRead.busy) {
+    // ── 3. LUM governor — entirely on the GPU, no read-back ────────────────
+    if (frames % 4 === 0) {
       g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
       g.generateMipmap(g.TEXTURE_2D);
       g.bindFramebuffer(g.FRAMEBUFFER, lumFbo);
       g.viewport(0, 0, 16, 16);
       g.useProgram(lum.p);
       bindTex(0, hdrTex[hcur], lum.u.uHdr);
+      bindTex(1, expTex[ecur], lum.u.uExp);
       g.uniform1f(lum.u.uLod, Math.max(0, Math.log2(Math.max(W, H) / 16)));
-      g.uniform1f(lum.u.uExposure, exposure);
       g.drawArrays(g.TRIANGLES, 0, 3);
-      g.bindFramebuffer(g.READ_FRAMEBUFFER, lumFbo);
-      g.readBuffer(g.COLOR_ATTACHMENT0);
-      lumRead.request(0, 0, 16, 16);
-      g.bindFramebuffer(g.READ_FRAMEBUFFER, null);
+      const en = 1 - ecur;
+      g.bindFramebuffer(g.FRAMEBUFFER, expFbo[en]);
+      g.viewport(0, 0, 1, 1);
+      g.useProgram(expo.p);
+      bindTex(0, lumTex, expo.u.uLum);
+      bindTex(1, expTex[ecur], expo.u.uPrev);
+      g.uniform1f(expo.u.uCap, 0.13);
+      g.uniform1f(expo.u.uMaxStep, 0.02);
+      g.uniform1f(expo.u.uInit, expInit ? 1 : 0);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      expInit = false;
+      ecur = en;
+      // probe only (verification runs): read the 1×1 back, async
+      if (lumRead) {
+        if (lumRead.poll()) {
+          exposure = lumRead.out[0];
+          const m = lumRead.out[1];
+          if (lastLum >= 0) maxLumStep = Math.max(maxLumStep, Math.abs(m - lastLum));
+          lastLum = m;
+          meanLum = m;
+        }
+        if (!lumRead.busy && frames % 16 === 0) {
+          g.bindFramebuffer(g.READ_FRAMEBUFFER, expFbo[ecur]);
+          g.readBuffer(g.COLOR_ATTACHMENT0);
+          lumRead.request(0, 0, 1, 1);
+          g.bindFramebuffer(g.READ_FRAMEBUFFER, null);
+        }
+      }
     }
 
     // ── 4. COMPOSITE ──────────────────────────────────────────────────────
@@ -756,10 +880,130 @@ export function createParticleEngine(
     g.viewport(0, 0, W, H);
     g.useProgram(comp.p);
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
-    g.uniform1f(comp.u.uExposure, exposure);
+    bindTex(1, expTex[ecur], comp.u.uExp);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
+    const cpu = performance.now() - frameT0;
+    if (wd && framesSinceStart > 3 && cpu > wd.cpuMs) stall(`frame cpu ${Math.round(cpu)} ms`);
+  }
+
+  // ── prewarm: compile polling + ONE 1-pixel warm draw per call ──────────────
+  // A program's GPU pipeline is built at its first draw (ANGLE/Metal); doing
+  // that here, while the field is invisible and one program at a time, keeps
+  // it off every visible frame (the kiosk hang).
+  let lastWarmAt = -1e9;
+  function prewarmStep() {
+    if (lost || stalled) return;
+    const g = gl!;
+    const t0 = performance.now();
+    // at most one GPU pipeline build per 350 ms, visible or not
+    if (t0 - lastWarmAt < 350) return;
+    const all = [...fixedProgs, ...simProgs.values()];
+    for (const pr of all) {
+      pollProgram(g, pr, par);
+      if (pr.state === "failed") { stall(`program failed: ${pr.error ?? ""}`); return; }
+    }
+    if (!particlesInitialised && seedInit.warm && posInit.warm) {
+      // re-initialise after setCount (programs already warm): two full passes
+      g.bindVertexArray(vao);
+      g.bindFramebuffer(g.FRAMEBUFFER, seedFbo);
+      g.viewport(0, 0, side, side);
+      g.useProgram(seedInit.p);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      g.bindFramebuffer(g.FRAMEBUFFER, simFbo[cur]);
+      g.useProgram(posInit.p);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      g.bindFramebuffer(g.FRAMEBUFFER, null);
+      g.bindVertexArray(null);
+      particlesInitialised = true;
+      return;
+    }
+    const cold = all.find((pr) => pr.state === "ready" && !pr.warm);
+    if (!cold) return;
+    g.bindVertexArray(vao);
+    g.enable(g.SCISSOR_TEST);
+    g.scissor(0, 0, 1, 1);
+    const hn = 1 - hcur;
+    const tw = performance.now();
+    if (cold === seedInit) {
+      g.disable(g.SCISSOR_TEST); // full pass: this IS the initialisation
+      g.bindFramebuffer(g.FRAMEBUFFER, seedFbo);
+      g.viewport(0, 0, side, side);
+      g.useProgram(seedInit.p);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (cold === posInit) {
+      g.disable(g.SCISSOR_TEST);
+      g.bindFramebuffer(g.FRAMEBUFFER, simFbo[cur]);
+      g.viewport(0, 0, side, side);
+      g.useProgram(posInit.p);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      particlesInitialised = true;
+    } else if (cold === draw) {
+      g.bindFramebuffer(g.FRAMEBUFFER, hdrFbo[hn]);
+      g.viewport(0, 0, W, H);
+      g.enable(g.BLEND);
+      g.blendFunc(g.ONE, g.ONE);
+      g.useProgram(draw.p);
+      bindTex(0, posTex[cur], draw.u.uPos);
+      bindTex(1, velTex[cur], draw.u.uVel);
+      bindTex(2, seedTex, draw.u.uSeed);
+      bindTex(3, imgTex[0], draw.u.uImgA);
+      bindTex(4, imgTex[1], draw.u.uImgB);
+      g.uniform1i(draw.u.uTexW, side);
+      g.uniform1f(draw.u.uAlpha, 0);
+      g.drawArrays(g.POINTS, 0, 1);
+      g.disable(g.BLEND);
+    } else if (cold === fade) {
+      g.bindFramebuffer(g.FRAMEBUFFER, hdrFbo[hn]);
+      g.viewport(0, 0, W, H);
+      g.useProgram(fade.p);
+      bindTex(0, hdrTex[hcur], fade.u.uPrev);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (cold === lum) {
+      g.bindFramebuffer(g.FRAMEBUFFER, lumFbo);
+      g.viewport(0, 0, 16, 16);
+      g.useProgram(lum.p);
+      bindTex(0, hdrTex[hcur], lum.u.uHdr);
+      bindTex(1, expTex[ecur], lum.u.uExp);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (cold === expo) {
+      g.bindFramebuffer(g.FRAMEBUFFER, expFbo[1 - ecur]);
+      g.viewport(0, 0, 1, 1);
+      g.useProgram(expo.p);
+      bindTex(0, lumTex, expo.u.uLum);
+      bindTex(1, expTex[ecur], expo.u.uPrev);
+      g.uniform1f(expo.u.uInit, 1);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (cold === comp) {
+      g.bindFramebuffer(g.FRAMEBUFFER, null);
+      g.viewport(0, 0, W, H);
+      g.useProgram(comp.p);
+      bindTex(0, hdrTex[hcur], comp.u.uHdr);
+      bindTex(1, expTex[ecur], comp.u.uExp);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    } else {
+      // a simulation variant: one texel of the NEXT state (overwritten next step)
+      g.bindFramebuffer(g.FRAMEBUFFER, simFbo[1 - cur]);
+      g.viewport(0, 0, side, side);
+      g.useProgram(cold.p);
+      bindTex(0, posTex[cur], cold.u.uPos);
+      bindTex(1, velTex[cur], cold.u.uVel);
+      bindTex(2, seedTex, cold.u.uSeed);
+      bindTex(3, specTex, cold.u.uSpec);
+      g.uniform1i(cold.u.uTexW, side);
+      g.uniform1f(cold.u.uCount, count);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    }
+    g.disable(g.SCISSOR_TEST);
+    g.bindFramebuffer(g.FRAMEBUFFER, null);
+    g.bindVertexArray(null);
+    cold.warm = true;
+    lastWarmAt = performance.now();
+    warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
+    if (warmLog.length > 40) warmLog.shift();
+    const cpu = performance.now() - t0;
+    if (opts.watchdog && cpu > opts.watchdog.cpuMs) stall(`prewarm cpu ${Math.round(cpu)} ms`);
   }
 
   let pendingPos: Float32Array | null = null;
@@ -786,8 +1030,9 @@ export function createParticleEngine(
 
   return {
     start() {
-      if (running || lost) return;
+      if (running || lost || stalled) return;
       running = true;
+      framesSinceStart = 0;
       lastT = 0;
       raf = requestAnimationFrame(frame);
     },
@@ -802,20 +1047,33 @@ export function createParticleEngine(
       if (lost) return;
       stateRead?.dispose();
       velRead?.dispose();
-      lumRead.dispose();
-      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex]) gl.deleteTexture(t);
+      lumRead?.dispose();
+      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...expTex]) gl.deleteTexture(t);
       if (seedTex) gl.deleteTexture(seedTex);
-      for (const fb of [...simFbo, ...hdrFbo, lumFbo]) gl.deleteFramebuffer(fb);
-      for (const p of [sim, draw, fade, lum, comp]) gl.deleteProgram(p.p);
+      if (seedFbo) gl.deleteFramebuffer(seedFbo);
+      for (const fb of [...simFbo, ...hdrFbo, lumFbo, ...expFbo]) gl.deleteFramebuffer(fb);
+      for (const p of [...fixedProgs, ...simProgs.values()]) gl.deleteProgram(p.p);
       gl.deleteVertexArray(vao);
     },
     setSoul(id, seconds = 7) {
       const next = soulById(id);
       if (soulB !== soulA) { soulA = soulB; mix = 0; } // settle a transition in flight
-      if (next === soulA) return;
-      soulB = next;
-      mix = 0;
-      mixDur = Math.max(0.5, seconds);
+      pendingSoul = next === soulA ? null : next;
+      pendingDur = Math.max(0.5, seconds);
+      if (pendingSoul) simProgFor(soulA.index, next.index); // queue its compile now
+    },
+    prepare(souls) {
+      const idx = souls.map((x) => soulById(x).index);
+      idx.forEach((a, i) => {
+        simProgFor(a, a);
+        if (i > 0 && idx[i - 1] !== a) simProgFor(idx[i - 1], a);
+      });
+    },
+    prewarm() {
+      if (!running) prewarmStep();
+    },
+    isWarm() {
+      return [...fixedProgs, ...simProgs.values()].every((pr) => pr.warm);
     },
     setPalette(p) { paletteOverride = p; },
     setCount(n) {
@@ -896,6 +1154,16 @@ export function createParticleEngine(
         sat,
         scatter: scatterEnv,
         bounce: bounceEnv,
+        warmLog: warmLog.slice(),
+        programs: (() => {
+          const all = [...fixedProgs, ...simProgs.values()];
+          return {
+            compiling: all.filter((x) => x.state === "compiling").length,
+            ready: all.filter((x) => x.state === "ready").length,
+            warm: all.filter((x) => x.warm).length,
+            failed: all.filter((x) => x.state === "failed").length,
+          };
+        })(),
       };
     },
   };

@@ -509,8 +509,19 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     q += normalize(hash31(s.a * 53.0) - 0.5) * (0.025 + 0.12 * up * trebW + 0.04 * up * midW);
     return vec4((q - p) * 10.0, 4.5);
   }
+  if (soul == 27) {
+    // ── RINGS: concentric rings breathing outward on the bass ──
+    float k = floor(s.b * 12.0);
+    float r = 0.22 + k * 0.12;
+    r *= 1.0 + 0.09 * sin(uClock.x * 0.8 - k * 0.55) + 0.12 * up * bassW;
+    float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
+    float ang = s.g * 6.2831853 + uClock.y * 0.12 * dir;
+    vec3 q = vec3(cos(ang) * r, 0.07 * sin(ang * 3.0 + uClock.y) * (0.3 + uBandLv.y + up * midW), sin(ang) * r);
+    q += normalize(hash31(s.a * 71.0) - 0.5) * (0.012 + 0.05 * up * trebW);
+    q = rotX(0.85 + 0.1 * sin(uClock.y * 0.07)) * q;
+    return vec4((q - p) * 10.0, 4.5);
+  }
   return vec4(-v, 1.0);
-
 }
 
 void main(){
@@ -733,22 +744,46 @@ void main(){ o = texelFetch(uPrev, ivec2(gl_FragCoord.xy), 0) * uDecay; }
 export const LUM_FS = /* glsl */ `#version 300 es
 precision highp float;
 uniform sampler2D uHdr;
+uniform sampler2D uExp;   // 1×1: r = exposure (GPU governor)
 uniform float uLod;
-uniform float uExposure;
 out vec4 o;
 void main(){
   vec2 uv = gl_FragCoord.xy / 16.0;
   vec3 h = textureLod(uHdr, uv, uLod).rgb;
-  vec3 t = 1.0 - exp(-h * uExposure);
+  float ex = texelFetch(uExp, ivec2(0), 0).r;
+  vec3 t = 1.0 - exp(-h * ex);
   float L = dot(t, vec3(0.2126, 0.7152, 0.0722));
   o = vec4(L, 0.0, 0.0, 1.0);
+}
+`;
+
+// The WCAG 2.3.1 governor, entirely on the GPU (kiosk hang 2026-10-05: the
+// CPU read-back of the luminance — getBufferSubData — blocked Chrome's main
+// thread 20–236 ms at a time). Averages the 16×16 tonemapped luminance and
+// slews the 1×1 exposure by at most uMaxStep per update (governExposure).
+export const EXPO_FS = /* glsl */ `#version 300 es
+precision highp float;
+uniform sampler2D uLum;   // 16×16, r = displayed luminance
+uniform sampler2D uPrev;  // 1×1: r = exposure, g = mean luminance
+uniform float uCap;
+uniform float uMaxStep;
+uniform float uInit;
+out vec4 o;
+void main(){
+  float s = 0.0;
+  for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++) s += texelFetch(uLum, ivec2(x, y), 0).r;
+  float m = s / 256.0;
+  float e = uInit > 0.5 ? 1.0 : texelFetch(uPrev, ivec2(0), 0).r;
+  float want = m > uCap ? min(1.0, e * uCap / max(m, 1e-6)) : 1.0;
+  float ratio = clamp(want / max(e, 1e-6), 1.0 - uMaxStep, 1.0 + uMaxStep);
+  o = vec4(clamp(e * ratio, 0.15, 1.0), m, 0.0, 1.0);
 }
 `;
 
 export const COMP_FS = /* glsl */ `#version 300 es
 precision highp float;
 uniform sampler2D uHdr;
-uniform float uExposure;
+uniform sampler2D uExp;     // 1×1: r = exposure (GPU governor)
 uniform float uTransparent; // 1 = premultiplied alpha = brightest channel
 out vec4 o;
 // interleaved-gradient dither (Jimenez) — kills 8-bit banding in the glow
@@ -757,12 +792,78 @@ float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.005
 void main(){
   ivec2 c = ivec2(gl_FragCoord.xy);
   vec3 h = texelFetch(uHdr, c, 0).rgb;
-  vec3 t = 1.0 - exp(-h * uExposure);
+  vec3 t = 1.0 - exp(-h * texelFetch(uExp, ivec2(0), 0).r);
   vec3 srgb = pow(t, vec3(1.0 / 2.2));
   srgb += (ign(gl_FragCoord.xy) - 0.5) / 255.0 * step(0.002, max(t.r, max(t.g, t.b)));
   srgb = max(srgb, 0.0);
   // transparent: black is fully see-through and light composites additively
   // (premultiplied, alpha = brightest channel) over whatever lies beneath
   o = uTransparent > 0.5 ? vec4(srgb, max(srgb.r, max(srgb.g, srgb.b))) : vec4(srgb, 1.0);
+}
+`;
+
+// ── per-variant simulation programs (kiosk hang fix, 2026-10-05) ─────────────
+// The full SIM_FS inlines all 28 soul force laws and calls them twice (A and
+// B): on ANGLE/Metal its pipeline is built at the FIRST DRAW, in the GPU
+// process, which stalled every WebGL context + video on the kiosk for seconds
+// (Snowflake froze at its first emergence). Each variant carries only the
+// souls it blends between — a fraction of the code — and is compiled ahead
+// of time with KHR_parallel_shader_compile (particle-engine.ts).
+const SOUL_BLOCK_RE = /\n {2}if \(soul == (\d+)\) \{/g;
+
+function splitSim(): { head: string; blocks: Map<number, string>; tail: string } {
+  const src = SIM_FS;
+  const fnStart = src.indexOf("vec4 soulForce(");
+  const bodyStart = src.indexOf("{", fnStart) + 1;
+  const firstBlock = src.slice(bodyStart).search(SOUL_BLOCK_RE) + bodyStart;
+  const tailStart = src.indexOf("\n  return vec4(-v, 1.0);", firstBlock);
+  const blocks = new Map<number, string>();
+  const region = src.slice(firstBlock, tailStart);
+  const marks = [...region.matchAll(SOUL_BLOCK_RE)];
+  marks.forEach((m, i) => {
+    const end = i + 1 < marks.length ? marks[i + 1].index! : region.length;
+    blocks.set(Number(m[1]), region.slice(m.index!, end));
+  });
+  return { head: src.slice(0, firstBlock), blocks, tail: src.slice(tailStart) };
+}
+let split: ReturnType<typeof splitSim> | null = null;
+
+/** SIM_FS with only the given souls' force laws (others fall to a gentle stop). */
+export function buildSimFS(souls: readonly number[]): string {
+  split ??= splitSim();
+  const uniq = [...new Set(souls)].sort((a, b) => a - b);
+  return split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
+}
+
+/** How many soul blocks the full simulation carries (test hook). */
+export function simSoulCount(): number {
+  split ??= splitSim();
+  return split.blocks.size;
+}
+
+// ── one-off GPU initialisation (kiosk hang follow-up): seeds + starting
+// positions are written by these passes instead of a 262k-iteration JS loop
+// and ~12 MB of texture uploads on the main thread at journey start.
+export const SEED_INIT_FS = /* glsl */ `#version 300 es
+precision highp float;
+out vec4 o;
+float h(vec2 p, float k){ vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973) + k); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
+void main(){
+  vec2 c = gl_FragCoord.xy;
+  // band skewed toward the lower half (piano lives low-mid), a dusting of treble
+  o = vec4(pow(h(c, 0.17), 1.25), h(c, 0.41), h(c, 0.73), h(c, 0.29));
+}
+`;
+export const POS_INIT_FS = /* glsl */ `#version 300 es
+precision highp float;
+layout(location = 0) out vec4 oPos;
+layout(location = 1) out vec4 oVel;
+float h(vec2 p, float k){ vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973) + k); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
+void main(){
+  vec2 c = gl_FragCoord.xy;
+  float u = h(c, 0.53), v = h(c, 0.61), w = pow(h(c, 0.67), 1.0 / 3.0) * 1.6;
+  float th = u * 6.2831853, ph = acos(2.0 * v - 1.0);
+  oPos = vec4(sin(ph) * cos(th) * w, cos(ph) * w * 0.4, sin(ph) * sin(th) * w, h(c, 0.79) * 15.0);
+  oVel = vec4(0.0);
 }
 `;

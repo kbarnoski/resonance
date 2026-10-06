@@ -93,3 +93,24 @@ export function emitClipEnded(url: string): void {
     try { cb(e); } catch { /* a listener never breaks imagery */ }
   }
 }
+
+/** Clip-STARTED signal (Karel 2026-10-05: particles "always overlapping with
+ *  the morph videos and extending after the morph video finishes"). */
+export interface ClipStarted {
+  url: string;
+  travel: boolean;
+  /** seconds (NaN if unknown) */
+  duration: number;
+  at: number;
+}
+const clipStartedListeners = new Set<(e: ClipStarted) => void>();
+export function onClipStarted(cb: (e: ClipStarted) => void): () => void {
+  clipStartedListeners.add(cb);
+  return () => clipStartedListeners.delete(cb);
+}
+export function emitClipStarted(url: string, duration: number): void {
+  const e: ClipStarted = { url, travel: /(^|\/)travel[-_]/i.test(url), duration, at: nowMs() };
+  for (const cb of clipStartedListeners) {
+    try { cb(e); } catch { /* a listener never breaks imagery */ }
+  }
+}

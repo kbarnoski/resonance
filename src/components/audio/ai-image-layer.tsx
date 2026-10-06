@@ -12,7 +12,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
-import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded } from "@/lib/journeys/video-activity";
+import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded, emitClipStarted } from "@/lib/journeys/video-activity";
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 
 interface AiImageLayerProps {
@@ -961,6 +961,7 @@ export function AiImageLayer({
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
             glitchRecord("clip", url.split("/").pop() ?? url);
+            emitClipStarted(url, v.duration); // particle layer: overlap the morph
             activeVideoRef.current = v;
             // Quiet window for the whole visible life of the clip:
             // playback + the long ended-fade, plus a settle margin.

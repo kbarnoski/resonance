@@ -38,14 +38,18 @@ import { useEffect, useRef, useState } from "react";
 import type { AnalyserLike } from "@/lib/audio/audio-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
-import { isVideoActive, inBoundarySettle, onClipEnded } from "@/lib/journeys/video-activity";
+import { isVideoActive, inBoundarySettle, onClipEnded, onClipStarted } from "@/lib/journeys/video-activity";
 import { setParticlePresent } from "@/lib/journeys/particle-presence";
-import { createParticleEngine, type ParticleEngine } from "@/lib/particles/particle-engine";
+import type { ParticleEngine } from "@/lib/particles/particle-engine";
+import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
+import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
+
+const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
 
 const TIER_BUDGET = {
   // Measured headless on the kiosk's M4 Pro, Lantern in pack mode (journey
@@ -56,6 +60,15 @@ const TIER_BUDGET = {
   medium: { count: 131_072, dpr: 1.25, trailScale: 1 },
   low: { count: 65_536, dpr: 1, trailScale: 0 },
 } as const;
+
+/** Souls this journey will show, in the order it will show them (intro, the
+ *  conducted windows, each travel morph's form) — pre-compiled at journey start. */
+function soulSequence(cast: ParticleLeadCast): SoulId[] {
+  const ev: [number, SoulId][] = [[3, cast.morphSouls[0] ?? cast.souls.transition]];
+  for (const w of cast.windows) ev.push([w.start, w.soul]);
+  (cast.phaseBounds ?? []).forEach((b, i) => ev.push([b, cast.morphSouls[Math.min(i + 1, cast.morphSouls.length - 1)] ?? cast.souls.transition]));
+  return ev.sort((a, b) => a[0] - b[0]).map((x) => x[1]);
+}
 
 export function ParticleLeadLayer({
   cast,
@@ -76,8 +89,11 @@ export function ParticleLeadLayer({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const veilRef = useRef<HTMLDivElement | null>(null);
   const contrastRef = useRef<HTMLDivElement | null>(null);
-  // emergence after a travel morph: [startT, endT] in track seconds
-  const emergeRef = useRef<{ start: number; end: number } | null>(null);
+  // emergence windows (track seconds): the intro gathering, and every travel
+  // morph — from the moment it starts, past its end (Karel: "always
+  // overlapping with the morph videos and extending after")
+  const emergeRef = useRef<{ start: number; end: number; soul: SoulId } | null>(null);
+  const hostRef = useRef<HTMLDivElement | null>(null);
   const contrastK = useRef(0.35);
   const engineRef = useRef<ParticleEngine | null>(null);
   const analyserRef = useRef<AnalyserLike | null>(analyser);
@@ -99,60 +115,58 @@ export function ParticleLeadLayer({
 
   // ── engine + conductor ────────────────────────────────────────────────────
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const host = hostRef.current;
+    if (!host) return;
+    const sh = acquireSharedParticleEngine({ count: budgetFor().count, dpr: budgetFor().dpr, trailScale: budgetFor().trailScale });
+    if (!sh) { setFailed(true); return; }
+    const offDisable = onParticlesDisabled(() => setFailed(true));
+    const engine = sh.engine;
     const tier = getDeviceTier();
-    const budget = TIER_BUDGET[tier] ?? TIER_BUDGET.medium;
+    host.appendChild(sh.canvas);
+    canvasRef.current = sh.canvas;
+    engine.resize();
     const proc = new SpectrumProcessor({ bins: 96, source: "kinetic" });
     let bytes = new Uint8Array(128);
-    let engine: ParticleEngine;
-    try {
-      engine = createParticleEngine(canvas, {
-        // mastered journeys carry the heaviest imagery stacks (Ghost's flashes,
-        // Snowflake's pinned takes) and keep their full shader stack — the
-        // particle layer takes half the budget there
-        count: cast.mastered ? Math.round(budget.count / 2) : budget.count,
-        // …and a lighter DPR (they keep their full shader stack)
-        dpr: cast.mastered ? Math.min(budget.dpr, 1.25) : budget.dpr,
-        trailScale: budget.trailScale,
-        transparent: true,
-        // v3 overlay: smaller, denser, brighter-cored forms that read over imagery
-        gain: (cast.gain ?? 1) * 1.7,
-        camScale: 1.35,
-        maxSpeed: 2.2,
-        soul: cast.windows[0]?.soul ?? cast.souls.transition,
-        onContextLost: () => setFailed(true),
-        audio: (dt) => {
-          const a = analyserRef.current;
-          if (!a || pausedRef.current) proc.ingestBytes(null);
-          else {
-            if (bytes.length !== a.frequencyBinCount) bytes = new Uint8Array(a.frequencyBinCount);
-            try {
-              a.getByteFrequencyData(bytes as Uint8Array<ArrayBuffer>);
-              proc.ingestBytes(bytes);
-            } catch {
-              proc.ingestBytes(null);
-            }
-          }
-          proc.step(dt);
-          return proc.frame();
-        },
-      });
-    } catch {
-      setFailed(true); // no WebGL2 float targets — the journey plays without its lead
-      return;
-    }
+    sh.hooks.audio = (dt) => {
+      const a = analyserRef.current;
+      if (!a || pausedRef.current) proc.ingestBytes(null);
+      else {
+        if (bytes.length !== a.frequencyBinCount) bytes = new Uint8Array(a.frequencyBinCount);
+        try {
+          a.getByteFrequencyData(bytes as Uint8Array<ArrayBuffer>);
+          proc.ingestBytes(bytes);
+        } catch {
+          proc.ingestBytes(null);
+        }
+      }
+      proc.step(dt);
+      return proc.frame();
+    };
+    // compile + warm everything this journey will show NOW, invisibly
+    engine.prepare(soulSequence(cast));
+    engine.setGain((cast.gain ?? 1) * 1.7);
     engineRef.current = engine;
     engine.setMotion(cast.motion);
     engine.setForm(cast.form);
     engine.setHueSpread(cast.hueSpread);
-    // RULE (Karel v3): particles EMERGE at the end of every travel morph and
-    // overlay the next sequence — a gathering form for ~18 s
+    // RULE (Karel v3): particles gather just after the intro, and OVERLAP
+    // every travel morph from its start, extending ~18 s past its end
+    const morphSoulAt = (t: number) =>
+      cast.morphSouls[Math.min((cast.phaseBounds ?? []).filter((x) => x <= t + 1).length, cast.morphSouls.length - 1)] ?? cast.souls.transition;
+    emergeRef.current = { start: 3, end: 20, soul: cast.morphSouls[0] ?? cast.souls.transition };
+    const offStart = onClipStarted((e) => {
+      if (!e.travel) return;
+      const t = useAudioStore.getState().currentTime || 0;
+      const dur = Number.isFinite(e.duration) && e.duration > 0 ? e.duration : 6;
+      emergeRef.current = { start: t, end: t + dur + 18, soul: morphSoulAt(t + 1.5) };
+      counters.current.emergences++;
+    });
     const offClip = onClipEnded((e) => {
       if (!e.travel) return;
       const t = useAudioStore.getState().currentTime || 0;
-      emergeRef.current = { start: t, end: t + 18 };
-      counters.current.emergences++;
+      const em = emergeRef.current;
+      if (em && t < em.end + 1) em.end = Math.max(em.end, t + 18);
+      else emergeRef.current = { start: t, end: t + 18, soul: morphSoulAt(t) };
     });
     const onResize = () => engine.resize();
     window.addEventListener("resize", onResize);
@@ -166,8 +180,10 @@ export function ParticleLeadLayer({
     let lastScatter = -1e9;
 
     let wasVisible = false;
+    let warmTick = 0;
     let presentFlag = false;
     const tick = () => {
+      if (particlesDisabledReason()) { window.clearInterval(iv); return; } // failsafe tripped: stand down
       const now = performance.now();
       const t = useAudioStore.getState().currentTime || 0;
       const pr0 = presenceAt(cast, t);
@@ -177,10 +193,11 @@ export function ParticleLeadLayer({
       if (em) {
         const x = Math.min((t - em.start) / 3, (em.end - t) / 3);
         emP = x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
-        if (t > em.end + 1 || t < em.start - 1) emergeRef.current = null;
+        // drop only once it has ended (the intro window is armed at t = 0,
+        // before it begins — dropping "early" windows lost the intro)
+        if (t > em.end + 1) emergeRef.current = null;
       }
-      const phaseIdx = (cast.phaseBounds ?? []).filter((x) => x <= t + 0.5).length;
-      const emSoul = cast.morphSouls[Math.min(phaseIdx, cast.morphSouls.length - 1)] ?? cast.souls.transition;
+      const emSoul = em?.soul ?? cast.souls.transition;
       const useEm = emP > pr0.presence;
       const pr = useEm
         ? { presence: emP, window: null, breakVeil: 0, density: 0.5 }
@@ -210,6 +227,9 @@ export function ParticleLeadLayer({
       }
       const dissolving = engine.dissolveTime() !== null;
       const wantRun = pr.presence > 0 || !!next || dissolving;
+      // compile/warm while invisible — at most one warm draw per 400 ms, and
+      // never while a clip is decoding (a warm draw builds a GPU pipeline)
+      if (!running && warmTick++ % 4 === 0 && !isVideoActive()) engine.prewarm();
       if (wantRun && !running) { engine.start(); running = true; }
       if (!wantRun) {
         if (running && now - absentSince > 2500) { engine.stop(); running = false; }
@@ -294,6 +314,8 @@ export function ParticleLeadLayer({
         morph: isVideoActive(),
         window: useEm ? `morph@${em?.start.toFixed(0)}` : pr.window ? `${pr.window.kind}@${pr.window.start.toFixed(0)}` : null,
         contrastK: contrastK.current,
+        programs: st.programs,
+        warmLog: st.warmLog,
         maxSpeed: +st.state.maxSpeed.toFixed(3),
         running,
         soul: st.soul,
@@ -325,7 +347,14 @@ export function ParticleLeadLayer({
       offClip();
       setParticlePresent(false);
       window.removeEventListener("resize", onResize);
-      engine.dispose();
+      // keep the shared engine + context for the next journey; just detach
+      engine.stop();
+      sh.hooks.audio = null;
+      offStart();
+      offDisable();
+      sh.canvas.style.visibility = "hidden";
+      sh.canvas.style.opacity = "0";
+      if (sh.canvas.parentElement === host) host.removeChild(sh.canvas);
       engineRef.current = null;
       delete (window as unknown as Record<string, unknown>).__resonanceParticleLead;
     };
@@ -417,23 +446,8 @@ export function ParticleLeadLayer({
           transition: "opacity 1.2s linear",
         }}
       />
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 3,
-          pointerEvents: "none",
-          // premultiplied transparent canvas composited NORMALLY: black is
-          // see-through, light lays over — no blend group over the whole
-          // imagery stack (a full-screen plus-lighter cost Ghost ~7 ms p95)
-          opacity: 0,
-          transition: "opacity 0.6s linear",
-        }}
-      />
+      {/* the shared particle canvas is re-parented in here (one context per session) */}
+      <div ref={hostRef} aria-hidden style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none" }} />
     </>
   );
 }
