@@ -70,26 +70,3 @@ export function inBoundarySettle(): boolean {
 export function inBoundarySettleExtended(extraMs: number): boolean {
   return nowMs() < boundaryUntilMs + extraMs;
 }
-
-// ── Clip-ended signal (particle language v3, Karel 2026-10-05: "particles
-// should as a rule emerge at the end of your morphs and … overlay those
-// sequences to keep it moving"). ai-image-layer announces every clip end;
-// `travel` = a travel morph (phase boundary, `travel-N` clips) vs a hero
-// loop inside a phase (`phase-N`). Pure notification — emitting changes
-// nothing about imagery.
-export interface ClipEnded {
-  url: string;
-  travel: boolean;
-  at: number;
-}
-const clipEndedListeners = new Set<(e: ClipEnded) => void>();
-export function onClipEnded(cb: (e: ClipEnded) => void): () => void {
-  clipEndedListeners.add(cb);
-  return () => clipEndedListeners.delete(cb);
-}
-export function emitClipEnded(url: string): void {
-  const e: ClipEnded = { url, travel: /(^|\/)travel[-_]/i.test(url), at: nowMs() };
-  for (const cb of clipEndedListeners) {
-    try { cb(e); } catch { /* a listener never breaks imagery */ }
-  }
-}

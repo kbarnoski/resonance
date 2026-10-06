@@ -1,7 +1,6 @@
 "use client";
 
 import { particleLeadFor, withParticleLeadSupports } from "@/lib/journeys/particle-lead";
-import { getParticlePresent } from "@/lib/journeys/particle-presence";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -834,7 +833,7 @@ export function SharedJourneyClient({
         if (visuallyChanged || now - lastFrameTimeRef.current >= FRAME_THROTTLE_MS) {
           lastFrameTimeRef.current = now;
           // particle-lead journeys run ONE supporting shader
-          setJourneyFrame(withParticleLeadSupports(newFrame, particleLeadRef.current, getParticlePresent()));
+          setJourneyFrame(withParticleLeadSupports(newFrame, particleLeadRef.current));
         }
       }
 

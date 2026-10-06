@@ -1,61 +1,58 @@
 /**
  * PARTICLE LEAD — registry of journeys that carry the GPU particle language
- * (src/lib/particles/ + particle-casting.ts).
+ * (src/lib/particles/ + particle-casting.ts). OPT-IN: every journey not
+ * listed plays exactly as before.
  *
- * v3 ROLLOUT (Karel 2026-10-05: "roll particles out … to all including
- * snowflake and ghost and all expansion and other journeys. its critical
- * they are elegant and perfectly integrate into each journey"): every
- * journey with a v2 deep-analysis profile (particle-profiles.generated.ts,
- * baked by scripts/build-particle-profiles.mjs in kiosk-loop order) is cast,
- * neighbours never sharing a form.
+ * v2 (Karel 2026-10-05, after the Lantern pilot: "i do like how they
+ * transition as part of imaging. having them always there and always part of
+ * every transition gets too much … sometimes … particle against the black"):
+ * particles are CONDUCTED from each journey's v2 deep analysis — present only
+ * for chosen moments (a few section-change transitions, builds, the summit,
+ * the coda), with 2–3 particle-only breaks (imagery + shaders veiled to
+ * black), colour following the harmony, playfulness from the texture.
  *
- * MASTERED journeys (Snowflake, Ghost) get the particle layer ONLY: their
- * shader stack is never stripped (withParticleLeadSupports refuses them) —
- * nothing else about how they play changes (mastered-lock fingerprints the
- * cast so any later change is deliberate).
+ * Review set: Lantern (devotional waves), Stir Crazy (restless, circling,
+ * rhythmic), Open Jam (brooding E-minor drone) — contrasting on purpose.
+ * NEVER Snowflake / Ghost (mastered) until Karel says so.
  */
 import type { ParticlePalette } from "@/lib/particles/souls";
-import { isMasteredJourney, MASTERED_JOURNEY_NAMES } from "./mastered";
-import { castSet, type ParticleCast } from "./particle-casting";
+import { isMasteredJourneyLike } from "./mastered";
+import { castJourney, type ParticleCast } from "./particle-casting";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 
 export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
 export const STIR_CRAZY_ID = "cd517f5a-c4eb-4d50-8a53-044aa668d087";
 export const OPEN_JAM_ID = "bd748991-a67b-41dc-af94-ac3f612a27c4";
 
-/** Cast order = the generated profile order (kiosk loop first). */
-export const PARTICLE_JOURNEY_IDS: readonly string[] = Object.keys(PARTICLE_PROFILES);
+/** Cast order (Lantern → Open Jam are loop neighbours in Vigil). */
+export const PARTICLE_JOURNEY_IDS: readonly string[] = [LANTERN_ID, OPEN_JAM_ID, STIR_CRAZY_ID];
 
 export interface ParticleLeadCast extends ParticleCast {
   /** Image dissolve ↔ reform on (some) transitions. */
   dissolve: boolean;
-  /** Mastered journey: particle layer only, shader stack never touched. */
-  mastered: boolean;
   /** Layer gain (energy) — 1 = engine default. */
   gain?: number;
 }
 
-const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MASTERED_JOURNEY_NAMES.has(name.trim().toLowerCase());
-
-/** Casts for the registry — built once, in loop order, neighbours differ. */
+/** Casts for the registry — built once; review set avoids sharing any soul. */
 export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() => {
-  const ids = PARTICLE_JOURNEY_IDS;
-  const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]));
   const out: Record<string, ParticleLeadCast> = {};
-  ids.forEach((id, i) => {
-    out[id] = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
-  });
+  const used = new Set<ParticleCast["souls"]["peak"]>();
+  for (const id of PARTICLE_JOURNEY_IDS) {
+    const prof = PARTICLE_PROFILES[id];
+    if (!prof) continue;
+    const cast = castJourney(prof, used);
+    for (const s of Object.values(cast.souls)) used.add(s);
+    out[id] = { ...cast, dissolve: true };
+  }
   return out;
 })();
 
-/** The cast for a journey (by id), or null if it has no analysis profile. */
+/** The cast for a journey, or null (not opted in, or mastered — never). */
 export function particleLeadFor(journey?: { id?: string | null; name?: string | null } | null): ParticleLeadCast | null {
   if (!journey?.id) return null;
-  const cast = PARTICLE_LEADS[journey.id] ?? null;
-  if (!cast) return null;
-  // a shared/path row wrapping a mastered built-in plays under its name
-  if (!cast.mastered && journey.name && MASTERED_JOURNEY_NAMES.has(journey.name.trim().toLowerCase())) return { ...cast, mastered: true };
-  return cast;
+  if (isMasteredJourneyLike(journey)) return null;
+  return PARTICLE_LEADS[journey.id] ?? null;
 }
 
 /** Travel morphs ride the phase changes (and the journey handoff), so the
@@ -108,14 +105,12 @@ export function particlePaletteFrom(p?: { primary: string; secondary: string; ac
   return { low: lift(hexToLinear(p.primary)), mid: lift(hexToLinear(p.accent)), high: lift(hexToLinear(p.glow), 0.7) };
 }
 
-/** Strip dual + tertiary shaders while particles are PRESENT (one supporting
- *  shader) — never on a mastered journey. */
+/** Strip dual + tertiary shaders while particles lead (one supporting shader). */
 export function withParticleLeadSupports<T extends { dualShaderMode?: string; tertiaryShaderMode?: string }>(
   frame: T | null,
   lead: ParticleLeadCast | null,
-  present = true,
 ): T | null {
-  if (!frame || !lead || lead.mastered || !present) return frame;
+  if (!frame || !lead) return frame;
   if (!frame.dualShaderMode && !frame.tertiaryShaderMode) return frame;
   return { ...frame, dualShaderMode: undefined, tertiaryShaderMode: undefined };
 }

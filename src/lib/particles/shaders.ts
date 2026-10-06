@@ -123,8 +123,6 @@ uniform vec3 uWrap;       // wrap weights: x-flow, rising, falling
 uniform float uInkW;      // ink respawn weight
 uniform float uFountainW; // fountain respawn weight
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
-uniform float uMaxSpeed;  // speed cap (entry ramps it up — no sudden bursts)
-uniform float uDisperse;  // 1 for one frame: scatter wide so the form GATHERS
 // playful impulses (particle-lead conductor)
 uniform float uScatter;   // scatter-and-regroup envelope 0..1
 uniform float uBounce;    // bounce envelope (signed)
@@ -457,13 +455,17 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     return vec4((home - p) * 8.0, 4.0);
   }
   if (soul == 22) {
-    // ── HELIX: three abstract strands twisting round a breathing column ──
-    float strand = floor(s.b * 3.0);
-    float y = (s.g - 0.5) * 3.6;
-    float ang = y * 2.0 * (1.0 + 0.3 * max(uBands.x, 0.0)) + uClock.y * 0.5 + strand * 2.0943951;
-    float r = 0.42 + 0.22 * sin(y * 1.3 + uClock.x * 0.4 + strand) + 0.1 * up * bassW;
-    vec3 home = vec3(cos(ang) * r, y, sin(ang) * r);
-    home += (hash31(s.a * 61.0) - 0.5) * 0.035 * (1.0 + 5.0 * up * trebW);
+    // ── HELIX: a double spiral column ──
+    float strand = step(0.5, s.b);
+    float y = (s.g - 0.5) * 4.0;
+    float rung = step(s.a, 0.15);
+    float yq = rung > 0.5 ? floor(y * 3.0) / 3.0 : y;
+    float ang = yq * 2.2 * (1.0 + 0.3 * max(uBands.x, 0.0)) + uClock.y * 0.6;
+    float r = 0.55 + 0.08 * sin(yq * 3.0 + uClock.x);
+    vec3 s0 = vec3(cos(ang) * r, yq, sin(ang) * r);
+    vec3 s1 = vec3(cos(ang + 3.14159) * r, yq, sin(ang + 3.14159) * r);
+    vec3 home = rung > 0.5 ? mix(s0, s1, fract(s.b * 7.0)) : (strand > 0.5 ? s1 : s0);
+    home += (hash31(s.a * 61.0) - 0.5) * 0.04 * (1.0 + 5.0 * up * trebW);
     return vec4((home - p) * 9.0, 4.2);
   }
   if (soul == 23) {
@@ -554,15 +556,10 @@ void main(){
   v += f.xyz * dt;
   v *= exp(-f.w * dt);
   float sp2 = length(v);
-  if (sp2 > uMaxSpeed) v *= uMaxSpeed / sp2;
+  if (sp2 > 3.5) v *= 3.5 / sp2;
   p += v * dt;
 
   if (uSnap > 0.5) { p = imgT; v = vec3(0.0); }
-  if (uDisperse > 0.5) {
-    vec3 r = hash31(s.a * 811.0 + 3.7);
-    p = normalize(r - 0.5 + 1e-4) * (2.4 + 1.4 * hash11(s.a * 97.0));
-    v = vec3(0.0);
-  }
 
   // wrapping souls re-enter off-edge (out of view — the draw fades the edges)
   if (uImgShow < 0.01) {
@@ -628,9 +625,6 @@ uniform vec3 uWrap;        // x-flow, rising, falling — edge fades where they 
 uniform float uSize;       // soul sprite size
 uniform float uHue;        // hue rotation (radians, luma-preserving YIQ)
 uniform float uSat;        // saturation multiplier
-uniform float uHueSpread;  // hue gradient across the form (rad)
-uniform float uHueWave;    // slow hue wave on swells (rad)
-uniform float uTimeD;      // draw-side time
 uniform float uDensity;    // world visibility fraction (1 = all)
 uniform float uWorldFade;  // world element fade (dissolve hides it)
 uniform sampler2D uImgA;   // outgoing still
@@ -680,11 +674,7 @@ void main(){
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   col = mix(col, uPalHigh, clamp(length(v.xyz) * 0.12, 0.0, 0.25));
-  // colour lives ACROSS the form: a gradient over height + azimuth, and a
-  // slow hue wave rolling outward on swells — luma-preserving (YIQ)
-  float grad = 0.55 * clamp(p.y / 1.6, -1.0, 1.0) + 0.45 * sin(atan(p.z, p.x));
-  float wave = sin(length(p.xyz) * 2.2 - uTimeD * 0.8);
-  col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave, uSat);
+  col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat, uSat);
 
   float life = lifeOf(s);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
@@ -716,9 +706,8 @@ void main(){
   vec2 d = gl_PointCoord * 2.0 - 1.0;
   float r2 = dot(d, d);
   if (r2 > 1.0) discard;
-  // bright core + soft glow — reads over imagery without growing the footprint
-  float g = exp(-r2 * 7.0) + 0.3 * exp(-r2 * 1.8);
-  o = vec4(vCol * g * 1.15, 1.0);
+  float g = exp(-r2 * 3.6);
+  o = vec4(vCol * g, 1.0);
 }
 `;
 

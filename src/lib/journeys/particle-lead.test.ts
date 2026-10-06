@@ -12,46 +12,30 @@ import {
   withParticleLeadSupports,
 } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
-import { dissolveEnvelope, DISSOLVE_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
-import { TRAMOKYO_SETLIST } from "./installation-sequence";
+import { dissolveEnvelope, DISSOLVE_SEC, SOULS } from "@/lib/particles/souls";
 
-describe("particle lead registry (v3 rollout)", () => {
-  it("casts every profiled journey — the whole kiosk loop", () => {
-    expect(PARTICLE_JOURNEY_IDS.length).toBeGreaterThanOrEqual(100);
-    for (const id of TRAMOKYO_SETLIST) expect(PARTICLE_LEADS[id], id).toBeTruthy();
-    for (const id of [LANTERN_ID, OPEN_JAM_ID, STIR_CRAZY_ID]) expect(PARTICLE_LEADS[id]).toBeTruthy();
+describe("particle lead registry", () => {
+  it("casts exactly the three review journeys", () => {
+    expect(Object.keys(PARTICLE_LEADS).sort()).toEqual([LANTERN_ID, OPEN_JAM_ID, STIR_CRAZY_ID].sort());
+    expect(PARTICLE_JOURNEY_IDS).toHaveLength(3);
+    expect(particleLeadFor({ id: "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", name: "Chemiluminescence 1" })).toBeNull();
   });
 
-  it("Snowflake + Ghost get the particle layer ONLY (flagged mastered — shaders untouched)", () => {
-    for (const id of MASTERED_JOURNEYS) {
-      const cast = particleLeadFor({ id });
-      expect(cast, id).toBeTruthy();
-      expect(cast!.mastered).toBe(true);
-      const f = { shaderMode: "a", dualShaderMode: "b", tertiaryShaderMode: "c" };
-      expect(withParticleLeadSupports(f, cast, true)).toBe(f);
+  it("never casts a mastered journey (Snowflake, Ghost)", () => {
+    for (const [id, cast] of Object.entries(PARTICLE_LEADS)) {
+      expect(MASTERED_JOURNEYS.has(id)).toBe(false);
+      expect(MASTERED_JOURNEY_NAMES.has(cast.name.toLowerCase())).toBe(false);
     }
-    // a path row wrapping a mastered built-in is protected by name too
-    expect(particleLeadFor({ id: LANTERN_ID, name: "Ghost" })!.mastered).toBe(true);
-    expect(MASTERED_JOURNEY_NAMES.has("snowflake")).toBe(true);
+    for (const id of MASTERED_JOURNEYS) expect(particleLeadFor({ id })).toBeNull();
+    expect(particleLeadFor({ id: LANTERN_ID, name: "Ghost" })).toBeNull();
+    expect(particleLeadFor({ id: LANTERN_ID, name: "Snowflake" })).toBeNull();
   });
 
-  it("only gathering SHAPE souls are cast — no full-volume swarms", () => {
-    for (const c of Object.values(PARTICLE_LEADS)) {
-      for (const s of [...Object.values(c.souls), ...c.morphSouls]) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
-    }
-  });
-
-  it("loop neighbours never share a lead (peak) form, and morph forms change every phase", () => {
-    const ids = PARTICLE_JOURNEY_IDS;
-    for (let i = 1; i < ids.length; i++) {
-      expect(PARTICLE_LEADS[ids[i]].souls.peak, `${PARTICLE_LEADS[ids[i - 1]].name} → ${PARTICLE_LEADS[ids[i]].name}`).not.toBe(PARTICLE_LEADS[ids[i - 1]].souls.peak);
-    }
-    for (const c of Object.values(PARTICLE_LEADS)) for (let i = 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
-  });
-
-  it("the whole library gets used across the set (diversity)", () => {
-    const used = new Set(Object.values(PARTICLE_LEADS).flatMap((c) => [...Object.values(c.souls), ...c.morphSouls]));
-    expect(used.size).toBeGreaterThanOrEqual(12);
+  it("the review set shares no soul — diversity at a glance", () => {
+    const all = Object.values(PARTICLE_LEADS).flatMap((c) => Object.values(c.souls));
+    expect(new Set(all).size).toBe(all.length);
+    const ids = new Set(SOULS.map((s) => s.id));
+    for (const s of all) expect(ids.has(s)).toBe(true);
   });
 
   it("palette comes from the journey palette, lifted to read as light", () => {
@@ -61,11 +45,10 @@ describe("particle lead registry (v3 rollout)", () => {
     expect(particlePaletteFrom(null)).toBeNull();
   });
 
-  it("strips dual + tertiary only while particles are present", () => {
+  it("strips dual + tertiary only while particles lead", () => {
     const f = { shaderMode: "a", dualShaderMode: "b", tertiaryShaderMode: "c" };
     const cast = PARTICLE_LEADS[LANTERN_ID];
-    expect(withParticleLeadSupports(f, cast, true)).toEqual({ shaderMode: "a", dualShaderMode: undefined, tertiaryShaderMode: undefined });
-    expect(withParticleLeadSupports(f, cast, false)).toBe(f);
+    expect(withParticleLeadSupports(f, cast)).toEqual({ shaderMode: "a", dualShaderMode: undefined, tertiaryShaderMode: undefined });
     expect(withParticleLeadSupports(f, null)).toBe(f);
   });
 });

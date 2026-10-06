@@ -73,10 +73,6 @@ export interface ParticleEngineOptions {
   trailScale?: number;
   /** Overall energy multiplier (layer gain). Default 1. */
   gain?: number;
-  /** Camera distance multiplier (>1 = smaller, denser forms). Default 1. */
-  camScale?: number;
-  /** Speed cap (world units/s). Default 3.5. */
-  maxSpeed?: number;
 }
 
 export interface ParticleStats {
@@ -104,8 +100,6 @@ export interface ParticleStats {
   /** Sampled particle state (one texture row, async readback). */
   state: {
     meanSpeed: number;
-    /** fastest sampled particle (no-burst check) */
-    maxSpeed: number;
     speedByBand: [number, number, number];
     meanRadius: number;
     radiusByBand: [number, number, number];
@@ -152,13 +146,6 @@ export interface ParticleEngine {
   impulse(kind: "scatter" | "bounce", strength?: number): void;
   /** Melodic attractor for ~14% follower particles (null = off). */
   setMelody(pos: [number, number, number] | null, weight?: number): void;
-  /** An entrance: scatter wide (invisible at presence 0) and GATHER into the
-   *  current soul with the speed cap ramping up over ~5 s — never a burst. */
-  enter(): void;
-  /** Hue gradient across the form (rad). */
-  setHueSpread(spread: number): void;
-  /** Layer gain (energy), glides ~1.5 s — e.g. lifted over bright imagery. */
-  setGain(k: number): void;
   resize(): void;
   stats(): ParticleStats;
 }
@@ -291,8 +278,7 @@ export function createParticleEngine(
 ): ParticleEngine {
   const transparent = !!opts.transparent;
   const trailScale = opts.trailScale ?? 1;
-  let layerGain = opts.gain ?? 1;
-  let layerGainTarget = layerGain;
+  const layerGain = opts.gain ?? 1;
   const gl = canvas.getContext("webgl2", {
     antialias: false,
     alpha: transparent,
@@ -456,11 +442,6 @@ export function createParticleEngine(
   const melody: [number, number, number] = [0, 0, 0];
   let melodyTarget: [number, number, number] = [0, 0, 0];
   let melodyW = 0, melodyWTarget = 0;
-  const camScale = opts.camScale ?? 1;
-  const speedCap = opts.maxSpeed ?? 3.5;
-  let entryT = 1e9;
-  let disperseNext = false;
-  let hueSpread = 0.35, hueSpreadTarget = 0.35, hueWave = 0;
 
   // ── image slots (A = outgoing still, B = incoming) ──────────────────────
   const mkImgTex = () => {
@@ -480,7 +461,7 @@ export function createParticleEngine(
   let snapped = false;
 
   const state: ParticleStats["state"] = {
-    meanSpeed: 0, maxSpeed: 0, speedByBand: [0, 0, 0], meanRadius: 0, radiusByBand: [0, 0, 0], samples: 0, t: 0,
+    meanSpeed: 0, speedByBand: [0, 0, 0], meanRadius: 0, radiusByBand: [0, 0, 0], samples: 0, t: 0,
   };
   const frameTimes: number[] = [];
   let fpsEma = 60;
@@ -576,14 +557,6 @@ export function createParticleEngine(
     for (let i = 0; i < 3; i++) melody[i] += (melodyTarget[i] - melody[i]) * (1 - Math.exp(-dt / 0.6));
     melodyW += (melodyWTarget - melodyW) * (1 - Math.exp(-dt / 1.5));
     const simDt = dt * motion;
-    entryT += dt;
-    const entryK = Math.min(1, entryT / 5);
-    const maxSpeedNow = 0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK);
-    const disperseNow = disperseNext;
-    disperseNext = false;
-    hueSpread += (hueSpreadTarget - hueSpread) * kHue;
-    layerGain += (layerGainTarget - layerGain) * (1 - Math.exp(-dt / 1.5));
-    hueWave += ((lastFrame?.swell ?? 0) * 0.6 - hueWave) * (1 - Math.exp(-dt / 1.2));
 
     // dissolve timeline
     let snapNow = false;
@@ -599,7 +572,7 @@ export function createParticleEngine(
     const lerp = (a: number, b: number) => a + (b - a) * e;
     az += dt * lerp(soulA.camSpin, soulB.camSpin);
     const elev = lerp(soulA.camElev, soulB.camElev);
-    const dist = lerp(soulA.camDist, soulB.camDist) * camScale;
+    const dist = lerp(soulA.camDist, soulB.camDist);
     const eye = [Math.cos(az) * Math.cos(elev) * dist, Math.sin(elev) * dist, Math.sin(az) * Math.cos(elev) * dist];
     const FOV = 0.85;
     const proj = perspective(FOV, W / H, 0.05, 50);
@@ -638,8 +611,6 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uInkW, inkW);
     g.uniform1f(sim.u.uFountainW, fountainW);
     g.uniform4f(sim.u.uForm, form[0], form[1], form[2], form[3]);
-    g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
-    g.uniform1f(sim.u.uDisperse, disperseNow ? 1 : 0);
     g.uniform1f(sim.u.uScatter, scatterEnv);
     g.uniform1f(sim.u.uBounce, bounceEnv * bounceSign);
     g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
@@ -707,9 +678,6 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uSize, sizeK);
     g.uniform1f(draw.u.uHue, hue);
     g.uniform1f(draw.u.uSat, sat);
-    g.uniform1f(draw.u.uHueSpread, hueSpread);
-    g.uniform1f(draw.u.uHueWave, hueWave);
-    g.uniform1f(draw.u.uTimeD, time);
     g.uniform1f(draw.u.uDensity, Math.min(density, densityCap));
     g.uniform1f(draw.u.uWorldFade, env.worldFade);
     bindTex(3, imgTex[0], draw.u.uImgA);
@@ -766,17 +734,15 @@ export function createParticleEngine(
   function digestState(buf: Float32Array, kind: "pos" | "vel") {
     if (kind === "pos") { pendingPos = buf.slice(); return; }
     const n = side;
-    let sp = 0, rr = 0, mx = 0;
+    let sp = 0, rr = 0;
     const sb = [0, 0, 0], rb = [0, 0, 0], cb = [0, 0, 0];
     for (let x = 0; x < n; x++) {
       const v = Math.hypot(buf[x * 4], buf[x * 4 + 1], buf[x * 4 + 2]);
       const r = pendingPos ? Math.hypot(pendingPos[x * 4], pendingPos[x * 4 + 1], pendingPos[x * 4 + 2]) : 0;
       const b = seedBand[x] < 0.33 ? 0 : seedBand[x] < 0.66 ? 1 : 2;
       sp += v; rr += r; sb[b] += v; rb[b] += r; cb[b]++;
-      if (v > mx) mx = v;
     }
     state.meanSpeed = sp / n;
-    state.maxSpeed = mx;
     state.meanRadius = rr / n;
     state.speedByBand = [0, 1, 2].map((k) => (cb[k] ? sb[k] / cb[k] : 0)) as [number, number, number];
     state.radiusByBand = [0, 1, 2].map((k) => (cb[k] ? rb[k] / cb[k] : 0)) as [number, number, number];
@@ -855,9 +821,6 @@ export function createParticleEngine(
       if (kind === "scatter") scatterTarget = Math.max(scatterTarget, k);
       else { bounceSign = -bounceSign; bounceEnv = Math.max(bounceEnv, k); }
     },
-    enter() { disperseNext = true; entryT = 0; },
-    setHueSpread(sp) { hueSpreadTarget = Math.max(0, Math.min(1.2, sp)); },
-    setGain(k) { layerGainTarget = Math.max(0.2, Math.min(5, k)); },
     setMelody(pos, w = 0.6) {
       if (!pos) { melodyWTarget = 0; return; }
       melodyTarget = [...pos] as [number, number, number];

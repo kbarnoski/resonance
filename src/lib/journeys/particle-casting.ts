@@ -19,7 +19,7 @@
  *    violet, key changes rotate further, register lifts saturation);
  *  - playfulness + motion from tempo/feel/texture.
  */
-import { SOULS, SHAPE_SOULS, type SoulId, type SoulPreset } from "@/lib/particles/souls";
+import { SOULS, type SoulId, type SoulPreset } from "@/lib/particles/souls";
 
 export interface ParticleSection {
   start: number;
@@ -90,11 +90,6 @@ export interface ParticleCast {
   form: [number, number, number, number];
   /** journey phase boundaries (s) — the layer's dissolve look-ahead */
   phaseBounds: number[];
-  /** v3: the form that GATHERS at the end of each travel morph, per phase
-   *  (index = the phase the morph leads into) */
-  morphSouls: SoulId[];
-  /** hue gradient across the form (rad) */
-  hueSpread: number;
 }
 
 const EDGE = 3; // presence ramps (s)
@@ -161,19 +156,11 @@ function score(soul: SoulPreset, kind: WindowKind, m: Mood, seed: number): numbe
   return s;
 }
 
-const SHAPES = SOULS.filter((x) => SHAPE_SOULS.includes(x.id));
-
-/** v3: only the gathering, legible SHAPE souls are cast in journeys. */
-function rankSouls(kind: WindowKind, m: Mood, seed: number, avoid: Set<SoulId>): SoulId[] {
-  const pool = SHAPES.filter((x) => !avoid.has(x.id));
-  return (pool.length >= 3 ? pool : SHAPES)
-    .map((x) => ({ id: x.id, s: score(x, kind, m, seed) }))
-    .sort((a, b) => b.s - a.s)
-    .map((x) => x.id);
-}
-
 function pickSoul(kind: WindowKind, m: Mood, seed: number, avoid: Set<SoulId>): SoulId {
-  return rankSouls(kind, m, seed, avoid)[0] ?? "rings";
+  const ranked = SOULS.filter((x) => !avoid.has(x.id))
+    .map((x) => ({ id: x.id, s: score(x, kind, m, seed) }))
+    .sort((a, b) => b.s - a.s);
+  return (ranked[0] ?? { id: "motes" as SoulId }).id;
 }
 
 // ── colour from harmony ─────────────────────────────────────────────────────
@@ -182,24 +169,13 @@ export function sectionColors(p: ParticleProfile): SectionColor[] {
   const midis = p.sections.map((s) => s.centerMidi ?? 55);
   const midMedian = midis.slice().sort((a, b) => a - b)[Math.floor(midis.length / 2)] ?? 55;
   let keyTurns = 0;
-  // v3 (Karel: "i didnt notice them changing color much"): wider travel —
-  // harmony (minor cooler/violet, major warmer/golden), key turns, mood
-  // valence and tension all move the hue; the journey's mean is centred so
-  // sections never all pin to one rail, and intensity spreads it further
-  const raw = p.sections.map((s, i) => {
+  return p.sections.map((s, i) => {
     const minorness = s.minor + s.diminished * 1.5 - s.major * 0.8 + s.suspended * 0.2;
     if (i > 0 && s.localKey && s.localKey !== p.sections[i - 1].localKey) keyTurns += 1;
     const keyShift = s.localKey && s.localKey !== globalKey ? 0.3 + 0.1 * (keyTurns % 2) : 0;
-    const tension = s.diminished * 1.2 + s.suspended * 0.3;
-    return minorness * 1.6 + keyShift * 1.6 + tension * 0.5 - (p.mood.valence ?? 0) * 0.35;
-  });
-  const mean = raw.reduce((a, b) => a + b, 0) / Math.max(1, raw.length);
-  const meanI = p.sections.reduce((a, s) => a + s.intensity, 0) / Math.max(1, p.sections.length);
-  const centre = Math.max(-0.6, Math.min(0.9, mean));
-  return p.sections.map((s, i) => {
-    const hue = Math.max(-1.1, Math.min(1.3, centre + (raw[i] - mean) + (s.intensity - meanI) * 1.2));
+    const hue = Math.max(-0.5, Math.min(0.75, minorness * 0.9 + keyShift));
     const reg = ((s.centerMidi ?? midMedian) - midMedian) / 12;
-    const sat = Math.max(0.8, Math.min(1.5, 1.05 + reg * 0.3 + (s.intensity - 0.6) * 0.6));
+    const sat = Math.max(0.7, Math.min(1.35, 0.95 + reg * 0.25 + (s.intensity - 0.6) * 0.4));
     return { start: s.start, end: s.end, hue: Math.round(hue * 100) / 100, sat: Math.round(sat * 100) / 100 };
   });
 }
@@ -216,13 +192,11 @@ export function formOf(p: ParticleProfile): [number, number, number, number] {
 export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): { windows: PresenceWindow[]; breaks: PresenceWindow[] } {
   const D = p.duration;
   const out: PresenceWindow[] = [];
-  // the summit window must fit before the coda even when the analysed climax
-  // sits at the very end of the take
-  const climax = Math.max(25, Math.min(p.climaxTime ?? D * 0.7, D - 30));
+  const climax = p.climaxTime ?? D * 0.7;
 
   // the summit
-  const half = Math.max(7, Math.min(18, D * 0.08));
-  out.push({ kind: "peak", start: Math.max(15, climax - half * 1.1), end: Math.min(D - 18, climax + half * 0.9), soul: souls.peak, density: 0.85, densityEnd: 1 });
+  const half = Math.max(12, Math.min(20, D * 0.1));
+  out.push({ kind: "peak", start: Math.max(15, climax - half * 1.1), end: Math.min(D - 18, climax + half * 0.9), soul: souls.peak, density: 0.75, densityEnd: 1 });
 
   // builds: the late part of building sections that rise above the median
   const ints = p.sections.map((s) => s.intensity).sort((a, b) => a - b);
@@ -263,7 +237,7 @@ export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): 
     // 24 s: the pack's still cadence is ~20 s, so a window this long almost
     // always catches one still change to dissolve through
     // (shorter on short tracks so restraint holds)
-    .forEach((b) => out.push({ kind: "transition", start: b.t - 4, end: b.t - 4 + tLen, soul: souls.transition, density: 0.45, densityEnd: 0.4 }));
+    .forEach((b) => out.push({ kind: "transition", start: b.t - 4, end: b.t - 4 + tLen, soul: souls.transition, density: 0.25, densityEnd: 0.2 }));
 
   // particle-only breaks: valleys of the dynamics curve + receding phrase ends
   const cand: { t: number; depth: number }[] = [];
@@ -296,10 +270,10 @@ export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): 
   out.push(...breaks);
 
   // coda: the last light settles to one ember
-  out.push({ kind: "coda", start: D - Math.min(12, Math.max(6, D * 0.08)), end: D + 2, soul: souls.coda, density: 0.012, densityEnd: 0 });
+  out.push({ kind: "coda", start: D - 12, end: D + 2, soul: souls.coda, density: 0.012, densityEnd: 0 });
 
-  // resolve overlaps by precedence (peak > break > coda > build > transition)
-  const rank: Record<WindowKind, number> = { peak: 5, break: 4, coda: 3.5, build: 3, transition: 2 };
+  // resolve overlaps by precedence (peak > break > build > transition > coda)
+  const rank: Record<WindowKind, number> = { peak: 5, break: 4, build: 3, transition: 2, coda: 1 };
   const sorted = out.sort((a, b) => rank[b.kind] - rank[a.kind]);
   const kept: PresenceWindow[] = [];
   for (const w of sorted) {
@@ -331,25 +305,11 @@ export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): 
     const pick = [a, b].filter(canDrop).sort((x, y) => dropOrder(x) - dropOrder(y))[0];
     if (pick) { kept.splice(kept.indexOf(pick), 1); i = 0; }
   }
-  // v3: the morph-end emergences (runtime, ~18 s per travel morph) now carry
-  // most overlays — the conducted windows stay sparse around them
-  const CAP = 0.3;
+  const CAP = 0.38;
   while (presenceFraction({ windows: kept }, D) > CAP) {
     const order = kept.filter(canDrop).sort((x, y) => dropOrder(x) - dropOrder(y) || y.start - x.start);
     if (!order.length) break;
     kept.splice(kept.indexOf(order[0]), 1);
-  }
-  // hard ceiling: if the summit, breaks and coda alone are dense, even the
-  // protected transition yields (the morph emergences carry the overlays)
-  while (presenceFraction({ windows: kept }, D) > 0.38) {
-    const tr = kept.filter((w) => w.kind === "transition").sort((x, y) => y.start - x.start)[0];
-    if (!tr) break;
-    kept.splice(kept.indexOf(tr), 1);
-  }
-  // …and on short tracks, surplus breaks (one always stays)
-  while (presenceFraction({ windows: kept }, D) > 0.38 && kept.filter((w) => w.kind === "break").length > 1) {
-    const br = kept.filter((w) => w.kind === "break").sort((x, y) => y.start - x.start)[0];
-    kept.splice(kept.indexOf(br), 1);
   }
   return { windows: kept, breaks: kept.filter((w) => w.kind === "break") };
 }
@@ -392,16 +352,6 @@ export function castJourney(p: ParticleProfile, avoid: Set<SoulId> = new Set()):
   const souls = {} as Record<WindowKind, SoulId>;
   for (const k of ["peak", "build", "transition", "break", "coda"] as WindowKind[]) souls[k] = take(k);
   const { windows, breaks } = conduct(p, souls);
-  // one gathering form per phase (the morph INTO phase i lands on morphSouls[i]);
-  // consecutive phases always differ, neighbours' forms avoided where possible
-  const nPhases = (p.phaseBounds?.length ?? 0) + 1;
-  const ranked = rankSouls("transition", m, seed + 7, avoid);
-  const morphSouls: SoulId[] = [];
-  for (let i = 0; i < nPhases; i++) {
-    let id = ranked[(i * 2 + (i > 2 ? 1 : 0)) % ranked.length];
-    if (i > 0 && id === morphSouls[i - 1]) id = ranked[(i * 2 + 1) % ranked.length];
-    morphSouls.push(id);
-  }
   return {
     name: p.name,
     windows,
@@ -413,8 +363,6 @@ export function castJourney(p: ParticleProfile, avoid: Set<SoulId> = new Set()):
     motion: motionOf(p),
     form: formOf(p),
     phaseBounds: p.phaseBounds ?? [],
-    morphSouls,
-    hueSpread: Math.round((0.3 + p.mood.arousal * 0.45) * 100) / 100,
   };
 }
 
@@ -423,11 +371,7 @@ export function castSet(profiles: ParticleProfile[]): ParticleCast[] {
   const casts: ParticleCast[] = [];
   for (let i = 0; i < profiles.length; i++) {
     const avoid = new Set<SoulId>();
-    if (i > 0) {
-      for (const s of Object.values(casts[i - 1].souls)) avoid.add(s);
-      // keep the pool wide enough to cast from
-      if (SHAPE_SOULS.length - avoid.size < 6) for (const s of [...avoid].slice(0, avoid.size - (SHAPE_SOULS.length - 6))) avoid.delete(s);
-    }
+    if (i > 0) for (const s of Object.values(casts[i - 1].souls)) avoid.add(s);
     casts.push(castJourney(profiles[i], avoid));
   }
   return casts;
