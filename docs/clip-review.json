@@ -121,7 +121,8 @@
  },
  "inferno/t3": {
   "verdict": "good",
-  "at": "2026-09-28T19:46:16.794Z"
+  "at": "2026-10-07T00:00:00.000Z",
+  "note": "Karel 2026-10-06: canyon-walls morph banned ('no walls in realized') \u2014 slot now plays Surrounded By Light's open molten-river morph"
  },
  "inferno/t4": {
   "verdict": "bad",
