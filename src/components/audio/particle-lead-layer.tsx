@@ -45,7 +45,7 @@ import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReas
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
-import { dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
+import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
 
@@ -238,7 +238,7 @@ export function ParticleLeadLayer({
       // a held still: start the dissolve once the guard clears (same window)
       if (pr.window?.kind === "transition" && heldInWindow.current === pr.window.start && dissolvedWindow.current !== pr.window.start) {
         const nextPb = (cast.phaseBounds ?? []).find((x) => x > t);
-        if (dissolveAllowed({
+        if (counters.current.dissolves < MAX_DISSOLVES_PER_JOURNEY && dissolveAllowed({
           inTransitionWindow: true,
           windowAlreadyDissolved: false,
           sincePhaseChange: (now - phaseRef.current.at) / 1000,
@@ -399,7 +399,7 @@ export function ParticleLeadLayer({
           engineRef.current?.setGain((cast.gain ?? 1) * 1.7 * (1 + 2.2 * Math.max(0, Math.min(0.4, L - 0.06))));
         } catch { /* tainted canvas — keep the last strength */ }
         const win = windowRef.current;
-        const ok = dissolveAllowed({
+        const ok = counters.current.dissolves < MAX_DISSOLVES_PER_JOURNEY && dissolveAllowed({
           inTransitionWindow: win?.kind === "transition",
           windowAlreadyDissolved: !!win && dissolvedWindow.current === win.start,
           sincePhaseChange: (performance.now() - phaseRef.current.at) / 1000,

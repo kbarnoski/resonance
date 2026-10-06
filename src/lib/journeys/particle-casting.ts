@@ -222,7 +222,7 @@ export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): 
 
   // the summit
   const half = Math.max(7, Math.min(18, D * 0.08));
-  out.push({ kind: "peak", start: Math.max(15, climax - half * 1.1), end: Math.min(D - 18, climax + half * 0.9), soul: souls.peak, density: 0.85, densityEnd: 1 });
+  out.push({ kind: "peak", start: Math.max(15, climax - half * 1.1), end: Math.min(D - 18, climax + half * 0.9), soul: souls.peak, density: 0.5, densityEnd: 0.65 }); // a held form, not a full-frame swarm
 
   // builds: the late part of building sections that rise above the median
   const ints = p.sections.map((s) => s.intensity).sort((a, b) => a - b);
@@ -281,7 +281,9 @@ export function conduct(p: ParticleProfile, souls: Record<WindowKind, SoulId>): 
     }
   }
   const breaks: PresenceWindow[] = [];
-  const maxBreaks = D > 240 ? 3 : 2;
+  // a particle-only black break is a full-screen moment: one per journey at
+  // most, and none in short pieces (Karel 2026-10-05: "only rarely")
+  const maxBreaks = D >= 150 ? 1 : 0;
   for (const k of cand.sort((a, b) => b.depth - a.depth)) {
     if (breaks.length >= maxBreaks) break;
     if (k.t < 30 || k.t > D - 30 || Math.abs(k.t - climax) < 35) continue;

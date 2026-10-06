@@ -266,7 +266,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // program/phase unchanged — no re-render, nothing restarted, and
         // the audio stayed paused: a frozen journey. Restart it in place.
         const cur = phaseRef.current;
-        if (programIndexRef.current === pi && cur.kind === "journey" && cur.index === ji) {
+        // Match on the journey actually playing too: the loop's opening
+        // journey can be on screen under a non-"journey" phase (intro), so
+        // the phase check alone missed and the jump left it paused (kiosk
+        // A/B 2026-10-05: Snowflake sat paused at 0:12 after jump:first-snow).
+        const playingNow = useAudioStore.getState().activeJourney?.id === jid;
+        if (playingNow || (programIndexRef.current === pi && cur.kind === "journey" && cur.index === ji)) {
           try {
             const el = getAudioEngine().audioElement;
             el.currentTime = 0;

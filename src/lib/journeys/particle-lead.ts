@@ -81,6 +81,11 @@ export function particleLeadFor(journey?: { id?: string | null; name?: string | 
  *  2026-10-05: a clip-guard held every dissolve and break in pack mode). */
 export const MORPH_GUARD_SEC = 14;
 
+/** Full-screen particle moments are RARE (Karel 2026-10-05: "only rarely do
+ *  the full screen particle effect its too over the top"): one still-to-
+ *  particles dissolve per journey at most. */
+export const MAX_DISSOLVES_PER_JOURNEY = 1;
+
 export function morphGuard(sincePhaseChange: number, boundarySettle: boolean): boolean {
   return boundarySettle || sincePhaseChange < MORPH_GUARD_SEC;
 }
