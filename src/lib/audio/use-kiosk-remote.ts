@@ -7,6 +7,33 @@ import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getParticlePresent } from "@/lib/journeys/particle-presence";
+import { disableParticlesForSession } from "@/lib/particles/shared-engine";
+
+// Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
+// >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
+const frameTimes: number[] = [];
+let frameMeterStarted = false;
+function startFrameMeter(): void {
+  if (frameMeterStarted || typeof window === "undefined") return;
+  frameMeterStarted = true;
+  let last = performance.now();
+  const tick = (now: number) => {
+    frameTimes.push(now - last);
+    last = now;
+    if (frameTimes.length > 600) frameTimes.splice(0, frameTimes.length - 600);
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+/** fps and p95 frame ms over roughly the last 3 s */
+function frameStats(): { fps: number; p95: number } | null {
+  const recent: number[] = [];
+  let acc = 0;
+  for (let i = frameTimes.length - 1; i >= 0 && acc < 3000; i--) { recent.push(frameTimes[i]); acc += frameTimes[i]; }
+  if (recent.length < 5) return null;
+  const sorted = [...recent].sort((a, b) => a - b);
+  return { fps: Math.round((recent.length / acc) * 1000), p95: Math.round(sorted[Math.floor(sorted.length * 0.95)]) };
+}
 
 /**
  * Kiosk side of the phone remote (Tramokyo offline installation).
@@ -39,6 +66,9 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {
     window.location.href = "/room/installation?loop=1";
+  } else if (cmd === "particles-off") {
+    // A/B performance check on the real kiosk GPU without a reload
+    disableParticlesForSession("remote: particles-off");
   } else if (cmd === "reload") {
     // Phone-remote recovery: a full page reload fixes most kiosk
     // wedges (dead shaders, stuck audio element, broken phase machine)
@@ -206,6 +236,7 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                 pt:
                   ((window as unknown as Record<string, unknown>).__resonanceParticlesDisabled as string | undefined) ??
                   (getParticlePresent() ? "on" : "idle"),
+                fr: (startFrameMeter(), frameStats()),
               },
               // Karel 2026-09-20: the remote must ALWAYS name what is on
               // screen. Between journeys the loop publishes a phase label
