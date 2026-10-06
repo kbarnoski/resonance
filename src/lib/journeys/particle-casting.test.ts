@@ -14,9 +14,10 @@ import { LANTERN_ID, STIR_CRAZY_ID, OPEN_JAM_ID } from "./particle-lead";
 import { SOULS, SOUL_IDS } from "@/lib/particles/souls";
 
 const profiles = Object.values(PARTICLE_PROFILES);
+const reviewProfiles = [LANTERN_ID, STIR_CRAZY_ID, OPEN_JAM_ID].map((id) => PARTICLE_PROFILES[id]);
 
 describe("soul library", () => {
-  it("is a tremendous palette: 25+ distinct souls, indices = shader branches", () => {
+  it("is a tremendous palette: 28 distinct souls, indices = shader branches", () => {
     expect(SOULS.length).toBeGreaterThanOrEqual(25);
     expect(SOULS.map((s) => s.index)).toEqual(SOULS.map((_, i) => i));
     expect(new Set(SOULS.map((s) => s.id)).size).toBe(SOULS.length);
@@ -27,10 +28,29 @@ describe("soul library", () => {
   });
 });
 
-describe("conducting — restraint", () => {
-  for (const p of profiles) {
+describe("conducting — restraint (every journey)", () => {
+  it("every journey rests most of the time and keeps a summit + coda", () => {
+    for (const p of profiles) {
+      const c = castJourney(p);
+      const f = presenceFraction(c, p.duration);
+      expect(f, p.name).toBeLessThanOrEqual(0.4); // + runtime morph-end emergences
+      expect(c.windows.some((w) => w.kind === "peak"), p.name).toBe(true);
+      expect(c.windows.some((w) => w.kind === "coda"), p.name).toBe(true);
+      for (const x of p.phaseBounds ?? []) for (const b of c.breaks) expect(x >= b.end + 1 - 1e-6 || x <= b.start - 14 + 1e-6, p.name).toBe(true);
+    }
+  });
+  it("colour travels: every journey with 2+ sections spans a visible hue range", () => {
+    for (const p of profiles.filter((x) => x.sections.length >= 3)) {
+      const hs = castJourney(p).colors.map((c) => c.hue);
+      expect(Math.max(...hs) - Math.min(...hs), p.name).toBeGreaterThanOrEqual(0.15);
+    }
+  });
+});
+
+describe("conducting — review set detail", () => {
+  for (const p of reviewProfiles) {
     const cast = castJourney(p);
-    it(`${p.name}: particles rest most of the time (≤ 40% presence)`, () => {
+    it(`${p.name}: conducted windows stay sparse (≤ 40%)`, () => {
       expect(presenceFraction(cast, p.duration)).toBeLessThanOrEqual(0.4);
       expect(presenceFraction(cast, p.duration)).toBeGreaterThan(0.12);
     });

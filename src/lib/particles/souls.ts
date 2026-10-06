@@ -18,7 +18,7 @@ export const SOUL_IDS = [
   "threads", "ribbons", "fireflies", "ink", "branches",
   "geometry", "orbitals", "waves", "cymatics", "nebula",
   "arcs", "kaleido", "helix", "knot", "fountain",
-  "harmonics", "lissajous",
+  "harmonics", "lissajous", "rings",
 ] as const;
 
 export type SoulId = (typeof SOUL_IDS)[number];
@@ -168,7 +168,7 @@ export const SOULS: readonly SoulPreset[] = [
   S("kaleido", "Kaleidoscope", "mirrored flow folded into eight sectors", pal([1.0, 0.4, 0.6], [0.5, 0.6, 1.0], [1.0, 0.9, 0.6]),
     { trail: 0.45, elev: 1.35, dist: 4.4, spin: 0.0 },
     { energy: 0.6, playful: 0.7, dark: 0.3, solo: 0.6, peak: 0.7, family: "geometric" }),
-  S("helix", "Helix", "a double spiral column turning on the mids", pal([0.4, 0.9, 1.0], [0.7, 0.5, 1.0], [1.0, 0.9, 0.95]),
+  S("helix", "Triple Spiral", "three strands twisting round a breathing column", pal([0.4, 0.9, 1.0], [0.7, 0.5, 1.0], [1.0, 0.9, 0.95]),
     { trail: 0.5, elev: 0.2, dist: 4.8, spin: 0.0 },
     { energy: 0.5, playful: 0.4, dark: 0.4, solo: 0.6, peak: 0.5, family: "geometric" }),
   S("knot", "Torus Knot", "a single thread of light tied into a turning knot", pal([1.0, 0.45, 0.25], [0.95, 0.4, 0.75], [0.6, 0.8, 1.0]),
@@ -183,6 +183,22 @@ export const SOULS: readonly SoulPreset[] = [
   S("lissajous", "Lissajous", "a figure traced by the music's own intervals", pal([1.0, 0.6, 0.4], [0.7, 0.55, 1.0], [0.85, 1.0, 1.0]),
     { trail: 0.6, elev: 0.3, dist: 4.4, size: 0.9 },
     { energy: 0.45, playful: 0.6, dark: 0.3, solo: 0.8, peak: 0.5, family: "geometric" }),
+  S("rings", "Resonant Rings", "concentric rings breathing outward on the bass", pal([1.0, 0.6, 0.35], [0.7, 0.55, 1.0], [0.85, 0.95, 1.0]),
+    { trail: 0.45, elev: 0.3, dist: 4.4 },
+    { energy: 0.45, playful: 0.4, dark: 0.4, solo: 0.8, peak: 0.7, family: "geometric" }),
+];
+
+/**
+ * The GATHERING language (Karel 2026-10-05, v3: "i like when they gather and
+ * move and make evolving geometric shape overlays you can see … i dont like
+ * when you fill the screen out of nowhere with them all moving quickly").
+ * Only these compact, legible forms are cast in journeys; the volume-filling
+ * souls (embers, dust storm, fountain, fireflies, petals, pollen, smoke,
+ * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
+ */
+export const SHAPE_SOULS: readonly SoulId[] = [
+  "geometry", "harmonics", "orbitals", "lissajous", "cymatics", "knot",
+  "kaleido", "bloom", "helix", "arcs", "rings", "vortex", "ribbons", "branches", "threads",
 ];
 
 export function soulById(id: SoulId): SoulPreset {
