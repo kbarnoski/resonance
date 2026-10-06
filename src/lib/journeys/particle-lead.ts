@@ -49,7 +49,14 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
 })();
 
 /** The cast for a journey (by id), or null if it has no analysis profile. */
+/** KILL SWITCH (2026-10-05): particle v3 froze the real kiosk Chrome on
+ *  Snowflake right as particles first emerged (~0:08-0:09; 1.1s frame gap
+ *  then a hang), reproducibly. Headless GPU checks never caught it. Off
+ *  everywhere until the hang is root-caused and verified in kiosk Chrome. */
+export const PARTICLES_ENABLED = false;
+
 export function particleLeadFor(journey?: { id?: string | null; name?: string | null } | null): ParticleLeadCast | null {
+  if (!PARTICLES_ENABLED) return null;
   if (!journey?.id) return null;
   const cast = PARTICLE_LEADS[journey.id] ?? null;
   if (!cast) return null;

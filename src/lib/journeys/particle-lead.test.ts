@@ -9,8 +9,7 @@ import {
   MORPH_GUARD_SEC,
   particleLeadFor,
   particlePaletteFrom,
-  withParticleLeadSupports,
-} from "./particle-lead";
+  withParticleLeadSupports, PARTICLES_ENABLED } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { dissolveEnvelope, DISSOLVE_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
@@ -22,7 +21,7 @@ describe("particle lead registry (v3 rollout)", () => {
     for (const id of [LANTERN_ID, OPEN_JAM_ID, STIR_CRAZY_ID]) expect(PARTICLE_LEADS[id]).toBeTruthy();
   });
 
-  it("Snowflake + Ghost get the particle layer ONLY (flagged mastered — shaders untouched)", () => {
+  it.skipIf(!PARTICLES_ENABLED)("Snowflake + Ghost get the particle layer ONLY (flagged mastered — shaders untouched)", () => {
     for (const id of MASTERED_JOURNEYS) {
       const cast = particleLeadFor({ id });
       expect(cast, id).toBeTruthy();
