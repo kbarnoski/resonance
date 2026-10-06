@@ -55,8 +55,18 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
  *  everywhere until the hang is root-caused and verified in kiosk Chrome. */
 export const PARTICLES_ENABLED = false;
 
+/** On-kiosk A/B (2026-10-05): the remote's "particles-on" sets this for the
+ *  kiosk tab only (sessionStorage), so particles can be measured on the real
+ *  GPU while the shipped default stays off. */
+export const PARTICLES_SESSION_KEY = "resonance-particles-ab";
+export function particlesForcedThisSession(): boolean {
+  try {
+    return typeof window !== "undefined" && window.sessionStorage.getItem(PARTICLES_SESSION_KEY) === "1";
+  } catch { return false; }
+}
+
 export function particleLeadFor(journey?: { id?: string | null; name?: string | null } | null): ParticleLeadCast | null {
-  if (!PARTICLES_ENABLED) return null;
+  if (!PARTICLES_ENABLED && !particlesForcedThisSession()) return null;
   if (!journey?.id) return null;
   const cast = PARTICLE_LEADS[journey.id] ?? null;
   if (!cast) return null;
