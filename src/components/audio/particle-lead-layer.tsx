@@ -67,6 +67,11 @@ const TIER_BUDGET = {
 
 /** Souls this journey will show, in the order it will show them (intro, the
  *  conducted windows, each travel morph's form) — pre-compiled at journey start. */
+/** Particles stay this long after a morph video ends (Karel: "present when
+ *  morph videos end … extending after"). 18 s held Snowflake at ~90 %
+ *  presence (morphs every ~30 s); 10 s keeps the law and lands near 60 %. */
+const MORPH_TAIL_SEC = 10;
+
 function soulSequence(cast: ParticleLeadCast): SoulId[] {
   const ev: [number, SoulId][] = [[3, cast.morphSouls[0] ?? cast.souls.transition]];
   for (const w of cast.windows) ev.push([w.start, w.soul]);
@@ -177,16 +182,16 @@ export function ParticleLeadLayer({
       const dur = Number.isFinite(e.duration) && e.duration > 0 ? e.duration : 6;
       const prev = emergeRef.current;
       emergeRef.current = prev && prev.end > t
-        ? { ...prev, end: Math.max(prev.end, t + dur + 18) }
-        : { start: t, end: t + dur + 18, soul: morphSoulAt(t + 1.5) };
+        ? { ...prev, end: Math.max(prev.end, t + dur + MORPH_TAIL_SEC) }
+        : { start: t, end: t + dur + MORPH_TAIL_SEC, soul: morphSoulAt(t + 1.5) };
       counters.current.emergences++;
     });
     const offClip = onClipEnded((e) => {
       if (!e.travel) return;
       const t = useAudioStore.getState().currentTime || 0;
       const em = emergeRef.current;
-      if (em && t < em.end + 1) em.end = Math.max(em.end, t + 18);
-      else emergeRef.current = { start: t, end: t + 18, soul: morphSoulAt(t) };
+      if (em && t < em.end + 1) em.end = Math.max(em.end, t + MORPH_TAIL_SEC);
+      else emergeRef.current = { start: t, end: t + MORPH_TAIL_SEC, soul: morphSoulAt(t) };
     });
     // signature phases: their entry always raises the journey's own form,
     // travel clip or not (Ghost's spirit — some boundaries are crossfades)
@@ -316,7 +321,7 @@ export function ParticleLeadLayer({
         if (pb !== undefined) {
           const em = emergeRef.current;
           const soul = morphSoulAt(pb + 1);
-          // armed through the boundary; a travel clip then extends it to its end + 18 s
+          // armed through the boundary; a travel clip then extends it to its end + MORPH_TAIL_SEC
           if (!em || em.end < pb + 8) emergeRef.current = { start: Math.min(em?.start ?? t, t), end: pb + 12, soul: em && em.end > t ? em.soul : soul };
         }
       }
