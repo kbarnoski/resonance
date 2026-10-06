@@ -178,6 +178,27 @@ function chroma(c: RGB, hueFrom: number, floor: number): RGB {
   return fromHsv([sat < 0.08 ? hueFrom : h, floor, v]);
 }
 
+/** The journey's palette sampled FROM ITS IMAGES (journey-palettes.generated)
+ *  — the particles' primary colour source (Karel 2026-10-06: "realized has
+ *  a lot of amber … a color palette and key color theme per journey based on
+ *  images"). Voicings move through the image colours, the KEY always present. */
+export function particlePaletteFromImage(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette | null {
+  if (!ip || !ip.colors.length) return null;
+  const chromatic = ip.colors.filter((c) => { const h = toHsv(hexToLinear(c)); return h[1] > 0.12 && h[2] > 0.02; });
+  const cs = chromatic.length >= 2 ? chromatic : ip.colors;
+  const K = ip.key;
+  const c1 = cs.find((c) => c !== K) ?? K;
+  const c2 = cs.filter((c) => c !== K)[1] ?? c1;
+  const bright = [...cs].sort((a, b) => toHsv(hexToLinear(b))[2] - toHsv(hexToLinear(a))[2])[0] ?? K;
+  const v = [[K, c1, c2], [c1, K, bright], [K, c2, bright], [c2, c1, K]][Math.max(0, Math.min(3, Math.round(voice)))];
+  const keyHue = toHsv(hexToLinear(K))[0];
+  return {
+    low: lift(chroma(hexToLinear(v[0]), keyHue, 0.5)),
+    mid: lift(chroma(hexToLinear(v[1]), keyHue, 0.45)),
+    high: lift(chroma(hexToLinear(v[2]), keyHue, 0.35), 0.7),
+  };
+}
+
 export function particlePaletteFrom(p?: { primary: string; secondary: string; accent: string; glow: string } | null, voice = 1): ParticlePalette | null {
   if (!p) return null;
   // voicings of the journey's own palette (low / mid / high band), dark → bright

@@ -47,6 +47,8 @@ import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReas
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
+import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
+import { particlePaletteFromImage } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -173,7 +175,10 @@ export function ParticleLeadLayer({
       if (!e.travel) return;
       const t = useAudioStore.getState().currentTime || 0;
       const dur = Number.isFinite(e.duration) && e.duration > 0 ? e.duration : 6;
-      emergeRef.current = { start: t, end: t + dur + 18, soul: morphSoulAt(t + 1.5) };
+      const prev = emergeRef.current;
+      emergeRef.current = prev && prev.end > t
+        ? { ...prev, end: Math.max(prev.end, t + dur + 18) }
+        : { start: t, end: t + dur + 18, soul: morphSoulAt(t + 1.5) };
       counters.current.emergences++;
     });
     const offClip = onClipEnded((e) => {
@@ -215,6 +220,11 @@ export function ParticleLeadLayer({
     // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
     let shown = 0;
     let veilShown = 0;
+    // density GATHERS on the way in but HOLDS on the way out — thinning while
+    // fading turned the field into a few big, bright motes popping out one by
+    // one ("drop frames and disappear", Karel 2026-10-06); only opacity fades
+    let densP = 0;
+    let zeroSince = 0;
     // variety (Karel 2026-10-06: "limited amount of shapes … always the same
     // amount and the same distance"): forms evolve while visible, and every
     // appearance draws its own figure, distance and density
@@ -295,6 +305,19 @@ export function ParticleLeadLayer({
       lastTick = now;
       const t = useAudioStore.getState().currentTime || 0;
       signatureAt(t);
+      // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
+      // morph and is present when morph videos end in all cases ever"):
+      // travel morphs ride the phase boundaries, which are known — arm the
+      // emergence 4 s AHEAD so the field is already up as the morph begins
+      // (the clip-start event alone left it fading in late)
+      {
+        const pb = (cast.phaseBounds ?? []).find((b) => b > t && b - t < 4);
+        if (pb !== undefined) {
+          const em = emergeRef.current;
+          const soul = morphSoulAt(pb + 1);
+          if (!em || em.end < pb + 24) emergeRef.current = { start: Math.min(em?.start ?? t, t), end: pb + 30, soul: em && em.end > t ? em.soul : soul };
+        }
+      }
       const pr0 = presenceAt(cast, t);
       // emergence window after a travel morph (3 s gather in, 3 s out)
       const em = emergeRef.current;
@@ -345,7 +368,9 @@ export function ParticleLeadLayer({
         // a flash is centred (it matches the flash image); the signature angel
         // is smaller and sits off-centre
         engine.setImageScale(flashing ? 1 : 0.62);
-        engine.setImageForm(Math.max(flashNow, angelForm), Math.max(flashTail, angelShow));
+        // a TAD less literal (Karel 2026-10-06): never fully snapped to the
+        // image — the field keeps a little drift and shimmer as it forms it
+        engine.setImageForm(Math.max(flashNow, angelForm) * 0.84, Math.max(flashTail, angelShow));
       }
       if (flashLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01) { flashLoaded = false; engine.setImageForm(0, 0); }
       const flashP = flashLoaded ? Math.max(flashTail, angelShow) : 0;
@@ -364,7 +389,7 @@ export function ParticleLeadLayer({
         if (w.soul !== lastAsked) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
-        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * shown));
+        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * densP));
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -396,9 +421,10 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * shown));
+      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * densP));
       const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP) * endFade;
       shown = slew(shown, targetPresence, tickDt);
+      if (shown >= densP || shown < 0.005) densP = shown; // rise with the gather, hold through the fade
       densKS += (densK - densKS) * (1 - Math.exp(-tickDt / 6));
       // dynamics: the dolly glides through each appearance; placement holds
       // its third (a flash centres itself to meet the flash image)
@@ -441,8 +467,10 @@ export function ParticleLeadLayer({
       // v3: "they often times get lost over the imaging")
       if (canvasRef.current) {
         canvasRef.current.style.opacity = presence.toFixed(3);
-        // out of the compositor entirely while absent
-        canvasRef.current.style.visibility = presence > 0 || dissolving ? "visible" : "hidden";
+        // out of the compositor only after a full second at zero (the CSS
+        // opacity transition must finish first — hiding early popped)
+        if (presence > 0 || dissolving) zeroSince = now;
+        canvasRef.current.style.visibility = now - zeroSince < 1000 ? "visible" : "hidden";
       }
       // a soft radial contrast veil under the form — never a full-frame wash
       if (contrastRef.current) {
@@ -464,10 +492,18 @@ export function ParticleLeadLayer({
       const st = engine.stats();
       const c = colorAt(cast, t);
       engine.setHue(c.hue + 0.06 * st.swell, c.sat * (1 + 0.1 * st.swell));
-      // the journey's palette, voiced for this section
+      // colour = the journey's IMAGE palette (this phase's stills), voiced for
+      // the section; the theme palette only where no image palette exists
+      const pbs = cast.phaseBounds ?? [];
+      const phaseIdx = pbs.filter((b) => b <= t).length;
+      const ip = JOURNEY_IMAGE_PALETTES[journeyId];
+      const ipPhase = ip ? (ip.phases[phaseIdx] ?? ip) : null;
       const pp = palRef.current;
-      const vk = pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${c.voice}` : "";
-      if (pp && vk !== palVoiceKey) { paletteTarget.current = particlePaletteFrom(pp, c.voice); palVoiceKey = vk; }
+      const vk = ipPhase ? `img:${phaseIdx}:${c.voice}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${c.voice}` : "";
+      if (vk && vk !== palVoiceKey) {
+        paletteTarget.current = ipPhase ? particlePaletteFromImage(ipPhase, c.voice) : particlePaletteFrom(pp, c.voice);
+        palVoiceKey = vk;
+      }
       const target = paletteTarget.current;
       if (target) {
         current = current ? lerpPalette(current, target, 0.06) : target;

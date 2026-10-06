@@ -9,7 +9,7 @@ import {
   MORPH_GUARD_SEC,
   particleLeadFor,
   particlePaletteFrom,
-  withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES } from "./particle-lead";
+  withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES, particlePaletteFromImage } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { dissolveEnvelope, DISSOLVE_SEC, DISSOLVE_SNAP_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
@@ -120,5 +120,21 @@ describe("dissolve: only some transitions, never fighting a morph", () => {
   it("the snap is invisible: image presence is 0 when the field teleports", () => {
     expect(dissolveEnvelope(DISSOLVE_SNAP_SEC).imgShow).toBeLessThan(0.01);
     expect(dissolveEnvelope(DISSOLVE_SNAP_SEC).worldFade).toBeLessThan(0.01);
+  });
+});
+
+describe("particle colour comes from the journey's IMAGES (Karel 2026-10-06)", () => {
+  it("every particle journey has an image palette with a key colour", async () => {
+    const { JOURNEY_IMAGE_PALETTES } = await import("@/lib/particles/journey-palettes.generated");
+    for (const id of Object.keys(PARTICLE_LEADS)) {
+      expect(JOURNEY_IMAGE_PALETTES[id]?.key, id).toMatch(/^#[0-9a-f]{6}$/);
+    }
+  });
+  it("Realized reads amber: its key colour is warm (red-orange hue)", async () => {
+    const { JOURNEY_IMAGE_PALETTES } = await import("@/lib/particles/journey-palettes.generated");
+    const pal = particlePaletteFromImage(JOURNEY_IMAGE_PALETTES["inferno"], 0)!;
+    const [r, g, b] = pal.low;
+    expect(r).toBeGreaterThan(g);
+    expect(g).toBeGreaterThan(b);
   });
 });
