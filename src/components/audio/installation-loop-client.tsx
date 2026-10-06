@@ -155,6 +155,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // effect on every phase change).
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
+  const programIndexRef = useRef(programIndex);
+  useEffect(() => { programIndexRef.current = programIndex; }, [programIndex]);
 
   // ── Singleton guard (P0 rebuild 2026-09-26): exactly ONE Resonance
   // instance, and the PROJECTOR instance always wins. The kiosk launch
@@ -259,6 +261,20 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         setIntroStage("gone");
         useAudioStore.getState().setSuppressNextJourneyIntro(false);
         setStartIdx(0);
+        // Jumping to the journey ALREADY playing (2026-10-05: the loop
+        // opens on Snowflake, so jump:first-snow after any relaunch) left
+        // program/phase unchanged — no re-render, nothing restarted, and
+        // the audio stayed paused: a frozen journey. Restart it in place.
+        const cur = phaseRef.current;
+        if (programIndexRef.current === pi && cur.kind === "journey" && cur.index === ji) {
+          try {
+            const el = getAudioEngine().audioElement;
+            el.currentTime = 0;
+            void el.play();
+            useAudioStore.setState({ isPlaying: true });
+          } catch { /* engine gone */ }
+          return;
+        }
         setProgramIndex(pi);
         setPhase({ kind: "journey", index: ji });
         return;
