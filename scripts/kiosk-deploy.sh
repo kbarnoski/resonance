@@ -34,23 +34,21 @@ echo "pack audio index OK"
 KIOSK_PROFILE="user-data-dir=$HOME/.tramokyo-chrome"
 KIOSK_WAS_OPEN=0
 pgrep -f "$KIOSK_PROFILE" >/dev/null && KIOSK_WAS_OPEN=1
+# BUILD WHILE THE KIOSK KEEPS PLAYING (Karel 2026-10-06: "room hit a snag
+# error on screen" — the old order stopped the server, then built for minutes
+# while the page's chunk requests failed into the error boundary). Build into
+# .next-staging (next.config distDir is env-driven), then swap in seconds.
+rm -rf .next-staging
+[ -d .next/cache ] && mkdir -p .next-staging && cp -R .next/cache .next-staging/cache 2>/dev/null
+cp tsconfig.json /tmp/kiosk-tsconfig.bak
+NEXT_DIST_DIR=.next-staging npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
+# next adds the staging types dir to tsconfig — never let a deploy dirty it
+cp /tmp/kiosk-tsconfig.bak tsconfig.json
 launchctl bootout "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
-# Holding page on :3000 during the build — a kiosk page that reloads
-# mid-deploy gets an auto-retrying "updating" screen instead of dying
-# on a browser error page (2026-09-30: every deploy killed the page).
-python3 - <<'PYEOF' > /tmp/kiosk-hold.log 2>&1 &
-from http.server import BaseHTTPRequestHandler, HTTPServer
-PAGE = b"""<!doctype html><html><head><meta http-equiv=refresh content=4><title>Resonance</title></head><body style='background:#000;color:rgba(255,255,255,0.5);font-family:system-ui;display:flex;align-items:center;justify-content:center;height:100vh;margin:0'>updatingâ¦</body></html>"""
-class H(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200); self.send_header("Content-Type","text/html"); self.end_headers(); self.wfile.write(PAGE)
-    do_POST = do_GET
-    def log_message(self, *a): pass
-HTTPServer(("127.0.0.1", 3000), H).serve_forever()
-PYEOF
-HOLD_PID=$!
-npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { kill $HOLD_PID 2>/dev/null; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
-kill $HOLD_PID 2>/dev/null; sleep 1
+rm -rf .next-old
+mv .next .next-old 2>/dev/null
+mv .next-staging .next
+(rm -rf .next-old &) 
 # Restart with RETRIES (2026-10-01: bootstrap silently failed twice,
 # leaving the venue dark mid-session — never trust one attempt).
 C=""
@@ -69,8 +67,15 @@ for attempt in 1 2 3; do
 done
 [ "${C:-}" = "$HEAD" ] || { echo "SERVER NOT ON $HEAD (got '${C:-none}') AFTER 3 ATTEMPTS"; exit 1; }
 echo "server OK ($C)"
-# reload the page and wait until ITS reported build matches
-curl -s -X POST localhost:3000/api/pack/remote -H "Content-Type: application/json" -d '{"command":"reload"}' -o /dev/null
+# the old page's chunks are gone with the swap: relaunch the kiosk browser
+# straight away (a reload leaves it autoplay-paused); otherwise reload
+if [ $KIOSK_WAS_OPEN -eq 1 ]; then
+  pkill -f "$KIOSK_PROFILE"; sleep 2
+  nohup scripts/tramokyo-kiosk.sh > /tmp/kiosk-launch.log 2>&1 &
+else
+  curl -s -X POST localhost:3000/api/pack/remote -H "Content-Type: application/json" -d '{"command":"reload"}' -o /dev/null
+fi
+# wait until the page's reported build matches
 PAGE=""
 for i in $(seq 1 45); do
   sleep 2
