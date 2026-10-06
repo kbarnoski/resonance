@@ -1,0 +1,376 @@
+{
+ "2019": {
+  "subject": "glowing firefly in flight",
+  "color": "warm amber gold (#de9a43) with ember-orange glow (#975523)",
+  "why": "The title is abstract, so the emblem comes from the recurring imagery of fireflies and amber embers glowing against deep indigo darkness."
+ },
+ "Ghost": {
+  "subject": "angel (the flash image)",
+  "color": "pearl white",
+  "why": "Ghost's own angel",
+  "file": "@angel"
+ },
+ "Snowflake": {
+  "subject": "six-armed crystalline snowflake",
+  "color": "icy blue and white with pale cyan glow (#9fc4e2, #6598c1) against deep #0b1d2c",
+  "why": "A symmetrical six-pointed snowflake is the instantly recognizable emblem of the title and echoes the ice, crystal and geometric imagery.",
+  "prompt": "a single luminous icy blue and white with pale cyan glow, against deep six-armed crystalline snowflake emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
+  "file": "/tramokyo-pack/emblems/snowflake.jpg"
+ },
+ "Realized": {
+  "subject": "single rising flame",
+  "color": "molten amber orange (#e5943d to #ad4a1a) with deep ember red core",
+  "why": "A flame embodies the lava and ember imagery and suggests an idea igniting into reality, tying the title to the theme at a glance.",
+  "prompt": "a single luminous molten amber orange (#e5943d to #ad4a1a) with deep ember red core single rising flame emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
+  "file": "/tramokyo-pack/emblems/realized.jpg"
+ },
+ "Chemiluminescence": {
+  "subject": "glowing bioluminescent jellyfish",
+  "color": "luminous cyan-turquoise with pale white highlights",
+  "why": "A drifting jellyfish with trailing tendrils embodies chemiluminescent light glowing from deep dark water and matches the underwater, smoky imagery."
+ },
+ "Rolling": {
+  "subject": "cresting ocean wave",
+  "color": "molten amber-gold (#e3ae5e, #ac7038) with deep midnight blue (#0b1a24, #223744) shadows",
+  "why": "A single curling wave glowing with amber light and embers ties the title \"Rolling\" directly to the imagery of ocean waves igniting from midnight blue into molten gold."
+ },
+ "Stand": {
+  "subject": "standing heron in water",
+  "color": "pale silver-cyan #8fbeb3 with golden #9b6228 sparks",
+  "why": "A heron standing still in rippling water embodies \"Stand\" and the underwater, pool-ripple imagery, while the golden sparks echo the final firefly ignition."
+ },
+ "Cabin Soul": {
+  "subject": "small log cabin with chimney flame",
+  "color": "molten amber and gold glowing against deep brown",
+  "why": "A cabin with a glowing hearth fire joins the title's 'Cabin' with the ember-and-flame imagery, and the warm amber-gold palette suits the 'Soul' mood."
+ },
+ "Vespers": {
+  "subject": "glowing ember-lit candle flame",
+  "color": "molten amber and gold (#e6a776, #b36452) with violet-tinged edges (#783e41)",
+  "why": "Vespers is the evening prayer service traditionally lit by candlelight, and a single flame blooming from the deep black void captures the amber-on-violet ember imagery."
+ },
+ "Lantern": {
+  "subject": "glowing paper lantern",
+  "color": "amber #e09f55 with deep orange #af5a2c glow and violet #553d65 edges",
+  "why": "A lantern is the literal title subject and embodies the ember-lit, warm-amber-in-darkness mood of the imagery."
+ },
+ "Open Jam": {
+  "subject": "glowing firefly with spread wings",
+  "color": "amber gold #d18b59 with warm #783824 glow",
+  "why": "Fireflies appear in the imagery and, with their amber sparks drifting through emerald darkness, capture the improvisational, luminous mood of an open jam."
+ },
+ "Testimony": {
+  "subject": "burning candle flame",
+  "color": "molten amber gold (#ecae3f) with a deep orange core (#c26a1f)",
+  "why": "A single steady flame glowing against the black void is a classic symbol of bearing witness, and it matches the ember and molten gold imagery."
+ },
+ "Calling": {
+  "subject": "glowing ember-lit horn",
+  "color": "molten amber gold (#dba269) with burnt orange (#a3623d) glow",
+  "why": "A calling horn echoes the title's summons while its ember-lit amber glow against deep indigo reflects the igniting-ember imagery."
+ },
+ "First Light": {
+  "subject": "rising sun with radiating rays",
+  "color": "molten ember-gold (#daa360) with amber (#9e5828) glow against deep blue-black",
+  "why": "\"First Light\" is the dawn, and a sunburst of golden rays echoes the ember sparks and light-rays piercing the cool dark void."
+ },
+ "Surrounded by Light": {
+  "subject": "radiant golden sun with rays",
+  "color": "molten amber gold (#be6f23) with pale gold (#e5c16e) highlights",
+  "why": "A glowing sun with streaming rays embodies being surrounded by light and echoes the golden light piercing teal depths in the imagery."
+ },
+ "Nothing": {
+  "subject": "single glowing ember flame",
+  "color": "molten amber and gold (#c46d2e to #eea54b)",
+  "why": "A lone ember igniting from black void embodies 'Nothing' becoming something, matching the embers, smoke and amber glow imagery."
+ },
+ "Night Wind": {
+  "subject": "glowing firefly in flight",
+  "color": "amber-gold with pale gold glints (#ca975a, #8c5733) against deep indigo-black",
+  "why": "A firefly embodies the night, drifting embers and golden light of the imagery, and its wings nod to the wind and feathers motifs."
+ },
+ "The Other Side": {
+  "subject": "concentric water ripple rings",
+  "color": "glowing lavender-pink (#ba81ac) fading to violet (#744a75)",
+  "why": "Concentric ripples echo the pool-ripple imagery and suggest a crossing to \"the other side\" through the water's surface."
+ },
+ "Northern Plane": {
+  "subject": "northern lights aurora ribbon",
+  "color": "pale cyan #6e98a5 fading into deep teal #376075 with amber #ba7d49 sparks",
+  "why": "\"Northern\" calls up the aurora, and its glowing cyan light over midnight blue matches the mist, water and light-ray imagery, with the amber embers echoing the sun scenes."
+ },
+ "No question": {
+  "subject": "glowing amber sun disc",
+  "color": "molten amber gold (#e0ab4a) fading to deep bronze (#704324)",
+  "why": "\"No question\" evokes a calm, certain answer, and a radiant sun rising through dark indigo, with golden light, rays and molten glow, embodies that quiet certainty."
+ },
+ "Loire": {
+  "subject": "single drifting autumn leaf",
+  "color": "molten amber gold with warm bronze edges (#c98e4b, #ecc571, #896343)",
+  "why": "Loire is a river of mist, water and leaves, so one golden leaf adrift on the current captures the title and its amber-lit, dark-night mood."
+ },
+ "Chenin": {
+  "subject": "grape leaf with curling tendril",
+  "color": "glowing amber gold (#af9f46) with deep emerald (#364938) veins",
+  "why": "Chenin is a grape variety, so a single vine leaf with its tendril ties the title to the vines, leaves and golden dew-like light of the imagery."
+ },
+ "Tranquility": {
+  "subject": "lotus flower on water",
+  "color": "pale gold #cfa473 with soft amber #735f4b shading",
+  "why": "A still lotus floating on a midnight-teal pool embodies serene calm and echoes the water ripples, mist and golden glints of the imagery."
+ },
+ "Bells": {
+  "subject": "golden temple bell",
+  "color": "molten amber-gold with ember-orange glow (#dfae5f, #af6b2f)",
+  "why": "A bell directly embodies the title \"Bells\" and its glowing amber-gold form echoes the molten rings and ripples rising from the black void."
+ },
+ "Rise": {
+  "subject": "rising phoenix with spread wings",
+  "color": "molten orange-gold and amber (#e3a777, #b96a49) with ember-red edges (#84423a)",
+  "why": "A phoenix ascending from embers embodies the title \"Rise\" and the molten sparks against a black-violet void."
+ },
+ "Amboise": {
+  "subject": "glowing ember-lit flame",
+  "color": "molten amber gold (#c57b26 to #e5b551) with deep bronze edges (#8e4f1d)",
+  "why": "Amboise's imagery of molten amber light glowing from midnight darkness, embers and a white-hot core is best embodied by a single flame."
+ },
+ "Never Forget": {
+  "subject": "glowing firefly in flight",
+  "color": "warm amber glow (#d68e4c) with ember orange-red (#753b2f) wing edges against deep indigo",
+  "why": "Fireflies appear in every scene of the imagery, and a single glowing firefly captures the theme of a small light that keeps burning in the dark, like a memory you never forget."
+ },
+ "Torraine": {
+  "subject": "radiant eight-pointed guiding star",
+  "color": "molten amber-gold with warm gold sparks (#c79f77 to #65432c glow)",
+  "why": "\"Torraine\" evokes a torch-lit guiding light, and a flaring golden star against the midnight-blue void captures the stars, light-rays and ember core of the imagery."
+ },
+ "Yellow Bird": {
+  "subject": "yellow songbird in flight",
+  "color": "glowing amber gold (#e0ae58) with bright yellow highlights",
+  "why": "The title names a yellow bird, and its golden sparks and embers against deep black can assemble into a luminous bird silhouette.",
+  "prompt": "a single luminous glowing amber gold (#e0ae58) with bright yellow highlights yellow songbird in flight emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
+  "file": "/tramokyo-pack/emblems/yellow-bird.jpg"
+ },
+ "Roll Away": {
+  "subject": "glowing molten lava boulder",
+  "color": "molten orange #dc9058 with deep ember red #873f25 cracks",
+  "why": "\"Roll Away\" suggests a rolling stone, and a lava-veined boulder ties together the embers, lava and stone imagery."
+ },
+ "Singular": {
+  "subject": "blazing golden sun",
+  "color": "molten gold and amber with a bright golden-white core",
+  "why": "\"Singular\" evokes one radiant source, and a lone sun with spiking amber rays matches the glowing core and light-rays in the imagery."
+ },
+ "Redwoods Sway": {
+  "subject": "swaying redwood sprig",
+  "color": "amber-gold glow against deep midnight blue",
+  "why": "the redwood as a single swaying sprig of needles (no tree silhouette)"
+ },
+ "Horses": {
+  "subject": "galloping horse silhouette",
+  "color": "molten orange #da974f with glowing amber #9a532c embers",
+  "why": "The title \"Horses\" calls for a horse, and a galloping silhouette built from ember-like particles suits the lava and smoke imagery."
+ },
+ "Velvet Tears": {
+  "subject": "single falling rose petal",
+  "color": "glowing amber-gold with rose-red edges (#d7895d, #863f42)",
+  "why": "A velvety rose petal evokes the title's 'velvet' softness and 'tears' through its teardrop shape, echoing the drifting petals and amber light in the imagery."
+ },
+ "Rattler": {
+  "subject": "coiled rattlesnake with raised tail",
+  "color": "molten orange-gold (#e99c43, #b45325) glowing veins on deep black-umber body (#33130e)",
+  "why": "\"Rattler\" names the rattlesnake, and its coiled form rendered in lava-vein orange and gold ties the title directly to the ember and molten imagery."
+ },
+ "Sancerre Cry": {
+  "subject": "weeping grapevine leaf cluster",
+  "color": "amber gold with magenta glow on deep violet",
+  "why": "Sancerre is a wine region, so a grape cluster on a vine evokes the title's wine and sorrow, glowing amber and magenta against the misty violet forest."
+ },
+ "The Summit": {
+  "subject": "jagged mountain peak",
+  "color": "ember orange #c89666 glowing against deep indigo #142330",
+  "why": "A single craggy summit crowned with a thin molten glow embodies the title and the stone, mist and ember imagery."
+ },
+ "The Ascension": {
+  "subject": "rising phoenix with spread wings",
+  "color": "molten amber gold with embers of #e6aa44 and #b3631b",
+  "why": "A phoenix lifting from black earth into radiant golden light embodies both \"The Ascension\" and the ember-to-glow imagery."
+ },
+ "The Bloom": {
+  "subject": "blooming flower with fireflies",
+  "color": "amber gold #c89d4e petals with ember orange #d13f19 glow and deep crimson #771009 core",
+  "why": "\"The Bloom\" calls for a single opening flower, and the amber glow, fern-green tones and drifting fireflies of the imagery are carried by its luminous petals."
+ },
+ "Cosmic Drift": {
+  "subject": "ringed planet with embers",
+  "color": "molten amber (#dd933f) glowing to burnt orange (#a34f22) on a dark umber (#201514) body",
+  "why": "\"Cosmic Drift\" calls for a celestial body, and a ringed planet drifting in a near-black void with ember-lit amber edges ties the cosmos to the glowing heat of the imagery."
+ },
+ "Mycelium Dream": {
+  "subject": "glowing mushroom with mycelium roots",
+  "color": "warm amber-gold with a deep teal glow",
+  "why": "A single luminous mushroom with threadlike mycelium roots embodies the title and the amber-lit teal forest imagery.",
+  "prompt": "a single luminous warm amber-gold with a deep teal glow glowing mushroom with mycelium roots emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
+  "file": "/tramokyo-pack/emblems/mycelium-dream.jpg"
+ },
+ "Interplay": {
+  "subject": "two interlocking flame and water droplets",
+  "color": "molten amber gold (#d89d5a) and cool teal-blue (#467796)",
+  "why": "\"Interplay\" is embodied by the imagery's meeting of fire and water, with warm amber and cool blue forming one intertwined emblem."
+ },
+ "Bath": {
+  "subject": "water-drop splash crown",
+  "color": "molten amber gold with pale gold highlights",
+  "why": "Karel-safe: the moment of entering water, not a bathtub"
+ },
+ "Welcome Home": {
+  "subject": "glowing lantern-lit cottage window",
+  "color": "warm amber-coral glow (#ca842f) with deep indigo (#0f374f) surround",
+  "why": "A single lit window is the universal symbol of coming home, echoing the amber windows, fireflies and dusk warmth in the imagery."
+ },
+ "The Knife": {
+  "subject": "single dagger blade with ember edge",
+  "color": "pale ash-white steel blade with glowing ember orange-red edge on near-black",
+  "why": "The title names a knife, and a blade outlined in ember glow ties together the cave, lava and spark imagery in one instantly readable emblem."
+ },
+ "Playa": {
+  "subject": "erupting volcano cone",
+  "color": "molten orange and amber glowing against indigo-black, with magenta fire veins",
+  "why": "\"Playa\" suggests a desert basin, and the lava, embers and cracked earth imagery points to a volcano as the one emblem that fuses fire and stone."
+ },
+ "Isolation": {
+  "subject": "lone ember-lit lantern",
+  "color": "warm amber-orange #b76835 glowing against deep midnight teal #09131d",
+  "why": "A single glowing lantern captures the solitary warm spark amid cold mist, water and darkness that defines the imagery of Isolation."
+ },
+ "Rebound": {
+  "subject": "rippling water drop ring",
+  "color": "molten amber #a06946 glowing against deep midnight blue #0e1a27",
+  "why": "A droplet striking a pool sends out concentric ripples that rebound back, matching the title and the pool-ripple, ember and amber-light imagery."
+ },
+ "Stir Crazy": {
+  "subject": "caged ember-winged firefly",
+  "color": "molten amber-gold glow (#dc8e4e) with deep rust (#853d23) edges and violet (#724f88) flickers",
+  "why": "\"Stir Crazy\" evokes restless, pent-up energy, and a glowing firefly pulsing in the dark indigo cave tunnel captures both the ember warmth and the restless flicker of the imagery."
+ },
+ "Quarantine": {
+  "subject": "glowing ember-lit lantern",
+  "color": "warm amber #d39b5b with orange ember core against midnight blue",
+  "why": "A lantern holding a single flame suggests solitary isolation and a warm spark of hope amid the cold midnight rain and drifting embers of the imagery."
+ },
+ "All Together": {
+  "subject": "constellation of gathered fireflies",
+  "color": "warm amber and gold (#db9c49) with molten copper (#855133) glow",
+  "why": "\"All Together\" is embodied by many fireflies drawing into one glowing cluster, echoing the amber sparks, embers and stars in the imagery."
+ },
+ "Drift": {
+  "subject": "drifting ember spark",
+  "color": "glowing amber-peach (#ca8e61) with violet glitter edges",
+  "why": "A single ember adrift in indigo darkness captures the title's sense of floating motion and ties together the desert, stars, and horizon-glow imagery."
+ },
+ "Self": {
+  "subject": "phoenix rising from embers",
+  "color": "molten amber gold (#daab6b to #aa6d39) with teal (#2b5262) shadowed edges",
+  "why": "\"Self\" is a journey of transformation from cold darkness into glowing fire and wings, and a phoenix embodies that rebirth of the self."
+ },
+ "Message": {
+  "subject": "glowing paper lantern in water",
+  "color": "ember amber and gold (#d1994c, #784129) on deep teal-black",
+  "why": "A lantern drifting on dark water carries a message across the pool ripples, golden light, and underwater glow of the imagery."
+ },
+ "Grace": {
+  "subject": "glowing ember-lit feather",
+  "color": "molten amber gold (#e8af56) shading to burnt orange (#bf793f)",
+  "why": "A single drifting feather lit by amber light evokes the lightness and gentle blessing of \"Grace\" and fits the embers and golden light-rays in the imagery."
+ },
+ "Held": {
+  "subject": "glowing ember in cupped flame",
+  "color": "molten amber #dc8328 with deep rust #7e3410 edges",
+  "why": "\"Held\" is embodied by a single glowing ember cradled in a flame-shaped hollow, echoing the amber core held within midnight darkness across the imagery."
+ },
+ "Mystic": {
+  "subject": "glowing ember-lit mandala flame",
+  "color": "molten amber gold with burnt-orange #8b542e core and violet #67648d edges",
+  "why": "A single flame embodies the embers, molten gold core and warm-glow-in-darkness imagery, while the violet-blue edges echo the cool petals and rings of the mystic journey."
+ },
+ "The First": {
+  "subject": "single burning ember flame",
+  "color": "molten amber gold (#e5ae44 core fading to #b9771f and #7e4e1e)",
+  "why": "\"The First\" evokes humanity's first fire, and a glowing flame igniting from darkness matches the embers, golden light and amber imagery."
+ },
+ "Dad's Song II": {
+  "subject": "glowing ember-lit campfire flame",
+  "color": "molten amber orange (#df9f44, #a15523) with deep brown-black core (#26140e)",
+  "why": "A single warm flame echoes the title's father-figure warmth and the embers, molten glow and golden light running through the imagery."
+ },
+ "Spectre": {
+  "subject": "luminous moth with spread wings",
+  "color": "glowing amber and magenta against deep midnight blue, with soft dusty rose #b7978b highlights",
+  "why": "A ghostly, light-drawn moth echoes the fireflies, wings and mist of the imagery and embodies the ethereal, haunting mood of \"Spectre\"."
+ },
+ "Mexican Boy": {
+  "subject": "blooming marigold flower",
+  "color": "glowing amber and burnt orange with deep violet edges",
+  "why": "The marigold, the flower of Mexican tradition, matches the petals igniting into a golden core and the warm ember palette without depicting a person."
+ },
+ "Afterglow": {
+  "subject": "glowing ember-edged setting sun",
+  "color": "molten coral-orange (#e4876a) fading to magenta-red (#a94945) at the rim",
+  "why": "An afterglow is the light that lingers after the sun sets, and a low sun with ember-lit edges ties together the dusk, molten glow and embers in the imagery."
+ },
+ "Grasshopper": {
+  "subject": "glowing green grasshopper",
+  "color": "emerald green with golden-amber highlights",
+  "why": "The title names the creature directly, and an emerald body lit by firefly-gold glints matches the dark, glowing palette."
+ },
+ "Love Again": {
+  "subject": "glowing lotus blossom",
+  "color": "golden-green core with soft rosy pink petal tips, on deep emerald",
+  "why": "A blooming lotus embodies renewal and opening the heart again, echoing the petals, forest glow and darkness igniting into a golden core."
+ },
+ "COSMIC HOMECOMING": {
+  "subject": "glowing spiral galaxy",
+  "color": "molten amber and peach-gold core fading to violet-black edges",
+  "why": "A spiral galaxy with a warm glowing core captures the cosmic, homeward pull of the title and the imagery of galaxies igniting into amber light."
+ },
+ "The Tempest": {
+  "subject": "lightning bolt striking through storm cloud",
+  "color": "electric blue-white bolt with violet glow, against #505d88 and #9291b9 cloud tones",
+  "why": "A forked lightning bolt is the most instantly recognizable symbol of a tempest and echoes the electric blue flashes splitting the dark indigo imagery."
+ },
+ "Abyssal Dive": {
+  "subject": "deep-sea anglerfish with glowing lure",
+  "color": "pale cyan #79c2d4 body outline with luminous #389cc0 glow on a deep teal #103e58 silhouette",
+  "why": "An anglerfish with its glowing lure embodies the abyssal darkness pierced by pale light, and its form fits a particle system assembling out of the deep."
+ },
+ "Surrender": {
+  "subject": "floating lotus blossom",
+  "color": "pale silvery-blue petals (#8aa3b1) over deep teal, with an ember-orange glowing core",
+  "why": "An open lotus resting on rippling water embodies letting go and matches the pool-ripple imagery and the ember glow at its heart."
+ },
+ "Openings": {
+  "subject": "glowing stone archway",
+  "color": "molten orange (#ae5631) glow edged with pale amber (#e0a887) on indigo-violet (#50436f)",
+  "why": "An open archway reads at once as an opening and echoes the cave tunnels and lava light in the imagery."
+ },
+ "Surrounded By Light": {
+  "subject": "radiant sun with rays",
+  "color": "warm coral-amber (#d67c78) with magenta and cool blue glow",
+  "why": "A sun ringed by streaming rays shows being surrounded by light and echoes the amber and magenta glow against the deep indigo void."
+ },
+ "Complete": {
+  "subject": "golden ouroboros serpent ring",
+  "color": "molten amber-gold (#d5aa70, #985c2f) with soft violet (#644c6c) glints",
+  "why": "The serpent eating its own tail is the classic emblem of completeness, and its closed ring echoes the molten amber rings and ripples in the imagery."
+ },
+ "Sway": {
+  "subject": "swaying fern frond",
+  "color": "muted teal #336877 with pale silvery-white glints and a faint ember-orange glow",
+  "why": "A single fern frond bending gently in the dark captures the title's swaying motion and the forest, leaf and ember imagery."
+ },
+ "Neural Link": {
+  "subject": "branching neuron cell",
+  "color": "cool cyan-blue (#6b8fbc) dendrites with a warm amber (#87553e) core glow",
+  "why": "A neuron with reaching dendrites and a glowing nucleus directly embodies \"Neural Link\" and fits the starry, light-ray, firefly-spark imagery."
+ }
+}
