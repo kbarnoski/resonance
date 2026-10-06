@@ -169,6 +169,10 @@ export interface ParticleEngine {
   setSizeScale(k: number): void;
   /** Sound reactivity multiplier (motion only — never luminance). */
   setReact(k: number): void;
+  /** Field mode: n copies of the form (1 = one), laid out by seed. */
+  setInstances(n: number, seed: number): void;
+  /** Image-form variety: mirrored, tilted (radians). */
+  setImageVariant(mirror: boolean, tilt: number): void;
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
@@ -569,6 +573,10 @@ export function createParticleEngine(
   let imgScaleS = 1, imgScaleT = 1;
   let sizeScaleS = 1, sizeScaleT = 1;
   let reactS = 1, reactT = 1;
+  // field mode + image-form variety (Karel 2026-10-06: many blossoms, the
+  // angel never the same twice)
+  let instN = 1, instSeed = 0;
+  let imgMirror = 1, imgTiltS = 0, imgTiltT = 0;
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
   let disperseNext = false;
@@ -841,8 +849,16 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
     g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
-    g.uniform3f(sim.u.uPlaneR, right[0] * halfW * imgScaleS, right[1] * halfW * imgScaleS, right[2] * halfW * imgScaleS);
-    g.uniform3f(sim.u.uPlaneU, up[0] * halfH * imgScaleS, up[1] * halfH * imgScaleS, up[2] * halfH * imgScaleS);
+    {
+      // image plane: scale, mirror, a gentle tilt (rotation within the plane)
+      imgTiltS += (imgTiltT - imgTiltS) * (1 - Math.exp(-dt / 2));
+      const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
+      const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * imgMirror);
+      const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
+      g.uniform3f(sim.u.uPlaneR, R[0], R[1], R[2]);
+      g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
+    }
+    if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
     g.uniform1f(sim.u.uImgAspect, imgAspect[1]);
     g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
@@ -898,6 +914,8 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uRiseW, riseW);
     g.uniform1f(draw.u.uRiseTop, riseTop);
     g.uniform1f(draw.u.uHeightCol, heightCol);
+    g.uniform1f(draw.u.uInst, instN);
+    g.uniform1f(draw.u.uInstSeed, instSeed);
     g.uniform1f(draw.u.uInkW, inkW);
     g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
     g.uniform1f(draw.u.uSize, sizeK * sizeScaleS);
@@ -1218,6 +1236,8 @@ export function createParticleEngine(
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(3, k)); },
+    setInstances(n, seed) { instN = Math.max(1, Math.min(9, Math.round(n))); instSeed = seed; },
+    setImageVariant(mirror, tilt) { imgMirror = mirror ? -1 : 1; imgTiltT = Math.max(-0.4, Math.min(0.4, tilt)); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)
       followX += (Math.max(-1.2, Math.min(1.2, x)) - followX) * 0.5;

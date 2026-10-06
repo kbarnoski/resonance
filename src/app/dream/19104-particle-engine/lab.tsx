@@ -145,6 +145,9 @@ export function LabView() {
     // ?shape=a,b,c,d — a specific figure of the form (v4 per-appearance seed)
     const shapeQ = q.get("shape")?.split(",").map(Number);
     if (shapeQ && shapeQ.length === 4 && shapeQ.every(Number.isFinite)) engine.setShape(shapeQ as [number, number, number, number], true);
+    // ?inst=n — field mode: n copies of the form
+    const instQ = Number(q.get("inst"));
+    if (instQ > 1) engine.setInstances(instQ, 0.37);
     engine.start();
 
     const onResize = () => engine.resize();

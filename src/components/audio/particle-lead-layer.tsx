@@ -42,14 +42,14 @@ import { isVideoActive, inBoundarySettle, onClipEnded, onClipStarted } from "@/l
 import { setParticlePresent } from "@/lib/journeys/particle-presence";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { keyedFlashAngel } from "./flash-angel";
-import { isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
+import { FIELD_FORMS, isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
 import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage, particlePaletteFire } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire, particlePaletteFloral } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -76,9 +76,9 @@ const MORPH_TAIL_SEC = 10;
 /** Following a particle-like shader (see sampleFollow) — off: kiosk stalls. */
 const FOLLOW_ENABLED = false;
 
-let emblemMap: Promise<Record<string, string>> | null = null;
+let emblemMap: Promise<Record<string, string | string[]>> | null = null;
 /** Journey → emblem image (offline pack; empty where the pack has none). */
-function loadEmblemMap(): Promise<Record<string, string>> {
+function loadEmblemMap(): Promise<Record<string, string | string[]>> {
   emblemMap ??= fetch("/tramokyo-pack/local-emblems.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   return emblemMap;
 }
@@ -128,7 +128,8 @@ export function ParticleLeadLayer({
   const frameRef = useRef(frame);
   frameRef.current = frame;
   // the journey's EMBLEM image (pack: local-emblems.json) — "@angel" = Ghost's angel
-  const emblemRef = useRef<HTMLImageElement | "@angel" | null>(null);
+  // (an array = variants: each appearance shows a different one — Snowflake)
+  const emblemRef = useRef<HTMLImageElement[] | "@angel" | null>(null);
   useEffect(() => {
     emblemRef.current = null;
     let cancelled = false;
@@ -136,9 +137,13 @@ export function ParticleLeadLayer({
       const src = map[journeyId];
       if (cancelled || !src) return;
       if (src === "@angel") { emblemRef.current = "@angel"; return; }
-      const img = new Image();
-      img.onload = () => { if (!cancelled) emblemRef.current = img; };
-      img.src = src;
+      const list = Array.isArray(src) ? src : [src];
+      const imgs: HTMLImageElement[] = [];
+      for (const u of list) {
+        const img = new Image();
+        img.onload = () => { if (cancelled) return; imgs.push(img); emblemRef.current = [...imgs]; };
+        img.src = u;
+      }
     });
     return () => { cancelled = true; };
   }, [journeyId]);
@@ -288,7 +293,9 @@ export function ParticleLeadLayer({
       densK = quietImaging ? 0.22 + 0.4 * rand01(2) : 0.3 + 0.7 * rand01(2);
       // forms HOLD (Karel 2026-10-06: "change should be smooth and not jump
       // between shapes quickly")
-      formDur = 20_000 + 14_000 * rand01(3);
+      // smooth, but never lingering (Karel 2026-10-06: Realized's flame "went
+      // on and on" — numerous forms, none lasting too long)
+      formDur = 14_000 + 8_000 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -307,14 +314,32 @@ export function ParticleLeadLayer({
     const formsNow = (t: number): SoulId[] => { const f = charAt(t)?.forms; return f && f.length ? f : cast.formCycle; };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
-      engine.setSoul(soul, quiet ? 0.5 : 12);
+      engine.setSoul(soul, quiet ? 0.5 : 10);
       engine.setShape(shapeSeed(soul, t + appearN * 11), quiet);
+      // FIELD mode: sometimes many smaller copies instead of one form (Ghost's
+      // blossoms most of all)
+      const floralNow = !!charAt(t)?.floral;
+      const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.65 : 0.38) : 0;
+      const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 6) : 1;
+      engine.setInstances(nInst, rand01(33 + appearN));
+      recent.unshift(soul);
+      if (recent.length > 2) recent.length = 2;
       currentSoul = soul;
       formAt = performance.now();
       appearance();
       glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
     };
     let wasShown = false;
+    const recent: SoulId[] = [];
+    /** next form for this phase: not one of the last two shown */
+    const nextForm = (t: number): SoulId | undefined => {
+      const fl = formsNow(t);
+      for (let i = 1; i <= fl.length; i++) {
+        const c = fl[(cycleIdx + i) % fl.length];
+        if (!recent.includes(c)) { cycleIdx += i; return c; }
+      }
+      return fl[(++cycleIdx) % Math.max(1, fl.length)];
+    };
     // ── follow a particle-like shader: 4×/s, a 32×18 snapshot of its canvas
     // (async createImageBitmap — no synchronous read-back), the centroid of
     // what MOVED between snapshots becomes a target a stream chases ──
@@ -359,6 +384,8 @@ export function ParticleLeadLayer({
     // flash form (Ghost)
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | null = null;
+    let imgKey: string | null = null;
+    let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
     let emblemOn = false;
     // ambient presence (Karel 2026-10-06: "on average particles should be
     // part of the journey around 60% of the time"): between conducted
@@ -448,43 +475,56 @@ export function ParticleLeadLayer({
       // the end, and once mid-journey in long pieces — the form that SAYS the
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
       let emForm = 0, emShow = 0;
+      let emOcc = 0; // 0 = opening, 1 = mid, 2 = closing
       if (emblemRef.current) {
         const D = useAudioStore.getState().duration || 0;
         emForm = ssf(0.8, 3.8, t) * (1 - ssf(11, 15, t));
         emShow = ssf(1.0, 4.0, t) * (1 - ssf(12, 16, t));
-        if (D > 40) {
+        if (D > 40 && t > D - 17) {
           const e = t - (D - 17);
           emForm = Math.max(emForm, ssf(0, 3.5, e));
           emShow = Math.max(emShow, ssf(0.3, 4, e));
+          emOcc = 2;
         }
-        if (D > 200) {
+        if (D > 200 && t > D * 0.5 && t < D * 0.5 + 15) {
           const m = t - D * 0.5;
           emForm = Math.max(emForm, ssf(0, 3.5, m) * (1 - ssf(9, 13, m)));
           emShow = Math.max(emShow, ssf(0.3, 4, m) * (1 - ssf(10, 14, m)));
+          emOcc = 1;
         }
       }
       const flashing = flashNow > 0.02 || flashTail > 0.02;
       const angelOn = flashing || angelForm > 0.02 || angelShow > 0.02;
       const want: "angel" | "emblem" | null = angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : null;
-      if (want && want !== imgLoaded) {
-        const img: HTMLCanvasElement | HTMLImageElement | null = want === "angel" || emblemRef.current === "@angel" ? keyedFlashAngel(1) : (emblemRef.current as HTMLImageElement | null);
+      const wantKey = want === "emblem" ? `emblem:${emOcc}` : want;
+      if (want && wantKey !== imgKey) {
+        const em = emblemRef.current;
+        const img: HTMLCanvasElement | HTMLImageElement | null = want === "angel" || em === "@angel" ? keyedFlashAngel(1) : Array.isArray(em) && em.length ? em[(emOcc + appearN) % em.length] : null;
         if (img) {
           engine.loadFormImage(img, img.width / Math.max(1, img.height));
           imgLoaded = want;
-          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : "emblem");
+          imgKey = wantKey;
+          // never the same twice (Karel 2026-10-06): mirror, tilt, size, how
+          // literally it forms — the flash alone stays exact (it meets the flash image)
+          const r1 = rand01(41 + appearN * 3 + emOcc), r2 = rand01(42 + appearN * 3 + emOcc), r3 = rand01(43 + appearN * 3 + emOcc);
+          imgVar = { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.3, scale: 0.85 + 0.3 * r3, literal: 0.7 + 0.2 * r2 };
+          engine.setImageVariant(!flashing && imgVar.mirror, flashing ? 0 : imgVar.tilt);
+          engine.setInstances(1, 0);
+          appearN++;
+          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : `emblem ${emOcc}`);
         }
       }
       emblemOn = imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02);
       if (imgLoaded) {
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
-        engine.setImageScale(flashing ? 1 : imgLoaded === "emblem" ? 0.74 : 0.62);
+        engine.setImageScale(flashing ? 1 : (imgLoaded === "emblem" ? 0.74 : 0.62) * imgVar.scale);
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the
         // image — the field keeps a little drift and shimmer as it forms it
         const useEm = imgLoaded === "emblem";
-        engine.setImageForm(Math.max(flashNow, angelForm, useEm ? emForm : 0) * 0.84, Math.max(flashTail, angelShow, useEm ? emShow : 0));
+        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0));
       }
-      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01) { imgLoaded = null; engine.setImageForm(0, 0); }
+      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
       const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
@@ -513,10 +553,8 @@ export function ParticleLeadLayer({
           appearance();
           glitchRecord("particle-form", `${currentSoul} refigure`);
         } else {
-          const fl = formsNow(t);
-          let nxt = fl[cycleIdx % fl.length];
-          if (nxt === currentSoul) nxt = fl[(cycleIdx + 1) % fl.length];
-          switchForm(nxt, t);
+          const nxt = nextForm(t);
+          if (nxt) switchForm(nxt, t);
         }
       }
       // the track's last seconds: everything has already faded (no drop at the handoff)
@@ -529,8 +567,7 @@ export function ParticleLeadLayer({
         if (ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
           ambientGap = 12 + 8 * rand01(23 + appearN);
-          const fl = formsNow(t);
-          const nxt = fl[(++cycleIdx) % Math.max(1, fl.length)];
+          const nxt = nextForm(t);
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
         }
@@ -632,12 +669,13 @@ export function ParticleLeadLayer({
       // changing and reflecting the palette not static"): a continuous glide
       // through the palette's voicings (~11 s per step), led by the section
       const fire = !!charAt(t)?.fire;
+      const floral = !fire && !!charAt(t)?.floral;
       const vf = c.voice + t / 11;
       const v0 = Math.floor(vf) % 4;
       const vfr = vf - Math.floor(vf);
-      const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
+      const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}:${floral}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
       if (vk && vk !== palVoiceKey) {
-        const mk = (v: number) => (fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        const mk = (v: number) => (fire ? particlePaletteFire(ipPhase, v) : floral ? particlePaletteFloral(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }

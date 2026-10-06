@@ -11,11 +11,15 @@
   "file": "@angel"
  },
  "Snowflake": {
-  "subject": "six-armed crystalline snowflake",
+  "subject": "insanely intricate fractal snowflake (3 variants)",
   "color": "icy blue and white with pale cyan glow (#9fc4e2, #6598c1) against deep #0b1d2c",
-  "why": "A symmetrical six-pointed snowflake is the instantly recognizable emblem of the title and echoes the ice, crystal and geometric imagery.",
+  "why": "Karel 2026-10-06: the basic snowflake is banned \u2014 trippy kaleidoscopic fractal geometry only",
   "prompt": "a single luminous icy blue and white with pale cyan glow, against deep six-armed crystalline snowflake emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
-  "file": "/tramokyo-pack/emblems/snowflake.jpg"
+  "file": [
+   "/tramokyo-pack/emblems/snowflake-1.jpg",
+   "/tramokyo-pack/emblems/snowflake-2.jpg",
+   "/tramokyo-pack/emblems/snowflake-3.jpg"
+  ]
  },
  "Realized": {
   "subject": "single rising flame",

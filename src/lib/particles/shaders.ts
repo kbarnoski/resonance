@@ -125,6 +125,8 @@ uniform float uInkW;      // ink respawn weight
 uniform float uFountainW; // fountain respawn weight
 uniform float uRiseW;     // rise souls (flame / wisp / petal fall) weight
 uniform float uRiseTop;   // rise souls: where a climber returns (negative = fallers)
+uniform float uInst;      // field mode: number of copies (1 = one form)
+uniform float uInstSeed;  // field layout seed
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
 uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
 uniform vec4 uShape;      // per-appearance shape seed 0..1 (v4 variety: petals, gears, symmetry, solid)
@@ -195,6 +197,22 @@ vec3 polyEdgePoint(int kind, float h1, float h2, float t){
 
 float causticF(vec2 q, float t1, float t2){
   return sin(q.x * 5.0 + t1) * sin(q.y * 4.1 - t2) + 0.5 * sin((q.x * 0.8 + q.y) * 3.3 + t1 * 0.7) + 0.3 * sin(q.x * 7.3 - q.y * 2.1 + t2 * 1.3);
+}
+
+// FIELD mode (Karel 2026-10-06: "can form many blossoms not just one … you
+// seem to only make singular forms"): the field splits into uInst copies of
+// the form, each with its own centre, depth and scale. The instance comes from
+// a hash of the seeds (independent of how souls use them).
+vec4 instOf(vec4 s, float n, float seed){
+  if (n < 1.5) return vec4(0.0, 0.0, 0.0, 1.0);
+  float h = fract(sin(dot(s.rgb, vec3(917.13, 31.71, 7.13)) + seed * 13.7) * 43758.5453);
+  float k = floor(h * n);
+  float hk = fract(sin(k * 12.9898 + seed * 78.233) * 43758.5453);
+  float ang = k * 2.39996323 + seed * 6.2831853;
+  float rad = 1.25 * sqrt((k + 0.5) / n);
+  vec3 c = vec3(cos(ang) * rad * 1.35, sin(ang) * rad * 0.8, (hk - 0.5) * 1.8);
+  float sc = mix(0.3, 0.5, hk) * (n <= 3.5 ? 1.35 : 1.0);
+  return vec4(c, sc);
 }
 
 // Returns xyz = acceleration, w = linear drag.
@@ -816,11 +834,15 @@ void main(){
   // ONE inlined soulForce: a runtime-bounded loop (uPasses = 1, or 2 while
   // blending) the compiler cannot unroll — halves the program the GPU must
   // build, so a journey's union program warms in one short step
+  vec4 I = instOf(s, uInst, uInstSeed);
+  vec3 pl = (p - I.xyz) / I.w;
+  vec3 vl = v / I.w;
   vec4 f = vec4(0.0);
   for (int k = 0; k < uPasses; k++) {
     float wgt = k == 0 ? (uPasses > 1 ? 1.0 - uMix : 1.0) : uMix;
-    f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, p, v, s, fid, lvl, drv);
+    f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, pl, vl, s, fid, lvl, drv);
   }
+  f.xyz *= I.w; // local → world
 
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
@@ -856,8 +878,9 @@ void main(){
   if (uRiseW > 0.5 && uImgShow < 0.01) {
     vec3 r = hash31(s.a * 917.0 + floor(uTime * 0.7));
     float top = uRiseTop + 0.25 * (hash11(s.a * 7.0) - 0.5);
-    if (uRiseTop > 0.0 && p.y > top) { float th = r.x * 6.2831853; float rr = 0.45 * sqrt(r.y); p = vec3(cos(th) * rr, -0.95, sin(th) * rr * 0.5); v = vec3(0.0, 0.3, 0.0); }
-    if (uRiseTop < 0.0 && p.y < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); }
+    float ly = (p.y - I.y) / I.w;
+    if (uRiseTop > 0.0 && ly > top) { float th = r.x * 6.2831853; float rr = 0.45 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, -0.95, sin(th) * rr * 0.5); v = vec3(0.0, 0.3, 0.0) * I.w; }
+    if (uRiseTop < 0.0 && ly < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); }
   }
 
   // wrapping souls re-enter off-edge (out of view — the draw fades the edges)
@@ -926,6 +949,23 @@ uniform float uHue;        // hue rotation (radians, luma-preserving YIQ)
 uniform float uRiseW;      // rise souls weight (edge fades at hearth / top)
 uniform float uRiseTop;
 uniform float uHeightCol;  // colour along height (flame: blue hearth → hot → ember tips)
+uniform float uInst;
+uniform float uInstSeed;
+// FIELD mode (Karel 2026-10-06: "can form many blossoms not just one … you
+// seem to only make singular forms"): the field splits into uInst copies of
+// the form, each with its own centre, depth and scale. The instance comes from
+// a hash of the seeds (independent of how souls use them).
+vec4 instOf(vec4 s, float n, float seed){
+  if (n < 1.5) return vec4(0.0, 0.0, 0.0, 1.0);
+  float h = fract(sin(dot(s.rgb, vec3(917.13, 31.71, 7.13)) + seed * 13.7) * 43758.5453);
+  float k = floor(h * n);
+  float hk = fract(sin(k * 12.9898 + seed * 78.233) * 43758.5453);
+  float ang = k * 2.39996323 + seed * 6.2831853;
+  float rad = 1.25 * sqrt((k + 0.5) / n);
+  vec3 c = vec3(cos(ang) * rad * 1.35, sin(ang) * rad * 0.8, (hk - 0.5) * 1.8);
+  float sc = mix(0.3, 0.5, hk) * (n <= 3.5 ? 1.35 : 1.0);
+  return vec4(c, sc);
+}
 uniform float uSat;        // saturation multiplier
 uniform float uHueSpread;  // hue gradient across the form (rad)
 uniform float uHueWave;    // slow hue wave on swells (rad)
@@ -978,8 +1018,10 @@ void main(){
   gl_PointSize = min(size, 32.0);
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
+  vec4 Id = instOf(s, uInst, uInstSeed);
+  float lyD = (p.y - Id.y) / Id.w; // height inside its own copy (field mode)
   if (uHeightCol > 0.001) {
-    float hh = clamp((p.y + 0.95) / 1.9 + (s.g - 0.5) * 0.12, 0.0, 1.0);
+    float hh = clamp((lyD + 0.95) / 1.9 + (s.g - 0.5) * 0.12, 0.0, 1.0);
     vec3 hc = hh < 0.25 ? mix(uPalLow, uPalMid, hh * 4.0) : mix(uPalMid, uPalHigh, (hh - 0.25) / 0.75);
     col = mix(col, hc, uHeightCol);
   }
@@ -996,8 +1038,8 @@ void main(){
   // rise souls fade at the hearth and toward the top (fallers: top and bottom)
   if (uRiseW > 0.001) {
     float rf = uRiseTop > 0.0
-      ? smoothstep(uRiseTop + 0.1, uRiseTop - 0.55, p.y) * smoothstep(-1.0, -0.78, p.y)
-      : smoothstep(1.2, 0.9, p.y) * smoothstep(uRiseTop - 0.05, uRiseTop + 0.4, p.y);
+      ? smoothstep(uRiseTop + 0.1, uRiseTop - 0.55, lyD) * smoothstep(-1.0, -0.78, lyD)
+      : smoothstep(1.2, 0.9, lyD) * smoothstep(uRiseTop - 0.05, uRiseTop + 0.4, lyD);
     a *= mix(1.0, rf, uRiseW * (1.0 - uImgShow));
   }
   // wrapping souls fade at the edges where they re-enter

@@ -28,9 +28,11 @@ export const BANNED_SOULS: readonly SoulId[] = [
 
 type W = [SoulId, number][];
 const MOTIF_FORMS: Record<string, W> = {
-  fire: [["flame", 3], ["wisp", 1], ["vortex", 0.6]],
-  lava: [["flame", 3], ["ink", 1], ["wisp", 0.8]],
-  embers: [["flame", 2.5], ["wisp", 1], ["murmuration", 0.8]],
+  // fire is a FAMILY, not one shape (Karel 2026-10-06: Realized "had the flame
+  // in some form the entire time … there needs to be numerous forms")
+  fire: [["flame", 2.4], ["wisp", 1.6], ["vortex", 1.4], ["bloom", 1.2], ["mandala", 1.1], ["rose", 1]],
+  lava: [["ink", 2], ["flame", 1.8], ["ribbons", 1.4], ["vortex", 1.2], ["wisp", 1]],
+  embers: [["murmuration", 1.8], ["flame", 1.8], ["wisp", 1.4], ["nebula", 1.2], ["bloom", 1]],
   sun: [["flame", 1.5], ["bloom", 1.5], ["mandala", 1], ["vortex", 1]],
   "light-rays": [["bloom", 1.5], ["mandala", 1], ["wisp", 1], ["nebula", 0.8]],
   "golden-light": [["bloom", 1.5], ["wisp", 1], ["nebula", 1], ["blossom", 0.8]],
@@ -99,7 +101,7 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
     .filter(([id]) => ORGANIC_SOULS.includes(id))
     .map(([id, v]) => [id, v * (0.92 + 0.16 * hash01(`${seed}:${id}`))] as const)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
+    .slice(0, 6)
     .map(([id]) => id);
 }
 
@@ -107,6 +109,8 @@ export interface PhaseCharacter {
   forms: SoulId[];
   /** fire-like imagery: flame colour ramp (a hint of blue → hot → ember) */
   fire: boolean;
+  /** floral imagery (petals, blossoms, flowers): the palette's pinks lead */
+  floral: boolean;
   /** motion multiplier from the imagery's movement (flicker livelier, drift calmer) */
   motion: number;
 }
@@ -118,11 +122,15 @@ export function phaseCharacters(journeyId: string): PhaseCharacter[] {
     const forms = formsForMotif(pm, `${journeyId}#${i}`);
     const top = new Set((pm?.motifs ?? []).slice(0, 2).map((x) => x.m));
     const fire = top.has("fire") || top.has("lava") || top.has("embers");
+    const floral = ["petals", "blossoms", "flowers"].some((m) => (pm?.motifs ?? []).some((x) => x.m === m));
     const mv = new Set(pm?.moves ?? []);
     const motion = mv.has("flickering") || mv.has("swirling") || mv.has("streaming") ? 1.2 : mv.has("drifting") || mv.has("still") ? 0.8 : 1;
-    return { forms, fire, motion };
+    return { forms, fire, floral, motion };
   });
 }
+
+/** Forms that read beautifully as a FIELD of many small copies. */
+export const FIELD_FORMS: ReadonlySet<SoulId> = new Set(["blossom", "flame", "rose", "bloom", "mandala", "kaleido", "spirograph", "vortex", "wisp"]);
 
 /** Shaders drawn around the screen centre (suns, portals, mandalas …): the
  *  particles align exactly with that centre point (Karel 2026-10-06). */

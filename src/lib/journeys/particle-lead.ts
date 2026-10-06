@@ -97,9 +97,10 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
       const formsAt = (i: number) => (chars[i]?.forms.length ? chars[i].forms : cast.formCycle);
       const morphSouls: SoulId[] = [];
       for (let i = 0; i < Math.max(cast.morphSouls.length, chars.length); i++) {
+        // successive morphs take successive forms — never the same one twice running
         const f = formsAt(Math.min(i, chars.length - 1));
-        let pick = f[0];
-        if (i > 0 && pick === morphSouls[i - 1] && f[1]) pick = f[1];
+        let pick = f[i % f.length];
+        if (i > 0 && pick === morphSouls[i - 1]) pick = f[(i + 1) % f.length];
         morphSouls.push(pick);
       }
       cast.morphSouls = morphSouls;
@@ -248,6 +249,21 @@ export function particlePaletteFire(ip: { key: string; colors: string[] } | null
     mid: white(lift(hexToLinear(pick(0)), 0.85), 0.35),
     high: lift(chroma(hexToLinear(pick(1) ?? pick(0)), 0.05, 0.7)),
   };
+}
+
+/** Floral imagery (Karel 2026-10-06: Ghost's particles "should make pink
+ *  flowers"): the palette's pinks and roses lead; a soft pink if it has none. */
+export function particlePaletteFloral(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette {
+  const cols = ip?.colors?.length ? ip.colors : ["#c8aaa8", "#9d7276"];
+  const pinkness = (c: string) => { const [h, sat, v] = toHsv(hexToLinear(c)); const d = Math.min(Math.abs(h - 0.93), 1 - Math.abs(h - 0.93)); return (1 - Math.min(1, d * 6)) * (0.3 + sat) * (0.3 + v); };
+  const ranked = [...cols].sort((a, b) => pinkness(b) - pinkness(a));
+  const pick = (i: number) => ranked[(i + Math.round(voice)) % Math.max(1, Math.min(3, ranked.length))];
+  const pink = (c: string, floor: number) => {
+    const [h, sat, v] = toHsv(hexToLinear(c));
+    const d = Math.min(Math.abs(h - 0.93), 1 - Math.abs(h - 0.93));
+    return lift(fromHsv([d < 0.12 ? h : 0.93, Math.max(sat, floor), v]));
+  };
+  return { low: pink(pick(0), 0.55), mid: pink(pick(1), 0.45), high: lift(chroma(hexToLinear(pick(2)), 0.93, 0.3), 0.75) };
 }
 
 export function particlePaletteFrom(p?: { primary: string; secondary: string; accent: string; glow: string } | null, voice = 1): ParticlePalette | null {

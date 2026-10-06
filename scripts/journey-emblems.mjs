@@ -77,7 +77,8 @@ for (const [title, members] of groups) {
     cache[title] = { subject: "angel (the flash image)", color: "pearl white", why: "Ghost's own angel", file: "@angel" };
     continue;
   }
-  if (cache[title]?.file && !force && fs.existsSync(path.join(ROOT, "public", cache[title].file.replace(/^\//, "")))) {
+  const files = [].concat(cache[title]?.file ?? []);
+  if (files.length && !force && files.every((f) => fs.existsSync(path.join(ROOT, "public", f.replace(/^\//, ""))))) {
     for (const m of members) map[m.id] = cache[title].file;
     continue;
   }
