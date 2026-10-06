@@ -6,6 +6,7 @@ import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
 import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { getParticlePresent } from "@/lib/journeys/particle-presence";
 
 /**
  * Kiosk side of the phone remote (Tramokyo offline installation).
@@ -199,6 +200,12 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                 ar: s.activeJourney?.audioReactive ?? null,
                 kin: isKineticJourneyName(s.activeJourney?.name),
                 an: !!getAnalyserNode(),
+                // Particle engine state (2026-10-05 kiosk verification):
+                // "on" = drawing now, "idle" = enabled but not presenting,
+                // otherwise the failsafe's disable reason.
+                pt:
+                  ((window as unknown as Record<string, unknown>).__resonanceParticlesDisabled as string | undefined) ??
+                  (getParticlePresent() ? "on" : "idle"),
               },
               // Karel 2026-09-20: the remote must ALWAYS name what is on
               // screen. Between journeys the loop publishes a phase label
