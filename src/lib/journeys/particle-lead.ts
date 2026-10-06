@@ -17,6 +17,8 @@
 import type { ParticlePalette } from "@/lib/particles/souls";
 import { isMasteredJourney, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { castSet, type ParticleCast } from "./particle-casting";
+import { phaseCharacters, type PhaseCharacter } from "./particle-motifs";
+import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 
 export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
@@ -38,6 +40,8 @@ export interface ParticleLeadCast extends ParticleCast {
   signatureMorphs?: readonly number[];
   /** What the signature forms: the real image the journey's flashes use. */
   signatureImage?: "angel";
+  /** Per phase, from the vision-tagged imagery: forms, fire colour, motion. */
+  phaseChars?: PhaseCharacter[];
 }
 
 function hash01(str: string): number {
@@ -82,6 +86,31 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     // essentials remain — the summit, the solo-on-black breaks, the coda
     // (transition windows only where the rare dissolve lives)
     cast.windows = cast.windows.filter((w) => w.kind === "peak" || w.kind === "break" || w.kind === "coda" || (w.kind === "transition" && cast.dissolve));
+    // IMAGE INTELLIGENCE (Karel 2026-10-06): the forms each phase shows come
+    // from what that phase's imagery shows (vision-tagged) — fire → flames,
+    // blossoms → unfurling floral patterns, water → caustic light …
+    const chars = phaseCharacters(id);
+    if (chars.some((c) => c.forms.length)) {
+      cast.phaseChars = chars;
+      const pbs = cast.phaseBounds ?? [];
+      const phaseAt = (t: number) => Math.min(chars.length - 1, pbs.filter((b) => b <= t).length);
+      const formsAt = (i: number) => (chars[i]?.forms.length ? chars[i].forms : cast.formCycle);
+      const morphSouls: SoulId[] = [];
+      for (let i = 0; i < Math.max(cast.morphSouls.length, chars.length); i++) {
+        const f = formsAt(Math.min(i, chars.length - 1));
+        let pick = f[0];
+        if (i > 0 && pick === morphSouls[i - 1] && f[1]) pick = f[1];
+        morphSouls.push(pick);
+      }
+      cast.morphSouls = morphSouls;
+      const kindIdx: Record<string, number> = { peak: 0, break: 1, coda: 2, transition: 1, build: 2 };
+      cast.windows = cast.windows.map((w) => {
+        const f = formsAt(phaseAt(w.start));
+        return { ...w, soul: f[(kindIdx[w.kind] ?? 0) % f.length] };
+      });
+      cast.formCycle = [...new Set(chars.flatMap((c) => c.forms))];
+      if (!cast.formCycle.length) cast.formCycle = casts[i].formCycle;
+    }
     out[id] = cast;
   });
   return out;
@@ -201,6 +230,23 @@ export function particlePaletteFromImage(ip: { key: string; colors: string[] } |
     low: lift(chroma(hexToLinear(v[0]), keyHue, 0.5)),
     mid: lift(chroma(hexToLinear(v[1]), keyHue, 0.45)),
     high: lift(chroma(hexToLinear(v[2]), keyHue, 0.35), 0.7),
+  };
+}
+
+/** Fire imagery (Karel 2026-10-06: "colors of fire from a bit of blue through
+ *  hot colors"): with height colour on, low = a hint of blue at the hearth,
+ *  mid = the image's hottest light pushed toward white-gold, high = its deep
+ *  ember/orange at the tips. Voices rotate which image colours burn. */
+export function particlePaletteFire(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette {
+  const cols = ip?.colors?.length ? ip.colors : ["#ad4a1a", "#e5943d", "#602511"];
+  const warm = cols.filter((c) => { const [h, sat] = toHsv(hexToLinear(c)); return sat > 0.25 && (h < 0.14 || h > 0.93); });
+  const hot = (warm.length ? warm : cols).slice().sort((a, b) => toHsv(hexToLinear(b))[2] - toHsv(hexToLinear(a))[2]);
+  const pick = (i: number) => hot[(i + Math.round(voice)) % hot.length];
+  const white = (c: RGB, k: number): RGB => [c[0] + (1 - c[0]) * k, c[1] + (1 - c[1]) * k, c[2] + (1 - c[2]) * k];
+  return {
+    low: [0.12, 0.2, 0.75],
+    mid: white(lift(hexToLinear(pick(0)), 0.85), 0.35),
+    high: lift(chroma(hexToLinear(pick(1) ?? pick(0)), 0.05, 0.7)),
   };
 }
 

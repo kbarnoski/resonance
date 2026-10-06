@@ -123,6 +123,8 @@ uniform float uSmokeW;    // weight of the smoke soul (respawn gate)
 uniform vec3 uWrap;       // wrap weights: x-flow, rising, falling
 uniform float uInkW;      // ink respawn weight
 uniform float uFountainW; // fountain respawn weight
+uniform float uRiseW;     // rise souls (flame / wisp / petal fall) weight
+uniform float uRiseTop;   // rise souls: where a climber returns (negative = fallers)
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
 uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
 uniform vec4 uShape;      // per-appearance shape seed 0..1 (v4 variety: petals, gears, symmetry, solid)
@@ -189,6 +191,10 @@ vec3 polyEdgePoint(int kind, float h1, float h2, float t){
     if (abs(dot(dv, dv) - e2) < 0.05) { if (c == want) { B = V; break; } c++; }
   }
   return mix(A, B, t);
+}
+
+float causticF(vec2 q, float t1, float t2){
+  return sin(q.x * 5.0 + t1) * sin(q.y * 4.1 - t2) + 0.5 * sin((q.x * 0.8 + q.y) * 3.3 + t1 * 0.7) + 0.3 * sin(q.x * 7.3 - q.y * 2.1 + t2 * 1.3);
 }
 
 // Returns xyz = acceleration, w = linear drag.
@@ -712,6 +718,79 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     q += normalize(hash31(s.a * 113.0) - 0.5) * (0.01 + 0.045 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
   }
+  if (soul == 35) {
+    // ── FLAME: tongues rising from a hearth, swaying, flickering; gusts on
+    // the bass, crackle on the treble (respawn: "rise") ──
+    float h = clamp((p.y + 0.9) / 1.9, 0.0, 1.0);
+    float k = floor(s.b * 5.0);
+    float ang = k * 1.2566 + 0.6 * sin(uClock.y * 0.3 + k);
+    vec2 tongue = vec2(cos(ang), sin(ang) * 0.5) * 0.3 * (1.0 - h);
+    vec2 axis = tongue + vec2(0.13 * sin(uTime * 1.7 + h * 6.0 + k), 0.0) * h;
+    float pull = 3.0 + 4.0 * h;
+    vec3 a = vec3((axis.x - p.x) * pull, 1.5 + 1.4 * max(uBands.x, 0.0) + 0.8 * hash11(s.a * 13.0 + floor(uTime * 3.0)), (axis.y * 0.6 - p.z) * pull);
+    a += curlNoise(p * 2.2 + vec3(0.0, -uTime * 1.2, 0.0)) * (0.9 + 1.5 * up * midW) * (0.3 + h);
+    a.xz += (hash31(s.a * 1e3 + floor(uTime * 20.0)).xz - 0.5) * 2.0 * up * trebW;
+    return vec4(a, 1.6);
+  }
+  if (soul == 36) {
+    // ── WISPS: slow curls rising and unravelling (respawn: "rise") ──
+    float h = clamp((p.y + 0.95) / 2.3, 0.0, 1.0);
+    float k = floor(s.b * 3.0);
+    vec2 axis = vec2(0.25 * sin(uTime * 0.25 + k * 2.1 + h * 3.0) * h, 0.15 * cos(uTime * 0.2 + k) * h);
+    float pull = 1.2 + 1.5 * (1.0 - h);
+    vec3 a = vec3((axis.x - p.x) * pull, 0.55 + 0.4 * max(uBands.x, 0.0), (axis.y - p.z) * pull);
+    a += curlNoise(p * 1.4 + vec3(0.0, -uTime * 0.25, k)) * (0.55 + 0.9 * up * midW) * (0.2 + h);
+    return vec4(a, 1.4);
+  }
+  if (soul == 37) {
+    // ── BLOSSOM: layered petals unfurling and closing, layers counter-turning ──
+    float L = floor(s.b * 3.0);
+    float n = 5.0 + floor(uShape.x * 4.999) + L;
+    float pi_ = floor(s.a * n);
+    float u = s.g;
+    float vv = fract(s.a * n) * 2.0 - 1.0;
+    float open = 0.55 + 0.45 * sin(uClock.x * 0.08 + L * 0.9 + uShape.y * 6.28);
+    float R = (0.55 + 0.45 * (1.0 - L * 0.28)) * 1.45;
+    float wid = pow(sin(3.14159265 * u), 0.8) * (0.42 - 0.08 * L) * (1.0 + 0.15 * max(uBands.y, 0.0));
+    float ang = (pi_ + 0.5 * L) * 6.2831853 / n + uClock.y * 0.03 * (mod(L, 2.0) < 0.5 ? 1.0 : -1.0);
+    vec2 dir = vec2(cos(ang), sin(ang));
+    vec2 side = vec2(-dir.y, dir.x);
+    float r = u * R * (0.35 + 0.65 * open);
+    vec2 xz = dir * r + side * vv * wid * r * 0.9;
+    float lift = (1.0 - open) * u * u * 0.9 + 0.15 * L;
+    vec3 q = vec3(xz.x, lift - 0.2, xz.y) * (1.0 + 0.06 * max(uBands.x, 0.0));
+    q += normalize(hash31(s.a * 127.0) - 0.5) * (0.008 + 0.04 * up * trebW);
+    return vec4((q - p) * 8.0, 4.0);
+  }
+  if (soul == 38) {
+    // ── WATER LIGHT: a pool of light gathering onto a shifting caustic web ──
+    float ang = s.g * 6.2831853;
+    float rr = 1.15 * sqrt(s.b);
+    vec2 hp = vec2(cos(ang), sin(ang)) * rr;
+    float t1 = uClock.y * 0.18, t2 = uClock.x * 0.11;
+    // three gradient steps toward the zero-lines of a detuned interference field
+    for (int it = 0; it < 3; it++) {
+      float f = causticF(hp, t1, t2);
+      vec2 g = vec2(causticF(hp + vec2(0.01, 0.0), t1, t2) - f, causticF(hp + vec2(0.0, 0.01), t1, t2) - f) / 0.01;
+      hp -= f * g / (dot(g, g) + 4.0) * 0.9;
+    }
+    hp += (hash31(s.a * 37.0).xy - 0.5) * (0.012 + 0.04 * up * trebW);
+    vec3 q = vec3(hp.x, 0.04 * sin(rr * 5.0 - uClock.x * 0.6) * (0.3 + uBandLv.x), hp.y);
+    return vec4((q - p) * 7.0, 3.8);
+  }
+  if (soul == 39) {
+    // ── PETAL FALL: sparse petals spiralling down a narrowing funnel, fluttering ──
+    float hN = clamp((p.y + 1.2) / 2.4, 0.0, 1.0);
+    float rr = (0.22 + 0.4 * hash11(s.a * 31.0)) * (0.45 + 0.55 * hN);
+    float ang = atan(p.z, p.x);
+    vec3 want = vec3(cos(ang + 0.7) * rr, p.y, sin(ang + 0.7) * rr * 0.7);
+    vec3 a = (want - p) * vec3(2.4, 0.0, 2.4);
+    a.y = -0.3 - 0.2 * max(uBands.x, 0.0);
+    a.x += sin(uTime * 2.3 + s.a * 40.0) * 0.6;
+    a.z += cos(uTime * 1.9 + s.a * 31.0) * 0.4;
+    a += curlNoise(p * 1.1 + uTime * 0.05) * 0.25 * (1.0 + up * midW);
+    return vec4(a, 1.3);
+  }
   return vec4(-v, 1.0);
 }
 
@@ -770,6 +849,15 @@ void main(){
     vec3 r = hash31(s.a * 811.0 + 3.7);
     p = normalize(r - 0.5 + 1e-4) * (2.4 + 1.4 * hash11(s.a * 97.0));
     v = vec3(0.0);
+  }
+
+  // rise souls: climbers return to the hearth (fallers to the top) — the draw
+  // fades both ends, so the return is never seen
+  if (uRiseW > 0.5 && uImgShow < 0.01) {
+    vec3 r = hash31(s.a * 917.0 + floor(uTime * 0.7));
+    float top = uRiseTop + 0.25 * (hash11(s.a * 7.0) - 0.5);
+    if (uRiseTop > 0.0 && p.y > top) { float th = r.x * 6.2831853; float rr = 0.45 * sqrt(r.y); p = vec3(cos(th) * rr, -0.95, sin(th) * rr * 0.5); v = vec3(0.0, 0.3, 0.0); }
+    if (uRiseTop < 0.0 && p.y < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); }
   }
 
   // wrapping souls re-enter off-edge (out of view — the draw fades the edges)
@@ -835,6 +923,9 @@ uniform float uInkW;
 uniform vec3 uWrap;        // x-flow, rising, falling — edge fades where they wrap
 uniform float uSize;       // soul sprite size
 uniform float uHue;        // hue rotation (radians, luma-preserving YIQ)
+uniform float uRiseW;      // rise souls weight (edge fades at hearth / top)
+uniform float uRiseTop;
+uniform float uHeightCol;  // colour along height (flame: blue hearth → hot → ember tips)
 uniform float uSat;        // saturation multiplier
 uniform float uHueSpread;  // hue gradient across the form (rad)
 uniform float uHueWave;    // slow hue wave on swells (rad)
@@ -887,6 +978,11 @@ void main(){
   gl_PointSize = min(size, 32.0);
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
+  if (uHeightCol > 0.001) {
+    float hh = clamp((p.y + 0.95) / 1.9 + (s.g - 0.5) * 0.12, 0.0, 1.0);
+    vec3 hc = hh < 0.25 ? mix(uPalLow, uPalMid, hh * 4.0) : mix(uPalMid, uPalHigh, (hh - 0.25) / 0.75);
+    col = mix(col, hc, uHeightCol);
+  }
   col = mix(col, uPalHigh, clamp(length(v.xyz) * 0.12, 0.0, 0.25));
   // colour lives ACROSS the form: a gradient over height + azimuth, and a
   // slow hue wave rolling outward on swells — luma-preserving (YIQ)
@@ -897,6 +993,13 @@ void main(){
   float life = lifeOf(s);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
+  // rise souls fade at the hearth and toward the top (fallers: top and bottom)
+  if (uRiseW > 0.001) {
+    float rf = uRiseTop > 0.0
+      ? smoothstep(uRiseTop + 0.1, uRiseTop - 0.55, p.y) * smoothstep(-1.0, -0.78, p.y)
+      : smoothstep(1.2, 0.9, p.y) * smoothstep(uRiseTop - 0.05, uRiseTop + 0.4, p.y);
+    a *= mix(1.0, rf, uRiseW * (1.0 - uImgShow));
+  }
   // wrapping souls fade at the edges where they re-enter
   float edgeY = smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y);
   a *= mix(1.0, edgeY, smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));

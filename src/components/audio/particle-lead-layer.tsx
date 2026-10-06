@@ -42,13 +42,14 @@ import { isVideoActive, inBoundarySettle, onClipEnded, onClipStarted } from "@/l
 import { setParticlePresent } from "@/lib/journeys/particle-presence";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { keyedFlashAngel } from "./flash-angel";
+import { isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
 import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -114,6 +115,8 @@ export function ParticleLeadLayer({
   const pausedRef = useRef(paused);
   const flashRef = useRef(flash);
   flashRef.current = flash;
+  const frameRef = useRef(frame);
+  frameRef.current = frame;
   const paletteTarget = useRef<ParticlePalette | null>(null);
   const palRef = useRef<JourneyFrame["palette"] | null>(null);
   const phaseRef = useRef<{ phase: string | undefined; at: number }>({ phase: undefined, at: 0 });
@@ -258,19 +261,28 @@ export function ParticleLeadLayer({
       dollyTo = k * (0.62 + 0.85 * rand01(4));
       dollyAt = performance.now();
       densK = quietImaging ? 0.22 + 0.4 * rand01(2) : 0.3 + 0.7 * rand01(2);
-      formDur = 10_000 + 9_000 * rand01(3);
+      // forms HOLD (Karel 2026-10-06: "change should be smooth and not jump
+      // between shapes quickly")
+      formDur = 20_000 + 14_000 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
       const side = rand01(5) < 0.5 ? -1 : 1;
-      const centred = rand01(6) < (quietImaging ? 0.2 : 0.5);
-      offX = centred ? 0 : side * (quietImaging ? 0.25 + 0.25 * rand01(7) : 0.1 + 0.2 * rand01(7));
-      offY = centred ? 0 : (rand01(8) - 0.5) * (quietImaging ? 0.4 : 0.25);
+      // Karel 2026-10-06: every journey but Snowflake + Ghost is CENTRED 75 %
+      // of the time, with a little variation away to keep it interesting
+      const keepOwn = journeyId === "first-snow" || quietImaging;
+      const centred = rand01(6) < (quietImaging ? 0.2 : keepOwn ? 0.5 : 0.75);
+      offX = centred ? 0 : side * (quietImaging ? 0.25 + 0.25 * rand01(7) : keepOwn ? 0.1 + 0.2 * rand01(7) : 0.08 + 0.14 * rand01(7));
+      offY = centred ? 0 : (rand01(8) - 0.5) * (quietImaging ? 0.4 : keepOwn ? 0.25 : 0.16);
       engine.setSizeScale(0.6 + 1.4 * rand01(9));
     };
+    // the forms THIS phase's imagery calls for (vision-tagged) — else the cycle
+    const phaseIdxAt = (t: number) => (cast.phaseBounds ?? []).filter((b) => b <= t).length;
+    const charAt = (t: number) => cast.phaseChars?.[Math.min(phaseIdxAt(t), (cast.phaseChars?.length ?? 1) - 1)];
+    const formsNow = (t: number): SoulId[] => { const f = charAt(t)?.forms; return f && f.length ? f : cast.formCycle; };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
-      engine.setSoul(soul, quiet ? 0.5 : 7);
+      engine.setSoul(soul, quiet ? 0.5 : 12);
       engine.setShape(shapeSeed(soul, t + appearN * 11), quiet);
       currentSoul = soul;
       formAt = performance.now();
@@ -278,6 +290,47 @@ export function ParticleLeadLayer({
       glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
     };
     let wasShown = false;
+    // ── follow a particle-like shader: 4×/s, a 32×18 snapshot of its canvas
+    // (async createImageBitmap — no synchronous read-back), the centroid of
+    // what MOVED between snapshots becomes a target a stream chases ──
+    let followOn = false;
+    let followBusy = false;
+    let followAt = 0;
+    let prevLum: Float32Array | null = null;
+    const fctx = typeof OffscreenCanvas !== "undefined" ? new OffscreenCanvas(32, 18).getContext("2d", { willReadFrequently: true }) : null;
+    const sampleFollow = (mode: string) => {
+      const nowMs = performance.now();
+      if (followBusy || !fctx || nowMs - followAt < 250) return;
+      const cvs = [...document.querySelectorAll<HTMLCanvasElement>(`canvas[data-shader-mode="${mode}"]`)].pop();
+      if (!cvs || !cvs.width) return;
+      followBusy = true;
+      followAt = nowMs;
+      createImageBitmap(cvs, { resizeWidth: 32, resizeHeight: 18, resizeQuality: "low" })
+        .then((bm) => {
+          fctx.clearRect(0, 0, 32, 18);
+          fctx.drawImage(bm, 0, 0);
+          bm.close();
+          const d = fctx.getImageData(0, 0, 32, 18).data;
+          const lum = new Float32Array(32 * 18);
+          for (let i = 0; i < lum.length; i++) lum[i] = (0.3 * d[i * 4] + 0.59 * d[i * 4 + 1] + 0.11 * d[i * 4 + 2]) / 255;
+          if (prevLum) {
+            let wx = 0, wy = 0, ws = 0;
+            for (let y = 0; y < 18; y++) for (let x = 0; x < 32; x++) {
+              const i = y * 32 + x;
+              const w = Math.max(0, lum[i] - prevLum[i]) * lum[i];
+              wx += w * x; wy += w * y; ws += w;
+            }
+            if (ws > 0.02) {
+              engine.setFollow((wx / ws / 31) * 2 - 1, 1 - (wy / ws / 17) * 2, 1);
+              if (!followOn) glitchRecord("particle-follow", mode);
+              followOn = true;
+            } else if (followOn) { engine.setFollow(0, 0, 0); followOn = false; }
+          }
+          prevLum = lum;
+        })
+        .catch(() => { /* canvas not readable — no follow */ })
+        .finally(() => { followBusy = false; });
+    };
     // flash form (Ghost)
     let flashTail = 0;
     let flashLoaded = false;
@@ -291,6 +344,7 @@ export function ParticleLeadLayer({
     let ambientGap = 12 + 8 * rand01(21);
     let lastTick = performance.now();
     let palVoiceKey = "";
+    let palPair: [ParticlePalette | null, ParticlePalette | null] = [null, null];
     // Karel 2026-10-06 (again): "fade out smoothly not drop out" — longer,
     // and EASED on screen (smoothstep of the slewed value), so the last
     // stretch of a fade never reads as a cut
@@ -409,8 +463,9 @@ export function ParticleLeadLayer({
           appearance();
           glitchRecord("particle-form", `${currentSoul} refigure`);
         } else {
-          let nxt = cast.formCycle[cycleIdx % cast.formCycle.length];
-          if (nxt === currentSoul) nxt = cast.formCycle[(cycleIdx + 1) % cast.formCycle.length];
+          const fl = formsNow(t);
+          let nxt = fl[cycleIdx % fl.length];
+          if (nxt === currentSoul) nxt = fl[(cycleIdx + 1) % fl.length];
           switchForm(nxt, t);
         }
       }
@@ -424,7 +479,8 @@ export function ParticleLeadLayer({
         if (ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
           ambientGap = 12 + 8 * rand01(23 + appearN);
-          const nxt = cast.formCycle?.[(++cycleIdx) % Math.max(1, cast.formCycle.length)];
+          const fl = formsNow(t);
+          const nxt = fl[(++cycleIdx) % Math.max(1, fl.length)];
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
         }
@@ -441,7 +497,16 @@ export function ParticleLeadLayer({
       {
         const prog = Math.min(1, (performance.now() - dollyAt) / Math.max(4000, formDur * 1.6));
         engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
-        engine.setOffset(flashing ? 0 : offX, flashing ? 0 : offY);
+        // a CENTRED shader (suns, portals, mandalas…) pins the field to its
+        // exact centre point (Karel 2026-10-06)
+        const mode = frameRef.current?.shaderMode;
+        const pinCentre = flashing || isCenteredShader(mode);
+        engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
+        // the imagery's movement sets the pace (flicker livelier, drift calmer)
+        engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1));
+        // a shader with its own moving particles: follow + trail them
+        if (mode && PARTICLE_LIKE_SHADERS.has(mode) && shown > 0.2) sampleFollow(mode);
+        else if (followOn) { engine.setFollow(0, 0, 0); followOn = false; }
       }
       if (!wasShown && shown > 0.05) { wasShown = true; glitchRecord("particle-in", `${currentSoul} t=${t.toFixed(1)}`); }
       else if (wasShown && shown < 0.01) { wasShown = false; glitchRecord("particle-out", `t=${t.toFixed(1)}`); }
@@ -509,11 +574,20 @@ export function ParticleLeadLayer({
       const ip = JOURNEY_IMAGE_PALETTES[journeyId];
       const ipPhase = ip ? (ip.phases[phaseIdx] ?? ip) : null;
       const pp = palRef.current;
-      const vk = ipPhase ? `img:${phaseIdx}:${c.voice}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${c.voice}` : "";
+      // ALWAYS changing (Karel 2026-10-06: "the colors need to always be
+      // changing and reflecting the palette not static"): a continuous glide
+      // through the palette's voicings (~11 s per step), led by the section
+      const fire = !!charAt(t)?.fire;
+      const vf = c.voice + t / 11;
+      const v0 = Math.floor(vf) % 4;
+      const vfr = vf - Math.floor(vf);
+      const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
       if (vk && vk !== palVoiceKey) {
-        paletteTarget.current = ipPhase ? particlePaletteFromImage(ipPhase, c.voice) : particlePaletteFrom(pp, c.voice);
+        const mk = (v: number) => (fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }
+      if (palPair[0] && palPair[1]) paletteTarget.current = lerpPalette(palPair[0], palPair[1], vfr * vfr * (3 - 2 * vfr));
       const target = paletteTarget.current;
       if (target) {
         current = current ? lerpPalette(current, target, 0.06) : target;

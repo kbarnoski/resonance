@@ -169,6 +169,8 @@ export interface ParticleEngine {
   setSizeScale(k: number): void;
   /** Sound reactivity multiplier (motion only — never luminance). */
   setReact(k: number): void;
+  /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
+  setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
   loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number): void;
   /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
@@ -557,6 +559,7 @@ export function createParticleEngine(
   const melody: [number, number, number] = [0, 0, 0];
   let melodyTarget: [number, number, number] = [0, 0, 0];
   let melodyW = 0, melodyWTarget = 0;
+  let followX = 0, followY = 0, followT = 0, followS = 0;
   const camScaleBase = opts.camScale ?? 1;
   let camScale = camScaleBase;
   let camScaleTarget = camScaleBase;
@@ -712,6 +715,9 @@ export function createParticleEngine(
     const wrap = [0, 1, 2].map((i) => lerpS((x) => x.wrap[i]));
     const inkW = lerpS((x) => (x.respawn === "ink" ? 1 : 0));
     const fountainW = lerpS((x) => (x.respawn === "fountain" ? 1 : 0));
+    const riseW = lerpS((x) => (x.respawn === "rise" ? 1 : 0));
+    const riseTop = lerpS((x) => x.riseTop ?? 1);
+    const heightCol = lerpS((x) => (x.heightColor ? 1 : 0));
     const sizeK = lerpS((x) => x.size);
     const densityCap = lerpS((x) => x.maxDensity);
 
@@ -809,6 +815,7 @@ export function createParticleEngine(
     g.uniform1i(sim.u.uTexW, side);
     g.uniform1f(sim.u.uCount, count);
     g.uniform1f(sim.u.uSmokeW, smokeW);
+    if (sim.u.uRiseW) { g.uniform1f(sim.u.uRiseW, riseW); g.uniform1f(sim.u.uRiseTop, riseTop); }
     g.uniform3f(sim.u.uWrap, wrap[0], wrap[1], wrap[2]);
     g.uniform1f(sim.u.uInkW, inkW);
     g.uniform1f(sim.u.uFountainW, fountainW);
@@ -819,8 +826,17 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uDisperse, disperseNow ? 1 : 0);
     g.uniform1f(sim.u.uScatter, scatterEnv);
     g.uniform1f(sim.u.uBounce, bounceEnv * bounceSign);
-    g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
-    g.uniform1f(sim.u.uMelodyW, melodyW);
+    // FOLLOW a moving shader element (screen point → world, on the focal
+    // plane): a stream of the field chases and trails it; wins over melody
+    followS += (followT - followS) * (1 - Math.exp(-dt / 0.8));
+    if (followS > 0.01) {
+      const fx = [0, 1, 2].map((i) => o3[i] + right[i] * followX * halfW + up[i] * followY * halfH);
+      g.uniform3f(sim.u.uMelody, fx[0], fx[1], fx[2]);
+      g.uniform1f(sim.u.uMelodyW, Math.max(melodyW, 1.4 * followS));
+    } else {
+      g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
+      g.uniform1f(sim.u.uMelodyW, melodyW);
+    }
     g.uniform1f(sim.u.uImgForm, env.imgForm);
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
@@ -879,6 +895,9 @@ export function createParticleEngine(
     g.uniform3fv(draw.u.uPalMid, pal.mid);
     g.uniform3fv(draw.u.uPalHigh, pal.high);
     g.uniform1f(draw.u.uSmokeW, smokeW);
+    g.uniform1f(draw.u.uRiseW, riseW);
+    g.uniform1f(draw.u.uRiseTop, riseTop);
+    g.uniform1f(draw.u.uHeightCol, heightCol);
     g.uniform1f(draw.u.uInkW, inkW);
     g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
     g.uniform1f(draw.u.uSize, sizeK * sizeScaleS);
@@ -1199,6 +1218,12 @@ export function createParticleEngine(
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(3, k)); },
+    setFollow(x, y, w) {
+      // glide the target point itself (the sampled centroid jumps 4×/s)
+      followX += (Math.max(-1.2, Math.min(1.2, x)) - followX) * 0.5;
+      followY += (Math.max(-1.2, Math.min(1.2, y)) - followY) * 0.5;
+      followT = Math.max(0, Math.min(1, w));
+    },
     loadFormImage(src, aspect) {
       if (lost) return;
       gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);

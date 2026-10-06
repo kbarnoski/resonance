@@ -245,10 +245,14 @@ export function ShaderVisualizer({
   tempoFlow = false,
   paused = false,
   onReady,
+  modeTag,
 }: {
   analyser: AnalyserLike;
   dataArray: Uint8Array<ArrayBuffer>;
   fragShader: string;
+  /** Shader id on the canvas (data-shader-mode) — the particle layer finds
+   *  the shader it plays over (centring, following its moving elements). */
+  modeTag?: string;
   style?: React.CSSProperties;
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
@@ -728,6 +732,7 @@ export function ShaderVisualizer({
       // Visualizer3D already uses (key={contextEpoch} on its Canvas).
       key={contextEpoch}
       ref={canvasRef}
+      data-shader-mode={modeTag}
       className="absolute inset-0 w-full h-full"
       style={style}
     />
@@ -1385,7 +1390,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} bandDriveOnly={bandDriveOnly} paused={layerPaused} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} modeTag={safeMode} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} bandDriveOnly={bandDriveOnly} paused={layerPaused} onReady={onShaderReady} />
     ) : null;
   };
 

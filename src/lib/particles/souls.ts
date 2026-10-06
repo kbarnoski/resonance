@@ -22,6 +22,9 @@ export const SOUL_IDS = [
   // v4 geometric family (Karel 2026-10-05: "geometric patterns … incredible
   // variety of shapes") + Ghost's spirit — appended so indices stay stable
   "rose", "spirograph", "superformula", "polyhedron", "mandala", "spirit", "torus",
+  // v7 ORGANIC language (Karel 2026-10-06: forms echo the IMAGERY — fire as
+  // abstract flames, flowers as evolving floral patterns; organic majority)
+  "flame", "wisp", "blossom", "caustic", "petalfall",
 ] as const;
 
 export type SoulId = (typeof SOUL_IDS)[number];
@@ -67,8 +70,13 @@ export interface SoulPreset {
   size: number;
   /** Wrap weights: [x-flow, rising, falling] — particles re-enter off-edge. */
   wrap: [number, number, number];
-  /** Age-based respawn: smoke (rising source), ink (drops), fountain (launch). */
-  respawn: "smoke" | "ink" | "fountain" | null;
+  /** Age-based respawn: smoke (rising source), ink (drops), fountain (launch),
+   *  rise (flame / wisp: climb, then re-enter at the hearth below `riseTop`). */
+  respawn: "smoke" | "ink" | "fountain" | "rise" | null;
+  /** rise souls: height (world y) where a climber returns to the hearth */
+  riseTop?: number;
+  /** colour along HEIGHT (low → mid → high palette stops) instead of band */
+  heightColor?: boolean;
   /** Density ceiling — volume-filling souls stay sparse so they can never
    *  become a full-frame wash (Karel's wash ban), whatever the conductor asks. */
   maxDensity: number;
@@ -82,7 +90,7 @@ const S = (
   title: string,
   line: string,
   palette: ParticlePalette,
-  stage: { trail: number; elev: number; dist: number; spin?: number; intensity?: number; size?: number; wrap?: C3; respawn?: SoulPreset["respawn"]; maxD?: number },
+  stage: { trail: number; elev: number; dist: number; spin?: number; intensity?: number; size?: number; wrap?: C3; respawn?: SoulPreset["respawn"]; maxD?: number; riseTop?: number; heightColor?: boolean },
   traits: SoulTraits,
 ): SoulPreset => ({
   id,
@@ -99,6 +107,8 @@ const S = (
   wrap: stage.wrap ?? [0, 0, 0],
   respawn: stage.respawn ?? null,
   maxDensity: stage.maxD ?? 1,
+  riseTop: stage.riseTop,
+  heightColor: stage.heightColor,
   traits,
 });
 
@@ -210,6 +220,21 @@ export const SOULS: readonly SoulPreset[] = [
   S("torus", "Torus Lattice", "a woven torus of light rolling through itself", pal([0.45, 0.75, 1.0], [0.9, 0.5, 0.85], [1.0, 0.95, 0.85]),
     { trail: 0.5, elev: 0.45, dist: 4.8, size: 0.85 },
     { energy: 0.55, playful: 0.4, dark: 0.4, solo: 0.6, peak: 0.8, family: "geometric" }),
+  S("flame", "Flame", "tongues of light rising from a hearth, flickering, gusting on the bass", pal([0.25, 0.4, 1.0], [1.0, 0.85, 0.45], [1.0, 0.35, 0.08]),
+    { trail: 0.6, elev: 0.08, dist: 4.4, spin: 0.0, intensity: 1.1, respawn: "rise", riseTop: 1.0, heightColor: true, maxD: 0.7 },
+    { energy: 0.7, playful: 0.4, dark: 0.5, solo: 0.8, peak: 0.8, family: "elemental" }),
+  S("wisp", "Wisps", "slow curls of light rising and unravelling like incense", pal([0.5, 0.45, 0.9], [0.85, 0.7, 1.0], [1.0, 0.95, 1.0]),
+    { trail: 0.75, elev: 0.1, dist: 4.6, spin: 0.0, intensity: 0.85, respawn: "rise", riseTop: 1.35, maxD: 0.55 },
+    { energy: 0.3, playful: 0.2, dark: 0.5, solo: 0.8, peak: 0.4, family: "flow" }),
+  S("blossom", "Blossom", "layered petals of light unfurling and closing, each layer turning its own way", pal([1.0, 0.45, 0.6], [1.0, 0.75, 0.55], [1.0, 0.95, 0.85]),
+    { trail: 0.45, elev: 1.0, dist: 4.2, spin: 0.0, size: 0.85 },
+    { energy: 0.4, playful: 0.4, dark: 0.2, solo: 0.8, peak: 0.8, family: "organic" }),
+  S("caustic", "Water Light", "a pool of light shimmering like caustics on a sunlit floor", pal([0.2, 0.5, 1.0], [0.35, 0.85, 0.95], [0.9, 1.0, 1.0]),
+    { trail: 0.5, elev: 1.25, dist: 4.4, spin: 0.0, size: 0.85 },
+    { energy: 0.35, playful: 0.3, dark: 0.4, solo: 0.7, peak: 0.5, family: "flow" }),
+  S("petalfall", "Petal Fall", "petals of light spiralling down through a column, fluttering", pal([1.0, 0.5, 0.65], [1.0, 0.75, 0.8], [1.0, 0.95, 0.9]),
+    { trail: 0.5, elev: 0.15, dist: 4.6, spin: 0.0, size: 1.8, respawn: "rise", riseTop: -1.15, maxD: 0.1, intensity: 1.6 },
+    { energy: 0.3, playful: 0.5, dark: 0.2, solo: 0.8, peak: 0.4, family: "organic" }),
 ];
 
 /**
@@ -221,12 +246,13 @@ export const SOULS: readonly SoulPreset[] = [
  * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
  */
 export const SHAPE_SOULS: readonly SoulId[] = [
-  // no "geometry" (nested cubes) and no "branches" (a tree) — Karel
-  // 2026-10-05: "dont use that tree or cube image"; "spirit" is cast only
-  // as a journey signature (Ghost), never from the general pool
-  "harmonics", "orbitals", "lissajous", "cymatics", "knot",
-  "kaleido", "bloom", "helix", "arcs", "rings", "vortex", "ribbons", "threads",
-  "rose", "spirograph", "superformula", "polyhedron", "mandala", "torus",
+  // v7 ORGANIC language (Karel 2026-10-06): organic majority, flowers as
+  // evolving floral patterns, no 3-D ellipses (orbitals/rings/arcs/lissajous/
+  // knot/harmonics), no squares or grids (polyhedron/superformula/torus/
+  // cymatics), never the tree or the cube. Mirrors ORGANIC_SOULS
+  // (particle-motifs.ts), which casts them from the imagery.
+  "flame", "wisp", "blossom", "caustic", "petalfall", "bloom", "rose", "mandala", "kaleido",
+  "spirograph", "vortex", "nebula", "murmuration", "ribbons", "ink", "tendrils",
 ];
 
 export function soulById(id: SoulId): SoulPreset {

@@ -9,7 +9,7 @@ import {
   MORPH_GUARD_SEC,
   particleLeadFor,
   particlePaletteFrom,
-  withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES, particlePaletteFromImage } from "./particle-lead";
+  withParticleLeadSupports, PARTICLES_ENABLED, JOURNEY_SIGNATURES, particlePaletteFromImage, particlePaletteFire } from "./particle-lead";
 import { MASTERED_JOURNEYS, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { dissolveEnvelope, DISSOLVE_SEC, DISSOLVE_SNAP_SEC, SHAPE_SOULS } from "@/lib/particles/souls";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
@@ -136,5 +136,36 @@ describe("particle colour comes from the journey's IMAGES (Karel 2026-10-06)", (
     const [r, g, b] = pal.low;
     expect(r).toBeGreaterThan(g);
     expect(g).toBeGreaterThan(b);
+  });
+});
+
+describe("particles echo the IMAGERY (Karel 2026-10-06 design principle)", () => {
+  it("only organic forms are cast — never 3-D ellipses, squares, the tree or the cube", async () => {
+    const { BANNED_SOULS } = await import("./particle-motifs");
+    for (const c of Object.values(PARTICLE_LEADS)) {
+      for (const s of [...Object.values(c.souls), ...c.morphSouls, ...c.formCycle, ...c.windows.map((w) => w.soul), ...(c.phaseChars ?? []).flatMap((p) => p.forms)]) {
+        expect(BANNED_SOULS, `${c.name}:${s}`).not.toContain(s);
+      }
+    }
+  });
+  it("Realized (lava, fire, embers) casts FLAMES with the fire colour ramp", () => {
+    const r = PARTICLE_LEADS["inferno"];
+    expect(r.phaseChars?.length).toBeGreaterThan(0);
+    expect(r.phaseChars!.filter((p) => p.forms[0] === "flame").length).toBeGreaterThanOrEqual(3);
+    expect(r.phaseChars!.some((p) => p.fire)).toBe(true);
+  });
+  it("Ghost (petals, wings) casts floral / airy forms, never flames", () => {
+    const g = PARTICLE_LEADS["ghost"];
+    const forms = (g.phaseChars ?? []).flatMap((p) => p.forms);
+    expect(forms).not.toContain("flame");
+    expect(forms.some((f) => ["blossom", "petalfall", "ribbons", "rose"].includes(f))).toBe(true);
+  });
+  it("every particle journey has vision-tagged phases", () => {
+    for (const [id, c] of Object.entries(PARTICLE_LEADS)) expect(c.phaseChars?.length ?? 0, id).toBeGreaterThan(0);
+  });
+  it("the fire palette runs from a blue hearth to hot tips", () => {
+    const p = particlePaletteFire({ key: "#ad4a1a", colors: ["#1e1617", "#602511", "#ad4a1a", "#e5943d", "#364755"] }, 0);
+    expect(p.low[2]).toBeGreaterThan(p.low[0]); // blue at the hearth
+    expect(p.high[0]).toBeGreaterThan(p.high[2]); // hot at the tips
   });
 });
