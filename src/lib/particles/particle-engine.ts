@@ -374,7 +374,12 @@ export function createParticleEngine(
   const warmLog: [string, number, number][] = [];
   // simulation variants: one per soul pair, only the force laws they need
   const simProgs = new Map<string, Prog>();
+  // a journey's UNION program: every soul it will show, one build + one warm
+  // at the journey's start, then no pipeline builds mid-journey (each pair
+  // program's first draw stalled the page 80–390 ms on the kiosk)
+  let union: { set: Set<number>; prog: Prog } | null = null;
   const simProgFor = (a: number, b: number): Prog => {
+    if (union && union.set.has(a) && union.set.has(b)) return union.prog;
     const k = a <= b ? `${a},${b}` : `${b},${a}`;
     let pr = simProgs.get(k);
     if (!pr) {
@@ -745,6 +750,7 @@ export function createParticleEngine(
     g.uniform1i(sim.u.uSoulA, soulA.index);
     g.uniform1i(sim.u.uSoulB, soulB.index);
     g.uniform1f(sim.u.uMix, soulB === soulA ? 0 : e);
+    g.uniform1i(sim.u.uPasses, soulB === soulA || e <= 0.001 ? 1 : 2);
     g.uniform1i(sim.u.uTexW, side);
     g.uniform1f(sim.u.uCount, count);
     g.uniform1f(sim.u.uSmokeW, smokeW);
@@ -1070,11 +1076,14 @@ export function createParticleEngine(
       if (pendingSoul) simProgFor(soulA.index, next.index); // queue its compile now
     },
     prepare(souls) {
-      const idx = souls.map((x) => soulById(x).index);
-      idx.forEach((a, i) => {
-        simProgFor(a, a);
-        if (i > 0 && idx[i - 1] !== a) simProgFor(idx[i - 1], a);
-      });
+      const idx = [...new Set(souls.map((x) => soulById(x).index).concat([soulA.index, soulB.index]))].sort((a, b) => a - b);
+      const key = `u:${idx.join(",")}`;
+      let prog = simProgs.get(key);
+      if (!prog) {
+        prog = startProgram(gl!, QUAD_VS, buildSimFS(idx));
+        simProgs.set(key, prog);
+      }
+      union = { set: new Set(idx), prog };
     },
     prewarm() {
       if (!running) prewarmStep();

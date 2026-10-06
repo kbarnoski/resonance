@@ -174,6 +174,20 @@ export function ParticleLeadLayer({
       if (em && t < em.end + 1) em.end = Math.max(em.end, t + 18);
       else emergeRef.current = { start: t, end: t + 18, soul: morphSoulAt(t) };
     });
+    // signature phases: their entry always raises the journey's own form,
+    // travel clip or not (Ghost's spirit — some boundaries are crossfades)
+    let lastPhaseIdx = -1;
+    const signatureAt = (t: number) => {
+      const pbs = cast.phaseBounds ?? [];
+      const idx = pbs.filter((x) => x <= t).length;
+      if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && cast.signatureMorphs?.includes(idx)) {
+        const em = emergeRef.current;
+        const soul = cast.morphSouls[Math.min(idx, cast.morphSouls.length - 1)] ?? cast.souls.transition;
+        if (!em || t > em.end - 3 || em.soul !== soul) emergeRef.current = { start: t, end: t + 26, soul };
+        counters.current.emergences++;
+      }
+      lastPhaseIdx = idx;
+    };
     const onResize = () => engine.resize();
     window.addEventListener("resize", onResize);
 
@@ -212,6 +226,7 @@ export function ParticleLeadLayer({
       const tickDt = Math.min(0.5, (now - lastTick) / 1000);
       lastTick = now;
       const t = useAudioStore.getState().currentTime || 0;
+      signatureAt(t);
       const pr0 = presenceAt(cast, t);
       // emergence window after a travel morph (3 s gather in, 3 s out)
       const em = emergeRef.current;

@@ -33,6 +33,9 @@ export interface ParticleLeadCast extends ParticleCast {
   mastered: boolean;
   /** Layer gain (energy) — 1 = engine default. */
   gain?: number;
+  /** Phases whose entry ALWAYS raises an emergence (journey signature), even
+   *  when that boundary is a plain crossfade with no travel clip. */
+  signatureMorphs?: readonly number[];
 }
 
 const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MASTERED_JOURNEY_NAMES.has(name.trim().toLowerCase());
@@ -52,12 +55,13 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
   const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]));
   const out: Record<string, ParticleLeadCast> = {};
   ids.forEach((id, i) => {
-    const cast = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
+    const cast: ParticleLeadCast = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };
     const sig = JOURNEY_SIGNATURES[id];
     if (sig) {
       const morphSouls = [...cast.morphSouls];
       for (const k of sig.morphs) if (k < morphSouls.length) morphSouls[k] = sig.soul;
       cast.morphSouls = morphSouls;
+      cast.signatureMorphs = sig.morphs;
     }
     out[id] = cast;
   });

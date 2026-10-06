@@ -116,6 +116,7 @@ uniform float uSwell;     // onset swell 0..1
 uniform int uSoulA;
 uniform int uSoulB;
 uniform float uMix;
+uniform int uPasses;      // 1, or 2 while blending A → B
 uniform int uTexW;
 uniform float uCount;
 uniform float uSmokeW;    // weight of the smoke soul (respawn gate)
@@ -733,8 +734,14 @@ void main(){
   float rate = 1.0 + clamp(drv, -0.7, 1.0) * mix(1.25, 1.0, s.r);
   float dt = uDt * rate;
 
-  vec4 f = soulForce(uSoulA, p, v, s, fid, lvl, drv);
-  if (uMix > 0.001) f = mix(f, soulForce(uSoulB, p, v, s, fid, lvl, drv), uMix);
+  // ONE inlined soulForce: a runtime-bounded loop (uPasses = 1, or 2 while
+  // blending) the compiler cannot unroll — halves the program the GPU must
+  // build, so a journey's union program warms in one short step
+  vec4 f = vec4(0.0);
+  for (int k = 0; k < uPasses; k++) {
+    float wgt = k == 0 ? (uPasses > 1 ? 1.0 - uMix : 1.0) : uMix;
+    f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, p, v, s, fid, lvl, drv);
+  }
 
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
