@@ -37,15 +37,22 @@ export function glitchRecord(type: string, detail?: string): void {
 async function upload(reason: string): Promise<void> {
   const pending = buffer.slice(lastUploadIdx);
   if (pending.length === 0) return;
+  const from = lastUploadIdx;
   lastUploadIdx = buffer.length;
   try {
-    await fetch("/api/review/glitch-log", {
+    const res = await fetch("/api/review/glitch-log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session: sessionId, reason, events: pending }),
       keepalive: true,
     });
-  } catch { /* offline or non-kiosk — recorder stays silent */ }
+    // 5xx = restarting → retry later; 4xx = not a kiosk (prod) → drop, never accumulate
+    if (res.status >= 500) throw new Error(String(res.status));
+  } catch {
+    // offline / server restarting (2026-10-07: a ~65 s deploy restart erased
+    // the very window being debugged) — keep the events for the next flush
+    lastUploadIdx = Math.min(lastUploadIdx, from);
+  }
 }
 
 /** Journey boundaries are the hotspot — flush immediately. */

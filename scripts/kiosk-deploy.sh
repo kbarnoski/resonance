@@ -44,7 +44,21 @@ cp tsconfig.json /tmp/kiosk-tsconfig.bak
 NEXT_DIST_DIR=.next-staging npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
 # next adds the staging types dir to tsconfig — never let a deploy dirty it
 cp /tmp/kiosk-tsconfig.bak tsconfig.json
-launchctl bootout "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
+# bootout returns BEFORE the job is unloaded: an immediate bootstrap then
+# failed silently every time (2026-10-07: "restart attempt 1 failed" on every
+# deploy = ~65 s with no server — pack images 404'd, the kiosk's imaging froze
+# mid-Ghost, the glitch log lost the window). Wait for the unload + free port.
+SVC="gui/$(id -u)/com.resonance.tramokyo"
+wait_unloaded() {
+  for i in $(seq 1 40); do
+    launchctl print "$SVC" >/dev/null 2>&1 || { lsof -ti tcp:3000 -sTCP:LISTEN >/dev/null 2>&1 || return 0; }
+    sleep 0.25
+  done
+  # last resort: a lingering next-server still holds the port
+  lsof -ti tcp:3000 -sTCP:LISTEN 2>/dev/null | xargs kill 2>/dev/null; sleep 0.5
+}
+launchctl bootout "$SVC" 2>/dev/null
+wait_unloaded
 rm -rf .next-old
 mv .next .next-old 2>/dev/null
 mv .next-staging .next
@@ -55,15 +69,17 @@ C=""
 for attempt in 1 2 3; do
   launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.resonance.tramokyo.plist" 2>/dev/null \
     || launchctl kickstart -k "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
-  for i in $(seq 1 30); do
+  for i in $(seq 1 60); do
     C=$(curl -s -m 3 localhost:3000/api/version | python3 -c "import json,sys;print(json.load(sys.stdin).get('commit',''))" 2>/dev/null)
     [ "$C" = "$HEAD" ] && break
-    sleep 2
+    # job never loaded (bootstrap refused) — retry now, not after a minute
+    launchctl print "$SVC" >/dev/null 2>&1 || break
+    sleep 1
   done
   [ "$C" = "$HEAD" ] && break
   echo "restart attempt $attempt failed — booting out and retrying"
-  launchctl bootout "gui/$(id -u)/com.resonance.tramokyo" 2>/dev/null
-  sleep 3
+  launchctl bootout "$SVC" 2>/dev/null
+  wait_unloaded
 done
 [ "${C:-}" = "$HEAD" ] || { echo "SERVER NOT ON $HEAD (got '${C:-none}') AFTER 3 ATTEMPTS"; exit 1; }
 echo "server OK ($C)"

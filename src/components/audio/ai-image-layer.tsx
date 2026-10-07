@@ -919,7 +919,14 @@ export function AiImageLayer({
               }, 1500);
             }
           })
-          .catch(() => { /* broken URL, skip */ });
+          .catch(() => {
+            // load FAILED (2026-10-07: the kiosk server restarted for ~65 s
+            // mid-Ghost and every still 404'd) — the slot was never seen:
+            // re-arm it so the next tick retries instead of walking past
+            glitchRecord("still-load-failed", stillUrl.split("/").pop() ?? "");
+            if (lastPackUrlRef.current === stillUrl) lastPackUrlRef.current = null;
+            if (lastPackIndexRef.current === idx) lastPackIndexRef.current = -1;
+          });
       }
 
       // ── Living video (Wave 2, rebuilt after 2026-09-25 audits): travel
