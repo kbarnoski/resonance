@@ -500,6 +500,10 @@ export function ParticleLeadLayer({
     let densK = 0.7;
     let densKS = 0.7;
     let appearN = 0;
+    // CALM (Karel 2026-10-07: "in snowflake the particle form is constantly
+    // changing and now very distracting"): Snowflake holds each form ~25-32 s,
+    // breathes slowly, no image echo, sections never cut a form short, gentle dolly
+    const calm = journeyId === "first-snow";
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
     // same distance away … always hover dead center … i need dynamics")
     let dollyFrom = 1, dollyTo = 1, dollyAt = performance.now();
@@ -516,7 +520,7 @@ export function ParticleLeadLayer({
       // and tiny — 0.45 (close, large) … 1.6
       const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(1.6) - Math.log(kLo)));
       dollyFrom = k;
-      dollyTo = k * (0.62 + 0.85 * rand01(4));
+      dollyTo = k * (calm ? 0.88 + 0.24 * rand01(4) : 0.62 + 0.85 * rand01(4));
       dollyAt = performance.now();
       densK = quietImaging ? 0.22 + 0.4 * rand01(2) : 0.3 + 0.7 * rand01(2);
       // forms HOLD (Karel 2026-10-06: "change should be smooth and not jump
@@ -526,7 +530,7 @@ export function ParticleLeadLayer({
       // ("you also kept shifting it fast between different shapes"): forms hold
       // ~10 s per form (Karel 2026-10-07: "10 secs is a rule of thumb … within
       // that time it should have detailed changes just not those big ones")
-      formDur = 9_000 + 3_500 * rand01(3);
+      formDur = calm ? 25_000 + 7_000 * rand01(3) : 9_000 + 3_500 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -545,7 +549,7 @@ export function ParticleLeadLayer({
     const formsNow = (t: number): SoulId[] => { const f = charAt(t)?.forms; return f && f.length ? f : cast.formCycle; };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
-      engine.setSoul(soul, quiet ? 0.5 : 5);
+      engine.setSoul(soul, quiet ? 0.5 : calm ? 8 : 5);
       lastShape = shapeSeed(soul, t + appearN * 11);
       engine.setShape(lastShape, quiet);
       // flower imagery: the blossom unfolds INFINITELY (layers grow from the centre)
@@ -778,7 +782,7 @@ export function ParticleLeadLayer({
       const ec = echoRef.current;
       if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded) {
         echoUsed = ec;
-        if (rand01(81 + echoN) < 0.4) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
+        if (rand01(81 + echoN) < (calm ? 0 : 0.4)) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
       }
       let ecForm = 0, ecShow = 0;
       if (echoAt >= 0) {
@@ -863,7 +867,7 @@ export function ParticleLeadLayer({
 
       const dissolving = engine.dissolveTime() !== null;
       if (w) {
-        if (w.soul !== lastAsked) { lastAsked = w.soul; switchForm(w.soul, t); }
+        if (w.soul !== lastAsked && (!calm || shown < 0.05 || performance.now() - formAt > formDur)) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
@@ -871,9 +875,9 @@ export function ParticleLeadLayer({
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
-      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 3000) {
+      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > (calm ? 8000 : 3000)) {
         microAt = performance.now();
-        const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * 0.16;
+        const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * (calm ? 0.07 : 0.16);
         lastShape = [lastShape[0], lastShape[1], Math.max(0, Math.min(0.999, lastShape[2] + j(1))), Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
         engine.setShape(lastShape, false);
       }
