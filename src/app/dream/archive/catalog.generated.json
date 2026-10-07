@@ -1,5 +1,13 @@
 [
  {
+  "slug": "19520-graft",
+  "cycle": 19520,
+  "name": "Graft",
+  "status": "wip",
+  "description": "What if two of Karel's recordings became one living voice — one take lending its shape (its chords, its dynamics, its phrasing) and the other lending its body (the piano you actual",
+  "category": "local"
+ },
+ {
   "slug": "19440-cantor",
   "cycle": 19440,
   "name": "Cantor",
