@@ -72,8 +72,13 @@ async function render(c, file) {
   // [trippy] snowflake … the wave … not quite trippy enough"): the subject at
   // the heart of a hypnotic kaleidoscopic fractal of Islamic geometry
   // subject LARGE + trippy halo (the kaleidoscope swallowed half the subjects)
-  const prompt = `a large glowing ${c.subject} filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry — interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in ${color} with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
-  const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 4, num_images: 1, enable_safety_checker: true } });
+  // FEATHERY LIGHT-DUST (Karel 2026-10-07: "have the emblem … more like this
+  // design not your cartoony one same for all emblems" + "shouldnt have such a
+  // big frame around each of them. more focused on the inner design"): the
+  // subject alone, large, made of motes and wisps — never the word "heart"
+  // (flux drew literal hearts). Same prompt as scripts/emblems-feathery.mjs.
+  const prompt = `an ethereal ${c.subject} made purely of light, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, ${color}, floating alone in deep black night`;
+  const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 3.5, num_images: 1, enable_safety_checker: true } });
   const url = res.data?.images?.[0]?.url;
   if (!url) throw new Error("no image");
   const buf = Buffer.from(await (await fetch(url)).arrayBuffer());
@@ -98,7 +103,7 @@ for (const [title, members] of groups) {
     // --force re-RENDERS; only --reconcept chooses a new subject
     const c = cache[title]?.subject && !args.includes("--reconcept") ? cache[title] : await concept(title, members);
     if (conceptsOnly) { cache[title] = c; console.error(`${title} → ${c.color} ${c.subject} (${c.why})`); fs.writeFileSync(cachePath, JSON.stringify(cache, null, 1)); continue; }
-    const file = `/tramokyo-pack/emblems/${s}.jpg`;
+    const file = `/tramokyo-pack/emblems/feathery/${s}.jpg`;
     c.prompt = await render(c, path.join(ROOT, "public", file.replace(/^\//, "")));
     c.file = file;
     cache[title] = c;
