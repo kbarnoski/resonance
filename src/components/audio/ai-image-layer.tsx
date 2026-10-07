@@ -340,6 +340,8 @@ export function AiImageLayer({
 
   const effectiveLocalUrls = hasPropLocalImages ? localImageUrls! : packUrls ?? [];
   const hasLocalImages = effectiveLocalUrls.length > 0;
+  const hasLocalImagesRef = useRef(hasLocalImages);
+  hasLocalImagesRef.current = hasLocalImages;
   const localImageUrlsRef = useRef(effectiveLocalUrls);
   useEffect(() => {
     localImageUrlsRef.current = effectiveLocalUrls;
@@ -1421,7 +1423,13 @@ export function AiImageLayer({
         return;
       }
 
-      if (now - lastGenTimeRef.current < nextInterval) return;
+      // the idle rescue must not wait for the cadence (journey review rig
+      // 2026-10-07: images sat 19-22 s — a tick at ~11 s found idle 9.x s,
+      // the solo-hold blocked it, and the next tick came ~11 s later): once
+      // nothing has landed for 10.5 s, tick at once (at most every 1.5 s)
+      const idleNow = now - Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
+      const rescueDue = hasLocalImagesRef.current && idleNow > 10_500 && now - lastGenTimeRef.current > 1500;
+      if (now - lastGenTimeRef.current < nextInterval && !rescueDue) return;
       genCountRef.current++;
       const tierMul = getTierProfile().aiImageIntervalMultiplier;
       // Conductor: quiet phases breathe slower — fewer arrivals, longer
