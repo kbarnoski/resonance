@@ -32,6 +32,10 @@ import {
   CYCLE_INTRO_TIMINGS,
   journeyCapMs,
 } from "./installation-machine";
+import { PARTICLE_LEADS, PARTICLES_ENABLED, particlesForcedThisSession } from "@/lib/journeys/particle-lead";
+import { warmParticleSouls } from "./particle-lead-layer";
+import type { SoulId } from "@/lib/particles/souls";
+const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
@@ -155,6 +159,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // effect on every phase change).
   const phaseRef = useRef<Phase>(phase);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
+  // warm every particle form's GPU program during the intro (black / title),
+  // so no particle pipeline is ever built while a journey is on screen
+  useEffect(() => {
+    if (!particlesActive()) return;
+    const souls = new Set<SoulId>();
+    for (const c of Object.values(PARTICLE_LEADS)) {
+      for (const x of [...c.morphSouls, ...Object.values(c.souls), ...c.windows.map((w) => w.soul), ...(c.formCycle ?? [])]) souls.add(x);
+    }
+    warmParticleSouls([...souls]);
+  }, []);
   const programIndexRef = useRef(programIndex);
   useEffect(() => { programIndexRef.current = programIndex; }, [programIndex]);
 

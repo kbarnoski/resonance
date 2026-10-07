@@ -58,9 +58,35 @@ export function onParticlesDisabled(cb: () => void): () => void {
   return () => listeners.delete(cb);
 }
 
+// ── release with a FADE (2026-10-06 zero-glitch: a jump/skip tore the layer
+// down and the field vanished in one frame). The canvas moves to a fixed
+// overlay and fades over 1.5 s while the engine keeps running; the next
+// journey's acquire cancels the fade and takes the canvas back.
+let releaseTimer: ReturnType<typeof setTimeout> | null = null;
+export function releaseSharedParticleEngineWithFade(): void {
+  const sh = shared;
+  if (!sh || typeof document === "undefined") return;
+  const visible = sh.canvas.style.visibility !== "hidden" && Number(sh.canvas.style.opacity || "0") > 0.02;
+  if (!visible) { sh.engine.stop(); sh.canvas.style.visibility = "hidden"; sh.canvas.remove(); return; }
+  Object.assign(sh.canvas.style, { position: "fixed", inset: "0", zIndex: "3", transition: "opacity 1.5s linear" } as Partial<CSSStyleDeclaration>);
+  document.body.appendChild(sh.canvas);
+  requestAnimationFrame(() => { sh.canvas.style.opacity = "0"; });
+  if (releaseTimer) clearTimeout(releaseTimer);
+  releaseTimer = setTimeout(() => {
+    releaseTimer = null;
+    sh.engine.stop();
+    sh.canvas.style.visibility = "hidden";
+    if (sh.canvas.parentElement === document.body) sh.canvas.remove();
+  }, 1600);
+}
+
 export function acquireSharedParticleEngine(budget: { count: number; dpr: number; trailScale: number }): SharedParticleEngine | null {
   if (disabledWhy) return null;
-  if (shared) return shared;
+  if (releaseTimer) { clearTimeout(releaseTimer); releaseTimer = null; }
+  if (shared) {
+    Object.assign(shared.canvas.style, { position: "absolute", inset: "0", zIndex: "", transition: "opacity 0.6s linear" } as Partial<CSSStyleDeclaration>);
+    return shared;
+  }
   const canvas = document.createElement("canvas");
   Object.assign(canvas.style, {
     position: "absolute", inset: "0", width: "100%", height: "100%", pointerEvents: "none",

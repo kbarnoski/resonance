@@ -44,12 +44,12 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { keyedFlashAngel } from "./flash-angel";
 import { FIELD_FORMS, isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
-import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason } from "@/lib/particles/shared-engine";
+import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason, releaseSharedParticleEngineWithFade } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage, particlePaletteFire, particlePaletteFloral } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire, particlePaletteFloral, particlePaletteGhost } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -61,7 +61,7 @@ const TIER_BUDGET = {
   // alone, 3 shaders: 99 fps): 410k @ DPR 2 → 65 fps · 410k @ 1.5 → 74 ·
   // 262k @ 1.5 → 109 fps, p95 16.7 ms (one supporting shader). DPR matches
   // the shader stack's 1.5× ceiling (visualizer.tsx).
-  high: { count: 262_144, dpr: 1.5, trailScale: 1 },
+  high: { count: 160_000, dpr: 1.0, trailScale: 1 }, // 262k → 160k (2026-10-06 kiosk freeze guard)
   medium: { count: 131_072, dpr: 1.25, trailScale: 1 },
   low: { count: 65_536, dpr: 1, trailScale: 0 },
 } as const;
@@ -75,6 +75,64 @@ const MORPH_TAIL_SEC = 10;
 
 /** Following a particle-like shader (see sampleFollow) — off: kiosk stalls. */
 const FOLLOW_ENABLED = false;
+
+/** Build + warm EVERY soul's program once per session while the screen is
+ *  black (the installation loop's intro / title card) — after this no
+ *  particle pipeline is ever built mid-journey (2026-10-06 zero-glitch). */
+let warmStarted = false;
+export function warmParticleSouls(souls: SoulId[]): void {
+  if (warmStarted || typeof window === "undefined") return;
+  warmStarted = true;
+  const sh = acquireSharedParticleEngine({ count: budgetFor().count, dpr: budgetFor().dpr, trailScale: budgetFor().trailScale });
+  if (!sh) return;
+  sh.engine.prepare(souls);
+  const t0 = performance.now();
+  // compiles run in parallel (KHR_parallel_shader_compile); burst-warm whatever
+  // has compiled, merged into the page-load hitch, until all are warm
+  const iv = window.setInterval(() => {
+    const done = sh.engine.warmBurst();
+    if (done || performance.now() - t0 > 25_000) {
+      window.clearInterval(iv);
+      glitchRecord("particle-warm", `${souls.length} souls ${done ? "warm" : "partial"} in ${Math.round(performance.now() - t0)} ms`);
+    }
+  }, 400);
+}
+
+type EmblemSource = HTMLCanvasElement | "@angel" | "@angel-outline";
+let angelOutline: HTMLCanvasElement | null = null;
+/** "@angel" → the keyed flash angel; "@angel-outline" → the angel traced as
+ *  lines of light (luminance edges), so particles DRAW it rather than fill it. */
+function resolveEmblem(src: EmblemSource | null): HTMLCanvasElement | null {
+  if (!src) return null;
+  if (src === "@angel") return keyedFlashAngel(1);
+  if (src === "@angel-outline") {
+    if (angelOutline) return angelOutline;
+    const a = keyedFlashAngel(1);
+    if (!a) return null;
+    const k = Math.min(1, 512 / Math.max(a.width, a.height));
+    const w = Math.round(a.width * k), h = Math.round(a.height * k);
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return a;
+    ctx.drawImage(a, 0, 0, w, h);
+    const d = ctx.getImageData(0, 0, w, h);
+    const L = new Float32Array(w * h);
+    for (let i = 0; i < w * h; i++) L[i] = (0.3 * d.data[i * 4] + 0.59 * d.data[i * 4 + 1] + 0.11 * d.data[i * 4 + 2]) / 255;
+    const o = ctx.createImageData(w, h);
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+      const i = y * w + x;
+      const gx = L[i + 1] - L[i - 1] + 0.5 * (L[i - w + 1] - L[i - w - 1] + L[i + w + 1] - L[i + w - 1]);
+      const gy = L[i + w] - L[i - w] + 0.5 * (L[i + w - 1] - L[i - w - 1] + L[i + w + 1] - L[i - w + 1]);
+      const e = Math.min(1, Math.hypot(gx, gy) * 3.2);
+      o.data[i * 4] = 255 * e; o.data[i * 4 + 1] = 240 * e; o.data[i * 4 + 2] = 248 * e; o.data[i * 4 + 3] = 255;
+    }
+    ctx.putImageData(o, 0, 0);
+    angelOutline = c;
+    return c;
+  }
+  return src;
+}
 
 let emblemMap: Promise<Record<string, string | string[]>> | null = null;
 /** Journey → emblem image (offline pack; empty where the pack has none). */
@@ -129,19 +187,32 @@ export function ParticleLeadLayer({
   frameRef.current = frame;
   // the journey's EMBLEM image (pack: local-emblems.json) — "@angel" = Ghost's angel
   // (an array = variants: each appearance shows a different one — Snowflake)
-  const emblemRef = useRef<HTMLImageElement[] | "@angel" | null>(null);
+  // entries are images, or tokens: "@angel" (the flash angel), "@angel-outline"
+  // (the angel traced as lines of light) — Ghost rotates through treatments
+  const emblemRef = useRef<EmblemSource[] | null>(null);
   useEffect(() => {
     emblemRef.current = null;
     let cancelled = false;
     void loadEmblemMap().then((map) => {
       const src = map[journeyId];
       if (cancelled || !src) return;
-      if (src === "@angel") { emblemRef.current = "@angel"; return; }
       const list = Array.isArray(src) ? src : [src];
-      const imgs: HTMLImageElement[] = [];
+      const imgs: EmblemSource[] = list.filter((u) => u.startsWith("@")) as EmblemSource[];
+      if (imgs.length) emblemRef.current = [...imgs];
       for (const u of list) {
+        if (u.startsWith("@")) continue;
         const img = new Image();
-        img.onload = () => { if (cancelled) return; imgs.push(img); emblemRef.current = [...imgs]; };
+        // decoded + shrunk to ≤512 px NOW, so forming it later uploads a small
+        // texture (a full 1024² JPEG upload hitched ~230 ms on a visible frame)
+        img.onload = () => {
+          if (cancelled) return;
+          const k = Math.min(1, 512 / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+          imgs.push(c);
+          emblemRef.current = [...imgs];
+        };
         img.src = u;
       }
     });
@@ -177,6 +248,9 @@ export function ParticleLeadLayer({
     });
     const engine = sh.engine;
     const tier = getDeviceTier();
+    // continuity: a field still fading from the previous journey carries over
+    // from its current opacity (never a cut at the handoff)
+    const carry = Math.max(0, Math.min(1, Number(sh.canvas.style.opacity || "0") || 0));
     host.appendChild(sh.canvas);
     canvasRef.current = sh.canvas;
     engine.resize();
@@ -197,7 +271,11 @@ export function ParticleLeadLayer({
       proc.step(dt);
       return proc.frame();
     };
-    // compile + warm everything this journey will show NOW, invisibly
+    // a fresh journey: no leftover image form / variant / field from the last one
+    engine.setImageForm(0, 0);
+    engine.setImageVariant(false, 0);
+    engine.setInstances(1, 0);
+    // queue this journey's souls (normally already warm: warmParticleSouls at the loop's intro)
     engine.prepare(soulSequence(cast));
     engine.setGain((cast.gain ?? 1) * 1.7);
     engineRef.current = engine;
@@ -256,7 +334,7 @@ export function ParticleLeadLayer({
     // SMOOTH FADES ONLY (Karel 2026-10-05: "the particles always need to
     // smoothly fade out not drop out"): what is shown is slew-limited —
     // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
-    let shown = 0;
+    let shown = carry;
     let veilShown = 0;
     // density GATHERS on the way in but HOLDS on the way out — thinning while
     // fading turned the field into a few big, bright motes popping out one by
@@ -384,6 +462,7 @@ export function ParticleLeadLayer({
     // flash form (Ghost)
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | null = null;
+    let treatN = 0;
     let imgKey: string | null = null;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
     let emblemOn = false;
@@ -499,11 +578,15 @@ export function ParticleLeadLayer({
       const wantKey = want === "emblem" ? `emblem:${emOcc}` : want;
       if (want && wantKey !== imgKey) {
         const em = emblemRef.current;
-        const img: HTMLCanvasElement | HTMLImageElement | null = want === "angel" || em === "@angel" ? keyedFlashAngel(1) : Array.isArray(em) && em.length ? em[(emOcc + appearN) % em.length] : null;
+        // the flash itself is always the exact angel; every OTHER angel moment
+        // (signature, emblem) takes the next treatment — angel, wings, outline …
+        const pickFrom = em && em.length ? em[(treatN + emOcc) % em.length] : null;
+        const img: HTMLCanvasElement | HTMLImageElement | null = flashing ? keyedFlashAngel(1) : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
           engine.loadFormImage(img, img.width / Math.max(1, img.height));
           imgLoaded = want;
           imgKey = wantKey;
+          if (!flashing) treatN++;
           // never the same twice (Karel 2026-10-06): mirror, tilt, size, how
           // literally it forms — the flash alone stays exact (it meets the flash image)
           const r1 = rand01(41 + appearN * 3 + emOcc), r2 = rand01(42 + appearN * 3 + emOcc), r3 = rand01(43 + appearN * 3 + emOcc);
@@ -675,7 +758,8 @@ export function ParticleLeadLayer({
       const vfr = vf - Math.floor(vf);
       const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}:${floral}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
       if (vk && vk !== palVoiceKey) {
-        const mk = (v: number) => (fire ? particlePaletteFire(ipPhase, v) : floral ? particlePaletteFloral(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        const ghost = cast.signatureImage === "angel";
+        const mk = (v: number) => (ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : floral ? particlePaletteFloral(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }
@@ -749,14 +833,12 @@ export function ParticleLeadLayer({
       offClip();
       setParticlePresent(false);
       window.removeEventListener("resize", onResize);
-      // keep the shared engine + context for the next journey; just detach
-      engine.stop();
       sh.hooks.audio = null;
       offStart();
       offDisable();
-      sh.canvas.style.visibility = "hidden";
-      sh.canvas.style.opacity = "0";
-      if (sh.canvas.parentElement === host) host.removeChild(sh.canvas);
+      // keep the shared engine + context for the next journey; a VISIBLE field
+      // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
+      releaseSharedParticleEngineWithFade();
       engineRef.current = null;
       delete (window as unknown as Record<string, unknown>).__resonanceParticleLead;
     };

@@ -122,7 +122,7 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
  *  Snowflake right as particles first emerged (~0:08-0:09; 1.1s frame gap
  *  then a hang), reproducibly. Headless GPU checks never caught it. Off
  *  everywhere until the hang is root-caused and verified in kiosk Chrome. */
-export const PARTICLES_ENABLED = false;
+export const PARTICLES_ENABLED = true;
 
 /** On-kiosk A/B (2026-10-05): the remote's "particles-on" sets this for the
  *  kiosk tab only (sessionStorage), so particles can be measured on the real
@@ -251,6 +251,17 @@ export function particlePaletteFire(ip: { key: string; colors: string[] } | null
   };
 }
 
+/** Ghost (Karel 2026-10-06: "bright white particles"): luminous whites with
+ *  a breath of blush / lavender; floral moments lean pink (the pink flowers). */
+export function particlePaletteGhost(floral: boolean, voice = 1): ParticlePalette {
+  const v = Math.round(voice) % 4;
+  const blush: [number, number, number] = floral ? [1.0, 0.62, 0.78] : [1.0, 0.9, 0.95];
+  const lav: [number, number, number] = [0.93, 0.9, 1.0];
+  const white: [number, number, number] = [1.0, 1.0, 1.0];
+  const order = [[blush, white, lav], [white, blush, white], [lav, white, blush], [white, lav, white]][v];
+  return { low: order[0], mid: order[1], high: order[2] };
+}
+
 /** Floral imagery (Karel 2026-10-06: Ghost's particles "should make pink
  *  flowers"): the palette's pinks and roses lead; a soft pink if it has none. */
 export function particlePaletteFloral(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette {
@@ -284,14 +295,15 @@ export function particlePaletteFrom(p?: { primary: string; secondary: string; ac
   };
 }
 
-/** Strip dual + tertiary shaders while particles are PRESENT (one supporting
- *  shader) — never on a mastered journey. */
+/** The shader stack is NO LONGER stripped while particles are present
+ *  (2026-10-06 zero-glitch pass): unmounting the dual/tertiary layers on
+ *  entry and re-creating them (new WebGL canvases + compiles) as the particles
+ *  faded out stuttered the last ~0.6 s of every particle fade. Kept as an
+ *  identity so call sites stay stable. */
 export function withParticleLeadSupports<T extends { dualShaderMode?: string; tertiaryShaderMode?: string }>(
   frame: T | null,
-  lead: ParticleLeadCast | null,
-  present = true,
+  _lead: ParticleLeadCast | null,
+  _present = true,
 ): T | null {
-  if (!frame || !lead || lead.mastered || !present) return frame;
-  if (!frame.dualShaderMode && !frame.tertiaryShaderMode) return frame;
-  return { ...frame, dualShaderMode: undefined, tertiaryShaderMode: undefined };
+  return frame;
 }

@@ -195,6 +195,10 @@ export interface ParticleEngine {
   /** Queue async compiles for these souls (and the blends between neighbours
    *  in the list) — call at journey start, long before they are visible. */
   prepare(souls: SoulId[]): void;
+  /** Warm every compiled program NOW in one burst (screen black); true when all warm. */
+  warmBurst(maxSteps?: number): boolean;
+  /** Minimum ms between warm draws (faster while the screen is black). */
+  setWarmPace(ms: number): void;
   /** Idle step while the field is invisible: poll compiles, warm ONE program
    *  (a 1-pixel draw builds its GPU pipeline). Cheap; call ~10×/s. */
   prewarm(): void;
@@ -394,20 +398,22 @@ export function createParticleEngine(
   const warmLog: [string, number, number][] = [];
   // simulation variants: one per soul pair, only the force laws they need
   const simProgs = new Map<string, Prog>();
-  // a journey's UNION program: every soul it will show, one build + one warm
-  // at the journey's start, then no pipeline builds mid-journey (each pair
-  // program's first draw stalled the page 80–390 ms on the kiosk)
-  let union: { set: Set<number>; prog: Prog } | null = null;
-  const simProgFor = (a: number, b: number): Prog => {
-    if (union && union.set.has(a) && union.set.has(b)) return union.prog;
-    const k = a <= b ? `${a},${b}` : `${b},${a}`;
+  // ONE SMALL PROGRAM PER SOUL (2026-10-06, after a 49 s kiosk freeze with a
+  // per-journey union program): every soul's program is built and warmed ONCE
+  // per session while the screen is black (warmSouls, the loop's intro), and a
+  // form change runs only the TARGET soul's force — particles GLIDE from the
+  // old form to the new one under a speed cap (no pair/union programs, no
+  // pipeline build can ever land mid-journey). `a` is kept for call-site parity.
+  const simProgFor = (_a: number, b: number): Prog => {
+    const k = `s:${b}`;
     let pr = simProgs.get(k);
     if (!pr) {
-      pr = startProgram(gl!, QUAD_VS, buildSimFS([a, b]));
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([b]));
       simProgs.set(k, pr);
     }
     return pr;
   };
+  let warmGapMs = 350;
   let stalled = false;
   const stall = (why: string) => {
     if (stalled) return;
@@ -746,7 +752,9 @@ export function createParticleEngine(
     const simDt = dt * motion;
     entryT += dt;
     const entryK = Math.min(1, entryT / 5);
-    const maxSpeedNow = 0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK);
+    // a form change GLIDES: the cap starts low and opens with the blend
+    const glideK = soulB !== soulA ? 0.3 + 0.7 * e : 1;
+    const maxSpeedNow = (0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK)) * glideK;
     const disperseNow = disperseNext;
     disperseNext = false;
     hueSpread += (hueSpreadTarget - hueSpread) * kHue;
@@ -816,10 +824,11 @@ export function createParticleEngine(
     g.uniform3f(sim.u.uBands, (f?.bands.bass ?? 0) * reactS, (f?.bands.mid ?? 0) * reactS, (f?.bands.treble ?? 0) * reactS);
     g.uniform3f(sim.u.uBandLv, Math.min(1, (f?.bandLevels.bass ?? 0) * reactS), Math.min(1, (f?.bandLevels.mid ?? 0) * reactS), Math.min(1, (f?.bandLevels.treble ?? 0) * reactS));
     g.uniform1f(sim.u.uSwell, Math.min(1, (f?.swell ?? 0) * reactS));
-    g.uniform1i(sim.u.uSoulA, soulA.index);
+    // single-soul program: the TARGET soul's force only (the glide does the blend)
+    g.uniform1i(sim.u.uSoulA, soulB.index);
     g.uniform1i(sim.u.uSoulB, soulB.index);
-    g.uniform1f(sim.u.uMix, soulB === soulA ? 0 : e);
-    g.uniform1i(sim.u.uPasses, soulB === soulA || e <= 0.001 ? 1 : 2);
+    g.uniform1f(sim.u.uMix, 0);
+    g.uniform1i(sim.u.uPasses, 1);
     g.uniform1i(sim.u.uTexW, side);
     g.uniform1f(sim.u.uCount, count);
     g.uniform1f(sim.u.uSmokeW, smokeW);
@@ -1007,12 +1016,13 @@ export function createParticleEngine(
   // that here, while the field is invisible and one program at a time, keeps
   // it off every visible frame (the kiosk hang).
   let lastWarmAt = -1e9;
-  function prewarmStep() {
+  function prewarmStep(force = false) {
     if (lost || stalled) return;
     const g = gl!;
     const t0 = performance.now();
-    // at most one GPU pipeline build per 350 ms, visible or not
-    if (t0 - lastWarmAt < 350) return;
+    // at most one GPU pipeline build per 350 ms, visible or not (unless forced:
+    // the session warm-up bursts while nothing is on screen)
+    if (!force && t0 - lastWarmAt < warmGapMs) return;
     const all = [...fixedProgs, ...simProgs.values()];
     for (const pr of all) {
       pollProgram(g, pr, par);
@@ -1178,23 +1188,22 @@ export function createParticleEngine(
       if (pendingSoul) simProgFor(soulA.index, next.index); // queue its compile now
     },
     prepare(souls) {
-      const idx = [...new Set(souls.map((x) => soulById(x).index).concat([soulA.index, soulB.index]))].sort((a, b) => a - b);
-      const key = `u:${idx.join(",")}`;
-      // a previous journey's programs that never warmed must NOT be warmed
-      // later by the idle prewarm (kiosk 2026-10-06: Snowflake's cold union
-      // built mid-Ghost — a 2.5 s stall); warm ones stay cached for revisits
-      for (const [k, pr] of [...simProgs]) {
-        if (k !== key && !pr.warm) { gl!.deleteProgram(pr.p); simProgs.delete(k); }
-      }
-      let prog = simProgs.get(key);
-      if (!prog) {
-        prog = startProgram(gl!, QUAD_VS, buildSimFS(idx));
-        simProgs.set(key, prog);
-      }
-      union = { set: new Set(idx), prog };
+      // queue each soul's own small program (shared across journeys, kept for the session)
+      for (const id of new Set(souls)) simProgFor(0, soulById(id).index);
     },
+    setWarmPace(ms) { warmGapMs = Math.max(60, Math.min(1000, ms)); },
     prewarm() {
       if (!running) prewarmStep();
+    },
+    warmBurst(maxSteps = 80) {
+      if (running) return false;
+      for (let i = 0; i < maxSteps; i++) {
+        const before = [...fixedProgs, ...simProgs.values()].filter((p) => p.warm).length;
+        prewarmStep(true);
+        const after = [...fixedProgs, ...simProgs.values()].filter((p) => p.warm).length;
+        if (after === before && particlesInitialised) break; // nothing ready to warm right now
+      }
+      return [...fixedProgs, ...simProgs.values()].every((p) => p.warm);
     },
     isWarm() {
       return [...fixedProgs, ...simProgs.values()].every((pr) => pr.warm);

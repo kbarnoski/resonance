@@ -35,8 +35,10 @@ const OUT_DIR = path.join(ROOT, "public/tramokyo-pack/emblems");
 fs.mkdirSync(OUT_DIR, { recursive: true });
 const cachePath = path.join(ROOT, "scripts/journey-emblems.json");
 const cache = fs.existsSync(cachePath) ? JSON.parse(fs.readFileSync(cachePath, "utf8")) : {};
-const mapPath = path.join(ROOT, "public/tramokyo-pack/local-emblems.json");
-const map = fs.existsSync(mapPath) ? JSON.parse(fs.readFileSync(mapPath, "utf8")) : {};
+// --staging: write the map to local-emblems.staging.json (review before it goes live)
+const mapPath = path.join(ROOT, args.includes("--staging") ? "public/tramokyo-pack/local-emblems.staging.json" : "public/tramokyo-pack/local-emblems.json");
+const livePath = path.join(ROOT, "public/tramokyo-pack/local-emblems.json");
+const map = fs.existsSync(mapPath) ? JSON.parse(fs.readFileSync(mapPath, "utf8")) : fs.existsSync(livePath) ? JSON.parse(fs.readFileSync(livePath, "utf8")) : {};
 
 const base = (name) => name.replace(/\s*\((expanded|jam)\)\s*$/i, "").replace(/\s+\d+[a-z]?$/i, "").trim();
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -60,7 +62,9 @@ Reply JSON only: {"subject":"<2-5 words>","color":"<colour words>","why":"<one s
 
 async function render(c, file) {
   const color = c.color.replace(/\(?#[0-9a-f]{6}[^)]*?\)?/gi, "").replace(/\s+/g, " ").replace(/\s+([,)])/g, "$1").trim();
-  const prompt = `a single luminous ${color} ${c.subject} emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated`;
+  // never a basic icon (Karel 2026-10-06: the plain snowflake was "too basic —
+  // the insanely geometric trippy kind"): intricate, visionary, still readable
+  const prompt = `a single luminous ${color} ${c.subject} emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a ${c.subject}, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast`;
   const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 4, num_images: 1, enable_safety_checker: true } });
   const url = res.data?.images?.[0]?.url;
   if (!url) throw new Error("no image");

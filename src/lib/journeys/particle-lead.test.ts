@@ -86,7 +86,8 @@ describe("particle lead registry (v3 rollout)", () => {
   it("strips dual + tertiary only while particles are present", () => {
     const f = { shaderMode: "a", dualShaderMode: "b", tertiaryShaderMode: "c" };
     const cast = PARTICLE_LEADS[LANTERN_ID];
-    expect(withParticleLeadSupports(f, cast, true)).toEqual({ shaderMode: "a", dualShaderMode: undefined, tertiaryShaderMode: undefined });
+    // supports are never stripped any more (fade-out stutter, 2026-10-06)
+    expect(withParticleLeadSupports(f, cast, true)).toBe(f);
     expect(withParticleLeadSupports(f, cast, false)).toBe(f);
     expect(withParticleLeadSupports(f, null)).toBe(f);
   });

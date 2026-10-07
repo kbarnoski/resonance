@@ -1008,6 +1008,9 @@ void main(){
   // ember (rank 0) so the field can settle to exactly one light
   float rank = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
   float visW = uDensity >= 0.999 ? 1.0 : 1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rank);
+  // hidden motes cost NOTHING (2026-10-06): culled before rasterisation —
+  // sparse fields used to rasterise every invisible mote at up to 32 px
+  if (visW < 0.003 && uImgShow < 0.001) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   float sparse = 1.0 - clamp(uDensity * 8.0, 0.0, 1.0); // sparse fields: fewer, bigger, brighter motes
   float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
   boost = mix(boost, 1.0, uImgShow);
@@ -1015,7 +1018,7 @@ void main(){
   float size = mix(1.55, 0.5, band) * (0.45 + 1.6 * s.b * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 1.0, uImgShow);
   float a = uAlpha;
   if (size < 1.0) { a *= size * size; size = 1.0; }
-  gl_PointSize = min(size, 32.0);
+  gl_PointSize = min(size, 24.0);
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   vec4 Id = instOf(s, uInst, uInstSeed);
