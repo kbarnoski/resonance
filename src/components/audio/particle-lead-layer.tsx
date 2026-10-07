@@ -708,7 +708,7 @@ export function ParticleLeadLayer({
           engine.setImageTint(want === "motif" ? 1 : 0);
           engine.setInstances(1, 0);
           appearN++;
-          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : `emblem ${emOcc}`);
+          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : `emblem ${emOcc}`);
         }
       }
       emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
