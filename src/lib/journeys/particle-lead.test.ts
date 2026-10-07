@@ -71,7 +71,12 @@ describe("particle lead registry (v3 rollout)", () => {
       const a = PARTICLE_LEADS[ids[i - 1]], b = PARTICLE_LEADS[ids[i]];
       expect(JSON.stringify(b.morphSouls), `${a.name} → ${b.name}`).not.toBe(JSON.stringify(a.morphSouls));
     }
-    for (const c of Object.values(PARTICLE_LEADS)) for (let i = 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
+    // (journeys with a single procedural form — Ghost's pink blossom — vary
+    // through their motif-form designs instead)
+    for (const c of Object.values(PARTICLE_LEADS)) {
+      if (new Set((c.phaseChars ?? []).flatMap((p) => p.forms)).size <= 1) continue;
+      for (let i = 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
+    }
   });
 
   it("the whole INTRICATE library gets used across the set (v8: 7 forms; variety lives in shape seeds, fields, colour, distance)", () => {
@@ -152,11 +157,11 @@ describe("particles echo the IMAGERY (Karel 2026-10-06 design principle)", () =>
       }
     }
   });
-  it("Realized (lava, fire, embers) casts FLAMES with the fire colour ramp", () => {
+  it("Realized (lava, fire, embers) reads as FIRE through colour, never the retired flame form", () => {
     const r = PARTICLE_LEADS["inferno"];
     expect(r.phaseChars?.length).toBeGreaterThan(0);
-    expect(r.phaseChars!.filter((p) => p.forms[0] === "flame").length).toBeGreaterThanOrEqual(3);
     expect(r.phaseChars!.some((p) => p.fire)).toBe(true);
+    for (const p of r.phaseChars!) expect(p.forms).not.toContain("flame");
   });
   it("Ghost (petals, wings) casts floral / airy forms, never flames", () => {
     const g = PARTICLE_LEADS["ghost"];
@@ -167,9 +172,8 @@ describe("particles echo the IMAGERY (Karel 2026-10-06 design principle)", () =>
   it("every particle journey has vision-tagged phases", () => {
     for (const [id, c] of Object.entries(PARTICLE_LEADS)) expect(c.phaseChars?.length ?? 0, id).toBeGreaterThan(0);
   });
-  it("the fire palette runs from a blue hearth to hot tips", () => {
+  it("the fire palette is all ember → hot (no blue hearth since the flame form retired)", () => {
     const p = particlePaletteFire({ key: "#ad4a1a", colors: ["#1e1617", "#602511", "#ad4a1a", "#e5943d", "#364755"] }, 0);
-    expect(p.low[2]).toBeGreaterThan(p.low[0]); // blue at the hearth
-    expect(p.high[0]).toBeGreaterThan(p.high[2]); // hot at the tips
+    for (const c of [p.low, p.mid, p.high]) expect(c[0]).toBeGreaterThan(c[2]);
   });
 });

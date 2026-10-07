@@ -19,7 +19,7 @@ export const ORGANIC_SOULS: readonly SoulId[] = [
   // v8 INTRICATE language (Karel 2026-10-06): Islamic-geometric girih +
   // medallions, mandala, kaleidoscope, blossom fields; fire keeps its flame,
   // water its caustic web
-  "girih", "medallion", "mandala", "kaleido", "blossom", "flame", "caustic",
+  "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
 ];
 
 /** Banned in journeys: 3-D ellipses, squares/grids, the tree, the cube — and
@@ -28,17 +28,18 @@ export const BANNED_SOULS: readonly SoulId[] = [
   "orbitals", "rings", "arcs", "lissajous", "knot", "harmonics", "polyhedron", "superformula",
   "torus", "cymatics", "geometry", "branches", "spirit", "threads", "helix",
   "bloom", "vortex", "rose", "spirograph", "nebula", "ink", "murmuration", "ribbons", "tendrils", "wisp", "petalfall",
+  "flame", // Karel 2026-10-06: "stay away from this type of tiny form" (a small blocky flame)
 ];
 
 type W = [SoulId, number][];
-const FIRE: W = [["flame", 2.4], ["blossom", 1.7], ["medallion", 1.6], ["girih", 1.4], ["mandala", 1.2]];
-const LIGHT: W = [["medallion", 2], ["blossom", 1.9], ["girih", 1.8], ["mandala", 1.5], ["kaleido", 1]];
+const FIRE: W = [["mandala", 2.2], ["medallion", 1.8], ["girih", 1.4], ["kaleido", 1]];
+const LIGHT: W = [["medallion", 2], ["girih", 1.8], ["mandala", 1.5], ["kaleido", 1]];
 const FLORAL: W = [["blossom", 3], ["medallion", 1.5], ["mandala", 1.5], ["kaleido", 1]];
-const GREEN: W = [["blossom", 2.4], ["girih", 1.4], ["mandala", 1.2], ["kaleido", 1]];
-const WATER: W = [["caustic", 2.5], ["blossom", 1.7], ["medallion", 1.4], ["kaleido", 1.2], ["girih", 1]];
+const GREEN: W = [["blossom", 1.2], ["girih", 1.4], ["mandala", 1.2], ["kaleido", 1]];
+const WATER: W = [["caustic", 2.5], ["medallion", 1.4], ["kaleido", 1.2], ["girih", 1]];
 const CRYSTAL: W = [["kaleido", 2.5], ["girih", 2], ["medallion", 1.5]];
-const AIR: W = [["girih", 1.6], ["blossom", 1.6], ["medallion", 1.5], ["mandala", 1.2], ["kaleido", 1]];
-const COSMOS: W = [["medallion", 2], ["blossom", 1.7], ["kaleido", 1.6], ["girih", 1.4], ["mandala", 1.2]];
+const AIR: W = [["girih", 1.6], ["medallion", 1.5], ["mandala", 1.2], ["kaleido", 1]];
+const COSMOS: W = [["medallion", 2], ["kaleido", 1.6], ["girih", 1.4], ["mandala", 1.2]];
 const GEO: W = [["girih", 2.5], ["kaleido", 2], ["medallion", 1.5]];
 const MOTIF_FORMS: Record<string, W> = {
   fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
@@ -52,7 +53,7 @@ const MOTIF_FORMS: Record<string, W> = {
   "city-neon": GEO, "silk-fabric": GEO, geometric: GEO,
 };
 const MOVE_FORMS: Record<string, W> = {
-  rising: [["flame", 0.6]],
+  rising: [["blossom", 0.5]],
   unfurling: [["blossom", 1]],
   rippling: [["caustic", 1]],
   swirling: [["medallion", 0.6], ["kaleido", 0.5]],
@@ -61,7 +62,7 @@ const MOVE_FORMS: Record<string, W> = {
   flowing: [["girih", 0.5]],
   streaming: [["girih", 0.5]],
   drifting: [["girih", 0.4], ["blossom", 0.3]],
-  flickering: [["flame", 0.5]],
+  flickering: [["kaleido", 0.5]],
 };
 
 function hash01(str: string): number {
@@ -90,8 +91,27 @@ export interface PhaseCharacter {
   fire: boolean;
   /** floral imagery (petals, blossoms, flowers): the palette's pinks lead */
   floral: boolean;
+  /** imagery family → which motif-form designs the field forms (pack: motif-forms.json) */
+  family: string;
   /** motion multiplier from the imagery's movement (flicker livelier, drift calmer) */
   motion: number;
+}
+
+const FAMILY_OF: Record<string, string> = {
+  fire: "fire", lava: "fire", embers: "fire", sun: "fire",
+  flowers: "floral", blossoms: "floral", petals: "floral", butterflies: "floral",
+  leaves: "green", forest: "green", mushrooms: "green", vines: "green", fireflies: "green", "birds-flock": "green",
+  water: "water", "ocean-waves": "water", rain: "water", "pool-ripples": "water", underwater: "water",
+  "ice-snow": "crystal", crystal: "crystal",
+  clouds: "air", mist: "air", smoke: "air", wind: "air", "sand-desert": "air", stone: "air", "cave-tunnel": "air",
+  stars: "cosmos", nebula: "cosmos", galaxy: "cosmos", planet: "cosmos", aurora: "cosmos",
+  "light-rays": "light", "golden-light": "light", figure: "light", "wings-feathers": "light",
+  "city-neon": "geo", "silk-fabric": "geo", geometric: "geo",
+};
+/** The imagery FAMILY of a phase (its strongest motif) — picks motif-form designs. */
+export function familyOf(pm: PhaseMotif | undefined): string {
+  for (const { m } of pm?.motifs ?? []) if (FAMILY_OF[m]) return FAMILY_OF[m];
+  return "geo";
 }
 
 /** Per phase: forms + colour behaviour + motion, from the vision tags. */
@@ -104,12 +124,17 @@ export function phaseCharacters(journeyId: string): PhaseCharacter[] {
     const floral = ["petals", "blossoms", "flowers"].some((m) => (pm?.motifs ?? []).some((x) => x.m === m));
     const mv = new Set(pm?.moves ?? []);
     const motion = mv.has("flickering") || mv.has("swirling") || mv.has("streaming") ? 1.2 : mv.has("drifting") || mv.has("still") ? 0.8 : 1;
-    return { forms, fire, floral, motion };
+    return { forms, fire, floral, motion, family: familyOf(pm) };
   });
 }
 
 /** Forms that read beautifully as a FIELD of many small copies. */
-export const FIELD_FORMS: ReadonlySet<SoulId> = new Set(["blossom", "flame", "medallion", "mandala", "kaleido"]);
+export const FIELD_FORMS: ReadonlySet<SoulId> = new Set(["blossom", "medallion", "mandala", "kaleido"]);
+
+/** Forms that carry FULL-SPECTRUM colour (Karel 2026-10-06: "mind blowing ones
+ *  with lots of full spectrum color and patterns") — anchored on the palette,
+ *  the hue wheels around the form and ripples outward through its rings. */
+export const SPECTRUM_FORMS: ReadonlySet<SoulId> = new Set(["mandala", "medallion", "girih", "kaleido"]);
 
 /** Shaders drawn around the screen centre (suns, portals, mandalas …): the
  *  particles align exactly with that centre point (Karel 2026-10-06). */

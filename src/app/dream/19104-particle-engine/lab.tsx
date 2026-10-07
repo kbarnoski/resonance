@@ -152,6 +152,7 @@ export function LabView() {
     const densQ = Number(q.get("dens")); if (densQ > 0) engine.setDensity(densQ);
     const sizeQ = Number(q.get("size")); if (sizeQ > 0) engine.setSizeScale(sizeQ);
     const camQ = Number(q.get("cam")); if (camQ > 0) engine.setCamScale(camQ);
+    const hsQ = Number(q.get("hs")); if (hsQ > 0) engine.setHueSpread(hsQ);
     engine.start();
 
     const onResize = () => engine.resize();

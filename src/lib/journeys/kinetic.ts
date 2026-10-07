@@ -116,10 +116,12 @@ export type BandProfile = {
  *  release slew — is unchanged, so the extra drive swells, never jitters;
  *  still motion only, never luminance. Pre-bump values:
  *  bass 16/0.035/0.30-2.30, mid 11/0.015/0.55-1.50, treble 22/0.010/0.50-2.60. */
+// +20 % again (Karel 2026-10-06: "shaders another 20% more responsive"):
+// gain and scale ×1.2, each band's speed range widened 20 % around 1.0
 export const BAND_PROFILES: Record<BandFocus, BandProfile> = {
-  bass:   { gain: 19.2, decay: 0.88,  scale: 0.042, rateLo: 0.16, rateHi: 2.56 },
-  mid:    { gain: 13.2, decay: 0.945, scale: 0.018, rateLo: 0.46, rateHi: 1.60 },
-  treble: { gain: 26.4, decay: 0.78,  scale: 0.012, rateLo: 0.40, rateHi: 2.92 },
+  bass:   { gain: 23.04, decay: 0.88,  scale: 0.0499, rateLo: 0.08, rateHi: 2.872 }, // scale held under the 0.05 "breath, not a zoom" ceiling; rate floor 0.08 (never freezes)
+  mid:    { gain: 15.84, decay: 0.945, scale: 0.0216, rateLo: 0.352, rateHi: 1.72 },
+  treble: { gain: 31.68, decay: 0.78,  scale: 0.0144, rateLo: 0.28, rateHi: 3.304 },
 };
 
 /** AUDIO-REACTIVE gate (Karel 2026-10-05, "this goes for all" — every

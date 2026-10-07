@@ -100,7 +100,11 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     // IMAGE INTELLIGENCE (Karel 2026-10-06): the forms each phase shows come
     // from what that phase's imagery shows (vision-tagged) — fire → flames,
     // blossoms → unfurling floral patterns, water → caustic light …
-    const chars = phaseCharacters(id);
+    let chars = phaseCharacters(id);
+    // Ghost (Karel 2026-10-06: "ghostly angels ghosts wings and those pink
+    // flowers not mandalas"): its procedural form is the pink blossom alone;
+    // the angels, wings and ghosts come from its motif-form family
+    if (sig) chars = chars.map((c) => ({ ...c, forms: ["blossom"], floral: true, family: "ghost" }));
     if (chars.some((c) => c.forms.length)) {
       cast.phaseChars = chars;
       const pbs = cast.phaseBounds ?? [];
@@ -268,7 +272,8 @@ export function particlePaletteFire(ip: { key: string; colors: string[] } | null
   const pick = (i: number) => hot[(i + Math.round(voice)) % hot.length];
   const white = (c: RGB, k: number): RGB => [c[0] + (1 - c[0]) * k, c[1] + (1 - c[1]) * k, c[2] + (1 - c[2]) * k];
   return {
-    low: [0.12, 0.2, 0.75],
+    // deep ember (the blue hearth only made sense for the retired flame form)
+    low: lift(chroma(hexToLinear(pick(2) ?? pick(1)), 0.02, 0.8), 0.6),
     mid: white(lift(hexToLinear(pick(0)), 0.85), 0.35),
     high: lift(chroma(hexToLinear(pick(1) ?? pick(0)), 0.05, 0.7)),
   };

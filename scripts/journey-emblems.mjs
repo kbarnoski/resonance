@@ -62,9 +62,11 @@ Reply JSON only: {"subject":"<2-5 words>","color":"<colour words>","why":"<one s
 
 async function render(c, file) {
   const color = c.color.replace(/\(?#[0-9a-f]{6}[^)]*?\)?/gi, "").replace(/\s+/g, " ").replace(/\s+([,)])/g, "$1").trim();
-  // never a basic icon (Karel 2026-10-06: the plain snowflake was "too basic —
-  // the insanely geometric trippy kind"): intricate, visionary, still readable
-  const prompt = `a single luminous ${color} ${c.subject} emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a ${c.subject}, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast`;
+  // INTRICATE ISLAMIC GEOMETRY (Karel 2026-10-06: "more intricate and islamic
+  // geometry like that rich snowflake … a bit cartoony like … lantern … cabin
+  // soul"): the subject is BUILT from geometric ornament — girih star lattices,
+  // arabesque interlace, nested rosettes — pattern only, never calligraphy
+  const prompt = `a circular Islamic geometric medallion of glowing light — concentric rings of interlacing girih star lattice, nested eight- and twelve-point rosettes and arabesque strapwork — with a large, clearly recognisable ${c.subject} filling the middle third — drawn in the same luminous filigree line art, the unmistakable focal point — flat 2D illuminated-tile style, intricate and perfectly symmetrical, in ${color}, mesmerizing and visionary, not a 3D model, not cartoonish, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
   const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 4, num_images: 1, enable_safety_checker: true } });
   const url = res.data?.images?.[0]?.url;
   if (!url) throw new Error("no image");
@@ -87,7 +89,8 @@ for (const [title, members] of groups) {
     continue;
   }
   try {
-    const c = cache[title]?.subject && !force ? cache[title] : await concept(title, members);
+    // --force re-RENDERS; only --reconcept chooses a new subject
+    const c = cache[title]?.subject && !args.includes("--reconcept") ? cache[title] : await concept(title, members);
     if (conceptsOnly) { cache[title] = c; console.error(`${title} → ${c.color} ${c.subject} (${c.why})`); fs.writeFileSync(cachePath, JSON.stringify(cache, null, 1)); continue; }
     const file = `/tramokyo-pack/emblems/${s}.jpg`;
     c.prompt = await render(c, path.join(ROOT, "public", file.replace(/^\//, "")));

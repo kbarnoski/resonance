@@ -174,6 +174,8 @@ export interface ParticleEngine {
   setInstances(n: number, seed: number): void;
   /** Image-form variety: mirrored, tilted (radians). */
   setImageVariant(mirror: boolean, tilt: number): void;
+  /** 1 = image forms take the journey palette (luminance kept), 0 = true colours. */
+  setImageTint(k: number): void;
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
@@ -584,6 +586,7 @@ export function createParticleEngine(
   // angel never the same twice)
   let instN = 1, instSeed = 0;
   let imgMirror = 1, imgTiltS = 0, imgTiltT = 0;
+  let imgTintS = 0, imgTintT = 0;
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
   let disperseNext = false;
@@ -945,6 +948,8 @@ export function createParticleEngine(
     // an image formed by ~N soft sprites: per-sprite gain so the particle
     // still sits near (below) the real still's brightness
     g.uniform1f(draw.u.uImgGain, 0.5 * (409_600 / count) * fadeIn * (W * H) / (2880 * 1800));
+    imgTintS += (imgTintT - imgTintS) * (1 - Math.exp(-dt / 0.8));
+    if (draw.u.uImgTint) g.uniform1f(draw.u.uImgTint, imgTintS);
     g.uniform1f(draw.u.uImgAspect, imgAspect[1]);
     g.uniform1f(draw.u.uScrAspect, W / H);
     g.drawArrays(g.POINTS, 0, count);
@@ -1247,9 +1252,10 @@ export function createParticleEngine(
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
-    setReact(k) { reactT = Math.max(0.5, Math.min(3, k)); },
+    setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
     setInstances(n, seed) { instN = Math.max(1, Math.min(9, Math.round(n))); instSeed = seed; },
-    setImageVariant(mirror, tilt) { imgMirror = mirror ? -1 : 1; imgTiltT = Math.max(-0.4, Math.min(0.4, tilt)); },
+    setImageVariant(mirror, tilt) { imgMirror = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
+    setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)
       followX += (Math.max(-1.2, Math.min(1.2, x)) - followX) * 0.5;
@@ -1280,7 +1286,7 @@ export function createParticleEngine(
       else { bounceSign = -bounceSign; bounceEnv = Math.max(bounceEnv, k); }
     },
     enter() { disperseNext = true; entryT = 0; },
-    setHueSpread(sp) { hueSpreadTarget = Math.max(0, Math.min(1.2, sp)); },
+    setHueSpread(sp) { hueSpreadTarget = Math.max(0, Math.min(3.2, sp)); },
     setGain(k) { layerGainTarget = Math.max(0.2, Math.min(5, k)); },
     setMelody(pos, w = 0.6) {
       if (!pos) { melodyWTarget = 0; return; }

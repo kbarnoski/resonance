@@ -258,7 +258,7 @@ export const SHAPE_SOULS: readonly SoulId[] = [
   // you have a lot of basic shapes and unclear stuff … islamic geometric
   // detail"): only intricate, legible forms; fire keeps its flame, water its
   // caustic web. Mirrors ORGANIC_SOULS (particle-motifs.ts).
-  "girih", "medallion", "mandala", "kaleido", "blossom", "flame", "caustic",
+  "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
 ];
 
 export function soulById(id: SoulId): SoulPreset {

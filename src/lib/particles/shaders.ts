@@ -652,16 +652,20 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     return vec4((q - p) * 10.0, 4.5);
   }
   if (soul == 32) {
-    // ── MANDALA: rings of n-fold petals, alternate rings counter-turning ──
-    float k = floor(s.b * 7.0);
-    float n = 4.0 + floor(uShape.x * 8.999) + k * floor(uShape.y * 2.999);
+    // ── MANDALA: eleven rings of interlocking petal harmonics, each ring
+    // counter-turning; a second harmonic weaves through the first ──
+    float k = floor(s.b * 11.0);
+    float n = 4.0 + floor(uShape.x * 8.999) + k * floor(1.0 + uShape.y * 1.999);
     float th = s.g * 6.2831853;
     float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
-    float r = 0.2 + k * 0.2 + (0.06 + 0.02 * k) * pow(abs(cos(n * th * 0.5)), 0.5 + uShape.w * 2.5);
-    r *= 1.0 + 0.05 * sin(uClock.x * 0.6 - k * 0.7) + 0.08 * up * bassW;
+    float e1 = 0.5 + uShape.w * 2.5;
+    float r = 0.16 + k * 0.135
+      + (0.05 + 0.012 * k) * pow(abs(cos(n * th * 0.5)), e1)
+      + (0.02 + 0.006 * k) * pow(abs(cos(n * th + uClock.y * 0.2 * dir)), 1.5);
+    r *= 1.0 + 0.04 * sin(uClock.x * 0.6 - k * 0.7) + 0.07 * up * bassW;
     float a = th + uClock.y * 0.05 * dir;
     vec3 q = vec3(cos(a) * r, 0.04 * sin(n * th + uClock.y) * (0.3 + uBandLv.y), sin(a) * r);
-    q += normalize(hash31(s.a * 109.0) - 0.5) * (0.01 + 0.045 * up * trebW);
+    q += normalize(hash31(s.a * 109.0) - 0.5) * (0.008 + 0.04 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
   }
   if (soul == 33) {
@@ -1053,6 +1057,7 @@ uniform sampler2D uImgB;   // incoming still
 uniform float uColorMix;   // A → B
 uniform float uImgShow;    // image presence 0..1
 uniform float uImgGain;
+uniform float uImgTint;   // 1 = an image form takes the journey palette (keeps the image's luminance)
 uniform float uImgAspect;
 uniform float uScrAspect;
 out vec3 vCol;
@@ -1108,6 +1113,8 @@ void main(){
   // colour lives ACROSS the form: a gradient over height + azimuth, and a
   // slow hue wave rolling outward on swells — luma-preserving (YIQ)
   float grad = 0.55 * clamp(p.y / 1.6, -1.0, 1.0) + 0.45 * sin(atan(p.z, p.x));
+  // spectrum forms (large uHueSpread): colour bands ripple outward through the rings
+  grad += 0.55 * sin(length(p.xz) * 5.0 - uTimeD * 0.35) * smoothstep(0.8, 2.0, uHueSpread);
   float wave = sin(length(p.xyz) * 2.2 - uTimeD * 0.8);
   col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave, uSat);
 
@@ -1135,6 +1142,10 @@ void main(){
     vec3 ib = texture(uImgB, uv).rgb;
     img = pow(mix(ia, ib, uColorMix), vec3(2.2));
     if (size <= 1.0) img *= a / max(uAlpha, 1e-6); // sub-pixel energy rule
+  }
+  if (uImgTint > 0.001) {
+    float il = dot(img, vec3(0.2126, 0.7152, 0.0722));
+    img = mix(img, col * il * 2.2, uImgTint);
   }
   vCol = mix(world, img * uImgGain, uImgShow);
 }

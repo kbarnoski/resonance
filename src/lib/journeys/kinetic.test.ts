@@ -40,12 +40,19 @@ describe("+20% band response (Karel 2026-10-05)", () => {
     mid:    { gain: 11, scale: 0.015, rateLo: 0.55, rateHi: 1.50, decay: 0.945 },
     treble: { gain: 22, scale: 0.010, rateLo: 0.50, rateHi: 2.60, decay: 0.78 },
   } as const;
-  it("gain and scale are x1.2, the rate swing widens 20% around 1.0, slew unchanged", () => {
+  it("gain and scale are x1.2 again (2026-10-06), the rate swing widens 20% around 1.0, slew unchanged", () => {
+    // the 2026-10-05 values, then +20 % (Karel 2026-10-06: "shaders another 20% more responsive")
+    const PREV = {
+      bass: { gain: 19.2, decay: 0.88, scale: 0.042, rateLo: 0.16, rateHi: 2.56 },
+      mid: { gain: 13.2, decay: 0.945, scale: 0.018, rateLo: 0.46, rateHi: 1.6 },
+      treble: { gain: 26.4, decay: 0.78, scale: 0.012, rateLo: 0.4, rateHi: 2.92 },
+    };
+    void BEFORE;
     for (const b of ["bass", "mid", "treble"] as const) {
-      const p = BAND_PROFILES[b], o = BEFORE[b];
+      const p = BAND_PROFILES[b], o = PREV[b];
       expect(p.gain).toBeCloseTo(o.gain * 1.2, 6);
-      expect(p.scale).toBeCloseTo(o.scale * 1.2, 6);
-      expect(p.rateLo).toBeCloseTo(1 - (1 - o.rateLo) * 1.2, 6);
+      expect(p.scale).toBeCloseTo(Math.min(0.0499, o.scale * 1.2), 6);
+      expect(p.rateLo).toBeCloseTo(Math.max(0.08, 1 - (1 - o.rateLo) * 1.2), 6);
       expect(p.rateHi).toBeCloseTo(1 + (o.rateHi - 1) * 1.2, 6);
       expect(p.rateLo).toBeGreaterThan(0); // never freezes or reverses
       expect(p.decay).toBe(o.decay);       // release slew untouched — no jitter
