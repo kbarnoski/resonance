@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-06T23:44:22.692Z",
+ "generated": "2026-10-07T03:39:23.409Z",
  "pool": [
   "astral",
   "aureole",
@@ -200,99 +200,99 @@
   }
  },
  "uses": {
-  "pelagic": 5,
-  "nadir": 5,
   "meteor-rain": 5,
-  "mandorla": 5,
+  "typhoon": 5,
+  "binary-stars": 5,
+  "r-smokerings": 5,
+  "pollen": 4,
   "satori": 4,
   "r2-pixie": 4,
-  "pollen": 4,
-  "iron-forge": 4,
-  "stigmata": 4,
-  "dark-tide": 4,
-  "singularity": 4,
-  "fracture-light": 4,
-  "magma": 4,
-  "jubilee": 4,
-  "hubble": 4,
-  "r3-heartwarmth": 4,
-  "binary-stars": 4,
-  "flame": 4,
-  "kelp": 4,
-  "ember": 4,
-  "shadow-fire": 4,
+  "rapture": 4,
   "r3-fernunfurl": 4,
-  "diatom": 4,
-  "furnace": 4,
-  "symbiosis": 4,
+  "iron-forge": 4,
+  "fracture-light": 4,
+  "singularity": 4,
+  "stigmata": 4,
+  "r-blackhole": 4,
+  "magma": 4,
+  "hubble": 4,
+  "nadir": 4,
+  "r3-heartwarmth": 4,
+  "dark-tide": 4,
+  "shadow-fire": 4,
+  "yantra": 4,
   "flagella": 4,
+  "ember": 4,
+  "diatom": 4,
   "chrysalis": 4,
   "r2-spore": 4,
-  "r-embers": 4,
+  "symbiosis": 4,
+  "flame": 4,
+  "kelp": 4,
+  "furnace": 4,
+  "ocean": 4,
   "monsoon": 4,
-  "r3-monsoonveil": 4,
-  "volcanic": 4,
   "molten-vein": 4,
   "ripple": 4,
+  "r3-monsoonveil": 4,
   "torrent": 4,
-  "ocean": 4,
-  "r2-portalrim": 4,
-  "mycelium": 4,
-  "dusk": 4,
-  "r2-thermal": 4,
-  "r-smokerings": 4,
-  "kepler": 4,
-  "supernova": 4,
-  "r3-lightningveil": 4,
-  "protostar": 4,
-  "threshold": 4,
+  "volcanic": 4,
   "obsidian-flow": 4,
+  "dusk": 4,
+  "mandorla": 4,
+  "mycelium": 4,
+  "supernova": 4,
+  "r2-thermal": 4,
+  "kepler": 4,
+  "threshold": 4,
+  "protostar": 4,
+  "r3-lightningveil": 4,
+  "pendulum-dust": 4,
   "pulsar": 4,
+  "r2-portalrim": 4,
   "r2-spiralgal": 4,
   "lightyear": 4,
-  "chinook": 4,
-  "r-blackhole": 4,
+  "jubilee": 4,
   "aureole": 4,
   "event-horizon": 4,
-  "dharma": 4,
+  "chinook": 4,
   "ribbon-of-light": 4,
   "rose-window": 4,
-  "rapture": 4,
-  "vestige": 4,
   "covenant": 4,
+  "vestige": 4,
+  "dharma": 4,
   "merkaba": 4,
+  "r-embers": 4,
   "zenith": 4,
   "orbit-weaver": 4,
   "r-mercury": 4,
-  "typhoon": 4,
   "astral": 4,
   "r3-sleepingbloom": 4,
-  "r2-curlswarm": 4,
-  "r3-waveveil": 4,
   "tide": 4,
-  "kairos": 4,
-  "r3-plasmastorm": 4,
-  "dark-nebula": 4,
+  "r3-waveveil": 4,
   "kenosis": 4,
+  "r3-plasmastorm": 4,
+  "kairos": 4,
+  "dark-nebula": 4,
   "seraph": 3,
   "lectio": 3,
-  "photon": 3,
-  "starfield": 3,
-  "parsec": 3,
   "maelstrom-dark": 3,
+  "parsec": 3,
   "cirrus": 3,
-  "murmuration": 3,
-  "pendulum-dust": 3,
+  "photon": 3,
   "r2-photon": 3,
+  "starfield": 3,
   "firefly-field": 3,
-  "drift": 3,
+  "murmuration": 3,
   "r-droplets": 3,
+  "drift": 3,
   "r-stardust": 3,
-  "yantra": 3,
   "resonant-rings": 3,
   "cascade-veil": 3,
+  "r2-curlswarm": 3,
   "will-o-wisp": 3,
   "plankton": 3,
+  "pelagic": 3,
   "r3-fairyglow": 3
  },
  "journeys": [
@@ -306,35 +306,35 @@
    "pathLen": null,
    "dur": 118,
    "shaders": [
-    "satori",
-    "r2-pixie",
-    "seraph",
     "pollen",
+    "satori",
+    "seraph",
+    "r2-pixie",
+    "rapture",
+    "r3-fernunfurl",
     "iron-forge",
-    "stigmata",
-    "dark-tide",
-    "singularity",
     "fracture-light",
-    "pelagic"
+    "singularity",
+    "stigmata"
    ],
    "cast": {
     "threshold": [
      "iron-forge"
     ],
     "expansion": [
-     "dark-tide"
+     "singularity"
     ],
     "transcendence": [
-     "pelagic",
-     "singularity",
-     "seraph"
+     "seraph",
+     "stigmata",
+     "rapture"
     ],
     "illumination": [
      "fracture-light"
     ],
     "return": [
      "satori",
-     "stigmata",
+     "r3-fernunfurl",
      "pollen"
     ],
     "integration": [
@@ -354,46 +354,46 @@
    "pathLen": null,
    "dur": 171,
    "shaders": [
+    "r-blackhole",
     "magma",
-    "jubilee",
-    "lectio",
     "hubble",
-    "photon",
-    "starfield",
-    "r3-heartwarmth",
+    "lectio",
     "nadir",
+    "r3-heartwarmth",
+    "maelstrom-dark",
     "meteor-rain",
-    "binary-stars",
-    "parsec"
+    "parsec",
+    "dark-tide",
+    "typhoon"
    ],
    "cast": {
     "threshold": [
-     "hubble"
+     "maelstrom-dark"
     ],
     "expansion": [
      "meteor-rain"
     ],
     "transcendence": [
-     "magma",
-     "nadir",
+     "r-blackhole",
+     "typhoon",
      "lectio",
-     "jubilee"
+     "magma"
     ],
     "illumination": [
-     "magma",
-     "photon",
-     "r3-heartwarmth"
+     "r-blackhole",
+     "dark-tide",
+     "nadir"
     ],
     "return": [
-     "starfield",
-     "parsec"
+     "parsec",
+     "r3-heartwarmth"
     ],
     "integration": [
-     "binary-stars"
+     "hubble"
     ]
    },
    "owned": true,
-   "lead": "magma"
+   "lead": "r-blackhole"
   },
   {
    "id": "910e6b62-abb8-40d1-bd31-ccdf6038f122",
@@ -405,47 +405,47 @@
    "pathLen": null,
    "dur": 309,
    "shaders": [
-    "maelstrom-dark",
-    "flame",
-    "kelp",
-    "ember",
+    "cirrus",
     "shadow-fire",
-    "r3-fernunfurl",
-    "diatom",
-    "furnace",
-    "symbiosis",
+    "yantra",
+    "photon",
     "flagella",
+    "ember",
+    "diatom",
     "chrysalis",
-    "r2-spore"
+    "r2-spore",
+    "symbiosis",
+    "flame",
+    "kelp"
    ],
    "cast": {
     "threshold": [
      "flagella"
     ],
     "expansion": [
-     "furnace",
+     "photon",
      "diatom",
-     "kelp"
+     "cirrus"
     ],
     "transcendence": [
-     "r2-spore",
-     "symbiosis"
+     "kelp",
+     "r2-spore"
     ],
     "illumination": [
-     "maelstrom-dark"
+     "shadow-fire"
     ],
     "return": [
-     "flame",
+     "yantra",
+     "symbiosis",
      "ember",
-     "r3-fernunfurl",
      "chrysalis"
     ],
     "integration": [
-     "shadow-fire"
+     "flame"
     ]
    },
    "owned": true,
-   "lead": "flame"
+   "lead": "yantra"
   },
   {
    "id": "bd748991-a67b-41dc-af94-ac3f612a27c4",
@@ -457,43 +457,43 @@
    "pathLen": null,
    "dur": 337,
    "shaders": [
-    "cirrus",
-    "r-embers",
+    "furnace",
+    "ocean",
     "monsoon",
-    "r3-monsoonveil",
-    "volcanic",
     "molten-vein",
     "ripple",
-    "murmuration",
+    "r3-monsoonveil",
+    "binary-stars",
     "torrent",
-    "ocean",
-    "r2-portalrim",
-    "pendulum-dust"
+    "volcanic",
+    "r2-photon",
+    "obsidian-flow",
+    "dusk"
    ],
    "cast": {
     "threshold": [
-     "murmuration"
+     "volcanic"
     ],
     "expansion": [
      "torrent",
      "monsoon"
     ],
     "transcendence": [
-     "pendulum-dust"
+     "binary-stars"
     ],
     "illumination": [
-     "cirrus",
+     "r2-photon",
      "molten-vein"
     ],
     "return": [
      "ocean",
-     "r2-portalrim",
      "ripple",
-     "r3-monsoonveil"
+     "r3-monsoonveil",
+     "dusk"
     ],
     "integration": [
-     "volcanic",
-     "r-embers"
+     "furnace",
+     "obsidian-flow"
     ]
    },
    "owned": true,
@@ -509,45 +509,45 @@
    "pathLen": null,
    "dur": 181,
    "shaders": [
+    "mandorla",
     "mycelium",
-    "dusk",
-    "r2-thermal",
-    "r-smokerings",
-    "kepler",
     "supernova",
-    "r3-lightningveil",
-    "protostar",
+    "r2-thermal",
+    "kepler",
     "threshold",
-    "r2-photon",
-    "obsidian-flow"
+    "protostar",
+    "starfield",
+    "r3-lightningveil",
+    "pendulum-dust",
+    "pulsar"
    ],
    "cast": {
     "threshold": [
-     "r2-thermal"
-    ],
-    "expansion": [
-     "kepler",
-     "mycelium"
-    ],
-    "transcendence": [
-     "r2-photon",
-     "supernova"
-    ],
-    "illumination": [
      "r3-lightningveil"
     ],
+    "expansion": [
+     "r2-thermal",
+     "kepler"
+    ],
+    "transcendence": [
+     "mycelium",
+     "mandorla"
+    ],
+    "illumination": [
+     "pendulum-dust"
+    ],
     "return": [
-     "dusk",
-     "r-smokerings",
-     "threshold",
-     "protostar"
+     "protostar",
+     "supernova",
+     "pulsar",
+     "threshold"
     ],
     "integration": [
-     "obsidian-flow"
+     "starfield"
     ]
    },
    "owned": true,
-   "lead": "dusk"
+   "lead": "protostar"
   },
   {
    "id": "d92c2d3a-4283-4300-abc3-d71ed7c6848d",
@@ -559,43 +559,43 @@
    "pathLen": null,
    "dur": 128,
    "shaders": [
-    "pulsar",
-    "r2-spiralgal",
     "firefly-field",
+    "r2-portalrim",
+    "r2-spiralgal",
     "lightyear",
-    "mandorla",
-    "chinook",
-    "r-blackhole",
+    "murmuration",
+    "r-smokerings",
+    "jubilee",
     "aureole",
     "event-horizon",
-    "dharma"
+    "chinook"
    ],
    "cast": {
     "threshold": [
-     "event-horizon"
+     "lightyear"
     ],
     "expansion": [
-     "mandorla",
+     "event-horizon",
      "chinook"
     ],
     "transcendence": [
-     "r2-spiralgal"
+     "r2-portalrim"
     ],
     "illumination": [
      "firefly-field"
     ],
     "return": [
-     "r-blackhole",
-     "pulsar",
-     "dharma",
-     "aureole"
+     "aureole",
+     "r-smokerings",
+     "r2-spiralgal",
+     "jubilee"
     ],
     "integration": [
-     "lightyear"
+     "murmuration"
     ]
    },
    "owned": true,
-   "lead": "r-blackhole"
+   "lead": "aureole"
   },
   {
    "id": "87e106f9-4d74-4886-b944-fd625a827b02",
@@ -607,23 +607,23 @@
    "pathLen": null,
    "dur": 150,
    "shaders": [
-    "drift",
     "r-droplets",
+    "drift",
+    "r-stardust",
     "ribbon-of-light",
     "rose-window",
-    "r-stardust",
-    "yantra",
-    "rapture",
-    "vestige",
     "covenant",
-    "merkaba"
+    "vestige",
+    "dharma",
+    "merkaba",
+    "r-embers"
    ],
    "cast": {
     "threshold": [
      "drift"
     ],
     "expansion": [
-     "yantra",
+     "r-embers",
      "r-droplets"
     ],
     "transcendence": [
@@ -632,7 +632,7 @@
     "illumination": [
      "vestige",
      "merkaba",
-     "rapture",
+     "dharma",
      "covenant"
     ],
     "return": [
@@ -661,16 +661,16 @@
     "r-mercury",
     "cascade-veil",
     "typhoon",
-    "pelagic"
+    "r2-curlswarm"
    ],
    "cast": {
     "threshold": [
-     "pelagic",
+     "resonant-rings",
      "r-mercury",
      "typhoon"
     ],
     "expansion": [
-     "pelagic",
+     "resonant-rings",
      "r-mercury",
      "typhoon",
      "zenith"
@@ -679,22 +679,22 @@
      "r-mercury",
      "typhoon",
      "zenith",
-     "resonant-rings"
+     "r2-curlswarm"
     ],
     "illumination": [
      "typhoon",
      "zenith",
-     "resonant-rings",
+     "r2-curlswarm",
      "orbit-weaver"
     ],
     "return": [
      "zenith",
-     "resonant-rings",
+     "r2-curlswarm",
      "orbit-weaver",
      "cascade-veil"
     ],
     "integration": [
-     "resonant-rings",
+     "r2-curlswarm",
      "orbit-weaver",
      "cascade-veil"
     ]
@@ -713,45 +713,45 @@
     "astral",
     "will-o-wisp",
     "r3-sleepingbloom",
-    "r2-curlswarm",
-    "r3-waveveil",
     "tide",
-    "kairos"
+    "r3-waveveil",
+    "binary-stars",
+    "kenosis"
    ],
    "cast": {
     "threshold": [
-     "astral",
-     "r3-waveveil",
-     "kairos"
+     "tide",
+     "kenosis",
+     "astral"
     ],
     "expansion": [
+     "tide",
+     "kenosis",
      "astral",
-     "r3-waveveil",
-     "kairos",
-     "tide"
+     "r3-waveveil"
     ],
     "transcendence": [
+     "kenosis",
+     "astral",
      "r3-waveveil",
-     "kairos",
-     "tide",
      "r3-sleepingbloom"
     ],
     "illumination": [
-     "kairos",
-     "tide",
+     "astral",
+     "r3-waveveil",
      "r3-sleepingbloom",
-     "r2-curlswarm"
+     "will-o-wisp"
     ],
     "return": [
-     "tide",
+     "r3-waveveil",
      "r3-sleepingbloom",
-     "r2-curlswarm",
-     "will-o-wisp"
+     "will-o-wisp",
+     "binary-stars"
     ],
     "integration": [
      "r3-sleepingbloom",
-     "r2-curlswarm",
-     "will-o-wisp"
+     "will-o-wisp",
+     "binary-stars"
     ]
    }
   },
@@ -768,45 +768,45 @@
     "plankton",
     "r3-plasmastorm",
     "torrent",
+    "pelagic",
     "ripple",
-    "binary-stars",
     "r3-monsoonveil",
-    "fracture-light"
+    "kairos"
    ],
    "cast": {
     "threshold": [
-     "fracture-light",
      "r3-plasmastorm",
-     "torrent"
+     "pelagic",
+     "ripple"
     ],
     "expansion": [
-     "fracture-light",
      "r3-plasmastorm",
-     "torrent",
-     "plankton"
+     "pelagic",
+     "ripple",
+     "kairos"
     ],
     "transcendence": [
-     "r3-plasmastorm",
-     "torrent",
+     "pelagic",
+     "ripple",
+     "kairos",
+     "plankton"
+    ],
+    "illumination": [
+     "ripple",
+     "kairos",
      "plankton",
      "r3-monsoonveil"
     ],
-    "illumination": [
-     "torrent",
-     "plankton",
-     "r3-monsoonveil",
-     "ripple"
-    ],
     "return": [
+     "kairos",
      "plankton",
      "r3-monsoonveil",
-     "ripple",
-     "binary-stars"
+     "torrent"
     ],
     "integration": [
+     "plankton",
      "r3-monsoonveil",
-     "ripple",
-     "binary-stars"
+     "torrent"
     ]
    }
   },
@@ -824,44 +824,44 @@
     "singularity",
     "nadir",
     "parsec",
-    "kenosis",
+    "fracture-light",
     "ribbon-of-light",
     "r3-fairyglow"
    ],
    "cast": {
     "threshold": [
-     "nadir",
-     "ribbon-of-light",
-     "dark-nebula"
+     "dark-nebula",
+     "fracture-light",
+     "r3-fairyglow"
     ],
     "expansion": [
-     "nadir",
-     "ribbon-of-light",
      "dark-nebula",
-     "kenosis"
-    ],
-    "transcendence": [
-     "ribbon-of-light",
-     "dark-nebula",
-     "kenosis",
-     "parsec"
-    ],
-    "illumination": [
-     "dark-nebula",
-     "kenosis",
-     "parsec",
+     "fracture-light",
+     "r3-fairyglow",
      "singularity"
     ],
-    "return": [
-     "kenosis",
-     "parsec",
+    "transcendence": [
+     "fracture-light",
+     "r3-fairyglow",
      "singularity",
-     "r3-fairyglow"
+     "ribbon-of-light"
+    ],
+    "illumination": [
+     "r3-fairyglow",
+     "singularity",
+     "ribbon-of-light",
+     "nadir"
+    ],
+    "return": [
+     "singularity",
+     "ribbon-of-light",
+     "nadir",
+     "parsec"
     ],
     "integration": [
-     "parsec",
-     "singularity",
-     "r3-fairyglow"
+     "ribbon-of-light",
+     "nadir",
+     "parsec"
     ]
    }
   },
@@ -1263,9 +1263,9 @@
    "pathLen": 14,
    "dur": 167,
    "shaders": [
-    "zenith",
-    "kairos",
+    "kenosis",
     "lightyear",
+    "zenith",
     "astral",
     "r-stardust",
     "typhoon",
@@ -1273,30 +1273,30 @@
    ],
    "cast": {
     "threshold": [
-     "kairos",
+     "astral",
      "zenith",
      "dusk"
     ],
     "expansion": [
-     "kairos",
+     "astral",
      "zenith",
      "dusk",
-     "astral"
+     "kenosis"
     ],
     "transcendence": [
      "zenith",
      "dusk",
-     "astral",
+     "kenosis",
      "typhoon"
     ],
     "illumination": [
      "dusk",
-     "astral",
+     "kenosis",
      "typhoon",
      "r-stardust"
     ],
     "return": [
-     "astral",
+     "kenosis",
      "typhoon",
      "r-stardust",
      "lightyear"
@@ -1320,44 +1320,44 @@
    "shaders": [
     "r3-sleepingbloom",
     "r2-spiralgal",
-    "pelagic",
-    "r2-curlswarm",
     "flagella",
+    "r2-curlswarm",
     "firefly-field",
+    "orbit-weaver",
     "will-o-wisp"
    ],
    "cast": {
     "threshold": [
-     "flagella",
+     "r2-curlswarm",
      "r3-sleepingbloom",
-     "pelagic"
+     "flagella"
     ],
     "expansion": [
-     "flagella",
+     "r2-curlswarm",
      "r3-sleepingbloom",
-     "pelagic",
+     "flagella",
      "r2-spiralgal"
     ],
     "transcendence": [
      "r3-sleepingbloom",
-     "pelagic",
+     "flagella",
      "r2-spiralgal",
-     "r2-curlswarm"
+     "orbit-weaver"
     ],
     "illumination": [
-     "pelagic",
+     "flagella",
      "r2-spiralgal",
-     "r2-curlswarm",
+     "orbit-weaver",
      "will-o-wisp"
     ],
     "return": [
      "r2-spiralgal",
-     "r2-curlswarm",
+     "orbit-weaver",
      "will-o-wisp",
      "firefly-field"
     ],
     "integration": [
-     "r2-curlswarm",
+     "orbit-weaver",
      "will-o-wisp",
      "firefly-field"
     ]
@@ -1376,7 +1376,7 @@
     "resonant-rings",
     "diatom",
     "tide",
-    "kenosis",
+    "kairos",
     "murmuration",
     "ocean",
     "cascade-veil"
@@ -1385,28 +1385,28 @@
     "threshold": [
      "diatom",
      "ocean",
-     "kenosis"
+     "tide"
     ],
     "expansion": [
      "diatom",
      "ocean",
-     "kenosis",
-     "tide"
+     "tide",
+     "kairos"
     ],
     "transcendence": [
      "ocean",
-     "kenosis",
      "tide",
+     "kairos",
      "resonant-rings"
     ],
     "illumination": [
-     "kenosis",
      "tide",
+     "kairos",
      "resonant-rings",
      "murmuration"
     ],
     "return": [
-     "tide",
+     "kairos",
      "resonant-rings",
      "murmuration",
      "cascade-veil"
@@ -1432,43 +1432,43 @@
     "rose-window",
     "r2-photon",
     "r3-plasmastorm",
-    "orbit-weaver",
+    "r3-waveveil",
     "monsoon",
     "dark-nebula"
    ],
    "cast": {
     "threshold": [
+     "r3-waveveil",
+     "r2-photon",
+     "dark-nebula"
+    ],
+    "expansion": [
+     "r3-waveveil",
      "r2-photon",
      "dark-nebula",
      "monsoon"
     ],
-    "expansion": [
+    "transcendence": [
      "r2-photon",
      "dark-nebula",
      "monsoon",
      "r3-plasmastorm"
     ],
-    "transcendence": [
+    "illumination": [
      "dark-nebula",
      "monsoon",
      "r3-plasmastorm",
      "r3-fairyglow"
     ],
-    "illumination": [
+    "return": [
      "monsoon",
      "r3-plasmastorm",
      "r3-fairyglow",
-     "orbit-weaver"
-    ],
-    "return": [
-     "r3-plasmastorm",
-     "r3-fairyglow",
-     "orbit-weaver",
      "rose-window"
     ],
     "integration": [
+     "r3-plasmastorm",
      "r3-fairyglow",
-     "orbit-weaver",
      "rose-window"
     ]
    }
@@ -1484,46 +1484,46 @@
    "dur": 275,
    "shaders": [
     "plankton",
-    "r3-waveveil",
-    "ember",
-    "r3-lightningveil",
     "chrysalis",
+    "r3-lightningveil",
+    "r-smokerings",
+    "ember",
     "r-mercury",
-    "r-smokerings"
+    "pelagic"
    ],
    "cast": {
     "threshold": [
-     "r-smokerings",
+     "ember",
      "plankton",
-     "r3-waveveil"
+     "r-smokerings"
     ],
     "expansion": [
-     "r-smokerings",
+     "ember",
      "plankton",
-     "r3-waveveil",
+     "r-smokerings",
      "chrysalis"
     ],
     "transcendence": [
      "plankton",
-     "r3-waveveil",
+     "r-smokerings",
      "chrysalis",
-     "ember"
+     "r-mercury"
     ],
     "illumination": [
-     "r3-waveveil",
+     "r-smokerings",
      "chrysalis",
-     "ember",
-     "r-mercury"
+     "r-mercury",
+     "pelagic"
     ],
     "return": [
      "chrysalis",
-     "ember",
      "r-mercury",
+     "pelagic",
      "r3-lightningveil"
     ],
     "integration": [
-     "ember",
      "r-mercury",
+     "pelagic",
      "r3-lightningveil"
     ]
    }
@@ -1652,36 +1652,36 @@
     "r-blackhole",
     "flame",
     "magma",
-    "merkaba",
-    "seraph",
-    "jubilee"
+    "chinook",
+    "covenant",
+    "merkaba"
    ],
    "cast": {
     "threshold": [
+     "covenant",
      "magma",
-     "jubilee",
      "r-blackhole"
     ],
     "expansion": [
+     "covenant",
      "magma",
-     "jubilee",
      "r-blackhole",
-     "seraph"
+     "chinook"
     ],
     "transcendence": [
-     "jubilee",
+     "magma",
      "r-blackhole",
-     "seraph",
+     "chinook",
      "merkaba"
     ],
     "illumination": [
      "r-blackhole",
-     "seraph",
+     "chinook",
      "merkaba",
      "event-horizon"
     ],
     "return": [
-     "seraph",
+     "chinook",
      "merkaba",
      "event-horizon",
      "flame"
@@ -1762,9 +1762,9 @@
     "volcanic",
     "molten-vein",
     "r-embers",
-    "maelstrom-dark",
     "yantra",
-    "shadow-fire"
+    "shadow-fire",
+    "maelstrom-dark"
    ],
    "cast": {
     "threshold": [
@@ -1815,11 +1815,11 @@
    "shaders": [
     "astral",
     "lightyear",
-    "r3-heartwarmth",
     "parsec",
     "dusk",
     "zenith",
-    "hubble"
+    "hubble",
+    "r3-heartwarmth"
    ],
    "cast": {
     "threshold": [
@@ -1868,48 +1868,48 @@
    "pathLen": 12,
    "dur": 232,
    "shaders": [
-    "chinook",
-    "pollen",
-    "covenant",
     "satori",
     "r2-pixie",
     "rapture",
-    "iron-forge"
+    "kenosis",
+    "pollen",
+    "seraph",
+    "vestige"
    ],
    "cast": {
     "threshold": [
      "r2-pixie",
-     "iron-forge",
-     "chinook"
+     "seraph",
+     "rapture"
     ],
     "expansion": [
      "r2-pixie",
-     "iron-forge",
-     "chinook",
+     "seraph",
+     "rapture",
      "satori"
     ],
     "transcendence": [
-     "iron-forge",
-     "chinook",
+     "seraph",
+     "rapture",
      "satori",
-     "covenant"
+     "vestige"
     ],
     "illumination": [
-     "chinook",
+     "rapture",
      "satori",
-     "covenant",
+     "vestige",
      "pollen"
     ],
     "return": [
      "satori",
-     "covenant",
+     "vestige",
      "pollen",
-     "rapture"
+     "kenosis"
     ],
     "integration": [
-     "covenant",
+     "vestige",
      "pollen",
-     "rapture"
+     "kenosis"
     ]
    }
   },
@@ -1928,7 +1928,7 @@
     "tide",
     "diatom",
     "flagella",
-    "pelagic",
+    "iron-forge",
     "firefly-field"
    ],
    "cast": {
@@ -1947,22 +1947,22 @@
      "diatom",
      "r3-sleepingbloom",
      "tide",
-     "pelagic"
+     "iron-forge"
     ],
     "illumination": [
      "r3-sleepingbloom",
      "tide",
-     "pelagic",
+     "iron-forge",
      "r2-curlswarm"
     ],
     "return": [
      "tide",
-     "pelagic",
+     "iron-forge",
      "r2-curlswarm",
      "firefly-field"
     ],
     "integration": [
-     "pelagic",
+     "iron-forge",
      "r2-curlswarm",
      "firefly-field"
     ]
@@ -1979,47 +1979,47 @@
    "dur": 175,
    "shaders": [
     "lectio",
-    "vestige",
-    "r3-fairyglow",
-    "aureole",
     "kairos",
+    "stigmata",
+    "jubilee",
     "dharma",
-    "kenosis"
+    "aureole",
+    "r2-photon"
    ],
    "cast": {
     "threshold": [
      "aureole",
-     "vestige",
-     "kairos"
-    ],
-    "expansion": [
-     "aureole",
-     "vestige",
      "kairos",
      "dharma"
     ],
-    "transcendence": [
-     "vestige",
+    "expansion": [
+     "aureole",
      "kairos",
      "dharma",
-     "kenosis"
+     "stigmata"
+    ],
+    "transcendence": [
+     "kairos",
+     "dharma",
+     "stigmata",
+     "jubilee"
     ],
     "illumination": [
-     "kairos",
      "dharma",
-     "kenosis",
+     "stigmata",
+     "jubilee",
      "lectio"
     ],
     "return": [
-     "dharma",
-     "kenosis",
+     "stigmata",
+     "jubilee",
      "lectio",
-     "r3-fairyglow"
+     "r2-photon"
     ],
     "integration": [
-     "kenosis",
+     "jubilee",
      "lectio",
-     "r3-fairyglow"
+     "r2-photon"
     ]
    }
   },
@@ -2091,10 +2091,10 @@
     "rose-window",
     "drift",
     "r2-spiralgal",
-    "r2-photon",
     "orbit-weaver",
     "r-stardust",
-    "murmuration"
+    "murmuration",
+    "r-smokerings"
    ],
    "cast": {
     "threshold": [
@@ -2106,22 +2106,22 @@
      "r2-spiralgal",
      "r-stardust",
      "drift",
-     "r2-photon"
+     "r-smokerings"
     ],
     "transcendence": [
      "r-stardust",
      "drift",
-     "r2-photon",
+     "r-smokerings",
      "murmuration"
     ],
     "illumination": [
      "drift",
-     "r2-photon",
+     "r-smokerings",
      "murmuration",
      "orbit-weaver"
     ],
     "return": [
-     "r2-photon",
+     "r-smokerings",
      "murmuration",
      "orbit-weaver",
      "rose-window"
@@ -2147,43 +2147,43 @@
     "r2-thermal",
     "r3-lightningveil",
     "obsidian-flow",
-    "stigmata",
-    "dark-nebula",
+    "ember",
+    "starfield",
     "monsoon"
    ],
    "cast": {
     "threshold": [
-     "r2-thermal",
-     "dark-nebula",
-     "stigmata"
+     "obsidian-flow",
+     "monsoon",
+     "ember"
     ],
     "expansion": [
-     "r2-thermal",
-     "dark-nebula",
-     "stigmata",
-     "monsoon"
+     "obsidian-flow",
+     "monsoon",
+     "ember",
+     "r2-thermal"
     ],
     "transcendence": [
-     "dark-nebula",
-     "stigmata",
      "monsoon",
-     "obsidian-flow"
-    ],
-    "illumination": [
-     "stigmata",
-     "monsoon",
-     "obsidian-flow",
+     "ember",
+     "r2-thermal",
      "r3-lightningveil"
     ],
-    "return": [
-     "monsoon",
-     "obsidian-flow",
+    "illumination": [
+     "ember",
+     "r2-thermal",
      "r3-lightningveil",
+     "starfield"
+    ],
+    "return": [
+     "r2-thermal",
+     "r3-lightningveil",
+     "starfield",
      "resonant-rings"
     ],
     "integration": [
-     "obsidian-flow",
      "r3-lightningveil",
+     "starfield",
      "resonant-rings"
     ]
    }
@@ -2199,46 +2199,46 @@
    "dur": 92,
    "shaders": [
     "chrysalis",
-    "cascade-veil",
+    "dark-nebula",
     "will-o-wisp",
     "ocean",
     "typhoon",
-    "r-mercury",
-    "r3-waveveil"
+    "cascade-veil",
+    "r-mercury"
    ],
    "cast": {
     "threshold": [
      "will-o-wisp",
-     "typhoon",
-     "r3-waveveil"
+     "r-mercury",
+     "ocean"
     ],
     "expansion": [
      "will-o-wisp",
-     "typhoon",
-     "r3-waveveil",
+     "r-mercury",
+     "ocean",
      "chrysalis"
     ],
     "transcendence": [
-     "typhoon",
-     "r3-waveveil",
+     "r-mercury",
+     "ocean",
      "chrysalis",
-     "ocean"
+     "typhoon"
     ],
     "illumination": [
-     "r3-waveveil",
-     "chrysalis",
      "ocean",
-     "r-mercury"
+     "chrysalis",
+     "typhoon",
+     "dark-nebula"
     ],
     "return": [
      "chrysalis",
-     "ocean",
-     "r-mercury",
+     "typhoon",
+     "dark-nebula",
      "cascade-veil"
     ],
     "integration": [
-     "ocean",
-     "r-mercury",
+     "typhoon",
+     "dark-nebula",
      "cascade-veil"
     ]
    }
@@ -2253,48 +2253,48 @@
    "pathLen": 12,
    "dur": 93,
    "shaders": [
-    "starfield",
+    "r3-waveveil",
     "fracture-light",
-    "nadir",
+    "ribbon-of-light",
     "binary-stars",
-    "mandorla",
     "meteor-rain",
-    "ribbon-of-light"
+    "singularity",
+    "pendulum-dust"
    ],
    "cast": {
     "threshold": [
+     "ribbon-of-light",
      "binary-stars",
-     "starfield",
-     "nadir"
+     "r3-waveveil"
     ],
     "expansion": [
+     "ribbon-of-light",
      "binary-stars",
-     "starfield",
-     "nadir",
-     "mandorla"
+     "r3-waveveil",
+     "singularity"
     ],
     "transcendence": [
-     "starfield",
-     "nadir",
-     "mandorla",
-     "ribbon-of-light"
-    ],
-    "illumination": [
-     "nadir",
-     "mandorla",
-     "ribbon-of-light",
+     "binary-stars",
+     "r3-waveveil",
+     "singularity",
      "fracture-light"
     ],
-    "return": [
-     "mandorla",
-     "ribbon-of-light",
+    "illumination": [
+     "r3-waveveil",
+     "singularity",
      "fracture-light",
      "meteor-rain"
     ],
-    "integration": [
-     "ribbon-of-light",
+    "return": [
+     "singularity",
      "fracture-light",
-     "meteor-rain"
+     "meteor-rain",
+     "pendulum-dust"
+    ],
+    "integration": [
+     "fracture-light",
+     "meteor-rain",
+     "pendulum-dust"
     ]
    }
   },
@@ -2308,47 +2308,47 @@
    "pathLen": 10,
    "dur": 110,
    "shaders": [
-    "ember",
     "r2-spore",
-    "flame",
     "r-embers",
+    "flame",
     "magma",
+    "kelp",
     "r3-fernunfurl",
-    "kelp"
+    "event-horizon"
    ],
    "cast": {
     "threshold": [
-     "kelp",
-     "ember",
+     "r-embers",
+     "r2-spore",
      "r3-fernunfurl"
     ],
     "expansion": [
-     "kelp",
-     "ember",
+     "r-embers",
+     "r2-spore",
      "r3-fernunfurl",
      "magma"
     ],
     "transcendence": [
-     "ember",
+     "r2-spore",
      "r3-fernunfurl",
      "magma",
-     "r2-spore"
+     "kelp"
     ],
     "illumination": [
      "r3-fernunfurl",
      "magma",
-     "r2-spore",
-     "r-embers"
+     "kelp",
+     "event-horizon"
     ],
     "return": [
      "magma",
-     "r2-spore",
-     "r-embers",
+     "kelp",
+     "event-horizon",
      "flame"
     ],
     "integration": [
-     "r2-spore",
-     "r-embers",
+     "kelp",
+     "event-horizon",
      "flame"
     ]
    }
@@ -2363,48 +2363,48 @@
    "pathLen": 10,
    "dur": 115,
    "shaders": [
-    "event-horizon",
-    "singularity",
     "ripple",
-    "r-blackhole",
-    "jubilee",
+    "shadow-fire",
+    "torrent",
+    "r3-monsoonveil",
     "r2-portalrim",
-    "hubble"
+    "r-blackhole",
+    "dark-tide"
    ],
    "cast": {
     "threshold": [
      "ripple",
-     "jubilee",
+     "r3-monsoonveil",
      "r-blackhole"
     ],
     "expansion": [
      "ripple",
-     "jubilee",
+     "r3-monsoonveil",
      "r-blackhole",
      "r2-portalrim"
     ],
     "transcendence": [
-     "jubilee",
+     "r3-monsoonveil",
      "r-blackhole",
      "r2-portalrim",
-     "singularity"
+     "dark-tide"
     ],
     "illumination": [
      "r-blackhole",
      "r2-portalrim",
-     "singularity",
-     "event-horizon"
+     "dark-tide",
+     "torrent"
     ],
     "return": [
      "r2-portalrim",
-     "singularity",
-     "event-horizon",
-     "hubble"
+     "dark-tide",
+     "torrent",
+     "shadow-fire"
     ],
     "integration": [
-     "singularity",
-     "event-horizon",
-     "hubble"
+     "dark-tide",
+     "torrent",
+     "shadow-fire"
     ]
    }
   },
@@ -2418,48 +2418,48 @@
    "pathLen": 10,
    "dur": 134,
    "shaders": [
-    "iron-forge",
+    "kenosis",
     "r2-pixie",
     "pollen",
     "satori",
-    "merkaba",
-    "shadow-fire",
-    "rapture"
+    "volcanic",
+    "yantra",
+    "r3-fairyglow"
    ],
    "cast": {
     "threshold": [
-     "merkaba",
+     "yantra",
      "satori",
      "pollen"
     ],
     "expansion": [
-     "merkaba",
+     "yantra",
      "satori",
      "pollen",
-     "rapture"
+     "kenosis"
     ],
     "transcendence": [
      "satori",
      "pollen",
-     "rapture",
-     "iron-forge"
+     "kenosis",
+     "r3-fairyglow"
     ],
     "illumination": [
      "pollen",
-     "rapture",
-     "iron-forge",
+     "kenosis",
+     "r3-fairyglow",
      "r2-pixie"
     ],
     "return": [
-     "rapture",
-     "iron-forge",
+     "kenosis",
+     "r3-fairyglow",
      "r2-pixie",
-     "shadow-fire"
+     "volcanic"
     ],
     "integration": [
-     "iron-forge",
+     "r3-fairyglow",
      "r2-pixie",
-     "shadow-fire"
+     "volcanic"
     ]
    }
   },
@@ -2473,48 +2473,48 @@
    "pathLen": 10,
    "dur": 137,
    "shaders": [
-    "covenant",
-    "chinook",
-    "symbiosis",
-    "torrent",
+    "r3-sleepingbloom",
+    "diatom",
     "pelagic",
-    "r3-monsoonveil",
-    "r2-curlswarm"
+    "tide",
+    "iron-forge",
+    "chinook",
+    "rapture"
    ],
    "cast": {
     "threshold": [
-     "symbiosis",
-     "covenant",
-     "chinook"
+     "chinook",
+     "tide",
+     "r3-sleepingbloom"
     ],
     "expansion": [
-     "symbiosis",
-     "covenant",
      "chinook",
-     "r3-monsoonveil"
+     "tide",
+     "r3-sleepingbloom",
+     "rapture"
     ],
     "transcendence": [
-     "covenant",
-     "chinook",
-     "r3-monsoonveil",
-     "pelagic"
+     "tide",
+     "r3-sleepingbloom",
+     "rapture",
+     "diatom"
     ],
     "illumination": [
-     "chinook",
-     "r3-monsoonveil",
-     "pelagic",
-     "torrent"
+     "r3-sleepingbloom",
+     "rapture",
+     "diatom",
+     "pelagic"
     ],
     "return": [
-     "r3-monsoonveil",
+     "rapture",
+     "diatom",
      "pelagic",
-     "torrent",
-     "r2-curlswarm"
+     "iron-forge"
     ],
     "integration": [
+     "diatom",
      "pelagic",
-     "torrent",
-     "r2-curlswarm"
+     "iron-forge"
     ]
    }
   },
@@ -2529,46 +2529,46 @@
    "dur": 163,
    "shaders": [
     "astral",
-    "dark-tide",
+    "mandorla",
+    "stigmata",
+    "flagella",
     "lightyear",
-    "tide",
-    "diatom",
-    "r3-sleepingbloom",
-    "zenith"
+    "zenith",
+    "threshold"
    ],
    "cast": {
     "threshold": [
-     "dark-tide",
-     "r3-sleepingbloom",
+     "flagella",
+     "threshold",
      "astral"
     ],
     "expansion": [
-     "dark-tide",
-     "r3-sleepingbloom",
+     "flagella",
+     "threshold",
      "astral",
      "zenith"
     ],
     "transcendence": [
-     "r3-sleepingbloom",
+     "threshold",
      "astral",
      "zenith",
-     "tide"
+     "stigmata"
     ],
     "illumination": [
      "astral",
      "zenith",
-     "tide",
-     "diatom"
+     "stigmata",
+     "mandorla"
     ],
     "return": [
      "zenith",
-     "tide",
-     "diatom",
+     "stigmata",
+     "mandorla",
      "lightyear"
     ],
     "integration": [
-     "tide",
-     "diatom",
+     "stigmata",
+     "mandorla",
      "lightyear"
     ]
    }
@@ -2583,28 +2583,28 @@
    "pathLen": 10,
    "dur": 310,
    "shaders": [
-    "kairos",
-    "vestige",
+    "merkaba",
     "aureole",
-    "kenosis",
+    "vestige",
+    "hubble",
     "r3-heartwarmth",
     "dharma",
-    "furnace"
+    "jubilee"
    ],
    "cast": {
     "threshold": [
-     "kairos",
      "dharma",
+     "jubilee",
      "vestige"
     ],
     "expansion": [
-     "kairos",
      "dharma",
+     "jubilee",
      "vestige",
      "aureole"
     ],
     "transcendence": [
-     "dharma",
+     "jubilee",
      "vestige",
      "aureole",
      "r3-heartwarmth"
@@ -2613,18 +2613,18 @@
      "vestige",
      "aureole",
      "r3-heartwarmth",
-     "kenosis"
+     "merkaba"
     ],
     "return": [
      "aureole",
      "r3-heartwarmth",
-     "kenosis",
-     "furnace"
+     "merkaba",
+     "hubble"
     ],
     "integration": [
      "r3-heartwarmth",
-     "kenosis",
-     "furnace"
+     "merkaba",
+     "hubble"
     ]
    }
   },
@@ -2638,49 +2638,49 @@
    "pathLen": 10,
    "dur": 368,
    "shaders": [
+    "furnace",
     "molten-vein",
-    "volcanic",
-    "supernova",
     "r3-plasmastorm",
-    "mycelium",
+    "dusk",
+    "supernova",
+    "pulsar",
     "kepler",
-    "r-smokerings",
-    "dusk"
+    "r-smokerings"
    ],
    "cast": {
     "threshold": [
-     "mycelium",
-     "r-smokerings",
+     "molten-vein",
+     "pulsar",
      "dusk"
     ],
     "expansion": [
-     "mycelium",
-     "r-smokerings",
+     "molten-vein",
+     "pulsar",
      "dusk",
-     "supernova"
+     "r-smokerings"
     ],
     "transcendence": [
-     "r-smokerings",
+     "pulsar",
      "dusk",
-     "supernova",
-     "molten-vein"
+     "r-smokerings",
+     "supernova"
     ],
     "illumination": [
+     "r-smokerings",
      "supernova",
-     "molten-vein",
      "r3-plasmastorm",
      "kepler"
     ],
     "return": [
-     "molten-vein",
+     "supernova",
      "r3-plasmastorm",
      "kepler",
-     "volcanic"
+     "furnace"
     ],
     "integration": [
      "r3-plasmastorm",
      "kepler",
-     "volcanic"
+     "furnace"
     ]
    }
   },
@@ -2694,46 +2694,46 @@
    "pathLen": 10,
    "dur": 151,
    "shaders": [
-    "orbit-weaver",
     "monsoon",
     "r2-spiralgal",
+    "orbit-weaver",
     "rose-window",
-    "pulsar",
-    "dark-nebula",
-    "protostar"
+    "symbiosis",
+    "protostar",
+    "obsidian-flow"
    ],
    "cast": {
     "threshold": [
-     "dark-nebula",
+     "monsoon",
      "protostar",
-     "r2-spiralgal"
+     "symbiosis"
     ],
     "expansion": [
-     "dark-nebula",
+     "monsoon",
      "protostar",
-     "r2-spiralgal",
-     "pulsar"
+     "symbiosis",
+     "r2-spiralgal"
     ],
     "transcendence": [
      "protostar",
+     "symbiosis",
      "r2-spiralgal",
-     "pulsar",
-     "monsoon"
+     "obsidian-flow"
     ],
     "illumination": [
+     "symbiosis",
      "r2-spiralgal",
-     "pulsar",
-     "monsoon",
+     "obsidian-flow",
      "orbit-weaver"
     ],
     "return": [
-     "pulsar",
-     "monsoon",
+     "r2-spiralgal",
+     "obsidian-flow",
      "orbit-weaver",
      "rose-window"
     ],
     "integration": [
-     "monsoon",
+     "obsidian-flow",
      "orbit-weaver",
      "rose-window"
     ]
@@ -2749,47 +2749,47 @@
    "pathLen": 10,
    "dur": 198,
    "shaders": [
-    "r2-thermal",
-    "chrysalis",
-    "stigmata",
-    "obsidian-flow",
-    "threshold",
+    "mycelium",
+    "dark-nebula",
     "r3-lightningveil",
+    "chrysalis",
+    "r2-thermal",
+    "r-mercury",
     "ocean"
    ],
    "cast": {
     "threshold": [
-     "threshold",
-     "stigmata",
+     "dark-nebula",
+     "r-mercury",
      "ocean"
     ],
     "expansion": [
-     "threshold",
-     "stigmata",
+     "dark-nebula",
+     "r-mercury",
      "ocean",
      "chrysalis"
     ],
     "transcendence": [
-     "stigmata",
+     "r-mercury",
      "ocean",
      "chrysalis",
-     "r2-thermal"
+     "mycelium"
     ],
     "illumination": [
      "ocean",
      "chrysalis",
-     "r2-thermal",
-     "obsidian-flow"
+     "mycelium",
+     "r2-thermal"
     ],
     "return": [
      "chrysalis",
+     "mycelium",
      "r2-thermal",
-     "obsidian-flow",
      "r3-lightningveil"
     ],
     "integration": [
+     "mycelium",
      "r2-thermal",
-     "obsidian-flow",
      "r3-lightningveil"
     ]
    }
@@ -2804,48 +2804,48 @@
    "pathLen": 10,
    "dur": 224,
    "shaders": [
-    "flagella",
+    "nadir",
     "r3-waveveil",
     "typhoon",
-    "r-mercury",
-    "mandorla",
-    "nadir",
-    "meteor-rain"
+    "binary-stars",
+    "meteor-rain",
+    "kairos",
+    "covenant"
    ],
    "cast": {
     "threshold": [
-     "r3-waveveil",
-     "typhoon",
-     "r-mercury"
+     "kairos",
+     "covenant",
+     "r3-waveveil"
     ],
     "expansion": [
+     "kairos",
+     "covenant",
      "r3-waveveil",
-     "typhoon",
-     "r-mercury",
-     "nadir"
+     "typhoon"
     ],
     "transcendence": [
+     "covenant",
+     "r3-waveveil",
      "typhoon",
-     "r-mercury",
-     "nadir",
-     "mandorla"
+     "nadir"
     ],
     "illumination": [
-     "r-mercury",
+     "r3-waveveil",
+     "typhoon",
      "nadir",
-     "mandorla",
      "meteor-rain"
     ],
     "return": [
+     "typhoon",
      "nadir",
-     "mandorla",
      "meteor-rain",
-     "flagella"
+     "binary-stars"
     ],
     "integration": [
-     "mandorla",
+     "nadir",
      "meteor-rain",
-     "flagella"
+     "binary-stars"
     ]
    }
   },
@@ -2861,38 +2861,38 @@
    "shaders": [
     "parsec",
     "r-stardust",
-    "zenith",
-    "typhoon",
-    "lightyear",
     "astral",
-    "kairos"
+    "zenith",
+    "kenosis",
+    "lightyear",
+    "dusk"
    ],
    "cast": {
     "threshold": [
      "parsec",
-     "typhoon",
-     "kairos"
+     "kenosis",
+     "zenith"
     ],
     "expansion": [
      "parsec",
-     "typhoon",
-     "kairos",
-     "zenith"
+     "kenosis",
+     "zenith",
+     "dusk"
     ],
     "transcendence": [
-     "typhoon",
-     "kairos",
+     "kenosis",
      "zenith",
+     "dusk",
      "astral"
     ],
     "illumination": [
-     "kairos",
      "zenith",
+     "dusk",
      "astral",
      "r-stardust"
     ],
     "return": [
-     "zenith",
+     "dusk",
      "astral",
      "r-stardust",
      "lightyear"
@@ -2914,22 +2914,22 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "r2-photon",
+    "pendulum-dust",
+    "resonant-rings",
+    "cascade-veil",
+    "cirrus",
     "drift",
     "will-o-wisp",
-    "resonant-rings",
-    "murmuration",
-    "cirrus",
-    "cascade-veil"
+    "r2-photon"
    ],
    "cast": {
     "threshold": [
-     "murmuration",
+     "will-o-wisp",
      "resonant-rings",
      "cirrus"
     ],
     "expansion": [
-     "murmuration",
+     "will-o-wisp",
      "resonant-rings",
      "cirrus",
      "r2-photon"
@@ -2944,18 +2944,18 @@
      "cirrus",
      "r2-photon",
      "drift",
-     "will-o-wisp"
+     "cascade-veil"
     ],
     "return": [
      "r2-photon",
      "drift",
-     "will-o-wisp",
-     "cascade-veil"
+     "cascade-veil",
+     "pendulum-dust"
     ],
     "integration": [
      "drift",
-     "will-o-wisp",
-     "cascade-veil"
+     "cascade-veil",
+     "pendulum-dust"
     ]
    }
   },
@@ -2969,48 +2969,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
+    "r2-curlswarm",
     "firefly-field",
-    "pendulum-dust",
-    "plankton",
-    "dark-nebula",
-    "dark-tide",
+    "murmuration",
     "photon",
-    "starfield"
+    "maelstrom-dark",
+    "plankton",
+    "r-droplets"
    ],
    "cast": {
     "threshold": [
-     "starfield",
-     "dark-tide",
-     "dark-nebula"
+     "r2-curlswarm",
+     "photon",
+     "r-droplets"
     ],
     "expansion": [
-     "starfield",
-     "dark-tide",
-     "dark-nebula",
+     "r2-curlswarm",
+     "photon",
+     "r-droplets",
      "plankton"
     ],
     "transcendence": [
-     "dark-tide",
-     "dark-nebula",
+     "photon",
+     "r-droplets",
      "plankton",
-     "photon"
+     "maelstrom-dark"
     ],
     "illumination": [
-     "dark-nebula",
+     "r-droplets",
      "plankton",
-     "photon",
-     "firefly-field"
+     "maelstrom-dark",
+     "murmuration"
     ],
     "return": [
      "plankton",
-     "photon",
-     "firefly-field",
-     "pendulum-dust"
+     "maelstrom-dark",
+     "murmuration",
+     "firefly-field"
     ],
     "integration": [
-     "photon",
-     "firefly-field",
-     "pendulum-dust"
+     "maelstrom-dark",
+     "murmuration",
+     "firefly-field"
     ]
    }
   },
@@ -3024,48 +3024,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "r-droplets",
-    "r3-fairyglow",
+    "starfield",
     "seraph",
-    "yantra",
     "lectio",
-    "parsec",
-    "r2-portalrim"
+    "fracture-light",
+    "ribbon-of-light",
+    "r-stardust",
+    "yantra"
    ],
    "cast": {
     "threshold": [
+     "starfield",
      "yantra",
-     "r2-portalrim",
      "seraph"
     ],
     "expansion": [
+     "starfield",
      "yantra",
-     "r2-portalrim",
      "seraph",
      "lectio"
     ],
     "transcendence": [
-     "r2-portalrim",
+     "yantra",
      "seraph",
      "lectio",
-     "r-droplets"
+     "r-stardust"
     ],
     "illumination": [
      "seraph",
      "lectio",
-     "r-droplets",
-     "r3-fairyglow"
+     "r-stardust",
+     "ribbon-of-light"
     ],
     "return": [
      "lectio",
-     "r-droplets",
-     "r3-fairyglow",
-     "parsec"
+     "r-stardust",
+     "ribbon-of-light",
+     "fracture-light"
     ],
     "integration": [
-     "r-droplets",
-     "r3-fairyglow",
-     "parsec"
+     "r-stardust",
+     "ribbon-of-light",
+     "fracture-light"
     ]
    }
   },
@@ -3079,48 +3079,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "maelstrom-dark",
-    "r3-plasmastorm",
+    "r3-fairyglow",
+    "rose-window",
+    "r-mercury",
     "ocean",
+    "r2-portalrim",
     "flagella",
-    "r-stardust",
-    "torrent",
-    "ripple"
+    "monsoon"
    ],
    "cast": {
     "threshold": [
-     "r-stardust",
-     "torrent",
-     "ripple"
+     "r3-fairyglow",
+     "r-mercury",
+     "r2-portalrim"
     ],
     "expansion": [
-     "r-stardust",
-     "torrent",
-     "ripple",
+     "r3-fairyglow",
+     "r-mercury",
+     "r2-portalrim",
      "ocean"
     ],
     "transcendence": [
-     "torrent",
-     "ripple",
+     "r-mercury",
+     "r2-portalrim",
      "ocean",
-     "r3-plasmastorm"
+     "monsoon"
     ],
     "illumination": [
-     "ripple",
+     "r2-portalrim",
      "ocean",
-     "r3-plasmastorm",
+     "monsoon",
      "flagella"
     ],
     "return": [
      "ocean",
-     "r3-plasmastorm",
+     "monsoon",
      "flagella",
-     "maelstrom-dark"
+     "rose-window"
     ],
     "integration": [
-     "r3-plasmastorm",
+     "monsoon",
      "flagella",
-     "maelstrom-dark"
+     "rose-window"
     ]
    }
   },
@@ -3134,48 +3134,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "chrysalis",
-    "singularity",
+    "dark-tide",
+    "torrent",
+    "dark-nebula",
+    "parsec",
     "symbiosis",
-    "monsoon",
-    "rose-window",
-    "fracture-light",
-    "diatom"
+    "pelagic",
+    "singularity"
    ],
    "cast": {
     "threshold": [
-     "monsoon",
+     "dark-tide",
+     "dark-nebula",
+     "singularity"
+    ],
+    "expansion": [
+     "dark-tide",
+     "dark-nebula",
      "singularity",
      "symbiosis"
     ],
-    "expansion": [
-     "monsoon",
-     "singularity",
-     "symbiosis",
-     "chrysalis"
-    ],
     "transcendence": [
+     "dark-nebula",
      "singularity",
      "symbiosis",
-     "chrysalis",
-     "diatom"
+     "pelagic"
     ],
     "illumination": [
+     "singularity",
      "symbiosis",
-     "chrysalis",
-     "diatom",
-     "rose-window"
+     "pelagic",
+     "torrent"
     ],
     "return": [
-     "chrysalis",
-     "diatom",
-     "rose-window",
-     "fracture-light"
+     "symbiosis",
+     "pelagic",
+     "torrent",
+     "parsec"
     ],
     "integration": [
-     "diatom",
-     "rose-window",
-     "fracture-light"
+     "pelagic",
+     "torrent",
+     "parsec"
     ]
    }
   },
@@ -3189,46 +3189,46 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "r2-spiralgal",
     "r3-monsoonveil",
-    "cascade-veil",
+    "ripple",
     "will-o-wisp",
-    "r3-waveveil",
-    "resonant-rings",
-    "r-mercury"
+    "r3-plasmastorm",
+    "typhoon",
+    "cascade-veil",
+    "r2-photon"
    ],
    "cast": {
     "threshold": [
-     "resonant-rings",
-     "r3-monsoonveil",
-     "r2-spiralgal"
+     "r3-plasmastorm",
+     "typhoon",
+     "ripple"
     ],
     "expansion": [
-     "resonant-rings",
-     "r3-monsoonveil",
-     "r2-spiralgal",
-     "r3-waveveil"
+     "r3-plasmastorm",
+     "typhoon",
+     "ripple",
+     "r3-monsoonveil"
     ],
     "transcendence": [
+     "typhoon",
+     "ripple",
      "r3-monsoonveil",
-     "r2-spiralgal",
-     "r3-waveveil",
-     "r-mercury"
+     "r2-photon"
     ],
     "illumination": [
-     "r2-spiralgal",
-     "r3-waveveil",
-     "r-mercury",
+     "ripple",
+     "r3-monsoonveil",
+     "r2-photon",
      "will-o-wisp"
     ],
     "return": [
-     "r3-waveveil",
-     "r-mercury",
+     "r3-monsoonveil",
+     "r2-photon",
      "will-o-wisp",
      "cascade-veil"
     ],
     "integration": [
-     "r-mercury",
+     "r2-photon",
      "will-o-wisp",
      "cascade-veil"
     ]
@@ -3245,47 +3245,47 @@
    "dur": 300,
    "shaders": [
     "r3-sleepingbloom",
-    "r2-photon",
-    "murmuration",
-    "pelagic",
-    "pendulum-dust",
-    "cirrus",
-    "r2-curlswarm"
+    "r2-curlswarm",
+    "r3-waveveil",
+    "chrysalis",
+    "r2-spiralgal",
+    "drift",
+    "orbit-weaver"
    ],
    "cast": {
     "threshold": [
-     "r2-curlswarm",
-     "cirrus",
-     "r2-photon"
+     "drift",
+     "r3-sleepingbloom",
+     "r3-waveveil"
     ],
     "expansion": [
-     "r2-curlswarm",
-     "cirrus",
-     "r2-photon",
-     "r3-sleepingbloom"
+     "drift",
+     "r3-sleepingbloom",
+     "r3-waveveil",
+     "chrysalis"
     ],
     "transcendence": [
-     "cirrus",
-     "r2-photon",
      "r3-sleepingbloom",
-     "pelagic"
+     "r3-waveveil",
+     "chrysalis",
+     "r2-spiralgal"
     ],
     "illumination": [
-     "r2-photon",
-     "r3-sleepingbloom",
-     "pelagic",
-     "murmuration"
+     "r3-waveveil",
+     "chrysalis",
+     "r2-spiralgal",
+     "r2-curlswarm"
     ],
     "return": [
-     "r3-sleepingbloom",
-     "pelagic",
-     "murmuration",
-     "pendulum-dust"
+     "chrysalis",
+     "r2-spiralgal",
+     "r2-curlswarm",
+     "orbit-weaver"
     ],
     "integration": [
-     "pelagic",
-     "murmuration",
-     "pendulum-dust"
+     "r2-spiralgal",
+     "r2-curlswarm",
+     "orbit-weaver"
     ]
    }
   },
@@ -3299,47 +3299,47 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "obsidian-flow",
-    "binary-stars",
-    "ribbon-of-light",
     "firefly-field",
-    "orbit-weaver",
+    "diatom",
+    "murmuration",
+    "obsidian-flow",
     "tide",
+    "r2-thermal",
     "r3-lightningveil"
    ],
    "cast": {
     "threshold": [
-     "binary-stars",
      "r3-lightningveil",
-     "obsidian-flow"
+     "r2-thermal",
+     "diatom"
     ],
     "expansion": [
-     "binary-stars",
      "r3-lightningveil",
-     "obsidian-flow",
+     "r2-thermal",
+     "diatom",
      "tide"
     ],
     "transcendence": [
-     "r3-lightningveil",
-     "obsidian-flow",
+     "r2-thermal",
+     "diatom",
      "tide",
-     "orbit-weaver"
+     "obsidian-flow"
     ],
     "illumination": [
-     "obsidian-flow",
+     "diatom",
      "tide",
-     "orbit-weaver",
-     "ribbon-of-light"
+     "obsidian-flow",
+     "murmuration"
     ],
     "return": [
      "tide",
-     "orbit-weaver",
-     "ribbon-of-light",
+     "obsidian-flow",
+     "murmuration",
      "firefly-field"
     ],
     "integration": [
-     "orbit-weaver",
-     "ribbon-of-light",
+     "obsidian-flow",
+     "murmuration",
      "firefly-field"
     ]
    }
@@ -3354,22 +3354,22 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "protostar",
-    "pulsar",
-    "mycelium",
     "kepler",
+    "mycelium",
     "supernova",
-    "r-droplets",
-    "r-smokerings"
+    "pulsar",
+    "r-smokerings",
+    "starfield",
+    "protostar"
    ],
    "cast": {
     "threshold": [
-     "r-droplets",
+     "mycelium",
      "r-smokerings",
      "pulsar"
     ],
     "expansion": [
-     "r-droplets",
+     "mycelium",
      "r-smokerings",
      "pulsar",
      "protostar"
@@ -3384,18 +3384,18 @@
      "pulsar",
      "protostar",
      "supernova",
-     "mycelium"
+     "kepler"
     ],
     "return": [
      "protostar",
      "supernova",
-     "mycelium",
-     "kepler"
+     "kepler",
+     "starfield"
     ],
     "integration": [
      "supernova",
-     "mycelium",
-     "kepler"
+     "kepler",
+     "starfield"
     ]
    }
   },
@@ -3409,48 +3409,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "dusk",
-    "r2-thermal",
     "threshold",
-    "r-embers",
+    "stigmata",
+    "mandorla",
+    "r2-spore",
     "flame",
-    "r3-fernunfurl",
-    "furnace"
+    "shadow-fire",
+    "kelp"
    ],
    "cast": {
     "threshold": [
-     "r-embers",
-     "threshold",
-     "r3-fernunfurl"
+     "mandorla",
+     "r2-spore",
+     "threshold"
     ],
     "expansion": [
-     "r-embers",
+     "mandorla",
+     "r2-spore",
      "threshold",
-     "r3-fernunfurl",
-     "dusk"
+     "stigmata"
     ],
     "transcendence": [
+     "r2-spore",
      "threshold",
-     "r3-fernunfurl",
-     "dusk",
-     "r2-thermal"
+     "stigmata",
+     "kelp"
     ],
     "illumination": [
-     "r3-fernunfurl",
-     "dusk",
-     "r2-thermal",
-     "furnace"
+     "threshold",
+     "stigmata",
+     "kelp",
+     "flame"
     ],
     "return": [
-     "dusk",
-     "r2-thermal",
-     "furnace",
-     "flame"
+     "stigmata",
+     "kelp",
+     "flame",
+     "shadow-fire"
     ],
     "integration": [
-     "r2-thermal",
-     "furnace",
-     "flame"
+     "kelp",
+     "flame",
+     "shadow-fire"
     ]
    }
   },
@@ -3464,48 +3464,48 @@
    "pathLen": null,
    "dur": 300,
    "shaders": [
-    "molten-vein",
     "ember",
+    "iron-forge",
+    "furnace",
+    "r3-fernunfurl",
+    "pelagic",
     "volcanic",
-    "r2-spore",
-    "shadow-fire",
-    "stigmata",
-    "kelp"
+    "molten-vein"
    ],
    "cast": {
     "threshold": [
-     "kelp",
-     "r2-spore",
+     "iron-forge",
+     "molten-vein",
      "ember"
     ],
     "expansion": [
-     "kelp",
-     "r2-spore",
+     "iron-forge",
+     "molten-vein",
      "ember",
-     "stigmata"
+     "r3-fernunfurl"
     ],
     "transcendence": [
-     "r2-spore",
+     "molten-vein",
      "ember",
-     "stigmata",
-     "molten-vein"
+     "r3-fernunfurl",
+     "pelagic"
     ],
     "illumination": [
      "ember",
-     "stigmata",
-     "molten-vein",
-     "volcanic"
+     "r3-fernunfurl",
+     "pelagic",
+     "furnace"
     ],
     "return": [
-     "stigmata",
-     "molten-vein",
-     "volcanic",
-     "shadow-fire"
+     "r3-fernunfurl",
+     "pelagic",
+     "furnace",
+     "volcanic"
     ],
     "integration": [
-     "molten-vein",
-     "volcanic",
-     "shadow-fire"
+     "pelagic",
+     "furnace",
+     "volcanic"
     ]
    }
   }

@@ -40,6 +40,8 @@ export interface ParticleLeadCast extends ParticleCast {
   signatureMorphs?: readonly number[];
   /** What the signature forms: the real image the journey's flashes use. */
   signatureImage?: "angel";
+  /** Timed image moments (Ghost's blossom cloud in the tree phase). */
+  signatureMoments?: readonly SignatureMoment[];
   /** Per phase, from the vision-tagged imagery: forms, fire colour, motion. */
   phaseChars?: PhaseCharacter[];
 }
@@ -57,11 +59,19 @@ const isMasteredId = (id: string, name: string) => isMasteredJourney(id) || MAST
  *  particles should ghost like moving form at a couple points"): the spirit
  *  rises with the morph into transcendence (out of the tunnel toward the
  *  light) and again into integration (joining the light). */
-export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morphs: readonly number[] }>> = {
+export interface SignatureMoment { phase: number; at: number; dur: number; images: readonly string[] }
+export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morphs: readonly number[]; moments?: readonly SignatureMoment[] }>> = {
   // Karel 2026-10-06: "not into that figurative shape … if you can make that
   // look like an angel like in the images that would work" — the field forms
   // the ANGEL from the real angel image (as in the flashes), off-centre
-  ghost: { image: "angel", morphs: [2, 5] },
+  // + the tree-blossom phase (Karel 2026-10-06: "at one point make a ton of
+  // pink blossoms that are like the tree blossoms"): the field forms a great
+  // cloud of pink tree blossoms (canopy images, trunk removed)
+  ghost: {
+    image: "angel",
+    morphs: [2, 5],
+    moments: [{ phase: 4, at: 2, dur: 16, images: ["/tramokyo-pack/emblems/ghost-blossoms-1.jpg", "/tramokyo-pack/emblems/ghost-blossoms-2.jpg"] }],
+  },
 };
 
 /** Casts for the registry — built once, in loop order, neighbours differ. */
@@ -75,6 +85,7 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     if (sig) {
       cast.signatureMorphs = sig.morphs;
       cast.signatureImage = sig.image;
+      cast.signatureMoments = sig.moments;
     }
     // the full-screen still-to-particles dissolve: BARELY EVER (Karel
     // 2026-10-06: "barely ever do i want that huge full screen particle
@@ -219,9 +230,21 @@ function chroma(c: RGB, hueFrom: number, floor: number): RGB {
  *  images"). Voicings move through the image colours, the KEY always present. */
 export function particlePaletteFromImage(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette | null {
   if (!ip || !ip.colors.length) return null;
-  const chromatic = ip.colors.filter((c) => { const h = toHsv(hexToLinear(c)); return h[1] > 0.12 && h[2] > 0.02; });
-  const cs = chromatic.length >= 2 ? chromatic : ip.colors;
-  const K = ip.key;
+  // only colours that are actually SEEN in the images (Karel 2026-10-06:
+  // Vespers went pink — its near-black violet shadows were lifted into
+  // bright magenta). sRGB value ≥ 0.35; key = the most vivid of those.
+  const srgbHsv = (c: string): RGB => { const n = parseInt(c.replace("#", ""), 16); return toHsv([((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]); };
+  // …ranked by PERCEIVED contribution (area × brightness²): bright highlights
+  // dominate what the eye sees even when small; a dim stray accent never leads
+  const w = (ip as { weights?: number[] }).weights;
+  const scored = ip.colors
+    .map((c, i) => { const [, sat, v] = srgbHsv(c); return { c, sat, v, score: (w?.[i] ?? 0.2) * v * v }; })
+    .filter((x) => x.v >= 0.35 && x.sat > 0.12)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+  const visible = scored.map((x) => x.c);
+  const cs = visible.length >= 2 ? visible : visible.length === 1 ? [visible[0], ...ip.colors.filter((c) => c !== visible[0] && srgbHsv(c)[2] >= 0.2)].slice(0, 3) : ip.colors;
+  const K = visible[0] ?? ip.key;
   const c1 = cs.find((c) => c !== K) ?? K;
   const c2 = cs.filter((c) => c !== K)[1] ?? c1;
   const bright = [...cs].sort((a, b) => toHsv(hexToLinear(b))[2] - toHsv(hexToLinear(a))[2])[0] ?? K;

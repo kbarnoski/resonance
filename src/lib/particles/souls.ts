@@ -25,6 +25,8 @@ export const SOUL_IDS = [
   // v7 ORGANIC language (Karel 2026-10-06: forms echo the IMAGERY — fire as
   // abstract flames, flowers as evolving floral patterns; organic majority)
   "flame", "wisp", "blossom", "caustic", "petalfall",
+  // v8 INTRICATE (Karel 2026-10-06: "intricate patterns … islamic geometric detail")
+  "girih", "medallion",
 ] as const;
 
 export type SoulId = (typeof SOUL_IDS)[number];
@@ -235,6 +237,12 @@ export const SOULS: readonly SoulPreset[] = [
   S("petalfall", "Petal Fall", "petals of light spiralling down through a column, fluttering", pal([1.0, 0.5, 0.65], [1.0, 0.75, 0.8], [1.0, 0.95, 0.9]),
     { trail: 0.5, elev: 0.15, dist: 4.6, spin: 0.0, size: 1.8, respawn: "rise", riseTop: -1.15, maxD: 0.1, intensity: 1.6 },
     { energy: 0.3, playful: 0.5, dark: 0.2, solo: 0.8, peak: 0.4, family: "organic" }),
+  S("girih", "Girih Lattice", "a tiled field of star rosettes and interlacing strapwork, cells counter-turning", pal([1.0, 0.75, 0.4], [0.55, 0.75, 1.0], [0.95, 0.95, 1.0]),
+    { trail: 0.4, elev: 1.3, dist: 4.2, spin: 0.0, size: 0.75 },
+    { energy: 0.5, playful: 0.4, dark: 0.4, solo: 0.8, peak: 0.9, family: "geometric" }),
+  S("medallion", "Medallion", "an Islamic rosette — nested star rings turning against each other, petal arcs between", pal([1.0, 0.7, 0.35], [0.6, 0.6, 1.0], [1.0, 0.95, 0.9]),
+    { trail: 0.4, elev: 1.3, dist: 4.0, spin: 0.0, size: 0.75 },
+    { energy: 0.5, playful: 0.4, dark: 0.4, solo: 0.9, peak: 0.95, family: "geometric" }),
 ];
 
 /**
@@ -246,13 +254,11 @@ export const SOULS: readonly SoulPreset[] = [
  * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
  */
 export const SHAPE_SOULS: readonly SoulId[] = [
-  // v7 ORGANIC language (Karel 2026-10-06): organic majority, flowers as
-  // evolving floral patterns, no 3-D ellipses (orbitals/rings/arcs/lissajous/
-  // knot/harmonics), no squares or grids (polyhedron/superformula/torus/
-  // cymatics), never the tree or the cube. Mirrors ORGANIC_SOULS
-  // (particle-motifs.ts), which casts them from the imagery.
-  "flame", "wisp", "blossom", "caustic", "petalfall", "bloom", "rose", "mandala", "kaleido",
-  "spirograph", "vortex", "nebula", "murmuration", "ribbons", "ink", "tendrils",
+  // v8 INTRICATE language (Karel 2026-10-06: "intricate patterns like this …
+  // you have a lot of basic shapes and unclear stuff … islamic geometric
+  // detail"): only intricate, legible forms; fire keeps its flame, water its
+  // caustic web. Mirrors ORGANIC_SOULS (particle-motifs.ts).
+  "girih", "medallion", "mandala", "kaleido", "blossom", "flame", "caustic",
 ];
 
 export function soulById(id: SoulId): SoulPreset {

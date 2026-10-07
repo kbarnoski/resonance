@@ -767,7 +767,9 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float pi_ = floor(s.a * n);
     float u = s.g;
     float vv = fract(s.a * n) * 2.0 - 1.0;
-    float open = 0.55 + 0.45 * sin(uClock.x * 0.08 + L * 0.9 + uShape.y * 6.28);
+    // a SLOW unfolding — bud to full bloom and back (Karel 2026-10-06: "that slow
+    // unfolding and growing flower form … was magic")
+    float open = 0.5 + 0.5 * sin(uClock.x * 0.05 + L * 0.7 + uShape.y * 6.28 - 1.5708);
     float R = (0.55 + 0.45 * (1.0 - L * 0.28)) * 1.45;
     float wid = pow(sin(3.14159265 * u), 0.8) * (0.42 - 0.08 * L) * (1.0 + 0.15 * max(uBands.y, 0.0));
     float ang = (pi_ + 0.5 * L) * 6.2831853 / n + uClock.y * 0.03 * (mod(L, 2.0) < 0.5 ? 1.0 : -1.0);
@@ -808,6 +810,80 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     a.z += cos(uTime * 1.9 + s.a * 31.0) * 0.4;
     a += curlNoise(p * 1.1 + uTime * 0.05) * 0.25 * (1.0 + up * midW);
     return vec4(a, 1.3);
+  }
+  if (soul == 40) {
+    // ── GIRIH DOME: one expansive Islamic rosette pattern — a great central
+    // {n/k} star, a ring of interlaced stars, a wider outer ring, strapwork
+    // joining them; rings counter-turn and breathe (one unified pattern, never
+    // a grid of tiny repeats — Karel 2026-10-06) ──
+    float n = uShape.x < 0.34 ? 8.0 : uShape.x < 0.67 ? 10.0 : 12.0;
+    float k = n == 8.0 ? 3.0 : n == 10.0 ? 3.0 : 5.0;
+    float breathe = 1.0 + 0.05 * sin(uClock.x * 0.45) + 0.08 * up * bassW;
+    float sel = s.b;
+    float t = s.g;
+    vec2 q;
+    if (sel < 0.24) {
+      // the great central star
+      float e = floor(s.a * n);
+      float rot = uClock.y * 0.03;
+      float a0 = 6.2831853 * e / n + rot, a1 = 6.2831853 * mod(e + k, n) / n + rot;
+      q = mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.62;
+    } else if (sel < 0.58) {
+      // ring of n interlaced twelve-point stars {12/5}
+      float j = floor(s.a * n);
+      float ringRot = -uClock.y * 0.022;
+      float ca = 6.2831853 * (j + 0.5) / n + ringRot;
+      vec2 c = vec2(cos(ca), sin(ca)) * 1.12;
+      float e = floor(fract(s.a * n) * 12.0);
+      float lr = uClock.y * 0.06 * (mod(j, 2.0) < 0.5 ? 1.0 : -1.0) + ca;
+      float a0 = 6.2831853 * e / 12.0 + lr, a1 = 6.2831853 * mod(e + 5.0, 12.0) / 12.0 + lr;
+      q = c + mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.36;
+    } else if (sel < 0.88) {
+      // outer ring: 2n eight-point stars {8/3} (the khatam — never hexagrams)
+      float m = 2.0 * n;
+      float j = floor(s.a * m);
+      float ringRot = uClock.y * 0.016;
+      float ca = 6.2831853 * j / m + ringRot;
+      vec2 c = vec2(cos(ca), sin(ca)) * 1.82;
+      float e = floor(fract(s.a * m) * 8.0);
+      float a0 = 6.2831853 * e / 8.0 + ca, a1 = 6.2831853 * mod(e + 3.0, 8.0) / 8.0 + ca;
+      q = c + mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.24;
+    } else {
+      // strapwork: from each central star point out through the rings
+      float e = floor(s.a * n);
+      float a = 6.2831853 * e / n + uClock.y * 0.03;
+      q = vec2(cos(a), sin(a)) * mix(0.62, 1.9, t);
+    }
+    q *= breathe;
+    vec3 home = vec3(q.x, 0.03 * sin(uClock.y * 0.5 + length(q) * 3.0) * (0.3 + uBandLv.y), q.y);
+    home += normalize(hash31(s.a * 139.0) - 0.5) * (0.006 + 0.03 * up * trebW);
+    return vec4((home - p) * 9.0, 4.2);
+  }
+  if (soul == 41) {
+    // ── MEDALLION: one Islamic rosette — nested rings of star polygons,
+    // alternating rotation, petal arcs between the rings ──
+    float n = uShape.x < 0.34 ? 8.0 : uShape.x < 0.67 ? 12.0 : 16.0;
+    float ring = floor(s.b * 6.0);
+    float t = s.g;
+    float rot = uClock.y * 0.035 * (mod(ring, 2.0) < 0.5 ? 1.0 : -1.0) + ring * 3.14159265 / n;
+    float r = 0.22 + ring * 0.25;
+    r *= 1.0 + 0.03 * sin(uClock.x * 0.5 - ring * 0.8) + 0.05 * up * bassW;
+    vec2 q;
+    if (mod(ring, 2.0) < 0.5) {
+      float kk = ring < 1.0 ? 3.0 : n == 8.0 ? 3.0 : n == 12.0 ? 5.0 : 7.0;
+      float e = floor(s.a * n);
+      float a0 = 6.2831853 * e / n + rot, a1 = 6.2831853 * mod(e + kk, n) / n + rot;
+      q = mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * r;
+    } else {
+      // petal arcs: n lens petals between the neighbouring rings
+      float e = floor(s.a * n);
+      float a = 6.2831853 * (e + t) / n + rot;
+      float lens = sin(3.14159265 * t) * (0.1 + 0.02 * ring) * (fract(s.a * n * 2.0) < 0.5 ? 1.0 : -1.0);
+      q = vec2(cos(a), sin(a)) * (r + lens);
+    }
+    vec3 home = vec3(q.x, 0.03 * sin(uClock.y * 0.5 + ring) * (0.3 + uBandLv.y), q.y);
+    home += normalize(hash31(s.a * 149.0) - 0.5) * (0.005 + 0.03 * up * trebW);
+    return vec4((home - p) * 9.0, 4.2);
   }
   return vec4(-v, 1.0);
 }

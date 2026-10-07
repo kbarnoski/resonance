@@ -16,73 +16,52 @@ import { JOURNEY_MOTIFS, type PhaseMotif } from "@/lib/particles/journey-motifs.
 
 /** The organic language — the only forms cast in journeys. */
 export const ORGANIC_SOULS: readonly SoulId[] = [
-  "flame", "wisp", "blossom", "caustic", "petalfall", "bloom", "rose", "mandala", "kaleido",
-  "spirograph", "vortex", "nebula", "murmuration", "ribbons", "ink", "tendrils",
+  // v8 INTRICATE language (Karel 2026-10-06): Islamic-geometric girih +
+  // medallions, mandala, kaleidoscope, blossom fields; fire keeps its flame,
+  // water its caustic web
+  "girih", "medallion", "mandala", "kaleido", "blossom", "flame", "caustic",
 ];
 
-/** Banned in journeys (Karel 2026-10-06): 3-D ellipses, squares/grids, the tree, the cube. */
+/** Banned in journeys: 3-D ellipses, squares/grids, the tree, the cube — and
+ *  (v8, "a lot of basic shapes and unclear stuff") the basic / unclear forms. */
 export const BANNED_SOULS: readonly SoulId[] = [
   "orbitals", "rings", "arcs", "lissajous", "knot", "harmonics", "polyhedron", "superformula",
   "torus", "cymatics", "geometry", "branches", "spirit", "threads", "helix",
+  "bloom", "vortex", "rose", "spirograph", "nebula", "ink", "murmuration", "ribbons", "tendrils", "wisp", "petalfall",
 ];
 
 type W = [SoulId, number][];
+const FIRE: W = [["flame", 2.4], ["blossom", 1.7], ["medallion", 1.6], ["girih", 1.4], ["mandala", 1.2]];
+const LIGHT: W = [["medallion", 2], ["blossom", 1.9], ["girih", 1.8], ["mandala", 1.5], ["kaleido", 1]];
+const FLORAL: W = [["blossom", 3], ["medallion", 1.5], ["mandala", 1.5], ["kaleido", 1]];
+const GREEN: W = [["blossom", 2.4], ["girih", 1.4], ["mandala", 1.2], ["kaleido", 1]];
+const WATER: W = [["caustic", 2.5], ["blossom", 1.7], ["medallion", 1.4], ["kaleido", 1.2], ["girih", 1]];
+const CRYSTAL: W = [["kaleido", 2.5], ["girih", 2], ["medallion", 1.5]];
+const AIR: W = [["girih", 1.6], ["blossom", 1.6], ["medallion", 1.5], ["mandala", 1.2], ["kaleido", 1]];
+const COSMOS: W = [["medallion", 2], ["blossom", 1.7], ["kaleido", 1.6], ["girih", 1.4], ["mandala", 1.2]];
+const GEO: W = [["girih", 2.5], ["kaleido", 2], ["medallion", 1.5]];
 const MOTIF_FORMS: Record<string, W> = {
-  // fire is a FAMILY, not one shape (Karel 2026-10-06: Realized "had the flame
-  // in some form the entire time … there needs to be numerous forms")
-  fire: [["flame", 2.4], ["wisp", 1.6], ["vortex", 1.4], ["bloom", 1.2], ["mandala", 1.1], ["rose", 1]],
-  lava: [["ink", 2], ["flame", 1.8], ["ribbons", 1.4], ["vortex", 1.2], ["wisp", 1]],
-  embers: [["murmuration", 1.8], ["flame", 1.8], ["wisp", 1.4], ["nebula", 1.2], ["bloom", 1]],
-  sun: [["flame", 1.5], ["bloom", 1.5], ["mandala", 1], ["vortex", 1]],
-  "light-rays": [["bloom", 1.5], ["mandala", 1], ["wisp", 1], ["nebula", 0.8]],
-  "golden-light": [["bloom", 1.5], ["wisp", 1], ["nebula", 1], ["blossom", 0.8]],
-  flowers: [["blossom", 3], ["rose", 2], ["mandala", 1.5], ["bloom", 1.5], ["petalfall", 1]],
-  blossoms: [["blossom", 3], ["petalfall", 2], ["rose", 1.5], ["bloom", 1.2]],
-  petals: [["petalfall", 2.5], ["blossom", 2.5], ["rose", 1.2]],
-  butterflies: [["murmuration", 2], ["petalfall", 1.5], ["blossom", 1]],
-  leaves: [["tendrils", 2], ["petalfall", 1.5], ["bloom", 1]],
-  forest: [["tendrils", 2], ["wisp", 1], ["murmuration", 1]],
-  mushrooms: [["bloom", 2], ["tendrils", 1.5], ["nebula", 1]],
-  vines: [["tendrils", 2.5], ["ribbons", 1], ["rose", 0.8]],
-  water: [["caustic", 3], ["ink", 1.5], ["ribbons", 1.5]],
-  "ocean-waves": [["caustic", 2], ["ribbons", 2], ["ink", 1]],
-  rain: [["caustic", 2], ["petalfall", 1], ["ink", 1]],
-  "pool-ripples": [["caustic", 3], ["blossom", 1], ["ink", 1]],
-  underwater: [["caustic", 2], ["tendrils", 2], ["ink", 1.5]],
-  "ice-snow": [["kaleido", 2], ["spirograph", 1.2], ["mandala", 1.2], ["nebula", 1]],
-  crystal: [["kaleido", 2.5], ["spirograph", 1.5], ["mandala", 1]],
-  clouds: [["wisp", 2], ["nebula", 2], ["ribbons", 1]],
-  mist: [["wisp", 2.5], ["nebula", 1.5], ["ink", 1]],
-  smoke: [["wisp", 3], ["ink", 1.5], ["ribbons", 1]],
-  wind: [["ribbons", 2.5], ["wisp", 1.5], ["murmuration", 1]],
-  "sand-desert": [["ribbons", 2], ["wisp", 1.5], ["vortex", 1]],
-  stone: [["wisp", 1.5], ["nebula", 1], ["mandala", 1]],
-  "cave-tunnel": [["vortex", 2], ["wisp", 1.5], ["nebula", 1]],
-  stars: [["vortex", 2], ["nebula", 1.5], ["murmuration", 1.5]],
-  nebula: [["nebula", 3], ["vortex", 1.5], ["ink", 1]],
-  galaxy: [["vortex", 3], ["nebula", 1.5]],
-  planet: [["vortex", 1.5], ["nebula", 1.5], ["mandala", 1]],
-  aurora: [["ribbons", 3], ["wisp", 1.5], ["nebula", 1]],
-  figure: [["bloom", 1.5], ["wisp", 1.5], ["ribbons", 1]],
-  "wings-feathers": [["ribbons", 2], ["murmuration", 1.5], ["petalfall", 1], ["blossom", 1]],
-  "birds-flock": [["murmuration", 3], ["ribbons", 1]],
-  fireflies: [["murmuration", 2], ["nebula", 1], ["bloom", 1]],
-  "city-neon": [["spirograph", 2], ["kaleido", 1.5], ["ribbons", 1.5]],
-  "silk-fabric": [["ribbons", 3], ["wisp", 1]],
-  geometric: [["kaleido", 2], ["mandala", 2], ["spirograph", 1.5]],
+  fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
+  "light-rays": LIGHT, "golden-light": LIGHT, figure: LIGHT,
+  flowers: FLORAL, blossoms: FLORAL, petals: FLORAL, butterflies: FLORAL, "wings-feathers": FLORAL,
+  leaves: GREEN, forest: GREEN, mushrooms: GREEN, vines: GREEN, fireflies: GREEN, "birds-flock": GREEN,
+  water: WATER, "ocean-waves": WATER, rain: WATER, "pool-ripples": WATER, underwater: WATER,
+  "ice-snow": CRYSTAL, crystal: CRYSTAL,
+  clouds: AIR, mist: AIR, smoke: AIR, wind: AIR, "sand-desert": AIR, stone: AIR, "cave-tunnel": AIR,
+  stars: COSMOS, nebula: COSMOS, galaxy: COSMOS, planet: COSMOS, aurora: COSMOS,
+  "city-neon": GEO, "silk-fabric": GEO, geometric: GEO,
 };
 const MOVE_FORMS: Record<string, W> = {
-  rising: [["flame", 0.6], ["wisp", 0.8]],
-  falling: [["petalfall", 1]],
-  swirling: [["vortex", 0.8], ["rose", 0.5]],
-  spiraling: [["vortex", 0.8], ["spirograph", 0.5]],
-  unfurling: [["blossom", 1], ["bloom", 0.5]],
+  rising: [["flame", 0.6]],
+  unfurling: [["blossom", 1]],
   rippling: [["caustic", 1]],
-  flowing: [["ribbons", 0.8], ["ink", 0.4]],
-  streaming: [["ribbons", 0.8], ["murmuration", 0.4]],
-  drifting: [["nebula", 0.5], ["wisp", 0.4]],
+  swirling: [["medallion", 0.6], ["kaleido", 0.5]],
+  spiraling: [["medallion", 0.6], ["mandala", 0.5]],
+  pulsing: [["mandala", 0.5], ["medallion", 0.5]],
+  flowing: [["girih", 0.5]],
+  streaming: [["girih", 0.5]],
+  drifting: [["girih", 0.4], ["blossom", 0.3]],
   flickering: [["flame", 0.5]],
-  pulsing: [["mandala", 0.5], ["bloom", 0.5]],
 };
 
 function hash01(str: string): number {
@@ -130,7 +109,7 @@ export function phaseCharacters(journeyId: string): PhaseCharacter[] {
 }
 
 /** Forms that read beautifully as a FIELD of many small copies. */
-export const FIELD_FORMS: ReadonlySet<SoulId> = new Set(["blossom", "flame", "rose", "bloom", "mandala", "kaleido", "spirograph", "vortex", "wisp"]);
+export const FIELD_FORMS: ReadonlySet<SoulId> = new Set(["blossom", "flame", "medallion", "mandala", "kaleido"]);
 
 /** Shaders drawn around the screen centre (suns, portals, mandalas …): the
  *  particles align exactly with that centre point (Karel 2026-10-06). */

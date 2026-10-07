@@ -1971,7 +1971,8 @@ export const JOURNEYS: Journey[] = [
     aiEnabled: true,
     enableBassFlash: true,
     completionOffset: 4,
-    blockedShaders: ["whirlpool", "nebula", "dark-nebula", "fibonacci-spiral", "fractal-tree", "night-forest"],
+    // coral (bubbles) + cirrus (neon-green algae) out — Karel 2026-10-06
+    blockedShaders: ["whirlpool", "nebula", "dark-nebula", "fibonacci-spiral", "fractal-tree", "night-forest", "coral", "cirrus"],
     // strictCameraPrompt removed: was skipping the random perspective
     // rotation in ai-image-layer, which produced monotonous same-angle
     // imagery. Camera variety is now baked into each Ghost phase prompt

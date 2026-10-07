@@ -63,16 +63,16 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0,"role":"primary","mode":"starfield"},
     {"p":0.152,"role":"primary","mode":"drift"},
     {"p":0.208,"role":"primary","mode":"yantra"},
-    {"p":0.272,"role":"primary","mode":"coral"}, // amber web ONLY in the build-up to flash #2 (Karel 2026-10-01: "not twice")
+    {"p":0.272,"role":"primary","mode":"firefly-field"}, // coral out (Karel 2026-10-06: "remove those bubbles in ghost")
     {"p":0.33,"role":"primary","mode":"murmuration"},
     {"p":0.389,"role":"primary","mode":"drift"},
     {"p":0.453,"role":"primary","mode":"r-stardust"},
-    {"p":0.52,"role":"primary","mode":"coral"},
+    {"p":0.52,"role":"primary","mode":"pendulum-dust"}, // coral out (bubbles)
     {"p":0.576,"role":"primary","mode":"r3-fairyglow"},
-    {"p":0.637,"role":"primary","mode":"cirrus"},
+    {"p":0.637,"role":"primary","mode":"r2-curlswarm"}, // cirrus out (Karel 2026-10-06: "that algae neon green shader")
     {"p":0.69,"role":"primary","mode":"magma"}, // amber web back (Karel 2026-10-01: "you lost that cool amber web shader. a mix of shaders is good"); sparkler banned
     {"p":0.749,"role":"primary","mode":"starfield"},
-    {"p":0.817,"role":"primary","mode":"cirrus"}, 
+    {"p":0.817,"role":"primary","mode":"drift"}, // cirrus out (neon-green algae)
         {"p":0.85,"role":"primary","mode":"r-petals"}, // petals over the TREE/union only (Karel: "cool with that tree scene but dont have it over the cosmos scene after")
     {"p":0.91,"role":"primary","mode":"starfield"}, // the cosmos ending: "another subtle shader"
   ],

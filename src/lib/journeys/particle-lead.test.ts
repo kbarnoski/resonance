@@ -65,15 +65,18 @@ describe("particle lead registry (v3 rollout)", () => {
 
   it("loop neighbours never share a lead (peak) form, and morph forms change every phase", () => {
     const ids = PARTICLE_JOURNEY_IDS;
+    // v8: a 7-form intricate vocabulary — neighbours may share a peak form,
+    // but never the whole cast
     for (let i = 1; i < ids.length; i++) {
-      expect(PARTICLE_LEADS[ids[i]].souls.peak, `${PARTICLE_LEADS[ids[i - 1]].name} → ${PARTICLE_LEADS[ids[i]].name}`).not.toBe(PARTICLE_LEADS[ids[i - 1]].souls.peak);
+      const a = PARTICLE_LEADS[ids[i - 1]], b = PARTICLE_LEADS[ids[i]];
+      expect(JSON.stringify(b.morphSouls), `${a.name} → ${b.name}`).not.toBe(JSON.stringify(a.morphSouls));
     }
     for (const c of Object.values(PARTICLE_LEADS)) for (let i = 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
   });
 
-  it("the whole library gets used across the set (diversity)", () => {
-    const used = new Set(Object.values(PARTICLE_LEADS).flatMap((c) => [...Object.values(c.souls), ...c.morphSouls]));
-    expect(used.size).toBeGreaterThanOrEqual(12);
+  it("the whole INTRICATE library gets used across the set (v8: 7 forms; variety lives in shape seeds, fields, colour, distance)", () => {
+    const used = new Set(Object.values(PARTICLE_LEADS).flatMap((c) => [...Object.values(c.souls), ...c.morphSouls, ...c.formCycle]));
+    expect(used.size).toBeGreaterThanOrEqual(6);
   });
 
   it("palette comes from the journey palette, lifted to read as light", () => {

@@ -111,11 +111,10 @@ describe("casting from analysis", () => {
     const c = castJourney(base);
     expect(colorAt(c, 15).hue).toBeGreaterThan(colorAt(c, 5).hue);
   });
-  it("neighbours in the loop never share a soul", () => {
+  it("neighbours in the loop never share their WHOLE cast (v8: 7-form vocabulary)", () => {
     const set = castSet([lantern, jam, stir]);
     for (let i = 1; i < set.length; i++) {
-      const a = new Set(Object.values(set[i - 1].souls));
-      for (const s of Object.values(set[i].souls)) expect(a.has(s)).toBe(false);
+      expect(JSON.stringify(set[i].souls)).not.toBe(JSON.stringify(set[i - 1].souls));
     }
   });
   it("is deterministic", () => {

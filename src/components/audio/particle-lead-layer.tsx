@@ -49,7 +49,7 @@ import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage, particlePaletteFire, particlePaletteFloral, particlePaletteGhost } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -218,6 +218,25 @@ export function ParticleLeadLayer({
     });
     return () => { cancelled = true; };
   }, [journeyId]);
+  // timed moment images (decoded + shrunk at mount, like emblems)
+  const momentImgs = useRef<HTMLCanvasElement[]>([]);
+  useEffect(() => {
+    momentImgs.current = [];
+    let cancelled = false;
+    for (const m of cast.signatureMoments ?? []) for (const u of m.images) {
+      const img = new Image();
+      img.onload = () => {
+        if (cancelled) return;
+        const k = Math.min(1, 640 / Math.max(img.width, img.height));
+        const c = document.createElement("canvas");
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+        momentImgs.current = [...momentImgs.current, c];
+      };
+      img.src = u;
+    }
+    return () => { cancelled = true; };
+  }, [cast]);
   const paletteTarget = useRef<ParticlePalette | null>(null);
   const palRef = useRef<JourneyFrame["palette"] | null>(null);
   const phaseRef = useRef<{ phase: string | undefined; at: number }>({ phase: undefined, at: 0 });
@@ -308,10 +327,13 @@ export function ParticleLeadLayer({
     // travel clip or not (Ghost's spirit — some boundaries are crossfades)
     let lastPhaseIdx = -1;
     let angelAt = -1;
+    let momentAt = -1, momentDur = 16, momentN = 0;
     const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
       const pbs = cast.phaseBounds ?? [];
       const idx = pbs.filter((x) => x <= t).length;
+      const mo = cast.signatureMoments?.find((m) => m.phase === idx);
+      if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && mo) { momentAt = t + mo.at; momentDur = mo.dur; momentN++; }
       if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && cast.signatureMorphs?.includes(idx) && cast.signatureImage === "angel") {
         angelAt = t; // the field forms the angel (real image), off-centre
         counters.current.emergences++;
@@ -364,7 +386,9 @@ export function ParticleLeadLayer({
       // Ghost: never over-obscure the imaging — further, sparser, off to a side
       const quietImaging = journeyId === "ghost";
       const kLo = quietImaging ? 0.9 : 0.45;
-      const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(2.3) - Math.log(kLo)));
+      // expansive presence (Realized's "good presence and dynamics"): never far
+      // and tiny — 0.45 (close, large) … 1.6
+      const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(1.6) - Math.log(kLo)));
       dollyFrom = k;
       dollyTo = k * (0.62 + 0.85 * rand01(4));
       dollyAt = performance.now();
@@ -397,14 +421,22 @@ export function ParticleLeadLayer({
       // FIELD mode: sometimes many smaller copies instead of one form (Ghost's
       // blossoms most of all)
       const floralNow = !!charAt(t)?.floral;
-      const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.65 : 0.38) : 0;
-      const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 6) : 1;
-      engine.setInstances(nInst, rand01(33 + appearN));
+      // FIELDS are rare and few + large (Karel 2026-10-06: "when you make little
+      // tiny shapes … and they repeat its boring") — expansive single forms lead.
+      // The layout only changes while INVISIBLE: switching it on a visible field
+      // made every mote jump at once ("drops in abrupt … when multiple")
+      if (quiet) {
+        const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.3 : 0.12) : 0;
+        const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 2) : 1;
+        engine.setInstances(nInst, rand01(33 + appearN));
+      }
       recent.unshift(soul);
       if (recent.length > 2) recent.length = 2;
       currentSoul = soul;
       formAt = performance.now();
       appearance();
+      // a blossom GROWS as it opens: it arrives further away and drifts in
+      if (soul === "blossom") { dollyFrom = Math.max(dollyFrom, 1.3); dollyTo = Math.min(dollyFrom * 0.55, 0.75); dollyAt = performance.now(); }
       glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
     };
     let wasShown = false;
@@ -461,7 +493,7 @@ export function ParticleLeadLayer({
     };
     // flash form (Ghost)
     let flashTail = 0;
-    let imgLoaded: "angel" | "emblem" | null = null;
+    let imgLoaded: "angel" | "emblem" | "moment" | null = null;
     let treatN = 0;
     let imgKey: string | null = null;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
@@ -572,16 +604,29 @@ export function ParticleLeadLayer({
           emOcc = 1;
         }
       }
+      // timed MOMENT (Ghost's blossom cloud): gather 4 s, hold breathing, dissipate
+      let moForm = 0, moShow = 0;
+      if (momentAt >= 0 && t >= momentAt) {
+        const a = t - momentAt;
+        moForm = ssf(0, 4, a) * (1 - ssf(momentDur - 6, momentDur - 2, a)) * (0.92 + 0.08 * Math.sin(a * 0.7));
+        moShow = ssf(0.5, 4.5, a) * (1 - ssf(momentDur - 4, momentDur, a));
+        if (a > momentDur) momentAt = -1;
+      }
       const flashing = flashNow > 0.02 || flashTail > 0.02;
+      const momentOn = !flashing && (moForm > 0.02 || moShow > 0.02);
       const angelOn = flashing || angelForm > 0.02 || angelShow > 0.02;
-      const want: "angel" | "emblem" | null = angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : null;
-      const wantKey = want === "emblem" ? `emblem:${emOcc}` : want;
+      const want: "angel" | "emblem" | "moment" | null = flashing ? "angel" : momentOn ? "moment" : angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : null;
+      const wantKey = want === "emblem" ? `emblem:${emOcc}` : want === "moment" ? `moment:${momentN}` : want;
       if (want && wantKey !== imgKey) {
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
         const pickFrom = em && em.length ? em[(treatN + emOcc) % em.length] : null;
-        const img: HTMLCanvasElement | HTMLImageElement | null = flashing ? keyedFlashAngel(1) : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
+        const img: HTMLCanvasElement | HTMLImageElement | null = flashing
+          ? keyedFlashAngel(1)
+          : want === "moment"
+            ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
+            : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
           engine.loadFormImage(img, img.width / Math.max(1, img.height));
           imgLoaded = want;
@@ -590,25 +635,32 @@ export function ParticleLeadLayer({
           // never the same twice (Karel 2026-10-06): mirror, tilt, size, how
           // literally it forms — the flash alone stays exact (it meets the flash image)
           const r1 = rand01(41 + appearN * 3 + emOcc), r2 = rand01(42 + appearN * 3 + emOcc), r3 = rand01(43 + appearN * 3 + emOcc);
-          imgVar = { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.3, scale: 0.85 + 0.3 * r3, literal: 0.7 + 0.2 * r2 };
+          // EMBLEMS must read clearly (Karel 2026-10-06: "unclear stuff including the
+          // first form"): larger, near-literal; angel moments keep their variety
+          imgVar = want === "moment"
+            ? { mirror: r1 < 0.5, tilt: 0, scale: 1.1, literal: 0.9 }
+            : want === "emblem" && !(emblemRef.current?.some((x) => typeof x === "string"))
+            ? { mirror: false, tilt: 0, scale: 1.05 + 0.1 * r3, literal: 0.97 }
+            : { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.3, scale: 0.85 + 0.3 * r3, literal: 0.7 + 0.2 * r2 };
           engine.setImageVariant(!flashing && imgVar.mirror, flashing ? 0 : imgVar.tilt);
           engine.setInstances(1, 0);
           appearN++;
           glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : `emblem ${emOcc}`);
         }
       }
-      emblemOn = imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02);
+      emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
       if (imgLoaded) {
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
-        engine.setImageScale(flashing ? 1 : (imgLoaded === "emblem" ? 0.74 : 0.62) * imgVar.scale);
+        engine.setImageScale(flashing ? 1 : (imgLoaded === "emblem" ? 0.74 : imgLoaded === "moment" ? 0.95 : 0.62) * imgVar.scale);
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the
         // image — the field keeps a little drift and shimmer as it forms it
         const useEm = imgLoaded === "emblem";
-        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0));
+        const useMo = imgLoaded === "moment";
+        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0));
       }
-      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
-      const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0) : 0;
+      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
+      const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0, imgLoaded === "moment" ? moShow : 0) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
       // the form pulls together — dispersing a visible form was the "drop out"
@@ -624,7 +676,8 @@ export function ParticleLeadLayer({
         if (w.soul !== lastAsked) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
-        engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * densP));
+        // an image form (emblem / angel) needs every mote to read clearly
+        engine.setDensity(imgLoaded && !flashing ? 1 : Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * densP));
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -759,7 +812,9 @@ export function ParticleLeadLayer({
       const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}:${floral}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
       if (vk && vk !== palVoiceKey) {
         const ghost = cast.signatureImage === "angel";
-        const mk = (v: number) => (ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : floral ? particlePaletteFloral(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        // every journey's particles wear ITS palette (Karel 2026-10-06: "pink in
+        // vespers … dont match the palette"): pink flowers are Ghost's alone
+        const mk = (v: number) => (ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }
