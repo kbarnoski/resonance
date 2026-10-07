@@ -453,7 +453,8 @@ export function ParticleLeadLayer({
     };
     // 2-D designs are accents now (Ghost keeps its angels / wings / blossoms)
     const theme = JOURNEY_THEMES[journeyId];
-    const pMotif = theme ? theme.motif : cast.signatureImage === "angel" ? 0.75 : 0.35;
+    // Ghost's ghostly motifs: occasional, not every form (Karel 2026-10-07: "keep changing forms")
+    const pMotif = theme ? theme.motif : cast.signatureImage === "angel" ? 0.3 : 0.35;
     const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
       const pbs = cast.phaseBounds ?? [];
@@ -500,10 +501,10 @@ export function ParticleLeadLayer({
     let densK = 0.7;
     let densKS = 0.7;
     let appearN = 0;
-    // CALM (Karel 2026-10-07: "in snowflake the particle form is constantly
+    // CALM — Snowflake + Ghost (Karel 2026-10-07: "in snowflake the particle form is constantly
     // changing and now very distracting"): Snowflake holds each form ~25-32 s,
     // breathes slowly, no image echo, sections never cut a form short, gentle dolly
-    const calm = journeyId === "first-snow";
+    const calm = journeyId === "first-snow" || journeyId === "ghost";
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
     // same distance away … always hover dead center … i need dynamics")
     let dollyFrom = 1, dollyTo = 1, dollyAt = performance.now();
@@ -577,7 +578,9 @@ export function ParticleLeadLayer({
       const snowJ = journeyId === "first-snow";
       // ("you way over did rainbow particle in snowflake"): an accent now
       // ("bring back more of the rainbow intense colors a bit more but dont over do it")
-      const rainbow = !ghostJ && SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (snowJ ? 0.45 : 0.35);
+      // Snowflake (Karel 2026-10-07: "i wanted the return of some of those bright
+      // rainbow color themed forms"): ~60 % of its (now long-held) forms, any shape
+      const rainbow = !ghostJ && (snowJ ? rand01(71 + appearN) < 0.6 : SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (charAt(t)?.fire ? 0.5 : 0.35));
       engine.setHueSpread(ghostJ ? Math.min(0.2, cast.hueSpread) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
       spectrumNow = rainbow;
       recent.unshift(soul);
@@ -702,7 +705,12 @@ export function ParticleLeadLayer({
           if (!em || em.end < pb + 8) emergeRef.current = { start: Math.min(em?.start ?? t, t), end: pb + 12, soul: em && em.end > t ? em.soul : soul };
         }
       }
-      const pr0 = presenceAt(cast, t);
+      // GHOST OPENING HUSH (Karel 2026-10-07: "in ghost the particle dominate
+      // the entire first minute and keep changing forms"): after the opening
+      // angel the field rests until 1:00 — the imaging carries the opening
+      const hush = journeyId === "ghost" && t > 16 && t < 60;
+      const pr0h = presenceAt(cast, t);
+      const pr0 = hush ? { ...pr0h, presence: 0, window: null } : pr0h;
       // emergence window after a travel morph (3 s gather in, 3 s out)
       const em = emergeRef.current;
       let emP = 0;
@@ -714,12 +722,12 @@ export function ParticleLeadLayer({
         if (t > em.end + 1) emergeRef.current = null;
       }
       const emSoul = em?.soul ?? cast.souls.transition;
-      const useEm = emP > pr0.presence;
+      const useEm = !hush && emP > pr0.presence;
       const pr = useEm
         ? { presence: emP, window: null, breakVeil: 0, density: 0.5 }
         : pr0;
       // look-ahead: wake the field 3 s before a window so it has formed by the fade-in
-      const next = cast.windows.find((w) => w.start > t && w.start - t < 3);
+      const next = hush ? undefined : cast.windows.find((w) => w.start > t && w.start - t < 3);
       const w = useEm ? { soul: emSoul, density: 0.5 } : pr.window ?? next ?? null;
       windowRef.current = pr.window ? { kind: pr.window.kind, start: pr.window.start } : null;
 
@@ -902,7 +910,7 @@ export function ParticleLeadLayer({
       if (pr.presence <= 0 && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
         // only where this journey is running UNDER budget (few morphs)
-        if (ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
+        if (!hush && ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
           ambientGap = 12 + 8 * rand01(23 + appearN);
           const nxt = nextForm(t);
@@ -1016,7 +1024,7 @@ export function ParticleLeadLayer({
       // through the palette's voicings (~11 s per step), led by the section
       const fire = !!charAt(t)?.fire;
       const floral = !fire && !!charAt(t)?.floral;
-      const vf = c.voice + t / 11;
+      const vf = c.voice + t / (charAt(t)?.fire ? 7 : 11);
       const v0 = Math.floor(vf) % 4;
       const vfr = vf - Math.floor(vf);
       const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}:${floral}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";

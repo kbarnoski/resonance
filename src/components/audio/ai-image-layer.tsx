@@ -528,6 +528,8 @@ export function AiImageLayer({
   // Push new image onto the layer stack — keeps 2-3 images visible simultaneously.
   // Only the OLDEST layer fades out when at capacity; recent layers stay at peak.
   // This creates a sense of video — imagery is always moving and always in transition.
+  const idleRescueNowRef = useRef(false);
+  const idleForceRef = useRef(false);
   const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement): boolean => {
     const service = getRealtimeImageService();
     // Only stills enter the LRU cache — videos are pack-local loops.
@@ -581,8 +583,22 @@ export function AiImageLayer({
         oldestVisible.fadeStartTime = now;
         // NOTE: createdTime is NOT touched — Ken Burns continues smoothly
       } else {
-        // All visible layers are still within their minimum peak hold — drop incoming image
-        return false;
+        // IMAGING MUST PROGRESS (Karel 2026-10-07: "in the underground scene
+        // sometimes an image sits a long time" — idle rescues fired at 44/50/58 s
+        // and every push was refused here): past 18 s idle the oldest visible
+        // still fades out (graceful, never a splice) so the incoming one lands
+        const forced = idleForceRef.current
+          ? layers.find((l) => "complete" in l.img && (l.state === "peak" || l.state === "fading-in") && l.opacity > 0)
+          : undefined;
+        if (!forced) {
+          // All visible layers are still within their minimum peak hold — drop incoming image
+          if (idleForceRef.current === false && idleRescueNowRef.current) glitchRecord("push-refused", `cap=${conductedMaxLayers()}`);
+          return false;
+        }
+        glitchRecord("idle-force-evict", `cap=${conductedMaxLayers()}`);
+        forced.fadeStartOpacity = forced.opacity;
+        forced.state = "fading-out";
+        forced.fadeStartTime = now;
       }
     }
 
@@ -823,6 +839,8 @@ export function AiImageLayer({
       const idleMs = performance.now() - idleFloor;
       const idleMax = 10_000; // uniform 2026-10-01b — stillness no longer slows replacements
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
+      idleRescueNowRef.current = idleRescue;
+      idleForceRef.current = idleRescue && idleMs > 18_000;
       if (idleRescue && urls.length > 1) {
         if (phaseSlice) {
           if (!isFresh(idx)) idx = nextSlotInSlice(idx, phaseSlice, isFresh);

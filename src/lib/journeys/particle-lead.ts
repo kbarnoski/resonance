@@ -287,17 +287,23 @@ export function particlePaletteFromImage(ip: { key: string; colors: string[] } |
  *  mid = the image's hottest light pushed toward white-gold, high = its deep
  *  ember/orange at the tips. Voices rotate which image colours burn. */
 export function particlePaletteFire(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette {
+  // DIVERSE FIRE (Karel 2026-10-07: "on realized the particles stay the same
+  // orange and pink the entire time. i asked for constantly changing colors
+  // and diversity"): four distinct fire families the voices glide through —
+  // the image's own ember, white-hot gold, the blue of a flame's heart, and a
+  // violet-magenta corona — never one warm wash
   const cols = ip?.colors?.length ? ip.colors : ["#ad4a1a", "#e5943d", "#602511"];
   const warm = cols.filter((c) => { const [h, sat] = toHsv(hexToLinear(c)); return sat > 0.25 && (h < 0.14 || h > 0.93); });
   const hot = (warm.length ? warm : cols).slice().sort((a, b) => toHsv(hexToLinear(b))[2] - toHsv(hexToLinear(a))[2]);
-  const pick = (i: number) => hot[(i + Math.round(voice)) % hot.length];
-  const white = (c: RGB, k: number): RGB => [c[0] + (1 - c[0]) * k, c[1] + (1 - c[1]) * k, c[2] + (1 - c[2]) * k];
-  return {
-    // deep ember (the blue hearth only made sense for the retired flame form)
-    low: lift(chroma(hexToLinear(pick(2) ?? pick(1)), 0.02, 0.8), 0.6),
-    mid: white(lift(hexToLinear(pick(0)), 0.85), 0.35),
-    high: lift(chroma(hexToLinear(pick(1) ?? pick(0)), 0.05, 0.7)),
-  };
+  const ember = lift(chroma(hexToLinear(hot[0]), 0.05, 0.75));
+  const v = ((Math.round(voice) % 4) + 4) % 4;
+  const L = (r: number, g: number, b: number): RGB => [r, g, b];
+  return [
+    { low: L(0.55, 0.06, 0.02), mid: ember, high: L(1.0, 0.72, 0.18) },       // ember: crimson → image ember → gold
+    { low: L(0.9, 0.42, 0.04), mid: L(1.0, 0.86, 0.45), high: L(1.0, 0.97, 0.85) }, // white-hot gold
+    { low: L(0.05, 0.16, 0.85), mid: L(0.3, 0.62, 1.0), high: L(1.0, 0.8, 0.35) },  // blue flame heart → gold tips
+    { low: L(0.45, 0.05, 0.6), mid: L(0.95, 0.2, 0.55), high: L(1.0, 0.6, 0.15) },  // violet-magenta corona
+  ][v];
 }
 
 /** Ghost (Karel 2026-10-06: "bright white particles"): luminous whites with
