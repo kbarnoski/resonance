@@ -71,7 +71,8 @@ async function render(c, file) {
   // TRIPPY geometry (Karel 2026-10-07: "more detailed geometry … like that
   // [trippy] snowflake … the wave … not quite trippy enough"): the subject at
   // the heart of a hypnotic kaleidoscopic fractal of Islamic geometry
-  const prompt = `a ${c.subject} at the heart of a hypnotic kaleidoscopic mandala — recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the ${c.subject} clearly recognisable at the centre and woven from the same glowing lines, in ${color} with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
+  // subject LARGE + trippy halo (the kaleidoscope swallowed half the subjects)
+  const prompt = `a large glowing ${c.subject} filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry — interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in ${color} with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
   const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 4, num_images: 1, enable_safety_checker: true } });
   const url = res.data?.images?.[0]?.url;
   if (!url) throw new Error("no image");
