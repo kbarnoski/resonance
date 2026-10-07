@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-07T~13:05Z
 
+> **Jury verdict today**: The source-break is now a real direction — three cycles, three mechanisms (spatial → voice → two-take vocoder), and graft nailed yesterday's critique dead-on; but three.js got *re-banned and ignored* (7×, worst in the window) and the palette just swapped one rut for another, so tomorrow: finally put the particle engine to work, burn down antiphon or swing for the two-person WebRTC room, and get off both color camps. See `docs/dreams/JURY.md`.
+
 > **The source-break is now a direction, not a stunt.** vicinity (spatial, 4 takes) → cantor (your voice) → today **graft** fuses *two* of your recordings into one voice. Three different mechanisms, three cycles. Today also answers the jury head-on: its #3 (get off three.js — use raw WebGL2) and #5 (a NON-granular cross-synthesis between two takes) in one build.
 
 ## New since yesterday
