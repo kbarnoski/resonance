@@ -69,11 +69,20 @@ export function AiOverlayElements({
     // journey-change tick (part of the recorded 177ms handoff stall,
     // session 1ebs19). One reflow total now.
     const clones = activeClonesRef.current;
-    const pinned = clones.map((c) => getComputedStyle(c.el).opacity);
+    // pin EVERYTHING the animation drives — pinning opacity alone made
+    // `animation: none` snap the clone's transform (centering, scale, drift)
+    // and blur back to base while still ~50 % visible: the image JUMP Karel
+    // saw at journey handoffs (2026-10-07, "image jump transitioning into ghost")
+    const pinned = clones.map((c) => {
+      const cs = getComputedStyle(c.el);
+      return { opacity: cs.opacity, transform: cs.transform, filter: cs.filter };
+    });
     clones.forEach((c, i) => {
-      glitchRecord("clone-purge", `pinned=${pinned[i]}`);
+      glitchRecord("clone-purge", `pinned=${pinned[i].opacity}`);
+      c.el.style.transform = pinned[i].transform === "none" ? "translate(-50%, -50%)" : pinned[i].transform;
+      c.el.style.filter = pinned[i].filter;
+      c.el.style.opacity = pinned[i].opacity;
       c.el.style.animation = "none";
-      c.el.style.opacity = pinned[i];
     });
     if (clones.length > 0) void clones[0].el.offsetWidth; // single reflow
     for (const c of clones) {

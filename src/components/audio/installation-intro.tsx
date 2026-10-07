@@ -3,7 +3,7 @@
 import type { Journey } from "@/lib/journeys/types";
 import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
-import { ParticleMark } from "./particle-mark";
+import { ParticleResolve } from "./particle-resolve";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
@@ -125,7 +125,8 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
       )}
 
       {/* the logo in particles: gathers with the fade-in, wisps away into the journey */}
-      {bgMounted && <ParticleMark release={stage === "fading-cycle" || stage === "journey" || stage === "fading-journey"} />}
+      {bgMounted && <ParticleResolve slot='[data-mark-slot="active"] svg' release={stage === "fading-cycle" || stage === "journey" || stage === "fading-journey"} />}
+      {journeyMounted && <ParticleResolve key={journey?.id ?? "j"} slot="[data-title-slot]" release={stage === "fading-journey"} resolveAt={2.2} zIndex={122} />}
 
       <style jsx>{`
         @keyframes installationContentFade {
@@ -140,7 +141,12 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
 /** Where the particle logo forms (Karel 2026-10-07) — an empty box the
  *  ParticleMark canvas tracks; "active" = the screen currently showing. */
 function MarkSlot({ state }: { state: "active" | "idle" }) {
-  return <div data-mark-slot={state} className="mx-auto mb-10 h-20 w-20" />;
+  // the REAL logo, born from (and dissolved into) particles by ParticleResolve
+  return (
+    <div data-mark-slot={state} className="mx-auto mb-10 h-20 w-20">
+      <ResonanceMark className="h-20 w-20 text-white/85" style={{ opacity: 0 }} />
+    </div>
+  );
 }
 
 export function ExperienceTextInner({ animate = true, showAbout = false, minimal = false, markSlot }: { animate?: boolean; showAbout?: boolean; minimal?: boolean; markSlot?: "active" | "idle" }) {
@@ -243,7 +249,8 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           <>
             <div
               className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
-              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
+              data-title-slot
+              style={{ display: "inline-block", opacity: 0, textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
             >
               {m ? m[1] : journey.name}
             </div>
