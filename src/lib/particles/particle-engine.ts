@@ -170,6 +170,8 @@ export interface ParticleEngine {
   setSizeScale(k: number): void;
   /** Sound reactivity multiplier (motion only — never luminance). */
   setReact(k: number): void;
+  /** Infinite unfolding blossom (flower imagery): layers keep growing from the centre. */
+  setUnfold(on: boolean): void;
   /** Field mode: n copies of the form (1 = one), laid out by seed. */
   setInstances(n: number, seed: number): void;
   /** Image-form variety: mirrored, tilted (radians). */
@@ -587,6 +589,7 @@ export function createParticleEngine(
   // field mode + image-form variety (Karel 2026-10-06: many blossoms, the
   // angel never the same twice)
   let instN = 1, instSeed = 0;
+  let unfoldOn = false, unfoldT = 0;
   let imgMirror = 1, imgTiltS = 0, imgTiltT = 0;
   let imgTintS = 0, imgTintT = 0;
   const speedCap = opts.maxSpeed ?? 3.5;
@@ -884,6 +887,8 @@ export function createParticleEngine(
       g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
     }
     if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
+    unfoldT += dt;
+    if (sim.u.uUnfold) { g.uniform1f(sim.u.uUnfold, unfoldOn && soulB.id === "blossom" ? 1 : 0); g.uniform1f(sim.u.uUnfoldT, unfoldT); }
     g.uniform1f(sim.u.uImgAspect, imgAspect[1]);
     g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
@@ -940,6 +945,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uRiseTop, riseTop);
     g.uniform1f(draw.u.uHeightCol, heightCol);
     g.uniform1f(draw.u.uInst, instN);
+    if (draw.u.uUnfold) { g.uniform1f(draw.u.uUnfold, unfoldOn && soulB.id === "blossom" ? 1 : 0); g.uniform1f(draw.u.uUnfoldT, unfoldT); }
     g.uniform1f(draw.u.uInstSeed, instSeed);
     g.uniform1f(draw.u.uInkW, inkW);
     g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
@@ -1263,6 +1269,7 @@ export function createParticleEngine(
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
+    setUnfold(on) { unfoldOn = on; },
     setInstances(n, seed) { instN = Math.max(1, Math.min(9, Math.round(n))); instSeed = seed; },
     setImageVariant(mirror, tilt) { imgMirror = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },

@@ -33,15 +33,15 @@ export const BANNED_SOULS: readonly SoulId[] = [
 ];
 
 type W = [SoulId, number][];
-const FIRE: W = [["vortex", 2.2], ["ribbons", 2], ["wisp", 1.8], ["murmuration", 1.4], ["mandala", 1], ["medallion", 0.8]];
-const LIGHT: W = [["ribbons", 2], ["vortex", 1.6], ["murmuration", 1.4], ["medallion", 1], ["girih", 0.8]];
-const FLORAL: W = [["blossom", 3], ["ribbons", 1.6], ["tendrils", 1.4], ["mandala", 0.9]];
+const FIRE: W = [["vortex", 2.2], ["ribbons", 1.1], ["wisp", 1.8], ["murmuration", 1.4], ["mandala", 1], ["medallion", 0.8]];
+const LIGHT: W = [["ribbons", 1.1], ["vortex", 1.6], ["murmuration", 1.4], ["medallion", 1], ["girih", 0.8]];
+const FLORAL: W = [["blossom", 3], ["ribbons", 1.0], ["tendrils", 1.4], ["mandala", 0.9]];
 const GREEN: W = [["tendrils", 2.4], ["murmuration", 1.8], ["ribbons", 1.4], ["blossom", 1], ["girih", 0.7]];
-const WATER: W = [["caustic", 2.2], ["ribbons", 2], ["tendrils", 1.4], ["vortex", 1.2], ["kaleido", 0.8]];
-const CRYSTAL: W = [["kaleido", 2], ["ribbons", 1.6], ["murmuration", 1.4], ["girih", 1.2], ["medallion", 1]];
-const AIR: W = [["wisp", 2.2], ["ribbons", 2], ["murmuration", 1.6], ["vortex", 1.2], ["girih", 0.8]];
-const COSMOS: W = [["vortex", 2.4], ["murmuration", 1.8], ["ribbons", 1.6], ["medallion", 1], ["kaleido", 0.8]];
-const GEO: W = [["girih", 1.8], ["ribbons", 1.6], ["kaleido", 1.4], ["vortex", 1.2], ["medallion", 1]];
+const WATER: W = [["caustic", 2.2], ["ribbons", 1.1], ["tendrils", 1.4], ["vortex", 1.2], ["kaleido", 0.8]];
+const CRYSTAL: W = [["kaleido", 2], ["ribbons", 1.0], ["murmuration", 1.4], ["girih", 1.2], ["medallion", 1]];
+const AIR: W = [["wisp", 2.2], ["ribbons", 1.1], ["murmuration", 1.6], ["vortex", 1.2], ["girih", 0.8]];
+const COSMOS: W = [["vortex", 2.4], ["murmuration", 1.8], ["ribbons", 1.0], ["medallion", 1], ["kaleido", 0.8]];
+const GEO: W = [["girih", 1.8], ["ribbons", 1.0], ["kaleido", 1.4], ["vortex", 1.2], ["medallion", 1]];
 const MOTIF_FORMS: Record<string, W> = {
   fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
   "light-rays": LIGHT, "golden-light": LIGHT, figure: LIGHT,
@@ -82,8 +82,11 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
     .filter(([id]) => ORGANIC_SOULS.includes(id))
     .map(([id, v]) => [id, v * (0.92 + 0.16 * hash01(`${seed}:${id}`))] as const)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
-    .map(([id]) => id);
+    .slice(0, 5)
+    .map(([id]) => id)
+    // diversity (Karel 2026-10-07: "i just want such diversity in geometry and
+    // shape users dont notice repetition"): two more organic forms per phase
+    .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && x !== "caustic" && x !== "blossom").sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 2));
 }
 
 export interface PhaseCharacter {

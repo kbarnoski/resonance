@@ -295,6 +295,27 @@ export function ParticleLeadLayer({
     });
     return () => { cancelled = true; };
   }, [journeyId]);
+  // IMAGE ECHO (Karel 2026-10-07: "particles image aware always and interplay
+  // with the images"): each arriving still is decoded small and sampled in idle
+  // time; the tick may have the field trace its bright structure over it
+  const echoRef = useRef<HTMLCanvasElement | null>(null);
+  useEffect(() => {
+    if (!imageSrc) return;
+    let cancelled = false;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      if (cancelled) return;
+      const k = Math.min(1, 320 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      try { c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height); } catch { return; }
+      warmUv(c);
+      echoRef.current = c;
+    };
+    img.src = imageSrc;
+    return () => { cancelled = true; };
+  }, [imageSrc]);
   // timed moment images (decoded + shrunk at mount, like emblems)
   const momentImgs = useRef<HTMLCanvasElement[]>([]);
   useEffect(() => {
@@ -374,7 +395,8 @@ export function ParticleLeadLayer({
     engine.setInstances(1, 0);
     // queue this journey's souls (normally already warm: warmParticleSouls at the loop's intro)
     engine.prepare(soulSequence(cast));
-    engine.setGain((cast.gain ?? 1) * 1.7);
+    // integrate, not dominate (Karel 2026-10-07): a touch less energy
+    engine.setGain((cast.gain ?? 1) * 1.45);
     engineRef.current = engine;
     engine.setMotion(cast.motion);
     engine.setForm(cast.form);
@@ -423,7 +445,7 @@ export function ParticleLeadLayer({
       motifRecent.unshift(motifSrc);
       if (motifRecent.length > 3) motifRecent.length = 3;
       motifAt = t;
-      motifDur = Math.max(12, formDur / 1000 + 4);
+      motifDur = Math.max(10, formDur / 1000 + 2);
       motifN++;
       formAt = performance.now();
       glitchRecord("particle-motif", `${fam} ${motifSrc.split("/").pop()}`);
@@ -502,7 +524,9 @@ export function ParticleLeadLayer({
       // smooth, but never lingering (Karel 2026-10-06: Realized's flame "went
       // on and on" — numerous forms, none lasting too long)
       // ("you also kept shifting it fast between different shapes"): forms hold
-      formDur = 24_000 + 12_000 * rand01(3);
+      // ~10 s per form (Karel 2026-10-07: "10 secs is a rule of thumb … within
+      // that time it should have detailed changes just not those big ones")
+      formDur = 9_000 + 3_500 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -521,8 +545,12 @@ export function ParticleLeadLayer({
     const formsNow = (t: number): SoulId[] => { const f = charAt(t)?.forms; return f && f.length ? f : cast.formCycle; };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
-      engine.setSoul(soul, quiet ? 0.5 : 10);
-      engine.setShape(shapeSeed(soul, t + appearN * 11), quiet);
+      engine.setSoul(soul, quiet ? 0.5 : 5);
+      lastShape = shapeSeed(soul, t + appearN * 11);
+      engine.setShape(lastShape, quiet);
+      // flower imagery: the blossom unfolds INFINITELY (layers grow from the centre)
+      engine.setUnfold(soul === "blossom" && !!charAt(t)?.floral);
+      microAt = performance.now();
       // FIELD mode: sometimes many smaller copies instead of one form (Ghost's
       // blossoms most of all)
       const floralNow = !!charAt(t)?.floral;
@@ -544,11 +572,12 @@ export function ParticleLeadLayer({
       const ghostJ = cast.signatureImage === "angel";
       const snowJ = journeyId === "first-snow";
       // ("you way over did rainbow particle in snowflake"): an accent now
-      const rainbow = !ghostJ && SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (snowJ ? 0.25 : 0.2);
+      // ("bring back more of the rainbow intense colors a bit more but dont over do it")
+      const rainbow = !ghostJ && SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (snowJ ? 0.45 : 0.35);
       engine.setHueSpread(ghostJ ? Math.min(0.2, cast.hueSpread) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
       spectrumNow = rainbow;
       recent.unshift(soul);
-      if (recent.length > 2) recent.length = 2;
+      if (recent.length > 4) recent.length = 4;
       currentSoul = soul;
       formAt = performance.now();
       appearance();
@@ -557,6 +586,10 @@ export function ParticleLeadLayer({
       glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
     };
     let wasShown = false;
+    // detailed changes WITHIN a form ("it needs to breathe"): every ~3 s the
+    // continuous shape parameters drift a little (petal counts etc. never jump)
+    let lastShape: [number, number, number, number] = [0, 0.3, 0.5, 0.5];
+    let microAt = performance.now();
     let spectrumNow = false;
     const recent: SoulId[] = [];
     /** next form for this phase: not one of the last two shown */
@@ -611,8 +644,10 @@ export function ParticleLeadLayer({
     };
     // flash form (Ghost)
     let flashTail = 0;
-    let imgLoaded: "angel" | "emblem" | "moment" | "motif" | null = null;
+    let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
+    let echoAt = -1, echoN = 0;
+    let echoUsed: HTMLCanvasElement | null = null;
     let treatN = 0;
     let imgKey: string | null = null;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
@@ -739,11 +774,24 @@ export function ParticleLeadLayer({
         mfShow = ssf(0.5, 4.5, a) * (1 - ssf(motifDur - 4, motifDur, a));
         if (a > motifDur || a < 0) { motifAt = -1; formAt = performance.now(); }
       }
+      // the echo: trace the arriving still's light, then flow back into the form
+      const ec = echoRef.current;
+      if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded) {
+        echoUsed = ec;
+        if (rand01(81 + echoN) < 0.4) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
+      }
+      let ecForm = 0, ecShow = 0;
+      if (echoAt >= 0) {
+        const a = t - echoAt;
+        ecForm = ssf(0, 2.5, a) * (1 - ssf(4.5, 6.5, a)) * 0.65;
+        ecShow = ssf(0.3, 2.5, a) * (1 - ssf(5, 7, a)) * 0.55;
+        if (a > 7) echoAt = -1;
+      }
       const flashing = flashNow > 0.02 || flashTail > 0.02;
       const momentOn = !flashing && (moForm > 0.02 || moShow > 0.02);
       const angelOn = flashing || angelForm > 0.02 || angelShow > 0.02;
-      const want: "angel" | "emblem" | "moment" | "motif" | null = flashing ? "angel" : momentOn ? "moment" : angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : mfForm > 0.02 || mfShow > 0.02 ? "motif" : null;
-      const wantKey = want === "emblem" ? `emblem:${emOcc}` : want === "moment" ? `moment:${momentN}` : want === "motif" ? `motif:${motifN}` : want;
+      const want: "angel" | "emblem" | "moment" | "motif" | "echo" | null = flashing ? "angel" : momentOn ? "moment" : angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : ecForm > 0.02 || ecShow > 0.02 ? "echo" : mfForm > 0.02 || mfShow > 0.02 ? "motif" : null;
+      const wantKey = want === "emblem" ? `emblem:${emOcc}` : want === "moment" ? `moment:${momentN}` : want === "motif" ? `motif:${motifN}` : want === "echo" ? `echo:${echoN}` : want;
       if (want && wantKey !== imgKey) {
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
@@ -751,7 +799,9 @@ export function ParticleLeadLayer({
         const pickFrom = em && em.length ? em[(treatN + emOcc) % em.length] : null;
         const img: HTMLCanvasElement | HTMLImageElement | null = flashing
           ? keyedFlashAngel(1)
-          : want === "motif"
+          : want === "echo"
+            ? echoUsed
+            : want === "motif"
             ? motifCanvas.get(motifSrc) ?? null
             : want === "moment"
             ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
@@ -766,26 +816,29 @@ export function ParticleLeadLayer({
           const r1 = rand01(41 + appearN * 3 + emOcc), r2 = rand01(42 + appearN * 3 + emOcc), r3 = rand01(43 + appearN * 3 + emOcc);
           // EMBLEMS must read clearly (Karel 2026-10-06: "unclear stuff including the
           // first form"): larger, near-literal; angel moments keep their variety
-          imgVar = want === "motif"
+          imgVar = want === "echo"
+            ? { mirror: false, tilt: 0, scale: 1, literal: 1 }
+            : want === "motif"
             ? { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.6, scale: 0.8 + 0.25 * r3, literal: 0.82 }
             : want === "moment"
             ? { mirror: r1 < 0.5, tilt: 0, scale: 1.1, literal: 0.9 }
             : want === "emblem" && !(emblemRef.current?.some((x) => typeof x === "string"))
             ? { mirror: false, tilt: 0, scale: 1.05 + 0.1 * r3, literal: 0.97 }
             : { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.3, scale: 0.85 + 0.3 * r3, literal: 0.7 + 0.2 * r2 };
-          engine.setImageVariant(!flashing && imgVar.mirror, flashing ? 0 : imgVar.tilt);
+          engine.setImageVariant(!flashing && imgVar.mirror, flashing || want === "echo" ? 0 : imgVar.tilt);
           // motif designs take the journey's palette; angel / emblem / blossom moment keep their own colours
           engine.setImageTint(want === "motif" ? 1 : 0);
           engine.setInstances(1, 0);
           appearN++;
-          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : `emblem ${emOcc}`);
+          glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : want === "echo" ? "echo" : `emblem ${emOcc}`);
         }
       }
       emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
       if (imgLoaded) {
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
-        engine.setImageScale(flashing ? 1 : (imgLoaded === "emblem" ? 0.74 : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.8 : 0.62) * imgVar.scale);
+        // emblems smaller (Karel 2026-10-07: "a bit too big"); an ECHO aligns with the still (full frame)
+        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? 0.5 : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
         // a motif design turns slowly while it is held
         if (imgLoaded === "motif" && motifAt >= 0) engine.setImageVariant(imgVar.mirror, imgVar.tilt + 0.35 * Math.sin((t - motifAt) * 0.09));
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the
@@ -793,9 +846,10 @@ export function ParticleLeadLayer({
         const useEm = imgLoaded === "emblem";
         const useMo = imgLoaded === "moment";
         const useMf = imgLoaded === "motif";
-        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0));
+        const useEc = imgLoaded === "echo";
+        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0, useEc ? ecForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
       }
-      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
+      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
       const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0, imgLoaded === "moment" ? moShow : 0) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
@@ -817,6 +871,12 @@ export function ParticleLeadLayer({
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
+      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 3000) {
+        microAt = performance.now();
+        const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * 0.16;
+        lastShape = [lastShape[0], lastShape[1], Math.max(0, Math.min(0.999, lastShape[2] + j(1))), Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
+        engine.setShape(lastShape, false);
+      }
       if (shown > 0.6 && !dissolving && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
       } else if (shown > 0.6 && !dissolving && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && cast.formCycle?.length) {
@@ -861,7 +921,7 @@ export function ParticleLeadLayer({
         // a CENTRED shader (suns, portals, mandalas…) pins the field to its
         // exact centre point (Karel 2026-10-06)
         const mode = frameRef.current?.shaderMode;
-        const pinCentre = flashing || emblemOn || isCenteredShader(mode);
+        const pinCentre = flashing || emblemOn || imgLoaded === "echo" || isCenteredShader(mode);
         engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
         // First Light: a sun design RISES up the screen as it forms
         if (theme?.rising && imgLoaded === "motif" && motifAt >= 0) {
@@ -911,7 +971,7 @@ export function ParticleLeadLayer({
       // the shaders down, and the particles were fading out with them (Karel
       // v3: "they often times get lost over the imaging")
       if (canvasRef.current) {
-        canvasRef.current.style.opacity = presence.toFixed(3);
+        canvasRef.current.style.opacity = (presence * 0.85).toFixed(3);
         // out of the compositor only after a full second at zero (the CSS
         // opacity transition must finish first — hiding early popped)
         if (presence > 0 || dissolving) zeroSince = now;
@@ -1083,7 +1143,7 @@ export function ParticleLeadLayer({
           // bright, busy stills get a deeper veil AND brighter particles (measured
           // headless: forms vanished over Snowflake's ice / Stir Crazy's amber)
           contrastK.current = Math.max(0.25, Math.min(0.78, 0.25 + (L - 0.08) * 2.4));
-          engineRef.current?.setGain((cast.gain ?? 1) * 1.7 * (1 + 2.2 * Math.max(0, Math.min(0.4, L - 0.06))));
+          engineRef.current?.setGain((cast.gain ?? 1) * 1.45 * (1 + 2.2 * Math.max(0, Math.min(0.4, L - 0.06))));
         } catch { /* tainted canvas — keep the last strength */ }
         const win = windowRef.current;
         const ok = counters.current.dissolves < MAX_DISSOLVES_PER_JOURNEY && dissolveAllowed({

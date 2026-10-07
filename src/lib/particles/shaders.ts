@@ -132,6 +132,8 @@ uniform float uFountainW; // fountain respawn weight
 uniform float uRiseW;     // rise souls (flame / wisp / petal fall) weight
 uniform float uRiseTop;   // rise souls: where a climber returns (negative = fallers)
 uniform float uInst;      // field mode: number of copies (1 = one form)
+uniform float uUnfold;    // 1 = the blossom unfolds INFINITELY (layers grow out from the centre)
+uniform float uUnfoldT;
 uniform float uInstSeed;  // field layout seed
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
 uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
@@ -786,8 +788,17 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     vec2 dir = vec2(cos(ang), sin(ang));
     vec2 side = vec2(-dir.y, dir.x);
     float r = u * R * (0.35 + 0.65 * open);
+    // INFINITE UNFOLDING (Karel 2026-10-07, flower imagery): each layer is born at
+    // the centre and grows outward; the draw fades it in and out at both ends
+    float grow = 1.0;
+    if (uUnfold > 0.5) {
+      float g = fract(uUnfoldT * 0.05 + L / 3.0);
+      grow = mix(0.12, 1.9, g);
+      open = mix(0.15, 1.0, smoothstep(0.0, 0.6, g));
+      r = u * 0.95 * grow * (0.35 + 0.65 * open);
+    }
     vec2 xz = dir * r + side * vv * wid * r * 0.9;
-    float lift = (1.0 - open) * u * u * 0.9 + 0.15 * L;
+    float lift = (1.0 - open) * u * u * 0.9 * min(grow, 1.0) + 0.15 * L;
     vec3 q = vec3(xz.x, lift - 0.2, xz.y) * (1.0 + 0.06 * max(uBands.x, 0.0));
     q += normalize(hash31(s.a * 127.0) - 0.5) * (0.008 + 0.04 * up * trebW);
     return vec4((q - p) * 8.0, 4.0);
@@ -1037,6 +1048,8 @@ uniform float uRiseTop;
 uniform float uHeightCol;  // colour along height (flame: blue hearth → hot → ember tips)
 uniform float uInst;
 uniform float uInstSeed;
+uniform float uUnfold;
+uniform float uUnfoldT;
 // FIELD mode (Karel 2026-10-06: "can form many blossoms not just one … you
 // seem to only make singular forms"): the field splits into uInst copies of
 // the form, each with its own centre, depth and scale. The instance comes from
@@ -1127,6 +1140,11 @@ void main(){
   float life = lifeOf(s);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
+  // infinite unfolding: a blossom layer fades in at birth and out as it opens away
+  if (uUnfold > 0.5) {
+    float g = fract(uUnfoldT * 0.05 + floor(s.b * 3.0) / 3.0);
+    a *= smoothstep(0.0, 0.14, g) * smoothstep(1.0, 0.72, g);
+  }
   // rise souls fade at the hearth and toward the top (fallers: top and bottom)
   if (uRiseW > 0.001) {
     float rf = uRiseTop > 0.0
