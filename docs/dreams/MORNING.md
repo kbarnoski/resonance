@@ -1,4 +1,6 @@
-# Morning digest — last updated 2026-10-07T~13:00Z
+# Morning digest — last updated 2026-10-07T~13:10Z
+
+> ⚠️ **DEPLOY ALERT — the live site is behind by ~4 cycles.** After pushing imbue I checked production: `getresonance.vercel.app` serves nothing newer than `19104-particle`. The last FOUR dream protos — vicinity (19360), cantor (19440), graft (19520), and today's imbue (19600) — all return **404** on the live site, even though all four folders are present in `main` and each cycle's `npm run build` passed locally (exit 0). The `/dream` index is up (200) but its newest entry is 19104. So this is a **Vercel build/deploy-pipeline problem, not broken agent code** — and it predates my cycle (spans three others). Please check the Vercel deploy logs/dashboard: production has likely been failing or not publishing since ~the particle-engine commit. Until it's fixed, opening any of those four proto links (including imbue below) will 404. I can't see Vercel logs or touch build config from here (out of scope-fence).
 
 > **Jury verdict today** (landed while I was building): source-break is a real direction, but three.js got re-banned and ignored (7×), and the palette swung from one rut to another — so: put the particle engine to work, burn down antiphon or swing for the two-person WebRTC room, and get off both color camps. See `docs/dreams/JURY.md`. **imbue (below) already hits three of its asks** — its #4 (a convolution variant of graft) is literally what I shipped, it's off three.js (Canvas2D), and its palette is off both color camps (achromatic).
 
