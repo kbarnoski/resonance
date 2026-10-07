@@ -1,9 +1,9 @@
 {
  "2019": {
-  "subject": "glowing firefly in flight",
-  "color": "warm amber gold (#de9a43) with ember-orange glow (#975523)",
-  "why": "The title is abstract, so the emblem comes from the recurring imagery of fireflies and amber embers glowing against deep indigo darkness.",
-  "prompt": "a single luminous warm amber gold with ember-orange glow glowing firefly in flight emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing firefly in flight, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Wind-carved sand dune crest",
+  "color": "amber gold, ember orange, deep indigo",
+  "why": "A single dune ridge shedding glowing grains into the night sky evokes a year dissolving into memory, golden and ember-lit.",
+  "prompt": "a single luminous amber gold, ember orange, deep indigo Wind-carved sand dune crest emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Wind-carved sand dune crest, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/2019.jpg"
  },
  "Ghost": {
@@ -59,10 +59,10 @@
   "file": "/tramokyo-pack/emblems/cabin-soul.jpg"
  },
  "Vespers": {
-  "subject": "glowing ember-lit candle flame",
-  "color": "molten amber and gold (#e6a776, #b36452) with violet-tinged edges (#783e41)",
-  "why": "Vespers is the evening prayer service traditionally lit by candlelight, and a single flame blooming from the deep black void captures the amber-on-violet ember imagery.",
-  "prompt": "a single luminous molten amber and gold, with violet-tinged edges glowing ember-lit candle flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-lit candle flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "crescent moon cradling evening star",
+  "color": "glowing amber, molten gold, deep violet, black",
+  "why": "Vespers is the evening prayer at dusk, and a crescent moon holding the first ember-bright star marks that threshold between day and night.",
+  "prompt": "a single luminous glowing amber, molten gold, deep violet, black crescent moon cradling evening star emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a crescent moon cradling evening star, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/vespers.jpg"
  },
  "Lantern": {
@@ -73,17 +73,17 @@
   "file": "/tramokyo-pack/emblems/lantern.jpg"
  },
  "Open Jam": {
-  "subject": "glowing firefly with spread wings",
-  "color": "amber gold #d18b59 with warm #783824 glow",
-  "why": "Fireflies appear in the imagery and, with their amber sparks drifting through emerald darkness, capture the improvisational, luminous mood of an open jam.",
-  "prompt": "a single luminous amber gold with warm glow glowing firefly with spread wings emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing firefly with spread wings, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "gliding manta ray with outspread fins",
+  "color": "emerald glow, pale gold highlights, amber sparks, near-black green-teal",
+  "why": "A manta ray's wide, unhurried glide through dark water echoes an open, improvised jam, free-flowing and unscripted.",
+  "prompt": "a single luminous emerald glow, pale gold highlights, amber sparks, near-black green-teal gliding manta ray with outspread fins emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a gliding manta ray with outspread fins, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/open-jam.jpg"
  },
  "Testimony": {
-  "subject": "burning candle flame",
-  "color": "molten amber gold (#ecae3f) with a deep orange core (#c26a1f)",
-  "why": "A single steady flame glowing against the black void is a classic symbol of bearing witness, and it matches the ember and molten gold imagery.",
-  "prompt": "a single luminous molten amber gold with a deep orange core burning candle flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a burning candle flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "pillar of light with spiralling embers",
+  "color": "molten amber and gold with pink-violet fade",
+  "why": "a column of light bearing witness (no branching bush)",
+  "prompt": "a single luminous molten amber and gold with pink-violet fade pillar of light with spiralling embers emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a pillar of light with spiralling embers, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/testimony.jpg"
  },
  "Calling": {
@@ -101,17 +101,17 @@
   "file": "/tramokyo-pack/emblems/first-light.jpg"
  },
  "Surrounded by Light": {
-  "subject": "radiant golden sun with rays",
-  "color": "molten amber gold (#be6f23) with pale gold (#e5c16e) highlights",
-  "why": "A glowing sun with streaming rays embodies being surrounded by light and echoes the golden light piercing teal depths in the imagery.",
-  "prompt": "a single luminous molten amber gold with pale gold highlights radiant golden sun with rays emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a radiant golden sun with rays, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Glowing sea anemone blooming",
+  "color": "cool cyan-blue, magenta, violet, hot amber tips",
+  "why": "Its luminous tentacles radiate outward in every direction, wrapping the viewer in light.",
+  "prompt": "a single luminous cool cyan-blue, magenta, violet, hot amber tips Glowing sea anemone blooming emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Glowing sea anemone blooming, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
  },
  "Nothing": {
-  "subject": "single glowing ember flame",
-  "color": "molten amber and gold (#c46d2e to #eea54b)",
-  "why": "A lone ember igniting from black void embodies 'Nothing' becoming something, matching the embers, smoke and amber glow imagery.",
-  "prompt": "a single luminous molten amber and gold to single glowing ember flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a single glowing ember flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "hollow seed pod dissolving to embers",
+  "color": "molten amber, gold, deep violet haze",
+  "why": "An empty seed husk crumbling into drifting sparks over black void embodies nothingness igniting into possibility.",
+  "prompt": "a single luminous molten amber, gold, deep violet haze hollow seed pod dissolving to embers emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a hollow seed pod dissolving to embers, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/nothing.jpg"
  },
  "Night Wind": {
@@ -136,10 +136,10 @@
   "file": "/tramokyo-pack/emblems/northern-plane.jpg"
  },
  "No question": {
-  "subject": "glowing amber sun disc",
-  "color": "molten amber gold (#e0ab4a) fading to deep bronze (#704324)",
-  "why": "\"No question\" evokes a calm, certain answer, and a radiant sun rising through dark indigo, with golden light, rays and molten glow, embodies that quiet certainty.",
-  "prompt": "a single luminous molten amber gold fading to deep bronze glowing amber sun disc emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing amber sun disc, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "solar eclipse corona ring",
+  "color": "molten amber gold, deep black indigo",
+  "why": "A black disc wreathed in golden fire is a total, silent answer that leaves nothing to ask.",
+  "prompt": "a single luminous molten amber gold, deep black indigo solar eclipse corona ring emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a solar eclipse corona ring, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/no-question.jpg"
  },
  "Loire": {
@@ -178,17 +178,17 @@
   "file": "/tramokyo-pack/emblems/rise.jpg"
  },
  "Amboise": {
-  "subject": "glowing ember-lit flame",
-  "color": "molten amber gold (#c57b26 to #e5b551) with deep bronze edges (#8e4f1d)",
-  "why": "Amboise's imagery of molten amber light glowing from midnight darkness, embers and a white-hot core is best embodied by a single flame.",
-  "prompt": "a single luminous molten amber gold to with deep bronze edges glowing ember-lit flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-lit flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Glowing ember-skinned salamander",
+  "color": "molten amber gold, white-hot core, deep midnight blue shadows",
+  "why": "The salamander was the emblem of Francis I, whose Loire court at Amboise it symbolised, and its fire-born glow matches the golden embers rising from dark water.",
+  "prompt": "a single luminous molten amber gold, white-hot core, deep midnight blue shadows Glowing ember-skinned salamander emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Glowing ember-skinned salamander, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/amboise.jpg"
  },
  "Never Forget": {
-  "subject": "glowing firefly in flight",
-  "color": "warm amber glow (#d68e4c) with ember orange-red (#753b2f) wing edges against deep indigo",
-  "why": "Fireflies appear in every scene of the imagery, and a single glowing firefly captures the theme of a small light that keeps burning in the dark, like a memory you never forget.",
-  "prompt": "a single luminous warm amber glow with ember orange-red wing edges against deep indigo glowing firefly in flight emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing firefly in flight, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Elephant with raised trunk, profile",
+  "color": "glowing amber, ember orange, violet highlights, deep indigo",
+  "why": "The elephant is the ancient symbol of memory, and its desert-walking silhouette made of embers evokes \"Never Forget\".",
+  "prompt": "a single luminous glowing amber, ember orange, violet highlights, deep indigo Elephant with raised trunk, profile emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Elephant with raised trunk, profile, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/never-forget.jpg"
  },
  "Torraine": {
@@ -213,10 +213,10 @@
   "file": "/tramokyo-pack/emblems/roll-away.jpg"
  },
  "Singular": {
-  "subject": "blazing golden sun",
-  "color": "molten gold and amber with a bright golden-white core",
-  "why": "\"Singular\" evokes one radiant source, and a lone sun with spiking amber rays matches the glowing core and light-rays in the imagery.",
-  "prompt": "a single luminous molten gold and amber with a bright golden-white core blazing golden sun emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a blazing golden sun, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Cosmic seed igniting into radiant point",
+  "color": "molten gold, amber, white-hot core on black",
+  "why": "A single dense seed of light bursting from one point echoes 'Singular' as the origin where everything begins.",
+  "prompt": "a single luminous molten gold, amber, white-hot core on black Cosmic seed igniting into radiant point emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Cosmic seed igniting into radiant point, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/singular.jpg"
  },
  "Redwoods Sway": {
@@ -262,10 +262,10 @@
   "file": "/tramokyo-pack/emblems/the-summit.jpg"
  },
  "The Ascension": {
-  "subject": "rising phoenix with spread wings",
-  "color": "molten amber gold with embers of #e6aa44 and #b3631b",
-  "why": "A phoenix lifting from black earth into radiant golden light embodies both \"The Ascension\" and the ember-to-glow imagery.",
-  "prompt": "a single luminous molten amber gold with embers of and rising phoenix with spread wings emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a rising phoenix with spread wings, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "soaring golden eagle ascending",
+  "color": "molten gold, amber, deep umber black",
+  "why": "An eagle climbing on outspread wings out of the dark is a direct image of ascension, rising toward the golden light.",
+  "prompt": "a single luminous molten gold, amber, deep umber black soaring golden eagle ascending emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a soaring golden eagle ascending, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/the-ascension.jpg"
  },
  "The Bloom": {
@@ -276,10 +276,10 @@
   "file": "/tramokyo-pack/emblems/the-bloom.jpg"
  },
  "Cosmic Drift": {
-  "subject": "ringed planet with embers",
-  "color": "molten amber (#dd933f) glowing to burnt orange (#a34f22) on a dark umber (#201514) body",
-  "why": "\"Cosmic Drift\" calls for a celestial body, and a ringed planet drifting in a near-black void with ember-lit amber edges ties the cosmos to the glowing heat of the imagery.",
-  "prompt": "a single luminous molten amber glowing to burnt orange on a dark umber body ringed planet with embers emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a ringed planet with embers, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "ringed gas-giant planet with broad tilted rings, drifting",
+  "color": "amber and burnt orange planet with violet-lit rings",
+  "why": "a planet adrift, clearly ringed (distinct from the eclipse ring)",
+  "prompt": "a single luminous amber and burnt orange planet with violet-lit rings ringed gas-giant planet with broad tilted rings, drifting emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a ringed gas-giant planet with broad tilted rings, drifting, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/cosmic-drift.jpg"
  },
  "Mycelium Dream": {
@@ -325,10 +325,10 @@
   "file": "/tramokyo-pack/emblems/playa.jpg"
  },
  "Isolation": {
-  "subject": "lone ember-lit lantern",
-  "color": "warm amber-orange #b76835 glowing against deep midnight teal #09131d",
-  "why": "A single glowing lantern captures the solitary warm spark amid cold mist, water and darkness that defines the imagery of Isolation.",
-  "prompt": "a single luminous warm amber-orange glowing against deep midnight teal lone ember-lit lantern emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a lone ember-lit lantern, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "lone dandelion seed drifting",
+  "color": "deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments",
+  "why": "One seed parting from its bloom and floating alone through the dark mist is a delicate image of isolation.",
+  "prompt": "a single luminous deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments lone dandelion seed drifting emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a lone dandelion seed drifting, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/isolation.jpg"
  },
  "Rebound": {
@@ -339,17 +339,17 @@
   "file": "/tramokyo-pack/emblems/rebound.jpg"
  },
  "Stir Crazy": {
-  "subject": "caged ember-winged firefly",
-  "color": "molten amber-gold glow (#dc8e4e) with deep rust (#853d23) edges and violet (#724f88) flickers",
-  "why": "\"Stir Crazy\" evokes restless, pent-up energy, and a glowing firefly pulsing in the dark indigo cave tunnel captures both the ember warmth and the restless flicker of the imagery.",
-  "prompt": "a single luminous molten amber-gold glow with deep rust edges and violet flickers caged ember-winged firefly emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a caged ember-winged firefly, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "prowling panther with ember-lit rosettes",
+  "color": "black void silhouette, violet shimmer, molten amber and gold ember rosettes",
+  "why": "A restless big cat pacing in endless circles captures the caged, pent-up energy of being stir crazy.",
+  "prompt": "a single luminous black void silhouette, violet shimmer, molten amber and gold ember rosettes prowling panther with ember-lit rosettes emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a prowling panther with ember-lit rosettes, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/stir-crazy.jpg"
  },
  "Quarantine": {
-  "subject": "glowing ember-lit lantern",
-  "color": "warm amber #d39b5b with orange ember core against midnight blue",
-  "why": "A lantern holding a single flame suggests solitary isolation and a warm spark of hope amid the cold midnight rain and drifting embers of the imagery.",
-  "prompt": "a single luminous warm amber with orange ember core against midnight blue glowing ember-lit lantern emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-lit lantern, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Glowing chrysalis hanging from twig",
+  "color": "deep midnight blue, molten amber core, violet glitter",
+  "why": "A sealed chrysalis hangs alone in the dark, waiting and changing inside, which is the stillness and isolation of quarantine.",
+  "prompt": "a single luminous deep midnight blue, molten amber core, violet glitter Glowing chrysalis hanging from twig emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Glowing chrysalis hanging from twig, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/quarantine.jpg"
  },
  "All Together": {
@@ -367,17 +367,17 @@
   "file": "/tramokyo-pack/emblems/drift.jpg"
  },
  "Self": {
-  "subject": "phoenix rising from embers",
-  "color": "molten amber gold (#daab6b to #aa6d39) with teal (#2b5262) shadowed edges",
-  "why": "\"Self\" is a journey of transformation from cold darkness into glowing fire and wings, and a phoenix embodies that rebirth of the self.",
-  "prompt": "a single luminous molten amber gold to with teal shadowed edges phoenix rising from embers emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a phoenix rising from embers, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "glowing labyrinth spiral path leading inward",
+  "color": "amber gold with cool teal shadows",
+  "why": "the path inward to the self (no tree)",
+  "prompt": "a single luminous amber gold with cool teal shadows glowing labyrinth spiral path leading inward emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing labyrinth spiral path leading inward, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/self.jpg"
  },
  "Message": {
-  "subject": "glowing paper lantern in water",
-  "color": "ember amber and gold (#d1994c, #784129) on deep teal-black",
-  "why": "A lantern drifting on dark water carries a message across the pool ripples, golden light, and underwater glow of the imagery.",
-  "prompt": "a single luminous ember amber and gold, on deep teal-black glowing paper lantern in water emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing paper lantern in water, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "comet streaking with luminous tail",
+  "color": "ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black",
+  "why": "A comet is a messenger crossing the dark, carrying light from far away to whoever looks up, which echoes the idea of a message.",
+  "prompt": "a single luminous ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black comet streaking with luminous tail emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a comet streaking with luminous tail, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/message.jpg"
  },
  "Grace": {
@@ -388,31 +388,31 @@
   "file": "/tramokyo-pack/emblems/grace.jpg"
  },
  "Held": {
-  "subject": "glowing ember in cupped flame",
-  "color": "molten amber #dc8328 with deep rust #7e3410 edges",
-  "why": "\"Held\" is embodied by a single glowing ember cradled in a flame-shaped hollow, echoing the amber core held within midnight darkness across the imagery.",
-  "prompt": "a single luminous molten amber with deep rust edges glowing ember in cupped flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember in cupped flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "glowing pearl cradled in shell",
+  "color": "molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light",
+  "why": "A pearl enfolded by an open shell is the image of being held, protected and cherished in the dark.",
+  "prompt": "a single luminous molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light glowing pearl cradled in shell emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing pearl cradled in shell, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/held.jpg"
  },
  "Mystic": {
-  "subject": "glowing ember-lit mandala flame",
-  "color": "molten amber gold with burnt-orange #8b542e core and violet #67648d edges",
-  "why": "A single flame embodies the embers, molten gold core and warm-glow-in-darkness imagery, while the violet-blue edges echo the cool petals and rings of the mystic journey.",
-  "prompt": "a single luminous molten amber gold with burnt-orange core and violet edges glowing ember-lit mandala flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-lit mandala flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "chambered nautilus shell spiral",
+  "color": "molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks",
+  "why": "The nautilus's perfect spiral of hidden chambers is a sacred-geometry symbol of secret depths and inner mystery, glowing from its golden core.",
+  "prompt": "a single luminous molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks chambered nautilus shell spiral emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a chambered nautilus shell spiral, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/mystic.jpg"
  },
  "The First": {
-  "subject": "single burning ember flame",
-  "color": "molten amber gold (#e5ae44 core fading to #b9771f and #7e4e1e)",
-  "why": "\"The First\" evokes humanity's first fire, and a glowing flame igniting from darkness matches the embers, golden light and amber imagery.",
-  "prompt": "a single luminous molten amber gold core fading to and single burning ember flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a single burning ember flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "cracking primordial egg of light",
+  "color": "molten amber, gold, deep umber, black",
+  "why": "An egg splitting open to release golden light is the moment of origin, the first spark of life igniting from the void.",
+  "prompt": "a single luminous molten amber, gold, deep umber, black cracking primordial egg of light emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a cracking primordial egg of light, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/the-first.jpg"
  },
  "Dad's Song II": {
-  "subject": "glowing ember-lit campfire flame",
-  "color": "molten amber orange (#df9f44, #a15523) with deep brown-black core (#26140e)",
-  "why": "A single warm flame echoes the title's father-figure warmth and the embers, molten glow and golden light running through the imagery.",
-  "prompt": "a single luminous molten amber orange, with deep brown-black core glowing ember-lit campfire flame emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-lit campfire flame, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "ember-veined humpback whale singing",
+  "color": "molten amber, burnt orange, gold on deep indigo-black",
+  "why": "Whale song is the oldest song handed from elder to young, a glowing emblem of a father's voice and legacy drifting through the dark.",
+  "prompt": "a single luminous molten amber, burnt orange, gold on deep indigo-black ember-veined humpback whale singing emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a ember-veined humpback whale singing, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/dad-s-song-ii.jpg"
  },
  "Spectre": {
@@ -430,10 +430,10 @@
   "file": "/tramokyo-pack/emblems/mexican-boy.jpg"
  },
  "Afterglow": {
-  "subject": "glowing ember-edged setting sun",
-  "color": "molten coral-orange (#e4876a) fading to magenta-red (#a94945) at the rim",
-  "why": "An afterglow is the light that lingers after the sun sets, and a low sun with ember-lit edges ties together the dusk, molten glow and embers in the imagery.",
-  "prompt": "a single luminous molten coral-orange fading to magenta-red at the rim glowing ember-edged setting sun emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing ember-edged setting sun, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Dragonfly with ember-veined wings",
+  "color": "molten orange, magenta-coral, violet, deep indigo",
+  "why": "A dragonfly's wings catch the last light of dusk over water, so it stands for the lingering glow after the sun has gone.",
+  "prompt": "a single luminous molten orange, magenta-coral, violet, deep indigo Dragonfly with ember-veined wings emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Dragonfly with ember-veined wings, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/afterglow.jpg"
  },
  "Grasshopper": {
@@ -444,10 +444,10 @@
   "file": "/tramokyo-pack/emblems/grasshopper.jpg"
  },
  "Love Again": {
-  "subject": "glowing lotus blossom",
-  "color": "golden-green core with soft rosy pink petal tips, on deep emerald",
-  "why": "A blooming lotus embodies renewal and opening the heart again, echoing the petals, forest glow and darkness igniting into a golden core.",
-  "prompt": "a single luminous golden-green core with soft rosy pink petal tips, on deep emerald glowing lotus blossom emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a glowing lotus blossom, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "twin swans forming heart",
+  "color": "deep emerald teal, rosy pink glow, golden-green core",
+  "why": "Two swans whose curved necks meet in a heart-shaped hollow, mirrored in dark misty water, embody love found a second time.",
+  "prompt": "a single luminous deep emerald teal, rosy pink glow, golden-green core twin swans forming heart emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a twin swans forming heart, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/love-again.jpg"
  },
  "COSMIC HOMECOMING": {
@@ -472,10 +472,10 @@
   "file": "/tramokyo-pack/emblems/abyssal-dive.jpg"
  },
  "Surrender": {
-  "subject": "floating lotus blossom",
-  "color": "pale silvery-blue petals (#8aa3b1) over deep teal, with an ember-orange glowing core",
-  "why": "An open lotus resting on rippling water embodies letting go and matches the pool-ripple imagery and the ember glow at its heart.",
-  "prompt": "a single luminous pale silvery-blue petals over deep teal, with an ember-orange glowing core floating lotus blossom emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a floating lotus blossom, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Koi fish curled in surrender",
+  "color": "deep midnight teal and indigo body, iridescent magenta-cyan sheen, warm ember-orange glowing core, pale silvery-blue highlights",
+  "why": "A koi curved into a slow circle and let go to the current shows yielding as release, matching the water ripples and the ember glow within.",
+  "prompt": "a single luminous deep midnight teal and indigo body, iridescent magenta-cyan sheen, warm ember-orange glowing core, pale silvery-blue highlights Koi fish curled in surrender emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Koi fish curled in surrender, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/surrender.jpg"
  },
  "Openings": {
@@ -486,10 +486,10 @@
   "file": "/tramokyo-pack/emblems/openings.jpg"
  },
  "Surrounded By Light": {
-  "subject": "radiant sun with rays",
-  "color": "warm coral-amber (#d67c78) with magenta and cool blue glow",
-  "why": "A sun ringed by streaming rays shows being surrounded by light and echoes the amber and magenta glow against the deep indigo void.",
-  "prompt": "a single luminous warm coral-amber with magenta and cool blue glow radiant sun with rays emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a radiant sun with rays, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
+  "subject": "Glowing sea anemone blooming",
+  "color": "cool cyan-blue, magenta, violet, hot amber tips",
+  "why": "Its luminous tentacles radiate outward in every direction, wrapping the viewer in light.",
+  "prompt": "a single luminous cool cyan-blue, magenta, violet, hot amber tips Glowing sea anemone blooming emblem, intricately detailed and visionary — ornate filigree of glowing light, fine fractal and sacred-geometry detail woven through it, mesmerizing and surreal yet instantly readable as a Glowing sea anemone blooming, one centered form, isolated on a pure black background, no ground, no text, no frame, generous empty black margin, high contrast",
   "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
  },
  "Complete": {
