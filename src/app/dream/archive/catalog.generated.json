@@ -1,5 +1,13 @@
 [
  {
+  "slug": "19600-imbue",
+  "cycle": 19600,
+  "name": "Imbue",
+  "status": "wip",
+  "description": "One question: what if one of Karel's recordings became the resonant *body* that another of his recordings plays inside — and your body chose which *moment* of that second recording",
+  "category": "local"
+ },
+ {
   "slug": "19520-graft",
   "cycle": 19520,
   "name": "Graft",
