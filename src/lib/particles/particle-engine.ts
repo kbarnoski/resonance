@@ -30,6 +30,7 @@
 // the dream proto mirrors it to window.__resonanceParticles.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { hiddenSince } from "@/lib/journeys/visibility-epoch";
 import {
   QUAD_VS,
   buildSimFS,
@@ -655,7 +656,9 @@ export function createParticleEngine(
     // Only REPEATED severe gaps (or one very long one) count: the page has
     // ~0.6–0.8 s hitches without particles (still decodes) and a single one
     // switched the field off for the session (kiosk 2026-10-06)
-    if (wd && framesSinceStart > 3 && rawDt * 1000 > wd.gapMs && typeof document !== "undefined" && document.visibilityState === "visible") {
+    // a gap spanning a hidden window (another app / Space in front) is the
+    // browser pausing rAF, never a GPU stall — it must not switch particles off
+    if (wd && framesSinceStart > 3 && rawDt * 1000 > wd.gapMs && typeof document !== "undefined" && !hiddenSince(performance.now() - rawDt * 1000 - 50)) {
       const nowMs = performance.now();
       gapLog.push(nowMs);
       while (gapLog.length && nowMs - gapLog[0] > 60_000) gapLog.shift();

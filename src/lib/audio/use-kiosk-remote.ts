@@ -245,6 +245,8 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                   ((window as unknown as Record<string, unknown>).__resonanceParticlesDisabled as string | undefined) ??
                   (getParticlePresent() ? "on" : "idle"),
                 fr: (startFrameMeter(), frameStats()),
+                // is the kiosk window actually visible? (hidden = Chrome pauses drawing)
+                vis: typeof document !== "undefined" ? document.visibilityState : null,
               },
               // Karel 2026-09-20: the remote must ALWAYS name what is on
               // screen. Between journeys the loop publishes a phase label

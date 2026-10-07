@@ -1,3 +1,4 @@
+import { ensureVisibilityTracking, hiddenSince } from "./visibility-epoch";
 /**
  * Visual flight recorder (Karel 2026-09-28: "do further scientific
  * analysis... something is off and we're going in circles for months").
@@ -63,14 +64,18 @@ function startMonitors(): void {
     // fetch keepalive lets the request outlive the page.
     window.addEventListener("pagehide", () => void upload("pagehide"));
     document.addEventListener("visibilitychange", () => {
+      // every visibility change is on the record (a hidden kiosk window is not a freeze)
+      buffer.push({ t: Math.round(performance.now()), wall: new Date().toISOString().slice(11, 23), type: "visibility", detail: document.visibilityState });
       if (document.visibilityState === "hidden") void upload("hidden");
     });
   }
   if (!rafMonitorStarted) {
     rafMonitorStarted = true;
+    ensureVisibilityTracking();
     let last = performance.now();
     const tick = (now: number) => {
       const gap = now - last;
+      const wasHidden = hiddenSince(last);
       last = now;
       // >80ms between frames = at least 4 dropped frames at 60Hz —
       // a gap a viewer can see on moving content.
@@ -82,7 +87,8 @@ function startMonitors(): void {
         buffer.push({
           t: Math.round(now),
           wall: new Date().toISOString().slice(11, 23),
-          type: gap > 80 ? "FRAME-GAP" : "microgap",
+          // a gap that spans a hidden window is the browser pausing, not a glitch
+          type: wasHidden ? "hidden-gap" : gap > 80 ? "FRAME-GAP" : "microgap",
           detail: `${Math.round(gap)}ms`,
         });
       }
