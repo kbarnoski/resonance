@@ -130,9 +130,9 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
       origin = { x: rect.left - cr.left, y: rect.top - cr.top };
       centre = { x: origin.x + rect.width / 2, y: origin.y + rect.height / 2 };
       // dense enough to READ as the element: ~1 mote per 1.6 lit px, capped
-      const N = Math.max(900, Math.min(5200, Math.round(hits.length / 1.6)));
+      const N = Math.max(1400, Math.min(7000, Math.round(hits.length / 1.2)));
       const cx = rect.width / 2, cy = rect.height / 2;
-      const span = Math.max(rect.width, rect.height, 160);
+      const span = Math.max(rect.width, rect.height, 420); // arrive from afar, never a clump
       motes = Array.from({ length: N }, () => {
         const [tx, ty] = hits[Math.floor(Math.random() * hits.length)];
         const ang = Math.random() * Math.PI * 2;
@@ -140,7 +140,7 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
         return {
           tx: tx + (Math.random() - 0.5) * 0.5, ty: ty + (Math.random() - 0.5) * 0.5,
           x: cx + Math.cos(ang) * r, y: cy + Math.sin(ang) * r * 0.6, vx: 0, vy: 0,
-          a: 0, size: 0.55 + Math.random() * 0.9, seed: Math.random() * 1000, delay: Math.random() * 0.8,
+          a: 0, size: 0.32 + Math.random() * 0.45, // fine motes: they DRAW the detail seed: Math.random() * 1000, delay: Math.random() * 0.8,
         };
       });
       return true;
@@ -218,8 +218,8 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
         m.y += m.vy * dt;
         if (m.a < 0.01) continue;
         alive++;
-        const sz = m.size * (1.5 - 0.75 * tight) * (rel > 0.35 ? 1.2 : 1);
-        g.fillStyle = `rgba(232,238,255,${(m.a * 0.7).toFixed(3)})`;
+        const sz = m.size * (1.6 - 0.7 * tight) * (rel > 0.35 ? 1.25 : 1);
+        g.fillStyle = `rgba(232,238,255,${(m.a * 0.42).toFixed(3)})`;
         g.beginPath();
         g.arc(m.x, m.y, sz, 0, Math.PI * 2);
         g.fill();
