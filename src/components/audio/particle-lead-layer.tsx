@@ -379,6 +379,10 @@ export function ParticleLeadLayer({
       window.setTimeout(() => setFailed(true), 2200);
     });
     const engine = sh.engine;
+    // velocity jump tripwire: diagnostic runs only (localStorage
+    // resonance-particle-tripwire=1) — journeys never read back by default
+    try { engine.setTripwire(window.localStorage.getItem("resonance-particle-tripwire") === "1"); } catch { /* storage blocked */ }
+    let lastRetargetLogged = "";
     const tier = getDeviceTier();
     // continuity: a field still fading from the previous journey carries over
     // from its current opacity (never a cut at the handoff)
@@ -552,7 +556,10 @@ export function ParticleLeadLayer({
       // ~10 s per form (Karel 2026-10-07: "10 secs is a rule of thumb … within
       // that time it should have detailed changes just not those big ones")
       // calm: 14-18 s (Karel 2026-10-07: 25-32 s "sat too long and too big")
-      formDur = calm ? 14_000 + 4_000 * rand01(3) : 9_000 + 3_500 * rand01(3);
+      // … then LONGER everywhere (same day: "you still change the particles form
+      // a bit too much overall so you create a shape and i go to look and you
+      // change again"): 16-20 s, calm 17-21 s
+      formDur = calm ? 17_000 + 4_000 * rand01(3) : 16_000 + 4_000 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -685,6 +692,8 @@ export function ParticleLeadLayer({
     let echoUsed: HTMLCanvasElement | null = null;
     let treatN = 0;
     let imgKey: string | null = null;
+    let imgReleasing = false, imgReleaseAt = 0;
+    let jumpRecAt = 0;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
     let emblemOn = false;
     // ambient presence (Karel 2026-10-06: "on average particles should be
@@ -832,14 +841,21 @@ export function ParticleLeadLayer({
         const a = t - echoAt;
         ecForm = ssf(0, 2.5, a) * (1 - ssf(4.5, 6.5, a)) * 0.65;
         ecShow = ssf(0.3, 2.5, a) * (1 - ssf(5, 7, a)) * 0.55;
-        if (a > 7) echoAt = -1;
+        if (a > 7) { echoAt = -1; formAt = performance.now(); } // an echo IS a form: the next change waits a full formDur
       }
       const flashing = flashNow > 0.02 || flashTail > 0.02;
       const momentOn = !flashing && (moForm > 0.02 || moShow > 0.02);
       const angelOn = flashing || angelForm > 0.02 || angelShow > 0.02;
       const want: "angel" | "emblem" | "moment" | "motif" | "echo" | null = flashing ? "angel" : momentOn ? "moment" : angelOn ? "angel" : emForm > 0.02 || emShow > 0.02 ? "emblem" : ecForm > 0.02 || ecShow > 0.02 ? "echo" : mfForm > 0.02 || mfShow > 0.02 ? "motif" : null;
       const wantKey = want === "emblem" ? `emblem:${emOcc}` : want === "moment" ? `moment:${momentN}` : want === "motif" ? `motif:${motifN}` : want === "echo" ? `echo:${echoN}` : want;
-      if (want && wantKey !== imgKey) {
+      // IMAGE → IMAGE never retargets in place (zero-glitch audit 2026-10-07:
+      // loadFormImage overwrote the image + its UVs while the field was still
+      // wearing the old one — every mote re-aimed and its colour popped in one
+      // frame): the old image releases to the procedural form first (~1.4 s),
+      // THEN the new one loads and the field glides onto it
+      if (want && wantKey !== imgKey && imgLoaded && !imgReleasing) { imgReleasing = true; imgReleaseAt = performance.now(); glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
+      if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; }
+      if (want && wantKey !== imgKey && !imgLoaded) {
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
@@ -854,7 +870,7 @@ export function ParticleLeadLayer({
             ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
             : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
-          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()));
+          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()), !flashing);
           imgLoaded = want;
           imgKey = wantKey;
           if (!flashing) treatN++;
@@ -875,7 +891,8 @@ export function ParticleLeadLayer({
           engine.setImageVariant(!flashing && imgVar.mirror, flashing || want === "echo" ? 0 : imgVar.tilt);
           // motif designs take the journey's palette; angel / emblem / blossom moment keep their own colours
           engine.setImageTint(want === "motif" ? 1 : 0);
-          engine.setInstances(1, 0);
+          // (no setInstances here: re-laying a visible FIELD at once was a jump;
+          // the image force dominates the instanced form while it is worn)
           appearN++;
           glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : want === "echo" ? "echo" : `emblem ${emOcc}`);
         }
@@ -894,9 +911,10 @@ export function ParticleLeadLayer({
         const useMo = imgLoaded === "moment";
         const useMf = imgLoaded === "motif";
         const useEc = imgLoaded === "echo";
-        engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0, useEc ? ecForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
+        if (imgReleasing) engine.setImageForm(0, 0);
+        else engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0, useEc ? ecForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
       }
-      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
+      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; imgReleasing = false; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); }
       const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0, imgLoaded === "moment" ? moShow : 0) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
@@ -910,7 +928,7 @@ export function ParticleLeadLayer({
 
       const dissolving = engine.dissolveTime() !== null;
       if (w) {
-        if (w.soul !== lastAsked && (!calm || shown < 0.05 || performance.now() - formAt > formDur)) { lastAsked = w.soul; switchForm(w.soul, t); }
+        if (w.soul !== lastAsked && (shown < 0.05 || performance.now() - formAt > formDur)) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
@@ -918,20 +936,25 @@ export function ParticleLeadLayer({
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
-      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > (calm ? 8000 : 3000)) {
+      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 8000) {
         microAt = performance.now();
-        const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * (calm ? 0.07 : 0.16);
-        lastShape = [lastShape[0], lastShape[1], Math.max(0, Math.min(0.999, lastShape[2] + j(1))), Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
+        const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * 0.07;
+        // a breath, never a new figure: z only drifts inside its discrete step
+        // (the souls floor() it) — a crossing would re-aim the whole form
+        const z = Math.max(0, Math.min(0.999, lastShape[2] + j(1)));
+        let zOk = true;
+        for (let n = 2; n <= 17 && zOk; n++) if (Math.floor(z * n) !== Math.floor(lastShape[2] * n)) zOk = false;
+        lastShape = [lastShape[0], lastShape[1], zOk ? z : lastShape[2], Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
         engine.setShape(lastShape, false);
       }
-      if (shown > 0.6 && !dissolving && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
+      if (shown > 0.6 && !dissolving && !imgLoaded && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
       } else if (shown > 0.6 && !dissolving && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && cast.formCycle?.length) {
         cycleIdx++;
         if (cycleIdx % 3 === 0 && currentSoul) {
           engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);
           formAt = performance.now();
-          appearance();
+          // (no appearance(): a refigure re-dollied + re-sized a visible form at once)
           glitchRecord("particle-form", `${currentSoul} refigure`);
         } else {
           const nxt = nextForm(t);
@@ -1049,6 +1072,23 @@ export function ParticleLeadLayer({
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();
+      // JUMP TRIPWIRE (zero-glitch law): a visible field where most sampled
+      // motes rush near the speed cap = a form jump — logged with its trigger
+      const mo = st.motion;
+      // permanent CPU-side tripwire: every re-aim of a VISIBLE field is logged
+      // with its trigger (each one now glides — this shows how often and why)
+      {
+        const lr = engine.lastRetarget();
+        const key = `${lr.event}@${lr.at.toFixed(3)}`;
+        if (lr.event && lr.ago < 1 && key !== lastRetargetLogged && shown > 0.3) {
+          lastRetargetLogged = key;
+          glitchRecord("particle-retarget", `${lr.event} soul=${currentSoul} img=${imgLoaded ?? "-"} shown=${shown.toFixed(2)}`);
+        }
+      }
+      if (shown > 0.3 && mo.fastFrac > 0.45 && now - jumpRecAt > 4000) {
+        jumpRecAt = now;
+        glitchRecord("particle-jump", `${mo.meanSpeed.toFixed(2)}u/s fast=${(mo.fastFrac * 100).toFixed(0)}% glide=${mo.glide.toFixed(2)} after=${mo.lastEvent}@${mo.lastEventAgo.toFixed(1)}s soul=${currentSoul} img=${imgLoaded ?? "-"}`);
+      }
       const c = colorAt(cast, t);
       // spectrum forms carry vivid full-spectrum colour
       const satK = spectrumNow ? 1.45 : 1;
@@ -1112,6 +1152,7 @@ export function ParticleLeadLayer({
       (window as unknown as Record<string, unknown>).__resonanceParticleLead = {
         journeyId,
         name: cast.name,
+        jumpScore: { meanSpeed: +st.motion.meanSpeed.toFixed(3), fastFrac: +st.motion.fastFrac.toFixed(3), glide: +st.motion.glide.toFixed(2), lastEvent: st.motion.lastEvent },
         t,
         presence: +presence.toFixed(3),
         veil: +veil.toFixed(3),

@@ -89,6 +89,10 @@ export interface ParticleEngineOptions {
 }
 
 export interface ParticleStats {
+  /** Jump tripwire (2026-10-07 zero-glitch audit): row-0 motes' mean speed
+   *  (world u/s), the share rushing near the speed cap, the retarget glide
+   *  (0.25 = just retargeted … 1 = free) and the last retarget event. */
+  motion: { meanSpeed: number; fastFrac: number; glide: number; lastEvent: string; lastEventAgo: number };
   fps: number;
   /** 5th-percentile fps over the last ~2 s (stutter detector). */
   fpsLow: number;
@@ -174,6 +178,11 @@ export interface ParticleEngine {
   setUnfold(on: boolean): void;
   /** Field mode: n copies of the form (1 = one), laid out by seed. */
   setInstances(n: number, seed: number): void;
+  /** Opt-in velocity read-back for the jump tripwire (diagnostic runs only —
+   *  journeys never read back from the GPU by default). */
+  setTripwire(on: boolean): void;
+  /** The last retarget the engine glided (event name, seconds ago). */
+  lastRetarget(): { event: string; ago: number; at: number };
   /** Image-form variety: mirrored, tilted (radians). */
   setImageVariant(mirror: boolean, tilt: number): void;
   /** 1 = image forms take the journey palette (luminance kept), 0 = true colours. */
@@ -181,7 +190,9 @@ export interface ParticleEngine {
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
-  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number, uv?: Float32Array): void;
+  /** `glide` (default true): the arrival is a retarget — motes ease onto it
+   *  (false only for the flash, which must meet the flash image on the beat). */
+  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number, uv?: Float32Array, glide?: boolean): void;
   /** How many image samples loadFormImage's `uv` needs (2 floats each). */
   imageSampleCount(): number;
   /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
@@ -451,6 +462,29 @@ export function createParticleEngine(
   let cur = 0;
   let stateRead: AsyncRead | null = null;
   let velRead: AsyncRead | null = null;
+  let jumpRead: AsyncRead | null = null;
+  let tripwireOn = false;
+  let jumpSpeed = 0, jumpFast = 0;
+  // RETARGET GLIDE (2026-10-07 zero-glitch audit, Karel: "i see some glitches
+  // where they jump to a new form or shape"): the sim chases its targets at a
+  // speed cap that only a SOUL blend used to lower — every other retarget (a
+  // discrete shape crossing, an instance layout, an image arriving, a setSoul
+  // landing mid-blend) sent every mote rushing at the full cap = a visible jump.
+  // Every retarget now restarts this envelope: the cap drops to 25 % and opens
+  // over 3 s, so motes always GLIDE onto the new form.
+  let glideT = 99;
+  let glideHeld = 0;
+  let flashPace = false;
+  const GLIDE_SEC = 5;
+  let lastEvent = "";
+  let lastEventAt = -99;
+  const retarget = (ev: string) => { glideT = 0; glideHeld = 0; lastEvent = ev; lastEventAt = timeNow(); };
+  // discrete shape seeds (floor(uShape.* × N) in the souls) — any change that
+  // crosses a step is a NEW figure, not a drift
+  const crossesStep = (a: readonly number[], b: readonly number[]) => {
+    for (let i = 0; i < 3; i++) for (let n = 2; n <= 17; n++) if (Math.floor(a[i] * n) !== Math.floor(b[i] * n)) return true;
+    return false;
+  };
 
   function buildParticles() {
     for (const t of [...posTex, ...velTex]) gl!.deleteTexture(t);
@@ -458,6 +492,7 @@ export function createParticleEngine(
     for (const f of simFbo) gl!.deleteFramebuffer(f);
     stateRead?.dispose();
     velRead?.dispose();
+    jumpRead?.dispose();
 
     count = side * side;
     // contents are written on the GPU (SEED_INIT / POS_INIT) once those
@@ -486,6 +521,8 @@ export function createParticleEngine(
     cur = 0;
     stateRead = probe ? new AsyncRead(gl!, side * 4) : null;
     velRead = probe ? new AsyncRead(gl!, side * 4) : null;
+    // opt-in (setTripwire): journeys never read back from the GPU (no-sync law)
+    jumpRead = tripwireOn ? new AsyncRead(gl!, side * 4) : null;
     fadeIn = 0;
   }
 
@@ -576,7 +613,7 @@ export function createParticleEngine(
   const melody: [number, number, number] = [0, 0, 0];
   let melodyTarget: [number, number, number] = [0, 0, 0];
   let melodyW = 0, melodyWTarget = 0;
-  let followX = 0, followY = 0, followT = 0, followS = 0;
+  let followX = 0, followY = 0, followT = 0, followS = 0, followTX = 0, followTY = 0;
   const camScaleBase = opts.camScale ?? 1;
   let camScale = camScaleBase;
   let camScaleTarget = camScaleBase;
@@ -634,6 +671,7 @@ export function createParticleEngine(
   let fpsEma = 60;
   let frames = 0;
   let time = 0;
+  function timeNow() { return time; }
   let raf = 0;
   let running = false;
   let lastT = 0;
@@ -771,7 +809,14 @@ export function createParticleEngine(
     entryT += dt;
     const entryK = Math.min(1, entryT / 5);
     // a form change GLIDES: the cap starts low and opens with the blend
-    const glideK = soulB !== soulA ? 0.3 + 0.7 * e : 1;
+    // the glide only OPENS once the field has arrived: while the sampled motes
+    // are still travelling (> 0.5 u/s) the cap holds where it is
+    // (at most 6 s — a naturally fast soul must never stay throttled)
+    if (jumpRead && glideT < GLIDE_SEC && jumpSpeed > 0.5 && glideHeld < 6) glideHeld += dt;
+    else glideT += dt;
+    const gr = Math.min(1, glideT / GLIDE_SEC);
+    const retargetK = 0.22 + 0.78 * gr * gr;
+    const glideK = Math.min(soulB !== soulA ? 0.3 + 0.7 * e : 1, retargetK);
     const maxSpeedNow = (0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK)) * glideK;
     const disperseNow = disperseNext;
     disperseNext = false;
@@ -790,6 +835,12 @@ export function createParticleEngine(
     let env = dissolveEnvelope(dissolveT);
     // externally conducted image form (Ghost's angel flashes): particles
     // gather into the image, wear it, then release and dissipate
+    // engaging OR releasing an image re-aims the whole field: hold the retarget
+    // glide low while the image form is still moving (harness 2026-10-07: an
+    // image release sent the mean mote speed 0.05 → 3.2 u/s, i.e. the cap).
+    // The flash alone keeps its pace (it meets the flash image on the beat).
+    if (!flashPace && Math.abs(imgFormTgt - imgFormExt) > 0.03) { if (glideT > 0.4) glideHeld = 0; glideT = Math.min(glideT, 0.4); }
+    if (imgFormTgt < 0.01 && imgFormExt < 0.02) flashPace = false;
     imgFormExt += (imgFormTgt - imgFormExt) * (1 - Math.exp(-dt / 0.35));
     imgShowExt += (imgShowTgt - imgShowExt) * (1 - Math.exp(-dt / 0.6));
     if (dissolveT === null && (imgFormExt > 0.001 || imgShowExt > 0.001)) {
@@ -869,6 +920,8 @@ export function createParticleEngine(
     // FOLLOW a moving shader element (screen point → world, on the focal
     // plane): a stream of the field chases and trails it; wins over melody
     followS += (followT - followS) * (1 - Math.exp(-dt / 0.8));
+    // the follow point glides per FRAME (it used to step 4×/s with each sample)
+    { const kf = 1 - Math.exp(-dt / 0.45); followX += (followTX - followX) * kf; followY += (followTY - followY) * kf; }
     if (followS > 0.01) {
       const fx = [0, 1, 2].map((i) => o3[i] + right[i] * followX * halfW + up[i] * followY * halfH);
       g.uniform3f(sim.u.uMelody, fx[0], fx[1], fx[2]);
@@ -897,6 +950,27 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
     cur = nxt;
+
+    // jump tripwire: row-0 velocities every 6 frames (async, never stalls)
+    if (jumpRead) {
+      if (jumpRead.poll()) {
+        const o = jumpRead.out;
+        let sum = 0, fast = 0;
+        for (let x = 0; x < side; x++) {
+          const v = Math.hypot(o[x * 4], o[x * 4 + 1], o[x * 4 + 2]);
+          sum += v;
+          if (v > 0.7 * speedCap) fast++;
+        }
+        jumpSpeed = sum / Math.max(1, side);
+        jumpFast = fast / Math.max(1, side);
+      }
+      if (frames % 6 === 3 && !jumpRead.busy) {
+        g.bindFramebuffer(g.READ_FRAMEBUFFER, simFbo[cur]);
+        g.readBuffer(g.COLOR_ATTACHMENT1);
+        jumpRead.request(0, 0, side, 1);
+        g.bindFramebuffer(g.READ_FRAMEBUFFER, null);
+      }
+    }
 
     // sampled particle state for the probe (row 0, async)
     if (stateRead && velRead) {
@@ -1200,6 +1274,7 @@ export function createParticleEngine(
       if (lost) return;
       stateRead?.dispose();
       velRead?.dispose();
+      jumpRead?.dispose();
       lumRead?.dispose();
       for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...expTex]) gl.deleteTexture(t);
       if (seedTex) gl.deleteTexture(seedTex);
@@ -1210,9 +1285,12 @@ export function createParticleEngine(
     },
     setSoul(id, seconds = 7) {
       const next = soulById(id);
-      if (soulB !== soulA) { soulA = soulB; mix = 0; } // settle a transition in flight
+      const settled = soulB !== soulA;
+      if (settled) { soulA = soulB; mix = 0; } // settle a transition in flight
       pendingSoul = next === soulA ? null : next;
       pendingDur = Math.max(0.5, seconds);
+      // settling an in-flight blend re-aims every mote — glide it
+      if (pendingSoul || settled) retarget(`soul:${id}`);
       if (pendingSoul) simProgFor(soulA.index, next.index); // queue its compile now
     },
     prepare(souls) {
@@ -1274,18 +1352,30 @@ export function createParticleEngine(
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
     setUnfold(on) { unfoldOn = on; },
-    setInstances(n, seed) { instN = Math.max(1, Math.min(9, Math.round(n))); instSeed = seed; },
+    setTripwire(on) {
+      if (on === tripwireOn || lost) return;
+      tripwireOn = on;
+      jumpRead?.dispose();
+      jumpRead = on ? new AsyncRead(gl, side * 4) : null;
+    },
+    lastRetarget() { return { event: lastEvent, ago: time - lastEventAt, at: lastEventAt }; },
+    setInstances(n, seed) {
+      const nn = Math.max(1, Math.min(9, Math.round(n)));
+      if (nn !== instN || (nn > 1 && seed !== instSeed)) retarget("instances");
+      instN = nn; instSeed = seed;
+    },
     setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)
-      followX += (Math.max(-1.2, Math.min(1.2, x)) - followX) * 0.5;
-      followY += (Math.max(-1.2, Math.min(1.2, y)) - followY) * 0.5;
+      followTX = Math.max(-1.2, Math.min(1.2, x));
+      followTY = Math.max(-1.2, Math.min(1.2, y));
       followT = Math.max(0, Math.min(1, w));
     },
     imageSampleCount() { return side * side; },
-    loadFormImage(src, aspect, uv) {
+    loadFormImage(src, aspect, uv, glide = true) {
       if (lost) return;
+      if (glide) { retarget("image"); flashPace = false; } else flashPace = true;
       if (uv && uv.length === side * side * 2) {
         gl.bindTexture(gl.TEXTURE_2D, imgUvTex);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, side, side, 0, gl.RG, gl.FLOAT, uv);
@@ -1303,8 +1393,15 @@ export function createParticleEngine(
       imgShowTgt = Math.max(0, Math.min(1, show));
     },
     setShape(sh, snap = false) {
-      shapeTarget = sh.map((x) => Math.max(0, Math.min(0.999, x))) as [number, number, number, number];
-      if (snap) for (let i = 0; i < 4; i++) shape[i] = shapeTarget[i];
+      const nt = sh.map((x) => Math.max(0, Math.min(0.999, x))) as [number, number, number, number];
+      // a step crossing is a new figure: easing THROUGH steps re-aimed the
+      // form several times in a row — take it once, and glide onto it
+      const discrete = crossesStep(shape, nt);
+      shapeTarget = nt;
+      if (snap || discrete) {
+        for (let i = 0; i < 4; i++) shape[i] = shapeTarget[i];
+        if (discrete) retarget("shape");
+      }
     },
     setMotion(k) { motionTarget = Math.max(0.5, Math.min(1.6, k)); },
     impulse(kind, strength = 1) {
@@ -1328,6 +1425,7 @@ export function createParticleEngine(
       return {
         fps: Math.round(fpsEma * 10) / 10,
         fpsLow: Math.round((1 / p95) * 10) / 10,
+        motion: { meanSpeed: jumpSpeed, fastFrac: jumpFast, glide: 0.22 + 0.78 * Math.min(1, glideT / GLIDE_SEC) ** 2, lastEvent, lastEventAgo: time - lastEventAt },
         frameMs: Math.round((1000 / fpsEma) * 100) / 100,
         count,
         texSide: side,
