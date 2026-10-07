@@ -140,7 +140,7 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
         return {
           tx: tx + (Math.random() - 0.5) * 0.5, ty: ty + (Math.random() - 0.5) * 0.5,
           x: cx + Math.cos(ang) * r, y: cy + Math.sin(ang) * r * 0.6, vx: 0, vy: 0,
-          a: 0, size: 0.32 + Math.random() * 0.45, // fine motes: they DRAW the detail seed: Math.random() * 1000, delay: Math.random() * 0.8,
+          a: 0, size: 0.32 + Math.random() * 0.45, /* fine motes: they DRAW the detail */ seed: Math.random() * 1000, delay: Math.random() * 0.8,
         };
       });
       return true;
