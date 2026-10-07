@@ -791,11 +791,15 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     // INFINITE UNFOLDING (Karel 2026-10-07, flower imagery): each layer is born at
     // the centre and grows outward; the draw fades it in and out at both ends
     float grow = 1.0;
-    if (uUnfold > 0.5) {
+    // eased in/out (2026-10-07: a hard on/off made the blossom JUMP mid-form)
+    if (uUnfold > 0.001) {
       float g = fract(uUnfoldT * 0.05 + L / 3.0);
-      grow = mix(0.12, 1.9, g);
-      open = mix(0.15, 1.0, smoothstep(0.0, 0.6, g));
-      r = u * 0.95 * grow * (0.35 + 0.65 * open);
+      float growU = mix(0.12, 1.9, g);
+      float openU = mix(0.15, 1.0, smoothstep(0.0, 0.6, g));
+      float rU = u * 0.95 * growU * (0.35 + 0.65 * openU);
+      grow = mix(1.0, growU, uUnfold);
+      open = mix(open, openU, uUnfold);
+      r = mix(r, rU, uUnfold);
     }
     vec2 xz = dir * r + side * vv * wid * r * 0.9;
     float lift = (1.0 - open) * u * u * 0.9 * min(grow, 1.0) + 0.15 * L;
@@ -1141,9 +1145,9 @@ void main(){
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
   // infinite unfolding: a blossom layer fades in at birth and out as it opens away
-  if (uUnfold > 0.5) {
+  if (uUnfold > 0.001) {
     float g = fract(uUnfoldT * 0.05 + floor(s.b * 3.0) / 3.0);
-    a *= smoothstep(0.0, 0.14, g) * smoothstep(1.0, 0.72, g);
+    a *= mix(1.0, smoothstep(0.0, 0.14, g) * smoothstep(1.0, 0.72, g), uUnfold);
   }
   // rise souls fade at the hearth and toward the top (fallers: top and bottom)
   if (uRiseW > 0.001) {

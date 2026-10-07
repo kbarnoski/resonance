@@ -589,8 +589,8 @@ export function createParticleEngine(
   // field mode + image-form variety (Karel 2026-10-06: many blossoms, the
   // angel never the same twice)
   let instN = 1, instSeed = 0;
-  let unfoldOn = false, unfoldT = 0;
-  let imgMirror = 1, imgTiltS = 0, imgTiltT = 0;
+  let unfoldOn = false, unfoldT = 0, unfoldS = 0;
+  let imgMirror = 1, imgMirrorT = 1, imgTiltS = 0, imgTiltT = 0;
   let imgTintS = 0, imgTintT = 0;
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
@@ -801,6 +801,10 @@ export function createParticleEngine(
       offX += (offTX - offX) * k4; offY += (offTY - offY) * k4;
       imgScaleS += (imgScaleT - imgScaleS) * (1 - Math.exp(-dt / 1.5));
       sizeScaleS += (sizeScaleT - sizeScaleS) * k4;
+      // NEVER INSTANT (2026-10-07 transition audit): the image mirror and the
+      // blossom unfold glide — a flipped mirror sent every mote across the form
+      imgMirror += (imgMirrorT - imgMirror) * (1 - Math.exp(-dt / 0.9));
+      unfoldS += ((unfoldOn && soulB.id === "blossom" ? 1 : 0) - unfoldS) * (1 - Math.exp(-dt / 2));
       reactS += (reactT - reactS) * (1 - Math.exp(-dt / 1.2));
     }
 
@@ -888,7 +892,7 @@ export function createParticleEngine(
     }
     if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
     unfoldT += dt;
-    if (sim.u.uUnfold) { g.uniform1f(sim.u.uUnfold, unfoldOn && soulB.id === "blossom" ? 1 : 0); g.uniform1f(sim.u.uUnfoldT, unfoldT); }
+    if (sim.u.uUnfold) { g.uniform1f(sim.u.uUnfold, unfoldS); g.uniform1f(sim.u.uUnfoldT, unfoldT); }
     g.uniform1f(sim.u.uImgAspect, imgAspect[1]);
     g.uniform1f(sim.u.uScrAspect, W / H);
     g.drawArrays(g.TRIANGLES, 0, 3);
@@ -945,7 +949,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uRiseTop, riseTop);
     g.uniform1f(draw.u.uHeightCol, heightCol);
     g.uniform1f(draw.u.uInst, instN);
-    if (draw.u.uUnfold) { g.uniform1f(draw.u.uUnfold, unfoldOn && soulB.id === "blossom" ? 1 : 0); g.uniform1f(draw.u.uUnfoldT, unfoldT); }
+    if (draw.u.uUnfold) { g.uniform1f(draw.u.uUnfold, unfoldS); g.uniform1f(draw.u.uUnfoldT, unfoldT); }
     g.uniform1f(draw.u.uInstSeed, instSeed);
     g.uniform1f(draw.u.uInkW, inkW);
     g.uniform3f(draw.u.uWrap, wrap[0], wrap[1], wrap[2]);
@@ -1271,7 +1275,7 @@ export function createParticleEngine(
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
     setUnfold(on) { unfoldOn = on; },
     setInstances(n, seed) { instN = Math.max(1, Math.min(9, Math.round(n))); instSeed = seed; },
-    setImageVariant(mirror, tilt) { imgMirror = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
+    setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)

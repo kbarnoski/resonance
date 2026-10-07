@@ -537,6 +537,10 @@ export function ParticleLeadLayer({
       const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(1.6) - Math.log(kLo)));
       dollyFrom = k;
       dollyTo = k * (calm ? 0.88 + 0.24 * rand01(4) : 0.62 + 0.85 * rand01(4));
+      // BIG IS BRIEF (Karel 2026-10-07: "nice for a brief time this big but
+      // over done if it stays this size"): a close, large arrival always
+      // recedes to mid-distance across its appearance
+      if (k < 0.9) dollyTo = Math.max(dollyTo, 1.05 + 0.3 * rand01(10));
       dollyAt = performance.now();
       densK = quietImaging ? 0.22 + 0.4 * rand01(2) : 0.3 + 0.7 * rand01(2);
       // forms HOLD (Karel 2026-10-06: "change should be smooth and not jump
@@ -682,6 +686,7 @@ export function ParticleLeadLayer({
     // windows the field returns for 12–22 s after 12–20 s away (measured
     // ~80 % with longer returns — tuned toward 60 %)
     let ambientUntil = -1;
+    let minHoldUntil = -1;
     let onSec = 0;
     let outSince = 0;
     let ambientGap = 12 + 8 * rand01(21);
@@ -772,6 +777,7 @@ export function ParticleLeadLayer({
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
       let emForm = 0, emShow = 0;
       let emOcc = 0; // 0 = opening, 1 = mid, 2 = closing
+      let emAge = ssf(4, 11, t); // the emblem eases smaller while held (big is brief)
       if (emblemRef.current) {
         const D = useAudioStore.getState().duration || 0;
         emForm = ssf(0.8, 3.8, t) * (1 - ssf(11, 15, t));
@@ -781,12 +787,14 @@ export function ParticleLeadLayer({
           emForm = Math.max(emForm, ssf(0, 3.5, e));
           emShow = Math.max(emShow, ssf(0.3, 4, e));
           emOcc = 2;
+          emAge = ssf(4, 11, e);
         }
         if (D > 200 && t > D * 0.5 && t < D * 0.5 + 15) {
           const m = t - D * 0.5;
           emForm = Math.max(emForm, ssf(0, 3.5, m) * (1 - ssf(9, 13, m)));
           emShow = Math.max(emShow, ssf(0.3, 4, m) * (1 - ssf(10, 14, m)));
           emOcc = 1;
+          emAge = ssf(4, 10, m);
         }
       }
       // timed MOMENT (Ghost's blossom cloud): gather 4 s, hold breathing, dissipate
@@ -808,7 +816,7 @@ export function ParticleLeadLayer({
       const ec = echoRef.current;
       if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded) {
         echoUsed = ec;
-        if (rand01(81 + echoN) < (calm ? 0 : 0.4)) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
+        if (rand01(81 + echoN) < (calm ? 0.25 : 0.4)) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
       }
       let ecForm = 0, ecShow = 0;
       if (echoAt >= 0) {
@@ -868,7 +876,7 @@ export function ParticleLeadLayer({
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
         // emblems smaller (Karel 2026-10-07: "a bit too big"); an ECHO aligns with the still (full frame)
-        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? 0.5 : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
+        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? 0.5 - 0.14 * emAge : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
         // a motif design turns slowly while it is held
         if (imgLoaded === "motif" && motifAt >= 0) engine.setImageVariant(imgVar.mirror, imgVar.tilt + 0.35 * Math.sin((t - motifAt) * 0.09));
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the
@@ -938,7 +946,13 @@ export function ParticleLeadLayer({
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
       if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * densP));
-      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP) * endFade;
+      // ≥5 s TO ABSORB (Karel 2026-10-07: "dont have particles come in only
+      // to go away a second or two later … 5 seconds minimum"): once the
+      // field arrives it holds ≥6 s before any fade-out begins
+      if (shown > 0.15 && minHoldUntil < 0) minHoldUntil = t + 6;
+      if (shown < 0.02) minHoldUntil = -1;
+      const minHold = minHoldUntil > t ? 1 : 0;
+      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP, minHold) * endFade;
       shown = slew(shown, targetPresence, tickDt);
       if (shown > 0.3) onSec += tickDt;
       if (shown >= densP || shown < 0.005) densP = shown; // rise with the gather, hold through the fade
@@ -946,7 +960,7 @@ export function ParticleLeadLayer({
       // dynamics: the dolly glides through each appearance; placement holds
       // its third (a flash centres itself to meet the flash image)
       {
-        const prog = Math.min(1, (performance.now() - dollyAt) / Math.max(4000, formDur * 1.6));
+        const prog = Math.min(1, (performance.now() - dollyAt) / (dollyFrom < 0.9 ? 7000 : Math.max(4000, formDur * 1.6)));
         engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
         // a CENTRED shader (suns, portals, mandalas…) pins the field to its
         // exact centre point (Karel 2026-10-06)
@@ -1042,7 +1056,8 @@ export function ParticleLeadLayer({
       // through the palette's voicings (~11 s per step), led by the section
       const fire = !!charAt(t)?.fire;
       const floral = !fire && !!charAt(t)?.floral;
-      const vf = c.voice + t / (charAt(t)?.fire ? 7 : 11);
+      // colours keep moving everywhere (Karel 2026-10-07: Realized's changing colours "do everywhere")
+      const vf = c.voice + t / (charAt(t)?.fire ? 7 : 8);
       const v0 = Math.floor(vf) % 4;
       const vfr = vf - Math.floor(vf);
       const vk = ipPhase ? `img:${phaseIdx}:${v0}:${fire}:${floral}` : pp ? `${pp.primary}${pp.secondary}${pp.accent}${pp.glow}:${v0}` : "";
