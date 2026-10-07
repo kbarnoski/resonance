@@ -90,7 +90,13 @@ vec3 hash31(float p){
 // Each particle's home on the image plane: its own texel uv (jittered),
 // cover-fit to the screen like the journey stills (1.06 overscan).
 const IMG_UV = /* glsl */ `
+// importance-sampled image coordinates (2026-10-06, "the opening forms need the
+// level of detail … still not crisp"): every particle sits ON the image's bright
+// lines, in proportion to brightness, instead of a uniform grid over black
+uniform sampler2D uImgUv;
+uniform float uImgSampled;
 vec2 imgUv(ivec2 c, vec4 s, int texW){
+  if (uImgSampled > 0.5) return texelFetch(uImgUv, c, 0).xy;
   return (vec2(c) + 0.5 + (s.gb - 0.5) * 0.9) / float(texW);
 }
 vec2 coverNdc(vec2 uv, float imgAspect, float scrAspect){
@@ -1096,7 +1102,7 @@ void main(){
   float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
   boost = mix(boost, 1.0, uImgShow);
   // bass = heavier motes, treble = the finest dust
-  float size = mix(1.55, 0.5, band) * (0.45 + 1.6 * s.b * s.b * s.b) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 1.0, uImgShow);
+  float size = mix(1.55, 0.5, band) * mix(0.45 + 1.6 * s.b * s.b * s.b, 0.75, uImgShow) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 0.7, uImgShow);
   float a = uAlpha;
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 24.0);

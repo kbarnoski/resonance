@@ -179,7 +179,9 @@ export interface ParticleEngine {
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
-  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number): void;
+  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number, uv?: Float32Array): void;
+  /** How many image samples loadFormImage's `uv` needs (2 floats each). */
+  imageSampleCount(): number;
   /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
   setImageForm(form: number, show: number): void;
   /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
@@ -604,6 +606,13 @@ export function createParticleEngine(
     return t;
   };
   let imgTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
+  // per-particle sampled image coordinates (RG32F, side × side) — crisp image forms
+  const imgUvTex = gl.createTexture()!;
+  gl.bindTexture(gl.TEXTURE_2D, imgUvTex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, 1, 1, 0, gl.RG, gl.FLOAT, new Float32Array([0.5, 0.5]));
+  let imgSampled = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   let imgFormExt = 0;
@@ -824,6 +833,7 @@ export function createParticleEngine(
     bindTex(1, velTex[cur], sim.u.uVel);
     bindTex(2, seedTex, sim.u.uSeed);
     bindTex(3, specTex, sim.u.uSpec);
+    if (sim.u.uImgUv) { bindTex(5, imgUvTex, sim.u.uImgUv); g.uniform1f(sim.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
     g.uniform1f(sim.u.uDt, simDt);
     g.uniform1f(sim.u.uTime, time);
     g.uniform3f(sim.u.uClock, clocks.bass, clocks.mid, clocks.treble);
@@ -895,7 +905,7 @@ export function createParticleEngine(
 
     // ── palette ───────────────────────────────────────────────────────────
     const pal = paletteOverride ?? lerpPalette(soulA.palette, soulB.palette, e);
-    const trail = lerp(soulA.trail, soulB.trail) * trailScale;
+    const trail = lerp(soulA.trail, soulB.trail) * trailScale * (1 - 0.7 * env.imgShow);
     const intensity = lerp(soulA.intensity, soulB.intensity);
     fadeIn = Math.min(1, fadeIn + dt / 2.5);
 
@@ -942,7 +952,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uDensity, Math.min(density, densityCap));
     g.uniform1f(draw.u.uWorldFade, env.worldFade);
     bindTex(3, imgTex[0], draw.u.uImgA);
-    bindTex(4, imgTex[1], draw.u.uImgB);
+    bindTex(4, imgTex[1], draw.u.uImgB); if (draw.u.uImgUv) { bindTex(5, imgUvTex, draw.u.uImgUv); g.uniform1f(draw.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
     g.uniform1f(draw.u.uColorMix, env.colorMix);
     g.uniform1f(draw.u.uImgShow, env.imgShow);
     // an image formed by ~N soft sprites: per-sprite gain so the particle
@@ -1081,7 +1091,7 @@ export function createParticleEngine(
       bindTex(1, velTex[cur], draw.u.uVel);
       bindTex(2, seedTex, draw.u.uSeed);
       bindTex(3, imgTex[0], draw.u.uImgA);
-      bindTex(4, imgTex[1], draw.u.uImgB);
+      bindTex(4, imgTex[1], draw.u.uImgB); if (draw.u.uImgUv) { bindTex(5, imgUvTex, draw.u.uImgUv); g.uniform1f(draw.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
       g.uniform1i(draw.u.uTexW, side);
       g.uniform1f(draw.u.uAlpha, 0);
       g.drawArrays(g.POINTS, 0, 1);
@@ -1262,8 +1272,14 @@ export function createParticleEngine(
       followY += (Math.max(-1.2, Math.min(1.2, y)) - followY) * 0.5;
       followT = Math.max(0, Math.min(1, w));
     },
-    loadFormImage(src, aspect) {
+    imageSampleCount() { return side * side; },
+    loadFormImage(src, aspect, uv) {
       if (lost) return;
+      if (uv && uv.length === side * side * 2) {
+        gl.bindTexture(gl.TEXTURE_2D, imgUvTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, side, side, 0, gl.RG, gl.FLOAT, uv);
+        imgSampled = 1;
+      } else imgSampled = 0;
       gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);

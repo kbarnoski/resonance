@@ -16,31 +16,32 @@ import { JOURNEY_MOTIFS, type PhaseMotif } from "@/lib/particles/journey-motifs.
 
 /** The organic language — the only forms cast in journeys. */
 export const ORGANIC_SOULS: readonly SoulId[] = [
-  // v8 INTRICATE language (Karel 2026-10-06): Islamic-geometric girih +
-  // medallions, mandala, kaleidoscope, blossom fields; fire keeps its flame,
-  // water its caustic web
+  // v9 balance (Karel 2026-10-06: "youve gone off the deep end with mandalas …
+  // you had nice other forms like a ribbon and other abstract stuff … 3d ish
+  // but organic"): 3-D organic forms LEAD; the intricate 2-D family accents
+  "ribbons", "murmuration", "vortex", "tendrils", "wisp",
   "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
 ];
 
-/** Banned in journeys: 3-D ellipses, squares/grids, the tree, the cube — and
- *  (v8, "a lot of basic shapes and unclear stuff") the basic / unclear forms. */
+/** Banned in journeys: 3-D ellipses, squares/grids, the tree, the cube, the
+ *  small blocky flame, and the unclear blobs. */
 export const BANNED_SOULS: readonly SoulId[] = [
   "orbitals", "rings", "arcs", "lissajous", "knot", "harmonics", "polyhedron", "superformula",
   "torus", "cymatics", "geometry", "branches", "spirit", "threads", "helix",
-  "bloom", "vortex", "rose", "spirograph", "nebula", "ink", "murmuration", "ribbons", "tendrils", "wisp", "petalfall",
+  "bloom", "rose", "spirograph", "nebula", "ink", "petalfall",
   "flame", // Karel 2026-10-06: "stay away from this type of tiny form" (a small blocky flame)
 ];
 
 type W = [SoulId, number][];
-const FIRE: W = [["mandala", 2.2], ["medallion", 1.8], ["girih", 1.4], ["kaleido", 1]];
-const LIGHT: W = [["medallion", 2], ["girih", 1.8], ["mandala", 1.5], ["kaleido", 1]];
-const FLORAL: W = [["blossom", 3], ["medallion", 1.5], ["mandala", 1.5], ["kaleido", 1]];
-const GREEN: W = [["blossom", 1.2], ["girih", 1.4], ["mandala", 1.2], ["kaleido", 1]];
-const WATER: W = [["caustic", 2.5], ["medallion", 1.4], ["kaleido", 1.2], ["girih", 1]];
-const CRYSTAL: W = [["kaleido", 2.5], ["girih", 2], ["medallion", 1.5]];
-const AIR: W = [["girih", 1.6], ["medallion", 1.5], ["mandala", 1.2], ["kaleido", 1]];
-const COSMOS: W = [["medallion", 2], ["kaleido", 1.6], ["girih", 1.4], ["mandala", 1.2]];
-const GEO: W = [["girih", 2.5], ["kaleido", 2], ["medallion", 1.5]];
+const FIRE: W = [["vortex", 2.2], ["ribbons", 2], ["wisp", 1.8], ["murmuration", 1.4], ["mandala", 1], ["medallion", 0.8]];
+const LIGHT: W = [["ribbons", 2], ["vortex", 1.6], ["murmuration", 1.4], ["medallion", 1], ["girih", 0.8]];
+const FLORAL: W = [["blossom", 3], ["ribbons", 1.6], ["tendrils", 1.4], ["mandala", 0.9]];
+const GREEN: W = [["tendrils", 2.4], ["murmuration", 1.8], ["ribbons", 1.4], ["blossom", 1], ["girih", 0.7]];
+const WATER: W = [["caustic", 2.2], ["ribbons", 2], ["tendrils", 1.4], ["vortex", 1.2], ["kaleido", 0.8]];
+const CRYSTAL: W = [["kaleido", 2], ["ribbons", 1.6], ["murmuration", 1.4], ["girih", 1.2], ["medallion", 1]];
+const AIR: W = [["wisp", 2.2], ["ribbons", 2], ["murmuration", 1.6], ["vortex", 1.2], ["girih", 0.8]];
+const COSMOS: W = [["vortex", 2.4], ["murmuration", 1.8], ["ribbons", 1.6], ["medallion", 1], ["kaleido", 0.8]];
+const GEO: W = [["girih", 1.8], ["ribbons", 1.6], ["kaleido", 1.4], ["vortex", 1.2], ["medallion", 1]];
 const MOTIF_FORMS: Record<string, W> = {
   fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
   "light-rays": LIGHT, "golden-light": LIGHT, figure: LIGHT,

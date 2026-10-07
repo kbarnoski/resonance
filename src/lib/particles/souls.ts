@@ -254,10 +254,9 @@ export const SOULS: readonly SoulPreset[] = [
  * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
  */
 export const SHAPE_SOULS: readonly SoulId[] = [
-  // v8 INTRICATE language (Karel 2026-10-06: "intricate patterns like this …
-  // you have a lot of basic shapes and unclear stuff … islamic geometric
-  // detail"): only intricate, legible forms; fire keeps its flame, water its
-  // caustic web. Mirrors ORGANIC_SOULS (particle-motifs.ts).
+  // v9 balance (Karel 2026-10-06): 3-D organic forms lead, intricate 2-D accents.
+  // Mirrors ORGANIC_SOULS (particle-motifs.ts).
+  "ribbons", "murmuration", "vortex", "tendrils", "wisp",
   "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
 ];
 

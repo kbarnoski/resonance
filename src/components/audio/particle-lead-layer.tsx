@@ -99,6 +99,56 @@ export function warmParticleSouls(souls: SoulId[]): void {
 }
 
 type EmblemSource = HTMLCanvasElement | "@angel" | "@angel-outline";
+
+// ── importance-sampled image coordinates (crisp image forms) ──────────────
+const SAMPLE_N = (() => { const sd = Math.max(64, Math.min(1024, Math.round(Math.sqrt(160_000)))); return sd * sd; })();
+const uvCache = new WeakMap<object, Float32Array>();
+function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined {
+  const W = Math.min(256, src.width), H = Math.max(1, Math.round((src.height * W) / Math.max(1, src.width)));
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return undefined;
+  ctx.drawImage(src, 0, 0, W, H);
+  const d = ctx.getImageData(0, 0, W, H).data;
+  const cdf = new Float64Array(W * H);
+  let acc = 0;
+  for (let i = 0; i < W * H; i++) {
+    const L = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
+    acc += L < 0.06 ? 0 : Math.pow(L, 1.4) * (d[i * 4 + 3] / 255);
+    cdf[i] = acc;
+  }
+  if (acc <= 0) return undefined;
+  const out = new Float32Array(n * 2);
+  const perm = new Uint32Array(n);
+  for (let i = 0; i < n; i++) perm[i] = i;
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+  for (let k = 0; k < n; k++) {
+    const target = ((k + Math.random()) / n) * acc;
+    let lo = 0, hi = W * H - 1;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (cdf[mid] < target) lo = mid + 1; else hi = mid; }
+    const x = lo % W, y = (lo - x) / W;
+    const j = perm[k];
+    out[j * 2] = (x + Math.random()) / W;
+    out[j * 2 + 1] = 1 - (y + Math.random()) / H; // textures upload flipped (bottom-left origin)
+  }
+  return out;
+}
+/** Sampled coordinates for an image (cached); computed in idle time when warmed. */
+function uvFor(src: HTMLCanvasElement | HTMLImageElement | null, n: number): Float32Array | undefined {
+  if (!src || !(src instanceof HTMLCanvasElement)) return undefined;
+  const hit = uvCache.get(src);
+  if (hit && hit.length === n * 2) return hit;
+  const uv = computeUv(src, n);
+  if (uv) uvCache.set(src, uv);
+  return uv;
+}
+function warmUv(src: HTMLCanvasElement): void {
+  if (uvCache.has(src)) return;
+  const run = () => { if (!uvCache.has(src)) { const uv = computeUv(src, SAMPLE_N); if (uv) uvCache.set(src, uv); } };
+  const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
+  if (ric) ric(run, { timeout: 4000 }); else setTimeout(run, 50);
+}
 let angelOutline: HTMLCanvasElement | null = null;
 /** "@angel" → the keyed flash angel; "@angel-outline" → the angel traced as
  *  lines of light (luminance edges), so particles DRAW it rather than fill it. */
@@ -129,6 +179,7 @@ function resolveEmblem(src: EmblemSource | null): HTMLCanvasElement | null {
     }
     ctx.putImageData(o, 0, 0);
     angelOutline = c;
+    warmUv(c);
     return c;
   }
   return src;
@@ -153,6 +204,7 @@ function motifImage(src: string): HTMLCanvasElement | null {
     c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
     c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
     motifCanvas.set(src, c);
+    warmUv(c);
   };
   img.src = src;
   return null;
@@ -236,6 +288,7 @@ export function ParticleLeadLayer({
           c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
           imgs.push(c);
           emblemRef.current = [...imgs];
+          warmUv(c);
         };
         img.src = u;
       }
@@ -256,6 +309,7 @@ export function ParticleLeadLayer({
         c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
         c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
         momentImgs.current = [...momentImgs.current, c];
+        warmUv(c);
       };
       img.src = u;
     }
@@ -375,7 +429,8 @@ export function ParticleLeadLayer({
       glitchRecord("particle-motif", `${fam} ${motifSrc.split("/").pop()}`);
       return true;
     };
-    const pMotif = cast.signatureImage === "angel" ? 0.75 : 0.6;
+    // 2-D designs are accents now (Ghost keeps its angels / wings / blossoms)
+    const pMotif = cast.signatureImage === "angel" ? 0.75 : 0.35;
     const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
       const pbs = cast.phaseBounds ?? [];
@@ -445,7 +500,8 @@ export function ParticleLeadLayer({
       // between shapes quickly")
       // smooth, but never lingering (Karel 2026-10-06: Realized's flame "went
       // on and on" — numerous forms, none lasting too long)
-      formDur = 14_000 + 8_000 * rand01(3);
+      // ("you also kept shifting it fast between different shapes"): forms hold
+      formDur = 24_000 + 12_000 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -478,8 +534,18 @@ export function ParticleLeadLayer({
         const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 2) : 1;
         engine.setInstances(nInst, rand01(33 + appearN));
       }
-      // full-spectrum colour for the mandala family; palette-close for the rest
-      engine.setHueSpread(SPECTRUM_FORMS.has(soul) ? 2.6 : cast.hueSpread);
+      // colour honours the journey first (Karel 2026-10-06: "the journey needs to
+      // have its images and themes honored by shapes and color too. def keep some
+      // rainbow on most though mixed in … keep some rainbow … in snowflake … dont
+      // bring that into ghost"): spectrum forms go FULL rainbow on ~1 in 3
+      // appearances (Snowflake: most), a moderate palette drift otherwise;
+      // Ghost never
+      const ghostJ = cast.signatureImage === "angel";
+      const snowJ = journeyId === "first-snow";
+      // ("you way over did rainbow particle in snowflake"): an accent now
+      const rainbow = !ghostJ && SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (snowJ ? 0.25 : 0.2);
+      engine.setHueSpread(ghostJ ? Math.min(0.2, cast.hueSpread) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
+      spectrumNow = rainbow;
       recent.unshift(soul);
       if (recent.length > 2) recent.length = 2;
       currentSoul = soul;
@@ -490,6 +556,7 @@ export function ParticleLeadLayer({
       glitchRecord("particle-form", `${soul}${quiet ? " (quiet)" : ""}`);
     };
     let wasShown = false;
+    let spectrumNow = false;
     const recent: SoulId[] = [];
     /** next form for this phase: not one of the last two shown */
     const nextForm = (t: number): SoulId | undefined => {
@@ -544,6 +611,7 @@ export function ParticleLeadLayer({
     // flash form (Ghost)
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | null = null;
+    let angelUvWarm = false;
     let treatN = 0;
     let imgKey: string | null = null;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
@@ -619,6 +687,7 @@ export function ParticleLeadLayer({
       // (Ghost's angel flash, Ghost's angel signature, every journey's EMBLEM)
       const ssf = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
       const fl = flashRef.current;
+      if (fl && !angelUvWarm) { const a = keyedFlashAngel(1); if (a) { warmUv(a); angelUvWarm = true; } }
       const fa = fl?.approach ?? 0;
       const fi = fl?.impulse ?? 0;
       const gather = fa <= 0.45 ? 0 : fa >= 0.9 ? 1 : ((fa - 0.45) / 0.45) ** 2 * (3 - 2 * ((fa - 0.45) / 0.45));
@@ -687,7 +756,7 @@ export function ParticleLeadLayer({
             ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
             : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
-          engine.loadFormImage(img, img.width / Math.max(1, img.height));
+          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()));
           imgLoaded = want;
           imgKey = wantKey;
           if (!flashing) treatN++;
@@ -863,7 +932,7 @@ export function ParticleLeadLayer({
       const st = engine.stats();
       const c = colorAt(cast, t);
       // spectrum forms carry vivid full-spectrum colour
-      const satK = SPECTRUM_FORMS.has(currentSoul as SoulId) ? 1.45 : 1;
+      const satK = spectrumNow ? 1.45 : 1;
       engine.setHue(c.hue + 0.06 * st.swell, c.sat * satK * (1 + 0.1 * st.swell));
       // colour = the journey's IMAGE palette (this phase's stills), voiced for
       // the section; the theme palette only where no image palette exists
