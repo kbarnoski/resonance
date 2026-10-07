@@ -22,9 +22,19 @@ let rafMonitorStarted = false;
 let lastUploadIdx = 0;
 const sessionId = Math.random().toString(36).slice(2, 8);
 
+/** Every event goes through here. REVIEW TAP (2026-10-07, opt-in, zero cost
+ *  when off): the journey-review rig (scripts/journey-review/record.mjs)
+ *  installs window.__resonanceGlitchTap to receive each event in real time —
+ *  the 20 s uploads lose their tail when a review page closes. */
+function emit(ev: GlitchEvent): void {
+  buffer.push(ev);
+  const tap = (window as unknown as { __resonanceGlitchTap?: (e: GlitchEvent) => void }).__resonanceGlitchTap;
+  if (tap) { try { tap(ev); } catch { /* rig-side error never touches the app */ } }
+}
+
 export function glitchRecord(type: string, detail?: string): void {
   if (typeof window === "undefined") return;
-  buffer.push({
+  emit({
     t: Math.round(performance.now()),
     wall: new Date().toISOString().slice(11, 23),
     type,
@@ -72,7 +82,7 @@ function startMonitors(): void {
     window.addEventListener("pagehide", () => void upload("pagehide"));
     document.addEventListener("visibilitychange", () => {
       // every visibility change is on the record (a hidden kiosk window is not a freeze)
-      buffer.push({ t: Math.round(performance.now()), wall: new Date().toISOString().slice(11, 23), type: "visibility", detail: document.visibilityState });
+      emit({ t: Math.round(performance.now()), wall: new Date().toISOString().slice(11, 23), type: "visibility", detail: document.visibilityState });
       if (document.visibilityState === "hidden") void upload("hidden");
     });
   }
@@ -91,7 +101,7 @@ function startMonitors(): void {
       // flickers in sessions with zero 80ms gaps, so the recorder must
       // see below its old floor.
       if (gap > 50) {
-        buffer.push({
+        emit({
           t: Math.round(now),
           wall: new Date().toISOString().slice(11, 23),
           // a gap that spans a hidden window is the browser pausing, not a glitch

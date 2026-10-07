@@ -81,3 +81,6 @@ public/tramokyo-pack/
 
 # harvest script esbuild scratch bundles
 .tmp-*
+
+# journey-review rig output (frames + logs, large)
+scripts/journey-review/runs/
