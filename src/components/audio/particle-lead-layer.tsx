@@ -468,6 +468,7 @@ export function ParticleLeadLayer({
     // 2-D designs are accents now (Ghost keeps its angels / wings / blossoms)
     const theme = JOURNEY_THEMES[journeyId];
     // Ghost's ghostly motifs: occasional, not every form (Karel 2026-10-07: "keep changing forms")
+    const THIN_LINE_FORMS = new Set<SoulId>(["spirograph", "rose", "lissajous", "harmonics", "rings", "arcs", "orbitals", "knot", "helix", "superformula", "mandala", "girih", "medallion", "kaleido", "threads"]);
     const pMotif = theme ? theme.motif : cast.signatureImage === "angel" ? 0.3 : 0.35;
     const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
@@ -562,7 +563,12 @@ export function ParticleLeadLayer({
       const centred = rand01(6) < (quietImaging ? 0.2 : keepOwn ? 0.5 : 0.75);
       offX = centred ? 0 : side * (quietImaging ? 0.25 + 0.25 * rand01(7) : keepOwn ? 0.1 + 0.2 * rand01(7) : 0.08 + 0.14 * rand01(7));
       offY = centred ? 0 : (rand01(8) - 0.5) * (quietImaging ? 0.4 : keepOwn ? 0.25 : 0.16);
-      engine.setSizeScale(0.6 + 1.4 * rand01(9));
+      // THIN LINES NEED PRESENCE (Karel 2026-10-07: "the thin shapes even
+      // mandalas get lost over imaging … the super thin line designs are tough
+      // to see"): line-drawn forms wear bigger, denser motes
+      const thin = THIN_LINE_FORMS.has(currentSoul as SoulId);
+      engine.setSizeScale(thin ? 1.5 + 0.7 * rand01(9) : 0.6 + 1.4 * rand01(9));
+      if (thin) densK = Math.max(densK, 0.85);
     };
     // the forms THIS phase's imagery calls for (vision-tagged) — else the cycle
     const phaseIdxAt = (t: number) => (cast.phaseBounds ?? []).filter((b) => b <= t).length;
@@ -689,7 +695,9 @@ export function ParticleLeadLayer({
     let minHoldUntil = -1;
     let onSec = 0;
     let outSince = 0;
-    let ambientGap = 12 + 8 * rand01(21);
+    // NEVER >10 s WITHOUT PARTICLES (Karel 2026-10-07, all journeys): the field
+    // returns 6-9 s after it has gone (plus its ~1.5 s fade-in)
+    let ambientGap = 6 + 3 * rand01(21);
     let lastTick = performance.now();
     let palVoiceKey = "";
     let palPair: [ParticlePalette | null, ParticlePalette | null] = [null, null];
@@ -731,7 +739,8 @@ export function ParticleLeadLayer({
       // GHOST OPENING HUSH (Karel 2026-10-07: "in ghost the particle dominate
       // the entire first minute and keep changing forms"): after the opening
       // angel the field rests until 1:00 — the imaging carries the opening
-      const hush = journeyId === "ghost" && t > 16 && t < 60;
+      // (lifted the same day — "you removed it too much from first section of ghost dude"; calm + the 10 s rule now carry Ghost's opening)
+      const hush = false;
       const pr0h = presenceAt(cast, t);
       const pr0 = hush ? { ...pr0h, presence: 0, window: null } : pr0h;
       // emergence window after a travel morph (3 s gather in, 3 s out)
@@ -936,9 +945,9 @@ export function ParticleLeadLayer({
       if (pr.presence <= 0 && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
         // only where this journey is running UNDER budget (few morphs)
-        if (!hush && ambientUntil < t && outSince > ambientGap && t > 30 && onSec / Math.max(1, t) < 0.5) {
+        if (!hush && ambientUntil < t && outSince > ambientGap && t > 4) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
-          ambientGap = 12 + 8 * rand01(23 + appearN);
+          ambientGap = 6 + 3 * rand01(23 + appearN);
           const nxt = nextForm(t);
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
