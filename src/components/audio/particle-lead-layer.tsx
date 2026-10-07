@@ -49,7 +49,7 @@ import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -430,7 +430,8 @@ export function ParticleLeadLayer({
       return true;
     };
     // 2-D designs are accents now (Ghost keeps its angels / wings / blossoms)
-    const pMotif = cast.signatureImage === "angel" ? 0.75 : 0.35;
+    const theme = JOURNEY_THEMES[journeyId];
+    const pMotif = theme ? theme.motif : cast.signatureImage === "angel" ? 0.75 : 0.35;
     const ANGEL_SEC = 22;
     const signatureAt = (t: number) => {
       const pbs = cast.phaseBounds ?? [];
@@ -862,6 +863,11 @@ export function ParticleLeadLayer({
         const mode = frameRef.current?.shaderMode;
         const pinCentre = flashing || emblemOn || isCenteredShader(mode);
         engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
+        // First Light: a sun design RISES up the screen as it forms
+        if (theme?.rising && imgLoaded === "motif" && motifAt >= 0) {
+          const prog = Math.max(0, Math.min(1, (t - motifAt) / Math.max(6, motifDur)));
+          engine.setOffset(offX * 0.3, 0.38 - 0.55 * prog);
+        }
         // the imagery's movement sets the pace (flicker livelier, drift calmer)
         engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1));
         // a shader with its own moving particles: follow + trail them
@@ -954,7 +960,7 @@ export function ParticleLeadLayer({
         const ghost = cast.signatureImage === "angel";
         // every journey's particles wear ITS palette (Karel 2026-10-06: "pink in
         // vespers … dont match the palette"): pink flowers are Ghost's alone
-        const mk = (v: number) => (ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }

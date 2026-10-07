@@ -74,6 +74,25 @@ export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morph
   },
 };
 
+/** Journey THEMES — a journey's own particle world (Karel 2026-10-06: First
+ *  Light "should be a rising sun … play on light and the sun rise with the
+ *  particle system. color and form"). */
+export interface JourneyTheme { family: string; motif: number; rising?: boolean; palette?: "dawn" }
+export const JOURNEY_THEMES: Readonly<Record<string, JourneyTheme>> = {
+  "87e106f9-4d74-4886-b944-fd625a827b02": { family: "dawn", motif: 0.7, rising: true, palette: "dawn" }, // First Light
+};
+
+/** Dawn: night violet → rose → orange → pale gold, voiced through the sunrise. */
+export function particlePaletteDawn(voice = 1): ParticlePalette {
+  const v = Math.round(voice) % 4;
+  const violet: [number, number, number] = [0.42, 0.18, 0.62];
+  const rose: [number, number, number] = [1.0, 0.42, 0.42];
+  const orange: [number, number, number] = [1.0, 0.55, 0.18];
+  const gold: [number, number, number] = [1.0, 0.86, 0.5];
+  const order = [[violet, rose, gold], [rose, orange, gold], [orange, gold, gold], [violet, orange, gold]][v];
+  return { low: order[0], mid: order[1], high: order[2] };
+}
+
 /** Casts for the registry — built once, in loop order, neighbours differ. */
 export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() => {
   const ids = PARTICLE_JOURNEY_IDS;
@@ -105,6 +124,8 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     // flowers not mandalas"): its procedural form is the pink blossom alone;
     // the angels, wings and ghosts come from its motif-form family
     if (sig) chars = chars.map((c) => ({ ...c, forms: ["blossom"], floral: true, family: "ghost" }));
+    const theme = JOURNEY_THEMES[id];
+    if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
     if (chars.some((c) => c.forms.length)) {
       cast.phaseChars = chars;
       const pbs = cast.phaseBounds ?? [];

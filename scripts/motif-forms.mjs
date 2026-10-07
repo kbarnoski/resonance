@@ -79,6 +79,15 @@ export const FAMILIES = {
     "a spray of pink cherry blossoms drawn as delicate arabesque filigree, no trunk",
     "a faceless angel silhouette of pure light and lace, seen from behind, dissolving into drifting pink blossom petals",
   ],
+  // First Light (Karel 2026-10-06: "your journey particle form should be a rising
+  // sun … play on light and the sun rise … color and form")
+  dawn: [
+    "a rising sun of intricate filigree rays lifting over a horizon of layered arabesque lines",
+    "sunrise rays fanning upward from a half-risen sun, each ray a strand of fine lattice",
+    "a sun disc emerging through horizontal bands of delicate strapwork, dawn light",
+    "beams of dawn light breaking through cloud bands drawn as luminous lace",
+    "a radiant sun rosette of nested star polygons lifting into the sky",
+  ],
   geo: [
     "a dense girih tessellation of ten-point stars",
     "an interlacing knot medallion",
