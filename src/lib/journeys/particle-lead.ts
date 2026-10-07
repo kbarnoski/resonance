@@ -123,7 +123,15 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     // Ghost (Karel 2026-10-06: "ghostly angels ghosts wings and those pink
     // flowers not mandalas"): its procedural form is the pink blossom alone;
     // the angels, wings and ghosts come from its motif-form family
-    if (sig) chars = chars.map((c) => ({ ...c, forms: ["blossom"], floral: true, family: "ghost" }));
+    // …but blossoms ONLY where its imagery shows flowers (Karel 2026-10-07: "the
+    // particles shouldnt be flowers until you see flowers in ghost. the
+    // particles need to echo the imaging"): other phases take their own
+    // vision-tagged organic forms (never mandalas)
+    const notGhostly = new Set<SoulId>(["mandala", "medallion", "girih", "kaleido", "blossom", "petalfall"]);
+    if (sig) chars = chars.map((c) => {
+      const own = c.forms.filter((f) => !notGhostly.has(f));
+      return { ...c, forms: c.floral ? ["blossom", "wisp"] : own.length ? own : ["wisp", "caustic", "ribbons"], family: "ghost" };
+    });
     const theme = JOURNEY_THEMES[id];
     if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
     if (chars.some((c) => c.forms.length)) {

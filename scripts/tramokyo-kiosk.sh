@@ -108,6 +108,9 @@ if [ -f "$PREFS" ]; then
 fi
 rm -rf "$HOME/.tramokyo-chrome/Default/Sessions" "$HOME/.tramokyo-chrome/Default/Session Storage" 2>/dev/null || true
 
+# NEVER THROTTLED (2026-10-07: Karel's review runs stalled — macOS marked the
+# covered kiosk window hidden for 15-80 s; Chrome throttled it: imaging froze
+# "after the second flash", particles went "start and go")
 open -na "Google Chrome" --args \
   --user-data-dir="$HOME/.tramokyo-chrome" \
   --kiosk \
@@ -115,4 +118,7 @@ open -na "Google Chrome" --args \
   --no-default-browser-check \
   --disable-session-crashed-bubble \
   --autoplay-policy=no-user-gesture-required \
+  --disable-backgrounding-occluded-windows \
+  --disable-renderer-backgrounding \
+  --disable-background-timer-throttling \
   "file://$APP_DIR/scripts/tramokyo-bootstrap.html"

@@ -48,6 +48,20 @@ import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReas
 import { SpectrumProcessor } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
+/** Ghost's imagery is dim (stone, water, shadow): its colours voiced VIVID —
+ *  saturation pushed away from grey and lifted, so the particles carry the
+ *  phase's hue (teal water, gold dawn, violet cosmos) instead of washing white. */
+function vivid(p: ParticlePalette | null): ParticlePalette | null {
+  if (!p) return null;
+  const v = (c: [number, number, number], lift: number): [number, number, number] => {
+    const l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    const sat = c.map((x) => Math.max(0, l + (x - l) * 2.2));
+    const m = Math.max(1e-3, ...sat);
+    const k = Math.max(1, lift / m);
+    return sat.map((x) => Math.min(1, x * k)) as [number, number, number];
+  };
+  return { ...p, low: v(p.low as [number, number, number], 0.45), mid: v(p.mid as [number, number, number], 0.8), high: v(p.high as [number, number, number], 0.95) };
+}
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
 import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
@@ -504,7 +518,8 @@ export function ParticleLeadLayer({
     // CALM — Snowflake + Ghost (Karel 2026-10-07: "in snowflake the particle form is constantly
     // changing and now very distracting"): Snowflake holds each form ~25-32 s,
     // breathes slowly, no image echo, sections never cut a form short, gentle dolly
-    const calm = journeyId === "first-snow" || journeyId === "ghost";
+    // Realized too (Karel 2026-10-07: "changing too much all the time. needs to not make me dizzy")
+    const calm = journeyId === "first-snow" || journeyId === "ghost" || journeyId === "inferno";
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
     // same distance away … always hover dead center … i need dynamics")
     let dollyFrom = 1, dollyTo = 1, dollyAt = performance.now();
@@ -516,7 +531,7 @@ export function ParticleLeadLayer({
       // then a slow dolly in or out across the appearance
       // Ghost: never over-obscure the imaging — further, sparser, off to a side
       const quietImaging = journeyId === "ghost";
-      const kLo = quietImaging ? 0.9 : 0.45;
+      const kLo = quietImaging ? 0.9 : calm ? 0.8 : 0.45;
       // expansive presence (Realized's "good presence and dynamics"): never far
       // and tiny — 0.45 (close, large) … 1.6
       const k = Math.exp(Math.log(kLo) + rand01(1) * (Math.log(1.6) - Math.log(kLo)));
@@ -531,7 +546,8 @@ export function ParticleLeadLayer({
       // ("you also kept shifting it fast between different shapes"): forms hold
       // ~10 s per form (Karel 2026-10-07: "10 secs is a rule of thumb … within
       // that time it should have detailed changes just not those big ones")
-      formDur = calm ? 25_000 + 7_000 * rand01(3) : 9_000 + 3_500 * rand01(3);
+      // calm: 14-18 s (Karel 2026-10-07: 25-32 s "sat too long and too big")
+      formDur = calm ? 14_000 + 4_000 * rand01(3) : 9_000 + 3_500 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -580,8 +596,10 @@ export function ParticleLeadLayer({
       // ("bring back more of the rainbow intense colors a bit more but dont over do it")
       // Snowflake (Karel 2026-10-07: "i wanted the return of some of those bright
       // rainbow color themed forms"): ~60 % of its (now long-held) forms, any shape
-      const rainbow = !ghostJ && (snowJ ? rand01(71 + appearN) < 0.6 : SPECTRUM_FORMS.has(soul) && rand01(71 + appearN) < (charAt(t)?.fire ? 0.5 : 0.35));
-      engine.setHueSpread(ghostJ ? Math.min(0.2, cast.hueSpread) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
+      // …and "just a bit more of this coloring in all" (Image #2: a multi-hue bloom):
+      // spectrum forms ~1 in 2, any other form ~1 in 5
+      const rainbow = !ghostJ && rand01(71 + appearN) < (snowJ ? 0.6 : SPECTRUM_FORMS.has(soul) ? 0.5 : 0.2);
+      engine.setHueSpread(ghostJ ? Math.min(0.5, Math.max(0.3, cast.hueSpread)) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
       spectrumNow = rainbow;
       recent.unshift(soul);
       if (recent.length > 4) recent.length = 4;
@@ -1032,7 +1050,10 @@ export function ParticleLeadLayer({
         const ghost = cast.signatureImage === "angel";
         // every journey's particles wear ITS palette (Karel 2026-10-06: "pink in
         // vespers … dont match the palette"): pink flowers are Ghost's alone
-        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost ? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        // Ghost (Karel 2026-10-07: "why are they always white? pink perfect for flowers
+        // but should … echo the imaging and vibe and be diverse"): its phase imagery,
+        // voiced vivid; the white/pink ghost palette only where flowers are seen
+        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost && (floral || !ipPhase) ? particlePaletteGhost(floral, v) : ghost ? vivid(particlePaletteFromImage(ipPhase, v)) ?? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }
