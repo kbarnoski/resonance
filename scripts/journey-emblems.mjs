@@ -66,7 +66,9 @@ async function render(c, file) {
   // geometry like that rich snowflake … a bit cartoony like … lantern … cabin
   // soul"): the subject is BUILT from geometric ornament — girih star lattices,
   // arabesque interlace, nested rosettes — pattern only, never calligraphy
-  const prompt = `a circular Islamic geometric medallion of glowing light — concentric rings of interlacing girih star lattice, nested eight- and twelve-point rosettes and arabesque strapwork — with a large, clearly recognisable ${c.subject} filling the middle third — drawn in the same luminous filigree line art, the unmistakable focal point — flat 2D illuminated-tile style, intricate and perfectly symmetrical, in ${color}, mesmerizing and visionary, not a 3D model, not cartoonish, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
+  // subject FIRST (an abstract centre lost the title — Lantern, Amboise …):
+  // a large, unmistakable centrepiece framed by the Islamic geometric medallion
+  const prompt = `a large, unmistakable ${c.subject} as the glowing centrepiece, drawn in luminous filigree line art, framed by a circular Islamic geometric medallion border of interlacing girih star lattice, nested rosettes and arabesque strapwork, flat 2D illuminated-tile style, intricate, in ${color}, mesmerizing and visionary, the ${c.subject} clearly recognisable at a glance, not a 3D model, not cartoonish, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast`;
   const res = await fal.subscribe("fal-ai/flux/dev", { input: { prompt, image_size: "square_hd", num_inference_steps: 30, guidance_scale: 4, num_images: 1, enable_safety_checker: true } });
   const url = res.data?.images?.[0]?.url;
   if (!url) throw new Error("no image");
