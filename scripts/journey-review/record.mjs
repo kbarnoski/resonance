@@ -243,7 +243,7 @@ async function playSlice(slot, ids, log) {
       const a = rv.audios.filter((x) => x.duration > 5);
       const au = a.find((x) => !x.paused) ?? null;
       const js = pl.jumpScore;
-      rv.motion.push([Math.round(performance.now()), au ? +au.currentTime.toFixed(2) : null, js.meanSpeed, js.fastFrac, js.glide, js.lastEvent, js.cap ?? null, +(pl.swell ?? 0).toFixed(3), pl.bands ? pl.bands.map?.((b) => +(+b).toFixed(3)) ?? pl.bands : null, pl.soul, +(pl.presence ?? 0).toFixed(2), +(pl.transition ?? 0).toFixed(3), pl.scatter ?? null]);
+      rv.motion.push([Math.round(performance.now()), au ? +au.currentTime.toFixed(2) : null, js.meanSpeed, js.fastFrac, js.glide, js.lastEvent, js.cap ?? null, +(pl.swell ?? 0).toFixed(3), pl.bands ? pl.bands.map?.((b) => +(+b).toFixed(3)) ?? pl.bands : null, pl.soul, +(pl.presence ?? 0).toFixed(2), +(pl.transition ?? 0).toFixed(3), pl.scatter ?? null, js.settled ?? null]);
     }, 100);
   });
 

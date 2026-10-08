@@ -172,13 +172,24 @@ async function checkJourney(dirId) {
       }
     }
   }
-  // forms hold ≥14 s (calm ≥17 s); image forms (motif/echo) count as forms
+  // forms hold ≥12 s (calm ≥13 s — Karel 2026-10-08: 16-21 s "sits too long");
+  // image forms (motif/echo) count as forms
   if (!TAIL_ONLY) {
-    const minHold = CALM.has(jid) ? 17 : 14;
+    const minHold = CALM.has(jid) ? 13 : 12;
     const changes = evIn.filter((e) => (e.type === "particle-form" && !/\(quiet\)/.test(e.detail ?? "")) || (e.type === "particle-flash" && /^(motif|echo)/.test(e.detail ?? "")));
     for (let i = 1; i < changes.length; i++) {
       const a = ctAt(changes[i - 1].t), b = ctAt(changes[i].t);
       if (a !== null && b !== null && b >= a && b - a < minHold - 0.5) add("error", "particles.form-too-soon", b, `form changed after ${(b - a).toFixed(1)} s (${changes[i - 1].type} ${changes[i - 1].detail} → ${changes[i].type} ${changes[i].detail}; min ${minHold})`);
+    }
+  }
+  // NO DOUBLE CHANGES (Karel 2026-10-08: "a form transitions to a new shape
+  // only to then immediately change to yet another form" / "it changes its
+  // mind"): two re-aims of a VISIBLE field < 8 s apart
+  {
+    const vis = evIn.filter((e) => e.type === "particle-retarget" && +(/shown=([0-9.]+)/.exec(e.detail ?? "")?.[1] ?? 0) > 0.5);
+    for (let i = 1; i < vis.length; i++) {
+      const dt = (vis[i].t - vis[i - 1].t) / 1000;
+      if (dt < 8) add("warn", "particles.double-change", ctAt(vis[i].t), `${dt.toFixed(1)} s after the last re-aim: ${vis[i - 1].detail} → ${vis[i].detail}`);
     }
   }
   // zero-glitch tripwires

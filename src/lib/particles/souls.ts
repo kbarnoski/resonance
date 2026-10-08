@@ -267,7 +267,7 @@ export const SHAPE_SOULS: readonly SoulId[] = [
  *  petals, blossoms): cast only where the phase's imagery calls for them
  *  (particle-motifs families), never as generic fill — embers drifting over
  *  Snowflake's ice would not echo the imaging (Karel's design principle). */
-export const IMAGERY_ONLY_SOULS: readonly SoulId[] = ["embers", "motes", "petals", "blossom"];
+export const IMAGERY_ONLY_SOULS: readonly SoulId[] = ["embers", "motes", "petals"];
 
 export function soulById(id: SoulId): SoulPreset {
   const s = SOULS.find((x) => x.id === id);

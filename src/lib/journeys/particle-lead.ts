@@ -151,6 +151,18 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
         return { ...c, forms: forms.length ? forms : c.forms };
       });
     }
+    // CENTRE-OUT FORMS LEAD (Karel 2026-10-08: "i especially like the ones that
+    // evolve from a center point like you cool floral stuff"): outside Snowflake
+    // and Ghost every phase opens with the unfolding blossom and carries at least
+    // two radial centre-out forms
+    if (!sig && id !== "first-snow") {
+      const RADIAL: SoulId[] = ["mandala", "rose", "medallion", "kaleido", "girih"];
+      chars = chars.map((c, i) => {
+        const radial = c.forms.filter((f) => RADIAL.includes(f));
+        const add = RADIAL.filter((f) => !c.forms.includes(f)).sort((a, b) => ((a.charCodeAt(0) * 31 + i * 7) % 11) - ((b.charCodeAt(0) * 31 + i * 7) % 11)).slice(0, Math.max(0, 2 - radial.length));
+        return { ...c, forms: [...new Set<SoulId>(["blossom", ...c.forms, ...add])] };
+      });
+    }
     const theme = JOURNEY_THEMES[id];
     if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
     if (chars.some((c) => c.forms.length)) {

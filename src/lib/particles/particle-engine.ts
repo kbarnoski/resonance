@@ -163,7 +163,7 @@ export interface ParticleEngine {
   /** Soul form parameters (cymatic plate mode n,m · lissajous ratios); glide. */
   setForm(form: [number, number, number, number]): void;
   /** Per-appearance shape seed (0..1 ×4): petals, gears, symmetry, solid — glides. */
-  setShape(shape: [number, number, number, number], snap?: boolean): void;
+  setShape(shape: [number, number, number, number], snap?: boolean, withSoul?: boolean): void;
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
@@ -183,6 +183,8 @@ export interface ParticleEngine {
   setTripwire(on: boolean): void;
   /** The last retarget the engine glided (event name, seconds ago). */
   lastRetarget(): { event: string; ago: number; at: number };
+  /** Seconds the field has been ARRIVED (no blend / glide / image pull in flight); 0 while moving. */
+  settledFor(): number;
   /** Image-form variety: mirrored, tilted (radians). */
   setImageVariant(mirror: boolean, tilt: number): void;
   /** 1 = image forms take the journey palette (luminance kept), 0 = true colours. */
@@ -513,6 +515,8 @@ export function createParticleEngine(
   }
   let capNow = 0; // the speed cap this frame (diag)
   let pullT = 99; // seconds since a new figure (shape step)
+  let settledSince = -1; // engine time the field last ARRIVED (no transition in flight)
+  let pendingShape: [number, number, number, number] | null = null; // a new figure waiting its turn
   let lastEvent = "";
   let lastEventAt = -99;
   const retarget = (ev: string) => { glideT = 0; lastEvent = ev; lastEventAt = timeNow(); };
@@ -895,9 +899,21 @@ export function createParticleEngine(
     if (imgFormTgt < 0.01 && imgFormExt < 0.02) flashPace = false;
     {
       const h = Math.min(dt, 0.05);
-      const wF = flashPace ? 6 : 2.2, wS = flashPace ? 4 : 1.8;
+      const wF = flashPace ? 6 : 3, wS = flashPace ? 4 : 2.4;
       imgFormVel += (wF * wF * (imgFormTgt - imgFormExt) - 2 * wF * imgFormVel) * h; imgFormExt += imgFormVel * h; if (imgFormExt < 0 || imgFormExt > 1) { imgFormExt = Math.max(0, Math.min(1, imgFormExt)); imgFormVel = 0; }
       imgShowVel += (wS * wS * (imgShowTgt - imgShowExt) - 2 * wS * imgShowVel) * h; imgShowExt += imgShowVel * h; if (imgShowExt < 0 || imgShowExt > 1) { imgShowExt = Math.max(0, Math.min(1, imgShowExt)); imgShowVel = 0; }
+    }
+    // SETTLED (Karel 2026-10-08, Snowflake: "you morph towards something it
+    // never takes form and then yet again transitions into yet another thing.
+    // its like it changes its mind"): the conductor may only start the next
+    // change once the field has ARRIVED — no soul blend, shape glide, new-figure
+    // pull, re-aim glide or image pull still in flight
+    {
+      let shapeMoving = false;
+      // (> 0.05: the conductor's breathing micro-drift nudges ≤ 0.035 — a breath, not a change)
+      for (let i = 0; i < 4; i++) if (Math.abs(shape[i] - shapeTarget[i]) > 0.05) shapeMoving = true;
+      const moving = soulB !== soulA || shapeMoving || pullT < 2.5 || glideT < 2.5 || Math.abs(imgFormTgt - imgFormExt) > 0.02 || Math.abs(imgShowTgt - imgShowExt) > 0.02;
+      if (moving) settledSince = -1; else if (settledSince < 0) settledSince = time;
     }
     if (dissolveT === null && (imgFormExt > 0.001 || imgShowExt > 0.001)) {
       env = { worldFade: 1 - 0.85 * imgShowExt, imgShow: imgShowExt, imgForm: imgFormExt, colorMix: 1 };
@@ -970,12 +986,21 @@ export function createParticleEngine(
     if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
     g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
     pullT += dt;
-    if (sim.u.uPull) { const pk = Math.min(1, pullT / 3); g.uniform1f(sim.u.uPull, 0.3 + 0.7 * pk * pk * (3 - 2 * pk)); }
+    if (pendingShape && pullT >= 6) {
+      const ps = pendingShape;
+      pendingShape = null;
+      shapeTarget = ps;
+      for (let i = 0; i < 4; i++) { shape[i] = ps[i]; sv[4 + i] = 0; }
+      pullT = 0; lastEvent = "shape"; lastEventAt = timeNow();
+    }
+    if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
       // opening smoothly to unlimited over 5 s (steady forms keep full forces)
-      const ts = Math.min(pullT, glideT), ak = Math.min(1, ts / 5);
-      g.uniform1f(sim.u.uAccCap, ak >= 1 ? 1e6 : 1.0 / Math.max(0.02, 1 - ak * ak * (3 - 2 * ak)));
+      // (Karel 2026-10-08: "it takes a tad bit too long for the forms to take
+      // shape" — 1.0 u/s² over 5 s → 1.6 over 3 s)
+      const ts = Math.min(pullT, glideT), ak = Math.min(1, ts / 3);
+      g.uniform1f(sim.u.uAccCap, ak >= 1 ? 1e6 : 1.6 / Math.max(0.02, 1 - ak * ak * (3 - 2 * ak)));
     }
     g.uniform1f(sim.u.uDisperse, disperseNow ? 1 : 0);
     g.uniform1f(sim.u.uScatter, scatterEnv);
@@ -1422,6 +1447,7 @@ export function createParticleEngine(
       jumpRead = on ? new AsyncRead(gl, side * 4) : null;
     },
     lastRetarget() { return { event: lastEvent, ago: time - lastEventAt, at: lastEventAt }; },
+    settledFor() { return settledSince < 0 ? 0 : time - settledSince; },
     setInstances(n, seed) {
       const nn = Math.max(1, Math.min(9, Math.round(n)));
       if (nn !== instN || (nn > 1 && seed !== instSeed)) retarget("instances");
@@ -1455,11 +1481,17 @@ export function createParticleEngine(
       imgFormTgt = Math.max(0, Math.min(1, form));
       imgShowTgt = Math.max(0, Math.min(1, show));
     },
-    setShape(sh, snap = false) {
+    setShape(sh, snap = false, withSoul = false) {
       const nt = sh.map((x) => Math.max(0, Math.min(0.999, x))) as [number, number, number, number];
       // a step crossing is a new figure: easing THROUGH steps re-aimed the
       // form several times in a row — take it once, and glide onto it
       const discrete = crossesStep(shape, nt);
+      // NO BACK-TO-BACK FIGURES (Karel 2026-10-08: "it never takes form and then
+      // yet again transitions into yet another thing"): a new figure within 6 s
+      // of the last one waits (applied once the first has had its moment)
+      // (a soul change carries its own figure — never deferred)
+      if (discrete && !snap && !withSoul && pullT < 6) { pendingShape = nt; return; }
+      pendingShape = null;
       shapeTarget = nt;
       if (snap || discrete) {
         for (let i = 0; i < 4; i++) { shape[i] = shapeTarget[i]; sv[4 + i] = 0; }

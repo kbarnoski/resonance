@@ -424,6 +424,13 @@ laptop onto venue-public wifi.
 
 Work through this top to bottom on the installation laptop:
 
+- [ ] **ON MAINS POWER, ALWAYS** (2026-10-08 lesson): the show drained the
+      battery 100 % → 2 % in ~1.5 h under load, and macOS throttles the CPU
+      and GPU hard at low charge — it read as image glitches. Check
+      `pmset -g batt` says "AC Power" before every run; Low Power Mode off
+      (`pmset -g | grep powermode` = 0). Never judge the visuals on battery.
+- [ ] **No other heavy work on the kiosk Mac while it plays** (builds, test
+      browsers, exports) — they starve the kiosk's frames.
 - [ ] **macOS auto-login**: System Settings → Users & Groups → Login
       Options → Automatic login = kiosk user. (A power cut must not strand
       the machine at the login screen.)
