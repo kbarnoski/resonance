@@ -20,8 +20,22 @@ for (let i = 1; i <= RUNS; i++) {
     requestAnimationFrame(loop);
     try { new PerformanceObserver((l) => { for (const e of l.getEntries()) rv.loaf.push([Math.round(e.startTime), Math.round(e.duration), Math.round(e.blockingDuration ?? 0), (e.scripts ?? []).map((s) => `${s.sourceFunctionName || "?"}@${(s.sourceURL || "").split("/").pop()}:${s.sourceCharPosition} ${Math.round(s.duration)}ms`).join(" | ")]); }).observe({ type: "long-animation-frame", buffered: true }); } catch {}
   });
-  await p.goto(`${BASE}/room/installation?loop=1&kiosk=1&start=first-snow`, { waitUntil: "domcontentloaded" });
+  const TRACE = argv.includes("--trace");
+  const cdp = TRACE ? await p.context().newCDPSession(p) : null;
+  const chunks = [];
+  if (cdp) {
+    cdp.on("Tracing.dataCollected", (e) => chunks.push(...e.value));
+    await cdp.send("Tracing.start", { transferMode: "ReportEvents", traceConfig: { includedCategories: ["toplevel", "gpu", "viz", "cc", "blink", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-gpu.service", "v8.execute", "gpu.angle"] } });
+  }
+  await p.goto(`${BASE}/room/installation?loop=1&kiosk=1&start=first-snow${argv.includes("--no-particles") ? "&particles=0" : ""}`, { waitUntil: "domcontentloaded" });
   await p.waitForTimeout(SECS * 1000);
+  if (cdp) {
+    const done = new Promise((r) => cdp.once("Tracing.tracingComplete", r));
+    await cdp.send("Tracing.end"); await done;
+    const fs = await import("node:fs");
+    fs.writeFileSync(`/tmp/probe-open-${i}.trace.json`, JSON.stringify({ traceEvents: chunks }));
+    console.log(`   trace → /tmp/probe-open-${i}.trace.json (${chunks.length} events)`);
+  }
   const r = await p.evaluate(() => window.__po);
   console.log(`run ${i} dpr ${DPR}: gaps>40ms ${JSON.stringify(r.gaps.filter((g) => g[1] > 100))}`);
   for (const l of r.loaf.filter((x) => x[1] > 150)) console.log(`   LoAF @${l[0]} ${l[1]}ms block ${l[2]} ${l[3].slice(0, 300)}`);

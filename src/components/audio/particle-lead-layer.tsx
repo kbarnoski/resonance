@@ -614,7 +614,9 @@ export function ParticleLeadLayer({
       // moment a set time after one — both known ahead
       (cast.phaseBounds ?? []).forEach((pb, i) => {
         const idx = i + 1;
-        if (cast.signatureImage === "angel" && cast.signatureMorphs?.includes(idx) && pb > t) next = Math.min(next, pb);
+        // (≥ t - 2: the angel lands ON the boundary — a form switch at that same
+        // boundary must not slip in just before it; motion-fix8: 0.4 s apart)
+        if (cast.signatureImage === "angel" && cast.signatureMorphs?.includes(idx) && pb > t - 2) next = Math.min(next, Math.max(t, pb));
         const mo = cast.signatureMoments?.find((m) => m.phase === idx);
         if (mo && pb + mo.at > t) next = Math.min(next, pb + mo.at);
       });
@@ -961,7 +963,7 @@ export function ParticleLeadLayer({
       const ec = echoRef.current;
       // an echo is a FORM change: only once the current form has had its full hold
       // (review rig 2026-10-07: echoes began 0.1-7 s after a switch, then again 7-13 s later)
-      if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded && performance.now() - formAt > formDur && !timedSoon(t) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)) {
+      if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)) {
         echoUsed = ec;
         // the echo IS this form change: restart the hold so nothing else changes in
         // the same tick (review pass1: echo + section form / echo + motif fired together)
@@ -1065,7 +1067,7 @@ export function ParticleLeadLayer({
 
       const dissolving = engine.dissolveTime() !== null;
       if (w) {
-        if (w.soul !== lastAsked && (shown < 0.05 || (performance.now() - formAt > formDur && echoAt < 0 && motifAt < 0 && !imgLoaded && !timedSoon(t) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)))) { lastAsked = w.soul; switchForm(w.soul, t); }
+        if (w.soul !== lastAsked && (shown < 0.05 || (performance.now() - formAt > formDur && echoAt < 0 && motifAt < 0 && !imgLoaded && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)))) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
@@ -1086,7 +1088,7 @@ export function ParticleLeadLayer({
       }
       if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, motifDur + 2) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
-      } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
+      } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
         cycleIdx++;
         if (cycleIdx % 3 === 0 && currentSoul) {
           engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);

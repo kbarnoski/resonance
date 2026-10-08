@@ -517,6 +517,9 @@ export function createParticleEngine(
   let pullT = 99; // seconds since a new figure (shape step)
   let settledSince = -1; // engine time the field last ARRIVED (no transition in flight)
   let pendingShape: [number, number, number, number] | null = null; // a new figure waiting its turn
+  // the last figure has had its moment: FORMED and held (pass4: a fixed 6 s
+  // release left ~2.5 s of finished form before the next re-aim)
+  const figureHeld = () => pullT >= 14 || (pullT >= 9 && settledSince >= 0 && time - settledSince >= 4);
   let lastEvent = "";
   let lastEventAt = -99;
   const retarget = (ev: string) => { glideT = 0; lastEvent = ev; lastEventAt = timeNow(); };
@@ -986,7 +989,7 @@ export function createParticleEngine(
     if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
     g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
     pullT += dt;
-    if (pendingShape && pullT >= 6) {
+    if (pendingShape && figureHeld()) {
       const ps = pendingShape;
       pendingShape = null;
       shapeTarget = ps;
@@ -1479,6 +1482,8 @@ export function createParticleEngine(
     },
     setImageForm(form, show) {
       imgFormTgt = Math.max(0, Math.min(1, form));
+      // an image takes the stage: a figure still queued would land on top of it
+      if (form > 0.05) pendingShape = null;
       imgShowTgt = Math.max(0, Math.min(1, show));
     },
     setShape(sh, snap = false, withSoul = false) {
@@ -1490,7 +1495,7 @@ export function createParticleEngine(
       // yet again transitions into yet another thing"): a new figure within 6 s
       // of the last one waits (applied once the first has had its moment)
       // (a soul change carries its own figure — never deferred)
-      if (discrete && !snap && !withSoul && pullT < 6) { pendingShape = nt; return; }
+      if (discrete && !snap && !withSoul && !figureHeld()) { pendingShape = nt; return; }
       pendingShape = null;
       shapeTarget = nt;
       if (snap || discrete) {

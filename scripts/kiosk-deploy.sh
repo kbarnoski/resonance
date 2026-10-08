@@ -83,6 +83,11 @@ for attempt in 1 2 3; do
 done
 [ "${C:-}" = "$HEAD" ] || { echo "SERVER NOT ON $HEAD (got '${C:-none}') AFTER 3 ATTEMPTS"; exit 1; }
 echo "server OK ($C)"
+# WARM-UP (2026-10-08): the first page load after a swap reads the pack
+# cold from disk — probe-open measured 117–150 ms hitches at ~10–16 s on
+# that first run only. One headless opening pass warms it before the kiosk
+# (re)loads, so the audience never sees a cold start.
+node "$(dirname "$0")/journey-review/probe-open.mjs" --runs 1 --secs 20 >/dev/null 2>&1 || echo "warm-up pass failed (non-fatal)"
 # the old page's chunks are gone with the swap: relaunch the kiosk browser
 # straight away (a reload leaves it autoplay-paused); otherwise reload
 if [ $KIOSK_WAS_OPEN -eq 1 ]; then
