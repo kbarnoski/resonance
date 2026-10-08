@@ -1,0 +1,390 @@
+{
+ "soul:vortex": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:51:43.177Z"
+ },
+ "soul:murmuration": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:51:57.370Z"
+ },
+ "soul:ribbons": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:52:03.453Z"
+ },
+ "soul:wisp": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:52:15.275Z"
+ },
+ "soul:tendrils": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:52:24.031Z"
+ },
+ "soul:girih": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:52:36.983Z"
+ },
+ "soul:medallion": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:55:14.706Z"
+ },
+ "soul:kaleido": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:55:19.815Z"
+ },
+ "soul:mandala": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:55:26.397Z"
+ },
+ "soul:caustic": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:55:34.574Z"
+ },
+ "soul:blossom": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:55:39.269Z"
+ },
+ "soul:smoke": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:55:45.182Z"
+ },
+ "soul:bloom": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:56:16.121Z"
+ },
+ "soul:motes": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:56:26.795Z"
+ },
+ "soul:petals": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:56:41.258Z"
+ },
+ "soul:embers": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:56:45.992Z"
+ },
+ "soul:duststorm": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:56:51.655Z"
+ },
+ "soul:pollen": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:56:58.701Z"
+ },
+ "soul:threads": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:03.201Z"
+ },
+ "soul:fireflies": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:57:16.418Z"
+ },
+ "soul:ink": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:57:20.902Z"
+ },
+ "soul:branches": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:25.635Z"
+ },
+ "soul:geometry": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:30.308Z"
+ },
+ "soul:orbitals": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:34.249Z"
+ },
+ "soul:waves": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:57:41.742Z"
+ },
+ "soul:cymatics": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:47.584Z"
+ },
+ "soul:nebula": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:57:52.723Z"
+ },
+ "soul:arcs": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:57:57.541Z"
+ },
+ "soul:helix": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:58:03.834Z"
+ },
+ "soul:knot": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:58:10.649Z"
+ },
+ "soul:fountain": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:58:19.924Z"
+ },
+ "soul:harmonics": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:58:28.567Z"
+ },
+ "soul:lissajous": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:58:37.517Z"
+ },
+ "soul:rings": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:58:49.864Z"
+ },
+ "soul:rose": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:58:54.251Z"
+ },
+ "soul:spirograph": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:00.386Z"
+ },
+ "soul:superformula": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:05.586Z"
+ },
+ "soul:polyhedron": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:09.782Z"
+ },
+ "soul:spirit": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:20.544Z"
+ },
+ "soul:torus": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:59:25.290Z"
+ },
+ "soul:flame": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:31.674Z"
+ },
+ "soul:petalfall": {
+  "verdict": "remove",
+  "at": "2026-10-08T15:59:43.170Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/2019.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:59:50.976Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/abyssal-dive.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T15:59:57.307Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/afterglow.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:03.571Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/all-together.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:10.563Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/amboise.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:20.119Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/bath.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:25.508Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/bells.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:34.175Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/cabin-soul.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:39.099Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/calling.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:45.750Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/chemiluminescence.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:51.341Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/chenin.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:00:57.366Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/complete.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:03.299Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/cosmic-drift.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:07.481Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/cosmic-homecoming.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:11.778Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/dad-s-song-ii.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:18.227Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/drift.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:23.744Z"
+ },
+ "emblem:/tramokyo-pack/motif-forms/dawn-1.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:29.255Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/first-light.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:34.844Z"
+ },
+ "emblem:@angel": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:40.927Z"
+ },
+ "emblem:@angel-outline": {
+  "verdict": "remove",
+  "at": "2026-10-08T16:01:48.517Z"
+ },
+ "emblem:/tramokyo-pack/emblems/ghost-wings-1.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:01:54.756Z"
+ },
+ "emblem:/tramokyo-pack/emblems/ghost-wings-2.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:00.025Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/grace.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:05.725Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/grasshopper.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:11.209Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/held.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:16.585Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/horses.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:22.201Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/interplay.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:26.801Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/isolation.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:31.952Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/lantern.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:39.036Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/loire.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:43.026Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/love-again.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:48.935Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/message.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:53.538Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/mexican-boy.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:02:58.484Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/mycelium-dream.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:03.969Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/mystic.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:10.434Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/neural-link.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:15.075Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/never-forget.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:20.382Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/night-wind.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:26.035Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/no-question.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:32.834Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/northern-plane.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:39.108Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/nothing.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:44.841Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/open-jam.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:50.116Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/openings.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:03:56.762Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/playa.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:05.447Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/quarantine.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:11.355Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/rattler.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:16.790Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/realized.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:22.679Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/rebound.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:27.347Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/redwoods-sway.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:33.837Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/rise.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:40.056Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/roll-away.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:47.081Z"
+ },
+ "emblem:/tramokyo-pack/emblems/feathery/rolling.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T16:04:55.005Z"
+ },
+ "motif:/tramokyo-pack/motif-forms/light-5.jpg": {
+  "verdict": "remove",
+  "at": "2026-10-08T17:21:58.757Z"
+ },
+ "moment:/tramokyo-pack/emblems/ghost-blossoms-1.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T17:22:35.296Z"
+ },
+ "moment:/tramokyo-pack/emblems/ghost-blossoms-2.jpg": {
+  "verdict": "keep",
+  "at": "2026-10-08T17:22:42.810Z"
+ }
+}

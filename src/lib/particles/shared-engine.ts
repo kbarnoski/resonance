@@ -29,6 +29,10 @@ const listeners = new Set<() => void>();
 /** test hook: how many engines (= WebGL contexts) this module ever created */
 export let sharedEnginesCreated = 0;
 
+function measuring(): boolean {
+  try { return window.localStorage.getItem("resonance-particle-tripwire") === "1"; } catch { return false; }
+}
+
 export function disableParticlesForSession(why: string): void {
   if (disabledWhy) return;
   disabledWhy = why;
@@ -110,7 +114,11 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
       probe, // read-back only for verification runs (?particleprobe=1)
       audio: (dt) => hooks.audio?.(dt) ?? null,
       onContextLost: () => disableParticlesForSession("webgl context lost"),
-      watchdog: { cpuMs: 50, gapMs: 1000, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
+      // measurement runs (velocity tripwire on — review browsers only, never the
+      // kiosk) pay a GPU read-back inside the frame: the watchdog must not count
+      // it, or it switches the field off and the run measures nothing
+      // (2026-10-08 A/B: Snowflake tripped at 2.8 s with the read-back, never without)
+      watchdog: { cpuMs: measuring() ? 1000 : 50, gapMs: 1000, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
     });
     sharedEnginesCreated++;
     shared = { canvas, engine, hooks };

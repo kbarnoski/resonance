@@ -45,7 +45,7 @@ import { keyedFlashAngel } from "./flash-angel";
 import { FIELD_FORMS, SPECTRUM_FORMS, isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
 import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason, releaseSharedParticleEngineWithFade } from "@/lib/particles/shared-engine";
-import { SpectrumProcessor } from "@/lib/particles/spectrum";
+import { SpectrumProcessor, type SpectrumFrame } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
 /** Ghost's imagery is dim (stone, water, shadow): its colours voiced VIVID —
@@ -63,7 +63,7 @@ function vivid(p: ParticlePalette | null): ParticlePalette | null {
   return { ...p, low: v(p.low as [number, number, number], 0.45), mid: v(p.mid as [number, number, number], 0.8), high: v(p.high as [number, number, number], 0.95) };
 }
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
-import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES } from "@/lib/journeys/particle-lead";
+import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES, fireColours } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -131,9 +131,20 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
   const d = ctx.getImageData(0, 0, W, H).data;
   const cdf = new Float64Array(W * H);
   let acc = 0;
+  // NO HARD EDGES (Karel 2026-10-08: "when the particle has hard edges like
+  // this it loses its organic integration"): density used to switch on at a
+  // 6 % luminance step and run flat to the image's border — a still that is
+  // bright at its frame edge formed a straight-sided slab. Now the luminance
+  // gate ramps (3 → 12 %) and density feathers to zero over the outer ~10 %
+  // of the frame, so every image form ends in a soft, organic falloff.
+  const ss = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
+  const edgeX = new Float32Array(W), edgeY = new Float32Array(H);
+  for (let x = 0; x < W; x++) { const u = (x + 0.5) / W; edgeX[x] = ss(0, 0.1, u) * ss(0, 0.1, 1 - u); }
+  for (let y = 0; y < H; y++) { const v = (y + 0.5) / H; edgeY[y] = ss(0, 0.1, v) * ss(0, 0.1, 1 - v); }
   for (let i = 0; i < W * H; i++) {
     const L = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
-    acc += L < 0.06 ? 0 : Math.pow(L, 1.4) * (d[i * 4 + 3] / 255);
+    const x = i % W;
+    acc += ss(0.03, 0.12, L) * Math.pow(L, 1.4) * (d[i * 4 + 3] / 255) * edgeX[x] * edgeY[(i - x) / W];
     cdf[i] = acc;
   }
   if (acc <= 0) return undefined;
@@ -210,6 +221,11 @@ function resolveEmblem(src: EmblemSource | null): HTMLCanvasElement | null {
 
 let motifMap: Promise<Record<string, string[]>> | null = null;
 const motifCanvas = new Map<string, HTMLCanvasElement>();
+const MOTIF_CAP = 48;
+/** CALM TEMPO (2026-10-08 motion study): with the music no longer slowing the
+ *  field in quiet passages, rest tempo measured +23 % mean / +51 % p95 speed
+ *  over the old build — calm, never dizzy (Karel) — so the field runs at 80 %. */
+const CALM_TEMPO = 0.8;
 /** Imagery-family motif designs (pack: motif-forms.json), decoded + shrunk once. */
 function loadMotifLibrary(): Promise<Record<string, string[]>> {
   motifMap ??= fetch("/tramokyo-pack/motif-forms.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
@@ -232,6 +248,10 @@ function motifImage(src: string): HTMLCanvasElement | null {
     c.getContext("2d", { willReadFrequently: true })?.drawImage(img, 0, 0, c.width, c.height);
     motifCanvas.set(src, c);
     warmUv(c);
+    // LRU cap: at most MOTIF_CAP decoded designs live (their sample tables are
+    // WeakMap-keyed by canvas, so they go with them)
+    const live = [...motifCanvas.keys()].filter((k) => !k.endsWith("#loading"));
+    for (const k of live.slice(0, Math.max(0, live.length - MOTIF_CAP))) { motifCanvas.delete(k); motifCanvas.delete(k + "#loading"); }
   });
   return null;
 }
@@ -412,6 +432,25 @@ export function ParticleLeadLayer({
     canvasRef.current = sh.canvas;
     engine.resize();
     const proc = new SpectrumProcessor({ bins: 96, source: "kinetic" });
+    // CALM FRAME (Karel 2026-10-08 stutter: "moves slower a bit than catches
+    // up faster"): the music used to drive particle MOTION three ways — per-band
+    // time-dilated clocks (rates sped up / slowed down with every swell), per-
+    // mote drive, bass/mid/treble pushes and an onset swell. Now motion runs at
+    // rest tempo (rates 1, no drive, no band push, no swell); the music keeps
+    // only a slow tide in the levels (each bin smoothed over ~6 s), so phrases
+    // can brighten the field without any beat-level jolt.
+    let calmLevels: Float32Array | null = null;
+    let calmDrive: Float32Array | null = null;
+    const calmBandLv = { bass: 0, mid: 0, treble: 0 };
+    const calmFrame = (f: SpectrumFrame, dt: number): SpectrumFrame => {
+      if (!calmLevels || calmLevels.length !== f.levels.length) { calmLevels = Float32Array.from(f.levels); calmDrive = new Float32Array(f.levels.length); }
+      const k = 1 - Math.exp(-Math.min(dt, 0.1) / 6);
+      for (let i = 0; i < calmLevels.length; i++) calmLevels[i] += (f.levels[i] - calmLevels[i]) * k;
+      calmBandLv.bass += (f.bandLevels.bass - calmBandLv.bass) * k;
+      calmBandLv.mid += (f.bandLevels.mid - calmBandLv.mid) * k;
+      calmBandLv.treble += (f.bandLevels.treble - calmBandLv.treble) * k;
+      return { ...f, levels: calmLevels, drive: calmDrive!, bands: { bass: 0, mid: 0, treble: 0 }, bandLevels: { ...calmBandLv }, swell: 0, rates: { bass: 1, mid: 1, treble: 1 } };
+    };
     let bytes = new Uint8Array(128);
     sh.hooks.audio = (dt) => {
       const a = analyserRef.current;
@@ -426,7 +465,7 @@ export function ParticleLeadLayer({
         }
       }
       proc.step(dt);
-      return proc.frame();
+      return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
     engine.setImageForm(0, 0);
@@ -437,7 +476,7 @@ export function ParticleLeadLayer({
     // integrate, not dominate (Karel 2026-10-07): a touch less energy
     engine.setGain((cast.gain ?? 1) * 1.45);
     engineRef.current = engine;
-    engine.setMotion(cast.motion);
+    engine.setMotion(cast.motion * CALM_TEMPO);
     engine.setForm(cast.form);
     engine.setHueSpread(cast.hueSpread);
     // RULE (Karel v3): particles gather just after the intro, and OVERLAP
@@ -479,7 +518,13 @@ export function ParticleLeadLayer({
       // drawn at once at the first journey's mount = ~430 ms of long frames
       // under the opening title). One design per idle slot, after the opening
       // emblem has formed; motifs are first needed after a full form hold.
-      const queue = Object.keys(m).flatMap((f) => (m[f] ?? []).filter(Boolean));
+      // ONLY THIS JOURNEY'S FAMILIES, ~8 designs each (2026-10-08: the library
+      // grew to ~300 designs — loading all = ~380 MB of canvases + sample
+      // tables in a kiosk that runs for days). Each journey takes its own
+      // deterministic subset, so the show as a whole wears the whole library.
+      const fams = [...new Set([...(cast.phaseChars ?? []).map((c) => c.family), "geo"])];
+      const hashJ = (u: string) => { let h = 2166136261; const k = `${journeyId}:${u}`; for (let i = 0; i < k.length; i++) { h ^= k.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+      const queue = fams.flatMap((f) => (m[f] ?? []).filter(Boolean).sort((a, b) => hashJ(a) - hashJ(b)).slice(0, 8));
       const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
       const next = () => {
         if (disposed || !queue.length) return;
@@ -526,9 +571,6 @@ export function ParticleLeadLayer({
 
     let running = false;
     let absentSince = performance.now();
-    let lastOnsets = 0;
-    const onsetTimes: number[] = [];
-    let lastScatter = -1e9;
 
     let wasVisible = false;
     let warmTick = 0;
@@ -593,7 +635,9 @@ export function ParticleLeadLayer({
       // … then LONGER everywhere (same day: "you still change the particles form
       // a bit too much overall so you create a shape and i go to look and you
       // change again"): 16-20 s, calm 17-21 s
-      formDur = calm ? 17_000 + 4_000 * rand01(3) : 16_000 + 4_000 * rand01(3);
+      // … and the middle (Karel 2026-10-08, Snowflake: "this form sits too long so
+      // we need to ensure we dont do this in journeys"): 12-15 s, calm 13-16 s
+      formDur = calm ? 13_000 + 3_000 * rand01(3) : 12_000 + 3_000 * rand01(3);
       // placement (Karel 2026-10-06: "in general centered, but needs
       // variety especially in ghost"): centred about half the time, else a
       // gentle shift to a side; Ghost mostly sits beside the imagery
@@ -650,7 +694,11 @@ export function ParticleLeadLayer({
       // …and "just a bit more of this coloring in all" (Image #2: a multi-hue bloom):
       // spectrum forms ~1 in 2, any other form ~1 in 5
       const rainbow = !ghostJ && rand01(71 + appearN) < (snowJ ? 0.6 : SPECTRUM_FORMS.has(soul) ? 0.5 : 0.2);
-      engine.setHueSpread(ghostJ ? Math.min(0.5, Math.max(0.3, cast.hueSpread)) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.8 : cast.hueSpread);
+      // a rainbow is a FULL spectrum; anything else stays inside the imaging's
+      // own hues (Karel 2026-10-08, a girih graded pink → orange → gold: "this is
+      // that orange and pink palette you over use") — the old 0.8 rad partial
+      // sweep rotated a warm base through a sunset band
+      engine.setHueSpread(ghostJ ? Math.min(0.5, Math.max(0.3, cast.hueSpread)) : rainbow ? 2.6 : SPECTRUM_FORMS.has(soul) ? 0.3 : cast.hueSpread);
       spectrumNow = rainbow;
       recent.unshift(soul);
       if (recent.length > 4) recent.length = 4;
@@ -1043,7 +1091,7 @@ export function ParticleLeadLayer({
           engine.setOffset(offX * 0.3, 0.38 - 0.55 * prog);
         }
         // the imagery's movement sets the pace (flicker livelier, drift calmer)
-        engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1));
+        engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)
@@ -1155,7 +1203,7 @@ export function ParticleLeadLayer({
         // Ghost (Karel 2026-10-07: "why are they always white? pink perfect for flowers
         // but should … echo the imaging and vibe and be diverse"): its phase imagery,
         // voiced vivid; the white/pink ghost palette only where flowers are seen
-        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost && (floral || !ipPhase) ? particlePaletteGhost(floral, v) : ghost ? vivid(particlePaletteFromImage(ipPhase, v)) ?? particlePaletteGhost(floral, v) : fire ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost && (floral || !ipPhase) ? particlePaletteGhost(floral, v) : ghost ? vivid(particlePaletteFromImage(ipPhase, v)) ?? particlePaletteGhost(floral, v) : fireColours(fire, ipPhase) ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }
@@ -1165,30 +1213,16 @@ export function ParticleLeadLayer({
       if (target) engine.setPalette(target);
 
       // playfulness: scatter on runs of fast notes, bounce on a steady pulse,
-      // a few motes follow the melody — serene pieces stay calm
-      if (running && pr.presence > 0.3 && cast.playfulness >= 0.45) {
-        if (st.onsets > lastOnsets) {
-          for (let i = lastOnsets; i < st.onsets; i++) onsetTimes.push(now);
-          if (cast.rhythmic) { engine.impulse("bounce", 0.18 + 0.2 * cast.playfulness); counters.current.bounces++; }
-        }
-        while (onsetTimes.length && now - onsetTimes[0] > 2000) onsetTimes.shift();
-        if (onsetTimes.length >= 3 && now - lastScatter > 10_000) {
-          engine.impulse("scatter", 0.35 + 0.45 * cast.playfulness);
-          lastScatter = now;
-          counters.current.scatters++;
-        }
-        const mid = proc.levels.slice(32, 96);
-        let wsum = 0, csum = 0;
-        for (let i = 0; i < mid.length; i++) { wsum += mid[i]; csum += mid[i] * i; }
-        const pitch = wsum > 1e-3 ? csum / wsum / mid.length : 0.5;
-        engine.setMelody([Math.sin(now / 2900) * 1.6, -1.2 + 2.4 * pitch, Math.cos(now / 3700) * 0.8], 0.5 * cast.playfulness * Math.min(1, wsum / 12));
-      } else engine.setMelody(null);
-      lastOnsets = st.onsets;
+      // MOTION NO LONGER FOLLOWS THE MUSIC (Karel 2026-10-08: "maybe the
+      // particles studdering is caused by responding to music? … we have shaders
+      // doing that"): no bounce on onsets, no scatter on runs, no melody stream
+      // — the shaders carry the beat; the particles move at their own calm pace
+      engine.setMelody(null);
 
       (window as unknown as Record<string, unknown>).__resonanceParticleLead = {
         journeyId,
         name: cast.name,
-        jumpScore: { meanSpeed: +st.motion.meanSpeed.toFixed(3), fastFrac: +st.motion.fastFrac.toFixed(3), glide: +st.motion.glide.toFixed(2), lastEvent: st.motion.lastEvent },
+        jumpScore: { meanSpeed: +st.motion.meanSpeed.toFixed(3), fastFrac: +st.motion.fastFrac.toFixed(3), glide: +st.motion.glide.toFixed(2), lastEvent: st.motion.lastEvent, cap: +st.motion.cap.toFixed(3) },
         t,
         presence: +presence.toFixed(3),
         veil: +veil.toFixed(3),

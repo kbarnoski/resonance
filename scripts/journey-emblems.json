@@ -513,5 +513,17 @@
   "why": "A neuron with reaching dendrites and a glowing nucleus directly embodies \"Neural Link\" and fits the starry, light-ray, firefly-spark imagery.",
   "prompt": "a large glowing glowing nerve cell with long branching dendrites and an axon, asymmetric and organic filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in violet and magenta dendrites with a warm amber nucleus with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
   "file": "/tramokyo-pack/emblems/neural-link.jpg"
+ },
+ "The Knife (Jam)": {
+  "subject": "curved blade spinning in a spiral of trailing sparks",
+  "color": "pale ash-white steel with glowing ember orange-red sparks on near-black",
+  "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the jam is the knife set loose: the same blade, now spinning free in a spiral of sparks.",
+  "file": "/tramokyo-pack/emblems/feathery/the-knife-jam.jpg"
+ },
+ "The First (Expanded)": {
+  "subject": "seed of light splitting open into an unfolding spiral of new light",
+  "color": "molten amber and gold on deep umber",
+  "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the expanded First: the origin moment unfolding outward into a spiral.",
+  "file": "/tramokyo-pack/emblems/feathery/the-first-expanded.jpg"
  }
 }

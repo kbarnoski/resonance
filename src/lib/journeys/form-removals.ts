@@ -97,8 +97,9 @@ export function castSoulsOf(c: SoulCastLike): SoulId[] {
 
 /** The cast with every removed soul replaced. Identity when nothing applies. */
 export function applySoulRemovals<T extends SoulCastLike>(cast: T, removedSouls: readonly string[], seed: string): T {
-  if (!removedSouls.length) return cast;
-  const removed = new Set(removedSouls);
+  // bans are removals too (2026-10-08): the casting can still name a banned
+  // soul on its own (e.g. wisp for a transition) — one filter point for both
+  const removed = new Set<string>([...removedSouls, ...BANNED_SOULS]);
   if (!castSoulsOf(cast).some((s) => removed.has(s))) return cast;
   const souls = {} as Record<string, SoulId>;
   const taken = new Set<SoulId>(Object.values(cast.souls).filter((s) => !removed.has(s)));

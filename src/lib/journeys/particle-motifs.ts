@@ -11,37 +11,42 @@
 // organic majority — flowers as evolving floral patterns, never stems; no
 // cheesy 3-D ellipses, no squares), MOTION and a COLOUR behaviour.
 // ─────────────────────────────────────────────────────────────────────────────
-import type { SoulId } from "@/lib/particles/souls";
+import { IMAGERY_ONLY_SOULS, type SoulId } from "@/lib/particles/souls";
 import { JOURNEY_MOTIFS, type PhaseMotif } from "@/lib/particles/journey-motifs.generated";
 
-/** The organic language — the only forms cast in journeys. */
+/** The forms cast in journeys = exactly what Karel KEPT in the form review
+ *  (2026-10-08, /review/forms — "let me get you the command that shares what i
+ *  liked"; he also removed wisp, caustic and the 3-D / grid geometry). His keep
+ *  list supersedes the older bans below for the souls he kept (ink, nebula,
+ *  harmonics, lissajous, rings, rose, torus). */
 export const ORGANIC_SOULS: readonly SoulId[] = [
-  // v9 balance (Karel 2026-10-06: "youve gone off the deep end with mandalas …
-  // you had nice other forms like a ribbon and other abstract stuff … 3d ish
-  // but organic"): 3-D organic forms LEAD; the intricate 2-D family accents
-  "ribbons", "murmuration", "vortex", "tendrils", "wisp",
-  "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
+  "vortex", "murmuration", "ribbons", "tendrils",
+  "girih", "medallion", "kaleido", "mandala", "blossom",
+  "smoke", "motes", "petals", "embers", "duststorm", "pollen", "fireflies",
+  "ink", "waves", "nebula", "fountain",
+  "harmonics", "lissajous", "rings", "rose", "torus",
 ];
 
-/** Banned in journeys: 3-D ellipses, squares/grids, the tree, the cube, the
- *  small blocky flame, and the unclear blobs. */
+/** Banned in journeys: what Karel removed in the form review, plus the old
+ *  bans he did not bring back. (Kept-in-review souls are never banned.) */
 export const BANNED_SOULS: readonly SoulId[] = [
-  "orbitals", "rings", "arcs", "lissajous", "knot", "harmonics", "polyhedron", "superformula",
-  "torus", "cymatics", "geometry", "branches", "spirit", "threads", "helix",
-  "bloom", "rose", "spirograph", "nebula", "ink", "petalfall",
-  "flame", // Karel 2026-10-06: "stay away from this type of tiny form" (a small blocky flame)
+  "orbitals", "arcs", "knot", "polyhedron", "superformula",
+  "cymatics", "geometry", "branches", "spirit", "threads", "helix",
+  "bloom", "spirograph", "petalfall", "flame", "wisp", "caustic",
 ];
 
 type W = [SoulId, number][];
-const FIRE: W = [["vortex", 2.2], ["ribbons", 1.1], ["wisp", 1.8], ["murmuration", 1.4], ["mandala", 1], ["medallion", 0.8]];
-const LIGHT: W = [["ribbons", 1.1], ["vortex", 1.6], ["murmuration", 1.4], ["medallion", 1], ["girih", 0.8]];
-const FLORAL: W = [["blossom", 3], ["ribbons", 1.0], ["tendrils", 1.4], ["mandala", 0.9]];
-const GREEN: W = [["tendrils", 2.4], ["murmuration", 1.8], ["ribbons", 1.4], ["blossom", 1], ["girih", 0.7]];
-const WATER: W = [["caustic", 2.2], ["ribbons", 1.1], ["tendrils", 1.4], ["vortex", 1.2], ["kaleido", 0.8]];
-const CRYSTAL: W = [["kaleido", 2], ["ribbons", 1.0], ["murmuration", 1.4], ["girih", 1.2], ["medallion", 1]];
-const AIR: W = [["wisp", 2.2], ["ribbons", 1.1], ["murmuration", 1.6], ["vortex", 1.2], ["girih", 0.8]];
-const COSMOS: W = [["vortex", 2.4], ["murmuration", 1.8], ["ribbons", 1.0], ["medallion", 1], ["kaleido", 0.8]];
-const GEO: W = [["girih", 1.8], ["ribbons", 1.0], ["kaleido", 1.4], ["vortex", 1.2], ["medallion", 1]];
+// every family draws on a WIDE set (Karel 2026-10-08: "we really need particle
+// forms within journeys … to expand in options and variety")
+const FIRE: W = [["vortex", 2.0], ["embers", 2.0], ["motes", 1.4], ["ribbons", 1.1], ["smoke", 1.0], ["murmuration", 1.0], ["mandala", 0.9], ["medallion", 0.8], ["torus", 0.6]];
+const LIGHT: W = [["ribbons", 1.1], ["vortex", 1.4], ["motes", 1.2], ["fountain", 1.0], ["harmonics", 1.0], ["murmuration", 1.0], ["medallion", 1], ["girih", 0.8], ["rings", 0.7], ["rose", 0.6]];
+const FLORAL: W = [["blossom", 2.4], ["petals", 2.0], ["rose", 1.6], ["pollen", 1.2], ["ribbons", 1.0], ["tendrils", 1.2], ["mandala", 0.9], ["fireflies", 0.6]];
+const GREEN: W = [["tendrils", 2.2], ["pollen", 1.6], ["fireflies", 1.6], ["murmuration", 1.4], ["ribbons", 1.2], ["petals", 0.9], ["blossom", 0.9], ["girih", 0.7], ["smoke", 0.6]];
+const WATER: W = [["waves", 2.2], ["ink", 1.6], ["fountain", 1.4], ["tendrils", 1.2], ["rings", 1.1], ["ribbons", 1.0], ["vortex", 1.0], ["kaleido", 0.8], ["lissajous", 0.6]];
+const CRYSTAL: W = [["kaleido", 2], ["girih", 1.3], ["medallion", 1.1], ["murmuration", 1.2], ["ribbons", 1.0], ["rose", 0.8], ["harmonics", 0.8], ["fireflies", 0.6], ["rings", 0.6]];
+const AIR: W = [["smoke", 2.2], ["duststorm", 1.6], ["murmuration", 1.6], ["ribbons", 1.2], ["ink", 1.0], ["vortex", 1.0], ["pollen", 0.8], ["girih", 0.6]];
+const COSMOS: W = [["nebula", 2.2], ["vortex", 2.0], ["torus", 1.4], ["murmuration", 1.4], ["rings", 1.2], ["lissajous", 1.0], ["motes", 0.8], ["medallion", 0.8], ["kaleido", 0.7]];
+const GEO: W = [["girih", 1.6], ["kaleido", 1.4], ["harmonics", 1.3], ["lissajous", 1.2], ["rose", 1.1], ["medallion", 1], ["torus", 1.0], ["ribbons", 0.9], ["rings", 0.8]];
 const MOTIF_FORMS: Record<string, W> = {
   fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
   "light-rays": LIGHT, "golden-light": LIGHT, figure: LIGHT,
@@ -54,16 +59,16 @@ const MOTIF_FORMS: Record<string, W> = {
   "city-neon": GEO, "silk-fabric": GEO, geometric: GEO,
 };
 const MOVE_FORMS: Record<string, W> = {
-  rising: [["blossom", 0.5]],
+  rising: [["blossom", 0.5], ["motes", 0.5], ["fountain", 0.4]],
   unfurling: [["blossom", 1]],
-  rippling: [["caustic", 1]],
+  rippling: [["waves", 1], ["rings", 0.6]],
   swirling: [["medallion", 0.6], ["kaleido", 0.5]],
   spiraling: [["medallion", 0.6], ["mandala", 0.5]],
   pulsing: [["mandala", 0.5], ["medallion", 0.5]],
   flowing: [["girih", 0.5]],
   streaming: [["girih", 0.5]],
-  drifting: [["girih", 0.4], ["blossom", 0.3]],
-  flickering: [["kaleido", 0.5]],
+  drifting: [["girih", 0.4], ["blossom", 0.3], ["pollen", 0.4], ["smoke", 0.3]],
+  flickering: [["kaleido", 0.5], ["fireflies", 0.5], ["embers", 0.4]],
 };
 
 function hash01(str: string): number {
@@ -82,11 +87,12 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
     .filter(([id]) => ORGANIC_SOULS.includes(id))
     .map(([id, v]) => [id, v * (0.92 + 0.16 * hash01(`${seed}:${id}`))] as const)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
+    .slice(0, 6)
     .map(([id]) => id)
     // diversity (Karel 2026-10-07: "i just want such diversity in geometry and
     // shape users dont notice repetition"): two more organic forms per phase
-    .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && x !== "caustic" && x !== "blossom").sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 2));
+    // (2026-10-08 expansion: three, from the full kept set)
+    .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && !IMAGERY_ONLY_SOULS.includes(x)).sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 3));
 }
 
 export interface PhaseCharacter {

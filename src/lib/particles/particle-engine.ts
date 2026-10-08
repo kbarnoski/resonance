@@ -92,7 +92,7 @@ export interface ParticleStats {
   /** Jump tripwire (2026-10-07 zero-glitch audit): row-0 motes' mean speed
    *  (world u/s), the share rushing near the speed cap, the retarget glide
    *  (0.25 = just retargeted … 1 = free) and the last retarget event. */
-  motion: { meanSpeed: number; fastFrac: number; glide: number; lastEvent: string; lastEventAgo: number };
+  motion: { meanSpeed: number; fastFrac: number; glide: number; lastEvent: string; lastEventAgo: number; cap: number };
   fps: number;
   /** 5th-percentile fps over the last ~2 s (stutter detector). */
   fpsLow: number;
@@ -499,12 +499,23 @@ export function createParticleEngine(
   // Every retarget now restarts this envelope: the cap drops to 25 % and opens
   // over 3 s, so motes always GLIDE onto the new form.
   let glideT = 99;
-  let glideHeld = 0;
   let flashPace = false;
-  const GLIDE_SEC = 5;
+  const GLIDE_SEC = 4;
+  // EVERY GLIDE HAS A GENTLE START AND LANDING (Karel 2026-10-08: "studder
+  // stepping"): an exponential follow starts at full speed the instant its
+  // target moves — each form/shape/placement re-aim began with a jolt. These
+  // follow on a critically damped spring (ω = 2/τ, settles like the old τ).
+  const sv = new Float64Array(24);
+  function sp(i: number, x: number, target: number, tau: number, dt: number): number {
+    const w = 2 / tau, h = Math.min(dt, 0.05);
+    sv[i] += (w * w * (target - x) - 2 * w * sv[i]) * h;
+    return x + sv[i] * h;
+  }
+  let capNow = 0; // the speed cap this frame (diag)
+  let pullT = 99; // seconds since a new figure (shape step)
   let lastEvent = "";
   let lastEventAt = -99;
-  const retarget = (ev: string) => { glideT = 0; glideHeld = 0; lastEvent = ev; lastEventAt = timeNow(); };
+  const retarget = (ev: string) => { glideT = 0; lastEvent = ev; lastEventAt = timeNow(); };
   // discrete shape seeds (floor(uShape.* × N) in the souls) — any change that
   // crosses a step is a NEW figure, not a drift
   const crossesStep = (a: readonly number[], b: readonly number[]) => {
@@ -681,7 +692,7 @@ export function createParticleEngine(
   let imgSampled = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
-  let imgFormExt = 0;
+  let imgFormExt = 0, imgFormVel = 0, imgShowVel = 0;
   let imgShowExt = 0;
   let imgFormTgt = 0;
   let imgShowTgt = 0;
@@ -818,7 +829,7 @@ export function createParticleEngine(
     const densityCap = lerpS((x) => x.maxDensity);
 
     // world density glides (~2.5 s) — motes appear/vanish one by one
-    density += (densityTarget - density) * (1 - Math.exp(-dt / 2.5));
+    density = sp(17, density, densityTarget, 2.5, dt);
     // hue / saturation / rainbow spread ride the same gentle spring as the palette
     {
       const h = Math.min(dt, 0.05), w = PAL_OMEGA;
@@ -826,9 +837,9 @@ export function createParticleEngine(
       satVel += (w * w * (satTarget - sat) - 2 * w * satVel) * h; sat += satVel * h;
       spreadVel += (w * w * (hueSpreadTarget - hueSpread) - 2 * w * spreadVel) * h; hueSpread += spreadVel * h;
     }
-    for (let i = 0; i < 4; i++) form[i] += (formTarget[i] - form[i]) * (1 - Math.exp(-dt / 4));
-    for (let i = 0; i < 4; i++) shape[i] += (shapeTarget[i] - shape[i]) * (1 - Math.exp(-dt / 2.5));
-    motion += (motionTarget - motion) * (1 - Math.exp(-dt / 2));
+    for (let i = 0; i < 4; i++) form[i] = sp(i, form[i], formTarget[i], 4, dt);
+    for (let i = 0; i < 4; i++) shape[i] = sp(4 + i, shape[i], shapeTarget[i], 2.5, dt);
+    motion = sp(8, motion, motionTarget, 2, dt);
     // impulses: scatter rises ~0.3 s then the target decays (~1.8 s); bounce rings ~0.35 s
     scatterEnv += (scatterTarget - scatterEnv) * (1 - Math.exp(-dt / 0.3));
     scatterTarget *= Math.exp(-dt / 1.8);
@@ -839,15 +850,20 @@ export function createParticleEngine(
     entryT += dt;
     const entryK = Math.min(1, entryT / 5);
     // a form change GLIDES: the cap starts low and opens with the blend
-    // the glide only OPENS once the field has arrived: while the sampled motes
-    // are still travelling (> 0.5 u/s) the cap holds where it is
-    // (at most 6 s — a naturally fast soul must never stay throttled)
-    if (jumpRead && glideT < GLIDE_SEC && jumpSpeed > 0.5 && glideHeld < 6) glideHeld += dt;
-    else glideT += dt;
+    // (the tripwire readback is MEASUREMENT ONLY — it used to also hold the
+    // glide while motes travelled, so switching it on changed what it measured;
+    // in production the tripwire is off and that hold never ran)
+    glideT += dt;
+    // a re-aim still eases the cap, but gently (floor 55 %, smoothstep over
+    // 4 s): the old 22 % floor opening quadratically over 5 s WAS the visible
+    // crawl-then-surge; transitions are now smooth at their source
     const gr = Math.min(1, glideT / GLIDE_SEC);
-    const retargetK = 0.22 + 0.78 * gr * gr;
+    // (v3: transitions are acceleration-limited — uAccCap — so the cap barely
+    // needs to bind: floor 80 %)
+    const retargetK = 0.8 + 0.2 * gr * gr * (3 - 2 * gr);
     const glideK = Math.min(soulB !== soulA ? 0.3 + 0.7 * e : 1, retargetK);
     const maxSpeedNow = (0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK)) * glideK;
+    capNow = maxSpeedNow;
     const disperseNow = disperseNext;
     disperseNext = false;
     layerGain += (layerGainTarget - layerGain) * (1 - Math.exp(-dt / 1.5));
@@ -868,23 +884,33 @@ export function createParticleEngine(
     // glide low while the image form is still moving (harness 2026-10-07: an
     // image release sent the mean mote speed 0.05 → 3.2 u/s, i.e. the cap).
     // The flash alone keeps its pace (it meets the flash image on the beat).
-    if (!flashPace && Math.abs(imgFormTgt - imgFormExt) > 0.03) { if (glideT > 0.4) glideHeld = 0; glideT = Math.min(glideT, 0.4); }
+    // NO CONTINUOUS BRAKE (Karel 2026-10-08 stutter: "moves slower a bit than
+    // catches up faster"): this used to pin the speed cap at ~25 % for as long
+    // as the image form was still moving — i.e. through every emblem / echo /
+    // motif ramp — then release it, so the field crawled and then surged. The
+    // jump it guarded against (an image engage/release sending motes to the cap)
+    // is now prevented at the SOURCE: the image pull itself rises and falls on a
+    // critically damped spring (gentle start and landing, ~2 s), so the force
+    // never steps. The flash keeps its fast pace (it meets the flash image).
     if (imgFormTgt < 0.01 && imgFormExt < 0.02) flashPace = false;
-    imgFormExt += (imgFormTgt - imgFormExt) * (1 - Math.exp(-dt / 0.35));
-    imgShowExt += (imgShowTgt - imgShowExt) * (1 - Math.exp(-dt / 0.6));
+    {
+      const h = Math.min(dt, 0.05);
+      const wF = flashPace ? 6 : 2.2, wS = flashPace ? 4 : 1.8;
+      imgFormVel += (wF * wF * (imgFormTgt - imgFormExt) - 2 * wF * imgFormVel) * h; imgFormExt += imgFormVel * h; if (imgFormExt < 0 || imgFormExt > 1) { imgFormExt = Math.max(0, Math.min(1, imgFormExt)); imgFormVel = 0; }
+      imgShowVel += (wS * wS * (imgShowTgt - imgShowExt) - 2 * wS * imgShowVel) * h; imgShowExt += imgShowVel * h; if (imgShowExt < 0 || imgShowExt > 1) { imgShowExt = Math.max(0, Math.min(1, imgShowExt)); imgShowVel = 0; }
+    }
     if (dissolveT === null && (imgFormExt > 0.001 || imgShowExt > 0.001)) {
       env = { worldFade: 1 - 0.85 * imgShowExt, imgShow: imgShowExt, imgForm: imgFormExt, colorMix: 1 };
     }
-    camScale += (camScaleTarget - camScale) * (1 - Math.exp(-dt / 5));
+    camScale = sp(9, camScale, camScaleTarget, 5, dt);
     {
-      const k4 = 1 - Math.exp(-dt / 4);
-      offX += (offTX - offX) * k4; offY += (offTY - offY) * k4;
-      imgScaleS += (imgScaleT - imgScaleS) * (1 - Math.exp(-dt / 1.5));
-      sizeScaleS += (sizeScaleT - sizeScaleS) * k4;
+      offX = sp(10, offX, offTX, 4, dt); offY = sp(11, offY, offTY, 4, dt);
+      imgScaleS = sp(12, imgScaleS, imgScaleT, 1.5, dt);
+      sizeScaleS = sp(13, sizeScaleS, sizeScaleT, 4, dt);
       // NEVER INSTANT (2026-10-07 transition audit): the image mirror and the
       // blossom unfold glide — a flipped mirror sent every mote across the form
-      imgMirror += (imgMirrorT - imgMirror) * (1 - Math.exp(-dt / 0.9));
-      unfoldS += ((unfoldOn && soulB.id === "blossom" ? 1 : 0) - unfoldS) * (1 - Math.exp(-dt / 2));
+      imgMirror = sp(14, imgMirror, imgMirrorT, 0.9, dt);
+      unfoldS = sp(15, unfoldS, unfoldOn && soulB.id === "blossom" ? 1 : 0, 2, dt);
       reactS += (reactT - reactS) * (1 - Math.exp(-dt / 1.2));
     }
 
@@ -943,6 +969,14 @@ export function createParticleEngine(
     if (sim.u.uShape) g.uniform4f(sim.u.uShape, shape[0], shape[1], shape[2], shape[3]);
     if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
     g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
+    pullT += dt;
+    if (sim.u.uPull) { const pk = Math.min(1, pullT / 3); g.uniform1f(sim.u.uPull, 0.3 + 0.7 * pk * pk * (3 - 2 * pk)); }
+    if (sim.u.uAccCap) {
+      // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
+      // opening smoothly to unlimited over 5 s (steady forms keep full forces)
+      const ts = Math.min(pullT, glideT), ak = Math.min(1, ts / 5);
+      g.uniform1f(sim.u.uAccCap, ak >= 1 ? 1e6 : 1.0 / Math.max(0.02, 1 - ak * ak * (3 - 2 * ak)));
+    }
     g.uniform1f(sim.u.uDisperse, disperseNow ? 1 : 0);
     g.uniform1f(sim.u.uScatter, scatterEnv);
     g.uniform1f(sim.u.uBounce, bounceEnv * bounceSign);
@@ -965,7 +999,7 @@ export function createParticleEngine(
     g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
     {
       // image plane: scale, mirror, a gentle tilt (rotation within the plane)
-      imgTiltS += (imgTiltT - imgTiltS) * (1 - Math.exp(-dt / 2));
+      imgTiltS = sp(16, imgTiltS, imgTiltT, 2, dt);
       const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
       const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * imgMirror);
       const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
@@ -1428,11 +1462,13 @@ export function createParticleEngine(
       const discrete = crossesStep(shape, nt);
       shapeTarget = nt;
       if (snap || discrete) {
-        for (let i = 0; i < 4; i++) shape[i] = shapeTarget[i];
-        if (discrete) retarget("shape");
+        for (let i = 0; i < 4; i++) { shape[i] = shapeTarget[i]; sv[4 + i] = 0; }
+        // a new figure: the PULL eases in (uPull) — no speed-cap glide, which
+        // pinned the field and then dragged it faster as it opened
+        if (discrete) { pullT = 0; lastEvent = "shape"; lastEventAt = timeNow(); }
       }
     },
-    setMotion(k) { motionTarget = Math.max(0.5, Math.min(1.6, k)); },
+    setMotion(k) { motionTarget = Math.max(0.4, Math.min(1.6, k)); },
     impulse(kind, strength = 1) {
       const k = Math.max(0, Math.min(1, strength));
       if (kind === "scatter") scatterTarget = Math.max(scatterTarget, k);
@@ -1454,7 +1490,7 @@ export function createParticleEngine(
       return {
         fps: Math.round(fpsEma * 10) / 10,
         fpsLow: Math.round((1 / p95) * 10) / 10,
-        motion: { meanSpeed: jumpSpeed, fastFrac: jumpFast, glide: 0.22 + 0.78 * Math.min(1, glideT / GLIDE_SEC) ** 2, lastEvent, lastEventAgo: time - lastEventAt },
+        motion: { meanSpeed: jumpSpeed, fastFrac: jumpFast, glide: (() => { const g2 = Math.min(1, glideT / GLIDE_SEC); return 0.8 + 0.2 * g2 * g2 * (3 - 2 * g2); })(), lastEvent, lastEventAgo: time - lastEventAt, cap: capNow },
         frameMs: Math.round((1000 / fpsEma) * 100) / 100,
         count,
         texSide: side,

@@ -70,3 +70,24 @@ probe `scripts/journey-review/probe-cycle.mjs` reproduced it 4/4; with the
 logo-resolve canvas hidden it dropped to 1/4 at 67 ms. Cause = the
 ParticleResolve canvas starting up (GPU-side, not JS). Removing title particles
 (note 3) removes most of it; the fix was paused to fold into that change.
+
+## Status (updated through the day)
+- DONE b15fd5ac: titles without particles (3); colour from imaging, no warm
+  default (4: 46 → 3 journeys >15 pts warmer than their imaging); every colour
+  change glides on a ~5 s spring (5).
+- DONE d1d4e0b4: form review station /review/forms (1); Snowflake gen-130 →
+  "vision a" (Karel's pick), depth map regenerated.
+- IN TEST (stutter, 2): cause found — (a) the engine pinned the speed cap at
+  ~25 % for the whole time an image form was moving, then released it
+  (crawl → surge); (b) per-band clocks sped up / slowed down with the music;
+  (c) beat bounces / scatters / melody stream; (d) every exponential follow
+  started at full speed. Fix: calm frame (rest tempo, slow 6 s tide only), no
+  impulses, image pull on a critically damped spring, no continuous brake,
+  gentle retarget glide (55 % floor), springs on every form/shape/placement
+  follow. Measured before/after with record.mjs --motion + motion-report.mjs.
+- IN TEST: hard edges (6) — image-form sampler feathers the frame border and
+  the luminance gate; rainbow sweep (7) — non-rainbow forms keep to the
+  imaging's hues (0.3 rad, was 0.8); holds (8) 12–15 s (calm 13–16).
+- Measurement gotcha: 4 parallel review browsers + the kiosk tripped the
+  particle watchdog in the TEST browsers (particles off → frozen diag); motion
+  runs use --parallel 2 and the report rejects disabled runs.

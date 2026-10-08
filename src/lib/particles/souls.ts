@@ -254,11 +254,20 @@ export const SOULS: readonly SoulPreset[] = [
  * ink, nebula, motes, waves, murmuration, tendrils) remain in the lab only.
  */
 export const SHAPE_SOULS: readonly SoulId[] = [
-  // v9 balance (Karel 2026-10-06): 3-D organic forms lead, intricate 2-D accents.
-  // Mirrors ORGANIC_SOULS (particle-motifs.ts).
-  "ribbons", "murmuration", "vortex", "tendrils", "wisp",
-  "girih", "medallion", "mandala", "kaleido", "blossom", "caustic",
+  // = what Karel KEPT in the form review (2026-10-08). Mirrors ORGANIC_SOULS
+  // (particle-motifs.ts).
+  "vortex", "murmuration", "ribbons", "tendrils",
+  "girih", "medallion", "kaleido", "mandala", "blossom",
+  "smoke", "motes", "petals", "embers", "duststorm", "pollen", "fireflies",
+  "ink", "waves", "nebula", "fountain",
+  "harmonics", "lissajous", "rings", "rose", "torus",
 ];
+
+/** Forms that belong to a kind of IMAGERY (fire sparks, lantern embers,
+ *  petals, blossoms): cast only where the phase's imagery calls for them
+ *  (particle-motifs families), never as generic fill — embers drifting over
+ *  Snowflake's ice would not echo the imaging (Karel's design principle). */
+export const IMAGERY_ONLY_SOULS: readonly SoulId[] = ["embers", "motes", "petals", "blossom"];
 
 export function soulById(id: SoulId): SoulPreset {
   const s = SOULS.find((x) => x.id === id);

@@ -20,6 +20,7 @@ import { castSet, type ParticleCast } from "./particle-casting";
 import { phaseCharacters, type PhaseCharacter } from "./particle-motifs";
 import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
+import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
 import { applySoulRemovals, momentsWithout, FORM_REMOVALS, type FormRemovals } from "./form-removals";
 
 export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
@@ -131,11 +132,25 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // particles shouldnt be flowers until you see flowers in ghost. the
     // particles need to echo the imaging"): other phases take their own
     // vision-tagged organic forms (never mandalas)
-    const notGhostly = new Set<SoulId>(["mandala", "medallion", "girih", "kaleido", "blossom", "petalfall"]);
+    // (2026-10-08: the newly kept geometric line forms are not ghostly either;
+    // petals are flowers — only where flowers are seen)
+    const notGhostly = new Set<SoulId>(["mandala", "medallion", "girih", "kaleido", "blossom", "petalfall", "petals", "rose", "harmonics", "lissajous", "rings", "torus"]);
     if (sig) chars = chars.map((c) => {
       const own = c.forms.filter((f) => !notGhostly.has(f));
-      return { ...c, forms: c.floral ? ["blossom", "wisp"] : own.length ? own : ["wisp", "caustic", "ribbons"], family: "ghost" };
+      return { ...c, forms: c.floral ? ["blossom", "petals"] : own.length ? own : ["smoke", "ink", "ribbons"], family: "ghost" };
     });
+    // fire FORMS only where the imagery really burns — same rule as fire colours
+    // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
+    // over ice and night water)
+    {
+      const ipj = JOURNEY_IMAGE_PALETTES[id];
+      chars = chars.map((c, i) => {
+        const ph = ipj ? (ipj.phases[i] ?? ipj) : null;
+        if (!c.fire || fireColours(true, ph)) return c;
+        const forms = c.forms.filter((f) => f !== "embers");
+        return { ...c, forms: forms.length ? forms : c.forms };
+      });
+    }
     const theme = JOURNEY_THEMES[id];
     if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
     if (chars.some((c) => c.forms.length)) {
@@ -287,19 +302,49 @@ export function particlePaletteFromImage(ip: { key: string; colors: string[] } |
   const hueDist = (a: number, b: number) => Math.min(Math.abs(a - b), 1 - Math.abs(a - b));
   const picked: typeof pool = [];
   // a distinct hue earns a voice only if the image really shows it (≥ 20 % of the lead colour's area)
-  for (const x of pool) if (picked.length < 3 && x.area >= 0.2 * pool[0].area && picked.every((p) => hueDist(p.h, x.h) >= 0.08)) picked.push(x);
+  // (Night Wind 9: navy imagery with an 8 % peach-skin highlight came out
+  // 40 % peach-pink — a small highlight must stay an accent, not a voice)
+  for (const x of pool) if (picked.length < 3 && x.area >= 0.35 * pool[0].area && picked.every((p) => hueDist(p.h, x.h) >= 0.08)) picked.push(x);
   for (const x of pool) if (picked.length < 3 && !picked.includes(x)) picked.push(x);
   while (picked.length < 3) picked.push(picked[picked.length - 1] ?? pool[0]);
   const dominant = real.length ? real.reduce((a, b) => (b.area > a.area ? b : a)) : null;
   const tintHue = dominant ? dominant.h : picked[0].h;
   const [K, c1, c2] = picked.map((x) => x.c);
-  const bright = [...picked].sort((a, b) => b.v - a.v)[0].c;
+  // the bright voice = the brightest colour the image shows IN QUANTITY
+  const big = picked.filter((x) => x.area >= 0.35 * picked[0].area);
+  const bright = [...(big.length ? big : picked)].sort((a, b) => b.v - a.v)[0].c;
   const v = [[K, c1, c2], [c1, K, bright], [K, c2, bright], [c2, c1, K]][Math.max(0, Math.min(3, Math.round(voice)))];
   return {
     low: lift(chroma(hexToLinear(v[0]), tintHue, 0.5)),
     mid: lift(chroma(hexToLinear(v[1]), tintHue, 0.42)),
     high: lift(chroma(hexToLinear(v[2]), tintHue, 0.3), 0.7),
   };
+}
+
+/** Share (0..1) of a phase's real colour (by area) that is warm — red,
+ *  orange, pink (hue < 0.12 or > 0.88, saturated, not black). */
+export function imageWarmShare(ip: { colors: string[]; weights?: number[] } | null | undefined): number {
+  if (!ip || !ip.colors.length) return 0;
+  let tot = 0, warm = 0;
+  ip.colors.forEach((c, i) => {
+    const n = parseInt(c.replace("#", ""), 16);
+    const [h, sat, v] = toHsv([((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]);
+    if (sat <= 0.15 || v <= 0.15) return;
+    const w = ip.weights?.[i] ?? 1;
+    tot += w;
+    if (h < 0.12 || h > 0.88) warm += w;
+  });
+  return tot ? warm / tot : 0;
+}
+
+/** The fire palette only where the imagery really burns (Karel 2026-10-08:
+ *  "i better not see the orange and pink default coloring over and over"):
+ *  the vision tags called whole cool journeys "fire" (Tranquility 21: 6/6
+ *  phases, imaging 16 % warm; even a Snowflake phase) and their particles wore
+ *  ember / gold / magenta. A phase gets fire colours only if ≥ 40 % of its
+ *  real image colour is warm; otherwise its own image palette. */
+export function fireColours(fire: boolean, ip: { colors: string[]; weights?: number[] } | null | undefined): boolean {
+  return fire && imageWarmShare(ip) >= 0.4;
 }
 
 /** Fire imagery (Karel 2026-10-06: "colors of fire from a bit of blue through

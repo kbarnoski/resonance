@@ -21,9 +21,15 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
   const d = ctx.getImageData(0, 0, W, H).data;
   const cdf = new Float64Array(W * H);
   let acc = 0;
+  // mirrors particle-lead-layer computeUv: feathered luminance gate + frame border
+  const ss = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
+  const edgeX = new Float32Array(W), edgeY = new Float32Array(H);
+  for (let x = 0; x < W; x++) { const u = (x + 0.5) / W; edgeX[x] = ss(0, 0.1, u) * ss(0, 0.1, 1 - u); }
+  for (let y = 0; y < H; y++) { const v = (y + 0.5) / H; edgeY[y] = ss(0, 0.1, v) * ss(0, 0.1, 1 - v); }
   for (let i = 0; i < W * H; i++) {
     const L = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
-    acc += L < 0.06 ? 0 : Math.pow(L, 1.4) * (d[i * 4 + 3] / 255);
+    const x = i % W;
+    acc += ss(0.03, 0.12, L) * Math.pow(L, 1.4) * (d[i * 4 + 3] / 255) * edgeX[x] * edgeY[(i - x) / W];
     cdf[i] = acc;
   }
   if (acc <= 0) return undefined;

@@ -34,7 +34,7 @@ describe("particle lead registry (v3 rollout)", () => {
     expect(MASTERED_JOURNEY_NAMES.has("snowflake")).toBe(true);
   });
 
-  it("only gathering SHAPE souls are cast — no full-volume swarms (journey signatures aside)", () => {
+  it("only the forms Karel kept in the form review are cast (journey signatures aside)", () => {
     for (const c of Object.values(PARTICLE_LEADS)) {
       for (const s of [...Object.values(c.souls), ...c.morphSouls, ...c.formCycle]) expect(SHAPE_SOULS, `${c.name}:${s}`).toContain(s);
     }

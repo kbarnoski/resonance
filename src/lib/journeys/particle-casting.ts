@@ -19,7 +19,7 @@
  *    violet, key changes rotate further, register lifts saturation);
  *  - playfulness + motion from tempo/feel/texture.
  */
-import { SOULS, SHAPE_SOULS, type SoulId, type SoulPreset } from "@/lib/particles/souls";
+import { SOULS, SHAPE_SOULS, IMAGERY_ONLY_SOULS, type SoulId, type SoulPreset } from "@/lib/particles/souls";
 
 export interface ParticleSection {
   start: number;
@@ -169,7 +169,7 @@ function score(soul: SoulPreset, kind: WindowKind, m: Mood, seed: number): numbe
   return s;
 }
 
-const SHAPES = SOULS.filter((x) => SHAPE_SOULS.includes(x.id));
+const SHAPES = SOULS.filter((x) => SHAPE_SOULS.includes(x.id) && !IMAGERY_ONLY_SOULS.includes(x.id));
 
 /** v3: only the gathering, legible SHAPE souls are cast in journeys. */
 function rankSouls(kind: WindowKind, m: Mood, seed: number, avoid: Set<SoulId>): SoulId[] {

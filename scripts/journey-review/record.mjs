@@ -52,6 +52,11 @@ const flag = (k) => argv.includes(k);
 
 const BASE = arg("--base", process.env.BASE_URL || "http://localhost:3000");
 const PERF = flag("--perf");
+// --motion: the engine's velocity tripwire ON + a 10 Hz motion log per journey
+// (motion.jsonl: speed, fast fraction, glide cap, swell/bands, retarget events)
+// — the stutter study (Karel 2026-10-08: "studder stepping where it moves
+// slower a bit than catches up faster")
+const MOTION = flag("--motion");
 const PARALLEL = PERF ? 1 : Math.max(1, Number(arg("--parallel", "1")));
 const TAIL = Number(arg("--tail", "20"));
 const FRAME_EVERY = Number(arg("--frames-every", PERF ? "10" : "2"));
@@ -141,6 +146,7 @@ function collector() {
       programs: window.__rvProgramsSent ? undefined : (window.__rvProgramsSent = 1, window.__resonanceKioskPrograms ?? null),
       heapMB: performance.memory ? +(performance.memory.usedJSHeapSize / 1048576).toFixed(1) : null,
       vis: document.visibilityState,
+      motion: rv.motion ? rv.motion.splice(0) : undefined,
     };
     return out;
   };
@@ -227,6 +233,19 @@ async function playSlice(slot, ids, log) {
   page.on("requestfailed", (r) => { const f = r.failure()?.errorText ?? ""; if (!/ERR_ABORTED/.test(f)) append(state.current, "errors.jsonl", { wall: Date.now(), requestfailed: f, url: r.url().replace(BASE, "") }); });
   page.on("console", (m) => { if (m.type() === "error") append(state.current, "errors.jsonl", { wall: Date.now(), console: m.text().slice(0, 400) }); });
   await page.addInitScript(collector);
+  if (MOTION) await page.addInitScript(() => {
+    try { localStorage.setItem("resonance-particle-tripwire", "1"); } catch { /* */ }
+    const rv = window.__rv;
+    rv.motion = [];
+    setInterval(() => {
+      const pl = window.__resonanceParticleLead;
+      if (!pl || !pl.jumpScore) return;
+      const a = rv.audios.filter((x) => x.duration > 5);
+      const au = a.find((x) => !x.paused) ?? null;
+      const js = pl.jumpScore;
+      rv.motion.push([Math.round(performance.now()), au ? +au.currentTime.toFixed(2) : null, js.meanSpeed, js.fastFrac, js.glide, js.lastEvent, js.cap ?? null, +(pl.swell ?? 0).toFixed(3), pl.bands ? pl.bands.map?.((b) => +(+b).toFixed(3)) ?? pl.bands : null, pl.soul, +(pl.presence ?? 0).toFixed(2), +(pl.transition ?? 0).toFixed(3), pl.scatter ?? null]);
+    }, 100);
+  });
 
   const tGo = Date.now();
   await page.goto(`${BASE}/room/installation?loop=1&kiosk=1&start=${encodeURIComponent(first)}`, { waitUntil: "domcontentloaded", timeout: 120000 });
@@ -262,6 +281,7 @@ async function playSlice(slot, ids, log) {
       if (d.programs) fs.writeFileSync(path.join(OUT, "programs.json"), JSON.stringify(d.programs, null, 1));
       if (d.pl?.journeyId && d.pl.stale < 1500) addSwitch(d.now - Math.min(d.pl.stale, 1000), d.pl.journeyId, "diag");
       for (const e of d.events) onEvent(e, "tap");
+      if (d.motion?.length) for (const m of d.motion) append(journeyAt(m[0]), "motion.jsonl", m);
       flushEvents();
       const jid = journeyAt(d.now);
       state.current = jid;

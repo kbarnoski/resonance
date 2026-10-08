@@ -139,6 +139,8 @@ uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ra
 uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
 uniform vec4 uShape;      // per-appearance shape seed 0..1 (v4 variety: petals, gears, symmetry, solid)
 uniform float uMaxSpeed;  // speed cap (entry ramps it up — no sudden bursts)
+uniform float uPull;      // 0.3 → 1 after a new figure: the pull eases in (no speed-cap drag)
+uniform float uAccCap;    // transition acceleration limit (huge = off): no lunge, no plateau
 uniform float uDisperse;  // 1 for one frame: scatter wide so the form GATHERS
 // playful impulses (particle-lead conductor)
 uniform float uScatter;   // scatter-and-regroup envelope 0..1
@@ -944,6 +946,10 @@ void main(){
     f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, pl, vl, s, fid, lvl, drv);
   }
   f.xyz *= I.w; // local → world
+  // a NEW FIGURE (shape step) is approached with a pull that eases in, so every
+  // mote accelerates, travels and settles on one smooth curve — capping its
+  // speed instead made the field crawl, then catch up (Karel 2026-10-08)
+  f.xyz *= uPull;
 
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
@@ -961,6 +967,12 @@ void main(){
   if (abs(uBounce) > 0.001) f.y += uBounce * 9.0 * (0.4 + s.b);
   if (uMelodyW > 0.001) f.xyz += (uMelody - p) * 3.0 * uMelodyW * step(0.86, s.b);
 
+  // TRANSITIONS ARE ACCELERATION-LIMITED (Karel 2026-10-08, stutter + jumps):
+  // a speed cap made the field crawl then catch up; no cap let distant motes
+  // lunge (the pull grows with distance). For a few seconds after any re-aim
+  // the force is capped instead — speed rises and falls on one smooth curve.
+  float fl = length(f.xyz);
+  if (fl > uAccCap) f.xyz *= uAccCap / fl;
   v += f.xyz * dt;
   v *= exp(-f.w * dt);
   float sp2 = length(v);

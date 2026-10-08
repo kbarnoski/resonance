@@ -1,6 +1,26 @@
 {
-  "souls": [],
-  "emblems": [],
+  "souls": [
+    "arcs",
+    "bloom",
+    "branches",
+    "caustic",
+    "cymatics",
+    "flame",
+    "geometry",
+    "helix",
+    "knot",
+    "orbitals",
+    "petalfall",
+    "polyhedron",
+    "spirit",
+    "spirograph",
+    "superformula",
+    "threads",
+    "wisp"
+  ],
+  "emblems": [
+    "@angel-outline"
+  ],
   "motifs": [],
   "moments": []
 }
