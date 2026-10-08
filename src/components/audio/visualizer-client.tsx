@@ -1,6 +1,5 @@
 "use client";
 
-import { ParticleResolve } from "@/components/audio/particle-resolve";
 import { useEffect, useState, useRef, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { VisualizerCore, type VisualizerMode } from "./visualizer";
@@ -1947,18 +1946,6 @@ export function VisualizerClient({
       )}
 
       {/* Journey intro screen — exact same treatment as completion overlay */}
-      {/* the title is BORN from particles and dissolves back into them
-          (Karel 2026-10-07: "each journey title should integrate particles") */}
-      {journeyIntroVisible && activeJourney && (
-        <ParticleResolve
-          key={`intro-pr-${overlayRemountKey}`}
-          slot="[data-journey-title-slot]"
-          release={false}
-          resolveAt={installationMode ? 2.5 : 1.8}
-          releaseAfter={installationMode ? 5.6 : 3.95}
-          zIndex={51}
-        />
-      )}
       {journeyIntroVisible && activeJourney && (
         <div
           key={`intro-${overlayRemountKey}`}
@@ -2032,8 +2019,7 @@ export function VisualizerClient({
                     <>
                       <span
                         className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.01em]"
-                        data-journey-title-slot
-                        style={{ display: "inline-block", opacity: 0, textShadow: TEXT_SHADOW, fontFamily: SANS, fontWeight: 300 }}
+                        style={{ textShadow: TEXT_SHADOW, fontFamily: SANS, fontWeight: 300 }}
                       >
                         {nm ? nm[1] : activeJourney.name}
                       </span>

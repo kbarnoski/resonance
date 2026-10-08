@@ -263,30 +263,37 @@ function chroma(c: RGB, hueFrom: number, floor: number): RGB {
  *  images"). Voicings move through the image colours, the KEY always present. */
 export function particlePaletteFromImage(ip: { key: string; colors: string[] } | null | undefined, voice = 1): ParticlePalette | null {
   if (!ip || !ip.colors.length) return null;
-  // only colours that are actually SEEN in the images (Karel 2026-10-06:
-  // Vespers went pink — its near-black violet shadows were lifted into
-  // bright magenta). sRGB value ≥ 0.35; key = the most vivid of those.
-  const srgbHsv = (c: string): RGB => { const n = parseInt(c.replace("#", ""), 16); return toHsv([((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]); };
-  // …ranked by PERCEIVED contribution (area × brightness²): bright highlights
-  // dominate what the eye sees even when small; a dim stray accent never leads
+  // THE IMAGE'S REAL COLOURS, IN PROPORTION (Karel 2026-10-08: "you use that
+  // same light orange and pink coloring over and over as a default … colors
+  // are to be assigned based on the theme and imaging"). The old pick ranked
+  // by area × brightness², so warm highlights always led, and grey stops
+  // borrowed that warm key hue → a peach/pink wash over cool imagery (audit:
+  // Torraine 6 imaging 45 % warm → particles 96 %). Now: colours ranked by
+  // AREA with a gentle brightness lean, chosen hue-diverse (a cool image keeps
+  // its cool voices, warm-on-cool contrast survives where the image has both),
+  // dark real colours lifted rather than dropped, neutral stops tinted by the
+  // image's dominant colour by area — never by the brightest highlight.
   const w = (ip as { weights?: number[] }).weights;
-  const scored = ip.colors
-    .map((c, i) => { const [, sat, v] = srgbHsv(c); return { c, sat, v, score: (w?.[i] ?? 0.2) * v * v }; })
-    .filter((x) => x.v >= 0.35 && x.sat > 0.12)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
-  const visible = scored.map((x) => x.c);
-  const cs = visible.length >= 2 ? visible : visible.length === 1 ? [visible[0], ...ip.colors.filter((c) => c !== visible[0] && srgbHsv(c)[2] >= 0.2)].slice(0, 3) : ip.colors;
-  const K = visible[0] ?? ip.key;
-  const c1 = cs.find((c) => c !== K) ?? K;
-  const c2 = cs.filter((c) => c !== K)[1] ?? c1;
-  const bright = [...cs].sort((a, b) => toHsv(hexToLinear(b))[2] - toHsv(hexToLinear(a))[2])[0] ?? K;
+  const srgbHsv = (c: string): RGB => { const n = parseInt(c.replace("#", ""), 16); return toHsv([((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]); };
+  const all = ip.colors.map((c, i) => { const [h, sat, v] = srgbHsv(c); return { c, h, sat, v, area: w?.[i] ?? 1 / ip.colors.length }; });
+  const real = all.filter((x) => x.v >= 0.12 && x.sat > 0.15);
+  const pool = (real.length ? real : all).map((x) => ({ ...x, score: x.area * (0.35 + x.v) }));
+  pool.sort((a, b) => b.score - a.score);
+  const hueDist = (a: number, b: number) => Math.min(Math.abs(a - b), 1 - Math.abs(a - b));
+  const picked: typeof pool = [];
+  // a distinct hue earns a voice only if the image really shows it (≥ 20 % of the lead colour's area)
+  for (const x of pool) if (picked.length < 3 && x.area >= 0.2 * pool[0].area && picked.every((p) => hueDist(p.h, x.h) >= 0.08)) picked.push(x);
+  for (const x of pool) if (picked.length < 3 && !picked.includes(x)) picked.push(x);
+  while (picked.length < 3) picked.push(picked[picked.length - 1] ?? pool[0]);
+  const dominant = real.length ? real.reduce((a, b) => (b.area > a.area ? b : a)) : null;
+  const tintHue = dominant ? dominant.h : picked[0].h;
+  const [K, c1, c2] = picked.map((x) => x.c);
+  const bright = [...picked].sort((a, b) => b.v - a.v)[0].c;
   const v = [[K, c1, c2], [c1, K, bright], [K, c2, bright], [c2, c1, K]][Math.max(0, Math.min(3, Math.round(voice)))];
-  const keyHue = toHsv(hexToLinear(K))[0];
   return {
-    low: lift(chroma(hexToLinear(v[0]), keyHue, 0.5)),
-    mid: lift(chroma(hexToLinear(v[1]), keyHue, 0.45)),
-    high: lift(chroma(hexToLinear(v[2]), keyHue, 0.35), 0.7),
+    low: lift(chroma(hexToLinear(v[0]), tintHue, 0.5)),
+    mid: lift(chroma(hexToLinear(v[1]), tintHue, 0.42)),
+    high: lift(chroma(hexToLinear(v[2]), tintHue, 0.3), 0.7),
   };
 }
 

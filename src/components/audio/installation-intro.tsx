@@ -3,7 +3,6 @@
 import type { Journey } from "@/lib/journeys/types";
 import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
-import { ParticleResolve } from "./particle-resolve";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
@@ -94,7 +93,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
             transition: "opacity 1800ms ease-out",
           }}
         >
-          <ExperienceTextInner minimal markSlot={stage === "experience" ? "active" : "idle"} />
+          <ExperienceTextInner minimal />
         </div>
       )}
 
@@ -107,7 +106,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
             transition: "opacity 1500ms ease-out",
           }}
         >
-          <CycleTextInner presenting={presenting} description={description} markSlot={stage === "cycle" ? "active" : "idle"} />
+          <CycleTextInner presenting={presenting} description={description} />
         </div>
       )}
 
@@ -124,10 +123,6 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
         </div>
       )}
 
-      {/* the logo in particles: gathers with the fade-in, wisps away into the journey */}
-      {bgMounted && <ParticleResolve slot='[data-mark-slot="active"] svg' release={stage === "fading-cycle" || stage === "journey" || stage === "fading-journey"} />}
-      {journeyMounted && <ParticleResolve key={journey?.id ?? "j"} slot="[data-title-slot]" release={stage === "fading-journey"} resolveAt={2.2} zIndex={122} />}
-
       <style jsx>{`
         @keyframes installationContentFade {
           from { opacity: 0; }
@@ -138,24 +133,13 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   );
 }
 
-/** Where the particle logo forms (Karel 2026-10-07) — an empty box the
- *  ParticleMark canvas tracks; "active" = the screen currently showing. */
-function MarkSlot({ state }: { state: "active" | "idle" }) {
-  // the REAL logo, born from (and dissolved into) particles by ParticleResolve
-  return (
-    <div data-mark-slot={state} className="mx-auto mb-10 h-20 w-20">
-      <ResonanceMark className="h-20 w-20 text-white/85" style={{ opacity: 0 }} />
-    </div>
-  );
-}
-
-export function ExperienceTextInner({ animate = true, showAbout = false, minimal = false, markSlot }: { animate?: boolean; showAbout?: boolean; minimal?: boolean; markSlot?: "active" | "idle" }) {
+export function ExperienceTextInner({ animate = true, showAbout = false, minimal = false }: { animate?: boolean; showAbout?: boolean; minimal?: boolean }) {
   // animate=false when a host (the mid-show statement interstitial)
   // drives the fade itself — the keyframes here are scoped to
   // InstallationIntro's style block and don't exist elsewhere.
   return (
     <div style={animate ? { animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 } : undefined}>
-      {markSlot ? <MarkSlot state={markSlot} /> : <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />}
+      <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
         style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
@@ -180,13 +164,13 @@ export function ExperienceTextInner({ animate = true, showAbout = false, minimal
   );
 }
 
-function CycleTextInner({ presenting, description, markSlot }: { presenting?: string; description?: string; markSlot: "active" | "idle" }) {
+function CycleTextInner({ presenting, description }: { presenting?: string; description?: string }) {
   return (
     <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
       {/* Set cards mirror the title screen exactly (Karel 2026-09-30:
           "same Resonance and logo at same size and placement as title
           screen but then the set list name below it"). */}
-      <MarkSlot state={markSlot} />
+      <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
         style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
@@ -249,8 +233,7 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           <>
             <div
               className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
-              data-title-slot
-              style={{ display: "inline-block", opacity: 0, textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
+              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
             >
               {m ? m[1] : journey.name}
             </div>

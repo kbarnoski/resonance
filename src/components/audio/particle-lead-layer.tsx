@@ -526,7 +526,6 @@ export function ParticleLeadLayer({
 
     let running = false;
     let absentSince = performance.now();
-    let current: ParticlePalette | null = null;
     let lastOnsets = 0;
     const onsetTimes: number[] = [];
     let lastScatter = -1e9;
@@ -1162,10 +1161,8 @@ export function ParticleLeadLayer({
       }
       if (palPair[0] && palPair[1]) paletteTarget.current = lerpPalette(palPair[0], palPair[1], vfr * vfr * (3 - 2 * vfr));
       const target = paletteTarget.current;
-      if (target) {
-        current = current ? lerpPalette(current, target, 0.06) : target;
-        engine.setPalette(current);
-      }
+      // the engine glides every colour change per frame (critically damped, ~5 s)
+      if (target) engine.setPalette(target);
 
       // playfulness: scatter on runs of fast notes, bounce on a steady pulse,
       // a few motes follow the melody — serene pieces stay calm

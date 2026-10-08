@@ -399,6 +399,32 @@ export function createParticleEngine(
   const BINS = 128;
   let audioFn = opts.audio ?? null;
   let paletteOverride: ParticlePalette | null = opts.palette ?? null;
+  // EVERY colour change glides (Karel 2026-10-08: "ensure color changes are
+  // always smooth not abrupt" — an emblem snapped to the new image's colour):
+  // setPalette sets a TARGET; the shown palette follows per frame on a
+  // critically damped spring (gentle start AND landing, ~90 % in 3.3 s,
+  // settled ~5 s), whatever the source — image change, section re-voicing,
+  // journey handoff. 9 channels: low/mid/high × rgb.
+  const PAL_OMEGA = 1.2;
+  const palShown = new Float32Array(9), palVel = new Float32Array(9);
+  let palPrimed = false;
+  const palFlat = (p: ParticlePalette, i: number) => (i < 3 ? p.low[i] : i < 6 ? p.mid[i - 3] : p.high[i - 6]);
+  const palOut: ParticlePalette = { low: [0, 0, 0], mid: [0, 0, 0], high: [0, 0, 0] };
+  function glidePalette(target: ParticlePalette, dt: number): ParticlePalette {
+    if (!palPrimed) {
+      for (let i = 0; i < 9; i++) { palShown[i] = palFlat(target, i); palVel[i] = 0; }
+      palPrimed = true;
+    } else {
+      const h = Math.min(dt, 0.05), w = PAL_OMEGA;
+      for (let i = 0; i < 9; i++) {
+        // semi-implicit critically damped step
+        palVel[i] += (w * w * (palFlat(target, i) - palShown[i]) - 2 * w * palVel[i]) * h;
+        palShown[i] += palVel[i] * h;
+      }
+    }
+    for (let i = 0; i < 3; i++) { palOut.low[i] = palShown[i]; palOut.mid[i] = palShown[3 + i]; palOut.high[i] = palShown[6 + i]; }
+    return palOut;
+  }
   const pointCss = opts.pointSize ?? 2.2;
 
   const par = gl.getExtension("KHR_parallel_shader_compile") as { COMPLETION_STATUS_KHR: number } | null;
@@ -603,7 +629,7 @@ export function createParticleEngine(
   let lastFrame: SpectrumFrame | null = null;
   let density = 1;
   let densityTarget = 1;
-  let hue = 0, hueTarget = 0, sat = 1, satTarget = 1;
+  let hue = 0, hueTarget = 0, sat = 1, satTarget = 1, hueVel = 0, satVel = 0, spreadVel = 0;
   const form: [number, number, number, number] = [3, 5, 1.5, 2];
   const shape: [number, number, number, number] = [0, 0.3, 0.5, 0.5];
   let shapeTarget: [number, number, number, number] = [0, 0.3, 0.5, 0.5];
@@ -793,9 +819,13 @@ export function createParticleEngine(
 
     // world density glides (~2.5 s) — motes appear/vanish one by one
     density += (densityTarget - density) * (1 - Math.exp(-dt / 2.5));
-    const kHue = 1 - Math.exp(-dt / 3);
-    hue += (hueTarget - hue) * kHue;
-    sat += (satTarget - sat) * kHue;
+    // hue / saturation / rainbow spread ride the same gentle spring as the palette
+    {
+      const h = Math.min(dt, 0.05), w = PAL_OMEGA;
+      hueVel += (w * w * (hueTarget - hue) - 2 * w * hueVel) * h; hue += hueVel * h;
+      satVel += (w * w * (satTarget - sat) - 2 * w * satVel) * h; sat += satVel * h;
+      spreadVel += (w * w * (hueSpreadTarget - hueSpread) - 2 * w * spreadVel) * h; hueSpread += spreadVel * h;
+    }
     for (let i = 0; i < 4; i++) form[i] += (formTarget[i] - form[i]) * (1 - Math.exp(-dt / 4));
     for (let i = 0; i < 4; i++) shape[i] += (shapeTarget[i] - shape[i]) * (1 - Math.exp(-dt / 2.5));
     motion += (motionTarget - motion) * (1 - Math.exp(-dt / 2));
@@ -820,7 +850,6 @@ export function createParticleEngine(
     const maxSpeedNow = (0.45 + (speedCap - 0.45) * entryK * entryK * (3 - 2 * entryK)) * glideK;
     const disperseNow = disperseNext;
     disperseNext = false;
-    hueSpread += (hueSpreadTarget - hueSpread) * kHue;
     layerGain += (layerGainTarget - layerGain) * (1 - Math.exp(-dt / 1.5));
     hueWave += ((lastFrame?.swell ?? 0) * 0.6 - hueWave) * (1 - Math.exp(-dt / 1.2));
 
@@ -987,7 +1016,7 @@ export function createParticleEngine(
     }
 
     // ── palette ───────────────────────────────────────────────────────────
-    const pal = paletteOverride ?? lerpPalette(soulA.palette, soulB.palette, e);
+    const pal = glidePalette(paletteOverride ?? lerpPalette(soulA.palette, soulB.palette, e), dt);
     const trail = lerp(soulA.trail, soulB.trail) * trailScale * (1 - 0.7 * env.imgShow);
     const intensity = lerp(soulA.intensity, soulB.intensity);
     fadeIn = Math.min(1, fadeIn + dt / 2.5);
