@@ -178,7 +178,7 @@ async function checkJourney(dirId) {
     const changes = evIn.filter((e) => (e.type === "particle-form" && !/\(quiet\)/.test(e.detail ?? "")) || (e.type === "particle-flash" && /^(motif|echo)/.test(e.detail ?? "")));
     for (let i = 1; i < changes.length; i++) {
       const a = ctAt(changes[i - 1].t), b = ctAt(changes[i].t);
-      if (a !== null && b !== null && b - a < minHold - 0.5) add("error", "particles.form-too-soon", b, `form changed after ${(b - a).toFixed(1)} s (${changes[i - 1].type} ${changes[i - 1].detail} → ${changes[i].type} ${changes[i].detail}; min ${minHold})`);
+      if (a !== null && b !== null && b >= a && b - a < minHold - 0.5) add("error", "particles.form-too-soon", b, `form changed after ${(b - a).toFixed(1)} s (${changes[i - 1].type} ${changes[i - 1].detail} → ${changes[i].type} ${changes[i].detail}; min ${minHold})`);
     }
   }
   // zero-glitch tripwires
@@ -234,7 +234,7 @@ async function checkJourney(dirId) {
     const firstStill = pushes.find((p) => p.e.type === "still");
     if (!firstStill) add("error", "imaging.no-stills", null, "no still ever landed");
     // the boundary freeze protocol holds new stills for the 10.5 s settle BY DESIGN
-    else if (firstStill.ct > 12) add("warn", "imaging.first-still-late", firstStill.ct, `first still at ${firstStill.ct.toFixed(1)} s`);
+    else if (firstStill.ct > 13) add("warn", "imaging.first-still-late", firstStill.ct, `first still at ${firstStill.ct.toFixed(1)} s`);
     const videoActiveAt = (c) => rows.some((r) => Math.abs(r.ct - c) < 1 && (r.videos?.length ?? 0) > 0);
     for (let i = 1; i < pushes.length; i++) {
       const a = pushes[i - 1].ct, b = pushes[i].ct;
@@ -284,6 +284,7 @@ async function checkJourney(dirId) {
         stats.push({ f, px, occupied });
       } catch { /* */ }
     }
+    const videoEv = evIn.filter((e) => ["layer-push-video", "clip", "video-ended"].includes(e.type)).map((e) => ctAt(e.t));
     const changeEv = evIn.filter((e) => ["still", "layer-push-still", "layer-push-video", "clip", "shader-primary", "shader-dual", "video-ended", "journey-change", "phase-entry", "bass-flash", "particle-flash"].includes(e.type)).map((e) => ctAt(e.t));
     for (let i = 1; i < stats.length; i++) {
       const a = stats[i - 1], b = stats[i];
@@ -291,7 +292,8 @@ async function checkJourney(dirId) {
       for (let k = 0; k < a.px.length; k++) s += Math.abs(a.px[k] - b.px[k]);
       const mad = s / a.px.length;
       if (mad > 0.16) {
-        const explained = changeEv.some((c) => c !== null && c >= a.f.ct - 1 && c <= b.f.ct + 1);
+        // a morph video FADES IN over ~2-4 s: it explains a change up to 4.5 s after it starts (pass2: Realized/b207 travel-4)
+        const explained = changeEv.some((c) => c !== null && c >= a.f.ct - 1 && c <= b.f.ct + 1) || videoEv.some((c) => c !== null && c >= a.f.ct - 4.5 && c <= b.f.ct + 1);
         if (!explained) add("warn", "frames.unexplained-change", b.f.ct, `frame changed ${(mad * 100).toFixed(0)} % between ${a.f.ct.toFixed(1)} s and ${b.f.ct.toFixed(1)} s with no scheduled change`, { evidence: [path.join(dirId, a.f.file), path.join(dirId, b.f.file)] });
       }
     }

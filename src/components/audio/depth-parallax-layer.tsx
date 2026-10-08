@@ -322,6 +322,11 @@ function DepthParallaxLayerInner({
     const onStill = (e: Event) => {
       const { src, depthSrc } = (e as CustomEvent).detail ?? {};
       if (!src || !depthSrc) return;
+      // a still from a journey WITHOUT depth maps (the layer stays mounted ~8.6 s
+      // fading out after e.g. Realized → Ghost) — never request its missing png
+      // (review pass2: 404 /depth/journeys/ghost/gen-000.png)
+      const sj = /\/images\/journeys\/([^/]+)\//.exec(src)?.[1];
+      if (sj && depthManifest && !depthManifest[sj]) return;
       const seq = ++loadSeq;
       Promise.allSettled([loadTex(gl, src), loadTex(gl, depthSrc)]).then((rs) => {
         const ok = rs.every((r) => r.status === "fulfilled");
