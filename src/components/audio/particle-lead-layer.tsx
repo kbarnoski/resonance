@@ -101,15 +101,19 @@ export function warmParticleSouls(souls: SoulId[]): void {
   if (!sh) return;
   sh.engine.prepare(souls);
   const t0 = performance.now();
-  // compiles run in parallel (KHR_parallel_shader_compile); burst-warm whatever
-  // has compiled, merged into the page-load hitch, until all are warm
+  // compiles run in parallel (KHR_parallel_shader_compile); warm ONE compiled
+  // program per step until all are warm. PERF (2026-10-07 audit): the old
+  // burst (up to 80 per call, every 400 ms) built ~19 GPU pipelines inside one
+  // or two frames — 150-190 ms long frames on the cold open, which now ANIMATES
+  // (the particle logo gathering). One per 120 ms: ~19 small frames, all warm
+  // in ~2.5 s, long before the first journey.
   const iv = window.setInterval(() => {
-    const done = sh.engine.warmBurst();
+    const done = sh.engine.warmBurst(1);
     if (done || performance.now() - t0 > 25_000) {
       window.clearInterval(iv);
       glitchRecord("particle-warm", `${souls.length} souls ${done ? "warm" : "partial"} in ${Math.round(performance.now() - t0)} ms`);
     }
-  }, 400);
+  }, 120);
 }
 
 type EmblemSource = HTMLCanvasElement | "@angel" | "@angel-outline";
@@ -136,11 +140,16 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
   const out = new Float32Array(n * 2);
   const perm = new Uint32Array(n);
   for (let i = 0; i < n; i++) perm[i] = i;
-  for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+  for (let i = n - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; const t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+  // PERF (2026-10-07 audit): the stratified targets are SORTED, so one linear
+  // sweep of the CDF replaces 160k binary searches — clean ~7 -> ~5 ms (worst 24 -> 6 ms) per
+  // arriving still (it runs in an uninterruptible idle callback). Identical
+  // samples.
+  const last = W * H - 1;
+  let lo = 0;
   for (let k = 0; k < n; k++) {
     const target = ((k + Math.random()) / n) * acc;
-    let lo = 0, hi = W * H - 1;
-    while (lo < hi) { const mid = (lo + hi) >> 1; if (cdf[mid] < target) lo = mid + 1; else hi = mid; }
+    while (lo < last && cdf[lo] < target) lo++;
     const x = lo % W, y = (lo - x) / W;
     const j = perm[k];
     out[j * 2] = (x + Math.random()) / W;
@@ -212,15 +221,18 @@ function motifImage(src: string): HTMLCanvasElement | null {
   if (motifCanvas.has(src + "#loading")) return null;
   motifCanvas.set(src + "#loading", document.createElement("canvas"));
   const img = new Image();
-  img.onload = () => {
+  // decode OFF the main thread first (2026-10-07 perf audit: drawImage of an
+  // undecoded JPEG in onload decoded it synchronously on the frame)
+  img.src = src;
+  void img.decode().catch(() => undefined).then(() => {
+    if (!img.naturalWidth) return; // failed load
     const k = Math.min(1, 512 / Math.max(img.width, img.height));
     const c = document.createElement("canvas");
     c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-    c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+    c.getContext("2d", { willReadFrequently: true })?.drawImage(img, 0, 0, c.width, c.height);
     motifCanvas.set(src, c);
     warmUv(c);
-  };
-  img.src = src;
+  });
   return null;
 }
 
@@ -294,17 +306,20 @@ export function ParticleLeadLayer({
         const img = new Image();
         // decoded + shrunk to ≤512 px NOW, so forming it later uploads a small
         // texture (a full 1024² JPEG upload hitched ~230 ms on a visible frame)
-        img.onload = () => {
+        // decode OFF the main thread first (2026-10-07 perf audit: drawImage of an
+        // undecoded JPEG in onload decoded it synchronously on the frame)
+        img.src = u;
+        void img.decode().catch(() => undefined).then(() => {
+          if (!img.naturalWidth) return; // failed load
           if (cancelled) return;
           const k = Math.min(1, 512 / Math.max(img.width, img.height));
           const c = document.createElement("canvas");
           c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-          c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+          c.getContext("2d", { willReadFrequently: true })?.drawImage(img, 0, 0, c.width, c.height);
           imgs.push(c);
           emblemRef.current = [...imgs];
           warmUv(c);
-        };
-        img.src = u;
+        });
       }
     });
     return () => { cancelled = true; };
@@ -318,16 +333,19 @@ export function ParticleLeadLayer({
     let cancelled = false;
     const img = new Image();
     img.crossOrigin = "anonymous";
-    img.onload = () => {
+    // decode OFF the main thread first (2026-10-07 perf audit: drawImage of an
+    // undecoded JPEG in onload decoded it synchronously on the frame)
+    img.src = imageSrc;
+    void img.decode().catch(() => undefined).then(() => {
+      if (!img.naturalWidth) return; // failed load
       if (cancelled) return;
       const k = Math.min(1, 320 / Math.max(img.width, img.height));
       const c = document.createElement("canvas");
       c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-      try { c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height); } catch { return; }
+      try { c.getContext("2d", { willReadFrequently: true })?.drawImage(img, 0, 0, c.width, c.height); } catch { return; }
       warmUv(c);
       echoRef.current = c;
-    };
-    img.src = imageSrc;
+    });
     return () => { cancelled = true; };
   }, [imageSrc]);
   // timed moment images (decoded + shrunk at mount, like emblems)
@@ -337,16 +355,19 @@ export function ParticleLeadLayer({
     let cancelled = false;
     for (const m of cast.signatureMoments ?? []) for (const u of m.images) {
       const img = new Image();
-      img.onload = () => {
+      // decode OFF the main thread first (2026-10-07 perf audit: drawImage of an
+      // undecoded JPEG in onload decoded it synchronously on the frame)
+      img.src = u;
+      void img.decode().catch(() => undefined).then(() => {
+        if (!img.naturalWidth) return; // failed load
         if (cancelled) return;
         const k = Math.min(1, 640 / Math.max(img.width, img.height));
         const c = document.createElement("canvas");
         c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-        c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+        c.getContext("2d", { willReadFrequently: true })?.drawImage(img, 0, 0, c.width, c.height);
         momentImgs.current = [...momentImgs.current, c];
         warmUv(c);
-      };
-      img.src = u;
+      });
     }
     return () => { cancelled = true; };
   }, [cast]);
@@ -450,9 +471,23 @@ export function ParticleLeadLayer({
     // theme" — an intricate flame for Realized, ghostly angels/wings for Ghost …)
     let motifAt = -1, motifDur = 16, motifN = 0, motifSrc = "";
     let motifLib: Record<string, string[]> = {};
+    let motifTimer = 0;
+    let disposed = false;
     void loadMotifLibrary().then((m) => {
       motifLib = m;
-      for (const f of Object.keys(m)) for (const u of m[f] ?? []) if (u) motifImage(u); // warm decode
+      // TRICKLE, not a flood (2026-10-07 perf audit: all 54 designs decoded +
+      // drawn at once at the first journey's mount = ~430 ms of long frames
+      // under the opening title). One design per idle slot, after the opening
+      // emblem has formed; motifs are first needed after a full form hold.
+      const queue = Object.keys(m).flatMap((f) => (m[f] ?? []).filter(Boolean));
+      const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+      const next = () => {
+        if (disposed || !queue.length) return;
+        const u = queue.shift()!;
+        if (!motifCanvas.has(u) && !motifCanvas.has(u + "#loading")) motifImage(u);
+        motifTimer = window.setTimeout(() => (ric ? ric(next, { timeout: 2000 }) : next()), 160);
+      };
+      motifTimer = window.setTimeout(next, 6000);
     });
     const motifRecent: string[] = [];
     const startMotif = (t: number): boolean => {
@@ -832,7 +867,9 @@ export function ParticleLeadLayer({
       }
       // the echo: trace the arriving still's light, then flow back into the form
       const ec = echoRef.current;
-      if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded) {
+      // an echo is a FORM change: only once the current form has had its full hold
+      // (review rig 2026-10-07: echoes began 0.1-7 s after a switch, then again 7-13 s later)
+      if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded && performance.now() - formAt > formDur) {
         echoUsed = ec;
         if (rand01(81 + echoN) < (calm ? 0.25 : 0.4)) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
       }
@@ -949,7 +986,7 @@ export function ParticleLeadLayer({
       }
       if (shown > 0.6 && !dissolving && !imgLoaded && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
-      } else if (shown > 0.6 && !dissolving && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && cast.formCycle?.length) {
+      } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && cast.formCycle?.length) {
         cycleIdx++;
         if (cycleIdx % 3 === 0 && currentSoul) {
           engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);
@@ -1197,6 +1234,8 @@ export function ParticleLeadLayer({
       offDisable();
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
+      disposed = true;
+      window.clearTimeout(motifTimer);
       releaseSharedParticleEngineWithFade();
       engineRef.current = null;
       delete (window as unknown as Record<string, unknown>).__resonanceParticleLead;
@@ -1229,7 +1268,7 @@ export function ParticleLeadLayer({
         const cv = document.createElement("canvas");
         cv.width = w;
         cv.height = h;
-        const c2 = cv.getContext("2d");
+        const c2 = cv.getContext("2d", { willReadFrequently: true }); // CPU-backed: getImageData never reads back from the GPU
         if (!c2) return;
         c2.drawImage(img, 0, 0, w, h);
         // the still's brightness sets how much the contrast veil lifts the form

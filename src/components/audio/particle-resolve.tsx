@@ -40,6 +40,10 @@ interface Mote {
   a: number; size: number; seed: number; delay: number;
 }
 
+/** Alpha levels the motes are batched into (one fill each). */
+const LEVELS = 8;
+const FILLS = Array.from({ length: LEVELS }, (_, i) => `rgba(232,238,255,${(((i + 0.5) / LEVELS) * 0.42).toFixed(3)})`);
+
 const ss = (e0: number, e1: number, x: number) => {
   const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
   return u * u * (3 - 2 * u);
@@ -115,6 +119,7 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
     let raf = 0;
     let fallback = false;
 
+    const buckets: Mote[][] = Array.from({ length: LEVELS }, () => []);
     const setCrisp = (o: number) => { if (el) el.style.opacity = o.toFixed(3); };
 
     const init = (): boolean => {
@@ -186,6 +191,10 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
       g.globalCompositeOperation = "lighter";
       const tight = ss(resolveAt - 1.2, resolveAt + 0.8, t); // 0 = loose gather, 1 = exact
       let alive = 0;
+      // PERF (2026-10-07 audit: 7,000 fills/frame cost 2.5 ms avg, 11.5 ms
+      // peak — the page's most expensive callback during every title): motes
+      // are BATCHED into 8 alpha levels, one path + one fill per level
+      for (const b of buckets) b.length = 0;
       for (const m of motes) {
         const gx = origin.x + m.tx, gy = origin.y + m.ty;
         if (rel < 0.35) {
@@ -218,10 +227,20 @@ export function ParticleResolve({ slot, release, resolveAt = 2.4, zIndex = 123, 
         m.y += m.vy * dt;
         if (m.a < 0.01) continue;
         alive++;
-        const sz = m.size * (1.6 - 0.7 * tight) * (rel > 0.35 ? 1.25 : 1);
-        g.fillStyle = `rgba(232,238,255,${(m.a * 0.42).toFixed(3)})`;
+        const lv = Math.min(LEVELS - 1, Math.floor(m.a * LEVELS));
+        buckets[lv].push(m);
+      }
+      const szK = (1.6 - 0.7 * tight) * (rel > 0.35 ? 1.25 : 1);
+      for (let lv = 0; lv < LEVELS; lv++) {
+        const list = buckets[lv];
+        if (!list.length) continue;
+        g.fillStyle = FILLS[lv];
         g.beginPath();
-        g.arc(m.x, m.y, sz, 0, Math.PI * 2);
+        for (const m of list) {
+          const sz = m.size * szK;
+          g.moveTo(m.x + sz, m.y);
+          g.arc(m.x, m.y, sz, 0, Math.PI * 2);
+        }
         g.fill();
       }
       if (rel > 1 && alive === 0) { g.clearRect(0, 0, cv.width / dpr, cv.height / dpr); return; }

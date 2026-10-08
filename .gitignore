@@ -84,3 +84,7 @@ public/tramokyo-pack/
 
 # journey-review rig output (frames + logs, large)
 scripts/journey-review/runs/
+
+# perf harness output
+.next-perf/
+scripts/.perf/

@@ -115,9 +115,13 @@ export function warmFlashAngel(src: string): Promise<HTMLCanvasElement | null> {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      const c = keyImage(img);
-      keyed.set(src, c);
-      resolve(c);
+      // decode off the main thread before the synchronous keying pass
+      // (2026-10-07 perf audit)
+      void img.decode().catch(() => undefined).then(() => {
+        const c = keyImage(img);
+        keyed.set(src, c);
+        resolve(c);
+      });
     };
     img.onerror = () => {
       keying.delete(src); // allow a retry on the next warm

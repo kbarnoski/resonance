@@ -176,7 +176,10 @@ async function checkJourney(dirId) {
     const opening = em.find((e) => { const c = ctAt(e.t); return c !== null && c < 6; });
     if (!opening) add("error", "emblem.opening-missing", 0, "no emblem formed under the title (0.8–16 s)");
     if (dur && dur > 40 && S.complete && !TAIL_ONLY) {
-      const closing = em.find((e) => { const c = ctAt(e.t); return c !== null && c > dur - 22; });
+      // Ghost's emblem IS the angel: its closing angel signature (held ANGEL_SEC
+      // = 22 s, priority over the emblem) covers the last 17 s by design
+      const angelClose = jid === "ghost" && evIn.find((e) => e.type === "particle-flash" && /angel signature/.test(e.detail ?? "") && (ctAt(e.t) ?? 0) > dur - 30);
+      const closing = angelClose || em.find((e) => { const c = ctAt(e.t); return c !== null && c > dur - 22; });
       if (!closing) add("error", "emblem.closing-missing", dur - 17, "no emblem in the last 17 s");
     }
   }
