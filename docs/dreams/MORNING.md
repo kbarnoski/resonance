@@ -1,21 +1,26 @@
-# Morning digest — last updated 2026-10-07T~13:10Z
+# Morning digest — last updated 2026-10-08T00:56Z
 
-> ⚠️ **DEPLOY ALERT — the live site is behind by ~4 cycles.** After pushing imbue I checked production: `getresonance.vercel.app` serves nothing newer than `19104-particle`. The last FOUR dream protos — vicinity (19360), cantor (19440), graft (19520), and today's imbue (19600) — all return **404** on the live site, even though all four folders are present in `main` and each cycle's `npm run build` passed locally (exit 0). The `/dream` index is up (200) but its newest entry is 19104. So this is a **Vercel build/deploy-pipeline problem, not broken agent code** — and it predates my cycle (spans three others). Please check the Vercel deploy logs/dashboard: production has likely been failing or not publishing since ~the particle-engine commit. Until it's fixed, opening any of those four proto links (including imbue below) will 404. I can't see Vercel logs or touch build config from here (out of scope-fence).
+> 🔴 **ACTION NEEDED — production hasn't deployed in ~2 days, and I found exactly why.** Nothing has gone live since **Oct 6 00:32 UTC** (commit `b98b6221`). That freeze covers **all your core work from Oct 7** — the whole particle-RESOLVE / emblems-feathery / title-screen series — *and* the last 4 dream protos. **It is NOT broken code.** The **Deploy Gate** workflow fails on every push at one step: **`npm audit`**. The prod dependency tree now trips **1 critical + 2 high** CVEs (new advisories, no code change caused it), so the gate's `verify` job goes red and the deploy step never runs.
+>
+> **The culprits (all have fixes waiting):** `@capacitor/ios` (critical, GHSA-rvm3-566m-v7fv) · `sharp <0.35.5` (high, CVE-2026-96889) · `source-map-js` (high). Dependabot has already opened the PRs.
+>
+> **I verified it's the ONLY blocker:** on today's `main` I ran the gate's other steps myself — **lint ✅ (0 errors), tsc ✅, all 362 tests ✅.** So the moment the deps are fixed, the entire 2-day backlog deploys on the next push.
+>
+> **Your move (1 min, out of my scope-fence so I can't do it):**
+> 1. `npm audit fix` → commit `package-lock.json`  — clears capacitor/sharp/source-map-js. **OR**
+> 2. Merge the open dependabot PRs (`ai-7.0.113`, `anthropic-4.0.62`, `minor-and-patch…`).
+> Re-push; the gate should go green and everything ships. (Break-glass if a deploy is urgent first: loosen the audit step in `.github/workflows/deploy-gate.yml` to `--audit-level=critical` — but that ships the known critical, so prefer 1/2.)
+>
+> Longer term: the gate's hard `--audit-level=high` means *any* future high/critical advisory silently freezes **all** deploys until deps are bumped. Worth a dependabot auto-merge policy or a scheduled audit alert so this never goes 2 days unnoticed again.
 
-> **Jury verdict today** (landed while I was building): source-break is a real direction, but three.js got re-banned and ignored (7×), and the palette swung from one rut to another — so: put the particle engine to work, burn down antiphon or swing for the two-person WebRTC room, and get off both color camps. See `docs/dreams/JURY.md`. **imbue (below) already hits three of its asks** — its #4 (a convolution variant of graft) is literally what I shipped, it's off three.js (Canvas2D), and its palette is off both color camps (achromatic).
+## This cycle (no new proto — on purpose)
+- This was an **ops cycle**: I root-caused the freeze, verified the fix is sufficient, and wrote it up for you. I did **not** ship a 5th prototype — it couldn't deploy anyway, and keeping the tree clean means the backlog ships the instant you fix the deps (no risk of a new regression hiding behind the same gate).
+- Once you've opened the valve: the 4 stuck protos (`19360-vicinity`, `19440-cantor`, `19520-graft`, `19600-imbue`) should finally serve live — worth a quick look, they're the four "fuse two of your recordings" pieces.
 
-> **Four ways to fuse two of your recordings, four cycles.** vicinity (spatial, 4 takes) → cantor (your voice) → graft (vocoder) → today **imbue**: one recording becomes the resonant *body* another plays inside. Built before today's verdict landed, it lands squarely on the verdict's provocation #4 — "a convolution variant of graft: one take as the impulse response for another, non-granular, two-source, breaks the source ban again."
-
-## New since yesterday
-- **[19600-imbue](https://getresonance.vercel.app/dream/19600-imbue) — one recording played inside the resonance of another.** Why open this: it's a **convolution cross-synthesis**. *Interplay* is the piano you hear; *Isolation* is never heard directly — five slices of it become impulse responses, and *Interplay* is convolved through them, so it rings with the harmony, decay, and room of whichever moment of *Isolation* you've scanned to. Your body conducts: **sit tall/low** to scan which moment of *Isolation* is the resonant body, **lean toward the camera** to deepen the imbue (dry → fully dissolved), **lean left/right** to tilt the chamber dark↔bright. Rendered as a chamber of sympathetic strings — graphite/pearl with a single amber glow. The lab's first time one of your takes is the *impulse response* for another. **Headphones.**
-- **The core is guaranteed by construction.** The body take is only ever wired into convolver IR buffers, never to a sound source — it has zero path to the speakers. So "one recording resonates inside the other" isn't a hope, it's how the graph is built. (I also fixed a small routing bug I'd copied from graft so everything now passes through the limiter.) Build is green, QA clean.
-
-## Needs your ~30 seconds (camera + headphones)
-- No webcam up here, so **imbue ships `wip`**. What I couldn't check: whether the sit-tall/low scan feels immediate, whether the lean-in depth read lands for a seated body, and whether the dry↔wet balance sits right on your ears. If any feel off it's a one- or two-number tuning pass — tell me which.
-
-## Still on the board
-- **`antiphon`** (your body conducts a call-and-response between two takes) is now the ONLY banked source-break left — a quick burn-down if you want the shelf lower.
-- The biggest unbuilt concept is still jury #2: a **two-person shared HRTF room over WebRTC** (multi-user + spatial, extending vicinity) — deliberate, multi-cycle.
+## Your open question from yesterday is still the fork
+- After vicinity → cantor → graft → imbue, **is the body-fusion lane still fresh, or tapped out?** Your answer steers the next build once deploys are flowing:
+  - **Fresh / new lane:** `cymatica` — conduct the actual standing-wave (Chladni) geometry of your music on the particle GPU engine (new seed in IDEAS, also finally puts that engine to work like the jury keeps asking).
+  - **Tapped out:** I'll burn down `antiphon` (last banked fusion piece) or start the bigger two-person WebRTC shared-room concept.
 
 ## Open question for you
-- **Four fusion verbs in, is the lane still fresh?** imbue's convolution is genuinely distinct from graft's vocoder, but after vicinity→cantor→graft→imbue a *fifth* fusion piece risks the "too similar" trap. Does the body-fusion lane feel rich or tapped out? If rich, the next deepening is a continuously-interpolated IR or a whole-catalog "resonance atlas." If tapped out, I'll swing the interaction axis entirely (or ship `antiphon` and move to the WebRTC room).
+- Do you want me to set up a **standing deploy-health check** (a tiny scheduled task that pings prod + the gate and alerts you) so a freeze like this surfaces in minutes, not days? Say the word and I'll propose how.
