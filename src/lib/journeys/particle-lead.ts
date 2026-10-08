@@ -20,6 +20,7 @@ import { castSet, type ParticleCast } from "./particle-casting";
 import { phaseCharacters, type PhaseCharacter } from "./particle-motifs";
 import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
+import { applySoulRemovals, momentsWithout, FORM_REMOVALS, type FormRemovals } from "./form-removals";
 
 export const LANTERN_ID = "910e6b62-abb8-40d1-bd31-ccdf6038f122";
 export const STIR_CRAZY_ID = "cd517f5a-c4eb-4d50-8a53-044aa668d087";
@@ -93,8 +94,11 @@ export function particlePaletteDawn(voice = 1): ParticlePalette {
   return { low: order[0], mid: order[1], high: order[2] };
 }
 
-/** Casts for the registry — built once, in loop order, neighbours differ. */
-export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() => {
+/** Casts for the registry — built once, in loop order, neighbours differ.
+ *  `removals` = Karel's form review (form-removals.ts — the single filter
+ *  point: removed souls are re-cast, removed moment images dropped; an empty
+ *  list leaves every cast exactly as before). */
+export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Readonly<Record<string, ParticleLeadCast>> {
   const ids = PARTICLE_JOURNEY_IDS;
   const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]));
   const out: Record<string, ParticleLeadCast> = {};
@@ -104,7 +108,7 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
     if (sig) {
       cast.signatureMorphs = sig.morphs;
       cast.signatureImage = sig.image;
-      cast.signatureMoments = sig.moments;
+      cast.signatureMoments = momentsWithout(sig.moments, removals.moments);
     }
     // the full-screen still-to-particles dissolve: BARELY EVER (Karel
     // 2026-10-06: "barely ever do i want that huge full screen particle
@@ -156,10 +160,11 @@ export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = (() =>
       cast.formCycle = [...new Set(chars.flatMap((c) => c.forms))];
       if (!cast.formCycle.length) cast.formCycle = casts[i].formCycle;
     }
-    out[id] = cast;
+    out[id] = applySoulRemovals(cast, removals.souls, id);
   });
   return out;
-})();
+}
+export const PARTICLE_LEADS: Readonly<Record<string, ParticleLeadCast>> = buildParticleLeads();
 
 /** The cast for a journey (by id), or null if it has no analysis profile. */
 /** KILL SWITCH (2026-10-05): particle v3 froze the real kiosk Chrome on

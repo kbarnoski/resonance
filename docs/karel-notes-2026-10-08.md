@@ -50,6 +50,20 @@
    colour crossfade (~4–6 s) whenever the palette source changes; keep the
    gentle voicing drift as is.
 
+6. **Hard edges** (screenshot: a golden column of motes with a hard straight
+   silhouette) — "when the particle has hard edges like this it loses its organic
+   integration. try and avoid this." Every form boundary must feather (image-form
+   rect bounds, wrap/edge cutoffs, any clip).
+7. **Orange/pink is ALSO a rainbow-sweep artefact** (screenshot: a girih/mandala
+   graded pink → orange → gold) — the spectrum hue spread swept from a warm base
+   gives a sunset band. A rainbow must be a real spectrum (or the image's hues),
+   never the pink-orange-gold sweep.
+8. **Snowflake: form sits too long** (screenshot: the rainbow kaleido) — "ensure
+   we dont do this in journeys". Holds were raised to 17–21 s (calm) on
+   2026-10-07 ("you change again" note) — find the middle. Also: "in snowflake i
+   def visually notice some glitches as a result of the particle system" —
+   Snowflake is a primary target for the stutter study.
+
 ## Related finding (same morning)
 Cycle-restart frame hitch (83–133 ms, black screen, 0.2 s after `cycle-start`):
 probe `scripts/journey-review/probe-cycle.mjs` reproduced it 4/4; with the
