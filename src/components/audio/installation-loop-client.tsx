@@ -1710,9 +1710,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             const { fetchPackLocalImages } = await import("@/lib/offline/pack-client");
             const map = await fetchPackLocalImages();
             const urls = map?.[nextJourneyId] ?? [];
+            // depth maps only where the journey HAS them (review pass1: Ghost has
+            // none — every prewarm 404'd /depth/journeys/ghost/gen-00x.png)
+            const depthMap = await fetch("/tramokyo-pack/local-depth.json")
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null);
+            const hasDepth = !!depthMap?.[nextJourneyId];
             for (const u of urls.slice(0, 3)) {
               new Image().src = u; // HTTP-cache warm; decode stays lazy
-              if (u.includes("/images/journeys/")) {
+              if (hasDepth && u.includes("/images/journeys/")) {
                 new Image().src = u
                   .replace("/images/journeys/", "/depth/journeys/")
                   .replace(/\.jpg(\?.*)?$/, ".png");

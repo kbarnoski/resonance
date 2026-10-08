@@ -905,6 +905,11 @@ export function AiImageLayer({
               lastPackIndexRef.current = -1;
               lastPackUrlRef.current = null;
               glitchRecord("phase-entry-retry", `slot ${idx}`);
+            } else if (lastPackIndexRef.current === idx) {
+              // any refused still is RETRIED, never silently skipped (review
+              // pass1: 441 refusals — each lost its image from the sequence)
+              lastPackIndexRef.current = -1;
+              lastPackUrlRef.current = null;
             }
             // Feed the depth-parallax base layer (it no-ops without depth
             // coverage) — STAGGERED 1.5s behind the collage push: the

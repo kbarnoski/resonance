@@ -61,7 +61,12 @@ async function checkJourney(dirId) {
   // perf-now → journey clock (ct) via the 1 Hz timeline
   // only rows on this journey's own track (the shared audio element can show the
   // next track's clock for a second before the switch registers)
-  const rows = tl.filter((r) => r.ct !== null && r.journey === jid && (!S.audio?.src || r.src === S.audio.src));
+  // the journey's own track = the src it played MOST (the first sample can be
+  // the previous track's, mid-handoff)
+  const srcCount = {};
+  for (const r of tl) if (r.ct !== null && r.journey === jid && r.src) srcCount[r.src] = (srcCount[r.src] ?? 0) + 1;
+  const ownSrc = Object.entries(srcCount).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const rows = tl.filter((r) => r.ct !== null && r.journey === jid && (!ownSrc || r.src === ownSrc));
   const ctAt = (perf) => {
     if (!rows.length) return null;
     let best = rows[0];
@@ -71,12 +76,27 @@ async function checkJourney(dirId) {
   const epochOfPerf = (r, perf) => r.epoch - r.now + perf;
   const shotWins = (S.screenshotWins ?? []).map(([a, b]) => [a - 60, b + 60]);
   const inShot = (epoch) => shotWins.some(([a, b]) => epoch >= a && epoch <= b);
-  const dur = S.audio?.dur ?? PROFILES[jid]?.duration ?? null;
+  // duration of the journey's OWN track (the summary's can be the next track's)
+  const ownDurs = rows.map((r) => r.dur).filter((d) => d > 0);
+  const ownDur = ownDurs.length ? ownDurs.sort((a, b) => ownDurs.filter((x) => x === b).length - ownDurs.filter((x) => x === a).length)[0] : null;
+  const dur = ownDur ?? S.audio?.dur ?? PROFILES[jid]?.duration ?? null;
   const jcIn = ev.find((e) => e.type === "journey-change" && String(e.detail).split("->").pop().trim() === jid);
   const jcOut = ev.find((e) => e.type === "journey-change" && String(e.detail).split("->")[0].trim() === jid);
   const evIn = ev.filter((e) => (!jcIn || e.t >= jcIn.t) && (!jcOut || e.t <= jcOut.t));
 
   // ── completeness / rig ──
+  // completeness from the WHOLE timeline (pass1: the summary locked onto the
+  // previous track's src from a handoff-time first sample → maxCt 0.09 on 19
+  // journeys that played to the end)
+  {
+    const own = rows.filter((r) => r.journey === jid && typeof r.ct === "number");
+    const durs = own.map((r) => r.dur).filter((d) => d > 0);
+    const durMode = durs.sort((a, b) => durs.filter((x) => x === b).length - durs.filter((x) => x === a).length)[0];
+    const D = dur ?? durMode;
+    const maxCt = Math.max(0, ...own.map((r) => r.ct));
+    const minCt = Math.min(...own.map((r) => r.ct), 99);
+    if (!S.complete && D && maxCt >= D - 4 && minCt < 3) { S.complete = true; S.audio = { ...(S.audio ?? {}), dur: D, maxCt }; }
+  }
   if (!S.complete) add(S.inSlice ? "warn" : "info", "rig.incomplete", null, `journey not recorded start→end (firstCt ${S.audio?.firstCt}, maxCt ${S.audio?.maxCt}/${S.audio?.dur})${S.inSlice ? "" : " — handoff tail only"}`);
   for (const e of errs) {
     if (e.pageerror) add("error", "page.error", null, e.pageerror);
@@ -97,7 +117,8 @@ async function checkJourney(dirId) {
   const TAIL_ONLY = S.inSlice === false;
   // ── AUDIO: plays continuously, 1 s per s ──
   for (const r of rows) {
-    if (!TAIL_ONLY && r.drift !== null && r.drift !== undefined && Math.abs(r.drift) > 0.5) add("error", "audio.drift", r.ct, `media clock moved ${(1 + r.drift).toFixed(2)} s in 1 s`);
+    // the first 2 s are the media element starting up (pass1: all 48 hits at ct < 0.5)
+    if (!TAIL_ONLY && r.ct >= 2 && r.drift !== null && r.drift !== undefined && Math.abs(r.drift) > 0.5) add("error", "audio.drift", r.ct, `media clock moved ${(1 + r.drift).toFixed(2)} s in 1 s`);
     // a jump inside the journey (not at its start/end) is a seek or a restart
     if (r.disc && r.ct > 3 && (!dur || r.ct < dur - 3)) add("error", "audio.jump", r.ct, `audio clock jumped ${r.disc > 0 ? "+" : ""}${r.disc.toFixed(1)} s`);
   }
@@ -212,7 +233,8 @@ async function checkJourney(dirId) {
     const pushes = evIn.filter((e) => e.type === "still" || e.type === "layer-push-video" || e.type === "clip").map((e) => ({ ct: ctAt(e.t), e }));
     const firstStill = pushes.find((p) => p.e.type === "still");
     if (!firstStill) add("error", "imaging.no-stills", null, "no still ever landed");
-    else if (firstStill.ct > 8) add("warn", "imaging.first-still-late", firstStill.ct, `first still at ${firstStill.ct.toFixed(1)} s`);
+    // the boundary freeze protocol holds new stills for the 10.5 s settle BY DESIGN
+    else if (firstStill.ct > 12) add("warn", "imaging.first-still-late", firstStill.ct, `first still at ${firstStill.ct.toFixed(1)} s`);
     const videoActiveAt = (c) => rows.some((r) => Math.abs(r.ct - c) < 1 && (r.videos?.length ?? 0) > 0);
     for (let i = 1; i < pushes.length; i++) {
       const a = pushes[i - 1].ct, b = pushes[i].ct;
@@ -228,7 +250,7 @@ async function checkJourney(dirId) {
       if (e.type === "still-load-failed") add("error", "imaging.load-failed", ctAt(e.t), e.detail);
     }
     let streak = 0;
-    for (const e of evIn) { if (e.type === "push-refused") { if (++streak === 2) add("warn", "imaging.push-refused", ctAt(e.t), "push refused twice in a row"); } else if (e.type === "still") streak = 0; }
+    for (const e of evIn) { if (e.type === "push-refused") { if (++streak === 2) add("info", "imaging.push-refused", ctAt(e.t), "push refused twice in a row"); } else if (e.type === "still") streak = 0; }
   }
 
   // ── HANDOFF: the boundary into this journey ──

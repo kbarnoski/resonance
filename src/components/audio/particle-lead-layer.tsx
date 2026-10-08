@@ -741,7 +741,7 @@ export function ParticleLeadLayer({
     let outSince = 0;
     // NEVER >10 s WITHOUT PARTICLES (Karel 2026-10-07, all journeys): the field
     // returns 6-9 s after it has gone (plus its ~1.5 s fade-in)
-    let ambientGap = 6 + 3 * rand01(21);
+    let ambientGap = 3.5 + 2 * rand01(21); // + fade tails ≈ 7-9 s visible gap (pass1: 6-9 s measured 11-12 s)
     let lastTick = performance.now();
     let palVoiceKey = "";
     let palPair: [ParticlePalette | null, ParticlePalette | null] = [null, null];
@@ -871,7 +871,9 @@ export function ParticleLeadLayer({
       // (review rig 2026-10-07: echoes began 0.1-7 s after a switch, then again 7-13 s later)
       if (ec && ec !== echoUsed && uvCache.has(ec) && echoAt < 0 && shown > 0.3 && !imgLoaded && performance.now() - formAt > formDur) {
         echoUsed = ec;
-        if (rand01(81 + echoN) < (calm ? 0.25 : 0.4)) { echoAt = t; echoN++; glitchRecord("particle-echo", "still"); }
+        // the echo IS this form change: restart the hold so nothing else changes in
+        // the same tick (review pass1: echo + section form / echo + motif fired together)
+        if (rand01(81 + echoN) < (calm ? 0.25 : 0.4)) { echoAt = t; echoN++; formAt = performance.now(); glitchRecord("particle-echo", "still"); }
       }
       let ecForm = 0, ecShow = 0;
       if (echoAt >= 0) {
@@ -965,7 +967,7 @@ export function ParticleLeadLayer({
 
       const dissolving = engine.dissolveTime() !== null;
       if (w) {
-        if (w.soul !== lastAsked && (shown < 0.05 || performance.now() - formAt > formDur)) { lastAsked = w.soul; switchForm(w.soul, t); }
+        if (w.soul !== lastAsked && (shown < 0.05 || (performance.now() - formAt > formDur && echoAt < 0 && motifAt < 0 && !imgLoaded))) { lastAsked = w.soul; switchForm(w.soul, t); }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
@@ -984,7 +986,7 @@ export function ParticleLeadLayer({
         lastShape = [lastShape[0], lastShape[1], zOk ? z : lastShape[2], Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
         engine.setShape(lastShape, false);
       }
-      if (shown > 0.6 && !dissolving && !imgLoaded && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
+      if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
       } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && cast.formCycle?.length) {
         cycleIdx++;
@@ -1007,7 +1009,7 @@ export function ParticleLeadLayer({
         // only where this journey is running UNDER budget (few morphs)
         if (!hush && ambientUntil < t && outSince > ambientGap && t > 4) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
-          ambientGap = 6 + 3 * rand01(23 + appearN);
+          ambientGap = 3.5 + 2 * rand01(23 + appearN);
           const nxt = nextForm(t);
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
