@@ -427,8 +427,19 @@ export function ParticleLeadLayer({
     const tier = getDeviceTier();
     // continuity: a field still fading from the previous journey carries over
     // from its current opacity (never a cut at the handoff)
-    const carry = Math.max(0, Math.min(1, Number(sh.canvas.style.opacity || "0") || 0));
+    // (2026-10-08: "a particle form burst in the transition after ghost to the
+    // title"): read the opacity ON SCREEN, not the style target — mid-fade the
+    // target is already "0", so the new journey thought the field was gone and
+    // scattered it wide (the gather-entrance) while it was still visible. Pin
+    // the canvas at that value through the DOM move; the field flows on.
+    let carry = 0;
+    try { carry = Math.max(0, Math.min(1, Number(getComputedStyle(sh.canvas).opacity) || 0)); } catch { carry = 0; }
+    if (carry < 0.02) carry = 0;
+    sh.canvas.style.transition = "none";
+    sh.canvas.style.opacity = Math.max(0.001, carry).toFixed(3);
     host.appendChild(sh.canvas);
+    void sh.canvas.offsetWidth; // commit the pinned value before transitions resume
+    sh.canvas.style.transition = "opacity 0.6s linear";
     canvasRef.current = sh.canvas;
     engine.resize();
     const proc = new SpectrumProcessor({ bins: 96, source: "kinetic" });
@@ -584,7 +595,6 @@ export function ParticleLeadLayer({
     // fading turned the field into a few big, bright motes popping out one by
     // one ("drop frames and disappear", Karel 2026-10-06); only opacity fades
     let densP = 0;
-    let zeroSince = 0;
     // variety (Karel 2026-10-06: "limited amount of shapes … always the same
     // amount and the same distance"): forms evolve while visible, and every
     // appearance draws its own figure, distance and density
@@ -1174,11 +1184,14 @@ export function ParticleLeadLayer({
       // the shaders down, and the particles were fading out with them (Karel
       // v3: "they often times get lost over the imaging")
       if (canvasRef.current) {
-        canvasRef.current.style.opacity = (presence * 0.85).toFixed(3);
+        // NEVER OUT OF THE COMPOSITOR (2026-10-08: a 0.5-3.3 s GPU freeze as the
+        // field first appeared — the opening emblem — at the kiosk's 2× density:
+        // a hidden layer re-promoted at full size. Reproduced at dpr 2, gone with
+        // the layer kept composited): absent = an invisible 0.1 %, never hidden
+        canvasRef.current.style.opacity = Math.max(0.001, presence * 0.85).toFixed(3);
         // out of the compositor only after a full second at zero (the CSS
         // opacity transition must finish first — hiding early popped)
-        if (presence > 0 || dissolving) zeroSince = now;
-        canvasRef.current.style.visibility = now - zeroSince < 1000 ? "visible" : "hidden";
+        canvasRef.current.style.visibility = "visible";
       }
       // a soft radial contrast veil under the form — never a full-frame wash
       if (contrastRef.current) {

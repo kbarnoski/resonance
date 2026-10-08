@@ -94,7 +94,9 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
   const canvas = document.createElement("canvas");
   Object.assign(canvas.style, {
     position: "absolute", inset: "0", width: "100%", height: "100%", pointerEvents: "none",
-    opacity: "0", visibility: "hidden", transition: "opacity 0.6s linear",
+    // composited from birth (2026-10-08 opening-freeze fix): invisible 0.1 %,
+    // never visibility:hidden while in use, its own layer (will-change)
+    opacity: "0.001", visibility: "visible", willChange: "opacity", transition: "opacity 0.6s linear",
   } as Partial<CSSStyleDeclaration>);
   canvas.setAttribute("aria-hidden", "true");
   canvas.dataset.particleLead = "1";

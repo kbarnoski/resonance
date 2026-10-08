@@ -91,3 +91,20 @@ ParticleResolve canvas starting up (GPU-side, not JS). Removing title particles
 - Measurement gotcha: 4 parallel review browsers + the kiosk tripped the
   particle watchdog in the TEST browsers (particles off → frozen diag); motion
   runs use --parallel 2 and the report rejects disabled runs.
+
+## Afternoon notes (kiosk relaunched on f5de536c, ~12:05)
+- Opening freeze (1.1 s as Snowflake's first emblem forms; 0.5-1 s at some
+  handoffs) — REPRODUCED at dpr 2 (probe-open.mjs), bisected to b15fd5ac:
+  removing the particle titles left the particle canvas `visibility:hidden`
+  while absent; its first full-size re-promotion stalled the GPU. Fix (pending
+  deploy): canvas stays composited (opacity floor 0.001, never hidden,
+  will-change). Old build 7b26 + titles restored = no stall (3/3 runs).
+- "particle form burst in the transition after ghost to the title" — REAL: the
+  next journey read the canvas's target opacity ("0") mid-fade, thought the
+  field was gone and fired the scatter-wide entrance. Fix (pending): carry the
+  ON-SCREEN opacity through the handoff.
+- "in chemo i saw the emblem jump or pop off" — overlapped my bisect build +
+  probes (12:26-12:32); recheck on clean data.
+- "in ghost when those lights coming down shader is happening they are slowed
+  by the particle system" — Ghost ran during a build (12:26-12:30); recheck clean.
+  If real: shader time vs frame rate, GPU load of particles at dpr 2.
