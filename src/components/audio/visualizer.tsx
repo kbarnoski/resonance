@@ -251,6 +251,7 @@ export function ShaderVisualizer({
   bandDriveOnly = false,
   tempoFlow = false,
   paused = false,
+  refireReadyOnResume = false,
   onReady,
   modeTag,
 }: {
@@ -277,6 +278,10 @@ export function ShaderVisualizer({
    *  Used for A/B buffer layers parked at opacity ≈ 0 — an invisible layer
    *  shouldn't burn a full-screen fragment pass every frame. */
   paused?: boolean;
+  /** Persistent dual/tertiary layers (2026-10-09): a parked layer resumed
+   *  with the SAME shader never recompiles, so it signals ready again on
+   *  its first frame after `paused` flips false. */
+  refireReadyOnResume?: boolean;
   /** Fires when the shader has compiled and rendered its first frame.
    *  `ok=false` means compilation/linking failed — callers should abort any
    *  pending crossfade instead of fading into a dead layer. */
@@ -309,6 +314,7 @@ export function ShaderVisualizer({
   latestFlagsRef.current = { smoothMotion, tempoFlow, bandFocus, bandDriveOnly };
   const flagsRef = useRef<DriveFlags>(latestFlagsRef.current);
   const pausedRef = useRef(paused);
+  const resumeReadyRef = useRef(false);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
 
@@ -363,8 +369,9 @@ export function ShaderVisualizer({
 
   // Keep refs in sync without tearing down GL program
   useEffect(() => {
+    if (pausedRef.current && !paused && refireReadyOnResume) resumeReadyRef.current = true;
     pausedRef.current = paused;
-  }, [paused]);
+  }, [paused, refireReadyOnResume]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -600,6 +607,10 @@ export function ShaderVisualizer({
         return;
       }
 
+      if (resumeReadyRef.current) {
+        resumeReadyRef.current = false;
+        readyFired = false;
+      }
       // Signal readiness on the first rendered frame — triggers crossfade start
       if (!readyFired) {
         readyFired = true;
@@ -1535,6 +1546,22 @@ export function VisualizerCore({
     ) : null;
   };
 
+  // Persistent dual/tertiary canvases (kiosk CPU profile 2026-10-09, Stand
+  // 10): mounting a layer per switch cost getContext 55-62ms + first frames
+  // ~25ms, and the unmount's loseContext 42ms — every dual/tertiary change
+  // dropped frames. Each slot now keeps its canvas + context for good,
+  // holding its last shader parked (paused, hidden) while its mode is null;
+  // the next mode recompiles on the same context. 5 shader contexts total.
+  const dualAHeldRef = useRef<string | null>(null);
+  const dualBHeldRef = useRef<string | null>(null);
+  const tertiaryHeldRef = useRef<string | null>(null);
+  if (dualLayerAMode && SHADERS[dualLayerAMode as VisualizerMode]) dualAHeldRef.current = dualLayerAMode;
+  if (dualLayerBMode && SHADERS[dualLayerBMode as VisualizerMode]) dualBHeldRef.current = dualLayerBMode;
+  if (tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode]) tertiaryHeldRef.current = tertiaryShaderVisible;
+  const dualAHeld = dualAHeldRef.current;
+  const dualBHeld = dualBHeldRef.current;
+  const tertiaryHeld = tertiaryHeldRef.current;
+
   return (
     <>
       {/* Shader layers — dimmed when journey browser is open */}
@@ -1575,13 +1602,15 @@ export function VisualizerCore({
 
         {/* ── Dual shader: A/B buffer ──
             Same persistent-layer pattern. mixBlendMode: screen for overlay effect. */}
-        {dualLayerAMode && SHADERS[dualLayerAMode as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualA", dualLayerAMode)})` as unknown as number }}>
+        {dualAHeld && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", visibility: dualLayerAMode ? undefined : "hidden", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualA", dualAHeld)})` as unknown as number }}>
             <div ref={setDualLayerARef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
                 dataArray={dataArray}
-                fragShader={SHADERS[dualLayerAMode as VisualizerMode]!}
+                fragShader={SHADERS[dualAHeld as VisualizerMode]!}
+                paused={!dualLayerAMode}
+                refireReadyOnResume
                 bandFocus={bandDual}
                 bandDriveOnly={bandDriveOnly}
                
@@ -1592,13 +1621,15 @@ export function VisualizerCore({
             </div>
           </div>
         )}
-        {dualLayerBMode && SHADERS[dualLayerBMode as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualB", dualLayerBMode)})` as unknown as number }}>
+        {dualBHeld && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", visibility: dualLayerBMode ? undefined : "hidden", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("dualB", dualBHeld)})` as unknown as number }}>
             <div ref={setDualLayerBRef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
                 dataArray={dataArray}
-                fragShader={SHADERS[dualLayerBMode as VisualizerMode]!}
+                fragShader={SHADERS[dualBHeld as VisualizerMode]!}
+                paused={!dualLayerBMode}
+                refireReadyOnResume
                 bandFocus={bandDual}
                 bandDriveOnly={bandDriveOnly}
                
@@ -1611,13 +1642,15 @@ export function VisualizerCore({
         )}
 
         {/* Tertiary shader — single layer with fade in/out (kept simple) */}
-        {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("tertiary", tertiaryShaderVisible)})` as unknown as number }}>
+        {tertiaryHeld && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", visibility: tertiaryShaderVisible ? undefined : "hidden", opacity: `calc(var(--shader-opacity, 1) * ${layerGain("tertiary", tertiaryHeld)})` as unknown as number }}>
             <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
                 dataArray={dataArray}
-                fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
+                fragShader={SHADERS[tertiaryHeld as VisualizerMode]!}
+                paused={!tertiaryShaderVisible}
+                refireReadyOnResume
                 bandFocus={bandTertiary}
                 bandDriveOnly={bandDriveOnly}
                
