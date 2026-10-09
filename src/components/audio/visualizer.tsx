@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 
@@ -241,6 +242,12 @@ export { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D } from "@/lib/shaders";
 // starts rendering once the program is ready. This prevents the 50-200ms
 // freezes that caused visible glitches during shader crossfades.
 
+let shaderNames: Map<string, string> | null = null;
+function shaderNameOf(src: string): string {
+  shaderNames ??= new Map(Object.entries(SHADERS).map(([k, v]) => [v as string, k]));
+  return shaderNames.get(src) ?? "?";
+}
+
 export function ShaderVisualizer({
   analyser,
   dataArray,
@@ -377,6 +384,15 @@ export function ShaderVisualizer({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Sync-cost probe (2026-10-09 soak: 9/20 remaining hitches follow a
+    // shader switch): each GL step that blocks the main thread > 15 ms is
+    // logged with its phase, so the soak names the exact call.
+    const syncTag = modeTag ?? shaderNameOf(fragShader);
+    const syncNote = (phase: string, t0: number) => {
+      const ms = performance.now() - t0;
+      if (ms > 15) glitchRecord("shader-sync", `${syncTag} ${phase} ${Math.round(ms)}ms`);
+    };
+    const tSetup = performance.now();
     const gl = canvas.getContext("webgl");
     if (!gl) return;
     glForUnmountRef.current = gl;
@@ -395,6 +411,7 @@ export function ShaderVisualizer({
     const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
     gl.shaderSource(fs, fragShader);
     gl.compileShader(fs);
+    syncNote("setup", tSetup);
 
     let animId: number;
     let program: WebGLProgram | null = null;
@@ -537,10 +554,13 @@ export function ShaderVisualizer({
       // Polls GPU compilation status each frame. Canvas stays blank/transparent
       // during compilation, which is invisible because the crossfade keeps the
       // old shader at full opacity until we signal onReady.
+      const tSync = performance.now();
+      const wasReady = compilePhase === "ready";
       if (compilePhase === "compiling") {
         if (ext) {
           const vsReady = gl.getShaderParameter(vs, ext.COMPLETION_STATUS_KHR);
           const fsReady = gl.getShaderParameter(fs, ext.COMPLETION_STATUS_KHR);
+          syncNote("poll-compile", tSync);
           if (!vsReady || !fsReady) {
             animId = requestAnimationFrame(render);
             return; // Still compiling on GPU thread, try next frame
@@ -565,6 +585,7 @@ export function ShaderVisualizer({
         gl.attachShader(program, vs);
         gl.attachShader(program, fs);
         gl.linkProgram(program);
+        syncNote("compiled+link-start", tSync);
         compilePhase = "linking";
         if (ext) {
           animId = requestAnimationFrame(render);
@@ -599,6 +620,7 @@ export function ShaderVisualizer({
         uMid = gl.getUniformLocation(program!, "u_mid");
         uTreble = gl.getUniformLocation(program!, "u_treble");
         uAmplitude = gl.getUniformLocation(program!, "u_amplitude");
+        syncNote("linked", tSync);
         compilePhase = "ready";
       }
 
@@ -727,6 +749,7 @@ export function ShaderVisualizer({
       gl.uniform1f(uAmplitude, s.amplitude * REACTIVITY);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      if (!wasReady) syncNote("first-draw", tSync);
       // EQ embodiment (Karel 2026-09-30: "basically an incredible eq
       // viz" — uniforms alone read as ambient because most shaders use
       // them subtly): a band-focused LAYER pulses as a whole, its

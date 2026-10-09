@@ -100,7 +100,7 @@ function startMonitors(): void {
     try {
       new PerformanceObserver((list) => {
         for (const e of list.getEntries() as PerformanceEntry[] & { blockingDuration?: number; renderStart?: number; scripts?: { duration: number; sourceFunctionName?: string; sourceURL?: string; sourceCharPosition?: number; invoker?: string }[] }[]) {
-          if (e.duration < 150) continue;
+          if (e.duration < 60) continue; // was 150 — hid every 60-110 ms hitch (2026-10-09)
           const top = (e.scripts ?? []).filter((x) => x.duration >= 20).sort((a, b) => b.duration - a.duration).slice(0, 3)
             .map((x) => `${x.sourceFunctionName || x.invoker || "?"}@${(x.sourceURL || "").split("/").pop()}:${x.sourceCharPosition ?? "?"} ${Math.round(x.duration)}ms`).join(" | ");
           emit({
