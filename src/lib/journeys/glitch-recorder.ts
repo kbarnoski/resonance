@@ -19,7 +19,11 @@ const BUFFER_MAX = 3000;
 const buffer: GlitchEvent[] = [];
 let uploaderStarted = false;
 let rafMonitorStarted = false;
-let lastUploadIdx = 0;
+// Monotonic counts, not buffer indices (2026-10-09): the ring trim used to
+// leave an index pinned at BUFFER_MAX, so every session went silent after
+// its first ~3000 events — about 50 min into a soak.
+let emitted = 0;
+let uploaded = 0;
 const sessionId = Math.random().toString(36).slice(2, 8);
 
 /** Every event goes through here. REVIEW TAP (2026-10-07, opt-in, zero cost
@@ -28,6 +32,8 @@ const sessionId = Math.random().toString(36).slice(2, 8);
  *  the 20 s uploads lose their tail when a review page closes. */
 function emit(ev: GlitchEvent): void {
   buffer.push(ev);
+  emitted++;
+  if (buffer.length > BUFFER_MAX) buffer.splice(0, buffer.length - BUFFER_MAX);
   const tap = (window as unknown as { __resonanceGlitchTap?: (e: GlitchEvent) => void }).__resonanceGlitchTap;
   if (tap) { try { tap(ev); } catch { /* rig-side error never touches the app */ } }
 }
@@ -40,15 +46,14 @@ export function glitchRecord(type: string, detail?: string): void {
     type,
     detail,
   });
-  if (buffer.length > BUFFER_MAX) buffer.splice(0, buffer.length - BUFFER_MAX);
   startMonitors();
 }
 
 async function upload(reason: string): Promise<void> {
-  const pending = buffer.slice(lastUploadIdx);
+  const from = Math.max(uploaded, emitted - buffer.length);
+  const pending = buffer.slice(from - (emitted - buffer.length));
   if (pending.length === 0) return;
-  const from = lastUploadIdx;
-  lastUploadIdx = buffer.length;
+  uploaded = emitted;
   try {
     const res = await fetch("/api/review/glitch-log", {
       method: "POST",
@@ -61,7 +66,7 @@ async function upload(reason: string): Promise<void> {
   } catch {
     // offline / server restarting (2026-10-07: a ~65 s deploy restart erased
     // the very window being debugged) — keep the events for the next flush
-    lastUploadIdx = Math.min(lastUploadIdx, from);
+    uploaded = Math.min(uploaded, from);
   }
 }
 
