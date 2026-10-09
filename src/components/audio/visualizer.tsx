@@ -432,6 +432,18 @@ export function ShaderVisualizer({
     // still reads as "smooth" for abstract shader motion; 45fps on medium is a
     // gentle safety net for hardware that can't quite sustain 60.
     const minFrameMs = tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
+    // HEADROOM CAP (2026-10-08 soak): uncapped on the kiosk's 120 Hz panel the
+    // kinetic journeys' band-split layers ran the GPU flat out (~75 fps,
+    // 16-41 micro-gaps per Kinetic Lab journey vs ~0 elsewhere), so every
+    // still upload or shader switch dropped visible frames (80-108 ms). A
+    // 60 fps cap leaves headroom to absorb those spikes; the slow shader
+    // motion reads the same. ?fpscap=0 disables, =60 caps every journey.
+    const fpsCapQ = typeof location !== "undefined" ? new URLSearchParams(location.search).get("fpscap") : null;
+    const headroomCapMs = () => {
+      if (fpsCapQ === "0") return 0;
+      if (fpsCapQ === "60") return 1000 / 60 - 2;
+      return isKineticJourneyName(useAudioStore.getState().activeJourney?.name) ? 1000 / 60 - 2 : 0;
+    };
 
     // EQ persistent state — EFFECT scope, NOT per-frame (2026-09-30:
     // these lived inside render() and reset every frame; the probe's
@@ -472,7 +484,8 @@ export function ShaderVisualizer({
       const now = performance.now();
       // Skip frames under the cap — still request the next rAF to stay synced
       // with vsync, just skip the draw.
-      if (minFrameMs > 0 && now - lastFrameTime < minFrameMs) {
+      const capMs = minFrameMs || headroomCapMs();
+      if (capMs > 0 && now - lastFrameTime < capMs) {
         animId = requestAnimationFrame(render);
         return;
       }
