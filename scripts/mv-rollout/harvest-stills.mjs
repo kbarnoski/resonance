@@ -98,8 +98,8 @@ for (const j of JOURNEYS) {
   }
 }
 writeFileSync(`${OUT}/slots.json`, JSON.stringify(manifest, null, 1));
-// Ice-family negative only when the shot doesn't ask for it (Karel lifted the exclusivity 2026-10-09).
-const negativeFor = (prompt) => [D.GLOBAL_NEGATIVE, D.TRAMOKYO_EXTRA_NEGATIVE, D.materialNegativeFor(prompt)].filter(Boolean).join(", ");
+// Celestial + ice-family negatives only when the shot doesn't ask for them (Karel lifted the exclusivity 2026-10-09).
+const negativeFor = (prompt) => [D.GLOBAL_NEGATIVE, D.extraNegativeFor(prompt), D.materialNegativeFor(prompt)].filter(Boolean).join(", ");
 console.log(`${jobs.length} stills to render (~$${(jobs.length * 0.025).toFixed(2)})`);
 let next = 0, ok = 0, bad = 0;
 async function worker() {

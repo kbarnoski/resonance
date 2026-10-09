@@ -85,7 +85,7 @@ low-register, warm; the right theme was an amber underground dawn. Check the
 theme AGAINST the profile before authoring: cold sparse themes need cold
 sparse music.
 
-- **Materials are open (Karel, 2026-10-09):** *"i dont need snow to be held
+- **Materials are open (Karel, 2026-10-09; widened the same day to "all of natures elements are free to use" — see law 7):** *"i dont need snow to be held
   to just snowflake. we have such a big set of journeys its all good. that
   was an earlier time."* Snow/ice/frost/crystal/aurora may appear in any
   journey whose music supports a cold theme (law 0 still decides). The
@@ -258,13 +258,18 @@ in a positive prompt (negation summons the noun — the moon lesson).
 
 **Check:** eye check (sample frames for figures).
 
-### Law 7 — No moons/planets/orbs by occupation
+### Law 7 — Nature's elements are all free; no UNASKED orbs
 
-Fill every open sky with the theme's own material (clouds, aurora, dust,
-falling light, canopy). FLUX ignores negative prompts; positive occupation is
-the only lever.
+*Karel, 2026-10-09: "all of natures elements are free to use."* Sun, moon,
+planets, stone, fire, water, earth, air, snow, ice — any element may be a
+subject when the music supports it (law 0). What stays: FLUX drops cliché
+moon/planet orbs into open skies nobody asked for (the Playa pink-moon
+lesson), so a shot that does NOT name a celestial body keeps the celestial
+negative (`extraNegativeFor` in prompt-decoration.ts) and fills its sky with
+the theme's own material. *(Superseded: "no moons/planets/orbs" and the
+shot-list ban on sun/moon/planet/stone.)*
 
-**Check:** eye check (sample frames for moons).
+**Check:** eye check (sample frames for unasked orbs).
 
 ### Law 8 — Spirit energy (SBL + March Light)
 

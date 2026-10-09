@@ -84,7 +84,7 @@ async function loadAppModules() {
         export { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
           STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
-          TRAMOKYO_PHASE_WEIGHT, TRAMOKYO_EXTRA_NEGATIVE,
+          TRAMOKYO_PHASE_WEIGHT, TRAMOKYO_EXTRA_NEGATIVE, extraNegativeFor,
           TRAMOKYO_MATERIAL_NEGATIVE, SNOW_EXEMPT_JOURNEY_IDS, materialNegativeFor,
           TRAMOKYO_STYLE_SUFFIX } from "@/lib/journeys/prompt-decoration";
         export { allocateByPhase } from "@/lib/journeys/pack-image-allocation";
@@ -310,7 +310,7 @@ async function main() {
     // Treated runs ban moons/planets/humans in the REAL negative (the
     // in-prompt "no moon" phrasing reads as "moon" — 2026-09-21).
     // Ghost keeps her figure: skip the human terms for the LoRA journey.
-    if (TREATMENT === "tramokyo" && !t.isGhost) negative = `${negative}, ${app.TRAMOKYO_EXTRA_NEGATIVE}`;
+    if (TREATMENT === "tramokyo" && !t.isGhost) negative = `${negative}, ${app.extraNegativeFor(prompt)}`; // 2026-10-09: celestial guard only when unasked
     if (TREATMENT === "tramokyo" && t.isGhost) negative = `${negative}, moon, moons, full moon, planet, planets`;
     // Material law: ban the ice family everywhere EXCEPT the Snowflake
     // journeys themselves (2026-09-27 audit — 15 journeys shipped snow).

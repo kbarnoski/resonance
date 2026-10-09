@@ -38,8 +38,8 @@ const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7).split("
 const { JOURNEYS, SET } = await import(`./shotlists/${setKey}.mjs`);
 import { TAIL } from "./tail.mjs";
 // summoning / law words that must never appear in a shot (FLUX reads
-// negations as the noun; stone clichés; drug words (ice family allowed since 2026-10-09); figures)
-const BANNED = /\b(silhouettes?|figures?|person|people|human|man|woman|face|sun|suns|sunrise|sunset|moon|moons|planet|psychedelic|dmt|trip|stone|stones|cathedral|nave|cloister|arch(es)?|temple|statue|window|door|streets?|station|text|letters?)\b/i;
+// negations as the noun; drug words; all of nature's elements allowed since 2026-10-09; figures)
+const BANNED = /\b(silhouettes?|figures?|person|people|human|man|woman|face|psychedelic|dmt|trip|cathedral|nave|cloister|arch(es)?|temple|statue|window|door|streets?|station|text|letters?)\b/i;
 
 const problems = [];
 const built = [];

@@ -186,11 +186,21 @@ export const TRAMOKYO_PHASE_WEIGHT: Record<string, number> = {
  * in-prompt ban. Real bans live here, applied by the harvest whenever
  * --treatment=tramokyo runs, alongside GLOBAL_NEGATIVE.
  */
-export const TRAMOKYO_EXTRA_NEGATIVE =
+const CELESTIAL_NEGATIVE =
   "moon, moons, full moon, crescent moon, glowing moon, moon orb, " +
-  "planet, planets, planetary sphere, large celestial sphere, orb in sky, " +
+  "planet, planets, planetary sphere, large celestial sphere, orb in sky";
+const HUMAN_NEGATIVE =
   "person, people, human figure, human figures, human silhouette, " +
   "man, woman, child, body, face";
+export const TRAMOKYO_EXTRA_NEGATIVE = `${CELESTIAL_NEGATIVE}, ${HUMAN_NEGATIVE}`;
+
+/** Karel 2026-10-09: "all of natures elements are free to use." A shot that names the moon, a planet
+ *  or the sun on purpose gets no celestial negative fighting it; every other shot keeps the guard
+ *  against FLUX's unasked-for orbs (the Playa pink-moon lesson). Humans stay banned everywhere. */
+const CELESTIAL = /\b(moons?|lunar|planets?|planetary|sun|suns|solar|sunrise|sunset|orbs?)\b/i;
+export function extraNegativeFor(prompt: string): string {
+  return CELESTIAL.test(prompt) ? HUMAN_NEGATIVE : TRAMOKYO_EXTRA_NEGATIVE;
+}
 
 // Material law (2026-09-27 audit): the ice family belongs to Snowflake
 // alone — 15 journeys shipped snow/frost from the 09-23 batch. Applied
