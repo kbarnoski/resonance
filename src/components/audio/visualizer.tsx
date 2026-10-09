@@ -45,7 +45,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isKineticJourneyName, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
+import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -477,7 +477,7 @@ export function ShaderVisualizer({
     const headroomCapMs = () => {
       if (fpsCapQ === "0") return 0;
       if (fpsCapQ === "60") return 1000 / 60 - 2;
-      return isKineticJourneyName(useAudioStore.getState().activeJourney?.name) ? 1000 / 60 - 2 : 0;
+      return isFullKineticJourney(useAudioStore.getState().activeJourney) ? 1000 / 60 - 2 : 0;
     };
 
     // EQ persistent state — EFFECT scope, NOT per-frame (2026-09-30:
@@ -940,10 +940,10 @@ export function VisualizerCore({
   // Kinetic band-split journeys: each shader layer listens to one band.
   const kineticName = useAudioStore((s) => s.activeJourney?.name);
   const activeJourneyId = useAudioStore((s) => s.activeJourney?.id);
-  const kinetic = isKineticJourneyName(kineticName);
-  // AUDIO-REACTIVE (Karel 2026-10-05, "this goes for all"): every other
-  // non-mastered journey gets the same band drive on its shader clocks —
-  // drive-only, none of the kinetic-mode behaviours (see kinetic.ts).
+  // Full kinetic everywhere but Snowflake + Ghost (Karel 2026-10-09).
+  const kinetic = isFullKineticJourney({ id: activeJourneyId, name: kineticName });
+  // (The 2026-10-05 drive-only tier — band drive without the kinetic layer
+  // behaviours — is now unused: every non-mastered journey is full kinetic.)
   const journeyRef = { id: activeJourneyId, name: kineticName };
   const audioReactive = kinetic || isAudioReactiveJourney(journeyRef);
   const bandDriveOnly = audioReactive && !kinetic;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAudioStore } from "./audio-store";
 import { ensureResumed, getAnalyserNode } from "./audio-engine";
-import { isKineticJourneyName } from "@/lib/journeys/kinetic";
+import { isFullKineticJourney } from "@/lib/journeys/kinetic";
 import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
 import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
@@ -236,7 +236,7 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               // responding to sound" — this pinpoints the dead link).
               diag: {
                 ar: s.activeJourney?.audioReactive ?? null,
-                kin: isKineticJourneyName(s.activeJourney?.name),
+                kin: isFullKineticJourney(s.activeJourney),
                 an: !!getAnalyserNode(),
                 // Particle engine state (2026-10-05 kiosk verification):
                 // "on" = drawing now, "idle" = enabled but not presenting,

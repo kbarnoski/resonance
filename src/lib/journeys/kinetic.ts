@@ -80,6 +80,19 @@ export function isKineticJourneyName(name?: string | null): boolean {
   return /^(chemiluminescence|rolling|stand|cabin soul)\s+\d/i.test(name.trim());
 }
 
+/** FULL KINETIC MODE gate (Karel 2026-10-09: "i only want snowflake and ghost
+ *  exempt from kinetic. every other one should be fully kinetic"; "we built
+ *  out a system to use everywhere but snowflake and ghost"). The kinetic
+ *  LAYER behaviour — mid voice always on, short treble windows at any
+ *  intensity, structural-presence fades, full band response, 60 fps headroom
+ *  cap — now runs on every non-mastered journey. Which shaders a journey
+ *  plays (its cast) is a separate question: isKineticJourneyName still
+ *  selects the hand-curated kinetic casts; every other journey keeps its own. */
+export function isFullKineticJourney(journey?: { id?: string | null; name?: string | null } | null): boolean {
+  if (!journey || (!journey.id && !journey.name)) return false;
+  return !isMasteredJourneyLike(journey);
+}
+
 /** Imagery whisper (one low-opacity still) — pure-shader lab pieces
  *  only; Rolling/Stand keep epic imagery under their reactive light. */
 export function isWhisperImageryName(name?: string | null): boolean {

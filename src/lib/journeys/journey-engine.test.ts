@@ -12,15 +12,15 @@ import { getJourneyEngine } from "./journey-engine";
 import { defaultPhases } from "./journeys";
 import type { Journey } from "./types";
 
-function makeJourney(intensities: [number, number, number, number, number, number]): Journey {
+function makeJourney(intensities: [number, number, number, number, number, number], id = "test-conductor"): Journey {
   const ids = ["threshold", "expansion", "transcendence", "illumination", "return", "integration"] as const;
   const bounds: Array<[number, number]> = [[0, 0.1], [0.1, 0.3], [0.3, 0.6], [0.6, 0.75], [0.75, 0.9], [0.9, 1]];
   const overrides = Object.fromEntries(
     ids.map((id, i) => [id, { start: bounds[i][0], end: bounds[i][1], intensityMultiplier: intensities[i] }]),
   );
   return {
-    id: "test-conductor",
-    name: "Conductor Test",
+    id,
+    name: id === "test-conductor" ? "Conductor Test" : id,
     subtitle: "",
     description: "",
     realmId: "cosmos",
@@ -51,8 +51,10 @@ describe("composition conductor", () => {
   beforeEach(() => vi.restoreAllMocks());
   afterEach(() => getJourneyEngine().stop());
 
-  it("holds the dual layer back in quiet phases and engages it in the build", () => {
-    const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3]));
+  // The intensity-gated conductor now governs only the kinetic-exempt
+  // journeys (Snowflake, Ghost — Karel 2026-10-09); "ghost" stands in here.
+  it("holds the dual layer back in quiet phases and engages it in the build (kinetic-exempt)", () => {
+    const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3], "ghost"));
     const quietStart = frames.filter((f) => f.progress < 0.08);
     const climax = frames.filter((f) => f.progress > 0.35 && f.progress < 0.55);
     const quietEnd = frames.filter((f) => f.progress > 0.93);
@@ -62,8 +64,8 @@ describe("composition conductor", () => {
     expect(quietEnd.every((f) => !f.dualShaderMode)).toBe(true);
   });
 
-  it("reserves the tertiary layer for the climax (activation-gated)", () => {
-    const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3]));
+  it("reserves the tertiary layer for the climax (activation-gated, kinetic-exempt)", () => {
+    const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3], "ghost"));
     // The tertiary may ride through a breath valley once active, but it
     // only ever ACTIVATES inside a climax-intent PHASE (2026-09-30: the
     // gate reads the composer's phase intensity, not the instantaneous
@@ -81,6 +83,14 @@ describe("composition conductor", () => {
     }
     // and the climax actually gets its third layer at some point
     expect(frames.some((f) => !!f.tertiaryShaderMode)).toBe(true);
+  });
+
+  it("full kinetic (every journey but Snowflake + Ghost): the mid voice never drops out, the treble plays outside the climax", () => {
+    const frames = run(makeJourney([0.4, 0.7, 1, 0.75, 0.5, 0.3]));
+    const quiet = frames.filter((f) => f.progress > 0.02 && f.progress < 0.08);
+    expect(quiet.length).toBeGreaterThan(3);
+    expect(quiet.some((f) => !!f.dualShaderMode)).toBe(true);
+    expect(frames.some((f) => !!f.tertiaryShaderMode && (f.progress < 0.3 || f.progress > 0.6))).toBe(true);
   });
 
   it("schedules stillness windows that drop the journey to a held sparse moment", () => {

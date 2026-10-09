@@ -2,7 +2,7 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
-import { isKineticJourneyName } from "./kinetic";
+import { isKineticJourneyName, isFullKineticJourney } from "./kinetic";
 import { TAKE_FINALE_SHADERS } from "./pinned-takes";
 import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
@@ -208,6 +208,8 @@ class JourneyEngine {
   /** Kinetic EQ journeys: dual locked on, tertiary continuous — all
    *  three band layers stay on screen (Karel 2026-09-30). */
   private kineticEq = false;
+  /** Hand-curated kinetic cast (Kinetic Lab / Expansion): play the journey's own shaders as written. */
+  private kineticCast = false;
   private takeSeedValue: number | null = null;
   private dualStartMs = 0;
   private nudgeForce = false;
@@ -261,7 +263,8 @@ class JourneyEngine {
 
     this.takeScript = options?.script?.length ? options.script : null;
     this.lastScriptPrim = null;
-    this.kineticEq = isKineticJourneyName(journey.name);
+    this.kineticCast = isKineticJourneyName(journey.name);
+    this.kineticEq = isFullKineticJourney(journey);
     this.scriptSubs = new Map();
     this.dualRestedMode = null;
     this.nudgeForce = false;
@@ -284,7 +287,7 @@ class JourneyEngine {
     // Phase-owned journeys (JourneyPhase.shaderOwned) play their authored
     // per-phase pools as written — regeneration would scatter them.
     const authoredOwned = journey.phases.some((p) => p.shaderOwned === true);
-    this.journey = this.kineticEq ? journey : (castJourneyShaders(journey) ?? (authoredOwned ? journey : regenerateJourneyShaders(journey, random, this.trackDuration)));
+    this.journey = this.kineticCast ? journey : (castJourneyShaders(journey) ?? (authoredOwned ? journey : regenerateJourneyShaders(journey, random, this.trackDuration)));
     // FINAL GUARD (2026-10-06): a globally banned shader can never play,
     // whatever a stored cast, DB row or procedural tail says (biofilm sat in
     // Expansion DB casts and Ghost's tail after it was banned)
@@ -399,7 +402,7 @@ class JourneyEngine {
       const regenRandom = this.takeSeedValue != null
         ? createSeededRandom(this.takeSeedValue + Math.round(duration))
         : this.random;
-      if (!this.kineticEq && !getJourneyCast(this.journey)) this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
+      if (!this.kineticCast && !getJourneyCast(this.journey)) this.journey = regenerateJourneyShaders(this.journey, regenRandom, duration);
       this.currentShaderMode = prevShader;
       this.dualShaderMode = prevDual;
     }
