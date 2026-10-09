@@ -237,44 +237,88 @@ const MOTIF_CAP = 48;
  *  field in quiet passages, rest tempo measured +23 % mean / +51 % p95 speed
  *  over the old build — calm, never dizzy (Karel) — so the field runs at 80 %. */
 const CALM_TEMPO = 0.8;
-/** Decode an image SMALL and CPU-side, off the main thread (2026-10-09 soak,
- *  uv-sync): the old new Image() + decode() + drawImage path left the decoded
- *  pixels GPU-side, so the first getImageData of the shrunk canvas re-decoded
- *  the full JPEG synchronously — 20-108 ms on a visible frame, after every
- *  still. fetch → createImageBitmap(resize) decodes and scales on a worker
- *  thread; the canvas then only ever holds a small CPU bitmap. Falls back to
- *  the old path on any failure. `size` maps natural (w, h) to target (w, h). */
-async function decodeSmall(url: string, size: (w: number, h: number) => [number, number], crossOrigin = false): Promise<HTMLCanvasElement | null> {
-  const toCanvas = (src: CanvasImageSource, w: number, h: number) => {
-    const c = document.createElement("canvas");
-    c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h));
-    const ctx = c.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return null;
-    ctx.drawImage(src, 0, 0, c.width, c.height);
-    return c;
-  };
+/** Decode an image SMALL and fully CPU-side, OFF the main thread.
+ *  2026-10-09 soak, uv-sync: the old new Image() + decode() path left pixels
+ *  GPU-side, so the first getImageData re-decoded the full JPEG (20-108 ms).
+ *  Main-thread createImageBitmap(resize) fixed the decode but not the stall:
+ *  the bitmap is GPU-backed too, so the deferred drawImage into the sampling
+ *  canvas still synced with the busy GPU process at readback (read 30-326 ms,
+ *  232x in the first soak hour). Now a worker fetches, decodes, scales AND reads
+ *  the pixels; the main thread only putImageData()s plain bytes into a
+ *  CPU canvas, which never touches the GPU. Falls back to the old path. */
+type Fit = { max: number } | { width: number };
+function fitSize(fit: Fit, w: number, h: number): [number, number] {
+  if ("width" in fit) return [fit.width, Math.max(1, Math.round((fit.width * h) / Math.max(1, w)))];
+  const k = Math.min(1, fit.max / Math.max(w, h));
+  return [Math.max(1, Math.round(w * k)), Math.max(1, Math.round(h * k))];
+}
+const DECODE_WORKER_SRC = `
+self.onmessage = async (ev) => {
+  const { id, url, fit, cors } = ev.data;
   try {
-    const res = await fetch(url, crossOrigin ? { mode: "cors" } : undefined);
+    const res = await fetch(url, cors ? { mode: "cors" } : undefined);
     if (!res.ok) throw new Error(String(res.status));
     const blob = await res.blob();
     const probe = await createImageBitmap(blob);
-    const [w, h] = size(probe.width, probe.height);
+    const nw = probe.width, nh = probe.height;
     probe.close();
-    const bmp = await createImageBitmap(blob, { resizeWidth: Math.max(1, Math.round(w)), resizeHeight: Math.max(1, Math.round(h)), resizeQuality: "high" });
-    const c = toCanvas(bmp, bmp.width, bmp.height);
+    let w, h;
+    if (fit.width) { w = fit.width; h = Math.max(1, Math.round((fit.width * nh) / Math.max(1, nw))); }
+    else { const k = Math.min(1, fit.max / Math.max(nw, nh)); w = Math.max(1, Math.round(nw * k)); h = Math.max(1, Math.round(nh * k)); }
+    const bmp = await createImageBitmap(blob, { resizeWidth: w, resizeHeight: h, resizeQuality: "high" });
+    const oc = new OffscreenCanvas(w, h);
+    const ctx = oc.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(bmp, 0, 0);
     bmp.close();
-    return c;
-  } catch {
-    const img = new Image();
-    if (crossOrigin) img.crossOrigin = "anonymous";
-    img.src = url;
-    await img.decode().catch(() => undefined);
-    if (!img.naturalWidth) return null;
-    const [w, h] = size(img.naturalWidth, img.naturalHeight);
-    return toCanvas(img, w, h);
-  }
+    const buf = ctx.getImageData(0, 0, w, h).data.buffer;
+    self.postMessage({ id, w, h, buf }, [buf]);
+  } catch (e) { self.postMessage({ id, err: String(e) }); }
+};`;
+let decodeWorker: Worker | null | undefined;
+let decodeSeq = 0;
+const decodeWaiters = new Map<number, (r: { w?: number; h?: number; buf?: ArrayBuffer; err?: string }) => void>();
+function getDecodeWorker(): Worker | null {
+  if (decodeWorker !== undefined) return decodeWorker;
+  try {
+    const w = new Worker(URL.createObjectURL(new Blob([DECODE_WORKER_SRC], { type: "text/javascript" })));
+    w.onmessage = (ev) => { const r = ev.data; const f = decodeWaiters.get(r.id); if (f) { decodeWaiters.delete(r.id); f(r); } };
+    w.onerror = () => { for (const f of decodeWaiters.values()) f({ err: "worker" }); decodeWaiters.clear(); decodeWorker = null; };
+    decodeWorker = w;
+  } catch { decodeWorker = null; }
+  return decodeWorker;
 }
-const fitMax = (max: number) => (w: number, h: number): [number, number] => { const k = Math.min(1, max / Math.max(w, h)); return [w * k, h * k]; };
+async function decodeSmall(url: string, fit: Fit, crossOrigin = false): Promise<HTMLCanvasElement | null> {
+  const cpuCanvas = (w: number, h: number) => {
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    return { c, ctx: c.getContext("2d", { willReadFrequently: true }) };
+  };
+  const worker = getDecodeWorker();
+  if (worker) {
+    const id = ++decodeSeq;
+    const r = await new Promise<{ w?: number; h?: number; buf?: ArrayBuffer; err?: string }>((resolve) => {
+      decodeWaiters.set(id, resolve);
+      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin });
+    });
+    if (r.buf && r.w && r.h) {
+      const { c, ctx } = cpuCanvas(r.w, r.h);
+      if (!ctx) return null;
+      ctx.putImageData(new ImageData(new Uint8ClampedArray(r.buf), r.w, r.h), 0, 0);
+      return c;
+    }
+  }
+  // fallback: main-thread decode (correct, just not stall-free)
+  const img = new Image();
+  if (crossOrigin) img.crossOrigin = "anonymous";
+  img.src = url;
+  await img.decode().catch(() => undefined);
+  if (!img.naturalWidth) return null;
+  const [w, h] = fitSize(fit, img.naturalWidth, img.naturalHeight);
+  const { c, ctx } = cpuCanvas(w, h);
+  if (!ctx) return null;
+  ctx.drawImage(img, 0, 0, w, h);
+  return c;
+}
 
 /** Imagery-family motif designs (pack: motif-forms.json), decoded + shrunk once. */
 function loadMotifLibrary(): Promise<Record<string, string[]>> {
@@ -286,7 +330,7 @@ function motifImage(src: string): HTMLCanvasElement | null {
   if (hit) return hit;
   if (motifCanvas.has(src + "#loading")) return null;
   motifCanvas.set(src + "#loading", document.createElement("canvas"));
-  void decodeSmall(src, fitMax(512)).then((c) => {
+  void decodeSmall(src, { max: 512 }).then((c) => {
     if (!c) return; // failed load
     motifCanvas.set(src, c);
     warmUv(c);
@@ -367,7 +411,7 @@ export function ParticleLeadLayer({
         if (u.startsWith("@")) continue;
         // decoded + shrunk to ≤512 px NOW, so forming it later uploads a small
         // texture (a full 1024² JPEG upload hitched ~230 ms on a visible frame)
-        void decodeSmall(u, fitMax(512)).then((c) => {
+        void decodeSmall(u, { max: 512 }).then((c) => {
           if (!c || cancelled) return; // failed load
           imgs.push(c);
           emblemRef.current = [...imgs];
@@ -384,7 +428,7 @@ export function ParticleLeadLayer({
   useEffect(() => {
     if (!imageSrc) return;
     let cancelled = false;
-    void decodeSmall(imageSrc, fitMax(320), true).catch(() => null).then((c) => {
+    void decodeSmall(imageSrc, { max: 320 }, true).catch(() => null).then((c) => {
       if (!c || cancelled) return; // failed load
       warmUv(c);
       echoRef.current = c;
@@ -397,7 +441,7 @@ export function ParticleLeadLayer({
     momentImgs.current = [];
     let cancelled = false;
     for (const m of cast.signatureMoments ?? []) for (const u of m.images) {
-      void decodeSmall(u, fitMax(640)).then((c) => {
+      void decodeSmall(u, { max: 640 }).then((c) => {
         if (!c || cancelled) return; // failed load
         momentImgs.current = [...momentImgs.current, c];
         warmUv(c);
@@ -1358,12 +1402,12 @@ export function ParticleLeadLayer({
     if (!cast.dissolve || !imageSrc) return;
     counters.current.stills++;
     let cancelled = false;
-    let aspect = 1;
-    void decodeSmall(imageSrc, (nw, nh) => { aspect = nw / Math.max(1, nh); return [384, Math.max(1, Math.round((384 * nh) / Math.max(1, nw)))]; }, true)
+    void decodeSmall(imageSrc, { width: 384 }, true)
       .then((cv) => {
         const engine = engineRef.current;
         if (cancelled || !engine || !cv) return;
         const w = cv.width, h = cv.height;
+        const aspect = w / Math.max(1, h);
         const c2 = cv.getContext("2d", { willReadFrequently: true }); // CPU-backed: getImageData never reads back from the GPU
         if (!c2) return;
         // the still's brightness sets how much the contrast veil lifts the form
