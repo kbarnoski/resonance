@@ -103,7 +103,7 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
         new CustomEvent("installation-operator-jump-journey", { detail: programId ? `${jid}@${programId}` : jid })
       );
     } else {
-      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(jid)}`;
+      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(programId ? `${jid}@${programId}` : jid)}`;
     }
   } else if (cmd.startsWith("program:")) {
     // Jump the attract loop to a program's starting point. In the loop

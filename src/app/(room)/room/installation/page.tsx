@@ -501,7 +501,9 @@ export default async function InstallationPage({ searchParams }: Props) {
 
     // Resolve ?start now that programs exist. Accepts a program id
     // ("snowflake-ep"), a journey id (builtin like "ghost" or a path
-    // journey uuid), or a numeric index into the first program.
+    // journey uuid), "<journey id>@<program id>" (a borrowed piece in a
+    // given set — Rise Above shares ids with later sets), or a numeric
+    // index into the first program.
     let startProgramIndex = 0;
     let startIndexInProgram = 0;
     if (start && programsWithCues.length > 0) {
@@ -513,8 +515,10 @@ export default async function InstallationPage({ searchParams }: Props) {
         if (Number.isInteger(n) && n >= 0) {
           if (n < programsWithCues[0].sequence.length) startIndexInProgram = n;
         } else {
+          const [startJid, startIn] = start.split("@");
           for (let pi = 0; pi < programsWithCues.length; pi++) {
-            const ji = programsWithCues[pi].sequence.findIndex((e) => e.journey.id === start);
+            if (startIn && programsWithCues[pi].id !== startIn) continue;
+            const ji = programsWithCues[pi].sequence.findIndex((e) => e.journey.id === startJid);
             if (ji >= 0) {
               startProgramIndex = pi;
               startIndexInProgram = ji;
