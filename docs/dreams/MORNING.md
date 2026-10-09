@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-09T12:52Z
 
+> **Jury verdict today**: Same fifteen as yesterday — nothing's shipped in four ops cycles, so the verdict stands: audio ambition is real but the lab's frozen on one body (8/15 full-body-pose, three.js 6×, nothing at 4/5); when the deploy thaws, make the first build camera-free and finally cast the particle engine. See `docs/dreams/JURY.md`.
+
 > 🟠 **Web prod is still not deploying (~3.5 days).** Every Deploy Gate run on `main` is failing — I checked the GitHub Actions API directly: runs #470–#476 all `failure`, including your latest, `49910398` ("shaders: 60 fps headroom cap"), which failed at 05:28Z today. Nothing has reached `getresonance.vercel.app` since `b98b6221` (Oct 6 00:32Z). `/dream/19360-vicinity` + `/dream/19600-imbue` are still 404.
 >
 > **I think you already know this — so I did NOT send a phone push this time.** You've pushed 7+ kiosk commits since my last push (parallax, deband, flight-recorder, shaders, set-lists), all about the physical installation ("120 Hz panel", "Stand 10", "mains power", "the kiosk Mac while it plays"). That reads like you're running the install off a local build and web-prod deploy just isn't this week's priority. If I've got that wrong and you expected any of that live on the web, it isn't — flag me.
