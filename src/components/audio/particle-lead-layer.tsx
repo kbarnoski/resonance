@@ -121,12 +121,16 @@ type EmblemSource = HTMLCanvasElement | "@angel" | "@angel-outline";
 // ── importance-sampled image coordinates (crisp image forms) ──────────────
 const SAMPLE_N = (() => { const sd = Math.max(64, Math.min(1024, Math.round(Math.sqrt(160_000)))); return sd * sd; })();
 const uvCache = new WeakMap<object, Float32Array>();
+// One reused scratch canvas (it was a fresh canvas + surface per sampled
+// image, every ~170 ms while motifs warm).
+let uvScratch: HTMLCanvasElement | null = null;
 function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined {
   const W = Math.min(256, src.width), H = Math.max(1, Math.round((src.height * W) / Math.max(1, src.width)));
-  const c = document.createElement("canvas");
-  c.width = W; c.height = H;
+  const c = (uvScratch ??= document.createElement("canvas"));
+  if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
   const ctx = c.getContext("2d", { willReadFrequently: true });
   if (!ctx) return undefined;
+  ctx.clearRect(0, 0, W, H);
   ctx.drawImage(src, 0, 0, W, H);
   const d = ctx.getImageData(0, 0, W, H).data;
   const cdf = new Float64Array(W * H);
