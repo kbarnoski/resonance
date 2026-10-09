@@ -1488,6 +1488,23 @@ export function AiImageLayer({
 
     let lastW = 0;
     let lastH = 0;
+    // Native DPR (<=2) when the backing store stays <= ~6.5Mpx (2026-10-05,
+    // "looks rasterized": a 1.5x canvas on a DPR-2 panel is resampled
+    // twice). Mastered journeys keep their 1.5x ceiling. Assigning width
+    // reallocates the bitmap, so only on a real size change.
+    const fit = () => {
+      const dpr = Math.min(devicePixelRatio, imageryDprCeil(canvas.clientWidth, canvas.clientHeight, useAudioStore.getState().activeJourney));
+      const w = canvas.clientWidth * dpr;
+      const h = canvas.clientHeight * dpr;
+      if (w !== lastW || h !== lastH) {
+        canvas.width = w;
+        canvas.height = h;
+        lastW = w;
+        lastH = h;
+      }
+      return [w, h] as const;
+    };
+    let blank = true;
 
     // 2026-09-19 audit: this loop used to redraw every display frame
     // (120fps on ProMotion) forever, even with zero layers — a constant
@@ -1502,31 +1519,37 @@ export function AiImageLayer({
     function render() {
       if (!canvas || !ctx) return;
       const nowTs = performance.now();
-      if (nowTs - lastDraw < minFrameMs || layersRef.current.length === 0) {
-        // Still keep the canvas clear when the last layer just vanished.
-        if (layersRef.current.length === 0 && lastW > 0) {
-          ctx.clearRect(0, 0, lastW, lastH);
-          lastW = 0;
-          lastH = 0;
-        }
+      if (nowTs - lastDraw < minFrameMs) {
         animRef.current = requestAnimationFrame(render);
         return;
       }
       lastDraw = nowTs;
-
-      // Native DPR (<=2) when the backing store stays <= ~6.5Mpx (2026-10-05,
-      // "looks rasterized": a 1.5x canvas on a DPR-2 panel is resampled
-      // twice). Mastered journeys keep their 1.5x ceiling.
-      const dpr = Math.min(devicePixelRatio, imageryDprCeil(canvas.clientWidth, canvas.clientHeight, useAudioStore.getState().activeJourney));
-      const w = canvas.clientWidth * dpr;
-      const h = canvas.clientHeight * dpr;
-
-      if (w !== lastW || h !== lastH) {
-        canvas.width = w;
-        canvas.height = h;
-        lastW = w;
-        lastH = h;
+      if (layersRef.current.length === 0) {
+        const [ew, eh] = fit();
+        // Still keep the canvas clear when the last layer just vanished.
+        if (!blank) {
+          ctx.clearRect(0, 0, ew, eh);
+          blank = true;
+        }
+        // HEARTBEAT (2026-10-08, the kiosk's opening freeze: 1.1 s, every
+        // launch, the instant Snowflake's first still landed). While this
+        // canvas sat idle, nothing blended above the shader canvas, so
+        // the shader's frames went out unthrottled and GPU work piled up
+        // behind them (~0.7 s per second since the shader started). The
+        // first frame this canvas produced made the compositor wait for all
+        // of it at once — 1.1 s at 5.6 s, 2.3 s when delayed to 7 s, 3.9 s at
+        // 9 s. One invisible pixel per frame keeps the screen-blend
+        // composite live from mount, so the backlog never forms (real kiosk
+        // Chrome: 1.1 s every run → clean every run).
+        ctx.clearRect(0, 0, 1, 1);
+        ctx.fillStyle = "rgba(0,0,0,0.01)";
+        ctx.fillRect(0, 0, 1, 1);
+        animRef.current = requestAnimationFrame(render);
+        return;
       }
+      blank = false;
+
+      const [w, h] = fit();
       // Cinema canvas is DORMANT (1x1) unless a morph is actually on
       // screen — compositing + clearing a second full-screen canvas
       // every frame stacked with shader crossfades into sustained
