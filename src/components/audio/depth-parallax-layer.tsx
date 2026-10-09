@@ -269,6 +269,9 @@ function DepthParallaxLayerInner({
     let slotA: Slot | null = null;
     let slotB: Slot | null = null;
     let pendingStill: Slot | null = null;
+    // the mix the pending still gets when it lands (long after a boundary
+    // settle or across journeys; the normal mix otherwise)
+    let pendingDur = 0;
     let mixStart = 0;
     let lastAmpMs = 0;
     const MIX_MS = 2600;
@@ -324,10 +327,14 @@ function DepthParallaxLayerInner({
       const camAmp = camAmpRef.current;
       const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
       const camY = Math.cos(t * (Math.PI * 2) / 34) * 0.016 * camAmp;
-      if (pendingStill && !inBoundarySettle()) {
-        mixDur = MIX_MS_LONG;
+      // A queued still lands only once the running crossfade has finished:
+      // restarting a mix mid-way snaps the half-blended picture to the other
+      // image in one frame (kiosk capture 2026-10-09 — the "popping" images).
+      if (pendingStill && !inBoundarySettle() && now - mixStart >= mixDur) {
+        mixDur = pendingDur || MIX_MS_LONG;
+        pendingDur = 0;
         crossJourneyMixRef.current = false;
-        glitchRecord("parallax-mix", "post-settle");
+        glitchRecord("parallax-mix", mixDur === MIX_MS_LONG ? "post-settle" : "queued");
         const retiring = slotA;
         slotA = slotB;
         slotB = pendingStill;
@@ -392,7 +399,17 @@ function DepthParallaxLayerInner({
             gl.deleteTexture(pendingStill.depth);
           }
           pendingStill = incoming;
+          pendingDur = MIX_MS_LONG;
           glitchRecord("parallax-hold", "boundary-settle");
+        } else if (pendingStill || performance.now() - mixStart < mixDur) {
+          // a crossfade is still running — queue (latest wins), never cut it
+          if (pendingStill) {
+            gl.deleteTexture(pendingStill.img);
+            gl.deleteTexture(pendingStill.depth);
+          }
+          pendingStill = incoming;
+          if (pendingDur !== MIX_MS_LONG) pendingDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
+          glitchRecord("parallax-queue");
         } else {
           mixDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
           crossJourneyMixRef.current = false;

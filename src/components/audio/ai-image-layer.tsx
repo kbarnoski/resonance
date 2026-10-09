@@ -895,7 +895,8 @@ export function AiImageLayer({
         }
         if (!dupStill) loadImage(stillUrl)
           .then((img) => {
-            if (pushImage(img)) glitchRecord("still", stillUrl.split("/").pop() ?? "");
+            const shown = pushImage(img);
+            if (shown) glitchRecord("still", stillUrl.split("/").pop() ?? "");
             else if (phaseEntry && lastPackIndexRef.current === idx && phaseEntryRetriesRef.current < 3) {
               phaseEntryRetriesRef.current++;
               // A phase's opening image refused (e.g. the 9s peak hold —
@@ -915,7 +916,10 @@ export function AiImageLayer({
             // coverage) — STAGGERED 1.5s behind the collage push: the
             // texture upload (2x 1024^2) landing in the same frame as the
             // collage's first draw stacked into one visible stall.
-            if (stillUrl.includes("/images/journeys/")) {
+            // Only a still the collage SHOWED (kiosk capture 2026-10-09:
+            // refused stills retried every ~1.6 s each reached the depth
+            // layer, which cut its own unfinished crossfade — images popped).
+            if (shown && stillUrl.includes("/images/journeys/")) {
               setTimeout(() => {
                 window.dispatchEvent(new CustomEvent("resonance:pack-still", {
                   detail: {
