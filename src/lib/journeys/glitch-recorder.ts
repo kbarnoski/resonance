@@ -88,6 +88,25 @@ function startMonitors(): void {
   }
   if (!rafMonitorStarted) {
     rafMonitorStarted = true;
+    // Attribution for the long frames (2026-10-08): a FRAME-GAP says THAT a
+    // frame was late, LoAF says whether script (block>0, with the culprit
+    // function@file:pos) or the GPU/compositor (block 0, rendering started
+    // late) held it — read from inside the real kiosk, where probes differ.
+    try {
+      new PerformanceObserver((list) => {
+        for (const e of list.getEntries() as PerformanceEntry[] & { blockingDuration?: number; renderStart?: number; scripts?: { duration: number; sourceFunctionName?: string; sourceURL?: string; sourceCharPosition?: number; invoker?: string }[] }[]) {
+          if (e.duration < 150) continue;
+          const top = (e.scripts ?? []).filter((x) => x.duration >= 20).sort((a, b) => b.duration - a.duration).slice(0, 3)
+            .map((x) => `${x.sourceFunctionName || x.invoker || "?"}@${(x.sourceURL || "").split("/").pop()}:${x.sourceCharPosition ?? "?"} ${Math.round(x.duration)}ms`).join(" | ");
+          emit({
+            t: Math.round(e.startTime + e.duration),
+            wall: new Date().toISOString().slice(11, 23),
+            type: "loaf",
+            detail: `${Math.round(e.duration)}ms block ${Math.round(e.blockingDuration ?? 0)} render+${e.renderStart ? Math.round(e.renderStart - e.startTime) : "?"}${top ? " " + top : ""}`,
+          });
+        }
+      }).observe({ type: "long-animation-frame", buffered: false });
+    } catch { /* LoAF unsupported */ }
     ensureVisibilityTracking();
     let last = performance.now();
     const tick = (now: number) => {
