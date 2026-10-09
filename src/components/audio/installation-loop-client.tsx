@@ -36,6 +36,10 @@ import { warmParticleSouls } from "./particle-lead-layer";
 import type { SoulId } from "@/lib/particles/souls";
 const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 
+/** Statement text holds this long after journey 0 pre-starts, so the
+ *  set-start GPU stall (~280-330 ms) lands on a still card, never a fade. */
+const CYCLE_FADE_AFTER_PRESTART_MS = 700;
+
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
   journey: Journey;
@@ -1180,6 +1184,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
+      let fadeCycleText: ReturnType<typeof setTimeout> | null = null;
       let mountJourney: ReturnType<typeof setTimeout> | null = null;
       let fadeJourneyStart: ReturnType<typeof setTimeout> | null = null;
       let finalPhaseChange: ReturnType<typeof setTimeout> | null = null;
@@ -1237,7 +1242,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           setPhase({ kind: "credits" });
           return;
         }
-        setIntroStage("fading-cycle");
+        // The statement text HOLDS while journey 0 spins up and only then
+        // fades (2026-10-09, reproduced on the kiosk: starting a set's first
+        // journey stalls the GPU ~280 ms — new contexts, 2x imagery surfaces
+        // — and it landed on the first 300 ms of this fade, freezing it).
+        // A still card hides a stall; a moving fade shows it.
+        if (isGesture) setIntroStage("fading-cycle");
+        else fadeCycleText = setTimeout(() => setIntroStage("fading-cycle"), CYCLE_FADE_AFTER_PRESTART_MS);
         const entry = sequence[startIdx];
         if (!entry) {
           setPhase({ kind: "credits" });
@@ -1335,6 +1346,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       return () => {
         window.removeEventListener("installation-operator-skip", introSkip);
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
+        if (fadeCycleText) clearTimeout(fadeCycleText);
         if (mountJourney) clearTimeout(mountJourney);
         if (fadeJourneyStart) clearTimeout(fadeJourneyStart);
         if (finalPhaseChange) clearTimeout(finalPhaseChange);
