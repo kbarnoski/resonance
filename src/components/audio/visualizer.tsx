@@ -416,7 +416,7 @@ export function ShaderVisualizer({
     gl.compileShader(fs);
     // Link immediately — valid GL before compile status is known (a failed
     // compile fails the link); the status is read once, later (see render).
-    let program: WebGLProgram | null = gl.createProgram()!;
+    const program: WebGLProgram | null = gl.createProgram();
     gl.attachShader(program, vs);
     gl.attachShader(program, fs);
     gl.linkProgram(program);
