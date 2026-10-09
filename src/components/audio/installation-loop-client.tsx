@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TRAMOKYO_SET_STARTS } from "@/lib/journeys/installation-sequence";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay, rampGainTo } from "@/lib/audio/audio-engine";
@@ -60,6 +59,9 @@ export interface InstallationProgram {
    *  black breath instead of a dedication card (Karel 2026-09-18). */
   dedication?: ProgramDedication;
   sequence: SequenceEntry[];
+  /** Tramokyo set programs: the set list this set belongs to. A list's
+   *  sets chain in order and wrap to its own first set. Albums: none. */
+  setList?: string;
 }
 
 const EMPTY_SEQUENCE: SequenceEntry[] = [];
@@ -171,6 +173,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   }, []);
   const programIndexRef = useRef(programIndex);
   useEffect(() => { programIndexRef.current = programIndex; }, [programIndex]);
+  // The set list last played — an album hands back to it when it ends.
+  const lastSetListRef = useRef<string | undefined>(programs[programIndex]?.setList ?? programs.find((p) => p.setList)?.setList);
+  useEffect(() => { const l = programs[programIndex]?.setList; if (l) lastSetListRef.current = l; }, [programs, programIndex]);
 
   // ── Singleton guard (P0 rebuild 2026-09-26): exactly ONE Resonance
   // instance, and the PROJECTOR instance always wins. The kiosk launch
@@ -254,9 +259,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         label: p.presenting.replace(/^the /, ""),
         journeys: p.sequence.map((e) => ({ id: e.journey.id, name: e.journey.name })),
       }));
+    // Journeys can live in several programs (Snowflake opens the main loop,
+    // Rise Above and its album): resolve in the program playing, then its
+    // set list (an album's = the list it was started from), then the rest.
+    const activeList = () => programs[programIndexRef.current]?.setList ?? lastSetListRef.current;
     const onJumpJourney = (e: Event) => {
       const jid = (e as CustomEvent<string>).detail;
-      for (let pi = 0; pi < programs.length; pi++) {
+      const list = activeList();
+      const rank = (i: number) => (i === programIndexRef.current ? 2 : programs[i].setList === list ? 1 : 0);
+      const order = programs.map((_, i) => i).sort((a, b) => rank(b) - rank(a));
+      for (const pi of order) {
         const ji = programs[pi].sequence.findIndex((en) => en.journey.id === jid);
         if (ji < 0) continue;
         // eslint-disable-next-line no-console
@@ -303,10 +315,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     // flattened sequence (rides the same jump-journey path).
     const onSetJump = (e: Event) => {
       const dir = (e as CustomEvent<number>).detail >= 0 ? 1 : -1;
-      const flat = programs.flatMap((p) => p.sequence.map((en) => en.journey.id));
+      // Set starts of the list that is playing — derived from the built
+      // sets themselves, so editing a list can never leave a stale start.
+      const list = activeList();
+      const sets = programs.filter((p) => p.setList === list && p.sequence.length > 0);
+      const flat = sets.flatMap((p) => p.sequence.map((en) => en.journey.id));
       if (flat.length === 0) return;
-      const starts = TRAMOKYO_SET_STARTS.map((id) => flat.indexOf(id)).filter((i) => i >= 0).sort((x, y) => x - y);
-      if (starts.length === 0) return;
+      const starts: number[] = [];
+      for (let i = 0, at = 0; i < sets.length; at += sets[i].sequence.length, i++) starts.push(at);
       const curId = useAudioStore.getState().activeJourney?.id;
       const cur = curId ? flat.indexOf(curId) : 0;
       let setIdx = 0;
@@ -1437,16 +1453,17 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // last). The ?start journey offset only applies to the very
         // first pass — every subsequent intro begins at journey 0.
         setStartIdx(0);
-        // Tramokyo sets chain in order (Set I → II → III → back to I),
-        // giving the Resonance statement card roughly every ~33 minutes
-        // (Karel 2026-09-18). Albums (selected from the phone) still
-        // hand back to Set I when they finish instead of chaining.
-        const isSet = (p?: InstallationProgram) =>
-          !!p && p.id.startsWith("tramokyo-mix");
+        // Tramokyo sets chain in order within their SET LIST and the last
+        // wraps to the list's first (the Resonance statement card roughly
+        // every ~30 min; Karel 2026-09-18 / 2026-10-08). Albums (selected
+        // from the phone) hand back to the list that was playing before.
+        const list = program?.setList ?? lastSetListRef.current;
+        const next = programs[programIndex + 1];
+        const first = programs.findIndex((p) => p.setList === list);
         setProgramIndex(
-          isSet(program) && isSet(programs[programIndex + 1])
+          program?.setList && next?.setList === program.setList
             ? programIndex + 1
-            : 0,
+            : Math.max(0, first),
         );
         setPhase({ kind: "intro" });
       };

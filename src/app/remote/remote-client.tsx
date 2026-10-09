@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 const START_POINTS: { cmd: string; label: string }[] = [
   // The beginning = Tramokyo Set I (cold open included).
   { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
+  // The Rise Above set list (Karel 2026-10-08) — twelve pieces, loops itself.
+  { cmd: "program:tramokyo-rise", label: "Rise Above" },
   // Direct jump to the second set (Karel 2026-09-19 two-set structure).
   { cmd: "program:tramokyo-mix-2", label: "Welcome Home set" },
   { cmd: "program:tramokyo-mix-3", label: "Surrounded by Light set" },

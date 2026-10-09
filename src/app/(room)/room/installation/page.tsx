@@ -5,7 +5,7 @@ import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } 
 import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
-import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETS, TRAMOKYO_EXCLUDED_JOURNEYS } from "@/lib/journeys/installation-sequence";
+import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETLISTS, TRAMOKYO_EXCLUDED_JOURNEYS } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 import {
@@ -418,32 +418,31 @@ export default async function InstallationPage({ searchParams }: Props) {
           !listed.has(e.journey.id) &&
           !TRAMOKYO_EXCLUDED_JOURNEYS.has(e.journey.id),
       );
-      // Three chained SETS (Karel 2026-09-18): the loop plays Set I →
-      // II → III → back to I forever, showing the Resonance statement
-      // card at each set boundary (~every 33 min). Each set's sequence
-      // is its slice of TRAMOKYO_SETLIST (by id, so a journey that
-      // failed to build never shifts the boundaries); anything built
-      // but unlisted is appended to the final set so nothing silently
-      // vanishes when the list is tweaked.
-      const setPrograms = TRAMOKYO_SETS.map((def, i) => {
-        const ids = TRAMOKYO_SETLIST.slice(
-          i === 0 ? 0 : TRAMOKYO_SETS[i - 1].end,
-          def.end,
-        );
-        const sequence = ids
-          .map((id) => byId.get(id))
-          .filter((e): e is SequenceEntry => !!e);
-        if (i === TRAMOKYO_SETS.length - 1) sequence.push(...extras);
-        return {
-          id: def.id,
-          presenting: def.presenting, // intro card retired — statement only
-          description:
-            "Pieces from across the catalog — Welcome Home, Snowflake, and " +
-            "the featured journeys — in an order of their own.",
-          dedication: def.dedication,
-          sequence,
-        };
-      }).filter((p) => p.sequence.length > 0);
+      // SET LISTS (Karel 2026-10-08): every selectable list builds its
+      // chain of set programs; the loop plays a list's sets in order and
+      // wraps to that list's first set (the Resonance statement card at
+      // each boundary). Each set's sequence is its explicit id list (a
+      // journey that failed to build never shifts anything); anything
+      // built but unlisted is appended to the DEFAULT list's final set so
+      // nothing silently vanishes when a list is tweaked.
+      const setPrograms = TRAMOKYO_SETLISTS.flatMap((list, li) =>
+        list.sets.map((def, i) => {
+          const sequence = def.journeyIds
+            .map((id) => byId.get(id))
+            .filter((e): e is SequenceEntry => !!e);
+          if (li === 0 && i === list.sets.length - 1) sequence.push(...extras);
+          return {
+            id: def.id,
+            presenting: def.presenting, // intro card retired — statement only
+            description:
+              "Pieces from across the catalog — Welcome Home, Snowflake, and " +
+              "the featured journeys — in an order of their own.",
+            dedication: def.dedication,
+            sequence,
+            setList: list.id,
+          };
+        }),
+      ).filter((p) => p.sequence.length > 0);
       programs.unshift(...setPrograms);
     }
 
