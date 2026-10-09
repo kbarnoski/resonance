@@ -39,9 +39,9 @@ const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 /** Statement text holds this long after journey 0 pre-starts, so the
  *  set-start GPU stall (~280-330 ms) and Snowflake's spin-up (60-80 ms
  *  frames for its first ~3.2 s — kiosk rig 2026-10-09, Rise Above and EP
- *  set starts) land on a still card, never a fade. The 1.8 s fade still
- *  ends before the journey title mounts (pre-start + 5.3 s). */
-const CYCLE_FADE_AFTER_PRESTART_MS = 3_300;
+ *  set starts) land on a still card, never a fade. The 1.8 s fade ends
+ *  as the journey title mounts (pre-start + 5.3 s). */
+const CYCLE_FADE_AFTER_PRESTART_MS = 3_500;
 
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
