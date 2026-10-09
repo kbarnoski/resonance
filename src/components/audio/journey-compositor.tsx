@@ -412,7 +412,11 @@ export function JourneyCompositor({
           the show down; maturity audit #8). */}
       <ImageryErrorBoundary resetKey={journeyId}>
       {/* Depth-parallax base — the 3D Ken Burns under the collage (z-2, earlier DOM) */}
-      {showAi && <DepthParallaxLayer journeyId={journeyId} intensity={frame?.intensityMultiplier ?? 1} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} />}
+      {/* Always mounted (2026-10-08): showAi is false between SETS, and the
+          remount rebuilt its WebGL context on the next set start (kiosk
+          profile: getContext ~205 ms on Ghost -> Chemiluminescence 1).
+          Without imagery it simply parks. */}
+      <DepthParallaxLayer journeyId={journeyId} intensity={frame?.intensityMultiplier ?? 1} imageryOpacity={1 - effectiveShaderOpacity} onCoveredChange={setParallaxCovered} suspended={!showAi} />
 
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (

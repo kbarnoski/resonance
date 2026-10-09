@@ -110,11 +110,14 @@ export function DepthParallaxLayer(props: {
   /** Fires when depth coverage resolves — the compositor uses it to split
    *  the imagery budget between this base and the collage (2026-09-26). */
   onCoveredChange?: (covered: boolean) => void;
+  /** No imagery right now (between sets) — park, stay mounted. */
+  suspended?: boolean;
 }) {
   // Pure-shader journeys (Karel 2026-09-30): no imagery ground at all —
   // shaders breathe on true black.
   const whisper = useAudioStore((st) => isWhisperImageryName(st.activeJourney?.name));
-  return <DepthParallaxLayerInner {...props} whisper={whisper} />;
+  const { suspended, ...rest } = props;
+  return <DepthParallaxLayerInner {...rest} whisper={whisper || !!suspended} />;
 }
 
 function DepthParallaxLayerInner({
