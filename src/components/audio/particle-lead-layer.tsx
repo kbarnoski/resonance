@@ -124,20 +124,9 @@ const uvCache = new WeakMap<object, Float32Array>();
 // One reused scratch canvas (it was a fresh canvas + surface per sampled
 // image, every ~170 ms while motifs warm).
 let uvScratch: HTMLCanvasElement | null = null;
-function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined {
-  // Cost probe (2026-10-09 soak: this idle callback ran 60-98 ms on the
-  // kiosk vs ~5 ms in isolation) — logged per step when it runs long.
-  const tA = performance.now();
-  const W = Math.min(256, src.width), H = Math.max(1, Math.round((src.height * W) / Math.max(1, src.width)));
-  const c = (uvScratch ??= document.createElement("canvas"));
-  if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
-  const ctx = c.getContext("2d", { willReadFrequently: true });
-  if (!ctx) return undefined;
-  ctx.clearRect(0, 0, W, H);
-  ctx.drawImage(src, 0, 0, W, H);
-  const tB = performance.now();
-  const d = ctx.getImageData(0, 0, W, H).data;
-  const tC = performance.now();
+/** Importance-sample n image coordinates from RGBA bytes. SELF-CONTAINED (no
+ *  outer references): its source is also shipped into the decode worker. */
+function uvFromPixels(d: Uint8ClampedArray, W: number, H: number, n: number): Float32Array | null {
   const cdf = new Float64Array(W * H);
   let acc = 0;
   // NO HARD EDGES (Karel 2026-10-08: "when the particle has hard edges like
@@ -156,7 +145,7 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
     acc += ss(0.03, 0.12, L) * Math.pow(L, 1.4) * (d[i * 4 + 3] / 255) * edgeX[x] * edgeY[(i - x) / W];
     cdf[i] = acc;
   }
-  if (acc <= 0) return undefined;
+  if (acc <= 0) return null;
   const out = new Float32Array(n * 2);
   const perm = new Uint32Array(n);
   for (let i = 0; i < n; i++) perm[i] = i;
@@ -175,9 +164,26 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
     out[j * 2] = (x + Math.random()) / W;
     out[j * 2 + 1] = 1 - (y + Math.random()) / H; // textures upload flipped (bottom-left origin)
   }
+  return out;
+}
+function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined {
+  // Cost probe (2026-10-09 soak: this idle callback ran 60-98 ms on the
+  // kiosk vs ~5 ms in isolation) — logged per step when it runs long.
+  const tA = performance.now();
+  const W = Math.min(256, src.width), H = Math.max(1, Math.round((src.height * W) / Math.max(1, src.width)));
+  const c = (uvScratch ??= document.createElement("canvas"));
+  if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return undefined;
+  ctx.clearRect(0, 0, W, H);
+  ctx.drawImage(src, 0, 0, W, H);
+  const tB = performance.now();
+  const d = ctx.getImageData(0, 0, W, H).data;
+  const tC = performance.now();
+  const out = uvFromPixels(d, W, H, n);
   const tD = performance.now();
   if (tD - tA > 15) glitchRecord("uv-sync", `${src.width}x${src.height} draw ${Math.round(tB - tA)} read ${Math.round(tC - tB)} math ${Math.round(tD - tC)}ms`);
-  return out;
+  return out ?? undefined;
 }
 /** Sampled coordinates for an image (cached); computed in idle time when warmed. */
 function uvFor(src: HTMLCanvasElement | HTMLImageElement | null, n: number): Float32Array | undefined {
@@ -252,9 +258,13 @@ function fitSize(fit: Fit, w: number, h: number): [number, number] {
   const k = Math.min(1, fit.max / Math.max(w, h));
   return [Math.max(1, Math.round(w * k)), Math.max(1, Math.round(h * k))];
 }
+// Mean luminance per decoded canvas (the dissolve veil reads it instead of
+// getImageData on the main thread).
+const lumCache = new WeakMap<HTMLCanvasElement, number>();
 const DECODE_WORKER_SRC = `
+const uvFromPixels = (${uvFromPixels.toString()});
 self.onmessage = async (ev) => {
-  const { id, url, fit, cors } = ev.data;
+  const { id, url, fit, cors, n } = ev.data;
   try {
     const res = await fetch(url, cors ? { mode: "cors" } : undefined);
     if (!res.ok) throw new Error(String(res.status));
@@ -270,13 +280,23 @@ self.onmessage = async (ev) => {
     const ctx = oc.getContext("2d", { willReadFrequently: true });
     ctx.drawImage(bmp, 0, 0);
     bmp.close();
-    const buf = ctx.getImageData(0, 0, w, h).data.buffer;
-    self.postMessage({ id, w, h, buf }, [buf]);
+    const data = ctx.getImageData(0, 0, w, h).data;
+    let L = 0, cnt = 0;
+    for (let i = 0; i < data.length; i += 64) { L += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255; cnt++; }
+    const W = Math.min(256, w), H = Math.max(1, Math.round((h * W) / Math.max(1, w)));
+    const sc = new OffscreenCanvas(W, H);
+    const sx = sc.getContext("2d", { willReadFrequently: true });
+    sx.drawImage(oc, 0, 0, W, H);
+    const uv = uvFromPixels(sx.getImageData(0, 0, W, H).data, W, H, n);
+    const buf = data.buffer;
+    self.postMessage({ id, w, h, buf, uv, lum: L / Math.max(1, cnt) }, uv ? [buf, uv.buffer] : [buf]);
   } catch (e) { self.postMessage({ id, err: String(e) }); }
 };`;
 let decodeWorker: Worker | null | undefined;
 let decodeSeq = 0;
-const decodeWaiters = new Map<number, (r: { w?: number; h?: number; buf?: ArrayBuffer; err?: string }) => void>();
+let decodeFallbackNoted = false;
+type DecodeResult = { w?: number; h?: number; buf?: ArrayBuffer; uv?: Float32Array | null; lum?: number; err?: string };
+const decodeWaiters = new Map<number, (r: DecodeResult) => void>();
 function getDecodeWorker(): Worker | null {
   if (decodeWorker !== undefined) return decodeWorker;
   try {
@@ -296,18 +316,22 @@ async function decodeSmall(url: string, fit: Fit, crossOrigin = false): Promise<
   const worker = getDecodeWorker();
   if (worker) {
     const id = ++decodeSeq;
-    const r = await new Promise<{ w?: number; h?: number; buf?: ArrayBuffer; err?: string }>((resolve) => {
+    const r = await new Promise<DecodeResult>((resolve) => {
       decodeWaiters.set(id, resolve);
-      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin });
+      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin, n: SAMPLE_N });
     });
     if (r.buf && r.w && r.h) {
       const { c, ctx } = cpuCanvas(r.w, r.h);
       if (!ctx) return null;
       ctx.putImageData(new ImageData(new Uint8ClampedArray(r.buf), r.w, r.h), 0, 0);
+      // samples + brightness arrive precomputed: no main-thread readback, ever
+      if (r.uv) uvCache.set(c, r.uv);
+      if (typeof r.lum === "number") lumCache.set(c, r.lum);
       return c;
     }
   }
-  // fallback: main-thread decode (correct, just not stall-free)
+  // fallback: main-thread decode (correct, just not stall-free) — on the record
+  if (!decodeFallbackNoted) { decodeFallbackNoted = true; glitchRecord("decode-fallback", url.split("/").pop()); }
   const img = new Image();
   if (crossOrigin) img.crossOrigin = "anonymous";
   img.src = url;
@@ -1408,14 +1432,19 @@ export function ParticleLeadLayer({
         if (cancelled || !engine || !cv) return;
         const w = cv.width, h = cv.height;
         const aspect = w / Math.max(1, h);
-        const c2 = cv.getContext("2d", { willReadFrequently: true }); // CPU-backed: getImageData never reads back from the GPU
-        if (!c2) return;
         // the still's brightness sets how much the contrast veil lifts the form
+        // (precomputed by the decode worker; the fallback path reads it here)
         try {
-          const d = c2.getImageData(0, 0, w, h).data;
-          let L = 0, n = 0;
-          for (let i = 0; i < d.length; i += 64) { L += (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255; n++; }
-          L /= Math.max(1, n);
+          let L = lumCache.get(cv);
+          if (L === undefined) {
+            const c2 = cv.getContext("2d", { willReadFrequently: true });
+            if (!c2) return;
+            const d = c2.getImageData(0, 0, w, h).data;
+            let n = 0;
+            L = 0;
+            for (let i = 0; i < d.length; i += 64) { L += (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255; n++; }
+            L /= Math.max(1, n);
+          }
           // bright, busy stills get a deeper veil AND brighter particles (measured
           // headless: forms vanished over Snowflake's ice / Stir Crazy's amber)
           contrastK.current = Math.max(0.25, Math.min(0.78, 0.25 + (L - 0.08) * 2.4));
