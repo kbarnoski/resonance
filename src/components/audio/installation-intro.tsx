@@ -138,7 +138,10 @@ export function ExperienceTextInner({ animate = true, showAbout = false, minimal
   // drives the fade itself — the keyframes here are scoped to
   // InstallationIntro's style block and don't exist elsewhere.
   return (
-    <div style={animate ? { animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 } : undefined}>
+    // The fade-in waits 700 ms on black: the outgoing set tears down in
+    // those first frames (kiosk rig 2026-10-09: a 217 ms GPU stall 0.25 s
+    // into the wrap's card), and a stall on black is invisible.
+    <div style={animate ? { animation: "installationContentFade 1400ms ease-out 700ms forwards", opacity: 0 } : undefined}>
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
       <h1
         className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
