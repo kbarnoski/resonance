@@ -1,5 +1,5 @@
 // Welcome Home visual rewrite v4 — THE MUSIC-VIDEO DOCTRINE
-// (docs/journey-design-spec.md, extended to WH 2026-09-22). Six radically
+// (docs/journey-archetype.md, extended to WH 2026-09-22). Six radically
 // different shots per journey across micro↔cosmic registers; motif family
 // per track kept from the album's heart (composed at home through
 // lockdown). NO humans, NO moons — skies occupied, never negated.

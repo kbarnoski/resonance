@@ -1,5 +1,5 @@
 // SBL visual rewrite v4 — THE MUSIC-VIDEO DOCTRINE (Karel 2026-09-21).
-// See docs/journey-design-spec.md. Each journey = six radically different
+// See docs/journey-archetype.md. Each journey = six radically different
 // SHOTS of one motif family, traversing micro ↔ landscape ↔ cosmic scale,
 // asymmetric, unfolding, uninhabited, skies occupied. SBL journeys carry
 // subtle spirit-energy light-forms in 1-2 phases (formless, never

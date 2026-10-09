@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // audit-snowflake-standard.mjs — score every non-mastered kiosk-loop
-// journey against the Snowflake Standard (docs/snowflake-standard.md).
+// journey against the Journey Archetype (docs/journey-archetype.md;
+// formerly the Snowflake Standard).
 //
 // Karel 2026-10-05: "im really expecting incredible journeys that are
 // following the design and arc definition that snowflake has with micro
@@ -33,7 +34,10 @@
 // Snowflake (first-snow) is scored as the reference row (its scripted
 // take is replayed exactly) and is never a target.
 //
-// Usage: node scripts/audit-snowflake-standard.mjs [--json=out.json] [--md=out.md] [--only=<id,...>] [--no-images]
+// Usage: node scripts/audit-snowflake-standard.mjs [--json=out.json] [--md=out.md] [--only=<id,...>] [--no-images] [--stage=<overlay.json>]
+// --stage: score STAGED work before it is installed — a JSON overlay
+//   { journeys: { <id>: { phases, theme? } }, images: { <id>: [absolute paths] } }
+//   replaces those journeys' pack phases / still lists in memory only.
 // Node 20 (repo .nvmrc). Read-only: touches no pack/DB/source file.
 import { createJiti } from "jiti";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -62,6 +66,9 @@ const recs = JSON.parse(readFileSync(PACK + "data/recordings.json", "utf8"));
 const featured = JSON.parse(readFileSync(ROOT + "scripts/featured-recast.json", "utf8"));
 const images = JSON.parse(readFileSync(PACK + "local-images.json", "utf8"));
 const clips = JSON.parse(readFileSync(PACK + "local-clips.json", "utf8"));
+const STAGE = arg("stage") ? JSON.parse(readFileSync(arg("stage"), "utf8")) : null;
+for (const [id, o] of Object.entries(STAGE?.journeys ?? {})) { const r = rows.find((x) => x.id === id); if (r) { r.phases = o.phases; if (o.theme) r.theme = { ...(r.theme ?? {}), ...o.theme }; } }
+for (const [id, list] of Object.entries(STAGE?.images ?? {})) images[id] = list;
 const rowById = new Map(rows.map((r) => [r.id, r]));
 const durByRec = new Map(recs.map((r) => [r.id, Number(r.duration) || 0]));
 const durFeatured = new Map(featured.journeys.map((j) => [j.id, j.dur]));
@@ -99,7 +106,7 @@ async function stillStats(urlsRaw) {
   const urls = [...new Set(urlsRaw)];
   const stats = [];
   for (const u of urls) {
-    const f = PACK + u.replace(/^\/tramokyo-pack\//, "");
+    const f = u.startsWith("/tramokyo-pack/") ? PACK + u.replace(/^\/tramokyo-pack\//, "") : u; // staged overlays pass absolute paths
     if (!existsSync(f)) continue;
     try {
       const { data, info } = await sharp(f).greyscale().resize(64, 64, { fit: "fill" }).raw().toBuffer({ resolveWithObject: true });
@@ -173,7 +180,10 @@ function flightRuns() {
 
 // ══════════════════════ targets ══════════════════════
 const loop = [...SEQ.TRAMOKYO_SETLIST].filter((id) => !SEQ.TRAMOKYO_EXCLUDED_JOURNEYS.has(id));
-const setOf = (idx) => SEQ.TRAMOKYO_SETS.find((s) => idx < s.end)?.presenting ?? "?";
+// TRAMOKYO_SETS was replaced by TRAMOKYO_MAIN.sets (2026-10-09 loop order);
+// the loop is the non-borrowed sets concatenated (= TRAMOKYO_SETLIST).
+const SET_ENDS = (() => { let end = 0; return SEQ.TRAMOKYO_MAIN.sets.filter((s) => !s.borrows).map((s) => ({ presenting: s.presenting, end: (end += s.journeyIds.length) })); })();
+const setOf = (idx) => SET_ENDS.find((s) => idx < s.end)?.presenting ?? "?";
 function journeyFor(id) {
   const b = J.JOURNEYS.find((j) => j.id === id);
   if (b) return { journey: b, dur: BUILTIN_DUR[id] ?? durFeatured.get(id) ?? 240, builtin: true };
@@ -215,7 +225,10 @@ for (const id of targets) {
     H1: H.distinct >= STD.H1_distinct,
     H2: (nonLead[0]?.share ?? 0) <= STD.H2_maxShare && (!lead || H.top[0].share <= STD.H3_leadShare),
     H4: Math.max(...H.top.map((t) => t.run)) <= STD.H4_maxRun,
-    H5: H.meanLayers <= STD.H5_layers,
+    // H5 for non-kinetic journeys; kinetic ones (all but Snowflake + Ghost,
+    // Karel 2026-10-09) are judged by H5k — kinetic is activation, its
+    // always-on dual + tertiary windows are the design, not a failure.
+    H5: H.meanLayers <= (KIN.isFullKineticJourney(journey) ? STD.H5k_layers : STD.H5_layers),
     P1: P ? P.dupRate <= STD.P1_dupRate : null,
     P2: P ? P.centred <= STD.P2_centred : null,
     P3: P ? P.negSpace >= STD.P3_negSpace : null,
@@ -237,7 +250,7 @@ for (const id of targets) {
 const pct = (x) => `${Math.round(x * 100)}%`;
 const lines = [];
 lines.push(`# Snowflake Standard scorecard — ${new Date().toISOString().slice(0, 16)}Z`, "");
-lines.push(`${results.length - 1} non-mastered loop journeys vs the reference (first-snow). Checks per docs/snowflake-standard.md; ✗ = fails.`, "");
+lines.push(`${results.length - 1} non-mastered loop journeys vs the reference (first-snow). Checks per docs/journey-archetype.md (H5 = H5k on kinetic journeys); ✗ = fails.`, "");
 lines.push("| # | Journey | Set | Score | Literal | Shots (distinct/total) | Registers · alt | Place lock | Shaders · top share · longest run · layers | Stills dup · centred · neg | Morphs | Measured stills/min · repeats · top shader presence | Fails |");
 lines.push("|---|---|---|---|---|---|---|---|---|---|---|---|---|");
 const ordered = [results[0], ...results.slice(1).sort((a, b) => a.score / a.of - b.score / b.of || a.pos - b.pos)];

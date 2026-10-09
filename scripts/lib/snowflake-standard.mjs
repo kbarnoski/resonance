@@ -1,10 +1,11 @@
-// Snowflake Standard — shared thresholds + shot-list / literalness lenses.
+// The Journey Archetype (formerly "Snowflake Standard") — shared thresholds
+// + shot-list / literalness lenses.
 // Used by scripts/audit-snowflake-standard.mjs and the mv-rollout tools
 // (scripts/mv-rollout/*) so a shot list is checked BEFORE it is applied.
-// See docs/snowflake-standard.md.
+// See docs/journey-archetype.md.
 // ══════════════════════ THE STANDARD (thresholds) ══════════════════════
 // Derived from Snowflake's measured take + Karel's laws; documented in
-// docs/snowflake-standard.md. Change both together.
+// docs/journey-archetype.md. Change both together.
 export const STD = {
   S1_distinctShots: 12,      // ≥12 genuinely different shots (Snowflake: 6 phases + 12 curated particle stills)
   S2_registers: 4,           // spec law 2: ≥4 scale registers
@@ -18,14 +19,17 @@ export const STD = {
   H2_maxShare: 0.35,         // no shader on screen >35% of the track (lead excepted up to H3)
   H3_leadShare: 0.5,         // the single lead ≤50%
   H4_maxRun: 0.25,           // no shader continuously on screen >25% of the track (~one phase)
-  H5_layers: 1.8,            // mean live shader layers ≤1.8 (Snowflake ≈1.2: one voice, the dual is earned)
+  H5_layers: 1.8,            // NON-kinetic journeys: mean live shader layers ≤1.8 (Snowflake ≈1.3: one voice, the dual is earned)
+  H5k_layers: 2.8,           // KINETIC journeys (all but Snowflake + Ghost, Karel 2026-10-09): the kinetic engine keeps the
+                             // dual always on + short tertiary windows (~75% of the track) → measured 2.73–2.77 on free-rotation
+                             // casts (1.3–1.7 phase-owned/scripted). ≤2.8 = no more than the kinetic stack itself (never a locked triple).
   P1_dupRate: 0.2,           // ≤20% of distinct stills are near-duplicates (16px zero-mean correlation ≥0.85) of another
   P2_centred: 0.35,          // ≤35% of stills put their subject dead centre
   P3_negSpace: 0.45,         // median dark-pixel share ≥45% (room to layer on top)
   M1_morphCover: 0.8,        // ≥80% of phase boundaries have a travel morph
   C1_stillsPerMin: 3.5,      // measured ≥3.5 new stills/min (Snowflake ≈4.3)
-  C2_repeatRate: 0.1,
-  C3_presence: 0.35,         // measured: no shader on screen (any layer) >35% of a real kiosk run (Snowflake: 23%)        // ≤10% of still pushes re-show an image already shown this run
+  C2_repeatRate: 0.1,        // ≤10% of still pushes re-show an image already shown this run
+  C3_presence: 0.35,         // measured: no shader on screen (any layer) >35% of a real kiosk run (Snowflake: 23%)
 };
 
 // ══════════════════════ helpers ══════════════════════

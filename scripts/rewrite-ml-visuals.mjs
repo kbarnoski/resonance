@@ -1,5 +1,5 @@
 // March Light visual rewrite v2 — THE MUSIC-VIDEO DOCTRINE (Karel
-// 2026-09-21, docs/journey-design-spec.md). Six radically different
+// 2026-09-21, docs/journey-archetype.md). Six radically different
 // shots per journey across micro↔cosmic registers; spirit-energy
 // light-forms in 1-2 phases; Mexican Boy freed from the endless-candles
 // monotony into a full color-and-geometry arc.

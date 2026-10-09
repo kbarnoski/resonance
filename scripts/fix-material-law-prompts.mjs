@@ -9,7 +9,7 @@
  * while preserving each journey's authored world. Per journey:
  *   - regex/string replacements (e.g. "WHITE BACKGROUND" → warm emberlit
  *     haze: pale voids materialize as SNOW on dark journeys; "Silhouette"
- *     is a banned summoning word per docs/journey-design-spec.md law 0)
+ *     is a banned summoning word per docs/journey-archetype.md law 0)
  *   - appends the law-0 TAIL where missing.
  *
  * Run:  node --env-file=.env.local scripts/fix-material-law-prompts.mjs [--dry-run]
