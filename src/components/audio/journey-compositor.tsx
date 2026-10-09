@@ -463,7 +463,7 @@ export function JourneyCompositor({
           dark gradients. One static noise tile over the WHOLE composite in
           overlay blend breaks the contours everywhere at once. Sub-
           perceptual: this is dithering, not grain. */}
-      {frame && <DebandOverlay />}
+      <DebandOverlay visible={!!frame} />
 
       {/* Pre-activation glow — bloom buildup before bass hit (Ghost only) */}
       {enableBassFlash && approach > 0.1 && (

@@ -35,9 +35,27 @@ for (let i = 1; i <= RUNS; i++) {
   let ok = false;
   for (let k = 0; k < 60 && !ok; k++) { await p.waitForTimeout(1000); ok = await p.evaluate(() => window.__bp.audios.some((x) => x.duration > 20 && !x.paused && x.currentTime > 14)); }
   if (!ok) { console.log(`run ${i}: never played`); await b.close(); continue; }
+  const PROF = argv.includes("--profile");
+  const cdp = PROF ? await p.context().newCDPSession(p) : null;
+  if (cdp) { await cdp.send("Profiler.enable"); await cdp.send("Profiler.setSamplingInterval", { interval: 200 }); await cdp.send("Profiler.start"); }
   const t0 = await p.evaluate((lead) => { const a = window.__bp.audios.find((x) => x.duration > 20 && !x.paused); a.currentTime = a.duration - lead; return Math.round(performance.now()); }, LEAD);
   await p.waitForTimeout((LEAD + 14) * 1000);
   const r = await p.evaluate(() => window.__bp);
+  if (cdp) {
+    const { profile } = await cdp.send("Profiler.stop");
+    const nowMs = await p.evaluate(() => performance.now());
+    // map samples to wall perf time: last sample ~ now
+    const byId = new Map(profile.nodes.map((n) => [n.id, n]));
+    let t = profile.startTime; const times = profile.timeDeltas.map((d) => (t += d));
+    const off = nowMs * 1000 - profile.endTime;
+    const big = r.gaps.filter((g) => g[1] > 60);
+    for (const g of big) {
+      const lo = (g[0] - g[1]) * 1000 - off, hi = g[0] * 1000 - off;
+      const self = new Map();
+      profile.samples.forEach((id, k) => { if (times[k] < lo || times[k] > hi) return; const n = byId.get(id); const key = `${n.callFrame.functionName || "(anon)"} ${n.callFrame.url.split("/").pop()}:${n.callFrame.lineNumber}:${n.callFrame.columnNumber}`; self.set(key, (self.get(key) ?? 0) + 0.2); });
+      console.log(`   profile gap ${g}:`, [...self.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, v]) => `${v.toFixed(0)}ms ${k}`).join("\n      "));
+    }
+  }
   const jc = r.ev.find((e) => e[1] === "journey-change" && e[0] > 0 && r.ev.indexOf(e) > 0 && e[0] > (r.ev.find((x) => x[1] === "journey-change")?.[0] ?? 0));
   const after = r.gaps.filter((g) => g[0] > t0 + 1500);
   console.log(`run ${i}: handoff @${jc?.[0] ?? "?"}  gaps after seek: ${JSON.stringify(after)}`);
