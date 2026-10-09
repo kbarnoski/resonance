@@ -818,7 +818,15 @@ class JourneyEngine {
     // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
     // The conductor also holds the dual back while the music is quiet
     // (threshold / return / integration): a second layer is earned by the build.
-    const primaryBansDual = !this.takeScript && (!this.kineticEq || owned) && (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode) || !this.dualAllowed);
+    // Kinetic frees the dual from the intensity gate everywhere; only the
+    // hand-curated kinetic casts may also stack on a solo-marked primary —
+    // elsewhere a shader's "runs solo" preference stands (Karel 2026-10-09:
+    // kinetic activates a journey, it never overrides its shader choices).
+    const kineticFree = this.kineticEq && !owned;
+    const soloPrimary = JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode);
+    const primaryBansDual = !this.takeScript && (this.kineticCast
+      ? !kineticFree && (soloPrimary || !this.dualAllowed)
+      : soloPrimary || (!kineticFree && !this.dualAllowed));
     if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
