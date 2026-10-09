@@ -145,12 +145,13 @@ function DepthParallaxLayerInner({
   // Ghost, the whisper journeys — used to unmount this canvas, and the next
   // covered journey built a fresh WebGL context + linked its program right
   // on the boundary: 26 of 56 such remounts in the flight log hitched
-  // 300-570 ms, e.g. Ghost -> Chemiluminescence 1, 316 ms). Once the first
-  // covered journey creates the context it lives for the page; between
+  // 300-570 ms, e.g. Ghost -> Chemiluminescence 1, 316 ms). The context
+  // lives for the page; between
   // covered journeys it sits cleared to black (invisible under the screen
-  // blend), not drawing, its textures released.
-  const [everCovered, setEverCovered] = useState(false);
-  useEffect(() => { if (covered && !whisper) setEverCovered(true); }, [covered, whisper]);
+  // blend), not drawing, its textures released. Created at MOUNT (page
+  // open), not at the first covered journey — a loop opened on Ghost built
+  // it on the Ghost -> Chemiluminescence boundary (kiosk profile: getContext
+  // 202 ms inside the set-start commit).
   const active = covered && !whisper;
   const activeRef = useRef(active);
   activeRef.current = active;
@@ -214,7 +215,7 @@ function DepthParallaxLayerInner({
   }, [journeyId]);
 
   useEffect(() => {
-    if (!everCovered || getDeviceTier() !== "high") return;
+    if (getDeviceTier() !== "high") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const onCtxLost = (e: Event) => { e.preventDefault(); setGlEpoch((n) => n + 1); };
@@ -419,9 +420,8 @@ function DepthParallaxLayerInner({
       const ext = gl.getExtension("WEBGL_lose_context");
       ext?.loseContext();
     };
-  }, [everCovered, glEpoch]);
+  }, [glEpoch]);
 
-  if (!everCovered) return null;
   // Freeze protocol v2: opacity derives from shaderOpacity and must
   // HOLD through the boundary settle like every other on-screen value.
   const computedOpacity = Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55));
