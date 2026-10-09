@@ -1567,6 +1567,17 @@ export function VisualizerCore({
   const dualAHeldRef = useRef<string | null>(null);
   const dualBHeldRef = useRef<string | null>(null);
   const tertiaryHeldRef = useRef<string | null>(null);
+  // PRE-WARM (2026-10-09, reproduced Ghost -> Chemiluminescence 1): the
+  // mastered openers never use these slots, so the first kinetic journey
+  // created all three contexts on its first visible frame — a 280-330 ms
+  // freeze every loop. In installation mode the slots are created at set
+  // start (parked "drift", behind the opening card); later modes recompile
+  // on the warm context. Ready from a parked warm-up is a no-op (nothing waits).
+  if (installationMode) {
+    dualAHeldRef.current ??= "drift";
+    dualBHeldRef.current ??= "drift";
+    tertiaryHeldRef.current ??= "drift";
+  }
   if (dualLayerAMode && SHADERS[dualLayerAMode as VisualizerMode]) dualAHeldRef.current = dualLayerAMode;
   if (dualLayerBMode && SHADERS[dualLayerBMode as VisualizerMode]) dualBHeldRef.current = dualLayerBMode;
   if (tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode]) tertiaryHeldRef.current = tertiaryShaderVisible;
