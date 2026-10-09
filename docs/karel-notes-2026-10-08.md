@@ -123,15 +123,20 @@ order, so re-run the handoff checks for every new adjacency after a reorder.
 3. Fallback: 7b26bbb6 (0 errors, 60 fps, 2026-10-07/08 night) — rollback ~5 min.
 4. No background work while Karel watches; mains power always.
 
-## Set lists (Karel 2026-10-08 — DRAFT, awaiting his OK)
+## Set lists (Karel 2026-10-08)
 
-Selectable set lists (kiosk picks one by name). Sets become explicit id lists (no index slices — reordering can't shift boundaries).
+SHIPPED 2026-10-08 night (1472a920): selectable set lists. Sets are explicit id lists (no index slices). Phone remote → "Rise Above", or kiosk URL `?start=tramokyo-rise`. A list loops itself; albums hand back to the list that was playing. Verified end to end (scripts/journey-review/probe-setlists.mjs, 22/22).
+- Main loop: UNCHANGED order for now (see decision below).
+- Rise Above: live (order below).
 
-### Main loop
-Snowflake EP (Snowflake, Realized, Ghost) → Vigil (Oct 4) → March Light → Surrounded by Light → Welcome Home → Expansion (49, one build, chapter cards ~every 30 min) → Featured journeys.
-Open: Kinetic Lab placement (not in Karel's list).
+### DECISION for Karel — the new main-loop order
+Your order (Snowflake EP → Vigil → March Light → Surrounded by Light → Welcome Home → Expansion build → Featured) is ready to switch on, BUT every album/featured journey's shader cast was solved for the current block order so no shader repeats within ~10 journeys. In the new order 356 journey pairs repeat a shader too close (e.g. Vespers 3 would replay two of Realized's shaders two journeys later). Fixing it = re-solving the album/featured casts (the shader line-up of ~47 journeys changes; Snowflake/Realized/Ghost, Kinetic Lab and the Expansion stay as they are). Options: (a) switch + re-solve casts (I verify every seam on the kiosk), (b) switch and accept closer repeats, (c) keep the current order.
+Open: Kinetic Lab placement (not in your list — would close the loop for now).
 
-### Expansion build order (calm ascent → storm → daybreak)
+### Rise Above (12, live)
+Snowflake → Ghost → Chenin 5 → The Other Side 9 → Surrounded By Light (March Light) → Openings → Welcome Home → Calling → Singular 4 → Amboise 2 → Tranquility 36 → Night Wind 9 (finale). ~40 min. Order inside each stage picked to keep shared shaders apart (one adjacent pair left: Welcome Home → Calling share two).
+
+### Expansion build order (calm ascent → storm → daybreak) — for the new main order, not live yet
 
 1. Northern Plane 5 `13e71555-03d6-4b27-ad32-2c6834559c24`
 2. The Other Side 10 `6499ac06-2cb1-4970-b75f-1258587c84d8`
@@ -183,5 +188,4 @@ Open: Kinetic Lab placement (not in Karel's list).
 48. Amboise 2 `4d17da19-6834-4005-a944-34c27a88a320`
 49. Night Wind 9 `85124aed-c3b4-42e2-870a-b14bc5425b72`
 
-### Rise Above (12)
-1. Snowflake 2. Ghost 3. The Other Side 9 4. Chenin 5 5. Welcome Home 6. Openings 7. Calling 8. Surrounded By Light (March Light) 9. Tranquility 36 10. Singular 4 11. Amboise 2 12. Night Wind 9 (finale) — ~40 min
+
