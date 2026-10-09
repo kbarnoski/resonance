@@ -451,7 +451,11 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
         // play watchdogs against the PREVIOUS journey's still-loaded
         // src, audibly restarting it at full gain during the intro
         // (2026-09-19 audit). A fresh src load resets position anyway.
-        if (!el.ended) el.currentTime = 0;
+        // 2026-10-09: and only when the element holds THIS track (the provider tags each src it loads).
+        // In the loop, setQueue has already named the next track while the element still holds the
+        // previous one, paused 2 s before its end by the breath — scrubbing that re-armed canplay + the
+        // play watchdogs and replayed the old track's opening before the new one (Karel's start glitch).
+        if (!el.ended && el.dataset.trackId === get().currentTrack?.id) el.currentTime = 0;
       }
     } catch { /* engine not ready yet; store change will drive seek */ }
 
@@ -491,8 +495,8 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     try {
       if (typeof window !== "undefined") {
         const el = getAudioEngine().audioElement;
-        // Same ended-guard as startJourney (2026-09-19 audit).
-        if (!el.ended) el.currentTime = 0;
+        // Same ended + same-track guards as startJourney (2026-09-19, 2026-10-09).
+        if (!el.ended && el.dataset.trackId === get().currentTrack?.id) el.currentTime = 0;
       }
     } catch { /* engine not ready yet */ }
     set({

@@ -34,6 +34,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const rafRef = useRef<number>(0);
   const lastSrcRef = useRef<string>("");
   const loadingNewSrc = useRef(false);
+  /** The src the pending load assigned (browser-normalized). canplay from any other src — e.g. a seek on
+   *  the outgoing track while the new URL resolves — must not consume loadingNewSrc. */
+  const pendingSrcRef = useRef<string>("");
 
   // Native audio mode (desktop app)
   const nativeMode = useRef(false);
@@ -178,6 +181,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       if (shouldSkip) {
         // Audio already loaded and playing (set by WaveSurfer's togglePlay) — skip reload
         lastSrcRef.current = newSrc;
+        audioElement.dataset.trackId = currentTrack.id;
         loadingNewSrc.current = false;
         useAudioStore.setState({ _skipLoad: false });
         stopAmbient();
@@ -204,6 +208,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           if (lastSrcRef.current !== newSrc) return;
           try { audioElement.pause(); } catch { /* element may not be ready */ }
           audioElement.src = resolvedUrl;
+          audioElement.dataset.trackId = currentTrack.id;
+          pendingSrcRef.current = audioElement.src;
           audioElement.load();
         });
       }
@@ -227,6 +233,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     const onCanPlay = async () => {
       if (!loadingNewSrc.current) return;
+      // 2026-10-09 (Karel: "loads, stops with a quick silence, then starts again"): the outgoing track's
+      // canplay (after a seek during the URL-resolve window) used to land here, play the OLD track from 0
+      // for ~200 ms, then the src swap cut it — a blip, silence, then the new track.
+      if (audioElement.src !== pendingSrcRef.current) return;
       loadingNewSrc.current = false;
 
       // Seek to the stored currentTime (from WaveSurfer or previous position)
