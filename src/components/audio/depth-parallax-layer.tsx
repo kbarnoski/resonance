@@ -114,8 +114,7 @@ export function DepthParallaxLayer(props: {
   // Pure-shader journeys (Karel 2026-09-30): no imagery ground at all —
   // shaders breathe on true black.
   const whisper = useAudioStore((st) => isWhisperImageryName(st.activeJourney?.name));
-  if (whisper) return null;
-  return <DepthParallaxLayerInner {...props} />;
+  return <DepthParallaxLayerInner {...props} whisper={whisper} />;
 }
 
 function DepthParallaxLayerInner({
@@ -123,11 +122,13 @@ function DepthParallaxLayerInner({
   intensity = 1,
   imageryOpacity = 0.4,
   onCoveredChange,
+  whisper = false,
 }: {
   journeyId?: string;
   intensity?: number;
   imageryOpacity?: number;
   onCoveredChange?: (covered: boolean) => void;
+  whisper?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sizeRef = useRef({ w: 0, h: 0 });
@@ -138,6 +139,23 @@ function DepthParallaxLayerInner({
   // yqwy2e — "the ghost titling transition glitched"). Retire: fade
   // 8s, then unmount.
   const [retiring, setRetiring] = useState(false);
+  const retireTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(retireTimerRef.current), []);
+  // PARKED, never torn down (2026-10-08 soak: a journey without depth —
+  // Ghost, the whisper journeys — used to unmount this canvas, and the next
+  // covered journey built a fresh WebGL context + linked its program right
+  // on the boundary: 26 of 56 such remounts in the flight log hitched
+  // 300-570 ms, e.g. Ghost -> Chemiluminescence 1, 316 ms). Once the first
+  // covered journey creates the context it lives for the page; between
+  // covered journeys it sits cleared to black (invisible under the screen
+  // blend), not drawing, its textures released.
+  const [everCovered, setEverCovered] = useState(false);
+  useEffect(() => { if (covered && !whisper) setEverCovered(true); }, [covered, whisper]);
+  const active = covered && !whisper;
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  const parkRef = useRef<(() => void) | null>(null);
+  useEffect(() => { if (!active && !retiring) parkRef.current?.(); }, [active, retiring]);
 
   useEffect(() => {
     if (!journeyId) { setCovered(false); return; }
@@ -146,10 +164,14 @@ function DepthParallaxLayerInner({
       if (cancelled) return;
       const next = !!m?.[journeyId];
       glitchRecord("parallax-covered", String(next));
+      // a covered journey arriving mid-retire cancels it (the stale timer
+      // used to drop the base under the new journey)
+      if (next) { clearTimeout(retireTimerRef.current); setRetiring(false); }
       setCovered((prev) => {
         if (prev && !next) {
           setRetiring(true);
-          setTimeout(() => { setRetiring(false); setCovered(false); }, 8600);
+          clearTimeout(retireTimerRef.current);
+          retireTimerRef.current = setTimeout(() => { setRetiring(false); setCovered(false); }, 8600);
           return prev; // keep mounted while the 8s fade runs
         }
         return next;
@@ -192,7 +214,7 @@ function DepthParallaxLayerInner({
   }, [journeyId]);
 
   useEffect(() => {
-    if (!covered || getDeviceTier() !== "high") return;
+    if (!everCovered || getDeviceTier() !== "high") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const onCtxLost = (e: Event) => { e.preventDefault(); setGlEpoch((n) => n + 1); };
@@ -258,6 +280,17 @@ function DepthParallaxLayerInner({
     const FPS_MS = 1000 / 30;
     const t0 = performance.now();
 
+    // Park: release the textures and present black (invisible under the
+    // screen blend); the next covered journey's first still re-seeds.
+    parkRef.current = () => {
+      cancelAnimationFrame(raf);
+      running = false;
+      ++loadSeq; // drop any texture still in flight
+      for (const sl of [slotA, slotB, pendingStill]) if (sl) { gl.deleteTexture(sl.img); gl.deleteTexture(sl.depth); }
+      slotA = slotB = pendingStill = null;
+      gl.clearColor(0, 0, 0, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    };
     const render = (now: number) => {
       raf = requestAnimationFrame(render);
       if (disposed || now - last < FPS_MS || !slotA || !slotB) return;
@@ -321,7 +354,7 @@ function DepthParallaxLayerInner({
 
     const onStill = (e: Event) => {
       const { src, depthSrc } = (e as CustomEvent).detail ?? {};
-      if (!src || !depthSrc) return;
+      if (!src || !depthSrc || !activeRef.current) return;
       // a still from a journey WITHOUT depth maps (the layer stays mounted ~8.6 s
       // fading out after e.g. Realized → Ghost) — never request its missing png
       // (review pass2: 404 /depth/journeys/ghost/gen-000.png)
@@ -373,6 +406,7 @@ function DepthParallaxLayerInner({
 
     return () => {
       disposed = true;
+      parkRef.current = null;
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener("resonance:pack-still", onStill);
@@ -385,14 +419,14 @@ function DepthParallaxLayerInner({
       const ext = gl.getExtension("WEBGL_lose_context");
       ext?.loseContext();
     };
-  }, [covered, glEpoch]);
+  }, [everCovered, glEpoch]);
 
-  if (!covered) return null;
+  if (!everCovered) return null;
   // Freeze protocol v2: opacity derives from shaderOpacity and must
   // HOLD through the boundary settle like every other on-screen value.
   const computedOpacity = Math.max(0.15, Math.min(0.6, imageryOpacity * 0.55));
   if (!inBoundarySettle() || heldOpacityRef.current === null) heldOpacityRef.current = computedOpacity;
-  const opacity = retiring ? 0 : inBoundarySettle() ? heldOpacityRef.current : computedOpacity;
+  const opacity = retiring || !active ? 0 : inBoundarySettle() ? heldOpacityRef.current : computedOpacity;
   return (
     <canvas
       key={glEpoch}
