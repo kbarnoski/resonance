@@ -125,6 +125,9 @@ const uvCache = new WeakMap<object, Float32Array>();
 // image, every ~170 ms while motifs warm).
 let uvScratch: HTMLCanvasElement | null = null;
 function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined {
+  // Cost probe (2026-10-09 soak: this idle callback ran 60-98 ms on the
+  // kiosk vs ~5 ms in isolation) — logged per step when it runs long.
+  const tA = performance.now();
   const W = Math.min(256, src.width), H = Math.max(1, Math.round((src.height * W) / Math.max(1, src.width)));
   const c = (uvScratch ??= document.createElement("canvas"));
   if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
@@ -132,7 +135,9 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
   if (!ctx) return undefined;
   ctx.clearRect(0, 0, W, H);
   ctx.drawImage(src, 0, 0, W, H);
+  const tB = performance.now();
   const d = ctx.getImageData(0, 0, W, H).data;
+  const tC = performance.now();
   const cdf = new Float64Array(W * H);
   let acc = 0;
   // NO HARD EDGES (Karel 2026-10-08: "when the particle has hard edges like
@@ -170,6 +175,8 @@ function computeUv(src: HTMLCanvasElement, n: number): Float32Array | undefined 
     out[j * 2] = (x + Math.random()) / W;
     out[j * 2 + 1] = 1 - (y + Math.random()) / H; // textures upload flipped (bottom-left origin)
   }
+  const tD = performance.now();
+  if (tD - tA > 15) glitchRecord("uv-sync", `${src.width}x${src.height} draw ${Math.round(tB - tA)} read ${Math.round(tC - tB)} math ${Math.round(tD - tC)}ms`);
   return out;
 }
 /** Sampled coordinates for an image (cached); computed in idle time when warmed. */

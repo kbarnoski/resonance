@@ -242,6 +242,9 @@ export { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D } from "@/lib/shaders";
 // starts rendering once the program is ready. This prevents the 50-200ms
 // freezes that caused visible glitches during shader crossfades.
 
+/** Wait before the single status/location read of a new shader program —
+ *  long enough that compile + link have finished on the GPU process. */
+const SYNC_DELAY_MS = 400;
 let shaderNames: Map<string, string> | null = null;
 function shaderNameOf(src: string): string {
   shaderNames ??= new Map(Object.entries(SHADERS).map(([k, v]) => [v as string, k]));
@@ -411,10 +414,18 @@ export function ShaderVisualizer({
     const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
     gl.shaderSource(fs, fragShader);
     gl.compileShader(fs);
+    // Link immediately — valid GL before compile status is known (a failed
+    // compile fails the link); the status is read once, later (see render).
+    let program: WebGLProgram | null = gl.createProgram()!;
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+    gl.flush();
+    const linkIssuedAt = performance.now();
+    let nextSyncAt = linkIssuedAt + SYNC_DELAY_MS;
     syncNote("setup", tSetup);
 
     let animId: number;
-    let program: WebGLProgram | null = null;
     let buffer: WebGLBuffer | null = null;
     let posLoc = -1;
     let uTime: WebGLUniformLocation | null = null;
@@ -430,7 +441,7 @@ export function ShaderVisualizer({
     const REACTIVITY = 0.85;
     let lastW = 0;
     let lastH = 0;
-    let compilePhase: "compiling" | "linking" | "ready" = "compiling";
+    let compilePhase: "linking" | "ready" = "linking";
     const settleBrakeLastRef = { current: 0 };
     let readyFired = false;
 
@@ -550,59 +561,37 @@ export function ShaderVisualizer({
       cumTime += dt * rateSm;
       const time = cumTime;
 
-      // ── Async compilation state machine ──
-      // Polls GPU compilation status each frame. Canvas stays blank/transparent
-      // during compilation, which is invisible because the crossfade keeps the
-      // old shader at full opacity until we signal onReady.
+      // ── Async compilation: ONE sync frame per shader (2026-10-09) ──
+      // Compile + link were issued together at setup; nothing here queries
+      // the GPU until SYNC_DELAY_MS has passed. Every getShaderParameter /
+      // getProgramParameter / getUniformLocation is a synchronous round trip
+      // to the GPU process — the kiosk soak (session uekl4f) showed each one
+      // waits 20-100 ms whenever that process is busy, on first AND repeat
+      // uses alike. The old per-frame COMPLETION_STATUS polling paid that on
+      // 4-8 frames per switch; now all queries land in a single frame, after
+      // the work is long finished. The canvas stays blank meanwhile, which is
+      // invisible: the crossfade keeps the old shader up until onReady.
       const tSync = performance.now();
       const wasReady = compilePhase === "ready";
-      if (compilePhase === "compiling") {
-        if (ext) {
-          const vsReady = gl.getShaderParameter(vs, ext.COMPLETION_STATUS_KHR);
-          const fsReady = gl.getShaderParameter(fs, ext.COMPLETION_STATUS_KHR);
-          syncNote("poll-compile", tSync);
-          if (!vsReady || !fsReady) {
-            animId = requestAnimationFrame(render);
-            return; // Still compiling on GPU thread, try next frame
-          }
+      if (compilePhase === "linking") {
+        if (tSync < nextSyncAt) {
+          animId = requestAnimationFrame(render);
+          return;
         }
-        // Compilation finished (or was synchronous without ext) — check status.
+        // Still compiling after the delay (cold GPU, rare): one cheap poll
+        // per ~250 ms rather than a blocking status read.
+        if (ext && tSync - linkIssuedAt < 3000 && !gl.getProgramParameter(program!, ext.COMPLETION_STATUS_KHR)) {
+          nextSyncAt = tSync + 250;
+          syncNote("poll-link", tSync);
+          animId = requestAnimationFrame(render);
+          return;
+        }
         // On failure, signal with ok=false so the crossfade layer can ABORT
         // (keep the healthy layer) instead of fading into a dead canvas.
-        // Without any signal the canvas stays blank until the 3s timeout.
-        if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-          console.warn("[shader] Vertex compile failed:", gl.getShaderInfoLog(vs));
-          onReadyRef.current?.(false);
-          return;
-        }
-        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-          console.warn("[shader] Fragment compile failed:", gl.getShaderInfoLog(fs));
-          onReadyRef.current?.(false);
-          return;
-        }
-        // Start linking (non-blocking with ext)
-        program = gl.createProgram()!;
-        gl.attachShader(program, vs);
-        gl.attachShader(program, fs);
-        gl.linkProgram(program);
-        syncNote("compiled+link-start", tSync);
-        compilePhase = "linking";
-        if (ext) {
-          animId = requestAnimationFrame(render);
-          return; // Poll for link completion next frame
-        }
-        // Without ext, linkProgram was synchronous — fall through
-      }
-
-      if (compilePhase === "linking") {
-        if (ext) {
-          if (!gl.getProgramParameter(program!, ext.COMPLETION_STATUS_KHR)) {
-            animId = requestAnimationFrame(render);
-            return; // Still linking on GPU thread
-          }
-        }
         if (!gl.getProgramParameter(program!, gl.LINK_STATUS)) {
-          console.error("Program link:", gl.getProgramInfoLog(program!));
+          if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) console.warn("[shader] Vertex compile failed:", gl.getShaderInfoLog(vs));
+          else if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) console.warn("[shader] Fragment compile failed:", gl.getShaderInfoLog(fs));
+          else console.error("Program link:", gl.getProgramInfoLog(program!));
           onReadyRef.current?.(false);
           return;
         }
