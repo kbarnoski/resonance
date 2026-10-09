@@ -95,10 +95,12 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     // Jump the loop to a specific journey (grouped phone browser). The
     // loop client resolves the journey id across its programs; outside
     // the loop, ?start=<journey-id> resolves it during page build.
-    const jid = cmd.slice(5);
+    // "jump:<jid>@<program id>" — the program the piece was tapped under
+    // (Rise Above borrows album pieces, so a journey id alone is ambiguous).
+    const [jid, programId] = cmd.slice(5).split("@");
     if (context === "loop") {
       window.dispatchEvent(
-        new CustomEvent("installation-operator-jump-journey", { detail: jid })
+        new CustomEvent("installation-operator-jump-journey", { detail: programId ? `${jid}@${programId}` : jid })
       );
     } else {
       window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(jid)}`;

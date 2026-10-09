@@ -11,14 +11,16 @@ import { Button } from "@/components/ui/button";
 // Surrounded by Light, March Light) appear here automatically once they
 // land in INSTALLATION_PROGRAMS.
 const START_POINTS: { cmd: string; label: string }[] = [
-  // The beginning = Tramokyo Set I (cold open included).
-  { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning" },
-  // The Rise Above set list (Karel 2026-10-08) — twelve pieces, loops itself.
-  { cmd: "program:tramokyo-rise", label: "Rise Above" },
-  // Direct jump to the second set (Karel 2026-09-19 two-set structure).
-  { cmd: "program:tramokyo-mix-2", label: "Welcome Home set" },
-  { cmd: "program:tramokyo-mix-3", label: "Surrounded by Light set" },
+  // The beginning = Rise Above, the main loop's opening set (Karel 2026-10-09).
+  { cmd: `program:${TRAMOKYO_MIX_ID}`, label: "From the beginning (Rise Above)" },
+  // Each set of the main loop, in loop order — it plays on from there.
   { cmd: "program:tramokyo-mix-4", label: "March Light set" },
+  { cmd: "program:tramokyo-mix-3", label: "Surrounded by Light set" },
+  { cmd: "program:tramokyo-mix-2", label: "Welcome Home set" },
+  { cmd: "program:tramokyo-mix-vigil", label: "Vigil set" },
+  { cmd: "program:tramokyo-mix-ep", label: "Snowflake EP set" },
+  { cmd: "program:tramokyo-mix-exp", label: "Expansion set" },
+  { cmd: "program:tramokyo-mix-1b", label: "Featured set" },
   ...INSTALLATION_PROGRAMS.map((p) => ({
     cmd: `program:${p.id}`,
     label: p.presenting.replace(/^the /, ""),
@@ -193,9 +195,9 @@ export function RemoteClient() {
             {prog.journeys.map((j, i) => (
               <Button
                 variant="glass"
-                key={j.id}
-                className={`${btn} py-2.5 justify-start text-left ${sending === `jump:${j.id}` ? "bg-white/[0.18]" : ""}`}
-                onClick={() => void send(`jump:${j.id}`)}
+                key={`${j.id}-${i}`}
+                className={`${btn} py-2.5 justify-start text-left ${sending === `jump:${j.id}@${prog.id}` ? "bg-white/[0.18]" : ""}`}
+                onClick={() => void send(`jump:${j.id}@${prog.id}`)}
               >
                 <span className="mr-2 shrink-0 font-mono text-[10px] text-ink-faint">
                   {i + 1}

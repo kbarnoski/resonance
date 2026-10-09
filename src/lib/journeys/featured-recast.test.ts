@@ -6,7 +6,7 @@ import {
   JOURNEYS, getJourney, castJourneyShaders, getJourneyCast, regenerateJourneyShaders,
   GLOBAL_SHADER_BLOCKLIST, PICKTIME_SHADER_BLOCKLIST, REALM_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST,
 } from "./journeys";
-import { TRAMOKYO_SETLIST } from "./installation-sequence";
+import { TRAMOKYO_SETLIST, TRAMOKYO_MAIN, TRAMOKYO_RISE_ABOVE } from "./installation-sequence";
 import { SCRIPTED_TAKES } from "./pinned-takes";
 import { MASTERED_JOURNEYS } from "./mastered";
 import { journeyLayerGain, expansionLayerGain, isKineticJourneyName, isWhisperImageryName } from "./kinetic";
@@ -41,6 +41,10 @@ const LEAD_DIST = 12;
 const CAP = 4;
 
 const L = TRAMOKYO_SETLIST.length;
+// Set of each setlist position: the Resonance statement card plays at every
+// set boundary, so spacing is guarded within a set (Karel's 2026-10-09 loop
+// order put sets side by side whose casts were solved for the old order).
+const SET_OF = TRAMOKYO_MAIN.sets.filter((s) => !s.borrows).flatMap((s, si) => s.journeyIds.map(() => si));
 const cdist = (a: number, b: number, n: number) => { const d = Math.abs(a - b); return Math.min(d, n - d); };
 const castShaders = (id: string) => [...new Set(Object.values(JOURNEY_CASTS[id].cast).flat())];
 
@@ -63,7 +67,8 @@ describe("featured + album recast: coverage", () => {
     expect(uses.filter((u) => u.kind === "unknown").map((u) => u.id)).toEqual([]);
     // 40 album/featured + 7 Vigil (Oct 4 2026 studio) = 47
     expect(uses.filter((u) => u.kind === "recast")).toHaveLength(47);
-    expect(uses.filter((u) => u.kind === "kinetic-lab")).toHaveLength(5);
+    // The Kinetic Lab left the loop (Karel 2026-10-09: "i dont want a kinetic loop anymore").
+    expect(uses.filter((u) => u.kind === "kinetic-lab")).toHaveLength(0);
     expect(uses.filter((u) => u.kind === "expansion")).toHaveLength(49);
   });
 
@@ -146,12 +151,12 @@ describe("featured + album recast: quality", () => {
 });
 
 describe("featured + album recast: diversity across the WHOLE kiosk loop", () => {
-  it("never repeats a recast shader within the next 10 journeys — against every journey in the loop (mastered takes, Kinetic Lab, Expansion included)", () => {
+  it("never repeats a recast shader within the next 10 journeys of its set — against every journey in it (mastered takes, Expansion included)", () => {
     const uses = loopUses();
     uses.forEach((u, i) => {
       if (u.kind !== "recast") return;
       uses.forEach((v, k) => {
-        if (k === i) return;
+        if (k === i || SET_OF[k] !== SET_OF[i]) return;
         for (const m of u.modes) if (v.modes.includes(m)) {
           const min = v.lead === m ? LEAD_DIST : (OWNED.has(u.id) || OWNED.has(v.id) ? Math.min(MIN_DIST, OWNED_DIST) : MIN_DIST);
           expect(cdist(i, k, L), `${m}: #${i} ${JOURNEY_CASTS[u.id].name} / #${k} ${v.kind} ${v.id}`).toBeGreaterThanOrEqual(min);
@@ -239,5 +244,21 @@ describe("brightness gain reaches every journey except the mastered three and th
     expect(isKineticJourneyName("Rolling")).toBe(false);
     expect(isWhisperImageryName("Rolling")).toBe(false);
     for (const name of KINETIC_LAB) expect(isKineticJourneyName(name), name).toBe(true);
+  });
+});
+
+describe("Rise Above (borrowed opening set)", () => {
+  it("borrows only — every piece also plays in full in its home set", () => {
+    for (const id of TRAMOKYO_RISE_ABOVE) expect(TRAMOKYO_SETLIST.includes(id), id).toBe(true);
+  });
+
+  it("never ends a journey on a shader the next one opens with", () => {
+    const exp = new Map(expansion.journeys.map((j) => [j.id, j.cast]));
+    const phases = (id: string) => Object.values(exp.get(id) ?? JOURNEY_CASTS[id]?.cast ?? {}) as (string | null)[][];
+    for (let i = 0; i + 1 < TRAMOKYO_RISE_ABOVE.length; i++) {
+      const a = phases(TRAMOKYO_RISE_ABOVE[i]), b = phases(TRAMOKYO_RISE_ABOVE[i + 1]);
+      if (!a.length || !b.length) continue; // mastered takes script their own
+      for (const m of b[0]) if (m) expect(a.at(-1)!.includes(m), `${m}: ${TRAMOKYO_RISE_ABOVE[i]} → ${TRAMOKYO_RISE_ABOVE[i + 1]}`).toBe(false);
+    }
   });
 });

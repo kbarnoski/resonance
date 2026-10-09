@@ -268,9 +268,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     // set list (an album's = the list it was started from), then the rest.
     const activeList = () => programs[programIndexRef.current]?.setList ?? lastSetListRef.current;
     const onJumpJourney = (e: Event) => {
-      const jid = (e as CustomEvent<string>).detail;
+      // "<jid>@<program id>" pins the program (phone taps under a set).
+      const [jid, wantProgram] = (e as CustomEvent<string>).detail.split("@");
       const list = activeList();
-      const rank = (i: number) => (i === programIndexRef.current ? 2 : programs[i].setList === list ? 1 : 0);
+      const rank = (i: number) =>
+        programs[i].id === wantProgram ? 3 : i === programIndexRef.current ? 2 : programs[i].setList === list ? 1 : 0;
       const order = programs.map((_, i) => i).sort((a, b) => rank(b) - rank(a));
       for (const pi of order) {
         const ji = programs[pi].sequence.findIndex((en) => en.journey.id === jid);
@@ -327,12 +329,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       if (flat.length === 0) return;
       const starts: number[] = [];
       for (let i = 0, at = 0; i < sets.length; at += sets[i].sequence.length, i++) starts.push(at);
+      // The set playing is the program playing — a journey id can sit in
+      // two sets (Rise Above borrows), so never locate it by id.
+      const playing = sets.indexOf(programs[programIndexRef.current]);
       const curId = useAudioStore.getState().activeJourney?.id;
       const cur = curId ? flat.indexOf(curId) : 0;
       let setIdx = 0;
-      for (let i = 0; i < starts.length; i++) if (starts[i] <= cur) setIdx = i;
-      const target = starts[(setIdx + dir + starts.length) % starts.length];
-      window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: flat[target] }));
+      if (playing >= 0) setIdx = playing;
+      else for (let i = 0; i < starts.length; i++) if (starts[i] <= cur) setIdx = i;
+      const ti = (setIdx + dir + sets.length) % sets.length;
+      window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: `${flat[starts[ti]]}@${sets[ti].id}` }));
     };
     // Mastering hold (Karel 2026-09-29: "i need to say im working on
     // what journey and master... a simple way that i just keep

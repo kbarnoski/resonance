@@ -20,14 +20,11 @@ const MASTERED_LEADS = new Set(["sparkler", "comet-swarm", "helix-stream", "embe
 const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"];
 
 const CAP = 5;
-const MIN_DIST = 11; // never reused within the next 10 journeys (cyclic)
-const LEAD_SUPPORT_DIST = 12;
 
 // The Expansion in kiosk setlist order.
 const ids = new Set(recast.journeys.map((j) => j.id));
 const ordered = TRAMOKYO_SETLIST.filter((id) => ids.has(id)).map((id) => recast.journeys.find((j) => j.id === id)!);
 const N = ordered.length;
-const cdist = (a: number, b: number) => { const d = Math.abs(a - b); return Math.min(d, N - d); };
 const supportsOf = (j: J) => [...new Set(Object.values(j.cast).flat().filter((m): m is string => !!m && m !== j.lead))];
 
 describe("Expansion recast", () => {
@@ -71,19 +68,15 @@ describe("Expansion recast", () => {
     for (const [m, u] of uses) expect(u, m).toBeLessThanOrEqual(CAP);
   });
 
-  it("never reuses a support within the next 10 journeys in setlist order (the loop wraps)", () => {
-    const at = new Map<string, number[]>();
-    ordered.forEach((j, i) => { for (const m of supportsOf(j)) at.set(m, [...(at.get(m) ?? []), i]); });
-    for (const [m, list] of at) for (let a = 0; a < list.length; a++) for (let b = a + 1; b < list.length; b++) {
-      expect(cdist(list[a], list[b]), `${m}: ${ordered[list[a]].title} / ${ordered[list[b]].title}`).toBeGreaterThanOrEqual(MIN_DIST);
+  // The casts were spaced (≥11 / lead ≥12) for the 10-05 order. Karel's
+  // analysis-sequenced order (2026-10-09) keeps the casts untouched, so the
+  // guard is now the one the eye reads: neighbours never share a shader.
+  it("never shares a shader between neighbouring journeys in setlist order", () => {
+    for (let i = 0; i + 1 < N; i++) {
+      const a = ordered[i], b = ordered[i + 1];
+      const A = new Set([a.lead, ...supportsOf(a)]);
+      for (const m of [b.lead, ...supportsOf(b)]) expect(A.has(m), `${m}: ${a.title} / ${b.title}`).toBe(false);
     }
-  });
-
-  it("lets a lead support another journey only >= 12 positions from its own", () => {
-    const leadPos = new Map(ordered.map((j, i) => [j.lead, i]));
-    ordered.forEach((j, i) => {
-      for (const m of supportsOf(j)) if (leadPos.has(m)) expect(cdist(leadPos.get(m)!, i), `${j.title}: ${m}`).toBeGreaterThanOrEqual(LEAD_SUPPORT_DIST);
-    });
   });
 
   it("gives every journey 6-7 distinct shaders (lead + 5-6 supports)", () => {
