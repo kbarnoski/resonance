@@ -85,11 +85,14 @@ low-register, warm; the right theme was an amber underground dawn. Check the
 theme AGAINST the profile before authoring: cold sparse themes need cold
 sparse music.
 
-- **Material exclusivity:** ice/frost/snow/crystal/aurora belong to Snowflake
-  alone (Welcome Home may use snow only as the winter dark the hearth
-  defeats — *superseded, see law 1's Welcome Home lesson: no winter
-  exemption*). If two journeys would share a dominant material, one of them
-  is wrong.
+- **Materials are open (Karel, 2026-10-09):** *"i dont need snow to be held
+  to just snowflake. we have such a big set of journeys its all good. that
+  was an earlier time."* Snow/ice/frost/crystal/aurora may appear in any
+  journey whose music supports a cold theme (law 0 still decides). The
+  harvesters keep the ice-family negative only on shots that don't ask for
+  it, so it never leaks into a warm shot by accident
+  (`materialNegativeFor` in prompt-decoration.ts). *(Superseded: the
+  2026-09-27 "ice family belongs to Snowflake alone" rule.)*
 - **Summoning-risk words — never use in prompts:** "silhouette(s)",
   "figure(s)", "streets", "station", any negation of people ("without a
   single figure" summons one). A cathedral/hall WITH A FLOOR summons a
@@ -127,9 +130,9 @@ photograph, the journey is broken.
 - **No non-nature material metaphors.** Silk/thread/braid/weave/rope
   vocabulary renders as literal cordage (the Interplay lesson) — express
   duets and joinings through waters, winds, mists, and light. And the
-  Welcome Home lesson: NO winter exemption after all — snow read as
-  off-theme; homecoming is a verdant golden-dusk valley. The ice family is
-  Snowflake's alone, fully, no exceptions.
+  Welcome Home lesson: snow read as off-theme THERE; homecoming is a
+  verdant golden-dusk valley. (The wider "ice family is Snowflake's alone"
+  rule was lifted 2026-10-09 — see law 0.)
 
 **Checks** (the phases' `aiPromptSequence`, which the harvest consumes in
 order — `auditShots` in the audit and in `apply-shotlists.mjs`):

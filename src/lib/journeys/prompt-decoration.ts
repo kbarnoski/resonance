@@ -202,6 +202,15 @@ export const TRAMOKYO_MATERIAL_NEGATIVE =
   "snow, snowy ground, snowfield, snowdrift, frost, frosted, hoarfrost, " +
   "ice, icicles, frozen ground, winter, aurora borealis";
 
+/** Karel 2026-10-09 lifted the ice-family exclusivity ("i dont need snow to be held to just snowflake …
+ *  that was an earlier time"). The negative still guards against UNINTENDED snow/frost leaking into a
+ *  warm shot (the 09-27 lesson), but a shot that names the ice family on purpose gets no negative
+ *  fighting it. Law 0 still decides whether a journey's music supports a cold theme. */
+const ICE_FAMILY = /\b(snow\w*|frost\w*|hoarfrost|ice|icy|icicles?|frozen|winter\w*|aurora\w*|glacier\w*|sleet)\b/i;
+export function materialNegativeFor(prompt: string): string | null {
+  return ICE_FAMILY.test(prompt) ? null : TRAMOKYO_MATERIAL_NEGATIVE;
+}
+
 /** Journeys exempt from TRAMOKYO_MATERIAL_NEGATIVE (the snow world). */
 export const SNOW_EXEMPT_JOURNEY_IDS = new Set([
   "first-snow",

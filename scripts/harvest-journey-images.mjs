@@ -85,7 +85,7 @@ async function loadAppModules() {
         export { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS,
           STYLE_SUFFIX, GLOBAL_NEGATIVE, tramokyoGradeForPhase,
           TRAMOKYO_PHASE_WEIGHT, TRAMOKYO_EXTRA_NEGATIVE,
-          TRAMOKYO_MATERIAL_NEGATIVE, SNOW_EXEMPT_JOURNEY_IDS,
+          TRAMOKYO_MATERIAL_NEGATIVE, SNOW_EXEMPT_JOURNEY_IDS, materialNegativeFor,
           TRAMOKYO_STYLE_SUFFIX } from "@/lib/journeys/prompt-decoration";
         export { allocateByPhase } from "@/lib/journeys/pack-image-allocation";
       `,
@@ -314,8 +314,10 @@ async function main() {
     if (TREATMENT === "tramokyo" && t.isGhost) negative = `${negative}, moon, moons, full moon, planet, planets`;
     // Material law: ban the ice family everywhere EXCEPT the Snowflake
     // journeys themselves (2026-09-27 audit — 15 journeys shipped snow).
-    if (TREATMENT === "tramokyo" && !app.SNOW_EXEMPT_JOURNEY_IDS.has(t.id)) {
-      negative = `${negative}, ${app.TRAMOKYO_MATERIAL_NEGATIVE}`;
+    // 2026-10-09: Karel lifted the exclusivity — only guard shots that don't ask for the ice family.
+    const matNeg = app.materialNegativeFor(prompt);
+    if (TREATMENT === "tramokyo" && !app.SNOW_EXEMPT_JOURNEY_IDS.has(t.id) && matNeg) {
+      negative = `${negative}, ${matNeg}`;
     }
     const useLora = !!t.loraUrl;
     const input = {
