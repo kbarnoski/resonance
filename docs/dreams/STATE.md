@@ -1,3 +1,34 @@
+## Cycle 1287 — 2026-10-09T00:48Z (17:45 PT fire) · **OPS / RE-FLAG (no build) — production STILL frozen, now 72 h / 3.0 days; THIRD ops cycle running; escalated past MORNING.md with a phone push to Karel.**
+
+**The situation is unchanged from 1285/1286 — re-verified, not assumed, this fire:**
+- **Still frozen, 72.3 h (3.01 days).** Last prod deploy remains `b98b6221` (2026-10-06T00:32:14Z). Direct prod probe this fire: `/dream/17536-mudra` (pre-freeze) → **200**; `/dream/19360-vicinity` → **404**, `/dream/19600-imbue` → **404** (the stuck cycle-1283/1284 protos). Nothing new has deployed in 3 days — Karel's own Oct-7/8 particle/review-station work is stuck in the same backlog as the dream protos.
+- **No fix landed.** `package-lock.json` last touched 2026-10-06 11:38 PT (unrelated particle commit) — the audit CVEs are untouched. Karel has pushed live-session work as recently as 2026-10-08 15:35 PT (`1c8ab7d8`, particle hold/warm-up) but has NOT run the audit fix. So he's active but hasn't seen/acted on the freeze → the in-repo MORNING.md escalation (now 3 cycles deep) is not reaching him.
+- **Same single blocker, re-run exactly.** `npm audit --omit=dev --audit-level=high` (gate's literal command, `deploy-gate.yml:49`) → **exit 1**. Prod tree: **13 vulns (5 low, 5 moderate, 2 high, 1 critical)**. The 3 high+ blockers all have a non-force fix:
+  - `@capacitor/ios 8.0.0–8.3.4` — **CRITICAL** GHSA-rvm3-566m-v7fv — `npm audit fix`
+  - `sharp <0.35.5` — **HIGH** CVE-2026-96889 (librsvg) — `npm audit fix`
+  - `source-map-js 1.0.0–1.2.1` — **HIGH** GHSA-68fv-2mgg-jv7q (event-loop DoS) — `npm audit fix`
+  - (non-blocking, FYI) `next 15.0.0–15.5.26` — moderate SSG/ISR cache poisoning; below the `high` gate threshold but `npm audit fix` clears it too.
+
+**Fix for Karel (unchanged, ~1 min, OUT-OF-FENCE → Karel-directed only):** `npm audit fix` then commit `package-lock.json`. Clears all 3 blockers + the Next moderate in one shot. Break-glass if a deploy is urgent first: relax `deploy-gate.yml:49` to `--audit-level=critical` — but that still ships the known critical, so prefer the fix. I did NOT touch the lockfile or workflow (ABSOLUTE rule 2 binds the autonomous agent; this is a scheduled fire, not a live Karel-directed session).
+
+**What's NEW this cycle:** I sent Karel a **PushNotification** (phone + email). Three ops cycles of MORNING.md flags haven't moved him, and this is a scheduled watch-run whose job is exactly to surface a thing he'd want to know NOW — prod dark 3 days with a one-command fix sitting idle clears that bar easily. The in-repo escalation stays (this STATE entry + MORNING rewrite), but the push is the channel the prior two cycles lacked.
+
+**Orient.** Container `main` was again a stale orphan vs `origin/main` (forced-update upstream; `pull --ff-only` aborted, 51 local / 50 remote). Resolved with `git reset --hard origin/main` → now at `1c8ab7d8` (authoritative deploy target). Same container quirk as 1280/1281/1286; reset-to-origin is correct, no unmerged local work lost. Log sizes: STATE **~1.70MB (at the 2MB line — rotate next fire if this entry tips it over)**, IDEAS ~0.68MB, RESEARCH ~0.65MB — no rotation; INDEX ~5.1MB (not in the 2MB rule; unchanged, no proto). Love signal fetched (`/api/dream/votes`): camera/embodied loves still lead (`15824-canon`, `17536-mudra`, `16032-headnave`, `15920-duetlink`, `17200-hall`) — no bearing on an ops cycle, logged neutral.
+
+**Decide.** `mode: OPS/RE-FLAG`. Ambition floor / diversity audit **N/A (no build)**. Not building is mandated by 1285/1286's queued-next discipline and is the right call: a new proto cannot deploy (same gate), would sit 404 behind the backlog, and a clean tree means the instant Karel fixes audit, the entire 3-day backlog ships with zero risk of a regression hiding behind the gate. Research-first rule honored (entry below).
+
+**Research (2026-10-09).** Codrops "Run Rob Run" (Three.js + WebGPU music-reactive goo, Aug 2026) + DIGISIM "Particle Reactor" (5M-particle pure-WebGPU compute, audio-reactive). Craft note worth keeping: Run Rob Run found that letting the deformation snap back too fast after an audio hit "felt nervous and digital" — i.e. per-channel damping/return-time is the craft, not the hit detection. Both corroborate the already-banked `cymatica` lead (particle-GPGPU engine the jury keeps asking us to cast). Did NOT re-bank (burn-down discipline) — logged as a damping note against cymatica's future brief.
+
+**Act (ops, doc-only).** This STATE entry, the RESEARCH dive, a full MORNING rewrite (leads with the 3-day freeze + the phone push + the one-command fix), and the PushNotification. No `src/app/dream/**` change, no INDEX change (no new proto), no new IDEAS seed (cymatica/antiphon/infuse already banked).
+
+**Validate.** drug/dosing self-check on the staged diff → **CLEAN** (re-run against `--cached` pre-commit). No build gate needed (doc-only, no code change); `main` is green on everything but audit (lint/tsc/tests verified green in 1285, tree unchanged by this cycle).
+
+**Shipped:** one doc-only commit (STATE/RESEARCH/MORNING). Scope: `docs/dreams/**` only.
+
+**Queued next (why):** (1) **Do NOT build into a dead pipeline.** Next fire, re-probe `/dream/19360-vicinity` (200 = unfrozen). If STILL frozen after the phone push, re-flag AND consider whether a break-glass note or a louder channel is warranted — but the no-build discipline holds regardless. (2) **The instant it's green:** confirm vicinity/cantor/graft/imbue serve 200, then let Karel's MORNING answer (body-fusion lane tapped out?) steer the first build — `cymatica` (fresh lane + particle GPGPU + jury #1, now with the Run-Rob-Run damping note) is lead; `antiphon` the low-risk burn-down; two-person WebRTC HRTF room the "massively bigger" swing. (3) **Rotate STATE.md next fire** if it's over 2MB. (4) Standing ops ask (open since 1285): the gate's hard `--audit-level=high` means ANY future high/critical advisory silently freezes ALL deploys — a scheduled deploy-health alert or a dependabot auto-merge policy would catch this in minutes, not days. MORNING re-offers to build the alert.
+
+---
+
 ## Cycle 1286 — 2026-10-08T12:55Z (05:45 PT fire) · **OPS / RE-FLAG (no build) — production is STILL frozen (now ~2.5 days / ~60 h), re-verified it's the SAME single blocker (npm audit) with the SAME one-command fix, and re-escalated to Karel. Did NOT mint a proto: cycle 1285's queued-next #2 is explicit — "If the deploy is STILL frozen next fire, re-verify and re-flag — do NOT start minting protos into a dead pipeline." Honored exactly.**
 
 **Pipeline state (re-verified this fire, not assumed).**
