@@ -212,8 +212,11 @@ function DepthParallaxLayerInner({
   const prevJourneyRef = useRef(journeyId);
   useEffect(() => {
     if (journeyId !== prevJourneyRef.current) {
+      // next still = the new journey's base — only for a real journey ->
+      // journey handoff (the layer now outlives the gap between sets and
+      // mounts before the first journey; those starts seed fresh)
+      crossJourneyMixRef.current = !!prevJourneyRef.current && !!journeyId;
       prevJourneyRef.current = journeyId;
-      crossJourneyMixRef.current = true; // next still = the new journey's base
     }
   }, [journeyId]);
 
