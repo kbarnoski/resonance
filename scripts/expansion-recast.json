@@ -74,80 +74,81 @@
   "minUses": 2
  },
  "supportUses": {
+  "dark-tide": 5,
+  "will-o-wisp": 5,
+  "astral": 4,
   "aureole": 4,
+  "binary-stars": 4,
   "covenant": 4,
+  "drift": 4,
   "ember": 4,
   "firefly-field": 4,
+  "kairos": 4,
+  "mandorla": 4,
+  "meteor-rain": 4,
   "monsoon": 4,
   "mycelium": 4,
+  "nadir": 4,
+  "parsec": 4,
+  "pendulum-dust": 4,
   "plankton": 4,
+  "r-mercury": 4,
   "r2-photon": 4,
   "r2-portalrim": 4,
   "r3-heartwarmth": 4,
   "r3-plasmastorm": 4,
+  "r3-sleepingbloom": 4,
   "rapture": 4,
+  "rose-window": 4,
   "starfield": 4,
   "stigmata": 4,
   "supernova": 4,
   "volcanic": 4,
-  "astral": 3,
-  "binary-stars": 3,
   "biofilm": 3,
   "cascade-veil": 3,
   "chinook": 3,
   "cirrus": 3,
   "dark-nebula": 3,
-  "dark-tide": 3,
   "event-horizon": 3,
   "flame": 3,
   "fracture-light": 3,
   "iron-forge": 3,
   "jubilee": 3,
-  "kairos": 3,
   "kelp": 3,
   "kenosis": 3,
   "kepler": 3,
   "maelstrom-dark": 3,
   "magma": 3,
-  "mandorla": 3,
   "merkaba": 3,
-  "meteor-rain": 3,
-  "nadir": 3,
   "obsidian-flow": 3,
   "ocean": 3,
-  "parsec": 3,
   "pelagic": 3,
-  "pendulum-dust": 3,
   "photon": 3,
   "pollen": 3,
   "protostar": 3,
   "pulsar": 3,
   "r-droplets": 3,
-  "r-mercury": 3,
   "r-smokerings": 3,
   "r2-curlswarm": 3,
   "r2-spore": 3,
   "r2-thermal": 3,
+  "r3-fairyglow": 3,
   "r3-fernunfurl": 3,
   "r3-lightningveil": 3,
   "r3-monsoonveil": 3,
-  "r3-sleepingbloom": 3,
   "r3-waveveil": 3,
   "ribbon-of-light": 3,
-  "rose-window": 3,
   "satori": 3,
   "seraph": 3,
   "shadow-fire": 3,
   "singularity": 3,
   "tide": 3,
   "vestige": 3,
-  "will-o-wisp": 3,
   "yantra": 3,
   "zenith": 3,
   "chrysalis": 2,
   "dharma": 2,
   "diatom": 2,
-  "drift": 2,
   "dusk": 2,
   "flagella": 2,
   "furnace": 2,
@@ -162,7 +163,6 @@
   "r-stardust": 2,
   "r2-pixie": 2,
   "r2-spiralgal": 2,
-  "r3-fairyglow": 2,
   "resonant-rings": 2,
   "ripple": 2,
   "symbiosis": 2,
@@ -1555,7 +1555,7 @@
    "lead": "orbit-weaver",
    "leadHue": "blue",
    "leadFit": 3,
-   "leadCoverage": 0.61,
+   "leadCoverage": 0.12,
    "energy": [
     0.51,
     0.64,
@@ -1575,45 +1575,48 @@
    "crests": false,
    "peakPhase": "transcendence",
    "supports": [
-    "flame",
+    "flagella",
+    "drift",
     "chrysalis",
     "r2-portalrim",
+    "binary-stars",
+    "astral",
+    "meteor-rain",
+    "dark-tide",
+    "flame",
     "fracture-light",
-    "flagella",
     "firefly-field"
    ],
    "cast": {
     "threshold": [
-     "flagella",
-     "r2-portalrim",
-     "chrysalis"
+     "flagella"
     ],
     "expansion": [
-     "orbit-weaver",
-     "r2-portalrim",
-     "chrysalis"
+     "flagella",
+     "drift",
+     "chrysalis",
+     "r2-portalrim"
     ],
     "transcendence": [
      "orbit-weaver",
-     "r2-portalrim",
-     "chrysalis"
+     "binary-stars",
+     "astral"
     ],
     "illumination": [
-     "flame",
-     "r2-portalrim",
-     "fracture-light"
+     "meteor-rain",
+     "dark-tide"
     ],
     "return": [
      "flame",
-     "firefly-field",
-     "fracture-light"
+     "fracture-light",
+     "firefly-field"
     ],
     "integration": [
-     "orbit-weaver",
-     "firefly-field",
-     "fracture-light"
+     "fracture-light",
+     "firefly-field"
     ]
-   }
+   },
+   "mvStandard": "2026-10-09T23-48-37"
   },
   {
    "id": "86b64938-26ea-40b9-9ea1-461323a049d5",
@@ -2736,7 +2739,7 @@
    "lead": "ripple",
    "leadHue": "blue",
    "leadFit": 2,
-   "leadCoverage": 0.67,
+   "leadCoverage": 0.18,
    "energy": [
     0.66,
     0.69,
@@ -2756,45 +2759,51 @@
    "crests": false,
    "peakPhase": "transcendence",
    "supports": [
-    "r2-pixie",
-    "magma",
-    "fracture-light",
+    "pendulum-dust",
     "nadir",
+    "r3-sleepingbloom",
+    "r-mercury",
+    "ember",
+    "magma",
+    "will-o-wisp",
+    "r3-fairyglow",
+    "r2-pixie",
     "iron-forge",
-    "ember"
+    "fracture-light",
+    "drift"
    ],
    "cast": {
     "threshold": [
-     "nadir",
-     "magma",
-     "ember"
+     "pendulum-dust",
+     "nadir"
     ],
     "expansion": [
-     "ripple",
-     "magma",
-     "ember"
+     "nadir",
+     "r3-sleepingbloom",
+     "r-mercury",
+     "ember",
+     "magma"
     ],
     "transcendence": [
-     "ripple",
-     "magma",
-     "ember"
+     "will-o-wisp",
+     "r3-fairyglow"
     ],
     "illumination": [
+     "ripple",
      "r2-pixie",
-     "magma",
      "iron-forge"
     ],
     "return": [
+     "ripple",
      "r2-pixie",
-     "fracture-light",
-     "iron-forge"
+     "fracture-light"
     ],
     "integration": [
-     "r2-pixie",
      "fracture-light",
-     "iron-forge"
+     "drift"
     ]
-   }
+   },
+   "mvStandard": "2026-10-09T23-48-37"
   },
   {
    "id": "81683231-3b3c-4542-8696-13dfcf56469a",
@@ -3065,7 +3074,7 @@
    "lead": "r-stardust",
    "leadHue": "blue",
    "leadFit": 2,
-   "leadCoverage": 0.62,
+   "leadCoverage": 0.57,
    "energy": [
     0.51,
     0.71,
@@ -3085,44 +3094,50 @@
    "crests": false,
    "peakPhase": "transcendence",
    "supports": [
-    "seraph",
-    "volcanic",
-    "covenant",
+    "parsec",
     "dusk",
-    "r2-spiralgal"
+    "covenant",
+    "rose-window",
+    "r2-spiralgal",
+    "mandorla",
+    "dark-tide",
+    "volcanic",
+    "will-o-wisp",
+    "nadir",
+    "seraph",
+    "kairos"
    ],
    "cast": {
     "threshold": [
-     "r-stardust",
-     "covenant",
-     "r2-spiralgal"
+     "parsec"
     ],
     "expansion": [
+     "parsec",
      "dusk",
-     "covenant",
-     "r2-spiralgal"
+     "covenant"
     ],
     "transcendence": [
      "r-stardust",
      "covenant",
-     "r2-spiralgal"
+     "rose-window"
     ],
     "illumination": [
      "r-stardust",
-     "covenant",
-     "r2-spiralgal"
+     "r2-spiralgal",
+     "mandorla",
+     "dark-tide",
+     "volcanic"
     ],
     "return": [
-     "volcanic",
-     "seraph",
-     "r2-spiralgal"
+     "will-o-wisp",
+     "nadir"
     ],
     "integration": [
-     "volcanic",
      "seraph",
-     "r2-spiralgal"
+     "kairos"
     ]
-   }
+   },
+   "mvStandard": "2026-10-09T23-48-37"
   },
   {
    "id": "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1",

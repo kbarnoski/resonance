@@ -12,7 +12,7 @@ import { SHADER_SUPPORT_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.
 // recast data (scripts/recast-expansion.mjs) against the objective
 // vetting pool (scripts/vet-shaders.mjs, brightness-normalized).
 const read = (p: string) => JSON.parse(readFileSync(join(process.cwd(), p), "utf8"));
-type J = { id: string; title: string; lead: string; cast: Record<string, (string | null)[]>; intensity: number[] };
+type J = { id: string; title: string; lead: string; cast: Record<string, (string | null)[]>; intensity: number[]; mvStandard?: string };
 const recast = read("scripts/expansion-recast.json") as { journeys: J[] };
 const vet = read("scripts/shader-vetting.json") as { pool: string[]; verdicts: Record<string, { gain: number; leadGain: number }> };
 const POOL = new Set(vet.pool);
@@ -79,11 +79,17 @@ describe("Expansion recast", () => {
     }
   });
 
-  it("gives every journey 6-7 distinct shaders (lead + 5-6 supports)", () => {
+  // Journeys raised to the Journey Archetype (scripts/mv-rollout,
+  // `mvStandard` stamp; Karel 2026-10-09 approved raising the per-shader
+  // cap so pools can reach H1 >= 10 on screen) carry phase-owned casts of
+  // 10-13 distinct shaders (lead + 9-12 supports); the rest keep the
+  // 10-05 recast's 6-9.
+  it("gives every journey 6-9 distinct shaders, Archetype journeys 10-13", () => {
     for (const j of ordered) {
       const n = supportsOf(j).length;
-      expect(n, j.title).toBeGreaterThanOrEqual(5);
-      expect(n, j.title).toBeLessThanOrEqual(8);
+      const [lo, hi] = j.mvStandard ? [9, 12] : [5, 8];
+      expect(n, j.title).toBeGreaterThanOrEqual(lo);
+      expect(n, j.title).toBeLessThanOrEqual(hi);
     }
   });
 

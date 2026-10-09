@@ -4,6 +4,9 @@
 // pack under depth/journeys/<id>/gen-XXX.png. local-depth.json lists
 // journeys with full coverage.
 // Usage: node --env-file=.env.local scripts/harvest-depth-maps.mjs inferno first-snow
+// Staging (2026-10-09): --picks=<mv-rollout out dir> maps the PICKED stills
+// in <out>/picks.json to <out>/<Journey-Name>/depth/gen-NNN.png instead
+// (pack + local-depth.json untouched); install.mjs carries them over.
 import { fal } from "@fal-ai/client";
 import { mkdir, readFile, writeFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -16,7 +19,38 @@ const PACK = path.join(ROOT, "public", "tramokyo-pack");
 const manifestPath = path.join(PACK, "local-depth.json");
 const manifest = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPath, "utf8")) : {};
 
-const CONCURRENCY = 6;
+const CONCURRENCY = Number(process.env.DEPTH_CONCURRENCY) || 6;
+const PICKS = process.argv.find((a) => a.startsWith("--picks="))?.slice(8) ?? null;
+async function depthOne(src, outPath) {
+  const b64 = (await readFile(src)).toString("base64");
+  const r = await fal.subscribe("fal-ai/image-preprocessors/depth-anything/v2", { input: { image_url: `data:image/jpeg;base64,${b64}` }, logs: false });
+  const url = r?.data?.image?.url ?? r?.image?.url;
+  if (!url) throw new Error("no image in result");
+  await writeFile(outPath, Buffer.from(await (await fetch(url)).arrayBuffer()));
+}
+if (PICKS) {
+  const picks = JSON.parse(await readFile(path.join(PICKS, "picks.json"), "utf8"));
+  const queue = [];
+  for (const j of Object.values(picks)) {
+    const outDir = path.join(PICKS, j.name.replace(/\s+/g, "-"), "depth");
+    await mkdir(outDir, { recursive: true });
+    for (const s of j.slots) if (s.file) {
+      const outPath = path.join(outDir, `gen-${String(s.slot).padStart(3, "0")}.png`);
+      // a re-pick changes the source still — keep a sidecar so stale maps are redone
+      const tag = `${outPath}.src`;
+      if (existsSync(outPath) && existsSync(tag) && (await readFile(tag, "utf8")) === s.file) continue;
+      queue.push({ src: s.file, outPath, tag });
+    }
+  }
+  console.log(`${queue.length} depth maps to render (staging)`);
+  let ok = 0, bad = 0;
+  await Promise.all(Array.from({ length: CONCURRENCY }, async () => {
+    for (;;) { const q = queue.shift(); if (!q) return;
+      try { await depthOne(q.src, q.outPath); await writeFile(q.tag, q.src); ok++; } catch (e) { bad++; console.error(`  ✗ ${q.outPath}: ${e.message ?? e}`); } }
+  }));
+  console.log(`staging depth: ${ok} done, ${bad} failed`);
+  process.exit(bad ? 1 : 0);
+}
 for (const jid of ids) {
   const imgDir = path.join(PACK, "images", "journeys", jid);
   if (!existsSync(imgDir)) { console.warn(`skip ${jid}: no images`); continue; }

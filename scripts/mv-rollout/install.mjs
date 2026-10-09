@@ -61,7 +61,18 @@ for (const j of JOURNEYS) {
     entry[`t${k}`] = e;
   }
   if (Object.keys(entry).length) clips.data[j.id] = entry; else delete clips.data[j.id];
-  delete depth.data[j.id]; // re-flagged by harvest-depth-maps.mjs once every new still has a map
+  // Staged depth maps (harvest-depth-maps.mjs --picks=<out>) for EVERY
+  // picked still → installed with the stills and the journey keeps its
+  // parallax; otherwise the flag drops until harvest-depth-maps.mjs runs.
+  const sdir = `${OUT}/${j.name.replace(/\s+/g, "-")}/depth`;
+  const stems = P.slots.map((s) => `gen-${String(s.slot).padStart(3, "0")}`);
+  const fresh = (st, s) => existsSync(`${sdir}/${st}.png`) && existsSync(`${sdir}/${st}.png.src`) && readFileSync(`${sdir}/${st}.png.src`, "utf8") === s.file;
+  if (stems.every((st, k) => fresh(st, P.slots[k]))) {
+    const ddir = `${PACK}/depth/journeys/${j.id}`;
+    mkdirSync(ddir, { recursive: true });
+    for (const st of stems) copyFileSync(`${sdir}/${st}.png`, `${ddir}/${st}.png`);
+    depth.data[j.id] = true;
+  } else delete depth.data[j.id]; // re-flagged by harvest-depth-maps.mjs once every new still has a map
   console.log(`  ✓ ${j.name}: ${urls.length} stills, ${Object.keys(entry).length} morphs`);
 }
 // every other entry byte-identical
