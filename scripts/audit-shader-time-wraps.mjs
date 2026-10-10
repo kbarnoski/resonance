@@ -242,6 +242,12 @@ for (const mode of modes) {
   console.log(`${mode.padEnd(24)} ${r.locked ? "LOCK" : "    "} ${r.err ? "ERR " + r.err.slice(0, 80) : `${String(evs.length).padStart(3)} events${worst ? `  worst ${lbl(worst)} mad=${worst.mad} (x${worst.ratio}) dLum=${worst.dLum} c/o=${worst.centre}/${worst.outer}${worst.tileMad ? ` tile=${worst.tileMad}/${worst.tileMed}` : ""} [${worst.kind}]` : ""}`}  ${Object.values(r.passes).map((p) => p.ms).join("/")}ms`);
 }
 await browser.close();
+// Coverage: the kiosk renders only SHADERS[mode] (visualizer.tsx primary /
+// dual / tertiary / backdrop), so the registry keys ARE the render set.
+const regKeys = Object.keys(reg.SHADERS), scanned = new Set(Object.keys(results));
+const missed = (ONLY ? regKeys.filter((m) => ONLY.includes(m)) : regKeys).filter((m) => !scanned.has(m) || results[m].err);
+console.log(`coverage: registry ${regKeys.length}, scanned ${scanned.size}, missed ${missed.length}${missed.length ? " -> " + missed.join(",") : ""}`);
+if (missed.length) process.exitCode = 2;
 const flagged = Object.entries(results).filter(([, r]) => Object.values(r.passes).some((p) => p.events.length));
 writeFileSync(OUT, JSON.stringify({ when: new Date().toISOString(), secs: SECS, fps: FPS, W, H, passes, ratio: RATIO, minMad: MIN_MAD, minLum: MIN_LUM, locked: [...locked], results }, null, 1));
 console.log(`\n${modes.length} scanned, ${flagged.length} flagged, ${((Date.now() - t0) / 1000).toFixed(0)}s. wrote ${OUT}`);
