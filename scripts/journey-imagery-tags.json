@@ -2,23 +2,23 @@
  "inferno#3": {
   "motifs": [
    {
-    "m": "fire",
+    "m": "embers",
     "w": 0.9
    },
    {
-    "m": "embers",
+    "m": "sun",
     "w": 0.7
    },
    {
-    "m": "smoke",
-    "w": 0.35
+    "m": "light-rays",
+    "w": 0.5
    }
   ],
   "moves": [
-   "flowing",
-   "rising"
+   "streaming",
+   "pulsing"
   ],
-  "colorStory": "molten orange glowing against deep black void"
+  "colorStory": "black void igniting into molten orange-gold coronas"
  },
  "inferno#2": {
   "motifs": [
@@ -27,19 +27,19 @@
     "w": 0.9
    },
    {
-    "m": "fire",
+    "m": "light-rays",
     "w": 0.7
    },
    {
-    "m": "light-rays",
+    "m": "smoke",
     "w": 0.45
    }
   ],
   "moves": [
-   "rising",
-   "flickering"
+   "streaming",
+   "pulsing"
   ],
-  "colorStory": "near-black dark flaring to molten amber orange"
+  "colorStory": "black void with molten orange-gold cores radiating outward"
  },
  "inferno#4": {
   "motifs": [
@@ -48,21 +48,42 @@
     "w": 0.9
    },
    {
-    "m": "golden-light",
-    "w": 0.7
+    "m": "sun",
+    "w": 0.6
    },
    {
-    "m": "fire",
-    "w": 0.5
+    "m": "smoke",
+    "w": 0.4
    }
   ],
   "moves": [
-   "swirling",
-   "streaming"
+   "streaming",
+   "falling"
   ],
-  "colorStory": "molten amber glow flaring from black void"
+  "colorStory": "black void ignited by molten orange, fading to ashen grey"
  },
  "inferno#1": {
+  "motifs": [
+   {
+    "m": "embers",
+    "w": 0.9
+   },
+   {
+    "m": "lava",
+    "w": 0.6
+   },
+   {
+    "m": "stone",
+    "w": 0.4
+   }
+  ],
+  "moves": [
+   "streaming",
+   "pulsing"
+  ],
+  "colorStory": "black and white void igniting into molten orange"
+ },
+ "inferno#0": {
   "motifs": [
    {
     "m": "embers",
@@ -73,7 +94,7 @@
     "w": 0.75
    },
    {
-    "m": "stone",
+    "m": "smoke",
     "w": 0.5
    }
   ],
@@ -81,9 +102,9 @@
    "rising",
    "flickering"
   ],
-  "colorStory": "charcoal black base split by molten orange glow"
+  "colorStory": "charred black base split by molten orange glow"
  },
- "inferno#0": {
+ "inferno#5": {
   "motifs": [
    {
     "m": "embers",
@@ -94,36 +115,15 @@
     "w": 0.7
    },
    {
-    "m": "stone",
-    "w": 0.45
-   }
-  ],
-  "moves": [
-   "flickering",
-   "rising"
-  ],
-  "colorStory": "near-black charcoal base split by molten orange glow"
- },
- "inferno#5": {
-  "motifs": [
-   {
-    "m": "embers",
-    "w": 0.9
-   },
-   {
-    "m": "fire",
-    "w": 0.7
-   },
-   {
     "m": "smoke",
-    "w": 0.4
+    "w": 0.5
    }
   ],
   "moves": [
    "rising",
    "flickering"
   ],
-  "colorStory": "near-black base, molten orange cores flaring upward"
+  "colorStory": "molten orange veins glowing against charred black void"
  },
  "first-snow#4": {
   "motifs": [
@@ -506,53 +506,32 @@
  "mycelium-dream#0": {
   "motifs": [
    {
-    "m": "mushrooms",
-    "w": 0.9
+    "m": "fireflies",
+    "w": 0.85
    },
    {
-    "m": "fireflies",
+    "m": "golden-light",
     "w": 0.7
    },
    {
-    "m": "forest",
+    "m": "embers",
     "w": 0.5
    }
   ],
   "moves": [
    "drifting",
-   "pulsing"
+   "falling"
   ],
-  "colorStory": "deep teal darkness with warm amber glowing cores"
+  "colorStory": "black void with golden and green glowing sparks"
  },
  "mycelium-dream#2": {
   "motifs": [
    {
-    "m": "mushrooms",
-    "w": 0.9
-   },
-   {
     "m": "embers",
-    "w": 0.6
+    "w": 0.85
    },
    {
-    "m": "forest",
-    "w": 0.4
-   }
-  ],
-  "moves": [
-   "drifting",
-   "pulsing"
-  ],
-  "colorStory": "deep teal darkness cradling glowing amber-orange light"
- },
- "mycelium-dream#1": {
-  "motifs": [
-   {
-    "m": "mushrooms",
-    "w": 0.9
-   },
-   {
-    "m": "forest",
+    "m": "sun",
     "w": 0.6
    },
    {
@@ -564,7 +543,28 @@
    "pulsing",
    "drifting"
   ],
-  "colorStory": "deep teal darkness with glowing amber-gold bioluminescence"
+  "colorStory": "black void with glowing amber orange points"
+ },
+ "mycelium-dream#1": {
+  "motifs": [
+   {
+    "m": "light-rays",
+    "w": 0.9
+   },
+   {
+    "m": "mushrooms",
+    "w": 0.7
+   },
+   {
+    "m": "fireflies",
+    "w": 0.6
+   }
+  ],
+  "moves": [
+   "pulsing",
+   "drifting"
+  ],
+  "colorStory": "black void with golden-green glow blooming outward"
  },
  "mycelium-dream#3": {
   "motifs": [
@@ -573,61 +573,61 @@
     "w": 0.85
    },
    {
-    "m": "fireflies",
+    "m": "golden-light",
     "w": 0.7
    },
    {
-    "m": "vines",
-    "w": 0.55
+    "m": "nebula",
+    "w": 0.5
    }
   ],
   "moves": [
-   "drifting",
-   "streaming"
+   "streaming",
+   "flickering"
   ],
-  "colorStory": "deep forest green glowing into molten golden light"
+  "colorStory": "black void with molten amber filaments, green haze glowing gold"
  },
  "mycelium-dream#5": {
   "motifs": [
    {
-    "m": "golden-light",
-    "w": 0.8
+    "m": "embers",
+    "w": 0.85
    },
    {
     "m": "fireflies",
     "w": 0.6
    },
    {
-    "m": "rain",
+    "m": "forest",
     "w": 0.4
    }
   ],
   "moves": [
-   "flickering",
-   "streaming"
+   "streaming",
+   "drifting"
   ],
-  "colorStory": "deep black-green void split by electric yellow-gold flashes"
+  "colorStory": "deep forest green dark, golden-orange sparks flaring through"
  },
  "mycelium-dream#4": {
   "motifs": [
    {
-    "m": "light-rays",
-    "w": 0.9
+    "m": "fireflies",
+    "w": 0.8
    },
    {
     "m": "embers",
     "w": 0.7
    },
    {
-    "m": "pool-ripples",
-    "w": 0.45
+    "m": "light-rays",
+    "w": 0.5
    }
   ],
   "moves": [
    "streaming",
-   "pulsing"
+   "flowing"
   ],
-  "colorStory": "golden sparks glowing against deep dark teal-black, with a sudden acid-green flash"
+  "colorStory": "deep black-green void threaded with glowing amber gold"
  },
  "abyssal-dive#1": {
   "motifs": [
@@ -842,65 +842,65 @@
  "cosmic-drift#1": {
   "motifs": [
    {
-    "m": "embers",
+    "m": "golden-light",
     "w": 0.9
    },
    {
-    "m": "stone",
-    "w": 0.7
+    "m": "embers",
+    "w": 0.6
    },
    {
-    "m": "smoke",
-    "w": 0.5
+    "m": "silk-fabric",
+    "w": 0.4
    }
   ],
   "moves": [
-   "rising",
-   "flickering"
+   "flowing",
+   "drifting"
   ],
-  "colorStory": "near-black void with glowing amber-orange heat"
+  "colorStory": "molten gold glowing against deep black void"
  },
  "cosmic-drift#0": {
   "motifs": [
    {
     "m": "embers",
-    "w": 0.85
+    "w": 0.9
    },
    {
     "m": "stone",
-    "w": 0.7
+    "w": 0.6
    },
    {
-    "m": "planet",
-    "w": 0.5
+    "m": "lava",
+    "w": 0.45
    }
   ],
   "moves": [
    "drifting",
    "flickering"
   ],
-  "colorStory": "near-black void with molten amber glowing at edges"
+  "colorStory": "black void with molten gold veins glowing amber"
  },
  "cosmic-drift#2": {
   "motifs": [
    {
+    "m": "golden-light",
+    "w": 0.9
+   },
+   {
     "m": "embers",
-    "w": 0.8
+    "w": 0.7
    },
    {
-    "m": "sand-desert",
-    "w": 0.6
-   },
-   {
-    "m": "sun",
+    "m": "crystal",
     "w": 0.5
    }
   ],
   "moves": [
-   "drifting",
-   "pulsing"
+   "streaming",
+   "flickering"
   ],
-  "colorStory": "dark umber shadows igniting into molten amber glow"
+  "colorStory": "black void igniting into molten amber and gold glow"
  },
  "neural-link#5": {
   "motifs": [
@@ -926,149 +926,149 @@
  "cosmic-drift#3": {
   "motifs": [
    {
-    "m": "embers",
+    "m": "golden-light",
     "w": 0.9
    },
    {
-    "m": "stone",
-    "w": 0.75
+    "m": "embers",
+    "w": 0.7
    },
    {
-    "m": "lava",
-    "w": 0.6
+    "m": "sand-desert",
+    "w": 0.4
    }
   ],
   "moves": [
-   "pulsing",
-   "flickering"
+   "streaming",
+   "drifting"
   ],
-  "colorStory": "black basalt base cracking to molten amber glow"
+  "colorStory": "black void with molten gold trails glowing amber"
  },
  "cosmic-drift#4": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.8
-   },
-   {
-    "m": "galaxy",
-    "w": 0.65
-   },
-   {
     "m": "golden-light",
+    "w": 0.9
+   },
+   {
+    "m": "embers",
+    "w": 0.7
+   },
+   {
+    "m": "ocean-waves",
     "w": 0.5
    }
   ],
   "moves": [
-   "swirling",
-   "flowing"
+   "flickering",
+   "rising"
   ],
-  "colorStory": "deep black base veined with molten amber gold"
+  "colorStory": "black void ignited by molten amber gold"
  },
  "cosmic-drift#5": {
   "motifs": [
    {
     "m": "embers",
-    "w": 0.85
-   },
-   {
-    "m": "golden-light",
-    "w": 0.7
-   },
-   {
-    "m": "stone",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "drifting",
-   "pulsing"
-  ],
-  "colorStory": "deep black void with molten amber glowing outward"
- },
- "the-ascent#1": {
-  "motifs": [
-   {
-    "m": "mist",
     "w": 0.9
    },
    {
-    "m": "embers",
+    "m": "lava",
     "w": 0.6
    },
    {
-    "m": "stone",
+    "m": "stars",
     "w": 0.4
    }
   ],
   "moves": [
-   "drifting",
+   "rising",
    "flickering"
   ],
-  "colorStory": "cold indigo base with sparse molten orange glints"
+  "colorStory": "deep midnight blue void with molten amber glowing"
  },
- "the-ascent#0": {
+ "the-ascent#1": {
   "motifs": [
    {
-    "m": "mist",
-    "w": 0.9
-   },
-   {
     "m": "stone",
-    "w": 0.7
+    "w": 0.8
    },
    {
-    "m": "embers",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "drifting",
-   "flowing"
-  ],
-  "colorStory": "deep black-blue shadow with thin ember-orange glow"
- },
- "the-ascent#5": {
-  "motifs": [
-   {
-    "m": "lava",
-    "w": 0.9
+    "m": "sand-desert",
+    "w": 0.55
    },
    {
-    "m": "stone",
-    "w": 0.7
-   },
-   {
-    "m": "mist",
-    "w": 0.5
+    "m": "golden-light",
+    "w": 0.45
    }
   ],
   "moves": [
    "flowing",
    "drifting"
   ],
-  "colorStory": "near-black shadows split by glowing molten amber veins"
+  "colorStory": "deep midnight blue-black base with glints of amber gold"
  },
- "the-ascent#3": {
+ "the-ascent#0": {
   "motifs": [
    {
-    "m": "clouds",
-    "w": 0.9
+    "m": "lava",
+    "w": 0.85
    },
    {
-    "m": "golden-light",
-    "w": 0.75
+    "m": "mist",
+    "w": 0.6
    },
    {
-    "m": "light-rays",
-    "w": 0.45
+    "m": "embers",
+    "w": 0.4
+   }
+  ],
+  "moves": [
+   "flowing",
+   "drifting"
+  ],
+  "colorStory": "cold blue-black dark, molten orange veins glowing through"
+ },
+ "the-ascent#5": {
+  "motifs": [
+   {
+    "m": "water",
+    "w": 0.85
+   },
+   {
+    "m": "stone",
+    "w": 0.7
+   },
+   {
+    "m": "mist",
+    "w": 0.55
    }
   ],
   "moves": [
    "drifting",
-   "streaming"
+   "pulsing"
   ],
-  "colorStory": "deep indigo darkness split by molten amber glow"
+  "colorStory": "deep indigo darkness with ember-amber glints"
+ },
+ "the-ascent#3": {
+  "motifs": [
+   {
+    "m": "petals",
+    "w": 0.85
+   },
+   {
+    "m": "ocean-waves",
+    "w": 0.6
+   },
+   {
+    "m": "golden-light",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "unfurling",
+   "pulsing"
+  ],
+  "colorStory": "deep indigo darkness igniting into glowing amber-gold"
  },
  "the-tempest#0": {
   "motifs": [
@@ -1094,23 +1094,23 @@
  "the-ascent#4": {
   "motifs": [
    {
-    "m": "light-rays",
+    "m": "clouds",
     "w": 0.9
    },
    {
-    "m": "stone",
+    "m": "embers",
     "w": 0.6
    },
    {
-    "m": "mist",
-    "w": 0.45
+    "m": "golden-light",
+    "w": 0.5
    }
   ],
   "moves": [
-   "streaming",
-   "drifting"
+   "drifting",
+   "pulsing"
   ],
-  "colorStory": "deep shadow blue-black pierced by molten golden light"
+  "colorStory": "deep black-blue void with glowing amber breaking through"
  },
  "the-ascent#2": {
   "motifs": [
@@ -1120,18 +1120,18 @@
    },
    {
     "m": "light-rays",
-    "w": 0.6
+    "w": 0.7
    },
    {
-    "m": "stone",
-    "w": 0.35
+    "m": "mist",
+    "w": 0.5
    }
   ],
   "moves": [
    "flowing",
    "drifting"
   ],
-  "colorStory": "deep indigo night, glowing golden-magenta veins threading through"
+  "colorStory": "deep indigo darkness with glowing amber ribbons of light"
  },
  "the-tempest#1": {
   "motifs": [
@@ -1401,10 +1401,10 @@
    }
   ],
   "moves": [
-   "swirling",
+   "spiraling",
    "rising"
   ],
-  "colorStory": "black void igniting into molten orange and gold, with violet edges"
+  "colorStory": "black void igniting into molten amber with violet flickers"
  },
  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9#2": {
   "motifs": [
@@ -1418,24 +1418,24 @@
    },
    {
     "m": "cave-tunnel",
-    "w": 0.5
+    "w": 0.45
    }
   ],
   "moves": [
    "spiraling",
    "pulsing"
   ],
-  "colorStory": "molten orange glow blazing against deep black"
+  "colorStory": "molten orange glow against deep black, white-gold hot cores"
  },
  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9#4": {
   "motifs": [
    {
     "m": "embers",
-    "w": 0.95
+    "w": 0.9
    },
    {
     "m": "lava",
-    "w": 0.7
+    "w": 0.65
    },
    {
     "m": "fireflies",
@@ -1446,20 +1446,20 @@
    "rising",
    "flickering"
   ],
-  "colorStory": "deep black base split by molten amber glow"
+  "colorStory": "deep black base with molten amber glowing through"
  },
  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9#0": {
   "motifs": [
    {
-    "m": "lava",
+    "m": "embers",
     "w": 0.9
    },
    {
-    "m": "embers",
+    "m": "lava",
     "w": 0.75
    },
    {
-    "m": "cave-tunnel",
+    "m": "light-rays",
     "w": 0.5
    }
   ],
@@ -1467,7 +1467,7 @@
    "rising",
    "flickering"
   ],
-  "colorStory": "near-black base cut by molten orange-gold glow"
+  "colorStory": "deep black-blue dark igniting into molten orange glow"
  },
  "f23b613b-7bc5-4ada-8e92-1d4ee79d30a9#5": {
   "motifs": [
@@ -1477,18 +1477,18 @@
    },
    {
     "m": "fire",
-    "w": 0.6
+    "w": 0.7
    },
    {
     "m": "smoke",
-    "w": 0.35
+    "w": 0.45
    }
   ],
   "moves": [
    "rising",
    "flickering"
   ],
-  "colorStory": "near-black base with glowing orange-gold veins flaring"
+  "colorStory": "near-black base with molten orange glowing through"
  },
  "9eb3df10-7835-4107-b995-4c9ad6f2edf1#0": {
   "motifs": [
@@ -1515,11 +1515,11 @@
   "motifs": [
    {
     "m": "embers",
-    "w": 0.9
+    "w": 0.85
    },
    {
     "m": "golden-light",
-    "w": 0.8
+    "w": 0.75
    },
    {
     "m": "galaxy",
@@ -1530,7 +1530,7 @@
    "spiraling",
    "drifting"
   ],
-  "colorStory": "deep black base igniting into molten amber gold with violet halos"
+  "colorStory": "deep black-violet base igniting into molten amber gold"
  },
  "9eb3df10-7835-4107-b995-4c9ad6f2edf1#1": {
   "motifs": [
@@ -2228,44 +2228,44 @@
  "a5b5f0cf-9a6b-451a-8293-3d98f3904342#0": {
   "motifs": [
    {
-    "m": "embers",
+    "m": "smoke",
     "w": 0.9
    },
    {
-    "m": "golden-light",
-    "w": 0.8
+    "m": "fire",
+    "w": 0.7
    },
    {
-    "m": "light-rays",
-    "w": 0.6
+    "m": "embers",
+    "w": 0.5
    }
   ],
   "moves": [
    "rising",
-   "flickering"
+   "swirling"
   ],
-  "colorStory": "deep black-teal darkness pierced by glowing amber gold"
+  "colorStory": "warm amber glow fading into pale smoke against black"
  },
  "a5b5f0cf-9a6b-451a-8293-3d98f3904342#1": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.85
+    "m": "golden-light",
+    "w": 0.9
    },
    {
-    "m": "mist",
+    "m": "underwater",
     "w": 0.7
    },
    {
-    "m": "pool-ripples",
-    "w": 0.55
+    "m": "smoke",
+    "w": 0.5
    }
   ],
   "moves": [
-   "drifting",
-   "pulsing"
+   "rising",
+   "swirling"
   ],
-  "colorStory": "cool blue-white pools glowing with molten amber"
+  "colorStory": "black void with molten amber glow, pale smoke wisps"
  },
  "5a3beb75-4788-4448-a024-4bfae30040c3#5": {
   "motifs": [
@@ -2291,23 +2291,23 @@
  "a5b5f0cf-9a6b-451a-8293-3d98f3904342#2": {
   "motifs": [
    {
-    "m": "lava",
+    "m": "golden-light",
     "w": 0.9
    },
    {
-    "m": "embers",
+    "m": "silk-fabric",
     "w": 0.7
    },
    {
-    "m": "mist",
-    "w": 0.5
+    "m": "embers",
+    "w": 0.55
    }
   ],
   "moves": [
    "flowing",
-   "rising"
+   "drifting"
   ],
-  "colorStory": "deep midnight blue shadows split by molten orange glow"
+  "colorStory": "deep indigo darkness with glowing amber-gold threads"
  },
  "5a3beb75-4788-4448-a024-4bfae30040c3#0": {
   "motifs": [
@@ -2334,43 +2334,43 @@
   "motifs": [
    {
     "m": "pool-ripples",
-    "w": 0.9
-   },
-   {
-    "m": "golden-light",
-    "w": 0.7
-   },
-   {
-    "m": "embers",
-    "w": 0.45
-   }
-  ],
-  "moves": [
-   "rippling",
-   "pulsing"
-  ],
-  "colorStory": "deep black base glowing with molten amber gold"
- },
- "a5b5f0cf-9a6b-451a-8293-3d98f3904342#5": {
-  "motifs": [
-   {
-    "m": "pool-ripples",
     "w": 0.85
    },
    {
-    "m": "cave-tunnel",
+    "m": "silk-fabric",
     "w": 0.7
    },
    {
-    "m": "smoke",
+    "m": "golden-light",
     "w": 0.55
    }
   ],
   "moves": [
-   "rippling",
-   "rising"
+   "flowing",
+   "rippling"
   ],
-  "colorStory": "deep indigo darkness pierced by glowing amber light"
+  "colorStory": "molten amber glowing against deep black, cool teal streaks"
+ },
+ "a5b5f0cf-9a6b-451a-8293-3d98f3904342#5": {
+  "motifs": [
+   {
+    "m": "fire",
+    "w": 0.9
+   },
+   {
+    "m": "smoke",
+    "w": 0.6
+   },
+   {
+    "m": "clouds",
+    "w": 0.4
+   }
+  ],
+  "moves": [
+   "rising",
+   "flickering"
+  ],
+  "colorStory": "deep black void warmed by amber flame glow"
  },
  "27f52cf0-5fad-420f-8324-8017c414f1f8#1": {
   "motifs": [
@@ -2480,23 +2480,23 @@
  "a5b5f0cf-9a6b-451a-8293-3d98f3904342#3": {
   "motifs": [
    {
-    "m": "smoke",
-    "w": 0.9
+    "m": "galaxy",
+    "w": 0.8
    },
    {
-    "m": "embers",
+    "m": "clouds",
+    "w": 0.7
+   },
+   {
+    "m": "pool-ripples",
     "w": 0.6
-   },
-   {
-    "m": "golden-light",
-    "w": 0.5
    }
   ],
   "moves": [
-   "rising",
-   "swirling"
+   "spiraling",
+   "rippling"
   ],
-  "colorStory": "deep black base glowing amber, violet edges, golden sparks"
+  "colorStory": "black void warmed by amber and golden glow"
  },
  "27f52cf0-5fad-420f-8324-8017c414f1f8#5": {
   "motifs": [
@@ -5152,18 +5152,18 @@
    },
    {
     "m": "water",
-    "w": 0.7
+    "w": 0.6
    },
    {
-    "m": "golden-light",
-    "w": 0.6
+    "m": "cave-tunnel",
+    "w": 0.5
    }
   ],
   "moves": [
-   "drifting",
-   "pulsing"
+   "pulsing",
+   "drifting"
   ],
-  "colorStory": "deep midnight blue with a single warm amber glow"
+  "colorStory": "black void with molten amber filament glowing"
  },
  "5a07f0af-654f-4dab-b42c-aef83983b33f#5": {
   "motifs": [
@@ -5189,6 +5189,69 @@
  "f0362f24-75f1-4717-8487-cc9cf12c7bcc#2": {
   "motifs": [
    {
+    "m": "golden-light",
+    "w": 0.9
+   },
+   {
+    "m": "leaves",
+    "w": 0.7
+   },
+   {
+    "m": "smoke",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "flowing",
+   "pulsing"
+  ],
+  "colorStory": "deep black base with molten amber glow edges"
+ },
+ "f0362f24-75f1-4717-8487-cc9cf12c7bcc#1": {
+  "motifs": [
+   {
+    "m": "pool-ripples",
+    "w": 0.9
+   },
+   {
+    "m": "embers",
+    "w": 0.7
+   },
+   {
+    "m": "golden-light",
+    "w": 0.6
+   }
+  ],
+  "moves": [
+   "rippling",
+   "pulsing"
+  ],
+  "colorStory": "molten amber glow igniting from deep black, dissolving into soft gold rings"
+ },
+ "f0362f24-75f1-4717-8487-cc9cf12c7bcc#3": {
+  "motifs": [
+   {
+    "m": "embers",
+    "w": 0.8
+   },
+   {
+    "m": "forest",
+    "w": 0.7
+   },
+   {
+    "m": "mist",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "drifting",
+   "pulsing"
+  ],
+  "colorStory": "deep black-teal base glowing with amber orange"
+ },
+ "f0362f24-75f1-4717-8487-cc9cf12c7bcc#4": {
+  "motifs": [
+   {
     "m": "embers",
     "w": 0.85
    },
@@ -5202,94 +5265,31 @@
    }
   ],
   "moves": [
-   "swirling",
-   "flickering"
+   "drifting",
+   "pulsing"
   ],
-  "colorStory": "deep black-green darkness igniting into molten amber gold"
+  "colorStory": "deep black-teal darkness pierced by glowing amber"
  },
- "f0362f24-75f1-4717-8487-cc9cf12c7bcc#1": {
+ "f0362f24-75f1-4717-8487-cc9cf12c7bcc#5": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.9
+    "m": "ocean-waves",
+    "w": 0.8
    },
    {
-    "m": "cave-tunnel",
+    "m": "golden-light",
     "w": 0.7
    },
    {
-    "m": "lava",
+    "m": "stars",
     "w": 0.5
    }
   ],
   "moves": [
    "drifting",
-   "spiraling"
+   "pulsing"
   ],
-  "colorStory": "black void split by molten amber glow"
- },
- "f0362f24-75f1-4717-8487-cc9cf12c7bcc#3": {
-  "motifs": [
-   {
-    "m": "light-rays",
-    "w": 0.9
-   },
-   {
-    "m": "forest",
-    "w": 0.75
-   },
-   {
-    "m": "mist",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "streaming",
-   "drifting"
-  ],
-  "colorStory": "dark silhouettes framing a molten amber glow"
- },
- "f0362f24-75f1-4717-8487-cc9cf12c7bcc#4": {
-  "motifs": [
-   {
-    "m": "light-rays",
-    "w": 0.9
-   },
-   {
-    "m": "forest",
-    "w": 0.75
-   },
-   {
-    "m": "mist",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "rising",
-   "drifting"
-  ],
-  "colorStory": "deep indigo shadows pierced by molten golden glow"
- },
- "f0362f24-75f1-4717-8487-cc9cf12c7bcc#5": {
-  "motifs": [
-   {
-    "m": "lava",
-    "w": 0.8
-   },
-   {
-    "m": "embers",
-    "w": 0.6
-   },
-   {
-    "m": "mist",
-    "w": 0.45
-   }
-  ],
-  "moves": [
-   "flowing",
-   "drifting"
-  ],
-  "colorStory": "deep black-indigo gloom veined with molten orange glow"
+  "colorStory": "deep midnight blue with molten gold glowing"
  },
  "9d901645-b8dd-4a62-b3e2-2613ccd64335#0": {
   "motifs": [
@@ -5424,91 +5424,49 @@
     "w": 0.9
    },
    {
-    "m": "embers",
-    "w": 0.75
+    "m": "leaves",
+    "w": 0.7
    },
    {
-    "m": "leaves",
-    "w": 0.5
+    "m": "galaxy",
+    "w": 0.55
    }
   ],
   "moves": [
-   "streaming",
+   "spiraling",
    "drifting"
   ],
-  "colorStory": "deep black dusk igniting into glowing amber gold"
+  "colorStory": "deep black void with glowing amber-gold filaments"
  },
  "c80a89bc-2c88-4bde-bec8-4be6916acb62#0": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.85
-   },
-   {
     "m": "leaves",
-    "w": 0.8
+    "w": 0.9
    },
    {
     "m": "fireflies",
-    "w": 0.55
+    "w": 0.6
+   },
+   {
+    "m": "golden-light",
+    "w": 0.5
    }
   ],
   "moves": [
    "drifting",
    "flickering"
   ],
-  "colorStory": "deep violet darkness sparked with glowing amber gold"
+  "colorStory": "amber glow emerging from deep black darkness"
  },
  "c80a89bc-2c88-4bde-bec8-4be6916acb62#3": {
   "motifs": [
    {
-    "m": "leaves",
-    "w": 0.9
-   },
-   {
-    "m": "golden-light",
-    "w": 0.7
-   },
-   {
     "m": "embers",
-    "w": 0.45
-   }
-  ],
-  "moves": [
-   "drifting",
-   "falling"
-  ],
-  "colorStory": "black void with glowing amber-gold edges, cool green flecks"
- },
- "c80a89bc-2c88-4bde-bec8-4be6916acb62#2": {
-  "motifs": [
+    "w": 0.85
+   },
    {
     "m": "golden-light",
-    "w": 0.9
-   },
-   {
-    "m": "stars",
-    "w": 0.7
-   },
-   {
-    "m": "nebula",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "streaming",
-   "drifting"
-  ],
-  "colorStory": "deep black base with molten gold glowing, sparkling"
- },
- "c80a89bc-2c88-4bde-bec8-4be6916acb62#4": {
-  "motifs": [
-   {
-    "m": "golden-light",
-    "w": 0.9
-   },
-   {
-    "m": "leaves",
     "w": 0.75
    },
    {
@@ -5518,9 +5476,51 @@
   ],
   "moves": [
    "drifting",
-   "rippling"
+   "flowing"
   ],
-  "colorStory": "deep black-blue void with glowing amber-gold accents"
+  "colorStory": "deep midnight black-blue holding a single glowing amber thread"
+ },
+ "c80a89bc-2c88-4bde-bec8-4be6916acb62#2": {
+  "motifs": [
+   {
+    "m": "galaxy",
+    "w": 0.9
+   },
+   {
+    "m": "embers",
+    "w": 0.6
+   },
+   {
+    "m": "golden-light",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "spiraling",
+   "swirling"
+  ],
+  "colorStory": "deep black void with molten gold glowing from luminous core"
+ },
+ "c80a89bc-2c88-4bde-bec8-4be6916acb62#4": {
+  "motifs": [
+   {
+    "m": "galaxy",
+    "w": 0.85
+   },
+   {
+    "m": "embers",
+    "w": 0.7
+   },
+   {
+    "m": "leaves",
+    "w": 0.6
+   }
+  ],
+  "moves": [
+   "swirling",
+   "drifting"
+  ],
+  "colorStory": "deep black void with glowing amber-gold warmth"
  },
  "800ed3f9-08d4-4b73-8a32-86ed8370e752#0": {
   "motifs": [
@@ -5551,18 +5551,18 @@
    },
    {
     "m": "pool-ripples",
-    "w": 0.6
+    "w": 0.7
    },
    {
     "m": "light-rays",
-    "w": 0.45
+    "w": 0.55
    }
   ],
   "moves": [
-   "drifting",
+   "falling",
    "rippling"
   ],
-  "colorStory": "deep teal darkness with a single amber glow"
+  "colorStory": "deep black void warmed by amber golden glow"
  },
  "800ed3f9-08d4-4b73-8a32-86ed8370e752#4": {
   "motifs": [
@@ -5924,70 +5924,28 @@
  "fb56b19e-ee23-43c6-ad41-5714e7969aad#0": {
   "motifs": [
    {
-    "m": "water",
-    "w": 0.9
-   },
-   {
-    "m": "mist",
-    "w": 0.6
+    "m": "pool-ripples",
+    "w": 0.85
    },
    {
     "m": "embers",
-    "w": 0.4
+    "w": 0.6
+   },
+   {
+    "m": "sun",
+    "w": 0.45
    }
   ],
   "moves": [
-   "drifting",
-   "rippling"
+   "rippling",
+   "drifting"
   ],
-  "colorStory": "deep indigo dusk glowing with magenta-coral reflections"
+  "colorStory": "deep violet-black glowing with ember orange and magenta"
  },
  "fb56b19e-ee23-43c6-ad41-5714e7969aad#1": {
   "motifs": [
    {
-    "m": "lava",
-    "w": 0.9
-   },
-   {
-    "m": "crystal",
-    "w": 0.6
-   },
-   {
-    "m": "embers",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "pulsing",
-   "flickering"
-  ],
-  "colorStory": "cool indigo-black base split by molten orange glow, violet crystal"
- },
- "fb56b19e-ee23-43c6-ad41-5714e7969aad#2": {
-  "motifs": [
-   {
-    "m": "light-rays",
-    "w": 0.9
-   },
-   {
-    "m": "crystal",
-    "w": 0.8
-   },
-   {
-    "m": "clouds",
-    "w": 0.6
-   }
-  ],
-  "moves": [
-   "rising",
-   "pulsing"
-  ],
-  "colorStory": "cool violet-blue base igniting into molten orange glow"
- },
- "fb56b19e-ee23-43c6-ad41-5714e7969aad#4": {
-  "motifs": [
-   {
-    "m": "golden-light",
+    "m": "pool-ripples",
     "w": 0.9
    },
    {
@@ -5995,17 +5953,38 @@
     "w": 0.6
    },
    {
-    "m": "mist",
+    "m": "crystal",
     "w": 0.4
    }
   ],
   "moves": [
-   "rising",
+   "rippling",
    "pulsing"
   ],
-  "colorStory": "deep indigo darkness pierced by glowing amber-gold"
+  "colorStory": "near-black base with glowing ember-red and amber highlights"
  },
- "fb56b19e-ee23-43c6-ad41-5714e7969aad#3": {
+ "fb56b19e-ee23-43c6-ad41-5714e7969aad#2": {
+  "motifs": [
+   {
+    "m": "clouds",
+    "w": 0.9
+   },
+   {
+    "m": "embers",
+    "w": 0.7
+   },
+   {
+    "m": "smoke",
+    "w": 0.55
+   }
+  ],
+  "moves": [
+   "drifting",
+   "pulsing"
+  ],
+  "colorStory": "indigo darkness igniting to molten orange, magenta wisps"
+ },
+ "fb56b19e-ee23-43c6-ad41-5714e7969aad#4": {
   "motifs": [
    {
     "m": "lava",
@@ -6013,102 +5992,123 @@
    },
    {
     "m": "embers",
-    "w": 0.7
+    "w": 0.6
    },
    {
-    "m": "light-rays",
-    "w": 0.5
+    "m": "golden-light",
+    "w": 0.4
    }
   ],
   "moves": [
    "flowing",
    "pulsing"
   ],
-  "colorStory": "deep indigo darkness split by molten orange-magenta glow"
+  "colorStory": "deep indigo darkness veined with glowing molten orange"
  },
- "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#1": {
+ "fb56b19e-ee23-43c6-ad41-5714e7969aad#3": {
   "motifs": [
    {
-    "m": "fireflies",
-    "w": 0.85
+    "m": "embers",
+    "w": 0.8
    },
    {
-    "m": "water",
+    "m": "pool-ripples",
     "w": 0.6
    },
    {
-    "m": "light-rays",
+    "m": "cave-tunnel",
     "w": 0.45
    }
   ],
   "moves": [
-   "drifting",
-   "flickering"
+   "spiraling",
+   "pulsing"
   ],
-  "colorStory": "deep emerald darkness pierced by warm golden bokeh glints"
+  "colorStory": "deep violet darkness around a glowing orange-gold core"
+ },
+ "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#1": {
+  "motifs": [
+   {
+    "m": "nebula",
+    "w": 0.8
+   },
+   {
+    "m": "fireflies",
+    "w": 0.6
+   },
+   {
+    "m": "golden-light",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "drifting",
+   "flowing"
+  ],
+  "colorStory": "deep emerald darkness with gold threads glowing and dripping"
  },
  "fb56b19e-ee23-43c6-ad41-5714e7969aad#5": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.85
+    "m": "golden-light",
+    "w": 0.9
    },
    {
-    "m": "lava",
+    "m": "clouds",
     "w": 0.7
    },
    {
-    "m": "light-rays",
+    "m": "embers",
     "w": 0.5
    }
   ],
   "moves": [
-   "rising",
+   "drifting",
    "flowing"
   ],
-  "colorStory": "deep indigo darkness split by molten orange glow"
+  "colorStory": "deep indigo darkness pierced by glowing amber-gold"
  },
  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#0": {
   "motifs": [
    {
-    "m": "leaves",
-    "w": 0.9
+    "m": "fireflies",
+    "w": 0.85
    },
    {
-    "m": "water",
-    "w": 0.6
-   },
-   {
-    "m": "fireflies",
-    "w": 0.4
-   }
-  ],
-  "moves": [
-   "unfurling",
-   "drifting"
-  ],
-  "colorStory": "deep black base with emerald glow and dewdrop highlights"
- },
- "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#3": {
-  "motifs": [
-   {
-    "m": "fireflies",
-    "w": 0.9
+    "m": "pool-ripples",
+    "w": 0.7
    },
    {
     "m": "golden-light",
-    "w": 0.75
-   },
-   {
-    "m": "light-rays",
-    "w": 0.5
+    "w": 0.55
    }
   ],
   "moves": [
    "drifting",
    "pulsing"
   ],
-  "colorStory": "deep emerald darkness lit by glowing golden-yellow points"
+  "colorStory": "deep black void pierced by warm amber glints"
+ },
+ "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#3": {
+  "motifs": [
+   {
+    "m": "golden-light",
+    "w": 0.9
+   },
+   {
+    "m": "light-rays",
+    "w": 0.65
+   },
+   {
+    "m": "embers",
+    "w": 0.4
+   }
+  ],
+  "moves": [
+   "pulsing",
+   "drifting"
+  ],
+  "colorStory": "black void with glowing molten gold halos"
  },
  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#2": {
   "motifs": [
@@ -6117,61 +6117,61 @@
     "w": 0.9
    },
    {
-    "m": "fireflies",
-    "w": 0.6
+    "m": "embers",
+    "w": 0.7
    },
    {
-    "m": "galaxy",
+    "m": "wings-feathers",
     "w": 0.45
    }
   ],
   "moves": [
-   "spiraling",
-   "pulsing"
+   "rising",
+   "flickering"
   ],
-  "colorStory": "black void with glowing amber-gold rings, turning green"
+  "colorStory": "black void with molten amber glow flaring gold"
  },
  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#4": {
   "motifs": [
    {
-    "m": "water",
+    "m": "golden-light",
     "w": 0.9
    },
    {
-    "m": "pool-ripples",
+    "m": "embers",
     "w": 0.7
    },
    {
-    "m": "golden-light",
-    "w": 0.6
+    "m": "light-rays",
+    "w": 0.55
    }
   ],
   "moves": [
-   "falling",
-   "rippling"
+   "rising",
+   "flickering"
   ],
-  "colorStory": "amber glow against black, with a green spark trail"
+  "colorStory": "deep midnight blue void with glowing amber-gold sparks"
  },
  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f#5": {
   "motifs": [
    {
-    "m": "fireflies",
+    "m": "embers",
     "w": 0.8
    },
    {
-    "m": "stars",
+    "m": "clouds",
     "w": 0.6
    },
    {
-    "m": "water",
-    "w": 0.45
+    "m": "stars",
+    "w": 0.5
    }
   ],
   "moves": [
    "drifting",
    "pulsing"
   ],
-  "colorStory": "deep midnight green-black with golden glints, violet-magenta glow"
+  "colorStory": "deep midnight black with small glowing amber flares"
  },
  "46216435-4340-4ad4-9033-101e66fb29e7#0": {
   "motifs": [
@@ -13064,23 +13064,23 @@
  "87e106f9-4d74-4886-b944-fd625a827b02#0": {
   "motifs": [
    {
-    "m": "aurora",
+    "m": "embers",
     "w": 0.8
    },
    {
-    "m": "light-rays",
-    "w": 0.65
+    "m": "water",
+    "w": 0.6
    },
    {
-    "m": "water",
-    "w": 0.5
+    "m": "clouds",
+    "w": 0.4
    }
   ],
   "moves": [
-   "flowing",
-   "pulsing"
+   "flickering",
+   "rippling"
   ],
-  "colorStory": "deep black-blue void, ember-gold sparks piercing cool blue glow"
+  "colorStory": "deep black-blue void pierced by warm amber sparks"
  },
  "9662fec9-04fa-4202-9859-8f01cd287aad#5": {
   "motifs": [
@@ -13106,65 +13106,65 @@
  "87e106f9-4d74-4886-b944-fd625a827b02#1": {
   "motifs": [
    {
-    "m": "silk-fabric",
-    "w": 0.8
-   },
-   {
     "m": "embers",
-    "w": 0.65
+    "w": 0.85
    },
    {
-    "m": "mist",
-    "w": 0.45
+    "m": "clouds",
+    "w": 0.7
+   },
+   {
+    "m": "sand-desert",
+    "w": 0.55
    }
   ],
   "moves": [
-   "flowing",
-   "pulsing"
+   "drifting",
+   "flowing"
   ],
-  "colorStory": "deep indigo darkness veined with glowing violet-orange light"
+  "colorStory": "near-black base, glowing amber sparks, violet-lavender cloud rims"
  },
  "87e106f9-4d74-4886-b944-fd625a827b02#2": {
   "motifs": [
    {
     "m": "embers",
-    "w": 0.8
+    "w": 0.85
    },
    {
     "m": "light-rays",
-    "w": 0.65
+    "w": 0.7
    },
    {
-    "m": "water",
-    "w": 0.45
+    "m": "mist",
+    "w": 0.5
    }
   ],
   "moves": [
    "drifting",
-   "rising"
+   "flickering"
   ],
-  "colorStory": "near-black base with warm amber sparks and a pink-silver glow"
+  "colorStory": "deep black base with warm amber and rose glints"
  },
  "87e106f9-4d74-4886-b944-fd625a827b02#3": {
   "motifs": [
    {
-    "m": "light-rays",
+    "m": "golden-light",
     "w": 0.9
    },
    {
-    "m": "golden-light",
-    "w": 0.7
+    "m": "light-rays",
+    "w": 0.75
    },
    {
     "m": "embers",
-    "w": 0.45
+    "w": 0.5
    }
   ],
   "moves": [
    "streaming",
-   "flickering"
+   "spiraling"
   ],
-  "colorStory": "violet-black void igniting into branching molten gold"
+  "colorStory": "deep black void with molten amber filaments flaring, cool white beam"
  },
  "87e106f9-4d74-4886-b944-fd625a827b02#5": {
   "motifs": [
@@ -13178,14 +13178,14 @@
    },
    {
     "m": "light-rays",
-    "w": 0.5
+    "w": 0.45
    }
   ],
   "moves": [
    "drifting",
-   "pulsing"
+   "flowing"
   ],
-  "colorStory": "amber gold glowing against deep black, with a cool violet flash"
+  "colorStory": "black void, molten amber glow with violet-white sparks"
  },
  "87e106f9-4d74-4886-b944-fd625a827b02#4": {
   "motifs": [
@@ -13195,18 +13195,18 @@
    },
    {
     "m": "embers",
-    "w": 0.6
+    "w": 0.7
    },
    {
     "m": "golden-light",
-    "w": 0.5
+    "w": 0.6
    }
   ],
   "moves": [
-   "pulsing",
+   "flickering",
    "streaming"
   ],
-  "colorStory": "black void with molten gold radiating from white-hot centers"
+  "colorStory": "black void split by molten gold, flaring amber"
  },
  "d92c2d3a-4283-4300-abc3-d71ed7c6848d#0": {
   "motifs": [
@@ -13353,7 +13353,7 @@
    "streaming",
    "flickering"
   ],
-  "colorStory": "black void with molten amber filaments glowing gold"
+  "colorStory": "molten amber threads glowing against deep black"
  },
  "d92c2d3a-4283-4300-abc3-d71ed7c6848d#4": {
   "motifs": [
@@ -13379,53 +13379,32 @@
  "dc8d9705-785a-485e-b91f-a12c85bf7b92#2": {
   "motifs": [
    {
-    "m": "golden-light",
+    "m": "embers",
     "w": 0.9
    },
    {
     "m": "stars",
-    "w": 0.8
+    "w": 0.7
    },
    {
-    "m": "embers",
+    "m": "golden-light",
     "w": 0.55
    }
   ],
   "moves": [
-   "pulsing",
-   "drifting"
+   "drifting",
+   "flickering"
   ],
-  "colorStory": "black void igniting into molten amber and gold"
+  "colorStory": "deep black void with glowing amber-gold sparks"
  },
  "dc8d9705-785a-485e-b91f-a12c85bf7b92#3": {
   "motifs": [
    {
-    "m": "golden-light",
+    "m": "stars",
     "w": 0.9
    },
-   {
-    "m": "geometric",
-    "w": 0.6
-   },
-   {
-    "m": "water",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "pulsing",
-   "falling"
-  ],
-  "colorStory": "molten gold glowing against black, cooling to pink-violet"
- },
- "dc8d9705-785a-485e-b91f-a12c85bf7b92#1": {
-  "motifs": [
    {
     "m": "embers",
-    "w": 0.9
-   },
-   {
-    "m": "lava",
     "w": 0.7
    },
    {
@@ -13434,31 +13413,52 @@
    }
   ],
   "moves": [
-   "rising",
-   "flowing"
+   "drifting",
+   "pulsing"
   ],
-  "colorStory": "molten amber glowing against deep black, flaring hot"
+  "colorStory": "black void with amber glow, rose-gold sparks"
  },
- "dc8d9705-785a-485e-b91f-a12c85bf7b92#5": {
+ "dc8d9705-785a-485e-b91f-a12c85bf7b92#1": {
   "motifs": [
    {
-    "m": "light-rays",
+    "m": "embers",
     "w": 0.9
    },
    {
-    "m": "embers",
-    "w": 0.75
+    "m": "fire",
+    "w": 0.7
    },
    {
-    "m": "stars",
+    "m": "golden-light",
     "w": 0.5
    }
   ],
   "moves": [
-   "rising",
-   "pulsing"
+   "flowing",
+   "flickering"
   ],
-  "colorStory": "deep black-navy void with molten amber glow radiating"
+  "colorStory": "black void split by molten gold and orange glow"
+ },
+ "dc8d9705-785a-485e-b91f-a12c85bf7b92#5": {
+  "motifs": [
+   {
+    "m": "embers",
+    "w": 0.85
+   },
+   {
+    "m": "sand-desert",
+    "w": 0.6
+   },
+   {
+    "m": "fireflies",
+    "w": 0.5
+   }
+  ],
+  "moves": [
+   "drifting",
+   "rising"
+  ],
+  "colorStory": "deep black void with glowing amber-gold sparks"
  },
  "dc8d9705-785a-485e-b91f-a12c85bf7b92#4": {
   "motifs": [
@@ -13467,19 +13467,19 @@
     "w": 0.9
    },
    {
-    "m": "embers",
-    "w": 0.75
+    "m": "golden-light",
+    "w": 0.7
    },
    {
-    "m": "lava",
-    "w": 0.6
+    "m": "stars",
+    "w": 0.45
    }
   ],
   "moves": [
-   "rising",
+   "streaming",
    "pulsing"
   ],
-  "colorStory": "black void igniting into molten amber gold, radiating outward"
+  "colorStory": "deep black base igniting into molten amber gold"
  },
  "01c987f6-17de-469b-b155-000922b479a1#0": {
   "motifs": [
