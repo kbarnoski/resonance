@@ -261,12 +261,13 @@ const RISE_ABOVE = [
   "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 25. Night Wind 4
   "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 26. Tranquility 8 — uplifting, big voices: the soulful build crests here
   "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 27. Never Forget 4 — deep, painful
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 28. Redwoods Sway 2 — V. the feel-good finale
-  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 29. Tranquility 36
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 30. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 31. Afterglow
-  "inferno", // 32. Realized
-  "aeb508d6-6447-4fb5-8468-636924520f82", // 33. Yellow Bird 6 — the last track
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 28. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 29. Redwoods Sway 2 — V. the feel-good finale
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 30. Tranquility 36
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 31. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 32. Afterglow
+  "inferno", // 33. Realized
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 34. Yellow Bird 6 — the last track
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
