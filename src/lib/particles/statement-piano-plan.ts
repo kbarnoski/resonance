@@ -61,7 +61,10 @@ export const READY_POLL_MS = 100;
 /** Living fire (draw-only flicker, licks and rising embers — shaders.ts uFire): its strength
  *  and the image line above which the photograph is fire (the cabinet's top board, in uv). */
 export const FIRE_STRENGTH = 1;
-export const FIRE_LINE_V = 0.575;
+export const FIRE_LINE_V = (0.575 + 0.12) / (1 + 2 * 0.12); // 0.575 of the piano, inside PIANO_PAD's margin
+/** Black margin around the prepared piano (scripts/make-piano-form.mjs PAD), as a
+ *  share of each side: the sampler's edge feather falls on black, not on the piano. */
+export const PIANO_PAD = 0.12;
 
 /** Piano opacity while shown (behind the text: rich, never fighting the title). */
 export const PIANO_OPACITY = 0.8;

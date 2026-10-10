@@ -66,5 +66,14 @@ for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
   out[i * 3 + 1] = Math.round(Math.min(1, g) * 255);
   out[i * 3 + 2] = Math.round(Math.min(1, b) * 255);
 }
-await sharp(out, { raw: { width: W, height: H, channels: 3 } }).extract(CROP).jpeg({ quality: 92 }).toFile(OUT);
-console.log(`wrote ${OUT} (${CROP.width}×${CROP.height}, aspect ${(CROP.width / CROP.height).toFixed(3)})`);
+// a black margin on every side (PIANO_PAD in statement-piano-plan.ts — keep in step):
+// the particle sampler feathers the outer ~10 % of any image, and the piano ran to
+// the crop's right + bottom edges, so its arm and feet dissolved as if cropped
+// (Karel 2026-10-10: "a bit cropped bottom right edge … id love it in the frame")
+const PAD = 0.12;
+const px = Math.round(CROP.width * PAD), py = Math.round(CROP.height * PAD);
+await sharp(out, { raw: { width: W, height: H, channels: 3 } }).extract(CROP)
+  .extend({ left: px, right: px, top: py, bottom: py, background: { r: 0, g: 0, b: 0 } })
+  .jpeg({ quality: 92 }).toFile(OUT);
+const OW = CROP.width + 2 * px, OH = CROP.height + 2 * py;
+console.log(`wrote ${OUT} (${OW}×${OH}, aspect ${(OW / OH).toFixed(3)})`);

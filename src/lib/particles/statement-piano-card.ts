@@ -11,7 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import type { ParticleEngine } from "./particle-engine";
 import {
-  pianoSchedule, stepAllowed, pianoPlaneScale, PIANO_OFFSET_Y, PIANO_FORM, FIRE_STRENGTH, FIRE_LINE_V, type PianoStep,
+  pianoSchedule, stepAllowed, pianoPlaneScale, PIANO_OFFSET_Y, PIANO_FORM, FIRE_STRENGTH, FIRE_LINE_V, PIANO_HEIGHT, PIANO_PAD, type PianoStep,
 } from "./statement-piano-plan";
 
 export type CardEngine = Pick<ParticleEngine,
@@ -70,7 +70,7 @@ export function createPianoCard<I extends PianoImage>(d: CardDeps<I>): PianoCard
       engine.setDensity(0);
       engine.setImageVariant(false, 0);
       engine.setImageTint(0); // the photograph's own amber, gold and fire
-      engine.setImageScale(pianoPlaneScale(aspect, d.screenAspect()));
+      engine.setImageScale(pianoPlaneScale(aspect, d.screenAspect(), PIANO_HEIGHT * (1 + 2 * PIANO_PAD)));
       engine.setOffset(0, PIANO_OFFSET_Y);
       engine.setInstances(1, 0);
       engine.snapImage(); // placement lands now

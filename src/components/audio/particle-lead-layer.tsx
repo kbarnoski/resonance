@@ -382,7 +382,8 @@ export function loadStatementPiano(): Promise<HTMLCanvasElement | null> {
   if (typeof window === "undefined") return Promise.resolve(null);
   // finer than any emblem: a 768 px colour texture, samples placed on a 512-wide grid
   // (the prepared image lives in the gitignored pack: fall back to the photo if it is missing)
-  pianoPromise ??= decodeSmall(STATEMENT_PIANO_SRC, { max: 768 }, false, 512)
+  // (×1.24 for the prepared image's black margin, so the piano itself keeps its detail)
+  pianoPromise ??= decodeSmall(STATEMENT_PIANO_SRC, { max: 952 }, false, 635)
     .catch(() => null)
     .then((c) => c ?? decodeSmall(STATEMENT_PIANO_FALLBACK, { max: 768 }, false, 512).catch(() => null));
   return pianoPromise;
