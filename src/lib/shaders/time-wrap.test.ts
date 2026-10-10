@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 /**
  * Periodic-time wrap lint (kiosk film 2026-10-10: supernova's big shock
  * ring vanished in ONE frame while a tiny new one appeared at the centre).
@@ -127,6 +128,14 @@ describe("shader registry — periodic-time wraps", () => {
       expect(stripComments(s), m).not.toMatch(AUDIO_POSITION_CLOCK);
       expect(s, m).toContain("kiosk slew audit 2026-10-10");
     }
+  });
+
+  it("pulsar's beam and ascension's drift run at a constant rate (tour 2026-10-10)", () => {
+    // both multiplied an ever-growing time by (1 + bass * 0.4): the beam angle /
+    // particle drift leapt as bass moved on a long-running layer
+    expect(stripComments(SHADERS.pulsar!)).not.toMatch(/t \* \(1\.0 \+ bass \* 0\.4\)/);
+    // (ascension is not a registered mode — pinned at the source)
+    expect(stripComments(readFileSync("src/lib/shaders/ascension.ts", "utf8"))).not.toMatch(/speed \* \(1\.0 \+ u_bass \* 0\.4\)/);
   });
 
   it("allowlist has no stale entries", () => {

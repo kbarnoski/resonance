@@ -70,7 +70,7 @@ void main() {
     float depth = fi;
     float speed = mix(1.2, 0.2, depth);          // far = fast scroll (parallax), near = slow
     float size = mix(0.18, 0.55, depth);          // far = tiny, near = large
-    float layerBrightness = particleLayer(warpedUV, depth, speed * (1.0 + u_bass * 0.4), size, t);
+    float layerBrightness = particleLayer(warpedUV, depth, speed * 1.12, size, t); // constant rate (was speed * (1 + u_bass * 0.4) × t: the drift leapt as bass moved on a long-running layer — 2026-10-10)
 
     // Depth attenuation — far layers dimmer
     float depthAtten = mix(0.12, 1.0, depth);

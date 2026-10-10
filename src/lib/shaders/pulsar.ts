@@ -28,8 +28,11 @@ float diffractionRing(float r, float t, float bass) {
 // Beam sweep — rotating collimated beam from distant pulsar
 float pulsarBeam(vec2 uv, float t, float bass) {
   float angle = atan(uv.y, uv.x);
-  float beamAngle1 = mod(t * (1.0 + bass * 0.4), 6.28318);
-  float beamAngle2 = mod(t * (1.0 + bass * 0.4) + 3.14159, 6.28318);
+  // constant rate (was t * (1 + bass * 0.4): on a long-running layer the beam
+  // angle leapt as bass moved — catalogue tour 2026-10-10, Night Wind 5; the
+  // kinetic clock already rides the band)
+  float beamAngle1 = mod(t * 1.12, 6.28318);
+  float beamAngle2 = mod(t * 1.12 + 3.14159, 6.28318);
 
   // Angular width narrows with depth — beam from infinity is nearly parallel
   float beamWidth = 0.08 + bass * 0.04;
