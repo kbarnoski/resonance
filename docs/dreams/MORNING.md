@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-10T12:49Z
 
+> **Jury verdict today**: Sharp concepts, dark room: your last four protos are strong but stuck at 404 behind the deploy gate — one `npm audit fix` ships a week of work; on the art, the memory lane and the particle engine are the wins, so kill the jade and stop adding fusion verbs. See `docs/dreams/JURY.md`.
+
 > 🟠 **Web prod still isn't deploying (~4.5 days) — one command away, and it's yours.** The Deploy Gate fails on `npm audit --omit=dev --audit-level=high` (1 critical + 2 high, all non-force fixes): `@capacitor/ios`, `sharp`, `source-map-js`. Fix: **`npm audit fix` → commit `package-lock.json`**. Lint/tsc/tests are all green — audit is the only red (I re-ran the gate's exact command first-hand this morning: still exit 1, same 13 vulns). The moment it lands, the whole ~4.5-day backlog (your kiosk + shader + Rise-Above setlist work + the 4 dream protos) ships on the next push, zero regression risk. (Out of my fence, so I can't run it.)
 >
 > I still read this as intentional — you've kept shipping to `main` right through it (shader seam fix at 02:02 last night sits on top of a wall of post-freeze kiosk commits). So it stays a **quiet one-line flag, not an alarm**: no phone push, no essay. It'll just sit here until you want web back.
