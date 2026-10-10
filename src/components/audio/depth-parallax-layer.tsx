@@ -280,6 +280,13 @@ function DepthParallaxLayerInner({
     });
     ro.observe(canvas);
 
+    let blackTex: WebGLTexture | null = null;
+    // never free the shared black texture with a retiring slot
+    const freeSlot = (sl: Slot | null) => {
+      if (!sl) return;
+      if (sl.img !== blackTex) gl.deleteTexture(sl.img);
+      if (sl.depth !== blackTex) gl.deleteTexture(sl.depth);
+    };
     // WARM-UP at mount (2026-10-10 soak + film: the first real frame spent
     // 57–74 ms inside render() — the drawing buffer's first full-size
     // allocation, plus the GPU pipeline's first draw). Pay both now,
@@ -311,7 +318,7 @@ function DepthParallaxLayerInner({
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         gl.clearColor(0, 0, 0, 1);
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.deleteTexture(dummy);
+        blackTex = dummy; // kept: the first still of a covered stretch mixes in FROM it
       }
     }
 
@@ -345,7 +352,7 @@ function DepthParallaxLayerInner({
       cancelAnimationFrame(raf);
       running = false;
       ++loadSeq; // drop any texture still in flight
-      for (const sl of [slotA, slotB, pendingStill]) if (sl) { gl.deleteTexture(sl.img); gl.deleteTexture(sl.depth); }
+      for (const sl of new Set([slotA, slotB, pendingStill])) freeSlot(sl);
       slotA = slotB = pendingStill = null;
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -388,10 +395,7 @@ function DepthParallaxLayerInner({
         slotA = slotB;
         slotB = pendingStill;
         pendingStill = null;
-        if (retiring !== slotA && retiring !== slotB) {
-          gl.deleteTexture(retiring.img);
-          gl.deleteTexture(retiring.depth);
-        }
+        if (retiring !== slotA && retiring !== slotB) freeSlot(retiring);
         mixStart = performance.now();
       }
       const m = Math.min(1, (now - mixStart) / mixDur);
@@ -433,11 +437,14 @@ function DepthParallaxLayerInner({
         const [img, dep] = rs.map((r) => (r as PromiseFulfilledResult<{ tex: WebGLTexture; aspect: number }>).value);
         const incoming: Slot = { img: img.tex, depth: dep.tex, aspect: img.aspect };
         if (!slotA || !slotB) {
-          // First still seeds BOTH slots — one image is enough to draw.
-          slotA = incoming;
+          // First still of a covered stretch: MIX IN FROM BLACK (tour 2026-10-10,
+          // The First @3 s: the canvas had already faded up while the still was
+          // decoding, so seeding both slots landed the picture in ONE frame).
+          // Black under the screen blend = nothing, so this is a clean fade-in.
+          slotA = blackTex ? { img: blackTex, depth: blackTex, aspect: incoming.aspect } : incoming;
           slotB = incoming;
-          mixDur = MIX_MS;
-          mixStart = performance.now() - MIX_MS;
+          mixDur = blackTex ? MIX_MS_LONG : MIX_MS;
+          mixStart = blackTex ? performance.now() : performance.now() - MIX_MS;
         } else if (inBoundarySettle()) {
           // Boundary freeze protocol: the base HOLDS the outgoing
           // journey's still through the title seconds. The incoming
@@ -466,10 +473,7 @@ function DepthParallaxLayerInner({
           const retiring = slotA;
           slotA = slotB;
           slotB = incoming;
-          if (retiring !== slotA && retiring !== slotB) {
-            gl.deleteTexture(retiring.img);
-            gl.deleteTexture(retiring.depth);
-          }
+          if (retiring !== slotA && retiring !== slotB) freeSlot(retiring);
           mixStart = performance.now();
         }
         if (!running) { running = true; raf = requestAnimationFrame(render); }
