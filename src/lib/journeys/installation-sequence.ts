@@ -235,11 +235,11 @@ const RISE_ABOVE = [
   "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — opens Rise Above after the masters (Karel 2026-10-09)
   "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  4. Testimony 3
   "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  5. Grasshopper — after Testimony 3; both follow First Light (Karel 2026-10-09)
-  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  6. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  7. Bath
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  8. The First (Expanded)
-  "d8705068-f8a9-4dd7-95a5-c6f1160fed22", //  9. Roll Away 8
-  "c80a89bc-2c88-4bde-bec8-4be6916acb62", // 10. Yellow Bird
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  6. Yellow Bird — after Grasshopper (Karel 2026-10-09)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  7. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  8. Bath
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  9. The First (Expanded)
+  "d8705068-f8a9-4dd7-95a5-c6f1160fed22", // 10. Roll Away 8
   "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 11. Night Wind 4
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 12. Loire 2 — mellow, uplifting (Karel 2026-10-09); lifts Night Wind 4 into Welcome Home
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 13. Welcome Home
