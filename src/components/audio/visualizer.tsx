@@ -51,7 +51,8 @@ import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/s
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import {
   frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
-  crossfadeRetarget, dequeueAfterFade, tertiaryStep, type DriveFlags, type TertiaryPhase,
+  crossfadeRetarget, dequeueAfterFade, tertiaryStep, slewVisibleDrive, type DriveFlags, type TertiaryPhase,
+  type VisibleDrive,
 } from "@/lib/journeys/shader-drive";
 // Performance monitor is now FPS-based, started/stopped by JourneyFeedback component
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
@@ -512,6 +513,10 @@ export function ShaderVisualizer({
     // FFT-smoothed uniforms, kept apart from the synthetic slow waves so
     // the two can be blended.
     const fftSm = { bass: 0, mid: 0, treble: 0, amplitude: 0 };
+    // What actually reaches the screen (uniforms + band scale), velocity-
+    // limited so an audio onset swells instead of stepping in one frame
+    // (snap RCA 2026-10-10, Spectre/mandorla). null until the first draw.
+    let shown: VisibleDrive | null = null;
     const MIX_K = 0.0165; // ~1 s time constant at 60 fps
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
@@ -728,14 +733,17 @@ export function ShaderVisualizer({
       // own band voice. NO damping of the true bands (Karel 2026-09-30:
       // a shader must respond the same way whatever its layer role).
       if (mix.kin > 0.001) s.amplitude += (eqLv - s.amplitude) * mix.kin;
+      const bandActive = !!lastBand && mix.band > 0.0005;
+      const scaleTarget = bandActive ? 1 + mix.band * eqLv * BAND_PROFILES[lastBand!].scale : 1;
+      shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt);
 
       gl.useProgram(program!);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uBass, s.bass * REACTIVITY);
-      gl.uniform1f(uMid, s.mid * REACTIVITY);
-      gl.uniform1f(uTreble, s.treble * REACTIVITY);
-      gl.uniform1f(uAmplitude, s.amplitude * REACTIVITY);
+      gl.uniform1f(uBass, shown.bass * REACTIVITY);
+      gl.uniform1f(uMid, shown.mid * REACTIVITY);
+      gl.uniform1f(uTreble, shown.treble * REACTIVITY);
+      gl.uniform1f(uAmplitude, shown.amplitude * REACTIVITY);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       if (!wasReady) syncNote("first-draw", tSync);
@@ -744,13 +752,16 @@ export function ShaderVisualizer({
       // them subtly): a band-focused LAYER pulses as a whole, its
       // scale riding its band. Motion carries the music; only a gentle
       // mass-breath on scale — eased in/out by the band mix.
+      // (the band scale is slewed above; it also eases back to 1 after the
+      // band mix closes before the transform is cleared)
+      if (bandActive || Math.abs(shown.scale - 1) > 0.0001) {
+        canvas.style.transform = `scale(${shown.scale.toFixed(4)})`;
+      }
       if (lastBand && mix.band > 0.0005) {
-        const prof2 = BAND_PROFILES[lastBand];
-        canvas.style.transform = `scale(${(1 + mix.band * eqLv * prof2.scale).toFixed(4)})`;
         // Per-band ground-truth probe for self-verification runs.
         const w = window as unknown as Record<string, Record<string, unknown>>;
         (w.__resonanceEq ??= {})[lastBand] = { pulse: +eqLv.toFixed(3), norm: +slowEma.toFixed(3), raw: +((s as unknown as Record<string, number>)[lastBand === "bass" ? "__rawB" : lastBand === "mid" ? "__rawM" : "__rawT"] ?? -1).toFixed(3), t: Date.now() };
-      } else if (canvas.style.transform) {
+      } else if (canvas.style.transform && Math.abs(shown.scale - 1) <= 0.0001) {
         canvas.style.transform = "";
       }
       // Structural presence (kinetic mid/treble layers) — the layer belongs

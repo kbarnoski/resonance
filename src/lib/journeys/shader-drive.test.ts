@@ -7,9 +7,12 @@ import {
   frameAlpha, isSilentLevel, driveTarget, stepDriveEnvelope, easedEnvelope,
   readSharedDriveEnvelope, __resetSharedDriveEnvelope, shouldRelatchDriveFlags,
   crossfadeRetarget, dequeueAfterFade, tertiaryStep, DRIVE_FALL_SEC, DRIVE_RISE_SEC,
-  type DriveFlags,
+  slewToward, slewVisibleDrive, UNIFORM_SLEW_PER_SEC, SCALE_SLEW_PER_SEC,
+  type DriveFlags, type VisibleDrive,
 } from "./shader-drive";
 import { getJourneyEngine } from "./journey-engine";
+import { BAND_PROFILES } from "./kinetic";
+import { createSeededRandom } from "./seeded-random";
 import { defaultPhases } from "./journeys";
 import type { Journey } from "./types";
 
@@ -141,41 +144,162 @@ describe("tertiary single-layer scheduling", () => {
 
 describe("take script is edge-triggered", () => {
   afterEach(() => { getJourneyEngine().stop(); vi.restoreAllMocks(); });
-  it("a finale-forced primary stands until the next script entry", () => {
-    const journey: Journey = {
-      id: "test-script-edge",
-      name: "Script Edge Test",
-      subtitle: "",
-      description: "",
-      realmId: "cosmos",
-      aiEnabled: false,
-      phases: defaultPhases("cosmos"),
-    };
+  // Determinism (flake RCA 2026-10-10): defaultPhases() draws its shader
+  // pools from Math.random, so every run scripted a different `a`/`b`, and
+  // ~1 pool in 130 had the finale-forced pick land on `b` itself — the
+  // "next entry lands" check then saw no change. The pools are now drawn
+  // from a fixed seed, the clock is fully mocked, and `b` is chosen (from
+  // a dry run of the same seeded take) to differ from the forced pick.
+  const buildJourney = (): Journey => {
+    const rnd = createSeededRandom(20261010);
+    const spy = vi.spyOn(Math, "random").mockImplementation(rnd);
+    try {
+      return {
+        id: "test-script-edge",
+        name: "Script Edge Test",
+        subtitle: "",
+        description: "",
+        realmId: "cosmos",
+        aiEnabled: false,
+        phases: defaultPhases("cosmos"),
+      };
+    } finally {
+      spy.mockRestore();
+    }
+  };
+  const runTake = (journey: Journey, a: string, b: string) => {
     const engine = getJourneyEngine();
+    engine.stop();
     let clock = 0;
-    vi.spyOn(performance, "now").mockImplementation(() => clock);
-    const pool = journey.phases.flatMap((p) => p.shaderModes);
-    const a = pool[0];
-    const b = pool.find((m) => m !== a)!;
+    const now = vi.spyOn(performance, "now").mockImplementation(() => clock);
     engine.start(journey, { seed: 7, trackDuration: 300, script: [
       { p: 0, role: "primary", mode: a },
       { p: 0.95, role: "primary", mode: b },
     ] });
     clock += 1000;
-    // the scripted primary (or its allowed substitute) is on
     const scripted = engine.getFrame(0.5)?.shaderMode;
-    expect(scripted).toBeTruthy();
     engine.forceShaderSwitch();
     const forced = engine.getCurrentShaderMode();
-    expect(forced).not.toBe(scripted);
-    // level-triggering reverted this on the very next frame
+    const held: (string | undefined)[] = [];
     for (let i = 0; i < 20; i++) {
       clock += 100;
-      expect(engine.getFrame(0.9 + i * 0.001)?.shaderMode).toBe(forced);
+      held.push(engine.getFrame(0.9 + i * 0.001)?.shaderMode);
     }
-    // the NEXT script entry still lands
     clock += 1000;
     const next = engine.getFrame(0.96)?.shaderMode;
+    engine.stop();
+    now.mockRestore();
+    return { scripted, forced, held, next };
+  };
+
+  it("a finale-forced primary stands until the next script entry", () => {
+    const journey = buildJourney();
+    // the pools are a pure function of the seed (no ambient Math.random)
+    expect(buildJourney().phases.map((p) => p.shaderModes)).toEqual(journey.phases.map((p) => p.shaderModes));
+    const pool = journey.phases.flatMap((p) => p.shaderModes);
+    const a = pool[0];
+    // dry run: learn which shader the finale forces for this seeded take
+    const dry = runTake(journey, a, pool.find((m) => m !== a)!);
+    const b = pool.find((m) => m !== a && m !== dry.scripted && m !== dry.forced)!;
+    expect(b).toBeTruthy();
+
+    const { scripted, forced, held, next } = runTake(journey, a, b);
+    // the scripted primary (or its allowed substitute) is on
+    expect(scripted).toBeTruthy();
+    expect(forced).toBe(dry.forced); // the take is deterministic
+    expect(forced).not.toBe(scripted);
+    // level-triggering reverted this on the very next frame
+    expect(held).toEqual(Array(20).fill(forced));
+    // the NEXT script entry still lands
+    expect(next).toBeTruthy();
     expect(next).not.toBe(forced);
+  });
+});
+
+describe("visible drive never steps on an audio onset (snap RCA 2026-10-10)", () => {
+  // Frame-by-frame replica of the kinetic primary (bass) layer's drive in
+  // visualizer.tsx: FFT smoothing k=0.3 (kinetic), eqLv fast attack 0.6 /
+  // banded release, u_amplitude = eqLv, band scale = 1 + eqLv * 0.0499.
+  // Input: Spectre @22.17 s — bass energy x6 within one 30 ms window.
+  const simulate = (fps: number, slew: boolean) => {
+    const dt = 1 / fps;
+    const prof = BAND_PROFILES.bass;
+    let fft = 0.1, slowEma = 0.1, eqLv = 0.5;
+    let shown: VisibleDrive | null = null;
+    const out: VisibleDrive[] = [];
+    for (let f = 0; f < fps * 3; f++) {
+      const tSec = f * dt;
+      const raw = tSec < 1 ? 0.1 : 0.6 - 0.25 * Math.min(1, (tSec - 1) / 0.5);
+      fft += (raw - fft) * frameAlpha(0.3, dt);
+      slowEma += (raw - slowEma) * frameAlpha(0.04, dt);
+      const target = driveTarget(raw, slowEma, prof.gain, 1, false);
+      eqLv += (target - eqLv) * frameAlpha(target > eqLv ? 0.6 : 1 - prof.decay, dt);
+      const v: VisibleDrive = { bass: fft, mid: fft * 0.5, treble: fft * 0.3, amplitude: eqLv, scale: 1 + eqLv * prof.scale };
+      shown = slew ? slewVisibleDrive(shown, v, dt) : v;
+      out.push(shown);
+    }
+    return out;
+  };
+  const maxStep = (frames: VisibleDrive[], key: keyof VisibleDrive) =>
+    frames.slice(1).reduce((m, v, i) => Math.max(m, Math.abs(v[key] - frames[i][key])), 0);
+
+  it("reproduces the snap without the slew (one-frame uniform + zoom jumps)", () => {
+    const raw = simulate(60, false);
+    expect(maxStep(raw, "amplitude")).toBeGreaterThan(0.2);   // eqLv 0.5 -> ~0.8 in a frame
+    expect(maxStep(raw, "bass")).toBeGreaterThan(0.1);
+    expect(maxStep(raw, "scale")).toBeGreaterThan(0.01);      // > 1 % zoom in a frame
+  });
+
+  for (const fps of [30, 60, 120]) {
+    it(`caps every visible output's per-frame change at ${fps} fps`, () => {
+      const frames = simulate(fps, true);
+      for (const k of ["bass", "mid", "treble", "amplitude"] as const) {
+        expect(maxStep(frames, k)).toBeLessThanOrEqual(UNIFORM_SLEW_PER_SEC / fps + 1e-9);
+      }
+      expect(maxStep(frames, "scale")).toBeLessThanOrEqual(SCALE_SLEW_PER_SEC / fps + 1e-9);
+    });
+  }
+
+  it("still answers the onset quickly (responsiveness kept)", () => {
+    const fps = 60;
+    const raw = simulate(fps, false);
+    const sl = simulate(fps, true);
+    const onset = fps; // frame of the onset (t = 1 s)
+    // within 0.25 s the shown values reach >= 90 % of the unslewed peak rise
+    const win = Math.round(0.25 * fps);
+    for (const k of ["amplitude", "bass", "scale"] as const) {
+      const base = raw[onset - 1][k];
+      const peakRaw = Math.max(...raw.slice(onset, onset + win).map((v) => v[k]));
+      const peakSl = Math.max(...sl.slice(onset, onset + win).map((v) => v[k]));
+      expect(peakSl - base).toBeGreaterThanOrEqual(0.9 * (peakRaw - base));
+    }
+  });
+
+  it("first drawn frame adopts the target; slow synthetic waves pass unchanged (mastered journeys)", () => {
+    const t0: VisibleDrive = { bass: 0.3, mid: 0.25, treble: 0.2, amplitude: 0.28, scale: 1 };
+    expect(slewVisibleDrive(null, t0, 1 / 60)).toEqual(t0);
+    // smooth-motion uniforms (visualizer synBass etc.) at the fastest clock
+    // the drive can run (rate 3x) never reach the cap: output == input
+    const fps = 60;
+    let shown: VisibleDrive | null = null;
+    let time = 0;
+    for (let f = 0; f < fps * 600; f++) {
+      time += (1 / fps) * 3;
+      const v: VisibleDrive = {
+        bass: 0.3 + 0.12 * Math.sin(time * 0.13),
+        mid: 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0),
+        treble: 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0),
+        amplitude: 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5),
+        scale: 1,
+      };
+      shown = slewVisibleDrive(shown, v, 1 / fps);
+      expect(shown).toEqual(v);
+    }
+  });
+
+  it("a hitch never licenses a jump; non-finite input holds", () => {
+    expect(slewToward(0, 1, UNIFORM_SLEW_PER_SEC, 2)).toBeCloseTo(UNIFORM_SLEW_PER_SEC * 0.05, 9);
+    expect(slewToward(0.4, Number.NaN, UNIFORM_SLEW_PER_SEC, 1 / 60)).toBe(0.4);
+    expect(slewToward(0.4, 0.41, UNIFORM_SLEW_PER_SEC, 1 / 60)).toBe(0.41);
   });
 });

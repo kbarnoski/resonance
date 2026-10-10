@@ -146,3 +146,53 @@ export function tertiaryStep(want: string | null, mounted: string | null, opacit
   if (opacity > 0.001) return "fade-out";
   return want === null ? "unmount" : "load";
 }
+
+// ── visible-output slew (snap RCA 2026-10-10) ──────────────────────────────
+//
+// Kiosk screencast, Spectre 03:22:45.839: the mandorla rings changed shape,
+// shifted colour and the centre glow brightened in ONE frame. Not the
+// crossfade — every one-frame jump in that journey sat 40-160 ms after an
+// audio onset (track 12.15 / 22.17 / 28.08 / 41.34 / 41.82 / 57.18 s). The
+// kinetic drive's internal levels attack in 1-2 frames by design (fftSm
+// k=0.3, eqLv k=0.6 per 60 fps frame), and three VISIBLE outputs followed
+// them directly: the u_bass/u_mid/u_treble/u_amplitude uniforms (shaders
+// like mandorla put u_bass into brightness, ring size and ripple phase),
+// and the band layer's CSS scale (eqLv x 0.05 = a 2.5 % zoom in a frame).
+// The levels keep their fast attack; what reaches the screen is now
+// velocity-limited, so an onset swells over ~8-10 frames instead of
+// stepping. Slow signals (the synthetic waves of smooth-motion / mastered
+// journeys) never reach the cap, so they pass through unchanged.
+
+/** Max uniform change per second (uniform units, 0..1 scale before the
+ *  0.85 reactivity): a full kinetic kick (0.5 -> 1) lands in ~0.2 s. */
+export const UNIFORM_SLEW_PER_SEC = 2.4;
+/** Max band-scale change per second: a full 2.5 % breath lands in ~0.17 s
+ *  (<= 0.25 % zoom per 60 fps frame). */
+export const SCALE_SLEW_PER_SEC = 0.15;
+
+/** Move `current` toward `target` by at most maxPerSec * dt. dt is clamped
+ *  like the render loop's (a hitch never licenses a jump). */
+export function slewToward(current: number, target: number, maxPerSec: number, dtSec: number): number {
+  if (!Number.isFinite(target)) return current;
+  if (!Number.isFinite(current)) return target;
+  const step = maxPerSec * Math.max(0, Math.min(0.05, dtSec));
+  const d = target - current;
+  if (d > step) return current + step;
+  if (d < -step) return current - step;
+  return target;
+}
+
+export type VisibleDrive = { bass: number; mid: number; treble: number; amplitude: number; scale: number };
+
+/** One frame of the visible-output slew. `prev` null = first drawn frame
+ *  (the layer is still at opacity 0): adopt the target outright. */
+export function slewVisibleDrive(prev: VisibleDrive | null, target: VisibleDrive, dtSec: number): VisibleDrive {
+  if (!prev) return { ...target };
+  return {
+    bass: slewToward(prev.bass, target.bass, UNIFORM_SLEW_PER_SEC, dtSec),
+    mid: slewToward(prev.mid, target.mid, UNIFORM_SLEW_PER_SEC, dtSec),
+    treble: slewToward(prev.treble, target.treble, UNIFORM_SLEW_PER_SEC, dtSec),
+    amplitude: slewToward(prev.amplitude, target.amplitude, UNIFORM_SLEW_PER_SEC, dtSec),
+    scale: slewToward(prev.scale, target.scale, SCALE_SLEW_PER_SEC, dtSec),
+  };
+}
