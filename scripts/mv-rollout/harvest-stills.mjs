@@ -21,7 +21,7 @@
 // Usage: node --env-file=.env.local scripts/mv-rollout/harvest-stills.mjs <set> --out=<dir> [--only=id,..] [--options=2] [--n=current|<N>] [--concurrency=6] [--reroll=<journeyId>:<slot>,...]
 import { fal } from "@fal-ai/client";
 import { createJiti } from "jiti";
-import { mkdirSync, existsSync, writeFileSync } from "node:fs";
+import { mkdirSync, existsSync, writeFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { TAIL } from "./tail.mjs";
 
@@ -97,9 +97,16 @@ for (const j of JOURNEYS) {
     for (const o of opts) { const f = `${dir}/${stem}-${o}.jpg`; if (!existsSync(f)) jobs.push({ f, prompt }); }
   }
 }
-writeFileSync(`${OUT}/slots.json`, JSON.stringify(manifest, null, 1));
+// merge: chunked runs (--only) add journeys to the set's manifest instead of replacing it
+const prior = existsSync(`${OUT}/slots.json`) ? JSON.parse(readFileSync(`${OUT}/slots.json`, "utf8")) : {};
+writeFileSync(`${OUT}/slots.json`, JSON.stringify({ ...prior, ...manifest }, null, 1));
 // Celestial + ice-family negatives only when the shot doesn't ask for them (Karel lifted the exclusivity 2026-10-09).
-const negativeFor = (prompt) => [D.GLOBAL_NEGATIVE, D.extraNegativeFor(prompt), D.materialNegativeFor(prompt)].filter(Boolean).join(", ");
+// Small distant forms and animal traces summon people (2026-10-09 horse
+// test: "tiny forms" became walkers, hooves became human legs + a hand) —
+// those shots get a stronger human/anatomy negative.
+const DISTANT = /\b(horse|mane|hoof\w*|herd|tiny|distant|far away|lone)\b/i;
+const STRONG_HUMAN = "rider, horseman, hiker, walker, traveler, wanderer, standing person, walking person, hands, fingers, human legs, feet, eyes, eye, face, head";
+const negativeFor = (prompt) => [D.GLOBAL_NEGATIVE, D.extraNegativeFor(prompt), DISTANT.test(prompt) ? STRONG_HUMAN : null, D.materialNegativeFor(prompt)].filter(Boolean).join(", ");
 console.log(`${jobs.length} stills to render (~$${(jobs.length * 0.025).toFixed(2)})`);
 let next = 0, ok = 0, bad = 0;
 async function worker() {

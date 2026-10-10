@@ -1,0 +1,1343 @@
+{
+ "generated": "2026-10-10T01:34:21.762Z",
+ "by": "scripts/mv-rollout/cast-shaders.mjs",
+ "seed": 1,
+ "cap": 8,
+ "loopCap": 13,
+ "minDist": 4,
+ "maxSupportUses": 8,
+ "maxLoopUses": 13,
+ "casts": {
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b": {
+   "name": "Tranquility 8",
+   "lead": "singularity",
+   "cast": {
+    "threshold": [
+     "lightyear"
+    ],
+    "expansion": [
+     "parsec",
+     "zenith",
+     "r3-plasmastorm"
+    ],
+    "transcendence": [
+     "singularity",
+     "astral"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "cirrus",
+     "resonant-rings",
+     "firefly-field"
+    ],
+    "integration": [
+     "nadir",
+     "murmuration",
+     "r2-photon"
+    ]
+   }
+  },
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": {
+   "name": "Night Wind 2",
+   "lead": "kairos",
+   "cast": {
+    "threshold": [
+     "merkaba",
+     "r-embers",
+     "hubble"
+    ],
+    "expansion": [
+     "kenosis",
+     "chinook"
+    ],
+    "transcendence": [
+     "maelstrom-dark",
+     "pollen"
+    ],
+    "illumination": [
+     "kairos",
+     "r-blackhole"
+    ],
+    "return": [
+     "dharma"
+    ],
+    "integration": [
+     "yantra",
+     "event-horizon"
+    ]
+   }
+  },
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308": {
+   "name": "Loire 2",
+   "lead": "tide",
+   "cast": {
+    "threshold": [
+     "monsoon",
+     "symbiosis",
+     "kelp"
+    ],
+    "expansion": [
+     "satori"
+    ],
+    "transcendence": [
+     "r-stardust",
+     "cascade-veil"
+    ],
+    "illumination": [
+     "tide",
+     "r3-waveveil",
+     "pelagic"
+    ],
+    "return": [
+     "volcanic",
+     "lectio"
+    ],
+    "integration": [
+     "r3-fernunfurl",
+     "aureole"
+    ]
+   }
+  },
+  "05664df7-d355-40b7-85d2-e2badf26123a": {
+   "name": "Torraine 6",
+   "lead": "torrent",
+   "cast": {
+    "threshold": [
+     "ribbon-of-light",
+     "diatom"
+    ],
+    "expansion": [
+     "r2-curlswarm",
+     "ocean",
+     "r3-monsoonveil",
+     "molten-vein"
+    ],
+    "transcendence": [
+     "r3-heartwarmth",
+     "furnace"
+    ],
+    "illumination": [
+     "r2-portalrim",
+     "orbit-weaver"
+    ],
+    "return": [
+     "torrent"
+    ],
+    "integration": [
+     "flagella"
+    ]
+   }
+  },
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8": {
+   "name": "Bells 1",
+   "lead": "flame",
+   "cast": {
+    "threshold": [
+     "shadow-fire"
+    ],
+    "expansion": [
+     "flame"
+    ],
+    "transcendence": [
+     "flame",
+     "jubilee"
+    ],
+    "illumination": [
+     "rapture",
+     "yantra",
+     "seraph",
+     "dharma",
+     "pollen",
+     "r-blackhole"
+    ],
+    "return": [
+     "event-horizon",
+     "r2-photon"
+    ],
+    "integration": [
+     "merkaba"
+    ]
+   }
+  },
+  "86b64938-26ea-40b9-9ea1-461323a049d5": {
+   "name": "Chenin 3",
+   "lead": "threshold",
+   "cast": {
+    "threshold": [
+     "chinook"
+    ],
+    "expansion": [
+     "threshold",
+     "vestige"
+    ],
+    "transcendence": [
+     "lectio",
+     "aureole",
+     "kenosis",
+     "covenant"
+    ],
+    "illumination": [
+     "resonant-rings",
+     "hubble"
+    ],
+    "return": [
+     "satori"
+    ],
+    "integration": [
+     "maelstrom-dark",
+     "r2-spore"
+    ]
+   }
+  },
+  "6499ac06-2cb1-4970-b75f-1258587c84d8": {
+   "name": "The Other Side 10",
+   "lead": "astral",
+   "cast": {
+    "threshold": [
+     "parsec",
+     "lightyear",
+     "r3-plasmastorm",
+     "cascade-veil"
+    ],
+    "expansion": [
+     "zenith",
+     "r-stardust"
+    ],
+    "transcendence": [
+     "r2-curlswarm"
+    ],
+    "illumination": [
+     "astral",
+     "ocean"
+    ],
+    "return": [
+     "typhoon",
+     "cirrus"
+    ],
+    "integration": [
+     "rose-window"
+    ]
+   }
+  },
+  "68b4289e-2247-41d6-8b9d-064345da9769": {
+   "name": "Tranquility 17",
+   "lead": "r2-pixie",
+   "cast": {
+    "threshold": [
+     "kelp"
+    ],
+    "expansion": [
+     "r3-fernunfurl",
+     "iron-forge",
+     "r3-fairyglow",
+     "kairos"
+    ],
+    "transcendence": [
+     "r2-pixie",
+     "ember"
+    ],
+    "illumination": [
+     "r3-heartwarmth",
+     "furnace",
+     "r-embers"
+    ],
+    "return": [
+     "molten-vein"
+    ],
+    "integration": [
+     "volcanic"
+    ]
+   }
+  },
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e": {
+   "name": "No question 7",
+   "lead": "symbiosis",
+   "cast": {
+    "threshold": [
+     "shadow-fire"
+    ],
+    "expansion": [
+     "jubilee",
+     "rapture",
+     "seraph",
+     "dharma",
+     "yantra"
+    ],
+    "transcendence": [
+     "pelagic",
+     "magma"
+    ],
+    "illumination": [
+     "symbiosis"
+    ],
+    "return": [
+     "murmuration",
+     "will-o-wisp"
+    ],
+    "integration": [
+     "singularity"
+    ]
+   }
+  },
+  "13e71555-03d6-4b27-ad32-2c6834559c24": {
+   "name": "Northern Plane 5",
+   "lead": "r3-waveveil",
+   "cast": {
+    "threshold": [
+     "r2-portalrim"
+    ],
+    "expansion": [
+     "drift",
+     "torrent",
+     "tide"
+    ],
+    "transcendence": [
+     "firefly-field",
+     "monsoon"
+    ],
+    "illumination": [
+     "ripple"
+    ],
+    "return": [
+     "r3-waveveil",
+     "r3-monsoonveil",
+     "chrysalis"
+    ],
+    "integration": [
+     "ribbon-of-light",
+     "r-mercury"
+    ]
+   }
+  },
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0": {
+   "name": "Never Forget 4",
+   "lead": "pollen",
+   "cast": {
+    "threshold": [
+     "flame",
+     "r2-spore",
+     "maelstrom-dark"
+    ],
+    "expansion": [
+     "aureole",
+     "vestige"
+    ],
+    "transcendence": [
+     "pollen",
+     "lectio"
+    ],
+    "illumination": [
+     "chinook",
+     "satori"
+    ],
+    "return": [
+     "kepler",
+     "hubble"
+    ],
+    "integration": [
+     "covenant"
+    ]
+   }
+  },
+  "4dac5718-517d-4183-ad27-e1a6c583e305": {
+   "name": "Tranquility 30",
+   "lead": "r-blackhole",
+   "cast": {
+    "threshold": [
+     "ember"
+    ],
+    "expansion": [
+     "r-blackhole"
+    ],
+    "transcendence": [
+     "kelp",
+     "r3-fairyglow"
+    ],
+    "illumination": [
+     "furnace",
+     "iron-forge",
+     "kairos",
+     "r3-fernunfurl"
+    ],
+    "return": [
+     "r3-heartwarmth",
+     "photon"
+    ],
+    "integration": [
+     "r-embers",
+     "molten-vein"
+    ]
+   }
+  },
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c": {
+   "name": "Amboise 1",
+   "lead": "merkaba",
+   "cast": {
+    "threshold": [
+     "shadow-fire"
+    ],
+    "expansion": [
+     "jubilee",
+     "seraph",
+     "rapture",
+     "dharma",
+     "yantra",
+     "magma"
+    ],
+    "transcendence": [
+     "merkaba"
+    ],
+    "illumination": [
+     "orbit-weaver"
+    ],
+    "return": [
+     "r2-curlswarm",
+     "pelagic"
+    ],
+    "integration": [
+     "murmuration"
+    ]
+   }
+  },
+  "d8705068-f8a9-4dd7-95a5-c6f1160fed22": {
+   "name": "Roll Away 8",
+   "lead": "event-horizon",
+   "cast": {
+    "threshold": [
+     "diatom"
+    ],
+    "expansion": [
+     "fracture-light",
+     "r2-pixie",
+     "pendulum-dust",
+     "ribbon-of-light"
+    ],
+    "transcendence": [
+     "rose-window",
+     "r2-spiralgal",
+     "ripple",
+     "monsoon",
+     "chrysalis"
+    ],
+    "illumination": [
+     "firefly-field",
+     "will-o-wisp"
+    ],
+    "return": [
+     "event-horizon"
+    ],
+    "integration": [
+     "event-horizon"
+    ]
+   }
+  },
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": {
+   "name": "Surrounded by Light 6",
+   "lead": "kenosis",
+   "cast": {
+    "threshold": [
+     "resonant-rings"
+    ],
+    "expansion": [
+     "symbiosis",
+     "r2-photon",
+     "torrent",
+     "ocean",
+     "cascade-veil"
+    ],
+    "transcendence": [
+     "kenosis",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "flame",
+     "meteor-rain"
+    ],
+    "integration": [
+     "r-mercury"
+    ]
+   }
+  },
+  "666436a4-eabf-4b0a-b6bc-665520daa687": {
+   "name": "Tranquility 3",
+   "lead": "cirrus",
+   "cast": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "r3-waveveil",
+     "r3-sleepingbloom",
+     "binary-stars",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "cirrus"
+    ],
+    "illumination": [
+     "drift",
+     "dark-nebula"
+    ],
+    "return": [
+     "zenith",
+     "lightyear"
+    ],
+    "integration": [
+     "maelstrom-dark"
+    ]
+   }
+  },
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41": {
+   "name": "Night Wind 4",
+   "lead": "lectio",
+   "cast": {
+    "threshold": [
+     "kelp"
+    ],
+    "expansion": [
+     "r2-spore"
+    ],
+    "transcendence": [
+     "lectio",
+     "r3-fernunfurl",
+     "jubilee",
+     "pollen"
+    ],
+    "illumination": [
+     "iron-forge",
+     "furnace",
+     "shadow-fire"
+    ],
+    "return": [
+     "r3-fairyglow",
+     "r3-heartwarmth"
+    ],
+    "integration": [
+     "ember"
+    ]
+   }
+  },
+  "9d0ad58d-e490-4cc3-b24d-7c97d1fa3c0d": {
+   "name": "Torraine 7",
+   "lead": "vestige",
+   "cast": {
+    "threshold": [
+     "r2-pixie"
+    ],
+    "expansion": [
+     "flame",
+     "r-blackhole",
+     "aureole",
+     "molten-vein",
+     "chinook",
+     "satori"
+    ],
+    "transcendence": [
+     "starfield",
+     "yantra"
+    ],
+    "illumination": [
+     "vestige",
+     "merkaba"
+    ],
+    "return": [
+     "vestige"
+    ],
+    "integration": [
+     "rapture"
+    ]
+   }
+  },
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1": {
+   "name": "Tranquility 36",
+   "lead": "flagella",
+   "cast": {
+    "threshold": [
+     "event-horizon"
+    ],
+    "expansion": [
+     "dharma",
+     "r3-waveveil",
+     "ripple",
+     "r2-curlswarm",
+     "cascade-veil",
+     "r3-plasmastorm"
+    ],
+    "transcendence": [
+     "diatom",
+     "orbit-weaver"
+    ],
+    "illumination": [
+     "flagella",
+     "magma"
+    ],
+    "return": [
+     "flagella"
+    ],
+    "integration": [
+     "murmuration"
+    ]
+   }
+  },
+  "aeb508d6-6447-4fb5-8468-636924520f82": {
+   "name": "Yellow Bird 6",
+   "lead": "hubble",
+   "cast": {
+    "threshold": [
+     "iron-forge"
+    ],
+    "expansion": [
+     "kenosis"
+    ],
+    "transcendence": [
+     "hubble"
+    ],
+    "illumination": [
+     "shadow-fire",
+     "pollen",
+     "jubilee",
+     "maelstrom-dark",
+     "resonant-rings",
+     "obsidian-flow"
+    ],
+    "return": [
+     "r-droplets",
+     "r3-heartwarmth"
+    ],
+    "integration": [
+     "r2-spore"
+    ]
+   }
+  },
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296": {
+   "name": "Redwoods Sway 2",
+   "lead": "r-embers",
+   "cast": {
+    "threshold": [
+     "r-embers"
+    ],
+    "expansion": [
+     "volcanic",
+     "plankton",
+     "furnace",
+     "ember",
+     "covenant",
+     "kelp"
+    ],
+    "transcendence": [
+     "mandorla",
+     "kairos"
+    ],
+    "illumination": [
+     "r3-lightningveil"
+    ],
+    "return": [
+     "r2-thermal",
+     "meteor-rain"
+    ],
+    "integration": [
+     "stigmata"
+    ]
+   }
+  },
+  "7b39db5e-68fa-4915-8ff1-83078c18edac": {
+   "name": "Tranquility 33",
+   "lead": "drift",
+   "cast": {
+    "threshold": [
+     "pelagic"
+    ],
+    "expansion": [
+     "pendulum-dust",
+     "tide",
+     "r2-photon",
+     "cirrus",
+     "dark-tide"
+    ],
+    "transcendence": [
+     "drift"
+    ],
+    "illumination": [
+     "torrent",
+     "firefly-field",
+     "r2-spiralgal"
+    ],
+    "return": [
+     "symbiosis"
+    ],
+    "integration": [
+     "singularity"
+    ]
+   }
+  },
+  "112c3e16-3c98-43ca-902e-a9c2b510ee3d": {
+   "name": "Cabin Soul 6",
+   "lead": "dusk",
+   "cast": {
+    "threshold": [
+     "r2-pixie"
+    ],
+    "expansion": [
+     "seraph",
+     "lectio",
+     "rapture",
+     "event-horizon",
+     "flame"
+    ],
+    "transcendence": [
+     "dusk",
+     "dharma"
+    ],
+    "illumination": [
+     "merkaba"
+    ],
+    "return": [
+     "yantra",
+     "r3-plasmastorm"
+    ],
+    "integration": [
+     "r-blackhole"
+    ]
+   }
+  },
+  "954a7000-91ba-42eb-b5a7-a8d5bc21c8c2": {
+   "name": "Night Wind 5",
+   "lead": "pulsar",
+   "cast": {
+    "threshold": [
+     "shadow-fire",
+     "chinook"
+    ],
+    "expansion": [
+     "pulsar",
+     "pollen"
+    ],
+    "transcendence": [
+     "iron-forge",
+     "monsoon"
+    ],
+    "illumination": [
+     "vestige",
+     "kenosis",
+     "aureole"
+    ],
+    "return": [
+     "satori"
+    ],
+    "integration": [
+     "r-stardust",
+     "parsec"
+    ]
+   }
+  },
+  "81683231-3b3c-4542-8696-13dfcf56469a": {
+   "name": "Loire 5A",
+   "lead": "r3-fairyglow",
+   "cast": {
+    "threshold": [
+     "r3-fairyglow"
+    ],
+    "expansion": [
+     "resonant-rings",
+     "flagella",
+     "r3-sleepingbloom",
+     "fracture-light",
+     "murmuration"
+    ],
+    "transcendence": [
+     "ripple"
+    ],
+    "illumination": [
+     "binary-stars"
+    ],
+    "return": [
+     "will-o-wisp",
+     "r2-curlswarm"
+    ],
+    "integration": [
+     "cascade-veil",
+     "chrysalis"
+    ]
+   }
+  },
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0": {
+   "name": "Tranquility 34",
+   "lead": "typhoon",
+   "cast": {
+    "threshold": [
+     "dark-tide"
+    ],
+    "expansion": [
+     "cirrus",
+     "covenant",
+     "ribbon-of-light",
+     "orbit-weaver"
+    ],
+    "transcendence": [
+     "typhoon",
+     "kairos",
+     "tide"
+    ],
+    "illumination": [
+     "astral"
+    ],
+    "return": [
+     "diatom",
+     "hubble"
+    ],
+    "integration": [
+     "magma",
+     "r2-photon"
+    ]
+   }
+  },
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9": {
+   "name": "Chemiluminescence",
+   "lead": "jubilee",
+   "cast": {
+    "threshold": [
+     "kelp",
+     "r2-spore"
+    ],
+    "expansion": [
+     "event-horizon",
+     "volcanic",
+     "r3-fernunfurl",
+     "r2-pixie"
+    ],
+    "transcendence": [
+     "lectio"
+    ],
+    "illumination": [
+     "merkaba"
+    ],
+    "return": [
+     "jubilee",
+     "r-blackhole"
+    ],
+    "integration": [
+     "r-embers",
+     "molten-vein"
+    ]
+   }
+  },
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084": {
+   "name": "Nothing 30",
+   "lead": "zenith",
+   "cast": {
+    "threshold": [
+     "r-stardust",
+     "lightyear"
+    ],
+    "expansion": [
+     "parsec",
+     "drift"
+    ],
+    "transcendence": [
+     "r-mercury",
+     "rose-window",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "zenith",
+     "r3-waveveil"
+    ],
+    "return": [
+     "firefly-field",
+     "pendulum-dust"
+    ],
+    "integration": [
+     "nadir"
+    ]
+   }
+  },
+  "1f83e254-a0c8-45ec-974f-8b363038a98d": {
+   "name": "Rise 1",
+   "lead": "seraph",
+   "cast": {
+    "threshold": [
+     "flame"
+    ],
+    "expansion": [
+     "kenosis",
+     "vestige",
+     "aureole",
+     "chinook",
+     "rapture"
+    ],
+    "transcendence": [
+     "seraph"
+    ],
+    "illumination": [
+     "yantra",
+     "flagella",
+     "satori"
+    ],
+    "return": [
+     "dharma"
+    ],
+    "integration": [
+     "pollen"
+    ]
+   }
+  },
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e": {
+   "name": "Chenin 5",
+   "lead": "shadow-fire",
+   "cast": {
+    "threshold": [
+     "hubble"
+    ],
+    "expansion": [
+     "kairos",
+     "covenant"
+    ],
+    "transcendence": [
+     "shadow-fire"
+    ],
+    "illumination": [
+     "resonant-rings",
+     "furnace"
+    ],
+    "return": [
+     "maelstrom-dark",
+     "r-droplets",
+     "magma"
+    ],
+    "integration": [
+     "pulsar",
+     "threshold",
+     "ember"
+    ]
+   }
+  },
+  "9662fec9-04fa-4202-9859-8f01cd287aad": {
+   "name": "Tranquility 38",
+   "lead": "ocean",
+   "cast": {
+    "threshold": [
+     "r3-plasmastorm"
+    ],
+    "expansion": [
+     "murmuration",
+     "ribbon-of-light",
+     "astral",
+     "r3-sleepingbloom",
+     "torrent"
+    ],
+    "transcendence": [
+     "ocean",
+     "r3-monsoonveil",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "meteor-rain"
+    ],
+    "integration": [
+     "r2-curlswarm"
+    ]
+   }
+  },
+  "e4658610-336d-452f-a4f8-7b652b339db6": {
+   "name": "Night Wind 11",
+   "lead": "diatom",
+   "cast": {
+    "threshold": [
+     "symbiosis",
+     "pelagic"
+    ],
+    "expansion": [
+     "r-stardust"
+    ],
+    "transcendence": [
+     "will-o-wisp"
+    ],
+    "illumination": [
+     "pendulum-dust",
+     "binary-stars",
+     "cascade-veil",
+     "cirrus"
+    ],
+    "return": [
+     "diatom",
+     "r3-waveveil"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "typhoon"
+    ]
+   }
+  },
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a": {
+   "name": "Horses 1",
+   "lead": "r2-spiralgal",
+   "cast": {
+    "threshold": [
+     "r-embers"
+    ],
+    "expansion": [
+     "r2-spiralgal"
+    ],
+    "transcendence": [
+     "molten-vein",
+     "volcanic"
+    ],
+    "illumination": [
+     "r3-heartwarmth",
+     "dark-tide",
+     "vestige",
+     "ripple",
+     "r2-photon"
+    ],
+    "return": [
+     "parsec",
+     "r3-fairyglow"
+    ],
+    "integration": [
+     "fracture-light"
+    ]
+   }
+  },
+  "6407bf5c-7862-49e8-883d-59754c4caf18": {
+   "name": "No question 8",
+   "lead": "iron-forge",
+   "cast": {
+    "threshold": [
+     "merkaba"
+    ],
+    "expansion": [
+     "pollen",
+     "r-blackhole",
+     "monsoon",
+     "r2-pixie",
+     "flame",
+     "aureole"
+    ],
+    "transcendence": [
+     "iron-forge",
+     "lectio"
+    ],
+    "illumination": [
+     "jubilee"
+    ],
+    "return": [
+     "maelstrom-dark",
+     "flagella"
+    ],
+    "integration": [
+     "chinook"
+    ]
+   }
+  },
+  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6": {
+   "name": "Velvet Tears 1",
+   "lead": "chrysalis",
+   "cast": {
+    "threshold": [
+     "singularity"
+    ],
+    "expansion": [
+     "chrysalis",
+     "r3-sleepingbloom",
+     "zenith",
+     "tide",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "rose-window",
+     "torrent"
+    ],
+    "illumination": [
+     "nadir",
+     "r-mercury"
+    ],
+    "return": [
+     "r2-curlswarm"
+    ],
+    "integration": [
+     "hubble"
+    ]
+   }
+  },
+  "2ff26268-997a-438f-8dac-d280d50da3a1": {
+   "name": "Tranquility 11",
+   "lead": "resonant-rings",
+   "cast": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "cirrus",
+     "murmuration",
+     "r-stardust",
+     "seraph"
+    ],
+    "transcendence": [
+     "resonant-rings",
+     "r3-waveveil",
+     "kenosis"
+    ],
+    "illumination": [
+     "symbiosis"
+    ],
+    "return": [
+     "pelagic",
+     "cascade-veil"
+    ],
+    "integration": [
+     "pendulum-dust"
+    ]
+   }
+  },
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d": {
+   "name": "Northern Plane 3",
+   "lead": "dharma",
+   "cast": {
+    "threshold": [
+     "r3-fairyglow"
+    ],
+    "expansion": [
+     "protostar",
+     "r3-fernunfurl",
+     "vestige"
+    ],
+    "transcendence": [
+     "dharma"
+    ],
+    "illumination": [
+     "event-horizon",
+     "r3-heartwarmth",
+     "starfield",
+     "mycelium"
+    ],
+    "return": [
+     "volcanic",
+     "photon"
+    ],
+    "integration": [
+     "r2-spore"
+    ]
+   }
+  },
+  "3f42929f-8b8e-4206-a3c8-057bf479d4e7": {
+   "name": "Torraine 5",
+   "lead": "magma",
+   "cast": {
+    "threshold": [
+     "merkaba"
+    ],
+    "expansion": [
+     "r-embers",
+     "lectio",
+     "plankton",
+     "hubble",
+     "ember",
+     "kairos"
+    ],
+    "transcendence": [
+     "r-droplets",
+     "r2-pixie"
+    ],
+    "illumination": [
+     "magma",
+     "covenant"
+    ],
+    "return": [
+     "magma"
+    ],
+    "integration": [
+     "dusk"
+    ]
+   }
+  },
+  "e181df12-049b-4199-8a1b-4bc1c3edd8e7": {
+   "name": "Tranquility 35",
+   "lead": "lightyear",
+   "cast": {
+    "threshold": [
+     "seraph"
+    ],
+    "expansion": [
+     "r-blackhole",
+     "rapture",
+     "jubilee",
+     "satori"
+    ],
+    "transcendence": [
+     "lightyear",
+     "kenosis",
+     "pollen"
+    ],
+    "illumination": [
+     "iron-forge"
+    ],
+    "return": [
+     "shadow-fire",
+     "yantra"
+    ],
+    "integration": [
+     "aureole"
+    ]
+   }
+  },
+  "85124aed-c3b4-42e2-870a-b14bc5425b72": {
+   "name": "Night Wind 9",
+   "lead": "r2-curlswarm",
+   "cast": {
+    "threshold": [
+     "r2-photon",
+     "rose-window"
+    ],
+    "expansion": [
+     "r2-spiralgal"
+    ],
+    "transcendence": [
+     "ocean",
+     "diatom",
+     "monsoon",
+     "cirrus"
+    ],
+    "illumination": [
+     "r2-curlswarm"
+    ],
+    "return": [
+     "r-stardust",
+     "pelagic"
+    ],
+    "integration": [
+     "typhoon",
+     "will-o-wisp"
+    ]
+   }
+  },
+  "3814f116-5c54-499c-9d9b-355201700fdc": {
+   "name": "Rattler 2",
+   "lead": "molten-vein",
+   "cast": {
+    "threshold": [
+     "volcanic"
+    ],
+    "expansion": [
+     "r3-heartwarmth",
+     "r3-fairyglow",
+     "vestige"
+    ],
+    "transcendence": [
+     "molten-vein",
+     "stigmata"
+    ],
+    "illumination": [
+     "kepler",
+     "obsidian-flow",
+     "r2-spore",
+     "event-horizon"
+    ],
+    "return": [
+     "r3-fernunfurl"
+    ],
+    "integration": [
+     "r2-thermal"
+    ]
+   }
+  },
+  "4d17da19-6834-4005-a944-34c27a88a320": {
+   "name": "Amboise 2",
+   "lead": "furnace",
+   "cast": {
+    "threshold": [
+     "r2-pixie"
+    ],
+    "expansion": [
+     "kairos",
+     "chinook"
+    ],
+    "transcendence": [
+     "furnace",
+     "dharma"
+    ],
+    "illumination": [
+     "lectio",
+     "merkaba",
+     "flame",
+     "covenant"
+    ],
+    "return": [
+     "mycelium",
+     "photon"
+    ],
+    "integration": [
+     "starfield"
+    ]
+   }
+  },
+  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f": {
+   "name": "Singular 4",
+   "lead": "maelstrom-dark",
+   "cast": {
+    "threshold": [
+     "maelstrom-dark"
+    ],
+    "expansion": [
+     "seraph",
+     "satori",
+     "r-blackhole",
+     "kenosis"
+    ],
+    "transcendence": [
+     "jubilee",
+     "rapture"
+    ],
+    "illumination": [
+     "shadow-fire",
+     "iron-forge"
+    ],
+    "return": [
+     "parsec",
+     "fracture-light"
+    ],
+    "integration": [
+     "astral"
+    ]
+   }
+  },
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3": {
+   "name": "Yellow Bird 3",
+   "lead": "dark-nebula",
+   "cast": {
+    "threshold": [
+     "drift"
+    ],
+    "expansion": [
+     "zenith",
+     "magma"
+    ],
+    "transcendence": [
+     "dark-nebula",
+     "r3-monsoonveil"
+    ],
+    "illumination": [
+     "diatom",
+     "flagella",
+     "r2-spiralgal",
+     "chrysalis",
+     "binary-stars"
+    ],
+    "return": [
+     "typhoon"
+    ],
+    "integration": [
+     "firefly-field"
+    ]
+   }
+  }
+ }
+}
