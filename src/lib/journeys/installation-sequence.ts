@@ -267,17 +267,18 @@ const RISE_ABOVE = [
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 31. Chenin 5 — THE PEAK — the screeching, intense one
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 32. No question 7 — IV. building up soulfully, after the peak
   "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 33. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
-  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 34. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 35. Night Wind 4
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 36. Tranquility 8 — uplifting, big voices: the soulful build crests here
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 37. Never Forget 4 — deep, painful
-  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 38. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 39. Redwoods Sway 2 — V. the feel-good finale
-  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 40. Tranquility 36
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 41. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 42. Afterglow
-  "inferno", // 43. Realized
-  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 44. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
+  "the-ascent", // 34. The Summit — a classical, moving piece into the mix (Karel 2026-10-09)
+  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 35. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 36. Night Wind 4
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 37. Tranquility 8 — uplifting, big voices: the soulful build crests here
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 38. Never Forget 4 — deep, painful
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 39. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 40. Redwoods Sway 2 — V. the feel-good finale
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 41. Tranquility 36
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 42. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 43. Afterglow
+  "inferno", // 44. Realized
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 45. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
