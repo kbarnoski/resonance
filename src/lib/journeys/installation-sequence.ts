@@ -250,9 +250,10 @@ const RISE_ABOVE = [
   "13e71555-03d6-4b27-ad32-2c6834559c24", // 19. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
   "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 20. Horses 1 — later in the set (Karel 2026-10-09)
   "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 21. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 22. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 23. Afterglow
-  "inferno", // 24. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 22. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 23. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 24. Afterglow
+  "inferno", // 25. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
