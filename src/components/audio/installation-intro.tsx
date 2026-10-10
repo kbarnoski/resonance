@@ -4,7 +4,9 @@ import type { Journey } from "@/lib/journeys/types";
 import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
+import { useEffect, useState } from "react";
 import { StatementPiano } from "./statement-piano";
+import { cardLayer, LATEST_REVEAL_MS } from "@/lib/particles/statement-piano-plan";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
  * time this component renders any text, every Cormorant Garamond
@@ -72,6 +74,20 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   const journeyMounted = stage === "journey" || stage === "fading-journey";
   const journeyOpacity = stage === "fading-journey" ? 0 : 1;
 
+  // THE STATEMENT CARD (kiosk path, cardT0 set): the logo + text and the
+  // particle piano are ONE layer — revealed together (the piano decides when:
+  // at 0.7 s, or on the boot card once the warm-up lets it form) and faded out
+  // together, same curve, same frame (statement-piano-plan cardLayer)
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => { setRevealed(false); }, [cardT0]); // a new card (operator jump) starts dark
+  useEffect(() => {
+    // safety: the text never waits on the piano past its latest reveal
+    if (cardT0 === null || revealed) return;
+    const id = setTimeout(() => setRevealed(true), Math.max(0, LATEST_REVEAL_MS + 800 - (performance.now() - cardT0)));
+    return () => clearTimeout(id);
+  }, [cardT0, revealed]);
+  const card = cardT0 !== null ? cardLayer(stage, revealed) : null;
+
   return (
     <>
       {bgMounted && (
@@ -90,18 +106,20 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
       {/* the statement card's particle piano (Karel's 1919 upright): behind
           the text, mounted for the card's whole life — it stops itself before
           journey 0 pre-starts and fades with the text (statement-piano.tsx) */}
-      {cardT0 !== null && (expMounted || stage === "journey") && <StatementPiano cardT0={cardT0} textShown={stage === "experience"} />}
+      {cardT0 !== null && (expMounted || stage === "journey") && (
+        <StatementPiano key={cardT0} cardT0={cardT0} stage={stage} revealed={revealed} onReveal={() => setRevealed(true)} />
+      )}
 
       {expMounted && (
         <div
           className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center px-8 text-center"
           style={{
             zIndex: 122,
-            opacity: expOpacity,
-            transition: "opacity 1800ms ease-out",
+            opacity: card ? (card.shown ? 1 : 0) : expOpacity,
+            transition: card ? card.transition : "opacity 1800ms ease-out",
           }}
         >
-          <ExperienceTextInner minimal />
+          <ExperienceTextInner minimal animate={!card} />
         </div>
       )}
 

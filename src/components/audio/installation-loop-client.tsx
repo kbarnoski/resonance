@@ -11,6 +11,7 @@ import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro, ExperienceTextInner } from "./installation-intro";
+import { TEXT_OUT_BEFORE_PRESTART_MS, TITLE_AFTER_PRESTART_MS } from "@/lib/particles/statement-piano-plan";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
 import { InstallationStatusPanel } from "./installation-status-panel";
@@ -36,12 +37,14 @@ import { warmParticleSouls } from "./particle-lead-layer";
 import type { SoulId } from "@/lib/particles/souls";
 const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 
-/** Statement text holds this long after journey 0 pre-starts, so the
- *  set-start GPU stall (~280-330 ms) and Snowflake's spin-up (60-80 ms
- *  frames for its first ~3.2 s — kiosk rig 2026-10-09, Rise Above and EP
- *  set starts) land on a still card, never a fade. The 1.8 s fade ends
- *  as the journey title mounts (pre-start + 5.3 s). */
-const CYCLE_FADE_AFTER_PRESTART_MS = 3_500;
+/** The statement card's choreography (statement-piano-plan.ts — Karel
+ *  2026-10-09: "the piano … should fade out as the text does … appear in the
+ *  beginning with the resonance logo and text fading in"): the logo, text and
+ *  particle piano fade out TOGETHER, ending 0.3 s before journey 0 pre-starts,
+ *  so the set-start GPU stall (~280-330 ms) and Snowflake's spin-up (60-80 ms
+ *  frames for its first ~3.2 s — kiosk rig 2026-10-09) land on BLACK; the
+ *  journey title mounts pre-start + 3.8 s, after the spin-up. The music starts
+ *  at the pre-start, as before. */
 
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
@@ -1251,9 +1254,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // behind it, the journey title mounts after a short black hold,
       // then the normal title choreography plays out.
       const preStartDelay = isGesture ? 0 : Math.max(0, expMs - 4_500);
-      const mountDelay = isGesture ? 2000 : expMs + 800;
+      const mountDelay = isGesture ? 2000 : preStartDelay + TITLE_AFTER_PRESTART_MS;
       const fadeOutDelay = isGesture ? 10_000 : mountDelay + 8_000;
       const phaseChangeDelay = isGesture ? 11_800 : mountDelay + 9_800;
+
+      // The card (logo + text + piano) fades out together and is gone before
+      // the pre-start: the spin-up lands on black (statement-piano-plan.ts).
+      if (!isGesture) fadeCycleText = setTimeout(() => setIntroStage("fading-cycle"), Math.max(0, preStartDelay - TEXT_OUT_BEFORE_PRESTART_MS));
 
       // Pre-start journey 0. The shader needs lead time to compile
       // + start its A/B crossfade before bg starts revealing it.
@@ -1268,7 +1275,6 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // — and it landed on the first 300 ms of this fade, freezing it).
         // A still card hides a stall; a moving fade shows it.
         if (isGesture) setIntroStage("fading-cycle");
-        else fadeCycleText = setTimeout(() => setIntroStage("fading-cycle"), CYCLE_FADE_AFTER_PRESTART_MS);
         const entry = sequence[startIdx];
         if (!entry) {
           setPhase({ kind: "credits" });

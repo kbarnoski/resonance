@@ -181,6 +181,9 @@ export interface ParticleEngine {
    *  mirror and tilt on their targets now; `clear` also drops any worn image
    *  at once (so a journey taking the engine back never sees it fade). */
   snapImage(clear?: boolean, placement?: boolean): void;
+  /** INVISIBLE FIELD ONLY (statement card): on the next frame every mote is PLACED
+   *  on its pixel of the loaded image (no gather) and the image is fully worn. */
+  snapToImage(): void;
   /** The image-form state (CPU): followers, targets, fire — the hand-back test reads it. */
   imageState(): { form: number; show: number; formTarget: number; showTarget: number; fire: number };
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
@@ -703,6 +706,7 @@ export function createParticleEngine(
   let imgTintS = 0, imgTintT = 0;
   // living fire on a worn photograph (statement piano only; 0 everywhere else)
   let fireS = 0, fireT = 0, fireLine = 0.6;
+  let snapPending = false; // snapToImage: place every mote on the image next frame
   const fireR = new Float32Array(3), fireU = new Float32Array(3);
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
@@ -910,6 +914,7 @@ export function createParticleEngine(
 
     // dissolve timeline
     let snapNow = false;
+    if (snapPending) { snapNow = true; snapPending = false; }
     if (dissolveT !== null) {
       const prevT = dissolveT;
       dissolveT += dt;
@@ -1517,6 +1522,9 @@ export function createParticleEngine(
       }
       if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; }
     },
+    // (also lands the session's first-run brightness ramp — invisible field only:
+    // the boot card's piano must appear at full brightness on the text's curve)
+    snapToImage() { snapPending = true; imgF.x = imgFormTgt; imgS.x = imgShowTgt; imgF.v = imgS.v = 0; fadeIn = 1; },
     imageState() { return { form: imgF.x, show: imgS.x, formTarget: imgFormTgt, showTarget: imgShowTgt, fire: Math.max(fireS, fireT) }; },
     imageLevel() { return Math.max(imgF.x, imgS.x, Math.abs(imgF.v) * 0.2, Math.abs(imgS.v) * 0.2); },
     setFollow(x, y, w) {
