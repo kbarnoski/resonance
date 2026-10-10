@@ -1,6 +1,7 @@
 import { U, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { RS_WRAP_ENV } from "./time-wrap";
 
-export const FRAG = U + VISIONARY_PALETTE + ROT2 + `
+export const FRAG = U + VISIONARY_PALETTE + ROT2 + RS_WRAP_ENV + `
 // Cycloid paths cascading down — brachistochrone curves
 // x = r(theta - sin(theta)), y = r(1 - cos(theta))
 // Multiple cycloid curves at different phases, falling motion, 80 points each
@@ -15,6 +16,9 @@ void main() {
     float r = 0.08 + fj * 0.04 + u_bass * 0.01;
     float phaseShift = fj * 1.2 + t * 0.5;
     float yShift = mod(fj * 0.3 + t * 0.15, 1.6) - 0.8;
+    // Wrap envelope (time-wrap audit 2026-10-10): the curve fades out
+    // before yShift snaps it back up by 1.6.
+    float curveEnv = rsWrapEnv((yShift + 0.8) / 1.6);
 
     for (int i = 0; i < 80; i++) {
       float fi = float(i) / 80.0;
@@ -31,7 +35,7 @@ void main() {
       float phase = fi + fj * 0.2 + t * 0.1;
       vec3 c = palette(phase, vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5),
                         vec3(1.0, 0.7, 0.4), vec3(0.0, 0.15, 0.2));
-      color += c * glow * trail * 0.07;
+      color += c * glow * trail * 0.07 * curveEnv;
     }
   }
 
@@ -45,7 +49,10 @@ void main() {
     float by = -r * (1.0 - cos(beadTheta)) * 0.8 + 0.4 - yShift;
     float bd = length(uv - vec2(bx, by));
     float bglow = 0.006 / (bd + 0.003);
-    color += vec3(1.0, 0.95, 0.8) * bglow * (0.5 + u_amplitude * 0.3);
+    // the bead fades at the end of its slide (and with its curve) instead of
+    // teleporting back to the top
+    float beadEnv = rsWrapEnvK(beadTheta / (6.28318 * 2.0), 0.06, 0.9) * rsWrapEnv((yShift + 0.8) / 1.6);
+    color += vec3(1.0, 0.95, 0.8) * bglow * (0.5 + u_amplitude * 0.3) * beadEnv;
   }
 
   // Vignette

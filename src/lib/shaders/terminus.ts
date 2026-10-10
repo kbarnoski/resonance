@@ -1,10 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 export const FRAG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 // The end of everything — light retreating from a field leaving only void.
 // A wavefront of extinction sweeping across the canvas.
@@ -22,8 +24,13 @@ void main() {
 
   // ── Extinction wavefront — radiates from center outward, cyclically ──
   float dist = length(uv);
-  float waveFront = fract(t * 0.15) * 2.5;
-  float extinctionZone = smoothstep(waveFront - 0.1, waveFront + 0.3, dist);
+  float wavePh = fract(t * 0.15);
+  float waveFront = wavePh * 2.5;
+  // Wrap envelope (kiosk 2026-10-10 time-wrap audit): the field relights
+  // gradually before the front snaps back to the centre, instead of the
+  // whole frame relighting in one frame.
+  float waveEnv = rsWrapEnv(wavePh);
+  float extinctionZone = mix(1.0, smoothstep(waveFront - 0.1, waveFront + 0.3, dist), waveEnv);
 
   // Behind the wave: void. Ahead: fading light.
   float behindWave = 1.0 - extinctionZone;
@@ -34,7 +41,7 @@ void main() {
   lightField *= extinctionZone;
 
   // Light becoming unstable near the wavefront
-  float nearWave = smoothstep(0.4, 0.0, abs(dist - waveFront));
+  float nearWave = smoothstep(0.4, 0.0, abs(dist - waveFront)) * waveEnv;
   float instability = snoise(uv * 15.0 + t * 3.0) * nearWave;
   lightField += instability * 0.2;
 
@@ -48,7 +55,7 @@ void main() {
     );
     float pDist = length(pos);
     // Remnants exist just ahead of the wavefront
-    float alive = smoothstep(waveFront - 0.05, waveFront + 0.3, pDist);
+    float alive = mix(1.0, smoothstep(waveFront - 0.05, waveFront + 0.3, pDist), waveEnv);
     float d = length(uv - pos);
     float brightness = 0.002 / (d * d + 0.002) * alive;
     float flicker = 0.5 + 0.5 * sin(t * 8.0 + fi * 7.0);

@@ -21,7 +21,7 @@ void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
   vec3 col = vec3(0.0);
 
-  float t = u_time * (0.22 + u_bass * 0.5);
+  float t = u_time * 0.37; // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
   float waveAmp = 0.25 + u_mid * 0.45;
   for (int i = 0; i < 60; i++) {
     float fi = float(i);

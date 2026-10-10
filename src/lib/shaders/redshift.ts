@@ -1,10 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 export const FRAG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 // Redshift — the expanding universe. Concentric rings stretching outward,
 // Doppler effect shifting colors red at edges. Bass stretches the rings.
@@ -14,7 +16,8 @@ export const FRAG =
 float dopplerRing(vec2 uv, float baseR, float t, float speed, float bass) {
   float r = length(uv);
   // Ring expands outward — Hubble flow
-  float ringR = baseR + fract(t * speed) * (1.5 + bass * 0.5);
+  float ph = fract(t * speed);
+  float ringR = baseR + ph * (1.5 + bass * 0.5);
   float ringWidth = 0.015 + bass * 0.01;
 
   // Ring dims as it expands (inverse square)
@@ -27,7 +30,9 @@ float dopplerRing(vec2 uv, float baseR, float t, float speed, float bass) {
   float wobble = sin(angle * 6.0 + t * 0.5 + baseR * 10.0) * 0.01 * ringR;
   ring += smoothstep(ringWidth, 0.0, abs(r - ringR - wobble)) * brightness * 0.3;
 
-  return ring;
+  // Wrap envelope: the ring fades out before it snaps back to baseR
+  // (kiosk 2026-10-10 time-wrap audit).
+  return ring * rsWrapEnv(ph);
 }
 
 // Receding galaxy cluster — getting smaller and redder

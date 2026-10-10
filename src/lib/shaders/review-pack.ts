@@ -106,7 +106,8 @@ void main() {
     vec2 c = vec2(x, y);
     float d = length(uv - c);
     float ember = 0.005 / (d + 0.004);
-    float fade = 1.0 - smoothstep(0.6, 1.4, life);
+    // fade in at birth too (time-wrap audit 2026-10-10)
+    float fade = (1.0 - smoothstep(0.6, 1.4, life)) * smoothstep(0.0, 0.1, life);
     vec3 hue = mix(vec3(1.0, 0.4, 0.05), vec3(0.4, 0.05, 0.0), life * 0.7);
     col += ember * hue * fade;
   }
@@ -257,7 +258,8 @@ void main() {
     vec2 c = vec2(sin(t + fi) * 0.1, -0.5 + life * 1.2);
     float r = 0.05 + life * 0.5;
     float d = abs(length(uv - c) - r);
-    float ring = 0.02 / (d + 0.02) * (1.0 - life);
+    // fade in at birth (time-wrap audit 2026-10-10: the ring used to pop in at full)
+    float ring = 0.02 / (d + 0.02) * (1.0 - life) * smoothstep(0.0, 0.08, life);
     col += ring * vec3(0.6, 0.65, 0.75);
   }
   gl_FragColor = vec4(col, 1.0);

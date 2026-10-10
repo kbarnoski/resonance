@@ -50,7 +50,8 @@ export const R3_GHOSTRIBBONS = mk(`
     float fi = float(i);
     vec2 p = uv + 0.1 * vec2(fbm(uv * 2.0 + t * 0.2 + fi), fbm(uv * 2.0 - t * 0.15 + fi));
     float wave = sin(p.x * 2.0 + t * 0.4 + fi * 1.2) * 0.18;
-    float d = abs(p.y - wave) - 0.005 * fract(fi * 0.31 + t * 0.1);
+    // triangle, not sawtooth: the width no longer snaps at the wrap (time-wrap audit 2026-10-10)
+    float d = abs(p.y - wave) - 0.005 * abs(fract(fi * 0.31 + t * 0.1) * 2.0 - 1.0);
     col += (0.004 / (d + 0.007)) * mix(vec3(0.7, 0.85, 1.0), vec3(0.85, 0.7, 1.0), fract(fi * 0.21)) * 0.5;
   }
 `);
@@ -310,7 +311,8 @@ export const R3_PLASMASTORM = mk(`
     vec2 q = rot2(fi * 1.25 + t * 0.1) * uv;
     q.x += sin(q.y * 4.0 + t * 0.5 + fi) * 0.1;
     float d = abs(q.x);
-    col += (0.005 / (d + 0.008)) * mix(vec3(0.4, 0.2, 0.9), vec3(0.95, 0.4, 0.85), fract(fi * 0.21 + t * 0.1)) * 0.4;
+    // triangle hue sweep: pink no longer snaps back to violet (time-wrap audit 2026-10-10)
+    col += (0.005 / (d + 0.008)) * mix(vec3(0.4, 0.2, 0.9), vec3(0.95, 0.4, 0.85), abs(fract(fi * 0.21 + t * 0.1) * 2.0 - 1.0)) * 0.4;
   }
   col += smoothstep(1.0, 0.0, length(uv)) * vec3(0.05, 0.0, 0.1);
 `);
@@ -934,7 +936,7 @@ export const R3_WISHTRAILS = mk(`
     vec2 origin = vec2(snoise(vec2(fi, 0.0)) * 0.8, -0.5);
     vec2 c = origin + vec2(sin(fi) * 0.05, tt * 1.4);
     float d = length(uv - c);
-    col += (0.0007 / (d * d + 0.0008)) * vec3(0.85, 0.95, 1.0) * (1.0 - tt) * 0.6;
+    col += (0.0007 / (d * d + 0.0008)) * vec3(0.85, 0.95, 1.0) * (1.0 - tt) * smoothstep(0.0, 0.08, tt) * 0.6; // fade in at birth (time-wrap audit)
   }
   col += vec3(0.03, 0.02, 0.06);
 `);

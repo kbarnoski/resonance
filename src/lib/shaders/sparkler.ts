@@ -26,8 +26,8 @@ vec3 path(float t) {
 
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-  // Bass advances the journey itself — the sparkler surges with the kick.
-  float t = u_time * (0.55 + u_bass * 0.9);
+  // Travel speed rides the music through the kinetic layer clock (u_time).
+  float t = u_time * 0.82; // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
   vec3 col = vec3(0.0);
 
   vec3 headP = path(t);
@@ -38,12 +38,18 @@ void main() {
 
   // Spark trail: 56 embers sampled back along the path, each with its
   // own spray velocity, drifting outward and fading as it ages.
+  // Each ember is anchored to its BIRTH slot (18 per unit of t), so it
+  // keeps one spray direction for its whole life and drifts; slot i used
+  // to re-roll its random spray 18x per unit of t (sparks teleported in
+  // one frame) — time-wrap audit 2026-10-10.
+  float slot0 = floor(t * 18.0);
   for (int i = 1; i <= 56; i++) {
     float fi = float(i);
-    float age = fi * 0.055; // seconds behind the head
-    float birth = t - age;
+    float birthSlot = slot0 - (fi - 1.0);
+    float birth = birthSlot / 18.0;
+    float age = t - birth; // 0 .. ~3.1 behind the head
     vec3 sp = path(birth);
-    vec3 rnd = hash3(floor(birth * 18.0) + fi * 7.31) - 0.5;
+    vec3 rnd = hash3(birthSlot * 1.37) - 0.5;
     // Spray: velocity spread grows with age; bass bursts the radius.
     float spread = age * (0.32 + u_bass * 0.75);
     sp += rnd * spread;
@@ -51,10 +57,10 @@ void main() {
     if (sp.z < 0.35) continue;
     vec2 ss = sp.xy / sp.z;
     float d = length(uv - ss);
-    float life = 1.0 - age / 3.1;
+    float life = (1.0 - age / 3.1) * smoothstep(0.0, 0.06, age);
     if (life <= 0.0) continue;
     // Treble twinkle — sparks shimmer, never strobe the frame.
-    float tw = 0.55 + 0.45 * sin(u_time * (5.0 + hash(fi) * 9.0) * (0.6 + u_treble) + fi);
+    float tw = 0.55 + 0.45 * sin(u_time * (5.0 + hash(birthSlot * 0.73) * 9.0) * (0.6 + u_treble) + birthSlot); // keyed to the ember, not the slot
     float b = 0.0035 / (d * d + 0.00012) * life * life * tw;
     // Ember color: white-gold young, cooling to teal-cyan with age
     // (Chemiluminescence's palette).

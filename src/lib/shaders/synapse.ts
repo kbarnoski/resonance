@@ -1,10 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 export const FRAG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 float hash1(float n) {
   return fract(sin(n) * 43758.5453);
@@ -131,7 +133,9 @@ void main() {
     float ntGlow = exp(-ntDist * ntDist / 0.0004);
 
     // Fade based on whether particle is in the gap
-    float gapFade = smoothstep(gapWidth * 0.5 + 0.02, gapWidth * 0.5 - 0.01, abs(yPos));
+    // x wrap envelope: the particle is gone before it jumps back to the top
+    // membrane (time-wrap audit 2026-10-10)
+    float gapFade = smoothstep(gapWidth * 0.5 + 0.02, gapWidth * 0.5 - 0.01, abs(yPos)) * rsWrapEnvK(particleTime, 0.05, 0.92);
     ntGlow *= gapFade * burstIntensity;
 
     ntAccum += ntGlow;

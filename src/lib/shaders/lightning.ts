@@ -57,7 +57,10 @@ void main() {
 
     float flashBright = smoothstep(threshold, 1.0, flash);
     float fadePhase = fract(t * (0.4 + fi * 0.15));
-    flashBright *= exp(-fadePhase * 6.0);
+    // Short attack (~0.2 s) instead of a 1-frame onset, and the tail
+    // reaches exactly 0 before the seed (bolt shape) steps — kiosk
+    // 2026-10-10 time-wrap audit.
+    flashBright *= exp(-fadePhase * 6.0) * smoothstep(0.0, 0.03, fadePhase) * (1.0 - smoothstep(0.85, 1.0, fadePhase));
 
     // Origin and endpoint
     vec2 origin = vec2(hash1(seed + 1.0) * 1.2 - 0.6, 0.4 + hash1(seed + 2.0) * 0.2);

@@ -19,7 +19,7 @@ void main() {
   vec3 col = vec3(0.0);
 
   vec2 c = vec2(0.1, -0.05);
-  float orb = u_time * (0.4 + u_bass * 0.35);
+  float orb = u_time * 0.505; // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
   float sep = 0.34 - u_bass * 0.08;
   vec2 a = c + vec2(cos(orb), sin(orb) * 0.6) * sep;
   vec2 b = c - vec2(cos(orb), sin(orb) * 0.6) * sep;
@@ -31,10 +31,17 @@ void main() {
   for (int i = 0; i < 34; i++) {
     float fi = float(i);
     float s = fi / 34.0;
-    vec3 h = hash3(fi * 5.57 + floor(u_time * 2.0));
-    vec2 p = mix(a, b, s) + vec2(sin(s * 3.14159 + orb) * 0.1, cos(s * 6.28 + orb) * 0.06) + (h.xy - 0.5) * 0.03;
+    // Jitter glides between successive hash keys instead of re-rolling in
+    // one frame every 0.5 s; the twinkle rate is per-particle constant
+    // (a re-rolled rate jumped the twinkle phase) — time-wrap audit 2026-10-10.
+    float jt = u_time * 2.0;
+    vec3 h0 = hash3(fi * 5.57 + floor(jt));
+    vec3 h1 = hash3(fi * 5.57 + floor(jt) + 1.0);
+    vec2 jit = mix(h0.xy, h1.xy, smoothstep(0.0, 1.0, fract(jt)));
+    float hz = hash3(fi * 5.57).z;
+    vec2 p = mix(a, b, s) + vec2(sin(s * 3.14159 + orb) * 0.1, cos(s * 6.28 + orb) * 0.06) + (jit - 0.5) * 0.03;
     float d = length(uv - p);
-    float tw = 0.5 + 0.5 * sin(u_time * (5.0 + h.z * 8.0) * (0.6 + u_treble) + fi);
+    float tw = 0.5 + 0.5 * sin(u_time * (5.0 + hz * 8.0) * (0.6 + u_treble) + fi);
     col += mix(ta, tb, s) * 0.0003 / (d * d + 0.00012) * tw * 0.28;
   }
 

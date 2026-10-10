@@ -1,5 +1,6 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 // Angle seam-blended (atan branch cut — see ./angle-seam).
 export const FRAG = withAngleSeamBlend(
@@ -7,6 +8,7 @@ export const FRAG = withAngleSeamBlend(
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 // Protostar — star birth. Swirling accretion disk with infalling matter,
 // central brightening, jets shooting from poles, disk rotates with bass.
@@ -58,7 +60,9 @@ float infallingMatter(vec2 uv, float t, float mid) {
     float dist = length(uv - matterPos);
 
     float size = 0.015 + (1.0 - progress) * 0.02;
-    float brightness = 0.3 + progress * 0.7; // brighter as it falls in
+    // brighter as it falls in; fades into the core before progress wraps
+    // and back in at the rim (time-wrap audit 2026-10-10)
+    float brightness = (0.3 + progress * 0.7) * rsWrapEnvK(progress, 0.08, 0.9);
     total += smoothstep(size, 0.0, dist) * brightness * (0.5 + mid * 0.5);
 
     // Trail behind the infalling clump
@@ -105,16 +109,18 @@ float hhKnots(vec2 uv, float t) {
   float total = 0.0;
   for (int i = 0; i < 4; i++) {
     float fi = float(i);
-    float knotY = 0.2 + fi * 0.15 + fract(t * 0.05 + fi * 0.25) * 0.3;
+    float knotPh = fract(t * 0.05 + fi * 0.25);
+    float knotY = 0.2 + fi * 0.15 + knotPh * 0.3;
+    float knotEnv = rsWrapEnv(knotPh); // fade before the knot snaps back (time-wrap audit)
     float knotX = sin(t * 0.3 + fi * 2.1) * 0.02;
 
     // Upper knot
     float d1 = length(uv - vec2(knotX, knotY));
-    total += exp(-d1 * d1 * 400.0) * 0.5;
+    total += exp(-d1 * d1 * 400.0) * 0.5 * knotEnv;
 
     // Lower knot (mirror)
     float d2 = length(uv - vec2(knotX, -knotY));
-    total += exp(-d2 * d2 * 400.0) * 0.5;
+    total += exp(-d2 * d2 * 400.0) * 0.5 * knotEnv;
   }
   return total;
 }

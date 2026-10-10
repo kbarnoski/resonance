@@ -81,8 +81,11 @@ void main() {
   // Light traveling along the surface — it must go around TWICE
   // because Mobius strip has one side
   float travel = mod(bestTheta - t * 2.5, 6.28318 * 2.0);
-  float lightPulse = exp(-mod(travel, 3.14159) * 2.0) * 0.8;
-  float lightPulse2 = exp(-mod(travel + 1.5, 3.14159) * 2.0) * 0.6;
+  // Soft leading edge: the sawtooth used to snap from full to ~0 where
+  // mod() wraps (kiosk 2026-10-10 time-wrap audit) — now it ramps in.
+  float lpm1 = mod(travel, 3.14159), lpm2 = mod(travel + 1.5, 3.14159);
+  float lightPulse = exp(-lpm1 * 2.0) * smoothstep(0.0, 0.2, lpm1) * 0.8;
+  float lightPulse2 = exp(-lpm2 * 2.0) * smoothstep(0.0, 0.2, lpm2) * 0.6;
 
   // Edge glow along strip width
   float edgeDist = abs(abs(bestS) - w);

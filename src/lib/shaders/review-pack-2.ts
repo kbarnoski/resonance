@@ -734,7 +734,7 @@ void main() {
     float d = length(uv - c);
     float twink = 0.5 + 0.5 * sin(t * 4.0 + fi * 3.0);
     twink = pow(twink, 8.0);
-    float fade = 1.0 - life;
+    float fade = (1.0 - life) * smoothstep(0.0, 0.08, life); // fade in at birth (time-wrap audit 2026-10-10)
     float glow = 0.0008 / (d * d + 0.0008);
     col += glow * vec3(1.0, 0.9, 0.6) * twink * fade;
   }
@@ -888,7 +888,9 @@ void main() {
     vec2 vel = vec2(snoise(vec2(fi, 0.0)) * 0.5, 0.4 + fract(fi * 0.21) * 0.4);
     vec2 c = origin + vel * life + 0.05 * vec2(sin(t * 2.0 + fi), cos(t * 2.0 + fi));
     float d = length(uv - c);
-    float fade = exp(-life * 1.0);
+    // 0 at both ends of the 1.5 cycle (time-wrap audit 2026-10-10: exp(-1.5)
+    // was still 0.22 when life wrapped)
+    float fade = exp(-life * 1.0) * smoothstep(0.0, 0.1, life) * (1.0 - smoothstep(1.25, 1.5, life));
     float p = 0.0008 / (d * d + 0.001);
     col += p * vec3(0.7, 0.9, 0.5) * fade;
   }

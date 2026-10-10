@@ -1,5 +1,6 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 // Angle seam-blended (atan branch cut — see ./angle-seam).
 export const FRAG = withAngleSeamBlend(
@@ -7,6 +8,7 @@ export const FRAG = withAngleSeamBlend(
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 // Nova — star explosion with expanding shock rings.
 // Concentric blast waves radiate outward from a blinding core,
@@ -40,6 +42,9 @@ void main() {
   // Pulsing explosion phase — cyclic
   float phase = fract(t * 0.15);
   float expandT = phase;
+  // Wrap envelope (kiosk 2026-10-10 time-wrap audit): everything sized by
+  // expandT (ejecta, blast cloud) fades out before the phase snaps to 0.
+  float cycleEnv = rsWrapEnv(phase);
 
   // Core — blinding white-hot remnant
   float core = exp(-r * 15.0) * (1.5 + u_bass * 1.0);
@@ -53,7 +58,8 @@ void main() {
     float ringPhase = fract(expandT + fi * 0.18);
     float radius = ringPhase * 0.8;
     float width_val = 0.015 + ringPhase * 0.02;
-    float intensity = (1.0 - ringPhase) * (1.0 - fi * 0.15);
+    // fade in from the core: a ring no longer pops in at full strength
+    float intensity = (1.0 - ringPhase) * (1.0 - fi * 0.15) * smoothstep(0.0, 0.08, ringPhase);
     rings += shockRing(uv, radius, width_val, t) * intensity;
   }
 
@@ -63,13 +69,13 @@ void main() {
     float fi = float(i);
     float a = fi * 0.524 + sin(fi * 2.3) * 0.3 + t * 0.02;
     float spd = 0.3 + fract(fi * 0.37) * 0.2;
-    ejecta += ejectaStreamer(uv * rot2(a), 0.0, spd, expandT) * 0.15;
+    ejecta += ejectaStreamer(uv * rot2(a), 0.0, spd, expandT) * 0.15 * cycleEnv;
   }
 
   // Turbulent blast cloud
   vec2 blastUv = uv * rot2(t * 0.05) * (2.0 + expandT * 3.0);
   float blast = fbm(blastUv + t * 0.3) * 0.5 + 0.5;
-  blast *= smoothstep(0.6, 0.1, r) * expandT;
+  blast *= smoothstep(0.6, 0.1, r) * expandT * cycleEnv;
 
   // Debris field — small bright fragments
   float debris = snoise(uv * 20.0 + vec2(t * 2.0, t * 1.5));
@@ -79,7 +85,7 @@ void main() {
 
   // Ring color — hot blue-white to cooling orange
   vec3 ringCol = palette(
-    rings * 0.5 + expandT + paletteShift,
+    rings * 0.5 + t * 0.15 + paletteShift, // unwrapped phase: hue never steps at the wrap
     vec3(0.7, 0.6, 0.8),
     vec3(0.3, 0.3, 0.3),
     vec3(0.8, 0.5, 0.3),

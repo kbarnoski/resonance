@@ -1,5 +1,6 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { RS_WRAP_ENV } from "./time-wrap";
 
 // Angle seam-blended (atan branch cut — see ./angle-seam).
 export const FRAG = withAngleSeamBlend(
@@ -7,6 +8,7 @@ export const FRAG = withAngleSeamBlend(
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
+  RS_WRAP_ENV +
   `
 // Supernova — the most violent death in the universe.
 // Multiple shock wavefronts racing outward at 10% light speed.
@@ -86,6 +88,10 @@ void main() {
   // Age of explosion — slowly expands over session
   // Loops on a long period so we always see active expansion
   float age = mod(t * 1.2, 5.0) + 0.3;
+  // Wrap envelope: the whole explosion (shocks, debris, ejecta, interior
+  // glow) fades out before age wraps and back in after — the big ring used
+  // to vanish in one frame while a tiny new one appeared (kiosk 2026-10-10).
+  float cycleEnv = rsWrapEnv((age - 0.3) / 5.0);
 
   // ── Shock wavefronts ──
   // Primary blast wave — outermost, fastest
@@ -163,14 +169,14 @@ void main() {
   vec3 color = vec3(0.002, 0.002, 0.005);
 
   // Build scene
-  color += interiorCol * interior * (0.5 + u_mid * 0.5);
-  color += shockCol * shockTotal * 0.7;
-  color += shockRimCol * shock1 * u_treble * 0.4;
-  color += debrisCol * (deb * 0.3 + ejecta * 0.12) * (0.6 + u_mid * 0.4);
+  color += interiorCol * interior * (0.5 + u_mid * 0.5) * cycleEnv;
+  color += shockCol * shockTotal * 0.7 * cycleEnv;
+  color += shockRimCol * shock1 * u_treble * 0.4 * cycleEnv;
+  color += debrisCol * (deb * 0.3 + ejecta * 0.12) * (0.6 + u_mid * 0.4) * cycleEnv;
   color += remnantCol * remnant * (1.0 + u_amplitude);
 
   // Hot white emissive on strongest shock
-  color += vec3(1.2, 1.1, 1.0) * pow(shock1, 3.0) * u_bass * 1.5;
+  color += vec3(1.2, 1.1, 1.0) * pow(shock1, 3.0) * u_bass * 1.5 * cycleEnv;
 
   // Vignette — infinity at edges
   float vignette = 1.0 - smoothstep(0.5, 1.4, r);

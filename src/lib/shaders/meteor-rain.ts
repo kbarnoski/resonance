@@ -16,7 +16,7 @@ vec3 pal(float t) {
 float palT(float seed) { return seed + u_time * 0.012 + u_mid * 0.18; }
 
 // Meteor Rain — sparse diagonal meteors with glittering wakes.
-// Bass raises the fall rate and streak length.
+// Bass lengthens the streaks; the fall rate rides the kinetic clock.
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
   vec3 col = vec3(0.0);
@@ -26,7 +26,7 @@ void main() {
     float fi = float(i);
     vec3 h = hash3(fi * 6.91);
     float period = 2.5 + h.x * 4.0;
-    float cycle = fract(u_time * (0.22 + u_bass * 0.22) / period * 3.0 + h.y);
+    float cycle = fract(u_time * 0.286 / period * 3.0 + h.y); // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
     vec2 start = vec2(-1.6 + h.x * 3.2, 1.25 + h.z * 0.4);
     vec2 head = start + dir * cycle * 3.0;
     for (int k = 0; k < 7; k++) {

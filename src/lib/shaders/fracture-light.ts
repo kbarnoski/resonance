@@ -18,18 +18,31 @@ void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
   vec3 col = vec3(0.0);
 
-  float strike = floor(u_time * (0.14 + u_bass * 0.1));
-  float age = fract(u_time * (0.14 + u_bass * 0.1));
+  // Strike clock (time-wrap audit 2026-10-10). The seam used to re-shape
+  // in ONE frame at each strike (new hash while still smouldering at 0.3)
+  // and flash to full; now the previous seam's smoulder cross-fades into
+  // the new one over the first 6% of the cycle. The rate no longer
+  // multiplies u_time by u_bass (the phase raced/jumped as bass moved on
+  // long-running layers); the kinetic clock already rides the band.
+  float sclk = u_time * 0.17;
+  float strike = floor(sclk);
+  float age = fract(sclk);
   float glow = 0.3 + 0.7 * (1.0 - age) * (1.0 - age); // never fully dark — the seam smolders between strikes
-  for (int i = 0; i < 46; i++) {
-    float fi = float(i);
-    float s = fi / 46.0;
-    vec3 h = hash3(strike * 31.7 + floor(s * 9.0));
-    vec2 p = mix(vec2(-0.9, -0.45), vec2(0.75, 0.55), s);
-    p += vec2((h.x - 0.5) * 0.22, (h.y - 0.5) * 0.3) * sin(s * 3.14159);
-    float d = length(uv - p);
-    float tw = 0.6 + 0.4 * sin(u_time * (6.0 + h.z * 9.0) * (0.6 + u_treble) + fi);
-    col += pal(palT(s * 0.15)) * 0.0006 / (d * d + 0.00011) * glow * tw * 0.4;
+  float wNew = smoothstep(0.0, 0.06, age);
+  for (int k = 0; k < 2; k++) {
+    float sk = strike - float(k);           // k = 1: the previous seam, smouldering
+    float g = k == 0 ? glow * wNew : 0.3 * (1.0 - wNew);
+    if (g < 0.0005) continue;
+    for (int i = 0; i < 46; i++) {
+      float fi = float(i);
+      float s = fi / 46.0;
+      vec3 h = hash3(sk * 31.7 + floor(s * 9.0));
+      vec2 p = mix(vec2(-0.9, -0.45), vec2(0.75, 0.55), s);
+      p += vec2((h.x - 0.5) * 0.22, (h.y - 0.5) * 0.3) * sin(s * 3.14159);
+      float d = length(uv - p);
+      float tw = 0.6 + 0.4 * sin(u_time * (6.0 + h.z * 9.0) * (0.6 + u_treble) + fi);
+      col += pal(palT(s * 0.15)) * 0.0006 / (d * d + 0.00011) * g * tw * 0.4;
+    }
   }
 
   col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 128.0;

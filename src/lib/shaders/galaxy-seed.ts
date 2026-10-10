@@ -22,7 +22,7 @@ void main() {
   vec3 col = vec3(0.0);
 
   vec2 c = vec2(-0.08, 0.05);
-  float spin = u_time * (0.12 + u_bass * 0.18);
+  float spin = u_time * 0.174; // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
   for (int i = 0; i < 66; i++) {
     float fi = float(i);
     vec3 h = hash3(fi * 7.73);

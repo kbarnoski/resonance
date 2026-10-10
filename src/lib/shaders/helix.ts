@@ -72,7 +72,12 @@ void main() {
       float rungPhase = (rungY + t * 2.0) / pitch * 6.28318;
       vec3 rA = vec3(helixR * cos(rungPhase), rungY, helixR * sin(rungPhase));
       vec3 rB = vec3(helixR * cos(rungPhase + 3.14159), rungY, helixR * sin(rungPhase + 3.14159));
-      float dRung = sdSegment3D(p, rA, rB);
+      // Taper the two ends of the rung set: when mod() wraps, the top rung
+      // vanishes and a bottom one appears — both now at zero weight
+      // (time-wrap audit 2026-10-10). Pushed away rather than dimmed
+      // because rungs are combined by min distance.
+      float rungEnv = smoothstep(-3.0, -2.8, rungY) * (1.0 - smoothstep(-0.8, -0.6, rungY)); // rungY spans [-3.0, -0.6)
+      float dRung = sdSegment3D(p, rA, rB) + (1.0 - rungEnv) * 2.0;
       if (dRung < minDRung) { minDRung = dRung; bestTRung = ray_t; }
     }
   }
