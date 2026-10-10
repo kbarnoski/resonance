@@ -148,11 +148,14 @@ for (const j of SETJ) {
     // a phase holding >= 20 % of the track needs >= 4 voices or one shader rides it whole (H4 > 25 %)
     // voices by screen time: one shader rarely holds > ~14 s, so a phase of
     // T seconds needs >= T/14 voices or one rides it whole (H4 > 25 %)
-    const size = ph.map((_, i) => Math.max(i === sparse ? 2 : 1, Math.min(6, Math.ceil((len[i] * dur) / (8 + (a % 4) * 2)))));
-    let left = target - 1 - size.reduce((x, y) => x + y, 0) + 1; // +1: lead occupies a slot in the peak phase
-    while (left-- > 0) { let k = 0, g = -1e9; for (let i = 0; i < ph.length; i++) { const gap = len[i] * target - size[i]; if (gap > g) { g = gap; k = i; } } size[k]++; }
-    // hard cap: featured-recast.test allows 10–12 distinct (lead counts once)
-    while (size.reduce((x, y) => x + y, 0) > target) { let k = -1; for (let i = 0; i < ph.length; i++) { const min = i === sparse ? 2 : 1; if (size[i] > min && (k < 0 || len[i] < len[k])) k = i; } /* shortest phases give voices up first */ if (k < 0) break; size[k]--; }
+    // voices by screen time (largest remainder over phase length, as in
+    // cast-shaders.mjs): a shader holds ~10–20 s, so a phase's voices track
+    // its seconds; the lead adds the peak phase; sparse >= 2.
+    const size = ph.map((_, i) => (i === sparse ? 2 : 1));
+    const slots = target; // sizes include the lead in the peak phase
+    const w = len.map((l) => l * (0.85 + R() * 0.3));
+    let left = slots - size.reduce((x, y) => x + y, 0);
+    while (left-- > 0) { let k = 0, g = -1e9; for (let i = 0; i < ph.length; i++) { const gap = (w[i] / w.reduce((x, y) => x + y, 0)) * slots - size[i]; if (gap > g) { g = gap; k = i; } } size[k]++; }
     const lead = avail.map((m) => ({ m, s: fit(m, pf) * 2 + Math.min(eff(m), 30) / 10 + R() * 3 })).filter((x) => !banFirst.has(x.m) || peak !== 0).sort((x, y) => y.s - x.s)[0].m;
     const used = new Set([lead]);
     const cast = ph.map((_, i) => (i === peak ? [lead] : []));
@@ -181,7 +184,8 @@ for (const j of SETJ) {
     const H = simulate({ ...(builtinJ ?? {}), ...(row.theme ?? {}), id: "cast-check", name: "cast-check", realmId: row.realm_id, phases, strictCamera: true }, dur);
     const fails = [];
     if (H.distinct < STD.H1_distinct) fails.push(`H1 ${H.distinct}`);
-    if ((H.top[0]?.share ?? 0) > STD.H3_leadShare || (H.top[1]?.share ?? 0) > STD.H2_maxShare) fails.push("H2");
+    // audit H2 for album/featured journeys: no shader (lead included) on screen > 35 %
+    if ((H.top[0]?.share ?? 0) > STD.H2_maxShare) fails.push("H2");
     if (Math.max(...H.top.slice(0, 4).map((t) => t.run)) > STD.H4_maxRun) fails.push("H4");
     if (H.layers > STD.H5k_layers) fails.push("H5k");
     if (!best || fails.length < best.fails.length) best = { cast: castObj, lead: given ? arg("lead") ?? cast[peak][0] : lead, fails, H, all: [...used] };

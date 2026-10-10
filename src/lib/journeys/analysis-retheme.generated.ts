@@ -182,11 +182,11 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "the-ascension": [
     {
       "intensityMultiplier": 0.75,
-      "aiPrompt": "extreme macro in deep darkness — a single seed of golden light cracking open on dark soil at closest range, thin filaments of warm light reaching upward out of the split, fine gold dust lifting off it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single seed of golden light cracking open in the lower left of vast darkness, thin filaments of warm honey light reaching upward out of the split, a faint haze of gold dust lifting off it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "extreme macro in deep darkness — a single seed of golden light cracking open on dark soil at closest range, thin filaments of warm light reaching upward out of the split, fine gold dust lifting off it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "microscopic — inside the seed's crack, a stair of light no wider than a vein climbing out of the dark kernel, gold dust rising through it in single grains, no text no signatures no watermarks no letters no writing",
-        "wide — a dark plain under starless black, one small gold glow waking low in the frame, its light reaching upward in a thin first thread, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single seed of golden light cracking open in the lower left of vast darkness, thin filaments of warm honey light reaching upward out of the split, a faint haze of gold dust lifting off it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — inside the seed's split at closest range, translucent amber walls glowing like warm resin, single grains of gold dust rising slowly through a thin shaft of light, a gentle rocking shimmer passing across them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down on a dark plain of soft umber haze filling the frame edge to edge, one small gold glow waking in the lower right, its first thread of light rising toward the camera, a slow slate shadow drifting across it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "breathe...",
@@ -194,15 +194,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "light is coming..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "threshold",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.97,
-      "aiPrompt": "vertical ascent through layered golden strata — rivers of luminous particles streaming straight upward past translucent amber membranes stacked like sky above sky, each layer brighter than the one below, the viewpoint rising with the current, gold dust accelerating along the climb, warm light strengthening toward an unseen brilliance overhead, strong vertical energy with the densest stream off-center left, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "inside a vertical ascent through layered golden strata, rivers of luminous particles streaming straight upward past translucent amber membranes stacked sky above sky, the camera rising with the current as the next layer glows rose-gold, one shade too bright, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "vertical ascent through layered golden strata — rivers of luminous particles streaming straight upward past translucent amber membranes stacked like sky above sky, each layer brighter than the one below, the viewpoint rising with the current, gold dust accelerating along the climb, warm light strengthening toward an unseen brilliance overhead, strong vertical energy with the densest stream off-center left, no text no signatures no watermarks no letters no writing",
-        "interior — passing through one amber membrane, the layer parting around the viewpoint like warm mist, the next brighter sky already glowing through from above, no text no signatures no watermarks no letters no writing",
-        "macro — one gold particle of the climb at closest range, its facets flashing the layered skies above and below as it spins in the updraft, no text no signatures no watermarks no letters no writing"
+        "inside a vertical ascent through layered golden strata, rivers of luminous particles streaming straight upward past translucent amber membranes stacked sky above sky, the camera rising with the current as the next layer glows rose-gold, one shade too bright, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — one gold particle of the climb at closest range, its facets flashing amber below and rose-gold above as it spins in the updraft, a soft shift of colour sliding across its surface, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — a sideways slip of the whole light: two broad bands of honey amber and brighter rose-gold sliding past each other across darkness, the lower band dropping half a step as the upper one blooms, fine particles shed along the seam, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "rise...",
@@ -210,15 +212,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "open..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "expansion",
+      "shaderOpacity": 0.47,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.75,
-      "aiPrompt": "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "from high above a boundless sea of radiant golden mist, luminous vapour rolling in slow immense swells to every edge of the frame, deep wells opening where shafts of white-gold light pour down into amber depth, the camera drifting slowly over the crests, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "aerial view from above a boundless sea of radiant golden cloud, the sunlit vapor rolling in slow immense swells to every edge of frame, deep wells opening in the cloud where shafts of white-gold light pour down into amber depth, the cloud tops burning brightest along one diagonal, serene altitude and total clarity, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "intimate — skimming the radiant cloud-tops, gold vapor curling past the viewpoint, a deep well opening ahead with white-gold light standing in it like a pillar, no text no signatures no watermarks no letters no writing",
-        "spirit-hint — over the cloud sea, the light half-gathers into a tall ancestral almost-presence of white-gold, translucent and featureless, standing on nothing, opening back into brightness, no text no signatures no watermarks no letters no writing"
+        "from high above a boundless sea of radiant golden mist, luminous vapour rolling in slow immense swells to every edge of the frame, deep wells opening where shafts of white-gold light pour down into amber depth, the camera drifting slowly over the crests, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — motes of gold light suspended in one warm beam at closest range, each mote a tiny translucent sphere holding a reflection of the golden sea, turning weightless in still air, deep umber shadow filling the left side, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — the golden sea seen from immense height as a slow spiral of honey and rose light breathing in infinite darkness, a cool band of slate-blue swelling at its rim before the summit, the camera rising away, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "see how vast you are...",
@@ -226,15 +230,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "stay in this light..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "illumination",
+      "shaderOpacity": 0.52,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 1,
-      "aiPrompt": "suspended weightless inside a monumental vault of pure golden light with no floor and no ground anywhere — colossal ribs of radiant gold geometry filling the entire frame in fibonacci curves above and below and to every side, white brilliance blazing at the convergence point off-center, luminous particles drifting through the vast interior like slow embers, only light architecture and glowing air in all directions, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "abstract — weightless within an immense lattice of pure golden light, colossal ribs of radiant gold geometry curving in fibonacci spirals above and below, white brilliance blazing in the upper right, the light fracturing into shifting rose and violet colour along every curve, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "suspended weightless inside a monumental vault of pure golden light with no floor and no ground anywhere — colossal ribs of radiant gold geometry filling the entire frame in fibonacci curves above and below and to every side, white brilliance blazing at the convergence point off-center, luminous particles drifting through the vast interior like slow embers, only light architecture and glowing air in all directions, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro — one rib of the golden vault at closest range, light flowing inside it like sap in a branch of dawn, luminous motes drifting slowly past, no text no signatures no watermarks no letters no writing",
-        "cosmic — the vault seen from outside, a lantern of gold geometry hanging alone in black space, its light spilling through its own ribs in long still rays, no text no signatures no watermarks no letters no writing"
+        "abstract — weightless within an immense lattice of pure golden light, colossal ribs of radiant gold geometry curving in fibonacci spirals above and below, white brilliance blazing in the upper right, the light fracturing into shifting rose and violet colour along every curve, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — the golden geometry seen from far outside, a radiant fibonacci bloom of gold light hanging in the upper left of infinite dark space, its light pouring out through its own curves in long still rays, chromatic fringes of rose and violet planing across it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — one rib of the golden lattice at closest range, light flowing inside it like warm sap, its edge fraying into prismatic motes of rose and violet, an aching held brightness, deep shadow below, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "you are light...",
@@ -242,15 +248,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "this is home..."
       ],
       "analysisRole": "peak",
-      "gradeAs": "transcendence"
+      "gradeAs": "transcendence",
+      "shaderOpacity": 0.46,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.66,
-      "aiPrompt": "intimate slow descent through hanging veils of warm amber light, translucent petals of gold luminance planing gently downward past the viewpoint in long glide paths, each catching rose and violet iridescence as it turns, the veils parting softly ahead and closing above, warmth deepening from white-gold toward ember amber with the fall, tender unhurried motion, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — one small petal of amber light settling slowly downward in the upper right of immense darkness, a few high specks of gold still turning in the air above it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "intimate slow descent through hanging veils of warm amber light, translucent petals of gold luminance planing gently downward past the viewpoint in long glide paths, each catching rose and violet iridescence as it turns, the veils parting softly ahead and closing above, warmth deepening from white-gold toward ember amber with the fall, tender unhurried motion, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro — one petal of gold light planing down at closest range, rose iridescence sweeping across its face as it turns over, no text no signatures no watermarks no letters no writing",
-        "wide — the veils from below, layer after amber layer parting as the light descends toward a warm deep glow waiting at the bottom of the frame, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — one small petal of amber light settling slowly downward in the upper right of immense darkness, a few high specks of gold still turning in the air above it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — that petal of light at closest range as it turns over, rose iridescence sweeping across its translucent surface, fine veins of gold glowing faintly, soft dark all around, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down through drifting layers of warm amber lit mist, each translucent layer thinning into particles as the camera descends toward a dim rose-gold glow in the lower left, the brighter place now far and dusky, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "gently now...",
@@ -258,22 +266,27 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "carry the warmth..."
       ],
       "analysisRole": "lowering",
-      "gradeAs": "return"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.6,
+      "sparse": true,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "macro stillness — one small warm amber glow resting in deep soft darkness, a faint halo of concentric golden rings breathing around it, a few last luminous motes settling toward it like sparks coming to rest, the light steady and kept, enormous quiet dark all around with the glow held low in the frame, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "extreme macro — a slow gold pulse at closest range inside soft darkness, the last motes of light settling into it like dust after a long day, a faint halo of concentric amber rings breathing around it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "macro stillness — one small warm amber glow resting in deep soft darkness, a faint halo of concentric golden rings breathing around it, a few last luminous motes settling toward it like sparks coming to rest, the light steady and kept, enormous quiet dark all around with the glow held low in the frame, no text no signatures no watermarks no letters no writing",
-        "extreme macro — the glow's heart at closest range, a slow gold pulse inside soft dark, the last motes settling into it like dust after glory, no text no signatures no watermarks no letters no writing",
-        "cosmic finale — the small warm glow seen from very far away, one gold point in vast dark, the whole ascent kept inside it, no text no signatures no watermarks no letters no writing"
+        "extreme macro — a slow gold pulse at closest range inside soft darkness, the last motes of light settling into it like dust after a long day, a faint halo of concentric amber rings breathing around it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — from very far away a single warm gold point in vast dark space among faint stars, the whole ascent folded inside it, the camera pulling back into stillness, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a single small seed of amber light resting closed in the lower left of vast darkness, a faint glow kept inside it, the bookend of the first gold seed, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "you are changed...",
         "the light lives in you now..."
       ],
       "analysisRole": "last",
-      "gradeAs": "integration"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     }
   ],
   "mycelium-dream": [
@@ -389,11 +402,11 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "the-bloom": [
     {
       "intensityMultiplier": 0.45,
-      "aiPrompt": "DARK BACKGROUND, enormous seed pod cracking open in the lower-right third of deep brown-black void, the pod shell rendered with photorealistic dark bark-like texture split along fibonacci spiral lines, but inside the pod instead of seeds there is a miniature world — tiny trees with green canopies, a winding stream of blue-silver water, clusters of wildflowers in white and gold, all contained within the pod shell like a terrarium, warm green-gold light spilling from the interior world into the surrounding darkness, fine spores and tiny flower petals ejecting from the opening along diagonal paths upward-left into vast dark space, the impossible nursery of an entire landscape inside a seed at cosmic scale, two-thirds of the frame open dark void above and left, asymmetric composition with the pod anchored low-right, no figures no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single seed pod of dark bark-like shell cracking open along fibonacci spiral lines in the lower right of deep brown-black void, a thin seam of green-gold light leaking out of the split, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND, enormous seed pod cracking open in the lower-right third of deep brown-black void, the pod shell rendered with photorealistic dark bark-like texture split along fibonacci spiral lines, but inside the pod instead of seeds there is a miniature world — tiny trees with green canopies, a winding stream of blue-silver water, clusters of wildflowers in white and gold, all contained within the pod shell like a terrarium, warm green-gold light spilling from the interior world into the surrounding darkness, fine spores and tiny flower petals ejecting from the opening along diagonal paths upward-left into vast dark space, the impossible nursery of an entire landscape inside a seed at cosmic scale, two-thirds of the frame open dark void above and left, asymmetric composition with the pod anchored low-right, no figures no text no signatures no watermarks no letters no writing",
-        "interior — inside the pod's miniature world, at the bank of its tiny silver stream under trees no taller than grass, the shell curving overhead like a wooden sky with day leaking through the split, no text no signatures no watermarks no letters no writing",
-        "macro — the pod's split edge at closest range, bark fibers parting one by one, green-gold interior light flooding out across the dark shell like dawn under a door, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single seed pod of dark bark-like shell cracking open along fibonacci spiral lines in the lower right of deep brown-black void, a thin seam of green-gold light leaking out of the split, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the pod's split edge at closest range, translucent fibers parting one by one, green-gold light flooding out across the dark shell, fine luminous pollen lifting off into the void, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down into the opened pod as into a tiny luminous world, a miniature silver stream winding through moss-soft green light far below, a mist of pale silver particles drifting over it, the camera slowly descending, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "wait for it...",
@@ -401,15 +414,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "something stirs beneath..."
       ],
       "analysisRole": "dark",
-      "gradeAs": "threshold"
+      "gradeAs": "threshold",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.58,
-      "aiPrompt": "DARK BACKGROUND, giant fiddlehead fern unfurling at cosmic scale from a tight coil in the upper-left corner of deep green-black void, but as each frond unfurls it reveals a different spring scene contained within — one frond opens to show cherry blossoms in pale pink, another reveals meadow wildflowers in gold and white, another shows new translucent green leaves — like pages of a book of spring turning open, the spiral structure following a golden ratio with photorealistic fern texture and translucent hairs along the rachis catching warm gold backlight, fine pollen particles of pale rose and chartreuse dispersing from the unfurling tips rightward and downward into vast dark void filling two-thirds of the frame, the frond architecture impossibly detailed as if viewing a fern the size of a galaxy, asymmetric composition with the coil anchored upper-left, no figures no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single small fiddlehead coil of muted sage-green light curled tight in the upper left of deep green-black void, translucent hairs along its spiral glowing faintly gold, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND, giant fiddlehead fern unfurling at cosmic scale from a tight coil in the upper-left corner of deep green-black void, but as each frond unfurls it reveals a different spring scene contained within — one frond opens to show cherry blossoms in pale pink, another reveals meadow wildflowers in gold and white, another shows new translucent green leaves — like pages of a book of spring turning open, the spiral structure following a golden ratio with photorealistic fern texture and translucent hairs along the rachis catching warm gold backlight, fine pollen particles of pale rose and chartreuse dispersing from the unfurling tips rightward and downward into vast dark void filling two-thirds of the frame, the frond architecture impossibly detailed as if viewing a fern the size of a galaxy, asymmetric composition with the coil anchored upper-left, no figures no text no signatures no watermarks no letters no writing",
-        "macro — one unfurling frond-tip at closest range caught mid-turn, the spring scene inside it half-revealed, translucent hairs along the coil lit gold, no text no signatures no watermarks no letters no writing",
-        "wide — the giant fern from far back, its opened fronds glowing like lit pages held at many angles in the green-black void, pollen drifting between them, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single small fiddlehead coil of muted sage-green light curled tight in the upper left of deep green-black void, translucent hairs along its spiral glowing faintly gold, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — the slow unfurling as a fibonacci spiral of pale gold and fog-blue light opening across darkness, each turn a little wider than the last, a lifting veil of luminous mist thinning at its outer edge, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — one frond-tip at closest range caught mid-turn, its translucent surface glowing sage and soft gold, a bead of light held in the curl with a tiny misty spring world curved inside it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "it's happening...",
@@ -417,15 +432,18 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "everything at once..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.6,
+      "sparse": true,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.8,
-      "aiPrompt": "vast cross-section of vascular architecture rendered at impossible scale against deep black-green void — luminous circular vessels and tubular channels arranged in a designed ring pattern at cosmic scale, each vessel a different size with green-gold bioluminescent fluid flowing through them in visible currents, between the vessels a matrix of cellular forms glowing soft rose-pink and warm gold, fine particles of luminous sap streaming from the vessel ends into surrounding darkness, the living architecture of growth at cosmic scale where each vessel could be a tunnel through a galaxy, asymmetric composition offset lower-left with generous dark void upper-right, no landscape no ground no soil no figures, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — a vast cross-section of luminous vascular rings at impossible scale in deep black-green space, circular vessels of green-gold bioluminescent light arranged like a slow galaxy, a heavy swell of bronze light rolling through them, the camera rising through the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "vast cross-section of vascular architecture rendered at impossible scale against deep black-green void — luminous circular vessels and tubular channels arranged in a designed ring pattern at cosmic scale, each vessel a different size with green-gold bioluminescent fluid flowing through them in visible currents, between the vessels a matrix of cellular forms glowing soft rose-pink and warm gold, fine particles of luminous sap streaming from the vessel ends into surrounding darkness, the living architecture of growth at cosmic scale where each vessel could be a tunnel through a galaxy, asymmetric composition offset lower-left with generous dark void upper-right, no landscape no ground no soil no figures, no text no signatures no watermarks no letters no writing",
-        "interior kinetic — riding a vessel's current, green-gold sap-light streaming past, rose cell-chambers glowing as they pass, the channel curving toward a brightness ahead, no text no signatures no watermarks no letters no writing",
-        "macro — one cell at the vessel wall at closest range, its membrane a warm rose lantern, gold fluid pulsing past in the channel beyond it, no text no signatures no watermarks no letters no writing"
+        "cosmic — a vast cross-section of luminous vascular rings at impossible scale in deep black-green space, circular vessels of green-gold bioluminescent light arranged like a slow galaxy, a heavy swell of bronze light rolling through them, the camera rising through the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "inside a translucent green stem at closest range, streams of green-gold sap-light flowing upward in a low rocking surge, tiny rose-lit cells glowing as they pass, abstract and luminous, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from high above, a slow tide of luminous gold light rolling across a dark expanse of opened fronds filling the frame edge to edge, a high clearing of pale silver-gold glowing in the upper right, translucent and weightless, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "this is what was waiting...",
@@ -433,15 +451,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "the bloom is you..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "illumination",
+      "shaderOpacity": 0.51,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 1,
-      "aiPrompt": "DARK BACKGROUND, field of wildflowers on a floating chunk of meadow earth viewed from within at eye-level with the flower heads, the flowers rendered with photorealistic detail — daisies, poppies in warm red, cornflowers in deep blue, buttercups in bright gold — swaying gently, bees and butterflies visible among the blooms with iridescent wing detail, the earth fragment visible at the edges where the meadow surface drops away revealing soil layers and dangling roots above deep cosmic blue void below, warm golden sunlight illuminating the flowers from the upper-left casting soft shadows, fine pollen particles drifting in the warm light, the meadow anchored across the lower two-thirds with cosmic blue space visible beyond the earth edge, the impossible intimacy of standing in a floating garden at atmospheric scale, no figures no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — a floating island of blooming meadow seen from far out in deep space, its flowers made of light in gold, crimson and deep blue blazing together, a vast spiral of pollen-light streaming off it like a galaxy arm across infinite darkness, the camera soaring back, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND, field of wildflowers on a floating chunk of meadow earth viewed from within at eye-level with the flower heads, the flowers rendered with photorealistic detail — daisies, poppies in warm red, cornflowers in deep blue, buttercups in bright gold — swaying gently, bees and butterflies visible among the blooms with iridescent wing detail, the earth fragment visible at the edges where the meadow surface drops away revealing soil layers and dangling roots above deep cosmic blue void below, warm golden sunlight illuminating the flowers from the upper-left casting soft shadows, fine pollen particles drifting in the warm light, the meadow anchored across the lower two-thirds with cosmic blue space visible beyond the earth edge, the impossible intimacy of standing in a floating garden at atmospheric scale, no figures no text no signatures no watermarks no letters no writing",
-        "extreme macro — inside one poppy at eye level with its stamens, red petal-walls glowing with sunlight, pollen grains like gold boulders on the curved floor, no text no signatures no watermarks no letters no writing",
-        "spirit-hint — across the floating meadow, the pollen-light half-gathers into a soft drifting cloud of radiance among the blooms, translucent and featureless, warm light moving like a careful wind, no text no signatures no watermarks no letters no writing"
+        "cosmic — a floating island of blooming meadow seen from far out in deep space, its flowers made of light in gold, crimson and deep blue blazing together, a vast spiral of pollen-light streaming off it like a galaxy arm across infinite darkness, the camera soaring back, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — inside one poppy of glowing red light at closest range, petal walls blazing translucent amber and crimson, pollen grains like luminous gold boulders on its curved floor, sparks of light lifting off them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — the summit as resonance: concentric rings of gold and sage light pulsing outward across darkness from the lower left, layer over layer ringing at full force, fine luminous pollen caught in each band, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "the garden is complete...",
@@ -449,15 +469,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "rest here in the green..."
       ],
       "analysisRole": "peak",
-      "gradeAs": "transcendence"
+      "gradeAs": "transcendence",
+      "shaderOpacity": 0.46,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.81,
-      "aiPrompt": "DARK BACKGROUND, dandelion seed-head at macro scale in the right third of deep blue-black void, the sphere of seed-parachutes rendered with photorealistic detail — each individual pappus a perfect radial structure of impossibly fine silver-white filaments, several seeds detaching and drifting leftward and upward into the darkness, each floating seed-parachute catching faint warm gold and spring green light as it separates, the most distant seeds already tiny luminous points dissolving into deep space like newborn stars, fine individual filaments trailing behind each drifting seed, the main seed-head still holding dozens of seeds with the stem visible below, vast quiet dark void filling two-thirds of the frame at left, the beautiful dispersal of life into the cosmos at impossible scale, asymmetric composition weighted right, no figures no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "macro — a dandelion seed-head of fine silver-white light in the right third of deep blue-black void, each pappus a perfect radial star of luminous filaments, a fast violet shadow sweeping across half of the sphere, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND, dandelion seed-head at macro scale in the right third of deep blue-black void, the sphere of seed-parachutes rendered with photorealistic detail — each individual pappus a perfect radial structure of impossibly fine silver-white filaments, several seeds detaching and drifting leftward and upward into the darkness, each floating seed-parachute catching faint warm gold and spring green light as it separates, the most distant seeds already tiny luminous points dissolving into deep space like newborn stars, fine individual filaments trailing behind each drifting seed, the main seed-head still holding dozens of seeds with the stem visible below, vast quiet dark void filling two-thirds of the frame at left, the beautiful dispersal of life into the cosmos at impossible scale, asymmetric composition weighted right, no figures no text no signatures no watermarks no letters no writing",
-        "macro — a single seed-parachute mid-flight at closest range, its silver filaments a perfect radial star, deep space soft and dark behind it, no text no signatures no watermarks no letters no writing",
-        "cosmic — the drifting seeds from far back scattered across the dark like a new constellation being sown, the seed-head a dim sphere at one edge of the frame, no text no signatures no watermarks no letters no writing"
+        "macro — a dandelion seed-head of fine silver-white light in the right third of deep blue-black void, each pappus a perfect radial star of luminous filaments, a fast violet shadow sweeping across half of the sphere, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — the seeds drifting free across the dark like a new constellation being sown, the dim seed-head at one edge of the frame, a band of violet shade passing over them and gold light returning, the camera drifting after them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — a single seed-parachute at closest range, its silver filaments a radial star of light, a faint violet glow fading from its tip as warm bronze light returns, weightless, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "the day was full...",
@@ -465,22 +487,26 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "carry the pollen with you..."
       ],
       "analysisRole": "calm",
-      "gradeAs": "illumination"
+      "gradeAs": "return",
+      "shaderOpacity": 0.51,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "DARK BACKGROUND, single thin plant stem with one closed bud at its tip rising from a tiny mound of dark rich earth floating in the lower-left corner of absolute black void, the stem rendered in muted olive-green with photorealistic cellular texture, the bud a small tight spiral of pale green and faint rose holding the memory of everything the bloom was inside its folded layers, a single dewdrop clinging to the bud tip catching faint warm prismatic light — a tiny spectrum visible in the drop, nearly the entire frame vast dark silence with only this single living form and its single drop of light, the quiet promise that what bloomed will bloom again at infinite scale, asymmetric composition with the stem small and anchored lower-left, no figures no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single thin stem of muted olive light with one closed bud at its tip in the lower left of absolute black void, a tiny dewdrop of prismatic light resting on the bud, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND, single thin plant stem with one closed bud at its tip rising from a tiny mound of dark rich earth floating in the lower-left corner of absolute black void, the stem rendered in muted olive-green with photorealistic cellular texture, the bud a small tight spiral of pale green and faint rose holding the memory of everything the bloom was inside its folded layers, a single dewdrop clinging to the bud tip catching faint warm prismatic light — a tiny spectrum visible in the drop, nearly the entire frame vast dark silence with only this single living form and its single drop of light, the quiet promise that what bloomed will bloom again at infinite scale, asymmetric composition with the stem small and anchored lower-left, no figures no text no signatures no watermarks no letters no writing",
-        "extreme macro — the dewdrop on the bud tip at closest range, a tiny living spectrum inside it, the folded petals a soft green-rose spiral behind the glass, no text no signatures no watermarks no letters no writing",
-        "wide — the small stem and its bud alone in vast dark from further back, the single point of prismatic light the only color in the silence, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single thin stem of muted olive light with one closed bud at its tip in the lower left of absolute black void, a tiny dewdrop of prismatic light resting on the bud, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the dewdrop on the bud tip at closest range, a tiny living spectrum inside it, the folded petals a soft green-rose spiral behind the translucent drop, amber dusk fading, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — the small bud seen from far away as one point of prismatic light in vast dark space among faint stars, the whole spring kept folded inside it, the camera slowly pulling back, left open, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "you bloomed...",
         "the spring is in you now..."
       ],
       "analysisRole": "last",
-      "gradeAs": "integration"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     }
   ],
   "inferno": [
