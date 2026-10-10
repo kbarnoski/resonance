@@ -1272,12 +1272,18 @@ void main(){
   // world visibility: a stable rank per particle; particle 0 is the last
   // ember (rank 0) so the field can settle to exactly one light
   float rank = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
-  float visW = uDensity >= 0.999 ? 1.0 : 1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rank);
+  // CONTINUOUS (2026-10-10 catalogue tour, "black-level steps"): this used to
+  // switch to 1.0 at uDensity >= 0.999 — just below it the top ~40 % of ranks
+  // sat half-dimmed (field ≈ 80 %), so a density spring creeping up to 1 (or
+  // easing off it) lifted/dropped the whole particle haze ~25 % in ONE frame.
+  // The partial-rank dimming now hands over to full visibility smoothly.
+  float visW = mix(1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rank), 1.0, smoothstep(0.9, 1.0, uDensity));
   // hidden motes cost NOTHING (2026-10-06): culled before rasterisation —
   // sparse fields used to rasterise every invisible mote at up to 32 px
   if (visW < 0.003 && uImgShow < 0.001) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   float sparse = 1.0 - clamp(uDensity * 8.0, 0.0, 1.0); // sparse fields: fewer, bigger, brighter motes
-  float boost = mix(1.0, 3.2, sparse) * (uDensity < 0.0005 ? 1.9 : 1.0);
+  // (the near-empty field's extra size eases in — it was a 1.9x one-frame jump)
+  float boost = mix(1.0, 3.2, sparse) * mix(1.9, 1.0, smoothstep(0.0002, 0.0015, uDensity));
   boost = mix(boost, 1.0, uImgShow);
   // bass = heavier motes, treble = the finest dust
   float size = mix(1.55, 0.5, band) * mix(0.45 + 1.6 * s.b * s.b * s.b, 0.75, uImgShow) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 0.7, uImgShow);
@@ -1320,7 +1326,7 @@ void main(){
   // wrapping souls fade at the edges where they re-enter
   // (each particle its own top, so a rising field ends in a ragged, flickering
   // crown instead of one horizontal line)
-  float topY = 2.0 - 1.1 * s.g * step(0.5, uWrap.y);
+  float topY = 2.0 - 1.1 * s.g * smoothstep(0.3, 0.7, uWrap.y);
   float edgeY = smoothstep(topY, topY - 0.6, p.y) * smoothstep(-2.0, -1.4, p.y);
   a *= mix(1.0, edgeY * smoothstep(2.4, 1.0, abs(p.x)), smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
   a *= mix(1.0, smoothstep(3.0, 2.3, abs(p.x)), smoothstep(0.0, 0.5, uWrap.x) * (1.0 - uImgShow));
