@@ -5,6 +5,7 @@
 // permanent category each survivor belongs in.
 
 import { U, SMOOTH_NOISE, VORONOI, ROT2, VISIONARY_PALETTE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 const HEAD = U + SMOOTH_NOISE + VORONOI + ROT2 + VISIONARY_PALETTE;
 
@@ -853,7 +854,7 @@ void main() {
 `;
 
 // 46. Portal rim event horizon
-export const R2_PORTALRIM = HEAD + `
+export const R2_PORTALRIM = withAngleSeamBlend(HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.2;
@@ -872,7 +873,7 @@ void main() {
   col += pow(ring, 4.0) * vec3(1.0);
   gl_FragColor = vec4(col, 1.0);
 }
-`;
+`);
 
 // 47. Spore cloud release
 export const R2_SPORE = HEAD + `

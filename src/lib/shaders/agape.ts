@@ -1,6 +1,8 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
-export const FRAG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
 // Agape — Unconditional radiance: warm expanding golden waves
 
 float fbm3(vec2 p) {
@@ -74,4 +76,4 @@ void main() {
   color *= smoothstep(1.5, 0.4, length(uv));
   gl_FragColor = vec4(color, 1.0);
 }
-`;
+`);

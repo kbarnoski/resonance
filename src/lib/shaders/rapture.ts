@@ -1,8 +1,10 @@
 import { U, VISIONARY_PALETTE, ROT2, SMOOTH_NOISE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 // Explosive fracturing light expanding upward infinitely, shards getting smaller
 // as they recede into the distance. FBM with radial expansion + depth layering.
-export const FRAG = U + VISIONARY_PALETTE + ROT2 + SMOOTH_NOISE + `
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(U + VISIONARY_PALETTE + ROT2 + SMOOTH_NOISE + `
 // Fracture/shard field: returns distance to nearest fracture line
 float fractureField(vec2 p, float scale) {
   vec2 sp = p * scale;
@@ -21,7 +23,6 @@ void main() {
   float paletteShift = u_amplitude * 0.3;
 
   float r = length(uv);
-  float angle = atan(uv.y, uv.x);
 
   // Expansion: the explosion's shards travel outward and upward
   // Remap space logarithmically so near-origin shards = distant/small
@@ -93,4 +94,4 @@ void main() {
   color *= vignette;
 
   gl_FragColor = vec4(color, 1.0);
-}`;
+}`);

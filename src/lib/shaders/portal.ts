@@ -1,8 +1,10 @@
 import { U, VISIONARY_PALETTE, ROT2, SMOOTH_NOISE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 // Deep spiraling vortex pulling infinitely inward, warped rings fading into a
 // bottomless center. Logarithmic polar spiral with fbm warp.
-export const FRAG = U + VISIONARY_PALETTE + ROT2 + SMOOTH_NOISE + `
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(U + VISIONARY_PALETTE + ROT2 + SMOOTH_NOISE + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
   float t = u_time * 0.14;
@@ -71,4 +73,4 @@ void main() {
   color *= vignette;
 
   gl_FragColor = vec4(color, 1.0);
-}`;
+}`);

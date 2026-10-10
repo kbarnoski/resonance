@@ -333,6 +333,11 @@ export const R3_CORONASTREAMS = mk(`
   float r = length(uv);
   float a = atan(uv.y, uv.x);
   float n = fbm(vec2(a * 4.0, r * 6.0) + t * 0.2);
+  // Angle seam (atan cut on the left half of the centre line): n is not
+  // 2π-periodic, so just below the cut fade it to the value above the cut
+  // (a + 2π). Rays stay crisp (integer frequency); identical elsewhere.
+  float seamW = smoothstep(2.35619449, 3.14159265, -a);
+  if (seamW > 0.0) n = mix(n, fbm(vec2((a + 6.28318531) * 4.0, r * 6.0) + t * 0.2), seamW);
   float rays = sin(a * 30.0 + n * 4.0);
   rays = smoothstep(0.0, 0.95, rays);
   float falloff = exp(-r * 1.8);

@@ -7,6 +7,7 @@
 // compact — variety > polish at this stage.
 
 import { U, SMOOTH_NOISE, VORONOI, ROT2, VISIONARY_PALETTE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 const HEAD = U + SMOOTH_NOISE + VORONOI + ROT2 + VISIONARY_PALETTE;
 
@@ -151,7 +152,7 @@ void main() {
 `;
 
 // 8. Black hole accretion disk
-export const R_BLACKHOLE = HEAD + `
+export const R_BLACKHOLE = withAngleSeamBlend(HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.4;
@@ -167,7 +168,7 @@ void main() {
   col -= event * col;
   gl_FragColor = vec4(col, 1.0);
 }
-`;
+`);
 
 // 9. Soap bubble iridescence
 export const R_SOAP = HEAD + `

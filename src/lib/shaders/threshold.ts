@@ -1,8 +1,10 @@
 import { U, VISIONARY_PALETTE, SMOOTH_NOISE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 // Looking through a narrow passage into infinite blinding light beyond.
 // Dark walls converging toward an unreachable bright vanishing point.
-export const FRAG = U + VISIONARY_PALETTE + SMOOTH_NOISE + `
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(U + VISIONARY_PALETTE + SMOOTH_NOISE + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
   float t = u_time * 0.1;
@@ -79,4 +81,4 @@ void main() {
   color *= vignette;
 
   gl_FragColor = vec4(color, 1.0);
-}`;
+}`);

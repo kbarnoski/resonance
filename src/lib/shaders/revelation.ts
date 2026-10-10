@@ -1,8 +1,10 @@
 import { U, VISIONARY_PALETTE, SMOOTH_NOISE } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
 // Waves of light expanding outward from an infinitely distant center point,
 // rippling through space toward the viewer. Concentric expanding rings with depth.
-export const FRAG = U + VISIONARY_PALETTE + SMOOTH_NOISE + `
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(U + VISIONARY_PALETTE + SMOOTH_NOISE + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
   float t = u_time * 0.13;
@@ -67,4 +69,4 @@ void main() {
   color *= vignette;
 
   gl_FragColor = vec4(color, 1.0);
-}`;
+}`);

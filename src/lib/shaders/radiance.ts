@@ -1,6 +1,8 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { withAngleSeamBlend } from "./angle-seam";
 
-export const FRAG =
+// Angle seam-blended (atan branch cut — see ./angle-seam).
+export const FRAG = withAngleSeamBlend(
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -206,4 +208,4 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-`;
+`);
