@@ -62,6 +62,12 @@ await page.addInitScript(() => {
 await page.reload({ waitUntil: "domcontentloaded" });
 await page.evaluate(() => { window.__resonanceGlitchTap = (e) => window.__ar.ev.push([Math.round(e.t), "rec", "glitch", e.type, (e.detail || "").slice(0, 60)]); });
 const main = () => page.evaluate(() => { const a = window.__ar.audios[window.__ar.main]; return a && a.duration > 60 && !a.paused && a.currentTime > 6 ? window.__ar.main : -1; });
+if (process.env.JUMP) {
+  // start from a chosen journey via the phone-remote API (the ?start param can lose a race with the supervisor)
+  await new Promise((r) => setTimeout(r, 6000));
+  await fetch("http://localhost:3000/api/pack/remote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: `jump:${process.env.JUMP}` }) });
+  await new Promise((r) => setTimeout(r, 4000));
+}
 for (let k = 0; k < N; k++) {
   let i = -1;
   for (let w = 0; w < 240 && i < 0; w++) { i = await main(); if (i < 0) await new Promise((r) => setTimeout(r, 500)); }
@@ -72,6 +78,7 @@ for (let k = 0; k < N; k++) {
   await page.waitForFunction(([i, from]) => { const a = window.__ar.audios[i]; return a.currentSrc.split("/").pop() !== from && !a.paused && a.currentTime > 9; }, [i, s], { timeout: 120000, polling: 500 }).catch(() => console.log("timeout waiting for next track"));
   const R = await page.evaluate(() => { const m = window.__ar.mark; return { ev: window.__ar.ev.filter((e) => e[0] >= m), lvl: window.__ar.lvl.filter((e) => e[0] >= m), m }; });
   // find the new track's src= and its sound onset
+  if (process.env.ALL) for (const e of R.ev) if ((e[1] === `a${i}` || e[1] === "gain" || (e[2] === "glitch" && /journey-change|take-seed/.test(e[3]))) && !/suspend|canplaythrough/.test(e[3])) console.log(`ALL ${String(e[0] - R.m).padStart(6)} ${e[1].padEnd(4)} ${e[3]}  ${e[4].slice(0, 150)}`);
   const srcSet = R.ev.filter((e) => e[3] === "src=" && !/^data:/.test(e[4]) && e[1] === `a${i}`);
   const T = srcSet.length ? srcSet[srcSet.length - 1][0] : R.m;
   for (const e of R.ev) if (e[0] >= T - 2500 && e[0] <= T + 9000 && !(e[2] === "glitch" && /particle|idle-rescue|push-refused|still|layer-push|clone/.test(e[3]))) console.log(`${String(e[0] - T).padStart(6)} ${e[1].padEnd(4)} ${e[2].padEnd(6)} ${e[3]}  ${e[4]}`);

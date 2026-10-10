@@ -241,7 +241,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
       // Seek to the stored currentTime (from WaveSurfer or previous position)
       const state = useAudioStore.getState();
-      if (state.currentTime > 0.5) {
+      if (state.currentTime > 0.5 && !(audioElement.duration > 0 && state.currentTime >= audioElement.duration - 1)) {
         audioElement.currentTime = state.currentTime;
       }
 
@@ -397,7 +397,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       const now = performance.now();
       if (now - lastUpdate > 66) {
         const { audioElement } = getAudioEngine();
-        if (!audioElement.paused && !isNaN(audioElement.currentTime)) {
+        // Only the track the store names: the outgoing src's time must never become the new track's
+        // (onCanPlay seeks the new src to it — 2026-10-09 set-start bug).
+        if (!audioElement.paused && !isNaN(audioElement.currentTime) && audioElement.dataset.trackId === useAudioStore.getState().currentTrack?.id) {
           useAudioStore.getState().setCurrentTime(audioElement.currentTime);
         }
         lastUpdate = now;

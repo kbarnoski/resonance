@@ -120,6 +120,12 @@ type Phase =
   | { kind: "statement"; index: number }
   | { kind: "credits" };
 
+/** The engine element keeps the OUTGOING track until the audio-provider swaps src (it tags each src it
+ *  loads with data-track-id). Never play() it under the next journey: at a set start that replayed the
+ *  last track's final 200 ms, and the provider then seeked the new track to the old one's time — The
+ *  First started at its end and played silent (Karel 2026-10-09). */
+const holdsCurrentTrack = (el: HTMLAudioElement) => el.dataset.trackId === useAudioStore.getState().currentTrack?.id;
+
 export function InstallationLoopClient({ programs, fallbackTracks, debug, playOnce, startIndex = 0, startProgramIndex = 0 }: Props) {
   // anonMode is still accepted on the props interface for future use
   // (e.g., a "sign up" CTA), but doesn't currently change behavior.
@@ -603,7 +609,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           !el.error &&
           (el.duration === 0 || el.currentTime < el.duration - 0.5)
         ) {
-          tryPlay(el);
+          if (holdsCurrentTrack(el)) tryPlay(el);
         }
       } catch { /* engine warming */ }
     }, 250);
@@ -786,7 +792,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
                 if (p.kind !== "journey" || p.index !== armedAtIndex) return;
                 try { el.currentTime = targetTime; } catch { /* seek beyond duration, ignore */ }
                 const { isPlaying: shouldPlay } = useAudioStore.getState();
-                if (shouldPlay && !el.ended) tryPlay(el);
+                if (holdsCurrentTrack(el) && shouldPlay && !el.ended) tryPlay(el);
               };
               el.addEventListener("canplay", onCanPlay, { once: true });
               setTimeout(() => el.removeEventListener("canplay", onCanPlay), 8_000);
@@ -796,7 +802,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         }
 
         const { isPlaying: shouldPlay } = useAudioStore.getState();
-        if (shouldPlay && el.paused && !el.ended) tryPlay(el);
+        if (holdsCurrentTrack(el) && shouldPlay && el.paused && !el.ended) tryPlay(el);
       }
     }, 2_000);
     return () => clearInterval(id);
@@ -1314,7 +1320,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           // browser is unlocked (desktop / prior gesture), audio
           // starts playing right away. If not, the mount-level
           // watchdog will retry every 250ms until the user clicks.
-          tryPlay(el);
+          if (holdsCurrentTrack(el)) tryPlay(el);
           el.addEventListener("error", earlyErrorListener);
         } catch { /* engine warming */ }
       }, preStartDelay);
@@ -1932,7 +1938,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           !el.error &&
           (el.duration === 0 || el.currentTime < el.duration - 0.5)
         ) {
-          tryPlay(el);
+          if (holdsCurrentTrack(el)) tryPlay(el);
         }
       } catch { /* engine gone */ }
     }, 250);
@@ -2005,7 +2011,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             try { el.currentTime = targetTime; } catch { /* seek beyond, ignore */ }
           }
           const { isPlaying: shouldPlay } = useAudioStore.getState();
-          if (shouldPlay && !el.ended) tryPlay(el);
+          if (holdsCurrentTrack(el) && shouldPlay && !el.ended) tryPlay(el);
           stallRecovering = false;
           stallLastTime = -1;
           stallFrozenSinceMs = 0;
