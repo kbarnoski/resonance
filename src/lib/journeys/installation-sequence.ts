@@ -277,7 +277,7 @@ const RISE_ABOVE = [
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 41. Welcome Home
   "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 42. Afterglow
   "inferno", // 43. Realized
-  "aeb508d6-6447-4fb5-8468-636924520f82", // 44. Yellow Bird 6 — the last track
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 44. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
