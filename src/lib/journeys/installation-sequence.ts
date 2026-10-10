@@ -226,8 +226,8 @@ const GRATITUDE: ProgramDedication = {
  *  with Expansion grooves chosen from the analysis, one dark peak (Horses 1),
  *  landing on Night Wind 9. BORROWED, not moved: every later set keeps its
  *  pieces in entirety ("all sets after Rise Above should keep their songs"). */
-// One version of a track per set (Karel 2026-10-09: "we cant have two versions of the same track in ra"):
-// Night Wind 4 is the Night Wind; Night Wind 11 and 9 play in the Expansion.
+// One version of a track per set (Karel 2026-10-09: "we cant have two versions of the same track in ra") —
+// except Night Wind: he wants Night Wind 2 early and Night Wind 4 late, far apart. 11 and 9 play in the Expansion.
 const RISE_ABOVE = [
   "first-snow", //  1. Snowflake
   "ghost", //  2. Ghost
@@ -235,17 +235,18 @@ const RISE_ABOVE = [
   "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  4. Testimony 3
   "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  5. Grasshopper — after Testimony 3; both follow First Light (Karel 2026-10-09)
   "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  6. Yellow Bird — after Grasshopper (Karel 2026-10-09)
-  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  7. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  8. Bath
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  9. The First (Expanded)
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 10. Tranquility 8 — a keeper (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 11. Night Wind 4
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", //  7. Night Wind 2 — early (Karel 2026-10-09: two Night Winds, kept far apart)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  8. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  9. Bath
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", // 10. The First (Expanded)
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 11. Tranquility 8 — a keeper (Karel 2026-10-09)
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 12. Loire 2 — mellow, uplifting (Karel 2026-10-09)
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 13. Chenin 5 — the screeching, intense, dark one, right after Loire 2 (Karel 2026-10-09)
   "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 14. Horses 1 — later in the set (Karel 2026-10-09)
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 15. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 16. Afterglow
-  "inferno", // 17. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 15. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 16. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 17. Afterglow
+  "inferno", // 18. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
