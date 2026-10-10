@@ -109,3 +109,16 @@ export const EMBLEM_HANDOFF = { strictRelease: true, underlay: true, microDriftG
 export function underlayDue(o: { emblemWorn: boolean; releasing: boolean; hasForm: boolean; emForm: number; imageShow: number }): boolean {
   return EMBLEM_HANDOFF.underlay && o.emblemWorn && !o.releasing && !o.hasForm && o.emForm > 0.6 && o.imageShow >= 0.95;
 }
+
+/**
+ * May a still be PRELOADED into the dissolve's texture slots (or a dissolve
+ * start) right now? The preload swaps the image textures A/B and the plane
+ * aspect — the very slot an image form (emblem, motif, angel, moment) is
+ * being worn from. Spectre 2026-10-09 (filmed): a still pushed at 14.9 s,
+ * during the opening emblem's exit, swapped its colours + aspect in one frame
+ * (a faint blue emblem turned into a dense pink-white figure).
+ */
+export function stillPreloadAllowed(o: { imageLevel: number; imageTarget: number }): boolean {
+  // (0.001 = the engine's own "no image form" threshold: below it the image is not drawn at all)
+  return o.imageLevel <= 0.001 && o.imageTarget <= 0.001;
+}

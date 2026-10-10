@@ -267,7 +267,7 @@ const lumCache = new WeakMap<HTMLCanvasElement, number>();
 const DECODE_WORKER_SRC = `
 const uvFromPixels = (${uvFromPixels.toString()});
 self.onmessage = async (ev) => {
-  const { id, url, fit, cors, n } = ev.data;
+  const { id, url, fit, cors, n, uvW } = ev.data;
   try {
     const res = await fetch(url, cors ? { mode: "cors" } : undefined);
     if (!res.ok) throw new Error(String(res.status));
@@ -286,7 +286,7 @@ self.onmessage = async (ev) => {
     const data = ctx.getImageData(0, 0, w, h).data;
     let L = 0, cnt = 0;
     for (let i = 0; i < data.length; i += 64) { L += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255; cnt++; }
-    const W = Math.min(256, w), H = Math.max(1, Math.round((h * W) / Math.max(1, w)));
+    const W = Math.min(uvW || 256, w), H = Math.max(1, Math.round((h * W) / Math.max(1, w)));
     const sc = new OffscreenCanvas(W, H);
     const sx = sc.getContext("2d", { willReadFrequently: true });
     sx.drawImage(oc, 0, 0, W, H);
@@ -310,7 +310,8 @@ function getDecodeWorker(): Worker | null {
   } catch { decodeWorker = null; }
   return decodeWorker;
 }
-async function decodeSmall(url: string, fit: Fit, crossOrigin = false): Promise<HTMLCanvasElement | null> {
+/** `uvW` = the sampling grid's width (default 256; the statement piano samples finer). */
+async function decodeSmall(url: string, fit: Fit, crossOrigin = false, uvW = 256): Promise<HTMLCanvasElement | null> {
   const cpuCanvas = (w: number, h: number) => {
     const c = document.createElement("canvas");
     c.width = w; c.height = h;
@@ -321,7 +322,7 @@ async function decodeSmall(url: string, fit: Fit, crossOrigin = false): Promise<
     const id = ++decodeSeq;
     const r = await new Promise<DecodeResult>((resolve) => {
       decodeWaiters.set(id, resolve);
-      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin, n: SAMPLE_N });
+      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin, n: SAMPLE_N, uvW });
     });
     if (r.buf && r.w && r.h) {
       const { c, ctx } = cpuCanvas(r.w, r.h);
@@ -372,11 +373,18 @@ function motifImage(src: string): HTMLCanvasElement | null {
 // ── the statement card's piano (statement-piano.tsx): decoded, shrunk AND
 // importance-sampled in the decode worker at page load — the card then only
 // uploads it (on black, before the text fades in) ──
-export const STATEMENT_PIANO_SRC = "/tramokyo-pack/emblems/piano-1919.jpg";
+// (piano-1919-form.jpg = the photo prepared for particles: cabinet lifted out of
+// the dark room, carvings drawn, fire compressed — scripts/make-piano-form.mjs)
+export const STATEMENT_PIANO_SRC = "/tramokyo-pack/emblems/piano-1919-form.jpg";
+export const STATEMENT_PIANO_FALLBACK = "/tramokyo-pack/emblems/piano-1919.jpg";
 let pianoPromise: Promise<HTMLCanvasElement | null> | null = null;
 export function loadStatementPiano(): Promise<HTMLCanvasElement | null> {
   if (typeof window === "undefined") return Promise.resolve(null);
-  pianoPromise ??= decodeSmall(STATEMENT_PIANO_SRC, { max: 512 }).catch(() => null);
+  // finer than any emblem: a 768 px colour texture, samples placed on a 512-wide grid
+  // (the prepared image lives in the gitignored pack: fall back to the photo if it is missing)
+  pianoPromise ??= decodeSmall(STATEMENT_PIANO_SRC, { max: 768 }, false, 512)
+    .catch(() => null)
+    .then((c) => c ?? decodeSmall(STATEMENT_PIANO_FALLBACK, { max: 768 }, false, 512).catch(() => null));
   return pianoPromise;
 }
 /** The worker's sample table for an image — never computed on the main thread here. */
@@ -1132,6 +1140,9 @@ export function ParticleLeadLayer({
         if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
         loadNow = !!want && wantKey !== imgKey && !imgLoaded;
       }
+      // …and never into a running still dissolve: loadFormImage overwrites the
+      // dissolve's incoming texture B mid-flight (the image waits for it to end)
+      if (want && loadNow && !flashing && engine.dissolveTime() !== null) loadNow = false;
       if (want && loadNow) {
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment

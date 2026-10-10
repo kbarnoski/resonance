@@ -20,7 +20,7 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_ENABLED, particlesForcedThisSession } from "@/lib/journeys/particle-lead";
 import { loadStatementPiano, cachedSamples, budgetFor } from "./particle-lead-layer";
 import {
-  pianoSchedule, stepAllowed, PIANO_OPACITY, PIANO_SCALE, PIANO_OFFSET_Y, PIANO_FORM, TEXT_FADE_MS, type PianoStep,
+  pianoSchedule, stepAllowed, pianoPlaneScale, PIANO_OPACITY, PIANO_OFFSET_Y, PIANO_FORM, TEXT_FADE_MS, LATEST_START_MS, READY_POLL_MS, type PianoStep,
 } from "@/lib/particles/statement-piano-plan";
 
 const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
@@ -66,7 +66,7 @@ export function StatementPiano({ cardT0, textShown }: { cardT0: number; textShow
         engine.setDensity(0);
         engine.setImageVariant(false, 0);
         engine.setImageTint(0); // the photograph's own amber, gold and fire
-        engine.setImageScale(PIANO_SCALE);
+        engine.setImageScale(pianoPlaneScale(img.width / Math.max(1, img.height), window.innerWidth / Math.max(1, window.innerHeight)));
         engine.setOffset(0, PIANO_OFFSET_Y);
         engine.setInstances(1, 0);
         engine.snapImage(); // invisible: placement lands now, never glides mid-gather
@@ -89,14 +89,22 @@ export function StatementPiano({ cardT0, textShown }: { cardT0: number; textShow
       }
     };
     let cancelled = false;
-    void loadStatementPiano().then((img) => {
+    // AT LOAD TOO (Karel 2026-10-09: "the resonance screen should have the
+    // burning piano on it when it loads"): the boot card waits for the
+    // session's program warm-up (~4 s; the engine must not run meanwhile —
+    // warming builds one pipeline per step while it is stopped) and gathers
+    // as soon as it is done, as long as there is time to form before the stop
+    const schedule = (img: HTMLCanvasElement | null) => {
       if (cancelled) return;
-      // a cold page (programs still warming) or no image: no piano this card
+      if (img && !engine.isWarm() && at() < LATEST_START_MS) { timers.push(setTimeout(() => schedule(img), READY_POLL_MS)); return; }
       const ready = !!img && engine.isWarm();
       const sched = ready ? pianoSchedule(at()) : [{ at: 0, step: "release" as const }];
       if (!ready) glitchRecord("piano-skip", img ? "programs warming" : "no image");
+      else if (sched.length === 1) glitchRecord("piano-skip", `ready too late @${Math.round(at())}ms`);
+      else if (at() > 1000) glitchRecord("piano", `ready @${Math.round(at())}ms (boot warm-up)`);
       for (const ev of sched) timers.push(setTimeout(() => run(ev.step, img), Math.max(0, ev.at - at())));
-    });
+    };
+    void loadStatementPiano().then(schedule);
     return () => {
       cancelled = true;
       timers.forEach(clearTimeout);

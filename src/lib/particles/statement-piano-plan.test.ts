@@ -9,8 +9,8 @@ import { readFileSync } from "node:fs";
 import { EXPERIENCE_INTRO_MS } from "@/components/audio/installation-machine";
 import {
   CARD_MS, PRESTART_MS, CYCLE_FADE_AFTER_PRESTART_MS, TEXT_FADE_MS, WINDOW_START_MS, WINDOW_END_MS,
-  STOP_AT_MS, FADE_AT_MS, RELEASE_AT_MS, FORMED_BY_MS, LATEST_START_MS,
-  engineWorkAllowed, pianoSchedule, stepAllowed,
+  STOP_AT_MS, FADE_AT_MS, RELEASE_AT_MS, FORMED_BY_MS, LATEST_START_MS, PIANO_HEIGHT,
+  engineWorkAllowed, pianoSchedule, stepAllowed, pianoPlaneScale,
 } from "./statement-piano-plan";
 import { setStatementHold, statementHoldActive, onStatementHoldChange } from "./shared-engine";
 
@@ -67,6 +67,37 @@ describe("statement piano — no engine work inside the stall window", () => {
     // journey title mounts at CARD_MS + 800 with a 3.8 s fade: the field returns under it
     expect(RELEASE_AT_MS).toBeGreaterThanOrEqual(WINDOW_END_MS + TEXT_FADE_MS);
     expect(RELEASE_AT_MS).toBeLessThan(CARD_MS + 800 + 3_800);
+  });
+});
+
+describe("statement piano — at load, longer, clearer (Karel 2026-10-09)", () => {
+  it("the card is 13 s: pre-start at 8.5 s, text still until 12 s, title at 13.8 s", () => {
+    expect(CARD_MS).toBe(13_000);
+    expect(PRESTART_MS).toBe(8_500);
+    expect(WINDOW_END_MS).toBe(12_000);
+    expect(CARD_MS + 800).toBe(13_800); // loop client: mountDelay = expMs + 800
+  });
+  it("a normal card shows the formed piano ≥ 5 s before it freezes", () => {
+    const s = pianoSchedule(0);
+    expect(STOP_AT_MS - FORMED_BY_MS).toBeGreaterThanOrEqual(5_000);
+    expect(s.find((e) => e.step === "start")!.at).toBe(700);
+  });
+  it("the BOOT card (programs warm ~3.9–4.5 s in, measured) still gathers, with ≥ 3.5 s to form before the freeze", () => {
+    for (let ready = 3_800; ready <= 4_700; ready += 50) {
+      const s = pianoSchedule(ready);
+      const start = s.find((e) => e.step === "start");
+      expect(start, `ready ${ready}`).toBeDefined();
+      expect(STOP_AT_MS - start!.at).toBeGreaterThanOrEqual(3_500);
+      expect(engineWorkAllowed(start!.at)).toBe(true);
+    }
+    expect(LATEST_START_MS).toBeGreaterThanOrEqual(5_500);
+  });
+  it("the piano stands ~86 % of the screen's height on the kiosk's screens", () => {
+    for (const scr of [16 / 9, 16 / 10, 3 / 2]) {
+      const img = 590 / 805; // piano-1919-form.jpg
+      const halfH = pianoPlaneScale(img, scr) * 1.06 * (scr / img);
+      expect(halfH).toBeCloseTo(PIANO_HEIGHT, 3);
+    }
   });
 });
 

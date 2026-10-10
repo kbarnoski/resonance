@@ -154,3 +154,31 @@ describe("Snowflake + Ghost emblems hand off without a drop", () => {
     expect(imageSlotStep(slot, "angel", 0.5, 1500, true, true)).toBe("unload");
   });
 });
+
+// ── a still arriving while an image form is worn (Spectre, filmed 2026-10-09) ──
+import { stillPreloadAllowed } from "./image-follow";
+
+describe("a still pushed during an emblem never swaps the worn image", () => {
+  it("emblem 0 / mid / closing, stills arriving every 0.5 s: the worn texture + aspect never change while the image shows", () => {
+    for (const D of [180, 260]) {
+      const imgF: Crit = { x: 0, v: 0 }, imgS: Crit = { x: 0, v: 0 };
+      let worn = "emblem", aspect = 1; // the slot the field draws its colours + geometry from
+      let jumps = 0;
+      for (let i = 0; i < D * FPS; i++) {
+        const t = i * DT;
+        const em = emblemEnvelope(t, D);
+        const tgt = Math.max(em.form, em.show);
+        // the layer's still-dissolve effect fires on every still push (cast.dissolve journeys)
+        if (i % (FPS / 2) === 0 && stillPreloadAllowed({ imageLevel: Math.max(imgF.x, imgS.x), imageTarget: tgt })) {
+          const before = `${worn}:${aspect}`;
+          worn = "still"; aspect = 16 / 9; // dissolveTo: B → A, the still lands in B
+          if (imgS.x > 0.001 && before !== `${worn}:${aspect}`) jumps++;
+        }
+        if (tgt > 0.02 && worn !== "emblem" && imgS.x < 0.01) { worn = "emblem"; aspect = 1; } // the next image load (cleared)
+        critStep(imgF, em.form * 0.97, 3, DT);
+        critStep(imgS, em.show, 2.4, DT);
+      }
+      expect(jumps, `D=${D}`).toBe(0);
+    }
+  });
+});

@@ -55,7 +55,7 @@ import {
   type ParticlePalette,
 } from "./souls";
 import type { SpectrumFrame } from "./spectrum";
-import { critStep, springTau, type Crit } from "./image-follow";
+import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 
 export interface ParticleEngineOptions {
   /** Requested particle count (rounded to a square texture). Default 409,600. */
@@ -1446,6 +1446,9 @@ export function createParticleEngine(
     setDensity(d) { densityTarget = Math.max(0, Math.min(1, d)); },
     dissolveTo(next, aspect, start = true) {
       if (dissolveT !== null || lost) return false;
+      // never while an image form is worn or coming: this swaps the very
+      // texture + aspect it is drawn from (Spectre emblem pop, 2026-10-09)
+      if (!stillPreloadAllowed({ imageLevel: Math.max(imgF.x, imgS.x), imageTarget: Math.max(imgFormTgt, imgShowTgt) })) return false;
       // B becomes A (the outgoing still), the new still lands in B
       imgTex = [imgTex[1], imgTex[0]];
       imgAspect = [imgAspect[1], aspect > 0 ? aspect : 16 / 9];
@@ -1461,6 +1464,7 @@ export function createParticleEngine(
     dissolveTime() { return dissolveT; },
     startDissolve() {
       if (dissolveT !== null || lost || !haveB) return false;
+      if (!stillPreloadAllowed({ imageLevel: Math.max(imgF.x, imgS.x), imageTarget: Math.max(imgFormTgt, imgShowTgt) })) return false;
       dissolveT = 0;
       snapped = false;
       return true;

@@ -13,7 +13,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The statement card's length (installation-machine EXPERIENCE_INTRO_MS). */
-export const CARD_MS = 8_000;
+export const CARD_MS = 13_000;
 /** Journey 0 pre-starts this long after the card begins (loop client: expMs - 4500). */
 export const PRESTART_MS = CARD_MS - 4_500;
 /** The statement text holds this long after the pre-start, then fades (1.8 s). */
@@ -35,16 +35,27 @@ export const WINDOW_END_MS = PRESTART_MS + CYCLE_FADE_AFTER_PRESTART_MS;
 export const FADE_AT_MS = WINDOW_END_MS;
 /** …and only then hands the engine back to the journey (layer may start it). */
 export const RELEASE_AT_MS = FADE_AT_MS + TEXT_FADE_MS + 100;
-/** A start later than this can't finish gathering before the stop: skip the piano this card. */
-export const LATEST_START_MS = STOP_AT_MS - 1_800;
+/** A start later than this can't gather + be seen before the stop: skip the piano this card.
+ *  (the boot card: the session's program warm-up ends ~3.9–4.5 s in — measured) */
+export const LATEST_START_MS = STOP_AT_MS - 2_500;
+/** How often the boot card re-checks whether the programs are warm. */
+export const READY_POLL_MS = 100;
 
 /** Canvas opacity while shown (behind the text: rich, never fighting the title). */
-export const PIANO_OPACITY = 0.62;
+export const PIANO_OPACITY = 0.8;
 /** Image plane size (1 = full frame) and placement (camera offset: negative y = the form sits higher). */
-export const PIANO_SCALE = 0.7;
-export const PIANO_OFFSET_Y = -0.1;
-/** How literally the motes wear the photograph (a tad of drift, like the emblems). */
-export const PIANO_FORM = 0.95;
+export const PIANO_OFFSET_Y = 0;
+/** The piano's height as a share of the screen. */
+export const PIANO_HEIGHT = 0.86;
+/** Fully literal: the motes sit ON the photograph (no swirl or drift while held). */
+export const PIANO_FORM = 1;
+
+/** Image-plane scale that makes an image of aspect `img` stand PIANO_HEIGHT of a
+ *  screen of aspect `scr` (the engine's plane covers the screen, ×1.06). */
+export function pianoPlaneScale(img: number, scr: number, height = PIANO_HEIGHT): number {
+  const halfH = 1.06 * (img > scr ? 1 : scr / img); // plane half-height, in screen half-heights, at scale 1
+  return Math.max(0.2, Math.min(1.2, height / halfH));
+}
 
 /** May the card touch the engine (start / stop excepted at their own instants) at card time t? */
 export function engineWorkAllowed(tMs: number): boolean {
