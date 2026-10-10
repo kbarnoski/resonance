@@ -1871,107 +1871,107 @@
  "79e33115-7f1e-44bc-b950-7adf5055dd55#0": {
   "motifs": [
    {
-    "m": "embers",
-    "w": 0.85
-   },
-   {
-    "m": "mist",
-    "w": 0.7
-   },
-   {
     "m": "golden-light",
-    "w": 0.6
-   }
-  ],
-  "moves": [
-   "drifting",
-   "flickering"
-  ],
-  "colorStory": "deep blue-black dusk with glowing amber warmth"
- },
- "79e33115-7f1e-44bc-b950-7adf5055dd55#1": {
-  "motifs": [
-   {
-    "m": "fireflies",
-    "w": 0.9
-   },
-   {
-    "m": "petals",
-    "w": 0.6
-   },
-   {
-    "m": "golden-light",
-    "w": 0.5
-   }
-  ],
-  "moves": [
-   "drifting",
-   "flickering"
-  ],
-  "colorStory": "deep indigo night with glowing amber-coral warmth"
- },
- "79e33115-7f1e-44bc-b950-7adf5055dd55#2": {
-  "motifs": [
-   {
-    "m": "fireflies",
     "w": 0.9
    },
    {
     "m": "light-rays",
-    "w": 0.75
+    "w": 0.7
    },
    {
-    "m": "forest",
+    "m": "embers",
     "w": 0.5
    }
   ],
   "moves": [
    "drifting",
-   "flickering"
+   "pulsing"
   ],
-  "colorStory": "deep indigo darkness pierced by warm amber glows"
+  "colorStory": "deep black void split by glowing amber light"
  },
- "79e33115-7f1e-44bc-b950-7adf5055dd55#3": {
+ "79e33115-7f1e-44bc-b950-7adf5055dd55#1": {
   "motifs": [
    {
-    "m": "golden-light",
+    "m": "embers",
     "w": 0.9
    },
    {
     "m": "fireflies",
+    "w": 0.5
+   },
+   {
+    "m": "rain",
+    "w": 0.35
+   }
+  ],
+  "moves": [
+   "rising",
+   "flickering"
+  ],
+  "colorStory": "near-black void with glowing amber-orange sparks and cracks"
+ },
+ "79e33115-7f1e-44bc-b950-7adf5055dd55#2": {
+  "motifs": [
+   {
+    "m": "rain",
+    "w": 0.9
+   },
+   {
+    "m": "embers",
     "w": 0.6
    },
    {
-    "m": "stone",
+    "m": "fireflies",
     "w": 0.4
    }
   ],
   "moves": [
-   "flickering",
-   "drifting"
+   "falling",
+   "flickering"
   ],
-  "colorStory": "deep indigo night warmed by glowing amber windows"
+  "colorStory": "deep indigo dusk holding warm ember-orange glints"
+ },
+ "79e33115-7f1e-44bc-b950-7adf5055dd55#3": {
+  "motifs": [
+   {
+    "m": "embers",
+    "w": 0.85
+   },
+   {
+    "m": "light-rays",
+    "w": 0.7
+   },
+   {
+    "m": "golden-light",
+    "w": 0.55
+   }
+  ],
+  "moves": [
+   "rising",
+   "streaming"
+  ],
+  "colorStory": "dusk violet darkness igniting into molten amber gold"
  },
  "79e33115-7f1e-44bc-b950-7adf5055dd55#4": {
   "motifs": [
    {
-    "m": "leaves",
-    "w": 0.9
-   },
-   {
-    "m": "golden-light",
-    "w": 0.6
-   },
-   {
     "m": "embers",
-    "w": 0.4
+    "w": 0.85
+   },
+   {
+    "m": "light-rays",
+    "w": 0.7
+   },
+   {
+    "m": "lava",
+    "w": 0.55
    }
   ],
   "moves": [
-   "drifting",
-   "falling"
+   "rising",
+   "flowing"
   ],
-  "colorStory": "amber glow veined in dark, emerging from black"
+  "colorStory": "deep black dusk igniting into molten amber gold"
  },
  "00fcca2b-bc1e-461a-8dcd-3fff74587f3e#1": {
   "motifs": [
@@ -1997,23 +1997,23 @@
  "79e33115-7f1e-44bc-b950-7adf5055dd55#5": {
   "motifs": [
    {
-    "m": "golden-light",
-    "w": 0.9
+    "m": "embers",
+    "w": 0.85
    },
    {
-    "m": "smoke",
+    "m": "stars",
     "w": 0.7
    },
    {
-    "m": "leaves",
-    "w": 0.5
+    "m": "golden-light",
+    "w": 0.6
    }
   ],
   "moves": [
-   "rising",
-   "drifting"
+   "drifting",
+   "pulsing"
   ],
-  "colorStory": "dark umber base glowing with molten amber gold"
+  "colorStory": "deep midnight blue base, molten amber flaring through"
  },
  "00fcca2b-bc1e-461a-8dcd-3fff74587f3e#2": {
   "motifs": [

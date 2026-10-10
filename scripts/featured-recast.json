@@ -122,7 +122,8 @@
     "owned 10-12/journey (by length), cap 10, dist 8: local search exhausted"
    ],
    "rollouts": [
-    "vigil"
+    "vigil",
+    "welcome-home-title"
    ]
   }
  },
@@ -1041,50 +1042,47 @@
    "pathLen": 14,
    "dur": 293,
    "shaders": [
-    "merkaba",
-    "flame",
-    "r2-portalrim",
     "r-blackhole",
+    "chinook",
+    "merkaba",
+    "r3-fairyglow",
+    "flame",
+    "r2-photon",
     "hubble",
+    "r2-portalrim",
+    "monsoon",
+    "r3-waveveil",
     "symbiosis",
-    "chinook"
+    "dark-nebula"
    ],
    "cast": {
     "threshold": [
-     "flame",
-     "symbiosis",
-     "r2-portalrim"
-    ],
-    "expansion": [
-     "flame",
-     "symbiosis",
-     "r2-portalrim",
-     "r-blackhole"
-    ],
-    "transcendence": [
-     "symbiosis",
-     "r2-portalrim",
-     "r-blackhole",
      "chinook"
     ],
-    "illumination": [
-     "r2-portalrim",
-     "r-blackhole",
-     "chinook",
+    "expansion": [
      "merkaba"
     ],
-    "return": [
-     "r-blackhole",
-     "chinook",
-     "merkaba",
+    "transcendence": [
+     "r3-fairyglow",
+     "flame",
+     "r2-photon",
      "hubble"
     ],
+    "illumination": [
+     "r-blackhole",
+     "r2-portalrim",
+     "monsoon",
+     "r3-waveveil"
+    ],
+    "return": [
+     "symbiosis"
+    ],
     "integration": [
-     "chinook",
-     "merkaba",
-     "hubble"
+     "dark-nebula"
     ]
-   }
+   },
+   "owned": true,
+   "lead": "r-blackhole"
   },
   {
    "id": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",

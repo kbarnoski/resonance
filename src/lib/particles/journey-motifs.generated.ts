@@ -1926,128 +1926,128 @@ export const JOURNEY_MOTIFS: Readonly<Record<string, PhaseMotif[]>> = {
   {
    "motifs": [
     {
-     "m": "embers",
-     "w": 0.85
-    },
-    {
-     "m": "mist",
-     "w": 0.7
-    },
-    {
      "m": "golden-light",
-     "w": 0.6
-    }
-   ],
-   "moves": [
-    "drifting",
-    "flickering"
-   ],
-   "colorStory": "deep blue-black dusk with glowing amber warmth"
-  },
-  {
-   "motifs": [
-    {
-     "m": "fireflies",
-     "w": 0.9
-    },
-    {
-     "m": "petals",
-     "w": 0.6
-    },
-    {
-     "m": "golden-light",
-     "w": 0.5
-    }
-   ],
-   "moves": [
-    "drifting",
-    "flickering"
-   ],
-   "colorStory": "deep indigo night with glowing amber-coral warmth"
-  },
-  {
-   "motifs": [
-    {
-     "m": "fireflies",
      "w": 0.9
     },
     {
      "m": "light-rays",
-     "w": 0.75
+     "w": 0.7
     },
     {
-     "m": "forest",
+     "m": "embers",
      "w": 0.5
     }
    ],
    "moves": [
     "drifting",
-    "flickering"
+    "pulsing"
    ],
-   "colorStory": "deep indigo darkness pierced by warm amber glows"
+   "colorStory": "deep black void split by glowing amber light"
   },
   {
    "motifs": [
     {
-     "m": "golden-light",
+     "m": "embers",
      "w": 0.9
     },
     {
      "m": "fireflies",
-     "w": 0.6
-    },
-    {
-     "m": "stone",
-     "w": 0.4
-    }
-   ],
-   "moves": [
-    "flickering",
-    "drifting"
-   ],
-   "colorStory": "deep indigo night warmed by glowing amber windows"
-  },
-  {
-   "motifs": [
-    {
-     "m": "leaves",
-     "w": 0.9
-    },
-    {
-     "m": "golden-light",
-     "w": 0.6
-    },
-    {
-     "m": "embers",
-     "w": 0.4
-    }
-   ],
-   "moves": [
-    "drifting",
-    "falling"
-   ],
-   "colorStory": "amber glow veined in dark, emerging from black"
-  },
-  {
-   "motifs": [
-    {
-     "m": "golden-light",
-     "w": 0.9
-    },
-    {
-     "m": "smoke",
-     "w": 0.7
-    },
-    {
-     "m": "leaves",
      "w": 0.5
+    },
+    {
+     "m": "rain",
+     "w": 0.35
     }
    ],
    "moves": [
     "rising",
-    "drifting"
+    "flickering"
    ],
-   "colorStory": "dark umber base glowing with molten amber gold"
+   "colorStory": "near-black void with glowing amber-orange sparks and cracks"
+  },
+  {
+   "motifs": [
+    {
+     "m": "rain",
+     "w": 0.9
+    },
+    {
+     "m": "embers",
+     "w": 0.6
+    },
+    {
+     "m": "fireflies",
+     "w": 0.4
+    }
+   ],
+   "moves": [
+    "falling",
+    "flickering"
+   ],
+   "colorStory": "deep indigo dusk holding warm ember-orange glints"
+  },
+  {
+   "motifs": [
+    {
+     "m": "embers",
+     "w": 0.85
+    },
+    {
+     "m": "light-rays",
+     "w": 0.7
+    },
+    {
+     "m": "golden-light",
+     "w": 0.55
+    }
+   ],
+   "moves": [
+    "rising",
+    "streaming"
+   ],
+   "colorStory": "dusk violet darkness igniting into molten amber gold"
+  },
+  {
+   "motifs": [
+    {
+     "m": "embers",
+     "w": 0.85
+    },
+    {
+     "m": "light-rays",
+     "w": 0.7
+    },
+    {
+     "m": "lava",
+     "w": 0.55
+    }
+   ],
+   "moves": [
+    "rising",
+    "flowing"
+   ],
+   "colorStory": "deep black dusk igniting into molten amber gold"
+  },
+  {
+   "motifs": [
+    {
+     "m": "embers",
+     "w": 0.85
+    },
+    {
+     "m": "stars",
+     "w": 0.7
+    },
+    {
+     "m": "golden-light",
+     "w": 0.6
+    }
+   ],
+   "moves": [
+    "drifting",
+    "pulsing"
+   ],
+   "colorStory": "deep midnight blue base, molten amber flaring through"
   }
  ],
  "00fcca2b-bc1e-461a-8dcd-3fff74587f3e": [

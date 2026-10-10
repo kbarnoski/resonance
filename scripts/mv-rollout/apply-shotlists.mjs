@@ -35,7 +35,7 @@ const CHECK = process.argv.includes("--check");
 const STAGE = process.argv.find((a) => a.startsWith("--stage="))?.slice(8) ?? null;
 const PACK_ONLY = process.argv.includes("--pack-only");
 const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7).split(",");
-const { JOURNEYS, SET } = await import(`./shotlists/${setKey}.mjs`);
+const { JOURNEYS, SET, ALLOW_WORDS = [] } = await import(`./shotlists/${setKey}.mjs`);
 import { TAIL } from "./tail.mjs";
 // summoning / law words that must never appear in a shot (FLUX reads
 // negations as the noun; drug words; all of nature's elements allowed since 2026-10-09; figures)
@@ -57,7 +57,8 @@ for (const j of JOURNEYS) {
     if (p.shaderOpacity != null && !(p.shaderOpacity >= 0.45 && p.shaderOpacity <= 0.85)) problems.push(`${j.name}/${p.id}: shaderOpacity ${p.shaderOpacity} outside the kiosk-proven 0.45-0.85`);
     for (const s of p.shots) {
       const head = s.text.replace(/^DARK BACKGROUND —\s*/, "");
-      const m = head.match(BANNED);
+      // a set may lift single words its brief explicitly needs (Welcome Home: doorways/windows of light)
+      const m = [...head.matchAll(new RegExp(BANNED.source, "gi"))].find((x) => !ALLOW_WORDS.includes(x[0].toLowerCase()));
       if (m) problems.push(`${j.name}/${p.id}: banned word "${m[0]}" in "${head.slice(0, 60)}…"`);
     }
   });
