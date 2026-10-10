@@ -76,19 +76,33 @@ interface Slot {
 }
 
 function loadTex(gl: WebGLRenderingContext, url: string): Promise<{ tex: WebGLTexture; aspect: number }> {
+  const upload = (src: TexImageSource, w: number, h: number) => {
+    const tex = gl.createTexture();
+    if (!tex) throw new Error("no tex");
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return { tex, aspect: w / Math.max(1, h) };
+  };
+  // Decode OFF the main thread first (2026-10-10 soak: uploading straight from
+  // an <img> made Chrome decode the JPEG/PNG lazily inside a frame — one 74 ms
+  // long frame on Snowflake's first still). An ImageBitmap uploads as a copy.
+  if (typeof createImageBitmap === "function") {
+    return fetch(url, { mode: "cors" })
+      .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(`load failed ${r.status}`))))
+      .then((b) => createImageBitmap(b))
+      .then((bmp) => {
+        try { return upload(bmp, bmp.width, bmp.height); } finally { bmp.close(); }
+      });
+  }
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      const tex = gl.createTexture();
-      if (!tex) return reject(new Error("no tex"));
-      gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      resolve({ tex, aspect: img.naturalWidth / Math.max(1, img.naturalHeight) });
+      try { resolve(upload(img, img.naturalWidth, img.naturalHeight)); } catch (e) { reject(e); }
     };
     img.onerror = () => reject(new Error("load failed"));
     img.src = url;
