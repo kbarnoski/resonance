@@ -609,7 +609,7 @@
    "dur": 150,
    "shaders": [
     "r-droplets",
-    "drift",
+    "resonant-rings",
     "r-stardust",
     "ribbon-of-light",
     "rose-window",
@@ -621,7 +621,7 @@
    ],
    "cast": {
     "threshold": [
-     "drift"
+     "resonant-rings"
     ],
     "expansion": [
      "r-embers",

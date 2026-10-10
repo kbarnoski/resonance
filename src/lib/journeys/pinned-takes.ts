@@ -43,7 +43,10 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0.429,"role":"primary","mode":"murmuration"},{"p":0.498,"role":"primary","mode":"firefly-field"},
     {"p":0.616,"role":"primary","mode":"eclipse-ring"},{"p":0.676,"role":"primary","mode":"r-droplets"},
     {"p":0.704,"role":"dual","mode":"pendulum-dust"},{"p":0.753,"role":"primary","mode":"r-silk"},
-    {"p":0.82,"role":"primary","mode":"drift"},
+    // drift out (Karel 2026-10-09: Snowflake → Ghost → First Light open Rise Above in
+    // sequence — "only use that in ghost"); cirrus, already in this take
+    // (p0.292) and the winter safelist, holds the same slot.
+    {"p":0.82,"role":"primary","mode":"cirrus"},
   ],
   // Ghost — session p4jv6o ("ghost take you should keep"); lightrivers
   // filtered here too per the same ban (dharma holds through p0.637).

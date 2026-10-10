@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-10T02:57:28.275Z",
+  "updated": "2026-10-10T03:36:28.252Z",
   "journeys": {
     "ghost": {
       "definition": "3c87fe99fae1c8a5",
@@ -14,7 +14,7 @@
     },
     "first-snow": {
       "definition": "65dbdf31c9cd9fde",
-      "scriptedTake": "a7827555351dcc3b",
+      "scriptedTake": "133ddcf061195ca1",
       "introStill": "00da9f69e0e5d4e3",
       "finaleStill": "74234e98afe7498f",
       "finaleShader": "095a76a4b4e4a4eb",
