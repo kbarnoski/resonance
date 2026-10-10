@@ -18,7 +18,16 @@ const parts = [];
 for (const k of ["b2-c3A", "b2-c3B"]) if (existsSync(here(`${k}.mjs`))) parts.push(...(await import(here(`${k}.mjs`))).JOURNEYS);
 
 const clips = JSON.parse(readFileSync(new URL("../../../public/tramokyo-pack/local-clips.json", import.meta.url), "utf8"));
-export const KEEP = Object.fromEntries(parts.filter((j) => Object.keys(clips[j.id] ?? {}).some((k) => /^t\d$/.test(k))).map((j) => [j.id, "morph-ends"]));
+// Content rules beat keeping a morph (coordinator, 2026-10-10): these
+// morphs are dropped (their boundaries crossfade) and the morph-end stills
+// that broke the rules are re-rendered. install.mjs installs the surviving
+// morphs from <out>/<Journey>/morphs/ (staged copies of the current clips).
+export const DROP_MORPHS = {
+  "27f52cf0-5fad-420f-8324-8017c414f1f8": { morphs: [3], release: [18, 19] }, // Interplay: slot 19 two glowing human figures; 18 a moon over water
+  "019e1e1d-c7e2-4609-a9c6-364a2755b115": { morphs: [3, 4], release: [21, 22, 23] }, // Quarantine: 21/22 rooftops; 23 a drinking glass
+};
+export const KEEP = Object.fromEntries(parts.filter((j) => Object.keys(clips[j.id] ?? {}).some((k) => /^t\d$/.test(k)))
+  .map((j) => [j.id, DROP_MORPHS[j.id] ? { mode: "morph-ends", except: DROP_MORPHS[j.id].release } : "morph-ends"]));
 
 export const JOURNEYS = parts.map((j) => {
   const arc = opacityArc(j.phases);

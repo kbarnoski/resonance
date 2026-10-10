@@ -48,11 +48,15 @@ const { JOURNEYS, KEEP = {} } = await import(`./shotlists/${setKey}.mjs`);
 const packList = JSON.parse(readFileSync(ROOT + "public/tramokyo-pack/local-images.json", "utf8"));
 const { copyFileSync } = await import("node:fs");
 function keptSlots(j, plan) {
-  const mode = KEEP[j.id];
+  // KEEP value may also be { mode, except: [slots] } (2026-10-10): kept
+  // stills that break content rules are released for re-render once the
+  // morph they belong to is dropped.
+  const raw = KEEP[j.id], mode = raw?.mode ?? raw, except = new Set(raw?.except ?? []);
   if (!mode) return new Set();
-  if (mode === "all") return new Set(plan.slots.map((s) => s.slot));
+  if (mode === "all") return new Set(plan.slots.map((s) => s.slot).filter((s) => !except.has(s)));
   const out = new Set(); let off = 0;
   plan.counts.forEach((c, i) => { if (i > 0) out.add(off); off += c; if (i < plan.counts.length - 1) out.add(off - 1); });
+  for (const s of except) out.delete(s);
   return out;
 }
 fal.config({ credentials: process.env.FAL_KEY });

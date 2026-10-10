@@ -65,6 +65,17 @@ for (const j of JOURNEYS) {
     if (existsSync(`${mdir}/travel-${k}.hevc.mp4`)) { copyFileSync(`${mdir}/travel-${k}.hevc.mp4`, `${cdir}/travel-${k}.hevc.mp4`); e.hevc = `/tramokyo-pack/clips/journeys/${j.id}/travel-${k}.hevc.mp4`; }
     entry[`t${k}`] = e;
   }
+  // KEEP journey with staged morphs (some morphs dropped, see DROP_MORPHS in
+  // the set module): its hero phase clips ("0".."5") carry over unchanged
+  // from the backed-up clips dir.
+  if (KEEP[j.id] && stagedMorphs) {
+    for (const [key, e] of Object.entries(before.clips[j.id] ?? {})) {
+      if (/^t\d$/.test(key)) continue;
+      mkdirSync(cdir, { recursive: true });
+      for (const u of Object.values(e)) { const b = u.split("/").pop(); copyFileSync(`${BACKUP}/clips/${j.id}/${b}`, `${cdir}/${b}`); }
+      entry[key] = e;
+    }
+  }
   if (keepClips) { /* clips dir + manifest entry untouched */ }
   else if (Object.keys(entry).length) clips.data[j.id] = entry; else delete clips.data[j.id];
   // Staged depth maps (harvest-depth-maps.mjs --picks=<out>) for EVERY

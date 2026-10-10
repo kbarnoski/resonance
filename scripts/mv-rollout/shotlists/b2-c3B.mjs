@@ -181,7 +181,7 @@ export const JOURNEYS = [
         S("cosmic", "cosmic — a faint golden glow opening in infinite slate darkness and closing again, motes of amber drifting outward from it into the void like a quiet star field, the camera approaching"),
       ], { sparse: true }),
       P("integration", 0.856, 1, 0.37, "integration", "2:31-2:56 Open-Fifth Stillness (the turn retraced slowly, then bare E5 and Esus2 over a deep E1 — the F♯ finally resting)", [
-        S("aerial", "from high above, pale silver mist resting over a vast still mirror of luminous dawn-silver light, one slow ring spreading across it from the upper right like a held tone, the camera pulling back into the hush"),
+        S("aerial", "seen from directly overhead, fine concentric ripples spreading slowly across dark still water filling the frame edge to edge, the ripple lines catching faint pale-silver light like a held tone, a thin veil of luminous mist drifting low over the surface, the camera pulling back into the hush"),
         S("sparse", "DARK BACKGROUND — a single clear luminous bead resting in the lower right of vast dark silence, empty of the storm now, one star and one amber glint held together inside it, the bookend of the first drop"),
         S("cosmic", "cosmic — the open stillness from immense height, faint rings of silver light widening across infinite indigo void and dissolving, open and unresolved"),
       ]),
