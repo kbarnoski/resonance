@@ -257,12 +257,13 @@ const RISE_ABOVE = [
   "13e71555-03d6-4b27-ad32-2c6834559c24", // 21. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
   "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 22. Horses 1 — later in the set (Karel 2026-10-09)
   "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 23. Tranquility 36 (Karel 2026-10-09); late, apart from Tranquility 17 and 8
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 24. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 25. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 26. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 27. Afterglow
-  "inferno", // 28. Realized — after Afterglow (Karel 2026-10-09)
-  "aeb508d6-6447-4fb5-8468-636924520f82", // 29. Yellow Bird 6 — the last track (Karel 2026-10-09)
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 24. Redwoods Sway 2 — another feel-good one, towards later (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 25. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 26. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 27. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 28. Afterglow
+  "inferno", // 29. Realized — after Afterglow (Karel 2026-10-09)
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 30. Yellow Bird 6 — the last track (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
