@@ -1183,8 +1183,12 @@ export function ParticleLeadLayer({
         }
       }
       // the track's last seconds: everything has already faded (no drop at the handoff)
-      const dur = useAudioStore.getState().duration || 0;
-      const endFade = dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
+      // A set's end clears the queue (setQueue([], 0)) while the outgoing journey is still mounted for
+      // its 3 s fade: currentTime dropped to 0 and duration to 0, so the field read the journey's
+      // OPENING and burst in over the fade (Karel 2026-10-09, into The First). No track = no field.
+      const audioSt = useAudioStore.getState();
+      const dur = audioSt.duration || 0;
+      const endFade = !audioSt.currentTrack ? 0 : dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
       // ambient: return between windows so the field is present ~60 % overall
       if (pr.presence <= 0 && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
