@@ -236,34 +236,34 @@ const GRATITUDE: ProgramDedication = {
 const RISE_ABOVE = [
   "first-snow", //  1. Snowflake
   "ghost", //  2. Ghost
-  "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — opens Rise Above after the masters (Karel 2026-10-09)
+  "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — I. his piano
   "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  4. Testimony 3
-  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  5. Grasshopper — after Testimony 3; both follow First Light (Karel 2026-10-09)
-  "68b4289e-2247-41d6-8b9d-064345da9769", //  6. Tranquility 17 — "wow … def a keeper" (Karel 2026-10-09); early, far from Tranquility 8
-  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  7. Yellow Bird — after Grasshopper (Karel 2026-10-09)
-  "86b64938-26ea-40b9-9ea1-461323a049d5", //  8. Chenin 3 — "wow that is dope" (Karel 2026-10-09); early, far from Chenin 5
-  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", //  9. Night Wind 2 — early (Karel 2026-10-09: two Night Winds, kept far apart)
-  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 10. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
-  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 11. Bells 1 — darker, powerful groove, voices + reverb, almost trip hop (Karel 2026-10-09)
-  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 12. Amboise 1 — classical, strong, simple; breaks the set after Bells 1's groove (Karel 2026-10-09)
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 13. Bath
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", // 14. The First (Expanded)
-  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 15. Sancerre Cry 4 — beat, attitude, groove (Karel 2026-10-09); builds toward the peak
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 16. Tranquility 8 — a keeper (Karel 2026-10-09)
-  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 17. The Other Side 10 — THE PEAK: epic, monster sound (Karel 2026-10-09); Tranquility 8 lifts into it, Loire 2 lands it
-  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 18. Loire 2 — mellow, uplifting (Karel 2026-10-09)
-  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 19. Chenin 5 — the screeching, intense, dark one, right after Loire 2 (Karel 2026-10-09)
-  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 20. No question 7 — after the dark Chenin 5 (Karel 2026-10-09)
-  "13e71555-03d6-4b27-ad32-2c6834559c24", // 21. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 22. Horses 1 — later in the set (Karel 2026-10-09)
-  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 23. Tranquility 36 (Karel 2026-10-09); late, apart from Tranquility 17 and 8
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 24. Redwoods Sway 2 — another feel-good one, towards later (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 25. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 26. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  5. Grasshopper
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  6. Yellow Bird
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  7. The First (Expanded)
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  8. Bath
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", //  9. Amboise 1 — II. weaving in the chill — classical bridge
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", // 10. Night Wind 2
+  "68b4289e-2247-41d6-8b9d-064345da9769", // 11. Tranquility 17
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 12. Surrounded by Light 6
+  "13e71555-03d6-4b27-ad32-2c6834559c24", // 13. Northern Plane 5
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 14. Loire 2
+  "86b64938-26ea-40b9-9ea1-461323a049d5", // 15. Chenin 3 — III. the build
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 16. Bells 1 — dark trip-hop groove
+  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 17. Sancerre Cry 4 — beat, attitude, groove
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 18. Horses 1
+  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 19. The Other Side 10 — epic, monster sound
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 20. Chenin 5 — THE PEAK — the screeching, intense one
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 21. No question 7 — IV. building up soulfully, after the peak
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 22. Tranquility 8 — uplifting, big voices
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 23. Night Wind 4
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 24. Never Forget 4 — deep, painful
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 25. Redwoods Sway 2 — V. the feel-good finale
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 26. Tranquility 36
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 27. Welcome Home
   "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 28. Afterglow
-  "inferno", // 29. Realized — after Afterglow (Karel 2026-10-09)
-  "aeb508d6-6447-4fb5-8468-636924520f82", // 30. Yellow Bird 6 — the last track (Karel 2026-10-09)
+  "inferno", // 29. Realized
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 30. Yellow Bird 6 — the last track
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
