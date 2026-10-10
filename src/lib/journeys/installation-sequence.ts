@@ -259,7 +259,7 @@ const RISE_ABOVE = [
   "81683231-3b3c-4542-8696-13dfcf56469a", // 23. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
   "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 24. Velvet Tears 1 — tribal dance groove, unique (Karel 2026-10-09)
   "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 25. Horses 1
-  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 26. The Other Side 10 — epic, monster sound
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 26. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 27. Chenin 5 — THE PEAK — the screeching, intense one
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 28. No question 7 — IV. building up soulfully, after the peak
   "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 29. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
