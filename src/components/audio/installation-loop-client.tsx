@@ -20,6 +20,7 @@ import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle } from "@/components/ui/typography";
 import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
+import { TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import {
   INTRO_MS,
   EXPERIENCE_INTRO_MS,
@@ -175,6 +176,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   useKioskRemote("loop");
 
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
+  // Phone "title-hold" (Karel 2026-10-10: "go to the title screen with piano
+  // and resonance hanging out … introduce it and leave it up until i formally
+  // start"): the statement card holds indefinitely; "title-release" starts
+  // Rise Above from the card. ?titlehold=1 opens the page already holding.
+  const [titleHold, setTitleHold] = useState(
+    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("titlehold"),
+  );
+  const titleHoldRef = useRef(titleHold);
+  titleHoldRef.current = titleHold;
+  const releaseFromHoldRef = useRef(false);
+  // the 2.6 s fade of whatever was playing, before the held card comes up
+  const [holdFading, setHoldFading] = useState(false);
   // Stable ref mirror so long-lived effects (heartbeat poster) can read
   // current phase without depending on it (which would re-run the entire
   // effect on every phase change).
@@ -267,6 +280,49 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     return () =>
       window.removeEventListener("installation-operator-program", onJump);
   }, [programs]);
+
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | null = null;
+    const onHold = () => {
+      if (titleHoldRef.current || t) return;
+      glitchRecord("title-hold", phaseRef.current.kind);
+      postEvent("title-hold");
+      const ra = Math.max(0, programs.findIndex((p) => p.id === TRAMOKYO_MIX_ID));
+      const toCard = () => {
+        t = null;
+        try { getJourneyEngine().setFrozen(true); } catch { /* engine gone */ }
+        // the faded journey is torn down (as at credits): the GPU idles under
+        // the card, and the phone shows "HOLDING" instead of the old journey
+        try { stopJourney(); } catch { /* ok */ }
+        setTitleHold(true);
+        setHoldFading(false); // the card's opaque black is up in the same render
+        useAudioStore.getState().setSuppressNextJourneyIntro(false);
+        setStartIdx(0);
+        setProgramIndex(ra);
+        setPhase({ kind: "intro" });
+      };
+      if (phaseRef.current.kind === "intro") { toCard(); return; } // already on black / the card
+      // never abrupt: sound ramps out and the picture fades to black first
+      setHoldFading(true);
+      useAudioStore.setState({ isPlaying: false });
+      try { void rampGainTo(0, 2_000).finally(() => { try { getAudioEngine().audioElement.pause(); } catch { /* ok */ } }); } catch { /* ok */ }
+      t = setTimeout(toCard, 3_100);
+    };
+    const onRelease = () => {
+      if (!titleHoldRef.current) return;
+      glitchRecord("title-release", "");
+      postEvent("title-release");
+      releaseFromHoldRef.current = true;
+      setTitleHold(false);
+    };
+    window.addEventListener("installation-operator-title-hold", onHold);
+    window.addEventListener("installation-operator-title-release", onRelease);
+    return () => {
+      if (t) clearTimeout(t);
+      window.removeEventListener("installation-operator-title-hold", onHold);
+      window.removeEventListener("installation-operator-title-release", onRelease);
+    };
+  }, [programs, stopJourney]);
 
   // Publish the built program structure (labels + ordered journey ids)
   // for the phone remote's grouped browser, and handle per-journey jumps.
@@ -1202,14 +1258,27 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // program "presenting…" card is retired (its stage renders at
       // opacity 0 and exists purely as choreography timing).
       const expMs = !(needsGesture && started) ? EXPERIENCE_INTRO_MS : 0;
-      // the statement card's clock (its particle piano times its GPU-free
-      // hold around the pre-start below — statement-piano-plan.ts)
-      setCardT0(expMs > 0 ? performance.now() : null);
-      setIntroStage(
-        needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
-      );
-      (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel =
-        `Title card — ${program?.presenting ?? "Resonance"}`;
+      // released from a phone hold: the card is ALREADY up — keep its clock
+      // and stage; only the hand-off below runs (from now)
+      const releasing = !titleHold && releaseFromHoldRef.current;
+      releaseFromHoldRef.current = false;
+      if (!releasing) {
+        // the statement card's clock (its particle piano times its GPU-free
+        // hold around the pre-start below — statement-piano-plan.ts)
+        setCardT0(expMs > 0 ? performance.now() : null);
+        setIntroStage(
+          needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
+        );
+      }
+      (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel = titleHold
+        ? "Title card — HOLDING (press Start)"
+        : `Title card — ${program?.presenting ?? "Resonance"}`;
+      if (titleHold && expMs > 0) {
+        // HOLD: no countdown, no pre-start. Next/skip also starts the set.
+        const skipToStart = () => window.dispatchEvent(new Event("installation-operator-title-release"));
+        window.addEventListener("installation-operator-skip", skipToStart);
+        return () => window.removeEventListener("installation-operator-skip", skipToStart);
+      }
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
@@ -1259,7 +1328,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // Statement holds EXPERIENCE_INTRO_MS; journey 0 pre-starts
       // behind it, the journey title mounts after a short black hold,
       // then the normal title choreography plays out.
-      const preStartDelay = isGesture ? 0 : Math.max(0, expMs - 4_500);
+      // (released from a hold: the card fades now and the pre-start follows
+      // the normal text-out lead, so the spin-up still lands on black)
+      const preStartDelay = isGesture ? 0 : releasing ? TEXT_OUT_BEFORE_PRESTART_MS : Math.max(0, expMs - 4_500);
       const mountDelay = isGesture ? 2000 : preStartDelay + TITLE_AFTER_PRESTART_MS;
       const fadeOutDelay = isGesture ? 10_000 : mountDelay + 8_000;
       const phaseChangeDelay = isGesture ? 11_800 : mountDelay + 9_800;
@@ -2181,7 +2252,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence, fontsReady, playOnce, needsGesture, started]);
+  }, [phase, sequence, fontsReady, playOnce, needsGesture, started, titleHold]);
 
   // Operator status panel — toggled with ⌘⇧S. Captured here so the
   // panel can show the live phase + journey name without needing to
@@ -2215,7 +2286,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         style={{
           position: "absolute",
           inset: 0,
-          opacity: phase.kind === "credits" ? 0 : 1,
+          opacity: phase.kind === "credits" || holdFading ? 0 : 1,
           transition: "opacity 3000ms ease-out",
         }}
       >
@@ -2261,6 +2332,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           presenting={program?.presenting}
           description={program?.description}
           cardT0={cardT0}
+          hold={titleHold}
         />
       )}
       {phase.kind === "statement" && (

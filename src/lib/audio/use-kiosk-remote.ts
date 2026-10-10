@@ -63,6 +63,14 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     window.dispatchEvent(new CustomEvent("installation-operator-set", { detail: 1 }));
   } else if (cmd === "set-prev" && context === "loop") {
     window.dispatchEvent(new CustomEvent("installation-operator-set", { detail: -1 }));
+  } else if (cmd === "title-hold") {
+    // Karel 2026-10-10: "go to the title screen with piano and resonance hanging
+    // out … introduce it and leave it up until i formally start" — the loop
+    // fades out and HOLDS the statement card until "title-release"
+    if (context === "loop") window.dispatchEvent(new Event("installation-operator-title-hold"));
+    else window.location.href = "/room/installation?loop=1&titlehold=1";
+  } else if (cmd === "title-release" && context === "loop") {
+    window.dispatchEvent(new Event("installation-operator-title-release"));
   } else if (cmd === "break" && context === "loop") {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {

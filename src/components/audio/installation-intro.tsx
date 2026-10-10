@@ -47,9 +47,11 @@ interface Props {
   description?: string;
   /** performance.now() when this set's statement card began (kiosk path) — the particle piano's clock */
   cardT0?: number | null;
+  /** phone "title-hold": the card (and its piano) stays up until released */
+  hold?: boolean;
 }
 
-export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description, cardT0 = null }: Props) {
+export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description, cardT0 = null, hold = false }: Props) {
   // bg-black: opaque during cycle + fading-cycle, fades out during
   // journey + fading-journey on the SAME 3.8s clock as the journey
   // title's inner fade-in. This keeps the visualizer hidden until the
@@ -107,7 +109,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
           the text, mounted for the card's whole life — it stops itself before
           journey 0 pre-starts and fades with the text (statement-piano.tsx) */}
       {cardT0 !== null && (expMounted || stage === "journey") && (
-        <StatementPiano key={cardT0} cardT0={cardT0} stage={stage} revealed={revealed} onReveal={() => setRevealed(true)} />
+        <StatementPiano key={cardT0} cardT0={cardT0} stage={stage} revealed={revealed} onReveal={() => setRevealed(true)} hold={hold} />
       )}
 
       {expMounted && (

@@ -20,7 +20,12 @@ import { acquireSharedParticleEngine, setStatementHold, particlesDisabledReason 
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_ENABLED, particlesForcedThisSession } from "@/lib/journeys/particle-lead";
 import { loadStatementPiano, cachedSamples, budgetFor } from "./particle-lead-layer";
-import { REVEAL_AT_MS, LATEST_REVEAL_MS, FORM_LEAD_MS, READY_POLL_MS, HOLD_MAX_MS, PIANO_OPACITY, cardLayer, textOnlySchedule } from "@/lib/particles/statement-piano-plan";
+import { REVEAL_AT_MS, LATEST_REVEAL_MS, FORM_LEAD_MS, READY_POLL_MS, HOLD_MAX_MS, PIANO_OPACITY, TEXT_FADE_MS, cardLayer, textOnlySchedule } from "@/lib/particles/statement-piano-plan";
+import type { PianoCard } from "@/lib/particles/statement-piano-card";
+
+/** a held card's engine hold: long but FINITE (setTimeout clamps anything over
+ *  2^31-1 ms to ~1 ms — an "infinite" hold would expire at once) */
+const TITLE_HOLD_MAX_MS = 24 * 3600 * 1000;
 import { createPianoCard } from "@/lib/particles/statement-piano-card";
 
 const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
@@ -28,8 +33,14 @@ const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 // start decoding as soon as this module loads (the loop page) — long before any card
 if (typeof window !== "undefined") void loadStatementPiano();
 
-export function StatementPiano({ cardT0, stage, revealed, onReveal }: { cardT0: number; stage: string; revealed: boolean; onReveal: () => void }) {
+export function StatementPiano({ cardT0, stage, revealed, onReveal, hold = false }: { cardT0: number; stage: string; revealed: boolean; onReveal: () => void; hold?: boolean }) {
   const hostRef = useRef<HTMLDivElement | null>(null);
+  // phone "title-hold" (Karel 2026-10-10): the piano stays formed and burning
+  // until released — no release step, no hold expiry; on release it fades
+  // WITH the text, then hands the engine back (below)
+  const holdRef = useRef(hold);
+  holdRef.current = hold;
+  const cardRef = useRef<PianoCard<HTMLCanvasElement> | null>(null);
   const revealRef = useRef(onReveal);
   revealRef.current = onReveal;
   useEffect(() => {
@@ -62,7 +73,8 @@ export function StatementPiano({ cardT0, stage, revealed, onReveal }: { cardT0: 
       reveal,
       record: glitchRecord,
     });
-    setStatementHold(true, HOLD_MAX_MS - at(), () => card.release("hold expired"));
+    cardRef.current = card;
+    setStatementHold(true, holdRef.current ? TITLE_HOLD_MAX_MS : HOLD_MAX_MS - at(), () => card.release("hold expired"));
     const timers: ReturnType<typeof setTimeout>[] = [];
     let cancelled = false;
     // AT LOAD TOO: the boot card waits for the session's program warm-up
@@ -75,7 +87,10 @@ export function StatementPiano({ cardT0, stage, revealed, onReveal }: { cardT0: 
       const sched = ready ? card.schedule(at()) : textOnlySchedule(at());
       if (!ready) glitchRecord("piano-skip", img ? "programs warming" : "no image");
       else if (at() > 1000) glitchRecord("piano", `ready @${Math.round(at())}ms (boot warm-up)`);
-      for (const ev of sched) timers.push(setTimeout(() => card.run(ev.step, img), Math.max(0, ev.at - at())));
+      for (const ev of sched) {
+        // held: the scheduled release is skipped (re-checked when it would fire)
+        timers.push(setTimeout(() => { if (ev.step === "release" && holdRef.current) return; card.run(ev.step, img); }, Math.max(0, ev.at - at())));
+      }
     };
     void loadStatementPiano().then(schedule);
     return () => {
@@ -87,6 +102,20 @@ export function StatementPiano({ cardT0, stage, revealed, onReveal }: { cardT0: 
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- one card, one clock
   }, []);
+  // released from a hold: the card's layer fades with the text (stage →
+  // fading-cycle, TEXT_FADE_MS); THEN the piano hands the engine back — well
+  // before the loop's pre-start (TEXT_OUT_BEFORE_PRESTART_MS after release)
+  const wasHeld = useRef(hold);
+  useEffect(() => {
+    if (hold) { wasHeld.current = true; return; }
+    if (!wasHeld.current) return;
+    wasHeld.current = false;
+    const card = cardRef.current;
+    if (!card || card.released) return;
+    setStatementHold(true, TEXT_FADE_MS + 1500, () => card.release("hold expired"));
+    const id = setTimeout(() => card.release("title-release"), TEXT_FADE_MS);
+    return () => clearTimeout(id);
+  }, [hold]);
   // ONE layer with the logo + text: same opacity target, same curve, same frame
   const layer = cardLayer(stage, revealed);
   return (

@@ -30,8 +30,23 @@ const intro = readFileSync("src/components/audio/installation-intro.tsx", "utf8"
 describe("statement card — the loop's choreography", () => {
   it("card length and pre-start (= when the music starts) are unchanged", () => {
     expect(CARD_MS).toBe(EXPERIENCE_INTRO_MS);
-    expect(loop).toMatch(/preStartDelay = isGesture \? 0 : Math\.max\(0, expMs - 4_500\)/);
+    expect(loop).toMatch(/preStartDelay = isGesture \? 0 : releasing \? TEXT_OUT_BEFORE_PRESTART_MS : Math\.max\(0, expMs - 4_500\)/);
     expect(PRESTART_MS).toBe(EXPERIENCE_INTRO_MS - 4_500);
+  });
+
+  it("phone title-hold: the held card schedules no hand-off, and a release lands on black", () => {
+    // held: the intro returns before any timer (no pre-start, no music)
+    expect(loop).toMatch(/if \(titleHold && expMs > 0\) \{[\s\S]{0,400}?return \(\) =>/);
+    // released: the piano hands back (after the text fade) BEFORE the pre-start
+    expect(TEXT_FADE_MS).toBeLessThan(TEXT_OUT_BEFORE_PRESTART_MS);
+    const piano = readFileSync("src/components/audio/statement-piano.tsx", "utf8");
+    // the held engine hold is long but finite (setTimeout clamps > 2^31-1 ms to ~1 ms)
+    const m = /TITLE_HOLD_MAX_MS = ([\d* ]+);/.exec(piano);
+    expect(m).not.toBeNull();
+    const ms = Function(`return ${m![1]}`)() as number;
+    expect(ms).toBeGreaterThan(3600_000);
+    expect(ms).toBeLessThan(2 ** 31 - 1);
+    expect(piano).toMatch(/ev\.step === "release" && holdRef\.current/);
   });
   it("the text fade-out ends 0.3 s before the pre-start; the title mounts after the spin-up", () => {
     expect(loop).toMatch(/setIntroStage\("fading-cycle"\), Math\.max\(0, preStartDelay - TEXT_OUT_BEFORE_PRESTART_MS\)\)/);

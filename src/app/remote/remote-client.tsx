@@ -163,6 +163,26 @@ export function RemoteClient() {
             </Button>
           </>
         )}
+        {inLoop && (
+          // Karel 2026-10-10: put the title card (piano + "Resonance") up and
+          // HOLD it for the introduction; Start begins Rise Above from it
+          (status?.journey ?? "").includes("HOLDING") ? (
+            <Button variant="glass" className={`${btn} col-span-2 bg-white/[0.14]`} onClick={() => void send("title-release")}>
+              ▶ Start Rise Above
+            </Button>
+          ) : (
+            <Button
+              variant="glass"
+              className={`${btn} col-span-2`}
+              onClick={() => {
+                // confirmed — a pocket tap would stop the show
+                if (window.confirm("Fade out and hold the title card until you press Start?")) void send("title-hold");
+              }}
+            >
+              Title card — hold
+            </Button>
+          )
+        )}
         <Button
           variant="glass"
           className={`${btn} col-span-2`}
