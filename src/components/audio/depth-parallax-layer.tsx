@@ -280,6 +280,41 @@ function DepthParallaxLayerInner({
     });
     ro.observe(canvas);
 
+    // WARM-UP at mount (2026-10-10 soak + film: the first real frame spent
+    // 57–74 ms inside render() — the drawing buffer's first full-size
+    // allocation, plus the GPU pipeline's first draw). Pay both now,
+    // at page load behind black, with 1×1 black textures: the first visible
+    // still then draws at normal cost. Black under the screen blend = invisible.
+    {
+      // sized for the journey that will draw first: the active one, else
+      // Snowflake (the loop always opens on it) — measured on the kiosk, the
+      // 57 ms was `canvas.width = …` itself (a synchronous drawing-buffer
+      // realloc) when the first frame's size differed from the mount size
+      const j0 = useAudioStore.getState().activeJourney ?? { id: "first-snow", name: "Snowflake" };
+      const dpr0 = Math.min(devicePixelRatio || 1, imageryDprCeil(sizeRef.current.w, sizeRef.current.h, j0));
+      const w0 = Math.max(1, Math.round(sizeRef.current.w * dpr0));
+      const h0 = Math.max(1, Math.round(sizeRef.current.h * dpr0));
+      if (canvas.width !== w0 || canvas.height !== h0) { canvas.width = w0; canvas.height = h0; }
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      const dummy = gl.createTexture();
+      if (dummy) {
+        gl.bindTexture(gl.TEXTURE_2D, dummy);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        for (let i = 0; i < 4; i++) { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, dummy); }
+        gl.uniform1i(u.imgA, 0); gl.uniform1i(u.depA, 1); gl.uniform1i(u.imgB, 2); gl.uniform1i(u.depB, 3);
+        gl.uniform1f(u.mix, 0); gl.uniform2f(u.cam, 0, 0);
+        gl.uniform2f(u.scaleA, 1, 1); gl.uniform2f(u.offA, 0, 0); gl.uniform2f(u.scaleB, 1, 1); gl.uniform2f(u.offB, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.deleteTexture(dummy);
+      }
+    }
+
     let slotA: Slot | null = null;
     let slotB: Slot | null = null;
     let pendingStill: Slot | null = null;
