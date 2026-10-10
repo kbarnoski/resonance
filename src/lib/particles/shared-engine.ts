@@ -69,6 +69,7 @@ export function onParticlesDisabled(cb: () => void): () => void {
 // overlay and fades over 1.5 s while the engine keeps running; the next
 // journey's acquire cancels the fade and takes the canvas back.
 let releaseTimer: ReturnType<typeof setTimeout> | null = null;
+let releaseSeq = 0;
 export function releaseSharedParticleEngineWithFade(): void {
   const sh = shared;
   if (!sh || typeof document === "undefined") return;
@@ -79,7 +80,10 @@ export function releaseSharedParticleEngineWithFade(): void {
   if (!visible) { sh.engine.stop(); sh.canvas.style.visibility = "hidden"; sh.canvas.remove(); return; }
   Object.assign(sh.canvas.style, { position: "fixed", inset: "0", zIndex: "3", transition: "opacity 1.5s linear" } as Partial<CSSStyleDeclaration>);
   document.body.appendChild(sh.canvas);
-  requestAnimationFrame(() => { sh.canvas.style.opacity = "0"; });
+  // (a re-acquire in the same frame — the phone title-hold tears the journey
+  // down as the card's piano takes the canvas — cancels this fade)
+  const seq = ++releaseSeq;
+  requestAnimationFrame(() => { if (seq === releaseSeq) sh.canvas.style.opacity = "0"; });
   if (releaseTimer) clearTimeout(releaseTimer);
   releaseTimer = setTimeout(() => {
     releaseTimer = null;
@@ -92,8 +96,10 @@ export function releaseSharedParticleEngineWithFade(): void {
 export function acquireSharedParticleEngine(budget: { count: number; dpr: number; trailScale: number }): SharedParticleEngine | null {
   if (disabledWhy) return null;
   if (releaseTimer) { clearTimeout(releaseTimer); releaseTimer = null; }
+  ++releaseSeq; // a release's pending fade-to-0 must not land on the new owner
   if (shared) {
-    Object.assign(shared.canvas.style, { position: "absolute", inset: "0", zIndex: "", transition: "opacity 0.6s linear" } as Partial<CSSStyleDeclaration>);
+    // visible again: a release of an invisible field parked it hidden
+    Object.assign(shared.canvas.style, { position: "absolute", inset: "0", zIndex: "", transition: "opacity 0.6s linear", visibility: "visible" } as Partial<CSSStyleDeclaration>);
     return shared;
   }
   const canvas = document.createElement("canvas");
