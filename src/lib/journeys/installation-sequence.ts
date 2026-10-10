@@ -136,7 +136,6 @@ const WELCOME_HOME = [
 const EXPANSION = [
   // wave 1 — open, airy
   "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", //  1. Tranquility 8 · 3:39
-  "21448504-ec00-48c3-8b0a-c92da2cf216a", //  2. Surrounded by Light 19 · 3:19
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", //  3. Night Wind 2 · 3:29
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", //  4. Loire 2 · 1:43
   "05664df7-d355-40b7-85d2-e2badf26123a", //  5. Torraine 6 · 3:09
@@ -168,7 +167,6 @@ const EXPANSION = [
   "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 29. Tranquility 34 · 3:39
   "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 30. Chemiluminescence · 2:36
   // wave 4 — the fullest sound
-  "06b07942-bf94-4513-8e71-ef00508ced3e", // 31. Surrounded by Light 3 · 3:22
   "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 32. Nothing 30 · 3:24
   "1f83e254-a0c8-45ec-974f-8b363038a98d", // 33. Rise 1 · 2:34
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 34. Chenin 5 · 3:12
@@ -229,23 +227,24 @@ const GRATITUDE: ProgramDedication = {
  *  with Expansion grooves chosen from the analysis, one dark peak (Horses 1),
  *  landing on Night Wind 9. BORROWED, not moved: every later set keeps its
  *  pieces in entirety ("all sets after Rise Above should keep their songs"). */
+// One version of a track per set (Karel 2026-10-09: "we cant have two versions of the same track in ra"):
+// Night Wind 4 is the Night Wind; Night Wind 11 and 9 play in the Expansion.
 const RISE_ABOVE = [
   "first-snow", //  1. Snowflake
   "ghost", //  2. Ghost
-  "4d17da19-6834-4005-a944-34c27a88a320", //  3. Amboise 2
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  3. Surrounded by Light 6 — the opener after the masters (Karel 2026-10-09; replaced Amboise 2)
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  4. Bath
-  "e4658610-336d-452f-a4f8-7b652b339db6", //  5. Night Wind 11
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  6. The First (Expanded) — after NW11, not before (dark-tide would carry across the hand-off)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", //  7. Horses 1
-  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  8. Testimony 3
-  "d8705068-f8a9-4dd7-95a5-c6f1160fed22", //  9. Roll Away 8
-  "c80a89bc-2c88-4bde-bec8-4be6916acb62", // 10. Yellow Bird
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 11. Night Wind 4
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  5. The First (Expanded)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", //  6. Horses 1
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  7. Testimony 3
+  "d8705068-f8a9-4dd7-95a5-c6f1160fed22", //  8. Roll Away 8
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  9. Yellow Bird
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 10. Night Wind 4
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 11. Loire 2 — mellow, uplifting (Karel 2026-10-09); lifts Night Wind 4 into Welcome Home
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 12. Welcome Home
   "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 13. Afterglow
   "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3", // 14. Surrounded By Light (the Surrounded by Light album's)
   "87e106f9-4d74-4886-b944-fd625a827b02", // 15. First Light
-  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 16. Night Wind 9 — the finale
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
@@ -277,6 +276,13 @@ export const TRAMOKYO_SETLIST: readonly string[] = TRAMOKYO_MAIN.sets.filter((s)
 /** Rise Above — exported for its own hand-off guard. */
 export const TRAMOKYO_RISE_ABOVE: readonly string[] = RISE_ABOVE;
 
+/** The parking lot (Karel 2026-10-09): takes pulled out of the loop to revisit later. Not in the
+ *  main loop; playable from the remote's Parking Lot program. */
+export const PARKING_LOT: readonly string[] = [
+  "06b07942-bf94-4513-8e71-ef00508ced3e", // Surrounded by Light 3 — from the Expansion (2026-10-09)
+  "21448504-ec00-48c3-8b0a-c92da2cf216a", // Surrounded by Light 19 — from the Expansion (2026-10-09)
+];
+
 /**
  * Journeys explicitly EXCLUDED from the Tramokyo show (Karel
  * 2026-09-18). The setlist builder appends any built-but-unlisted
@@ -285,6 +291,7 @@ export const TRAMOKYO_RISE_ABOVE: readonly string[] = RISE_ABOVE;
  * They remain playable via their album programs / the phone remote.
  */
 export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
+  ...PARKING_LOT, // parked takes leave the loop (remote: Parking Lot program)
   "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // COSMIC HOMECOMING — cut from the mix (still closes the Welcome Home album program)
   "the-tempest", // PULLED 2026-09-19 (Karel) — its paired take (17th St 63 spectre) is truncated in storage to 1:12; out of the show until re-uploaded/re-paired
   "neural-link", // PULLED 2026-09-19 (Karel) — out of the show for now
@@ -329,10 +336,19 @@ export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
     id: "expansion",
     presenting: "the Expansion set",
     description:
-      "Forty-nine new pieces, each its own world, where the light listens — " +
+      "Forty-seven new pieces, each its own world, where the light listens — " +
       "bass, mids and highs each move a layer while the imagery travels. " +
       "Recline.",
+    // The Expansion DB path, picked + ordered by the loop's own list (the path still holds parked takes).
     pathShareToken: "3422c91db7ee4769",
+    journeyIds: [...EXPANSION],
+  },
+  {
+    id: "parking-lot",
+    presenting: "the Parking Lot",
+    description: "Takes pulled out of the loop, kept to revisit. Recline.",
+    pathShareToken: "3422c91db7ee4769", // parked takes are Expansion journeys
+    journeyIds: [...PARKING_LOT],
   },
   {
     id: "march-light",

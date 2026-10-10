@@ -1617,6 +1617,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       ghost: 2000,
     };
     let advanceTimer: ReturnType<typeof setTimeout> | null = null;
+    // A journey advances ONCE. The 'ended' DOM event and the tick's audioEnded both call advance(); the
+    // second call used to start a second breath timer, overwriting advanceTimer — the cleanup then
+    // cleared only one, and the orphan fired after a remote jump during the breath, yanking the kiosk
+    // to the old next journey 3 s later (Karel 2026-10-09: "you started skipping around").
+    let advanced = false;
     const advance = () => {
       // Mastering hold: replay the same journey instead of advancing.
       const masterId = masteringJourneyRef.current;
@@ -1624,6 +1629,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: masterId }));
         return;
       }
+      if (advanced) return;
+      advanced = true;
       if (phase.index + 1 < sequence.length) {
         // Every Nth journey, pause the flow for the artist-statement
         // interstitial so a short visit still meets the statement

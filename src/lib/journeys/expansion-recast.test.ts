@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { EXPANSION_KINETIC_NAMES, expansionLayerGain } from "./kinetic";
-import { TRAMOKYO_SETLIST } from "./installation-sequence";
+import { TRAMOKYO_SETLIST, TRAMOKYO_MAIN, PARKING_LOT } from "./installation-sequence";
 import { SHADER_SUPPORT_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
 
 // Karel 2026-10-04: "your responsive shaders need to have variety ...
@@ -13,13 +13,18 @@ import { SHADER_SUPPORT_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.
 // vetting pool (scripts/vet-shaders.mjs, brightness-normalized).
 const read = (p: string) => JSON.parse(readFileSync(join(process.cwd(), p), "utf8"));
 type J = { id: string; title: string; lead: string; cast: Record<string, (string | null)[]>; intensity: number[]; mvStandard?: string };
-const recast = read("scripts/expansion-recast.json") as { journeys: J[] };
+const recast = read("scripts/expansion-recast.json") as { journeys: J[]; parked?: { id: string; title: string }[] };
 const vet = read("scripts/shader-vetting.json") as { pool: string[]; verdicts: Record<string, { gain: number; leadGain: number }> };
 const POOL = new Set(vet.pool);
 const MASTERED_LEADS = new Set(["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"]);
 const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"];
 
-const CAP = 5;
+// Raised 5 -> 8 for the Journey Archetype rollout (Karel 2026-10-09 approved
+// raising the per-shader cap so every Expansion journey can carry 11-13
+// phase-owned shaders; scripts/mv-rollout/cast-shaders.mjs also holds every
+// shader to <= 13 journeys across the whole kiosk loop).
+const CAP = 8;
+const EXPANSION_SET = TRAMOKYO_MAIN.sets.find((s) => s.presenting === "Expansion")!.journeyIds;
 
 // The Expansion in kiosk setlist order.
 const ids = new Set(recast.journeys.map((j) => j.id));
@@ -28,15 +33,20 @@ const N = ordered.length;
 const supportsOf = (j: J) => [...new Set(Object.values(j.cast).flat().filter((m): m is string => !!m && m !== j.lead))];
 
 describe("Expansion recast", () => {
-  it("covers all 49 Expansion journeys, all in the kiosk setlist", () => {
-    expect(recast.journeys).toHaveLength(49);
-    expect(new Set(recast.journeys.map((j) => j.title.toLowerCase()))).toEqual(EXPANSION_KINETIC_NAMES);
-    expect(N).toBe(49);
+  // Karel 2026-10-09: Surrounded by Light 3 moved to the Parking Lot (out of
+  // the loop, still a kinetic Expansion take on the remote) — 48 in the set.
+  // Count derives from the setlist: Karel parks takes during review.
+  it("covers every Expansion journey (all in the kiosk setlist); parked takes stay kinetic but leave the loop", () => {
+    expect(recast.journeys).toHaveLength(EXPANSION_SET.length);
+    const parked = recast.parked ?? [];
+    for (const p of parked) { expect(PARKING_LOT.includes(p.id), p.title).toBe(true); expect(TRAMOKYO_SETLIST.includes(p.id), p.title).toBe(false); }
+    expect(new Set([...recast.journeys, ...parked].map((j) => j.title.toLowerCase()))).toEqual(EXPANSION_KINETIC_NAMES);
+    expect(N).toBe(EXPANSION_SET.length);
   });
 
   it("gives every journey its own lead: distinct as lead, in the pool, not a mastered journey's lead", () => {
     const leads = ordered.map((j) => j.lead);
-    expect(new Set(leads).size).toBe(49);
+    expect(new Set(leads).size).toBe(N);
     for (const l of leads) {
       expect(MASTERED_LEADS.has(l), l).toBe(false);
       expect(POOL.has(l), l).toBe(true);
@@ -62,7 +72,7 @@ describe("Expansion recast", () => {
     }
   });
 
-  it("caps every support at 5 uses across the Expansion", () => {
+  it(`caps every support at ${CAP} uses across the Expansion`, () => {
     const uses = new Map<string, number>();
     for (const j of ordered) for (const m of supportsOf(j)) uses.set(m, (uses.get(m) ?? 0) + 1);
     for (const [m, u] of uses) expect(u, m).toBeLessThanOrEqual(CAP);

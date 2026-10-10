@@ -6,7 +6,7 @@ import {
   JOURNEYS, getJourney, castJourneyShaders, getJourneyCast, regenerateJourneyShaders,
   GLOBAL_SHADER_BLOCKLIST, PICKTIME_SHADER_BLOCKLIST, REALM_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST,
 } from "./journeys";
-import { TRAMOKYO_SETLIST, TRAMOKYO_MAIN, TRAMOKYO_RISE_ABOVE } from "./installation-sequence";
+import { TRAMOKYO_SETLIST, TRAMOKYO_MAIN, TRAMOKYO_RISE_ABOVE, PARKING_LOT } from "./installation-sequence";
 import { SCRIPTED_TAKES } from "./pinned-takes";
 import { MASTERED_JOURNEYS } from "./mastered";
 import { journeyLayerGain, expansionLayerGain, isKineticJourneyName, isWhisperImageryName } from "./kinetic";
@@ -69,7 +69,9 @@ describe("featured + album recast: coverage", () => {
     expect(uses.filter((u) => u.kind === "recast")).toHaveLength(47);
     // The Kinetic Lab left the loop (Karel 2026-10-09: "i dont want a kinetic loop anymore").
     expect(uses.filter((u) => u.kind === "kinetic-lab")).toHaveLength(0);
-    expect(uses.filter((u) => u.kind === "expansion")).toHaveLength(49);
+    // Parked takes (PARKING_LOT, Karel 2026-10-09) leave the loop; count derives from the Expansion set.
+    expect(uses.filter((u) => u.kind === "expansion")).toHaveLength(TRAMOKYO_MAIN.sets.find((s) => s.presenting === "Expansion")!.journeyIds.length);
+    for (const id of PARKING_LOT) expect(TRAMOKYO_SETLIST.includes(id), id).toBe(false);
   });
 
   it("casts every non-mastered built-in, and never a mastered, Kinetic Lab or Expansion journey", () => {

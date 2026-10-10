@@ -374,10 +374,16 @@ export default async function InstallationPage({ searchParams }: Props) {
     const programs: InstallationProgram[] = [];
     for (const def of INSTALLATION_PROGRAMS) {
       let seq: SequenceEntry[] = [];
-      if (def.journeyIds) {
-        seq = buildBuiltinSequence(def.journeyIds);
-      } else if (def.pathShareToken) {
+      if (def.pathShareToken) {
         seq = await buildPathSequence(def.pathShareToken);
+        // A path row + an id list: the list picks and orders the path's journeys (the Expansion and the
+        // Parking Lot share the Expansion path; 2026-10-09).
+        if (def.journeyIds) {
+          const byId = new Map(seq.map((e) => [e.journey.id, e]));
+          seq = def.journeyIds.map((id) => byId.get(id)).filter((e): e is SequenceEntry => !!e);
+        }
+      } else if (def.journeyIds) {
+        seq = buildBuiltinSequence(def.journeyIds);
       }
       // Programs that resolve empty (path missing, RLS-blocked) are
       // dropped rather than rendered as an intro-to-credits flash.
