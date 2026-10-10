@@ -180,6 +180,7 @@ export function PostProcessingLayer({
       }
 
       // --- Vignette ---
+      // (the vignette's own cut-off was at 0.55 % alpha — invisible either way)
       if (pp.vignette > 0.01 && vigGradient) {
         ctx.globalAlpha = pp.vignette * 0.55;
         ctx.fillStyle = vigGradient;
@@ -188,10 +189,19 @@ export function PostProcessingLayer({
       }
 
       // --- Color-temperature grade (signed; 0 neutral) ---
+      // THE "BLACK-LEVEL STEP" (catalogue tour 2026-10-10, 15 cases): the
+      // tint was drawn only when |ct| > 0.04 — and switched on at 1.8 % alpha,
+      // so a temperature gliding through 0.04 lifted/dropped every dark pixel
+      // ~3 levels in ONE frame (highlights barely moved). The cut-off is now a
+      // short ramp across it (0.03→0.05): every resting look is unchanged
+      // (no tint below 0.03, the full grade above 0.05 — Snowflake/Ghost
+      // included), and a glide through it fades instead of popping.
       const ct = pp.colorTemperature ?? 0;
-      if (Math.abs(ct) > 0.04) {
+      const ctAbs = Math.abs(ct);
+      const ctOn = ctAbs <= 0.03 ? 0 : ctAbs >= 0.05 ? 1 : ((u) => u * u * (3 - 2 * u))((ctAbs - 0.03) / 0.02);
+      if (ctOn > 0) {
         ctx.globalCompositeOperation = "overlay";
-        ctx.globalAlpha = Math.min(0.22, Math.abs(ct) * 0.45);
+        ctx.globalAlpha = Math.min(0.22, ctAbs * 0.45) * ctOn;
         ctx.fillStyle = ct > 0 ? "rgb(255, 168, 92)" : "rgb(96, 150, 255)";
         ctx.fillRect(0, 0, w, h);
         ctx.globalAlpha = 1;
