@@ -236,15 +236,15 @@ const RISE_ABOVE = [
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", //  4. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  5. Bath
   "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  6. The First (Expanded)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", //  7. Horses 1
-  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  8. Testimony 3
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  7. Testimony 3
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  8. Grasshopper — after Testimony 3 (Karel 2026-10-09)
   "d8705068-f8a9-4dd7-95a5-c6f1160fed22", //  9. Roll Away 8
   "c80a89bc-2c88-4bde-bec8-4be6916acb62", // 10. Yellow Bird
   "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 11. Night Wind 4
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 12. Loire 2 — mellow, uplifting (Karel 2026-10-09); lifts Night Wind 4 into Welcome Home
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 13. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 14. Afterglow
-  "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3", // 15. Surrounded By Light (the Surrounded by Light album's)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 14. Horses 1 — later in the set (Karel 2026-10-09)
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 15. Afterglow
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
