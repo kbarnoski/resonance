@@ -152,9 +152,12 @@ export function __resetSharedParticleEngineForTest(): void {
 // timeout releases it regardless.
 let holdTimer: ReturnType<typeof setTimeout> | null = null;
 const holdListeners = new Set<() => void>();
-export function setStatementHold(on: boolean, maxMs = 15_000): void {
+export function setStatementHold(on: boolean, maxMs = 15_000, onExpire?: () => void): void {
   if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-  if (on) holdTimer = setTimeout(() => setStatementHold(false), maxMs);
+  // a hold that outlives its card hands back PROPERLY (the owner clears what it
+  // showed first) — 2026-10-09: a 15 s expiry fired inside the 15 s card and the
+  // journey took the canvas with the piano still worn on it
+  if (on) holdTimer = setTimeout(() => { holdTimer = null; try { onExpire?.(); } finally { setStatementHold(false); } }, maxMs);
   if (statementHold === on) return;
   statementHold = on;
   for (const l of [...holdListeners]) l();

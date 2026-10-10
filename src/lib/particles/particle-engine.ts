@@ -175,10 +175,14 @@ export interface ParticleEngine {
   imageLevel(): number;
   /** Image presence follower (1 = the field fully wears the image). */
   imageShown(): number;
+  /** Living fire on the worn image (draw-only motion above `line`, image uv.y); 0 = off. Eases ~1 s. */
+  setFire(k: number, line?: number): void;
   /** INVISIBLE FIELD ONLY (statement card): land placement, plane scale,
    *  mirror and tilt on their targets now; `clear` also drops any worn image
    *  at once (so a journey taking the engine back never sees it fade). */
-  snapImage(clear?: boolean): void;
+  snapImage(clear?: boolean, placement?: boolean): void;
+  /** The image-form state (CPU): followers, targets, fire — the hand-back test reads it. */
+  imageState(): { form: number; show: number; formTarget: number; showTarget: number; fire: number };
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
@@ -697,6 +701,9 @@ export function createParticleEngine(
   let unfoldOn = false, unfoldT = 0, unfoldS = 0;
   let imgMirror = 1, imgMirrorT = 1, imgTiltS = 0, imgTiltT = 0;
   let imgTintS = 0, imgTintT = 0;
+  // living fire on a worn photograph (statement piano only; 0 everywhere else)
+  let fireS = 0, fireT = 0, fireLine = 0.6;
+  const fireR = new Float32Array(3), fireU = new Float32Array(3);
   const speedCap = opts.maxSpeed ?? 3.5;
   let entryT = 1e9;
   let disperseNext = false;
@@ -1063,6 +1070,7 @@ export function createParticleEngine(
       const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
       g.uniform3f(sim.u.uPlaneR, R[0], R[1], R[2]);
       g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
+      for (let i = 0; i < 3; i++) { fireR[i] = R[i]; fireU[i] = U[i]; }
     }
     if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
     unfoldT += dt;
@@ -1165,6 +1173,13 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uImgGain, 0.5 * (409_600 / count) * fadeIn * (W * H) / (2880 * 1800));
     imgTintS += (imgTintT - imgTintS) * (1 - Math.exp(-dt / 0.8));
     if (draw.u.uImgTint) g.uniform1f(draw.u.uImgTint, imgTintS);
+    fireS += (fireT - fireS) * (1 - Math.exp(-dt / 1.2)); // the fire wakes / settles over ~1 s
+    if (draw.u.uFire) {
+      g.uniform1f(draw.u.uFire, fireS);
+      g.uniform1f(draw.u.uFireLine, fireLine);
+      g.uniform3f(draw.u.uFireR, fireR[0], fireR[1], fireR[2]);
+      g.uniform3f(draw.u.uFireU, fireU[0], fireU[1], fireU[2]);
+    }
     g.uniform1f(draw.u.uImgAspect, imgAspect[1]);
     g.uniform1f(draw.u.uScrAspect, W / H);
     g.drawArrays(g.POINTS, 0, count);
@@ -1494,11 +1509,15 @@ export function createParticleEngine(
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
     setVariant(v, now = false) { varStaged = v; if (now) applyVariant(); },
     imageShown() { return imgS.x; },
-    snapImage(clear = false) {
-      offX = offTX; offY = offTY; imgScaleS = imgScaleT; imgMirror = imgMirrorT; imgTiltS = imgTiltT;
-      for (const i of [10, 11, 12, 14, 16]) sv[i] = 0;
-      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; }
+    setFire(k, line) { fireT = Math.max(0, Math.min(1.5, k)); if (line !== undefined) fireLine = line; },
+    snapImage(clear = false, placement = true) {
+      if (placement) {
+        offX = offTX; offY = offTY; imgScaleS = imgScaleT; imgMirror = imgMirrorT; imgTiltS = imgTiltT;
+        for (const i of [10, 11, 12, 14, 16]) sv[i] = 0;
+      }
+      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; }
     },
+    imageState() { return { form: imgF.x, show: imgS.x, formTarget: imgFormTgt, showTarget: imgShowTgt, fire: Math.max(fireS, fireT) }; },
     imageLevel() { return Math.max(imgF.x, imgS.x, Math.abs(imgF.v) * 0.2, Math.abs(imgS.v) * 0.2); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)

@@ -1200,6 +1200,12 @@ uniform float uImgGain;
 uniform float uImgTint;   // 1 = an image form takes the journey palette (keeps the image's luminance)
 uniform float uImgAspect;
 uniform float uScrAspect;
+// LIVING FIRE (statement piano): 0 = off (every journey); the image line (uv.y)
+// above which the worn photograph burns; the image plane's right / up vectors
+uniform float uFire;
+uniform float uFireLine;
+uniform vec3 uFireR;
+uniform vec3 uFireU;
 out vec3 vCol;
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 ${IMG_UV}
@@ -1220,6 +1226,34 @@ void main(){
   vec4 p = texelFetch(uPos, c, 0);
   vec4 v = texelFetch(uVel, c, 0);
   vec4 s = texelFetch(uSeed, c, 0);
+  // LIVING FIRE (Karel 2026-10-09: "the title particle system needs to animate
+  // that fire"): DRAW-ONLY motion for the motes wearing the photograph's flames
+  // (saturated light above the cabinet line) — a tremble, licks that rise faster
+  // toward the tips, and ~7 % breaking away as embers that rise, sway and fade.
+  // The simulation keeps every mote on its pixel, so the piano body and the
+  // candles' wax stay crisp; with uFire = 0 nothing here runs.
+  float emberA = 1.0;
+  if (uFire > 0.001 && uImgShow > 0.001) {
+    vec2 fuv = imgUv(c, s, uTexW);
+    vec3 fc = texture(uImgB, fuv).rgb;
+    float fl = dot(fc, vec3(0.2126, 0.7152, 0.0722));
+    float fmx = max(fc.r, max(fc.g, fc.b));
+    float fsat = (fmx - min(fc.r, min(fc.g, fc.b))) / max(fmx, 1e-3);
+    float heat = smoothstep(uFireLine, uFireLine + 0.03, fuv.y) * smoothstep(0.25, 0.55, fl) * smoothstep(0.22, 0.45, fsat) * uFire * uImgShow;
+    if (heat > 0.001) {
+      float up = max(0.0, fuv.y - uFireLine);
+      float ph = s.a * 6.2831853;
+      float tt = uTimeD;
+      float dx = (0.6 * sin(tt * 7.3 + ph + fuv.y * 23.0) + 0.4 * sin(tt * 13.1 + ph * 1.7)) * 0.02 * (0.3 + 3.0 * up);
+      float dy = (0.5 + 0.5 * sin(tt * 5.2 + fuv.x * 31.0 + ph)) * 0.045 * (0.25 + 3.0 * up);
+      float isE = step(fract(sin(s.a * 331.7) * 43758.5453), 0.07);
+      float eph = fract(tt * (0.22 + 0.18 * s.g) + s.b);
+      dx += isE * sin(eph * 9.0 + ph) * 0.07 * eph;
+      dy += isE * eph * 0.65;
+      emberA = mix(1.0, smoothstep(0.0, 0.08, eph) * smoothstep(1.0, 0.5, eph), isE * step(0.001, heat));
+      p.xyz += (uFireR * dx + uFireU * dy) * heat;
+    }
+  }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
   if (clip.w <= 0.05) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   gl_Position = clip;
@@ -1287,6 +1321,7 @@ void main(){
     vec3 ib = texture(uImgB, uv).rgb;
     img = pow(mix(ia, ib, uColorMix), vec3(2.2));
     if (size <= 1.0) img *= a / max(uAlpha, 1e-6); // sub-pixel energy rule
+    img *= emberA;
   }
   if (uImgTint > 0.001) {
     float il = dot(img, vec3(0.2126, 0.7152, 0.0722));

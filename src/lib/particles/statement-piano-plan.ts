@@ -26,20 +26,37 @@ export const UPLOAD_AT_MS = 550;
 export const START_AT_MS = 700;
 /** Gathered by here (image pull follower settles in ~2 s). */
 export const FORMED_BY_MS = 3_000;
-/** Engine STOPS here — the canvas holds the formed piano as a still frame. */
+/**
+ * LIVING FIRE, NEVER STUCK (Karel 2026-10-09: "the title particle system needs
+ * to animate that fire" + "your opening piano particle system gets stuck as it
+ * goes into snowflake"). Animated fire cannot share the screen with journey 0's
+ * spin-up (Snowflake: 60–80 ms frames for ~3.2 s after the pre-start; other set
+ * starts one ~290 ms GPU stall — kiosk rig 2026-10-09): any moving thing on
+ * screen shows those as a stutter or a freeze. So the piano burns, alive, from
+ * its gathering until DISSOLVE_AT, then dissolves (the image lets go: the motes
+ * swirl up as embers while the canvas fades) and is GONE before the pre-start.
+ * The spin-up lands on the static statement text alone — a still frame.
+ */
+export const DISSOLVE_MS = 1_800;
+/** Engine stops, image cleared, engine handed back — everything invisible by now. */
 export const STOP_AT_MS = PRESTART_MS - 300;
-/** No engine work at all inside [WINDOW_START, WINDOW_END). */
+export const DISSOLVE_AT_MS = STOP_AT_MS - DISSOLVE_MS;
+/** The card itself never touches the engine inside [WINDOW_START, WINDOW_END). */
 export const WINDOW_START_MS = PRESTART_MS - 300;
 export const WINDOW_END_MS = PRESTART_MS + CYCLE_FADE_AFTER_PRESTART_MS;
-/** The piano fades out with the text (CSS opacity on the stopped canvas). */
-export const FADE_AT_MS = WINDOW_END_MS;
-/** …and only then hands the engine back to the journey (layer may start it). */
-export const RELEASE_AT_MS = FADE_AT_MS + TEXT_FADE_MS + 100;
-/** A start later than this can't gather + be seen before the stop: skip the piano this card.
+/** The hand-back: the same instant as the stop (journey 0 mounts at the pre-start, after it). */
+export const RELEASE_AT_MS = STOP_AT_MS;
+/** The engine hold's safety expiry (a forgotten hold must still hand back — after the release, never before). */
+export const HOLD_MAX_MS = RELEASE_AT_MS + 3_000;
+/** A start later than this can't gather + be seen before the dissolve: skip the piano this card.
  *  (the boot card: the session's program warm-up ends ~3.9–4.5 s in — measured) */
-export const LATEST_START_MS = STOP_AT_MS - 2_500;
+export const LATEST_START_MS = DISSOLVE_AT_MS - 2_500;
 /** How often the boot card re-checks whether the programs are warm. */
 export const READY_POLL_MS = 100;
+/** Living fire (draw-only flicker, licks and rising embers — shaders.ts uFire): its strength
+ *  and the image line above which the photograph is fire (the cabinet's top board, in uv). */
+export const FIRE_STRENGTH = 1;
+export const FIRE_LINE_V = 0.575;
 
 /** Canvas opacity while shown (behind the text: rich, never fighting the title). */
 export const PIANO_OPACITY = 0.8;
@@ -62,13 +79,13 @@ export function engineWorkAllowed(tMs: number): boolean {
   return tMs < WINDOW_START_MS || tMs >= WINDOW_END_MS;
 }
 
-export type PianoStep = "upload" | "start" | "stop" | "fade" | "release";
+export type PianoStep = "upload" | "start" | "dissolve" | "release";
 export interface PianoEvent { at: number; step: PianoStep }
 
 /**
  * The card's schedule. `ready` = the engine's programs are warm and the image
- * is decoded + sampled by `readyAt` (ms); if that is too late to gather before
- * the stop, the piano is skipped (only the fade-free release remains).
+ * is decoded + sampled by `readyAt` (ms); if that is too late to gather and be
+ * seen before the dissolve, the piano is skipped (only the release remains).
  */
 export function pianoSchedule(readyAt: number): PianoEvent[] {
   const startAt = Math.max(START_AT_MS, readyAt);
@@ -77,15 +94,14 @@ export function pianoSchedule(readyAt: number): PianoEvent[] {
   return [
     { at: uploadAt, step: "upload" },
     { at: startAt, step: "start" },
-    { at: STOP_AT_MS, step: "stop" },
-    { at: FADE_AT_MS, step: "fade" },
+    { at: DISSOLVE_AT_MS, step: "dissolve" },
     { at: RELEASE_AT_MS, step: "release" },
   ];
 }
 
 /** True when an engine call of this kind is legal at card time t (the runtime guard). */
 export function stepAllowed(step: PianoStep, tMs: number): boolean {
-  if (step === "stop") return true; // stopping only ever removes GPU work (a late timer still stops)
-  if (step === "fade") return tMs >= FADE_AT_MS; // CSS only
+  // the release only ever REMOVES work (stop + clear + hand back): a late timer still releases
+  if (step === "release") return true;
   return engineWorkAllowed(tMs);
 }

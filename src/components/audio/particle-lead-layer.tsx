@@ -601,6 +601,9 @@ export function ParticleLeadLayer({
       return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
+    // (invisible field: drop a worn image + fire at once — 2026-10-09, the set
+    // card's piano was still worn when Snowflake took the engine)
+    if (carry === 0) engine.snapImage(true, false);
     engine.setImageForm(0, 0);
     engine.setImageVariant(false, 0);
     engine.setInstances(1, 0);
