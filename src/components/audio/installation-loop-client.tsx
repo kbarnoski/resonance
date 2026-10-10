@@ -6,6 +6,7 @@ import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay, rampGainTo } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
@@ -330,6 +331,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         setPhase({ kind: "journey", index: ji });
         return;
       }
+      // No program holds this id (built-ins jump by slug, e.g. Realized =
+      // "inferno"): say so in the recorder instead of failing silently.
+      glitchRecord("jump-miss", (e as CustomEvent<string>).detail);
     };
     // Set-level transport: jump to the next/previous SET START in the
     // flattened sequence (rides the same jump-journey path).
