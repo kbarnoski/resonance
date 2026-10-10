@@ -39,7 +39,22 @@ const REROLL = arg("reroll")?.split(",").map((x) => x.split(":"));
 const N_ARG = arg("n");
 const CONCURRENCY = Number(arg("concurrency") ?? 6);
 const currentSlots = N_ARG === "current" ? JSON.parse((await import("node:fs")).readFileSync(ROOT + "public/tramokyo-pack/local-images.json", "utf8")) : null;
-const { JOURNEYS } = await import(`./shotlists/${setKey}.mjs`);
+const { JOURNEYS, KEEP = {} } = await import(`./shotlists/${setKey}.mjs`);
+// KEEP (2026-10-09): { journeyId: "morph-ends" | "all" } — slots whose CURRENT
+// pack still stays (copied in as the only option "o", never rendered):
+// "morph-ends" = the last slot of each phase and the first of the next, the
+// stills an existing travel morph was cut between, so installed morphs still
+// land on their own frames; "all" = no new stills for that journey.
+const packList = JSON.parse(readFileSync(ROOT + "public/tramokyo-pack/local-images.json", "utf8"));
+const { copyFileSync } = await import("node:fs");
+function keptSlots(j, plan) {
+  const mode = KEEP[j.id];
+  if (!mode) return new Set();
+  if (mode === "all") return new Set(plan.slots.map((s) => s.slot));
+  const out = new Set(); let off = 0;
+  plan.counts.forEach((c, i) => { if (i > 0) out.add(off); off += c; if (i < plan.counts.length - 1) out.add(off - 1); });
+  return out;
+}
 fal.config({ credentials: process.env.FAL_KEY });
 
 // Composition anchors for repeated shots — placement/scale only, positive
@@ -87,7 +102,15 @@ for (const j of JOURNEYS) {
   const dir = `${OUT}/${j.name.replace(/\s+/g, "-")}/opt`;
   mkdirSync(dir, { recursive: true });
   manifest[j.id] = { name: j.name, n: plan.n, counts: plan.counts, slots: plan.slots.map(({ text, ...s }) => s) };
+  const keep = keptSlots(j, plan);
+  if (keep.size && packList[j.id]?.length !== plan.n) throw new Error(`${j.name}: KEEP needs --n=current (pack has ${packList[j.id]?.length} slots, plan ${plan.n})`);
+  manifest[j.id].kept = [...keep].sort((a, b) => a - b);
   for (const s of plan.slots) {
+    if (keep.has(s.slot)) {
+      const dst = `${dir}/gen-${String(s.slot).padStart(3, "0")}-o.jpg`;
+      if (!existsSync(dst)) copyFileSync(ROOT + "public" + packList[j.id][s.slot], dst);
+      continue;
+    }
     const prompt = `${s.text}, ${TAIL}, ${D.tramokyoGradeForPhase(s.gradeAs)}, ${D.TRAMOKYO_STYLE_SUFFIX}`;
     const stem = `gen-${String(s.slot).padStart(3, "0")}`;
     const letters = REROLL ? REROLL.filter(([id, sl]) => id === j.id && Number(sl) === s.slot).map(() => null) : null;
@@ -116,7 +139,7 @@ async function worker() {
       try {
         const r = await fal.subscribe("fal-ai/flux/dev", { input: { prompt: j.prompt, negative_prompt: negativeFor(j.prompt), image_size: { width: 1024, height: 1024 }, num_inference_steps: 28, guidance_scale: 3.5, seed: Math.floor(Math.random() * 4294967295), enable_safety_checker: true } });
         const url = r.data?.images?.[0]?.url; if (!url) throw new Error("no image");
-        writeFileSync(j.f, Buffer.from(await (await fetch(url)).arrayBuffer())); ok++; break;
+        const res = await fetch(url); const buf = Buffer.from(await res.arrayBuffer()); if (!res.ok || buf.length < 5000 || buf[0] !== 0xff || buf[1] !== 0xd8) throw new Error(`bad download ${res.status} ${buf.length}b`); /* a CDN 500 page once landed as a .jpg */ writeFileSync(j.f, buf); ok++; break;
       } catch (e) {
         // Out of fal credit: stop the whole run instead of burning retries.
         const msg = `${e.message ?? e} ${JSON.stringify(e.body ?? "")}`;

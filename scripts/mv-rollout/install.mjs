@@ -16,7 +16,7 @@ const arg = (k) => process.argv.find((a) => a.startsWith(`--${k}=`))?.split("=")
 const setKey = process.argv[2];
 const OUT = arg("out");
 const DRY = process.argv.includes("--dry-run");
-const { JOURNEYS } = await import(`./shotlists/${setKey}.mjs`);
+const { JOURNEYS, KEEP = {} } = await import(`./shotlists/${setKey}.mjs`);
 const picks = JSON.parse(readFileSync(`${OUT}/picks.json`, "utf8"));
 const PACK = "public/tramokyo-pack";
 const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
@@ -37,7 +37,12 @@ mkdirSync(BACKUP, { recursive: true });
 writeFileSync(`${BACKUP}/manifest-entries.json`, JSON.stringify(Object.fromEntries(ids.map((id) => [id, { images: images.data[id], clips: clips.data[id], depth: depth.data[id] }])), null, 1));
 for (const j of JOURNEYS) {
   const P = picks[j.id];
+  // KEEP journeys without staged morphs keep their existing clips (their
+  // morph-end stills were kept, see harvest-stills.mjs KEEP)
+  const stagedMorphs = existsSync(`${OUT}/${j.name.replace(/\s+/g, "-")}/morphs/travel-0.mp4`);
+  const keepClips = !!KEEP[j.id] && !stagedMorphs;
   for (const kind of ["images", "depth", "clips"]) {
+    if (kind === "clips" && keepClips) continue;
     const d = `${PACK}/${kind}/journeys/${j.id}`;
     if (existsSync(d)) { mkdirSync(`${BACKUP}/${kind}`, { recursive: true }); renameSync(d, `${BACKUP}/${kind}/${j.id}`); }
   }
@@ -60,7 +65,8 @@ for (const j of JOURNEYS) {
     if (existsSync(`${mdir}/travel-${k}.hevc.mp4`)) { copyFileSync(`${mdir}/travel-${k}.hevc.mp4`, `${cdir}/travel-${k}.hevc.mp4`); e.hevc = `/tramokyo-pack/clips/journeys/${j.id}/travel-${k}.hevc.mp4`; }
     entry[`t${k}`] = e;
   }
-  if (Object.keys(entry).length) clips.data[j.id] = entry; else delete clips.data[j.id];
+  if (keepClips) { /* clips dir + manifest entry untouched */ }
+  else if (Object.keys(entry).length) clips.data[j.id] = entry; else delete clips.data[j.id];
   // Staged depth maps (harvest-depth-maps.mjs --picks=<out>) for EVERY
   // picked still → installed with the stills and the journey keeps its
   // parallax; otherwise the flag drops until harvest-depth-maps.mjs runs.

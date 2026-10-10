@@ -23,6 +23,11 @@
 //   touched except scripts/expansion-recast.json (repo-only, not read at
 //   runtime). Use while Karel reviews samples.
 // --pack-only: write the pack snapshot but not the DB (DB step pending).
+// BUILT-IN journeys (no DB row, not in the pack snapshot — e.g. Realized,
+// The Summit) are applied to src/lib/journeys/analysis-retheme.generated.ts
+// (BUILTIN_ANALYSIS_RETHEME, overlaid per phase at module load) — the one
+// place built-in beats live. A module may export KEEP_OPACITY = [ids] to keep
+// a journey's own shaderOpacity (Realized's mastered values).
 // Without either flag: DB + pack (the idempotent install of the phases).
 import { createClient } from "@supabase/supabase-js";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -35,7 +40,21 @@ const CHECK = process.argv.includes("--check");
 const STAGE = process.argv.find((a) => a.startsWith("--stage="))?.slice(8) ?? null;
 const PACK_ONLY = process.argv.includes("--pack-only");
 const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7).split(",");
-const { JOURNEYS, SET, ALLOW_WORDS = [] } = await import(`./shotlists/${setKey}.mjs`);
+const { JOURNEYS, SET, ALLOW_WORDS = [], KEEP_OPACITY = [] } = await import(`./shotlists/${setKey}.mjs`);
+const RETHEME_PATH = "src/lib/journeys/analysis-retheme.generated.ts";
+const retheme = (() => {
+  const t = readFileSync(RETHEME_PATH, "utf8");
+  const i = t.indexOf("= {", t.indexOf("BUILTIN_ANALYSIS_RETHEME"));
+  const data = JSON.parse(t.slice(i + 2, t.lastIndexOf("};") + 1));
+  return { data, write: () => writeFileSync(RETHEME_PATH, t.slice(0, i + 2) + JSON.stringify(data, null, 2) + ";\n") };
+})();
+const builtinPhases = (j) => j.phases.map((p) => {
+  const o = { intensityMultiplier: p.intensity, aiPrompt: `${p.shots[0].text}, ${TAIL}`, aiPromptSequence: p.shots.map((s) => `${s.text}, ${TAIL}`), gradeAs: p.gradeAs };
+  if (p.sparse) o.sparse = true;
+  o.shaderOwned = true; // same as album rows: the cast is phase-owned
+  if (p.shaderOpacity != null && !KEEP_OPACITY.includes(j.id)) o.shaderOpacity = p.shaderOpacity;
+  return o;
+});
 import { TAIL } from "./tail.mjs";
 // summoning / law words that must never appear in a shot (FLUX reads
 // negations as the noun; drug words; all of nature's elements allowed since 2026-10-09; figures)
@@ -93,6 +112,16 @@ const recastPath = "scripts/expansion-recast.json";
 const recast = (() => { const data = JSON.parse(readFileSync(recastPath, "utf8")); return { data, write: () => writeFileSync(recastPath, JSON.stringify(data, null, 1)) }; })();
 for (const j of built) {
   let row;
+  if (!pack.data.some((x) => x.id === j.id)) {
+    // built-in: beats go into BUILTIN_ANALYSIS_RETHEME (keeps analysisRole / guidancePhrases already there)
+    const prev = retheme.data[j.id] ?? [];
+    backup[j.id] = { builtin: true, retheme: prev };
+    const next = builtinPhases(j).map((o, i) => { const keep = { ...(prev[i] ?? {}) }; delete keep.sparse; delete keep.shaderOwned; return { ...keep, ...o }; });
+    if (STAGE) { staged[j.id] = { name: j.name, builtin: true, phases: next }; console.log(`  ✓ staged ${j.name} (built-in)`); continue; }
+    retheme.data[j.id] = next; retheme.dirty = true;
+    console.log(`  ✓ ${j.name} (built-in → ${RETHEME_PATH})`);
+    continue;
+  }
   if (sb) { const { data, error } = await sb.from("journeys").select("id,name,phases,theme").eq("id", j.id).single(); if (error) throw error; row = data; } // fresh read right before writing
   else row = pack.data.find((x) => x.id === j.id);
   if (!row) throw new Error(`${j.name}: no row`);
@@ -104,7 +133,7 @@ for (const j of built) {
       aiPrompt: `${p.shots[0].text}, ${TAIL}`, aiPromptSequence: p.shots.map((s) => `${s.text}, ${TAIL}`), shaderOwned: true };
     if (p.sparse) out.sparse = true; else delete out.sparse;
     if (p.shaders) out.shaderModes = [...p.shaders];
-    if (p.shaderOpacity != null) out.shaderOpacity = p.shaderOpacity;
+    if (p.shaderOpacity != null && !KEEP_OPACITY.includes(j.id)) out.shaderOpacity = p.shaderOpacity;
     return out;
   });
   const theme = { ...row.theme, strictCamera: true, mvStandard: { set: SET.presenting, version: 1, applied: stamp, world: j.world, shotRegisters: j.phases.map((p) => p.shots.map((s) => s.reg)), morphs: j.morphs } };
@@ -138,4 +167,5 @@ if (STAGE) {
   process.exit(0);
 }
 pack.write();
+if (retheme.dirty) retheme.write();
 console.log(`applied ${built.length} journeys${sb ? "" : " to the pack only (DB pending)"} · backup ${BACKUP}/phases-before.json`);

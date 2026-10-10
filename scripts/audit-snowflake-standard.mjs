@@ -69,6 +69,9 @@ const clips = JSON.parse(readFileSync(PACK + "local-clips.json", "utf8"));
 const STAGE = arg("stage") ? JSON.parse(readFileSync(arg("stage"), "utf8")) : null;
 for (const [id, o] of Object.entries(STAGE?.journeys ?? {})) { const r = rows.find((x) => x.id === id); if (r) { r.phases = o.phases; if (o.theme) r.theme = { ...(r.theme ?? {}), ...o.theme }; } }
 for (const [id, list] of Object.entries(STAGE?.images ?? {})) images[id] = list;
+for (const [id, c] of Object.entries(STAGE?.clips ?? {})) clips[id] = c; // staged travel morphs (M1)
+// staged built-ins carry per-phase overlays (BUILTIN_ANALYSIS_RETHEME shape)
+for (const [id, o] of Object.entries(STAGE?.journeys ?? {})) { const b = o.builtin && J.JOURNEYS.find((j) => j.id === id); if (b) b.phases.forEach((p, i) => Object.assign(p, o.phases[i] ?? {})); }
 const rowById = new Map(rows.map((r) => [r.id, r]));
 const durByRec = new Map(recs.map((r) => [r.id, Number(r.duration) || 0]));
 const durFeatured = new Map(featured.journeys.map((j) => [j.id, j.dur]));

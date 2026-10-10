@@ -8,149 +8,175 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "the-ascent": [
     {
       "intensityMultiplier": 0.62,
-      "aiPrompt": "DARK BACKGROUND — extreme close detail: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single thin seam of cold silver light resting along the crest of a dark rock ridge in the lower right of vast darkness, a faint veil of luminous mist breathing over its edge, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — extreme close detail: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — looking down along a high bare ridge of dark rock at night, mist pooled on both sides, one thin seam of cold silver light along the crest in the lower right, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — abstract: slow luminous rivers of cloud flowing over dark ridgelines, only the faintest light, wide negative space, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single thin seam of cold silver light resting along the crest of a dark rock ridge in the lower right of vast darkness, a faint veil of luminous mist breathing over its edge, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — fine mist spilling over the edge of dark rock at closest range, countless suspended droplets glowing silver and faint amber, drifting at different depths, translucent and weightless, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from high above, looking straight down on a long ridge of black rock dividing two pools of luminous mist, one pale glow slowly widening beneath the cloud on the left, the camera beginning to descend toward the crest, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "dark",
-      "gradeAs": "threshold"
+      "gradeAs": "threshold",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.9,
-      "aiPrompt": "slow rivers of cloud flowing through a dark mountain saddle at night, their tops lit faint silver, the ridges rising above them, yearning and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "gliding inside a slow river of luminous cloud as it pours through a dark saddle between ridges, deep teal and silver billows of light folding over one another on every side, a faint amber sheen rising through them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "slow rivers of cloud flowing through a dark mountain saddle at night, their tops lit faint silver, the ridges rising above them, yearning and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow luminous rivers of cloud flowing over dark ridgelines, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "gliding inside a slow river of luminous cloud as it pours through a dark saddle between ridges, deep teal and silver billows of light folding over one another on every side, a faint amber sheen rising through them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — two broad bands of slate-blue and amber light rocking against each other across black in a slow repeating sigh, their edges dissolving into fine particles, wide dark space in the upper half, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — a fine rime of light coating dark rock at the crest, one trembling patch of reflected silver rippling across it and resettling again and again, deep shadow filling the left side, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "expansion",
+      "shaderOpacity": 0.49,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 1,
-      "aiPrompt": "a long ridge of bare black rock at night seen from high above, an immense sea of moving cloud pouring over its saddle in a slow luminous cascade, cold silver and dusky violet light along every cloud edge, the brightest flow right of center, brooding and resolute, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — an immense sea of luminous cloud heaving in slow swells beneath a long black ridge, seen from far above, cold silver and smoky violet light rolling across its surface like a galaxy turning, the camera rising through the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "a long ridge of bare black rock at night seen from high above, an immense sea of moving cloud pouring over its saddle in a slow luminous cascade, cold silver and dusky violet light along every cloud edge, the brightest flow right of center, brooding and resolute, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "abstract at the largest scale: slow luminous rivers of cloud flowing over dark ridgelines, at full radiance, filling the frame with asymmetric weight, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro at the height of the light: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, glowing at full strength against deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "cosmic — an immense sea of luminous cloud heaving in slow swells beneath a long black ridge, seen from far above, cold silver and smoky violet light rolling across its surface like a galaxy turning, the camera rising through the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro at the height of the surge — the crest of one swell of glowing mist breaking over dark rock in a spray of silver particles, blazing against deep darkness in the right third, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down on the dark ridge as luminous cloud surges against it from both sides, long plumes of lit mist torn upward from the crest and dissolving, the camera pulling back, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "peak",
-      "gradeAs": "transcendence"
+      "gradeAs": "transcendence",
+      "shaderOpacity": 0.46,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.96,
-      "aiPrompt": "looking down at the cloud cascade pouring over the dark ridge, a warmer pale gold seam along its crest, light and shadow trading across the rock, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "abstract — a sudden bloom of white-gold light unfolding across the dark in wide radiant fans, layers of pale gold and rose light opening one inside the next, kaleidoscopic and weightless, filling the upper left, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "looking down at the cloud cascade pouring over the dark ridge, a warmer pale gold seam along its crest, light and shadow trading across the rock, poignant and suspended, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, in broad steady calm light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow luminous rivers of cloud flowing over dark ridgelines, the light broad, steady and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "abstract — a sudden bloom of white-gold light unfolding across the dark in wide radiant fans, layers of pale gold and rose light opening one inside the next, kaleidoscopic and weightless, filling the upper left, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from high above, the whole sea of cloud glowing white-gold from within for one long moment, luminous and impossibly still, the black ridge cutting a diagonal through the radiance, the light already dimming at the far edges, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "a single faint amber point of light pulsing low in the lower right where the bloom has withdrawn, luminous mist closing softly around it, the ache left hanging in the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "calm",
-      "gradeAs": "illumination"
+      "gradeAs": "illumination",
+      "shaderOpacity": 0.47,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.69,
-      "aiPrompt": "looking straight down at the cloud sinking slowly back into the valleys between dark ridges, its surface softening to blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — one small wisp of pale blue lit mist suspended alone in the upper left of immense darkness, a few fine motes drifting upward from it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "looking straight down at the cloud sinking slowly back into the valleys between dark ridges, its surface softening to blue-grey, bittersweet and open, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, in broad steady calm light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow luminous rivers of cloud flowing over dark ridgelines, the light broad, steady and calm, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — one small wisp of pale blue lit mist suspended alone in the upper left of immense darkness, a few fine motes drifting upward from it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "rising slowly while looking straight down as the luminous cloud sinks back between the dark ridges, its surface softening to blue-grey, pale gold catching the high crests one by one, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — a single droplet of pale gold light clinging to the edge of dark rock at closest range, holding a tiny upside-down reflection of the whole ridge above the cloud, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "calm",
-      "gradeAs": "illumination"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.6,
+      "sparse": true,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "DARK BACKGROUND — the ridge alone in deep night, one faint silver seam fading along the crest, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — from immense height the ridge becomes a faint silver line across deep blue darkness, a thin band of rose light lying along it, a quiet star field opening all around, still and unresolved, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — the ridge alone in deep night, one faint silver seam fading along the crest, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — close: dark rock at the crest of a ridge, fine mist flowing over its edge lit silver, the last glow in near darkness, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — slow luminous rivers of cloud flowing over dark ridgelines, almost entirely dark, one last trace of light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "cosmic — from immense height the ridge becomes a faint silver line across deep blue darkness, a thin band of rose light lying along it, a quiet star field opening all around, still and unresolved, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the last veil of mist on dark rock at closest range turning pale dawn gold, translucent droplets dissolving into the dark one by one, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a single thin seam of pale gold light resting along the crest of a dark ridge in the lower right of vast darkness, the bookend of the first silver seam, left open, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "last",
-      "gradeAs": "integration"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     }
   ],
   "cosmic-drift": [
     {
       "intensityMultiplier": 0.53,
-      "aiPrompt": "DARK BACKGROUND — extreme close detail: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single small jagged shard of dark stone drifting in the lower left of deep space, its broken edge lit warm amber, a faint breath of golden dust lifting off it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — extreme close detail: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, barely lit, deep darkness all around it, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — a loose scatter of small jagged irregular rock shards drifting slowly through deep space in the lower left, their broken edges catching a faint warm amber light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — abstract: slow flowing currents of glowing golden dust in deep space, only the faintest light, wide negative space, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single small jagged shard of dark stone drifting in the lower left of deep space, its broken edge lit warm amber, a faint breath of golden dust lifting off it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the rough broken surface of the shard at closest range, warm amber light grazing every ridge, fine motes of golden dust lifting off it and hanging weightless in the beam, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — from far away, a loose scatter of small amber shards drifting slowly through a vast star field, a faint warm haze of golden dust trailing between them, the camera gliding toward them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "dark",
-      "gradeAs": "threshold"
+      "gradeAs": "threshold",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.87,
-      "aiPrompt": "a gentle field of jagged irregular rock shards of many sizes drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "drifting inside a warm luminous cloud of golden dust, shards of dark stone passing slowly close on every side, their broken edges glowing honey and amber, the light pooling and spreading between them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "a gentle field of jagged irregular rock shards of many sizes drifting in slow procession, warm golden dust trailing between them, glowing softly, content, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "drifting inside a warm luminous cloud of golden dust, shards of dark stone passing slowly close on every side, their broken edges glowing honey and amber, the light pooling and spreading between them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — slow currents of golden dust flowing in long curving bands across black, pooling into soft spirals of honey light, wide dark space below, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — golden dust settling across the broken surface of one shard in fine luminous drifts, faint sage-green glints in its hollows, impossible stillness, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "expansion",
+      "shaderOpacity": 0.49,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.43,
-      "aiPrompt": "DARK BACKGROUND — wide empty dark space with a faint drift of warm golden dust across it, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — one small curl of golden dust suspended alone in the upper right of immense dark space, a few fine motes drifting away from it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — wide empty dark space with a faint drift of warm golden dust across it, still, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — one small curl of golden dust suspended alone in the upper right of immense dark space, a few fine motes drifting away from it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — one slow ring of pale gold light widening across the infinite void in the lower left, fading as it spreads, the dark around it perfectly still, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — one mote of golden dust at closest range, glowing softly and hanging motionless in the dark, a tiny warm spark held at its heart, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.6,
+      "sparse": true,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.94,
-      "aiPrompt": "jagged rock shards drifting through a vast cloud of warm golden dust, their broken faces lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — an immense slow river of honey-gold dust flowing diagonally across deep space, countless small amber shards carried within it, light rising and widening along its length, the densest glow left of centre, the camera gliding with it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "jagged rock shards drifting through a vast cloud of warm golden dust, their broken faces lit amber and rose, fine particles glowing around them, uplifted, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "close study: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the light gathering softly around it in deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "slow flowing currents of glowing golden dust in deep space, the light gathering and spreading outward, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "cosmic — an immense slow river of honey-gold dust flowing diagonally across deep space, countless small amber shards carried within it, light rising and widening along its length, the densest glow left of centre, the camera gliding with it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — the leading edge of one shard blazing with warm light at closest range, golden dust streaming off it in fine luminous threads, deep dark filling the right side, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — gentle swells of amber and honey light rocking in slow repeating waves across black, each swell reaching a little further than the last, the long golden glow held motionless at the crest, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "illumination",
+      "shaderOpacity": 0.48,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 1,
-      "aiPrompt": "an immense slow river of glowing golden dust flowing diagonally through deep space, countless small jagged rock shards carried within it lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — vast slate-blue veils of nebula rolling across the golden river of dust, shafts of warm light breaking through the gaps and closing again, infinite darkness beyond, the camera rising through, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "an immense slow river of glowing golden dust flowing diagonally through deep space, countless small jagged rock shards carried within it lit warm gold, the densest glow left of center, yearning and tender, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "abstract at the largest scale: slow flowing currents of glowing golden dust in deep space, at full radiance, filling the frame with asymmetric weight, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "macro at the height of the light: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, glowing at full strength against deep surrounding dark, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "cosmic — vast slate-blue veils of nebula rolling across the golden river of dust, shafts of warm light breaking through the gaps and closing again, infinite darkness beyond, the camera rising through, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — one shard caught in the passing slate-blue veil, its amber surface dimming and flaring as the shadow moves over it, fine dust glittering along its broken edge, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from high above, the whole river of golden dust half-veiled in drifting blue-grey haze, long luminous bands of light and shadow trading across it, the camera pulling back, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "peak",
-      "gradeAs": "transcendence"
+      "gradeAs": "transcendence",
+      "shaderOpacity": 0.46,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "DARK BACKGROUND — the last thin thread of golden dust and a few tiny jagged shards drifting away into deep dark, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — from immense distance the river of dust thinning to a faint thread of gold across a quiet star field, a few small shards drifting away into the deep dark, at peace, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DARK BACKGROUND — the last thin thread of golden dust and a few tiny jagged shards drifting away into deep dark, at peace, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — close: the rough broken face of a jagged rock shard lit warm amber, fine dust lifting off it, seen close, the last glow in near darkness, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing",
-        "DARK BACKGROUND — slow flowing currents of glowing golden dust in deep space, almost entirely dark, one last trace of light, asymmetric off-center composition with strong diagonal weight, completely uninhabited, no text no signatures no watermarks no letters no writing"
+        "cosmic — from immense distance the river of dust thinning to a faint thread of gold across a quiet star field, a few small shards drifting away into the deep dark, at peace, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — a last ember of gold light glowing in the hollow of one dark shard, fine motes lifting off it and dissolving into the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a single small ember of warm gold light drifting in the lower left of vast dark space, the bookend of the first amber shard, slowly softening, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [],
       "analysisRole": "last",
-      "gradeAs": "integration"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     }
   ],
   "the-ascension": [
@@ -253,11 +279,11 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
   "mycelium-dream": [
     {
       "intensityMultiplier": 0.37,
-      "aiPrompt": "enormous moss-covered boulder floating in deep dark space emerging from the lower right, the boulder photorealistic grey granite with thick green moss carpeting its top and sides, luminous mushrooms growing from crevices in the rock — their caps translucent and glowing soft cyan and warm gold bioluminescence, dangling roots and delicate ferns hanging from the boulder underside reaching into the void below, bioluminescent spores drifting upward from the mushroom gills in lazy spirals like tiny green-gold stars, the boulder detail anchored in one third of the frame with vast darkness and faint scattered spore-light above and left, macro texture visible on the moss and mushroom surfaces, asymmetric composition with visual weight low and right, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — a single small bioluminescent spore glowing soft green-gold in the lower right of vast brown-black darkness, a faint warm glow breathing around it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "night forest floor at ground level, a great mossy boulder among dark roots, luminous mushrooms glowing soft cyan and warm gold in its crevices, ferns arching over it in silhouette, bioluminescent spores spiraling up like tiny green-gold stars into the black canopy, asymmetric weight low and right, no text no signatures no watermarks no letters no writing",
-        "extreme macro — one translucent mushroom cap at closest range, cyan light glowing through its flesh like a paper lantern, a single spore lifting off its gill edge lit gold, moss fronds soft and dark around the small light, no text no signatures no watermarks no letters no writing",
-        "surreal — inside one glowing mushroom cap, a vaulted gill-cathedral of gold-green light, and through its translucent wall the dim shapes of the whole dark forest beyond, a chapel inside a lantern inside a wood, worlds nested three deep, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — a single small bioluminescent spore glowing soft green-gold in the lower right of vast brown-black darkness, a faint warm glow breathing around it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — a scatter of green-gold points of light spiraling slowly upward through an infinite dark void like the first stars forming, each one pulsing at its own pace, the camera drifting toward them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — one translucent mushroom cap at closest range, cyan and amber light glowing through its flesh from within, a single spore lifting off its gill edge lit gold, luminous against the dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "the spores are waking...",
@@ -265,15 +291,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "life begins small..."
       ],
       "analysisRole": "dark",
-      "gradeAs": "threshold"
+      "gradeAs": "threshold",
+      "shaderOpacity": 0.62,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.49,
-      "aiPrompt": "DEEP BROWN-BLACK BACKGROUND — forest floor cross-section at cosmic scale floating in dark void, viewed from the side like a floating terrarium slice sweeping diagonally from upper left, visible layers of dark rich soil with embedded pale roots threading horizontally, fallen autumn leaves in various stages of decomposition compressed between soil strata, tiny translucent organisms and pale mycorrhizal threads glowing faint green-gold at the root interfaces, the cross-section edge raw and organic with soil crumbling away and fine earth particles dispersing into open dark void below, the top surface shows a miniature landscape of moss and tiny seedlings, infinite depth through layered translucent soil planes, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "inside the dark earth beneath the glowing caps, countless pale threads of light reaching downward through brown-black depth, green-gold pulses travelling along them as they take root, the camera descending, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DEEP BROWN-BLACK BACKGROUND — beneath the forest floor, dark soil strata threaded with pale roots at every depth, mycorrhizal threads glowing faint green-gold where root meets root, small hollow chambers opening like dark rooms in the earth, the buried network pulsing softly through it all, no text no signatures no watermarks no letters no writing",
-        "microscopic — inside the soil between two root hairs, a single glowing mycelial thread reaching across the dark gap grain by grain, green-gold light pulsing along it as the connection closes, earth crystals glinting around the meeting, no text no signatures no watermarks no letters no writing",
-        "spirit-hint — in a root-hollow deep under the forest, the green-gold glow half-gathers into low ancient earthen almost-presences, translucent and featureless, made of spore-light, gathered around the brightest root the way ancestors keep a fire, no text no signatures no watermarks no letters no writing"
+        "inside the dark earth beneath the glowing caps, countless pale threads of light reaching downward through brown-black depth, green-gold pulses travelling along them as they take root, the camera descending, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "microscopic — two glowing mycelial threads reaching across a dark gap toward each other, green-gold light pulsing along them as the connection closes, fine motes glinting around the meeting, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "looking straight down on a dark ground netted with faint green-gold veins of light spreading outward from one bright point in the upper left, luminous and fractal, the web widening across the frame, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "it's growing...",
@@ -281,15 +309,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "feel the network..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "expansion",
+      "shaderOpacity": 0.58,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.64,
-      "aiPrompt": "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale arranged along the left edge and lower third of vast dark void, viewed from below looking up at the luminous gill structure radiating outward in precise geometric patterns, the gills glowing warm gold and soft green bioluminescence, tiny ferns and curling moss growing on the cap surface visible at the edges, photorealistic water droplets hanging from the gill ridges catching and refracting the bioluminescent light into tiny prismatic spectra, fine spore particles drifting downward from the gills like luminous snow into dark void below, asymmetric leaving the upper right vast and open, quiet power in the contrast of organic intricacy against boundless darkness, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "abstract — the gill geometry of one enormous mushroom cap seen from below, radiating blades of gold-green light fanning from an off-centre point in the upper left, a slow umber shadow sliding across them, prismatic motes drifting through the spokes, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "DEEP SOIL-BLACK BACKGROUND — a single enormous mushroom cap at cosmic scale from below, luminous gill structure radiating in precise geometry, warm gold and soft green bioluminescence, water droplets on the gill ridges refracting tiny prismatic spectra, spore particles drifting down like luminous snow, no text no signatures no watermarks no letters no writing",
-        "macro — one water droplet hanging from a gill ridge at closest range, the whole radiating gill-cathedral curved inside it upside down, a prism-spark burning at its heart, no text no signatures no watermarks no letters no writing",
-        "abstract — the gill geometry alone: radiating blades of gold-green light fanning from an unseen center across darkness, spore-snow drifting through the spokes, architecture grown rather than built, no text no signatures no watermarks no letters no writing"
+        "abstract — the gill geometry of one enormous mushroom cap seen from below, radiating blades of gold-green light fanning from an off-centre point in the upper left, a slow umber shadow sliding across them, prismatic motes drifting through the spokes, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "macro — one water droplet hanging from a gill ridge at closest range, the whole radiating gill structure curved inside it upside down, a prism-spark of amber burning at its heart, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — dark umber clouds of dust drifting slowly across a glowing green-gold nebula, shadows passing over its light and lifting again, infinite darkness beyond, the camera passing through, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "the garden knows you...",
@@ -297,15 +327,17 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "this intelligence is ancient..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "expansion",
+      "shaderOpacity": 0.55,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.78,
-      "aiPrompt": "fallen log covered in thick moss and small plants floating in deep space arcing from lower left toward upper right, the log photorealistic with weathered bark and soft green moss texture, shelf fungi growing in tiers along its length glowing faint warm amber and pale green, tiny seedlings and unfurling fern fronds emerging from the decomposing bark, seeds and luminous spores trailing off from the log into generous dark negative space above and right like a comet tail of organic matter, the forms impossibly detailed even as they thin and dissolve into pure particle at the trailing edge, composition weighted to the lower half with cosmic darkness opening above, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "DARK BACKGROUND — one small node of green-gold light pulsing slowly alone in the upper left of immense brown-black darkness, a few faint motes drifting around it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "a fallen log at rest on the night forest floor, shelf fungi in glowing amber tiers along its mossy length, seedlings and fern fronds unfurling from the soft bark, luminous spores drifting up from it lit against the dark trunks beyond, no text no signatures no watermarks no letters no writing",
-        "intimate — among the shelf fungi at close range, tiered amber lights stacked up the dark bark like lantern balconies, one new fern frond unrolling into their glow, no text no signatures no watermarks no letters no writing",
-        "spirit-hint — above the old log, the rising spore-light half-gathers into a slow procession of small ancestral almost-presences, translucent and featureless, drifting up between the dark trunks like elders returning home, no text no signatures no watermarks no letters no writing"
+        "DARK BACKGROUND — one small node of green-gold light pulsing slowly alone in the upper left of immense brown-black darkness, a few faint motes drifting around it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from high above, a calm sheet of deep amber light lying across the dark ground, slow concentric ripples spreading outward from one point and fading, luminous and impossibly still, the camera hovering, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — a single bead of amber light resting at the tip of one fine mycelial thread at closest range, breathing slowly brighter and dimmer, darkness close around it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "the forest settles...",
@@ -313,15 +345,18 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "return to soil..."
       ],
       "analysisRole": "gathering",
-      "gradeAs": "expansion"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.6,
+      "sparse": true,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.91,
-      "aiPrompt": "cosmic-scale bioluminescent network sweeping across infinite brown-black void — millions of luminous green-gold points connected by hair-thin filaments forming a web-like structure that could be neurons or galaxies or mycorrhizal connections, the network dense and intricate in the upper-right third but dissolving into scattered individual points at its edges, warm amber pulses traveling along the filaments between nodes creating a sense of living communication, the spaces between filled with drifting spore-like particles of pale green light, composition fills the frame off-center with the densest cluster upper-right and filament bridges reaching across into generous darkness lower-left, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "cosmic — a vast bioluminescent network sweeping across an infinite brown-black void, millions of green-gold points joined by hair-thin threads of light like galaxies, ember-orange pulses racing between the nodes, the densest cluster blazing in the lower right, the camera pulling back to reveal it all, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "cosmic-scale bioluminescent network sweeping across infinite brown-black void, millions of green-gold points joined by hair-thin filaments like neurons or galaxies, amber pulses traveling between nodes, drifting spore-light filling the spaces, densest cluster upper-right with bridges reaching into generous darkness, no text no signatures no watermarks no letters no writing",
-        "interior kinetic — flying along one filament inside the network, node-lights flaring past like stations, amber signal-pulses overtaking and racing ahead, branches curving away into deep green-black on every side, no text no signatures no watermarks no letters no writing",
-        "aerial — the network spread across a dark ground filling the frame seen from very high above, green-gold veins netting the whole dark ground, slow pulses crossing wide fields of darkness, one region blazing awake, no text no signatures no watermarks no letters no writing"
+        "cosmic — a vast bioluminescent network sweeping across an infinite brown-black void, millions of green-gold points joined by hair-thin threads of light like galaxies, ember-orange pulses racing between the nodes, the densest cluster blazing in the lower right, the camera pulling back to reveal it all, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "flying inside one glowing thread of the network, node-lights flaring past, amber signal-pulses overtaking and racing ahead, branches of light curving away into deep umber dark on every side, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "from very high above, the network spread across the whole dark ground filling the frame edge to edge, green-gold veins netting it, slow tides of ember-orange light rolling across it wave after wave, luminous and fractal, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "you are the network...",
@@ -329,22 +364,26 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
         "breathe with the forest..."
       ],
       "analysisRole": "peak",
-      "gradeAs": "transcendence"
+      "gradeAs": "transcendence",
+      "shaderOpacity": 0.46,
+      "shaderOwned": true
     },
     {
       "intensityMultiplier": 0.74,
-      "aiPrompt": "sparse scattered bioluminescent particles drifting across vast brown-black silence — some green-gold some pale amber — moving in barely perceptible spiral paths like the memory of a network dissolving, one faintly brighter point in the lower-left corner pulsing with gathered light as if all the network's energy has condensed to a single node, the faintest filament trails still connecting it to a few nearby motes before they fade to nothing, enormous open darkness everywhere, asymmetric and quiet — the last signal in an infinite dark, no mushrooms no plants no landscape no figures, no text no signatures no watermarks no letters no writing",
+      "aiPrompt": "abstract — the network slowly drawing inward, threads of green-gold light folding toward one point in long fractal spirals, the ember glow cooling to blue-black at the edges, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
       "aiPromptSequence": [
-        "sparse scattered bioluminescent particles drifting across vast brown-black silence, green-gold and pale amber motes in barely perceptible spirals, one brighter point pulsing with gathered light, the faintest filament trails fading around it, enormous open darkness, no text no signatures no watermarks no letters no writing",
-        "extreme macro — the single bright node at closest range, a seed of condensed green-gold light with the memory of filaments still flickering faint at its rim, darkness pressing close and kind, no text no signatures no watermarks no letters no writing",
-        "cosmic finale — the dark from very far away, one green-gold point alone in brown-black immensity, indistinguishable from a first star or a last spore, holding everything either way, no text no signatures no watermarks no letters no writing"
+        "abstract — the network slowly drawing inward, threads of green-gold light folding toward one point in long fractal spirals, the ember glow cooling to blue-black at the edges, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the single bright node at closest range, a seed of condensed green-gold light with the memory of its threads still flickering faint at its rim, darkness pressing close, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a single green-gold point of light alone in the lower right of brown-black immensity, indistinguishable from a first star or a last seed, the bookend of the first light, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
       ],
       "guidancePhrases": [
         "one spore holds everything...",
         "you carry the forest..."
       ],
       "analysisRole": "calm",
-      "gradeAs": "illumination"
+      "gradeAs": "integration",
+      "shaderOpacity": 0.53,
+      "shaderOwned": true
     }
   ],
   "the-bloom": [
@@ -442,6 +481,75 @@ export const BUILTIN_ANALYSIS_RETHEME: Record<string, Array<Partial<JourneyPhase
       ],
       "analysisRole": "last",
       "gradeAs": "integration"
+    }
+  ],
+  "inferno": [
+    {
+      "intensityMultiplier": 0.9,
+      "aiPrompt": "DARK BACKGROUND — a single small shard of black volcanic glass floating alone in the lower right of immense blackness, one hairline seam of deep orange heat glowing inside it, its obsidian edges catching a faint rim of light, a few ash motes hanging weightless beside it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "DARK BACKGROUND — a single small shard of black volcanic glass floating alone in the lower right of immense blackness, one hairline seam of deep orange heat glowing inside it, its obsidian edges catching a faint rim of light, a few ash motes hanging weightless beside it, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the hairline seam inside the volcanic glass shard at closest range, white-hot light breathing through the fracture from deep within, its razor edge dusted with fine grey ash, heat shimmer rising off it in slow ripples, black glass mirroring the glow, the camera pushing in toward the light, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — pulling back as the first sparks escape the shard and scatter upward across infinite black, the glowing fragment now a tiny ember among drifting motes of orange light, ash particles trailing into vast empty darkness above and left, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "threshold",
+      "shaderOwned": true
+    },
+    {
+      "intensityMultiplier": 1,
+      "aiPrompt": "from high above, looking straight down at an immense ember network spread across black far below, fractal fire threads branching between white-hot nodes like a dying star's skeleton, the network clustered in the lower right, the camera descending toward it through drifting ash, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "from high above, looking straight down at an immense ember network spread across black far below, fractal fire threads branching between white-hot nodes like a dying star's skeleton, the network clustered in the lower right, the camera descending toward it through drifting ash, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "PURE WHITE BACKGROUND — abstract — a designed lattice of black volcanic glass sweeping diagonally from the upper left across a brilliant pale ash-white ground, obsidian planes holding deep orange fire inside them, white-hot edges, scattered dark ash particles drifting down into vast open white space below, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — one curl of black smoke at closest range, lit from beneath by hidden orange fire, its folds turning slowly like heavy velvet, embers glinting inside the curl, the smoke unfurling upward out of the lower left into empty darkness, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "expansion",
+      "shaderOwned": true
+    },
+    {
+      "intensityMultiplier": 1.25,
+      "aiPrompt": "cosmic — a black sun of fire burning in the upper right of infinite darkness, its corona a fractal crown of white-hot streamers and deep crimson flares lashing outward, ash and sparks wheeling around it like a galaxy, the camera plunging toward it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "cosmic — a black sun of fire burning in the upper right of infinite darkness, its corona a fractal crown of white-hot streamers and deep crimson flares lashing outward, ash and sparks wheeling around it like a galaxy, the camera plunging toward it, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "abstract — a vast fractal fire network sweeping in a descending spiral arc across black, white-hot nodes pulsing at every intersection, amber light coursing through interlinked ember threads, the spiral core low in the left third, burning streamers dissolving into ash trails and open dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — a single droplet of molten fire falling through black at closest range in the upper left third, its skin crawling with white-hot light and dark cooling crust, sparks shearing off its trailing edge in a curving wake, heat shimmer bending the darkness around it, menacing and alive, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "transcendence",
+      "shaderOwned": true
+    },
+    {
+      "intensityMultiplier": 1,
+      "aiPrompt": "DARK BACKGROUND — a single small coal glowing deep orange in the lower left of vast black silence, its light swelling and dimming like slow breath, one thin ribbon of grey smoke rising from it and dissolving into the dark, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "DARK BACKGROUND — a single small coal glowing deep orange in the lower left of vast black silence, its light swelling and dimming like slow breath, one thin ribbon of grey smoke rising from it and dissolving into the dark, nearly the entire frame empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "PURE WHITE BACKGROUND — looking straight down into a boundless ash-white haze, fine dark ash particles falling slowly through the pale light toward the camera, two or three still carrying a faint orange core, immense open white space, weightless and still, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — the skin of one coal at closest range, gold light breathing slowly through a lace of white ash, the pulse slow as sleep, tiny sparks lifting off its cracks and drifting into the dark, the glow gathered to the right edge of the frame, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "integration",
+      "sparse": true,
+      "shaderOwned": true
+    },
+    {
+      "intensityMultiplier": 0.9,
+      "aiPrompt": "abstract — a connected ember lattice arcing up from the lower left across deep charcoal darkness, prismatic heat threading through it from orange to amber to rose to cool silver, ash particles drifting upward into open space above, the camera rising through, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "abstract — a connected ember lattice arcing up from the lower left across deep charcoal darkness, prismatic heat threading through it from orange to amber to rose to cool silver, ash particles drifting upward into open space above, the camera rising through, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "close — a single rising spark cooling from gold to silver as it climbs through the dark in the right third of the frame, a faint curving trail of light behind it, fine ash motes turning slowly around it, cool grey-blue air opening above, everything beyond soft and empty, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "cosmic — a dim eclipsed sun of copper and rose hanging in the upper left of deep charcoal space, its fire banked to a thin glowing rim, streams of cooling sparks and ash rising past it into infinite darkness, the menace gone out of the fire, the camera drifting upward beside them, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "return",
+      "shaderOwned": true
+    },
+    {
+      "intensityMultiplier": 0.75,
+      "aiPrompt": "cosmic — sparse ash particles and fading ember traces drifting across vast cool grey-black silence, the last connected fire forms clustered small in the lower left, dissolving into scattered sparks that trail diagonally toward infinite upper darkness, the particles carrying the fire's memory as they cool, almost nothing against everything, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+      "aiPromptSequence": [
+        "cosmic — sparse ash particles and fading ember traces drifting across vast cool grey-black silence, the last connected fire forms clustered small in the lower left, dissolving into scattered sparks that trail diagonally toward infinite upper darkness, the particles carrying the fire's memory as they cool, almost nothing against everything, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "extreme macro — one flake of charcoal ash drifting at closest range in the lower right, its lace edge still holding the faintest orange core, the last living coal of the whole descent, a few cinder motes suspended weightless beside it in cool grey dark, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing",
+        "DARK BACKGROUND — a single small shard of black volcanic glass resting in the lower right of vast cool darkness, its hairline seam cooled to a faint silver-rose glow, one ash mote settling beside it, nearly the entire frame empty, the bookend of the first light, asymmetric composition with generous dark negative space, completely uninhabited, no text no signatures no watermarks no letters no writing"
+      ],
+      "gradeAs": "integration",
+      "shaderOwned": true
     }
   ]
 };

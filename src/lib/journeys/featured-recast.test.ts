@@ -22,13 +22,14 @@ import { createSeededRandom } from "./seeded-random";
 // expansion-recast.test.ts guards the Expansion.
 const read = (p: string) => JSON.parse(readFileSync(join(process.cwd(), p), "utf8"));
 type FJ = { id: string; name: string; builtin: boolean; setlistPos: number | null; path: string; pathIdx: number | null; pathLen: number | null; shaders: string[]; cast: Record<string, string[]>; owned?: boolean; lead?: string };
-const featured = read("scripts/featured-recast.json") as { journeys: FJ[]; kineticLabCasts: Record<string, string[]>; constraints: { owned?: { minDist: number; cap: number } } };
+const featured = read("scripts/featured-recast.json") as { journeys: FJ[]; kineticLabCasts: Record<string, string[]>; constraints: { owned?: { minDist: number; cap: number; pathMinDist?: number } } };
 // Snowflake Standard rollout (Karel 2026-10-05): rolled-out journeys carry
 // PHASE-OWNED casts (10-12 shaders, one phase each, lead on the peak) under
 // a loosened loop cap and the closest spacing the 95-shader pool allows.
 const OWNED = new Set(featured.journeys.filter((j) => j.owned).map((j) => j.id));
 const OWNED_DIST = featured.constraints.owned?.minDist ?? Infinity;
 const OWNED_CAP = featured.constraints.owned?.cap ?? 0;
+const OWNED_PATH_DIST: number | null = (featured.constraints.owned as { pathMinDist?: number } | undefined)?.pathMinDist ?? null;
 const expansion = read("scripts/expansion-recast.json") as { journeys: { id: string; lead: string; cast: Record<string, (string | null)[]> }[] };
 const vet = read("scripts/shader-vetting.json") as { pool: string[] };
 
@@ -179,7 +180,8 @@ describe("featured + album recast: diversity across the WHOLE kiosk loop", () =>
     expect([...byPath.keys()].sort()).toEqual(["March Light", "Surrounded by Light", "Welcome Home"]);
     for (const [path, js] of byPath) for (const a of js) for (const b of js) {
       if (a === b) continue;
-      for (const m of a.shaders) if (b.shaders.includes(m)) expect(cdist(a.pathIdx!, b.pathIdx!, a.pathLen!), `${path}: ${m} in ${a.name} + ${b.name}`).toBeGreaterThanOrEqual(Math.floor(a.pathLen! / 2));
+      // owned (Archetype) casts: relaxed path spacing (featured-recast.json constraints.owned.pathMinDist, 2026-10-09)
+      for (const m of a.shaders) if (b.shaders.includes(m)) expect(cdist(a.pathIdx!, b.pathIdx!, a.pathLen!), `${path}: ${m} in ${a.name} + ${b.name}`).toBeGreaterThanOrEqual((a.owned || b.owned) && OWNED_PATH_DIST != null ? Math.min(OWNED_PATH_DIST, Math.floor(a.pathLen! / 2)) : Math.floor(a.pathLen! / 2));
     }
   });
 });

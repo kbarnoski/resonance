@@ -80,12 +80,12 @@ export const JOURNEYS = [
         S("micro", "extreme macro — dew beads along the veins of a dark leaf, each bead holding a tiny point of violet light, mist breathing between them"),
         S("aerial", "from high above a vast dark canopy at night, slow sheets of luminous mist lifting off its roof, one soft plume of violet lit mist rising through a gap, the camera drifting down toward it"),
       ]),
-      P("expansion", 0.05, 0.271, 0.84, "expansion", "0:12-1:05 Clustered Awakening → Lifted Questions (two-third doubt, Ab as a door)", ["parsec", "dusk", "covenant"], 0.56, [
+      P("expansion", 0.05, 0.271, 0.84, "expansion", "0:12-1:05 Clustered Awakening → Lifted Questions (two-third doubt, Ab as a door)", ["parsec", "dusk", "astral"], 0.56, [
         S("interior", "inside a slow rising plume of violet lit mist, countless motes of pale gold drifting upward past dark leaf edges, the light leaning and searching"),
         S("abstract", "abstract — two and then three soft plumes of violet and gold lit mist drifting toward each other, their edges diffusing prismatically into particles, wide dark space between"),
         S("micro", "macro — velvet moss on a high dark branch lit from beneath by a narrow beam of violet light, fine particles of mist turning slowly through the beam"),
       ]),
-      P("transcendence", 0.271, 0.407, 1, "illumination", "1:05-1:38 Brightening Current (Fm9, flow and light, longing)", ["r-stardust", "covenant", "rose-window"], 0.5, [
+      P("transcendence", 0.271, 0.407, 1, "illumination", "1:05-1:38 Brightening Current (Fm9, flow and light, longing)", ["r-stardust", "astral", "rose-window"], 0.5, [
         S("aerial", "looking straight down at a dark winding current of luminous water threading beneath the canopy, bands of brighter violet and gold light catching on it as the camera glides along"),
         S("micro", "macro — the surface of dark moving water carrying broken reflections of violet and gold light, fine ripples splitting every color into prismatic threads"),
         S("abstract", "abstract at the largest scale — seen from high above, dozens of soft plumes of violet and gold lit mist rising from the dark canopy and leaning into one another, a luminous fractal web of light woven over the treetops, the camera rising through them"),
@@ -100,7 +100,7 @@ export const JOURNEYS = [
         S("micro", "extreme macro — the last thread of pale gold light lying across a single dark leaf, tiny droplets along it glowing like embers of light"),
         S("intimate", "a few small threads of violet light withdrawing slowly down into the dark canopy one by one, mist closing over them"),
       ], { sparse: true }),
-      P("integration", 0.92, 1, 0.55, "integration", "3:41-4:00 the long-held C major — a quiet consolation", ["seraph", "kairos"], 0.62, [
+      P("integration", 0.92, 1, 0.55, "integration", "3:41-4:00 the long-held C major — a quiet consolation", ["seraph", "plankton"], 0.62, [
         S("cosmic", "cosmic — from immense height the dark canopy becomes a deep quiet field beneath drifting luminous mist, one last soft plume of warm lit mist rising into a vast star field, consoled and still"),
         S("intimate", "DARK BACKGROUND — a single small plume of warm gold lit mist hanging alone in the lower left of immense darkness, gently glowing, the bookend of the first thread of light"),
         S("micro", "extreme macro — one bead of warm light at the tip of a dark leaf, holding a tiny reflection of the whole sanctuary of light"),
@@ -134,17 +134,17 @@ export const JOURNEYS = [
         S("micro", "macro at the height of the light — the crest of one billow of fog blazing silver-white and rose, fine droplets glittering against darkness"),
         S("abstract", "abstract — luminous fog streaming across the frame in long diagonal bands of silver, rose and cold blue light, dissolving into one another"),
       ]),
-      P("illumination", 0.545, 0.738, 0.6, "integration", "1:49-2:28 Descent and Stillness (the trough) — the sparse valley", ["meteor-rain", "dark-tide"], 0.6, [
+      P("illumination", 0.545, 0.738, 0.6, "integration", "1:49-2:28 Descent and Stillness (the trough) — the sparse valley", ["meteor-rain", "r2-thermal"], 0.6, [
         S("sparse", "DARK BACKGROUND — one small wisp of glowing fog suspended alone in the upper left of immense darkness, a few pale motes drifting from it, nearly the entire frame empty"),
         S("interior", "within the fog, a sheltered hollow of darkness where a quiet thread of luminous water winds slowly, faint violet glow lying on it, the camera descending"),
         S("micro", "extreme macro — a single drop of light falling toward black still water, a faint luminous ring of pale blue light waiting where it will land"),
       ], { sparse: true }),
-      P("return", 0.738, 0.882, 0.3, "illumination", "2:28-2:56 High Open Plateau (bright, thirdless, vast)", ["flame", "fracture-light", "firefly-field"], 0.52, [
+      P("return", 0.738, 0.882, 0.3, "illumination", "2:28-2:56 High Open Plateau (bright, thirdless, vast)", ["flame", "ribbon-of-light", "firefly-field"], 0.52, [
         S("aerial", "rising high above the fog and looking straight down on a vast plateau of luminous cloud that fills the frame, wind combing long silver ripples across its surface"),
         S("intimate", "close — the surface of the fog sea combed into fine silver ripples of light, cold blue shadow between them, translucent and weightless"),
         S("abstract", "abstract — long parallel ribbons of silver and pale gold light streaming across darkness toward a distant bright edge, the camera traveling with them"),
       ]),
-      P("integration", 0.882, 1, 0.3, "integration", "2:56-3:20 Unresolved Horizon (fades on Bb5 over F)", ["fracture-light", "firefly-field"], 0.62, [
+      P("integration", 0.882, 1, 0.3, "integration", "2:56-3:20 Unresolved Horizon (fades on Bb5 over F)", ["ribbon-of-light", "firefly-field"], 0.62, [
         S("cosmic", "cosmic — from immense height the fog-covered water becomes a faint pale band across deep violet darkness scattered with a quiet star field, suspended and unresolved"),
         S("micro", "extreme macro — the last violet light lying on a single drop of still black water, fog closing gently over it, translucent and dissolving"),
         S("sparse", "DARK BACKGROUND — a single low wisp of luminous fog drifting above black water in the lower right of vast darkness, the bookend of the first light, left open"),
