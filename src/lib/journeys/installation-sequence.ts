@@ -247,11 +247,12 @@ const RISE_ABOVE = [
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 16. Loire 2 — mellow, uplifting (Karel 2026-10-09)
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 17. Chenin 5 — the screeching, intense, dark one, right after Loire 2 (Karel 2026-10-09)
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 18. No question 7 — after the dark Chenin 5 (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 19. Horses 1 — later in the set (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 20. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 21. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 22. Afterglow
-  "inferno", // 23. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
+  "13e71555-03d6-4b27-ad32-2c6834559c24", // 19. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 20. Horses 1 — later in the set (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 21. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 22. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 23. Afterglow
+  "inferno", // 24. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
