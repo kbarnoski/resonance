@@ -80,7 +80,8 @@ export function imageSlotStep(slot: ImageSlot, wantKey: string | null, level: nu
   }
   if (slot.releasing) {
     const waited = nowMs - slot.releaseAt;
-    const done = strict ? (waited > RELEASE_MS && level < IMAGE_CLEAR) || waited > RELEASE_MAX_MS : waited > RELEASE_MS;
+    // (the flash keeps its old pace: it must meet the flash image on the beat)
+    const done = strict && !urgent ? (waited > RELEASE_MS && level < IMAGE_CLEAR) || waited > RELEASE_MAX_MS : waited > RELEASE_MS;
     if (done) { slot.releasing = false; slot.key = null; return "unload"; }
     return null;
   }
@@ -89,4 +90,22 @@ export function imageSlotStep(slot: ImageSlot, wantKey: string | null, level: nu
     return "load";
   }
   return null;
+}
+
+/**
+ * The emblem hand-off rules, for EVERY journey (Karel 2026-10-09: "fix those
+ * emblems too" — Snowflake and Ghost included; mastered-lock fingerprints this
+ * object, so any later change to it is deliberate):
+ *  • strictRelease — the next image loads only once the last has cleared;
+ *  • underlay — the journey's own opening form is set UNDER the opening
+ *    emblem while the field fully wears it, so the emblem dissolves straight
+ *    into it (no stale leftover form re-aimed as it releases);
+ *  • microDriftGuard — no breathing micro-drift before the journey has a form.
+ */
+export const EMBLEM_HANDOFF = { strictRelease: true, underlay: true, microDriftGuard: true } as const;
+
+/** Underlay the opening form now? Only once the field fully WEARS the emblem
+ *  (image presence ≥ 0.95 → the world form is ≤ 19 % visible underneath). */
+export function underlayDue(o: { emblemWorn: boolean; releasing: boolean; hasForm: boolean; emForm: number; imageShow: number }): boolean {
+  return EMBLEM_HANDOFF.underlay && o.emblemWorn && !o.releasing && !o.hasForm && o.emForm > 0.6 && o.imageShow >= 0.95;
 }

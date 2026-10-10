@@ -44,7 +44,7 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { keyedFlashAngel } from "./flash-angel";
 import { FIELD_FORMS, SPECTRUM_FORMS, isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
-import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason, releaseSharedParticleEngineWithFade } from "@/lib/particles/shared-engine";
+import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason, releaseSharedParticleEngineWithFade, statementHoldActive, onStatementHoldChange } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor, type SpectrumFrame } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
 import { lerpPalette, type ParticlePalette } from "@/lib/particles/souls";
@@ -68,10 +68,10 @@ import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePalette
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed } from "@/lib/journeys/particle-rotation";
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
-import { emblemEnvelope, imageSlotStep, type ImageSlot } from "@/lib/particles/image-follow";
+import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageSlot } from "@/lib/particles/image-follow";
 import type { JourneyFrame } from "@/lib/journeys/types";
 
-const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
+export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
 
 const TIER_BUDGET = {
   // Measured headless on the kiosk's M4 Pro, Lantern in pack mode (journey
@@ -369,6 +369,22 @@ function motifImage(src: string): HTMLCanvasElement | null {
   return null;
 }
 
+// ── the statement card's piano (statement-piano.tsx): decoded, shrunk AND
+// importance-sampled in the decode worker at page load — the card then only
+// uploads it (on black, before the text fades in) ──
+export const STATEMENT_PIANO_SRC = "/tramokyo-pack/emblems/piano-1919.jpg";
+let pianoPromise: Promise<HTMLCanvasElement | null> | null = null;
+export function loadStatementPiano(): Promise<HTMLCanvasElement | null> {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  pianoPromise ??= decodeSmall(STATEMENT_PIANO_SRC, { max: 512 }).catch(() => null);
+  return pianoPromise;
+}
+/** The worker's sample table for an image — never computed on the main thread here. */
+export function cachedSamples(c: HTMLCanvasElement, n: number): Float32Array | undefined {
+  const uv = uvCache.get(c);
+  return uv && uv.length === n * 2 ? uv : undefined;
+}
+
 let emblemMap: Promise<Record<string, string | string[]>> | null = null;
 /** Journey → emblem image (offline pack; empty where the pack has none). */
 function loadEmblemMap(): Promise<Record<string, string | string[]>> {
@@ -495,10 +511,20 @@ export function ParticleLeadLayer({
   const pal = frame?.palette;
   const palKey = pal ? `${pal.primary}${pal.accent}${pal.glow}` : "";
 
+  // the set-start statement card owns the engine while its piano shows
+  // (statement-piano.tsx): journey 0 pre-starts behind it and waits here
+  const [cardHeld, setCardHeld] = useState(() => statementHoldActive());
+  useEffect(() => {
+    if (!cardHeld) return;
+    const off = onStatementHoldChange(() => setCardHeld(statementHoldActive()));
+    if (!statementHoldActive()) setCardHeld(false);
+    return off;
+  }, [cardHeld]);
+
   // ── engine + conductor ────────────────────────────────────────────────────
   useEffect(() => {
     const host = hostRef.current;
-    if (!host) return;
+    if (!host || cardHeld) return;
     const sh = acquireSharedParticleEngine({ count: budgetFor().count, dpr: budgetFor().dpr, trailScale: budgetFor().trailScale });
     if (!sh) { setFailed(true); return; }
     // failsafe: veils fade on their own CSS transitions; unmount after
@@ -965,6 +991,9 @@ export function ParticleLeadLayer({
     };
     const tick = () => {
       if (particlesDisabledReason()) { window.clearInterval(iv); return; } // failsafe tripped: stand down
+      // the statement card owns the engine + canvas (its piano): an outgoing
+      // journey still mounted for its fade must not touch either
+      if (statementHoldActive()) { lastTick = performance.now(); return; }
       const now = performance.now();
       const tickDt = Math.min(0.5, (now - lastTick) / 1000);
       lastTick = now;
@@ -1086,7 +1115,8 @@ export function ParticleLeadLayer({
       // frame): the old image releases to the procedural form first (~1.4 s),
       // THEN the new one loads and the field glides onto it
       let loadNow: boolean;
-      if (diverse) {
+      // (every journey since 2026-10-09 — Karel: "fix those emblems too")
+      if (EMBLEM_HANDOFF.strictRelease) {
         // STRICT (2026-10-09 emblem audit): the next image loads only once the
         // last one has truly CLEARED (engine followers < 1 %). The fixed 1.4 s
         // left ~15 % of the old image's presence on screen, so loading the next
@@ -1152,7 +1182,7 @@ export function ParticleLeadLayer({
       // re-aimed it at once. Now, once the field fully wears the emblem (the
       // world form is ~invisible under it), the journey's opening form is set
       // underneath — the emblem then dissolves straight into it.
-      if (diverse && imgLoaded === "emblem" && !imgReleasing && currentSoul === "" && emForm > 0.6 && engine.imageLevel() > 0.6) {
+      if (underlayDue({ emblemWorn: imgLoaded === "emblem", releasing: imgReleasing, hasForm: currentSoul !== "", emForm, imageShow: engine.imageShown() })) {
         const under = w?.soul ?? cast.morphSouls[0] ?? cast.souls.transition;
         lastAsked = under;
         switchForm(under, t);
@@ -1199,7 +1229,7 @@ export function ParticleLeadLayer({
       // (diverse: only once THIS journey has a form — the micro-drift of a stale
       // lastShape re-aimed the previous journey's leftover form the instant the
       // opening emblem released: 372 of 597 plays, Karel's Grasshopper "drop")
-      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 8000 && (!diverse || currentSoul !== "")) {
+      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 8000 && (!EMBLEM_HANDOFF.microDriftGuard || currentSoul !== "")) {
         microAt = performance.now();
         const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * 0.07;
         // a breath, never a new figure: z only drifts inside its discrete step
@@ -1464,7 +1494,7 @@ export function ParticleLeadLayer({
       engineRef.current = null;
       delete (window as unknown as Record<string, unknown>).__resonanceParticleLead;
     };
-  }, [cast, journeyId]);
+  }, [cast, journeyId, cardHeld]);
 
   // palette follows the phase palette (theme); the tick picks the section's
   // voicing of it (which palette colours sit on low / mid / high)

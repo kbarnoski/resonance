@@ -4,6 +4,7 @@ import type { Journey } from "@/lib/journeys/types";
 import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
+import { StatementPiano } from "./statement-piano";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
  * time this component renders any text, every Cormorant Garamond
@@ -42,9 +43,11 @@ interface Props {
   presenting?: string;
   /** Program-driven description paragraph. */
   description?: string;
+  /** performance.now() when this set's statement card began (kiosk path) — the particle piano's clock */
+  cardT0?: number | null;
 }
 
-export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description }: Props) {
+export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description, cardT0 = null }: Props) {
   // bg-black: opaque during cycle + fading-cycle, fades out during
   // journey + fading-journey on the SAME 3.8s clock as the journey
   // title's inner fade-in. This keeps the visualizer hidden until the
@@ -83,6 +86,11 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
           }}
         />
       )}
+
+      {/* the statement card's particle piano (Karel's 1919 upright): behind
+          the text, mounted for the card's whole life — it stops itself before
+          journey 0 pre-starts and fades with the text (statement-piano.tsx) */}
+      {cardT0 !== null && (expMounted || stage === "journey") && <StatementPiano cardT0={cardT0} textShown={stage === "experience"} />}
 
       {expMounted && (
         <div

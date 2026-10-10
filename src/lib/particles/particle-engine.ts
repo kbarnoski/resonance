@@ -173,6 +173,12 @@ export interface ParticleEngine {
   setVariant(v: { a: readonly number[]; b: readonly number[]; c: readonly number[] } | null, now?: boolean): void;
   /** Image pull / presence still in flight (CPU followers, no GPU read): 0 = clear. */
   imageLevel(): number;
+  /** Image presence follower (1 = the field fully wears the image). */
+  imageShown(): number;
+  /** INVISIBLE FIELD ONLY (statement card): land placement, plane scale,
+   *  mirror and tilt on their targets now; `clear` also drops any worn image
+   *  at once (so a journey taking the engine back never sees it fade). */
+  snapImage(clear?: boolean): void;
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
@@ -1483,6 +1489,12 @@ export function createParticleEngine(
     setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
     setVariant(v, now = false) { varStaged = v; if (now) applyVariant(); },
+    imageShown() { return imgS.x; },
+    snapImage(clear = false) {
+      offX = offTX; offY = offTY; imgScaleS = imgScaleT; imgMirror = imgMirrorT; imgTiltS = imgTiltT;
+      for (const i of [10, 11, 12, 14, 16]) sv[i] = 0;
+      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; }
+    },
     imageLevel() { return Math.max(imgF.x, imgS.x, Math.abs(imgF.v) * 0.2, Math.abs(imgS.v) * 0.2); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)

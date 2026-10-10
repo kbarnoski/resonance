@@ -11,6 +11,7 @@ import { JOURNEYS } from "./journeys";
 import { SCRIPTED_TAKES, TAKE_INTRO_STILLS, TAKE_FINALE_STILLS, TAKE_FINALE_SHADERS } from "./pinned-takes";
 import { MASTERED_JOURNEYS, LEGACY_SLIDESHOW_JOURNEYS } from "./mastered";
 import { PARTICLE_LEADS } from "./particle-lead";
+import { EMBLEM_HANDOFF } from "@/lib/particles/image-follow";
 
 const LOCK = "docs/mastered-lock.json";
 const h = (v: unknown) => createHash("sha256").update(JSON.stringify(v)).digest("hex").slice(0, 16);
@@ -29,6 +30,9 @@ function fingerprint() {
       // Particle layer (Karel 2026-10-05: "roll particles out … including
       // snowflake and ghost") — the ONLY addition; locks their particle cast.
       particleCast: h(PARTICLE_LEADS[id] ?? null),
+      // Emblem hand-off rules (Karel 2026-10-09: "fix those emblems too") —
+      // the particle layer's only behaviour they share with every journey
+      emblemHandoff: h(EMBLEM_HANDOFF),
     };
     // Pack stills (gitignored — checked where the pack exists, i.e. the kiosk Mac).
     const dir = `public/tramokyo-pack/images/journeys/${id}`;

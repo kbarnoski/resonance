@@ -25,6 +25,8 @@ export interface SharedParticleEngine {
 
 let shared: SharedParticleEngine | null = null;
 let disabledWhy: string | null = null;
+/** the set-start statement card owns the engine (see setStatementHold below) */
+let statementHold = false;
 const listeners = new Set<() => void>();
 /** test hook: how many engines (= WebGL contexts) this module ever created */
 export let sharedEnginesCreated = 0;
@@ -70,6 +72,9 @@ let releaseTimer: ReturnType<typeof setTimeout> | null = null;
 export function releaseSharedParticleEngineWithFade(): void {
   const sh = shared;
   if (!sh || typeof document === "undefined") return;
+  // the statement card took the canvas for its piano: an outgoing journey's
+  // late unmount must not pull it away (or stop the engine mid-gather)
+  if (statementHold) return;
   const visible = sh.canvas.style.visibility !== "hidden" && Number(sh.canvas.style.opacity || "0") > 0.02;
   if (!visible) { sh.engine.stop(); sh.canvas.style.visibility = "hidden"; sh.canvas.remove(); return; }
   Object.assign(sh.canvas.style, { position: "fixed", inset: "0", zIndex: "3", transition: "opacity 1.5s linear" } as Partial<CSSStyleDeclaration>);
@@ -137,4 +142,27 @@ export function __resetSharedParticleEngineForTest(): void {
   disabledWhy = null;
   sharedEnginesCreated = 0;
   listeners.clear();
+}
+
+// ── STATEMENT-CARD HOLD (2026-10-09: the set-start card forms Karel's 1919
+// piano in particles). While the card owns the shared engine, a journey layer
+// that mounts behind it (journey 0 pre-starts under the card) waits: it must
+// not take the canvas (the piano would vanish) nor start the engine inside the
+// set-start GPU stall window. The card releases after its fade; a safety
+// timeout releases it regardless.
+let holdTimer: ReturnType<typeof setTimeout> | null = null;
+const holdListeners = new Set<() => void>();
+export function setStatementHold(on: boolean, maxMs = 15_000): void {
+  if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+  if (on) holdTimer = setTimeout(() => setStatementHold(false), maxMs);
+  if (statementHold === on) return;
+  statementHold = on;
+  for (const l of [...holdListeners]) l();
+}
+export function statementHoldActive(): boolean {
+  return statementHold;
+}
+export function onStatementHoldChange(cb: () => void): () => void {
+  holdListeners.add(cb);
+  return () => holdListeners.delete(cb);
 }

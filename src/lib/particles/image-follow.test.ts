@@ -100,3 +100,57 @@ describe("image-form hand-offs are continuous (strict conductor, non-mastered jo
     expect(Math.max(...old.loads.map((l) => l.level))).toBeGreaterThan(0.05);
   });
 });
+
+// ── Snowflake + Ghost (Karel 2026-10-09: "fix those emblems too") ─────────────
+import { EMBLEM_HANDOFF, underlayDue } from "./image-follow";
+import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
+
+/** The opening emblem of a journey of length D, stepped at 60 fps: when does the
+ *  field's own form arrive, and how visible is the world form at that instant? */
+function openingHandOff(D: number, fixed: boolean) {
+  const imgF: Crit = { x: 0, v: 0 }, imgS: Crit = { x: 0, v: 0 };
+  let hasForm = false;
+  let formAtWorldFade = -1, formAt = -1;
+  let loaded = false;
+  for (let i = 0; i < 25 * FPS; i++) {
+    const t = i * DT;
+    const em = emblemEnvelope(t, D);
+    if (!loaded && em.show > 0.02) loaded = true;
+    if (fixed && !hasForm && underlayDue({ emblemWorn: loaded, releasing: false, hasForm, emForm: em.form, imageShow: imgS.x })) { hasForm = true; formAt = t; formAtWorldFade = 1 - 0.85 * imgS.x; }
+    // the old path: no form could be chosen while the emblem was worn; the
+    // stale leftover form was re-aimed the moment the image had released
+    if (!fixed && !hasForm && loaded && em.form < 0.01 && em.show < 0.01) { hasForm = true; formAt = t; formAtWorldFade = 1 - 0.85 * imgS.x; }
+    critStep(imgF, loaded ? em.form * 0.97 : 0, 3, DT);
+    critStep(imgS, loaded ? em.show : 0, 2.4, DT);
+  }
+  return { formAt, formAtWorldFade };
+}
+
+describe("Snowflake + Ghost emblems hand off without a drop", () => {
+  it("the emblem hand-off rules apply to every journey, mastered included", () => {
+    expect(EMBLEM_HANDOFF).toEqual({ strictRelease: true, underlay: true, microDriftGuard: true });
+  });
+  for (const [id, name] of [["first-snow", "Snowflake"], ["ghost", "Ghost"]] as const) {
+    const D = PARTICLE_PROFILES[id].duration;
+    it(`${name}: the opening form is set while the emblem covers the field (world ≤ 20 % visible), never after it releases`, () => {
+      const now = openingHandOff(D, true);
+      expect(now.formAt).toBeGreaterThan(0);
+      expect(now.formAtWorldFade).toBeLessThan(0.2);
+      const before = openingHandOff(D, false);
+      expect(before.formAtWorldFade).toBeGreaterThan(0.8); // the old drop: a re-aim of a mostly visible field at ~16 s
+    });
+    it(`${name}: every emblem exit and image → image hand-off is continuous frame to frame`, () => {
+      const { frames, loads } = run(true, D);
+      expect(maxStep(frames, "form")).toBeLessThan(0.03);
+      expect(maxStep(frames, "show")).toBeLessThan(0.03);
+      expect(maxStep(frames, "worldFade")).toBeLessThan(0.03);
+      expect(maxStep(frames, "scale")).toBeLessThan(0.01);
+      for (const l of loads) expect(l.level, `${name} ${l.key}`).toBeLessThan(IMAGE_CLEAR);
+    });
+  }
+  it("the flash keeps its fast release (it meets the flash image on the beat)", () => {
+    const slot: ImageSlot = { key: "emblem:0", releasing: false, releaseAt: 0 };
+    expect(imageSlotStep(slot, "angel", 0.5, 0, true, true)).toBe("release");
+    expect(imageSlotStep(slot, "angel", 0.5, 1500, true, true)).toBe("unload");
+  });
+});

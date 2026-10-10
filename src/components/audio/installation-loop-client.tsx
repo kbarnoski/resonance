@@ -372,6 +372,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // intro overlay (~6s when each journey starts). Drives the dot stepper
   // visibility — dots only show during this window + during credits.
   const [titleWindow, setTitleWindow] = useState(false);
+  // When this set's statement card began (performance.now), null on the gesture path.
+  const [cardT0, setCardT0] = useState<number | null>(null);
   // Artist-statement interstitial fade (opacity out over its last 1.5s).
   const [statementFading, setStatementFading] = useState(false);
   // Hidden audio element that warms the browser's media cache with the
@@ -1191,6 +1193,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // program "presenting…" card is retired (its stage renders at
       // opacity 0 and exists purely as choreography timing).
       const expMs = !(needsGesture && started) ? EXPERIENCE_INTRO_MS : 0;
+      // the statement card's clock (its particle piano times its GPU-free
+      // hold around the pre-start below — statement-piano-plan.ts)
+      setCardT0(expMs > 0 ? performance.now() : null);
       setIntroStage(
         needsGesture && started ? "fading-cycle" : expMs > 0 ? "experience" : "cycle"
       );
@@ -2241,6 +2246,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           trackArtist={sequence[startIdx]?.track?.artist ?? null}
           presenting={program?.presenting}
           description={program?.description}
+          cardT0={cardT0}
         />
       )}
       {phase.kind === "statement" && (
