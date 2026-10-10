@@ -352,7 +352,13 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     tv += curlNoise(p * 1.4 + vec3(0.0, -uClock.y * 0.4, 0.0)) * 0.55 * (0.5 + 2.0 * up * midW);
     tv += (hash31(s.a * 1e3 + floor(uTime * 20.0)) - 0.5) * 1.2 * up * trebW;
     vec3 a = (tv - v) * 2.2;
-    a.xz -= p.xz * smoothstep(1.4, 2.4, length(p.xz)) * 2.0;
+    // a PLUME, not a column (2026-10-10 kiosk film, Realized): a fixed 1.4–2.4
+    // cylinder filled by fast risers read side-on as a solid square with
+    // straight sides. The hold now narrows with height (wide hearth → thin
+    // tongue) and pulls gently from the axis, so density falls off softly
+    float ph = smoothstep(-2.0, 1.9, p.y);
+    float pr = mix(1.25, 0.45, ph) * (0.75 + 0.5 * hash11(s.a * 53.0));
+    a.xz -= p.xz * smoothstep(pr * 0.5, pr * 1.3, length(p.xz)) * 2.4;
     return vec4(a, 0.0);
   }
   if (soul == 7) {
@@ -1312,7 +1318,10 @@ void main(){
     a *= mix(1.0, rf, uRiseW * (1.0 - uImgShow));
   }
   // wrapping souls fade at the edges where they re-enter
-  float edgeY = smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y);
+  // (each particle its own top, so a rising field ends in a ragged, flickering
+  // crown instead of one horizontal line)
+  float topY = 2.0 - 1.1 * s.g * step(0.5, uWrap.y);
+  float edgeY = smoothstep(topY, topY - 0.6, p.y) * smoothstep(-2.0, -1.4, p.y);
   a *= mix(1.0, edgeY * smoothstep(2.4, 1.0, abs(p.x)), smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
   a *= mix(1.0, smoothstep(3.0, 2.3, abs(p.x)), smoothstep(0.0, 0.5, uWrap.x) * (1.0 - uImgShow));
   vec3 world = col * a * visW * mix(1.0, 4.0, sparse) * uWorldFade;
