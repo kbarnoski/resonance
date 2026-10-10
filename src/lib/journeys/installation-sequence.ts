@@ -249,27 +249,28 @@ const RISE_ABOVE = [
   "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 13. Chemiluminescence — an ambient journey (Karel 2026-10-09)
   "13e71555-03d6-4b27-ad32-2c6834559c24", // 14. Northern Plane 5
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 15. Loire 2
-  "86b64938-26ea-40b9-9ea1-461323a049d5", // 16. Chenin 3 — III. the build
-  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 17. Bells 1 — dark trip-hop groove
-  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 18. Sancerre Cry 4 — beat, attitude, groove
-  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 19. Cabin Soul 6 — neo-soul, head-nod groove, nice vocals (Karel 2026-10-09)
-  "81683231-3b3c-4542-8696-13dfcf56469a", // 20. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 21. Horses 1
-  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 22. The Other Side 10 — epic, monster sound
-  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 23. Chenin 5 — THE PEAK — the screeching, intense one
-  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 24. No question 7 — IV. building up soulfully, after the peak
-  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 25. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
-  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 26. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 27. Night Wind 4
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 28. Tranquility 8 — uplifting, big voices: the soulful build crests here
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 29. Never Forget 4 — deep, painful
-  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 30. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 31. Redwoods Sway 2 — V. the feel-good finale
-  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 32. Tranquility 36
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 33. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 34. Afterglow
-  "inferno", // 35. Realized
-  "aeb508d6-6447-4fb5-8468-636924520f82", // 36. Yellow Bird 6 — the last track
+  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 16. Rise 1 — beautiful, an early soulful ballad that leads the chill into the build (Karel 2026-10-09)
+  "86b64938-26ea-40b9-9ea1-461323a049d5", // 17. Chenin 3 — III. the build
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 18. Bells 1 — dark trip-hop groove
+  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 19. Sancerre Cry 4 — beat, attitude, groove
+  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 20. Cabin Soul 6 — neo-soul, head-nod groove, nice vocals (Karel 2026-10-09)
+  "81683231-3b3c-4542-8696-13dfcf56469a", // 21. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 22. Horses 1
+  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 23. The Other Side 10 — epic, monster sound
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 24. Chenin 5 — THE PEAK — the screeching, intense one
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 25. No question 7 — IV. building up soulfully, after the peak
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 26. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
+  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 27. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 28. Night Wind 4
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 29. Tranquility 8 — uplifting, big voices: the soulful build crests here
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 30. Never Forget 4 — deep, painful
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 31. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 32. Redwoods Sway 2 — V. the feel-good finale
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 33. Tranquility 36
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 34. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 35. Afterglow
+  "inferno", // 36. Realized
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 37. Yellow Bird 6 — the last track
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
