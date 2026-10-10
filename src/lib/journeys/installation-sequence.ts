@@ -206,6 +206,11 @@ export interface TramokyoSetDef {
   /** Every piece is borrowed from a later set that keeps it too (Rise
    *  Above); TRAMOKYO_SETLIST lists each journey at its home position. */
   borrows?: true;
+  /** Played only when chosen from the phone; when it ends the loop returns to
+   *  the list's first set (Karel 2026-10-09: "ra is going to end up the loop we
+   *  use that is self running and the other lists ill only play if i choose to
+   *  from my phone"). */
+  onDemand?: true;
 }
 
 export interface TramokyoSetListDef {
@@ -256,7 +261,8 @@ const RISE_ABOVE = [
   "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 25. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 26. Welcome Home
   "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 27. Afterglow
-  "inferno", // 28. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
+  "inferno", // 28. Realized — after Afterglow (Karel 2026-10-09)
+  "aeb508d6-6447-4fb5-8468-636924520f82", // 29. Yellow Bird 6 — the last track (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
@@ -268,13 +274,13 @@ export const TRAMOKYO_MAIN: TramokyoSetListDef = {
   name: "Main loop",
   sets: [
     { id: "tramokyo-mix", presenting: "Rise Above", journeyIds: RISE_ABOVE, borrows: true },
-    { id: "tramokyo-mix-4", presenting: "March Light", journeyIds: MARCH_LIGHT },
-    { id: "tramokyo-mix-3", presenting: "Surrounded by Light", journeyIds: SURROUNDED_BY_LIGHT },
-    { id: "tramokyo-mix-2", presenting: "Welcome Home", journeyIds: WELCOME_HOME },
-    { id: "tramokyo-mix-vigil", presenting: "Vigil", journeyIds: VIGIL },
-    { id: "tramokyo-mix-ep", presenting: "the Snowflake EP", journeyIds: SNOWFLAKE_EP },
-    { id: "tramokyo-mix-exp", presenting: "Expansion", journeyIds: EXPANSION },
-    { id: "tramokyo-mix-1b", presenting: "the featured journeys", journeyIds: FEATURED, dedication: GRATITUDE },
+    { id: "tramokyo-mix-4", presenting: "March Light", journeyIds: MARCH_LIGHT, onDemand: true },
+    { id: "tramokyo-mix-3", presenting: "Surrounded by Light", journeyIds: SURROUNDED_BY_LIGHT, onDemand: true },
+    { id: "tramokyo-mix-2", presenting: "Welcome Home", journeyIds: WELCOME_HOME, onDemand: true },
+    { id: "tramokyo-mix-vigil", presenting: "Vigil", journeyIds: VIGIL, onDemand: true },
+    { id: "tramokyo-mix-ep", presenting: "the Snowflake EP", journeyIds: SNOWFLAKE_EP, onDemand: true },
+    { id: "tramokyo-mix-exp", presenting: "Expansion", journeyIds: EXPANSION, onDemand: true },
+    { id: "tramokyo-mix-1b", presenting: "the featured journeys", journeyIds: FEATURED, dedication: GRATITUDE, onDemand: true },
   ],
 };
 

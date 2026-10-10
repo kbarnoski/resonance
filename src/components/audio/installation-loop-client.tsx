@@ -72,6 +72,8 @@ export interface InstallationProgram {
   /** Tramokyo set programs: the set list this set belongs to. A list's
    *  sets chain in order and wrap to its own first set. Albums: none. */
   setList?: string;
+  /** Played only when chosen from the phone; the loop then returns to its list's first set. */
+  onDemand?: boolean;
 }
 
 const EMPTY_SEQUENCE: SequenceEntry[] = [];
@@ -1499,7 +1501,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         const next = programs[programIndex + 1];
         const first = programs.findIndex((p) => p.setList === list);
         setProgramIndex(
-          program?.setList && next?.setList === program.setList
+          // Rise Above loops on its own; on-demand sets (albums, Vigil, EP,
+          // Expansion, Featured) hand back to it (Karel 2026-10-09).
+          program?.setList && next?.setList === program.setList && !next.onDemand
             ? programIndex + 1
             : Math.max(0, first),
         );

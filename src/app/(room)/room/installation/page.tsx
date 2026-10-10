@@ -446,6 +446,7 @@ export default async function InstallationPage({ searchParams }: Props) {
             dedication: def.dedication,
             sequence,
             setList: list.id,
+            onDemand: def.onDemand,
           };
         }),
       ).filter((p) => p.sequence.length > 0);
