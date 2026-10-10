@@ -248,38 +248,39 @@ const RISE_ABOVE = [
   "68b4289e-2247-41d6-8b9d-064345da9769", // 12. Tranquility 17
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 13. Surrounded by Light 6
   "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 14. Chemiluminescence — an ambient journey (Karel 2026-10-09)
-  "13e71555-03d6-4b27-ad32-2c6834559c24", // 15. Northern Plane 5
-  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 16. Loire 2
-  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 17. Rise 1 — beautiful, an early soulful ballad that leads the chill into the build (Karel 2026-10-09)
-  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 18. Singular 4 — a sensational portal, transporting (Karel 2026-10-09): the passage from the chill into the build
-  "86b64938-26ea-40b9-9ea1-461323a049d5", // 19. Chenin 3 — III. the build
-  "6407bf5c-7862-49e8-883d-59754c4caf18", // 20. No question 8 — one of his best: smoky night-club jazz lounge, ambient vocals (Karel 2026-10-09)
-  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 21. Bells 1 — dark trip-hop groove
-  "4d17da19-6834-4005-a944-34c27a88a320", // 22. Amboise 2 — another tribal ambient groove (Karel 2026-10-09; in as a groove, never the opener)
-  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 23. Sancerre Cry 4 — beat, attitude, groove
-  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 24. Night Wind 9 — groovy chill with a beat, not a peak (Karel 2026-10-09); between Night Wind 2 and 4
-  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 25. Cabin Soul 6 — neo-soul, head-nod groove, nice vocals (Karel 2026-10-09)
-  "81683231-3b3c-4542-8696-13dfcf56469a", // 26. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
-  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 27. Velvet Tears 1 — tribal dance groove, unique (Karel 2026-10-09)
-  "3814f116-5c54-499c-9d9b-355201700fdc", // 28. Rattler 2 — funky, groovy: a fun peak (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 29. Horses 1
-  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 30. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
-  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 31. Chenin 5 — THE PEAK — the screeching, intense one
-  "cosmic-drift", // 32. Cosmic Drift — soulful solo-piano ambient: the exhale after the peak, to wander (Karel 2026-10-09)
-  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 33. No question 7 — IV. building up soulfully, after the peak
-  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 34. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
-  "the-ascent", // 35. The Summit — a classical, moving piece into the mix (Karel 2026-10-09)
-  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 36. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 37. Night Wind 4
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 38. Tranquility 8 — uplifting, big voices: the soulful build crests here
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 39. Never Forget 4 — deep, painful
-  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 40. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 41. Redwoods Sway 2 — V. the feel-good finale
-  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 42. Tranquility 36
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 43. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 44. Afterglow
-  "inferno", // 45. Realized
-  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 46. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
+  "mycelium-dream", // 15. Mycelium Dream — spacey, far out there, visionary (Karel 2026-10-09); early, in the chill
+  "13e71555-03d6-4b27-ad32-2c6834559c24", // 16. Northern Plane 5
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 17. Loire 2
+  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 18. Rise 1 — beautiful, an early soulful ballad that leads the chill into the build (Karel 2026-10-09)
+  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 19. Singular 4 — a sensational portal, transporting (Karel 2026-10-09): the passage from the chill into the build
+  "86b64938-26ea-40b9-9ea1-461323a049d5", // 20. Chenin 3 — III. the build
+  "6407bf5c-7862-49e8-883d-59754c4caf18", // 21. No question 8 — one of his best: smoky night-club jazz lounge, ambient vocals (Karel 2026-10-09)
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 22. Bells 1 — dark trip-hop groove
+  "4d17da19-6834-4005-a944-34c27a88a320", // 23. Amboise 2 — another tribal ambient groove (Karel 2026-10-09; in as a groove, never the opener)
+  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 24. Sancerre Cry 4 — beat, attitude, groove
+  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 25. Night Wind 9 — groovy chill with a beat, not a peak (Karel 2026-10-09); between Night Wind 2 and 4
+  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 26. Cabin Soul 6 — neo-soul, head-nod groove, nice vocals (Karel 2026-10-09)
+  "81683231-3b3c-4542-8696-13dfcf56469a", // 27. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
+  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 28. Velvet Tears 1 — tribal dance groove, unique (Karel 2026-10-09)
+  "3814f116-5c54-499c-9d9b-355201700fdc", // 29. Rattler 2 — funky, groovy: a fun peak (Karel 2026-10-09)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 30. Horses 1
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 31. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 32. Chenin 5 — THE PEAK — the screeching, intense one
+  "cosmic-drift", // 33. Cosmic Drift — soulful solo-piano ambient: the exhale after the peak, to wander (Karel 2026-10-09)
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 34. No question 7 — IV. building up soulfully, after the peak
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 35. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
+  "the-ascent", // 36. The Summit — a classical, moving piece into the mix (Karel 2026-10-09)
+  "7b39db5e-68fa-4915-8ff1-83078c18edac", // 37. Tranquility 33 — part of the post-Chenin soulful build (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 38. Night Wind 4
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 39. Tranquility 8 — uplifting, big voices: the soulful build crests here
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 40. Never Forget 4 — deep, painful
+  "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 41. Tranquility 34 — gospel with a simple groove, almost a New Orleans funeral jazz (Karel 2026-10-09): grief turning to celebration, into the finale
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 42. Redwoods Sway 2 — V. the feel-good finale
+  "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 43. Tranquility 36
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 44. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 45. Afterglow
+  "inferno", // 46. Realized
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 47. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
