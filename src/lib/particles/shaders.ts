@@ -138,6 +138,14 @@ uniform float uInstSeed;  // field layout seed
 uniform vec4 uForm;       // xy = cymatic plate mode (n, m) · zw = lissajous ratios
 uniform float uCamAz;     // camera azimuth — figures that must FACE the viewer build in camera space
 uniform vec4 uShape;      // per-appearance shape seed 0..1 (v4 variety: petals, gears, symmetry, solid)
+// FORM VARIANTS (Karel 2026-10-09: "dozens of unfolding flower designs, endless
+// shapes"): per-appearance design parameters, decoded on the CPU by
+// form-variety.ts (the single source of truth for what each slot means).
+// uVarOn = 0 → every soul runs its original constants (Snowflake + Ghost).
+uniform float uVarOn;
+uniform vec4 uVarA;
+uniform vec4 uVarB;
+uniform vec4 uVarC;
 uniform float uMaxSpeed;  // speed cap (entry ramps it up — no sudden bursts)
 uniform float uPull;      // 0.3 → 1 after a new figure: the pull eases in (no speed-cap drag)
 uniform float uAccCap;    // transition acceleration limit (huge = off): no lunge, no plateau
@@ -236,17 +244,22 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 0) {
     // ── VORTEX: a 3-arm log-spiral galaxy; bass surges its orbit radius ──
     // bands segregate by radius: warm bass core → violet mids → blue treble rim
-    float r0 = 0.08 + 1.55 * pow(mix(s.g, band, 0.55), 0.9);
-    float arm = floor(s.b * 3.0);
+    // variant: arms · pitch (sign = handedness) · arm spread · halo share ·
+    // spin · core bulge · disk warp · extent (form-variety.ts)
+    float vxExt = 1.55, vxArms = 3.0, vxStep = 2.0943951, vxPitch = 2.3, vxSpread = 1.0, vxHalo = 0.85, vxSpin = 0.22, vxBulge = 1.0, vxWarp = 0.0;
+    if (uVarOn > 0.5) { vxArms = uVarA.x; vxStep = 6.2831853 / uVarA.x; vxPitch = uVarA.y; vxSpread = uVarA.z; vxHalo = uVarA.w; vxSpin = uVarB.x; vxBulge = uVarB.y; vxWarp = uVarB.z; vxExt = uVarB.w; }
+    float r0 = 0.08 + vxExt * pow(mix(s.g, band, 0.55), 0.9);
+    float arm = floor(s.b * vxArms);
     // ~28% of the bodies are the diffuse disk between the arms (s.b high)
-    float halo = step(0.85, fract(s.b * 7.31));
-    float scatter = (hash11(s.a * 917.0) - 0.5) * mix(0.42 + 0.35 * s.g, 6.2831853, halo) * mix(1.0, 2.0, step(0.5, hash11(s.a * 11.0)) * (1.0 - halo));
-    float ang = arm * 2.0943951 + log(r0) * 2.3 + scatter + uClock.x * 0.22
+    float halo = step(vxHalo, fract(s.b * 7.31));
+    float scatter = (hash11(s.a * 917.0) - 0.5) * mix((0.42 + 0.35 * s.g) * vxSpread, 6.2831853, halo) * mix(1.0, 2.0, step(0.5, hash11(s.a * 11.0)) * (1.0 - halo));
+    float ang = arm * vxStep + log(r0) * vxPitch + scatter + uClock.x * vxSpin
               + uClock.y * 0.05 / (0.3 + r0);
     float rj = 1.0 + (hash11(s.a * 53.0) - 0.5) * 0.18;
     float R = r0 * rj * (1.0 + 0.10 * uBands.x + 0.42 * up * bassW + 0.12 * lvl * bassW);
     float y = (hash11(s.a * 331.0) - 0.5) * 0.16 * exp(-r0 * 0.7)
-            + (hash11(s.a * 77.0) - 0.5) * 0.45 * exp(-r0 * 4.0);
+            + (hash11(s.a * 77.0) - 0.5) * 0.45 * vxBulge * exp(-r0 * 4.0);
+    if (uVarOn > 0.5) y += vxWarp * sin(ang * 2.0) * r0;
     vec3 home = vec3(cos(ang) * R, y, sin(ang) * R);
     // treble: the finest dust sprays off the arms along its own fixed
     // direction while its band is up, and settles back as it falls
@@ -261,13 +274,17 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 1) {
     // ── SMOKE OF LIGHT: a curl-noise current rising like breath ──
-    vec3 q = p * 0.85 + vec3(0.0, -uClock.y * 0.16, uClock.x * 0.06);
+    // variant: curl scale · rise · column width · swirl
+    float smC = 0.85, smRise = 0.2, smCol = 0.55, smCol2 = 1.2;
+    if (uVarOn > 0.5) { smC = uVarA.x; smRise = uVarA.y; smCol = uVarA.z; smCol2 = uVarA.z + 0.65; }
+    vec3 q = p * smC + vec3(0.0, -uClock.y * 0.16, uClock.x * 0.06);
     vec3 c = curlNoise(q) * 0.22 * (0.55 + 3.0 * up * midW + 0.7 * uSwell);
-    vec3 tv = c + vec3(0.0, 0.2 + 0.5 * max(uBands.x, 0.0) * (0.5 + bassW), 0.0);
+    vec3 tv = c + vec3(0.0, smRise + 0.5 * max(uBands.x, 0.0) * (0.5 + bassW), 0.0);
+    if (uVarOn > 0.5) tv.xz += vec2(-p.z, p.x) * uVarA.w;
     tv += curlNoise(p * 3.1 + uClock.z * 0.2) * 0.7 * up * trebW;
     vec3 a = (tv - v) * 2.2;
     float d = length(p.xz);
-    a.xz -= p.xz * smoothstep(0.55, 1.2, d) * 2.0;
+    a.xz -= p.xz * smoothstep(smCol, smCol2, d) * 2.0;
     return vec4(a, 0.0);
   }
   if (soul == 2) {
@@ -300,13 +317,18 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 3) {
     // ── MURMURATION: a lagged ribbon chasing a wandering leader ──
-    float t = uClock.x * 0.55 - s.g * 4.5;
-    vec3 lead = vec3(sin(t * 0.61) * 1.25 + sin(t * 0.23) * 0.3,
-                     sin(t * 0.47 + 1.0) * 0.45,
-                     sin(t * 0.39 + 2.0) * 0.95);
+    // variant: leader path (3 frequencies) · lag · spread (x/z, y) · sub-flocks · path scale
+    float muLag = 4.5, muFx = 0.61, muFy = 0.47, muFz = 0.39, muSx = 1.6, muSy = 0.25;
+    if (uVarOn > 0.5) { muFx = uVarA.x; muFy = uVarA.y; muFz = uVarA.z; muLag = uVarA.w; muSx = uVarB.x; muSy = uVarB.y; }
+    float t = uClock.x * 0.55 - s.g * muLag;
+    if (uVarOn > 0.5) t += floor(hash11(s.a * 19.0) * uVarB.z) * 2.3;
+    vec3 lead = vec3(sin(t * muFx) * 1.25 + sin(t * 0.23) * 0.3,
+                     sin(t * muFy + 1.0) * 0.45,
+                     sin(t * muFz + 2.0) * 0.95);
+    if (uVarOn > 0.5) lead *= uVarB.w;
     vec3 h = hash31(s.a * 2971.0) - 0.5;
     float spread = 0.55 + 0.25 * uSwell;
-    vec3 off = vec3(h.x * 1.6, h.y * 0.25, h.z * 1.6) * spread;
+    vec3 off = vec3(h.x * muSx, h.y * muSy, h.z * muSx) * spread;
     vec3 target = lead + off + normalize(h + 1e-4) * 0.45 * up * trebW;
     vec3 desired = (target - p) * (2.0 + 1.2 * max(uBands.x, 0.0));
     vec3 a = (desired - v) * (1.4 + 1.6 * s.b);
@@ -352,13 +374,18 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 9) {
     // ── TENDRILS: luminous growth reaching upward, swaying with the melody ──
-    float k = floor(s.b * 7.0);
+    // variant: count · sway · height · spacing · curl freq · ring of roots · sway speed · helix
+    float tdN = 7.0, tdSw = 0.45, tdH = 3.6, tdSp = 0.55, tdF = 3.0, tdSpd = 0.3;
+    if (uVarOn > 0.5) { tdN = uVarA.x; tdSw = uVarA.y; tdH = uVarA.z; tdSp = uVarA.w; tdF = uVarB.x; tdSpd = uVarB.z; }
+    float k = floor(s.b * tdN);
     float reach = 0.55 + 0.45 * smoothstep(0.0, 1.0, uSwell + uBandLv.y * 0.5);
     float u = min(s.g, reach);
-    vec3 root = vec3((k - 3.0) * 0.55, -1.9, sin(k * 2.3) * 0.5);
-    vec3 home = root + vec3(sin(u * 3.0 + k + uClock.y * 0.3) * 0.45 * u,
-                            u * 3.6,
-                            cos(u * 2.5 + k * 1.7 + uClock.y * 0.25) * 0.45 * u);
+    vec3 root = vec3((k - (tdN - 1.0) * 0.5) * tdSp, -1.9, sin(k * 2.3) * 0.5);
+    if (uVarOn > 0.5 && uVarB.y > 0.5) { float ra = k * 6.2831853 / tdN; root = vec3(cos(ra) * tdSp * 1.6, -1.9, sin(ra) * tdSp * 1.6); }
+    vec3 home = root + vec3(sin(u * tdF + k + uClock.y * tdSpd) * tdSw * u,
+                            u * tdH,
+                            cos(u * 2.5 + k * 1.7 + uClock.y * 0.25) * tdSw * u);
+    if (uVarOn > 0.5) home.xz += vec2(cos(u * 9.0 + k + uClock.y * 0.2), sin(u * 9.0 + k + uClock.y * 0.2)) * uVarB.w * u;
     home += curlNoise(vec3(k * 3.1, u * 2.0, uClock.y * 0.12)) * 0.12 * u * (1.0 + 2.0 * up * midW);
     home += (hash31(s.a * 77.0) - 0.5) * 0.05 * (1.0 + 4.0 * up * trebW);
     return vec4((home - p) * 8.0, 4.0);
@@ -377,16 +404,23 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 11) {
     // ── RIBBONS: three twisting bands looping through space ──
-    float r = floor(s.b * 3.0);
-    float t = s.g * 6.2831853 + uClock.y * 0.18 + r * 2.1;
-    vec3 c0 = vec3(sin(t) * 1.4, sin(t * 2.0 + r) * 0.5, cos(t) * 1.1 * cos(t * 0.5 + r));
-    vec3 c1 = vec3(sin(t + 0.01) * 1.4, sin((t + 0.01) * 2.0 + r) * 0.5, cos(t + 0.01) * 1.1 * cos((t + 0.01) * 0.5 + r));
+    // variant: count · phase spacing (loops ↔ fan) · figure freq · width ·
+    // twist turns · z-fold freq · braid radius · path speed
+    float rbN = 3.0, rbPh = 2.1, rbFy = 2.0, rbW = 0.32, rbTw = 8.0, rbZm = 0.5, rbSpd = 0.18, rbR = 1.0;
+    if (uVarOn > 0.5) { rbN = uVarA.x; rbPh = uVarA.y; rbFy = uVarA.z; rbW = uVarA.w; rbTw = uVarB.x; rbZm = uVarB.y; rbSpd = uVarB.w; rbR = uVarB.z > 0.0 ? 0.0 : 1.0; }
+    float r = floor(s.b * rbN);
+    float rr = r * rbR;
+    float t = s.g * 6.2831853 + uClock.y * rbSpd + rr * rbPh;
+    vec3 c0 = vec3(sin(t) * 1.4, sin(t * rbFy + rr) * 0.5, cos(t) * 1.1 * cos(t * rbZm + rr));
+    vec3 c1 = vec3(sin(t + 0.01) * 1.4, sin((t + 0.01) * rbFy + rr) * 0.5, cos(t + 0.01) * 1.1 * cos((t + 0.01) * rbZm + rr));
     vec3 T = normalize(c1 - c0 + 1e-5);
     vec3 N = normalize(cross(T, vec3(0.0, 1.0, 0.0)) + 1e-4);
     vec3 B = cross(T, N);
-    float tw = s.g * 8.0 + uClock.x * 0.6;
-    float w = (s.a - 0.5) * 0.32 * (1.0 + 0.8 * up * midW);
+    float tw = s.g * rbTw + uClock.x * 0.6;
+    float w = (s.a - 0.5) * rbW * (1.0 + 0.8 * up * midW);
     vec3 home = c0 + (N * cos(tw) + B * sin(tw)) * w;
+    // braid: the strands share one path and wind round it, evenly spaced
+    if (uVarOn > 0.5 && uVarB.z > 0.0) { float ba = t * 3.0 + r * 6.2831853 / rbN + uClock.y * 0.3; home += (N * cos(ba) + B * sin(ba)) * uVarB.z; }
     home += normalize(hash31(s.a * 613.0) - 0.5) * 0.15 * up * trebW;
     return vec4((home - p) * 8.0, 4.0);
   }
@@ -402,8 +436,11 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 13) {
     // ── INK IN WATER: clouds of light unfurling from drops ──
-    vec3 tv = curlNoise(p * 1.1 + vec3(0.0, uClock.y * 0.1, 0.0)) * 0.35 * (0.6 + 2.2 * up * midW + 0.4 * uBandLv.x);
-    tv.y -= 0.05;
+    // variant: curl scale · amplitude · sink
+    float inC = 1.1, inA = 0.35, inS = 0.05;
+    if (uVarOn > 0.5) { inC = uVarA.x; inA = uVarA.y; inS = uVarA.z; }
+    vec3 tv = curlNoise(p * inC + vec3(0.0, uClock.y * 0.1, 0.0)) * inA * (0.6 + 2.2 * up * midW + 0.4 * uBandLv.x);
+    tv.y -= inS;
     vec3 a = (tv - v) * 1.2;
     a -= p * smoothstep(2.0, 2.8, length(p)) * 1.2;
     return vec4(a, 0.0);
@@ -472,11 +509,21 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 17) {
     // ── WAVES: a field of motes rolling like a sea of sound ──
-    float x = (s.g - 0.5) * 6.4;
+    // variant: wavelength · amplitude · height · direction · radial ripples ·
+    // cross-wave freq · speed · field width
+    float wvK = 1.1, wvA = 0.26, wvY = -0.5, wvF2 = 2.3, wvSpd = 1.4, wvW = 6.4;
+    if (uVarOn > 0.5) { wvK = uVarA.x; wvA = uVarA.y; wvY = uVarA.z; wvF2 = uVarB.y; wvSpd = uVarB.z; wvW = uVarB.w; }
+    float x = (s.g - 0.5) * wvW;
     float z = (s.b - 0.5) * 4.4;
-    float y = 0.26 * sin(x * 1.1 - uClock.x * 1.4) * (0.4 + uBandLv.x + max(uBands.x, 0.0))
-            + 0.12 * sin(z * 2.3 + x * 0.7 - uClock.y * 2.0) * (0.4 + uBandLv.y)
-            + 0.05 * sin(x * 7.0 + z * 5.0 - uClock.z * 4.0) * (0.3 + uBandLv.z + up * trebW) - 0.5;
+    float xw = x, zw = z;
+    if (uVarOn > 0.5) {
+      float ca = cos(uVarA.w), sa = sin(uVarA.w);
+      xw = x * ca + z * sa; zw = -x * sa + z * ca;
+      if (uVarB.x > 0.5) xw = length(vec2(x, z * 1.4)) * 1.3; // ripples from the centre
+    }
+    float y = wvA * sin(xw * wvK - uClock.x * wvSpd) * (0.4 + uBandLv.x + max(uBands.x, 0.0))
+            + 0.12 * sin(zw * wvF2 + xw * 0.7 - uClock.y * 2.0) * (0.4 + uBandLv.y)
+            + 0.05 * sin(xw * 7.0 + zw * 5.0 - uClock.z * 4.0) * (0.3 + uBandLv.z + up * trebW) + wvY;
     return vec4((vec3(x, y, z) - p) * 9.0, 4.2);
   }
   if (soul == 18) {
@@ -501,9 +548,14 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     vec3 gauss = vec3(sqrt(-2.0 * log(max(h.x, 1e-4))) * cos(6.2831853 * h.y),
                       sqrt(-2.0 * log(max(h.z, 1e-4))) * sin(6.2831853 * h2.x),
                       sqrt(-2.0 * log(max(h2.y, 1e-4))) * cos(6.2831853 * h2.z));
-    float breath = 1.0 + 0.18 * sin(uClock.x * 0.4) + 0.22 * max(uBands.x, 0.0);
-    vec3 home = gauss * vec3(0.9, 0.5, 0.8) * breath;
-    home += curlNoise(home * 0.6 + uClock.y * 0.05) * 0.35 * (1.0 + 1.5 * up * midW);
+    // variant: shape (x, y, z) · breath · curl scale · curl amount · spiral swirl
+    vec3 nbAx = vec3(0.9, 0.5, 0.8);
+    float nbBr = 0.18, nbCs = 0.6, nbCa = 0.35;
+    if (uVarOn > 0.5) { nbAx = uVarA.xyz; nbBr = uVarA.w; nbCs = uVarB.x; nbCa = uVarB.y; }
+    float breath = 1.0 + nbBr * sin(uClock.x * 0.4) + 0.22 * max(uBands.x, 0.0);
+    vec3 home = gauss * nbAx * breath;
+    if (uVarOn > 0.5) { float sw = uVarB.z * length(home.xz) + uClock.y * 0.02 * uVarB.w; home.xz = mat2(cos(sw), sin(sw), -sin(sw), cos(sw)) * home.xz; }
+    home += curlNoise(home * nbCs + uClock.y * 0.05) * nbCa * (1.0 + 1.5 * up * midW);
     home += normalize(hash31(s.a * 613.0) - 0.5) * 0.2 * up * trebW;
     return vec4((home - p) * 3.0, 2.2);
   }
@@ -523,15 +575,19 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 21) {
     // ── KALEIDOSCOPE: mirrored flow folded into eight sectors ──
-    float r = 0.15 + 1.6 * s.g;
+    // variant: inner hole · reach · wedge wave · ripple freq/amp · turn · breath · flat/dome
+    float kIn = 0.15, kR = 1.6, kWv = 0.25, kRf = 4.0, kRa = 0.2, kSpd = 0.05, kBr = 0.08;
+    if (uVarOn > 0.5) { kIn = uVarA.x; kR = uVarA.y; kWv = uVarA.z; kRf = uVarA.w; kRa = uVarB.x; kSpd = uVarB.y; kBr = uVarB.z; }
+    float r = kIn + kR * s.g;
     float nSec = 5.0 + floor(uShape.x * 7.999);
     float wedge = 3.14159265 / nSec;
-    float tb = s.b * wedge + 0.25 * sin(uClock.y * 0.4 + r * 3.0) * wedge + 0.1 * up * midW;
+    float tb = s.b * wedge + kWv * sin(uClock.y * 0.4 + r * 3.0) * wedge + 0.1 * up * midW;
     float k = floor(s.a * nSec);
     float mirror = mod(floor(s.a * nSec * 2.0), 2.0);
-    float th = k * 2.0 * wedge + (mirror > 0.5 ? -tb : tb) + uClock.x * 0.05;
-    r *= 1.0 + 0.08 * sin(tb * nSec * 2.0 + uClock.y) + 0.12 * up * bassW;
-    vec3 home = vec3(cos(th) * r, 0.2 * sin(r * 4.0 - uClock.y * 1.2) * (0.3 + uBandLv.y), sin(th) * r);
+    float th = k * 2.0 * wedge + (mirror > 0.5 ? -tb : tb) + uClock.x * kSpd;
+    r *= 1.0 + kBr * sin(tb * nSec * 2.0 + uClock.y) + 0.12 * up * bassW;
+    vec3 home = vec3(cos(th) * r, kRa * sin(r * kRf - uClock.y * 1.2) * (0.3 + uBandLv.y), sin(th) * r);
+    if (uVarOn > 0.5) home.y += uVarB.w * (1.0 - r * r * 0.3);
     return vec4((home - p) * 8.0, 4.0);
   }
   if (soul == 22) {
@@ -573,45 +629,66 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float phi = i * 2.39996323;
     vec3 d = vec3(cos(phi) * rad, yy, sin(phi) * rad);
     float th = acos(clamp(d.y, -1.0, 1.0));
-    float az = atan(d.z, d.x) + uClock.y * 0.1;
-    float R = 1.15
-      + 0.22 * cos((2.0 + floor(uShape.x * 2.999)) * th) * cos((2.0 + floor(uShape.y * 3.999)) * az + uClock.x * 0.5) * (0.3 + uBandLv.x + max(uBands.x, 0.0))
-      + 0.1 * cos(4.0 * th) * cos(4.0 * az - uClock.y * 0.6) * (0.3 + uBandLv.y + max(uBands.y, 0.0))
-      + 0.05 * cos(8.0 * th) * cos(8.0 * az + uClock.z) * (0.3 + uBandLv.z + up * trebW);
-    return vec4((d * R - p) * 10.0, 4.5);
+    // variant: radius · first-order amp · second / third orders · spin · squash
+    float hmR = 1.15, hmA = 0.22, hmO2 = 4.0, hmO3 = 8.0, hmSpin = 0.1;
+    if (uVarOn > 0.5) { hmR = uVarA.x; hmA = uVarA.y; hmO2 = uVarA.z; hmO3 = uVarA.w; hmSpin = uVarB.x; }
+    float az = atan(d.z, d.x) + uClock.y * hmSpin;
+    float R = hmR
+      + hmA * cos((2.0 + floor(uShape.x * 2.999)) * th) * cos((2.0 + floor(uShape.y * 3.999)) * az + uClock.x * 0.5) * (0.3 + uBandLv.x + max(uBands.x, 0.0))
+      + 0.1 * cos(hmO2 * th) * cos(hmO2 * az - uClock.y * 0.6) * (0.3 + uBandLv.y + max(uBands.y, 0.0))
+      + 0.05 * cos(hmO3 * th) * cos(hmO3 * az + uClock.z) * (0.3 + uBandLv.z + up * trebW);
+    vec3 hq = d * R;
+    if (uVarOn > 0.5) hq.y *= uVarB.y;
+    return vec4((hq - p) * 10.0, 4.5);
   }
   if (soul == 26) {
     // ── LISSAJOUS: a figure traced by the music's own intervals ──
-    float t = s.g * 6.2831853 * 2.0;
+    // variant: loops · phase · extents (x, y, z) · drift speed
+    float ljLoops = 2.0, ljPh = 1.3, ljSpd = 0.2;
+    vec3 ljS = vec3(1.6, 1.1, 1.2);
+    if (uVarOn > 0.5) { ljLoops = uVarA.x; ljPh = uVarA.y; ljS = vec3(uVarA.z, uVarA.w, uVarB.x); ljSpd = uVarB.y; }
+    float t = s.g * 6.2831853 * ljLoops;
     vec3 rat = vec3(1.0, uForm.z, uForm.w);
-    vec3 q = vec3(sin(rat.x * t + uClock.y * 0.2),
+    vec3 q = vec3(sin(rat.x * t + uClock.y * ljSpd),
                   sin(rat.y * t),
-                  sin(rat.z * t + 1.3 + uClock.x * 0.1)) * vec3(1.6, 1.1, 1.2);
+                  sin(rat.z * t + ljPh + uClock.x * 0.1)) * ljS;
     q += normalize(hash31(s.a * 53.0) - 0.5) * (0.025 + 0.12 * up * trebW + 0.04 * up * midW);
     return vec4((q - p) * 10.0, 4.5);
   }
   if (soul == 27) {
     // ── RINGS: concentric rings breathing outward on the bass ──
     float nR = 7.0 + floor(uShape.x * 7.999);
+    // variant: spacing curve · wobble lobes / amp · speed · tilt · gyroscope fan · one-way turn
+    float rgLobes = 3.0, rgWob = 0.07, rgSpd = 0.12, rgTilt = 0.55;
+    if (uVarOn > 0.5) { rgLobes = uVarA.y; rgWob = uVarA.z; rgSpd = uVarA.w; rgTilt = uVarB.x; }
     float k = floor(s.b * nR);
-    float r = 0.22 + k * 1.32 / nR;
+    float rk = k * 1.32 / nR;
+    if (uVarOn > 0.5) rk = pow(k / nR, uVarA.x) * 1.32;
+    float r = 0.22 + rk;
     r *= 1.0 + 0.09 * sin(uClock.x * 0.8 - k * 0.55) + 0.12 * up * bassW;
     float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
-    float ang = s.g * 6.2831853 + uClock.y * 0.12 * dir;
-    vec3 q = vec3(cos(ang) * r, 0.07 * sin(ang * 3.0 + uClock.y) * (0.3 + uBandLv.y + up * midW), sin(ang) * r);
+    if (uVarOn > 0.5 && uVarB.z > 0.5) dir = 1.0;
+    float ang = s.g * 6.2831853 + uClock.y * rgSpd * dir;
+    vec3 q = vec3(cos(ang) * r, rgWob * sin(ang * rgLobes + uClock.y) * (0.3 + uBandLv.y + up * midW), sin(ang) * r);
     q += normalize(hash31(s.a * 71.0) - 0.5) * (0.012 + 0.05 * up * trebW);
-    q = rotX(0.55 + 0.7 * uShape.z + 0.1 * sin(uClock.y * 0.07)) * q;
+    if (uVarOn > 0.5) q = rotY(k * 1.3) * rotX(k * uVarB.y) * q;
+    q = rotX(rgTilt + 0.7 * uShape.z + 0.1 * sin(uClock.y * 0.07)) * q;
     return vec4((q - p) * 10.0, 4.5);
   }
   if (soul == 28) {
     // ── ROSE CURVES: nested rhodonea petals turning against each other ──
-    float layer = floor(s.b * 3.0);
-    float n = 2.0 + floor(uShape.x * 5.999) + layer;
-    float d = 1.0 + floor(uShape.y * 2.999);
+    // variant: layers · base petals · petals added per layer · denominator ·
+    // layer shrink · counter-turn speed · layer offset · tilt
+    float rsL = 3.0, rsN0 = 2.0 + floor(uShape.x * 5.999), rsAdd = 1.0, rsD = 1.0 + floor(uShape.y * 2.999), rsShr = 0.4, rsSpd = 0.08, rsOff = 0.4;
+    if (uVarOn > 0.5) { rsL = uVarA.x; rsN0 = uVarA.y; rsAdd = uVarA.z; rsD = uVarA.w; rsShr = uVarB.x; rsSpd = uVarB.y; rsOff = uVarB.z; }
+    float layer = floor(s.b * rsL);
+    float n = rsN0 + layer * rsAdd;
+    float d = rsD;
     float th = s.g * 6.2831853 * d;
-    float r = cos(n / d * th) * (1.5 - layer * 0.4) * (1.0 + 0.08 * max(uBands.x, 0.0));
-    float rot = uClock.y * 0.08 * (mod(layer, 2.0) < 0.5 ? 1.0 : -1.0) + layer * 0.4;
+    float r = cos(n / d * th) * (1.5 - layer * rsShr) * (1.0 + 0.08 * max(uBands.x, 0.0));
+    float rot = uClock.y * rsSpd * (mod(layer, 2.0) < 0.5 ? 1.0 : -1.0) + layer * rsOff;
     vec3 q = vec3(cos(th + rot) * r, 0.06 * sin(n * th + uClock.y) * (0.3 + uBandLv.y), sin(th + rot) * r);
+    if (uVarOn > 0.5) q = rotX(uVarB.w * (layer - (rsL - 1.0) * 0.5)) * q;
     q += normalize(hash31(s.a * 83.0) - 0.5) * (0.012 + 0.05 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
   }
@@ -664,17 +741,24 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 32) {
     // ── MANDALA: eleven rings of interlocking petal harmonics, each ring
     // counter-turning; a second harmonic weaves through the first ──
-    float k = floor(s.b * 11.0);
+    // variant: rings · ring step · petal amplitude · weave harmonic · turn speed ·
+    // spiral twist · dome · one-way turn
+    float mdK = 11.0, mdSp = 0.135, mdAmp = 1.0, mdH2 = 1.0, mdRot = 0.05;
+    if (uVarOn > 0.5) { mdK = uVarA.x; mdSp = uVarA.y; mdAmp = uVarA.z; mdH2 = uVarA.w; mdRot = uVarB.x; }
+    float k = floor(s.b * mdK);
     float n = 4.0 + floor(uShape.x * 8.999) + k * floor(1.0 + uShape.y * 1.999);
     float th = s.g * 6.2831853;
     float dir = mod(k, 2.0) < 0.5 ? 1.0 : -1.0;
+    if (uVarOn > 0.5 && uVarB.w > 0.5) dir = 1.0;
     float e1 = 0.5 + uShape.w * 2.5;
-    float r = 0.16 + k * 0.135
-      + (0.05 + 0.012 * k) * pow(abs(cos(n * th * 0.5)), e1)
-      + (0.02 + 0.006 * k) * pow(abs(cos(n * th + uClock.y * 0.2 * dir)), 1.5);
+    float r = 0.16 + k * mdSp
+      + (0.05 + 0.012 * k) * mdAmp * pow(abs(cos(n * th * 0.5)), e1)
+      + (0.02 + 0.006 * k) * pow(abs(cos(n * th * mdH2 + uClock.y * 0.2 * dir)), 1.5);
     r *= 1.0 + 0.04 * sin(uClock.x * 0.6 - k * 0.7) + 0.07 * up * bassW;
-    float a = th + uClock.y * 0.05 * dir;
+    float a = th + uClock.y * mdRot * dir;
+    if (uVarOn > 0.5) a += k * uVarB.y;
     vec3 q = vec3(cos(a) * r, 0.04 * sin(n * th + uClock.y) * (0.3 + uBandLv.y), sin(a) * r);
+    if (uVarOn > 0.5) q.y += uVarB.z * (1.0 - r * r * 0.35);
     q += normalize(hash31(s.a * 109.0) - 0.5) * (0.008 + 0.04 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
   }
@@ -743,9 +827,12 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     float tw = (1.0 + floor(uShape.z * 3.999)) * (s.a < 0.5 ? 1.0 : -1.0);
     float uu = s.g * 6.2831853;
     float vv = tw * uu + L * 6.2831853 / nl + uClock.y * 0.2;
+    // variant: major radius · lobes (a knotted rim) · lobe depth · roll speed · tilt
     float R = 1.0, r = 0.38 + uShape.x * 0.3;
+    float toRot = 0.1, toTilt = 0.9;
+    if (uVarOn > 0.5) { R = uVarA.x + uVarA.z * sin(uVarA.y * uu + uClock.y * 0.1); toRot = uVarA.w; toTilt = uVarB.x; }
     vec3 q = vec3((R + r * cos(vv)) * cos(uu), r * sin(vv), (R + r * cos(vv)) * sin(uu)) * 1.15;
-    q = rotY(uClock.y * 0.1) * rotX(0.9 + 0.15 * sin(uClock.x * 0.1)) * q;
+    q = rotY(uClock.y * toRot) * rotX(toTilt + 0.15 * sin(uClock.x * 0.1)) * q;
     q *= 1.0 + 0.06 * max(uBands.x, 0.0);
     q += normalize(hash31(s.a * 113.0) - 0.5) * (0.01 + 0.045 * up * trebW);
     return vec4((q - p) * 10.0, 4.5);
@@ -776,17 +863,24 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 37) {
     // ── BLOSSOM: layered petals unfurling and closing, layers counter-turning ──
-    float L = floor(s.b * 3.0);
-    float n = 5.0 + floor(uShape.x * 4.999) + L;
+    // variant (form-variety.ts): petals 3–13 · layers 2–5 · petals added per
+    // layer · petal shape (slender ↔ round) · notched tips · curl (pinwheel) ·
+    // layer offset (alternate ↔ phyllotaxis spiral) · open/close rhythm · cup ·
+    // turn direction. uVarOn = 0 → Ghost's blossom, constants untouched.
+    float bL = 3.0, bN0 = 5.0 + floor(uShape.x * 4.999), bAdd = 1.0, bExp = 0.8, bShr = 0.28, bWs = 0.08, bOff = 0.5, bRate = 0.05, bCup = 0.9, bTurn = 0.03;
+    if (uVarOn > 0.5) { bN0 = uVarA.x; bL = uVarA.y; bAdd = uVarA.z; bExp = uVarA.w; bOff = uVarB.y; bRate = uVarB.z; bCup = uVarB.w; bTurn = uVarC.y; bShr = 0.84 / uVarA.y; bWs = 0.24 / uVarA.y; }
+    float L = floor(s.b * bL);
+    float n = bN0 + L * bAdd;
     float pi_ = floor(s.a * n);
     float u = s.g;
     float vv = fract(s.a * n) * 2.0 - 1.0;
     // a SLOW unfolding — bud to full bloom and back (Karel 2026-10-06: "that slow
     // unfolding and growing flower form … was magic")
-    float open = 0.5 + 0.5 * sin(uClock.x * 0.05 + L * 0.7 + uShape.y * 6.28 - 1.5708);
-    float R = (0.55 + 0.45 * (1.0 - L * 0.28)) * 1.45;
-    float wid = pow(sin(3.14159265 * u), 0.8) * (0.42 - 0.08 * L) * (1.0 + 0.15 * max(uBands.y, 0.0));
-    float ang = (pi_ + 0.5 * L) * 6.2831853 / n + uClock.y * 0.03 * (mod(L, 2.0) < 0.5 ? 1.0 : -1.0);
+    float open = 0.5 + 0.5 * sin(uClock.x * bRate + L * 0.7 + uShape.y * 6.28 - 1.5708);
+    float R = (0.55 + 0.45 * (1.0 - L * bShr)) * 1.45;
+    float wid = pow(sin(3.14159265 * u), bExp) * (0.42 - bWs * L) * (1.0 + 0.15 * max(uBands.y, 0.0));
+    float ang = (pi_ + bOff * L) * 6.2831853 / n + uClock.y * bTurn * (mod(L, 2.0) < 0.5 ? 1.0 : -1.0);
+    if (uVarOn > 0.5) ang += uVarB.x * u * u;
     vec2 dir = vec2(cos(ang), sin(ang));
     vec2 side = vec2(-dir.y, dir.x);
     float r = u * R * (0.35 + 0.65 * open);
@@ -803,8 +897,9 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
       open = mix(open, openU, uUnfold);
       r = mix(r, rU, uUnfold);
     }
+    if (uVarOn > 0.5) r *= 1.0 - uVarC.x * smoothstep(0.72, 1.0, u) * (1.0 - abs(vv));
     vec2 xz = dir * r + side * vv * wid * r * 0.9;
-    float lift = (1.0 - open) * u * u * 0.9 * min(grow, 1.0) + 0.15 * L;
+    float lift = (1.0 - open) * u * u * bCup * min(grow, 1.0) + 0.15 * L;
     vec3 q = vec3(xz.x, lift - 0.2, xz.y) * (1.0 + 0.06 * max(uBands.x, 0.0));
     q += normalize(hash31(s.a * 127.0) - 0.5) * (0.008 + 0.04 * up * trebW);
     return vec4((q - p) * 8.0, 4.0);
@@ -845,6 +940,9 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     // a grid of tiny repeats — Karel 2026-10-06) ──
     float n = uShape.x < 0.34 ? 8.0 : uShape.x < 0.67 ? 10.0 : 12.0;
     float k = n == 8.0 ? 3.0 : n == 10.0 ? 3.0 : 5.0;
+    // variant: central star size · ring radii · turn speed · ring-star {m/j} · strapwork reach · dome
+    float giC = 0.62, giR1 = 1.12, giR2 = 1.82, giSpd = 1.0, giM = 12.0, giJ = 5.0, giStrap = 1.9;
+    if (uVarOn > 0.5) { giC = uVarA.x; giR1 = uVarA.y; giR2 = uVarA.z; giSpd = uVarA.w; giM = uVarB.x; giJ = uVarB.y; giStrap = uVarB.z; }
     float breathe = 1.0 + 0.05 * sin(uClock.x * 0.45) + 0.08 * up * bassW;
     float sel = s.b;
     float t = s.g;
@@ -852,37 +950,38 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     if (sel < 0.24) {
       // the great central star
       float e = floor(s.a * n);
-      float rot = uClock.y * 0.03;
+      float rot = uClock.y * 0.03 * giSpd;
       float a0 = 6.2831853 * e / n + rot, a1 = 6.2831853 * mod(e + k, n) / n + rot;
-      q = mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.62;
+      q = mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * giC;
     } else if (sel < 0.58) {
       // ring of n interlaced twelve-point stars {12/5}
       float j = floor(s.a * n);
-      float ringRot = -uClock.y * 0.022;
+      float ringRot = -uClock.y * 0.022 * giSpd;
       float ca = 6.2831853 * (j + 0.5) / n + ringRot;
-      vec2 c = vec2(cos(ca), sin(ca)) * 1.12;
-      float e = floor(fract(s.a * n) * 12.0);
-      float lr = uClock.y * 0.06 * (mod(j, 2.0) < 0.5 ? 1.0 : -1.0) + ca;
-      float a0 = 6.2831853 * e / 12.0 + lr, a1 = 6.2831853 * mod(e + 5.0, 12.0) / 12.0 + lr;
+      vec2 c = vec2(cos(ca), sin(ca)) * giR1;
+      float e = floor(fract(s.a * n) * giM);
+      float lr = uClock.y * 0.06 * giSpd * (mod(j, 2.0) < 0.5 ? 1.0 : -1.0) + ca;
+      float a0 = 6.2831853 * e / giM + lr, a1 = 6.2831853 * mod(e + giJ, giM) / giM + lr;
       q = c + mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.36;
     } else if (sel < 0.88) {
       // outer ring: 2n eight-point stars {8/3} (the khatam — never hexagrams)
       float m = 2.0 * n;
       float j = floor(s.a * m);
-      float ringRot = uClock.y * 0.016;
+      float ringRot = uClock.y * 0.016 * giSpd;
       float ca = 6.2831853 * j / m + ringRot;
-      vec2 c = vec2(cos(ca), sin(ca)) * 1.82;
+      vec2 c = vec2(cos(ca), sin(ca)) * giR2;
       float e = floor(fract(s.a * m) * 8.0);
       float a0 = 6.2831853 * e / 8.0 + ca, a1 = 6.2831853 * mod(e + 3.0, 8.0) / 8.0 + ca;
       q = c + mix(vec2(cos(a0), sin(a0)), vec2(cos(a1), sin(a1)), t) * 0.24;
     } else {
       // strapwork: from each central star point out through the rings
       float e = floor(s.a * n);
-      float a = 6.2831853 * e / n + uClock.y * 0.03;
-      q = vec2(cos(a), sin(a)) * mix(0.62, 1.9, t);
+      float a = 6.2831853 * e / n + uClock.y * 0.03 * giSpd;
+      q = vec2(cos(a), sin(a)) * mix(giC, giStrap, t);
     }
     q *= breathe;
     vec3 home = vec3(q.x, 0.03 * sin(uClock.y * 0.5 + length(q) * 3.0) * (0.3 + uBandLv.y), q.y);
+    if (uVarOn > 0.5) home.y += uVarB.w * (1.0 - dot(q, q) * 0.25);
     home += normalize(hash31(s.a * 139.0) - 0.5) * (0.006 + 0.03 * up * trebW);
     return vec4((home - p) * 9.0, 4.2);
   }
@@ -890,10 +989,15 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     // ── MEDALLION: one Islamic rosette — nested rings of star polygons,
     // alternating rotation, petal arcs between the rings ──
     float n = uShape.x < 0.34 ? 8.0 : uShape.x < 0.67 ? 12.0 : 16.0;
-    float ring = floor(s.b * 6.0);
+    // variant: rings · ring step · centre radius · turn speed · petal-arc width · dome · one-way turn
+    float meRings = 6.0, meStep = 0.25, meR0 = 0.22, meSpd = 0.035, meLens = 1.0;
+    if (uVarOn > 0.5) { meRings = uVarA.x; meStep = uVarA.y; meR0 = uVarA.z; meSpd = uVarA.w; meLens = uVarB.x; }
+    float ring = floor(s.b * meRings);
     float t = s.g;
-    float rot = uClock.y * 0.035 * (mod(ring, 2.0) < 0.5 ? 1.0 : -1.0) + ring * 3.14159265 / n;
-    float r = 0.22 + ring * 0.25;
+    float meDir = mod(ring, 2.0) < 0.5 ? 1.0 : -1.0;
+    if (uVarOn > 0.5 && uVarB.z > 0.5) meDir = 1.0;
+    float rot = uClock.y * meSpd * meDir + ring * 3.14159265 / n;
+    float r = meR0 + ring * meStep;
     r *= 1.0 + 0.03 * sin(uClock.x * 0.5 - ring * 0.8) + 0.05 * up * bassW;
     vec2 q;
     if (mod(ring, 2.0) < 0.5) {
@@ -905,10 +1009,11 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
       // petal arcs: n lens petals between the neighbouring rings
       float e = floor(s.a * n);
       float a = 6.2831853 * (e + t) / n + rot;
-      float lens = sin(3.14159265 * t) * (0.1 + 0.02 * ring) * (fract(s.a * n * 2.0) < 0.5 ? 1.0 : -1.0);
+      float lens = sin(3.14159265 * t) * (0.1 + 0.02 * ring) * meLens * (fract(s.a * n * 2.0) < 0.5 ? 1.0 : -1.0);
       q = vec2(cos(a), sin(a)) * (r + lens);
     }
     vec3 home = vec3(q.x, 0.03 * sin(uClock.y * 0.5 + ring) * (0.3 + uBandLv.y), q.y);
+    if (uVarOn > 0.5) home.y += uVarB.y * (1.0 - dot(q, q) * 0.3);
     home += normalize(hash31(s.a * 149.0) - 0.5) * (0.005 + 0.03 * up * trebW);
     return vec4((home - p) * 9.0, 4.2);
   }

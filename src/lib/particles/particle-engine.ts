@@ -55,6 +55,7 @@ import {
   type ParticlePalette,
 } from "./souls";
 import type { SpectrumFrame } from "./spectrum";
+import { critStep, springTau, type Crit } from "./image-follow";
 
 export interface ParticleEngineOptions {
   /** Requested particle count (rounded to a square texture). Default 409,600. */
@@ -164,6 +165,14 @@ export interface ParticleEngine {
   setForm(form: [number, number, number, number]): void;
   /** Per-appearance shape seed (0..1 ×4): petals, gears, symmetry, solid — glides. */
   setShape(shape: [number, number, number, number], snap?: boolean, withSoul?: boolean): void;
+  /** The DESIGN the next figure wears (form-variety.ts; null = the soul's own
+   *  constants — mastered journeys). Staged: it lands together with the next
+   *  new figure (setShape with withSoul / snap / a step crossing), never on its
+   *  own — so it always rides that figure's eased pull. `now` (invisible field
+   *  only) applies it at once. */
+  setVariant(v: { a: readonly number[]; b: readonly number[]; c: readonly number[] } | null, now?: boolean): void;
+  /** Image pull / presence still in flight (CPU followers, no GPU read): 0 = clear. */
+  imageLevel(): number;
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
@@ -509,14 +518,23 @@ export function createParticleEngine(
   // follow on a critically damped spring (ω = 2/τ, settles like the old τ).
   const sv = new Float64Array(24);
   function sp(i: number, x: number, target: number, tau: number, dt: number): number {
-    const w = 2 / tau, h = Math.min(dt, 0.05);
-    sv[i] += (w * w * (target - x) - 2 * w * sv[i]) * h;
-    return x + sv[i] * h;
+    return springTau(sv, i, x, target, tau, dt); // (image-follow.ts — unit-tested hand-offs)
   }
   let capNow = 0; // the speed cap this frame (diag)
   let pullT = 99; // seconds since a new figure (shape step)
   let settledSince = -1; // engine time the field last ARRIVED (no transition in flight)
   let pendingShape: [number, number, number, number] | null = null; // a new figure waiting its turn
+  // FORM VARIANT (form-variety.ts): applied only together with a new figure
+  const varA = new Float32Array(4), varB = new Float32Array(4), varC = new Float32Array(4);
+  let varOn = 0;
+  let varStaged: { a: readonly number[]; b: readonly number[]; c: readonly number[] } | null | undefined; // undefined = nothing staged
+  const applyVariant = () => {
+    if (varStaged === undefined) return;
+    const v = varStaged;
+    varStaged = undefined;
+    varOn = v ? 1 : 0;
+    for (let i = 0; i < 4; i++) { varA[i] = v ? v.a[i] ?? 0 : 0; varB[i] = v ? v.b[i] ?? 0 : 0; varC[i] = v ? v.c[i] ?? 0 : 0; }
+  };
   // the last figure has had its moment: FORMED and held (pass4: a fixed 6 s
   // release left ~2.5 s of finished form before the next re-aim)
   const figureHeld = () => pullT >= 14 || (pullT >= 9 && settledSince >= 0 && time - settledSince >= 4);
@@ -699,8 +717,9 @@ export function createParticleEngine(
   let imgSampled = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
-  let imgFormExt = 0, imgFormVel = 0, imgShowVel = 0;
-  let imgShowExt = 0;
+  // image pull + presence followers (image-follow.ts critStep)
+  const imgF: Crit = { x: 0, v: 0 };
+  const imgS: Crit = { x: 0, v: 0 };
   let imgFormTgt = 0;
   let imgShowTgt = 0;
   let dissolveT: number | null = null;
@@ -899,12 +918,12 @@ export function createParticleEngine(
     // is now prevented at the SOURCE: the image pull itself rises and falls on a
     // critically damped spring (gentle start and landing, ~2 s), so the force
     // never steps. The flash keeps its fast pace (it meets the flash image).
-    if (imgFormTgt < 0.01 && imgFormExt < 0.02) flashPace = false;
+    if (imgFormTgt < 0.01 && imgF.x < 0.02) flashPace = false;
     {
       const h = Math.min(dt, 0.05);
       const wF = flashPace ? 6 : 3, wS = flashPace ? 4 : 2.4;
-      imgFormVel += (wF * wF * (imgFormTgt - imgFormExt) - 2 * wF * imgFormVel) * h; imgFormExt += imgFormVel * h; if (imgFormExt < 0 || imgFormExt > 1) { imgFormExt = Math.max(0, Math.min(1, imgFormExt)); imgFormVel = 0; }
-      imgShowVel += (wS * wS * (imgShowTgt - imgShowExt) - 2 * wS * imgShowVel) * h; imgShowExt += imgShowVel * h; if (imgShowExt < 0 || imgShowExt > 1) { imgShowExt = Math.max(0, Math.min(1, imgShowExt)); imgShowVel = 0; }
+      critStep(imgF, imgFormTgt, wF, h);
+      critStep(imgS, imgShowTgt, wS, h);
     }
     // SETTLED (Karel 2026-10-08, Snowflake: "you morph towards something it
     // never takes form and then yet again transitions into yet another thing.
@@ -915,11 +934,11 @@ export function createParticleEngine(
       let shapeMoving = false;
       // (> 0.05: the conductor's breathing micro-drift nudges ≤ 0.035 — a breath, not a change)
       for (let i = 0; i < 4; i++) if (Math.abs(shape[i] - shapeTarget[i]) > 0.05) shapeMoving = true;
-      const moving = soulB !== soulA || shapeMoving || pullT < 2.5 || glideT < 2.5 || Math.abs(imgFormTgt - imgFormExt) > 0.02 || Math.abs(imgShowTgt - imgShowExt) > 0.02;
+      const moving = soulB !== soulA || shapeMoving || pullT < 2.5 || glideT < 2.5 || Math.abs(imgFormTgt - imgF.x) > 0.02 || Math.abs(imgShowTgt - imgS.x) > 0.02;
       if (moving) settledSince = -1; else if (settledSince < 0) settledSince = time;
     }
-    if (dissolveT === null && (imgFormExt > 0.001 || imgShowExt > 0.001)) {
-      env = { worldFade: 1 - 0.85 * imgShowExt, imgShow: imgShowExt, imgForm: imgFormExt, colorMix: 1 };
+    if (dissolveT === null && (imgF.x > 0.001 || imgS.x > 0.001)) {
+      env = { worldFade: 1 - 0.85 * imgS.x, imgShow: imgS.x, imgForm: imgF.x, colorMix: 1 };
     }
     camScale = sp(9, camScale, camScaleTarget, 5, dt);
     {
@@ -986,6 +1005,10 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uFountainW, fountainW);
     g.uniform4f(sim.u.uForm, form[0], form[1], form[2], form[3]);
     if (sim.u.uShape) g.uniform4f(sim.u.uShape, shape[0], shape[1], shape[2], shape[3]);
+    if (sim.u.uVarOn) g.uniform1f(sim.u.uVarOn, varOn);
+    if (sim.u.uVarA) g.uniform4f(sim.u.uVarA, varA[0], varA[1], varA[2], varA[3]);
+    if (sim.u.uVarB) g.uniform4f(sim.u.uVarB, varB[0], varB[1], varB[2], varB[3]);
+    if (sim.u.uVarC) g.uniform4f(sim.u.uVarC, varC[0], varC[1], varC[2], varC[3]);
     if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
     g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
     pullT += dt;
@@ -994,6 +1017,7 @@ export function createParticleEngine(
       pendingShape = null;
       shapeTarget = ps;
       for (let i = 0; i < 4; i++) { shape[i] = ps[i]; sv[4 + i] = 0; }
+      applyVariant();
       pullT = 0; lastEvent = "shape"; lastEventAt = timeNow();
     }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
@@ -1458,6 +1482,8 @@ export function createParticleEngine(
     },
     setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
+    setVariant(v, now = false) { varStaged = v; if (now) applyVariant(); },
+    imageLevel() { return Math.max(imgF.x, imgS.x, Math.abs(imgF.v) * 0.2, Math.abs(imgS.v) * 0.2); },
     setFollow(x, y, w) {
       // glide the target point itself (the sampled centroid jumps 4×/s)
       followTX = Math.max(-1.2, Math.min(1.2, x));
@@ -1498,6 +1524,7 @@ export function createParticleEngine(
       if (discrete && !snap && !withSoul && !figureHeld()) { pendingShape = nt; return; }
       pendingShape = null;
       shapeTarget = nt;
+      if (snap || discrete || withSoul) applyVariant();
       if (snap || discrete) {
         for (let i = 0; i < 4; i++) { shape[i] = shapeTarget[i]; sv[4 + i] = 0; }
         // a new figure: the PULL eases in (uPull) — no speed-cap glide, which

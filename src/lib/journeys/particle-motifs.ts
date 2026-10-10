@@ -95,6 +95,46 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
     .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && !IMAGERY_ONLY_SOULS.includes(x)).sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 3));
 }
 
+/** IMAGERY-MATCHED WIDENING (Karel 2026-10-09: "i figured you would have dozens
+ *  of … designs, endless shapes, things that brought diversity"): per imagery
+ *  family, the kept forms that also read as that imagery. Non-mastered
+ *  journeys draw their extra forms from HERE (their phase's own family + its
+ *  second motif's family) instead of a random draw from the whole set — wider,
+ *  but never a mismatch. The unfolding blossom is not in any list: it is
+ *  Ghost's signature, rare elsewhere (particle-lead.ts gives it to ≤ 1 phase). */
+export const FAMILY_WIDE: Readonly<Record<string, readonly SoulId[]>> = {
+  fire: ["vortex", "smoke", "medallion", "mandala", "rose", "ribbons", "nebula", "rings", "murmuration"],
+  light: ["rings", "harmonics", "rose", "mandala", "fountain", "medallion", "girih", "lissajous", "kaleido", "ribbons"],
+  floral: ["rose", "mandala", "kaleido", "pollen", "fireflies", "petals", "tendrils", "medallion", "ribbons"],
+  green: ["tendrils", "pollen", "fireflies", "rose", "mandala", "murmuration", "ribbons", "waves"],
+  water: ["waves", "rings", "ink", "lissajous", "harmonics", "kaleido", "fountain", "tendrils", "nebula"],
+  crystal: ["kaleido", "girih", "medallion", "mandala", "harmonics", "rings", "rose", "lissajous"],
+  air: ["smoke", "ink", "duststorm", "nebula", "lissajous", "murmuration", "ribbons", "rings"],
+  cosmos: ["nebula", "torus", "harmonics", "lissajous", "rings", "vortex", "medallion", "mandala"],
+  geo: ["girih", "kaleido", "harmonics", "lissajous", "torus", "rose", "rings", "mandala", "medallion"],
+};
+
+/** Non-mastered phases: the imagery-ranked forms (no blossom), widened from the
+ *  imagery's own families — 8–10 forms per phase, every one matched. */
+export function diverseFormsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[] {
+  if (!pm?.motifs?.length) return [];
+  const score = new Map<SoulId, number>();
+  for (const { m, w } of pm.motifs) for (const [id, k] of MOTIF_FORMS[m] ?? []) score.set(id, (score.get(id) ?? 0) + k * (0.3 + w));
+  for (const mv of pm.moves ?? []) for (const [id, k] of MOVE_FORMS[mv] ?? []) score.set(id, (score.get(id) ?? 0) + k);
+  const ranked = [...score.entries()]
+    .filter(([id]) => ORGANIC_SOULS.includes(id) && id !== "blossom")
+    .map(([id, v]) => [id, v * (0.92 + 0.16 * hash01(`${seed}:${id}`))] as const)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([id]) => id);
+  const fams = [...new Set(pm.motifs.slice(0, 2).map(({ m }) => FAMILY_OF[m] ?? "geo"))];
+  const wide = [...new Set(fams.flatMap((f) => FAMILY_WIDE[f] ?? []))]
+    .filter((x) => !ranked.includes(x) && ORGANIC_SOULS.includes(x))
+    .sort((a, b) => hash01(`${seed}:w:${a}`) - hash01(`${seed}:w:${b}`))
+    .slice(0, 4);
+  return [...ranked, ...wide];
+}
+
 export interface PhaseCharacter {
   forms: SoulId[];
   /** fire-like imagery: flame colour ramp (a hint of blue → hot → ember) */
@@ -125,10 +165,11 @@ export function familyOf(pm: PhaseMotif | undefined): string {
 }
 
 /** Per phase: forms + colour behaviour + motion, from the vision tags. */
-export function phaseCharacters(journeyId: string): PhaseCharacter[] {
+export function phaseCharacters(journeyId: string, opts: { diverse?: boolean } = {}): PhaseCharacter[] {
   const ph = JOURNEY_MOTIFS[journeyId] ?? [];
   return ph.map((pm, i) => {
-    const forms = formsForMotif(pm, `${journeyId}#${i}`);
+    // mastered journeys keep the original ranking (mastered-lock fingerprints it)
+    const forms = opts.diverse ? diverseFormsForMotif(pm, `${journeyId}#${i}`) : formsForMotif(pm, `${journeyId}#${i}`);
     const top = new Set((pm?.motifs ?? []).slice(0, 2).map((x) => x.m));
     const fire = top.has("fire") || top.has("lava") || top.has("embers");
     const floral = ["petals", "blossoms", "flowers"].some((m) => (pm?.motifs ?? []).some((x) => x.m === m));

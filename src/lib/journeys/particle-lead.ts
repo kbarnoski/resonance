@@ -124,7 +124,10 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // IMAGE INTELLIGENCE (Karel 2026-10-06): the forms each phase shows come
     // from what that phase's imagery shows (vision-tagged) — fire → flames,
     // blossoms → unfurling floral patterns, water → caustic light …
-    let chars = phaseCharacters(id);
+    // non-mastered journeys draw WIDER, imagery-matched form lists (2026-10-09
+    // diversity pass — particle-motifs diverseFormsForMotif); mastered keep theirs
+    const diverse = !cast.mastered && !sig;
+    let chars = phaseCharacters(id, { diverse });
     // Ghost (Karel 2026-10-06: "ghostly angels ghosts wings and those pink
     // flowers not mandalas"): its procedural form is the pink blossom alone;
     // the angels, wings and ghosts come from its motif-form family
@@ -155,13 +158,22 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // evolve from a center point like you cool floral stuff"): outside Snowflake
     // and Ghost every phase opens with the unfolding blossom and carries at least
     // two radial centre-out forms
+    // …but NOT the same unfolding blossom everywhere (Karel 2026-10-09: "you use
+    // the unfolding flower from ghost all over and over"): the blossom is Ghost's
+    // signature. Elsewhere centre-out forms still lead (≥ 2 radial forms per
+    // phase, each appearance its own design — form-variety.ts), and the blossom
+    // is offered in at most ONE phase — the most floral one — among its
+    // options (the layer shows it ≤ 1× per journey, never two journeys running).
     if (!sig && id !== "first-snow") {
       const RADIAL: SoulId[] = ["mandala", "rose", "medallion", "kaleido", "girih"];
       chars = chars.map((c, i) => {
         const radial = c.forms.filter((f) => RADIAL.includes(f));
         const add = RADIAL.filter((f) => !c.forms.includes(f)).sort((a, b) => ((a.charCodeAt(0) * 31 + i * 7) % 11) - ((b.charCodeAt(0) * 31 + i * 7) % 11)).slice(0, Math.max(0, 2 - radial.length));
-        return { ...c, forms: [...new Set<SoulId>(["blossom", ...c.forms, ...add])] };
+        // (mastered DB wrappers of Ghost / Snowflake keep their original cast: blossom first)
+        return { ...c, forms: [...new Set<SoulId>(diverse ? [...c.forms.filter((f) => f !== "blossom"), ...add] : ["blossom", ...c.forms, ...add])] };
       });
+      const floralIdx = diverse ? chars.findIndex((c) => c.floral) : -1;
+      if (floralIdx >= 0) chars = chars.map((c, i) => (i === floralIdx ? { ...c, forms: [...c.forms.slice(0, 3), "blossom", ...c.forms.slice(3)] } : c));
     }
     const theme = JOURNEY_THEMES[id];
     if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
@@ -184,6 +196,13 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
         const f = formsAt(phaseAt(w.start));
         return { ...w, soul: f[(kindIdx[w.kind] ?? 0) % f.length] };
       });
+      if (diverse) {
+        // the rare blossom is never a morph / window form (those recur every
+        // journey) — only the evolving cycle may offer it, once
+        const alt = (i: number, avoid: SoulId | undefined) => formsAt(Math.min(i, chars.length - 1)).find((f) => f !== "blossom" && f !== avoid) ?? "rose";
+        cast.morphSouls = cast.morphSouls.map((m, i, a) => (m === "blossom" ? alt(i, a[i - 1]) : m));
+        cast.windows = cast.windows.map((w) => (w.soul === "blossom" ? { ...w, soul: alt(phaseAt(w.start), undefined) } : w));
+      }
       cast.formCycle = [...new Set(chars.flatMap((c) => c.forms))];
       if (!cast.formCycle.length) cast.formCycle = casts[i].formCycle;
     }

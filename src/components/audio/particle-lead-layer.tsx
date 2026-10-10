@@ -34,7 +34,7 @@
  *
  * Probe: window.__resonanceParticleLead.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnalyserLike } from "@/lib/audio/audio-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -66,6 +66,9 @@ import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generat
 import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES, fireColours } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
+import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed } from "@/lib/journeys/particle-rotation";
+import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
+import { emblemEnvelope, imageSlotStep, type ImageSlot } from "@/lib/particles/image-follow";
 import type { JourneyFrame } from "@/lib/journeys/types";
 
 const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
@@ -382,7 +385,7 @@ function soulSequence(cast: ParticleLeadCast): SoulId[] {
 }
 
 export function ParticleLeadLayer({
-  cast,
+  cast: castIn,
   journeyId,
   frame,
   analyser,
@@ -401,6 +404,9 @@ export function ParticleLeadLayer({
    *  INTO the angel, wears it, then dissipates (Karel 2026-10-06). */
   flash?: { approach: number; impulse: number } | null;
 }) {
+  // LOOP ROTATION (2026-10-09): this loop position's own lead / morph / window
+  // forms (particle-rotation.ts) — mastered + signature journeys: the cast itself
+  const cast = useMemo(() => planCast(castIn, journeyId, LOOP_MEMORY), [castIn, journeyId]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const veilRef = useRef<HTMLDivElement | null>(null);
   const contrastRef = useRef<HTMLDivElement | null>(null);
@@ -721,6 +727,11 @@ export function ParticleLeadLayer({
     // breathes slowly, no image echo, sections never cut a form short, gentle dolly
     // Realized too (Karel 2026-10-07: "changing too much all the time. needs to not make me dizzy")
     const calm = journeyId === "first-snow" || journeyId === "ghost" || journeyId === "inferno";
+    // DIVERSITY PASS (Karel 2026-10-09): every non-mastered journey rotates its
+    // forms loop-wide and gives each appearance its own design; Snowflake +
+    // Ghost run exactly as before (mastered)
+    const diverse = !cast.mastered;
+    let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
     // same distance away … always hover dead center … i need dynamics")
     let dollyFrom = 1, dollyTo = 1, dollyAt = performance.now();
@@ -789,12 +800,20 @@ export function ParticleLeadLayer({
       // re-aim → arrived 6.3 s)
       engine.setSoul(soul, quiet ? 0.5 : calm ? 5 : 3.5);
       lastShape = shapeSeed(soul, t + appearN * 11);
+      // its own DESIGN (form-variety.ts): never one the loop showed lately —
+      // staged, so it lands with this figure's eased pull (mastered: none)
+      const variant = diverse ? freshVariant(soul, `${journeyId}:${appearN}:${Math.round(t)}`, RECENT_DESIGNS) : null;
+      engine.setVariant(variant ? { a: variant.a, b: variant.b, c: variant.c } : null);
+      if (variant) { rememberDesign(variant.label); glitchRecord("particle-design", variant.label); }
       engine.setShape(lastShape, quiet, true);
       // flower imagery: the blossom unfolds INFINITELY (layers grow from the centre)
       // (2026-10-08: "i especially like the ones that evolve from a center point
       // like your cool floral stuff" — the blossom always unfolds outside
       // Snowflake + Ghost, in the journey's own colours)
-      engine.setUnfold(soul === "blossom" && (!!charAt(t)?.floral || (journeyId !== "first-snow" && journeyId !== "ghost")));
+      // (2026-10-09: outside Ghost the infinite unfolding is one design among many)
+      engine.setUnfold(soul === "blossom" && (diverse ? !!variant?.unfold : (!!charAt(t)?.floral || (journeyId !== "first-snow" && journeyId !== "ghost"))));
+      noteForm(LOOP_MEMORY, journeyId, soul);
+      if (soul === "blossom") blossomShown = true;
       microAt = performance.now();
       // FIELD mode: sometimes many smaller copies instead of one form (Ghost's
       // blossoms most of all)
@@ -848,6 +867,13 @@ export function ParticleLeadLayer({
     /** next form for this phase: not one of the last two shown */
     const nextForm = (t: number): SoulId | undefined => {
       const fl = formsNow(t);
+      if (diverse) {
+        // loop-aware: not the last two, the blossom ≤ 1× and never two journeys
+        // running, over-used forms yield to the phase's other imagery forms
+        const pick = chooseNext(fl, { recent, mem: LOOP_MEMORY, blossomOk: blossomAllowed(LOOP_MEMORY, journeyId, blossomShown), cycleIdx, jitter: rand01(97 + cycleIdx) });
+        cycleIdx++;
+        return pick;
+      }
       for (let i = 1; i <= fl.length; i++) {
         const c = fl[(cycleIdx + i) % fl.length];
         if (!recent.includes(c)) { cycleIdx += i; return c; }
@@ -904,6 +930,8 @@ export function ParticleLeadLayer({
     let treatN = 0;
     let imgKey: string | null = null;
     let imgReleasing = false, imgReleaseAt = 0;
+    // strict image slot (non-mastered): the next image loads only once the last has CLEARED
+    const slot: ImageSlot = { key: null, releasing: false, releaseAt: 0 };
     let jumpRecAt = 0;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
     let emblemOn = false;
@@ -1004,28 +1032,11 @@ export function ParticleLeadLayer({
       // the EMBLEM (Karel 2026-10-06): under the title at the start, again at
       // the end, and once mid-journey in long pieces — the form that SAYS the
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
-      let emForm = 0, emShow = 0;
-      let emOcc = 0; // 0 = opening, 1 = mid, 2 = closing
-      let emAge = ssf(4, 11, t); // the emblem eases smaller while held (big is brief)
-      if (emblemRef.current) {
-        const D = useAudioStore.getState().duration || 0;
-        emForm = ssf(0.8, 3.8, t) * (1 - ssf(11, 15, t));
-        emShow = ssf(1.0, 4.0, t) * (1 - ssf(12, 16, t));
-        if (D > 40 && t > D - 17) {
-          const e = t - (D - 17);
-          emForm = Math.max(emForm, ssf(0, 3.5, e));
-          emShow = Math.max(emShow, ssf(0.3, 4, e));
-          emOcc = 2;
-          emAge = ssf(4, 11, e);
-        }
-        if (D > 200 && t > D * 0.5 && t < D * 0.5 + 15) {
-          const m = t - D * 0.5;
-          emForm = Math.max(emForm, ssf(0, 3.5, m) * (1 - ssf(9, 13, m)));
-          emShow = Math.max(emShow, ssf(0.3, 4, m) * (1 - ssf(10, 14, m)));
-          emOcc = 1;
-          emAge = ssf(4, 10, m);
-        }
-      }
+      // (image-follow.ts emblemEnvelope — same timings, unit-tested)
+      const emEnv = emblemRef.current ? emblemEnvelope(t, useAudioStore.getState().duration || 0) : null;
+      const emForm = emEnv?.form ?? 0, emShow = emEnv?.show ?? 0;
+      const emOcc = emEnv?.occ ?? 0; // 0 = opening, 1 = mid, 2 = closing
+      const emAge = emEnv?.age ?? ssf(4, 11, t); // the emblem eases smaller while held (big is brief)
       // timed MOMENT (Ghost's blossom cloud): gather 4 s, hold breathing, dissipate
       let moForm = 0, moShow = 0;
       if (momentAt >= 0 && t >= momentAt) {
@@ -1074,9 +1085,24 @@ export function ParticleLeadLayer({
       // wearing the old one — every mote re-aimed and its colour popped in one
       // frame): the old image releases to the procedural form first (~1.4 s),
       // THEN the new one loads and the field glides onto it
-      if (want && wantKey !== imgKey && imgLoaded && !imgReleasing) { imgReleasing = true; imgReleaseAt = performance.now(); glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
-      if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
-      if (want && wantKey !== imgKey && !imgLoaded) {
+      let loadNow: boolean;
+      if (diverse) {
+        // STRICT (2026-10-09 emblem audit): the next image loads only once the
+        // last one has truly CLEARED (engine followers < 1 %). The fixed 1.4 s
+        // left ~15 % of the old image's presence on screen, so loading the next
+        // one swapped every mote's colour + target at once — a visible pop at
+        // every emblem → motif / motif → emblem hand-off
+        slot.key = imgLoaded ? imgKey : null; slot.releasing = imgReleasing; slot.releaseAt = imgReleaseAt;
+        const act = imageSlotStep(slot, want ? wantKey : null, engine.imageLevel(), performance.now(), true, flashing);
+        if (act === "release") { imgReleasing = true; imgReleaseAt = slot.releaseAt; glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
+        else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
+        loadNow = act === "load";
+      } else {
+        if (want && wantKey !== imgKey && imgLoaded && !imgReleasing) { imgReleasing = true; imgReleaseAt = performance.now(); glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
+        if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
+        loadNow = !!want && wantKey !== imgKey && !imgLoaded;
+      }
+      if (want && loadNow) {
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
@@ -1119,6 +1145,19 @@ export function ParticleLeadLayer({
         }
       }
       emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
+      // THE OPENING EMBLEM HANDS OFF TO THIS JOURNEY'S OWN FORM (2026-10-09,
+      // Karel: "the grasshopper emblem didnt transition smoothly. it just
+      // dropped"): no form could be chosen while the emblem was worn, so as it
+      // released the field fell back to the PREVIOUS journey's leftover form and
+      // re-aimed it at once. Now, once the field fully wears the emblem (the
+      // world form is ~invisible under it), the journey's opening form is set
+      // underneath — the emblem then dissolves straight into it.
+      if (diverse && imgLoaded === "emblem" && !imgReleasing && currentSoul === "" && emForm > 0.6 && engine.imageLevel() > 0.6) {
+        const under = w?.soul ?? cast.morphSouls[0] ?? cast.souls.transition;
+        lastAsked = under;
+        switchForm(under, t);
+        glitchRecord("particle-underlay", under);
+      }
       if (imgLoaded) {
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
@@ -1157,7 +1196,10 @@ export function ParticleLeadLayer({
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
-      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 8000) {
+      // (diverse: only once THIS journey has a form — the micro-drift of a stale
+      // lastShape re-aimed the previous journey's leftover form the instant the
+      // opening emblem released: 372 of 597 plays, Karel's Grasshopper "drop")
+      if (shown > 0.5 && !imgLoaded && performance.now() - microAt > 8000 && (!diverse || currentSoul !== "")) {
         microAt = performance.now();
         const j = (k: number) => (rand01(91 + k + Math.floor(microAt / 1000)) - 0.5) * 0.07;
         // a breath, never a new figure: z only drifts inside its discrete step
@@ -1173,6 +1215,11 @@ export function ParticleLeadLayer({
       } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
         cycleIdx++;
         if (cycleIdx % 3 === 0 && currentSoul) {
+          if (diverse) {
+            const v = freshVariant(currentSoul as SoulId, `${journeyId}:r${cycleIdx}:${Math.round(t)}`, RECENT_DESIGNS);
+            engine.setVariant(v ? { a: v.a, b: v.b, c: v.c } : null);
+            if (v) { rememberDesign(v.label); glitchRecord("particle-design", `${v.label} (refigure)`); }
+          }
           engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);
           formAt = performance.now();
           // (no appearance(): a refigure re-dollied + re-sized a visible form at once)
@@ -1211,6 +1258,8 @@ export function ParticleLeadLayer({
       const minHold = minHoldUntil > t ? 1 : 0;
       const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP, minHold) * endFade;
       shown = slew(shown, targetPresence, tickDt);
+      // loop-wide ledger of on-screen time per form (particle-rotation.ts)
+      if (shown > 0.3 && !imgLoaded && currentSoul) recordUsage(LOOP_MEMORY, currentSoul as SoulId, tickDt * shown);
       if (shown > 0.3) onSec += tickDt;
       if (shown >= densP || shown < 0.005) densP = shown; // rise with the gather, hold through the fade
       densKS += (densK - densKS) * (1 - Math.exp(-tickDt / 6));
