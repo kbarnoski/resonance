@@ -96,6 +96,8 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   // retain that" — the r-growth slot re-picks via the pick-time ban;
   // everything else replays exactly.
   "first-snow": 1955860385,
+  // Karel 2026-10-09 (March Light set start, build 47226505): "The First i just watched and wow keep that take"
+  "5a07f0af-654f-4dab-b42c-aef83983b33f": 1640537332,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random
