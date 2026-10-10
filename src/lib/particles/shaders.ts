@@ -1101,17 +1101,21 @@ void main(){
     if (uRiseTop < 0.0 && ly < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); }
   }
 
-  // wrapping souls re-enter off-edge (out of view — the draw fades the edges)
+  // wrapping souls re-enter off-edge (out of view — the draw fades the edges).
+  // NO SLAB (2026-10-10 kiosk film, Realized ~209 s): re-entry x was uniform
+  // over ±2.2, so a rising/falling field settled into a filled straight-sided
+  // column; x is now a tent (dense at the centre, thinning to nothing at the
+  // sides) and the draw feathers the sides, so the field has no edge to see
   if (uImgShow < 0.01) {
     vec3 r = hash31(s.a * 4271.0 + floor(uTime));
-    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x - 0.5) * 4.4, -2.0, (r.z - 0.5) * 3.2); v = vec3(0.0); }
+    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x + r.y - 1.0) * 2.6, -2.0, (r.z - 0.5) * 3.2); v = vec3(0.0); }
     if (uWrap.z > 0.5 && p.y < -2.0) {
       if (uFountainW > 0.5) {
         vec2 d = normalize(r.xz - 0.5 + 1e-4);
         p = vec3(d.x * 0.08, -1.95, d.y * 0.08);
         v = vec3(d.x * (0.3 + 0.6 * r.y), 2.4 + 0.6 * r.z + 0.9 * max(uBands.x, 0.0), d.y * (0.3 + 0.6 * r.y));
       } else {
-        p = vec3((r.x - 0.5) * 4.4, 2.0, (r.z - 0.5) * 3.2); v = vec3(0.0);
+        p = vec3((r.x + r.y - 1.0) * 2.6, 2.0, (r.z - 0.5) * 3.2); v = vec3(0.0);
       }
     }
     if (uWrap.x > 0.5 && p.x > 3.0) { p.x = -3.0; p.y = (r.y - 0.5) * 1.6; }
@@ -1309,7 +1313,7 @@ void main(){
   }
   // wrapping souls fade at the edges where they re-enter
   float edgeY = smoothstep(2.0, 1.4, p.y) * smoothstep(-2.0, -1.4, p.y);
-  a *= mix(1.0, edgeY, smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
+  a *= mix(1.0, edgeY * smoothstep(2.4, 1.0, abs(p.x)), smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
   a *= mix(1.0, smoothstep(3.0, 2.3, abs(p.x)), smoothstep(0.0, 0.5, uWrap.x) * (1.0 - uImgShow));
   vec3 world = col * a * visW * mix(1.0, 4.0, sparse) * uWorldFade;
 
