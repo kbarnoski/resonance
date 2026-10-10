@@ -240,20 +240,21 @@ const RISE_ABOVE = [
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", //  9. Night Wind 2 — early (Karel 2026-10-09: two Night Winds, kept far apart)
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 10. Surrounded by Light 6 — replaced Amboise 2 (Karel 2026-10-09)
   "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 11. Bells 1 — darker, powerful groove, voices + reverb, almost trip hop (Karel 2026-10-09)
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 12. Bath
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", // 13. The First (Expanded)
-  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 14. Tranquility 8 — a keeper (Karel 2026-10-09)
-  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 15. The Other Side 10 — THE PEAK: epic, monster sound (Karel 2026-10-09); Tranquility 8 lifts into it, Loire 2 lands it
-  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 16. Loire 2 — mellow, uplifting (Karel 2026-10-09)
-  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 17. Chenin 5 — the screeching, intense, dark one, right after Loire 2 (Karel 2026-10-09)
-  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 18. No question 7 — after the dark Chenin 5 (Karel 2026-10-09)
-  "13e71555-03d6-4b27-ad32-2c6834559c24", // 19. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 20. Horses 1 — later in the set (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 21. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 22. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 23. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 24. Afterglow
-  "inferno", // 25. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 12. Amboise 1 — classical, strong, simple; breaks the set after Bells 1's groove (Karel 2026-10-09)
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 13. Bath
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", // 14. The First (Expanded)
+  "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", // 15. Tranquility 8 — a keeper (Karel 2026-10-09)
+  "6499ac06-2cb1-4970-b75f-1258587c84d8", // 16. The Other Side 10 — THE PEAK: epic, monster sound (Karel 2026-10-09); Tranquility 8 lifts into it, Loire 2 lands it
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 17. Loire 2 — mellow, uplifting (Karel 2026-10-09)
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 18. Chenin 5 — the screeching, intense, dark one, right after Loire 2 (Karel 2026-10-09)
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 19. No question 7 — after the dark Chenin 5 (Karel 2026-10-09)
+  "13e71555-03d6-4b27-ad32-2c6834559c24", // 20. Northern Plane 5 — after No question 7 (Karel 2026-10-09)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 21. Horses 1 — later in the set (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 22. Night Wind 4 — late, apart from Night Wind 2 (Karel 2026-10-09)
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 23. Never Forget 4 — super deep and painful (Karel 2026-10-09); the grief before the homecoming
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 24. Welcome Home
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 25. Afterglow
+  "inferno", // 26. Realized — closes Rise Above after Afterglow (Karel 2026-10-09)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
