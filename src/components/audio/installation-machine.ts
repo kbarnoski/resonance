@@ -32,8 +32,9 @@ export const INTRO_MS = 11_000;
  *  once per full cycle, before program 0's intro. */
 // Karel 2026-09-29: "intro much too long" (→ 8 s); 2026-10-09: +5 s so the
 // particle piano "the burning piano … detailed and clear" fully forms and is
-// seen before journey 0's spin-up (statement-piano-plan.ts)
-export const EXPERIENCE_INTRO_MS = 13_000;
+// seen before journey 0's spin-up (statement-piano-plan.ts); +2 s more the same
+// night ("the title screen is dope. keep it another 2 seconds longer")
+export const EXPERIENCE_INTRO_MS = 15_000;
 /** Mid-show artist-statement interstitial: shown between journeys every
  *  N tracks so a 30-minute drop-in still meets the statement. */
 export const STATEMENT_INTERSTITIAL_MS = 8_000; // minimal card since 2026-09-29

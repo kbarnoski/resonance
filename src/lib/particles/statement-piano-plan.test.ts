@@ -46,7 +46,7 @@ describe("statement piano — no engine work inside the stall window", () => {
     expect(at("stop") - at("start")).toBeGreaterThanOrEqual(1_800);
   });
   it("whatever time the image / programs become ready, nothing that works the GPU lands in the window", () => {
-    for (let ready = 0; ready <= 12_000; ready += 50) {
+    for (let ready = 0; ready <= 14_000; ready += 50) {
       for (const ev of pianoSchedule(ready)) {
         if (ev.step === "upload" || ev.step === "start") expect(engineWorkAllowed(ev.at), `${ev.step} @${ev.at} (ready ${ready})`).toBe(true);
         if (ev.step === "release") expect(ev.at).toBeGreaterThanOrEqual(WINDOW_END_MS);
@@ -55,7 +55,7 @@ describe("statement piano — no engine work inside the stall window", () => {
     }
   });
   it("the runtime guard refuses a late timer's upload / start inside the window (stop is always allowed)", () => {
-    for (let t = 0; t < 12_000; t += 10) {
+    for (let t = 0; t < 14_000; t += 10) {
       const inWin = t >= WINDOW_START_MS && t < WINDOW_END_MS;
       expect(stepAllowed("upload", t)).toBe(!inWin);
       expect(stepAllowed("start", t)).toBe(!inWin);
@@ -71,11 +71,11 @@ describe("statement piano — no engine work inside the stall window", () => {
 });
 
 describe("statement piano — at load, longer, clearer (Karel 2026-10-09)", () => {
-  it("the card is 13 s: pre-start at 8.5 s, text still until 12 s, title at 13.8 s", () => {
-    expect(CARD_MS).toBe(13_000);
-    expect(PRESTART_MS).toBe(8_500);
-    expect(WINDOW_END_MS).toBe(12_000);
-    expect(CARD_MS + 800).toBe(13_800); // loop client: mountDelay = expMs + 800
+  it("the card is 15 s: pre-start at 10.5 s, text still until 14 s, title at 15.8 s", () => {
+    expect(CARD_MS).toBe(15_000);
+    expect(PRESTART_MS).toBe(10_500);
+    expect(WINDOW_END_MS).toBe(14_000);
+    expect(CARD_MS + 800).toBe(15_800); // loop client: mountDelay = expMs + 800
   });
   it("a normal card shows the formed piano ≥ 5 s before it freezes", () => {
     const s = pianoSchedule(0);

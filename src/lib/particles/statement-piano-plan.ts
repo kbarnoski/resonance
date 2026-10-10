@@ -13,7 +13,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The statement card's length (installation-machine EXPERIENCE_INTRO_MS). */
-export const CARD_MS = 13_000;
+export const CARD_MS = 15_000;
 /** Journey 0 pre-starts this long after the card begins (loop client: expMs - 4500). */
 export const PRESTART_MS = CARD_MS - 4_500;
 /** The statement text holds this long after the pre-start, then fades (1.8 s). */
