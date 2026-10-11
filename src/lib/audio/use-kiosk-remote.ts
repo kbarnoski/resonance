@@ -47,7 +47,7 @@ function frameStats(): { fps: number; p95: number } | null {
  * Pass context=null to disable (e.g. the visualizer inside the attract
  * loop defers to the loop client's instance so only one poller runs).
  */
-export type KioskRemoteContext = "loop" | "room" | null;
+export type KioskRemoteContext = "loop" | "room" | "live" | null;
 
 const POLL_MS = 2_000;
 
@@ -55,6 +55,12 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
   const store = useAudioStore.getState();
   if (cmd === "toggle-play") {
     store.togglePlayPause();
+  } else if (cmd === "live" && context !== "live") {
+    // LIVE THEATRE (Karel 2026-10-11): he plays the Nord; the kiosk listens
+    // and wanders the catalogue (live-theatre-client.tsx). Full page load.
+    window.location.href = "/room/installation?live=1&kiosk=1";
+  } else if (cmd === "skip" && context === "live") {
+    window.dispatchEvent(new Event("live-next"));
   } else if (cmd === "skip" && context === "loop") {
     window.dispatchEvent(new Event("installation-operator-skip"));
   } else if (cmd === "prev" && context === "loop") {
@@ -68,13 +74,13 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     // out … introduce it and leave it up until i formally start" — the loop
     // fades out and HOLDS the statement card until "title-release"
     if (context === "loop") window.dispatchEvent(new Event("installation-operator-title-hold"));
-    else window.location.href = "/room/installation?loop=1&titlehold=1";
+    else window.location.href = `/room/installation?loop=1&titlehold=1${context === "live" ? "&kiosk=1" : ""}`;
   } else if (cmd === "title-release" && context === "loop") {
     window.dispatchEvent(new Event("installation-operator-title-release"));
   } else if (cmd === "break" && context === "loop") {
     window.location.href = "/room";
   } else if (cmd === "loop" && context !== "loop") {
-    window.location.href = "/room/installation?loop=1";
+    window.location.href = context === "live" ? "/room/installation?loop=1&kiosk=1" : "/room/installation?loop=1";
   } else if (cmd === "particles-on" || cmd === "particles-default") {
     // session-only A/B switch (kiosk tab). No reload — a reloaded kiosk page
     // is autoplay-blocked; it takes effect on the next journey mount (jump).
@@ -111,7 +117,7 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
         new CustomEvent("installation-operator-jump-journey", { detail: programId ? `${jid}@${programId}` : jid })
       );
     } else {
-      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(programId ? `${jid}@${programId}` : jid)}`;
+      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(programId ? `${jid}@${programId}` : jid)}${context === "live" ? "&kiosk=1" : ""}`;
     }
   } else if (cmd.startsWith("program:")) {
     // Jump the attract loop to a program's starting point. In the loop
@@ -124,7 +130,7 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
         new CustomEvent("installation-operator-program", { detail: id })
       );
     } else {
-      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(id)}`;
+      window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(id)}${context === "live" ? "&kiosk=1" : ""}`;
     }
   }
 }

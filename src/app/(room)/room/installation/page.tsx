@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry, type InstallationProgram } from "@/components/audio/installation-loop-client";
+import { LiveTheatreClient } from "@/components/audio/live-theatre-client";
 import { VERIFIED_RECORDING_IDS, FALLBACK_ELIGIBLE_RECORDING_IDS } from "@/components/audio/installation-machine";
 import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
@@ -29,12 +30,16 @@ interface Props {
     debug?: string;
     once?: string;
     start?: string;
+    live?: string;
   }>;
 }
 
 export default async function InstallationPage({ searchParams }: Props) {
-  const { journey, loop, debug, once, start } = await searchParams;
-  const isLoop = loop === "1" || loop === "true";
+  const { journey, loop, debug, once, start, live } = await searchParams;
+  // ?live=1 → LIVE THEATRE (Karel plays the Nord; the kiosk listens and
+  // wanders the catalogue). Built from the same programs as the loop.
+  const isLive = live === "1" || live === "true";
+  const isLoop = isLive || loop === "1" || loop === "true";
   const isDebug = debug === "1" || debug === "true";
   // ?once=1 → play through the cycle a single time then end on the
   // credits screen instead of looping back to the intro.
@@ -535,6 +540,8 @@ export default async function InstallationPage({ searchParams }: Props) {
         }
       }
     }
+
+    if (isLive) return <LiveTheatreClient programs={programsWithCues} />;
 
     return (
       <div className="h-screen w-screen overflow-hidden bg-void">

@@ -34,7 +34,7 @@ interface KioskProgram {
 }
 
 interface KioskStatus {
-  context?: "loop" | "room";
+  context?: "loop" | "room" | "live";
   programs?: KioskProgram[] | null;
   journey?: string | null;
   track?: string | null;
@@ -94,6 +94,7 @@ export function RemoteClient() {
   }, []);
 
   const inLoop = status?.context === "loop";
+  const inLive = status?.context === "live";
   const stale = ageMs === null || ageMs > 10_000;
 
   // Glass Button overrides — keep the remote's touch-first sizing and the
@@ -121,7 +122,7 @@ export function RemoteClient() {
 
       <div className="rounded-xl p-4 mb-6 bg-white/[0.04] border border-white/10">
         <div className="text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
-          {stale ? "waiting for kiosk…" : inLoop ? "attract loop" : "dj mode"}
+          {stale ? "waiting for kiosk…" : inLive ? "live theatre — listening" : inLoop ? "attract loop" : "dj mode"}
         </div>
         <div
           className="text-2xl text-white/95 mb-0.5"
@@ -183,13 +184,33 @@ export function RemoteClient() {
             </Button>
           )
         )}
-        <Button
-          variant="glass"
-          className={`${btn} col-span-2`}
-          onClick={() => void send("toggle-play")}
-        >
-          {status?.isPlaying === false ? "Play" : "Pause"}
-        </Button>
+        {inLive ? (
+          // LIVE THEATRE (Karel 2026-10-11): the kiosk listens to the Nord and
+          // wanders the catalogue; Next opens another world now
+          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("skip")}>
+            Next world ▶
+          </Button>
+        ) : (
+          <>
+            <Button
+              variant="glass"
+              className={`${btn} col-span-2`}
+              onClick={() => void send("toggle-play")}
+            >
+              {status?.isPlaying === false ? "Play" : "Pause"}
+            </Button>
+            <Button
+              variant="glass"
+              className={`${btn} col-span-2`}
+              onClick={() => {
+                // confirmed — a pocket tap would stop the show
+                if (window.confirm("Go LIVE? The kiosk listens to your playing and wanders every world until you press Back to loop.")) void send("live");
+              }}
+            >
+              ● Live — I&apos;m playing
+            </Button>
+          </>
+        )}
 
         {inLoop ? (
           <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("break")}>
@@ -197,7 +218,7 @@ export function RemoteClient() {
           </Button>
         ) : (
           <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("loop")}>
-            Resume attract loop
+            {inLive ? "■ Back to loop" : "Resume attract loop"}
           </Button>
         )}
       </div>

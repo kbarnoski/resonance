@@ -74,6 +74,48 @@ export function getAnalyserNode(): AnalyserNode | null {
   return analyserNode;
 }
 
+// ─── LIVE THEATRE: the microphone drives the visuals ─────────────
+// Karel 2026-10-11: he plays the Nord live through the Hyperboom; the Mac
+// only LISTENS (built-in mic) and the visuals follow his playing. Rewired
+// for the live page only (a full page load enters and leaves it):
+//   track element -> (nothing)              (the silent clock track)
+//   mic -> preamp -> analyser -> mute(0) -> destination
+// The analyser hears ONLY the mic, and the mic can never reach the speakers
+// (the mute keeps the analyser pulled by the graph without making a sound).
+let micSource: MediaStreamAudioSourceNode | null = null;
+
+/** Live mode: feed the shared analyser from the microphone instead of the
+ *  track. Resolves false when the mic is unavailable (no permission / no
+ *  device) — the visuals then simply drift on their own. */
+export async function attachMicDrive(preampGain = 2): Promise<boolean> {
+  if (micSource) return true;
+  const eng = getAudioEngine();
+  let stream: MediaStream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+    });
+  } catch {
+    return false;
+  }
+  const ctx = eng.audioContext;
+  // The clock track is disconnected OUTRIGHT: the element still plays and
+  // advances (the visuals' clock) but has no path to the speakers, so no
+  // volume restore anywhere can ever play it over Karel's live set.
+  try { eng.sourceNode.disconnect(); } catch { /* not connected */ }
+  try { eng.analyserNode.disconnect(); } catch { /* not connected */ }
+  const mute = ctx.createGain();
+  mute.gain.value = 0;
+  eng.analyserNode.connect(mute);
+  mute.connect(ctx.destination);
+  const preamp = ctx.createGain();
+  preamp.gain.value = preampGain;
+  preamp.connect(eng.analyserNode);
+  micSource = ctx.createMediaStreamSource(stream);
+  micSource.connect(preamp);
+  return true;
+}
+
 // ─── Gain envelopes — the "never abrupt" law, applied to audio ───
 // Every pause / stop / src-swap should ride a short linear ramp instead of
 // cutting. Ramps are deliberately short (~200ms) so rapid transitions

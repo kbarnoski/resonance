@@ -108,6 +108,9 @@ if [ -f "$PREFS" ]; then
 fi
 rm -rf "$HOME/.tramokyo-chrome/Default/Sessions" "$HOME/.tramokyo-chrome/Default/Session Storage" 2>/dev/null || true
 
+# --use-fake-ui-for-media-stream: LIVE THEATRE (2026-10-11) listens on the
+# built-in mic; a permission prompt would hang in --kiosk. It only skips the
+# prompt UI (the REAL mic is used); the attract loop never asks for it.
 # NEVER THROTTLED (2026-10-07: Karel's review runs stalled — macOS marked the
 # covered kiosk window hidden for 15-80 s; Chrome throttled it: imaging froze
 # "after the second flash", particles went "start and go")
@@ -118,6 +121,7 @@ open -na "Google Chrome" --args \
   --no-default-browser-check \
   --disable-session-crashed-bubble \
   --autoplay-policy=no-user-gesture-required \
+  --use-fake-ui-for-media-stream \
   --disable-backgrounding-occluded-windows \
   --disable-renderer-backgrounding \
   --disable-background-timer-throttling \
