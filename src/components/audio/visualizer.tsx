@@ -660,8 +660,18 @@ export function ShaderVisualizer({
       const w = Math.round(canvas.clientWidth * dpr);
       const h = Math.round(canvas.clientHeight * dpr);
       if (w !== lastW || h !== lastH) {
-        canvas.width = w;
-        canvas.height = h;
+        // Only touch the attributes when the size really changes: ASSIGNING
+        // canvas.width — even the same value — discards and reallocates the
+        // WebGL drawing buffer synchronously (57 ms measured on the kiosk for
+        // the depth layer). lastW resets on every shader switch (this effect
+        // re-runs on the same persistent canvas), so the old code paid that
+        // realloc on the first frame of EVERY new shader — the 64–87 ms
+        // render-only long frames the catalogue tour caught ~0.5 s after a
+        // dual/tertiary shader started (2026-10-10).
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
         gl.viewport(0, 0, w, h);
         lastW = w;
         lastH = h;
