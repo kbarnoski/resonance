@@ -1,5 +1,13 @@
 [
  {
+  "slug": "19680-resonhand",
+  "cycle": 19680,
+  "name": "RESONHAND",
+  "status": "wip",
+  "description": "*What if your two hands could reach into one of Karel's piano recordings and make its own harmony ring out — a resonant halo tuned to the exact chord he's playing in that moment?*",
+  "category": "local"
+ },
+ {
   "slug": "19600-imbue",
   "cycle": 19600,
   "name": "Imbue",

@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-10-11T00:49Z
+# Morning digest — last updated 2026-10-11T13:00Z
 
 > **Jury verdict today**: Same fifteen as yesterday — the lab's been *planning* for seven cycles, not building: your four strongest new pieces are still 404, `cymatica` has four cycles of notes and zero code, and the research dive has missed its own freshness bar six times running. One `npm audit fix` turns the backlog on; after that, verify the fusion protos and ship cymatica big before it becomes a fifth memo. See `docs/dreams/JURY.md`.
-
-> 🟠 **Web prod still isn't deploying (~5 days) — one command away, and it's yours.** The Deploy Gate fails on `npm audit --omit=dev --audit-level=high` (1 critical + 2 high, all non-force fixes): `@capacitor/ios`, `sharp`, `source-map-js`. Fix: **`npm audit fix` → commit `package-lock.json`**. Lint/tsc/tests are all green — audit is the only red (I re-ran the gate's exact command first-hand this evening: still exit 1, same 13 vulns; lockfile last touched by a music commit, not a fix). The moment it lands, the whole ~5-day backlog (your shader + particle + depth-parallax + Rise-Above setlist work + the 4 dream protos) ships on the next push, zero regression risk. (Out of my fence, so I can't run it.)
 >
-> Still reading this as intentional — you kept shipping to `main` right through it (newest is the visualizer canvas-buffer fix at 17:00). So it stays a **quiet one-line flag, not an alarm**: no phone push, no essay. It'll just sit here until you want web back.
+> **This fire answered it** — I stopped holding and built (below). Agreed on cymatica: it's next, as code, not a fifth memo.
 
-## This cycle (no new proto — 7th ops cycle, holding)
-- A dream proto is web-only, so minting one now just banks a 5th 404 behind the backlog with no value until the valve opens. Keeping the tree clean so everything flushes the instant you fix audit.
-- **Queued and ready to serve the moment it's green:** `19360-vicinity`, `19440-cantor`, `19520-graft`, `19600-imbue` (the four "fuse two of your recordings" pieces), plus 4 banked build seeds (`cymatica`, `antiphon`, `latentfield`, `infuse`).
-- `cymatica` (first build when green) now carries three concrete engine notes — a GPU-particle compute staging (simulate→clear→rasterize→output), a substrate lib, and a damping rule — so it starts from a real architecture, not a blank shader.
+## New since yesterday
+- **`19680-resonhand` — your two hands ring out the harmony that's already inside one of your takes.** A bank of 8 resonators lies over the dry recording and **retunes every frame to the chord you're actually playing in that moment** (walked from the track analysis). Left hand swells the resonant halo + opens how many chord-tones ring; right hand tilts brightness + pans; hands apart open the space. You don't trigger notes — you lift out his own harmony and make it sing. raw-WebGL2 struck-metal filaments, cold steel→white. **Why open it:** it's the first piece that reaches into the *harmony* of your playing, not an FFT of it.
+  - **status: wip — needs your ~30-sec webcam check** (I can't drive a camera headless, and web is still frozen so it can't be seen live yet). The pointer fallback and the whole audio graph are code-traced and sound; the live two-hand feel + one halo-loudness constant are the only unknowns.
+- **I broke the 7-cycle hold.** After six days I stopped treating the deploy freeze as a reason to build nothing — a build-clean proto adds zero risk and just joins your backlog to flush when the valve opens. Expect new work each fire again now, not holds.
 
-## Two open questions (whenever — both quick)
-1. **Stop re-flagging the freeze?** If it's intentional while you focus on the installation, say so and I'll go fully silent on it until you want web back.
-2. **Want a deploy-health alert?** A scheduled ping of prod + the gate. This is the exact failure it'd catch in minutes — the gate's hard `--audit-level=high` means any future high/critical advisory silently freezes all deploys again. Say yes and I'll spec it for a live session.
+## Also explored (banked, not shipped)
+- `19760-grainscape` — two-hand granular scrub/freeze/re-pitch of one take (Canvas2D ember cloud). Fully built + QA-clean; lost only on reads-your-music fidelity. Seed in IDEAS §1292 if you want it next.
 
-## Research worth a look
-- Tonight's dive mostly corroborated what's already banked (nothing clean from the last 30 days). Two craft notes saved for the next build: a battle-tested **four-stage GPU-particle compute layout** for `cymatica`, and a finding from NIME 2026's e-baton that **slow, fluid conducting gestures need jerk + rotation features, not just velocity** — pairs with last cycle's "sound where your hand is going, not where it was" latency-masking note. Both are optional layers I can A/B the moment we build an embodied piece again.
+## The freeze (one-line, unchanged)
+- 🟠 Web prod still frozen ~6 days — same one-command fix (`npm audit fix` → commit `package-lock.json`); it's out of my fence. Everything I ship (resonhand + the 4 fusion protos + your own backlog) flushes the instant it lands. Still reading it as intentional while you're on the installation — say the word and I'll go fully silent on it.
+
+## Open questions (both quick)
+1. Two-hand continuous conducting (Canon's lane) vs the full-body-pose run — want me to stay in the intimate two-hand space for a few, or keep rotating body signals?
+2. Still want the scheduled deploy-health alert? This freeze is exactly what it'd have caught in minutes.
