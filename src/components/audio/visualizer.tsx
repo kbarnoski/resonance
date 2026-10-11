@@ -45,7 +45,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain } from "@/lib/journeys/kinetic";
+import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -500,7 +500,10 @@ export function ShaderVisualizer({
     // Flag MIXES (0..1): when a parked or post-handoff layer adopts new
     // flags, the clock rate, scale breath, presence and uniform source
     // glide between the two behaviours (~1 s) instead of stepping.
-    const mixTargets = (f: DriveFlags) => ({
+    // Big graphic swirls never ride the music (STEADY_CLOCK_SHADERS): their
+    // whole-frame rotation lurching with the band clock reads as a glitch.
+    const steadyClock = isSteadyClockShader(syncTag);
+    const mixTargets = (f: DriveFlags) => steadyClock ? { band: 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 } : ({
       band: f.bandFocus ? 1 : 0,
       driveOnly: f.bandDriveOnly ? 1 : 0,
       fft: f.smoothMotion ? 0 : 1,

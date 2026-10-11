@@ -150,6 +150,26 @@ export function isAudioReactiveJourney(journey?: { id?: string | null; name?: st
   return !isMasteredJourneyLike(journey);
 }
 
+/** STEADY-CLOCK shaders (Karel 2026-10-11, Rattler 2's r3-fernunfurl finale:
+ *  "big swirling shaders that rotate and react to the sound ... makes it feel
+ *  like a glitch instead of intentional" / "its ok to have that shader ... just
+ *  wouldnt want them glitching to music" / "i havent had issue with the dark
+ *  hurricane swirling one its just these swirl graphical ones"). The big
+ *  graphic spirals turn the WHOLE frame: a band-driven clock (0.08x-2.9x)
+ *  reads as the frame lurching, not as flow. These keep every journey slot
+ *  but run on a steady clock with the slow synthetic uniforms — no band rate,
+ *  no tempo flow, no kinetic amplitude. Found by scripts/audit-shader-rotation.mjs
+ *  (log-polar rotation fit over all 252) and sorted by eye; maelstrom /
+ *  maelstrom-dark (the dark hurricane) deliberately stay reactive. */
+export const STEADY_CLOCK_SHADERS: ReadonlySet<string> = new Set([
+  "r2-spiralgal", "r3-fernunfurl", "fibonacci-spiral", "chrysalis",
+  "r-blackhole", "r-kaleido", "whirlpool", "spiral",
+]);
+
+export function isSteadyClockShader(mode?: string | null): boolean {
+  return !!mode && STEADY_CLOCK_SHADERS.has(mode);
+}
+
 /** Drive-only clock rate: same band profile and swing as kinetic mode,
  *  but centred on the journey's own resting pace (1.0 at lv=0.5) so a
  *  meditative journey keeps its tempo between phrases and only surges /

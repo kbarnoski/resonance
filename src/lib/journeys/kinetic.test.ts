@@ -104,3 +104,19 @@ describe("imagery native resolution", () => {
     for (const id of MASTERED_JOURNEYS) expect(imageryDprCeil(1512, 982, { id }, 2)).toBe(1.5);
   });
 });
+
+describe("steady-clock shaders (Karel 2026-10-11: graphic swirls must not lurch with the music)", () => {
+  it("the big graphic spirals run steady; the dark hurricane stays reactive", async () => {
+    const { isSteadyClockShader, STEADY_CLOCK_SHADERS } = await import("./kinetic");
+    for (const m of ["r2-spiralgal", "r3-fernunfurl", "fibonacci-spiral", "whirlpool"]) expect(isSteadyClockShader(m)).toBe(true);
+    for (const m of ["maelstrom", "maelstrom-dark", "magma", null, undefined]) expect(isSteadyClockShader(m)).toBe(false);
+    const { SHADERS } = await import("@/lib/shaders");
+    for (const m of STEADY_CLOCK_SHADERS) expect(SHADERS).toHaveProperty(m);
+  });
+  it("the visualizer zeroes every music mix for a steady shader", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync("src/components/audio/visualizer.tsx", "utf8");
+    expect(src).toMatch(/const steadyClock = isSteadyClockShader\(syncTag\);/);
+    expect(src).toMatch(/steadyClock \? \{ band: 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 \}/);
+  });
+});
