@@ -85,11 +85,13 @@ describe("form removals — a removed soul is never cast", () => {
 
 describe("form removals — moments", () => {
   it("drops removed moment images, and a moment with none left", () => {
-    const m = JOURNEY_SIGNATURES["ghost"].moments!;
-    const [a, b] = m[0].images;
+    // Ghost's tree-blossom moment was retired 2026-10-11 (Karel: end on the
+    // angel) — the filter is exercised on a sample moment instead
+    expect(JOURNEY_SIGNATURES["ghost"].moments).toEqual([]);
+    const a = "/tramokyo-pack/emblems/sample-a.jpg", b = "/tramokyo-pack/emblems/sample-b.jpg";
+    const m = [{ phase: 4, at: 2, dur: 16, images: [a, b] }];
     expect(momentsWithout(m, [])).toBe(m);
     expect(momentsWithout(m, [a])![0].images).toEqual([b]);
     expect(momentsWithout(m, [a, b])).toEqual([]);
-    expect(buildParticleLeads({ ...EMPTY_REMOVALS, moments: [a] })["ghost"].signatureMoments![0].images).toEqual([b]);
   });
 });
