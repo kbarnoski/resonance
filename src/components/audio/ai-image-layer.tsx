@@ -887,7 +887,12 @@ export function AiImageLayer({
         // via two different slots) — curated bands repeat URLs across
         // adjacent slots by design; never push the same image twice in
         // a row. Skip only the push — clips below still schedule.
-        const dupStill = stillUrl === lastPackUrlRef.current;
+        // …nor push a still that is ALREADY on screen (tour 2026-10-10: a
+        // refusal resets lastPackUrlRef, and The Summit then re-pushed the
+        // shown gen-012 3x in 24 s — a duplicate screen-blended layer over
+        // itself only brightens). A layer that has faded away doesn't count.
+        const onScreen = layersRef.current.some((l) => "complete" in l.img && l.state !== "fading-out" && (l.img as HTMLImageElement).src.endsWith(stillUrl));
+        const dupStill = stillUrl === lastPackUrlRef.current || onScreen;
         if (!dupStill) lastPackUrlRef.current = stillUrl;
         if (!dupStill && morphCoverPendingRef.current) {
           morphCoverPendingRef.current = false;
