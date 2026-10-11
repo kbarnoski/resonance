@@ -771,7 +771,11 @@ export function ShaderVisualizer({
       // mass-breath on scale — eased in/out by the band mix.
       // (the band scale is slewed above; it also eases back to 1 after the
       // band mix closes before the transform is cleared)
-      if (bandActive || Math.abs(shown.scale - 1) > 0.0001) {
+      // STEADY swirls never scale: a log spiral scaled IS a log spiral
+      // rotated, so the size-breath read as twisting to the beat (Karel
+      // 2026-10-11, Bath's r2-spiralgal: "responding to sound … confirm it
+      // only pulses not girate"). They pulse as a soft GLOW instead (below).
+      if (!steadyClock && (bandActive || Math.abs(shown.scale - 1) > 0.0001)) {
         canvas.style.transform = `scale(${shown.scale.toFixed(4)})`;
       }
       if (lastBand && mix.band > 0.0005) {
@@ -786,7 +790,14 @@ export function ShaderVisualizer({
       // it goes ALL THE WAY to absent (Karel 2026-09-30: "starts with a
       // shader against empty black space... builds up and then back").
       // The pres mix eases a layer into / out of this behaviour.
-      if (mix.pres > 0.0005) {
+      if (steadyClock && lastBand) {
+        // the swirls' pulse: a gentle glow swell 0.85-1.0 riding the same
+        // slewed band drive as the scale breath (eased, never a flash) —
+        // Karel chose "Soft glow pulse instead" (2026-10-11)
+        const breath = Math.min(1, Math.max(0, (shown.scale - 1) / Math.max(1e-6, BAND_PROFILES[lastBand].scale)));
+        canvas.style.opacity = (0.85 + 0.15 * breath).toFixed(3);
+        if (canvas.style.transform) canvas.style.transform = ""; // a scale left by the canvas's previous shader
+      } else if (mix.pres > 0.0005) {
         const presence = Math.min(1, Math.max(0, (actEma - 0.08) * 4.0));
         canvas.style.opacity = (1 + (presence - 1) * mix.pres).toFixed(3);
       } else if (canvas.style.opacity) {

@@ -120,5 +120,8 @@ describe("steady-clock shaders (Karel 2026-10-11: graphic swirls must not lurch 
     expect(src).toMatch(/steadyClock \? \{ band: f\.bandFocus \? 1 : 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 \}/);
     // they still PULSE (band -> scale breath) but the band never drives the clock
     expect(src).toMatch(/if \(lastBand && mix\.band > 0\.001 && !steadyClock\) \{/);
+    // …and the pulse is a GLOW, never a scale (a scaled log spiral reads as rotating)
+    expect(src).toMatch(/if \(!steadyClock && \(bandActive \|\| Math\.abs\(shown\.scale - 1\) > 0\.0001\)\) \{/);
+    expect(src).toMatch(/canvas\.style\.opacity = \(0\.85 \+ 0\.15 \* breath\)\.toFixed\(3\);/);
   });
 });
