@@ -88,7 +88,8 @@ describe("featured + album recast: coverage", () => {
     for (const id of [...Object.keys(featured.kineticLabCasts), ...expansion.journeys.map((j) => j.id)]) expect(JOURNEY_CASTS[id], id).toBeUndefined();
     // shared rows wrapping a mastered built-in (DB uuid id, live name) stay uncast
     for (const name of ["Snowflake", "Realized", "Ghost"]) expect(getJourneyCast({ id: "some-db-uuid", name })).toBeNull();
-    expect(JOURNEY_CASTS["b4ea4c60-d158-40ca-8bd5-4d2d57473e4f"], "Cosmic Homecoming closes the Welcome Home program").toBeDefined();
+    // Cosmic Homecoming removed 2026-10-11 (Karel: "a duplicate of welcome home journey and not needed anymore")
+    expect(JOURNEY_CASTS["b4ea4c60-d158-40ca-8bd5-4d2d57473e4f"]).toBeUndefined();
   });
 
   it("keeps the generated casts and the report in sync", () => {
@@ -238,7 +239,7 @@ describe("brightness gain reaches every journey except the mastered three and th
   });
 
   it("dims bright shaders in featured + album journeys", () => {
-    for (const name of ["The Summit", "Interplay", "Welcome Home", "Rolling", "Rise", "Love Again", "COSMIC HOMECOMING"]) {
+    for (const name of ["The Summit", "Interplay", "Welcome Home", "Rolling", "Rise", "Love Again"]) {
       expect(journeyLayerGain({ id: "x", name }, bright), name).toBe(SHADER_SUPPORT_GAIN[bright]);
     }
     expect(journeyLayerGain({ id: "x", name: "Interplay" }, "not-a-gained-shader")).toBe(1);

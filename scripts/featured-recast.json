@@ -2736,61 +2736,6 @@
    "lead": "covenant"
   },
   {
-   "id": "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f",
-   "name": "COSMIC HOMECOMING",
-   "builtin": false,
-   "setlistPos": null,
-   "path": "Welcome Home",
-   "pathIdx": 13,
-   "pathLen": 14,
-   "dur": 293,
-   "shaders": [
-    "parsec",
-    "r-stardust",
-    "astral",
-    "zenith",
-    "kenosis",
-    "lightyear",
-    "dusk"
-   ],
-   "cast": {
-    "threshold": [
-     "parsec",
-     "kenosis",
-     "zenith"
-    ],
-    "expansion": [
-     "parsec",
-     "kenosis",
-     "zenith",
-     "dusk"
-    ],
-    "transcendence": [
-     "kenosis",
-     "zenith",
-     "dusk",
-     "astral"
-    ],
-    "illumination": [
-     "zenith",
-     "dusk",
-     "astral",
-     "r-stardust"
-    ],
-    "return": [
-     "dusk",
-     "astral",
-     "r-stardust",
-     "lightyear"
-    ],
-    "integration": [
-     "astral",
-     "r-stardust",
-     "lightyear"
-    ]
-   }
-  },
-  {
    "id": "abyssal-dive",
    "name": "Abyssal Dive",
    "builtin": true,

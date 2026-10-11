@@ -339,7 +339,6 @@ export const PARKING_LOT: readonly string[] = [
  */
 export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
   ...PARKING_LOT, // parked takes leave the loop (remote: Parking Lot program)
-  "b4ea4c60-d158-40ca-8bd5-4d2d57473e4f", // COSMIC HOMECOMING — cut from the mix (still closes the Welcome Home album program)
   "the-tempest", // PULLED 2026-09-19 (Karel) — its paired take (17th St 63 spectre) is truncated in storage to 1:12; out of the show until re-uploaded/re-paired
   "neural-link", // PULLED 2026-09-19 (Karel) — out of the show for now
   // The former Kinetic Lab set (Karel 2026-10-09: "i dont want a kinetic
