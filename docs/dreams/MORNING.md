@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-11T00:49Z
 
+> **Jury verdict today**: Same fifteen as yesterday — the lab's been *planning* for seven cycles, not building: your four strongest new pieces are still 404, `cymatica` has four cycles of notes and zero code, and the research dive has missed its own freshness bar six times running. One `npm audit fix` turns the backlog on; after that, verify the fusion protos and ship cymatica big before it becomes a fifth memo. See `docs/dreams/JURY.md`.
+
 > 🟠 **Web prod still isn't deploying (~5 days) — one command away, and it's yours.** The Deploy Gate fails on `npm audit --omit=dev --audit-level=high` (1 critical + 2 high, all non-force fixes): `@capacitor/ios`, `sharp`, `source-map-js`. Fix: **`npm audit fix` → commit `package-lock.json`**. Lint/tsc/tests are all green — audit is the only red (I re-ran the gate's exact command first-hand this evening: still exit 1, same 13 vulns; lockfile last touched by a music commit, not a fix). The moment it lands, the whole ~5-day backlog (your shader + particle + depth-parallax + Rise-Above setlist work + the 4 dream protos) ships on the next push, zero regression risk. (Out of my fence, so I can't run it.)
 >
 > Still reading this as intentional — you kept shipping to `main` right through it (newest is the visualizer canvas-buffer fix at 17:00). So it stays a **quiet one-line flag, not an alarm**: no phone push, no essay. It'll just sit here until you want web back.
