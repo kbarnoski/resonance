@@ -180,10 +180,22 @@ export const FlashAngel = memo(function FlashAngel({ opacity, blurPx, variant }:
     };
   }, [src, variant]);
 
+  // The fade arrives at the journey frame's ~15 Hz (progress-rate) cadence:
+  // each step is ~6 % opacity on a near-white figure — a visibly stuttered
+  // fade (catalogue tour 2026-10-11). A short linear transition bridges the
+  // steps on the way DOWN only; the onset stays instant so the angel still
+  // lands on the beat.
+  const prevOpacityRef = useRef(opacity);
+  const falling = opacity < prevOpacityRef.current;
+  useLayoutEffect(() => {
+    prevOpacityRef.current = opacity;
+  }, [opacity]);
+
   return (
     <canvas
       ref={canvasRef}
       style={{
+        transition: falling ? "opacity 75ms linear, filter 75ms linear" : "none",
         width: "75vmin",
         height: "95vmin",
         maxWidth: "100%",

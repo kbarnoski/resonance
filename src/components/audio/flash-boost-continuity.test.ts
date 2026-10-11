@@ -42,4 +42,8 @@ describe("bass-hit shader boost is continuous", () => {
     expect(maxStep).toBeLessThan(0.03);
     expect(Math.abs(cur - base)).toBeLessThan(0.002); // handed back at base
   });
+  it("the angel's progress-rate fade is bridged on the way down, never on the onset", () => {
+    const angel = readFileSync("src/components/audio/flash-angel.tsx", "utf8");
+    expect(angel).toMatch(/transition: falling \? "opacity 75ms linear, filter 75ms linear" : "none"/);
+  });
 });
