@@ -347,6 +347,10 @@ export const EXPERIENCE_INTRO = {
   // the logo. dont have my name on it for tramokyo. just have it say
   // thank you to the hosts and organizers."
   title: "Resonance",
+  // Karel 2026-10-11: Resonance is the meta-level entity, Theatre the
+  // experience inside it ("kind of like Disney has Epcot") — option A,
+  // the sub-brand in tracked capitals under the wordmark.
+  subBrand: "Theatre",
   about: "a contemplative listening room — music conducting worlds of light and imagery",
   thanks: "with gratitude to the organizers and hosts of Tramokyo",
 } as const;

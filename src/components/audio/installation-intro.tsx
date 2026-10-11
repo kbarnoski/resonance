@@ -171,12 +171,29 @@ export function ExperienceTextInner({ animate = true, showAbout = false, minimal
     // into the wrap's card), and a stall on black is invisible.
     <div style={animate ? { animation: "installationContentFade 1400ms ease-out 700ms forwards", opacity: 0 } : undefined}>
       <ResonanceMark className="mx-auto mb-10 h-20 w-20 text-white/85" />
-      <h1
-        className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
-        style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
-      >
-        {EXPERIENCE_INTRO.title}
-      </h1>
+      <div className="relative">
+        <h1
+          className="mt-2 text-[clamp(3rem,7vw,5.2rem)] tracking-[-0.01em] text-white/90"
+          style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
+        >
+          {EXPERIENCE_INTRO.title}
+        </h1>
+        {/* Sub-brand (Karel 2026-10-11, option A): Resonance stays the hero
+            mark; THEATRE names this experience inside it. Same tracked-caps
+            voice as the journey cards' secondary line; the left pad equals
+            the tracking so the letters centre optically. Hung BELOW the
+            wordmark out of flow, so the logo + "Resonance" keep their exact
+            placement over the particle piano. */}
+        <div
+          className="absolute left-0 right-0 top-full mt-1 text-[clamp(1.1rem,2.6vw,1.9rem)] tracking-[0.55em] pl-[0.55em] uppercase text-white/60"
+          style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 400 }}
+        >
+          {EXPERIENCE_INTRO.subBrand}
+        </div>
+      </div>
+      {/* Cards with more text below (the statement's thanks line) make room
+          for the hung sub-brand; the minimal title keeps its exact layout. */}
+      {(showAbout || !minimal) && <div aria-hidden className="h-[clamp(2rem,3.9vw,3rem)]" />}
       {showAbout && (
         <div
           className="mt-8 text-[clamp(1.1rem,2vw,1.5rem)] tracking-[0.01em] text-white/70"
