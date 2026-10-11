@@ -367,40 +367,61 @@ export function JourneyCompositor({
 
   // Pre-activation + bass hit shader boost (Ghost-only, gated by enableBassFlash).
   // Approach ramp: shaders get brighter ~1.5s before the hit.
-  // On hit: spike to max then settle back fast.
+  // On hit: spike to max then settle back over ~450ms.
+  //
+  // ONE rAF loop per flash, reading the latest values from refs (catalogue
+  // tour 2026-10-11, every pass, Ghost +163 s): the old effect re-ran on
+  // every `impulse` change — the frame reaches React only as often as the
+  // audio progress updates — and each re-run reset the shaders to 1 and
+  // restarted the 450 ms recovery. The shaders sawtoothed bright↔base at
+  // that cadence for the whole 1.7 s impulse, then the "restore" branch
+  // snapped them to base in one frame when it ended. Now the hit curve is
+  // timed from the hit itself and everything else slews, so React render
+  // cadence can never step the visible opacity.
+  const flashDriveRef = useRef({ approach, impulse, hit: false });
+  flashDriveRef.current = { approach, impulse, hit: impulse > 0 && evtType === "bass_hit" };
+  const flashBoostRafRef = useRef(0);
+  const flashBoostActive = enableBassFlash && (approach > 0 || impulse > 0);
   useEffect(() => {
-    if (!rootRef.current || !enableBassFlash) return;
-    if (approach > 0 && impulse <= 0) {
-      // Building up — ramp shader opacity toward 1.0
-      const ramped = Math.min(1.0, shaderOpacityRef.current + approach * approach * 0.6);
-      rootRef.current.style.setProperty("--shader-opacity", String(ramped));
-      return;
-    }
-    if (impulse > 0 && evtType === "bass_hit") {
-      // Hit! Spike to max so shaders flash with the white overlay.
-      // Recovery is ramped (not snapped) over ~450ms so the return to baseline
-      // is as gentle as the pre-activation approach.
-      rootRef.current.style.setProperty("--shader-opacity", "1");
-      const startTime = performance.now();
-      const recoverMs = 450;
-      let raf = 0;
-      const tick = () => {
-        if (!rootRef.current) return;
-        const t = Math.min(1, (performance.now() - startTime) / recoverMs);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const target = shaderOpacityRef.current;
-        const current = 1 + (target - 1) * eased;
-        rootRef.current.style.setProperty("--shader-opacity", String(current));
-        if (t < 1) raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(raf);
-    }
-    // Neither approaching nor firing — restore normal
-    if (approach <= 0 && impulse <= 0 && rootRef.current) {
-      rootRef.current.style.setProperty("--shader-opacity", String(shaderOpacityRef.current));
-    }
-  }, [approach, impulse, evtType, enableBassFlash]);
+    if (!flashBoostActive || flashBoostRafRef.current) return;
+    const RECOVER_MS = 450;
+    let cur = shaderOpacityRef.current;
+    let last = performance.now();
+    const tick = () => {
+      const root = rootRef.current;
+      if (!root) { flashBoostRafRef.current = 0; return; }
+      const now = performance.now();
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const base = shaderOpacityRef.current;
+      const d = flashDriveRef.current;
+      const sinceHit = now - bassHitStartRef.current;
+      if (d.hit && sinceHit < RECOVER_MS) {
+        // Hit! Spike to max with the white overlay, eased back to base —
+        // a time curve from the hit, so re-renders can't restart it.
+        const t = Math.max(0, sinceHit) / RECOVER_MS;
+        cur = 1 + (base - 1) * (1 - Math.pow(1 - t, 3));
+      } else {
+        // Building up (approach), or settling: glide toward the goal (~120 ms)
+        // so the progress-rate updates of `approach` never show as steps.
+        const goal = d.approach > 0 && !d.hit ? Math.min(1.0, base + d.approach * d.approach * 0.6) : base;
+        cur += (goal - cur) * (1 - Math.exp(-dt / 0.12));
+        if (d.approach <= 0 && d.impulse <= 0 && Math.abs(cur - base) < 0.002) {
+          // Flash over and settled — hand back exactly at base, stop.
+          root.style.setProperty("--shader-opacity", String(base));
+          flashBoostRafRef.current = 0;
+          return;
+        }
+      }
+      root.style.setProperty("--shader-opacity", String(cur));
+      flashBoostRafRef.current = requestAnimationFrame(tick);
+    };
+    flashBoostRafRef.current = requestAnimationFrame(tick);
+  }, [flashBoostActive]);
+  useEffect(() => () => {
+    cancelAnimationFrame(flashBoostRafRef.current);
+    flashBoostRafRef.current = 0;
+  }, []);
 
   return (
     <div
