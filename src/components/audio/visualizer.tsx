@@ -500,10 +500,14 @@ export function ShaderVisualizer({
     // Flag MIXES (0..1): when a parked or post-handoff layer adopts new
     // flags, the clock rate, scale breath, presence and uniform source
     // glide between the two behaviours (~1 s) instead of stepping.
-    // Big graphic swirls never ride the music (STEADY_CLOCK_SHADERS): their
-    // whole-frame rotation lurching with the band clock reads as a glitch.
+    // Big graphic swirls never ride the music with their CLOCK
+    // (STEADY_CLOCK_SHADERS): a whole-frame rotation lurching with the band
+    // clock reads as a glitch. They still PULSE (Karel 2026-10-11: "the
+    // swirls can pulse but not glitchy rotation") — the band keeps driving
+    // the layer's scale breath; rate, tempo flow and the audio uniforms stay
+    // steady.
     const steadyClock = isSteadyClockShader(syncTag);
-    const mixTargets = (f: DriveFlags) => steadyClock ? { band: 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 } : ({
+    const mixTargets = (f: DriveFlags) => steadyClock ? { band: f.bandFocus ? 1 : 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 } : ({
       band: f.bandFocus ? 1 : 0,
       driveOnly: f.bandDriveOnly ? 1 : 0,
       fft: f.smoothMotion ? 0 : 1,
@@ -559,7 +563,7 @@ export function ShaderVisualizer({
         baseRate = 1 + (0.65 + Math.min(1, energy * 2.2) * 0.7 - 1) * mix.tempo;
       }
       let rateTarget = baseRate;
-      if (lastBand && mix.band > 0.001) {
+      if (lastBand && mix.band > 0.001 && !steadyClock) {
         const prof0 = BAND_PROFILES[lastBand];
         const kinRate = prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
         const bandRate = kinRate + (driveOnlyRate(prof0, eqLv) - kinRate) * mix.driveOnly;

@@ -113,10 +113,12 @@ describe("steady-clock shaders (Karel 2026-10-11: graphic swirls must not lurch 
     const { SHADERS } = await import("@/lib/shaders");
     for (const m of STEADY_CLOCK_SHADERS) expect(SHADERS).toHaveProperty(m);
   });
-  it("the visualizer zeroes every music mix for a steady shader", async () => {
+  it("a steady shader pulses with the band but its clock never rides it", async () => {
     const { readFileSync } = await import("node:fs");
     const src = readFileSync("src/components/audio/visualizer.tsx", "utf8");
     expect(src).toMatch(/const steadyClock = isSteadyClockShader\(syncTag\);/);
-    expect(src).toMatch(/steadyClock \? \{ band: 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 \}/);
+    expect(src).toMatch(/steadyClock \? \{ band: f\.bandFocus \? 1 : 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 \}/);
+    // they still PULSE (band -> scale breath) but the band never drives the clock
+    expect(src).toMatch(/if \(lastBand && mix\.band > 0\.001 && !steadyClock\) \{/);
   });
 });
