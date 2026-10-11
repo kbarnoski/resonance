@@ -1331,9 +1331,13 @@ void main(){
   // wrapping souls fade at the edges where they re-enter
   // (each particle its own top, so a rising field ends in a ragged, flickering
   // crown instead of one horizontal line)
-  float topY = 2.0 - 1.1 * s.g * smoothstep(0.3, 0.7, uWrap.y);
-  float edgeY = smoothstep(topY, topY - 0.6, p.y) * smoothstep(-2.0, -1.4, p.y);
-  a *= mix(1.0, edgeY * smoothstep(2.4, 1.0, abs(p.x)), smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
+  // …and FALLING fields too (2026-10-11, Ghost between the flashes: the petal
+  // field wore a hard flat top — every faller entered on one line with a 0.6
+  // fade band, read as "a bunch appear too quick" at the top). Both edges now
+  // feather over 1.0 and each particle keeps its own top.
+  float topY = 2.0 - 1.1 * s.g * smoothstep(0.3, 0.7, max(uWrap.y, uWrap.z));
+  float edgeY = smoothstep(topY, topY - 1.0, p.y) * smoothstep(-2.0, -1.0, p.y);
+  a *= mix(1.0, edgeY * smoothstep(2.6, 0.6, abs(p.x)), smoothstep(0.0, 0.5, max(uWrap.y, uWrap.z)) * (1.0 - uImgShow));
   a *= mix(1.0, smoothstep(3.0, 2.3, abs(p.x)), smoothstep(0.0, 0.5, uWrap.x) * (1.0 - uImgShow));
   vec3 world = col * a * visW * mix(1.0, 4.0, sparse) * uWorldFade;
 
