@@ -79,6 +79,12 @@ describe("form diversity — loop-wide rotation", () => {
     for (const [soul, v] of sh) expect(v, soul).toBeLessThan(MAX_SHARE + 0.02);
     expect([...sh.values()].filter((v) => v > 0.01).length).toBeGreaterThanOrEqual(14);
   });
+  it("the swaying-lines family is held near 10 % (Karel 2026-10-11: \"the pattern where the particles turn into swaying lines happens a lot\")", () => {
+    const sh = shares(logs);
+    const lines = (["ribbons", "waves", "tendrils", "ink"] as SoulId[]).reduce((a, k) => a + (sh.get(k) ?? 0), 0);
+    expect(lines).toBeLessThan(0.12);
+    expect([...sh.values()].filter((v) => v > 0.02).length).toBeGreaterThanOrEqual(20);
+  });
   it("every planned form is one the session pre-warms (no program built on show)", () => {
     const warm = new Set<SoulId>();
     for (const c of Object.values(PARTICLE_LEADS)) for (const x of [...c.morphSouls, ...Object.values(c.souls), ...c.windows.map((w) => w.soul), ...(c.formCycle ?? [])]) warm.add(x);

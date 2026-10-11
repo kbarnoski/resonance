@@ -37,8 +37,33 @@ export function createLoopMemory(): LoopMemory {
 /** The kiosk page's loop memory. */
 export const LOOP_MEMORY: LoopMemory = createLoopMemory();
 
-/** Soft cap on any one form's share of on-screen time, loop-wide. */
-export const MAX_SHARE = 0.15;
+/** Soft cap on any one form's share of on-screen time, loop-wide.
+ *  2026-10-11 rebalance (Karel: "the particle system is pretty boring once
+ *  youve seen a few journeys … the pattern where the particles turn into
+ *  swaying lines happens a lot"): measured on the kiosk vortex 11.5 %,
+ *  murmuration 10.6 %, ribbons 9.4 %, the swaying-lines family ~20 % — the
+ *  15 % cap never engaged. Now ~6.5 % per form; the swaying-lines family ~10 %. */
+export const MAX_SHARE = 0.065;
+/** Soft cap on a FAMILY's share (forms that read alike on screen). The
+ *  swaying-lines family is held tighter — Karel named it: "the pattern where
+ *  the particles turn into swaying lines happens a lot". */
+export const MAX_FAMILY_SHARE = 0.24; // a guard: five-member families sit ~20 % naturally
+const FAMILY_CAP: Readonly<Record<string, number>> = { lines: 0.1 };
+
+/** Forms that read alike (one family each) — all within the session's warm set,
+ *  so a sibling swap never builds a program on show. A phase's imagery asks
+ *  for a form; an under-used sibling keeps that character while the loop
+ *  stays varied. The blossom is never a sibling (its own rules). */
+export const FORM_FAMILIES: Readonly<Record<string, readonly SoulId[]>> = {
+  swirl: ["vortex", "torus", "lissajous", "harmonics", "rings"],
+  swarm: ["murmuration", "fireflies", "motes", "pollen", "duststorm"],
+  lines: ["ribbons", "waves", "tendrils", "ink"],
+  vapour: ["smoke", "nebula", "embers", "fountain"],
+  geometric: ["medallion", "girih", "mandala", "kaleido", "rose"],
+};
+const FAMILY_OF = new Map<SoulId, string>();
+for (const [fam, xs] of Object.entries(FORM_FAMILIES)) for (const x of xs) FAMILY_OF.set(x, fam);
+export function familyOf(soul: SoulId): string | undefined { return FAMILY_OF.get(soul); }
 
 export function previousJourney(mem: LoopMemory, journeyId: string): LoopEntry | null {
   for (let i = mem.history.length - 1; i >= 0; i--) if (mem.history[i].journeyId !== journeyId) return mem.history[i];
@@ -81,10 +106,20 @@ export function blossomAllowed(mem: LoopMemory, journeyId: string, shownThisJour
   return !shownThisJourney && !previousJourney(mem, journeyId)?.blossom;
 }
 
+function familyShare(mem: LoopMemory, soul: SoulId): number {
+  const fam = FAMILY_OF.get(soul);
+  if (!fam) return 0;
+  let s = 0;
+  for (const x of FORM_FAMILIES[fam]) s += shareOf(mem, x);
+  return s;
+}
+
 /** How much a form is over-used (0 when under its share). */
 function overusePenalty(mem: LoopMemory, soul: SoulId): number {
   const sh = shareOf(mem, soul);
-  return 2 * sh + (sh > MAX_SHARE * 0.8 ? 0.6 : 0);
+  const fs = familyShare(mem, soul);
+  const cap = FAMILY_CAP[FAMILY_OF.get(soul) ?? ""] ?? MAX_FAMILY_SHARE;
+  return 4 * sh + (sh > MAX_SHARE ? 3 : sh > MAX_SHARE * 0.75 ? 0.8 : 0) + (fs > cap ? 2.5 : fs > cap * 0.8 ? 0.6 : 0);
 }
 
 /**
@@ -104,6 +139,38 @@ export function chooseNext(cands: readonly SoulId[], o: { recent: readonly SoulI
     if (o.recent.slice(0, 2).includes(c)) score += 10;
     if (o.avoid && c === o.avoid) score += 10;
     if (score < bestScore) { bestScore = score; best = c; }
+  }
+  // Family siblings of the imagery's forms (2026-10-11 rebalance): a sibling
+  // reads like what the phase asked for; it wins only when it is clearly
+  // fresher than every own candidate (a small bias keeps the imagery first).
+  const seen = new Set<SoulId>(cands);
+  for (let i = 0; i < n; i++) {
+    const fam = FAMILY_OF.get(cands[i]);
+    if (!fam) continue;
+    for (const sib of FORM_FAMILIES[fam]) {
+      if (seen.has(sib)) continue;
+      seen.add(sib);
+      let score = 0.35 + overusePenalty(o.mem, sib) + i * 0.02 + (o.jitter ?? 0) * 0.05;
+      if (o.recent.slice(0, 2).includes(sib)) score += 10;
+      if (o.avoid && sib === o.avoid) score += 10;
+      if (score < bestScore) { bestScore = score; best = sib; }
+    }
+  }
+  // Release valve: when even the siblings sit in an over-capped family (a
+  // phase whose imagery only asks for swaying lines), any form of an
+  // under-used family may take the slot — a clear cost keeps imagery first.
+  const bf = best ? FAMILY_OF.get(best) : undefined;
+  if (best && bf && familyShare(o.mem, best) > (FAMILY_CAP[bf] ?? MAX_FAMILY_SHARE)) {
+    for (const [fam, xs] of Object.entries(FORM_FAMILIES)) {
+      if (fam === bf || familyShare(o.mem, xs[0]) > (FAMILY_CAP[fam] ?? MAX_FAMILY_SHARE) * 0.9) continue;
+      for (const x of xs) {
+        if (seen.has(x)) continue;
+        let score = 1 + overusePenalty(o.mem, x) + (o.jitter ?? 0) * 0.05;
+        if (o.recent.slice(0, 2).includes(x)) score += 10;
+        if (o.avoid && x === o.avoid) score += 10;
+        if (score < bestScore) { bestScore = score; best = x; }
+      }
+    }
   }
   return best;
 }
