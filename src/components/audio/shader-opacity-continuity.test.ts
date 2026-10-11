@@ -12,11 +12,21 @@ describe("shader opacity glide is continuous", () => {
   it("a running ramp is not cancelled by the next update", () => {
     const normal = src.slice(src.indexOf("// Normal update."), src.indexOf("}, [effectiveShaderOpacity]);"));
     expect(normal).not.toMatch(/return \(\) => \{\s*cancelAnimationFrame\(introRampRafRef\.current\)/);
-    expect(normal).toMatch(/Math\.abs\(effectiveShaderOpacity - from\) > 0\.02/);
+    expect(normal).toMatch(/Math\.abs\(effectiveShaderOpacity - from\) > 0\.001/);
   });
   it("the ramp holds during a handoff settle (freeze protocol)", () => {
     const normal = src.slice(src.indexOf("// Normal update."), src.indexOf("}, [effectiveShaderOpacity]);"));
     expect(normal).toMatch(/if \(inBoundarySettleExtended\(3000\)\) \{\s*introRampRafRef\.current = requestAnimationFrame\(ramp\);/);
+  });
+  it("a slow phase blend arriving at ~15 Hz in small steps is glided per frame (Realized +180 s)", () => {
+    // target moves 0.50 -> 0.55 in 0.008 steps every 75 ms; frames at 120 Hz
+    let css = 0.5, ramping = false, target = 0.5, maxStep = 0;
+    for (let f = 0; f < 120 * 3; f++) {
+      const ms = f * (1000 / 120);
+      if (f % 9 === 0) { target = Math.min(0.55, 0.5 + 0.008 * Math.floor(ms / 75)); if (!ramping && Math.abs(target - css) > 0.001) ramping = true; else if (!ramping) css = target; }
+      if (ramping) { const prev = css; css += (target - css) * 0.012; if (Math.abs(css - target) < 0.005) { css = target; ramping = false; } maxStep = Math.max(maxStep, Math.abs(css - prev)); }
+    }
+    expect(maxStep).toBeLessThan(0.006);
   });
   it("a phase blend after a step lands with no per-frame jump > 1 %", () => {
     // 120 Hz frames; React delivers the target every 66 ms.
@@ -24,7 +34,7 @@ describe("shader opacity glide is continuous", () => {
     const setTarget = (v: number) => {
       target = v;
       if (ramping) return;                       // the running ramp tracks it
-      if (Math.abs(v - css) > 0.02) ramping = true;
+      if (Math.abs(v - css) > 0.001) ramping = true;
       else { maxStep = Math.max(maxStep, Math.abs(v - css)); css = v; }
     };
     for (let f = 0; f < 120 * 8; f++) {

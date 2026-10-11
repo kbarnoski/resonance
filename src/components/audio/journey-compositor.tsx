@@ -345,7 +345,11 @@ export function JourneyCompositor({
       const el = rootRef.current;
       const parsed = parseFloat(el.style.getPropertyValue("--shader-opacity"));
       const from = Number.isFinite(parsed) ? parsed : prev;
-      if (Math.abs(effectiveShaderOpacity - from) > 0.02) {
+      // EVERY change glides (Realized +180 s, tour passes 1-5: a phase blend
+      // moving 0.50 -> 0.55 reached here as ~15 Hz steps of up to 0.008, each
+      // written directly — a stair-stepped brightness on every shader layer).
+      // Only a sub-0.001 nudge is written as-is.
+      if (Math.abs(effectiveShaderOpacity - from) > 0.001) {
         let current = from;
         // 0.012/frame ~= 2s time constant — the recorded settle-end
         // blip (session q0z43f f0363) was the old 0.04 catch-up moving
@@ -359,7 +363,7 @@ export function JourneyCompositor({
           }
           const target = shaderOpacityRef.current;
           current += (target - current) * rate;
-          if (Math.abs(current - target) < 0.005) {
+          if (Math.abs(current - target) < 0.0015) {
             current = target;
             introRampRafRef.current = 0;
           }
