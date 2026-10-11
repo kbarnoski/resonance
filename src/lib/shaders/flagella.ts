@@ -104,6 +104,12 @@ void main() {
       float ff = float(f);
       float flagAngle = heading + 3.14 + (ff - 1.0) * 0.4;
       float flagLen = 0.15 + hash1(fi * 3.0 + ff * 7.0) * 0.12;
+      // early-out (identical output): a tail never reaches farther than its
+      // length + lateral swing 0.12 + width 0.012 + glow 0.015 from its body,
+      // and both glows below are zero beyond that. The full trace was ~480
+      // segment tests per pixel — 3 consecutive 66 ms render frames on the
+      // kiosk the moment flagella became primary (tour pass 3, 2026-10-11)
+      if (length(uv - orgPos) > flagLen + 0.16) continue;
 
       float flagDist = tendrilDist(uv, orgPos, flagAngle, flagLen, t + fi * 2.0, seed + ff);
       float flagGlow = smoothstep(0.015, 0.0, flagDist);
