@@ -539,7 +539,11 @@ void main() {
     float speed = 0.3 + fract(fi * 0.27) * 0.4;
     float x = mod(fi * 0.21 - t * speed, 2.4) - 1.2;
     float y = (fract(fi * 0.13) - 0.5) * 1.0 + sin(t * 0.5 + fi) * 0.05;
-    float trail = smoothstep(0.0, 0.4, x + 1.2) * (1.0 - step(0.0, uv.x - x));
+    // (the wrap: x jumps from -1.2 to +1.2, and everything left of the head
+    // doubled in ONE frame — the trail now regrows while the head is still
+    // off-screen right (x 1.2 -> 0.95; the visible edge is 0.89 at 16:9), so
+    // what is on screen is unchanged — tour 2026-10-10, Snowflake finale)
+    float trail = smoothstep(0.0, 0.4, x + 1.2) * smoothstep(1.2, 0.95, x) * (1.0 - step(0.0, uv.x - x));
     float thick = 0.005 + 0.005 * trail;
     float d = abs(uv.y - y);
     float beam = thick / (d + 0.005);
