@@ -1293,7 +1293,11 @@ export function VisualizerCore({
   }, []);
 
   // Dual shader A/B crossfade — handles both shader-to-shader swaps and removal
-  const dualShaderTarget = journeyDualShaderMode && SHADERS[journeyDualShaderMode as VisualizerMode]
+  // NEVER the primary's own shader (tour pass 3: 37 episodes, 4–75 s, of a
+  // shader on two layers at once — screen-blended onto itself; several engine
+  // paths could land the primary on the dual's shader). The duplicate layer
+  // fades out; the scripted mastered takes never mirror, so they're unchanged.
+  const dualShaderTarget = journeyDualShaderMode && SHADERS[journeyDualShaderMode as VisualizerMode] && journeyDualShaderMode !== actualPrimaryMode
     ? journeyDualShaderMode : null;
 
   // Re-target queue (see primary): a new dual target that arrives while a
@@ -1435,7 +1439,8 @@ export function VisualizerCore({
   const tertiaryShaderRef = useRef<HTMLDivElement>(null);
   const tertiaryFadeRef = useRef<number>(0);
 
-  const tertiaryShaderTarget = journeyTertiaryShaderMode && SHADERS[journeyTertiaryShaderMode as VisualizerMode]
+  // (never the primary's own shader — see dualShaderTarget)
+  const tertiaryShaderTarget = journeyTertiaryShaderMode && SHADERS[journeyTertiaryShaderMode as VisualizerMode] && journeyTertiaryShaderMode !== actualPrimaryMode
     ? journeyTertiaryShaderMode : null;
 
   // Single layer, so a visible shader is NEVER swapped in place (the old
