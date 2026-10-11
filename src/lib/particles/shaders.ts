@@ -1114,14 +1114,19 @@ void main(){
   // sides) and the draw feathers the sides, so the field has no edge to see
   if (uImgShow < 0.01) {
     vec3 r = hash31(s.a * 4271.0 + floor(uTime));
-    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x + r.y - 1.0) * 2.6, -2.0, (r.z - 0.5) * 3.2); v = vec3(0.0); }
+    // NO BAND (2026-10-11, Karel watching Ghost: after the flash "the top part
+    // a bunch appear too quick"): re-entry HEIGHT is spread beyond the edge
+    // (±2.0 … ±3.4, hidden by the edge fade), so a mass wrap — every mote at
+    // once when an image releases — arrives as a staggered drift-in, never a
+    // dense line fading in together
+    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x + r.y - 1.0) * 2.6, -2.0 - 1.4 * hash11(s.a * 53.7 + floor(uTime)), (r.z - 0.5) * 3.2); v = vec3(0.0); }
     if (uWrap.z > 0.5 && p.y < -2.0) {
       if (uFountainW > 0.5) {
         vec2 d = normalize(r.xz - 0.5 + 1e-4);
         p = vec3(d.x * 0.08, -1.95, d.y * 0.08);
         v = vec3(d.x * (0.3 + 0.6 * r.y), 2.4 + 0.6 * r.z + 0.9 * max(uBands.x, 0.0), d.y * (0.3 + 0.6 * r.y));
       } else {
-        p = vec3((r.x + r.y - 1.0) * 2.6, 2.0, (r.z - 0.5) * 3.2); v = vec3(0.0);
+        p = vec3((r.x + r.y - 1.0) * 2.6, 2.0 + 1.4 * hash11(s.a * 53.7 + floor(uTime)), (r.z - 0.5) * 3.2); v = vec3(0.0);
       }
     }
     if (uWrap.x > 0.5 && p.x > 3.0) { p.x = -3.0; p.y = (r.y - 0.5) * 1.6; }

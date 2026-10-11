@@ -72,14 +72,14 @@ export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morph
   ghost: {
     image: "angel",
     morphs: [2, 5],
-    // The tree-blossom MOMENT (phase 4, 3:09-3:24) is retired (Karel
-    // 2026-10-11, watching Ghost: "the particles create flowers then an
-    // abstract form then only to make an angel form again. this kind of
-    // gyrating motion makes it look undecided" → "End on the angel"). It ended
-    // 3 s before the closing angel, and an image must clear before the next
-    // loads, so the field went flowers → abstract → angel. Phase 4 keeps its
-    // blossom FORM; the angel forms straight from it.
-    moments: [],
+    // The tree-blossom MOMENT stays (Karel 2026-10-11: "you have to keep that
+    // particle treatment where they turn into the pink blossoms and merge on the
+    // tree like before. then they end as wings in that final image"). The hand-
+    // off is what read as undecided ("flowers then an abstract form then … an
+    // angel form again"): while the blossom image clears (strict release) the
+    // field now drifts as falling PETALS — the blossoms scattering — and the
+    // closing signature is always the WINGS (particle-lead-layer finalWings).
+    moments: [{ phase: 4, at: 2, dur: 16, images: ["/tramokyo-pack/emblems/ghost-blossoms-1.jpg", "/tramokyo-pack/emblems/ghost-blossoms-2.jpg"] }],
   },
 };
 

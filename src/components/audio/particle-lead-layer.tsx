@@ -643,6 +643,7 @@ export function ParticleLeadLayer({
     let lastPhaseIdx = -1;
     let angelAt = -1;
     let momentAt = -1, momentDur = 16, momentN = 0;
+    let finalWings = false;
     // MOTIF FORMS (Karel 2026-10-06: "particle systems reflect the imaging and
     // theme" — an intricate flame for Realized, ghostly angels/wings for Ghost …)
     let motifAt = -1, motifDur = 16, motifN = 0, motifSrc = "";
@@ -699,6 +700,9 @@ export function ParticleLeadLayer({
       if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && mo) { momentAt = t + mo.at; momentDur = mo.dur; momentN++; }
       if (lastPhaseIdx >= 0 && idx === lastPhaseIdx + 1 && cast.signatureMorphs?.includes(idx) && cast.signatureImage === "angel") {
         angelAt = t; // the field forms the angel (real image), off-centre
+        // the CLOSING signature always ends as the wings (Karel 2026-10-11:
+        // "then they end as wings in that final image")
+        finalWings = idx === Math.max(...cast.signatureMorphs);
         counters.current.emergences++;
       }
       lastPhaseIdx = idx;
@@ -1136,7 +1140,12 @@ export function ParticleLeadLayer({
         // every emblem → motif / motif → emblem hand-off
         slot.key = imgLoaded ? imgKey : null; slot.releasing = imgReleasing; slot.releaseAt = imgReleaseAt;
         const act = imageSlotStep(slot, want ? wantKey : null, engine.imageLevel(), performance.now(), true, flashing);
-        if (act === "release") { imgReleasing = true; imgReleaseAt = slot.releaseAt; glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
+        if (act === "release") {
+          imgReleasing = true; imgReleaseAt = slot.releaseAt; glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`);
+          // Ghost: the tree's blossoms SCATTER as the image clears — falling
+          // petals, not an abstract interim form (Karel 2026-10-11)
+          if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && currentSoul !== "petals") { engine.setSoul("petals", 3.5); currentSoul = "petals"; glitchRecord("particle-form", "petals (blossoms scatter)"); }
+        }
         else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
         loadNow = act === "load";
       } else {
@@ -1151,7 +1160,8 @@ export function ParticleLeadLayer({
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
-        const pickFrom = em && em.length ? em[(treatN + emOcc) % em.length] : null;
+        const wingsEm = finalWings && want === "angel" && em ? em.filter((x) => typeof x === "string" && x.includes("wings")) : [];
+        const pickFrom = wingsEm.length ? wingsEm[treatN % wingsEm.length] : em && em.length ? em[(treatN + emOcc) % em.length] : null;
         const img: HTMLCanvasElement | HTMLImageElement | null = flashing
           ? keyedFlashAngel(1)
           : want === "echo"

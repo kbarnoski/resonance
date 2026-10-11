@@ -85,9 +85,7 @@ describe("form removals — a removed soul is never cast", () => {
 
 describe("form removals — moments", () => {
   it("drops removed moment images, and a moment with none left", () => {
-    // Ghost's tree-blossom moment was retired 2026-10-11 (Karel: end on the
-    // angel) — the filter is exercised on a sample moment instead
-    expect(JOURNEY_SIGNATURES["ghost"].moments).toEqual([]);
+    // the filter on a sample moment (Ghost's own moment is Karel's to tune)
     const a = "/tramokyo-pack/emblems/sample-a.jpg", b = "/tramokyo-pack/emblems/sample-b.jpg";
     const m = [{ phase: 4, at: 2, dur: 16, images: [a, b] }];
     expect(momentsWithout(m, [])).toBe(m);
