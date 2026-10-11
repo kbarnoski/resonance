@@ -335,17 +335,28 @@ export function JourneyCompositor({
     // one frame, visibly brightening whatever shader was still
     // crossfading ("that green shader twirl got a bit brighter when
     // realized loaded", session wnotel). Settle ramps ~3x slower.
+    // A running ramp is NEVER cancelled by a re-run (catalogue tour
+    // 2026-10-11, Horses 1): phase blends move this value at the ~15 Hz
+    // frame cadence, and each re-run used to cancel the ramp and re-check —
+    // once the remaining gap was ≤ 0.05 it was SET in one frame, a 5 %
+    // opacity step over every shader. The ramp reads shaderOpacityRef each
+    // frame, so it simply keeps tracking the live target until it lands.
     if (!introRampRafRef.current && rootRef.current) {
       const el = rootRef.current;
       const parsed = parseFloat(el.style.getPropertyValue("--shader-opacity"));
       const from = Number.isFinite(parsed) ? parsed : prev;
-      if (Math.abs(effectiveShaderOpacity - from) > 0.05) {
+      if (Math.abs(effectiveShaderOpacity - from) > 0.02) {
         let current = from;
         // 0.012/frame ~= 2s time constant — the recorded settle-end
         // blip (session q0z43f f0363) was the old 0.04 catch-up moving
         // ~1%/frame on its first frames.
         const rate = 0.012;
         const ramp = () => {
+          // Freeze protocol: a ramp still running when a handoff opens HOLDS.
+          if (inBoundarySettleExtended(3000)) {
+            introRampRafRef.current = requestAnimationFrame(ramp);
+            return;
+          }
           const target = shaderOpacityRef.current;
           current += (target - current) * rate;
           if (Math.abs(current - target) < 0.005) {
@@ -356,14 +367,15 @@ export function JourneyCompositor({
           if (current !== target) introRampRafRef.current = requestAnimationFrame(ramp);
         };
         introRampRafRef.current = requestAnimationFrame(ramp);
-        return () => {
-          cancelAnimationFrame(introRampRafRef.current);
-          introRampRafRef.current = 0;
-        };
+        return;
       }
       el.style.setProperty("--shader-opacity", String(effectiveShaderOpacity));
     }
   }, [effectiveShaderOpacity]);
+  useEffect(() => () => {
+    cancelAnimationFrame(introRampRafRef.current);
+    introRampRafRef.current = 0;
+  }, []);
 
   // Pre-activation + bass hit shader boost (Ghost-only, gated by enableBassFlash).
   // Approach ramp: shaders get brighter ~1.5s before the hit.
