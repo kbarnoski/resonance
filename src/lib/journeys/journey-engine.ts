@@ -794,10 +794,16 @@ class JourneyEngine {
           break;
         }
       }
-      // If every shader everywhere is spent/blocked, keep current (don't flash)
+      // If every shader everywhere is spent/blocked, KEEP the current one: just
+      // extend its time. (This used to assign shaderModes[currentShaderIndex] —
+      // often the shader live on the dual/tertiary layer, so the same shader
+      // rendered on two layers, screen-blended onto itself (tour pass 3,
+      // Isolation: will-o-wisp primary + tertiary for 13 s), and a "switch" to
+      // the unchanged shader was logged again and again.)
       if (!picked) {
-        this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
-      }
+        this.shaderStartMs = now;
+        this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
+      } else {
       // Close previous primary history entry and start a new one
       this.closeHistoryEntry("primary", now);
       this.shaderHistory.push({
@@ -811,6 +817,7 @@ class JourneyEngine {
       this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
       glitchRecord("shader-primary", `${this.currentShaderMode} @p${clamped.toFixed(3)}`);
       this.lastAnySwitchMs = now; this.nudgeForce = false;
+      }
     }
     // ─── Dual shader (persistent 2nd layer) ───
     // Switches on its own timer, independent of primary.
