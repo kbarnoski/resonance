@@ -17,7 +17,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore } from "@/lib/audio/audio-store";
-import { getAudioEngine, ensureResumed, attachMicDrive } from "@/lib/audio/audio-engine";
+import { getAudioEngine, ensureResumed, attachMicDrive, getAnalyserNode } from "@/lib/audio/audio-engine";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
@@ -99,12 +99,37 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     } catch { /* engine warming */ }
     const q = new URLSearchParams(window.location.search);
     const pre = Number(q.get("micgain"));
-    void attachMicDrive(Number.isFinite(pre) && pre > 0 ? pre : undefined).then((ok) =>
-      postEvent(ok ? "live-mic on" : "live-mic UNAVAILABLE (visuals drift on their own)"),
-    );
+    let levelTimer: ReturnType<typeof setInterval> | null = null;
+    let sampleTimer: ReturnType<typeof setInterval> | null = null;
+    void attachMicDrive(Number.isFinite(pre) && pre > 0 ? pre : undefined).then((ok) => {
+      postEvent(ok ? "live-mic on" : "live-mic UNAVAILABLE (visuals drift on their own)");
+      const an = getAnalyserNode();
+      // diagnostics handles (on-kiosk check script) + a level line every 30 s
+      // in the events log, so the mic drive can be tuned from real show levels
+      const w = window as unknown as Record<string, unknown>;
+      w.__liveAnalyser = an;
+      try { w.__liveClock = getAudioEngine().audioElement; } catch { /* engine warming */ }
+      if (ok && an) {
+        const d = new Uint8Array(an.frequencyBinCount);
+        let peak = 0, sum = 0, n = 0;
+        sampleTimer = setInterval(() => {
+          an.getByteFrequencyData(d);
+          const v = d.reduce((a, x) => a + x, 0) / d.length / 255;
+          peak = Math.max(peak, v); sum += v; n++;
+        }, 500);
+        levelTimer = setInterval(() => {
+          postEvent(`live-mic level avg=${(sum / Math.max(1, n)).toFixed(3)} peak=${peak.toFixed(3)}`);
+          peak = 0; sum = 0; n = 0;
+        }, 30_000);
+      }
+    });
     postEvent(`live-start (${poolRef.current.length} worlds)`);
     void nextWorld("start");
-    return () => setInstallationMode(false);
+    return () => {
+      if (levelTimer) clearInterval(levelTimer);
+      if (sampleTimer) clearInterval(sampleTimer);
+      setInstallationMode(false);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
