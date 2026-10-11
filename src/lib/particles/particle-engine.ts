@@ -159,6 +159,8 @@ export interface ParticleEngine {
   dissolveTime(): number | null;
   /** Start a dissolve between the two stills already loaded (A → B). */
   startDissolve(): boolean;
+  /** Image gather/release pace multiplier (1 = house; calm journeys < 1). The flash keeps its own pace. */
+  setImagePace(k: number): void;
   /** Luma-preserving colour: hue rotation (rad) + saturation; glides ~3 s. */
   setHue(hue: number, sat?: number): void;
   /** Soul form parameters (cymatic plate mode n,m · lissajous ratios); glide. */
@@ -524,6 +526,7 @@ export function createParticleEngine(
   // over 3 s, so motes always GLIDE onto the new form.
   let glideT = 99;
   let flashPace = false;
+  let imgPaceK = 1;
   const GLIDE_SEC = 4;
   // EVERY GLIDE HAS A GENTLE START AND LANDING (Karel 2026-10-08: "studder
   // stepping"): an exponential follow starts at full speed the instant its
@@ -939,7 +942,9 @@ export function createParticleEngine(
     if (imgFormTgt < 0.01 && imgF.x < 0.02) flashPace = false;
     {
       const h = Math.min(dt, 0.05);
-      const wF = flashPace ? 6 : 3, wS = flashPace ? 4 : 2.4;
+      // calm journeys gather images slower (Karel 2026-10-11, Ghost: a bunch
+      // "appear too quick" at the top as the wings form) — setImagePace
+      const wF = flashPace ? 6 : 3 * imgPaceK, wS = flashPace ? 4 : 2.4 * imgPaceK;
       critStep(imgF, imgFormTgt, wF, h);
       critStep(imgS, imgShowTgt, wS, h);
     }
@@ -1494,6 +1499,7 @@ export function createParticleEngine(
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
+    setImagePace(k) { imgPaceK = Math.max(0.3, Math.min(1.5, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
     setUnfold(on) { unfoldOn = on; },

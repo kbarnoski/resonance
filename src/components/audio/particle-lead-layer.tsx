@@ -769,6 +769,9 @@ export function ParticleLeadLayer({
     // breathes slowly, no image echo, sections never cut a form short, gentle dolly
     // Realized too (Karel 2026-10-07: "changing too much all the time. needs to not make me dizzy")
     const calm = journeyId === "first-snow" || journeyId === "ghost" || journeyId === "inferno";
+    // calm journeys: images gather and release unhurried (Karel 2026-10-11,
+    // Ghost: "a bunch appear too quick" / "contract and expand … smoothed out")
+    engine.setImagePace(calm ? 0.6 : 1);
     // DIVERSITY PASS (Karel 2026-10-09): every non-mastered journey rotates its
     // forms loop-wide and gives each appearance its own design; Snowflake +
     // Ghost run exactly as before (mastered)
@@ -1160,7 +1163,8 @@ export function ParticleLeadLayer({
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
-        const wingsEm = finalWings && want === "angel" && em ? em.filter((x) => typeof x === "string" && x.includes("wings")) : [];
+        // Ghost's wing images are decoded canvases (the "@…" tokens are the angel treatments)
+        const wingsEm = finalWings && want === "angel" && em ? em.filter((x) => typeof x !== "string") : [];
         const pickFrom = wingsEm.length ? wingsEm[treatN % wingsEm.length] : em && em.length ? em[(treatN + emOcc) % em.length] : null;
         const img: HTMLCanvasElement | HTMLImageElement | null = flashing
           ? keyedFlashAngel(1)
@@ -1217,7 +1221,7 @@ export function ParticleLeadLayer({
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
         // emblems smaller (Karel 2026-10-07: "a bit too big"); an ECHO aligns with the still (full frame)
-        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? 0.5 - 0.14 * emAge : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
+        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? (calm ? 0.43 : 0.5 - 0.14 * emAge) : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
         // a motif design turns slowly while it is held
         if (imgLoaded === "motif" && motifAt >= 0) engine.setImageVariant(imgVar.mirror, imgVar.tilt + 0.35 * Math.sin((t - motifAt) * 0.09));
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the
@@ -1322,7 +1326,9 @@ export function ParticleLeadLayer({
       // its third (a flash centres itself to meet the flash image)
       {
         const prog = Math.min(1, (performance.now() - dollyAt) / (dollyFrom < 0.9 ? 7000 : Math.max(4000, formDur * 1.6)));
-        engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
+        // calm journeys hold the camera while an image is worn — the dolly
+        // under a forming figure read as the field contracting and expanding
+        if (!(calm && imgLoaded)) engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
         // a CENTRED shader (suns, portals, mandalas…) pins the field to its
         // exact centre point (Karel 2026-10-06)
         const mode = frameRef.current?.shaderMode;
