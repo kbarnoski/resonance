@@ -197,10 +197,15 @@ function journeyFor(id) {
 }
 
 const flights = flightRuns();
-const targets = ["first-snow", ...loop.filter((id) => {
-  const jf = journeyFor(id);
-  return jf && !MASTERED_JOURNEYS.has(id) && !(KIN.isKineticJourneyName(jf.journey.name) && !KIN.isExpansionKineticName(jf.journey.name));
-})].filter((id) => !ONLY || ONLY.includes(id) || id === "first-snow");
+// --only scores exactly those ids, loop or not (Karel 2026-10-11: on-demand
+// sets like the Kinetic Lab must be "up to par in design with all expansion
+// stuff" too — they're one phone tap away during the show).
+const targets = ONLY
+  ? ["first-snow", ...ONLY.filter((id) => id !== "first-snow" && journeyFor(id) && !MASTERED_JOURNEYS.has(id))]
+  : ["first-snow", ...loop.filter((id) => {
+      const jf = journeyFor(id);
+      return jf && !MASTERED_JOURNEYS.has(id) && !(KIN.isKineticJourneyName(jf.journey.name) && !KIN.isExpansionKineticName(jf.journey.name));
+    })];
 
 const results = [];
 for (const id of targets) {
