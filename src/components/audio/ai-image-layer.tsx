@@ -156,10 +156,15 @@ import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
 // pushed) and back off for 2 minutes. Requires FAL_KEY in the kiosk env;
 // live attempts respect the image service's session cost cap.
 const LIVE_OVERLAY_BACKOFF_MS = 120_000;
+const LIVE_OVERLAY_OFF = true;
 let liveOverlayEnabled: boolean | null = null;
 let liveOverlayBackoffUntil = 0;
 let liveOverlayTick = 0;
 function shouldAttemptLiveOverlay(): boolean {
+  // OFF (Karel 2026-10-12: "why you generating on the fly?"): the desert has no
+  // internet, so a live bonus frame meant the kiosk at home showed images the
+  // audience never will. The kiosk shows exactly its packed imagery.
+  if (LIVE_OVERLAY_OFF) return false;
   if (typeof navigator !== "undefined" && navigator.onLine === false) return false;
   if (performance.now() < liveOverlayBackoffUntil) return false;
   if (liveOverlayEnabled === null) {
@@ -371,6 +376,7 @@ export function AiImageLayer({
   /** Direct handle so the finale can push its cover NOW, not on the
    *  next tick (2026-10-01: "something substantial has to be done"). */
   const triggerGenerationRef = useRef<((skipCache?: boolean) => void) | null>(null);
+  const packRefetchRef = useRef(false);
   const pendingIntroStillRef = useRef<string | null>(null);
   const pendingFinaleStillRef = useRef<string | null>(null);
   const lastPushedPhaseStartRef = useRef(-1);
@@ -720,6 +726,24 @@ export function AiImageLayer({
     // "almost backwards" to Karel). Falls back to sequential cycling
     // when progress/phases are unavailable.
     const isPackOverlay = localImageUrlsRef.current.length > 0;
+    // KIOSK: never generate live. With the pack active but this journey's list
+    // not in hand yet (seen every time Snowflake followed First Light — the
+    // handoff left the list empty and the whole journey ran on live AI frames,
+    // which offline would be one stuck image), fetch the list for the CURRENT
+    // journey now and wait for the next tick.
+    if (!isPackOverlay && isPackActive()) {
+      const jid = journeyIdRef.current;
+      if (jid && !packRefetchRef.current) {
+        packRefetchRef.current = true;
+        glitchRecord("pack-refetch", jid);
+        void fetchPackLocalImages().then((map) => {
+          packRefetchRef.current = false;
+          const urls = map?.[jid];
+          if (urls && urls.length && journeyIdRef.current === jid) setPackUrls(urls);
+        });
+      }
+      return;
+    }
     if (isPackOverlay) {
       const urls = localImageUrlsRef.current;
       const { currentTime, duration } = useAudioStore.getState();
