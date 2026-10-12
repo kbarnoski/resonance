@@ -153,7 +153,6 @@ const EXPANSION = [
   "4dac5718-517d-4183-ad27-e1a6c583e305", // 14. Tranquility 30 · 3:29
   "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 15. Amboise 1 · 3:12
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 17. Surrounded by Light 6 · 2:54
-  "666436a4-eabf-4b0a-b6bc-665520daa687", // 18. Tranquility 3 · 3:24
   "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 19. Night Wind 4 · 3:29
   "4ef43223-42cf-4ce8-9088-7578569f7de6", // 20. Sancerre Cry 4 · 3:59
   // wave 3 — deepening
@@ -330,6 +329,7 @@ export const PARKING_LOT: readonly string[] = [
   "06b07942-bf94-4513-8e71-ef00508ced3e", // Surrounded by Light 3 — from the Expansion (2026-10-09)
   "21448504-ec00-48c3-8b0a-c92da2cf216a", // Surrounded by Light 19 — from the Expansion (2026-10-09)
   "d8705068-f8a9-4dd7-95a5-c6f1160fed22", // Roll Away 8 — from the Expansion and Rise Above (2026-10-09)
+  "666436a4-eabf-4b0a-b6bc-665520daa687", // Tranquility 3 — from the Expansion (Karel 2026-10-12, pass 7: "that version isnt strong so id parking lot it")
 ];
 
 /**

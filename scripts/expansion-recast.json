@@ -704,72 +704,6 @@
    "mvStandard": "2026-10-10T14-49-51"
   },
   {
-   "id": "666436a4-eabf-4b0a-b6bc-665520daa687",
-   "title": "Tranquility 3",
-   "lead": "cirrus",
-   "leadHue": "blue",
-   "leadFit": 3,
-   "leadCoverage": 0.13,
-   "energy": [
-    0.37,
-    0.66,
-    0.9,
-    0.55,
-    0.56,
-    0.46
-   ],
-   "intensity": [
-    0.3,
-    0.62,
-    1,
-    0.45,
-    0.47,
-    0.32
-   ],
-   "crests": false,
-   "peakPhase": "transcendence",
-   "supports": [
-    "typhoon",
-    "r3-waveveil",
-    "r3-sleepingbloom",
-    "binary-stars",
-    "r2-portalrim",
-    "r3-monsoonveil",
-    "drift",
-    "dark-nebula",
-    "zenith",
-    "lightyear",
-    "maelstrom-dark"
-   ],
-   "cast": {
-    "threshold": [
-     "typhoon"
-    ],
-    "expansion": [
-     "r3-waveveil",
-     "r3-sleepingbloom",
-     "binary-stars",
-     "r2-portalrim",
-     "r3-monsoonveil"
-    ],
-    "transcendence": [
-     "cirrus"
-    ],
-    "illumination": [
-     "drift",
-     "dark-nebula"
-    ],
-    "return": [
-     "zenith",
-     "lightyear"
-    ],
-    "integration": [
-     "maelstrom-dark"
-    ]
-   },
-   "mvStandard": "2026-10-10T14-49-51"
-  },
-  {
    "id": "ecf0d90f-7e1b-4ecb-a654-ecea936caca8",
    "title": "Bells 1",
    "lead": "flame",
@@ -3599,6 +3533,72 @@
     ]
    },
    "mvStandard": "2026-10-10T02-33-54"
+  },
+  {
+   "id": "666436a4-eabf-4b0a-b6bc-665520daa687",
+   "title": "Tranquility 3",
+   "lead": "cirrus",
+   "leadHue": "blue",
+   "leadFit": 3,
+   "leadCoverage": 0.13,
+   "energy": [
+    0.37,
+    0.66,
+    0.9,
+    0.55,
+    0.56,
+    0.46
+   ],
+   "intensity": [
+    0.3,
+    0.62,
+    1,
+    0.45,
+    0.47,
+    0.32
+   ],
+   "crests": false,
+   "peakPhase": "transcendence",
+   "supports": [
+    "typhoon",
+    "r3-waveveil",
+    "r3-sleepingbloom",
+    "binary-stars",
+    "r2-portalrim",
+    "r3-monsoonveil",
+    "drift",
+    "dark-nebula",
+    "zenith",
+    "lightyear",
+    "maelstrom-dark"
+   ],
+   "cast": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "r3-waveveil",
+     "r3-sleepingbloom",
+     "binary-stars",
+     "r2-portalrim",
+     "r3-monsoonveil"
+    ],
+    "transcendence": [
+     "cirrus"
+    ],
+    "illumination": [
+     "drift",
+     "dark-nebula"
+    ],
+    "return": [
+     "zenith",
+     "lightyear"
+    ],
+    "integration": [
+     "maelstrom-dark"
+    ]
+   },
+   "mvStandard": "2026-10-10T14-49-51"
   }
  ]
 }
