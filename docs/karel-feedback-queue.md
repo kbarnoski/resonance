@@ -24,7 +24,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 ## After the release (first upgrade work)
 - 📋 Shader diversity: magma (~14 journeys), parsec (~11), ember (~13) overused; amber (gold + ember) 37 % of shader time — recast with a tighter per-shader cap (≤ ~5 journeys) and a loop-wide hue balance (amber ≤ ~25 %); own tour.
 - 📋 MORPHS MISSING for 68 of 100 loop journeys (Karel: "confirm you have morphs for all journeys besides ghost. cant say ive seen them lately") — 34 of them in Rise Above (Grasshopper → Yellow Bird 3, all Expansion tracks). Generate travel morphs through the QA gate: sample 2-3 for Karel → RA first → the rest. ~350-400 clips, ~$150-250 fal, needs Karel's go + budget.
-- 📋 Liked takes (offer to pin): The Other Side 10 #618230075 ("cool stuff happening"), Northern Plane 5 #417740911 ("good too"); Cabin Soul 5 "has a cool beat" (groove x1.35 — move to big?).
+- 📋 Liked takes (offer to pin): The Other Side 10 #618230075 ("cool stuff happening"), Northern Plane 5 #417740911 ("good too … good for ambient portal use if needed" — the go-to ambient PORTAL between sections; in RA already the breath before wave 3); Cabin Soul 5 "has a cool beat" (groove x1.35 — move to big?).
 - 📋 LITERAL-IMAGERY AUDIT of every journey's stills (Archetype: abstract — fruit, leaves, objects, animals except Horses 1 / Yellow Bird) — vision pass, drop or regenerate (sample first).
 - 📋 Dharma (the spoked wheel) a RARITY loop-wide — ~2 journeys at most (Karel: "once in a great while ok").
 - 📋 Bells 1 confirmed big & intense ("has a big beat") — x1.6 in the ladder (🟡 committed).
