@@ -128,6 +128,18 @@ const uvCache = new WeakMap<object, Float32Array>();
 // spatial pairing (?pfx=1): the same samples sorted by wedge/radius, from the worker
 const PAIRING = pairingEnabled();
 const pairCache = new WeakMap<object, Float32Array>();
+/** Sorted samples for an image at the engine's sample count: the worker's
+ *  (same count), else sorted here from the image's own samples — the locked
+ *  journeys run half the count and Ghost's angels are drawn, not decoded. */
+function pairFor(img: object, n: number): Float32Array | undefined {
+  const hit = pairCache.get(img);
+  if (hit && hit.length === n * 2 + 2) return hit;
+  const uv = uvCache.get(img);
+  if (!uv || uv.length !== n * 2) return undefined;
+  const p = pairOrder(uv, PAIR_GROUPS);
+  pairCache.set(img, p);
+  return p;
+}
 // One reused scratch canvas (it was a fresh canvas + surface per sampled
 // image, every ~170 ms while motifs warm).
 let uvScratch: HTMLCanvasElement | null = null;
@@ -203,7 +215,7 @@ function uvFor(src: HTMLCanvasElement | HTMLImageElement | null, n: number): Flo
 }
 function warmUv(src: HTMLCanvasElement): void {
   if (uvCache.has(src)) return;
-  const run = () => { if (!uvCache.has(src)) { const uv = computeUv(src, SAMPLE_N); if (uv) uvCache.set(src, uv); } };
+  const run = () => { if (!uvCache.has(src)) { const uv = computeUv(src, SAMPLE_N); if (uv) { uvCache.set(src, uv); if (PAIRING) pairFor(src, SAMPLE_N); } } };
   const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
   if (ric) ric(run, { timeout: 4000 }); else setTimeout(run, 50);
 }
@@ -250,6 +262,8 @@ const MOTIF_CAP = 48;
  *  field in quiet passages, rest tempo measured +23 % mean / +51 % p95 speed
  *  over the old build — calm, never dizzy (Karel) — so the field runs at 80 %. */
 const CALM_TEMPO = 0.8;
+/** The field never fades out only to return within this many seconds. */
+const BRIDGE_SEC = 12;
 /** Decode an image SMALL and fully CPU-side, OFF the main thread.
  *  2026-10-09 soak, uv-sync: the old new Image() + decode() path left pixels
  *  GPU-side, so the first getImageData re-decoded the full JPEG (20-108 ms).
@@ -997,7 +1011,14 @@ export function ParticleLeadLayer({
     let outSince = 0;
     // NEVER >10 s WITHOUT PARTICLES (Karel 2026-10-07, all journeys): the field
     // returns 6-9 s after it has gone (plus its ~1.5 s fade-in)
-    let ambientGap = 3.5 + 2 * rand01(21); // + fade tails ≈ 7-9 s visible gap (pass1: 6-9 s measured 11-12 s)
+    // a rest is a REST: ≥ 12 s out before the ambient field returns (it came
+    // back after 3.5-5.5 s — "fades out and then right back in", Karel 2026-10-12)
+    let ambientGap = BRIDGE_SEC + 3 * rand01(21);
+    let bridgeUntil = -1;
+    // the next moment the field is due back: a window's start, or a phase
+    // boundary (its travel morph's emergence)
+    const returnsWithin = (t: number, sec: number) =>
+      cast.windows.some((w) => w.start > t && w.start - t < sec) || (cast.phaseBounds ?? []).some((b) => b > t && b - t < sec);
     let lastTick = performance.now();
     let palVoiceKey = "";
     let palPair: [ParticlePalette | null, ParticlePalette | null] = [null, null];
@@ -1183,9 +1204,10 @@ export function ParticleLeadLayer({
             ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
             : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
-          // spatial pairing (?pfx=1): never on the locked journeys, never for the flash
-          const pair = PAIRING && !cast.mastered && !flashing ? pairCache.get(img) : undefined;
-          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()), !flashing, pair);
+          // spatial pairing: every journey — never the flash (it meets the flash image exactly)
+          const uvNow = uvFor(img, engine.imageSampleCount());
+          const pair = PAIRING && !flashing && uvNow ? pairFor(img, engine.imageSampleCount()) : undefined;
+          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvNow, !flashing, pair);
           imgLoaded = want;
           imgKey = wantKey;
           if (!flashing) treatN++;
@@ -1311,7 +1333,7 @@ export function ParticleLeadLayer({
         // only where this journey is running UNDER budget (few morphs)
         if (!hush && ambientUntil < t && outSince > ambientGap && t > 4) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
-          ambientGap = 3.5 + 2 * rand01(23 + appearN);
+          ambientGap = BRIDGE_SEC + 3 * rand01(23 + appearN);
           const nxt = nextForm(t);
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
@@ -1325,7 +1347,13 @@ export function ParticleLeadLayer({
       if (shown > 0.15 && minHoldUntil < 0) minHoldUntil = t + 6;
       if (shown < 0.02) minHoldUntil = -1;
       const minHold = minHoldUntil > t ? 1 : 0;
-      const targetPresence = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP, minHold) * endFade;
+      // NEVER OUT-AND-RIGHT-BACK (Karel 2026-10-12, Ghost: "see how it slows and
+      // fades out and then right back in? dont do that"): if the field is about
+      // to fade while a window or a phase's emergence brings it back within
+      // BRIDGE_SEC, it holds instead of dipping
+      const raw = Math.max(pr.presence, dissolving ? 1 : 0, flashP, ambientP, minHold);
+      if (raw < shown && shown > 0.05 && returnsWithin(t, BRIDGE_SEC)) bridgeUntil = Math.max(bridgeUntil, t + 0.5);
+      const targetPresence = Math.max(raw, bridgeUntil > t ? shown : 0) * endFade;
       shown = slew(shown, targetPresence, tickDt);
       // loop-wide ledger of on-screen time per form (particle-rotation.ts)
       if (shown > 0.3 && !imgLoaded && currentSoul) recordUsage(LOOP_MEMORY, currentSoul as SoulId, tickDt * shown);
@@ -1350,7 +1378,11 @@ export function ParticleLeadLayer({
           engine.setOffset(offX * 0.3, 0.38 - 0.55 * prog);
         }
         // the imagery's movement sets the pace (flicker livelier, drift calmer)
-        engine.setMotion(cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO);
+        // Ghost's opening ran at the engine's floor (0.6 × 0.8 × 0.8 = 0.38 —
+        // Karel 2026-10-12: "the motion is a bit slow … in just the opening
+        // section"): it moves at 0.6 now; the rest of Ghost is unchanged
+        const mo = cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO;
+        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) === 0 ? Math.max(mo, 0.6) : mo);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)
@@ -1465,7 +1497,11 @@ export function ParticleLeadLayer({
         // Ghost (Karel 2026-10-07: "why are they always white? pink perfect for flowers
         // but should … echo the imaging and vibe and be diverse"): its phase imagery,
         // voiced vivid; the white/pink ghost palette only where flowers are seen
-        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghost && (floral || !ipPhase) ? particlePaletteGhost(floral, v) : ghost ? vivid(particlePaletteFromImage(ipPhase, v)) ?? particlePaletteGhost(floral, v) : fireColours(fire, ipPhase) ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
+        // …except the OPENING (Karel 2026-10-12: "the blob of particles after emblem
+        // turns green … dont make it green in that spot"): the tunnel's grey-green
+        // stills, saturated by vivid(), read as green — the opening wears Ghost's own
+        const ghostOwn = ghost && (floral || !ipPhase || phaseIdx === 0);
+        const mk = (v: number) => (theme?.palette === "dawn" ? particlePaletteDawn(v) : ghostOwn ? particlePaletteGhost(floral, v) : ghost ? vivid(particlePaletteFromImage(ipPhase, v)) ?? particlePaletteGhost(floral, v) : fireColours(fire, ipPhase) ? particlePaletteFire(ipPhase, v) : ipPhase ? particlePaletteFromImage(ipPhase, v) : particlePaletteFrom(pp, v));
         palPair = [mk(v0), mk((v0 + 1) % 4)];
         palVoiceKey = vk;
       }

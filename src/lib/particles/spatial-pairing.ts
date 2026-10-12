@@ -16,8 +16,9 @@
 // emblem: mean travel −20…−75 % by form, no paths through the centre, coverage
 // within sampling noise. Sample film: ~/Documents/Resonance/particle-pairing-sample-2026-10-12.mp4
 //
-// On for every journey (Karel approved the sample, 2026-10-12); never on
-// Snowflake or Ghost (locked), never for Ghost's flash. ?pfx=0 = the old pairing.
+// On for EVERY journey, Snowflake and Ghost included (Karel 2026-10-12: "ghost
+// needs your particle fix", "snowflake also") — never for Ghost's flash (it
+// must land exactly on the flash image). ?pfx=0 = the old pairing.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Angle wedges the samples are sorted into (the GPU pass uses the same number). */
@@ -36,8 +37,8 @@ export function pairingEnabled(): boolean {
 /** Sort image samples (uv pairs) into `groups` equal-count angle wedges around
  *  their centroid, each wedge ordered by radius. Returns n*2 sorted uvs plus
  *  the centroid (cx, cy) at the end. SELF-CONTAINED (no outer references): its
- *  source is shipped into the decode worker. O(n) angle bucketing + per-wedge
- *  radius sort. */
+ *  source is shipped into the decode worker. O(n): angle buckets, then radius
+ *  buckets within each wedge. */
 export function pairOrder(uv: Float32Array, groups: number): Float32Array {
   const n = uv.length >> 1;
   let cx = 0, cy = 0;
@@ -57,14 +58,25 @@ export function pairOrder(uv: Float32Array, groups: number): Float32Array {
   for (let b = 0; b < NB; b++) start[b + 1] += start[b];
   const order = new Uint32Array(n);
   for (let i = 0; i < n; i++) order[start[bin[i]]++] = i;
+  // within each wedge: counting sort by radius (1024 rings) — O(n), a few ms
+  // even on the main thread (the locked journeys' angel images sample there)
+  let rmax = 1e-9;
+  for (let i = 0; i < n; i++) if (rad[i] > rmax) rmax = rad[i];
+  const RB = 1024;
+  const ring = new Uint16Array(n);
+  for (let i = 0; i < n; i++) ring[i] = Math.min(RB - 1, Math.floor((rad[i] / rmax) * RB));
   const out = new Float32Array(n * 2 + 2);
+  const cnt = new Uint32Array(RB + 1);
   for (let g = 0; g < groups; g++) {
     const s = Math.floor((g * n) / groups), e = Math.floor(((g + 1) * n) / groups);
-    const seg = Array.from(order.subarray(s, e));
-    seg.sort((a, b) => rad[a] - rad[b]);
-    for (let k = 0; k < seg.length; k++) {
-      out[(s + k) * 2] = uv[seg[k] * 2];
-      out[(s + k) * 2 + 1] = uv[seg[k] * 2 + 1];
+    cnt.fill(0);
+    for (let k = s; k < e; k++) cnt[ring[order[k]] + 1]++;
+    for (let b = 0; b < RB; b++) cnt[b + 1] += cnt[b];
+    for (let k = s; k < e; k++) {
+      const i = order[k];
+      const at = s + cnt[ring[i]]++;
+      out[at * 2] = uv[i * 2];
+      out[at * 2 + 1] = uv[i * 2 + 1];
     }
   }
   out[n * 2] = cx;

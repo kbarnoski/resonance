@@ -35,6 +35,9 @@ describe("spatial pairing — pairOrder", () => {
   });
 
   it("orders wedges by angle and each wedge by radius", () => {
+    let rmax = 0;
+    for (let i = 0; i < n; i++) rmax = Math.max(rmax, Math.hypot(uv[i * 2] - cx, uv[i * 2 + 1] - cy));
+    const rTol = rmax / 1024 + 1e-6;
     let lastMaxAngle = -Infinity;
     for (let g = 0; g < PAIR_GROUPS; g++) {
       const s = Math.floor((g * n) / PAIR_GROUPS), e = Math.floor(((g + 1) * n) / PAIR_GROUPS);
@@ -42,7 +45,7 @@ describe("spatial pairing — pairOrder", () => {
       for (let k = s; k < e; k++) {
         const dx = out[k * 2] - cx, dy = out[k * 2 + 1] - cy;
         const r = Math.hypot(dx, dy), a = Math.atan2(dy, dx);
-        expect(r).toBeGreaterThanOrEqual(prevR - 1e-6); // (the sort keys are float32)
+        expect(r).toBeGreaterThanOrEqual(prevR - rTol); // (1024 radius buckets)
         prevR = r; minA = Math.min(minA, a); maxA = Math.max(maxA, a);
       }
       // wedges follow each other around the circle (4096-bin bucketing tolerance)
