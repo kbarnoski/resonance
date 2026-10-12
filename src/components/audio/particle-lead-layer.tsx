@@ -128,14 +128,19 @@ const uvCache = new WeakMap<object, Float32Array>();
 // spatial pairing (?pfx=1): the same samples sorted by wedge/radius, from the worker
 const PAIRING = pairingEnabled();
 const pairCache = new WeakMap<object, Float32Array>();
+const pairHalfCache = new WeakMap<object, Float32Array>();
 /** Sorted samples for an image at the engine's sample count: the worker's
  *  (same count), else sorted here from the image's own samples — the locked
  *  journeys run half the count and Ghost's angels are drawn, not decoded. */
 function pairFor(img: object, n: number): Float32Array | undefined {
   const hit = pairCache.get(img);
   if (hit && hit.length === n * 2 + 2) return hit;
+  const half = pairHalfCache.get(img);
+  if (half && half.length === n * 2 + 2) return half;
   const uv = uvCache.get(img);
-  if (!uv || uv.length !== n * 2) return undefined;
+  if (!uv || uv.length < n * 2) return undefined;
+  // a longer table (worker-sampled at the full count): its random-order head
+  if (uv.length > n * 2) { const p = pairOrder(uv.subarray(0, n * 2), PAIR_GROUPS); pairHalfCache.set(img, p); return p; }
   const p = pairOrder(uv, PAIR_GROUPS);
   pairCache.set(img, p);
   return p;
@@ -209,11 +214,37 @@ function uvFor(src: HTMLCanvasElement | HTMLImageElement | null, n: number): Flo
   if (!src || !(src instanceof HTMLCanvasElement)) return undefined;
   const hit = uvCache.get(src);
   if (hit && hit.length === n * 2) return hit;
+  // the locked journeys run fewer particles: the samples are in random order,
+  // so the table's head is itself a fair sample (no main-thread recompute)
+  if (hit && hit.length > n * 2) return hit.subarray(0, n * 2);
   const uv = computeUv(src, n);
   if (uv) uvCache.set(src, uv);
   return uv;
 }
+const uvWarming = new WeakSet<HTMLCanvasElement>();
 function warmUv(src: HTMLCanvasElement): void {
+  if (uvCache.has(src) || uvWarming.has(src)) return;
+  // OFF THE MAIN THREAD (pass 7, 2026-10-12: Ghost's 1024² angel emblem sampled
+  // in idle time cost 16 ms on the title card): the canvas goes to the decode
+  // worker as a bitmap; the idle-time path below is only the fallback
+  const worker = getDecodeWorker();
+  if (worker && typeof createImageBitmap === "function") {
+    uvWarming.add(src);
+    const fallback = () => { uvWarming.delete(src); warmUvIdle(src); };
+    void createImageBitmap(src).then((bitmap) => {
+      const id = ++decodeSeq;
+      decodeWaiters.set(id, (r) => {
+        uvWarming.delete(src);
+        if (r.uv && r.uv.length === SAMPLE_N * 2) { uvCache.set(src, r.uv); if (r.pair) pairCache.set(src, r.pair); }
+        else warmUvIdle(src);
+      });
+      worker.postMessage({ id, bitmap, n: SAMPLE_N, uvW: 256, pairG: PAIRING ? PAIR_GROUPS : 0 }, [bitmap]);
+    }, fallback);
+    return;
+  }
+  warmUvIdle(src);
+}
+function warmUvIdle(src: HTMLCanvasElement): void {
   if (uvCache.has(src)) return;
   const run = () => { if (!uvCache.has(src)) { const uv = computeUv(src, SAMPLE_N); if (uv) { uvCache.set(src, uv); if (PAIRING) pairFor(src, SAMPLE_N); } } };
   const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
@@ -286,7 +317,21 @@ const DECODE_WORKER_SRC = `
 const uvFromPixels = (${uvFromPixels.toString()});
 const pairOrder = (${pairOrder.toString()});
 self.onmessage = async (ev) => {
-  const { id, url, fit, cors, n, uvW, pairG } = ev.data;
+  const { id, url, fit, cors, n, uvW, pairG, bitmap } = ev.data;
+  if (bitmap) {
+    // a drawn canvas (Ghost's angel emblem): sampled here, never on the main thread
+    try {
+      const W = Math.min(uvW || 256, bitmap.width), H = Math.max(1, Math.round((bitmap.height * W) / Math.max(1, bitmap.width)));
+      const sc = new OffscreenCanvas(W, H);
+      const sx = sc.getContext("2d", { willReadFrequently: true });
+      sx.drawImage(bitmap, 0, 0, W, H);
+      bitmap.close();
+      const uv = uvFromPixels(sx.getImageData(0, 0, W, H).data, W, H, n);
+      const pair = uv && pairG ? pairOrder(uv, pairG) : null;
+      self.postMessage({ id, uv, pair }, uv ? (pair ? [uv.buffer, pair.buffer] : [uv.buffer]) : []);
+    } catch (e) { self.postMessage({ id, err: String(e) }); }
+    return;
+  }
   try {
     const res = await fetch(url, cors ? { mode: "cors" } : undefined);
     if (!res.ok) throw new Error(String(res.status));
@@ -1002,6 +1047,7 @@ export function ParticleLeadLayer({
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
+    let angelPairWarm = false;
     let echoAt = -1, echoN = 0;
     let echoUsed: HTMLCanvasElement | null = null;
     let treatN = 0;
@@ -1103,7 +1149,19 @@ export function ParticleLeadLayer({
       // (Ghost's angel flash, Ghost's angel signature, every journey's EMBLEM)
       const ssf = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
       const fl = flashRef.current;
-      if (fl && !angelUvWarm) { const a = keyedFlashAngel(1); if (a) { warmUv(a); angelUvWarm = true; } }
+      // the angel (Ghost's flash AND its opening emblem) is sampled in the worker
+      // as soon as it is keyed — never on the frame the field forms it
+      if (!angelUvWarm && (fl || emblemRef.current?.some((x) => typeof x === "string"))) { const a = keyedFlashAngel(1); if (a) { warmUv(a); angelUvWarm = true; } }
+      // …and its paired order at THIS engine's count, in idle time once the samples land
+      if (PAIRING && angelUvWarm && !angelPairWarm) {
+        const a = keyedFlashAngel(1);
+        if (a && uvCache.has(a)) {
+          angelPairWarm = true;
+          const n = engine.imageSampleCount();
+          const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
+          (ric ?? ((cb: () => void) => setTimeout(cb, 50)))(() => { pairFor(a, n); }, { timeout: 4000 });
+        }
+      }
       const fa = fl?.approach ?? 0;
       const fi = fl?.impulse ?? 0;
       const gather = fa <= 0.45 ? 0 : fa >= 0.9 ? 1 : ((fa - 0.45) / 0.45) ** 2 * (3 - 2 * ((fa - 0.45) / 0.45));
