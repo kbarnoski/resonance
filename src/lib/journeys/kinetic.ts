@@ -134,10 +134,15 @@ export type BandProfile = {
  *  bass 16/0.035/0.30-2.30, mid 11/0.015/0.55-1.50, treble 22/0.010/0.50-2.60. */
 // +20 % again (Karel 2026-10-06: "shaders another 20% more responsive"):
 // gain and scale ×1.2, each band's speed range widened 20 % around 1.0
+// +20 % a third time (Karel 2026-10-12: "bump up the responsiveness to the audio
+// in all journeys by another 20%. dont over do it"): same recipe — decay
+// unchanged (it swells, never jitters), bass scale held at its 0.05 ceiling and
+// its rate floor at 0.08. 10-06 values: bass 23.04/0.0499/0.08-2.872,
+// mid 15.84/0.0216/0.352-1.72, treble 31.68/0.0144/0.28-3.304.
 export const BAND_PROFILES: Record<BandFocus, BandProfile> = {
-  bass:   { gain: 23.04, decay: 0.88,  scale: 0.0499, rateLo: 0.08, rateHi: 2.872 }, // scale held under the 0.05 "breath, not a zoom" ceiling; rate floor 0.08 (never freezes)
-  mid:    { gain: 15.84, decay: 0.945, scale: 0.0216, rateLo: 0.352, rateHi: 1.72 },
-  treble: { gain: 31.68, decay: 0.78,  scale: 0.0144, rateLo: 0.28, rateHi: 3.304 },
+  bass:   { gain: 27.648, decay: 0.88,  scale: 0.0499, rateLo: 0.08, rateHi: 3.2464 }, // scale held under the 0.05 "breath, not a zoom" ceiling; rate floor 0.08 (never freezes)
+  mid:    { gain: 19.008, decay: 0.945, scale: 0.02592, rateLo: 0.2224, rateHi: 1.864 },
+  treble: { gain: 38.016, decay: 0.78,  scale: 0.01728, rateLo: 0.136, rateHi: 3.7648 },
 };
 
 /** AUDIO-REACTIVE gate (Karel 2026-10-05, "this goes for all" — every

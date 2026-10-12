@@ -40,12 +40,13 @@ describe("+20% band response (Karel 2026-10-05)", () => {
     mid:    { gain: 11, scale: 0.015, rateLo: 0.55, rateHi: 1.50, decay: 0.945 },
     treble: { gain: 22, scale: 0.010, rateLo: 0.50, rateHi: 2.60, decay: 0.78 },
   } as const;
-  it("gain and scale are x1.2 again (2026-10-06), the rate swing widens 20% around 1.0, slew unchanged", () => {
-    // the 2026-10-05 values, then +20 % (Karel 2026-10-06: "shaders another 20% more responsive")
+  it("gain and scale are x1.2 a third time (2026-10-12), the rate swing widens 20% around 1.0, slew unchanged", () => {
+    // the 2026-10-06 values, then +20 % (Karel 2026-10-12: "bump up the
+    // responsiveness to the audio in all journeys by another 20%")
     const PREV = {
-      bass: { gain: 19.2, decay: 0.88, scale: 0.042, rateLo: 0.16, rateHi: 2.56 },
-      mid: { gain: 13.2, decay: 0.945, scale: 0.018, rateLo: 0.46, rateHi: 1.6 },
-      treble: { gain: 26.4, decay: 0.78, scale: 0.012, rateLo: 0.4, rateHi: 2.92 },
+      bass: { gain: 23.04, decay: 0.88, scale: 0.0499, rateLo: 0.08, rateHi: 2.872 },
+      mid: { gain: 15.84, decay: 0.945, scale: 0.0216, rateLo: 0.352, rateHi: 1.72 },
+      treble: { gain: 31.68, decay: 0.78, scale: 0.0144, rateLo: 0.28, rateHi: 3.304 },
     };
     void BEFORE;
     for (const b of ["bass", "mid", "treble"] as const) {

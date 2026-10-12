@@ -1486,7 +1486,9 @@ export function ParticleLeadLayer({
       if (veilRef.current) veilRef.current.style.opacity = veil.toFixed(3);
       // alone on black, the field answers the music strongly (Karel 2026-10-06)
       // much more responsive (Karel 2026-10-06): 2.2× always, up to 3.8× alone on black
-      engine.setReact(2.2 + 1.6 * veil);
+      // +20 % (Karel 2026-10-12: "bump up the responsiveness to the music by 20%"):
+      // 2.64× always, up to the engine's 4× ceiling alone on black
+      engine.setReact(2.64 + 1.92 * veil);
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();
