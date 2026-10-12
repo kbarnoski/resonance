@@ -432,12 +432,18 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   }
   if (soul == 12) {
     // ── FIREFLIES: slow wanderers that dart when the treble sparkles ──
-    vec3 base = (hash31(s.a * 91.0) - 0.5) * vec3(4.4, 2.8, 3.0);
+    // a soft, rounded cloud (was a uniform box: on screen a straight-sided slab —
+    // tour pass 6, 2026-10-12): denser at the heart, thinning to nothing at the rim
+    vec3 hd = hash31(s.a * 91.0) - 0.5;
+    vec3 dir = hd / max(length(hd), 1e-3);
+    vec3 base = dir * pow(hash11(s.a * 47.3), 0.6) * vec3(2.2, 1.4, 1.5);
     vec3 wander = vec3(sin(uClock.y * 0.3 * (0.5 + s.g) + s.a * 30.0),
                        sin(uClock.y * 0.23 * (0.5 + s.b) + s.g * 40.0) * 0.6,
                        cos(uClock.y * 0.27 + s.b * 20.0)) * 0.5;
     vec3 a = (base + wander - p) * 1.6;
-    a += (hash31(s.a * 1e3 + floor(uTime * 3.0)) - 0.5) * 9.0 * up * trebW;
+    // each firefly darts on its own beat (a shared floor() made the whole swarm
+    // jolt in unison 3×/s — a shudder, not a sparkle)
+    a += (hash31(s.a * 1e3 + floor(uTime * 3.0 + s.g * 3.0)) - 0.5) * 9.0 * up * trebW;
     return vec4(a, 1.4);
   }
   if (soul == 13) {
