@@ -852,7 +852,13 @@ export function ParticleLeadLayer({
       // mandalas get lost over imaging … the super thin line designs are tough
       // to see"): line-drawn forms wear bigger, denser motes
       const thin = THIN_LINE_FORMS.has(currentSoul as SoulId);
-      engine.setSizeScale(thin ? 1.5 + 0.7 * rand01(9) : 0.6 + 1.4 * rand01(9));
+      // GHOST'S OPENING SEQUENCE (Karel 2026-10-12: "it goes from emblem into a
+      // slow moving blob then moves to the left and hangs out and particles get
+      // bigger"): through the first two phases the field never slides aside and
+      // its motes stay fine — it rises in place over the tunnel
+      const ghostOpening = journeyId === "ghost" && (cast.phaseBounds ?? []).filter((b) => b <= (useAudioStore.getState().currentTime || 0)).length <= 1;
+      if (ghostOpening) { offX = 0; offY = 0; }
+      engine.setSizeScale(ghostOpening ? 0.85 : thin ? 1.5 + 0.7 * rand01(9) : 0.6 + 1.4 * rand01(9));
       if (thin) densK = Math.max(densK, 0.85);
     };
     // the forms THIS phase's imagery calls for (vision-tagged) — else the cycle
@@ -1283,7 +1289,12 @@ export function ParticleLeadLayer({
         if (imgReleasing) engine.setImageForm(0, 0);
         else engine.setImageForm(formNow, Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
         // an image letting go with nothing after it: hover, then ease into the form
-        if (formPeak > 0.5 && formNow < formPeak * 0.7 && hoverAt < 0) hoverAt = performance.now();
+        if (formPeak > 0.5 && formNow < formPeak * 0.7 && hoverAt < 0) {
+          hoverAt = performance.now();
+          // Ghost's opening emblem DISSOLVES OUTWARD as it lets go (Karel
+          // 2026-10-12: the post-emblem blob) — a gentle breath, never a mass
+          if (journeyId === "ghost" && phaseIdxAt(t) <= 1 && imgLoaded === "emblem") engine.impulse("scatter", 0.45);
+        }
         formPeak = Math.max(formPeak, formNow);
       }
       if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; imgReleasing = false; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); formAt = performance.now(); }
@@ -1307,8 +1318,12 @@ export function ParticleLeadLayer({
         // Ghost's opening sequence (tunnel → depths, until the second phase ends)
         // never a mass over the imagery (Karel 2026-10-12: "that particle blob
         // just sits over that opening sequence") — a sparse field
-        const openCap = journeyId === "ghost" && phaseIdxAt(t) <= 1 ? 0.25 : 1;
-        engine.setDensity(imgLoaded && !flashing ? 1 : Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP));
+        // (also while the opening emblem lets go: an image held the field at 100 %
+        // until it fully cleared — that WAS the blob)
+        const gOpen = journeyId === "ghost" && phaseIdxAt(t) <= 1;
+        const openCap = gOpen ? (phaseIdxAt(t) === 0 ? 0.07 : 0.12) : 1;
+        const holdImage = imgLoaded && !flashing && !(gOpen && hoverAt >= 0);
+        engine.setDensity(holdImage ? 1 : Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP));
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -1365,7 +1380,7 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) <= 1 ? 0.25 : 1) * densKS * (0.3 + 0.7 * densP));
+      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) <= 1 ? (phaseIdxAt(t) === 0 ? 0.07 : 0.12) : 1) * densKS * (0.3 + 0.7 * densP));
       // ≥5 s TO ABSORB (Karel 2026-10-07: "dont have particles come in only
       // to go away a second or two later … 5 seconds minimum"): once the
       // field arrives it holds ≥6 s before any fade-out begins
@@ -1408,7 +1423,7 @@ export function ParticleLeadLayer({
         // section" … "it even seems slow"): it moves at 0.85 now; the rest of Ghost
         // is unchanged
         const mo = cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO;
-        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) === 0 ? Math.max(mo, 0.85) : mo);
+        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) <= 1 ? Math.max(mo, 0.85) : mo);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)
