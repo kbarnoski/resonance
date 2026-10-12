@@ -45,7 +45,7 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
-import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader } from "@/lib/journeys/kinetic";
+import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, boostedProfile } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { SHADER_MEAN_LUMA } from "@/lib/shaders/shader-brightness.generated";
@@ -577,7 +577,7 @@ export function ShaderVisualizer({
       }
       let rateTarget = baseRate;
       if (lastBand && mix.band > 0.001 && !steadyClock) {
-        const prof0 = BAND_PROFILES[lastBand];
+        const prof0 = boostedProfile(BAND_PROFILES[lastBand], journeyResponse(useAudioStore.getState().activeJourney));
         const kinRate = prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
         const bandRate = kinRate + (driveOnlyRate(prof0, eqLv) - kinRate) * mix.driveOnly;
         rateTarget = baseRate + (bandRate - baseRate) * mix.band;
@@ -742,7 +742,7 @@ export function ShaderVisualizer({
         }
         if (lastBand) {
           const raw = lastBand === "bass" ? rawBass : lastBand === "mid" ? rawMid : rawTreble;
-          const prof = BAND_PROFILES[lastBand];
+          const prof = boostedProfile(BAND_PROFILES[lastBand], journeyResponse(useAudioStore.getState().activeJourney));
           if (!silent) {
             slowEma += (raw - slowEma) * frameAlpha(0.04, dt); // ~400ms baseline
             actEma += (raw - actEma) * frameAlpha(0.008, dt);  // ~2s structural envelope
@@ -764,7 +764,7 @@ export function ShaderVisualizer({
       // a shader must respond the same way whatever its layer role).
       if (mix.kin > 0.001) s.amplitude += (eqLv - s.amplitude) * mix.kin;
       const bandActive = !!lastBand && mix.band > 0.0005;
-      const scaleTarget = bandActive ? 1 + mix.band * eqLv * BAND_PROFILES[lastBand!].scale : 1;
+      const scaleTarget = bandActive ? 1 + mix.band * eqLv * boostedProfile(BAND_PROFILES[lastBand!], journeyResponse(useAudioStore.getState().activeJourney)).scale : 1;
       shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt);
 
       gl.useProgram(program!);

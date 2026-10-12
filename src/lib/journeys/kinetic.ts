@@ -182,6 +182,72 @@ export function isSteadyClockShader(mode?: string | null): boolean {
  *  but centred on the journey's own resting pace (1.0 at lv=0.5) so a
  *  meditative journey keeps its tempo between phrases and only surges /
  *  slows with the music. Clamped to the profile's floor and ceiling. */
+/** PER-JOURNEY RESPONSE (Karel 2026-10-12): some tracks want more than the
+ *  loop-wide profile — "for chemo … the shaders should be another 50% more
+ *  responsive since its big funky up beat energy track". Multiplies the band
+ *  drive gain, widens the speed swing around 1.0 and grows the scale breath
+ *  (capped under the 0.05 "breath, not a zoom" ceiling); the release slew is
+ *  unchanged, so it swells, never jitters. Motion only, never luminance. */
+// …a LADDER (Karel 2026-10-12: "the solo piano ones get the base setting, then
+// the next level gets more and so on such that the intense stuff is highly
+// reactive") — the Rise Above vibe tiers. Journeys outside RA stay at base.
+const FAR_OUT = 1.1, AMBIENT = 1.2, GROOVE = 1.35, BIG = 1.6;
+export const JOURNEY_RESPONSE: Readonly<Record<string, number>> = {
+  // solo piano — base (×1): First Light, Bath, The First (Expanded), Testimony 3,
+  // Grasshopper, Yellow Bird, The Summit, Welcome Home, Afterglow, Realized
+  // far out
+  "cosmic-drift": FAR_OUT,
+  "mycelium-dream": FAR_OUT,
+  // ambient & voices
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c": AMBIENT, // Amboise 1
+  "1f83e254-a0c8-45ec-974f-8b363038a98d": AMBIENT, // Rise 1
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d": AMBIENT, // Northern Plane 3
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": AMBIENT, // Night Wind 2
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": AMBIENT, // Surrounded by Light 6
+  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f": AMBIENT, // Singular 4
+  "13e71555-03d6-4b27-ad32-2c6834559c24": AMBIENT, // Northern Plane 5
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e": AMBIENT, // No question 7
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084": AMBIENT, // Nothing 30
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41": AMBIENT, // Night Wind 4
+  "9662fec9-04fa-4202-9859-8f01cd287aad": AMBIENT, // Tranquility 38
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0": AMBIENT, // Never Forget 4
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296": AMBIENT, // Redwoods Sway 2
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3": AMBIENT, // Yellow Bird 3
+  // lounge & groove
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308": GROOVE, // Loire 2
+  "6407bf5c-7862-49e8-883d-59754c4caf18": GROOVE, // No question 8
+  "84a82478-f0f2-4c49-b800-b4fe722f1df5": GROOVE, // Stand 10
+  "81683231-3b3c-4542-8696-13dfcf56469a": GROOVE, // Loire 5A
+  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac": GROOVE, // Cabin Soul 8
+  "86b64938-26ea-40b9-9ea1-461323a049d5": GROOVE, // Chenin 3
+  "4ef43223-42cf-4ce8-9088-7578569f7de6": GROOVE, // Sancerre Cry 4
+  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6": GROOVE, // Velvet Tears 1
+  "85124aed-c3b4-42e2-870a-b14bc5425b72": GROOVE, // Night Wind 9
+  // big & intense (+ both Chemiluminescence takes: "big funky up beat energy")
+  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9": BIG, // Chemiluminescence 1
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9": BIG, // Chemiluminescence
+  "4d17da19-6834-4005-a944-34c27a88a320": BIG, // Amboise 2
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8": BIG, // Bells 1
+  "3814f116-5c54-499c-9d9b-355201700fdc": BIG, // Rattler 2
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a": BIG, // Horses 1
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3": BIG, // The Other Side 9
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e": BIG, // Chenin 5 — THE PEAK
+};
+export function journeyResponse(journey?: { id?: string | null } | null): number {
+  return (journey?.id && JOURNEY_RESPONSE[journey.id]) || 1;
+}
+/** A band profile scaled by a journey's response multiplier. */
+export function boostedProfile(prof: BandProfile, k: number): BandProfile {
+  if (k === 1) return prof;
+  return {
+    gain: prof.gain * k,
+    decay: prof.decay,
+    scale: Math.min(0.0499, prof.scale * k),
+    rateLo: Math.max(0.08, 1 - (1 - prof.rateLo) * k),
+    rateHi: 1 + (prof.rateHi - 1) * k,
+  };
+}
+
 export function driveOnlyRate(prof: BandProfile, lv: number): number {
   const r = 1 + (lv - 0.5) * (prof.rateHi - prof.rateLo);
   return Math.min(prof.rateHi, Math.max(prof.rateLo, r));
