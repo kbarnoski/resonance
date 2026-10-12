@@ -212,6 +212,11 @@ export function RemoteClient() {
           </>
         )}
 
+        {/* MARK (Karel 2026-10-12): tap the moment something looks wrong —
+            the kiosk logs the journey + exact second for Claude to find */}
+        <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send(`mark:${Date.now()}`)}>
+          ⚑ Mark glitch
+        </Button>
         {inLoop ? (
           <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("break")}>
             Break in — DJ mode

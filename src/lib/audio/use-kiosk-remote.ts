@@ -8,6 +8,7 @@ import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getParticlePresent } from "@/lib/journeys/particle-presence";
 import { disableParticlesForSession } from "@/lib/particles/shared-engine";
+import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_SESSION_KEY } from "@/lib/journeys/particle-lead";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
@@ -53,7 +54,15 @@ const POLL_MS = 2_000;
 
 function runCommand(cmd: string, context: KioskRemoteContext): void {
   const store = useAudioStore.getState();
-  if (cmd === "toggle-play") {
+  if (cmd.startsWith("mark:")) {
+    // MARK (Karel 2026-10-12): he taps "Mark glitch" the moment he sees one;
+    // the phone's send time puts it on the exact second of the track (the
+    // kiosk only polls every 2 s), so the recorder + footage find the frame
+    const sent = Number(cmd.slice(5)) || Date.now();
+    const lag = Math.max(0, Math.min(10, (Date.now() - sent) / 1000));
+    const t = Math.max(0, (store.currentTime || 0) - lag);
+    glitchRecord("karel-mark", `${store.activeJourney?.name ?? "?"} @${t.toFixed(1)}s (lag ${lag.toFixed(1)}s)`);
+  } else if (cmd === "toggle-play") {
     store.togglePlayPause();
   } else if (cmd === "live" && context !== "live") {
     // LIVE THEATRE (Karel 2026-10-11): he plays the Nord; the kiosk listens
