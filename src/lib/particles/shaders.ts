@@ -314,7 +314,11 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     tv += curlNoise(p * 0.65 + vec3(0.0, -uClock.y * 0.05, uClock.x * 0.02)) * 0.13 * (0.6 + 2.4 * up * midW);
     tv += (hash31(s.a * 1e3 + floor(uTime * 16.0)) - 0.5) * 0.6 * up * trebW;
     vec3 a = (tv - v) * 1.6;
-    a.xz -= p.xz * smoothstep(2.2, 3.0, length(p.xz)) * 1.5;
+    // each mote keeps to its OWN radius (was one shared 2.2-3.0 wall: seen from
+    // the side, a column with straight hard sides — Ghost's opening, 2026-10-12):
+    // dense at the heart, thinning softly to nothing at the rim
+    float mr = mix(0.7, 3.0, pow(hash11(s.a * 77.0), 0.7));
+    a.xz -= p.xz * smoothstep(mr * 0.75, mr, length(p.xz)) * 1.5;
     return vec4(a, 0.0);
   }
   if (soul == 3) {
