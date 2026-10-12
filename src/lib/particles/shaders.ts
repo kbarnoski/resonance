@@ -157,6 +157,7 @@ uniform vec3 uMelody;     // melodic attractor
 uniform float uMelodyW;   // follower weight
 // image dissolve / reform (particle-engine dissolveTo)
 uniform float uImgForm;   // spring toward the image plane 0..1
+uniform float uPairSoft;  // spatial pairing: the 'less literal' softness as a drift (0 = off)
 uniform float uImgShow;   // image presence (dissolve swirl gate)
 uniform float uSnap;      // 1 for one frame: teleport onto the image plane
 uniform vec3 uPlaneC;     // image plane centre (world)
@@ -1074,6 +1075,14 @@ void main(){
   if (uImgForm > 0.001 || uImgShow > 0.001 || uSnap > 0.5) {
     vec2 ndc = coverNdc(imgUv(c, s, uTexW), uImgAspect, uScrAspect);
     imgT = uPlaneC + uPlaneR * ndc.x + uPlaneU * ndc.y;
+    // SPATIAL PAIRING: the form's own pull is not left in (paired to a point on
+    // its own side, it printed the previous form into the image — sample 1,
+    // The Bloom from a lissajous); the softness it gave returns as a slow drift
+    // of each mote around its point
+    if (uPairSoft > 0.0) {
+      float ph = hash11(s.a * 61.7) * 6.2831853 + uTime * (0.3 + 0.5 * hash11(s.a * 13.1));
+      imgT += (uPlaneR * cos(ph) + uPlaneU * sin(ph)) * uPairSoft * hash11(s.a * 29.3);
+    }
     f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
     float rel = uImgShow * (1.0 - uImgForm);
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
@@ -1516,5 +1525,132 @@ void main(){
   float th = u * 6.2831853, ph = acos(2.0 * v - 1.0);
   oPos = vec4(sin(ph) * cos(th) * w, cos(ph) * w * 0.4, sin(ph) * sin(th) * w, h(c, 0.79) * 15.0);
   oVel = vec4(0.0);
+}
+`;
+
+// ── SPATIAL PAIRING (spatial-pairing.ts) ───────────────────────────────────
+// Five small passes, once per image, no readback. The field is projected onto
+// the image plane (ndc) and binned in polar coordinates around its centre:
+// 256 angle sectors × 64 radius rings. Each particle's angle quantile (over the
+// whole field) picks its wedge of the sorted image samples, its radius quantile
+// (within its own sector) its place along that wedge.
+const PAIR_COMMON = /* glsl */ `
+uniform vec3 uPlaneR;
+uniform vec3 uPlaneU;
+vec2 planeNdc(vec3 p){ return vec2(dot(p, uPlaneR) / dot(uPlaneR, uPlaneR), dot(p, uPlaneU) / dot(uPlaneU, uPlaneU)); }
+`;
+// 1 × 1: the field's centre (and reach) from 256 reference particles
+export const PAIR_STATS_FS = /* glsl */ `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uPos;
+uniform int uTexW;
+uniform float uCount;
+${PAIR_COMMON}
+out vec4 o;
+void main(){
+  vec2 cen = vec2(0.0);
+  for (int k = 0; k < 256; k++) {
+    int i = int((float(k) + 0.5) / 256.0 * uCount);
+    cen += planeNdc(texelFetch(uPos, ivec2(i % uTexW, i / uTexW), 0).xyz);
+  }
+  cen /= 256.0;
+  float rmax = 1e-4;
+  for (int k = 0; k < 256; k++) {
+    int i = int((float(k) + 0.5) / 256.0 * uCount);
+    rmax = max(rmax, length(planeNdc(texelFetch(uPos, ivec2(i % uTexW, i / uTexW), 0).xyz) - cen));
+  }
+  o = vec4(cen, rmax * 1.5, 1.0);
+}
+`;
+// every particle → one point into its (angle sector, radius ring) bin (additive)
+export const PAIR_HIST_VS = /* glsl */ `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uPos;
+uniform sampler2D uStats;
+uniform int uTexW;
+${PAIR_COMMON}
+void main(){
+  int id = gl_VertexID;
+  vec3 p = texelFetch(uPos, ivec2(id % uTexW, id / uTexW), 0).xyz;
+  vec4 st = texelFetch(uStats, ivec2(0), 0);
+  vec2 d = planeNdc(p) - st.xy;
+  float ua = (atan(d.y, d.x) + 3.14159265) / 6.2831853;
+  float ur = clamp(length(d) / st.z, 0.0, 0.99999);
+  float bx = min(floor(ua * 256.0), 255.0), by = floor(ur * 64.0);
+  gl_Position = vec4((bx + 0.5) / 128.0 - 1.0, (by + 0.5) / 32.0 - 1.0, 0.0, 1.0);
+  gl_PointSize = 1.0;
+}
+`;
+export const PAIR_HIST_FS = /* glsl */ `#version 300 es
+precision highp float;
+out vec4 o;
+void main(){ o = vec4(1.0, 0.0, 0.0, 0.0); }
+`;
+// 256 × 1: x = particles in the sectors before this one, y = in this one
+export const PAIR_ACDF_FS = /* glsl */ `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uHist;
+out vec4 o;
+void main(){
+  int s = int(gl_FragCoord.x);
+  float pre = 0.0, own = 0.0;
+  for (int a = 0; a < 256; a++) {
+    if (a > s) break;
+    float row = 0.0;
+    for (int r = 0; r < 64; r++) row += texelFetch(uHist, ivec2(a, r), 0).x;
+    if (a < s) pre += row; else own = row;
+  }
+  o = vec4(pre, own, 0.0, 1.0);
+}
+`;
+// 256 × 64: x = particles in this sector inside this ring, y = in this ring
+export const PAIR_RCDF_FS = /* glsl */ `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uHist;
+out vec4 o;
+void main(){
+  ivec2 c = ivec2(gl_FragCoord.xy);
+  float pre = 0.0;
+  for (int r = 0; r < 64; r++) { if (r >= c.y) break; pre += texelFetch(uHist, ivec2(c.x, r), 0).x; }
+  o = vec4(pre, texelFetch(uHist, c, 0).x, 0.0, 1.0);
+}
+`;
+// texW × texW: each particle's paired image uv
+export const PAIR_ASSIGN_FS = /* glsl */ `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uPos;
+uniform sampler2D uStats;
+uniform sampler2D uAcdf;
+uniform sampler2D uRcdf;
+uniform sampler2D uPair;   // sorted samples (wedge-major, radius within)
+uniform int uTexW;
+uniform float uCount;
+uniform float uGroups;
+${PAIR_COMMON}
+out vec4 o;
+float h(vec2 p, float k){ vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973) + k); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
+void main(){
+  ivec2 c = ivec2(gl_FragCoord.xy);
+  vec4 st = texelFetch(uStats, ivec2(0), 0);
+  vec2 d = planeNdc(texelFetch(uPos, c, 0).xyz) - st.xy;
+  float ua = (atan(d.y, d.x) + 3.14159265) / 6.2831853;
+  float ur = clamp(length(d) / st.z, 0.0, 0.99999);
+  float b = min(floor(ua * 256.0), 255.0), rb = floor(ur * 64.0);
+  vec2 A = texelFetch(uAcdf, ivec2(int(b), 0), 0).xy;
+  vec2 Rr = texelFetch(uRcdf, ivec2(int(b), int(rb)), 0).xy;
+  // a fixed per-particle random place WITHIN its bin (not its exact angle /
+  // radius): a line form crowds one angle of a sector, and interpolating by
+  // angle starved the wedges beside it (spokes + a thin centre, sample 1)
+  float qa = clamp((A.x + h(vec2(c), 0.37) * A.y) / uCount, 0.0, 0.99999);
+  float qr = clamp((Rr.x + h(vec2(c), 0.71) * Rr.y) / max(A.y, 1.0), 0.0, 0.99999);
+  float n = float(uTexW * uTexW);
+  float g = floor(qa * uGroups);
+  int idx = int(clamp(floor((g + qr) / uGroups * n), 0.0, n - 1.0));
+  o = vec4(texelFetch(uPair, ivec2(idx % uTexW, idx / uTexW), 0).xy, 0.0, 1.0);
 }
 `;

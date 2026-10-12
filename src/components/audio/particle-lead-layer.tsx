@@ -44,6 +44,7 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { keyedFlashAngel } from "./flash-angel";
 import { FIELD_FORMS, SPECTRUM_FORMS, isCenteredShader, PARTICLE_LIKE_SHADERS } from "@/lib/journeys/particle-motifs";
 import type { ParticleEngine } from "@/lib/particles/particle-engine";
+import { pairingEnabled, pairOrder, PAIR_GROUPS } from "@/lib/particles/spatial-pairing";
 import { acquireSharedParticleEngine, onParticlesDisabled, particlesDisabledReason, releaseSharedParticleEngineWithFade, statementHoldActive, onStatementHoldChange } from "@/lib/particles/shared-engine";
 import { SpectrumProcessor, type SpectrumFrame } from "@/lib/particles/spectrum";
 import type { SoulId } from "@/lib/particles/souls";
@@ -124,6 +125,9 @@ type EmblemSource = HTMLCanvasElement | "@angel" | "@angel-outline";
 // ── importance-sampled image coordinates (crisp image forms) ──────────────
 const SAMPLE_N = (() => { const sd = Math.max(64, Math.min(1024, Math.round(Math.sqrt(160_000)))); return sd * sd; })();
 const uvCache = new WeakMap<object, Float32Array>();
+// spatial pairing (?pfx=1): the same samples sorted by wedge/radius, from the worker
+const PAIRING = pairingEnabled();
+const pairCache = new WeakMap<object, Float32Array>();
 // One reused scratch canvas (it was a fresh canvas + surface per sampled
 // image, every ~170 ms while motifs warm).
 let uvScratch: HTMLCanvasElement | null = null;
@@ -266,8 +270,9 @@ function fitSize(fit: Fit, w: number, h: number): [number, number] {
 const lumCache = new WeakMap<HTMLCanvasElement, number>();
 const DECODE_WORKER_SRC = `
 const uvFromPixels = (${uvFromPixels.toString()});
+const pairOrder = (${pairOrder.toString()});
 self.onmessage = async (ev) => {
-  const { id, url, fit, cors, n, uvW } = ev.data;
+  const { id, url, fit, cors, n, uvW, pairG } = ev.data;
   try {
     const res = await fetch(url, cors ? { mode: "cors" } : undefined);
     if (!res.ok) throw new Error(String(res.status));
@@ -291,14 +296,15 @@ self.onmessage = async (ev) => {
     const sx = sc.getContext("2d", { willReadFrequently: true });
     sx.drawImage(oc, 0, 0, W, H);
     const uv = uvFromPixels(sx.getImageData(0, 0, W, H).data, W, H, n);
+    const pair = uv && pairG ? pairOrder(uv, pairG) : null;
     const buf = data.buffer;
-    self.postMessage({ id, w, h, buf, uv, lum: L / Math.max(1, cnt) }, uv ? [buf, uv.buffer] : [buf]);
+    self.postMessage({ id, w, h, buf, uv, pair, lum: L / Math.max(1, cnt) }, uv ? (pair ? [buf, uv.buffer, pair.buffer] : [buf, uv.buffer]) : [buf]);
   } catch (e) { self.postMessage({ id, err: String(e) }); }
 };`;
 let decodeWorker: Worker | null | undefined;
 let decodeSeq = 0;
 let decodeFallbackNoted = false;
-type DecodeResult = { w?: number; h?: number; buf?: ArrayBuffer; uv?: Float32Array | null; lum?: number; err?: string };
+type DecodeResult = { w?: number; h?: number; buf?: ArrayBuffer; uv?: Float32Array | null; pair?: Float32Array | null; lum?: number; err?: string };
 const decodeWaiters = new Map<number, (r: DecodeResult) => void>();
 function getDecodeWorker(): Worker | null {
   if (decodeWorker !== undefined) return decodeWorker;
@@ -322,7 +328,7 @@ async function decodeSmall(url: string, fit: Fit, crossOrigin = false, uvW = 256
     const id = ++decodeSeq;
     const r = await new Promise<DecodeResult>((resolve) => {
       decodeWaiters.set(id, resolve);
-      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin, n: SAMPLE_N, uvW });
+      worker.postMessage({ id, url: new URL(url, location.href).href, fit, cors: crossOrigin, n: SAMPLE_N, uvW, pairG: PAIRING ? PAIR_GROUPS : 0 });
     });
     if (r.buf && r.w && r.h) {
       const { c, ctx } = cpuCanvas(r.w, r.h);
@@ -330,6 +336,7 @@ async function decodeSmall(url: string, fit: Fit, crossOrigin = false, uvW = 256
       ctx.putImageData(new ImageData(new Uint8ClampedArray(r.buf), r.w, r.h), 0, 0);
       // samples + brightness arrive precomputed: no main-thread readback, ever
       if (r.uv) uvCache.set(c, r.uv);
+      if (r.pair) pairCache.set(c, r.pair);
       if (typeof r.lum === "number") lumCache.set(c, r.lum);
       return c;
     }
@@ -1176,7 +1183,9 @@ export function ParticleLeadLayer({
             ? (momentImgs.current.length ? momentImgs.current[momentN % momentImgs.current.length] : null)
             : resolveEmblem(want === "angel" && !(em && em.some((x) => typeof x === "string")) ? "@angel" : pickFrom);
         if (img) {
-          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()), !flashing);
+          // spatial pairing (?pfx=1): never on the locked journeys, never for the flash
+          const pair = PAIRING && !cast.mastered && !flashing ? pairCache.get(img) : undefined;
+          engine.loadFormImage(img, img.width / Math.max(1, img.height), uvFor(img, engine.imageSampleCount()), !flashing, pair);
           imgLoaded = want;
           imgKey = wantKey;
           if (!flashing) treatN++;
@@ -1195,6 +1204,7 @@ export function ParticleLeadLayer({
             ? { mirror: false, tilt: 0, scale: 1.05 + 0.1 * r3, literal: 0.97 }
             : { mirror: r1 < 0.5, tilt: (r2 - 0.5) * 0.3, scale: 0.85 + 0.3 * r3, literal: 0.7 + 0.2 * r2 };
           engine.setImageVariant(!flashing && imgVar.mirror, flashing || want === "echo" ? 0 : imgVar.tilt);
+          engine.setImageLiteral(imgVar.literal);
           // motif designs take the journey's palette; angel / emblem / blossom moment keep their own colours
           engine.setImageTint(want === "motif" ? 1 : 0);
           // (no setInstances here: re-laying a visible FIELD at once was a jump;

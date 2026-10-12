@@ -42,7 +42,14 @@ import {
   FADE_FS,
   LUM_FS,
   COMP_FS,
+  PAIR_STATS_FS,
+  PAIR_HIST_VS,
+  PAIR_HIST_FS,
+  PAIR_ACDF_FS,
+  PAIR_RCDF_FS,
+  PAIR_ASSIGN_FS,
 } from "./shaders";
+import { pairingEnabled, PAIR_GROUPS } from "./spatial-pairing";
 import {
   SOULS,
   soulById,
@@ -84,6 +91,8 @@ export interface ParticleEngineOptions {
   /** Verification probe: async state + luminance read-back. OFF in journeys —
    *  getBufferSubData is a synchronous round trip in Chrome (the kiosk hang). */
   probe?: boolean;
+  /** Spatial pairing for image forms (spatial-pairing.ts). Default: ?pfx=1. */
+  pairing?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -218,11 +227,14 @@ export interface ParticleEngine {
   /** Load an image the field can form into (no dissolve timeline). */
   /** `glide` (default true): the arrival is a retarget — motes ease onto it
    *  (false only for the flash, which must meet the flash image on the beat). */
-  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number, uv?: Float32Array, glide?: boolean): void;
+  loadFormImage(src: HTMLCanvasElement | HTMLImageElement, aspect: number, uv?: Float32Array, glide?: boolean, pair?: Float32Array): void;
   /** How many image samples loadFormImage's `uv` needs (2 floats each). */
   imageSampleCount(): number;
   /** Conducted image form: form = spring onto the image 0..1, show = wear its colours 0..1. */
   setImageForm(form: number, show: number): void;
+  /** How literally the image is formed at full strength (the layer's 0.7–1). With
+   *  spatial pairing the form's pull is not left in; the softness becomes a drift. */
+  setImageLiteral(l: number): void;
   /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
   setMotion(k: number): void;
   /** Playful impulse — motion only. */
@@ -462,7 +474,20 @@ export function createParticleEngine(
   const comp = startProgram(gl, QUAD_VS, COMP_FS);
   const seedInit = startProgram(gl, QUAD_VS, SEED_INIT_FS);
   const posInit = startProgram(gl, QUAD_VS, POS_INIT_FS);
-  const fixedProgs = [seedInit, posInit, draw, fade, lum, expo, comp];
+  // spatial pairing (step 1 of the particle upgrade): its two passes only exist
+  // when it is on — with it off the program set is exactly the show build's
+  // (the histogram pass blends 32-bit floats: EXT_float_blend, else off)
+  const pairingOn = (opts.pairing ?? pairingEnabled()) && !!gl.getExtension("EXT_float_blend");
+  const pairProgs = pairingOn
+    ? {
+        stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
+        hist: startProgram(gl, PAIR_HIST_VS, PAIR_HIST_FS),
+        acdf: startProgram(gl, QUAD_VS, PAIR_ACDF_FS),
+        rcdf: startProgram(gl, QUAD_VS, PAIR_RCDF_FS),
+        asg: startProgram(gl, QUAD_VS, PAIR_ASSIGN_FS),
+      }
+    : null;
+  const fixedProgs = [seedInit, posInit, draw, fade, lum, expo, comp, ...(pairProgs ? Object.values(pairProgs) : [])];
   let particlesInitialised = false;
   // which program warmed when, and how long the call took (diagnostics)
   const warmLog: [string, number, number][] = [];
@@ -573,6 +598,7 @@ export function createParticleEngine(
     jumpRead?.dispose();
 
     count = side * side;
+    pairUse = false; pairPending = false; // paired uvs belong to the old texture size
     // contents are written on the GPU (SEED_INIT / POS_INIT) once those
     // programs are ready — no JS loop, no multi-MB uploads on the main thread
     seedBand = new Float32Array(side);
@@ -735,6 +761,24 @@ export function createParticleEngine(
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, 1, 1, 0, gl.RG, gl.FLOAT, new Float32Array([0.5, 0.5]));
   let imgSampled = 0;
+  // spatial pairing: the image's samples sorted by wedge/radius (uploaded with
+  // the image), the 16 × 16 reference particles, and each particle's paired uv
+  // (written once by the assign pass when the image loads)
+  const target = (w: number, h: number) => {
+    const tex = floatTex(gl, w, h, null);
+    const fbo = gl.createFramebuffer()!;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return { tex, fbo, w, h };
+  };
+  const pairT = pairingOn
+    ? { sorted: floatTex(gl, 1, 1, null), stats: target(1, 1), hist: target(256, 64), acdf: target(256, 1), rcdf: target(256, 64) }
+    : null;
+  let pairUv: ReturnType<typeof target> | null = null;
+  let pairPending = false; // run the assign passes on the next step (before the sim)
+  let pairUse = false;     // the worn image uses the paired uvs
+  let pairLit = 1;         // the image's literal level (setImageLiteral)
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -995,6 +1039,46 @@ export function createParticleEngine(
     const view = lookAt([eye[0] + o3[0], eye[1] + o3[1], eye[2] + o3[2]], o3, [0, 1, 0]);
     const vp = mul(proj, view);
 
+    // image plane: scale, mirror, a gentle tilt (rotation within the plane)
+    imgTiltS = sp(16, imgTiltS, imgTiltT, 2, dt);
+    const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
+    const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * imgMirror);
+    const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
+    for (let i = 0; i < 3; i++) { fireR[i] = R[i]; fireU[i] = U[i]; }
+
+    // ── 0. SPATIAL PAIRING (once per image, before the sim reads it) ────────
+    if (pairPending && pairProgs && pairT && pairUv) {
+      pairPending = false;
+      const P = pairProgs, T = pairT;
+      const plane = (pr: Prog) => { g.uniform3f(pr.u.uPlaneR, R[0], R[1], R[2]); g.uniform3f(pr.u.uPlaneU, U[0], U[1], U[2]); };
+      const pass = (pr: Prog, t: { fbo: WebGLFramebuffer; w: number; h: number }) => { g.bindFramebuffer(g.FRAMEBUFFER, t.fbo); g.viewport(0, 0, t.w, t.h); g.useProgram(pr.p); };
+      g.disable(g.BLEND);
+      g.bindVertexArray(vao);
+      pass(P.stats, T.stats);
+      bindTex(0, posTex[cur], P.stats.u.uPos);
+      g.uniform1i(P.stats.u.uTexW, side); g.uniform1f(P.stats.u.uCount, count); plane(P.stats);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      pass(P.hist, T.hist);
+      g.clearColor(0, 0, 0, 0); g.clear(g.COLOR_BUFFER_BIT);
+      g.enable(g.BLEND); g.blendFunc(g.ONE, g.ONE);
+      bindTex(0, posTex[cur], P.hist.u.uPos); bindTex(1, T.stats.tex, P.hist.u.uStats);
+      g.uniform1i(P.hist.u.uTexW, side); plane(P.hist);
+      g.drawArrays(g.POINTS, 0, count);
+      g.disable(g.BLEND);
+      pass(P.acdf, T.acdf);
+      bindTex(0, T.hist.tex, P.acdf.u.uHist);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      pass(P.rcdf, T.rcdf);
+      bindTex(0, T.hist.tex, P.rcdf.u.uHist);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      pass(P.asg, pairUv);
+      bindTex(0, posTex[cur], P.asg.u.uPos); bindTex(1, T.stats.tex, P.asg.u.uStats); bindTex(2, T.acdf.tex, P.asg.u.uAcdf);
+      bindTex(3, T.rcdf.tex, P.asg.u.uRcdf); bindTex(4, T.sorted, P.asg.u.uPair);
+      g.uniform1i(P.asg.u.uTexW, side); g.uniform1f(P.asg.u.uCount, count); g.uniform1f(P.asg.u.uGroups, PAIR_GROUPS); plane(P.asg);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+    }
+    const imgUvNow = pairUse && pairUv ? pairUv.tex : imgUvTex;
+
     // ── 1. SIM ────────────────────────────────────────────────────────────
     const nxt = 1 - cur;
     g.disable(g.BLEND);
@@ -1007,7 +1091,7 @@ export function createParticleEngine(
     bindTex(1, velTex[cur], sim.u.uVel);
     bindTex(2, seedTex, sim.u.uSeed);
     bindTex(3, specTex, sim.u.uSpec);
-    if (sim.u.uImgUv) { bindTex(5, imgUvTex, sim.u.uImgUv); g.uniform1f(sim.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
+    if (sim.u.uImgUv) { bindTex(5, imgUvNow, sim.u.uImgUv); g.uniform1f(sim.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
     g.uniform1f(sim.u.uDt, simDt);
     g.uniform1f(sim.u.uTime, time);
     g.uniform3f(sim.u.uClock, clocks.bass, clocks.mid, clocks.treble);
@@ -1068,20 +1152,14 @@ export function createParticleEngine(
       g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
       g.uniform1f(sim.u.uMelodyW, melodyW);
     }
-    g.uniform1f(sim.u.uImgForm, env.imgForm);
+    const pairOn = pairUse && dissolveT === null;
+    g.uniform1f(sim.u.uImgForm, pairOn ? Math.min(1, env.imgForm / pairLit) : env.imgForm);
+    g.uniform1f(sim.u.uPairSoft, pairOn ? 1 - pairLit : 0);
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
     g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
-    {
-      // image plane: scale, mirror, a gentle tilt (rotation within the plane)
-      imgTiltS = sp(16, imgTiltS, imgTiltT, 2, dt);
-      const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
-      const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * imgMirror);
-      const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
-      g.uniform3f(sim.u.uPlaneR, R[0], R[1], R[2]);
-      g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
-      for (let i = 0; i < 3; i++) { fireR[i] = R[i]; fireU[i] = U[i]; }
-    }
+    g.uniform3f(sim.u.uPlaneR, R[0], R[1], R[2]);
+    g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
     if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
     unfoldT += dt;
     if (sim.u.uUnfold) { g.uniform1f(sim.u.uUnfold, unfoldS); g.uniform1f(sim.u.uUnfoldT, unfoldT); }
@@ -1175,7 +1253,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uDensity, Math.min(density, densityCap));
     g.uniform1f(draw.u.uWorldFade, env.worldFade);
     bindTex(3, imgTex[0], draw.u.uImgA);
-    bindTex(4, imgTex[1], draw.u.uImgB); if (draw.u.uImgUv) { bindTex(5, imgUvTex, draw.u.uImgUv); g.uniform1f(draw.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
+    bindTex(4, imgTex[1], draw.u.uImgB); if (draw.u.uImgUv) { bindTex(5, imgUvNow, draw.u.uImgUv); g.uniform1f(draw.u.uImgSampled, dissolveT === null ? imgSampled : 0); }
     g.uniform1f(draw.u.uColorMix, env.colorMix);
     g.uniform1f(draw.u.uImgShow, env.imgShow);
     // an image formed by ~N soft sprites: per-sprite gain so the particle
@@ -1347,6 +1425,14 @@ export function createParticleEngine(
       bindTex(1, expTex[ecur], expo.u.uPrev);
       g.uniform1f(expo.u.uInit, 1);
       g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (pairProgs && pairT && Object.values(pairProgs).includes(cold)) {
+      // one texel into the stats target (rewritten before any use)
+      g.bindFramebuffer(g.FRAMEBUFFER, pairT.stats.fbo);
+      g.viewport(0, 0, 1, 1);
+      g.useProgram(cold.p);
+      bindTex(0, posTex[cur], cold.u.uPos);
+      g.uniform1i(cold.u.uTexW, side);
+      if (cold === pairProgs.hist) g.drawArrays(g.POINTS, 0, 1); else g.drawArrays(g.TRIANGLES, 0, 3);
     } else if (cold === comp) {
       g.bindFramebuffer(g.FRAMEBUFFER, null);
       g.viewport(0, 0, W, H);
@@ -1372,7 +1458,7 @@ export function createParticleEngine(
     g.bindVertexArray(null);
     cold.warm = true;
     lastWarmAt = performance.now();
-    warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
+    warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : pairProgs && Object.values(pairProgs).includes(cold) ? "pair" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
     if (warmLog.length > 40) warmLog.shift();
     const cpu = performance.now() - t0;
     // a warm draw is a pipeline build by design (invisible, once per program) — logged, never fatal
@@ -1423,6 +1509,8 @@ export function createParticleEngine(
       jumpRead?.dispose();
       lumRead?.dispose();
       for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...expTex]) gl.deleteTexture(t);
+      if (pairT) for (const t of [pairT.sorted, pairT.stats.tex, pairT.hist.tex, pairT.acdf.tex, pairT.rcdf.tex]) gl.deleteTexture(t);
+      if (pairUv) gl.deleteTexture(pairUv.tex);
       if (seedTex) gl.deleteTexture(seedTex);
       if (seedFbo) gl.deleteFramebuffer(seedFbo);
       for (const fb of [...simFbo, ...hdrFbo, lumFbo, ...expFbo]) gl.deleteFramebuffer(fb);
@@ -1540,7 +1628,7 @@ export function createParticleEngine(
       followT = Math.max(0, Math.min(1, w));
     },
     imageSampleCount() { return side * side; },
-    loadFormImage(src, aspect, uv, glide = true) {
+    loadFormImage(src, aspect, uv, glide = true, pair) {
       if (lost) return;
       if (glide) { retarget("image"); flashPace = false; } else flashPace = true;
       if (uv && uv.length === side * side * 2) {
@@ -1548,6 +1636,19 @@ export function createParticleEngine(
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, side, side, 0, gl.RG, gl.FLOAT, uv);
         imgSampled = 1;
       } else imgSampled = 0;
+      // spatial pairing: decided ONCE per image (never switched while it is worn)
+      pairUse = false;
+      pairPending = false;
+      if (pairT && pairProgs && Object.values(pairProgs).every((p) => p.warm) && imgSampled && pair && pair.length === side * side * 2 + 2) {
+        gl.bindTexture(gl.TEXTURE_2D, pairT.sorted);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, side, side, 0, gl.RG, gl.FLOAT, pair.subarray(0, side * side * 2));
+        if (!pairUv || pairUv.w !== side) {
+          if (pairUv) { gl.deleteTexture(pairUv.tex); gl.deleteFramebuffer(pairUv.fbo); }
+          pairUv = target(side, side);
+        }
+        pairPending = true;
+        pairUse = true;
+      }
       gl.bindTexture(gl.TEXTURE_2D, imgTex[1]);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
@@ -1555,6 +1656,7 @@ export function createParticleEngine(
       imgAspect = [imgAspect[0], aspect > 0 ? aspect : 1];
       haveB = true;
     },
+    setImageLiteral(l) { pairLit = Math.max(0.5, Math.min(1, l)); },
     setImageForm(form, show) {
       imgFormTgt = Math.max(0, Math.min(1, form));
       // an image takes the stage: a figure still queued would land on top of it
