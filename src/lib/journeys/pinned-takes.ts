@@ -104,6 +104,8 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   // Karel 2026-10-12 (baseline tour pass 7, build 1365b334): "i love this take
   // … def a keeper" — Calling
   "d92c2d3a-4283-4300-abc3-d71ed7c6848d": 903101341,
+  // Karel 2026-10-12 (pass 7): "this night wind track is a keeper" — Night Wind 2
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": 391401299,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random
