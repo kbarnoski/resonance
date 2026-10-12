@@ -913,7 +913,8 @@ export function ParticleLeadLayer({
       // rainbow color themed forms"): ~60 % of its (now long-held) forms, any shape
       // …and "just a bit more of this coloring in all" (Image #2: a multi-hue bloom):
       // spectrum forms ~1 in 2, any other form ~1 in 5
-      const rainbow = !ghostJ && rand01(71 + appearN) < (snowJ ? 0.6 : SPECTRUM_FORMS.has(soul) ? 0.5 : 0.2);
+      // the light journeys' sun theme is PSYCHEDELIC (Karel 2026-10-12): rainbow ~3 in 4
+      const rainbow = !ghostJ && rand01(71 + appearN) < (theme?.psychedelic ? 0.75 : snowJ ? 0.6 : SPECTRUM_FORMS.has(soul) ? 0.5 : 0.2);
       // a rainbow is a FULL spectrum; anything else stays inside the imaging's
       // own hues (Karel 2026-10-08, a girih graded pink → orange → gold: "this is
       // that orange and pink palette you over use") — the old 0.8 rad partial

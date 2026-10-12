@@ -86,9 +86,21 @@ export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morph
 /** Journey THEMES — a journey's own particle world (Karel 2026-10-06: First
  *  Light "should be a rising sun … play on light and the sun rise with the
  *  particle system. color and form"). */
-export interface JourneyTheme { family: string; motif: number; rising?: boolean; palette?: "dawn" }
+export interface JourneyTheme { family: string; motif: number; rising?: boolean; palette?: "dawn"; psychedelic?: boolean }
+/** SUN (Karel 2026-10-12: "in first light and surrounded by light so journeys
+ *  referring to light i would expect the particle system use sun themed a bit
+ *  and of coarse psychadelic!"): radiant, centre-out forms — sun rays, rosettes,
+ *  kaleidoscopes, rings — going full rainbow most of the time. */
+const SUN_FORMS: SoulId[] = ["starburst", "medallion", "mandala", "kaleido", "rings", "rose"];
+const SUN: JourneyTheme = { family: "sun", motif: 0.35, psychedelic: true };
 export const JOURNEY_THEMES: Readonly<Record<string, JourneyTheme>> = {
-  "87e106f9-4d74-4886-b944-fd625a827b02": { family: "dawn", motif: 0.7, rising: true, palette: "dawn" }, // First Light
+  "87e106f9-4d74-4886-b944-fd625a827b02": { family: "sun", motif: 0.7, rising: true, palette: "dawn", psychedelic: true }, // First Light (a sunrise)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": SUN, // Surrounded by Light 6
+  "06b07942-bf94-4513-8e71-ef00508ced3e": SUN, // Surrounded by Light 3
+  "21448504-ec00-48c3-8b0a-c92da2cf216a": SUN, // Surrounded by Light 19
+  "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3": SUN, // Surrounded By Light
+  "f7b01537-af1b-4ade-b788-f21c6565b057": SUN, // Surrounded By Light
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad": SUN, // Afterglow
 };
 
 /** Dawn: night violet → rose → orange → pale gold, voiced through the sunrise. */
@@ -195,7 +207,12 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       if (floralIdx >= 0) chars = chars.map((c, i) => (i === floralIdx ? { ...c, forms: [...c.forms.slice(0, 3), "blossom", ...c.forms.slice(3)] } : c));
     }
     const theme = JOURNEY_THEMES[id];
-    if (theme) chars = chars.map((c) => ({ ...c, family: theme.family, forms: theme.family === "dawn" ? ["ribbons", "murmuration", "vortex"] : c.forms }));
+    // (First Light's dawn used to force ribbons / murmuration / vortex — no sun at all)
+    // (each sun journey starts the rotation at its own form — two light journeys
+    // never share a sequence)
+    const sunK = Math.max(0, Object.keys(JOURNEY_THEMES).indexOf(id)) * 2;
+    const sunAt = (i: number) => { const k = (sunK + i) % SUN_FORMS.length; return [...SUN_FORMS.slice(k), ...SUN_FORMS.slice(0, k)]; };
+    if (theme) chars = chars.map((c, i) => ({ ...c, family: theme.family, forms: theme.family === "sun" ? sunAt(i) : c.forms }));
     if (chars.some((c) => c.forms.length)) {
       cast.phaseChars = chars;
       const pbs = cast.phaseBounds ?? [];

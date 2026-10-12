@@ -1185,14 +1185,21 @@ void main(){
     v = vec3(0.0);
   }
 
+  // RE-ENTRY FADES BY AGE, NOT BY HEIGHT (Karel 2026-10-12, Ghost after the
+  // flash: "a bunch of them pop in rather than fade … we solved this before"):
+  // the edge fades below are tied to world height, so whenever the camera
+  // stood back the re-entry height came into view and recycled motes popped
+  // in. Every recycled mote is now marked (age < 0) and the draw fades it in
+  // over ~1.6 s wherever the camera is.
+  bool reborn = false;
   // rise souls: climbers return to the hearth (fallers to the top) — the draw
   // fades both ends, so the return is never seen
   if (uRiseW > 0.5 && uImgShow < 0.01) {
     vec3 r = hash31(s.a * 917.0 + floor(uTime * 0.7));
     float top = uRiseTop + 0.25 * (hash11(s.a * 7.0) - 0.5);
     float ly = (p.y - I.y) / I.w;
-    if (uRiseTop > 0.0 && ly > top) { float th = r.x * 6.2831853; float rr = 0.45 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, -0.95, sin(th) * rr * 0.5); v = vec3(0.0, 0.3, 0.0) * I.w; }
-    if (uRiseTop < 0.0 && ly < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); }
+    if (uRiseTop > 0.0 && ly > top) { float th = r.x * 6.2831853; float rr = 0.45 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, -0.95, sin(th) * rr * 0.5); v = vec3(0.0, 0.3, 0.0) * I.w; reborn = true; }
+    if (uRiseTop < 0.0 && ly < top) { float th = r.x * 6.2831853; float rr = 0.55 * sqrt(r.y); p = I.xyz + I.w * vec3(cos(th) * rr, 1.15, sin(th) * rr * 0.5); v = vec3(0.0); reborn = true; }
   }
 
   // wrapping souls re-enter off-edge (out of view — the draw fades the edges).
@@ -1207,7 +1214,7 @@ void main(){
     // (±2.0 … ±3.4, hidden by the edge fade), so a mass wrap — every mote at
     // once when an image releases — arrives as a staggered drift-in, never a
     // dense line fading in together
-    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x + r.y - 1.0) * 2.6, -2.0 - 1.4 * hash11(s.a * 53.7 + floor(uTime)), (r.z - 0.5) * 3.2); v = vec3(0.0); }
+    if (uWrap.y > 0.5 && p.y > 2.0) { p = vec3((r.x + r.y - 1.0) * 2.6, -2.0 - 1.4 * hash11(s.a * 53.7 + floor(uTime)), (r.z - 0.5) * 3.2); v = vec3(0.0); reborn = true; }
     if (uWrap.z > 0.5 && p.y < -2.0) {
       if (uFountainW > 0.5) {
         vec2 d = normalize(r.xz - 0.5 + 1e-4);
@@ -1215,12 +1222,14 @@ void main(){
         v = vec3(d.x * (0.3 + 0.6 * r.y), 2.4 + 0.6 * r.z + 0.9 * max(uBands.x, 0.0), d.y * (0.3 + 0.6 * r.y));
       } else {
         p = vec3((r.x + r.y - 1.0) * 2.6, 2.0 + 1.4 * hash11(s.a * 53.7 + floor(uTime)), (r.z - 0.5) * 3.2); v = vec3(0.0);
+        reborn = true;
       }
     }
-    if (uWrap.x > 0.5 && p.x > 3.0) { p.x = -3.0; p.y = (r.y - 0.5) * 1.6; }
+    if (uWrap.x > 0.5 && p.x > 3.0) { p.x = -3.0; p.y = (r.y - 0.5) * 1.6; reborn = true; }
   }
 
   float age = P4.w + uDt;
+  if (reborn) age = -1.6; // counts up through the fade-in (draw: arrive)
   float life = lifeOf(s);
   if (age > life) {
     age -= life;
@@ -1402,6 +1411,8 @@ void main(){
   col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave, uSat);
 
   float life = lifeOf(s);
+  // a recycled mote fades in by its age (sim: reborn → age −1.6 … 0)
+  if (p.w < 0.0) a *= smoothstep(-1.6, 0.0, p.w);
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
   // infinite unfolding: a blossom layer fades in at birth and out as it opens away
