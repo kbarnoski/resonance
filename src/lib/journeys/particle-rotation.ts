@@ -64,10 +64,10 @@ export const NEIGHBOUR_COST = 3;
  *  for a form; an under-used sibling keeps that character while the loop
  *  stays varied. The blossom is never a sibling (its own rules). */
 export const FORM_FAMILIES: Readonly<Record<string, readonly SoulId[]>> = {
-  swirl: ["vortex", "torus", "lissajous", "harmonics", "rings"],
+  swirl: ["vortex", "torus", "lissajous", "harmonics", "rings", "attractor", "smokering"],
   swarm: ["murmuration", "fireflies", "motes", "pollen", "duststorm"],
   lines: ["ribbons", "waves", "tendrils", "ink"],
-  vapour: ["smoke", "nebula", "embers", "fountain"],
+  vapour: ["smoke", "nebula", "embers", "fountain", "aurora", "starburst"],
   geometric: ["medallion", "girih", "mandala", "kaleido", "rose"],
 };
 const FAMILY_OF = new Map<SoulId, string>();

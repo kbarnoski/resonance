@@ -276,6 +276,8 @@ export const SHAPE_SOULS: readonly SoulId[] = [
   "smoke", "motes", "petals", "embers", "duststorm", "pollen", "fireflies",
   "ink", "waves", "nebula", "fountain",
   "harmonics", "lissajous", "rings", "rose", "torus",
+  // v9 expansion batch 1 — kept by Karel from the sample film (2026-10-12)
+  "aurora", "attractor", "starburst", "smokering",
 ];
 
 /** Forms that belong to a kind of IMAGERY (fire sparks, lantern embers,

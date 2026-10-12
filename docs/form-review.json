@@ -386,5 +386,21 @@
  "moment:/tramokyo-pack/emblems/ghost-blossoms-2.jpg": {
   "verdict": "keep",
   "at": "2026-10-08T17:22:42.810Z"
+ },
+ "soul:aurora": {
+  "verdict": "keep",
+  "at": "2026-10-12T18:30:00.000Z"
+ },
+ "soul:attractor": {
+  "verdict": "keep",
+  "at": "2026-10-12T18:30:00.000Z"
+ },
+ "soul:starburst": {
+  "verdict": "keep",
+  "at": "2026-10-12T18:30:00.000Z"
+ },
+ "soul:smokering": {
+  "verdict": "keep",
+  "at": "2026-10-12T18:30:00.000Z"
  }
 }

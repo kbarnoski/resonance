@@ -17,7 +17,7 @@
 import type { ParticlePalette } from "@/lib/particles/souls";
 import { isMasteredJourney, MASTERED_JOURNEY_NAMES } from "./mastered";
 import { castSet, type ParticleCast } from "./particle-casting";
-import { phaseCharacters, type PhaseCharacter } from "./particle-motifs";
+import { phaseCharacters, V9_FORMS, type PhaseCharacter } from "./particle-motifs";
 import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generated";
@@ -108,7 +108,9 @@ export function particlePaletteDawn(voice = 1): ParticlePalette {
  *  list leaves every cast exactly as before). */
 export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Readonly<Record<string, ParticleLeadCast>> {
   const ids = PARTICLE_JOURNEY_IDS;
-  const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]));
+  // the v9 expansion forms never enter a MASTERED cast (Snowflake, Ghost: locked
+  // designs — Ghost's coda had turned aurora) — every other journey may draw them
+  const casts = castSet(ids.map((id) => PARTICLE_PROFILES[id]), (i) => (isMasteredId(ids[i], PARTICLE_PROFILES[ids[i]].name) ? V9_FORMS : []));
   const out: Record<string, ParticleLeadCast> = {};
   ids.forEach((id, i) => {
     const cast: ParticleLeadCast = { ...casts[i], dissolve: true, mastered: isMasteredId(id, PARTICLE_PROFILES[id].name) };

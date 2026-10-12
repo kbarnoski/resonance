@@ -453,10 +453,10 @@ export function castJourney(p: ParticleProfile, avoid: Set<SoulId> = new Set()):
 }
 
 /** Cast a set in loop order: no soul repeats between neighbours (±1). */
-export function castSet(profiles: ParticleProfile[]): ParticleCast[] {
+export function castSet(profiles: ParticleProfile[], exclude?: (i: number) => readonly SoulId[]): ParticleCast[] {
   const casts: ParticleCast[] = [];
   for (let i = 0; i < profiles.length; i++) {
-    const avoid = new Set<SoulId>();
+    const avoid = new Set<SoulId>(exclude?.(i) ?? []);
     if (i > 0) {
       for (const s of Object.values(casts[i - 1].souls)) avoid.add(s);
       // keep the pool wide enough to cast from

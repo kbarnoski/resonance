@@ -25,6 +25,8 @@ export const ORGANIC_SOULS: readonly SoulId[] = [
   "smoke", "motes", "petals", "embers", "duststorm", "pollen", "fireflies",
   "ink", "waves", "nebula", "fountain",
   "harmonics", "lissajous", "rings", "rose", "torus",
+  // v9 expansion batch 1 (Karel approved 2026-10-12: "those all look good")
+  "aurora", "attractor", "starburst", "smokering",
 ];
 
 /** Banned in journeys: what Karel removed in the form review, plus the old
@@ -38,15 +40,15 @@ export const BANNED_SOULS: readonly SoulId[] = [
 type W = [SoulId, number][];
 // every family draws on a WIDE set (Karel 2026-10-08: "we really need particle
 // forms within journeys … to expand in options and variety")
-const FIRE: W = [["vortex", 2.0], ["embers", 2.0], ["motes", 1.4], ["ribbons", 1.1], ["smoke", 1.0], ["murmuration", 1.0], ["mandala", 0.9], ["medallion", 0.8], ["torus", 0.6]];
-const LIGHT: W = [["ribbons", 1.1], ["vortex", 1.4], ["motes", 1.2], ["fountain", 1.0], ["harmonics", 1.0], ["murmuration", 1.0], ["medallion", 1], ["girih", 0.8], ["rings", 0.7], ["rose", 0.6]];
+const FIRE: W = [["starburst", 1.6], ["vortex", 2.0], ["embers", 2.0], ["motes", 1.4], ["ribbons", 1.1], ["smoke", 1.0], ["murmuration", 1.0], ["mandala", 0.9], ["medallion", 0.8], ["torus", 0.6]];
+const LIGHT: W = [["starburst", 1.4], ["aurora", 0.9], ["ribbons", 1.1], ["vortex", 1.4], ["motes", 1.2], ["fountain", 1.0], ["harmonics", 1.0], ["murmuration", 1.0], ["medallion", 1], ["girih", 0.8], ["rings", 0.7], ["rose", 0.6]];
 const FLORAL: W = [["blossom", 2.4], ["petals", 2.0], ["rose", 1.6], ["pollen", 1.2], ["ribbons", 1.0], ["tendrils", 1.2], ["mandala", 0.9], ["fireflies", 0.6]];
 const GREEN: W = [["tendrils", 2.2], ["pollen", 1.6], ["fireflies", 1.6], ["murmuration", 1.4], ["ribbons", 1.2], ["petals", 0.9], ["blossom", 0.9], ["girih", 0.7], ["smoke", 0.6]];
-const WATER: W = [["waves", 2.2], ["ink", 1.6], ["fountain", 1.4], ["tendrils", 1.2], ["rings", 1.1], ["ribbons", 1.0], ["vortex", 1.0], ["kaleido", 0.8], ["lissajous", 0.6]];
-const CRYSTAL: W = [["kaleido", 2], ["girih", 1.3], ["medallion", 1.1], ["murmuration", 1.2], ["ribbons", 1.0], ["rose", 0.8], ["harmonics", 0.8], ["fireflies", 0.6], ["rings", 0.6]];
-const AIR: W = [["smoke", 2.2], ["duststorm", 1.6], ["murmuration", 1.6], ["ribbons", 1.2], ["ink", 1.0], ["vortex", 1.0], ["pollen", 0.8], ["girih", 0.6]];
-const COSMOS: W = [["nebula", 2.2], ["vortex", 2.0], ["torus", 1.4], ["murmuration", 1.4], ["rings", 1.2], ["lissajous", 1.0], ["motes", 0.8], ["medallion", 0.8], ["kaleido", 0.7]];
-const GEO: W = [["girih", 1.6], ["kaleido", 1.4], ["harmonics", 1.3], ["lissajous", 1.2], ["rose", 1.1], ["medallion", 1], ["torus", 1.0], ["ribbons", 0.9], ["rings", 0.8]];
+const WATER: W = [["smokering", 1.0], ["waves", 2.2], ["ink", 1.6], ["fountain", 1.4], ["tendrils", 1.2], ["rings", 1.1], ["ribbons", 1.0], ["vortex", 1.0], ["kaleido", 0.8], ["lissajous", 0.6]];
+const CRYSTAL: W = [["aurora", 1.0], ["kaleido", 2], ["girih", 1.3], ["medallion", 1.1], ["murmuration", 1.2], ["ribbons", 1.0], ["rose", 0.8], ["harmonics", 0.8], ["fireflies", 0.6], ["rings", 0.6]];
+const AIR: W = [["aurora", 1.3], ["smokering", 1.2], ["smoke", 2.2], ["duststorm", 1.6], ["murmuration", 1.6], ["ribbons", 1.2], ["ink", 1.0], ["vortex", 1.0], ["pollen", 0.8], ["girih", 0.6]];
+const COSMOS: W = [["aurora", 1.8], ["attractor", 1.6], ["starburst", 1.0], ["nebula", 2.2], ["vortex", 2.0], ["torus", 1.4], ["murmuration", 1.4], ["rings", 1.2], ["lissajous", 1.0], ["motes", 0.8], ["medallion", 0.8], ["kaleido", 0.7]];
+const GEO: W = [["attractor", 1.2], ["girih", 1.6], ["kaleido", 1.4], ["harmonics", 1.3], ["lissajous", 1.2], ["rose", 1.1], ["medallion", 1], ["torus", 1.0], ["ribbons", 0.9], ["rings", 0.8]];
 const MOTIF_FORMS: Record<string, W> = {
   fire: FIRE, lava: FIRE, embers: FIRE, sun: FIRE,
   "light-rays": LIGHT, "golden-light": LIGHT, figure: LIGHT,
@@ -78,13 +80,17 @@ function hash01(str: string): number {
 }
 
 /** Ranked forms for one phase's imagery (strongest first, 4 at most). */
+// the v9 expansion forms never enter the MASTERED casts (Snowflake, Ghost are
+// locked designs — only diverseFormsForMotif, the non-mastered path, offers them)
+export const V9_FORMS: readonly SoulId[] = ["aurora", "attractor", "starburst", "smokering"];
+
 export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[] {
   if (!pm?.motifs?.length) return [];
   const score = new Map<SoulId, number>();
   for (const { m, w } of pm.motifs) for (const [id, k] of MOTIF_FORMS[m] ?? []) score.set(id, (score.get(id) ?? 0) + k * (0.3 + w));
   for (const mv of pm.moves ?? []) for (const [id, k] of MOVE_FORMS[mv] ?? []) score.set(id, (score.get(id) ?? 0) + k);
   return [...score.entries()]
-    .filter(([id]) => ORGANIC_SOULS.includes(id))
+    .filter(([id]) => ORGANIC_SOULS.includes(id) && !V9_FORMS.includes(id))
     .map(([id, v]) => [id, v * (0.92 + 0.16 * hash01(`${seed}:${id}`))] as const)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
@@ -92,7 +98,7 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
     // diversity (Karel 2026-10-07: "i just want such diversity in geometry and
     // shape users dont notice repetition"): two more organic forms per phase
     // (2026-10-08 expansion: three, from the full kept set)
-    .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && !IMAGERY_ONLY_SOULS.includes(x)).sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 3));
+    .concat(ORGANIC_SOULS.filter((x) => !score.has(x) && !IMAGERY_ONLY_SOULS.includes(x) && !V9_FORMS.includes(x)).sort((a, b) => hash01(`${seed}:x:${a}`) - hash01(`${seed}:x:${b}`)).slice(0, 3));
 }
 
 /** IMAGERY-MATCHED WIDENING (Karel 2026-10-09: "i figured you would have dozens
@@ -103,15 +109,15 @@ export function formsForMotif(pm: PhaseMotif | undefined, seed: string): SoulId[
  *  but never a mismatch. The unfolding blossom is not in any list: it is
  *  Ghost's signature, rare elsewhere (particle-lead.ts gives it to ≤ 1 phase). */
 export const FAMILY_WIDE: Readonly<Record<string, readonly SoulId[]>> = {
-  fire: ["vortex", "smoke", "medallion", "mandala", "rose", "ribbons", "nebula", "rings", "murmuration"],
-  light: ["rings", "harmonics", "rose", "mandala", "fountain", "medallion", "girih", "lissajous", "kaleido", "ribbons"],
+  fire: ["starburst", "vortex", "smoke", "medallion", "mandala", "rose", "ribbons", "nebula", "rings", "murmuration"],
+  light: ["starburst", "aurora", "rings", "harmonics", "rose", "mandala", "fountain", "medallion", "girih", "lissajous", "kaleido", "ribbons"],
   floral: ["rose", "mandala", "kaleido", "pollen", "fireflies", "petals", "tendrils", "medallion", "ribbons"],
   green: ["tendrils", "pollen", "fireflies", "rose", "mandala", "murmuration", "ribbons", "waves"],
-  water: ["waves", "rings", "ink", "lissajous", "harmonics", "kaleido", "fountain", "tendrils", "nebula"],
-  crystal: ["kaleido", "girih", "medallion", "mandala", "harmonics", "rings", "rose", "lissajous"],
-  air: ["smoke", "ink", "duststorm", "nebula", "lissajous", "murmuration", "ribbons", "rings"],
-  cosmos: ["nebula", "torus", "harmonics", "lissajous", "rings", "vortex", "medallion", "mandala"],
-  geo: ["girih", "kaleido", "harmonics", "lissajous", "torus", "rose", "rings", "mandala", "medallion"],
+  water: ["smokering", "waves", "rings", "ink", "lissajous", "harmonics", "kaleido", "fountain", "tendrils", "nebula"],
+  crystal: ["aurora", "kaleido", "girih", "medallion", "mandala", "harmonics", "rings", "rose", "lissajous"],
+  air: ["aurora", "smokering", "smoke", "ink", "duststorm", "nebula", "lissajous", "murmuration", "ribbons", "rings"],
+  cosmos: ["attractor", "aurora", "starburst", "nebula", "torus", "harmonics", "lissajous", "rings", "vortex", "medallion", "mandala"],
+  geo: ["attractor", "girih", "kaleido", "harmonics", "lissajous", "torus", "rose", "rings", "mandala", "medallion"],
 };
 
 /** Non-mastered phases: the imagery-ranked forms (no blossom), widened from the

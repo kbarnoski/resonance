@@ -36,6 +36,7 @@ import {
 } from "./installation-machine";
 import { PARTICLE_LEADS, PARTICLES_ENABLED, particlesForcedThisSession } from "@/lib/journeys/particle-lead";
 import { warmParticleSouls } from "./particle-lead-layer";
+import { FORM_FAMILIES } from "@/lib/journeys/particle-rotation";
 import type { SoulId } from "@/lib/particles/souls";
 const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
 
@@ -201,6 +202,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     for (const c of Object.values(PARTICLE_LEADS)) {
       for (const x of [...c.morphSouls, ...Object.values(c.souls), ...c.windows.map((w) => w.soul), ...(c.formCycle ?? [])]) souls.add(x);
     }
+    // the rotation may swap in a family sibling of a cast form — warm those too
+    for (const xs of Object.values(FORM_FAMILIES)) for (const x of xs) souls.add(x);
     warmParticleSouls([...souls]);
   }, []);
   const programIndexRef = useRef(programIndex);
