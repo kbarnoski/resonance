@@ -1035,6 +1035,65 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     home += normalize(hash31(s.a * 149.0) - 0.5) * (0.005 + 0.03 * up * trebW);
     return vec4((home - p) * 9.0, 4.2);
   }
+  // ── v9 EXPANSION (2026-10-12, Karel: "truly expand your particles pool") ──
+  if (soul == 42) {
+    // ── AURORA: three luminous curtains folding slowly; bright lower hem,
+    // rays thinning upward, ends tapering to nothing (never a slab); bass lifts
+    // the light, treble shivers the rays ──
+    float k = floor(s.b * 3.0);
+    float u = (s.g * 2.0 - 1.0);
+    float taper = 1.0 - u * u;                       // the curtain's ends fall away
+    float h = (1.0 - sqrt(fract(s.a * 7.13 + 0.31))) * taper;
+    // each curtain hangs on an ARC around the centre (flat sheets read as
+    // slabs whenever the camera saw them edge-on — sample 1)
+    float th = u * 1.25 + k * 2.094 + uClock.y * 0.012;
+    float R = 1.45 + 0.3 * k + 0.32 * sin(u * 3.1 + uClock.y * 0.2 + k * 1.7) + 0.12 * sin(u * 7.7 - uClock.y * 0.33 + k * 2.9);
+    float hem = -0.85 + 0.25 * sin(u * 1.9 + uClock.x * 0.14 + k) + 0.25 * (1.0 - taper);
+    vec3 home = vec3(cos(th) * R, hem + h * (1.7 + 0.4 * sin(u * 2.3 + uClock.x * 0.17 + k)), sin(th) * R);
+    home.xz += vec2(-sin(th), cos(th)) * 0.04 * sin(h * 13.0 + uClock.z * 0.9 + s.a * 23.0) * (0.4 + 2.0 * up * trebW);
+    // a soft VOLUME, not a sheet: depth grows up the rays (edge-on, a thin sheet
+    // stacked its motes into a hard bright line — sample 2)
+    float dep = (hash11(s.a * 77.0) - 0.5) + (hash11(s.a * 91.0) - 0.5);
+    home.xz += vec2(cos(th), sin(th)) * dep * (0.18 + 0.35 * h);
+    home.y += 0.3 * up * bassW * h;
+    return vec4((home - p) * 5.5, 3.6);
+  }
+  if (soul == 43) {
+    // ── ATTRACTOR: motes stream along Thomas' cyclically symmetric attractor —
+    // an intricate tangle of orbits that never repeats; mids quicken the flow ──
+    vec3 q = p * 2.1;
+    float tb = 0.19;
+    vec3 F = vec3(sin(q.y) - tb * q.x, sin(q.z) - tb * q.y, sin(q.x) - tb * q.z);
+    vec3 tv = F * 0.55 * (1.0 + 0.6 * up * midW);
+    vec3 a = (tv - v) * 2.4;
+    a -= p * smoothstep(2.3, 3.2, length(p)) * 2.0;
+    a += (hash31(s.a * 1e3 + floor(uTime * 10.0)) - 0.5) * 0.3 * up * trebW;
+    return vec4(a, 0.0);
+  }
+  if (soul == 44) {
+    // ── STARBURST: rays of light from a bright heart; every bass hit throws
+    // them outward and they ease back — a burst on the beat, never a jump ──
+    vec3 dir = normalize(hash31(s.a * 211.0) - 0.5 + 1e-4);
+    float len = pow(s.g, 0.8);                      // along the ray: dense at the heart
+    float reach = 0.55 + 0.25 * sin(uClock.x * 0.3 + hash11(s.a * 5.0) * 6.2831853) + 1.1 * up * bassW + 0.35 * lvl;
+    vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(floor(s.b * 48.0) * 3.7));
+    home.y *= 0.8;
+    return vec4((home - p) * 7.0, 3.4);
+  }
+  if (soul == 45) {
+    // ── SMOKE RINGS: two rings of light stacked in the air, each rolling about
+    // its own core like a smoke ring, slowly breathing wider and narrower ──
+    float k = floor(s.b * 2.0);
+    float R = 0.95 + 0.4 * k + 0.1 * sin(uClock.y * 0.16 + k * 2.1);
+    float yc = -0.45 + 0.85 * k + 0.08 * sin(uClock.x * 0.2 + k);
+    float big = s.g * 6.2831853 + uClock.y * 0.04 * (k - 0.5);
+    float roll = s.a * 6.2831853 + uClock.y * (0.6 + 0.2 * k);
+    float rr = (0.085 + 0.02 * k) * (1.0 + 0.4 * up * midW) * (0.7 + 0.6 * hash11(s.a * 63.0));
+    vec3 out_ = vec3(cos(big), 0.0, sin(big));
+    vec3 home = vec3(0.0, yc, 0.0) + out_ * R + (out_ * cos(roll) + vec3(0.0, 1.0, 0.0) * sin(roll)) * rr;
+    home += curlNoise(home * 1.6 + vec3(0.0, uClock.y * 0.05, 0.0)) * 0.015;
+    return vec4((home - p) * 6.5, 3.6);
+  }
   return vec4(-v, 1.0);
 }
 

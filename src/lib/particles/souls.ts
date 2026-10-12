@@ -27,6 +27,9 @@ export const SOUL_IDS = [
   "flame", "wisp", "blossom", "caustic", "petalfall",
   // v8 INTRICATE (Karel 2026-10-06: "intricate patterns … islamic geometric detail")
   "girih", "medallion",
+  // v9 EXPANSION (Karel 2026-10-12: "truly expand your particles pool") — sample
+  // first; not in the rotation until approved
+  "aurora", "attractor", "starburst", "smokering",
 ] as const;
 
 export type SoulId = (typeof SOUL_IDS)[number];
@@ -243,6 +246,18 @@ export const SOULS: readonly SoulPreset[] = [
   S("medallion", "Medallion", "an Islamic rosette — nested star rings turning against each other, petal arcs between", pal([1.0, 0.7, 0.35], [0.6, 0.6, 1.0], [1.0, 0.95, 0.9]),
     { trail: 0.4, elev: 1.3, dist: 4.0, spin: 0.0, size: 0.75 },
     { energy: 0.5, playful: 0.4, dark: 0.4, solo: 0.9, peak: 0.95, family: "geometric" }),
+  S("aurora", "Aurora", "luminous curtains folding slowly in the dark, rays thinning upward", pal([0.3, 1.0, 0.65], [0.45, 0.6, 1.0], [0.95, 0.75, 1.0]),
+    { trail: 0.7, elev: 0.12, dist: 4.8, spin: 0.0, intensity: 0.9 },
+    { energy: 0.3, playful: 0.2, dark: 0.6, solo: 0.8, peak: 0.5, family: "flow" }),
+  S("attractor", "Strange Attractor", "motes streaming a chaotic orbit that never repeats", pal([0.55, 0.45, 1.0], [0.95, 0.5, 0.85], [0.7, 0.95, 1.0]),
+    { trail: 0.82, elev: 0.35, dist: 4.4, spin: 0.03, intensity: 0.85 },
+    { energy: 0.45, playful: 0.3, dark: 0.7, solo: 0.7, peak: 0.6, family: "cosmic" }),
+  S("starburst", "Starburst", "rays of light from a bright heart, thrown outward on every bass hit", pal([1.0, 0.45, 0.3], [1.0, 0.75, 0.4], [1.0, 0.95, 0.85]),
+    { trail: 0.45, elev: 0.3, dist: 4.6, spin: 0.02, size: 0.85 },
+    { energy: 0.85, playful: 0.5, dark: 0.5, solo: 0.2, peak: 1.0, family: "cosmic" }),
+  S("smokering", "Smoke Rings", "soft rings of light rolling about their own cores, stacked in the air", pal([0.75, 0.7, 1.0], [0.95, 0.75, 0.85], [1.0, 0.95, 0.9]),
+    { trail: 0.75, elev: 0.25, dist: 4.8, spin: 0.01, intensity: 0.8 },
+    { energy: 0.4, playful: 0.4, dark: 0.5, solo: 0.6, peak: 0.5, family: "flow" }),
 ];
 
 /**
