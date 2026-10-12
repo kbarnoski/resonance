@@ -25,6 +25,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - 📋 Bells 1 confirmed big & intense ("has a big beat") — x1.6 in the ladder (🟡 committed).
 - 📋 Long phase-owned shader phases (Grasshopper: 67 s / 4 shaders) — bigger casts in the recast.
 - 📋 Particle expansion (docs/particle-upgrade-plan.md): cinematic look (stashed), effects-from-parts, imagery-aware particles, phrase-level music, WebGPU.
+- 📋 Karel loved: the LIGHT-RAY shader in Bells 1 (~22:44:30, ZENITH dual — or Seraph primary; "dope … more so than that wheel") — favour it in the recast, esp. the light journeys.
 - 📋 Karel loved: the rainbow ROSE form at the end of First Light; the blossom → wings hover hand-off in Ghost — keep and build on.
 
 ## Done today (2026-10-12)
