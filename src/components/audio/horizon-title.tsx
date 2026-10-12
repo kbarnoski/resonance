@@ -9,7 +9,8 @@
  * every place a journey title shows so they always match.
  */
 
-const SHADOW = "0 1px 2px rgba(0,0,0,0.9), 0 2px 14px rgba(0,0,0,0.75)";
+// light shadows only: the blurred 14 px pass rastered slowly on the kiosk
+const SHADOW = "0 1px 2px rgba(0,0,0,0.85), 0 0 6px rgba(0,0,0,0.5)";
 
 export function splitJourneyName(name: string): { title: string; num: string | null } {
   const m = /^(.*?)\s+(\d+)$/.exec(name);
@@ -19,7 +20,8 @@ export function splitJourneyName(name: string): { title: string; num: string | n
 export function HorizonTitle({ name, byline }: { name: string; byline?: string | null }) {
   const { title, num } = splitJourneyName(name);
   return (
-    <div className="relative flex flex-col items-center text-center" style={{ maxWidth: "92vw" }}>
+    // its own compositor layer: the entrance (transform + opacity) never repaints
+    <div className="relative flex flex-col items-center text-center" style={{ maxWidth: "92vw", willChange: "transform, opacity", transform: "translateZ(0)" }}>
       {/* a small centred scrim (the screen never darkens as a whole) */}
       <div
         aria-hidden

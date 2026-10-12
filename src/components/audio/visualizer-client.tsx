@@ -1996,16 +1996,10 @@ export function VisualizerClient({
                     element now hugs the text (a soft local halo) and
                     fades with the title like any other element; the
                     3-layer text shadow carries legibility. */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: "-10% -16%",
-                    background:
-                      "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.32) 45%, rgba(0,0,0,0.1) 70%, transparent 88%)",
-                    filter: "blur(36px)",
-                    pointerEvents: "none",
-                  }}
-                />
+                {/* (no blurred halo under the Horizon Split title: its 46 vw line
+                    made this box ~3x wider, and rasterizing the 36 px blur in the
+                    title's first visible frame cost a 70 ms hitch as Ghost began —
+                    2026-10-12; the title brings its own light, unblurred scrim) */}
                 {/* Karel 2026-09-20: name alone — no "Journey" eyebrow,
                     no subtitle. Mirrors installation-intro. */}
                 {/* HORIZON SPLIT (Karel 2026-10-12, option 07) — the journey

@@ -262,12 +262,14 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           this backdrop + the per-text-shadow stack covers every
           lighting condition we've seen in the journey image set
           (bright cosmic frames, dark caves, busy gradients). */}
+      {/* (2026-10-12: the 48 px blurred halo is gone — under the wide Horizon
+          Split title it rastered a huge blur in the title's first frame; a soft
+          unblurred gradient keeps the legibility, and the title has its own) */}
       <div
         style={{
           position: "absolute",
-          inset: "-50%",
-          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.45) 30%, rgba(0,0,0,0.15) 55%, transparent 75%)",
-          filter: "blur(48px)",
+          inset: "-30%",
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.1) 60%, transparent 80%)",
           pointerEvents: "none",
         }}
       />
