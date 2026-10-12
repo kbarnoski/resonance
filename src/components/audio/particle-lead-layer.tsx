@@ -1291,9 +1291,6 @@ export function ParticleLeadLayer({
         // an image letting go with nothing after it: hover, then ease into the form
         if (formPeak > 0.5 && formNow < formPeak * 0.7 && hoverAt < 0) {
           hoverAt = performance.now();
-          // Ghost's opening emblem DISSOLVES OUTWARD as it lets go (Karel
-          // 2026-10-12: the post-emblem blob) — a gentle breath, never a mass
-          if (journeyId === "ghost" && phaseIdxAt(t) <= 1 && imgLoaded === "emblem") engine.impulse("scatter", 0.45);
         }
         formPeak = Math.max(formPeak, formNow);
       }
@@ -1321,7 +1318,7 @@ export function ParticleLeadLayer({
         // (also while the opening emblem lets go: an image held the field at 100 %
         // until it fully cleared — that WAS the blob)
         const gOpen = journeyId === "ghost" && phaseIdxAt(t) <= 1;
-        const openCap = gOpen ? (phaseIdxAt(t) === 0 ? 0.07 : 0.12) : 1;
+        const openCap = gOpen ? (phaseIdxAt(t) === 0 ? 0.3 : 0.12) : 1;
         const holdImage = imgLoaded && !flashing && !(gOpen && hoverAt >= 0);
         engine.setDensity(holdImage ? 1 : Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP));
       }
@@ -1380,7 +1377,7 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) <= 1 ? (phaseIdxAt(t) === 0 ? 0.07 : 0.12) : 1) * densKS * (0.3 + 0.7 * densP));
+      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) <= 1 ? (phaseIdxAt(t) === 0 ? 0.3 : 0.12) : 1) * densKS * (0.3 + 0.7 * densP));
       // ≥5 s TO ABSORB (Karel 2026-10-07: "dont have particles come in only
       // to go away a second or two later … 5 seconds minimum"): once the
       // field arrives it holds ≥6 s before any fade-out begins
@@ -1411,7 +1408,14 @@ export function ParticleLeadLayer({
         // exact centre point (Karel 2026-10-06)
         const mode = frameRef.current?.shaderMode;
         const pinCentre = flashing || emblemOn || imgLoaded === "echo" || isCenteredShader(mode);
-        engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
+        // GHOST'S OPENING SECTION (Karel 2026-10-12): a SMALL wispy cloud of
+        // ghost energy that moves around — the camera stands back (half size)
+        // and the cloud wanders on its own slow path near the centre
+        const ghostWisp = journeyId === "ghost" && phaseIdxAt(t) === 0 && !imgLoaded;
+        if (ghostWisp) {
+          engine.setCamScale(1.9);
+          engine.setOffset(0.2 * Math.sin(t * 0.13) + 0.06 * Math.sin(t * 0.31), 0.1 * Math.sin(t * 0.09 + 1.0));
+        } else engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
         // First Light: a sun design RISES up the screen as it forms
         if (theme?.rising && imgLoaded === "motif" && motifAt >= 0) {
           const prog = Math.max(0, Math.min(1, (t - motifAt) / Math.max(6, motifDur)));
