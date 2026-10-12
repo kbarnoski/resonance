@@ -17,10 +17,12 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - 📋 Ghost: "that same stupid bunching of particles near top around the flashes section" — film the flash section after the tour, fix.
 - 📋 Ghost: uv-sync 16-33 ms at Ghost's start (opening emblem sampled on the main thread) — precompute in idle.
 - 📋 Replays after the tour: First Light → Snowflake (own stills), Realized (1:40 faint step), Isolation (faint step).
-- 📋 First Light: "wouldn't use the big solid spinning wheel shader" — awaiting Karel: Rose Window, or Dharma too → swap for Aureole.
+- 📋 First Light: "wouldn't use the big solid spinning wheel shader" = DHARMA (confirmed in Bells 1: "that wheel … not a favorite shader. once in a great while ok") → out of First Light (Aureole in), rare loop-wide (recast).
 
 ## After the release (first upgrade work)
 - 📋 Shader diversity: magma (~14 journeys), parsec (~11), ember (~13) overused; amber (gold + ember) 37 % of shader time — recast with a tighter per-shader cap (≤ ~5 journeys) and a loop-wide hue balance (amber ≤ ~25 %); own tour.
+- 📋 Dharma (the spoked wheel) a RARITY loop-wide — ~2 journeys at most (Karel: "once in a great while ok").
+- 📋 Bells 1 confirmed big & intense ("has a big beat") — x1.6 in the ladder (🟡 committed).
 - 📋 Long phase-owned shader phases (Grasshopper: 67 s / 4 shaders) — bigger casts in the recast.
 - 📋 Particle expansion (docs/particle-upgrade-plan.md): cinematic look (stashed), effects-from-parts, imagery-aware particles, phrase-level music, WebGPU.
 - 📋 Karel loved: the rainbow ROSE form at the end of First Light; the blossom → wings hover hand-off in Ghost — keep and build on.
