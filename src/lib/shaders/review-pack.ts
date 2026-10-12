@@ -449,7 +449,9 @@ void main() {
     float d = abs(uv.y - yOff - wave);
     float thread = 0.003 / (d + 0.003);
     vec3 hue = palette(fi * 0.07 + t * 0.05, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.0, 0.3, 0.6));
-    col += thread * hue * 0.3;
+    // +40 % (Karel 2026-10-12, Snowflake: "id like the colored lines waves a bit
+    // brighter") — thin lines on black: the threads glow, the frame stays dark
+    col += thread * hue * 0.42;
   }
   gl_FragColor = vec4(col, 1.0);
 }

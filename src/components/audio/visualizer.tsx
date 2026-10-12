@@ -48,6 +48,7 @@ const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visua
 import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
+import { SHADER_MEAN_LUMA } from "@/lib/shaders/shader-brightness.generated";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import {
   frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
@@ -86,8 +87,20 @@ const TERTIARY_SHADER_MAX_OPACITY = 0.60;
 
 /** Advance a crossfade progress value by real elapsed time. Clamps large
  *  gaps (background tab, hitchy frame) so fades never visibly jump. */
-function advanceFade(progress: number, elapsedMs: number): number {
-  return Math.min(1, progress + Math.min(elapsedMs, 100) / (inBoundarySettle() ? BOUNDARY_SHADER_FADE_MS : SHADER_FADE_DURATION_MS));
+function advanceFade(progress: number, elapsedMs: number, durationMs = SHADER_FADE_DURATION_MS): number {
+  return Math.min(1, progress + Math.min(elapsedMs, 100) / (inBoundarySettle() ? Math.max(BOUNDARY_SHADER_FADE_MS, durationMs) : durationMs));
+}
+
+/** BRIGHTNESS-AWARE FADE (Karel 2026-10-12, Snowflake: "a slight jump in color
+ *  brightness … at same spot every time"): plasma (mean luma 0.1) → swell (91.8)
+ *  in 2.5 s lifted the whole frame ~1 level per frame. A fade to a much brighter
+ *  shader now stretches ~1 s per 30 luma of rise, up to 7 s; darker or similar
+ *  shaders keep the 2.5 s fade. `from` null = fading in from nothing. */
+export function fadeMsFor(from: string | null | undefined, to: string | null | undefined): number {
+  const a = from ? SHADER_MEAN_LUMA[from] ?? 20 : 0;
+  const b = to ? SHADER_MEAN_LUMA[to] ?? 20 : 0;
+  const rise = Math.max(0, b - a);
+  return Math.min(7000, SHADER_FADE_DURATION_MS * (1 + rise / 75));
 }
 
 /** Pick a deterministic backdrop shader for an AI mode */
@@ -1231,6 +1244,8 @@ export function VisualizerCore({
     // waiting on it would stall until the 3s safety timeout.
     const inactiveResidentMode = inactive === 'a' ? layerAMode : layerBMode;
     const alreadyResident = inactiveResidentMode === target;
+    // the fade stretches when the incoming shader is much brighter
+    const primaryFadeMs = fadeMsFor(inactive === 'a' ? layerBMode : layerAMode, target);
 
     // Set new shader on the inactive layer (compiles in background at opacity 0)
     if (inactive === 'a') setLayerAMode(target);
@@ -1245,7 +1260,7 @@ export function VisualizerCore({
       let lastTs = performance.now();
       const animate = () => {
         const now = performance.now();
-        progress = advanceFade(progress, now - lastTs);
+        progress = advanceFade(progress, now - lastTs, primaryFadeMs);
         lastTs = now;
         const eased = progress < 0.5
           ? 2 * progress * progress
@@ -1350,6 +1365,7 @@ export function VisualizerCore({
       // Set new shader on inactive layer
       if (inactive === 'a') setDualLayerAMode(target);
       else setDualLayerBMode(target);
+      const dualFadeMs = fadeMsFor(active === 'a' ? dualLayerAMode : dualLayerBMode, target);
 
       const startDualCrossfade = () => {
         dualFadingRef.current = true;
@@ -1360,7 +1376,7 @@ export function VisualizerCore({
         let lastTs = performance.now();
         const animate = () => {
           const now = performance.now();
-          progress = advanceFade(progress, now - lastTs);
+          progress = advanceFade(progress, now - lastTs, dualFadeMs);
           lastTs = now;
           const eased = progress < 0.5
             ? 2 * progress * progress
@@ -1520,9 +1536,10 @@ export function VisualizerCore({
       tertiaryPhaseRef.current = "in";
       let progress = 0;
       let lastTs = performance.now();
+      const tertFadeMs = fadeMsFor(null, want);
       const fadeIn = () => {
         const now = performance.now();
-        progress = advanceFade(progress, now - lastTs);
+        progress = advanceFade(progress, now - lastTs, tertFadeMs);
         lastTs = now;
         const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
         if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);

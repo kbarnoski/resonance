@@ -8,6 +8,8 @@ import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourn
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
+import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
+import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
   getPhaseBlend,
@@ -780,6 +782,12 @@ class JourneyEngine {
           this.seenShaders.add(this.currentShaderMode);
           picked = true;
         }
+        // …and once the journey's WHOLE roster is spent, a kindred shader from
+        // the vetted pool before any repeat (kinBorrow)
+        if (!picked) {
+          const kin = this.kinBorrow(live);
+          if (kin) { this.currentShaderMode = kin; this.seenShaders.add(kin); picked = true; }
+        }
       }
       // Every unseen option exhausted: NOW allow repeating a seen shader.
       if (!picked) {
@@ -1503,6 +1511,24 @@ class JourneyEngine {
     return pool[Math.floor(this.random() * pool.length)];
   }
 
+  /** KINDRED BORROW (Karel 2026-10-12, The First: "you used that web shader over
+   *  and over" — magma 5×, kelp 4×, event-horizon 3× in 110 s from a 7-shader
+   *  roster): once a journey has shown its whole roster, an UNSEEN shader from
+   *  the vetted pool in one of the roster's own hue families — never a stranger
+   *  palette. A hash pick, NOT this.random(): the seeded stream (pinned takes)
+   *  is untouched. Null when nothing kindred is left (then it may repeat). */
+  private kinBorrow(live: Set<string | null>): string | null {
+    if (!this.journey) return null;
+    const roster = this.journey.phases.flatMap((p) => p.shaderModes);
+    const hues = new Set(roster.map((m) => SHADER_HUES[m] ?? "neutral"));
+    const cands = VETTED_POOL.filter((m) => !this.seenShaders.has(m) && !live.has(m) && !roster.includes(m) && !MODES_3D.has(m) && this.isShaderAllowed(m) && hues.has(SHADER_HUES[m] ?? "neutral"));
+    if (!cands.length) return null;
+    let h = 2166136261;
+    const key = `${this.journey.id}:${this.seenShaders.size}`;
+    for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return cands[(h >>> 0) % cands.length];
+  }
+
   private pickDualShader(phase: JourneyPhase): string {
     const candidates = phase.shaderModes.filter(
       m => m !== this.currentShaderMode && m !== this.tertiaryShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m)
@@ -1528,6 +1554,8 @@ class JourneyEngine {
         .flatMap((p) => p.shaderModes)
         .filter((m) => !this.seenShaders.has(m) && !MODES_3D.has(m) && this.isShaderAllowed(m) && !live.has(m));
       if (borrow.length > 0) return borrow[Math.floor(this.random() * borrow.length)];
+      const kin = this.kinBorrow(live);
+      if (kin) return kin;
     }
     const pool = unseenCandidates.length > 0 ? unseenCandidates : candidates;
 
