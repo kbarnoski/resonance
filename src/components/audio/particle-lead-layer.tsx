@@ -67,7 +67,7 @@ import { JOURNEY_IMAGE_PALETTES } from "@/lib/particles/journey-palettes.generat
 import { particlePaletteFromImage, particlePaletteFire, particlePaletteGhost, particlePaletteDawn, JOURNEY_THEMES, fireColours } from "@/lib/journeys/particle-lead";
 import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePaletteFrom, type ParticleLeadCast } from "@/lib/journeys/particle-lead";
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
-import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed } from "@/lib/journeys/particle-rotation";
+import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney } from "@/lib/journeys/particle-rotation";
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageSlot } from "@/lib/particles/image-follow";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -942,7 +942,7 @@ export function ParticleLeadLayer({
       if (diverse) {
         // loop-aware: not the last two, the blossom ≤ 1× and never two journeys
         // running, over-used forms yield to the phase's other imagery forms
-        const pick = chooseNext(fl, { recent, mem: LOOP_MEMORY, blossomOk: blossomAllowed(LOOP_MEMORY, journeyId, blossomShown), cycleIdx, jitter: rand01(97 + cycleIdx) });
+        const pick = chooseNext(fl, { recent, mem: LOOP_MEMORY, blossomOk: blossomAllowed(LOOP_MEMORY, journeyId, blossomShown), cycleIdx, jitter: rand01(97 + cycleIdx), neighbour: previousJourney(LOOP_MEMORY, journeyId)?.forms });
         cycleIdx++;
         return pick;
       }

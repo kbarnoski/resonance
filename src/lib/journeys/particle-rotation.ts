@@ -24,7 +24,7 @@
 import type { SoulId } from "@/lib/particles/souls";
 import type { ParticleLeadCast } from "./particle-lead";
 
-export interface LoopEntry { journeyId: string; lead: SoulId | null; blossom: boolean }
+export interface LoopEntry { journeyId: string; lead: SoulId | null; blossom: boolean; /** every procedural form it showed */ forms?: Set<SoulId> }
 export interface LoopMemory {
   history: LoopEntry[];
   /** on-screen seconds per procedural form, loop-wide */
@@ -43,12 +43,21 @@ export const LOOP_MEMORY: LoopMemory = createLoopMemory();
  *  swaying lines happens a lot"): measured on the kiosk vortex 11.5 %,
  *  murmuration 10.6 %, ribbons 9.4 %, the swaying-lines family ~20 % — the
  *  15 % cap never engaged. Now ~6.5 % per form; the swaying-lines family ~10 %. */
-export const MAX_SHARE = 0.065;
+// …then 5 % (Karel 2026-10-12: "be careful not to over use this floating ribbons
+// kind of thing … truly expand your particles pool and make sure you arent
+// lazily repeating"): recent plays still had vortex 7.7 %, murmuration 7.3 %,
+// ribbons 6.2 % with 86 % of neighbouring journeys sharing a form
+export const MAX_SHARE = 0.05;
 /** Soft cap on a FAMILY's share (forms that read alike on screen). The
  *  swaying-lines family is held tighter — Karel named it: "the pattern where
  *  the particles turn into swaying lines happens a lot". */
 export const MAX_FAMILY_SHARE = 0.24; // a guard: five-member families sit ~20 % naturally
-const FAMILY_CAP: Readonly<Record<string, number>> = { lines: 0.1 };
+const FAMILY_CAP: Readonly<Record<string, number>> = { lines: 0.08 };
+/** NEIGHBOURS (Karel 2026-10-12, "like we have done with shaders … neighboring
+ *  journeys dont over do reuse"): a form the previous journey showed costs this
+ *  much — more than any imagery preference, less than the hard avoid (10), so a
+ *  phase whose imagery allows nothing else still gets a form. */
+export const NEIGHBOUR_COST = 3;
 
 /** Forms that read alike (one family each) — all within the session's warm set,
  *  so a sibling swap never builds a program on show. A phase's imagery asks
@@ -73,7 +82,7 @@ export function previousJourney(mem: LoopMemory, journeyId: string): LoopEntry |
 function entryFor(mem: LoopMemory, journeyId: string): LoopEntry {
   const last = mem.history[mem.history.length - 1];
   if (last && last.journeyId === journeyId) return last;
-  const e: LoopEntry = { journeyId, lead: null, blossom: false };
+  const e: LoopEntry = { journeyId, lead: null, blossom: false, forms: new Set() };
   mem.history.push(e);
   if (mem.history.length > 16) mem.history.shift();
   return e;
@@ -84,6 +93,7 @@ export function noteForm(mem: LoopMemory, journeyId: string, soul: SoulId): void
   const e = entryFor(mem, journeyId);
   if (!e.lead) e.lead = soul;
   if (soul === "blossom") e.blossom = true;
+  (e.forms ??= new Set()).add(soul);
 }
 
 /** Seconds a form was on screen. Halves the ledger every ~2 h so it tracks the recent loop. */
@@ -127,15 +137,16 @@ function overusePenalty(mem: LoopMemory, soul: SoulId): number {
  * not one of the last two shown, the blossom only when allowed, leaning away
  * from over-used forms; ties keep the rotation order after `cycleIdx`.
  */
-export function chooseNext(cands: readonly SoulId[], o: { recent: readonly SoulId[]; mem: LoopMemory; blossomOk: boolean; cycleIdx: number; jitter?: number; avoid?: SoulId | null }): SoulId | undefined {
+export function chooseNext(cands: readonly SoulId[], o: { recent: readonly SoulId[]; mem: LoopMemory; blossomOk: boolean; cycleIdx: number; jitter?: number; avoid?: SoulId | null; neighbour?: ReadonlySet<SoulId> | null }): SoulId | undefined {
   const n = cands.length;
+  const nb = (c: SoulId) => (o.neighbour?.has(c) ? NEIGHBOUR_COST : 0);
   if (!n) return undefined;
   let best: SoulId | undefined;
   let bestScore = Infinity;
   for (let i = 0; i < n; i++) {
     const c = cands[i];
     if (c === "blossom" && !o.blossomOk) continue;
-    let score = overusePenalty(o.mem, c) + (((i - o.cycleIdx - 1) % n) + n) % n * 0.05 + i * 0.02 + (o.jitter ?? 0) * ((i * 0.6180339) % 1) * 0.1;
+    let score = overusePenalty(o.mem, c) + nb(c) + (((i - o.cycleIdx - 1) % n) + n) % n * 0.05 + i * 0.02 + (o.jitter ?? 0) * ((i * 0.6180339) % 1) * 0.1;
     if (o.recent.slice(0, 2).includes(c)) score += 10;
     if (o.avoid && c === o.avoid) score += 10;
     if (score < bestScore) { bestScore = score; best = c; }
@@ -150,7 +161,7 @@ export function chooseNext(cands: readonly SoulId[], o: { recent: readonly SoulI
     for (const sib of FORM_FAMILIES[fam]) {
       if (seen.has(sib)) continue;
       seen.add(sib);
-      let score = 0.35 + overusePenalty(o.mem, sib) + i * 0.02 + (o.jitter ?? 0) * 0.05;
+      let score = 0.35 + overusePenalty(o.mem, sib) + nb(sib) + i * 0.02 + (o.jitter ?? 0) * 0.05;
       if (o.recent.slice(0, 2).includes(sib)) score += 10;
       if (o.avoid && sib === o.avoid) score += 10;
       if (score < bestScore) { bestScore = score; best = sib; }
@@ -160,12 +171,14 @@ export function chooseNext(cands: readonly SoulId[], o: { recent: readonly SoulI
   // phase whose imagery only asks for swaying lines), any form of an
   // under-used family may take the slot — a clear cost keeps imagery first.
   const bf = best ? FAMILY_OF.get(best) : undefined;
-  if (best && bf && familyShare(o.mem, best) > (FAMILY_CAP[bf] ?? MAX_FAMILY_SHARE)) {
+  // (…and when the best left is one the previous journey showed, any fresher
+  // form of another family may take it)
+  if (best && bf && (familyShare(o.mem, best) > (FAMILY_CAP[bf] ?? MAX_FAMILY_SHARE) || nb(best) > 0)) {
     for (const [fam, xs] of Object.entries(FORM_FAMILIES)) {
       if (fam === bf || familyShare(o.mem, xs[0]) > (FAMILY_CAP[fam] ?? MAX_FAMILY_SHARE) * 0.9) continue;
       for (const x of xs) {
         if (seen.has(x)) continue;
-        let score = 1 + overusePenalty(o.mem, x) + (o.jitter ?? 0) * 0.05;
+        let score = 1 + overusePenalty(o.mem, x) + nb(x) + (o.jitter ?? 0) * 0.05;
         if (o.recent.slice(0, 2).includes(x)) score += 10;
         if (o.avoid && x === o.avoid) score += 10;
         if (score < bestScore) { bestScore = score; best = x; }
@@ -199,13 +212,13 @@ export function planCast(cast: ParticleLeadCast, journeyId: string, mem: LoopMem
   const morphSouls: SoulId[] = [];
   for (let i = 0; i < cast.morphSouls.length; i++) {
     const avoid = i === 0 ? prev?.lead ?? null : morphSouls[i - 1];
-    const pick = chooseNext(formsAt(i), { recent: i > 0 ? [morphSouls[i - 1]] : [], mem: plan, blossomOk: false, cycleIdx: -1, avoid }) ?? cast.morphSouls[i];
+    const pick = chooseNext(formsAt(i), { recent: i > 0 ? [morphSouls[i - 1]] : [], mem: plan, blossomOk: false, cycleIdx: -1, avoid, neighbour: prev?.forms }) ?? cast.morphSouls[i];
     morphSouls.push(pick);
     take(pick, 14);
   }
   const windows = cast.windows.map((w) => {
     const ph = phaseAt(w.start);
-    const soul = chooseNext(formsAt(ph), { recent: [morphSouls[Math.min(ph, morphSouls.length - 1)]], mem: plan, blossomOk: false, cycleIdx: -1 }) ?? w.soul;
+    const soul = chooseNext(formsAt(ph), { recent: [morphSouls[Math.min(ph, morphSouls.length - 1)]], mem: plan, blossomOk: false, cycleIdx: -1, neighbour: prev?.forms }) ?? w.soul;
     take(soul, Math.max(0, w.end - w.start));
     return soul === w.soul ? w : { ...w, soul };
   });
