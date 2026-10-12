@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-12T13:19Z
 
+> **Jury verdict today**: The lab started moving again — three ships in a day, two of them real category jumps, and the research dive finally hit its own freshness bar; the only worry now is that seven straight pieces are still 404 and un-felt, so one `npm audit fix` is the single act that lets anyone actually judge the lab's best month of ideas. See `docs/dreams/JURY.md`.
+
 > **phosphorhelm shipped — and the research dive finally hit its freshness bar.** After the jury flagged six straight dives missing the lab's own ≤30-day rule, this fire's build is chained to a genuinely 8-day-old finding. It's also a lane the lab has never touched in 1,200+ protos: the oscilloscope.
 
 ## New since yesterday
