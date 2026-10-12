@@ -1,20 +1,18 @@
-# Morning digest — last updated 2026-10-11T13:00Z
+# Morning digest — last updated 2026-10-12T01:15Z
 
-> **Jury verdict today**: Same fifteen as yesterday — the lab's been *planning* for seven cycles, not building: your four strongest new pieces are still 404, `cymatica` has four cycles of notes and zero code, and the research dive has missed its own freshness bar six times running. One `npm audit fix` turns the backlog on; after that, verify the fusion protos and ship cymatica big before it becomes a fifth memo. See `docs/dreams/JURY.md`.
->
-> **This fire answered it** — I stopped holding and built (below). Agreed on cymatica: it's next, as code, not a fifth memo.
+> **cymatica shipped.** The jury's #1 ask for a week was: stop writing cymatica architecture notes (four cycles, zero code) and ship it big. This fire did — as a real piece, and embodied, so it honors your "every winner is camera-conducted" directive AND the jury's "cast the particle engine as a lead actor, kill the green." One build cleared both.
 
 ## New since yesterday
-- **`19680-resonhand` — your two hands ring out the harmony that's already inside one of your takes.** A bank of 8 resonators lies over the dry recording and **retunes every frame to the chord you're actually playing in that moment** (walked from the track analysis). Left hand swells the resonant halo + opens how many chord-tones ring; right hand tilts brightness + pans; hands apart open the space. You don't trigger notes — you lift out his own harmony and make it sing. raw-WebGL2 struck-metal filaments, cold steel→white. **Why open it:** it's the first piece that reaches into the *harmony* of your playing, not an FFT of it.
-  - **status: wip — needs your ~30-sec webcam check** (I can't drive a camera headless, and web is still frozen so it can't be seen live yet). The pointer fallback and the whole audio graph are code-traced and sound; the live two-hand feel + one halo-loudness constant are the only unknowns.
-- **I broke the 7-cycle hold.** After six days I stopped treating the deploy freeze as a reason to build nothing — a build-clean proto adds zero risk and just joins your backlog to flush when the valve opens. Expect new work each fire again now, not holds.
+- **`19840-cymatica` — your body conducts the Chladni sand figures of the harmony inside your own playing.** 160,000 grains of "sand" live on the GPU; every frame they migrate onto the nodal lines of a vibrating plate whose modes are chosen by **the chord you're actually playing right now** (walked from the track analysis). Upper body conducts: wrist height = driving frequency, arm span = how many modes ring + the room, torso lean = how sharp the lines get — and the same motion shapes the sound (resonant filter + reverb space), not just the picture. Steel-and-bone, zero green, a genuine GPU particle system (the jury's "lead actor"), not a flat shader field.
+  - **Why open it:** it's the lab's first piece where you don't watch a visualization of your music — you shape its *physics*. The chord becomes a sand figure.
+  - **status: wip — needs your ~30-sec webcam check.** I can't drive a camera or a GPU headless, and web is still frozen so it can't be seen live yet. The pointer + Canvas2D fallbacks and the whole audio/physics chain are code-traced and sound; the live upper-body feel is the only real unknown.
 
 ## Also explored (banked, not shipped)
-- `19760-grainscape` — two-hand granular scrub/freeze/re-pitch of one take (Canvas2D ember cloud). Fully built + QA-clean; lost only on reads-your-music fidelity. Seed in IDEAS §1292 if you want it next.
+- `19920-chladnite` — the SAME physics rendered as a luminous vibrating *membrane* instead of sand. Fully built + QA-clean; lost only because the sand figure is the iconic cymatics image and a truer "particle engine as lead." Seed in IDEAS §1293 — a strong candidate to ship as-is, or to fold into cymatica as a toggleable "show the plate itself" layer.
 
 ## The freeze (one-line, unchanged)
-- 🟠 Web prod still frozen ~6 days — same one-command fix (`npm audit fix` → commit `package-lock.json`); it's out of my fence. Everything I ship (resonhand + the 4 fusion protos + your own backlog) flushes the instant it lands. Still reading it as intentional while you're on the installation — say the word and I'll go fully silent on it.
+- 🟠 Web prod still frozen ~7 days — same one-command fix (`npm audit fix` → commit `package-lock.json`); it's out of my fence. Everything I've shipped (cymatica + resonhand + the 4 fusion protos + your own backlog) flushes the instant it lands. Still reading it as intentional while you're on the installation — say the word and I'll go fully silent on it.
 
 ## Open questions (both quick)
-1. Two-hand continuous conducting (Canon's lane) vs the full-body-pose run — want me to stay in the intimate two-hand space for a few, or keep rotating body signals?
-2. Still want the scheduled deploy-health alert? This freeze is exactly what it'd have caught in minutes.
+1. cymatica is **upper-body** this time (shoulders + wrists + lean), a change from the two-hand resonhand. Want me to keep rotating the body signal every fire, or settle into one lane for a stretch?
+2. Still want the scheduled deploy-health alert? This 7-day freeze is exactly what it would have caught in minutes.

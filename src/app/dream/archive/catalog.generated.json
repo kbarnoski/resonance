@@ -1,5 +1,13 @@
 [
  {
+  "slug": "19840-cymatica",
+  "cycle": 19840,
+  "name": "Cymatica",
+  "status": "wip",
+  "description": "*What if your body could conduct the actual physical standing-wave geometry — the Chladni sand figure — of the harmony inside one of Karel's own piano recordings?*",
+  "category": "local"
+ },
+ {
   "slug": "19680-resonhand",
   "cycle": 19680,
   "name": "RESONHAND",
