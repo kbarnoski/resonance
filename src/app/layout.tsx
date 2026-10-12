@@ -78,6 +78,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${bodoniModa.variable} antialiased`}
       >
+        {/* warm the Horizon Split title fonts at boot (load + shape + raster at
+            the title size), so the first journey title never pays for them */}
+        <span
+          aria-hidden
+          style={{ position: "fixed", left: 0, bottom: 0, opacity: 0.001, pointerEvents: "none", fontFamily: "var(--font-inter-tight)", fontWeight: 300, fontSize: "5vh", whiteSpace: "nowrap", zIndex: -1 }}
+        >
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ <i style={{ fontFamily: "var(--font-bodoni)", fontStyle: "italic", fontWeight: 400, fontSize: "3.3vh" }}>No. 0123456789</i>
+        </span>
         <Providers>
           {children}
           <Toaster />

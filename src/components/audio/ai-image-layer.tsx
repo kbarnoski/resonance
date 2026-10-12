@@ -360,7 +360,10 @@ export function AiImageLayer({
   // onto the scene (it can only add light), so a hazy still — the misty hall,
   // gen-006 at ~27 s — lifted every black on screen. Through Ghost's opening
   // (its first two phases, to 65.8 s) the stills keep a deep black point.
-  const [openGrade, setOpenGrade] = useState(false);
+  // (applied straight to the canvas — a React state here re-rendered the whole
+  // layer and switched a full-screen filter on in one frame: a 34-75 ms hitch
+  // as Ghost began, 2026-10-12. The filter is always present at neutral values,
+  // so turning the grade on is only a value change the compositor eases.)
   const openGradeRef = useRef(false);
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
@@ -1539,7 +1542,7 @@ export function AiImageLayer({
       if (!canvas || !ctx) return;
       {
         const g = journeyIdRef.current === "ghost" && (useAudioStore.getState().currentTime || 0) < GHOST_OPEN_END;
-        if (g !== openGradeRef.current) { openGradeRef.current = g; setOpenGrade(g); }
+        if (g !== openGradeRef.current) { openGradeRef.current = g; canvas.style.filter = g ? "contrast(1.2) brightness(0.9)" : "contrast(1) brightness(1)"; }
       }
       const nowTs = performance.now();
       if (nowTs - lastDraw < minFrameMs) {
@@ -1765,7 +1768,7 @@ export function AiImageLayer({
         style={
           aiOnly
             ? { zIndex: 2, pointerEvents: "none" }
-            : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out, filter 4000ms ease-in-out", pointerEvents: "none", filter: openGrade ? "contrast(1.2) brightness(0.9)" : "none" }
+            : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out, filter 4000ms ease-in-out", pointerEvents: "none", filter: "contrast(1) brightness(1)" }
         }
       />
       {/* Morph cinema canvas — normal blending so clips keep their true
