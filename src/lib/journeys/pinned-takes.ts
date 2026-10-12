@@ -101,6 +101,9 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   "first-snow": 1955860385,
   // Karel 2026-10-09 (March Light set start, build 47226505): "The First i just watched and wow keep that take"
   "5a07f0af-654f-4dab-b42c-aef83983b33f": 1640537332,
+  // Karel 2026-10-12 (baseline tour pass 7, build 1365b334): "i love this take
+  // … def a keeper" — Calling
+  "d92c2d3a-4283-4300-abc3-d71ed7c6848d": 903101341,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random
