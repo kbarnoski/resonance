@@ -106,6 +106,8 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   "d92c2d3a-4283-4300-abc3-d71ed7c6848d": 903101341,
   // Karel 2026-10-12 (pass 7): "this night wind track is a keeper" — Night Wind 2
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": 391401299,
+  // Karel 2026-10-12 (pass 7): "the current journey playing is a big time keeper" — No question 7
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e": 1643832524,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random

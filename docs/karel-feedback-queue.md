@@ -13,7 +13,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - 🟡 Ghost: "slight slowness when the particle blob and the lights falling shader happen" — no dropped frames; motion lifted 0.38 → 0.65 after the opening.
 - 🟡 Response ladder — solo piano base → far out ×1.1 → ambient ×1.2 → groove ×1.35 → big ×1.6, every journey (Chemiluminescence "50 % more").
 - 🟡 Fountain / rising-from-the-bottom forms "often" — one family, capped ~10 % (was ~17 %).
-- 🟡 Pinned takes: Calling #903101341, Night Wind 2 #391401299.
+- 🟡 Pinned takes: Calling #903101341, Night Wind 2 #391401299, No question 7 #1643832524 ("a big time keeper").
 - 🟡 Chenin 3: "the literal pictures of grapes and leaves isnt good especially how it ended. keep it abstract" — 11 literal stills out (28 → 17, now ends on an abstract galaxy); same pass: Chenin 5 −6 leaves, Loire 2 −3 leaves, Sancerre Cry 4 −2 (pack list; backup ~/Documents/Resonance/local-images.backup-2026-10-12-literal.json; Amboise 1/2, Loire 5A already abstract).
 - 🟡 Field mode (2-4 large copies of a form at different depths): "nice when the particle system shows multiple things rather than always one thing" — +25 % (0.12 → 0.15; Karel: "dont increase it that substantial … another 25% sure"), copies stay large.
 - 📋 Ghost: "that same stupid bunching of particles near top around the flashes section" — film the flash section after the tour, fix.

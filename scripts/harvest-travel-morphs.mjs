@@ -77,6 +77,10 @@ try {
 const PACK = path.join(ROOT, "public", "tramokyo-pack");
 const manifestPath = path.join(PACK, "local-clips.json");
 const manifest = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPath, "utf8")) : {};
+const packLists = JSON.parse(await readFile(path.join(PACK, "local-images.json"), "utf8"));
+// --max=N: only the first N new morphs per journey (samples for Karel)
+const MAX = Number((process.argv.find((a) => a.startsWith("--max=")) ?? "").slice(6)) || 0;
+let made = 0;
 
 async function kling(prompt, startB64, endB64) {
   const variants = [
@@ -118,7 +122,13 @@ for (const jid of ids) {
   const clipDir = path.join(PACK, "clips", "journeys", jid);
   await mkdir(clipDir, { recursive: true });
   manifest[jid] = manifest[jid] ?? {};
-  const counts = app.allocateByPhase(journey.phases, 90, app.TRAMOKYO_PHASE_WEIGHT);
+  // the journey's ACTUAL pack list — what the show plays (2026-10-12: the old
+  // fixed 90 picked wrong / missing stills for the 15-35-still Expansion
+  // journeys, and literal stills have since been dropped from some lists)
+  const list = packLists[jid] ?? null;
+  if (!list || list.length < 2) { console.warn(`  no pack list for ${jid}`); continue; }
+  made = 0;
+  const counts = app.allocateByPhase(journey.phases, list.length, app.TRAMOKYO_PHASE_WEIGHT);
   const starts = [];
   let c = 0;
   for (const n of counts) { starts.push(c); c += n; }
@@ -135,10 +145,12 @@ for (const jid of ids) {
       console.log(`  keep ${jid} t${pi}`);
       continue;
     }
-    const fromIdx = starts[pi] + counts[pi] - 1;
-    const toIdx = starts[pi + 1];
-    const fromPath = path.join(imgDir, `gen-${String(fromIdx).padStart(3, "0")}.jpg`);
-    const toPath = path.join(imgDir, `gen-${String(toIdx).padStart(3, "0")}.jpg`);
+    if (MAX && made >= MAX) { console.log(`  --max ${MAX} reached`); break; }
+    const fromIdx = Math.min(list.length - 1, starts[pi] + counts[pi] - 1);
+    const toIdx = Math.min(list.length - 1, starts[pi + 1]);
+    const fromPath = path.join(ROOT, "public", list[fromIdx]);
+    const toPath = path.join(ROOT, "public", list[toIdx]);
+    made++;
     if (!existsSync(fromPath) || !existsSync(toPath)) { console.warn(`  missing stills for ${jid} t${pi}`); continue; }
     const prompt =
       "one continuous slow cinematic camera journey from the first scene into the second scene, " +
