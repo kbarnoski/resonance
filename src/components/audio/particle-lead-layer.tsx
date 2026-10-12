@@ -1421,7 +1421,10 @@ export function ParticleLeadLayer({
         // section" … "it even seems slow"): it moves at 0.85 now; the rest of Ghost
         // is unchanged
         const mo = cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO;
-        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) <= 1 ? Math.max(mo, 0.85) : mo);
+        // …and the rest of Ghost lifts off the floor too (Karel 2026-10-12, pass 7:
+        // "a slight slowness when the particle blob and the lights falling shader
+        // happen" — no dropped frames; the field ran at 0.38): calm, not dragging
+        engine.setMotion(journeyId === "ghost" ? Math.max(mo, phaseIdxAt(t) <= 1 ? 0.85 : 0.65) : mo);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)
