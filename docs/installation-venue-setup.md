@@ -441,6 +441,10 @@ Work through this top to bottom on the installation laptop:
       should prevent sleep entirely).
 - [ ] **Notifications off**: Settings → Focus → Do Not Disturb scheduled
       24h, share across devices OFF. No update toasts over the projection.
+- [ ] **Handoff / Continuity OFF**: Settings → General → AirDrop & Handoff →
+      Allow Handoff OFF (and iPhone Mirroring / Universal Control off). Tour
+      pass 6 (2026-10-12): the only stall in 4.5 h — 275 ms — fell inside a
+      Handoff session from another device.
 - [ ] **Software update auto-restart OFF** (Settings → General → Software
       Update → uncheck automatic installs).
 - [ ] **Install supervision**: `scripts/tramokyo-install-supervision.sh`.
