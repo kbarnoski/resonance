@@ -16,7 +16,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - 🟡 Pinned takes: Calling #903101341, Night Wind 2 #391401299.
 - 📋 Ghost: "that same stupid bunching of particles near top around the flashes section" — film the flash section after the tour, fix.
 - 📋 Ghost: uv-sync 16-33 ms at Ghost's start (opening emblem sampled on the main thread) — precompute in idle.
-- 📋 Replays after the tour: First Light → Snowflake (own stills), Realized (1:40 faint step), Isolation (faint step).
+- 📋 Replays after the tour: First Light → Snowflake (own stills), Realized (1:40 faint step), Isolation (faint step), Bells 1 (faint step 22:43:30). Pattern: 2 of 3 faint steps land within 40 ms of `particle-out` (the field's last haze vanishing in one frame?), Bells 0.7 s after a switch to the full-frame nebula form — high-res capture, then fix.
 - 📋 First Light: "wouldn't use the big solid spinning wheel shader" = DHARMA (confirmed in Bells 1: "that wheel … not a favorite shader. once in a great while ok") → out of First Light (Aureole in), rare loop-wide (recast).
 
 ## After the release (first upgrade work)
