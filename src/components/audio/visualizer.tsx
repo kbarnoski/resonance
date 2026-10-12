@@ -2729,7 +2729,8 @@ export function Visualizer({ audioElement, onClose, analysis }: VisualizerProps)
       return;
     }
 
-    const ctx = new AudioContext();
+    // playback buffering — rides through CPU spikes without crackle (audio-engine.ts)
+    const ctx = new AudioContext({ latencyHint: "playback" });
     const source = ctx.createMediaElementSource(audioElement);
     const analyserNode = ctx.createAnalyser();
     analyserNode.fftSize = 256;

@@ -38,7 +38,13 @@ export function getAudioEngine(): AudioEngine {
   }
 
   if (!audioContext) {
-    audioContext = new AudioContext();
+    // PLAYBACK buffering (Karel 2026-10-12, Cosmic Drift: "a quick static
+    // connection disruption sound … a quick distorted sound"): the default
+    // "interactive" hint runs tiny render quanta meant for live instruments —
+    // any CPU spike on the kiosk starved them into a crackle. Recorded music
+    // only needs "playback": larger buffers that ride through load spikes
+    // (the added latency is inaudible here; Live Theatre only analyses the mic).
+    audioContext = new AudioContext({ latencyHint: "playback" });
   }
 
   if (!audioElement) {
