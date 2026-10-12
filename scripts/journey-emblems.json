@@ -1,511 +1,511 @@
 {
- "2019": {
-  "subject": "Wind-carved sand dune crest",
-  "color": "amber gold, ember orange, deep indigo",
-  "why": "A single dune ridge shedding glowing grains into the night sky evokes a year dissolving into memory, golden and ember-lit.",
-  "prompt": "a large glowing Wind-carved sand dune crest filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold, ember orange, deep indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/2019.jpg"
- },
- "Ghost": {
-  "subject": "angel (the flash image)",
-  "color": "pearl white",
-  "why": "Ghost's own angel",
-  "file": "@angel"
- },
- "Snowflake": {
-  "subject": "ethereal feathery swirling snowflake (Karel's reference)",
-  "color": "icy blue and white with pale cyan glow (#9fc4e2, #6598c1) against deep #0b1d2c",
-  "why": "Karel 2026-10-07: 'have the emblem snowflake more like this design not your cartoony one' \u2014 feathery fern arms of drifting light motes swirling around a dark core; same emblem opening and closing",
-  "prompt": "a single luminous icy blue and white with pale cyan glow, against deep six-armed crystalline snowflake emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
-  "file": [
-   "/tramokyo-pack/emblems/snowflake-6.jpg"
-  ]
- },
- "Realized": {
-  "subject": "single rising flame",
-  "color": "molten amber orange #e5943d glowing to deep burnt orange #ad4a1a",
-  "why": "A flame embodies the lava, embers and fire imagery and the idea of something igniting into being, matching the title \"Realized\" and its charcoal-and-molten-orange palette.",
-  "prompt": "a large glowing single rising flame filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber orange glowing to deep burnt orange with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/realized.jpg"
- },
- "Chemiluminescence": {
-  "subject": "cresting wave of bioluminescent water",
-  "color": "luminous cyan-turquoise with pale white highlights",
-  "why": "Living light glowing from deep dark water, as a wave crests and shines.",
-  "file": "/tramokyo-pack/emblems/chemiluminescence.jpg"
- },
- "Rolling": {
-  "subject": "cresting ocean wave",
-  "color": "molten amber-gold (#e3ae5e, #ac7038) with deep midnight blue (#0b1a24, #223744) shadows",
-  "why": "A single curling wave glowing with amber light and embers ties the title \"Rolling\" directly to the imagery of ocean waves igniting from midnight blue into molten gold.",
-  "prompt": "a cresting ocean wave at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the cresting ocean wave clearly recognisable at the centre and woven from the same glowing lines, in molten amber-gold, with deep midnight blue, shadows with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/rolling.jpg"
- },
- "Stand": {
-  "subject": "lone mountain peak mirrored in still water",
-  "color": "pale silver-cyan #8fbeb3 with golden #9b6228 sparks",
-  "why": "A mountain standing unmoved, mirrored in rippling water.",
-  "file": "/tramokyo-pack/emblems/stand.jpg"
- },
- "Cabin Soul": {
-  "subject": "small log cabin hearth flame",
-  "color": "molten amber and gold with deep ember orange (#d67d23, #f4be47)",
-  "why": "A glowing hearth flame fuses the cozy 'cabin' with the fire, embers and amber glow of the imagery.",
-  "prompt": "a large glowing small log cabin hearth flame filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and gold with deep ember orange, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/cabin-soul.jpg"
- },
- "Vespers": {
-  "subject": "crescent moon cradling evening star",
-  "color": "glowing amber, molten gold, deep violet, black",
-  "why": "Vespers is the evening prayer at dusk, and a crescent moon holding the first ember-bright star marks that threshold between day and night.",
-  "prompt": "a crescent moon cradling evening star at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the crescent moon cradling evening star clearly recognisable at the centre and woven from the same glowing lines, in glowing amber, molten gold, deep violet, black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/vespers.jpg"
- },
- "Lantern": {
-  "subject": "hanging pierced-brass lantern glowing from within",
-  "color": "warm amber #e09f55 with deep orange #af5a2c glow and violet #553d65 edges",
-  "why": "A lantern is the literal title, and its ember-lit glow in a dark void matches the amber and violet imagery.",
-  "prompt": "a large glowing hanging pierced-brass lantern glowing from within filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber with deep orange glow and violet edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/lantern.jpg"
- },
- "Open Jam": {
-  "subject": "wide open ocean wave unfurling",
-  "color": "emerald glow, pale gold highlights, amber sparks, near-black green-teal",
-  "why": "An open wave unfurling freely, unscripted like an open jam.",
-  "file": "/tramokyo-pack/emblems/open-jam.jpg"
- },
- "Testimony": {
-  "subject": "pillar of light with spiralling embers",
-  "color": "molten amber and gold with pink-violet fade",
-  "why": "a column of light bearing witness (no branching bush)",
-  "prompt": "a large glowing pillar of light with spiralling embers filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and gold with pink-violet fade with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/testimony.jpg"
- },
- "Calling": {
-  "subject": "glowing ember-lit horn",
-  "color": "molten amber gold (#dba269) with burnt orange (#a3623d) glow",
-  "why": "A calling horn echoes the title's summons while its ember-lit amber glow against deep indigo reflects the igniting-ember imagery.",
-  "prompt": "a large glowing glowing ember-lit horn filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold with burnt orange glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/calling.jpg"
- },
- "First Light": {
-  "subject": "rising sun with radiating rays",
-  "color": "molten ember-gold (#daa360) with amber (#9e5828) glow against deep blue-black",
-  "why": "Karel 2026-10-06: First Light opens on the sun RISING over the horizon",
-  "prompt": "a circular Islamic geometric medallion of glowing light \u2014 concentric rings of interlacing girih star lattice, nested eight- and twelve-point rosettes and arabesque strapwork \u2014 with a large, clearly recognisable rising sun with radiating rays filling the middle third \u2014 drawn in the same luminous filigree line art, the unmistakable focal point \u2014 flat 2D illuminated-tile style, intricate and perfectly symmetrical, in molten ember-gold with amber glow against deep blue-black, mesmerizing and visionary, not a 3D model, not cartoonish, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": [
-   "/tramokyo-pack/motif-forms/dawn-1.jpg",
-   "/tramokyo-pack/emblems/first-light.jpg"
-  ]
- },
- "Surrounded by Light": {
-  "subject": "Glowing sea anemone blooming",
-  "color": "cool cyan-blue, magenta, violet, hot amber tips",
-  "why": "Its luminous tentacles radiate outward in every direction, wrapping the viewer in light.",
-  "prompt": "a large glowing Glowing sea anemone blooming filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in cool cyan-blue, magenta, violet, hot amber tips with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
- },
- "Nothing": {
-  "subject": "hollow seed pod dissolving to embers",
-  "color": "molten amber, gold, deep violet haze",
-  "why": "An empty seed husk crumbling into drifting sparks over black void embodies nothingness igniting into possibility.",
-  "prompt": "a hollow seed pod dissolving to embers at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the hollow seed pod dissolving to embers clearly recognisable at the centre and woven from the same glowing lines, in molten amber, gold, deep violet haze with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/nothing.jpg"
- },
- "Night Wind": {
-  "subject": "spiral gust of wind carrying dandelion seeds",
-  "color": "amber-gold with pale gold glints (#ca975a, #8c5733) against deep indigo-black",
-  "why": "The night wind made visible, carrying drifting seeds of light.",
-  "file": "/tramokyo-pack/emblems/night-wind.jpg"
- },
- "The Other Side": {
-  "subject": "concentric water ripple rings",
-  "color": "glowing lavender-pink (#ba81ac) fading to violet (#744a75)",
-  "why": "Concentric ripples echo the pool-ripple imagery and suggest a crossing to \"the other side\" through the water's surface.",
-  "prompt": "a large glowing concentric water ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing lavender-pink fading to violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-other-side.jpg"
- },
- "Northern Plane": {
-  "subject": "flowing aurora curtain of light waving across the dark",
-  "color": "pale cyan and teal with amber sparks",
-  "why": "an aurora curtain (not a ribbon symbol)",
-  "prompt": "a flowing aurora curtain of light waving across the dark at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the flowing aurora curtain of light waving across the dark clearly recognisable at the centre and woven from the same glowing lines, in pale cyan and teal with amber sparks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/northern-plane.jpg"
- },
- "No question": {
-  "subject": "solar eclipse corona ring",
-  "color": "molten amber gold, deep black indigo",
-  "why": "A black disc wreathed in golden fire is a total, silent answer that leaves nothing to ask.",
-  "prompt": "a solar eclipse corona ring at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the solar eclipse corona ring clearly recognisable at the centre and woven from the same glowing lines, in molten amber gold, deep black indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/no-question.jpg"
- },
- "Loire": {
-  "subject": "single drifting autumn leaf",
-  "color": "molten amber gold with warm bronze edges (#c98e4b, #ecc571, #896343)",
-  "why": "Loire is a river of mist, water and leaves, so one golden leaf adrift on the current captures the title and its amber-lit, dark-night mood.",
-  "prompt": "a single drifting autumn leaf at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the single drifting autumn leaf clearly recognisable at the centre and woven from the same glowing lines, in molten amber gold with warm bronze edges,, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/loire.jpg"
- },
- "Chenin": {
-  "subject": "grape leaf with curling tendril",
-  "color": "glowing amber gold (#af9f46) with deep emerald (#364938) veins",
-  "why": "Chenin is a grape variety, so a single vine leaf with its tendril ties the title to the vines, leaves and golden dew-like light of the imagery.",
-  "prompt": "a grape leaf with curling tendril at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the grape leaf with curling tendril clearly recognisable at the centre and woven from the same glowing lines, in glowing amber gold with deep emerald veins with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/chenin.jpg"
- },
- "Tranquility": {
-  "subject": "lotus flower on water",
-  "color": "pale gold #cfa473 with soft amber #735f4b shading",
-  "why": "A still lotus floating on a midnight-teal pool embodies serene calm and echoes the water ripples, mist and golden glints of the imagery.",
-  "prompt": "a large glowing lotus flower on water filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale gold with soft amber shading with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/tranquility.jpg"
- },
- "Bells": {
-  "subject": "golden temple bell",
-  "color": "molten amber-gold with ember-orange glow (#dfae5f, #af6b2f)",
-  "why": "A bell directly embodies the title \"Bells\" and its glowing amber-gold form echoes the molten rings and ripples rising from the black void.",
-  "prompt": "a large glowing golden temple bell filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber-gold with ember-orange glow, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/bells.jpg"
- },
- "Rise": {
-  "subject": "tall rising flame with spiralling sparks",
-  "color": "molten orange-gold and amber (#e3a777, #b96a49) with ember-red edges (#84423a)",
-  "why": "A flame climbing upward from embers embodies the title Rise.",
-  "file": "/tramokyo-pack/emblems/rise.jpg"
- },
- "Amboise": {
-  "subject": "single flame blooming above dark river water",
-  "color": "molten amber gold, white-hot core, deep midnight blue shadows",
-  "why": "Fire-born light rising from the Loire's dark water \u2014 the golden embers of Amboise.",
-  "file": "/tramokyo-pack/emblems/amboise.jpg"
- },
- "Never Forget": {
-  "subject": "rings of an ancient tree trunk cross-section",
-  "color": "glowing amber, ember orange, violet highlights, deep indigo",
-  "why": "A tree keeps every year it has lived in its rings \u2014 memory made visible.",
-  "file": "/tramokyo-pack/emblems/never-forget.jpg"
- },
- "Torraine": {
-  "subject": "radiant eight-pointed guiding star",
-  "color": "molten amber-gold with warm gold sparks (#c79f77 to #65432c glow)",
-  "why": "\"Torraine\" evokes a torch-lit guiding light, and a flaring golden star against the midnight-blue void captures the stars, light-rays and ember core of the imagery.",
-  "prompt": "a radiant eight-pointed guiding star at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the radiant eight-pointed guiding star clearly recognisable at the centre and woven from the same glowing lines, in molten amber-gold with warm gold sparks to glow) with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/torraine.jpg"
- },
- "Yellow Bird": {
-  "subject": "Yellow songbird in flight",
-  "color": "glowing amber gold with bright #e0ae58 highlights",
-  "why": "The title names a yellow bird, and a golden bird of embers and sparks matches the amber-on-black imagery.",
-  "prompt": "a large glowing Yellow songbird in flight filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber gold with bright highlights with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/yellow-bird.jpg"
- },
- "Roll Away": {
-  "subject": "glowing molten lava boulder",
-  "color": "molten orange #dc9058 with deep ember red #873f25 cracks",
-  "why": "\"Roll Away\" suggests a rolling stone, and a lava-veined boulder ties together the embers, lava and stone imagery.",
-  "prompt": "a glowing molten lava boulder at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing molten lava boulder clearly recognisable at the centre and woven from the same glowing lines, in molten orange with deep ember red cracks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/roll-away.jpg"
- },
- "Singular": {
-  "subject": "Cosmic seed igniting into radiant point",
-  "color": "molten gold, amber, white-hot core on black",
-  "why": "A single dense seed of light bursting from one point echoes 'Singular' as the origin where everything begins.",
-  "prompt": "a Cosmic seed igniting into radiant point at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the Cosmic seed igniting into radiant point clearly recognisable at the centre and woven from the same glowing lines, in molten gold, amber, white-hot core on black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/singular.jpg"
- },
- "Redwoods Sway": {
-  "subject": "single feathery redwood sprig of needles, gently curved",
-  "color": "amber-gold glow against deep midnight blue",
-  "why": "a sprig, never a tree silhouette",
-  "prompt": "a large glowing single feathery redwood sprig of needles, gently curved filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber-gold glow against deep midnight blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/redwoods-sway.jpg"
- },
- "Horses": {
-  "subject": "galloping horse silhouette",
-  "color": "molten orange #da974f with glowing amber #9a532c embers",
-  "why": "The title \"Horses\" calls for a horse, and a galloping silhouette built from ember-like particles suits the lava and smoke imagery.",
-  "prompt": "a galloping horse silhouette at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the galloping horse silhouette clearly recognisable at the centre and woven from the same glowing lines, in molten orange with glowing amber embers with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/horses.jpg"
- },
- "Velvet Tears": {
-  "subject": "single falling rose petal",
-  "color": "glowing amber-gold with rose-red edges (#d7895d, #863f42)",
-  "why": "A velvety rose petal evokes the title's 'velvet' softness and 'tears' through its teardrop shape, echoing the drifting petals and amber light in the imagery.",
-  "prompt": "a large glowing single falling rose petal filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber-gold with rose-red edges, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/velvet-tears.jpg"
- },
- "Rattler": {
-  "subject": "crackling burst of desert lightning",
-  "color": "molten orange-gold (#e99c43, #b45325) glowing veins on deep black-umber body (#33130e)",
-  "why": "Desert heat and charged air \u2014 the sudden crackle the title rattles with.",
-  "file": "/tramokyo-pack/emblems/rattler.jpg"
- },
- "Sancerre Cry": {
-  "subject": "weeping grapevine leaf cluster",
-  "color": "amber gold with magenta glow on deep violet",
-  "why": "Sancerre is a wine region, so a grape cluster on a vine evokes the title's wine and sorrow, glowing amber and magenta against the misty violet forest.",
-  "prompt": "a large glowing weeping grapevine leaf cluster filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold with magenta glow on deep violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/sancerre-cry.jpg"
- },
- "The Summit": {
-  "subject": "jagged mountain peak",
-  "color": "ember orange #c89666 glowing against deep indigo #142330",
-  "why": "A single craggy summit crowned with a thin molten glow embodies the title and the stone, mist and ember imagery.",
-  "prompt": "a jagged mountain peak at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the jagged mountain peak clearly recognisable at the centre and woven from the same glowing lines, in ember orange glowing against deep indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-summit.jpg"
- },
- "The Ascension": {
-  "subject": "towering crystal spire rising upward",
-  "color": "molten gold, amber, deep umber black",
-  "why": "A spire of light climbing out of the dark toward the golden light.",
-  "file": "/tramokyo-pack/emblems/the-ascension.jpg"
- },
- "The Bloom": {
-  "subject": "blooming flower with fireflies",
-  "color": "amber gold #c89d4e petals with ember orange #d13f19 glow and deep crimson #771009 core",
-  "why": "\"The Bloom\" calls for a single opening flower, and the amber glow, fern-green tones and drifting fireflies of the imagery are carried by its luminous petals.",
-  "prompt": "a large glowing blooming flower with fireflies filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold petals with ember orange glow and deep crimson core with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-bloom.jpg"
- },
- "Cosmic Drift": {
-  "subject": "ringed gas-giant planet with broad tilted rings, drifting",
-  "color": "amber and burnt orange planet with violet-lit rings",
-  "why": "a planet adrift, clearly ringed (distinct from the eclipse ring)",
-  "prompt": "a ringed gas-giant planet with broad tilted rings, drifting at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the ringed gas-giant planet with broad tilted rings, drifting clearly recognisable at the centre and woven from the same glowing lines, in amber and burnt orange planet with violet-lit rings with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/cosmic-drift.jpg"
- },
- "Mycelium Dream": {
-  "subject": "glowing mushroom with mycelium roots",
-  "color": "warm amber-gold with a deep teal glow",
-  "why": "A single luminous mushroom with threadlike mycelium roots embodies the title and the amber-lit teal forest imagery.",
-  "prompt": "a glowing mushroom with mycelium roots at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing mushroom with mycelium roots clearly recognisable at the centre and woven from the same glowing lines, in warm amber-gold with a deep teal glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/mycelium-dream.jpg"
- },
- "Interplay": {
-  "subject": "two interlocking flame and water droplets",
-  "color": "molten amber gold (#d89d5a) and cool teal-blue (#467796)",
-  "why": "\"Interplay\" is embodied by the imagery's meeting of fire and water, with warm amber and cool blue forming one intertwined emblem.",
-  "prompt": "a large glowing two interlocking flame and water droplets filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold and cool teal-blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/interplay.jpg"
- },
- "Bath": {
-  "subject": "single falling water droplet with ripple rings",
-  "color": "molten amber gold with pale gold highlights",
-  "why": "the moment of entering water (a splash read as a royal crown)",
-  "prompt": "a large glowing single falling water droplet with ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold with pale gold highlights with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/bath.jpg"
- },
- "Welcome Home": {
-  "subject": "warm glowing bird nest cradling small orbs of light",
-  "color": "warm amber-coral glow (#ca842f) with deep indigo (#0f374f) surround",
-  "why": "coming home \u2014 a nest of warm light (Karel 2026-10-07: no framing/scene)",
-  "prompt": "a large glowing glowing lantern-lit cottage window filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber-coral glow with deep indigo surround with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/welcome-home.jpg"
- },
- "The Knife": {
-  "subject": "single dagger blade with ember edge",
-  "color": "pale ash-white steel blade with glowing ember orange-red edge on near-black",
-  "why": "The title names a knife, and a blade outlined in ember glow ties together the cave, lava and spark imagery in one instantly readable emblem.",
-  "prompt": "a large glowing single dagger blade with ember edge filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale ash-white steel blade with glowing ember orange-red edge on near-black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-knife.jpg"
- },
- "Playa": {
-  "subject": "erupting volcano cone",
-  "color": "molten orange and amber glowing against indigo-black, with magenta fire veins",
-  "why": "\"Playa\" suggests a desert basin, and the lava, embers and cracked earth imagery points to a volcano as the one emblem that fuses fire and stone.",
-  "prompt": "a erupting volcano cone at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the erupting volcano cone clearly recognisable at the centre and woven from the same glowing lines, in molten orange and amber glowing against indigo-black, with magenta fire veins with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/playa.jpg"
- },
- "Isolation": {
-  "subject": "lone dandelion seed drifting",
-  "color": "deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments",
-  "why": "One seed parting from its bloom and floating alone through the dark mist is a delicate image of isolation.",
-  "prompt": "a large glowing lone dandelion seed drifting filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/isolation.jpg"
- },
- "Rebound": {
-  "subject": "glowing droplet leaping upward and trailing arcs of light",
-  "color": "molten amber #a06946 glowing against deep midnight blue #0e1a27",
-  "why": "A droplet striking a pool sends out concentric ripples that rebound back, matching the title and the pool-ripple, ember and amber-light imagery.",
-  "prompt": "a large glowing water droplet bouncing up from concentric ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber glowing against deep midnight blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/rebound.jpg"
- },
- "Stir Crazy": {
-  "subject": "swirling whirlpool spiral",
-  "color": "black void silhouette, violet shimmer, molten amber and gold ember rosettes",
-  "why": "Restless energy spinning in endless circles \u2014 pent-up and turning.",
-  "file": "/tramokyo-pack/emblems/stir-crazy.jpg"
- },
- "Quarantine": {
-  "subject": "cracked-open geode glowing with crystals inside",
-  "color": "deep midnight blue, molten amber core, violet glitter",
-  "why": "Sealed away, changing inside \u2014 a geode's hidden glowing crystals.",
-  "file": "/tramokyo-pack/emblems/quarantine.jpg"
- },
- "All Together": {
-  "subject": "many small glowing fireflies gathering into one swirling cluster",
-  "color": "warm amber and gold",
-  "why": "gathering fireflies, not a crystal or star",
-  "prompt": "a large glowing many small glowing fireflies gathering into one heart-shaped swirl filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber and gold with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/all-together.jpg"
- },
- "Drift": {
-  "subject": "drifting ember spark",
-  "color": "glowing amber-peach (#ca8e61) with violet glitter edges",
-  "why": "A single ember adrift in indigo darkness captures the title's sense of floating motion and ties together the desert, stars, and horizon-glow imagery.",
-  "prompt": "a large glowing drifting ember spark filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber-peach with violet glitter edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/drift.jpg"
- },
- "Self": {
-  "subject": "glowing labyrinth spiral path leading inward",
-  "color": "amber gold with cool teal shadows",
-  "why": "the path inward to the self (no tree)",
-  "prompt": "a glowing labyrinth spiral path leading inward at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing labyrinth spiral path leading inward clearly recognisable at the centre and woven from the same glowing lines, in amber gold with cool teal shadows with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/self.jpg"
- },
- "Message": {
-  "subject": "comet streaking with luminous tail",
-  "color": "ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black",
-  "why": "A comet is a messenger crossing the dark, carrying light from far away to whoever looks up, which echoes the idea of a message.",
-  "prompt": "a comet streaking with luminous tail at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the comet streaking with luminous tail clearly recognisable at the centre and woven from the same glowing lines, in ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/message.jpg"
- },
- "Grace": {
-  "subject": "glowing ember-lit feather",
-  "color": "molten amber gold (#e8af56) shading to burnt orange (#bf793f)",
-  "why": "A single drifting feather lit by amber light evokes the lightness and gentle blessing of \"Grace\" and fits the embers and golden light-rays in the imagery.",
-  "prompt": "a large glowing glowing ember-lit feather filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold shading to burnt orange with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/grace.jpg"
- },
- "Held": {
-  "subject": "glowing pearl cradled in shell",
-  "color": "molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light",
-  "why": "A pearl enfolded by an open shell is the image of being held, protected and cherished in the dark.",
-  "prompt": "a large glowing glowing pearl cradled in shell filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/held.jpg"
- },
- "Mystic": {
-  "subject": "chambered nautilus shell spiral",
-  "color": "molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks",
-  "why": "The nautilus's perfect spiral of hidden chambers is a sacred-geometry symbol of secret depths and inner mystery, glowing from its golden core.",
-  "prompt": "a large glowing chambered nautilus shell spiral filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/mystic.jpg"
- },
- "The First": {
-  "subject": "cracking primordial egg of light",
-  "color": "molten amber, gold, deep umber, black",
-  "why": "An egg splitting open to release golden light is the moment of origin, the first spark of life igniting from the void.",
-  "prompt": "a large glowing cracking primordial egg of light filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber, gold, deep umber, black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-first.jpg"
- },
- "Dad's Song II": {
-  "subject": "ancient oak tree with wide sheltering branches",
-  "color": "molten amber, burnt orange, gold on deep indigo-black",
-  "why": "An old oak sheltering everything beneath it \u2014 a father's song and legacy.",
-  "file": "/tramokyo-pack/emblems/dad-s-song-ii.jpg"
- },
- "Spectre": {
-  "subject": "drifting ghostly veil of luminous mist",
-  "color": "glowing amber and magenta against deep midnight blue, with soft dusty rose #b7978b highlights",
-  "why": "A drifting, ghostly veil of light embodies the haunting mood of Spectre.",
-  "file": "/tramokyo-pack/emblems/spectre.jpg"
- },
- "Mexican Boy": {
-  "subject": "blooming marigold flower",
-  "color": "glowing amber and burnt orange with deep violet edges",
-  "why": "The marigold, the flower of Mexican tradition, matches the petals igniting into a golden core and the warm ember palette without depicting a person.",
-  "prompt": "a blooming marigold flower at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the blooming marigold flower clearly recognisable at the centre and woven from the same glowing lines, in glowing amber and burnt orange with deep violet edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/mexican-boy.jpg"
- },
- "Afterglow": {
-  "subject": "setting sun's last rays fanning across still rippled water",
-  "color": "molten orange, magenta-coral, violet, deep indigo",
-  "why": "The last light of the sun lingering across still water is the afterglow itself.",
-  "file": "/tramokyo-pack/emblems/afterglow.jpg"
- },
- "Grasshopper": {
-  "subject": "tall meadow grass seed heads swaying in the wind",
-  "color": "emerald green with golden-amber highlights",
-  "why": "The summer meadow the grasshopper sings in, glowing in green and gold.",
-  "file": "/tramokyo-pack/emblems/grasshopper.jpg"
- },
- "Love Again": {
-  "subject": "two spirals of light joining into one",
-  "color": "deep emerald teal, rosy pink glow, golden-green core",
-  "why": "Two separate paths curving together into one \u2014 love found a second time.",
-  "file": "/tramokyo-pack/emblems/love-again.jpg"
- },
- "COSMIC HOMECOMING": {
-  "subject": "glowing spiral galaxy",
-  "color": "molten amber and peach-gold core fading to violet-black edges",
-  "why": "A spiral galaxy with a warm glowing core captures the cosmic, homeward pull of the title and the imagery of galaxies igniting into amber light.",
-  "prompt": "a large glowing glowing spiral galaxy filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and peach-gold core fading to violet-black edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/cosmic-homecoming.jpg"
- },
- "The Tempest": {
-  "subject": "lightning bolt striking through storm cloud",
-  "color": "electric blue-white bolt with violet glow, against #505d88 and #9291b9 cloud tones",
-  "why": "A forked lightning bolt is the most instantly recognizable symbol of a tempest and echoes the electric blue flashes splitting the dark indigo imagery.",
-  "prompt": "a large glowing lightning bolt striking through storm cloud filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in electric blue-white bolt with violet glow, against and cloud tones with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/the-tempest.jpg"
- },
- "Abyssal Dive": {
-  "subject": "deep-sea anglerfish with glowing lure",
-  "color": "pale cyan #79c2d4 body outline with luminous #389cc0 glow on a deep teal #103e58 silhouette",
-  "why": "An anglerfish with its glowing lure embodies the abyssal darkness pierced by pale light, and its form fits a particle system assembling out of the deep.",
-  "prompt": "a large glowing deep-sea anglerfish with glowing lure filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale cyan body outline with luminous glow on a deep teal silhouette with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/abyssal-dive.jpg"
- },
- "Surrender": {
-  "subject": "lotus blossom opening on dark water",
-  "color": "deep midnight teal and indigo body, iridescent magenta-cyan sheen, warm ember-orange glowing core, pale silvery-blue highlights",
-  "why": "A lotus opening and letting go on still water \u2014 yielding as release.",
-  "file": "/tramokyo-pack/emblems/surrender.jpg"
- },
- "Openings": {
-  "subject": "glowing stone archway",
-  "color": "molten orange (#ae5631) glow edged with pale amber (#e0a887) on indigo-violet (#50436f)",
-  "why": "An open archway reads at once as an opening and echoes the cave tunnels and lava light in the imagery.",
-  "prompt": "a glowing stone archway at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing stone archway clearly recognisable at the centre and woven from the same glowing lines, in molten orange glow edged with pale amber on indigo-violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/openings.jpg"
- },
- "Surrounded By Light": {
-  "subject": "Glowing sea anemone blooming",
-  "color": "cool cyan-blue, magenta, violet, hot amber tips",
-  "why": "Its luminous tentacles radiate outward in every direction, wrapping the viewer in light.",
-  "prompt": "a large glowing Glowing sea anemone blooming filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in cool cyan-blue, magenta, violet, hot amber tips with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
- },
- "Complete": {
-  "subject": "perfect seamless torus ring",
-  "color": "molten amber-gold (#d5aa70, #985c2f) with soft violet (#644c6c) glints",
-  "why": "A closed ring with no beginning or end is the purest emblem of completeness.",
-  "file": "/tramokyo-pack/emblems/complete.jpg"
- },
- "Sway": {
-  "subject": "swaying fern frond",
-  "color": "muted teal #336877 with pale silvery-white glints and a faint ember-orange glow",
-  "why": "A single fern frond bending gently in the dark captures the title's swaying motion and the forest, leaf and ember imagery.",
-  "prompt": "a large glowing swaying fern frond filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in muted teal with pale silvery-white glints and a faint ember-orange glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/sway.jpg"
- },
- "Neural Link": {
-  "subject": "glowing nerve cell with long branching dendrites and an axon, asymmetric and organic",
-  "color": "violet and magenta dendrites with a warm amber nucleus",
-  "why": "A neuron with reaching dendrites and a glowing nucleus directly embodies \"Neural Link\" and fits the starry, light-ray, firefly-spark imagery.",
-  "prompt": "a large glowing glowing nerve cell with long branching dendrites and an axon, asymmetric and organic filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in violet and magenta dendrites with a warm amber nucleus with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
-  "file": "/tramokyo-pack/emblems/neural-link.jpg"
- },
- "The Knife (Jam)": {
-  "subject": "curved blade spinning in a spiral of trailing sparks",
-  "color": "pale ash-white steel with glowing ember orange-red sparks on near-black",
-  "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the jam is the knife set loose: the same blade, now spinning free in a spiral of sparks.",
-  "file": "/tramokyo-pack/emblems/feathery/the-knife-jam.jpg"
- },
- "The First (Expanded)": {
-  "subject": "seed of light splitting open into an unfolding spiral of new light",
-  "color": "molten amber and gold on deep umber",
-  "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the expanded First: the origin moment unfolding outward into a spiral.",
-  "file": "/tramokyo-pack/emblems/feathery/the-first-expanded.jpg"
- }
+  "2019": {
+    "subject": "Wind-carved sand dune crest",
+    "color": "amber gold, ember orange, deep indigo",
+    "why": "A single dune ridge shedding glowing grains into the night sky evokes a year dissolving into memory, golden and ember-lit.",
+    "prompt": "a large glowing Wind-carved sand dune crest filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold, ember orange, deep indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/2019.jpg"
+  },
+  "Ghost": {
+    "subject": "angel (the flash image)",
+    "color": "pearl white",
+    "why": "Ghost's own angel",
+    "file": "@angel"
+  },
+  "Snowflake": {
+    "subject": "ethereal feathery swirling snowflake (Karel's reference)",
+    "color": "icy blue and white with pale cyan glow (#9fc4e2, #6598c1) against deep #0b1d2c",
+    "why": "Karel 2026-10-07: 'have the emblem snowflake more like this design not your cartoony one' \u2014 feathery fern arms of drifting light motes swirling around a dark core; same emblem opening and closing",
+    "prompt": "a single luminous icy blue and white with pale cyan glow, against deep six-armed crystalline snowflake emblem, formed of glowing light and fine luminous detail, one centered iconic silhouette with a clear readable outline, isolated on a pure black background, no ground, no text, no frame, generous empty black margin around it, ethereal, elegant, visionary, high contrast, studio isolated",
+    "file": [
+      "/tramokyo-pack/emblems/snowflake-6.jpg"
+    ]
+  },
+  "Realized": {
+    "subject": "single rising flame",
+    "color": "molten amber orange #e5943d glowing to deep burnt orange #ad4a1a",
+    "why": "A flame embodies the lava, embers and fire imagery and the idea of something igniting into being, matching the title \"Realized\" and its charcoal-and-molten-orange palette.",
+    "prompt": "a large glowing single rising flame filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber orange glowing to deep burnt orange with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/realized.jpg"
+  },
+  "Chemiluminescence": {
+    "subject": "cresting wave of bioluminescent water",
+    "color": "luminous cyan-turquoise with pale white highlights",
+    "why": "Living light glowing from deep dark water, as a wave crests and shines.",
+    "file": "/tramokyo-pack/emblems/chemiluminescence.jpg"
+  },
+  "Rolling": {
+    "subject": "cresting ocean wave",
+    "color": "molten amber-gold (#e3ae5e, #ac7038) with deep midnight blue (#0b1a24, #223744) shadows",
+    "why": "A single curling wave glowing with amber light and embers ties the title \"Rolling\" directly to the imagery of ocean waves igniting from midnight blue into molten gold.",
+    "prompt": "a cresting ocean wave at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the cresting ocean wave clearly recognisable at the centre and woven from the same glowing lines, in molten amber-gold, with deep midnight blue, shadows with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/rolling.jpg"
+  },
+  "Stand": {
+    "subject": "lone mountain peak mirrored in still water",
+    "color": "pale silver-cyan #8fbeb3 with golden #9b6228 sparks",
+    "why": "A mountain standing unmoved, mirrored in rippling water.",
+    "file": "/tramokyo-pack/emblems/stand.jpg"
+  },
+  "Cabin Soul": {
+    "subject": "small log cabin hearth flame",
+    "color": "molten amber and gold with deep ember orange (#d67d23, #f4be47)",
+    "why": "A glowing hearth flame fuses the cozy 'cabin' with the fire, embers and amber glow of the imagery.",
+    "prompt": "a large glowing small log cabin hearth flame filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and gold with deep ember orange, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/cabin-soul.jpg"
+  },
+  "Vespers": {
+    "subject": "crescent moon cradling evening star",
+    "color": "glowing amber, molten gold, deep violet, black",
+    "why": "Vespers is the evening prayer at dusk, and a crescent moon holding the first ember-bright star marks that threshold between day and night.",
+    "prompt": "a crescent moon cradling evening star at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the crescent moon cradling evening star clearly recognisable at the centre and woven from the same glowing lines, in glowing amber, molten gold, deep violet, black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/vespers.jpg"
+  },
+  "Lantern": {
+    "subject": "hanging pierced-brass lantern glowing from within",
+    "color": "warm amber #e09f55 with deep orange #af5a2c glow and violet #553d65 edges",
+    "why": "A lantern is the literal title, and its ember-lit glow in a dark void matches the amber and violet imagery.",
+    "prompt": "a large glowing hanging pierced-brass lantern glowing from within filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber with deep orange glow and violet edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/lantern.jpg"
+  },
+  "Open Jam": {
+    "subject": "wide open ocean wave unfurling",
+    "color": "emerald glow, pale gold highlights, amber sparks, near-black green-teal",
+    "why": "An open wave unfurling freely, unscripted like an open jam.",
+    "file": "/tramokyo-pack/emblems/open-jam.jpg"
+  },
+  "Testimony": {
+    "subject": "pillar of light with spiralling embers",
+    "color": "molten amber and gold with pink-violet fade",
+    "why": "a column of light bearing witness (no branching bush)",
+    "prompt": "a large glowing pillar of light with spiralling embers filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and gold with pink-violet fade with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/testimony.jpg"
+  },
+  "Calling": {
+    "subject": "glowing ember-lit horn",
+    "color": "molten amber gold (#dba269) with burnt orange (#a3623d) glow",
+    "why": "A calling horn echoes the title's summons while its ember-lit amber glow against deep indigo reflects the igniting-ember imagery.",
+    "prompt": "a large glowing glowing ember-lit horn filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold with burnt orange glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/calling.jpg"
+  },
+  "First Light": {
+    "subject": "rising sun with radiating rays",
+    "color": "molten ember-gold (#daa360) with amber (#9e5828) glow against deep blue-black",
+    "why": "Karel 2026-10-06: First Light opens on the sun RISING over the horizon",
+    "prompt": "a circular Islamic geometric medallion of glowing light \u2014 concentric rings of interlacing girih star lattice, nested eight- and twelve-point rosettes and arabesque strapwork \u2014 with a large, clearly recognisable rising sun with radiating rays filling the middle third \u2014 drawn in the same luminous filigree line art, the unmistakable focal point \u2014 flat 2D illuminated-tile style, intricate and perfectly symmetrical, in molten ember-gold with amber glow against deep blue-black, mesmerizing and visionary, not a 3D model, not cartoonish, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": [
+      "/tramokyo-pack/motif-forms/dawn-1.jpg",
+      "/tramokyo-pack/emblems/first-light.jpg"
+    ]
+  },
+  "Surrounded by Light": {
+    "subject": "a soft radiant core of light enclosed on every side by concentric luminous halos",
+    "color": "warm white gold with pale violet and rose edges",
+    "why": "Karel 2026-10-12: the anemone read as 'weird' \u2014 'it should be light oriented as if surrounded by light'; he chose the halo of light (option 1).",
+    "prompt": "a large glowing Glowing sea anemone blooming filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in cool cyan-blue, magenta, violet, hot amber tips with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
+  },
+  "Nothing": {
+    "subject": "hollow seed pod dissolving to embers",
+    "color": "molten amber, gold, deep violet haze",
+    "why": "An empty seed husk crumbling into drifting sparks over black void embodies nothingness igniting into possibility.",
+    "prompt": "a hollow seed pod dissolving to embers at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the hollow seed pod dissolving to embers clearly recognisable at the centre and woven from the same glowing lines, in molten amber, gold, deep violet haze with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/nothing.jpg"
+  },
+  "Night Wind": {
+    "subject": "spiral gust of wind carrying dandelion seeds",
+    "color": "amber-gold with pale gold glints (#ca975a, #8c5733) against deep indigo-black",
+    "why": "The night wind made visible, carrying drifting seeds of light.",
+    "file": "/tramokyo-pack/emblems/night-wind.jpg"
+  },
+  "The Other Side": {
+    "subject": "concentric water ripple rings",
+    "color": "glowing lavender-pink (#ba81ac) fading to violet (#744a75)",
+    "why": "Concentric ripples echo the pool-ripple imagery and suggest a crossing to \"the other side\" through the water's surface.",
+    "prompt": "a large glowing concentric water ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing lavender-pink fading to violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-other-side.jpg"
+  },
+  "Northern Plane": {
+    "subject": "flowing aurora curtain of light waving across the dark",
+    "color": "pale cyan and teal with amber sparks",
+    "why": "an aurora curtain (not a ribbon symbol)",
+    "prompt": "a flowing aurora curtain of light waving across the dark at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the flowing aurora curtain of light waving across the dark clearly recognisable at the centre and woven from the same glowing lines, in pale cyan and teal with amber sparks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/northern-plane.jpg"
+  },
+  "No question": {
+    "subject": "solar eclipse corona ring",
+    "color": "molten amber gold, deep black indigo",
+    "why": "A black disc wreathed in golden fire is a total, silent answer that leaves nothing to ask.",
+    "prompt": "a solar eclipse corona ring at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the solar eclipse corona ring clearly recognisable at the centre and woven from the same glowing lines, in molten amber gold, deep black indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/no-question.jpg"
+  },
+  "Loire": {
+    "subject": "single drifting autumn leaf",
+    "color": "molten amber gold with warm bronze edges (#c98e4b, #ecc571, #896343)",
+    "why": "Loire is a river of mist, water and leaves, so one golden leaf adrift on the current captures the title and its amber-lit, dark-night mood.",
+    "prompt": "a single drifting autumn leaf at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the single drifting autumn leaf clearly recognisable at the centre and woven from the same glowing lines, in molten amber gold with warm bronze edges,, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/loire.jpg"
+  },
+  "Chenin": {
+    "subject": "grape leaf with curling tendril",
+    "color": "glowing amber gold (#af9f46) with deep emerald (#364938) veins",
+    "why": "Chenin is a grape variety, so a single vine leaf with its tendril ties the title to the vines, leaves and golden dew-like light of the imagery.",
+    "prompt": "a grape leaf with curling tendril at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the grape leaf with curling tendril clearly recognisable at the centre and woven from the same glowing lines, in glowing amber gold with deep emerald veins with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/chenin.jpg"
+  },
+  "Tranquility": {
+    "subject": "lotus flower on water",
+    "color": "pale gold #cfa473 with soft amber #735f4b shading",
+    "why": "A still lotus floating on a midnight-teal pool embodies serene calm and echoes the water ripples, mist and golden glints of the imagery.",
+    "prompt": "a large glowing lotus flower on water filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale gold with soft amber shading with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/tranquility.jpg"
+  },
+  "Bells": {
+    "subject": "golden temple bell",
+    "color": "molten amber-gold with ember-orange glow (#dfae5f, #af6b2f)",
+    "why": "A bell directly embodies the title \"Bells\" and its glowing amber-gold form echoes the molten rings and ripples rising from the black void.",
+    "prompt": "a large glowing golden temple bell filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber-gold with ember-orange glow, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/bells.jpg"
+  },
+  "Rise": {
+    "subject": "tall rising flame with spiralling sparks",
+    "color": "molten orange-gold and amber (#e3a777, #b96a49) with ember-red edges (#84423a)",
+    "why": "A flame climbing upward from embers embodies the title Rise.",
+    "file": "/tramokyo-pack/emblems/rise.jpg"
+  },
+  "Amboise": {
+    "subject": "single flame blooming above dark river water",
+    "color": "molten amber gold, white-hot core, deep midnight blue shadows",
+    "why": "Fire-born light rising from the Loire's dark water \u2014 the golden embers of Amboise.",
+    "file": "/tramokyo-pack/emblems/amboise.jpg"
+  },
+  "Never Forget": {
+    "subject": "rings of an ancient tree trunk cross-section",
+    "color": "glowing amber, ember orange, violet highlights, deep indigo",
+    "why": "A tree keeps every year it has lived in its rings \u2014 memory made visible.",
+    "file": "/tramokyo-pack/emblems/never-forget.jpg"
+  },
+  "Torraine": {
+    "subject": "radiant eight-pointed guiding star",
+    "color": "molten amber-gold with warm gold sparks (#c79f77 to #65432c glow)",
+    "why": "\"Torraine\" evokes a torch-lit guiding light, and a flaring golden star against the midnight-blue void captures the stars, light-rays and ember core of the imagery.",
+    "prompt": "a radiant eight-pointed guiding star at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the radiant eight-pointed guiding star clearly recognisable at the centre and woven from the same glowing lines, in molten amber-gold with warm gold sparks to glow) with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/torraine.jpg"
+  },
+  "Yellow Bird": {
+    "subject": "Yellow songbird in flight",
+    "color": "glowing amber gold with bright #e0ae58 highlights",
+    "why": "The title names a yellow bird, and a golden bird of embers and sparks matches the amber-on-black imagery.",
+    "prompt": "a large glowing Yellow songbird in flight filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber gold with bright highlights with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/yellow-bird.jpg"
+  },
+  "Roll Away": {
+    "subject": "glowing molten lava boulder",
+    "color": "molten orange #dc9058 with deep ember red #873f25 cracks",
+    "why": "\"Roll Away\" suggests a rolling stone, and a lava-veined boulder ties together the embers, lava and stone imagery.",
+    "prompt": "a glowing molten lava boulder at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing molten lava boulder clearly recognisable at the centre and woven from the same glowing lines, in molten orange with deep ember red cracks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/roll-away.jpg"
+  },
+  "Singular": {
+    "subject": "Cosmic seed igniting into radiant point",
+    "color": "molten gold, amber, white-hot core on black",
+    "why": "A single dense seed of light bursting from one point echoes 'Singular' as the origin where everything begins.",
+    "prompt": "a Cosmic seed igniting into radiant point at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the Cosmic seed igniting into radiant point clearly recognisable at the centre and woven from the same glowing lines, in molten gold, amber, white-hot core on black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/singular.jpg"
+  },
+  "Redwoods Sway": {
+    "subject": "single feathery redwood sprig of needles, gently curved",
+    "color": "amber-gold glow against deep midnight blue",
+    "why": "a sprig, never a tree silhouette",
+    "prompt": "a large glowing single feathery redwood sprig of needles, gently curved filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber-gold glow against deep midnight blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/redwoods-sway.jpg"
+  },
+  "Horses": {
+    "subject": "galloping horse silhouette",
+    "color": "molten orange #da974f with glowing amber #9a532c embers",
+    "why": "The title \"Horses\" calls for a horse, and a galloping silhouette built from ember-like particles suits the lava and smoke imagery.",
+    "prompt": "a galloping horse silhouette at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the galloping horse silhouette clearly recognisable at the centre and woven from the same glowing lines, in molten orange with glowing amber embers with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/horses.jpg"
+  },
+  "Velvet Tears": {
+    "subject": "single falling rose petal",
+    "color": "glowing amber-gold with rose-red edges (#d7895d, #863f42)",
+    "why": "A velvety rose petal evokes the title's 'velvet' softness and 'tears' through its teardrop shape, echoing the drifting petals and amber light in the imagery.",
+    "prompt": "a large glowing single falling rose petal filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber-gold with rose-red edges, with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/velvet-tears.jpg"
+  },
+  "Rattler": {
+    "subject": "crackling burst of desert lightning",
+    "color": "molten orange-gold (#e99c43, #b45325) glowing veins on deep black-umber body (#33130e)",
+    "why": "Desert heat and charged air \u2014 the sudden crackle the title rattles with.",
+    "file": "/tramokyo-pack/emblems/rattler.jpg"
+  },
+  "Sancerre Cry": {
+    "subject": "weeping grapevine leaf cluster",
+    "color": "amber gold with magenta glow on deep violet",
+    "why": "Sancerre is a wine region, so a grape cluster on a vine evokes the title's wine and sorrow, glowing amber and magenta against the misty violet forest.",
+    "prompt": "a large glowing weeping grapevine leaf cluster filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold with magenta glow on deep violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/sancerre-cry.jpg"
+  },
+  "The Summit": {
+    "subject": "jagged mountain peak",
+    "color": "ember orange #c89666 glowing against deep indigo #142330",
+    "why": "A single craggy summit crowned with a thin molten glow embodies the title and the stone, mist and ember imagery.",
+    "prompt": "a jagged mountain peak at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the jagged mountain peak clearly recognisable at the centre and woven from the same glowing lines, in ember orange glowing against deep indigo with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-summit.jpg"
+  },
+  "The Ascension": {
+    "subject": "towering crystal spire rising upward",
+    "color": "molten gold, amber, deep umber black",
+    "why": "A spire of light climbing out of the dark toward the golden light.",
+    "file": "/tramokyo-pack/emblems/the-ascension.jpg"
+  },
+  "The Bloom": {
+    "subject": "blooming flower with fireflies",
+    "color": "amber gold #c89d4e petals with ember orange #d13f19 glow and deep crimson #771009 core",
+    "why": "\"The Bloom\" calls for a single opening flower, and the amber glow, fern-green tones and drifting fireflies of the imagery are carried by its luminous petals.",
+    "prompt": "a large glowing blooming flower with fireflies filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in amber gold petals with ember orange glow and deep crimson core with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-bloom.jpg"
+  },
+  "Cosmic Drift": {
+    "subject": "ringed gas-giant planet with broad tilted rings, drifting",
+    "color": "amber and burnt orange planet with violet-lit rings",
+    "why": "a planet adrift, clearly ringed (distinct from the eclipse ring)",
+    "prompt": "a ringed gas-giant planet with broad tilted rings, drifting at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the ringed gas-giant planet with broad tilted rings, drifting clearly recognisable at the centre and woven from the same glowing lines, in amber and burnt orange planet with violet-lit rings with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/cosmic-drift.jpg"
+  },
+  "Mycelium Dream": {
+    "subject": "glowing mushroom with mycelium roots",
+    "color": "warm amber-gold with a deep teal glow",
+    "why": "A single luminous mushroom with threadlike mycelium roots embodies the title and the amber-lit teal forest imagery.",
+    "prompt": "a glowing mushroom with mycelium roots at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing mushroom with mycelium roots clearly recognisable at the centre and woven from the same glowing lines, in warm amber-gold with a deep teal glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/mycelium-dream.jpg"
+  },
+  "Interplay": {
+    "subject": "two interlocking flame and water droplets",
+    "color": "molten amber gold (#d89d5a) and cool teal-blue (#467796)",
+    "why": "\"Interplay\" is embodied by the imagery's meeting of fire and water, with warm amber and cool blue forming one intertwined emblem.",
+    "prompt": "a large glowing two interlocking flame and water droplets filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold and cool teal-blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/interplay.jpg"
+  },
+  "Bath": {
+    "subject": "single falling water droplet with ripple rings",
+    "color": "molten amber gold with pale gold highlights",
+    "why": "the moment of entering water (a splash read as a royal crown)",
+    "prompt": "a large glowing single falling water droplet with ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold with pale gold highlights with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/bath.jpg"
+  },
+  "Welcome Home": {
+    "subject": "warm glowing bird nest cradling small orbs of light",
+    "color": "warm amber-coral glow (#ca842f) with deep indigo (#0f374f) surround",
+    "why": "coming home \u2014 a nest of warm light (Karel 2026-10-07: no framing/scene)",
+    "prompt": "a large glowing glowing lantern-lit cottage window filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber-coral glow with deep indigo surround with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/welcome-home.jpg"
+  },
+  "The Knife": {
+    "subject": "single dagger blade with ember edge",
+    "color": "pale ash-white steel blade with glowing ember orange-red edge on near-black",
+    "why": "The title names a knife, and a blade outlined in ember glow ties together the cave, lava and spark imagery in one instantly readable emblem.",
+    "prompt": "a large glowing single dagger blade with ember edge filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale ash-white steel blade with glowing ember orange-red edge on near-black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-knife.jpg"
+  },
+  "Playa": {
+    "subject": "erupting volcano cone",
+    "color": "molten orange and amber glowing against indigo-black, with magenta fire veins",
+    "why": "\"Playa\" suggests a desert basin, and the lava, embers and cracked earth imagery points to a volcano as the one emblem that fuses fire and stone.",
+    "prompt": "a erupting volcano cone at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the erupting volcano cone clearly recognisable at the centre and woven from the same glowing lines, in molten orange and amber glowing against indigo-black, with magenta fire veins with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/playa.jpg"
+  },
+  "Isolation": {
+    "subject": "lone dandelion seed drifting",
+    "color": "deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments",
+    "why": "One seed parting from its bloom and floating alone through the dark mist is a delicate image of isolation.",
+    "prompt": "a large glowing lone dandelion seed drifting filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in deep midnight teal body with a single warm amber glowing core and faint ember-orange filaments with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/isolation.jpg"
+  },
+  "Rebound": {
+    "subject": "glowing droplet leaping upward and trailing arcs of light",
+    "color": "molten amber #a06946 glowing against deep midnight blue #0e1a27",
+    "why": "A droplet striking a pool sends out concentric ripples that rebound back, matching the title and the pool-ripple, ember and amber-light imagery.",
+    "prompt": "a large glowing water droplet bouncing up from concentric ripple rings filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber glowing against deep midnight blue with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/rebound.jpg"
+  },
+  "Stir Crazy": {
+    "subject": "swirling whirlpool spiral",
+    "color": "black void silhouette, violet shimmer, molten amber and gold ember rosettes",
+    "why": "Restless energy spinning in endless circles \u2014 pent-up and turning.",
+    "file": "/tramokyo-pack/emblems/stir-crazy.jpg"
+  },
+  "Quarantine": {
+    "subject": "cracked-open geode glowing with crystals inside",
+    "color": "deep midnight blue, molten amber core, violet glitter",
+    "why": "Sealed away, changing inside \u2014 a geode's hidden glowing crystals.",
+    "file": "/tramokyo-pack/emblems/quarantine.jpg"
+  },
+  "All Together": {
+    "subject": "many small glowing fireflies gathering into one swirling cluster",
+    "color": "warm amber and gold",
+    "why": "gathering fireflies, not a crystal or star",
+    "prompt": "a large glowing many small glowing fireflies gathering into one heart-shaped swirl filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in warm amber and gold with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/all-together.jpg"
+  },
+  "Drift": {
+    "subject": "drifting ember spark",
+    "color": "glowing amber-peach (#ca8e61) with violet glitter edges",
+    "why": "A single ember adrift in indigo darkness captures the title's sense of floating motion and ties together the desert, stars, and horizon-glow imagery.",
+    "prompt": "a large glowing drifting ember spark filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in glowing amber-peach with violet glitter edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/drift.jpg"
+  },
+  "Self": {
+    "subject": "glowing labyrinth spiral path leading inward",
+    "color": "amber gold with cool teal shadows",
+    "why": "the path inward to the self (no tree)",
+    "prompt": "a glowing labyrinth spiral path leading inward at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing labyrinth spiral path leading inward clearly recognisable at the centre and woven from the same glowing lines, in amber gold with cool teal shadows with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/self.jpg"
+  },
+  "Message": {
+    "subject": "comet streaking with luminous tail",
+    "color": "ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black",
+    "why": "A comet is a messenger crossing the dark, carrying light from far away to whoever looks up, which echoes the idea of a message.",
+    "prompt": "a comet streaking with luminous tail at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the comet streaking with luminous tail clearly recognisable at the centre and woven from the same glowing lines, in ember-orange core, glowing violet and magenta tail, golden amber glints, teal-emerald veins on deep black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/message.jpg"
+  },
+  "Grace": {
+    "subject": "glowing ember-lit feather",
+    "color": "molten amber gold (#e8af56) shading to burnt orange (#bf793f)",
+    "why": "A single drifting feather lit by amber light evokes the lightness and gentle blessing of \"Grace\" and fits the embers and golden light-rays in the imagery.",
+    "prompt": "a large glowing glowing ember-lit feather filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber gold shading to burnt orange with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/grace.jpg"
+  },
+  "Held": {
+    "subject": "glowing pearl cradled in shell",
+    "color": "molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light",
+    "why": "A pearl enfolded by an open shell is the image of being held, protected and cherished in the dark.",
+    "prompt": "a large glowing glowing pearl cradled in shell filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber pearl glowing against deep midnight blue and teal shadows, with soft golden light with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/held.jpg"
+  },
+  "Mystic": {
+    "subject": "chambered nautilus shell spiral",
+    "color": "molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks",
+    "why": "The nautilus's perfect spiral of hidden chambers is a sacred-geometry symbol of secret depths and inner mystery, glowing from its golden core.",
+    "prompt": "a large glowing chambered nautilus shell spiral filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten gold and amber-white core, violet and lilac glow, steel-blue edges, ember-orange sparks with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/mystic.jpg"
+  },
+  "The First": {
+    "subject": "cracking primordial egg of light",
+    "color": "molten amber, gold, deep umber, black",
+    "why": "An egg splitting open to release golden light is the moment of origin, the first spark of life igniting from the void.",
+    "prompt": "a large glowing cracking primordial egg of light filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber, gold, deep umber, black with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-first.jpg"
+  },
+  "Dad's Song II": {
+    "subject": "ancient oak tree with wide sheltering branches",
+    "color": "molten amber, burnt orange, gold on deep indigo-black",
+    "why": "An old oak sheltering everything beneath it \u2014 a father's song and legacy.",
+    "file": "/tramokyo-pack/emblems/dad-s-song-ii.jpg"
+  },
+  "Spectre": {
+    "subject": "drifting ghostly veil of luminous mist",
+    "color": "glowing amber and magenta against deep midnight blue, with soft dusty rose #b7978b highlights",
+    "why": "A drifting, ghostly veil of light embodies the haunting mood of Spectre.",
+    "file": "/tramokyo-pack/emblems/spectre.jpg"
+  },
+  "Mexican Boy": {
+    "subject": "blooming marigold flower",
+    "color": "glowing amber and burnt orange with deep violet edges",
+    "why": "The marigold, the flower of Mexican tradition, matches the petals igniting into a golden core and the warm ember palette without depicting a person.",
+    "prompt": "a blooming marigold flower at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the blooming marigold flower clearly recognisable at the centre and woven from the same glowing lines, in glowing amber and burnt orange with deep violet edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/mexican-boy.jpg"
+  },
+  "Afterglow": {
+    "subject": "setting sun's last rays fanning across still rippled water",
+    "color": "molten orange, magenta-coral, violet, deep indigo",
+    "why": "The last light of the sun lingering across still water is the afterglow itself.",
+    "file": "/tramokyo-pack/emblems/afterglow.jpg"
+  },
+  "Grasshopper": {
+    "subject": "tall meadow grass seed heads swaying in the wind",
+    "color": "emerald green with golden-amber highlights",
+    "why": "The summer meadow the grasshopper sings in, glowing in green and gold.",
+    "file": "/tramokyo-pack/emblems/grasshopper.jpg"
+  },
+  "Love Again": {
+    "subject": "two spirals of light joining into one",
+    "color": "deep emerald teal, rosy pink glow, golden-green core",
+    "why": "Two separate paths curving together into one \u2014 love found a second time.",
+    "file": "/tramokyo-pack/emblems/love-again.jpg"
+  },
+  "COSMIC HOMECOMING": {
+    "subject": "glowing spiral galaxy",
+    "color": "molten amber and peach-gold core fading to violet-black edges",
+    "why": "A spiral galaxy with a warm glowing core captures the cosmic, homeward pull of the title and the imagery of galaxies igniting into amber light.",
+    "prompt": "a large glowing glowing spiral galaxy filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in molten amber and peach-gold core fading to violet-black edges with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/cosmic-homecoming.jpg"
+  },
+  "The Tempest": {
+    "subject": "lightning bolt striking through storm cloud",
+    "color": "electric blue-white bolt with violet glow, against #505d88 and #9291b9 cloud tones",
+    "why": "A forked lightning bolt is the most instantly recognizable symbol of a tempest and echoes the electric blue flashes splitting the dark indigo imagery.",
+    "prompt": "a large glowing lightning bolt striking through storm cloud filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in electric blue-white bolt with violet glow, against and cloud tones with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/the-tempest.jpg"
+  },
+  "Abyssal Dive": {
+    "subject": "deep-sea anglerfish with glowing lure",
+    "color": "pale cyan #79c2d4 body outline with luminous #389cc0 glow on a deep teal #103e58 silhouette",
+    "why": "An anglerfish with its glowing lure embodies the abyssal darkness pierced by pale light, and its form fits a particle system assembling out of the deep.",
+    "prompt": "a large glowing deep-sea anglerfish with glowing lure filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in pale cyan body outline with luminous glow on a deep teal silhouette with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/abyssal-dive.jpg"
+  },
+  "Surrender": {
+    "subject": "lotus blossom opening on dark water",
+    "color": "deep midnight teal and indigo body, iridescent magenta-cyan sheen, warm ember-orange glowing core, pale silvery-blue highlights",
+    "why": "A lotus opening and letting go on still water \u2014 yielding as release.",
+    "file": "/tramokyo-pack/emblems/surrender.jpg"
+  },
+  "Openings": {
+    "subject": "glowing stone archway",
+    "color": "molten orange (#ae5631) glow edged with pale amber (#e0a887) on indigo-violet (#50436f)",
+    "why": "An open archway reads at once as an opening and echoes the cave tunnels and lava light in the imagery.",
+    "prompt": "a glowing stone archway at the heart of a hypnotic kaleidoscopic mandala \u2014 recursive fractal Islamic geometry exploding outward in six- to twelve-fold symmetry, interlocking star lattices within star lattices, razor-fine luminous filigree, optical-art precision, the glowing stone archway clearly recognisable at the centre and woven from the same glowing lines, in molten orange glow edged with pale amber on indigo-violet with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/openings.jpg"
+  },
+  "Surrounded By Light": {
+    "subject": "a soft radiant core of light enclosed on every side by concentric luminous halos",
+    "color": "warm white gold with pale violet and rose edges",
+    "why": "Karel 2026-10-12: the anemone read as 'weird' \u2014 'it should be light oriented as if surrounded by light'; he chose the halo of light (option 1).",
+    "prompt": "a large glowing Glowing sea anemone blooming filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in cool cyan-blue, magenta, violet, hot amber tips with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/surrounded-by-light.jpg"
+  },
+  "Complete": {
+    "subject": "perfect seamless torus ring",
+    "color": "molten amber-gold (#d5aa70, #985c2f) with soft violet (#644c6c) glints",
+    "why": "A closed ring with no beginning or end is the purest emblem of completeness.",
+    "file": "/tramokyo-pack/emblems/complete.jpg"
+  },
+  "Sway": {
+    "subject": "swaying fern frond",
+    "color": "muted teal #336877 with pale silvery-white glints and a faint ember-orange glow",
+    "why": "A single fern frond bending gently in the dark captures the title's swaying motion and the forest, leaf and ember imagery.",
+    "prompt": "a large glowing swaying fern frond filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in muted teal with pale silvery-white glints and a faint ember-orange glow with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/sway.jpg"
+  },
+  "Neural Link": {
+    "subject": "glowing nerve cell with long branching dendrites and an axon, asymmetric and organic",
+    "color": "violet and magenta dendrites with a warm amber nucleus",
+    "why": "A neuron with reaching dendrites and a glowing nucleus directly embodies \"Neural Link\" and fits the starry, light-ray, firefly-spark imagery.",
+    "prompt": "a large glowing glowing nerve cell with long branching dendrites and an axon, asymmetric and organic filling the centre of the frame, rendered in razor-fine luminous filigree, unmistakable at a glance, surrounded by a hypnotic kaleidoscopic halo of recursive Islamic fractal geometry \u2014 interlocking star lattices within star lattices radiating outward in perfect symmetry, optical-art precision, in violet and magenta dendrites with a warm amber nucleus with shimmering iridescent highlights, mesmerizing and visionary, flat 2D, no calligraphy, no text, centered, isolated on a pure black background, generous black margin, high contrast",
+    "file": "/tramokyo-pack/emblems/neural-link.jpg"
+  },
+  "The Knife (Jam)": {
+    "subject": "curved blade spinning in a spiral of trailing sparks",
+    "color": "pale ash-white steel with glowing ember orange-red sparks on near-black",
+    "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the jam is the knife set loose: the same blade, now spinning free in a spiral of sparks.",
+    "file": "/tramokyo-pack/emblems/feathery/the-knife-jam.jpg"
+  },
+  "The First (Expanded)": {
+    "subject": "seed of light splitting open into an unfolding spiral of new light",
+    "color": "molten amber and gold on deep umber",
+    "why": "Karel 2026-10-08: every title gets its own emblem \u2014 the expanded First: the origin moment unfolding outward into a spiral.",
+    "file": "/tramokyo-pack/emblems/feathery/the-first-expanded.jpg"
+  }
 }
