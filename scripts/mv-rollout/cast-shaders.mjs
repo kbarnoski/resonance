@@ -33,7 +33,13 @@ const jiti = createJiti(import.meta.url, { alias: { "@": ROOT + "src" } });
 const arg = (k, d) => process.argv.find((a) => a.startsWith(`--${k}=`))?.split("=")[1] ?? d;
 const setKey = process.argv[2];
 const CAP = Number(arg("cap", 8));
-const LOOP_CAP = Number(arg("loop-cap", 13));
+// Shader balance (Karel 2026-10-12, src/lib/journeys/shader-balance.ts):
+// per-shader loop caps (magma / parsec / ember 5, dharma 2, others
+// SHADER_LOOP_CAP), journey bans, and a lean away from amber toward cosmic.
+const BAL = await jiti.import("../../src/lib/journeys/shader-balance.ts");
+const LOOP_CAP = Number(arg("loop-cap", BAL.SHADER_LOOP_CAP));
+const loopCapOf = (m) => Math.min(LOOP_CAP, BAL.shaderLoopCap(m));
+const balanceScore = (m) => (BAL.isAmberShader(m) ? -1.5 : 0) + (V[m]?.category === "Cosmic" ? 0.75 : 0);
 let MIN_DIST = Number(arg("min-dist", 4));
 const LEAD_DIST = 6;
 const TARGET = 12; // distinct per journey incl. lead (11–13 allowed)
@@ -167,7 +173,7 @@ function solve(seed) {
     const cast = j.phases.map((p, i) => (leadPh.includes(i) ? [lead] : []));
     const total = size.reduce((a, b) => a + b, 0) - leadPh.length;
     let carries = Math.max(0, total - (TARGET - 1));
-    const ok = (m, i) => !used.has(m) && !near.has(m) && (uses[m] ?? 0) < CAP && (featuredUses[m] ?? 0) + (anyUse[m] ?? 0) < LOOP_CAP
+    const ok = (m, i) => !used.has(m) && !near.has(m) && (uses[m] ?? 0) < CAP && (featuredUses[m] ?? 0) + (anyUse[m] ?? 0) < loopCapOf(m) && !(BAL.SHADER_JOURNEY_BANS[id] ?? []).includes(m)
       && !(leadPos.has(m) && Math.abs(leadPos.get(m) - pos) < LEAD_DIST && m !== lead)
       && !(i === 0 && raBan.first.has(m)) && !(i === j.phases.length - 1 && raBan.last.has(m))
       && (i !== sparse || cast[i].length >= 2 || eff(m) <= 12) && (i !== 0 || eff(m) <= 20) && eff(m) <= 40;
@@ -178,7 +184,7 @@ function solve(seed) {
         if (prev.length) { cast[i].push(prev[Math.floor(R() * prev.length)]); carries--; }
       }
       while (cast[i].length < size[i]) {
-        const cands = POOL.filter((m) => ok(m, i)).map((m) => ({ m, s: fit(m, pf) * 2 - ((uses[m] ?? 0) + (featuredUses[m] ?? 0)) * 0.35 + (LOW.has(m) ? -1.5 : 0) + (i === peak ? Math.min(eff(m), 30) / 15 : 0) + R() * (1.5 + attempt * 0.15) }));
+        const cands = POOL.filter((m) => ok(m, i)).map((m) => ({ m, s: fit(m, pf) * 2 - ((uses[m] ?? 0) + (featuredUses[m] ?? 0)) * 0.35 + (LOW.has(m) ? -1.5 : 0) + balanceScore(m) + (i === peak ? Math.min(eff(m), 30) / 15 : 0) + R() * (1.5 + attempt * 0.15) }));
         if (!cands.length) { FAIL[`${j.name}/${j.phases[i].id}: no candidate`] = (FAIL[`${j.name}/${j.phases[i].id}: no candidate`] ?? 0) + 1; break; }
         cands.sort((a, b) => b.s - a.s);
         const m = cands[0].m;

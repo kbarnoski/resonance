@@ -10,6 +10,8 @@ import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
 import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
 import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
+import { KIN_BORROW_AVOID, isAmberShader } from "./shader-balance";
+import { isMasteredJourneyLike } from "./mastered";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
   getPhaseBlend,
@@ -207,6 +209,9 @@ class JourneyEngine {
   private inStillnessNow = false;
   /** Scripted take: recorded shader timeline replayed by progress. */
   private takeScript: TakeScriptEntry[] | null = null;
+  /** This run started from a scripted (mastered) take — survives the
+   *  script's tail release, so the take's borrowing stays as mastered. */
+  private scriptedTake = false;
   /** Kinetic EQ journeys: dual locked on, tertiary continuous — all
    *  three band layers stay on screen (Karel 2026-09-30). */
   private kineticEq = false;
@@ -264,6 +269,7 @@ class JourneyEngine {
     this.stop();
 
     this.takeScript = options?.script?.length ? options.script : null;
+    this.scriptedTake = !!this.takeScript;
     this.lastScriptPrim = null;
     this.kineticCast = isKineticJourneyName(journey.name);
     this.kineticEq = isFullKineticJourney(journey);
@@ -1529,13 +1535,23 @@ class JourneyEngine {
    *  roster): once a journey has shown its whole roster, an UNSEEN shader from
    *  the vetted pool in one of the roster's own hue families — never a stranger
    *  palette. A hash pick, NOT this.random(): the seeded stream (pinned takes)
-   *  is untouched. Null when nothing kindred is left (then it may repeat). */
+   *  is untouched. Null when nothing kindred is left (then it may repeat).
+   *  SHADER BALANCE (Karel 2026-10-12, shader-balance.ts): never borrows the
+   *  over-seen (dharma, magma, parsec, ember), and leans cool — amber kin only
+   *  when the roster itself is mostly amber or nothing cool is kindred. */
   private kinBorrow(live: Set<string | null>): string | null {
     if (!this.journey) return null;
     const roster = this.journey.phases.flatMap((p) => p.shaderModes);
     const hues = new Set(roster.map((m) => SHADER_HUES[m] ?? "neutral"));
-    const cands = VETTED_POOL.filter((m) => !this.seenShaders.has(m) && !live.has(m) && !roster.includes(m) && !MODES_3D.has(m) && this.isShaderAllowed(m) && hues.has(SHADER_HUES[m] ?? "neutral"));
+    // scripted (mastered) takes keep their borrowing exactly as mastered
+    const balance = !this.scriptedTake && !isMasteredJourneyLike(this.journey);
+    let cands = VETTED_POOL.filter((m) => !this.seenShaders.has(m) && !live.has(m) && !roster.includes(m) && !MODES_3D.has(m) && !(balance && KIN_BORROW_AVOID.has(m)) && this.isShaderAllowed(m) && hues.has(SHADER_HUES[m] ?? "neutral"));
     if (!cands.length) return null;
+    if (balance) {
+      const amberRoster = roster.length ? roster.filter(isAmberShader).length / roster.length : 0;
+      const cool = cands.filter((m) => !isAmberShader(m));
+      if (cool.length && amberRoster < 0.5) cands = cool;
+    }
     let h = 2166136261;
     const key = `${this.journey.id}:${this.seenShaders.size}`;
     for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }

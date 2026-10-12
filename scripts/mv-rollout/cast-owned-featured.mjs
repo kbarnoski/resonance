@@ -60,7 +60,11 @@ const KLAB = new Set(["sparkler", "comet-swarm", "helix-stream", "ember-fountain
 const GEOMETRY = new Set(SH.MODE_META.filter((m) => m.category === "Geometry").map((m) => m.mode));
 const OWNED_DIST = featured.constraints.owned?.minDist ?? 7;
 const OWNED_CAP = featured.constraints.owned?.cap ?? 10;
-const LOOP_CAP = 13;
+// Shader balance (Karel 2026-10-12, src/lib/journeys/shader-balance.ts): per-shader
+// loop caps (magma / parsec / ember 5, dharma 2, others SHADER_LOOP_CAP), journey
+// bans (First Light: no dharma), and a lean away from amber toward cosmic.
+const BAL = await jiti.import("../../src/lib/journeys/shader-balance.ts");
+const balanceScore = (m) => (BAL.isAmberShader(m) ? -1.5 : 0) + (V[m]?.category === "Cosmic" ? 0.75 : 0);
 
 const RING = ["ember", "gold", "green", "teal", "blue", "violet", "magenta"];
 function hsv(hex) { const n = parseInt(hex.replace("#", ""), 16); const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255; const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; let h = 0; if (d > 0) { if (mx === r) h = 60 * (((g - b) / d) % 6); else if (mx === g) h = 60 * ((b - r) / d + 2); else h = 60 * ((r - g) / d + 4); } return { h: ((h % 360) + 360) % 360, s: mx ? d / mx : 0, v: mx }; }
@@ -126,7 +130,7 @@ for (const j of SETJ) {
   const banLast = new Set(ri >= 0 && ri + 1 < RA.length ? firstPhase(RA[ri + 1]) : []);
   const raNeighbours = ri >= 0 ? [RA[(ri - 1 + RA.length) % RA.length], RA[(ri + 1) % RA.length]] : [];
   for (const id of raNeighbours) for (const m of rosterOf(id)) ban.add(m);
-  const ok = (m) => !ban.has(m) && (recastUses[m] ?? 0) < OWNED_CAP && (loopUses[m] ?? 0) < LOOP_CAP && eff(m) <= 40;
+  const ok = (m) => !ban.has(m) && (recastUses[m] ?? 0) < OWNED_CAP && (loopUses[m] ?? 0) < BAL.shaderLoopCap(m) && !(BAL.SHADER_JOURNEY_BANS[j.id] ?? []).includes(m) && eff(m) <= 40;
   const avail = POOL.filter(ok);
   const pf = paletteFamilies(row.theme?.palette ?? row.phases[0]?.palette);
   console.log(`${j.name}: ${avail.length} eligible shaders (pool ${POOL.length}, spacing-banned ${ban.size}); RA bans first [${[...banFirst]}] last [${[...banLast]}]`);
@@ -164,7 +168,7 @@ for (const j of SETJ) {
       while (cast[i].length < size[i]) {
         const dark = i === sparse && cast[i].length < 2;
         const c = avail.filter((m) => !used.has(m) && (!dark || eff(m) <= 12) && !(i === 0 && banFirst.has(m)) && !(i === ph.length - 1 && banLast.has(m)) && (i !== 0 || eff(m) <= 20))
-          .map((m) => ({ m, s: fit(m, pf) * 2 - (recastUses[m] ?? 0) * 0.3 + (i === peak ? Math.min(eff(m), 30) / 15 : 0) + R() * 2.5 }));
+          .map((m) => ({ m, s: fit(m, pf) * 2 - (recastUses[m] ?? 0) * 0.3 + balanceScore(m) + (i === peak ? Math.min(eff(m), 30) / 15 : 0) + R() * 2.5 }));
         if (!c.length) { failed = true; break; }
         c.sort((x, y) => y.s - x.s); cast[i].push(c[0].m); used.add(c[0].m);
       }

@@ -133,10 +133,14 @@ describe("featured + album recast: quality", () => {
     }
   });
 
-  it("gives every legacy journey 7-9 distinct shaders and every rolled-out journey 10-12", () => {
+  it("gives every legacy journey 7-9 distinct shaders and every rolled-out journey 10-12 (14 with long-phase voices)", () => {
+    // longPhaseVoices (Grasshopper, Karel 2026-10-12: "that moving plane shader
+    // on repeat and ends up too long"): a 60 s+ phase gets one voice per
+    // SECONDS_PER_VOICE (scripts/rebalance-shader-casts.mjs) — up to 14 in all.
+    const longPhase = new Set(featured.journeys.filter((j) => (j as FJ & { longPhaseVoices?: boolean }).longPhaseVoices).map((j) => j.id));
     for (const id of Object.keys(JOURNEY_CASTS)) {
       const n = castShaders(id).length;
-      const [lo, hi] = OWNED.has(id) ? [10, 12] : [7, 9];
+      const [lo, hi] = OWNED.has(id) ? [10, longPhase.has(id) ? 14 : 12] : [7, 9];
       expect(n, JOURNEY_CASTS[id].name).toBeGreaterThanOrEqual(lo); expect(n, JOURNEY_CASTS[id].name).toBeLessThanOrEqual(hi);
     }
   });

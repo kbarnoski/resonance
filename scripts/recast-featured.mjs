@@ -78,6 +78,10 @@ const SEQ = await jiti.import("../src/lib/journeys/installation-sequence.ts");
 const TAKES = await jiti.import("../src/lib/journeys/pinned-takes.ts");
 const KIN = await jiti.import("../src/lib/journeys/kinetic.ts");
 const { MASTERED_JOURNEYS } = await jiti.import("../src/lib/journeys/mastered.ts");
+// Shader balance (Karel 2026-10-12, src/lib/journeys/shader-balance.ts): journey
+// bans (First Light: no dharma) + a lean away from amber toward cosmic. The
+// loop-wide caps are applied after any recast by scripts/rebalance-shader-casts.mjs.
+const BAL = await jiti.import("../src/lib/journeys/shader-balance.ts");
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 const vet = JSON.parse(readFileSync("scripts/shader-vetting.json", "utf8"));
 const exp = JSON.parse(readFileSync("scripts/expansion-recast.json", "utf8"));
@@ -175,7 +179,7 @@ function solve(c, iters = 300000) {
   const ns = T.map((t, j) => (frozen[j] ? priorById.get(t.id).shaders.length : kFor(t.dur, c)));
   const pfs = T.map((t) => paletteFamilies(t.palette));
   const domain = T.map((t) => {
-    const ban = new Set([...(t.blocked ?? []), ...(J.REALM_SHADER_BLOCKLIST[t.realm] ?? []), ...(J.PICKTIME_REALM_BLOCKLIST[t.realm] ?? [])]);
+    const ban = new Set([...(t.blocked ?? []), ...(J.REALM_SHADER_BLOCKLIST[t.realm] ?? []), ...(J.PICKTIME_REALM_BLOCKLIST[t.realm] ?? []), ...(BAL.SHADER_JOURNEY_BANS[t.id] ?? [])]);
     return POOL.filter((m) => !ban.has(m) && !(t.pos != null && (fixed.get(m) ?? []).some((f) => cdist(f.pos, t.pos, L) < (f.lead ? Math.max(LEAD_SUPPORT_DIST, c.minDist) : c.minDist))));
   });
   const at = new Map(POOL.map((m) => [m, new Set()]));
@@ -197,7 +201,7 @@ function solve(c, iters = 300000) {
     return k;
   };
   const affinity = (m, j) => (T[j].cats.includes(V[m].category) ? 1 : 0);
-  const cost = (m, j) => conf(m, j) * 100 + at.get(m).size * 2 - fit(m, pfs[j]) * 0.8 - affinity(m, j) * 0.6 + rand() * 1.5;
+  const cost = (m, j) => conf(m, j) * 100 + at.get(m).size * 2 - fit(m, pfs[j]) * 0.8 - affinity(m, j) * 0.6 + (BAL.isAmberShader(m) ? 1.5 : 0) + (BAL.SHADER_NAMED_CAPS[m] != null ? 3 : 0) + rand() * 1.5;
   const add = (m, j) => { sets[j].add(m); if (!at.has(m)) at.set(m, new Set()); at.get(m).add(j); };
   const del = (m, j) => { sets[j].delete(m); at.get(m).delete(j); };
   for (let j = 0; j < N; j++) if (frozen[j]) for (const m of priorById.get(T[j].id).shaders) add(m, j);
