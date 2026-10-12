@@ -154,9 +154,11 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // field was pollen — every mote held in a ball at the centre, over the tunnel.
     // …then (same day): "i like the idea of the emblem and then having it go to
     // how you used to have a smaller whispy moving cloud … it kind of moved
-    // around and looked like a paranormal ghost energy" — wisps (incense curls
-    // of light), kept small and wandering by the layer
-    if (id === "ghost" && chars[0]) chars[0] = { ...chars[0], forms: ["wisp"] };
+    // around and looked like a paranormal ghost energy" — then, pointing at a
+    // still of Snowflake's opening: "i need you to follow the snowflake whisp" —
+    // Snowflake's MURMURATION (a soft cloud that wanders on its own leader and
+    // trails as it moves), worn exactly as Snowflake wears it
+    if (id === "ghost" && chars[0]) chars[0] = { ...chars[0], forms: ["murmuration"] };
     // fire FORMS only where the imagery really burns — same rule as fire colours
     // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
     // over ice and night water)
@@ -220,6 +222,17 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       }
       cast.formCycle = [...new Set(chars.flatMap((c) => c.forms))];
       if (!cast.formCycle.length) cast.formCycle = casts[i].formCycle;
+    }
+    // NO RIBBONS IN GHOST, ANYWHERE (Karel 2026-10-12: "i dont want a ribbon in
+    // ghost anywhere") — nor the incense wisp that read as one
+    if (id === "ghost") {
+      const bad = new Set<SoulId>(["ribbons", "wisp"]);
+      const ok = (f: SoulId): SoulId => (bad.has(f) ? "smoke" : f);
+      cast.formCycle = [...new Set(cast.formCycle.map(ok))];
+      cast.morphSouls = cast.morphSouls.map(ok);
+      cast.windows = cast.windows.map((w) => ({ ...w, soul: ok(w.soul) }));
+      cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
+      if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
     }
     out[id] = applySoulRemovals(cast, removals.souls, id);
   });
