@@ -270,9 +270,10 @@ a[href] {
 
 /* Journey intro screen — fade in, hold, fade out */
 @keyframes journeyIntroAnim {
+  /* quick in (the Horizon Split title animates its own entrance), long hold */
   0% { opacity: 0; }
-  40% { opacity: 1; }
-  70% { opacity: 1; }
+  8% { opacity: 1; }
+  72% { opacity: 1; }
   100% { opacity: 0; }
 }
 
@@ -385,3 +386,16 @@ a[href] {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
+
+/* HORIZON SPLIT journey titles (Karel 2026-10-12, option 07 of
+   docs title-treatments): a hairline draws out from the centre, the title
+   rises from behind it, the number drops from beneath. Entrance only — the
+   card's own fade carries the exit. Transform + opacity only (no blur). */
+@keyframes hzDraw { from { transform: scaleX(0); } }
+@keyframes hzRise { from { transform: translateY(110%); } }
+@keyframes hzDrop { from { transform: translateY(-110%); } }
+@keyframes hzFade { from { opacity: 0; } }
+.hz-line { animation: hzDraw 1.4s cubic-bezier(.65, 0, .35, 1) both; }
+.hz-title { animation: hzRise 1.7s cubic-bezier(.16, 1, .3, 1) .7s both; }
+.hz-num { animation: hzDrop 1.7s cubic-bezier(.16, 1, .3, 1) .95s both; }
+.hz-by { animation: hzFade 1.4s ease-out 1.9s both; }

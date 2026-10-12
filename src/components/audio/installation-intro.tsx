@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizonTitle } from "./horizon-title";
 import type { Journey } from "@/lib/journeys/types";
 import { EXPERIENCE_INTRO } from "@/lib/journeys/installation-sequence";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
@@ -272,30 +273,8 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
       />
       {/* Karel 2026-09-20: title cards carry the NAME ALONE — no
           "Journey" eyebrow label, no subtitle. Simple. */}
-      {(() => {
-        // Numbered titles split (Karel 2026-09-30: "the name and then
-        // below it No. 1 or whatever that number is"); size trimmed
-        // 25% across all journey titles the same day.
-        const m = /^(.*?)\s+(\d+)$/.exec(journey.name);
-        return (
-          <>
-            <div
-              className="relative text-white text-[clamp(2.25rem,4.9vw,3.75rem)] tracking-[-0.015em]"
-              style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 300 }}
-            >
-              {m ? m[1] : journey.name}
-            </div>
-            {m && (
-              <div
-                className="relative mt-5 text-[clamp(0.9rem,1.5vw,1.2rem)] tracking-[0.32em] uppercase text-white/60"
-                style={{ textShadow: TEXT_SHADOW, fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif", fontWeight: 400 }}
-              >
-                No.&thinsp;{m[2]}
-              </div>
-            )}
-          </>
-        );
-      })()}
+      {/* HORIZON SPLIT (Karel 2026-10-12, option 07) — same card as every journey */}
+      <HorizonTitle name={journey.name} />
       {(() => {
         // No per-track self-credit — the program intro already says
         // "composed and performed by Karel Barnoski" once (Karel's
