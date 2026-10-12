@@ -823,6 +823,17 @@ class JourneyEngine {
       });
       this.shaderStartMs = now;
       this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
+      // PACED OWNED PHASES (Karel 2026-10-12, Grasshopper: "you use that moving
+      // plane shader on repeat and ends up too long" — a 67 s phase owning four
+      // shaders looped them at 10-15 s each): a phase-owned cast spreads its
+      // shaders over the phase so none comes back — each holds the phase's
+      // remaining time over the shaders still unseen (≤ 30 s). The cast law
+      // (only the phase's own shaders) is untouched; so is the seeded stream.
+      if (owned) {
+        const left = currentPhase.shaderModes.filter((m) => !this.seenShaders.has(m) && this.isShaderAllowed(m)).length;
+        const remainMs = Math.max(0, (currentPhase.end - clamped) * this.trackDuration * 1000);
+        this.shaderDurationMs = Math.min(30_000, Math.max(this.shaderDurationMs, remainMs / (left + 1)));
+      }
       glitchRecord("shader-primary", `${this.currentShaderMode} @p${clamped.toFixed(3)}`);
       this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
@@ -940,7 +951,9 @@ class JourneyEngine {
                 && m2 !== this.currentShaderMode && m2 !== this.dualShaderMode,
             );
             const unseen = pool.filter((m2) => !this.seenShaders.has(m2));
-            const alternates = unseen.length > 0 ? unseen : pool;
+            // spent: the tertiary SITS OUT rather than re-show a shader (it is
+            // a sprinkle — a repeat only lengthens the loop; Grasshopper 2026-10-12)
+            const alternates = unseen;
             tertiaryCandidate = alternates.length > 0
               ? alternates[Math.floor(this.random() * alternates.length)]
               : null; // no collision-free option — sit this moment out
