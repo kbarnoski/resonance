@@ -897,8 +897,9 @@ export function ParticleLeadLayer({
       if (quiet) {
         // …more of them again, LARGE (Karel 2026-10-12, a still of three big
         // mandalas at different depths: "nice when the particle system shows
-        // multiple things rather than always one thing or one area"): ~1 in 4
-        const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.35 : 0.25) : 0;
+        // multiple things rather than always one thing or one area" … "dont increase
+        // it that substantial … another 25% sure"): x1.25 of the old rate
+        const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.375 : 0.15) : 0;
         const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 2) : 1;
         engine.setInstances(nInst, rand01(33 + appearN));
       }
