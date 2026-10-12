@@ -233,8 +233,23 @@ export const JOURNEY_RESPONSE: Readonly<Record<string, number>> = {
   "24101852-61ee-4ac9-8fd7-da2ae19ab0a3": BIG, // The Other Side 9
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e": BIG, // Chenin 5 — THE PEAK
 };
-export function journeyResponse(journey?: { id?: string | null } | null): number {
-  return (journey?.id && JOURNEY_RESPONSE[journey.id]) || 1;
+/** EVERY journey, not only Rise Above (Karel 2026-10-12: "it should be for all
+ *  105 not just ra set"). The deep analysis cannot sort them (its energy score
+ *  overlaps across Karel's own RA tiers), so: an exact RA placement first; else
+ *  the Expansion's song FAMILY, by the tier Karel gave its RA take; else his own
+ *  piano-led albums and studio pieces — the base. */
+// (Expansion tracks are always "<Name> <No.>" — Karel's own "Rolling" is a
+// piano original, "Rolling 2" the Expansion song)
+const FAMILY_RESPONSE: ReadonlyArray<[RegExp, number]> = [
+  [/^(the other side|bells|rattler|horses|chemiluminescence|amboise 2$)\s*\d*$/i, BIG],
+  [/^(cabin soul|rolling|stand|loire|chenin|sancerre cry|velvet tears|no question)\s+\d+[a-z]?$/i, GROOVE],
+  [/^(tranquility|torraine|northern plane|yellow bird|night wind|amboise|rise|singular|nothing|never forget|redwoods sway)\s+\d+[a-z]?$/i, AMBIENT],
+];
+export function journeyResponse(journey?: { id?: string | null; name?: string | null } | null): number {
+  if (journey?.id && JOURNEY_RESPONSE[journey.id]) return JOURNEY_RESPONSE[journey.id];
+  const name = (journey?.name ?? "").trim();
+  for (const [re, k] of FAMILY_RESPONSE) if (re.test(name)) return k;
+  return 1;
 }
 /** A band profile scaled by a journey's response multiplier. */
 export function boostedProfile(prof: BandProfile, k: number): BandProfile {
