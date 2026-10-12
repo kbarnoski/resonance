@@ -23,7 +23,7 @@ DEST="$DRIVE/Resonance Backup"
 APP="$HOME/my-app"
 DRY=(); [ "${1:-}" = "--dry-run" ] && DRY=(--dry-run)
 mkdir -p "$DEST/my-app-ignored"
-R=(nice -n 19 rsync -a --delete --human-readable --stats "${DRY[@]}" --exclude .DS_Store)
+R=(nice -n 19 rsync -a --delete --human-readable --stats ${DRY[@]+"${DRY[@]}"} --exclude .DS_Store)
 
 "${R[@]}" "$APP/public/tramokyo-pack/" "$DEST/tramokyo-pack/"
 "${R[@]}" "$HOME/Documents/Resonance/" "$DEST/Documents-Resonance/"
