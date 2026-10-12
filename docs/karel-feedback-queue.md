@@ -41,3 +41,5 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - ✅ Horizon Split titles; title handoff hitch fixed.
 - ✅ Audio: playback buffering (no crackle under load).
 - ✅ Spatial pairing everywhere; recycled motes fade in; neighbour diversity; 4 new forms; sun theme for light journeys; +20 % response.
+- 2026-10-12 pass 7 — Tranquility 3: "that version isnt strong so id parking lot it" → PARKED (75e009fd), out of the Expansion loop. (I first parked Night Wind 4 by mistake; reverted before commit.)
+- 2026-10-12 pass 7 — Night Wind 4: "dope … has a slight beat so in the chill stuff, not the ambient voice and piano one". Already in RA at #37, the post-peak cool-down after Nothing 30. OPEN: ask whether to move it to the chill section around #16–17 (Night Wind 2 is at #16; the spacing rule needs Night Wind takes ≥8 apart).
