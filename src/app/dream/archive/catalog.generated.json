@@ -1,5 +1,13 @@
 [
  {
+  "slug": "20080-phosphorhelm",
+  "cycle": 20080,
+  "name": "Phosphor Helm",
+  "status": "demoable",
+  "description": "An oscilloscope you wear. Karel's real catalog recording always plays, and your head is the conductor. An X–Y vectorscope plots the left channel against the right channel; for a st",
+  "category": "local"
+ },
+ {
   "slug": "19840-cymatica",
   "cycle": 19840,
   "name": "Cymatica",
