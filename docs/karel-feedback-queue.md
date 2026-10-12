@@ -15,6 +15,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - 🟡 Fountain / rising-from-the-bottom forms "often" — one family, capped ~10 % (was ~17 %).
 - 🟡 Pinned takes: Calling #903101341, Night Wind 2 #391401299.
 - 🟡 Chenin 3: "the literal pictures of grapes and leaves isnt good especially how it ended. keep it abstract" — 11 literal stills out (28 → 17, now ends on an abstract galaxy); same pass: Chenin 5 −6 leaves, Loire 2 −3 leaves, Sancerre Cry 4 −2 (pack list; backup ~/Documents/Resonance/local-images.backup-2026-10-12-literal.json; Amboise 1/2, Loire 5A already abstract).
+- 🟡 Field mode (2-4 large copies of a form at different depths): "nice when the particle system shows multiple things rather than always one thing" — ~1 in 8 → ~1 in 4, copies stay large.
 - 📋 Ghost: "that same stupid bunching of particles near top around the flashes section" — film the flash section after the tour, fix.
 - 📋 Ghost: uv-sync 16-33 ms at Ghost's start (opening emblem sampled on the main thread) — precompute in idle.
 - 📋 Replays after the tour: First Light → Snowflake (own stills), Realized (1:40 faint step), Isolation (faint step), Bells 1 (faint step 22:43:30). Pattern: 2 of 3 faint steps land within 40 ms of `particle-out` (the field's last haze vanishing in one frame?), Bells 0.7 s after a switch to the full-frame nebula form — high-res capture, then fix.

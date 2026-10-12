@@ -895,7 +895,10 @@ export function ParticleLeadLayer({
       // The layout only changes while INVISIBLE: switching it on a visible field
       // made every mote jump at once ("drops in abrupt … when multiple")
       if (quiet) {
-        const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.3 : 0.12) : 0;
+        // …more of them again, LARGE (Karel 2026-10-12, a still of three big
+        // mandalas at different depths: "nice when the particle system shows
+        // multiple things rather than always one thing or one area"): ~1 in 4
+        const pField = FIELD_FORMS.has(soul) ? (floralNow && soul === "blossom" ? 0.35 : 0.25) : 0;
         const nInst = rand01(31 + appearN) < pField ? 3 + Math.floor(rand01(32 + appearN) * 2) : 1;
         engine.setInstances(nInst, rand01(33 + appearN));
       }
