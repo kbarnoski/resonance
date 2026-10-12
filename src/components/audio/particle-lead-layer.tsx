@@ -1022,6 +1022,7 @@ export function ParticleLeadLayer({
     let ambientGap = BRIDGE_SEC + 3 * rand01(21);
     let bridgeUntil = -1;
     let hoverAt = -1, formPeak = 0; // hover: when an image began letting go / its strongest form
+    let ghostSmall = false; // Ghost's opening: the camera stands back until the field is out
     // the next moment the field is due back: a window's start, or a phase
     // boundary (its travel morph's emergence)
     const returnsWithin = (t: number, sec: number) =>
@@ -1411,9 +1412,14 @@ export function ParticleLeadLayer({
         // GHOST'S OPENING SECTION (Karel 2026-10-12): a SMALL wispy cloud of
         // ghost energy that moves around — the camera stands back (half size)
         // and the cloud wanders on its own slow path near the centre
+        // …and it NEVER grows on screen (Karel: "you scaled it up after the emblem
+        // section"): the camera stays back until the field has faded out after
+        // the opening, and only resets while nothing is visible
         const ghostWisp = journeyId === "ghost" && phaseIdxAt(t) === 0 && !imgLoaded;
+        if (ghostWisp) ghostSmall = true;
+        else if (ghostSmall && phaseIdxAt(t) > 0 && shown < 0.02) ghostSmall = false;
+        if (ghostSmall && !imgLoaded) engine.setCamScale(1.9);
         if (ghostWisp) {
-          engine.setCamScale(1.9);
           engine.setOffset(0.2 * Math.sin(t * 0.13) + 0.06 * Math.sin(t * 0.31), 0.1 * Math.sin(t * 0.09 + 1.0));
         } else engine.setOffset(pinCentre ? 0 : offX, pinCentre ? 0 : offY);
         // First Light: a sun design RISES up the screen as it forms
