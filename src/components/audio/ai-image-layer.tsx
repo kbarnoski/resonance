@@ -190,6 +190,9 @@ function easeInOutCubic(t: number): number {
  *   - Fade-out is slower than fade-in, keeping images visible during transitions
  *   - Creates a "video" feel where imagery is always moving and always in transition
  */
+/** End of Ghost's opening section (its first two phases — particle profile phaseBounds[1]). */
+const GHOST_OPEN_END = 65.8;
+
 export function AiImageLayer({
   prompt,
   denoisingStrength,
@@ -352,6 +355,13 @@ export function AiImageLayer({
   // across multiple 7s ticks, so redundant pushes are skipped.
   const lastPackIndexRef = useRef(-1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // GHOST'S OPENING GRADE (Karel 2026-10-12: "whenever the whole entire screen
+  // lightens in this section it isnt what i prefer"): the stills canvas SCREENS
+  // onto the scene (it can only add light), so a hazy still — the misty hall,
+  // gen-006 at ~27 s — lifted every black on screen. Through Ghost's opening
+  // (its first two phases, to 65.8 s) the stills keep a deep black point.
+  const [openGrade, setOpenGrade] = useState(false);
+  const openGradeRef = useRef(false);
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
   const lastGenTimeRef = useRef(0);
@@ -1527,6 +1537,10 @@ export function AiImageLayer({
 
     function render() {
       if (!canvas || !ctx) return;
+      {
+        const g = journeyIdRef.current === "ghost" && (useAudioStore.getState().currentTime || 0) < GHOST_OPEN_END;
+        if (g !== openGradeRef.current) { openGradeRef.current = g; setOpenGrade(g); }
+      }
       const nowTs = performance.now();
       if (nowTs - lastDraw < minFrameMs) {
         animRef.current = requestAnimationFrame(render);
@@ -1751,7 +1765,7 @@ export function AiImageLayer({
         style={
           aiOnly
             ? { zIndex: 2, pointerEvents: "none" }
-            : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out", pointerEvents: "none" }
+            : { zIndex: 2, mixBlendMode: "screen", opacity: aiLayerOpacity, transition: "opacity 2600ms ease-in-out, filter 4000ms ease-in-out", pointerEvents: "none", filter: openGrade ? "contrast(1.2) brightness(0.9)" : "none" }
         }
       />
       {/* Morph cinema canvas — normal blending so clips keep their true
