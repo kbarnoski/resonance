@@ -1153,7 +1153,9 @@ void main(){
     // The Bloom from a lissajous); the softness it gave returns as a slow drift
     // of each mote around its point
     if (uPairSoft > 0.0) {
-      float ph = hash11(s.a * 61.7) * 6.2831853 + uTime * (0.3 + 0.5 * hash11(s.a * 13.1));
+      // SLOW (pass 7, Realized's fire motif at 82 % literal: a 0.3-0.8 rad/s
+      // circle of up to 18 % of the image made the whole form crawl — STEP x7)
+      float ph = hash11(s.a * 61.7) * 6.2831853 + uTime * (0.08 + 0.12 * hash11(s.a * 13.1));
       imgT += (uPlaneR * cos(ph) + uPlaneU * sin(ph)) * uPairSoft * hash11(s.a * 29.3);
     }
     f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
