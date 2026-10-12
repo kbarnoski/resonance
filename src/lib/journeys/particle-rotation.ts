@@ -52,7 +52,7 @@ export const MAX_SHARE = 0.05;
  *  swaying-lines family is held tighter — Karel named it: "the pattern where
  *  the particles turn into swaying lines happens a lot". */
 export const MAX_FAMILY_SHARE = 0.24; // a guard: five-member families sit ~20 % naturally
-const FAMILY_CAP: Readonly<Record<string, number>> = { lines: 0.08 };
+const FAMILY_CAP: Readonly<Record<string, number>> = { lines: 0.08, rising: 0.1 };
 /** NEIGHBOURS (Karel 2026-10-12, "like we have done with shaders … neighboring
  *  journeys dont over do reuse"): a form the previous journey showed costs this
  *  much — more than any imagery preference, less than the hard avoid (10), so a
@@ -65,9 +65,13 @@ export const NEIGHBOUR_COST = 3;
  *  stays varied. The blossom is never a sibling (its own rules). */
 export const FORM_FAMILIES: Readonly<Record<string, readonly SoulId[]>> = {
   swirl: ["vortex", "torus", "lissajous", "harmonics", "rings", "attractor", "smokering"],
-  swarm: ["murmuration", "fireflies", "motes", "pollen", "duststorm"],
+  swarm: ["murmuration", "fireflies", "pollen", "duststorm"],
+  // RISING FROM THE BOTTOM (Karel 2026-10-12: "you really love using that kind of
+  // fountain from the bottom particle animation. seems often") — each ~4 %, but
+  // together ~17 % of all forms in pass 7: one look, so one family, capped
+  rising: ["fountain", "motes", "embers", "smoke"],
   lines: ["ribbons", "waves", "tendrils", "ink"],
-  vapour: ["smoke", "nebula", "embers", "fountain", "aurora", "starburst"],
+  vapour: ["nebula", "aurora", "starburst"],
   geometric: ["medallion", "girih", "mandala", "kaleido", "rose"],
 };
 const FAMILY_OF = new Map<SoulId, string>();
