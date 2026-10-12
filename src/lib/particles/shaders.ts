@@ -148,6 +148,7 @@ uniform vec4 uVarB;
 uniform vec4 uVarC;
 uniform float uMaxSpeed;  // speed cap (entry ramps it up — no sudden bursts)
 uniform float uPull;      // 0.3 → 1 after a new figure: the pull eases in (no speed-cap drag)
+uniform float uHover;     // 0..1: an image let go — motes stay where they are (no form pull)
 uniform float uAccCap;    // transition acceleration limit (huge = off): no lunge, no plateau
 uniform float uDisperse;  // 1 for one frame: scatter wide so the form GATHERS
 // playful impulses (particle-lead conductor)
@@ -1068,6 +1069,15 @@ void main(){
   // mote accelerates, travels and settles on one smooth curve — capping its
   // speed instead made the field crawl, then catch up (Karel 2026-10-08)
   f.xyz *= uPull;
+  // HOVER (Karel 2026-10-12, Ghost's blossom → wings: "a weird back and forth
+  // before it goes to its final wings state"): as an image lets go, the form's
+  // pull is held off — the motes drift down softly where they are, so the next
+  // image gathers from right there instead of the field rushing into the form
+  // and back out
+  if (uHover > 0.001) {
+    f.xyz = f.xyz * (1.0 - uHover) + (curlNoise(p * 0.9 + vec3(0.0, uTime * 0.07, 0.0)) * 0.35 + vec3(0.0, -0.12, 0.0)) * uHover;
+    f.w = mix(f.w, 1.6, uHover);
+  }
 
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)

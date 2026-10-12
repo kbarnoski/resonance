@@ -1155,7 +1155,10 @@ class JourneyEngine {
     // (scripts also ignore nudges). Past the last entry + a beat, hand the
     // journey back to procedural rotation so the ending keeps breathing.
     const lastP = this.takeScript[this.takeScript.length - 1]?.p ?? 1;
-    if (clamped > lastP + 0.04) {
+    // …never in a track's last 10 % (Ghost 2026-10-12: released at p0.95, the
+    // procedural pick's FIRST DRAW stalled 51-53 ms right as the final wings
+    // formed — and with ~11 s left there is nothing left to keep breathing)
+    if (clamped > lastP + 0.04 && clamped < 0.9) {
       this.takeScript = null;
       this.shaderDurationMs = 12_000 + this.random() * 6_000;
       this.shaderStartMs = now;

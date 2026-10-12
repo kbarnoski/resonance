@@ -235,6 +235,8 @@ export interface ParticleEngine {
   /** How literally the image is formed at full strength (the layer's 0.7–1). With
    *  spatial pairing the form's pull is not left in; the softness becomes a drift. */
   setImageLiteral(l: number): void;
+  /** 0..1: hold the form's pull off while an image lets go (motes stay put). */
+  setHover(k: number): void;
   /** Motion intensity multiplier (tempo / feel), 0.5..1.6. */
   setMotion(k: number): void;
   /** Playful impulse — motion only. */
@@ -779,6 +781,7 @@ export function createParticleEngine(
   let pairPending = false; // run the assign passes on the next step (before the sim)
   let pairUse = false;     // the worn image uses the paired uvs
   let pairLit = 1;         // the image's literal level (setImageLiteral)
+  let hoverT = 0, hoverS = 0; // setHover target / glided
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1127,6 +1130,8 @@ export function createParticleEngine(
       applyVariant();
       pullT = 0; lastEvent = "shape"; lastEventAt = timeNow();
     }
+    hoverS += (hoverT - hoverS) * (1 - Math.exp(-dt / 0.35));
+    if (sim.u.uHover) g.uniform1f(sim.u.uHover, hoverS);
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
@@ -1657,6 +1662,7 @@ export function createParticleEngine(
       haveB = true;
     },
     setImageLiteral(l) { pairLit = Math.max(0.5, Math.min(1, l)); },
+    setHover(k) { hoverT = Math.max(0, Math.min(1, k)); },
     setImageForm(form, show) {
       imgFormTgt = Math.max(0, Math.min(1, form));
       // an image takes the stage: a figure still queued would land on top of it

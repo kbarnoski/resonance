@@ -1015,6 +1015,7 @@ export function ParticleLeadLayer({
     // back after 3.5-5.5 s — "fades out and then right back in", Karel 2026-10-12)
     let ambientGap = BRIDGE_SEC + 3 * rand01(21);
     let bridgeUntil = -1;
+    let hoverAt = -1, formPeak = 0; // hover: when an image began letting go / its strongest form
     // the next moment the field is due back: a window's start, or a phase
     // boundary (its travel morph's emergence)
     const returnsWithin = (t: number, sec: number) =>
@@ -1179,6 +1180,7 @@ export function ParticleLeadLayer({
         }
         else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
         loadNow = act === "load";
+        if (act === "release") hoverAt = performance.now();
       } else {
         if (want && wantKey !== imgKey && imgLoaded && !imgReleasing) { imgReleasing = true; imgReleaseAt = performance.now(); glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
         if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
@@ -1188,6 +1190,7 @@ export function ParticleLeadLayer({
       // dissolve's incoming texture B mid-flight (the image waits for it to end)
       if (want && loadNow && !flashing && engine.dissolveTime() !== null) loadNow = false;
       if (want && loadNow) {
+        hoverAt = -1; formPeak = 0;
         const em = emblemRef.current;
         // the flash itself is always the exact angel; every OTHER angel moment
         // (signature, emblem) takes the next treatment — angel, wings, outline …
@@ -1236,6 +1239,20 @@ export function ParticleLeadLayer({
         }
       }
       emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
+      // HOVER (Karel 2026-10-12, Ghost blossom → wings: "a weird back and forth"):
+      // while an image hands off to the next, the motes stay where they are; after
+      // an image with nothing following, they hover 1.5 s, then ease into the form
+      // over ~4 s instead of rushing in together (the contract-and-expand)
+      {
+        let hv = 0;
+        if (imgReleasing && want) hv = 1;
+        else if (hoverAt >= 0) {
+          const a = (performance.now() - hoverAt) / 1000;
+          hv = a < 1.5 ? 1 : Math.max(0, 1 - (a - 1.5) / 4);
+          if (a > 5.5) hoverAt = -1;
+        }
+        engine.setHover(loadNow || (imgLoaded && !imgReleasing && formPeak < 0.5) ? 0 : hv);
+      }
       // THE OPENING EMBLEM HANDS OFF TO THIS JOURNEY'S OWN FORM (2026-10-09,
       // Karel: "the grasshopper emblem didnt transition smoothly. it just
       // dropped"): no form could be chosen while the emblem was worn, so as it
@@ -1262,8 +1279,12 @@ export function ParticleLeadLayer({
         const useMo = imgLoaded === "moment";
         const useMf = imgLoaded === "motif";
         const useEc = imgLoaded === "echo";
+        const formNow = imgReleasing ? 0 : Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0, useEc ? ecForm : 0) * imgVar.literal);
         if (imgReleasing) engine.setImageForm(0, 0);
-        else engine.setImageForm(Math.max(flashNow * 0.84, Math.max(angelForm, useEm ? emForm : 0, useMo ? moForm : 0, useMf ? mfForm : 0, useEc ? ecForm : 0) * imgVar.literal), Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
+        else engine.setImageForm(formNow, Math.max(flashTail, angelShow, useEm ? emShow : 0, useMo ? moShow : 0, useMf ? mfShow : 0, useEc ? ecShow : 0));
+        // an image letting go with nothing after it: hover, then ease into the form
+        if (formPeak > 0.5 && formNow < formPeak * 0.7 && hoverAt < 0) hoverAt = performance.now();
+        formPeak = Math.max(formPeak, formNow);
       }
       if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; imgReleasing = false; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); formAt = performance.now(); }
       const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0, imgLoaded === "moment" ? moShow : 0) : 0;
