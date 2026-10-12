@@ -1304,7 +1304,11 @@ export function ParticleLeadLayer({
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
-        engine.setDensity(imgLoaded && !flashing ? 1 : Math.min(cast.mastered ? 0.8 : 1, target) * densKS * (0.3 + 0.7 * densP));
+        // Ghost's opening sequence (tunnel → depths, until the second phase ends)
+        // never a mass over the imagery (Karel 2026-10-12: "that particle blob
+        // just sits over that opening sequence") — a sparse field
+        const openCap = journeyId === "ghost" && phaseIdxAt(t) <= 1 ? 0.25 : 1;
+        engine.setDensity(imgLoaded && !flashing ? 1 : Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP));
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -1361,7 +1365,7 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6) * densKS * (0.3 + 0.7 * densP));
+      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) <= 1 ? 0.25 : 1) * densKS * (0.3 + 0.7 * densP));
       // ≥5 s TO ABSORB (Karel 2026-10-07: "dont have particles come in only
       // to go away a second or two later … 5 seconds minimum"): once the
       // field arrives it holds ≥6 s before any fade-out begins
@@ -1401,9 +1405,10 @@ export function ParticleLeadLayer({
         // the imagery's movement sets the pace (flicker livelier, drift calmer)
         // Ghost's opening ran at the engine's floor (0.6 × 0.8 × 0.8 = 0.38 —
         // Karel 2026-10-12: "the motion is a bit slow … in just the opening
-        // section"): it moves at 0.6 now; the rest of Ghost is unchanged
+        // section" … "it even seems slow"): it moves at 0.85 now; the rest of Ghost
+        // is unchanged
         const mo = cast.motion * (charAt(t)?.motion ?? 1) * CALM_TEMPO;
-        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) === 0 ? Math.max(mo, 0.6) : mo);
+        engine.setMotion(journeyId === "ghost" && phaseIdxAt(t) === 0 ? Math.max(mo, 0.85) : mo);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)

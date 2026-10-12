@@ -149,6 +149,12 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       const own = c.forms.filter((f) => !notGhostly.has(f));
       return { ...c, forms: c.floral ? ["blossom", "petals"] : own.length ? own : ["smoke", "ink", "ribbons"], family: "ghost" };
     });
+    // GHOST'S OPENING (Karel 2026-10-12: "that particle blob just sits over that
+    // opening sequence and its not a good design"): after the opening emblem the
+    // field was pollen — every mote held in a ball at the centre, over the tunnel.
+    // The tunnel phase now takes sparse lantern motes rising through the whole
+    // frame toward the light above (the arc's tunnel → light), never a mass
+    if (id === "ghost" && chars[0]) chars[0] = { ...chars[0], forms: ["motes"] };
     // fire FORMS only where the imagery really burns — same rule as fire colours
     // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
     // over ice and night water)
