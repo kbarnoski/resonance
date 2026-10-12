@@ -134,6 +134,7 @@ const WELCOME_HOME = [
  *  and (the casts were solved for the old order, and stay untouched)
  *  neighbours never share a shader. */
 const EXPANSION = [
+  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", // Chemiluminescence 1 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
   // wave 1 — open, airy
   "0b4eb01a-9ac7-4a04-8877-05f905b14f8b", //  1. Tranquility 8 · 3:39
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", //  3. Night Wind 2 · 3:29
@@ -146,6 +147,7 @@ const EXPANSION = [
   "68b4289e-2247-41d6-8b9d-064345da9769", // 10. Tranquility 17 · 3:29
   // wave 2 — first grooves
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 11. No question 7 · 2:39
+  "b5247327-b1fd-45ce-a249-0a58a8a3c57e", // Cabin Soul 5 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
   "13e71555-03d6-4b27-ad32-2c6834559c24", // 12. Northern Plane 5 · 2:34
   "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 13. Never Forget 4 · 3:28
   "4dac5718-517d-4183-ad27-e1a6c583e305", // 14. Tranquility 30 · 3:29
@@ -157,11 +159,13 @@ const EXPANSION = [
   // wave 3 — deepening
   "9d0ad58d-e490-4cc3-b24d-7c97d1fa3c0d", // 21. Torraine 7 · 3:51
   "4fda2ae1-d3a7-4e23-b5ca-8f696b537ad1", // 22. Tranquility 36 · 3:24
+  "84a82478-f0f2-4c49-b800-b4fe722f1df5", // Stand 10 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
   "aeb508d6-6447-4fb5-8468-636924520f82", // 23. Yellow Bird 6 · 2:12
   "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 24. Redwoods Sway 2 · 2:18
   "7b39db5e-68fa-4915-8ff1-83078c18edac", // 25. Tranquility 33 · 3:25
   "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 26. Cabin Soul 6 · 2:34
   "954a7000-91ba-42eb-b5a7-a8d5bc21c8c2", // 27. Night Wind 5 · 3:29
+  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // Cabin Soul 8 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
   "81683231-3b3c-4542-8696-13dfcf56469a", // 28. Loire 5A · 3:42
   "71b71375-8d7f-4e84-86c8-76d9e85a6eb0", // 29. Tranquility 34 · 3:39
   "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 30. Chemiluminescence · 2:36
@@ -185,6 +189,7 @@ const EXPANSION = [
   "4d17da19-6834-4005-a944-34c27a88a320", // 47. Amboise 2 · 3:21
   "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 48. Singular 4 · 1:46
   "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 49. Yellow Bird 3 · 2:26
+  "061528d4-e9a3-49c3-ad3c-f23cf9cf2251", // Rolling 2 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
 ] as const;
 /** The featured journeys (verified session-take pairings). */
 const FEATURED = [
@@ -264,9 +269,9 @@ const RISE_ABOVE = [
   "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 19. Chemiluminescence — III. wave 2 — lounge and groove — an ambient journey (Karel 2026-10-09)
   "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 20. Loire 2
   "6407bf5c-7862-49e8-883d-59754c4caf18", // 21. No question 8 — one of his best: smoky night-club jazz lounge, ambient vocals (Karel 2026-10-09)
-  // 22. Stand 10 — a jazzy lounge groove (Karel 2026-10-11) — goes HERE once upgraded to the Archetype
+  "84a82478-f0f2-4c49-b800-b4fe722f1df5", // 22. Stand 10 — a jazzy lounge groove (Karel 2026-10-11)
   "81683231-3b3c-4542-8696-13dfcf56469a", // 23. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
-  "112c3e16-3c98-43ca-902e-a9c2b510ee3d", // 24. Cabin Soul 6 — holds the slot until Cabin Soul 8 (Karel's RA take, "a great jazzy groove that is loungey just like stand 10") is upgraded
+  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // 24. Cabin Soul 8 — "a great jazzy groove that is loungey just like stand 10" (Karel 2026-10-11; his RA take over Cabin Soul 6)
   "86b64938-26ea-40b9-9ea1-461323a049d5", // 25. Chenin 3 — "wow that is dope" (Karel 2026-10-09)
   "4ef43223-42cf-4ce8-9088-7578569f7de6", // 26. Sancerre Cry 4 — beat, attitude, groove
   "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 27. Velvet Tears 1 — crest 2 — tribal dance groove, unique (Karel 2026-10-09)
@@ -341,13 +346,7 @@ export const TRAMOKYO_EXCLUDED_JOURNEYS: ReadonlySet<string> = new Set([
   ...PARKING_LOT, // parked takes leave the loop (remote: Parking Lot program)
   "the-tempest", // PULLED 2026-09-19 (Karel) — its paired take (17th St 63 spectre) is truncated in storage to 1:12; out of the show until re-uploaded/re-paired
   "neural-link", // PULLED 2026-09-19 (Karel) — out of the show for now
-  // The former Kinetic Lab set (Karel 2026-10-09: "i dont want a kinetic
-  // loop anymore") — still playable from the remote's Kinetic Lab program.
-  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9", // Chemiluminescence 1
-  "061528d4-e9a3-49c3-ad3c-f23cf9cf2251", // Rolling 2
-  "84a82478-f0f2-4c49-b800-b4fe722f1df5", // Stand 10 — joins Rise Above v4 (slot 20) once upgraded to the Archetype (2026-10-11)
-  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // Cabin Soul 8 — replaces Cabin Soul 6 in Rise Above once upgraded (2026-10-11)
-  "b5247327-b1fd-45ce-a249-0a58a8a3c57e", // Cabin Soul 5
+  // (the former Kinetic Lab five joined the Expansion 2026-10-11 once upgraded to the Archetype)
   "abyssal-dive", // PULLED 2026-09-19 — its "17th St 62" upload is a byte-level DUPLICATE of 17th St 63 (envelope correlation 1.000), so it played the same audio as The Ascension; benched until Karel re-uploads the true take 62
 ]);
 
@@ -373,14 +372,6 @@ export const INSTALLATION_PROGRAMS: InstallationProgramDef[] = [
       "a night watch kept from evening prayer, through lantern-light and " +
       "storm, to first light. Recline.",
     pathShareToken: "c62f3672cfc54d5d",
-  },
-  {
-    id: "kinetic-lab",
-    presenting: "the Kinetic Lab",
-    description:
-      "Experiments where the shaders listen — bass, mids and highs each " +
-      "driving a layer of light. Meditative and kinetic, together.",
-    pathShareToken: "adce2b2d52114bbc",
   },
   {
     id: "expansion",

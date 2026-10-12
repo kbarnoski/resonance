@@ -75,97 +75,99 @@
  },
  "supportUses": {
   "astral": 8,
+  "aureole": 8,
+  "cascade-veil": 8,
+  "chinook": 8,
+  "cirrus": 8,
+  "ember": 8,
+  "furnace": 8,
   "iron-forge": 8,
+  "jubilee": 8,
   "magma": 8,
+  "parsec": 8,
+  "pelagic": 8,
   "pollen": 8,
   "r3-fernunfurl": 8,
+  "r3-heartwarmth": 8,
+  "r3-plasmastorm": 8,
   "shadow-fire": 8,
   "vestige": 8,
+  "volcanic": 8,
   "yantra": 8,
-  "cascade-veil": 7,
-  "chinook": 7,
-  "cirrus": 7,
-  "ember": 7,
+  "zenith": 8,
+  "covenant": 7,
+  "dark-tide": 7,
+  "drift": 7,
   "event-horizon": 7,
-  "jubilee": 7,
+  "kairos": 7,
+  "kelp": 7,
   "kenosis": 7,
   "lectio": 7,
   "merkaba": 7,
+  "molten-vein": 7,
   "murmuration": 7,
+  "nadir": 7,
   "orbit-weaver": 7,
-  "parsec": 7,
-  "pelagic": 7,
+  "pendulum-dust": 7,
   "r-blackhole": 7,
+  "r-embers": 7,
+  "r-mercury": 7,
   "r2-photon": 7,
   "r2-pixie": 7,
   "r2-spore": 7,
-  "r3-heartwarmth": 7,
   "rapture": 7,
   "ribbon-of-light": 7,
   "seraph": 7,
-  "volcanic": 7,
-  "aureole": 6,
-  "covenant": 6,
+  "tide": 7,
   "dharma": 6,
-  "drift": 6,
+  "diatom": 6,
+  "dusk": 6,
+  "firefly-field": 6,
   "flagella": 6,
   "flame": 6,
-  "furnace": 6,
   "hubble": 6,
-  "kairos": 6,
-  "kelp": 6,
   "lightyear": 6,
   "maelstrom-dark": 6,
-  "molten-vein": 6,
-  "r-mercury": 6,
   "r-stardust": 6,
   "r2-curlswarm": 6,
+  "r2-portalrim": 6,
   "r3-fairyglow": 6,
   "r3-monsoonveil": 6,
-  "r3-plasmastorm": 6,
+  "r3-sleepingbloom": 6,
+  "r3-waveveil": 6,
   "resonant-rings": 6,
+  "ripple": 6,
   "satori": 6,
+  "singularity": 6,
+  "starfield": 6,
   "symbiosis": 6,
-  "tide": 6,
+  "torrent": 6,
   "typhoon": 6,
-  "zenith": 6,
   "binary-stars": 5,
-  "diatom": 5,
-  "firefly-field": 5,
   "meteor-rain": 5,
-  "nadir": 5,
-  "pendulum-dust": 5,
+  "ocean": 5,
   "photon": 5,
   "plankton": 5,
-  "r-embers": 5,
-  "r2-portalrim": 5,
-  "r3-sleepingbloom": 5,
-  "r3-waveveil": 5,
   "rose-window": 5,
-  "singularity": 5,
   "stigmata": 5,
-  "torrent": 5,
   "will-o-wisp": 5,
   "chrysalis": 4,
-  "dark-tide": 4,
-  "dusk": 4,
   "fracture-light": 4,
   "monsoon": 4,
-  "ocean": 4,
+  "mycelium": 4,
+  "obsidian-flow": 4,
+  "r-droplets": 4,
   "r2-spiralgal": 4,
-  "ripple": 4,
-  "mycelium": 3,
-  "obsidian-flow": 3,
-  "r-droplets": 3,
-  "r2-thermal": 3,
-  "starfield": 3,
+  "r2-thermal": 4,
+  "dark-nebula": 3,
+  "protostar": 3,
   "kepler": 2,
   "mandorla": 2,
-  "protostar": 2,
+  "r-smokerings": 2,
   "r3-lightningveil": 2,
-  "dark-nebula": 1,
+  "supernova": 2,
+  "biofilm": 1,
   "pulsar": 1,
-  "supernova": 1,
   "threshold": 1
  },
  "journeys": [
@@ -3231,6 +3233,289 @@
     ]
    },
    "mvStandard": "2026-10-10T14-49-51"
+  },
+  {
+   "id": "84a82478-f0f2-4c49-b800-b4fe722f1df5",
+   "title": "Stand 10",
+   "lead": "ember",
+   "supports": [
+    "r-smokerings",
+    "aureole",
+    "dusk",
+    "dark-tide",
+    "r-mercury",
+    "drift",
+    "r-embers",
+    "pendulum-dust",
+    "nadir",
+    "starfield",
+    "cirrus",
+    "parsec"
+   ],
+   "cast": {
+    "threshold": [
+     "r-smokerings",
+     "ember"
+    ],
+    "expansion": [
+     "aureole",
+     "dusk"
+    ],
+    "transcendence": [
+     "dark-tide",
+     "r-mercury",
+     "drift"
+    ],
+    "illumination": [
+     "r-embers",
+     "pendulum-dust",
+     "r-mercury"
+    ],
+    "return": [
+     "nadir",
+     "starfield"
+    ],
+    "integration": [
+     "cirrus",
+     "parsec",
+     "ember"
+    ]
+   },
+   "intensity": [
+    0.45,
+    1,
+    0.8,
+    0.6,
+    0.35,
+    0.3
+   ],
+   "mvStandard": "2026-10-12T00-11-27",
+   "leadCoverage": 0.33
+  },
+  {
+   "id": "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac",
+   "title": "Cabin Soul 8",
+   "lead": "volcanic",
+   "supports": [
+    "obsidian-flow",
+    "r-embers",
+    "tide",
+    "firefly-field",
+    "molten-vein",
+    "furnace",
+    "r3-plasmastorm",
+    "kairos",
+    "dark-nebula",
+    "singularity",
+    "torrent",
+    "zenith"
+   ],
+   "cast": {
+    "threshold": [
+     "obsidian-flow",
+     "r-embers"
+    ],
+    "expansion": [
+     "tide",
+     "volcanic",
+     "firefly-field"
+    ],
+    "transcendence": [
+     "molten-vein"
+    ],
+    "illumination": [
+     "furnace",
+     "r3-plasmastorm",
+     "kairos"
+    ],
+    "return": [
+     "dark-nebula",
+     "singularity"
+    ],
+    "integration": [
+     "torrent",
+     "zenith"
+    ]
+   },
+   "intensity": [
+    0.4,
+    0.7,
+    0.9,
+    1,
+    0.35,
+    0.3
+   ],
+   "mvStandard": "2026-10-12T00-11-27",
+   "leadCoverage": 0.19
+  },
+  {
+   "id": "061528d4-e9a3-49c3-ad3c-f23cf9cf2251",
+   "title": "Rolling 2",
+   "lead": "chinook",
+   "supports": [
+    "pendulum-dust",
+    "aureole",
+    "r3-heartwarmth",
+    "jubilee",
+    "nadir",
+    "ocean",
+    "r3-sleepingbloom",
+    "r3-waveveil",
+    "ripple",
+    "pelagic",
+    "dusk",
+    "starfield"
+   ],
+   "cast": {
+    "threshold": [
+     "chinook",
+     "pendulum-dust"
+    ],
+    "expansion": [
+     "aureole",
+     "r3-heartwarmth",
+     "jubilee"
+    ],
+    "transcendence": [
+     "nadir",
+     "ocean"
+    ],
+    "illumination": [
+     "r3-sleepingbloom",
+     "r3-waveveil",
+     "chinook"
+    ],
+    "return": [
+     "ripple",
+     "pelagic"
+    ],
+    "integration": [
+     "dusk",
+     "starfield"
+    ]
+   },
+   "intensity": [
+    0.4,
+    1,
+    0.3,
+    0.9,
+    0.4,
+    0.3
+   ],
+   "mvStandard": "2026-10-12T00-11-27",
+   "leadCoverage": 0.38
+  },
+  {
+   "id": "b5247327-b1fd-45ce-a249-0a58a8a3c57e",
+   "title": "Cabin Soul 5",
+   "lead": "nadir",
+   "supports": [
+    "ember",
+    "chinook",
+    "r-smokerings",
+    "zenith",
+    "covenant",
+    "dark-tide",
+    "cascade-veil",
+    "volcanic",
+    "r3-plasmastorm",
+    "furnace",
+    "dark-nebula"
+   ],
+   "cast": {
+    "threshold": [
+     "ember",
+     "nadir"
+    ],
+    "expansion": [
+     "chinook",
+     "r-smokerings"
+    ],
+    "transcendence": [
+     "zenith",
+     "covenant"
+    ],
+    "illumination": [
+     "dark-tide",
+     "cascade-veil"
+    ],
+    "return": [
+     "volcanic",
+     "r3-plasmastorm",
+     "furnace"
+    ],
+    "integration": [
+     "dark-nebula",
+     "nadir"
+    ]
+   },
+   "intensity": [
+    0.4,
+    0.55,
+    0.75,
+    0.65,
+    1,
+    0.3
+   ],
+   "mvStandard": "2026-10-12T00-11-27",
+   "leadCoverage": 0.36
+  },
+  {
+   "id": "9f7d1b51-aeac-4dfc-a39f-b00101a403f9",
+   "title": "Chemiluminescence 1",
+   "lead": "pelagic",
+   "supports": [
+    "biofilm",
+    "r2-thermal",
+    "diatom",
+    "kelp",
+    "mycelium",
+    "supernova",
+    "protostar",
+    "r2-portalrim",
+    "ripple",
+    "r-droplets",
+    "dark-tide",
+    "starfield"
+   ],
+   "cast": {
+    "threshold": [
+     "biofilm"
+    ],
+    "expansion": [
+     "r2-thermal",
+     "diatom",
+     "pelagic"
+    ],
+    "transcendence": [
+     "kelp",
+     "mycelium"
+    ],
+    "illumination": [
+     "supernova",
+     "protostar",
+     "r2-portalrim"
+    ],
+    "return": [
+     "ripple",
+     "pelagic",
+     "r-droplets"
+    ],
+    "integration": [
+     "dark-tide",
+     "starfield"
+    ]
+   },
+   "intensity": [
+    0.45,
+    0.65,
+    0.85,
+    1,
+    0.5,
+    0.3
+   ],
+   "mvStandard": "2026-10-12T00-11-27",
+   "leadCoverage": 0.3
   }
  ],
  "parked": [

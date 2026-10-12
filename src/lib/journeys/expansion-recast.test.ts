@@ -119,9 +119,9 @@ describe("Expansion brightness-normalized layers", () => {
 
   it("applies gain only to Expansion journeys; a journey's lead uses its lead gain", () => {
     const bright = Object.keys(SHADER_SUPPORT_GAIN)[0];
-    expect(expansionLayerGain("Rolling 2", bright)).toBe(1);
+    expect(expansionLayerGain("Rolling", bright)).toBe(1); // the Welcome Home album piece, not an Expansion take
     expect(expansionLayerGain("Ghost", bright)).toBe(1);
-    expect(expansionLayerGain("Chemiluminescence 1", bright)).toBe(1);
+    expect(expansionLayerGain("Snowflake", bright)).toBe(1);
     expect(expansionLayerGain(ordered.find((j) => j.lead !== bright)!.title, bright)).toBe(SHADER_SUPPORT_GAIN[bright]);
     for (const j of ordered) expect(expansionLayerGain(j.title, j.lead)).toBe(vet.verdicts[j.lead].leadGain);
     for (const g of Object.values(SHADER_SUPPORT_GAIN)) { expect(g).toBeGreaterThanOrEqual(0.35); expect(g).toBeLessThan(1); }

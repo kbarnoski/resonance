@@ -35,6 +35,9 @@ export const EXPANSION_KINETIC_NAMES: ReadonlySet<string> = new Set(
     "Tranquility 21", "Tranquility 30", "Tranquility 33", "Tranquility 34",
     "Tranquility 35", "Tranquility 36", "Tranquility 38",
     "Velvet Tears 1", "Yellow Bird 3", "Yellow Bird 6",
+    // the former Kinetic Lab, upgraded to the Archetype (Karel 2026-10-11:
+    // "once upgraded no need for a kinetic lab set")
+    "Stand 10", "Cabin Soul 8", "Rolling 2", "Cabin Soul 5", "Chemiluminescence 1",
   ].map((n) => n.toLowerCase()),
 );
 

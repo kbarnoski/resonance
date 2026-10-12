@@ -138,64 +138,7 @@
   "kineticLab": 5,
   "expansion": 49
  },
- "kineticLabCasts": {
-  "9f7d1b51-aeac-4dfc-a39f-b00101a403f9": [
-   "resonant-rings",
-   "plankton",
-   "r3-fairyglow",
-   "sparkler",
-   "r2-curlswarm",
-   "r-stardust",
-   "will-o-wisp",
-   "r-droplets",
-   "murmuration",
-   "drift"
-  ],
-  "061528d4-e9a3-49c3-ad3c-f23cf9cf2251": [
-   "resonant-rings",
-   "drift",
-   "r-stardust",
-   "comet-swarm",
-   "ribbon-of-light",
-   "r2-curlswarm",
-   "r3-fairyglow",
-   "r-droplets",
-   "pendulum-dust",
-   "plankton"
-  ],
-  "84a82478-f0f2-4c49-b800-b4fe722f1df5": [
-   "plankton",
-   "firefly-field",
-   "resonant-rings",
-   "helix-stream",
-   "r-droplets",
-   "cascade-veil",
-   "r-stardust",
-   "r3-fairyglow"
-  ],
-  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac": [
-   "will-o-wisp",
-   "r3-fairyglow",
-   "ember-fountain",
-   "r-stardust",
-   "firefly-field",
-   "r2-curlswarm",
-   "r-droplets",
-   "drift",
-   "plankton"
-  ],
-  "b5247327-b1fd-45ce-a249-0a58a8a3c57e": [
-   "resonant-rings",
-   "r-stardust",
-   "galaxy-seed",
-   "ribbon-of-light",
-   "r2-curlswarm",
-   "rose-window",
-   "r3-fairyglow",
-   "drift",
-   "r-droplets"
-  ]
- },
+ "kineticLabCasts": {},
  "achieved": {
   "minSpacingRecast": 10,
   "minSpacingVsFixed": 7,

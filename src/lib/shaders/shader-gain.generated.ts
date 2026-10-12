@@ -70,6 +70,11 @@ export const SHADER_LEAD_GAIN: Readonly<Record<string, number>> = {
 };
 /** Expansion journey name (lowercase) -> its exclusive lead. */
 export const EXPANSION_LEADS: Readonly<Record<string, string>> = {
+  "stand 10": "ember", // the former Kinetic Lab, joined 2026-10-11
+  "cabin soul 8": "volcanic", // the former Kinetic Lab, joined 2026-10-11
+  "rolling 2": "chinook", // the former Kinetic Lab, joined 2026-10-11
+  "cabin soul 5": "nadir", // the former Kinetic Lab, joined 2026-10-11
+  "chemiluminescence 1": "pelagic", // the former Kinetic Lab, joined 2026-10-11
   "surrounded by light 6": "kenosis",
   "nothing 30": "zenith",
   "night wind 2": "kairos",

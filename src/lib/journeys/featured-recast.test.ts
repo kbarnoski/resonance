@@ -34,7 +34,8 @@ const expansion = read("scripts/expansion-recast.json") as { journeys: { id: str
 const vet = read("scripts/shader-vetting.json") as { pool: string[] };
 
 const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"];
-const KINETIC_LAB = ["Chemiluminescence 1", "Rolling 2", "Stand 10", "Cabin Soul 8", "Cabin Soul 5"];
+// the former Kinetic Lab five joined the Expansion (2026-10-11) — no lab left
+const KINETIC_LAB: string[] = [];
 const KINETIC_LAB_LEADS = ["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"];
 const GEOMETRY = new Set<string>(MODE_META.filter((m) => m.category === "Geometry").map((m) => m.mode));
 const MIN_DIST = 10; // never within the next 9 journeys (cyclic) — 11 became infeasible once Vigil (+7, 2026-10-05) joined the loop; the solver proves 10
