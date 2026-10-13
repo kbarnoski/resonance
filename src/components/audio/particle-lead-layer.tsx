@@ -1085,6 +1085,8 @@ export function ParticleLeadLayer({
     let emblemFormAt = -1;
     let emblemSettledLogged = false;
     let emblemFrames = 0;
+    let emblemTrace: string[] = [];
+    let emblemTraceLogged = false;
     let angelPairWarm = false;
     let echoAt = -1, echoN = 0;
     let echoUsed: HTMLCanvasElement | null = null;
@@ -1342,7 +1344,7 @@ export function ParticleLeadLayer({
           // (no setInstances here: re-laying a visible FIELD at once was a jump;
           // the image force dominates the instanced form while it is worn)
           appearN++;
-          if (want === "emblem") { emblemFormAt = performance.now(); emblemSettledLogged = false; emblemFrames = 0; }
+          if (want === "emblem") { emblemFormAt = performance.now(); emblemSettledLogged = false; emblemFrames = 0; emblemTrace = []; emblemTraceLogged = false; }
           glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : want === "echo" ? "echo" : `emblem ${emOcc}`);
         }
       }
@@ -1560,6 +1562,9 @@ export function ParticleLeadLayer({
       if (emblemFormAt > 0 && !emblemSettledLogged && imgLoaded === "emblem") {
         const el = (performance.now() - emblemFormAt) / 1000;
         emblemFrames++;
+        // trace (fps · mean mote speed) every 0.5 s for the first 6 s of the formation
+        if (el < 6.2 && el >= emblemTrace.length * 0.5) { const stt = engine.stats(); emblemTrace.push(`${Math.round(stt.fps)}/${stt.motion.meanSpeed.toFixed(2)}`); }
+        if (el >= 6.2 && emblemTrace.length && !emblemTraceLogged) { emblemTraceLogged = true; glitchRecord("emblem-trace", `fps/speed ${emblemTrace.join(" ")}`); }
         // settled AFTER the load (a field already settled before it doesn't count)
         if (engine.settledFor() > 0.3 && engine.settledFor() < el - 0.2) {
           emblemSettledLogged = true;
