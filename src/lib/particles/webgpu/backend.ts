@@ -1,0 +1,93 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// backend.ts — which particle engine runs: WebGL2 (the show) or WebGPU.
+//
+// `?gpu=webgpu` opts in (default OFF — with the flag off nothing here changes
+// what the show runs). Fallback to WebGL2 whenever navigator.gpu is missing or
+// the adapter probe fails. The probe must happen BEFORE the canvas is touched:
+// a canvas that has handed out a "webgpu" context can never give a "webgl2"
+// one, so the decision is made on a probed adapter, never by trying.
+//
+// Not wired into shared-engine.ts yet (phase A exit criterion, plan §A.7).
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { createParticleEngine, type ParticleEngine, type ParticleEngineOptions } from "../particle-engine";
+import { navigatorGpu, type WAdapter } from "./gpu-types";
+import { createWebGPUParticleEngine, type WebGPUEngineOptions } from "./engine";
+
+export type ParticleBackend = "webgl2" | "webgpu";
+
+/** The backend the URL asks for: `?gpu=webgpu` → webgpu; anything else → webgl2. */
+export function requestedParticleBackend(search?: string): ParticleBackend {
+  try {
+    const q = new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : ""));
+    return q.get("gpu") === "webgpu" ? "webgpu" : "webgl2";
+  } catch {
+    return "webgl2";
+  }
+}
+
+export interface WebGPUProbe {
+  available: boolean;
+  /** why not (no navigator.gpu, no adapter, too-small limits) */
+  why?: string;
+  adapter?: WAdapter;
+  maxStorageBufferBindingSize?: number;
+  timestamps?: boolean;
+}
+
+/** Minimum the engine needs: 4,096 motes × 16 B per stream — any WebGPU device. */
+const MIN_STORAGE_BYTES = 4096 * 16;
+
+let probeP: Promise<WebGPUProbe> | null = null;
+
+/** Probe once per session (cached). Never touches a canvas. */
+export function probeWebGPU(): Promise<WebGPUProbe> {
+  probeP ??= (async (): Promise<WebGPUProbe> => {
+    const gpu = navigatorGpu();
+    if (!gpu) return { available: false, why: "navigator.gpu missing" };
+    try {
+      const adapter = await gpu.requestAdapter({ powerPreference: "high-performance" });
+      if (!adapter) return { available: false, why: "no adapter" };
+      if (adapter.limits.maxStorageBufferBindingSize < MIN_STORAGE_BYTES) return { available: false, why: "storage limit too small" };
+      return {
+        available: true,
+        adapter,
+        maxStorageBufferBindingSize: adapter.limits.maxStorageBufferBindingSize,
+        timestamps: adapter.features.has("timestamp-query"),
+      };
+    } catch (e) {
+      return { available: false, why: e instanceof Error ? e.message : String(e) };
+    }
+  })();
+  return probeP;
+}
+
+/** test hook */
+export function __resetWebGPUProbeForTest(): void {
+  probeP = null;
+}
+
+/** Pure decision: what to run, and why. */
+export function chooseParticleBackend(requested: ParticleBackend, probe: Pick<WebGPUProbe, "available" | "why"> | null): { backend: ParticleBackend; why: string } {
+  if (requested !== "webgpu") return { backend: "webgl2", why: "default (flag off)" };
+  if (!probe) return { backend: "webgl2", why: "webgpu requested but not probed yet" };
+  if (!probe.available) return { backend: "webgl2", why: `webgpu requested, falling back: ${probe.why ?? "unavailable"}` };
+  return { backend: "webgpu", why: "webgpu requested and available" };
+}
+
+/** Create the engine for a decided backend. With `webgpu`, the probed adapter
+ *  is handed over (an adapter is consumed by its first requestDevice; the
+ *  cached probe is cleared so a later engine probes afresh). */
+export function createParticleEngineFor(
+  canvas: HTMLCanvasElement,
+  opts: ParticleEngineOptions & Pick<WebGPUEngineOptions, "gpuTiming" | "minPx" | "onReady">,
+  backend: ParticleBackend,
+  probe?: WebGPUProbe | null,
+): ParticleEngine {
+  if (backend === "webgpu") {
+    const adapter = probe?.adapter ?? null;
+    if (adapter) probeP = null;
+    return createWebGPUParticleEngine(canvas, { ...opts, adapter });
+  }
+  return createParticleEngine(canvas, opts);
+}
