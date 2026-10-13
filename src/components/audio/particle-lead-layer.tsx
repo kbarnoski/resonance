@@ -542,6 +542,7 @@ export function ParticleLeadLayer({
   useEffect(() => {
     emblemRef.current = null;
     let cancelled = false;
+    const mountAt = performance.now();
     void loadEmblemMap().then((map) => {
       const src = map[journeyId];
       if (cancelled || !src) return;
@@ -558,9 +559,10 @@ export function ParticleLeadLayer({
         // journeys after" — the others decoded AFTER the switch, so the field
         // gathered empty at 1.4 s and re-aimed when the emblem landed ~1 s later)
         const hit = emblemCanvasCache.get(u);
-        if (hit) { imgs.push(hit); emblemRef.current = [...imgs]; continue; }
+        if (hit) { imgs.push(hit); emblemRef.current = [...imgs]; glitchRecord("emblem-ready", `prewarmed +${Math.round(performance.now() - mountAt)}ms`); continue; }
         void decodeSmall(u, { max: 512 }).then((c) => {
           if (!c || cancelled) return; // failed load
+          glitchRecord("emblem-ready", `decoded +${Math.round(performance.now() - mountAt)}ms`);
           cacheEmblem(u, c);
           imgs.push(c);
           emblemRef.current = [...imgs];
@@ -1078,6 +1080,8 @@ export function ParticleLeadLayer({
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
+    let emblemFormAt = -1;
+    let emblemSettledLogged = false;
     let angelPairWarm = false;
     let echoAt = -1, echoN = 0;
     let echoUsed: HTMLCanvasElement | null = null;
@@ -1335,6 +1339,7 @@ export function ParticleLeadLayer({
           // (no setInstances here: re-laying a visible FIELD at once was a jump;
           // the image force dominates the instanced form while it is worn)
           appearN++;
+          if (want === "emblem") { emblemFormAt = performance.now(); emblemSettledLogged = false; }
           glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : want === "echo" ? "echo" : `emblem ${emOcc}`);
         }
       }
@@ -1547,6 +1552,12 @@ export function ParticleLeadLayer({
         if (running && now - absentSince > 2500) { engine.stop(); running = false; }
       } else absentSince = now;
 
+      // MEASURE (Karel 2026-10-13, "use measurement"): seconds from an emblem load to
+      // the field settling into it — compare the first journey after boot with later ones
+      if (emblemFormAt > 0 && !emblemSettledLogged && imgLoaded === "emblem" && engine.settledFor() > 0.3) {
+        emblemSettledLogged = true;
+        glitchRecord("emblem-settled", `${((performance.now() - emblemFormAt) / 1000 - engine.settledFor()).toFixed(2)}s`);
+      }
       // a held still: start the dissolve once the guard clears (same window)
       if (pr.window?.kind === "transition" && heldInWindow.current === pr.window.start && dissolvedWindow.current !== pr.window.start) {
         const nextPb = (cast.phaseBounds ?? []).find((x) => x > t);
