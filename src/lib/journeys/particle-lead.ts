@@ -253,7 +253,9 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
       if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
     }
-    out[id] = applySoulRemovals(cast, removals.souls, id);
+    // the mastered journeys keep their locked look: a form removed AFTER their
+    // lock (ribbons, Karel 2026-10-13: "cheesey with those circles") stays in them
+    out[id] = applySoulRemovals(cast, cast.mastered ? removals.souls : [...removals.souls, ...(removals.soulsUnlocked ?? [])], id);
   });
   return out;
 }

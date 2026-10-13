@@ -166,9 +166,11 @@ const nextRemovals = {
   emblems: [...applied.emblems].sort(),
   motifs: [...applied.motifs].sort(),
   moments: removed.moments,
+  // carried through (hand-kept: removed everywhere but the mastered journeys)
+  ...(prev.soulsUnlocked?.length ? { soulsUnlocked: prev.soulsUnlocked } : {}),
 };
 const bundledChanged = !same(prev.souls ?? [], nextRemovals.souls) || !same(prev.moments ?? [], nextRemovals.moments);
-if (!same({ souls: prev.souls, emblems: prev.emblems, motifs: prev.motifs, moments: prev.moments }, nextRemovals)) writeJson(REMOVALS, nextRemovals);
+if (!same({ souls: prev.souls, emblems: prev.emblems, motifs: prev.motifs, moments: prev.moments, ...(prev.soulsUnlocked?.length ? { soulsUnlocked: prev.soulsUnlocked } : {}) }, nextRemovals)) writeJson(REMOVALS, nextRemovals);
 
 console.log(`souls removed: ${nextRemovals.souls.length} · moments removed: ${nextRemovals.moments.length}`);
 for (const r of report) console.log(`• ${r}`);
