@@ -78,6 +78,7 @@ import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swell
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
+import { createGravityGlide, describeGravity, gravityActive, gravityEnabled, lightsOfStill, packGravity, retargetGravity, sampleGravity, gravityStrengthFor } from "@/lib/particles/light-gravity";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
 
@@ -1002,6 +1003,71 @@ export function ParticleLeadLayer({
     const breathTl = breathTimelineFor(journeyId);
     engine.setBreath(null, true); // a fresh journey never inherits the last one's breath
     if (breathTl) glitchRecord("particle-breath", breathSummary(breathTl));
+    // LIGHT GRAVITY (?gravity=1, off by default — light-gravity.ts): the free
+    // motes slowly drift toward where the light is in the picture on screen
+    // and let go when it changes. The still is sampled small in the bridge's
+    // worker (never a main-thread read-back); its lights are found on that
+    // tiny grid once per picture; every attractor glides >= 4 s. Runs on every
+    // journey, Snowflake + Ghost included (Karel 2026-10-13), at its own
+    // strength (GRAVITY_JOURNEY_STRENGTH, default 1); emblems / image forms are
+    // untouched (the shader's image gate). Off = gravity stays at 0.
+    let gravityOn = false;
+    try { gravityOn = gravityEnabled(undefined, window.sessionStorage); } catch { gravityOn = false; }
+    const gravStrength = gravityStrengthFor(journeyId);
+    if (gravStrength <= 0) gravityOn = false;
+    let gravGlide = createGravityGlide();
+    let gravUrl: string | null | undefined; // the picture the lights came from (undefined = none yet)
+    let gravSeq = 0;
+    const gravPacked = new Float32Array(16);
+    const gravHints: BridgeHint[] = [];
+    const gravNow = () => performance.now() / 1000;
+    engine.setGravity(null);
+    const gravityTo = (url: string | null, why: string) => {
+      if (!gravityOn || disposed || url === gravUrl) return;
+      gravUrl = url;
+      const seq = ++gravSeq;
+      if (!url) {
+        gravGlide = retargetGravity(gravGlide, [], gravNow());
+        glitchRecord("particle-gravity", `${why}: ${describeGravity([])}`);
+        return;
+      }
+      void sampleBridgeStill(url).then((st) => {
+        if (disposed || seq !== gravSeq) return;
+        // a picture that can't be sampled: let go (the lights never guess)
+        const pts = st ? lightsOfStill(st.px, st.w, st.h, st.aspect, window.innerWidth / Math.max(1, window.innerHeight)) : [];
+        gravGlide = retargetGravity(gravGlide, pts, gravNow());
+        glitchRecord("particle-gravity", `${why} ${url.split("/").pop()}: ${describeGravity(pts)}`);
+      });
+    };
+    // every still the collage SHOWED (the depth layer's own feed)
+    const onGravStill = (e: Event) => {
+      const src = (e as CustomEvent<{ src?: string }>).detail?.src;
+      if (typeof src === "string") gravityTo(src, "still");
+    };
+    if (gravityOn) window.addEventListener("resonance:pack-still", onGravStill);
+    // the boundary hints: the still already on screen when the field mounts,
+    // and the incoming still a travel morph ends on
+    const offGravHint = gravityOn
+      ? onBridgeHint((h) => {
+          if (h.journeyId !== journeyId || disposed) return;
+          const i = gravHints.findIndex((x) => Math.abs(x.boundarySec - h.boundarySec) < 0.5);
+          if (i >= 0) gravHints.splice(i, 1);
+          gravHints.push(h);
+          while (gravHints.length > 3) gravHints.shift();
+          if (gravUrl === undefined && h.outgoing) gravityTo(h.outgoing, "on screen");
+        })
+      : () => {};
+    // a travel morph: its end frame is the next phase's opening still — glide
+    // there with it; unknown → let go (the next shown still takes over)
+    const offGravClip = gravityOn
+      ? onClipStarted((e) => {
+          if (!e.travel) return;
+          const t = useAudioStore.getState().currentTime || 0;
+          let h: BridgeHint | null = null;
+          for (const x of gravHints) if (Math.abs(x.boundarySec - t) < 10 && (!h || Math.abs(x.boundarySec - t) < Math.abs(h.boundarySec - t))) h = x;
+          gravityTo(h?.incoming ?? null, "morph end");
+        })
+      : () => {};
     let sizeBase = 1;
     let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
@@ -1283,6 +1349,7 @@ export function ParticleLeadLayer({
       // breath: the phrase-long, slew-limited timeline (never per beat)
       const breathNow = breathTl ? breathAt(breathTl, t) : null;
       if (breathNow) engine.setBreath(breathNow);
+      if (gravityOn) engine.setGravity(packGravity(sampleGravity(gravGlide, gravNow()), gravPacked), gravStrength);
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
       // travel morphs ride the phase boundaries, which are known — arm the
@@ -1945,6 +2012,7 @@ export function ParticleLeadLayer({
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
         ...(bridgeOn ? { bridge: { ...engine.bridgeState(), phase: bridgeSt.phase, pb: bridgeSt.pb, note: bridgeSt.note, stills: [...bridgeLoaded] } } : {}),
         ...(breathNow ? { breath: breathNow } : {}),
+        ...(gravityOn ? { gravity: { active: gravityActive(gravGlide, gravNow()), still: gravUrl ? gravUrl.split("/").pop() : null, ...engine.gravityState() } } : {}),
         ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
       };
     };
@@ -1962,6 +2030,10 @@ export function ParticleLeadLayer({
       offBridgeHint();
       offBridgeClip();
       engine.setBridge(0, 0, 0, 0.2);
+      window.removeEventListener("resonance:pack-still", onGravStill);
+      offGravHint();
+      offGravClip();
+      engine.setGravity(null);
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
       disposed = true;

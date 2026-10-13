@@ -179,6 +179,14 @@ uniform vec3 uCurRight;
 // off — the branch is skipped), y = breath (−1 exhaled/contracted … +1
 // inhaled/expanded), z = settle 0..1 (extra drag as a phrase lands)
 uniform vec4 uBreath;
+// LIGHT GRAVITY (light-gravity.ts, ?gravity=1): the lights of the picture on
+// screen. A[i] = xyz world centre (on the focal plane), w = weight (0 = off);
+// B[i] = x well reach, y soft core radius (world). uGravG = gain × the soul's
+// freedom × strength (0 = off — the branch is skipped, the show build exactly).
+uniform vec4 uGravA[4];
+uniform vec4 uGravB[4];
+uniform float uGravG;
+uniform vec3 uGravE;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -1224,6 +1232,38 @@ void main(){
     vec3 rad = (p + uCurEye * (bdc * ${BREATH_LAWS.DEPTH_BIAS.toFixed(3)})) * (1.0 - smoothstep(2.4, 3.2, bpr));
     f.xyz += rad * (uBreath.y * ${BREATH_LAWS.EXPAND_FORCE.toFixed(3)} * brG);
     f.w += uBreath.z * ${BREATH_LAWS.SETTLE_DRAG.toFixed(3)} * brG;
+  }
+  // LIGHT GRAVITY (2026-10-13): the free motes slowly drift toward where the
+  // light is in the picture (the sun, the glowing horizon, the bright water)
+  // and let go when it changes. A FORCE only, in the screen plane (depth is
+  // left alone), from a broad well with a soft repulsive core and a gentle
+  // orbit, so motes drift and circle NEAR the light — never collapse into a
+  // dot; ~30 % of motes never feel it (density stays spread). Images and
+  // emblems are untouched: gated by the image form and presence.
+  float gravG = uGravG * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (gravG > 0.001) {
+    float sus = smoothstep(0.3, 1.0, hash11(s.a * 47.13 + 2.9));
+    if (sus > 0.001) {
+      float orb = hash11(s.a * 91.7 + 1.3) > 0.5 ? 1.0 : -1.0;
+      vec3 fg = vec3(0.0);
+      for (int i = 0; i < 4; i++) {
+        float gw = uGravA[i].w;
+        if (gw < 0.001) continue;
+        vec3 gd = uGravA[i].xyz - p;
+        gd -= uGravE * dot(gd, uGravE);           // the screen plane only
+        float gr = length(gd) + 1e-4;
+        vec3 gn = gd / gr;
+        float well = uGravB[i].x, core = uGravB[i].y;
+        float q = gr / well;
+        float pull = q * exp(0.5 - 0.5 * q * q);   // 0 at the centre, 1 at the reach, fades beyond
+        float push = 1.0 - smoothstep(0.0, core, gr); // soft repulsive core
+        vec3 tang = cross(uGravE, gn) * orb;
+        fg += gw * (gn * (pull - 0.8 * push) + tang * 0.35 * pull);
+      }
+      float fgl = length(fg);
+      if (fgl > 1.0) fg /= fgl;                    // capped: never a lunge
+      f.xyz += fg * gravG * sus;
+    }
   }
 
   // image dissolve / reform: spring onto the image plane; while released,
