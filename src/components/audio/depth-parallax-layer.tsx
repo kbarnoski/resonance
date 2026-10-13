@@ -284,6 +284,11 @@ function DepthParallaxLayerInner({
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
   const camAmpRef = useRef(0);
   const crossJourneyMixRef = useRef(false);
+  // the outgoing journey's base fades to black under the title (Karel
+  // 2026-10-13: "whats that transparent window image that was in realized.
+  // leftover?" — Welcome Home's last still, a window at dusk, held by the
+  // freeze protocol and mixed out only ~18 s into Realized)
+  const retireBaseRef = useRef(false);
   const heldOpacityRef = useRef<number | null>(null);
   const prevJourneyRef = useRef(journeyId);
   useEffect(() => {
@@ -292,6 +297,7 @@ function DepthParallaxLayerInner({
       // journey handoff (the layer now outlives the gap between sets and
       // mounts before the first journey; those starts seed fresh)
       crossJourneyMixRef.current = !!prevJourneyRef.current && !!journeyId;
+      retireBaseRef.current = crossJourneyMixRef.current;
       prevJourneyRef.current = journeyId;
     }
   }, [journeyId]);
@@ -454,6 +460,22 @@ function DepthParallaxLayerInner({
       // A queued still lands only once the running crossfade has finished:
       // restarting a mix mid-way snaps the half-blended picture to the other
       // image in one frame (kiosk capture 2026-10-09 — the "popping" images).
+      // A journey handoff: the outgoing journey's still never carries into
+      // the next one — it mixes to black over 8 s (the old stills' own
+      // boundary fade), under the title; the new base then mixes in from
+      // black after the settle, like the first still of a covered stretch.
+      if (retireBaseRef.current && blackTex && now - mixStart >= mixDur) {
+        retireBaseRef.current = false;
+        if (slotB.img !== blackTex) {
+          const retiring = slotA;
+          slotA = slotB;
+          slotB = { img: blackTex, depth: blackTex, aspect: slotB.aspect };
+          if (retiring !== slotA && retiring !== slotB) freeSlot(retiring);
+          mixStart = performance.now();
+          mixDur = 8000;
+          glitchRecord("parallax-mix", "boundary-fade-to-black");
+        }
+      }
       if (pendingStill && !inBoundarySettle() && now - mixStart >= mixDur) {
         mixDur = pendingDur || MIX_MS_LONG;
         pendingDur = 0;
