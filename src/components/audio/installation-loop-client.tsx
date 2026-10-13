@@ -1851,6 +1851,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         try {
           const nextJourneyId = nextEntry.journey?.id;
           if (nextJourneyId) {
+            // its emblem, decoded now — in hand at its first frame (2026-10-13)
+            try { (await import("@/components/audio/particle-lead-layer")).prewarmEmblems(nextJourneyId); } catch { /* best-effort */ }
             const { fetchPackLocalImages } = await import("@/lib/offline/pack-client");
             const map = await fetchPackLocalImages();
             const urls = map?.[nextJourneyId] ?? [];

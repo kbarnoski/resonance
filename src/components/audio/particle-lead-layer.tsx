@@ -461,6 +461,26 @@ export function cachedSamples(c: HTMLCanvasElement, n: number): Float32Array | u
 }
 
 let emblemMap: Promise<Record<string, string | string[]>> | null = null;
+/** Decoded emblem canvases by URL (a few journeys' worth; samples ride along in the uv cache). */
+const emblemCanvasCache = new Map<string, HTMLCanvasElement>();
+function cacheEmblem(u: string, c: HTMLCanvasElement): void {
+  emblemCanvasCache.delete(u);
+  emblemCanvasCache.set(u, c);
+  while (emblemCanvasCache.size > 8) emblemCanvasCache.delete(emblemCanvasCache.keys().next().value as string);
+}
+/** Decode a journey's emblem images ahead of its start (the loop calls this for
+ *  the NEXT journey with the rest of its visual prewarm). */
+export function prewarmEmblems(journeyId: string): void {
+  if (typeof window === "undefined" || !journeyId) return;
+  void loadEmblemMap().then((map) => {
+    const src = map[journeyId];
+    if (!src) return;
+    for (const u of Array.isArray(src) ? src : [src]) {
+      if (u.startsWith("@") || emblemCanvasCache.has(u)) continue;
+      void decodeSmall(u, { max: 512 }).then((c) => { if (c) { cacheEmblem(u, c); warmUv(c); } }).catch(() => undefined);
+    }
+  });
+}
 /** Journey → emblem image (offline pack; empty where the pack has none). */
 function loadEmblemMap(): Promise<Record<string, string | string[]>> {
   emblemMap ??= fetch("/tramokyo-pack/local-emblems.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
@@ -532,8 +552,16 @@ export function ParticleLeadLayer({
         if (u.startsWith("@")) continue;
         // decoded + shrunk to ≤512 px NOW, so forming it later uploads a small
         // texture (a full 1024² JPEG upload hitched ~230 ms on a visible frame)
+        // pre-decoded in the previous journey's last seconds (prewarmEmblems):
+        // in hand at the first frame, like Ghost's drawn angel (Karel 2026-10-13:
+        // "the first journey after the title … forms the emblem quicker than all
+        // journeys after" — the others decoded AFTER the switch, so the field
+        // gathered empty at 1.4 s and re-aimed when the emblem landed ~1 s later)
+        const hit = emblemCanvasCache.get(u);
+        if (hit) { imgs.push(hit); emblemRef.current = [...imgs]; continue; }
         void decodeSmall(u, { max: 512 }).then((c) => {
           if (!c || cancelled) return; // failed load
+          cacheEmblem(u, c);
           imgs.push(c);
           emblemRef.current = [...imgs];
           warmUv(c);
