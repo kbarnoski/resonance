@@ -21,6 +21,9 @@
   "emblems": [
     "@angel-outline"
   ],
-  "motifs": [],
+  "motifs": [
+    "/tramokyo-pack/motif-forms/light-a14.jpg",
+    "/tramokyo-pack/motif-forms/water-5.jpg"
+  ],
   "moments": []
 }
